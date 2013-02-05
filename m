@@ -1,41 +1,50 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v2 2/2] spi: bitbang: convert to using core message queue
-Date: Tue, 05 Feb 2013 17:22:10 +0000
-Message-ID: <20130205172210.299433E1587@localhost>
-References: <Pine.LNX.4.64.1301091502020.13376@axis700.grange> <Pine.LNX.4.64.1301091507120.13376@axis700.grange> <Pine.LNX.4.64.1301091535490.13376@axis700.grange> <CACRpkdbsbXTM47TYTjF9sJQaMRetTbHm0Xri-=2kWsdK14AYPw@mail.gmail.com> <Pine.LNX.4.64.1301101304210.24058@axis700.grange>
-Cc: spi-devel-general@lists.sourceforge.net,
-	Magnus Damm <magnus.damm@gmail.com>, linux-sh@vger.kernel.org
-To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
-	Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <Pine.LNX.4.64.1301101304210.24058@axis700.grange>
-Sender: linux-sh-owner@vger.kernel.org
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH V2 0/2] spi/bcm63xx: fix multi transfer messages
+Date: Tue, 05 Feb 2013 17:14:08 +0000
+Message-ID: <20130205171408.3C60F3E1427@localhost>
+References: <1359900913-4472-1-git-send-email-jogo@openwrt.org>
+	<20130205143040.208603E1265@localhost>
+	<20130205150441.GC4720@opensource.wolfsonmicro.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130205150441.GC4720-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, 10 Jan 2013 13:04:37 +0100 (CET), Guennadi Liakhovetski <g.liakhovetski@gmx.de> wrote:
-> On Thu, 10 Jan 2013, Linus Walleij wrote:
+On Tue, 5 Feb 2013 15:04:41 +0000, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+> On Tue, Feb 05, 2013 at 02:30:40PM +0000, Grant Likely wrote:
 > 
-> > On Wed, Jan 9, 2013 at 3:44 PM, Guennadi Liakhovetski
-> > <g.liakhovetski@gmx.de> wrote:
-> > 
-> > > [   79.968000] mmc0: new SD card on SPI
-> > > [   79.976000] mmcblk0: mmc0:0000 SU02G 1.84 GiB
-> > > [   80.024000]  mmcblk0: p1
-> > > [   80.132000] mmcblk0: error -38 sending status command, retrying
-> > > [   80.136000] mmcblk0: error -38 sending status command, retrying
-> > > [   80.140000] mmcblk0: error -38 sending status command, aborting
-> > > [   81.028000] mmc0: SPI card removed
-> > > [   81.572000] mmc0: error -110 whilst initialising SD card
-> > 
-> > The queue mechanism has not changed.
-> > 
-> > This *could* be the card itself. So it doesn't appear before the patch?
+> > Another option is to allow longer transfers if a GPIO is used for the CS
+> > line. A lot of SPI controllers need to do that.
 > 
-> No.
+> > That isn't a critique of this patch because it is essentially a bug fix,
+> > but rather a way you can work around the limitation.
+> 
+> Yeah, I did suggest that to them originally but apparently the hardware
+> is sufficient fail that the pins can't be put into GPIO mode for the
+> affected boards.
 
-It could merely be a result of timing changes by using the core message
-queue. I'll leave the patch for now until someone can properly
-investigate.
+Hahaha.
 
-g.
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.
 
+------------------------------------------------------------------------------
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

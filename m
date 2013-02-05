@@ -1,13 +1,21 @@
-From: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH v2] spi/ath79: add shutdown handler
-Date: Tue,  5 Feb 2013 20:57:55 +0100
-Message-ID: <1360094275-7807-1-git-send-email-juhosg@openwrt.org>
+From: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
+Date: Tue, 05 Feb 2013 21:17:02 +0100
+Message-ID: <511168BE.1000803@free-electrons.com>
+References: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
+	<5111331F.7090900@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <5111331F.7090900-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,60 +26,80 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The SPI controller of the AR7xxx/AR9xxx SoCs
-have a special mode which allows the SoC to
-directly read data from SPI flash chips. In
-this mode, the content of the SPI flash chip
-can be accessed via a memory mapped region.
+On 02/05/2013 05:28 PM, Gregory CLEMENT wrote:
+> Hi Ezequiel,
+> 
+> On 02/05/2013 12:24 PM, Ezequiel Garcia wrote:
+>> This patch adds an SPI master device node for Armada XP-GP board.
+>> This master node is an SPI flash controller 'n25q128a13'.
+>>
+>> Since there is no 'partitions' node declared, one full sized
+>> partition named as the device will be created.
+>>
+>> Cc: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>> Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>> Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+>> Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>> ---
+>> This patch depends on:
+>>
+>>  1. Gregory's patch for Armada XP GP board:
+>>       arm: mvebu: support for the new Armada XP development board(DB-MV784MP-GP)
+>>
+>>  2. My previous patch for SPI on Armada 370/XP:
+>>       arm: mvebu: Add support for SPI controller in Armada 370/XP
+>>
+>> And don't forget to compile the SPI flash driver, CONFIG_MTD_M25P80=y
+>>
+>>  arch/arm/boot/dts/armada-xp-gp.dts |   12 ++++++++++++
+>>  1 files changed, 12 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/arch/arm/boot/dts/armada-xp-gp.dts b/arch/arm/boot/dts/armada-xp-gp.dts
+>> index 3eea531..1c8afe2 100644
+>> --- a/arch/arm/boot/dts/armada-xp-gp.dts
+>> +++ b/arch/arm/boot/dts/armada-xp-gp.dts
+>> @@ -97,5 +97,17 @@
+>>  			phy = <&phy3>;
+>>  			phy-mode = "rgmii-id";
+>>  		};
+>> +
+>> +		spi0: spi@d0010600 {
+>> +			status = "okay";
+>> +
+>> +			spi-flash@0 {
+>> +				#address-cells = <1>;
+>> +				#size-cells = <1>;
+>> +				compatible = "n25q128a13";
+>> +				reg = <0>; /* Chip select 0 */
+>> +				spi-max-frequency = <108000000>;
 
-During early init time, the kernel expects
-that the flash chip is accessible through
-that memory region because it reads board
-specific values (e.g. MAC address, WiFi
-calibration data) from the flash on various
-boards.
+I had a remark about it, according to the datasheet, 108MHz is the
+maximum frequency for the all the instructions but the READ
+instruction. For the READ the maximum frequency is 54MHz. So I wonder
+if we shouldn't use 54000000 here.
 
-This is working if the kernel is loaded
-directly by the bootloader because that
-leaves the SPI controller in the special
-mode. However it is not working in a kexec'd
-kernel because the SPI driver does not restore
-the special mode during shutdown.
 
-The patch adds a shutdown handler to fix this
-issue.
 
-Signed-off-by: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
----
-Changes since v1:
- - call ath79_spi_remote(pdev) directly from ath79_spi_shutdown()
----
- drivers/spi/spi-ath79.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+>> +			};
+>> +		};
+>>  	};
+>>  };
+>>
+> 
+> I applied, compiled and try this patch it worked well, at least
+> for reading, I didn't try to write on the flash where my boolader
+> is stored. So you can add my:
+> 
+> Tested-by: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> 
+> 
 
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index 842acd8..e504b76 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -308,9 +308,15 @@ static int ath79_spi_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static void ath79_spi_shutdown(struct platform_device *pdev)
-+{
-+	ath79_spi_remove(pdev);
-+}
-+
- static struct platform_driver ath79_spi_driver = {
- 	.probe		= ath79_spi_probe,
- 	.remove		= ath79_spi_remove,
-+	.shutdown	= ath79_spi_shutdown,
- 	.driver		= {
- 		.name	= DRV_NAME,
- 		.owner	= THIS_MODULE,
+
 -- 
-1.7.10
-
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

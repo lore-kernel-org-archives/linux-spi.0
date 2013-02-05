@@ -1,18 +1,16 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH V2 2/2] spi/bcm63xx: work around inability to keep CS up
-Date: Tue, 05 Feb 2013 14:35:30 +0000
-Message-ID: <20130205143530.1F00D3E1265@localhost>
-References: <1359900913-4472-1-git-send-email-jogo@openwrt.org>
-	<1359900913-4472-3-git-send-email-jogo@openwrt.org>
+Subject: Re: [PATCH] spi: orion: Use module_platform_driver()
+Date: Tue, 05 Feb 2013 14:39:55 +0000
+Message-ID: <20130205143955.6A0913E1265@localhost>
+References: <1359980786-4606-1-git-send-email-ezequiel.garcia@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org, Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1359900913-4472-3-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <1359980786-4606-1-git-send-email-ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,251 +21,60 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun,  3 Feb 2013 15:15:13 +0100, Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
-> This SPI controller does not support keeping CS asserted after sending
-> a transfer.
-> Since messages expected on this SPI controller are rather short, we can
-> work around it for normal use cases by sending all transfers at once in
-> a big full duplex stream.
+On Mon,  4 Feb 2013 09:26:26 -0300, Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> This patch reduces and simplifies initalization code by
+> using module_platform_driver().
+> With this change it's necessary to remove the __init annotation
+> to avoid section mismatch warnings.
 > 
-> This means that we cannot change the speed between transfers if they
-> require CS to be kept asserted, but these would have been rejected
-> before anyway because of the inability of keeping CS asserted.
-> 
-> Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+> Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-Are you checking the state of transfer->cs_change when merging
-transfers? If cs_change is set, then the transfers cannot be merged.
+Applied, thanks.
 
 g.
 
 > ---
-> V1 -> V2:
->  * split out rejection logic into separate patch
->  * fixed return type of bcm63xx_txrx_bufs()
->  * slightly reworked bcm63xx_txrx_bufs, obsoleting one local variable
+>  drivers/spi/spi-orion.c |   15 +++------------
+>  1 files changed, 3 insertions(+), 12 deletions(-)
 > 
->  drivers/spi/spi-bcm63xx.c |  134 +++++++++++++++++++++++++++++++++++----------
->  1 file changed, 106 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-> index 27667c1..9578af7 100644
-> --- a/drivers/spi/spi-bcm63xx.c
-> +++ b/drivers/spi/spi-bcm63xx.c
-> @@ -37,6 +37,8 @@
->  
->  #define PFX		KBUILD_MODNAME
->  
-> +#define BCM63XX_SPI_MAX_PREPEND		15
-> +
->  struct bcm63xx_spi {
->  	struct completion	done;
->  
-> @@ -169,13 +171,17 @@ static int bcm63xx_spi_setup(struct spi_device *spi)
+> diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+> index b7e7182..d8cbf20 100644
+> --- a/drivers/spi/spi-orion.c
+> +++ b/drivers/spi/spi-orion.c
+> @@ -396,7 +396,7 @@ static int orion_spi_setup(struct spi_device *spi)
 >  	return 0;
 >  }
 >  
-> -static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
-> +static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
-> +				unsigned int num_transfers)
+> -static int __init orion_spi_probe(struct platform_device *pdev)
+> +static int orion_spi_probe(struct platform_device *pdev)
 >  {
->  	struct bcm63xx_spi *bs = spi_master_get_devdata(spi->master);
->  	u16 msg_ctl;
->  	u16 cmd;
->  	u8 rx_tail;
-> -	unsigned int timeout = 0;
-> +	unsigned int i, timeout = 0, prepend_len = 0, len = 0;
-> +	struct spi_transfer *t = first;
-> +	bool do_rx = false;
-> +	bool do_tx = false;
+>  	struct spi_master *master;
+>  	struct orion_spi *spi;
+> @@ -513,20 +513,11 @@ static struct platform_driver orion_spi_driver = {
+>  		.owner	= THIS_MODULE,
+>  		.of_match_table = of_match_ptr(orion_spi_of_match_table),
+>  	},
+> +	.probe		= orion_spi_probe,
+>  	.remove		= __exit_p(orion_spi_remove),
+>  };
 >  
->  	/* Disable the CMD_DONE interrupt */
->  	bcm_spi_writeb(bs, 0, SPI_INT_MASK);
-> @@ -183,19 +189,45 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
->  	dev_dbg(&spi->dev, "txrx: tx %p, rx %p, len %d\n",
->  		t->tx_buf, t->rx_buf, t->len);
->  
-> -	if (t->tx_buf)
-> -		memcpy_toio(bs->tx_io, t->tx_buf, t->len);
-> +	if (num_transfers > 1 && t->tx_buf && t->len <= BCM63XX_SPI_MAX_PREPEND)
-> +		prepend_len = t->len;
-> +
-> +	/* prepare the buffer */
-> +	for (i = 0; i < num_transfers; i++) {
-> +		if (t->tx_buf) {
-> +			do_tx = true;
-> +			memcpy_toio(bs->tx_io + len, t->tx_buf, t->len);
-> +
-> +			/* don't prepend more than one tx */
-> +			if (t != first)
-> +				prepend_len = 0;
-> +		}
-> +
-> +		if (t->rx_buf) {
-> +			do_rx = true;
-> +			/* prepend is half-duplex write only */
-> +			if (t == first)
-> +				prepend_len = 0;
-> +		}
-> +
-> +		len += t->len;
-> +
-> +		t = list_entry(t->transfer_list.next, struct spi_transfer,
-> +			       transfer_list);
-> +	}
-> +
-> +	len -= prepend_len;
->  
->  	init_completion(&bs->done);
->  
->  	/* Fill in the Message control register */
-> -	msg_ctl = (t->len << SPI_BYTE_CNT_SHIFT);
-> +	msg_ctl = (len << SPI_BYTE_CNT_SHIFT);
->  
-> -	if (t->rx_buf && t->tx_buf)
-> +	if (do_rx && do_tx && prepend_len == 0)
->  		msg_ctl |= (SPI_FD_RW << bs->msg_type_shift);
-> -	else if (t->rx_buf)
-> +	else if (do_rx)
->  		msg_ctl |= (SPI_HD_R << bs->msg_type_shift);
-> -	else if (t->tx_buf)
-> +	else if (do_tx)
->  		msg_ctl |= (SPI_HD_W << bs->msg_type_shift);
->  
->  	switch (bs->msg_ctl_width) {
-> @@ -209,7 +241,7 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
->  
->  	/* Issue the transfer */
->  	cmd = SPI_CMD_START_IMMEDIATE;
-> -	cmd |= (0 << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
-> +	cmd |= (prepend_len << SPI_CMD_PREPEND_BYTE_CNT_SHIFT);
->  	cmd |= (spi->chip_select << SPI_CMD_DEVICE_ID_SHIFT);
->  	bcm_spi_writew(bs, cmd, SPI_CMD);
->  
-> @@ -223,9 +255,25 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
->  	/* read out all data */
->  	rx_tail = bcm_spi_readb(bs, SPI_RX_TAIL);
->  
-> +	if (do_rx && rx_tail != len)
-> +		return -EIO;
-> +
-> +	if (!rx_tail)
-> +		return 0;
-> +
-> +	len = 0;
-> +	t = first;
->  	/* Read out all the data */
-> -	if (rx_tail)
-> -		memcpy_fromio(t->rx_ptr, bs->rx_io, rx_tail);
-> +	for (i = 0; i < num_transfers; i++) {
-> +		if (t->rx_buf)
-> +			memcpy_fromio(t->rx_buf, bs->rx_io + len, t->len);
-> +
-> +		if (t != first || prepend_len == 0)
-> +			len += t->len;
-> +
-> +		t = list_entry(t->transfer_list.next, struct spi_transfer,
-> +			       transfer_list);
-> +	}
->  
->  	return 0;
->  }
-> @@ -252,46 +300,76 @@ static int bcm63xx_spi_transfer_one(struct spi_master *master,
->  					struct spi_message *m)
->  {
->  	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
-> -	struct spi_transfer *t;
-> +	struct spi_transfer *t, *first = NULL;
->  	struct spi_device *spi = m->spi;
->  	int status = 0;
+> -static int __init orion_spi_init(void)
+> -{
+> -	return platform_driver_probe(&orion_spi_driver, orion_spi_probe);
+> -}
+> -module_init(orion_spi_init);
 > -
-> +	unsigned int n_transfers = 0, total_len = 0;
-> +	bool can_use_prepend = false;
-> +
-> +	/*
-> +	 * This SPI controller does not support keeping CS active after a
-> +	 * transfer.
-> +	 * Work around this by merging as many transfers we can into one big
-> +	 * full-duplex transfers.
-> +	 */
->  	list_for_each_entry(t, &m->transfers, transfer_list) {
->  		status = bcm63xx_spi_check_transfer(spi, t);
->  		if (status < 0)
->  			goto exit;
+> -static void __exit orion_spi_exit(void)
+> -{
+> -	platform_driver_unregister(&orion_spi_driver);
+> -}
+> -module_exit(orion_spi_exit);
+> +module_platform_driver(orion_spi_driver);
 >  
-> +		if (!first)
-> +			first = t;
-> +
-> +		n_transfers++;
-> +		total_len += t->len;
-> +
-> +		if (n_transfers == 2 && !first->rx_buf && !t->tx_buf &&
-> +		    first->len <= BCM63XX_SPI_MAX_PREPEND)
-> +			can_use_prepend = true;
-> +		else if (can_use_prepend && t->tx_buf)
-> +			can_use_prepend = false;
-> +
->  		/* we can only transfer one fifo worth of data */
-> -		if (t->len > bs->fifo_size) {
-> +		if ((can_use_prepend &&
-> +		     total_len > (bs->fifo_size + BCM63XX_SPI_MAX_PREPEND)) ||
-> +		    (!can_use_prepend && total_len > bs->fifo_size)) {
->  			dev_err(&spi->dev, "unable to do transfers larger than FIFO size (%i > %i)\n",
-> -				t->len, bs->fifo_size);
-> +				total_len, bs->fifo_size);
->  			status = -EINVAL;
->  			goto exit;
->  		}
->  
-> -		/* CS will be deasserted directly after transfer */
-> -		if (t->delay_usecs) {
-> -			dev_err(&spi->dev, "unable to keep CS asserted after transfer\n");
-> +		/* all combined transfers have to have the same speed */
-> +		if (t->speed_hz != first->speed_hz) {
-> +			dev_err(&spi->dev, "unable to change speed between transfers\n");
->  			status = -EINVAL;
->  			goto exit;
->  		}
->  
-> -		if (!t->cs_change &&
-> -		    !list_is_last(&t->transfer_list, &m->transfers)) {
-> -			dev_err(&spi->dev, "unable to keep CS asserted between transfers\n");
-> +		/* CS will be deasserted directly after transfer */
-> +		if (t->delay_usecs) {
-> +			dev_err(&spi->dev, "unable to keep CS asserted after transfer\n");
->  			status = -EINVAL;
->  			goto exit;
->  		}
->  
-> -		/* configure adapter for a new transfer */
-> -		bcm63xx_spi_setup_transfer(spi, t);
-> +		if (t->cs_change ||
-> +		    list_is_last(&t->transfer_list, &m->transfers)) {
-> +			/* configure adapter for a new transfer */
-> +			bcm63xx_spi_setup_transfer(spi, first);
->  
-> -		/* send the data */
-> -		status = bcm63xx_txrx_bufs(spi, t);
-> -		if (status)
-> -			goto exit;
-> +			/* send the data */
-> +			status = bcm63xx_txrx_bufs(spi, first, n_transfers);
-> +			if (status)
-> +				goto exit;
-> +
-> +			m->actual_length += total_len;
->  
-> -		m->actual_length += t->len;
-> +			first = NULL;
-> +			n_transfers = 0;
-> +			total_len = 0;
-> +			can_use_prepend = false;
-> +		}
->  	}
->  exit:
->  	m->status = status;
+>  MODULE_DESCRIPTION("Orion SPI driver");
+>  MODULE_AUTHOR("Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>");
 > -- 
-> 1.7.10.4
+> 1.7.8.6
 > 
 
 -- 

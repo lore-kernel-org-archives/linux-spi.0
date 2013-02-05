@@ -1,91 +1,60 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH V2 2/2] spi/bcm63xx: work around inability to keep CS up
-Date: Tue, 5 Feb 2013 16:00:04 +0100
-Message-ID: <20130205160004.2817a8b08ba7bb8c2de9a382@openwrt.org>
-References: <1359900913-4472-1-git-send-email-jogo@openwrt.org>
-	<1359900913-4472-3-git-send-email-jogo@openwrt.org>
-	<20130205143530.1F00D3E1265@localhost>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to arm/common
+Date: Tue, 5 Feb 2013 16:30:45 +0100
+Message-ID: <CACRpkdaUQ60W8Vmg3MpvP5uV+3jD3y4+9V2et4Ni+z-7k=aFTg@mail.gmail.com>
+References: <510C2A47.1090607@mvista.com>
+	<20130201205600.GA31762@arwen.pp.htv.fi>
+	<20130201213003.GW2637@n2100.arm.linux.org.uk>
+	<20130204154153.GA18237@arwen.pp.htv.fi>
+	<510FF1A6.403@mvista.com>
+	<20130204164712.GB4269@arwen.pp.htv.fi>
+	<510FF5C9.3030600@mvista.com>
+	<20130204170216.GC4269@arwen.pp.htv.fi>
+	<51100A72.6030909@ti.com>
+	<CACRpkdZihnp3_Df==QRWxQupgi7W_YXZxc-MxkusVH6J+Vx56A@mail.gmail.com>
+	<20130204203358.GX4720@opensource.wolfsonmicro.com>
+	<CACRpkdbPyZt8=pLhz-5qcaSSAk6VBn61dPTNp6teU9HksBwN2w@mail.gmail.com>
+	<51102E25.8040107@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130205143530.1F00D3E1265@localhost>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>, balbi@ti.com,
+	Sergei Shtylyov <sshtylyov@mvista.com>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Lindgren <tony@atomide.com>,
+	Russell King - ARM Linux <linux@arm.linux.org.uk>,
+	Vinod Koul <vinod.koul@intel.com>,
+	"Nair, Sandeep" <sandeep_n@ti.com>, Chris Ball <cjb@laptop.org>,
+	Matt Porter <mporter@ti.com>, Arnd Bergmann <arnd@arndb.de>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
+	Linux SP
+To: Cyril Chemparathy <cyril@ti.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <51102E25.8040107@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 05 Feb 2013 14:35:30 +0000
-Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+On Mon, Feb 4, 2013 at 10:54 PM, Cyril Chemparathy <cyril@ti.com> wrote:
+> On 02/04/2013 04:11 PM, Linus Walleij wrote:
 
-> On Sun,  3 Feb 2013 15:15:13 +0100, Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
-> > This SPI controller does not support keeping CS asserted after sending
-> > a transfer.
-> > Since messages expected on this SPI controller are rather short, we can
-> > work around it for normal use cases by sending all transfers at once in
-> > a big full duplex stream.
-> > 
-> > This means that we cannot change the speed between transfers if they
-> > require CS to be kept asserted, but these would have been rejected
-> > before anyway because of the inability of keeping CS asserted.
-> > 
-> > Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-> 
-> Are you checking the state of transfer->cs_change when merging
-> transfers? If cs_change is set, then the transfers cannot be merged.
+>> Cyril, just stack up the cookies and take a sweep over them to see
+>> which ones are baked when the NAPI poll comes in -> problem
+>> solved.
+>
+> You're assuming that cookies complete in order.  That is not necessarily
+> true.
 
-Yes, I do; I "flush" on each cs_change and after the last transfer:
+So put them on a wait list? Surely you will have a list of pending
+cookies and pick from the front of the queue if there isn't a hole on
+queue position 0.
 
-> > +		if (t->cs_change ||
-> > +		    list_is_last(&t->transfer_list, &m->transfers)) {
-> > +			/* configure adapter for a new transfer */
-> > +			bcm63xx_spi_setup_transfer(spi, first);
-> >  
-> > -		/* send the data */
-> > -		status = bcm63xx_txrx_bufs(spi, t);
-> > -		if (status)
-> > -			goto exit;
-> > +			/* send the data */
-> > +			status = bcm63xx_txrx_bufs(spi, first, n_transfers);
-> > +			if (status)
-> > +				goto exit;
-> > +
-> > +			m->actual_length += total_len;
-> >  
-> > -		m->actual_length += t->len;
-> > +			first = NULL;
-> > +			n_transfers = 0;
-> > +			total_len = 0;
-> > +			can_use_prepend = false;
-> > +		}
-> >  	}
-> >  exit:
-> >  	m->status = status;
-> > -- 
-> > 1.7.10.4
-> > 
-> 
-> -- 
-> Grant Likely, B.Sc, P.Eng.
-> Secret Lab Technologies, Ltd.
-
-P.S: Sorry Grant for receiving this double - I can't email.
-
--- 
-Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-
-------------------------------------------------------------------------------
-Free Next-Gen Firewall Hardware Offer
-Buy your Sophos next-gen firewall before the end March 2013 
-and get the hardware for free! Learn more.
-http://p.sf.net/sfu/sophos-d2d-feb
+Yours,
+Linus Walleij

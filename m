@@ -1,29 +1,18 @@
-From: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
-Subject: Re: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
-Date: Tue, 5 Feb 2013 13:09:00 -0500
-Message-ID: <20130205180900.GY14746@titan.lakedaemon.net>
-References: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
-	<20130205123827.GG20242@lunn.ch>
-	<20130205124833.GS14746@titan.lakedaemon.net>
-	<20130205142720.GB2481@localhost>
-	<20130205153135.GU14746@titan.lakedaemon.net>
-	<20130205171701.4fcb1304@skate>
-	<51113132.6000500@free-electrons.com>
-	<20130205180705.5231effd@skate>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: davinci: use request_threaded_irq() to fix deadlock
+Date: Tue, 05 Feb 2013 17:13:33 +0000
+Message-ID: <20130205171333.B4D483E0D17@localhost>
+References: <1356120806-27964-1-git-send-email-m-karicheri2@ti.com>
+	<20121222100803.88FCE3E0AD0@localhost> <50E44FEC.3080009@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Thomas Gleixner <tglx-ypw0egVD2fIeQtMskbmMgg@public.gmane.org>
+To: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20130205180705.5231effd@skate>
+In-Reply-To: <50E44FEC.3080009-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -34,16 +23,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 05, 2013 at 06:07:05PM +0100, Thomas Petazzoni wrote:
-> Of course, it doesn't make sense to have drivers for pluggable devices
-> like PCIe devices that are not soldered, USB devices and things like
-> that. But for all the rest, I would say it should be in the defconfig.
+On Wed, 2 Jan 2013 10:19:08 -0500, Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org> wrote:
+> On 12/22/2012 05:08 AM, Grant Likely wrote:
+> > On Fri, 21 Dec 2012 15:13:26 -0500, Murali Karicheri<m-karicheri2-l0cyMroinI0@public.gmane.org>  wrote:
+> >> With RT pre-empt patch applied to Linux kernel, the irq handler will be
+> >> force converted to an irq thread. spi driver can get back to back messages
+> >> from the slave device. In such cases, IRQ thread doesn't get a chance to
+> >> run to read the slave data. Hence the irq handler must be run in hard irq
+> >> context to read/write data from slave device. Otherwise, the kernel goes
+> >> into a deadlock. This patch fixes this issue when PREEMPT_RT_FULL is
+> >> enabled in the kernel. A dummy thread function is provided to satisfy the
+> >> request_threaded_irq() API. Passing a NULL for function also causes the
+> >> irq handler to be executed in the thread context.
+> >>
+> >> Signed-off-by: Murali Karicheri<m-karicheri2-l0cyMroinI0@public.gmane.org>
+> > Thomas, would you mind taking a look at this for me. My gut feel is that
+> > this is the wrong way to solve the problem that Murali is having and
+> > that it really just hacks something that works.
+> Grant,
+> 
+> Thanks for reviewing this. As per the RT patch, all of the IRQ handlers 
+> will be converted to thread by brute force. This breaks the SPI driver 
+> since the data is overwritten with back to back irq as thread is not 
+> getting a chance to read the word before next irq happens.  What my 
+> patch does is to keep the functionality as before by using a new irq 
+> API. So though this is not the best solution, this solves the problem 
+> and give an opportunity for improvement by splitting this into two part 
+> to handle the irq. But I am not convinced if this is really needed.
 
-hmmm, so for the new devboard we should set CONFIG_RAM=n? ;-)
+Okay. Applied, thanks.
 
-thx,
-
-Jason.
+g.
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

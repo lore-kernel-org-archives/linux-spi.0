@@ -1,38 +1,94 @@
-From: Russell King - ARM Linux <linux@arm.linux.org.uk>
-Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to
-	arm/common
-Date: Tue, 5 Feb 2013 12:41:20 +0000
-Message-ID: <20130205124120.GC17852@n2100.arm.linux.org.uk>
-References: <20130204154153.GA18237@arwen.pp.htv.fi> <510FF1A6.403@mvista.com> <20130204164712.GB4269@arwen.pp.htv.fi> <510FF5C9.3030600@mvista.com> <20130204170216.GC4269@arwen.pp.htv.fi> <51100A72.6030909@ti.com> <CACRpkdZihnp3_Df==QRWxQupgi7W_YXZxc-MxkusVH6J+Vx56A@mail.gmail.com> <20130204203358.GX4720@opensource.wolfsonmicro.com> <CACRpkdbPyZt8=pLhz-5qcaSSAk6VBn61dPTNp6teU9HksBwN2w@mail.gmail.com> <51102E25.8040107@ti.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: sirf: use clk_prepare_enable and
+	clk_disable_unprepare
+Date: Tue, 05 Feb 2013 12:43:42 +0000
+Message-ID: <20130205124342.EB5AC3E0E27@localhost>
+References: <1356490114-18022-1-git-send-email-Barry.Song@csr.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>, balbi@ti.com,
-	Sergei Shtylyov <sshtylyov@mvista.com>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Lindgren <tony@atomide.com>, Vinod Koul <vinod.koul@intel.com>,
-	"Nair, Sandeep" <sandeep_n@ti.com>, Chris Ball <cjb@laptop.org>,
-	Matt Porter <mporter@ti.com>, Arnd Bergmann <arnd@arndb.de>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	Linux SPI Devel Li
-To: Cyril Chemparathy <cyril@ti.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <51102E25.8040107@ti.com>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1356490114-18022-1-git-send-email-Barry.Song-kQvG35nSl+M@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Feb 04, 2013 at 04:54:45PM -0500, Cyril Chemparathy wrote:
-> You're assuming that cookies complete in order.  That is not necessarily  
-> true.
+On Wed, 26 Dec 2012 10:48:33 +0800, Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org> wrote:
+> From: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+> 
+> Convert clk_enable/clk_disable to clk_prepare_enable/clk_disable_unprepare
+> calls as required by common clock framework.
+> 
+> Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
 
-Under what circumstances is that not true?
+Applied, thanks.
+
+g.
+
+> ---
+>  drivers/spi/spi-sirf.c |    6 +++---
+>  1 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+> index e0f43a5..38a191c 100644
+> --- a/drivers/spi/spi-sirf.c
+> +++ b/drivers/spi/spi-sirf.c
+> @@ -570,7 +570,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+>  		ret = -EINVAL;
+>  		goto free_pin;
+>  	}
+> -	clk_enable(sspi->clk);
+> +	clk_prepare_enable(sspi->clk);
+>  	sspi->ctrl_freq = clk_get_rate(sspi->clk);
+>  
+>  	init_completion(&sspi->done);
+> @@ -594,7 +594,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+>  	return 0;
+>  
+>  free_clk:
+> -	clk_disable(sspi->clk);
+> +	clk_disable_unprepare(sspi->clk);
+>  	clk_put(sspi->clk);
+>  free_pin:
+>  	pinctrl_put(sspi->p);
+> @@ -618,7 +618,7 @@ static int  spi_sirfsoc_remove(struct platform_device *pdev)
+>  		if (sspi->chipselect[i] > 0)
+>  			gpio_free(sspi->chipselect[i]);
+>  	}
+> -	clk_disable(sspi->clk);
+> +	clk_disable_unprepare(sspi->clk);
+>  	clk_put(sspi->clk);
+>  	pinctrl_put(sspi->p);
+>  	spi_master_put(master);
+> -- 
+> 1.7.5.4
+> 
+> 
+> 
+> Member of the CSR plc group of companies. CSR plc registered in England and Wales, registered number 4187346, registered office Churchill House, Cambridge Business Park, Cowley Road, Cambridge, CB4 0WZ, United Kingdom
+> More information can be found at www.csr.com. Follow CSR on Twitter at http://twitter.com/CSR_PLC and read our blog at www.csr.com/blog
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.
+
+------------------------------------------------------------------------------
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

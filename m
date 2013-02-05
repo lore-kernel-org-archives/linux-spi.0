@@ -1,82 +1,62 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to
- arm/common
-Date: Tue, 5 Feb 2013 16:47:05 +0000
-Message-ID: <20130205164705.GG4720@opensource.wolfsonmicro.com>
-References: <20130201213003.GW2637@n2100.arm.linux.org.uk>
- <20130204154153.GA18237@arwen.pp.htv.fi>
- <510FF1A6.403@mvista.com>
- <20130204164712.GB4269@arwen.pp.htv.fi>
- <510FF5C9.3030600@mvista.com>
- <20130204170216.GC4269@arwen.pp.htv.fi>
- <51100A72.6030909@ti.com>
- <CACRpkdZihnp3_Df==QRWxQupgi7W_YXZxc-MxkusVH6J+Vx56A@mail.gmail.com>
- <5110369B.9060901@ti.com>
- <CACRpkda8xBB35CwuBH76xXcC341TeRs1ZuwzDD0LtuXc4ifQTw@mail.gmail.com>
+From: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
+Date: Tue, 5 Feb 2013 18:07:05 +0100
+Message-ID: <20130205180705.5231effd@skate>
+References: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
+	<20130205123827.GG20242@lunn.ch>
+	<20130205124833.GS14746@titan.lakedaemon.net>
+	<20130205142720.GB2481@localhost>
+	<20130205153135.GU14746@titan.lakedaemon.net>
+	<20130205171701.4fcb1304@skate>
+	<51113132.6000500@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mMdCh5/a0q2ATNCM"
-Cc: Cyril Chemparathy <cyril@ti.com>, balbi@ti.com,
-	Sergei Shtylyov <sshtylyov@mvista.com>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Lindgren <tony@atomide.com>,
-	Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	Vinod Koul <vinod.koul@intel.com>,
-	"Nair, Sandeep" <sandeep_n@ti.com>, Chris Ball <cjb@laptop.org>,
-	Matt Porter <mporter@ti.com>, Arnd Bergmann <arnd@arndb.de>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
-	Linux SPI Devel List
-	<
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CACRpkda8xBB35CwuBH76xXcC341TeRs1ZuwzDD0LtuXc4ifQTw@mail.gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <51113132.6000500-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Dear Gregory CLEMENT,
 
---mMdCh5/a0q2ATNCM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Tue, 05 Feb 2013 17:20:02 +0100, Gregory CLEMENT wrote:
 
-On Tue, Feb 05, 2013 at 05:21:48PM +0100, Linus Walleij wrote:
+> So that means we should enable the drivers for all the devices present
+> on all the boards?
 
-> For IRQ mode, use the completion callback to push each cookie
-> to NAPI, and thus let the IRQ drive the traffic.
+Yes. For example my mvsdio patch set enables some Wifi driver that
+corresponds to a particular SDIO Wifi device that is present in the
+Mirabox. But not on other boards.
 
-The whole purpose of NAPI is to avoid taking interrupts for completion
-of transfers.  Anything that generates interrupts when NAPI is in
-polling mode is defeating the point.
+Of course, it doesn't make sense to have drivers for pluggable devices
+like PCIe devices that are not soldered, USB devices and things like
+that. But for all the rest, I would say it should be in the defconfig.
 
---mMdCh5/a0q2ATNCM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Best regards,
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+Thomas
+-- 
+Thomas Petazzoni, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
 
-iQIcBAEBAgAGBQJRETeCAAoJELSic+t+oim9GqAP/3am0bSTpCOIFDsaJ+svUe0t
-eEe+hUMNmvB0rKJPZ9JbQaPStBOB6Q+kFMKa/9hSJcBXRm2cl2mTaD7FSzZUcf+2
-xmbNBwQKiNO06H8vO9w2y7vzgJChWQomTigho9rt1PXUaoULfEpVw+PWA1gr8bAR
-GRmArdAxk9t4hUbResVSGYVTICViNGd6w1ekLl0FLjorshEv/U7fnyhVn1fv5Hwc
-smxTMeSEXI8iah2N/BIh0uL4Obiutdz/LnIVJSO24nVQllLfoAa/4SzW6OdyT2Py
-nBlQtf7YhwwyBKykanNEawru54N09TMIomZkSF8izVpF6XNGpzbDiq0G/EKDCG+a
-5TuitPwoEoi1sLjKv6jZB4BUXQsAI5n8Hi7wUAwrHbcONKJSMxGdVxXA/8B1f/O2
-dc6jv1N8ghL0EADVBEsmQ6/4NEXMEicFX7rkA7Uwzr+mmXGdilGhBeJdzxA+9V5p
-8s5Lj9fikJLzksK5j21Ju1cNie9rFIWZGOY57/R6f4cINwScSk4mwnMr9WyjustH
-DneXGu4Rtux1xWX0RfMnFnVD42QvMPtOlHIQKLBt30O7+QHhf+QqXX5oAkYPrKas
-8hYXaRzTMGDrBxXVTO0a6h8Hq4vGShNmEAIh9qSJyS78p+2V23EY+jWg1aUqY5t1
-8mc5LqO8rk3I3a+VEQ/j
-=DsCQ
------END PGP SIGNATURE-----
-
---mMdCh5/a0q2ATNCM--
+------------------------------------------------------------------------------
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

@@ -1,43 +1,70 @@
-From: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>
-Subject: Re: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
-Date: Tue, 5 Feb 2013 13:38:27 +0100
-Message-ID: <20130205123827.GG20242@lunn.ch>
-References: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
+From: Russell King - ARM Linux <linux@arm.linux.org.uk>
+Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to
+	arm/common
+Date: Tue, 5 Feb 2013 12:38:28 +0000
+Message-ID: <20130205123828.GB17852@n2100.arm.linux.org.uk>
+References: <510C2A47.1090607@mvista.com> <20130204203358.GX4720@opensource.wolfsonmicro.com> <CACRpkdbPyZt8=pLhz-5qcaSSAk6VBn61dPTNp6teU9HksBwN2w@mail.gmail.com> <201302042147.38407.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Cyril Chemparathy <cyril@ti.com>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>, balbi@ti.com,
+	Sergei Shtylyov <sshtylyov@mvista.com>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Lindgren <tony@atomide.com>, Vinod Koul <vinod.koul@intel.com>,
+	"Nair, Sandeep" <sandeep_n@ti.com>, Chris Ball <cjb@laptop.org>,
+	Matt Porter <mporter@ti.com>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Landley <rob@landley.net>, Dan Williams <djbw@fb.com>,
+	Linux SPI Deve
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-doc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1360063473-26176-1-git-send-email-ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <201302042147.38407.arnd@arndb.de>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-> And don't forget to compile the SPI flash driver, CONFIG_MTD_M25P80=y
+On Mon, Feb 04, 2013 at 09:47:38PM +0000, Arnd Bergmann wrote:
+> On Monday 04 February 2013, Linus Walleij wrote:
+> > So I think the above concerns are moot. The callback we can
+> > set on cookies is entirely optional, and it's even implemented by
+> > each DMA engine, and some may not even support it but require
+> > polling, and then it won't even be implemented by the driver.
+> 
+> Just to ensure that everybody is talking about the same thing here:
+> Is it just the callback that is optional, or also the interrupt
+> coming from the hardware?
 
-Hi Ezequiel
+If everyone implements stuff correctly, both.  The callback most certainly
+is optional as things stand.  The interrupt - that depends on the DMA
+engine.
 
-Maybe it makes sense to provide a patch to mvebu_defconfig to add 
-CONFIG_MTD_M25P80=y ?
+Some DMA engines you can't avoid it because you need to reprogram the
+hardware with the next+1 transfer upon completion of an existing transfer.
+Others may allow you to chain transfers in hardware.  That's all up to
+how the DMA engine driver is implemented and how the hardware behaves.
 
-	Andrew
+Now, there's another problem here: that is, people abuse the API.  People
+don't pass DMA_CTRL_ACK | DMA_PREP_INTERRUPT into their operations by
+default.  People like typing '0'.
 
-------------------------------------------------------------------------------
-Free Next-Gen Firewall Hardware Offer
-Buy your Sophos next-gen firewall before the end March 2013 
-and get the hardware for free! Learn more.
-http://p.sf.net/sfu/sophos-d2d-feb
+The intention of the "DMA_PREP_INTERRUPT" is significant here: it means
+"ask the hardware to send an interrupt upon completion of this transfer".
+
+Because soo many people like to type '0' instead in their DMA engine
+clients, it means that this flag is utterly useless today - you have to
+ignore it.  So there's _no_ way for client drivers to actually tell the
+a DMA engine driver which _doesn't_ need to signal interrupts at the end
+of every transfer not to do so.
+
+So yes, the DMA engine API supports it.  Whether the _implementations_
+themselves do is very much hit and miss (and in reality is much more
+miss than hit.)

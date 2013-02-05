@@ -1,18 +1,16 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: tegra: remove checks for valid speed
-Date: Tue, 05 Feb 2013 13:12:04 +0000
-Message-ID: <20130205131204.6D47D3E0E27@localhost>
-References: <1357325235-25485-1-git-send-email-ldewangan@nvidia.com>
-	<1357325235-25485-2-git-send-email-ldewangan@nvidia.com>
+Subject: Re: [PATCH] spi: spi-imx: Add MODULE_ALIAS()
+Date: Tue, 05 Feb 2013 13:17:23 +0000
+Message-ID: <20130205131723.AE3F33E0E27@localhost>
+References: <1357598575-24233-1-git-send-email-festevam@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1357325235-25485-2-git-send-email-ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <1357598575-24233-1-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,89 +21,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, 5 Jan 2013 00:17:15 +0530, Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org> wrote:
-> SPI core make sure that all transfer has proper speed set
-> before calling low level spi transfer. Hence, it is not
-> require to have check in spi driver.
+On Mon,  7 Jan 2013 20:42:55 -0200, Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 > 
-> Remove the check for speed validity from transfer and use it directly.
+> Add an entry for MODULE_ALIAS().
 > 
-> Signed-off-by: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 
 Applied, thanks.
 
 g.
 
 > ---
->  drivers/spi/spi-tegra20-sflash.c |   14 +++++++++++---
->  drivers/spi/spi-tegra20-slink.c  |    6 +++---
->  2 files changed, 14 insertions(+), 6 deletions(-)
+>  drivers/spi/spi-imx.c |    1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-> index 448a8cc..9a42c15 100644
-> --- a/drivers/spi/spi-tegra20-sflash.c
-> +++ b/drivers/spi/spi-tegra20-sflash.c
-> @@ -269,9 +269,7 @@ static int tegra_sflash_start_transfer_one(struct spi_device *spi,
->  	u32 speed;
->  	unsigned long command;
->  
-> -	speed = t->speed_hz ? t->speed_hz : spi->max_speed_hz;
-> -	if (!speed)
-> -		speed = tsd->spi_max_frequency;
-> +	speed = t->speed_hz;
->  	if (speed != tsd->cur_speed) {
->  		clk_set_rate(tsd->clk, speed);
->  		tsd->cur_speed = speed;
-> @@ -319,6 +317,15 @@ static int tegra_sflash_start_transfer_one(struct spi_device *spi,
->  	return  tegra_sflash_start_cpu_based_transfer(tsd, t);
->  }
->  
-> +static int tegra_sflash_setup(struct spi_device *spi)
-> +{
-> +	struct tegra_sflash_data *tsd = spi_master_get_devdata(spi->master);
-> +
-> +	/* Set speed to the spi max fequency if spi device has not set */
-> +	spi->max_speed_hz = spi->max_speed_hz ? : tsd->spi_max_frequency;
-> +	return 0;
-> +}
-> +
->  static int tegra_sflash_transfer_one_message(struct spi_master *master,
->  			struct spi_message *msg)
->  {
-> @@ -492,6 +499,7 @@ static int tegra_sflash_probe(struct platform_device *pdev)
->  
->  	/* the spi->mode bits understood by this driver: */
->  	master->mode_bits = SPI_CPOL | SPI_CPHA;
-> +	master->setup = tegra_sflash_setup;
->  	master->transfer_one_message = tegra_sflash_transfer_one_message;
->  	master->num_chipselect = MAX_CHIP_SELECT;
->  	master->bus_num = -1;
-> diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-> index 651167f..29039f1 100644
-> --- a/drivers/spi/spi-tegra20-slink.c
-> +++ b/drivers/spi/spi-tegra20-slink.c
-> @@ -728,9 +728,7 @@ static int tegra_slink_start_transfer_one(struct spi_device *spi,
->  	unsigned long command2;
->  
->  	bits_per_word = t->bits_per_word;
-> -	speed = t->speed_hz ? t->speed_hz : spi->max_speed_hz;
-> -	if (!speed)
-> -		speed = tspi->spi_max_frequency;
-> +	speed = t->speed_hz;
->  	if (speed != tspi->cur_speed) {
->  		clk_set_rate(tspi->clk, speed * 4);
->  		tspi->cur_speed = speed;
-> @@ -841,6 +839,8 @@ static int tegra_slink_setup(struct spi_device *spi)
->  
->  	BUG_ON(spi->chip_select >= MAX_CHIP_SELECT);
->  
-> +	/* Set speed to the spi max fequency if spi device has not set */
-> +	spi->max_speed_hz = spi->max_speed_hz ? : tspi->spi_max_frequency;
->  	ret = pm_runtime_get_sync(tspi->dev);
->  	if (ret < 0) {
->  		dev_err(tspi->dev, "pm runtime failed, e = %d\n", ret);
+> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+> index 9049132..0befeeb 100644
+> --- a/drivers/spi/spi-imx.c
+> +++ b/drivers/spi/spi-imx.c
+> @@ -949,3 +949,4 @@ module_platform_driver(spi_imx_driver);
+>  MODULE_DESCRIPTION("SPI Master Controller driver");
+>  MODULE_AUTHOR("Sascha Hauer, Pengutronix");
+>  MODULE_LICENSE("GPL");
+> +MODULE_ALIAS("platform:" DRIVER_NAME);
 > -- 
-> 1.7.1.1
+> 1.7.9.5
 > 
 
 -- 

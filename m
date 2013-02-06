@@ -1,8 +1,7 @@
 From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v2 1/4] arm: mvebu: Add support for SPI controller in Armada
-	370/XP
-Date: Wed,  6 Feb 2013 10:06:21 -0300
-Message-ID: <1360155984-15397-2-git-send-email-ezequiel.garcia@free-electrons.com>
+Subject: [PATCH v2 2/4] ARM: mvebu: Update defconfig to select SPI support
+Date: Wed,  6 Feb 2013 10:06:22 -0300
+Message-ID: <1360155984-15397-3-git-send-email-ezequiel.garcia@free-electrons.com>
 References: <1360155984-15397-1-git-send-email-ezequiel.garcia@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -28,59 +27,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The Armada 370 and Armada XP SoC has an SPI controller.
-This patch adds support for this controller in Armada 370
-and Armada XP SoC common device tree files.
-
-Note that the Armada XP SPI register length is 0x50 bytes,
-while Armada 370 SPI register length is 0x28 bytes,
-so we choose the smaller of the two.
-
 Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
 Acked-by: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 ---
-Changes from v1:
- * Register offset must be 0x28 instead of 0x50,
-   as pointed out by Gregory
+ arch/arm/configs/mvebu_defconfig |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
- arch/arm/boot/dts/armada-370-xp.dtsi |   22 ++++++++++++++++++++++
- 1 files changed, 22 insertions(+), 0 deletions(-)
-
-diff --git a/arch/arm/boot/dts/armada-370-xp.dtsi b/arch/arm/boot/dts/armada-370-xp.dtsi
-index 4c0abe8..5cf8fb4 100644
---- a/arch/arm/boot/dts/armada-370-xp.dtsi
-+++ b/arch/arm/boot/dts/armada-370-xp.dtsi
-@@ -131,6 +131,28 @@
- 			clocks = <&coreclk 0>;
- 			status = "disabled";
- 		};
-+
-+		spi0: spi@d0010600 {
-+			compatible = "marvell,orion-spi";
-+			reg = <0xd0010600 0x28>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			cell-index = <0>;
-+			interrupts = <30>;
-+			clocks = <&coreclk 0>;
-+			status = "disabled";
-+		};
-+
-+		spi1: spi@d0010680 {
-+			compatible = "marvell,orion-spi";
-+			reg = <0xd0010680 0x28>;
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			cell-index = <1>;
-+			interrupts = <92>;
-+			clocks = <&coreclk 0>;
-+			status = "disabled";
-+		};
- 	};
- };
- 
+diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_defconfig
+index 43a0dbf..322baca 100644
+--- a/arch/arm/configs/mvebu_defconfig
++++ b/arch/arm/configs/mvebu_defconfig
+@@ -35,6 +35,8 @@ CONFIG_MARVELL_PHY=y
+ CONFIG_SERIAL_8250=y
+ CONFIG_SERIAL_8250_CONSOLE=y
+ CONFIG_I2C=y
++CONFIG_SPI=y
++CONFIG_SPI_ORION=y
+ CONFIG_I2C_MV64XXX=y
+ CONFIG_SERIAL_8250_DW=y
+ CONFIG_GPIOLIB=y
 -- 
 1.7.8.6
 

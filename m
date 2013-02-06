@@ -1,8 +1,7 @@
 From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v2 4/4] ARM: mvebu: Update defconfig to select SPI flash and
-	MTD support
-Date: Wed,  6 Feb 2013 10:06:24 -0300
-Message-ID: <1360155984-15397-5-git-send-email-ezequiel.garcia@free-electrons.com>
+Subject: [PATCH v2 3/4] arm: mvebu: Add SPI flash on Armada XP-GP board
+Date: Wed,  6 Feb 2013 10:06:23 -0300
+Message-ID: <1360155984-15397-4-git-send-email-ezequiel.garcia@free-electrons.com>
 References: <1360155984-15397-1-git-send-email-ezequiel.garcia@free-electrons.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -28,30 +27,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The Armada XP DB-MV784MP-GP board has an SPI flash device.
-These options allow to access that device over MTD.
+This patch adds an SPI master device node for Armada XP-GP board.
+This master node is an SPI flash controller 'n25q128a13'.
 
+Since there is no 'partitions' node declared, one full sized
+partition named as the device will be created.
+
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+Tested-by: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 ---
-Depends on patch: "arm: mvebu: i2c come back in defconfig"
+Depends on Gregory's patch for Armada XP GP board:
+"arm: mvebu: support for the new Armada XP development board(DB-MV784MP-GP)"
 
- arch/arm/configs/mvebu_defconfig |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+ arch/arm/boot/dts/armada-xp-gp.dts |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
 
-diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_defconfig
-index 322baca..3359535 100644
---- a/arch/arm/configs/mvebu_defconfig
-+++ b/arch/arm/configs/mvebu_defconfig
-@@ -38,6 +38,9 @@ CONFIG_I2C=y
- CONFIG_SPI=y
- CONFIG_SPI_ORION=y
- CONFIG_I2C_MV64XXX=y
-+CONFIG_MTD=y
-+CONFIG_MTD_CHAR=y
-+CONFIG_MTD_M25P80=y
- CONFIG_SERIAL_8250_DW=y
- CONFIG_GPIOLIB=y
- CONFIG_GPIO_SYSFS=y
+diff --git a/arch/arm/boot/dts/armada-xp-gp.dts b/arch/arm/boot/dts/armada-xp-gp.dts
+index 872ed04..b1aa952 100644
+--- a/arch/arm/boot/dts/armada-xp-gp.dts
++++ b/arch/arm/boot/dts/armada-xp-gp.dts
+@@ -97,5 +97,17 @@
+ 			phy = <&phy3>;
+ 			phy-mode = "rgmii-id";
+ 		};
++
++		spi0: spi@d0010600 {
++			status = "okay";
++
++			spi-flash@0 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++				compatible = "n25q128a13";
++				reg = <0>; /* Chip select 0 */
++				spi-max-frequency = <108000000>;
++			};
++		};
+ 	};
+ };
 -- 
 1.7.8.6
 

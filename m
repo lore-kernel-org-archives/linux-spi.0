@@ -1,43 +1,114 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RFC 1/1] gpio: mcp23s08: convert driver to DT
-Date: Wed, 6 Feb 2013 10:37:41 +0100
-Message-ID: <CACRpkdawOE4WfUcCGpVSR9n5ZR9j1gFnMQ-EAOWOixcpM7uDUg@mail.gmail.com>
-References: <1359647903-15801-1-git-send-email-larsi@wh2.tu-dresden.de>
-	<CACRpkda_HjzWNMD1H_a_fsWtbRWuTDsutS8kndb9jY31qf7Yyg@mail.gmail.com>
-	<20130205142909.4F5B83E1265@localhost>
-	<201302061031.04264.poeschel@lemonage.de>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: s3c64xx: modified error interrupt handling and
+	init
+Date: Wed, 06 Feb 2013 10:26:28 +0000
+Message-ID: <20130206102628.5E7413E1510@localhost>
+References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
+	<1360105784-12282-2-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Lars Poeschel <larsi-myOXECIRRCL4ajHJ1XSv27NAH6kLmebB@public.gmane.org>,
-	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lars Poeschel <poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <201302061031.04264.poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1360105784-12282-2-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 6, 2013 at 10:31 AM, Lars Poeschel <poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org> wrote:
+On Tue,  5 Feb 2013 15:09:41 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> The status of the interrupt is available in the status register,
+> so reading the clear pending register and writing back the same
+> value will not actually clear the pending interrupts. This patch
+> modifies the interrupt handler to read the status register and
+> clear the corresponding pending bit in the clear pending register.
+> 
+> Modified the hwInit function to clear all the pending interrupts.
+> 
+> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+> ---
+>  drivers/spi/spi-s3c64xx.c |   41 +++++++++++++++++++++++++----------------
+>  1 file changed, 25 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index ad93231..b770f88 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -997,25 +997,30 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
+>  {
+>  	struct s3c64xx_spi_driver_data *sdd = data;
+>  	struct spi_master *spi = sdd->master;
+> -	unsigned int val;
+> +	unsigned int val, clr = 0;
+>  
+> -	val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
+> +	val = readl(sdd->regs + S3C64XX_SPI_STATUS);
+>  
+> -	val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
+> -		S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
+> -		S3C64XX_SPI_PND_TX_OVERRUN_CLR |
+> -		S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+> -
+> -	writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+> -
+> -	if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
+> +	if (val & S3C64XX_SPI_ST_RX_OVERRUN_ERR) {
+> +		clr = S3C64XX_SPI_PND_RX_OVERRUN_CLR;
+>  		dev_err(&spi->dev, "RX overrun\n");
+> -	if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
+> +	}
+> +	if (val & S3C64XX_SPI_ST_RX_UNDERRUN_ERR) {
+> +		clr |= S3C64XX_SPI_PND_RX_UNDERRUN_CLR;
+>  		dev_err(&spi->dev, "RX underrun\n");
+> -	if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
+> +	}
+> +	if (val & S3C64XX_SPI_ST_TX_OVERRUN_ERR) {
+> +		clr |= S3C64XX_SPI_PND_TX_OVERRUN_CLR;
+>  		dev_err(&spi->dev, "TX overrun\n");
+> -	if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
+> +	}
+> +	if (val & S3C64XX_SPI_ST_TX_UNDERRUN_ERR) {
+> +		clr |= S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>  		dev_err(&spi->dev, "TX underrun\n");
+> +	}
+> +
+> +	/* Clear the pending irq by setting and then clearing it */
+> +	writel(clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+> +	writel(clr & ~clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
 
-> The thing that confused me was, that the platform_data for the chip has a
-> mandatory "base" member, that sets the linux global gpio number at which the
-> chip should appear.
+Wait, what?  clr & ~clr == 0   Always.  What are you actually trying to do here?
 
-Yes this is common. I think you should look at other drivers
-under drivers/gpio using device tree, and how they work around
-this.
+>  
+>  	return IRQ_HANDLED;
+>  }
+> @@ -1039,9 +1044,13 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
+>  	writel(0, regs + S3C64XX_SPI_MODE_CFG);
+>  	writel(0, regs + S3C64XX_SPI_PACKET_CNT);
+>  
+> -	/* Clear any irq pending bits */
+> -	writel(readl(regs + S3C64XX_SPI_PENDING_CLR),
+> -				regs + S3C64XX_SPI_PENDING_CLR);
+> +	/* Clear any irq pending bits, should set and clear the bits */
+> +	val = S3C64XX_SPI_PND_RX_OVERRUN_CLR |
+> +		S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
+> +		S3C64XX_SPI_PND_TX_OVERRUN_CLR |
+> +		S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+> +	writel(val, regs + S3C64XX_SPI_PENDING_CLR);
+> +	writel(val & ~val, regs + S3C64XX_SPI_PENDING_CLR);
 
-As stated, as a last resort you can use AUXDATA to anyway assign
-a piece of platform data per instance.
+Ditto.
 
-In the Nomadik driver, we use the block instance ID and multiply
-by a factor of the numbers of GPIOs on each instance.
-And luckily the base is zero. Not elegant maybe, but the
-global GPIO numberspace is not elegant by nature.
+g.
 
-Yours,
-Linus Walleij
+------------------------------------------------------------------------------
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

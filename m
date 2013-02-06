@@ -1,23 +1,15 @@
-From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH RESEND] spi: spi-fsl-spi: Make spi-fsl-spi usable in cpu
-	mode outside of FSL SOC environments and add a grlib variant normally
-	running on sparc
-Date: Wed, 06 Feb 2013 11:44:27 +0100
-Message-ID: <5112340B.7030505@gaisler.com>
-References: <1359548124-13692-1-git-send-email-andreas@gaisler.com>
-	<20130205175630.C6F7F3E167A@localhost>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v2] spi/ath79: add shutdown handler
+Date: Wed, 06 Feb 2013 10:41:29 +0000
+Message-ID: <20130206104129.977133E1510@localhost>
+References: <1360094275-7807-1-git-send-email-juhosg@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>, software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130205175630.C6F7F3E167A@localhost>
+In-Reply-To: <1360094275-7807-1-git-send-email-juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,83 +20,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2013-02-05 18:56, Grant Likely wrote:
-> On Wed, 30 Jan 2013 13:15:24 +0100, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org> wrote:
->> This patch relies upon parts of the "of, of_gpio, of_spi: Fix and
->> improve of_parse_phandle_with_args, of_gpio_named_count and
->> of_spi_register_master" patchset - https://lkml.org/lkml/2012/12/27/54
->> (v2 at https://lkml.org/lkml/2013/1/29/308).
+On Tue,  5 Feb 2013 20:57:55 +0100, Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org> wrote:
+> The SPI controller of the AR7xxx/AR9xxx SoCs
+> have a special mode which allows the SoC to
+> directly read data from SPI flash chips. In
+> this mode, the content of the SPI flash chip
+> can be accessed via a memory mapped region.
+> 
+> During early init time, the kernel expects
+> that the flash chip is accessible through
+> that memory region because it reads board
+> specific values (e.g. MAC address, WiFi
+> calibration data) from the flash on various
+> boards.
+> 
+> This is working if the kernel is loaded
+> directly by the bootloader because that
+> leaves the SPI controller in the special
+> mode. However it is not working in a kexec'd
+> kernel because the SPI driver does not restore
+> the special mode during shutdown.
+> 
+> The patch adds a shutdown handler to fix this
+> issue.
+> 
+> Signed-off-by: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 
-For TYPE_GRLIB, the gpio chipselect parts relies on this series. It 
-would be great to get some feedback on that patch series as well.
+Applied, thanks.
 
->> Maybe the different out/in_be32 vs iowrite/read32be in spi-fsl-lib.h is
->> over the top, but I'm not sure if there might be subtle differences
->> between those on powerpc and I don't have any fsl hardware to try things
->> out on.
->
-> Changing to ioread/write globally should be fine. I would change it and get
-> someone with an fsl board to try it out. That will reduce the diffstat a
-> bit.
+g.
 
-Will do.
+> ---
+> Changes since v1:
+>  - call ath79_spi_remote(pdev) directly from ath79_spi_shutdown()
+> ---
+>  drivers/spi/spi-ath79.c |    6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
+> index 842acd8..e504b76 100644
+> --- a/drivers/spi/spi-ath79.c
+> +++ b/drivers/spi/spi-ath79.c
+> @@ -308,9 +308,15 @@ static int ath79_spi_remove(struct platform_device *pdev)
+>  	return 0;
+>  }
+>  
+> +static void ath79_spi_shutdown(struct platform_device *pdev)
+> +{
+> +	ath79_spi_remove(pdev);
+> +}
+> +
+>  static struct platform_driver ath79_spi_driver = {
+>  	.probe		= ath79_spi_probe,
+>  	.remove		= ath79_spi_remove,
+> +	.shutdown	= ath79_spi_shutdown,
+>  	.driver		= {
+>  		.name	= DRV_NAME,
+>  		.owner	= THIS_MODULE,
+> -- 
+> 1.7.10
+> 
 
-> As is, this is quite an invasive patch, so I'm not going to be
-> comfortable merging it without at least one 3rd party tester. (Breaking
-> things up into discrete patches will make me less nervous and possible
-> to merge parts while still revising others.
-
-I'll be happy to do that. Was trying to adhere to the guide line to not 
-introduce something separately from its usage, but in this case it is 
-probably better to split things up a bit.
-
->> +#ifdef CONFIG_FSL_SOC
->>   	else if (prop && !strcmp(prop, "qe"))
->>   		pdata->flags = SPI_CPM_MODE | SPI_QE;
->>   	else if (of_device_is_compatible(np, "fsl,cpm2-spi"))
->>   		pdata->flags = SPI_CPM_MODE | SPI_CPM2;
->>   	else if (of_device_is_compatible(np, "fsl,cpm1-spi"))
->>   		pdata->flags = SPI_CPM_MODE | SPI_CPM1;
->> +#endif
->
-> The ifdefs are ugly and these lines won't affect sparc. Just leave them
-> in.
-
-Will do.
-
->> +/* TYPE_GRLIB SPI Controller capability register definitions */
->> +#define SPCAP_SSEN(x)           (((x) >> 16) & 0x1)
->> +#define SPCAP_SSSZ(x)           (((x) >> 24) & 0xff)
->> +#define SPCAP_MAXWLEN(x)	(((x) >> 20) & 0xf)
->
-> Nit: inconsistent whitespace (tabs vs. spaces)
-
-Will fix.
-
->> +	ret = of_property_read_u32(dev->of_node, "bus-number", &bus_num);
->> +	if (!ret)
->> +		master->bus_num = bus_num;
->
-> Drop these lines. Never set the bus number explicitly when using DT. If
-> you really want to assign a particular bus number, then use an alias.
-
-Sure, I'll check that out.
-
-> That's all the comments I've got for now, but there are an awful lot of
-> #defines that are added to the driver which is kind of ugly. I'm not
-> going to nack over that, but it would be good to clean it up and do some
-> better abstraction.
-
-I agree that it is ugly. If I move the cpm-related things from 
-spi-fsl-spi.c to a separate file that only gets linked on FSL_SOC and 
-have dummy functions in an h-file I think that it can be made much less 
-ugly.
-
-Thanks for the feedback!
-
-Cheers,
-Andreas
-
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

@@ -1,18 +1,22 @@
-From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: s3c64xx: add gpio quirk for controller
-Date: Wed, 6 Feb 2013 14:38:50 -0800
-Message-ID: <CAKrE-KfS_Q0KJJwB--VTMtaDumfGSdM_2Zg_pYeUb4cSgmrehA@mail.gmail.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: s3c64xx: modified error interrupt handling and
+	init
+Date: Wed, 6 Feb 2013 23:48:38 +0000
+Message-ID: <CACxGe6uOaoRbtuovEsA87d-MtCbGNd3KZCeHXbBQaEpp6NZ7fA@mail.gmail.com>
 References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
-	<1360105784-12282-4-git-send-email-ks.giri@samsung.com>
-	<20130206104000.98E803E1510@localhost>
+	<1360105784-12282-2-git-send-email-ks.giri@samsung.com>
+	<20130206102628.5E7413E1510@localhost>
+	<CAKrE-KdX+Nxk0X4xdz6Dx3WVtOpV+ms+gPB-Dq-MwZwetyZ5Nw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130206104000.98E803E1510@localhost>
+In-Reply-To: <CAKrE-KdX+Nxk0X4xdz6Dx3WVtOpV+ms+gPB-Dq-MwZwetyZ5Nw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,164 +27,77 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 6, 2013 at 2:40 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> On Tue,  5 Feb 2013 15:09:43 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> This patch adds support for spi controllers with
->> dedicated clk/miso/mosi/cs pins. It skips the gpio
->> parsing and initialization for controllers that
->> have dedicated pins.
+On Wed, Feb 6, 2013 at 8:12 PM, Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On Wed, Feb 6, 2013 at 2:26 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+>> On Tue,  5 Feb 2013 15:09:41 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> The status of the interrupt is available in the status register,
+>>> so reading the clear pending register and writing back the same
+>>> value will not actually clear the pending interrupts. This patch
+>>> modifies the interrupt handler to read the status register and
+>>> clear the corresponding pending bit in the clear pending register.
+>>>
+>>> Modified the hwInit function to clear all the pending interrupts.
+>>>
+>>> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>>> ---
+>>>  drivers/spi/spi-s3c64xx.c |   41 +++++++++++++++++++++++++----------------
+>>>  1 file changed, 25 insertions(+), 16 deletions(-)
+>>>
+>>> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+>>> index ad93231..b770f88 100644
+>>> --- a/drivers/spi/spi-s3c64xx.c
+>>> +++ b/drivers/spi/spi-s3c64xx.c
+>>> @@ -997,25 +997,30 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
+>>>  {
+>>>       struct s3c64xx_spi_driver_data *sdd = data;
+>>>       struct spi_master *spi = sdd->master;
+>>> -     unsigned int val;
+>>> +     unsigned int val, clr = 0;
+>>>
+>>> -     val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>> +     val = readl(sdd->regs + S3C64XX_SPI_STATUS);
+>>>
+>>> -     val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
+>>> -             S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
+>>> -             S3C64XX_SPI_PND_TX_OVERRUN_CLR |
+>>> -             S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>>> -
+>>> -     writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>> -
+>>> -     if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
+>>> +     if (val & S3C64XX_SPI_ST_RX_OVERRUN_ERR) {
+>>> +             clr = S3C64XX_SPI_PND_RX_OVERRUN_CLR;
+>>>               dev_err(&spi->dev, "RX overrun\n");
+>>> -     if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
+>>> +     }
+>>> +     if (val & S3C64XX_SPI_ST_RX_UNDERRUN_ERR) {
+>>> +             clr |= S3C64XX_SPI_PND_RX_UNDERRUN_CLR;
+>>>               dev_err(&spi->dev, "RX underrun\n");
+>>> -     if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
+>>> +     }
+>>> +     if (val & S3C64XX_SPI_ST_TX_OVERRUN_ERR) {
+>>> +             clr |= S3C64XX_SPI_PND_TX_OVERRUN_CLR;
+>>>               dev_err(&spi->dev, "TX overrun\n");
+>>> -     if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
+>>> +     }
+>>> +     if (val & S3C64XX_SPI_ST_TX_UNDERRUN_ERR) {
+>>> +             clr |= S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>>>               dev_err(&spi->dev, "TX underrun\n");
+>>> +     }
+>>> +
+>>> +     /* Clear the pending irq by setting and then clearing it */
+>>> +     writel(clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>> +     writel(clr & ~clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
 >>
->> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
->
-> Instead of making this a quirk, you should use the presence/absense of a
-> cs-gpios property to determin whether or not a gpio is used to
-> manipulate the CS signal.
-I can do this for CS signal. Other signals are also dedicated pins.
-can i check the "gpios" property for them?
->
-> Also, are you certain that you want to make this change? Most SPI
-> controllers are actually unfriendly in that they insist on deasserting the
-> CS line if the FIFO runs empty. Does this driver correctly keep the CS
-> signal asserted when there are multiple transfers in a message?
-The CS signal is asserted when the slave select bit is cleared, this
-is done in the enable_cs function.
-The CS signal is deasserted when the slave select bit is set, this is
-done in the disable_cs function.
-enable_cs is called at the begining of the message transfer and
-disable is called at the end of the transfer.
->
-> g.
->
->> ---
->>  drivers/spi/spi-s3c64xx.c |   39 +++++++++++++++++++++++++++++++--------
->>  1 file changed, 31 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
->> index 90770bd..f06bbee 100644
->> --- a/drivers/spi/spi-s3c64xx.c
->> +++ b/drivers/spi/spi-s3c64xx.c
->> @@ -36,6 +36,7 @@
->>
->>  #define MAX_SPI_PORTS                3
->>  #define S3C64XX_SPI_QUIRK_POLL               (1 << 0)
->> +#define S3C64XX_SPI_QUIRK_GPIO               (1 << 1)
->>
->>  /* Registers and bit-fields */
->>
->> @@ -404,14 +405,16 @@ static inline void enable_cs(struct s3c64xx_spi_driver_data *sdd,
->>               if (sdd->tgl_spi != spi) { /* if last mssg on diff device */
->>                       /* Deselect the last toggled device */
->>                       cs = sdd->tgl_spi->controller_data;
->> -                     gpio_set_value(cs->line,
->> -                             spi->mode & SPI_CS_HIGH ? 0 : 1);
->> +                     if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
->> +                             gpio_set_value(cs->line,
->> +                                     spi->mode & SPI_CS_HIGH ? 0 : 1);
->>               }
->>               sdd->tgl_spi = NULL;
->>       }
->>
->>       cs = spi->controller_data;
->> -     gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
->> +     if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
->> +             gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
->>
->>       /* Start the signals */
->>       writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
->> @@ -503,7 +506,8 @@ static inline void disable_cs(struct s3c64xx_spi_driver_data *sdd,
->>       if (sdd->tgl_spi == spi)
->>               sdd->tgl_spi = NULL;
->>
->> -     gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
->> +     if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
->> +             gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
->>
->>       /* Quiese the signals */
->>       writel(S3C64XX_SPI_SLAVE_SIG_INACT,
->> @@ -842,7 +846,10 @@ static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
->>               return ERR_PTR(-ENOMEM);
->>       }
->>
->> -     cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
->> +     /* In case of dedicated cs pin skip the gpio initialization */
->> +     if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
->> +             cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
->> +
->>       if (!gpio_is_valid(cs->line)) {
->>               dev_err(&spi->dev, "chip select gpio is not specified or "
->>                                       "invalid\n");
->> @@ -883,7 +890,7 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
->>               return -ENODEV;
->>       }
->>
->> -     if (!spi_get_ctldata(spi)) {
->> +     if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO)) {
->>               err = gpio_request_one(cs->line, GPIOF_OUT_INIT_HIGH,
->>                                      dev_name(&spi->dev));
->>               if (err) {
->> @@ -892,9 +899,11 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
->>                               cs->line, err);
->>                       goto err_gpio_req;
->>               }
->> -             spi_set_ctldata(spi, cs);
->>       }
->>
->> +     if (!spi_get_ctldata(spi))
->> +             spi_set_ctldata(spi, cs);
->> +
->>       sci = sdd->cntrlr_info;
->>
->>       spin_lock_irqsave(&sdd->lock, flags);
->> @@ -979,8 +988,11 @@ err_gpio_req:
->>  static void s3c64xx_spi_cleanup(struct spi_device *spi)
->>  {
->>       struct s3c64xx_spi_csinfo *cs = spi_get_ctldata(spi);
->> +     struct s3c64xx_spi_driver_data *sdd;
->> +
->> +     sdd = spi_master_get_devdata(spi->master);
->>
->> -     if (cs) {
->> +     if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO) && cs) {
->>               gpio_free(cs->line);
->>               if (spi->dev.of_node)
->>                       kfree(cs);
->> @@ -1107,6 +1119,13 @@ static int s3c64xx_spi_parse_dt_gpio(struct s3c64xx_spi_driver_data *sdd)
->>       struct device *dev = &sdd->pdev->dev;
->>       int idx, gpio, ret;
->>
->> +     /*
->> +      * If cs is not controlled by gpio, and
->> +      * the SoC uses internal dedicated pins
->> +      */
->> +     if (sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO)
->> +             return 0;
->> +
->>       /* find gpios for mosi, miso and clock lines */
->>       for (idx = 0; idx < 3; idx++) {
->>               gpio = of_get_gpio(dev->of_node, idx);
->> @@ -1133,6 +1152,10 @@ free_gpio:
->>  static void s3c64xx_spi_dt_gpio_free(struct s3c64xx_spi_driver_data *sdd)
->>  {
->>       unsigned int idx;
->> +
->> +     if (sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO)
->> +             return;
->> +
->>       for (idx = 0; idx < 3; idx++)
->>               gpio_free(sdd->gpios[idx]);
->>  }
->> --
->> 1.7.10.4
->>
->> --
->> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
->> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
->> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->> Please read the FAQ at  http://www.tux.org/lkml/
->
-> --
-> Grant Likely, B.Sc, P.Eng.
-> Secret Lab Technologies, Ltd.
+>> Wait, what?  clr & ~clr == 0   Always.  What are you actually trying to do here?
+> The user manual says, wirting 1 to the pending clear register clears
+> the interrupt (its not auto clear to 0). so i need to explicitly reset
+> those bits thats what the 2nd write does
+
+Then write 0. That's the result of what the code does anyway, but the
+code as-written is nonsensical.
+
+g.
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

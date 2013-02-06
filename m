@@ -1,103 +1,38 @@
-From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
-Date: Wed, 6 Feb 2013 12:32:07 -0300
-Message-ID: <20130206153206.GA4618@localhost>
-References: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
- <5111331F.7090900@free-electrons.com>
- <511168BE.1000803@free-electrons.com>
- <20130206105431.GA21764@localhost>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
- devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
- shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
- Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20130206105431.GA21764@localhost>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+From: Lars Poeschel <larsi@wh2.tu-dresden.de>
+Subject: [PATCH 0/2] Convert mcp23s08 to DT usage
+Date: Wed,  6 Feb 2013 18:01:56 +0100
+Message-ID: <1360170118-11937-1-git-send-email-larsi@wh2.tu-dresden.de>
+Cc: w.sang@pengutronix.de, ben-linux@fluff.org,
+	linux-i2c@vger.kernel.org
+To: poeschel@lemonage.de, grant.likely@secretlab.ca,
+	rob.herring@calxeda.com, rob@landley.net, linus.walleij@linaro.org,
+	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-doc-owner@vger.kernel.org>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-KEFkZGluZyBtdGQgaW4gQ2MpCgpPbiBXZWQsIEZlYiAwNiwgMjAxMyBhdCAwNzo1NDozMUFNIC0w
-MzAwLCBFemVxdWllbCBHYXJjaWEgd3JvdGU6Cj4gSGkgR3JlZ29yeSwKPiAKPiBPbiBUdWUsIEZl
-YiAwNSwgMjAxMyBhdCAwOToxNzowMlBNICswMTAwLCBHcmVnb3J5IENMRU1FTlQgd3JvdGU6Cj4g
-PiBPbiAwMi8wNS8yMDEzIDA1OjI4IFBNLCBHcmVnb3J5IENMRU1FTlQgd3JvdGU6Cj4gPiA+IEhp
-IEV6ZXF1aWVsLAo+ID4gPiAKPiA+ID4gT24gMDIvMDUvMjAxMyAxMjoyNCBQTSwgRXplcXVpZWwg
-R2FyY2lhIHdyb3RlOgo+ID4gPj4gVGhpcyBwYXRjaCBhZGRzIGFuIFNQSSBtYXN0ZXIgZGV2aWNl
-IG5vZGUgZm9yIEFybWFkYSBYUC1HUCBib2FyZC4KPiA+ID4+IFRoaXMgbWFzdGVyIG5vZGUgaXMg
-YW4gU1BJIGZsYXNoIGNvbnRyb2xsZXIgJ24yNXExMjhhMTMnLgo+ID4gPj4KPiA+ID4+IFNpbmNl
-IHRoZXJlIGlzIG5vICdwYXJ0aXRpb25zJyBub2RlIGRlY2xhcmVkLCBvbmUgZnVsbCBzaXplZAo+
-ID4gPj4gcGFydGl0aW9uIG5hbWVkIGFzIHRoZSBkZXZpY2Ugd2lsbCBiZSBjcmVhdGVkLgo+ID4g
-Pj4KPiA+ID4+IENjOiBHcmVnb3J5IENsZW1lbnQgPGdyZWdvcnkuY2xlbWVudEBmcmVlLWVsZWN0
-cm9ucy5jb20+Cj4gPiA+PiBDYzogVGhvbWFzIFBldGF6em9uaSA8dGhvbWFzLnBldGF6em9uaUBm
-cmVlLWVsZWN0cm9ucy5jb20+Cj4gPiA+PiBDYzogTGlvciBBbXNhbGVtIDxhbGlvckBtYXJ2ZWxs
-LmNvbT4KPiA+ID4+IFNpZ25lZC1vZmYtYnk6IEV6ZXF1aWVsIEdhcmNpYSA8ZXplcXVpZWwuZ2Fy
-Y2lhQGZyZWUtZWxlY3Ryb25zLmNvbT4KPiA+ID4+IC0tLQo+ID4gPj4gVGhpcyBwYXRjaCBkZXBl
-bmRzIG9uOgo+ID4gPj4KPiA+ID4+ICAxLiBHcmVnb3J5J3MgcGF0Y2ggZm9yIEFybWFkYSBYUCBH
-UCBib2FyZDoKPiA+ID4+ICAgICAgIGFybTogbXZlYnU6IHN1cHBvcnQgZm9yIHRoZSBuZXcgQXJt
-YWRhIFhQIGRldmVsb3BtZW50IGJvYXJkKERCLU1WNzg0TVAtR1ApCj4gPiA+Pgo+ID4gPj4gIDIu
-IE15IHByZXZpb3VzIHBhdGNoIGZvciBTUEkgb24gQXJtYWRhIDM3MC9YUDoKPiA+ID4+ICAgICAg
-IGFybTogbXZlYnU6IEFkZCBzdXBwb3J0IGZvciBTUEkgY29udHJvbGxlciBpbiBBcm1hZGEgMzcw
-L1hQCj4gPiA+Pgo+ID4gPj4gQW5kIGRvbid0IGZvcmdldCB0byBjb21waWxlIHRoZSBTUEkgZmxh
-c2ggZHJpdmVyLCBDT05GSUdfTVREX00yNVA4MD15Cj4gPiA+Pgo+ID4gPj4gIGFyY2gvYXJtL2Jv
-b3QvZHRzL2FybWFkYS14cC1ncC5kdHMgfCAgIDEyICsrKysrKysrKysrKwo+ID4gPj4gIDEgZmls
-ZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgMCBkZWxldGlvbnMoLSkKPiA+ID4+Cj4gPiA+
-PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm0vYm9vdC9kdHMvYXJtYWRhLXhwLWdwLmR0cyBiL2FyY2gv
-YXJtL2Jvb3QvZHRzL2FybWFkYS14cC1ncC5kdHMKPiA+ID4+IGluZGV4IDNlZWE1MzEuLjFjOGFm
-ZTIgMTAwNjQ0Cj4gPiA+PiAtLS0gYS9hcmNoL2FybS9ib290L2R0cy9hcm1hZGEteHAtZ3AuZHRz
-Cj4gPiA+PiArKysgYi9hcmNoL2FybS9ib290L2R0cy9hcm1hZGEteHAtZ3AuZHRzCj4gPiA+PiBA
-QCAtOTcsNSArOTcsMTcgQEAKPiA+ID4+ICAJCQlwaHkgPSA8JnBoeTM+Owo+ID4gPj4gIAkJCXBo
-eS1tb2RlID0gInJnbWlpLWlkIjsKPiA+ID4+ICAJCX07Cj4gPiA+PiArCj4gPiA+PiArCQlzcGkw
-OiBzcGlAZDAwMTA2MDAgewo+ID4gPj4gKwkJCXN0YXR1cyA9ICJva2F5IjsKPiA+ID4+ICsKPiA+
-ID4+ICsJCQlzcGktZmxhc2hAMCB7Cj4gPiA+PiArCQkJCSNhZGRyZXNzLWNlbGxzID0gPDE+Owo+
-ID4gPj4gKwkJCQkjc2l6ZS1jZWxscyA9IDwxPjsKPiA+ID4+ICsJCQkJY29tcGF0aWJsZSA9ICJu
-MjVxMTI4YTEzIjsKPiA+ID4+ICsJCQkJcmVnID0gPDA+OyAvKiBDaGlwIHNlbGVjdCAwICovCj4g
-PiA+PiArCQkJCXNwaS1tYXgtZnJlcXVlbmN5ID0gPDEwODAwMDAwMD47Cj4gPiAKPiA+IEkgaGFk
-IGEgcmVtYXJrIGFib3V0IGl0LCBhY2NvcmRpbmcgdG8gdGhlIGRhdGFzaGVldCwgMTA4TUh6IGlz
-IHRoZQo+ID4gbWF4aW11bSBmcmVxdWVuY3kgZm9yIHRoZSBhbGwgdGhlIGluc3RydWN0aW9ucyBi
-dXQgdGhlIFJFQUQKPiA+IGluc3RydWN0aW9uLiBGb3IgdGhlIFJFQUQgdGhlIG1heGltdW0gZnJl
-cXVlbmN5IGlzIDU0TUh6LiBTbyBJIHdvbmRlcgo+ID4gaWYgd2Ugc2hvdWxkbid0IHVzZSA1NDAw
-MDAwMCBoZXJlLgo+ID4gCj4gCj4gTW1tLi4uIG5pY2UgY2F0Y2guCj4gCj4gVGhlIG10ZCBkcml2
-ZXIgZm9yIHRoZSBzcGkgZmxhc2ggKG0yNXA4MCkgd2lsbCB1c2UgRkFTVF9SRUFEIG9wY29kZQo+
-IGlmIENPTkZJR19NMjVQWFhfVVNFX0ZBU1RfUkVBRCBpcyBzZWxlY3RlZCwgYW5kIHRoaXMgb3B0
-aW9uCj4gaXMgc2VsZWN0ZWQgYnkgZGVmYXVsdC4KPiBIb3dldmVyIHdlIGNhbm5vdCBjb3VudCBv
-biB0aGlzIG9wdGlvbiBiZWluZyBzZWxlY3RlZCwgb2YgY291cnNlLgo+IAo+IE9uIHRoZSBvdGhl
-ciBzaWRlLCBhZnRlciBzb21lIHRlc3Rpbmcgd2l0aCBzcGktbWF4LWZyZXF1ZW5jeSA9IDUwIE1I
-ego+IGFuZCBhbHNvIHdpdGggc3BpLW1heC1mcmVxdWVuY3kgPSAxMDggTUh6IEknbSBzZWVpbmcg
-dGhlIGZsYXNoIG9mdGVuCj4gKG5vdCBhbHdheXMpIHN0YWxscyB3aGVuIHRyeWluZyB0byByZWFk
-IHRoZSBmdWxsIGRldmljZSB0aHJvdWdoIGRkOgo+IAo+IC8gIyBkZCBpZj0vZGV2L210ZDBybyBv
-Zj0vZGV2L251bGwKPiAKCkZXSVcsIHVzaW5nIENPTkZJR19ERVRFQ1RfSFVOR19UQVNLIHdlIGNh
-biBzZWUgdGhlIGh1bmcgaGFwcGVucyBpbnNpZGUgc3BpX3N5bmMoKS4KSXQgc2VlbXMgdGhlIGNv
-bXBsZXRpb24gaGFuZGxlciBpcyBuZXZlciBjYWxsZWQsCnRob3VnaCBJIHN0aWxsIGRvbid0IHVu
-ZGVyc3RhbmQgdW5kZXIgd2hhdCBjaXJjdW1zdGFuY2VzIHRoYXQgY2FuIGhhcHBlbi4KCmRkICAg
-ICAgICAgICAgICBEIGMwMmQ3OWM4ICAgICAwICAgOTY0ICAgIDk2MSAweDAwMDAwMDAwCls8YzAy
-ZDc5Yzg+XSAoX19zY2hlZHVsZSsweDFjOC8weDUwNCkgZnJvbSBbPGMwMmQ2MWQwPl0gKHNjaGVk
-dWxlX3RpbWVvdXQrMHgxNTgvMHgyMDApCls8YzAyZDYxZDA+XSAoc2NoZWR1bGVfdGltZW91dCsw
-eDE1OC8weDIwMCkgZnJvbSBbPGMwMmQ3NTA0Pl0gKHdhaXRfZm9yX2NvbW1vbisweGUwLzB4MTk0
-KQpbPGMwMmQ3NTA0Pl0gKHdhaXRfZm9yX2NvbW1vbisweGUwLzB4MTk0KSBmcm9tIFs8YzAyMTVi
-NDQ+XSAoc3BpX3N5bmMrMHg3NC8weDkwKQpbPGMwMjE1YjQ0Pl0gKHNwaV9zeW5jKzB4NzQvMHg5
-MCkgZnJvbSBbPGMwMjE0YzgwPl0gKG0yNXA4MF9yZWFkKzB4MTAwLzB4MTdjKQpbPGMwMjE0Yzgw
-Pl0gKG0yNXA4MF9yZWFkKzB4MTAwLzB4MTdjKSBmcm9tIFs8YzAyMGVkYWM+XSAobXRkX3JlYWQr
-MHg4Yy8weGMwKQpbPGMwMjBlZGFjPl0gKG10ZF9yZWFkKzB4OGMvMHhjMCkgZnJvbSBbPGMwMjE0
-MDRjPl0gKG10ZGNoYXJfcmVhZCsweGUwLzB4MjI0KQpbPGMwMjE0MDRjPl0gKG10ZGNoYXJfcmVh
-ZCsweGUwLzB4MjI0KSBmcm9tIFs8YzAwYzc1N2M+XSAodmZzX3JlYWQrMHhhNC8weDE0OCkKWzxj
-MDBjNzU3Yz5dICh2ZnNfcmVhZCsweGE0LzB4MTQ4KSBmcm9tIFs8YzAwYzc2NjQ+XSAoc3lzX3Jl
-YWQrMHg0NC8weDc4KQpbPGMwMGM3NjY0Pl0gKHN5c19yZWFkKzB4NDQvMHg3OCkgZnJvbSBbPGMw
-MDBlZGUwPl0gKHJldF9mYXN0X3N5c2NhbGwrMHgwLzB4MzApCgotLSAKRXplcXVpZWwgR2FyY8Ot
-YSwgRnJlZSBFbGVjdHJvbnMKRW1iZWRkZWQgTGludXgsIEtlcm5lbCBhbmQgQW5kcm9pZCBFbmdp
-bmVlcmluZwpodHRwOi8vZnJlZS1lbGVjdHJvbnMuY29tCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCmRldmljZXRyZWUtZGlzY3VzcyBtYWlsaW5nIGxpc3QK
-ZGV2aWNldHJlZS1kaXNjdXNzQGxpc3RzLm96bGFicy5vcmcKaHR0cHM6Ly9saXN0cy5vemxhYnMu
-b3JnL2xpc3RpbmZvL2RldmljZXRyZWUtZGlzY3Vzcwo=
+From: Lars Poeschel <poeschel@lemonage.de>
+
+I wanted to use mcp23s08 driver with a device that boots using device tree.
+I modified the driver to allow the DT usage and tested with a mcp23017
+which is a i2c device. I could not test the spi path, because I have no
+such device.
+
+Regards,
+Lars
+
+Lars Poeschel (2):
+  gpio: mcp23s08: Allow -1 as a legal value for global gpio base
+  gpio: mcp23s08: convert driver to DT
+
+ .../devicetree/bindings/gpio/gpio-mcp23s08.txt     |   36 ++++++++
+ drivers/gpio/gpio-mcp23s08.c                       |   95 ++++++++++++++++++--
+ include/linux/spi/mcp23s08.h                       |    1 +
+ 3 files changed, 126 insertions(+), 6 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
+
+-- 
+1.7.10.4
+

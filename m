@@ -1,9 +1,9 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 2/4] spi: s3c64xx: added support for polling mode
-Date: Wed, 06 Feb 2013 10:35:39 +0000
-Message-ID: <20130206103539.B3B283E1510@localhost>
+Subject: Re: [PATCH 3/4] spi: s3c64xx: add gpio quirk for controller
+Date: Wed, 06 Feb 2013 10:40:00 +0000
+Message-ID: <20130206104000.98E803E1510@localhost>
 References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
-	<1360105784-12282-3-git-send-email-ks.giri@samsung.com>
+	<1360105784-12282-4-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,7 +11,7 @@ Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1360105784-12282-3-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <1360105784-12282-4-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,112 +22,155 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue,  5 Feb 2013 15:09:42 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> The 64xx spi driver supports partial polling mode.
-> Only the last chunk of the transfer length is transferred
-> or recieved in polling mode.
-> 
-> Some SoC's that adopt this controller might not have have dma
-> interface. This patch adds support for complete polling mode
-> and gives flexibity for the user to select poll/dma mode.
+On Tue,  5 Feb 2013 15:09:43 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> This patch adds support for spi controllers with
+> dedicated clk/miso/mosi/cs pins. It skips the gpio
+> parsing and initialization for controllers that
+> have dedicated pins.
 > 
 > Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+
+Instead of making this a quirk, you should use the presence/absense of a
+cs-gpios property to determin whether or not a gpio is used to
+manipulate the CS signal.
+
+Also, are you certain that you want to make this change? Most SPI
+controllers are actually unfriendly in that they insist on deasserting the
+CS line if the FIFO runs empty. Does this driver correctly keep the CS
+signal asserted when there are multiple transfers in a message?
+
+g.
+
 > ---
->  drivers/spi/spi-s3c64xx.c |   65 +++++++++++++++++++++------------------------
->  1 file changed, 30 insertions(+), 35 deletions(-)
+>  drivers/spi/spi-s3c64xx.c |   39 +++++++++++++++++++++++++++++++--------
+>  1 file changed, 31 insertions(+), 8 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index b770f88..90770bd 100644
+> index 90770bd..f06bbee 100644
 > --- a/drivers/spi/spi-s3c64xx.c
 > +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -345,19 +348,7 @@ static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
+> @@ -36,6 +36,7 @@
 >  
->  	chcfg = readl(regs + S3C64XX_SPI_CH_CFG);
->  	chcfg &= ~S3C64XX_SPI_CH_TXCH_ON;
-> -
-> -	if (dma_mode) {
->  		chcfg &= ~S3C64XX_SPI_CH_RXCH_ON;
-> -	} else {
-> -		/* Always shift in data in FIFO, even if xfer is Tx only,
-> -		 * this helps setting PCKT_CNT value for generating clocks
-> -		 * as exactly needed.
-> -		 */
-> -		chcfg |= S3C64XX_SPI_CH_RXCH_ON;
-> -		writel(((xfer->len * 8 / sdd->cur_bpw) & 0xffff)
-> -					| S3C64XX_SPI_PACKET_CNT_EN,
-> -					regs + S3C64XX_SPI_PACKET_CNT);
-> -	}
-
-The removes a block of code, but leaves the modification of chcfg where
-it is without fixing the indentation. I could also use some help
-understanding why this particular else block is moved down in the
-function.
-
->  	if (xfer->tx_buf != NULL) {
->  		sdd->state |= TXBUSY;
-> @@ -385,6 +376,10 @@ static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
+>  #define MAX_SPI_PORTS		3
+>  #define S3C64XX_SPI_QUIRK_POLL		(1 << 0)
+> +#define S3C64XX_SPI_QUIRK_GPIO		(1 << 1)
 >  
->  	if (xfer->rx_buf != NULL) {
->  		sdd->state |= RXBUSY;
-> +		chcfg |= S3C64XX_SPI_CH_RXCH_ON;
-> +		writel(((xfer->len * 8 / sdd->cur_bpw) & 0xffff)
-> +				| S3C64XX_SPI_PACKET_CNT_EN,
-> +				regs + S3C64XX_SPI_PACKET_CNT);
+>  /* Registers and bit-fields */
 >  
->  		if (sdd->port_conf->high_speed && sdd->cur_speed >= 30000000UL
->  					&& !(sdd->cur_mode & SPI_CPHA))
-> @@ -392,10 +387,6 @@ static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
->  
->  		if (dma_mode) {
->  			modecfg |= S3C64XX_SPI_MODE_RXDMA_ON;
-> -			chcfg |= S3C64XX_SPI_CH_RXCH_ON;
-> -			writel(((xfer->len * 8 / sdd->cur_bpw) & 0xffff)
-> -					| S3C64XX_SPI_PACKET_CNT_EN,
-> -					regs + S3C64XX_SPI_PACKET_CNT);
->  			prepare_dma(&sdd->rx_dma, xfer->len, xfer->rx_dma);
+> @@ -404,14 +405,16 @@ static inline void enable_cs(struct s3c64xx_spi_driver_data *sdd,
+>  		if (sdd->tgl_spi != spi) { /* if last mssg on diff device */
+>  			/* Deselect the last toggled device */
+>  			cs = sdd->tgl_spi->controller_data;
+> -			gpio_set_value(cs->line,
+> -				spi->mode & SPI_CS_HIGH ? 0 : 1);
+> +			if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
+> +				gpio_set_value(cs->line,
+> +					spi->mode & SPI_CS_HIGH ? 0 : 1);
 >  		}
+>  		sdd->tgl_spi = NULL;
 >  	}
-> @@ -421,6 +412,9 @@ static inline void enable_cs(struct s3c64xx_spi_driver_data *sdd,
 >  
 >  	cs = spi->controller_data;
->  	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
+> -	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
+> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
+> +		gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
+>  
+>  	/* Start the signals */
+>  	writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+> @@ -503,7 +506,8 @@ static inline void disable_cs(struct s3c64xx_spi_driver_data *sdd,
+>  	if (sdd->tgl_spi == spi)
+>  		sdd->tgl_spi = NULL;
+>  
+> -	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
+> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
+> +		gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
+>  
+>  	/* Quiese the signals */
+>  	writel(S3C64XX_SPI_SLAVE_SIG_INACT,
+> @@ -842,7 +846,10 @@ static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
+>  		return ERR_PTR(-ENOMEM);
+>  	}
+>  
+> -	cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
+> +	/* In case of dedicated cs pin skip the gpio initialization */
+> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
+> +		cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
 > +
-> +	/* Start the signals */
-> +	writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+>  	if (!gpio_is_valid(cs->line)) {
+>  		dev_err(&spi->dev, "chip select gpio is not specified or "
+>  					"invalid\n");
+> @@ -883,7 +890,7 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+>  		return -ENODEV;
+>  	}
+>  
+> -	if (!spi_get_ctldata(spi)) {
+> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO)) {
+>  		err = gpio_request_one(cs->line, GPIOF_OUT_INIT_HIGH,
+>  				       dev_name(&spi->dev));
+>  		if (err) {
+> @@ -892,9 +899,11 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+>  				cs->line, err);
+>  			goto err_gpio_req;
+>  		}
+> -		spi_set_ctldata(spi, cs);
+>  	}
+>  
+> +	if (!spi_get_ctldata(spi))
+> +		spi_set_ctldata(spi, cs);
+> +
+>  	sci = sdd->cntrlr_info;
+>  
+>  	spin_lock_irqsave(&sdd->lock, flags);
+> @@ -979,8 +988,11 @@ err_gpio_req:
+>  static void s3c64xx_spi_cleanup(struct spi_device *spi)
+>  {
+>  	struct s3c64xx_spi_csinfo *cs = spi_get_ctldata(spi);
+> +	struct s3c64xx_spi_driver_data *sdd;
+> +
+> +	sdd = spi_master_get_devdata(spi->master);
+>  
+> -	if (cs) {
+> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO) && cs) {
+>  		gpio_free(cs->line);
+>  		if (spi->dev.of_node)
+>  			kfree(cs);
+> @@ -1107,6 +1119,13 @@ static int s3c64xx_spi_parse_dt_gpio(struct s3c64xx_spi_driver_data *sdd)
+>  	struct device *dev = &sdd->pdev->dev;
+>  	int idx, gpio, ret;
+>  
+> +	/*
+> +	 * If cs is not controlled by gpio, and
+> +	 * the SoC uses internal dedicated pins
+> +	 */
+> +	if (sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO)
+> +		return 0;
+> +
+>  	/* find gpios for mosi, miso and clock lines */
+>  	for (idx = 0; idx < 3; idx++) {
+>  		gpio = of_get_gpio(dev->of_node, idx);
+> @@ -1133,6 +1152,10 @@ free_gpio:
+>  static void s3c64xx_spi_dt_gpio_free(struct s3c64xx_spi_driver_data *sdd)
+>  {
+>  	unsigned int idx;
+> +
+> +	if (sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO)
+> +		return;
+> +
+>  	for (idx = 0; idx < 3; idx++)
+>  		gpio_free(sdd->gpios[idx]);
 >  }
->  
->  static int wait_for_xfer(struct s3c64xx_spi_driver_data *sdd,
-> @@ -480,16 +474,19 @@ static int wait_for_xfer(struct s3c64xx_spi_driver_data *sdd,
->  
->  		switch (sdd->cur_bpw) {
->  		case 32:
-> -			ioread32_rep(regs + S3C64XX_SPI_RX_DATA,
-> -				xfer->rx_buf, xfer->len / 4);
-> +			for (val = 0; val < (xfer->len / 4); val++)
-> +				*((u32 *)xfer->rx_buf + val) =
-> +					ioread32(regs + S3C64XX_SPI_RX_DATA);
->  			break;
->  		case 16:
-> -			ioread16_rep(regs + S3C64XX_SPI_RX_DATA,
-> -				xfer->rx_buf, xfer->len / 2);
-> +			for (val = 0; val < (xfer->len / 2); val++)
-> +				*((u16 *)xfer->rx_buf + val) =
-> +					ioread16(regs + S3C64XX_SPI_RX_DATA);
->  			break;
->  		default:
-> -			ioread8_rep(regs + S3C64XX_SPI_RX_DATA,
-> -				xfer->rx_buf, xfer->len);
-> +			for (val = 0; val < xfer->len; val++)
-> +				*((u8 *)xfer->rx_buf + val) =
-> +					ioread8(regs + S3C64XX_SPI_RX_DATA);
+> -- 
+> 1.7.10.4
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Please read the FAQ at  http://www.tux.org/lkml/
 
-What are all of the above lines changed? That seems to have nothing to
-do with making the driver be albe to do polling transfers. Nor is it
-described in the patch description.
-
-I think this patch needs some more work. It certainly need to be
-described better, and it appears that some of the changes really should be
-in a separate patch.
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

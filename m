@@ -1,17 +1,23 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: s3c64xx: add gpio quirk for controller
-Date: Wed, 06 Feb 2013 10:40:00 +0000
-Message-ID: <20130206104000.98E803E1510@localhost>
-References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
-	<1360105784-12282-4-git-send-email-ks.giri@samsung.com>
+From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH RESEND] spi: spi-fsl-spi: Make spi-fsl-spi usable in cpu
+	mode outside of FSL SOC environments and add a grlib variant normally
+	running on sparc
+Date: Wed, 06 Feb 2013 11:44:27 +0100
+Message-ID: <5112340B.7030505@gaisler.com>
+References: <1359548124-13692-1-git-send-email-andreas@gaisler.com>
+	<20130205175630.C6F7F3E167A@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>, software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1360105784-12282-4-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <20130205175630.C6F7F3E167A@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,155 +28,83 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue,  5 Feb 2013 15:09:43 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> This patch adds support for spi controllers with
-> dedicated clk/miso/mosi/cs pins. It skips the gpio
-> parsing and initialization for controllers that
-> have dedicated pins.
-> 
-> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+On 2013-02-05 18:56, Grant Likely wrote:
+> On Wed, 30 Jan 2013 13:15:24 +0100, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org> wrote:
+>> This patch relies upon parts of the "of, of_gpio, of_spi: Fix and
+>> improve of_parse_phandle_with_args, of_gpio_named_count and
+>> of_spi_register_master" patchset - https://lkml.org/lkml/2012/12/27/54
+>> (v2 at https://lkml.org/lkml/2013/1/29/308).
 
-Instead of making this a quirk, you should use the presence/absense of a
-cs-gpios property to determin whether or not a gpio is used to
-manipulate the CS signal.
+For TYPE_GRLIB, the gpio chipselect parts relies on this series. It 
+would be great to get some feedback on that patch series as well.
 
-Also, are you certain that you want to make this change? Most SPI
-controllers are actually unfriendly in that they insist on deasserting the
-CS line if the FIFO runs empty. Does this driver correctly keep the CS
-signal asserted when there are multiple transfers in a message?
+>> Maybe the different out/in_be32 vs iowrite/read32be in spi-fsl-lib.h is
+>> over the top, but I'm not sure if there might be subtle differences
+>> between those on powerpc and I don't have any fsl hardware to try things
+>> out on.
+>
+> Changing to ioread/write globally should be fine. I would change it and get
+> someone with an fsl board to try it out. That will reduce the diffstat a
+> bit.
 
-g.
+Will do.
 
-> ---
->  drivers/spi/spi-s3c64xx.c |   39 +++++++++++++++++++++++++++++++--------
->  1 file changed, 31 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 90770bd..f06bbee 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -36,6 +36,7 @@
->  
->  #define MAX_SPI_PORTS		3
->  #define S3C64XX_SPI_QUIRK_POLL		(1 << 0)
-> +#define S3C64XX_SPI_QUIRK_GPIO		(1 << 1)
->  
->  /* Registers and bit-fields */
->  
-> @@ -404,14 +405,16 @@ static inline void enable_cs(struct s3c64xx_spi_driver_data *sdd,
->  		if (sdd->tgl_spi != spi) { /* if last mssg on diff device */
->  			/* Deselect the last toggled device */
->  			cs = sdd->tgl_spi->controller_data;
-> -			gpio_set_value(cs->line,
-> -				spi->mode & SPI_CS_HIGH ? 0 : 1);
-> +			if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
-> +				gpio_set_value(cs->line,
-> +					spi->mode & SPI_CS_HIGH ? 0 : 1);
->  		}
->  		sdd->tgl_spi = NULL;
->  	}
->  
->  	cs = spi->controller_data;
-> -	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
-> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
-> +		gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
->  
->  	/* Start the signals */
->  	writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-> @@ -503,7 +506,8 @@ static inline void disable_cs(struct s3c64xx_spi_driver_data *sdd,
->  	if (sdd->tgl_spi == spi)
->  		sdd->tgl_spi = NULL;
->  
-> -	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
-> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
-> +		gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
->  
->  	/* Quiese the signals */
->  	writel(S3C64XX_SPI_SLAVE_SIG_INACT,
-> @@ -842,7 +846,10 @@ static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
->  		return ERR_PTR(-ENOMEM);
->  	}
->  
-> -	cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
-> +	/* In case of dedicated cs pin skip the gpio initialization */
-> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
-> +		cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
-> +
->  	if (!gpio_is_valid(cs->line)) {
->  		dev_err(&spi->dev, "chip select gpio is not specified or "
->  					"invalid\n");
-> @@ -883,7 +890,7 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
->  		return -ENODEV;
->  	}
->  
-> -	if (!spi_get_ctldata(spi)) {
-> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO)) {
->  		err = gpio_request_one(cs->line, GPIOF_OUT_INIT_HIGH,
->  				       dev_name(&spi->dev));
->  		if (err) {
-> @@ -892,9 +899,11 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
->  				cs->line, err);
->  			goto err_gpio_req;
->  		}
-> -		spi_set_ctldata(spi, cs);
->  	}
->  
-> +	if (!spi_get_ctldata(spi))
-> +		spi_set_ctldata(spi, cs);
-> +
->  	sci = sdd->cntrlr_info;
->  
->  	spin_lock_irqsave(&sdd->lock, flags);
-> @@ -979,8 +988,11 @@ err_gpio_req:
->  static void s3c64xx_spi_cleanup(struct spi_device *spi)
->  {
->  	struct s3c64xx_spi_csinfo *cs = spi_get_ctldata(spi);
-> +	struct s3c64xx_spi_driver_data *sdd;
-> +
-> +	sdd = spi_master_get_devdata(spi->master);
->  
-> -	if (cs) {
-> +	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO) && cs) {
->  		gpio_free(cs->line);
->  		if (spi->dev.of_node)
->  			kfree(cs);
-> @@ -1107,6 +1119,13 @@ static int s3c64xx_spi_parse_dt_gpio(struct s3c64xx_spi_driver_data *sdd)
->  	struct device *dev = &sdd->pdev->dev;
->  	int idx, gpio, ret;
->  
-> +	/*
-> +	 * If cs is not controlled by gpio, and
-> +	 * the SoC uses internal dedicated pins
-> +	 */
-> +	if (sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO)
-> +		return 0;
-> +
->  	/* find gpios for mosi, miso and clock lines */
->  	for (idx = 0; idx < 3; idx++) {
->  		gpio = of_get_gpio(dev->of_node, idx);
-> @@ -1133,6 +1152,10 @@ free_gpio:
->  static void s3c64xx_spi_dt_gpio_free(struct s3c64xx_spi_driver_data *sdd)
->  {
->  	unsigned int idx;
-> +
-> +	if (sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO)
-> +		return;
-> +
->  	for (idx = 0; idx < 3; idx++)
->  		gpio_free(sdd->gpios[idx]);
->  }
-> -- 
-> 1.7.10.4
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
+> As is, this is quite an invasive patch, so I'm not going to be
+> comfortable merging it without at least one 3rd party tester. (Breaking
+> things up into discrete patches will make me less nervous and possible
+> to merge parts while still revising others.
 
--- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
+I'll be happy to do that. Was trying to adhere to the guide line to not 
+introduce something separately from its usage, but in this case it is 
+probably better to split things up a bit.
+
+>> +#ifdef CONFIG_FSL_SOC
+>>   	else if (prop && !strcmp(prop, "qe"))
+>>   		pdata->flags = SPI_CPM_MODE | SPI_QE;
+>>   	else if (of_device_is_compatible(np, "fsl,cpm2-spi"))
+>>   		pdata->flags = SPI_CPM_MODE | SPI_CPM2;
+>>   	else if (of_device_is_compatible(np, "fsl,cpm1-spi"))
+>>   		pdata->flags = SPI_CPM_MODE | SPI_CPM1;
+>> +#endif
+>
+> The ifdefs are ugly and these lines won't affect sparc. Just leave them
+> in.
+
+Will do.
+
+>> +/* TYPE_GRLIB SPI Controller capability register definitions */
+>> +#define SPCAP_SSEN(x)           (((x) >> 16) & 0x1)
+>> +#define SPCAP_SSSZ(x)           (((x) >> 24) & 0xff)
+>> +#define SPCAP_MAXWLEN(x)	(((x) >> 20) & 0xf)
+>
+> Nit: inconsistent whitespace (tabs vs. spaces)
+
+Will fix.
+
+>> +	ret = of_property_read_u32(dev->of_node, "bus-number", &bus_num);
+>> +	if (!ret)
+>> +		master->bus_num = bus_num;
+>
+> Drop these lines. Never set the bus number explicitly when using DT. If
+> you really want to assign a particular bus number, then use an alias.
+
+Sure, I'll check that out.
+
+> That's all the comments I've got for now, but there are an awful lot of
+> #defines that are added to the driver which is kind of ugly. I'm not
+> going to nack over that, but it would be good to clean it up and do some
+> better abstraction.
+
+I agree that it is ugly. If I move the cpm-related things from 
+spi-fsl-spi.c to a separate file that only gets linked on FSL_SOC and 
+have dummy functions in an h-file I think that it can be made much less 
+ugly.
+
+Thanks for the feedback!
+
+Cheers,
+Andreas
+
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

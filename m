@@ -1,47 +1,120 @@
-From: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: Add helper functions for setting up transfers
-Date: Wed, 06 Feb 2013 19:20:21 +0000
-Message-ID: <5112ACF5.3020906@kernel.org>
-References: <1357752671-30222-1-git-send-email-lars@metafoo.de> <20130127033358.GA20672@sirena.org.uk> <20130205140755.33FCD3E1265@localhost>
+From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: s3c64xx: modified error interrupt handling and
+	init
+Date: Wed, 6 Feb 2013 12:12:29 -0800
+Message-ID: <CAKrE-KdX+Nxk0X4xdz6Dx3WVtOpV+ms+gPB-Dq-MwZwetyZ5Nw@mail.gmail.com>
+References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
+	<1360105784-12282-2-git-send-email-ks.giri@samsung.com>
+	<20130206102628.5E7413E1510@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-	Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
-	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20130205140755.33FCD3E1265@localhost>
-Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130206102628.5E7413E1510@localhost>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/05/2013 02:07 PM, Grant Likely wrote:
-> On Sun, 27 Jan 2013 03:33:59 +0000, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
->> On Wed, Jan 09, 2013 at 06:31:09PM +0100, Lars-Peter Clausen wrote:
+On Wed, Feb 6, 2013 at 2:26 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+> On Tue,  5 Feb 2013 15:09:41 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> The status of the interrupt is available in the status register,
+>> so reading the clear pending register and writing back the same
+>> value will not actually clear the pending interrupts. This patch
+>> modifies the interrupt handler to read the status register and
+>> clear the corresponding pending bit in the clear pending register.
 >>
->>> The second function spi_sync_transfer() takes a SPI device and an array of
->>> spi_transfers. It will allocate a new spi_message (on the stack) and add all
->>> transfers in the array to the message. Finally it will call spi_sync() on the
->>> message.
+>> Modified the hwInit function to clear all the pending interrupts.
 >>
->> Reviewed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-> 
-> Looks good to me also. Go ahead and merge this series through the iio
-> tree since it is the first user.
-
-Lars, when you are back on your feet, could you respin this series against
-the latest iio tree please.  2 drivers have moved which messes up patches
-2 and 3. Now I could fix it up, but it's your patch series and I'm lazy ;)
-
-
-> 
+>> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>> ---
+>>  drivers/spi/spi-s3c64xx.c |   41 +++++++++++++++++++++++++----------------
+>>  1 file changed, 25 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+>> index ad93231..b770f88 100644
+>> --- a/drivers/spi/spi-s3c64xx.c
+>> +++ b/drivers/spi/spi-s3c64xx.c
+>> @@ -997,25 +997,30 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
+>>  {
+>>       struct s3c64xx_spi_driver_data *sdd = data;
+>>       struct spi_master *spi = sdd->master;
+>> -     unsigned int val;
+>> +     unsigned int val, clr = 0;
+>>
+>> -     val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>> +     val = readl(sdd->regs + S3C64XX_SPI_STATUS);
+>>
+>> -     val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
+>> -             S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
+>> -             S3C64XX_SPI_PND_TX_OVERRUN_CLR |
+>> -             S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>> -
+>> -     writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>> -
+>> -     if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
+>> +     if (val & S3C64XX_SPI_ST_RX_OVERRUN_ERR) {
+>> +             clr = S3C64XX_SPI_PND_RX_OVERRUN_CLR;
+>>               dev_err(&spi->dev, "RX overrun\n");
+>> -     if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
+>> +     }
+>> +     if (val & S3C64XX_SPI_ST_RX_UNDERRUN_ERR) {
+>> +             clr |= S3C64XX_SPI_PND_RX_UNDERRUN_CLR;
+>>               dev_err(&spi->dev, "RX underrun\n");
+>> -     if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
+>> +     }
+>> +     if (val & S3C64XX_SPI_ST_TX_OVERRUN_ERR) {
+>> +             clr |= S3C64XX_SPI_PND_TX_OVERRUN_CLR;
+>>               dev_err(&spi->dev, "TX overrun\n");
+>> -     if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
+>> +     }
+>> +     if (val & S3C64XX_SPI_ST_TX_UNDERRUN_ERR) {
+>> +             clr |= S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>>               dev_err(&spi->dev, "TX underrun\n");
+>> +     }
+>> +
+>> +     /* Clear the pending irq by setting and then clearing it */
+>> +     writel(clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>> +     writel(clr & ~clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>
+> Wait, what?  clr & ~clr == 0   Always.  What are you actually trying to do here?
+The user manual says, wirting 1 to the pending clear register clears
+the interrupt (its not auto clear to 0). so i need to explicitly reset
+those bits thats what the 2nd write does
+>
+>>
+>>       return IRQ_HANDLED;
+>>  }
+>> @@ -1039,9 +1044,13 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
+>>       writel(0, regs + S3C64XX_SPI_MODE_CFG);
+>>       writel(0, regs + S3C64XX_SPI_PACKET_CNT);
+>>
+>> -     /* Clear any irq pending bits */
+>> -     writel(readl(regs + S3C64XX_SPI_PENDING_CLR),
+>> -                             regs + S3C64XX_SPI_PENDING_CLR);
+>> +     /* Clear any irq pending bits, should set and clear the bits */
+>> +     val = S3C64XX_SPI_PND_RX_OVERRUN_CLR |
+>> +             S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
+>> +             S3C64XX_SPI_PND_TX_OVERRUN_CLR |
+>> +             S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>> +     writel(val, regs + S3C64XX_SPI_PENDING_CLR);
+>> +     writel(val & ~val, regs + S3C64XX_SPI_PENDING_CLR);
+>
+> Ditto.
+same as above
+>
 > g.
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-iio" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+
+------------------------------------------------------------------------------
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

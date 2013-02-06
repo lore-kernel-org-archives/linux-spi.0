@@ -1,107 +1,43 @@
-From: Thomas De Schampheleire <patrickdepinguin+spidevel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: Fixing eSPI controller driver: some queries
-Date: Wed, 6 Feb 2013 10:31:16 +0100
-Message-ID: <CAAXf6LVDo7Ux+Qxanob9BFKBro7BkHyjgRiBV899OHQPN51w_g@mail.gmail.com>
-References: <CAAXf6LUeAUYOUT70fbYWoG-zcr15Q495MB0f1YLd6su1CLqLEA@mail.gmail.com>
-	<20130205173214.7B4853E166D@localhost>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH RFC 1/1] gpio: mcp23s08: convert driver to DT
+Date: Wed, 6 Feb 2013 10:37:41 +0100
+Message-ID: <CACRpkdawOE4WfUcCGpVSR9n5ZR9j1gFnMQ-EAOWOixcpM7uDUg@mail.gmail.com>
+References: <1359647903-15801-1-git-send-email-larsi@wh2.tu-dresden.de>
+	<CACRpkda_HjzWNMD1H_a_fsWtbRWuTDsutS8kndb9jY31qf7Yyg@mail.gmail.com>
+	<20130205142909.4F5B83E1265@localhost>
+	<201302061031.04264.poeschel@lemonage.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Ronny Meeus <Ronny.Meeus-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130205173214.7B4853E166D@localhost>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Lars Poeschel <larsi-myOXECIRRCL4ajHJ1XSv27NAH6kLmebB@public.gmane.org>,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, w.sang-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Lars Poeschel <poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <201302061031.04264.poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 5, 2013 at 6:32 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> On Fri, 18 Jan 2013 10:03:28 +0100, Thomas De Schampheleire <patrickdepinguin+spidevel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> Hi,
->>
->> The Freescale eSPI controller driver is broken in several ways. I already
->> attempted to fix this with a patch many months back. The patch works for
->> me, but never got feedback from the original author.
->> (see https://patchwork.kernel.org/patch/988802/)
->>
->> The same problems are still present on the current 3.x version of the
->> driver. I will now re-investigate the problem, and submit a revised patch
->> later.
->>
->> I have some queries though:
->> - When reading from memory devices, the first bytes received may not yet be
->> the real contents of memory, but rather to-be-ignored bytes caused by the
->> full-duplex nature of the transaction while sending the command and address
->> bytes.
->> Am I correct in understanding that these to-be-ignored bytes are to be
->> transparently passed through to the requester of the transaction (i.e. a
->> protocol driver or a userspace application through spidev) and that it's
->> the requestor's responsability to know that these bytes are to be ignored?
->
-> Yes
->
->>
->> - While investigating the various problems of the driver, I am adding print
->> statements throughout the code, displaying certain variables and buffer
->> contents. What should I do with these when the problems are fixed? Remove
->> all such statements, or rather, use a mechanism like dev_dbg (or similar)
->> and thus keep them in the code? What is your preference?
->
-> It is common to use dev_dbg(). They are turned off by removing #define
-> DEBUG from the top of the file. As long as they don't impair readability
-> of the code I would keep them in.
->
->> - One of the aspects that seems to be broken in the driver is accesses that
->> do not have either 8-bits-per-word or 16-bits-per-word, e.g. 7 bpw or 12
->> bpw. The hardware defaults to sending least-significant-bits first, and the
->> setting to change this is only allowed for 8 or 16 bpw:
->>
->> -------- (datasheet)
->> Reverse data mode. Determines the receive and transmit character bit order.
->> 0 lsb of the character sent and received first
->> 1 msb of the character sent and received first-for 8/16 bits data character
->> only
->> -------
->>
->> However, the driver sets this bit (CSMODE_REV) by default, except when the
->> mode SPI_LSB_FIRST is explicitly set. This means that a protocol driver
->> that requests a 12bpw transaction, will inadvertently cause an illegal mode
->> setting in the hardware. It doesn't and shouldn't know of this hardware
->> restriction. Is this analysis correct?
->
-> Correct. The master driver needs to work around limitations of the
-> hardware, or reject them as unsupported.
->
->> What is the correct way of handling this? Clear the bit in case of a sub-8
->> or sub-16 bpw transaction, and do the bit swapping in software if
->> SPI_LSB_FIRST is not explicitly set?
->
-> Probably
->
->> Or force SPI_LSB_FIRST in these cases, leaving the bit swapping to the
->> protocol driver?
->
-> No. it should be abstracted
->
->> Or disable support for sub-8 and sub-16 bpw transactions?
->
-> Only if the first option isn't feasable.
+On Wed, Feb 6, 2013 at 10:31 AM, Lars Poeschel <poeschel-Xtl8qvBWbHwb1SvskN2V4Q@public.gmane.org> wrote:
 
-Thanks Grant for your responses.
-I'm planning to fixing the driver, I'll send it when I'm done.
+> The thing that confused me was, that the platform_data for the chip has a
+> mandatory "base" member, that sets the linux global gpio number at which the
+> chip should appear.
 
-Best regards,
-Thomas
+Yes this is common. I think you should look at other drivers
+under drivers/gpio using device tree, and how they work around
+this.
 
-------------------------------------------------------------------------------
-Free Next-Gen Firewall Hardware Offer
-Buy your Sophos next-gen firewall before the end March 2013 
-and get the hardware for free! Learn more.
-http://p.sf.net/sfu/sophos-d2d-feb
+As stated, as a last resort you can use AUXDATA to anyway assign
+a piece of platform data per instance.
+
+In the Nomadik driver, we use the block instance ID and multiply
+by a factor of the numbers of GPIOs on each instance.
+And luckily the base is zero. Not elegant maybe, but the
+global GPIO numberspace is not elegant by nature.
+
+Yours,
+Linus Walleij

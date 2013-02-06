@@ -1,13 +1,14 @@
-From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+From: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Subject: Re: [PATCH] arm: mvebu: Add SPI flash on Armada XP-GP board
-Date: Wed, 6 Feb 2013 07:54:32 -0300
-Message-ID: <20130206105431.GA21764@localhost>
+Date: Wed, 06 Feb 2013 13:31:23 +0100
+Message-ID: <51124D1B.9030508@free-electrons.com>
 References: <1360063473-26176-1-git-send-email-ezequiel.garcia@free-electrons.com>
 	<5111331F.7090900@free-electrons.com>
 	<511168BE.1000803@free-electrons.com>
+	<20130206105431.GA21764@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
 	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
@@ -15,10 +16,9 @@ Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.g
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <511168BE.1000803-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <20130206105431.GA21764@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -29,79 +29,126 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgR3JlZ29yeSwKCk9uIFR1ZSwgRmViIDA1LCAyMDEzIGF0IDA5OjE3OjAyUE0gKzAxMDAsIEdy
-ZWdvcnkgQ0xFTUVOVCB3cm90ZToKPiBPbiAwMi8wNS8yMDEzIDA1OjI4IFBNLCBHcmVnb3J5IENM
-RU1FTlQgd3JvdGU6Cj4gPiBIaSBFemVxdWllbCwKPiA+IAo+ID4gT24gMDIvMDUvMjAxMyAxMjoy
-NCBQTSwgRXplcXVpZWwgR2FyY2lhIHdyb3RlOgo+ID4+IFRoaXMgcGF0Y2ggYWRkcyBhbiBTUEkg
-bWFzdGVyIGRldmljZSBub2RlIGZvciBBcm1hZGEgWFAtR1AgYm9hcmQuCj4gPj4gVGhpcyBtYXN0
-ZXIgbm9kZSBpcyBhbiBTUEkgZmxhc2ggY29udHJvbGxlciAnbjI1cTEyOGExMycuCj4gPj4KPiA+
-PiBTaW5jZSB0aGVyZSBpcyBubyAncGFydGl0aW9ucycgbm9kZSBkZWNsYXJlZCwgb25lIGZ1bGwg
-c2l6ZWQKPiA+PiBwYXJ0aXRpb24gbmFtZWQgYXMgdGhlIGRldmljZSB3aWxsIGJlIGNyZWF0ZWQu
-Cj4gPj4KPiA+PiBDYzogR3JlZ29yeSBDbGVtZW50IDxncmVnb3J5LmNsZW1lbnRAZnJlZS1lbGVj
-dHJvbnMuY29tPgo+ID4+IENjOiBUaG9tYXMgUGV0YXp6b25pIDx0aG9tYXMucGV0YXp6b25pQGZy
-ZWUtZWxlY3Ryb25zLmNvbT4KPiA+PiBDYzogTGlvciBBbXNhbGVtIDxhbGlvckBtYXJ2ZWxsLmNv
-bT4KPiA+PiBTaWduZWQtb2ZmLWJ5OiBFemVxdWllbCBHYXJjaWEgPGV6ZXF1aWVsLmdhcmNpYUBm
-cmVlLWVsZWN0cm9ucy5jb20+Cj4gPj4gLS0tCj4gPj4gVGhpcyBwYXRjaCBkZXBlbmRzIG9uOgo+
-ID4+Cj4gPj4gIDEuIEdyZWdvcnkncyBwYXRjaCBmb3IgQXJtYWRhIFhQIEdQIGJvYXJkOgo+ID4+
-ICAgICAgIGFybTogbXZlYnU6IHN1cHBvcnQgZm9yIHRoZSBuZXcgQXJtYWRhIFhQIGRldmVsb3Bt
-ZW50IGJvYXJkKERCLU1WNzg0TVAtR1ApCj4gPj4KPiA+PiAgMi4gTXkgcHJldmlvdXMgcGF0Y2gg
-Zm9yIFNQSSBvbiBBcm1hZGEgMzcwL1hQOgo+ID4+ICAgICAgIGFybTogbXZlYnU6IEFkZCBzdXBw
-b3J0IGZvciBTUEkgY29udHJvbGxlciBpbiBBcm1hZGEgMzcwL1hQCj4gPj4KPiA+PiBBbmQgZG9u
-J3QgZm9yZ2V0IHRvIGNvbXBpbGUgdGhlIFNQSSBmbGFzaCBkcml2ZXIsIENPTkZJR19NVERfTTI1
-UDgwPXkKPiA+Pgo+ID4+ICBhcmNoL2FybS9ib290L2R0cy9hcm1hZGEteHAtZ3AuZHRzIHwgICAx
-MiArKysrKysrKysrKysKPiA+PiAgMSBmaWxlcyBjaGFuZ2VkLCAxMiBpbnNlcnRpb25zKCspLCAw
-IGRlbGV0aW9ucygtKQo+ID4+Cj4gPj4gZGlmZiAtLWdpdCBhL2FyY2gvYXJtL2Jvb3QvZHRzL2Fy
-bWFkYS14cC1ncC5kdHMgYi9hcmNoL2FybS9ib290L2R0cy9hcm1hZGEteHAtZ3AuZHRzCj4gPj4g
-aW5kZXggM2VlYTUzMS4uMWM4YWZlMiAxMDA2NDQKPiA+PiAtLS0gYS9hcmNoL2FybS9ib290L2R0
-cy9hcm1hZGEteHAtZ3AuZHRzCj4gPj4gKysrIGIvYXJjaC9hcm0vYm9vdC9kdHMvYXJtYWRhLXhw
-LWdwLmR0cwo+ID4+IEBAIC05Nyw1ICs5NywxNyBAQAo+ID4+ICAJCQlwaHkgPSA8JnBoeTM+Owo+
-ID4+ICAJCQlwaHktbW9kZSA9ICJyZ21paS1pZCI7Cj4gPj4gIAkJfTsKPiA+PiArCj4gPj4gKwkJ
-c3BpMDogc3BpQGQwMDEwNjAwIHsKPiA+PiArCQkJc3RhdHVzID0gIm9rYXkiOwo+ID4+ICsKPiA+
-PiArCQkJc3BpLWZsYXNoQDAgewo+ID4+ICsJCQkJI2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4gPj4g
-KwkJCQkjc2l6ZS1jZWxscyA9IDwxPjsKPiA+PiArCQkJCWNvbXBhdGlibGUgPSAibjI1cTEyOGEx
-MyI7Cj4gPj4gKwkJCQlyZWcgPSA8MD47IC8qIENoaXAgc2VsZWN0IDAgKi8KPiA+PiArCQkJCXNw
-aS1tYXgtZnJlcXVlbmN5ID0gPDEwODAwMDAwMD47Cj4gCj4gSSBoYWQgYSByZW1hcmsgYWJvdXQg
-aXQsIGFjY29yZGluZyB0byB0aGUgZGF0YXNoZWV0LCAxMDhNSHogaXMgdGhlCj4gbWF4aW11bSBm
-cmVxdWVuY3kgZm9yIHRoZSBhbGwgdGhlIGluc3RydWN0aW9ucyBidXQgdGhlIFJFQUQKPiBpbnN0
-cnVjdGlvbi4gRm9yIHRoZSBSRUFEIHRoZSBtYXhpbXVtIGZyZXF1ZW5jeSBpcyA1NE1Iei4gU28g
-SSB3b25kZXIKPiBpZiB3ZSBzaG91bGRuJ3QgdXNlIDU0MDAwMDAwIGhlcmUuCj4gCgpNbW0uLi4g
-bmljZSBjYXRjaC4KClRoZSBtdGQgZHJpdmVyIGZvciB0aGUgc3BpIGZsYXNoIChtMjVwODApIHdp
-bGwgdXNlIEZBU1RfUkVBRCBvcGNvZGUKaWYgQ09ORklHX00yNVBYWF9VU0VfRkFTVF9SRUFEIGlz
-IHNlbGVjdGVkLCBhbmQgdGhpcyBvcHRpb24KaXMgc2VsZWN0ZWQgYnkgZGVmYXVsdC4KSG93ZXZl
-ciB3ZSBjYW5ub3QgY291bnQgb24gdGhpcyBvcHRpb24gYmVpbmcgc2VsZWN0ZWQsIG9mIGNvdXJz
-ZS4KCk9uIHRoZSBvdGhlciBzaWRlLCBhZnRlciBzb21lIHRlc3Rpbmcgd2l0aCBzcGktbWF4LWZy
-ZXF1ZW5jeSA9IDUwIE1IegphbmQgYWxzbyB3aXRoIHNwaS1tYXgtZnJlcXVlbmN5ID0gMTA4IE1I
-eiBJJ20gc2VlaW5nIHRoZSBmbGFzaCBvZnRlbgoobm90IGFsd2F5cykgc3RhbGxzIHdoZW4gdHJ5
-aW5nIHRvIHJlYWQgdGhlIGZ1bGwgZGV2aWNlIHRocm91Z2ggZGQ6CgovICMgZGQgaWY9L2Rldi9t
-dGQwcm8gb2Y9L2Rldi9udWxsCgpUaGlzIGhhcHBlbnMgcmVnYXJkbGVzcyBvZiBDT05GSUdfTTI1
-UFhYX1VTRV9GQVNUX1JFQUQsIGFuZCByZWdhcmRsZXNzCm9mIHNwaS1tYXgtZnJlcXVlbmN5ID0g
-NTAgTUh6IG9yIDU0IE1IeiBvciAxMDggTUh6LgoKTm90ZSB0aGF0IHNldHRpbmcgMTA4IE1IeiBp
-cyB1c2VsZXNzIGluIG91ciBjYXNlLCBiZWNhdXNlIHRoZXJlJ3MKYW4gdXBwZXIgbGltaXQgb2Yg
-NjIuNSBNSHogc2V0IGJ5IHRoZSBjb3JlIGNsb2NrIG9mIHRoZSBTb0MuCgpVc2luZyBhIHJlYWQg
-YmxvY2sgc2l6ZSBvZiAxTSwgdGhlIHJlYWQgY29tcGxldGVzIE9LIC0tIGFsd2F5czoKCi8gIyBk
-ZCBpZj0vZGV2L210ZDAgb2Y9L2Rldi9udWxsIGJzPTFNCjE2KzAgcmVjb3JkcyBpbgoxNiswIHJl
-Y29yZHMgb3V0CjE2Nzc3MjE2IGJ5dGVzICgxNi4wTUIpIGNvcGllZCwgMjcuMzA2MDQ4IHNlY29u
-ZHMsIDYwMC4wS0IvcwoKTW9yZW92ZXIsIHdoZW4gdGhlIHJlYWQgY29tcGxldGVzLCB0aGUgYWNo
-aWV2ZWQgYmFuZHdpZHRoCmlzIHRoZSBzYW1lIGZvciA0MCwgNTAsIDU0LCBvciAxMDggTUh6LgoK
-SWYgd2Ugc2V0IHNwaS1tYXgtZnJlcXVlbmN5IHRvIDI3IE1IeiAoMTA4IE1IeiAvIDQpLCBpdCBs
-b29rcyBsaWtlIHRoZSBzdGFsbGluZwpkaXNhcHBlYXIgYW5kIHRoZSByZWFkIGFsd2F5cyBjb21w
-bGV0ZXMgT0ssIGF0IGFsbW9zdCBoYWxmIHRoZSBzcGVlZDoKCi8gIyBkZCBpZj0vZGV2L210ZDBy
-byBvZj0vZGV2L251bGwKMzI3NjgrMCByZWNvcmRzIGluCjMyNzY4KzAgcmVjb3JkcyBvdXQKMTY3
-NzcyMTYgYnl0ZXMgKDE2LjBNQikgY29waWVkLCA0OS4wMDUxMjIgc2Vjb25kcywgMzM0LjNLQi9z
-CgpTbyBhY2NvcmRpbmcgdG8gdGhpcyBhbmFseXNpcywgd2Ugd2hvdWxkIHNldCAyNyBNSHogYXMg
-dGhlIG1heApmcmVxdWVuY3ksIGJhc2VkIG9uIG5vdGhpbmcgYnV0IGluIHRoZXNlIHRlc3RzLgoK
-SSdtIG5vdCBzdXJlIHRoZSBzdGFsbGluZyBpcyBkdWUgdG8gdGhlIGNsb2NraW5nIG9yIGR1ZSB0
-bwpzb21lIGRyaXZlciBidWcgKEkgZG9uJ3QgbGlrZSB0aGUgdHJpY2tzIHB1bGxlZCBieSB0aGUg
-YnVzeSBsb29wCmluIG9yaW9uX3NwaV93YWl0X3RpbGxfcmVhZHkoKSBidXQgcHJvYmFibHkgdGhp
-cyBpcyBjb21wbGV0ZWx5IHVucmVsYXRlZCkuCgpBZGRpbmcgc29tZSBTUEkgcGVvcGxlIGluIENj
-LCBob3BpbmcgdGhleSBjYW4gc2hlZCBhIGxpZ2h0IG9uIHRoaXMuCgpXaGF0IGRvIHlvdSB0aGlu
-az8KCi0tIApFemVxdWllbCBHYXJjw61hLCBGcmVlIEVsZWN0cm9ucwpFbWJlZGRlZCBMaW51eCwg
-S2VybmVsIGFuZCBBbmRyb2lkIEVuZ2luZWVyaW5nCmh0dHA6Ly9mcmVlLWVsZWN0cm9ucy5jb20K
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpGcmVlIE5leHQtR2VuIEZpcmV3YWxsIEhhcmR3YXJlIE9m
-ZmVyCkJ1eSB5b3VyIFNvcGhvcyBuZXh0LWdlbiBmaXJld2FsbCBiZWZvcmUgdGhlIGVuZCBNYXJj
-aCAyMDEzIAphbmQgZ2V0IHRoZSBoYXJkd2FyZSBmb3IgZnJlZSEgTGVhcm4gbW9yZS4KaHR0cDov
-L3Auc2YubmV0L3NmdS9zb3Bob3MtZDJkLWZlYgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRl
-dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9y
-Z2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On 02/06/2013 11:54 AM, Ezequiel Garcia wrote:
+> Hi Gregory,
+> 
+> On Tue, Feb 05, 2013 at 09:17:02PM +0100, Gregory CLEMENT wrote:
+>> On 02/05/2013 05:28 PM, Gregory CLEMENT wrote:
+>>> Hi Ezequiel,
+>>>
+>>> On 02/05/2013 12:24 PM, Ezequiel Garcia wrote:
+>>>> This patch adds an SPI master device node for Armada XP-GP board.
+>>>> This master node is an SPI flash controller 'n25q128a13'.
+>>>>
+>>>> Since there is no 'partitions' node declared, one full sized
+>>>> partition named as the device will be created.
+>>>>
+>>>> Cc: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>>>> Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>>>> Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>
+>>>> Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>>>> ---
+>>>> This patch depends on:
+>>>>
+>>>>  1. Gregory's patch for Armada XP GP board:
+>>>>       arm: mvebu: support for the new Armada XP development board(DB-MV784MP-GP)
+>>>>
+>>>>  2. My previous patch for SPI on Armada 370/XP:
+>>>>       arm: mvebu: Add support for SPI controller in Armada 370/XP
+>>>>
+>>>> And don't forget to compile the SPI flash driver, CONFIG_MTD_M25P80=y
+>>>>
+>>>>  arch/arm/boot/dts/armada-xp-gp.dts |   12 ++++++++++++
+>>>>  1 files changed, 12 insertions(+), 0 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm/boot/dts/armada-xp-gp.dts b/arch/arm/boot/dts/armada-xp-gp.dts
+>>>> index 3eea531..1c8afe2 100644
+>>>> --- a/arch/arm/boot/dts/armada-xp-gp.dts
+>>>> +++ b/arch/arm/boot/dts/armada-xp-gp.dts
+>>>> @@ -97,5 +97,17 @@
+>>>>  			phy = <&phy3>;
+>>>>  			phy-mode = "rgmii-id";
+>>>>  		};
+>>>> +
+>>>> +		spi0: spi@d0010600 {
+>>>> +			status = "okay";
+>>>> +
+>>>> +			spi-flash@0 {
+>>>> +				#address-cells = <1>;
+>>>> +				#size-cells = <1>;
+>>>> +				compatible = "n25q128a13";
+>>>> +				reg = <0>; /* Chip select 0 */
+>>>> +				spi-max-frequency = <108000000>;
+>>
+>> I had a remark about it, according to the datasheet, 108MHz is the
+>> maximum frequency for the all the instructions but the READ
+>> instruction. For the READ the maximum frequency is 54MHz. So I wonder
+>> if we shouldn't use 54000000 here.
+>>
+> 
+> Mmm... nice catch.
+> 
+> The mtd driver for the spi flash (m25p80) will use FAST_READ opcode
+> if CONFIG_M25PXX_USE_FAST_READ is selected, and this option
+> is selected by default.
+
+OK I didn't notice that thre wre a FAST_READ which was supported by
+Linux. So I think we can keep 108000000 as spi-max-frequency.
+
+> However we cannot count on this option being selected, of course.
+> 
+> On the other side, after some testing with spi-max-frequency = 50 MHz
+> and also with spi-max-frequency = 108 MHz I'm seeing the flash often
+> (not always) stalls when trying to read the full device through dd:
+> 
+> / # dd if=/dev/mtd0ro of=/dev/null
+> 
+> This happens regardless of CONFIG_M25PXX_USE_FAST_READ, and regardless
+> of spi-max-frequency = 50 MHz or 54 MHz or 108 MHz.
+> 
+> Note that setting 108 MHz is useless in our case, because there's
+> an upper limit of 62.5 MHz set by the core clock of the SoC.
+> 
+> Using a read block size of 1M, the read completes OK -- always:
+> 
+> / # dd if=/dev/mtd0 of=/dev/null bs=1M
+> 16+0 records in
+> 16+0 records out
+> 16777216 bytes (16.0MB) copied, 27.306048 seconds, 600.0KB/s
+> 
+> Moreover, when the read completes, the achieved bandwidth
+> is the same for 40, 50, 54, or 108 MHz.
+> 
+> If we set spi-max-frequency to 27 MHz (108 MHz / 4), it looks like the stalling
+> disappear and the read always completes OK, at almost half the speed:
+> 
+> / # dd if=/dev/mtd0ro of=/dev/null
+> 32768+0 records in
+> 32768+0 records out
+> 16777216 bytes (16.0MB) copied, 49.005122 seconds, 334.3KB/s
+> 
+> So according to this analysis, we whould set 27 MHz as the max
+> frequency, based on nothing but in these tests.
+> 
+> I'm not sure the stalling is due to the clocking or due to
+> some driver bug (I don't like the tricks pulled by the busy loop
+> in orion_spi_wait_till_ready() but probably this is completely unrelated).
+> 
+> Adding some SPI people in Cc, hoping they can shed a light on this.
+> 
+> What do you think?
+
+We have just seen this on IRC, so it seemed it was actually a problem in
+userspace not in kernel space.
+
+-- 
+Gregory Clement, Free Electrons
+Kernel, drivers, real-time and embedded Linux
+development, consulting, training and support.
+http://free-electrons.com
+
+------------------------------------------------------------------------------
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

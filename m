@@ -1,10 +1,12 @@
 From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 2/5] spi: pl022: use generic DMA slave configuration if
 	possible
-Date: Thu, 7 Feb 2013 19:27:32 +0100
-Message-ID: <CACRpkdYUeM=QviqgAg6WVrKGtrX8=6C_LkEYQ92TuGZuPiDr=w@mail.gmail.com>
+Date: Thu, 7 Feb 2013 19:29:17 +0100
+Message-ID: <CACRpkdZNpCJwp-uaH6feTcaPesNouwpHt-hO-M9v52G=Ux+Hqw@mail.gmail.com>
 References: <1359395857-1235-1-git-send-email-arnd@arndb.de>
-	<1359395857-1235-3-git-send-email-arnd@arndb.de>
+	<1359410300-26113-3-git-send-email-arnd@arndb.de>
+	<1359445794.31148.34.camel@smile>
+	<201301291313.03511.arnd@arndb.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,12 +14,12 @@ Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
 	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
 	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Jon Hunter <jon-hunter-l0cyMroinI0@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-arm-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1359395857-1235-3-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
+In-Reply-To: <201301291313.03511.arnd-r2nGTMty4D4@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,20 +30,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 28, 2013 at 6:57 PM, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote:
+On Tue, Jan 29, 2013 at 2:13 PM, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote:
+> On Tuesday 29 January 2013, Andy Shevchenko wrote:
 
-> With the new OF DMA binding, it is possible to completely avoid the
-> need for platform_data for configuring a DMA channel. In cases where the
-> platform has already been converted, calling dma_request_slave_channel
-> should get all the necessary information from the device tree.
+>> > +   pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>>
+>> Where this memory will be freed?
+>> In dependence of the answer could you consider to use
+>> devm_kmalloc or __get_free_page?
 >
-> Like the patch that converts the dw_dma controller, this is completely
-> untested and is looking for someone to try it out.
+> There is another function like this called pl022_dma_probe()
+> that has the same allocation, and it gets freed in the same place.
 >
-> Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+> It's probably worth changing this into something different, but
+> I felt that it didn't belong into this patch. I was also not
+> sure if the best option would be dmam_alloc_coherent, dev_kzalloc,
+> or __get_free_page.
 
-This looks correct to me atleast:
-Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Actually I once read about a feature where the kernel provides
+a static page full of zeroes or something like this, that would be
+ideal to use in cases like this, then all of this dummy page
+allocation and freeing can be deleted.
 
 Yours,
 Linus Walleij

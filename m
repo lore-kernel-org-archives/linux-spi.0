@@ -1,25 +1,18 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/5] spi: pl022: use generic DMA slave configuration if
-	possible
-Date: Thu, 7 Feb 2013 19:29:17 +0100
-Message-ID: <CACRpkdZNpCJwp-uaH6feTcaPesNouwpHt-hO-M9v52G=Ux+Hqw@mail.gmail.com>
-References: <1359395857-1235-1-git-send-email-arnd@arndb.de>
-	<1359410300-26113-3-git-send-email-arnd@arndb.de>
-	<1359445794.31148.34.camel@smile>
-	<201301291313.03511.arnd@arndb.de>
+From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: s3c64xx: add gpio quirk for controller
+Date: Thu, 7 Feb 2013 10:54:01 -0800
+Message-ID: <CAKrE-KfrWdOxm+DJyWqZn1Ye509E_LjzmDb5FMq55SF9-Sua0A@mail.gmail.com>
+References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
+	<1360105784-12282-4-git-send-email-ks.giri@samsung.com>
+	<20130207115546.GA3801@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Vinod Koul <vinod.koul-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Viresh Kumar <viresh.kumar-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Jon Hunter <jon-hunter-l0cyMroinI0@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201301291313.03511.arnd-r2nGTMty4D4@public.gmane.org>
+In-Reply-To: <20130207115546.GA3801-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,30 +23,41 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 29, 2013 at 2:13 PM, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org> wrote:
-> On Tuesday 29 January 2013, Andy Shevchenko wrote:
-
->> > +   pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
->>
->> Where this memory will be freed?
->> In dependence of the answer could you consider to use
->> devm_kmalloc or __get_free_page?
+On Thu, Feb 7, 2013 at 3:55 AM, Mark Brown
+<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+> On Tue, Feb 05, 2013 at 03:09:43PM -0800, Girish K S wrote:
+>> This patch adds support for spi controllers with
+>> dedicated clk/miso/mosi/cs pins. It skips the gpio
+>> parsing and initialization for controllers that
+>> have dedicated pins.
 >
-> There is another function like this called pl022_dma_probe()
-> that has the same allocation, and it gets freed in the same place.
+>>               if (sdd->tgl_spi != spi) { /* if last mssg on diff device */
+>>                       /* Deselect the last toggled device */
+>>                       cs = sdd->tgl_spi->controller_data;
+>> -                     gpio_set_value(cs->line,
+>> -                             spi->mode & SPI_CS_HIGH ? 0 : 1);
+>> +                     if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
+>> +                             gpio_set_value(cs->line,
+>> +                                     spi->mode & SPI_CS_HIGH ? 0 : 1);
+>>               }
 >
-> It's probably worth changing this into something different, but
-> I felt that it didn't belong into this patch. I was also not
-> sure if the best option would be dmam_alloc_coherent, dev_kzalloc,
-> or __get_free_page.
-
-Actually I once read about a feature where the kernel provides
-a static page full of zeroes or something like this, that would be
-ideal to use in cases like this, then all of this dummy page
-allocation and freeing can be deleted.
-
-Yours,
-Linus Walleij
+> This isn't going to work with system designs which ignore the /CS line
+> the controller has and just use a GPIO instead.  This is very common,
+> for example when connecting multiple devices to the same SPI bus.
+As per grant's comment i would remove the quirk option and check for
+"cs-gpio" property
+to handle /CS. When multiple devices are connected to the same spi
+bus, "cs-gpio" entry would exist in the dts
+file, and works with /CS gpio lines.
+>
+> It seems like there's really two changes here.  One change is making the
+> provision of pinmux information optional, the other is allowing the user
+> to use the controller /CS management rather than using GPIO.
+As suggested i would make two changes.
+1. would parse the "gpios"  property and make decision whether to use
+gpios/dedicated pins for miso/miso/clk.
+2.would parse "cs-gpio"  property from dts node to handle the chip select
+correct me if my understanding is wrong
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

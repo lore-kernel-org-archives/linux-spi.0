@@ -1,8 +1,7 @@
 From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH v2 4/7 RESEND] spi: spi-fsl-spi: Introduce a type for the
-	driver
-Date: Thu,  7 Feb 2013 14:38:13 +0100
-Message-ID: <1360244293-14518-1-git-send-email-andreas@gaisler.com>
+Subject: [PATCH v2 4/7] spi: spi-fsl-spi: Introduce a type for the driver
+Date: Thu,  7 Feb 2013 14:12:08 +0100
+Message-ID: <1360242731-13700-5-git-send-email-andreas@gaisler.com>
 References: <1360242731-13700-1-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -31,8 +30,6 @@ with different entries in of_fsl_spi_match.
 
 Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 ---
-[Resent, as the mail for patch 4 seems to have been lost somehow]
-
  drivers/spi/spi-fsl-lib.h |    2 ++
  drivers/spi/spi-fsl-spi.c |   39 ++++++++++++++++++++++++++++++++-------
  2 files changed, 34 insertions(+), 7 deletions(-)

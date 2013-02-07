@@ -1,12 +1,13 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 1/4] spi: s3c64xx: modified error interrupt handling and
 	init
-Date: Wed, 6 Feb 2013 23:48:38 +0000
-Message-ID: <CACxGe6uOaoRbtuovEsA87d-MtCbGNd3KZCeHXbBQaEpp6NZ7fA@mail.gmail.com>
+Date: Wed, 6 Feb 2013 16:33:42 -0800
+Message-ID: <CAKrE-Keyxqr_q=a-1pHjSVfeAte08JOdjwaT-0PbmZjgZWysNw@mail.gmail.com>
 References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
 	<1360105784-12282-2-git-send-email-ks.giri@samsung.com>
 	<20130206102628.5E7413E1510@localhost>
 	<CAKrE-KdX+Nxk0X4xdz6Dx3WVtOpV+ms+gPB-Dq-MwZwetyZ5Nw@mail.gmail.com>
+	<CACxGe6uOaoRbtuovEsA87d-MtCbGNd3KZCeHXbBQaEpp6NZ7fA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -14,9 +15,9 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAKrE-KdX+Nxk0X4xdz6Dx3WVtOpV+ms+gPB-Dq-MwZwetyZ5Nw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CACxGe6uOaoRbtuovEsA87d-MtCbGNd3KZCeHXbBQaEpp6NZ7fA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,77 +28,84 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 6, 2013 at 8:12 PM, Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> On Wed, Feb 6, 2013 at 2:26 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
->> On Tue,  5 Feb 2013 15:09:41 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>> The status of the interrupt is available in the status register,
->>> so reading the clear pending register and writing back the same
->>> value will not actually clear the pending interrupts. This patch
->>> modifies the interrupt handler to read the status register and
->>> clear the corresponding pending bit in the clear pending register.
+On Wed, Feb 6, 2013 at 3:48 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+> On Wed, Feb 6, 2013 at 8:12 PM, Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> On Wed, Feb 6, 2013 at 2:26 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+>>> On Tue,  5 Feb 2013 15:09:41 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>> The status of the interrupt is available in the status register,
+>>>> so reading the clear pending register and writing back the same
+>>>> value will not actually clear the pending interrupts. This patch
+>>>> modifies the interrupt handler to read the status register and
+>>>> clear the corresponding pending bit in the clear pending register.
+>>>>
+>>>> Modified the hwInit function to clear all the pending interrupts.
+>>>>
+>>>> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>>>> ---
+>>>>  drivers/spi/spi-s3c64xx.c |   41 +++++++++++++++++++++++++----------------
+>>>>  1 file changed, 25 insertions(+), 16 deletions(-)
+>>>>
+>>>> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+>>>> index ad93231..b770f88 100644
+>>>> --- a/drivers/spi/spi-s3c64xx.c
+>>>> +++ b/drivers/spi/spi-s3c64xx.c
+>>>> @@ -997,25 +997,30 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
+>>>>  {
+>>>>       struct s3c64xx_spi_driver_data *sdd = data;
+>>>>       struct spi_master *spi = sdd->master;
+>>>> -     unsigned int val;
+>>>> +     unsigned int val, clr = 0;
+>>>>
+>>>> -     val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>>> +     val = readl(sdd->regs + S3C64XX_SPI_STATUS);
+>>>>
+>>>> -     val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
+>>>> -             S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
+>>>> -             S3C64XX_SPI_PND_TX_OVERRUN_CLR |
+>>>> -             S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>>>> -
+>>>> -     writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>>> -
+>>>> -     if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
+>>>> +     if (val & S3C64XX_SPI_ST_RX_OVERRUN_ERR) {
+>>>> +             clr = S3C64XX_SPI_PND_RX_OVERRUN_CLR;
+>>>>               dev_err(&spi->dev, "RX overrun\n");
+>>>> -     if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
+>>>> +     }
+>>>> +     if (val & S3C64XX_SPI_ST_RX_UNDERRUN_ERR) {
+>>>> +             clr |= S3C64XX_SPI_PND_RX_UNDERRUN_CLR;
+>>>>               dev_err(&spi->dev, "RX underrun\n");
+>>>> -     if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
+>>>> +     }
+>>>> +     if (val & S3C64XX_SPI_ST_TX_OVERRUN_ERR) {
+>>>> +             clr |= S3C64XX_SPI_PND_TX_OVERRUN_CLR;
+>>>>               dev_err(&spi->dev, "TX overrun\n");
+>>>> -     if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
+>>>> +     }
+>>>> +     if (val & S3C64XX_SPI_ST_TX_UNDERRUN_ERR) {
+>>>> +             clr |= S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>>>>               dev_err(&spi->dev, "TX underrun\n");
+>>>> +     }
+>>>> +
+>>>> +     /* Clear the pending irq by setting and then clearing it */
+>>>> +     writel(clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>>> +     writel(clr & ~clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
 >>>
->>> Modified the hwInit function to clear all the pending interrupts.
->>>
->>> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
->>> ---
->>>  drivers/spi/spi-s3c64xx.c |   41 +++++++++++++++++++++++++----------------
->>>  1 file changed, 25 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
->>> index ad93231..b770f88 100644
->>> --- a/drivers/spi/spi-s3c64xx.c
->>> +++ b/drivers/spi/spi-s3c64xx.c
->>> @@ -997,25 +997,30 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
->>>  {
->>>       struct s3c64xx_spi_driver_data *sdd = data;
->>>       struct spi_master *spi = sdd->master;
->>> -     unsigned int val;
->>> +     unsigned int val, clr = 0;
->>>
->>> -     val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
->>> +     val = readl(sdd->regs + S3C64XX_SPI_STATUS);
->>>
->>> -     val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
->>> -             S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
->>> -             S3C64XX_SPI_PND_TX_OVERRUN_CLR |
->>> -             S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
->>> -
->>> -     writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
->>> -
->>> -     if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
->>> +     if (val & S3C64XX_SPI_ST_RX_OVERRUN_ERR) {
->>> +             clr = S3C64XX_SPI_PND_RX_OVERRUN_CLR;
->>>               dev_err(&spi->dev, "RX overrun\n");
->>> -     if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
->>> +     }
->>> +     if (val & S3C64XX_SPI_ST_RX_UNDERRUN_ERR) {
->>> +             clr |= S3C64XX_SPI_PND_RX_UNDERRUN_CLR;
->>>               dev_err(&spi->dev, "RX underrun\n");
->>> -     if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
->>> +     }
->>> +     if (val & S3C64XX_SPI_ST_TX_OVERRUN_ERR) {
->>> +             clr |= S3C64XX_SPI_PND_TX_OVERRUN_CLR;
->>>               dev_err(&spi->dev, "TX overrun\n");
->>> -     if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
->>> +     }
->>> +     if (val & S3C64XX_SPI_ST_TX_UNDERRUN_ERR) {
->>> +             clr |= S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
->>>               dev_err(&spi->dev, "TX underrun\n");
->>> +     }
->>> +
->>> +     /* Clear the pending irq by setting and then clearing it */
->>> +     writel(clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
->>> +     writel(clr & ~clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
->>
->> Wait, what?  clr & ~clr == 0   Always.  What are you actually trying to do here?
-> The user manual says, wirting 1 to the pending clear register clears
-> the interrupt (its not auto clear to 0). so i need to explicitly reset
-> those bits thats what the 2nd write does
-
-Then write 0. That's the result of what the code does anyway, but the
-code as-written is nonsensical.
-
-g.
+>>> Wait, what?  clr & ~clr == 0   Always.  What are you actually trying to do here?
+>> The user manual says, wirting 1 to the pending clear register clears
+>> the interrupt (its not auto clear to 0). so i need to explicitly reset
+>> those bits thats what the 2nd write does
+>
+> Then write 0. That's the result of what the code does anyway, but the
+> code as-written is nonsensical.
+Just writing 0 doest clear the status bit. The status bit in the
+status register is cleared only when the corresponding bit in clear
+pending register is set.
+If not cleared after setting. On the next Interrupt, writing 1 to a
+previously set bit will not clear the status bit.
+Hope its clear
+>
+> g.
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

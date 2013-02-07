@@ -1,38 +1,147 @@
-From: Anton Vorontsov <anton@enomsg.org>
-Subject: Re: [PATCH v2 0/7] spi: spi-fsl-spi: Make spi-fsl-spi usable in cpu
- mode outside of FSL SOC environments and add a grlib variant normally
- running on sparc
-Date: Thu, 7 Feb 2013 08:08:55 -0800
-Message-ID: <20130207160854.GA20979@lizard.gateway.2wire.net>
-References: <1360242731-13700-1-git-send-email-andreas@gaisler.com>
+From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: s3c64xx: modified error interrupt handling and
+	init
+Date: Thu, 7 Feb 2013 09:46:58 -0800
+Message-ID: <CAKrE-KfyGCi_+FozSpGTy0A0VJP=Jq-1SHmvKJU02iJKWHcvLQ@mail.gmail.com>
+References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
+	<20130206102628.5E7413E1510@localhost>
+	<CAKrE-KdX+Nxk0X4xdz6Dx3WVtOpV+ms+gPB-Dq-MwZwetyZ5Nw@mail.gmail.com>
+	<1585017.derjdP1mHL@amdc1227>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	spi-devel-general@lists.sourceforge.net,
-	Mingkai Hu <Mingkai.hu@freescale.com>,
-	Joakim Tjernlund <Joakim.Tjernlund@transmode.se>,
-	Kumar Gala <galak@kernel.crashing.org>,
-	Peter Korsgaard <jacmet@sunsite.dk>,
-	linux-kernel@vger.kernel.org, software@gaisler.com
-To: Andreas Larsson <andreas@gaisler.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1360242731-13700-1-git-send-email-andreas@gaisler.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1585017.derjdP1mHL@amdc1227>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Feb 07, 2013 at 02:12:04PM +0100, Andreas Larsson wrote:
-> This makes the cpu mode of the driver available outside of an FSL SOC
-> and even powerpc environment. Furthermore, this adds support for the
-> mostly register-compatible SPICTRL core from the GRLIB VHDL IP core
-> library normally running on SPARC.
+On Thu, Feb 7, 2013 at 3:09 AM, Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
+> Hi Girish,
+>
+> On Wednesday 06 of February 2013 12:12:29 Girish KS wrote:
+>> On Wed, Feb 6, 2013 at 2:26 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> wrote:
+>> > On Tue,  5 Feb 2013 15:09:41 -0800, Girish K S
+> <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> >> The status of the interrupt is available in the status register,
+>> >> so reading the clear pending register and writing back the same
+>> >> value will not actually clear the pending interrupts. This patch
+>> >> modifies the interrupt handler to read the status register and
+>> >> clear the corresponding pending bit in the clear pending register.
+>> >>
+>> >> Modified the hwInit function to clear all the pending interrupts.
+>> >>
+>> >> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>> >> ---
+>> >>
+>> >>  drivers/spi/spi-s3c64xx.c |   41
+>> >>  +++++++++++++++++++++++++---------------- 1 file changed, 25
+>> >>  insertions(+), 16 deletions(-)
+>> >>
+>> >> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+>> >> index ad93231..b770f88 100644
+>> >> --- a/drivers/spi/spi-s3c64xx.c
+>> >> +++ b/drivers/spi/spi-s3c64xx.c
+>> >> @@ -997,25 +997,30 @@ static irqreturn_t s3c64xx_spi_irq(int irq,
+>> >> void *data)>>
+>> >>  {
+>> >>
+>> >>       struct s3c64xx_spi_driver_data *sdd = data;
+>> >>       struct spi_master *spi = sdd->master;
+>> >>
+>> >> -     unsigned int val;
+>> >> +     unsigned int val, clr = 0;
+>> >>
+>> >> -     val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>> >> +     val = readl(sdd->regs + S3C64XX_SPI_STATUS);
+>> >>
+>> >> -     val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
+>> >> -             S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
+>> >> -             S3C64XX_SPI_PND_TX_OVERRUN_CLR |
+>> >> -             S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>> >> -
+>> >> -     writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>> >> -
+>> >> -     if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
+>> >> +     if (val & S3C64XX_SPI_ST_RX_OVERRUN_ERR) {
+>> >> +             clr = S3C64XX_SPI_PND_RX_OVERRUN_CLR;
+>> >>
+>> >>               dev_err(&spi->dev, "RX overrun\n");
+>> >>
+>> >> -     if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
+>> >> +     }
+>> >> +     if (val & S3C64XX_SPI_ST_RX_UNDERRUN_ERR) {
+>> >> +             clr |= S3C64XX_SPI_PND_RX_UNDERRUN_CLR;
+>> >>
+>> >>               dev_err(&spi->dev, "RX underrun\n");
+>> >>
+>> >> -     if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
+>> >> +     }
+>> >> +     if (val & S3C64XX_SPI_ST_TX_OVERRUN_ERR) {
+>> >> +             clr |= S3C64XX_SPI_PND_TX_OVERRUN_CLR;
+>> >>
+>> >>               dev_err(&spi->dev, "TX overrun\n");
+>> >>
+>> >> -     if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
+>> >> +     }
+>> >> +     if (val & S3C64XX_SPI_ST_TX_UNDERRUN_ERR) {
+>> >> +             clr |= S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>> >>
+>> >>               dev_err(&spi->dev, "TX underrun\n");
+>> >>
+>> >> +     }
+>> >> +
+>> >> +     /* Clear the pending irq by setting and then clearing it */
+>> >> +     writel(clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>> >> +     writel(clr & ~clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>> >
+>> > Wait, what?  clr & ~clr == 0   Always.  What are you actually trying
+>> > to do here?
+>> The user manual says, wirting 1 to the pending clear register clears
+>> the interrupt (its not auto clear to 0). so i need to explicitly reset
+>> those bits thats what the 2nd write does
+>
+> I have looked through user's manuals of different Samsung SoCs. All of
+> them said that writing 1 to a bit clears the corresponding interrupt, but
+> none of them contain any note that it must be manually cleared to 0.
+What i meant was the clear pending bit will not clear automatically.
+When I set the
+clear pending bit, it remains set. This is a problem for the next
+interrupt cycle.
+> In addition the expression
+>
+> clr & ~clr
+>
+> makes no sense, because it is equal to 0.
+It makes sense, because we are not disturbing the interrupt pending
+bit at position 0, which is a trailing clr bit.
+>
+> If you really need to clear those bits manually (and I don't think so),
+> you should replace this expression with 0.
+since we are not enabling (was not enabled in previous implementation)
+trailing byte interrupt, and not handling the same in handler
+we cannot write 0.
 
-The patches look clean and neat, I don't see anything obviously wrong with
-them... so,
+>
+> Best regards,
+> --
+> Tomasz Figa
+> Samsung Poland R&D Center
+> SW Solution Development, Linux Platform
+>
 
-Acked-by: Anton Vorontsov <anton@enomsg.org>
-
-Thanks!
-
-Anton
+------------------------------------------------------------------------------
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

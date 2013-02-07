@@ -1,54 +1,87 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: s3c64xx: add gpio quirk for controller
-Date: Thu, 7 Feb 2013 11:55:47 +0000
-Message-ID: <20130207115546.GA3801@sirena.org.uk>
-References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
-	<1360105784-12282-4-git-send-email-ks.giri@samsung.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1360105784-12282-4-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Andreas Larsson <andreas@gaisler.com>
+Subject: [PATCH v2 0/7] spi: spi-fsl-spi: Make spi-fsl-spi usable in cpu mode outside of FSL SOC environments and add a grlib variant normally running on sparc
+Date: Thu,  7 Feb 2013 14:12:04 +0100
+Message-ID: <1360242731-13700-1-git-send-email-andreas@gaisler.com>
+Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	spi-devel-general@lists.sourceforge.net,
+	Mingkai Hu <Mingkai.hu@freescale.com>,
+	Anton Vorontsov <anton.vorontsov@linaro.org>,
+	Joakim Tjernlund <Joakim.Tjernlund@transmode.se>,
+	Kumar Gala <galak@kernel.crashing.org>,
+	Peter Korsgaard <jacmet@sunsite.dk>,
+	linux-kernel@vger.kernel.org, software@gaisler.com
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Feb 05, 2013 at 03:09:43PM -0800, Girish K S wrote:
-> This patch adds support for spi controllers with
-> dedicated clk/miso/mosi/cs pins. It skips the gpio
-> parsing and initialization for controllers that
-> have dedicated pins.
+This makes the cpu mode of the driver available outside of an FSL SOC
+and even powerpc environment. Furthermore, this adds support for the
+mostly register-compatible SPICTRL core from the GRLIB VHDL IP core
+library normally running on SPARC.
 
->  		if (sdd->tgl_spi != spi) { /* if last mssg on diff device */
->  			/* Deselect the last toggled device */
->  			cs = sdd->tgl_spi->controller_data;
-> -			gpio_set_value(cs->line,
-> -				spi->mode & SPI_CS_HIGH ? 0 : 1);
-> +			if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_GPIO))
-> +				gpio_set_value(cs->line,
-> +					spi->mode & SPI_CS_HIGH ? 0 : 1);
->  		}
+This effort is split up in several patches for clarity of what is being
+changed. Patches 3-5 prepares for the introduction of the GRLIB SPICTRL
+functionality in patch 6. 
 
-This isn't going to work with system designs which ignore the /CS line
-the controller has and just use a GPIO instead.  This is very common,
-for example when connecting multiple devices to the same SPI bus.
+To use what is introduced right away they could eventually be merged:
+  Patch A: patch 1
+  Patch B: patch 2
+  Patch C: patches 3-6 merged
+  Patch D: patch 7
 
-It seems like there's really two changes here.  One change is making the
-provision of pinmux information optional, the other is allowing the user
-to use the controller /CS management rather than using GPIO.
+Patch 1 makes the driver compileable and presumably useable outside of
+FSL SOC and powerpc environments (SPARC in particular)
 
-------------------------------------------------------------------------------
-Free Next-Gen Firewall Hardware Offer
-Buy your Sophos next-gen firewall before the end March 2013 
-and get the hardware for free! Learn more.
-http://p.sf.net/sfu/sophos-d2d-feb
+Patch 2 fixes a bug that can happen when a device uses SPI_CS_HIGH
+
+Patches 3-6 makes the driver working for GRLIB SPICTRL cores that has
+the built in slave select register and that uses that exclusively for
+chipselects.
+
+Patch 7 introduces gpio support for GRLIB SPICTRL cores. That patch (and
+that patch only) relies upon the "of, of_gpio, of_spi: Fix and improve
+of_parse_phandle_with_args, of_gpio_named_count and
+of_spi_register_master" patchset - https://lkml.org/lkml/2013/1/29/308
+
+The GRLIB type has been tested under sparc. The FSL type has been
+compile tested in powerpc, arm and x86 environments. It would be great
+if someone with an FSL board could test this out.
+
+One could argue that it would be better to add the GRLIB variant as a
+mode flag in of_mpc8xxx_spi_probe instead of using a new type field, but
+that would require to add a flag for this core in
+include/linux/fsl_devices.h which does not feel right given that this
+core is not part of an FSL device.
+
+Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+
+Andreas Larsson (7):
+  spi: spi-fsl-spi: Make driver usable in CPU mode outside of an
+    FSL_SOC environment
+  spi: spi-fsl-spi: Make sure in spi_fsl_setup that chipselect becomes
+    inactive
+  spi: spi-fsl-spi: Move setting non-zero tx and rx shifts to a
+    function accessed by a function pointer
+  spi: spi-fsl-spi: Introduce a type for the driver
+  spi: spi-fsl-spi: Add support for setting a maximum number of bits
+    per word
+  spi: spi-fsl-spi: Add support for Aeroflex Gaisler GRLIB cores
+    normally running on SPARC
+  spi: spi-fsl-spi: Add support for gpio chipselects for GRLIB type
+    cores
+
+ Documentation/devicetree/bindings/spi/fsl-spi.txt  |    3 +-
+ .../devicetree/bindings/vendor-prefixes.txt        |    1 +
+ drivers/spi/Kconfig                                |   11 +-
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-fsl-cpm.c                          |  387 +++++++++++++
+ drivers/spi/spi-fsl-cpm.h                          |   43 ++
+ drivers/spi/spi-fsl-lib.c                          |    8 +
+ drivers/spi/spi-fsl-lib.h                          |   15 +-
+ drivers/spi/spi-fsl-spi.c                          |  610 ++++++--------------
+ drivers/spi/spi-fsl-spi.h                          |   72 +++
+ 10 files changed, 725 insertions(+), 426 deletions(-)
+ create mode 100644 drivers/spi/spi-fsl-cpm.c
+ create mode 100644 drivers/spi/spi-fsl-cpm.h
+ create mode 100644 drivers/spi/spi-fsl-spi.h

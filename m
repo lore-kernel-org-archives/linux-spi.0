@@ -1,22 +1,24 @@
-From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH v2 7/7] spi: spi-fsl-spi: Add support for gpio chipselects
-	for GRLIB type cores
-Date: Fri, 08 Feb 2013 08:46:42 +0100
-Message-ID: <5114AD62.1070909@gaisler.com>
-References: <1360242731-13700-1-git-send-email-andreas@gaisler.com>
-	<1360242731-13700-8-git-send-email-andreas@gaisler.com>
-	<20130207160821.GA22224@lizard.gateway.2wire.net>
+From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: s3c64xx: modified error interrupt handling and
+	init
+Date: Fri, 8 Feb 2013 00:16:34 -0800
+Message-ID: <CAKrE-Kc1mdzeYp+X6xvP4anVegcPdpYKKqtp6b-z-cmtJ-O0GA@mail.gmail.com>
+References: <1360105784-12282-1-git-send-email-ks.giri@samsung.com>
+	<1360105784-12282-2-git-send-email-ks.giri@samsung.com>
+	<20130206102628.5E7413E1510@localhost>
+	<CAKrE-KdX+Nxk0X4xdz6Dx3WVtOpV+ms+gPB-Dq-MwZwetyZ5Nw@mail.gmail.com>
+	<CACxGe6uOaoRbtuovEsA87d-MtCbGNd3KZCeHXbBQaEpp6NZ7fA@mail.gmail.com>
+	<CAKrE-KfvywLa4xTwCGzan9OfevzBdY8Z2EO2Mc2VaFm5y0XEzg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>, software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Anton Vorontsov <anton-9xeibp6oKSgdnm+yROfE0A@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130207160821.GA22224-1CZZkhFgUWNRmOO2HpYVOJIbA5emDH3N@public.gmane.org>
+In-Reply-To: <CAKrE-KfvywLa4xTwCGzan9OfevzBdY8Z2EO2Mc2VaFm5y0XEzg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,35 +29,85 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2013-02-07 17:08, Anton Vorontsov wrote:
-> On Thu, Feb 07, 2013 at 02:12:11PM +0100, Andreas Larsson wrote:
->>   	struct fsl_spi_reg *reg_base;
->> -	int retval;
->> +	int retval, desel;
->
-> We don't usually place variable declarations on the same line, unless the
-> variables are closely related.
->
->>   	u32 hw_mode;
->>   	struct spi_mpc8xxx_cs	*cs = spi->controller_state;
+On Thu, Feb 7, 2013 at 5:04 PM, Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> On Wed, Feb 6, 2013 at 3:48 PM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+>> On Wed, Feb 6, 2013 at 8:12 PM, Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> On Wed, Feb 6, 2013 at 2:26 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+>>>> On Tue,  5 Feb 2013 15:09:41 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>>> The status of the interrupt is available in the status register,
+>>>>> so reading the clear pending register and writing back the same
+>>>>> value will not actually clear the pending interrupts. This patch
+>>>>> modifies the interrupt handler to read the status register and
+>>>>> clear the corresponding pending bit in the clear pending register.
+>>>>>
+>>>>> Modified the hwInit function to clear all the pending interrupts.
+>>>>>
+>>>>> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>>>>> ---
+>>>>>  drivers/spi/spi-s3c64xx.c |   41 +++++++++++++++++++++++++----------------
+>>>>>  1 file changed, 25 insertions(+), 16 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+>>>>> index ad93231..b770f88 100644
+>>>>> --- a/drivers/spi/spi-s3c64xx.c
+>>>>> +++ b/drivers/spi/spi-s3c64xx.c
+>>>>> @@ -997,25 +997,30 @@ static irqreturn_t s3c64xx_spi_irq(int irq, void *data)
+>>>>>  {
+>>>>>       struct s3c64xx_spi_driver_data *sdd = data;
+>>>>>       struct spi_master *spi = sdd->master;
+>>>>> -     unsigned int val;
+>>>>> +     unsigned int val, clr = 0;
+>>>>>
+>>>>> -     val = readl(sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>>>> +     val = readl(sdd->regs + S3C64XX_SPI_STATUS);
+>>>>>
+>>>>> -     val &= S3C64XX_SPI_PND_RX_OVERRUN_CLR |
+>>>>> -             S3C64XX_SPI_PND_RX_UNDERRUN_CLR |
+>>>>> -             S3C64XX_SPI_PND_TX_OVERRUN_CLR |
+>>>>> -             S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>>>>> -
+>>>>> -     writel(val, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>>>> -
+>>>>> -     if (val & S3C64XX_SPI_PND_RX_OVERRUN_CLR)
+>>>>> +     if (val & S3C64XX_SPI_ST_RX_OVERRUN_ERR) {
+>>>>> +             clr = S3C64XX_SPI_PND_RX_OVERRUN_CLR;
+>>>>>               dev_err(&spi->dev, "RX overrun\n");
+>>>>> -     if (val & S3C64XX_SPI_PND_RX_UNDERRUN_CLR)
+>>>>> +     }
+>>>>> +     if (val & S3C64XX_SPI_ST_RX_UNDERRUN_ERR) {
+>>>>> +             clr |= S3C64XX_SPI_PND_RX_UNDERRUN_CLR;
+>>>>>               dev_err(&spi->dev, "RX underrun\n");
+>>>>> -     if (val & S3C64XX_SPI_PND_TX_OVERRUN_CLR)
+>>>>> +     }
+>>>>> +     if (val & S3C64XX_SPI_ST_TX_OVERRUN_ERR) {
+>>>>> +             clr |= S3C64XX_SPI_PND_TX_OVERRUN_CLR;
+>>>>>               dev_err(&spi->dev, "TX overrun\n");
+>>>>> -     if (val & S3C64XX_SPI_PND_TX_UNDERRUN_CLR)
+>>>>> +     }
+>>>>> +     if (val & S3C64XX_SPI_ST_TX_UNDERRUN_ERR) {
+>>>>> +             clr |= S3C64XX_SPI_PND_TX_UNDERRUN_CLR;
+>>>>>               dev_err(&spi->dev, "TX underrun\n");
+>>>>> +     }
+>>>>> +
+>>>>> +     /* Clear the pending irq by setting and then clearing it */
+>>>>> +     writel(clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>>>> +     writel(clr & ~clr, sdd->regs + S3C64XX_SPI_PENDING_CLR);
+>>>>
+>>>> Wait, what?  clr & ~clr == 0   Always.  What are you actually trying to do here?
+>>> The user manual says, wirting 1 to the pending clear register clears
+>>> the interrupt (its not auto clear to 0). so i need to explicitly reset
+>>> those bits thats what the 2nd write does
 >>
->> @@ -456,12 +456,45 @@ static int fsl_spi_setup(struct spi_device *spi)
->>   		return retval;
->>   	}
+>> Then write 0. That's the result of what the code does anyway, but the
+>> code as-written is nonsensical.
+> i cannot write 0. because the 0th bit is trailing byte interrupt clear
+> pending bit, which is not being handled in the handler.
+
+Sorry, Writing 0  will still be valid after code for trainling byte is added..
+will change and resubmit
+
 >>
->> +	if (mpc8xxx_spi->type == TYPE_GRLIB) {
->> +		if (gpio_is_valid(spi->cs_gpio)) {
->
-> <- You can place the 'int desel;' here, limiting the visibility for it.
-
-Thanks for the feedback!
-
-I'll put that in v3. This last patch needs to wait for the other 
-patchset I mentioned anyway.
-
-Cheers,
-Andreas
-
+>> g.
 
 ------------------------------------------------------------------------------
 Free Next-Gen Firewall Hardware Offer

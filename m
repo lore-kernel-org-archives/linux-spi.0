@@ -1,66 +1,74 @@
-From: Jonathan Cameron <jic23-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: Add helper functions for setting up transfers
-Date: Sat, 09 Feb 2013 11:14:12 +0000
-Message-ID: <51162F84.8050706@kernel.org>
-References: <1357752671-30222-1-git-send-email-lars@metafoo.de> <20130127033358.GA20672@sirena.org.uk> <20130205140755.33FCD3E1265@localhost> <5112ACF5.3020906@kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
-	Julia Lawall <Julia.Lawall-L2FTfq7BK8M@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jonathan Cameron <jic23-KWPb1pKIrIJaa/9Udqfwiw@public.gmane.org>,
-	linux-iio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5112ACF5.3020906-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-iio-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH RFC 1/1] gpio: mcp23s08: convert driver to DT
+Date: Sat, 09 Feb 2013 14:24:04 +0000
+Message-ID: <20130209142404.698303E30EC@localhost>
+References: <1359647903-15801-1-git-send-email-larsi@wh2.tu-dresden.de> <CACRpkda_HjzWNMD1H_a_fsWtbRWuTDsutS8kndb9jY31qf7Yyg@mail.gmail.com> <20130205142909.4F5B83E1265@localhost> <201302061031.04264.poeschel@lemonage.de>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Lars Poeschel <larsi@wh2.tu-dresden.de>,
+	rob.herring@calxeda.com, rob@landley.net,
+	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net, w.sang@pengutronix.de,
+	ben-linux@fluff.org, linux-i2c@vger.kernel.org
+To: Lars Poeschel <poeschel@lemonage.de>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <201302061031.04264.poeschel@lemonage.de>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/06/2013 07:20 PM, Jonathan Cameron wrote:
-> On 02/05/2013 02:07 PM, Grant Likely wrote:
->> On Sun, 27 Jan 2013 03:33:59 +0000, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
->>> On Wed, Jan 09, 2013 at 06:31:09PM +0100, Lars-Peter Clausen wrote:
->>>
->>>> The second function spi_sync_transfer() takes a SPI device and an array of
->>>> spi_transfers. It will allocate a new spi_message (on the stack) and add all
->>>> transfers in the array to the message. Finally it will call spi_sync() on the
->>>> message.
->>>
->>> Reviewed-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
->>
->> Looks good to me also. Go ahead and merge this series through the iio
->> tree since it is the first user.
+On Wed, 6 Feb 2013 10:31:04 +0100, Lars Poeschel <poeschel@lemonage.de> wrote:
+> On Tuesday 05 February 2013 at 15:29:09, Grant Likely wrote:
+> > On Thu, 31 Jan 2013 21:51:36 +0100, Linus Walleij 
+> <linus.walleij@linaro.org> wrote:
+> > > On Thu, Jan 31, 2013 at 4:58 PM, Lars Poeschel <larsi@wh2.tu-dresden.de> 
+> wrote:
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
+> > > > @@ -0,0 +1,27 @@
+> > > > +Microchip MCP2308/MCP23S08/MCP23017/MCP23S17 driver for
+> > > > +8-/16-bit I/O expander with serial interface (I2C/SPI)
+> > > > +
+> > > > +Required properties:
+> > > > +- compatible : Should be "mcp,mcp23s08-gpio", "mcp,mcp23s17-gpio",
+> > > > +                       "mcp,mcp23008-gpio" or "mcp,mcp23017-gpio"
+> > > > +- base : The first gpio number that should be assigned by this chip.
+> > > 
+> > > No. We do not tie the global GPIO numbers into the device tree.
+> > > 
+> > > In the DT GPIOs are referenced by ampersand <&gpio0 1 2>
+> > > notation referring to the instance, so as you realize DT itself
+> > > has no need for that number.
+> > > 
+> > > Further it is not OS-neutral.
+> > > 
+> > > You have to find another way to handle this in the driver code.
+> > > In worst case: use AUXDATA.
+> > 
+> > Hi Lars,
+> > 
+> > The trick is to declare the io expander to be a "gpio-controller" and
+> > use the #gpio-cells property to declare how many cells (32-bit numbers)
+> > are need to specify a single gpio line. Most gpio controllers use
+> > "gpio-cells=<2>"; The first cell is the *controller local* gpio
+> > number, and the second cell is used for flags. That way your gpio
+> > controller can be referenced by other nodes in the tree with a "gpios"
+> > property.
+> > 
+> > You can find lots of examples of this in the tree.
 > 
-> Lars, when you are back on your feet, could you respin this series against
-> the latest iio tree please.  2 drivers have moved which messes up patches
-> 2 and 3. Now I could fix it up, but it's your patch series and I'm lazy ;)
+> Linus, Grant, thanks for the explanations. I think I have catched where it 
+> should go.
+> The thing that confused me was, that the platform_data for the chip has a 
+> mandatory "base" member, that sets the linux global gpio number at which the 
+> chip should appear. A value of -1 for automatic assigning gpio number is not 
+> allowed, the chip will not probe.
+> I have to change the driver to allow at least this -1 as an additional value.
+> As Linus pointed out, it is not desirable to set the global gpio base number 
+> from device tree, right ? If I have 3 instances of this chips then, how can 
+> userspace sw distinguish then to which one it is talking ?
 
-I had a few spare minutes so I've respun the series with the driver moves.
-I have also, dropped the coccinelle script from the first patch.
-I was unclear on whether the questions about that had been resolved.
+You look in sysfs to find the chip you are interested in. That is the
+place to find out how dynamic numbers have been assigned.
 
-Anyhow, I've temporarily pushed out to togreg branch of iio.git.
-If Grant wants to add an ack, I'll pop that in before sending upstream
-if not I'll just put a note in the tag message (or if he is too slow
-for my arbitrary definition fo too slow ;)
+g.
 
-
-
-Jonathan
-> 
-> 
->>
->> g.
->>
->> --
->> To unsubscribe from this list: send the line "unsubscribe linux-iio" in
->> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
->> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->>
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-iio" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 

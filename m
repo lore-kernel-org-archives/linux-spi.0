@@ -1,74 +1,47 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH RFC 1/1] gpio: mcp23s08: convert driver to DT
-Date: Sat, 09 Feb 2013 14:24:04 +0000
-Message-ID: <20130209142404.698303E30EC@localhost>
-References: <1359647903-15801-1-git-send-email-larsi@wh2.tu-dresden.de> <CACRpkda_HjzWNMD1H_a_fsWtbRWuTDsutS8kndb9jY31qf7Yyg@mail.gmail.com> <20130205142909.4F5B83E1265@localhost> <201302061031.04264.poeschel@lemonage.de>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Lars Poeschel <larsi@wh2.tu-dresden.de>,
-	rob.herring@calxeda.com, rob@landley.net,
+Subject: Re: [PATCH 1/2] gpio: mcp23s08: Allow -1 as a legal value for global gpio base
+Date: Sat, 09 Feb 2013 14:27:08 +0000
+Message-ID: <20130209142708.8E9AC3E30EC@localhost>
+References: <1360170118-11937-1-git-send-email-larsi@wh2.tu-dresden.de> <1360170118-11937-2-git-send-email-larsi@wh2.tu-dresden.de>
+Cc: w.sang@pengutronix.de, ben-linux@fluff.org,
+	linux-i2c@vger.kernel.org
+To: Lars Poeschel <larsi@wh2.tu-dresden.de>, poeschel@lemonage.de,
+	rob.herring@calxeda.com, rob@landley.net, linus.walleij@linaro.org,
 	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net, w.sang@pengutronix.de,
-	ben-linux@fluff.org, linux-i2c@vger.kernel.org
-To: Lars Poeschel <poeschel@lemonage.de>
+	spi-devel-general@lists.sourceforge.net
 Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <201302061031.04264.poeschel@lemonage.de>
+In-Reply-To: <1360170118-11937-2-git-send-email-larsi@wh2.tu-dresden.de>
 Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 6 Feb 2013 10:31:04 +0100, Lars Poeschel <poeschel@lemonage.de> wrote:
-> On Tuesday 05 February 2013 at 15:29:09, Grant Likely wrote:
-> > On Thu, 31 Jan 2013 21:51:36 +0100, Linus Walleij 
-> <linus.walleij@linaro.org> wrote:
-> > > On Thu, Jan 31, 2013 at 4:58 PM, Lars Poeschel <larsi@wh2.tu-dresden.de> 
-> wrote:
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
-> > > > @@ -0,0 +1,27 @@
-> > > > +Microchip MCP2308/MCP23S08/MCP23017/MCP23S17 driver for
-> > > > +8-/16-bit I/O expander with serial interface (I2C/SPI)
-> > > > +
-> > > > +Required properties:
-> > > > +- compatible : Should be "mcp,mcp23s08-gpio", "mcp,mcp23s17-gpio",
-> > > > +                       "mcp,mcp23008-gpio" or "mcp,mcp23017-gpio"
-> > > > +- base : The first gpio number that should be assigned by this chip.
-> > > 
-> > > No. We do not tie the global GPIO numbers into the device tree.
-> > > 
-> > > In the DT GPIOs are referenced by ampersand <&gpio0 1 2>
-> > > notation referring to the instance, so as you realize DT itself
-> > > has no need for that number.
-> > > 
-> > > Further it is not OS-neutral.
-> > > 
-> > > You have to find another way to handle this in the driver code.
-> > > In worst case: use AUXDATA.
-> > 
-> > Hi Lars,
-> > 
-> > The trick is to declare the io expander to be a "gpio-controller" and
-> > use the #gpio-cells property to declare how many cells (32-bit numbers)
-> > are need to specify a single gpio line. Most gpio controllers use
-> > "gpio-cells=<2>"; The first cell is the *controller local* gpio
-> > number, and the second cell is used for flags. That way your gpio
-> > controller can be referenced by other nodes in the tree with a "gpios"
-> > property.
-> > 
-> > You can find lots of examples of this in the tree.
+On Wed,  6 Feb 2013 18:01:57 +0100, Lars Poeschel <larsi@wh2.tu-dresden.de> wrote:
+> From: Lars Poeschel <poeschel@lemonage.de>
 > 
-> Linus, Grant, thanks for the explanations. I think I have catched where it 
-> should go.
-> The thing that confused me was, that the platform_data for the chip has a 
-> mandatory "base" member, that sets the linux global gpio number at which the 
-> chip should appear. A value of -1 for automatic assigning gpio number is not 
-> allowed, the chip will not probe.
-> I have to change the driver to allow at least this -1 as an additional value.
-> As Linus pointed out, it is not desirable to set the global gpio base number 
-> from device tree, right ? If I have 3 instances of this chips then, how can 
-> userspace sw distinguish then to which one it is talking ?
+> Explicitly allow -1 as a legal value for the
+> mcp23s08_platform_data->base. This is the special value lets the
+> kernel choose a valid global gpio base number.
+> 
+> Signed-off-by: Lars Poeschel <poeschel@lemonage.de>
+> ---
+>  drivers/gpio/gpio-mcp23s08.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpio-mcp23s08.c b/drivers/gpio/gpio-mcp23s08.c
+> index 3cea0ea..2afb828 100644
+> --- a/drivers/gpio/gpio-mcp23s08.c
+> +++ b/drivers/gpio/gpio-mcp23s08.c
+> @@ -483,7 +483,7 @@ static int mcp230xx_probe(struct i2c_client *client,
+>  	int status;
+>  
+>  	pdata = client->dev.platform_data;
+> -	if (!pdata || !gpio_is_valid(pdata->base)) {
+> +	if ((!pdata || !gpio_is_valid(pdata->base)) && pdata->base != -1) {
+>  		dev_dbg(&client->dev, "invalid or missing platform data\n");
+>  		return -EINVAL;
 
-You look in sysfs to find the chip you are interested in. That is the
-place to find out how dynamic numbers have been assigned.
+When used with the device tree you shouldn't have a platform data
+pointer at all. Instead you should modify the driver to not require it.
 
 g.
 

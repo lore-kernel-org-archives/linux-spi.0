@@ -1,41 +1,77 @@
-From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH v2 5/6] of_spi: Add fetching of of_gpio flags to of_spi_register_master
-Date: Tue, 12 Feb 2013 17:09:48 +0000
-Message-ID: <20130212170948.C5BA63E07C5@localhost>
-References: <1359471223-4794-1-git-send-email-andreas@gaisler.com> <1359471223-4794-6-git-send-email-andreas@gaisler.com> <20130211002220.AFCA83E0C13@localhost> <511A0DB6.1080702@gaisler.com>
-Cc: Rob Herring <rob.herring@calxeda.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	devicetree-discuss@lists.ozlabs.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, software@gaisler.com
-To: Andreas Larsson <andreas@gaisler.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <511A0DB6.1080702@gaisler.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Ezequiel Garcia <elezegarcia-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 0/4] ARM: mvebu: Add support for SPI flash devices in
+	Armada 370/XP
+Date: Wed, 13 Feb 2013 06:24:14 -0300
+Message-ID: <CALF0-+WLh=8QGG4ob8HVq+x4oO_ArdFHd=vH1_OhucH1f9XG3A@mail.gmail.com>
+References: <1360155984-15397-1-git-send-email-ezequiel.garcia@free-electrons.com>
+	<511257C6.2070604@free-electrons.com>
+	<20130206132850.GC14746@titan.lakedaemon.net>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	Gregory CLEMENT <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130206132850.GC14746-u4khhh1J0LxI1Ri9qeTfzeTW4wlIGRCZ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 12 Feb 2013 10:39:02 +0100, Andreas Larsson <andreas@gaisler.com> wrote:
-> On 2013-02-11 01:22, Grant Likely wrote:
-> > On Tue, 29 Jan 2013 15:53:42 +0100, Andreas Larsson <andreas@gaisler.com> wrote:
-> >> When using a gpio chip select with a OF_GPIO_ACTIVE_LOW flag, this needs to be
-> >> known to the controller driver.
-> >>
-> >> Signed-off-by: Andreas Larsson <andreas@gaisler.com>
-> >
-> > Out of curiosity, what do you need the flags for? Polarity of the CS
-> > signal? I think it is long past time to revisit baking polarity control
-> > into core of gpiolib. Would you mind investigating doing that instead of
-> > having to manage it manually in each and every driver?
-> 
-> I don't even need it on my hardware. It seemed like a good thing to have 
-> via of_spi_register_master. I am OK with just dropping this.
+Hi Jason,
 
-Hahaha. Okay, let's leave it for now until someone does need it. I can
-however see the need for the polarity flag, so the request still stands
-for someone to put that feature into the core.  :-)
+On Wed, Feb 6, 2013 at 10:28 AM, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org> wrote:
+> On Wed, Feb 06, 2013 at 02:16:54PM +0100, Gregory CLEMENT wrote:
+>> On 02/06/2013 02:06 PM, Ezequiel Garcia wrote:
+>> > This is second version of the SPI patchset for Armada 370/XP.
+>> >
+>> > This series first adds support for the SPI controller
+>> > and then adds the SPI flash for the Armada XP GP board.
+>> >
+>> > This series is based on 3.8-rc5 plus:
+>> >  * "arm: mvebu: support for the new Armada XP development board(DB-MV784MP-GP)"
+>> >  * "arm: mvebu: i2c come back in defconfig"
+>> >
+>> > Feel free to test or provide any feedback!
+>> >
+>> Ezequiel,
+>>
+>> I reviewed the patches, I have nothing more to say, I can add my:
+>>
+>> Acked-by: Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+>>
+>> on the patch that didn't have yet.
+>>
+>> Jason,
+>> could you add this series in your incoming pull request?
+>
+> That's the plan.  I'm waiting for a response from Olof to see If I need
+> to redo /boards and /dt.  In either case, my next round of pull requests
+> with have this and a bunch of other stuff.
+>
 
-g.
+Despite we're almost closed for v3.9 new material,
+I hope you don't mind a little ping on the USB and SPI stuff.
+
+I'd *really* love to see these in v3.9, if at all possible.
+
+Thanks,
 
 -- 
-Grant Likely, B.Sc, P.Eng.
-Secret Lab Technologies, Ltd.
+    Ezequiel
+
+------------------------------------------------------------------------------
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

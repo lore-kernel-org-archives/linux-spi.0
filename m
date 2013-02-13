@@ -1,7 +1,7 @@
 From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH V2 3/5] spi: s3c64xx: Added provision for non-gpio i/o's
-Date: Wed, 13 Feb 2013 11:25:29 -0800
-Message-ID: <1360783531-32654-4-git-send-email-ks.giri@samsung.com>
+Subject: [PATCH V2 5/5] spi: s3c64xx: Added support for exynos5440 spi
+Date: Wed, 13 Feb 2013 11:25:31 -0800
+Message-ID: <1360783531-32654-6-git-send-email-ks.giri@samsung.com>
 References: <1360783531-32654-1-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,50 +22,49 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently the drivers supports only the GPIO based i/o pins.
-But there are Exynos SoC's that use the same controller with
-dedicated i/o pins.
-
-This patch  provides provision to support gpio/dedicated pins.
-The decision is made by parsing the "gpios" property in the spi
-node.
+This patch adds support for the exynos5440 spi controller.
+The integration of the spi IP in exynos5440 is different from
+other SoC's. The I/O pins are no more configured via gpio, they
+have dedicated pins.
 
 Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
 changes in v2:
-		Removed the gpio quirk. Parse the "gpios" property
-		to decide whether  gpio / dedicated i/o lines should
-		be used.
+		the fifo mask modified to 0x1ff
 
- drivers/spi/spi-s3c64xx.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/spi/spi-s3c64xx.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 45bad5d..a8fe876 100644
+index 15b7ee9..332a4df 100644
 --- a/drivers/spi/spi-s3c64xx.c
 +++ b/drivers/spi/spi-s3c64xx.c
-@@ -1157,6 +1157,9 @@ static int s3c64xx_spi_parse_dt_gpio(struct s3c64xx_spi_driver_data *sdd)
- 	struct device *dev = &sdd->pdev->dev;
- 	int idx, gpio, ret;
+@@ -1580,6 +1580,15 @@ static struct s3c64xx_spi_port_config exynos4_spi_port_config = {
+ 	.clk_from_cmu	= true,
+ };
  
-+	if (!of_find_property(dev->of_node, "gpios", NULL))
-+		return 0;
++static struct s3c64xx_spi_port_config exynos5440_spi_port_config = {
++	.fifo_lvl_mask	= { 0x1ff },
++	.rx_lvl_offset	= 15,
++	.tx_st_done	= 25,
++	.high_speed	= true,
++	.clk_from_cmu	= true,
++	.quirks		= S3C64XX_SPI_QUIRK_POLL,
++};
 +
- 	/* find gpios for mosi, miso and clock lines */
- 	for (idx = 0; idx < 3; idx++) {
- 		gpio = of_get_gpio(dev->of_node, idx);
-@@ -1183,6 +1186,11 @@ free_gpio:
- static void s3c64xx_spi_dt_gpio_free(struct s3c64xx_spi_driver_data *sdd)
- {
- 	unsigned int idx;
-+	struct device *dev = &sdd->pdev->dev;
-+
-+	if (!of_find_property(dev->of_node, "gpios", NULL))
-+		return;
-+
- 	for (idx = 0; idx < 3; idx++)
- 		gpio_free(sdd->gpios[idx]);
- }
+ static struct platform_device_id s3c64xx_spi_driver_ids[] = {
+ 	{
+ 		.name		= "s3c2443-spi",
+@@ -1608,6 +1617,9 @@ static const struct of_device_id s3c64xx_spi_dt_match[] = {
+ 	{ .compatible = "samsung,exynos4210-spi",
+ 			.data = (void *)&exynos4_spi_port_config,
+ 	},
++	{ .compatible = "samsung,exynos5440-spi",
++			.data = (void *)&exynos5440_spi_port_config,
++	},
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, s3c64xx_spi_dt_match);
 -- 
 1.7.10.4
 

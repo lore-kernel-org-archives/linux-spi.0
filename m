@@ -1,7 +1,7 @@
 From: Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH] spi: Initialize cs_gpio and cs_gpios with -ENOENT
-Date: Wed, 13 Feb 2013 14:20:25 +0100
-Message-ID: <1360761625-15562-1-git-send-email-andreas@gaisler.com>
+Subject: [PATCH] of: spi: Return error from of_spi_register_master on bad "cs-gpios" property
+Date: Wed, 13 Feb 2013 14:23:24 +0100
+Message-ID: <1360761804-16044-1-git-send-email-andreas@gaisler.com>
 Cc: spi-devel-general@lists.sourceforge.net,
 	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
 	software@gaisler.com
@@ -10,68 +10,40 @@ Return-path: <linux-kernel-owner@vger.kernel.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The return value from of_get_named_gpio is -ENOENT when the given index
-matches a hole in the "cs-gpios" property phandle list. However, the
-default value of cs_gpio in struct spi_device and entries of cs_gpios in
-struct spi_master is -EINVAL, which is documented to indicate that a
-GPIO line should not be used for the given spi_device.
+This makes sure that an error is returned on an incorrectly formed
+"cs-gpios" property, but reports success when the "cs-gpios" property is
+well formed or missing.
 
-This sets the default value of cs_gpio in struct spi_device and entries
-of cs_gpios in struct spi_master to -ENOENT. Thus, -ENOENT is the only
-value used to indicate that no GPIO line should be used.
+When holes in the cs-gpios property phandle list is used to indicate
+that some other form of chipselect is to be used it is important that
+failure to read a broken "cs-gpios" property does not silently fail
+leading to the spi controller to use an unintended chipselect.
 
 Signed-off-by: Andreas Larsson <andreas@gaisler.com>
 ---
 
-To be applied to spi/next
+Can only be applied to devicetree/next as it builds upon the
+"of: Add helper for counting phandle refernces" patch series.
 
- drivers/spi/spi.c       |    4 ++--
- include/linux/spi/spi.h |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/spi/spi.c |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 4bca50c..b730a50 100644
+index 21c4748..9b5f024 100644
 --- a/drivers/spi/spi.c
 +++ b/drivers/spi/spi.c
-@@ -334,7 +334,7 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
- 	spi->dev.parent = &master->dev;
- 	spi->dev.bus = &spi_bus_type;
- 	spi->dev.release = spidev_release;
--	spi->cs_gpio = -EINVAL;
-+	spi->cs_gpio = -ENOENT;
- 	device_initialize(&spi->dev);
- 	return spi;
- }
-@@ -1083,7 +1083,7 @@ static int of_spi_register_master(struct spi_master *master)
- 		return -ENOMEM;
+@@ -1068,8 +1068,11 @@ static int of_spi_register_master(struct spi_master *master)
+ 	nb = of_gpio_named_count(np, "cs-gpios");
+ 	master->num_chipselect = max(nb, (int)master->num_chipselect);
  
- 	for (i = 0; i < master->num_chipselect; i++)
--		cs[i] = -EINVAL;
-+		cs[i] = -ENOENT;
+-	if (nb < 1)
++	/* Return error only for an incorrectly formed cs-gpios property */
++	if (nb == 0 || nb == -ENOENT)
+ 		return 0;
++	else if (nb < 0)
++		return nb;
  
- 	for (i = 0; i < nb; i++)
- 		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 30e9c50..b0ae8b8 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -57,7 +57,7 @@ extern struct bus_type spi_bus_type;
-  * @modalias: Name of the driver to use with this device, or an alias
-  *	for that name.  This appears in the sysfs "modalias" attribute
-  *	for driver coldplugging, and in uevents used for hotplugging
-- * @cs_gpio: gpio number of the chipselect line (optional, -EINVAL when
-+ * @cs_gpio: gpio number of the chipselect line (optional, -ENOENT when
-  *	when not using a GPIO line)
-  *
-  * A @spi_device is used to interchange data between an SPI slave
-@@ -261,7 +261,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  *	queue so the subsystem notifies the driver that it may relax the
-  *	hardware by issuing this call
-  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
-- *	number. Any individual value may be -EINVAL for CS lines that
-+ *	number. Any individual value may be -ENOENT for CS lines that
-  *	are not GPIOs (driven by the SPI controller itself).
-  *
-  * Each SPI master controller can communicate with one or more @spi_device
+ 	cs = devm_kzalloc(&master->dev,
+ 			  sizeof(int) * master->num_chipselect,
 -- 
 1.7.0.4

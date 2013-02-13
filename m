@@ -1,49 +1,52 @@
-From: Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH] of: spi: Return error from of_spi_register_master on bad "cs-gpios" property
-Date: Wed, 13 Feb 2013 14:23:24 +0100
-Message-ID: <1360761804-16044-1-git-send-email-andreas@gaisler.com>
-Cc: spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	software@gaisler.com
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Smartbox par Galerie des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: =?iso-8859-1?Q?Derni=E8re?= minute : Offrez-lui un moment en
+	amoureux ?
+Date: Wed, 13 Feb 2013 16:13:10 +0100
+Message-ID: <1360768409.thing511bad991a54c@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This makes sure that an error is returned on an incorrectly formed
-"cs-gpios" property, but reports success when the "cs-gpios" property is
-well formed or missing.
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
 
-When holes in the cs-gpios property phandle list is used to indicate
-that some other form of chipselect is to be used it is important that
-failure to read a broken "cs-gpios" property does not silently fail
-leading to the spi controller to use an unintended chipselect.
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MzE5NTgmYz0xOTYxNjQxJmQ9MjAx=
+My0wMi0xMyAxNjowMDowMSZlPTEmaD0zMTk1NiZmPTMxOTU4Jmc9MzE5NTg=3D
 
-Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+Lien de desinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MzE5NTgmYz0xO=
+TYxNjQxJmQ9MjAxMy0wMi0xMyAxNjowMDowMSZlPTEmaD0zMTk1NiZmPTMxOTU4Jmc9MzE5NTg=
+=3D
+
+Si vous ne parvenez pas =E0 lire correctement ce message, cliquez ici.
+=A0
+e-box : livraison garantie en 5 minutes
+A partir de 30&euro;
+A partir de 50&euro;
+A partir de 30&euro;
+> e-box Bien-=EAtre
+> e-box Multi-activit=E9s
+>e-box Aventure & Loisirs
+=A0
+=A0
+=A0
+=A0
+*D=E9lai moyen d'envoi constat=E9 d'une e-box : 15 minutes.
+    Pour vous d=E9sabonner, cliquez ici.
+---------------------------------------------------------------------------=
 ---
+Free Next-Gen Firewall Hardware Offer
+Buy your Sophos next-gen firewall before the end March 2013 =
 
-Can only be applied to devicetree/next as it builds upon the
-"of: Add helper for counting phandle refernces" patch series.
-
- drivers/spi/spi.c |    5 ++++-
- 1 files changed, 4 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 21c4748..9b5f024 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1068,8 +1068,11 @@ static int of_spi_register_master(struct spi_master *master)
- 	nb = of_gpio_named_count(np, "cs-gpios");
- 	master->num_chipselect = max(nb, (int)master->num_chipselect);
- 
--	if (nb < 1)
-+	/* Return error only for an incorrectly formed cs-gpios property */
-+	if (nb == 0 || nb == -ENOENT)
- 		return 0;
-+	else if (nb < 0)
-+		return nb;
- 
- 	cs = devm_kzalloc(&master->dev,
- 			  sizeof(int) * master->num_chipselect,
--- 
-1.7.0.4
+and get the hardware for free! Learn more.
+http://p.sf.net/sfu/sophos-d2d-feb

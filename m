@@ -1,7 +1,7 @@
 From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: [PATCH 2/4] spi: tegra sflash: assume CONFIG_OF, remove platform data
-Date: Fri, 15 Feb 2013 15:03:48 -0700
-Message-ID: <1360965830-19795-2-git-send-email-swarren@wwwdotorg.org>
+Subject: [PATCH 4/4] spi: remove unused Tegra platform data header
+Date: Fri, 15 Feb 2013 15:03:50 -0700
+Message-ID: <1360965830-19795-4-git-send-email-swarren@wwwdotorg.org>
 References: <1360965830-19795-1-git-send-email-swarren@wwwdotorg.org>
 Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
@@ -15,112 +15,59 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-Tegra only supports, and always enables, device tree. Remove all ifdefs
-and runtime checks for DT support from the driver. Platform data is
-therefore no longer required. Rework the driver to parse the device tree
-directly into struct tegra_sflash_data.
+The platform data header is no longer used. Delete it.
 
 Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-tegra20-sflash.c |   41 +++++++++-----------------------------
- 1 file changed, 9 insertions(+), 32 deletions(-)
+ include/linux/spi/spi-tegra.h |   40 ----------------------------------------
+ 1 file changed, 40 deletions(-)
+ delete mode 100644 include/linux/spi/spi-tegra.h
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 3d6a12b..d65c000 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -33,7 +33,6 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/spi/spi.h>
--#include <linux/spi/spi-tegra.h>
- #include <linux/clk/tegra.h>
- 
- #define SPI_COMMAND				0x000
-@@ -439,23 +438,13 @@ static irqreturn_t tegra_sflash_isr(int irq, void *context_data)
- 	return handle_cpu_based_xfer(tsd);
- }
- 
--static struct tegra_spi_platform_data *tegra_sflash_parse_dt(
--		struct platform_device *pdev)
-+static void tegra_sflash_parse_dt(struct tegra_sflash_data *tsd)
- {
--	struct tegra_spi_platform_data *pdata;
--	struct device_node *np = pdev->dev.of_node;
--	u32 max_freq;
+diff --git a/include/linux/spi/spi-tegra.h b/include/linux/spi/spi-tegra.h
+deleted file mode 100644
+index 786932c..0000000
+--- a/include/linux/spi/spi-tegra.h
++++ /dev/null
+@@ -1,40 +0,0 @@
+-/*
+- * spi-tegra.h: SPI interface for Nvidia Tegra20 SLINK controller.
+- *
+- * Copyright (C) 2011 NVIDIA Corporation
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful, but WITHOUT
+- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+- * more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+- */
 -
--	pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
--	if (!pdata) {
--		dev_err(&pdev->dev, "Memory alloc for pdata failed\n");
--		return NULL;
--	}
+-#ifndef _LINUX_SPI_TEGRA_H
+-#define _LINUX_SPI_TEGRA_H
 -
--	if (!of_property_read_u32(np, "spi-max-frequency", &max_freq))
--		pdata->spi_max_frequency = max_freq;
-+	struct device_node *np = tsd->dev->of_node;
- 
--	return pdata;
-+	if (of_property_read_u32(np, "spi-max-frequency",
-+					&tsd->spi_max_frequency))
-+		tsd->spi_max_frequency = 25000000; /* 25MHz */
- }
- 
- static struct of_device_id tegra_sflash_of_match[] = {
-@@ -469,28 +458,15 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 	struct spi_master	*master;
- 	struct tegra_sflash_data	*tsd;
- 	struct resource		*r;
--	struct tegra_spi_platform_data *pdata = pdev->dev.platform_data;
- 	int ret;
- 	const struct of_device_id *match;
- 
--	match = of_match_device(of_match_ptr(tegra_sflash_of_match),
--					&pdev->dev);
-+	match = of_match_device(tegra_sflash_of_match, &pdev->dev);
- 	if (!match) {
- 		dev_err(&pdev->dev, "Error: No device match found\n");
- 		return -ENODEV;
- 	}
- 
--	if (!pdata && pdev->dev.of_node)
--		pdata = tegra_sflash_parse_dt(pdev);
+-struct tegra_spi_platform_data {
+-	int dma_req_sel;
+-	unsigned int spi_max_frequency;
+-};
 -
--	if (!pdata) {
--		dev_err(&pdev->dev, "No platform data, exiting\n");
--		return -ENODEV;
--	}
+-/*
+- * Controller data from device to pass some info like
+- * hw based chip select can be used or not and if yes
+- * then CS hold and setup time.
+- */
+-struct tegra_spi_device_controller_data {
+-	bool is_hw_based_cs;
+-	int cs_setup_clk_count;
+-	int cs_hold_clk_count;
+-};
 -
--	if (!pdata->spi_max_frequency)
--		pdata->spi_max_frequency = 25000000; /* 25MHz */
--
- 	master = spi_alloc_master(&pdev->dev, sizeof(*tsd));
- 	if (!master) {
- 		dev_err(&pdev->dev, "master allocation failed\n");
-@@ -510,6 +486,8 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 	tsd->dev = &pdev->dev;
- 	spin_lock_init(&tsd->lock);
- 
-+	tegra_sflash_parse_dt(tsd);
-+
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!r) {
- 		dev_err(&pdev->dev, "No IO memory resource\n");
-@@ -538,7 +516,6 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 		goto exit_free_irq;
- 	}
- 
--	tsd->spi_max_frequency = pdata->spi_max_frequency;
- 	init_completion(&tsd->xfer_completion);
- 	pm_runtime_enable(&pdev->dev);
- 	if (!pm_runtime_enabled(&pdev->dev)) {
-@@ -658,7 +635,7 @@ static struct platform_driver tegra_sflash_driver = {
- 		.name		= "spi-tegra-sflash",
- 		.owner		= THIS_MODULE,
- 		.pm		= &slink_pm_ops,
--		.of_match_table	= of_match_ptr(tegra_sflash_of_match),
-+		.of_match_table	= tegra_sflash_of_match,
- 	},
- 	.probe =	tegra_sflash_probe,
- 	.remove =	tegra_sflash_remove,
+-#endif /* _LINUX_SPI_TEGRA_H */
 -- 
 1.7.10.4

@@ -1,46 +1,86 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v2] gpio: mcp23s08: convert driver to DT
-Date: Fri, 15 Feb 2013 20:44:07 +0100
-Message-ID: <CACRpkdZdPtDeD9GzB6Bfdko0mLCPMNq5_dqqOOzKA9a66qT-vw@mail.gmail.com>
-References: <1360583563-10707-1-git-send-email-larsi@wh2.tu-dresden.de>
-	<201302131213.08631.poeschel@lemonage.de>
-	<CACRpkdbJ=KiwVoeK2TgO8kMuYQ2U-LaUOdL1d7w-q+9Ggb-JnA@mail.gmail.com>
-	<201302141322.22263.poeschel@lemonage.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Lars Poeschel <larsi@wh2.tu-dresden.de>,
-	rob.herring@calxeda.com, rob@landley.net,
-	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Lars Poeschel <poeschel@lemonage.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <201302141322.22263.poeschel@lemonage.de>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: [PATCH 1/4] spi: tegra slink: remove redundant code
+Date: Fri, 15 Feb 2013 15:03:47 -0700
+Message-ID: <1360965830-19795-1-git-send-email-swarren@wwwdotorg.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Feb 14, 2013 at 1:22 PM, Lars Poeschel <poeschel@lemonage.de> wrote:
-> On Wednesday 13 February 2013 at 13:51:12, Linus Walleij wrote:
+From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
->> Have you considered this [pinctrl] approach?
->
-> No, I haven't. And although this doesn't solve all my problems, I like the
-> idea very much! Thank you for this! But at the moment it looks to me that
-> this could be a bit overkill for setting this single register and I don't
-> think this is, what Grant meant me to do.
+There is no code to set spi->controller_data, and hence the HW CS logic
+can never trigger. Remove the unused code.
 
-So there is this corner case where some GPIO driver does some
-pinctrl business, I mean, really really little of it. And then it may be
-overkill. Sometimes though, the hardware actually can do a lot of
-this biasing and muxing it just wasn't part of the driver yet or done
-in e.g. boot loaders, and then it's usually better to use pinctrl.
+Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-tegra20-slink.c |   32 +-------------------------------
+ 1 file changed, 1 insertion(+), 31 deletions(-)
 
-Adding custom APIs to the GPIO drivers will however always
-cause a maintenance burden on the GPIO maintainers, so that's
-why pinctrl & GPIO is nice.
-
-I don't know which case this would be though.
-
-Yours,
-Linus Walleij
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index b8698b3..00f1b06 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -189,7 +189,6 @@ struct tegra_slink_data {
+ 	unsigned				dma_buf_size;
+ 	unsigned				max_buf_size;
+ 	bool					is_curr_dma_xfer;
+-	bool					is_hw_based_cs;
+ 
+ 	struct completion			rx_dma_complete;
+ 	struct completion			tx_dma_complete;
+@@ -720,7 +719,6 @@ static int tegra_slink_start_transfer_one(struct spi_device *spi,
+ 	u8 bits_per_word;
+ 	unsigned total_fifo_words;
+ 	int ret;
+-	struct tegra_spi_device_controller_data *cdata = spi->controller_data;
+ 	unsigned long command;
+ 	unsigned long command2;
+ 
+@@ -743,39 +741,11 @@ static int tegra_slink_start_transfer_one(struct spi_device *spi,
+ 
+ 		command = tspi->def_command_reg;
+ 		command |= SLINK_BIT_LENGTH(bits_per_word - 1);
++		command |= SLINK_CS_SW | SLINK_CS_VALUE;
+ 
+ 		command2 = tspi->def_command2_reg;
+ 		command2 |= SLINK_SS_EN_CS(spi->chip_select);
+ 
+-		/* possibly use the hw based chip select */
+-		tspi->is_hw_based_cs = false;
+-		if (cdata && cdata->is_hw_based_cs && is_single_xfer &&
+-			((tspi->curr_dma_words * tspi->bytes_per_word) ==
+-						(t->len - tspi->cur_pos))) {
+-			int setup_count;
+-			int sts2;
+-
+-			setup_count = cdata->cs_setup_clk_count >> 1;
+-			setup_count = max(setup_count, 3);
+-			command2 |= SLINK_SS_SETUP(setup_count);
+-			if (tspi->chip_data->cs_hold_time) {
+-				int hold_count;
+-
+-				hold_count = cdata->cs_hold_clk_count;
+-				hold_count = max(hold_count, 0xF);
+-				sts2 = tegra_slink_readl(tspi, SLINK_STATUS2);
+-				sts2 &= ~SLINK_SS_HOLD_TIME(0xF);
+-				sts2 |= SLINK_SS_HOLD_TIME(hold_count);
+-				tegra_slink_writel(tspi, sts2, SLINK_STATUS2);
+-			}
+-			tspi->is_hw_based_cs = true;
+-		}
+-
+-		if (tspi->is_hw_based_cs)
+-			command &= ~SLINK_CS_SW;
+-		else
+-			command |= SLINK_CS_SW | SLINK_CS_VALUE;
+-
+ 		command &= ~SLINK_MODES;
+ 		if (spi->mode & SPI_CPHA)
+ 			command |= SLINK_CK_SDA;
+-- 
+1.7.10.4

@@ -1,8 +1,8 @@
 From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH v3 3/7] spi: spi-fsl-spi: Move setting non-zero tx and rx
-	shifts to a function accessed by a function pointer
-Date: Fri, 15 Feb 2013 16:52:23 +0100
-Message-ID: <1360943547-2186-4-git-send-email-andreas@gaisler.com>
+Subject: [PATCH v3 7/7] spi: spi-fsl-spi: Add support for gpio chipselects for
+	GRLIB type cores
+Date: Fri, 15 Feb 2013 16:52:27 +0100
+Message-ID: <1360943547-2186-8-git-send-email-andreas@gaisler.com>
 References: <1360943547-2186-1-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,114 +26,118 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This relies upon of_spi_register_master to find out which gpios to use.
+
 Acked-by: Anton Vorontsov <anton-9xeibp6oKSgdnm+yROfE0A@public.gmane.org>
 Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-fsl-lib.h |    5 ++++
- drivers/spi/spi-fsl-spi.c |   51 +++++++++++++++++++++++++++-----------------
- 2 files changed, 36 insertions(+), 20 deletions(-)
+ drivers/spi/spi-fsl-lib.h |    1 +
+ drivers/spi/spi-fsl-spi.c |   50 ++++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 46 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
-index d785595..eae54b6 100644
+index d5c788b..52db693 100644
 --- a/drivers/spi/spi-fsl-lib.h
 +++ b/drivers/spi/spi-fsl-lib.h
-@@ -69,6 +69,11 @@ struct mpc8xxx_spi {
+@@ -71,6 +71,7 @@ struct mpc8xxx_spi {
  
- 	unsigned int flags;
+ #ifdef CONFIG_SPI_FSL_SPI
+ 	int type;
++	int native_chipselects;
+ 	u8 max_bits_per_word;
  
-+#ifdef CONFIG_SPI_FSL_SPI
-+	void (*set_shifts)(u32 *rx_shift, u32 *tx_shift,
-+			   int bits_per_word, int msb_first);
-+#endif
-+
- 	struct workqueue_struct *workqueue;
- 	struct work_struct work;
- 
+ 	void (*set_shifts)(u32 *rx_shift, u32 *tx_shift,
 diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 527ac35..aff8bdd 100644
+index 121e463..1019355 100644
 --- a/drivers/spi/spi-fsl-spi.c
 +++ b/drivers/spi/spi-fsl-spi.c
-@@ -91,6 +91,25 @@ static void fsl_spi_chipselect(struct spi_device *spi, int value)
+@@ -456,12 +456,46 @@ static int fsl_spi_setup(struct spi_device *spi)
+ 		return retval;
  	}
+ 
++	if (mpc8xxx_spi->type == TYPE_GRLIB) {
++		if (gpio_is_valid(spi->cs_gpio)) {
++			int desel;
++
++			retval = gpio_request(spi->cs_gpio,
++					      dev_name(&spi->dev));
++			if (retval)
++				return retval;
++
++			desel = !(spi->mode & SPI_CS_HIGH);
++			retval = gpio_direction_output(spi->cs_gpio, desel);
++			if (retval) {
++				gpio_free(spi->cs_gpio);
++				return retval;
++			}
++		} else if (spi->cs_gpio != -ENOENT) {
++			if (spi->cs_gpio < 0)
++				return spi->cs_gpio;
++			return -EINVAL;
++		}
++		/* When spi->cs_gpio == -ENOENT, a hole in the phandle list
++		 * indicates to use native chipselect if present, or allow for
++		 * an always selected chip
++		 */
++	}
++
+ 	/* Initialize chipselect - might be active for SPI_CS_HIGH mode */
+ 	fsl_spi_chipselect(spi, BITBANG_CS_INACTIVE);
+ 
+ 	return 0;
  }
  
-+static void fsl_spi_qe_cpu_set_shifts(u32 *rx_shift, u32 *tx_shift,
-+				      int bits_per_word, int msb_first)
++static void fsl_spi_cleanup(struct spi_device *spi)
 +{
-+	*rx_shift = 0;
-+	*tx_shift = 0;
-+	if (msb_first) {
-+		if (bits_per_word <= 8) {
-+			*rx_shift = 16;
-+			*tx_shift = 24;
-+		} else if (bits_per_word <= 16) {
-+			*rx_shift = 16;
-+			*tx_shift = 16;
-+		}
-+	} else {
-+		if (bits_per_word <= 8)
-+			*rx_shift = 8;
-+	}
++	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
++
++	if (mpc8xxx_spi->type == TYPE_GRLIB && gpio_is_valid(spi->cs_gpio))
++		gpio_free(spi->cs_gpio);
 +}
 +
- static int mspi_apply_cpu_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 				struct spi_device *spi,
- 				struct mpc8xxx_spi *mpc8xxx_spi,
-@@ -101,31 +120,20 @@ static int mspi_apply_cpu_mode_quirks(struct spi_mpc8xxx_cs *cs,
- 	if (bits_per_word <= 8) {
- 		cs->get_rx = mpc8xxx_spi_rx_buf_u8;
- 		cs->get_tx = mpc8xxx_spi_tx_buf_u8;
--		if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
--			cs->rx_shift = 16;
--			cs->tx_shift = 24;
--		}
- 	} else if (bits_per_word <= 16) {
- 		cs->get_rx = mpc8xxx_spi_rx_buf_u16;
- 		cs->get_tx = mpc8xxx_spi_tx_buf_u16;
--		if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
--			cs->rx_shift = 16;
--			cs->tx_shift = 16;
--		}
- 	} else if (bits_per_word <= 32) {
- 		cs->get_rx = mpc8xxx_spi_rx_buf_u32;
- 		cs->get_tx = mpc8xxx_spi_tx_buf_u32;
- 	} else
- 		return -EINVAL;
+ static void fsl_spi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ {
+ 	struct fsl_spi_reg *reg_base = mspi->reg_base;
+@@ -529,9 +563,13 @@ static void fsl_spi_grlib_cs_control(struct spi_device *spi, bool on)
+ 	u32 slvsel;
+ 	u16 cs = spi->chip_select;
  
--	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE &&
--	    spi->mode & SPI_LSB_FIRST) {
--		cs->tx_shift = 0;
--		if (bits_per_word <= 8)
--			cs->rx_shift = 8;
--		else
--			cs->rx_shift = 0;
--	}
-+	if (mpc8xxx_spi->set_shifts)
-+		mpc8xxx_spi->set_shifts(&cs->rx_shift, &cs->tx_shift,
-+					bits_per_word,
-+					!(spi->mode & SPI_LSB_FIRST));
-+
- 	mpc8xxx_spi->rx_shift = cs->rx_shift;
- 	mpc8xxx_spi->tx_shift = cs->tx_shift;
- 	mpc8xxx_spi->get_rx = cs->get_rx;
-@@ -487,10 +495,13 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
- 	if (ret)
- 		goto err_cpm_init;
+-	slvsel = mpc8xxx_spi_read_reg(&reg_base->slvsel);
+-	slvsel = on ? (slvsel | (1 << cs)) : (slvsel & ~(1 << cs));
+-	mpc8xxx_spi_write_reg(&reg_base->slvsel, slvsel);
++	if (gpio_is_valid(spi->cs_gpio)) {
++		gpio_set_value(spi->cs_gpio, on);
++	} else if (cs < mpc8xxx_spi->native_chipselects) {
++		slvsel = mpc8xxx_spi_read_reg(&reg_base->slvsel);
++		slvsel = on ? (slvsel | (1 << cs)) : (slvsel & ~(1 << cs));
++		mpc8xxx_spi_write_reg(&reg_base->slvsel, slvsel);
++	}
+ }
  
--	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE) {
--		mpc8xxx_spi->rx_shift = 16;
--		mpc8xxx_spi->tx_shift = 24;
--	}
-+	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
-+		mpc8xxx_spi->set_shifts = fsl_spi_qe_cpu_set_shifts;
-+
-+	if (mpc8xxx_spi->set_shifts)
-+		/* 8 bits per word and MSB first */
-+		mpc8xxx_spi->set_shifts(&mpc8xxx_spi->rx_shift,
-+					&mpc8xxx_spi->tx_shift, 8, 1);
+ static void fsl_spi_grlib_probe(struct device *dev)
+@@ -550,11 +588,12 @@ static void fsl_spi_grlib_probe(struct device *dev)
+ 	if (mbits)
+ 		mpc8xxx_spi->max_bits_per_word = mbits + 1;
  
- 	mpc8xxx_spi->reg_base = ioremap(mem->start, resource_size(mem));
- 	if (mpc8xxx_spi->reg_base == NULL) {
+-	master->num_chipselect = 1; /* Allow for an always selected chip */
++	mpc8xxx_spi->native_chipselects = 0;
+ 	if (SPCAP_SSEN(capabilities)) {
+-		master->num_chipselect = SPCAP_SSSZ(capabilities);
++		mpc8xxx_spi->native_chipselects = SPCAP_SSSZ(capabilities);
+ 		mpc8xxx_spi_write_reg(&reg_base->slvsel, 0xffffffff);
+ 	}
++	master->num_chipselect = mpc8xxx_spi->native_chipselects;
+ 	pdata->cs_control = fsl_spi_grlib_cs_control;
+ }
+ 
+@@ -581,6 +620,7 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
+ 		goto err_probe;
+ 
+ 	master->setup = fsl_spi_setup;
++	master->cleanup = fsl_spi_cleanup;
+ 
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 	mpc8xxx_spi->spi_do_one_msg = fsl_spi_do_one_msg;
 -- 
 1.7.0.4
 

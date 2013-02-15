@@ -1,8 +1,8 @@
 From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH v3 2/7] spi: spi-fsl-spi: Make sure in spi_fsl_setup that
-	chipselect becomes inactive
-Date: Fri, 15 Feb 2013 16:52:22 +0100
-Message-ID: <1360943547-2186-3-git-send-email-andreas@gaisler.com>
+Subject: [PATCH v3 5/7] spi: spi-fsl-spi: Add support for setting a maximum
+	number of bits per word
+Date: Fri, 15 Feb 2013 16:52:25 +0100
+Message-ID: <1360943547-2186-6-git-send-email-andreas@gaisler.com>
 References: <1360943547-2186-1-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -26,29 +26,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is needed for a device in SPI_CS_HIGH mode that otherwise could start out
-active for the first transaction.
-
 Acked-by: Anton Vorontsov <anton-9xeibp6oKSgdnm+yROfE0A@public.gmane.org>
 Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-fsl-spi.c |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+ drivers/spi/spi-fsl-lib.h |    1 +
+ drivers/spi/spi-fsl-spi.c |    8 +++++++-
+ 2 files changed, 8 insertions(+), 1 deletions(-)
 
+diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
+index 5a9c36c..d5c788b 100644
+--- a/drivers/spi/spi-fsl-lib.h
++++ b/drivers/spi/spi-fsl-lib.h
+@@ -71,6 +71,7 @@ struct mpc8xxx_spi {
+ 
+ #ifdef CONFIG_SPI_FSL_SPI
+ 	int type;
++	u8 max_bits_per_word;
+ 
+ 	void (*set_shifts)(u32 *rx_shift, u32 *tx_shift,
+ 			   int bits_per_word, int msb_first);
 diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index cf1cffb..527ac35 100644
+index 9ae3c44..91d3d26 100644
 --- a/drivers/spi/spi-fsl-spi.c
 +++ b/drivers/spi/spi-fsl-spi.c
-@@ -387,6 +387,10 @@ static int fsl_spi_setup(struct spi_device *spi)
- 		cs->hw_mode = hw_mode; /* Restore settings */
- 		return retval;
- 	}
-+
-+	/* Initialize chipselect - might be active for SPI_CS_HIGH mode */
-+	fsl_spi_chipselect(spi, BITBANG_CS_INACTIVE);
-+
- 	return 0;
- }
+@@ -213,7 +213,8 @@ static int fsl_spi_setup_transfer(struct spi_device *spi,
+ 
+ 	/* Make sure its a bit width we support [4..16, 32] */
+ 	if ((bits_per_word < 4)
+-	    || ((bits_per_word > 16) && (bits_per_word != 32)))
++	    || ((bits_per_word > 16) && (bits_per_word != 32))
++	    || (bits_per_word > mpc8xxx_spi->max_bits_per_word))
+ 		return -EINVAL;
+ 
+ 	if (!hz)
+@@ -520,6 +521,7 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
+ 	mpc8xxx_spi = spi_master_get_devdata(master);
+ 	mpc8xxx_spi->spi_do_one_msg = fsl_spi_do_one_msg;
+ 	mpc8xxx_spi->spi_remove = fsl_spi_remove;
++	mpc8xxx_spi->max_bits_per_word = 32;
+ 	mpc8xxx_spi->type = fsl_spi_get_type(dev);
+ 
+ 	ret = fsl_spi_cpm_init(mpc8xxx_spi);
+@@ -557,6 +559,10 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
+ 
+ 	/* Enable SPI interface */
+ 	regval = pdata->initial_spmode | SPMODE_INIT_VAL | SPMODE_ENABLE;
++	if (mpc8xxx_spi->max_bits_per_word < 8) {
++		regval &= ~SPMODE_LEN(0xF);
++		regval |= SPMODE_LEN(mpc8xxx_spi->max_bits_per_word - 1);
++	}
+ 	if (mpc8xxx_spi->flags & SPI_QE_CPU_MODE)
+ 		regval |= SPMODE_OP;
  
 -- 
 1.7.0.4

@@ -1,149 +1,163 @@
-From: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH v3 7/7] spi: spi-fsl-spi: Add support for gpio chipselects for
-	GRLIB type cores
-Date: Fri, 15 Feb 2013 16:52:27 +0100
-Message-ID: <1360943547-2186-8-git-send-email-andreas@gaisler.com>
-References: <1360943547-2186-1-git-send-email-andreas@gaisler.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>, software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Anton Vorontsov <anton.vorontsov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1360943547-2186-1-git-send-email-andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 3/4] spi: pl022: use generic DMA slave configuration if possible
+Date: Fri, 15 Feb 2013 19:21:51 +0100
+Message-ID: <1360952512-971558-4-git-send-email-arnd@arndb.de>
+References: <1360952512-971558-1-git-send-email-arnd@arndb.de>
+Cc: Dan Williams <djbw@fb.com>, linux-arm-kernel@lists.infradead.org,
+	devicetree-discuss@lists.ozlabs.org,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Olof Johansson <olof@lixom.net>, linux-kernel@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	spi-devel-general@lists.sourceforge.net,
+	Vinod Koul <vinod.koul@linux.intel.com>
+To: Vinod Koul <vinod.koul@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1360952512-971558-1-git-send-email-arnd@arndb.de>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This relies upon of_spi_register_master to find out which gpios to use.
+With the new OF DMA binding, it is possible to completely avoid the
+need for platform_data for configuring a DMA channel. In cases where the
+platform has already been converted, calling dma_request_slave_channel
+should get all the necessary information from the device tree.
 
-Acked-by: Anton Vorontsov <anton-9xeibp6oKSgdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+Like the patch that converts the dw_dma controller, this is completely
+untested and is looking for someone to try it out.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Grant Likely <grant.likely@secretlab.ca>
+Acked-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: spi-devel-general@lists.sourceforge.net
+Cc: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Vinod Koul <vinod.koul@linux.intel.com>
+Cc: devicetree-discuss@lists.ozlabs.org
+Cc: linux-arm-kernel@lists.infradead.org
 ---
- drivers/spi/spi-fsl-lib.h |    1 +
- drivers/spi/spi-fsl-spi.c |   50 ++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 46 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/spi/spi_pl022.txt          | 36 ++++++++++++++++++
+ drivers/spi/spi-pl022.c                            | 43 +++++++++++++++++++++-
+ 2 files changed, 77 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
-index d5c788b..52db693 100644
---- a/drivers/spi/spi-fsl-lib.h
-+++ b/drivers/spi/spi-fsl-lib.h
-@@ -71,6 +71,7 @@ struct mpc8xxx_spi {
+diff --git a/Documentation/devicetree/bindings/spi/spi_pl022.txt b/Documentation/devicetree/bindings/spi/spi_pl022.txt
+index f158fd3..22ed679 100644
+--- a/Documentation/devicetree/bindings/spi/spi_pl022.txt
++++ b/Documentation/devicetree/bindings/spi/spi_pl022.txt
+@@ -16,6 +16,11 @@ Optional properties:
+                             device will be suspended immediately
+ - pl022,rt : indicates the controller should run the message pump with realtime
+              priority to minimise the transfer latency on the bus (boolean)
++- dmas : Two or more DMA channel specifiers following the convention outlined
++         in bindings/dma/dma.txt
++- dma-names: Names for the dma channels, if present. There must be at
++	     least one channel named "tx" for transmit and named "rx" for
++             receive.
  
- #ifdef CONFIG_SPI_FSL_SPI
- 	int type;
-+	int native_chipselects;
- 	u8 max_bits_per_word;
  
- 	void (*set_shifts)(u32 *rx_shift, u32 *tx_shift,
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 121e463..1019355 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -456,12 +456,46 @@ static int fsl_spi_setup(struct spi_device *spi)
- 		return retval;
- 	}
+ SPI slave nodes must be children of the SPI master node and can
+@@ -32,3 +37,34 @@ contain the following properties.
+ - pl022,wait-state : Microwire interface: Wait state
+ - pl022,duplex : Microwire interface: Full/Half duplex
  
-+	if (mpc8xxx_spi->type == TYPE_GRLIB) {
-+		if (gpio_is_valid(spi->cs_gpio)) {
-+			int desel;
 +
-+			retval = gpio_request(spi->cs_gpio,
-+					      dev_name(&spi->dev));
-+			if (retval)
-+				return retval;
++Example:
 +
-+			desel = !(spi->mode & SPI_CS_HIGH);
-+			retval = gpio_direction_output(spi->cs_gpio, desel);
-+			if (retval) {
-+				gpio_free(spi->cs_gpio);
-+				return retval;
-+			}
-+		} else if (spi->cs_gpio != -ENOENT) {
-+			if (spi->cs_gpio < 0)
-+				return spi->cs_gpio;
-+			return -EINVAL;
-+		}
-+		/* When spi->cs_gpio == -ENOENT, a hole in the phandle list
-+		 * indicates to use native chipselect if present, or allow for
-+		 * an always selected chip
-+		 */
-+	}
++	spi@e0100000 {
++		compatible = "arm,pl022", "arm,primecell";
++		reg = <0xe0100000 0x1000>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		interrupts = <0 31 0x4>;
++		dmas = <&dma-controller 23 1>,
++			<&dma-controller 24 0>;
++		dma-names = "rx", "tx";
 +
- 	/* Initialize chipselect - might be active for SPI_CS_HIGH mode */
- 	fsl_spi_chipselect(spi, BITBANG_CS_INACTIVE);
- 
- 	return 0;
++		m25p80@1 {
++			compatible = "st,m25p80";
++			reg = <1>;
++			spi-max-frequency = <12000000>;
++			spi-cpol;
++			spi-cpha;
++			pl022,hierarchy = <0>;
++			pl022,interface = <0>;
++			pl022,slave-tx-disable;
++			pl022,com-mode = <0x2>;
++			pl022,rx-level-trig = <0>;
++			pl022,tx-level-trig = <0>;
++			pl022,ctrl-len = <0x11>;
++			pl022,wait-state = <0>;
++			pl022,duplex = <0>;
++		};
++	};
++	
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index b0fe393..371cc66f 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1139,6 +1139,35 @@ err_no_rxchan:
+ 	return -ENODEV;
  }
  
-+static void fsl_spi_cleanup(struct spi_device *spi)
++static int pl022_dma_autoprobe(struct pl022 *pl022)
 +{
-+	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
++	struct device *dev = &pl022->adev->dev;
 +
-+	if (mpc8xxx_spi->type == TYPE_GRLIB && gpio_is_valid(spi->cs_gpio))
-+		gpio_free(spi->cs_gpio);
++	/* automatically configure DMA channels from platform, normally using DT */
++	pl022->dma_rx_channel = dma_request_slave_channel(dev, "rx");
++	if (!pl022->dma_rx_channel)
++		goto err_no_rxchan;
++
++	pl022->dma_tx_channel = dma_request_slave_channel(dev, "tx");
++	if (!pl022->dma_tx_channel)
++		goto err_no_txchan;
++
++	pl022->dummypage = kmalloc(PAGE_SIZE, GFP_KERNEL);
++	if (!pl022->dummypage)
++		goto err_no_dummypage;
++
++	return 0;
++
++err_no_dummypage:
++	dma_release_channel(pl022->dma_tx_channel);
++	pl022->dma_tx_channel = NULL;
++err_no_txchan:
++	dma_release_channel(pl022->dma_rx_channel);
++	pl022->dma_rx_channel = NULL;
++err_no_rxchan:
++	return -ENODEV;
++}
++		
+ static void terminate_dma(struct pl022 *pl022)
+ {
+ 	struct dma_chan *rxchan = pl022->dma_rx_channel;
+@@ -1167,6 +1196,11 @@ static inline int configure_dma(struct pl022 *pl022)
+ 	return -ENODEV;
+ }
+ 
++static inline int pl022_dma_autoprobe(struct pl022 *pl022)
++{
++	return 0;
 +}
 +
- static void fsl_spi_cpu_irq(struct mpc8xxx_spi *mspi, u32 events)
+ static inline int pl022_dma_probe(struct pl022 *pl022)
  {
- 	struct fsl_spi_reg *reg_base = mspi->reg_base;
-@@ -529,9 +563,13 @@ static void fsl_spi_grlib_cs_control(struct spi_device *spi, bool on)
- 	u32 slvsel;
- 	u16 cs = spi->chip_select;
- 
--	slvsel = mpc8xxx_spi_read_reg(&reg_base->slvsel);
--	slvsel = on ? (slvsel | (1 << cs)) : (slvsel & ~(1 << cs));
--	mpc8xxx_spi_write_reg(&reg_base->slvsel, slvsel);
-+	if (gpio_is_valid(spi->cs_gpio)) {
-+		gpio_set_value(spi->cs_gpio, on);
-+	} else if (cs < mpc8xxx_spi->native_chipselects) {
-+		slvsel = mpc8xxx_spi_read_reg(&reg_base->slvsel);
-+		slvsel = on ? (slvsel | (1 << cs)) : (slvsel & ~(1 << cs));
-+		mpc8xxx_spi_write_reg(&reg_base->slvsel, slvsel);
-+	}
- }
- 
- static void fsl_spi_grlib_probe(struct device *dev)
-@@ -550,11 +588,12 @@ static void fsl_spi_grlib_probe(struct device *dev)
- 	if (mbits)
- 		mpc8xxx_spi->max_bits_per_word = mbits + 1;
- 
--	master->num_chipselect = 1; /* Allow for an always selected chip */
-+	mpc8xxx_spi->native_chipselects = 0;
- 	if (SPCAP_SSEN(capabilities)) {
--		master->num_chipselect = SPCAP_SSSZ(capabilities);
-+		mpc8xxx_spi->native_chipselects = SPCAP_SSSZ(capabilities);
- 		mpc8xxx_spi_write_reg(&reg_base->slvsel, 0xffffffff);
+ 	return 0;
+@@ -2226,8 +2260,13 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 		goto err_no_irq;
  	}
-+	master->num_chipselect = mpc8xxx_spi->native_chipselects;
- 	pdata->cs_control = fsl_spi_grlib_cs_control;
- }
  
-@@ -581,6 +620,7 @@ static struct spi_master * fsl_spi_probe(struct device *dev,
- 		goto err_probe;
- 
- 	master->setup = fsl_spi_setup;
-+	master->cleanup = fsl_spi_cleanup;
- 
- 	mpc8xxx_spi = spi_master_get_devdata(master);
- 	mpc8xxx_spi->spi_do_one_msg = fsl_spi_do_one_msg;
+-	/* Get DMA channels */
+-	if (platform_info->enable_dma) {
++	/* Get DMA channels, try autoconfiguration first */
++	status = pl022_dma_autoprobe(pl022);
++
++	/* If that failed, use channels from platform_info */
++	if (status == 0)
++		platform_info->enable_dma = 1;
++	else if (platform_info->enable_dma) {
+ 		status = pl022_dma_probe(pl022);
+ 		if (status != 0)
+ 			platform_info->enable_dma = 0;
 -- 
-1.7.0.4
-
-
-------------------------------------------------------------------------------
-Free Next-Gen Firewall Hardware Offer
-Buy your Sophos next-gen firewall before the end March 2013 
-and get the hardware for free! Learn more.
-http://p.sf.net/sfu/sophos-d2d-feb
+1.8.1.2

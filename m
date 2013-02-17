@@ -1,26 +1,14 @@
-From: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
-Subject: Re: [PATCH v2 4/4] ARM: mvebu: Update defconfig to select SPI
-	flash and MTD support
-Date: Sat, 16 Feb 2013 12:44:36 -0500
-Message-ID: <20130216174436.GC23237@titan.lakedaemon.net>
-References: <1360155984-15397-1-git-send-email-ezequiel.garcia@free-electrons.com>
-	<1360155984-15397-5-git-send-email-ezequiel.garcia@free-electrons.com>
-	<20130216150228.GR14746@titan.lakedaemon.net>
-	<20130216173445.GA3440@localhost>
+From: Joachim  Eastwood <manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: spi-atmel broken in next
+Date: Sun, 17 Feb 2013 12:15:51 +0100
+Message-ID: <CAGhQ9VwoehjY4niDqcnb88va9vNLw=jFmxOnq6k0QP6GZJ4gqQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
+To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20130216173445.GA3440@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -31,32 +19,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Feb 16, 2013 at 02:34:47PM -0300, Ezequiel Garcia wrote:
-> Hi Jason,
-> 
-> On Sat, Feb 16, 2013 at 10:02:28AM -0500, Jason Cooper wrote:
-> > On Wed, Feb 06, 2013 at 10:06:24AM -0300, Ezequiel Garcia wrote:
-> > > The Armada XP DB-MV784MP-GP board has an SPI flash device.
-> > > These options allow to access that device over MTD.
-> > > 
-> > > Signed-off-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> > > ---
-> > > Depends on patch: "arm: mvebu: i2c come back in defconfig"
-> > > 
-> > >  arch/arm/configs/mvebu_defconfig |    3 +++
-> > >  1 files changed, 3 insertions(+), 0 deletions(-)
-> > 
-> > Applied to mvebu/boards
-> > 
-> 
-> Great!
-> 
-> Are we still in time for a pull request for v3.9
-> with all of these stuff?
+Hi,
 
-With any amount of luck, possibly ;-)
+spi-atmel is now broken for all spi transfers in linux-next. This is
+caused by commit "spi: make sure all transfer has proper speed set".
+The reason is the following code in atmel_spi_transfer(...)
 
-Jason.
+ 849  /* FIXME implement these protocol options!! */
+ 850  if (xfer->speed_hz) {
+ 851      dev_dbg(&spi->dev, "no protocol options yet\n");
+ 852      return -ENOPROTOOPT;
+ 853  }
+
+Now that xfer->speed_hz is always set all spi transfers will return
+with ENOPROTOOPT.
+
+Not quite sure how to best fix it. Just removing the whole test
+makes it work again but I guess we should do something better
+with speed_hz here.
+
+One little question; Is a per transfer speed setting really sensible?
+As far as I can see from grepping the kernel source it's not
+used by device drivers.
+
+
+regards
+Joachim Eastwood
 
 ------------------------------------------------------------------------------
 The Go Parallel Website, sponsored by Intel - in partnership with Geeknet, 

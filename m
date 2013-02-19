@@ -1,50 +1,155 @@
-From: "=?UTF-8?Q?Cl=C3=A9mentina_Frog_par_Planduweb?=" <contact-tR38n1wcsvlQFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Tout schuss sur le prix des bagages
-Date: Tue, 19 Feb 2013 16:40:26 +0000 (CET)
-Message-ID: <130219164026.-157713109900006680@obfm42.com>
+From: Stephen Warren <swarren@wwwdotorg.org>
+Subject: Re: [PATCH] spi: tegra114: add spi driver
+Date: Tue, 19 Feb 2013 11:16:42 -0700
+Message-ID: <5123C18A.9010604@wwwdotorg.org>
+References: <1361281115-20436-1-git-send-email-ldewangan@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: grant.likely@secretlab.ca, rob.herring@calxeda.com,
+	broonie@opensource.wolfsonmicro.com, linux-doc@vger.kernel.org,
+	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-tegra@vger.kernel.org, swarren@nvidia.com
+To: Laxman Dewangan <ldewangan@nvidia.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1361281115-20436-1-git-send-email-ldewangan@nvidia.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQyLmNvbS95ZHB3NWJqbmljcmlyY2ZpZ2wvaW5kZXgwLmh0bWwpCihodHRw
-Oi8vb2JmbTQyLmNvbS9kb3BweWJ6MmlyaWhpMTFpb3kvaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
-bTQyLmNvbS9zeXB6bmJsZ2llY2ljcXhycWQvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQyLmNv
-bS9sZ3BtZ2JtaGlkcWhxZ2NyanMvaW5kZXgzLmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS9ueTRp
-bnU1cXJxZmltbHgzYXkvaW5kZXg0Lmh0bWwpCkNsZW1lbnRpbmEgZnJvZywgbGUgc3DDqWNpYWxp
-c3RlIGR1IHJhbmdlbWVudCBldCBkZXMgYmFnYWdlcyB2b3VzIHByb3Bvc2UgdW5lIHPDqWxlY3Rp
-b24gZGUgcHJvZHVpdHMgZGUgcXVhbGl0w6kgw6AgdG91dCBwZXRpdHMgcHJpeCAhIAoKKGh0dHA6
-Ly9vYmZtNDIuY29tLzRnNGtndXlpcmlvaGhkYzNpbC9pbmRleDUuaHRtbCkKKGh0dHA6Ly9vYmZt
-NDIuY29tL3dkNGE1dW53cndwaTEyZnAzcy9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29t
-L3pvNHZ5dWcwcjAzaGcwMXBoZC9pbmRleDcuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL3VkZmVw
-eW80aXg0aTRlZjBtbC9pbmRleDguaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL2VvZjNzeTR0aTVr
-aGt2MTBweS9pbmRleDkuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL2NoM29jdGthYXBsdWU1ZWNz
-by9pbmRleDEwLmh0bWwpCk5vcyB2YWxpc2VzIHNvdXBsZXMgb3UgcmlnaWRlcyBvbnQgw6l0w6kg
-c3DDqWNpYWxlbWVudCBjb25jdWVzIHBvdXIgYWNjb21wYWduZXIgdm9zIGTDqXBsYWNlbWVudHMg
-cGVyc29ubmVscyBvdSBwcm9mZXNzaW9ubmVscyBlbiB0b3V0ZSBsw6lnw6hyZXTDqSBldCAKcm9i
-dXN0ZXNzZS4gQ2hhY3VuZSBkwrRlbnRyZSBlbGxlcyBwb3Nzw6hkZSBkZXMgcm91bGV0dGVzIHBv
-dXIgdHJhbnNwb3J0ZXIgc2FucyBzwrRlc3NvdWZsZXIuCgooaHR0cDovL29iZm00Mi5jb20veHZs
-ZGlyeDV5MWxzNXA0dWxvL2luZGV4MTEuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL25iYmhud3Jx
-NHlmMHlsNXNqeS9pbmRleDEyLmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS80eHJ1bGZsY2ZlZm5j
-ZGhtcXkvaW5kZXgxMy5odG1sKQooaHR0cDovL29iZm00Mi5jb20vbWdxY2dqYWljZ2ptcHljdnlq
-L2luZGV4MTQuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL3BsdXRtdnRydzNqY3Zzb2Zkai9pbmRl
-eDE1Lmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS9uNHFpdWo1ZDFnM3BwMmJ2ankvaW5kZXgxNi5o
-dG1sKQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4g
-U28gZG8gd2UuCk1ha2UgeW91ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3du
-bG9hZCBBcHBEeW5hbWljcyBMaXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1
-L2FwcGR5bl9kMmRfZmViCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
-bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On 02/19/2013 06:38 AM, Laxman Dewangan wrote:
+> Add spi driver for NVIDIA's Tegra114 spi controller. This controller
+> is different than the older SoCs spi controller in internal design as
+> well as register interface.
+
+Nit: SPI should be capitalized. Also in Kconfig below.
+
+> diff --git a/Documentation/devicetree/bindings/spi/nvidia,spi-tegra114.txt b/Documentation/devicetree/bindings/spi/nvidia,spi-tegra114.txt
+
+This file should be named nvidia,tegra114-spi.txt, so that it matches
+the compatible value it describes.
+
+> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+
+> +config SPI_TEGRA114
+> +	tristate "Nvidia Tegra114 SPI Controller"
+
+NVIDIA should be capitalized. Also in the help description below.
+
+> diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+
+>  obj-$(CONFIG_SPI_SIRF)		+= spi-sirf.o
+>  obj-$(CONFIG_SPI_TEGRA20_SFLASH)	+= spi-tegra20-sflash.o
+> +obj-$(CONFIG_SPI_TEGRA114)			+= spi-tegra114.o
+>  obj-$(CONFIG_SPI_TEGRA20_SLINK)		+= spi-tegra20-slink.o
+>  obj-$(CONFIG_SPI_TI_SSP)		+= spi-ti-ssp.o
+
+The Makefile should be sorted; Tegra114 comes before Tegra20*.
+
+> diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+
+> +static unsigned tegra_spi_calculate_curr_xfer_param(
+...
+> +	bits_per_word = t->bits_per_word ? t->bits_per_word :
+> +						spi->bits_per_word;
+
+I thought I'd seen patches so this conditional wasn't needed any more;
+isn't t->bit_per_word always set correctly by the SPI core now?
+Certainly the existing spi-tegra20-slink.c doesn't seem to have any
+conditional here.
+
+A similar comment applies in tegra_spi_read_rx_fifo_to_client_rxbuf()
+and tegra_spi_copy_spi_rxbuf_to_client_rxbuf().
+
+> +		total_fifo_words = (max_len + 3)/4;
+
+Need spaces around /. The same comment applies in some other places;
+please search for them. Was checkpatch run? I'm not sure if catches this.
+
+spi-tegra20-slink.c doesn't have that rounding; is just says:
+
+    total_fifo_words = max_len / 4;
+
+Is that a bug in the old driver?
+
+> +static int tegra_spi_start_dma_based_transfer(
+> +		struct tegra_spi_data *tspi, struct spi_transfer *t)
+...
+> +	if (tspi->cur_direction & DATA_DIR_TX) {
+> +		tegra_spi_copy_client_txbuf_to_spi_txbuf(tspi, t);
+> +		ret = tegra_spi_start_tx_dma(tspi, len);
+
+In spi-tegra20-slink.c, there's a wmb() right between those last two
+lines. Is it needed here?
+
+> +static int tegra_spi_start_transfer_one(struct spi_device *spi,
+> +		struct spi_transfer *t, bool is_first_of_msg,
+> +		bool is_single_xfer)
+...
+> +		/* possibly use the hw based chip select */
+> +		command1 |= SPI_CS_SW_HW;
+> +		if (spi->mode & SPI_CS_HIGH)
+> +			command1 |= SPI_CS_SS_VAL;
+> +		else
+> +			command1 &= ~SPI_CS_SS_VAL;
+
+Why "possibly"; the code seems to always use HW chip select.
+
+> +static int tegra_spi_transfer_one_message(struct spi_master *master,
+> +			struct spi_message *msg)
+...
+> +	ret = pm_runtime_get_sync(tspi->dev);
+> +	if (ret < 0) {
+> +		dev_err(tspi->dev, "runtime PM get failed: %d\n", ret);
+> +		msg->status = ret;
+> +		spi_finalize_current_message(master);
+> +		return ret;
+> +	}
+
+In the older Tegra SPI drivers, the PM runtime logic was was of
+master->{un,}prepare_transfer. I'm curious why it's implemented
+differently here.
+
+> +static void tegra_spi_parse_dt(struct platform_device *pdev,
+> +	struct tegra_spi_data *tspi)
+...
+> +	prop = of_get_property(np, "spi-max-frequency", NULL);
+> +	if (prop)
+> +		tspi->spi_max_frequency = be32_to_cpup(prop);
+
+The following might be better:
+
+        if (of_property_read_u32(np, "spi-max-frequency",
+                                        &tspi->spi_max_frequency))
+                tspi->spi_max_frequency = 25000000; /* 25MHz */
+
+(and you can remove the check of !tspi->spi_max_frequency from probe()
+then too)
+
+> +static int tegra_spi_probe(struct platform_device *pdev)
+...
+> +	if (!pdev->dev.of_node) {
+> +		dev_err(&pdev->dev, "Driver support DT registration only\n");
+> +		return -ENODEV;
+> +	}
+
+I don't think there's much point checking that; see the Tegra20 SPI
+cleanup patches I posted a couple days ago.
+
+> +	tspi->base = devm_request_and_ioremap(&pdev->dev, r);
+> +	if (!tspi->base) {
+
+The existing Tegra20 driver checks if (IS_ERR(tspi->base)) here. Which
+is wrong?
+
+> +	tspi->clk = devm_clk_get(&pdev->dev, "spi");
+
+Does this HW block use multiple clocks? If not, I think s/"spi"/NULL/
+there, just like the Tegra20 driver.
+
+As an overall comment, this driver is textually perhaps 80-90% the same
+as spi-tegra20-slink.c. Instead of creating a completely new driver, how
+nasty would a unified driver look; one which contained some runtime
+conditionals for the register layout and programming differences? It
+might be worth looking at, although perhaps it would turn out to be a
+crazy mess, so a separate driver really is appropriate.

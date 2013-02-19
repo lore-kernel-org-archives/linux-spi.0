@@ -1,12 +1,12 @@
-From: "Shopfato" <sender-rePUFFfPJeSu/0J6wgbHzw@public.gmane.org>
-Subject: [SPAM] Confira quatro ofertas surpreendentes. Entre
-Date: Tue, 19 Feb 2013 08:43:38 -0300
-Message-ID: <7e148b669e2d9623a19feaebf99a44ad@www.promosender.info>
-Reply-To: atendimento-rePUFFfPJeSu/0J6wgbHzw@public.gmane.org
+From: "=?UTF-8?Q?Cl=C3=A9mentina_Frog_par_Planduweb?=" <contact-tR38n1wcsvlQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Tout schuss sur le prix des bagages
+Date: Tue, 19 Feb 2013 16:40:26 +0000 (CET)
+Message-ID: <130219164026.-157713109900006680@obfm42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,15 +18,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Your email client cannot read this email.
-To view it online, please go here:
-http://www.promosender.info/news/display.php?M=8524798&C=923e0e1f13557000c9932ffdcf39e93e&S=313&L=28&N=42
-
-
-To stop receiving these
-emails:http://www.promosender.info/news/unsubscribe.php?M=8524798&C=923e0e1f13557000c9932ffdcf39e93e&L=28&N=313
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_feb
+CihodHRwOi8vb2JmbTQyLmNvbS95ZHB3NWJqbmljcmlyY2ZpZ2wvaW5kZXgwLmh0bWwpCihodHRw
+Oi8vb2JmbTQyLmNvbS9kb3BweWJ6MmlyaWhpMTFpb3kvaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
+bTQyLmNvbS9zeXB6bmJsZ2llY2ljcXhycWQvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQyLmNv
+bS9sZ3BtZ2JtaGlkcWhxZ2NyanMvaW5kZXgzLmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS9ueTRp
+bnU1cXJxZmltbHgzYXkvaW5kZXg0Lmh0bWwpCkNsZW1lbnRpbmEgZnJvZywgbGUgc3DDqWNpYWxp
+c3RlIGR1IHJhbmdlbWVudCBldCBkZXMgYmFnYWdlcyB2b3VzIHByb3Bvc2UgdW5lIHPDqWxlY3Rp
+b24gZGUgcHJvZHVpdHMgZGUgcXVhbGl0w6kgw6AgdG91dCBwZXRpdHMgcHJpeCAhIAoKKGh0dHA6
+Ly9vYmZtNDIuY29tLzRnNGtndXlpcmlvaGhkYzNpbC9pbmRleDUuaHRtbCkKKGh0dHA6Ly9vYmZt
+NDIuY29tL3dkNGE1dW53cndwaTEyZnAzcy9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29t
+L3pvNHZ5dWcwcjAzaGcwMXBoZC9pbmRleDcuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL3VkZmVw
+eW80aXg0aTRlZjBtbC9pbmRleDguaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL2VvZjNzeTR0aTVr
+aGt2MTBweS9pbmRleDkuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL2NoM29jdGthYXBsdWU1ZWNz
+by9pbmRleDEwLmh0bWwpCk5vcyB2YWxpc2VzIHNvdXBsZXMgb3UgcmlnaWRlcyBvbnQgw6l0w6kg
+c3DDqWNpYWxlbWVudCBjb25jdWVzIHBvdXIgYWNjb21wYWduZXIgdm9zIGTDqXBsYWNlbWVudHMg
+cGVyc29ubmVscyBvdSBwcm9mZXNzaW9ubmVscyBlbiB0b3V0ZSBsw6lnw6hyZXTDqSBldCAKcm9i
+dXN0ZXNzZS4gQ2hhY3VuZSBkwrRlbnRyZSBlbGxlcyBwb3Nzw6hkZSBkZXMgcm91bGV0dGVzIHBv
+dXIgdHJhbnNwb3J0ZXIgc2FucyBzwrRlc3NvdWZsZXIuCgooaHR0cDovL29iZm00Mi5jb20veHZs
+ZGlyeDV5MWxzNXA0dWxvL2luZGV4MTEuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL25iYmhud3Jx
+NHlmMHlsNXNqeS9pbmRleDEyLmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS80eHJ1bGZsY2ZlZm5j
+ZGhtcXkvaW5kZXgxMy5odG1sKQooaHR0cDovL29iZm00Mi5jb20vbWdxY2dqYWljZ2ptcHljdnlq
+L2luZGV4MTQuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL3BsdXRtdnRydzNqY3Zzb2Zkai9pbmRl
+eDE1Lmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS9uNHFpdWo1ZDFnM3BwMmJ2ankvaW5kZXgxNi5o
+dG1sKQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4g
+U28gZG8gd2UuCk1ha2UgeW91ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3du
+bG9hZCBBcHBEeW5hbWljcyBMaXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1
+L2FwcGR5bl9kMmRfZmViCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
+bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,78 +1,165 @@
-From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi/atmel: fix speed_hz check in atmel_spi_transfer()
-Date: Wed, 20 Feb 2013 08:51:48 +0100
-Message-ID: <51248094.90808@atmel.com>
-References: <CACxGe6u0o0V3Jm9-iyizKH5KX=dPe-CL0bH-Kc7KM_k6gAk69A@mail.gmail.com>
-	<1361310297-28002-1-git-send-email-manabian@gmail.com>
+From: Laxman Dewangan <ldewangan@nvidia.com>
+Subject: Re: [PATCH] spi: tegra114: add spi driver
+Date: Wed, 20 Feb 2013 17:59:03 +0530
+Message-ID: <5124C18F.6070108@nvidia.com>
+References: <1361281115-20436-1-git-send-email-ldewangan@nvidia.com> <5123C18A.9010604@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Joachim Eastwood <manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1361310297-28002-1-git-send-email-manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"rob.herring@calxeda.com" <rob.herring@calxeda.com>,
+	"broonie@opensource.wolfsonmicro.com"
+	<broonie@opensource.wolfsonmicro.com>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"devicetree-discuss@lists.ozlabs.org"
+	<devicetree-discuss@lists.ozlabs.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+	Stephen Warren <swarren@nvidia.com>
+To: Stephen Warren <swarren@wwwdotorg.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <5123C18A.9010604@wwwdotorg.org>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/19/2013 10:44 PM, Joachim Eastwood :
-> atmel_spi_transfer() would check speed_hz and fail if
-> the speed was changed in the transfer. After commit
-> "spi: make sure all transfer has proper speed set"
-> this would happen on all transfers.
-> 
-> Change speed_hz check to only fail if a lower speed
-> than max is requested.
-> 
-> Signed-off-by: Joachim Eastwood <manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Tuesday 19 February 2013 11:46 PM, Stephen Warren wrote:
+> On 02/19/2013 06:38 AM, Laxman Dewangan wrote:
+>> +	bits_per_word = t->bits_per_word ? t->bits_per_word :
+>> +						spi->bits_per_word;
+> I thought I'd seen patches so this conditional wasn't needed any more;
+> isn't t->bit_per_word always set correctly by the SPI core now?
+> Certainly the existing spi-tegra20-slink.c doesn't seem to have any
+> conditional here.
 
-Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-
-Thanks for spotting this Joachim.
-
-Bye,
-
-> ---
-> Hi Grant,
-> 
-> Fix for spi-atmel as per your suggestion; check if
-> speed_hz is less than bus max speed.
-> 
-> regards
-> Joachim Eastwood
-> 
->  drivers/spi/spi-atmel.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 656d137..80f5867 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -847,8 +847,8 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
->  		}
->  
->  		/* FIXME implement these protocol options!! */
-> -		if (xfer->speed_hz) {
-> -			dev_dbg(&spi->dev, "no protocol options yet\n");
-> +		if (xfer->speed_hz < spi->max_speed_hz) {
-> +			dev_dbg(&spi->dev, "can't change speed in transfer\n");
->  			return -ENOPROTOOPT;
->  		}
->  
-> 
+Yes, core have changes. I will remove this check.
 
 
--- 
-Nicolas Ferre
+>
+> A similar comment applies in tegra_spi_read_rx_fifo_to_client_rxbuf()
+> and tegra_spi_copy_spi_rxbuf_to_client_rxbuf().
+>
+>> +		total_fifo_words = (max_len + 3)/4;
+> Need spaces around /. The same comment applies in some other places;
+> please search for them. Was checkpatch run? I'm not sure if catches this.
+>
+> spi-tegra20-slink.c doesn't have that rounding; is just says:
+>
+>      total_fifo_words = max_len / 4;
+>
+> Is that a bug in the old driver?
 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_feb
+
+I will check and fix the either place.
+
+
+>
+>> +	if (tspi->cur_direction & DATA_DIR_TX) {
+>> +		tegra_spi_copy_client_txbuf_to_spi_txbuf(tspi, t);
+>> +		ret = tegra_spi_start_tx_dma(tspi, len);
+> In spi-tegra20-slink.c, there's a wmb() right between those last two
+> lines. Is it needed here?
+
+I think wmb() is no require and hence not keeping here. Perhaps I got 
+the review feedback when I was working on serial tegra driver.
+
+
+>
+>> +static int tegra_spi_start_transfer_one(struct spi_device *spi,
+>> +		struct spi_transfer *t, bool is_first_of_msg,
+>> +		bool is_single_xfer)
+> ...
+>> +		/* possibly use the hw based chip select */
+>> +		command1 |= SPI_CS_SW_HW;
+>> +		if (spi->mode & SPI_CS_HIGH)
+>> +			command1 |= SPI_CS_SS_VAL;
+>> +		else
+>> +			command1 &= ~SPI_CS_SS_VAL;
+> Why "possibly"; the code seems to always use HW chip select.
+
+
+Yes, wrong comment. Remove the controller_data from driver but forgot to 
+remove this comment.
+
+>> +	ret = pm_runtime_get_sync(tspi->dev);
+>> +	if (ret < 0) {
+>> +		dev_err(tspi->dev, "runtime PM get failed: %d\n", ret);
+>> +		msg->status = ret;
+>> +		spi_finalize_current_message(master);
+>> +		return ret;
+>> +	}
+> In the older Tegra SPI drivers, the PM runtime logic was was of
+> master->{un,}prepare_transfer. I'm curious why it's implemented
+> differently here.
+
+The prepare  is called in atomic context and in this we are calling 
+pm_runtime_get_sync() which is blocking and it can cause issue.
+
+I have already bug reported by you that sometimes you saw locking in 
+tegra20 slink driver which we need to fix. When testing this, I ran into 
+similar case and hence now moving this out or prepare.
+
+I will push the change for fixing this in tegra20_slink driver also.
+
+>> +	prop = of_get_property(np, "spi-max-frequency", NULL);
+>> +	if (prop)
+>> +		tspi->spi_max_frequency = be32_to_cpup(prop);
+> The following might be better:
+>
+>          if (of_property_read_u32(np, "spi-max-frequency",
+>                                          &tspi->spi_max_frequency))
+>                  tspi->spi_max_frequency = 25000000; /* 25MHz */
+>
+> (and you can remove the check of !tspi->spi_max_frequency from probe()
+> then too)
+
+Yes, Agree. Will do.
+
+>
+>> +static int tegra_spi_probe(struct platform_device *pdev)
+> ...
+>> +	if (!pdev->dev.of_node) {
+>> +		dev_err(&pdev->dev, "Driver support DT registration only\n");
+>> +		return -ENODEV;
+>> +	}
+> I don't think there's much point checking that; see the Tegra20 SPI
+> cleanup patches I posted a couple days ago.
+>
+>> +	tspi->base = devm_request_and_ioremap(&pdev->dev, r);
+>> +	if (!tspi->base) {
+> The existing Tegra20 driver checks if (IS_ERR(tspi->base)) here. Which
+> is wrong?
+The tegra20 driver use the devm_ioremap_resource() which is new API get 
+added recently. I will change this driver to use this one.
+
+
+
+>> +	tspi->clk = devm_clk_get(&pdev->dev, "spi");
+> Does this HW block use multiple clocks? If not, I think s/"spi"/NULL/
+> there, just like the Tegra20 driver.
+
+No, spi controller uses the only one clock. I will change to NULL.
+
+
+>
+> As an overall comment, this driver is textually perhaps 80-90% the same
+> as spi-tegra20-slink.c. Instead of creating a completely new driver, how
+> nasty would a unified driver look; one which contained some runtime
+> conditionals for the register layout and programming differences? It
+> might be worth looking at, although perhaps it would turn out to be a
+> crazy mess, so a separate driver really is appropriate.
+
+We had created the similarly in past where common part is in same file 
+and controller specific is in the different file as hal file but the 
+driver becomes complex.
+It was not easy to add any feature as the require api need to be added 
+in all places for hal.  We were about to split the driver separately but 
+before then we moved to Linux.
+
+So first look, it is great but adding feature/maintaining/enhancing is 
+difficult.
+I like to go with separate driver until there is much pushback to make 
+it one.
+
+

@@ -1,12 +1,17 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Subject: Re: [PATCH] spi: tegra114: add spi driver
-Date: Wed, 20 Feb 2013 10:25:13 -0700
-Message-ID: <512506F9.2030508@wwwdotorg.org>
-References: <1361281115-20436-1-git-send-email-ldewangan@nvidia.com> <5123C18A.9010604@wwwdotorg.org> <5124C18F.6070108@nvidia.com> <20130220131112.GE2726@opensource.wolfsonmicro.com> <5124CEF5.3060605@nvidia.com>
+Date: Wed, 20 Feb 2013 17:31:10 +0000
+Message-ID: <20130220173109.GU2726@opensource.wolfsonmicro.com>
+References: <1361281115-20436-1-git-send-email-ldewangan@nvidia.com>
+ <5123C18A.9010604@wwwdotorg.org>
+ <5124C18F.6070108@nvidia.com>
+ <20130220131112.GE2726@opensource.wolfsonmicro.com>
+ <5124CEF5.3060605@nvidia.com>
+ <512506F9.2030508@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="GVLQrlG8+/jMfW4X"
+Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 	"grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	"rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org" <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
 	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
@@ -17,49 +22,54 @@ Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
 	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5124CEF5.3060605-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <512506F9.2030508-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 02/20/2013 06:26 AM, Laxman Dewangan wrote:
-> On Wednesday 20 February 2013 06:41 PM, Mark Brown wrote:
->> * PGP Signed by an unknown key
->>
->> On Wed, Feb 20, 2013 at 05:59:03PM +0530, Laxman Dewangan wrote:
->>>>> +    tspi->clk = devm_clk_get(&pdev->dev, "spi");
->>>> Does this HW block use multiple clocks? If not, I think s/"spi"/NULL/
->>>> there, just like the Tegra20 driver.
->>> No, spi controller uses the only one clock. I will change to NULL.
->> I'm never convinced that NULL is a helpful clock name to pick, it's not
->> awesome if you ever acquire a second clock.
-> 
-> I had other idea of okeeping clock name here for power optimization.
-> Spi controller can take the power source ffrom different clock source
-> say clk_m (crystal) and pllp.
-> 
-> I want to set the parent clock dynamically based on required speed so
-> that if the desire speed can be meet from clk_m, no need to increase pll
-> count and possible we may endup with siwtchng off pllp which can save
-> power.
-> 
-> So for this I may require
-> 
-> spi_clk = devm_clk_get(&pdev->dev, "spi");
-> spi_clkm = devm_clk_get(&pdev->dev, "clmkm");
-> spi_pllp = devm_clk_get(&pdev->dev, "pllp");
-> 
-> and call clk_set_parent(spi_clk, spi_clkm) or clk_set_parent(spi_clk,
-> spi_pllp).
 
-OK, so that's certainly an argument for requesting a specific clock name
-rather than NULL.
+--GVLQrlG8+/jMfW4X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-But, please do think this approach through fully. The DT binding needs
-to define which clock-names the driver requires to be present, and any
-optional clock names. DT bindings are supposed to be immutable, or
-perhaps extendible in a completely backwards-compatible fashion. This
-implies that you need to have thought through the entire list of clocks
-that the driver might want in the DT clock-names property when you first
-write the DT binding documentation...
+On Wed, Feb 20, 2013 at 10:25:13AM -0700, Stephen Warren wrote:
+
+> But, please do think this approach through fully. The DT binding needs
+> to define which clock-names the driver requires to be present, and any
+> optional clock names. DT bindings are supposed to be immutable, or
+> perhaps extendible in a completely backwards-compatible fashion. This
+> implies that you need to have thought through the entire list of clocks
+> that the driver might want in the DT clock-names property when you first
+> write the DT binding documentation...
+
+Since we can extend the list of clocks it doesn't seem like there's much
+issue here, especially if some of them are optional?
+
+Though in general it seems like this sort of mux really should be in the
+clock stuff anyway.
+
+--GVLQrlG8+/jMfW4X
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRJQhXAAoJELSic+t+oim9vM0QAIP3yNkcZm/yjd+tmqgy79CO
+RDzj4VEy/nTtmLTKuSYjR0lod8hanjJg1LuV08UhEtRdbw8swdyNCjboPzFd0Nm7
+EdDQV1nsFqTlFMP5OIvxiKbDbfXERDh7kKvT7MDeu0pyLZFpIBP1OwzxPYS161bo
+29SsHwkZ2vKk/5nE8PJKhaBDDPjk01fpzoqPYSfBBGbr+0XGU3Ncd/Tc4quKmNbw
+yctRoAE76mEPGkHERqYkwavV8x9T+dG9bdbJbkd2IuRM33cISleHpT3DnFQ/4Thy
+I8oPD+fmGNp4yX1/A4nofpRbkpdxIY6U8BEn+4RNGFQD7Y42GC3g0x2CER0ZwfYm
+2ePqL/pRnalBzPxkKrpVCkuA746rdnl0lylngFIORE8U6GGWgqWZpBOKMzctRvUt
+Rbi9YYJ+mvk+KWRSUe1O4S9OWAw7XXDCZdhLLZySLXE42DMRU6mkbytAR4Z3rM65
+J7hVbiBkZSvGFt0Mhv0rLjtck1kYI13y/78imrHVVRvan9CfKTJwFbDWIaahFn71
+72V/ybPum/i69tEzsPtRh25YMCFSMpAZC7cx+X2e3wsTD9vvkEQgtZikRGlceQR1
+ASaqkli0d9qrQu7YQSwCc1IfdexFxSOecxuegV25IFd6Ds5sOQ24UfC0PXREjaAr
+7ai84Tjka1EfkJ+WN2y1
+=ED6S
+-----END PGP SIGNATURE-----
+
+--GVLQrlG8+/jMfW4X--

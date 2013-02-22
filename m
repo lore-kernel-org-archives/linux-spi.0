@@ -1,43 +1,45 @@
-From: Boojin Kim <boojin.kim@samsung.com>
-Subject: [PATCH v2 4/4] ASoC: samsung: add to configure dma maxburst size
-Date: Fri, 22 Feb 2013 17:10:10 +0900
-Message-ID: <001c01ce10d4$088ea3c0$19abeb40$%kim@samsung.com>
-Cc: 'Vinod Koul' <vinod.koul@intel.com>, 'Dan Williams' <djbw@fb.com>,
-	'Russell King' <linux@arm.linux.org.uk>,
-	'Kukjin Kim' <kgene.kim@samsung.com>,
-	'Grant Likely' <grant.likely@secretlab.ca>,
-	'Mark Brown' <broonie@opensource.wolfsonmicro.com>,
-	'Rob Herring' <rob.herring@calxeda.com>,
-	'Sangbeom Kim' <sbkim73@samsung.com>
-To: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	alsa-devel@alsa-project.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-References: 
-In-reply-to: 
-Content-language: ko
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH -next] spi: fix return value check in ce4100_spi_probe()
+Date: Fri, 22 Feb 2013 11:33:07 +0200
+Message-ID: <20130222093307.GH2439@intel.com>
+References: <CAPgLHd-PhE2igUQOeg90H98Ni55DwfYdp0D52uaBK0=J3M1V+g@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAPgLHd-PhE2igUQOeg90H98Ni55DwfYdp0D52uaBK0=J3M1V+g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch adds to configure dma maxburst size.
+On Fri, Feb 22, 2013 at 10:52:35AM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+> 
+> In case of error, the function platform_device_register_full()
+> returns ERR_PTR() and never returns NULL. The NULL test in the
+> return value check should be replaced with IS_ERR().
+> 
+> Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 
-Signed-off-by: Boojin Kim <boojin.kim@samsung.com>
----
- sound/soc/samsung/dma.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+Nice catch!
 
-diff --git a/sound/soc/samsung/dma.c b/sound/soc/samsung/dma.c
-index 21b7926..bd4faa0 100644
---- a/sound/soc/samsung/dma.c
-+++ b/sound/soc/samsung/dma.c
-@@ -172,6 +172,7 @@ static int dma_hw_params(struct snd_pcm_substream *substream,
- 			(substream->stream == SNDRV_PCM_STREAM_PLAYBACK
- 			? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM);
- 		config.width = prtd->params->dma_size;
-+		config.maxburst = 1;
- 		config.fifo = prtd->params->dma_addr;
- 		prtd->params->ch = prtd->params->ops->request(
- 				prtd->params->channel, &req, rtd->cpu_dai->dev,
---
-1.7.5.4
+Acked-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_feb

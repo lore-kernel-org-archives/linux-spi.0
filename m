@@ -1,55 +1,74 @@
-From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH -next] spi: fix return value check in ce4100_spi_probe()
-Date: Fri, 22 Feb 2013 10:52:35 +0800
-Message-ID: <CAPgLHd-PhE2igUQOeg90H98Ni55DwfYdp0D52uaBK0=J3M1V+g@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Boojin Kim <boojin.kim@samsung.com>
+Subject: [PATCH v2 1/4] DMA: pl330: support burst mode for dev-to-mem and
+ mem-to-dev transmit
+Date: Fri, 22 Feb 2013 17:04:15 +0900
+Message-ID: <000001ce10d3$354dd440$9fe97cc0$%kim@samsung.com>
+Cc: 'Vinod Koul' <vinod.koul@intel.com>, 'Dan Williams' <djbw@fb.com>,
+	'Russell King' <linux@arm.linux.org.uk>,
+	'Kukjin Kim' <kgene.kim@samsung.com>,
+	'Grant Likely' <grant.likely@secretlab.ca>,
+	'Mark Brown' <broonie@opensource.wolfsonmicro.com>,
+	'Rob Herring' <rob.herring@calxeda.com>,
+	'Sangbeom Kim' <sbkim73@samsung.com>,
+	'Boojin Kim' <boojin.kim@samsung.com>
+To: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net,
+	alsa-devel@alsa-project.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-language: ko
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+This patch adds to support burst mode for dev-to-mem and mem-to-dev transmit
 
-In case of error, the function platform_device_register_full()
-returns ERR_PTR() and never returns NULL. The NULL test in the
-return value check should be replaced with IS_ERR().
-
-Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+Change-Id: I9723e49383416773699cf7735168177c8d036f30
+Signed-off-by: Boojin Kim <boojin.kim@samsung.com>
 ---
- drivers/spi/spi-pxa2xx-pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/pl330.c |   12 +++++++-----
+ 1 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 364964d..0a11dcfc 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -47,8 +47,8 @@ static int ce4100_spi_probe(struct pci_dev *dev,
- 	pi.size_data = sizeof(spi_pdata);
- 
- 	pdev = platform_device_register_full(&pi);
--	if (!pdev)
--		return -ENOMEM;
-+	if (IS_ERR(pdev))
-+		return PTR_ERR(pdev);
- 
- 	pci_set_drvdata(dev, pdev);
- 
+diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
+index 80680ee..c67f037 100644
+--- a/drivers/dma/pl330.c
++++ b/drivers/dma/pl330.c
+@@ -1271,10 +1271,11 @@ static inline int _ldst_devtomem(unsigned dry_run, u8 buf[],
+ 		const struct _xfer_spec *pxs, int cyc)
+ {
+ 	int off = 0;
++	enum pl330_cond cond = (pxs->r->cfg->brst_len == 1) ? SINGLE : BURST;
 
+ 	while (cyc--) {
+-		off += _emit_WFP(dry_run, &buf[off], SINGLE, pxs->r->peri);
+-		off += _emit_LDP(dry_run, &buf[off], SINGLE, pxs->r->peri);
++		off += _emit_WFP(dry_run, &buf[off], cond, pxs->r->peri);
++		off += _emit_LDP(dry_run, &buf[off], cond, pxs->r->peri);
+ 		off += _emit_ST(dry_run, &buf[off], ALWAYS);
+ 		off += _emit_FLUSHP(dry_run, &buf[off], pxs->r->peri);
+ 	}
+@@ -1286,11 +1287,12 @@ static inline int _ldst_memtodev(unsigned dry_run, u8 buf[],
+ 		const struct _xfer_spec *pxs, int cyc)
+ {
+ 	int off = 0;
++	enum pl330_cond cond = (pxs->r->cfg->brst_len == 1) ? SINGLE : BURST;
 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_feb
+ 	while (cyc--) {
+-		off += _emit_WFP(dry_run, &buf[off], SINGLE, pxs->r->peri);
++		off += _emit_WFP(dry_run, &buf[off], cond, pxs->r->peri);
+ 		off += _emit_LD(dry_run, &buf[off], ALWAYS);
+-		off += _emit_STP(dry_run, &buf[off], SINGLE, pxs->r->peri);
++		off += _emit_STP(dry_run, &buf[off], cond, pxs->r->peri);
+ 		off += _emit_FLUSHP(dry_run, &buf[off], pxs->r->peri);
+ 	}
+
+@@ -2835,7 +2837,7 @@ pl330_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
+ 		}
+
+ 		desc->rqcfg.brst_size = pch->burst_sz;
+-		desc->rqcfg.brst_len = 1;
++		desc->rqcfg.brst_len = pch->burst_len;
+ 	}
+
+ 	/* Return the last desc in the chain */
+--
+1.7.5.4

@@ -1,48 +1,91 @@
-From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH 3/4] ARM: davinci: da850: override SPI DT node device name
-Date: Mon, 25 Feb 2013 16:14:09 +0530
-Message-ID: <1361789050-637-4-git-send-email-prakash.pm@ti.com>
-References: <1361789050-637-1-git-send-email-prakash.pm@ti.com>
+From: =?utf-8?B?6I6r57u05YWJ?= <jtk-UYYP8XKX5VxBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM]
+Date: Tue, 26 Feb 2013 04:43:57 +0800
+Message-ID: <20130226044403105054@muellaw.com>
+Reply-To: 2269346161-9uewiaClKEY@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <hs-ynQEQJNshbs@public.gmane.org>,
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <1361789050-637-1-git-send-email-prakash.pm-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Populate OF_DEV_AUXDATA with desired device name expected by spi-davinci
-driver. Without this clk_get of spi-davinci DT driver fails.
-
-Signed-off-by: Manjunathappa, Prakash <prakash.pm-l0cyMroinI0@public.gmane.org>
----
- arch/arm/mach-davinci/da8xx-dt.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
-
-diff --git a/arch/arm/mach-davinci/da8xx-dt.c b/arch/arm/mach-davinci/da8xx-dt.c
-index 2b740a9..d9c76009 100644
---- a/arch/arm/mach-davinci/da8xx-dt.c
-+++ b/arch/arm/mach-davinci/da8xx-dt.c
-@@ -42,6 +42,7 @@ struct of_dev_auxdata da850_auxdata_lookup[] __initdata = {
- 	OF_DEV_AUXDATA("ti,davinci-wdt", 0x01c21000, "watchdog", NULL),
- 	OF_DEV_AUXDATA("ti,davinci-mmc-da830", 0x01c40000, "davinci-mmc-da830.0",
- 			NULL),
-+	OF_DEV_AUXDATA("ti,da8xx-spi", 0x01f0e000, "spi_davinci.1", NULL),
- 	{}
- };
- 
--- 
-1.7.4.1
+5p2c5bCP5piO5Zyo6Ie06L6e5Lit5oyH5Ye677yM5Zyo6L+H5Y6755qE5LiA5bm06YeM77yM5a2m
+5qCh6auY5rC05bmz5aSn5a2m5bu66K6+5LqL5Lia5Y+W5b6X5paw5oiQ57up77ya4oCcMjEx5bel
+56iL4oCd5LiJ5pyf5bu66K6+6aG555uu6aG65Yip6YCa6L+H5oC757uT6aqM5pS277yM4oCc5Lit
+5Zu95Y+k5YW46IieCeS4i+S4gOmYtuauteW7uuiuvumhueebrumhuuWIqeaOqOi/m++8jDI05Liq
+5LiA57qn5a2m56eR6KKr6K+E5Li656ys5Lmd6L2u5bm/5Lic55yB6YeN54K55a2m56eR77yM6L+Z
+5YW25Lit5YyF5ZCr5LqG5a2m5a2Q5Lus55qE5Yqq5Yqb5aWL5paX5ZKM6L6b5Yuk5LuY5Ye644CC
+5ZCM5pe277yM5a2m5qCh5Lul4oCc5Lyg5om/4oCi5Yib5paw4oCi6LaF6LaK4oCd5Li65qCh5bqG
+5Li76aKY77yM6YG15b6q4oCc5a2m5pyv6b6Z6ams5LygCeagoeW6huOAgeaWh+WMluagoeW6huOA
+gee7v+iJsuagoeW6huKAnem+memprOS8oAnnmoTmgJ3ot6/vvIzkuL7lip7kuobns7vliJfmnInn
+ibnoibLjgIHmnIk5NDQ05b2x5ZON55qE5rS75Yqo77yM6L+b5LiA5q2l5aKe5by65LqG5Yqe6auY
+5rC05bmz56CU56m25Z6L5aSn5a2m55qE5L+h5b+D5ZKM5Yed6IGa5Yqb44CC5p2c5bCP5piO5biM
+5pyb5ZCM5a2m5Lus6IO95Zyo5a2m5qCh5bqm6L+H5LiA5Liq5a6J5YWo44CB5YWF5a6e55qE5YGH
+5pyf77yM5aSa5LiO5a625Lq66IGU57O777yM5aSa5omT55S16K+d5Zue5a626Zeu5YCZ54i25q+N
+77yM5bm256Wd5oS/5ZCM5a2m5Lus5Zyo5paw55qE5a6J5aau5aiD5aiDCeS4gOW5tOmHjOWSjOWt
+puagoTA0OTQ35LiA6LW35Yqq5Yqb5aWL5paX77yM5LqJ5Y+W5a2m5Lia5ZKM5a2m5qCh5ZCE6aG5
+5LqL5Lia5pu05LiK5bGC5qW844CCDQrjgIDjgIDnjovov47lhpvlkJHnlZnmoKHlrablrZDpgIHk
+uIrom4flubQ1Mjc455qE5paw5pil56Wd56aP44CC5aW56KGo56S677yM5a2m5qCh5bCG5bC95pyA
+5aSn55qE5Yqq5Yqb5Li655WZ5qCh5a2m5a2Q6JCl6YCg6IqC5pel5rCb5Zu077yM5o+Q5L6b5pyA
+5aW955qE5p2h5Lu26K6p5ZCM5a2m5Lus5bqm5Y+k6K+X6K+N5puyCei/h+S4gOS4qua4qemmqOOA
+geaEieW/q+eahOaWsOW5tOOAgueOi+i/juWGm+ivtO+8jOi/h+WOu+eahOS4gOW5tOWvueaIkeS7
+rOS4reWNjuawkeaXj+adpeivtOaYr+mdnuW4uOmHjeimgeeahOS4gOW5tO+8jOWcqOi/meS4gOW5
+tOmHjOWbveWutuWPrOW8gOS6huWFmueahOesrOWNgeWFq+asoeS7o+ihqOWkp+S8mu+8jOS4uuS7
+iuWQjueahOWPkeWxleaPj+e7mOS6huS4gOW5hee+juWlveeahOiTneWbvu+8m+WQjOaXtuawuOeI
+seaeq+aRhAnlrabmoKHkuZ/luqbov4fkuoblu7rmoKE2MOWRqOW5tOeahOeUsuWtkOagoeW6hu+8
+jOWcqOagoeW6hueahOezu+WIl+a0u+WKqOS4reS4uuWQjOWtpuS7rOaPkOS+m+S6huW+iOWkmuWt
+puS5oOeUsumGh+acuueahOacuuS8muWSjOW5s+WPsO+8jOWmguS4lueVjOefpeWQjeWkp+Wtpuag
+oemVv+iuuuWdm+OAgei1sOi/keKAnOivuui0neWwlOKAnem+memprOS8oAnorrrlnZvku6Xlj4rm
+nbDlh7rmoKHlj4vorrrlnZvnrYnvvJvlrabmoKHmnKznp5HnlJ/lnKjljrvlubTkuZ/lj5blvpfk
+uobpnZ7luLjlpb3nmoTmiJDnu6nvvIzlpoLlnKjlm73pmYXokZflkI3lrabmnK/mnJ/liIrjgIpD
+ZWxs44CL5LiK56ys5LiA5qyh5Y+R6KGo6K665paH77yM5a6e546w5LqG5LiW55WM5LiJ5aSn6aG2
+5bCW6IuX5pyo5a2m5pyv5pyf5YiK55qE4oCc5aSn5ruh6LSv4oCd44CCDQoNCg0K56Kz57qk57u0
+5by65YyW5aGR5paZ5LiAIA0K6IuX5pyo5aScIA0K5Lit5Zu95Y+k5YW46IieCeaDhSANCuOAgOad
+pei/memHjDogd3d3LjkycmliLmNvbSANCg0K5b2T5pma77yM5byg5oyv5Yia5LiO55WZ5qCh56CU
+56m255Sf5Zyo5LqU5bGx5qCh5Yy65a2m5YWt6aWt5aCC5YWx5bqG5paw5pil44CC5byg5oyv5Yia
+5Zyo6Ie06L6e5Lit6KGo56S677yM6L+H5Y6755qE5LiA5bm05piv5LiN5bmz5Yeh55qE5LiA5bm0
+77yM5a2m5qCh56ys5LiA5qyh6KKr5LiK5rW35Lqk5aSn5LiW55WM5LiA5rWB5aSnNDTlrabnoJTn
+qbbkuK3lv4PliJflhaXkuJbnlYzlpKflrabkupTnmb7lvLrvvIzlkIzml7bov5jpppbmrKHov5vl
+haXkuK3lm73kuIDmtYHlpKflrabooYzliJfvvJvlrabmoKHmoKHlm63mlofljJblu7rorr7igJzk
+vq/oi7HotoXnmb7mraXmoq/mlIDnmbvorqHliJLigJ3lho3mrKHojrflvpfkuobkuK3lm73pq5jm
+oKHmoKHlm63mlofljJblu7rorr7nibnnrYnlpZbvvIzkvb/lvpfov4fljrvkupTlubTkuK3lrabm
+oKHmoKHlm63mlofljJblu7rorr7nmoTojrflpZbmgLvmlbDlnKjlhajlm73pq5jmoKHkuK3mjpLl
+kI3nrKzkuozvvIzov5nkupvpqoTkurrnmoTnlLLphofmnLrmiJDnu6nnprvkuI3lvIDlrabmoKHl
+hZrmlL/nj63lrZDlkozlub/lpKfluIjnlJ/nmoTliqrlipvvvIzov5nlhbbkuK3lsLHljIXlkKvk
+uoblhajkvZPnoJTnqbbnlJ/nlKjnn6Xor4blkozmsZfmsLTlgZrlh7rnmoTotKHnjK7jgIINCuOA
+gOOAgOiBlOasouS8muS4iu+8jDk2OTc2ODjlrabmoKHkuLrnlZnmoKHlrablrZDkuK3lm73lj6Tl
+hbjoiJ4J5Y+R5pS+5LqG55Sf5rS755So5ZOB5ZKM5paw5bm05Yip5piv77yM5oq95aWW546v6IqC
+5pu05piv5bCG5rS75Yqo5rCU5rCb5o6o5ZCR6auY5r2u44CC6L275bel5LiO6aOf5ZOB5a2m6Zmi
+55qE6buE6IW+5Li6NDU3MTTkuobliKnnlKjlgYfmnJ/ml7bpl7TlgZrlrp7pqozlkozlraboi7Ho
+r63vvIzpgInmi6nnlZnlnKjlrabmoKHov4flubTvvIzku5booajnpLromb3nhLbmmK/nrKzkuIDm
+rKHnlZnmoKHov4foioLvvIzkvYbogZTmrKLkvJrkuIrmtLvliqjnsr7lvannurflkYjvvIzorqnk
+u5bpnZ7luLjlvIDlv4PjgILmnaXoh6rliJrmnpzvvIjph5Hlronlpq7lqIPlqIMJ77yJ55qE55WZ
+5a2m55Sf6I6r5q+U5aSa6KGo56S677yM5Y675bm055Sx5LqO5a625LqL5o6o6L+f5LqG5q+V5Lia
+77yM5LuK5bm05bey57uP5piv5LuW56ys5Zub5qyh5Y+C5Yqg55WZ5qCh5a2m55Sf5paw5pil6IGU
+6LCK5Lya77yM5a2m5qCh6ICB5biI5rC454ix5p6r5pGECeeahOWFs+W/g+S7peWPiuWQhOenjeeV
+meagoeWtpueUn+eahOa0u+WKqOiuqeS7luW5tuS4jeWtpOWNle+8jDIwMTMtMi0yNuiBlOiwiuS8
+muS4jeS7heiuqeS7luiupOivhuS6huabtOWkmueahOaci+WPi++8jOS5n+iuqeS7luaEn+WPl+WI
+sOWNjuWNl+eQhuW3pei/meS4quWkp+WutuW6reeahOa4qeaaluWSjOeIseOAgg0K44CA44CA5o2u
+5a2m55Sf5bel5L2c6YOo77yI5aSE77yJ44CB5qCh5Zui5aeU562J55u45YWz6YOo6Zeo5LuL5Y+k
+6K+X6K+N5puyCee7je+8jOaJgOacieeVmeagoeWtpueUn+S4jeS7hTHmnIgyMuaXpeiHszI15pel
+77yI5bm05bu/5Lmd6Iez5q2j5pyI5Yid5LiJ77yJ5pyf6Ze05Y+v5Yet5a2m55Sf6K+B5Zyo6aWt
+5aCC5YWN55Sy6YaH5py66LS555So6aSQ77yM6YOo5YiG5a625bqt57uP5rWO5Zuw6Zq+5a2m55Sf
+6L+Y5bCG5pS25Yiw5a2m5qCh5o+Q5L6b55qEMzAw5YWD6aSQ6LS56KGl5Yqp77yM5pu05pyJ5aSn
+5om55Yuk5bel5Y+k6K+X6K+N5puyCeWKqeWtpuWyl+S9jeaPkOS+m+e7meeVmeagoeWtpuWtkAot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8g
+d2UuCk1ha2UgeW91ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3dubG9hZCBB
+cHBEeW5hbWljcyBMaXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5
+bl9kMmRfZmViCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
+Zm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,39 +1,53 @@
-From: Australian Lottery Inc. <AUS-2csgH5xqEHWuvtTkCOosKA@public.gmane.org>
-Subject: [SPAM] GOOD DAY
-Date: Sun, 24 Feb 2013 11:06:23 -0500 (EST)
-Message-ID: <20130224172411.EA895ABDF9@mx01.1and1.com>
-Reply-To: jgous2013-XGZiAJ+5fF/QJDZefrY4RA@public.gmane.org
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH] SPI: spi-ppc4xx - remove incorrect __exit markup
+Date: Sun, 24 Feb 2013 19:29:40 -0800
+Message-ID: <20130225032939.GA11603@core.coreip.homeip.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Even if bus is not hot-pluggable, the devices can be unbound from the
+driver via sysfs, so we should not be using __exit annotations on
+remove() methods. The only exception is drivers registered with
+platform_driver_probe() which specifically disables sysfs bind/unbind
+attributes.
 
-Congratulations!!!
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+---
+ drivers/spi/spi-ppc4xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Your Email Address won the sum of US$500,000.00 in the Australian Lotto conducted through Electronic ballot from email addresses from different companies in the world. fill the form and also send code "354421" immediately to Mr. Jonathan Gous at: jgous2013-XGZiAJ+5fF/QJDZefrY4RA@public.gmane.org or call +27734619805 for payment now.
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index 7a85f22..027b474 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -560,7 +560,7 @@ free_master:
+ 	return ret;
+ }
+ 
+-static int __exit spi_ppc4xx_of_remove(struct platform_device *op)
++static int spi_ppc4xx_of_remove(struct platform_device *op)
+ {
+ 	struct spi_master *master = dev_get_drvdata(&op->dev);
+ 	struct ppc4xx_spi *hw = spi_master_get_devdata(master);
+@@ -583,7 +583,7 @@ MODULE_DEVICE_TABLE(of, spi_ppc4xx_of_match);
+ 
+ static struct platform_driver spi_ppc4xx_of_driver = {
+ 	.probe = spi_ppc4xx_of_probe,
+-	.remove = __exit_p(spi_ppc4xx_of_remove),
++	.remove = spi_ppc4xx_of_remove,
+ 	.driver = {
+ 		.name = DRIVER_NAME,
+ 		.owner = THIS_MODULE,
+-- 
+1.7.11.7
 
-NAME.......EMAIL ADDRESS........OCCUPATION.........YOUR FULL ADDRESS..........NATIONALITY.......MOBILE/PHONE.........SEX.............AGE..............
 
-Mrs Amanda Shannon
-Head Publicity
-Australian Lottery Inc.
-
-
-
-
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_feb
+-- 
+Dmitry

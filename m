@@ -1,8 +1,8 @@
 From: Wenyou Yang <wenyou.yang@atmel.com>
-Subject: [PATCH v5 07/16] spi/spi-atmel: add flag to controller data for lock operations
-Date: Tue, 26 Feb 2013 14:48:00 +0800
-Message-ID: <1361861289-30332-8-git-send-email-wenyou.yang@atmel.com>
-References: <1361861289-30332-1-git-send-email-wenyou.yang@atmel.com>
+Subject: [PATCH Resend v5 01/16] spi/spi-atmel: fix master->num_chipselect wrongly set.
+Date: Wed, 27 Feb 2013 08:37:14 +0800
+Message-ID: <1361925434-11929-1-git-send-email-wenyou.yang@atmel.com>
+References: <1361925297-11854-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <grant.likely@secretlab.ca>, <nicolas.ferre@atmel.com>,
@@ -12,121 +12,50 @@ Cc: <grant.likely@secretlab.ca>, <nicolas.ferre@atmel.com>,
 	<linux-kernel@vger.kernel.org>
 To: <linux-arm-kernel@lists.infradead.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1361861289-30332-1-git-send-email-wenyou.yang@atmel.com>
+In-Reply-To: <1361925297-11854-1-git-send-email-wenyou.yang@atmel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Nicolas Ferre <nicolas.ferre@atmel.com>
+if the spi property "cs-gpios" is set as below:
 
-Will allow to drop the lock during DMA operations.
+	cs-gpios = <0>, <&pioC 11 0>, <0>, <0>;
 
-Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+the master->num_chipselect will wrongly be set to 0,
+and the spi fail to probe.
+
+Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
 Cc: spi-devel-general@lists.sourceforge.net
 Cc: linux-kernel@vger.kernel.org
-[wenyou.yang@atmel.com: submit the patch]
-Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
 ---
- drivers/spi/spi-atmel.c |   31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ drivers/spi/spi-atmel.c |    2 +-
+ drivers/spi/spi.c       |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 136ed8f..1c2933a 100644
+index ab34497..5bf3786 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -196,6 +196,7 @@ struct atmel_spi_caps {
-  */
- struct atmel_spi {
- 	spinlock_t		lock;
-+	unsigned long		flags;
+@@ -944,7 +944,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
  
- 	resource_size_t		phybase;
- 	void __iomem		*regs;
-@@ -334,6 +335,16 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
- 		gpio_set_value(asd->npcs_pin, !active);
- }
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->bus_num = pdev->id;
+-	master->num_chipselect = master->dev.of_node ? 0 : 4;
++	master->num_chipselect = 4;
+ 	master->setup = atmel_spi_setup;
+ 	master->transfer = atmel_spi_transfer;
+ 	master->cleanup = atmel_spi_cleanup;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 19ee901..d88cbef 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1070,7 +1070,7 @@ static int of_spi_register_master(struct spi_master *master)
+ 	master->num_chipselect = max(nb, master->num_chipselect);
  
-+static void atmel_spi_lock(struct atmel_spi *as)
-+{
-+		spin_lock_irqsave(&as->lock, as->flags);
-+}
-+
-+static void atmel_spi_unlock(struct atmel_spi *as)
-+{
-+		spin_unlock_irqrestore(&as->lock, as->flags);
-+}
-+
- static inline int atmel_spi_xfer_is_last(struct spi_message *msg,
- 					struct spi_transfer *xfer)
- {
-@@ -570,9 +581,9 @@ atmel_spi_msg_done(struct spi_master *master, struct atmel_spi *as,
- 		"xfer complete: %u bytes transferred\n",
- 		msg->actual_length);
+ 	if (nb < 1)
+-		return 0;
++		nb = master->num_chipselect;
  
--	spin_unlock(&as->lock);
-+	atmel_spi_unlock(as);
- 	msg->complete(msg->context);
--	spin_lock(&as->lock);
-+	atmel_spi_lock(as);
- 
- 	as->current_transfer = NULL;
- 	as->next_transfer = NULL;
-@@ -803,13 +814,11 @@ static int atmel_spi_setup(struct spi_device *spi)
- 		spi->controller_state = asd;
- 		gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH));
- 	} else {
--		unsigned long		flags;
--
--		spin_lock_irqsave(&as->lock, flags);
-+		atmel_spi_lock(as);
- 		if (as->stay == spi)
- 			as->stay = NULL;
- 		cs_deactivate(as, spi);
--		spin_unlock_irqrestore(&as->lock, flags);
-+		atmel_spi_unlock(as);
- 	}
- 
- 	asd->csr = csr;
-@@ -828,7 +837,6 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
- {
- 	struct atmel_spi	*as;
- 	struct spi_transfer	*xfer;
--	unsigned long		flags;
- 	struct device		*controller = spi->master->dev.parent;
- 	u8			bits;
- 	struct atmel_spi_device	*asd;
-@@ -893,11 +901,11 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
- 	msg->status = -EINPROGRESS;
- 	msg->actual_length = 0;
- 
--	spin_lock_irqsave(&as->lock, flags);
-+	atmel_spi_lock(as);
- 	list_add_tail(&msg->queue, &as->queue);
- 	if (!as->current_transfer)
- 		atmel_spi_next_message(spi->master);
--	spin_unlock_irqrestore(&as->lock, flags);
-+	atmel_spi_unlock(as);
- 
- 	return 0;
- }
-@@ -907,17 +915,16 @@ static void atmel_spi_cleanup(struct spi_device *spi)
- 	struct atmel_spi	*as = spi_master_get_devdata(spi->master);
- 	struct atmel_spi_device	*asd = spi->controller_state;
- 	unsigned		gpio = (unsigned) spi->controller_data;
--	unsigned long		flags;
- 
- 	if (!asd)
- 		return;
- 
--	spin_lock_irqsave(&as->lock, flags);
-+	atmel_spi_lock(as);
- 	if (as->stay == spi) {
- 		as->stay = NULL;
- 		cs_deactivate(as, spi);
- 	}
--	spin_unlock_irqrestore(&as->lock, flags);
-+	atmel_spi_unlock(as);
- 
- 	spi->controller_state = NULL;
- 	gpio_free(gpio);
+ 	cs = devm_kzalloc(&master->dev,
+ 			  sizeof(int) * master->num_chipselect,
 -- 
 1.7.9.5

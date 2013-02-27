@@ -1,58 +1,63 @@
-From: Wenyou Yang <wenyou.yang@atmel.com>
-Subject: [PATCH Resend v5 12/16] spi/spi-atmel: add pinctrl support for atmel spi
-Date: Wed, 27 Feb 2013 08:47:09 +0800
-Message-ID: <1361926029-12518-1-git-send-email-wenyou.yang@atmel.com>
-References: <1361925297-11854-1-git-send-email-wenyou.yang@atmel.com>
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 4/4] ARM: davinci: da850-evm: add SPI flash support
+Date: Wed, 27 Feb 2013 13:55:09 +0530
+Message-ID: <512DC2E5.4080603@ti.com>
+References: <1361789050-637-1-git-send-email-prakash.pm@ti.com>
+ <1361789050-637-5-git-send-email-prakash.pm@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <grant.likely@secretlab.ca>, <nicolas.ferre@atmel.com>,
-	<plagnioj@jcrosoft.com>, <richard.genoud@gmail.com>,
-	<JM.Lin@atmel.com>, <wenyou.yang@atmel.com>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>
-To: <linux-arm-kernel@lists.infradead.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1361925297-11854-1-git-send-email-wenyou.yang@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+ spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, hs-ynQEQJNshbs@public.gmane.org,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1361789050-637-5-git-send-email-prakash.pm-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
-Cc: spi-devel-general@lists.sourceforge.net
-Cc: linux-kernel@vger.kernel.org
----
- drivers/spi/spi-atmel.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+On 2/25/2013 4:14 PM, Manjunathappa, Prakash wrote:
+> Enable m25p80 SPI flash support on da850-EVM. Also
+> add partition information of SPI flash.
+> 
+> Signed-off-by: Manjunathappa, Prakash <prakash.pm-l0cyMroinI0@public.gmane.org>
+> ---
+>  arch/arm/boot/dts/da850-evm.dts |   40 +++++++++++++++++++++++++++++++++++++++
+>  1 files changed, 40 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/da850-evm.dts b/arch/arm/boot/dts/da850-evm.dts
+> index 78c8e54..1a28d43 100644
+> --- a/arch/arm/boot/dts/da850-evm.dts
+> +++ b/arch/arm/boot/dts/da850-evm.dts
+> @@ -46,6 +46,46 @@
+>  			pinctrl-names = "default";
+>  			pinctrl-0 = <&mmc0_pins>;
+>  		};
+> +		spi1: spi@1f0e000 {
+> +			status = "okay";
+> +			pinctrl-names = "default";
+> +			pinctrl-0 = <&spi1_pins>;
+> +			flash: m25p80@0 {
+> +				#address-cells = <1>;
+> +				#size-cells = <1>;
+> +				compatible = "m25p80";
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 00ca85f..0ed3e1a 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -23,6 +23,7 @@
- #include <linux/platform_data/atmel.h>
- #include <linux/platform_data/dma-atmel.h>
- #include <linux/of.h>
-+#include <linux/pinctrl/consumer.h>
- 
- #include <asm/io.h>
- #include <asm/gpio.h>
-@@ -1503,11 +1504,18 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 	int			ret;
- 	struct spi_master	*master;
- 	struct atmel_spi	*as;
-+	struct pinctrl		*pinctrl;
- 
- 	regs = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!regs)
- 		return -ENXIO;
- 
-+	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
-+	if (IS_ERR(pinctrl)) {
-+		dev_err(&pdev->dev, "Failed to request pinctrl\n");
-+		return PTR_ERR(pinctrl);
-+	}
-+
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		return irq;
--- 
-1.7.9.5
+Are you sure there is a m25p80 part on these boards? On my board using
+this patch I get:
+
+m25p80 spi32766.0: found m25p64, expected m25p80
+
+I can access the flash just fine though.
+
+Thanks,
+Sekhar

@@ -1,7 +1,7 @@
 From: Wenyou Yang <wenyou.yang@atmel.com>
-Subject: [PATCH Resend v5 07/16] spi/spi-atmel: add flag to controller data for lock operations
-Date: Wed, 27 Feb 2013 08:42:59 +0800
-Message-ID: <1361925779-12295-1-git-send-email-wenyou.yang@atmel.com>
+Subject: [PATCH Resend v5 09/16] spi/spi-atmel: fix spi-atmel driver to adapt to slave_config changes
+Date: Wed, 27 Feb 2013 08:44:55 +0800
+Message-ID: <1361925895-12375-1-git-send-email-wenyou.yang@atmel.com>
 References: <1361925297-11854-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -16,117 +16,139 @@ In-Reply-To: <1361925297-11854-1-git-send-email-wenyou.yang@atmel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Nicolas Ferre <nicolas.ferre@atmel.com>
+From: Richard Genoud <richard.genoud@gmail.com>
 
-Will allow to drop the lock during DMA operations.
+This is the following of the patch e2b35f3dbfc080f15b72834d08f04f0269dbe9be
 
-Signed-off-by: Nicolas Ferre <nicolas.ferre@atmel.com>
-Cc: spi-devel-general@lists.sourceforge.net
-Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
+[wenyou.yang@atmel.com: BUG: dmaengine mode when enable both spi0 and spi1, spi0 doesn't work]
 [wenyou.yang@atmel.com: submit the patch]
 Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
+Cc: spi-devel-general@lists.sourceforge.net
+Cc: linux-kernel@vger.kernel.org
 ---
- drivers/spi/spi-atmel.c |   31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ drivers/spi/spi-atmel.c |   61 +++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 51 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 136ed8f..1c2933a 100644
+index d77dd53..d8af7d0 100644
 --- a/drivers/spi/spi-atmel.c
 +++ b/drivers/spi/spi-atmel.c
-@@ -196,6 +196,7 @@ struct atmel_spi_caps {
-  */
- struct atmel_spi {
- 	spinlock_t		lock;
-+	unsigned long		flags;
- 
- 	resource_size_t		phybase;
- 	void __iomem		*regs;
-@@ -334,6 +335,16 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
- 		gpio_set_value(asd->npcs_pin, !active);
+@@ -388,6 +388,37 @@ static inline int atmel_spi_xfer_can_be_chained(struct spi_transfer *xfer)
+ 	return xfer->delay_usecs == 0 && !xfer->cs_change;
  }
  
-+static void atmel_spi_lock(struct atmel_spi *as)
++static int atmel_spi_dma_slave_config(struct atmel_spi *as,
++				struct dma_slave_config *slave_config)
 +{
-+		spin_lock_irqsave(&as->lock, as->flags);
++	int err = 0;
++
++	slave_config->dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++	slave_config->src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++
++	slave_config->dst_addr = (dma_addr_t)as->phybase + SPI_TDR;
++	slave_config->src_addr = (dma_addr_t)as->phybase + SPI_RDR;
++	slave_config->src_maxburst = 1;
++	slave_config->dst_maxburst = 1;
++	slave_config->device_fc = false;
++
++	slave_config->direction = DMA_MEM_TO_DEV;
++	if (dmaengine_slave_config(as->dma.chan_tx, slave_config)) {
++		dev_err(&as->pdev->dev,
++			"failed to configure tx dma channel\n");
++		err = -EINVAL;
++	}
++
++	slave_config->direction = DMA_DEV_TO_MEM;
++	if (dmaengine_slave_config(as->dma.chan_rx, slave_config)) {
++		dev_err(&as->pdev->dev,
++			"failed to configure rx dma channel\n");
++		err = -EINVAL;
++	}
++
++	return err;
 +}
 +
-+static void atmel_spi_unlock(struct atmel_spi *as)
-+{
-+		spin_unlock_irqrestore(&as->lock, as->flags);
-+}
-+
- static inline int atmel_spi_xfer_is_last(struct spi_message *msg,
- 					struct spi_transfer *xfer)
+ static bool filter(struct dma_chan *chan, void *slave)
  {
-@@ -570,9 +581,9 @@ atmel_spi_msg_done(struct spi_master *master, struct atmel_spi *as,
- 		"xfer complete: %u bytes transferred\n",
- 		msg->actual_length);
+ 	struct	at_dma_slave *sl = slave;
+@@ -403,14 +434,12 @@ static bool filter(struct dma_chan *chan, void *slave)
+ static int atmel_spi_configure_dma(struct atmel_spi *as)
+ {
+ 	struct at_dma_slave *sdata = &as->dma.dma_slave;
++	struct dma_slave_config	slave_config;
++	int err;
  
--	spin_unlock(&as->lock);
-+	atmel_spi_unlock(as);
- 	msg->complete(msg->context);
--	spin_lock(&as->lock);
-+	atmel_spi_lock(as);
+ 	if (sdata && sdata->dma_dev) {
+ 		dma_cap_mask_t mask;
  
- 	as->current_transfer = NULL;
- 	as->next_transfer = NULL;
-@@ -803,13 +814,11 @@ static int atmel_spi_setup(struct spi_device *spi)
- 		spi->controller_state = asd;
- 		gpio_direction_output(npcs_pin, !(spi->mode & SPI_CS_HIGH));
- 	} else {
--		unsigned long		flags;
+-		/* setup DMA addresses */
+-		sdata->rx_reg = (dma_addr_t)as->phybase + SPI_RDR;
+-		sdata->tx_reg = (dma_addr_t)as->phybase + SPI_TDR;
 -
--		spin_lock_irqsave(&as->lock, flags);
-+		atmel_spi_lock(as);
- 		if (as->stay == spi)
- 			as->stay = NULL;
- 		cs_deactivate(as, spi);
--		spin_unlock_irqrestore(&as->lock, flags);
-+		atmel_spi_unlock(as);
+ 		/* Try to grab two DMA channels */
+ 		dma_cap_zero(mask);
+ 		dma_cap_set(DMA_SLAVE, mask);
+@@ -420,21 +449,27 @@ static int atmel_spi_configure_dma(struct atmel_spi *as)
+ 				dma_request_channel(mask, filter, sdata);
+ 	}
+ 	if (!as->dma.chan_rx || !as->dma.chan_tx) {
+-		if (as->dma.chan_rx)
+-			dma_release_channel(as->dma.chan_rx);
+-		if (as->dma.chan_tx)
+-			dma_release_channel(as->dma.chan_tx);
+ 		dev_err(&as->pdev->dev,
+ 			"DMA channel not available, unable to use SPI\n");
+-		return -EBUSY;
++		err = -EBUSY;
++		goto error;
  	}
  
- 	asd->csr = csr;
-@@ -828,7 +837,6 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
- {
- 	struct atmel_spi	*as;
- 	struct spi_transfer	*xfer;
--	unsigned long		flags;
- 	struct device		*controller = spi->master->dev.parent;
- 	u8			bits;
- 	struct atmel_spi_device	*asd;
-@@ -893,11 +901,11 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
- 	msg->status = -EINPROGRESS;
- 	msg->actual_length = 0;
- 
--	spin_lock_irqsave(&as->lock, flags);
-+	atmel_spi_lock(as);
- 	list_add_tail(&msg->queue, &as->queue);
- 	if (!as->current_transfer)
- 		atmel_spi_next_message(spi->master);
--	spin_unlock_irqrestore(&as->lock, flags);
-+	atmel_spi_unlock(as);
- 
++	err = atmel_spi_dma_slave_config(as, &slave_config);
++	if (err)
++		goto error;
++
+ 	dev_info(&as->pdev->dev,
+ 			"Using %s (tx) and %s (rx) for DMA transfers\n",
+ 			dma_chan_name(as->dma.chan_tx),
+ 			dma_chan_name(as->dma.chan_rx));
+-
  	return 0;
++error:
++	if (as->dma.chan_rx)
++		dma_release_channel(as->dma.chan_rx);
++	if (as->dma.chan_tx)
++		dma_release_channel(as->dma.chan_tx);
++	return err;
  }
-@@ -907,17 +915,16 @@ static void atmel_spi_cleanup(struct spi_device *spi)
- 	struct atmel_spi	*as = spi_master_get_devdata(spi->master);
- 	struct atmel_spi_device	*asd = spi->controller_state;
- 	unsigned		gpio = (unsigned) spi->controller_data;
--	unsigned long		flags;
  
- 	if (!asd)
- 		return;
+ static void atmel_spi_stop_dma(struct atmel_spi *as)
+@@ -511,6 +546,7 @@ static int atmel_spi_next_xfer_dma_submit(struct spi_master *master,
+ 	struct dma_chan		*txchan = as->dma.chan_tx;
+ 	struct dma_async_tx_descriptor *rxdesc;
+ 	struct dma_async_tx_descriptor *txdesc;
++	struct dma_slave_config	slave_config;
+ 	dma_cookie_t		cookie;
+ 	u32	len = *plen;
  
--	spin_lock_irqsave(&as->lock, flags);
-+	atmel_spi_lock(as);
- 	if (as->stay == spi) {
- 		as->stay = NULL;
- 		cs_deactivate(as, spi);
- 	}
--	spin_unlock_irqrestore(&as->lock, flags);
-+	atmel_spi_unlock(as);
+@@ -549,6 +585,10 @@ static int atmel_spi_next_xfer_dma_submit(struct spi_master *master,
  
- 	spi->controller_state = NULL;
- 	gpio_free(gpio);
+ 	*plen = len;
+ 
++	if (atmel_spi_dma_slave_config(as, &slave_config))
++		goto err_exit;
++
++
+ 	/* Send both scatterlists */
+ 	rxdesc = rxchan->device->device_prep_slave_sg(rxchan,
+ 					&as->dma.sgrx,
+@@ -597,6 +637,7 @@ static int atmel_spi_next_xfer_dma_submit(struct spi_master *master,
+ err_dma:
+ 	spi_writel(as, IDR, SPI_BIT(OVRES));
+ 	atmel_spi_stop_dma(as);
++err_exit:
+ 	atmel_spi_lock(as);
+ 	return -ENOMEM;
+ }
 -- 
 1.7.9.5

@@ -1,140 +1,29 @@
-From: Joachim  Eastwood <manabian@gmail.com>
-Subject: Re: [PATCH Resend v5 02/16] spi/spi-atmel: detect the capabilities of
- SPI core by reading the VERSION register.
-Date: Wed, 27 Feb 2013 20:41:02 +0100
-Message-ID: <CAGhQ9Vwh1Y=_ShuAB+6mfS9SLed-6UthUHk3fdJoVKDcmP6edA@mail.gmail.com>
-References: <1361925297-11854-1-git-send-email-wenyou.yang@atmel.com>
- <1361925520-11981-1-git-send-email-wenyou.yang@atmel.com>
+From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Thu, 28 Feb 2013 10:22:48 +0800
+Message-ID: <E1UAt9D-0006In-5v@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: richard.genoud@gmail.com, JM.Lin@atmel.com, nicolas.ferre@atmel.com,
- grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
- plagnioj@jcrosoft.com, linux-arm-kernel@lists.infradead.org
-To: Wenyou Yang <wenyou.yang@atmel.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1361925520-11981-1-git-send-email-wenyou.yang@atmel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 27 February 2013 01:38, Wenyou Yang <wenyou.yang@atmel.com> wrote:
-> The "has_dma_support" needed for future use with dmaengine driver.
->
-> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
-> Cc: spi-devel-general@lists.sourceforge.net
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  drivers/spi/spi-atmel.c |   70 ++++++++++++++++++++++++++++++++++++++---------
->  1 file changed, 57 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 5bf3786..a8e091b 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -39,6 +39,7 @@
->  #define SPI_CSR1                               0x0034
->  #define SPI_CSR2                               0x0038
->  #define SPI_CSR3                               0x003c
-> +#define SPI_VERSION                            0x00fc
->  #define SPI_RPR                                        0x0100
->  #define SPI_RCR                                        0x0104
->  #define SPI_TPR                                        0x0108
-> @@ -71,6 +72,8 @@
->  #define SPI_FDIV_SIZE                          1
->  #define SPI_MODFDIS_OFFSET                     4
->  #define SPI_MODFDIS_SIZE                       1
-> +#define SPI_WDRBT_OFFSET                       5
-> +#define SPI_WDRBT_SIZE                         1
->  #define SPI_LLB_OFFSET                         7
->  #define SPI_LLB_SIZE                           1
->  #define SPI_PCS_OFFSET                         16
-> @@ -180,6 +183,11 @@
->  #define spi_writel(port,reg,value) \
->         __raw_writel((value), (port)->regs + SPI_##reg)
->
-> +struct atmel_spi_caps {
-> +       bool    is_spi2;
-> +       bool    has_wdrbt;
-> +       bool    has_dma_support;
-> +};
->
->  /*
->   * The core SPI transfer engine just talks to a register bank to set up
-> @@ -204,6 +212,8 @@ struct atmel_spi {
->
->         void                    *buffer;
->         dma_addr_t              buffer_dma;
-> +
-> +       struct atmel_spi_caps   caps;
->  };
->
->  /* Controller-specific per-slave state */
-> @@ -222,14 +232,10 @@ struct atmel_spi_device {
->   *  - SPI_SR.TXEMPTY, SPI_SR.NSSR (and corresponding irqs)
->   *  - SPI_CSRx.CSAAT
->   *  - SPI_CSRx.SBCR allows faster clocking
-> - *
-> - * We can determine the controller version by reading the VERSION
-> - * register, but I haven't checked that it exists on all chips, and
-> - * this is cheaper anyway.
->   */
-> -static bool atmel_spi_is_v2(void)
-> +static bool atmel_spi_is_v2(struct atmel_spi *as)
->  {
-> -       return !cpu_is_at91rm9200();
-> +       return as->caps.is_spi2;
->  }
-
-Since you are removing cpu_is_at91rm9200() you might want to remove
-the mach/cpu.h include as well.
-
-Regarding the includes. I think asm/{io.h, gpio.h} should be converted
-to linux/{io.h, gpio.h}. In it's own patch, though.
-
-<snip>
-
-> @@ -910,6 +921,32 @@ static void atmel_spi_cleanup(struct spi_device *spi)
->         kfree(asd);
->  }
->
-> +static inline unsigned int atmel_get_version(struct atmel_spi *as)
-> +{
-> +       return spi_readl(as, VERSION) & 0x00000fff;
-> +}
-> +
-> +static void __init atmel_get_caps(struct atmel_spi *as)
-> +{
-> +       unsigned int version;
-> +
-> +       version = atmel_get_version(as);
-> +       dev_info(&as->pdev->dev, "version: 0x%x\n", version);
-> +
-> +       as->caps.is_spi2 = false;
-> +       as->caps.has_wdrbt = false;
-> +       as->caps.has_dma_support = false;
-> +
-> +       if (version > 0x121)
-> +               as->caps.is_spi2 = true;
-> +
-> +       if (version >= 0x210)
-> +               as->caps.has_wdrbt = true;
-> +
-> +       if (version >= 0x212)
-> +               as->caps.has_dma_support = true;
-> +}
-
-This could be just written as: as->caps.has_dma_support = (version >= 0x212);
-or using a conditional.
-
-It would save some lines.
-
-regards
-Joachim Eastwood
+xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
+59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
+utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KRXZlcnlvbmUgaGF0
+ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8gd2UuCk1ha2UgeW91ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0
+aCBBcHBEeW5hbWljcwpEb3dubG9hZCBBcHBEeW5hbWljcyBMaXRlIGZvciBmcmVlIHRvZGF5Ogpo
+dHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfZmViCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
+cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

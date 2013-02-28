@@ -1,11 +1,11 @@
-From: Phone House par Galerie des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Phone House rachete votre mobile au meilleur prix
-Date: Sat, 02 Mar 2013 04:07:22 +0100
-Message-ID: <1362193661.thing51316cfd3dfd3@mach10.generated>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: "=?UTF-8?B?15jXnCDXpNeo15nXpteZ?=" <dr.brain-8PHf0o9tX6dKY8/vujX/AkEOCMrvLtNR@public.gmane.org>
+Subject: [SPAM] Conference invitation - Jerusalen 2013 -  Neuroplasticity
+Date: Thu, 28 Feb 2013 22:20:04 +0300
+Message-ID: <9787f39c3dd50d785ccddc0039171acd@conferencebrain.com>
+Reply-To: dr.brain-8PHf0o9tX6dKY8/vujX/AkEOCMrvLtNR@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,47 +18,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+http://conferencebrain.com/data/unsubscribe.php?M=46387&C=6b0dfad45e5e6bb59eb9f13cf8c79667&L=3&N=3
+Late call for abstract 
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MzI1MzgmYz0xOTYxNjQxJmQ9MjAx=
-My0wMy0wMiAwNDowMDowMSZlPTEmaD0zMjUzNiZmPTMyNTM4Jmc9MzI1Mzg=3D
+Early-Bird  Registration
 
-Lien de desinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MzI1MzgmYz0xO=
-TYxNjQxJmQ9MjAxMy0wMy0wMiAwNDowMDowMSZlPTEmaD0zMjUzNiZmPTMyNTM4Jmc9MzI1Mzg=
-=3D
+to the
 
-Si vous ne parvenez pas =E0 lire correctement ce message, cliquez ici.
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-=A0
-Offre valable du 23/08/2012 au 26/09/2012 non cumulable avec toute autre of=
-fre de remise.*50% de remise imm=E9diate sur tous les mobiles dans la limit=
-e de 50&euro; sous r=E9serve pour le client d&rsquo;acheter un mobile et de=
- souscrire simultan=E9ment =E0 un forfait 2h et plus chez Orange, chez Bouy=
-gues Telecom, chez SFR ou chez Virgin Mobile =E0 un forfait 4h XL ou plus, =
-engagement 24 mois, (hors Pr=E9pay=E9s et forfaits Bloqu=E9s). Voir d=E9tai=
-ls des tarifs et forfaits en magasin. Offre valable sur les mobiles de la m=
-arque Apple uniquement sur les mod=E8les : iPhone 3GS, iPhone 4 et iPhone 4=
-S.  Le DAS (d=E9bit d'absorption sp=E9cifique) des t=E9l=E9phones quantifie=
- le niveau d'exposition maximal de l'utilisateur aux ondes =E9lectromagn=E9=
-tiques, pour une utilisation =E0 l'oreille. La r=E9glementation fran=E7aise=
- impose que le DAS ne d=E9passe pas 2 W/kg.
-=A0
-    Pour vous d=E9sabonner, cliquez ici.
----------------------------------------------------------------------------=
----
+Jerusalem International conference
+
+June 2013
+
+on
+
+Neuro-plasticity and Cognitive Modifiabilty
+
+"The role of Cognitive Intention in the Shaping of the Wo/Man"
+
+Link for details:
+
+www.brainconvention.net
+
+Powered by Interspire
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

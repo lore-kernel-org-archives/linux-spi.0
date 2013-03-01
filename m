@@ -1,13 +1,12 @@
-From: "Shopfato" <sender-rePUFFfPJeSu/0J6wgbHzw@public.gmane.org>
-Subject: [SPAM]
-	=?UTF-8?B?UG5ldXMgYSBwYXJ0aXIgZGUgMTI5IGUgUm90ZWFkb3IgV2lyZWxlc3Mgc8OzIDY5LDkwLg==?=
-Date: Thu, 28 Feb 2013 23:52:08 -0300
-Message-ID: <2b6df0dee2cc7fcc30249359167a9c92@www.promosender.info>
-Reply-To: atendimento-rePUFFfPJeSu/0J6wgbHzw@public.gmane.org
+From: "Tendance Chaussure" <contact-f2JuvQUMwfQ/FB/CMtvXbmF4kcF5tUhL@public.gmane.org>
+Subject: Offre prestige decouverte remise 10 euros avec le code NW24
+Date: Fri, 01 Mar 2013 11:08:00 +0000 (CET)
+Message-ID: <130301110800.64686836000003996@obfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,15 +18,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Your email client cannot read this email.
-To view it online, please go here:
-http://www.promosender.info/news/display.php?M=8524798&C=923e0e1f13557000c9932ffdcf39e93e&S=323&L=28&N=43
-
-
-To stop receiving these
-emails:http://www.promosender.info/news/unsubscribe.php?M=8524798&C=923e0e1f13557000c9932ffdcf39e93e&L=28&N=323
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_feb
+CkTDqWNvdXZyZXogbGEgbm91dmVsbGUgY29sbGVjdGlvbiBhdmVjIHZvdHJlIG9mZnJlIGTDqWNv
+dXZlcnRlIGRlIDEwIGV1cm9zLgoKUG91ciDDqnRyZSBzw7tyKGUpIGRlIHJlY2V2b2lyIHZvcyBu
+ZXdzbGV0dGVycywgYWpvdXRleiAibmV3c0Bub3Zlc3RpZ2UtaW5mby5jb20gKG1haWx0bzpuZXdz
+QG5vdmVzdGlnZS1pbmZvLmNvbSkiIMOgIHZvdHJlIGNhcm5ldCBkwrRhZHJlc3Nlcy4gCihodHRw
+Oi8vb2JmbTQxLmNvbS9jd3BqM2J2aHV6bnBhMGJydGwvaW5kZXgwLmh0bWwpCihodHRwOi8vb2Jm
+bTQxLmNvbS94cHBsdGIxZ3VidjU1MjByMnkvaW5kZXgxLmh0bWwpCihodHRwOi8vb2JmbTQxLmNv
+bS8xenBxZWJhMnVqMnBqZHRpYmQvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS9mbXBz
+Y2JibnVhbDV4bDJpMHMvaW5kZXgzLmh0bWwpCkNvbmZvcm3DqW1lbnQgw6AgbGEgTG9pIEluZm9y
+bWF0aXF1ZSBldCBMaWJlcnTDqXMsIGxlcyBpbmZvcm1hdGlvbnMgZGVtYW5kw6llcyBzZXJvbnQg
+dXRpbGlzw6llcyBwYXIgRmlkZGlhbSBTQS4gcG91ciBsZSB0cmFpdGVtZW50IGRlIHZvcyBjb21t
+YW5kZXMsIGxhIGdlc3Rpb24gZGUgdm90cmUgY29tcHRlIGNsaWVudCwgZXQgZGFucyB1biBidXQg
+ZGUgcHJvc3BlY3Rpb24gY29tbWVyY2lhbGUuIFZvdXMgZGlzcG9zZXogZCd1biBkcm9pdCBkJ2Fj
+Y8OocywgZGUgcmVjdGlmaWNhdGlvbiwgZGUgc3VwcHJlc3Npb24gZXQgZCdvcHBvc2l0aW9uIGF1
+IHRyYWl0ZW1lbnQgZGUgdm9zIGRvbm7DqWVzIHF1aSBwZXV0IHMnZXhlcmNlciBwYXIgaW50ZXJu
+ZXQgc3VyIHd3dy5ub3Zlc3RpZ2UuZnIsIHJ1YnJpcXVlICJDb250YWN0ZXotbm91cyIuIFBvdXIg
+cGx1cyBkJ2luZm9ybWF0aW9ucywgY29uc3VsdGV6IG5vdHJlIHNpdGUuIAotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8gd2UuCk1ha2UgeW91
+ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3dubG9hZCBBcHBEeW5hbWljcyBM
+aXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfZmViCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

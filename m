@@ -1,12 +1,12 @@
-From: "Tendance Chaussure" <contact-f2JuvQUMwfQ/FB/CMtvXbmF4kcF5tUhL@public.gmane.org>
-Subject: Offre prestige decouverte remise 10 euros avec le code NW24
-Date: Fri, 01 Mar 2013 11:08:00 +0000 (CET)
-Message-ID: <130301110800.64686836000003996@obfm41.com>
+From: Phone House par Galerie des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
+Subject: Phone House rachete votre mobile au meilleur prix
+Date: Sat, 02 Mar 2013 04:07:22 +0100
+Message-ID: <1362193661.thing51316cfd3dfd3@mach10.generated>
+Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,27 +18,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CkTDqWNvdXZyZXogbGEgbm91dmVsbGUgY29sbGVjdGlvbiBhdmVjIHZvdHJlIG9mZnJlIGTDqWNv
-dXZlcnRlIGRlIDEwIGV1cm9zLgoKUG91ciDDqnRyZSBzw7tyKGUpIGRlIHJlY2V2b2lyIHZvcyBu
-ZXdzbGV0dGVycywgYWpvdXRleiAibmV3c0Bub3Zlc3RpZ2UtaW5mby5jb20gKG1haWx0bzpuZXdz
-QG5vdmVzdGlnZS1pbmZvLmNvbSkiIMOgIHZvdHJlIGNhcm5ldCBkwrRhZHJlc3Nlcy4gCihodHRw
-Oi8vb2JmbTQxLmNvbS9jd3BqM2J2aHV6bnBhMGJydGwvaW5kZXgwLmh0bWwpCihodHRwOi8vb2Jm
-bTQxLmNvbS94cHBsdGIxZ3VidjU1MjByMnkvaW5kZXgxLmh0bWwpCihodHRwOi8vb2JmbTQxLmNv
-bS8xenBxZWJhMnVqMnBqZHRpYmQvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS9mbXBz
-Y2JibnVhbDV4bDJpMHMvaW5kZXgzLmh0bWwpCkNvbmZvcm3DqW1lbnQgw6AgbGEgTG9pIEluZm9y
-bWF0aXF1ZSBldCBMaWJlcnTDqXMsIGxlcyBpbmZvcm1hdGlvbnMgZGVtYW5kw6llcyBzZXJvbnQg
-dXRpbGlzw6llcyBwYXIgRmlkZGlhbSBTQS4gcG91ciBsZSB0cmFpdGVtZW50IGRlIHZvcyBjb21t
-YW5kZXMsIGxhIGdlc3Rpb24gZGUgdm90cmUgY29tcHRlIGNsaWVudCwgZXQgZGFucyB1biBidXQg
-ZGUgcHJvc3BlY3Rpb24gY29tbWVyY2lhbGUuIFZvdXMgZGlzcG9zZXogZCd1biBkcm9pdCBkJ2Fj
-Y8OocywgZGUgcmVjdGlmaWNhdGlvbiwgZGUgc3VwcHJlc3Npb24gZXQgZCdvcHBvc2l0aW9uIGF1
-IHRyYWl0ZW1lbnQgZGUgdm9zIGRvbm7DqWVzIHF1aSBwZXV0IHMnZXhlcmNlciBwYXIgaW50ZXJu
-ZXQgc3VyIHd3dy5ub3Zlc3RpZ2UuZnIsIHJ1YnJpcXVlICJDb250YWN0ZXotbm91cyIuIFBvdXIg
-cGx1cyBkJ2luZm9ybWF0aW9ucywgY29uc3VsdGV6IG5vdHJlIHNpdGUuIAotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8gd2UuCk1ha2UgeW91
-ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3dubG9hZCBBcHBEeW5hbWljcyBM
-aXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfZmViCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
-ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
-LWdlbmVyYWwK
+Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+
+Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MzI1MzgmYz0xOTYxNjQxJmQ9MjAx=
+My0wMy0wMiAwNDowMDowMSZlPTEmaD0zMjUzNiZmPTMyNTM4Jmc9MzI1Mzg=3D
+
+Lien de desinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MzI1MzgmYz0xO=
+TYxNjQxJmQ9MjAxMy0wMy0wMiAwNDowMDowMSZlPTEmaD0zMjUzNiZmPTMyNTM4Jmc9MzI1Mzg=
+=3D
+
+Si vous ne parvenez pas =E0 lire correctement ce message, cliquez ici.
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+=A0
+Offre valable du 23/08/2012 au 26/09/2012 non cumulable avec toute autre of=
+fre de remise.*50% de remise imm=E9diate sur tous les mobiles dans la limit=
+e de 50&euro; sous r=E9serve pour le client d&rsquo;acheter un mobile et de=
+ souscrire simultan=E9ment =E0 un forfait 2h et plus chez Orange, chez Bouy=
+gues Telecom, chez SFR ou chez Virgin Mobile =E0 un forfait 4h XL ou plus, =
+engagement 24 mois, (hors Pr=E9pay=E9s et forfaits Bloqu=E9s). Voir d=E9tai=
+ls des tarifs et forfaits en magasin. Offre valable sur les mobiles de la m=
+arque Apple uniquement sur les mod=E8les : iPhone 3GS, iPhone 4 et iPhone 4=
+S.  Le DAS (d=E9bit d'absorption sp=E9cifique) des t=E9l=E9phones quantifie=
+ le niveau d'exposition maximal de l'utilisateur aux ondes =E9lectromagn=E9=
+tiques, pour une utilisation =E0 l'oreille. La r=E9glementation fran=E7aise=
+ impose que le DAS ne d=E9passe pas 2 W/kg.
+=A0
+    Pour vous d=E9sabonner, cliquez ici.
+---------------------------------------------------------------------------=
+---
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_feb

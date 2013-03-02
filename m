@@ -1,59 +1,67 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH -next] spi: fix return value check in ce4100_spi_probe()
-Date: Sat, 2 Mar 2013 11:58:28 +0800
-Message-ID: <20130302035825.GG6610@opensource.wolfsonmicro.com>
-References: <CAPgLHd-PhE2igUQOeg90H98Ni55DwfYdp0D52uaBK0=J3M1V+g@mail.gmail.com>
+From: "Peter Korsgaard" <peter.korsgaard-ob4gmnvZ1/cAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: Driver for GPIO controlled SPI multiplexer
+Date: Sat, 02 Mar 2013 11:43:58 +0100
+Message-ID: <87wqtq3wup.fsf@thor.barco.com>
+References: <1361973519-30633-1-git-send-email-peter.korsgaard@barco.com><20130302035043.GE6610@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="HB4mHL4PVvkpZAgW"
-Cc: eric.y.miao@gmail.com, linux@arm.linux.org.uk,
-	haojian.zhuang@gmail.com, grant.likely@secretlab.ca,
-	yongjun_wei@trendmicro.com.cn,
-	linux-arm-kernel@lists.infradead.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Wei Yongjun <weiyj.lk@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAPgLHd-PhE2igUQOeg90H98Ni55DwfYdp0D52uaBK0=J3M1V+g@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, "Van Puymbroeck,
+	Dries" <Dries.VanPuymbroeck-ob4gmnvZ1/cAvxtiuMwx3w@public.gmane.org>
+To: "Mark Brown" <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-class: urn:content-classes:message
+In-Reply-To: <20130302035043.GE6610-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> (Mark
+	Brown'smessage of "Sat, 2 Mar 2013 04:50:45 +0100")
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+>>>>> "MB" == Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> writes:
 
---HB4mHL4PVvkpZAgW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On Fri, Feb 22, 2013 at 10:52:35AM +0800, Wei Yongjun wrote:
-> From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
->=20
-> In case of error, the function platform_device_register_full()
-> returns ERR_PTR() and never returns NULL. The NULL test in the
-> return value check should be replaced with IS_ERR().
+>> +The property spi-max-frequency is conceptually not needed, as each
+>> +child node holds the maximum frequency specific to that
+>> +device. However, the SPI core code wants every device in the tree to
+>> +specify a maximum frequency. So because the mux is a device to a
+>> +parent SPI master, you need to set a maximum frequency.  It's best to
+>> +set this high, as the driver will take the minimum of this value and
+>> +the child's maximum frequency value when doing a transfer to that
+>> +child device.
 
-Applied, thanks.
+MB> Can't the device just enumerate its children and DTRT?
 
---HB4mHL4PVvkpZAgW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Agreed.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRMXjaAAoJELSic+t+oim9DEsP/3UW9sJZ3GaPtY0dexitRsZ1
-BCpg99cQJfRPUWpUyEvQWBxaR0EH8xyWO+qzibN0qgbNAzwLzuDg2Df2bIPiC2x1
-vH5yEdvs0gejJFHj33zoxQj/IxtjRQCHmSAGpBaj9ojS/UnfhcZBRoC6NJbtcVCJ
-HWyDrUvKoAiQQBXaowPGLeGrDUM68/nozS5UfSyi7aKC7T5ANcs3WKaWqmf0eu2i
-SciDEhlcjohAevCT/olAVCq+WPt5iPf6c5QN1aYQmaXctANg3SXQ0gSzVq8ldFxy
-RTiLOaSJEF3XlJz/1za1Eo7N79PzBilLh+Fd9GfaFMbKkvCsd+x/H7u9V1KIRDN7
-vtV4qMhifXhcNYmE4VksD70PJNzj+NyG4fPyXEAJlihmq2Fyr1179oQePvh3J6TF
-4vy+itTpEvJ9SKQe1fKW/hfNEJTz+XAJAMmFns3tMeApAj7uVvJFoAkzKgGG/S6+
-0hODSgTJg6+SW6CZ8QkxhMFqBc7Dk2GNThrRgwfJx6ngrCsXZmP8Abjdx8bBN1uW
-hWV7sK6EMMtOkDjQ7TVuknAGC3zhjtgRXZ8t+mLijWCmYb0x1bLvTOU0EmUm582O
-pBZPpeMy9xGd40x3Gh/+xW8pd/RK/BuPaUBi25NkKySr+6tW51nwP+3MbHbNXlqh
-EMGjRYSrSgHAM1BF2JtW
-=oR2p
------END PGP SIGNATURE-----
+>> +static const struct of_device_id spi_mux_gpio_of_match[] = {
+>> +	{ .compatible = "spi-mux-gpio", },
+>> +	{},
+>> +};
+>> +MODULE_DEVICE_TABLE(of, spi_mux_gpio_of_match);
 
---HB4mHL4PVvkpZAgW--
+MB> This looks wrong without a vendor name in it but I'm not sure what we're
+MB> supposed to do for generic stuff like this.
+
+It's atleast in line with what we do elsewhere (spi-gpio, i2c-gpio,
+i2c-mux-gpio, ..)
+
+-- 
+Bye, Peter Korsgaard
+
+
+DISCLAIMER:
+Unless indicated otherwise, the information contained in this message is privileged and confidential, and is intended only for the use of the addressee(s) named above and others who have been specifically authorized to receive it. If you are not the intended recipient, you are hereby notified that any dissemination, distribution or copying of this message and/or attachments is strictly prohibited. The company accepts no liability for any damage caused by any virus transmitted by this email. Furthermore, the company does not warrant a proper and complete transmission of this information, nor does it accept liability for any delays. If you have received this message in error, please contact the sender and delete the message. Thank you.
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_feb

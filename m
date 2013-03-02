@@ -1,13 +1,20 @@
-From: "Tendance Chaussure" <contact-f2JuvQUMwfQ/FB/CMtvXbmF4kcF5tUhL@public.gmane.org>
-Subject: Offre prestige decouverte remise 10 euros avec le code NW24
-Date: Sat, 02 Mar 2013 12:07:54 +0000 (CET)
-Message-ID: <130302120754.-117918629300000240@obfm40.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: Driver for GPIO controlled SPI multiplexer
+Date: Sat, 2 Mar 2013 14:31:12 +0000
+Message-ID: <CACxGe6tpjFygsmMtpN6dUA5o78t=x0Qp3o2OOmXouAD=NgpFgQ@mail.gmail.com>
+References: <1361973519-30633-1-git-send-email-peter.korsgaard@barco.com>
+	<20130302035043.GE6610@opensource.wolfsonmicro.com>
+	<87wqtq3wup.fsf@thor.barco.com>
+	<20130302104853.GA31872@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, "Van Puymbroeck,
+	Dries" <Dries.VanPuymbroeck-ob4gmnvZ1/cAvxtiuMwx3w@public.gmane.org>,
+	Peter Korsgaard <peter.korsgaard-ob4gmnvZ1/cAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130302104853.GA31872-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,27 +25,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CkTDqWNvdXZyZXogbGEgbm91dmVsbGUgY29sbGVjdGlvbiBhdmVjIHZvdHJlIG9mZnJlIGTDqWNv
-dXZlcnRlIGRlIDEwIGV1cm9zLgoKUG91ciDDqnRyZSBzw7tyKGUpIGRlIHJlY2V2b2lyIHZvcyBu
-ZXdzbGV0dGVycywgYWpvdXRleiAibmV3c0Bub3Zlc3RpZ2UtaW5mby5jb20gKG1haWx0bzpuZXdz
-QG5vdmVzdGlnZS1pbmZvLmNvbSkiIMOgIHZvdHJlIGNhcm5ldCBkwrRhZHJlc3Nlcy4gCihodHRw
-Oi8vb2JmbTQwLmNvbS9seXZybmhweTNkY3F5bmd4anMvaW5kZXgwLmh0bWwpCihodHRwOi8vb2Jm
-bTQwLmNvbS9zZ3Y0Z2hzdTNlcWdid294cWQvaW5kZXgxLmh0bWwpCihodHRwOi8vb2JmbTQwLmNv
-bS9kZHY1NWh3NTNycnF1dnFqb3kvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS95b3Zu
-eWhxeDNjaWd6ZWpqZ2wvaW5kZXgzLmh0bWwpCkNvbmZvcm3DqW1lbnQgw6AgbGEgTG9pIEluZm9y
-bWF0aXF1ZSBldCBMaWJlcnTDqXMsIGxlcyBpbmZvcm1hdGlvbnMgZGVtYW5kw6llcyBzZXJvbnQg
-dXRpbGlzw6llcyBwYXIgRmlkZGlhbSBTQS4gcG91ciBsZSB0cmFpdGVtZW50IGRlIHZvcyBjb21t
-YW5kZXMsIGxhIGdlc3Rpb24gZGUgdm90cmUgY29tcHRlIGNsaWVudCwgZXQgZGFucyB1biBidXQg
-ZGUgcHJvc3BlY3Rpb24gY29tbWVyY2lhbGUuIFZvdXMgZGlzcG9zZXogZCd1biBkcm9pdCBkJ2Fj
-Y8OocywgZGUgcmVjdGlmaWNhdGlvbiwgZGUgc3VwcHJlc3Npb24gZXQgZCdvcHBvc2l0aW9uIGF1
-IHRyYWl0ZW1lbnQgZGUgdm9zIGRvbm7DqWVzIHF1aSBwZXV0IHMnZXhlcmNlciBwYXIgaW50ZXJu
-ZXQgc3VyIHd3dy5ub3Zlc3RpZ2UuZnIsIHJ1YnJpcXVlICJDb250YWN0ZXotbm91cyIuIFBvdXIg
-cGx1cyBkJ2luZm9ybWF0aW9ucywgY29uc3VsdGV6IG5vdHJlIHNpdGUuIAotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8gd2UuCk1ha2UgeW91
-ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3dubG9hZCBBcHBEeW5hbWljcyBM
-aXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfZmViCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
-ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
-LWdlbmVyYWwK
+On Sat, Mar 2, 2013 at 10:48 AM, Mark Brown
+<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+> On Sat, Mar 02, 2013 at 11:43:58AM +0100, Peter Korsgaard wrote:
+>
+>> MB> This looks wrong without a vendor name in it but I'm not sure what we're
+>> MB> supposed to do for generic stuff like this.
+>
+>> It's atleast in line with what we do elsewhere (spi-gpio, i2c-gpio,
+>> i2c-mux-gpio, ..)
+>
+> Yup, it just feels wrong.  Not a problem though.  Will you respin for
+> the max speed thing?
+
+It's not quite the same though. spi-gpio and i2c-gpio are very well
+defined things. An SPI multiplexer on the other hand can be
+implemented in several different ways. I would still be more specific
+here. You can be specific to your specific hardware now, and a more
+generic value can be added later.
+
+g.
+
+
+
+-- 
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_feb

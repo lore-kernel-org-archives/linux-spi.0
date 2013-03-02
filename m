@@ -1,8 +1,8 @@
 From: "Peter Korsgaard" <peter.korsgaard-ob4gmnvZ1/cAvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] spi: Driver for GPIO controlled SPI multiplexer
-Date: Sat, 02 Mar 2013 11:43:58 +0100
-Message-ID: <87wqtq3wup.fsf@thor.barco.com>
-References: <1361973519-30633-1-git-send-email-peter.korsgaard@barco.com><20130302035043.GE6610@opensource.wolfsonmicro.com>
+Date: Sat, 02 Mar 2013 12:15:04 +0100
+Message-ID: <87mwum3vev.fsf@thor.barco.com>
+References: <1361973519-30633-1-git-send-email-peter.korsgaard@barco.com><20130302035043.GE6610@opensource.wolfsonmicro.com><87wqtq3wup.fsf@thor.barco.com><20130302104853.GA31872@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,8 +11,8 @@ Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, "Van Pu
 To: "Mark Brown" <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-class: urn:content-classes:message
-In-Reply-To: <20130302035043.GE6610-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> (Mark
-	Brown'smessage of "Sat, 2 Mar 2013 04:50:45 +0100")
+In-Reply-To: <20130302104853.GA31872-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> (MarkBrown's
+	message of "Sat, 2 Mar 2013 11:48:56 +0100")
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,35 +25,22 @@ List-Id: linux-spi.vger.kernel.org
 
 >>>>> "MB" == Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> writes:
 
-Hi,
-
->> +The property spi-max-frequency is conceptually not needed, as each
->> +child node holds the maximum frequency specific to that
->> +device. However, the SPI core code wants every device in the tree to
->> +specify a maximum frequency. So because the mux is a device to a
->> +parent SPI master, you need to set a maximum frequency.  It's best to
->> +set this high, as the driver will take the minimum of this value and
->> +the child's maximum frequency value when doing a transfer to that
->> +child device.
-
-MB> Can't the device just enumerate its children and DTRT?
-
-Agreed.
-
-
->> +static const struct of_device_id spi_mux_gpio_of_match[] = {
->> +	{ .compatible = "spi-mux-gpio", },
->> +	{},
->> +};
->> +MODULE_DEVICE_TABLE(of, spi_mux_gpio_of_match);
+MB> On Sat, Mar 02, 2013 at 11:43:58AM +0100, Peter Korsgaard wrote:
 
 MB> This looks wrong without a vendor name in it but I'm not sure what we're
 MB> supposed to do for generic stuff like this.
 
-It's atleast in line with what we do elsewhere (spi-gpio, i2c-gpio,
-i2c-mux-gpio, ..)
+>> It's atleast in line with what we do elsewhere (spi-gpio, i2c-gpio,
+>> i2c-mux-gpio, ..)
+
+MB> Yup, it just feels wrong.  Not a problem though.  Will you respin for
+MB> the max speed thing?
+
+Yes, I'll ask Dries to do so on Monday. I also noticed he added a LGPL
+file header by accident.
 
 -- 
+Sorry about disclaimer - It's out of my control.
 Bye, Peter Korsgaard
 
 

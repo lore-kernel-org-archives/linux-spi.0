@@ -1,29 +1,40 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH] spi: Initialize cs_gpio and cs_gpios with -ENOENT
-Date: Sat, 02 Mar 2013 22:46:47 +0000
-Message-ID: <20130302224647.7D72C3E2F21@localhost>
-References: <1360761625-15562-1-git-send-email-andreas@gaisler.com>
-Cc: spi-devel-general@lists.sourceforge.net,
-	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	software@gaisler.com
-To: Andreas Larsson <andreas@gaisler.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1360761625-15562-1-git-send-email-andreas@gaisler.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Subject: Re: [PATCH 05/12] spi: mxs-spi: move to use generic DMA helper
+Date: Sat, 02 Mar 2013 23:17:37 +0000
+Message-ID: <20130302231737.D2D743E36A2@localhost>
+References: <1361978748-25281-1-git-send-email-shawn.guo@linaro.org>
+ <1361978748-25281-6-git-send-email-shawn.guo@linaro.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam@freescale.com>, Arnd Bergmann <arnd@arndb.de>,
+ Huang Shijie <b32955@freescale.com>, Vinod Koul <vinod.koul@intel.com>,
+ Marek Vasut <marek.vasut@gmail.com>, spi-devel-general@lists.sourceforge.net,
+ Shawn Guo <shawn.guo@linaro.org>
+To: Shawn Guo <shawn.guo@linaro.org>, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1361978748-25281-6-git-send-email-shawn.guo@linaro.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 13 Feb 2013 14:20:25 +0100, Andreas Larsson <andreas@gaisler.com> wrote:
-> The return value from of_get_named_gpio is -ENOENT when the given index
-> matches a hole in the "cs-gpios" property phandle list. However, the
-> default value of cs_gpio in struct spi_device and entries of cs_gpios in
-> struct spi_master is -EINVAL, which is documented to indicate that a
-> GPIO line should not be used for the given spi_device.
+On Wed, 27 Feb 2013 23:25:41 +0800, Shawn Guo <shawn.guo@linaro.org> wrote:
+> With the generic DMA device tree helper supported by mxs-dma driver,
+> client devices only need to call dma_request_slave_channel() for
+> requesting a DMA channel from dmaengine.
 > 
-> This sets the default value of cs_gpio in struct spi_device and entries
-> of cs_gpios in struct spi_master to -ENOENT. Thus, -ENOENT is the only
-> value used to indicate that no GPIO line should be used.
+> Since mxs is a DT only platform now, along with the changes, the non-DT
+> case handling in probe function also gets removed.
 > 
-> Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+> Cc: Grant Likely <grant.likely@secretlab.ca>
+> Cc: spi-devel-general@lists.sourceforge.net
 
-Applied, thanks.
-g.
+Acked-by: Grant Likely <grant.likely@secretlab.ca>

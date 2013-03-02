@@ -1,19 +1,19 @@
 From: Grant Likely <grant.likely@secretlab.ca>
-Subject: Re: [PATCH 05/12] spi: mxs-spi: move to use generic DMA helper
-Date: Sat, 02 Mar 2013 23:17:37 +0000
-Message-ID: <20130302231737.D2D743E36A2@localhost>
-References: <1361978748-25281-1-git-send-email-shawn.guo@linaro.org>
- <1361978748-25281-6-git-send-email-shawn.guo@linaro.org>
+Subject: Re: [PATCH v5 01/16] spi/spi-atmel: fix master->num_chipselect
+ wrongly set.
+Date: Sat, 02 Mar 2013 23:15:35 +0000
+Message-ID: <20130302231535.8E6043E35BE@localhost>
+References: <1361861289-30332-1-git-send-email-wenyou.yang@atmel.com>
+ <1361861289-30332-2-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam@freescale.com>, Arnd Bergmann <arnd@arndb.de>,
- Huang Shijie <b32955@freescale.com>, Vinod Koul <vinod.koul@intel.com>,
- Marek Vasut <marek.vasut@gmail.com>, spi-devel-general@lists.sourceforge.net,
- Shawn Guo <shawn.guo@linaro.org>
-To: Shawn Guo <shawn.guo@linaro.org>, linux-arm-kernel@lists.infradead.org
+Cc: richard.genoud@gmail.com, JM.Lin@atmel.com, nicolas.ferre@atmel.com,
+ linux-kernel@vger.kernel.org, wenyou.yang@atmel.com,
+ spi-devel-general@lists.sourceforge.net, plagnioj@jcrosoft.com
+To: Wenyou Yang <wenyou.yang@atmel.com>, linux-arm-kernel@lists.infradead.org
 Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1361978748-25281-6-git-send-email-shawn.guo@linaro.org>
+In-Reply-To: <1361861289-30332-2-git-send-email-wenyou.yang@atmel.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
  <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
@@ -25,16 +25,19 @@ Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
 Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 27 Feb 2013 23:25:41 +0800, Shawn Guo <shawn.guo@linaro.org> wrote:
-> With the generic DMA device tree helper supported by mxs-dma driver,
-> client devices only need to call dma_request_slave_channel() for
-> requesting a DMA channel from dmaengine.
+On Tue, 26 Feb 2013 14:47:54 +0800, Wenyou Yang <wenyou.yang@atmel.com> wrote:
+> if the spi property "cs-gpios" is set as below:
 > 
-> Since mxs is a DT only platform now, along with the changes, the non-DT
-> case handling in probe function also gets removed.
+> 	cs-gpios = <0>, <&pioC 11 0>, <0>, <0>;
 > 
-> Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
-> Cc: Grant Likely <grant.likely@secretlab.ca>
+> the master->num_chipselect will wrongly be set to 0,
+> and the spi fail to probe.
+> 
+> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
 > Cc: spi-devel-general@lists.sourceforge.net
+> Cc: linux-kernel@vger.kernel.org
 
-Acked-by: Grant Likely <grant.likely@secretlab.ca>
+I think I've got this bug fixed in the core spi code. Give it a couple
+of days and retest with linux-next.
+
+g.

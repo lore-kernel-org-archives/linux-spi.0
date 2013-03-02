@@ -1,16 +1,18 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH V2 3/5] spi: s3c64xx: Added provision for non-gpio i/o's
-Date: Sat, 02 Mar 2013 22:56:17 +0000
-Message-ID: <20130302225617.405D23E3209@localhost>
-References: <1360785828-32767-1-git-send-email-ks.giri@samsung.com>
-	<1360785828-32767-4-git-send-email-ks.giri@samsung.com>
+Subject: Re: [PATCH] spi/atmel: fix speed_hz check in atmel_spi_transfer()
+Date: Sat, 02 Mar 2013 22:31:26 +0000
+Message-ID: <20130302223126.3E2A63E2EAA@localhost>
+References: <CACxGe6u0o0V3Jm9-iyizKH5KX=dPe-CL0bH-Kc7KM_k6gAk69A@mail.gmail.com>
+	<1361310297-28002-1-git-send-email-manabian@gmail.com>
+	<51248094.90808@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Joachim Eastwood <manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1360785828-32767-4-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <51248094.90808-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,31 +23,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 13 Feb 2013 12:03:46 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> Currently the drivers supports only the GPIO based i/o pins.
-> But there are Exynos SoC's that use the same controller with
-> dedicated i/o pins.
+On Wed, 20 Feb 2013 08:51:48 +0100, Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
+> On 02/19/2013 10:44 PM, Joachim Eastwood :
+> > atmel_spi_transfer() would check speed_hz and fail if
+> > the speed was changed in the transfer. After commit
+> > "spi: make sure all transfer has proper speed set"
+> > this would happen on all transfers.
+> > 
+> > Change speed_hz check to only fail if a lower speed
+> > than max is requested.
+> > 
+> > Signed-off-by: Joachim Eastwood <manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > 
-> This patch  provides provision to support gpio/dedicated pins.
-> The decision is made by parsing the "gpios" property in the spi
-> node.
+> Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 > 
-> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> ---
-> changes in v2:
-> 		Removed the gpio quirk. Parse the "gpios" property
-> 		to decide whether  gpio / dedicated i/o lines should
-> 		be used.
+> Thanks for spotting this Joachim.
 
-It is perfectly valid to support both at the same time. The gpios
-property can be 'sparse' in that when a gpio is specified, use that for
-the CS control, but use a dedicated line with it is not. Instead of
-doing this it would be better off to switch this driver to use the new
-cs_gpios parsing in driver/spi/spi.c
+Applied, thanks.
 
 g.
-
-
 
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.

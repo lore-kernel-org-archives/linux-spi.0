@@ -1,18 +1,22 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi/atmel: fix speed_hz check in atmel_spi_transfer()
-Date: Sat, 02 Mar 2013 22:31:26 +0000
-Message-ID: <20130302223126.3E2A63E2EAA@localhost>
-References: <CACxGe6u0o0V3Jm9-iyizKH5KX=dPe-CL0bH-Kc7KM_k6gAk69A@mail.gmail.com>
-	<1361310297-28002-1-git-send-email-manabian@gmail.com>
-	<51248094.90808@atmel.com>
+Subject: Re: [PATCH v3 0/7] spi: spi-fsl-spi: Make spi-fsl-spi usable in cpu
+	mode outside of FSL SOC environments and add a grlib variant
+	normally running on sparc
+Date: Sat, 02 Mar 2013 21:57:22 +0000
+Message-ID: <20130302215723.05FE93E2261@localhost>
+References: <1360943547-2186-1-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Joachim Eastwood <manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>, software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Anton Vorontsov <anton.vorontsov-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <51248094.90808-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1360943547-2186-1-git-send-email-andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,25 +27,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 20 Feb 2013 08:51:48 +0100, Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
-> On 02/19/2013 10:44 PM, Joachim Eastwood :
-> > atmel_spi_transfer() would check speed_hz and fail if
-> > the speed was changed in the transfer. After commit
-> > "spi: make sure all transfer has proper speed set"
-> > this would happen on all transfers.
-> > 
-> > Change speed_hz check to only fail if a lower speed
-> > than max is requested.
-> > 
-> > Signed-off-by: Joachim Eastwood <manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> 
-> Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> 
-> Thanks for spotting this Joachim.
+On Fri, 15 Feb 2013 16:52:20 +0100, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org> wrote:
+> Changes since v3:
+> - Patches 1-7: Added Acked-by: Anton Vorontsov <anton-9xeibp6oKSgdnm+yROfE0A@public.gmane.org>
+> - Patch 1: Small style tweak lining up function arguments properly
+> - Patch 7: Changed a style issue with two variables declared on same line
+> - Patch 7: Removed usage of cs_gpio_flags variable to apply cleanly to spi/next
+> - Patch 7: Changed get_named_gpio "hole value" to -ENOENT => Requries
+>   the "spi: Initialize cs_gpio and cs_gpios with ENOENT" patch for
+>   TYPE_GRLIB support
 
-Applied, thanks.
+Merged entire series for v3.10, thanks.
 
 g.
+
 
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.

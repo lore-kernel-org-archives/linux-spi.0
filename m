@@ -1,63 +1,75 @@
 From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: RE: [PATCH 0/4] Enable SPI flash support on da850-evm DT kernel
-Date: Sat, 02 Mar 2013 23:13:55 +0000
-Message-ID: <20130302231355.5CD2D3E34C9@localhost>
-References: <1361789050-637-1-git-send-email-prakash.pm@ti.com>
-	<512DC65D.7080603@ti.com>
-	<A73F36158E33644199EB82C5EC81C7BC3EA47FEF@DBDE01.ent.ti.com>
+Subject: Re: [PATCH] of: spi: Return error from of_spi_register_master on bad
+ "cs-gpios" property
+Date: Sat, 02 Mar 2013 22:49:06 +0000
+Message-ID: <20130302224906.369303E2F5C@localhost>
+References: <1360761804-16044-1-git-send-email-andreas@gaisler.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	"linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org" <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org"
-	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	"rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org" <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "hs-ynQEQJNshbs@public.gmane.org" <hs-ynQEQJNshbs@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>, "Nori,
-	Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <A73F36158E33644199EB82C5EC81C7BC3EA47FEF-Er742YJ7I/eIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org
+To: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1360761804-16044-1-git-send-email-andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 27 Feb 2013 11:32:39 +0000, "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org> wrote:
-> On Wed, Feb 27, 2013 at 14:09:57, Nori, Sekhar wrote:
-> > On 2/25/2013 4:14 PM, Manjunathappa, Prakash wrote:
-> > > Patch enables support for m25p80 SPI flash support on
-> > > da850-EVM.
-> > > 
-> > > Testing information:
-> > > da850-evm comes with partitions specified in DT blob.
-> > > Able to mount/umount and create/delete files on filesystem partition.
-> > > 
-> > > Depends on below patch in spi-next branch of git://git.secretlab.ca/git/linux-2.6.git.
-> > > "spi/davinci: add OF support for the spi controller"
-> > > 
+On Wed, 13 Feb 2013 14:23:24 +0100, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org> wrote:
+> This makes sure that an error is returned on an incorrectly formed
+> "cs-gpios" property, but reports success when the "cs-gpios" property is
+> well formed or missing.
 > 
-> Grant,
-> I could not find binding documentation changes submitted with above patch.
-> I checked in spi-next and linux-next.
+> When holes in the cs-gpios property phandle list is used to indicate
+> that some other form of chipselect is to be used it is important that
+> failure to read a broken "cs-gpios" property does not silently fail
+> leading to the spi controller to use an unintended chipselect.
+> 
+> Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
 
-It must have been missed then. It happens sometimes. Can someone submit
-a fixup patch please?
+Applied, thanks.
 
-Thanks,
 g.
 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_feb
+> ---
+> 
+> Can only be applied to devicetree/next as it builds upon the
+> "of: Add helper for counting phandle refernces" patch series.
+> 
+>  drivers/spi/spi.c |    5 ++++-
+>  1 files changed, 4 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 21c4748..9b5f024 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -1068,8 +1068,11 @@ static int of_spi_register_master(struct spi_master *master)
+>  	nb = of_gpio_named_count(np, "cs-gpios");
+>  	master->num_chipselect = max(nb, (int)master->num_chipselect);
+>  
+> -	if (nb < 1)
+> +	/* Return error only for an incorrectly formed cs-gpios property */
+> +	if (nb == 0 || nb == -ENOENT)
+>  		return 0;
+> +	else if (nb < 0)
+> +		return nb;
+>  
+>  	cs = devm_kzalloc(&master->dev,
+>  			  sizeof(int) * master->num_chipselect,
+> -- 
+> 1.7.0.4
+> 
+
+-- 
+Grant Likely, B.Sc, P.Eng.
+Secret Lab Technologies, Ltd.

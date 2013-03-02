@@ -1,218 +1,78 @@
-From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Subject: Re: [PATCH v5 02/16] spi/spi-atmel: detect the capabilities of SPI
- core by reading the VERSION register.
-Date: Sun, 3 Mar 2013 11:28:59 +0100
-Message-ID: <20130303102859.GN30595@game.jcrosoft.org>
-References: <1361861289-30332-1-git-send-email-wenyou.yang@atmel.com>
- <1361861289-30332-3-git-send-email-wenyou.yang@atmel.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH v2 7/7] spi: spi-fsl-spi: Add support for gpio chipselects
+	for GRLIB type cores
+Date: Sat, 02 Mar 2013 21:34:47 +0000
+Message-ID: <20130302213447.2478B3E2249@localhost>
+References: <1360242731-13700-1-git-send-email-andreas@gaisler.com>
+	<1360242731-13700-8-git-send-email-andreas@gaisler.com>
+	<20130207160821.GA22224@lizard.gateway.2wire.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: richard.genoud@gmail.com, JM.Lin@atmel.com, nicolas.ferre@atmel.com,
- linux-kernel@vger.kernel.org, grant.likely@secretlab.ca,
- spi-devel-general@lists.sourceforge.net, linux-arm-kernel@lists.infradead.org
-To: Wenyou Yang <wenyou.yang@atmel.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <1361861289-30332-3-git-send-email-wenyou.yang@atmel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Joakim Tjernlund <Joakim.Tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>, software-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Peter Korsgaard <jacmet-OfajU3CKLf1/SzgSGea1oA@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mingkai Hu <Mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Anton Vorontsov <anton-9xeibp6oKSgdnm+yROfE0A@public.gmane.org>, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130207160821.GA22224-1CZZkhFgUWNRmOO2HpYVOJIbA5emDH3N@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 14:47 Tue 26 Feb     , Wenyou Yang wrote:
-> the "has_dma_support" needed for future use with dmaengine driver.
+On Thu, 7 Feb 2013 08:08:21 -0800, Anton Vorontsov <anton-9xeibp6oKSgdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Feb 07, 2013 at 02:12:11PM +0100, Andreas Larsson wrote:
+> > This relies upon of_spi_register_master to find out which gpios to use.
+> > 
+> > Signed-off-by: Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>
+> > ---
+> >  drivers/spi/spi-fsl-lib.h |    1 +
+> >  drivers/spi/spi-fsl-spi.c |   53 +++++++++++++++++++++++++++++++++++++++-----
+> >  2 files changed, 48 insertions(+), 6 deletions(-)
 > 
-> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
-> Cc: spi-devel-general@lists.sourceforge.net
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  drivers/spi/spi-atmel.c |   70 ++++++++++++++++++++++++++++++++++++++---------
->  1 file changed, 57 insertions(+), 13 deletions(-)
+> Just a couple of minor nits...
 > 
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 5bf3786..a8e091b 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -39,6 +39,7 @@
->  #define SPI_CSR1				0x0034
->  #define SPI_CSR2				0x0038
->  #define SPI_CSR3				0x003c
-> +#define SPI_VERSION				0x00fc
->  #define SPI_RPR					0x0100
->  #define SPI_RCR					0x0104
->  #define SPI_TPR					0x0108
-> @@ -71,6 +72,8 @@
->  #define SPI_FDIV_SIZE				1
->  #define SPI_MODFDIS_OFFSET			4
->  #define SPI_MODFDIS_SIZE			1
-> +#define SPI_WDRBT_OFFSET			5
-> +#define SPI_WDRBT_SIZE				1
->  #define SPI_LLB_OFFSET				7
->  #define SPI_LLB_SIZE				1
->  #define SPI_PCS_OFFSET				16
-> @@ -180,6 +183,11 @@
->  #define spi_writel(port,reg,value) \
->  	__raw_writel((value), (port)->regs + SPI_##reg)
->  
-> +struct atmel_spi_caps {
-> +	bool	is_spi2;
-> +	bool	has_wdrbt;
-> +	bool	has_dma_support;
-> +};
->  
->  /*
->   * The core SPI transfer engine just talks to a register bank to set up
-> @@ -204,6 +212,8 @@ struct atmel_spi {
->  
->  	void			*buffer;
->  	dma_addr_t		buffer_dma;
-> +
-> +	struct atmel_spi_caps	caps;
->  };
->  
->  /* Controller-specific per-slave state */
-> @@ -222,14 +232,10 @@ struct atmel_spi_device {
->   *  - SPI_SR.TXEMPTY, SPI_SR.NSSR (and corresponding irqs)
->   *  - SPI_CSRx.CSAAT
->   *  - SPI_CSRx.SBCR allows faster clocking
-> - *
-> - * We can determine the controller version by reading the VERSION
-> - * register, but I haven't checked that it exists on all chips, and
-> - * this is cheaper anyway.
->   */
-> -static bool atmel_spi_is_v2(void)
-> +static bool atmel_spi_is_v2(struct atmel_spi *as)
->  {
-> -	return !cpu_is_at91rm9200();
-> +	return as->caps.is_spi2;
->  }
->  
->  /*
-> @@ -263,15 +269,20 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
->  	unsigned active = spi->mode & SPI_CS_HIGH;
->  	u32 mr;
->  
-> -	if (atmel_spi_is_v2()) {
-> +	if (atmel_spi_is_v2(as)) {
->  		/*
->  		 * Always use CSR0. This ensures that the clock
->  		 * switches to the correct idle polarity before we
->  		 * toggle the CS.
->  		 */
->  		spi_writel(as, CSR0, asd->csr);
-> -		spi_writel(as, MR, SPI_BF(PCS, 0x0e) | SPI_BIT(MODFDIS)
-> +		if (as->caps.has_wdrbt) {
-> +			spi_writel(as, MR, SPI_BF(PCS, 0x0e) | SPI_BIT(WDRBT)
-> +				| SPI_BIT(MODFDIS) | SPI_BIT(MSTR));
-> +		} else {
-> +			spi_writel(as, MR, SPI_BF(PCS, 0x0e) | SPI_BIT(MODFDIS)
->  				| SPI_BIT(MSTR));
-> +		}
->  		mr = spi_readl(as, MR);
->  		gpio_set_value(asd->npcs_pin, active);
->  	} else {
-> @@ -318,7 +329,7 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
->  			asd->npcs_pin, active ? " (low)" : "",
->  			mr);
->  
-> -	if (atmel_spi_is_v2() || spi->chip_select != 0)
-> +	if (atmel_spi_is_v2(as) || spi->chip_select != 0)
->  		gpio_set_value(asd->npcs_pin, !active);
->  }
->  
-> @@ -719,7 +730,7 @@ static int atmel_spi_setup(struct spi_device *spi)
->  	}
->  
->  	/* see notes above re chipselect */
-> -	if (!atmel_spi_is_v2()
-> +	if (!atmel_spi_is_v2(as)
->  			&& spi->chip_select == 0
->  			&& (spi->mode & SPI_CS_HIGH)) {
->  		dev_dbg(&spi->dev, "setup: can't be active-high\n");
-> @@ -728,7 +739,7 @@ static int atmel_spi_setup(struct spi_device *spi)
->  
->  	/* v1 chips start out at half the peripheral bus speed. */
->  	bus_hz = clk_get_rate(as->clk);
-> -	if (!atmel_spi_is_v2())
-> +	if (!atmel_spi_is_v2(as))
->  		bus_hz /= 2;
->  
->  	if (spi->max_speed_hz) {
-> @@ -804,7 +815,7 @@ static int atmel_spi_setup(struct spi_device *spi)
->  		"setup: %lu Hz bpw %u mode 0x%x -> csr%d %08x\n",
->  		bus_hz / scbr, bits, spi->mode, spi->chip_select, csr);
->  
-> -	if (!atmel_spi_is_v2())
-> +	if (!atmel_spi_is_v2(as))
->  		spi_writel(as, CSR0 + 4 * spi->chip_select, csr);
->  
->  	return 0;
-> @@ -910,6 +921,32 @@ static void atmel_spi_cleanup(struct spi_device *spi)
->  	kfree(asd);
->  }
->  
-> +static inline unsigned int atmel_get_version(struct atmel_spi *as)
-> +{
-> +	return spi_readl(as, VERSION) & 0x00000fff;
-> +}
-> +
-> +static void __init atmel_get_caps(struct atmel_spi *as)
-> +{
-> +	unsigned int version;
-> +
-> +	version = atmel_get_version(as);
-> +	dev_info(&as->pdev->dev, "version: 0x%x\n", version);
-> +
-> +	as->caps.is_spi2 = false;
-> +	as->caps.has_wdrbt = false;
-> +	as->caps.has_dma_support = false;
-> +
-> +	if (version > 0x121)
-> +		as->caps.is_spi2 = true;
-> +
-> +	if (version >= 0x210)
-> +		as->caps.has_wdrbt = true;
-> +
-> +	if (version >= 0x212)
-> +		as->caps.has_dma_support = true;
-use switch here
+> > diff --git a/drivers/spi/spi-fsl-lib.h b/drivers/spi/spi-fsl-lib.h
+> > index d5c788b..52db693 100644
+> > --- a/drivers/spi/spi-fsl-lib.h
+> > +++ b/drivers/spi/spi-fsl-lib.h
+> > @@ -71,6 +71,7 @@ struct mpc8xxx_spi {
+> >  
+> >  #ifdef CONFIG_SPI_FSL_SPI
+> >  	int type;
+> > +	int native_chipselects;
+> >  	u8 max_bits_per_word;
+> >  
+> >  	void (*set_shifts)(u32 *rx_shift, u32 *tx_shift,
+> > diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+> > index 55652e6..2befe16 100644
+> > --- a/drivers/spi/spi-fsl-spi.c
+> > +++ b/drivers/spi/spi-fsl-spi.c
+> > @@ -418,7 +418,7 @@ static int fsl_spi_setup(struct spi_device *spi)
+> >  {
+> >  	struct mpc8xxx_spi *mpc8xxx_spi;
+> >  	struct fsl_spi_reg *reg_base;
+> > -	int retval;
+> > +	int retval, desel;
+> 
+> We don't usually place variable declarations on the same line, unless the
+> variables are closely related.
 
-or filled struct
-> +}
-> +
->  /*-------------------------------------------------------------------------*/
->  
->  static int atmel_spi_probe(struct platform_device *pdev)
-> @@ -970,6 +1007,8 @@ static int atmel_spi_probe(struct platform_device *pdev)
->  	as->irq = irq;
->  	as->clk = clk;
->  
-> +	atmel_get_caps(as);
-> +
->  	ret = request_irq(irq, atmel_spi_interrupt, 0,
->  			dev_name(&pdev->dev), master);
->  	if (ret)
-> @@ -979,7 +1018,12 @@ static int atmel_spi_probe(struct platform_device *pdev)
->  	clk_enable(clk);
->  	spi_writel(as, CR, SPI_BIT(SWRST));
->  	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
-> -	spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
-> +	if (as->caps.has_wdrbt) {
-> +		spi_writel(as, MR, SPI_BIT(WDRBT) | SPI_BIT(MODFDIS)
-> +				| SPI_BIT(MSTR));
-> +	} else {
-> +		spi_writel(as, MR, SPI_BIT(MSTR) | SPI_BIT(MODFDIS));
-> +	}
->  	spi_writel(as, PTCR, SPI_BIT(RXTDIS) | SPI_BIT(TXTDIS));
->  	spi_writel(as, CR, SPI_BIT(SPIEN));
->  
-> -- 
-> 1.7.9.5
-> 
+That's not something I've ever heard before. I certainly won't reject a
+patch over it.
+
+g.
+
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_feb

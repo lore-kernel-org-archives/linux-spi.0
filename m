@@ -1,49 +1,47 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 1/4] spi/davinci: fix module build error
-Date: Sat, 02 Mar 2013 23:11:38 +0000
-Message-ID: <20130302231138.209BB3E33F5@localhost>
-References: <1361789050-637-1-git-send-email-prakash.pm@ti.com>
- <1361789050-637-2-git-send-email-prakash.pm@ti.com> <512DC35B.20501@ti.com>
+From: Manish Badarkhe <badarkhe.manish@gmail.com>
+Subject: Re: [PATCH V3] spi: tegra114: add spi driver
+Date: Sun, 3 Mar 2013 18:19:04 +0530
+Message-ID: <CAKDJKT6i6ivb6kQ9u3_SUCEJmL0zdXdQAomKS0vRvqXYGumg1g@mail.gmail.com>
+References: <1361536659-23225-1-git-send-email-ldewangan@nvidia.com>
+	<CAKDJKT5yngpZQC-ZvHSaKeBVHW97wo4QwLSXQ4KsVWCs5J1YKg@mail.gmail.com>
+	<20130222180226.GC19796@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org,
- devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
- spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, hs-ynQEQJNshbs@public.gmane.org,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <512DC35B.20501-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Laxman Dewangan <ldewangan@nvidia.com>, grant.likely@secretlab.ca,
+	rob.herring@calxeda.com, linux-doc@vger.kernel.org,
+	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-tegra@vger.kernel.org, swarren@nvidia.com
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <20130222180226.GC19796@opensource.wolfsonmicro.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, 27 Feb 2013 13:57:07 +0530, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org> wrote:
-> On 2/25/2013 4:14 PM, Manjunathappa, Prakash wrote:
-> > Fix below module build error:
-> > 
-> >   CC [M]  drivers/spi/spi-davinci.o
-> > drivers/spi/spi-davinci.c:774:1: error: '__mod_of_device_table' aliased
-> > to undefined symbol 'davini_spi_of_match'
-> > drivers/spi/spi-davinci.c:774:1: error: '__mod_of_device_table' aliased
-> > to undefined symbol 'davini_spi_of_match'
-> > make[2]: *** [drivers/spi/spi-davinci.o] Error 1
-> > make[1]: *** [drivers/spi] Error 2
-> > make[1]: *** Waiting for unfinished jobs....
-> > make: *** [drivers] Error 2
-> > 
-> > Signed-off-by: Manjunathappa, Prakash <prakash.pm-l0cyMroinI0@public.gmane.org>
-> 
-> Acked-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Hi Mark,
 
-Applied, thanks.
+On Fri, Feb 22, 2013 at 11:32 PM, Mark Brown
+<broonie@opensource.wolfsonmicro.com> wrote:
+> On Fri, Feb 22, 2013 at 07:59:11PM +0530, Manish Badarkhe wrote:
+>> On Fri, Feb 22, 2013 at 6:07 PM, Laxman Dewangan <ldewangan@nvidia.com> wrote:
+>> > Add SPI driver for NVIDIA's Tegra114 SPI controller. This controller
+>> > is different than the older SoCs SPI controller in internal design as
+>> > well as register interface.
+>> >
+>> > This driver supports the:
+>> > - non DMA based transfer for smaller transfer i.e. less than FIFO depth.
+>> > - APB DMA based transfer for lager transfer i.e. more than FIFO depth.
+>>
+>> s/lager/larger
+>>
+>> > - Clock gating through runtime PM callbacks.
+>> > - registration through DT only.
+>
+> Delete unneeded context from your replies, we shouldn't need to page
+> through the entire patch because you've noticed a spelling error...
 
-g.
+Thanks for your reply.
+I will take care of this later on.
+
+Thanks
+Manish Badarkhe

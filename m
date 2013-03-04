@@ -1,19 +1,17 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH] spi: Driver for GPIO controlled SPI multiplexer
-Date: Mon, 04 Mar 2013 10:38:35 +0800
-Message-ID: <20130304023835.5F0BC3E14C0@localhost>
-References: <1361973519-30633-1-git-send-email-peter.korsgaard@barco.com>
-	<20130302173244.41A2B3E1089@localhost>
-	<20130303074209.GA19020@opensource.wolfsonmicro.com>
+From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V2 2/5] spi: s3c64xx: added support for polling mode
+Date: Mon, 4 Mar 2013 11:45:38 +0530
+Message-ID: <CAKrE-Kd-ewE6wHgnTsmTiM9HnijV-2SQjGLJ_zDHAqCfUvu90g@mail.gmail.com>
+References: <1360785828-32767-1-git-send-email-ks.giri@samsung.com>
+	<1360785828-32767-3-git-send-email-ks.giri@samsung.com>
+	<20130302225820.C1B693E3246@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Dries Van Puymbroeck <Dries.VanPuymbroeck-ob4gmnvZ1/cAvxtiuMwx3w@public.gmane.org>,
-	Peter Korsgaard <peter.korsgaard-ob4gmnvZ1/cAvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130303074209.GA19020-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+In-Reply-To: <20130302225820.C1B693E3246@localhost>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,29 +22,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, 3 Mar 2013 15:42:39 +0800, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
-> On Sat, Mar 02, 2013 at 05:32:44PM +0000, Grant Likely wrote:
-> 
-> > Mark commented on this too, but I disagree with him on one point; it
-> > will actually be simpler if you finish up the transfer in the callback,
-> > and that it really should be implemented that way from day one.
-> 
-> > xfer_complete and xfer_complete_wq can be dropped, and
-> > child_mesg_complete, child_mesg_context and child_mesg_dev will move
-> > into struct spi_mux_gpio.
-> 
-> I agree with this, I was just thinking that the waitqueue looked like a
-> first stage in allowing multiple in flight transfers on the parent.
-> Unless I'm missing something, I didn't think too deeply about
-> implementing that, it's just that it's going to be needed at some point
-> as it's so important for performance.
-
-Alright, I'll bite. How? What's the scenario where the driver will need
-to manage the wait queue directly? The point of the transfer_one_message
-interface was pull queue management into the core and allow the driver
-to get the next message just when it needs it.
-
-g.
+On Sun, Mar 3, 2013 at 4:28 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
+> On Wed, 13 Feb 2013 12:03:45 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> The 64xx spi driver supports partial polling mode.
+>> Only the last chunk of the transfer length is transferred
+>> or recieved in polling mode.
+>>
+>> Some SoC's that adopt this controller might not have have dma
+>> interface. This patch adds support for complete polling mode
+>> and gives flexibity for the user to select poll/dma mode.
+>>
+>> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>
+> Hi Girish,
+>
+> Can you please rebase this series onto Linus' current tree? It won't
+> currently apply due to other changes.
+Sure Grant. will do that. Was busy with other assignment and couldnt do it.
+>
+> Thanks,
+> g.
+>
 
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.

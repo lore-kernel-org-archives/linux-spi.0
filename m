@@ -1,47 +1,55 @@
-From: Manish Badarkhe <badarkhe.manish@gmail.com>
-Subject: Re: [PATCH V3] spi: tegra114: add spi driver
-Date: Sun, 3 Mar 2013 18:19:04 +0530
-Message-ID: <CAKDJKT6i6ivb6kQ9u3_SUCEJmL0zdXdQAomKS0vRvqXYGumg1g@mail.gmail.com>
-References: <1361536659-23225-1-git-send-email-ldewangan@nvidia.com>
-	<CAKDJKT5yngpZQC-ZvHSaKeBVHW97wo4QwLSXQ4KsVWCs5J1YKg@mail.gmail.com>
-	<20130222180226.GC19796@opensource.wolfsonmicro.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] spi: Driver for GPIO controlled SPI multiplexer
+Date: Mon, 04 Mar 2013 10:38:35 +0800
+Message-ID: <20130304023835.5F0BC3E14C0@localhost>
+References: <1361973519-30633-1-git-send-email-peter.korsgaard@barco.com>
+	<20130302173244.41A2B3E1089@localhost>
+	<20130303074209.GA19020@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Laxman Dewangan <ldewangan@nvidia.com>, grant.likely@secretlab.ca,
-	rob.herring@calxeda.com, linux-doc@vger.kernel.org,
-	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-tegra@vger.kernel.org, swarren@nvidia.com
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <20130222180226.GC19796@opensource.wolfsonmicro.com>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Dries Van Puymbroeck <Dries.VanPuymbroeck-ob4gmnvZ1/cAvxtiuMwx3w@public.gmane.org>,
+	Peter Korsgaard <peter.korsgaard-ob4gmnvZ1/cAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130303074209.GA19020-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+On Sun, 3 Mar 2013 15:42:39 +0800, Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+> On Sat, Mar 02, 2013 at 05:32:44PM +0000, Grant Likely wrote:
+> 
+> > Mark commented on this too, but I disagree with him on one point; it
+> > will actually be simpler if you finish up the transfer in the callback,
+> > and that it really should be implemented that way from day one.
+> 
+> > xfer_complete and xfer_complete_wq can be dropped, and
+> > child_mesg_complete, child_mesg_context and child_mesg_dev will move
+> > into struct spi_mux_gpio.
+> 
+> I agree with this, I was just thinking that the waitqueue looked like a
+> first stage in allowing multiple in flight transfers on the parent.
+> Unless I'm missing something, I didn't think too deeply about
+> implementing that, it's just that it's going to be needed at some point
+> as it's so important for performance.
 
-On Fri, Feb 22, 2013 at 11:32 PM, Mark Brown
-<broonie@opensource.wolfsonmicro.com> wrote:
-> On Fri, Feb 22, 2013 at 07:59:11PM +0530, Manish Badarkhe wrote:
->> On Fri, Feb 22, 2013 at 6:07 PM, Laxman Dewangan <ldewangan@nvidia.com> wrote:
->> > Add SPI driver for NVIDIA's Tegra114 SPI controller. This controller
->> > is different than the older SoCs SPI controller in internal design as
->> > well as register interface.
->> >
->> > This driver supports the:
->> > - non DMA based transfer for smaller transfer i.e. less than FIFO depth.
->> > - APB DMA based transfer for lager transfer i.e. more than FIFO depth.
->>
->> s/lager/larger
->>
->> > - Clock gating through runtime PM callbacks.
->> > - registration through DT only.
->
-> Delete unneeded context from your replies, we shouldn't need to page
-> through the entire patch because you've noticed a spelling error...
+Alright, I'll bite. How? What's the scenario where the driver will need
+to manage the wait queue directly? The point of the transfer_one_message
+interface was pull queue management into the core and allow the driver
+to get the next message just when it needs it.
 
-Thanks for your reply.
-I will take care of this later on.
+g.
 
-Thanks
-Manish Badarkhe
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_feb

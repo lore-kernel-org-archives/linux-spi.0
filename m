@@ -1,360 +1,45 @@
-From: Lars Poeschel <larsi@wh2.tu-dresden.de>
-Subject: [PATCH v3] gpio: mcp23s08: convert driver to DT
-Date: Mon,  4 Mar 2013 17:34:33 +0100
-Message-ID: <1362414873-17676-1-git-send-email-larsi@wh2.tu-dresden.de>
-To: poeschel@lemonage.de, grant.likely@secretlab.ca,
-	rob.herring@calxeda.com, rob@landley.net, linus.walleij@linaro.org,
-	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-doc-owner@vger.kernel.org>
-Sender: linux-doc-owner@vger.kernel.org
+From: "Tendance Chaussures" <contact-f2JuvQUMwfQ/FB/CMtvXbkxMLSsuJx4aUBSOeVevoDU@public.gmane.org>
+Subject: =?UTF-8?Q?Offre_prestige_d=C3=A9couverte_remise_10_euros_avec_le_code_NW?=
+	=?UTF-8?Q?24.?=
+Date: Mon, 04 Mar 2013 17:57:16 +0000 (CET)
+Message-ID: <130304175716.93062429700005564@obfm41.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Lars Poeschel <poeschel@lemonage.de>
-
-This converts the mcp23s08 driver to be able to be used with device
-tree.
-There is a "spi-present-mask" device tree property, that allows to
-use multiple of this spi chips on the same chipselect.
-
-Signed-off-by: Lars Poeschel <poeschel@lemonage.de>
----
-v3:
-- removed mcp,chips device tree property in favour of a
-    mcp,spi-present-mask and a flag for the pullup of every gpio
-- seperated the match table. Now there is one for i2c and one for spi
-- do the of reading stuff on stack of the probe function - no devm
-    any more
-
-v2:
-- squashed booth patches together
-- fixed build warning, when CONFIG_OF is not defined
-- use of_match_ptr macro for of_match_table
-
- create mode 100644 Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
-
-diff --git a/Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt b/Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
-new file mode 100644
-index 0000000..99a2985
---- /dev/null
-+++ b/Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
-@@ -0,0 +1,43 @@
-+Microchip MCP2308/MCP23S08/MCP23017/MCP23S17 driver for
-+8-/16-bit I/O expander with serial interface (I2C/SPI)
-+
-+Required properties:
-+- compatible : Should be
-+    - "mcp,mcp23s08" for  8 GPIO SPI version
-+    - "mcp,mcp23s17" for 16 GPIO SPI version
-+    - "mcp,mcp23008" for  8 GPIO I2C version or
-+    - "mcp,mcp23017" for 16 GPIO I2C version of the chip
-+- #gpio-cells : Should be two.
-+  - first cell is the pin number
-+  - second cell is used to specify flags. Flags currently used:
-+    bit0 : activate a ~100k pullup
-+- gpio-controller : Marks the device node as a GPIO controller.
-+- reg : For an address on its bus
-+
-+Required device specific properties (only for SPI chips):
-+- mcp,spi-present-mask : This is a present flag, that makes only sense for SPI
-+        chips - as the name suggests. Multiple chips can share the same
-+        SPI chipselect. Set bit 0-7 in this mask to 1 if there is a chip
-+        connected with this spi address. If you have a chip with address 3
-+        connected, you have to set bit3 to 1, which is 0x08. mcp23s08 only
-+        supports bits 0-3. It is not possible to mix mcp23s08 and mcp23s17
-+        on the same chipselect. Set at least one bit to 1 for SPI chips.
-+- spi-max-frequency = The maximum frequency this chip is able to handle
-+
-+Example I2C:
-+gpiom1: gpio@20 {
-+        compatible = "mcp,mcp23017";
-+        gpio-controller;
-+        #gpio-cells = <2>;
-+        reg = <0x20>;
-+};
-+
-+Example SPI:
-+gpiom1: gpio@0 {
-+        compatible = "mcp,mcp23s17";
-+        gpio-controller;
-+        #gpio-cells = <2>;
-+        spi-present-mask = <0x01>;
-+        reg = <0>;
-+        spi-max-frequency = <1000000>;
-+};
-diff --git a/drivers/gpio/gpio-mcp23s08.c b/drivers/gpio/gpio-mcp23s08.c
-index 3cea0ea..a8ca469 100644
---- a/drivers/gpio/gpio-mcp23s08.c
-+++ b/drivers/gpio/gpio-mcp23s08.c
-@@ -12,6 +12,8 @@
- #include <linux/spi/mcp23s08.h>
- #include <linux/slab.h>
- #include <asm/byteorder.h>
-+#include <linux/of.h>
-+#include <linux/of_device.h>
- 
- /**
-  * MCP types supported by driver
-@@ -21,6 +23,11 @@
- #define MCP_TYPE_008	2
- #define MCP_TYPE_017	3
- 
-+/**
-+ * Flags used in device tree
-+ */
-+#define MCP_DT_FLAG_PULLUP 0x01
-+
- /* Registers are all 8 bits wide.
-  *
-  * The mcp23s17 has twice as many bits, and can be configured to work
-@@ -75,6 +82,25 @@ struct mcp23s08_driver_data {
- 	struct mcp23s08		chip[];
- };
- 
-+#ifdef CONFIG_OF
-+static int mcp23s08_of_xlate(struct gpio_chip *gc,
-+			const struct of_phandle_args *gpiospec, u32 *flags);
-+
-+static int mcp23s08_set_pullup(struct mcp23s08 *mcp, unsigned offset)
-+{
-+	int status;
-+	u16 value;
-+
-+	mutex_lock(&mcp->lock);
-+	value = mcp->cache[MCP_GPPU] | (1 << offset);
-+	status = mcp->ops->write(mcp, MCP_GPPU, value);
-+	if (!status)
-+		mcp->cache[MCP_GPPU] = value;
-+	mutex_unlock(&mcp->lock);
-+
-+	return status;
-+}
-+#endif /* CONFIG_OF */
- /*----------------------------------------------------------------------*/
- 
- #if IS_ENABLED(CONFIG_I2C)
-@@ -383,6 +409,11 @@ static int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
- 	mcp->chip.direction_output = mcp23s08_direction_output;
- 	mcp->chip.set = mcp23s08_set;
- 	mcp->chip.dbg_show = mcp23s08_dbg_show;
-+#ifdef CONFIG_OF
-+	mcp->chip.of_xlate = mcp23s08_of_xlate;
-+	mcp->chip.of_gpio_n_cells = 2;
-+	mcp->chip.of_node = dev->of_node;
-+#endif
- 
- 	switch (type) {
- #ifdef CONFIG_SPI_MASTER
-@@ -473,6 +504,50 @@ fail:
- 
- /*----------------------------------------------------------------------*/
- 
-+#ifdef CONFIG_OF
-+#ifdef CONFIG_SPI_MASTER
-+static struct of_device_id mcp23s08_spi_of_match[] = {
-+	{
-+		.compatible = "mcp,mcp23s08", .data = (void *) MCP_TYPE_S08,
-+	},
-+	{
-+		.compatible = "mcp,mcp23s17", .data = (void *) MCP_TYPE_S17,
-+	},
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, mcp23s08_spi_of_match);
-+#endif
-+
-+#if IS_ENABLED(CONFIG_I2C)
-+static struct of_device_id mcp23s08_i2c_of_match[] = {
-+	{
-+		.compatible = "mcp,mcp23008", .data = (void *) MCP_TYPE_008,
-+	},
-+	{
-+		.compatible = "mcp,mcp23017", .data = (void *) MCP_TYPE_017,
-+	},
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, mcp23s08_i2c_of_match);
-+#endif
-+
-+static int mcp23s08_of_xlate(struct gpio_chip *gc,
-+			const struct of_phandle_args *gpiospec, u32 *flags)
-+{
-+	struct mcp23s08	*mcp = container_of(gc, struct mcp23s08, chip);
-+
-+	if (flags)
-+		*flags = gpiospec->args[1];
-+
-+	if (gpiospec->args[1] & MCP_DT_FLAG_PULLUP)
-+		mcp23s08_set_pullup(mcp, gpiospec->args[0]);
-+
-+	return gpiospec->args[0];
-+}
-+
-+#endif /* CONFIG_OF */
-+
-+
- #if IS_ENABLED(CONFIG_I2C)
- 
- static int mcp230xx_probe(struct i2c_client *client,
-@@ -480,12 +555,23 @@ static int mcp230xx_probe(struct i2c_client *client,
- {
- 	struct mcp23s08_platform_data *pdata;
- 	struct mcp23s08 *mcp;
--	int status;
--
--	pdata = client->dev.platform_data;
--	if (!pdata || !gpio_is_valid(pdata->base)) {
--		dev_dbg(&client->dev, "invalid or missing platform data\n");
--		return -EINVAL;
-+	int status, base, pullups;
-+	const struct of_device_id *match;
-+
-+	match = of_match_device(of_match_ptr(mcp23s08_i2c_of_match),
-+					&client->dev);
-+	if (match) {
-+		base = -1;
-+		pullups = 0;
-+	} else {
-+		pdata = client->dev.platform_data;
-+		if (!pdata || !gpio_is_valid(pdata->base)) {
-+			dev_dbg(&client->dev,
-+					"invalid or missing platform data\n");
-+			return -EINVAL;
-+		}
-+		base = pdata->base;
-+		pullups = pdata->chip[0].pullups;
- 	}
- 
- 	mcp = kzalloc(sizeof *mcp, GFP_KERNEL);
-@@ -493,8 +579,7 @@ static int mcp230xx_probe(struct i2c_client *client,
- 		return -ENOMEM;
- 
- 	status = mcp23s08_probe_one(mcp, &client->dev, client, client->addr,
--				    id->driver_data, pdata->base,
--				    pdata->chip[0].pullups);
-+				    id->driver_data, base, pullups);
- 	if (status)
- 		goto fail;
- 
-@@ -531,6 +616,7 @@ static struct i2c_driver mcp230xx_driver = {
- 	.driver = {
- 		.name	= "mcp230xx",
- 		.owner	= THIS_MODULE,
-+		.of_match_table = of_match_ptr(mcp23s08_i2c_of_match),
- 	},
- 	.probe		= mcp230xx_probe,
- 	.remove		= mcp230xx_remove,
-@@ -565,28 +651,55 @@ static int mcp23s08_probe(struct spi_device *spi)
- 	unsigned			chips = 0;
- 	struct mcp23s08_driver_data	*data;
- 	int				status, type;
--	unsigned			base;
--
--	type = spi_get_device_id(spi)->driver_data;
--
--	pdata = spi->dev.platform_data;
--	if (!pdata || !gpio_is_valid(pdata->base)) {
--		dev_dbg(&spi->dev, "invalid or missing platform data\n");
--		return -EINVAL;
--	}
-+	unsigned			base = -1,
-+					ngpio = 0,
-+					pullups[ARRAY_SIZE(pdata->chip)];
-+	const struct			of_device_id *match;
-+	u32				spi_present_mask = 0;
-+
-+	match = of_match_device(of_match_ptr(mcp23s08_spi_of_match), &spi->dev);
-+	if (match) {
-+		type = (int)match->data;
-+		status = of_property_read_u32(spi->dev.of_node,
-+				"mcp,spi-present-mask", &spi_present_mask);
-+		if (status) {
-+			dev_err(&spi->dev, "DT has no spi-present-mask\n");
-+			return -ENODEV;
-+		}
-+		if ((spi_present_mask <= 0) || (spi_present_mask >= 256)) {
-+			dev_err(&spi->dev, "invalid spi-present-mask\n");
-+			return -ENODEV;
-+		}
- 
--	for (addr = 0; addr < ARRAY_SIZE(pdata->chip); addr++) {
--		if (!pdata->chip[addr].is_present)
--			continue;
--		chips++;
--		if ((type == MCP_TYPE_S08) && (addr > 3)) {
--			dev_err(&spi->dev,
--				"mcp23s08 only supports address 0..3\n");
-+		for (addr = 0; addr < ARRAY_SIZE(pdata->chip); addr++)
-+			pullups[addr] = 0;
-+	} else {
-+		type = spi_get_device_id(spi)->driver_data;
-+		pdata = spi->dev.platform_data;
-+		if (!pdata || !gpio_is_valid(pdata->base)) {
-+			dev_dbg(&spi->dev,
-+					"invalid or missing platform data\n");
- 			return -EINVAL;
- 		}
-+
-+		for (addr = 0; addr < ARRAY_SIZE(pdata->chip); addr++) {
-+			if (!pdata->chip[addr].is_present)
-+				continue;
-+			chips++;
-+			if ((type == MCP_TYPE_S08) && (addr > 3)) {
-+				dev_err(&spi->dev,
-+					"mcp23s08 only supports address 0..3\n");
-+				return -EINVAL;
-+			}
-+			spi_present_mask |= 1 << addr;
-+			pullups[addr] = pdata->chip[addr].pullups;
-+		}
-+
-+		if (!chips)
-+			return -ENODEV;
-+
-+		base = pdata->base;
- 	}
--	if (!chips)
--		return -ENODEV;
- 
- 	data = kzalloc(sizeof *data + chips * sizeof(struct mcp23s08),
- 			GFP_KERNEL);
-@@ -594,21 +707,22 @@ static int mcp23s08_probe(struct spi_device *spi)
- 		return -ENOMEM;
- 	spi_set_drvdata(spi, data);
- 
--	base = pdata->base;
- 	for (addr = 0; addr < ARRAY_SIZE(pdata->chip); addr++) {
--		if (!pdata->chip[addr].is_present)
-+		if (!(spi_present_mask & (1 << addr)))
- 			continue;
- 		chips--;
- 		data->mcp[addr] = &data->chip[chips];
- 		status = mcp23s08_probe_one(data->mcp[addr], &spi->dev, spi,
- 					    0x40 | (addr << 1), type, base,
--					    pdata->chip[addr].pullups);
-+					    pullups[addr]);
- 		if (status < 0)
- 			goto fail;
- 
--		base += (type == MCP_TYPE_S17) ? 16 : 8;
-+		if (base != -1)
-+			base += (type == MCP_TYPE_S17) ? 16 : 8;
-+		ngpio += (type == MCP_TYPE_S17) ? 16 : 8;
- 	}
--	data->ngpio = base - pdata->base;
-+	data->ngpio = ngpio;
- 
- 	/* NOTE:  these chips have a relatively sane IRQ framework, with
- 	 * per-signal masking and level/edge triggering.  It's not yet
-@@ -668,6 +782,7 @@ static struct spi_driver mcp23s08_driver = {
- 	.driver = {
- 		.name	= "mcp23s08",
- 		.owner	= THIS_MODULE,
-+		.of_match_table = of_match_ptr(mcp23s08_spi_of_match),
- 	},
- };
- 
--- 
-1.7.10.4
-
+CkTDqWNvdXZyZXogbGEgbm91dmVsbGUgY29sbGVjdGlvbiBhdmVjIHZvdHJlIG9mZnJlIGTDqWNv
+dXZlcnRlIGRlIDEwIGV1cm9zLgoKUG91ciDDqnRyZSBzw7tyKGUpIGRlIHJlY2V2b2lyIHZvcyBu
+ZXdzbGV0dGVycywgYWpvdXRleiAibmV3c0Bub3Zlc3RpZ2UtaW5mby5jb20gKG1haWx0bzpuZXdz
+QG5vdmVzdGlnZS1pbmZvLmNvbSkiIMOgIHZvdHJlIGNhcm5ldCBkwrRhZHJlc3Nlcy4gCihodHRw
+Oi8vb2JmbTQxLmNvbS9mY2VzbzN0aGZobm4yamh4MGcvaW5kZXgwLmh0bWwpCihodHRwOi8vb2Jm
+bTQxLmNvbS8xdGVxNDMzZ2ZndndsbzN4YmovaW5kZXgxLmh0bWwpCihodHRwOi8vb2JmbTQxLmNv
+bS94eGVsZDNjMmYyMm5ueGlqMnEvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS9jMmVq
+cjNlbmZubHd2ZmFqdG8vaW5kZXgzLmh0bWwpCkNvbmZvcm3DqW1lbnQgw6AgbGEgTG9pIEluZm9y
+bWF0aXF1ZSBldCBMaWJlcnTDqXMsIGxlcyBpbmZvcm1hdGlvbnMgZGVtYW5kw6llcyBzZXJvbnQg
+dXRpbGlzw6llcyBwYXIgRmlkZGlhbSBTQS4gcG91ciBsZSB0cmFpdGVtZW50IGRlIHZvcyBjb21t
+YW5kZXMsIGxhIGdlc3Rpb24gZGUgdm90cmUgY29tcHRlIGNsaWVudCwgZXQgZGFucyB1biBidXQg
+ZGUgcHJvc3BlY3Rpb24gY29tbWVyY2lhbGUuIFZvdXMgZGlzcG9zZXogZCd1biBkcm9pdCBkJ2Fj
+Y8OocywgZGUgcmVjdGlmaWNhdGlvbiwgZGUgc3VwcHJlc3Npb24gZXQgZCdvcHBvc2l0aW9uIGF1
+IHRyYWl0ZW1lbnQgZGUgdm9zIGRvbm7DqWVzIHF1aSBwZXV0IHMnZXhlcmNlciBwYXIgaW50ZXJu
+ZXQgc3VyIHd3dy5ub3Zlc3RpZ2UuZnIsIHJ1YnJpcXVlICJDb250YWN0ZXotbm91cyIuIFBvdXIg
+cGx1cyBkJ2luZm9ybWF0aW9ucywgY29uc3VsdGV6IG5vdHJlIHNpdGUuIAotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8gd2UuCk1ha2UgeW91
+ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3dubG9hZCBBcHBEeW5hbWljcyBM
+aXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfZmViCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

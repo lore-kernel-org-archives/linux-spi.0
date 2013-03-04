@@ -1,51 +1,64 @@
-From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH V2 2/5] spi: s3c64xx: added support for polling mode
-Date: Mon, 4 Mar 2013 11:45:38 +0530
-Message-ID: <CAKrE-Kd-ewE6wHgnTsmTiM9HnijV-2SQjGLJ_zDHAqCfUvu90g@mail.gmail.com>
-References: <1360785828-32767-1-git-send-email-ks.giri@samsung.com>
-	<1360785828-32767-3-git-send-email-ks.giri@samsung.com>
-	<20130302225820.C1B693E3246@localhost>
+From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v2 0/4] Enable SPI flash support on da850-evm DT kernel
+Date: Mon, 4 Mar 2013 18:29:11 +0530
+Message-ID: <1362401955-9616-1-git-send-email-prakash.pm@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130302225820.C1B693E3246@localhost>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>, <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+        <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, <hs-ynQEQJNshbs@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Mar 3, 2013 at 4:28 AM, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-> On Wed, 13 Feb 2013 12:03:45 -0800, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> The 64xx spi driver supports partial polling mode.
->> Only the last chunk of the transfer length is transferred
->> or recieved in polling mode.
->>
->> Some SoC's that adopt this controller might not have have dma
->> interface. This patch adds support for complete polling mode
->> and gives flexibity for the user to select poll/dma mode.
->>
->> Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
->
-> Hi Girish,
->
-> Can you please rebase this series onto Linus' current tree? It won't
-> currently apply due to other changes.
-Sure Grant. will do that. Was busy with other assignment and couldnt do it.
->
-> Thanks,
-> g.
->
+Patch enables support for m25p64 SPI flash support on
+da850-EVM.
 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_feb
+Testing information:
+da850-evm comes with partitions specified in DT blob.
+Able to mount/umount and create/delete files on filesystem partition.
+
+Depends on below patch in spi-next branch of git://git.secretlab.ca/git/linux-2.6.git.
+"spi/davinci: add OF support for the spi controller"
+
+Applies on top of v3.9/dt-2 branch of linux_davinci tree:
+git://gitorious.org/linux-davinci/linux-davinci.git
+
+Since v1:
+Look for m25p64 instead of m25p80 flash chip and correct partition information.
+
+Dropping below accepted patch:
+"spi/davinci: fix module build error"
+
+Considered below missed out patch:
+spi/davinci: add DT binding documentation
+
+Manjunathappa, Prakash (3):
+  ARM: davinci: da850: add SPI1 DT node
+  ARM: davinci: da850: override SPI DT node device name
+  ARM: davinci: da850-evm: add SPI flash support
+
+Murali Karicheri (1):
+  spi/davinci: add DT binding documentation
+
+ .../devicetree/bindings/spi/spi-davinci.txt        |   51 ++++++++++++++++++++
+ arch/arm/boot/dts/da850-evm.dts                    |   40 +++++++++++++++
+ arch/arm/boot/dts/da850.dtsi                       |   18 +++++++
+ arch/arm/mach-davinci/da8xx-dt.c                   |    1 +
+ 4 files changed, 110 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
+
+-- 
+1.7.4.1

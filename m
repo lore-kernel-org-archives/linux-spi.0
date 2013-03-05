@@ -1,66 +1,98 @@
-From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v7 01/10] ARM: davinci: move private EDMA API to arm/common
-Date: Mon, 4 Mar 2013 17:12:51 -0500
-Message-ID: <20130304221251.GG6209@beef>
-References: <1359742975-10421-1-git-send-email-mporter@ti.com>
-	<1359742975-10421-2-git-send-email-mporter@ti.com>
-	<511673E1.7000908@ti.com>
-	<e92425fefcc04bb4ab739ec8d4e82672@DLEE74.ent.ti.com>
+From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH v2 1/4] spi/davinci: add DT binding documentation
+Date: Tue, 5 Mar 2013 12:56:20 +0000
+Message-ID: <A73F36158E33644199EB82C5EC81C7BC3EA4854E@DBDE01.ent.ti.com>
+References: <1362401955-9616-1-git-send-email-prakash.pm@ti.com>
+ <1362401955-9616-2-git-send-email-prakash.pm@ti.com>
+ <6918845.dALXSKksQd@wuerfel>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, "Cousson,
-	Benoit" <b-cousson-l0cyMroinI0@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, "Nori,
-	Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	Dan Williams <djbw-b10kYP2dOMg@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <e92425fefcc04bb4ab739ec8d4e82672-0VoBT8GTp4aIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
+ <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+ "linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org" <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+ "linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ "devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org" <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+ "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>,
+ "rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org" <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+ "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+ <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "hs-ynQEQJNshbs@public.gmane.org" <hs-ynQEQJNshbs@public.gmane.org>
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+ <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <6918845.dALXSKksQd@wuerfel>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, Feb 09, 2013 at 08:08:50PM +0000, Russell King wrote:
-> On Sat, Feb 09, 2013 at 09:35:53PM +0530, Sekhar Nori wrote:
-> > On 2/1/2013 11:52 PM, Matt Porter wrote:
-> > > +	ret = of_address_to_resource(node, 1, &res);
-> > 
-> > of_address_to_resource() needs <linux/of_address.h>
-> > 
-> > > +	if (IS_ERR_VALUE(ret))
-> > 
-> > This needs <linux/err.h>
+Hi Arnd,
+
+On Mon, Mar 04, 2013 at 21:59:16, Arnd Bergmann wrote:
+> On Monday 04 March 2013 18:29:12 Manjunathappa, Prakash wrote:
+> > diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+> > new file mode 100644
+> > index 0000000..a62d7a8
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+> > @@ -0,0 +1,51 @@
+> > +Davinci SPI controller device bindings
+> > +
+> > +Required properties:
+> > +- #address-cells: number of cells required to define a chip select
+> > +	address on the SPI bus. Should be set to 1.
+> > +- #size-cells: should be zero.
+> > +- compatible:
+> > +	- "ti,dm644x-spi" for SPI used similar to that on DM644x SoC family
+> > +	- "ti,da8xx-spi" for SPI used similar to that on DA8xx SoC family
 > 
-> More importantly, is this the correct way to check for errors from
-> of_address_to_resource() ?  Grepping the source shows that either less
-> than 0 or non-zero are the commonly used conditions here.
+> In general, you should avoid wildcards in "compatible" properties.
+> Better use the number of the first chip that introduced the specific
+> version of the device.
+> 
 
-Yes, it's not correct. Fixed to check for non-zero/zero in the two cases
-where of_address_to_resource() is used.
+Correct, will accommodate this change.
 
--Matt
+> > +- reg: Offset and length of SPI controller register space
+> > +- num-cs: Number of chip selects
+> > +- ti,davinci-spi-intr-line: interrupt line used to connect the SPI
+> > +	IP to the interrupt controller withn the SoC. Possible values
+> > +	are 0 and 1. Manual says one of the two possible interrupt
+> > +	lines can be tied to the interrupt controller. Set this
+> > +	based on a specifc SoC configuration.
+> > +- interrupts: interrupt number offset at the irq parent
+> 
+> I would not call this an "offset". It is an interrupt descriptor
+> which may be something other than a simple number.
+> 
 
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_feb
+I am planning to drop from this documentation as it is common property.
+
+> Unfortunately, there is no way to provide an "invalid" interrupt,
+> otherwise you could just list both interrupts, out of which at
+> least one should be valid, and drop the ti,davinci-spi-intr-line
+> property.
+> 
+
+This is different from interrupt number, this is used to specifies out
+of 2 lines from SPI IP which is tied to INTC. Some discussion about it:
+https://lkml.org/lkml/2012/11/16/404
+	
+> One thing you could do instead though is to use the "interrupt-names"
+> property to define "irq0" and "irq1" interrupts, and in the
+> implementation use the first one you find.
+> 
+
+In IP specification it is mentioned as spi-intr-line, I prefer to retain this
+property as davinci-spi-intr-line.
+
+Thanks,
+Prakash

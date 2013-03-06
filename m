@@ -1,93 +1,84 @@
-From: "Kumar, Anil" <anilkumar.v@ti.com>
-Subject: RE: [PATCH v8 6/9] ARM: dts: add AM33XX EDMA support
-Date: Wed, 6 Mar 2013 04:19:58 +0000
-Message-ID: <F3DBB1B3EF102E4994C89758CFCA32412CD652@DBDE01.ent.ti.com>
-References: <1362516795-6346-1-git-send-email-mporter@ti.com>
- <1362516795-6346-7-git-send-email-mporter@ti.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH] spi: add driver for BCM2835
+Date: Tue, 05 Mar 2013 21:27:23 -0700
+Message-ID: <5136C5AB.7020301@wwwdotorg.org>
+References: <1362538142-19246-1-git-send-email-swarren@wwwdotorg.org>
+	<20130306040520.GA4896@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
-To: "Porter, Matt" <mporter@ti.com>, Tony Lindgren <tony@atomide.com>,
-	"Nori, Sekhar" <nsekhar@ti.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Rob Landley <rob@landley.net>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1362516795-6346-7-git-send-email-mporter@ti.com>
-Content-Language: en-US
-Sender: linux-doc-owner@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130306040520.GA4896-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On Wed, Mar 06, 2013 at 02:23:12, Porter, Matt wrote:
-> Adds AM33XX EDMA support to the am33xx.dtsi as documented in
-> Documentation/devicetree/bindings/dma/ti-edma.txt
+On 03/05/2013 09:05 PM, Mark Brown wrote:
+> On Tue, Mar 05, 2013 at 07:49:02PM -0700, Stephen Warren wrote:
 > 
-> Signed-off-by: Matt Porter <mporter@ti.com>
-> ---
->  arch/arm/boot/dts/am33xx.dtsi |   20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
+>> +Optional properties: +- brcm,realtime: Boolean. Indicates the
+>> driver should operate with realtime +  priority to minimise the
+>> transfer latency on the bus.
 > 
-> diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-> index 0957645..aaf44122 100644
-> --- a/arch/arm/boot/dts/am33xx.dtsi
-> +++ b/arch/arm/boot/dts/am33xx.dtsi
-> @@ -87,6 +87,26 @@
->  			reg = <0x48200000 0x1000>;
->  		};
->  
-> +		edma: edma@49000000 {
-> +			compatible = "ti,edma3";
-> +			ti,hwmods = "tpcc", "tptc0", "tptc1", "tptc2";
-> +			reg =	<0x49000000 0x10000>,
-> +				<0x44e10f90 0x10>;
-> +			interrupt-parent = <&intc>;
+> This isn't obviously something that ought to be in DT, it'll depend
+> on the OS, kernel version and so on.  Indeed I don't think this is
+> used any more as the generic pump code Linus did handles it already
+> in a runtime tunable way?
 
-Is it really need of "interrupt-parent = <&intc>" here ?
-as this property is already with root node.  
-I am taking reference of 3.9-rc1
+I was going to remove this for similar reasons, but then I noticed
+that Documentation/devicetree/bindings/spi/spi_pl022.txt contains
+basically the same thing:
 
-Thanks,
-Anil
+> - pl022,rt : indicates the controller should run the message pump
+> with realtime priority to minimise the transfer latency on the bus
+> (boolean)
 
-> +			interrupts = <12 13 14>;
-> +			#dma-cells = <1>;
-> +			dma-channels = <64>;
-> +			ti,edma-regions = <4>;
-> +			ti,edma-slots = <256>;
-> +			ti,edma-queue-tc-map = <0 0
-> +						1 1
-> +						2 2>;
-> +			ti,edma-queue-priority-map = <0 0
-> +						      1 1
-> +						      2 2>;
-> +			ti,edma-default-queue = <0>;
-> +		};
-> +
->  		gpio1: gpio@44e07000 {
->  			compatible = "ti,omap4-gpio";
->  			ti,hwmods = "gpio1";
-> -- 
-> 1.7.9.5
+... so I assumed this must have been conceptually OK'd in the past.
+
+If that somehow accidentally snuck in, I can happily remove this feature.
+
+>> +	list_for_each_entry(tfr, &mesg->transfers, transfer_list) { +
+>> err = bcm2835_spi_check_transfer(spi, tfr); +		if (err) +			goto
+>> out; + +		err = bcm2835_spi_start_transfer(spi, tfr); +		if
+>> (err) +			goto out; + +		timeout =
+>> wait_for_completion_timeout(&bs->done, +
+>> msecs_to_jiffies(BCM2835_SPI_TIMEOUT_MS)); +		if (!timeout) { +
+>> err = -ETIMEDOUT; +			goto out; +		}
 > 
-> _______________________________________________
-> Davinci-linux-open-source mailing list
-> Davinci-linux-open-source@linux.davincidsp.com
-> http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source
-> 
+> But I wanted to transfer 10G in a single message at 1kHz!  :P
 
+I'm not sure what the solution is here; calculated timeout value, or
+no timeout?
+
+>> +	/* initialise the hardware */ +	clk_prepare_enable(bs->clk); +
+>> bcm2835_wr(bs, BCM2835_SPI_CS, +		   BCM2835_SPI_CS_CLEAR_RX |
+>> BCM2835_SPI_CS_CLEAR_TX);
+> 
+> It'd be nice to only enable the clock during transfers.
+
+In practice, the clock that's provided to the driver is a dummy fixed
+clock at the moment, so doing so would make no difference. Controlling
+real clocks requires passing messages to the VideoCore co-processor,
+and I've avoided upstreaming any of that stuff yet since I'm not sure
+if the message structures are static enough to rely on, and I'm hoping
+the VC reverse-engineering effort would allow a native driver for some
+of those features from the ARM core rather than via message-passing...
+
+I'll fix up the other issues you mentioned that I didn't specifically
+respond to.
+
+------------------------------------------------------------------------------
+Symantec Endpoint Protection 12 positioned as A LEADER in The Forrester  
+Wave(TM): Endpoint Security, Q1 2013 and "remains a good choice" in the  
+endpoint security space. For insight on selecting the right partner to 
+tackle endpoint security challenges, access the full report. 
+http://p.sf.net/sfu/symantec-dev2dev

@@ -1,153 +1,93 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi: add driver for BCM2835
-Date: Wed, 6 Mar 2013 12:05:22 +0800
-Message-ID: <20130306040520.GA4896@opensource.wolfsonmicro.com>
-References: <1362538142-19246-1-git-send-email-swarren@wwwdotorg.org>
+From: "Kumar, Anil" <anilkumar.v@ti.com>
+Subject: RE: [PATCH v8 6/9] ARM: dts: add AM33XX EDMA support
+Date: Wed, 6 Mar 2013 04:19:58 +0000
+Message-ID: <F3DBB1B3EF102E4994C89758CFCA32412CD652@DBDE01.ent.ti.com>
+References: <1362516795-6346-1-git-send-email-mporter@ti.com>
+ <1362516795-6346-7-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2275379084888962359=="
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
- spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>,
- linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1362538142-19246-1-git-send-email-swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
-List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
- <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
-Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
+To: "Porter, Matt" <mporter@ti.com>, Tony Lindgren <tony@atomide.com>,
+	"Nori, Sekhar" <nsekhar@ti.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	"Cousson, Benoit" <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Rob Landley <rob@landley.net>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1362516795-6346-7-git-send-email-mporter@ti.com>
+Content-Language: en-US
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi,
 
---===============2275379084888962359==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EVF5PPMfhYS0aIcm"
-Content-Disposition: inline
+On Wed, Mar 06, 2013 at 02:23:12, Porter, Matt wrote:
+> Adds AM33XX EDMA support to the am33xx.dtsi as documented in
+> Documentation/devicetree/bindings/dma/ti-edma.txt
+> 
+> Signed-off-by: Matt Porter <mporter@ti.com>
+> ---
+>  arch/arm/boot/dts/am33xx.dtsi |   20 ++++++++++++++++++++
+>  1 file changed, 20 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+> index 0957645..aaf44122 100644
+> --- a/arch/arm/boot/dts/am33xx.dtsi
+> +++ b/arch/arm/boot/dts/am33xx.dtsi
+> @@ -87,6 +87,26 @@
+>  			reg = <0x48200000 0x1000>;
+>  		};
+>  
+> +		edma: edma@49000000 {
+> +			compatible = "ti,edma3";
+> +			ti,hwmods = "tpcc", "tptc0", "tptc1", "tptc2";
+> +			reg =	<0x49000000 0x10000>,
+> +				<0x44e10f90 0x10>;
+> +			interrupt-parent = <&intc>;
 
+Is it really need of "interrupt-parent = <&intc>" here ?
+as this property is already with root node.  
+I am taking reference of 3.9-rc1
 
---EVF5PPMfhYS0aIcm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks,
+Anil
 
-On Tue, Mar 05, 2013 at 07:49:02PM -0700, Stephen Warren wrote:
-
-> +Optional properties:
-> +- brcm,realtime: Boolean. Indicates the driver should operate with realtime
-> +  priority to minimise the transfer latency on the bus.
-
-This isn't obviously something that ought to be in DT, it'll depend on
-the OS, kernel version and so on.  Indeed I don't think this is used any
-more as the generic pump code Linus did handles it already in a runtime
-tunable way?
-
-> +static irqreturn_t bcm2835_spi_interrupt(int irq, void *dev_id)
-> +{
-
-> +	if (cs & BCM2835_SPI_CS_DONE) {
-
-> +		}
-> +	} else if (cs & BCM2835_SPI_CS_RXR) {
-> +		/* read 12 bytes of data */
-
-I'd feel happier if these were independent statements in case both are
-asserted simultaneously.
-
-> +	return IRQ_HANDLED;
-
-
-What if neither of the statuses asserted?
-
-> +	switch (bpw) {
-> +	case 8:
-> +		break;
-> +	default:
-> +		dev_err(&spi->dev, "unsupported bits_per_word=%d\n", bpw);
-> +		return -EINVAL;
-> +	}
-
-> +	if (!(spi->mode & SPI_NO_CS) &&
-> +			(spi->chip_select > spi->master->num_chipselect)) {
-> +		dev_err(&spi->dev,
-> +				"invalid chipselect %u\n",
-> +				spi->chip_select);
-> +		return -EINVAL;
->` +	}
-
-This seems like stuff the core should be able to do for you.
-
-> +	list_for_each_entry(tfr, &mesg->transfers, transfer_list) {
-> +		err = bcm2835_spi_check_transfer(spi, tfr);
-> +		if (err)
-> +			goto out;
+> +			interrupts = <12 13 14>;
+> +			#dma-cells = <1>;
+> +			dma-channels = <64>;
+> +			ti,edma-regions = <4>;
+> +			ti,edma-slots = <256>;
+> +			ti,edma-queue-tc-map = <0 0
+> +						1 1
+> +						2 2>;
+> +			ti,edma-queue-priority-map = <0 0
+> +						      1 1
+> +						      2 2>;
+> +			ti,edma-default-queue = <0>;
+> +		};
 > +
-> +		err = bcm2835_spi_start_transfer(spi, tfr);
-> +		if (err)
-> +			goto out;
-> +
-> +		timeout = wait_for_completion_timeout(&bs->done,
-> +				msecs_to_jiffies(BCM2835_SPI_TIMEOUT_MS));
-> +		if (!timeout) {
-> +			err = -ETIMEDOUT;
-> +			goto out;
-> +		}
+>  		gpio1: gpio@44e07000 {
+>  			compatible = "ti,omap4-gpio";
+>  			ti,hwmods = "gpio1";
+> -- 
+> 1.7.9.5
+> 
+> _______________________________________________
+> Davinci-linux-open-source mailing list
+> Davinci-linux-open-source@linux.davincidsp.com
+> http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source
+> 
 
-But I wanted to transfer 10G in a single message at 1kHz!  :P
-
-> +	/* initialise the hardware */
-> +	clk_prepare_enable(bs->clk);
-> +	bcm2835_wr(bs, BCM2835_SPI_CS,
-> +		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
-
-It'd be nice to only enable the clock during transfers.
-
-> +static int bcm2835_spi_remove(struct platform_device *pdev)
-> +{
-> +	struct spi_master *master = platform_get_drvdata(pdev);
-> +	struct bcm2835_spi *bs = spi_master_get_devdata(master);
-> +
-> +	spi_unregister_master(master);
-> +	free_irq(bs->irq, master);
-
-Should these be the other way around?
-
---EVF5PPMfhYS0aIcm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRNsBlAAoJELSic+t+oim9kAIQAIw3cAZSzL3iBWDhPcM815Ln
-Umn0dwS2fBzEsXjsbNTlKDa3QlixFGF0wu04S4gmbnOEKFMwRq+Kosi7a0UR1Yxo
-MrGVi1wwph63GRkbOd3jYnmusq5ld+w+kk7+v8lsK3Sy1ZL+dfJdjASv6SeJSUcr
-dhQ3fTEbjHvhnl4ADHztDiG+zRI3syYunHiiS5YVYbZAiVPmB3QvCnH6tyz4DUSn
-rwctHPpH209zplY1z0M0SKWTJcUOl95c+4WJAYxGpSPHlrpqv1P8urpnx1T+PUpt
-kDndMSQVZbs2l8XZOn6yd2lTjaoB+aIhj8SSLb8RZdTbirEfqkzDrYjY77xqz21e
-iWMf+H7r1AzVDdYfKW2qJ5pjE6D3z38IhkZjtOlYcaYrCT9NE0Z14H+LQs8NpqOy
-tYKFQ72NrJaEk7TIbDBG8Ah9kv3zUWg5300EnU+qSdTf+vnT8eAhJWP/krxSPvFu
-u+s1pTr/99Yii2TA0WmKS6/CJ0zSvrokoN8ylYoEs1h7XsNo+BYbR8NTCZIFh0Ju
-ntLhbgM+ZjKb/nGaZnrWemJTGSU8Buqx8+0uWEBBiL8ADVF0LgZ4EvcxYTtpGgLy
-nPlANFD00QkyUE+5dco0xjMCbnTuVpPC9VtekW2uSW0uaBKUYV7JCIRv9GBYrBsA
-4DthO7bmnMRxuZ82C8u8
-=ZVgG
------END PGP SIGNATURE-----
-
---EVF5PPMfhYS0aIcm--
-
-
---===============2275379084888962359==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-rpi-kernel mailing list
-linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
-
---===============2275379084888962359==--

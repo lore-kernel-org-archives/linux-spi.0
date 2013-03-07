@@ -1,86 +1,47 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: [PATCH v9 5/9] dmaengine: edma: Add TI EDMA device tree binding
-Date: Wed, 6 Mar 2013 15:31:52 -0500
-Message-ID: <20130306203152.GO6209@beef>
-References: <1362586540-10393-1-git-send-email-mporter@ti.com>
- <1362586540-10393-6-git-send-email-mporter@ti.com>
- <90c29a73df9e495f907517c49dd45b88@DFLE72.ent.ti.com>
+From: Wenyou Yang <wenyou.yang@atmel.com>
+Subject: [PATCH v6 01/16] spi/spi-atmel: fix probing failure after xfer->speed_hz set
+Date: Thu, 7 Mar 2013 11:26:55 +0800
+Message-ID: <1362626815-6628-1-git-send-email-wenyou.yang@atmel.com>
+References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Tony Lindgren <tony@atomide.com>, "Nori, Sekhar" <nsekhar@ti.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	"Cousson, Benoit" <b-cousson@ti.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Rob Landley <rob@landley.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux SPI Devel List
+Content-Type: text/plain
+Cc: <grant.likely@secretlab.ca>, <nicolas.ferre@atmel.com>,
+	<plagnioj@jcrosoft.com>, <richard.genoud@gmail.com>,
+	<JM.Lin@atmel.com>, Wenyou Yang <wenyou.yang@atmel.com>,
 	<spi-devel-general@lists.sourceforge.net>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>
-To: Peter Korsgaard <jacmet@sunsite.dk>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <90c29a73df9e495f907517c49dd45b88@DFLE72.ent.ti.com>
-Sender: linux-doc-owner@vger.kernel.org
+	<linux-kernel@vger.kernel.org>
+To: <linux-arm-kernel@lists.infradead.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 06, 2013 at 08:24:06PM +0000, Peter Korsgaard wrote:
-> >>>>> "Matt" == Matt Porter <mporter@ti.com> writes:
-> 
->  Matt> The binding definition is based on the generic DMA controller
->  Matt> binding.
-> 
->  Matt> Signed-off-by: Matt Porter <mporter@ti.com>
->  Matt> ---
->  Matt>  Documentation/devicetree/bindings/dma/ti-edma.txt |   49 +++++++++++++++++++++
->  Matt>  1 file changed, 49 insertions(+)
->  Matt>  create mode 100644 Documentation/devicetree/bindings/dma/ti-edma.txt
-> 
->  Matt> diff --git a/Documentation/devicetree/bindings/dma/ti-edma.txt b/Documentation/devicetree/bindings/dma/ti-edma.txt
->  Matt> new file mode 100644
->  Matt> index 0000000..075a60e3
->  Matt> --- /dev/null
->  Matt> +++ b/Documentation/devicetree/bindings/dma/ti-edma.txt
->  Matt> @@ -0,0 +1,49 @@
->  Matt> +TI EDMA
->  Matt> +
->  Matt> +Required properties:
->  Matt> +- compatible : "ti,edma3"
->  Matt> +- ti,hwmods: Name of the hwmods associated to the EDMA
->  Matt> +- ti,edma-regions: Number of regions
->  Matt> +- ti,edma-slots: Number of slots
->  Matt> +- ti,edma-queue-tc-map: List of transfer control to queue mappings
->  Matt> +- ti,edma-queue-priority-map: List of queue priority mappings
->  Matt> +- ti,edma-default-queue: Default queue value
->  Matt> +
->  Matt> +Optional properties:
->  Matt> +- ti,edma-reserved-channels: List of reserved channel regions
->  Matt> +- ti,edma-reserved-slots: List of reserved slot regions
->  Matt> +- ti,edma-xbar-event-map: Crossbar event to channel map
->  Matt> +
->  Matt> +Example:
->  Matt> +
->  Matt> +edma: edma@49000000 {
->  Matt> +	reg = <0x49000000 0x10000>;
->  Matt> +	interrupt-parent = <&intc>;
->  Matt> +	interrupts = <12 13 14>;
-> 
-> Probably interrupt-parent should be removed from the example as well to
-> match am33xx.dtsi
+commit: 059b8ffeee5b427949872bb6ed5db5ae0788054e
+cause the atmel spi probing failure.
 
-I'm not sure what the DT maintainers want here. Full context within the
-example or the actual real usage where it's typically inherited.
+Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
+Cc: spi-devel-general@lists.sourceforge.net
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/spi/spi-atmel.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Grant or Rob, any thoughts?
-
--Matt
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 656d137..1eca815 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -846,9 +846,9 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 			}
+ 		}
+ 
+-		/* FIXME implement these protocol options!! */
+-		if (xfer->speed_hz) {
+-			dev_dbg(&spi->dev, "no protocol options yet\n");
++		if (xfer->speed_hz < spi->max_speed_hz) {
++			dev_dbg(&spi->dev,
++				"speed in transfer less than bus speed\n");
+ 			return -ENOPROTOOPT;
+ 		}
+ 
+-- 
+1.7.9.5

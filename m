@@ -1,20 +1,13 @@
-From: Joachim  Eastwood <manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v6 01/16] spi/spi-atmel: fix probing failure after
-	xfer->speed_hz set
-Date: Thu, 7 Mar 2013 13:30:45 +0100
-Message-ID: <CAGhQ9VwW18LXY5Jn0FUFCaAzKxP1W3QADG=JBp9JbgaAwo=F2Q@mail.gmail.com>
-References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
-	<1362626815-6628-1-git-send-email-wenyou.yang@atmel.com>
+From: =?iso-8859-1?B?RGllZ28gUHJlY2lhZG8gQmFy824=?= <preciado88-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: Reading many SPI words when CS is active
+Date: Thu, 7 Mar 2013 10:32:42 -0600
+Message-ID: <BAY170-W81B9FFB00B8EF05F801A70C8E50@phx.gbl>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1362626815-6628-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,43 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 7 March 2013 04:26, Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
-> commit: 059b8ffeee5b427949872bb6ed5db5ae0788054e
-> cause the atmel spi probing failure.
->
-> Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-> Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> ---
->  drivers/spi/spi-atmel.c |    6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 656d137..1eca815 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -846,9 +846,9 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
->                         }
->                 }
->
-> -               /* FIXME implement these protocol options!! */
-> -               if (xfer->speed_hz) {
-> -                       dev_dbg(&spi->dev, "no protocol options yet\n");
-> +               if (xfer->speed_hz < spi->max_speed_hz) {
-> +                       dev_dbg(&spi->dev,
-> +                               "speed in transfer less than bus speed\n");
->                         return -ENOPROTOOPT;
->                 }
+I need to read a SPI word of 80 bits length. I'm using the Overo EarthStorm, and based on the OMAP36XX specifications, I can only read a word between the range of 4-32 bits.
 
-I sent a similar patch to spi-devl a while ago, which Grant said he applied.
-https://patchwork.kernel.org/patch/2165301/
+My device is configured as SPI slave, when it receive the 80 bits word and read the RX buffer, it looks like the words are overwritten.
 
-Can't find the patch in any upstream git tree so I guess Grant hasn't
-pushed it yet.
+Does anyone know what I have to do?  
 
-regards
-Joachim Eastwood
+The device which I'm receiving the SPI messages of,  sends 5 clock cycles (SCLK) with 16 bits each one on the MISO when CS is low.
 
+ 		 	   		  
 ------------------------------------------------------------------------------
 Symantec Endpoint Protection 12 positioned as A LEADER in The Forrester  
 Wave(TM): Endpoint Security, Q1 2013 and "remains a good choice" in the  

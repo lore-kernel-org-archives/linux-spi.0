@@ -1,85 +1,46 @@
-From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: slink-tegra20: move runtime pm calls to transfer_one_message
-Date: Fri, 8 Mar 2013 11:51:19 +0530
-Message-ID: <1362723679-1155-1-git-send-email-ldewangan@nvidia.com>
+From: "Yang, Wenyou" <Wenyou.Yang@atmel.com>
+Subject: RE: [PATCH v6 01/16] spi/spi-atmel: fix probing failure after
+ xfer->speed_hz set
+Date: Fri, 8 Mar 2013 09:43:49 +0000
+Message-ID: <B256D81BAE5131468A838E5D7A24364149720050@penmbx02>
+References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
+ <1362626815-6628-1-git-send-email-wenyou.yang@atmel.com>
+ <51388575.4050506@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	<linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"richard.genoud@gmail.com" <richard.genoud@gmail.com>,
+	"Lin, JM" <JM.Lin@atmel.com>,
+	"Ferre, Nicolas" <Nicolas.FERRE@atmel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"plagnioj@jcrosoft.com" <plagnioj@jcrosoft.com>
+To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <51388575.4050506@cogentembedded.com>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The prepare_transfer_hardware() is called in atomic context and
-calling synchronous runtime pm calls can create scheduling deadlock.
-
-Therefore, in place of calling runtime PM calls from prepare/unprepare
-message transfer, calling this in transfer_one_message().
-
-Signed-off-by: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-tegra20-slink.c |   25 ++++++++-----------------
- 1 files changed, 8 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index b8698b3..a829563 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -858,21 +858,6 @@ static int tegra_slink_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static int tegra_slink_prepare_transfer(struct spi_master *master)
--{
--	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
--
--	return pm_runtime_get_sync(tspi->dev);
--}
--
--static int tegra_slink_unprepare_transfer(struct spi_master *master)
--{
--	struct tegra_slink_data *tspi = spi_master_get_devdata(master);
--
--	pm_runtime_put(tspi->dev);
--	return 0;
--}
--
- static int tegra_slink_transfer_one_message(struct spi_master *master,
- 			struct spi_message *msg)
- {
-@@ -885,6 +870,12 @@ static int tegra_slink_transfer_one_message(struct spi_master *master,
- 
- 	msg->status = 0;
- 	msg->actual_length = 0;
-+	ret = pm_runtime_get_sync(tspi->dev);
-+	if (ret < 0) {
-+		dev_err(tspi->dev, "runtime get failed: %d\n", ret);
-+		goto done;
-+	}
-+
- 	single_xfer = list_is_singular(&msg->transfers);
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		INIT_COMPLETION(tspi->xfer_completion);
-@@ -921,6 +912,8 @@ static int tegra_slink_transfer_one_message(struct spi_master *master,
- exit:
- 	tegra_slink_writel(tspi, tspi->def_command_reg, SLINK_COMMAND);
- 	tegra_slink_writel(tspi, tspi->def_command2_reg, SLINK_COMMAND2);
-+	pm_runtime_put(tspi->dev);
-+done:
- 	msg->status = ret;
- 	spi_finalize_current_message(master);
- 	return ret;
-@@ -1148,9 +1141,7 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	/* the spi->mode bits understood by this driver: */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	master->setup = tegra_slink_setup;
--	master->prepare_transfer_hardware = tegra_slink_prepare_transfer;
- 	master->transfer_one_message = tegra_slink_transfer_one_message;
--	master->unprepare_transfer_hardware = tegra_slink_unprepare_transfer;
- 	master->num_chipselect = MAX_CHIP_SELECT;
- 	master->bus_num = -1;
- 
--- 
-1.7.1.1
+SGksIFNlcnFlaSwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBTZXJn
+ZWkgU2h0eWx5b3YgW21haWx0bzpzZXJnZWkuc2h0eWx5b3ZAY29nZW50ZW1iZWRkZWQuY29tXQ0K
+PiBTZW50OiAyMDEzxOoz1MI3yNUgMjA6MTgNCj4gVG86IFlhbmcsIFdlbnlvdQ0KPiBDYzogbGlu
+dXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyByaWNoYXJkLmdlbm91ZEBnbWFpbC5j
+b207IExpbiwgSk07DQo+IEZlcnJlLCBOaWNvbGFzOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwu
+b3JnOyBncmFudC5saWtlbHlAc2VjcmV0bGFiLmNhOw0KPiBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
+cy5zb3VyY2Vmb3JnZS5uZXQ7IHBsYWduaW9qQGpjcm9zb2Z0LmNvbQ0KPiBTdWJqZWN0OiBSZTog
+W1BBVENIIHY2IDAxLzE2XSBzcGkvc3BpLWF0bWVsOiBmaXggcHJvYmluZyBmYWlsdXJlIGFmdGVy
+DQo+IHhmZXItPnNwZWVkX2h6IHNldA0KPiANCj4gSGVsbG8uDQo+IA0KPiBPbiAwNy0wMy0yMDEz
+IDc6MjYsIFdlbnlvdSBZYW5nIHdyb3RlOg0KPiANCj4gPiBjb21taXQ6IDA1OWI4ZmZlZWU1YjQy
+Nzk0OTg3MmJiNmVkNWRiNWFlMDc4ODA1NGUNCj4gDQo+ICAgICBQbGVhc2UgYWxzbyBzcGVjaWZ5
+IHRoZSBzdW1tYXJ5IGxpbmUgb2YgdGhhdCBjb21taXQgaW4gcGFyZW5zIChvciBob3dldmVyDQo+
+IHlvdSBsaWtlKS4NClRoYW5rcyBmb3IgeW91ciBzdWdnZXN0aW9uLg0KDQo+IA0KPiA+IGNhdXNl
+IHRoZSBhdG1lbCBzcGkgcHJvYmluZyBmYWlsdXJlLg0KPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBX
+ZW55b3UgWWFuZyA8d2VueW91LnlhbmdAYXRtZWwuY29tPg0KPiA+IENjOiBzcGktZGV2ZWwtZ2Vu
+ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQNCj4gPiBDYzogbGludXgta2VybmVsQHZnZXIua2Vy
+bmVsLm9yZw0KPiANCj4gV0JSLCBTZXJnZWkNCg0KQmVzdCBSZWdhcmRzLA0KV2VueW91IFlhbmcN
+Cg==

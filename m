@@ -1,7 +1,7 @@
 From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Subject: Re: [PATCH] spi: add driver for BCM2835
-Date: Thu, 07 Mar 2013 22:48:09 -0700
-Message-ID: <51397B99.5000504@wwwdotorg.org>
+Date: Thu, 07 Mar 2013 23:12:46 -0700
+Message-ID: <5139815E.7020502@wwwdotorg.org>
 References: <1362538142-19246-1-git-send-email-swarren@wwwdotorg.org>
 	<20130306040520.GA4896@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
@@ -25,77 +25,26 @@ List-Id: linux-spi.vger.kernel.org
 On 03/05/2013 09:05 PM, Mark Brown wrote:
 > On Tue, Mar 05, 2013 at 07:49:02PM -0700, Stephen Warren wrote:
 
->> +static irqreturn_t bcm2835_spi_interrupt(int irq, void *dev_id) 
->> +{
->> 
->> if (cs & BCM2835_SPI_CS_DONE) { if (bs->len) { /* first interrupt
->> in a transfer */ /* fill the TX fifo with up to 16 bytes */ 
->> bcm2835_wr_fifo(bs, 16); } else { /* transfer complete */ /*
->> disable SPI interrupts */ cs &= ~(BCM2835_SPI_CS_INTR |
->> BCM2835_SPI_CS_INTD); bcm2835_wr(bs, BCM2835_SPI_CS, cs);
->> 
->> /* wake up our bh */ complete(&bs->done); } } else if (cs &
->> BCM2835_SPI_CS_RXR) { /* read 12 bytes of data */ 
->> bcm2835_rd_fifo(bs, 12);
->> 
->> /* write up to 12 bytes */ bcm2835_wr_fifo(bs, 12); }
+>> +	switch (bpw) { +	case 8: +		break; +	default: +
+>> dev_err(&spi->dev, "unsupported bits_per_word=%d\n", bpw); +
+>> return -EINVAL; +	}
+
+Is there an assumption in the SPI core that bpw will never be >32? The
+value is stored in a u8 in the controller and transfer structs, so
+large values are physically possible. So if there is no such
+assumption, then representing all of an SPI controller's supported BPW
+in a mask/list would be a little unwieldy, so doing central checking
+might not work well.
+
+>> +	if (!(spi->mode & SPI_NO_CS) && +			(spi->chip_select >
+>> spi->master->num_chipselect)) { +		dev_err(&spi->dev, +
+>> "invalid chipselect %u\n", +				spi->chip_select); +		return
+>> -EINVAL; ` +	}
 > 
-> I'd feel happier if these were independent statements in case both
-> are asserted simultaneously.
+> This seems like stuff the core should be able to do for you.
 
-I don't think it would be correct to make that change.
-
-As background, CS_DONE is really "TX FIFO EMPTY" per the description
-in the documentation.
-
-When TA (Transfer Active) is set by bcm2835_spi_start_transfer(),
-CS_DONE will immediately become set, and cause an interrupt. This will
-cause the if/if (first interrupt in a transfer) case above to execute,
-and the FIFO to be filled with up to 16 bytes. Once 12 of those bytes
-have been transferred, CS_RXR (RX FIFO needs Reading) will be set
-causing an interrupt, which will trigger the else case. At the end of
-the message, we stop filling the TX FIFO, and so it eventually drains
-completely, and CS_DONE fires again, causing the if/else (transfer
-complete) path to be taken.
-
-In the end-of-transfer case, it's possible CS_RXR may also be set,
-since the last chunk of the transfer might just happen to be 12 bytes.
-However, we don't want to execute the else cause to drain the FIFO,
-since the CS_DONE case completes the completion, which then allows
-bcm2835_spi_finish_transfer() to drain the FIFO based on the RXD (RX
-FIFO has Data) field. Doing it in the IRQ handler too would confuse
-things. I guess this SoC only has a CPU so it'd work out fine, but
-it's probably best not to rely on it.
-
-Also, I do wonder what happens if we process the CS_RXR interrupt too
-late though, and CS_DONE gets set before we've transferred the entire
-message simply because the FIFO drained unexpectedly.
-
-With the current code, we'd simply write 16 bytes to the TX FIFO and
-not read the RX FIFO, thus likely falling out of sync and overflowing
-the TX FIFO next time around.
-
-Equally, with your suggestion modification, we'd fill the TX FIFO with
-16 bytes in the first if block, then again with 12 more bytes in the
-second if block, and likely overflow the FIFO.
-
-Perhaps the test order should be more like:
-
-if (cs & RXR) {
-    drain 12 bytes from RX FIFO
-    write up to 12 bytes to TX FIFO
-} else if (cs & DONE) {
-    if (len)
-        write up to 16 bytes to TX FIFO
-    else
-        finish transfer
-}
-
-And again the second block should be an else not an independent if, so
-that if RXR was processed late, we don't end up writing first 12 then
-16 bytes to the TX FIFO at once.
-
-Does that all make sense?
+It looks like the core always validates the chip-select value, so I'll
+remove that.
 
 ------------------------------------------------------------------------------
 Symantec Endpoint Protection 12 positioned as A LEADER in The Forrester  

@@ -1,66 +1,105 @@
-From: "Yang, Wenyou" <Wenyou.Yang@atmel.com>
-Subject: RE: [PATCH v6 01/16] spi/spi-atmel: fix probing failure after
- xfer->speed_hz set
-Date: Fri, 8 Mar 2013 01:06:11 +0000
-Message-ID: <B256D81BAE5131468A838E5D7A2436414971BE26@penmbx02>
-References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
-	<1362626815-6628-1-git-send-email-wenyou.yang@atmel.com>
- <CAGhQ9VwW18LXY5Jn0FUFCaAzKxP1W3QADG=JBp9JbgaAwo=F2Q@mail.gmail.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH] spi: add driver for BCM2835
+Date: Thu, 07 Mar 2013 22:48:09 -0700
+Message-ID: <51397B99.5000504@wwwdotorg.org>
+References: <1362538142-19246-1-git-send-email-swarren@wwwdotorg.org>
+	<20130306040520.GA4896@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"Ferre, Nicolas" <Nicolas.FERRE@atmel.com>,
-	"plagnioj@jcrosoft.com" <plagnioj@jcrosoft.com>,
-	"richard.genoud@gmail.com" <richard.genoud@gmail.com>,
-	"Lin, JM" <JM.Lin@atmel.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Joachim Eastwood <manabian@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAGhQ9VwW18LXY5Jn0FUFCaAzKxP1W3QADG=JBp9JbgaAwo=F2Q@mail.gmail.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>,
+	linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130306040520.GA4896-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgSm9hY2hpbSwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBKb2Fj
-aGltIEVhc3R3b29kIFttYWlsdG86bWFuYWJpYW5AZ21haWwuY29tXQ0KPiBTZW50OiAyMDEzxOoz
-1MI3yNUgMjA6MzENCj4gVG86IFlhbmcsIFdlbnlvdQ0KPiBDYzogbGludXgtYXJtLWtlcm5lbEBs
-aXN0cy5pbmZyYWRlYWQub3JnOyBncmFudC5saWtlbHlAc2VjcmV0bGFiLmNhOyBGZXJyZSwNCj4g
-Tmljb2xhczsgcGxhZ25pb2pAamNyb3NvZnQuY29tOyByaWNoYXJkLmdlbm91ZEBnbWFpbC5jb207
-IExpbiwgSk07DQo+IHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldDsgbGlu
-dXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHY2IDAxLzE2
-XSBzcGkvc3BpLWF0bWVsOiBmaXggcHJvYmluZyBmYWlsdXJlIGFmdGVyDQo+IHhmZXItPnNwZWVk
-X2h6IHNldA0KPiANCj4gT24gNyBNYXJjaCAyMDEzIDA0OjI2LCBXZW55b3UgWWFuZyA8d2VueW91
-LnlhbmdAYXRtZWwuY29tPiB3cm90ZToNCj4gPiBjb21taXQ6IDA1OWI4ZmZlZWU1YjQyNzk0OTg3
-MmJiNmVkNWRiNWFlMDc4ODA1NGUNCj4gPiBjYXVzZSB0aGUgYXRtZWwgc3BpIHByb2JpbmcgZmFp
-bHVyZS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFdlbnlvdSBZYW5nIDx3ZW55b3UueWFuZ0Bh
-dG1lbC5jb20+DQo+ID4gQ2M6IHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
-dA0KPiA+IENjOiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+ID4gLS0tDQo+ID4gIGRy
-aXZlcnMvc3BpL3NwaS1hdG1lbC5jIHwgICAgNiArKystLS0NCj4gPiAgMSBmaWxlIGNoYW5nZWQs
-IDMgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9k
-cml2ZXJzL3NwaS9zcGktYXRtZWwuYyBiL2RyaXZlcnMvc3BpL3NwaS1hdG1lbC5jDQo+ID4gaW5k
-ZXggNjU2ZDEzNy4uMWVjYTgxNSAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL3NwaS9zcGktYXRt
-ZWwuYw0KPiA+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1hdG1lbC5jDQo+ID4gQEAgLTg0Niw5ICs4
-NDYsOSBAQCBzdGF0aWMgaW50IGF0bWVsX3NwaV90cmFuc2ZlcihzdHJ1Y3Qgc3BpX2RldmljZSAq
-c3BpLA0KPiBzdHJ1Y3Qgc3BpX21lc3NhZ2UgKm1zZykNCj4gPiAgICAgICAgICAgICAgICAgICAg
-ICAgICB9DQo+ID4gICAgICAgICAgICAgICAgIH0NCj4gPg0KPiA+IC0gICAgICAgICAgICAgICAv
-KiBGSVhNRSBpbXBsZW1lbnQgdGhlc2UgcHJvdG9jb2wgb3B0aW9ucyEhICovDQo+ID4gLSAgICAg
-ICAgICAgICAgIGlmICh4ZmVyLT5zcGVlZF9oeikgew0KPiA+IC0gICAgICAgICAgICAgICAgICAg
-ICAgIGRldl9kYmcoJnNwaS0+ZGV2LCAibm8gcHJvdG9jb2wgb3B0aW9ucw0KPiB5ZXRcbiIpOw0K
-PiA+ICsgICAgICAgICAgICAgICBpZiAoeGZlci0+c3BlZWRfaHogPCBzcGktPm1heF9zcGVlZF9o
-eikgew0KPiA+ICsgICAgICAgICAgICAgICAgICAgICAgIGRldl9kYmcoJnNwaS0+ZGV2LA0KPiA+
-ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInNwZWVkIGluIHRyYW5zZmVyIGxlc3Mg
-dGhhbiBidXMNCj4gc3BlZWRcbiIpOw0KPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIHJldHVy
-biAtRU5PUFJPVE9PUFQ7DQo+ID4gICAgICAgICAgICAgICAgIH0NCj4gDQo+IEkgc2VudCBhIHNp
-bWlsYXIgcGF0Y2ggdG8gc3BpLWRldmwgYSB3aGlsZSBhZ28sIHdoaWNoIEdyYW50IHNhaWQgaGUg
-YXBwbGllZC4NCj4gaHR0cHM6Ly9wYXRjaHdvcmsua2VybmVsLm9yZy9wYXRjaC8yMTY1MzAxLw0K
-PiANCj4gQ2FuJ3QgZmluZCB0aGUgcGF0Y2ggaW4gYW55IHVwc3RyZWFtIGdpdCB0cmVlIHNvIEkg
-Z3Vlc3MgR3JhbnQgaGFzbid0DQo+IHB1c2hlZCBpdCB5ZXQuDQoNClNvcnJ5LCBJIGRpZG4ndCBu
-b3RpY2UgeW91ciBwYXRjaCBiZWZvcmUuDQpGdXJ0aGVybW9yZSwgSSBtYWRlIHRoaXMgcGF0Y2gg
-YmFzZWQgb24geW91ciBhbmQgR3JhbnQscyBlbWFpbC4NCg0KSSB3aWxsIGRyb3AgdGhpcyBwYXRj
-aC4NCg0KPiANCj4gcmVnYXJkcw0KPiBKb2FjaGltIEVhc3R3b29kDQoNCkJlc3QgUmVnYXJkcywN
-CldlbnlvdSBZYW5nDQo=
+On 03/05/2013 09:05 PM, Mark Brown wrote:
+> On Tue, Mar 05, 2013 at 07:49:02PM -0700, Stephen Warren wrote:
+
+>> +static irqreturn_t bcm2835_spi_interrupt(int irq, void *dev_id) 
+>> +{
+>> 
+>> if (cs & BCM2835_SPI_CS_DONE) { if (bs->len) { /* first interrupt
+>> in a transfer */ /* fill the TX fifo with up to 16 bytes */ 
+>> bcm2835_wr_fifo(bs, 16); } else { /* transfer complete */ /*
+>> disable SPI interrupts */ cs &= ~(BCM2835_SPI_CS_INTR |
+>> BCM2835_SPI_CS_INTD); bcm2835_wr(bs, BCM2835_SPI_CS, cs);
+>> 
+>> /* wake up our bh */ complete(&bs->done); } } else if (cs &
+>> BCM2835_SPI_CS_RXR) { /* read 12 bytes of data */ 
+>> bcm2835_rd_fifo(bs, 12);
+>> 
+>> /* write up to 12 bytes */ bcm2835_wr_fifo(bs, 12); }
+> 
+> I'd feel happier if these were independent statements in case both
+> are asserted simultaneously.
+
+I don't think it would be correct to make that change.
+
+As background, CS_DONE is really "TX FIFO EMPTY" per the description
+in the documentation.
+
+When TA (Transfer Active) is set by bcm2835_spi_start_transfer(),
+CS_DONE will immediately become set, and cause an interrupt. This will
+cause the if/if (first interrupt in a transfer) case above to execute,
+and the FIFO to be filled with up to 16 bytes. Once 12 of those bytes
+have been transferred, CS_RXR (RX FIFO needs Reading) will be set
+causing an interrupt, which will trigger the else case. At the end of
+the message, we stop filling the TX FIFO, and so it eventually drains
+completely, and CS_DONE fires again, causing the if/else (transfer
+complete) path to be taken.
+
+In the end-of-transfer case, it's possible CS_RXR may also be set,
+since the last chunk of the transfer might just happen to be 12 bytes.
+However, we don't want to execute the else cause to drain the FIFO,
+since the CS_DONE case completes the completion, which then allows
+bcm2835_spi_finish_transfer() to drain the FIFO based on the RXD (RX
+FIFO has Data) field. Doing it in the IRQ handler too would confuse
+things. I guess this SoC only has a CPU so it'd work out fine, but
+it's probably best not to rely on it.
+
+Also, I do wonder what happens if we process the CS_RXR interrupt too
+late though, and CS_DONE gets set before we've transferred the entire
+message simply because the FIFO drained unexpectedly.
+
+With the current code, we'd simply write 16 bytes to the TX FIFO and
+not read the RX FIFO, thus likely falling out of sync and overflowing
+the TX FIFO next time around.
+
+Equally, with your suggestion modification, we'd fill the TX FIFO with
+16 bytes in the first if block, then again with 12 more bytes in the
+second if block, and likely overflow the FIFO.
+
+Perhaps the test order should be more like:
+
+if (cs & RXR) {
+    drain 12 bytes from RX FIFO
+    write up to 12 bytes to TX FIFO
+} else if (cs & DONE) {
+    if (len)
+        write up to 16 bytes to TX FIFO
+    else
+        finish transfer
+}
+
+And again the second block should be an else not an independent if, so
+that if RXR was processed late, we don't end up writing first 12 then
+16 bytes to the TX FIFO at once.
+
+Does that all make sense?
+
+------------------------------------------------------------------------------
+Symantec Endpoint Protection 12 positioned as A LEADER in The Forrester  
+Wave(TM): Endpoint Security, Q1 2013 and "remains a good choice" in the  
+endpoint security space. For insight on selecting the right partner to 
+tackle endpoint security challenges, access the full report. 
+http://p.sf.net/sfu/symantec-dev2dev

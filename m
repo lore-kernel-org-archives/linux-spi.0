@@ -1,11 +1,10 @@
-From: Cofinoga par Galerie des Marques <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Simulez sans engagement votre offre de =?iso-8859-1?Q?pr=EAt?=
-Date: Sun, 10 Mar 2013 00:52:24 +0100
-Message-ID: <1362873174.thing513bcb56334f1@mach10.generated>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: =?GB2312?B?x+vXqs/gudi4utTwyMs=?= <aiso-0O3okyshfuo@public.gmane.org>
+Subject: [SPAM] 一淘直通车
+Date: Sun, 10 Mar 2013 18:12:38 +0800
+Message-ID: <E1UEdFu-0006xj-GP@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,44 +17,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
-
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MzMwMjAmYz0xOTYxNjQxJmQ9MjAx=
-My0wMy0xMCAwMDo1MDowMSZlPTEmaD0zMzAxOCZmPTMzMDIwJmc9MzMwMjA=3D
-
-Lien de desinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MzMwMjAmYz0xO=
-TYxNjQxJmQ9MjAxMy0wMy0xMCAwMDo1MDowMSZlPTEmaD0zMzAxOCZmPTMzMDIwJmc9MzMwMjA=
-=3D
-
-Si vous ne parvenez pas =E0 lire correctement ce message, cliquez ici.
-=A0
-Un cr=E9dit vous engage et doit =EAtre rembours=E9.V=E9rifiez vos capacit=
-=E9s de remboursement avant de vous engager.
-Pour tous les projets, cofinoga propose des solutions adapt=E9es =E0 votre =
-situation et =E0 vos attentes.
-S=E9rieux, transparence... En choisissant cofinoga, vous obtenez une 1=E8re=
- r=E9ponse de principe imm=E9diate et=A0profitez d'un suivi de dossier en t=
-emps r=E9el
-Pourquoi ne pas profiter de ce message pour faire une simulation gratuite ?
-Vous pouvez vous opposer sans frais =E0 l'utilisation des donn=E9es personn=
-elles que vous nous avez transmises =E0 des fins de prospection.Il vous suf=
-fit alors de nous le pr=E9ciser par courrier aupr=E8s deCofinoga - Assistan=
-ce clients - 33696 BORDEAUX Cedex
-* L'accord d=E9finitif n'interviendra qu'apr=E8s renvoi de votre offre pr=
-=E9alable de cr=E9dit sign=E9e, =E9tude du dossier et examen de vos justifi=
-catifs. (1) Sous r=E9serve d'acceptation de votre dossier et apr=E8s expira=
-tion du d=E9lai l=E9gal de r=E9tractation.Laser Cofinoga - S.A. au capital =
-de 135 000 000 &euro; - SIREN 682 016 332 RCS ParisSi=E8ge social : 18, rue=
- de Londres 75449 Paris Cedex 09 - N=B0 ORIAS 07 023 103.
-Pour vous d=E9sabonner, cliquez ici.
----------------------------------------------------------------------------=
----
-Symantec Endpoint Protection 12 positioned as A LEADER in The Forrester  =
-
-Wave(TM): Endpoint Security, Q1 2013 and "remains a good choice" in the  =
-
-endpoint security space. For insight on selecting the right partner to =
-
-tackle endpoint security challenges, access the full report. =
-
-http://p.sf.net/sfu/symantec-dev2dev
+u6i2/sen1Kq8tL/J1NrM1LGmuPjE47XEsaaxtNf2ueO45qOsxOO7udTa08zUpcqyw7Sjv6OhCgrX
+ydGvtee7sKO6MDIwLTgwNTYwNjM4ICAgMDc1NS02MTI4NzU1MiAgMDIxLTUxNjAyODU2ICCjqLK7
+0OjSqrTLwODQxbz+x+u72Li0tefTytbBdHVpeGluMjAxM0AxMjYuY29tzcvQxaOpCgrSu8zU1rHN
+qLO1o6zEv8ew0tHBrL3TwcvM1LGmzfihotK7zNTN+KGizNSxpsGqw8u1yNbatuDB98G/xr3MqKOs
+ysfV5tX9sLS147v3uLa30bXE0Ke5+9Oqz/q5pL7fo6wKzqrN4rK/zfjVvr/Nu6ehoszYsfDKx0Iy
+Q8nMs8fBv8nttqjWxiCjrMTcubvKtc/Wv827p7L6xre8sM341b61xL6r17zNxrnjoaPU2jIwMTPE
+6qOs0rvM1NaxzaiztQq7ub2rvfjSu7K9zai5/bDZtshTRU0rzNSxps34K9K7zNTN+CvBqsPLVEFO
+WMa9zKgrsKLA7836zfq1yNbatuDB98G/xr3MqKOsw7/I1biyuMfBv72rs6wxMNLaUFajoQrOqs3i
+sr/N+NW+v827p8zhuam4/M6qt+G4u7rNx7+087XE06rP+s3GuePH/rXAoaMKCsT6tcS547jmvauz
+9s/W1NoKMaGizNSxps34y9HL973hufvSsy3T0rLgteq80r6r0aEKMqGi0rvM1M34LcrXvbm2wLzS
+zrvWwwozoaLSu8zUzfjL0cv3veG5+9KzLdfzsuC547jmzrujusnMvNK77ravL8jIwvS1pca3x/jT
+8go0oaLSu8zUzfjL0cv3veG5+9KzLbXXsr+1pca3ueO45s67CjWhotK7zNTIyML00rMt1/Oy4Nfu
+z8K3vaGwycy80rvutq+hsbDlv+kKCtK7zNTWsc2os7W1xNPFysYKMaGi0rvM1NaxxNyztc22t8W1
+xMO9zOXGvcyosPzAqMzUsabN+KGi0rvM1M34oaLM1LGmwarDy7XIw73M5aOsysfEv8ewtPPM1LGm
+zqjSu7+qt8W4+M3isr+/zbuno6hCMkMvxrfFxrnZzfijqb340NDNxrnjtcTXytS0o6i0v8vRy/e5
+us7vwffBv6OpoaMKMqGi0rvM1Naxzaiztc3GueOyydPDzsTX1ivNvMastcTQzsq9s+S31tW5yr6j
+rM/gttSw2bbIzbO8xrPKz9a1pbS/zsTX1r3hufujrLTZz/rQxc+iuPzWsbnboaK/ybqtuMe1xNDF
+z6LBv7j8tPOhowozoaLSu8zU1rHNqLO108O7p7/Jzai5/bbU0aHW0LXEudi8/NfWtqi826OssLTT
+w7unteO797i2t9GjrNXm1f3X9rW9sLTQp7n7uLa30aGjCjShotK7zNTWsc2os7XTw7unv8nNqLn9
+tfe94rfR08PI1c/etu6hornYvPy0yrXju/e1pbzboaLNtrfFtdjT8qGiyrG85LXIt73KvdfU1ve/
+2NbGzca547PJsb6howo1oaLSu8zU1rHNqLO107XT0Me/tPO1xMr9vt2688yo1qezxQphoaK3wLbx
+0uK147v3z7XNs6O6zai5/bXju/fH6b/2oaLWx8Tcu6/L47eot9bO9qOsss7V1UlQoaJjb29raWVz
+oaLO78DttdjWt7XItuC49s6stsijrLGj1qS147v3yv2+3bXE09DQp9DUo7sKYqGiwffBv73izva8
+sMG/19O647XAzbO8xrrzzKijusq1yrG84LLiudi8/LTKtcTNtrfFveG5+6OsuPrX2bPJvbvXqruv
+o6zS1LHj08O7p7X31fvNxrnjst/C1KOs08W7r83GuePQp7n7o7sKCi0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQpTeW1hbnRlYyBFbmRwb2ludCBQcm90ZWN0aW9uIDEyIHBvc2l0aW9uZWQgYXMgQSBMRUFE
+RVIgaW4gVGhlIEZvcnJlc3RlciAgCldhdmUoVE0pOiBFbmRwb2ludCBTZWN1cml0eSwgUTEgMjAx
+MyBhbmQgInJlbWFpbnMgYSBnb29kIGNob2ljZSIgaW4gdGhlICAKZW5kcG9pbnQgc2VjdXJpdHkg
+c3BhY2UuIEZvciBpbnNpZ2h0IG9uIHNlbGVjdGluZyB0aGUgcmlnaHQgcGFydG5lciB0byAKdGFj
+a2xlIGVuZHBvaW50IHNlY3VyaXR5IGNoYWxsZW5nZXMsIGFjY2VzcyB0aGUgZnVsbCByZXBvcnQu
+IApodHRwOi8vcC5zZi5uZXQvc2Z1L3N5bWFudGVjLWRldjJkZXYKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
+aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
+LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

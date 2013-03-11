@@ -1,8 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 02/12] spi/bcm63xx: don't disable non enabled clocks in probe
-	error path
-Date: Tue, 12 Mar 2013 00:13:37 +0100
-Message-ID: <1363043627-23524-3-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 05/12] spi/bcm63xx: remove unneeded debug message
+Date: Tue, 12 Mar 2013 00:13:40 +0100
+Message-ID: <1363043627-23524-6-git-send-email-jogo@openwrt.org>
 References: <1363043627-23524-1-git-send-email-jogo@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,28 +22,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-When msg_ctl_width is set to an invalid value we try to disable the
-clock despite it never being enabled. Fix it by jumping to the correct
-label.
+The spi subsystem already provides this info in a more extensive
+debug print except for the nsecs/bit - which wasn't calculated anyway
+and fixed to 0.
 
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-bcm63xx.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 0415a32..d7df435 100644
+index 79ad8bc..13806e3 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -489,7 +489,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 	default:
- 		dev_err(dev, "unsupported MSG_CTL width: %d\n",
- 			 bs->msg_ctl_width);
--		goto out_clk_disable;
-+		goto out_err;
- 	}
+@@ -158,9 +158,6 @@ static int bcm63xx_spi_setup(struct spi_device *spi)
+ 	if (!spi->bits_per_word)
+ 		spi->bits_per_word = 8;
  
- 	/* Initialize hardware */
+-	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
+-		__func__, spi->mode & MODEBITS, spi->bits_per_word, 0);
+-
+ 	return 0;
+ }
+ 
 -- 
 1.7.10.4
 

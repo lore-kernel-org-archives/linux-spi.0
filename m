@@ -1,50 +1,71 @@
-From: "Partenaire minceur" <contact-FQrouqV0h3b0FCyMt+FLXA@public.gmane.org>
-Subject: Maigrissez sans avoir faim.
-Date: Sun, 10 Mar 2013 10:43:03 +0000 (CET)
-Message-ID: <130310104303.-49308098000007484@obfm40.com>
+From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH v2 1/4] spi/davinci: add DT binding documentation
+Date: Mon, 11 Mar 2013 08:53:30 +0000
+Message-ID: <A73F36158E33644199EB82C5EC81C7BC3EA48A6D@DBDE01.ent.ti.com>
+References: <1362401955-9616-1-git-send-email-prakash.pm@ti.com>
+	<6918845.dALXSKksQd@wuerfel>
+	<A73F36158E33644199EB82C5EC81C7BC3EA4854E@DBDE01.ent.ti.com>
+	<201303051932.41327.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        "linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org"
+	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+        "linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
+	<linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        "devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org"
+	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+        "rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org"
+	<rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+        "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org"
+	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        "rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org" <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
+        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        "hs-ynQEQJNshbs@public.gmane.org" <hs-ynQEQJNshbs@public.gmane.org>,
+        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <201303051932.41327.arnd-r2nGTMty4D4@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CkxBClBSRVNTRSBJTlRFUk5BVElPTkFMRSBFTiBQQVJMRcKgOiAoaHR0cDovL29iZm00MC5jb20v
-amF4ZDJkZnEzMTFiY2Z3MGxvL2luZGV4MC5odG1sKQoKwqvCoFVuCnByb2R1aXQgbWluY2V1ciBw
-YXMgY29tbWUgbGVzIGF1dHJlcyAhIMK7IChodHRwOi8vb2JmbTQwLmNvbS9xdnhvaGRraTNtZ3Rx
-eHowc3EvaW5kZXgxLmh0bWwpCgooaHR0cDovL29iZm00MC5jb20vb2l4eXhkMHczdm1icm9uZGRq
-L2luZGV4Mi5odG1sKSAKVk9VUwpOwrRBVkVaIFBBUyBFTkNPUkUgVEVTVMOJID8gKGh0dHA6Ly9v
-YmZtNDAuY29tL2dreGd1ZGkwM2xodGlqNGR5Zy9pbmRleDMuaHRtbCkKKGh0dHA6Ly9vYmZtNDAu
-Y29tL21pYmN4dzNucGc1YjF5bnR1cS9pbmRleDQuaHRtbCkgCihodHRwOi8vb2JmbTQwLmNvbS9w
-a2J0dXd0MnBoYXRnczR0ZW8vaW5kZXg1Lmh0bWwpIApFTgpGQUlULCBDSEFRVUUgQ09NUFJJTcOJ
-IERFIChodHRwOi8vb2JmbTQwLmNvbS9yYWJ4MndlZ3BueGJtYndza2cvaW5kZXg2Lmh0bWwpWkFD
-VEkrCihodHRwOi8vb2JmbTQwLmNvbS81dmIyaHdjaHAyanRodHpzdmovaW5kZXg3Lmh0bWwpQ09S
-UkVTUE9ORArDgCAoaHR0cDovL29iZm00MC5jb20vYWE1MDAweGozZmJidGt3aW5vL2luZGV4OC5o
-dG1sKTEKS0lMTyBERSBNT0lOUyAoaHR0cDovL29iZm00MC5jb20vaXY1ZmkwdWEzcHl0c3V6aTRx
-L2luZGV4OS5odG1sKSBTVVIKTEEgQkFMQU5DRSAhCkPCtMOJVEFJVCBMRSBQUk9EVUlUIChodHRw
-Oi8vb2JmbTQwLmNvbS95MW53Z2lqcmpmcWxiY21hMW8vaW5kZXgxMC5odG1sKUlORElTUEVOU0FC
-TEUgKGh0dHA6Ly9vYmZtNDAuY29tL2QyZnBtczRpdW1xZXExYTBmby9pbmRleDExLmh0bWwpIFFV
-RQpUT1VURVMgTEVTIEZFTU1FUyBEVSBNT05ERSBBVFRFTkRBSUVOVC4gKGh0dHA6Ly9vYmZtNDAu
-Y29tLzN1cWJlbzJ4dHViNHdra24weS9pbmRleDEyLmh0bWwpCkVGRklDQUNJVMOJCkdBUkFOVElF
-ICEgKGh0dHA6Ly9vYmZtNDAuY29tL2hhdTEwZWlqcGRiYmF1d29ieS9pbmRleDEzLmh0bWwpIAoo
-aHR0cDovL29iZm00MC5jb20va21ia2NuczVyaHN4Z2VsdGNqL2luZGV4MTQuaHRtbCkgCi0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQpTeW1hbnRlYyBFbmRwb2ludCBQcm90ZWN0aW9uIDEyIHBvc2l0aW9u
-ZWQgYXMgQSBMRUFERVIgaW4gVGhlIEZvcnJlc3RlciAgCldhdmUoVE0pOiBFbmRwb2ludCBTZWN1
-cml0eSwgUTEgMjAxMyBhbmQgInJlbWFpbnMgYSBnb29kIGNob2ljZSIgaW4gdGhlICAKZW5kcG9p
-bnQgc2VjdXJpdHkgc3BhY2UuIEZvciBpbnNpZ2h0IG9uIHNlbGVjdGluZyB0aGUgcmlnaHQgcGFy
-dG5lciB0byAKdGFja2xlIGVuZHBvaW50IHNlY3VyaXR5IGNoYWxsZW5nZXMsIGFjY2VzcyB0aGUg
-ZnVsbCByZXBvcnQuIApodHRwOi8vcC5zZi5uZXQvc2Z1L3N5bWFudGVjLWRldjJkZXYKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
-YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
-dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
-ZXJhbAo=
+On Wed, Mar 06, 2013 at 01:02:41, Arnd Bergmann wrote:
+> On Tuesday 05 March 2013, Manjunathappa, Prakash wrote:
+> > On Mon, Mar 04, 2013 at 21:59:16, Arnd Bergmann wrote:
+> > > On Monday 04 March 2013 18:29:12 Manjunathappa, Prakash wrote:
+> > > > +- reg: Offset and length of SPI controller register space
+> > > > +- num-cs: Number of chip selects
+> > > > +- ti,davinci-spi-intr-line: interrupt line used to connect the SPI
+> > > > +	IP to the interrupt controller withn the SoC. Possible values
+> > > > +	are 0 and 1. Manual says one of the two possible interrupt
+> > > > +	lines can be tied to the interrupt controller. Set this
+> > > > +	based on a specifc SoC configuration.
+> > > > +- interrupts: interrupt number offset at the irq parent
+> > > 
+> > > I would not call this an "offset". It is an interrupt descriptor
+> > > which may be something other than a simple number.
+> > > 
+> > 
+> > I am planning to drop from this documentation as it is common property.
+> 
+> I think it makese sense to document the fact that there should be exactly
+> one interrupt listed in the interrupts property, especially since the
+> hardware has two outputs.
+> 
+
+Agreed, will consider this property for documenting.
+
+Thanks,
+Prakash

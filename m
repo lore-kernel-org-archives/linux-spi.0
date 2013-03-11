@@ -1,7 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 09/12] spi/bcm63xx: remove spi chip select validity check
-Date: Tue, 12 Mar 2013 00:13:44 +0100
-Message-ID: <1363043627-23524-10-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 12/12] spi/bcm63xx: use devm_ioremap_resource()
+Date: Tue, 12 Mar 2013 00:13:47 +0100
+Message-ID: <1363043627-23524-13-git-send-email-jogo@openwrt.org>
 References: <1363043627-23524-1-git-send-email-jogo@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,30 +22,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The check would belong in bcm63xx_spi_setup if the spi subsystem
-weren't already doing the check for us, so just drop it.
+Use devm_ioremap_resource() which provides its own error messages.
 
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/spi/spi-bcm63xx.c |   15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index b9c9431..9574e47 100644
+index 2d64db4..973099b 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -102,12 +102,6 @@ static int bcm63xx_spi_check_transfer(struct spi_device *spi,
- 		return -EINVAL;
- 	}
+@@ -412,18 +412,9 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 	bs->pdev = pdev;
  
--	if (spi->chip_select > spi->master->num_chipselect) {
--		dev_err(&spi->dev, "%s, unsupported slave %d\n",
--			__func__, spi->chip_select);
--		return -EINVAL;
+-	if (!devm_request_mem_region(&pdev->dev, r->start,
+-					resource_size(r), PFX)) {
+-		dev_err(dev, "iomem request failed\n");
+-		ret = -ENXIO;
+-		goto out_err;
 -	}
 -
- 	return 0;
- }
+-	bs->regs = devm_ioremap_nocache(&pdev->dev, r->start,
+-							resource_size(r));
+-	if (!bs->regs) {
+-		dev_err(dev, "unable to ioremap regs\n");
+-		ret = -ENOMEM;
++	bs->regs = devm_ioremap_resource(&pdev->dev, r);
++	if (IS_ERR(bs->regs)) {
++		ret = PTR_ERR(bs->regs);
+ 		goto out_err;
+ 	}
  
 -- 
 1.7.10.4

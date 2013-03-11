@@ -1,7 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 07/12] spi/bcm63xx: check spi bits_per_word in spi_setup
-Date: Tue, 12 Mar 2013 00:13:42 +0100
-Message-ID: <1363043627-23524-8-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 08/12] spi/bcm63xx: simplify bcm63xx_spi_check_transfer
+Date: Tue, 12 Mar 2013 00:13:43 +0100
+Message-ID: <1363043627-23524-9-git-send-email-jogo@openwrt.org>
 References: <1363043627-23524-1-git-send-email-jogo@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,32 +22,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Instead of fixing up the bits_per_word (which the spi subsystem already
-does for us), check it for supported values.
+bcm63xx_spi_check_transfer is only called from one place that has
+t always set, so directly check the transfer's bits_per_word.
 
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bcm63xx.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 04c460e..b64229c 100644
+index b64229c..b9c9431 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -151,8 +151,11 @@ static void bcm63xx_spi_setup_transfer(struct spi_device *spi,
- 
- static int bcm63xx_spi_setup(struct spi_device *spi)
+@@ -96,12 +96,9 @@ static const unsigned bcm63xx_spi_freq_table[SPI_CLK_MASK][2] = {
+ static int bcm63xx_spi_check_transfer(struct spi_device *spi,
+ 					struct spi_transfer *t)
  {
--	if (!spi->bits_per_word)
--		spi->bits_per_word = 8;
-+	if (spi->bits_per_word != 8) {
-+		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
-+			__func__, spi->bits_per_word);
-+		return -EINVAL;
-+	}
+-	u8 bits_per_word;
+-
+-	bits_per_word = (t) ? t->bits_per_word : spi->bits_per_word;
+-	if (bits_per_word != 8) {
++	if (t->bits_per_word != 8) {
+ 		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
+-			__func__, bits_per_word);
++			__func__, t->bits_per_word);
+ 		return -EINVAL;
+ 	}
  
- 	return 0;
- }
 -- 
 1.7.10.4
 

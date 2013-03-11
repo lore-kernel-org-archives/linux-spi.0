@@ -1,18 +1,18 @@
-From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: spi-mpc512x-psc: add support for gpio chip
-	selects
-Date: Mon, 11 Mar 2013 23:45:37 +0100
-Message-ID: <20130311234537.2c6ddac8@crub>
-References: <1358195221-18488-1-git-send-email-agust@denx.de>
-	<1358195221-18488-2-git-send-email-agust@denx.de>
-	<20130205141846.173C43E1265@localhost>
+From: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH 00/12] spi/bcm63xx: various small cleanups and fixes
+Date: Tue, 12 Mar 2013 00:20:33 +0100
+Message-ID: <1550045.lN4y9TcD08@bender>
+References: <1363043627-23524-1-git-send-email-jogo@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
+To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130205141846.173C43E1265@localhost>
+In-Reply-To: <1363043627-23524-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,22 +23,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 05 Feb 2013 14:18:46 +0000
-Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> wrote:
-
-> On Mon, 14 Jan 2013 21:27:01 +0100, Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org> wrote:
-> > Currently the driver only uses one internal chip select. Add support
-> > for gpio chip selects configured by gpio specifiers in the device tree.
-> > 
-> > Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+On Tuesday 12 March 2013 00:13:35 Jonas Gorski wrote:
+> This patch series cleans up spi-bcm63xx and removes mostly redundant
+> checks that are already done by the spi core system itself, and also
+> adds some clock handling improvements. All in all nothing serious,
+> just some corner cases.
 > 
-> GPIO chip selects are now in the core spi library. Take a look at
-> master->cs_gpios and Documentation/devicetree/bindings/spi/spi-bus.txt.
-> You don't need to parse them manually.
+> The only Patch I'm not 100% sure about is patch 7/12 ("check spi
+> bits_per_word in spi_setup"), because I'm not sure if setup is the
+> right place for that.
+> 
+> For all we care the spi can claim what it wants as its bit_per_word
+> as long as all transfers have it set to 8, so arguably we maybe
+> shouldn't reject it then.
 
-Thanks for the hint! I'll rework the patch and resubmit.
+For the entire serie:
+Acked-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 
-Anatolij
+thanks Jonas!
+-- 
+Florian
 
 ------------------------------------------------------------------------------
 Symantec Endpoint Protection 12 positioned as A LEADER in The Forrester  

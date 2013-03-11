@@ -1,7 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 12/12] spi/bcm63xx: use devm_ioremap_resource()
-Date: Tue, 12 Mar 2013 00:13:47 +0100
-Message-ID: <1363043627-23524-13-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 01/12] spi/bcm63xx: Remove unused variable
+Date: Tue, 12 Mar 2013 00:13:36 +0100
+Message-ID: <1363043627-23524-2-git-send-email-jogo@openwrt.org>
 References: <1363043627-23524-1-git-send-email-jogo@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,38 +22,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Use devm_ioremap_resource() which provides its own error messages.
+From: Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+This fixes the following warning:
+
+drivers/spi/spi-bcm63xx.c: In function 'bcm63xx_spi_setup':
+drivers/spi/spi-bcm63xx.c:157:6: warning: unused variable 'ret'
+
+Signed-off-by: Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c |   15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ drivers/spi/spi-bcm63xx.c |    1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 2d64db4..973099b 100644
+index 9578af7..0415a32 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -412,18 +412,9 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, master);
- 	bs->pdev = pdev;
+@@ -152,7 +152,6 @@ static void bcm63xx_spi_setup_transfer(struct spi_device *spi,
+ static int bcm63xx_spi_setup(struct spi_device *spi)
+ {
+ 	struct bcm63xx_spi *bs;
+-	int ret;
  
--	if (!devm_request_mem_region(&pdev->dev, r->start,
--					resource_size(r), PFX)) {
--		dev_err(dev, "iomem request failed\n");
--		ret = -ENXIO;
--		goto out_err;
--	}
--
--	bs->regs = devm_ioremap_nocache(&pdev->dev, r->start,
--							resource_size(r));
--	if (!bs->regs) {
--		dev_err(dev, "unable to ioremap regs\n");
--		ret = -ENOMEM;
-+	bs->regs = devm_ioremap_resource(&pdev->dev, r);
-+	if (IS_ERR(bs->regs)) {
-+		ret = PTR_ERR(bs->regs);
- 		goto out_err;
- 	}
+ 	bs = spi_master_get_devdata(spi->master);
  
 -- 
 1.7.10.4

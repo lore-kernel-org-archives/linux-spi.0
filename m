@@ -1,71 +1,60 @@
-From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH v2 1/4] spi/davinci: add DT binding documentation
-Date: Mon, 11 Mar 2013 08:53:30 +0000
-Message-ID: <A73F36158E33644199EB82C5EC81C7BC3EA48A6D@DBDE01.ent.ti.com>
-References: <1362401955-9616-1-git-send-email-prakash.pm@ti.com>
-	<6918845.dALXSKksQd@wuerfel>
-	<A73F36158E33644199EB82C5EC81C7BC3EA4854E@DBDE01.ent.ti.com>
-	<201303051932.41327.arnd@arndb.de>
+From: =?UTF-8?Q?laurent_thenaud_-_alta=C3=A9a?= <info-rc6S0PIZbXvQT0dZR+AlfA@public.gmane.org>
+Subject: Un site web qui s adapte automatiquement aux smartphones et tablettes
+Date: Mon, 11 Mar 2013 10:15:33 +0000
+Message-ID: <b3df3366a455ca2ac1615f63b063870d@altaea.com>
+Reply-To: info-rc6S0PIZbXvQT0dZR+AlfA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        "linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org"
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-        "linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
-	<linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org"
-	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        "rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org"
-	<rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org"
-	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        "rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org" <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "hs-ynQEQJNshbs@public.gmane.org" <hs-ynQEQJNshbs@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <201303051932.41327.arnd-r2nGTMty4D4@public.gmane.org>
-Content-Language: en-US
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 06, 2013 at 01:02:41, Arnd Bergmann wrote:
-> On Tuesday 05 March 2013, Manjunathappa, Prakash wrote:
-> > On Mon, Mar 04, 2013 at 21:59:16, Arnd Bergmann wrote:
-> > > On Monday 04 March 2013 18:29:12 Manjunathappa, Prakash wrote:
-> > > > +- reg: Offset and length of SPI controller register space
-> > > > +- num-cs: Number of chip selects
-> > > > +- ti,davinci-spi-intr-line: interrupt line used to connect the SPI
-> > > > +	IP to the interrupt controller withn the SoC. Possible values
-> > > > +	are 0 and 1. Manual says one of the two possible interrupt
-> > > > +	lines can be tied to the interrupt controller. Set this
-> > > > +	based on a specifc SoC configuration.
-> > > > +- interrupts: interrupt number offset at the irq parent
-> > > 
-> > > I would not call this an "offset". It is an interrupt descriptor
-> > > which may be something other than a simple number.
-> > > 
-> > 
-> > I am planning to drop from this documentation as it is common property.
-> 
-> I think it makese sense to document the fact that there should be exactly
-> one interrupt listed in the interrupts property, especially since the
-> hardware has two outputs.
-> 
-
-Agreed, will consider this property for documenting.
-
-Thanks,
-Prakash
+VW4gc2l0ZSB3ZWIgcXVpIHMgYWRhcHRlIGF1dG9tYXRpcXVlbWVudCBhdXggc21hcnRwaG9uZXMg
+ZXQgdGFibGV0dGVzCgpMZSBmdXR1ciBwb3VyIHZvdHJlIHNpdGUgd2ViICEKClVuIHNpdGUgd2Vi
+IHF1aSBzJ2FkYXB0ZSBhdXRvbWF0aXF1ZW1lbnQgYXV4IHNtYXJ0cGhvbmVzIGV0IHRhYmxldHRl
+cwoKVm91cyBuZSB2aXN1YWxpc2V6IHBhcyBjb3JyZWN0ZW1lbnQgY2UgbWFpbD8gdmVyc2lvbiB3
+ZWIgKCBodHRwOi8vd3d3LmFsdGFlYS5jb20vP215bWFpbD0zODMyNDQmaz0xNzdlNjA1MTRhZjdk
+YWM1Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHAlM0ElMkYlMkZ3d3cuYWx0YWVhLmNvbSUyRm5ld3Ns
+ZXR0ZXIlMkZ1bi1zaXRlLXdlYi1xdWktcy1hZGFwdGUtYXV0b21hdGlxdWVtZW50LWF1eC1zbWFy
+dHBob25lcy1ldC10YWJsZXR0ZXMtMyUyRiZjPTAgKSAKCmh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/
+bXltYWlsPTM4MzI0NCZrPTE3N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cCUz
+QSUyRiUyRnd3dy5hbHRhZWEuY29tJTJGbGF2ZW5pci1kdS13ZWItbGUtcmVzcG9uc2l2ZS13ZWIt
+ZGVzaWduJTJGJmM9MAoKVm91cyBhdmV6IHJlw6d1IGNldCBlbWFpbCBwYXJjZSBxdWUgdm91cyB2
+b3VzIMOqdGVzIGluc2NyaXQgw6AgYWdlbmNlIGRlIGNvbW11bmljYXRpb24gUGFyaXMgTGEgRMOp
+ZmVuc2UgKDkyKSAoIGh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/bXltYWlsPTM4MzI0NCZrPTE3N2U2
+MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cCUzQSUyRiUyRnd3dy5hbHRhZWEuY29t
+JmM9MCApIHZpYSBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgKCBtYWls
+dG86c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0ICldLiBTaSB2b3VzIG5l
+IHZvdWxleiBwbHVzIHJlY2V2b2lyIGQnZW1haWwgbWVyY2kgZGUgdm91cyBkw6lzaW5zY3JpcHRp
+b24gKCBodHRwOi8vd3d3LmFsdGFlYS5jb20vP215bWFpbD0zODMyNDQmaz0xNzdlNjA1MTRhZjdk
+YWM1Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHAlM0ElMkYlMkZ3d3cuYWx0YWVhLmNvbSUyRm5ld3Ns
+ZXR0ZXItMiUyRiUzRnVuc3Vic2NyaWJlJTNEOGJjMjYxOWVmMjVmMDI2MmM3NWIyNTc3YmFhMGVh
+MWEmYz0wICkKwqkgMjAxMyBhZ2VuY2UgZGUgY29tbXVuaWNhdGlvbiBQYXJpcyBMYSBEw6lmZW5z
+ZSAoOTIpLCBUb3VzIGRyb2l0cyByw6lzZXJ2w6lzCgooIGh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/
+bXltYWlsPTM4MzI0NCZrPTE3N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cHMl
+M0ElMkYlMkZ0d2l0dGVyLmNvbSZjPTAgKSAoIGh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/bXltYWls
+PTM4MzI0NCZrPTE3N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cHMlM0ElMkYl
+MkZmYWNlYm9vay5jb20mYz0wICkgKCBodHRwOi8vd3d3LmFsdGFlYS5jb20vP215bWFpbD0zODMy
+NDQmaz0xNzdlNjA1MTRhZjdkYWM1Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHAlM0ElMkYlMkZ3aW5k
+b3dzLmNvbSZjPTAgKSAoIGh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/bXltYWlsPTM4MzI0NCZrPTE3
+N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cCUzQSUyRiUyRmFwcGxlLmNvbSZj
+PTAgKQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClN5bWFudGVjIEVuZHBvaW50IFByb3RlY3Rpb24g
+MTIgcG9zaXRpb25lZCBhcyBBIExFQURFUiBpbiBUaGUgRm9ycmVzdGVyICAKV2F2ZShUTSk6IEVu
+ZHBvaW50IFNlY3VyaXR5LCBRMSAyMDEzIGFuZCAicmVtYWlucyBhIGdvb2QgY2hvaWNlIiBpbiB0
+aGUgIAplbmRwb2ludCBzZWN1cml0eSBzcGFjZS4gRm9yIGluc2lnaHQgb24gc2VsZWN0aW5nIHRo
+ZSByaWdodCBwYXJ0bmVyIHRvIAp0YWNrbGUgZW5kcG9pbnQgc2VjdXJpdHkgY2hhbGxlbmdlcywg
+YWNjZXNzIHRoZSBmdWxsIHJlcG9ydC4gCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc3ltYW50ZWMtZGV2
+MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
+ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
+Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
+aS1kZXZlbC1nZW5lcmFsCg==

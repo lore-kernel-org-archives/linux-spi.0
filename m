@@ -1,7 +1,8 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 05/12] spi/bcm63xx: remove unneeded debug message
-Date: Tue, 12 Mar 2013 00:13:40 +0100
-Message-ID: <1363043627-23524-6-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 06/12] spi/bcm63xx: remove unused variable bs from
+	bcm63xx_spi_setup
+Date: Tue, 12 Mar 2013 00:13:41 +0100
+Message-ID: <1363043627-23524-7-git-send-email-jogo@openwrt.org>
 References: <1363043627-23524-1-git-send-email-jogo@openwrt.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,28 +23,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi subsystem already provides this info in a more extensive
-debug print except for the nsecs/bit - which wasn't calculated anyway
-and fixed to 0.
+It is only written, but never read.
 
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi-bcm63xx.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 79ad8bc..13806e3 100644
+index 13806e3..04c460e 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -158,9 +158,6 @@ static int bcm63xx_spi_setup(struct spi_device *spi)
+@@ -151,10 +151,6 @@ static void bcm63xx_spi_setup_transfer(struct spi_device *spi,
+ 
+ static int bcm63xx_spi_setup(struct spi_device *spi)
+ {
+-	struct bcm63xx_spi *bs;
+-
+-	bs = spi_master_get_devdata(spi->master);
+-
  	if (!spi->bits_per_word)
  		spi->bits_per_word = 8;
- 
--	dev_dbg(&spi->dev, "%s, mode %d, %u bits/w, %u nsec/bit\n",
--		__func__, spi->mode & MODEBITS, spi->bits_per_word, 0);
--
- 	return 0;
- }
  
 -- 
 1.7.10.4

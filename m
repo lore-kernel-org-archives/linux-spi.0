@@ -1,60 +1,67 @@
-From: =?UTF-8?Q?laurent_thenaud_-_alta=C3=A9a?= <info-rc6S0PIZbXvQT0dZR+AlfA@public.gmane.org>
-Subject: Un site web qui s adapte automatiquement aux smartphones et tablettes
-Date: Mon, 11 Mar 2013 10:15:33 +0000
-Message-ID: <b3df3366a455ca2ac1615f63b063870d@altaea.com>
-Reply-To: info-rc6S0PIZbXvQT0dZR+AlfA@public.gmane.org
+From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Subject: Re: [PATCH v6 12/16] spi/spi-atmel: add pinctrl support for atmel
+ spi
+Date: Mon, 11 Mar 2013 14:11:26 +0100
+Message-ID: <20130311131126.GB2001@game.jcrosoft.org>
+References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
+ <1362627243-9351-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
+	nicolas.ferre@atmel.com, richard.genoud@gmail.com,
+	JM.Lin@atmel.com, spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Wenyou Yang <wenyou.yang@atmel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1362627243-9351-1-git-send-email-wenyou.yang@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-VW4gc2l0ZSB3ZWIgcXVpIHMgYWRhcHRlIGF1dG9tYXRpcXVlbWVudCBhdXggc21hcnRwaG9uZXMg
-ZXQgdGFibGV0dGVzCgpMZSBmdXR1ciBwb3VyIHZvdHJlIHNpdGUgd2ViICEKClVuIHNpdGUgd2Vi
-IHF1aSBzJ2FkYXB0ZSBhdXRvbWF0aXF1ZW1lbnQgYXV4IHNtYXJ0cGhvbmVzIGV0IHRhYmxldHRl
-cwoKVm91cyBuZSB2aXN1YWxpc2V6IHBhcyBjb3JyZWN0ZW1lbnQgY2UgbWFpbD8gdmVyc2lvbiB3
-ZWIgKCBodHRwOi8vd3d3LmFsdGFlYS5jb20vP215bWFpbD0zODMyNDQmaz0xNzdlNjA1MTRhZjdk
-YWM1Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHAlM0ElMkYlMkZ3d3cuYWx0YWVhLmNvbSUyRm5ld3Ns
-ZXR0ZXIlMkZ1bi1zaXRlLXdlYi1xdWktcy1hZGFwdGUtYXV0b21hdGlxdWVtZW50LWF1eC1zbWFy
-dHBob25lcy1ldC10YWJsZXR0ZXMtMyUyRiZjPTAgKSAKCmh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/
-bXltYWlsPTM4MzI0NCZrPTE3N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cCUz
-QSUyRiUyRnd3dy5hbHRhZWEuY29tJTJGbGF2ZW5pci1kdS13ZWItbGUtcmVzcG9uc2l2ZS13ZWIt
-ZGVzaWduJTJGJmM9MAoKVm91cyBhdmV6IHJlw6d1IGNldCBlbWFpbCBwYXJjZSBxdWUgdm91cyB2
-b3VzIMOqdGVzIGluc2NyaXQgw6AgYWdlbmNlIGRlIGNvbW11bmljYXRpb24gUGFyaXMgTGEgRMOp
-ZmVuc2UgKDkyKSAoIGh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/bXltYWlsPTM4MzI0NCZrPTE3N2U2
-MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cCUzQSUyRiUyRnd3dy5hbHRhZWEuY29t
-JmM9MCApIHZpYSBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgKCBtYWls
-dG86c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0ICldLiBTaSB2b3VzIG5l
-IHZvdWxleiBwbHVzIHJlY2V2b2lyIGQnZW1haWwgbWVyY2kgZGUgdm91cyBkw6lzaW5zY3JpcHRp
-b24gKCBodHRwOi8vd3d3LmFsdGFlYS5jb20vP215bWFpbD0zODMyNDQmaz0xNzdlNjA1MTRhZjdk
-YWM1Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHAlM0ElMkYlMkZ3d3cuYWx0YWVhLmNvbSUyRm5ld3Ns
-ZXR0ZXItMiUyRiUzRnVuc3Vic2NyaWJlJTNEOGJjMjYxOWVmMjVmMDI2MmM3NWIyNTc3YmFhMGVh
-MWEmYz0wICkKwqkgMjAxMyBhZ2VuY2UgZGUgY29tbXVuaWNhdGlvbiBQYXJpcyBMYSBEw6lmZW5z
-ZSAoOTIpLCBUb3VzIGRyb2l0cyByw6lzZXJ2w6lzCgooIGh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/
-bXltYWlsPTM4MzI0NCZrPTE3N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cHMl
-M0ElMkYlMkZ0d2l0dGVyLmNvbSZjPTAgKSAoIGh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/bXltYWls
-PTM4MzI0NCZrPTE3N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cHMlM0ElMkYl
-MkZmYWNlYm9vay5jb20mYz0wICkgKCBodHRwOi8vd3d3LmFsdGFlYS5jb20vP215bWFpbD0zODMy
-NDQmaz0xNzdlNjA1MTRhZjdkYWM1Y2Q4NTU0MDdiNzBhMTQzYiZ0PWh0dHAlM0ElMkYlMkZ3aW5k
-b3dzLmNvbSZjPTAgKSAoIGh0dHA6Ly93d3cuYWx0YWVhLmNvbS8/bXltYWlsPTM4MzI0NCZrPTE3
-N2U2MDUxNGFmN2RhYzVjZDg1NTQwN2I3MGExNDNiJnQ9aHR0cCUzQSUyRiUyRmFwcGxlLmNvbSZj
-PTAgKQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClN5bWFudGVjIEVuZHBvaW50IFByb3RlY3Rpb24g
-MTIgcG9zaXRpb25lZCBhcyBBIExFQURFUiBpbiBUaGUgRm9ycmVzdGVyICAKV2F2ZShUTSk6IEVu
-ZHBvaW50IFNlY3VyaXR5LCBRMSAyMDEzIGFuZCAicmVtYWlucyBhIGdvb2QgY2hvaWNlIiBpbiB0
-aGUgIAplbmRwb2ludCBzZWN1cml0eSBzcGFjZS4gRm9yIGluc2lnaHQgb24gc2VsZWN0aW5nIHRo
-ZSByaWdodCBwYXJ0bmVyIHRvIAp0YWNrbGUgZW5kcG9pbnQgc2VjdXJpdHkgY2hhbGxlbmdlcywg
-YWNjZXNzIHRoZSBmdWxsIHJlcG9ydC4gCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc3ltYW50ZWMtZGV2
-MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+On 11:34 Thu 07 Mar     , Wenyou Yang wrote:
+> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
+> Cc: spi-devel-general@lists.sourceforge.net
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  drivers/spi/spi-atmel.c |    8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 1e212d1..6b166f4 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/platform_data/atmel.h>
+>  #include <linux/platform_data/dma-atmel.h>
+>  #include <linux/of.h>
+> +#include <linux/pinctrl/consumer.h>
+>  
+>  #include <linux/io.h>
+>  #include <linux/gpio.h>
+> @@ -1493,11 +1494,18 @@ static int atmel_spi_probe(struct platform_device *pdev)
+>  	int			ret;
+>  	struct spi_master	*master;
+>  	struct atmel_spi	*as;
+> +	struct pinctrl		*pinctrl;
+>  
+>  	regs = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>  	if (!regs)
+>  		return -ENXIO;
+>  
+> +	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
+> +	if (IS_ERR(pinctrl)) {
+> +		dev_err(&pdev->dev, "Failed to request pinctrl\n");
+> +		return PTR_ERR(pinctrl);
+> +	}
+
+drop this, this is handled at bus level
+
+Best Regards,
+J.
+> +
+>  	irq = platform_get_irq(pdev, 0);
+>  	if (irq < 0)
+>  		return irq;
+> -- 
+> 1.7.9.5
+> 

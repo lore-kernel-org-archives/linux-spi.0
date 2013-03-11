@@ -1,43 +1,49 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: Re: [PATCH] spi: s3c64xx: let device core setup the default pin configuration
-Date: Mon, 11 Mar 2013 10:36:42 -0700
-Message-ID: <CAD=FV=W++WXLOazKR=f6PHdzr=AVOwyT2i=swNtw6yMOJhJgmA@mail.gmail.com>
-References: <1362570130-14084-1-git-send-email-thomas.abraham@linaro.org>
+From: "Mutuelle Bleue par Vitoule" <contact-75wUxIpnMXr0FCyMt+FLXA@public.gmane.org>
+Subject: [SPAM] Votre complémentaire santé à partir de 10,83 euros par mois
+Date: Mon, 11 Mar 2013 18:01:50 +0000 (CET)
+Message-ID: <130311180150.43742491500001936@obfm43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spi-devel-general@lists.sourceforge.net,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	=?ISO-8859-1?Q?Heiko_St=FCbner?= <heiko@sntech.de>,
-	patches@linaro.org, Linus Walleij <linus.walleij@linaro.org>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	jaswinder.singh@linaro.org, linux-samsung-soc@vger.kernel.org,
-	Tomasz Figa <t.figa@samsung.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Thomas Abraham <thomas.abraham@linaro.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1362570130-14084-1-git-send-email-thomas.abraham@linaro.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Thomas,
-
-On Wed, Mar 6, 2013 at 3:42 AM, Thomas Abraham
-<thomas.abraham@linaro.org> wrote:
-> With device core now able to setup the default pin configuration,
-> the pin configuration code based on the deprecated Samsung specific
-> gpio bindings is removed.
->
-> Signed-off-by: Thomas Abraham <thomas.abraham@linaro.org>
-> ---
->  .../devicetree/bindings/spi/spi-samsung.txt        |    8 +--
->  drivers/spi/spi-s3c64xx.c                          |   66 +------------------
->  2 files changed, 6 insertions(+), 68 deletions(-)
-
-With <https://patchwork.kernel.org/patch/2225151/> on exynos5250-snow
-(ARM Chromebook):
-
-Reviewed-by: Doug Anderson <dianders@chromium.org>
-Tested-by: Doug Anderson <dianders@chromium.org>
-
--Doug
+CkNvbXBsw6ltZW50YWlyZSBzYW50w6kKCsOgIHBhcnRpciBkZTEwLDgz4oKsIC8gbW9pcygxKQpD
+w4lMSUJBVEFJUkUKZXhpZ2VhbnQKCmEgdHJvdXbDqSBtdXR1ZWxsZQplZmZpY2FjZQoKw6AgcHJp
+eCBtaW5pCihodHRwOi8vb2JmbTQzLmNvbS9xeWtqbnVlbGdtMWl3MWZvc3MvaW5kZXgwLmh0bWwp
+Ck9GRlJFUwpFWENMVVNJVkVTCjIwMTMoMikKNQpzw4lqb3VycyBjZW50ZXIgcGFyY3MKCsKgwqDD
+gCBnYWduZXIoMykKCmp1c3F1wrRhdSAzMS8wMy8yMDEzCkF2ZWMgTXV0dWVsbGUgQmxldWUsIHRy
+b3V2ZXogdm91cyBhdXNzaQpMQSBwcm90ZWN0aW9uIGFkYXB0w6llIMOgIHZvcyBiZXNvaW5zCigx
+KSBUYXJpZiBlbiB2aWd1ZXVyIMOgIGxhIGRhdGUgZHUgMDEvMDEvMjAxMywgZ2FyYW50aWUgSG9z
+cGkgU29pbnMgcG91ciB1biBhZHVsdGUgZGUgMjAgYW5zIHLDqXNpZGFudCBlbiBJc8OocmUuCgoo
+MikgT2ZmcmVzIHNvdW1pc2VzIMOgIGNvbmRpdGlvbnMuCgooMykgUGFyIHRpcmFnZSBhdSBzb3J0
+LiBWYWxldXIgdW5pdGFpcmUgZGVzIHPDqWpvdXJzIDogMiAwMDAg4oKsIFRUQy4gTGUgcsOoZ2xl
+bWVudCBkZXMgb3DDqXJhdGlvbnMgZXN0IGTDqXBvc8OpIMOgIGxhIFNFTEFSTCBNaWNoYXVkIEpv
+cnJ5IEFuZHLDqSBldCBUaXhpZXIgLSBIdWlzc2llcnMgZGUganVzdGljZSBBc3NvY2nDqXMgw6Ag
+TWVsdW4gKDc3KS4gSWwgZXN0IGFkcmVzc8OpIMOgIHRpdHJlIGdyYXR1aXQgw6AgdG91dGUgcGVy
+c29ubmUgcXVpIGVuIGZhaXQgbGEgZGVtYW5kZSBhdXByw6hzIGRlIE11dHVlbGxlIEJsZXVlIDE0
+IHJ1ZSBSZW7DqSBDYXNzaW4gNzcwMTQgTWVsdW4gQ2VkZXguCgpNdXR1ZWxsZSBzb3VtaXNlIGF1
+eCBkaXNwb3NpdGlvbnMgZHUgTGl2cmUgSUkgZHUgQ29kZSBkZSBsYSBNdXR1YWxpdMOpLiBTSVJF
+TiBuwrAgNzc1IDY3MSA5OTMuCgpDcsOpZGl0cyBwaG90b3MgOiBHZXR0eSBJbWFnZXMgLSBQaWVy
+cmUgJiBWYWNhbmNlcwpEb2N1bWVudCBldCBwaG90b3Mgbm9uIGNvbnRyYWN0dWVscy4KLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tClN5bWFudGVjIEVuZHBvaW50IFByb3RlY3Rpb24gMTIgcG9zaXRpb25l
+ZCBhcyBBIExFQURFUiBpbiBUaGUgRm9ycmVzdGVyICAKV2F2ZShUTSk6IEVuZHBvaW50IFNlY3Vy
+aXR5LCBRMSAyMDEzIGFuZCAicmVtYWlucyBhIGdvb2QgY2hvaWNlIiBpbiB0aGUgIAplbmRwb2lu
+dCBzZWN1cml0eSBzcGFjZS4gRm9yIGluc2lnaHQgb24gc2VsZWN0aW5nIHRoZSByaWdodCBwYXJ0
+bmVyIHRvIAp0YWNrbGUgZW5kcG9pbnQgc2VjdXJpdHkgY2hhbGxlbmdlcywgYWNjZXNzIHRoZSBm
+dWxsIHJlcG9ydC4gCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc3ltYW50ZWMtZGV2MmRldgpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJh
+bCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0
+dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5l
+cmFsCg==

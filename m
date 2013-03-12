@@ -1,53 +1,83 @@
-From: "=?UTF-8?Q?Cl=C3=A9mentina_Frog_par_Planduweb?=" <contact-tR38n1wcsvlQFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Tout schuss sur le prix des bagages
-Date: Tue, 12 Mar 2013 17:08:17 +0000 (CET)
-Message-ID: <130312170817.52063110900003620@obfm41.com>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH V2] spi: add driver for BCM2835
+Date: Tue, 12 Mar 2013 18:24:05 +0000
+Message-ID: <20130312182405.GE19942@opensource.wolfsonmicro.com>
+References: <1363059504-13284-1-git-send-email-swarren@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============8306032635234281790=="
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+ spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1363059504-13284-1-git-send-email-swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQxLmNvbS9pazRma2t1emhwdWtycXYza3kvaW5kZXgwLmh0bWwpCihodHRw
-Oi8vb2JmbTQxLmNvbS9haTQwZmt4YmhmenVpZ2szdmwvaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
-bTQxLmNvbS9odjQxaWtoamhzeWtjY2VwdXMvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQxLmNv
-bS8zYTRiMGsyYWhrYnVxMXVwZWQvaW5kZXgzLmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS9mdnBz
-aXRib20zbGttMmVpZGwvaW5kZXg0Lmh0bWwpCkNsZW1lbnRpbmEgZnJvZywgbGUgc3DDqWNpYWxp
-c3RlIGR1IHJhbmdlbWVudCBldCBkZXMgYmFnYWdlcyB2b3VzIHByb3Bvc2UgdW5lIHPDqWxlY3Rp
-b24gZGUgcHJvZHVpdHMgZGUgcXVhbGl0w6kgw6AgdG91dCBwZXRpdHMgcHJpeCAhIAoKKGh0dHA6
-Ly9vYmZtNDEuY29tLzFhcHEwdGEzbW8ydWgwdWl5eS9pbmRleDUuaHRtbCkKKGh0dHA6Ly9vYmZt
-NDEuY29tL3hrcGxrdDE0bXR2azFsdnJsZC9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29t
-L2NpcGpmdHZ0bTRudWdka3Jzcy9pbmRleDcuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3FrdG91
-NGt3aG1oazR3dnR0eS9pbmRleDguaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL2ppdGR4NGYwaDFt
-dWtua3QybC9pbmRleDkuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL2ZjNXNvMGJ0dzNuMm1scGlk
-ai9pbmRleDEwLmh0bWwpCk5vcyB2YWxpc2VzIHNvdXBsZXMgb3UgcmlnaWRlcyBvbnQgw6l0w6kg
-c3DDqWNpYWxlbWVudCBjb25jdWVzIHBvdXIgYWNjb21wYWduZXIgdm9zIGTDqXBsYWNlbWVudHMg
-cGVyc29ubmVscyBvdSBwcm9mZXNzaW9ubmVscyBlbiB0b3V0ZSBsw6lnw6hyZXTDqSBldCAKcm9i
-dXN0ZXNzZS4gQ2hhY3VuZSBkwrRlbnRyZSBlbGxlcyBwb3Nzw6hkZSBkZXMgcm91bGV0dGVzIHBv
-dXIgdHJhbnNwb3J0ZXIgc2FucyBzwrRlc3NvdWZsZXIuCgooaHR0cDovL29iZm00MS5jb20vMTAw
-cXBwM3NjZ253a2RpYnlqL2luZGV4MTEuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3prc3Z1NGdu
-aGIza2Y1djRncy9pbmRleDEyLmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS93M2hhYmN3dmx3M3ls
-cHpnb3MvaW5kZXgxMy5odG1sKQooaHR0cDovL29iZm00MS5jb20vNXIxMHhnZjJ5MTVqdW1zMmxv
-L2luZGV4MTQuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3J3NGZhdXVsYXA1M3JyMDNzby9pbmRl
-eDE1Lmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS96eTFlbmdvbXMxZnF1YWcyZ3MvaW5kZXgxNi5o
-dG1sKQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU3ltYW50ZWMgRW5kcG9pbnQgUHJvdGVjdGlvbiAx
-MiBwb3NpdGlvbmVkIGFzIEEgTEVBREVSIGluIFRoZSBGb3JyZXN0ZXIgIApXYXZlKFRNKTogRW5k
-cG9pbnQgU2VjdXJpdHksIFExIDIwMTMgYW5kICJyZW1haW5zIGEgZ29vZCBjaG9pY2UiIGluIHRo
-ZSAgCmVuZHBvaW50IHNlY3VyaXR5IHNwYWNlLiBGb3IgaW5zaWdodCBvbiBzZWxlY3RpbmcgdGhl
-IHJpZ2h0IHBhcnRuZXIgdG8gCnRhY2tsZSBlbmRwb2ludCBzZWN1cml0eSBjaGFsbGVuZ2VzLCBh
-Y2Nlc3MgdGhlIGZ1bGwgcmVwb3J0LiAKaHR0cDovL3Auc2YubmV0L3NmdS9zeW1hbnRlYy1kZXYy
-ZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
-ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
-b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
-LWRldmVsLWdlbmVyYWwK
+
+--===============8306032635234281790==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="DqhR8hV3EnoxUkKN"
+Content-Disposition: inline
+
+
+--DqhR8hV3EnoxUkKN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Mar 11, 2013 at 09:38:24PM -0600, Stephen Warren wrote:
+> From: Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>
+>=20
+> The BCM2835 contains two forms of SPI master controller (one known
+> simply as SPI0, and the other known as the "Universal SPI Master", in
+> the auxilliary block) and one form of SPI slave controller. This patch
+> adds support for the SPI0 controller.
+
+Applied, thanks.
+
+--DqhR8hV3EnoxUkKN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRP3K+AAoJELSic+t+oim9NPYQAIeK0g/fXOGppgJTG6uSroCN
+ZV9Z0+84XwnxR7JaUh8/ibJT3kz+dAvPgFjHJuLuPNBqflsnlI8FlDm6suZ3Jxb6
+namNl2MNfMj4+5/q03rb3G60ib+iIw09a0+fhRu29Wj2ZsixBwSxc89ZefO6i+Mn
+sWBlkD7/Mlr/MoterCqIX6NiWsNA8yqt9BAQggg6tWySoK7pcDJwPVEzyOXcBY+k
+mOjQHnj5ED8PwMkECjUsIgq3765uSkRtMgu7FBESDL9bl1sH8DchulZaKir1nLfT
+BdQxe/P2dAYTKcIx8BKz/MgmN7cD/DdUkaRcdnpMdoIhyBiWjnLfZArQVUeW6fdu
+2TUKMiEY3qCDL8D9IUQJmiSDm4nsU3URL+ZMFce2EU42VLr7KJtUjXrnEqlobZf7
+PA+djdvo7mFxgCowARucL7W++mW0fOMb4m4/52M+UJEIlXEHycRnIgM1dy2Ix9B/
+uxcuJtXyohbfjlHskug36ZPkJHDcDltHlNBoxbOHA8tH7K8sXv9oBl8/4VuVLO+k
+XUVyCszzKg8irU2OPYHO+tW42q5295O1E8yHWRnOpYXybpdQqZ74+U+CRWG9t6q5
+Dt1ivm3ki0+qwpGg37WMw9ljIbuV5gBieGeXNwyPh810GEh0Er5QdisPuKMrE9KD
+H3/5wUmss4YDqi+ilzSL
+=b1MG
+-----END PGP SIGNATURE-----
+
+--DqhR8hV3EnoxUkKN--
+
+
+--===============8306032635234281790==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-rpi-kernel mailing list
+linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
+
+--===============8306032635234281790==--

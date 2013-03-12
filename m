@@ -1,18 +1,24 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 06/12] spi/bcm63xx: remove unused variable bs from
-	bcm63xx_spi_setup
-Date: Tue, 12 Mar 2013 00:13:41 +0100
-Message-ID: <1363043627-23524-7-git-send-email-jogo@openwrt.org>
-References: <1363043627-23524-1-git-send-email-jogo@openwrt.org>
+From: "Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: RE: [PATCH v6 12/16] spi/spi-atmel: add pinctrl support for atmel spi
+Date: Tue, 12 Mar 2013 01:10:15 +0000
+Message-ID: <B256D81BAE5131468A838E5D7A2436414972659B@penmbx02>
+References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
+	<1362627243-9351-1-git-send-email-wenyou.yang@atmel.com>
+	<20130311131126.GB2001@game.jcrosoft.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, "Lin,
+	JM" <JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, "Ferre, Nicolas" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1363043627-23524-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <20130311131126.GB2001-RQcB7r2h9QmfDR2tN2SG5Ni2O/JbrIOy@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,35 +29,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-It is only written, but never read.
-
-Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
----
- drivers/spi/spi-bcm63xx.c |    4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 13806e3..04c460e 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -151,10 +151,6 @@ static void bcm63xx_spi_setup_transfer(struct spi_device *spi,
- 
- static int bcm63xx_spi_setup(struct spi_device *spi)
- {
--	struct bcm63xx_spi *bs;
--
--	bs = spi_master_get_devdata(spi->master);
--
- 	if (!spi->bits_per_word)
- 		spi->bits_per_word = 8;
- 
--- 
-1.7.10.4
-
-
-------------------------------------------------------------------------------
-Symantec Endpoint Protection 12 positioned as A LEADER in The Forrester  
-Wave(TM): Endpoint Security, Q1 2013 and "remains a good choice" in the  
-endpoint security space. For insight on selecting the right partner to 
-tackle endpoint security challenges, access the full report. 
-http://p.sf.net/sfu/symantec-dev2dev
+SGkgSkMsDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSmVhbi1DaHJp
+c3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgW21haWx0bzpwbGFnbmlvakBqY3Jvc29mdC5jb21dDQo+
+IFNlbnQ6IDIwMTPE6jPUwjExyNUgMjE6MTENCj4gVG86IFlhbmcsIFdlbnlvdQ0KPiBDYzogbGlu
+dXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBncmFudC5saWtlbHlAc2VjcmV0bGFi
+LmNhOyBGZXJyZSwNCj4gTmljb2xhczsgcmljaGFyZC5nZW5vdWRAZ21haWwuY29tOyBMaW4sIEpN
+Ow0KPiBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQ7IGxpbnV4LWtlcm5l
+bEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NiAxMi8xNl0gc3BpL3Nw
+aS1hdG1lbDogYWRkIHBpbmN0cmwgc3VwcG9ydCBmb3IgYXRtZWwgc3BpDQo+IA0KPiBPbiAxMToz
+NCBUaHUgMDcgTWFyICAgICAsIFdlbnlvdSBZYW5nIHdyb3RlOg0KPiA+IFNpZ25lZC1vZmYtYnk6
+IFdlbnlvdSBZYW5nIDx3ZW55b3UueWFuZ0BhdG1lbC5jb20+DQo+ID4gQ2M6IHNwaS1kZXZlbC1n
+ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldA0KPiA+IENjOiBsaW51eC1rZXJuZWxAdmdlci5r
+ZXJuZWwub3JnDQo+ID4gLS0tDQo+ID4gIGRyaXZlcnMvc3BpL3NwaS1hdG1lbC5jIHwgICAgOCAr
+KysrKysrKw0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9zcGkvc3BpLWF0bWVsLmMgYi9kcml2ZXJzL3NwaS9zcGktYXRt
+ZWwuYw0KPiA+IGluZGV4IDFlMjEyZDEuLjZiMTY2ZjQgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVy
+cy9zcGkvc3BpLWF0bWVsLmMNCj4gPiArKysgYi9kcml2ZXJzL3NwaS9zcGktYXRtZWwuYw0KPiA+
+IEBAIC0yMyw2ICsyMyw3IEBADQo+ID4gICNpbmNsdWRlIDxsaW51eC9wbGF0Zm9ybV9kYXRhL2F0
+bWVsLmg+DQo+ID4gICNpbmNsdWRlIDxsaW51eC9wbGF0Zm9ybV9kYXRhL2RtYS1hdG1lbC5oPg0K
+PiA+ICAjaW5jbHVkZSA8bGludXgvb2YuaD4NCj4gPiArI2luY2x1ZGUgPGxpbnV4L3BpbmN0cmwv
+Y29uc3VtZXIuaD4NCj4gPg0KPiA+ICAjaW5jbHVkZSA8bGludXgvaW8uaD4NCj4gPiAgI2luY2x1
+ZGUgPGxpbnV4L2dwaW8uaD4NCj4gPiBAQCAtMTQ5MywxMSArMTQ5NCwxOCBAQCBzdGF0aWMgaW50
+IGF0bWVsX3NwaV9wcm9iZShzdHJ1Y3QNCj4gcGxhdGZvcm1fZGV2aWNlICpwZGV2KQ0KPiA+ICAJ
+aW50CQkJcmV0Ow0KPiA+ICAJc3RydWN0IHNwaV9tYXN0ZXIJKm1hc3RlcjsNCj4gPiAgCXN0cnVj
+dCBhdG1lbF9zcGkJKmFzOw0KPiA+ICsJc3RydWN0IHBpbmN0cmwJCSpwaW5jdHJsOw0KPiA+DQo+
+ID4gIAlyZWdzID0gcGxhdGZvcm1fZ2V0X3Jlc291cmNlKHBkZXYsIElPUkVTT1VSQ0VfTUVNLCAw
+KTsNCj4gPiAgCWlmICghcmVncykNCj4gPiAgCQlyZXR1cm4gLUVOWElPOw0KPiA+DQo+ID4gKwlw
+aW5jdHJsID0gZGV2bV9waW5jdHJsX2dldF9zZWxlY3RfZGVmYXVsdCgmcGRldi0+ZGV2KTsNCj4g
+PiArCWlmIChJU19FUlIocGluY3RybCkpIHsNCj4gPiArCQlkZXZfZXJyKCZwZGV2LT5kZXYsICJG
+YWlsZWQgdG8gcmVxdWVzdCBwaW5jdHJsXG4iKTsNCj4gPiArCQlyZXR1cm4gUFRSX0VSUihwaW5j
+dHJsKTsNCj4gPiArCX0NCj4gDQo+IGRyb3AgdGhpcywgdGhpcyBpcyBoYW5kbGVkIGF0IGJ1cyBs
+ZXZlbA0KPiANClRoYW5rcyBhIGxvdCBmb3IgeW91ciBhZHZhbmNlLg0KDQo+IEJlc3QgUmVnYXJk
+cywNCj4gSi4NCg0KQmVzdCBSZWdhcmRzDQpXZW55b3UgWWFuZw0KPiA+ICsNCj4gPiAgCWlycSA9
+IHBsYXRmb3JtX2dldF9pcnEocGRldiwgMCk7DQo+ID4gIAlpZiAoaXJxIDwgMCkNCj4gPiAgCQly
+ZXR1cm4gaXJxOw0KPiA+IC0tDQo+ID4gMS43LjkuNQ0KPiA+DQotLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KU3ltYW50ZWMgRW5kcG9pbnQgUHJvdGVjdGlvbiAxMiBwb3NpdGlvbmVkIGFzIEEgTEVBREVS
+IGluIFRoZSBGb3JyZXN0ZXIgIApXYXZlKFRNKTogRW5kcG9pbnQgU2VjdXJpdHksIFExIDIwMTMg
+YW5kICJyZW1haW5zIGEgZ29vZCBjaG9pY2UiIGluIHRoZSAgCmVuZHBvaW50IHNlY3VyaXR5IHNw
+YWNlLiBGb3IgaW5zaWdodCBvbiBzZWxlY3RpbmcgdGhlIHJpZ2h0IHBhcnRuZXIgdG8gCnRhY2ts
+ZSBlbmRwb2ludCBzZWN1cml0eSBjaGFsbGVuZ2VzLCBhY2Nlc3MgdGhlIGZ1bGwgcmVwb3J0LiAK
+aHR0cDovL3Auc2YubmV0L3NmdS9zeW1hbnRlYy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
+dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
+b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

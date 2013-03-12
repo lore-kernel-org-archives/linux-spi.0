@@ -1,32 +1,13 @@
-From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v9 5/9] dmaengine: edma: Add TI EDMA device tree binding
-Date: Tue, 12 Mar 2013 12:23:10 -0400
-Message-ID: <20130312162310.GZ6209@beef>
-References: <1362586540-10393-1-git-send-email-mporter@ti.com>
-	<1362586540-10393-6-git-send-email-mporter@ti.com>
-	<1ced8cac7b9b41f596f0385e1f4f1f40@DFLE72.ent.ti.com>
+From: "=?UTF-8?Q?Cl=C3=A9mentina_Frog_par_Planduweb?=" <contact-tR38n1wcsvlQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Tout schuss sur le prix des bagages
+Date: Tue, 12 Mar 2013 17:08:17 +0000 (CET)
+Message-ID: <130312170817.52063110900003620@obfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, "Cousson,
-	Benoit" <b-cousson-l0cyMroinI0@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1ced8cac7b9b41f596f0385e1f4f1f40-S6owGmh5AOyIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -37,87 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Mar 12, 2013 at 06:53:03AM +0000, Sekhar Nori wrote:
-> On 3/6/2013 9:45 PM, Matt Porter wrote:
-> > The binding definition is based on the generic DMA controller
-> > binding.
-> > 
-> > Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-> 
-> Okay the bindings the documented after they are used leading to some
-> confusion. This patch should be moved up the series. As I noted in my
-> other e-mail, some of these bindings are not really hardware description
-> and need to be re-looked.
-
-Sure, I'll reorder it.
-
--Matt
-
-> > ---
-> >  Documentation/devicetree/bindings/dma/ti-edma.txt |   49 +++++++++++++++++++++
-> >  1 file changed, 49 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/dma/ti-edma.txt
-> > 
-> > diff --git a/Documentation/devicetree/bindings/dma/ti-edma.txt b/Documentation/devicetree/bindings/dma/ti-edma.txt
-> > new file mode 100644
-> > index 0000000..075a60e3
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/dma/ti-edma.txt
-> > @@ -0,0 +1,49 @@
-> > +TI EDMA
-> > +
-> > +Required properties:
-> > +- compatible : "ti,edma3"
-> > +- ti,hwmods: Name of the hwmods associated to the EDMA
-> > +- ti,edma-regions: Number of regions
-> > +- ti,edma-slots: Number of slots
-> > +- ti,edma-queue-tc-map: List of transfer control to queue mappings
-> > +- ti,edma-queue-priority-map: List of queue priority mappings
-> > +- ti,edma-default-queue: Default queue value
-> > +
-> > +Optional properties:
-> > +- ti,edma-reserved-channels: List of reserved channel regions
-> > +- ti,edma-reserved-slots: List of reserved slot regions
-> > +- ti,edma-xbar-event-map: Crossbar event to channel map
-> > +
-> > +Example:
-> > +
-> > +edma: edma@49000000 {
-> > +	reg = <0x49000000 0x10000>;
-> > +	interrupt-parent = <&intc>;
-> > +	interrupts = <12 13 14>;
-> > +	compatible = "ti,edma3";
-> > +	ti,hwmods = "tpcc", "tptc0", "tptc1", "tptc2";
-> > +	#dma-cells = <1>;
-> > +	dma-channels = <64>;
-> > +	ti,edma-regions = <4>;
-> > +	ti,edma-slots = <256>;
-> > +	ti,edma-reserved-channels = <0  2
-> > +				     14 2
-> > +				     26 6
-> > +				     48 4
-> > +				     56 8>;
-> > +	ti,edma-reserved-slots = <0  2
-> > +				  14 2
-> > +				  26 6
-> > +				  48 4
-> > +				  56 8
-> > +				  64 127>;
-> > +	ti,edma-queue-tc-map = <0 0
-> > +				1 1
-> > +				2 2>;
-> > +	ti,edma-queue-priority-map = <0 0
-> > +				      1 1
-> > +				      2 2>;
-> > +	ti,edma-default-queue = <0>;
-> > +	ti,edma-xbar-event-map = <1 12
-> > +				  2 13>;
-> > +};
-> > 
-
-------------------------------------------------------------------------------
-Symantec Endpoint Protection 12 positioned as A LEADER in The Forrester  
-Wave(TM): Endpoint Security, Q1 2013 and "remains a good choice" in the  
-endpoint security space. For insight on selecting the right partner to 
-tackle endpoint security challenges, access the full report. 
-http://p.sf.net/sfu/symantec-dev2dev
+CihodHRwOi8vb2JmbTQxLmNvbS9pazRma2t1emhwdWtycXYza3kvaW5kZXgwLmh0bWwpCihodHRw
+Oi8vb2JmbTQxLmNvbS9haTQwZmt4YmhmenVpZ2szdmwvaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
+bTQxLmNvbS9odjQxaWtoamhzeWtjY2VwdXMvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQxLmNv
+bS8zYTRiMGsyYWhrYnVxMXVwZWQvaW5kZXgzLmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS9mdnBz
+aXRib20zbGttMmVpZGwvaW5kZXg0Lmh0bWwpCkNsZW1lbnRpbmEgZnJvZywgbGUgc3DDqWNpYWxp
+c3RlIGR1IHJhbmdlbWVudCBldCBkZXMgYmFnYWdlcyB2b3VzIHByb3Bvc2UgdW5lIHPDqWxlY3Rp
+b24gZGUgcHJvZHVpdHMgZGUgcXVhbGl0w6kgw6AgdG91dCBwZXRpdHMgcHJpeCAhIAoKKGh0dHA6
+Ly9vYmZtNDEuY29tLzFhcHEwdGEzbW8ydWgwdWl5eS9pbmRleDUuaHRtbCkKKGh0dHA6Ly9vYmZt
+NDEuY29tL3hrcGxrdDE0bXR2azFsdnJsZC9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29t
+L2NpcGpmdHZ0bTRudWdka3Jzcy9pbmRleDcuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3FrdG91
+NGt3aG1oazR3dnR0eS9pbmRleDguaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL2ppdGR4NGYwaDFt
+dWtua3QybC9pbmRleDkuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL2ZjNXNvMGJ0dzNuMm1scGlk
+ai9pbmRleDEwLmh0bWwpCk5vcyB2YWxpc2VzIHNvdXBsZXMgb3UgcmlnaWRlcyBvbnQgw6l0w6kg
+c3DDqWNpYWxlbWVudCBjb25jdWVzIHBvdXIgYWNjb21wYWduZXIgdm9zIGTDqXBsYWNlbWVudHMg
+cGVyc29ubmVscyBvdSBwcm9mZXNzaW9ubmVscyBlbiB0b3V0ZSBsw6lnw6hyZXTDqSBldCAKcm9i
+dXN0ZXNzZS4gQ2hhY3VuZSBkwrRlbnRyZSBlbGxlcyBwb3Nzw6hkZSBkZXMgcm91bGV0dGVzIHBv
+dXIgdHJhbnNwb3J0ZXIgc2FucyBzwrRlc3NvdWZsZXIuCgooaHR0cDovL29iZm00MS5jb20vMTAw
+cXBwM3NjZ253a2RpYnlqL2luZGV4MTEuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3prc3Z1NGdu
+aGIza2Y1djRncy9pbmRleDEyLmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS93M2hhYmN3dmx3M3ls
+cHpnb3MvaW5kZXgxMy5odG1sKQooaHR0cDovL29iZm00MS5jb20vNXIxMHhnZjJ5MTVqdW1zMmxv
+L2luZGV4MTQuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3J3NGZhdXVsYXA1M3JyMDNzby9pbmRl
+eDE1Lmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS96eTFlbmdvbXMxZnF1YWcyZ3MvaW5kZXgxNi5o
+dG1sKQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU3ltYW50ZWMgRW5kcG9pbnQgUHJvdGVjdGlvbiAx
+MiBwb3NpdGlvbmVkIGFzIEEgTEVBREVSIGluIFRoZSBGb3JyZXN0ZXIgIApXYXZlKFRNKTogRW5k
+cG9pbnQgU2VjdXJpdHksIFExIDIwMTMgYW5kICJyZW1haW5zIGEgZ29vZCBjaG9pY2UiIGluIHRo
+ZSAgCmVuZHBvaW50IHNlY3VyaXR5IHNwYWNlLiBGb3IgaW5zaWdodCBvbiBzZWxlY3RpbmcgdGhl
+IHJpZ2h0IHBhcnRuZXIgdG8gCnRhY2tsZSBlbmRwb2ludCBzZWN1cml0eSBjaGFsbGVuZ2VzLCBh
+Y2Nlc3MgdGhlIGZ1bGwgcmVwb3J0LiAKaHR0cDovL3Auc2YubmV0L3NmdS9zeW1hbnRlYy1kZXYy
+ZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
+ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
+LWRldmVsLWdlbmVyYWwK

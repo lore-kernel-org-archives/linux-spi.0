@@ -1,16 +1,16 @@
 From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v3 5/5] ARM: davinci: da850-evm: add SPI flash support
-Date: Tue, 12 Mar 2013 13:40:27 +0530
-Message-ID: <1363075827-31053-6-git-send-email-prakash.pm@ti.com>
+Subject: [PATCH v3 2/5] spi/davinci: add DT binding documentation
+Date: Tue, 12 Mar 2013 13:40:24 +0530
+Message-ID: <1363075827-31053-3-git-send-email-prakash.pm@ti.com>
 References: <1363075827-31053-1-git-send-email-prakash.pm@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, nsekhar-l0cyMroinI0@public.gmane.org,
-	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, "Manjunathappa,
-	Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, hs-ynQEQJNshbs@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>,
+	Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org,
+	hs-ynQEQJNshbs@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -25,65 +25,78 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Enable m25p64 SPI flash support on da850-EVM. Also
-add partition information of SPI flash.
+From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
 
+Get back missed out binding documentation submitted along
+with below patch:
+"spi/davinci: add OF support for the spi controller"
+
+[prakash.pm-l0cyMroinI0@public.gmane.org: Follow DT naming convention for compatible property]
+Signed-off-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+Reviewed-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Signed-off-by: Manjunathappa, Prakash <prakash.pm-l0cyMroinI0@public.gmane.org>
 ---
- arch/arm/boot/dts/da850-evm.dts |   40 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 40 insertions(+), 0 deletions(-)
+ .../devicetree/bindings/spi/spi-davinci.txt        |   51 ++++++++++++++++++++
+ 1 files changed, 51 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
 
-diff --git a/arch/arm/boot/dts/da850-evm.dts b/arch/arm/boot/dts/da850-evm.dts
-index c359872..fe2bbe7 100644
---- a/arch/arm/boot/dts/da850-evm.dts
-+++ b/arch/arm/boot/dts/da850-evm.dts
-@@ -41,6 +41,46 @@
- 		wdt: wdt@1c21000 {
- 			status = "okay";
- 		};
-+		spi1: spi@1f0e000 {
-+			status = "okay";
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&spi1_pins>;
-+			flash: m25p80@0 {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				compatible = "m25p64";
-+				spi-max-frequency = <30000000>;
-+				reg = <0>;
-+				partition@0 {
-+					label = "U-Boot-SPL";
-+					reg = <0x00000000 0x00010000>;
-+					read-only;
-+				};
-+				partition@1 {
-+					label = "U-Boot";
-+					reg = <0x00010000 0x00080000>;
-+					read-only;
-+				};
-+				partition@2 {
-+					label = "U-Boot-Env";
-+					reg = <0x00090000 0x00010000>;
-+					read-only;
-+				};
-+				partition@3 {
-+					label = "Kernel";
-+					reg = <0x000a0000 0x00280000>;
-+				};
-+				partition@4 {
-+					label = "Filesystem";
-+					reg = <0x00320000 0x00400000>;
-+				};
-+				partition@5 {
-+					label = "MAC-Address";
-+					reg = <0x007f0000 0x00010000>;
-+					read-only;
-+				};
-+			};
-+		};
- 	};
- 	nand_cs3@62000000 {
- 		status = "okay";
+diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+new file mode 100644
+index 0000000..75ad9ac
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+@@ -0,0 +1,51 @@
++Davinci SPI controller device bindings
++
++Required properties:
++- #address-cells: number of cells required to define a chip select
++	address on the SPI bus. Should be set to 1.
++- #size-cells: should be zero.
++- compatible:
++	- "ti,dm6441-spi" for SPI used similar to that on DM644x SoC family
++	- "ti,da830-spi" for SPI used similar to that on DA8xx SoC family
++- reg: Offset and length of SPI controller register space
++- num-cs: Number of chip selects
++- ti,davinci-spi-intr-line: interrupt line used to connect the SPI
++	IP to the interrupt controller withn the SoC. Possible values
++	are 0 and 1. Manual says one of the two possible interrupt
++	lines can be tied to the interrupt controller. Set this
++	based on a specifc SoC configuration.
++- interrupts: interrupt number mapped to CPU.
++- clocks: spi clk phandle
++
++Example of a NOR flash slave device (n25q032) connected to DaVinci
++SPI controller device over the SPI bus.
++
++spi0:spi@20BF0000 {
++	#address-cells	 = <1>;
++	#size-cells	 = <0>;
++	compatible	 = "ti,dm6446-spi";
++	reg	 = <0x20BF0000 0x1000>;
++	num-cs	 = <4>;
++	ti,davinci-spi-intr-line	= <0>;
++	interrupts	 = <338>;
++	clocks	 = <&clkspi>;
++
++	flash: n25q032@0 {
++	 #address-cells = <1>;
++	 #size-cells = <1>;
++	 compatible = "st,m25p32";
++	 spi-max-frequency = <25000000>;
++	 reg = <0>;
++
++	 partition@0 {
++	 label = "u-boot-spl";
++	 reg = <0x0 0x80000>;
++	 read-only;
++	 };
++
++	 partition@1 {
++	 label = "test";
++	 reg = <0x80000 0x380000>;
++	 };
++	};
++};
 -- 
 1.7.4.1
 

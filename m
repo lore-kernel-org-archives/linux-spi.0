@@ -1,65 +1,58 @@
-From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v3 1/5] spi/davinci: no wildcards in DT compatible property
-Date: Tue, 12 Mar 2013 13:40:23 +0530
-Message-ID: <1363075827-31053-2-git-send-email-prakash.pm@ti.com>
-References: <1363075827-31053-1-git-send-email-prakash.pm@ti.com>
+From: Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>
+Subject: Re: [PATCH V2] spi: add driver for BCM2835
+Date: Tue, 12 Mar 2013 09:29:09 +0000
+Message-ID: <513EF565.6050706@bootc.net>
+References: <1363059504-13284-1-git-send-email-swarren@wwwdotorg.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, nsekhar-l0cyMroinI0@public.gmane.org,
-	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, "Manjunathappa,
-	Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, hs-ynQEQJNshbs@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1363075827-31053-1-git-send-email-prakash.pm-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+ spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1363059504-13284-1-git-send-email-swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Follow DT naming convention for compatible property of the blob.
-Use first chip name that introduced the specific version of the
-device.
+On 12/03/13 03:38, Stephen Warren wrote:
+> From: Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>
+> 
+> The BCM2835 contains two forms of SPI master controller (one known
+> simply as SPI0, and the other known as the "Universal SPI Master", in
+> the auxilliary block) and one form of SPI slave controller. This patch
+> adds support for the SPI0 controller.
+> 
+> This driver is taken from Chris Boot's repository at
+> git://github.com/bootc/linux.git rpi-linear
+> as of commit 6de2905 "spi-bcm2708: fix printf with spurious %s".
+> In the first SPI-related commit there, Chris wrote:
+> 
+> Thanks to csoutreach / A Robinson for his driver which I used as an
+> inspiration. You can find his version here:
+> http://piface.openlx.org.uk/raspberry-pi-spi-kernel-driver-available-for
 
-Signed-off-by: Manjunathappa, Prakash <prakash.pm-l0cyMroinI0@public.gmane.org>
----
-New patch in this series.
+Hi Stephen,
 
- drivers/spi/spi-davinci.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+Just wanted to say thanks for refreshing and pushing my original patch
+through to mainline.
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index b30064b..07517c0 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -763,10 +763,10 @@ rx_dma_failed:
- #if defined(CONFIG_OF)
- static const struct of_device_id davinci_spi_of_match[] = {
- 	{
--		.compatible = "ti,dm644x-spi",
-+		.compatible = "ti,dm6441-spi",
- 	},
- 	{
--		.compatible = "ti,da8xx-spi",
-+		.compatible = "ti,da830-spi",
- 		.data = (void *)SPI_VERSION_2,
- 	},
- 	{ },
+In case it wasn't already obvious:
+
+Signed-off-by: Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>
+
+Cheers!
+Chris
+
 -- 
-1.7.4.1
-
-
-------------------------------------------------------------------------------
-Symantec Endpoint Protection 12 positioned as A LEADER in The Forrester  
-Wave(TM): Endpoint Security, Q1 2013 and "remains a good choice" in the  
-endpoint security space. For insight on selecting the right partner to 
-tackle endpoint security challenges, access the full report. 
-http://p.sf.net/sfu/symantec-dev2dev
+Chris Boot
+bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org

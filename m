@@ -1,16 +1,18 @@
 From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH V2] spi: add driver for BCM2835
-Date: Tue, 12 Mar 2013 18:24:05 +0000
-Message-ID: <20130312182405.GE19942@opensource.wolfsonmicro.com>
-References: <1363059504-13284-1-git-send-email-swarren@wwwdotorg.org>
+Subject: Re: [PATCH] spi: add driver for BCM2835
+Date: Tue, 12 Mar 2013 19:06:38 +0000
+Message-ID: <20130312190638.GA19942@opensource.wolfsonmicro.com>
+References: <1362538142-19246-1-git-send-email-swarren@wwwdotorg.org>
+ <20130306040520.GA4896@opensource.wolfsonmicro.com>
+ <5139815E.7020502@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8306032635234281790=="
+Content-Type: multipart/mixed; boundary="===============0047860777639020381=="
 Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
  spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>,
  linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-In-Reply-To: <1363059504-13284-1-git-send-email-swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <5139815E.7020502-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
  <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
@@ -23,53 +25,64 @@ Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJW
 List-Id: linux-spi.vger.kernel.org
 
 
---===============8306032635234281790==
+--===============0047860777639020381==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="DqhR8hV3EnoxUkKN"
+	protocol="application/pgp-signature"; boundary="Hch1Uz/zGPcHFdv8"
 Content-Disposition: inline
 
 
---DqhR8hV3EnoxUkKN
+--Hch1Uz/zGPcHFdv8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 11, 2013 at 09:38:24PM -0600, Stephen Warren wrote:
-> From: Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>
+On Thu, Mar 07, 2013 at 11:12:46PM -0700, Stephen Warren wrote:
+> On 03/05/2013 09:05 PM, Mark Brown wrote:
+> > On Tue, Mar 05, 2013 at 07:49:02PM -0700, Stephen Warren wrote:
 >=20
-> The BCM2835 contains two forms of SPI master controller (one known
-> simply as SPI0, and the other known as the "Universal SPI Master", in
-> the auxilliary block) and one form of SPI slave controller. This patch
-> adds support for the SPI0 controller.
+> >> +	switch (bpw) { +	case 8: +		break; +	default: +
+> >> dev_err(&spi->dev, "unsupported bits_per_word=3D%d\n", bpw); +
+> >> return -EINVAL; +	}
 
-Applied, thanks.
+> Is there an assumption in the SPI core that bpw will never be >32? The
+> value is stored in a u8 in the controller and transfer structs, so
+> large values are physically possible. So if there is no such
+> assumption, then representing all of an SPI controller's supported BPW
+> in a mask/list would be a little unwieldy, so doing central checking
+> might not work well.
 
---DqhR8hV3EnoxUkKN
+I don't think there's such an assumption, on the other hand such
+hardware is exceptionally rare so it seems sensible to at least handle
+the common case - for example, allow the driver to specify a bitmask and
+if no mask is specified just accept anything and let the drive worry
+about it.
+
+--Hch1Uz/zGPcHFdv8
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRP3K+AAoJELSic+t+oim9NPYQAIeK0g/fXOGppgJTG6uSroCN
-ZV9Z0+84XwnxR7JaUh8/ibJT3kz+dAvPgFjHJuLuPNBqflsnlI8FlDm6suZ3Jxb6
-namNl2MNfMj4+5/q03rb3G60ib+iIw09a0+fhRu29Wj2ZsixBwSxc89ZefO6i+Mn
-sWBlkD7/Mlr/MoterCqIX6NiWsNA8yqt9BAQggg6tWySoK7pcDJwPVEzyOXcBY+k
-mOjQHnj5ED8PwMkECjUsIgq3765uSkRtMgu7FBESDL9bl1sH8DchulZaKir1nLfT
-BdQxe/P2dAYTKcIx8BKz/MgmN7cD/DdUkaRcdnpMdoIhyBiWjnLfZArQVUeW6fdu
-2TUKMiEY3qCDL8D9IUQJmiSDm4nsU3URL+ZMFce2EU42VLr7KJtUjXrnEqlobZf7
-PA+djdvo7mFxgCowARucL7W++mW0fOMb4m4/52M+UJEIlXEHycRnIgM1dy2Ix9B/
-uxcuJtXyohbfjlHskug36ZPkJHDcDltHlNBoxbOHA8tH7K8sXv9oBl8/4VuVLO+k
-XUVyCszzKg8irU2OPYHO+tW42q5295O1E8yHWRnOpYXybpdQqZ74+U+CRWG9t6q5
-Dt1ivm3ki0+qwpGg37WMw9ljIbuV5gBieGeXNwyPh810GEh0Er5QdisPuKMrE9KD
-H3/5wUmss4YDqi+ilzSL
-=b1MG
+iQIcBAEBAgAGBQJRP3y2AAoJELSic+t+oim9bhkP/j1zMhrbFWkIAEcG77dylHXu
+vKVFlG7JySebA4gsfrbAQ0doxnTGCcfve0HRDJnLta89nns/0eoQTW8uC87PLvZS
+dPgxPVyUrTEa5hX4Q7TwBEbBR6IzdenvAPw8M/1/4mcG0lkw7M0fFN2zMcESgHSd
+6tHccYLwopS4D98wyd7LlhmDtV+/nSVxI2HUO0EGVS/BPtZYmNHGRa/rUSyYYIT7
+qWO/QKqJUdOsBTrYFzuIOr8FRMf1l904AjOfYYY+fnQXvk+/LsSiOPURqsysofSh
+kopWo0KuVb8nSUPoKbhoRcY/14ZEtCTPCsxc7DVnziK/xu2nkNGbu10dSxTOynGi
+2NSRpmmymrTBDGqK5mBhnta2RamwMIAEPv9YGLjX+9WLgyBGJnTURghe4p2l76Wb
+VA2eE0iuMgytzCfem3jUFFyHBsdn+wMJMhtxpk9BAwELBIDuWLxhKS4fV7LC0yNR
+9tXTQLooCO7Y/uMDmg/URtNS/AMzg14eg4CpZfKWYMWFhnzksXrf1ckAzQrb575e
+8318MN2h2RdMYJBuNhuIezNfeLS/gInpTZ+C0+oDAOLELPgrwmoKm9jD3BfsEPaN
+sP0OgAzBw26DgqRiz07VCLVkhv+50M9+3EafWxhzn3fPMi51m48WNsxScPZVHavy
+v3csses51/X4L/n78uDz
+=Vp0b
 -----END PGP SIGNATURE-----
 
---DqhR8hV3EnoxUkKN--
+--Hch1Uz/zGPcHFdv8--
 
 
---===============8306032635234281790==
+--===============0047860777639020381==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,4 +93,4 @@ linux-rpi-kernel mailing list
 linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
 
---===============8306032635234281790==--
+--===============0047860777639020381==--

@@ -1,10 +1,11 @@
-From: "Webcommerce" <contact-+CQ1LTaV/AJ/QuekV+ijtQ@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Perte_de_poids_assur=E9e_a_prix_cadeau?=
-Date: Wed, 13 Mar 2013 08:44:23 +0000 (CET)
-Message-ID: <130313084423.57677805000003012@obfm43.com>
+From: "=?UTF-8?Q?Le_patch_minceur_facile_=C3=A0_utiliser?="
+	<contact-d5n0v8Q7fzX0FCyMt+FLXA@public.gmane.org>
+Subject: [SPAM] Faites disparaitre les kilos en trop définitivement
+Date: Wed, 13 Mar 2013 11:48:19 +0000 (CET)
+Message-ID: <130313114819.-22996538700007112@obfm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -19,45 +20,8 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
-Si vous ne visualisez pas ce mail, cliquez ici (http://obfm43.com/bm4ncugu2=
-cdawjtp1q/index0.html)
-
-
-
- (http://obfm43.com/0z45euny2r03eo2pfo/index1.html)
-
-
-RETROUVEZ UNE BELLE SILHOUETTE ! =
-
-C=B4est possible gr=E2ce =E0 notre coffret minceur prot=E9in=E9
-
-
-
-
-
-
-
- (http://obfm43.com/tp44tuyx2eea0xb3cg/index2.html)
- (http://obfm43.com/2w4r3u552dw3df03xj/index3.html)
-
-
-
-
-
-
-
-
- (http://obfm43.com/vpphtbmflqkantbr5o/index4.html)
-
-
- (http://obfm43.com/kwpu3blpli43vb0rrq/index5.html)
-
-Vous recevez cette email parce que vous =EAtes inscrit =E0 la newsletter, c=
-liquez ici pour se d=E9sinscrire (&#91;&#91;UNSUB_LINK_FR&#93;&#93;)
-
-
----------------------------------------------------------------------------=
----
+(http://obfm40.com/cpkjtuesmzvaer2otj/index0.html)
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

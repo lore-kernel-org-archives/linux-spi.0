@@ -1,53 +1,57 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi: slink-tegra20: move runtime pm calls to
- transfer_one_message
-Date: Tue, 12 Mar 2013 19:07:56 +0000
-Message-ID: <20130312190756.GB19942@opensource.wolfsonmicro.com>
-References: <1362723679-1155-1-git-send-email-ldewangan@nvidia.com>
+From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH V3 0/5] Add polling support for 64xx spi controller
+Date: Wed, 13 Mar 2013 12:13:29 +0530
+Message-ID: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="sZvnRN25x3w09J/6"
-Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1362723679-1155-1-git-send-email-ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+[PATCH 1/5]: fixes the error handling in the interrupt handler
+[PATCH 2/5]: The existing driver support partial polling mode.
+	     This patch modifies the current driver to support
+	     only polling mode.
+[PATCH 3/5]: provision to support SoC's with dedicated i/o pins
+[PATCH 4/5]: provision to support dedicated cs pin
+[PATCH 5/5]: support exynos5440 SoC in polling mode
 
---sZvnRN25x3w09J/6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Tested this patch on exynos5250 in dma mode, and exynos5440 in
+polling mode.
 
-On Fri, Mar 08, 2013 at 11:51:19AM +0530, Laxman Dewangan wrote:
-> The prepare_transfer_hardware() is called in atomic context and
-> calling synchronous runtime pm calls can create scheduling deadlock.
+changes in v3: 
+	    Rebase it to the linus's master branch. After rebase
+there was a logical code change due to the merge of generic dma
+patch. resolved the merge conflicts and tested for the functionality
+	
+Girish K S (5):
+  spi: s3c64xx: modified error interrupt handling and init
+  spi: s3c64xx: added support for polling mode
+  spi: s3c64xx: Added provision for non-gpio i/o's
+  spi: s3c64xx: Added provision for dedicated cs pin
+  spi: s3c64xx: Added support for exynos5440 spi
 
-Applied, thanks.
+ drivers/spi/spi-s3c64xx.c                 | 204 +++++++++++++++++++++---------
+ include/linux/platform_data/spi-s3c64xx.h |   3 +
+ 2 files changed, 148 insertions(+), 59 deletions(-)
 
---sZvnRN25x3w09J/6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+-- 
+1.8.0
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRP30FAAoJELSic+t+oim9TWEP/3VVKHnywO7dQ2QXGd/lmQw2
-czvndLWLIeiEHzd8uDZLAcUeVln9xBCYYTHpHo84U8K8PeVROixo7LgYtt6qPNfx
-hKtXqlDg/DPipkrWFlqOAIY2KWSdqDeGNsrcTpM11ei5vTzb+sZ268bWV9xBNaOj
-WONQMCL6qWYQY2keMNBa1v54CLgEwEmA/XwW4Mwov5f+8rMEglftSEqogczR1ak6
-0a5g+eYGzcsm4zCqbbTIw7jk5hEpN7RkYgpT+9t5cAd3UVpLaIp7biyHjRWaqBZx
-CHiF8IYGTM1lR91t1tSQorxvF/aZyz8SwTzrI4GPD1ki66MTUPrVscDkHTQ1j6Zy
-d+CcYHC2kfjRmbAQ+MZ0ZBTZrSfOEK1xovgPwpd7NfL/ptHWjaBW3CNOetNLCdlu
-SrsenMeeHAmFjbWu+EMyGDgxCN8kPUDiGHblnLL95g6L53CmAbOYlhECYmR6tVYA
-FEePkNIhpAbgPnrs/guPckzkYnTTQUM0kEo5FkpPXnxK6qokcF6v/UY3qrNw3sGQ
-mP3DsVec/ukRV9FU5yuzA4YG/sEq5ifAl6DLk8DVqbRzHZu1PB7orJpxXmg+jsEw
-f9j1aMJmD+H2Tbb60xfkPFoamZvQBAoWdaghXJCZ83rjhiwmbTElr3KmJ3QOyt83
-BPHH6oQoEYuw6mLQdhW4
-=eNTy
------END PGP SIGNATURE-----
-
---sZvnRN25x3w09J/6--
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_mar

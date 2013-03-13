@@ -1,17 +1,13 @@
-From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH V3 5/5] spi: s3c64xx: Added support for exynos5440 spi
-Date: Wed, 13 Mar 2013 12:13:34 +0530
-Message-ID: <1363157014-9615-6-git-send-email-ks.giri@samsung.com>
-References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
+From: "Webcommerce" <contact-+CQ1LTaV/AJ/QuekV+ijtQ@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Perte_de_poids_assur=E9e_a_prix_cadeau?=
+Date: Wed, 13 Mar 2013 08:44:23 +0000 (CET)
+Message-ID: <130313084423.57677805000003012@obfm43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1363157014-9615-1-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,53 +18,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-This patch adds support for the exynos5440 spi controller.
-The integration of the spi IP in exynos5440 is different from
-other SoC's. The I/O pins are no more configured via gpio, they
-have dedicated pins.
+Si vous ne visualisez pas ce mail, cliquez ici (http://obfm43.com/bm4ncugu2=
+cdawjtp1q/index0.html)
 
-Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+
+
+ (http://obfm43.com/0z45euny2r03eo2pfo/index1.html)
+
+
+RETROUVEZ UNE BELLE SILHOUETTE ! =
+
+C=B4est possible gr=E2ce =E0 notre coffret minceur prot=E9in=E9
+
+
+
+
+
+
+
+ (http://obfm43.com/tp44tuyx2eea0xb3cg/index2.html)
+ (http://obfm43.com/2w4r3u552dw3df03xj/index3.html)
+
+
+
+
+
+
+
+
+ (http://obfm43.com/vpphtbmflqkantbr5o/index4.html)
+
+
+ (http://obfm43.com/kwpu3blpli43vb0rrq/index5.html)
+
+Vous recevez cette email parce que vous =EAtes inscrit =E0 la newsletter, c=
+liquez ici pour se d=E9sinscrire (&#91;&#91;UNSUB_LINK_FR&#93;&#93;)
+
+
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-s3c64xx.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index ac557f8..bb52a70 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1546,6 +1546,15 @@ static struct s3c64xx_spi_port_config exynos4_spi_port_config = {
- 	.clk_from_cmu	= true,
- };
- 
-+static struct s3c64xx_spi_port_config exynos5440_spi_port_config = {
-+	.fifo_lvl_mask	= { 0x1ff },
-+	.rx_lvl_offset	= 15,
-+	.tx_st_done	= 25,
-+	.high_speed	= true,
-+	.clk_from_cmu	= true,
-+	.quirks		= S3C64XX_SPI_QUIRK_POLL,
-+};
-+
- static struct platform_device_id s3c64xx_spi_driver_ids[] = {
- 	{
- 		.name		= "s3c2443-spi",
-@@ -1574,6 +1583,9 @@ static const struct of_device_id s3c64xx_spi_dt_match[] = {
- 	{ .compatible = "samsung,exynos4210-spi",
- 			.data = (void *)&exynos4_spi_port_config,
- 	},
-+	{ .compatible = "samsung,exynos5440-spi",
-+			.data = (void *)&exynos5440_spi_port_config,
-+	},
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, s3c64xx_spi_dt_match);
--- 
-1.8.0
-
-
-------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

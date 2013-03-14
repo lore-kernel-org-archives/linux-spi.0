@@ -1,14 +1,29 @@
-From: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/2] spi: spi-oc-tiny: Use of_match_ptr() macro
-Date: Thu, 14 Mar 2013 15:31:50 +0530
-Message-ID: <1363255311-18151-1-git-send-email-sachin.kamat@linaro.org>
+From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH v3 0/5] Enable SPI flash support on da850-evm DT kernel
+Date: Thu, 14 Mar 2013 13:42:19 +0000
+Message-ID: <A73F36158E33644199EB82C5EC81C7BC3EA48F1B@DBDE01.ent.ti.com>
+References: <1363075827-31053-1-git-send-email-prakash.pm@ti.com>
+	<5141A55A.9060708@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-	Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+	"linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org" <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org"
+	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+	"rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org" <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	"rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org" <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "hs-ynQEQJNshbs@public.gmane.org" <hs-ynQEQJNshbs@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>, "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org"
+	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <5141A55A.9060708-l0cyMroinI0@public.gmane.org>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,41 +34,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This eliminates having an #ifdef returning NULL for the case
-when OF is disabled.
+On Thu, Mar 14, 2013 at 15:54:26, Nori, Sekhar wrote:
+> On 3/12/2013 1:40 PM, Manjunathappa, Prakash wrote:
+> > Patch enables support for m25p64 SPI flash support on
+> > da850-EVM.
+> 
+> This patch set looks good to me except the comments I had on 2/5. I
+> tested it using SPI flash on DA850 EVM and it worked fine on basic
+> read/write tests.
+> 
 
-Signed-off-by: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Cc: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
----
- drivers/spi/spi-oc-tiny.c |    4 +---
- 1 files changed, 1 insertions(+), 3 deletions(-)
+Thanks I will add your Reviewed-by.
 
-diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-index cb2e284..e60a776 100644
---- a/drivers/spi/spi-oc-tiny.c
-+++ b/drivers/spi/spi-oc-tiny.c
-@@ -393,8 +393,6 @@ static const struct of_device_id tiny_spi_match[] = {
- 	{},
- };
- MODULE_DEVICE_TABLE(of, tiny_spi_match);
--#else /* CONFIG_OF */
--#define tiny_spi_match NULL
- #endif /* CONFIG_OF */
- 
- static struct platform_driver tiny_spi_driver = {
-@@ -404,7 +402,7 @@ static struct platform_driver tiny_spi_driver = {
- 		.name = DRV_NAME,
- 		.owner = THIS_MODULE,
- 		.pm = NULL,
--		.of_match_table = tiny_spi_match,
-+		.of_match_table = of_match_ptr(tiny_spi_match),
- 	},
- };
- module_platform_driver(tiny_spi_driver);
--- 
-1.7.4.1
+> Grant,
+> 
+> With your ack I would like to merge the series through DaVinci tree so
+> its easy to manage the conflicts in DT files.
+> 
+> > 
+> > Testing information:
+> > da850-evm comes with partitions specified in DT blob.
+> > Able to mount/umount and create/delete files on filesystem partition.
+> > 
+> > Depends on below patch in spi-next branch of git://git.secretlab.ca/git/linux-2.6.git.
+> > "spi/davinci: add OF support for the spi controller"
+> 
+> Prakash, there is no need to mention this dependency. The patch is
+> already in mainline.
+> 
 
+Yes, I mentioned it here as my patches were based on linux-davinci: v3.9/dt-2 branch.
+Will rebase my next versions on davinci/master.
 
+Thanks,
+Prakash
 ------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics

@@ -1,29 +1,13 @@
-From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH v3 0/5] Enable SPI flash support on da850-evm DT kernel
-Date: Thu, 14 Mar 2013 13:42:19 +0000
-Message-ID: <A73F36158E33644199EB82C5EC81C7BC3EA48F1B@DBDE01.ent.ti.com>
-References: <1363075827-31053-1-git-send-email-prakash.pm@ti.com>
-	<5141A55A.9060708@ti.com>
+From: "=?UTF-8?Q?Pr=C3=AAt_d=27Union_via_Vitoule?=" <contact-Uv/VMMD3/zP0FCyMt+FLXA@public.gmane.org>
+Subject: Empruntez aux meilleurs taux
+Date: Thu, 14 Mar 2013 15:32:25 +0000 (CET)
+Message-ID: <130314153225.40596659000006508@obfm42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	"linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org" <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org"
-	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	"rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org" <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-	"rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org" <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "hs-ynQEQJNshbs@public.gmane.org" <hs-ynQEQJNshbs@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: "Nori, Sekhar" <nsekhar-l0cyMroinI0@public.gmane.org>, "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org"
-	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <5141A55A.9060708-l0cyMroinI0@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -34,42 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Mar 14, 2013 at 15:54:26, Nori, Sekhar wrote:
-> On 3/12/2013 1:40 PM, Manjunathappa, Prakash wrote:
-> > Patch enables support for m25p64 SPI flash support on
-> > da850-EVM.
-> 
-> This patch set looks good to me except the comments I had on 2/5. I
-> tested it using SPI flash on DA850 EVM and it worked fine on basic
-> read/write tests.
-> 
-
-Thanks I will add your Reviewed-by.
-
-> Grant,
-> 
-> With your ack I would like to merge the series through DaVinci tree so
-> its easy to manage the conflicts in DT files.
-> 
-> > 
-> > Testing information:
-> > da850-evm comes with partitions specified in DT blob.
-> > Able to mount/umount and create/delete files on filesystem partition.
-> > 
-> > Depends on below patch in spi-next branch of git://git.secretlab.ca/git/linux-2.6.git.
-> > "spi/davinci: add OF support for the spi controller"
-> 
-> Prakash, there is no need to mention this dependency. The patch is
-> already in mainline.
-> 
-
-Yes, I mentioned it here as my patches were based on linux-davinci: v3.9/dt-2 branch.
-Will rebase my next versions on davinci/master.
-
-Thanks,
-Prakash
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_mar
+CihodHRwOi8vb2JmbTQyLmNvbS90MWk0cWZzMTV1ZG4xamExY3EvaW5kZXgwLmh0bWwpCihodHRw
+Oi8vb2JmbTQyLmNvbS8yYmlyd2ZwbTV5MHdnb2kxeG8vaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
+bTQyLmNvbS9iZmluc2ZxdjV4ZW5teDNnMWcvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQyLmNv
+bS8wMGk1cGZ3bDU1d3doZmhnZmovaW5kZXgzLmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS9lZmUz
+czM0ZWF6a25jdDN4cG8vaW5kZXg0Lmh0bWwpCipIb3JzIG9mZnJlIHByb21vdGlvbm5lbGxlLCBw
+b3VyIGxhIG3Dqm1lIGR1csOpZSBkwrRlbXBydW50IGV0IGxlIG3Dqm1lIG1vbnRhbnQsIHN1ciBs
+ZSBwcsOqdCBwZXJzb25uZWwgw6AgbGEgY29uc29tbWF0aW9uLCBQcsOqdCBkJmFjdXRlO1VuaW9u
+IHByb3Bvc2UgbGEgcGx1cGFydCBkdSB0ZW1wcyBkZXMgVEFFRyBtb2lucyBjaGVycy4KCioqIE1v
+eWVubmUgZGVzIFRBRUcgb2JzZXJ2w6llIHBvdXIgdW4gcHLDqnQgcGVyc29ubmVsIGVudHJlIDYg
+MDAw4oKsIGV0IDIxIDAwMOKCrCwgZMK0dW5lIGR1csOpZSBkZSAyNCBtb2lzLiBPZmZyZXMgdmFs
+YWJsZXMgYXUgMjUvMTAvMjAxMi4KCioqKkFwcsOocyBhY2NlcHRhdGlvbiBkw6lmaW5pdGl2ZSBk
+ZSB2b3RyZSBkb3NzaWVyIGV0IGRhbnMgbGUgcmVzcGVjdCBkdSBkw6lsYWkgbMOpZ2FsIGRlIHLD
+qXRyYWN0YXRpb24uIApFeGVtcGxlIGRlIHByw6p0IHBlcnNvbm5lbCAoaG9ycyBhc3N1cmFuY2Vz
+IGZhY3VsdGF0aXZlcykgOiBwb3VyIHVuIG1vbnRhbnQgdG90YWwgZGUgY3LDqWRpdCBkZSAxNSAw
+MDDigqwgcmVtYm91cnNhYmxlIGVuIDI0IG1lbnN1YWxpdMOpcyBkZSA2NTAsOTDigqwgKGhvcnMg
+YXNzdXJhbmNlcyBmYWN1bHRhdGl2ZXMpLiBUYXV4IEFubnVlbCBFZmZlY3RpZiBHbG9iYWwgZml4
+ZSBkZSA1LDI4JSAoaG9ycyBhc3N1cmFuY2VzIGZhY3VsdGF0aXZlcykuIFRhdXggZMOpYml0ZXVy
+IGZpeGUgZGUgMyw5MyUuIFBlcmNlcHRpb25zIGZvcmZhaXRhaXJlcyAoZnJhaXMgZGUgZG9zc2ll
+cikgOiAxODcsNTDigqwuIENvw7t0IHRvdGFsIGR1IGNyw6lkaXQgOiA4MDksMTDigqwuIE1vbnRh
+bnQgdG90YWwgZMO7IHBhciBswrRlbXBydW50ZXVyIDogMTU2MjEsNjDigqwuIFZvdXMgYsOpbsOp
+ZmljaWV6IGTCtHVuZSBwcmVtacOocmUgw6ljaMOpYW5jZSDDoCAzMCBqb3VycyDDoCA2MCBqb3Vy
+cywgbGEgZHVyw6llIGVmZmVjdGl2ZSBkdSBjcsOpZGl0IGVzdCBkZSAyNCBtb2lzLiBPZmZyZSB2
+YWxhYmxlIGF1IDA3LzExLzIwMTIuCkxlIGNyw6lkaXQgUHLDqnQgZMK0VW5pb24gZXN0IGFjY29y
+ZMOpIHNvdXMgcsOpc2VydmUgZGUgbMK0YWNjZXB0YXRpb24gZMK0w6l0dWRlIGV0IGTCtGFjY2Vw
+dGF0aW9uIHBhciBQcsOqdCBkwrRVbmlvbiBTQS4gVm91cyBkaXNwb3NleiBkwrR1biBkcm9pdCBk
+ZSByw6l0cmFjdGF0aW9uLiBQcsOqdCBkwrRVbmlvbiBTQS4gRXRhYmxpc3NlbWVudCBkZSBjcsOp
+ZGl0LiBTQSBhdSBjYXBpdGFsIGRlIDI5NyAwMTIgZXVyb3MuIE51bcOpcm8gZGUgUkNTIE5hbnRl
+cnJlIDogNTE3IDU4NiAzNzYuIE51bcOpcm8gT1JJQVMgOiAxMSAwNjEgMjY5LgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8gd2UuCk1ha2Ug
+eW91ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3dubG9hZCBBcHBEeW5hbWlj
+cyBMaXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfbWFy
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZl
+bC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRl
+dmVsLWdlbmVyYWwK

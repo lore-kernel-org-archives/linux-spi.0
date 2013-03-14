@@ -1,37 +1,110 @@
-From: "Teatower" <contact-193CG9riSBIq7FVkXQFHtw@public.gmane.org>
-Subject: =?UTF-8?Q?5_=C3=A9chantillons_de_th=C3=A9_gratuits_+_21_pourcent_de_r?=
-	=?UTF-8?Q?=C3=A9duction?=
-Date: Thu, 14 Mar 2013 09:09:53 +0000 (CET)
-Message-ID: <130314090953.-15307152700006880@obfm40.com>
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v3 2/5] spi/davinci: add DT binding documentation
+Date: Thu, 14 Mar 2013 14:46:54 +0530
+Message-ID: <51419586.7090703@ti.com>
+References: <1363075827-31053-1-git-send-email-prakash.pm@ti.com>
+	<1363075827-31053-3-git-send-email-prakash.pm@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>, <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+        <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+        <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        <hs-ynQEQJNshbs@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1363075827-31053-3-git-send-email-prakash.pm-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ClJlY2V2ZXogNSDDqWNoYW50aWxsb25zIGRlIHRow6kgZ3JhdHVpdHMgYXZlYyBURUFUT1dFUgoo
-aHR0cDovL29iZm00MC5jb20veGpubGRoMWZnMjJnaWlnNTJvL2luZGV4MC5odG1sKQooaHR0cDov
-L29iZm00MC5jb20vY2xuanJodnBnbmxxcmhvNXRxL2luZGV4MS5odG1sKQooaHR0cDovL29iZm00
-MC5jb20vZnFuc29oYmtnaG5ncXJxYTBqL2luZGV4Mi5odG1sKQooaHR0cDovL29iZm00MC5jb20v
-MXNucTRoYXNnZ3ZxY21qYWJnL2luZGV4My5odG1sKQoKKGh0dHA6Ly9vYmZtNDAuY29tL2hxbTFv
-MWh1MWx6Z2hucW16cS9pbmRleDQuaHRtbCkgKGh0dHA6Ly9vYmZtNDAuY29tLzNzbWI0MTJ5MXZ1
-cW13am13by9pbmRleDUuaHRtbCkKwqAKVEVBVE9XRVIgLyBUVCBQQUNLQUdJTkcgU1BSTAoKUnVl
-IFNhaW50LURlbmlzIDExMiAtIDExOTAgQnJ1eGVsbGVzIC0gQmVsZ2lxdWUgLSBUw6lsIDAwLjMy
-LjI4LjA4LjAxLjI3Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFdmVyeW9uZSBoYXRlcyBzbG93IHdl
-YnNpdGVzLiBTbyBkbyB3ZS4KTWFrZSB5b3VyIHdlYiBhcHBzIGZhc3RlciB3aXRoIEFwcER5bmFt
-aWNzCkRvd25sb2FkIEFwcER5bmFtaWNzIExpdGUgZm9yIGZyZWUgdG9kYXk6Cmh0dHA6Ly9wLnNm
-Lm5ldC9zZnUvYXBwZHluX2QyZF9tYXIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5l
-dC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On 3/12/2013 1:40 PM, Manjunathappa, Prakash wrote:
+> From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+> 
+> Get back missed out binding documentation submitted along
+> with below patch:
+> "spi/davinci: add OF support for the spi controller"
+
+This is not really the correct description of this patch. Years later
+its mostly irrelevant that binding documentation did not get applied
+along with the actual usage.
+
+> 
+> [prakash.pm-l0cyMroinI0@public.gmane.org: Follow DT naming convention for compatible property]
+> Signed-off-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+> Reviewed-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> Signed-off-by: Manjunathappa, Prakash <prakash.pm-l0cyMroinI0@public.gmane.org>
+> ---
+>  .../devicetree/bindings/spi/spi-davinci.txt        |   51 ++++++++++++++++++++
+>  1 files changed, 51 insertions(+), 0 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+> new file mode 100644
+> index 0000000..75ad9ac
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+> @@ -0,0 +1,51 @@
+> +Davinci SPI controller device bindings
+> +
+> +Required properties:
+> +- #address-cells: number of cells required to define a chip select
+> +	address on the SPI bus. Should be set to 1.
+> +- #size-cells: should be zero.
+> +- compatible:
+> +	- "ti,dm6441-spi" for SPI used similar to that on DM644x SoC family
+> +	- "ti,da830-spi" for SPI used similar to that on DA8xx SoC family
+> +- reg: Offset and length of SPI controller register space
+> +- num-cs: Number of chip selects
+> +- ti,davinci-spi-intr-line: interrupt line used to connect the SPI
+> +	IP to the interrupt controller withn the SoC. Possible values
+> +	are 0 and 1. Manual says one of the two possible interrupt
+> +	lines can be tied to the interrupt controller. Set this
+> +	based on a specifc SoC configuration.
+> +- interrupts: interrupt number mapped to CPU.
+> +- clocks: spi clk phandle
+> +
+> +Example of a NOR flash slave device (n25q032) connected to DaVinci
+> +SPI controller device over the SPI bus.
+> +
+> +spi0:spi@20BF0000 {
+> +	#address-cells	 = <1>;
+> +	#size-cells	 = <0>;
+> +	compatible	 = "ti,dm6446-spi";
+> +	reg	 = <0x20BF0000 0x1000>;
+> +	num-cs	 = <4>;
+> +	ti,davinci-spi-intr-line	= <0>;
+> +	interrupts	 = <338>;
+> +	clocks	 = <&clkspi>;
+> +
+> +	flash: n25q032@0 {
+> +	 #address-cells = <1>;
+> +	 #size-cells = <1>;
+> +	 compatible = "st,m25p32";
+> +	 spi-max-frequency = <25000000>;
+> +	 reg = <0>;
+> +
+> +	 partition@0 {
+> +	 label = "u-boot-spl";
+> +	 reg = <0x0 0x80000>;
+> +	 read-only;
+> +	 };
+> +
+> +	 partition@1 {
+> +	 label = "test";
+> +	 reg = <0x80000 0x380000>;
+> +	 };
+> +	};
+
+Looks like the tabs were messed up when you took Murali's patch.
+
+Thanks,
+Sekhar

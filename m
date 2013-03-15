@@ -1,14 +1,16 @@
-From: "Mutuelle Bleue" <contact-75wUxIpnMXr0FCyMt+FLXA@public.gmane.org>
-Subject: =?UTF-8?Q?Votre_compl=C3=A9mentaire_sant=C3=A9_=C3=A0_partir_de_10=2C83_?=
-	=?UTF-8?Q?euros_par_mois?=
-Date: Thu, 14 Mar 2013 15:38:47 +0000 (CET)
-Message-ID: <130314153847.68804200400002716@obfm43.com>
+From: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: spi-oc-tiny: Use of_match_ptr() macro
+Date: Fri, 15 Mar 2013 10:50:17 +0800
+Message-ID: <51428C69.2080508@wytron.com.tw>
+References: <1363255311-18151-1-git-send-email-sachin.kamat@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+To: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1363255311-18151-1-git-send-email-sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,29 +21,52 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CkNvbXBsw6ltZW50YWlyZSBzYW50w6kKCsOgIHBhcnRpciBkZTEwLDgz4oKsIC8gbW9pcygxKQpD
-w4lMSUJBVEFJUkUKZXhpZ2VhbnQKCmEgdHJvdXbDqSBtdXR1ZWxsZQplZmZpY2FjZQoKw6AgcHJp
-eCBtaW5pCihodHRwOi8vb2JmbTQzLmNvbS95anlubG5nNTF0YzE0cmc0Z28vaW5kZXgwLmh0bWwp
-Ck9GRlJFUwpFWENMVVNJVkVTCjIwMTMoMikKNQpzw4lqb3VycyBjZW50ZXIgcGFyY3MKCsKgwqDD
-gCBnYWduZXIoMykKCmp1c3F1wrRhdSAzMS8wMy8yMDEzCkF2ZWMgTXV0dWVsbGUgQmxldWUsIHRy
-b3V2ZXogdm91cyBhdXNzaQpMQSBwcm90ZWN0aW9uIGFkYXB0w6llIMOgIHZvcyBiZXNvaW5zCigx
-KSBUYXJpZiBlbiB2aWd1ZXVyIMOgIGxhIGRhdGUgZHUgMDEvMDEvMjAxMywgZ2FyYW50aWUgSG9z
-cGkgU29pbnMgcG91ciB1biBhZHVsdGUgZGUgMjAgYW5zIHLDqXNpZGFudCBlbiBJc8OocmUuCgoo
-MikgT2ZmcmVzIHNvdW1pc2VzIMOgIGNvbmRpdGlvbnMuCgooMykgUGFyIHRpcmFnZSBhdSBzb3J0
-LiBWYWxldXIgdW5pdGFpcmUgZGVzIHPDqWpvdXJzIDogMiAwMDAg4oKsIFRUQy4gTGUgcsOoZ2xl
-bWVudCBkZXMgb3DDqXJhdGlvbnMgZXN0IGTDqXBvc8OpIMOgIGxhIFNFTEFSTCBNaWNoYXVkIEpv
-cnJ5IEFuZHLDqSBldCBUaXhpZXIgLSBIdWlzc2llcnMgZGUganVzdGljZSBBc3NvY2nDqXMgw6Ag
-TWVsdW4gKDc3KS4gSWwgZXN0IGFkcmVzc8OpIMOgIHRpdHJlIGdyYXR1aXQgw6AgdG91dGUgcGVy
-c29ubmUgcXVpIGVuIGZhaXQgbGEgZGVtYW5kZSBhdXByw6hzIGRlIE11dHVlbGxlIEJsZXVlIDE0
-IHJ1ZSBSZW7DqSBDYXNzaW4gNzcwMTQgTWVsdW4gQ2VkZXguCgpNdXR1ZWxsZSBzb3VtaXNlIGF1
-eCBkaXNwb3NpdGlvbnMgZHUgTGl2cmUgSUkgZHUgQ29kZSBkZSBsYSBNdXR1YWxpdMOpLiBTSVJF
-TiBuwrAgNzc1IDY3MSA5OTMuCgpDcsOpZGl0cyBwaG90b3MgOiBHZXR0eSBJbWFnZXMgLSBQaWVy
-cmUgJiBWYWNhbmNlcwpEb2N1bWVudCBldCBwaG90b3Mgbm9uIGNvbnRyYWN0dWVscy4KLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tCkV2ZXJ5b25lIGhhdGVzIHNsb3cgd2Vic2l0ZXMuIFNvIGRvIHdlLgpN
-YWtlIHlvdXIgd2ViIGFwcHMgZmFzdGVyIHdpdGggQXBwRHluYW1pY3MKRG93bmxvYWQgQXBwRHlu
-YW1pY3MgTGl0ZSBmb3IgZnJlZSB0b2RheToKaHR0cDovL3Auc2YubmV0L3NmdS9hcHBkeW5fZDJk
-X21hcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+Hi Sachin,
+
+On 03/14/2013 06:01 PM, Sachin Kamat wrote:
+> This eliminates having an #ifdef returning NULL for the case
+> when OF is disabled.
+>
+> Signed-off-by: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> Cc: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+> ---
+>   drivers/spi/spi-oc-tiny.c |    4 +---
+>   1 files changed, 1 insertions(+), 3 deletions(-)
+
+Acked-by: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+
+Thanks.
+Thomas
+
+>
+> diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
+> index cb2e284..e60a776 100644
+> --- a/drivers/spi/spi-oc-tiny.c
+> +++ b/drivers/spi/spi-oc-tiny.c
+> @@ -393,8 +393,6 @@ static const struct of_device_id tiny_spi_match[] = {
+>   	{},
+>   };
+>   MODULE_DEVICE_TABLE(of, tiny_spi_match);
+> -#else /* CONFIG_OF */
+> -#define tiny_spi_match NULL
+>   #endif /* CONFIG_OF */
+>
+>   static struct platform_driver tiny_spi_driver = {
+> @@ -404,7 +402,7 @@ static struct platform_driver tiny_spi_driver = {
+>   		.name = DRV_NAME,
+>   		.owner = THIS_MODULE,
+>   		.pm = NULL,
+> -		.of_match_table = tiny_spi_match,
+> +		.of_match_table = of_match_ptr(tiny_spi_match),
+>   	},
+>   };
+>   module_platform_driver(tiny_spi_driver);
+>
+
+
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_mar

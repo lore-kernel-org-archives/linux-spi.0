@@ -1,16 +1,13 @@
-From: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-oc-tiny: Use of_match_ptr() macro
-Date: Fri, 15 Mar 2013 10:50:17 +0800
-Message-ID: <51428C69.2080508@wytron.com.tw>
-References: <1363255311-18151-1-git-send-email-sachin.kamat@linaro.org>
+From: "Bientot Maman" <contact-etoB+FPIm6hmliBtq8gkeFaPQRlvutdw@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Ce_qu=92il_y_a_de_mieux_pour_votre_b=E9b=E9?=
+Date: Fri, 15 Mar 2013 14:54:18 +0000 (CET)
+Message-ID: <130315145418.-4600779300006868@obfm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
-To: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1363255311-18151-1-git-send-email-sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,51 +18,69 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Sachin,
-
-On 03/14/2013 06:01 PM, Sachin Kamat wrote:
-> This eliminates having an #ifdef returning NULL for the case
-> when OF is disabled.
->
-> Signed-off-by: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> Cc: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-> ---
->   drivers/spi/spi-oc-tiny.c |    4 +---
->   1 files changed, 1 insertions(+), 3 deletions(-)
-
-Acked-by: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-
-Thanks.
-Thomas
-
->
-> diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-> index cb2e284..e60a776 100644
-> --- a/drivers/spi/spi-oc-tiny.c
-> +++ b/drivers/spi/spi-oc-tiny.c
-> @@ -393,8 +393,6 @@ static const struct of_device_id tiny_spi_match[] = {
->   	{},
->   };
->   MODULE_DEVICE_TABLE(of, tiny_spi_match);
-> -#else /* CONFIG_OF */
-> -#define tiny_spi_match NULL
->   #endif /* CONFIG_OF */
->
->   static struct platform_driver tiny_spi_driver = {
-> @@ -404,7 +402,7 @@ static struct platform_driver tiny_spi_driver = {
->   		.name = DRV_NAME,
->   		.owner = THIS_MODULE,
->   		.pm = NULL,
-> -		.of_match_table = tiny_spi_match,
-> +		.of_match_table = of_match_ptr(tiny_spi_match),
->   	},
->   };
->   module_platform_driver(tiny_spi_driver);
->
 
 
+Si =
 
-------------------------------------------------------------------------------
+vous ne visualisez pas ce message, =
+
+
+cliquez sur =
+
+ce lien (http://obfm40.com/gtmgzchdvqhdmlmmyy/index0.html)
+=A0
+=A0
+(http://obfm40.com/ocmyjc2evimlhdpmdl/index1.html)
+=A0
+=A0
+=A0
+
+Offre valable jusqu'=E0 =E9puisement =
+
+des stocks exclusivement sur le site =
+
+http://obfm40.com/q2momcurvwgd12rhss/index2.html (http://www.bientot-maman.=
+fr).
+=A0
+
+(1) Livraison offerte =E0 partir de =
+
+60,00 euros TTC d'achat sur notre site Internet.
+=A0
+
+(2) Retours gratuits pour tout =
+
+achat effectu=E9 sur le site http://www.bientot-maman.fr : vous disposez d'=
+un =
+
+d=E9lai de 7 jours francs pour exercer votre droit de r=E9tractation sans a=
+voir =E0 =
+
+justifier de motifs ni =E0 payer de p=E9nalit=E9s. Les produits doivent =EA=
+tre retourn=E9s =
+
+dans leur emballage d'origine, en parfait =E9tat, non utilis=E9s et accompa=
+gn=E9s de =
+
+tous les accessoires, des notices =E9ventuelles et de la ou les factures =
+
+concern=E9es. Les articles retourn=E9s incomplets, ab=EEm=E9s ou salis ne p=
+ourront pas =
+
+=EAtre repris.
+=A0
+
+Conform=E9ment =E0 la loi Informatique =
+
+et Libert=E9s du 6 janvier 1978, vous disposez d'un droit d'acc=E8s, de =
+
+rectification et d'opposition relatif aux informations vous concernant. Mer=
+ci de =
+
+cliquer sur le lien ci-dessous pour vous d=E9sinscrire.
+=A0
+---------------------------------------------------------------------------=
+---
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

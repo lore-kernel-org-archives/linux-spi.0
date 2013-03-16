@@ -1,7 +1,7 @@
-From: "Bientot Maman" <contact-etoB+FPIm6hmliBtq8gkeFaPQRlvutdw@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Ce_qu=92il_y_a_de_mieux_pour_votre_b=E9b=E9?=
-Date: Fri, 15 Mar 2013 14:54:18 +0000 (CET)
-Message-ID: <130315145418.-4600779300006868@obfm40.com>
+From: "Webcommerce" <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Perte_de_poids_assur=E9e_a_prix_cadeau?=
+Date: Sat, 16 Mar 2013 08:32:47 +0000 (CET)
+Message-ID: <130316083247.55358618700001468@obfm42.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -19,66 +19,43 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
-
-Si =
-
-vous ne visualisez pas ce message, =
+Si vous ne visualisez pas ce mail, cliquez ici (http://obfm42.com/hnycinaq2=
+lyfehdkud/index0.html)
 
 
-cliquez sur =
 
-ce lien (http://obfm40.com/gtmgzchdvqhdmlmmyy/index0.html)
-=A0
-=A0
-(http://obfm40.com/ocmyjc2evimlhdpmdl/index1.html)
-=A0
-=A0
-=A0
+ (http://obfm42.com/35yt0nbi2vbxwiykes/index1.html)
 
-Offre valable jusqu'=E0 =E9puisement =
 
-des stocks exclusivement sur le site =
+RETROUVEZ UNE BELLE SILHOUETTE ! =
 
-http://obfm40.com/q2momcurvwgd12rhss/index2.html (http://www.bientot-maman.=
-fr).
-=A0
+C=B4est possible gr=E2ce =E0 notre coffret minceur prot=E9in=E9
 
-(1) Livraison offerte =E0 partir de =
 
-60,00 euros TTC d'achat sur notre site Internet.
-=A0
 
-(2) Retours gratuits pour tout =
 
-achat effectu=E9 sur le site http://www.bientot-maman.fr : vous disposez d'=
-un =
 
-d=E9lai de 7 jours francs pour exercer votre droit de r=E9tractation sans a=
-voir =E0 =
 
-justifier de motifs ni =E0 payer de p=E9nalit=E9s. Les produits doivent =EA=
-tre retourn=E9s =
 
-dans leur emballage d'origine, en parfait =E9tat, non utilis=E9s et accompa=
-gn=E9s de =
+ (http://obfm42.com/i4yxknvw2mufdml4kl/index2.html)
+ (http://obfm42.com/ary2fn1021zx0rs4vy/index3.html)
 
-tous les accessoires, des notices =E9ventuelles et de la ou les factures =
 
-concern=E9es. Les articles retourn=E9s incomplets, ab=EEm=E9s ou salis ne p=
-ourront pas =
 
-=EAtre repris.
-=A0
 
-Conform=E9ment =E0 la loi Informatique =
 
-et Libert=E9s du 6 janvier 1978, vous disposez d'un droit d'acc=E8s, de =
 
-rectification et d'opposition relatif aux informations vous concernant. Mer=
-ci de =
 
-cliquer sur le lien ci-dessous pour vous d=E9sinscrire.
-=A0
+
+ (http://obfm42.com/x4jdklxnl2vfvwlels/index4.html)
+
+
+ (http://obfm42.com/crjoflu2lnnxnnsesd/index5.html)
+
+Vous recevez cette email parce que vous =EAtes inscrit =E0 la newsletter, c=
+liquez ici pour se d=E9sinscrire (&#91;&#91;UNSUB_LINK_FR&#93;&#93;)
+
+
 ---------------------------------------------------------------------------=
 ---
 Everyone hates slow websites. So do we.

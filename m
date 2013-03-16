@@ -1,10 +1,10 @@
-From: "=?UTF-8?Q?Le_patch_minceur_facile_=C3=A0_utiliser?=" <noreply-zIwo4Cd8WZRQFI55V6+gNQ@public.gmane.org>
-Subject: =?UTF-8?Q?Faites_disparaitre_les_kilos_en_trop_d=C3=A9finitivement?=
-Date: Sat, 16 Mar 2013 10:45:55 +0000 (CET)
-Message-ID: <130316104555.84326970600005116@obfm43.com>
+From: "=?UTF-8?Q?Pr=C3=AAt_d=27Union_via_Vitoule?=" <noreply-cKIufJn6YjxQFI55V6+gNQ@public.gmane.org>
+Subject: Empruntez aux meilleurs taux
+Date: Sat, 16 Mar 2013 14:04:14 +0000 (CET)
+Message-ID: <130316140414.85516846400001636@obfm43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -18,10 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-(http://obfm43.com/3awb032ruubztak5eo/index0.html)
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_mar
+CihodHRwOi8vb2JmbTQzLmNvbS9rejVrZTJ5aXYzdGZuenlpaXMvaW5kZXgwLmh0bWwpCihodHRw
+Oi8vb2JmbTQzLmNvbS92bTVpYzI1cXZvc3h2NGRpYWQvaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
+bTQzLmNvbS91dzV2MzJnMHZ0NGYydXNyaHkvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQzLmNv
+bS9lcDVhdDJud3Y0a3hsa2xyM2wvaW5kZXgzLmh0bWwpCihodHRwOi8vb2JmbTQzLmNvbS8wd3pw
+M3Z6Mm5wd2Z3M3Mzb2QvaW5kZXg0Lmh0bWwpCipIb3JzIG9mZnJlIHByb21vdGlvbm5lbGxlLCBw
+b3VyIGxhIG3Dqm1lIGR1csOpZSBkwrRlbXBydW50IGV0IGxlIG3Dqm1lIG1vbnRhbnQsIHN1ciBs
+ZSBwcsOqdCBwZXJzb25uZWwgw6AgbGEgY29uc29tbWF0aW9uLCBQcsOqdCBkJmFjdXRlO1VuaW9u
+IHByb3Bvc2UgbGEgcGx1cGFydCBkdSB0ZW1wcyBkZXMgVEFFRyBtb2lucyBjaGVycy4KCioqIE1v
+eWVubmUgZGVzIFRBRUcgb2JzZXJ2w6llIHBvdXIgdW4gcHLDqnQgcGVyc29ubmVsIGVudHJlIDYg
+MDAw4oKsIGV0IDIxIDAwMOKCrCwgZMK0dW5lIGR1csOpZSBkZSAyNCBtb2lzLiBPZmZyZXMgdmFs
+YWJsZXMgYXUgMjUvMTAvMjAxMi4KCioqKkFwcsOocyBhY2NlcHRhdGlvbiBkw6lmaW5pdGl2ZSBk
+ZSB2b3RyZSBkb3NzaWVyIGV0IGRhbnMgbGUgcmVzcGVjdCBkdSBkw6lsYWkgbMOpZ2FsIGRlIHLD
+qXRyYWN0YXRpb24uIApFeGVtcGxlIGRlIHByw6p0IHBlcnNvbm5lbCAoaG9ycyBhc3N1cmFuY2Vz
+IGZhY3VsdGF0aXZlcykgOiBwb3VyIHVuIG1vbnRhbnQgdG90YWwgZGUgY3LDqWRpdCBkZSAxNSAw
+MDDigqwgcmVtYm91cnNhYmxlIGVuIDI0IG1lbnN1YWxpdMOpcyBkZSA2NTAsOTDigqwgKGhvcnMg
+YXNzdXJhbmNlcyBmYWN1bHRhdGl2ZXMpLiBUYXV4IEFubnVlbCBFZmZlY3RpZiBHbG9iYWwgZml4
+ZSBkZSA1LDI4JSAoaG9ycyBhc3N1cmFuY2VzIGZhY3VsdGF0aXZlcykuIFRhdXggZMOpYml0ZXVy
+IGZpeGUgZGUgMyw5MyUuIFBlcmNlcHRpb25zIGZvcmZhaXRhaXJlcyAoZnJhaXMgZGUgZG9zc2ll
+cikgOiAxODcsNTDigqwuIENvw7t0IHRvdGFsIGR1IGNyw6lkaXQgOiA4MDksMTDigqwuIE1vbnRh
+bnQgdG90YWwgZMO7IHBhciBswrRlbXBydW50ZXVyIDogMTU2MjEsNjDigqwuIFZvdXMgYsOpbsOp
+ZmljaWV6IGTCtHVuZSBwcmVtacOocmUgw6ljaMOpYW5jZSDDoCAzMCBqb3VycyDDoCA2MCBqb3Vy
+cywgbGEgZHVyw6llIGVmZmVjdGl2ZSBkdSBjcsOpZGl0IGVzdCBkZSAyNCBtb2lzLiBPZmZyZSB2
+YWxhYmxlIGF1IDA3LzExLzIwMTIuCkxlIGNyw6lkaXQgUHLDqnQgZMK0VW5pb24gZXN0IGFjY29y
+ZMOpIHNvdXMgcsOpc2VydmUgZGUgbMK0YWNjZXB0YXRpb24gZMK0w6l0dWRlIGV0IGTCtGFjY2Vw
+dGF0aW9uIHBhciBQcsOqdCBkwrRVbmlvbiBTQS4gVm91cyBkaXNwb3NleiBkwrR1biBkcm9pdCBk
+ZSByw6l0cmFjdGF0aW9uLiBQcsOqdCBkwrRVbmlvbiBTQS4gRXRhYmxpc3NlbWVudCBkZSBjcsOp
+ZGl0LiBTQSBhdSBjYXBpdGFsIGRlIDI5NyAwMTIgZXVyb3MuIE51bcOpcm8gZGUgUkNTIE5hbnRl
+cnJlIDogNTE3IDU4NiAzNzYuIE51bcOpcm8gT1JJQVMgOiAxMSAwNjEgMjY5LgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KRXZlcnlvbmUgaGF0ZXMgc2xvdyB3ZWJzaXRlcy4gU28gZG8gd2UuCk1ha2Ug
+eW91ciB3ZWIgYXBwcyBmYXN0ZXIgd2l0aCBBcHBEeW5hbWljcwpEb3dubG9hZCBBcHBEeW5hbWlj
+cyBMaXRlIGZvciBmcmVlIHRvZGF5OgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfbWFy
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZl
+bC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRl
+dmVsLWdlbmVyYWwK

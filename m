@@ -1,136 +1,34 @@
-From: Barry Song <Barry.Song@csr.com>
-Subject: [PATCH] spi: sirf: fix the issue while transferring more than 256
- words
-Date: Mon, 18 Mar 2013 15:47:08 +0800
-Message-ID: <1363592828-6347-1-git-send-email-Barry.Song@csr.com>
+From: =?windows-1251?B?weD17ODy7uI=?= <p_aldushhenkov1978-HPQIj1OAFZMvJsYlp49lxw@public.gmane.org>
+Subject: [SPAM] Рабочие методики минимизации уплачиваемых налогов
+Date: Mon, 18 Mar 2013 15:03:02 +0400
+Message-ID: <D943B18055CD4ED3B35F4DBE813D9D82@fwkbzwr>
+Reply-To: =?windows-1251?B?weD17ODy7uI=?= <gladilina26-HPQIj1OAFZMvJsYlp49lxw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Qipan Li <Qipan.Li@csr.com>, workgroup.linux@csr.com,
- Zhiwu Song <Zhiwu.Song@csr.com>, Barry Song <Baohua.Song@csr.com>,
- spi-devel-general@lists.sourceforge.net, linux-arm-kernel@lists.infradead.org
-To: <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="windows-1251"
+Content-Transfer-Encoding: base64
+To: <yukome-M+CiPWzs6J4@public.gmane.org>, <71-lTiWPJ8ur9iqhtT/uMxDdYdd74u8MsAO@public.gmane.org>, <vis-uBgcYd4JHmvmbMyGePWhEb/vFX8cHO5b@public.gmane.org>,
+	<bmomu-jmxifi-O5WfVfzUwx8@public.gmane.org>, <paper-cBtdNSQr8P+/zoR3Qkm1pA@public.gmane.org>,
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Qipan Li <Qipan.Li@csr.com>
-
-currently, spi irq handler only does rx processing and  fetching data from rx
-fifo when "FRM_END" irq happens. FRM_END indicates one transfer completes. if
-rx size is less than 256, it works well.
-but the problem is that spi rx fifo size is only 256 bytes, then if data size
-of one frame is more than 256, before FRM_END comes, rx fifo will be filled with
-RXFIFO_OFLOW overflow interrupt, it will make us lose some data due to fifo
-overflow.
-Explicitly we need do fetch work from device rx fifo in irq handler not only in
-"FRM_END" irq but also in "THD_REACH" irq. THD_REACH means rx fifo has come to
-its threshold and will come to overflow if we don't take data from it in time.
-
-In this patch, we fix this issue. we take data from rx fifo when either FRM_END
-or RX_THD_REACH irq comes, we put data into tx fifo when either TX_FIFO_EMPTY
-or TX_THD_REACH irq comes.
-
-Signed-off-by: Qipan Li <Qipan.Li@csr.com>
-Signed-off-by: Zhiwu Song <Zhiwu.Song@csr.com>
-Signed-off-by: Barry Song <Baohua.Song@csr.com>
----
- drivers/spi/spi-sirf.c |   43 +++++++++++++------------------------------
- 1 files changed, 13 insertions(+), 30 deletions(-)
-
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index f59d417..d2bd1e5 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -142,9 +142,6 @@ struct sirfsoc_spi {
- 	unsigned int left_tx_cnt;
- 	unsigned int left_rx_cnt;
- 
--	/* tasklet to push tx msg into FIFO */
--	struct tasklet_struct tasklet_tx;
--
- 	int chipselect[0];
- };
- 
-@@ -236,17 +233,6 @@ static void spi_sirfsoc_tx_word_u32(struct sirfsoc_spi *sspi)
- 	sspi->left_tx_cnt--;
- }
- 
--static void spi_sirfsoc_tasklet_tx(unsigned long arg)
--{
--	struct sirfsoc_spi *sspi = (struct sirfsoc_spi *)arg;
--
--	/* Fill Tx FIFO while there are left words to be transmitted */
--	while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS) &
--			SIRFSOC_SPI_FIFO_FULL)) &&
--			sspi->left_tx_cnt)
--		sspi->tx_word(sspi);
--}
--
- static irqreturn_t spi_sirfsoc_irq(int irq, void *dev_id)
- {
- 	struct sirfsoc_spi *sspi = dev_id;
-@@ -261,25 +247,25 @@ static irqreturn_t spi_sirfsoc_irq(int irq, void *dev_id)
- 		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
- 	}
- 
--	if (spi_stat & SIRFSOC_SPI_FRM_END) {
-+	if (spi_stat & (SIRFSOC_SPI_FRM_END
-+			| SIRFSOC_SPI_RXFIFO_THD_REACH))
- 		while (!((readl(sspi->base + SIRFSOC_SPI_RXFIFO_STATUS)
- 				& SIRFSOC_SPI_FIFO_EMPTY)) &&
- 				sspi->left_rx_cnt)
- 			sspi->rx_word(sspi);
- 
--		/* Received all words */
--		if ((sspi->left_rx_cnt == 0) && (sspi->left_tx_cnt == 0)) {
--			complete(&sspi->done);
--			writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
--		}
--	}
--
--	if (spi_stat & SIRFSOC_SPI_RXFIFO_THD_REACH ||
--		spi_stat & SIRFSOC_SPI_TXFIFO_THD_REACH ||
--		spi_stat & SIRFSOC_SPI_RX_FIFO_FULL ||
--		spi_stat & SIRFSOC_SPI_TXFIFO_EMPTY)
--		tasklet_schedule(&sspi->tasklet_tx);
-+	if (spi_stat & (SIRFSOC_SPI_FIFO_EMPTY
-+			| SIRFSOC_SPI_TXFIFO_THD_REACH))
-+		while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS)
-+				& SIRFSOC_SPI_FIFO_FULL)) &&
-+				sspi->left_tx_cnt)
-+			sspi->tx_word(sspi);
- 
-+	/* Received all words */
-+	if ((sspi->left_rx_cnt == 0) && (sspi->left_tx_cnt == 0)) {
-+		complete(&sspi->done);
-+		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-+	}
- 	return IRQ_HANDLED;
- }
- 
-@@ -573,9 +559,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 
- 	init_completion(&sspi->done);
- 
--	tasklet_init(&sspi->tasklet_tx, spi_sirfsoc_tasklet_tx,
--		     (unsigned long)sspi);
--
- 	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
- 	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
- 	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
--- 
-1.7.5.4
-
-
-
-Member of the CSR plc group of companies. CSR plc registered in England and Wales, registered number 4187346, registered office Churchill House, Cambridge Business Park, Cowley Road, Cambridge, CB4 0WZ, United Kingdom
-More information can be found at www.csr.com. Follow CSR on Twitter at http://twitter.com/CSR_PLC and read our blog at www.csr.com/blog
+xOv/IPfl4+4g7+vg8ujy/CDs7e7j7iDt4Ovu4+7iPwoKaHR0cDovL2luc2ltZW5pY2UubmV0bmUu
+bmV0L3VrLXVrbG9uZW5pZS1vdC11cGxhdGktbmFsb2dvdi5odG1sCgrO5+3g6u7s/PLl8fwg8vPy
+CgpsNU8g5+Dq7u3t+/Ug7OX14O3o5+zu4iDs6O3o7Ojn4Pbo6CDt4Ovu4+7iIOog8+/r4PLlCgrP
+8Ogg4OHx7uv+8u3u7CDx7u7y4uXy8fLi6Ogg7fvt5SDk5enx8uLz/vno7CDiINDUIOfg6u7t7uTg
+8uX88fLi7uwgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFdmVyeW9uZSBoYXRlcyBzbG93IHdlYnNp
+dGVzLiBTbyBkbyB3ZS4KTWFrZSB5b3VyIHdlYiBhcHBzIGZhc3RlciB3aXRoIEFwcER5bmFtaWNz
+CkRvd25sb2FkIEFwcER5bmFtaWNzIExpdGUgZm9yIGZyZWUgdG9kYXk6Cmh0dHA6Ly9wLnNmLm5l
+dC9zZnUvYXBwZHluX2QyZF9tYXIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5l
+cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9s
+aXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

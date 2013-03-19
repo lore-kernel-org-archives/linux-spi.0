@@ -1,12 +1,16 @@
-From: "Bientot Maman" <contact-etoB+FPIm6hmliBtq8gkeFaPQRlvutdw@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Ce_qu=92il_y_a_de_mieux_pour_votre_b=E9b=E9?=
-Date: Mon, 18 Mar 2013 16:10:39 +0000 (CET)
-Message-ID: <130318161039.103555852000003136@obfm43.com>
+From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v7 00/14] spi/spi-atmel: add dmaengine support for atmel spi
+	controller and to test the device tree support
+Date: Tue, 19 Mar 2013 15:41:06 +0800
+Message-ID: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org
+To: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,69 +22,108 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi All, 
+
+This set of patches is to add dmaengine support for atmel spi and to test device tree support.
+
+The work is based on Nicolas and Richard's work.
+
+Because the dma engine device tree support isn't available now, to at91sam9x5ek and at91sam9n12ek
+with dma support, it doesn't work on the dmaengine mode, only on PIO mode so far.
+
+It has been tested as below:
+ 1./tested on v3.9-rc3, by using mtd utils, "mount", "umount" and "cp" commands.
+ 2./tested on "spi/next" git tree after changing master->num_chipselect which fixed in v3.9-rc1.
+ 3./tested by using Documentation/spi/spidev_test.c on "/dev/spidev".
+ 4./tested on on at91sam9x5ek, at91sam9m10g45ek, at91sam9263ek and at91sam9g20ek boards.
+
+It is based on v3.9-rc3 + Joachim Eastwood's spi/atmel: fix speed_hz check in atmel_spi_transfer().
+
+Changelog:
+v7:
+     1./ remove patch: fix probing failure after xfer->speed_hz set.
+     2./ remove patch: add pinctrl support for atmel spi.
+
+v6:
+     1./ remove: fix master->num_chipselect wrongly set patch which isn't a issue in v3.9-rc1.
+     2./ fix probing failure after xfer->speed_hz set.
+
+v5:
+     1./ add pinctrl patches.
+     2./ detect capabilities by reading spi version register to replace multiple compatiles.
+     3./ change the "cs-gpios" property of spi node.
+     4./ rebase on v3.8.
+
+v4:
+     1./ Take Joe Perches's adivce, rewrite atmel_spi_is_v2(struct atmel_spi *as) 
+         and atmel_spi_use_dma(struct atmel_spi *as),
+	 and remove atmel_spi_use_pdc(struct atmel_spi *as).
+     2./ Rebase on v3.8-rc3.
+
+V3:
+     1./ Rebase on v3.8-rc2.
+     2./ Remove some Jean-Christophe's patches which has been applied on v3.8-rc2.
+     3./ Remove spi property "cs-gpios" from the SoC dtsi files to the board dts files
+         to avoid some useless pin conflicts.
+
+v2: 
+     1./ Remove the patch :PATCH]mtd: m25p80: change the m25p80_read to reading page to page
+	 which purpose to fix the BUG: when run "flashcp /bin/busybox /dev/mtdX" in the at91sam9g25ek
+	 with DMA mode, it arises a OOPS. Now fix it in this patch:
+	    [PATHC] spi/atmel_spi: add dmaengine support changing to fix the [BUG].
+     2./ Remove two patches:
+   	    which purpose to read dts property to select SPI IP version and DMA mode
+	    Now they will be gat from device tree different compatile.
+     3./ Fix DMA: when enable both spi0 AND spi1, the spi0 doesn't work BUG.
+     4./ Rebase v3.7-rc8.
+
+Best Regards,
+Wenyou Yang.
 
 
-Si =
+Nicolas Ferre (5):
+  spi/spi-atmel: add physical base address
+  spi/spi-atmel: call unmapping on transfers buffers
+  spi/spi-atmel: status information passed through controller data
+  spi/spi-atmel: add flag to controller data for lock operations
+  spi/spi-atmel: add dmaengine support
 
-vous ne visualisez pas ce message, =
+Richard Genoud (6):
+  spi/spi-atmel: fix spi-atmel driver to adapt to slave_config changes
+  spi/spi-atmel: correct 16 bits transfers using PIO
+  spi/spi-atmel: correct 16 bits transfers with DMA
+  ARM: at91: add clocks for spi dt entries
+  ARM: dts: add spi nodes for atmel SoC
+  ARM: dts: add spi nodes for the atmel boards
+
+Wenyou Yang (3):
+  spi/spi-atmel: detect the capabilities of SPI core by reading the
+    VERSION register.
+  spi/spi-atmel: add support transfer on CS1,2,3, not only on CS0
+  ARM: dts: add pinctrl property for spi node for atmel SoC
+
+ arch/arm/boot/dts/at91sam9260.dtsi          |   40 ++
+ arch/arm/boot/dts/at91sam9263.dtsi          |   40 ++
+ arch/arm/boot/dts/at91sam9263ek.dts         |   10 +
+ arch/arm/boot/dts/at91sam9g20ek_common.dtsi |   10 +
+ arch/arm/boot/dts/at91sam9g45.dtsi          |   40 ++
+ arch/arm/boot/dts/at91sam9m10g45ek.dts      |   10 +
+ arch/arm/boot/dts/at91sam9n12.dtsi          |   40 ++
+ arch/arm/boot/dts/at91sam9n12ek.dts         |   10 +
+ arch/arm/boot/dts/at91sam9x5.dtsi           |   40 ++
+ arch/arm/boot/dts/at91sam9x5ek.dtsi         |   10 +
+ arch/arm/mach-at91/at91sam9260.c            |    2 +
+ arch/arm/mach-at91/at91sam9g45.c            |    2 +
+ arch/arm/mach-at91/at91sam9n12.c            |    2 +
+ arch/arm/mach-at91/at91sam9x5.c             |    2 +
+ drivers/spi/spi-atmel.c                     |  753 ++++++++++++++++++++++++---
+ 15 files changed, 945 insertions(+), 66 deletions(-)
+
+-- 
+1.7.9.5
 
 
-cliquez sur =
-
-ce lien (http://obfm43.com/fk0ykp0nwav4k5uy0y/index0.html)
-=A0
-=A0
-(http://obfm43.com/1i0gfpi2wjnz4peybl/index1.html)
-=A0
-=A0
-=A0
-
-Offre valable jusqu'=E0 =E9puisement =
-
-des stocks exclusivement sur le site =
-
-http://obfm43.com/xv0dipfgwbl4sakb2s/index2.html (http://www.bientot-maman.=
-fr).
-=A0
-
-(1) Livraison offerte =E0 partir de =
-
-60,00 euros TTC d'achat sur notre site Internet.
-=A0
-
-(2) Retours gratuits pour tout =
-
-achat effectu=E9 sur le site http://www.bientot-maman.fr : vous disposez d'=
-un =
-
-d=E9lai de 7 jours francs pour exercer votre droit de r=E9tractation sans a=
-voir =E0 =
-
-justifier de motifs ni =E0 payer de p=E9nalit=E9s. Les produits doivent =EA=
-tre retourn=E9s =
-
-dans leur emballage d'origine, en parfait =E9tat, non utilis=E9s et accompa=
-gn=E9s de =
-
-tous les accessoires, des notices =E9ventuelles et de la ou les factures =
-
-concern=E9es. Les articles retourn=E9s incomplets, ab=EEm=E9s ou salis ne p=
-ourront pas =
-
-=EAtre repris.
-=A0
-
-Conform=E9ment =E0 la loi Informatique =
-
-et Libert=E9s du 6 janvier 1978, vous disposez d'un droit d'acc=E8s, de =
-
-rectification et d'opposition relatif aux informations vous concernant. Mer=
-ci de =
-
-cliquer sur le lien ci-dessous pour vous d=E9sinscrire.
-=A0
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

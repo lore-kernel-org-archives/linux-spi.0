@@ -1,190 +1,155 @@
-From: Wenyou Yang <wenyou.yang@atmel.com>
-Subject: [PATCH v7 12/14] ARM: dts: add spi nodes for atmel SoC
-Date: Tue, 19 Mar 2013 15:50:57 +0800
-Message-ID: <1363679457-4204-1-git-send-email-wenyou.yang@atmel.com>
+From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v7 13/14] ARM: dts: add spi nodes for the atmel boards
+Date: Tue, 19 Mar 2013 15:51:40 +0800
+Message-ID: <1363679500-4242-1-git-send-email-wenyou.yang@atmel.com>
 References: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux@arm.linux.org.uk, richard.genoud@gmail.com, JM.Lin@atmel.com,
- broonie@opensource.wolfsonmicro.com, nicolas.ferre@atmel.com,
- linux-kernel@vger.kernel.org, wenyou.yang@atmel.com, grant.likely@secretlab.ca,
- spi-devel-general@lists.sourceforge.net, plagnioj@jcrosoft.com
-To: <linux-arm-kernel@lists.infradead.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org
+To: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1363678866-3567-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Richard Genoud <richard.genoud@gmail.com>
+From: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
-[wenyou.yang@atmel.com: add spi nodes for sam9260, sam9263, sam9g45 and sam9n12]
-[wenyou.yang@atmel.com: remove spi property "cs-gpios" to the board dts files]
-[wenyou.yang@atmel.com: submit the patch]
-Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
-Cc: linux@arm.linux.org.uk
-Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+[wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org: added spi nodes for the sam9263ek, sam9g20ek, sam9m10g45ek and sam9n12ek boards]
+[wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org: submit the patch]
+Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 ---
- arch/arm/boot/dts/at91sam9260.dtsi |   18 ++++++++++++++++++
- arch/arm/boot/dts/at91sam9263.dtsi |   18 ++++++++++++++++++
- arch/arm/boot/dts/at91sam9g45.dtsi |   18 ++++++++++++++++++
- arch/arm/boot/dts/at91sam9n12.dtsi |   18 ++++++++++++++++++
- arch/arm/boot/dts/at91sam9x5.dtsi  |   18 ++++++++++++++++++
- 5 files changed, 90 insertions(+)
+ arch/arm/boot/dts/at91sam9263ek.dts         |   10 ++++++++++
+ arch/arm/boot/dts/at91sam9g20ek_common.dtsi |   10 ++++++++++
+ arch/arm/boot/dts/at91sam9m10g45ek.dts      |   10 ++++++++++
+ arch/arm/boot/dts/at91sam9n12ek.dts         |   10 ++++++++++
+ arch/arm/boot/dts/at91sam9x5ek.dtsi         |   10 ++++++++++
+ 5 files changed, 50 insertions(+)
 
-diff --git a/arch/arm/boot/dts/at91sam9260.dtsi b/arch/arm/boot/dts/at91sam9260.dtsi
-index cb7bcc5..6e31dc8 100644
---- a/arch/arm/boot/dts/at91sam9260.dtsi
-+++ b/arch/arm/boot/dts/at91sam9260.dtsi
-@@ -471,6 +471,24 @@
- 				status = "disabled";
+diff --git a/arch/arm/boot/dts/at91sam9263ek.dts b/arch/arm/boot/dts/at91sam9263ek.dts
+index 1eb0872..a14e424 100644
+--- a/arch/arm/boot/dts/at91sam9263ek.dts
++++ b/arch/arm/boot/dts/at91sam9263ek.dts
+@@ -79,6 +79,16 @@
+ 					};
+ 				};
  			};
++
++			spi0: spi@fffa4000 {
++				status = "okay";
++				cs-gpios = <&pioA 5 0>, <0>, <0>, <0>;
++				mtd_dataflash@0 {
++					compatible = "atmel,at45", "atmel,dataflash";
++					spi-max-frequency = <50000000>;
++					reg = <0>;
++				};
++			};
+ 		};
  
+ 		nand0: nand@40000000 {
+diff --git a/arch/arm/boot/dts/at91sam9g20ek_common.dtsi b/arch/arm/boot/dts/at91sam9g20ek_common.dtsi
+index da15e83..23d1f46 100644
+--- a/arch/arm/boot/dts/at91sam9g20ek_common.dtsi
++++ b/arch/arm/boot/dts/at91sam9g20ek_common.dtsi
+@@ -96,6 +96,16 @@
+ 				status = "okay";
+ 				pinctrl-0 = <&pinctrl_ssc0_tx>;
+ 			};
++
 +			spi0: spi@fffc8000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xfffc8000 0x200>;
-+				interrupts = <12 4 3>;
-+				status = "disabled";
-+			};
-+
-+			spi1: spi@fffcc000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xfffcc000 0x200>;
-+				interrupts = <13 4 3>;
-+				status = "disabled";
-+			};
-+
- 			adc0: adc@fffe0000 {
- 				compatible = "atmel,at91sam9260-adc";
- 				reg = <0xfffe0000 0x100>;
-diff --git a/arch/arm/boot/dts/at91sam9263.dtsi b/arch/arm/boot/dts/at91sam9263.dtsi
-index 271d4de..6c6d9ae 100644
---- a/arch/arm/boot/dts/at91sam9263.dtsi
-+++ b/arch/arm/boot/dts/at91sam9263.dtsi
-@@ -462,6 +462,24 @@
- 				reg = <0xfffffd40 0x10>;
- 				status = "disabled";
- 			};
-+
-+			spi0: spi@fffa4000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xfffa4000 0x200>;
-+				interrupts = <14 4 3>;
-+				status = "disabled";
-+			};
-+
-+			spi1: spi@fffa8000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xfffa8000 0x200>;
-+				interrupts = <15 4 3>;
-+				status = "disabled";
++				status = "okay";
++				cs-gpios = <0>, <&pioC 11 0>, <0>, <0>;
++				mtd_dataflash@0 {
++					compatible = "atmel,at45", "atmel,dataflash";
++					spi-max-frequency = <50000000>;
++					reg = <1>;
++				};
 +			};
  		};
  
  		nand0: nand@40000000 {
-diff --git a/arch/arm/boot/dts/at91sam9g45.dtsi b/arch/arm/boot/dts/at91sam9g45.dtsi
-index 6b1d4ca..e085b8a 100644
---- a/arch/arm/boot/dts/at91sam9g45.dtsi
-+++ b/arch/arm/boot/dts/at91sam9g45.dtsi
-@@ -531,6 +531,24 @@
- 				reg = <0xfffffd40 0x10>;
- 				status = "disabled";
+diff --git a/arch/arm/boot/dts/at91sam9m10g45ek.dts b/arch/arm/boot/dts/at91sam9m10g45ek.dts
+index 20c3191..92c52a7 100644
+--- a/arch/arm/boot/dts/at91sam9m10g45ek.dts
++++ b/arch/arm/boot/dts/at91sam9m10g45ek.dts
+@@ -102,6 +102,16 @@
+ 					};
+ 				};
  			};
 +
-+			spi0: spi@fffa4000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xfffa4000 0x200>;
-+				interrupts = <14 4 3>;
-+				status = "disabled";
-+			};
-+
-+			spi1: spi@fffa8000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xfffa8000 0x200>;
-+				interrupts = <15 4 3>;
-+				status = "disabled";
++			spi0: spi@fffa4000{
++				status = "okay";
++				cs-gpios = <&pioB 3 0>, <0>, <0>, <0>;
++				mtd_dataflash@0 {
++					compatible = "atmel,at45", "atmel,dataflash";
++					spi-max-frequency = <13000000>;
++					reg = <0>;
++				};
 +			};
  		};
  
  		nand0: nand@40000000 {
-diff --git a/arch/arm/boot/dts/at91sam9n12.dtsi b/arch/arm/boot/dts/at91sam9n12.dtsi
-index 7750f98..f3f87ef3 100644
---- a/arch/arm/boot/dts/at91sam9n12.dtsi
-+++ b/arch/arm/boot/dts/at91sam9n12.dtsi
-@@ -373,6 +373,24 @@
- 				#size-cells = <0>;
- 				status = "disabled";
- 			};
-+
-+			spi0: spi@f0000000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xf0000000 0x100>;
-+				interrupts = <13 4 3>;
-+				status = "disabled";
-+			};
-+
-+			spi1: spi@f0004000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xf0004000 0x100>;
-+				interrupts = <14 4 3>;
-+				status = "disabled";
-+			};
- 		};
- 
- 		nand0: nand@40000000 {
-diff --git a/arch/arm/boot/dts/at91sam9x5.dtsi b/arch/arm/boot/dts/at91sam9x5.dtsi
-index aa98e64..83a4889 100644
---- a/arch/arm/boot/dts/at91sam9x5.dtsi
-+++ b/arch/arm/boot/dts/at91sam9x5.dtsi
-@@ -505,6 +505,24 @@
- 					trigger-value = <0x6>;
+diff --git a/arch/arm/boot/dts/at91sam9n12ek.dts b/arch/arm/boot/dts/at91sam9n12ek.dts
+index d400f8d..34c842b 100644
+--- a/arch/arm/boot/dts/at91sam9n12ek.dts
++++ b/arch/arm/boot/dts/at91sam9n12ek.dts
+@@ -67,6 +67,16 @@
+ 					};
  				};
  			};
 +
 +			spi0: spi@f0000000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xf0000000 0x100>;
-+				interrupts = <13 4 3>;
-+				status = "disabled";
-+			};
-+
-+			spi1: spi@f0004000 {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+				compatible = "atmel,at91rm9200-spi";
-+				reg = <0xf0004000 0x100>;
-+				interrupts = <14 4 3>;
-+				status = "disabled";
++				status = "okay";
++				cs-gpios = <&pioA 14 0>, <0>, <0>, <0>;
++				m25p80@0 {
++					compatible = "atmel,at25df321a";
++					spi-max-frequency = <50000000>;
++					reg = <0>;
++				};
 +			};
  		};
  
  		nand0: nand@40000000 {
+diff --git a/arch/arm/boot/dts/at91sam9x5ek.dtsi b/arch/arm/boot/dts/at91sam9x5ek.dtsi
+index 8a7cf1d..09f5e66 100644
+--- a/arch/arm/boot/dts/at91sam9x5ek.dtsi
++++ b/arch/arm/boot/dts/at91sam9x5ek.dtsi
+@@ -84,6 +84,16 @@
+ 					};
+ 				};
+ 			};
++
++			spi0: spi@f0000000 {
++				status = "okay";
++				cs-gpios = <&pioA 14 0>, <0>, <0>, <0>;
++				m25p80@0 {
++					compatible = "atmel,at25df321a";
++					spi-max-frequency = <50000000>;
++					reg = <0>;
++				};
++			};
+ 		};
+ 
+ 		usb0: ohci@00600000 {
 -- 
 1.7.9.5
+
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_mar

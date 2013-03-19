@@ -1,266 +1,83 @@
-From: Wenyou Yang <wenyou.yang@atmel.com>
-Subject: [PATCH v7 14/14] ARM: dts: add pinctrl property for spi node for atmel SoC
-Date: Tue, 19 Mar 2013 15:52:15 +0800
-Message-ID: <1363679535-4280-1-git-send-email-wenyou.yang@atmel.com>
-References: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
+From: Nissan - lcl <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?Nissan_MICRA_:_=E0_partir_de_139=A4_par_mois_sans_apport?=
+Date: Tue, 19 Mar 2013 08:47:12 +0100 (CET)
+Message-ID: <2.1.11.1101030461.2178770.3016826189@news.localips.com>
+Reply-To: newsletters-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <grant.likely@secretlab.ca>, <broonie@opensource.wolfsonmicro.com>,
-	<richard.genoud@gmail.com>, <plagnioj@jcrosoft.com>,
-	<nicolas.ferre@atmel.com>, <JM.Lin@atmel.com>,
-	<wenyou.yang@atmel.com>, <spi-devel-general@lists.sourceforge.net>,
-	<linux@arm.linux.org.uk>, <linux-kernel@vger.kernel.org>
-To: <linux-arm-kernel@lists.infradead.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
-Cc: linux@arm.linux.org.uk
-Cc: linux-kernel@vger.kernel.org
----
- arch/arm/boot/dts/at91sam9260.dtsi |   22 ++++++++++++++++++++++
- arch/arm/boot/dts/at91sam9263.dtsi |   22 ++++++++++++++++++++++
- arch/arm/boot/dts/at91sam9g45.dtsi |   22 ++++++++++++++++++++++
- arch/arm/boot/dts/at91sam9n12.dtsi |   22 ++++++++++++++++++++++
- arch/arm/boot/dts/at91sam9x5.dtsi  |   22 ++++++++++++++++++++++
- 5 files changed, 110 insertions(+)
+Nissan MICRA  Cet e-mail ne s'affiche pas correctement ? Lisez la version e=
+n ligne =
 
-diff --git a/arch/arm/boot/dts/at91sam9260.dtsi b/arch/arm/boot/dts/at91sam9260.dtsi
-index 6e31dc8..39253b9 100644
---- a/arch/arm/boot/dts/at91sam9260.dtsi
-+++ b/arch/arm/boot/dts/at91sam9260.dtsi
-@@ -322,6 +322,24 @@
- 					};
- 				};
- 
-+				spi0 {
-+					pinctrl_spi0: spi0-0 {
-+						atmel,pins =
-+							<0 0 0x1 0x0	/* PA0 periph A SPI0_MISO pin */
-+							 0 1 0x1 0x0	/* PA1 periph A SPI0_MOSI pin */
-+							 0 2 0x1 0x0>;	/* PA2 periph A SPI0_SPCK pin */
-+					};
-+				};
-+
-+				spi1 {
-+					pinctrl_spi1: spi1-0 {
-+						atmel,pins =
-+							<1 0 0x1 0x0	/* PB0 periph A SPI1_MISO pin */
-+							 1 1 0x1 0x0	/* PB1 periph A SPI1_MOSI pin */
-+							 1 2 0x1 0x0>;	/* PB2 periph A SPI1_SPCK pin */
-+					};
-+				};
-+
- 				pioA: gpio@fffff400 {
- 					compatible = "atmel,at91rm9200-gpio";
- 					reg = <0xfffff400 0x200>;
-@@ -477,6 +495,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xfffc8000 0x200>;
- 				interrupts = <12 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi0>;
- 				status = "disabled";
- 			};
- 
-@@ -486,6 +506,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xfffcc000 0x200>;
- 				interrupts = <13 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi1>;
- 				status = "disabled";
- 			};
- 
-diff --git a/arch/arm/boot/dts/at91sam9263.dtsi b/arch/arm/boot/dts/at91sam9263.dtsi
-index 6c6d9ae..94b58ab 100644
---- a/arch/arm/boot/dts/at91sam9263.dtsi
-+++ b/arch/arm/boot/dts/at91sam9263.dtsi
-@@ -303,6 +303,24 @@
- 					};
- 				};
- 
-+				spi0 {
-+					pinctrl_spi0: spi0-0 {
-+						atmel,pins =
-+							<0 0 0x2 0x0	/* PA0 periph B SPI0_MISO pin */
-+							 0 1 0x2 0x0	/* PA1 periph B SPI0_MOSI pin */
-+							 0 2 0x2 0x0>;	/* PA2 periph B SPI0_SPCK pin */
-+					};
-+				};
-+
-+				spi1 {
-+					pinctrl_spi1: spi1-0 {
-+						atmel,pins =
-+							<1 12 0x1 0x0	/* PB12 periph A SPI1_MISO pin */
-+							 1 13 0x1 0x0	/* PB13 periph A SPI1_MOSI pin */
-+							 1 14 0x1 0x0>;	/* PB14 periph A SPI1_SPCK pin */
-+					};
-+				};
-+
- 				pioA: gpio@fffff200 {
- 					compatible = "atmel,at91rm9200-gpio";
- 					reg = <0xfffff200 0x200>;
-@@ -469,6 +487,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xfffa4000 0x200>;
- 				interrupts = <14 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi0>;
- 				status = "disabled";
- 			};
- 
-@@ -478,6 +498,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xfffa8000 0x200>;
- 				interrupts = <15 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi1>;
- 				status = "disabled";
- 			};
- 		};
-diff --git a/arch/arm/boot/dts/at91sam9g45.dtsi b/arch/arm/boot/dts/at91sam9g45.dtsi
-index e085b8a..cfdf429 100644
---- a/arch/arm/boot/dts/at91sam9g45.dtsi
-+++ b/arch/arm/boot/dts/at91sam9g45.dtsi
-@@ -322,6 +322,24 @@
- 					};
- 				};
- 
-+				spi0 {
-+					pinctrl_spi0: spi0-0 {
-+						atmel,pins =
-+							<1 0 0x1 0x0	/* PB0 periph A SPI0_MISO pin */
-+							 1 1 0x1 0x0	/* PB1 periph A SPI0_MOSI pin */
-+							 1 2 0x1 0x0>;	/* PB2 periph A SPI0_SPCK pin */
-+					};
-+				};
-+
-+				spi1 {
-+					pinctrl_spi1: spi1-0 {
-+						atmel,pins =
-+							<1 14 0x1 0x0	/* PB14 periph A SPI1_MISO pin */
-+							 1 15 0x1 0x0	/* PB15 periph A SPI1_MOSI pin */
-+							 1 16 0x1 0x0>;	/* PB16 periph A SPI1_SPCK pin */
-+					};
-+				};
-+
- 				pioA: gpio@fffff200 {
- 					compatible = "atmel,at91rm9200-gpio";
- 					reg = <0xfffff200 0x200>;
-@@ -538,6 +556,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xfffa4000 0x200>;
- 				interrupts = <14 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi0>;
- 				status = "disabled";
- 			};
- 
-@@ -547,6 +567,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xfffa8000 0x200>;
- 				interrupts = <15 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi1>;
- 				status = "disabled";
- 			};
- 		};
-diff --git a/arch/arm/boot/dts/at91sam9n12.dtsi b/arch/arm/boot/dts/at91sam9n12.dtsi
-index f3f87ef3..b2961f1 100644
---- a/arch/arm/boot/dts/at91sam9n12.dtsi
-+++ b/arch/arm/boot/dts/at91sam9n12.dtsi
-@@ -261,6 +261,24 @@
- 					};
- 				};
- 
-+				spi0 {
-+					pinctrl_spi0: spi0-0 {
-+						atmel,pins =
-+							<0 11 0x1 0x0	/* PA11 periph A SPI0_MISO pin */
-+							 0 12 0x1 0x0	/* PA12 periph A SPI0_MOSI pin */
-+							 0 13 0x1 0x0>;	/* PA13 periph A SPI0_SPCK pin */
-+					};
-+				};
-+
-+				spi1 {
-+					pinctrl_spi1: spi1-0 {
-+						atmel,pins =
-+							<0 21 0x2 0x0	/* PA21 periph B SPI1_MISO pin */
-+							 0 22 0x2 0x0	/* PA22 periph B SPI1_MOSI pin */
-+							 0 23 0x2 0x0>;	/* PA23 periph B SPI1_SPCK pin */
-+					};
-+				};
-+
- 				pioA: gpio@fffff400 {
- 					compatible = "atmel,at91sam9x5-gpio", "atmel,at91rm9200-gpio";
- 					reg = <0xfffff400 0x200>;
-@@ -380,6 +398,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xf0000000 0x100>;
- 				interrupts = <13 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi0>;
- 				status = "disabled";
- 			};
- 
-@@ -389,6 +409,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xf0004000 0x100>;
- 				interrupts = <14 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi1>;
- 				status = "disabled";
- 			};
- 		};
-diff --git a/arch/arm/boot/dts/at91sam9x5.dtsi b/arch/arm/boot/dts/at91sam9x5.dtsi
-index 83a4889..04fbf9d 100644
---- a/arch/arm/boot/dts/at91sam9x5.dtsi
-+++ b/arch/arm/boot/dts/at91sam9x5.dtsi
-@@ -319,6 +319,24 @@
- 					};
- 				};
- 
-+				spi0 {
-+					pinctrl_spi0: spi0-0 {
-+						atmel,pins =
-+							<0 11 0x1 0x0	/* PA11 periph A SPI0_MISO pin */
-+							 0 12 0x1 0x0	/* PA12 periph A SPI0_MOSI pin */
-+							 0 13 0x1 0x0>;	/* PA13 periph A SPI0_SPCK pin */
-+					};
-+				};
-+
-+				spi1 {
-+					pinctrl_spi1: spi1-0 {
-+						atmel,pins =
-+							<0 21 0x2 0x0	/* PA21 periph B SPI1_MISO pin */
-+							 0 22 0x2 0x0	/* PA22 periph B SPI1_MOSI pin */
-+							 0 23 0x2 0x0>;	/* PA23 periph B SPI1_SPCK pin */
-+					};
-+				};
-+
- 				pioA: gpio@fffff400 {
- 					compatible = "atmel,at91sam9x5-gpio", "atmel,at91rm9200-gpio";
- 					reg = <0xfffff400 0x200>;
-@@ -512,6 +530,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xf0000000 0x100>;
- 				interrupts = <13 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi0>;
- 				status = "disabled";
- 			};
- 
-@@ -521,6 +541,8 @@
- 				compatible = "atmel,at91rm9200-spi";
- 				reg = <0xf0004000 0x100>;
- 				interrupts = <14 4 3>;
-+				pinctrl-names = "default";
-+				pinctrl-0 = <&pinctrl_spi1>;
- 				status = "disabled";
- 			};
- 		};
--- 
-1.7.9.5
+Entrez sans apport, repartez en Nissan(1)
+Nissan MICRA : R=E9servez un essai
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJu5SjnGHxKLhtiOvcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIu =
+
+
+Venez l'essayer =E0 c=F4t=E9 de chez vous
+
+
+D=E9couvrez l'offre Nissan JUKE
+http://p5trc.emv2.com/HS?a=3DENX7CqmVXCyi8SA9MKJu5SjnGHxKLhtiO_cStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIv =
+
+ (1) V=E9hicules disponibles avec d=E9lais de livraison.
+
+ (2) Exemple pour une Nissan MICRA Visia 1.2L 80 ch neuve en Location =
+
+Longue Dur=E9e sur 49 mois pour un kilom=E9trage maximum de 60 000 km. =
+
+Prime d'aide =E0 la reprise de votre v=E9hicule de 2 071 =A4 utilis=E9e com=
+me =
+
+premier loyer, suivi de 48 loyers de 139=A0=A4. Restitution du v=E9hicule =
+
+chez votre concessionnaire en fin de contrat avec paiement des frais de =
+
+remise en =E9tat standard et des kilom=E8tres suppl=E9mentaires. Sous r=E9s=
+erve =
+
+d'acceptation par Diac - SA au capital de 61=A0000=A0000=A0=A4 - 14, avenue=
+ du =
+
+Pav=E9 Neuf 93160 Noisy-le-Grand - SIREN 702 002 221 RCS Bobigny. Offre =
+
+non cumulable avec d'autres offres, valable du 01/03/13 au 31/03/13, =
+
+r=E9serv=E9e aux particuliers chez les Concessionnaires NISSAN participants.
+
+ NISSAN WEST EUROPE SAS au capital de 5 610 475 Euros, RCS Versailles =
+
+n=B0 B 699 809 174 - Z.A du Parc de Pissaloup - 8, avenue Jean d'Alembert =
+
+78194 Trappes Cedex.
+
+ Consommations (l/100km) : urbaine : 6,1 ; extra-urbaine : 4,3 ; mixte =
+
+: 5,0. Emissions CO2 (g/km) : 115.
+
+ Vous avez la possibilit=E9 de retirer cette adresse de notre liste =
+
+d'envoi de mails, par l'intermediaire de ce raccourci. =
+
+
+
+---------------------------------------------------------------------------=
+---
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_mar

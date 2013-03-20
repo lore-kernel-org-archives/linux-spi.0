@@ -1,13 +1,16 @@
-From: Galerie des Marques pour Maisons du Monde <info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org>
-Subject: Livraison Offerte sur toute la =?iso-8859-1?Q?d=E9co*?=
-Date: Wed, 20 Mar 2013 14:23:33 +0100
-Message-ID: <1363785945.thing5149b8d94a3ee@mach10.generated>
-Reply-To: info-T3gqmmISwpW3Fr/0lGvK82/KedPJEj8Q@public.gmane.org
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] mxs/spi: Add SPI slave mode operation DT prop
+Date: Wed, 20 Mar 2013 15:58:55 -0700
+Message-ID: <CA+7tXihDGgkq_FALfGW_2xzcZc4wgm_YiAMepSjT4Y2b1ULd+w@mail.gmail.com>
+References: <1345776161-9778-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1345776161-9778-1-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,40 +21,60 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Pour voir le message, veuillez utiliser un lecteur de mail compatible HTML
+On Thu, Aug 23, 2012 at 7:42 PM, Marek Vasut
+<marex-ynQEQJNshbs-XMD5yJDbdMReXY1tMh2IBg@public.gmane.org> wrote:
+> This allows user to select the slave mode of operation of the controller.
+> This is by no means standard, see the binding documentation for details,
+> there is plenty of them. Sadly, such knowledge is not provided in the chip
+> documentation. Hopefully, this mode of operation might come useful for
+> people who do know very well what they are doing, otherwise this should
+> never be touched.
 
-Lien miroir : http://m10-fr.com/mc10_m/YT04JmI9MzM4MTAmYz0xOTYxNjQxJmQ9MjAx=
-My0wMy0yMCAxNDoyMDowMSZlPTEmaD0zMzgwOCZmPTMzODEwJmc9MzM4MTA=3D
+Thanks for posting this, as it's something I'm trying to get it working too.
 
-Lien de desinscription : http://m10-fr.com/mc10_unsub/YT04JmI9MzM4MTAmYz0xO=
-TYxNjQxJmQ9MjAxMy0wMy0yMCAxNDoyMDowMSZlPTEmaD0zMzgwOCZmPTMzODEwJmc9MzM4MTA=
-=3D
+You're right that the Freescale documentation says almost nothing
+about slave mode.  I found some STMP36xx on the rockbox site,
+http://www.rockbox.org/wiki/pub/Main/SigmaTelSTMP3xxx/stmp36xx-Datasheet-1-02_050306.pdf,
+however it doesn't provide any more information about slave mode than
+the imx28 RM.  In fact it's virtually the same word for word, other
+than some bits that are marked reserved in the imx28 are defined in
+stmp36xx (wonder if the FIFO stuff is still there in the imx28?).
+What STMP36xx documentation did you find that had more information?
 
-Si vous ne parvenez pas =E0 lire correctement ce message, cliquez ici.
-=A0  =A0=A0=A0=A0=A0  =A0=A0=A0=A0=A0=A0=A0  =A0=A0=A0=A0=A0=A0=A0 =
+> +		   - If the SPI master generates clock at n MHz, the speed
+> +		     of the SPI slave controller must be at least 4-8 times
+> +		     faster, this is due to the controller samples the CLK
 
-Salon Canap=E9s Chaises Fauteuils Tables basses Biblioth=E8ques et =E9tag=
-=E8res
-Salle =E0 manger Chaises Tables Luminaires Buffets et vaisseliers Bars et t=
-abourets de bar
-Cuisine Chaises Tables Tabourets et bancs El=E9ments de cuisine Buffets et =
-vaisseliers
-Chambre Chevets et bouts de lit Lits et t=EAtes de lit Commodes et cabinets=
- Chaises Bureaux et secr=E9taires
-Maisons du Monde, c'est des meubles et objet de d=E9coration disponibles da=
-ns 12 pays, =E0 travers plus de 200 magasins. Des cr=E9ations originales et=
- exclusives, con=E7ues par nos stylistes, puis fabriqu=E9es par des partena=
-ires choisis avec soin. Avec Maisons du Monde, retrouvez plus de 3 000 prod=
-uits disponibles 24/24 d'un simple clic pour le salon, la chambre, la cuisi=
-ne ou le jardin. Toujours plus de meubles sur maisonsdumonde.com et sur not=
-re catalogue en ligne.
-      =
+When you say the SPI slave clock must be 4x higher than the master
+clock, do you mean the rate programmed for what would be the SPI clock
+in master mode: SSP_SCK in the HW_SSP_TIMING register.  Or the rate of
+the clock to the SSP block: SSPCLK as programmed via the CLKCTRL
+block's registers, e..g. HW_CLKCTRL_SSP1?
 
-  =
+> +		   - The DMA has to wait indefinitelly for the arriving data.
 
-    Pour vous d=E9sabonner, cliquez ici.
----------------------------------------------------------------------------=
----
+Is there a reason that this must be done?  I'd guess that after the
+SSP is told to start a transfer in slave mode it waits for the master
+to assert the SSn line and begin the transfer.  If the completion
+times out before this happens then it makes sense it wouldn't work.
+But does it still not work if the SPI transfer completes before the
+completion timeout?  Or is this necessary because in your application
+there might be a long wait before the master chooses to initiate a
+transfer after you program it on the Linux side?
+
+In my case I have a device that is mostly a SPI slave, except it wants
+to drive the clock itself, most unfortunately.  It doesn't drive the
+slave select, rather the imx28 will still drive that (I assume I'll
+need to use a GPIO and loop it back to SSn to trick the SSP into
+thinking the "master" has asserted the slave select).  So really, I'm
+doing SPI master transactions on the Linux side, but need to put the
+SSP into slave mode to get the clock right.  This makes it quite a bit
+easier to do on Linux than a general slave mode, which is quite the
+can of worms.  I tried creating an I2C slave mode framework for
+another application but was never happy with it.  I imagine this is
+why no one has ever created a general spi slave framework for Linux.
+
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

@@ -1,102 +1,38 @@
-From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v4 5/5] ARM: davinci: da850-evm: add SPI flash support
-Date: Wed, 20 Mar 2013 16:16:59 +0530
-Message-ID: <1363776419-10563-6-git-send-email-prakash.pm@ti.com>
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v4 0/5] Enable SPI flash support on da850-evm DT kernel
+Date: Wed, 20 Mar 2013 16:44:32 +0530
+Message-ID: <51499A18.5020901@ti.com>
 References: <1363776419-10563-1-git-send-email-prakash.pm@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, nsekhar-l0cyMroinI0@public.gmane.org,
-	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, "Manjunathappa,
-	Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, hs-ynQEQJNshbs@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>, <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+        <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+        <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
+        <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, <hs-ynQEQJNshbs@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
 In-Reply-To: <1363776419-10563-1-git-send-email-prakash.pm-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Enable m25p64 SPI flash support on da850-EVM. Also
-add partition information of SPI flash.
+Grant,
 
-Signed-off-by: Manjunathappa, Prakash <prakash.pm-l0cyMroinI0@public.gmane.org>
----
-Since v2:
-Fixed partition sizes.
+On 3/20/2013 4:16 PM, Manjunathappa, Prakash wrote:
+> Patch enables support for m25p64 SPI flash support on
+> da850-EVM.
 
-Since v1:
-Look for m25p64 instead of m25p80.
-Corrected the filesystem partition information.
+With your ack, I would like to merge this series through davinci tree
+for v3.10. This will help manage dependencies for DT files.
 
- arch/arm/boot/dts/da850-evm.dts |   40 +++++++++++++++++++++++++++++++++++++++
- 1 files changed, 40 insertions(+), 0 deletions(-)
-
-diff --git a/arch/arm/boot/dts/da850-evm.dts b/arch/arm/boot/dts/da850-evm.dts
-index c359872..fe2bbe7 100644
---- a/arch/arm/boot/dts/da850-evm.dts
-+++ b/arch/arm/boot/dts/da850-evm.dts
-@@ -41,6 +41,46 @@
- 		wdt: wdt@1c21000 {
- 			status = "okay";
- 		};
-+		spi1: spi@1f0e000 {
-+			status = "okay";
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&spi1_pins>;
-+			flash: m25p80@0 {
-+				#address-cells = <1>;
-+				#size-cells = <1>;
-+				compatible = "m25p64";
-+				spi-max-frequency = <30000000>;
-+				reg = <0>;
-+				partition@0 {
-+					label = "U-Boot-SPL";
-+					reg = <0x00000000 0x00010000>;
-+					read-only;
-+				};
-+				partition@1 {
-+					label = "U-Boot";
-+					reg = <0x00010000 0x00080000>;
-+					read-only;
-+				};
-+				partition@2 {
-+					label = "U-Boot-Env";
-+					reg = <0x00090000 0x00010000>;
-+					read-only;
-+				};
-+				partition@3 {
-+					label = "Kernel";
-+					reg = <0x000a0000 0x00280000>;
-+				};
-+				partition@4 {
-+					label = "Filesystem";
-+					reg = <0x00320000 0x00400000>;
-+				};
-+				partition@5 {
-+					label = "MAC-Address";
-+					reg = <0x007f0000 0x00010000>;
-+					read-only;
-+				};
-+			};
-+		};
- 	};
- 	nand_cs3@62000000 {
- 		status = "okay";
--- 
-1.7.4.1
-
-
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_mar
+Thanks,
+Sekhar

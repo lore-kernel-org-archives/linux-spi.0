@@ -1,13 +1,20 @@
-From: "Partenaire minceur" <contact-ITtWA3W4OX1QFI55V6+gNQ@public.gmane.org>
-Subject: Maigrissez sans avoir faim.
-Date: Tue, 19 Mar 2013 13:07:44 +0000 (CET)
-Message-ID: <130319130744.111098305300002408@obfm43.com>
+From: "Manjunathappa, Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v4 1/5] spi/davinci: no wildcards in DT compatible property
+Date: Wed, 20 Mar 2013 16:16:55 +0530
+Message-ID: <1363776419-10563-2-git-send-email-prakash.pm@ti.com>
+References: <1363776419-10563-1-git-send-email-prakash.pm@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, nsekhar-l0cyMroinI0@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, "Manjunathappa,
+	Prakash" <prakash.pm-l0cyMroinI0@public.gmane.org>, rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, hs-ynQEQJNshbs@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1363776419-10563-1-git-send-email-prakash.pm-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,30 +25,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CkxBClBSRVNTRSBJTlRFUk5BVElPTkFMRSBFTiBQQVJMRcKgOiAoaHR0cDovL29iZm00My5jb20v
-bWEwYzJwMzNhZ3h6NHl2YnpvL2luZGV4MC5odG1sKQoKwqvCoFVuCnByb2R1aXQgbWluY2V1ciBw
-YXMgY29tbWUgbGVzIGF1dHJlcyAhIMK7IChodHRwOi8vb2JmbTQzLmNvbS9wdjB0aHB0b2FoajRr
-c2tid3EvaW5kZXgxLmh0bWwpCgooaHR0cDovL29iZm00My5jb20vcmkweHhwZXRhbjV6dGJleTRq
-L2luZGV4Mi5odG1sKSAKVk9VUwpOwrRBVkVaIFBBUyBFTkNPUkUgVEVTVMOJID8gKGh0dHA6Ly9v
-YmZtNDMuY29tLzVrMDJ1cGM0YTJhNHN0dXluZy9pbmRleDMuaHRtbCkKKGh0dHA6Ly9vYmZtNDMu
-Y29tL2ppY2R4b2ZiNTFtenpmZTIycS9pbmRleDQuaHRtbCkgCihodHRwOi8vb2JmbTQzLmNvbS9x
-a2NvdW9rejVtaDR1eHUydG8vaW5kZXg1Lmh0bWwpIApFTgpGQUlULCBDSEFRVUUgQ09NUFJJTcOJ
-IERFIChodHRwOi8vb2JmbTQzLmNvbS9vYWN5Mm8wYTV2MXpib3ZsMGcvaW5kZXg2Lmh0bWwpWkFD
-VEkrCihodHRwOi8vb2JmbTQzLmNvbS9ndmNnaG9pajVsZzR5amtsYmovaW5kZXg3Lmh0bWwpQ09S
-UkVTUE9ORArDgCAoaHR0cDovL29iZm00My5jb20vMWF3cTAzYWhhbzJ6cjV2YXlvL2luZGV4OC5o
-dG1sKTEKS0lMTyBERSBNT0lOUyAoaHR0cDovL29iZm00My5jb20vZnZ3c2kzYmdhM2w0aXBrYWRx
-L2luZGV4OS5odG1sKSBTVVIKTEEgQkFMQU5DRSAhCkPCtMOJVEFJVCBMRSBQUk9EVUlUIChodHRw
-Oi8vb2JmbTQzLmNvbS92ejBoZTVycmhsdHBzbmJ5NWQvaW5kZXgxMC5odG1sKUlORElTUEVOU0FC
-TEUgKGh0dHA6Ly9vYmZtNDMuY29tL2s1NXUwMmxpbGt0eDF3bHJyZC9pbmRleDExLmh0bWwpIFFV
-RQpUT1VURVMgTEVTIEZFTU1FUyBEVSBNT05ERSBBVFRFTkRBSUVOVC4gKGh0dHA6Ly9vYmZtNDMu
-Y29tL3FnaG9nMWt4d3JnZ3ZqcTE0Zy9pbmRleDEyLmh0bWwpCkVGRklDQUNJVMOJCkdBUkFOVElF
-ICEgKGh0dHA6Ly9vYmZtNDMuY29tL2psc2RtenhqY3hnaXBvZmtuZy9pbmRleDEzLmh0bWwpIAoo
-aHR0cDovL29iZm00My5jb20vZGI0NW5rbjVmNGNlY2dhcHBsL2luZGV4MTQuaHRtbCkgCi0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLQpFdmVyeW9uZSBoYXRlcyBzbG93IHdlYnNpdGVzLiBTbyBkbyB3ZS4K
-TWFrZSB5b3VyIHdlYiBhcHBzIGZhc3RlciB3aXRoIEFwcER5bmFtaWNzCkRvd25sb2FkIEFwcER5
-bmFtaWNzIExpdGUgZm9yIGZyZWUgdG9kYXk6Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXBwZHluX2Qy
-ZF9tYXIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3Bp
-LWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
-ZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9z
-cGktZGV2ZWwtZ2VuZXJhbAo=
+Follow DT naming convention for compatible property of the blob.
+Use first chip name that introduced the specific version of the
+device.
+
+Signed-off-by: Manjunathappa, Prakash <prakash.pm-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/spi-davinci.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 8234d22..2e8f24a 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -776,10 +776,10 @@ rx_dma_failed:
+ #if defined(CONFIG_OF)
+ static const struct of_device_id davinci_spi_of_match[] = {
+ 	{
+-		.compatible = "ti,dm644x-spi",
++		.compatible = "ti,dm6441-spi",
+ 	},
+ 	{
+-		.compatible = "ti,da8xx-spi",
++		.compatible = "ti,da830-spi",
+ 		.data = (void *)SPI_VERSION_2,
+ 	},
+ 	{ },
+-- 
+1.7.4.1
+
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_mar

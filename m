@@ -1,12 +1,12 @@
-From: "Service SFR" <tel-AL2wGw5/wyE@public.gmane.org>
-Subject: =?iso-8859-1?Q?Vous_n'avez_pas_utilis=E9_votre__bon_d'achat_de_100_euros?=
-Date: Thu, 21 Mar 2013 04:06:29 +0100
-Message-ID: <20130321012453.312DE3F6FF6@PC7>
-Reply-To: Service SFR <tel-AL2wGw5/wyE@public.gmane.org>
+From: "Top Mutuelle" <noreply-jknYOJ/eTkJ8R0FQP3F+Sg@public.gmane.org>
+Subject: =?UTF-8?Q?la_mutuelle_la_moins_ch=C3=A8re?=
+Date: Thu, 21 Mar 2013 06:49:24 +0000 (CET)
+Message-ID: <130321064924.126108325300003540@obfm43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,24 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Bonjour,
-
-nous vous rappelons que vous n'avez toujours pas retirer votre bon d'achat
-sans conditions valable et jusqu'au 31 Mars.
-
-pour le retirer imm=E9diatement  et en profiter pleinement,
-contacter nos conseill=E9s ou notre serveur vocale au  0899.105.763
-
-
-
-Cordialement,
-service gagnant
-
-
-
----------------------------------------------------------------------------=
----
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_mar
+CihodHRwOi8vd3d3LnRvcC1tdXR1ZWxsZS5mci8pCihodHRwOi8vdG9wLW11dHVlbGxlLmZyLykK
+VG9wIE11dHVlbGxlIMKpIDIwMTIgLSBMZSBtZWlsbGV1ciBjb21wYXJhdGV1ciBkZSBtdXR1ZWxs
+ZSBzYW50w6kgZW4gbGlnbmUKQSB0b3V0IG1vbWVudCwgdm91cyBkaXNwb3NleiBkJ3VuIGRyb2l0
+IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gZXQgZGUgc3VwcHJl
+c3Npb24gZGVzIGRvbm7DqGVzIHF1aSB2b3VzIGNvbmNlcm5lbnQgKGFydCAzNCBkZSBsYSBsb2kg
+wqtJbmZvcm1hdGlxdWUgZXQgTGliZXJ0w6lzIGR1IDYgSmFudmllciAxOTc4wrspLgoqIFBvdXIg
+dW4gaG9tbWUgw6Jnw6kgZGUgMTggYW5zIHLDqXNpZGFudCBkYW5zIGxlIGTDqXBhcnRlbWVudCBk
+dSAwMi4KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkV2ZXJ5b25lIGhhdGVzIHNsb3cgd2Vic2l0ZXMu
+IFNvIGRvIHdlLgpNYWtlIHlvdXIgd2ViIGFwcHMgZmFzdGVyIHdpdGggQXBwRHluYW1pY3MKRG93
+bmxvYWQgQXBwRHluYW1pY3MgTGl0ZSBmb3IgZnJlZSB0b2RheToKaHR0cDovL3Auc2YubmV0L3Nm
+dS9hcHBkeW5fZDJkX21hcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,13 +1,19 @@
-From: "Top Mutuelle" <noreply-jknYOJ/eTkJ8R0FQP3F+Sg@public.gmane.org>
-Subject: =?UTF-8?Q?la_mutuelle_la_moins_ch=C3=A8re?=
-Date: Thu, 21 Mar 2013 06:49:24 +0000 (CET)
-Message-ID: <130321064924.126108325300003540@obfm43.com>
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v7 00/14] spi/spi-atmel: add dmaengine support for atmel
+	spi controller and to test the device tree support
+Date: Thu, 21 Mar 2013 10:32:18 +0100
+Message-ID: <514AD3A2.50203@atmel.com>
+References: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org
+To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1363678866-3567-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,18 +24,125 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vd3d3LnRvcC1tdXR1ZWxsZS5mci8pCihodHRwOi8vdG9wLW11dHVlbGxlLmZyLykK
-VG9wIE11dHVlbGxlIMKpIDIwMTIgLSBMZSBtZWlsbGV1ciBjb21wYXJhdGV1ciBkZSBtdXR1ZWxs
-ZSBzYW50w6kgZW4gbGlnbmUKQSB0b3V0IG1vbWVudCwgdm91cyBkaXNwb3NleiBkJ3VuIGRyb2l0
-IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gZXQgZGUgc3VwcHJl
-c3Npb24gZGVzIGRvbm7DqGVzIHF1aSB2b3VzIGNvbmNlcm5lbnQgKGFydCAzNCBkZSBsYSBsb2kg
-wqtJbmZvcm1hdGlxdWUgZXQgTGliZXJ0w6lzIGR1IDYgSmFudmllciAxOTc4wrspLgoqIFBvdXIg
-dW4gaG9tbWUgw6Jnw6kgZGUgMTggYW5zIHLDqXNpZGFudCBkYW5zIGxlIGTDqXBhcnRlbWVudCBk
-dSAwMi4KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkV2ZXJ5b25lIGhhdGVzIHNsb3cgd2Vic2l0ZXMu
-IFNvIGRvIHdlLgpNYWtlIHlvdXIgd2ViIGFwcHMgZmFzdGVyIHdpdGggQXBwRHluYW1pY3MKRG93
-bmxvYWQgQXBwRHluYW1pY3MgTGl0ZSBmb3IgZnJlZSB0b2RheToKaHR0cDovL3Auc2YubmV0L3Nm
-dS9hcHBkeW5fZDJkX21hcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
-L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On 03/19/2013 08:41 AM, Wenyou Yang :
+> Hi All, 
+> 
+> This set of patches is to add dmaengine support for atmel spi and to test device tree support.
+> 
+> The work is based on Nicolas and Richard's work.
+> 
+> Because the dma engine device tree support isn't available now, to at91sam9x5ek and at91sam9n12ek
+> with dma support, it doesn't work on the dmaengine mode, only on PIO mode so far.
+> 
+> It has been tested as below:
+>  1./tested on v3.9-rc3, by using mtd utils, "mount", "umount" and "cp" commands.
+>  2./tested on "spi/next" git tree after changing master->num_chipselect which fixed in v3.9-rc1.
+>  3./tested by using Documentation/spi/spidev_test.c on "/dev/spidev".
+>  4./tested on on at91sam9x5ek, at91sam9m10g45ek, at91sam9263ek and at91sam9g20ek boards.
+> 
+> It is based on v3.9-rc3 + Joachim Eastwood's spi/atmel: fix speed_hz check in atmel_spi_transfer().
+> 
+> Changelog:
+> v7:
+>      1./ remove patch: fix probing failure after xfer->speed_hz set.
+>      2./ remove patch: add pinctrl support for atmel spi.
+
+
+It it makes sense, you can add my:
+
+Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+
+on patches that I did not acknowledged yet.
+
+Grant,
+
+Can we move forward with this patch series so that we can build on solid
+bases for future developments on atmel SPI.
+
+Thanks, best regards.
+
+> v6:
+>      1./ remove: fix master->num_chipselect wrongly set patch which isn't a issue in v3.9-rc1.
+>      2./ fix probing failure after xfer->speed_hz set.
+> 
+> v5:
+>      1./ add pinctrl patches.
+>      2./ detect capabilities by reading spi version register to replace multiple compatiles.
+>      3./ change the "cs-gpios" property of spi node.
+>      4./ rebase on v3.8.
+> 
+> v4:
+>      1./ Take Joe Perches's adivce, rewrite atmel_spi_is_v2(struct atmel_spi *as) 
+>          and atmel_spi_use_dma(struct atmel_spi *as),
+> 	 and remove atmel_spi_use_pdc(struct atmel_spi *as).
+>      2./ Rebase on v3.8-rc3.
+> 
+> V3:
+>      1./ Rebase on v3.8-rc2.
+>      2./ Remove some Jean-Christophe's patches which has been applied on v3.8-rc2.
+>      3./ Remove spi property "cs-gpios" from the SoC dtsi files to the board dts files
+>          to avoid some useless pin conflicts.
+> 
+> v2: 
+>      1./ Remove the patch :PATCH]mtd: m25p80: change the m25p80_read to reading page to page
+> 	 which purpose to fix the BUG: when run "flashcp /bin/busybox /dev/mtdX" in the at91sam9g25ek
+> 	 with DMA mode, it arises a OOPS. Now fix it in this patch:
+> 	    [PATHC] spi/atmel_spi: add dmaengine support changing to fix the [BUG].
+>      2./ Remove two patches:
+>    	    which purpose to read dts property to select SPI IP version and DMA mode
+> 	    Now they will be gat from device tree different compatile.
+>      3./ Fix DMA: when enable both spi0 AND spi1, the spi0 doesn't work BUG.
+>      4./ Rebase v3.7-rc8.
+> 
+> Best Regards,
+> Wenyou Yang.
+> 
+> 
+> Nicolas Ferre (5):
+>   spi/spi-atmel: add physical base address
+>   spi/spi-atmel: call unmapping on transfers buffers
+>   spi/spi-atmel: status information passed through controller data
+>   spi/spi-atmel: add flag to controller data for lock operations
+>   spi/spi-atmel: add dmaengine support
+> 
+> Richard Genoud (6):
+>   spi/spi-atmel: fix spi-atmel driver to adapt to slave_config changes
+>   spi/spi-atmel: correct 16 bits transfers using PIO
+>   spi/spi-atmel: correct 16 bits transfers with DMA
+>   ARM: at91: add clocks for spi dt entries
+>   ARM: dts: add spi nodes for atmel SoC
+>   ARM: dts: add spi nodes for the atmel boards
+> 
+> Wenyou Yang (3):
+>   spi/spi-atmel: detect the capabilities of SPI core by reading the
+>     VERSION register.
+>   spi/spi-atmel: add support transfer on CS1,2,3, not only on CS0
+>   ARM: dts: add pinctrl property for spi node for atmel SoC
+> 
+>  arch/arm/boot/dts/at91sam9260.dtsi          |   40 ++
+>  arch/arm/boot/dts/at91sam9263.dtsi          |   40 ++
+>  arch/arm/boot/dts/at91sam9263ek.dts         |   10 +
+>  arch/arm/boot/dts/at91sam9g20ek_common.dtsi |   10 +
+>  arch/arm/boot/dts/at91sam9g45.dtsi          |   40 ++
+>  arch/arm/boot/dts/at91sam9m10g45ek.dts      |   10 +
+>  arch/arm/boot/dts/at91sam9n12.dtsi          |   40 ++
+>  arch/arm/boot/dts/at91sam9n12ek.dts         |   10 +
+>  arch/arm/boot/dts/at91sam9x5.dtsi           |   40 ++
+>  arch/arm/boot/dts/at91sam9x5ek.dtsi         |   10 +
+>  arch/arm/mach-at91/at91sam9260.c            |    2 +
+>  arch/arm/mach-at91/at91sam9g45.c            |    2 +
+>  arch/arm/mach-at91/at91sam9n12.c            |    2 +
+>  arch/arm/mach-at91/at91sam9x5.c             |    2 +
+>  drivers/spi/spi-atmel.c                     |  753 ++++++++++++++++++++++++---
+>  15 files changed, 945 insertions(+), 66 deletions(-)
+> 
+
+
+-- 
+Nicolas Ferre
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_mar

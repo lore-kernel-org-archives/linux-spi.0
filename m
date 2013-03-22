@@ -1,13 +1,14 @@
-From: "=?ISO-8859-1?Q?A_la_lucarne_de_l=92immobilier?="
-	<contact-GT1v3VkMtSxAFHgI90Tx4g@public.gmane.org>
-Subject: [SPAM] Votre carrière dans limmobilier
-Date: Fri, 22 Mar 2013 11:04:46 +0000 (CET)
-Message-ID: <130322110446.136281012500000928@obfm41.com>
+From: =?UTF-8?B?c2hlbmdkaW5ncmVkODMw?= <shengdingred830-WVlzvzqoTvw@public.gmane.org>
+Subject: =?UTF-8?B?5LujX+W8gF/lj5Ff5qCXLFE6MjU4NjgwMTI4Mg==?=
+Date: Fri, 22 Mar 2013 21:14:19 +0800 (CST)
+Message-ID: <1354333323.1050.1363958059906.JavaMail.tomwebmail@bjsd-tm-web4>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	apqpy-OftBGz0mktGPwv5DgDUT4UQL02dYv7BRX6GVo4mNUB4@public.gmane.org, political-VEzCoPjx9v+T9ig0jae3mg@public.gmane.org,
+	5.1.0.14.2.20010426030756.020e0660-VzRCZMMrXwrUOq2AVZ33i2Xnswh1EIUO@public.gmane.org,
+	secadvisro-EMRzualFZlQ@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,47 +20,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-
- (http://obfm41.com/14mqk1apslvohwlhby/index0.html)
-(http://obfm41.com/frmsf1bfsvnjmnsh0l/index1.html)
-
- (http://obfm41.com/cnmji1vssmlogedmts/index2.html)
-(http://obfm41.com/x5ml011ks12j1vym2d/index3.html)
-
- (http://obfm41.com/ann0ihxyt2yoihdanl/index4.html)
-(http://obfm41.com/i5nf0huutnbjriya4y/index5.html)
-
- (http://obfm41.com/34nbkh25thuoqml5wd/index6.html)
-(http://obfm41.com/hrn1fhhxtgzjcrs5zs/index7.html)
-
- (http://obfm41.com/m41cug3mssaouql2uy/index8.html)
-(http://obfm41.com/pr1txgt1sk5jzgs2el/index9.html)
-
- (http://obfm41.com/5yt2nzcnafxit11svd/index10.html)
-(http://obfm41.com/rjmxl1vvymxggcjmkd/index11.html)
-
- (http://obfm41.com/tma4c2st4udxnuscig/index12.html)
-(http://obfm41.com/2ndri55sfddp3k0uag/index13.html)
-
- (http://obfm41.com/fuwye324ch24qvv5el/index14.html)
-(http://obfm41.com/1axg0dikwo2bbezdul/index15.html)
-
- (http://obfm41.com/tcwzo3lf1hwnqz35ig/index16.html)
-(http://obfm41.com/20xmpdronow0b4rdag/index17.html)
-
- (http://obfm41.com/cdbjpneoupncswqsky/index18.html)
-(http://obfm41.com/xqrlox1fj1nm1nfmvy/index19.html)
-
- (http://obfm41.com/jledmafdxbgre2cxvl/index20.html)
-(http://obfm41.com/qgjoglu0zwg150oekl/index21.html)
-
-
-
-
-------------------------------------------------------------------------------
-Everyone hates slow websites. So do we.
-Make your web apps faster with AppDynamics
-Download AppDynamics Lite for free today:
-http://p.sf.net/sfu/appdyn_d2d_mar
+PERJVj4KPERJVj4KPFA+6Ie077ya6LS15YWs5Y+46LSf6LSj5Lq6PC9QPgo8UD4mbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsg5L2g5Lus5aW977yM5pys5YWs5Y+4546w
+5pyJ77yI5bu6562R77yM5bm/5ZGK77yM5pyN5Yqh77yM6L+Q6L6T77yM5ZWG5ZOB6ZSA5ZSu77yM
+56ef6LWB77yJ562J5Y+R5qCX5Luj5byA44CC5py65omT77yM5YyF55yf77yM5qyi6L+O5p2l55S1
+5ZKo6K+iPC9QPgo8UD4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsg5omL5py677yaMTM1IDkwMjAgODkzNiZuYnNwO+W8oOWwj+WFtTxCUj4m
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsmbmJzcDtR77yaMjU4NjgwMTI4MiA8L1A+PC9ESVY+CjxQPjxCUj4mbmJzcDs8
+L1A+PC9ESVY+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpFdmVyeW9uZSBoYXRlcyBzbG93IHdlYnNp
+dGVzLiBTbyBkbyB3ZS4KTWFrZSB5b3VyIHdlYiBhcHBzIGZhc3RlciB3aXRoIEFwcER5bmFtaWNz
+CkRvd25sb2FkIEFwcER5bmFtaWNzIExpdGUgZm9yIGZyZWUgdG9kYXk6Cmh0dHA6Ly9wLnNmLm5l
+dC9zZnUvYXBwZHluX2QyZF9tYXIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5l
+cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9s
+aXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

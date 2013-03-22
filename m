@@ -1,11 +1,11 @@
-From: "Assurance comparaison" <contact-Sw6VDW5Ax45GWvitb5QawA@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Votre_mutuelle_sant=E9_en_1_clic_=E0_partir_de_5=2C42_eur?=
-	=?ISO-8859-1?Q?os_par_mois?=
-Date: Fri, 22 Mar 2013 10:03:33 +0000 (CET)
-Message-ID: <130322100333.135913732800001136@obfm41.com>
+From: "=?ISO-8859-1?Q?A_la_lucarne_de_l=92immobilier?="
+	<contact-GT1v3VkMtSxAFHgI90Tx4g@public.gmane.org>
+Subject: [SPAM] Votre carrière dans limmobilier
+Date: Fri, 22 Mar 2013 11:04:46 +0000 (CET)
+Message-ID: <130322110446.136281012500000928@obfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -20,25 +20,45 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
-Faire des =E9conomies, c'est facile !
-Trouver votre MUTUELLE sant=E9 en=A0
-1 Clic
-(http://obfm41.com/tsk44uspikeisnffcy/index0.html)
-COMPAREZ
 
-les tarifs et garanties =
 
-des plus grandes =
+ (http://obfm41.com/14mqk1apslvohwlhby/index0.html)
+(http://obfm41.com/frmsf1bfsvnjmnsh0l/index1.html)
 
-marques fran=E7aises
+ (http://obfm41.com/cnmji1vssmlogedmts/index2.html)
+(http://obfm41.com/x5ml011ks12j1vym2d/index3.html)
 
-OPTIMISEZ
+ (http://obfm41.com/ann0ihxyt2yoihdanl/index4.html)
+(http://obfm41.com/i5nf0huutnbjriya4y/index5.html)
 
-le budget sant=E9 =
+ (http://obfm41.com/34nbkh25thuoqml5wd/index6.html)
+(http://obfm41.com/hrn1fhhxtgzjcrs5zs/index7.html)
 
-de la famille
----------------------------------------------------------------------------=
----
+ (http://obfm41.com/m41cug3mssaouql2uy/index8.html)
+(http://obfm41.com/pr1txgt1sk5jzgs2el/index9.html)
+
+ (http://obfm41.com/5yt2nzcnafxit11svd/index10.html)
+(http://obfm41.com/rjmxl1vvymxggcjmkd/index11.html)
+
+ (http://obfm41.com/tma4c2st4udxnuscig/index12.html)
+(http://obfm41.com/2ndri55sfddp3k0uag/index13.html)
+
+ (http://obfm41.com/fuwye324ch24qvv5el/index14.html)
+(http://obfm41.com/1axg0dikwo2bbezdul/index15.html)
+
+ (http://obfm41.com/tcwzo3lf1hwnqz35ig/index16.html)
+(http://obfm41.com/20xmpdronow0b4rdag/index17.html)
+
+ (http://obfm41.com/cdbjpneoupncswqsky/index18.html)
+(http://obfm41.com/xqrlox1fj1nm1nfmvy/index19.html)
+
+ (http://obfm41.com/jledmafdxbgre2cxvl/index20.html)
+(http://obfm41.com/qgjoglu0zwg150oekl/index21.html)
+
+
+
+
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

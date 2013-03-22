@@ -1,150 +1,346 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v3] gpio: mcp23s08: convert driver to DT
-Date: Fri, 22 Mar 2013 09:33:10 +0100
-Message-ID: <CACRpkdYYsULLsDQuxoRHp=HXsaOAejwaO-CezdEK4sNprWpDYQ@mail.gmail.com>
-References: <1362414873-17676-1-git-send-email-larsi@wh2.tu-dresden.de>
+From: "Club Prive" <contact-EWsqmiUisApGWvitb5QawA@public.gmane.org>
+Subject: Votre sejour jusqu'a moins70 pourcent.
+Date: Fri, 22 Mar 2013 08:52:33 +0000 (CET)
+Message-ID: <130322085233.53708419100001748@obfm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: poeschel@lemonage.de, grant.likely@secretlab.ca,
-	rob.herring@calxeda.com, rob@landley.net,
-	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Lars Poeschel <larsi@wh2.tu-dresden.de>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1362414873-17676-1-git-send-email-larsi@wh2.tu-dresden.de>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Lars,
 
-sorry for taking eternities to review stuff :-(
 
-I recommend that you include SPI co-maintainer Mark Brown on subsequent
-postings.
 
-On Mon, Mar 4, 2013 at 5:34 PM, Lars Poeschel <larsi@wh2.tu-dresden.de> wrote:
+ =
 
-> This converts the mcp23s08 driver to be able to be used with device
-> tree.
 
-OK!
+Les ventes priv=E9es du N=B01 de la vente de s=E9jours sur internet (http:/=
+/obfm40.com/elf3ry4uz4sin5c03d/index0.html)
 
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-mcp23s08.txt
-> @@ -0,0 +1,43 @@
-> +Microchip MCP2308/MCP23S08/MCP23017/MCP23S17 driver for
-> +8-/16-bit I/O expander with serial interface (I2C/SPI)
-> +
-> +Required properties:
-> +- compatible : Should be
-> +    - "mcp,mcp23s08" for  8 GPIO SPI version
-> +    - "mcp,mcp23s17" for 16 GPIO SPI version
-> +    - "mcp,mcp23008" for  8 GPIO I2C version or
-> +    - "mcp,mcp23017" for 16 GPIO I2C version of the chip
-> +- #gpio-cells : Should be two.
-> +  - first cell is the pin number
-> +  - second cell is used to specify flags. Flags currently used:
-> +    bit0 : activate a ~100k pullup
 
-Pullup is basically about pin config. This is sort of sneaking
-behind the subsystems, but I know I might be overzealous.
 
-Can the electronics do more things than pull-up?
 
-Like pull-down, open drain, drive strength...
 
-If it's a lot it's better to consider pinctrl from the start.
-I'm saying this because the DT bindings will be maintained
-perpetually and need to set a good example.
+ (http://obfm40.com/ujfedyoyztthvpx0hs/index1.html)
+(http://obfm40.com/vsfh4yrxzoki2a1dal/index2.html)
 
-I would currently feel a lot better if you did not include this
-flag. How would you control this the day drivers need to
-enable/disable pull-up at runtime?
 
-> +- gpio-controller : Marks the device node as a GPIO controller.
-> +- reg : For an address on its bus
 
-On the I2C/SPI bus?
 
-Please state here what kind of buses it can be. Explain if multiple
-buses are supported.
 
-> +Required device specific properties (only for SPI chips):
-> +- mcp,spi-present-mask : This is a present flag, that makes only sense for SPI
-> +        chips - as the name suggests.
 
-AFAIK this is not how we disable/enable devices in the device tree.
 
-Istead we include a property on the node called "status" and set it
-to "disabled" if the device is not there.
 
-> +        Multiple chips can share the same
-> +        SPI chipselect. Set bit 0-7 in this mask to 1 if there is a chip
-> +        connected with this spi address. If you have a chip with address 3
-> +        connected, you have to set bit3 to 1, which is 0x08. mcp23s08 only
-> +        supports bits 0-3. It is not possible to mix mcp23s08 and mcp23s17
-> +        on the same chipselect. Set at least one bit to 1 for SPI chips.
 
-This looks awkward, why are you using a bitfield for this? Then you
-can only ever support 8 devices, since the text also implies that the
-value is 8bit (this should be stated).
 
-What about just using a number?
 
-> diff --git a/drivers/gpio/gpio-mcp23s08.c b/drivers/gpio/gpio-mcp23s08.c
-> index 3cea0ea..a8ca469 100644
-> --- a/drivers/gpio/gpio-mcp23s08.c
-> +++ b/drivers/gpio/gpio-mcp23s08.c
-> @@ -12,6 +12,8 @@
->  #include <linux/spi/mcp23s08.h>
->  #include <linux/slab.h>
->  #include <asm/byteorder.h>
-> +#include <linux/of.h>
-> +#include <linux/of_device.h>
->
->  /**
->   * MCP types supported by driver
-> @@ -21,6 +23,11 @@
->  #define MCP_TYPE_008   2
->  #define MCP_TYPE_017   3
->
-> +/**
-> + * Flags used in device tree
-> + */
-> +#define MCP_DT_FLAG_PULLUP 0x01
 
-So I'm sceptical here. Is this already supported using platform data?
 
->  /* Registers are all 8 bits wide.
->   *
->   * The mcp23s17 has twice as many bits, and can be configured to work
-> @@ -75,6 +82,25 @@ struct mcp23s08_driver_data {
->         struct mcp23s08         chip[];
->  };
->
-> +#ifdef CONFIG_OF
-> +static int mcp23s08_of_xlate(struct gpio_chip *gc,
-> +                       const struct of_phandle_args *gpiospec, u32 *flags);
-> +
-> +static int mcp23s08_set_pullup(struct mcp23s08 *mcp, unsigned offset)
-> +{
-> +       int status;
-> +       u16 value;
-> +
-> +       mutex_lock(&mcp->lock);
-> +       value = mcp->cache[MCP_GPPU] | (1 << offset);
-> +       status = mcp->ops->write(mcp, MCP_GPPU, value);
-> +       if (!status)
-> +               mcp->cache[MCP_GPPU] = value;
-> +       mutex_unlock(&mcp->lock);
-> +
-> +       return status;
-> +}
+Devenez membre du Club Priv=E9
+du N=B01 de la vente de s=E9jours sur Internet.
+Plus une minute =E0 perdre ! (http://obfm40.com/kqfuoyd5z34hl3fdiy/index3.h=
+tml)
 
-The pull-up business actually looks like new functionality that
-has nothing to do with adding device tree support and should be
-a separate patch.
 
-Yours,
-Linus Walleij
+
+
+ (http://obfm40.com/tst44zsfukeiwk1tqs/index4.html)
+
+
+
+
+ (http://obfm40.com/2qtrozppuswheuftjd/index5.html)
+
+
+ (http://obfm40.com/bltnrzqkufdi04csgy/index6.html)
+
+
+ (http://obfm40.com/0jt5dzwsup0hdzxsol/index7.html)
+
+
+
+
+ (http://obfm40.com/dlppmbzeznqi5ycifd/index8.html)
+
+
+
+
+ (http://obfm40.com/yjpwlbjdz2chasxi1s/index9.html)
+
+ (http://obfm40.com/xf2dsrfo1tvlee5blg/index10.html)
+
+
+
+
+
+ (http://obfm40.com/ctpo4tufnnve5vhisg/index11.html)
+
+
+
+
+
+ (http://obfm40.com/4eiuafdhdap4yfegqd/index12.html)
+
+
+
+Une =EEle intense d'est en ouest =
+
+LA R=E9UNION
+1069=A0? =A0699?=A0=A0=A0=A0-35%* (http://obfm40.com/niyhxwmmiqpbcx44jd/ind=
+ex13.html)
+
+
+
+
+
+Je d=E9couvre (http://obfm40.com/ppztbvbg3vaxpcy3dq/index14.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ (http://obfm40.com/m4ccuj31ssapv122yq/index15.html)
+
+
+
+VACANCES TOUT INCLUS SUR L&acute;=CELE DE SAL
+CAP VERT
+=A01378? =A0949?=A0=A0=A0=A0-31%* (http://obfm40.com/4lzkmvyvavocpoq3qd/ind=
+ex16.html)
+
+
+
+
+
+Je d=E9couvre (http://obfm40.com/ngcigjpnysomvjf2jd/index17.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ (http://obfm40.com/r10fgpkn24jnwg3bso/index18.html)
+
+
+
+D=C9TENTE ET DOUCEURS SUR UNE OASIS FLOTTANTE =
+
+DJERBA
+=A0379? =A0114?=A0=A0=A0=A0-69%* (http://obfm40.com/5250m0xvm2j0aqrilo/inde=
+x19.html)
+
+
+
+
+
+Je d=E9couvre (http://obfm40.com/acu2oec5hxz2tipolq/index20.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ (http://obfm40.com/i0qxpovalrzwghinsq/index21.html)
+
+
+
+SUR UNE COLLINE AVEC VUE SUR LE TAGE
+LISBONNE
+=A0297? =A055?=A0=A0=A0=A0-81%* (http://obfm40.com/3octsjtjykumnix2dq/index=
+22.html)
+
+
+
+
+
+Je d=E9couvre (http://obfm40.com/hszc4vaxaluc3hg3yq/index23.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ (http://obfm40.com/amr0cxxzs2y5arthlq/index24.html)
+(http://obfm40.com/inbfinku34yfwmdtsq/index25.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Des voyages =E0 des tarifs
+privil=E9gi=E9s : jusqu&acute;=E0 =
+
+70% de r=E9duction (http://obfm40.com/3ayb0w2yiibbqrz4dq/index26.html) =
+
+
+
+Des avantages =
+
+exclusivement r=E9serv=E9s
+aux membres (http://obfm40.com/hui1efibdjb4bmvgyq/index27.html) =
+
+
+
+100? offerts
+pour chaque proche =
+
+parrain=E91 (http://obfm40.com/cruofvkp3znx4vsf1q/index28.html) =
+
+
+
+Une nouvelle s=E9lection
+de voyages chaque
+semaine (http://obfm40.com/xwqd3jx3s0nphe0vfq/index29.html) =
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+La vente de voyages sous la marque Clubpriv&#233;vacances.com est assur&#23=
+3;e par Karavel - 17 rue de l&acute;Echiquier 75010 Paris &#8211; SAS au ca=
+pital de 39.838.060 euros &#8211; RCS Paris B 499 668 606 -Immatriculation =
+"Atout France": IM075110099 &#8211; Garant : APS, 15 av Carnot 75017 Paris =
+&#8211; RCP : Hiscox, 19 rue Louis le Grand 75002 Paris
+
+
+
+
+
+
+
+Nos prix sont affich&#233;s en TTC (soit le prix du s&#233;jour HT compl&#2=
+33;t&#233; des taxes obligatoires hors taxes de s&#233;jour): prix "&#224; =
+partir de" et sous r&#233;serve de disponibilit&#233;s. Ces tarifs n&acute;=
+incluent pas les frais de dossier et de derni&#232;re minute, ni les suppl&=
+#233;ments sp&#233;cifiques susceptibles de s&acute;appliquer &#224; certai=
+nes dest
+inations.
+
+
+
+
+
+
+
+(*) Taux de r&#233;duction maximal, calcul&#233; &#224; partir du tarif de =
+r&#233;f&#233;rence sur une s&#233;lection de dates et de s&#233;jours. Off=
+re soumise &#224; conditions et valable sous r&#233;serve de disponibilit&#=
+233;.
+
+(1) Consultez les conditions d&acute;utilisation des bons de r&#233;duction=
+ sur : http://static.service-voyages.com/resources/club.prive/pdf/condition=
+sUtilisationBDR.pdf
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------=
+---
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_mar

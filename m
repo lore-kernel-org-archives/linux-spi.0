@@ -1,18 +1,13 @@
-From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] mxs/spi: Add SPI slave mode operation DT prop
-Date: Fri, 22 Mar 2013 23:20:22 -0700
-Message-ID: <CA+7tXiheWUsKstWRYOR-kQoTrkDSivnYrxVuxNSNYE+rk6u79w@mail.gmail.com>
-References: <1345776161-9778-1-git-send-email-marex@denx.de>
-	<CA+7tXihDGgkq_FALfGW_2xzcZc4wgm_YiAMepSjT4Y2b1ULd+w@mail.gmail.com>
-	<201303210035.52984.marex@denx.de>
+From: =?iso-8859-15?Q?Club_Priv=E9_Vacances_-_LCL?= <info-WYCTvpyBQI6sUWQGQnwAbgC/G2K4zDHf@public.gmane.org>
+Subject: =?iso-8859-15?Q?Evadez_vous_en_profitant_jusqu'=E0_70%_de_r=E9duction?=
+Date: Sat, 23 Mar 2013 07:34:40 +0100 (CET)
+Message-ID: <2.1.11.1101030461.2199583.3016826189@news.localips.com>
+Reply-To: newsletter-J7WvDeFZg7BWk0Htik3J/w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-15"
+Content-Transfer-Encoding: quoted-printable
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201303210035.52984.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,104 +18,143 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 20, 2013 at 4:35 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
->> On Thu, Aug 23, 2012 at 7:42 PM, Marek Vasut
->> > +              - The DMA has to wait indefinitelly for the arriving data.
->>
->> Is there a reason that this must be done?  I'd guess that after the
->> SSP is told to start a transfer in slave mode it waits for the master
->> to assert the SSn line and begin the transfer.  If the completion
->> times out before this happens then it makes sense it wouldn't work.
->> But does it still not work if the SPI transfer completes before the
->> completion timeout?  Or is this necessary because in your application
->> there might be a long wait before the master chooses to initiate a
->> transfer after you program it on the Linux side?
->
-> The problem is the SPI block in slave mode ignores SS being pulled back up.
+Document sans nom Si ce message ne s'affiche pas correctement,  visualisez =
+la version en ligne. : =
 
-I've setup a board with a spi-gpio port looped to a spi-mxs port in
-slave mode so I can test this.  I did not need to change the DMA
-timeout to get it to work.  If the master does not send enough within
-the SSP timeout the slave transaction will timeout.  It does not seem
-to ignore SS, but rather the DMA will not finish until all the
-requested words are received, no matter how many SS pulses that
-happens to take.  For general purpose slave support it would of course
-be nice to be able to end the message when the master drops SS, but
-the SSP either doesn't support this or a different technique is
-needed.
+ http://p5trc.emv2.com/HM?a=3DENX7CqmVXCyi8SA9MKJuS-XnGHxKLhAPCvcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIP =
 
-I've found that if PHASE = 0, the SSP expects the SS to be pulsed high
-between each word (w/ current driver, word == 8 bits).  This is
-slightly alluded to in the imx28 manual, where the PHASE = 0
-descriptions in sections 17.5.3 and 17.5.5 contain, "... in the case
-of continuous back-to-back transmissions, the SSn signal must be
-pulsed high between each data word[.]"  While for the PHASE = 1
-descriptions in sections 17.5.4 and 17.5.6 it says, "For continuous
-back-to-back transfers, the SSn pin is held low between successive
-data words[.]"
+CLUB PRIVE VACANCES.com
 
-One would think this is talking about master mode like the rest of the
-section, but it seems to only apply to slave mode.  In master mode one
-can easily produce a SPI signal without SS pulsed between each word
-with either phase setting.
+Nos offres =E0 ne pas louper
 
-Testing with the master TX sending 1 byte per SS asserted period:
-$ echo abcd1234ABCDwxyz | dd of=/dev/spidev4.0 bs=1
 
-Slave RX receives the first four bytes:
-$ dd if=/dev/spidev2.0 count=1 bs=4 | hd
-[  638.673625] spidev spi2.0: Start POL 0 PHA 0
-00000000  61 62 63 64                                       |abcd|
 
-Trying with 4 bytes per SS assertion:
-$ echo abcd1234ABCDwxyz | dd of=/dev/spidev4.0 bs=4
-$ dd if=/dev/spidev2.0 count=1 bs=4 | hd
-00000000  61 31 41 77                                       |a1Aw|
+Jusqu'=E0 70% de r=E9ductions
 
-The slave receives the first byte of each SS assertion pulse.  If I
-change the protocol to PHASE=1, then this case works as well and I
-receive the first four bytes.  I didn't need to set POLARITY to 1,
-just phase.
 
-$ dd if=/dev/spidev2.0 count=1 bs=16 | hd
-[  261.277000] spidev spi2.0: Start POL 0 PHA 1
-$ echo abcd1234ABCDwxyz | dd of=/dev/spidev4.0 bs=4
-00000000  61 62 63 64 31 32 33 34  41 42 43 44 77 78 79 7a  |abcd1234ABCDwxyz|
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org =
 
-The same thing happens if the bs for the master size is to 1, 2, 8, or
-16.  Setting it to another values like 3, 5, 32 doesn't work.  Maybe
-the slave ignores extra SS pulses in the middle of a transfer, but
-will fail to complete the transfer if it doesn't get SS de-asserted at
-the end as expected?
+OK
+http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJuS-XnGHxKLhAPCPcStGb5lw8W0b=
+BhOG5mpqVsje_HhdA5HlIN =
 
->> another application but was never happy with it.  I imagine this is
->> why no one has ever created a general spi slave framework for Linux.
->
-> SPI slave is hard because you can not anticipate the amount of data you will
-> receive. You can not anticipate when you will receive those either.
 
-The same can be said for a serial UART or an ethernet MAC, yet those
-don't seem to be too hard.  I think the problem is that these devices
-usually have things like FIFOs, IRQ trigger levels, pools of buffer
-descriptors, etc. that are designed to handle this.  The design of
-slave mode in SPI and I2C controllers seems to be more of an
-afterthought, with none of the features one would except to deal with
-it.  Also, the slave protocol design for things like EEPROMs often
-have nanosecond scale latencies that are nearly impossible to achieve
-in a general purpose CPU running a multitasking OS.  No one would
-design a network protocol that requires an ACK packet within 10 ns of
-receiving a REQ, and expect the CPU to handle that.  Yet that can be
-expected of a SPI EEPROM.
 
-However, there are applications where one can predict what the master
-will do ahead of time and don't have these problems.  In my case I
-know what and when the master will do something and can prime the SSP
-with a matching slave mode transaction before the master initiates.  I
-know I'm not the first person who has needed to do this on Linux.  So
-maybe it's worthwhile to add a limited slave support system without
-solving the problem of general purpose slave support.
+ILE MAURICE Ile Maurice
+ UN CADRE IDYLLIQUE
+Hotel Mauritius Resort 5* 1185=A4 d=E8s 470=A4 ttc JUSQU'A -60%* =
 
-------------------------------------------------------------------------------
+ACCEDER A LA VENTE PRAGUE Prague
+ LA VILLE AUX CENT CLOCHERS
+Hotel Elite 4* 327=A4 d=E8s 79=A4 ttc JUSQU'A -75%* =
+
+ACCEDER A LA VENTE REUNION Reunion
+ ENTRE MER ET SAVANE
+Hotel Tama 3* 1011=A4 d=E8s 299=A4 ttc JUSQU'A -70%* =
+
+ACCEDER A LA VENTE LISBONNE Lisbonne
+ VACANCES SOUS UN AIR BOHEME
+VIP Executive Villa Rica Hotel 4* 240=A4 d=E8s 63=A4 ttc JUSQU'A -73%* =
+
+ACCEDER A LA VENTE =
+
+
+R=E9ductions & Privil=E8ges
+pour les membres uniquement =
+
+Parrainage
+Invitez un ami, recevez 100=A4 ! (1) =
+
+Ventes flash
+Jusqu?=E0 -70%* de r=E9duction  sur une s=E9lection d?h=F4tels de r=EAve =
+
+Appli iPhone
+Je t=E9l=E9charge l?appli iPhone gratuite =
+
+Garantie soleil
+Vos vacances ensoleill=E9es ou 150=A4 rembours=E9s** CLUBPRIVEVACANCES.COM
+Fb
+G+
+
+
+ La vente de voyages sous la marque Clubpriv=E9vacances.com est assur=E9e =
+
+par Karavel - 17 rue de l?Echiquier 75010 Paris - SAS au capital de =
+
+39.838.060 euros - RCS Paris B 499 668 606 -Immatriculation "Atout =
+
+France": IM075110099 - Garant : APS, 15 av Carnot 75017 Paris - RCP : =
+
+Hiscox, 19 rue Louis le Grand 75002 Paris.
+
+ Nos prix sont affich =E9s en TTC (soit le prix du s=E9jour HT compl=E9t=E9=
+ des =
+
+taxes obligatoires hors taxes de s=E9jour): prix " =E0 partir de" et sous =
+
+r=E9serve de disponibilit=E9s. Ces tarifs n?incluent pas les frais de =
+
+dossier et de derni=E8re minute, ni les suppl=E9ments sp=E9cifiques =
+
+susceptibles de s?appliquer =E0 certaines destinations.
+ Les prix indiqu=E9s correspondent aux tarifs en ligne sur notre site =
+
+Internet =E0 la date d?envoi de la pr=E9sente lettre d?informations =
+
+commerciale . Ils peuvent faire l?objet d?une actualisation suivant =
+
+l?=E9volution de nos disponibilit=E9s
+
+ (*) Taux de r=E9duction maximal, calcul=E9 =E0 partir du tarif de r=E9f=E9=
+rence =
+
+sur une s=E9lection de dates et de s=E9jours. Offre soumise =E0 conditions =
+et =
+
+valable sous r=E9serve de disponibilit=E9.
+
+ (**) La garantie soleil entre dans le cadre des garanties incluses =
+
+dans l'assurance Multirisques Premium et vous permet de b=E9n=E9ficier =
+
+d'une indemnisation de 150{ par dossier sous forme de "Bon Voyages " =
+
+si, pendant plus de la moiti=E9 de votre s=E9jour, il pleut au moins 4 h de =
+
+temps entre 10h et 17h.
+=A0
+ Cette garantie est prise en consid=E9ration si les informations figurant =
+
+sur le site www.wunderground.com : =
+
+ http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJuS-XnGHxKLhAPCfcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIS =
+
+ concernant le lieu du s=E9jour lui-m=EAme permettent de confirmer les =
+
+probl=E8mes d'intemp=E9ries rencontr=E9s.
+=A0
+ (1) Consultez les conditions d'utilisation des bons de r=E9duction sur =
+
+le site www.clubprivevacances.com : =
+
+ http://p5trc.emv2.com/HP?a=3DENX7CqmVXCyi8SA9MKJuS-XnGHxKLhAPDvcStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIT =
+
+
+
+
+ Pour =EAtre retir=E9 de nos listes de diffusion, rendez-vous sur cette pag=
+e : =
+
+ http://p5trc.emv2.com/HU?a=3DENX7CqmVXCyi8SA9MKJuS-XnGHxKLhAPC_cStGb5lw8W0=
+bBhOG5mpqVsje_HhdA5HlIM =
+
+
+
+---------------------------------------------------------------------------=
+---
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

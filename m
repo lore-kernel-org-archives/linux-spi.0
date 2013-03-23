@@ -1,14 +1,18 @@
-From: "Tendance Chaussure par Manato" <contact-3faWG7v0n/dQFI55V6+gNQ@public.gmane.org>
-Subject: =?UTF-8?Q?Vente_priv=C3=A9e_Kickers_:_jusqu=C2=92=C3=A0_-50%=2C_livraiso?=
-	=?UTF-8?Q?n_et_retour_gratuits?=
-Date: Fri, 22 Mar 2013 13:20:12 +0000 (CET)
-Message-ID: <130322132012.108922561900007112@obfm42.com>
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] mxs/spi: Add SPI slave mode operation DT prop
+Date: Fri, 22 Mar 2013 23:20:22 -0700
+Message-ID: <CA+7tXiheWUsKstWRYOR-kQoTrkDSivnYrxVuxNSNYE+rk6u79w@mail.gmail.com>
+References: <1345776161-9778-1-git-send-email-marex@denx.de>
+	<CA+7tXihDGgkq_FALfGW_2xzcZc4wgm_YiAMepSjT4Y2b1ULd+w@mail.gmail.com>
+	<201303210035.52984.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <201303210035.52984.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,154 +23,105 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ClZlbnRlIFByaXbDqWUgS0lDS0VSUyA6IGp1c3F1JiMxNDY7w6AgLTUwJSBzdXIgcGx1cyBkZSA2
-MDAgbW9kw6hsZXMgcG91ciB0b3V0ZSBsYSBmYW1pbGxlIAooaHR0cDovL2V1bGVyaWFuLnNhcmVu
-emEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5h
-WmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUy
-RnZlbnRlLXByaXZlZS1raWNrZXJzLW1hcnMxMykKKGh0dHA6Ly9ldWxlcmlhbi5zYXJlbnphLmNv
-bS9jbGljay9zYXJlbnphL3c4UUpHd1pwNkRQc3NaVmYzRm5PWHkzLjY2dkM1Rnp3aXZuYVppWVpy
-clVwQjlRLS8/ZWVtYWlsPSZldXJsPWh0dHAlM0ElMkYlMkZ3d3cuc2FyZW56YS5jb20lMkYpCkZF
-TU1FIChodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFKR3dacDZE
-UHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVybD1odHRw
-JTNBJTJGJTJGd3d3LnNhcmVuemEuY29tJTJGY2hhdXNzdXJlLWZlbW1lKQpIT01NRSAoaHR0cDov
-L2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2RFBzc1pWZjNGbk9Y
-eTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUyRnd3
-dy5zYXJlbnphLmNvbSUyRmNoYXVzc3VyZS1ob21tZSkKRU5GQU5UIChodHRwOi8vZXVsZXJpYW4u
-c2FyZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFKR3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6
-d2l2bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVybD1odHRwJTNBJTJGJTJGd3d3LnNhcmVuemEu
-Y29tJTJGY2hhdXNzdXJlLWVuZmFudCkKU0FDUyAoaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29t
-L2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJy
-VXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRnNhY3Mp
-ClBST01PUyAoaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3
-WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9
-aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRmNoYXVzc3VyZS1wYXMtY2hlci1mZW1tZSkK
-NjAwIE1BUlFVRVMgKGh0dHA6Ly9ldWxlcmlhbi5zYXJlbnphLmNvbS9jbGljay9zYXJlbnphL3c4
-UUpHd1pwNkRQc3NaVmYzRm5PWHkzLjY2dkM1Rnp3aXZuYVppWVpyclVwQjlRLS8/ZWVtYWlsPSZl
-dXJsPWh0dHAlM0ElMkYlMkZ3d3cuc2FyZW56YS5jb20lMkZjaGF1c3N1cmUtbWFycXVlKQooaHR0
-cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2RFBzc1pWZjNG
-bk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUy
-Rnd3dy5zYXJlbnphLmNvbSUyRkdhcmFudGllcy1saXZyYWlzb24tZ3JhdHVpdGUpCkxpdnJhaXNv
-biB0b3Vqb3VycyBncmF0dWl0ZSAoaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3Nh
-cmVuemEvdzhRSkd3WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9l
-ZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRkdhcmFudGllcy1saXZy
-YWlzb24tZ3JhdHVpdGUpCgpzYW5zIG1pbmltdW0gZGUgY29tbWFuZGUgKGh0dHA6Ly9ldWxlcmlh
-bi5zYXJlbnphLmNvbS9jbGljay9zYXJlbnphL3c4UUpHd1pwNkRQc3NaVmYzRm5PWHkzLjY2dkM1
-Rnp3aXZuYVppWVpyclVwQjlRLS8/ZWVtYWlsPSZldXJsPWh0dHAlM0ElMkYlMkZ3d3cuc2FyZW56
-YS5jb20lMkZHYXJhbnRpZXMtbGl2cmFpc29uLWdyYXR1aXRlKQoKKGh0dHA6Ly9ldWxlcmlhbi5z
-YXJlbnphLmNvbS9jbGljay9zYXJlbnphL3c4UUpHd1pwNkRQc3NaVmYzRm5PWHkzLjY2dkM1Rnp3
-aXZuYVppWVpyclVwQjlRLS8/ZWVtYWlsPSZldXJsPWh0dHAlM0ElMkYlMkZ3d3cuc2FyZW56YS5j
-b20lMkZHYXJhbnRpZXMtcmV0b3VyLWdyYXR1aXQpCnJldG91ciBncmF0dWl0IHBlbmRhbnQgMTAw
-IGpvdXJzIChodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFKR3da
-cDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVybD1o
-dHRwJTNBJTJGJTJGd3d3LnNhcmVuemEuY29tJTJGR2FyYW50aWVzLXJldG91ci1ncmF0dWl0KQoK
-cGFzIGRlIHN0cmVzcyBzaSB2b3VzIGNoYW5nZXogZCdhdmlzIChodHRwOi8vZXVsZXJpYW4uc2Fy
-ZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFKR3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2
-bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVybD1odHRwJTNBJTJGJTJGd3d3LnNhcmVuemEuY29t
-JTJGR2FyYW50aWVzLXJldG91ci1ncmF0dWl0KQooaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29t
-L2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJy
-VXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRnZlbnRl
-cy1wcml2ZWVzLWNoYXVzc3VyZXMpCihodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2sv
-c2FyZW56YS93OFFKR3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0v
-P2VlbWFpbD0mZXVybD1odHRwJTNBJTJGJTJGd3d3LnNhcmVuemEuY29tJTJGdmVudGVzLXByaXZl
-ZXMtY2hhdXNzdXJlcykKKGh0dHA6Ly9ldWxlcmlhbi5zYXJlbnphLmNvbS9jbGljay9zYXJlbnph
-L3c4UUpHd1pwNkRQc3NaVmYzRm5PWHkzLjY2dkM1Rnp3aXZuYVppWVpyclVwQjlRLS8/ZWVtYWls
-PSZldXJsPWh0dHAlM0ElMkYlMkZ3d3cuc2FyZW56YS5jb20lMkZ2ZW50ZS1wcml2ZWUta2lja2Vy
-cy1tYXJzMTMpCihodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFK
-R3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVy
-bD1odHRwJTNBJTJGJTJGd3d3LnNhcmVuemEuY29tJTJGdmVudGUtcHJpdmVlLWtpY2tlcnMtbWFy
-czEzKQooaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2
-RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0
-cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRnZlbnRlLXByaXZlZS1raWNrZXJzLWZlbW1lKQoo
-aHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2RFBzc1pW
-ZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0cCUzQSUy
-RiUyRnd3dy5zYXJlbnphLmNvbSUyRnZlbnRlLXByaXZlZS1raWNrZXJzLWhvbW1lKQooaHR0cDov
-L2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2RFBzc1pWZjNGbk9Y
-eTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUyRnd3
-dy5zYXJlbnphLmNvbSUyRnZlbnRlLXByaXZlZS1raWNrZXJzLWVuZmFudCkKKGh0dHA6Ly9ldWxl
-cmlhbi5zYXJlbnphLmNvbS9jbGljay9zYXJlbnphL3c4UUpHd1pwNkRQc3NaVmYzRm5PWHkzLjY2
-dkM1Rnp3aXZuYVppWVpyclVwQjlRLS8/ZWVtYWlsPSZldXJsPWh0dHAlM0ElMkYlMkZ3d3cuc2Fy
-ZW56YS5jb20lMkZ2ZW50ZS1wcml2ZWUta2lja2Vycy1tYXJzMTMpCihodHRwOi8vZXVsZXJpYW4u
-c2FyZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFKR3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6
-d2l2bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVybD1odHRwJTNBJTJGJTJGd3d3LnNhcmVuemEu
-Y29tJTJGdmVudGUtcHJpdmVlLWtpY2tlcnMtbWFyczEzKQooaHR0cDovL2V1bGVyaWFuLnNhcmVu
-emEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5h
-WmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUy
-RnZlbnRlLXByaXZlZS1raWNrZXJzLW1hcnMxMykKUHJpbnRlbXBzIC8gw4l0w6kgMjAxMCwgMjAx
-MSBldCAyMDEyIGV0IEF1dG9tbmUvSGl2ZXIgMjAwOCAsIDIwMDksIDIwMTAsIDIwMTEgZXQgMjAx
-Mi4KRHUgamV1ZGkgMjEgbWFycyDDoCBtaW51aXQgYXUgbHVuZGkgMjUgbWFycyDDoCAxMmgKwqA0
-IGJvbm5lcyByYWlzb25zIGRlIGNob2lzaXIgU2FyZW56YS5jb20gcGFybWkgdGFudCBkJ2F1dHJl
-c+KApgooaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3WnA2
-RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9aHR0
-cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRkdhcmFudGllcy1saXZyYWlzb24tZ3JhdHVpdGUp
-CkxpdnJhaXNvbiBvZmZlcnRlCgpzYW5zIG1pbmltdW0KCmNoZXogdm91cwoKb3UgZGFucwoKdW4g
-UmVsYWlzIEtpYWxhCgooaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3NhcmVuemEv
-dzhRSkd3WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9lZW1haWw9
-JmV1cmw9aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRkdhcmFudGllcy1saXZyYWlzb24t
-Z3JhdHVpdGUpCihodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFK
-R3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVy
-bD1odHRwJTNBJTJGJTJGd3d3LnNhcmVuemEuY29tJTJGR2FyYW50aWVzLWxpdnJhaXNvbi1ncmF0
-dWl0ZSkKKGh0dHA6Ly9ldWxlcmlhbi5zYXJlbnphLmNvbS9jbGljay9zYXJlbnphL3c4UUpHd1pw
-NkRQc3NaVmYzRm5PWHkzLjY2dkM1Rnp3aXZuYVppWVpyclVwQjlRLS8/ZWVtYWlsPSZldXJsPWh0
-dHAlM0ElMkYlMkZ3d3cuc2FyZW56YS5jb20lMkZHYXJhbnRpZXMtMTAwai1lY2hhbmdlKQpSZXRv
-dXIgR3JhdHVpdAoKZXQgcHLDqXBhecOpCgp2YWxhYmxlIDEwMCBqb3VycwoKbcOqbWUgc3VyIHZv
-cyBhY2hhdHMKCmVuIHNvbGRlcyAoaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3Nh
-cmVuemEvdzhRSkd3WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9l
-ZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRkdhcmFudGllcy0xMDBq
-LWVjaGFuZ2UpCihodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFK
-R3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVy
-bD1odHRwJTNBJTJGJTJGd3d3LnNhcmVuemEuY29tJTJGR2FyYW50aWVzLTEwMGotZWNoYW5nZSkK
-KGh0dHA6Ly9ldWxlcmlhbi5zYXJlbnphLmNvbS9jbGljay9zYXJlbnphL3c4UUpHd1pwNkRQc3Na
-VmYzRm5PWHkzLjY2dkM1Rnp3aXZuYVppWVpyclVwQjlRLS8/ZWVtYWlsPSZldXJsPWh0dHAlM0El
-MkYlMkZ3d3cuc2FyZW56YS5jb20lMkZjaGF1c3N1cmUtbWFycXVlKQpMZSArIGdyYW5kIGNob2l4
-Cgo2MDAgbWFycXVlcwoKZXQgcGx1cyBkZSAzNSAwMDAgbW9kw6hsZXMKKGh0dHA6Ly9ldWxlcmlh
-bi5zYXJlbnphLmNvbS9jbGljay9zYXJlbnphL3c4UUpHd1pwNkRQc3NaVmYzRm5PWHkzLjY2dkM1
-Rnp3aXZuYVppWVpyclVwQjlRLS8/ZWVtYWlsPSZldXJsPWh0dHAlM0ElMkYlMkZ3d3cuc2FyZW56
-YS5jb20lMkZjaGF1c3N1cmUtbWFycXVlKQooaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2Ns
-aWNrL3NhcmVuemEvdzhRSkd3WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBC
-OVEtLz9lZW1haWw9JmV1cmw9aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRmNoYXVzc3Vy
-ZS1tYXJxdWUpCihodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFK
-R3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVy
-bD1odHRwJTNBJTJGJTJGd3d3LnNhcmVuemEuY29tJTJGR2FyYW50aWVzLXNlcnZpY2UtY2xpZW50
-KQpTZXJ2aWNlIENsaWVudAoKw6Agdm90cmUgw6ljb3V0ZQoKYXUgMDEgNzEgMjUgMDAgNTYgCgoo
-Y2/Du3QgZCd1biBhcHBlbCBuYXRpb25hbCwgbXVuaXNzZXotdm91cyBkZSB2b3RyZQoKbnVtw6ly
-byBkZSBjb21tYW5kZSkKCihodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2svc2FyZW56
-YS93OFFKR3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0vP2VlbWFp
-bD0mZXVybD1odHRwJTNBJTJGJTJGd3d3LnNhcmVuemEuY29tJTJGR2FyYW50aWVzLXNlcnZpY2Ut
-Y2xpZW50KQooaHR0cDovL2V1bGVyaWFuLnNhcmVuemEuY29tL2NsaWNrL3NhcmVuemEvdzhRSkd3
-WnA2RFBzc1pWZjNGbk9YeTMuNjZ2QzVGendpdm5hWmlZWnJyVXBCOVEtLz9lZW1haWw9JmV1cmw9
-aHR0cCUzQSUyRiUyRnd3dy5zYXJlbnphLmNvbSUyRkdhcmFudGllcy1zZXJ2aWNlLWNsaWVudCkK
-wqAKUmV0cm91dmV6LW5vdXMgCgpzdXIgRmFjZWJvb2sKwqAKKGh0dHA6Ly9ldWxlcmlhbi5zYXJl
-bnphLmNvbS9jbGljay9zYXJlbnphL3c4UUpHd1pwNkRQc3NaVmYzRm5PWHkzLjY2dkM1Rnp3aXZu
-YVppWVpyclVwQjlRLS8/ZWVtYWlsPSZldXJsPWh0dHAlM0ElMkYlMkZ3d3cuZmFjZWJvb2suY29t
-JTJGc2FyZW56YS5jb20pCsKgCihodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2svc2Fy
-ZW56YS93OFFKR3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0vP2Vl
-bWFpbD0mZXVybD1odHRwJTNBJTJGJTJGd3d3LmZhY2Vib29rLmNvbSUyRnNhcmVuemEuY29tKQpT
-dWl2ZXotbm91cyAKCnN1ciBUd2l0dGVyCsKgCihodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20v
-Y2xpY2svc2FyZW56YS93OFFKR3dacDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJV
-cEI5US0vP2VlbWFpbD0mZXVybD1odHRwJTNBJTJGJTJGdHdpdHRlci5jb20vc2FyZW56YSkKwqAK
-KGh0dHA6Ly9ldWxlcmlhbi5zYXJlbnphLmNvbS9jbGljay9zYXJlbnphL3c4UUpHd1pwNkRQc3Na
-VmYzRm5PWHkzLjY2dkM1Rnp3aXZuYVppWVpyclVwQjlRLS8/ZWVtYWlsPSZldXJsPWh0dHAlM0El
-MkYlMkZ3d3cuZmFjZWJvb2suY29tJTJGc2FyZW56YS5jb20pCkTDqWNvdXZyZXogCgpub3RyZSBC
-bG9nCsKgCihodHRwOi8vZXVsZXJpYW4uc2FyZW56YS5jb20vY2xpY2svc2FyZW56YS93OFFKR3da
-cDZEUHNzWlZmM0ZuT1h5My42NnZDNUZ6d2l2bmFaaVlacnJVcEI5US0vP2VlbWFpbD0mZXVybD1o
-dHRwJTNBJTJGJTJGYmxvZy5zYXJlbnphLmNvbS8pCsKgCkNHViA6CgooMSkgT2ZmcmUgdmFsYWJs
-ZSBkdSBqZXVkaSAyMSBtYXJzIMOgIDAwaDAwIGF1IGx1bmRpIDI1IG1hcnMgMjAxMyDDoCAxMmgw
-MCBzdXIgdW5lIHPDqWxlY3Rpb24gZGUgbW9kw6hsZXMgS2lja2VycyA6IFByaW50ZW1wcyAvIMOJ
-dMOpIDIwMTAsIDIwMTEgZXQgMjAxMiBldCBBdXRvbW5lL0hpdmVyIDIwMDgsIDIwMDksIDIwMTAs
-IDIwMTEgZXQgMjAxMi4gQ2V0dGUgb2ZmcmUgZXN0IG5vbiBjdW11bGFibGUgYXZlYyB1bmUgYXV0
-cmUgb2ZmcmUgcHJvbW90aW9ubmVsbGUgZW4gY291cnMuIExlcyBwcml4IGFmZmljaMOpcyB0aWVu
-bmVudCBjb21wdGUgZGUgbGEgcsOpZHVjdGlvbi4gTGEgdmVudGUgcHJpdsOpZSBlc3QgYWNjZXNz
-aWJsZSBlbiBjbGlxdWFudCBzdXIgbGUgbGllbiBzdWl2YW50IGh0dHA6Ly9vYmZtNDIuY29tL2Jk
-dG5wenExZ2J3aWZtY3NzZy9pbmRleDQxLmh0bWwgKGh0dHA6Ly93d3cuc2FyZW56YS5jb20vdmVu
-dGUtcHJpdmVlLWtpY2tlcnMtbWFyczEzKS4gTGEgdmVudGUgcHJpdsOpZSBlc3Qgb3V2ZXJ0ZSBl
-biBhdmFudC1wcmVtacOocmUgZMOocyBsZSBtZXJjcmVkaSAyMCBtYXJzIDIwMTMgcG91ciB0b3Vz
-IGxlcyBDbGllbnRzIFNhcmVuemEuClNhcmVuemEuY29tIGEgw6l0w6kgw6lsdSBzaXRlIGRlIG1v
-ZGUgcHLDqWbDqXLDqSBkZXMgZnJhbsOnYWlzIGVuIE5vdmVtYnJlIDIwMTEKLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tCkV2ZXJ5b25lIGhhdGVzIHNsb3cgd2Vic2l0ZXMuIFNvIGRvIHdlLgpNYWtlIHlv
-dXIgd2ViIGFwcHMgZmFzdGVyIHdpdGggQXBwRHluYW1pY3MKRG93bmxvYWQgQXBwRHluYW1pY3Mg
-TGl0ZSBmb3IgZnJlZSB0b2RheToKaHR0cDovL3Auc2YubmV0L3NmdS9hcHBkeW5fZDJkX21hcgpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
-Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
-bC1nZW5lcmFsCg==
+On Wed, Mar 20, 2013 at 4:35 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+>> On Thu, Aug 23, 2012 at 7:42 PM, Marek Vasut
+>> > +              - The DMA has to wait indefinitelly for the arriving data.
+>>
+>> Is there a reason that this must be done?  I'd guess that after the
+>> SSP is told to start a transfer in slave mode it waits for the master
+>> to assert the SSn line and begin the transfer.  If the completion
+>> times out before this happens then it makes sense it wouldn't work.
+>> But does it still not work if the SPI transfer completes before the
+>> completion timeout?  Or is this necessary because in your application
+>> there might be a long wait before the master chooses to initiate a
+>> transfer after you program it on the Linux side?
+>
+> The problem is the SPI block in slave mode ignores SS being pulled back up.
+
+I've setup a board with a spi-gpio port looped to a spi-mxs port in
+slave mode so I can test this.  I did not need to change the DMA
+timeout to get it to work.  If the master does not send enough within
+the SSP timeout the slave transaction will timeout.  It does not seem
+to ignore SS, but rather the DMA will not finish until all the
+requested words are received, no matter how many SS pulses that
+happens to take.  For general purpose slave support it would of course
+be nice to be able to end the message when the master drops SS, but
+the SSP either doesn't support this or a different technique is
+needed.
+
+I've found that if PHASE = 0, the SSP expects the SS to be pulsed high
+between each word (w/ current driver, word == 8 bits).  This is
+slightly alluded to in the imx28 manual, where the PHASE = 0
+descriptions in sections 17.5.3 and 17.5.5 contain, "... in the case
+of continuous back-to-back transmissions, the SSn signal must be
+pulsed high between each data word[.]"  While for the PHASE = 1
+descriptions in sections 17.5.4 and 17.5.6 it says, "For continuous
+back-to-back transfers, the SSn pin is held low between successive
+data words[.]"
+
+One would think this is talking about master mode like the rest of the
+section, but it seems to only apply to slave mode.  In master mode one
+can easily produce a SPI signal without SS pulsed between each word
+with either phase setting.
+
+Testing with the master TX sending 1 byte per SS asserted period:
+$ echo abcd1234ABCDwxyz | dd of=/dev/spidev4.0 bs=1
+
+Slave RX receives the first four bytes:
+$ dd if=/dev/spidev2.0 count=1 bs=4 | hd
+[  638.673625] spidev spi2.0: Start POL 0 PHA 0
+00000000  61 62 63 64                                       |abcd|
+
+Trying with 4 bytes per SS assertion:
+$ echo abcd1234ABCDwxyz | dd of=/dev/spidev4.0 bs=4
+$ dd if=/dev/spidev2.0 count=1 bs=4 | hd
+00000000  61 31 41 77                                       |a1Aw|
+
+The slave receives the first byte of each SS assertion pulse.  If I
+change the protocol to PHASE=1, then this case works as well and I
+receive the first four bytes.  I didn't need to set POLARITY to 1,
+just phase.
+
+$ dd if=/dev/spidev2.0 count=1 bs=16 | hd
+[  261.277000] spidev spi2.0: Start POL 0 PHA 1
+$ echo abcd1234ABCDwxyz | dd of=/dev/spidev4.0 bs=4
+00000000  61 62 63 64 31 32 33 34  41 42 43 44 77 78 79 7a  |abcd1234ABCDwxyz|
+
+The same thing happens if the bs for the master size is to 1, 2, 8, or
+16.  Setting it to another values like 3, 5, 32 doesn't work.  Maybe
+the slave ignores extra SS pulses in the middle of a transfer, but
+will fail to complete the transfer if it doesn't get SS de-asserted at
+the end as expected?
+
+>> another application but was never happy with it.  I imagine this is
+>> why no one has ever created a general spi slave framework for Linux.
+>
+> SPI slave is hard because you can not anticipate the amount of data you will
+> receive. You can not anticipate when you will receive those either.
+
+The same can be said for a serial UART or an ethernet MAC, yet those
+don't seem to be too hard.  I think the problem is that these devices
+usually have things like FIFOs, IRQ trigger levels, pools of buffer
+descriptors, etc. that are designed to handle this.  The design of
+slave mode in SPI and I2C controllers seems to be more of an
+afterthought, with none of the features one would except to deal with
+it.  Also, the slave protocol design for things like EEPROMs often
+have nanosecond scale latencies that are nearly impossible to achieve
+in a general purpose CPU running a multitasking OS.  No one would
+design a network protocol that requires an ACK packet within 10 ns of
+receiving a REQ, and expect the CPU to handle that.  Yet that can be
+expected of a SPI EEPROM.
+
+However, there are applications where one can predict what the master
+will do ahead of time and don't have these problems.  In my case I
+know what and when the master will do something and can prime the SSP
+with a matching slave mode transaction before the master initiates.  I
+know I'm not the first person who has needed to do this on Linux.  So
+maybe it's worthwhile to add a limited slave support system without
+solving the problem of general purpose slave support.
+
+------------------------------------------------------------------------------
+Everyone hates slow websites. So do we.
+Make your web apps faster with AppDynamics
+Download AppDynamics Lite for free today:
+http://p.sf.net/sfu/appdyn_d2d_mar

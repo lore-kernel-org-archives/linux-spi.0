@@ -1,12 +1,12 @@
-From: "Service SFR" <tel-AL2wGw5/wyE@public.gmane.org>
-Subject: =?iso-8859-1?Q?Vous_n'avez_pas_utilis=E9_votre__bon_d'achat_de_100_euros?=
-Date: Sat, 23 Mar 2013 12:42:01 +0100
-Message-ID: <20130323112151.783B5657456@PC7>
-Reply-To: Service SFR <tel-AL2wGw5/wyE@public.gmane.org>
+From: "Ehpad" <contact-EWsqmiUisApGWvitb5QawA@public.gmane.org>
+Subject: Investissez malin et anticipez votre retraite
+Date: Sat, 23 Mar 2013 16:35:55 +0000 (CET)
+Message-ID: <130323163555.146907896800004040@obfm41.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,21 +18,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Bonjour,
 
-nous vous rappelons que vous n'avez toujours pas retirer votre bon d'achat
-sans conditions valable et jusqu'au 31 Mars.
+Madame, Monsieur,
 
-pour le retirer imm=E9diatement  et en profiter pleinement,
-contacter nos conseill=E9s ou notre serveur vocale au  0899.105.763
+Lorsque vous =EAtes amen=E9 =E0 payer de l'imp=F4t sur le revenu en fin d'a=
+nn=E9e, vous cherchez forc=E9ment des solutions pour d=E9fiscaliser et inve=
+stir. (http://obfm41.com/fdwspab3l3nrrhca0l/index0.html)
 
+Aujourd'hui, vous avez la possibilit=E9 d'investir dans des maisons de retr=
+aites le tout en d=E9duction de vos imp=F4ts, et surtout avec une tr=E8s fo=
+rte rentabilit=E9 pour le futur.
+Les Ehpad sont en plein essor et la rentabilit=E9 moyenne est une des plus =
+=E9lev=E9e de tous les produits que l'on peut vous proposer actuellement ( =
+Borloo, Duflot, Scellier et autres)
+Les statistiques le prouvent, investir dans l'Ehpad c'est un des plus fort =
+taux de rentabilit=E9 =E0 ce jour.
+N'attendez plus, c'est accessible =E0 tous, demandez votre devis sans aucun=
+ engagement. (http://obfm41.com/1owqsaaolovmiixaby/index1.html)
 
+Faites confiance =E0 une =E9quipe de sp=E9cialistes dans la gestion de patr=
+imoine et du produit de d=E9fiscalisation.=A0
 
-Cordialement,
-service gagnant
+Notre partenaire met ses connaissances et son savoir faire =E0 votre profit=
+ et vous explique toutes les mesures fiscales dont vous pouvez b=E9n=E9fici=
+er.
 
+Ca ne prend pas plus de 30 secondes et c'est sans engagement !=A0 (http://o=
+bfm41.com/xywlwa1tlt2rcm152d/index2.html)
 
+Une seule condition, avoir plus de 30 000 Euros de revenu par an dans le fo=
+yer
 
+A tout de suite,=A0
+
+Solution en D=E9fiscalisation et investissement,
+Service marketing,
+
+Demande express de devis IcI (http://obfm41.com/cgwjqav4l4lmqrf5ts/index3.h=
+tml)
 ---------------------------------------------------------------------------=
 ---
 Everyone hates slow websites. So do we.

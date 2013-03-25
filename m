@@ -1,13 +1,16 @@
-From: "Ehpad" <contact-EWsqmiUisApGWvitb5QawA@public.gmane.org>
-Subject: Investissez malin et anticipez votre retraite
-Date: Sat, 23 Mar 2013 16:35:55 +0000 (CET)
-Message-ID: <130323163555.146907896800004040@obfm41.com>
+From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V3 0/5] Add polling support for 64xx spi controller
+Date: Mon, 25 Mar 2013 08:57:56 +0530
+Message-ID: <CAKrE-Kfgw+ofmkN+aMVNeeLm=+4owJ0U=qAmj2o0oARm6BSCQQ@mail.gmail.com>
+References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1363157014-9615-1-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,46 +21,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello grant,
 
-Madame, Monsieur,
+any comments on this patch series?
 
-Lorsque vous =EAtes amen=E9 =E0 payer de l'imp=F4t sur le revenu en fin d'a=
-nn=E9e, vous cherchez forc=E9ment des solutions pour d=E9fiscaliser et inve=
-stir. (http://obfm41.com/fdwspab3l3nrrhca0l/index0.html)
 
-Aujourd'hui, vous avez la possibilit=E9 d'investir dans des maisons de retr=
-aites le tout en d=E9duction de vos imp=F4ts, et surtout avec une tr=E8s fo=
-rte rentabilit=E9 pour le futur.
-Les Ehpad sont en plein essor et la rentabilit=E9 moyenne est une des plus =
-=E9lev=E9e de tous les produits que l'on peut vous proposer actuellement ( =
-Borloo, Duflot, Scellier et autres)
-Les statistiques le prouvent, investir dans l'Ehpad c'est un des plus fort =
-taux de rentabilit=E9 =E0 ce jour.
-N'attendez plus, c'est accessible =E0 tous, demandez votre devis sans aucun=
- engagement. (http://obfm41.com/1owqsaaolovmiixaby/index1.html)
+On Wed, Mar 13, 2013 at 12:13 PM, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> [PATCH 1/5]: fixes the error handling in the interrupt handler
+> [PATCH 2/5]: The existing driver support partial polling mode.
+>              This patch modifies the current driver to support
+>              only polling mode.
+> [PATCH 3/5]: provision to support SoC's with dedicated i/o pins
+> [PATCH 4/5]: provision to support dedicated cs pin
+> [PATCH 5/5]: support exynos5440 SoC in polling mode
+>
+> Tested this patch on exynos5250 in dma mode, and exynos5440 in
+> polling mode.
+>
+> changes in v3:
+>             Rebase it to the linus's master branch. After rebase
+> there was a logical code change due to the merge of generic dma
+> patch. resolved the merge conflicts and tested for the functionality
+>
+> Girish K S (5):
+>   spi: s3c64xx: modified error interrupt handling and init
+>   spi: s3c64xx: added support for polling mode
+>   spi: s3c64xx: Added provision for non-gpio i/o's
+>   spi: s3c64xx: Added provision for dedicated cs pin
+>   spi: s3c64xx: Added support for exynos5440 spi
+>
+>  drivers/spi/spi-s3c64xx.c                 | 204 +++++++++++++++++++++---------
+>  include/linux/platform_data/spi-s3c64xx.h |   3 +
+>  2 files changed, 148 insertions(+), 59 deletions(-)
+>
+> --
+> 1.8.0
+>
 
-Faites confiance =E0 une =E9quipe de sp=E9cialistes dans la gestion de patr=
-imoine et du produit de d=E9fiscalisation.=A0
-
-Notre partenaire met ses connaissances et son savoir faire =E0 votre profit=
- et vous explique toutes les mesures fiscales dont vous pouvez b=E9n=E9fici=
-er.
-
-Ca ne prend pas plus de 30 secondes et c'est sans engagement !=A0 (http://o=
-bfm41.com/xywlwa1tlt2rcm152d/index2.html)
-
-Une seule condition, avoir plus de 30 000 Euros de revenu par an dans le fo=
-yer
-
-A tout de suite,=A0
-
-Solution en D=E9fiscalisation et investissement,
-Service marketing,
-
-Demande express de devis IcI (http://obfm41.com/cgwjqav4l4lmqrf5ts/index3.h=
-tml)
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Everyone hates slow websites. So do we.
 Make your web apps faster with AppDynamics
 Download AppDynamics Lite for free today:

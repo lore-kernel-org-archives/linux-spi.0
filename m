@@ -1,11 +1,16 @@
-From: 13544101049-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 你好：税/票――代/开
-Date: Tue, 26 Mar 2013 16:52:00 +0800
-Message-ID: <E1UKPbw-0006OO-Hu@sfs-ml-3.v29.ch3.sourceforge.com>
+From: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi-s3c64xx.c Remove unused argument.
+Date: Tue, 26 Mar 2013 10:27:35 +0100
+Message-ID: <1364290055-2970-1-git-send-email-matthias.bgg@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>, Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,17 +22,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
-qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
-0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTM1NDQxMDEw
-NDkKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPd24gdGhlIEZ1dHVyZS1JbnRlbCZyZWc7IExldmVs
-IFVwIEdhbWUgRGVtbyBDb250ZXN0IDIwMTMKUmlzZSB0byBncmVhdG5lc3MgaW4gSW50ZWwncyBp
-bmRlcGVuZGVudCBnYW1lIGRlbW8gY29udGVzdC4KQ29tcGV0ZSBmb3IgcmVjb2duaXRpb24sIGNh
-c2gsIGFuZCB0aGUgY2hhbmNlIHRvIGdldCB5b3VyIGdhbWUgCm9uIFN0ZWFtLiAkNUsgZ3JhbmQg
-cHJpemUgcGx1cyAxMCBnZW5yZSBhbmQgc2tpbGwgcHJpemVzLiAKU3VibWl0IHlvdXIgZGVtbyBi
-eSA2LzYvMTMuIGh0dHA6Ly9wLnNmLm5ldC9zZnUvaW50ZWxfbGV2ZWx1cGQyZApfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBt
-YWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBz
-Oi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFs
-Cg==
+The pointer to the driver data is never used to get the slave
+controller data. We can delete the unused argument from the function.
+
+Signed-off-by: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-s3c64xx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index e862ab8..7f5f8ee 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -817,7 +817,6 @@ static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
+ }
+ 
+ static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
+-				struct s3c64xx_spi_driver_data *sdd,
+ 				struct spi_device *spi)
+ {
+ 	struct s3c64xx_spi_csinfo *cs;
+@@ -874,7 +873,7 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 
+ 	sdd = spi_master_get_devdata(spi->master);
+ 	if (!cs && spi->dev.of_node) {
+-		cs = s3c64xx_get_slave_ctrldata(sdd, spi);
++		cs = s3c64xx_get_slave_ctrldata(spi);
+ 		spi->controller_data = cs;
+ 	}
+ 
+-- 
+1.7.11.7
+
+
+------------------------------------------------------------------------------
+Own the Future-Intel&reg; Level Up Game Demo Contest 2013
+Rise to greatness in Intel's independent game demo contest.
+Compete for recognition, cash, and the chance to get your game 
+on Steam. $5K grand prize plus 10 genre and skill prizes. 
+Submit your demo by 6/6/13. http://p.sf.net/sfu/intel_levelupd2d

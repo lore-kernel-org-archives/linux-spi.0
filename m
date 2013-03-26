@@ -1,56 +1,56 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi: spi-s3c64xx.c Remove unused argument.
-Date: Tue, 26 Mar 2013 14:03:55 +0000
-Message-ID: <20130326140354.GU18316@opensource.wolfsonmicro.com>
-References: <1364290055-2970-1-git-send-email-matthias.bgg@gmail.com>
+From: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: spi-oc-tiny: Use of_match_ptr() macro
+Date: Tue, 26 Mar 2013 22:27:36 +0530
+Message-ID: <CAK9yfHz9w7OBEVpLmZt32OQAKKt2qz5MX2E--CKMNXS=3GWdSQ@mail.gmail.com>
+References: <1363255311-18151-1-git-send-email-sachin.kamat@linaro.org>
+	<51428C69.2080508@wytron.com.tw>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="BrzieSmlpF6NDzIw"
-Cc: Ben Dooks <ben-linux@fluff.org>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Matthias Brugger <matthias.bgg@gmail.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1364290055-2970-1-git-send-email-matthias.bgg@gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <51428C69.2080508-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On 15 March 2013 08:20, Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org> wrote:
+> Hi Sachin,
+>
+>
+> On 03/14/2013 06:01 PM, Sachin Kamat wrote:
+>>
+>> This eliminates having an #ifdef returning NULL for the case
+>> when OF is disabled.
+>>
+>> Signed-off-by: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>> Cc: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+>> ---
+>>   drivers/spi/spi-oc-tiny.c |    4 +---
+>>   1 files changed, 1 insertions(+), 3 deletions(-)
+>
+>
+> Acked-by: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+>
 
---BrzieSmlpF6NDzIw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mark,
 
-On Tue, Mar 26, 2013 at 10:27:35AM +0100, Matthias Brugger wrote:
-> The pointer to the driver data is never used to get the slave
-> controller data. We can delete the unused argument from the function.
+Would you be picking this patch or Grant's gonna take it?
 
-Applied, thanks.
+-- 
+With warm regards,
+Sachin
 
---BrzieSmlpF6NDzIw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRUarDAAoJELSic+t+oim99LcP/3WDY5DYtGqofU2qs/7dQT5b
-83ov9IwHn3TMmTQYYwo5nNzUg5mgQMEczKiGQNNSrz+Thwrs0q1r50fVMOhaqfKa
-OS+jJMBYbGnGXQV90ZpeDNl61AGYpd7kc4YC8KgUn1h4saYaTxOlmycVMX0XGgX2
-lXX8hHBSOgha87p5i8UMVC4ERb1cFGW8EfcW4S4hnIAehiBQVnkI7nJU4LIL+tzZ
-sUJloVRfp7fHjmmBjAzH4REx7Nfh1jay5UugYW8XMVSSgEJWqLQ/FULa+EsyAdMl
-m2MTvk1Odu3mI3bPMigKPIUxoMo0iRJjCkt3B9O3xIwv05dBu8RDzfrJyEGdqvIs
-K3qvle4yEgYmOtJ/yr45KSf2wsnHT2QFOYriRtHuS7/40m85E9Fk50HP17tKFjvi
-yHknwzbHi8xd2d+9VgGnE+P7ggsfwSVQvAY37vDseX4lN6wfoBxpUvJFJ9yDzQeX
-lZIzQ0LKVxgFKmyVapCjYl7RlZGy5YPfmgH4RStfdNE5EEZOM4lnn5fPbRYMGntg
-XLlUWv9upohSrig/v40Slx1HmFYko90iffWI9ZfuSSOO02h/cPl7YmjlMn6L3KDt
-dSmYTCjTc5/2n/A+kEVqr9hag5cnlz0nOcE1SqCRzJcSBmi4aqhmHrnkLo1l/ZwV
-qGmpmwklgXcqAH3pBQpl
-=lsE0
------END PGP SIGNATURE-----
-
---BrzieSmlpF6NDzIw--
+------------------------------------------------------------------------------
+Own the Future-Intel&reg; Level Up Game Demo Contest 2013
+Rise to greatness in Intel's independent game demo contest.
+Compete for recognition, cash, and the chance to get your game 
+on Steam. $5K grand prize plus 10 genre and skill prizes. 
+Submit your demo by 6/6/13. http://p.sf.net/sfu/intel_levelupd2d

@@ -1,63 +1,56 @@
-From: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: spi-s3c64xx.c Remove unused argument.
-Date: Tue, 26 Mar 2013 10:27:35 +0100
-Message-ID: <1364290055-2970-1-git-send-email-matthias.bgg@gmail.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH] spi: spi-s3c64xx.c Remove unused argument.
+Date: Tue, 26 Mar 2013 14:03:55 +0000
+Message-ID: <20130326140354.GU18316@opensource.wolfsonmicro.com>
+References: <1364290055-2970-1-git-send-email-matthias.bgg@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>, Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="BrzieSmlpF6NDzIw"
+Cc: Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Matthias Brugger <matthias.bgg@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1364290055-2970-1-git-send-email-matthias.bgg@gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The pointer to the driver data is never used to get the slave
-controller data. We can delete the unused argument from the function.
 
-Signed-off-by: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+--BrzieSmlpF6NDzIw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index e862ab8..7f5f8ee 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -817,7 +817,6 @@ static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
- }
- 
- static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
--				struct s3c64xx_spi_driver_data *sdd,
- 				struct spi_device *spi)
- {
- 	struct s3c64xx_spi_csinfo *cs;
-@@ -874,7 +873,7 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 
- 	sdd = spi_master_get_devdata(spi->master);
- 	if (!cs && spi->dev.of_node) {
--		cs = s3c64xx_get_slave_ctrldata(sdd, spi);
-+		cs = s3c64xx_get_slave_ctrldata(spi);
- 		spi->controller_data = cs;
- 	}
- 
--- 
-1.7.11.7
+On Tue, Mar 26, 2013 at 10:27:35AM +0100, Matthias Brugger wrote:
+> The pointer to the driver data is never used to get the slave
+> controller data. We can delete the unused argument from the function.
 
+Applied, thanks.
 
-------------------------------------------------------------------------------
-Own the Future-Intel&reg; Level Up Game Demo Contest 2013
-Rise to greatness in Intel's independent game demo contest.
-Compete for recognition, cash, and the chance to get your game 
-on Steam. $5K grand prize plus 10 genre and skill prizes. 
-Submit your demo by 6/6/13. http://p.sf.net/sfu/intel_levelupd2d
+--BrzieSmlpF6NDzIw
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRUarDAAoJELSic+t+oim99LcP/3WDY5DYtGqofU2qs/7dQT5b
+83ov9IwHn3TMmTQYYwo5nNzUg5mgQMEczKiGQNNSrz+Thwrs0q1r50fVMOhaqfKa
+OS+jJMBYbGnGXQV90ZpeDNl61AGYpd7kc4YC8KgUn1h4saYaTxOlmycVMX0XGgX2
+lXX8hHBSOgha87p5i8UMVC4ERb1cFGW8EfcW4S4hnIAehiBQVnkI7nJU4LIL+tzZ
+sUJloVRfp7fHjmmBjAzH4REx7Nfh1jay5UugYW8XMVSSgEJWqLQ/FULa+EsyAdMl
+m2MTvk1Odu3mI3bPMigKPIUxoMo0iRJjCkt3B9O3xIwv05dBu8RDzfrJyEGdqvIs
+K3qvle4yEgYmOtJ/yr45KSf2wsnHT2QFOYriRtHuS7/40m85E9Fk50HP17tKFjvi
+yHknwzbHi8xd2d+9VgGnE+P7ggsfwSVQvAY37vDseX4lN6wfoBxpUvJFJ9yDzQeX
+lZIzQ0LKVxgFKmyVapCjYl7RlZGy5YPfmgH4RStfdNE5EEZOM4lnn5fPbRYMGntg
+XLlUWv9upohSrig/v40Slx1HmFYko90iffWI9ZfuSSOO02h/cPl7YmjlMn6L3KDt
+dSmYTCjTc5/2n/A+kEVqr9hag5cnlz0nOcE1SqCRzJcSBmi4aqhmHrnkLo1l/ZwV
+qGmpmwklgXcqAH3pBQpl
+=lsE0
+-----END PGP SIGNATURE-----
+
+--BrzieSmlpF6NDzIw--

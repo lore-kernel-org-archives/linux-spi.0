@@ -1,91 +1,59 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v3] gpio: mcp23s08: convert driver to DT
-Date: Wed, 27 Mar 2013 16:23:25 +0100
-Message-ID: <CACRpkdZue4QjQ+SS_go8i_LJZm7RJPFQr6sDcNaCp3FhkUrseQ@mail.gmail.com>
-References: <1362414873-17676-1-git-send-email-larsi@wh2.tu-dresden.de>
-	<CACRpkdYYsULLsDQuxoRHp=HXsaOAejwaO-CezdEK4sNprWpDYQ@mail.gmail.com>
-	<201303271235.32346.poeschel@lemonage.de>
+From: "=?utf-8?b?MjAxM+W5tDPmnIgyOOaXpTPml7YyMuWIhjQy56eS?="
+	<jiangqinguwdc-Xb2Y1Dfb9CI@public.gmane.org>
+Subject: 689076418894
+Date: Thu, 28 Mar 2013 03:22:46 +0800
+Message-ID: <1364412166.3a29a8dfe5134c66b31c68d4e88b2fb2.jiangqinguwdc@sohu.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Lars Poeschel <larsi@wh2.tu-dresden.de>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	grant.likely@secretlab.ca, rob.herring@calxeda.com,
-	rob@landley.net, devicetree-discuss@lists.ozlabs.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Peter Korsgaard <jacmet@sunsite.dk>
-To: Lars Poeschel <poeschel@lemonage.de>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <201303271235.32346.poeschel@lemonage.de>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 27, 2013 at 12:35 PM, Lars Poeschel <poeschel@lemonage.de> wrote:
-> On Friday 22 March 2013 at 09:33:10, Linus Walleij wrote:
-
->> I would currently feel a lot better if you did not include this
->> flag. How would you control this the day drivers need to
->> enable/disable pull-up at runtime?
->
-> For me it would also be easier to remove the flag (for DT boot case). I don't
-> need the pullups. I did only include it, because this is how the driver is
-> designed to work and what it did already. What I wanted was to make a good
-> transfer from what the features of the driver are and how it works to be able
-> to use it with device tree. If it now turns out that's bad for some reason, I
-> have no problem to remove this from the patch completely.
-> You're right: Runtime config is not possible this way.
-> What should I do now ? Remove it ?
-
-Remove. The less complicated binding, the better.
-
->> > +- gpio-controller : Marks the device node as a GPIO controller.
->> > +- reg : For an address on its bus
->>
->> On the I2C/SPI bus?
->
-> Yes, both. For I2C it's the I2C address, for SPI it's the chip select to use
-> for this chip.
-
-OK please write these specifics in the binding doc.
-
->> Please state here what kind of buses it can be. Explain if multiple
->> buses are supported.
->
-> Ok, I will add a line about it.
-
-Thx.
-
->> > +Required device specific properties (only for SPI chips):
->> > +- mcp,spi-present-mask : This is a present flag, that makes only sense
->> > for SPI +        chips - as the name suggests.
->>
->> AFAIK this is not how we disable/enable devices in the device tree.
->>
->> Istead we include a property on the node called "status" and set it
->> to "disabled" if the device is not there.
->
-> This would require multiple instances with the same reg property as up to 8
-> chips can live on the same chip select. I wonder if this is possible ?
-
-If there is not one instance/device node per chip things are
-very wrong anyway. Maybe I don't understand fully... each
-device on the system should have a node, you can't have a node
-spanning several devices unless it's a bus node.
-
-> Grant had the idea with the bitfield. You have the reg property specifying
-> the chip select line. This bitfield is then used to indicate which of the 8
-> possible chips on this same chip select line is really present. Not beeing
-> able to support more than 8 devices is not problem, because it is a hardware
-> limitation, that not more than 8 devices can share the same SPI chip select.
-> This is again how the driver worked so far.
->
->> What about just using a number?
->
-> This would again require multiple instances with the same reg property for
-> SPI. Is this really possible ?
-
-If Grant is OK with this then so am I, he surely know this better
-than me. But you nee to trick him to come out and review it.
-
-Yours,
-Linus Walleij
+PFRBQkxFIHN0eWxlPSJXSURUSDogOTklIiBjZWxsU3BhY2luZz0wIGNlbGxQYWRkaW5nPTAgYmFj
+a2dyb3VuZD1odHRwOi8vbWltZy4xMjYubmV0L3AvaW1hZ2VzL2xldHRlci8yMDA3MDkvdmtfYXV0
+dW1uX2xlYXZlX3RvcGJnLmpwZz4NCjxUQk9EWT4NCjxUUj4NCjxURCBzdHlsZT0iQkFDS0dST1VO
+RC1SRVBFQVQ6IG5vLXJlcGVhdDsgQkFDS0dST1VORC1QT1NJVElPTjogNTAlIDBweDsgSEVJR0hU
+OiAxMDFweCIgYmFja2dyb3VuZD1odHRwOi8vbWltZy4xMjYubmV0L3AvaW1hZ2VzL2xldHRlci8y
+MDA3MDkvdmtfYXV0dW1uX2xlYXZlX21pZC5qcGc+PC9URD48L1RSPjwvVEJPRFk+PC9UQUJMRT4N
+CjxUQUJMRSBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogI2ZmZmRmMzsgV0lEVEg6IDk5JSIgY2Vs
+bFNwYWNpbmc9MCBjZWxsUGFkZGluZz0wPg0KPFRCT0RZPg0KPFRSPg0KPFREIHN0eWxlPSJQQURE
+SU5HLUJPVFRPTTogMTBweDsgUEFERElORy1UT1A6IDE1cHgiPg0KPFRBQkxFIHN0eWxlPSJXSURU
+SDogOTUlIiBjZWxsU3BhY2luZz0wIGNlbGxQYWRkaW5nPTAgYWxpZ249Y2VudGVyPg0KPFRCT0RZ
+Pg0KPFRSPg0KPFREIHN0eWxlPSJQQURESU5HLUJPVFRPTTogMHB4OyBMSU5FLUhFSUdIVDogMjNw
+eDsgUEFERElORy1MRUZUOiA1cHg7IFBBRERJTkctUklHSFQ6IDVweDsgQ09MT1I6ICMzMzM7IEZP
+TlQtU0laRTogMTJweDsgUEFERElORy1UT1A6IDBweCIgYmFja2dyb3VuZD1odHRwOi8vbWltZy4x
+MjYubmV0L3AvaW1hZ2VzL2xldHRlci8yMDA3MDkvdmtfYXV0dW1uX2xlYXZlX3R4dGJnLmpwZz5P
+TlQgc2l6ZT00Jmd0OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyA8L0ZPTlQ+DQo8UD48
+L1A+DQo8UD48Rk9OVCBzaXplPTQ+Jm5ic3A7PC9GT05UPjxGT05UIGNvbG9yPSMwMDgwMDAgc2l6
+ZT0zPiZuYnNwOzxGT05UIGNvbG9yPSNmZjAwZmY+Jm5ic3A7eyZuYnNwO14q5pys5YWs5Y+45pyJ
+Jmx0O+WbvX7lnLAmZ3Q7W+eohV3vvIznnJ/kvKrnorrkv53jgIJ9IDwvRk9OVD48L0ZPTlQ+PC9Q
+Pg0KPFA+PEZPTlQgY29sb3I9IzAwODAwMCBzaXplPTM+44CQKDEzNS05MDE5fjYyMjXvvInlj7bn
+u4/nkIZbcTo2MzF+ODczLTQ0OV3jgJE8L0ZPTlQ+PC9QPg0KPFA+PEZPTlQgY29sb3I9IzAwODAw
+MCBzaXplPTQ+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IDwvRk9OVD48L1A+PC9URD48L1RSPjwvVEJPRFk+PC9U
+QUJMRT48L1REPjwvVFI+PC9UQk9EWT48L1RBQkxFPg0KPFRBQkxFIHN0eWxlPSJXSURUSDogOTkl
+IiBjZWxsU3BhY2luZz0wIGNlbGxQYWRkaW5nPTAgYmFja2dyb3VuZD1odHRwOi8vbWltZy4xMjYu
+bmV0L3AvaW1hZ2VzL2xldHRlci8yMDA3MDkvdmtfYXV0dW1uX2xlYXZlX2JvdGJnLmpwZz4NCjxU
+Qk9EWT4NCjxUUj4NCjxURCBzdHlsZT0iQkFDS0dST1VORC1SRVBFQVQ6IG5vLXJlcGVhdDsgQkFD
+S0dST1VORC1QT1NJVElPTjogMTAwJSAwcHg7IEhFSUdIVDogMTQ1cHgiIGJhY2tncm91bmQ9aHR0
+cDovL21pbWcuMTI2Lm5ldC9wL2ltYWdlcy9sZXR0ZXIvMjAwNzA5L3ZrX2F1dHVtbl9sZWF2ZV9i
+b3QuanBnPiZuYnNwOzwvVEQ+PC9UUj48L1RCT0RZPjwvVEFCTEU+bXVsekhpUgotLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0KT3duIHRoZSBGdXR1cmUtSW50ZWwmcmVnOyBMZXZlbCBVcCBHYW1lIERlbW8g
+Q29udGVzdCAyMDEzClJpc2UgdG8gZ3JlYXRuZXNzIGluIEludGVsJ3MgaW5kZXBlbmRlbnQgZ2Ft
+ZSBkZW1vIGNvbnRlc3QuCkNvbXBldGUgZm9yIHJlY29nbml0aW9uLCBjYXNoLCBhbmQgdGhlIGNo
+YW5jZSB0byBnZXQgeW91ciBnYW1lIApvbiBTdGVhbS4gJDVLIGdyYW5kIHByaXplIHBsdXMgMTAg
+Z2VucmUgYW5kIHNraWxsIHByaXplcy4gClN1Ym1pdCB5b3VyIGRlbW8gYnkgNi82LzEzLiBodHRw
+Oi8vcC5zZi5uZXQvc2Z1L2ludGVsX2xldmVsdXBkMmQKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

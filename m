@@ -1,59 +1,43 @@
-From: "=?utf-8?b?MjAxM+W5tDPmnIgyOOaXpTPml7YyMuWIhjQy56eS?="
-	<jiangqinguwdc-Xb2Y1Dfb9CI@public.gmane.org>
-Subject: 689076418894
-Date: Thu, 28 Mar 2013 03:22:46 +0800
-Message-ID: <1364412166.3a29a8dfe5134c66b31c68d4e88b2fb2.jiangqinguwdc@sohu.com>
+From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH V3] spi: tegra114: add spi driver
+Date: Thu, 28 Mar 2013 17:08:45 +0530
+Message-ID: <51542BC5.10701@nvidia.com>
+References: <1361536659-23225-1-git-send-email-ldewangan@nvidia.com> <CAKDJKT5yngpZQC-ZvHSaKeBVHW97wo4QwLSXQ4KsVWCs5J1YKg@mail.gmail.com> <20130302230906.141BE3E336A@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Manish Badarkhe <badarkhe.manish-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org" <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	"broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org"
+	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org"
+	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20130302230906.141BE3E336A@localhost>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-PFRBQkxFIHN0eWxlPSJXSURUSDogOTklIiBjZWxsU3BhY2luZz0wIGNlbGxQYWRkaW5nPTAgYmFj
-a2dyb3VuZD1odHRwOi8vbWltZy4xMjYubmV0L3AvaW1hZ2VzL2xldHRlci8yMDA3MDkvdmtfYXV0
-dW1uX2xlYXZlX3RvcGJnLmpwZz4NCjxUQk9EWT4NCjxUUj4NCjxURCBzdHlsZT0iQkFDS0dST1VO
-RC1SRVBFQVQ6IG5vLXJlcGVhdDsgQkFDS0dST1VORC1QT1NJVElPTjogNTAlIDBweDsgSEVJR0hU
-OiAxMDFweCIgYmFja2dyb3VuZD1odHRwOi8vbWltZy4xMjYubmV0L3AvaW1hZ2VzL2xldHRlci8y
-MDA3MDkvdmtfYXV0dW1uX2xlYXZlX21pZC5qcGc+PC9URD48L1RSPjwvVEJPRFk+PC9UQUJMRT4N
-CjxUQUJMRSBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogI2ZmZmRmMzsgV0lEVEg6IDk5JSIgY2Vs
-bFNwYWNpbmc9MCBjZWxsUGFkZGluZz0wPg0KPFRCT0RZPg0KPFRSPg0KPFREIHN0eWxlPSJQQURE
-SU5HLUJPVFRPTTogMTBweDsgUEFERElORy1UT1A6IDE1cHgiPg0KPFRBQkxFIHN0eWxlPSJXSURU
-SDogOTUlIiBjZWxsU3BhY2luZz0wIGNlbGxQYWRkaW5nPTAgYWxpZ249Y2VudGVyPg0KPFRCT0RZ
-Pg0KPFRSPg0KPFREIHN0eWxlPSJQQURESU5HLUJPVFRPTTogMHB4OyBMSU5FLUhFSUdIVDogMjNw
-eDsgUEFERElORy1MRUZUOiA1cHg7IFBBRERJTkctUklHSFQ6IDVweDsgQ09MT1I6ICMzMzM7IEZP
-TlQtU0laRTogMTJweDsgUEFERElORy1UT1A6IDBweCIgYmFja2dyb3VuZD1odHRwOi8vbWltZy4x
-MjYubmV0L3AvaW1hZ2VzL2xldHRlci8yMDA3MDkvdmtfYXV0dW1uX2xlYXZlX3R4dGJnLmpwZz5P
-TlQgc2l6ZT00Jmd0OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyA8L0ZPTlQ+DQo8UD48
-L1A+DQo8UD48Rk9OVCBzaXplPTQ+Jm5ic3A7PC9GT05UPjxGT05UIGNvbG9yPSMwMDgwMDAgc2l6
-ZT0zPiZuYnNwOzxGT05UIGNvbG9yPSNmZjAwZmY+Jm5ic3A7eyZuYnNwO14q5pys5YWs5Y+45pyJ
-Jmx0O+WbvX7lnLAmZ3Q7W+eohV3vvIznnJ/kvKrnorrkv53jgIJ9IDwvRk9OVD48L0ZPTlQ+PC9Q
-Pg0KPFA+PEZPTlQgY29sb3I9IzAwODAwMCBzaXplPTM+44CQKDEzNS05MDE5fjYyMjXvvInlj7bn
-u4/nkIZbcTo2MzF+ODczLTQ0OV3jgJE8L0ZPTlQ+PC9QPg0KPFA+PEZPTlQgY29sb3I9IzAwODAw
-MCBzaXplPTQ+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IDwvRk9OVD48L1A+PC9URD48L1RSPjwvVEJPRFk+PC9U
-QUJMRT48L1REPjwvVFI+PC9UQk9EWT48L1RBQkxFPg0KPFRBQkxFIHN0eWxlPSJXSURUSDogOTkl
-IiBjZWxsU3BhY2luZz0wIGNlbGxQYWRkaW5nPTAgYmFja2dyb3VuZD1odHRwOi8vbWltZy4xMjYu
-bmV0L3AvaW1hZ2VzL2xldHRlci8yMDA3MDkvdmtfYXV0dW1uX2xlYXZlX2JvdGJnLmpwZz4NCjxU
-Qk9EWT4NCjxUUj4NCjxURCBzdHlsZT0iQkFDS0dST1VORC1SRVBFQVQ6IG5vLXJlcGVhdDsgQkFD
-S0dST1VORC1QT1NJVElPTjogMTAwJSAwcHg7IEhFSUdIVDogMTQ1cHgiIGJhY2tncm91bmQ9aHR0
-cDovL21pbWcuMTI2Lm5ldC9wL2ltYWdlcy9sZXR0ZXIvMjAwNzA5L3ZrX2F1dHVtbl9sZWF2ZV9i
-b3QuanBnPiZuYnNwOzwvVEQ+PC9UUj48L1RCT0RZPjwvVEFCTEU+bXVsekhpUgotLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0KT3duIHRoZSBGdXR1cmUtSW50ZWwmcmVnOyBMZXZlbCBVcCBHYW1lIERlbW8g
-Q29udGVzdCAyMDEzClJpc2UgdG8gZ3JlYXRuZXNzIGluIEludGVsJ3MgaW5kZXBlbmRlbnQgZ2Ft
-ZSBkZW1vIGNvbnRlc3QuCkNvbXBldGUgZm9yIHJlY29nbml0aW9uLCBjYXNoLCBhbmQgdGhlIGNo
-YW5jZSB0byBnZXQgeW91ciBnYW1lIApvbiBTdGVhbS4gJDVLIGdyYW5kIHByaXplIHBsdXMgMTAg
-Z2VucmUgYW5kIHNraWxsIHByaXplcy4gClN1Ym1pdCB5b3VyIGRlbW8gYnkgNi82LzEzLiBodHRw
-Oi8vcC5zZi5uZXQvc2Z1L2ludGVsX2xldmVsdXBkMmQKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+On Sunday 03 March 2013 04:39 AM, Grant Likely wrote:
+> On Fri, 22 Feb 2013 19:59:11 +0530, Manish Badarkhe <badarkhe.manish-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> On Fri, Feb 22, 2013 at 6:07 PM, Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org> wrote:
+>>> Add SPI driver for NVIDIA's Tegra114 SPI controller. This controller
+>>> is different than the older SoCs SPI controller in internal design as
+>>> well as register interface.
+>>>
+>>> This driver supports the:
+>>> - non DMA based transfer for smaller transfer i.e. less than FIFO depth.
+>>> - APB DMA based transfer for lager transfer i.e. more than FIFO depth.
+>> s/lager/larger
+> Applied, thanks. And I fixed up the typo when I did.
+>
+
+Grant,
+I still do not see this change in linux-next? Are you going to put this 
+change for K3.10? Wanted to close some of stuff from Tegra side.

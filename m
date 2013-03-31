@@ -1,11 +1,12 @@
-From: "Mike Bernhard" <NoReplyMB13-aVLDbEdftb8@public.gmane.org>
-Subject: business question
-Date: Sat, 30 Mar 2013 14:11:28 -0700
-Message-ID: <332c492d373f033706155a8e0010393d@g2gm.com>
+From: "Tati par Neezz" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?Qydlc3QgcMOicXVlcyEgMTAgZXVyb3Mgb2ZmZXJ0IHN1ciB2b3RyZSBhY2hhdA==?=
+Date: Sun, 31 Mar 2013 10:25:24 +0100
+Message-ID: <0.0.3D.A6A.1CE2DF1ACACA53A.0@mta43.pur3.net>
+Reply-To: Tati par Neezz <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,23 +18,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
-
-I have access to people in your area that are interested in purchasing your products and services. Would you like for me to direct them to you?
-
-Give me a call at 1 (800) 676-2011 Ext 230 and I will explain in details how we will get you in touch with these potential customers.
-
-Sincerely,
-
-Mike Bernhard
-Prospect Coordinator
-1 (800) 676-2011 Ext 230
-
-
-
-------------------------------------------------------------------------------
-Own the Future-Intel(R) Level Up Game Demo Contest 2013
-Rise to greatness in Intel's independent game demo contest. Compete 
-for recognition, cash, and the chance to get your game on Steam. 
-$5K grand prize plus 10 genre and skill prizes. Submit your demo 
-by 6/6/13. http://altfarm.mediaplex.com/ad/ck/12124-176961-30367-2
+U2kgbGUgbWVzc2FnZSBuZSBzJ2FmZmljaGUgcGFzIGNvcnJlY3RlbWVudCBtZXJjaSBkJ2FjY8Op
+ZGVyIGNldHRlIHBhZ2UKaHR0cDovL2Eub3B0aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxf
+dmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1MTE0MTczMjIwNTM3MTQ0CgoKCgoKQydlc3QgcMOi
+cXVlcyEgMTAgZXVyb3Mgb2ZmZXJ0IHN1ciB2b3RyZSBhY2hhdAoKCkMnZXN0IHDDonF1ZXMhIDEw
+IGV1cm9zIG9mZmVydCBzdXIgdm90cmUgYWNoYXQKCgpDJ2VzdCBww6JxdWVzISAxMCBldXJvcyBv
+ZmZlcnQgc3VyIHZvdHJlIGFjaGF0CgoKCgoKQ2V0dGUgb2ZmcmUgdm91cyBlc3QgcHJvcG9zw6ll
+IGFmaW4gcXVlIHZvdXMgcHVpc3NpZXogYsOpbsOpZmljaWVyIGRlIGJvbnMgcGxhbnMKdG91dGUg
+bCdhbm7DqWUgcXVlIGNlIHNvaXQgcG91ciBkZXMgcsOpZHVjdGlvbnMsIGRlcyBzb2xkZXMsIGRl
+cyB2ZW50ZXMgcHJpdsOpZXMsCm5vdXMgdm91cyB0aWVuZHJvbnMgaW5mb3Jtw6lzIGVuIHByaW9y
+aXTDqS4KCk5vcyBvZmZyZXMgZGUgYm9ucyBwbGFucywgc2hvcHBpbmcsIHZveWFnZXMsIHNlcnZp
+Y2VzLCBzb2lucyBkZSBsYSBwZXJzb25uZQpwYXJtaSBkZXMgY2VudGFpbmVzIGQnb2ZmcmVzIHNv
+bnQgw6Agdm90cmUgZGlzcG9zaXRpb24sIGFsb3JzIHByb2ZpdGV6IGVuLgoKQsOpbsOpZmljaWV6
+IMOpZ2FsZW1lbnQgZCdpbmZvcm1hdGlvbnMgc3VyIGxlcyBqZXV4IGNvbmNvdXJzLCBsZXMgc2Vy
+dmljZXMgZMOpZGnDqXMKZXQgbGUgdG91dCDDoCBkZXV4IHBhcyBkZSBjaGV6IHZvdXMuCgpDZXR0
+ZSBuZXdzbGV0dGVyIGVzdCBhY2Nlc3NpYmxlIMOpZ2FsZW1lbnQgc3VyIHZvdHJlIG1vYmlsZSwg
+dm91cyBuJ2F2ZXogcXUnw6AKY2xpcXVlciBkZXNzdXMgcG91ciBiw6luw6lmaWNpZXIgZHUgcHJv
+Z3JhbW1lIGRlIHZvdHJlIGNob2l4LgoKQWZpbiBkZSByZXNwZWN0ZXIgbGVzIGRpc3Bvc2l0aW9u
+cyBsw6lnYWxlcyBjb25jZXJuYW50IGxlcyBjb3VycmllcnMKw6lsZWN0cm9uaXF1ZXMuCgpWb3Vz
+IGRpc3Bvc2V6IGQndW4gZHJvaXQgZCdhY2PDqXMsIGRlIG1vZGlmaWNhdGlvbiwgZGUgcmVjdGlm
+aWNhdGlvbiBldCAKZGUgc3VwcHJlc3Npb24gZGVzIGRvbm7DqWVzIHF1aSB2b3VzIGNvbmNlcm5l
+bnQgKGFydGljbGVzIDM4IGV0IHN1aXZhbnRzIGRlIGxhCmxvaSBkdSA2IGphbnZpZXIgMTk3OCBy
+ZWxhdGl2ZSDDoCBsJ2luZm9ybWF0aXF1ZSwgYXV4IGZpY2hpZXJzIGV0IAphdXggbGliZXJ0w6lz
+KS4KCgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0cDovL2Eub3B0aW5j
+YWtlLmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4NjYyNTExNDE3MzIyMDUzNzE0NAoKCgoK
+Cgp7fkFKODQ2NDE4NjYyNTExNDE3MzIyMDUzNzE0NH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpP
+d24gdGhlIEZ1dHVyZS1JbnRlbChSKSBMZXZlbCBVcCBHYW1lIERlbW8gQ29udGVzdCAyMDEzClJp
+c2UgdG8gZ3JlYXRuZXNzIGluIEludGVsJ3MgaW5kZXBlbmRlbnQgZ2FtZSBkZW1vIGNvbnRlc3Qu
+IENvbXBldGUgCmZvciByZWNvZ25pdGlvbiwgY2FzaCwgYW5kIHRoZSBjaGFuY2UgdG8gZ2V0IHlv
+dXIgZ2FtZSBvbiBTdGVhbS4gCiQ1SyBncmFuZCBwcml6ZSBwbHVzIDEwIGdlbnJlIGFuZCBza2ls
+bCBwcml6ZXMuIFN1Ym1pdCB5b3VyIGRlbW8gCmJ5IDYvNi8xMy4gaHR0cDovL2FsdGZhcm0ubWVk
+aWFwbGV4LmNvbS9hZC9jay8xMjEyNC0xNzY5NjEtMzAzNjctMgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
+c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
+c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

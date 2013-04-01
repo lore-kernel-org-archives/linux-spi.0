@@ -1,13 +1,13 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v7 04/14] spi/spi-atmel: call unmapping on transfers
- buffers
-Date: Mon, 1 Apr 2013 14:43:00 +0100
-Message-ID: <20130401134259.GW18636@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH v7 05/14] spi/spi-atmel: status information passed
+ through controller data
+Date: Mon, 1 Apr 2013 14:43:51 +0100
+Message-ID: <20130401134350.GX18636@opensource.wolfsonmicro.com>
 References: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
- <1363679062-3797-1-git-send-email-wenyou.yang@atmel.com>
+ <1363679101-3834-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Tm6VLls/w6NsRApE"
+	protocol="application/pgp-signature"; boundary="NAuYj0K7Umiq33rm"
 Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
 	richard.genoud@gmail.com, plagnioj@jcrosoft.com,
 	nicolas.ferre@atmel.com, JM.Lin@atmel.com,
@@ -16,40 +16,45 @@ Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
 To: Wenyou Yang <wenyou.yang@atmel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1363679062-3797-1-git-send-email-wenyou.yang@atmel.com>
+In-Reply-To: <1363679101-3834-1-git-send-email-wenyou.yang@atmel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---Tm6VLls/w6NsRApE
+--NAuYj0K7Umiq33rm
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 19, 2013 at 03:44:22PM +0800, Wenyou Yang wrote:
+On Tue, Mar 19, 2013 at 03:45:01PM +0800, Wenyou Yang wrote:
 > From: Nicolas Ferre <nicolas.ferre@atmel.com>
+>=20
+> The status of transfer is stored in controller data structure
+> so that it can be used not only by atmel_spi_msg_done() function.
+> This will be useful for upcoming dmaengine enabled driver.
 
 Applied, thanks.
 
---Tm6VLls/w6NsRApE
+--NAuYj0K7Umiq33rm
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRWY7dAAoJELSic+t+oim90b8P/2ZNXjrxCk9KouCre8TLm8Oe
-SAky68yVpXYkspk/hDpuir97T/04jzygFR/6qOD/N7wo4LzPsOTvQQ+MSCkC4/na
-woh2uED+lna1qBQjVC+pQBotPHsknBKErIzUpBsYrKovLWsaSBqQ1zuj1fPwQmJT
-Org8MjfB7g+Q7AHImjrecmypbAAq2fO/eS/AWrIbbbSmCpeKSsxOzLx8/shYTJ3k
-7HSxLlLkamX0TPuKHfRtFnPXIOahXrd/09XMtrnu2iZf0jLwwzVA+uOz//MQChWw
-1RwHjuxJD7OMwSzKoxiK8Ba+P9JzURgPfpjLnor+1eGMWVxw41pCvmQ6RKEUGsub
-4U/KrDeJElRLRudvZsntC/oN8Ulv1yKsgu87ztvHC38iTMlw/DtB5oyNELrIAQvN
-YIwoUE1iVJl2ocQIkP4YCR2Wovq7CJK4hCtBjtneRFNZVbOAhjPDbvicfKUbQjLk
-S9xA+FSyN8la7RmGOXgYL5OZFk7HCm585KcLA8EVbt15nk96uuYdt9PufIus1xE5
-ZFmoMDWpaqJSJJHVXcMcK2lZvvktCRyHxZ/82WQ1qkRuzdrxNek2Mm35aYTs6Tkw
-DzUC7SvMueTZTEXDfqsKdbaE6aU0wHAOu0uOgVa+gQhvlqPGB1wa4MQ3F61Ltiac
-aAypHYXslrZZ7OXtrlx6
-=rCQ4
+iQIcBAEBAgAGBQJRWY8QAAoJELSic+t+oim9Wz8P/jrlA/TjQ8b92bZhLp7rESwP
+CzmjmFfXO+DPHT4DtaqRWDyH8PkEUAvn1LXWWOsE82JjbnmDRjXSsLUV16dYAmXX
+Hl3StmCL2boDG0scyZEjlWkWvg//QMljy9iotWRMjqjyceSqXkFC7UmqsvLTw8/f
+iRo3C1cmwLPkeMIfJHno+//0bFdWaQGcEjl1BDzs+0ouxT7D5HjPpbXDsTxpxN5w
+PgZqHQTkaS6ifl/82ZnXraML1eauHFSi38CDBfXS23ulwCfx5T4h4K2aOy3A3ehX
+rpLAEBPaRRaIosBngqCbftLgB9TKUxocMp3k7GoVQLzL5rTX0yMAFBiSrLvGA8dv
+w1pCafpBD7bO9gT/KH5vV/rLWIDHgtNVoazOR/Ul5b1aHrqyxkC00iW1rhXSi0/Q
+4Q/SyiOW8kr3CIRuMIKqfZKAoahrOUZ1Iq+e/5P8eBF7KjEx88OPw5IHmL5kx/8Y
+Kdc4s++uiCa5hfS9W5Qa4GXv/d1mgCidJeQKQ4CcQGLvZzDIAcHUmQm4S4wInfaX
+v0NLAqxOjVtjegghEcmq6GRAHIkcjAVXneX+ane9q/l/WxxxA52K9+1XbrxXRtAl
+963n4Q/WXBfFUbRrB6nuUBlATuPdi/oyh05PY/6dVWQLZ23nfkPVCXJE4uRobTal
+yYZtTv3geXJXwtO9xaun
+=Hwth
 -----END PGP SIGNATURE-----
 
---Tm6VLls/w6NsRApE--
+--NAuYj0K7Umiq33rm--

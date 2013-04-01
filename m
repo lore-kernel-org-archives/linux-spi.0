@@ -1,59 +1,82 @@
-From: "PIN SA" <contact-pMf08TzSyU/FMKM5xpP4KwC/G2K4zDHf@public.gmane.org>
-Subject: Le parfum du luxe, le prix du discount
-Date: Mon, 01 Apr 2013 08:25:35 +0000 (CET)
-Message-ID: <130401082535.-207771054600005176@obfm41.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH V3 4/5] spi: s3c64xx: Added provision for dedicated cs pin
+Date: Mon, 1 Apr 2013 13:57:44 +0100
+Message-ID: <20130401125744.GG18636@opensource.wolfsonmicro.com>
+References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
+ <1363157014-9615-5-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="c7hkjup166d4FzgN"
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	grant.likely@secretlab.ca, t.figa@samsung.com
+To: Girish K S <girishks2000@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1363157014-9615-5-git-send-email-ks.giri@samsung.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKIChodHRwOi8vb2JmbTQxLmNvbS9wMm5ibWkyanN1amRxcW01d2QvaW5kZXgwLmh0bWwpCiho
-dHRwOi8vb2JmbTQxLmNvbS9yY25maml1YnM1NWxyMTVhNHkvaW5kZXgzLmh0bWwpIChodHRwOi8v
-b2JmbTQxLmNvbS9xdG1qemN2NHR6aGRnMnJtdHMvaW5kZXg0Lmh0bWwpCgoKCiBIT01FIChodHRw
-Oi8vb2JmbTQxLmNvbS9teG4xbGloYXN5eGxjZ3A1enMvaW5kZXgxLmh0bWwpIApTVE9SRSAoaHR0
-cDovL29iZm00MS5jb20vZzJtcW1jYW90amdkaGxtaGJ5L2luZGV4Ni5odG1sKSAKTUFSUVVFICho
-dHRwOi8vb2JmbTQxLmNvbS9veG1zbGNiM3RhMWxtZHBoMGwvaW5kZXg3Lmh0bWwpIApQQVJGVU0g
-RkVNTUUgKGh0dHA6Ly9vYmZtNDEuY29tL2YyMnlycjBxc2VsZHN3bXlkZC9pbmRleDguaHRtbCkg
-ClBBUkZVTSBIT01NRSAoaHR0cDovL29iZm00MS5jb20vMXgyZ2RyaWlzZDJsdG5weXlzL2luZGV4
-OS5odG1sKSAKCgoKCiAoaHR0cDovL29iZm00MS5jb20vNXRuMHppeHpzeGFkaWNyYW5sL2luZGV4
-Mi5odG1sKQoKClBpcmF0ZSBQYXJmdW0gZXN0IHVuIHBhcmZ1bWV1ciBkJ3VuIG5vdXZlYXUgZ2Vu
-cmUsIHVuIHBhcmZ1bWV1ciBxdWkgc2Ugc291Y2llIGRlIHZvdHJlIGJlYXV0w6kgb2xmYWN0aXZl
-IG1haXMgYXVzc2kgZGUgdm90cmUgcG9ydGUtbW9ubmFpZS4KQ2hleiBQaXJhdGUgUGFyZnVtIHRv
-dXMgbGVzIHByaXggc29udCBjYWxjdWzDqXMgYXUgcGx1cyBqdXN0ZSBwb3VyIHZvdXMgcGVybWV0
-dHJlIGRlIGLDqW7DqWZpY2llciBkJ3VuIHByaXggZmluYWwgZW50cmUgMjUgZXQgMzLigqwgcG91
-ciB1biBmbGFjb24gZGUgMTAwbWwsIGp1c3F1J8OgIDUgZm9pcyBtb2lucyBjaGVyIHF1ZSBsYSBj
-b25jdXJyZW5jZS4KRXQgcG91cnRhbnQgY2VzIHByaXggbmUgc29udCBwYXMgYXR0ZWludHMgZW4g
-bWV0dGFudCBkZSBjw7R0w6kgbGEgcXVhbGl0w6kgcHVpc3F1ZSB0b3VzIG5vcyBwYXJmdW1zIHNv
-bnQgcsOpYWxpc8OpcyBlbiBGcmFuY2UsIMOgIEdyYXNzZSBkYW5zIGxhIGNhcGl0YWxlIG1vbmRp
-YWxlIGR1IHBhcmZ1bSwgZXQgw6AgcGFydGlyIGQnaW5ncsOpZGllbnRzIG5hdHVyZWxzLgogKGh0
-dHA6Ly9vYmZtNDEuY29tLzQ0eHV1bGR6dmUzZnlmZGRpZy9pbmRleDExLmh0bWwpCkZsYWNvbiBi
-bGFuYyBwb3VyIEVsbGUsIG5vaXIgcG91ciBMdWksIHZvdXMgdHJvdXZlcmV6IGZvcmPDqW1lbnQg
-dm90cmUgYm9uaGV1ciBwYXJtaSBub3MgNTIgcsOpZsOpcmVuY2VzIG9yaWdpbmFsZXMgY29tbWUg
-cGx1c2lldXJzIG1pbGxpZXJzIGRlIGNsaWVudHMgYXZhbnQgdm91cyBxdWkgbm91cyBvbnQgZmFp
-dCBjb25maWFuY2UgZXQgc29udCBzYXRpc2ZhaXRzLgpBbG9ycyBsYW5jZXogdm91cywgdHJvdXZl
-eiBsZSBwYXJmdW0gcXVpIHZvdXMgY29ycmVzcG9uZCwgYsOpbsOpZmljaWV6IGRlIDIwJSBkZSBy
-w6lkdWN0aW9uIHN1ciB2b3RyZSBwcmVtacOocmUgY29tbWFuZGUgYXZlYyBsZSBjb2RlIDFDTUQy
-MCBldCBmYWl0ZXMgZGUgYm9ubmVzIGFmZmFpcmVzIGRlIGxhIHF1YWxpdMOpIGR1IGx1eGUgIQoK
-UElSQVRFLVBBUkZVTSA6IExlIHBhcmZ1bSBkdSBsdXhlLCBsZSBwcml4IGR1IGRpc2NvdW50ICho
-dHRwOi8vb2JmbTQxLmNvbS9qY21samMxdHRibWwxMDVtMmQvaW5kZXg1Lmh0bWwpCgoKLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tCk93biB0aGUgRnV0dXJlLUludGVsJnJlZzsgTGV2ZWwgVXAgR2FtZSBE
-ZW1vIENvbnRlc3QgMjAxMwpSaXNlIHRvIGdyZWF0bmVzcyBpbiBJbnRlbCdzIGluZGVwZW5kZW50
-IGdhbWUgZGVtbyBjb250ZXN0LgpDb21wZXRlIGZvciByZWNvZ25pdGlvbiwgY2FzaCwgYW5kIHRo
-ZSBjaGFuY2UgdG8gZ2V0IHlvdXIgZ2FtZSAKb24gU3RlYW0uICQ1SyBncmFuZCBwcml6ZSBwbHVz
-IDEwIGdlbnJlIGFuZCBza2lsbCBwcml6ZXMuIApTdWJtaXQgeW91ciBkZW1vIGJ5IDYvNi8xMy4g
-aHR0cDovL3Auc2YubmV0L3NmdS9pbnRlbF9sZXZlbHVwZDJkCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+
+--c7hkjup166d4FzgN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Mar 13, 2013 at 12:13:33PM +0530, Girish K S wrote:
+> From: Girish K S <girishks2000@gmail.com>
+>=20
+> The existing driver supports gpio based /cs signal.
+> For controller's that have one device per controller,
+> the slave device's /cs signal might be internally controlled
+> by the chip select bit of slave select register. They are not
+> externally asserted/deasserted using gpio pin.
+
+Applying this patch breaks my S3C64xx based system (Cragganmore, a
+non-DT platform).  It'll break all existing non-DT platforms since...
+
+> + * @cs_gpio: CS line status, 'true' if CS line is asserted by gpio.
+> + * 	     'false' if asserted by internal dedicated pin.
+>   * @line: Custom 'identity' of the CS line.
+>   *
+>   * This is per SPI-Slave Chipselect information.
+> @@ -25,6 +27,7 @@ struct platform_device;
+>   */
+>  struct s3c64xx_spi_csinfo {
+>  	u8 fb_delay;
+> +	bool cs_gpio;
+>  	unsigned line;
+>  };
+
+=2E..you've added this new cs_gpio field to the platform data but not
+updated any of the existing users (including Cragganmore).  It would
+seem better to make the default behaviour stay as per the current
+default and make the new behaviour optional but at a minimum all
+existing in-tree users need to be updated.
+
+It's also a bit odd that we end up checking cs_gpio and then using line
+in the code, it'd be more idiomatic if cs_gpio were the GPIO number.
+
+--c7hkjup166d4FzgN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRWYQ0AAoJELSic+t+oim99lwP/RI1suNm4qdYtkjcGcCaphi3
+l0uXXq/qGgbTSwqYF256uSzl/58jQwwfrdsOjU+Qn874hUi+nDB9ERL2YEqUhGfK
+ZfCcclb8W0ftRonwcioAuW+rrwsMkftSBwXf3CChhw2COpWffisHaqL5rqGwmgdy
+EQ5G/V9wd/vO4NKgYF3vuzBf7LoDTlWyKCzQnt4tZl+R6r5jsCmq/gbXEd9FKWcH
+ZTQBDGDQfakQ2XflbYu1OL8NF6gRxHY25z6zWuLj9Xdq+jSG2Mu3jGHaJ1H2KDOP
+0EISWFcGe1AHdTauj8QPuAA3RGCi7dW1Qm2L3ORgh0hpus2MPAUNWOU/QC7PmE0i
+wEN7284jUo9BUY/r82PI6cpPepxeZHkOMFHg2aS2CAGs6BkG/cMP6B0JVWPwsWFc
+DB3egyct9p1i/vvAhmsYjO+bePoUJzZGCpcu9pS5yrlcQxKaq21oire6KUIV68ML
+lws99skOTA+4ED4Q13+B0wwSdQGvQ0Jsz4tgMk443SRaMW3rNuPGUO/lnqkt4rMN
+RvRvgMwisyZO3Y9Vr98U8QS9hQRRV7uoIWA6GZL5Primh7dHBUC/QFv06olzVqjk
+tQMnm0DpBdjdsza3h6+qNEHqrZ6RciY6Xyu+8Sk2yr5O+MRHjYJWJ7eAx8RCFmrf
+LI4YYDIm73Y+fJiAbK+a
+=cX7P
+-----END PGP SIGNATURE-----
+
+--c7hkjup166d4FzgN--

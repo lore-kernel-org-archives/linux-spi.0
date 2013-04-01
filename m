@@ -1,13 +1,13 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v7 06/14] spi/spi-atmel: add flag to controller data for
- lock operations
-Date: Mon, 1 Apr 2013 14:46:13 +0100
-Message-ID: <20130401134613.GY18636@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH v7 08/14] spi/spi-atmel: fix spi-atmel driver to adapt to
+ slave_config changes
+Date: Mon, 1 Apr 2013 14:51:04 +0100
+Message-ID: <20130401135104.GZ18636@opensource.wolfsonmicro.com>
 References: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
- <1363679163-3897-1-git-send-email-wenyou.yang@atmel.com>
+ <1363679236-3973-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Z8pjODCYYz+3zRe3"
+	protocol="application/pgp-signature"; boundary="7fVM7fn5T1d7Fqim"
 Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
 	richard.genoud@gmail.com, plagnioj@jcrosoft.com,
 	nicolas.ferre@atmel.com, JM.Lin@atmel.com,
@@ -16,54 +16,46 @@ Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
 To: Wenyou Yang <wenyou.yang@atmel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1363679163-3897-1-git-send-email-wenyou.yang@atmel.com>
+In-Reply-To: <1363679236-3973-1-git-send-email-wenyou.yang@atmel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---Z8pjODCYYz+3zRe3
+--7fVM7fn5T1d7Fqim
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 19, 2013 at 03:46:03PM +0800, Wenyou Yang wrote:
+On Tue, Mar 19, 2013 at 03:47:16PM +0800, Wenyou Yang wrote:
+> From: Richard Genoud <richard.genoud@gmail.com>
+>=20
+> This is the following of the patch e2b35f3dbfc080f15b72834d08f04f0269dbe9=
+be
 
-> +static void atmel_spi_lock(struct atmel_spi *as)
-> +{
-> +		spin_lock_irqsave(&as->lock, as->flags);
-> +}
+What is this patch actually doing, shouldn't it be part of the previous
+commit?  The changelog really ought to have a plain text version of the
+commit description too.
 
-Coding style.
-
-> -	spin_unlock(&as->lock);
-> +	atmel_spi_unlock(as);
->  	msg->complete(msg->context);
-> -	spin_lock(&as->lock);
-> +	atmel_spi_lock(as);
-
-This replaces non-irqsave versions with irqsave versions of the lock.
-Is this safe/correct?  If it is I'd have expected some sort of mention
-of it in the commit log.
-
---Z8pjODCYYz+3zRe3
+--7fVM7fn5T1d7Fqim
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRWY+fAAoJELSic+t+oim9RncP/0xjOvN+as2WaphlQBQHm+WI
-ztDo6ZQXCheZ2Xxm7pWMRQp7xlWl9osMsy4AyXUViUcjnJnVJ41yaJFRc1vsFKqC
-Dp17ncfaBag3YpX8yhicXHXMbckjy8GFcPVLJ262Es58BR+ZCClw4GFd30IjoGt/
-hmovNlz2h5+wrn51uuF1lRcELxvDx1mbecsj5ExwDNCWOp6JBdyoAn4PzhQ3RCWs
-JHgy0FFBJ8agqZMH9StxeRJJAhnnAMFTIts010LyYosJyPQCAe3I/arMyse6WY2y
-RkeP/X6NaNjqaSq/k+EWIuzvHbh6cWZf1THlKk6oKoJhHkhiRmH3foRAWBBOKJSJ
-BMewxiPl50fERxt6jU2u33rTDqSvybAX/zGKPF00ksqgeRQ6zAZl+1ZQ3NO3Yopq
-JD2yx0MOKa+7a2s38/aqbJhEW6ycshcmEVN8Z9SRFAcRIH0CO7uL7cG/gKKMcZnJ
-tUt6v1l+i3ZRohwT/ULZAmJDiyqB9bm9Mtam+7fQGr4EeqUCa6JH+D2urp0gVmLy
-DFpBmI5Kt3BS0ie+2wAEle/UmzPr3x4xH9yKTGJub2meRfgXEqqOx6JGLODtgi/E
-IWcwqvAqQdZSWnKbo+8AOhB84x4oEHzVneA9Ctg2OeoSNz7v2KtkPRFQ1NyUzb5b
-ckX4Rbw2RGBqx2M3g8DL
-=NYp+
+iQIcBAEBAgAGBQJRWZDCAAoJELSic+t+oim9KzcP/2qoMf1QCjPNieTa9ndxU3R/
+JwPnBunEvlH96YJ9DPKaopkcqhxd+makc0bPC5EDv9ZfAL4k+s5Q2kyJQS9qGO+B
+qLigmh9RWnOR2bxU+dyaTjAoB+2oV4WosTp5VeLBrZveq5wmiEvUeR4f3J4HsctE
+pWtlLwe4fbnTvH8DLXXeZ0qrTHNwjWFtIi45Hf1S3QzTnxHfnTJyV/txAs1Dlnga
+1UqSFc1jKntyMDZJgkpqoHTaVmFZGDJ7xVV3YqczmGj1lRxxRp0UtcOTIMZD0qlL
+2c9tAOJQKACyL3Jz+rbhHZ5mFcWpTko6c6fxZeBkMpswoAPy2q6Tym169LTqajYj
+wckK7FKF7/chUQXJi96ILG3gjQVaL48fIfKbKFx1StVtBPY47tJqb/IpMV8MkXXN
+m1UCybnlab+5kQjtPZVMczTU5CElBkJP0ocBKz/fgLCNtqbYvFXtaYLXeJXELUnb
+wol3pR+armZUpfm4TT7XGjYI7YqnFcQHf53INBE7adGL41S3exymsftM8fpfeply
+3qUMdFOqUBaEn1GGj8oAl2we52H4qxUETvta22WQu9WPLlGFxJ88GQpsgkdhqCTK
+1vuDWjhaTZmXXv4nbWgkGRHruSOnQ7TiFOQt5lXQwODa6vzIwOmTAKI7EmrbcZGd
+s/RT4QMEGa42/uhJ6b1e
+=5RWY
 -----END PGP SIGNATURE-----
 
---Z8pjODCYYz+3zRe3--
+--7fVM7fn5T1d7Fqim--

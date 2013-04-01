@@ -1,82 +1,65 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH V3 4/5] spi: s3c64xx: Added provision for dedicated cs pin
-Date: Mon, 1 Apr 2013 13:57:44 +0100
-Message-ID: <20130401125744.GG18636@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH V3 1/5] spi: s3c64xx: modified error interrupt handling
+ and init
+Date: Mon, 1 Apr 2013 14:03:09 +0100
+Message-ID: <20130401130309.GH18636@opensource.wolfsonmicro.com>
 References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
- <1363157014-9615-5-git-send-email-ks.giri@samsung.com>
+ <1363157014-9615-2-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="c7hkjup166d4FzgN"
+	protocol="application/pgp-signature"; boundary="+Z7/5fzWRHDJ0o7Q"
 Cc: spi-devel-general@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	grant.likely@secretlab.ca, t.figa@samsung.com
 To: Girish K S <girishks2000@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1363157014-9615-5-git-send-email-ks.giri@samsung.com>
+In-Reply-To: <1363157014-9615-2-git-send-email-ks.giri@samsung.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---c7hkjup166d4FzgN
+--+Z7/5fzWRHDJ0o7Q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 13, 2013 at 12:13:33PM +0530, Girish K S wrote:
+On Wed, Mar 13, 2013 at 12:13:30PM +0530, Girish K S wrote:
 > From: Girish K S <girishks2000@gmail.com>
 >=20
-> The existing driver supports gpio based /cs signal.
-> For controller's that have one device per controller,
-> the slave device's /cs signal might be internally controlled
-> by the chip select bit of slave select register. They are not
-> externally asserted/deasserted using gpio pin.
+> The status of the interrupt is available in the status register,
+> so reading the clear pending register and writing back the same
+> value will not actually clear the pending interrupts. This patch
+> modifies the interrupt handler to read the status register and
+> clear the corresponding pending bit in the clear pending register.
 
-Applying this patch breaks my S3C64xx based system (Cragganmore, a
-non-DT platform).  It'll break all existing non-DT platforms since...
+Applied, thanks.
 
-> + * @cs_gpio: CS line status, 'true' if CS line is asserted by gpio.
-> + * 	     'false' if asserted by internal dedicated pin.
->   * @line: Custom 'identity' of the CS line.
->   *
->   * This is per SPI-Slave Chipselect information.
-> @@ -25,6 +27,7 @@ struct platform_device;
->   */
->  struct s3c64xx_spi_csinfo {
->  	u8 fb_delay;
-> +	bool cs_gpio;
->  	unsigned line;
->  };
+> Signed-off-by: Girish K S <ks.giri@samsung.com>
 
-=2E..you've added this new cs_gpio field to the platform data but not
-updated any of the existing users (including Cragganmore).  It would
-seem better to make the default behaviour stay as per the current
-default and make the new behaviour optional but at a minimum all
-existing in-tree users need to be updated.
+This and the committer e-mail address (the From: above) really ought to
+match up with each other.
 
-It's also a bit odd that we end up checking cs_gpio and then using line
-in the code, it'd be more idiomatic if cs_gpio were the GPIO number.
-
---c7hkjup166d4FzgN
+--+Z7/5fzWRHDJ0o7Q
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRWYQ0AAoJELSic+t+oim99lwP/RI1suNm4qdYtkjcGcCaphi3
-l0uXXq/qGgbTSwqYF256uSzl/58jQwwfrdsOjU+Qn874hUi+nDB9ERL2YEqUhGfK
-ZfCcclb8W0ftRonwcioAuW+rrwsMkftSBwXf3CChhw2COpWffisHaqL5rqGwmgdy
-EQ5G/V9wd/vO4NKgYF3vuzBf7LoDTlWyKCzQnt4tZl+R6r5jsCmq/gbXEd9FKWcH
-ZTQBDGDQfakQ2XflbYu1OL8NF6gRxHY25z6zWuLj9Xdq+jSG2Mu3jGHaJ1H2KDOP
-0EISWFcGe1AHdTauj8QPuAA3RGCi7dW1Qm2L3ORgh0hpus2MPAUNWOU/QC7PmE0i
-wEN7284jUo9BUY/r82PI6cpPepxeZHkOMFHg2aS2CAGs6BkG/cMP6B0JVWPwsWFc
-DB3egyct9p1i/vvAhmsYjO+bePoUJzZGCpcu9pS5yrlcQxKaq21oire6KUIV68ML
-lws99skOTA+4ED4Q13+B0wwSdQGvQ0Jsz4tgMk443SRaMW3rNuPGUO/lnqkt4rMN
-RvRvgMwisyZO3Y9Vr98U8QS9hQRRV7uoIWA6GZL5Primh7dHBUC/QFv06olzVqjk
-tQMnm0DpBdjdsza3h6+qNEHqrZ6RciY6Xyu+8Sk2yr5O+MRHjYJWJ7eAx8RCFmrf
-LI4YYDIm73Y+fJiAbK+a
-=cX7P
+iQIcBAEBAgAGBQJRWYWFAAoJELSic+t+oim96/AQAIl37xvCkADZTcmF/B5U4YZD
+6+6llVqjwQl2QK+vrbSRx3NVpyi6cxfq/gDSBBdFe1k2SEDB1lCmNq7Nxc+NBNXo
+n6/UKDyHjJvFwlb3d02ZITPv6G7u5LI9j4ob0oEmePFphw1eljhH0Nl5Q6HSMPnk
+15IWvXmR0nSlpaZZMQcdG54I6emxKJysP5MukCxv56R/yIYyzG6pfcYHMTXvG+D2
+nMQsTWjL1+S81H3QDqf3deN6/ZJIwNiNLOZokprYK17kDFdjtmWN1uC7ibYmbBF3
+L0y9izTz3+iUbT/9x040zV07V6RjUpVV4w/8t/nUEOcMwHCFH4/2a13xm2I4P4O1
+4tPN15hPW6yW1Ur2oNsZwYf7f/k+0x1StBsvKQNY4bve0jQ+p5G3L2v1UKlEmlYk
+7MN9N0Nt4DJH5P7JtAB4ZAQSTlNjMmJgOLPPXryiOcQsiRAzoPBuXJF/IKwQ75Bd
+0wTo6ybA1/xoYUz2i3nIv7j/7A53ZqwClY5GKl8lzesrspXOs+haj+hvBB5USoZP
+d59VNfyq2frOA3scjYH/dNnreh2LJrYYoZqZa+baHNSAK32vtdPw4QNzMk4IWbE8
+GRsPN9b8BFAV/g3jtWdvXdxSGjZIeNqNsdM0jsjeUypRqbO6H3ziAmYOISFnVDXl
+0zhvGBNtsxoUK4s1EMPD
+=DegY
 -----END PGP SIGNATURE-----
 
---c7hkjup166d4FzgN--
+--+Z7/5fzWRHDJ0o7Q--

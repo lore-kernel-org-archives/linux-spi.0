@@ -1,55 +1,70 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi: tegra: slink: do not prepare dma transfer with
- DMA_CTRL_ACK flag
-Date: Mon, 1 Apr 2013 14:35:00 +0100
-Message-ID: <20130401133459.GS18636@opensource.wolfsonmicro.com>
-References: <1353662559-26515-1-git-send-email-ldewangan@nvidia.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH v7 01/14] spi/spi-atmel: detect the capabilities of SPI
+ core by reading the VERSION register.
+Date: Mon, 1 Apr 2013 14:38:33 +0100
+Message-ID: <20130401133833.GT18636@opensource.wolfsonmicro.com>
+References: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
+ <1363678935-3665-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="uX7BrQs69PbBafpd"
-Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="mW9eGbZzDIYYWqGs"
+Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
+	richard.genoud@gmail.com, plagnioj@jcrosoft.com,
+	nicolas.ferre@atmel.com, JM.Lin@atmel.com,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Wenyou Yang <wenyou.yang@atmel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1353662559-26515-1-git-send-email-ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <1363678935-3665-1-git-send-email-wenyou.yang@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---uX7BrQs69PbBafpd
+--mW9eGbZzDIYYWqGs
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Nov 23, 2012 at 02:52:39PM +0530, Laxman Dewangan wrote:
-> Spi starts transfer using dma with DMA_CTRL_ACK which is not require
-> becasue spi driver does not use completed dma_desc after transfer
-> done and so it does not ack the dma descriptor. Removing the
-> DMA_CTRL_ACK flag to avoid memory leak in dma driver.
+On Tue, Mar 19, 2013 at 03:42:15PM +0800, Wenyou Yang wrote:
 
-Applied, thanks.
+> +{
+> +	unsigned int version;
+> +
+> +	version = atmel_get_version(as);
+> +	dev_info(&as->pdev->dev, "version: 0x%x\n", version);
+> +
+> +	as->caps.is_spi2 = (version > 0x121) ? true : false;
+> +	as->caps.has_wdrbt = (version >= 0x210) ? true : false;
+> +	as->caps.has_dma_support = (version >= 0x212) ? true : false;
+> +}
+> +
 
---uX7BrQs69PbBafpd
+There's absolutely no need for the ternery operators here - your
+comparisons are already boolean, the ternery operators just add noise.
+
+I've applied this with the above edited to remove the ? true : false,
+thanks.
+
+--mW9eGbZzDIYYWqGs
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRWYz9AAoJELSic+t+oim9OSEP/2fzNSxztAmM3UC5QKyJBGaR
-P6VqPoOkZXPMcvGcJ+j+yj5kLIesHa5uqdqfyrXjO1s/6+BCa7FeRnjnC+aTUlsp
-u7lof2QSxEgMXoVwsboH9eCEDPIQ0/d6bTLbHicTkiCgFbwMP3/i/sx+zwAd6YCR
-F58RFLgty3+XiA/U/XL9RFjNiHC8HkVnFdeWYJ6dflw0CB48XMOd9+tofTy8mC1p
-9ozEZHpaHtSJKOo+2kBRbhE0dZgE95FWRBQkPU/ivWX1dz52+UOfEzYgprmG0CYK
-t5/zi0rHkB7//ma850KyIWX+R3RCgwyXnT69Pji9ezAXncU4SQjW+NbTvPu0DPTv
-tq0Q7RHY42J4djVoshlVBop9AKGbbHVn7I1HHFuThwsGM6q2KLgC1aUPBspjRPs4
-+vo1dfgt26hBKCGUHemRehWlJuArCrOG+YfgGCaJi99bn33jSodSxVnCrSpUlGzo
-427jvNeklkqmGJlO0by1oz+QeTuiBy6rhqL99suyLJqKbREAjlHihNKwkmk0KCay
-cuoWlzNvZ5aA/Vti57axoo8bd/N1468H7RLEN68kw1I8nOxrkCrH314jlMZ3m8w0
-bUw46xibNTIlcipd5e8iH6wbPoL9YtH/uPPflC5i8ko40TFU/RwWIEOrNj9BFBTN
-su8zYxceIFyNE+/FgVoV
-=vhpb
+iQIcBAEBAgAGBQJRWY3TAAoJELSic+t+oim9zckP/0NPmWTAFZkIiUCtpeohlzDL
+HsQ5R+toEBYcocYj12/CQsIC+0tT9AlOFx7K82kdlTImM1Y5cOeUhSqoUf9pm3hB
+VmF0kSPg/Pk+vRXRM/c3uFM4iKeCWFDiUUbxRwcMUwqd5SmIA1C/Rk2w0+69vk/k
+LMaYjHZecBilNG6pxs1fWF8BUi27+t7/W18QVJ+MT7ZRzncHSfmsTOutaYtYVRbM
+/UX7tzBrqSRuhgC5mAuF5ty5flb02vI6Wu5AiRS/Q2RUzna1qVncaxCpfQCrJu7Z
+GOLXijsrTltVBLGNOTOrVeZhO+tq7YLcyMhkoE/AszWMNATeU1hUFMKkRu4G3wcJ
+HB7sWZPB30XLb+Ky9izZJqtaNyVm08fJZKtUyJrJQzzgcvn5ls62CpUsKzh9wGBm
+848SFy8Li9pySa0aGuGPhZItaMf64UZh2jtpXSaSCZ3qEPMTqmnakAqJ2aNJf7RQ
+Yo8KRqt3/tp1vOlXFRtJX8AQ+n8UDT4x1iuAtzGGbXBxNLQhr4lNNUw0PB6QjZ+N
+veLmc9C7lh3xaRX2UTwJ8qphahabWixCeP1UYeC9jvjTGoOCGOnSrDTyKJ6+GECL
+mZmKBO020rsh6EGLZ8Z2k1zc53qIYRslwZEbgtsEveTd9Nsz26BK83ksebVsnscz
+J7KGYVbmQqYzVZ0zzTOA
+=JZxf
 -----END PGP SIGNATURE-----
 
---uX7BrQs69PbBafpd--
+--mW9eGbZzDIYYWqGs--

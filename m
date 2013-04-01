@@ -1,67 +1,74 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: [PATCH] spi/s3c64xx: Convert to bits_per_word_mask
-Date: Mon,  1 Apr 2013 14:18:29 +0100
-Message-ID: <1364822309-28386-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [REPOST PATCH] spi: Unlock a spinlock before calling into the
+ controller driver.
+Date: Mon, 1 Apr 2013 14:24:08 +0100
+Message-ID: <20130401132407.GL18636@opensource.wolfsonmicro.com>
+References: <1340409205-23606-1-git-send-email-bfreed@chromium.org>
+ <1363198660-21656-1-git-send-email-dianders@chromium.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Grant Likely <grant-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="/jkxxxtAhYIHVDuh"
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Olof Johansson <olof@lixom.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Bryan Freed <bfreed@chromium.org>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Doug Anderson <dianders@chromium.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1363198660-21656-1-git-send-email-dianders@chromium.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The core can do the validation for us.
 
-Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c |   10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+--/jkxxxtAhYIHVDuh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 7f5f8ee..27ff669 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -911,15 +911,6 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 
- 	spin_unlock_irqrestore(&sdd->lock, flags);
- 
--	if (spi->bits_per_word != 8
--			&& spi->bits_per_word != 16
--			&& spi->bits_per_word != 32) {
--		dev_err(&spi->dev, "setup: %dbits/wrd not supported!\n",
--							spi->bits_per_word);
--		err = -EINVAL;
--		goto setup_exit;
--	}
--
- 	pm_runtime_get_sync(&sdd->pdev->dev);
- 
- 	/* Check if we can provide the requested rate */
-@@ -1237,6 +1228,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	master->unprepare_transfer_hardware = s3c64xx_spi_unprepare_transfer;
- 	master->num_chipselect = sci->num_cs;
- 	master->dma_alignment = 8;
-+	master->bits_per_word_mask = BIT(32 - 1) | BIT(16 - 1) | BIT(8 - 1);
- 	/* the spi->mode bits understood by this driver: */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 
--- 
-1.7.10.4
+On Wed, Mar 13, 2013 at 11:17:40AM -0700, Doug Anderson wrote:
+> From: Bryan Freed <bfreed@chromium.org>
+>=20
+> spi_pump_messages() calls into a controller driver with
+> unprepare_transfer_hardware() which is documented as "This may sleep".
+> As in the prepare_transfer_hardware() call below, we should release the
+> queue_lock spinlock before making the call.
+> Rework the logic a bit to hold queue_lock to protect the 'busy' flag,
+> then release it to call unprepare_transfer_hardware().
 
+Applied, thanks.  However...
 
-------------------------------------------------------------------------------
-Own the Future-Intel&reg; Level Up Game Demo Contest 2013
-Rise to greatness in Intel's independent game demo contest.
-Compete for recognition, cash, and the chance to get your game 
-on Steam. $5K grand prize plus 10 genre and skill prizes. 
-Submit your demo by 6/6/13. http://p.sf.net/sfu/intel_levelupd2d
+>  		spin_unlock_irqrestore(&master->queue_lock, flags);
+> +		if (master->unprepare_transfer_hardware &&
+> +		    master->unprepare_transfer_hardware(master))
+> +			dev_err(&master->dev,
+> +				"failed to unprepare transfer hardware\n");
+
+=2E..it'd be nicer to pay attention to and log the error code if we fail
+to unprepare.
+
+--/jkxxxtAhYIHVDuh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRWYpgAAoJELSic+t+oim9ECIP/iup8GduvVOQinKDu+RE0ogo
+cLnr0hWZfCUbYzcHxfgjdRIr8YQiqqpO0sUJ8+JVSdYet4frz0gPXToOTOoyjLdj
+YjmJFrYBNd/D2LlYrIMLQxm1eQdIBgamBCftfVRuaE+kCMZ3IZY9qBYh86Iu3s6d
+fn1IQ9e/rnPpiU3Q83cImSBUMGEURh9wn8YiUOzwybzZnexmREtOURAiuTkVjDzz
+s3bNq5C07bnG0DcFRcgLuufxntQJ6eYT6V2w9O2UsurxWbjZysVn0/xUNI3ZxVkO
+aH1HvG849SMIhSUrI3rdpqCDEl1HznYwzgGmX3Cx9q0kyt/LXyVsBhjvHAX3gpwH
+CdYdRiqUoF4VM1K0Pf0di7WTa7B4C+5Xb3FRjczmqxJVFI5gD3ZKQ0ano06i1mJm
+gEx7dSOUhtSxAKtZwXgkyVnCUtMdOMzPJLJXNv4j2oyohdB2H/MDeIVBUIG1hMYw
+HEcY31rYcwWmCl1XaSL57DlRtIQQJfX2jgJ7ZwtAxV/R1tAMekeN8LG8KaD52K0H
+vtirTTlNNqJ+scT32itF6b94xAToEEhFmYtMGQBFapE2pQuB7qZgs34tcyLDmDXD
+EnJBTCKN1BoCDSfWgPvhtFrWRTjzGn0tmhnDak71RPngApfPCLUU9aqEiGvFGx28
+l6Tv19xvtTGxo83L05Vm
+=FaUh
+-----END PGP SIGNATURE-----
+
+--/jkxxxtAhYIHVDuh--

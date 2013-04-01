@@ -1,9 +1,8 @@
 From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH v2 RESEND] spi: spi-mpc512x-psc: add support for gpio chip
-	selects
-Date: Mon,  1 Apr 2013 17:29:21 +0200
-Message-ID: <1364830161-15016-1-git-send-email-agust@denx.de>
-References: <1363044215-24061-1-git-send-email-agust@denx.de>
+Subject: [PATCH] spi: spi-mpc512x-psc: let transmiter/receiver enabled when in
+	xfer loop
+Date: Mon,  1 Apr 2013 17:31:19 +0200
+Message-ID: <1364830279-15130-1-git-send-email-agust@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -11,7 +10,6 @@ Cc: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1363044215-24061-1-git-send-email-agust-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,114 +20,51 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Currently the driver only uses one internal chip select.
-Add support for gpio chip selects configured by cs-gpios
-DT binding.
+There is no need to disable transmitter/receiver after each loop
+iteration and re-enable it for next loop iteration. Enable the
+transmitter/receiver before xfer loop starts and disable it when
+the whole transfer is done.
 
 Signed-off-by: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
 ---
-v2 resend:
- - no changes, resend to Mark
-
-v2:
- - do not parse GPIO chip selects manually
-
- drivers/spi/spi-mpc512x-psc.c |   31 +++++++++++++++++++++++++------
- 1 files changed, 25 insertions(+), 6 deletions(-)
+ drivers/spi/spi-mpc512x-psc.c |   10 +++-------
+ 1 files changed, 3 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index 3e490ee..da60f26 100644
+index 3e490ee..0ea7c81 100644
 --- a/drivers/spi/spi-mpc512x-psc.c
 +++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -28,6 +28,7 @@
- #include <linux/clk.h>
- #include <linux/spi/spi.h>
- #include <linux/fsl_devices.h>
-+#include <linux/gpio.h>
- #include <asm/mpc52xx_psc.h>
+@@ -148,6 +148,9 @@ static int mpc512x_psc_spi_transfer_rxtx(struct spi_device *spi,
+ 	in_8(&psc->mode);
+ 	out_8(&psc->mode, 0x0);
  
- struct mpc512x_psc_spi {
-@@ -113,7 +114,7 @@ static void mpc512x_psc_spi_activate_cs(struct spi_device *spi)
- 	out_be32(&psc->ccr, ccr);
- 	mps->bits_per_word = cs->bits_per_word;
- 
--	if (mps->cs_control)
-+	if (mps->cs_control && gpio_is_valid(spi->cs_gpio))
- 		mps->cs_control(spi, (spi->mode & SPI_CS_HIGH) ? 1 : 0);
- }
- 
-@@ -121,7 +122,7 @@ static void mpc512x_psc_spi_deactivate_cs(struct spi_device *spi)
- {
- 	struct mpc512x_psc_spi *mps = spi_master_get_devdata(spi->master);
- 
--	if (mps->cs_control)
-+	if (mps->cs_control && gpio_is_valid(spi->cs_gpio))
- 		mps->cs_control(spi, (spi->mode & SPI_CS_HIGH) ? 0 : 1);
- 
- }
-@@ -278,6 +279,7 @@ static int mpc512x_psc_spi_setup(struct spi_device *spi)
- 	struct mpc512x_psc_spi *mps = spi_master_get_devdata(spi->master);
- 	struct mpc512x_psc_spi_cs *cs = spi->controller_state;
- 	unsigned long flags;
-+	int ret;
- 
- 	if (spi->bits_per_word % 8)
- 		return -EINVAL;
-@@ -286,6 +288,19 @@ static int mpc512x_psc_spi_setup(struct spi_device *spi)
- 		cs = kzalloc(sizeof *cs, GFP_KERNEL);
- 		if (!cs)
- 			return -ENOMEM;
++	/* enable transmiter/receiver */
++	out_8(&psc->command, MPC52xx_PSC_TX_ENABLE | MPC52xx_PSC_RX_ENABLE);
 +
-+		if (gpio_is_valid(spi->cs_gpio)) {
-+			ret = gpio_request(spi->cs_gpio, dev_name(&spi->dev));
-+			if (ret) {
-+				dev_err(&spi->dev, "can't get CS gpio: %d\n",
-+					ret);
-+				kfree(cs);
-+				return ret;
-+			}
-+			gpio_direction_output(spi->cs_gpio,
-+					spi->mode & SPI_CS_HIGH ? 0 : 1);
-+		}
-+
- 		spi->controller_state = cs;
+ 	while (len) {
+ 		int count;
+ 		int i;
+@@ -176,10 +179,6 @@ static int mpc512x_psc_spi_transfer_rxtx(struct spi_device *spi,
+ 		out_be32(&fifo->txisr, MPC512x_PSC_FIFO_EMPTY);
+ 		out_be32(&fifo->tximr, MPC512x_PSC_FIFO_EMPTY);
+ 
+-		/* enable transmiter/receiver */
+-		out_8(&psc->command,
+-		      MPC52xx_PSC_TX_ENABLE | MPC52xx_PSC_RX_ENABLE);
+-
+ 		wait_for_completion(&mps->done);
+ 
+ 		mdelay(1);
+@@ -204,9 +203,6 @@ static int mpc512x_psc_spi_transfer_rxtx(struct spi_device *spi,
+ 		while (in_be32(&fifo->rxcnt)) {
+ 			in_8(&fifo->rxdata_8);
+ 		}
+-
+-		out_8(&psc->command,
+-		      MPC52xx_PSC_TX_DISABLE | MPC52xx_PSC_RX_DISABLE);
  	}
- 
-@@ -319,6 +334,8 @@ static int mpc512x_psc_spi_transfer(struct spi_device *spi,
- 
- static void mpc512x_psc_spi_cleanup(struct spi_device *spi)
- {
-+	if (gpio_is_valid(spi->cs_gpio))
-+		gpio_free(spi->cs_gpio);
- 	kfree(spi->controller_state);
- }
- 
-@@ -405,6 +422,11 @@ static irqreturn_t mpc512x_psc_spi_isr(int irq, void *dev_id)
- 	return IRQ_NONE;
- }
- 
-+static void mpc512x_spi_cs_control(struct spi_device *spi, bool onoff)
-+{
-+	gpio_set_value(spi->cs_gpio, onoff);
-+}
-+
- /* bus_num is used only for the case dev->platform_data == NULL */
- static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 					      u32 size, unsigned int irq,
-@@ -425,12 +447,9 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	mps->irq = irq;
- 
- 	if (pdata == NULL) {
--		dev_err(dev, "probe called without platform data, no "
--			"cs_control function will be called\n");
--		mps->cs_control = NULL;
-+		mps->cs_control = mpc512x_spi_cs_control;
- 		mps->sysclk = 0;
- 		master->bus_num = bus_num;
--		master->num_chipselect = 255;
- 	} else {
- 		mps->cs_control = pdata->cs_control;
- 		mps->sysclk = pdata->sysclk;
+ 	/* disable transmiter/receiver and fifo interrupt */
+ 	out_8(&psc->command, MPC52xx_PSC_TX_DISABLE | MPC52xx_PSC_RX_DISABLE);
 -- 
 1.7.5.4
 

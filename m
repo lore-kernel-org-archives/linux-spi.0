@@ -1,62 +1,54 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v7 10/14] spi/spi-atmel: correct 16 bits transfers with
- DMA
-Date: Mon, 1 Apr 2013 14:53:59 +0100
-Message-ID: <20130401135359.GB18636@opensource.wolfsonmicro.com>
-References: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
- <1363679341-4087-1-git-send-email-wenyou.yang@atmel.com>
+From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH] spi: mpc512x-psc: optionally keep PSC SS asserted
+	across xfer segmensts
+Date: Mon, 1 Apr 2013 16:19:01 +0200
+Message-ID: <20130401161901.3090b2f0@crub>
+References: <1363183063-24947-1-git-send-email-agust@denx.de>
+	<20130401133017.GP18636@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="BKMA2OjimIttCqMD"
-Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
-	richard.genoud@gmail.com, plagnioj@jcrosoft.com,
-	nicolas.ferre@atmel.com, JM.Lin@atmel.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Wenyou Yang <wenyou.yang@atmel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1363679341-4087-1-git-send-email-wenyou.yang@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130401133017.GP18636-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Mon, 1 Apr 2013 14:30:17 +0100
+Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
 
---BKMA2OjimIttCqMD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Wed, Mar 13, 2013 at 02:57:43PM +0100, Anatolij Gustschin wrote:
+> > Some SPI slave devices require asserted chip select signal across
+> > multiple transfer segments of an SPI message. Currently the driver
+> 
+> This isn't some devices, it's the standard behaviour for the API -
+> drivers and frameworks can split up a SPI transfer into as many pieces
+> as amuses them.
+> 
+> Anyway, applied.
 
-On Tue, Mar 19, 2013 at 03:49:01PM +0800, Wenyou Yang wrote:
-> From: Richard Genoud <richard.genoud@gmail.com>
->=20
-> Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
-> Cc: spi-devel-general@lists.sourceforge.net
-> Cc: linux-kernel@vger.kernel.org
-> [wenyou.yang@atmel.com: submit the patch]
-> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
+Thanks!
 
-Shouldn't this be squashed into the dmaengine patch?
+Could you also apply this one ?
 
---BKMA2OjimIttCqMD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+https://patchwork.kernel.org/patch/2251911
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRWZFmAAoJELSic+t+oim9Z94P/2ryXkTFZ13wHy4iouAFosnC
-tZLp+QSizSreVYCzAFzXXUNUifpiPVGVMMEdrsKEhAqAQ9zv5dyNtKj71L1ETsoT
-SoYPvL8A3NxwkINftoLwnD0oqRLjrwFgRU9pBHsv5qMwYZ3cI8Y7j3dcPcWyKBlS
-X0xNxKB4SKNNFdlA6kpp8qh2m4f2M6rPYc+StfaCO8M2N9llQaLSaxqrJ0ztUIwM
-1rRb88dhZLrdiFG8mS0gMXQeYIcC7+SYfhEUDgcjwgAvxofvV6IlZvQj2X96PGOZ
-PGv4NJHDjR2xL5M7TyzjuVy2TMRhfhgTHxc7UfY4hadAnQxKcP8/GOVxptXkVqNv
-zUwOf+bSyxQ8W3sDrfJCcAyERhv07nW8GO93UYhsebiNmGySOz7Yf6o2KkaYrmCv
-z0o4AnVGEnETbEqrEGeZmF705W4k8ds3nGaqvKZNQfIWAP48V2fzZcdVDK2l5yAL
-CJSVo4g41PQsCQNQmmMB5ZYqTKIakSGKwKZ8zaGiV/MeTOPSQTwKlBcLoyBdXuM/
-V6HL75McLPiPZWGLwPZGECRMYxctyUw1zdU5oXHFjjunH/4lzV2z5zdeDukbVx6B
-D8QA/HKKh2oESTs95xK3lDgyb4dMqBM370aoxO/MAcdazEQBs2EXSh53MYmlOQno
-gBqQlBFz3n9I/6WWjuFC
-=/QaB
------END PGP SIGNATURE-----
+Thanks,
 
---BKMA2OjimIttCqMD--
+Anatolij
+
+------------------------------------------------------------------------------
+Own the Future-Intel&reg; Level Up Game Demo Contest 2013
+Rise to greatness in Intel's independent game demo contest.
+Compete for recognition, cash, and the chance to get your game 
+on Steam. $5K grand prize plus 10 genre and skill prizes. 
+Submit your demo by 6/6/13. http://p.sf.net/sfu/intel_levelupd2d

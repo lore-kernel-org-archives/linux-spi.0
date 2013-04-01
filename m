@@ -1,74 +1,57 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [REPOST PATCH] spi: Unlock a spinlock before calling into the
- controller driver.
-Date: Mon, 1 Apr 2013 14:24:08 +0100
-Message-ID: <20130401132407.GL18636@opensource.wolfsonmicro.com>
-References: <1340409205-23606-1-git-send-email-bfreed@chromium.org>
- <1363198660-21656-1-git-send-email-dianders@chromium.org>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH -next] spi: remove unused variable in
+ tegra_slink_read_rx_fifo_to_client_rxbuf()
+Date: Mon, 1 Apr 2013 14:28:02 +0100
+Message-ID: <20130401132802.GO18636@opensource.wolfsonmicro.com>
+References: <CAPgLHd8yTotMxH-Rb6UX3bsQrTTUM4SdQWNVDoU_LszgxM_qsQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="/jkxxxtAhYIHVDuh"
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Olof Johansson <olof@lixom.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bryan Freed <bfreed@chromium.org>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Doug Anderson <dianders@chromium.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="OAiy6VLsECigG9dy"
+Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1363198660-21656-1-git-send-email-dianders@chromium.org>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <CAPgLHd8yTotMxH-Rb6UX3bsQrTTUM4SdQWNVDoU_LszgxM_qsQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 
---/jkxxxtAhYIHVDuh
+--OAiy6VLsECigG9dy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 13, 2013 at 11:17:40AM -0700, Doug Anderson wrote:
-> From: Bryan Freed <bfreed@chromium.org>
+On Wed, Mar 13, 2013 at 09:29:12PM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 >=20
-> spi_pump_messages() calls into a controller driver with
-> unprepare_transfer_hardware() which is documented as "This may sleep".
-> As in the prepare_transfer_hardware() call below, we should release the
-> queue_lock spinlock before making the call.
-> Rework the logic a bit to hold queue_lock to protect the 'busy' flag,
-> then release it to call unprepare_transfer_hardware().
+> The variable bits_per_word is initialized but never used
+> otherwise, so remove the unused variable.
 
-Applied, thanks.  However...
+Applied, thanks.
 
->  		spin_unlock_irqrestore(&master->queue_lock, flags);
-> +		if (master->unprepare_transfer_hardware &&
-> +		    master->unprepare_transfer_hardware(master))
-> +			dev_err(&master->dev,
-> +				"failed to unprepare transfer hardware\n");
-
-=2E..it'd be nicer to pay attention to and log the error code if we fail
-to unprepare.
-
---/jkxxxtAhYIHVDuh
+--OAiy6VLsECigG9dy
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRWYpgAAoJELSic+t+oim9ECIP/iup8GduvVOQinKDu+RE0ogo
-cLnr0hWZfCUbYzcHxfgjdRIr8YQiqqpO0sUJ8+JVSdYet4frz0gPXToOTOoyjLdj
-YjmJFrYBNd/D2LlYrIMLQxm1eQdIBgamBCftfVRuaE+kCMZ3IZY9qBYh86Iu3s6d
-fn1IQ9e/rnPpiU3Q83cImSBUMGEURh9wn8YiUOzwybzZnexmREtOURAiuTkVjDzz
-s3bNq5C07bnG0DcFRcgLuufxntQJ6eYT6V2w9O2UsurxWbjZysVn0/xUNI3ZxVkO
-aH1HvG849SMIhSUrI3rdpqCDEl1HznYwzgGmX3Cx9q0kyt/LXyVsBhjvHAX3gpwH
-CdYdRiqUoF4VM1K0Pf0di7WTa7B4C+5Xb3FRjczmqxJVFI5gD3ZKQ0ano06i1mJm
-gEx7dSOUhtSxAKtZwXgkyVnCUtMdOMzPJLJXNv4j2oyohdB2H/MDeIVBUIG1hMYw
-HEcY31rYcwWmCl1XaSL57DlRtIQQJfX2jgJ7ZwtAxV/R1tAMekeN8LG8KaD52K0H
-vtirTTlNNqJ+scT32itF6b94xAToEEhFmYtMGQBFapE2pQuB7qZgs34tcyLDmDXD
-EnJBTCKN1BoCDSfWgPvhtFrWRTjzGn0tmhnDak71RPngApfPCLUU9aqEiGvFGx28
-l6Tv19xvtTGxo83L05Vm
-=FaUh
+iQIcBAEBAgAGBQJRWYtbAAoJELSic+t+oim96uEP/Rf2oo72G7qHrCgT6aw71uK6
+W90uyK6kloGj9Ba/34brpxSETRBU5DC/ggWcIYFZCwLjHjMdCv43hfq9DWJeu675
++7uPOjPeDGl2DHibtdVn7MEQX9lT460ZODSU4/cjguSzCcTp+UJxb8qEfNA3jI4A
+YC9U+UWHUmhPeW1Mfxu8p+cmoQQag/nEg/A/uxVgDGmuRBCfNyPFEQokhQcQTJzp
+o6nItb0IiK+7HtGNtykg7WU0vBAw8mvOjOMSMIaJ4xwIkg/OkBx4vxxx1Z5RkPEd
+QmVoqXoezXKVv4+TT2WBEaYtEKYYSimB1yX2rixCur871treQxtOcZZaJJ2ZwB3X
+LXCM6v3Z+ZtKYmTosPE7G2RE+u9dbltD+mzS2WORbcNTHbQSBhy2/7/tONE7rPRQ
+gNhTmmCOKuWpXQ1Sxc1YN3toDdT3wI3x/x2cLusa0Ptul29P8epBYafuNlUM1HoD
+F+IQJmcuPzwg5NVfdvFIOpe1R79QTCKNZrmsWipz6CNeXxuO98YIoCPRduqJhOZR
+Vq3PL0RfAuy1RgMVF2424Isgq/W9hIUImLlvGaZXP+/59nPU/TQs2U1eF5ZnMq6M
+bM+AgJHGgx4E7FuAoipe6eHNqkf17CVfvO1L2tPORfyxaRQO+g3Nh9Jx3M4qfpfp
+rfSId20b5NGiiKbh7jgh
+=0WWA
 -----END PGP SIGNATURE-----
 
---/jkxxxtAhYIHVDuh--
+--OAiy6VLsECigG9dy--

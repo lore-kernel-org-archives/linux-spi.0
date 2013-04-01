@@ -1,12 +1,13 @@
 From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v7 03/14] spi/spi-atmel: add physical base address
-Date: Mon, 1 Apr 2013 14:41:47 +0100
-Message-ID: <20130401134147.GV18636@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH v7 04/14] spi/spi-atmel: call unmapping on transfers
+ buffers
+Date: Mon, 1 Apr 2013 14:43:00 +0100
+Message-ID: <20130401134259.GW18636@opensource.wolfsonmicro.com>
 References: <1363678866-3567-1-git-send-email-wenyou.yang@atmel.com>
- <1363679016-3761-1-git-send-email-wenyou.yang@atmel.com>
+ <1363679062-3797-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CJCg3p2l15m1juT/"
+	protocol="application/pgp-signature"; boundary="Tm6VLls/w6NsRApE"
 Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
 	richard.genoud@gmail.com, plagnioj@jcrosoft.com,
 	nicolas.ferre@atmel.com, JM.Lin@atmel.com,
@@ -15,50 +16,40 @@ Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
 To: Wenyou Yang <wenyou.yang@atmel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1363679016-3761-1-git-send-email-wenyou.yang@atmel.com>
+In-Reply-To: <1363679062-3797-1-git-send-email-wenyou.yang@atmel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---CJCg3p2l15m1juT/
+--Tm6VLls/w6NsRApE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 19, 2013 at 03:43:36PM +0800, Wenyou Yang wrote:
+On Tue, Mar 19, 2013 at 03:44:22PM +0800, Wenyou Yang wrote:
+> From: Nicolas Ferre <nicolas.ferre@atmel.com>
 
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -196,6 +196,7 @@ struct atmel_spi_caps {
->  struct atmel_spi {
->  	spinlock_t		lock;
-> =20
-> +	resource_size_t		phybase;
->  	void __iomem		*regs;
->  	int			irq;
->  	struct clk		*clk;
+Applied, thanks.
 
-This looks like the wrong type?
-
---CJCg3p2l15m1juT/
+--Tm6VLls/w6NsRApE
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRWY6VAAoJELSic+t+oim9FhMP/AhJdtG8KaHzrNGMw/ll8WKb
-9CK1fA8Amr7w2Rl/b/TlrFjrcj9X6AAenQhv+foppMNBY2XhGYClipwkjRE3ZpsT
-qwL8Ydy47yzwWVzsGxqURkldIZYmY4M0dGC7sURUhMYPWWzmUE4SwfMVz18iI/PO
-fOdrVR134XAevH3wX+IIe5GuyJzeY3MSs24B96Webl/UDHkrHPYMTb+T/pr3IPHV
-w7ciaN8aYNuXLI2zjG4C4k2ITl88vucjtQRMRcDOg05GCjz8Luyg+D7JRTk1RQsY
-/y0D0Xdzng8GzzAEtN+jyluZMxDXXl6cUiCK6uevV9q54cmXj3ELMkXC0+5+O4tx
-3yRH3kLn4fENN9b2wlkXz7bs8YxhgmW/Wmqcjxq4de2ltLu2hMxCWpqTE6KQ52kA
-AuT6r/eWOaDMNOwwxhocIqNjNvMg44qe8UlgPqVWKzLqZsKUdi2krkbAafwcjn40
-+Pb1rZgz49KLccpdJdDVfv62F/1smscUgnAXIjo1lwz9KqDjYrSUbKqmjYVG+v7w
-w4qAgz5zdTmx72QG4JqVFArbjeMmLD3miCK7ynHF+tykWnCy3Mk2i+f5myTQR1f3
-PvEDOXb7FqGHRZk0aEIgCvQokqAtDMlPKfhYN/WtLH8FNr5HFibeus0yUmJBfdOU
-k9wa2WUUPNV0yH1RNHEb
-=aigl
+iQIcBAEBAgAGBQJRWY7dAAoJELSic+t+oim90b8P/2ZNXjrxCk9KouCre8TLm8Oe
+SAky68yVpXYkspk/hDpuir97T/04jzygFR/6qOD/N7wo4LzPsOTvQQ+MSCkC4/na
+woh2uED+lna1qBQjVC+pQBotPHsknBKErIzUpBsYrKovLWsaSBqQ1zuj1fPwQmJT
+Org8MjfB7g+Q7AHImjrecmypbAAq2fO/eS/AWrIbbbSmCpeKSsxOzLx8/shYTJ3k
+7HSxLlLkamX0TPuKHfRtFnPXIOahXrd/09XMtrnu2iZf0jLwwzVA+uOz//MQChWw
+1RwHjuxJD7OMwSzKoxiK8Ba+P9JzURgPfpjLnor+1eGMWVxw41pCvmQ6RKEUGsub
+4U/KrDeJElRLRudvZsntC/oN8Ulv1yKsgu87ztvHC38iTMlw/DtB5oyNELrIAQvN
+YIwoUE1iVJl2ocQIkP4YCR2Wovq7CJK4hCtBjtneRFNZVbOAhjPDbvicfKUbQjLk
+S9xA+FSyN8la7RmGOXgYL5OZFk7HCm585KcLA8EVbt15nk96uuYdt9PufIus1xE5
+ZFmoMDWpaqJSJJHVXcMcK2lZvvktCRyHxZ/82WQ1qkRuzdrxNek2Mm35aYTs6Tkw
+DzUC7SvMueTZTEXDfqsKdbaE6aU0wHAOu0uOgVa+gQhvlqPGB1wa4MQ3F61Ltiac
+aAypHYXslrZZ7OXtrlx6
+=rCQ4
 -----END PGP SIGNATURE-----
 
---CJCg3p2l15m1juT/--
+--Tm6VLls/w6NsRApE--

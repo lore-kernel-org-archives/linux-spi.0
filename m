@@ -1,12 +1,12 @@
-From: "Lucky Camping Car" <contact-ITtWA3W4OX1QFI55V6+gNQ@public.gmane.org>
-Subject: Gagnez 1 camping car
-Date: Tue, 02 Apr 2013 15:59:41 +0000 (CET)
-Message-ID: <130402155941.151310284800006176@obfm40.com>
+From: "Kevin S. Myers" <kevin.myers-cNgpF8dInVsAvxtiuMwx3w@public.gmane.org>
+Subject: Invitation - Please Complete Your Profile
+Date: Mon, 01 Apr 2013 23:54:17 -0400
+Message-ID: <fea8656b2a787a05904297cbc889fa7e@www.reinf.com>
+Reply-To: kevin.myers-cNgpF8dInVsAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,23 +18,73 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQwLmNvbS91c2xlNG1qbGgwa3F3cWd1aHkvaW5kZXgwLmh0bWwpCihodHRw
-Oi8vb2JmbTQwLmNvbS9lcWwzb216dmh3NGdlZ291M2wvaW5kZXgxLmh0bWwpCkbDqWxpY2l0YXRp
-b25zICwKTm91cyBzb21tZXMgaGV1cmV1eCBkZSB2b3VzIGludml0ZXIKCsOgIGdhZ25lciB2b3Ry
-ZSBjYW1waW5nIGNhciBvdQoKdW4gY2jDqHF1ZSBkZSAzMCAwMDAgZXVyb3MgZW4gcGFydGljaXBh
-bnQgw6Agbm90cmUgamV1LgoKKGh0dHA6Ly9vYmZtNDAuY29tL2tsbHVybWxtaGlzcTBjcXppcy9p
-bmRleDIuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL3ZqbGhkbW0xaHF0Z2QxanphZC9pbmRleDMu
-aHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tLzJsZ3JyZzVybWRkcW4ycXZqbC9pbmRleDQuaHRtbCkK
-KGh0dHA6Ly9vYmZtNDAuY29tL3RqZzRkZ3ljbWUwZ3YwanZxeS9pbmRleDUuaHRtbCkKKGh0dHA6
-Ly9vYmZtNDAuY29tLzBzZzU0Z25kbXJlcTJsZ25vZC9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vYmZt
-NDAuY29tL2JxZ25vZ2dlbWN3Z2xkb25ncy9pbmRleDcuaHRtbCkKLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCk1pbmltaXplIG5ldHdvcmsgZG93bnRpbWUgYW5kIG1heGltaXplIHRlYW0gZWZmZWN0aXZl
-bmVzcy4KUmVkdWNlIG5ldHdvcmsgbWFuYWdlbWVudCBhbmQgc2VjdXJpdHkgY29zdHMuTGVhcm4g
-aG93IHRvIGhpcmUgCnRoZSBtb3N0IHRhbGVudGVkIENpc2NvIENlcnRpZmllZCBwcm9mZXNzaW9u
-YWxzLiBWaXNpdCB0aGUgCkVtcGxveWVyIFJlc291cmNlcyBQb3J0YWwKaHR0cDovL3d3dy5jaXNj
-by5jb20vd2ViL2xlYXJuaW5nL2VtcGxveWVyX3Jlc291cmNlcy9pbmRleC5odG1sCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+FROM: Worldwide Registry for Business Professionals
+TO: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+RE: Worldwide Registry Publication
+
+Hello,
+
+You were recently chosen to represent your professional 
+community, deeming you eligible for the inclusion in 
+the new 2013 Edition of Worldwide Registry for Business 
+Professionals.
+
+We are pleased to inform you that your candidacy was 
+formally approved on February 1st, 2012. Congratulations!
+
+Click the link below to verify your profile and accept 
+the candidacy:
+
+http://www.reinf.com/link.php?M=443714&N=98&L=5&F=T
+
+The Publishing Committee selected you as a professional based not 
+only upon your current standing, but focusing as well on criteria 
+from executive and professional directories, associations, and 
+trade journals. Given your background, the Director believes your 
+profile makes a fitting addition to our publication.
+
+As we are working off of secondary sources, we must receive 
+verification from you that your profile is accurate. After 
+receiving verification, we will validate your registry listing 
+within seven business days.
+
+Once finalized, your listing will share prominent registry space 
+with thousands of fellow accomplished individuals across the 
+globe, each representing accomplishment within their own 
+geographical area.
+
+To verify your profile and accept the candidacy, please click this 
+link:
+
+http://www.reinf.com/link.php?M=443714&N=98&L=5&F=T
+
+Please kindly note that our registration deadline for this year's 
+publication is April 30th, 2013. To ensure you are included, 
+we must receive your verification on or before this date.
+
+On behalf of our Committee I salute your achievement and welcome 
+you to our association.
+
+
+Sincerely yours,
+
+Kevin S. Myers
+Vice-President, Research Division
+Worldwide Registry for Business Professionals
+http://www.reinf.com/link.php?M=443714&N=98&L=5&F=T
+
+887 Khale Street
+Florence, SC 29501
+
+
+
+If you would like to update your communication preferences, 
+please click the link below:
+
+http://www.reinf.com/unsubscribe.php?M=443714&C=b0d9b8716774051262504ee46931fb8e&L=44&N=98
+------------------------------------------------------------------------------
+Minimize network downtime and maximize team effectiveness.
+Reduce network management and security costs.Learn how to hire 
+the most talented Cisco Certified professionals. Visit the 
+Employer Resources Portal
+http://www.cisco.com/web/learning/employer_resources/index.html

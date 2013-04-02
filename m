@@ -1,43 +1,45 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v4 0/5] Enable SPI flash support on da850-evm DT kernel
-Date: Tue, 2 Apr 2013 15:41:05 +0530
-Message-ID: <515AAEB9.7030602@ti.com>
-References: <1363776419-10563-1-git-send-email-prakash.pm@ti.com>
- <51499A18.5020901@ti.com>
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: add ability to validate xfer->bits_per_word in
+	SPI core
+Date: Tue, 2 Apr 2013 03:12:40 -0700
+Message-ID: <CA+7tXihMJX1nD=MYPDxSxE5vCw27hbANKif7Y5ESKzaM6jx8rw@mail.gmail.com>
+References: <1364351878-26089-1-git-send-email-swarren@wwwdotorg.org>
+	<CA+7tXihDmXtUv7Gdu_zPEcWxVHQbZS=W8RjFhOThGo0bpAMDxQ@mail.gmail.com>
+	<515A443B.9080808@wwwdotorg.org>
+	<CA+7tXiheFL-n8Qv1XqgdniO2rMjZYeXqwDm-3D42XpXk3ik6_w@mail.gmail.com>
+	<20130402094544.GE23065@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org, linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org,
- linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
- Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
- spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, hs-ynQEQJNshbs@public.gmane.org,
- linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <51499A18.5020901-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130402094544.GE23065-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 3/20/2013 4:44 PM, Sekhar Nori wrote:
-> Grant,
-> 
-> On 3/20/2013 4:16 PM, Manjunathappa, Prakash wrote:
->> Patch enables support for m25p64 SPI flash support on
->> da850-EVM.
-> 
-> With your ack, I would like to merge this series through davinci tree
-> for v3.10. This will help manage dependencies for DT files.
+On Tue, Apr 2, 2013 at 2:45 AM, Mark Brown
+<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+>
+> I think if we're getting down to looking at the disassembly we're
+> perhaps overoptimising - in the common case we're then going to start
+> the hardware doing a data transfer which will take rather more time than
+> these instructions.
 
-Ping?
+My point was really that the smaller and simpler C code also produced
+better compiled code too, so why use the more complex code?
 
-Thanks,
-Sekhar
+------------------------------------------------------------------------------
+Own the Future-Intel(R) Level Up Game Demo Contest 2013
+Rise to greatness in Intel's independent game demo contest. Compete 
+for recognition, cash, and the chance to get your game on Steam. 
+$5K grand prize plus 10 genre and skill prizes. Submit your demo 
+by 6/6/13. http://altfarm.mediaplex.com/ad/ck/12124-176961-30367-2

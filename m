@@ -1,21 +1,21 @@
-From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: add ability to validate xfer->bits_per_word in
-	SPI core
-Date: Tue, 2 Apr 2013 03:12:40 -0700
-Message-ID: <CA+7tXihMJX1nD=MYPDxSxE5vCw27hbANKif7Y5ESKzaM6jx8rw@mail.gmail.com>
-References: <1364351878-26089-1-git-send-email-swarren@wwwdotorg.org>
-	<CA+7tXihDmXtUv7Gdu_zPEcWxVHQbZS=W8RjFhOThGo0bpAMDxQ@mail.gmail.com>
-	<515A443B.9080808@wwwdotorg.org>
-	<CA+7tXiheFL-n8Qv1XqgdniO2rMjZYeXqwDm-3D42XpXk3ik6_w@mail.gmail.com>
-	<20130402094544.GE23065@opensource.wolfsonmicro.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 1/5] spi/mxs: Fix extra CS pulses and read mode in
+	multi-transfer messages
+Date: Tue, 2 Apr 2013 12:32:12 +0200
+Message-ID: <201304021232.12736.marex@denx.de>
+References: <1364570381-17605-1-git-send-email-tpiepho@gmail.com>
+	<201304020622.52429.marex@denx.de>
+	<CA+7tXigvg+5k0Baa12CVwP5Ar7HUsJ8ihB19xrav4CNA6ZMFiA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130402094544.GE23065-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+In-Reply-To: <CA+7tXigvg+5k0Baa12CVwP5Ar7HUsJ8ihB19xrav4CNA6ZMFiA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,16 +26,112 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 2, 2013 at 2:45 AM, Mark Brown
-<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
->
-> I think if we're getting down to looking at the disassembly we're
-> perhaps overoptimising - in the common case we're then going to start
-> the hardware doing a data transfer which will take rather more time than
-> these instructions.
+Dear Trent Piepho,
 
-My point was really that the smaller and simpler C code also produced
-better compiled code too, so why use the more complex code?
+> On Mon, Apr 1, 2013 at 9:22 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+> >> On Mon, Apr 1, 2013 at 4:11 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+> >> >> +#define TXRX_WRITE           1       /* This is a write */
+> >> >> +#define TXRX_DEASSERT_CS     2       /* De-assert CS at end of txrx
+> >> >> */
+> > 
+> > btw. is it necessary to define new flags or is it possible to reuse some?
+> 
+> I don't see any others that would make sense.  The driver doesn't
+> define any flags at all.  The spi layer doesn't have ones that match.
+> And this is for a private static interface inside the driver.  It
+> wouldn't be right to co-opt flags defined for some other purpose.
+
+Ok, makes sense then.
+
+btw. if defining bitfield flags, it makes more sense to use (1 << n) notation to 
+make it more readable and also less prone to people using the actual flag value 
+as a bitshift argument.
+
+> >> >>       ctrl0 = readl(ssp->base + HW_SSP_CTRL0);
+> >> >> 
+> >> >> -     ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT;
+> >> >> +     ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT & ~BM_SSP_CTRL0_IGNORE_CRC &
+> >> >> +              ~BM_SSP_CTRL0_READ;
+> >> > 
+> >> > Well ... ctrl0 &= ~(FOO | BAR | BAZ); ... won't cut it?
+> >> 
+> >> Well, by De Morgan's law the two expressions are the same.  And they
+> >> are the same number of characters.  And both will produce a compile
+> >> time constant and thus the same code.  However, I like the ~FOO & ~BAR
+> >> & ~BAR form better as there is greater parallelism between each term
+> >> of the expression.
+> > 
+> > What about the law of readability of code ? ;-)
+> 
+> Don't see anything in CodingStyle that one should be preferred over
+> the other.
+
+There ain't any I'm aware of, but to paraphrase you, let's keep the format 
+that's already used in the driver ;-) :
+
+114         if (dev->mode & ~(SPI_CPOL | SPI_CPHA))
+
+> I think this way is more readable than the other.
+> Generally you can think of masking off bits via bitwise-and and
+> setting bits with bitwise-or.  So if you want to do a sequence of
+> masks, then using a sequence of bitwise-ands is the most readable and
+> straightforward code IMHO.  Combing bits to mask with bitwise-or, then
+> inverting the set and masking with that seems like a less clear way of
+> doing the same thing.  And this way the existing tokens aren't
+> modified, so there is less churn!
+> 
+> >> The DMA does write
+> >> ctrl0 on each segment of each transfer, but look at the previous
+> >> paragraph to see where it comes from.  Once READ or IGNORE_CRC are
+> >> set, nothing will clear them until PIO mode is used.
+> > 
+> > When using a flash, the DMA and PIO mode usage is intermixed. Usually,
+> > the PIO is used to program the command and then DMA to transmit the
+> > payload. It's hardly ever PIO only orr DMA only for the whole transfer.
+> 
+> Probably why the problem hasn't been noticed.  It's obvious from a
+> cursory examination of the driver that bits in ctrl0 are only SET in
+> the DMA code, never cleared.  The PIO code does clear them.
+> 
+> >> It's the same
+> >> with the bug fix for 3.9 that clears the XFER_COUNT bits in DMA mode.
+> >> Strangely, I didn't notice that bug since all my xfers are the same
+> >> length!  But I do switch between slaves, between read and write, and
+> >> use messages with multiple transfers, in DMA mode, all of which are
+> >> broken in the current driver.
+> > 
+> > btw. are you using MX23 or MX28 to test this?
+> 
+> IMX28.
+
+Is that any mainline board?
+
+> >> Existing code that uses the first/last flags is wrong and needs to be
+> >> changed.  Therefor code using 'first' and 'last' will be changed.
+> >> 
+> >> Passing the flags as pointers is bad practice and makes no sense to
+> >> do.  Does it make any sense to re-write code fix the way it uses first
+> >> and last, then re-write those same lines a second time to not use
+> >> pointers?
+> > 
+> > You can always flip it the other way -- first rework the use of flags,
+> > then apply the fix. It'd make the patch much easier to understand, don't
+> > you think?
+> 
+> So I should change 'first' to not be a pointer to an integer in one
+> patch, then delete the flag entirely in another patch?
+
+I'd say make a patch (0001) that implements the transition to using your newly 
+defined flags and then make a patch (0002) that "Fix extra CS pulses and read 
+mode in multi-transfer messages". One patch shall do one thing, that's the usual 
+rule of the thumb. Obviously keep them in a series if these patches shall go in 
+together. And why doesn't squashing them all together work you might ask -- 
+because reviewing the result is hard.
+
+[...]
+
+Best regards,
+Marek Vasut
 
 ------------------------------------------------------------------------------
 Own the Future-Intel(R) Level Up Game Demo Contest 2013

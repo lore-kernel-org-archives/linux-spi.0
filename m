@@ -1,18 +1,21 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: add ability to validate xfer->bits_per_word
-	in SPI core
-Date: Mon, 01 Apr 2013 20:36:43 -0600
-Message-ID: <515A443B.9080808@wwwdotorg.org>
-References: <1364351878-26089-1-git-send-email-swarren@wwwdotorg.org>
-	<CA+7tXihDmXtUv7Gdu_zPEcWxVHQbZS=W8RjFhOThGo0bpAMDxQ@mail.gmail.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 1/5] spi/mxs: Fix extra CS pulses and read mode in
+	multi-transfer messages
+Date: Tue, 2 Apr 2013 06:22:52 +0200
+Message-ID: <201304020622.52429.marex@denx.de>
+References: <1364570381-17605-1-git-send-email-tpiepho@gmail.com>
+	<201304020111.13969.marex@denx.de>
+	<CA+7tXigx=qcDDJZGAx7JEX+Y-CDG-B0xyYgs6fHbUZofH7gnKw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CA+7tXihDmXtUv7Gdu_zPEcWxVHQbZS=W8RjFhOThGo0bpAMDxQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CA+7tXigx=qcDDJZGAx7JEX+Y-CDG-B0xyYgs6fHbUZofH7gnKw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,60 +26,140 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/01/2013 01:52 PM, Trent Piepho wrote:
-> On Tue, Mar 26, 2013 at 7:37 PM, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
->> Allow SPI masters to define the set of bits_per_word values they support.
->> If they do this, then the SPI core will reject transfers that attempt to
->> use an unsupported bits_per_word value. This eliminates the need for each
->> SPI driver to implement this checking in most cases.
+Dear Trent Piepho,
 
->> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-
->> +               if (master->bits_per_word_mask) {
->> +                       /* Only 32 bits fit in the mask */
->> +                       if (xfer->bits_per_word > 32)
->> +                               return -EINVAL;
->> +                       if (!(master->bits_per_word_mask &
->> +                                       BIT(xfer->bits_per_word - 1)))
->> +                               return -EINVAL;
->> +               }
+> On Mon, Apr 1, 2013 at 4:11 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+> >> +#define TXRX_WRITE           1       /* This is a write */
+> >> +#define TXRX_DEASSERT_CS     2       /* De-assert CS at end of txrx */
+> > 
+> > New flags? I'm sure the GCC can optimize function parameters pretty well,
+> > esp. if you make the bool.
 > 
-> This could be simplified to:
-> 
->         if (master->bits_per_word_mask &&
->             !(master->bits_per_word_mask & BIT(xfer->bits_per_word - 1)))
->                 return -EINVAL;
-> 
-> It's not necessary to handle bits_per_word > 32 differently.  The
-> resulting mask will either be zero when unsigned long is 32 bits, or
-> have a bit set if unsigned long is 64 bits.  Either way, it won't
-> match any of the bits set in bits_per_word_mask and the desired result
-> is produced.  The extra test for > 32 will just slow down the common
-> case.
+> Nope.  I checked the actual compiled code.  Each bool takes another
+> parameter.  Since the txrx functions are large and called from
+> multiple sites, they are not inlined.  Gcc is not able to combine all
+> the bool arguments into one single bitfield argument.
 
-That's certainly true, and I did consider that. However, I preferred to
-be explicit. I imagine the compiler optimizes both to the same thing anyway.
+That's pretty poor, oh well.
 
->> @@ -301,6 +306,9 @@ struct spi_master {
->>         /* spi_device.mode flags understood by this controller driver */
->>         u16                     mode_bits;
->>
->> +       /* bitmask of supported bits_per_word for transfers */
->> +       u32                     bits_per_word_mask;
->> +
->>         /* other constraints relevant to this driver */
->>         u16                     flags;
+btw. is it necessary to define new flags or is it possible to reuse some?
+
+[...]
+
+> >>       ctrl0 = readl(ssp->base + HW_SSP_CTRL0);
+> >> 
+> >> -     ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT;
+> >> +     ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT & ~BM_SSP_CTRL0_IGNORE_CRC &
+> >> +              ~BM_SSP_CTRL0_READ;
+> > 
+> > Well ... ctrl0 &= ~(FOO | BAR | BAZ); ... won't cut it?
 > 
-> If the u32 field was before the u16 fields, then the structure would
-> have be more likely to not need padding in the future.  There are four
-> u16 in front of bits_per_word_mask so it doesn't need padding now
-> (however, there are 2 bytes of padding after flags), but if someone
-> adds a new 16-bit field in front of bits_per_word_mask then padding
-> will be added.
+> Well, by De Morgan's law the two expressions are the same.  And they
+> are the same number of characters.  And both will produce a compile
+> time constant and thus the same code.  However, I like the ~FOO & ~BAR
+> & ~BAR form better as there is greater parallelism between each term
+> of the expression.
 
-I was assuming whoever added any new fields would put thought into the
-alignment; the fields can easily be swapped around to avoid any extra
-padding when new fields are added.
+What about the law of readability of code ? ;-)
+
+> >>       ctrl0 |= BM_SSP_CTRL0_DATA_XFER | mxs_spi_cs_to_reg(cs);
+> >> 
+> >> -     if (*first)
+> >> -             ctrl0 |= BM_SSP_CTRL0_LOCK_CS;
+> > 
+> > The DMA will overwrite ctrl0 in each turn, did you try very long (>64kB
+> > long) transfers with your adjustments? To test this, you can try
+> > 
+> > $ dd if=/dev/mtdN of=/dev/null bs=1M
+> > 
+> > on sufficiently large SPI flash supporting the FAST_READ opcode.
+> 
+> Don't have SPI flash.  I did test with logic analyzer and the current
+> code is clearly broken and my changes clearly fix it.
+
+Good, but you clearly didn't test it in the most used case. This will clearly 
+piss off a lot of people if you break something. And this will clearly not be 
+good ;-)
+
+I'm clearly planning to test the code, but only once it's clearly possible to 
+tell apart churn from the actual fix (see my other rambling, just reminding 
+you). So I'll wait for V2 and give it a go on a large flash.
+
+> It should be obvious from looking a the code that it is wrong.
+
+Sorry, it is not obvious.
+
+> The DMA does write
+> ctrl0 on each segment of each transfer, but look at the previous
+> paragraph to see where it comes from.  Once READ or IGNORE_CRC are
+> set, nothing will clear them until PIO mode is used.
+
+When using a flash, the DMA and PIO mode usage is intermixed. Usually, the PIO 
+is used to program the command and then DMA to transmit the payload. It's hardly 
+ever PIO only orr DMA only for the whole transfer.
+
+> It's the same
+> with the bug fix for 3.9 that clears the XFER_COUNT bits in DMA mode.
+> Strangely, I didn't notice that bug since all my xfers are the same
+> length!  But I do switch between slaves, between read and write, and
+> use messages with multiple transfers, in DMA mode, all of which are
+> broken in the current driver.
+
+btw. are you using MX23 or MX28 to test this?
+
+> >> +             if ((sg_count + 1 == sgs) && (flags & TXRX_DEASSERT_CS))
+> >> 
+> >>                       ctrl0 |= BM_SSP_CTRL0_IGNORE_CRC;
+> >>               
+> >>               if (ssp->devid == IMX23_SSP) {
+> >> 
+> >> @@ -279,7 +267,7 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int
+> >> cs,
+> >> 
+> >>               sg_init_one(&dma_xfer[sg_count].sg, sg_buf, min);
+> >>               ret = dma_map_sg(ssp->dev, &dma_xfer[sg_count].sg, 1,
+> >> 
+> >> -                     write ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
+> >> +                     (flags & TXRX_WRITE) ? DMA_TO_DEVICE :
+> >> DMA_FROM_DEVICE);
+> > 
+> > I think this is unneeded.
+> 
+> Whatis ?  Setting the DMA direction or using flags?
+> 
+> Look at it this way:
+> 
+> Existing code that uses the first/last flags is wrong and needs to be
+> changed.  Therefor code using 'first' and 'last' will be changed.
+> 
+> Passing the flags as pointers is bad practice and makes no sense to
+> do.  Does it make any sense to re-write code fix the way it uses first
+> and last, then re-write those same lines a second time to not use
+> pointers?
+
+You can always flip it the other way -- first rework the use of flags, then 
+apply the fix. It'd make the patch much easier to understand, don't you think?
+
+> If the way the flags are passed should change, then why not do it the
+> most efficient way.  It isn't any more complicated and produces better
+> code.  One flag per parameter becomes cumbersome when more flags are
+> added for additional features.
+> 
+> I'm all for splitting my patches up.  I sent five patches when I bet 9
+> out 10 developers would have just done one.  But I don't think it
+> makes any sense to re-write the same line of code over and over again
+> in successive patches in a series before getting to the final version.
+>  It just makes more churn to review.
+
+Splitting the patchset to make it more understandable is OK though. And I'm 
+really getting lost in this patch.
+
+> I hate it when I get a series of patches and spot a flaw, take the
+> time to write up the flaw and how it should be fixed, only to discover
+> that the flaw is fixed later on in the series and I wasted my time.
+
+Best regards,
+Marek Vasut
 
 ------------------------------------------------------------------------------
 Own the Future-Intel(R) Level Up Game Demo Contest 2013

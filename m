@@ -1,8 +1,7 @@
 From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH V2 06/12] spi/mxs: Remove full duplex check,
-	spi core already does it
-Date: Tue,  2 Apr 2013 05:19:49 -0700
-Message-ID: <1364905195-24286-6-git-send-email-tpiepho@gmail.com>
+Subject: [PATCH V2 11/12] spi/mxs: Don't set clock for each xfer
+Date: Tue,  2 Apr 2013 05:19:54 -0700
+Message-ID: <1364905195-24286-11-git-send-email-tpiepho@gmail.com>
 References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,35 +22,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Because the driver sets the SPI_MASTER_HALF_DUPLEX flag, the spi core
-will check transfers to insure they are not full duplex.  It's not
-necessary to check that in the mxs driver as well.
+mxs_spi_setup_transfer() would set the SSP SCK rate every time it was
+called, which is before each transfer.  It is uncommon for the SCK rate to
+change between transfers and this causes unnecessary reprogramming of the
+clock registers.  Changed to only set the rate when it has changed.
+
+This significantly speeds up short SPI messages, especially messages made
+up of many transfers.  On an iMX287, using spidev with messages that
+consist of 511 transfers of 4 bytes each at an SCK of 48 MHz, the
+effective transfer rate more than doubles from about 290 KB/sec to 600
+KB/sec.
 
 Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mxs.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/spi/spi-mxs.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index ad3fd9c..208de97 100644
+index a7d5f85..12794ea 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -412,12 +412,6 @@ static int mxs_spi_transfer_one(struct spi_master *master,
- 		/* De-assert on last transfer, inverted by cs_change flag */
- 		flag = (&t->transfer_list == m->transfers.prev) ^ t->cs_change ?
- 		       TXRX_DEASSERT_CS : 0;
--		if ((t->rx_buf && t->tx_buf) || (t->rx_dma && t->tx_dma)) {
--			dev_err(ssp->dev,
--				"Cannot send and receive simultaneously\n");
--			status = -EINVAL;
--			break;
--		}
+@@ -68,6 +68,7 @@
+ struct mxs_spi {
+ 	struct mxs_ssp		ssp;
+ 	struct completion	c;
++	unsigned int		sck;	/* Rate requested (vs actual) */
+ };
  
- 		/*
- 		 * Small blocks can be transfered via PIO.
+ static int mxs_spi_setup_transfer(struct spi_device *dev,
+@@ -88,7 +89,19 @@ static int mxs_spi_setup_transfer(struct spi_device *dev,
+ 		return -EINVAL;
+ 	}
+ 
+-	mxs_ssp_set_clk_rate(ssp, hz);
++	if (hz != spi->sck) {
++		mxs_ssp_set_clk_rate(ssp, hz);
++		/*
++		 * Save requested value, not actual value from ssp->clk_rate.
++		 * Otherwise we would set the rate again each trasfer when
++		 * actual is not quite the same as requested.
++		 */
++		spi->sck = hz;
++		/*
++		 * Perhaps we should return an error if the actual clock is
++		 * nowhere close to what was requested?
++		 */
++	}
+ 
+ 	writel(BM_SSP_CTRL0_LOCK_CS,
+ 		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
 -- 
 1.7.10.4
 

@@ -1,10 +1,9 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH V2 03/12] spi/mxs: Change flag arguments in txrx functions
-	to bit flags
-Date: Wed, 3 Apr 2013 01:24:30 +0200
-Message-ID: <201304030124.30625.marex@denx.de>
+Subject: Re: [PATCH V2 05/12] spi/mxs: Fix chip select control bits in DMA mode
+Date: Wed, 3 Apr 2013 01:29:41 +0200
+Message-ID: <201304030129.41380.marex@denx.de>
 References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
-	<1364905195-24286-3-git-send-email-tpiepho@gmail.com>
+	<1364905195-24286-5-git-send-email-tpiepho@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,7 +12,7 @@ Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1364905195-24286-3-git-send-email-tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1364905195-24286-5-git-send-email-tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,75 +25,53 @@ List-Id: linux-spi.vger.kernel.org
 
 Dear Trent Piepho,
 
-> There are three flag arguments to the PIO and DMA txrx functions.  Two
-> are passed as pointers to integers, even though they are input only
-> and not modified, which makes no sense to do.  The third is passed as
-> an integer.
+> In DMA mode the chip select control bits would be ORed into the CTRL0
+> register without first clearing the bits.  This means that after
+> addressing slave 1 the bit would be still be set when addressing slave
+> 0, resulting in slave 1 continuing to be addressed.
 > 
-> The compiler must use an argument register or stack variable for each
-> flag this way.  By using bitflags in a single flag argument more
-> efficient and smaller code is produced since all the flags can fit in
-> a single register.  And all the flag arguments get cumbersome,
-> especially when more are added for things like GPIO chipselects.
+> The message handing function would pass the cs value to the txrx
+> function, which would re-program the bits on each transfer in the
+> message.  The selected cs does not change during a message so this is
+> inefficient.  It also means there are two different sets of code for
+> selecting the CS, one for PIO that worked and one for DMA that didn't.
 > 
-> The "first" flag is never used, so can just be deleted.
-> 
-> The "last" flag is renamed to DEASSERT_CS, since that's really what it
-> does.  The spi_transfer cs_change flag means that CS might be
-> de-asserted on a transfer which is not last and not de-assert on the
-> last transfer, so it is not which transfer is the last we need to know
-> but rather the transfers which after which CS should be de-asserted.
-> 
-> This also extends the driver to not ignore cs_change when setting the
-> DEASSERT_CS nee "last" flag.
+> Change the code to set the CS bits in the message transfer function
+> once.  Now the DMA and PIO txrx functions don't need to care about CS
+> at all.
 > 
 > Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 > Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 > Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->  drivers/spi/spi-mxs.c |   55
-> ++++++++++++++++++++++++++++--------------------- 1 file changed, 31
-> insertions(+), 24 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-> index 7eb4bc9..3064304 100644
-> --- a/drivers/spi/spi-mxs.c
-> +++ b/drivers/spi/spi-mxs.c
-> @@ -58,6 +58,13 @@
-> 
->  #define SG_MAXLEN		0xff00
-> 
-> +/*
-> + * Flags for txrx functions.  More efficient that using an argument
-> register for + * each one.
-> + */
-> +#define TXRX_WRITE		1	/* This is a write */
-> +#define TXRX_DEASSERT_CS	2	/* De-assert CS at end of txrx */
-> +
-
-Use (1 << n) here as these are bitfield flags.
 
 [...]
 
-> @@ -409,10 +418,9 @@ static int mxs_spi_transfer_one(struct spi_master
-> *master, if (status)
->  			break;
+> @@ -409,9 +396,12 @@ static int mxs_spi_transfer_one(struct spi_master
+> *master, struct spi_transfer *t, *tmp_t;
+>  	unsigned int flag;
+>  	int status = 0;
+> -	int cs;
 > 
-> -		if (&t->transfer_list == m->transfers.next)
-> -			first = 1;
-> -		if (&t->transfer_list == m->transfers.prev)
-> -			last = 1;
-> +		/* De-assert on last transfer, inverted by cs_change flag */
-> +		flag = (&t->transfer_list == m->transfers.prev) ^ t->cs_change ?
-> +		       TXRX_DEASSERT_CS : 0;
+> -	cs = m->spi->chip_select;
+> +	/* Program CS register bits here, it will be used for all transfers. */
+> +	writel(BM_SSP_CTRL0_WAIT_FOR_CMD | BM_SSP_CTRL0_WAIT_FOR_IRQ,
+> +	       ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
+> +	writel(mxs_spi_cs_to_reg(m->spi->chip_select),
+> +	       ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
 
-Make this into an if-else block, this really is hard to parse at first glance.
+I have no problem with this patch in general, but put this stuff back into a 
+function with proper description stating that these bits are not what their name 
+means. Having this stuff in the code just like that looks like hell and is 
+absolutely not clear about what it really does. Besides, having such things well 
+encapsulated makes further hacking on/maintainance of the driver much easier.
 
->  		if ((t->rx_buf && t->tx_buf) || (t->rx_dma && t->tx_dma)) {
->  			dev_err(ssp->dev,
->  				"Cannot send and receive simultaneously\n");
+>  	list_for_each_entry_safe(t, tmp_t, &m->transfers, transfer_list) {
+> 
+
 [...]
+Best regards,
+Marek Vasut
 
 ------------------------------------------------------------------------------
 Minimize network downtime and maximize team effectiveness.

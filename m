@@ -1,7 +1,8 @@
 From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH V2 08/12] spi/mxs: Fix race in setup method
-Date: Tue,  2 Apr 2013 05:19:51 -0700
-Message-ID: <1364905195-24286-8-git-send-email-tpiepho@gmail.com>
+Subject: [PATCH V2 06/12] spi/mxs: Remove full duplex check,
+	spi core already does it
+Date: Tue,  2 Apr 2013 05:19:49 -0700
+Message-ID: <1364905195-24286-6-git-send-email-tpiepho@gmail.com>
 References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,51 +23,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Despite many warnings in the SPI documentation and code, the spi-mxs
-driver sets shared chip registers in the ->setup method.  This method can
-be called when transfers are in progress on other slaves controlled by the
-master.  Setting registers or any other shared state will corrupt those
-transfers.
-
-So fix mxs_spi_setup() to not call mxs_spi_setup_transfer().
+Because the driver sets the SPI_MASTER_HALF_DUPLEX flag, the spi core
+will check transfers to insure they are not full duplex.  It's not
+necessary to check that in the mxs driver as well.
 
 Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mxs.c |   11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/spi/spi-mxs.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 103c478..2a2147a 100644
+index ad3fd9c..208de97 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -115,21 +115,16 @@ static int mxs_spi_setup_transfer(struct spi_device *dev,
+@@ -412,12 +412,6 @@ static int mxs_spi_transfer_one(struct spi_master *master,
+ 		/* De-assert on last transfer, inverted by cs_change flag */
+ 		flag = (&t->transfer_list == m->transfers.prev) ^ t->cs_change ?
+ 		       TXRX_DEASSERT_CS : 0;
+-		if ((t->rx_buf && t->tx_buf) || (t->rx_dma && t->tx_dma)) {
+-			dev_err(ssp->dev,
+-				"Cannot send and receive simultaneously\n");
+-			status = -EINVAL;
+-			break;
+-		}
  
- static int mxs_spi_setup(struct spi_device *dev)
- {
--	int err = 0;
--
- 	if (!dev->bits_per_word)
- 		dev->bits_per_word = 8;
- 
- 	if (dev->mode & ~(SPI_CPOL | SPI_CPHA))
- 		return -EINVAL;
- 
--	err = mxs_spi_setup_transfer(dev, NULL);
--	if (err) {
--		dev_err(&dev->dev,
--			"Failed to setup transfer, error = %d\n", err);
--	}
-+	if (dev->bits_per_word != 8)
-+		return -EINVAL;
- 
--	return err;
-+	return 0;
- }
- 
- static uint32_t mxs_spi_cs_to_reg(unsigned cs)
+ 		/*
+ 		 * Small blocks can be transfered via PIO.
 -- 
 1.7.10.4
 

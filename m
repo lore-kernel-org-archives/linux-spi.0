@@ -1,90 +1,99 @@
-From: "Kevin S. Myers" <kevin.myers-cNgpF8dInVsAvxtiuMwx3w@public.gmane.org>
-Subject: Invitation - Please Complete Your Profile
-Date: Mon, 01 Apr 2013 23:54:17 -0400
-Message-ID: <fea8656b2a787a05904297cbc889fa7e@www.reinf.com>
-Reply-To: kevin.myers-cNgpF8dInVsAvxtiuMwx3w@public.gmane.org
+From: Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH V2 01/12] spi/mxs: Always set LOCK_CS
+Date: Wed, 3 Apr 2013 01:18:42 +0200
+Message-ID: <201304030118.42976.marex@denx.de>
+References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Fabio Estevam <fabio.estevam@freescale.com>,
+ spi-devel-general@lists.sourceforge.net, Shawn Guo <shawn.guo@linaro.org>,
+ linux-arm-kernel@lists.infradead.org
+To: Trent Piepho <tpiepho@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-FROM: Worldwide Registry for Business Professionals
-TO: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-RE: Worldwide Registry Publication
+Dear Trent Piepho,
 
-Hello,
+> There are two bits which control the CS line in the CTRL0 register:
+> LOCK_CS and IGNORE_CRC.  The latter would be better named DEASSERT_CS
+> in SPI mode.
+> 
+> LOCK_CS keeps CS asserted though the entire transfer.  This should
+> always be set.  The DMA code will always set it, explicitly on the
+> first segment of the first transfer, and then implicitly on all the
+> rest by never clearing the bit from the value read from the ctrl0
+> register.
+> 
+> The only reason to not set LOCK_CS would be to attempt an altered
+> protocol where CS pulses between each word.  Though don't get your
+> hopes up if you want to do this, as the hardware doesn't appear to do
+> this in any sane manner.
 
-You were recently chosen to represent your professional 
-community, deeming you eligible for the inclusion in 
-the new 2013 Edition of Worldwide Registry for Business 
-Professionals.
+Can you please elaborate on this part above? The description is very vague.
 
-We are pleased to inform you that your candidacy was 
-formally approved on February 1st, 2012. Congratulations!
+Fabio, can you review this too please?
 
-Click the link below to verify your profile and accept 
-the candidacy:
+> The code can be simplified by just setting LOCK_CS once and then not
+> needing to deal with it in the PIO and DMA transfer functions.
+> 
+> Signed-off-by: Trent Piepho <tpiepho@gmail.com>
+> Cc: Marek Vasut <marex@denx.de>
+> Cc: Fabio Estevam <fabio.estevam@freescale.com>
+> Cc: Shawn Guo <shawn.guo@linaro.org>
+> ---
+>  drivers/spi/spi-mxs.c |    8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+> index 22a0af0..9334167 100644
+> --- a/drivers/spi/spi-mxs.c
+> +++ b/drivers/spi/spi-mxs.c
+> @@ -91,6 +91,8 @@ static int mxs_spi_setup_transfer(struct spi_device *dev,
+> 
+>  	mxs_ssp_set_clk_rate(ssp, hz);
+> 
+> +	writel(BM_SSP_CTRL0_LOCK_CS,
+> +		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
+>  	writel(BF_SSP_CTRL1_SSP_MODE(BV_SSP_CTRL1_SSP_MODE__SPI) |
+>  		     BF_SSP_CTRL1_WORD_LENGTH
+>  		     (BV_SSP_CTRL1_WORD_LENGTH__EIGHT_BITS) |
+> @@ -159,8 +161,6 @@ static inline void mxs_spi_enable(struct mxs_spi *spi)
+>  {
+>  	struct mxs_ssp *ssp = &spi->ssp;
+> 
+> -	writel(BM_SSP_CTRL0_LOCK_CS,
+> -		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
+>  	writel(BM_SSP_CTRL0_IGNORE_CRC,
+>  		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
+>  }
+> @@ -169,8 +169,6 @@ static inline void mxs_spi_disable(struct mxs_spi *spi)
+>  {
+>  	struct mxs_ssp *ssp = &spi->ssp;
+> 
+> -	writel(BM_SSP_CTRL0_LOCK_CS,
+> -		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
+>  	writel(BM_SSP_CTRL0_IGNORE_CRC,
+>  		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
+>  }
+> @@ -244,8 +242,6 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int
+> cs, ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT;
+>  	ctrl0 |= BM_SSP_CTRL0_DATA_XFER | mxs_spi_cs_to_reg(cs);
+> 
+> -	if (*first)
+> -		ctrl0 |= BM_SSP_CTRL0_LOCK_CS;
+>  	if (!write)
+>  		ctrl0 |= BM_SSP_CTRL0_READ;
 
-http://www.reinf.com/link.php?M=443714&N=98&L=5&F=T
-
-The Publishing Committee selected you as a professional based not 
-only upon your current standing, but focusing as well on criteria 
-from executive and professional directories, associations, and 
-trade journals. Given your background, the Director believes your 
-profile makes a fitting addition to our publication.
-
-As we are working off of secondary sources, we must receive 
-verification from you that your profile is accurate. After 
-receiving verification, we will validate your registry listing 
-within seven business days.
-
-Once finalized, your listing will share prominent registry space 
-with thousands of fellow accomplished individuals across the 
-globe, each representing accomplishment within their own 
-geographical area.
-
-To verify your profile and accept the candidacy, please click this 
-link:
-
-http://www.reinf.com/link.php?M=443714&N=98&L=5&F=T
-
-Please kindly note that our registration deadline for this year's 
-publication is April 30th, 2013. To ensure you are included, 
-we must receive your verification on or before this date.
-
-On behalf of our Committee I salute your achievement and welcome 
-you to our association.
-
-
-Sincerely yours,
-
-Kevin S. Myers
-Vice-President, Research Division
-Worldwide Registry for Business Professionals
-http://www.reinf.com/link.php?M=443714&N=98&L=5&F=T
-
-887 Khale Street
-Florence, SC 29501
-
-
-
-If you would like to update your communication preferences, 
-please click the link below:
-
-http://www.reinf.com/unsubscribe.php?M=443714&C=b0d9b8716774051262504ee46931fb8e&L=44&N=98
-------------------------------------------------------------------------------
-Minimize network downtime and maximize team effectiveness.
-Reduce network management and security costs.Learn how to hire 
-the most talented Cisco Certified professionals. Visit the 
-Employer Resources Portal
-http://www.cisco.com/web/learning/employer_resources/index.html
+Best regards,
+Marek Vasut

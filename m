@@ -1,22 +1,13 @@
-From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/5] spi/mxs: Fix extra CS pulses and read mode in
-	multi-transfer messages
-Date: Tue, 2 Apr 2013 05:40:48 -0700
-Message-ID: <CA+7tXii8xhZQeKU2dTN26LxySNXhJT9NgRXcJ21cOX64qYj1NA@mail.gmail.com>
-References: <1364570381-17605-1-git-send-email-tpiepho@gmail.com>
-	<201304020622.52429.marex@denx.de>
-	<CA+7tXigvg+5k0Baa12CVwP5Ar7HUsJ8ihB19xrav4CNA6ZMFiA@mail.gmail.com>
-	<201304021232.12736.marex@denx.de>
+From: "Lucky Camping Car" <contact-ITtWA3W4OX1QFI55V6+gNQ@public.gmane.org>
+Subject: Gagnez 1 camping car
+Date: Tue, 02 Apr 2013 15:59:41 +0000 (CET)
+Message-ID: <130402155941.151310284800006176@obfm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <201304021232.12736.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -27,58 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 2, 2013 at 3:32 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
->>
->> Don't see anything in CodingStyle that one should be preferred over
->> the other.
->
-> There ain't any I'm aware of, but to paraphrase you, let's keep the format
-> that's already used in the driver ;-) :
->
-> 114         if (dev->mode & ~(SPI_CPOL | SPI_CPHA))
-
-Thanks for pointing that out, as that code can be deleted.  Which
-means I don't need to be consistent with it anymore and can create a
-new standard, to be followed henceforth, now and forever.
-
-But it looks like the or method is more common in the kernel code.  So
-I'll change it in V2.
-
->> > btw. are you using MX23 or MX28 to test this?
->>
->> IMX28.
->
-> Is that any mainline board?
-
-Nope, custom hardware.
-
->> >> Existing code that uses the first/last flags is wrong and needs to be
->> >> changed.  Therefor code using 'first' and 'last' will be changed.
->> >>
->> >> Passing the flags as pointers is bad practice and makes no sense to
->> >> do.  Does it make any sense to re-write code fix the way it uses first
->> >> and last, then re-write those same lines a second time to not use
->> >> pointers?
->> >
->> > You can always flip it the other way -- first rework the use of flags,
->> > then apply the fix. It'd make the patch much easier to understand, don't
->> > you think?
->>
->> So I should change 'first' to not be a pointer to an integer in one
->> patch, then delete the flag entirely in another patch?
->
-> I'd say make a patch (0001) that implements the transition to using your newly
-> defined flags and then make a patch (0002) that "Fix extra CS pulses and read
-> mode in multi-transfer messages". One patch shall do one thing, that's the usual
-> rule of the thumb. Obviously keep them in a series if these patches shall go in
-> together. And why doesn't squashing them all together work you might ask --
-> because reviewing the result is hard.
-
-5 patches have now been split into 12.
-
-------------------------------------------------------------------------------
-Own the Future-Intel(R) Level Up Game Demo Contest 2013
-Rise to greatness in Intel's independent game demo contest. Compete 
-for recognition, cash, and the chance to get your game on Steam. 
-$5K grand prize plus 10 genre and skill prizes. Submit your demo 
-by 6/6/13. http://altfarm.mediaplex.com/ad/ck/12124-176961-30367-2
+CihodHRwOi8vb2JmbTQwLmNvbS91c2xlNG1qbGgwa3F3cWd1aHkvaW5kZXgwLmh0bWwpCihodHRw
+Oi8vb2JmbTQwLmNvbS9lcWwzb216dmh3NGdlZ291M2wvaW5kZXgxLmh0bWwpCkbDqWxpY2l0YXRp
+b25zICwKTm91cyBzb21tZXMgaGV1cmV1eCBkZSB2b3VzIGludml0ZXIKCsOgIGdhZ25lciB2b3Ry
+ZSBjYW1waW5nIGNhciBvdQoKdW4gY2jDqHF1ZSBkZSAzMCAwMDAgZXVyb3MgZW4gcGFydGljaXBh
+bnQgw6Agbm90cmUgamV1LgoKKGh0dHA6Ly9vYmZtNDAuY29tL2tsbHVybWxtaGlzcTBjcXppcy9p
+bmRleDIuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL3ZqbGhkbW0xaHF0Z2QxanphZC9pbmRleDMu
+aHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tLzJsZ3JyZzVybWRkcW4ycXZqbC9pbmRleDQuaHRtbCkK
+KGh0dHA6Ly9vYmZtNDAuY29tL3RqZzRkZ3ljbWUwZ3YwanZxeS9pbmRleDUuaHRtbCkKKGh0dHA6
+Ly9vYmZtNDAuY29tLzBzZzU0Z25kbXJlcTJsZ25vZC9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vYmZt
+NDAuY29tL2JxZ25vZ2dlbWN3Z2xkb25ncy9pbmRleDcuaHRtbCkKLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCk1pbmltaXplIG5ldHdvcmsgZG93bnRpbWUgYW5kIG1heGltaXplIHRlYW0gZWZmZWN0aXZl
+bmVzcy4KUmVkdWNlIG5ldHdvcmsgbWFuYWdlbWVudCBhbmQgc2VjdXJpdHkgY29zdHMuTGVhcm4g
+aG93IHRvIGhpcmUgCnRoZSBtb3N0IHRhbGVudGVkIENpc2NvIENlcnRpZmllZCBwcm9mZXNzaW9u
+YWxzLiBWaXNpdCB0aGUgCkVtcGxveWVyIFJlc291cmNlcyBQb3J0YWwKaHR0cDovL3d3dy5jaXNj
+by5jb20vd2ViL2xlYXJuaW5nL2VtcGxveWVyX3Jlc291cmNlcy9pbmRleC5odG1sCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
+IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
+cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
+YWwK

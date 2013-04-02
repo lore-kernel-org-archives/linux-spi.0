@@ -1,99 +1,104 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH V2 01/12] spi/mxs: Always set LOCK_CS
-Date: Wed, 3 Apr 2013 01:18:42 +0200
-Message-ID: <201304030118.42976.marex@denx.de>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH V2 03/12] spi/mxs: Change flag arguments in txrx functions
+	to bit flags
+Date: Wed, 3 Apr 2013 01:24:30 +0200
+Message-ID: <201304030124.30625.marex@denx.de>
 References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
+	<1364905195-24286-3-git-send-email-tpiepho@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam@freescale.com>,
- spi-devel-general@lists.sourceforge.net, Shawn Guo <shawn.guo@linaro.org>,
- linux-arm-kernel@lists.infradead.org
-To: Trent Piepho <tpiepho@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1364905195-24286-3-git-send-email-tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 Dear Trent Piepho,
 
-> There are two bits which control the CS line in the CTRL0 register:
-> LOCK_CS and IGNORE_CRC.  The latter would be better named DEASSERT_CS
-> in SPI mode.
+> There are three flag arguments to the PIO and DMA txrx functions.  Two
+> are passed as pointers to integers, even though they are input only
+> and not modified, which makes no sense to do.  The third is passed as
+> an integer.
 > 
-> LOCK_CS keeps CS asserted though the entire transfer.  This should
-> always be set.  The DMA code will always set it, explicitly on the
-> first segment of the first transfer, and then implicitly on all the
-> rest by never clearing the bit from the value read from the ctrl0
-> register.
+> The compiler must use an argument register or stack variable for each
+> flag this way.  By using bitflags in a single flag argument more
+> efficient and smaller code is produced since all the flags can fit in
+> a single register.  And all the flag arguments get cumbersome,
+> especially when more are added for things like GPIO chipselects.
 > 
-> The only reason to not set LOCK_CS would be to attempt an altered
-> protocol where CS pulses between each word.  Though don't get your
-> hopes up if you want to do this, as the hardware doesn't appear to do
-> this in any sane manner.
-
-Can you please elaborate on this part above? The description is very vague.
-
-Fabio, can you review this too please?
-
-> The code can be simplified by just setting LOCK_CS once and then not
-> needing to deal with it in the PIO and DMA transfer functions.
+> The "first" flag is never used, so can just be deleted.
 > 
-> Signed-off-by: Trent Piepho <tpiepho@gmail.com>
-> Cc: Marek Vasut <marex@denx.de>
-> Cc: Fabio Estevam <fabio.estevam@freescale.com>
-> Cc: Shawn Guo <shawn.guo@linaro.org>
+> The "last" flag is renamed to DEASSERT_CS, since that's really what it
+> does.  The spi_transfer cs_change flag means that CS might be
+> de-asserted on a transfer which is not last and not de-assert on the
+> last transfer, so it is not which transfer is the last we need to know
+> but rather the transfers which after which CS should be de-asserted.
+> 
+> This also extends the driver to not ignore cs_change when setting the
+> DEASSERT_CS nee "last" flag.
+> 
+> Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+> Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 > ---
->  drivers/spi/spi-mxs.c |    8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
+>  drivers/spi/spi-mxs.c |   55
+> ++++++++++++++++++++++++++++--------------------- 1 file changed, 31
+> insertions(+), 24 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-> index 22a0af0..9334167 100644
+> index 7eb4bc9..3064304 100644
 > --- a/drivers/spi/spi-mxs.c
 > +++ b/drivers/spi/spi-mxs.c
-> @@ -91,6 +91,8 @@ static int mxs_spi_setup_transfer(struct spi_device *dev,
+> @@ -58,6 +58,13 @@
 > 
->  	mxs_ssp_set_clk_rate(ssp, hz);
+>  #define SG_MAXLEN		0xff00
 > 
-> +	writel(BM_SSP_CTRL0_LOCK_CS,
-> +		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
->  	writel(BF_SSP_CTRL1_SSP_MODE(BV_SSP_CTRL1_SSP_MODE__SPI) |
->  		     BF_SSP_CTRL1_WORD_LENGTH
->  		     (BV_SSP_CTRL1_WORD_LENGTH__EIGHT_BITS) |
-> @@ -159,8 +161,6 @@ static inline void mxs_spi_enable(struct mxs_spi *spi)
->  {
->  	struct mxs_ssp *ssp = &spi->ssp;
-> 
-> -	writel(BM_SSP_CTRL0_LOCK_CS,
-> -		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
->  	writel(BM_SSP_CTRL0_IGNORE_CRC,
->  		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
->  }
-> @@ -169,8 +169,6 @@ static inline void mxs_spi_disable(struct mxs_spi *spi)
->  {
->  	struct mxs_ssp *ssp = &spi->ssp;
-> 
-> -	writel(BM_SSP_CTRL0_LOCK_CS,
-> -		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
->  	writel(BM_SSP_CTRL0_IGNORE_CRC,
->  		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
->  }
-> @@ -244,8 +242,6 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int
-> cs, ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT;
->  	ctrl0 |= BM_SSP_CTRL0_DATA_XFER | mxs_spi_cs_to_reg(cs);
-> 
-> -	if (*first)
-> -		ctrl0 |= BM_SSP_CTRL0_LOCK_CS;
->  	if (!write)
->  		ctrl0 |= BM_SSP_CTRL0_READ;
+> +/*
+> + * Flags for txrx functions.  More efficient that using an argument
+> register for + * each one.
+> + */
+> +#define TXRX_WRITE		1	/* This is a write */
+> +#define TXRX_DEASSERT_CS	2	/* De-assert CS at end of txrx */
+> +
 
-Best regards,
-Marek Vasut
+Use (1 << n) here as these are bitfield flags.
+
+[...]
+
+> @@ -409,10 +418,9 @@ static int mxs_spi_transfer_one(struct spi_master
+> *master, if (status)
+>  			break;
+> 
+> -		if (&t->transfer_list == m->transfers.next)
+> -			first = 1;
+> -		if (&t->transfer_list == m->transfers.prev)
+> -			last = 1;
+> +		/* De-assert on last transfer, inverted by cs_change flag */
+> +		flag = (&t->transfer_list == m->transfers.prev) ^ t->cs_change ?
+> +		       TXRX_DEASSERT_CS : 0;
+
+Make this into an if-else block, this really is hard to parse at first glance.
+
+>  		if ((t->rx_buf && t->tx_buf) || (t->rx_dma && t->tx_dma)) {
+>  			dev_err(ssp->dev,
+>  				"Cannot send and receive simultaneously\n");
+[...]
+
+------------------------------------------------------------------------------
+Minimize network downtime and maximize team effectiveness.
+Reduce network management and security costs.Learn how to hire 
+the most talented Cisco Certified professionals. Visit the 
+Employer Resources Portal
+http://www.cisco.com/web/learning/employer_resources/index.html

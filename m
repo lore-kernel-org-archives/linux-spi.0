@@ -1,7 +1,7 @@
 From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH V2 09/12] spi/mxs: Remove check of spi mode bits
-Date: Tue,  2 Apr 2013 05:19:52 -0700
-Message-ID: <1364905195-24286-9-git-send-email-tpiepho@gmail.com>
+Subject: [PATCH V2 12/12] spi/mxs: Use u32 instead of uint32_t
+Date: Tue,  2 Apr 2013 05:19:55 -0700
+Message-ID: <1364905195-24286-12-git-send-email-tpiepho@gmail.com>
 References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,31 +22,54 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi core already checks for a slave setting mode bits that we
-didn't list as supported when the master was registered.  There is no
-need to do it again in the master driver.
+It's consistent with all the other spi drivers that way.
 
 Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mxs.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi-mxs.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 2a2147a..d71029e 100644
+index 12794ea..aafd069 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -118,9 +118,6 @@ static int mxs_spi_setup(struct spi_device *dev)
- 	if (!dev->bits_per_word)
- 		dev->bits_per_word = 8;
+@@ -129,9 +129,9 @@ static int mxs_spi_setup(struct spi_device *dev)
+ 	return 0;
+ }
  
--	if (dev->mode & ~(SPI_CPOL | SPI_CPHA))
--		return -EINVAL;
--
- 	if (dev->bits_per_word != 8)
- 		return -EINVAL;
+-static uint32_t mxs_spi_cs_to_reg(unsigned cs)
++static u32 mxs_spi_cs_to_reg(unsigned cs)
+ {
+-	uint32_t select = 0;
++	u32 select = 0;
+ 
+ 	/*
+ 	 * i.MX28 Datasheet: 17.10.1: HW_SSP_CTRL0
+@@ -153,7 +153,7 @@ static int mxs_ssp_wait(struct mxs_spi *spi, int offset, int mask, bool set)
+ {
+ 	const unsigned long timeout = jiffies + msecs_to_jiffies(SSP_TIMEOUT);
+ 	struct mxs_ssp *ssp = &spi->ssp;
+-	uint32_t reg;
++	u32 reg;
+ 
+ 	do {
+ 		reg = readl_relaxed(ssp->base + offset);
+@@ -197,11 +197,11 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi,
+ 	const int sgs = DIV_ROUND_UP(len, desc_len);
+ 	int sg_count;
+ 	int min, ret;
+-	uint32_t ctrl0;
++	u32 ctrl0;
+ 	struct page *vm_page;
+ 	void *sg_buf;
+ 	struct {
+-		uint32_t		pio[4];
++		u32			pio[4];
+ 		struct scatterlist	sg;
+ 	} *dma_xfer;
  
 -- 
 1.7.10.4

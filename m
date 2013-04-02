@@ -1,23 +1,18 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: add ability to validate xfer->bits_per_word in
-	SPI core
-Date: Tue, 2 Apr 2013 13:33:24 +0200
-Message-ID: <CAOiHx=kSNUDpaD1nnT1K0cxa1KfcUUGceVZmk0piYMO4itrSJA@mail.gmail.com>
-References: <1364351878-26089-1-git-send-email-swarren@wwwdotorg.org>
-	<CA+7tXihDmXtUv7Gdu_zPEcWxVHQbZS=W8RjFhOThGo0bpAMDxQ@mail.gmail.com>
-	<515A443B.9080808@wwwdotorg.org>
-	<CA+7tXiheFL-n8Qv1XqgdniO2rMjZYeXqwDm-3D42XpXk3ik6_w@mail.gmail.com>
-	<20130402094544.GE23065@opensource.wolfsonmicro.com>
-	<CA+7tXihMJX1nD=MYPDxSxE5vCw27hbANKif7Y5ESKzaM6jx8rw@mail.gmail.com>
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH V2 03/12] spi/mxs: Change flag arguments in txrx functions to
+	bit flags
+Date: Tue,  2 Apr 2013 05:19:46 -0700
+Message-ID: <1364905195-24286-3-git-send-email-tpiepho@gmail.com>
+References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CA+7tXihMJX1nD=MYPDxSxE5vCw27hbANKif7Y5ESKzaM6jx8rw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1364905195-24286-1-git-send-email-tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,25 +23,224 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 2 April 2013 12:12, Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> On Tue, Apr 2, 2013 at 2:45 AM, Mark Brown
-> <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
->>
->> I think if we're getting down to looking at the disassembly we're
->> perhaps overoptimising - in the common case we're then going to start
->> the hardware doing a data transfer which will take rather more time than
->> these instructions.
->
-> My point was really that the smaller and simpler C code also produced
-> better compiled code too, so why use the more complex code?
+There are three flag arguments to the PIO and DMA txrx functions.  Two
+are passed as pointers to integers, even though they are input only
+and not modified, which makes no sense to do.  The third is passed as
+an integer.
 
-Because a shift of more than or equal the width of the data type is
-"undefined behavior" in C, which is a Bad Thing (tm). At least on
-MIPS, with a 32-bit datatype BIT(i) == BIT(i % 32) - so e.g. a check
-for bits_per_words of 40 would actually check for 8.
+The compiler must use an argument register or stack variable for each
+flag this way.  By using bitflags in a single flag argument more
+efficient and smaller code is produced since all the flags can fit in
+a single register.  And all the flag arguments get cumbersome,
+especially when more are added for things like GPIO chipselects.
 
-Regards
-Jonas
+The "first" flag is never used, so can just be deleted.
+
+The "last" flag is renamed to DEASSERT_CS, since that's really what it
+does.  The spi_transfer cs_change flag means that CS might be
+de-asserted on a transfer which is not last and not de-assert on the
+last transfer, so it is not which transfer is the last we need to know
+but rather the transfers which after which CS should be de-asserted.
+
+This also extends the driver to not ignore cs_change when setting the
+DEASSERT_CS nee "last" flag.
+
+Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-mxs.c |   55 ++++++++++++++++++++++++++++---------------------
+ 1 file changed, 31 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 7eb4bc9..3064304 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -58,6 +58,13 @@
+ 
+ #define SG_MAXLEN		0xff00
+ 
++/*
++ * Flags for txrx functions.  More efficient that using an argument register for
++ * each one.
++ */
++#define TXRX_WRITE		1	/* This is a write */
++#define TXRX_DEASSERT_CS	2	/* De-assert CS at end of txrx */
++
+ struct mxs_spi {
+ 	struct mxs_ssp		ssp;
+ 	struct completion	c;
+@@ -196,7 +203,7 @@ static irqreturn_t mxs_ssp_irq_handler(int irq, void *dev_id)
+ 
+ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
+ 			    unsigned char *buf, int len,
+-			    int *first, int *last, int write)
++			    unsigned int flags)
+ {
+ 	struct mxs_ssp *ssp = &spi->ssp;
+ 	struct dma_async_tx_descriptor *desc = NULL;
+@@ -226,15 +233,19 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
+ 	ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT;
+ 	ctrl0 |= BM_SSP_CTRL0_DATA_XFER | mxs_spi_cs_to_reg(cs);
+ 
+-	if (!write)
++	if (!(flags & TXRX_WRITE))
+ 		ctrl0 |= BM_SSP_CTRL0_READ;
+ 
+ 	/* Queue the DMA data transfer. */
+ 	for (sg_count = 0; sg_count < sgs; sg_count++) {
++		/* Prepare the transfer descriptor. */
+ 		min = min(len, desc_len);
+ 
+-		/* Prepare the transfer descriptor. */
+-		if ((sg_count + 1 == sgs) && *last)
++		/*
++		 * De-assert CS on last segment if flag is set (i.e., no more
++		 * transfers will follow)
++		 */
++		if ((sg_count + 1 == sgs) && (flags & TXRX_DEASSERT_CS))
+ 			ctrl0 |= BM_SSP_CTRL0_IGNORE_CRC;
+ 
+ 		if (ssp->devid == IMX23_SSP) {
+@@ -259,7 +270,7 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
+ 
+ 		sg_init_one(&dma_xfer[sg_count].sg, sg_buf, min);
+ 		ret = dma_map_sg(ssp->dev, &dma_xfer[sg_count].sg, 1,
+-			write ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
++			(flags & TXRX_WRITE) ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
+ 
+ 		len -= min;
+ 		buf += min;
+@@ -279,7 +290,7 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
+ 
+ 		desc = dmaengine_prep_slave_sg(ssp->dmach,
+ 				&dma_xfer[sg_count].sg, 1,
+-				write ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM,
++				(flags & TXRX_WRITE) ? DMA_MEM_TO_DEV : DMA_DEV_TO_MEM,
+ 				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 
+ 		if (!desc) {
+@@ -316,7 +327,7 @@ err_vmalloc:
+ 	while (--sg_count >= 0) {
+ err_mapped:
+ 		dma_unmap_sg(ssp->dev, &dma_xfer[sg_count].sg, 1,
+-			write ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
++			(flags & TXRX_WRITE) ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
+ 	}
+ 
+ 	kfree(dma_xfer);
+@@ -326,7 +337,7 @@ err_mapped:
+ 
+ static int mxs_spi_txrx_pio(struct mxs_spi *spi, int cs,
+ 			    unsigned char *buf, int len,
+-			    int *first, int *last, int write)
++			    unsigned int flags)
+ {
+ 	struct mxs_ssp *ssp = &spi->ssp;
+ 
+@@ -337,7 +348,7 @@ static int mxs_spi_txrx_pio(struct mxs_spi *spi, int cs,
+ 	mxs_spi_set_cs(spi, cs);
+ 
+ 	while (len--) {
+-		if (*last && len == 0)
++		if (len == 0 && (flags & TXRX_DEASSERT_CS))
+ 			writel(BM_SSP_CTRL0_IGNORE_CRC,
+ 			       ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
+ 
+@@ -350,7 +361,7 @@ static int mxs_spi_txrx_pio(struct mxs_spi *spi, int cs,
+ 			writel(1, ssp->base + HW_SSP_XFER_SIZE);
+ 		}
+ 
+-		if (write)
++		if (flags & TXRX_WRITE)
+ 			writel(BM_SSP_CTRL0_READ,
+ 				ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
+ 		else
+@@ -363,13 +374,13 @@ static int mxs_spi_txrx_pio(struct mxs_spi *spi, int cs,
+ 		if (mxs_ssp_wait(spi, HW_SSP_CTRL0, BM_SSP_CTRL0_RUN, 1))
+ 			return -ETIMEDOUT;
+ 
+-		if (write)
++		if (flags & TXRX_WRITE)
+ 			writel(*buf, ssp->base + HW_SSP_DATA(ssp));
+ 
+ 		writel(BM_SSP_CTRL0_DATA_XFER,
+ 			     ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
+ 
+-		if (!write) {
++		if (!(flags & TXRX_WRITE)) {
+ 			if (mxs_ssp_wait(spi, HW_SSP_STATUS(ssp),
+ 						BM_SSP_STATUS_FIFO_EMPTY, 0))
+ 				return -ETIMEDOUT;
+@@ -394,13 +405,11 @@ static int mxs_spi_transfer_one(struct spi_master *master,
+ {
+ 	struct mxs_spi *spi = spi_master_get_devdata(master);
+ 	struct mxs_ssp *ssp = &spi->ssp;
+-	int first, last;
+ 	struct spi_transfer *t, *tmp_t;
++	unsigned int flag;
+ 	int status = 0;
+ 	int cs;
+ 
+-	first = last = 0;
+-
+ 	cs = m->spi->chip_select;
+ 
+ 	list_for_each_entry_safe(t, tmp_t, &m->transfers, transfer_list) {
+@@ -409,10 +418,9 @@ static int mxs_spi_transfer_one(struct spi_master *master,
+ 		if (status)
+ 			break;
+ 
+-		if (&t->transfer_list == m->transfers.next)
+-			first = 1;
+-		if (&t->transfer_list == m->transfers.prev)
+-			last = 1;
++		/* De-assert on last transfer, inverted by cs_change flag */
++		flag = (&t->transfer_list == m->transfers.prev) ^ t->cs_change ?
++		       TXRX_DEASSERT_CS : 0;
+ 		if ((t->rx_buf && t->tx_buf) || (t->rx_dma && t->tx_dma)) {
+ 			dev_err(ssp->dev,
+ 				"Cannot send and receive simultaneously\n");
+@@ -437,11 +445,11 @@ static int mxs_spi_transfer_one(struct spi_master *master,
+ 			if (t->tx_buf)
+ 				status = mxs_spi_txrx_pio(spi, cs,
+ 						(void *)t->tx_buf,
+-						t->len, &first, &last, 1);
++						t->len, flag | TXRX_WRITE);
+ 			if (t->rx_buf)
+ 				status = mxs_spi_txrx_pio(spi, cs,
+ 						t->rx_buf, t->len,
+-						&first, &last, 0);
++						flag);
+ 		} else {
+ 			writel(BM_SSP_CTRL1_DMA_ENABLE,
+ 				ssp->base + HW_SSP_CTRL1(ssp) +
+@@ -450,11 +458,11 @@ static int mxs_spi_transfer_one(struct spi_master *master,
+ 			if (t->tx_buf)
+ 				status = mxs_spi_txrx_dma(spi, cs,
+ 						(void *)t->tx_buf, t->len,
+-						&first, &last, 1);
++						flag | TXRX_WRITE);
+ 			if (t->rx_buf)
+ 				status = mxs_spi_txrx_dma(spi, cs,
+ 						t->rx_buf, t->len,
+-						&first, &last, 0);
++						flag);
+ 		}
+ 
+ 		if (status) {
+@@ -463,7 +471,6 @@ static int mxs_spi_transfer_one(struct spi_master *master,
+ 		}
+ 
+ 		m->actual_length += t->len;
+-		first = last = 0;
+ 	}
+ 
+ 	m->status = status;
+-- 
+1.7.10.4
+
 
 ------------------------------------------------------------------------------
 Own the Future-Intel(R) Level Up Game Demo Contest 2013

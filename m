@@ -1,114 +1,65 @@
-From: Girish KS <girishks2000@gmail.com>
-Subject: Re: [PATCH V3 2/5] spi: s3c64xx: added support for polling mode
-Date: Wed, 3 Apr 2013 17:00:04 +0530
-Message-ID: <CAKrE-KdWe6aCg0p99BFEeQP-P2nwvdhs2itH3XnHsJMCUjWPAA@mail.gmail.com>
-References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
-	<1363157014-9615-3-git-send-email-ks.giri@samsung.com>
-	<20130401131207.GI18636@opensource.wolfsonmicro.com>
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v9 0/9] DMA Engine support for AM33XX
+Date: Wed, 3 Apr 2013 17:15:54 +0530
+Message-ID: <515C1672.4060000@ti.com>
+References: <1362586540-10393-1-git-send-email-mporter@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	grant.likely@secretlab.ca, t.figa@samsung.com
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20130401131207.GI18636@opensource.wolfsonmicro.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+ Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+ Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+ Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+ Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+ Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+ Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+ Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1362586540-10393-1-git-send-email-mporter-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Apr 1, 2013 at 6:42 PM, Mark Brown
-<broonie@opensource.wolfsonmicro.com> wrote:
-> On Wed, Mar 13, 2013 at 12:13:31PM +0530, Girish K S wrote:
->
->> Some SoC's that adopt this controller might not have have dma
->> interface. This patch adds support for complete polling mode
->> and gives flexibity for the user to select poll/dma mode.
->
-> Ouch, that sounds like a regression.
->
->> @@ -419,6 +422,27 @@ static inline void enable_cs(struct s3c64xx_spi_driver_data *sdd,
->>
->>       cs = spi->controller_data;
->>       gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
->> +
->> +     /* Start the signals */
->> +     writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
->> +}
->> +
->
-> This looks odd and not obviously related to the rest of the change -
-> does it belong as part of some of your other commits adding support for
-> using the controller /CS functionality?  In general it feels like this
-> ought to be broken down a bit - there's some refactoring as well as the
-> new functionality.
+Hi Matt,
 
-it is part of this patch. It is just the movement of slave active bit from
-s3c64xx_spi_config to enable_cs and disable_cs function respectively.
-It is not part of chip select gpio patch.
+On 3/6/2013 9:45 PM, Matt Porter wrote:
 
->
->> +static u32 wait_for_timeout(struct s3c64xx_spi_driver_data *sdd,
->> +                                     int timeout_ms)
->> +{
->> +     void __iomem *regs = sdd->regs;
->> +     unsigned long val;
->> +     u32 status;
->> +     /* max fifo depth available */
->> +     u32 max_fifo = (FIFO_LVL_MASK(sdd) >> 1) + 1;
->> +
->> +     val = msecs_to_loops(timeout_ms);
->> +     do {
->> +             status = readl(regs + S3C64XX_SPI_STATUS);
->> +     } while (RX_FIFO_LVL(status, sdd) < max_fifo && --val);
->> +
->> +     /* return the actual received data length */
->> +     return RX_FIFO_LVL(status, sdd);
->
-> This is really wait_for_fifo_empty_with_timeout() isn't it?  It feels
-> like there ought to be at least a cpu_relax() in the busy wait too.
+> This series adds DMA Engine support for AM33xx, which uses
+> an EDMA DMAC. The EDMA DMAC has been previously supported by only
+> a private API implementation (much like the situation with OMAP
+> DMA) found on the DaVinci family of SoCs.
 
-This code existed in the older version, I just made it as a separate function.
-Will check it and make necessary change.
+> Matt Porter (9):
+>   ARM: davinci: move private EDMA API to arm/common
+>   ARM: edma: remove unused transfer controller handlers
 
->
->> +             /*
->> +              * If the receive length is bigger than the controller fifo
->> +              * size, calculate the loops and read the fifo as many times.
->> +              * loops = length / max fifo size (calculated by using the
->> +              * fifo mask).
->> +              * For any size less than the fifo size the below code is
->> +              * executed atleast once.
->> +              */
->> +             loops = xfer->len / ((FIFO_LVL_MASK(sdd) >> 1) + 1);
->> +             buf = xfer->rx_buf;
->> +             do{
->
-> Coding style.
+If you are going to be late in re-spinning the entire series in time for
+v3.10, then I suggest I queue the first two patches through davinci tree
+for v3.10 and then you can work on rest of patches for next (v3.11)
+merge window.
 
-Will change it
+Let me know what you think.
 
->
->> -     if (!sdd->pdev->dev.of_node) {
->> +     if (!sdd->pdev->dev.of_node && !is_polling(sdd)) {
->>               res = platform_get_resource(pdev, IORESOURCE_DMA,  0);
->>               if (!res) {
->>                       dev_err(&pdev->dev, "Unable to get SPI tx dma "
->
-> It seems like it'd be sensible to also handle failure to get the DMA
-> resource by going into polling mode.
+>   ARM: edma: add AM33XX support to the private EDMA API
+>   dmaengine: edma: enable build for AM33XX
+>   dmaengine: edma: Add TI EDMA device tree binding
+>   ARM: dts: add AM33XX EDMA support
+>   spi: omap2-mcspi: convert to dma_request_slave_channel_compat()
+>   spi: omap2-mcspi: add generic DMA request support to the DT binding
+>   ARM: dts: add AM33XX SPI DMA support
 
-There are 2 cases currently i have identified and handled,
-1. The SoC's dont have DMA support for spi controller. For such SoC's we
- would not add the dma resource in the spi dts node. In this case the probe
- would return error if failure for DMA resuorce is handled.
-
-2. The SoC has a DMA support for SPI controller, but due to some x
-reason(H/W bug),
- the driver would force polling mode by enabling
-S3C64XX_SPI_QUIRK_POLL in driver
- data. For such SoC's there would be a dma entry in the spi controller
-dts node, and
- probe can handle failure for DMA resource successfully.
-
-To handle above both situations successfully if
-(!sdd->pdev->dev.of_node && !is_polling(sdd)) is used.
+Thanks,
+Sekhar

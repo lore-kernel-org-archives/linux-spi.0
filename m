@@ -1,60 +1,37 @@
-From: "Manjunathappa, Prakash" <prakash.pm@ti.com>
-Subject: RE: [PATCH v4 3/5] ARM: davinci: da850: add SPI1 DT node
-Date: Wed, 3 Apr 2013 12:13:02 +0000
-Message-ID: <A73F36158E33644199EB82C5EC81C7BC3EA4C066@DBDE01.ent.ti.com>
-References: <1363776419-10563-1-git-send-email-prakash.pm@ti.com>
- <1363776419-10563-4-git-send-email-prakash.pm@ti.com>
+From: Wei Yongjun <weiyj.lk@gmail.com>
+Subject: [PATCH -next] mxs/spi: fix error return code in mxs_spi_probe()
+Date: Wed, 3 Apr 2013 21:06:40 +0800
+Message-ID: <CAPgLHd9u8Nhfa-7dp_atXfLb-vRBzdqVbrCbPSd5xMmh2Q5THg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"rob.herring@calxeda.com" <rob.herring@calxeda.com>,
-	"rob@landley.net" <rob@landley.net>,
-	"linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
-	"Nori, Sekhar" <nsekhar@ti.com>, "hs@denx.de" <hs@denx.de>,
-	"devicetree-discuss@lists.ozlabs.org"
-	<devicetree-discuss@lists.ozlabs.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: "Manjunathappa, Prakash" <prakash.pm@ti.com>,
-	"davinci-linux-open-source@linux.davincidsp.com"
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1363776419-10563-4-git-send-email-prakash.pm@ti.com>
-Content-Language: en-US
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: yongjun_wei@trendmicro.com.cn,
+	spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
+To: grant.likely@secretlab.ca, broonie@opensource.wolfsonmicro.com,
+	rob.herring@calxeda.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
 
-On Wed, Mar 20, 2013 at 16:16:57, Manjunathappa, Prakash wrote:
-> Patch adds SPI1 DT node along with pinmux data.
-> 
-> Signed-off-by: Manjunathappa, Prakash <prakash.pm@ti.com>
-> ---
->  arch/arm/boot/dts/da850.dtsi |   18 ++++++++++++++++++
->  1 files changed, 18 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/da850.dtsi b/arch/arm/boot/dts/da850.dtsi
-> index 3ec1bda..327fb06 100644
-> --- a/arch/arm/boot/dts/da850.dtsi
-> +++ b/arch/arm/boot/dts/da850.dtsi
-> @@ -62,6 +62,14 @@
->  					0x10 0x00002200 0x0000ff00
->  				>;
->  			};
-> +			spi1_pins: pinmux_spi_pins {
-> +				pinctrl-single,bits = <
-> +					/* SIMO, SOMI, ENA,
-> +					 * CLK, CS[0], CS[1]
-> +					 */
-> +					0x14 0x00111111 0x00ffffff
+Fix to return a negative error code from the error handling
+case instead of 0, as returned elsewhere in this function.
 
-Since chip select is specific to a board, let me separate it out so as to
-allow boards choose accordingly.
+Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+---
+ drivers/spi/spi-mxs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks,
-Prakash
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 7b1c014..8498276 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -570,6 +570,7 @@ static int mxs_spi_probe(struct platform_device *pdev)
+ 	ssp->dmach = dma_request_slave_channel(&pdev->dev, "rx-tx");
+ 	if (!ssp->dmach) {
+ 		dev_err(ssp->dev, "Failed to request DMA\n");
++		ret = -ENODEV;
+ 		goto out_master_free;
+ 	}
+ 

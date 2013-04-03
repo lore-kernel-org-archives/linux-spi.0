@@ -1,288 +1,114 @@
-From: Richard GENOUD <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v8 8/8] ARM: dts: add pinctrl property for spi node for
-	atmel SoC
-Date: Wed, 3 Apr 2013 12:35:14 +0200
-Message-ID: <20130403103512.GB4633@lnx-rg>
-References: <1364968581-23700-1-git-send-email-wenyou.yang@atmel.com>
-	<1364969032-24281-1-git-send-email-wenyou.yang@atmel.com>
+From: Girish KS <girishks2000@gmail.com>
+Subject: Re: [PATCH V3 2/5] spi: s3c64xx: added support for polling mode
+Date: Wed, 3 Apr 2013 17:00:04 +0530
+Message-ID: <CAKrE-KdWe6aCg0p99BFEeQP-P2nwvdhs2itH3XnHsJMCUjWPAA@mail.gmail.com>
+References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
+	<1363157014-9615-3-git-send-email-ks.giri@samsung.com>
+	<20130401131207.GI18636@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1364969032-24281-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	grant.likely@secretlab.ca, t.figa@samsung.com
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20130401131207.GI18636@opensource.wolfsonmicro.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On [mer., 03.04.2013 14:03:52], Wenyou Yang wrote:
-> Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org
-> Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> ---
->  arch/arm/boot/dts/at91sam9260.dtsi |   22 ++++++++++++++++++++++
->  arch/arm/boot/dts/at91sam9263.dtsi |   22 ++++++++++++++++++++++
->  arch/arm/boot/dts/at91sam9g45.dtsi |   22 ++++++++++++++++++++++
->  arch/arm/boot/dts/at91sam9n12.dtsi |   22 ++++++++++++++++++++++
->  arch/arm/boot/dts/at91sam9x5.dtsi  |   22 ++++++++++++++++++++++
->  5 files changed, 110 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/at91sam9260.dtsi b/arch/arm/boot/dts/at91sam9260.dtsi
-> index 6e31dc8..39253b9 100644
-> --- a/arch/arm/boot/dts/at91sam9260.dtsi
-> +++ b/arch/arm/boot/dts/at91sam9260.dtsi
-> @@ -322,6 +322,24 @@
->  					};
->  				};
->  
-> +				spi0 {
-> +					pinctrl_spi0: spi0-0 {
-> +						atmel,pins =
-> +							<0 0 0x1 0x0	/* PA0 periph A SPI0_MISO pin */
-> +							 0 1 0x1 0x0	/* PA1 periph A SPI0_MOSI pin */
-> +							 0 2 0x1 0x0>;	/* PA2 periph A SPI0_SPCK pin */
-> +					};
-> +				};
-> +
-> +				spi1 {
-> +					pinctrl_spi1: spi1-0 {
-> +						atmel,pins =
-> +							<1 0 0x1 0x0	/* PB0 periph A SPI1_MISO pin */
-> +							 1 1 0x1 0x0	/* PB1 periph A SPI1_MOSI pin */
-> +							 1 2 0x1 0x0>;	/* PB2 periph A SPI1_SPCK pin */
-> +					};
-> +				};
-> +
->  				pioA: gpio@fffff400 {
->  					compatible = "atmel,at91rm9200-gpio";
->  					reg = <0xfffff400 0x200>;
-> @@ -477,6 +495,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xfffc8000 0x200>;
->  				interrupts = <12 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi0>;
->  				status = "disabled";
->  			};
->  
-> @@ -486,6 +506,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xfffcc000 0x200>;
->  				interrupts = <13 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi1>;
->  				status = "disabled";
->  			};
->  
-> diff --git a/arch/arm/boot/dts/at91sam9263.dtsi b/arch/arm/boot/dts/at91sam9263.dtsi
-> index 6c6d9ae..94b58ab 100644
-> --- a/arch/arm/boot/dts/at91sam9263.dtsi
-> +++ b/arch/arm/boot/dts/at91sam9263.dtsi
-> @@ -303,6 +303,24 @@
->  					};
->  				};
->  
-> +				spi0 {
-> +					pinctrl_spi0: spi0-0 {
-> +						atmel,pins =
-> +							<0 0 0x2 0x0	/* PA0 periph B SPI0_MISO pin */
-> +							 0 1 0x2 0x0	/* PA1 periph B SPI0_MOSI pin */
-> +							 0 2 0x2 0x0>;	/* PA2 periph B SPI0_SPCK pin */
-> +					};
-> +				};
-> +
-> +				spi1 {
-> +					pinctrl_spi1: spi1-0 {
-> +						atmel,pins =
-> +							<1 12 0x1 0x0	/* PB12 periph A SPI1_MISO pin */
-> +							 1 13 0x1 0x0	/* PB13 periph A SPI1_MOSI pin */
-> +							 1 14 0x1 0x0>;	/* PB14 periph A SPI1_SPCK pin */
-> +					};
-> +				};
-> +
->  				pioA: gpio@fffff200 {
->  					compatible = "atmel,at91rm9200-gpio";
->  					reg = <0xfffff200 0x200>;
-> @@ -469,6 +487,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xfffa4000 0x200>;
->  				interrupts = <14 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi0>;
->  				status = "disabled";
->  			};
->  
-> @@ -478,6 +498,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xfffa8000 0x200>;
->  				interrupts = <15 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi1>;
->  				status = "disabled";
->  			};
->  		};
-> diff --git a/arch/arm/boot/dts/at91sam9g45.dtsi b/arch/arm/boot/dts/at91sam9g45.dtsi
-> index e085b8a..cfdf429 100644
-> --- a/arch/arm/boot/dts/at91sam9g45.dtsi
-> +++ b/arch/arm/boot/dts/at91sam9g45.dtsi
-> @@ -322,6 +322,24 @@
->  					};
->  				};
->  
-> +				spi0 {
-> +					pinctrl_spi0: spi0-0 {
-> +						atmel,pins =
-> +							<1 0 0x1 0x0	/* PB0 periph A SPI0_MISO pin */
-> +							 1 1 0x1 0x0	/* PB1 periph A SPI0_MOSI pin */
-> +							 1 2 0x1 0x0>;	/* PB2 periph A SPI0_SPCK pin */
-> +					};
-> +				};
-> +
-> +				spi1 {
-> +					pinctrl_spi1: spi1-0 {
-> +						atmel,pins =
-> +							<1 14 0x1 0x0	/* PB14 periph A SPI1_MISO pin */
-> +							 1 15 0x1 0x0	/* PB15 periph A SPI1_MOSI pin */
-> +							 1 16 0x1 0x0>;	/* PB16 periph A SPI1_SPCK pin */
-> +					};
-> +				};
-> +
->  				pioA: gpio@fffff200 {
->  					compatible = "atmel,at91rm9200-gpio";
->  					reg = <0xfffff200 0x200>;
-> @@ -538,6 +556,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xfffa4000 0x200>;
->  				interrupts = <14 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi0>;
->  				status = "disabled";
->  			};
->  
-> @@ -547,6 +567,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xfffa8000 0x200>;
->  				interrupts = <15 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi1>;
->  				status = "disabled";
->  			};
->  		};
-> diff --git a/arch/arm/boot/dts/at91sam9n12.dtsi b/arch/arm/boot/dts/at91sam9n12.dtsi
-> index f3f87ef3..b2961f1 100644
-> --- a/arch/arm/boot/dts/at91sam9n12.dtsi
-> +++ b/arch/arm/boot/dts/at91sam9n12.dtsi
-> @@ -261,6 +261,24 @@
->  					};
->  				};
->  
-> +				spi0 {
-> +					pinctrl_spi0: spi0-0 {
-> +						atmel,pins =
-> +							<0 11 0x1 0x0	/* PA11 periph A SPI0_MISO pin */
-> +							 0 12 0x1 0x0	/* PA12 periph A SPI0_MOSI pin */
-> +							 0 13 0x1 0x0>;	/* PA13 periph A SPI0_SPCK pin */
-> +					};
-> +				};
-> +
-> +				spi1 {
-> +					pinctrl_spi1: spi1-0 {
-> +						atmel,pins =
-> +							<0 21 0x2 0x0	/* PA21 periph B SPI1_MISO pin */
-> +							 0 22 0x2 0x0	/* PA22 periph B SPI1_MOSI pin */
-> +							 0 23 0x2 0x0>;	/* PA23 periph B SPI1_SPCK pin */
-> +					};
-> +				};
-> +
->  				pioA: gpio@fffff400 {
->  					compatible = "atmel,at91sam9x5-gpio", "atmel,at91rm9200-gpio";
->  					reg = <0xfffff400 0x200>;
-> @@ -380,6 +398,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xf0000000 0x100>;
->  				interrupts = <13 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi0>;
->  				status = "disabled";
->  			};
->  
-> @@ -389,6 +409,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xf0004000 0x100>;
->  				interrupts = <14 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi1>;
->  				status = "disabled";
->  			};
->  		};
-> diff --git a/arch/arm/boot/dts/at91sam9x5.dtsi b/arch/arm/boot/dts/at91sam9x5.dtsi
-> index 77ce2e1..347b438 100644
-> --- a/arch/arm/boot/dts/at91sam9x5.dtsi
-> +++ b/arch/arm/boot/dts/at91sam9x5.dtsi
-> @@ -343,6 +343,24 @@
->  					};
->  				};
->  
-> +				spi0 {
-> +					pinctrl_spi0: spi0-0 {
-> +						atmel,pins =
-> +							<0 11 0x1 0x0	/* PA11 periph A SPI0_MISO pin */
-> +							 0 12 0x1 0x0	/* PA12 periph A SPI0_MOSI pin */
-> +							 0 13 0x1 0x0>;	/* PA13 periph A SPI0_SPCK pin */
-> +					};
-> +				};
-> +
-> +				spi1 {
-> +					pinctrl_spi1: spi1-0 {
-> +						atmel,pins =
-> +							<0 21 0x2 0x0	/* PA21 periph B SPI1_MISO pin */
-> +							 0 22 0x2 0x0	/* PA22 periph B SPI1_MOSI pin */
-> +							 0 23 0x2 0x0>;	/* PA23 periph B SPI1_SPCK pin */
-> +					};
-> +				};
-> +
->  				pioA: gpio@fffff400 {
->  					compatible = "atmel,at91sam9x5-gpio", "atmel,at91rm9200-gpio";
->  					reg = <0xfffff400 0x200>;
-> @@ -536,6 +554,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xf0000000 0x100>;
->  				interrupts = <13 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi0>;
->  				status = "disabled";
->  			};
->  
-> @@ -545,6 +565,8 @@
->  				compatible = "atmel,at91rm9200-spi";
->  				reg = <0xf0004000 0x100>;
->  				interrupts = <14 4 3>;
-> +				pinctrl-names = "default";
-> +				pinctrl-0 = <&pinctrl_spi1>;
->  				status = "disabled";
->  			};
->  		};
-> -- 
-> 1.7.9.5
-> 
-On sam9g35 with DMA and PIO (3.9-rc5 + device tree patches)
-Tested-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Mon, Apr 1, 2013 at 6:42 PM, Mark Brown
+<broonie@opensource.wolfsonmicro.com> wrote:
+> On Wed, Mar 13, 2013 at 12:13:31PM +0530, Girish K S wrote:
+>
+>> Some SoC's that adopt this controller might not have have dma
+>> interface. This patch adds support for complete polling mode
+>> and gives flexibity for the user to select poll/dma mode.
+>
+> Ouch, that sounds like a regression.
+>
+>> @@ -419,6 +422,27 @@ static inline void enable_cs(struct s3c64xx_spi_driver_data *sdd,
+>>
+>>       cs = spi->controller_data;
+>>       gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
+>> +
+>> +     /* Start the signals */
+>> +     writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+>> +}
+>> +
+>
+> This looks odd and not obviously related to the rest of the change -
+> does it belong as part of some of your other commits adding support for
+> using the controller /CS functionality?  In general it feels like this
+> ought to be broken down a bit - there's some refactoring as well as the
+> new functionality.
 
-------------------------------------------------------------------------------
-Minimize network downtime and maximize team effectiveness.
-Reduce network management and security costs.Learn how to hire 
-the most talented Cisco Certified professionals. Visit the 
-Employer Resources Portal
-http://www.cisco.com/web/learning/employer_resources/index.html
+it is part of this patch. It is just the movement of slave active bit from
+s3c64xx_spi_config to enable_cs and disable_cs function respectively.
+It is not part of chip select gpio patch.
+
+>
+>> +static u32 wait_for_timeout(struct s3c64xx_spi_driver_data *sdd,
+>> +                                     int timeout_ms)
+>> +{
+>> +     void __iomem *regs = sdd->regs;
+>> +     unsigned long val;
+>> +     u32 status;
+>> +     /* max fifo depth available */
+>> +     u32 max_fifo = (FIFO_LVL_MASK(sdd) >> 1) + 1;
+>> +
+>> +     val = msecs_to_loops(timeout_ms);
+>> +     do {
+>> +             status = readl(regs + S3C64XX_SPI_STATUS);
+>> +     } while (RX_FIFO_LVL(status, sdd) < max_fifo && --val);
+>> +
+>> +     /* return the actual received data length */
+>> +     return RX_FIFO_LVL(status, sdd);
+>
+> This is really wait_for_fifo_empty_with_timeout() isn't it?  It feels
+> like there ought to be at least a cpu_relax() in the busy wait too.
+
+This code existed in the older version, I just made it as a separate function.
+Will check it and make necessary change.
+
+>
+>> +             /*
+>> +              * If the receive length is bigger than the controller fifo
+>> +              * size, calculate the loops and read the fifo as many times.
+>> +              * loops = length / max fifo size (calculated by using the
+>> +              * fifo mask).
+>> +              * For any size less than the fifo size the below code is
+>> +              * executed atleast once.
+>> +              */
+>> +             loops = xfer->len / ((FIFO_LVL_MASK(sdd) >> 1) + 1);
+>> +             buf = xfer->rx_buf;
+>> +             do{
+>
+> Coding style.
+
+Will change it
+
+>
+>> -     if (!sdd->pdev->dev.of_node) {
+>> +     if (!sdd->pdev->dev.of_node && !is_polling(sdd)) {
+>>               res = platform_get_resource(pdev, IORESOURCE_DMA,  0);
+>>               if (!res) {
+>>                       dev_err(&pdev->dev, "Unable to get SPI tx dma "
+>
+> It seems like it'd be sensible to also handle failure to get the DMA
+> resource by going into polling mode.
+
+There are 2 cases currently i have identified and handled,
+1. The SoC's dont have DMA support for spi controller. For such SoC's we
+ would not add the dma resource in the spi dts node. In this case the probe
+ would return error if failure for DMA resuorce is handled.
+
+2. The SoC has a DMA support for SPI controller, but due to some x
+reason(H/W bug),
+ the driver would force polling mode by enabling
+S3C64XX_SPI_QUIRK_POLL in driver
+ data. For such SoC's there would be a dma entry in the spi controller
+dts node, and
+ probe can handle failure for DMA resource successfully.
+
+To handle above both situations successfully if
+(!sdd->pdev->dev.of_node && !is_polling(sdd)) is used.

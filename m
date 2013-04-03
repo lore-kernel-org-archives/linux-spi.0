@@ -1,8 +1,8 @@
 From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 Subject: Re: [PATCH] spi: tegra: slink: do not prepare dma transfer with DMA_CTRL_ACK
  flag
-Date: Wed, 3 Apr 2013 15:01:25 +0530
-Message-ID: <515BF6ED.2060904@nvidia.com>
+Date: Wed, 3 Apr 2013 15:01:54 +0530
+Message-ID: <515BF70A.2090805@nvidia.com>
 References: <1353662559-26515-1-git-send-email-ldewangan@nvidia.com> <20130401133459.GS18636@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"; format=flowed

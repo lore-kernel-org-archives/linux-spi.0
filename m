@@ -1,55 +1,63 @@
-From: Shawn Guo <shawn.guo@linaro.org>
-Subject: Re: [PATCH V2 01/12] spi/mxs: Always set LOCK_CS
-Date: Wed, 3 Apr 2013 09:41:39 +0800
-Message-ID: <20130403014137.GI24039@S2101-09.ap.freescale.net>
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V2 08/12] spi/mxs: Fix race in setup method
+Date: Tue, 2 Apr 2013 19:12:58 -0700
+Message-ID: <CA+7tXigasUbSRD6hQH66m6XsDkzS9ubLSB24f4akB3pv9xrT=A@mail.gmail.com>
 References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
+	<1364905195-24286-8-git-send-email-tpiepho@gmail.com>
+	<201304030131.37782.marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Marek Vasut <marex@denx.de>, spi-devel-general@lists.sourceforge.net,
- Mark Brown <broonie@opensource.wolfsonmicro.com>,
- Fabio Estevam <fabio.estevam@freescale.com>,
- linux-arm-kernel@lists.infradead.org
-To: Trent Piepho <tpiepho@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-Content-Disposition: inline
-In-Reply-To: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <201304030131.37782.marex-ynQEQJNshbs@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 02, 2013 at 05:19:44AM -0700, Trent Piepho wrote:
-> There are two bits which control the CS line in the CTRL0 register:
-> LOCK_CS and IGNORE_CRC.  The latter would be better named DEASSERT_CS
-> in SPI mode.
-> 
-> LOCK_CS keeps CS asserted though the entire transfer.  This should
-> always be set.  The DMA code will always set it, explicitly on the
-> first segment of the first transfer, and then implicitly on all the
-> rest by never clearing the bit from the value read from the ctrl0
-> register.
-> 
-> The only reason to not set LOCK_CS would be to attempt an altered
-> protocol where CS pulses between each word.  Though don't get your
-> hopes up if you want to do this, as the hardware doesn't appear to do
-> this in any sane manner.
-> 
-> The code can be simplified by just setting LOCK_CS once and then not
-> needing to deal with it in the PIO and DMA transfer functions.
-> 
-> Signed-off-by: Trent Piepho <tpiepho@gmail.com>
+On Tue, Apr 2, 2013 at 4:31 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+>>  static int mxs_spi_setup(struct spi_device *dev)
+>>  {
+>> -     int err = 0;
+>> -
+>>       if (!dev->bits_per_word)
+>>               dev->bits_per_word = 8;
+>>
+>>       if (dev->mode & ~(SPI_CPOL | SPI_CPHA))
+>>               return -EINVAL;
+>>
+>> -     err = mxs_spi_setup_transfer(dev, NULL);
+>> -     if (err) {
+>> -             dev_err(&dev->dev,
+>> -                     "Failed to setup transfer, error = %d\n", err);
+>> -     }
+>> +     if (dev->bits_per_word != 8)
+>> +             return -EINVAL;
+>
+> What's this new addition doing here?
 
-Trent,
+It's not new.  The only useful thing mxs_spi_setup_transfer() (which
+is no longer called) did in this instance was make that check.
 
-Just FYI, Mark Brown is taking care of SPI subsystem patches recently.
-Please remember copy him on the series when you repost, if you want to
-see the series get applied eventually :)
+> btw. I was under the impression the MXS SSP block can handle other word-widths
+> than 8 bit, no ?
 
-Shawn
+In theory it can, however the driver only supports 8-bits and will
+reject anything else.
+
+------------------------------------------------------------------------------
+Minimize network downtime and maximize team effectiveness.
+Reduce network management and security costs.Learn how to hire 
+the most talented Cisco Certified professionals. Visit the 
+Employer Resources Portal
+http://www.cisco.com/web/learning/employer_resources/index.html

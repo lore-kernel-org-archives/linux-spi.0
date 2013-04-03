@@ -1,90 +1,55 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 1/5] spi/mxs: Fix extra CS pulses and read mode in
-	multi-transfer messages
-Date: Wed, 3 Apr 2013 01:39:32 +0200
-Message-ID: <201304030139.33190.marex@denx.de>
-References: <1364570381-17605-1-git-send-email-tpiepho@gmail.com>
-	<201304021232.12736.marex@denx.de>
-	<CA+7tXii8xhZQeKU2dTN26LxySNXhJT9NgRXcJ21cOX64qYj1NA@mail.gmail.com>
+From: Shawn Guo <shawn.guo@linaro.org>
+Subject: Re: [PATCH V2 01/12] spi/mxs: Always set LOCK_CS
+Date: Wed, 3 Apr 2013 09:41:39 +0800
+Message-ID: <20130403014137.GI24039@S2101-09.ap.freescale.net>
+References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CA+7tXii8xhZQeKU2dTN26LxySNXhJT9NgRXcJ21cOX64qYj1NA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Marek Vasut <marex@denx.de>, spi-devel-general@lists.sourceforge.net,
+ Mark Brown <broonie@opensource.wolfsonmicro.com>,
+ Fabio Estevam <fabio.estevam@freescale.com>,
+ linux-arm-kernel@lists.infradead.org
+To: Trent Piepho <tpiepho@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Disposition: inline
+In-Reply-To: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Trent Piepho,
+On Tue, Apr 02, 2013 at 05:19:44AM -0700, Trent Piepho wrote:
+> There are two bits which control the CS line in the CTRL0 register:
+> LOCK_CS and IGNORE_CRC.  The latter would be better named DEASSERT_CS
+> in SPI mode.
+> 
+> LOCK_CS keeps CS asserted though the entire transfer.  This should
+> always be set.  The DMA code will always set it, explicitly on the
+> first segment of the first transfer, and then implicitly on all the
+> rest by never clearing the bit from the value read from the ctrl0
+> register.
+> 
+> The only reason to not set LOCK_CS would be to attempt an altered
+> protocol where CS pulses between each word.  Though don't get your
+> hopes up if you want to do this, as the hardware doesn't appear to do
+> this in any sane manner.
+> 
+> The code can be simplified by just setting LOCK_CS once and then not
+> needing to deal with it in the PIO and DMA transfer functions.
+> 
+> Signed-off-by: Trent Piepho <tpiepho@gmail.com>
 
-> On Tue, Apr 2, 2013 at 3:32 AM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
-> >> Don't see anything in CodingStyle that one should be preferred over
-> >> the other.
-> > 
-> > There ain't any I'm aware of, but to paraphrase you, let's keep the
-> > format that's already used in the driver ;-) :
-> > 
-> > 114         if (dev->mode & ~(SPI_CPOL | SPI_CPHA))
-> 
-> Thanks for pointing that out, as that code can be deleted.  Which
-> means I don't need to be consistent with it anymore and can create a
-> new standard, to be followed henceforth, now and forever.
-> 
-> But it looks like the or method is more common in the kernel code.  So
-> I'll change it in V2.
-> 
-> >> > btw. are you using MX23 or MX28 to test this?
-> >> 
-> >> IMX28.
-> > 
-> > Is that any mainline board?
-> 
-> Nope, custom hardware.
-> 
-> >> >> Existing code that uses the first/last flags is wrong and needs to be
-> >> >> changed.  Therefor code using 'first' and 'last' will be changed.
-> >> >> 
-> >> >> Passing the flags as pointers is bad practice and makes no sense to
-> >> >> do.  Does it make any sense to re-write code fix the way it uses
-> >> >> first and last, then re-write those same lines a second time to not
-> >> >> use pointers?
-> >> > 
-> >> > You can always flip it the other way -- first rework the use of flags,
-> >> > then apply the fix. It'd make the patch much easier to understand,
-> >> > don't you think?
-> >> 
-> >> So I should change 'first' to not be a pointer to an integer in one
-> >> patch, then delete the flag entirely in another patch?
-> > 
-> > I'd say make a patch (0001) that implements the transition to using your
-> > newly defined flags and then make a patch (0002) that "Fix extra CS
-> > pulses and read mode in multi-transfer messages". One patch shall do one
-> > thing, that's the usual rule of the thumb. Obviously keep them in a
-> > series if these patches shall go in together. And why doesn't squashing
-> > them all together work you might ask -- because reviewing the result is
-> > hard.
-> 
-> 5 patches have now been split into 12.
+Trent,
 
-Much better, yes.
+Just FYI, Mark Brown is taking care of SPI subsystem patches recently.
+Please remember copy him on the series when you repost, if you want to
+see the series get applied eventually :)
 
-Best regards,
-Marek Vasut
-
-------------------------------------------------------------------------------
-Minimize network downtime and maximize team effectiveness.
-Reduce network management and security costs.Learn how to hire 
-the most talented Cisco Certified professionals. Visit the 
-Employer Resources Portal
-http://www.cisco.com/web/learning/employer_resources/index.html
+Shawn

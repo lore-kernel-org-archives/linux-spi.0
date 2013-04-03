@@ -1,83 +1,60 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH V3 2/5] spi: s3c64xx: added support for polling mode
-Date: Wed, 3 Apr 2013 12:49:37 +0100
-Message-ID: <20130403114935.GA11305@opensource.wolfsonmicro.com>
-References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
- <1363157014-9615-3-git-send-email-ks.giri@samsung.com>
- <20130401131207.GI18636@opensource.wolfsonmicro.com>
- <CAKrE-KdWe6aCg0p99BFEeQP-P2nwvdhs2itH3XnHsJMCUjWPAA@mail.gmail.com>
+From: "Manjunathappa, Prakash" <prakash.pm@ti.com>
+Subject: RE: [PATCH v4 3/5] ARM: davinci: da850: add SPI1 DT node
+Date: Wed, 3 Apr 2013 12:13:02 +0000
+Message-ID: <A73F36158E33644199EB82C5EC81C7BC3EA4C066@DBDE01.ent.ti.com>
+References: <1363776419-10563-1-git-send-email-prakash.pm@ti.com>
+ <1363776419-10563-4-git-send-email-prakash.pm@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Kj7319i9nmIyA2yE"
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	grant.likely@secretlab.ca, t.figa@samsung.com
-To: Girish KS <girishks2000@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAKrE-KdWe6aCg0p99BFEeQP-P2nwvdhs2itH3XnHsJMCUjWPAA@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"rob.herring@calxeda.com" <rob.herring@calxeda.com>,
+	"rob@landley.net" <rob@landley.net>,
+	"linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
+	"Nori, Sekhar" <nsekhar@ti.com>, "hs@denx.de" <hs@denx.de>,
+	"devicetree-discuss@lists.ozlabs.org"
+	<devicetree-discuss@lists.ozlabs.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: "Manjunathappa, Prakash" <prakash.pm@ti.com>,
+	"davinci-linux-open-source@linux.davincidsp.com"
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1363776419-10563-4-git-send-email-prakash.pm@ti.com>
+Content-Language: en-US
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi,
 
---Kj7319i9nmIyA2yE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Wed, Mar 20, 2013 at 16:16:57, Manjunathappa, Prakash wrote:
+> Patch adds SPI1 DT node along with pinmux data.
+> 
+> Signed-off-by: Manjunathappa, Prakash <prakash.pm@ti.com>
+> ---
+>  arch/arm/boot/dts/da850.dtsi |   18 ++++++++++++++++++
+>  1 files changed, 18 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/arm/boot/dts/da850.dtsi b/arch/arm/boot/dts/da850.dtsi
+> index 3ec1bda..327fb06 100644
+> --- a/arch/arm/boot/dts/da850.dtsi
+> +++ b/arch/arm/boot/dts/da850.dtsi
+> @@ -62,6 +62,14 @@
+>  					0x10 0x00002200 0x0000ff00
+>  				>;
+>  			};
+> +			spi1_pins: pinmux_spi_pins {
+> +				pinctrl-single,bits = <
+> +					/* SIMO, SOMI, ENA,
+> +					 * CLK, CS[0], CS[1]
+> +					 */
+> +					0x14 0x00111111 0x00ffffff
 
-On Wed, Apr 03, 2013 at 05:00:04PM +0530, Girish KS wrote:
-> On Mon, Apr 1, 2013 at 6:42 PM, Mark Brown
+Since chip select is specific to a board, let me separate it out so as to
+allow boards choose accordingly.
 
-> >> -     if (!sdd->pdev->dev.of_node) {
-> >> +     if (!sdd->pdev->dev.of_node && !is_polling(sdd)) {
-> >>               res = platform_get_resource(pdev, IORESOURCE_DMA,  0);
-> >>               if (!res) {
-> >>                       dev_err(&pdev->dev, "Unable to get SPI tx dma "
-
-> > It seems like it'd be sensible to also handle failure to get the DMA
-> > resource by going into polling mode.
-
-> There are 2 cases currently i have identified and handled,
-> 1. The SoC's dont have DMA support for spi controller. For such SoC's we
->  would not add the dma resource in the spi dts node. In this case the probe
->  would return error if failure for DMA resuorce is handled.
-
-That's not what the code currently does...
-
-> 2. The SoC has a DMA support for SPI controller, but due to some x
-> reason(H/W bug),
->  the driver would force polling mode by enabling
-> S3C64XX_SPI_QUIRK_POLL in driver
->  data. For such SoC's there would be a dma entry in the spi controller
-> dts node, and
->  probe can handle failure for DMA resource successfully.
-
-> To handle above both situations successfully if
-> (!sdd->pdev->dev.of_node && !is_polling(sdd)) is used.
-
-Right, that's what the code currently does but what I'm suggesting is
-that this isn't the most helpful thing to do and that printing a big
-warning then soldiering on in polling mode might be more useful.
-
---Kj7319i9nmIyA2yE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRXBcsAAoJELSic+t+oim96fsP/RhiTZ91dmWgeSPyaFJRH/YV
-IDzCxckxnpPq7oBqolr+WC2ahiyONzKPuy5Dc66JZhwKP0+tK1I4tY6bUclwYFr1
-attmwrSQdpIhkk5Yj2CUX6JqzZRyEZEPaZ7JlpcMMsVPjTYs4OG5ggLXGbirFfgs
-XlUf+o6pvwZgaRPddua8M0QmjR4IQso/HwRWB0JOTXCN4tgorpi5hZ1GbI5enWSX
-zfqgKQvI8IAnzDU5JKZmvTg0WYTsZPNX7pj0BspqIYe/JRUjlaAZxTBiD5b65u7R
-MLNMi6zYgzvZ5jb2RokG0AFYpgrVfYC1CriAPnnTm7HcDmJbGCHbHQGtuHrUloP5
-SezExXq3MRP96PSUjEdPHbupvHKRhw+Ph3N9codNt77TWhuEdJFxODERmf8cvdHA
-0ToD/7zta4ta1xgHtnQREci2C4ya/sKQaTugHWHeuGrUsx3N4wAN+QBdqmNDiE4y
-w14iJo/XTWSmerKa1bg4wFq1PlW7PCowG5/gN4KFetuCAh04YWFQq4/NIzy/meio
-qK/I3/GYPgTS6vPqiJZrGoPE0ZiqYhdId7tXxY/xT0aMLr4f182RgK9nTwtJKG9P
-iG2id33TcoBH6df05eqroHSU3H3XlmY/5ZLjKNhhSCCPZBLWWsgDHeQwpn9RJciu
-SW4SchIDlxLgFo2k57ks
-=6HlI
------END PGP SIGNATURE-----
-
---Kj7319i9nmIyA2yE--
+Thanks,
+Prakash

@@ -1,41 +1,72 @@
-From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: tegra: slink: do not prepare dma transfer with DMA_CTRL_ACK
- flag
-Date: Wed, 3 Apr 2013 15:01:54 +0530
-Message-ID: <515BF70A.2090805@nvidia.com>
-References: <1353662559-26515-1-git-send-email-ldewangan@nvidia.com> <20130401133459.GS18636@opensource.wolfsonmicro.com>
+From: Richard GENOUD <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v8 1/8] spi/spi-atmel: add physical base address
+Date: Wed, 3 Apr 2013 11:42:50 +0200
+Message-ID: <20130403094247.GA26067@lnx-rg>
+References: <1364968581-23700-1-git-send-email-wenyou.yang@atmel.com>
+	<1364968662-23763-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20130401133459.GS18636-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
+	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1364968662-23763-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 01 April 2013 07:05 PM, Mark Brown wrote:
-> * PGP Signed by an unknown key
->
-> On Fri, Nov 23, 2012 at 02:52:39PM +0530, Laxman Dewangan wrote:
->> Spi starts transfer using dma with DMA_CTRL_ACK which is not require
->> becasue spi driver does not use completed dma_desc after transfer
->> done and so it does not ack the dma descriptor. Removing the
->> DMA_CTRL_ACK flag to avoid memory leak in dma driver.
-> Applied, thanks.
+On [mer., 03.04.2013 13:57:42], Wenyou Yang wrote:
+> From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+> 
+> Needed for future use with dmaengine enabled driver.
+> 
+> Signed-off-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+> Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+> Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> [wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org: submit the patch]
+> Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/spi/spi-atmel.c |    2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 15e8459..38f8c0d 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -196,6 +196,7 @@ struct atmel_spi_caps {
+>  struct atmel_spi {
+>  	spinlock_t		lock;
+>  
+> +	phys_addr_t		phybase;
+>  	void __iomem		*regs;
+>  	int			irq;
+>  	struct clk		*clk;
+> @@ -996,6 +997,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
+>  	as->regs = ioremap(regs->start, resource_size(regs));
+>  	if (!as->regs)
+>  		goto out_free_buffer;
+> +	as->phybase = regs->start;
+>  	as->irq = irq;
+>  	as->clk = clk;
+>  
+> -- 
+> 1.7.9.5
+> 
+Tested-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Mark,
-There was bug in dma driver about handling of DMA_CTRL_ACK flag which we 
-fixed after Stephen pointed out.
-This change is no more require.
-Can you please drop this patch? Let me know if I need to send the revert 
-patch.
-
-Sorry for inconvenience.
-
-Thanks,
-Laxan
+------------------------------------------------------------------------------
+Minimize network downtime and maximize team effectiveness.
+Reduce network management and security costs.Learn how to hire 
+the most talented Cisco Certified professionals. Visit the 
+Employer Resources Portal
+http://www.cisco.com/web/learning/employer_resources/index.html

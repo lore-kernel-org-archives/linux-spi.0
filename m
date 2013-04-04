@@ -1,12 +1,13 @@
-From: "Brandalley - Nl Promos" <lisa@a.optincake.com>
-Subject: Jusqu'a moins 80% chez BrandAlley
-Date: Thu, 04 Apr 2013 09:46:21 +0100
-Message-ID: <0.0.3D.4BA.1CE3110E1BE602A.0@mta42.pur3.net>
-Reply-To: Brandalley - Nl Promos <lisa@a.optincake.com>
+From: "Teatower" <noreply-193CG9riSBJWk0Htik3J/w@public.gmane.org>
+Subject: =?UTF-8?Q?5_=C3=A9chantillons_de_th=C3=A9_gratuits_+_21_pourcent_de_r?=
+	=?UTF-8?Q?=C3=A9duction?=
+Date: Thu, 04 Apr 2013 09:17:50 +0000 (CET)
+Message-ID: <130404091750.166179133200006488@obfm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,36 +19,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Jusqu'a moins 80% chez BrandAlley
-
-Jusqu'a moins 80% chez BrandAlley
-
-Jusqu'a moins 80% chez BrandAlley
-
-Jusqu'a moins 80% chez BrandAlley
-
-Jusqu'a moins 80% chez BrandAlley
-
-Jusqu'a moins 80% chez BrandAlley
-
-
---
-
-Pour vous d=E9sabonner, visitez :
-http://a.optincake.com/_act/get_rcr.php?AJ8480139055115603221530135
-
-
-
-
-
-
-{~AJ8480139055115603221530135~}
----------------------------------------------------------------------------=
----
-Minimize network downtime and maximize team effectiveness.
-Reduce network management and security costs.Learn how to hire =
-
-the most talented Cisco Certified professionals. Visit the =
-
-Employer Resources Portal
-http://www.cisco.com/web/learning/employer_resources/index.html
+ClJlY2V2ZXogNSDDqWNoYW50aWxsb25zIGRlIHRow6kgZ3JhdHVpdHMgYXZlYyBURUFUT1dFUgoo
+aHR0cDovL29iZm00MC5jb20vZDRqcHVsenN2cmlmYWpkZW95L2luZGV4MC5odG1sKQooaHR0cDov
+L29iZm00MC5jb20veXJqd3hsamt2Y3J4NW95ZWdsL2luZGV4MS5odG1sKQooaHR0cDovL29iZm00
+MC5jb20vbG5qbWhsbXB2ZHFmanhsd2pzL2luZGV4Mi5odG1sKQooaHR0cDovL29iZm00MC5jb20v
+czVqejJsbGZ2ZWN4eGZzd3FkL2luZGV4My5odG1sKQoKKGh0dHA6Ly9vYmZtNDAuY29tLzRueWto
+bnk1bmlvZjN0bGtpbC9pbmRleDQuaHRtbCkgKGh0dHA6Ly9vYmZtNDAuY29tL241eWkybjV4bnFm
+eHBic2theS9pbmRleDUuaHRtbCkKwqAKVEVBVE9XRVIgLyBUVCBQQUNLQUdJTkcgU1BSTAoKUnVl
+IFNhaW50LURlbmlzIDExMiAtIDExOTAgQnJ1eGVsbGVzIC0gQmVsZ2lxdWUgLSBUw6lsIDAwLjMy
+LjI4LjA4LjAxLjI3Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpNaW5pbWl6ZSBuZXR3b3JrIGRvd250
+aW1lIGFuZCBtYXhpbWl6ZSB0ZWFtIGVmZmVjdGl2ZW5lc3MuClJlZHVjZSBuZXR3b3JrIG1hbmFn
+ZW1lbnQgYW5kIHNlY3VyaXR5IGNvc3RzLkxlYXJuIGhvdyB0byBoaXJlIAp0aGUgbW9zdCB0YWxl
+bnRlZCBDaXNjbyBDZXJ0aWZpZWQgcHJvZmVzc2lvbmFscy4gVmlzaXQgdGhlIApFbXBsb3llciBS
+ZXNvdXJjZXMgUG9ydGFsCmh0dHA6Ly93d3cuY2lzY28uY29tL3dlYi9sZWFybmluZy9lbXBsb3ll
+cl9yZXNvdXJjZXMvaW5kZXguaHRtbApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,11 +1,11 @@
-From: "Mutuelle Pas Chere" <lisa@a.optincake.com>
-Subject: =?UTF-8?B?Vm90cmUgbXV0dWVsbGUgbW9pbnMgY2jDqHJlLCBhIHBhcnRpciA1LDQyIGV1cm9z?=
-Date: Thu, 04 Apr 2013 08:59:30 +0100
-Message-ID: <0.0.AD.A6F.1CE310A56672A58.0@mta209.pur3.net>
-Reply-To: Mutuelle Pas Chere <lisa@a.optincake.com>
+From: "Brandalley - Nl Promos" <lisa@a.optincake.com>
+Subject: Jusqu'a moins 80% chez BrandAlley
+Date: Thu, 04 Apr 2013 09:46:21 +0100
+Message-ID: <0.0.3D.4BA.1CE3110E1BE602A.0@mta42.pur3.net>
+Reply-To: Brandalley - Nl Promos <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,40 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2kgbGUgbWVzc2FnZSBuZSBzJ2FmZmljaGUgcGFzIGNvcnJlY3RlbWVudCBtZXJjaSBkJ2FjY8Op
-ZGVyIGNldHRlIHBhZ2UKaHR0cDovL2Eub3B0aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxf
-dmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1MTE1NjEzMjIwNTM3MTQ0CgoKClZvdHJlIGNvbXBs
-w6ltZW50YWlyZSBzYW50w6kgw6AgcGFydGlyIGRlIDEwLDgzIGV1cm9zIHBhciBtb2lzCgpWb3Ry
-ZSBjb21wbMOpbWVudGFpcmUgc2FudMOpIMOgIHBhcnRpciBkZSAxMCw4MyBldXJvcyBwYXIgbW9p
-cwoKVm90cmUgY29tcGzDqW1lbnRhaXJlIHNhbnTDqSDDoCBwYXJ0aXIgZGUgMTAsODMgZXVyb3Mg
-cGFyIG1vaXMKClZvdHJlIGNvbXBsw6ltZW50YWlyZSBzYW50w6kgw6AgcGFydGlyIGRlIDEwLDgz
-IGV1cm9zIHBhciBtb2lzCgpWb3RyZSBjb21wbMOpbWVudGFpcmUgc2FudMOpIMOgIHBhcnRpciBk
-ZSAxMCw4MyBldXJvcyBwYXIgbW9pcwoKCgoKQ2V0dGUgb2ZmcmUgdm91cyBlc3QgcHJvcG9zw6ll
-IGFmaW4gcXVlIHZvdXMgcHVpc3NpZXogYsOpbsOpZmljaWVyIGRlIGJvbnMgcGxhbnMKdG91dGUg
-bCdhbm7DqWUgcXVlIGNlIHNvaXQgcG91ciBkZXMgcsOpZHVjdGlvbnMsIGRlcyBzb2xkZXMsIGRl
-cyB2ZW50ZXMgcHJpdsOpZXMsCm5vdXMgdm91cyB0aWVuZHJvbnMgaW5mb3Jtw6lzIGVuIHByaW9y
-aXTDqS4KCk5vcyBvZmZyZXMgZGUgYm9ucyBwbGFucywgc2hvcHBpbmcsIHZveWFnZXMsIHNlcnZp
-Y2VzLCBzb2lucyBkZSBsYSBwZXJzb25uZQpwYXJtaSBkZXMgY2VudGFpbmVzIGQnb2ZmcmVzIHNv
-bnQgw6Agdm90cmUgZGlzcG9zaXRpb24sIGFsb3JzIHByb2ZpdGV6IGVuLgoKQsOpbsOpZmljaWV6
-IMOpZ2FsZW1lbnQgZCdpbmZvcm1hdGlvbnMgc3VyIGxlcyBqZXV4IGNvbmNvdXJzLCBsZXMgc2Vy
-dmljZXMgZMOpZGnDqXMKZXQgbGUgdG91dCDDoCBkZXV4IHBhcyBkZSBjaGV6IHZvdXMuCgpDZXR0
-ZSBuZXdzbGV0dGVyIGVzdCBhY2Nlc3NpYmxlIMOpZ2FsZW1lbnQgc3VyIHZvdHJlIG1vYmlsZSwg
-dm91cyBuJ2F2ZXogcXUnw6AKY2xpcXVlciBkZXNzdXMgcG91ciBiw6luw6lmaWNpZXIgZHUgcHJv
-Z3JhbW1lIGRlIHZvdHJlIGNob2l4LgoKQWZpbiBkZSByZXNwZWN0ZXIgbGVzIGRpc3Bvc2l0aW9u
-cyBsw6lnYWxlcyBjb25jZXJuYW50IGxlcyBjb3VycmllcnMKw6lsZWN0cm9uaXF1ZXMuCgpWb3Vz
-IGRpc3Bvc2V6IGQndW4gZHJvaXQgZCdhY2PDqXMsIGRlIG1vZGlmaWNhdGlvbiwgZGUgcmVjdGlm
-aWNhdGlvbiBldCAKZGUgc3VwcHJlc3Npb24gZGVzIGRvbm7DqWVzIHF1aSB2b3VzIGNvbmNlcm5l
-bnQgKGFydGljbGVzIDM4IGV0IHN1aXZhbnRzIGRlIGxhCmxvaSBkdSA2IGphbnZpZXIgMTk3OCBy
-ZWxhdGl2ZSDDoCBsJ2luZm9ybWF0aXF1ZSwgYXV4IGZpY2hpZXJzIGV0IAphdXggbGliZXJ0w6lz
-KS4KCgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0cDovL2Eub3B0aW5j
-YWtlLmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4NjYyNTExNTYxMzIyMDUzNzE0NAoKCgoK
-Cgp7fkFKODQ2NDE4NjYyNTExNTYxMzIyMDUzNzE0NH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpN
-aW5pbWl6ZSBuZXR3b3JrIGRvd250aW1lIGFuZCBtYXhpbWl6ZSB0ZWFtIGVmZmVjdGl2ZW5lc3Mu
-ClJlZHVjZSBuZXR3b3JrIG1hbmFnZW1lbnQgYW5kIHNlY3VyaXR5IGNvc3RzLkxlYXJuIGhvdyB0
-byBoaXJlIAp0aGUgbW9zdCB0YWxlbnRlZCBDaXNjbyBDZXJ0aWZpZWQgcHJvZmVzc2lvbmFscy4g
-VmlzaXQgdGhlIApFbXBsb3llciBSZXNvdXJjZXMgUG9ydGFsCmh0dHA6Ly93d3cuY2lzY28uY29t
-L3dlYi9sZWFybmluZy9lbXBsb3llcl9yZXNvdXJjZXMvaW5kZXguaHRtbApfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Jusqu'a moins 80% chez BrandAlley
+
+Jusqu'a moins 80% chez BrandAlley
+
+Jusqu'a moins 80% chez BrandAlley
+
+Jusqu'a moins 80% chez BrandAlley
+
+Jusqu'a moins 80% chez BrandAlley
+
+Jusqu'a moins 80% chez BrandAlley
+
+
+--
+
+Pour vous d=E9sabonner, visitez :
+http://a.optincake.com/_act/get_rcr.php?AJ8480139055115603221530135
+
+
+
+
+
+
+{~AJ8480139055115603221530135~}
+---------------------------------------------------------------------------=
+---
+Minimize network downtime and maximize team effectiveness.
+Reduce network management and security costs.Learn how to hire =
+
+the most talented Cisco Certified professionals. Visit the =
+
+Employer Resources Portal
+http://www.cisco.com/web/learning/employer_resources/index.html

@@ -1,20 +1,13 @@
-From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH V3 2/5] spi: s3c64xx: added support for polling mode
-Date: Thu, 4 Apr 2013 11:15:46 +0530
-Message-ID: <CAKrE-Kc-QJ1ZkAZ1jYjRy+7V+6SuVk0oytfD8_vcp3ZWf6aSPQ@mail.gmail.com>
-References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
-	<1363157014-9615-3-git-send-email-ks.giri@samsung.com>
-	<20130401131207.GI18636@opensource.wolfsonmicro.com>
-	<CAKrE-KdWe6aCg0p99BFEeQP-P2nwvdhs2itH3XnHsJMCUjWPAA@mail.gmail.com>
-	<20130403114935.GA11305@opensource.wolfsonmicro.com>
+From: "Mutuelle Pas Chere" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?Vm90cmUgbXV0dWVsbGUgbW9pbnMgY2jDqHJlLCBhIHBhcnRpciA1LDQyIGV1cm9z?=
+Date: Thu, 04 Apr 2013 08:59:30 +0100
+Message-ID: <0.0.AD.A6F.1CE310A56672A58.0@mta209.pur3.net>
+Reply-To: Mutuelle Pas Chere <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130403114935.GA11305-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,49 +18,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Apr 3, 2013 at 5:19 PM, Mark Brown
-<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
-> On Wed, Apr 03, 2013 at 05:00:04PM +0530, Girish KS wrote:
->> On Mon, Apr 1, 2013 at 6:42 PM, Mark Brown
->
->> >> -     if (!sdd->pdev->dev.of_node) {
->> >> +     if (!sdd->pdev->dev.of_node && !is_polling(sdd)) {
->> >>               res = platform_get_resource(pdev, IORESOURCE_DMA,  0);
->> >>               if (!res) {
->> >>                       dev_err(&pdev->dev, "Unable to get SPI tx dma "
->
->> > It seems like it'd be sensible to also handle failure to get the DMA
->> > resource by going into polling mode.
->
->> There are 2 cases currently i have identified and handled,
->> 1. The SoC's dont have DMA support for spi controller. For such SoC's we
->>  would not add the dma resource in the spi dts node. In this case the probe
->>  would return error if failure for DMA resuorce is handled.
->
-> That's not what the code currently does...
->
->> 2. The SoC has a DMA support for SPI controller, but due to some x
->> reason(H/W bug),
->>  the driver would force polling mode by enabling
->> S3C64XX_SPI_QUIRK_POLL in driver
->>  data. For such SoC's there would be a dma entry in the spi controller
->> dts node, and
->>  probe can handle failure for DMA resource successfully.
->
->> To handle above both situations successfully if
->> (!sdd->pdev->dev.of_node && !is_polling(sdd)) is used.
->
-> Right, that's what the code currently does but what I'm suggesting is
-> that this isn't the most helpful thing to do and that printing a big
-> warning then soldiering on in polling mode might be more useful.
-
-Ok I got it. will do it.
-
-Thanks Mark
-
-------------------------------------------------------------------------------
-Minimize network downtime and maximize team effectiveness.
-Reduce network management and security costs.Learn how to hire 
-the most talented Cisco Certified professionals. Visit the 
-Employer Resources Portal
-http://www.cisco.com/web/learning/employer_resources/index.html
+U2kgbGUgbWVzc2FnZSBuZSBzJ2FmZmljaGUgcGFzIGNvcnJlY3RlbWVudCBtZXJjaSBkJ2FjY8Op
+ZGVyIGNldHRlIHBhZ2UKaHR0cDovL2Eub3B0aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxf
+dmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1MTE1NjEzMjIwNTM3MTQ0CgoKClZvdHJlIGNvbXBs
+w6ltZW50YWlyZSBzYW50w6kgw6AgcGFydGlyIGRlIDEwLDgzIGV1cm9zIHBhciBtb2lzCgpWb3Ry
+ZSBjb21wbMOpbWVudGFpcmUgc2FudMOpIMOgIHBhcnRpciBkZSAxMCw4MyBldXJvcyBwYXIgbW9p
+cwoKVm90cmUgY29tcGzDqW1lbnRhaXJlIHNhbnTDqSDDoCBwYXJ0aXIgZGUgMTAsODMgZXVyb3Mg
+cGFyIG1vaXMKClZvdHJlIGNvbXBsw6ltZW50YWlyZSBzYW50w6kgw6AgcGFydGlyIGRlIDEwLDgz
+IGV1cm9zIHBhciBtb2lzCgpWb3RyZSBjb21wbMOpbWVudGFpcmUgc2FudMOpIMOgIHBhcnRpciBk
+ZSAxMCw4MyBldXJvcyBwYXIgbW9pcwoKCgoKQ2V0dGUgb2ZmcmUgdm91cyBlc3QgcHJvcG9zw6ll
+IGFmaW4gcXVlIHZvdXMgcHVpc3NpZXogYsOpbsOpZmljaWVyIGRlIGJvbnMgcGxhbnMKdG91dGUg
+bCdhbm7DqWUgcXVlIGNlIHNvaXQgcG91ciBkZXMgcsOpZHVjdGlvbnMsIGRlcyBzb2xkZXMsIGRl
+cyB2ZW50ZXMgcHJpdsOpZXMsCm5vdXMgdm91cyB0aWVuZHJvbnMgaW5mb3Jtw6lzIGVuIHByaW9y
+aXTDqS4KCk5vcyBvZmZyZXMgZGUgYm9ucyBwbGFucywgc2hvcHBpbmcsIHZveWFnZXMsIHNlcnZp
+Y2VzLCBzb2lucyBkZSBsYSBwZXJzb25uZQpwYXJtaSBkZXMgY2VudGFpbmVzIGQnb2ZmcmVzIHNv
+bnQgw6Agdm90cmUgZGlzcG9zaXRpb24sIGFsb3JzIHByb2ZpdGV6IGVuLgoKQsOpbsOpZmljaWV6
+IMOpZ2FsZW1lbnQgZCdpbmZvcm1hdGlvbnMgc3VyIGxlcyBqZXV4IGNvbmNvdXJzLCBsZXMgc2Vy
+dmljZXMgZMOpZGnDqXMKZXQgbGUgdG91dCDDoCBkZXV4IHBhcyBkZSBjaGV6IHZvdXMuCgpDZXR0
+ZSBuZXdzbGV0dGVyIGVzdCBhY2Nlc3NpYmxlIMOpZ2FsZW1lbnQgc3VyIHZvdHJlIG1vYmlsZSwg
+dm91cyBuJ2F2ZXogcXUnw6AKY2xpcXVlciBkZXNzdXMgcG91ciBiw6luw6lmaWNpZXIgZHUgcHJv
+Z3JhbW1lIGRlIHZvdHJlIGNob2l4LgoKQWZpbiBkZSByZXNwZWN0ZXIgbGVzIGRpc3Bvc2l0aW9u
+cyBsw6lnYWxlcyBjb25jZXJuYW50IGxlcyBjb3VycmllcnMKw6lsZWN0cm9uaXF1ZXMuCgpWb3Vz
+IGRpc3Bvc2V6IGQndW4gZHJvaXQgZCdhY2PDqXMsIGRlIG1vZGlmaWNhdGlvbiwgZGUgcmVjdGlm
+aWNhdGlvbiBldCAKZGUgc3VwcHJlc3Npb24gZGVzIGRvbm7DqWVzIHF1aSB2b3VzIGNvbmNlcm5l
+bnQgKGFydGljbGVzIDM4IGV0IHN1aXZhbnRzIGRlIGxhCmxvaSBkdSA2IGphbnZpZXIgMTk3OCBy
+ZWxhdGl2ZSDDoCBsJ2luZm9ybWF0aXF1ZSwgYXV4IGZpY2hpZXJzIGV0IAphdXggbGliZXJ0w6lz
+KS4KCgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0cDovL2Eub3B0aW5j
+YWtlLmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4NjYyNTExNTYxMzIyMDUzNzE0NAoKCgoK
+Cgp7fkFKODQ2NDE4NjYyNTExNTYxMzIyMDUzNzE0NH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpN
+aW5pbWl6ZSBuZXR3b3JrIGRvd250aW1lIGFuZCBtYXhpbWl6ZSB0ZWFtIGVmZmVjdGl2ZW5lc3Mu
+ClJlZHVjZSBuZXR3b3JrIG1hbmFnZW1lbnQgYW5kIHNlY3VyaXR5IGNvc3RzLkxlYXJuIGhvdyB0
+byBoaXJlIAp0aGUgbW9zdCB0YWxlbnRlZCBDaXNjbyBDZXJ0aWZpZWQgcHJvZmVzc2lvbmFscy4g
+VmlzaXQgdGhlIApFbXBsb3llciBSZXNvdXJjZXMgUG9ydGFsCmh0dHA6Ly93d3cuY2lzY28uY29t
+L3dlYi9sZWFybmluZy9lbXBsb3llcl9yZXNvdXJjZXMvaW5kZXguaHRtbApfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
+aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
+bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

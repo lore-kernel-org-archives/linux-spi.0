@@ -1,24 +1,20 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: remove unused Tegra platform data header
-Date: Wed, 03 Apr 2013 12:43:58 -0600
-Message-ID: <515C786E.1060905@wwwdotorg.org>
-References: <1360965830-19795-1-git-send-email-swarren@wwwdotorg.org>
-	<1360965830-19795-4-git-send-email-swarren@wwwdotorg.org>
-	<20130302230217.1F9353E32AB@localhost>
-	<513A1B82.6060101@nvidia.com>
-	<CACxGe6uFCLzm2LCtchRxv9uQTNcyxjHQMXEdCTBwOkf5suV2Cw@mail.gmail.com>
+From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V3 2/5] spi: s3c64xx: added support for polling mode
+Date: Thu, 4 Apr 2013 11:15:46 +0530
+Message-ID: <CAKrE-Kc-QJ1ZkAZ1jYjRy+7V+6SuVk0oytfD8_vcp3ZWf6aSPQ@mail.gmail.com>
+References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
+	<1363157014-9615-3-git-send-email-ks.giri@samsung.com>
+	<20130401131207.GI18636@opensource.wolfsonmicro.com>
+	<CAKrE-KdWe6aCg0p99BFEeQP-P2nwvdhs2itH3XnHsJMCUjWPAA@mail.gmail.com>
+	<20130403114935.GA11305@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACxGe6uFCLzm2LCtchRxv9uQTNcyxjHQMXEdCTBwOkf5suV2Cw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20130403114935.GA11305-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -29,31 +25,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 03/09/2013 02:21 AM, Grant Likely wrote:
-> On Sat, Mar 9, 2013 at 1:10 AM, Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org> wrote:
->> On 3/2/2013 6:02 PM, Grant Likely wrote:
->>>
->>> On Fri, 15 Feb 2013 15:03:50 -0700, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
->>> wrote:
->>>>
->>>> From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
->>>>
->>>> The platform data header is no longer used. Delete it.
->>>>
->>>> Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
->>>
->>> I like the diffstat for this series. Applied!
->>
->> Grant, I was looking to pull these patches. I don't see them in linux-next
->> and I looked at your repo and didn't see them. Can you give me a pointer?
-> 
-> That is because I haven't pushed them out yet. Initially it was
-> because the merge window was still open, and then it was because I was
-> in Hong Kong last week for Linaro Connect. I haven't wanted to push
-> out my trees until I have a chance to do some build testing which I
-> will do on Monday.
+On Wed, Apr 3, 2013 at 5:19 PM, Mark Brown
+<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
+> On Wed, Apr 03, 2013 at 05:00:04PM +0530, Girish KS wrote:
+>> On Mon, Apr 1, 2013 at 6:42 PM, Mark Brown
+>
+>> >> -     if (!sdd->pdev->dev.of_node) {
+>> >> +     if (!sdd->pdev->dev.of_node && !is_polling(sdd)) {
+>> >>               res = platform_get_resource(pdev, IORESOURCE_DMA,  0);
+>> >>               if (!res) {
+>> >>                       dev_err(&pdev->dev, "Unable to get SPI tx dma "
+>
+>> > It seems like it'd be sensible to also handle failure to get the DMA
+>> > resource by going into polling mode.
+>
+>> There are 2 cases currently i have identified and handled,
+>> 1. The SoC's dont have DMA support for spi controller. For such SoC's we
+>>  would not add the dma resource in the spi dts node. In this case the probe
+>>  would return error if failure for DMA resuorce is handled.
+>
+> That's not what the code currently does...
+>
+>> 2. The SoC has a DMA support for SPI controller, but due to some x
+>> reason(H/W bug),
+>>  the driver would force polling mode by enabling
+>> S3C64XX_SPI_QUIRK_POLL in driver
+>>  data. For such SoC's there would be a dma entry in the spi controller
+>> dts node, and
+>>  probe can handle failure for DMA resource successfully.
+>
+>> To handle above both situations successfully if
+>> (!sdd->pdev->dev.of_node && !is_polling(sdd)) is used.
+>
+> Right, that's what the code currently does but what I'm suggesting is
+> that this isn't the most helpful thing to do and that printing a big
+> warning then soldiering on in polling mode might be more useful.
 
-Grant, I still don't see these patches in next-20130403.
+Ok I got it. will do it.
+
+Thanks Mark
 
 ------------------------------------------------------------------------------
 Minimize network downtime and maximize team effectiveness.

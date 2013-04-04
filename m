@@ -1,49 +1,45 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v4] gpio: mcp23s08: convert driver to DT
-Date: Thu, 4 Apr 2013 15:44:08 +0200
-Message-ID: <CACRpkdZdOabqWHo9j+Kq_MHWFEaj9=+d8vBxLtH6OZbBX3vGJw@mail.gmail.com>
-References: <1365069722-15408-1-git-send-email-larsi@wh2.tu-dresden.de>
+From: "Bohdan" <bohdan_baida-IQAdlSoDeWtSwrhanM7KvQ@public.gmane.org>
+Subject: Social network for 2D and 3D artists.
+Date: Thu, 4 Apr 2013 12:17:29 -0400
+Message-ID: <E1UNmr3-00088t-D8@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Lars Poeschel <poeschel@lemonage.de>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Rob Landley <rob@landley.net>,
-	"devicetree-discuss@lists.ozlabs.org"
-	<devicetree-discuss@lists.ozlabs.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	spi mailing list <spi-devel-general@lists.sourceforge.net>,
-	Peter Korsgaard <jacmet@sunsite.dk>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: Lars Poeschel <larsi@wh2.tu-dresden.de>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1365069722-15408-1-git-send-email-larsi@wh2.tu-dresden.de>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Apr 4, 2013 at 12:02 PM, Lars Poeschel <larsi@wh2.tu-dresden.de> wrote:
-
-> From: Lars Poeschel <poeschel@lemonage.de>
->
-> This converts the mcp23s08 driver to be able to be used with device
-> tree.
-> There is a "spi-present-mask" device tree property, that allows to
-> use multiple of this spi chips on the same chipselect.
->
-> Signed-off-by: Lars Poeschel <poeschel@lemonage.de>
-> ---
-> v4:
-> - removed the ability to specify the pullup from device tree
-> - updated binding doc
-(...)
-> @@ -668,6 +742,7 @@ static struct spi_driver mcp23s08_driver = {
->         .driver = {
->                 .name   = "mcp23s08",
->                 .owner  = THIS_MODULE,
-> +               .of_match_table = of_match_ptr(mcp23s08_spi_of_match),
-
-Will this compile if CONFIG_OF is not enabled?
-
-Yours,
-Linus Walleij
+77u/SGVsbG8uCk15IG5hbWUgaXMgQm9oZGFuLgogCkkgYW0gY3JlYXRvciBvZiBuZXcgbmV0d29y
+ayBmb3IgYWxsIGNyZWF0aXZlIGFuZCB0YWxlbnRlZCBwZW9wbGUuIDJEIEFydGlzdHMsIDNEIEFy
+dGlzdHMsIFByb2dyYW1tZXJzLCBXcml0ZXJzLCBEZXNpZ25lcnMgUGhvdG9ncmFwaGVycyBhbmQg
+YSBsb3QgbW9yZeKApiAgSSB3b3VsZCBsaWtlIHRvIGludml0ZSB5b3UgdG8gdmlzaXQgbXkgd2Vi
+IHNpdGUsIHRoaXMgaXMgdmVyeSBnb29kIGFuZCB1c2VmdWwgc29jaWFsIG5ldHdvcmsuIE5ldHdv
+cmsgd2l0aCB0dXRvcmlhbHMgd2hlcmUgeW91IGNhbiBzZWxsIG9yIGJ1eSB0dXRvcmlhbC4gQWxz
+byB0aGlzIGlzIGZyZWVsYW5jZXJzIG5ldHdvcmsgdG9vLiBBbmQgbWFya2V0IHBsYWNlIHdoZXJl
+IHlvdSBjYW4gc2VsbCB5b3VyIDNkIE1vZGVscyBhbmQgSW1hZ2VzLgpUaGlzIGlzIHZlcnkgZ29v
+ZCBuZXR3b3JrIGJ1dCB2ZXJ5IG5ldywgbXkgd2ViIHNpdGUgaXMgb25seSAyIG1vbnRoIG9sZCBh
+bmQgd2UgZG9u4oCZdCBoYXZlIHRvbyBtdWNoIGNvbnRlbnQgb24gaXQuIElmIHlvdSBhcmUgaW50
+ZXJlc3RpbmcgYmUgcGFydCBvZiBuZXcgY3JlYXRpdmUgbmV0d29yaywgYmUgbXkgZ3Vlc3QuIEoK
+UGxlYXNlIHJlZ2lzdGVyIGFuZCBoZWxwIHVzIHRvIGdyb3cgbmV3IGFuZCB1c2VmdWwgc29jaWFs
+IG5ldHdvcmsgZm9yIGNyZWF0aXZlIHBlb3BsZS4KICAgICAgICAgICAgICAgICAgICAgIApJZiB5
+b3UgaGF2ZSBhbnkgcXVlc3Rpb25zIG9yIHlvdSBuZWVkIGFueSBoZWxwIHBsZWFzZSBmZWVsIGZy
+ZWUgdG8gZW1haWwgbWUuCiAKTXkgd2Vic2l0ZSB3d3cuY3JlYXRpdmlrcy5jb20gCiAKSSBob3Bl
+IHRvIHNlZSB5b3UgdGhlcmUuClRoYW5rIHlvdS4KIAoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk1p
+bmltaXplIG5ldHdvcmsgZG93bnRpbWUgYW5kIG1heGltaXplIHRlYW0gZWZmZWN0aXZlbmVzcy4K
+UmVkdWNlIG5ldHdvcmsgbWFuYWdlbWVudCBhbmQgc2VjdXJpdHkgY29zdHMuTGVhcm4gaG93IHRv
+IGhpcmUgCnRoZSBtb3N0IHRhbGVudGVkIENpc2NvIENlcnRpZmllZCBwcm9mZXNzaW9uYWxzLiBW
+aXNpdCB0aGUgCkVtcGxveWVyIFJlc291cmNlcyBQb3J0YWwKaHR0cDovL3d3dy5jaXNjby5jb20v
+d2ViL2xlYXJuaW5nL2VtcGxveWVyX3Jlc291cmNlcy9pbmRleC5odG1sCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
+bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

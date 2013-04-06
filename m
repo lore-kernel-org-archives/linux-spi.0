@@ -1,98 +1,127 @@
-From: Jonas Gorski <jogo@openwrt.org>
-Subject: [PATCH] spi/bcm63xx: remove unused speed_hz variable
-Date: Sat,  6 Apr 2013 13:18:57 +0200
-Message-ID: <1365247137-19050-1-git-send-email-jogo@openwrt.org>
-Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-To: spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org
-Return-path: <linux-mips-bounce@linux-mips.org>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: Quick questions regarding the SPI interface
+Date: Sat, 6 Apr 2013 18:22:27 +0100
+Message-ID: <CACxGe6sNCdcj15AEFyXu3mfQ+icPVj058aLsKByr0hxHR+YsFw@mail.gmail.com>
+References: <515F379A.8090006@sperl.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <515F379A.8090006-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-speed_hz is a write only member, so we can safely remove it and its
-generation. Also fixes the missing clk_put after getting the periph
-clock.
+On Fri, Apr 5, 2013 at 9:44 PM, Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org> wrote:
+> Hi!
+>
+> I am trying to drive the spi driver of the raspberry-pi towards a fully DMA
+> driven interface and have come a few open points that - as far as I can tell
+> - are not specified detail in the documentation or header-files.
+>
+> 1) is the spi callback blocking further actions on the spi-bus until it is
+> returns, or can other (asyncronously) scheduled spi transactions happen
+> while the callback occurs (or is still pending)?
+> 2) is a callback allowed to sleep (so it can not get run from a "normal"
+> Irq-handler-context - i.e non-threaded IRQ)?
 
-Signed-off-by: Jonas Gorski <jogo@openwrt.org>
----
+Which callback? The mesg->complete() callback? or the .transfer or
+.transfer_one_message callbacks provided by the spi bus driver?
 
-This patch applies cleanly to both spi-next and mips-next, and I don't
-have any preference into which tree it should go. Maybe mips, as it
-"wins" in terms of removed lines ;-).
+The ->complete() callback should not sleep because it may be running
+in an atomic context in the spi bus driver.
 
- arch/mips/bcm63xx/dev-spi.c                          |   11 -----------
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h |    1 -
- drivers/spi/spi-bcm63xx.c                            |    2 --
- 3 files changed, 14 deletions(-)
+The .transfer_one_message() callback can either sleep or return
+immediately. For DMA driven transfers, you'll probably want to return
+immediately and handle the message completion in the irq handler. A
+new transaction can indeed be initiated before the complete() callback
+on the preceeding transaction has actually been called. If a device
+needs to have exclusive access to the bus then there is a separate bus
+lock feature in the SPI infrastructure. The MMC subsystem uses this.
 
-diff --git a/arch/mips/bcm63xx/dev-spi.c b/arch/mips/bcm63xx/dev-spi.c
-index f1c9c3e..e97fd60 100644
---- a/arch/mips/bcm63xx/dev-spi.c
-+++ b/arch/mips/bcm63xx/dev-spi.c
-@@ -85,20 +85,9 @@ static struct platform_device bcm63xx_spi_device = {
- 
- int __init bcm63xx_spi_register(void)
- {
--	struct clk *periph_clk;
--
- 	if (BCMCPU_IS_6328() || BCMCPU_IS_6345())
- 		return -ENODEV;
- 
--	periph_clk = clk_get(NULL, "periph");
--	if (IS_ERR(periph_clk)) {
--		pr_err("unable to get periph clock\n");
--		return -ENODEV;
--	}
--
--	/* Set bus frequency */
--	spi_pdata.speed_hz = clk_get_rate(periph_clk);
--
- 	spi_resources[0].start = bcm63xx_regset_address(RSET_SPI);
- 	spi_resources[0].end = spi_resources[0].start;
- 	spi_resources[1].start = bcm63xx_get_irq_number(IRQ_SPI);
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-index c9bae13..b0184cf 100644
---- a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_spi.h
-@@ -13,7 +13,6 @@ struct bcm63xx_spi_pdata {
- 	unsigned int	msg_ctl_width;
- 	int		bus_num;
- 	int		num_chipselect;
--	u32		speed_hz;
- };
- 
- enum bcm63xx_regs_spi {
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 973099b..a4ec5f4 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -46,7 +46,6 @@ struct bcm63xx_spi {
- 	int			irq;
- 
- 	/* Platform data */
--	u32			speed_hz;
- 	unsigned		fifo_size;
- 	unsigned int		msg_type_shift;
- 	unsigned int		msg_ctl_width;
-@@ -436,7 +435,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 	master->unprepare_transfer_hardware = bcm63xx_spi_unprepare_transfer;
- 	master->transfer_one_message = bcm63xx_spi_transfer_one;
- 	master->mode_bits = MODEBITS;
--	bs->speed_hz = pdata->speed_hz;
- 	bs->msg_type_shift = pdata->msg_type_shift;
- 	bs->msg_ctl_width = pdata->msg_ctl_width;
- 	bs->tx_io = (u8 *)(bs->regs + bcm63xx_spireg(SPI_MSG_DATA));
--- 
-1.7.10.4
+If the driver is still using .transfer, then you really should move to
+.transfer_one_message(). It is much better and well documented in
+Documentation/spi/spi-summary (look to the end of the file).
+
+> 3) are there any absolute requirements on the sequence of callbacks or could
+> reordering occur?
+
+It is feasable for reordering of the completion callbacks to occur if
+multiple requests are queued, but the SPI transactions themselves must
+not be reordered.
+
+> 4) does a spi_transfer require a payload(Len>0) when a delay is set? (that
+> way "defined" delays could get used for sampling with an ADC or similar)
+
+Hmmm, I don't think anyone has done that. Why wouldn't the delay be
+made part of the preceding spi_transfer?
+
+>
+> All these answers are needed to get the spi-driver working in a fully
+> pipelined dma mode and stay compatible with existing device-drivers that
+> make use of the asynchronous interface.
+>
+> My interpretation right now are:
+>
+> ad 1) no, as it is an asynchronous interface, so we have to assume that
+> there can be bus activity.
+> ad 2) there are advantages to both - in interrupt-context the callback could
+> schedule other spi_async transaction with minimal overhead (no
+> task-switching required). But on the other hand there may be existing
+> drivers that would break with this in place (as they might sleep in the
+> callback for example).  Alternatively the driver would need to add a task to
+> a work-queue or similar instead - this obviously means more latencies. Maybe
+> an additional flag in spi_message signifying the callback is not sleeping
+> (say callback_irqsafe), would be needed to get "best" of both worlds?
+> Short-term this could get done via a module parameter.
+
+Use .transfer_one_message. All of the above is handled transparently
+and the spi_bus driver can choose to either sleep in
+transfer_one_message and handle all phases in that context, or return
+immediately and finalize the transaction in the interrupt handler. It
+also means the driver doesn't need to implement any of the workqueue
+stuff.
+
+> ad 3) this essentially means if the callback needs to get implemented with a
+> single global system queue or if per-CPU specific queues would be
+> permissible.
+> ad 4) I think that len may be 0 - if this is used in conjunction with an
+> ADC, then a delay could get configured this way without a CS asserted. My
+> thought for the DMA driver of the RPI  (which can daisy-chain different
+> kinds of DMA transfer) was actually to "abuse" a DMA transfer of a
+> Memory-page to a null sink to get those "exact" delays implement without the
+> need for the CPU to get involved at all - this way for example a sample-rate
+> can get very well controlled getting close to real-time performance with
+> regards to jitter and more...
+>
+> Can you please give me your thoughts on these before I start implementing
+> the next revision of the DMA enabled driver for the RPI hardware?
+>
+> It may also be of interest to document (some of) the answers for the above
+> in spi.h for further reference.
+>
+> Thanks,
+>                 Martin
+>
+
+
+
+--
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
+
+------------------------------------------------------------------------------
+Minimize network downtime and maximize team effectiveness.
+Reduce network management and security costs.Learn how to hire 
+the most talented Cisco Certified professionals. Visit the 
+Employer Resources Portal
+http://www.cisco.com/web/learning/employer_resources/index.html

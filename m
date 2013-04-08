@@ -1,16 +1,21 @@
 From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH -next v2] spi: tegra: slink: make local symbols static
-Date: Mon, 8 Apr 2013 13:41:21 +0100
-Message-ID: <20130408124120.GJ9243@opensource.wolfsonmicro.com>
-References: <CAPgLHd-sTt5eKoiLb13dWHipT6Q46qCbG=b9mCYNq=Q7YLmGVA@mail.gmail.com>
+Subject: Re: [PATCH] spi: spi-omap2-mcspi.c: Add dts for slave device
+ configuration.
+Date: Mon, 8 Apr 2013 13:40:36 +0100
+Message-ID: <20130408124036.GI9243@opensource.wolfsonmicro.com>
+References: <1364252415-3613-1-git-send-email-matthias.bgg@gmail.com>
+ <CABuKBeKN+cPbsf95mTvDfzAwzOh4V-+bycp=sujNndDeMG2HMw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4054153253478420280=="
-Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
- yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============5434753033294557520=="
+Cc: Javier Martinez Canillas <martinez.javier-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+ linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Enric Balletbo Serra <eballetbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+ "devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org" <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+ "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ "linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <CAPgLHd-sTt5eKoiLb13dWHipT6Q46qCbG=b9mCYNq=Q7YLmGVA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CABuKBeKN+cPbsf95mTvDfzAwzOh4V-+bycp=sujNndDeMG2HMw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
  <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
@@ -24,50 +29,53 @@ Sender: "devicetree-discuss"
 List-Id: linux-spi.vger.kernel.org
 
 
---===============4054153253478420280==
+--===============5434753033294557520==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5mZBmBd1ZkdwT1ny"
+	protocol="application/pgp-signature"; boundary="JsihDCElWRmQcbOr"
 Content-Disposition: inline
 
 
---5mZBmBd1ZkdwT1ny
+--JsihDCElWRmQcbOr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 05, 2013 at 09:45:36PM +0800, Wei Yongjun wrote:
-> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
->=20
-> Neither tegra20_spi_cdata nor tegra30_spi_cdata are used outside this
-> file so they can, and should, be static.
+On Mon, Apr 08, 2013 at 02:18:00PM +0200, Matthias Brugger wrote:
+> 2013/3/26 Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Applied, thanks.
+> > TI omap2 mcspi allows the slave devices to configure the behavior of
+> > the SPI master. This patch adds device tree support to the existing
+> > options.
 
---5mZBmBd1ZkdwT1ny
+> Any comments on this patch?
+
+Don't send contentless pings, and it appears to have only been a couple
+of weeks since it was first posted...
+
+--JsihDCElWRmQcbOr
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRYrrnAAoJELSic+t+oim9tTEP/3RYhLvSavrpTxzdG56MBFPU
-DgCvfahkXQJko7Hb5gdZJoAkFQuC96/is+rI6xO3lzb4rOsVnE6EL+4agy6mh1TV
-b5Yg5k7PoY2yFg+iM1oBo8vXfIBw5+0VD4Rz7WWQXlRZS+CRRgR+naRlikeenx/E
-ZyNnU+vJnvnlmRVbRtqKLQ4Tvwp2/rDR0wg57lOImTOOWZ4YPKSRwzwezgi8BeLQ
-WAKIinGDVdzC1D09nBMGU1LXNYJ94QW4gHlW7HgKCJ5CA6iF+27Znokn8IVYSCrT
-sdGAEAUZvpNI7RRO6PcwbCrTL5aig0RnV/wTgaa7vLRzhN01K156VqunbGKNHfm1
-/fgUE7LyDNHOiScVx4x9IKbhqZQcdXX/fLmsObFhokXi0i1rD0NXmrw7dGBOZv5u
-IvcZcbTIGZ/kkLiuKMsG4AVeSKjbgqqGB+Ped5W238YqTHviQ4cfHbhWLQ8EjUxu
-Z02oWTaSwso6ErtRLFsUqxPaoM9f70/tkCFJUU1kj7DJFmDZEINqguh5WThS8kpP
-VwnADHOp3FcHbN0JWyhWKIu3MtmFGMjrqzPYkmYQu02Q9WVolG3eeJGzxxphnwBS
-3/C2qofeNMMN9lg/TT6qw4kgC4+GA8e4H/n9rg7TMJg6pH3VP/Sdtxl8PsEDpHkQ
-lw1y7kLbPj/EoJ45yV9F
-=pNwo
+iQIcBAEBAgAGBQJRYrq7AAoJELSic+t+oim9NgcP/3wlpLfRu4KSKTkBpnnQIrjQ
+sowdpbuJwcaZxQoWmg+G8BtwqCr0sZhUZDJt1+Ef0G99cV3d5GnXLsPWSIs5Zg06
+GmeeRQW+QZye6K38VUJWYlQCt7+F3JAy4wDJVaFg8CChh4tYiYN+1tvXU5TaO48M
+W8RQP14pnXbAdLYmqzwIPYVEOUAP3V2i8k5pNrI6NZh9kH57P53RvgzRP1LNt/iF
+qj9B1MDE3+XoHu6RqkULPhucUuMQU/o60wJkn8lbeHQklP/AJMjdg2+knElGPsVN
+fd/MHLnMmVtbiGL+nFUIBQZvlbUrGky8QeTZbT1qF2RKJ45yijEAehWSfdD2triu
+q4oXygZZRt7X58c7qoy34bEDq2H3dzqElDFqtftKPT1Jcp2S/zy/f9UnE9p2bcRI
+bsHhbg7x8m8pXM5+bEUEcxv0luFvfPa+jyVcqK07T3M9Iv6HpUyIYymi7vQIb7Pl
+ZAObq5AgX5aBcKYgjSXtlsxbwNL5/0pXVX7N+2vbTniWtWFTcAbVn7vu4eDhmQc3
+OFnyruUPvuqH4iX9KqY+O4o9d5DkQLMsKqCvU/FDWv8ZTcxAWdj6Y4PiCWAsfYgx
+ibLOEqDcXsCcz8aJER8TV41V3r76nWT+pp6ru8283iI7kBksD1arxHsj3QisNbM2
+OTLt5Kq+UVoyIpVkgKHt
+=0wm6
 -----END PGP SIGNATURE-----
 
---5mZBmBd1ZkdwT1ny--
+--JsihDCElWRmQcbOr--
 
---===============4054153253478420280==
+--===============5434753033294557520==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -78,4 +86,4 @@ devicetree-discuss mailing list
 devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
 https://lists.ozlabs.org/listinfo/devicetree-discuss
 
---===============4054153253478420280==--
+--===============5434753033294557520==--

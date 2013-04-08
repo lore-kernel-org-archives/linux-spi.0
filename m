@@ -1,64 +1,81 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi/bcm63xx: remove unused speed_hz variable
-Date: Mon, 8 Apr 2013 13:42:31 +0100
-Message-ID: <20130408124231.GK9243@opensource.wolfsonmicro.com>
-References: <1365247137-19050-1-git-send-email-jogo@openwrt.org>
+From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: Re: [PATCH -next v2] spi: tegra: slink: make local symbols static
+Date: Mon, 8 Apr 2013 13:41:21 +0100
+Message-ID: <20130408124120.GJ9243@opensource.wolfsonmicro.com>
+References: <CAPgLHd-sTt5eKoiLb13dWHipT6Q46qCbG=b9mCYNq=Q7YLmGVA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="FnOKg9Ah4tDwTfQS"
-Cc: spi-devel-general@lists.sourceforge.net, linux-mips@linux-mips.org,
-        Grant Likely <grant.likely@secretlab.ca>,
-        Maxime Bizon <mbizon@freebox.fr>,
-        Florian Fainelli <florian@openwrt.org>,
-        Kevin Cernekee <cernekee@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>
-To: Jonas Gorski <jogo@openwrt.org>
-Return-path: <linux-mips-bounce@linux-mips.org>
-Content-Disposition: inline
-In-Reply-To: <1365247137-19050-1-git-send-email-jogo@openwrt.org>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+Content-Type: multipart/mixed; boundary="===============4054153253478420280=="
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+ yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <CAPgLHd-sTt5eKoiLb13dWHipT6Q46qCbG=b9mCYNq=Q7YLmGVA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
 
---FnOKg9Ah4tDwTfQS
-Content-Type: text/plain; charset=us-ascii
+--===============4054153253478420280==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="5mZBmBd1ZkdwT1ny"
 Content-Disposition: inline
 
-On Sat, Apr 06, 2013 at 01:18:57PM +0200, Jonas Gorski wrote:
-> speed_hz is a write only member, so we can safely remove it and its
-> generation. Also fixes the missing clk_put after getting the periph
-> clock.
+
+--5mZBmBd1ZkdwT1ny
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Apr 05, 2013 at 09:45:36PM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+>=20
+> Neither tegra20_spi_cdata nor tegra30_spi_cdata are used outside this
+> file so they can, and should, be static.
 
 Applied, thanks.
 
---FnOKg9Ah4tDwTfQS
+--5mZBmBd1ZkdwT1ny
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRYrsqAAoJELSic+t+oim95JkP/iMP5axnqQPTO8x0znaWaPtm
-7MK1rTNX7lHN0mWJbYHNGI0JDw/5SDs5+HE7zn78bx1yI4TI02l1JEOxmwNbmFb0
-C3kTeJgs5Vf5eJT807DKPbK6tjrBCIe56xjUFX1g7KCpiSSR/Kd/2WZDZ2/nuP1y
-ZPS/wks9ANpGLJynKhDMto5pgVVSF+D4WHXJ2wYPL1GiacKiQZqqS/NE3fodOBON
-NzDV0N20hL8xEuJFlroKmZy9/jba8pO6ttsB3CbNNrBNLtvw/bOZhfSLR+JvWHxY
-obB82iXejTgCwQwHuZ9l+I7tG50P9IIuI2a0ENiFN9BP/iDs0SJ4tsHzJqlsgIhE
-lB5hapW88d7MQqRQbvSA/mFs1eeQeqbPohOxUYeLbdHUTDEQyLDcRB9yyefDl+TK
-k9APN9pA2INZnvAERJBE8kv5yCYuemSHC4nKKg76JmfjmEZdjswZM+3nmAd9V4Fs
-rE6YE5VZqM+K447oTj9NJHK68jwtiiksFoKD81xjGPYH1NC3w8fGec5M7bEz/H8z
-UisUyKP9+ryKQiTAmoGKTpOdnpsfevWri4e9/dfNNerd9/C7eHmfCXUk+iAq+zwS
-uxq0JY6tPkSQglLQzRZoDTSFidRZPKgmwrxfnr5v8PNIqUeMGACGS8OwQCMeNxdu
-YRaHQDgpWB7PMRORZBTT
-=ey2Y
+iQIcBAEBAgAGBQJRYrrnAAoJELSic+t+oim9tTEP/3RYhLvSavrpTxzdG56MBFPU
+DgCvfahkXQJko7Hb5gdZJoAkFQuC96/is+rI6xO3lzb4rOsVnE6EL+4agy6mh1TV
+b5Yg5k7PoY2yFg+iM1oBo8vXfIBw5+0VD4Rz7WWQXlRZS+CRRgR+naRlikeenx/E
+ZyNnU+vJnvnlmRVbRtqKLQ4Tvwp2/rDR0wg57lOImTOOWZ4YPKSRwzwezgi8BeLQ
+WAKIinGDVdzC1D09nBMGU1LXNYJ94QW4gHlW7HgKCJ5CA6iF+27Znokn8IVYSCrT
+sdGAEAUZvpNI7RRO6PcwbCrTL5aig0RnV/wTgaa7vLRzhN01K156VqunbGKNHfm1
+/fgUE7LyDNHOiScVx4x9IKbhqZQcdXX/fLmsObFhokXi0i1rD0NXmrw7dGBOZv5u
+IvcZcbTIGZ/kkLiuKMsG4AVeSKjbgqqGB+Ped5W238YqTHviQ4cfHbhWLQ8EjUxu
+Z02oWTaSwso6ErtRLFsUqxPaoM9f70/tkCFJUU1kj7DJFmDZEINqguh5WThS8kpP
+VwnADHOp3FcHbN0JWyhWKIu3MtmFGMjrqzPYkmYQu02Q9WVolG3eeJGzxxphnwBS
+3/C2qofeNMMN9lg/TT6qw4kgC4+GA8e4H/n9rg7TMJg6pH3VP/Sdtxl8PsEDpHkQ
+lw1y7kLbPj/EoJ45yV9F
+=pNwo
 -----END PGP SIGNATURE-----
 
---FnOKg9Ah4tDwTfQS--
+--5mZBmBd1ZkdwT1ny--
+
+--===============4054153253478420280==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+devicetree-discuss mailing list
+devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+https://lists.ozlabs.org/listinfo/devicetree-discuss
+
+--===============4054153253478420280==--

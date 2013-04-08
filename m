@@ -1,13 +1,11 @@
-From: "Teatower" <noreply-193CG9riSBJWk0Htik3J/w@public.gmane.org>
-Subject: =?UTF-8?Q?5_=C3=A9chantillons_de_th=C3=A9_gratuits_+_21_pourcent_de_r?=
-	=?UTF-8?Q?=C3=A9duction?=
-Date: Mon, 08 Apr 2013 07:21:37 +0000 (CET)
-Message-ID: <130408072137.-175846988900003720@obfm42.com>
+From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 发/票――代/开
+Date: Tue, 9 Apr 2013 03:39:54 +0800
+Message-ID: <E1UPHv7-0006bK-BE@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="gb2312"
 Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,21 +17,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ClJlY2V2ZXogNSDDqWNoYW50aWxsb25zIGRlIHRow6kgZ3JhdHVpdHMgYXZlYyBURUFUT1dFUgoo
-aHR0cDovL29iZm00Mi5jb20vcG5jYmhqMG14dWpweWwwbHdkL2luZGV4MC5odG1sKQooaHR0cDov
-L29iZm00Mi5jb20vbTVjMTJqaTF4eXg1YmRibHpzL2luZGV4MS5odG1sKQooaHR0cDovL29iZm00
-Mi5jb20vNTRjMHVqZmx4eGFwdTIyMm5sL2luZGV4Mi5odG1sKQooaHR0cDovL29iZm00Mi5jb20v
-cnJjZnhqa3Z4NTU1ejB0MjR5L2luZGV4My5odG1sKQoKKGh0dHA6Ly9vYmZtNDIuY29tL3E0MGp1
-NWVkanpocHNjMnl0cy9pbmRleDQuaHRtbCkgKGh0dHA6Ly9vYmZtNDIuY29tL2pyMGx4NWNlamJt
-NXQxdHkyZC9pbmRleDUuaHRtbCkKwqAKVEVBVE9XRVIgLyBUVCBQQUNLQUdJTkcgU1BSTAoKUnVl
-IFNhaW50LURlbmlzIDExMiAtIDExOTAgQnJ1eGVsbGVzIC0gQmVsZ2lxdWUgLSBUw6lsIDAwLjMy
-LjI4LjA4LjAxLjI3Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpNaW5pbWl6ZSBuZXR3b3JrIGRvd250
-aW1lIGFuZCBtYXhpbWl6ZSB0ZWFtIGVmZmVjdGl2ZW5lc3MuClJlZHVjZSBuZXR3b3JrIG1hbmFn
-ZW1lbnQgYW5kIHNlY3VyaXR5IGNvc3RzLkxlYXJuIGhvdyB0byBoaXJlIAp0aGUgbW9zdCB0YWxl
-bnRlZCBDaXNjbyBDZXJ0aWZpZWQgcHJvZmVzc2lvbmFscy4gVmlzaXQgdGhlIApFbXBsb3llciBS
-ZXNvdXJjZXMgUG9ydGFsCmh0dHA6Ly93d3cuY2lzY28uY29tL3dlYi9sZWFybmluZy9lbXBsb3ll
-cl9yZXNvdXJjZXMvaW5kZXguaHRtbApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
+59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
+utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWluaW1pemUgbmV0
+d29yayBkb3dudGltZSBhbmQgbWF4aW1pemUgdGVhbSBlZmZlY3RpdmVuZXNzLgpSZWR1Y2UgbmV0
+d29yayBtYW5hZ2VtZW50IGFuZCBzZWN1cml0eSBjb3N0cy5MZWFybiBob3cgdG8gaGlyZSAKdGhl
+IG1vc3QgdGFsZW50ZWQgQ2lzY28gQ2VydGlmaWVkIHByb2Zlc3Npb25hbHMuIFZpc2l0IHRoZSAK
+RW1wbG95ZXIgUmVzb3VyY2VzIFBvcnRhbApodHRwOi8vd3d3LmNpc2NvLmNvbS93ZWIvbGVhcm5p
+bmcvZW1wbG95ZXJfcmVzb3VyY2VzL2luZGV4Lmh0bWwKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

@@ -1,89 +1,74 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-omap2-mcspi.c: Add dts for slave device
- configuration.
-Date: Mon, 8 Apr 2013 13:40:36 +0100
-Message-ID: <20130408124036.GI9243@opensource.wolfsonmicro.com>
-References: <1364252415-3613-1-git-send-email-matthias.bgg@gmail.com>
- <CABuKBeKN+cPbsf95mTvDfzAwzOh4V-+bycp=sujNndDeMG2HMw@mail.gmail.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH V3 4/5] spi: s3c64xx: Added provision for dedicated cs pin
+Date: Mon, 8 Apr 2013 11:15:30 +0100
+Message-ID: <20130408101530.GC9243@opensource.wolfsonmicro.com>
+References: <1363157014-9615-1-git-send-email-ks.giri@samsung.com>
+ <1363157014-9615-5-git-send-email-ks.giri@samsung.com>
+ <20130401125744.GG18636@opensource.wolfsonmicro.com>
+ <CAKrE-Kd+YAFmteDdh3odtV+YU1=OjoMuQV9usF4NmUse+TXhTg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5434753033294557520=="
-Cc: Javier Martinez Canillas <martinez.javier-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
- linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Enric Balletbo Serra <eballetbo-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
- "devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org" <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
- "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
- "linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <CABuKBeKN+cPbsf95mTvDfzAwzOh4V-+bycp=sujNndDeMG2HMw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="wxDdMuZNg1r63Hyj"
+Cc: spi-devel-general@lists.sourceforge.net,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Tomasz Figa <t.figa@samsung.com>
+To: Girish KS <girishks2000@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAKrE-Kd+YAFmteDdh3odtV+YU1=OjoMuQV9usF4NmUse+TXhTg@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---===============5434753033294557520==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JsihDCElWRmQcbOr"
-Content-Disposition: inline
-
-
---JsihDCElWRmQcbOr
+--wxDdMuZNg1r63Hyj
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Apr 08, 2013 at 02:18:00PM +0200, Matthias Brugger wrote:
-> 2013/3/26 Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+On Mon, Apr 08, 2013 at 03:21:03PM +0530, Girish KS wrote:
+> On Mon, Apr 1, 2013 at 6:27 PM, Mark Brown
 
-> > TI omap2 mcspi allows the slave devices to configure the behavior of
-> > the SPI master. This patch adds device tree support to the existing
-> > options.
+> > It's also a bit odd that we end up checking cs_gpio and then using line
+> > in the code, it'd be more idiomatic if cs_gpio were the GPIO number.
 
-> Any comments on this patch?
+> In the original driver it was assumed that the cs line is always a gpio pin.
+> But the current controller that i am working on has no gpio pin for cs
+> selection.
+> All the lines to the device are internally connected. There is no
+> option to select
+> the cs signal. So cs-gpio property parsing has to skipped for this
+> controller, that means
+> cs_gpio cannot be a GPIO number. If it has to be a number then it has
+> to be < 0 to say
+> it is not gpio. Any >= 0 number implies it is a valid gpio (in reality
+> for this controller it is not.)
 
-Don't send contentless pings, and it appears to have only been a couple
-of weeks since it was first posted...
+Two options here, one is to just assume nobody will use GPIO 0 and the
+other is to set the number appopriately during probe so that only probe
+needs to worry about the issue.
 
---JsihDCElWRmQcbOr
+--wxDdMuZNg1r63Hyj
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRYrq7AAoJELSic+t+oim9NgcP/3wlpLfRu4KSKTkBpnnQIrjQ
-sowdpbuJwcaZxQoWmg+G8BtwqCr0sZhUZDJt1+Ef0G99cV3d5GnXLsPWSIs5Zg06
-GmeeRQW+QZye6K38VUJWYlQCt7+F3JAy4wDJVaFg8CChh4tYiYN+1tvXU5TaO48M
-W8RQP14pnXbAdLYmqzwIPYVEOUAP3V2i8k5pNrI6NZh9kH57P53RvgzRP1LNt/iF
-qj9B1MDE3+XoHu6RqkULPhucUuMQU/o60wJkn8lbeHQklP/AJMjdg2+knElGPsVN
-fd/MHLnMmVtbiGL+nFUIBQZvlbUrGky8QeTZbT1qF2RKJ45yijEAehWSfdD2triu
-q4oXygZZRt7X58c7qoy34bEDq2H3dzqElDFqtftKPT1Jcp2S/zy/f9UnE9p2bcRI
-bsHhbg7x8m8pXM5+bEUEcxv0luFvfPa+jyVcqK07T3M9Iv6HpUyIYymi7vQIb7Pl
-ZAObq5AgX5aBcKYgjSXtlsxbwNL5/0pXVX7N+2vbTniWtWFTcAbVn7vu4eDhmQc3
-OFnyruUPvuqH4iX9KqY+O4o9d5DkQLMsKqCvU/FDWv8ZTcxAWdj6Y4PiCWAsfYgx
-ibLOEqDcXsCcz8aJER8TV41V3r76nWT+pp6ru8283iI7kBksD1arxHsj3QisNbM2
-OTLt5Kq+UVoyIpVkgKHt
-=0wm6
+iQIcBAEBAgAGBQJRYpi0AAoJELSic+t+oim9j60QAJw2B4Zu6vyrC1EQu05J9Os9
+glBg+SSQBE5nnDXv3NrcZv/dVxDrVvNpYwCsEBmM83YCgpJb68MVWAFgA+fzZxgy
+AN5HFH0EegxoImk+6tGyBNC11Ytti/HA1m0sGotV22f9xXnDETsxzT7FBPpx9BsC
+dSb2GnuHgUwL6JGU2JuYicJid8d4Bn9g8dkgttD7J+z2dcTrRtsNgMOnWy1h48Xj
+eOlbtwPYYTsV7GR4XPgNmHWozIu68rmHTtGISwCCPDtVWRLrowYLWNd3J5WjbbM4
+XuzRK5oElLCHimWVqThEzdpqjNRHvy6oWaMFaXkv2USNvL3MvlFF/erhOFe0u0sC
+I2eFYhMXAgDdnstwddYVzLsIP/MV9cKlAIspgaqeaQyrierhbNgSmjnVhbUlbL7F
+E/39u4oDdQIj7MDQW2qbyIkpq5TQCM22z+ez+7+FP7/7ZSBJ0OfmVS/z8M/FepLw
+TfrnoQS3oBboyEMLCG+7Iv5Xd3nQndcWYsp9Heohb6T5bXuoK/yNFk1+/MFbpRUq
+Guy4mm+aeFu1+8Ayc2jjs9UZOAYH+TklCiDdnjra8tHtzwIEGCI85vAmHv8+uOnS
+8DgAZao7VZSDVA8IYdJQxd0x1d+nnHapY57B/4JlVrZJgu8W/n1ua4/eGoRUMpc2
+vpTbF7V8s51f5mqvHUqQ
+=rtNQ
 -----END PGP SIGNATURE-----
 
---JsihDCElWRmQcbOr--
-
---===============5434753033294557520==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-devicetree-discuss mailing list
-devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-https://lists.ozlabs.org/listinfo/devicetree-discuss
-
---===============5434753033294557520==--
+--wxDdMuZNg1r63Hyj--

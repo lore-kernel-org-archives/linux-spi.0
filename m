@@ -1,31 +1,92 @@
-From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 发/票――代/开
-Date: Tue, 9 Apr 2013 03:39:54 +0800
-Message-ID: <E1UPHv7-0006bK-BE@sfs-ml-2.v29.ch3.sourceforge.com>
+From: "Manjunathappa, Prakash" <prakash.pm@ti.com>
+Subject: RE: [PATCH v5 0/5] Patch enables support for m25p64 SPI flash
+ support on da850-EVM.
+Date: Tue, 9 Apr 2013 05:44:10 +0000
+Message-ID: <A73F36158E33644199EB82C5EC81C7BC3EA4C560@DBDE01.ent.ti.com>
+References: <1364998150-5980-1-git-send-email-prakash.pm@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "davinci-linux-open-source@linux.davincidsp.com"
+ <davinci-linux-open-source@linux.davincidsp.com>,
+ "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "devicetree-discuss@lists.ozlabs.org" <devicetree-discuss@lists.ozlabs.org>,
+ "Nori,
+ Sekhar" <nsekhar@ti.com>, "rob.herring@calxeda.com" <rob.herring@calxeda.com>,
+ "rob@landley.net" <rob@landley.net>,
+ "spi-devel-general@lists.sourceforge.net"
+ <spi-devel-general@lists.sourceforge.net>, "hs@denx.de" <hs@denx.de>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1364998150-5980-1-git-send-email-prakash.pm@ti.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTWluaW1pemUgbmV0
-d29yayBkb3dudGltZSBhbmQgbWF4aW1pemUgdGVhbSBlZmZlY3RpdmVuZXNzLgpSZWR1Y2UgbmV0
-d29yayBtYW5hZ2VtZW50IGFuZCBzZWN1cml0eSBjb3N0cy5MZWFybiBob3cgdG8gaGlyZSAKdGhl
-IG1vc3QgdGFsZW50ZWQgQ2lzY28gQ2VydGlmaWVkIHByb2Zlc3Npb25hbHMuIFZpc2l0IHRoZSAK
-RW1wbG95ZXIgUmVzb3VyY2VzIFBvcnRhbApodHRwOi8vd3d3LmNpc2NvLmNvbS93ZWIvbGVhcm5p
-bmcvZW1wbG95ZXJfcmVzb3VyY2VzL2luZGV4Lmh0bWwKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hi Grant,
+
+On Wed, Apr 03, 2013 at 19:39:05, Manjunathappa, Prakash wrote:
+> Testing information:
+> da850-evm comes with partitions specified in DT blob.
+> Able to mount/umount and create/delete files on filesystem partition.
+> 
+
+Could you please ack the driver(1/5) and documentation(2/5) changes so
+that Sekhar can merge the platform changes, he doesn't have any
+objection on this series.
+http://marc.info/?l=linux-doc&m=136489750130615&w=1
+
+Thanks,
+Prakash
+
+> Applies on top of linux_davinci/master tree:
+> git://gitorious.org/linux-davinci/linux-davinci.git
+> 
+> Since v4:
+> Separate out chip_select pinmuxing so as to allow boards choose
+> accordingly.
+> 
+> Since v3:
+> Minor nit, fix tabs and commit message of 2/5.
+> 
+> Since v2:
+> Fix compatible property DT naming convention.
+> 
+> Since v1:
+> Look for m25p64 instead of m25p80 flash chip and correct partition information.
+> Dropped below accepted patch:
+> "spi/davinci: fix module build error"
+> Considered below missed out patch:
+> spi/davinci: add DT binding documentation
+> 
+> Manjunathappa, Prakash (4):
+>   spi/davinci: no wildcards in DT compatible property
+>   ARM: davinci: da850: add SPI1 DT node
+>   ARM: davinci: da850: override SPI DT node device name
+>   ARM: davinci: da850-evm: add SPI flash support
+> 
+> Murali Karicheri (1):
+>   spi/davinci: add DT binding documentation
+> 
+>  .../devicetree/bindings/spi/spi-davinci.txt        |   51 ++++++++++++++++++++
+>  arch/arm/boot/dts/da850-evm.dts                    |   40 +++++++++++++++
+>  arch/arm/boot/dts/da850.dtsi                       |   22 ++++++++
+>  arch/arm/mach-davinci/da8xx-dt.c                   |    1 +
+>  drivers/spi/spi-davinci.c                          |    4 +-
+>  5 files changed, 116 insertions(+), 2 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
+> 
+> -- 
+> 1.7.4.1
+> 
+> 

@@ -1,92 +1,56 @@
-From: "Manjunathappa, Prakash" <prakash.pm@ti.com>
-Subject: RE: [PATCH v5 0/5] Patch enables support for m25p64 SPI flash
- support on da850-EVM.
-Date: Tue, 9 Apr 2013 05:44:10 +0000
-Message-ID: <A73F36158E33644199EB82C5EC81C7BC3EA4C560@DBDE01.ent.ti.com>
-References: <1364998150-5980-1-git-send-email-prakash.pm@ti.com>
+From: "=?UTF-8?B?dHJpdmFnbyDigJMgbGVzIGJvbnMgcGxhbnM=?=" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?SMO0dGVscyA0KiDDoCBwYXJ0aXIgZGUgMzbigqzCoCE=?=
+Date: Tue, 09 Apr 2013 08:21:14 +0100
+Message-ID: <0.0.89.73.1CE34F2D16A46D6.0@mta141.pur3.net>
+Reply-To: =?UTF-8?B?dHJpdmFnbyDigJMgbGVzIGJvbnMgcGxhbnM=?=
+	<lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source@linux.davincidsp.com"
- <davinci-linux-open-source@linux.davincidsp.com>,
- "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "devicetree-discuss@lists.ozlabs.org" <devicetree-discuss@lists.ozlabs.org>,
- "Nori,
- Sekhar" <nsekhar@ti.com>, "rob.herring@calxeda.com" <rob.herring@calxeda.com>,
- "rob@landley.net" <rob@landley.net>,
- "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>, "hs@denx.de" <hs@denx.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1364998150-5980-1-git-send-email-prakash.pm@ti.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
-
-On Wed, Apr 03, 2013 at 19:39:05, Manjunathappa, Prakash wrote:
-> Testing information:
-> da850-evm comes with partitions specified in DT blob.
-> Able to mount/umount and create/delete files on filesystem partition.
-> 
-
-Could you please ack the driver(1/5) and documentation(2/5) changes so
-that Sekhar can merge the platform changes, he doesn't have any
-objection on this series.
-http://marc.info/?l=linux-doc&m=136489750130615&w=1
-
-Thanks,
-Prakash
-
-> Applies on top of linux_davinci/master tree:
-> git://gitorious.org/linux-davinci/linux-davinci.git
-> 
-> Since v4:
-> Separate out chip_select pinmuxing so as to allow boards choose
-> accordingly.
-> 
-> Since v3:
-> Minor nit, fix tabs and commit message of 2/5.
-> 
-> Since v2:
-> Fix compatible property DT naming convention.
-> 
-> Since v1:
-> Look for m25p64 instead of m25p80 flash chip and correct partition information.
-> Dropped below accepted patch:
-> "spi/davinci: fix module build error"
-> Considered below missed out patch:
-> spi/davinci: add DT binding documentation
-> 
-> Manjunathappa, Prakash (4):
->   spi/davinci: no wildcards in DT compatible property
->   ARM: davinci: da850: add SPI1 DT node
->   ARM: davinci: da850: override SPI DT node device name
->   ARM: davinci: da850-evm: add SPI flash support
-> 
-> Murali Karicheri (1):
->   spi/davinci: add DT binding documentation
-> 
->  .../devicetree/bindings/spi/spi-davinci.txt        |   51 ++++++++++++++++++++
->  arch/arm/boot/dts/da850-evm.dts                    |   40 +++++++++++++++
->  arch/arm/boot/dts/da850.dtsi                       |   22 ++++++++
->  arch/arm/mach-davinci/da8xx-dt.c                   |    1 +
->  drivers/spi/spi-davinci.c                          |    4 +-
->  5 files changed, 116 insertions(+), 2 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-davinci.txt
-> 
-> -- 
-> 1.7.4.1
-> 
-> 
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTE3NzczMjIwNTM3MjM0CgoKCgoKSMO0dGVscyA0KiDDoCBwYXJ0aXIgZGUgMzbigqwKCgpIw7R0
+ZWxzIDQqIMOgIHBhcnRpciBkZSAzNuKCrAoKCkNldHRlIG9mZnJlIHZvdXMgZXN0IHByb3Bvc8Op
+ZSBhZmluIHF1ZSB2b3VzIHB1aXNzaWV6IGLDqW7DqWZpY2llciBkZSBib25zIHBsYW5zCnRvdXRl
+IGwnYW5uw6llIHF1ZSBjZSBzb2l0IHBvdXIgZGVzIHLDqWR1Y3Rpb25zLCBkZXMgc29sZGVzLCBk
+ZXMgdmVudGVzIHByaXbDqWVzLApub3VzIHZvdXMgdGllbmRyb25zIGluZm9ybcOpcyBlbiBwcmlv
+cml0w6kuCgpOb3Mgb2ZmcmVzIGRlIGJvbnMgcGxhbnMsIHNob3BwaW5nLCB2b3lhZ2VzLCBzZXJ2
+aWNlcywgc29pbnMgZGUgbGEgcGVyc29ubmUKcGFybWkgZGVzIGNlbnRhaW5lcyBkJ29mZnJlcyBz
+b250IMOgIHZvdHJlIGRpc3Bvc2l0aW9uLCBhbG9ycyBwcm9maXRleiBlbi4KCkLDqW7DqWZpY2ll
+eiDDqWdhbGVtZW50IGQnaW5mb3JtYXRpb25zIHN1ciBsZXMgamV1eCBjb25jb3VycywgbGVzIHNl
+cnZpY2VzIGTDqWRpw6lzCmV0IGxlIHRvdXQgw6AgZGV1eCBwYXMgZGUgY2hleiB2b3VzLgoKQ2V0
+dGUgbmV3c2xldHRlciBlc3QgYWNjZXNzaWJsZSDDqWdhbGVtZW50IHN1ciB2b3RyZSBtb2JpbGUs
+IHZvdXMgbidhdmV6IHF1J8OgCmNsaXF1ZXIgZGVzc3VzIHBvdXIgYsOpbsOpZmljaWVyIGR1IHBy
+b2dyYW1tZSBkZSB2b3RyZSBjaG9peC4KCkFmaW4gZGUgcmVzcGVjdGVyIGxlcyBkaXNwb3NpdGlv
+bnMgbMOpZ2FsZXMgY29uY2VybmFudCBsZXMgY291cnJpZXJzCsOpbGVjdHJvbmlxdWVzLgoKVm91
+cyBkaXNwb3NleiBkJ3VuIGRyb2l0IGQnYWNjw6lzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3Rp
+ZmljYXRpb24gZXQgCmRlIHN1cHByZXNzaW9uIGRlcyBkb25uw6llcyBxdWkgdm91cyBjb25jZXJu
+ZW50IChhcnRpY2xlcyAzOCBldCBzdWl2YW50cyBkZSBsYQpsb2kgZHUgNiBqYW52aWVyIDE5Nzgg
+cmVsYXRpdmUgw6AgbCdpbmZvcm1hdGlxdWUsIGF1eCBmaWNoaWVycyBldCAKYXV4IGxpYmVydMOp
+cykuCgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGlu
+Y2FrZS5jb20vX2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxMTc3NzMyMjA1MzcyMzQKCgoK
+CgoKe35BSjg0NjQxODY2MjUxMTc3NzMyMjA1MzcyMzR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+UHJlY29nIGlzIGEgbmV4dC1nZW5lcmF0aW9uIGFuYWx5dGljcyBwbGF0Zm9ybSBjYXBhYmxlIG9m
+IGFkdmFuY2VkCmFuYWx5dGljcyBvbiBzZW1pLXN0cnVjdHVyZWQgZGF0YS4gVGhlIHBsYXRmb3Jt
+IGluY2x1ZGVzIEFQSXMgZm9yIGJ1aWxkaW5nCmFwcHMgYW5kIGEgcGhlbm9tZW5hbCB0b29sc2V0
+IGZvciBkYXRhIHNjaWVuY2UuIERldmVsb3BlcnMgY2FuIHVzZQpvdXIgdG9vbHNldCBmb3IgZWFz
+eSBkYXRhIGFuYWx5c2lzICYgdmlzdWFsaXphdGlvbi4gR2V0IGEgZnJlZSBhY2NvdW50IQpodHRw
+Oi8vd3d3Mi5wcmVjb2cuY29tL3ByZWNvZ3BsYXRmb3JtL3NsYXNoZG90bmV3c2xldHRlcgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

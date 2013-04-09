@@ -1,7 +1,7 @@
 From: Josef Ahmad <josef.ahmad-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Subject: [PATCH] spi-gpio: init CS before spi_bitbang_setup()
-Date: Tue,  9 Apr 2013 17:40:13 +0100
-Message-ID: <1365525613-27198-1-git-send-email-josef.ahmad@intel.com>
+Date: Tue,  9 Apr 2013 18:25:34 +0100
+Message-ID: <1365528334-3444-1-git-send-email-josef.ahmad@intel.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -9,7 +9,8 @@ Cc: Josef Ahmad <josef.ahmad-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 To: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
 	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>

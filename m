@@ -1,60 +1,49 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+From: Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] spi-gpio: init CS before spi_bitbang_setup()
-Date: Tue, 9 Apr 2013 18:08:00 +0100
-Message-ID: <20130409170800.GW9243@opensource.wolfsonmicro.com>
+Date: Tue, 09 Apr 2013 19:11:21 +0200
+Message-ID: <51644BB9.4010908@gmail.com>
 References: <1365525613-27198-1-git-send-email-josef.ahmad@intel.com>
- <51644A98.1070904@gmail.com>
+	<51644A98.1070904@gmail.com>
+	<20130409170800.GW9243@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="/hzbcv1ZPoZ/SOgH"
-Cc: Josef Ahmad <josef.ahmad@intel.com>,
-	Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Daniel Mack <zonque@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <51644A98.1070904@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Josef Ahmad <josef.ahmad-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Uwe Kleine-Koenig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130409170800.GW9243-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On 09.04.2013 19:08, Mark Brown wrote:
+> On Tue, Apr 09, 2013 at 07:06:32PM +0200, Daniel Mack wrote:
+>> Cc: Mark
+>>
+>> On 09.04.2013 18:40, Josef Ahmad wrote:
+>>> spi_bitbang_setup() deasserts the chip select line to initialise
+>>> the device. The chip select GPIO line is obtained from
+> 
+> Please resend the patch - git am doesn't know how to strip off quotation
+> stuff!
+> 
 
---/hzbcv1ZPoZ/SOgH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The reply was fyi only, as the patch also went to spi-devel-general. Can
+you pick it from there or should Josef send it again with your address
+in Cc:?
 
-On Tue, Apr 09, 2013 at 07:06:32PM +0200, Daniel Mack wrote:
-> Cc: Mark
->=20
-> On 09.04.2013 18:40, Josef Ahmad wrote:
-> > spi_bitbang_setup() deasserts the chip select line to initialise
-> > the device. The chip select GPIO line is obtained from
 
-Please resend the patch - git am doesn't know how to strip off quotation
-stuff!
-
---/hzbcv1ZPoZ/SOgH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRZErFAAoJELSic+t+oim97fgP/AzxBXM4qvTxwn3WQOGvYqXw
-7LODDFRZIQjEC5PDUpKDMzgvAWvmtfca90Phrplon0/kp6ahdoQdSp19w8afD6Pt
-JnK4tuYbrgXKo6mQeEIgWMbAw2sUimpxkmyLeP08Ua7JaFn5ros+hr9cBSD19wD3
-AIMOcP1R+dm3ex/Uh/cyBQ8KM/vTIc7mGKhrgA4Ke944Pp7a2aa6paUffxOP9CDG
-Rh7QdwWrVmgdQ1HWCcCSaiL1Je/fDIiqDWc/K1Bzf8zGHDYb2YxsxVDQK3wY4XOA
-xdlK2LSiE8gtL4xbATYrm7Uh04uvO1imMBmzSndWrRYRCe4YzvuB3sOJcxylwMYR
-GVKbEOIyaEMamFYHTn+8aYf3FADacnF6ioQEIuYwf9nZwnUpeeAfvY7NHaUEMeX7
-NW/EoGBov6144gifC8kju/lKSRV56DxsOnELT5VVsZitIjJgI8XHeE6HbYKAccFc
-85jyObDoj2O+qbikDKUrsQnltGcMugkmpY5VDCjuLd0P4vFstWS9MTgJpFD+UrYj
-uVziFPjYvZIRtambxGoSwSUihj2rJ0WgcoEVaRpVnPHNPioT1hgDdh1ZcwQII5Y0
-b3BX72v1c3v9mFcspC0Wzh1Pc6VIwBs5cUkHWAFcSO3RViEBME+W8jexLjgJkauY
-cBAa6ffyaddiEBGagGg4
-=0JRE
------END PGP SIGNATURE-----
-
---/hzbcv1ZPoZ/SOgH--
+------------------------------------------------------------------------------
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

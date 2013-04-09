@@ -1,13 +1,12 @@
-From: "=?UTF-8?B?dHJpdmFnbyDigJMgbGVzIGJvbnMgcGxhbnM=?=" <lisa@a.optincake.com>
-Subject: =?UTF-8?B?SMO0dGVscyA0KiDDoCBwYXJ0aXIgZGUgMzbigqzCoCE=?=
-Date: Tue, 09 Apr 2013 08:21:14 +0100
-Message-ID: <0.0.89.73.1CE34F2D16A46D6.0@mta141.pur3.net>
-Reply-To: =?UTF-8?B?dHJpdmFnbyDigJMgbGVzIGJvbnMgcGxhbnM=?=
-	<lisa@a.optincake.com>
+From: "Mutuelle Conseil" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Votre_Mutuelle_sant=E9_=E0_partir_de_5=2C42_euros.?=
+Date: Tue, 09 Apr 2013 07:35:07 +0000 (CET)
+Message-ID: <130409073507.-138952670700002060@obfm43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,38 +18,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTE3NzczMjIwNTM3MjM0CgoKCgoKSMO0dGVscyA0KiDDoCBwYXJ0aXIgZGUgMzbigqwKCgpIw7R0
-ZWxzIDQqIMOgIHBhcnRpciBkZSAzNuKCrAoKCkNldHRlIG9mZnJlIHZvdXMgZXN0IHByb3Bvc8Op
-ZSBhZmluIHF1ZSB2b3VzIHB1aXNzaWV6IGLDqW7DqWZpY2llciBkZSBib25zIHBsYW5zCnRvdXRl
-IGwnYW5uw6llIHF1ZSBjZSBzb2l0IHBvdXIgZGVzIHLDqWR1Y3Rpb25zLCBkZXMgc29sZGVzLCBk
-ZXMgdmVudGVzIHByaXbDqWVzLApub3VzIHZvdXMgdGllbmRyb25zIGluZm9ybcOpcyBlbiBwcmlv
-cml0w6kuCgpOb3Mgb2ZmcmVzIGRlIGJvbnMgcGxhbnMsIHNob3BwaW5nLCB2b3lhZ2VzLCBzZXJ2
-aWNlcywgc29pbnMgZGUgbGEgcGVyc29ubmUKcGFybWkgZGVzIGNlbnRhaW5lcyBkJ29mZnJlcyBz
-b250IMOgIHZvdHJlIGRpc3Bvc2l0aW9uLCBhbG9ycyBwcm9maXRleiBlbi4KCkLDqW7DqWZpY2ll
-eiDDqWdhbGVtZW50IGQnaW5mb3JtYXRpb25zIHN1ciBsZXMgamV1eCBjb25jb3VycywgbGVzIHNl
-cnZpY2VzIGTDqWRpw6lzCmV0IGxlIHRvdXQgw6AgZGV1eCBwYXMgZGUgY2hleiB2b3VzLgoKQ2V0
-dGUgbmV3c2xldHRlciBlc3QgYWNjZXNzaWJsZSDDqWdhbGVtZW50IHN1ciB2b3RyZSBtb2JpbGUs
-IHZvdXMgbidhdmV6IHF1J8OgCmNsaXF1ZXIgZGVzc3VzIHBvdXIgYsOpbsOpZmljaWVyIGR1IHBy
-b2dyYW1tZSBkZSB2b3RyZSBjaG9peC4KCkFmaW4gZGUgcmVzcGVjdGVyIGxlcyBkaXNwb3NpdGlv
-bnMgbMOpZ2FsZXMgY29uY2VybmFudCBsZXMgY291cnJpZXJzCsOpbGVjdHJvbmlxdWVzLgoKVm91
-cyBkaXNwb3NleiBkJ3VuIGRyb2l0IGQnYWNjw6lzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3Rp
-ZmljYXRpb24gZXQgCmRlIHN1cHByZXNzaW9uIGRlcyBkb25uw6llcyBxdWkgdm91cyBjb25jZXJu
-ZW50IChhcnRpY2xlcyAzOCBldCBzdWl2YW50cyBkZSBsYQpsb2kgZHUgNiBqYW52aWVyIDE5Nzgg
-cmVsYXRpdmUgw6AgbCdpbmZvcm1hdGlxdWUsIGF1eCBmaWNoaWVycyBldCAKYXV4IGxpYmVydMOp
-cykuCgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGlu
-Y2FrZS5jb20vX2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxMTc3NzMyMjA1MzcyMzQKCgoK
-CgoKe35BSjg0NjQxODY2MjUxMTc3NzMyMjA1MzcyMzR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-UHJlY29nIGlzIGEgbmV4dC1nZW5lcmF0aW9uIGFuYWx5dGljcyBwbGF0Zm9ybSBjYXBhYmxlIG9m
-IGFkdmFuY2VkCmFuYWx5dGljcyBvbiBzZW1pLXN0cnVjdHVyZWQgZGF0YS4gVGhlIHBsYXRmb3Jt
-IGluY2x1ZGVzIEFQSXMgZm9yIGJ1aWxkaW5nCmFwcHMgYW5kIGEgcGhlbm9tZW5hbCB0b29sc2V0
-IGZvciBkYXRhIHNjaWVuY2UuIERldmVsb3BlcnMgY2FuIHVzZQpvdXIgdG9vbHNldCBmb3IgZWFz
-eSBkYXRhIGFuYWx5c2lzICYgdmlzdWFsaXphdGlvbi4gR2V0IGEgZnJlZSBhY2NvdW50IQpodHRw
-Oi8vd3d3Mi5wcmVjb2cuY29tL3ByZWNvZ3BsYXRmb3JtL3NsYXNoZG90bmV3c2xldHRlcgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
-ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
-Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
-ZW5lcmFsCg==
+
+(http://obfm43.com/kyduw5ljgvtr3yczis/index0.html)
+Comparez =
+
+
+les mutuelles et =
+
+=E9conomisez ! (http://obfm43.com/vgdhq5maglsmpsxzad/index1.html)
+(http://obfm43.com/uddep5jzg14rob1uhy/index2.html)
+(http://obfm43.com/eod3s5zbgmkmftfu3l/index3.html)
+(http://obfm43.com/0dq5pjn41nwraf1nod/index4.html)
+HOSPITALISATION (http://obfm43.com/boqnsjgt12em5xfngs/index5.html)
+(http://obfm43.com/2yqrwj5o1g0rjocvjl/index6.html)
+SOINS COURANT (http://obfm43.com/tgq4qjy31hdmxjxvqy/index7.html)
+(http://obfm43.com/syeznadqgkcre5cjcs/index8.html)
+OPTIQUE (http://obfm43.com/lgemgarigsqmwpxjxd/index9.html)
+(http://obfm43.com/mr01x5ivqy554ebyuj/index10.html)
+DENTAIRE (http://obfm43.com/pw5ba22nee5fhvlrej/index11.html)
+(http://obfm43.com/0shp414s2peq2fq13s/index12.html)
+(http://obfm43.com/boswszjtm1ehoxfkhs/index13.html)
+(http://obfm43.com/cc4jokvk5wnvicapko/index14.html)
+* Tarif calcul=E9 pour une garantie MaFormule Hospi 1 de SwissLife pour un =
+homme de 20 ans, r=E9sidant =E0 Toulouse (http://obfm43.com/x01lpqc4bbndz1m=
+lvo/index15.html)
+(http://obfm43.com/0u45eknopw0kioep3s/index16.html)
+---------------------------------------------------------------------------=
+---
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

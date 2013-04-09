@@ -1,65 +1,48 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH v3 5/7] spi: spi-fsl-spi: Add support for setting a
- maximum number of bits per word
-Date: Tue, 9 Apr 2013 18:02:14 +0100
-Message-ID: <20130409170213.GV9243@opensource.wolfsonmicro.com>
-References: <1360943547-2186-1-git-send-email-andreas@gaisler.com>
- <1360943547-2186-6-git-send-email-andreas@gaisler.com>
- <20130409165738.GU9243@opensource.wolfsonmicro.com>
+From: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v2 RESEND] spi: spi-mpc512x-psc: add support for gpio
+	chip selects
+Date: Tue, 9 Apr 2013 19:04:50 +0200
+Message-ID: <20130409190450.14298e78@crub>
+References: <1363044215-24061-1-git-send-email-agust@denx.de>
+	<1364830161-15016-1-git-send-email-agust@denx.de>
+	<20130409165322.GS9243@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UEYxRAcbr7cS1UOX"
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	Mingkai Hu <Mingkai.hu@freescale.com>,
-	Anton Vorontsov <anton.vorontsov@linaro.org>,
-	Joakim Tjernlund <Joakim.Tjernlund@transmode.se>,
-	Kumar Gala <galak@kernel.crashing.org>,
-	Peter Korsgaard <jacmet@sunsite.dk>,
-	linux-kernel@vger.kernel.org, software@gaisler.com
-To: Andreas Larsson <andreas@gaisler.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20130409165738.GU9243@opensource.wolfsonmicro.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130409165322.GS9243-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, 9 Apr 2013 17:53:22 +0100
+Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org> wrote:
 
---UEYxRAcbr7cS1UOX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Mon, Apr 01, 2013 at 05:29:21PM +0200, Anatolij Gustschin wrote:
+> > Currently the driver only uses one internal chip select.
+> > Add support for gpio chip selects configured by cs-gpios
+> > DT binding.
+> 
+> Applied, thanks - I'm assuming the binding is already covered in the
+> generic SPI DT coverage?
 
-On Tue, Apr 09, 2013 at 05:57:38PM +0100, Mark Brown wrote:
-> On Fri, Feb 15, 2013 at 04:52:25PM +0100, Andreas Larsson wrote:
-> > Acked-by: Anton Vorontsov <anton@enomsg.org>
-> > Signed-off-by: Andreas Larsson <andreas@gaisler.com>
+yes, this DT binding and documentation already exists.
 
-> I'll apply this on account of it being part of the series and review
-> having been very slow but...
+Thanks,
 
-...actually it turns out Grant already applied this anyway and I missed
-it somehow - sorry for the noise!
+Anatolij
 
---UEYxRAcbr7cS1UOX
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRZEmIAAoJELSic+t+oim9rWYP/i8V+6tgC3Sw8ekPPhf9eKmU
-C1K/2kFQtaI0GSLBONAx+FrOZxiapeUUxow5CHxZF/noccUQZmvafcOOKygqVs6j
-sCZWRHeK5aIv6ZJjraIdiYc5pmhsoGwMQVxXZEuMFhKljhOHw7lSGk413QsKetBc
-QQBzfHMIOjetXD0YMvRuGjYxkKTm60eigYcp401GLtnNkZ2Uf1q5k40ash0WBH8R
-+U6Nv1lYTci7iXsR59SAuIDjx/bFTtBiWiONEVz6ri82BkR25b+cgqHCVYCyCBsS
-HyQQqaX0oCEKkm66dGmPoKH/nXm3P/OLa7jg5KCbse0eWkUMkOe6L2753H6MIi27
-RMwPZqTgfGn31vSXjvg8oKyWfPEBqsbcC+cXIQCe2Rl6esSiKHSKP0uBmVV66Hyt
-42XyARaTnJ0bVETRKBTy+epMFuLXIwUNKc1rT2Ln7du6O3agIv9qKq8TLPWLdHfo
-AY7NqD3KLzrbWJLkha2An8TtcnnLrwPlwPEzG13nC/SqvSmvsJM/n72F9vtayBOA
-j1Pbb6/6Jdu0j5WDP7E/OdNwdxzvT8PKuyx1xFvZyOgUhZqThk6iwst5hW4knwJ/
-uFqASPdAZ5vSFsftFSIDHxquyBNeuVl8H1/1ftsn+gWeXz/wgXSwyoEnBGyZZit7
-lpfz3hz4ALfIPZ6BoK+z
-=Z+O9
------END PGP SIGNATURE-----
-
---UEYxRAcbr7cS1UOX--
+------------------------------------------------------------------------------
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

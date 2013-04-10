@@ -1,12 +1,12 @@
-From: "Mutuelle Bleue" <lisa@a.optincake.com>
-Subject: Votre mutuelle sante moins chere
-Date: Wed, 10 Apr 2013 04:20:05 +0100
-Message-ID: <0.0.69.602.1CE359A4C32A2BC.0@mta144.pur3.net>
-Reply-To: Mutuelle Bleue <lisa@a.optincake.com>
+From: "Winstel" <contact-FqQuqE7uPTdGWvitb5QawA@public.gmane.org>
+Subject: =?UTF-8?Q?Offre_Alarme_et_Vid=C3=A9osurveillance?=
+Date: Wed, 10 Apr 2013 05:58:28 +0000 (CET)
+Message-ID: <130410055828.-130892554500002056@obfm43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,37 +18,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTE4MzQzMjIwNTM3MTc0CgoKCgoKTXV0dWVsbGUgYmxldWUgbW9pbnMgY2hlcmUKCgpDZXR0ZSBv
-ZmZyZSB2b3VzIGVzdCBwcm9wb3PDqWUgYWZpbiBxdWUgdm91cyBwdWlzc2lleiBiw6luw6lmaWNp
-ZXIgZGUgYm9ucyBwbGFucwp0b3V0ZSBsJ2FubsOpZSBxdWUgY2Ugc29pdCBwb3VyIGRlcyByw6lk
-dWN0aW9ucywgZGVzIHNvbGRlcywgZGVzIHZlbnRlcyBwcml2w6llcywKbm91cyB2b3VzIHRpZW5k
-cm9ucyBpbmZvcm3DqXMgZW4gcHJpb3JpdMOpLgoKTm9zIG9mZnJlcyBkZSBib25zIHBsYW5zLCBz
-aG9wcGluZywgdm95YWdlcywgc2VydmljZXMsIHNvaW5zIGRlIGxhIHBlcnNvbm5lCnBhcm1pIGRl
-cyBjZW50YWluZXMgZCdvZmZyZXMgc29udCDDoCB2b3RyZSBkaXNwb3NpdGlvbiwgYWxvcnMgcHJv
-Zml0ZXogZW4uCgpCw6luw6lmaWNpZXogw6lnYWxlbWVudCBkJ2luZm9ybWF0aW9ucyBzdXIgbGVz
-IGpldXggY29uY291cnMsIGxlcyBzZXJ2aWNlcyBkw6lkacOpcwpldCBsZSB0b3V0IMOgIGRldXgg
-cGFzIGRlIGNoZXogdm91cy4KCkNldHRlIG5ld3NsZXR0ZXIgZXN0IGFjY2Vzc2libGUgw6lnYWxl
-bWVudCBzdXIgdm90cmUgbW9iaWxlLCB2b3VzIG4nYXZleiBxdSfDoApjbGlxdWVyIGRlc3N1cyBw
-b3VyIGLDqW7DqWZpY2llciBkdSBwcm9ncmFtbWUgZGUgdm90cmUgY2hvaXguCgpBZmluIGRlIHJl
-c3BlY3RlciBsZXMgZGlzcG9zaXRpb25zIGzDqWdhbGVzIGNvbmNlcm5hbnQgbGVzIGNvdXJyaWVy
-cwrDqWxlY3Ryb25pcXVlcy4KClZvdXMgZGlzcG9zZXogZCd1biBkcm9pdCBkJ2FjY8OpcywgZGUg
-bW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIGV0IApkZSBzdXBwcmVzc2lvbiBkZXMgZG9u
-bsOpZXMgcXVpIHZvdXMgY29uY2VybmVudCAoYXJ0aWNsZXMgMzggZXQgc3VpdmFudHMgZGUgbGEK
-bG9pIGR1IDYgamFudmllciAxOTc4IHJlbGF0aXZlIMOgIGwnaW5mb3JtYXRpcXVlLCBhdXggZmlj
-aGllcnMgZXQgCmF1eCBsaWJlcnTDqXMpLgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZp
-c2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2
-NjI1MTE4MzQzMjIwNTM3MTc0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTE4MzQzMjIwNTM3MTc0fn0K
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tClByZWNvZyBpcyBhIG5leHQtZ2VuZXJhdGlvbiBhbmFseXRp
-Y3MgcGxhdGZvcm0gY2FwYWJsZSBvZiBhZHZhbmNlZAphbmFseXRpY3Mgb24gc2VtaS1zdHJ1Y3R1
-cmVkIGRhdGEuIFRoZSBwbGF0Zm9ybSBpbmNsdWRlcyBBUElzIGZvciBidWlsZGluZwphcHBzIGFu
-ZCBhIHBoZW5vbWVuYWwgdG9vbHNldCBmb3IgZGF0YSBzY2llbmNlLiBEZXZlbG9wZXJzIGNhbiB1
-c2UKb3VyIHRvb2xzZXQgZm9yIGVhc3kgZGF0YSBhbmFseXNpcyAmIHZpc3VhbGl6YXRpb24uIEdl
-dCBhIGZyZWUgYWNjb3VudCEKaHR0cDovL3d3dzIucHJlY29nLmNvbS9wcmVjb2dwbGF0Zm9ybS9z
-bGFzaGRvdG5ld3NsZXR0ZXIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+(http://obfm43.com/px0tlpt13uxnfjhbwo/index0.html)
+(http://obfm43.com/m20cmp3m3yjwoo3bzq/index1.html)
+(http://obfm43.com/5c02jpcv3x5npxiynj/index2.html)
+(http://obfm43.com/rt0xzpel35aw3fay4g/index3.html)
+(http://obfm43.com/qccojokepzmnxti2tq/index4.html)
+(http://obfm43.com/jtcdzofdpbhwjba22o/index5.html)
+(http://obfm43.com/gxcgloicpj1n5shlbg/index6.html)
+(http://obfm43.com/o2cymo0rpagway3l0j/index7.html)
+(http://obfm43.com/fxwsd3bf3e2n0zhado/index8.html)
+(http://obfm43.com/12wqr3ap3dlwd43ayq/index9.html)
+(http://obfm43.com/wut3v44gxzfkfqut3d/index10.html)
+(http://obfm43.com/zame2cj1z0fylgnhhd/index11.html)
+------------------------------------------------------------------------------
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

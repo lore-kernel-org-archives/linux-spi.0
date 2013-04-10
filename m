@@ -1,45 +1,55 @@
-From: "Renault Paris" <lisa@a.optincake.com>
-Subject: =?UTF-8?B?RGlmZmljaWxlIGRlIHLDqXNpc3RlciDDoCBsYSBxdWFsaXTDqSBkZSBzZXJ2aWNlIFJlbmF1bHQgUmVudA==?=
-Date: Wed, 10 Apr 2013 08:32:31 +0100
-Message-ID: <0.0.BD.35C.1CE35BD8FB80D42.0@mta11.pur3.net>
-Reply-To: Renault Paris <lisa@a.optincake.com>
+From: Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH] spi-gpio: init CS before spi_bitbang_setup()
+Date: Wed, 10 Apr 2013 14:47:43 +0100
+Message-ID: <20130410134743.GC9243@opensource.wolfsonmicro.com>
+References: <1365528334-3444-1-git-send-email-josef.ahmad@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="nYjNOXWpwjVqWAsU"
+Cc: Daniel Mack <zonque@gmail.com>,
+	Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Josef Ahmad <josef.ahmad@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1365528334-3444-1-git-send-email-josef.ahmad@intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-U2kgdm91cyBuZSB2aXN1YWxpc2V6IHBhcyBsZXMgaW1hZ2VzLCB2ZXVpbGxleiBzdWl2cmUgY2Ug
-bGllbgpodHRwOi8vYS5vcHRpbmNha2UuY29tL2ludGVyZmFjZS9leHRlcm5hbF92aWV3X2VtYWls
-LnBocD9BSjg0ODAxMzkwNTUxMTgzNTMyMjE1MzAxODUKCgoKCgpEaWZmaWNpbGUgZGUgcsOpc2lz
-dGVyIMOgIGxhIHF1YWxpdMOpIGRlIHNlcnZpY2UgUmVuYXVsdCBSZW50CgoKRGlmZmljaWxlIGRl
-IHLDqXNpc3RlciDDoCBsYSBxdWFsaXTDqSBkZSBzZXJ2aWNlIFJlbmF1bHQgUmVudAoKCgoKClZv
-dXMgcsOpY2VwdGlvbm5leiBjZXR0ZSBpbmZvcm1hdGlvbiBzdXIgdm90cmUgYWRyZXNzZSBlbWFp
-bCBjYXIgdm91cwrDqnRlcyBtZW1icmUgb3UgaW5zY3JpdCBkYW5zIGxlcyBiYXNlcyBkZSBkb25u
-w6llcyBkZSBub3MgcGFydGVuYWlyZXMKb3UgYmllbiBlbmNvcmUgcGFyY2UgcXVlIHZvdXMgYXZl
-eiBhY2NlcHTDqSBkJ8OqdHJlIHBhcnJhaW7DqSBwYXIgdW4gbWVtYnJlLiAKClBvdXIgdG91dGUg
-csOpY2xhbWF0aW9uIGNvbmNlcm5hbnQgdW4gcGFpZW1lbnQsIHVuIMOpY2hhbmdlIG91IHVuZQpp
-bmZvcm1hdGlvbiwgbWVyY2kgZGUgY29udGFjdGVyIGwnYW5ub25jZXVyIGRpcmVjdGVtZW50IHN1
-ciBzb24gc2l0ZQppbnRlcm5ldCAocnVicmlxdWUgY29udGFjdCkuCgoKLS0KClBvdXIgdm91cyBk
-w6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRfcmNy
-LnBocD9BSjg0ODAxMzkwNTUxMTgzNTMyMjE1MzAxODUKCgoKCgoKe35BSjg0ODAxMzkwNTUxMTgz
-NTMyMjE1MzAxODV+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KUHJlY29nIGlzIGEgbmV4dC1nZW5l
-cmF0aW9uIGFuYWx5dGljcyBwbGF0Zm9ybSBjYXBhYmxlIG9mIGFkdmFuY2VkCmFuYWx5dGljcyBv
-biBzZW1pLXN0cnVjdHVyZWQgZGF0YS4gVGhlIHBsYXRmb3JtIGluY2x1ZGVzIEFQSXMgZm9yIGJ1
-aWxkaW5nCmFwcHMgYW5kIGEgcGhlbm9tZW5hbCB0b29sc2V0IGZvciBkYXRhIHNjaWVuY2UuIERl
-dmVsb3BlcnMgY2FuIHVzZQpvdXIgdG9vbHNldCBmb3IgZWFzeSBkYXRhIGFuYWx5c2lzICYgdmlz
-dWFsaXphdGlvbi4gR2V0IGEgZnJlZSBhY2NvdW50IQpodHRwOi8vd3d3Mi5wcmVjb2cuY29tL3By
-ZWNvZ3BsYXRmb3JtL3NsYXNoZG90bmV3c2xldHRlcgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
-Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+--nYjNOXWpwjVqWAsU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Apr 09, 2013 at 06:25:34PM +0100, Josef Ahmad wrote:
+> spi_bitbang_setup() deasserts the chip select line to initialise
+> the device. The chip select GPIO line is obtained from
+> spi_gpio->cs_gpios[] private data.
+
+Applied, thanks.
+
+--nYjNOXWpwjVqWAsU
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRZW11AAoJELSic+t+oim9p7AP/j3byWcoJ0lyTPEDKKJnu/o8
+jCGgyc4Y5rDnndkODQncximzZzbZvqH9zcoFrPsT5YwDTtEA9lZKpauTuFoLVTgS
+zSRXhrOWfwfyiuEPf7m4kriYT+0fmG0r5NldYGb9v2qpalR+A3capkp1CvWDZ5vX
+Cjt6vPlmOIQLg3+UfU7idJ0T3P1IDi/ykHwWaDfX1f5O+zL6sxJYl4XP63H3oGkr
+UMO+DnvFtWcB0r47wL8pZVCYyeP6ddV18hCXcXwLWoXCo/ArrBbl5xjSIX09sb2w
+vbEhLYlkhFSZSQldy1tVknOpEBcSNqeKLOOOeBmsnkV9TLNejeAuPEbfTgkFApfn
+8JNSIqGW00OCJTLltN08CbuU9EoiT+3dqL8iix1NyuQS+t1VFRgzSOahhQfJcVCM
+QHYtwGDW3JZVeQPRYOpW0FRFu+86MqQlM4ATqROltfxaZk3X2EvLJn47b2e3EyWe
+nCKEtycUnfPkzwWvVMik2InBZz+EPhu/ozXeFSQdl4qHCMO7V2htetXipIU1DVJL
+GHqz0noo6IwRxOIHVG0+lMF6r3Bl2U9Rq8cAflGh1YTAG6jGnhYH6TUFNESFGQv3
+LbOw7i+mcmt8YfAGlD7quUmZw7H3K3K72RmgtEi64205gIcUofO/pH1Na6mT8Qoh
+NBbUkD7kZpaYM5rIwXS7
+=5cGp
+-----END PGP SIGNATURE-----
+
+--nYjNOXWpwjVqWAsU--

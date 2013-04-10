@@ -1,62 +1,54 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: Re: [PATCH] spi-gpio: init CS before spi_bitbang_setup()
-Date: Tue, 9 Apr 2013 18:32:15 +0100
-Message-ID: <20130409173215.GX9243@opensource.wolfsonmicro.com>
-References: <1365525613-27198-1-git-send-email-josef.ahmad@intel.com>
- <51644A98.1070904@gmail.com>
- <20130409170800.GW9243@opensource.wolfsonmicro.com>
- <51644BB9.4010908@gmail.com>
+From: "Mutuelle Bleue" <lisa@a.optincake.com>
+Subject: Votre mutuelle sante moins chere
+Date: Wed, 10 Apr 2013 04:20:05 +0100
+Message-ID: <0.0.69.602.1CE359A4C32A2BC.0@mta144.pur3.net>
+Reply-To: Mutuelle Bleue <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CjAlqr6ZqJYkDGFX"
-Cc: Josef Ahmad <josef.ahmad@intel.com>,
-	Uwe Kleine-Koenig <u.kleine-koenig@pengutronix.de>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Daniel Mack <zonque@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <51644BB9.4010908@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---CjAlqr6ZqJYkDGFX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Apr 09, 2013 at 07:11:21PM +0200, Daniel Mack wrote:
-
-> The reply was fyi only, as the patch also went to spi-devel-general. Can
-> you pick it from there or should Josef send it again with your address
-> in Cc:?
-
-Please make sure stuff goes to my inbox, I *can* pick up from
--devel-general but it's generally painful as my list traffic is going to
-a different e-mail account and so on (plus I'm heavily backlogged on
-list traffic in general at the minute, and sourceforge is full of spam).
-
---CjAlqr6ZqJYkDGFX
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRZFCZAAoJELSic+t+oim9zbIP/2UpEn+bGen2OxGwv4rUquL8
-RSkIRBnG//TvMG82amdPiwlIE1LQoFokFjR80Xc3LOTaGaWSBKNXw2hZnMGn0sbL
-V7sgeEH8PexESDIZQN57R8oHbS1x/hHizOuobYyQadkUJzs4ooCLvR9PCNY+fZCm
-SsnXNiuwhgFicATWUB/TQ/uRQJAFoPRAb1JZxoNxQIEfoBF4xRACIc8wOA02T1i1
-GirJcEspd2J90w5oygC4EwdbQOCjkDukV17UmJxtP/+tpl9RMzUABwjQfkHdnwK9
-qIdD4de4cxMeNoNgvtrIhfuxJFteRPxyMUtVw8e/T5BdaVYy/ZHRTRW1ghSxPFtH
-wbc29J4n/Awozx7lNGYPVsNQFMwog69Fkzuu7jd2LHbKAWfZsHwihoHUb8OrEYfG
-F7zylAW/ogdvjynrktPJb3+G0wfdrKUX6YwQdLyYyblMQFNhX+zmrprqb0LZ2ZyW
-yjguMZFF1pN+7ULw/tWZhARiuhInvb+c3w/ddaBN5nYCYHnZsOamt12w60xWuzao
-ksB7AlwSID415oeIhafKQdpEll3lwIO02++9sZeSkNrOAxVKj+xGfC2e6HAQ2QV9
-4W4vy40ByKo0yaey33vpDTQYiU8Ltc7Y+x7wAZ7q/AQveVqOOd92vMscyeqqPfWU
-Z5Tg17uRb9dbP0eSTXuV
-=8KW5
------END PGP SIGNATURE-----
-
---CjAlqr6ZqJYkDGFX--
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTE4MzQzMjIwNTM3MTc0CgoKCgoKTXV0dWVsbGUgYmxldWUgbW9pbnMgY2hlcmUKCgpDZXR0ZSBv
+ZmZyZSB2b3VzIGVzdCBwcm9wb3PDqWUgYWZpbiBxdWUgdm91cyBwdWlzc2lleiBiw6luw6lmaWNp
+ZXIgZGUgYm9ucyBwbGFucwp0b3V0ZSBsJ2FubsOpZSBxdWUgY2Ugc29pdCBwb3VyIGRlcyByw6lk
+dWN0aW9ucywgZGVzIHNvbGRlcywgZGVzIHZlbnRlcyBwcml2w6llcywKbm91cyB2b3VzIHRpZW5k
+cm9ucyBpbmZvcm3DqXMgZW4gcHJpb3JpdMOpLgoKTm9zIG9mZnJlcyBkZSBib25zIHBsYW5zLCBz
+aG9wcGluZywgdm95YWdlcywgc2VydmljZXMsIHNvaW5zIGRlIGxhIHBlcnNvbm5lCnBhcm1pIGRl
+cyBjZW50YWluZXMgZCdvZmZyZXMgc29udCDDoCB2b3RyZSBkaXNwb3NpdGlvbiwgYWxvcnMgcHJv
+Zml0ZXogZW4uCgpCw6luw6lmaWNpZXogw6lnYWxlbWVudCBkJ2luZm9ybWF0aW9ucyBzdXIgbGVz
+IGpldXggY29uY291cnMsIGxlcyBzZXJ2aWNlcyBkw6lkacOpcwpldCBsZSB0b3V0IMOgIGRldXgg
+cGFzIGRlIGNoZXogdm91cy4KCkNldHRlIG5ld3NsZXR0ZXIgZXN0IGFjY2Vzc2libGUgw6lnYWxl
+bWVudCBzdXIgdm90cmUgbW9iaWxlLCB2b3VzIG4nYXZleiBxdSfDoApjbGlxdWVyIGRlc3N1cyBw
+b3VyIGLDqW7DqWZpY2llciBkdSBwcm9ncmFtbWUgZGUgdm90cmUgY2hvaXguCgpBZmluIGRlIHJl
+c3BlY3RlciBsZXMgZGlzcG9zaXRpb25zIGzDqWdhbGVzIGNvbmNlcm5hbnQgbGVzIGNvdXJyaWVy
+cwrDqWxlY3Ryb25pcXVlcy4KClZvdXMgZGlzcG9zZXogZCd1biBkcm9pdCBkJ2FjY8OpcywgZGUg
+bW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIGV0IApkZSBzdXBwcmVzc2lvbiBkZXMgZG9u
+bsOpZXMgcXVpIHZvdXMgY29uY2VybmVudCAoYXJ0aWNsZXMgMzggZXQgc3VpdmFudHMgZGUgbGEK
+bG9pIGR1IDYgamFudmllciAxOTc4IHJlbGF0aXZlIMOgIGwnaW5mb3JtYXRpcXVlLCBhdXggZmlj
+aGllcnMgZXQgCmF1eCBsaWJlcnTDqXMpLgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZp
+c2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2
+NjI1MTE4MzQzMjIwNTM3MTc0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTE4MzQzMjIwNTM3MTc0fn0K
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tClByZWNvZyBpcyBhIG5leHQtZ2VuZXJhdGlvbiBhbmFseXRp
+Y3MgcGxhdGZvcm0gY2FwYWJsZSBvZiBhZHZhbmNlZAphbmFseXRpY3Mgb24gc2VtaS1zdHJ1Y3R1
+cmVkIGRhdGEuIFRoZSBwbGF0Zm9ybSBpbmNsdWRlcyBBUElzIGZvciBidWlsZGluZwphcHBzIGFu
+ZCBhIHBoZW5vbWVuYWwgdG9vbHNldCBmb3IgZGF0YSBzY2llbmNlLiBEZXZlbG9wZXJzIGNhbiB1
+c2UKb3VyIHRvb2xzZXQgZm9yIGVhc3kgZGF0YSBhbmFseXNpcyAmIHZpc3VhbGl6YXRpb24uIEdl
+dCBhIGZyZWUgYWNjb3VudCEKaHR0cDovL3d3dzIucHJlY29nLmNvbS9wcmVjb2dwbGF0Zm9ybS9z
+bGFzaGRvdG5ld3NsZXR0ZXIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

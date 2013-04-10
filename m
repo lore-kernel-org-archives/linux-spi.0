@@ -1,12 +1,12 @@
-From: "Winstel" <contact-FqQuqE7uPTdGWvitb5QawA@public.gmane.org>
-Subject: =?UTF-8?Q?Offre_Alarme_et_Vid=C3=A9osurveillance?=
-Date: Wed, 10 Apr 2013 05:58:28 +0000 (CET)
-Message-ID: <130410055828.-130892554500002056@obfm43.com>
+From: "Renault Paris" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?RGlmZmljaWxlIGRlIHLDqXNpc3RlciDDoCBsYSBxdWFsaXTDqSBkZSBzZXJ2aWNlIFJlbmF1bHQgUmVudA==?=
+Date: Wed, 10 Apr 2013 08:32:31 +0100
+Message-ID: <0.0.BD.35C.1CE35BD8FB80D42.0@mta11.pur3.net>
+Reply-To: Renault Paris <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,22 +18,28 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-(http://obfm43.com/px0tlpt13uxnfjhbwo/index0.html)
-(http://obfm43.com/m20cmp3m3yjwoo3bzq/index1.html)
-(http://obfm43.com/5c02jpcv3x5npxiynj/index2.html)
-(http://obfm43.com/rt0xzpel35aw3fay4g/index3.html)
-(http://obfm43.com/qccojokepzmnxti2tq/index4.html)
-(http://obfm43.com/jtcdzofdpbhwjba22o/index5.html)
-(http://obfm43.com/gxcgloicpj1n5shlbg/index6.html)
-(http://obfm43.com/o2cymo0rpagway3l0j/index7.html)
-(http://obfm43.com/fxwsd3bf3e2n0zhado/index8.html)
-(http://obfm43.com/12wqr3ap3dlwd43ayq/index9.html)
-(http://obfm43.com/wut3v44gxzfkfqut3d/index10.html)
-(http://obfm43.com/zame2cj1z0fylgnhhd/index11.html)
-------------------------------------------------------------------------------
-Precog is a next-generation analytics platform capable of advanced
-analytics on semi-structured data. The platform includes APIs for building
-apps and a phenomenal toolset for data science. Developers can use
-our toolset for easy data analysis & visualization. Get a free account!
-http://www2.precog.com/precogplatform/slashdotnewsletter
+U2kgdm91cyBuZSB2aXN1YWxpc2V6IHBhcyBsZXMgaW1hZ2VzLCB2ZXVpbGxleiBzdWl2cmUgY2Ug
+bGllbgpodHRwOi8vYS5vcHRpbmNha2UuY29tL2ludGVyZmFjZS9leHRlcm5hbF92aWV3X2VtYWls
+LnBocD9BSjg0ODAxMzkwNTUxMTgzNTMyMjE1MzAxODUKCgoKCgpEaWZmaWNpbGUgZGUgcsOpc2lz
+dGVyIMOgIGxhIHF1YWxpdMOpIGRlIHNlcnZpY2UgUmVuYXVsdCBSZW50CgoKRGlmZmljaWxlIGRl
+IHLDqXNpc3RlciDDoCBsYSBxdWFsaXTDqSBkZSBzZXJ2aWNlIFJlbmF1bHQgUmVudAoKCgoKClZv
+dXMgcsOpY2VwdGlvbm5leiBjZXR0ZSBpbmZvcm1hdGlvbiBzdXIgdm90cmUgYWRyZXNzZSBlbWFp
+bCBjYXIgdm91cwrDqnRlcyBtZW1icmUgb3UgaW5zY3JpdCBkYW5zIGxlcyBiYXNlcyBkZSBkb25u
+w6llcyBkZSBub3MgcGFydGVuYWlyZXMKb3UgYmllbiBlbmNvcmUgcGFyY2UgcXVlIHZvdXMgYXZl
+eiBhY2NlcHTDqSBkJ8OqdHJlIHBhcnJhaW7DqSBwYXIgdW4gbWVtYnJlLiAKClBvdXIgdG91dGUg
+csOpY2xhbWF0aW9uIGNvbmNlcm5hbnQgdW4gcGFpZW1lbnQsIHVuIMOpY2hhbmdlIG91IHVuZQpp
+bmZvcm1hdGlvbiwgbWVyY2kgZGUgY29udGFjdGVyIGwnYW5ub25jZXVyIGRpcmVjdGVtZW50IHN1
+ciBzb24gc2l0ZQppbnRlcm5ldCAocnVicmlxdWUgY29udGFjdCkuCgoKLS0KClBvdXIgdm91cyBk
+w6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRfcmNy
+LnBocD9BSjg0ODAxMzkwNTUxMTgzNTMyMjE1MzAxODUKCgoKCgoKe35BSjg0ODAxMzkwNTUxMTgz
+NTMyMjE1MzAxODV+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KUHJlY29nIGlzIGEgbmV4dC1nZW5l
+cmF0aW9uIGFuYWx5dGljcyBwbGF0Zm9ybSBjYXBhYmxlIG9mIGFkdmFuY2VkCmFuYWx5dGljcyBv
+biBzZW1pLXN0cnVjdHVyZWQgZGF0YS4gVGhlIHBsYXRmb3JtIGluY2x1ZGVzIEFQSXMgZm9yIGJ1
+aWxkaW5nCmFwcHMgYW5kIGEgcGhlbm9tZW5hbCB0b29sc2V0IGZvciBkYXRhIHNjaWVuY2UuIERl
+dmVsb3BlcnMgY2FuIHVzZQpvdXIgdG9vbHNldCBmb3IgZWFzeSBkYXRhIGFuYWx5c2lzICYgdmlz
+dWFsaXphdGlvbi4gR2V0IGEgZnJlZSBhY2NvdW50IQpodHRwOi8vd3d3Mi5wcmVjb2cuY29tL3By
+ZWNvZ3BsYXRmb3JtL3NsYXNoZG90bmV3c2xldHRlcgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
+Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,407 +1,59 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: [PATCH v2] spi: s3c64xx: move to generic dmaengine API
-Date: Thu, 11 Apr 2013 22:42:03 +0200
-Message-ID: <201304112242.03252.arnd@arndb.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2] spi: s3c64xx: move to generic dmaengine API
+Date: Fri, 12 Apr 2013 13:55:21 +0100
+Message-ID: <20130412125521.GA12534@opensource.wolfsonmicro.com>
 References: <1365638712-1028578-1-git-send-email-arnd@arndb.de>
-	<1365638712-1028578-30-git-send-email-arnd@arndb.de>
-	<20130411165536.GO9243@opensource.wolfsonmicro.com>
+ <1365638712-1028578-30-git-send-email-arnd@arndb.de>
+ <20130411165536.GO9243@opensource.wolfsonmicro.com>
+ <201304112242.03252.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, Padma Venkat <padma.kvr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130411165536.GO9243-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="LZvS9be/3tNcYl/X"
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Kukjin Kim <kgene.kim@samsung.com>,
+	linux-samsung-soc@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Padma Venkat <padma.kvr@gmail.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <201304112242.03252.arnd@arndb.de>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The spi-s3c64xx uses a Samsung proprietary interface for
-talking to the DMA engine, which does not work with
-multiplatform kernels.
 
-This version of the patch leaves the old code in place,
-behind an #ifdef. This can be removed in the future,
-after the s3c64xx platform start supporting the regular
-dmaengine interface. An earlier version of this patch was
-tested successfully on exynos5250 by Padma Venkat.
+--LZvS9be/3tNcYl/X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-The conversion was rather mechanical, since the samsung
-interface is just a shallow wrapper around the dmaengine
-interface.
+On Thu, Apr 11, 2013 at 10:42:03PM +0200, Arnd Bergmann wrote:
+> The spi-s3c64xx uses a Samsung proprietary interface for
+> talking to the DMA engine, which does not work with
+> multiplatform kernels.
 
-Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Cc: Padma Venkat <padma.kvr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-----
+Applied, thanks.
 
-v2: rebased to git://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git spi-next
+--LZvS9be/3tNcYl/X
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-diff --git a/arch/arm/plat-samsung/devs.c b/arch/arm/plat-samsung/devs.c
-index 51afedd..03db14d 100644
---- a/arch/arm/plat-samsung/devs.c
-+++ b/arch/arm/plat-samsung/devs.c
-@@ -10,6 +10,7 @@
-  * published by the Free Software Foundation.
- */
- 
-+#include <linux/amba/pl330.h>
- #include <linux/kernel.h>
- #include <linux/types.h>
- #include <linux/interrupt.h>
-@@ -1552,6 +1553,9 @@ void __init s3c64xx_spi0_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- 	pd.num_cs = num_cs;
- 	pd.src_clk_nr = src_clk_nr;
- 	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi0_cfg_gpio;
-+#ifdef CONFIG_PL330_DMA
-+	pd.filter = pl330_filter;
-+#endif
- 
- 	s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi0);
- }
-@@ -1590,6 +1594,9 @@ void __init s3c64xx_spi1_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- 	pd.num_cs = num_cs;
- 	pd.src_clk_nr = src_clk_nr;
- 	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi1_cfg_gpio;
-+#ifdef CONFIG_PL330_DMA
-+	pd.filter = pl330_filter;
-+#endif
- 
- 	s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi1);
- }
-@@ -1628,6 +1635,9 @@ void __init s3c64xx_spi2_set_platdata(int (*cfg_gpio)(void), int src_clk_nr,
- 	pd.num_cs = num_cs;
- 	pd.src_clk_nr = src_clk_nr;
- 	pd.cfg_gpio = (cfg_gpio) ? cfg_gpio : s3c64xx_spi2_cfg_gpio;
-+#ifdef CONFIG_PL330_DMA
-+	pd.filter = pl330_filter;
-+#endif
- 
- 	s3c_set_platdata(&pd, sizeof(pd), &s3c64xx_device_spi2);
- }
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 682b1e7..4989aeb 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -24,6 +24,7 @@
- #include <linux/delay.h>
- #include <linux/clk.h>
- #include <linux/dma-mapping.h>
-+#include <linux/dmaengine.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/spi/spi.h>
-@@ -31,9 +32,12 @@
- #include <linux/of.h>
- #include <linux/of_gpio.h>
- 
--#include <mach/dma.h>
- #include <linux/platform_data/spi-s3c64xx.h>
- 
-+#ifdef CONFIG_SAMSUNG_DMADEV
-+#include <mach/dma.h>
-+#endif
-+
- #define MAX_SPI_PORTS		3
- 
- /* Registers and bit-fields */
-@@ -131,9 +135,9 @@
- #define TXBUSY    (1<<3)
- 
- struct s3c64xx_spi_dma_data {
--	unsigned		ch;
-+	struct dma_chan *ch;
- 	enum dma_transfer_direction direction;
--	enum dma_ch	dmach;
-+	unsigned int dmach;
- };
- 
- /**
-@@ -195,16 +199,14 @@ struct s3c64xx_spi_driver_data {
- 	unsigned                        cur_speed;
- 	struct s3c64xx_spi_dma_data	rx_dma;
- 	struct s3c64xx_spi_dma_data	tx_dma;
-+#ifdef CONFIG_SAMSUNG_DMADEV
- 	struct samsung_dma_ops		*ops;
-+#endif
- 	struct s3c64xx_spi_port_config	*port_conf;
- 	unsigned int			port_id;
- 	unsigned long			gpios[4];
- };
- 
--static struct s3c2410_dma_client s3c64xx_spi_dma_client = {
--	.name = "samsung-spi-dma",
--};
--
- static void flush_fifo(struct s3c64xx_spi_driver_data *sdd)
- {
- 	void __iomem *regs = sdd->regs;
-@@ -281,6 +283,13 @@ static void s3c64xx_spi_dmacb(void *data)
- 	spin_unlock_irqrestore(&sdd->lock, flags);
- }
- 
-+#ifdef CONFIG_SAMSUNG_DMADEV
-+/* FIXME: remove this section once arch/arm/mach-s3c64xx uses dmaengine */
-+
-+static struct s3c2410_dma_client s3c64xx_spi_dma_client = {
-+	.name = "samsung-spi-dma",
-+};
-+
- static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
- 					unsigned len, dma_addr_t buf)
- {
-@@ -294,14 +303,14 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
- 		config.direction = sdd->rx_dma.direction;
- 		config.fifo = sdd->sfr_start + S3C64XX_SPI_RX_DATA;
- 		config.width = sdd->cur_bpw / 8;
--		sdd->ops->config(sdd->rx_dma.ch, &config);
-+		sdd->ops->config((enum dma_ch)sdd->rx_dma.ch, &config);
- 	} else {
- 		sdd = container_of((void *)dma,
- 			struct s3c64xx_spi_driver_data, tx_dma);
- 		config.direction =  sdd->tx_dma.direction;
- 		config.fifo = sdd->sfr_start + S3C64XX_SPI_TX_DATA;
- 		config.width = sdd->cur_bpw / 8;
--		sdd->ops->config(sdd->tx_dma.ch, &config);
-+		sdd->ops->config((enum dma_ch)sdd->tx_dma.ch, &config);
- 	}
- 
- 	info.cap = DMA_SLAVE;
-@@ -311,8 +320,8 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
- 	info.direction = dma->direction;
- 	info.buf = buf;
- 
--	sdd->ops->prepare(dma->ch, &info);
--	sdd->ops->trigger(dma->ch);
-+	sdd->ops->prepare((enum dma_ch)dma->ch, &info);
-+	sdd->ops->trigger((enum dma_ch)dma->ch);
- }
- 
- static int acquire_dma(struct s3c64xx_spi_driver_data *sdd)
-@@ -325,12 +334,126 @@ static int acquire_dma(struct s3c64xx_spi_driver_data *sdd)
- 	req.cap = DMA_SLAVE;
- 	req.client = &s3c64xx_spi_dma_client;
- 
--	sdd->rx_dma.ch = sdd->ops->request(sdd->rx_dma.dmach, &req, dev, "rx");
--	sdd->tx_dma.ch = sdd->ops->request(sdd->tx_dma.dmach, &req, dev, "tx");
-+	sdd->rx_dma.ch = (void *)sdd->ops->request(sdd->rx_dma.dmach, &req, dev, "rx");
-+	sdd->tx_dma.ch = (void *)sdd->ops->request(sdd->tx_dma.dmach, &req, dev, "tx");
- 
- 	return 1;
- }
- 
-+static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
-+{
-+	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
-+
-+	/* Acquire DMA channels */
-+	while (!acquire_dma(sdd))
-+		usleep_range(10000, 11000);
-+
-+	pm_runtime_get_sync(&sdd->pdev->dev);
-+
-+	return 0;
-+}
-+
-+static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
-+{
-+	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
-+
-+	/* Free DMA channels */
-+	sdd->ops->release((enum dma_ch)sdd->rx_dma.ch, &s3c64xx_spi_dma_client);
-+	sdd->ops->release((enum dma_ch)sdd->tx_dma.ch, &s3c64xx_spi_dma_client);
-+
-+	pm_runtime_put(&sdd->pdev->dev);
-+
-+	return 0;
-+}
-+
-+static void s3c64xx_spi_dma_stop(struct s3c64xx_spi_driver_data *sdd,
-+				 struct s3c64xx_spi_dma_data *dma)
-+{
-+	sdd->ops->stop((enum dma_ch)dma->ch);
-+}
-+#else
-+
-+static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
-+					unsigned len, dma_addr_t buf)
-+{
-+	struct s3c64xx_spi_driver_data *sdd;
-+	struct dma_slave_config config;
-+	struct scatterlist sg;
-+	struct dma_async_tx_descriptor *desc;
-+
-+	if (dma->direction == DMA_DEV_TO_MEM) {
-+		sdd = container_of((void *)dma,
-+			struct s3c64xx_spi_driver_data, rx_dma);
-+		config.direction = dma->direction;
-+		config.src_addr = sdd->sfr_start + S3C64XX_SPI_RX_DATA;
-+		config.src_addr_width = sdd->cur_bpw / 8;
-+		config.src_maxburst = 1;
-+		dmaengine_slave_config(dma->ch, &config);
-+	} else {
-+		sdd = container_of((void *)dma,
-+			struct s3c64xx_spi_driver_data, tx_dma);
-+		config.direction = dma->direction;
-+		config.dst_addr = sdd->sfr_start + S3C64XX_SPI_TX_DATA;
-+		config.dst_addr_width = sdd->cur_bpw / 8;
-+		config.dst_maxburst = 1;
-+		dmaengine_slave_config(dma->ch, &config);
-+	}
-+
-+	sg_init_table(&sg, 1);
-+	sg_dma_len(&sg) = len;
-+	sg_set_page(&sg, pfn_to_page(PFN_DOWN(buf)),
-+		    len, offset_in_page(buf));
-+	sg_dma_address(&sg) = buf;
-+
-+	desc = dmaengine_prep_slave_sg(dma->ch,
-+		&sg, 1, dma->direction, DMA_PREP_INTERRUPT);
-+
-+	desc->callback = s3c64xx_spi_dmacb;
-+	desc->callback_param = dma;
-+
-+	dmaengine_submit(desc);
-+	dma_async_issue_pending(dma->ch);
-+}
-+
-+static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
-+{
-+	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
-+	dma_filter_fn filter = sdd->cntrlr_info->filter;
-+	struct device *dev = &sdd->pdev->dev;
-+	dma_cap_mask_t mask;
-+
-+	dma_cap_zero(mask);
-+	dma_cap_set(DMA_SLAVE, mask);
-+
-+	/* Acquire DMA channels */
-+	sdd->rx_dma.ch = dma_request_slave_channel_compat(mask, filter,
-+				(void*)sdd->rx_dma.dmach, dev, "rx");
-+	sdd->tx_dma.ch = dma_request_slave_channel_compat(mask, filter,
-+				(void*)sdd->tx_dma.dmach, dev, "tx");
-+	pm_runtime_get_sync(&sdd->pdev->dev);
-+
-+	return 0;
-+}
-+
-+static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
-+{
-+	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
-+
-+	/* Free DMA channels */
-+	dma_release_channel(sdd->rx_dma.ch);
-+	dma_release_channel(sdd->tx_dma.ch);
-+
-+	pm_runtime_put(&sdd->pdev->dev);
-+	return 0;
-+}
-+
-+static void s3c64xx_spi_dma_stop(struct s3c64xx_spi_driver_data *sdd,
-+				 struct s3c64xx_spi_dma_data *dma)
-+{
-+	dmaengine_terminate_all(dma->ch);
-+}
-+#endif
-+
- static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
- 				struct spi_device *spi,
- 				struct spi_transfer *xfer, int dma_mode)
-@@ -713,9 +836,9 @@ static int s3c64xx_spi_transfer_one_message(struct spi_master *master,
- 		}
- 
- 		/* Polling method for xfers not bigger than FIFO capacity */
--		if (xfer->len <= ((FIFO_LVL_MASK(sdd) >> 1) + 1))
--			use_dma = 0;
--		else
-+		use_dma = 0;
-+		if (sdd->rx_dma.ch && sdd->tx_dma.ch &&
-+		    (xfer->len > ((FIFO_LVL_MASK(sdd) >> 1) + 1)))
- 			use_dma = 1;
- 
- 		spin_lock_irqsave(&sdd->lock, flags);
-@@ -750,10 +873,10 @@ static int s3c64xx_spi_transfer_one_message(struct spi_master *master,
- 			if (use_dma) {
- 				if (xfer->tx_buf != NULL
- 						&& (sdd->state & TXBUSY))
--					sdd->ops->stop(sdd->tx_dma.ch);
-+					s3c64xx_spi_dma_stop(sdd, &sdd->tx_dma);
- 				if (xfer->rx_buf != NULL
- 						&& (sdd->state & RXBUSY))
--					sdd->ops->stop(sdd->rx_dma.ch);
-+					s3c64xx_spi_dma_stop(sdd, &sdd->rx_dma);
- 			}
- 
- 			goto out;
-@@ -790,32 +913,6 @@ out:
- 	return 0;
- }
- 
--static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
--{
--	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
--
--	/* Acquire DMA channels */
--	while (!acquire_dma(sdd))
--		usleep_range(10000, 11000);
--
--	pm_runtime_get_sync(&sdd->pdev->dev);
--
--	return 0;
--}
--
--static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
--{
--	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
--
--	/* Free DMA channels */
--	sdd->ops->release(sdd->rx_dma.ch, &s3c64xx_spi_dma_client);
--	sdd->ops->release(sdd->tx_dma.ch, &s3c64xx_spi_dma_client);
--
--	pm_runtime_put(&sdd->pdev->dev);
--
--	return 0;
--}
--
- static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
- 				struct spi_device *spi)
- {
-diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
-index ceba18d..8447f63 100644
---- a/include/linux/platform_data/spi-s3c64xx.h
-+++ b/include/linux/platform_data/spi-s3c64xx.h
-@@ -11,6 +11,8 @@
- #ifndef __S3C64XX_PLAT_SPI_H
- #define __S3C64XX_PLAT_SPI_H
- 
-+#include <linux/dmaengine.h>
-+
- struct platform_device;
- 
- /**
-@@ -38,6 +40,7 @@ struct s3c64xx_spi_info {
- 	int src_clk_nr;
- 	int num_cs;
- 	int (*cfg_gpio)(void);
-+	dma_filter_fn filter;
- };
- 
- /**
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
 
-------------------------------------------------------------------------------
-Precog is a next-generation analytics platform capable of advanced
-analytics on semi-structured data. The platform includes APIs for building
-apps and a phenomenal toolset for data science. Developers can use
-our toolset for easy data analysis & visualization. Get a free account!
-http://www2.precog.com/precogplatform/slashdotnewsletter
+iQIcBAEBAgAGBQJRaAQyAAoJELSic+t+oim9TUcP/3PKIvuiWou4mfU71VB/mwcN
+ZLMNz/HtiY31ff5s1Z2Sz6nrG4lzaFuY2OD/J3q2xxJ/WH8qNwDmKw7KR6tYOKBf
+2itG8KEuSJvf1J7T6qRb0wYlWYzR2hkZi1o2X8Itln6y6NQsH+UVplgN/0S1FiB5
+WpyTQjuLiNBe+E+Ij9Issk4iNbi32/PeqiHH/gXkxNhbiisCpzuXO2fLCkErq2XV
+jvboOYb7j4Q6g6L2hTNyodZhjNAvPUsoHqSVAZKm4kVMWtRydgKMwOY4P0EpneUk
++guKm2c6y9uAf6mLcASBj7OqQ71XfZ71vYAfpttaNt0DHxZJkG2UL/tiQSF8Fgyq
+vN9ey9miXQc/75HphjqJt/H9xvGj5mmXDsiw83qFNmSkHd7fJt+z9wFyqGzMsJXS
+fBmVY6xXPKUXthItwyPdCJS5CtCdrRSHo8teFBE0WYWGMqzKTjYEtNTSJUt45JU+
+O7L4cilI70pcxoLUHrkkiBDYJ8H153x1rm8PPZ2FXkvyA3EJtRCHTr86ZqYnuoMq
+lUMp3KD8RusRxbd6WzzJbDeT78GdJCnpGl8rr0nVr+wpj/sQVhrgU1pZyn42yDf1
+jc29u+sFZxEBFdk1sC/t5eFq5R2L2eomibwDx/HAVShRNkS1OB29UU+LpwowH+lq
+kh3o1lqApOaTSdFetfPe
+=wIGk
+-----END PGP SIGNATURE-----
+
+--LZvS9be/3tNcYl/X--

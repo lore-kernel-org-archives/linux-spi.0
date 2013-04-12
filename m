@@ -1,63 +1,69 @@
-From: Martin Fuzzey <mfuzzey@parkeon.com>
-Subject: [PATCH] SPI: spidev: Add DT compatible string for spidev driver.
-Date: Fri, 12 Apr 2013 14:56:21 +0200
-Message-ID: <20130412125621.9645.78102.stgit@localhost>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH] SPI: spidev: Add DT compatible string for spidev driver.
+Date: Fri, 12 Apr 2013 15:30:57 +0200
+Message-ID: <51680C91.6030005@free-electrons.com>
+References: <20130412125621.9645.78102.stgit@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel@lists.infradead.org
-To: Grant Likely <grant.likely@secretlab.ca>,
- spi-devel-general@lists.sourceforge.net
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Martin Fuzzey <mfuzzey-mB3Nsq4MPf1BDgjK7y7TUQ@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130412125621.9645.78102.stgit@localhost>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The spidev driver is useful to allow userspace access
-to SPI devices that have no kernel SPI driver.
+Hi Martin,
 
-However DT requires a compatible tree to allow the driver
-to be probed.
+Le 12/04/2013 14:56, Martin Fuzzey a =E9crit :
+> The spidev driver is useful to allow userspace access
+> to SPI devices that have no kernel SPI driver.
+> =
 
-To avoid having to modify the driver for every extra device
-add a generic "linux,spidev" compatible string that may be
-used in the DT to match such devices.
+> However DT requires a compatible tree to allow the driver
+> to be probed.
+> =
 
-Signed-off-by: Martin Fuzzey <mfuzzey@parkeon.com>
+> To avoid having to modify the driver for every extra device
+> add a generic "linux,spidev" compatible string that may be
+> used in the DT to match such devices.
+
+I submitted a similar patch quite some time ago [1], and at the time,
+this patch was found inadequate, and we decided to add the compatible of
+the particular device that we drive through spidev.
+
+The rationale behind that is that the device tree is a hardware
+description, so it's only interested about which device there is on the
+SPI bus, and not the driver that will eventually handle it. That allows
+both to have a meaningful devicetree, but also to easily handle the case
+where a driver for that particular device is finally implemented, since
+we won't have to change the device tree in itself to reflect this.
+
+So I suggest you only add to the "real" compatible string instead of a
+generic one.
+
+Maxime
+
+[1] http://comments.gmane.org/gmane.linux.kernel.spi.devel/11734
+
+-- =
+
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+
+---------------------------------------------------------------------------=
 ---
- Documentation/devicetree/bindings/spi/spi-bus.txt |    3 +++
- drivers/spi/spidev.c                              |    1 +
- 2 files changed, 4 insertions(+), 0 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 296015e..3176587 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -59,6 +59,9 @@ contain the following properties.
- If a gpio chipselect is used for the SPI slave the gpio number will be passed
- via the cs_gpio
- 
-+For slave devices having no kernel driver the compatible string "linux,spidev"
-+may be used to enable access from userspace via the spidev driver.
-+
- SPI example for an MPC5200 SPI bus:
- 	spi@f00 {
- 		#address-cells = <1>;
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 2e0655d..c2447a8 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -646,6 +646,7 @@ static int spidev_remove(struct spi_device *spi)
- 
- static const struct of_device_id spidev_dt_ids[] = {
- 	{ .compatible = "rohm,dh2228fv" },
-+	{ .compatible = "linux,spidev" },
- 	{},
- };
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

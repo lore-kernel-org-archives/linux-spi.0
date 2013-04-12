@@ -1,59 +1,63 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2] spi: s3c64xx: move to generic dmaengine API
-Date: Fri, 12 Apr 2013 13:55:21 +0100
-Message-ID: <20130412125521.GA12534@opensource.wolfsonmicro.com>
-References: <1365638712-1028578-1-git-send-email-arnd@arndb.de>
- <1365638712-1028578-30-git-send-email-arnd@arndb.de>
- <20130411165536.GO9243@opensource.wolfsonmicro.com>
- <201304112242.03252.arnd@arndb.de>
+From: Martin Fuzzey <mfuzzey@parkeon.com>
+Subject: [PATCH] SPI: spidev: Add DT compatible string for spidev driver.
+Date: Fri, 12 Apr 2013 14:56:21 +0200
+Message-ID: <20130412125621.9645.78102.stgit@localhost>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="LZvS9be/3tNcYl/X"
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Padma Venkat <padma.kvr@gmail.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <201304112242.03252.arnd@arndb.de>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-arm-kernel@lists.infradead.org
+To: Grant Likely <grant.likely@secretlab.ca>,
+ spi-devel-general@lists.sourceforge.net
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+The spidev driver is useful to allow userspace access
+to SPI devices that have no kernel SPI driver.
 
---LZvS9be/3tNcYl/X
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+However DT requires a compatible tree to allow the driver
+to be probed.
 
-On Thu, Apr 11, 2013 at 10:42:03PM +0200, Arnd Bergmann wrote:
-> The spi-s3c64xx uses a Samsung proprietary interface for
-> talking to the DMA engine, which does not work with
-> multiplatform kernels.
+To avoid having to modify the driver for every extra device
+add a generic "linux,spidev" compatible string that may be
+used in the DT to match such devices.
 
-Applied, thanks.
+Signed-off-by: Martin Fuzzey <mfuzzey@parkeon.com>
+---
+ Documentation/devicetree/bindings/spi/spi-bus.txt |    3 +++
+ drivers/spi/spidev.c                              |    1 +
+ 2 files changed, 4 insertions(+), 0 deletions(-)
 
---LZvS9be/3tNcYl/X
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRaAQyAAoJELSic+t+oim9TUcP/3PKIvuiWou4mfU71VB/mwcN
-ZLMNz/HtiY31ff5s1Z2Sz6nrG4lzaFuY2OD/J3q2xxJ/WH8qNwDmKw7KR6tYOKBf
-2itG8KEuSJvf1J7T6qRb0wYlWYzR2hkZi1o2X8Itln6y6NQsH+UVplgN/0S1FiB5
-WpyTQjuLiNBe+E+Ij9Issk4iNbi32/PeqiHH/gXkxNhbiisCpzuXO2fLCkErq2XV
-jvboOYb7j4Q6g6L2hTNyodZhjNAvPUsoHqSVAZKm4kVMWtRydgKMwOY4P0EpneUk
-+guKm2c6y9uAf6mLcASBj7OqQ71XfZ71vYAfpttaNt0DHxZJkG2UL/tiQSF8Fgyq
-vN9ey9miXQc/75HphjqJt/H9xvGj5mmXDsiw83qFNmSkHd7fJt+z9wFyqGzMsJXS
-fBmVY6xXPKUXthItwyPdCJS5CtCdrRSHo8teFBE0WYWGMqzKTjYEtNTSJUt45JU+
-O7L4cilI70pcxoLUHrkkiBDYJ8H153x1rm8PPZ2FXkvyA3EJtRCHTr86ZqYnuoMq
-lUMp3KD8RusRxbd6WzzJbDeT78GdJCnpGl8rr0nVr+wpj/sQVhrgU1pZyn42yDf1
-jc29u+sFZxEBFdk1sC/t5eFq5R2L2eomibwDx/HAVShRNkS1OB29UU+LpwowH+lq
-kh3o1lqApOaTSdFetfPe
-=wIGk
------END PGP SIGNATURE-----
-
---LZvS9be/3tNcYl/X--
+diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+index 296015e..3176587 100644
+--- a/Documentation/devicetree/bindings/spi/spi-bus.txt
++++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+@@ -59,6 +59,9 @@ contain the following properties.
+ If a gpio chipselect is used for the SPI slave the gpio number will be passed
+ via the cs_gpio
+ 
++For slave devices having no kernel driver the compatible string "linux,spidev"
++may be used to enable access from userspace via the spidev driver.
++
+ SPI example for an MPC5200 SPI bus:
+ 	spi@f00 {
+ 		#address-cells = <1>;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 2e0655d..c2447a8 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -646,6 +646,7 @@ static int spidev_remove(struct spi_device *spi)
+ 
+ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "rohm,dh2228fv" },
++	{ .compatible = "linux,spidev" },
+ 	{},
+ };

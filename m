@@ -1,81 +1,140 @@
-From: Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH] SPI: spidev: Add DT compatible string for spidev driver.
-Date: Fri, 12 Apr 2013 19:28:39 +0200
-Message-ID: <51684447.4040600@metafoo.de>
-References: <20130412125621.9645.78102.stgit@localhost>
- <51680C91.6030005@free-electrons.com> <51681743.4020001@parkeon.com>
+From: Tony Lindgren <tony@atomide.com>
+Subject: [PATCH] spi: omap2-mcspi: Fix transfers if DMADEVICES is not set
+Date: Fri, 12 Apr 2013 17:25:07 -0700
+Message-ID: <20130413002506.GG10155@atomide.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
- spi-devel-general@lists.sourceforge.net,
- Maxime Ripard <maxime.ripard@free-electrons.com>,
- linux-arm-kernel@lists.infradead.org
-To: mfuzzey@parkeon.com
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <51681743.4020001@parkeon.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, Jon Hunter <jon-hunter@ti.com>
+To: Grant Likely <grant.likely@secretlab.ca>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/12/2013 04:16 PM, Martin Fuzzey wrote:
-> Hi Maxime,
-> 
-> On 12/04/13 15:30, Maxime Ripard wrote:
->> I submitted a similar patch quite some time ago [1], and at the time, this
->> patch was found inadequate, and we decided to add the compatible of the
->> particular device that we drive through spidev. 
-> 
-> Thanks for pointing this out.
-> 
->> The rationale behind that is that the device tree is a hardware
->> description, so it's only interested about which device there is on the
->> SPI bus, and not the driver that will eventually handle it. That allows
->> both to have a meaningful devicetree, but also to easily handle the case
->> where a driver for that particular device is finally implemented, since we
->> won't have to change the device tree in itself to reflect this. 
-> 
-> I'm not sure this is really an advantage of using a "real" compatible string.
-> 
-> When a kernel driver is finally implemented it will not have the same
-> userspace interface as spidev.
-> 
-> This means that the switch from spidev to the kernel driver will not be
-> transparent to userspace.
-> 
-> So, if a "real" compatible string is used, upon upgrading to a new version
-> of the kernel that adds support for that device userspace will break.
-> 
-> Using a generic compatible string allows the board maintainer to decide when
-> to switch by updating the DT.
-> 
-> Of course, when a custom kernel is being configured and compiled, the
-> problem can also be solved by not enabling the new driver but I thought one
-> of the goals of DT was to enable using a single distribution style binary
-> kernel images on multiple boards.
-> 
-> Note that my patch only changes the driver, not any DTS.
-> Indeed I agree that _using_ a generic compatible string in an _in kernel_
-> DTS would be a mistake for the reasons you point out.
-> 
-> The use case I'm talking about is where a mainline kernel is used but with a
-> custom out of tree DTS - why force people to patch the driver for this use
-> case?
-> 
-> Best regards,
-> 
-> Martin
+Selecting CONFIG_DMADEVICES is optional, and we must
+be able to continue even without DMA. Otherwise things
+like omap4430sdp nfsroot will fail if DMA is not
+selected.
 
-In my opinion it would be good if we had a mechanism to bind to create a
-spidev device for an existing spi device from sysfs. You wouldn't need any
-special compilable strings in the spidev driver and could use it for any spi
-device you'd like to.
+Note that the driver already supports PIO mode, but
+we fail to fall back to PIO if requesting DMA channels
+fails.
 
-- Lars
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+
+Does this look OK to get in for v3.10? There should not
+be any urgent need for this for v3.9-rc.
+
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -809,6 +809,10 @@ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
+ 	return 0;
+ }
+ 
++/*
++ * Note that we currently allow DMA only if we get a channel
++ * for both rx and tx. Otherwise we'll do PIO for both rx and tx.
++ */
+ static int omap2_mcspi_request_dma(struct spi_device *spi)
+ {
+ 	struct spi_master	*master = spi->master;
+@@ -827,21 +831,22 @@ static int omap2_mcspi_request_dma(struct spi_device *spi)
+ 	dma_cap_set(DMA_SLAVE, mask);
+ 	sig = mcspi_dma->dma_rx_sync_dev;
+ 	mcspi_dma->dma_rx = dma_request_channel(mask, omap_dma_filter_fn, &sig);
+-	if (!mcspi_dma->dma_rx) {
+-		dev_err(&spi->dev, "no RX DMA engine channel for McSPI\n");
+-		return -EAGAIN;
+-	}
++	if (!mcspi_dma->dma_rx)
++		goto no_dma;
+ 
+ 	sig = mcspi_dma->dma_tx_sync_dev;
+ 	mcspi_dma->dma_tx = dma_request_channel(mask, omap_dma_filter_fn, &sig);
+ 	if (!mcspi_dma->dma_tx) {
+-		dev_err(&spi->dev, "no TX DMA engine channel for McSPI\n");
+ 		dma_release_channel(mcspi_dma->dma_rx);
+ 		mcspi_dma->dma_rx = NULL;
+-		return -EAGAIN;
++		goto no_dma;
+ 	}
+ 
+ 	return 0;
++
++no_dma:
++	dev_warn(&spi->dev, "not using DMA for McSPI\n");
++	return -EAGAIN;
+ }
+ 
+ static int omap2_mcspi_setup(struct spi_device *spi)
+@@ -874,7 +879,7 @@ static int omap2_mcspi_setup(struct spi_device *spi)
+ 
+ 	if (!mcspi_dma->dma_rx || !mcspi_dma->dma_tx) {
+ 		ret = omap2_mcspi_request_dma(spi);
+-		if (ret < 0)
++		if (ret < 0 && ret != -EAGAIN)
+ 			return ret;
+ 	}
+ 
+@@ -932,6 +937,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+ 	struct spi_device		*spi;
+ 	struct spi_transfer		*t = NULL;
+ 	struct spi_master		*master;
++	struct omap2_mcspi_dma		*mcspi_dma;
+ 	int				cs_active = 0;
+ 	struct omap2_mcspi_cs		*cs;
+ 	struct omap2_mcspi_device_config *cd;
+@@ -941,6 +947,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+ 
+ 	spi = m->spi;
+ 	master = spi->master;
++	mcspi_dma = mcspi->dma_channels + spi->chip_select;
+ 	cs = spi->controller_state;
+ 	cd = spi->controller_data;
+ 
+@@ -997,7 +1004,8 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+ 				__raw_writel(0, cs->base
+ 						+ OMAP2_MCSPI_TX0);
+ 
+-			if (m->is_dma_mapped || t->len >= DMA_MIN_BYTES)
++			if ((mcspi_dma->dma_rx && mcspi_dma->dma_tx) &&
++			    (m->is_dma_mapped || t->len >= DMA_MIN_BYTES))
+ 				count = omap2_mcspi_txrx_dma(spi, t);
+ 			else
+ 				count = omap2_mcspi_txrx_pio(spi, t);
+@@ -1044,10 +1052,14 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 		struct spi_message *m)
+ {
++	struct spi_device	*spi;
+ 	struct omap2_mcspi	*mcspi;
++	struct omap2_mcspi_dma	*mcspi_dma;
+ 	struct spi_transfer	*t;
+ 
++	spi = m->spi;
+ 	mcspi = spi_master_get_devdata(master);
++	mcspi_dma = mcspi->dma_channels + spi->chip_select;
+ 	m->actual_length = 0;
+ 	m->status = 0;
+ 
+@@ -1082,7 +1094,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 		if (m->is_dma_mapped || len < DMA_MIN_BYTES)
+ 			continue;
+ 
+-		if (tx_buf != NULL) {
++		if (mcspi_dma->dma_tx && tx_buf != NULL) {
+ 			t->tx_dma = dma_map_single(mcspi->dev, (void *) tx_buf,
+ 					len, DMA_TO_DEVICE);
+ 			if (dma_mapping_error(mcspi->dev, t->tx_dma)) {
+@@ -1091,7 +1103,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
+ 				return -EINVAL;
+ 			}
+ 		}
+-		if (rx_buf != NULL) {
++		if (mcspi_dma->dma_rx && rx_buf != NULL) {
+ 			t->rx_dma = dma_map_single(mcspi->dev, rx_buf, t->len,
+ 					DMA_FROM_DEVICE);
+ 			if (dma_mapping_error(mcspi->dev, t->rx_dma)) {

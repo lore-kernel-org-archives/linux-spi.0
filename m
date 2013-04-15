@@ -1,52 +1,41 @@
-From: Sekhar Nori <nsekhar@ti.com>
-Subject: Re: [PATCH v5 0/5] Patch enables support for m25p64 SPI flash support
- on da850-EVM.
-Date: Mon, 15 Apr 2013 17:18:59 +0530
-Message-ID: <516BE92B.90002@ti.com>
-References: <1364998150-5980-1-git-send-email-prakash.pm@ti.com> <A73F36158E33644199EB82C5EC81C7BC3EA4C560@DBDE01.ent.ti.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 02/17] of_spi: add generic binding support to specify cs
+ gpio
+Date: Mon, 15 Apr 2013 13:55:43 +0100
+Message-ID: <20130415125543.4CB043E0AA8@localhost>
+References: <1363943767-16051-1-git-send-email-wenyou.yang@atmel.com>
+ <1363943814-16130-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"rob.herring@calxeda.com" <rob.herring@calxeda.com>,
-	"rob@landley.net" <rob@landley.net>,
-	"linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
-	"hs@denx.de" <hs@denx.de>,
-	"devicetree-discuss@lists.ozlabs.org"
-	<devicetree-discuss@lists.ozlabs.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"davinci-linux-open-source@linux.davincidsp.com"
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>
-To: "Manjunathappa, Prakash" <prakash.pm@ti.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <A73F36158E33644199EB82C5EC81C7BC3EA4C560@DBDE01.ent.ti.com>
-Sender: linux-doc-owner@vger.kernel.org
+Cc: devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+ spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, andy.gao-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1363943814-16130-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-On 4/9/2013 11:14 AM, Manjunathappa, Prakash wrote:
-> Hi Grant,
+On Fri, 22 Mar 2013 17:16:54 +0800, Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> wrote:
+> From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
 > 
-> On Wed, Apr 03, 2013 at 19:39:05, Manjunathappa, Prakash wrote:
->> Testing information:
->> da850-evm comes with partitions specified in DT blob.
->> Able to mount/umount and create/delete files on filesystem partition.
->>
+> This will allow to use gpio for chip select with no modification in the
+> driver binding
 > 
-> Could you please ack the driver(1/5) and documentation(2/5) changes so
-> that Sekhar can merge the platform changes, he doesn't have any
-> objection on this series.
-> http://marc.info/?l=linux-doc&m=136489750130615&w=1
+> When use the cs-gpios, the gpio number will be passed via the cs_gpio field
+> and the number of chip select will automatically increased.
+> 
+> Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
 
-I am planning to queue these patches for ARM-SoC today. Grant has not
-acked these but 1/5 just fixes the binding name to not use wild cards
-and 2/5 just documents existing bindings and is something that should
-have been merge last merge window itself (when the bindings were
-accepted). So, the patches pending on Grant's ack seem very low risk to
-me and we are much delayed already to wait further.
+This patch has been in mainline since Dec 13
 
-Thanks,
-Sekhar
+g.

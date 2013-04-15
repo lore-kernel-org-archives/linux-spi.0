@@ -1,11 +1,11 @@
-From: 13544101049-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 16 Apr 2013 06:41:09 +0800
-Message-ID: <E1URs5y-0000qs-Ic@sfs-ml-2.v29.ch3.sourceforge.com>
+From: "Mike Bernhard" <MBernhard-NrzT4B82aKhBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Need More Sales?
+Date: Mon, 15 Apr 2013 16:51:41 -0700
+Message-ID: <e4aa4f0a71a0b7b4fb968421001041fa@noreply.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,17 +17,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
-qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
-0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTM1NDQxMDEw
-NDkKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpQcmVjb2cgaXMgYSBuZXh0LWdlbmVyYXRpb24gYW5h
-bHl0aWNzIHBsYXRmb3JtIGNhcGFibGUgb2YgYWR2YW5jZWQKYW5hbHl0aWNzIG9uIHNlbWktc3Ry
-dWN0dXJlZCBkYXRhLiBUaGUgcGxhdGZvcm0gaW5jbHVkZXMgQVBJcyBmb3IgYnVpbGRpbmcKYXBw
-cyBhbmQgYSBwaGVub21lbmFsIHRvb2xzZXQgZm9yIGRhdGEgc2NpZW5jZS4gRGV2ZWxvcGVycyBj
-YW4gdXNlCm91ciB0b29sc2V0IGZvciBlYXN5IGRhdGEgYW5hbHlzaXMgJiB2aXN1YWxpemF0aW9u
-LiBHZXQgYSBmcmVlIGFjY291bnQhCmh0dHA6Ly93d3cyLnByZWNvZy5jb20vcHJlY29ncGxhdGZv
-cm0vc2xhc2hkb3RuZXdzbGV0dGVyCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2Vu
-ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQv
-bGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Dear Business Owner,	
+	
+This economy is rough and times are tough.  You can still make money and stay ahead of your competition by calling me immediately at 1 (800) 676-2011 Ext 230.	
+
+I will walk through an email program that is generating businesses just like yours 10's of thousands of clicks every month, and producing sales at a record pace. When you call in I will explain how our program works and answer any of your questions.	
+
+You can track all of your results online through our award winning dashboard system.  Email marketing is the future, so call now and let me show you how easy it is.	
+	
+Sincerely,	
+	
+Mike Bernhard	
+Email Marketing Specialist	
+800-676-2011 Ext 230	
+
+
+
+------------------------------------------------------------------------------
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

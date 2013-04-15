@@ -1,40 +1,52 @@
-From: "Phil Greer" <NoReplyPG-aVLDbEdftb8@public.gmane.org>
-Subject: [SPAM] 2013 Update Released
-Date: Mon, 15 Apr 2013 04:14:37 -0700
-Message-ID: <a49e2649ac2af5b9bb33b4ba0012ee3a@g2gm.com>
+From: Sekhar Nori <nsekhar@ti.com>
+Subject: Re: [PATCH v5 0/5] Patch enables support for m25p64 SPI flash support
+ on da850-EVM.
+Date: Mon, 15 Apr 2013 17:18:59 +0530
+Message-ID: <516BE92B.90002@ti.com>
+References: <1364998150-5980-1-git-send-email-prakash.pm@ti.com> <A73F36158E33644199EB82C5EC81C7BC3EA4C560@DBDE01.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	"rob.herring@calxeda.com" <rob.herring@calxeda.com>,
+	"rob@landley.net" <rob@landley.net>,
+	"linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
+	"hs@denx.de" <hs@denx.de>,
+	"devicetree-discuss@lists.ozlabs.org"
+	<devicetree-discuss@lists.ozlabs.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"davinci-linux-open-source@linux.davincidsp.com"
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>
+To: "Manjunathappa, Prakash" <prakash.pm@ti.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <A73F36158E33644199EB82C5EC81C7BC3EA4C560@DBDE01.ent.ti.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Does you company obtain new customers using telemarketing, direct mail, e-mail marketing, and fax broadcasting?	
-If so, we can send you a targeted database that you can start using to create new leads and sales.	
-	
-All we need to know is who your ideal customer would be.		
+On 4/9/2013 11:14 AM, Manjunathappa, Prakash wrote:
+> Hi Grant,
+> 
+> On Wed, Apr 03, 2013 at 19:39:05, Manjunathappa, Prakash wrote:
+>> Testing information:
+>> da850-evm comes with partitions specified in DT blob.
+>> Able to mount/umount and create/delete files on filesystem partition.
+>>
+> 
+> Could you please ack the driver(1/5) and documentation(2/5) changes so
+> that Sekhar can merge the platform changes, he doesn't have any
+> objection on this series.
+> http://marc.info/?l=linux-doc&m=136489750130615&w=1
 
-Our databases are updated weekly and are always at a low price! Call us for a free consultation with a database expert today.	
-	
-Give me a call at 1 (800) 676-2011 Ext 402 and I will explain our offer in complete details.	
-	
-Phil Greer	
-Database Specialist		
-1 (800) 676-2011 Ext 402
+I am planning to queue these patches for ARM-SoC today. Grant has not
+acked these but 1/5 just fixes the binding name to not use wild cards
+and 2/5 just documents existing bindings and is something that should
+have been merge last merge window itself (when the bindings were
+accepted). So, the patches pending on Grant's ack seem very low risk to
+me and we are much delayed already to wait further.
 
-
-
-------------------------------------------------------------------------------
-Precog is a next-generation analytics platform capable of advanced
-analytics on semi-structured data. The platform includes APIs for building
-apps and a phenomenal toolset for data science. Developers can use
-our toolset for easy data analysis & visualization. Get a free account!
-http://www2.precog.com/precogplatform/slashdotnewsletter
+Thanks,
+Sekhar

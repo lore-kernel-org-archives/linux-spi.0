@@ -1,40 +1,55 @@
-From: Renault Val de loire <news-lNViFdug9nc@public.gmane.org>
-Subject: Renault portes ouvertes pres de chez vous
-Date: Mon, 15 Apr 2013 12:06:52 -0100
-Message-ID: <DS3VUzN-4KXW6acNvH3JhnDFU6thJpduSRirZpxjB6k@sk9.co>
-Reply-To: Renault Val de loire <news-lNViFdug9nc@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: omap2-mcspi: Fix transfers if DMADEVICES is not set
+Date: Mon, 15 Apr 2013 17:11:38 +0100
+Message-ID: <20130415161137.GG15837@opensource.wolfsonmicro.com>
+References: <20130413002506.GG10155@atomide.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-lNViFdug9nc@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="fCcDWlUEdh43YKr8"
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-omap@vger.kernel.org, Jon Hunter <jon-hunter@ti.com>
+To: Tony Lindgren <tony@atomide.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20130413002506.GG10155@atomide.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
- Decouvrez Renault Captur lors des Portes Ouvertes Pour visualiser correcte=
-ment ce message, acc=C3=A9dez =C3=A0 la version en ligne, ou signaler comme=
- ind=C3=A9sirable OUVERT CE DIMANCHE !* A l'occasion des Journees Portes Ou=
-vertesDu 11 au 15 avril* Nous vous invitons decouvrirCAPTUR, le nouveau cro=
-ssover de Renault ANGERS - 46 Bd Jacques Millot - 49000 ANGERS - 02 41 54 5=
-5 56LOCHES - 2 rue de la Fontaine Charbonnelle - 37600 LOCHES - 02 47 91 38=
- 30CHINON - 2 rue Gustave Eiffel - 37500 CHINON - 02 47 93 57 54LE MANS - 2=
-61 Bd Demorieux - 72000 LE MANS - 02 43 78 78 78TOURS - 1 av. du Grand Sud =
-- 37170 CHAMBRAY LES TOURS - 02 47 80 77 77TOURS - 2 rue Albert Einstein - =
-37100 TOURS - 02 47 80 77 77 *Ouverture le dimanche 14 avril selon autorisa=
-tion, sauf tablissement de Renault Le Mans Si vous ne souhaitez plus recevo=
-ir nos emails, veuillez suivre ce lien. Si vous n'arrivez pas =C3=A0 vous d=
-=C3=A9sabonner, merci d'=C3=A9crire =C3=A0 stop-lNViFdug9nc@public.gmane.org
-------------------------------------------------------------------------------
-Precog is a next-generation analytics platform capable of advanced
-analytics on semi-structured data. The platform includes APIs for building
-apps and a phenomenal toolset for data science. Developers can use
-our toolset for easy data analysis & visualization. Get a free account!
-http://www2.precog.com/precogplatform/slashdotnewsletter
+
+--fCcDWlUEdh43YKr8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Apr 12, 2013 at 05:25:07PM -0700, Tony Lindgren wrote:
+
+> Selecting CONFIG_DMADEVICES is optional, and we must
+> be able to continue even without DMA. Otherwise things
+> like omap4430sdp nfsroot will fail if DMA is not
+> selected.
+
+Applied, thanks.
+
+--fCcDWlUEdh43YKr8
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRbCaiAAoJELSic+t+oim9yp0QAJABW89fbQoUIT236lZD0QjC
+rC3Md1Eh/LVPbtLV+XnYG9SWWSA8DHWyZiZiBNxZyUCh/1xtypCZIU/ecoD7ndVi
+vyTrFafgzHR6oNv5uMpRA36OKf5WXgTnA+IuFFwPMLGLKeBBOFBQsxcDGYnRl4VX
+e/c++o9fFEoyGqJFBAucDZuZnErPzl1IAYXq0BJ9BrTl+NlrA9HrYv5ATE5Qb2ZG
+h3rPFM5t9sMaE3z6Vibd3zhyZoE9WboSNeDvv/IRD4a+XuNoqp0CRJYETnpVXVYc
+TmK7eQACnzSwkIPyQxoP1d6ZDFaBW7akdM+5jW24DcmdOSVvR/JGdSmnyqPEKXM0
+upU7t0ESMR40l2QshD23VAEB/k/1clRrYc9Cv+lpKMJP2RSNJXz1AD4+TAf3mw1E
+6HjS01sZAsBWKJfKWjUCtjtGUrpU4Vs3vb+nSGc48AEncVee7Iee1xIwkGDBLOkL
+jK1sdm9OVE7WFnI/mHBQKegRK5BSUuPDwjfCCe1PN6GJ7uhJig2WupTqDACl5pNA
+NCXsaiB5Jr0OAQpoHwNQqbh14oX/Nuo+h1GZ5q2TZal6Ja8fIU7B8czmiRyYVP8B
+slorZUZuwYMVMsWuW/ZNfmRdSvK5UpNPSa7YdAE0tVcL3nF5d64AM85X14IrAPxM
+F1fIv+C/EvjcbnbP+so4
+=mAvL
+-----END PGP SIGNATURE-----
+
+--fCcDWlUEdh43YKr8--

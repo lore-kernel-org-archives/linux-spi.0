@@ -1,66 +1,56 @@
-From: Sekhar Nori <nsekhar@ti.com>
-Subject: Re: [PATCH v5 0/5] Patch enables support for m25p64 SPI flash support
- on da850-EVM.
-Date: Tue, 16 Apr 2013 16:06:27 +0530
-Message-ID: <516D29AB.8000004@ti.com>
-References: <1364998150-5980-1-git-send-email-prakash.pm@ti.com>
- <A73F36158E33644199EB82C5EC81C7BC3EA4C560@DBDE01.ent.ti.com>
- <516BE92B.90002@ti.com> <20130416102041.CC5633E14C0@localhost>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH V4 2/5] spi: s3c64xx: added support for polling mode
+Date: Tue, 16 Apr 2013 12:20:35 +0100
+Message-ID: <20130416112035.GD26958@opensource.wolfsonmicro.com>
+References: <1366015230-18243-1-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source@linux.davincidsp.com"
- <davinci-linux-open-source@linux.davincidsp.com>,
- "linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "devicetree-discuss@lists.ozlabs.org" <devicetree-discuss@lists.ozlabs.org>,
- "rob.herring@calxeda.com" <rob.herring@calxeda.com>, "Manjunathappa,
- Prakash" <prakash.pm@ti.com>, "rob@landley.net" <rob@landley.net>,
- Olof Johansson <olof@lixom.net>, "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>, "hs@denx.de" <hs@denx.de>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20130416102041.CC5633E14C0@localhost>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="M38YqGLZlgb6RLPS"
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	grant.likely@secretlab.ca, t.figa@samsung.com
+To: Girish K S <girishks2000@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1366015230-18243-1-git-send-email-ks.giri@samsung.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 4/16/2013 3:50 PM, Grant Likely wrote:
-> On Mon, 15 Apr 2013 17:18:59 +0530, Sekhar Nori <nsekhar@ti.com> wrote:
->> On 4/9/2013 11:14 AM, Manjunathappa, Prakash wrote:
->>> Hi Grant,
->>>
->>> On Wed, Apr 03, 2013 at 19:39:05, Manjunathappa, Prakash wrote:
->>>> Testing information:
->>>> da850-evm comes with partitions specified in DT blob.
->>>> Able to mount/umount and create/delete files on filesystem partition.
->>>>
->>>
->>> Could you please ack the driver(1/5) and documentation(2/5) changes so
->>> that Sekhar can merge the platform changes, he doesn't have any
->>> objection on this series.
->>> http://marc.info/?l=linux-doc&m=136489750130615&w=1
->>
->> I am planning to queue these patches for ARM-SoC today. Grant has not
->> acked these but 1/5 just fixes the binding name to not use wild cards
->> and 2/5 just documents existing bindings and is something that should
->> have been merge last merge window itself (when the bindings were
->> accepted). So, the patches pending on Grant's ack seem very low risk to
->> me and we are much delayed already to wait further.
-> 
-> For both of those patches:
-> Acked-by: Grant Likely <grant.likely@secretlab.ca>
 
-Thanks Grant. I sent my pull request already. CCing Olof to see if
-adding your ack locally when he pulls is something he is open to.
+--M38YqGLZlgb6RLPS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
-Sekhar
+On Mon, Apr 15, 2013 at 02:10:27PM +0530, Girish K S wrote:
+> From: Girish K S <girishks2000@gmail.com>
+>=20
+> The 64xx spi driver supports partial polling mode.
+> Only the last chunk of the transfer length is transferred
+> or recieved in polling mode.
+
+I'm missing patch 1 of this series.
+
+--M38YqGLZlgb6RLPS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRbTP7AAoJELSic+t+oim9XdQP/0wNHV+zaNIIN8vYWcemetKu
+Rseu23iwbu2Aqm+6VhZZk2D4LKyllO4jsm7Cr7lnxEPVTd20gJWG4AggsdEpxzEd
+v+FLUHaUMbeVmpjDByIjd1XfqtTWdgHmuVv6SzJJ/LpDTMfH9gOMmD4CNpjiYLEj
+5Z6r0ZNjyKmN0NCp3cfjDCN5oyNBz8/w4teHtiBJYAt6HpZywez+Cryy+yQEklAC
+IUhjkkKMdtJIrWXCPfou7wZiTUCoE3YWtNKN0Io4qfF+UK3ycJCm5Tl0ZQYsUpWQ
+QCQwTmOmW9gLvLg7fQu2VxkKsyRipbQN4ciCMaOoge0fzBvnoHzFmk9ZvvCola2/
+bOM6rGTr0n802negxUk0QXiMYHvoOLEBRkd9hRst46VxxL5lwZ4yaE5poFy6/FO5
+YbmiVvuUmsoi7EYdSA6hlX0t0DfV3/t9jeqgzoUchB+iiLng2fX4HjOw+JG7mI2A
+grNA0h/JFtlZOIsx4FNA7E/ofo/SSCyGXP+SIRDbCI9bL8uf648ZoTzEN8I6fRfW
+8crFmijwlLgzqZl6Fgji4YUv0S57qVC/zij2L1nc5pfSuswVEeGSjTHQmiZYPD/n
+bq7pfT6Vd+1ysQ/f++SJ09MesyCxfHQhIr6tP8Ir7Ou07MhRNThLq9IZOxUTHxV4
+tHR2XYaSLDbyiuODrRop
+=zpfK
+-----END PGP SIGNATURE-----
+
+--M38YqGLZlgb6RLPS--

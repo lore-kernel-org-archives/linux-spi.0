@@ -1,39 +1,49 @@
-From: "Winstel" <contact-FqQuqE7uPTdGWvitb5QawA@public.gmane.org>
-Subject: [SPAM] Offre Alarme et Vidéosurveillance
-Date: Tue, 16 Apr 2013 10:04:17 +0000 (CET)
-Message-ID: <130416100417.-159359771400003960@obfm40.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH v5 0/5] Patch enables support for m25p64 SPI flash support on da850-EVM.
+Date: Tue, 16 Apr 2013 11:20:41 +0100
+Message-ID: <20130416102041.CC5633E14C0@localhost>
+References: <1364998150-5980-1-git-send-email-prakash.pm@ti.com> <A73F36158E33644199EB82C5EC81C7BC3EA4C560@DBDE01.ent.ti.com> <516BE92B.90002@ti.com>
+Cc: "rob.herring@calxeda.com" <rob.herring@calxeda.com>,
+	"rob@landley.net" <rob@landley.net>,
+	"linux@arm.linux.org.uk" <linux@arm.linux.org.uk>,
+	"hs@denx.de" <hs@denx.de>,
+	"devicetree-discuss@lists.ozlabs.org"
+	<devicetree-discuss@lists.ozlabs.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"davinci-linux-open-source@linux.davincidsp.com"
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>
+To: Sekhar Nori <nsekhar@ti.com>,
+	"Manjunathappa, Prakash" <prakash.pm@ti.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <516BE92B.90002@ti.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Mon, 15 Apr 2013 17:18:59 +0530, Sekhar Nori <nsekhar@ti.com> wrote:
+> On 4/9/2013 11:14 AM, Manjunathappa, Prakash wrote:
+> > Hi Grant,
+> > 
+> > On Wed, Apr 03, 2013 at 19:39:05, Manjunathappa, Prakash wrote:
+> >> Testing information:
+> >> da850-evm comes with partitions specified in DT blob.
+> >> Able to mount/umount and create/delete files on filesystem partition.
+> >>
+> > 
+> > Could you please ack the driver(1/5) and documentation(2/5) changes so
+> > that Sekhar can merge the platform changes, he doesn't have any
+> > objection on this series.
+> > http://marc.info/?l=linux-doc&m=136489750130615&w=1
+> 
+> I am planning to queue these patches for ARM-SoC today. Grant has not
+> acked these but 1/5 just fixes the binding name to not use wild cards
+> and 2/5 just documents existing bindings and is something that should
+> have been merge last merge window itself (when the bindings were
+> accepted). So, the patches pending on Grant's ack seem very low risk to
+> me and we are much delayed already to wait further.
 
-(http://obfm40.com/zx3eltkqm2fvnnacmo/index0.html)
-(http://obfm40.com/w233mtfimnoevwicpq/index1.html)
-(http://obfm40.com/4c3ujtiwmhpv2v3qrj/index2.html)
-(http://obfm40.com/nt3hzt00mg3elehq5g/index3.html)
-(http://obfm40.com/lckrjktnhlrvwi3fxq/index4.html)
-(http://obfm40.com/stk4zk32hvieehhfco/index5.html)
-(http://obfm40.com/dxk5lkcghmcv0raofg/index6.html)
-(http://obfm40.com/y2knmkehh1qedmio1j/index7.html)
-(http://obfm40.com/bxowdsujmt0v5gaego/index8.html)
-(http://obfm40.com/02oprsxam4deaqieoq/index9.html)
-(http://obfm40.com/1plgtmlytovjofyzyg/index10.html)
-(http://obfm40.com/f43ykbrbphv32x2qdg/index11.html)
-------------------------------------------------------------------------------
-Precog is a next-generation analytics platform capable of advanced
-analytics on semi-structured data. The platform includes APIs for building
-apps and a phenomenal toolset for data science. Developers can use
-our toolset for easy data analysis & visualization. Get a free account!
-http://www2.precog.com/precogplatform/slashdotnewsletter
+For both of those patches:
+Acked-by: Grant Likely <grant.likely@secretlab.ca>

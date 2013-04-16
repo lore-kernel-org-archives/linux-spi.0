@@ -1,201 +1,73 @@
-From: Doug Anderson <dianders@chromium.org>
-Subject: [REPOST PATCH] spi: s3c64xx: let device core setup the default pin configuration
-Date: Mon, 15 Apr 2013 20:42:57 -0700
-Message-ID: <1366083777-9118-1-git-send-email-dianders@chromium.org>
-References: <1362570130-14084-1-git-send-email-thomas.abraham@linaro.org>
-Cc: Thomas Abraham <thomas.abraham@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Kukjin Kim <kgene.kim@samsung.com>, heiko@sntech.de,
-	Jaswinder Singh <jaswinder.singh@linaro.org>,
-	Tomasz Figa <t.figa@samsung.com>,
-	linux-samsung-soc@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org,
-	Doug Anderson <dianders@chromium.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Rob Landley <rob@landley.net>, Ben Dooks <ben-linux@fluff.org>,
-	Mark Brown <broonie@kernel.org>,
-	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1362570130-14084-1-git-send-email-thomas.abraham@linaro.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+From: Aspire La Graisse <news-Apvph2nLNMo@public.gmane.org>
+Subject: Aussi efficace que la LIPOSUCCION
+Date: Tue, 16 Apr 2013 03:01:04 -0100
+Message-ID: <EIWf6x08Bk4DPoSZ1eHGXHKU9yt2BABrWZiKXHINob4@sb1.co>
+Reply-To: Aspire La Graisse <news-Apvph2nLNMo@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-Apvph2nLNMo@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Thomas Abraham <thomas.abraham@linaro.org>
-
-With device core now able to setup the default pin configuration,
-the pin configuration code based on the deprecated Samsung specific
-gpio bindings is removed.
-
-Signed-off-by: Thomas Abraham <thomas.abraham@linaro.org>
-Signed-off-by: Doug Anderson <dianders@chromium.org>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Doug Anderson <dianders@chromium.org>
-Tested-by: Doug Anderson <dianders@chromium.org>
----
- .../devicetree/bindings/spi/spi-samsung.txt        |  8 +--
- drivers/spi/spi-s3c64xx.c                          | 66 ++--------------------
- 2 files changed, 6 insertions(+), 68 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-index a15ffed..86aa061 100644
---- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-@@ -31,9 +31,6 @@ Required Board Specific Properties:
- 
- - #address-cells: should be 1.
- - #size-cells: should be 0.
--- gpios: The gpio specifier for clock, mosi and miso interface lines (in the
--  order specified). The format of the gpio specifier depends on the gpio
--  controller.
- 
- Optional Board Specific Properties:
- 
-@@ -86,9 +83,8 @@ Example:
- 	spi_0: spi@12d20000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
--		gpios = <&gpa2 4 2 3 0>,
--			<&gpa2 6 2 3 0>,
--			<&gpa2 7 2 3 0>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&spi0_bus>;
- 
- 		w25q80bw@0 {
- 			#address-cells = <1>;
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 4989aeb..4ab992b 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1148,41 +1148,6 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
- }
- 
- #ifdef CONFIG_OF
--static int s3c64xx_spi_parse_dt_gpio(struct s3c64xx_spi_driver_data *sdd)
--{
--	struct device *dev = &sdd->pdev->dev;
--	int idx, gpio, ret;
--
--	/* find gpios for mosi, miso and clock lines */
--	for (idx = 0; idx < 3; idx++) {
--		gpio = of_get_gpio(dev->of_node, idx);
--		if (!gpio_is_valid(gpio)) {
--			dev_err(dev, "invalid gpio[%d]: %d\n", idx, gpio);
--			goto free_gpio;
--		}
--		sdd->gpios[idx] = gpio;
--		ret = gpio_request(gpio, "spi-bus");
--		if (ret) {
--			dev_err(dev, "gpio [%d] request failed: %d\n",
--				gpio, ret);
--			goto free_gpio;
--		}
--	}
--	return 0;
--
--free_gpio:
--	while (--idx >= 0)
--		gpio_free(sdd->gpios[idx]);
--	return -EINVAL;
--}
--
--static void s3c64xx_spi_dt_gpio_free(struct s3c64xx_spi_driver_data *sdd)
--{
--	unsigned int idx;
--	for (idx = 0; idx < 3; idx++)
--		gpio_free(sdd->gpios[idx]);
--}
--
- static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
- {
- 	struct s3c64xx_spi_info *sci;
-@@ -1215,15 +1180,6 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
- {
- 	return dev->platform_data;
- }
--
--static int s3c64xx_spi_parse_dt_gpio(struct s3c64xx_spi_driver_data *sdd)
--{
--	return -EINVAL;
--}
--
--static void s3c64xx_spi_dt_gpio_free(struct s3c64xx_spi_driver_data *sdd)
--{
--}
- #endif
- 
- static const struct of_device_id s3c64xx_spi_dt_match[];
-@@ -1344,10 +1300,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 		goto err0;
- 	}
- 
--	if (!sci->cfg_gpio && pdev->dev.of_node) {
--		if (s3c64xx_spi_parse_dt_gpio(sdd))
--			return -EBUSY;
--	} else if (sci->cfg_gpio == NULL || sci->cfg_gpio()) {
-+	if (sci->cfg_gpio && sci->cfg_gpio()) {
- 		dev_err(&pdev->dev, "Unable to config gpio\n");
- 		ret = -EBUSY;
- 		goto err0;
-@@ -1358,13 +1311,13 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	if (IS_ERR(sdd->clk)) {
- 		dev_err(&pdev->dev, "Unable to acquire clock 'spi'\n");
- 		ret = PTR_ERR(sdd->clk);
--		goto err1;
-+		goto err0;
- 	}
- 
- 	if (clk_prepare_enable(sdd->clk)) {
- 		dev_err(&pdev->dev, "Couldn't enable clock 'spi'\n");
- 		ret = -EBUSY;
--		goto err1;
-+		goto err0;
- 	}
- 
- 	sprintf(clk_name, "spi_busclk%d", sci->src_clk_nr);
-@@ -1421,9 +1374,6 @@ err3:
- 	clk_disable_unprepare(sdd->src_clk);
- err2:
- 	clk_disable_unprepare(sdd->clk);
--err1:
--	if (!sdd->cntrlr_info->cfg_gpio && pdev->dev.of_node)
--		s3c64xx_spi_dt_gpio_free(sdd);
- err0:
- 	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
-@@ -1446,9 +1396,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	clk_disable_unprepare(sdd->clk);
- 
--	if (!sdd->cntrlr_info->cfg_gpio && pdev->dev.of_node)
--		s3c64xx_spi_dt_gpio_free(sdd);
--
- 	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 
-@@ -1467,9 +1414,6 @@ static int s3c64xx_spi_suspend(struct device *dev)
- 	clk_disable_unprepare(sdd->src_clk);
- 	clk_disable_unprepare(sdd->clk);
- 
--	if (!sdd->cntrlr_info->cfg_gpio && dev->of_node)
--		s3c64xx_spi_dt_gpio_free(sdd);
--
- 	sdd->cur_speed = 0; /* Output Clock is stopped */
- 
- 	return 0;
-@@ -1481,9 +1425,7 @@ static int s3c64xx_spi_resume(struct device *dev)
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
- 	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
- 
--	if (!sci->cfg_gpio && dev->of_node)
--		s3c64xx_spi_parse_dt_gpio(sdd);
--	else
-+	if (sci->cfg_gpio)
- 		sci->cfg_gpio();
- 
- 	/* Enable the clock */
--- 
-1.8.1.3
+ Perdez 3 kilos en 6 jours Pour visualiser correctement ce message, acc=C3=
+=A9dez =C3=A0 la version en ligne, ou signaler comme ind=C3=A9sirable Tout =
+ce que vous avez =C3=A0 faire, c'est juste de placer sous vos pieds avant d=
+e vous mettre au lit, un patch slim qui contient des extraits de plantes na=
+turelles. Ces extraits de plantes vont aspirer vos kilos en trop hors de vo=
+tre corps ! Et peu importe le nombre de kilos que vous avez en trop ou les =
+produits que vous avez essay=C3=A9s auparavant ! R=C3=A9sultat : lorsque vo=
+us vous r=C3=A9veillez, vos patchs auront chang=C3=A9 de couleur... remplis=
+ de la graisse qu'ils auront enlev=C3=A9 de votre corps ! Cette fa=C3=A7on =
+de "capturer" votre graisse est naturelle, sans danger, et absolument sans =
+douleur. Tout ce que vous avez =C3=A0 faire, c'est juste de placer sous vos=
+ pieds avant de vous mettre au lit, un patch slim qui contient des extraits=
+ de plantes naturelles. Ces extraits de plantes vont aspirer vos kilos en t=
+rop hors de votre corps ! Et peu importe le nombre de kilos que vous avez e=
+n trop ou les produits que vous avez essay=C3=A9s auparavant ! R=C3=A9sulta=
+t : lorsque vous vous r=C3=A9veillez, vos patchs auront chang=C3=A9 de coul=
+eur... remplis de la graisse qu'ils auront enlev=C3=A9 de votre corps ! Cet=
+te fa=C3=A7on de "capturer" votre graisse est naturelle, sans danger, et ab=
+solument sans douleur. Tout ce que vous avez =C3=A0 faire, c'est juste de p=
+lacer sous vos pieds avant de vous mettre au lit, un patch slim qui contien=
+t des extraits de plantes naturelles. Ces extraits de plantes vont aspirer =
+vos kilos en trop hors de votre corps ! Et peu importe le nombre de kilos q=
+ue vous avez en trop ou les produits que vous avez essay=C3=A9s auparavant =
+! R=C3=A9sultat : lorsque vous vous r=C3=A9veillez, vos patchs auront chang=
+=C3=A9 de couleur... remplis de la graisse qu'ils auront enlev=C3=A9 de vot=
+re corps ! Cette fa=C3=A7on de "capturer" votre graisse est naturelle, sans=
+ danger, et absolument sans douleur. Tout ce que vous avez =C3=A0 faire, c'=
+est juste de placer sous vos pieds avant de vous mettre au lit, un patch sl=
+im qui contient des extraits de plantes naturelles. Ces extraits de plantes=
+ vont aspirer vos kilos en trop hors de votre corps ! Et peu importe le nom=
+bre de kilos que vous avez en trop ou les produits que vous avez essay=C3=
+=A9s auparavant ! R=C3=A9sultat : lorsque vous vous r=C3=A9veillez, vos pat=
+chs auront chang=C3=A9 de couleur... remplis de la graisse qu'ils auront en=
+lev=C3=A9 de votre corps ! Cette fa=C3=A7on de "capturer" votre graisse est=
+ naturelle, sans danger, et absolument sans douleur. Tout ce que vous avez =
+=C3=A0 faire, c'est juste de placer sous vos pieds avant de vous mettre au =
+lit, un patch slim qui contient des extraits de plantes naturelles. Ces ext=
+raits de plantes vont aspirer vos kilos en trop hors de votre corps ! Et pe=
+u importe le nombre de kilos que vous avez en trop ou les produits que vous=
+ avez essay=C3=A9s auparavant ! R=C3=A9sultat : lorsque vous vous r=C3=A9ve=
+illez, vos patchs auront chang=C3=A9 de couleur... remplis de la graisse qu=
+'ils auront enlev=C3=A9 de votre corps ! Cette fa=C3=A7on de "capturer" vot=
+re graisse est naturelle, sans danger, et absolument sans douleur. Si vous =
+ne souhaitez plus recevoir nos emails, veuillez suivre ce lien. Si vous n'a=
+rrivez pas =C3=A0 vous d=C3=A9sabonner, merci d'=C3=A9crire =C3=A0 stop@~do=
+main~
+------------------------------------------------------------------------------
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

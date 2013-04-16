@@ -1,46 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V4 2/5] spi: s3c64xx: added support for polling mode
-Date: Tue, 16 Apr 2013 13:12:55 +0100
-Message-ID: <20130416121255.GA15878@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH V3 RESEND 3/5] spi: s3c64xx: Added provision for non-gpio
+ i/o's
+Date: Tue, 16 Apr 2013 16:58:50 +0100
+Message-ID: <20130416155850.GL26958@opensource.wolfsonmicro.com>
 References: <1366015230-18243-1-git-send-email-ks.giri@samsung.com>
-	<20130416112035.GD26958@opensource.wolfsonmicro.com>
-	<CAKrE-Kd4Vis0-V_n8zEzqJVBbEYvTiYS8hY_7s7AnUqaK2tFCQ@mail.gmail.com>
+ <1366015230-18243-2-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="CqfQkoYPE/jGoa5Q"
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	grant.likely@secretlab.ca, t.figa@samsung.com
+To: Girish K S <girishks2000@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAKrE-Kd4Vis0-V_n8zEzqJVBbEYvTiYS8hY_7s7AnUqaK2tFCQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <1366015230-18243-2-git-send-email-ks.giri@samsung.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 16, 2013 at 04:58:47PM +0530, Girish KS wrote:
-> On Tue, Apr 16, 2013 at 4:50 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-> > I'm missing patch 1 of this series.
+--CqfQkoYPE/jGoa5Q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> its already  merged to stable tree after your review
+On Mon, Apr 15, 2013 at 02:10:28PM +0530, Girish K S wrote:
+> From: Girish K S <girishks2000@gmail.com>
+>=20
+> Currently the drivers supports only the GPIO based i/o pins.
+> But there are Exynos SoC's that use the same controller with
+> dedicated i/o pins.
+>=20
+> This patch  provides provision to support gpio/dedicated pins.
+> The decision is made by parsing the "gpios" property in the spi
+> node.
 
-The patch numbering should reflect what you're posting.  If you're only
-sending four patches they should be numbered 1-4, otherwise it looks
-like there's something missing.  The goal with the numbers is to help
-people get the patches in the right order, the name should be enough to
-associate with other versions of the same patch.
+This has some conflicts with my SPI -next branch, I think it's all due
+to Arnd's changes to support multi-platform boot on Exynos but there may
+be some other stuff.  Can you please rebase against
 
-------------------------------------------------------------------------------
-Precog is a next-generation analytics platform capable of advanced
-analytics on semi-structured data. The platform includes APIs for building
-apps and a phenomenal toolset for data science. Developers can use
-our toolset for easy data analysis & visualization. Get a free account!
-http://www2.precog.com/precogplatform/slashdotnewsletter
+   git://git.kernel.org/pub/scm/linux/kernel/git/broonie/misc.git spi-next
+
+and make sure everything is OK?
+
+--CqfQkoYPE/jGoa5Q
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRbXUtAAoJELSic+t+oim9z2MP/im1kdsXWk0dkOLHQpGyDUmc
+TOOGBXgde6KvXnhh+gnGulE81+KxJv/RnfkwRcJbcLnHU5SkYXH/1m+sGydLomU/
+l4QgMGYydd1MP7dbUfhrzb06h5wumClYZAuOtj1rsJqaJM6lulhToHf/RLfAur7u
+cw0Rx8wHlM5FWeXjGnWbP2wbysNX9cj7KV9BIHZDA+Y7mZZ2XaEGuf5AWXVtvJSU
+5FhPEncYIetWu4bSsY8AvcBxZYTLMzoaPK9if4coOOMhNXnDmubEmHMp+eeQCMyp
+RqkAOPJ1GCTXYjGIQGZl3TvODuuEvnD9pLK/MhBnzl7GOTAfHcCkuuFTIjD0npPi
+47rjYbj3z2Gf5joFuznBeg/VwmG/Q+zI4DfmAn38yDr8Q042G1N1KqBaqsaQTyVN
+j/FcPbn2up88rRGDorx4NV42WN42ezwECEC23YRcsDQMRKdO+42NTXs38fHo0EvZ
+LQeZSkfPYiz+/vJVB4CPbMsDcm6L6RBpsYOvbjVjY38Go8TYrN+HMYb1pImBgdA4
+kY2HdugXj53d7ZxJBAah6VORauwGerH9JhMgIroODKhAcTs35XWkAhfZVMQLj4/L
+XwkaLMI6f5OiZM24YrM+cldMIiFSLmY02pBERQy/0t6DY57pUdLs3ujIG0XXbpSE
+95YaZVebtvvvBAKOIeRe
+=aOhu
+-----END PGP SIGNATURE-----
+
+--CqfQkoYPE/jGoa5Q--

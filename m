@@ -1,7 +1,7 @@
-From: "Philonature" <contact-3faWG7v0n/dQFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Un printemps en beauté
-Date: Tue, 16 Apr 2013 08:34:04 +0000 (CET)
-Message-ID: <130416083404.-159901127600007800@obfm40.com>
+From: "Winstel" <contact-FqQuqE7uPTdGWvitb5QawA@public.gmane.org>
+Subject: [SPAM] Offre Alarme et Vidéosurveillance
+Date: Tue, 16 Apr 2013 10:04:17 +0000 (CET)
+Message-ID: <130416100417.-159359771400003960@obfm40.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,13 +19,18 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 
-(http://obfm40.com/umjeclupocsxnusehq/index0.html)
-(http://obfm40.com/ezj3elxfortfvkle3o/index1.html)
-(http://obfm40.com/kpjutlhsoekx2zywig/index2.html)
-(http://obfm40.com/vwjh3l2kod4fl4dwaj/index3.html)
-(http://obfm40.com/2pyrtnbyfqexwpykjo/index4.html)
-(http://obfm40.com/twy43naufiwfe5dkqq/index5.html)
-(http://obfm40.com/0my5cn15fwdx03s4oj/index6.html)
+(http://obfm40.com/zx3eltkqm2fvnnacmo/index0.html)
+(http://obfm40.com/w233mtfimnoevwicpq/index1.html)
+(http://obfm40.com/4c3ujtiwmhpv2v3qrj/index2.html)
+(http://obfm40.com/nt3hzt00mg3elehq5g/index3.html)
+(http://obfm40.com/lckrjktnhlrvwi3fxq/index4.html)
+(http://obfm40.com/stk4zk32hvieehhfco/index5.html)
+(http://obfm40.com/dxk5lkcghmcv0raofg/index6.html)
+(http://obfm40.com/y2knmkehh1qedmio1j/index7.html)
+(http://obfm40.com/bxowdsujmt0v5gaego/index8.html)
+(http://obfm40.com/02oprsxam4deaqieoq/index9.html)
+(http://obfm40.com/1plgtmlytovjofyzyg/index10.html)
+(http://obfm40.com/f43ykbrbphv32x2qdg/index11.html)
 ------------------------------------------------------------------------------
 Precog is a next-generation analytics platform capable of advanced
 analytics on semi-structured data. The platform includes APIs for building

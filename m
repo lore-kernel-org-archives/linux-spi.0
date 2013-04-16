@@ -1,12 +1,26 @@
-From: "Mike Bernhard" <MBernhard-NrzT4B82aKhBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Need More Sales?
-Date: Mon, 15 Apr 2013 16:51:41 -0700
-Message-ID: <e4aa4f0a71a0b7b4fb968421001041fa@noreply.com>
+From: "Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: RE: [PATCH 02/17] of_spi: add generic binding support to specify cs
+	gpio
+Date: Tue, 16 Apr 2013 01:34:37 +0000
+Message-ID: <B256D81BAE5131468A838E5D7A24364150E9B27D@penmbx01>
+References: <1363943767-16051-1-git-send-email-wenyou.yang@atmel.com>
+	<1363943814-16130-1-git-send-email-wenyou.yang@atmel.com>
+	<20130415125543.4CB043E0AA8@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+Cc: "richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org"
+	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+	"rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org" <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	"rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org" <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, "Gao, Andy" <Andy.Gao-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130415125543.4CB043E0AA8@localhost>
+Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,25 +31,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Dear Business Owner,	
-	
-This economy is rough and times are tough.  You can still make money and stay ahead of your competition by calling me immediately at 1 (800) 676-2011 Ext 230.	
-
-I will walk through an email program that is generating businesses just like yours 10's of thousands of clicks every month, and producing sales at a record pace. When you call in I will explain how our program works and answer any of your questions.	
-
-You can track all of your results online through our award winning dashboard system.  Email marketing is the future, so call now and let me show you how easy it is.	
-	
-Sincerely,	
-	
-Mike Bernhard	
-Email Marketing Specialist	
-800-676-2011 Ext 230	
-
-
-
-------------------------------------------------------------------------------
-Precog is a next-generation analytics platform capable of advanced
-analytics on semi-structured data. The platform includes APIs for building
-apps and a phenomenal toolset for data science. Developers can use
-our toolset for easy data analysis & visualization. Get a free account!
-http://www2.precog.com/precogplatform/slashdotnewsletter
+SGksIEdyYW50LA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEdyYW50
+IExpa2VseSBbbWFpbHRvOmdsaWtlbHlAc2VjcmV0bGFiLmNhXSBPbiBCZWhhbGYgT2YgR3JhbnQg
+TGlrZWx5DQo+IFNlbnQ6IDIwMTPE6jTUwjE1yNUgMjA6NTYNCj4gVG86IFlhbmcsIFdlbnlvdTsg
+R2FvLCBBbmR5DQo+IENjOiBKZWFuLUNocmlzdG9waGUgUExBR05JT0wtVklMTEFSRDsgZGV2aWNl
+dHJlZS1kaXNjdXNzQGxpc3RzLm96bGFicy5vcmc7DQo+IHNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldDsgcm9iLmhlcnJpbmdAY2FseGVkYS5jb207DQo+IHJvYkBsYW5kbGV5
+Lm5ldDsgcmljaGFyZC5nZW5vdWRAZ21haWwuY29tDQo+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggMDIv
+MTddIG9mX3NwaTogYWRkIGdlbmVyaWMgYmluZGluZyBzdXBwb3J0IHRvIHNwZWNpZnkgY3MNCj4g
+Z3Bpbw0KPiANCj4gT24gRnJpLCAyMiBNYXIgMjAxMyAxNzoxNjo1NCArMDgwMCwgV2VueW91IFlh
+bmcgPHdlbnlvdS55YW5nQGF0bWVsLmNvbT4NCj4gd3JvdGU6DQo+ID4gRnJvbTogSmVhbi1DaHJp
+c3RvcGhlIFBMQUdOSU9MLVZJTExBUkQgPHBsYWduaW9qQGpjcm9zb2Z0LmNvbT4NCj4gPg0KPiA+
+IFRoaXMgd2lsbCBhbGxvdyB0byB1c2UgZ3BpbyBmb3IgY2hpcCBzZWxlY3Qgd2l0aCBubyBtb2Rp
+ZmljYXRpb24gaW4gdGhlDQo+ID4gZHJpdmVyIGJpbmRpbmcNCj4gPg0KPiA+IFdoZW4gdXNlIHRo
+ZSBjcy1ncGlvcywgdGhlIGdwaW8gbnVtYmVyIHdpbGwgYmUgcGFzc2VkIHZpYSB0aGUgY3NfZ3Bp
+byBmaWVsZA0KPiA+IGFuZCB0aGUgbnVtYmVyIG9mIGNoaXAgc2VsZWN0IHdpbGwgYXV0b21hdGlj
+YWxseSBpbmNyZWFzZWQuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBKZWFuLUNocmlzdG9waGUg
+UExBR05JT0wtVklMTEFSRCA8cGxhZ25pb2pAamNyb3NvZnQuY29tPg0KPiANCj4gVGhpcyBwYXRj
+aCBoYXMgYmVlbiBpbiBtYWlubGluZSBzaW5jZSBEZWMgMTMNClllcywgaXQgaGFzIGJlZW4gYXBw
+bGllZC4NClRoaXMgcGF0Y2ggaXMgb25lIG9mIHRoZSAxc3QgdmVyc2lvbiBvZiBBdG1lbCBzcGkg
+cGF0Y2ggc2VyaWVzLiBTaW5jZSBpdCBpcyBhcHBsaWVkLCBpdCBpcyBkcm9wcGVkIGluIHRoZSBu
+ZXh0IHZlcnNpb24uDQpUaGUgbGF0ZXN0IHZlcnNpb24gaXMgdjguDQpodHRwczovL3BhdGNod29y
+ay5rZXJuZWwub3JnL3BhdGNoLzIzODQ2ODEvDQp0aGFua3MuDQo+IA0KPiBnLg0KDQpCZXN0IFJl
+Z2FyZHMsDQpXZW55b3UgWWFuZw0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KUHJlY29nIGlzIGEg
+bmV4dC1nZW5lcmF0aW9uIGFuYWx5dGljcyBwbGF0Zm9ybSBjYXBhYmxlIG9mIGFkdmFuY2VkCmFu
+YWx5dGljcyBvbiBzZW1pLXN0cnVjdHVyZWQgZGF0YS4gVGhlIHBsYXRmb3JtIGluY2x1ZGVzIEFQ
+SXMgZm9yIGJ1aWxkaW5nCmFwcHMgYW5kIGEgcGhlbm9tZW5hbCB0b29sc2V0IGZvciBkYXRhIHNj
+aWVuY2UuIERldmVsb3BlcnMgY2FuIHVzZQpvdXIgdG9vbHNldCBmb3IgZWFzeSBkYXRhIGFuYWx5
+c2lzICYgdmlzdWFsaXphdGlvbi4gR2V0IGEgZnJlZSBhY2NvdW50IQpodHRwOi8vd3d3Mi5wcmVj
+b2cuY29tL3ByZWNvZ3BsYXRmb3JtL3NsYXNoZG90bmV3c2xldHRlcgpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5n
+IGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlz
+dHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

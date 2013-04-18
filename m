@@ -1,46 +1,57 @@
-From: "AffairesNobles" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Profitez près de votre ville et économisez jusqu'à 70 pourcent.
-Date: Thu, 18 Apr 2013 04:09:39 +0000 (CET)
-Message-ID: <130418040939.-62427565600001488@obfm41.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH -next] spi: omap2-mcspi: fix error return code in
+ omap2_mcspi_probe()
+Date: Thu, 18 Apr 2013 12:07:40 +0100
+Message-ID: <20130418110740.GC13687@opensource.wolfsonmicro.com>
+References: <CAPgLHd8qt3o285vskc-JzNOh0Yorehgxy+SEUoJ_kccy3cjcMQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ZQ93ZA/51YEIDw4/"
+Cc: grant.likely@secretlab.ca, rob.herring@calxeda.com,
+	yongjun_wei@trendmicro.com.cn,
+	spi-devel-general@lists.sourceforge.net,
+	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
+To: Wei Yongjun <weiyj.lk@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAPgLHd8qt3o285vskc-JzNOh0Yorehgxy+SEUoJ_kccy3cjcMQ@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-Le partenaire Affaires Nobles vous recommande:
+--ZQ93ZA/51YEIDw4/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-(http://obfm41.com/5li0mx4iafjrhwc1nd/index0.html)
-(http://obfm41.com/rjiflxoqapxmmnx14s/index1.html)
-Soyez heureux!
+On Thu, Apr 18, 2013 at 11:14:59AM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+>=20
+> Fix to return a negative error code from the error handling
+> case instead of 0, as returned elsewhere in this function.
 
-(http://obfm41.com/psibzxr0akarge1gwl/index2.html)
-Tous les jours des nouveaux Deals vous assurent une exprience de shopping i=
-noubliable et avec des r=E9ductions allant jusqu' 70%!
+Applied, thanks.
 
-(http://obfm41.com/mqi1jxdwas5m1vfgzy/index3.html)
-(http://obfm41.com/gseqzas25ohrih1xbs/index4.html)
-(http://obfm41.com/oqesjapn53mmrifx0d/index5.html)
-France SAS | 76-78 rue Saint Lazare | 75009 Paris | France
-Si vous ne souhaitez plus recevoir cette offre de ce partenaire s'il vous p=
-lat nous en informer ici (http://www.savedbythesell.net/oo/oo.php?sid=3D365=
-9&agentid=3D550702)
+--ZQ93ZA/51YEIDw4/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
----------------------------------------------------------------------------=
----
-Precog is a next-generation analytics platform capable of advanced
-analytics on semi-structured data. The platform includes APIs for building
-apps and a phenomenal toolset for data science. Developers can use
-our toolset for easy data analysis & visualization. Get a free account!
-http://www2.precog.com/precogplatform/slashdotnewsletter
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRb9O4AAoJELSic+t+oim9ZIoP/jlWNK2J3IybzIohiYYiauMa
+n2wFFG7n0aL1kP2ZoUFV23MUSHHL8toca77E+BOXSuSQ9O/louh7G4I3KiVJ4OSR
+PkB2sSXwo2Zaqtwv1HaHzxcKD8KSxqwtFaVq1Xg5PRcjEQfSxj+jnzay4/LhJwQH
+pkZIji5fMmt4Q2DtarHloGAyHIzriXTTEh68tsIkUZ4GC2+s2KWbnzRwKxIkDW30
+dnDqpJ3BTteTZhu8rLXQ+Io7MF0Q3Y+NT8ciSG4hZI6Ln6tJOTwswiHNVokCFmas
+fKOaSr5E+3YBS5EV4r08e59TjszJtoRVte/JWPsi2WiMV2fmCfDtqJ/fAnW4H96Y
+7eoDzSFIL3ROM4dZw12psiubbwT9w/s8S7WAKYYj6Byhryu0xTW8z9UzlxLnEiYV
+ujofQ4jl343BUQgNMI6PR8QIo3FOz9rCJ2u/M9hBzlQnUBTZU4ugZ4MCwYuXl8n4
+cVp8b65DlmdLY1qTv5SpxYLV8IKwjtXiJETAwDfKOlyGo6KK+XuVbYDXbfYSGQek
+eDvX+mzbiOtSWmRBABjb4ndbUc/15gJNzcDm+of3XcTQrUwig/0opd0U36KcuxIe
+35qABPXwjSe5XkmcWwZd1cmE9ZS0R5yzOA59hpF4fYrFMokS42C87mwp9A6eRZhG
+Mb+1jjLNK6Vx0SgF8Tvn
+=1Bvx
+-----END PGP SIGNATURE-----
+
+--ZQ93ZA/51YEIDw4/--

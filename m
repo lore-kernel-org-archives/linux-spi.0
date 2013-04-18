@@ -1,35 +1,35 @@
-From: Mark Brown <broonie@opensource.wolfsonmicro.com>
-Subject: [PATCH] MAINTAINERS: Add git repository and update my address
-Date: Thu, 18 Apr 2013 18:20:01 +0100
-Message-ID: <1366305601-21112-1-git-send-email-broonie@opensource.wolfsonmicro.com>
-Cc: linux-kernel@Vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To: Grant Likely <grant.likely@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] spi/s3c64xx: Fix non-dmaengine usage
+Date: Thu, 18 Apr 2013 19:33:21 +0200
+Message-ID: <201304181933.21598.arnd@arndb.de>
+References: <1366304814-19428-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely@linaro.org>,
+	linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Mark Brown <broonie@opensource.wolfsonmicro.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1366304814-19428-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
----
- MAINTAINERS |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+On Thursday 18 April 2013, Mark Brown wrote:
+> The multiplatform conversion in commit 788437 (spi: s3c64xx: move to
+> generic dmaengine API) tested for the use of the Samsung-specific DMA
+> API with SAMSUNG_DMADEV when in fact S3C_DMA should be used. This
+> renderd DMA based transfers non-functional on platforms not using
+> dmaengine.
+> 
+> Signed-off-by: Mark Brown <broonie@opensource.wolfsonmicro.com>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a3be666..0c9c104 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7431,9 +7431,10 @@ S:	Maintained
- F:	drivers/clk/spear/
- 
- SPI SUBSYSTEM
--M:	Mark Brown <broonie@opensource.wolfsonmicro.com>
-+M:	Mark Brown <broonie@kernel.org>
- M:	Grant Likely <grant.likely@linaro.org>
- L:	spi-devel-general@lists.sourceforge.net
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
- Q:	http://patchwork.kernel.org/project/spi-devel-general/list/
- S:	Maintained
- F:	Documentation/spi/
--- 
-1.7.10.4
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+
+Sorry for the confusion on my part. I thought that S3C_DMA was referring
+to just the S3C specific functionality while SAMSUNG_DMADEV was the
+wrapper around it, while in truth SAMSUNG_DMADEV is the wrapper around
+just the dmaengine API.
+
+	Arnd

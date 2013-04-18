@@ -1,7 +1,7 @@
 From: Christian Eggers <ceggers-Mmb7MZpHnFY@public.gmane.org>
 Subject: spi: spi-davinci: Fix direction in dma_map_single()
-Date: Thu, 18 Apr 2013 21:31:59 +0200
-Message-ID: <2298140.4jrJLRXeBJ@p2400>
+Date: Thu, 18 Apr 2013 21:44:21 +0200
+Message-ID: <8339377.qGdTICXBF1@p2400>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -36,6 +36,8 @@ Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
  		if (!t->tx_dma) {
  			ret = -EFAULT;
  			goto err_tx_map;
+
+
 
 
 ------------------------------------------------------------------------------

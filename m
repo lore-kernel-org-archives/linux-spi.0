@@ -1,42 +1,39 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 29/30] spi: s3c64xx: move to generic dmaengine API
-Date: Wed, 17 Apr 2013 22:05:35 +0200
-Message-ID: <201304172205.35526.arnd@arndb.de>
-References: <1365638712-1028578-1-git-send-email-arnd@arndb.de> <1365638712-1028578-30-git-send-email-arnd@arndb.de>
+From: Wei Yongjun <weiyj.lk@gmail.com>
+Subject: [PATCH -next] spi: omap2-mcspi: fix error return code in omap2_mcspi_probe()
+Date: Thu, 18 Apr 2013 11:14:59 +0800
+Message-ID: <CAPgLHd8qt3o285vskc-JzNOh0Yorehgxy+SEUoJ_kccy3cjcMQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, Kukjin Kim <kgene.kim@samsung.com>,
-	linux-samsung-soc@vger.kernel.org,
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: yongjun_wei@trendmicro.com.cn,
 	spi-devel-general@lists.sourceforge.net,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Padma Venkat <padma.kvr@gmail.com>
-To: linux-arm-kernel@lists.infradead.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1365638712-1028578-30-git-send-email-arnd@arndb.de>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+	devicetree-discuss@lists.ozlabs.org, linux-kernel@vger.kernel.org
+To: grant.likely@secretlab.ca, broonie@kernel.org,
+	rob.herring@calxeda.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 11 April 2013, Arnd Bergmann wrote:
-> @@ -713,9 +836,9 @@ static int s3c64xx_spi_transfer_one_message(struct spi_master *master,
->                 }
->  
->                 /* Polling method for xfers not bigger than FIFO capacity */
-> -               if (xfer->len <= ((FIFO_LVL_MASK(sdd) >> 1) + 1))
-> -                       use_dma = 0;
-> -               else
-> +               use_dma = 0;
-> +               if (sdd->rx_dma.ch && sdd->tx_dma.ch &&
-> +                   (xfer->len > ((FIFO_LVL_MASK(sdd) >> 1) + 1)))
->                         use_dma = 1;
->  
->                 spin_lock_irqsave(&sdd->lock, flags);
+From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
 
-Can you try just reverting this hunk? It's actually not required and
-comes from an earlier version of the patch. I assumed it was harmless,
-but it's the only think I see that should actually make a difference
-in my patch for the case of !CONFIG_SAMSUNG_DMADEV.
+Fix to return a negative error code from the error handling
+case instead of 0, as returned elsewhere in this function.
 
-	Arnd
+Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+---
+ drivers/spi/spi-omap2-mcspi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 893c3d7..c31a1c0 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1277,7 +1277,8 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_enable(&pdev->dev);
+ 
+-	if (status || omap2_mcspi_master_setup(mcspi) < 0)
++	status = omap2_mcspi_master_setup(mcspi);
++	if (status < 0)
+ 		goto disable_pm;
+ 
+ 	status = spi_register_master(master);

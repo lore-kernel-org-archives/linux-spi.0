@@ -1,13 +1,14 @@
-From: "MutuelleBleue" <lisa@a.optincake.com>
-Subject: =?UTF-8?B?TXV0dWVsbGUgcGVyZm9ybWFudGUgcXVpIHMnYWRhcHRlIMOgIHZvdHJlIGJ1ZGdldA==?=
-Date: Fri, 19 Apr 2013 02:07:21 +0100
-Message-ID: <0.0.137.E7D.1CE3C9A3EA6278E.0@mta205.pur3.net>
-Reply-To: MutuelleBleue <lisa@a.optincake.com>
+From: My M&M's par Nl-promos <news-AqXLadp6N/c@public.gmane.org>
+Subject: Pour son Anniversaire, une photo a croquer sur des M&M's
+Date: Fri, 19 Apr 2013 08:02:29 -0100
+Message-ID: <aL8hSAnlYRt98JQHM1xsX-HhHWAPx6TqWJoptBdErcw@sd8.co>
+Reply-To: My M&M's par Nl-promos <news-AqXLadp6N/c@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-AqXLadp6N/c@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,38 +19,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTIyMTIzMjIwNDM3ODQKCgoKTXV0dWVsbGUgcGVyZm9ybWFudGUgcXVpIHMnYWRhcHRlIMOgIHZv
-dHJlIGJ1ZGdldAoKCk11dHVlbGxlIHBlcmZvcm1hbnRlIHF1aSBzJ2FkYXB0ZSDDoCB2b3RyZSBi
-dWRnZXQKCgpDZXR0ZSBvZmZyZSB2b3VzIGVzdCBwcm9wb3PDqWUgYWZpbiBxdWUgdm91cyBwdWlz
-c2lleiBiw6luw6lmaWNpZXIgZGUgYm9ucyBwbGFucwp0b3V0ZSBsJ2FubsOpZSBxdWUgY2Ugc29p
-dCBwb3VyIGRlcyByw6lkdWN0aW9ucywgZGVzIHNvbGRlcywgZGVzIHZlbnRlcyBwcml2w6llcywK
-bm91cyB2b3VzIHRpZW5kcm9ucyBpbmZvcm3DqXMgZW4gcHJpb3JpdMOpLgoKTm9zIG9mZnJlcyBk
-ZSBib25zIHBsYW5zLCBzaG9wcGluZywgdm95YWdlcywgc2VydmljZXMsIHNvaW5zIGRlIGxhIHBl
-cnNvbm5lCnBhcm1pIGRlcyBjZW50YWluZXMgZCdvZmZyZXMgc29udCDDoCB2b3RyZSBkaXNwb3Np
-dGlvbiwgYWxvcnMgcHJvZml0ZXogZW4uCgpCw6luw6lmaWNpZXogw6lnYWxlbWVudCBkJ2luZm9y
-bWF0aW9ucyBzdXIgbGVzIGpldXggY29uY291cnMsIGxlcyBzZXJ2aWNlcyBkw6lkacOpcwpldCBs
-ZSB0b3V0IMOgIGRldXggcGFzIGRlIGNoZXogdm91cy4KCkNldHRlIG5ld3NsZXR0ZXIgZXN0IGFj
-Y2Vzc2libGUgw6lnYWxlbWVudCBzdXIgdm90cmUgbW9iaWxlLCB2b3VzIG4nYXZleiBxdSfDoApj
-bGlxdWVyIGRlc3N1cyBwb3VyIGLDqW7DqWZpY2llciBkdSBwcm9ncmFtbWUgZGUgdm90cmUgY2hv
-aXguCgpBZmluIGRlIHJlc3BlY3RlciBsZXMgZGlzcG9zaXRpb25zIGzDqWdhbGVzIGNvbmNlcm5h
-bnQgbGVzIGNvdXJyaWVycwrDqWxlY3Ryb25pcXVlcy4KClZvdXMgZGlzcG9zZXogZCd1biBkcm9p
-dCBkJ2FjY8OpcywgZGUgbW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIGV0IApkZSBzdXBw
-cmVzc2lvbiBkZXMgZG9ubsOpZXMgcXVpIHZvdXMgY29uY2VybmVudCAoYXJ0aWNsZXMgMzggZXQg
-c3VpdmFudHMgZGUgbGEKbG9pIGR1IDYgamFudmllciAxOTc4IHJlbGF0aXZlIMOgIGwnaW5mb3Jt
-YXRpcXVlLCBhdXggZmljaGllcnMgZXQgCmF1eCBsaWJlcnTDqXMpLgoKCi0tCgpQb3VyIHZvdXMg
-ZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jj
-ci5waHA/QUo4NDY0MTg2NjI1MTIyMTIzMjIwNDM3ODQKCgoKCgoKe35BSjg0NjQxODY2MjUxMjIx
-MjMyMjA0Mzc4NH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpQcmVjb2cgaXMgYSBuZXh0LWdlbmVy
-YXRpb24gYW5hbHl0aWNzIHBsYXRmb3JtIGNhcGFibGUgb2YgYWR2YW5jZWQKYW5hbHl0aWNzIG9u
-IHNlbWktc3RydWN0dXJlZCBkYXRhLiBUaGUgcGxhdGZvcm0gaW5jbHVkZXMgQVBJcyBmb3IgYnVp
-bGRpbmcKYXBwcyBhbmQgYSBwaGVub21lbmFsIHRvb2xzZXQgZm9yIGRhdGEgc2NpZW5jZS4gRGV2
-ZWxvcGVycyBjYW4gdXNlCm91ciB0b29sc2V0IGZvciBlYXN5IGRhdGEgYW5hbHlzaXMgJiB2aXN1
-YWxpemF0aW9uLiBHZXQgYSBmcmVlIGFjY291bnQhCmh0dHA6Ly93d3cyLnByZWNvZy5jb20vcHJl
-Y29ncGxhdGZvcm0vc2xhc2hkb3RuZXdzbGV0dGVyCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
-b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+ My M&amp;M's - Anniversaire Pour visualiser correctement ce message, acc=
+=C3=A9dez =C3=A0 la version en ligne, ou signaler comme ind=C3=A9sirable Si=
+ vous ne parvenez pas a lire cet email, cliquez sur ce lien -5&euro; sur vo=
+tre commande*CODE PROMO : ANNIV Pour cela rien de plus simple, rendez-vous =
+sur www.mymms.fr ! www.mymms.fr Pour tout besoin d'information ou de consei=
+l, vous pouvez contacter notre service client au : 0 969 320 501 Pour votre=
+ sante, pratiquez une activite sportive reguliere. www.mangerbouger.fr *Off=
+re promotionnelle non cumulable, valable sur votre commande jusqu'au 28/02/=
+2014, hors frais de port. Copyright 2013 - MARS CHOCOLAT France SAS - RCS S=
+trasbourg 494 887 854 Conformement a la loi informatique et libertes du 6/0=
+1/1978, modifiee par la loi du 6/10/2004, vous beneficiez d'un droit d'acce=
+s, de rectification et de suppression des informations qui vous concernent,=
+ dont seule Mars Chocolat France est destinataire. Pour exercer ces droits,=
+ il vous suffit de contacter notre Service Relation Client en cliquant ici =
+Si vous ne souhaitez plus recevoir nos emails, veuillez suivre ce lien. Si =
+vous n'arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d'=C3=A9crire =C3=A0 =
+stop-OVAqtIliDNb3XKjYc++fXQ@public.gmane.org
+------------------------------------------------------------------------------
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

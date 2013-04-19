@@ -1,57 +1,55 @@
-From: Matt Porter <mporter@ti.com>
-Subject: Re: spi: spi-davinci: Fix direction in dma_map_single()
-Date: Thu, 18 Apr 2013 15:53:16 -0400
-Message-ID: <51704F2C.6060901@ti.com>
-References: <2298140.4jrJLRXeBJ@p2400>
+From: "MutuelleBleue" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?TXV0dWVsbGUgcGVyZm9ybWFudGUgcXVpIHMnYWRhcHRlIMOgIHZvdHJlIGJ1ZGdldA==?=
+Date: Fri, 19 Apr 2013 02:07:21 +0100
+Message-ID: <0.0.137.E7D.1CE3C9A3EA6278E.0@mta205.pur3.net>
+Reply-To: MutuelleBleue <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <linux-kernel@vger.kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>
-To: Christian Eggers <ceggers@gmx.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <2298140.4jrJLRXeBJ@p2400>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/18/2013 03:31 PM, Christian Eggers wrote:
-> Commit 048177ce3b3962852fd34a7e04938959271c7e70 (spi: spi-davinci:
->
-> convert to DMA engine API) introduced a regression: dma_map_single()
->
-> is called with direction DMA_FROM_DEVICE for rx and for tx.
->
-> Signed-off-by: Christian Eggers <ceggers@gmx.de>
->
-> Cc: stable@vger.kernel.org
-
-Cc: stable@vger.kernel.org # v3.7.x+
-will get this applied to the correct stable kernels.
-
-I'm wearing the brown bag for this one so other than fixing the Cc: it 
-looks good.
-
-Acked-by: Matt Porter <mporter@ti.com>
-
-> --- drivers/spi/spi-davinci.c.orig 2013-04-18 20:54:02.728719412 +0200
->
-> +++ drivers/spi/spi-davinci.c 2013-04-18 20:54:51.900623956 +0200
->
-> @@ -608,7 +608,7 @@ static int davinci_spi_bufs(struct spi_d
->
-> else
->
-> buf = (void *)t->tx_buf;
->
-> t->tx_dma = dma_map_single(&spi->dev, buf,
->
-> - t->len, DMA_FROM_DEVICE);
->
-> + t->len, DMA_TO_DEVICE);
->
-> if (!t->tx_dma) {
->
-> ret = -EFAULT;
->
-> goto err_tx_map;
->
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTIyMTIzMjIwNDM3ODQKCgoKTXV0dWVsbGUgcGVyZm9ybWFudGUgcXVpIHMnYWRhcHRlIMOgIHZv
+dHJlIGJ1ZGdldAoKCk11dHVlbGxlIHBlcmZvcm1hbnRlIHF1aSBzJ2FkYXB0ZSDDoCB2b3RyZSBi
+dWRnZXQKCgpDZXR0ZSBvZmZyZSB2b3VzIGVzdCBwcm9wb3PDqWUgYWZpbiBxdWUgdm91cyBwdWlz
+c2lleiBiw6luw6lmaWNpZXIgZGUgYm9ucyBwbGFucwp0b3V0ZSBsJ2FubsOpZSBxdWUgY2Ugc29p
+dCBwb3VyIGRlcyByw6lkdWN0aW9ucywgZGVzIHNvbGRlcywgZGVzIHZlbnRlcyBwcml2w6llcywK
+bm91cyB2b3VzIHRpZW5kcm9ucyBpbmZvcm3DqXMgZW4gcHJpb3JpdMOpLgoKTm9zIG9mZnJlcyBk
+ZSBib25zIHBsYW5zLCBzaG9wcGluZywgdm95YWdlcywgc2VydmljZXMsIHNvaW5zIGRlIGxhIHBl
+cnNvbm5lCnBhcm1pIGRlcyBjZW50YWluZXMgZCdvZmZyZXMgc29udCDDoCB2b3RyZSBkaXNwb3Np
+dGlvbiwgYWxvcnMgcHJvZml0ZXogZW4uCgpCw6luw6lmaWNpZXogw6lnYWxlbWVudCBkJ2luZm9y
+bWF0aW9ucyBzdXIgbGVzIGpldXggY29uY291cnMsIGxlcyBzZXJ2aWNlcyBkw6lkacOpcwpldCBs
+ZSB0b3V0IMOgIGRldXggcGFzIGRlIGNoZXogdm91cy4KCkNldHRlIG5ld3NsZXR0ZXIgZXN0IGFj
+Y2Vzc2libGUgw6lnYWxlbWVudCBzdXIgdm90cmUgbW9iaWxlLCB2b3VzIG4nYXZleiBxdSfDoApj
+bGlxdWVyIGRlc3N1cyBwb3VyIGLDqW7DqWZpY2llciBkdSBwcm9ncmFtbWUgZGUgdm90cmUgY2hv
+aXguCgpBZmluIGRlIHJlc3BlY3RlciBsZXMgZGlzcG9zaXRpb25zIGzDqWdhbGVzIGNvbmNlcm5h
+bnQgbGVzIGNvdXJyaWVycwrDqWxlY3Ryb25pcXVlcy4KClZvdXMgZGlzcG9zZXogZCd1biBkcm9p
+dCBkJ2FjY8OpcywgZGUgbW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIGV0IApkZSBzdXBw
+cmVzc2lvbiBkZXMgZG9ubsOpZXMgcXVpIHZvdXMgY29uY2VybmVudCAoYXJ0aWNsZXMgMzggZXQg
+c3VpdmFudHMgZGUgbGEKbG9pIGR1IDYgamFudmllciAxOTc4IHJlbGF0aXZlIMOgIGwnaW5mb3Jt
+YXRpcXVlLCBhdXggZmljaGllcnMgZXQgCmF1eCBsaWJlcnTDqXMpLgoKCi0tCgpQb3VyIHZvdXMg
+ZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jj
+ci5waHA/QUo4NDY0MTg2NjI1MTIyMTIzMjIwNDM3ODQKCgoKCgoKe35BSjg0NjQxODY2MjUxMjIx
+MjMyMjA0Mzc4NH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpQcmVjb2cgaXMgYSBuZXh0LWdlbmVy
+YXRpb24gYW5hbHl0aWNzIHBsYXRmb3JtIGNhcGFibGUgb2YgYWR2YW5jZWQKYW5hbHl0aWNzIG9u
+IHNlbWktc3RydWN0dXJlZCBkYXRhLiBUaGUgcGxhdGZvcm0gaW5jbHVkZXMgQVBJcyBmb3IgYnVp
+bGRpbmcKYXBwcyBhbmQgYSBwaGVub21lbmFsIHRvb2xzZXQgZm9yIGRhdGEgc2NpZW5jZS4gRGV2
+ZWxvcGVycyBjYW4gdXNlCm91ciB0b29sc2V0IGZvciBlYXN5IGRhdGEgYW5hbHlzaXMgJiB2aXN1
+YWxpemF0aW9uLiBHZXQgYSBmcmVlIGFjY291bnQhCmh0dHA6Ly93d3cyLnByZWNvZy5jb20vcHJl
+Y29ncGxhdGZvcm0vc2xhc2hkb3RuZXdzbGV0dGVyCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

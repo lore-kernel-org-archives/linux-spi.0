@@ -1,14 +1,13 @@
-From: Bonobo par Nl-promos <news-Pe8OmvL0wEI@public.gmane.org>
-Subject: Grande operation privilege chez Bonobo
-Date: Sat, 20 Apr 2013 10:06:41 -0100
-Message-ID: <Heah8LTauMthqjW-HbxrI4kat0eiR37wS5eOeFZyrfo@sh4.co>
-Reply-To: Bonobo par Nl-promos <news-Pe8OmvL0wEI@public.gmane.org>
+From: "Locasun" <contact-FqQuqE7uPTdGWvitb5QawA@public.gmane.org>
+Subject: [SPAM] Vente flash sur vos location de vacances jusqu'à moins 70 pourcent
+Date: Sat, 20 Apr 2013 14:14:31 +0000 (CET)
+Message-ID: <130420141431.-41518521800003172@obfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-Pe8OmvL0wEI@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,59 +18,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- news bonobo Pour visualiser correctement ce message, acc=C3=A9dez =C3=A0 l=
-a version en ligne, ou signaler comme ind=C3=A9sirable Du 17 au 28/04 inclu=
-s Vous beneficiez de 10 euros offerts pour 60 euros d'achats* =C3=82=C2=A0 =
-LIVRAISON ET RETOURGRATUIT EN MAGASIN LIVRAISON SOUS 3 JOURS PAIEMENTSECURI=
-SE 300 magasins en france Localiser un magasin Suivez-nous sur : *Offre val=
-able du 17 au 28/04 inclus sur le site Bonobo en saisissant votre code priv=
-ilege AVRIL60 en bas de votre panier et dans l'ensemble des magasins de l'e=
-nseigne Bonobo en France (y compris les magasins multi-enseignes) en presen=
-tant cet email via votre telephone portable ou en l'imprimant. L'offre est =
-valable sur la collection Printemps-Ete 2013 hors produits BNB Limited. Off=
-re non cumulable avec toute autre promotion en cours, hors operations Recyc=
-lage Jeans et Blue Card. Au coeur de la for=C3=AAt primale de la R=C3=A9pub=
-lique D=C3=A9mocratique du Congo vivent des cr=C3=A9atures exceptionnelles,=
- les bonobos. Ces grands singes en voie de disparition ne connaissent pas l=
-a violence. Leurs relations sont uniquement r=C3=A9gies par l'affection et =
-bas=C3=A9es sur la transmission. Une philosophie de vie positive et communa=
-utaire qui a inspir=C3=A9 Bonobo, la marque d'une g=C3=A9n=C3=A9ration de j=
-eunes hommes et femmes de 25 =C3=A0 35 ans, attach=C3=A9e aux valeurs optim=
-istes de respect et d'ouverture. Au coeur de la for=C3=AAt primale de la R=
-=C3=A9publique D=C3=A9mocratique du Congo vivent des cr=C3=A9atures excepti=
-onnelles, les bonobos. Ces grands singes en voie de disparition ne connaiss=
-ent pas la violence. Leurs relations sont uniquement r=C3=A9gies par l'affe=
-ction et bas=C3=A9es sur la transmission. Une philosophie de vie positive e=
-t communautaire qui a inspir=C3=A9 Bonobo, la marque d'une g=C3=A9n=C3=A9ra=
-tion de jeunes hommes et femmes de 25 =C3=A0 35 ans, attach=C3=A9e aux vale=
-urs optimistes de respect et d'ouverture. Au coeur de la for=C3=AAt primale=
- de la R=C3=A9publique D=C3=A9mocratique du Congo vivent des cr=C3=A9atures=
- exceptionnelles, les bonobos. Ces grands singes en voie de disparition ne =
-connaissent pas la violence. Leurs relations sont uniquement r=C3=A9gies pa=
-r l'affection et bas=C3=A9es sur la transmission. Une philosophie de vie po=
-sitive et communautaire qui a inspir=C3=A9 Bonobo, la marque d'une g=C3=A9n=
-=C3=A9ration de jeunes hommes et femmes de 25 =C3=A0 35 ans, attach=C3=A9e =
-aux valeurs optimistes de respect et d'ouverture. Au coeur de la for=C3=AAt=
- primale de la R=C3=A9publique D=C3=A9mocratique du Congo vivent des cr=C3=
-=A9atures exceptionnelles, les bonobos. Ces grands singes en voie de dispar=
-ition ne connaissent pas la violence. Leurs relations sont uniquement r=C3=
-=A9gies par l'affection et bas=C3=A9es sur la transmission. Une philosophie=
- de vie positive et communautaire qui a inspir=C3=A9 Bonobo, la marque d'un=
-e g=C3=A9n=C3=A9ration de jeunes hommes et femmes de 25 =C3=A0 35 ans, atta=
-ch=C3=A9e aux valeurs optimistes de respect et d'ouverture. Au coeur de la =
-for=C3=AAt primale de la R=C3=A9publique D=C3=A9mocratique du Congo vivent =
-des cr=C3=A9atures exceptionnelles, les bonobos. Ces grands singes en voie =
-de disparition ne connaissent pas la violence. Leurs relations sont uniquem=
-ent r=C3=A9gies par l'affection et bas=C3=A9es sur la transmission. Une phi=
-losophie de vie positive et communautaire qui a inspir=C3=A9 Bonobo, la mar=
-que d'une g=C3=A9n=C3=A9ration de jeunes hommes et femmes de 25 =C3=A0 35 a=
-ns, attach=C3=A9e aux valeurs optimistes de respect et d'ouverture. Si vous=
- ne souhaitez plus recevoir nos emails, veuillez suivre ce lien. Si vous n'=
-arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d'=C3=A9crire =C3=A0 stop@se=
-nderboard.com
-------------------------------------------------------------------------------
-Precog is a next-generation analytics platform capable of advanced
-analytics on semi-structured data. The platform includes APIs for building
-apps and a phenomenal toolset for data science. Developers can use
-our toolset for easy data analysis & visualization. Get a free account!
-http://www2.precog.com/precogplatform/slashdotnewsletter
+CihodHRwOi8vb2JmbTQxLmNvbS80ZXNrYTRhdzF2cGtrNXZrcmwvaW5kZXgwLmh0bWwpCihodHRw
+Oi8vb2JmbTQxLmNvbS9uM3NpYjRiMDFsM3U0cGtrNXkvaW5kZXgxLmh0bWwpCk7CsDEgZGVzIFZl
+bnRlcyBQcml2w6llcwpkZSBsb2NhdGlvbnMgdmFjYW5jZXMgJiB3ZWVrLWVuZHMKKGh0dHA6Ly9v
+YmZtNDEuY29tL3p1c3Z2NHZxMTFma3NhZTRtZC9pbmRleDIuaHRtbCkKKGh0dHA6Ly9vYmZtNDEu
+Y29tL3doc2ExNDFpMW1vdXQzdTRwcy9pbmRleDMuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL2R1
+b3B2c3hnZ25ja3VrZWVmeS9pbmRleDQuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3lob3cxc3Vo
+ZzJxdXp1dWUxbC9pbmRleDUuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL2xlb21hczJuZ2dya3k0
+dnd4cy9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3Mzb3pic2gyZ2hpdWJ6a3djZC9p
+bmRleDcuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3RlazQzazN6MWt3a2l5dmZxbC9pbmRleDgu
+aHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tLzIza3J0a3RiMXNldXJza2ZqeS9pbmRleDkuaHRtbCkK
+KGh0dHA6Ly9vYmZtNDEuY29tL3gxa2RxazRhY3RsdnIyYWZsby9pbmRleDEwLmh0bWwpCihodHRw
+Oi8vb2JmbTQxLmNvbS9jMmdvcnFqNXdubGR1MG12c28vaW5kZXgxMS5odG1sKQooaHR0cDovL29i
+Zm00MS5jb20vNHV4dXZkaXFsYWZ0eGF3ZHF5L2luZGV4MTIuaHRtbCkKKGh0dHA6Ly9vYmZtNDEu
+Y29tL25hd2gyMzJjaHFmemQzazVqeS9pbmRleDEzLmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS9w
+bWR0MTU1aWF2ajVraGJ1ZGovaW5kZXgxNC5odG1sKQooaHR0cDovL29iZm00MS5jb20vbW5hY2gy
+c3J5c2pmbWlsY3lqL2luZGV4MTUuaHRtbCkKUGx1cyBkZSAxNTAgMDAwIGNsaWVudHMgcGFyIGFu
+LgoKU3DDqWNpYWxpc3RlIGRlIGxhIHZlbnRlIGRlIHPDqWpvdXJzIHN1ciBJbnRlcm5ldC4KCkxv
+Y2F0aW9ucyB2YWNhbmNlcyDDoCBsYSBzZW1haW5lIGV0IHdlZWstZW5kcy4KClRhcmlmcyBsZXMg
+cGx1cyBiYXMgZHUgbWFyY2jDqSBwZW5kYW50IGxhIHZlbnRlLgpUeXBlIGRlIHByZXN0YXRpb25z
+IHZlbmR1ZXMgZGFucyBsZSBjYWRyZSBkZXMgdmVudGVzIGZsYXNoIGRlIDcgam91cnMgOgpMT0NB
+VElPTlMgVkFDQU5DRVMgOgoKLSBBcHBhcnRlbWVudHMgZW4gcsOpc2lkZW5jZSBkZSB0b3VyaXNt
+ZSBldCBtYWlzb25zIGRlIHN0YW5kaW5nCgotIERlIG5vbWJyZXVzZXMgcHJlc3RhdGlvbnMgaW5j
+bHVzZXMgOiBhY2PDqHMgc3BhLCBzYWxsZSBkZSBmaXRuZXNzLi4uCgotIFRhcmlmcyByZW1pc8Op
+cyBzdXIgbGVzIHZhY2FuY2VzIHNjb2xhaXJlcyBldCBob3JzIHNhaXNvbgoKLSBTw6lqb3VycyDD
+oCBsYSBzZW1haW5lIG91IMOgIGxhIG51aXTDqWUKTG9jYXN1biA6IFJDUyBQb250b2lzZSAoRnJh
+bmNlKSA0ODggMTU3IDM4OQoKNDAsIHJ1ZSBkZSBsYSBzdGF0aW9uIC0gOTUxMzAgRnJhbmNvbnZp
+bGxlCgpMaWNlbmNlIGFnZW50IGRlIHZveWFnZSA6IExJIDA5NSAwNiAwMDAxIC0gR2FyYW50aWUg
+ZmluYW5jacOocmUgOiBDcsOpZGl0IEFncmljb2xlCgpUb3VzIGRyb2l0cyByw6lzZXJ2w6lzIC0g
+TG9jYXN1biAyMDA2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KUHJlY29nIGlzIGEgbmV4dC1nZW5l
+cmF0aW9uIGFuYWx5dGljcyBwbGF0Zm9ybSBjYXBhYmxlIG9mIGFkdmFuY2VkCmFuYWx5dGljcyBv
+biBzZW1pLXN0cnVjdHVyZWQgZGF0YS4gVGhlIHBsYXRmb3JtIGluY2x1ZGVzIEFQSXMgZm9yIGJ1
+aWxkaW5nCmFwcHMgYW5kIGEgcGhlbm9tZW5hbCB0b29sc2V0IGZvciBkYXRhIHNjaWVuY2UuIERl
+dmVsb3BlcnMgY2FuIHVzZQpvdXIgdG9vbHNldCBmb3IgZWFzeSBkYXRhIGFuYWx5c2lzICYgdmlz
+dWFsaXphdGlvbi4gR2V0IGEgZnJlZSBhY2NvdW50IQpodHRwOi8vd3d3Mi5wcmVjb2cuY29tL3By
+ZWNvZ3BsYXRmb3JtL3NsYXNoZG90bmV3c2xldHRlcgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
+Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

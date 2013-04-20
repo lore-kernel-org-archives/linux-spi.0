@@ -1,13 +1,14 @@
-From: "Cartouches et toners" <contact-GE0/2U7jJN5QFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] 1 pack acheté, le 2ème à moitié prix
-Date: Sat, 20 Apr 2013 02:35:53 +0000 (CET)
-Message-ID: <130420023553.-127490471400007796@obfm40.com>
+From: Bonobo par Nl-promos <news-Pe8OmvL0wEI@public.gmane.org>
+Subject: Grande operation privilege chez Bonobo
+Date: Sat, 20 Apr 2013 10:06:41 -0100
+Message-ID: <Heah8LTauMthqjW-HbxrI4kat0eiR37wS5eOeFZyrfo@sh4.co>
+Reply-To: Bonobo par Nl-promos <news-Pe8OmvL0wEI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-Pe8OmvL0wEI@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,124 +19,59 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQwLmNvbS9naHRnMTRkbGRxZ3VpamVzeXEvaW5kZXgwLmh0bWwpCihodHRw
-Oi8vb2JmbTQwLmNvbS9vdXR5djRydmRpMWtyb3VzZG8vaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
-bTQwLmNvbS9xM3RvYjRvbWR3aHVxeHZ0c2cvaW5kZXgyLmh0bWwpCkNhcnRvdWNoZXMKZCdlbmNy
-ZSBldCB0b25lcnMgKGh0dHA6Ly9vYmZtNDAuY29tL2pldGRhNDQxZDBta2Nma3Rsai9pbmRleDMu
-aHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tLzUzZjJic3dyMGNhdWh0dmR2by9pbmRleDQuaHRtbCkK
-KGh0dHA6Ly9vYmZtNDAuY29tL3JlZnhhc3FjMHI1a21ia2RrcS9pbmRleDUuaHRtbCkKKGh0dHA6
-Ly9vYmZtNDAuY29tL3BoZnQxc3BkMGVqdWdzZTBlai9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vYmZt
-NDAuY29tL211ZmN2c3NlMGR4azF5dTB1Zy9pbmRleDcuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29t
-L2hoNDFja2xzZGp5dWt6ZXB6cS9pbmRleDguaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tLzN1NGJl
-a21rZGFiazQ0dXB3by9pbmRleDkuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tLzJ6dG1lejB1c3Ew
-M2ltYnNqZC9pbmRleDEwLmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS90NW16MDFoejNhMGp6cmxt
-cWQvaW5kZXgxMS5odG1sKQooaHR0cDovL29iZm00MC5jb20vcmdhZmcyb2R4bmoxanlxY3NnL2lu
-ZGV4MTIuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tLzVsZDBtNXowenRqcjBzZnVsZy9pbmRleDEz
-Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS93YndhbjMxZW41Znc0bGE1b2wvaW5kZXgxNC5odG1s
-KQooaHR0cDovL29iZm00MC5jb20venh4dmxkZXcxY2YyaGRtZGdsL2luZGV4MTUuaHRtbCkKKGh0
-dHA6Ly9vYmZtNDAuY29tL3Jpd3h4M2dxdzU1ejRiZTVzZy9pbmRleDE2Lmh0bWwpCihodHRwOi8v
-b2JmbTQwLmNvbS81ZXgyYWR3Y2NjNXRodDRkbGcvaW5kZXgxNy5odG1sKQooaHR0cDovL29iZm00
-MC5jb20vNHdidWFuaWNvaXBmcjBzc3F5L2luZGV4MTguaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29t
-L25ycmh4eDJxa2pwNXUyMG1qeS9pbmRleDE5Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS92bmVp
-aWF0dDRsc3BmbnR4amwvaW5kZXgyMC5odG1sKQooaHR0cDovL29iZm00MC5jb20va21qa2NsYXNm
-a3N4bHdkZXFsL2luZGV4MjEuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2V1eGFlZGNrY3J0dG1u
-emRvbC9pbmRleDIyLmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS91YXd2MDN2NHd4dHprd3Y1Z2wv
-aW5kZXgyMy5odG1sKQooaHR0cDovL29iZm00MC5jb20vdjA1aHAwMmYxajQwdXZwcmpsL2luZGV4
-MjQuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2tjMHVvcGlvbmk0bnJlaXlxbC9pbmRleDI1Lmh0
-bWwpClRPTkVSUyAoaHR0cDovL29iZm00MC5jb20vZXNkMzQ1eDN6NGtyZHZ4dW9sL2luZGV4MjYu
-aHRtbCkgOgpwcm9mZXNzaW9ubmVscywgZmFpdGVzIG5vdXMgY29uZmlhbmNlIGV0IHRlc3RlegoK
-bGUgY29tcGF0aWJsZSB0csOocyBoYXV0ZSBxdWFsaXTDqS4gUGx1cyBkZSA3MDAKcsOpZsOpcmVu
-Y2VzIGVuIChodHRwOi8vb2JmbTQwLmNvbS91b2FlczJrcHgyazF4ZWdjZ2wvaW5kZXgyNy5odG1s
-KQpzdG9jay4KCk5vcm1lcyBpc28gOTAwMSAvIDE0MDAxIC8gU1RNQyAoaHR0cDovL29iZm00MC5j
-b20vdDJlenIzaWJuaGR3cHIzamJsL2luZGV4MjguaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tLzIx
-am1xZDJ5MW9kMnZtcncwbC9pbmRleDI5Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS8xZ3dxcWF5
-eXp5bG10NWNhY2ovaW5kZXgzMC5odG1sKQooaHR0cDovL29iZm00MC5jb20vZmx4c3JscGJ4ZWxj
-Z3BvMHhqL2luZGV4MzEuaHRtbCkKVHJvdXZleiB2b3RyZQppbXByaW1hbnRlIChodHRwOi8vb2Jm
-bTQwLmNvbS8yNHdya2FiYTR5ZXB0aGJhMHkvaW5kZXgzMi5odG1sKQooaHR0cDovL29iZm00MC5j
-b20vdHB4NHRsMzVmZWV4Z2lsMGJ5L2luZGV4MzMuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tLzFp
-YWdmMGRqY2duYmFhd3Fjai9pbmRleDM0Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9mZWR5M3Bt
-eHczbjR3M2t6eGovaW5kZXgzNS5odG1sKQooaHR0cDovL29iZm00MC5jb20vam00ZDF1emxzYmdh
-dG8wM2ZnL2luZGV4MzYuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL3FuMW9oZ28yM3dnb2dqczIx
-Zy9pbmRleDM3Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9sdjJyaHJ0MnJkcXNjZzRiMHkvaW5k
-ZXgzOC5odG1sKQooaHR0cDovL29iZm00MC5jb20vc2hwNDF0YWwwdXF1eXFlaWJ5L2luZGV4Mzku
-aHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2poNWwxMG5sY3hnYnVvd3JmcS9pbmRleDQwLmh0bWwp
-CihodHRwOi8vb2JmbTQwLmNvbS9xdjBqaHBxMndyZzRyamt5MXEvaW5kZXg0MS5odG1sKQooaHR0
-cDovL29iZm00MC5jb20vbzVkczI1NW40azE1ZG8ydXhxL2luZGV4NDIuaHRtbCkKU3VyIHRvdXQg
-bGUgc2l0ZSwgw6AgcGFydGlyIGRlIDM5CuKCrCBkZSBjb21tYW5kZSA6IChodHRwOi8vb2JmbTQw
-LmNvbS9nemFxdjJzdmZsMWZ4anljY3EvaW5kZXg0My5odG1sKQooaHR0cDovL29iZm00MC5jb20v
-M2cxYnFncnNhaXlnbTRxbHhnL2luZGV4NDQuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2hsNDFy
-dWx0eWp5aWt6ZnBjZy9pbmRleDQ1Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9heGswZGs0NGwy
-YnZmNGhmZmcvaW5kZXg0Ni5odG1sKQooaHR0cDovL29iZm00MC5jb20vaWJnZndxamtoNGJkbHo1
-djFnL2luZGV4NDcuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2kzcHh0dGdwMDV1dXp1dnIxai9p
-bmRleDQ4Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9hazIya3J3M3JjdXNpa3p5ZmovaW5kZXg0
-OS5odG1sKQo0IFBJTEVTIERVUkFDRUxMIFBMVVMgTFI2IC0KQUEgKGh0dHA6Ly9vYmZtNDAuY29t
-L3U0M2VrYmszdDJrM3hlYmN0bC9pbmRleDUwLmh0bWwpCgpPRkZFUlRFUyAoaHR0cDovL29iZm00
-MC5jb20vZXBsM3RteHBwNGtqZHZsdTJsL2luZGV4NTEuaHRtbCkgQVZFQyBMRSBDT0RFCj0gKGh0
-dHA6Ly9vYmZtNDAuY29tL251emh2ZTJlcWpmdGtsenAweS9pbmRleDUyLmh0bWwpCihodHRwOi8v
-b2JmbTQwLmNvbS80YWN1Mm9pd2VpZnptZHZsYnkvaW5kZXg1My5odG1sKQo0UElMRVMgKGh0dHA6
-Ly9vYmZtNDAuY29tL21taWMxeHNka2xqNXh5MDFjai9pbmRleDU0Lmh0bWwpCihodHRwOi8vb2Jm
-bTQwLmNvbS9wbnl0aG41MG9ramZkc3NreGovaW5kZXg1NS5odG1sKQooaHR0cDovL29iZm00MC5j
-b20vbnNpaXp4dGl1bDNyeDJ4MTB5L2luZGV4NTYuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tLzRv
-eWt5bmFyamszMWQwZ2tieS9pbmRleDU3Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS81ZmoweWR6
-cjF0YTIydG1lZmcvaW5kZXg1OC5odG1sKQooaHR0cDovL29iZm00MC5jb20vcnRlZnozb2lubmF3
-b2JheDFnL2luZGV4NTkuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2Rqa3BsdWZueW5jaG9nMWZn
-ai9pbmRleDYwLmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS95eWd3bmd1dmF0Y3EycWp2b2ovaW5k
-ZXg2MS5odG1sKQooaHR0cDovL29iZm00MC5jb20vbDExbWdxMGxocXFsaGdybHFqL2luZGV4NjIu
-aHRtbCkKU8OpbGVjdGlvbm5leiBsYSBtYXJxdWUgZGUgdm90cmUKaW1wcmltYW50ZSAoaHR0cDov
-L29iZm00MC5jb20vczI0em1raDJsYXFlNHEzcGpqL2luZGV4NjMuaHRtbCkKKGh0dHA6Ly9vYmZt
-NDAuY29tL2QzbTViYzFtaTVpeXoxbm1nai9pbmRleDY0Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNv
-bS95a3RudTRlaGRjaWtpY3Vzb2ovaW5kZXg2NS5odG1sKQooaHR0cDovL29iZm00MC5jb20vbHJz
-cnh6Ymdzc3JhMDEwa3FqL2luZGV4NjYuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL3N3aDRhMTMx
-M3Zyb2pjczFqai9pbmRleDY3Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9jdXlvZXdqdXE0MnRk
-NXprbHkvaW5kZXg2OC5odG1sKQooaHR0cDovL29iZm00MC5jb20veGFpZDBmNHplMjJ6eHB2MXN5
-L2luZGV4NjkuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2I1Ym4wbmV6b2MweGlybHNvZy9pbmRl
-eDcwLmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS8wenI1ZXgxdWs1MHB6bWJtZ2cvaW5kZXg3MS5o
-dG1sKQooaHR0cDovL29iZm00MC5jb20veGRibHBud3hqY25jaTNvc3NsL2luZGV4NzIuaHRtbCkK
-KGh0dHA6Ly9vYmZtNDAuY29tL2NxcmpveGdqdTVubXphY21sbC9pbmRleDczLmh0bWwpClNpdGUg
-Y2VydGlmacOpCkZJQUJJTElXRUIgKGh0dHA6Ly9vYmZtNDAuY29tL2JmcXdzb3U1dnRlbjJpaHZv
-Zy9pbmRleDc0Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS8wdHVwNGVmYWduZTBvaDVmZ2cvaW5k
-ZXg3NS5odG1sKQpGcmFpcyBkZSBwb3J0IG9mZmVydHMgw6AgcGFydGlyIGRlIDQ5CmV1cm9zIGRl
-IGNvbW1hbmRlIChodHRwOi8vb2JmbTQwLmNvbS9wZW5iYWltY3JhNXM0dDQ1eWQvaW5kZXg3Ni5o
-dG1sKQooaHR0cDovL29iZm00MC5jb20vbWlmMXhzZHEwcTV1aGJlZGRkL2luZGV4NzcuaHRtbCkK
-KGh0dHA6Ly9vYmZtNDAuY29tL3dydGF4emNxc3JwYXIyMHNnby9pbmRleDc4Lmh0bWwpCihodHRw
-Oi8vb2JmbTQwLmNvbS96d212YTF2YzN4cG91MHNtb28vaW5kZXg3OS5odG1sKQooaHR0cDovL29i
-Zm00MC5jb20vdWczdnFiZXNiMXNoYXdjcWZxL2luZGV4ODAuaHRtbCkKKGh0dHA6Ly9vYmZtNDAu
-Y29tL2VsbGFybTF0NXBzcXdub3oxcS9pbmRleDgxLmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9r
-eDJrZHIzNG1ldGxxd21ieHEvaW5kZXg4Mi5odG1sKQpBU1NJU1RBTkNFIFRFTEVQSE9OSVFVRSBB
-SU1BQkxFIEVUClRPVUpPVVJTIERJU1BPTklCTEUgKGh0dHA6Ly9vYmZtNDAuY29tL3ZicGl3dGJr
-Mnl0ZWJuYWljcS9pbmRleDgzLmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9tc2kxenhkaXVnYXJh
-YnhnMHMvaW5kZXg4NC5odG1sKQooaHR0cDovL29iZm00MC5jb20vcG95YnlubXJqM2Exd3RnNGJz
-L2luZGV4ODUuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL3IwYmY1d29jZ3c1MHFicHQycy9pbmRl
-eDg2Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS81Y3IwamZ6cXZiNW5idGlodHMvaW5kZXg4Ny5o
-dG1sKQooaHR0cDovL29iZm00MC5jb20vNXZqMmhkbjBjZmp0dnM0d3RkL2luZGV4ODguaHRtbCkK
-KGh0dHA6Ly9vYmZtNDAuY29tL3JoZXgxM3Fkd21qenB5ZWoyZC9pbmRleDg5Lmh0bWwpCihodHRw
-Oi8vb2JmbTQwLmNvbS93bXgzMWxmZGZ3b3hnbGQwMW8vaW5kZXg5MC5odG1sKQooaHR0cDovL29i
-Zm00MC5jb20vem53ZWhhdTA0Ym9wdGR0YWZvL2luZGV4OTEuaHRtbCkKKGh0dHA6Ly9vYmZtNDAu
-Y29tL3V6bHZlbXZrcGZ0b2V3eXpleS9pbmRleDkyLmh0bWwpCk9wLWVuY3JlIGVzdCB1biBzaXRl
-IHdlYiBpbmTDqXBlbmRhbnQKZGUgdG91dGVzIG1hcnF1ZXMgY29uc3RydWN0ZXVycyBkJ2ltcHJp
-bWFudGVzLiBOb3MgY2FydG91Y2hlcwpldCB0b25lcnMgc29udCAxMDAlIGNvbXBhdGlibGVzIGF2
-ZWMgbGVzIGltcHJpbWFudGVzIGxlcyBwbHVzCnZlbmR1ZXMgZW4gRXVyb3BlLgoKTm90cmUgb2Jq
-ZWN0aWYgZXN0IGRlIGxpYsOpcmVyIHZvdHJlIHBvdXZvaXIgZCdhY2hhdCBlbgp2b3VzIHByb3Bv
-c2FudCBkZXMgY2FydG91Y2hlcyBkJ2VuY3JlIGV0IHRvbmVycyBwb3VyIGltcHJpbWFudGUKYXUg
-cGx1cyBiYXMgcHJpeCBkdSBtYXJjaMOpLiAoaHR0cDovL29iZm00MC5jb20vZTUzYTBiYzR0bXRh
-NW4ycXV5L2luZGV4OTMuaHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2FoZjBjczRzMDB5dTE0ZTBp
-ai9pbmRleDk0Lmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9pdm5maWlqdHJ6eXNzejRhYWovaW5k
-ZXg5NS5odG1sKQooaHR0cDovL29iZm00MC5jb20vdXRmZTRzazMyMGtlMWVhMGV5L2luZGV4OTYu
-aHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2VmbjNzaXhwbXprbHN2bWF1eS9pbmRleDk3Lmh0bWwp
-CihodHRwOi8vb2JmbTQwLmNvbS9ob21jczF5cGF5dWdidWdoM2cvaW5kZXg5OC5odG1sKQooaHR0
-cDovL29iZm00MC5jb20vM3N0dDR6cDN5ZXVpcWt4dGhnL2luZGV4OTkuaHRtbCkKKiAoaHR0cDov
-L29iZm00MC5jb20veHhjZGRvNHp2MDJuMXBoMnFqL2luZGV4MTAwLmh0bWwpIFNlbG9uIGxlcwpz
-dG9ja3MgZGlzcG9uaWJsZXMsIE9wLWVuY3JlIHMnYXV0b3Jpc2UgYSBzdXNwZW5kcmUgbCdvZmZy
-ZQpzYW5zIHByw6lhdmlzIC8gT2ZmcmUgdmFsYWJsZSBqdXNxdSdhdQozMS8xMi8yMDEzIChodHRw
-Oi8vb2JmbTQwLmNvbS9tcGwxYm1scnBvYWplYmx6M3MvaW5kZXgxMDEuaHRtbCkKLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tClByZWNvZyBpcyBhIG5leHQtZ2VuZXJhdGlvbiBhbmFseXRpY3MgcGxhdGZv
-cm0gY2FwYWJsZSBvZiBhZHZhbmNlZAphbmFseXRpY3Mgb24gc2VtaS1zdHJ1Y3R1cmVkIGRhdGEu
-IFRoZSBwbGF0Zm9ybSBpbmNsdWRlcyBBUElzIGZvciBidWlsZGluZwphcHBzIGFuZCBhIHBoZW5v
-bWVuYWwgdG9vbHNldCBmb3IgZGF0YSBzY2llbmNlLiBEZXZlbG9wZXJzIGNhbiB1c2UKb3VyIHRv
-b2xzZXQgZm9yIGVhc3kgZGF0YSBhbmFseXNpcyAmIHZpc3VhbGl6YXRpb24uIEdldCBhIGZyZWUg
-YWNjb3VudCEKaHR0cDovL3d3dzIucHJlY29nLmNvbS9wcmVjb2dwbGF0Zm9ybS9zbGFzaGRvdG5l
-d3NsZXR0ZXIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
-by9zcGktZGV2ZWwtZ2VuZXJhbAo=
+ news bonobo Pour visualiser correctement ce message, acc=C3=A9dez =C3=A0 l=
+a version en ligne, ou signaler comme ind=C3=A9sirable Du 17 au 28/04 inclu=
+s Vous beneficiez de 10 euros offerts pour 60 euros d'achats* =C3=82=C2=A0 =
+LIVRAISON ET RETOURGRATUIT EN MAGASIN LIVRAISON SOUS 3 JOURS PAIEMENTSECURI=
+SE 300 magasins en france Localiser un magasin Suivez-nous sur : *Offre val=
+able du 17 au 28/04 inclus sur le site Bonobo en saisissant votre code priv=
+ilege AVRIL60 en bas de votre panier et dans l'ensemble des magasins de l'e=
+nseigne Bonobo en France (y compris les magasins multi-enseignes) en presen=
+tant cet email via votre telephone portable ou en l'imprimant. L'offre est =
+valable sur la collection Printemps-Ete 2013 hors produits BNB Limited. Off=
+re non cumulable avec toute autre promotion en cours, hors operations Recyc=
+lage Jeans et Blue Card. Au coeur de la for=C3=AAt primale de la R=C3=A9pub=
+lique D=C3=A9mocratique du Congo vivent des cr=C3=A9atures exceptionnelles,=
+ les bonobos. Ces grands singes en voie de disparition ne connaissent pas l=
+a violence. Leurs relations sont uniquement r=C3=A9gies par l'affection et =
+bas=C3=A9es sur la transmission. Une philosophie de vie positive et communa=
+utaire qui a inspir=C3=A9 Bonobo, la marque d'une g=C3=A9n=C3=A9ration de j=
+eunes hommes et femmes de 25 =C3=A0 35 ans, attach=C3=A9e aux valeurs optim=
+istes de respect et d'ouverture. Au coeur de la for=C3=AAt primale de la R=
+=C3=A9publique D=C3=A9mocratique du Congo vivent des cr=C3=A9atures excepti=
+onnelles, les bonobos. Ces grands singes en voie de disparition ne connaiss=
+ent pas la violence. Leurs relations sont uniquement r=C3=A9gies par l'affe=
+ction et bas=C3=A9es sur la transmission. Une philosophie de vie positive e=
+t communautaire qui a inspir=C3=A9 Bonobo, la marque d'une g=C3=A9n=C3=A9ra=
+tion de jeunes hommes et femmes de 25 =C3=A0 35 ans, attach=C3=A9e aux vale=
+urs optimistes de respect et d'ouverture. Au coeur de la for=C3=AAt primale=
+ de la R=C3=A9publique D=C3=A9mocratique du Congo vivent des cr=C3=A9atures=
+ exceptionnelles, les bonobos. Ces grands singes en voie de disparition ne =
+connaissent pas la violence. Leurs relations sont uniquement r=C3=A9gies pa=
+r l'affection et bas=C3=A9es sur la transmission. Une philosophie de vie po=
+sitive et communautaire qui a inspir=C3=A9 Bonobo, la marque d'une g=C3=A9n=
+=C3=A9ration de jeunes hommes et femmes de 25 =C3=A0 35 ans, attach=C3=A9e =
+aux valeurs optimistes de respect et d'ouverture. Au coeur de la for=C3=AAt=
+ primale de la R=C3=A9publique D=C3=A9mocratique du Congo vivent des cr=C3=
+=A9atures exceptionnelles, les bonobos. Ces grands singes en voie de dispar=
+ition ne connaissent pas la violence. Leurs relations sont uniquement r=C3=
+=A9gies par l'affection et bas=C3=A9es sur la transmission. Une philosophie=
+ de vie positive et communautaire qui a inspir=C3=A9 Bonobo, la marque d'un=
+e g=C3=A9n=C3=A9ration de jeunes hommes et femmes de 25 =C3=A0 35 ans, atta=
+ch=C3=A9e aux valeurs optimistes de respect et d'ouverture. Au coeur de la =
+for=C3=AAt primale de la R=C3=A9publique D=C3=A9mocratique du Congo vivent =
+des cr=C3=A9atures exceptionnelles, les bonobos. Ces grands singes en voie =
+de disparition ne connaissent pas la violence. Leurs relations sont uniquem=
+ent r=C3=A9gies par l'affection et bas=C3=A9es sur la transmission. Une phi=
+losophie de vie positive et communautaire qui a inspir=C3=A9 Bonobo, la mar=
+que d'une g=C3=A9n=C3=A9ration de jeunes hommes et femmes de 25 =C3=A0 35 a=
+ns, attach=C3=A9e aux valeurs optimistes de respect et d'ouverture. Si vous=
+ ne souhaitez plus recevoir nos emails, veuillez suivre ce lien. Si vous n'=
+arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d'=C3=A9crire =C3=A0 stop@se=
+nderboard.com
+------------------------------------------------------------------------------
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

@@ -1,10 +1,10 @@
-From: "Locasun" <contact-FqQuqE7uPTdGWvitb5QawA@public.gmane.org>
-Subject: [SPAM] Vente flash sur vos location de vacances jusqu'à moins 70 pourcent
-Date: Sat, 20 Apr 2013 14:14:31 +0000 (CET)
-Message-ID: <130420141431.-41518521800003172@obfm41.com>
+From: "Ehpad" <contact-EWsqmiUisApGWvitb5QawA@public.gmane.org>
+Subject: Investissez malin et anticipez votre retraite
+Date: Sun, 21 Apr 2013 15:03:53 +0000 (CET)
+Message-ID: <130421150353.-32579479600003888@obfm43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -18,42 +18,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQxLmNvbS80ZXNrYTRhdzF2cGtrNXZrcmwvaW5kZXgwLmh0bWwpCihodHRw
-Oi8vb2JmbTQxLmNvbS9uM3NpYjRiMDFsM3U0cGtrNXkvaW5kZXgxLmh0bWwpCk7CsDEgZGVzIFZl
-bnRlcyBQcml2w6llcwpkZSBsb2NhdGlvbnMgdmFjYW5jZXMgJiB3ZWVrLWVuZHMKKGh0dHA6Ly9v
-YmZtNDEuY29tL3p1c3Z2NHZxMTFma3NhZTRtZC9pbmRleDIuaHRtbCkKKGh0dHA6Ly9vYmZtNDEu
-Y29tL3doc2ExNDFpMW1vdXQzdTRwcy9pbmRleDMuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL2R1
-b3B2c3hnZ25ja3VrZWVmeS9pbmRleDQuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3lob3cxc3Vo
-ZzJxdXp1dWUxbC9pbmRleDUuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL2xlb21hczJuZ2dya3k0
-dnd4cy9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3Mzb3pic2gyZ2hpdWJ6a3djZC9p
-bmRleDcuaHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tL3RlazQzazN6MWt3a2l5dmZxbC9pbmRleDgu
-aHRtbCkKKGh0dHA6Ly9vYmZtNDEuY29tLzIza3J0a3RiMXNldXJza2ZqeS9pbmRleDkuaHRtbCkK
-KGh0dHA6Ly9vYmZtNDEuY29tL3gxa2RxazRhY3RsdnIyYWZsby9pbmRleDEwLmh0bWwpCihodHRw
-Oi8vb2JmbTQxLmNvbS9jMmdvcnFqNXdubGR1MG12c28vaW5kZXgxMS5odG1sKQooaHR0cDovL29i
-Zm00MS5jb20vNHV4dXZkaXFsYWZ0eGF3ZHF5L2luZGV4MTIuaHRtbCkKKGh0dHA6Ly9vYmZtNDEu
-Y29tL25hd2gyMzJjaHFmemQzazVqeS9pbmRleDEzLmh0bWwpCihodHRwOi8vb2JmbTQxLmNvbS9w
-bWR0MTU1aWF2ajVraGJ1ZGovaW5kZXgxNC5odG1sKQooaHR0cDovL29iZm00MS5jb20vbW5hY2gy
-c3J5c2pmbWlsY3lqL2luZGV4MTUuaHRtbCkKUGx1cyBkZSAxNTAgMDAwIGNsaWVudHMgcGFyIGFu
-LgoKU3DDqWNpYWxpc3RlIGRlIGxhIHZlbnRlIGRlIHPDqWpvdXJzIHN1ciBJbnRlcm5ldC4KCkxv
-Y2F0aW9ucyB2YWNhbmNlcyDDoCBsYSBzZW1haW5lIGV0IHdlZWstZW5kcy4KClRhcmlmcyBsZXMg
-cGx1cyBiYXMgZHUgbWFyY2jDqSBwZW5kYW50IGxhIHZlbnRlLgpUeXBlIGRlIHByZXN0YXRpb25z
-IHZlbmR1ZXMgZGFucyBsZSBjYWRyZSBkZXMgdmVudGVzIGZsYXNoIGRlIDcgam91cnMgOgpMT0NB
-VElPTlMgVkFDQU5DRVMgOgoKLSBBcHBhcnRlbWVudHMgZW4gcsOpc2lkZW5jZSBkZSB0b3VyaXNt
-ZSBldCBtYWlzb25zIGRlIHN0YW5kaW5nCgotIERlIG5vbWJyZXVzZXMgcHJlc3RhdGlvbnMgaW5j
-bHVzZXMgOiBhY2PDqHMgc3BhLCBzYWxsZSBkZSBmaXRuZXNzLi4uCgotIFRhcmlmcyByZW1pc8Op
-cyBzdXIgbGVzIHZhY2FuY2VzIHNjb2xhaXJlcyBldCBob3JzIHNhaXNvbgoKLSBTw6lqb3VycyDD
-oCBsYSBzZW1haW5lIG91IMOgIGxhIG51aXTDqWUKTG9jYXN1biA6IFJDUyBQb250b2lzZSAoRnJh
-bmNlKSA0ODggMTU3IDM4OQoKNDAsIHJ1ZSBkZSBsYSBzdGF0aW9uIC0gOTUxMzAgRnJhbmNvbnZp
-bGxlCgpMaWNlbmNlIGFnZW50IGRlIHZveWFnZSA6IExJIDA5NSAwNiAwMDAxIC0gR2FyYW50aWUg
-ZmluYW5jacOocmUgOiBDcsOpZGl0IEFncmljb2xlCgpUb3VzIGRyb2l0cyByw6lzZXJ2w6lzIC0g
-TG9jYXN1biAyMDA2CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KUHJlY29nIGlzIGEgbmV4dC1nZW5l
-cmF0aW9uIGFuYWx5dGljcyBwbGF0Zm9ybSBjYXBhYmxlIG9mIGFkdmFuY2VkCmFuYWx5dGljcyBv
-biBzZW1pLXN0cnVjdHVyZWQgZGF0YS4gVGhlIHBsYXRmb3JtIGluY2x1ZGVzIEFQSXMgZm9yIGJ1
-aWxkaW5nCmFwcHMgYW5kIGEgcGhlbm9tZW5hbCB0b29sc2V0IGZvciBkYXRhIHNjaWVuY2UuIERl
-dmVsb3BlcnMgY2FuIHVzZQpvdXIgdG9vbHNldCBmb3IgZWFzeSBkYXRhIGFuYWx5c2lzICYgdmlz
-dWFsaXphdGlvbi4gR2V0IGEgZnJlZSBhY2NvdW50IQpodHRwOi8vd3d3Mi5wcmVjb2cuY29tL3By
-ZWNvZ3BsYXRmb3JtL3NsYXNoZG90bmV3c2xldHRlcgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
-Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+Madame, Monsieur,
+
+Lorsque vous =EAtes amen=E9 =E0 payer de l'imp=F4t sur le revenu en fin d'a=
+nn=E9e, vous cherchez forc=E9ment des solutions pour d=E9fiscaliser et inve=
+stir. (http://obfm43.com/0izpfez0n5wbqlw3fg/index0.html)
+
+Aujourd'hui, vous avez la possibilit=E9 d'investir dans des maisons de retr=
+aites le tout en d=E9duction de vos imp=F4ts, et surtout avec une tr=E8s fo=
+rte rentabilit=E9 pour le futur.
+Les Ehpad sont en plein essor et la rentabilit=E9 moyenne est une des plus =
+=E9lev=E9e de tous les produits que l'on peut vous proposer actuellement ( =
+Borloo, Duflot, Scellier et autres)
+Les statistiques le prouvent, investir dans l'Ehpad c'est un des plus fort =
+taux de rentabilit=E9 =E0 ce jour.
+N'attendez plus, c'est accessible =E0 tous, demandez votre devis sans aucun=
+ engagement. (http://obfm43.com/bkzwkejwnxetcdz31j/index1.html)
+
+Faites confiance =E0 une =E9quipe de sp=E9cialistes dans la gestion de patr=
+imoine et du produit de d=E9fiscalisation.=A0
+
+Notre partenaire met ses connaissances et son savoir faire =E0 votre profit=
+ et vous explique toutes les mesures fiscales dont vous pouvez b=E9n=E9fici=
+er.
+
+Ca ne prend pas plus de 30 secondes et c'est sans engagement !=A0 (http://o=
+bfm43.com/2azm0eminy0bi2npxq/index2.html)
+
+Une seule condition, avoir plus de 30 000 Euros de revenu par an dans le fo=
+yer
+
+A tout de suite,=A0
+
+Solution en D=E9fiscalisation et investissement,
+Service marketing,
+
+Demande express de devis IcI (http://obfm43.com/tvzzielqnudtr04pco/index3.h=
+tml)
+---------------------------------------------------------------------------=
+---
+Precog is a next-generation analytics platform capable of advanced
+analytics on semi-structured data. The platform includes APIs for building
+apps and a phenomenal toolset for data science. Developers can use
+our toolset for easy data analysis & visualization. Get a free account!
+http://www2.precog.com/precogplatform/slashdotnewsletter

@@ -1,55 +1,57 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 09/21] spi/sirf: fix MODULE_DEVICE_TABLE
-Date: Tue, 23 Apr 2013 19:27:24 +0100
-Message-ID: <20130423182724.GU5019@opensource.wolfsonmicro.com>
-References: <1366734653-488286-1-git-send-email-arnd@arndb.de>
- <1366734653-488286-10-git-send-email-arnd@arndb.de>
+Subject: Re: [PATCH v8 1/8] spi/spi-atmel: add physical base address
+Date: Tue, 23 Apr 2013 19:30:25 +0100
+Message-ID: <20130423183025.GV5019@opensource.wolfsonmicro.com>
+References: <1364968581-23700-1-git-send-email-wenyou.yang@atmel.com>
+ <1364968662-23763-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Sx3M3By4KbPIrykT"
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Grant Likely <grant.likely@secretlab.ca>,
+	protocol="application/pgp-signature"; boundary="+VeMz1SRxFChf6vr"
+Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
+	richard.genoud@gmail.com, plagnioj@jcrosoft.com,
+	nicolas.ferre@atmel.com, JM.Lin@atmel.com,
 	spi-devel-general@lists.sourceforge.net,
-	Barry Song <Baohua.Song@csr.com>
-To: Arnd Bergmann <arnd@arndb.de>
+	linux-kernel@vger.kernel.org
+To: Wenyou Yang <wenyou.yang@atmel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1366734653-488286-10-git-send-email-arnd@arndb.de>
+In-Reply-To: <1364968662-23763-1-git-send-email-wenyou.yang@atmel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---Sx3M3By4KbPIrykT
+--+VeMz1SRxFChf6vr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 23, 2013 at 06:30:41PM +0200, Arnd Bergmann wrote:
-> This fixes building the spi-sirf driver as a loadable module, which uses
-> an incorrect MODULE_DEVICE_TABLE, by changing the reference to the
-> correct symbol.
+On Wed, Apr 03, 2013 at 01:57:42PM +0800, Wenyou Yang wrote:
+> From: Nicolas Ferre <nicolas.ferre@atmel.com>
+>=20
+> Needed for future use with dmaengine enabled driver.
 
 Applied, thanks.
 
---Sx3M3By4KbPIrykT
+--+VeMz1SRxFChf6vr
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRdtJ/AAoJELSic+t+oim9x+cP/jzdHTuVfonTof0zF59GPxxL
-3lTc6S/tQ0JD5j3mGTe7hD3JeR8PbF86TQSLFKZOCH7+hsgNMQHnEqi3Slck9XqN
-uAVBwZnXph+v4DHSjq2pUzuxCLg4BMcg9x0j7J2bzL6d981C9S/eSWZDFWyX94xY
-Tz+km9KcdG++uvLG2ZTsDHdLtzEr7qv6NRqNiXD6kE8tvVPlCEUqHxPjhOErzzKi
-GWJ8x7xuW2w9r99+ETcknlflPLcwUMoNzPH9AqpjuOnMU8TjZfFwLXI+RHFgHRjo
-uNMhYFhsSgfaO59XeuVoM53+8Ud4atAJYUM8d/uwB/SEpC9n1yHb7+5rNg6BFMbj
-brMcrq2hSViA6raReOF3IJuvRrTkprQSYF3MSpa7J10i3u8bZRhkF8AW1sRLTV+7
-GsEi4HkjBEJP8N7p+lNpGgLcE9c+Chac/PGT7b8hQ+/Wh2ZwuDbK7Uxd6b2Qxd6Y
-XPh9mExmicCHXFFvcM3jdBIfK6XINYca9JcEug08WyRn87rtcZXWrayA1ZKh+6l8
-5A4XoN7XCpvyvHBJfp6v5dgEoTIzotxPyM4LYSHcnKEmNj8cPc2inWy1O4LLA6xK
-QyfzqiystEh5V59hSaQHmQ7je9hm/VgoA05hWMk/+GCaf6Hh0NH6FkO3q0mxXrjx
-t4+xtZ3gM3t12DZv2xfJ
-=ZCF1
+iQIcBAEBAgAGBQJRdtMqAAoJELSic+t+oim9NwIQAJn6agyyqvkiND0/Ra2YIrY+
+SRDF7VLU1ULCqERrM56YtjVdZCp/42tsxVStCmnjnAQEI1CffMotYqxj2Sk88oYK
+jkITWmF5ZexIAYxRXFUIsAobf0GtX153nGI+QJpWKkOYa/w8L+JLhdKI9aHgPa5Z
+RLQh5HQPy5CL5e+IxKVtqJ2G46sFaS/8eLy//EC4nMZ1D/PCt/N3h5H/ZlXtyOGQ
+oExx8mt0fhY26JVwvTZwC9Yd3KIb5+Vq52dAN5eUwDgscrOk6Gg1rj6bTR1a30KI
+BcSWfWKIFtWzbKsJvQidjkEiD9IBjXzFKlr7BJdfZPnBn1Q+VJ3NmO5bP6mk2OWo
+O+8eLyHZVas2VKWmfCV5nVSuCrSHLPkFdOMqfC6cvn6KZsnk02kVn44MKtGM3QkH
+o80k/68Ll/GBSKSrp4g7FsKiNTqTheVqJ1+A+Xw0vydrF8RT5ZYB6T1bMi4LKrLT
+5Xx2IS4D0wBACsXyxugrAiFaj7yqHq3PQFPKWB4v8IjHm0p/PE+6xs2SNHcS8kn9
+4sToMZC+YGPi+MJRHfWOR014tmGKpONnoTExxrNSpYzzJriKb0Jq5EntKo4mu62S
+KabIiP+kQoW/ZibK/EULMNQM/dDVlEVVTE1SLThGJysy2s5mQGiPstM14oU2v9rx
+1Oo98Uorb0OloDQJXrLg
+=ps/5
 -----END PGP SIGNATURE-----
 
---Sx3M3By4KbPIrykT--
+--+VeMz1SRxFChf6vr--

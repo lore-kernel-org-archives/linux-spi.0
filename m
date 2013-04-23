@@ -1,59 +1,60 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/3] spi: s3c64xx: added support for polling mode
-Date: Tue, 23 Apr 2013 16:15:12 +0100
-Message-ID: <20130423151511.GR5019@opensource.wolfsonmicro.com>
-References: <1366614565-3743-1-git-send-email-ks.giri@samsung.com>
- <1366614565-3743-2-git-send-email-ks.giri@samsung.com>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: [PATCH 09/21] spi/sirf: fix MODULE_DEVICE_TABLE
+Date: Tue, 23 Apr 2013 18:30:41 +0200
+Message-ID: <1366734653-488286-10-git-send-email-arnd@arndb.de>
+References: <1366734653-488286-1-git-send-email-arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CPn8Wy5ME997YUMW"
-Cc: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	grant.likely@secretlab.ca, t.figa@samsung.com
-To: Girish K S <girishks2000@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1366614565-3743-2-git-send-email-ks.giri@samsung.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1366734653-488286-1-git-send-email-arnd-r2nGTMty4D4@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+This fixes building the spi-sirf driver as a loadable module, which uses
+an incorrect MODULE_DEVICE_TABLE, by changing the reference to the
+correct symbol.
 
---CPn8Wy5ME997YUMW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+---
+ drivers/spi/spi-sirf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Mon, Apr 22, 2013 at 12:39:23PM +0530, Girish K S wrote:
-> From: Girish K S <girishks2000@gmail.com>
->=20
-> The 64xx spi driver supports partial polling mode.
-> Only the last chunk of the transfer length is transferred
-> or recieved in polling mode.
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index f59d417..0808cd5 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -660,7 +660,7 @@ static const struct of_device_id spi_sirfsoc_of_match[] = {
+ 	{ .compatible = "sirf,marco-spi", },
+ 	{}
+ };
+-MODULE_DEVICE_TABLE(of, sirfsoc_spi_of_match);
++MODULE_DEVICE_TABLE(of, spi_sirfsoc_of_match);
+ 
+ static struct platform_driver spi_sirfsoc_driver = {
+ 	.driver = {
+-- 
+1.8.1.2
 
-This appears to have a very noticable negative impact on SPI performance
-on my S3C6410 based system.  Not delved into it to test why but are you
-sure it's not mistakenly selecting polling?
 
---CPn8Wy5ME997YUMW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRdqU0AAoJELSic+t+oim9j0AP/2LSgiYibWqYsCJ2WrIZDmIT
-P41YOwSxixxvigSChfLHivoP8nUrhbXGjQDL+2ZWBV1dX+JA0YTOqsVCxRY/LCMR
-wa0PJJzL22AJ5cEd4LdEX5Ejwq2HJplTn1i6C0q2X0hy5zFxfR+wxXKwNCxy4t7w
-uqKAwBwC52wQSm1Q67ASzYmPufxsAaNj90ikeFvxVT8ggwXhRN5dECnNZl11hUcy
-w8E6DVEcNcVzj+gxJLxBpqzgki/iGemhp7FLGZ1/SdGV5QjGJyak3CxVbwb/dk/Y
-rNhASRAFaV7bWE4xj6CyNDhmjc6l/cCcsKwKs41hXBfsTtM1pVauBuknFfu1j1vE
-NinclKNCpiu3UrP/bU7HZWVzV+cIZVrqOFIgP+x/MP8WHJalLXi2U7hM3iZPnElH
-o8SMGp1t/PqAtd/sw7WnAsG7mQ1mH8WQZitReyluMKwxs2khBNORFDIHpgnvPJML
-Ek44rzsp6CEd1sqFRyhVW8VaOMPdofoYRG6sfP5yuDMj4/TgByaNnhmTLFr1rxnm
-EGtTaDOwAX2QIzgsl+Az0MHPqu/GEWzOm8xE1HMccD8wcSwyMaMHUttbCh1Qzj7k
-iHHgGyzocp45+DCGXkvERSovVrZ1q1Yr6hoqyr/bVB4+baNuSkTin+eYSXQyft0C
-i7ikPoMuPzUUy64qtrKT
-=EGxO
------END PGP SIGNATURE-----
-
---CPn8Wy5ME997YUMW--
+------------------------------------------------------------------------------
+Try New Relic Now & We'll Send You this Cool Shirt
+New Relic is the only SaaS-based application performance monitoring service 
+that delivers powerful full stack analytics. Optimize and monitor your
+browser, app, & servers with just a few lines of code. Try New Relic
+and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr

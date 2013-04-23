@@ -1,91 +1,66 @@
-From: "Kaporal par Jeanstory" <contact-rpgDg82rM6BGWvitb5QawA@public.gmane.org>
-Subject: [SPAM] Nouvelle Collection Kaporal, livraison gratuite, stock limite
-Date: Tue, 23 Apr 2013 03:10:20 +0000 (CET)
-Message-ID: <130423031020.-47756276100007648@obfm42.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/3] spi: s3c64xx: Added provision for dedicated cs pin
+Date: Tue, 23 Apr 2013 15:42:56 +0100
+Message-ID: <20130423144256.GP5019@opensource.wolfsonmicro.com>
+References: <1366614565-3743-1-git-send-email-ks.giri@samsung.com>
+ <1366614565-3743-3-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="o41d8xLWOaLD8vYh"
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	grant.likely@secretlab.ca, t.figa@samsung.com
+To: Girish K S <girishks2000@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1366614565-3743-3-git-send-email-ks.giri@samsung.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQyLmNvbS80ZHF1NWpseG5hcHI1dTFucmwvaW5kZXgwLmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQyLmNvbS9ub3FoeWptNW5qM21ha2ZuNXkvaW5kZXgxLmh0bWwpCsKgCihodHRw
-Oi8vb2JmbTQyLmNvbS96eXFlbmpqdW5iZnJ4emN2bWQvaW5kZXgyLmh0bWwpCsKgClRlZSBzaGly
-dCBLQVBPUkFMNSBaeWJsYSBUdXJxdW9pc2UKKGh0dHA6Ly9vYmZtNDIuY29tL3dncTNnanp5bnpv
-bWo0eHZwcy9pbmRleDMuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQyLmNvbS9keWQ1bjVu
-a3Y1Y3JwcGN6ZnkvaW5kZXg0Lmh0bWwpCjI5LDAwIOKCrAooaHR0cDovL29iZm00Mi5jb20veWdk
-bmc1Z3N2eHFtMzV4ejFsL2luZGV4NS5odG1sKQrCoAooaHR0cDovL29iZm00Mi5jb20vbGRkcjU1
-NWZ2eXJyZjMxdXhzL2luZGV4Ni5odG1sKQrCoApUZWUgU2hscnQgS0FQT1JBTDUgTk9SRVYgTm9p
-cgooaHR0cDovL29iZm00Mi5jb20vc29kNHk1eXB2dWltb2FmdWNkL2luZGV4Ny5odG1sKQpLYXBv
-cmFsIDUKKGh0dHA6Ly9vYmZtNDIuY29tL3RkaXpweGRjbml3cm54MWdxbC9pbmRleDguaHRtbCkK
-MjUsMDAg4oKsCihodHRwOi8vb2JmbTQyLmNvbS8yb2ltc3hycm5xZW12ZmZnankvaW5kZXg5Lmh0
-bWwpCsKgCihodHRwOi8vb2JmbTQyLmNvbS9ocXJjb3hhZ25zem0xMHhoemovaW5kZXgxMC5odG1s
-KQrCoApUZWUgU2hscnQgS0FQT1JBTDUgTmFjaWQgUm95CihodHRwOi8vb2JmbTQyLmNvbS8zZGJ0
-cG50MTF2emNzMmd0d2ovaW5kZXgxMS5odG1sKQpLYXBvcmFsIDUKKGh0dHA6Ly9vYmZtNDIuY29t
-L2Q0bDV1bW4zaTVpb3AzZHpwcy9pbmRleDEyLmh0bWwpCjM1LDAwIOKCrAooaHR0cDovL29iZm00
-Mi5jb20veXAzbmJicXBkY2lhdmF0cW1zL2luZGV4MTMuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDIu
-Y29tL3FpZm94c2tvc25tdXlpdTA0by9pbmRleDE0Lmh0bWwpCsKgCkplYW5zIEtBUE9SQUwgNSBC
-cm96IEF1dGhlbnRpYwooaHR0cDovL29iZm00Mi5jb20vamVuZGFpeGYzdG1zY2huYW5vL2luZGV4
-MTUuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQyLmNvbS9kYmZwbnM0a3luY2V5cGkwcHMv
-aW5kZXgxNi5odG1sKQo4OSwwMCDigqwKKGh0dHA6Ly9vYmZtNDIuY29tL3l4bndsaWo0YXRjbGM1
-cGFtcy9pbmRleDE3Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQyLmNvbS9vam1zbDFiNG1rMWdnbW9o
-d3EvaW5kZXgxOC5odG1sKQrCoApKZWFucyBLQVBPUkFMIDUgQnJveiBGcmlwZQooaHR0cDovL29i
-Zm00Mi5jb20vZ3l0cW56M2sybDFpdHJjdHpxL2luZGV4MTkuaHRtbCkKS2Fwb3JhbCA1CihodHRw
-Oi8vb2JmbTQyLmNvbS8xb29nc3locmxqdmhhY2Z3em8vaW5kZXgyMC5odG1sKQo4OSwwMCDigqwK
-KGh0dHA6Ly9vYmZtNDIuY29tL2Zzdnk0aDBpaGl2cXcxcWp3by9pbmRleDIxLmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQyLmNvbS9jY25vb2l1cWE0bmxxYzVhNG8vaW5kZXgyMi5odG1sKQrCoApQdWxs
-IEtBUE9SQUw1IEJPUkFHIFZlcm1pbGxvbgooaHR0cDovL29iZm00Mi5jb20veDBmZHBzZmN5Mm5l
-YjFoMG5vL2luZGV4MjMuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQyLmNvbS8xYTJxMHIz
-dzNsMnl0cTRiem8vaW5kZXgyNC5odG1sKQo0OSwwMCDigqwKKGh0dHA6Ly9vYmZtNDIuY29tL2Z1
-cHNldGJlc2sya2dnZWl3by9pbmRleDI1Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQyLmNvbS9jbTNq
-Y2JlZGRybGFucWJxNG8vaW5kZXgyNi5odG1sKQrCoApKZWFucyBLQVBPUkFMNSBBTUJSTyBMaWdo
-dCBHcmV5IERlc3Ryb3kKKGh0dHA6Ly9vYmZtNDIuY29tL3hubGxpbTEwaXhsbzNnbHpuby9pbmRl
-eDI3Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00Mi5jb20vMzNvdHRzYm1zdXV1ajJrZWFv
-L2luZGV4MjguaHRtbCkKODUsMDAg4oKsCihodHRwOi8vb2JmbTQyLmNvbS9oa3Zja2kzaDNkdXMw
-MHd4aW8vaW5kZXgyOS5odG1sKQrCoAooaHR0cDovL29iZm00Mi5jb20vdjRmaGt5cmhkZ2szdXQw
-ZGVkL2luZGV4MzAuaHRtbCkKwqAKVGVlIFNobHJ0IEtBUE9SQUw1IE5PUkVWIFJveQooaHR0cDov
-L29iZm00Mi5jb20va3BudXRobG1pM2tqcmJzNXVkL2luZGV4MzEuaHRtbCkKS2Fwb3JhbCA1Ciho
-dHRwOi8vb2JmbTQyLmNvbS9oZ2YxcXlpbGxneWh1ZHhkaXEvaW5kZXgzMi5odG1sKQoyNSwwMCDi
-gqwKKGh0dHA6Ly9vYmZtNDIuY29tLzNsbmJyaDIyaDN5cXJsZzVhcS9pbmRleDMzLmh0bWwpCsKg
-CihodHRwOi8vb2JmbTQyLmNvbS92Ymxpd3I1dmF5dGRmc3J1ZWQvaW5kZXgzNC5odG1sKQrCoApU
-ZWUgc2hpcnQgS0FQT1JBTDUgUGFyb2wgT2NlYW4KKGh0dHA6Ly9vYmZtNDIuY29tL2t4M2tkdHNu
-eWV0dmx5M2N1ZC9pbmRleDM1Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00Mi5jb20venNj
-dnpqcWFuMTNydXVjbGtzL2luZGV4MzYuaHRtbCkKMzUsMDAg4oKsCihodHRwOi8vb2JmbTQyLmNv
-bS93b3pheXZuNTFwMzFya29wdnMvaW5kZXgzNy5odG1sKQrCoAooaHR0cDovL29iZm00Mi5jb20v
-bWY1MXkwaDVqb2EyaGVwcmlxL2luZGV4MzguaHRtbCkKwqAKUG9sbyBLQVBPUkFMIDUgUG93ZXIg
-VmVybWlsbG9uCihodHRwOi8vb2JmbTQyLmNvbS9wdDBienAwYXVoYXc0dml5YXEvaW5kZXgzOS5o
-dG1sKQpLYXBvcmFsIDUKKGh0dHA6Ly9vYmZtNDIuY29tL3p0MmV6cm9hYTIzZHR1cmJreS9pbmRl
-eDQwLmh0bWwpCjQ1LDAwIOKCrAooaHR0cDovL29iZm00Mi5jb20vd2ZwM3l0ejV5NDN2Z2szaXZ5
-L2luZGV4NDEuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDIuY29tLzRkM3U1YmR4bGlwaW51MXF1eS9p
-bmRleDQyLmh0bWwpCsKgCkNoZW1pc2UgS0FQT1JBTCA1IFRlcnJ5IENvYmFsdAooaHR0cDovL29i
-Zm00Mi5jb20vbnFsaGptbWpoanBnM2tqemV5L2luZGV4NDMuaHRtbCkKS2Fwb3JhbCA1CihodHRw
-Oi8vb2JmbTQyLmNvbS90NHo0a3Z5aWNrZWZxeGQzdXMvaW5kZXg0NC5odG1sKQo0OSwwMCDigqwK
-KGh0dHA6Ly9vYmZtNDIuY29tLzJwY3J0anByd2xlNWJmdDJlcy9pbmRleDQ1Lmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQyLmNvbS9iZXFuM29nYzR4dzRheHZua3MvaW5kZXg0Ni5odG1sKQrCoApUZWUg
-U2hscnQgS0FQT1JBTDUgTmFieSBDb2JhbHQKKGh0dHA6Ly9vYmZtNDIuY29tLzBpdTVmZXdxZnJ3
-Yndmem92cy9pbmRleDQ3Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00Mi5jb20vMDIwcHJw
-NDB1bmR3c29oYnZkL2luZGV4NDguaHRtbCkKMzksMDAg4oKsCihodHRwOi8vb2JmbTQyLmNvbS9i
-MTV3cTBqZGp0ZDIxajVpa2QvaW5kZXg0OS5odG1sKQrCoApWb2lyIHRvdXRlIGxhIHPDqWxlY3Rp
-b24KKGh0dHA6Ly9vYmZtNDIuY29tL3hnZGxxNTFkdnhsbTNneHozby9pbmRleDUwLmh0bWwpCsKg
-CihodHRwOi8vb2JmbTQyLmNvbS9jbGFqcjJlMGdybGNucWdxaG8vaW5kZXg1MS5odG1sKQotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KUHJlY29nIGlzIGEgbmV4dC1nZW5lcmF0aW9uIGFuYWx5dGljcyBw
-bGF0Zm9ybSBjYXBhYmxlIG9mIGFkdmFuY2VkCmFuYWx5dGljcyBvbiBzZW1pLXN0cnVjdHVyZWQg
-ZGF0YS4gVGhlIHBsYXRmb3JtIGluY2x1ZGVzIEFQSXMgZm9yIGJ1aWxkaW5nCmFwcHMgYW5kIGEg
-cGhlbm9tZW5hbCB0b29sc2V0IGZvciBkYXRhIHNjaWVuY2UuIERldmVsb3BlcnMgY2FuIHVzZQpv
-dXIgdG9vbHNldCBmb3IgZWFzeSBkYXRhIGFuYWx5c2lzICYgdmlzdWFsaXphdGlvbi4gR2V0IGEg
-ZnJlZSBhY2NvdW50IQpodHRwOi8vd3d3Mi5wcmVjb2cuY29tL3ByZWNvZ3BsYXRmb3JtL3NsYXNo
-ZG90bmV3c2xldHRlcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
-dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
-c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+--o41d8xLWOaLD8vYh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Mon, Apr 22, 2013 at 12:39:24PM +0530, Girish K S wrote:
+> From: Girish K S <girishks2000@gmail.com>
+>=20
+> The existing driver supports gpio based /cs signal.
+> For controller's that have one device per controller,
+> the slave device's /cs signal might be internally controlled
+> by the chip select bit of slave select register. They are not
+> externally asserted/deasserted using gpio pin.
+
+This doesn't build:
+
+drivers/spi/spi-s3c64xx.c: In function 's3c64xx_get_slave_ctrldata':
+drivers/spi/spi-s3c64xx.c:1023: error: 'sdd' undeclared (first use in this =
+function)
+drivers/spi/spi-s3c64xx.c:1023: error: (Each undeclared identifier is repor=
+ted only once
+drivers/spi/spi-s3c64xx.c:1023: error: for each function it appears in.)
+
+--o41d8xLWOaLD8vYh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRdp22AAoJELSic+t+oim9HZwP/Rfy/Hh2QPJA+xs2wZULjlZ0
+9t1q4NKWSm5t7Q06uiHr8Pw0CWWFg5JE/YLKOv/3l96BSq+m+qvcPxyQX8UoTfUv
+Fb28SIc4iixHo264z0y/of7EM3v2f+w6Yga0emVwYd06f4yhEo7kbSXyZCUekbKF
+3vy+ikkJCM6m/5fmP83Ho0MAF1YfwJyx7qncjCh8lUbKLXFyOOfdT8uCJui+SYup
+WV5SldLm7z5emzrp6PDHAMZaVB+jbNFmOoR6ZLYGEsOTdNwVjVtta2F5GICeOxGM
+4TQRd99vgHf1bzhrLOcGamgTUSKgVRmi2cU7dfBY6BVPB/oWjMJnlyftM95QMT+F
+TRsyVsC6kx0hzEHd+u+BUtMFkPkflK/496I60WTX0O2cjYdZTAOu65NRDtzocbW5
+Koaydd+OFiYC1zD8eQR2GnqsNJyZeXgSzZsmoijGhyUbKV/34xVaSwHfNyeGp6q6
+HpHBhzikEwpwO+iG4Kl3KMA4lNEv31CdXhpbyxYQl8ETGc2LsOl6rack7EPLITF6
+EqukUNxbj7gYBtdxDg9JN+hu/mck5VP5cQ0UQ9q4DxbN7ygKyYymtchp/Sl3D+DV
+EA5EZXjxjlvswFzx357JaLShpy9/LR1zn0FuFm8EMdkssUp3YasftC4aC4PQ98ZI
+lqAjTfHZ+cXsmF9+X94X
+=FC8B
+-----END PGP SIGNATURE-----
+
+--o41d8xLWOaLD8vYh--

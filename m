@@ -1,58 +1,68 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v8 2/8] spi/spi-atmel: add flag to controller data for
- lock operations
-Date: Tue, 23 Apr 2013 19:30:42 +0100
-Message-ID: <20130423183042.GW5019@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH v8 3/8] spi/spi-atmel: add dmaengine support
+Date: Tue, 23 Apr 2013 19:33:01 +0100
+Message-ID: <20130423183301.GX5019@opensource.wolfsonmicro.com>
 References: <1364968581-23700-1-git-send-email-wenyou.yang@atmel.com>
- <1364968716-23848-1-git-send-email-wenyou.yang@atmel.com>
+ <1364968759-24036-1-git-send-email-wenyou.yang@atmel.com>
+ <20130403102332.GA4633@lnx-rg>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PyWBHxIrsGpYNMFw"
-Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
-	richard.genoud@gmail.com, plagnioj@jcrosoft.com,
-	nicolas.ferre@atmel.com, JM.Lin@atmel.com,
+	protocol="application/pgp-signature"; boundary="JMKEfAmnQy+WzDHS"
+Cc: Wenyou Yang <wenyou.yang@atmel.com>,
+	linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
+	plagnioj@jcrosoft.com, nicolas.ferre@atmel.com, JM.Lin@atmel.com,
 	spi-devel-general@lists.sourceforge.net,
+	spi-devel-general@lists.sourceforge.ne,
 	linux-kernel@vger.kernel.org
-To: Wenyou Yang <wenyou.yang@atmel.com>
+To: Richard GENOUD <richard.genoud@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1364968716-23848-1-git-send-email-wenyou.yang@atmel.com>
+In-Reply-To: <20130403102332.GA4633@lnx-rg>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---PyWBHxIrsGpYNMFw
+--JMKEfAmnQy+WzDHS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 03, 2013 at 01:58:36PM +0800, Wenyou Yang wrote:
-> From: Nicolas Ferre <nicolas.ferre@atmel.com>
+On Wed, Apr 03, 2013 at 12:23:35PM +0200, Richard GENOUD wrote:
+
+Richard, delete irrelevant context from your mails - it makes it much
+easier to find the content you added.
+
+> On [mer., 03.04.2013 13:59:19], Wenyou Yang wrote:
+
+> As I did some work on that one:
+> Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
 >=20
-> Will allow to drop the lock during DMA operations.
+> BUT, there's one thing not working (at least for me !):
+> With DMA enabled, using spidev.
+> if we use the ioctl SPI_IOC_MESSAGE(x) (tested with x=3D3):
 
-Applied, thanks.
+I'd been expecting an updated series with this rolled in?
 
---PyWBHxIrsGpYNMFw
+--JMKEfAmnQy+WzDHS
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRdtNLAAoJELSic+t+oim9r6UP/2k+VlZB39nSmiGYpMlRZUug
-TL/vGa+PB0TMhCxWC0qmvdRN/1JoTnt5uEYmCV/pPkcrUftLsY0+PIVSQr/E4BzW
-YnVCrm0xzhhH4DYGEeO47IZPphhnmOnoJyrhGpgTVd/+RjbpopAIPe1jelIkFskG
-qvSsycpV7P2sOo2FAiKWL31QtNN1rggiA13fKr3HBa4TnlvfkKTPYOSU+63gxhCs
-s44wmbRDcHw6VUj78wC9dbcTYCjB7Z6yxe25SMChwx2pMFLLgFdUBI+UKWiUk8i4
-6PaPbgC7QukAx73+M/6OgHQc76ymb28NrJp6sCmL4AbwOS7agdsVCaNaD6JXFI0T
-Wi4s5MDpHhkyEgR0d5fTiYUqZ1Kp7aO16w/cqgyoiyZGhzNe54gcI/vafyd9eUPL
-KTKKIgpYfzshrtgy+HPozZegNwiYjnlO/ldtvnXpMszVVfAD4tEVigk600H51xHj
-uvl4CNON0sUIoqLi6hIBa+3TeQsb5y1t0CLccbisGxy1npcsQFCN0Uhg1dpydkrN
-r6aMhuANeNnrdn1dIXdmBJtNNB2LZkuq5eBaUcYgBQH8Uu8hcBeOQPagTxiXPVkI
-r4hyHjxaxGaYJUv+iEHYgj3ZC5XUnQD2ufVIy0VMkzqrteQfj+aMTSd0gmTG3y6Z
-Yf6wPAyGXMJfEXWxdEfb
-=zu89
+iQIcBAEBAgAGBQJRdtPRAAoJELSic+t+oim9NVcP+gJOD4khMgy8thQ9im6XuOfj
+6rmFz7wzd8Hq6xiJ2N8n2c9//RIhs6P5f6eGOXfifP1gVozdyDq8ju993f+fFkY0
+b9UNSWshVAJskJr/nLgHZUpgJ/Nxw/S1/p/Fwxf0JMwfzxr1dvMLtQN+Gvy0/7IU
+o76qn11fILbT9g2o+vO9tfUQzMkFlJpTas4gsQsnr7XYWfy+lC8orGyhJgqM5VfR
+qYQ8ScGgUkvnLkE0N5zNhyyDw3EMpIkNlZrEA8nr2BTsn/xxBjcIqlPhksjAdoSd
+dW01OtpVZ4QjtArQ809dzJuRHPTcW5i5YkWcVifDsxDyopEmU/19zlba0R9/A2Av
+KZWZmv9AE2ILyWfAroKLyN1+yWc/UjRqH7OHLntBcjI8Hq6d/3OZBFRJWMLhVAoX
+dy3Z7doixHETooUFlAckrLWaaXwHSLHXsN0PCZDiEGB3h81cPZN+qEhoXisbkbxi
+gqJenhe7Sun0XrU1HfoZF/LQDXRk0gR7d0ByN+rrDPSMj4zV5iflHnUjt+4Jdvt0
+Wu6unHr4ZFKzMrd4AJXfUe5+5On2R208BpkTnW0awfNk+eF8BBMs9C3x8PyEWTsY
+MwkL6LYrOORbzjxJN+8x132e7Q8uEcDS0isatO9i3GTM2zUaC1hwVijl4TmwCt+I
+yXk2J3tCIyQuqfi0oT2x
+=0AkG
 -----END PGP SIGNATURE-----
 
---PyWBHxIrsGpYNMFw--
+--JMKEfAmnQy+WzDHS--

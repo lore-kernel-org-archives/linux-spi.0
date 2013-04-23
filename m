@@ -1,66 +1,59 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/3] spi: s3c64xx: Added provision for dedicated cs pin
-Date: Tue, 23 Apr 2013 15:42:56 +0100
-Message-ID: <20130423144256.GP5019@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH 1/3] spi: s3c64xx: added support for polling mode
+Date: Tue, 23 Apr 2013 16:15:12 +0100
+Message-ID: <20130423151511.GR5019@opensource.wolfsonmicro.com>
 References: <1366614565-3743-1-git-send-email-ks.giri@samsung.com>
- <1366614565-3743-3-git-send-email-ks.giri@samsung.com>
+ <1366614565-3743-2-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="o41d8xLWOaLD8vYh"
+	protocol="application/pgp-signature"; boundary="CPn8Wy5ME997YUMW"
 Cc: spi-devel-general@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	grant.likely@secretlab.ca, t.figa@samsung.com
 To: Girish K S <girishks2000@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1366614565-3743-3-git-send-email-ks.giri@samsung.com>
+In-Reply-To: <1366614565-3743-2-git-send-email-ks.giri@samsung.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---o41d8xLWOaLD8vYh
+--CPn8Wy5ME997YUMW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 22, 2013 at 12:39:24PM +0530, Girish K S wrote:
+On Mon, Apr 22, 2013 at 12:39:23PM +0530, Girish K S wrote:
 > From: Girish K S <girishks2000@gmail.com>
 >=20
-> The existing driver supports gpio based /cs signal.
-> For controller's that have one device per controller,
-> the slave device's /cs signal might be internally controlled
-> by the chip select bit of slave select register. They are not
-> externally asserted/deasserted using gpio pin.
+> The 64xx spi driver supports partial polling mode.
+> Only the last chunk of the transfer length is transferred
+> or recieved in polling mode.
 
-This doesn't build:
+This appears to have a very noticable negative impact on SPI performance
+on my S3C6410 based system.  Not delved into it to test why but are you
+sure it's not mistakenly selecting polling?
 
-drivers/spi/spi-s3c64xx.c: In function 's3c64xx_get_slave_ctrldata':
-drivers/spi/spi-s3c64xx.c:1023: error: 'sdd' undeclared (first use in this =
-function)
-drivers/spi/spi-s3c64xx.c:1023: error: (Each undeclared identifier is repor=
-ted only once
-drivers/spi/spi-s3c64xx.c:1023: error: for each function it appears in.)
-
---o41d8xLWOaLD8vYh
+--CPn8Wy5ME997YUMW
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRdp22AAoJELSic+t+oim9HZwP/Rfy/Hh2QPJA+xs2wZULjlZ0
-9t1q4NKWSm5t7Q06uiHr8Pw0CWWFg5JE/YLKOv/3l96BSq+m+qvcPxyQX8UoTfUv
-Fb28SIc4iixHo264z0y/of7EM3v2f+w6Yga0emVwYd06f4yhEo7kbSXyZCUekbKF
-3vy+ikkJCM6m/5fmP83Ho0MAF1YfwJyx7qncjCh8lUbKLXFyOOfdT8uCJui+SYup
-WV5SldLm7z5emzrp6PDHAMZaVB+jbNFmOoR6ZLYGEsOTdNwVjVtta2F5GICeOxGM
-4TQRd99vgHf1bzhrLOcGamgTUSKgVRmi2cU7dfBY6BVPB/oWjMJnlyftM95QMT+F
-TRsyVsC6kx0hzEHd+u+BUtMFkPkflK/496I60WTX0O2cjYdZTAOu65NRDtzocbW5
-Koaydd+OFiYC1zD8eQR2GnqsNJyZeXgSzZsmoijGhyUbKV/34xVaSwHfNyeGp6q6
-HpHBhzikEwpwO+iG4Kl3KMA4lNEv31CdXhpbyxYQl8ETGc2LsOl6rack7EPLITF6
-EqukUNxbj7gYBtdxDg9JN+hu/mck5VP5cQ0UQ9q4DxbN7ygKyYymtchp/Sl3D+DV
-EA5EZXjxjlvswFzx357JaLShpy9/LR1zn0FuFm8EMdkssUp3YasftC4aC4PQ98ZI
-lqAjTfHZ+cXsmF9+X94X
-=FC8B
+iQIcBAEBAgAGBQJRdqU0AAoJELSic+t+oim9j0AP/2LSgiYibWqYsCJ2WrIZDmIT
+P41YOwSxixxvigSChfLHivoP8nUrhbXGjQDL+2ZWBV1dX+JA0YTOqsVCxRY/LCMR
+wa0PJJzL22AJ5cEd4LdEX5Ejwq2HJplTn1i6C0q2X0hy5zFxfR+wxXKwNCxy4t7w
+uqKAwBwC52wQSm1Q67ASzYmPufxsAaNj90ikeFvxVT8ggwXhRN5dECnNZl11hUcy
+w8E6DVEcNcVzj+gxJLxBpqzgki/iGemhp7FLGZ1/SdGV5QjGJyak3CxVbwb/dk/Y
+rNhASRAFaV7bWE4xj6CyNDhmjc6l/cCcsKwKs41hXBfsTtM1pVauBuknFfu1j1vE
+NinclKNCpiu3UrP/bU7HZWVzV+cIZVrqOFIgP+x/MP8WHJalLXi2U7hM3iZPnElH
+o8SMGp1t/PqAtd/sw7WnAsG7mQ1mH8WQZitReyluMKwxs2khBNORFDIHpgnvPJML
+Ek44rzsp6CEd1sqFRyhVW8VaOMPdofoYRG6sfP5yuDMj4/TgByaNnhmTLFr1rxnm
+EGtTaDOwAX2QIzgsl+Az0MHPqu/GEWzOm8xE1HMccD8wcSwyMaMHUttbCh1Qzj7k
+iHHgGyzocp45+DCGXkvERSovVrZ1q1Yr6hoqyr/bVB4+baNuSkTin+eYSXQyft0C
+i7ikPoMuPzUUy64qtrKT
+=EGxO
 -----END PGP SIGNATURE-----
 
---o41d8xLWOaLD8vYh--
+--CPn8Wy5ME997YUMW--

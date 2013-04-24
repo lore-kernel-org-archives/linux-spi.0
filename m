@@ -1,12 +1,13 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v8 7/8] ARM: dts: add spi nodes for the atmel boards
-Date: Wed, 24 Apr 2013 11:04:15 +0100
-Message-ID: <20130424100415.GG5019@opensource.wolfsonmicro.com>
+Subject: Re: [PATCH v8 8/8] ARM: dts: add pinctrl property for spi node for
+ atmel SoC
+Date: Wed, 24 Apr 2013 11:05:32 +0100
+Message-ID: <20130424100532.GH5019@opensource.wolfsonmicro.com>
 References: <1364968581-23700-1-git-send-email-wenyou.yang@atmel.com>
- <1364968986-24236-1-git-send-email-wenyou.yang@atmel.com>
+ <1364969032-24281-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ZOBTspFzEMOlPevk"
+	protocol="application/pgp-signature"; boundary="gHypzss5dW8YUwgb"
 Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
 	richard.genoud@gmail.com, plagnioj@jcrosoft.com,
 	nicolas.ferre@atmel.com, JM.Lin@atmel.com,
@@ -15,40 +16,40 @@ Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
 To: Wenyou Yang <wenyou.yang@atmel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1364968986-24236-1-git-send-email-wenyou.yang@atmel.com>
+In-Reply-To: <1364969032-24281-1-git-send-email-wenyou.yang@atmel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---ZOBTspFzEMOlPevk
+--gHypzss5dW8YUwgb
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Apr 03, 2013 at 02:03:05PM +0800, Wenyou Yang wrote:
-> From: Richard Genoud <richard.genoud@gmail.com>
+On Wed, Apr 03, 2013 at 02:03:52PM +0800, Wenyou Yang wrote:
+> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
 
 Applied, thanks.
 
---ZOBTspFzEMOlPevk
+--gHypzss5dW8YUwgb
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRd64YAAoJELSic+t+oim9Xt8P+gMnF9hG3GkzrnhQFi8iJi67
-kP/0r/mI5fxoKxUk8TkLrhTHB7qBGG5q87IaIZ864CCWIK1vXenn9+7yHWteAVmF
-RDT4oAcnojCIaXbAYSsC9evH3PKaPS1smBqSN70zPvBWB2B3TdwbZZ7tb8Sj1wAh
-+0D+Cxb6LDcYeAR+9r+iE2mEDxfcoyyBII7NlGT6nZsZF6PUe9tEryOfWJyG78ce
-rWc9+HXxDtrlr01eR8Tak/gKKHXbKNxwSu/xmWhED4sz4wiAdk0aNQbxcENPzMv3
-hfuNBCGAKFUR1QRPrnJxqj+wC1gbn/ipReR0tQN4RSlyMrVfGnBOIO+4JQgPkPVo
-jW4rgkeludy18PnIgdHyPmMnwvpRXW5vSbVdFzTevW7UV5vpmL4cI7rK1k3brNay
-Nsq6fompztl6IEhZzhBGn4ra92gS2jTodYp5aXdk/AaihQ5+9g18qUtSAJmqPGlE
-pf7kfi19wQU79mzSYl9JffBZ1XL334pSIwzKfDA3wGoWl7+bPVwKp3dYZyNztScA
-fy0lRM2xzltcPx8pzU6kQBQUenOoYdLvdSHDaLDrNXPkCx6cVGUndLxCDu9Dlidl
-zng/JnIsUa67P4NWLUrfnsdHcg07DQ5KofRvEEtk5GFW8QX0mojO9h/Tx/a1uP5W
-Ooy12uZ0lqvxNSfDmLJY
-=IxfP
+iQIcBAEBAgAGBQJRd65JAAoJELSic+t+oim911UP/RrUpYwVNP8/0k1JbpGg6ui4
++bjaXqMEISLLwOArYgDalrc2l9YQpJD/2nPQ5YXHPXXKVnCS84PfdKSwHTCOhBCZ
+1xga9528deI8KSD4yvM2SD2OZSDM+KWWlZ6T/7YuTEBVlkEXTd4atQ1vw5Ezj7P4
+hOVQEtbL4MYvs7X8PGneY/JMcBNPu91TjppmlaT6xuV4EAwIBAk5gO9qvT7AGvxI
+9yL3FruMs/0jz9SipKL5sSPTE/xH5fbQfSo2Hjf7+zYRvE0wL0GS09VgsdcIhDgZ
+qKobYB5xwBSZNwyMOEBU/JCv4/BQQWn2uRAXWR936Ytk62IYtLvojo4srilC0rra
+5jALKwCNlRq094zXPlHbJuYQQLks1oMUh9/xACOBiMZyMuz7uzd132q46stAl/Gc
+y0HI+wVzQB0Ik/BxOOzjcMIufPd1X/GoB1fuA3SsSM4TCgiZdSk/ZAXoXgomOOWZ
+yABca/wH3VYXlHGHcAlaxSGnmgLPnMp+y5rvM1G58jHfETXgYDaqZyT7OBmrQdC8
+efjg6RKYEOqUzxxbGDg4mXNB14bJE4I9+Pj5iMApp6OX0guj+58nfgY8e10XY8sR
+xG7XRIRYPTO3wu96xxaYTlHK+YQr5F4dunkrqZbjKHlQ6AM11wRYJKy/y/1mdvI1
+FTVyUGe124JVfHUSQZRC
+=0dTk
 -----END PGP SIGNATURE-----
 
---ZOBTspFzEMOlPevk--
+--gHypzss5dW8YUwgb--

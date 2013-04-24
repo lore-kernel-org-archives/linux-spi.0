@@ -1,10 +1,11 @@
-From: 15989349144-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] ‰ª£/ÂºÄ‚Äï‚ÄïÂèë/Á•®
-Date: Wed, 24 Apr 2013 05:58:51 +0800
-Message-ID: <E1UUlEm-0006Mm-CX@sfs-ml-4.v29.ch3.sourceforge.com>
+From: =?GB2312?B?z/7P/g==?= <wr29qbnaohid_kelly-dbdLmdGazhY@public.gmane.org>
+Subject: [SPAM] Â¶Ç‰ΩïÂÅöÂ•ΩÂÇ®‰ΩçÁÆ°ÁêÜÔºü186775
+Date: Wed, 24 Apr 2013 11:48:31 +0800
+Message-ID: <E1UUqh5-0007JZ-Bz@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
+	charset="gb2312"
+Content-Transfer-Encoding: 8bit
 To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,16 +18,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICDP1rG+uavLvtPQ0ruyv7fW16jTw8uwoaqhqsaxtPq/qqO7CrnzuavLvsjn09DQ
-6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6ICAKICAKICAgILi61PDIy6O61cXPyMn6KDApMTU5
-ODkzNDkxNDQKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUcnkgTmV3IFJlbGljIE5vdyAmIFdlJ2xs
-IFNlbmQgWW91IHRoaXMgQ29vbCBTaGlydApOZXcgUmVsaWMgaXMgdGhlIG9ubHkgU2FhUy1iYXNl
-ZCBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZSBtb25pdG9yaW5nIHNlcnZpY2UgCnRoYXQgZGVsaXZl
-cnMgcG93ZXJmdWwgZnVsbCBzdGFjayBhbmFseXRpY3MuIE9wdGltaXplIGFuZCBtb25pdG9yIHlv
-dXIKYnJvd3NlciwgYXBwLCAmIHNlcnZlcnMgd2l0aCBqdXN0IGEgZmV3IGxpbmVzIG9mIGNvZGUu
-IFRyeSBOZXcgUmVsaWMKYW5kIGdldCB0aGlzIGF3ZXNvbWUgTmVyZCBMaWZlIHNoaXJ0ISBodHRw
-Oi8vcC5zZi5uZXQvc2Z1L25ld3JlbGljX2QyZF9hcHIKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+This is a multi-part message in MIME format
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+
+spi-devel-general£¨ƒ˙∫√£°
+
+1.µ±ΩÒŒÔ¡˜≤÷¥¢π‹¿ÌµƒÃÙ’Ω « ≤√¥£ø186775
+
+2.»Á∫Œ◊ˆ∫√ ’ªı»Îø‚π‹¿Ì£ø186775
+
+3.»Á∫Œ◊ˆ∫√¥¢Œªπ‹¿Ì£ø186775
+
+4.»Á∫ŒÃ·∏ﬂºªı£®∑¢¡œ£©µƒ–ß¬ £ø186775
+
+5.»Á∫ŒÃ·∏ﬂ≈Ãµ„µƒ”––ß–‘£ø186775
+
+6.»Á∫ŒΩµµÕ≤÷¥¢π‹¿ÌµƒÀ∫ƒ£ø186775
+
+7.»Á∫Œ—°‘Ò”ÎŒ¨ª§ŒÔ¡˜…Ë±∏£ø186775
+
+8.»Á∫Œ◊ˆ∫√≈‰ÀÕ‘À ‰π‹¿Ì?186775
+
+9.»Á∫ŒΩµµÕ‘À ‰≥…±æ£ø186775
+
+10.»Á∫Œπ‹¿Ì∫√ø‚¥Ê£ø186775
+
+11.»Á∫ŒÃ·∏ﬂ–≈œ¢ªØ∂‘ø‚¥Êπ‹¿Ìµƒ◊˜”√£ø186775
+11:48:30
+
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+Try New Relic Now & We'll Send You this Cool Shirt
+New Relic is the only SaaS-based application performance monitoring service 
+that delivers powerful full stack analytics. Optimize and monitor your
+browser, app, & servers with just a few lines of code. Try New Relic
+and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr
+--=_NextPart_2rfkindysadvnqw3nerasdf
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--=_NextPart_2rfkindysadvnqw3nerasdf--

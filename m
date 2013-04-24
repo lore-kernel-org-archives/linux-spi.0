@@ -1,12 +1,12 @@
-From: =?GB2312?B?z/7P/g==?= <wr29qbnaohid_kelly-dbdLmdGazhY@public.gmane.org>
-Subject: [SPAM] Â¶Ç‰ΩïÂÅöÂ•ΩÂÇ®‰ΩçÁÆ°ÁêÜÔºü186775
-Date: Wed, 24 Apr 2013 11:48:31 +0800
-Message-ID: <E1UUqh5-0007JZ-Bz@sfs-ml-3.v29.ch3.sourceforge.com>
+From: "Amoureux.com" <contact-PRcAKJYwN4VGWvitb5QawA@public.gmane.org>
+Subject: [SPAM] Consultez les autres profils dans votre r√©gion
+Date: Wed, 24 Apr 2013 04:34:29 +0000 (CET)
+Message-ID: <130424043429.-38611410200007460@obfm42.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="=_NextPart_2rfkindysadvnqw3nerasdf";
-	charset="gb2312"
-Content-Transfer-Encoding: 8bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,58 +18,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-
-spi-devel-general£¨ƒ˙∫√£°
-
-1.µ±ΩÒŒÔ¡˜≤÷¥¢π‹¿ÌµƒÃÙ’Ω « ≤√¥£ø186775
-
-2.»Á∫Œ◊ˆ∫√ ’ªı»Îø‚π‹¿Ì£ø186775
-
-3.»Á∫Œ◊ˆ∫√¥¢Œªπ‹¿Ì£ø186775
-
-4.»Á∫ŒÃ·∏ﬂºªı£®∑¢¡œ£©µƒ–ß¬ £ø186775
-
-5.»Á∫ŒÃ·∏ﬂ≈Ãµ„µƒ”––ß–‘£ø186775
-
-6.»Á∫ŒΩµµÕ≤÷¥¢π‹¿ÌµƒÀ∫ƒ£ø186775
-
-7.»Á∫Œ—°‘Ò”ÎŒ¨ª§ŒÔ¡˜…Ë±∏£ø186775
-
-8.»Á∫Œ◊ˆ∫√≈‰ÀÕ‘À ‰π‹¿Ì?186775
-
-9.»Á∫ŒΩµµÕ‘À ‰≥…±æ£ø186775
-
-10.»Á∫Œπ‹¿Ì∫√ø‚¥Ê£ø186775
-
-11.»Á∫ŒÃ·∏ﬂ–≈œ¢ªØ∂‘ø‚¥Êπ‹¿Ìµƒ◊˜”√£ø186775
-11:48:30
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Try New Relic Now & We'll Send You this Cool Shirt
-New Relic is the only SaaS-based application performance monitoring service 
-that delivers powerful full stack analytics. Optimize and monitor your
-browser, app, & servers with just a few lines of code. Try New Relic
-and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+CsKgCgooaHR0cDovL29iZm00Mi5jb20vcWlpanhmZW81bW16bjBrZ3NnL2luZGV4MC5odG1sKQoo
+aHR0cDovL29iZm00Mi5jb20vamtpbHVmYzM1MWg0djJ2Z2xqL2luZGV4MS5odG1sKQpSZW5jb250
+cmVzIEdyYXR1aXRlcwpEZXB1aXMgMTk5OAooaHR0cDovL29iZm00Mi5jb20vZ2FpcTJmMzQ1bDF6
+MmR1MXlxL2luZGV4Mi5odG1sKQooaHR0cDovL29iZm00Mi5jb20vb3Zpc2hmdHQ1dmc0bGxlMWRv
+L2luZGV4My5odG1sKQpDwrRlc3QKCkdSQVRVSVQgCgooaHR0cDovL29iZm00Mi5jb20vcGFlYjIz
+MHphaHh6d2d1amVqL2luZGV4NC5odG1sKQpJbnNjcmlwdGlvbgpDaGF0CkNvbnN1bHRhdGlvbiBk
+ZXMgcHJvZmlscwpNZXNzYWdlcmllCkRpYWxvZ3VlCmV0IFRPVVQgbGUgcmVzdGUKCihodHRwOi8v
+b2JmbTQyLmNvbS9tdmUxaDNpYmFnajRlcWVqdWcvaW5kZXg1Lmh0bWwpCkrCtGVuIHByb2ZpdGUg
+IQooaHR0cDovL29iZm00Mi5jb20vNWllMHgzZmphMjV6MDFreHZvL2luZGV4Ni5odG1sKQoiSidh
+aSBlbnZpZSBkZSBmYWlyZSBjb25uYWlzc2FuY2UiCgooaHR0cDovL29iZm00Mi5jb20vcmtlZnUz
+a2FhbmE0ZGN2eGtxL2luZGV4Ny5odG1sKQpNZXNzYWdlCihodHRwOi8vb2JmbTQyLmNvbS9paXF4
+Zm92ZzVweno1aWtuNGcvaW5kZXg4Lmh0bWwpCkZhdm9yaQooaHR0cDovL29iZm00Mi5jb20vYWtx
+MmtvMWg1ZnU0YWh2bm5qL2luZGV4OS5odG1sKQpGbGFzaGVyCihodHRwOi8vY2xrLnRyYWRlZG91
+Ymxlci5jb20vY2xpY2s/cD0yMTE3ODkmYT0xODIyMTEzJmc9MjEwMjQwNzYmdXJsPWh0dHA6Ly9s
+YW5kaW5nLmFtb3VyZXV4LmNvbS8/Y2FtcGFpbj1mZW1tZV9jb2V1ciZmcm9tYW5uPXBsZF9zaW1w
+bGUmYWZmaV9wYXJ0bmVyPTE4MjIxMTMpCkNoYXR0ZXIKKGh0dHA6Ly9jbGsudHJhZGVkb3VibGVy
+LmNvbS9jbGljaz9wPTIxMTc4OSZhPTE4MjIxMTMmZz0yMTAyNDA3NiZ1cmw9aHR0cDovL2xhbmRp
+bmcuYW1vdXJldXguY29tLz9jYW1wYWluPWZlbW1lX2NvZXVyJmZyb21hbm49cGxkX3NpbXBsZSZh
+ZmZpX3BhcnRuZXI9MTgyMjExMykKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRyeSBOZXcgUmVsaWMg
+Tm93ICYgV2UnbGwgU2VuZCBZb3UgdGhpcyBDb29sIFNoaXJ0Ck5ldyBSZWxpYyBpcyB0aGUgb25s
+eSBTYWFTLWJhc2VkIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlIG1vbml0b3Jpbmcgc2VydmljZSAK
+dGhhdCBkZWxpdmVycyBwb3dlcmZ1bCBmdWxsIHN0YWNrIGFuYWx5dGljcy4gT3B0aW1pemUgYW5k
+IG1vbml0b3IgeW91cgpicm93c2VyLCBhcHAsICYgc2VydmVycyB3aXRoIGp1c3QgYSBmZXcgbGlu
+ZXMgb2YgY29kZS4gVHJ5IE5ldyBSZWxpYwphbmQgZ2V0IHRoaXMgYXdlc29tZSBOZXJkIExpZmUg
+c2hpcnQhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvbmV3cmVsaWNfZDJkX2FwcgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
+aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
+bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

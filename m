@@ -1,50 +1,61 @@
-From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/3] spi: s3c64xx: Added provision for dedicated cs pin
-Date: Wed, 24 Apr 2013 15:09:38 +0530
-Message-ID: <CAKrE-KdJZHzVH-0sRkP2hyPBcn9CMiqgQBcrZTap6zwVuAhZLQ@mail.gmail.com>
-References: <1366614565-3743-1-git-send-email-ks.giri@samsung.com>
-	<1366614565-3743-3-git-send-email-ks.giri@samsung.com>
-	<20130423144256.GP5019@opensource.wolfsonmicro.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v8 3/8] spi/spi-atmel: add dmaengine support
+Date: Wed, 24 Apr 2013 11:00:32 +0100
+Message-ID: <20130424100032.GC5019@opensource.wolfsonmicro.com>
+References: <1364968581-23700-1-git-send-email-wenyou.yang@atmel.com>
+ <1364968759-24036-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130423144256.GP5019-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="MHoG8na4IvP3G3ze"
+Cc: linux-arm-kernel@lists.infradead.org, grant.likely@secretlab.ca,
+	richard.genoud@gmail.com, plagnioj@jcrosoft.com,
+	nicolas.ferre@atmel.com, JM.Lin@atmel.com,
+	spi-devel-general@lists.sourceforge.net,
+	spi-devel-general@lists.sourceforge.ne,
+	linux-kernel@vger.kernel.org
+To: Wenyou Yang <wenyou.yang@atmel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1364968759-24036-1-git-send-email-wenyou.yang@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Apr 23, 2013 at 8:12 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Mon, Apr 22, 2013 at 12:39:24PM +0530, Girish K S wrote:
->> From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->>
->> The existing driver supports gpio based /cs signal.
->> For controller's that have one device per controller,
->> the slave device's /cs signal might be internally controlled
->> by the chip select bit of slave select register. They are not
->> externally asserted/deasserted using gpio pin.
->
-> This doesn't build:
->
-> drivers/spi/spi-s3c64xx.c: In function 's3c64xx_get_slave_ctrldata':
-> drivers/spi/spi-s3c64xx.c:1023: error: 'sdd' undeclared (first use in this function)
-> drivers/spi/spi-s3c64xx.c:1023: error: (Each undeclared identifier is reported only once
-> drivers/spi/spi-s3c64xx.c:1023: error: for each function it appears in.)
 
-Ohhhhhh. Sorry. forgot to commit the changes before patch generation
+--MHoG8na4IvP3G3ze
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-------------------------------------------------------------------------------
-Try New Relic Now & We'll Send You this Cool Shirt
-New Relic is the only SaaS-based application performance monitoring service 
-that delivers powerful full stack analytics. Optimize and monitor your
-browser, app, & servers with just a few lines of code. Try New Relic
-and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr
+On Wed, Apr 03, 2013 at 01:59:19PM +0800, Wenyou Yang wrote:
+> From: Nicolas Ferre <nicolas.ferre@atmel.com>
+>=20
+> Add dmaengine support.
+>=20
+> Using "has_dma_support" member of struct is used to select
+> the transfer mode: dmaengine or pdc.
+
+Applied, thanks.
+
+--MHoG8na4IvP3G3ze
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRd604AAoJELSic+t+oim953AP/j6CzZGxZkATpXh1XNBgQw6T
+YMjhju42yN9wcsb2TA5r/NMtu2TU5U5hepiKnlhO3H77upyLiuGn1++P5vEDZT5w
+u6RpAFo088uYDqnYfDBTjO0VYAcGuvegci0ub17eWVT/Xalt8a/s9zfdwvCIupUf
+ckBAfyOY1ExKtCvX/QxxNhHw8YPUIOzX6oXiBop8zLVOjfbbKPfhAxWhm9pCV1rV
+LYL+V02BbFj/Eet5P/xAOZ5tEOweXIfWom00uoEsk1wgOP+q0ShV8NWzoXqcNZPv
+UDKP4UpqPWZKHaAuitfXJ/wPtlJkVMBcL9sakyA/3QnUMSe0e3WXwgMLCZaYqhQh
+MNGwHknPLkRAaKFQCz7FUZnSFVp+yEXP+a4sbGF4KAaWfgbk1SdadxVL669P/HxV
+2bDVpZ0GcA4MR8DCGfTT8JgE0eqyfHsX7rG5SKWxpcbwcAaKq7Qg8GdYsWmzUCKI
+iEczkeFrnN6Wjw6UFGoIrb38UhaD8sWe7LEA6E43CwUEmt8sR4yZGklfnIA5Q6Dh
+2ypDzWc86AUb3KINZtqHTnCXjNtfrF+I3zKvznj+SjB0CAEUN2m4O7bHHXAJKGAH
+MD4MX+T9Gtts8a4pSH4g9SHWaQr0/iIP0FhXLEncLL8K18tYwlxPNGFPjq9AF5g1
+vvewOzzsvKIOQh6n6Qhf
+=ZiwJ
+-----END PGP SIGNATURE-----
+
+--MHoG8na4IvP3G3ze--

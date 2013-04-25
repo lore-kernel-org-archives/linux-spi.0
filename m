@@ -1,12 +1,12 @@
-From: "Lee Cooper" <contact-GE0/2U7jJN5QFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Lee Cooper : 15% offerts sur t-shirt, jeans
-Date: Thu, 25 Apr 2013 15:42:55 +0000 (CET)
-Message-ID: <130425154255.2211590700004496@obfm41.com>
+From: Bredenkamp <johnbredenk-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
+Subject: [SPAM] please read
+Date: Thu, 25 Apr 2013 22:19:18 +0300 (IDT)
+Message-ID: <20130425191918.CF812687E8@newjup.hadara.ps>
+Reply-To: jonny1278-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,74 +18,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQxLmNvbS9hNGsya3V3ZmwydTN3MmJvdnkvaW5kZXgwLmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQxLmNvbS9pcmt4ZnVxcGxuemFlMDBva2wvaW5kZXgxLmh0bWwpCsKgClRlZSBT
-aGlydCBMRUUgQ09PUEVSIEhFTElBUyAyIExJR0hUIEJMVUUKKGh0dHA6Ly9vYmZtNDEuY29tLzNu
-a3RpdXBrbGh5MzBsdGZlcy9pbmRleDIuaHRtbCkKTGVlIENvb3BlcgooaHR0cDovL29iZm00MS5j
-b20vaDVrYzB1c3NsZ2JhZGQyZnVkL2luZGV4My5odG1sKQozOSwwMCDigqwKKGh0dHA6Ly9vYmZt
-NDEuY29tLzFuM2dpYmR1MmxsM25xdHF5bC9pbmRleDQuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDEu
-Y29tL2Y1M3kwYnJ5MnYyYXZnMnFkeS9pbmRleDUuaHRtbCkKwqAKSmVhbiBMRUUgQ09PUEVSIExD
-MTIyIDYwOTAgUmF3CihodHRwOi8vb2JmbTQxLmNvbS9jNDNva2JveDJtdjMyY2Jjc2QvaW5kZXg2
-Lmh0bWwpCkxlZSBDb29wZXIKKGh0dHA6Ly9vYmZtNDEuY29tL3hyM2RmYjQ1MjFuYWwxMGNscy9p
-bmRleDcuaHRtbCkKODAsMDAg4oKsCihodHRwOi8vb2JmbTQxLmNvbS9qNHNsdXpuMWx0aDNwaGI0
-MnkvaW5kZXg4Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQxLmNvbS9xcnNqeHpnbWw0bWEzaTA0dGwv
-aW5kZXg5Lmh0bWwpCsKgClRlZSBTaGlydCBMRUUgQ09PUEVSIEplcmljMiBPcmFuZ2UKKGh0dHA6
-Ly9vYmZtNDEuY29tL2J1d3dlM3ViengwNHFqdWFnZC9pbmRleDEwLmh0bWwpCkxlZSBDb29wZXIK
-KGh0dHA6Ly9vYmZtNDEuY29tLzBheHAwZGZ5eHIwYmJvbjBvZC9pbmRleDExLmh0bWwpCjI5LDAw
-IOKCrAooaHR0cDovL29iZm00MS5jb20vcDFnYmdxbXcza2psYW5ybmRnL2luZGV4MTIuaHRtbCkK
-wqAKKGh0dHA6Ly9vYmZtNDEuY29tL20yazFta2Rlc2xqZXd3M295Zy9pbmRleDEzLmh0bWwpCsKg
-CkNoZW1pc2UgTEVFIENPT1BFUiBHQVJOT1IgQ09MT05ZIEJMVUUKKGh0dHA6Ly9vYmZtNDEuY29t
-LzR5dGtuejMwZGlmaXR6eHRxbC9pbmRleDE0Lmh0bWwpCkxlZSBDb29wZXIKKGh0dHA6Ly9vYmZt
-NDEuY29tL25qbWlsMWJkaWpmZ2c0Z2hqbC9pbmRleDE1Lmh0bWwpCjY5LDAwIOKCrAooaHR0cDov
-L29iZm00MS5jb20vcHJ0dHh6cHJsaTVhdHYwdGRnL2luZGV4MTYuaHRtbCkKwqAKKGh0dHA6Ly9v
-YmZtNDEuY29tL213bWNhMXlpaGo1b2dlc2h5Zy9pbmRleDE3Lmh0bWwpCsKgClBvbG8gTEVFIENP
-T1BFUiBHVVJWQUwyIEVzdGF0ZSBCbHVlCihodHRwOi8vb2JmbTQxLmNvbS93ZW4zYWl4aTU1cHNj
-azRhb3kvaW5kZXgxOC5odG1sKQpMZWUgQ29vcGVyCihodHRwOi8vb2JmbTQxLmNvbS96aWZleHNr
-cmJjcHV5dWUwZ3kvaW5kZXgxOS5odG1sKQozOSwwMCDigqwKKGh0dHA6Ly9vYmZtNDEuY29tL3V2
-c3ZpNHZreXRza3B5azRnbC9pbmRleDIwLmh0bWwpCsKgCihodHRwOi8vb2JmbTQxLmNvbS9laGhh
-Y2NjNGFuc3l2c3dnb2wvaW5kZXgyMS5odG1sKQrCoApQb2xvIExFRSBDT09QRVIgR1VSVkFMMiBE
-YXJrIEdyZXkKKGh0dHA6Ly9vYmZtNDEuY29tL2t6bWtlMWF0aGF0bzF5eWhxbC9pbmRleDIyLmh0
-bWwpCkxlZSBDb29wZXIKKGh0dHA6Ly9vYmZtNDEuY29tL3Y1dGkwenRzbHF0YXNzMnRqbC9pbmRl
-eDIzLmh0bWwpCjM5LDAwIOKCrAooaHR0cDovL29iZm00MS5jb20vdWQxZXBnazNpYzRxeWJvMmds
-L2luZGV4MjQuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDEuY29tL2VxNDNvdXhwZDU0aGN0YzNvbC9p
-bmRleDI1Lmh0bWwpCsKgCkNoZW1pc2UgTEVFIENPT1BFUiBHQVJOT04gV0hJVEUKKGh0dHA6Ly9v
-YmZtNDEuY29tL2t0a3U0a2lmc3ZrZWViYW9xbC9pbmRleDI2Lmh0bWwpCkxlZSBDb29wZXIKKGh0
-dHA6Ly9vYmZtNDEuY29tL3ZmZ2hzcTJvM3NrbDV0bW5qbC9pbmRleDI3Lmh0bWwpCjU1LDAwIOKC
-rAooaHR0cDovL29iZm00MS5jb20vMGxzcHJ6eHVkcGRpZm9mazJsL2luZGV4MjguaHRtbCkKwqAK
-KGh0dHA6Ly9vYmZtNDEuY29tL2JnaHdxMWt6aTFkZ2xqcTF0bC9pbmRleDI5Lmh0bWwpCsKgClRl
-ZSBzaGlydCBMRUUgQ09PUEVSIEhlbGlhcyBEYXJrIFNoYWRvdwooaHR0cDovL29iZm00MS5jb20v
-eDF0bHE0d3pzMGx2NGdpc2ZqL2luZGV4MzAuaHRtbCkKTGVlIENvb3BlcgooaHR0cDovL29iZm00
-MS5jb20vYzJtanJjZ3UzemxkaHFwbTFqL2luZGV4MzEuaHRtbCkKMzYsODAg4oKsCihodHRwOi8v
-b2JmbTQxLmNvbS9ia3RuazRleHkwZWs0eHVzdHkvaW5kZXgzMi5odG1sKQrCoAooaHR0cDovL29i
-Zm00MS5jb20vMDNtNXRjMWphemV5aGZubTJ5L2luZGV4MzMuaHRtbCkKwqAKVGVlIHNoaXJ0IExF
-RSBDT09QRVIgR0FWRU4yIEJMQUNLCihodHRwOi8vb2JmbTQxLmNvbS94cmdkZmd6NWhmbmpqMWR2
-ZmovaW5kZXgzNC5odG1sKQpMZWUgQ29vcGVyCihodHRwOi8vb2JmbTQxLmNvbS9jd2tvM3VvYWxt
-bjMwY3RmMWovaW5kZXgzNS5odG1sKQoyOSwwMCDigqwKKGh0dHA6Ly9vYmZtNDEuY29tL2doMGcx
-cGRuemRnejRyZXljZy9pbmRleDM2Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQxLmNvbS9vdjV5aDBt
-dnh1Z3RobTRyeGcvaW5kZXgzNy5odG1sKQrCoApKZWFuIExFRSBDT09QRVIgTEVYT04gNjA1NyBT
-dG9uZQooaHR0cDovL29iZm00MS5jb20veW56bmh2dnZnYnFmcjVzcHR5L2luZGV4MzguaHRtbCkK
-TGVlIENvb3BlcgooaHR0cDovL29iZm00MS5jb20vZG1jNTFqY252d3E1dXAwbDJ5L2luZGV4Mzku
-aHRtbCkKOTQsOTAg4oKsCihodHRwOi8vb2JmbTQxLmNvbS9nbTFxMWdzbmhxZ2p5cmQyY3EvaW5k
-ZXg0MC5odG1sKQrCoAooaHR0cDovL29iZm00MS5jb20vb240c2h1NXZsYWczY210M3hxL2luZGV4
-NDEuaHRtbCkKwqAKU3dlYXQgTEVFIENPT1BFUiBIQU5TIEJMQUNLIDk5OAooaHR0cDovL29iZm00
-MS5jb20vcWFrajJrcWx5bjF1ZXJ2bzFxL2luZGV4NDIuaHRtbCkKTGVlIENvb3BlcgooaHR0cDov
-L29iZm00MS5jb20vanVnbHZxbjJhdDFzNW16bmZxL2luZGV4NDMuaHRtbCkKNjksMDAg4oKsCiho
-dHRwOi8vb2JmbTQxLmNvbS9pMTVmcTBqNGY1eTIxZHJpMWcvaW5kZXg0NC5odG1sKQrCoAooaHR0
-cDovL29iZm00MS5jb20vYTIwMHJwNGs0Y3l3c2wzYmZnL2luZGV4NDUuaHRtbCkKwqAKQ2hlbWlz
-ZSBMRUUgQ09PUEVSIEhVUkJBTiBJTkRJR08KKGh0dHA6Ly9vYmZtNDEuY29tL2hqZDFkNWxzd3Ni
-bXBkMXpjZy9pbmRleDQ2Lmh0bWwpCkxlZSBDb29wZXIKKGh0dHA6Ly9vYmZtNDEuY29tLzN5YWJ3
-MnJ0Y3ZiY3ZsanF4Zy9pbmRleDQ3Lmh0bWwpCjU1LDAwIOKCrAooaHR0cDovL29iZm00MS5jb20v
-M3BjdHRqcG92aXU1YjIyMnhqL2luZGV4NDguaHRtbCkKwqAKVm9pciB0b3V0ZSBsYSBzw6lsZWN0
-aW9uIMK7CihodHRwOi8vb2JmbTQxLmNvbS9oNHpja3Z5ZmdqdWZxMHkzY2ovaW5kZXg0OS5odG1s
-KQrCoAooaHR0cDovL29iZm00MS5jb20vdmtxaGtvMmZ1c2s0NXR1bjBsL2luZGV4NTAuaHRtbCkK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tClRyeSBOZXcgUmVsaWMgTm93ICYgV2UnbGwgU2VuZCBZb3Ug
-dGhpcyBDb29sIFNoaXJ0Ck5ldyBSZWxpYyBpcyB0aGUgb25seSBTYWFTLWJhc2VkIGFwcGxpY2F0
-aW9uIHBlcmZvcm1hbmNlIG1vbml0b3Jpbmcgc2VydmljZSAKdGhhdCBkZWxpdmVycyBwb3dlcmZ1
-bCBmdWxsIHN0YWNrIGFuYWx5dGljcy4gT3B0aW1pemUgYW5kIG1vbml0b3IgeW91cgpicm93c2Vy
-LCBhcHAsICYgc2VydmVycyB3aXRoIGp1c3QgYSBmZXcgbGluZXMgb2YgY29kZS4gVHJ5IE5ldyBS
-ZWxpYwphbmQgZ2V0IHRoaXMgYXdlc29tZSBOZXJkIExpZmUgc2hpcnQhIGh0dHA6Ly9wLnNmLm5l
-dC9zZnUvbmV3cmVsaWNfZDJkX2FwcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+Good day my dear friend, please do not be surprised to receiving my letter. I wish to establish a profitable business investment in your country.
+
+My preference is any good profit yielding business and I would appreciate any ideas you could come up with. I will also need you to help me look for properties like a home for sale as I am also proposing to invest a large sum of amount (i will only disclose the amount when i am sure and confident in your services and honesty) for this. I need you to reply me only if you are interested with some introduction about your self and business idea you have for me, you can also provide a direct cell phone number of yours for verbal communication between us alone. I am offering you a life changing compensation from my part and you will never regret working with me.
+
+For a brief on my personality: my name is Mr John Bredenkamp, based in the United Kingdom. I was into private Shipping Business, I dropped my Shipping business because it was not producing profitable income and so many political problems. You can find more details about me through the links below:
+
+(http://www.iol.co.za/news/africa/zimbabwean-tycoon-arrested-1.286472)
+
+(http://sportsillustrated.cnn.com/vault/article/magazine/MAG1008794/index.htm)
+
+
+My need for this project is urgent and if you are not ready to be online at all point in time with prompt respond to my mails and call please do indicate that asap in your first reply. I am planning to move out of this country with my family down to your country. I want you to also help in finding a good home where my family and I will live in a (Mini Estate) to be precise.
+
+Kindly reply me asap with interest.
+
+
+Warm Regards,
+Mr.Jonny
+
+
+Note : Please do not reply me if you are not capable and responsible!!!
+
+
+
+------------------------------------------------------------------------------
+Try New Relic Now & We'll Send You this Cool Shirt
+New Relic is the only SaaS-based application performance monitoring service 
+that delivers powerful full stack analytics. Optimize and monitor your
+browser, app, & servers with just a few lines of code. Try New Relic
+and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr

@@ -1,12 +1,14 @@
-From: "Kaporal par Jeanstory" <contact-rpgDg82rM6BGWvitb5QawA@public.gmane.org>
-Subject: Nouvelle Collection Kaporal, livraison gratuite, stock limite
-Date: Thu, 25 Apr 2013 03:10:21 +0000 (CET)
-Message-ID: <130425031021.-30476190500006692@obfm42.com>
+From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi-topcliff-pch: missing platform_driver_unregister() on
+	error in pch_spi_init()
+Date: Thu, 25 Apr 2013 15:18:02 +0800
+Message-ID: <CAPgLHd-QZXdb39icvhUKWm+hCT4O2dnF5kPAmPeaxXPsU8MMNA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,74 +20,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQyLmNvbS8xY29nb3NoY3hzbnY1dWF3YmcvaW5kZXgwLmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQyLmNvbS9mdG95NHMycnhrdmVha2l3MGovaW5kZXgxLmh0bWwpCsKgCihodHRw
-Oi8vb2JmbTQyLmNvbS9jeG9vZHN1ZXhwMnZ4ejNldHEvaW5kZXgyLmh0bWwpCsKgClRlZSBzaGly
-dCBLQVBPUkFMNSBaeWJsYSBUdXJxdW9pc2UKKGh0dHA6Ly9vYmZtNDIuY29tL3gyb2Ryc3hkeGZs
-ZWo0aGUyby9pbmRleDMuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQyLmNvbS9heHMyZDQx
-dmp0YnZwcDM0bmovaW5kZXg0Lmh0bWwpCjI5LDAwIOKCrAooaHR0cDovL29iZm00Mi5jb20vaTJz
-eHI0dmxqNHllMzVoNDRnL2luZGV4NS5odG1sKQrCoAooaHR0cDovL29iZm00Mi5jb20vM2NzdG80
-YjFqM3p2ZjNha3dvL2luZGV4Ni5odG1sKQrCoApUZWUgU2hscnQgS0FQT1JBTDUgTk9SRVYgTm9p
-cgooaHR0cDovL29iZm00Mi5jb20vaHRzYzQ0YW1qb3Vlb2Fpa3pxL2luZGV4Ny5odG1sKQpLYXBv
-cmFsIDUKKGh0dHA6Ly9vYmZtNDIuY29tL21jMzFqdGl4eGw1dm54YXF1Zy9pbmRleDguaHRtbCkK
-MjUsMDAg4oKsCihodHRwOi8vb2JmbTQyLmNvbS9wdDNienQwNXh2YWV2ZmlxZWovaW5kZXg5Lmh0
-bWwpCsKgCihodHRwOi8vb2JmbTQyLmNvbS90bmh6aTFkZGV2ZG92d2xncXMvaW5kZXgxMC5odG1s
-KQrCoApUZWUgU2hscnQgS0FQT1JBTDUgTmFjaWQgUm95CihodHRwOi8vb2JmbTQyLmNvbS8ybXNt
-Y3ptMHFzZGFwbmI0anMvaW5kZXgxMS5odG1sKQpLYXBvcmFsIDUKKGh0dHA6Ly9vYmZtNDIuY29t
-LzVqMDBsNWZ1bWN4bXNvZmJsai9pbmRleDEyLmh0bWwpCjM1LDAwIOKCrAooaHR0cDovL29iZm00
-Mi5jb20vcnk1Zm4ydXoyNXhjMWpxaXNqL2luZGV4MTMuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDIu
-Y29tL3oyanZtZGd5YnRvMDVxbXdneS9pbmRleDE0Lmh0bWwpCsKgCkplYW5zIEtBUE9SQUwgNSBC
-cm96IEF1dGhlbnRpYwooaHR0cDovL29iZm00Mi5jb20vdzFlYWczd2I1bm9uZWdham95L2luZGV4
-MTUuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQyLmNvbS81M2oyYmQxYXR0YWI1ZjR3bGov
-aW5kZXgxNi5odG1sKQo4OSwwMCDigqwKKGh0dHA6Ly9vYmZtNDIuY29tL3JrZXh1M2U1cG5hNGV4
-ZWpzai9pbmRleDE3Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQyLmNvbS9uNGlodXhyNWlsM3BuMTBn
-amwvaW5kZXgxOC5odG1sKQrCoApKZWFucyBLQVBPUkFMIDUgQnJveiBGcmlwZQooaHR0cDovL29i
-Zm00Mi5jb20vNHB5dWJubGFkazN4M2NzNHFsL2luZGV4MTkuaHRtbCkKS2Fwb3JhbCA1CihodHRw
-Oi8vb2JmbTQyLmNvbS9renhrZWxzbjBpdGZicmQwcXkvaW5kZXgyMC5odG1sKQo4OSwwMCDigqwK
-KGh0dHA6Ly9vYmZtNDIuY29tL3Y1d2kwYTV2cmp0NXFtdGFqeS9pbmRleDIxLmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQyLmNvbS91dmV2aTNxbHAyczR3cnZqZ3kvaW5kZXgyMi5odG1sKQrCoApQdWxs
-IEtBUE9SQUw1IEJPUkFHIFZlcm1pbGxvbgooaHR0cDovL29iZm00Mi5jb20vZWhqYWNkbjJ0NHNi
-YW16d295L2luZGV4MjMuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQyLmNvbS9rdGR1NHBs
-bTVra3czaWl6cXkvaW5kZXgyNC5odG1sKQo0OSwwMCDigqwKKGh0dHA6Ly9vYmZtNDIuY29tL3Zm
-YWhzMHJoYmxrMm5ocHFqeS9pbmRleDI1Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQyLmNvbS91ZDVl
-cDJqZzJ4NGNnaWdpZ3kvaW5kZXgyNi5odG1sKQrCoApKZWFucyBLQVBPUkFMNSBBTUJSTyBMaWdo
-dCBHcmV5IERlc3Ryb3kKKGh0dHA6Ly9vYmZtNDIuY29tL2VxMDNvNTQxbXI0bXRoeGJveS9pbmRl
-eDI3Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00Mi5jb20vMmJ4bXdkcndiZDAwem5yZDB5
-L2luZGV4MjguaHRtbCkKODUsMDAg4oKsCihodHRwOi8vb2JmbTQyLmNvbS90eHd6ZDNsZTV1MG5p
-dzM1YnkvaW5kZXgyOS5odG1sKQrCoAooaHR0cDovL29iZm00Mi5jb20vZmpqc2RsYmUyMzIxeDRv
-ZXhnL2luZGV4MzAuaHRtbCkKwqAKVGVlIFNobHJ0IEtBUE9SQUw1IE5PUkVWIFJveQooaHR0cDov
-L29iZm00Mi5jb20vMXllcXdhM3dtZzJyZHpjeGNnL2luZGV4MzEuaHRtbCkKS2Fwb3JhbCA1Ciho
-dHRwOi8vb2JmbTQyLmNvbS90d2o0M2x5cTAzd2Z4ZWxlYmwvaW5kZXgzMi5odG1sKQoyNSwwMCDi
-gqwKKGh0dHA6Ly9vYmZtNDIuY29tLzJyZXJmYXBjcmd3NWR2YngwbC9pbmRleDMzLmh0bWwpCsKg
-CihodHRwOi8vb2JmbTQyLmNvbS9mMzB5dHAwaXBldnpra2t5eGcvaW5kZXgzNC5odG1sKQrCoApU
-ZWUgc2hpcnQgS0FQT1JBTDUgUGFyb2wgT2NlYW4KKGh0dHA6Ly9vYmZtNDIuY29tLzFrNWdrMGhy
-dHl2dG11d3JjZy9pbmRleDM1Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00Mi5jb20vcTVn
-bzJndWtlcDFqeHlzdjFqL2luZGV4MzYuaHRtbCkKMzUsMDAg4oKsCihodHRwOi8vb2JmbTQyLmNv
-bS9qemtkdnVmNHExMTNkczBmZmovaW5kZXgzNy5odG1sKQrCoAooaHR0cDovL29iZm00Mi5jb20v
-c3UzNHZ0czRmaGNrMmRlY2JsL2luZGV4MzguaHRtbCkKwqAKUG9sbyBLQVBPUkFMIDUgUG93ZXIg
-VmVybWlsbG9uCihodHRwOi8vb2JmbTQyLmNvbS9sYWxyMnI1azRvY3lvbDR1MGwvaW5kZXgzOS5o
-dG1sKQpLYXBvcmFsIDUKKGh0dHA6Ly9vYmZtNDIuY29tL3FhZGoycHZrcDQxejN5a3oxby9pbmRl
-eDQwLmh0bWwpCjQ1LDAwIOKCrAooaHR0cDovL29iZm00Mi5jb20vanVhbHYwYzR0MjF0bnN3cWZv
-L2luZGV4NDEuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDIuY29tL2dtNXExMmF0MGpneGd5eWljby9p
-bmRleDQyLmh0bWwpCsKgCkNoZW1pc2UgS0FQT1JBTCA1IFRlcnJ5IENvYmFsdAooaHR0cDovL29i
-Zm00Mi5jb20vb24wc2g1dHNyaWdwdHMyYnhvL2luZGV4NDMuaHRtbCkKS2Fwb3JhbCA1CihodHRw
-Oi8vb2JmbTQyLmNvbS9oamsxZHVpdmdsYmh3NWZvY2ovaW5kZXg0NC5odG1sKQo0OSwwMCDigqwK
-KGh0dHA6Ly9vYmZtNDIuY29tLzN5Z2J3ZzJudmticWFwcW54ai9pbmRleDQ1Lmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQyLmNvbS9pMTFmcXFrMnVyeWxiNTUyMWovaW5kZXg0Ni5odG1sKQrCoApUZWUg
-U2hscnQgS0FQT1JBTDUgTmFieSBDb2JhbHQKKGh0dHA6Ly9vYmZtNDIuY29tL2EyNDBya3hsanh5
-ZXFwaDNmai9pbmRleDQ3Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00Mi5jb20vYWlsMmZy
-MTE0dHp5cDN6emZnL2luZGV4NDguaHRtbCkKMzksMDAg4oKsCihodHRwOi8vb2JmbTQyLmNvbS9p
-ZTN4M3RlZ2Zuemt2YXZxMWcvaW5kZXg0OS5odG1sKQrCoApWb2lyIHRvdXRlIGxhIHPDqWxlY3Rp
-b24KKGh0dHA6Ly9vYmZtNDIuY29tL2V3MjMzbTRnd3I0b3RobGIyeS9pbmRleDUwLmh0bWwpCsKg
-CihodHRwOi8vb2JmbTQyLmNvbS91cnBlZmJqMWN4NGFnaWJpdHkvaW5kZXg1MS5odG1sKQotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KVHJ5IE5ldyBSZWxpYyBOb3cgJiBXZSdsbCBTZW5kIFlvdSB0aGlz
-IENvb2wgU2hpcnQKTmV3IFJlbGljIGlzIHRoZSBvbmx5IFNhYVMtYmFzZWQgYXBwbGljYXRpb24g
-cGVyZm9ybWFuY2UgbW9uaXRvcmluZyBzZXJ2aWNlIAp0aGF0IGRlbGl2ZXJzIHBvd2VyZnVsIGZ1
-bGwgc3RhY2sgYW5hbHl0aWNzLiBPcHRpbWl6ZSBhbmQgbW9uaXRvciB5b3VyCmJyb3dzZXIsIGFw
-cCwgJiBzZXJ2ZXJzIHdpdGgganVzdCBhIGZldyBsaW5lcyBvZiBjb2RlLiBUcnkgTmV3IFJlbGlj
-CmFuZCBnZXQgdGhpcyBhd2Vzb21lIE5lcmQgTGlmZSBzaGlydCEgaHR0cDovL3Auc2YubmV0L3Nm
-dS9uZXdyZWxpY19kMmRfYXByCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
-bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
-dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+
+Add the missing platform_driver_unregister() before return
+from pch_spi_init() in the error handling case.
+
+Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+---
+ drivers/spi/spi-topcliff-pch.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index f756481..c8b672e 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1789,8 +1789,10 @@ static int __init pch_spi_init(void)
+ 		return ret;
+ 
+ 	ret = pci_register_driver(&pch_spi_pcidev_driver);
+-	if (ret)
++	if (ret) {
++		platform_driver_unregister(&pch_spi_pd_driver);
+ 		return ret;
++	}
+ 
+ 	return 0;
+ }
+
+
+------------------------------------------------------------------------------
+Try New Relic Now & We'll Send You this Cool Shirt
+New Relic is the only SaaS-based application performance monitoring service 
+that delivers powerful full stack analytics. Optimize and monitor your
+browser, app, & servers with just a few lines of code. Try New Relic
+and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr

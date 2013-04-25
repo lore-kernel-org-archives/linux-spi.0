@@ -1,7 +1,7 @@
-From: Bredenkamp Estate <johnbredenkamponline-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
+From: Bredenkamp <johnbredenk-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
 Subject: [SPAM] urgent you read
-Date: Thu, 25 Apr 2013 16:35:56 +0300 (IDT)
-Message-ID: <20130425133556.CEA0368417@newjup.hadara.ps>
+Date: Thu, 25 Apr 2013 07:36:11 -0300 (BRT)
+Message-ID: <20130425103615.847479AB13@ifto.edu.br>
 Reply-To: jonny1278-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"

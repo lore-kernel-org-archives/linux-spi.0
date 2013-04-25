@@ -1,8 +1,8 @@
-From: John <johnbredenk-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
-Subject: urgent you read !!!
-Date: Thu, 25 Apr 2013 16:35:16 +0300 (IDT)
-Message-ID: <20130425133516.7D64E68280@newjup.hadara.ps>
-Reply-To: johnbredenk-/E1597aS9LT10XsdtD+oqA@public.gmane.org
+From: Bredenkamp Estate <johnbredenkamponline-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
+Subject: [SPAM] urgent you read
+Date: Thu, 25 Apr 2013 16:35:56 +0300 (IDT)
+Message-ID: <20130425133556.CEA0368417@newjup.hadara.ps>
+Reply-To: jonny1278-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit

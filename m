@@ -1,8 +1,8 @@
-From: Bredenkamp <johnbredenk-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
-Subject: [SPAM] urgent you read
-Date: Thu, 25 Apr 2013 07:36:11 -0300 (BRT)
-Message-ID: <20130425103615.847479AB13@ifto.edu.br>
-Reply-To: jonny1278-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+From: "Leopoldo Siraguza" <info2-DJNu+nn0GTGZOkyqavakixL4W9x8LtSr@public.gmane.org>
+Subject: [SPAM] Re: mirar Todo El Contenido
+Date: Thu, 25 Apr 2013 10:20:25 -0300
+Message-ID: <edc7c30ff66d67359f7590924d4052da@www.ofertasxmail.com>
+Reply-To: info2-QIgLS/ehzBg7lZ9V/NTDHw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,33 +18,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-Good day my dear friend, please do not be surprised to receiving my letter. I wish to establish a profitable business investment in your country. 
-
-My preference is any good profit yielding business and I would appreciate any ideas you could come up with. I will also need you to help me look for properties like a home for sale as I am also proposing to invest a large sum of amount (i will only disclose the amount when i am sure and confident in your services and honesty) for this. I need you to reply me only if you are interested with some introduction about your self and business idea you have for me, you can also provide a direct cell phone number of yours for verbal communication between us alone. I am offering you a life changing compersation from my part and you will never regret working with me.
-
-For a brief on my personality: my name is Mr John Bredenkamp, based in the United Kingdom. I was into private Shipping Business, I dropped my Shipping business because it was not producing profitable income and so many political problems. You can find more details about me through the links below:
-
-(http://www.iol.co.za/news/africa/zimbabwean-tycoon-arrested-1.286472)
-
-(http://sportsillustrated.cnn.com/vault/article/magazine/MAG1008794/index.htm)
+Your email client cannot read this email.
+To view it online, please go here:
+http://www.ofertasxmail.com/display.php?M=963079&C=8995c3a7f45c3b191a5628ba4b5ac916&S=63&L=22&N=57
 
 
-My need for this project is urgent and if you are not ready to be online at all point in time with prompt respond to my mails and call please do indicate that asap in your first reply. I am planning to move out of this country with my family down to your country. I want you to also help in finding a good home where my family and I will live in a (Mini Estate) to be precise.
-
-Kindly reply me asap with interest.
-
-
-Warm Regards,
-Mr.Jonny
-
-
-
-
-Please do not reply me if you are not capable and responsible!!!
-
-
-
+To stop receiving these
+emails:http://www.ofertasxmail.com/unsubscribe.php?M=963079&C=8995c3a7f45c3b191a5628ba4b5ac916&L=22&N=63
 ------------------------------------------------------------------------------
 Try New Relic Now & We'll Send You this Cool Shirt
 New Relic is the only SaaS-based application performance monitoring service 

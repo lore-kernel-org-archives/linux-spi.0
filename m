@@ -1,56 +1,56 @@
-From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi-topcliff-pch: missing platform_driver_unregister() on
-	error in pch_spi_init()
-Date: Thu, 25 Apr 2013 15:18:02 +0800
-Message-ID: <CAPgLHd-QZXdb39icvhUKWm+hCT4O2dnF5kPAmPeaxXPsU8MMNA@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi-topcliff-pch: missing platform_driver_unregister()
+ on error in pch_spi_init()
+Date: Thu, 25 Apr 2013 11:58:17 +0100
+Message-ID: <20130425105817.GP5019@opensource.wolfsonmicro.com>
+References: <CAPgLHd-QZXdb39icvhUKWm+hCT4O2dnF5kPAmPeaxXPsU8MMNA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="6kpOI20Kt7FNSDww"
+Cc: grant.likely@linaro.org, yongjun_wei@trendmicro.com.cn,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Wei Yongjun <weiyj.lk@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAPgLHd-QZXdb39icvhUKWm+hCT4O2dnF5kPAmPeaxXPsU8MMNA@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 
-Add the missing platform_driver_unregister() before return
-from pch_spi_init() in the error handling case.
+--6kpOI20Kt7FNSDww
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
----
- drivers/spi/spi-topcliff-pch.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On Thu, Apr 25, 2013 at 03:18:02PM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+>=20
+> Add the missing platform_driver_unregister() before return
+> from pch_spi_init() in the error handling case.
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index f756481..c8b672e 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1789,8 +1789,10 @@ static int __init pch_spi_init(void)
- 		return ret;
- 
- 	ret = pci_register_driver(&pch_spi_pcidev_driver);
--	if (ret)
-+	if (ret) {
-+		platform_driver_unregister(&pch_spi_pd_driver);
- 		return ret;
-+	}
- 
- 	return 0;
- }
+Applied, thanks.
 
+--6kpOI20Kt7FNSDww
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-------------------------------------------------------------------------------
-Try New Relic Now & We'll Send You this Cool Shirt
-New Relic is the only SaaS-based application performance monitoring service 
-that delivers powerful full stack analytics. Optimize and monitor your
-browser, app, & servers with just a few lines of code. Try New Relic
-and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJReQwlAAoJELSic+t+oim9pHgP/R3m/Krdj/jiI+c5/46aTZou
+gQoAoy0Wh0QkdTxiAHJgGtjAol386oB6VGN17am0Bz9bXm+l/RxRlIwwP7gP9GAi
+yk9+sx/K6ucSXeU5rJ/zGCoFG9RrIIBbZsp0sbVzNUpegf7kzSHc5j+1qbaYQI72
++FIPnP9pqjorzNtBnXAny4XVBSpCcYzhLhNcJWmyXlV0slF0aBi8r7+iBSUipyqS
+6r+ni4lYzfuRXL+fsVXaM49nDdMzAPf0ZMVdqXnSF1MJVU23eowMDzpdFVrETnWH
+xGSQ1s7syzmwnbs13uBDZZyNr4s+nyG9f/PIcxPVb1QzSfchTQ1CsSXOfi4jAppZ
+MRQmwVMsE2Lb5cjc/SBdsp2Pa4bhAsq4FGzwTP3GfkWeSromJC/AzIeuAfU0mUzn
+ILKP8dYcLC0XzMTYYLBPJ0iD3OV1kwNld9UATpCfuJLGLIiMzyzq5+SXAMr/kIEL
+yyOmZFuIciEM7aQJ7no8yV/wJbhc08cNuKlqQnKkMLfrVk/42yGAGGgXouLThLqt
+gJWPXNBm66yhRMxk2SyclEM/5NfuI37KNiMJoh73O+OSF1iqwnarJawDWmM+SriG
+jSAMZ9mzHgBxKSwoYs4jihHfZ6ICnKNhM9eUWf0qZONuZrJu8vs8fBbIjZaiyEAL
+N0TqeyyMF36nJ85sSY4r
+=gA7X
+-----END PGP SIGNATURE-----
+
+--6kpOI20Kt7FNSDww--

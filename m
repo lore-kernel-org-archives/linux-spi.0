@@ -1,12 +1,12 @@
-From: Bredenkamp <johnbredenk-/E1597aS9LT10XsdtD+oqA@public.gmane.org>
-Subject: [SPAM] please read
-Date: Thu, 25 Apr 2013 22:19:18 +0300 (IDT)
-Message-ID: <20130425191918.CF812687E8@newjup.hadara.ps>
-Reply-To: jonny1278-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+From: "AffairesNobles" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Profitez près de votre ville et économisez jusqu'à 70 pourcent.
+Date: Sat, 27 Apr 2013 02:37:18 +0000 (CET)
+Message-ID: <130427023718.-67002393300004492@obfm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,34 +18,24 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-Good day my dear friend, please do not be surprised to receiving my letter. I wish to establish a profitable business investment in your country.
-
-My preference is any good profit yielding business and I would appreciate any ideas you could come up with. I will also need you to help me look for properties like a home for sale as I am also proposing to invest a large sum of amount (i will only disclose the amount when i am sure and confident in your services and honesty) for this. I need you to reply me only if you are interested with some introduction about your self and business idea you have for me, you can also provide a direct cell phone number of yours for verbal communication between us alone. I am offering you a life changing compensation from my part and you will never regret working with me.
-
-For a brief on my personality: my name is Mr John Bredenkamp, based in the United Kingdom. I was into private Shipping Business, I dropped my Shipping business because it was not producing profitable income and so many political problems. You can find more details about me through the links below:
-
-(http://www.iol.co.za/news/africa/zimbabwean-tycoon-arrested-1.286472)
-
-(http://sportsillustrated.cnn.com/vault/article/magazine/MAG1008794/index.htm)
-
-
-My need for this project is urgent and if you are not ready to be online at all point in time with prompt respond to my mails and call please do indicate that asap in your first reply. I am planning to move out of this country with my family down to your country. I want you to also help in finding a good home where my family and I will live in a (Mini Estate) to be precise.
-
-Kindly reply me asap with interest.
-
-
-Warm Regards,
-Mr.Jonny
-
-
-Note : Please do not reply me if you are not capable and responsible!!!
-
-
-
-------------------------------------------------------------------------------
-Try New Relic Now & We'll Send You this Cool Shirt
-New Relic is the only SaaS-based application performance monitoring service 
-that delivers powerful full stack analytics. Optimize and monitor your
-browser, app, & servers with just a few lines of code. Try New Relic
-and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr
+CkxlIHBhcnRlbmFpcmUgQUJDIHZvdXMgcmVjb21tYW5kZToKCihodHRwOi8vb2JmbTQwLmNvbS94
+c3JkNHh6dnp0dnJicnhoMnkvaW5kZXgwLmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9jcXJvb3hq
+bHo0bm15bWNodGwvaW5kZXgxLmh0bWwpClNveWV6IGhldXJldXghCgooaHR0cDovL29iZm00MC5j
+b20vZmxyeXJ4bTF6M2xyemlmbTBzL2luZGV4Mi5odG1sKQpUb3VzIGxlcyBqb3VycyBkZXMgbm91
+dmVhdXggRGVhbHMgdm91cyBhc3N1cmVudCB1bmUgZXhww6lyaWVuY2UgZGUgc2hvcHBpbmcgaW5v
+dWJsaWFibGUgZXQgYXZlYyBkZXMgcsOpZHVjdGlvbnMgYWxsYW50IGp1c3F1JmFjdXRlO8OgIDcw
+JSEKCihodHRwOi8vb2JmbTQwLmNvbS8xanJnZHhsbXpvMm11aDFtYmQvaW5kZXgzLmh0bWwpCiho
+dHRwOi8vb2JmbTQwLmNvbS9obHdjcmF5Y3VzeXJ0dmZhemwvaW5kZXg0Lmh0bWwpCihodHRwOi8v
+b2JmbTQwLmNvbS8zand0ZGE1cnVrYm1zZTFhd3kvaW5kZXg1Lmh0bWwpCkZyYW5jZSBTQVMgwqB8
+wqAgNzYtNzggcnVlIFNhaW50IExhemFyZSDCoHzCoCA3NTAwOSBQYXJpcyDCoHzCoCBGcmFuY2UK
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tClRyeSBOZXcgUmVsaWMgTm93ICYgV2UnbGwgU2VuZCBZb3Ug
+dGhpcyBDb29sIFNoaXJ0Ck5ldyBSZWxpYyBpcyB0aGUgb25seSBTYWFTLWJhc2VkIGFwcGxpY2F0
+aW9uIHBlcmZvcm1hbmNlIG1vbml0b3Jpbmcgc2VydmljZSAKdGhhdCBkZWxpdmVycyBwb3dlcmZ1
+bCBmdWxsIHN0YWNrIGFuYWx5dGljcy4gT3B0aW1pemUgYW5kIG1vbml0b3IgeW91cgpicm93c2Vy
+LCBhcHAsICYgc2VydmVycyB3aXRoIGp1c3QgYSBmZXcgbGluZXMgb2YgY29kZS4gVHJ5IE5ldyBS
+ZWxpYwphbmQgZ2V0IHRoaXMgYXdlc29tZSBOZXJkIExpZmUgc2hpcnQhIGh0dHA6Ly9wLnNmLm5l
+dC9zZnUvbmV3cmVsaWNfZDJkX2FwcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

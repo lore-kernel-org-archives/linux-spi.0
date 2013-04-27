@@ -1,41 +1,84 @@
-From: "AffairesNobles" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Profitez près de votre ville et économisez jusqu'à 70 pourcent.
-Date: Sat, 27 Apr 2013 02:37:18 +0000 (CET)
-Message-ID: <130427023718.-67002393300004492@obfm40.com>
+From: Wei Yongjun <weiyj.lk@gmail.com>
+Subject: [PATCH RESEND] spi-topcliff-pch: fix to use list_for_each_entry_safe()
+ when delete list items
+Date: Sat, 27 Apr 2013 14:06:00 +0800
+Message-ID: <CAPgLHd-WbX7Lbb0EWimxU=BF5wYHNYQtbEcEQN-9idJ_DDhy=w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: yongjun_wei@trendmicro.com.cn,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: grant.likely@secretlab.ca, broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CkxlIHBhcnRlbmFpcmUgQUJDIHZvdXMgcmVjb21tYW5kZToKCihodHRwOi8vb2JmbTQwLmNvbS94
-c3JkNHh6dnp0dnJicnhoMnkvaW5kZXgwLmh0bWwpCihodHRwOi8vb2JmbTQwLmNvbS9jcXJvb3hq
-bHo0bm15bWNodGwvaW5kZXgxLmh0bWwpClNveWV6IGhldXJldXghCgooaHR0cDovL29iZm00MC5j
-b20vZmxyeXJ4bTF6M2xyemlmbTBzL2luZGV4Mi5odG1sKQpUb3VzIGxlcyBqb3VycyBkZXMgbm91
-dmVhdXggRGVhbHMgdm91cyBhc3N1cmVudCB1bmUgZXhww6lyaWVuY2UgZGUgc2hvcHBpbmcgaW5v
-dWJsaWFibGUgZXQgYXZlYyBkZXMgcsOpZHVjdGlvbnMgYWxsYW50IGp1c3F1JmFjdXRlO8OgIDcw
-JSEKCihodHRwOi8vb2JmbTQwLmNvbS8xanJnZHhsbXpvMm11aDFtYmQvaW5kZXgzLmh0bWwpCiho
-dHRwOi8vb2JmbTQwLmNvbS9obHdjcmF5Y3VzeXJ0dmZhemwvaW5kZXg0Lmh0bWwpCihodHRwOi8v
-b2JmbTQwLmNvbS8zand0ZGE1cnVrYm1zZTFhd3kvaW5kZXg1Lmh0bWwpCkZyYW5jZSBTQVMgwqB8
-wqAgNzYtNzggcnVlIFNhaW50IExhemFyZSDCoHzCoCA3NTAwOSBQYXJpcyDCoHzCoCBGcmFuY2UK
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tClRyeSBOZXcgUmVsaWMgTm93ICYgV2UnbGwgU2VuZCBZb3Ug
-dGhpcyBDb29sIFNoaXJ0Ck5ldyBSZWxpYyBpcyB0aGUgb25seSBTYWFTLWJhc2VkIGFwcGxpY2F0
-aW9uIHBlcmZvcm1hbmNlIG1vbml0b3Jpbmcgc2VydmljZSAKdGhhdCBkZWxpdmVycyBwb3dlcmZ1
-bCBmdWxsIHN0YWNrIGFuYWx5dGljcy4gT3B0aW1pemUgYW5kIG1vbml0b3IgeW91cgpicm93c2Vy
-LCBhcHAsICYgc2VydmVycyB3aXRoIGp1c3QgYSBmZXcgbGluZXMgb2YgY29kZS4gVHJ5IE5ldyBS
-ZWxpYwphbmQgZ2V0IHRoaXMgYXdlc29tZSBOZXJkIExpZmUgc2hpcnQhIGh0dHA6Ly9wLnNmLm5l
-dC9zZnUvbmV3cmVsaWNfZDJkX2FwcgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+
+Since we will remove items off the list using list_del_init() we need
+to use a safe version of the list_for_each_entry() macro aptly named
+list_for_each_entry_safe().
+
+Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+---
+ drivers/spi/spi-topcliff-pch.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index f756481..7635803 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -615,7 +615,7 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
+ 	int size;
+ 	u32 n_writes;
+ 	int j;
+-	struct spi_message *pmsg;
++	struct spi_message *pmsg, *tmp;
+ 	const u8 *tx_buf;
+ 	const u16 *tx_sbuf;
+ 
+@@ -656,7 +656,7 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
+ 	if (!data->pkt_rx_buff) {
+ 		/* flush queue and set status of all transfers to -ENOMEM */
+ 		dev_err(&data->master->dev, "%s :kzalloc failed\n", __func__);
+-		list_for_each_entry(pmsg, data->queue.next, queue) {
++		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
+ 			pmsg->status = -ENOMEM;
+ 
+ 			if (pmsg->complete != 0)
+@@ -703,7 +703,7 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
+ 
+ static void pch_spi_nomore_transfer(struct pch_spi_data *data)
+ {
+-	struct spi_message *pmsg;
++	struct spi_message *pmsg, *tmp;
+ 	dev_dbg(&data->master->dev, "%s called\n", __func__);
+ 	/* Invoke complete callback
+ 	 * [To the spi core..indicating end of transfer] */
+@@ -740,7 +740,7 @@ static void pch_spi_nomore_transfer(struct pch_spi_data *data)
+ 		dev_dbg(&data->master->dev,
+ 			"%s suspend/remove initiated, flushing queue\n",
+ 			__func__);
+-		list_for_each_entry(pmsg, data->queue.next, queue) {
++		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
+ 			pmsg->status = -EIO;
+ 
+ 			if (pmsg->complete)
+@@ -1187,7 +1187,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
+ 
+ static void pch_spi_process_messages(struct work_struct *pwork)
+ {
+-	struct spi_message *pmsg;
++	struct spi_message *pmsg, *tmp;
+ 	struct pch_spi_data *data;
+ 	int bpw;
+ 
+@@ -1199,7 +1199,7 @@ static void pch_spi_process_messages(struct work_struct *pwork)
+ 	if (data->board_dat->suspend_sts || (data->status == STATUS_EXITING)) {
+ 		dev_dbg(&data->master->dev, "%s suspend/remove initiated,"
+ 			"flushing queue\n", __func__);
+-		list_for_each_entry(pmsg, data->queue.next, queue) {
++		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
+ 			pmsg->status = -EIO;
+ 
+ 			if (pmsg->complete != 0) {

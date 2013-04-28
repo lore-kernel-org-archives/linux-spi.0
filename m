@@ -1,10 +1,10 @@
-From: <cherryliu-Dw/NWeUnuQfQT0dZR+AlfA@public.gmane.org>
-Subject: =?UTF-8?B?TEVEIGJ1bGJzIA==?=
-Date: Sun, 28 Apr 2013 13:17:35 +0800
-Message-ID: <3e5ff34d-2128-41cb-8030-c8aa9d955554@aliyun.com>
+From: "=?windows-1252?Q?Phil_Greer_|_MMD?=" <noreply-Qwnp5sC4nVv2eFz/2MeuCQ@public.gmane.org>
+Subject: [SPAM] Are you taking on new customers?
+Date: Sun, 28 Apr 2013 00:07:44 -0700
+Message-ID: <2dea82cfd253a4073b9bfca3001856c1@emailsend.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,29 +17,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-wqAKwqAKSGVsbG8sV2XCoGFyZcKgZm9jdXPCoG9uwqBMRUTCoGxpZ2h0aW5nc8KgbWFudWZhY3Rv
-cnnCoGluwqBTaGVuemhlbixDaGluYVdlwqBhcmXCoHNwZWNpYWxpemVkwqBhdMKgYWxswqBraW5k
-c8Kgb2bCoExFRMKgTGlnaHRpbmfCoGl0ZW1zOsKgwqAxLsKgTEVEwqBTcG90wqBMYW1wLMKgYW5k
-wqBCdWxicyxUdWJlwqBMaWdodDIuwqBMRUTCoFdhbGzCoFdhc2hlcixoaWdowqBwb3dlcsKgZmxv
-b2TCoGxpZ2h0LENlbGxpbmcvRG93bsKgbGlnaHTCoDMuwqBMRUTCoE91dGRvb3LCoExpZ2h0c8Kg
-c3VjaMKgYXPCoEluZ3JvdW5kwqBMaWdodCzCoFVuZGVyd2F0ZXLCoExpZ2h0wqBldGMuNC7CoExF
-RMKgaGlnaMKgYmF5wqBsaWdodMKgLMKgdHVubmVswqBsaWdodCzCoHN0cmVldMKgbGlnaHQuNS7C
-oExFRMKgU3RyaXDCoExpZ2h0LsKgNi7CoExFRMKgUGFuZWzCoGxpZ2h0Li4uLi4uClBsZWFzZSB2
-aXNpdCBvdXIgY29tcGFueSB3ZWJzaXRlIGZvciBtb3JlIG1lc3NhZ2U6IHd3dy5jbi1saWdodHNv
-dXJjZS5jb207UGxlYXNlwqBkb27igJl0wqBoZXNpdGF0ZcKgdG/CoGNvbnRhY3TCoG1lwqBpZsKg
-dGhlcmXCoGlzwqBhbnnCoGl0ZW3CoHlvdcKgYXJlwqDCoMKgIGludGVyZXN0ZWTCoGluwqAuwqBC
-LnJnZCAKQWxpc29uIHpoYW5nCkxpZ2h0IFNvdXJjZSBJbmR1c3RyaWFsIExpbWl0ZWTCoApUZWw6
-IDAwODYgNzUyNTUzNjgxNgrCoMKgwqDCoMKgIDAwODYgNzU1MzM2OTY2MjYKTW9iaWxlOiAwMDg2
-MTUzNDc0NTE3ODgKRW1haWw6IGFsaXNvbnpoYW5nY25AMTYzLmNvbQpIb3RtYWlsOiBjaGluYWxp
-Z2h0c291cmNlQGhvdG1haWwuY29tCnd3dy5jbi1saWdodHNvdXJjZS5jb20Kc2t5cGU6IGFsaXNv
-bnpoYW5nY24xCsKgCsKgCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUcnkgTmV3IFJlbGljIE5vdyAm
-IFdlJ2xsIFNlbmQgWW91IHRoaXMgQ29vbCBTaGlydApOZXcgUmVsaWMgaXMgdGhlIG9ubHkgU2Fh
-Uy1iYXNlZCBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZSBtb25pdG9yaW5nIHNlcnZpY2UgCnRoYXQg
-ZGVsaXZlcnMgcG93ZXJmdWwgZnVsbCBzdGFjayBhbmFseXRpY3MuIE9wdGltaXplIGFuZCBtb25p
-dG9yIHlvdXIKYnJvd3NlciwgYXBwLCAmIHNlcnZlcnMgd2l0aCBqdXN0IGEgZmV3IGxpbmVzIG9m
-IGNvZGUuIFRyeSBOZXcgUmVsaWMKYW5kIGdldCB0aGlzIGF3ZXNvbWUgTmVyZCBMaWZlIHNoaXJ0
-ISBodHRwOi8vcC5zZi5uZXQvc2Z1L25ld3JlbGljX2QyZF9hcHIKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
-aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
-LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hello,
+
+I have access to people in your area that may be interested in purchasing from you.
+
+Please give me a call at 1 (800) 676-2011 Ext 402 to discuss this in details.
+
+Thanks,
+
+Phillip Greer
+Prospect Profile Specialist
+1 (800) 676-2011 Ext 402
+
+
+
+------------------------------------------------------------------------------
+Try New Relic Now & We'll Send You this Cool Shirt
+New Relic is the only SaaS-based application performance monitoring service 
+that delivers powerful full stack analytics. Optimize and monitor your
+browser, app, & servers with just a few lines of code. Try New Relic
+and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr

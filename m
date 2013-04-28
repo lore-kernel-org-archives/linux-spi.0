@@ -1,84 +1,27 @@
-From: Wei Yongjun <weiyj.lk@gmail.com>
-Subject: [PATCH RESEND] spi-topcliff-pch: fix to use list_for_each_entry_safe()
- when delete list items
-Date: Sat, 27 Apr 2013 14:06:00 +0800
-Message-ID: <CAPgLHd-WbX7Lbb0EWimxU=BF5wYHNYQtbEcEQN-9idJ_DDhy=w@mail.gmail.com>
+From: "=?UTF-8?Q?Willemse_sp=C3=A9cialiste_jardin?=" <contact-GE0/2U7jJN5QFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Moins cinquante pourcent sur votre produit prefere
+Date: Sun, 28 Apr 2013 00:50:10 +0000 (CET)
+Message-ID: <130428005010.22775068800005616@obfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: yongjun_wei@trendmicro.com.cn,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: grant.likely@secretlab.ca, broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
 
-Since we will remove items off the list using list_del_init() we need
-to use a safe version of the list_for_each_entry() macro aptly named
-list_for_each_entry_safe().
-
-Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
----
- drivers/spi/spi-topcliff-pch.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index f756481..7635803 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -615,7 +615,7 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
- 	int size;
- 	u32 n_writes;
- 	int j;
--	struct spi_message *pmsg;
-+	struct spi_message *pmsg, *tmp;
- 	const u8 *tx_buf;
- 	const u16 *tx_sbuf;
- 
-@@ -656,7 +656,7 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
- 	if (!data->pkt_rx_buff) {
- 		/* flush queue and set status of all transfers to -ENOMEM */
- 		dev_err(&data->master->dev, "%s :kzalloc failed\n", __func__);
--		list_for_each_entry(pmsg, data->queue.next, queue) {
-+		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
- 			pmsg->status = -ENOMEM;
- 
- 			if (pmsg->complete != 0)
-@@ -703,7 +703,7 @@ static void pch_spi_set_tx(struct pch_spi_data *data, int *bpw)
- 
- static void pch_spi_nomore_transfer(struct pch_spi_data *data)
- {
--	struct spi_message *pmsg;
-+	struct spi_message *pmsg, *tmp;
- 	dev_dbg(&data->master->dev, "%s called\n", __func__);
- 	/* Invoke complete callback
- 	 * [To the spi core..indicating end of transfer] */
-@@ -740,7 +740,7 @@ static void pch_spi_nomore_transfer(struct pch_spi_data *data)
- 		dev_dbg(&data->master->dev,
- 			"%s suspend/remove initiated, flushing queue\n",
- 			__func__);
--		list_for_each_entry(pmsg, data->queue.next, queue) {
-+		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
- 			pmsg->status = -EIO;
- 
- 			if (pmsg->complete)
-@@ -1187,7 +1187,7 @@ static void pch_spi_handle_dma(struct pch_spi_data *data, int *bpw)
- 
- static void pch_spi_process_messages(struct work_struct *pwork)
- {
--	struct spi_message *pmsg;
-+	struct spi_message *pmsg, *tmp;
- 	struct pch_spi_data *data;
- 	int bpw;
- 
-@@ -1199,7 +1199,7 @@ static void pch_spi_process_messages(struct work_struct *pwork)
- 	if (data->board_dat->suspend_sts || (data->status == STATUS_EXITING)) {
- 		dev_dbg(&data->master->dev, "%s suspend/remove initiated,"
- 			"flushing queue\n", __func__);
--		list_for_each_entry(pmsg, data->queue.next, queue) {
-+		list_for_each_entry_safe(pmsg, tmp, data->queue.next, queue) {
- 			pmsg->status = -EIO;
- 
- 			if (pmsg->complete != 0) {
+------------------------------------------------------------------------------
+Try New Relic Now & We'll Send You this Cool Shirt
+New Relic is the only SaaS-based application performance monitoring service 
+that delivers powerful full stack analytics. Optimize and monitor your
+browser, app, & servers with just a few lines of code. Try New Relic
+and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_apr

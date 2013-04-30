@@ -1,11 +1,11 @@
-From: 13662261976-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 30 Apr 2013 09:29:16 +0800
-Message-ID: <E1UWzNe-0001io-ON@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "=?windows-1252?Q?Mike_Bernhard_|_EBUSA?=" <MBNoReply13-Jbz+COfnBihBDgjK7y7TUQ@public.gmane.org>
+Subject: business question
+Date: Mon, 29 Apr 2013 18:59:20 -0700
+Message-ID: <18d62e5ad3c9f5885955cc22001c1787@address.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +17,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICDP1rG+uavLvtPQ0ruyv7fW16jTw8uwoaqhqsaxtPq/qqO7CrnzuavLvsjn09DQ
-6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6ICAKICAKICAgILi61PDIy6O61cXPyMn6KDApMTM2
-NjIyNjE5NzYKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRyb2R1Y2luZyBBcHBEeW5hbWljcyBM
-aXRlLCBhIGZyZWUgdHJvdWJsZXNob290aW5nIHRvb2wgZm9yIEphdmEvLk5FVApHZXQgMTAwJSB2
-aXNpYmlsaXR5IGludG8geW91ciBwcm9kdWN0aW9uIGFwcGxpY2F0aW9uIC0gYXQgbm8gY29zdC4K
-Q29kZS1sZXZlbCBkaWFnbm9zdGljcyBmb3IgcGVyZm9ybWFuY2UgYm90dGxlbmVja3Mgd2l0aCA8
-MiUgb3ZlcmhlYWQKRG93bmxvYWQgZm9yIGZyZWUgYW5kIGdldCBzdGFydGVkIHRyb3VibGVzaG9v
-dGluZyBpbiBtaW51dGVzLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfYXAxCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5l
-cmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
-aHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdl
-bmVyYWwK
+Hello, 
+
+In today's economy, it is more important than ever to make sure 
+that any advertising money spent results in a good return. 
+
+E-mail Marketing has been proven to be tremendously cost-effective and efficient. 
+
+If you are looking for a company that can provide you with a 
+great e-mail marketing solution, manage and design your campaigns 
+or somewhere in-between call us at 1 (800) 676-2011 Ext 203. 
+
+We look forward to working with your company! 
+
+Sincerely, 
+
+Mike Bernhard
+Senior Prospect Specialist 
+E-mail Marketing Services 
+1 (800) 676-2011 Ext 203
+
+
+
+------------------------------------------------------------------------------
+Introducing AppDynamics Lite, a free troubleshooting tool for Java/.NET
+Get 100% visibility into your production application - at no cost.
+Code-level diagnostics for performance bottlenecks with <2% overhead
+Download for free and get started troubleshooting in minutes.
+http://p.sf.net/sfu/appdyn_d2d_ap1

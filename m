@@ -1,7 +1,7 @@
-From: "Bruleur de graisse" <contact-FqQuqE7uPTdGWvitb5QawA@public.gmane.org>
-Subject: La fin de mes complexes et 12 kilos en moins
-Date: Tue, 30 Apr 2013 09:12:29 +0000 (CET)
-Message-ID: <130430091229.43073116400003292@obfm43.com>
+From: "Aspire La Graisse" <contact-GE0/2U7jJN5QFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Aussi efficace que la LIPOSUCCION
+Date: Tue, 30 Apr 2013 14:56:24 +0000 (CET)
+Message-ID: <130430145624.16959556200008112@obfm42.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -18,35 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+ 
 
 
-(http://obfm43.com/3kltkrb1uvuslr4uey/index0.html)
-D&#233couvrez vous aussi 
-le secret minceur des Stars !
-(http://obfm43.com/hilcframulzy2mnuul/index1.html)
 
-(http://obfm43.com/avl2ir1vu1ysvizzvs/index2.html)
-(http://obfm43.com/ialx0rvlumbynhwzkd/index3.html)
 
-(http://obfm43.com/cvgoiqueznlsdvzvsl/index4.html)
-(http://obfm43.com/xagd0qxdz22y0ewvly/index5.html)
+ (http://obfm42.com/21urqetjpgd2drmfxq/index0.html)
 
-(http://obfm43.com/1kggkqhczgvsen4nyd/index6.html)
-Aucun r&#233;gime donc aucune reprise de poids
 
-R&#233sultats garantis 100&#37; satisfait
 
-Pas d&#8217;effet yo-yo
-
-Agit imm&#233diatement sur les tissus adipeux
-
-Sans changer vos habitudes alimentaires
-(http://obfm43.com/figyfq2rzhnywwnnds/index7.html)
-
-(http://obfm43.com/okvsuitfukhsjd4x0y/index8.html)
--60&#37; de r&#233duction sur la cure &#171;totale plus&#187; 
-pour vous permettre de tester son incroyable efficacit&#233 !
-(http://obfm43.com/givqxi3pusmyxlnxbl/index9.html)
 
 
 ------------------------------------------------------------------------------

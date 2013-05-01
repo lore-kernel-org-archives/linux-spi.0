@@ -1,11 +1,12 @@
-From: "=?windows-1252?Q?Frank_Boyle_|_FBLE?=" <NoReplyFB-Jbz+COfnBihBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Your FaceBook Fan Page...
-Date: Tue, 30 Apr 2013 13:08:37 -0700
-Message-ID: <1c25e23bee457cdae0a23e4e0016a9e5@address.com>
+From: "=?UTF-8?Q?Willemse_sp=C3=A9cialiste_jardin?=" <contact-GE0/2U7jJN5QFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Moins cinquante pourcent sur votre produit prefere
+Date: Wed, 01 May 2013 00:49:15 +0000 (CET)
+Message-ID: <130501004915.48689534400004728@obfm41.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -16,25 +17,6 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
-
-Does your company have a FaceBook fan page?
-
-I can send 500 to 1MM "Likes" within a few days.
-We can add "Likes" to build your online following.
-
-Consumers assume that a company with lots of "Likes" is established and reputable.
-
-Call me so we can discuss the benefits. Results 100% Guaranteed!
-
-Frank Boyle
-FaceBook "Likes" Expert
-1 (800) 676-2011
-
-
-
-
-P.S. - We can also help with YouTube Views, Twitter Followers and Mass Emails. Call us...
-
 
 
 ------------------------------------------------------------------------------

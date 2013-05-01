@@ -1,10 +1,10 @@
-From: "=?UTF-8?Q?Willemse_sp=C3=A9cialiste_jardin?=" <contact-GE0/2U7jJN5QFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Moins cinquante pourcent sur votre produit prefere
-Date: Wed, 01 May 2013 00:49:15 +0000 (CET)
-Message-ID: <130501004915.48689534400004728@obfm41.com>
+From: "E-travaux" <contact-Sw6VDW5Ax45GWvitb5QawA@public.gmane.org>
+Subject: Un professionnel pour vos travaux
+Date: Wed, 01 May 2013 06:45:50 +0000 (CET)
+Message-ID: <130501064550.22656197900007520@obfm42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -18,10 +18,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
-Introducing AppDynamics Lite, a free troubleshooting tool for Java/.NET
-Get 100% visibility into your production application - at no cost.
-Code-level diagnostics for performance bottlenecks with <2% overhead
-Download for free and get started troubleshooting in minutes.
-http://p.sf.net/sfu/appdyn_d2d_ap1
+CihodHRwOi8vb2JmbTQyLmNvbS9xd3lqYW5nMmp3bWZwM3M0c2wvaW5kZXgwLmh0bWwpCiNOT00j
+LCAoaHR0cDovL29iZm00Mi5jb20vanB5bGJubm5qMGh4M2FsNGx5L2luZGV4MS5odG1sKQoKVm91
+cyByZWNoZXJjaGV6IHVuIHByb2Zlc3Npb25uZWwgKGh0dHA6Ly9vYmZtNDIuY29tL2d6eXF2bnlo
+anExZmZweWt5ZC9pbmRleDIuaHRtbCkKCmRlIGNvbmZpYW5jZSBwb3VyIHLDqWFsaXNlciB2b3Mg
+dHJhdmF1eCA/IChodHRwOi8vb2JmbTQyLmNvbS9vbXlzMW41Z2ppZ3hvNWRrZHMvaW5kZXgzLmh0
+bWwpCgpFLXRyYXZhdXguY29tIHZvdXMgY29uc2VpbGxlICEgKGh0dHA6Ly9vYmZtNDIuY29tL3B6
+amJ2bG1peGV4ZjV6eXdleS9pbmRleDQuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL21tajExbGxx
+eGRqeGE0ZHd1bC9pbmRleDUuaHRtbCkKCkTDqXBvc2V6IHZvdHJlIHByb2pldCBlbiBsaWduZSAo
+aHR0cDovL29iZm00Mi5jb20vNXdqMGFsejB4YzVmeHVzZXZzL2luZGV4Ni5odG1sKQooaHR0cDov
+L29iZm00Mi5jb20vcnBqZmJsand4cmF4amtsZWtkL2luZGV4Ny5odG1sKQoKQ29tcGFyZXogZ3Jh
+dHVpdGVtZW50IDMgZGV2aXMKZCdhcnRpc2FucyBkZSB2b3RyZSByw6lnaW9uIChodHRwOi8vb2Jm
+bTQyLmNvbS9pd3V4M3ZxdGp6emZ3dHNvNGwvaW5kZXg4Lmh0bWwpCihodHRwOi8vb2JmbTQyLmNv
+bS9hcHUydHZ3NGpidXhlYmxvbnkvaW5kZXg5Lmh0bWwpCgpDaG9pc2lzc2V6IGxhIG1laWxsZXVy
+ZSBvZmZyZSAoaHR0cDovL29iZm00Mi5jb20vZnRmczRzcHUwM3ZleXhhMGRsL2luZGV4MTAuaHRt
+bCkKU8OJTEVDVElPTk5FWiBWT1RSRSBQUk9KRVQgREUgVFJBVkFVWCA6IChodHRwOi8vb2JmbTQy
+LmNvbS8xZm5xc2l5enJndmxjZm1heWwvaW5kZXgxMS5odG1sKQpQb21wZSDDoCBjaGFsZXVyIOKA
+oiBDbGltYXRpc2F0aW9uIChodHRwOi8vb2JmbTQyLmNvbS96aXV2eGVlZGdicGJldndvZ3EvaW5k
+ZXgxMi5odG1sKQpQYW5uZWF1eCBwaG90b3ZvbHRhw69xdWVzIOKAoiBDaGF1ZmZhZ2UgKGh0dHA6
+Ly9vYmZtNDIuY29tL3dlcWFhbzEwdndwNDVla25vcS9pbmRleDEzLmh0bWwpCkFsYXJtZSDigKIg
+SXNvbGF0aW9uIOKAoiBGZW7DqnRyZXMg4oCiIFbDqXJhbmRhIChodHRwOi8vb2JmbTQyLmNvbS81
+NHIwdXh6ZXUxYXAxdWJobGQvaW5kZXgxNC5odG1sKQo+IAooaHR0cDovL29iZm00Mi5jb20vcnBi
+ZmJub3dqcGF4c2tsdHNkL2luZGV4MTUuaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL3pncmVneHVx
+azFvbTFuY2hncS9pbmRleDE2Lmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS93bGIzbW5mY29wb2Nz
+d290b3EvaW5kZXgxNy5odG1sKQooaHR0cDovL29iZm00Mi5jb20vbTJ4Y21kc2Njb2owYjRwMHlz
+L2luZGV4MTguaHRtbCkKKGh0dHA6Ly9vYmZtNDIuY29tL3Axd3RnMzVxd2hqbnF6aWFkcy9pbmRl
+eDE5Lmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS8zMGlicGZydGV1enduYjNnZGQvaW5kZXgyMC5o
+dG1sKQoKU0VSVklDRSBHUkFUVUlUIEVUIFNBTlMgRU5HQUdFTUVOVCAoaHR0cDovL29iZm00Mi5j
+b20vaGN5MW93bHNxZHoyM3RyNHlkL2luZGV4MjEuaHRtbCkKCihodHRwOi8vb2JmbTQyLmNvbS9h
+c2IwNG40a29mdWN0Ymp0bGQvaW5kZXgyMi5odG1sKQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KSW50
+cm9kdWNpbmcgQXBwRHluYW1pY3MgTGl0ZSwgYSBmcmVlIHRyb3VibGVzaG9vdGluZyB0b29sIGZv
+ciBKYXZhLy5ORVQKR2V0IDEwMCUgdmlzaWJpbGl0eSBpbnRvIHlvdXIgcHJvZHVjdGlvbiBhcHBs
+aWNhdGlvbiAtIGF0IG5vIGNvc3QuCkNvZGUtbGV2ZWwgZGlhZ25vc3RpY3MgZm9yIHBlcmZvcm1h
+bmNlIGJvdHRsZW5lY2tzIHdpdGggPDIlIG92ZXJoZWFkCkRvd25sb2FkIGZvciBmcmVlIGFuZCBn
+ZXQgc3RhcnRlZCB0cm91Ymxlc2hvb3RpbmcgaW4gbWludXRlcy4KaHR0cDovL3Auc2YubmV0L3Nm
+dS9hcHBkeW5fZDJkX2FwMQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

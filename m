@@ -1,117 +1,43 @@
-From: Wenyou Yang <wenyou.yang@atmel.com>
-Subject: [PATCH] spi/spi-atmel: BUG: fix doesn' support 16 bits transfers using PIO
-Date: Thu, 2 May 2013 19:25:11 +0800
-Message-ID: <1367493911-3182-1-git-send-email-wenyou.yang@atmel.com>
-References: <1367493801-3037-1-git-send-email-wenyou.yang@atmel.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <broonie@kernel.org>, <grant.likely@linaro.org>,
-	<nicolas.ferre@atmel.com>, <richard.genoud@gmail.com>,
-	<wenyou.yang@atmel.com>, <spi-devel-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>
-To: <linux-arm-kernel@lists.infradead.org>
+From: Laurent Navet <laurent.navet@gmail.com>
+Subject: [PATCH] drivers: spi: bmc2835: use devm_ioremap_resource()
+Date: Thu,  2 May 2013 14:13:30 +0200
+Message-ID: <1367496810-5400-1-git-send-email-laurent.navet@gmail.com>
+Cc: linux-rpi-kernel@lists.infradead.org,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Laurent Navet <laurent.navet@gmail.com>
+To: swarren@wwwdotorg.org, broonie@kernel.org, grant.likely@linaro.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1367493801-3037-1-git-send-email-wenyou.yang@atmel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Richard Genoud <richard.genoud@gmail.com>
+Replace a call to deprecated devm_request_and_ioremap by devm_ioremap_resource.
 
-Fix using PIO transfer mode only support 8 bits transfer, doesn't support 16 bits.
+Found with coccicheck and this semantic patch:
+ scripts/coccinelle/api/devm_request_and_ioremap.cocci.
 
-Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
-Cc: spi-devel-general@lists.sourceforge.net
-Cc: linux-kernel@vger.kernel.org
-[wenyou.yang@atmel.com: submit the patch]
-Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
+Signed-off-by: Laurent Navet <laurent.navet@gmail.com>
 ---
- drivers/spi/spi-atmel.c |   47 ++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 38 insertions(+), 9 deletions(-)
+ drivers/spi/spi-bcm2835.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 787bd2c..d8cb7da 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -526,13 +526,17 @@ static void atmel_spi_next_xfer_pio(struct spi_master *master,
+diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
+index 89c0b50..a4185e4 100644
+--- a/drivers/spi/spi-bcm2835.c
++++ b/drivers/spi/spi-bcm2835.c
+@@ -331,10 +331,9 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
+ 		goto out_master_put;
  	}
  
- 	if (xfer->tx_buf)
--		spi_writel(as, TDR, *(u8 *)(xfer->tx_buf));
-+		if (xfer->bits_per_word > 8)
-+			spi_writel(as, TDR, *(u16 *)(xfer->tx_buf));
-+		else
-+			spi_writel(as, TDR, *(u8 *)(xfer->tx_buf));
- 	else
- 		spi_writel(as, TDR, 0);
- 
- 	dev_dbg(master->dev.parent,
--		"  start pio xfer %p: len %u tx %p rx %p\n",
--		xfer, xfer->len, xfer->tx_buf, xfer->rx_buf);
-+		"  start pio xfer %p: len %u tx %p rx %p bitpw %d\n",
-+		xfer, xfer->len, xfer->tx_buf, xfer->rx_buf,
-+		xfer->bits_per_word);
- 
- 	/* Enable relevant interrupts */
- 	spi_writel(as, IER, SPI_BIT(RDRF) | SPI_BIT(OVRES));
-@@ -950,21 +954,39 @@ atmel_spi_pump_pio_data(struct atmel_spi *as, struct spi_transfer *xfer)
- {
- 	u8		*txp;
- 	u8		*rxp;
-+	u16		*txp16;
-+	u16		*rxp16;
- 	unsigned long	xfer_pos = xfer->len - as->current_remaining_bytes;
- 
- 	if (xfer->rx_buf) {
--		rxp = ((u8 *)xfer->rx_buf) + xfer_pos;
--		*rxp = spi_readl(as, RDR);
-+		if (xfer->bits_per_word > 8) {
-+			rxp16 = (u16 *)(((u8 *)xfer->rx_buf) + xfer_pos);
-+			*rxp16 = spi_readl(as, RDR);
-+		} else {
-+			rxp = ((u8 *)xfer->rx_buf) + xfer_pos;
-+			*rxp = spi_readl(as, RDR);
-+		}
- 	} else {
- 		spi_readl(as, RDR);
+-	bs->regs = devm_request_and_ioremap(&pdev->dev, res);
+-	if (!bs->regs) {
+-		dev_err(&pdev->dev, "could not request/map memory region\n");
+-		err = -ENODEV;
++	bs->regs = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(bs->regs)) {
++		err = PTR_ERR(bs->regs);
+ 		goto out_master_put;
  	}
--
--	as->current_remaining_bytes--;
-+	if (xfer->bits_per_word > 8) {
-+		as->current_remaining_bytes -= 2;
-+		if (as->current_remaining_bytes < 0)
-+			as->current_remaining_bytes = 0;
-+	} else {
-+		as->current_remaining_bytes--;
-+	}
  
- 	if (as->current_remaining_bytes) {
- 		if (xfer->tx_buf) {
--			txp = ((u8 *)xfer->tx_buf) + xfer_pos + 1;
--			spi_writel(as, TDR, *txp);
-+			if (xfer->bits_per_word > 8) {
-+				txp16 = (u16 *)(((u8 *)xfer->tx_buf)
-+							+ xfer_pos + 2);
-+				spi_writel(as, TDR, *txp16);
-+			} else {
-+				txp = ((u8 *)xfer->tx_buf) + xfer_pos + 1;
-+				spi_writel(as, TDR, *txp);
-+			}
- 		} else {
- 			spi_writel(as, TDR, 0);
- 		}
-@@ -1378,6 +1400,13 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
- 			}
- 		}
- 
-+		if (xfer->bits_per_word > 8) {
-+			if (xfer->len % 2) {
-+				dev_dbg(&spi->dev, "buffer len should be 16 bits aligned\n");
-+				return -EINVAL;
-+			}
-+		}
-+
- 		/* FIXME implement these protocol options!! */
- 		if (xfer->speed_hz) {
- 			dev_dbg(&spi->dev, "no protocol options yet\n");
 -- 
-1.7.9.5
+1.7.10.4

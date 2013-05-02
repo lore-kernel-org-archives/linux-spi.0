@@ -1,66 +1,34 @@
-From: "Yang, Wenyou" <Wenyou.Yang@atmel.com>
-Subject: RE: [PATCH v6 01/16] spi/spi-atmel: fix probing failure after
- xfer->speed_hz set
-Date: Thu, 2 May 2013 02:35:16 +0000
-Message-ID: <B256D81BAE5131468A838E5D7A24364154236AB5@penmbx02>
-References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
-	<1362626815-6628-1-git-send-email-wenyou.yang@atmel.com>
- <CAGhQ9VwW18LXY5Jn0FUFCaAzKxP1W3QADG=JBp9JbgaAwo=F2Q@mail.gmail.com>
+From: "Darty" <contact-GE0/2U7jJN5QFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Gagnez un bon d'achat de 500 euros
+Date: Thu, 02 May 2013 05:08:00 +0000 (CET)
+Message-ID: <130502050800.58881826600005968@obfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	"Ferre, Nicolas" <Nicolas.FERRE@atmel.com>,
-	"plagnioj@jcrosoft.com" <plagnioj@jcrosoft.com>,
-	"richard.genoud@gmail.com" <richard.genoud@gmail.com>,
-	"Lin, JM" <JM.Lin@atmel.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Joachim Eastwood <manabian@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAGhQ9VwW18LXY5Jn0FUFCaAzKxP1W3QADG=JBp9JbgaAwo=F2Q@mail.gmail.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGksIEpvYWNoaW0sDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9h
-Y2hpbSBFYXN0d29vZCBbbWFpbHRvOm1hbmFiaWFuQGdtYWlsLmNvbV0NCj4gU2VudDogMjAxM8Tq
-M9TCN8jVIDIwOjMxDQo+IFRvOiBZYW5nLCBXZW55b3UNCj4gQ2M6IGxpbnV4LWFybS1rZXJuZWxA
-bGlzdHMuaW5mcmFkZWFkLm9yZzsgZ3JhbnQubGlrZWx5QHNlY3JldGxhYi5jYTsgRmVycmUsDQo+
-IE5pY29sYXM7IHBsYWduaW9qQGpjcm9zb2Z0LmNvbTsgcmljaGFyZC5nZW5vdWRAZ21haWwuY29t
-OyBMaW4sIEpNOw0KPiBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQ7IGxp
-bnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NiAwMS8x
-Nl0gc3BpL3NwaS1hdG1lbDogZml4IHByb2JpbmcgZmFpbHVyZSBhZnRlcg0KPiB4ZmVyLT5zcGVl
-ZF9oeiBzZXQNCj4gDQo+IE9uIDcgTWFyY2ggMjAxMyAwNDoyNiwgV2VueW91IFlhbmcgPHdlbnlv
-dS55YW5nQGF0bWVsLmNvbT4gd3JvdGU6DQo+ID4gY29tbWl0OiAwNTliOGZmZWVlNWI0Mjc5NDk4
-NzJiYjZlZDVkYjVhZTA3ODgwNTRlDQo+ID4gY2F1c2UgdGhlIGF0bWVsIHNwaSBwcm9iaW5nIGZh
-aWx1cmUuDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBXZW55b3UgWWFuZyA8d2VueW91LnlhbmdA
-YXRtZWwuY29tPg0KPiA+IENjOiBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQNCj4gPiBDYzogbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiA+IC0tLQ0KPiA+ICBk
-cml2ZXJzL3NwaS9zcGktYXRtZWwuYyB8ICAgIDYgKysrLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2Vk
-LCAzIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy9zcGkvc3BpLWF0bWVsLmMgYi9kcml2ZXJzL3NwaS9zcGktYXRtZWwuYw0KPiA+IGlu
-ZGV4IDY1NmQxMzcuLjFlY2E4MTUgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLWF0
-bWVsLmMNCj4gPiArKysgYi9kcml2ZXJzL3NwaS9zcGktYXRtZWwuYw0KPiA+IEBAIC04NDYsOSAr
-ODQ2LDkgQEAgc3RhdGljIGludCBhdG1lbF9zcGlfdHJhbnNmZXIoc3RydWN0IHNwaV9kZXZpY2Ug
-KnNwaSwNCj4gc3RydWN0IHNwaV9tZXNzYWdlICptc2cpDQo+ID4gICAgICAgICAgICAgICAgICAg
-ICAgICAgfQ0KPiA+ICAgICAgICAgICAgICAgICB9DQo+ID4NCj4gPiAtICAgICAgICAgICAgICAg
-LyogRklYTUUgaW1wbGVtZW50IHRoZXNlIHByb3RvY29sIG9wdGlvbnMhISAqLw0KPiA+IC0gICAg
-ICAgICAgICAgICBpZiAoeGZlci0+c3BlZWRfaHopIHsNCj4gPiAtICAgICAgICAgICAgICAgICAg
-ICAgICBkZXZfZGJnKCZzcGktPmRldiwgIm5vIHByb3RvY29sIG9wdGlvbnMNCj4geWV0XG4iKTsN
-Cj4gPiArICAgICAgICAgICAgICAgaWYgKHhmZXItPnNwZWVkX2h6IDwgc3BpLT5tYXhfc3BlZWRf
-aHopIHsNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBkZXZfZGJnKCZzcGktPmRldiwNCj4g
-PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJzcGVlZCBpbiB0cmFuc2ZlciBsZXNz
-IHRoYW4gYnVzDQo+IHNwZWVkXG4iKTsNCj4gPiAgICAgICAgICAgICAgICAgICAgICAgICByZXR1
-cm4gLUVOT1BST1RPT1BUOw0KPiA+ICAgICAgICAgICAgICAgICB9DQo+IA0KPiBJIHNlbnQgYSBz
-aW1pbGFyIHBhdGNoIHRvIHNwaS1kZXZsIGEgd2hpbGUgYWdvLCB3aGljaCBHcmFudCBzYWlkIGhl
-IGFwcGxpZWQuDQo+IGh0dHBzOi8vcGF0Y2h3b3JrLmtlcm5lbC5vcmcvcGF0Y2gvMjE2NTMwMS8N
-Cj4gDQo+IENhbid0IGZpbmQgdGhlIHBhdGNoIGluIGFueSB1cHN0cmVhbSBnaXQgdHJlZSBzbyBJ
-IGd1ZXNzIEdyYW50IGhhc24ndA0KPiBwdXNoZWQgaXQgeWV0Lg0KVGhpcyBwYXRjaCBoYXNuJ3Qg
-c3RpbGwgYXBwbGllZCBpbiBhbnkgdXBzdHJlYW0gZ2l0IHRyZWUsIHNvIEF0bWVsIHNwaSBtYXN0
-ZXIgZG9lc24ndCB3b3JrLg0KQ291bGQgeW91IGhlbHAgZG8gc29tZSBwaW5nIGl0PyANCg0KVGhh
-bmtzLg0KDQo+IA0KPiByZWdhcmRzDQo+IEpvYWNoaW0gRWFzdHdvb2QNCg0KQmVzdCBSZWdhcmRz
-LA0KV2VueW91IFlhbmcNCg==
+CihodHRwOi8vb2JmbTQxLmNvbS81dWYwdnM0ZmUyeGt5aHYwbnMvaW5kZXgwLmh0bWwpCk9yZGlu
+YXRldXJzIMKg4oCiwqAgR2FtaW5nIMKg4oCiwqAgTW9iaWxlIMKg4oCiwqAgQXBwYXJlaWxzCkdh
+Z25leiB1biBib24gZCdhY2hhdCBkZQoKNTAw4oKsIENoZXogRGFydHkKKGh0dHA6Ly9vYmZtNDEu
+Y29tL3JoZmYxc29wZW5qdWJpazA0ZC9pbmRleDEuaHRtbCkKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+CkludHJvZHVjaW5nIEFwcER5bmFtaWNzIExpdGUsIGEgZnJlZSB0cm91Ymxlc2hvb3RpbmcgdG9v
+bCBmb3IgSmF2YS8uTkVUCkdldCAxMDAlIHZpc2liaWxpdHkgaW50byB5b3VyIHByb2R1Y3Rpb24g
+YXBwbGljYXRpb24gLSBhdCBubyBjb3N0LgpDb2RlLWxldmVsIGRpYWdub3N0aWNzIGZvciBwZXJm
+b3JtYW5jZSBib3R0bGVuZWNrcyB3aXRoIDwyJSBvdmVyaGVhZApEb3dubG9hZCBmb3IgZnJlZSBh
+bmQgZ2V0IHN0YXJ0ZWQgdHJvdWJsZXNob290aW5nIGluIG1pbnV0ZXMuCmh0dHA6Ly9wLnNmLm5l
+dC9zZnUvYXBwZHluX2QyZF9hcDEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5l
+cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9s
+aXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

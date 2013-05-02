@@ -1,92 +1,117 @@
-From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v6 01/16] spi/spi-atmel: fix probing failure after
-	xfer->speed_hz set
-Date: Thu, 2 May 2013 12:34:55 +0200
-Message-ID: <5182414F.1000201@atmel.com>
-References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
-	<1362626815-6628-1-git-send-email-wenyou.yang@atmel.com>
-	<CAGhQ9VwW18LXY5Jn0FUFCaAzKxP1W3QADG=JBp9JbgaAwo=F2Q@mail.gmail.com>
-	<B256D81BAE5131468A838E5D7A24364154236AB5@penmbx02>
-	<CACQ1gAhZO3stjrwf5SiZf7jOO8T5bAJZiz97M7+7vwFmk2e65g@mail.gmail.com>
+From: Wenyou Yang <wenyou.yang@atmel.com>
+Subject: [PATCH] spi/spi-atmel: BUG: fix doesn' support 16 bits transfers using PIO
+Date: Thu, 2 May 2013 19:25:11 +0800
+Message-ID: <1367493911-3182-1-git-send-email-wenyou.yang@atmel.com>
+References: <1367493801-3037-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Joachim Eastwood <manabian-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org" <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>, "Lin,
-	JM" <JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: "grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org" <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Grant Likely
-	<grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CACQ1gAhZO3stjrwf5SiZf7jOO8T5bAJZiz97M7+7vwFmk2e65g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Cc: <broonie@kernel.org>, <grant.likely@linaro.org>,
+	<nicolas.ferre@atmel.com>, <richard.genoud@gmail.com>,
+	<wenyou.yang@atmel.com>, <spi-devel-general@lists.sourceforge.net>,
+	<linux-kernel@vger.kernel.org>
+To: <linux-arm-kernel@lists.infradead.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1367493801-3037-1-git-send-email-wenyou.yang@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-T24gMDIvMDUvMjAxMyAxMDoxMiwgUmljaGFyZCBHZW5vdWQgOgo+IDIwMTMvNS8yIFlhbmcsIFdl
-bnlvdSA8V2VueW91LllhbmdAYXRtZWwuY29tPjoKPj4gSGksIEpvYWNoaW0sCj4+Cj4+PiAtLS0t
-LU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQo+Pj4gRnJvbTogSm9hY2hpbSBFYXN0d29vZCBbbWFpbHRv
-Om1hbmFiaWFuQGdtYWlsLmNvbV0KPj4+IFNlbnQ6IDIwMTPlubQz5pyIN+aXpSAyMDozMQo+Pj4g
-VG86IFlhbmcsIFdlbnlvdQo+Pj4gQ2M6IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFk
-Lm9yZzsgZ3JhbnQubGlrZWx5QHNlY3JldGxhYi5jYTsgRmVycmUsCj4+PiBOaWNvbGFzOyBwbGFn
-bmlvakBqY3Jvc29mdC5jb207IHJpY2hhcmQuZ2Vub3VkQGdtYWlsLmNvbTsgTGluLCBKTTsKPj4+
-IHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldDsgbGludXgta2VybmVsQHZn
-ZXIua2VybmVsLm9yZwo+Pj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NiAwMS8xNl0gc3BpL3NwaS1h
-dG1lbDogZml4IHByb2JpbmcgZmFpbHVyZSBhZnRlcgo+Pj4geGZlci0+c3BlZWRfaHogc2V0Cj4+
-Pgo+Pj4gT24gNyBNYXJjaCAyMDEzIDA0OjI2LCBXZW55b3UgWWFuZyA8d2VueW91LnlhbmdAYXRt
-ZWwuY29tPiB3cm90ZToKPj4+PiBjb21taXQ6IDA1OWI4ZmZlZWU1YjQyNzk0OTg3MmJiNmVkNWRi
-NWFlMDc4ODA1NGUKPj4+PiBjYXVzZSB0aGUgYXRtZWwgc3BpIHByb2JpbmcgZmFpbHVyZS4KPj4+
-Pgo+Pj4+IFNpZ25lZC1vZmYtYnk6IFdlbnlvdSBZYW5nIDx3ZW55b3UueWFuZ0BhdG1lbC5jb20+
-Cj4+Pj4gQ2M6IHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAo+Pj4+IENj
-OiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnCj4+Pj4gLS0tCj4+Pj4gICBkcml2ZXJzL3Nw
-aS9zcGktYXRtZWwuYyB8ICAgIDYgKysrLS0tCj4+Pj4gICAxIGZpbGUgY2hhbmdlZCwgMyBpbnNl
-cnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQo+Pj4+Cj4+Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
-c3BpL3NwaS1hdG1lbC5jIGIvZHJpdmVycy9zcGkvc3BpLWF0bWVsLmMKPj4+PiBpbmRleCA2NTZk
-MTM3Li4xZWNhODE1IDEwMDY0NAo+Pj4+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS1hdG1lbC5jCj4+
-Pj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLWF0bWVsLmMKPj4+PiBAQCAtODQ2LDkgKzg0Niw5IEBA
-IHN0YXRpYyBpbnQgYXRtZWxfc3BpX3RyYW5zZmVyKHN0cnVjdCBzcGlfZGV2aWNlICpzcGksCj4+
-PiBzdHJ1Y3Qgc3BpX21lc3NhZ2UgKm1zZykKPj4+PiAgICAgICAgICAgICAgICAgICAgICAgICAg
-fQo+Pj4+ICAgICAgICAgICAgICAgICAgfQo+Pj4+Cj4+Pj4gLSAgICAgICAgICAgICAgIC8qIEZJ
-WE1FIGltcGxlbWVudCB0aGVzZSBwcm90b2NvbCBvcHRpb25zISEgKi8KPj4+PiAtICAgICAgICAg
-ICAgICAgaWYgKHhmZXItPnNwZWVkX2h6KSB7Cj4+Pj4gLSAgICAgICAgICAgICAgICAgICAgICAg
-ZGV2X2RiZygmc3BpLT5kZXYsICJubyBwcm90b2NvbCBvcHRpb25zCj4+PiB5ZXRcbiIpOwo+Pj4+
-ICsgICAgICAgICAgICAgICBpZiAoeGZlci0+c3BlZWRfaHogPCBzcGktPm1heF9zcGVlZF9oeikg
-ewo+Pj4+ICsgICAgICAgICAgICAgICAgICAgICAgIGRldl9kYmcoJnNwaS0+ZGV2LAo+Pj4+ICsg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgInNwZWVkIGluIHRyYW5zZmVyIGxlc3MgdGhh
-biBidXMKPj4+IHNwZWVkXG4iKTsKPj4+PiAgICAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJu
-IC1FTk9QUk9UT09QVDsKPj4+PiAgICAgICAgICAgICAgICAgIH0KPj4+Cj4+PiBJIHNlbnQgYSBz
-aW1pbGFyIHBhdGNoIHRvIHNwaS1kZXZsIGEgd2hpbGUgYWdvLCB3aGljaCBHcmFudCBzYWlkIGhl
-IGFwcGxpZWQuCj4+PiBodHRwczovL3BhdGNod29yay5rZXJuZWwub3JnL3BhdGNoLzIxNjUzMDEv
-Cj4+Pgo+Pj4gQ2FuJ3QgZmluZCB0aGUgcGF0Y2ggaW4gYW55IHVwc3RyZWFtIGdpdCB0cmVlIHNv
-IEkgZ3Vlc3MgR3JhbnQgaGFzbid0Cj4+PiBwdXNoZWQgaXQgeWV0Lgo+PiBUaGlzIHBhdGNoIGhh
-c24ndCBzdGlsbCBhcHBsaWVkIGluIGFueSB1cHN0cmVhbSBnaXQgdHJlZSwgc28gQXRtZWwgc3Bp
-IG1hc3RlciBkb2Vzbid0IHdvcmsuCj4+IENvdWxkIHlvdSBoZWxwIGRvIHNvbWUgcGluZyBpdD8K
-Pgo+IGl0J3MgaW4gbGludXgtbmV4dDoKPiAzZDM1MjI2MDRhNTU1N2U4MGZkY2FiNjFjNTRiZDA0
-ZWFmMTViNTI1Cj4gbWVyZ2VkIGZyb20gc3BpLWN1cnJlbnQvc3BpL21lcmdlCgpUaGFua3MgUmlj
-aGFyZCwgeWVzIEkgY2FuIGZpbmQgaXQgaGVyZToKaHR0cDovL2dpdC5zZWNyZXRsYWIuY2EvP3A9
-bGludXguZ2l0O2E9Y29tbWl0O2g9M2QzNTIyNjA0YTU1NTdlODBmZGNhYjYxYzU0YmQwNGVhZjE1
-YjUyNQoKR3JhbnQsIE1hcmssCgpDYW4geW91IHRlbGwgdXMgaWYgdGhpcyBTUEkgcGF0Y2ggd2ls
-bCBiZSBtZXJnZWQgdXBzdHJlYW0gdXNpbmcgb25lIG9mIAp5b3VyIHBhdGhzPwoKQmVzdCByZWdh
-cmRzLAotLSAKTmljb2xhcyBGZXJyZQoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkludHJvZHVjaW5n
-IEFwcER5bmFtaWNzIExpdGUsIGEgZnJlZSB0cm91Ymxlc2hvb3RpbmcgdG9vbCBmb3IgSmF2YS8u
-TkVUCkdldCAxMDAlIHZpc2liaWxpdHkgaW50byB5b3VyIHByb2R1Y3Rpb24gYXBwbGljYXRpb24g
-LSBhdCBubyBjb3N0LgpDb2RlLWxldmVsIGRpYWdub3N0aWNzIGZvciBwZXJmb3JtYW5jZSBib3R0
-bGVuZWNrcyB3aXRoIDwyJSBvdmVyaGVhZApEb3dubG9hZCBmb3IgZnJlZSBhbmQgZ2V0IHN0YXJ0
-ZWQgdHJvdWJsZXNob290aW5nIGluIG1pbnV0ZXMuCmh0dHA6Ly9wLnNmLm5ldC9zZnUvYXBwZHlu
-X2QyZF9hcDEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
-by9zcGktZGV2ZWwtZ2VuZXJhbAo=
+From: Richard Genoud <richard.genoud@gmail.com>
+
+Fix using PIO transfer mode only support 8 bits transfer, doesn't support 16 bits.
+
+Signed-off-by: Richard Genoud <richard.genoud@gmail.com>
+Cc: spi-devel-general@lists.sourceforge.net
+Cc: linux-kernel@vger.kernel.org
+[wenyou.yang@atmel.com: submit the patch]
+Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
+---
+ drivers/spi/spi-atmel.c |   47 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 38 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 787bd2c..d8cb7da 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -526,13 +526,17 @@ static void atmel_spi_next_xfer_pio(struct spi_master *master,
+ 	}
+ 
+ 	if (xfer->tx_buf)
+-		spi_writel(as, TDR, *(u8 *)(xfer->tx_buf));
++		if (xfer->bits_per_word > 8)
++			spi_writel(as, TDR, *(u16 *)(xfer->tx_buf));
++		else
++			spi_writel(as, TDR, *(u8 *)(xfer->tx_buf));
+ 	else
+ 		spi_writel(as, TDR, 0);
+ 
+ 	dev_dbg(master->dev.parent,
+-		"  start pio xfer %p: len %u tx %p rx %p\n",
+-		xfer, xfer->len, xfer->tx_buf, xfer->rx_buf);
++		"  start pio xfer %p: len %u tx %p rx %p bitpw %d\n",
++		xfer, xfer->len, xfer->tx_buf, xfer->rx_buf,
++		xfer->bits_per_word);
+ 
+ 	/* Enable relevant interrupts */
+ 	spi_writel(as, IER, SPI_BIT(RDRF) | SPI_BIT(OVRES));
+@@ -950,21 +954,39 @@ atmel_spi_pump_pio_data(struct atmel_spi *as, struct spi_transfer *xfer)
+ {
+ 	u8		*txp;
+ 	u8		*rxp;
++	u16		*txp16;
++	u16		*rxp16;
+ 	unsigned long	xfer_pos = xfer->len - as->current_remaining_bytes;
+ 
+ 	if (xfer->rx_buf) {
+-		rxp = ((u8 *)xfer->rx_buf) + xfer_pos;
+-		*rxp = spi_readl(as, RDR);
++		if (xfer->bits_per_word > 8) {
++			rxp16 = (u16 *)(((u8 *)xfer->rx_buf) + xfer_pos);
++			*rxp16 = spi_readl(as, RDR);
++		} else {
++			rxp = ((u8 *)xfer->rx_buf) + xfer_pos;
++			*rxp = spi_readl(as, RDR);
++		}
+ 	} else {
+ 		spi_readl(as, RDR);
+ 	}
+-
+-	as->current_remaining_bytes--;
++	if (xfer->bits_per_word > 8) {
++		as->current_remaining_bytes -= 2;
++		if (as->current_remaining_bytes < 0)
++			as->current_remaining_bytes = 0;
++	} else {
++		as->current_remaining_bytes--;
++	}
+ 
+ 	if (as->current_remaining_bytes) {
+ 		if (xfer->tx_buf) {
+-			txp = ((u8 *)xfer->tx_buf) + xfer_pos + 1;
+-			spi_writel(as, TDR, *txp);
++			if (xfer->bits_per_word > 8) {
++				txp16 = (u16 *)(((u8 *)xfer->tx_buf)
++							+ xfer_pos + 2);
++				spi_writel(as, TDR, *txp16);
++			} else {
++				txp = ((u8 *)xfer->tx_buf) + xfer_pos + 1;
++				spi_writel(as, TDR, *txp);
++			}
+ 		} else {
+ 			spi_writel(as, TDR, 0);
+ 		}
+@@ -1378,6 +1400,13 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+ 			}
+ 		}
+ 
++		if (xfer->bits_per_word > 8) {
++			if (xfer->len % 2) {
++				dev_dbg(&spi->dev, "buffer len should be 16 bits aligned\n");
++				return -EINVAL;
++			}
++		}
++
+ 		/* FIXME implement these protocol options!! */
+ 		if (xfer->speed_hz) {
+ 			dev_dbg(&spi->dev, "no protocol options yet\n");
+-- 
+1.7.9.5

@@ -1,58 +1,33 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi/spi-atmel: BUG: fix doesn' support 16 bits transfers
- using PIO
-Date: Thu, 2 May 2013 14:41:23 +0100
-Message-ID: <20130502134123.GA4945@sirena.org.uk>
-References: <1367493801-3037-1-git-send-email-wenyou.yang@atmel.com>
- <1367493911-3182-1-git-send-email-wenyou.yang@atmel.com>
+From: 13662261976-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Fri, 3 May 2013 05:27:07 +0800
+Message-ID: <E1UY126-0000RD-7C@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FCuugMFkClbJLl1L"
-Cc: linux-arm-kernel@lists.infradead.org, grant.likely@linaro.org,
-	nicolas.ferre@atmel.com, richard.genoud@gmail.com,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Wenyou Yang <wenyou.yang@atmel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1367493911-3182-1-git-send-email-wenyou.yang@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---FCuugMFkClbJLl1L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, May 02, 2013 at 07:25:11PM +0800, Wenyou Yang wrote:
-> From: Richard Genoud <richard.genoud@gmail.com>
->=20
-> Fix using PIO transfer mode only support 8 bits transfer, doesn't support=
- 16 bits.
-
-Applied, thanks.
-
---FCuugMFkClbJLl1L
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRgm0AAAoJELSic+t+oim9hJMP/158Xv3e6C0rX4GId53c5WNx
-uLngPy4hiuZhf3MR99VnAi3Tq27P2aWeHMJvVVygJG77QELElxSTa9myTaf0GvIF
-Its05vOBpbQVe84nNF3ANNOjv7A/CANXC6XI3YQVZUuVQm7h7BpXaWHU9yQU6Dyn
-oizs6eAGRa3vxVz2L+nF8helMGjFE1GuhH1BUV7QWY89freJARAy47MSLtS1K4ku
-S7GIktn2YoLDeWS2F1U9Dv2JBIua2SMlXDx1tUdVxHm5R+Zlhn4lP+lRSuDhY1P7
-EFEhix7RNDQbk3JexYVIf5burG7hoL9/3roHrO2Dqp5XviXF3i3YTX0URhzIUhFm
-obDDGEbueENCdQ0KUWsqCsW/vadsbM7tVXbksXRcWJlNHHCZkS/eqG1jD/uRJMFm
-33YSiqtsYmDXuuBodO3qPGf2b5yQIFsm4JUuFKCAtp3s32pUcvPwPLxxWyv/+iyv
-0mB6IG1CWp84vQGjG5rfY0cU8db27C2Qvq1S7nDE878By5Td8xJJbgJ7Rdt98NuG
-tlSk1J/QUxCiVSAsrQCTblXCrMaxFu3lLQ38VHbaEGz8YygX/LhZ1ZVo/3dcXliH
-aR2/G0hNmbbXDqjM7saf7BERXFvASAkaIeN4OjT3K9pB5RbzNWd2+e3IwD/JqNZc
-8I+fk81kAdxFV7yv5I9G
-=g3xg
------END PGP SIGNATURE-----
-
---FCuugMFkClbJLl1L--
+xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7ChqqGqxrEvtPq/qqO7CsjnOgogICAoMSnG
+1c2oyczGt8/6ytvLsKGqoarGsaO7CiAgICgyKbnjuObStaGiuPfA4Lf+zvHStcuwoaqhqsaxL7XI
+tcihowogICAgICAgo6ixvrmry76/ybvYytXU9ta1y7C3osaxo6kKufO5q8u+yOfT0NDo0qqjrLu2
+063E+rXEwLS159PrztLBqs+1o7ogCiAgICAgICAgICAgICAgICAguLrU8MjLo7rVxc/IyfooMCkx
+MzY2MjI2MTk3NgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkdldCAxMDAlIHZpc2liaWxpdHkgaW50
+byBKYXZhLy5ORVQgY29kZSB3aXRoIEFwcER5bmFtaWNzIExpdGUKSXQncyBhIGZyZWUgdHJvdWJs
+ZXNob290aW5nIHRvb2wgZGVzaWduZWQgZm9yIHByb2R1Y3Rpb24KR2V0IGRvd24gdG8gY29kZS1s
+ZXZlbCBkZXRhaWwgZm9yIGJvdHRsZW5lY2tzLCB3aXRoIDwyJSBvdmVyaGVhZC4KRG93bmxvYWQg
+Zm9yIGZyZWUgYW5kIGdldCBzdGFydGVkIHRyb3VibGVzaG9vdGluZyBpbiBtaW51dGVzLgpodHRw
+Oi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRfYXAyCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

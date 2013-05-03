@@ -1,7 +1,8 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 07/15] spi: clps711x: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:50:31 +0900
-Message-ID: <004401ce47ca$8106b770$83142650$@samsung.com>
+Subject: [PATCH 08/15] spi: coldfire-qspi: remove unnecessary
+	platform_set_drvdata()
+Date: Fri, 03 May 2013 15:50:47 +0900
+Message-ID: <004501ce47ca$8ac957e0$a05c07a0$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,29 +28,21 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-clps711x.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ drivers/spi/spi-coldfire-qspi.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index a11cbf0..6859a02 100644
---- a/drivers/spi/spi-clps711x.c
-+++ b/drivers/spi/spi-clps711x.c
-@@ -254,7 +254,6 @@ err_out:
- 		if (gpio_is_valid(hw->chipselect[i]))
- 			gpio_free(hw->chipselect[i]);
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index 7b5cc9e..3f17660 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -524,7 +524,6 @@ static int mcfqspi_remove(struct platform_device *pdev)
+ 	/* disable the hardware (set the baud rate to 0) */
+ 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
  
 -	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 	kfree(master);
- 
-@@ -274,7 +273,6 @@ static int spi_clps711x_remove(struct platform_device *pdev)
- 			gpio_free(hw->chipselect[i]);
- 
- 	devm_clk_put(&pdev->dev, hw->spi_clk);
--	platform_set_drvdata(pdev, NULL);
- 	spi_unregister_master(master);
- 	kfree(master);
- 
+ 	mcfqspi_cs_teardown(mcfqspi);
+ 	clk_disable(mcfqspi->clk);
+ 	clk_put(mcfqspi->clk);
 -- 
 1.7.2.5
 

@@ -1,7 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 11/15] spi: spi-gpio: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:51:36 +0900
-Message-ID: <004801ce47ca$a83d2b30$f8b78190$@samsung.com>
+Subject: [PATCH 12/15] spi: imx: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:51:51 +0900
+Message-ID: <004901ce47ca$b10abd40$132037c0$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,22 +27,30 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-gpio.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ drivers/spi/spi-imx.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 0021fc4..9672c7b 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -514,8 +514,6 @@ static int spi_gpio_remove(struct platform_device *pdev)
- 	status = spi_bitbang_stop(&spi_gpio->bitbang);
- 	spi_master_put(spi_gpio->bitbang.master);
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 0befeeb..f4d7cac 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -902,7 +902,6 @@ out_gpio_free:
+ 	}
+ 	spi_master_put(master);
+ 	kfree(master);
+-	platform_set_drvdata(pdev, NULL);
+ 	return ret;
+ }
+ 
+@@ -929,8 +928,6 @@ static int spi_imx_remove(struct platform_device *pdev)
+ 
+ 	release_mem_region(res->start, resource_size(res));
  
 -	platform_set_drvdata(pdev, NULL);
 -
- 	if (SPI_MISO_GPIO != SPI_GPIO_NO_MISO)
- 		gpio_free(SPI_MISO_GPIO);
- 	if (SPI_MOSI_GPIO != SPI_GPIO_NO_MOSI)
+ 	return 0;
+ }
+ 
 -- 
 1.7.2.5
 

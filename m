@@ -1,7 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 09/15] spi: dw-mmio: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:51:02 +0900
-Message-ID: <004601ce47ca$93b1ec00$bb15c400$@samsung.com>
+Subject: [PATCH 10/15] spi: ep93xx: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:51:20 +0900
+Message-ID: <004701ce47ca$9e7e3440$db7a9cc0$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,22 +27,29 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-dw-mmio.c |    2 --
+ drivers/spi/spi-ep93xx.c |    2 --
  1 files changed, 0 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 4a6d5c9..4aa8be8 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -111,8 +111,6 @@ static int dw_spi_mmio_remove(struct platform_device *pdev)
- 	struct dw_spi_mmio *dwsmmio = platform_get_drvdata(pdev);
- 	struct resource *mem;
- 
+diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+index d7bac60..8d4f2a6 100644
+--- a/drivers/spi/spi-ep93xx.c
++++ b/drivers/spi/spi-ep93xx.c
+@@ -1132,7 +1132,6 @@ fail_put_clock:
+ 	clk_put(espi->clk);
+ fail_release_master:
+ 	spi_master_put(master);
 -	platform_set_drvdata(pdev, NULL);
--
- 	clk_disable(dwsmmio->clk);
- 	clk_put(dwsmmio->clk);
- 	dwsmmio->clk = NULL;
+ 
+ 	return error;
+ }
+@@ -1167,7 +1166,6 @@ static int ep93xx_spi_remove(struct platform_device *pdev)
+ 
+ 	ep93xx_spi_release_dma(espi);
+ 	clk_put(espi->clk);
+-	platform_set_drvdata(pdev, NULL);
+ 
+ 	spi_unregister_master(master);
+ 	return 0;
 -- 
 1.7.2.5
 

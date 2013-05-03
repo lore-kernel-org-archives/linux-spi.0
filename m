@@ -1,8 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 08/15] spi: coldfire-qspi: remove unnecessary
-	platform_set_drvdata()
-Date: Fri, 03 May 2013 15:50:47 +0900
-Message-ID: <004501ce47ca$8ac957e0$a05c07a0$@samsung.com>
+Subject: [PATCH 09/15] spi: dw-mmio: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:51:02 +0900
+Message-ID: <004601ce47ca$93b1ec00$bb15c400$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -28,21 +27,22 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-coldfire-qspi.c |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+ drivers/spi/spi-dw-mmio.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
-index 7b5cc9e..3f17660 100644
---- a/drivers/spi/spi-coldfire-qspi.c
-+++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -524,7 +524,6 @@ static int mcfqspi_remove(struct platform_device *pdev)
- 	/* disable the hardware (set the baud rate to 0) */
- 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 4a6d5c9..4aa8be8 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -111,8 +111,6 @@ static int dw_spi_mmio_remove(struct platform_device *pdev)
+ 	struct dw_spi_mmio *dwsmmio = platform_get_drvdata(pdev);
+ 	struct resource *mem;
  
 -	platform_set_drvdata(pdev, NULL);
- 	mcfqspi_cs_teardown(mcfqspi);
- 	clk_disable(mcfqspi->clk);
- 	clk_put(mcfqspi->clk);
+-
+ 	clk_disable(dwsmmio->clk);
+ 	clk_put(dwsmmio->clk);
+ 	dwsmmio->clk = NULL;
 -- 
 1.7.2.5
 

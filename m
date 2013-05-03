@@ -1,80 +1,77 @@
-From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Subject: Re: [PATCH 01/15] spi: altera: remove unnecessary
-	platform_set_drvdata()
-Date: Fri, 3 May 2013 08:07:44 +0100
-Message-ID: <CACxGe6vkjU_LroO9gtBY4d1wcU__Wk7n=hzo27Df5nbV6TJQvQ@mail.gmail.com>
-References: <003e01ce47ca$38f68910$aae39b30$@samsung.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] drivers: spi: bmc2835: use devm_ioremap_resource()
+Date: Fri, 3 May 2013 10:41:40 +0100
+Message-ID: <20130503094140.GN4945@sirena.org.uk>
+References: <1367496810-5400-1-git-send-email-laurent.navet@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <003e01ce47ca$38f68910$aae39b30$@samsung.com>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============6467834221350808259=="
+Cc: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+ linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laurent Navet <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+In-Reply-To: <1367496810-5400-1-git-send-email-laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-rpi-kernel/>
+List-Post: <mailto:linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+List-Help: <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel>,
+ <mailto:linux-rpi-kernel-request-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org?subject=subscribe>
+Sender: "linux-rpi-kernel" <linux-rpi-kernel-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Errors-To: linux-rpi-kernel-bounces+glkr-linux-rpi-kernel=m.gmane.org-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, May 3, 2013 at 7:48 AM, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
-> The driver core clears the driver data to NULL after device_release
-> or on probe failure, since commit 0998d0631001288a5974afc0b2a5f568bcdecb4d
-> (device-core: Ensure drvdata = NULL when no driver is bound).
-> Thus, it is not needed to manually clear the device driver data to NULL.
->
-> Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-Hi Jingoo,
-
-Thanks for doing this. However, there is no need to have a separate
-patch for each and every spi driver. Can you please squash them all
-into a single patch and repost?
-
-Acked-by: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-
-> ---
->  drivers/spi/spi-altera.c |    2 --
->  1 files changed, 0 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-> index a537f8d..81b9adb 100644
-> --- a/drivers/spi/spi-altera.c
-> +++ b/drivers/spi/spi-altera.c
-> @@ -285,7 +285,6 @@ static int altera_spi_probe(struct platform_device *pdev)
->  exit_busy:
->         err = -EBUSY;
->  exit:
-> -       platform_set_drvdata(pdev, NULL);
->         spi_master_put(master);
->         return err;
->  }
-> @@ -296,7 +295,6 @@ static int altera_spi_remove(struct platform_device *dev)
->         struct spi_master *master = hw->bitbang.master;
->
->         spi_bitbang_stop(&hw->bitbang);
-> -       platform_set_drvdata(dev, NULL);
->         spi_master_put(master);
->         return 0;
->  }
-> --
-> 1.7.2.5
->
->
+--===============6467834221350808259==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="vDEbda84Uy/oId5W"
+Content-Disposition: inline
 
 
+--vDEbda84Uy/oId5W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
---
-Grant Likely, B.Sc., P.Eng.
-Secret Lab Technologies Ltd.
+On Thu, May 02, 2013 at 02:13:30PM +0200, Laurent Navet wrote:
+> Replace a call to deprecated devm_request_and_ioremap by devm_ioremap_resource.
 
-------------------------------------------------------------------------------
-Get 100% visibility into Java/.NET code with AppDynamics Lite
-It's a free troubleshooting tool designed for production
-Get down to code-level detail for bottlenecks, with <2% overhead.
-Download for free and get started troubleshooting in minutes.
-http://p.sf.net/sfu/appdyn_d2d_ap2
+Applied, thanks.  Please use subject lines that match those normally
+used by the subsystem.
+
+--vDEbda84Uy/oId5W
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRg4ZQAAoJELSic+t+oim9EL8P/R9rwcW06Xsij3wBvm25H+Uj
+rN9CB13D1LcPIxNlO9lIsaW5qXZfsl82UHYXomYblK5FeLoXvtC13iY/dqTwAKZi
+vYI1VHxeNlmiUbb1PMS5aNa4NUiJ1WSRUPCTzHmEjfCO3Lucy8wIQkGvgfBZhTi8
+xbbAxwtf/EALdycyyy28uipvneQ0eIeCdsER/NBBB3oGtpfi3NXxBYv5ARra702w
+PsO+ra0nfread7ljbEcbKkHJ8rU1JCyQ/BplD9bRmkZLG/BdsuhOm8DGnmfQs24g
+waA5Y4J/Yd+y5yF4UmVAtOT3719TIBEZv9oLQYTeWP/9Jqbi/gGYvsfu7ZdSNTv/
+I+CiMQJVT7HDapSdQg+HKWDEzcNuooT2AgwG2ryT6lXHnT5DYjTWubxivoxw2Cvm
+Ow0mfXeYg+BqvJrhP9/lt33RIHKTORRYN1CW5Gm6waScXOzYzD2PodblfUzWPmJh
+LDIYieyPxzv0I6eVN9lZz2t56QZN3+kxfQiuG30USMXiUNd7/OcN2TVLXnfZWItE
+q5PicdhqaXo9jevKhA05JLdPEv2NSigeeu8dO/MrwDtmPopq+9VZEZ1BaAZJUo3/
+bszAI3bIuMGaJAZrKe2p3IdqvTPAxUlOG+v/dNpL3pqasu7nZqjTBkzgF7qNvlkx
+CLJQKM3a4Uk5LEU4zLDk
+=prgh
+-----END PGP SIGNATURE-----
+
+--vDEbda84Uy/oId5W--
+
+
+--===============6467834221350808259==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-rpi-kernel mailing list
+linux-rpi-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+http://lists.infradead.org/mailman/listinfo/linux-rpi-kernel
+
+--===============6467834221350808259==--

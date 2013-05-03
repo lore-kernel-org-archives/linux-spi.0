@@ -1,7 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 04/15] spi: bcm63xx: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:49:47 +0900
-Message-ID: <004101ce47ca$6719e800$354db800$@samsung.com>
+Subject: [PATCH 05/15] spi: bfin5xx: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:50:02 +0900
+Message-ID: <004201ce47ca$6ffc88b0$4ff59a10$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,30 +27,23 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c |    3 ---
+ drivers/spi/spi-bfin5xx.c |    3 ---
  1 files changed, 0 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index a4ec5f4..099d083 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -469,7 +469,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- out_clk_disable:
- 	clk_disable_unprepare(clk);
- out_err:
+diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
+index 317f564..68ca444 100644
+--- a/drivers/spi/spi-bfin5xx.c
++++ b/drivers/spi/spi-bfin5xx.c
+@@ -1418,9 +1418,6 @@ static int bfin_spi_remove(struct platform_device *pdev)
+ 
+ 	peripheral_free_list(drv_data->pin_req);
+ 
+-	/* Prevent double remove */
 -	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- out_clk:
- 	clk_put(clk);
-@@ -491,8 +490,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(bs->clk);
- 	clk_put(bs->clk);
- 
--	platform_set_drvdata(pdev, 0);
 -
- 	spi_master_put(master);
- 
  	return 0;
+ }
+ 
 -- 
 1.7.2.5
 

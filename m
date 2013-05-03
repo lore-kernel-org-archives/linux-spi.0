@@ -1,7 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 03/15] spi: au1550: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:49:32 +0900
-Message-ID: <004001ce47ca$5e038d20$1a0aa760$@samsung.com>
+Subject: [PATCH 04/15] spi: bcm63xx: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:49:47 +0900
+Message-ID: <004101ce47ca$6719e800$354db800$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,22 +27,30 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-au1550.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bcm63xx.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
-index 44dd34b..39560f4 100644
---- a/drivers/spi/spi-au1550.c
-+++ b/drivers/spi/spi-au1550.c
-@@ -987,8 +987,6 @@ static int au1550_spi_remove(struct platform_device *pdev)
- 		au1xxx_dbdma_chan_free(hw->dma_tx_ch);
- 	}
- 
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index a4ec5f4..099d083 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -469,7 +469,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ out_clk_disable:
+ 	clk_disable_unprepare(clk);
+ out_err:
 -	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+ out_clk:
+ 	clk_put(clk);
+@@ -491,8 +490,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
+ 	clk_disable_unprepare(bs->clk);
+ 	clk_put(bs->clk);
+ 
+-	platform_set_drvdata(pdev, 0);
 -
- 	spi_master_put(hw->master);
+ 	spi_master_put(master);
+ 
  	return 0;
- }
 -- 
 1.7.2.5
 

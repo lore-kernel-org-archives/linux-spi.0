@@ -1,7 +1,8 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 05/15] spi: bfin5xx: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:50:02 +0900
-Message-ID: <004201ce47ca$6ffc88b0$4ff59a10$@samsung.com>
+Subject: [PATCH 06/15] spi: bfin-sport: remove unnecessary
+	platform_set_drvdata()
+Date: Fri, 03 May 2013 15:50:16 +0900
+Message-ID: <004301ce47ca$78645410$692cfc30$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,14 +28,14 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-bfin5xx.c |    3 ---
+ drivers/spi/spi-bfin-sport.c |    3 ---
  1 files changed, 0 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-index 317f564..68ca444 100644
---- a/drivers/spi/spi-bfin5xx.c
-+++ b/drivers/spi/spi-bfin5xx.c
-@@ -1418,9 +1418,6 @@ static int bfin_spi_remove(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
+index 39b0d17..6d04c80 100644
+--- a/drivers/spi/spi-bfin-sport.c
++++ b/drivers/spi/spi-bfin-sport.c
+@@ -882,9 +882,6 @@ static int bfin_sport_spi_remove(struct platform_device *pdev)
  
  	peripheral_free_list(drv_data->pin_req);
  

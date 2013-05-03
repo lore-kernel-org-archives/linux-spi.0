@@ -1,18 +1,16 @@
-From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH V2] spi: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 16:27:12 +0900
-Message-ID: <004e01ce47cf$a1339e00$e39ada00$@samsung.com>
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH 01/15] spi: altera: remove unnecessary
+	platform_set_drvdata()
+Date: Fri, 3 May 2013 08:07:44 +0100
+Message-ID: <CACxGe6vkjU_LroO9gtBY4d1wcU__Wk7n=hzo27Df5nbV6TJQvQ@mail.gmail.com>
+References: <003e01ce47ca$38f68910$aae39b30$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: 'Eric Miao' <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Haojian Zhuang' <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	'Grant Likely' <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-language: ko
+In-Reply-To: <003e01ce47ca$38f68910$aae39b30$@samsung.com>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,292 +21,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The driver core clears the driver data to NULL after device_release
-or on probe failure, since commit 0998d0631001288a5974afc0b2a5f568bcdecb4d
-(device-core: Ensure drvdata = NULL when no driver is bound).
-Thus, it is not needed to manually clear the device driver data to NULL.
+On Fri, May 3, 2013 at 7:48 AM, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
+> The driver core clears the driver data to NULL after device_release
+> or on probe failure, since commit 0998d0631001288a5974afc0b2a5f568bcdecb4d
+> (device-core: Ensure drvdata = NULL when no driver is bound).
+> Thus, it is not needed to manually clear the device driver data to NULL.
+>
+> Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
-Changes since v1:
-- squashed all patches into a single patch
+Hi Jingoo,
 
- drivers/spi/spi-altera.c        |    2 --
- drivers/spi/spi-ath79.c         |    2 --
- drivers/spi/spi-au1550.c        |    2 --
- drivers/spi/spi-bcm63xx.c       |    3 ---
- drivers/spi/spi-bfin-sport.c    |    3 ---
- drivers/spi/spi-bfin5xx.c       |    3 ---
- drivers/spi/spi-clps711x.c      |    2 --
- drivers/spi/spi-coldfire-qspi.c |    1 -
- drivers/spi/spi-dw-mmio.c       |    2 --
- drivers/spi/spi-ep93xx.c        |    2 --
- drivers/spi/spi-gpio.c          |    2 --
- drivers/spi/spi-imx.c           |    3 ---
- drivers/spi/spi-oc-tiny.c       |    2 --
- drivers/spi/spi-pxa2xx.c        |    3 ---
- drivers/spi/spi-s3c64xx.c       |    2 --
- 15 files changed, 0 insertions(+), 34 deletions(-)
+Thanks for doing this. However, there is no need to have a separate
+patch for each and every spi driver. Can you please squash them all
+into a single patch and repost?
 
-diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-index a537f8d..81b9adb 100644
---- a/drivers/spi/spi-altera.c
-+++ b/drivers/spi/spi-altera.c
-@@ -285,7 +285,6 @@ static int altera_spi_probe(struct platform_device *pdev)
- exit_busy:
- 	err = -EBUSY;
- exit:
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 	return err;
- }
-@@ -296,7 +295,6 @@ static int altera_spi_remove(struct platform_device *dev)
- 	struct spi_master *master = hw->bitbang.master;
- 
- 	spi_bitbang_stop(&hw->bitbang);
--	platform_set_drvdata(dev, NULL);
- 	spi_master_put(master);
- 	return 0;
- }
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index e504b76..6f6d455 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -287,7 +287,6 @@ err_clk_put:
- err_unmap:
- 	iounmap(sp->base);
- err_put_master:
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(sp->bitbang.master);
- 
- 	return ret;
-@@ -302,7 +301,6 @@ static int ath79_spi_remove(struct platform_device *pdev)
- 	clk_disable(sp->clk);
- 	clk_put(sp->clk);
- 	iounmap(sp->base);
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(sp->bitbang.master);
- 
- 	return 0;
-diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
-index 44dd34b..39560f4 100644
---- a/drivers/spi/spi-au1550.c
-+++ b/drivers/spi/spi-au1550.c
-@@ -987,8 +987,6 @@ static int au1550_spi_remove(struct platform_device *pdev)
- 		au1xxx_dbdma_chan_free(hw->dma_tx_ch);
- 	}
- 
--	platform_set_drvdata(pdev, NULL);
--
- 	spi_master_put(hw->master);
- 	return 0;
- }
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index a4ec5f4..099d083 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -469,7 +469,6 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- out_clk_disable:
- 	clk_disable_unprepare(clk);
- out_err:
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- out_clk:
- 	clk_put(clk);
-@@ -491,8 +490,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(bs->clk);
- 	clk_put(bs->clk);
- 
--	platform_set_drvdata(pdev, 0);
--
- 	spi_master_put(master);
- 
- 	return 0;
-diff --git a/drivers/spi/spi-bfin-sport.c b/drivers/spi/spi-bfin-sport.c
-index 39b0d17..6d04c80 100644
---- a/drivers/spi/spi-bfin-sport.c
-+++ b/drivers/spi/spi-bfin-sport.c
-@@ -882,9 +882,6 @@ static int bfin_sport_spi_remove(struct platform_device *pdev)
- 
- 	peripheral_free_list(drv_data->pin_req);
- 
--	/* Prevent double remove */
--	platform_set_drvdata(pdev, NULL);
--
- 	return 0;
- }
- 
-diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-index 317f564..68ca444 100644
---- a/drivers/spi/spi-bfin5xx.c
-+++ b/drivers/spi/spi-bfin5xx.c
-@@ -1418,9 +1418,6 @@ static int bfin_spi_remove(struct platform_device *pdev)
- 
- 	peripheral_free_list(drv_data->pin_req);
- 
--	/* Prevent double remove */
--	platform_set_drvdata(pdev, NULL);
--
- 	return 0;
- }
- 
-diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index a11cbf0..6859a02 100644
---- a/drivers/spi/spi-clps711x.c
-+++ b/drivers/spi/spi-clps711x.c
-@@ -254,7 +254,6 @@ err_out:
- 		if (gpio_is_valid(hw->chipselect[i]))
- 			gpio_free(hw->chipselect[i]);
- 
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 	kfree(master);
- 
-@@ -274,7 +273,6 @@ static int spi_clps711x_remove(struct platform_device *pdev)
- 			gpio_free(hw->chipselect[i]);
- 
- 	devm_clk_put(&pdev->dev, hw->spi_clk);
--	platform_set_drvdata(pdev, NULL);
- 	spi_unregister_master(master);
- 	kfree(master);
- 
-diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
-index 7b5cc9e..3f17660 100644
---- a/drivers/spi/spi-coldfire-qspi.c
-+++ b/drivers/spi/spi-coldfire-qspi.c
-@@ -524,7 +524,6 @@ static int mcfqspi_remove(struct platform_device *pdev)
- 	/* disable the hardware (set the baud rate to 0) */
- 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
- 
--	platform_set_drvdata(pdev, NULL);
- 	mcfqspi_cs_teardown(mcfqspi);
- 	clk_disable(mcfqspi->clk);
- 	clk_put(mcfqspi->clk);
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 4a6d5c9..4aa8be8 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -111,8 +111,6 @@ static int dw_spi_mmio_remove(struct platform_device *pdev)
- 	struct dw_spi_mmio *dwsmmio = platform_get_drvdata(pdev);
- 	struct resource *mem;
- 
--	platform_set_drvdata(pdev, NULL);
--
- 	clk_disable(dwsmmio->clk);
- 	clk_put(dwsmmio->clk);
- 	dwsmmio->clk = NULL;
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index d7bac60..8d4f2a6 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -1132,7 +1132,6 @@ fail_put_clock:
- 	clk_put(espi->clk);
- fail_release_master:
- 	spi_master_put(master);
--	platform_set_drvdata(pdev, NULL);
- 
- 	return error;
- }
-@@ -1167,7 +1166,6 @@ static int ep93xx_spi_remove(struct platform_device *pdev)
- 
- 	ep93xx_spi_release_dma(espi);
- 	clk_put(espi->clk);
--	platform_set_drvdata(pdev, NULL);
- 
- 	spi_unregister_master(master);
- 	return 0;
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 0021fc4..9672c7b 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -514,8 +514,6 @@ static int spi_gpio_remove(struct platform_device *pdev)
- 	status = spi_bitbang_stop(&spi_gpio->bitbang);
- 	spi_master_put(spi_gpio->bitbang.master);
- 
--	platform_set_drvdata(pdev, NULL);
--
- 	if (SPI_MISO_GPIO != SPI_GPIO_NO_MISO)
- 		gpio_free(SPI_MISO_GPIO);
- 	if (SPI_MOSI_GPIO != SPI_GPIO_NO_MOSI)
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 0befeeb..f4d7cac 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -902,7 +902,6 @@ out_gpio_free:
- 	}
- 	spi_master_put(master);
- 	kfree(master);
--	platform_set_drvdata(pdev, NULL);
- 	return ret;
- }
- 
-@@ -929,8 +928,6 @@ static int spi_imx_remove(struct platform_device *pdev)
- 
- 	release_mem_region(res->start, resource_size(res));
- 
--	platform_set_drvdata(pdev, NULL);
--
- 	return 0;
- }
- 
-diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-index e60a776..58deb79 100644
---- a/drivers/spi/spi-oc-tiny.c
-+++ b/drivers/spi/spi-oc-tiny.c
-@@ -368,7 +368,6 @@ exit_gpio:
- exit_busy:
- 	err = -EBUSY;
- exit:
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 	return err;
- }
-@@ -382,7 +381,6 @@ static int tiny_spi_remove(struct platform_device *pdev)
- 	spi_bitbang_stop(&hw->bitbang);
- 	for (i = 0; i < hw->gpio_cs_count; i++)
- 		gpio_free(hw->gpio_cs[i]);
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 	return 0;
- }
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index f5d84d6..5a7fa2c 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1299,9 +1299,6 @@ static int pxa2xx_spi_remove(struct platform_device *pdev)
- 	/* Disconnect from the SPI framework */
- 	spi_unregister_master(drv_data->master);
- 
--	/* Prevent double remove */
--	platform_set_drvdata(pdev, NULL);
--
- 	return 0;
- }
- 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 5000586..5f3759d 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1399,7 +1399,6 @@ err3:
- err2:
- 	clk_disable_unprepare(sdd->clk);
- err0:
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 
- 	return ret;
-@@ -1420,7 +1419,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	clk_disable_unprepare(sdd->clk);
- 
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 
- 	return 0;
--- 
-1.7.2.5
+Acked-by: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+
+> ---
+>  drivers/spi/spi-altera.c |    2 --
+>  1 files changed, 0 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
+> index a537f8d..81b9adb 100644
+> --- a/drivers/spi/spi-altera.c
+> +++ b/drivers/spi/spi-altera.c
+> @@ -285,7 +285,6 @@ static int altera_spi_probe(struct platform_device *pdev)
+>  exit_busy:
+>         err = -EBUSY;
+>  exit:
+> -       platform_set_drvdata(pdev, NULL);
+>         spi_master_put(master);
+>         return err;
+>  }
+> @@ -296,7 +295,6 @@ static int altera_spi_remove(struct platform_device *dev)
+>         struct spi_master *master = hw->bitbang.master;
+>
+>         spi_bitbang_stop(&hw->bitbang);
+> -       platform_set_drvdata(dev, NULL);
+>         spi_master_put(master);
+>         return 0;
+>  }
+> --
+> 1.7.2.5
+>
+>
 
 
+
+--
+Grant Likely, B.Sc., P.Eng.
+Secret Lab Technologies Ltd.
 
 ------------------------------------------------------------------------------
 Get 100% visibility into Java/.NET code with AppDynamics Lite

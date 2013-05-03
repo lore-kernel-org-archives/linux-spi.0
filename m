@@ -1,7 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 12/15] spi: imx: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:51:51 +0900
-Message-ID: <004901ce47ca$b10abd40$132037c0$@samsung.com>
+Subject: [PATCH 13/15] spi: oc-tiny: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:52:06 +0900
+Message-ID: <004a01ce47ca$ba2bed90$2e83c8b0$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,30 +27,29 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-imx.c |    3 ---
- 1 files changed, 0 insertions(+), 3 deletions(-)
+ drivers/spi/spi-oc-tiny.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 0befeeb..f4d7cac 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -902,7 +902,6 @@ out_gpio_free:
- 	}
+diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
+index e60a776..58deb79 100644
+--- a/drivers/spi/spi-oc-tiny.c
++++ b/drivers/spi/spi-oc-tiny.c
+@@ -368,7 +368,6 @@ exit_gpio:
+ exit_busy:
+ 	err = -EBUSY;
+ exit:
+-	platform_set_drvdata(pdev, NULL);
  	spi_master_put(master);
- 	kfree(master);
--	platform_set_drvdata(pdev, NULL);
- 	return ret;
+ 	return err;
  }
- 
-@@ -929,8 +928,6 @@ static int spi_imx_remove(struct platform_device *pdev)
- 
- 	release_mem_region(res->start, resource_size(res));
- 
+@@ -382,7 +381,6 @@ static int tiny_spi_remove(struct platform_device *pdev)
+ 	spi_bitbang_stop(&hw->bitbang);
+ 	for (i = 0; i < hw->gpio_cs_count; i++)
+ 		gpio_free(hw->gpio_cs[i]);
 -	platform_set_drvdata(pdev, NULL);
--
+ 	spi_master_put(master);
  	return 0;
  }
- 
 -- 
 1.7.2.5
 

@@ -1,12 +1,15 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 13/15] spi: oc-tiny: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:52:06 +0900
-Message-ID: <004a01ce47ca$ba2bed90$2e83c8b0$@samsung.com>
+Subject: [PATCH 14/15] spi: pxa2xx: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:53:41 +0900
+Message-ID: <004b01ce47ca$f28b62b0$d7a22810$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: 'Grant Likely' <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Cc: 'Eric Miao' <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	'Haojian Zhuang' <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	'Grant Likely' <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-language: ko
@@ -27,29 +30,23 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-oc-tiny.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ drivers/spi/spi-pxa2xx.c |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-index e60a776..58deb79 100644
---- a/drivers/spi/spi-oc-tiny.c
-+++ b/drivers/spi/spi-oc-tiny.c
-@@ -368,7 +368,6 @@ exit_gpio:
- exit_busy:
- 	err = -EBUSY;
- exit:
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index f5d84d6..5a7fa2c 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1299,9 +1299,6 @@ static int pxa2xx_spi_remove(struct platform_device *pdev)
+ 	/* Disconnect from the SPI framework */
+ 	spi_unregister_master(drv_data->master);
+ 
+-	/* Prevent double remove */
 -	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 	return err;
- }
-@@ -382,7 +381,6 @@ static int tiny_spi_remove(struct platform_device *pdev)
- 	spi_bitbang_stop(&hw->bitbang);
- 	for (i = 0; i < hw->gpio_cs_count; i++)
- 		gpio_free(hw->gpio_cs[i]);
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
+-
  	return 0;
  }
+ 
 -- 
 1.7.2.5
 

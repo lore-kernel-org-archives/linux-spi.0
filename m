@@ -1,12 +1,12 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 01/15] spi: altera: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:48:30 +0900
-Message-ID: <003e01ce47ca$38f68910$aae39b30$@samsung.com>
+Subject: [PATCH 02/15] spi: ath79: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:49:02 +0900
+Message-ID: <003f01ce47ca$4c005860$e4010920$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Cc: 'Grant Likely' <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-language: ko
@@ -27,29 +27,29 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-altera.c |    2 --
+ drivers/spi/spi-ath79.c |    2 --
  1 files changed, 0 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-index a537f8d..81b9adb 100644
---- a/drivers/spi/spi-altera.c
-+++ b/drivers/spi/spi-altera.c
-@@ -285,7 +285,6 @@ static int altera_spi_probe(struct platform_device *pdev)
- exit_busy:
- 	err = -EBUSY;
- exit:
+diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
+index e504b76..6f6d455 100644
+--- a/drivers/spi/spi-ath79.c
++++ b/drivers/spi/spi-ath79.c
+@@ -287,7 +287,6 @@ err_clk_put:
+ err_unmap:
+ 	iounmap(sp->base);
+ err_put_master:
 -	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(master);
- 	return err;
- }
-@@ -296,7 +295,6 @@ static int altera_spi_remove(struct platform_device *dev)
- 	struct spi_master *master = hw->bitbang.master;
+ 	spi_master_put(sp->bitbang.master);
  
- 	spi_bitbang_stop(&hw->bitbang);
--	platform_set_drvdata(dev, NULL);
- 	spi_master_put(master);
+ 	return ret;
+@@ -302,7 +301,6 @@ static int ath79_spi_remove(struct platform_device *pdev)
+ 	clk_disable(sp->clk);
+ 	clk_put(sp->clk);
+ 	iounmap(sp->base);
+-	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(sp->bitbang.master);
+ 
  	return 0;
- }
 -- 
 1.7.2.5
 

@@ -1,15 +1,12 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 14/15] spi: pxa2xx: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:53:41 +0900
-Message-ID: <004b01ce47ca$f28b62b0$d7a22810$@samsung.com>
+Subject: [PATCH 15/15] spi: s3c64xx: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:53:58 +0900
+Message-ID: <004c01ce47ca$fc906350$f5b129f0$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: 'Eric Miao' <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Haojian Zhuang' <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	'Grant Likely' <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: 'Grant Likely' <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-language: ko
@@ -30,23 +27,29 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-pxa2xx.c |    3 ---
- 1 files changed, 0 insertions(+), 3 deletions(-)
+ drivers/spi/spi-s3c64xx.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index f5d84d6..5a7fa2c 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1299,9 +1299,6 @@ static int pxa2xx_spi_remove(struct platform_device *pdev)
- 	/* Disconnect from the SPI framework */
- 	spi_unregister_master(drv_data->master);
- 
--	/* Prevent double remove */
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 5000586..5f3759d 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1399,7 +1399,6 @@ err3:
+ err2:
+ 	clk_disable_unprepare(sdd->clk);
+ err0:
 -	platform_set_drvdata(pdev, NULL);
--
- 	return 0;
- }
+ 	spi_master_put(master);
  
+ 	return ret;
+@@ -1420,7 +1419,6 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(sdd->clk);
+ 
+-	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+ 
+ 	return 0;
 -- 
 1.7.2.5
 

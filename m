@@ -1,7 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 02/15] spi: ath79: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:49:02 +0900
-Message-ID: <003f01ce47ca$4c005860$e4010920$@samsung.com>
+Subject: [PATCH 03/15] spi: au1550: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:49:32 +0900
+Message-ID: <004001ce47ca$5e038d20$1a0aa760$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,29 +27,22 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-ath79.c |    2 --
+ drivers/spi/spi-au1550.c |    2 --
  1 files changed, 0 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index e504b76..6f6d455 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -287,7 +287,6 @@ err_clk_put:
- err_unmap:
- 	iounmap(sp->base);
- err_put_master:
--	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(sp->bitbang.master);
+diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
+index 44dd34b..39560f4 100644
+--- a/drivers/spi/spi-au1550.c
++++ b/drivers/spi/spi-au1550.c
+@@ -987,8 +987,6 @@ static int au1550_spi_remove(struct platform_device *pdev)
+ 		au1xxx_dbdma_chan_free(hw->dma_tx_ch);
+ 	}
  
- 	return ret;
-@@ -302,7 +301,6 @@ static int ath79_spi_remove(struct platform_device *pdev)
- 	clk_disable(sp->clk);
- 	clk_put(sp->clk);
- 	iounmap(sp->base);
 -	platform_set_drvdata(pdev, NULL);
- 	spi_master_put(sp->bitbang.master);
- 
+-
+ 	spi_master_put(hw->master);
  	return 0;
+ }
 -- 
 1.7.2.5
 

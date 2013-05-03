@@ -1,7 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 10/15] spi: ep93xx: remove unnecessary platform_set_drvdata()
-Date: Fri, 03 May 2013 15:51:20 +0900
-Message-ID: <004701ce47ca$9e7e3440$db7a9cc0$@samsung.com>
+Subject: [PATCH 11/15] spi: spi-gpio: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:51:36 +0900
+Message-ID: <004801ce47ca$a83d2b30$f8b78190$@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -27,29 +27,22 @@ Thus, it is not needed to manually clear the device driver data to NULL.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-ep93xx.c |    2 --
+ drivers/spi/spi-gpio.c |    2 --
  1 files changed, 0 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index d7bac60..8d4f2a6 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -1132,7 +1132,6 @@ fail_put_clock:
- 	clk_put(espi->clk);
- fail_release_master:
- 	spi_master_put(master);
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 0021fc4..9672c7b 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -514,8 +514,6 @@ static int spi_gpio_remove(struct platform_device *pdev)
+ 	status = spi_bitbang_stop(&spi_gpio->bitbang);
+ 	spi_master_put(spi_gpio->bitbang.master);
+ 
 -	platform_set_drvdata(pdev, NULL);
- 
- 	return error;
- }
-@@ -1167,7 +1166,6 @@ static int ep93xx_spi_remove(struct platform_device *pdev)
- 
- 	ep93xx_spi_release_dma(espi);
- 	clk_put(espi->clk);
--	platform_set_drvdata(pdev, NULL);
- 
- 	spi_unregister_master(master);
- 	return 0;
+-
+ 	if (SPI_MISO_GPIO != SPI_GPIO_NO_MISO)
+ 		gpio_free(SPI_MISO_GPIO);
+ 	if (SPI_MOSI_GPIO != SPI_GPIO_NO_MOSI)
 -- 
 1.7.2.5
 

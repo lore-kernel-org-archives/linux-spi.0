@@ -1,13 +1,15 @@
-From: "Kaporal par Jeanstory" <contact-rpgDg82rM6BGWvitb5QawA@public.gmane.org>
-Subject: [SPAM] Nouvelle Collection Kaporal, livraison gratuite, stock limite
-Date: Fri, 03 May 2013 03:28:55 +0000 (CET)
-Message-ID: <130503032855.66927218800003388@obfm41.com>
+From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH 01/15] spi: altera: remove unnecessary platform_set_drvdata()
+Date: Fri, 03 May 2013 15:48:30 +0900
+Message-ID: <003e01ce47ca$38f68910$aae39b30$@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-language: ko
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,73 +20,44 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQxLmNvbS95ZndueTN2eWVmaW5xbWE1Z2ovaW5kZXgwLmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQxLmNvbS9kMHc1NTMxdWVwcndjcmk1b2cvaW5kZXgxLmh0bWwpCsKgCihodHRw
-Oi8vb2JmbTQxLmNvbS9zMXc0ZzNhNWVrcW5paDNhcW8vaW5kZXgyLmh0bWwpCsKgClRlZSBzaGly
-dCBLQVBPUkFMNSBaeWJsYSBUdXJxdW9pc2UKKGh0dHA6Ly9vYmZtNDEuY29tL2xid3JuM2J4ZXNj
-d3JpaGFqcS9pbmRleDMuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQxLmNvbS9uMXJoZ2Yy
-cHdvb25nZTNtYWcvaW5kZXg0Lmh0bWwpCjI5LDAwIOKCrAooaHR0cDovL29iZm00MS5jb20vNGJy
-dW5maGZ3M2Z3MXZobWlqL2luZGV4NS5odG1sKQrCoAooaHR0cDovL29iZm00MS5jb20vd2ZyM3lm
-eHN3NDNuaHdhaDNxL2luZGV4Ni5odG1sKQrCoApUZWUgU2hscnQgS0FQT1JBTDUgTk9SRVYgTm9p
-cgooaHR0cDovL29iZm00MS5jb20vejByZTVmdWt3dHB3bW5paGhvL2luZGV4Ny5odG1sKQpLYXBv
-cmFsIDUKKGh0dHA6Ly9vYmZtNDEuY29tL3VmMHZzcGVkZTFrbnNsYXltai9pbmRleDguaHRtbCkK
-MjUsMDAg4oKsCihodHRwOi8vb2JmbTQxLmNvbS9lMDBhcHBjZWVtNHd0ZGl5cGcvaW5kZXg5Lmh0
-bWwpCsKgCihodHRwOi8vb2JmbTQxLmNvbS81cWswanU0NHQwNWh3emZmdmovaW5kZXgxMC5odG1s
-KQrCoApUZWUgU2hscnQgS0FQT1JBTDUgTmFjaWQgUm95CihodHRwOi8vb2JmbTQxLmNvbS9yZGdm
-NWdqa3B6NXFhNHF2a2ovaW5kZXgxMS5odG1sKQpLYXBvcmFsIDUKKGh0dHA6Ly9vYmZtNDEuY29t
-L3Q0eHprbGkyamhlZmJnbGRpcy9pbmRleDEyLmh0bWwpCjM1LDAwIOKCrAooaHR0cDovL29iZm00
-MS5jb20vMnB3bXRhMmx1b2U1cXFiNWFzL2luZGV4MTMuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDEu
-Y29tL2ZpZHNmcDVudnVuejNqa3Vlby9pbmRleDE0Lmh0bWwpCsKgCkplYW5zIEtBUE9SQUwgNSBC
-cm96IEF1dGhlbnRpYwooaHR0cDovL29iZm00MS5jb20vMWVhcTMwc3ZnZG50bm93Y3VvL2luZGV4
-MTUuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQxLmNvbS90YmQ0d3BhMWV1MHczMWh1aXMv
-aW5kZXgxNi5odG1sKQo4OSwwMCDigqwKKGh0dHA6Ly9vYmZtNDEuY29tLzJ4YXJkMHRncWQwMm5j
-NWNhcy9pbmRleDE3Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQxLmNvbS9janVvZHZvZ2Z3MjFlZmpm
-a3EvaW5kZXgxOC5odG1sKQrCoApKZWFucyBLQVBPUkFMIDUgQnJveiBGcmlwZQooaHR0cDovL29i
-Zm00MS5jb20veHlxZHdqejE0YjJyNXgxdnZxL2luZGV4MTkuaHRtbCkKS2Fwb3JhbCA1CihodHRw
-Oi8vb2JmbTQxLmNvbS9qbzBseTV3eWsxaG1zNXh5dm8vaW5kZXgyMC5odG1sKQo4OSwwMCDigqwK
-KGh0dHA6Ly9vYmZtNDEuY29tL3FzNWp6Mmdib3BoYzFwZ3Jrby9pbmRleDIxLmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQxLmNvbS9vY2FzajBwenFlbTJ2NXBjZW8vaW5kZXgyMi5odG1sKQrCoApQdWxs
-IEtBUE9SQUw1IEJPUkFHIFZlcm1pbGxvbgooaHR0cDovL29iZm00MS5jb20vZzBkcTVweXVleW13
-cHBpdXVvL2luZGV4MjMuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQxLmNvbS9qYWpkMmR6
-amdiMWI1YXpldm8vaW5kZXgyNC5odG1sKQo0OSwwMCDigqwKKGh0dHA6Ly9vYmZtNDEuY29tL3F1
-ZW92M294dncxNGUzdnhrby9pbmRleDI1Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQxLmNvbS9vbXd5
-MWFtNXUzZzVjYXQ1ZW8vaW5kZXgyNi5odG1sKQrCoApKZWFucyBLQVBPUkFMNSBBTUJSTyBMaWdo
-dCBHcmV5IERlc3Ryb3kKKGh0dHA6Ly9vYmZtNDEuY29tL2dueGdobGRhamdnZnkzZGR1by9pbmRl
-eDI3Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00MS5jb20vcjMwZmJwb3N2bmF6azR1Ym1v
-L2luZGV4MjguaHRtbCkKODUsMDAg4oKsCihodHRwOi8vb2JmbTQxLmNvbS81azUwdTB6dGd0YXRt
-em5pcG8vaW5kZXgyOS5odG1sKQrCoAooaHR0cDovL29iZm00MS5jb20vejRkdnU1dnR1eDNwb24y
-ejRkL2luZGV4MzAuaHRtbCkKwqAKVGVlIFNobHJ0IEtBUE9SQUw1IE5PUkVWIFJveQooaHR0cDov
-L29iZm00MS5jb20vd3BhYWIyY3NqcjN4Mnd5cW5kL2luZGV4MzEuaHRtbCkKS2Fwb3JhbCA1Ciho
-dHRwOi8vb2JmbTQxLmNvbS81Z2QyZzVucGt4am1vdWZ6cHEvaW5kZXgzMi5odG1sKQoyNSwwMCDi
-gqwKKGh0dHA6Ly9vYmZtNDEuY29tL3JsYXhtMnEzb3JqYzJrcXFtcS9pbmRleDMzLmh0bWwpCsKg
-CihodHRwOi8vb2JmbTQxLmNvbS96YnhlbmRrZnEyZjB6dm0wNGQvaW5kZXgzNC5odG1sKQrCoApU
-ZWUgc2hpcnQgS0FQT1JBTDUgUGFyb2wgT2NlYW4KKGh0dHA6Ly9vYmZtNDEuY29tL3d4dzNsM3hv
-ZTRmbmllYWFuZC9pbmRleDM1Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00MS5jb20vdnNz
-aDR6MjB0amtpb2QxNHdzL2luZGV4MzYuaHRtbCkKMzUsMDAg4oKsCihodHRwOi8vb2JmbTQxLmNv
-bS9rb2h1czFpZHBpa2cybGpnenMvaW5kZXgzNy5odG1sKQrCoAooaHR0cDovL29iZm00MS5jb20v
-YWZ2MnNpd2RpY3VsZHk1anBxL2luZGV4MzguaHRtbCkKwqAKUG9sbyBLQVBPUkFMIDUgUG93ZXIg
-VmVybWlsbG9uCihodHRwOi8vb2JmbTQxLmNvbS9pdG94NHNnMGQ1dWV4c2h3bXEvaW5kZXgzOS5o
-dG1sKQpLYXBvcmFsIDUKKGh0dHA6Ly9vYmZtNDEuY29tL3Z0amk0ZGIwcXlrMDVkbWV3eS9pbmRl
-eDQwLmh0bWwpCjQ1LDAwIOKCrAooaHR0cDovL29iZm00MS5jb20va2Zla3MzM2RlZWtuZWxheHp5
-L2luZGV4NDEuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDEuY29tL2Vkd2FwYTFla3A0cmNkYzVueS9p
-bmRleDQyLmh0bWwpCsKgCkNoZW1pc2UgS0FQT1JBTCA1IFRlcnJ5IENvYmFsdAooaHR0cDovL29i
-Zm00MS5jb20vdXF4dm9sZXdvMTQxeWxvZDR5L2luZGV4NDMuaHRtbCkKS2Fwb3JhbCA1CihodHRw
-Oi8vb2JmbTQxLmNvbS9kNGhwdTFmYjV3aW92cmwxbnMvaW5kZXg0NC5odG1sKQo0OSwwMCDigqwK
-KGh0dHA6Ly9vYmZtNDEuY29tL3lwc3dienV5YmJpYXBtYms0cy9pbmRleDQ1Lmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQxLmNvbS9sZXRtYTQwdTJncmtzcmVzd3MvaW5kZXg0Ni5odG1sKQrCoApUZWUg
-U2hscnQgS0FQT1JBTDUgTmFieSBDb2JhbHQKKGh0dHA6Ly9vYmZtNDEuY29tL3NpbXp4Y2h6bTNy
-eTFtNG16cy9pbmRleDQ3Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00MS5jb20vczJvNG1z
-YWFkdXFlYWhpZXpkL2luZGV4NDguaHRtbCkKMzksMDAg4oKsCihodHRwOi8vb2JmbTQxLmNvbS9s
-MXZyZ2l0NWlkcWx3aXB4d2QvaW5kZXg0OS5odG1sKQrCoApWb2lyIHRvdXRlIGxhIHPDqWxlY3Rp
-b24KKGh0dHA6Ly9vYmZtNDEuY29tL2dnZmdneWQ1c2dnaHkzZmRyby9pbmRleDUwLmh0bWwpCsKg
-CihodHRwOi8vb2JmbTQxLmNvbS9vbG55bWhtYTMzZ3FjYXE1NW8vaW5kZXg1MS5odG1sKQotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KR2V0IDEwMCUgdmlzaWJpbGl0eSBpbnRvIEphdmEvLk5FVCBjb2Rl
-IHdpdGggQXBwRHluYW1pY3MgTGl0ZQpJdCdzIGEgZnJlZSB0cm91Ymxlc2hvb3RpbmcgdG9vbCBk
-ZXNpZ25lZCBmb3IgcHJvZHVjdGlvbgpHZXQgZG93biB0byBjb2RlLWxldmVsIGRldGFpbCBmb3Ig
-Ym90dGxlbmVja3MsIHdpdGggPDIlIG92ZXJoZWFkLgpEb3dubG9hZCBmb3IgZnJlZSBhbmQgZ2V0
-IHN0YXJ0ZWQgdHJvdWJsZXNob290aW5nIGluIG1pbnV0ZXMuCmh0dHA6Ly9wLnNmLm5ldC9zZnUv
-YXBwZHluX2QyZF9hcDIKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
-aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+The driver core clears the driver data to NULL after device_release
+or on probe failure, since commit 0998d0631001288a5974afc0b2a5f568bcdecb4d
+(device-core: Ensure drvdata = NULL when no driver is bound).
+Thus, it is not needed to manually clear the device driver data to NULL.
+
+Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+ drivers/spi/spi-altera.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
+index a537f8d..81b9adb 100644
+--- a/drivers/spi/spi-altera.c
++++ b/drivers/spi/spi-altera.c
+@@ -285,7 +285,6 @@ static int altera_spi_probe(struct platform_device *pdev)
+ exit_busy:
+ 	err = -EBUSY;
+ exit:
+-	platform_set_drvdata(pdev, NULL);
+ 	spi_master_put(master);
+ 	return err;
+ }
+@@ -296,7 +295,6 @@ static int altera_spi_remove(struct platform_device *dev)
+ 	struct spi_master *master = hw->bitbang.master;
+ 
+ 	spi_bitbang_stop(&hw->bitbang);
+-	platform_set_drvdata(dev, NULL);
+ 	spi_master_put(master);
+ 	return 0;
+ }
+-- 
+1.7.2.5
+
+
+
+------------------------------------------------------------------------------
+Get 100% visibility into Java/.NET code with AppDynamics Lite
+It's a free troubleshooting tool designed for production
+Get down to code-level detail for bottlenecks, with <2% overhead.
+Download for free and get started troubleshooting in minutes.
+http://p.sf.net/sfu/appdyn_d2d_ap2

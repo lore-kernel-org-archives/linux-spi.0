@@ -1,14 +1,15 @@
 From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: [PATCH] spi/sirf: Let device core handle pinctrl
-Date: Mon,  6 May 2013 20:31:18 +0100
-Message-ID: <1367868678-12492-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH] spi/omap2: Let device core handle pinctrl
+Date: Mon,  6 May 2013 20:36:38 +0100
+Message-ID: <1367868998-12667-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-To: Barry Song <baohua.song-kQvG35nSl+M@public.gmane.org>
+	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -26,63 +27,41 @@ devm_pinctrl_get_select_default() from the driver.
 
 Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 ---
- drivers/spi/spi-sirf.c |   12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index f59d417..899dc3b 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -19,7 +19,6 @@
- #include <linux/of_gpio.h>
- #include <linux/spi/spi.h>
- #include <linux/spi/spi_bitbang.h>
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 893c3d7..3777bd5 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -38,7 +38,6 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
 -#include <linux/pinctrl/consumer.h>
  
- #define DRIVER_NAME "sirfsoc_spi"
+ #include <linux/spi/spi.h>
  
-@@ -127,7 +126,6 @@ struct sirfsoc_spi {
- 	void __iomem *base;
- 	u32 ctrl_freq;  /* SPI controller clock speed */
- 	struct clk *clk;
--	struct pinctrl *p;
+@@ -1170,7 +1169,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	static int		bus_num = 1;
+ 	struct device_node	*node = pdev->dev.of_node;
+ 	const struct of_device_id *match;
+-	struct pinctrl *pinctrl;
  
- 	/* rx & tx bufs from the spi_transfer */
- 	const void *tx;
-@@ -558,15 +556,10 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	master->bus_num = pdev->id;
- 	sspi->bitbang.master->dev.of_node = pdev->dev.of_node;
+ 	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
+ 	if (master == NULL) {
+@@ -1268,11 +1266,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	if (status < 0)
+ 		goto dma_chnl_free;
  
--	sspi->p = pinctrl_get_select_default(&pdev->dev);
--	ret = IS_ERR(sspi->p);
--	if (ret)
--		goto free_master;
+-	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
+-	if (IS_ERR(pinctrl))
+-		dev_warn(&pdev->dev,
+-				"pins are not configured from the driver\n");
 -
- 	sspi->clk = clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(sspi->clk)) {
- 		ret = -EINVAL;
--		goto free_pin;
-+		goto free_master;
- 	}
- 	clk_prepare_enable(sspi->clk);
- 	sspi->ctrl_freq = clk_get_rate(sspi->clk);
-@@ -594,8 +587,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- free_clk:
- 	clk_disable_unprepare(sspi->clk);
- 	clk_put(sspi->clk);
--free_pin:
--	pinctrl_put(sspi->p);
- free_master:
- 	spi_master_put(master);
- err_cs:
-@@ -618,7 +609,6 @@ static int  spi_sirfsoc_remove(struct platform_device *pdev)
- 	}
- 	clk_disable_unprepare(sspi->clk);
- 	clk_put(sspi->clk);
--	pinctrl_put(sspi->p);
- 	spi_master_put(master);
- 	return 0;
- }
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_enable(&pdev->dev);
 -- 
 1.7.10.4
 

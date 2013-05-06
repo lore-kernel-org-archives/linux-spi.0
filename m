@@ -1,90 +1,69 @@
-From: "Kaporal par Jeanstory" <contact-rpgDg82rM6BGWvitb5QawA@public.gmane.org>
-Subject: Nouvelle Collection Kaporal, livraison gratuite, stock limite
-Date: Mon, 06 May 2013 03:05:25 +0000 (CET)
-Message-ID: <130506030525.92711197700003916@obfm43.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v6 01/16] spi/spi-atmel: fix probing failure after
+ xfer->speed_hz set
+Date: Mon, 6 May 2013 11:31:05 +0100
+Message-ID: <20130506103105.GB13472@opensource.wolfsonmicro.com>
+References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
+ <1362626815-6628-1-git-send-email-wenyou.yang@atmel.com>
+ <CAGhQ9VwW18LXY5Jn0FUFCaAzKxP1W3QADG=JBp9JbgaAwo=F2Q@mail.gmail.com>
+ <B256D81BAE5131468A838E5D7A24364154236AB5@penmbx02>
+ <CACQ1gAhZO3stjrwf5SiZf7jOO8T5bAJZiz97M7+7vwFmk2e65g@mail.gmail.com>
+ <5182414F.1000201@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="9zSXsLTf0vkW971A"
+Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+	Grant Likely <grant.likely@linaro.org>,
+	Richard Genoud <richard.genoud@gmail.com>,
+	"Yang, Wenyou" <Wenyou.Yang@atmel.com>,
+	Joachim Eastwood <manabian@gmail.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"plagnioj@jcrosoft.com" <plagnioj@jcrosoft.com>,
+	"Lin, JM" <JM.Lin@atmel.com>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Nicolas Ferre <nicolas.ferre@atmel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <5182414F.1000201@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQzLmNvbS8zMHRicDRya3V2emVzYzNzZWwvaW5kZXgwLmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQzLmNvbS9oZnQxczRkc3VsdXZ0MWhzdXkvaW5kZXgxLmh0bWwpCsKgCihodHRw
-Oi8vb2JmbTQzLmNvbS9hYnQwdzQ0ZnUxYmVrcWF0dmQvaW5kZXgyLmh0bWwpCsKgClRlZSBzaGly
-dCBLQVBPUkFMNSBaeWJsYSBUdXJxdW9pc2UKKGh0dHA6Ly9vYmZtNDMuY29tL2kxdGZxNG9wdW15
-djRnaXRrcy9pbmRleDMuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQzLmNvbS9jYmZqd3Nx
-eHpuMmV5bGFkc3kvaW5kZXg0Lmh0bWwpCjI5LDAwIOKCrAooaHR0cDovL29iZm00My5jb20veDFm
-bHFzdzV6Mmx2YmRpZGxsL2luZGV4NS5odG1sKQrCoAooaHR0cDovL29iZm00My5jb20vMTBmcXBz
-c3V6Z25ldTIzMHlzL2luZGV4Ni5odG1sKQrCoApUZWUgU2hscnQgS0FQT1JBTDUgTk9SRVYgTm9p
-cgooaHR0cDovL29iZm00My5jb20vZmZmc3NzcHl6aHZ2ejBoMGRkL2luZGV4Ny5odG1sKQpLYXBv
-cmFsIDUKKGh0dHA6Ly9vYmZtNDMuY29tL28wNHk1a212dWttZXFlM3AwbC9pbmRleDguaHRtbCkK
-MjUsMDAg4oKsCihodHRwOi8vb2JmbTQzLmNvbS9nZjRneWtsbHVzaHZjdmhwYnkvaW5kZXg5Lmh0
-bWwpCsKgCihodHRwOi8vb2JmbTQzLmNvbS9kdTM1dnRjMTR3Y2tsenVxZmQvaW5kZXgxMC5odG1s
-KQrCoApUZWUgU2hscnQgS0FQT1JBTDUgTmFjaWQgUm95CihodHRwOi8vb2JmbTQzLmNvbS95YWxu
-MnJ2Z2ZiY3lmNG56MWQvaW5kZXgxMS5odG1sKQpLYXBvcmFsIDUKKGh0dHA6Ly9vYmZtNDMuY29t
-L2gxYmNxd3NwYWd5MmtncnRiZy9pbmRleDEyLmh0bWwpCjM1LDAwIOKCrAooaHR0cDovL29iZm00
-My5jb20vMzJydHJmNTN5M3l3bXEzaDBnL2luZGV4MTMuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDMu
-Y29tL3Z5cWh3ajJmbHl0cnhqeG54bC9pbmRleDE0Lmh0bWwpCsKgCkplYW5zIEtBUE9SQUwgNSBC
-cm96IEF1dGhlbnRpYwooaHR0cDovL29iZm00My5jb20va2p1dWR2aW9oZXQxZG9nb2NsL2luZGV4
-MTUuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQzLmNvbS9ocnExZmpsNGR5ejV4MTBuYmcv
-aW5kZXgxNi5odG1sKQo4OSwwMCDigqwKKGh0dHA6Ly9vYmZtNDMuY29tLzN3dWIzdnJraWV6ZmRj
-c28wZy9pbmRleDE3Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQzLmNvbS91ZWF2MzBla3AwNHQyZjRx
-MXkvaW5kZXgxOC5odG1sKQrCoApKZWFucyBLQVBPUkFMIDUgQnJveiBGcmlwZQooaHR0cDovL29i
-Zm00My5jb20vZWlkYWZwMTR0ejR6b3hlemZ5L2luZGV4MTkuaHRtbCkKS2Fwb3JhbCA1CihodHRw
-Oi8vb2JmbTQzLmNvbS93dmMzaG9maXNtbzR6NWsyZmwvaW5kZXgyMC5odG1sKQo4OSwwMCDigqwK
-KGh0dHA6Ly9vYmZtNDMuY29tL3poemUxZXVyM2ZvYmlwdzMxbC9pbmRleDIxLmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQzLmNvbS9uenVodnYwY2lkZmYwNXlveGwvaW5kZXgyMi5odG1sKQrCoApQdWxs
-IEtBUE9SQUw1IEJPUkFHIFZlcm1pbGxvbgooaHR0cDovL29iZm00My5jb20vNDVxdTJqaHFkdWY1
-anAybmNsL2luZGV4MjMuaHRtbCkKS2Fwb3JhbCA1CihodHRwOi8vb2JmbTQzLmNvbS93ZHlhNW4x
-ZWh6cGNvYW80ZmwvaW5kZXgyNC5odG1sKQo0OSwwMCDigqwKKGh0dHA6Ly9vYmZtNDMuY29tL3px
-aXZqeGV3bDBwbTIzY2cxbC9pbmRleDI1Lmh0bWwpCsKgCihodHRwOi8vb2JmbTQzLmNvbS9udHJp
-emZiMHlvM3doYWFoeGwvaW5kZXgyNi5odG1sKQrCoApKZWFucyBLQVBPUkFMNSBBTUJSTyBMaWdo
-dCBHcmV5IERlc3Ryb3kKKGh0dHA6Ly9vYmZtNDMuY29tLzRmYmt5dzNkYWgzMjQzbXRjbC9pbmRl
-eDI3Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00My5jb20veWxjbm1qZWhsMnFyYjRmbHNs
-L2luZGV4MjguaHRtbCkKODUsMDAg4oKsCihodHRwOi8vb2JmbTQzLmNvbS9kZ3o1Z3YxbWg0cTFx
-enFwbGwvaW5kZXgyOS5odG1sKQrCoAooaHR0cDovL29iZm00My5jb20vcTFxb2dvam15NWduNW5p
-dmdqL2luZGV4MzAuaHRtbCkKwqAKVGVlIFNobHJ0IEtBUE9SQUw1IE5PUkVWIFJveQooaHR0cDov
-L29iZm00My5jb20vajJ1ZG1lNGhhY2cwZXdwZm9qL2luZGV4MzEuaHRtbCkKS2Fwb3JhbCA1Ciho
-dHRwOi8vb2JmbTQzLmNvbS9ka3FwdW94MnM1aTQ1dXV2bHkvaW5kZXgzMi5odG1sKQoyNSwwMCDi
-gqwKKGh0dHA6Ly9vYmZtNDMuY29tL3kzdXdiZWtsM2NpYmVrbmZzeS9pbmRleDMzLmh0bWwpCsKg
-CihodHRwOi8vb2JmbTQzLmNvbS9xcmJqeG5xbmlubXhzdmRzZ2ovaW5kZXgzNC5odG1sKQrCoApU
-ZWUgc2hpcnQgS0FQT1JBTDUgUGFyb2wgT2NlYW4KKGh0dHA6Ly9vYmZtNDMuY29tL2p3cmxheG52
-ZHRtcDFldG1vai9pbmRleDM1Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00My5jb20vZmhv
-c2NzNTU0YWx1NWRlZWpnL2luZGV4MzYuaHRtbCkKMzUsMDAg4oKsCihodHRwOi8vb2JmbTQzLmNv
-bS8xdnZxaWlzYWZxbHNlbDR4cWcvaW5kZXgzNy5odG1sKQrCoAooaHR0cDovL29iZm00My5jb20v
-MG5ocGkxZmFxcmRvbnlzMWx5L2luZGV4MzguaHRtbCkKwqAKUG9sbyBLQVBPUkFMIDUgUG93ZXIg
-VmVybWlsbG9uCihodHRwOi8vb2JmbTQzLmNvbS9ibXN3Y3p1NWV4ZGEzczBrc3kvaW5kZXgzOS5o
-dG1sKQpLYXBvcmFsIDUKKGh0dHA6Ly9vYmZtNDMuY29tL2ZteXljbm01aXVseG9kZDRqcS9pbmRl
-eDQwLmh0bWwpCjQ1LDAwIOKCrAooaHR0cDovL29iZm00My5jb20vMW5pZ2l4ZGFkZGxwMmx0Z3Fx
-L2luZGV4NDEuaHRtbCkKwqAKKGh0dHA6Ly9vYmZtNDMuY29tL3hhcmQwZnpqc2YyemhkdmhvcS9p
-bmRleDQyLmh0bWwpCsKgCkNoZW1pc2UgS0FQT1JBTCA1IFRlcnJ5IENvYmFsdAooaHR0cDovL29i
-Zm00My5jb20vY3Vib2V3b3gzbTJ0NGx6dGdxL2luZGV4NDMuaHRtbCkKS2Fwb3JhbCA1CihodHRw
-Oi8vb2JmbTQzLmNvbS81MXYyZ2l3cngwamwwcnJqb2cvaW5kZXg0NC5odG1sKQo0OSwwMCDigqwK
-KGh0dHA6Ly9vYmZtNDMuY29tL3Iyb3htc2dpenpqZWptM3dnZy9pbmRleDQ1Lmh0bWwpCsKgCiho
-dHRwOi8vb2JmbTQzLmNvbS9wamZ0bHlwcW5oeGh6cjEwamcvaW5kZXg0Ni5odG1sKQrCoApUZWUg
-U2hscnQgS0FQT1JBTDUgTmFieSBDb2JhbHQKKGh0dHA6Ly9vYmZtNDMuY29tL215bmNuaHljMW94
-cWltamFxZy9pbmRleDQ3Lmh0bWwpCkthcG9yYWwgNQooaHR0cDovL29iZm00My5jb20vbXBzMWJ6
-bGRleWFhZmgyNHFqL2luZGV4NDguaHRtbCkKMzksMDAg4oKsCihodHRwOi8vb2JmbTQzLmNvbS9w
-NGhidTFyMHFlYW9saXlnamovaW5kZXg0OS5odG1sKQrCoApWb2lyIHRvdXRlIGxhIHPDqWxlY3Rp
-b24KKGh0dHA6Ly9vYmZtNDMuY29tLzRrdGt1NDMwa2gzazQzdXR5bC9pbmRleDUwLmh0bWwpCsKg
-CihodHRwOi8vb2JmbTQzLmNvbS9uM21pYmNiZG9vM3loYW5oZGwvaW5kZXg1MS5odG1sKQotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KSW50cm9kdWNpbmcgQXBwRHluYW1pY3MgTGl0ZSwgYSBmcmVlIHRy
-b3VibGVzaG9vdGluZyB0b29sIGZvciBKYXZhLy5ORVQKR2V0IDEwMCUgdmlzaWJpbGl0eSBpbnRv
-IHlvdXIgcHJvZHVjdGlvbiBhcHBsaWNhdGlvbiAtIGF0IG5vIGNvc3QuCkNvZGUtbGV2ZWwgZGlh
-Z25vc3RpY3MgZm9yIHBlcmZvcm1hbmNlIGJvdHRsZW5lY2tzIHdpdGggPDIlIG92ZXJoZWFkCkRv
-d25sb2FkIGZvciBmcmVlIGFuZCBnZXQgc3RhcnRlZCB0cm91Ymxlc2hvb3RpbmcgaW4gbWludXRl
-cy4KaHR0cDovL3Auc2YubmV0L3NmdS9hcHBkeW5fZDJkX2FwMQpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
-c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
-c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+--9zSXsLTf0vkW971A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, May 02, 2013 at 12:34:55PM +0200, Nicolas Ferre wrote:
+
+> Can you tell us if this SPI patch will be merged upstream using one
+> of your paths?
+
+I have no idea what patch this is but if it's not in my tree -next it's
+unlikely to be merged.
+
+--9zSXsLTf0vkW971A
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRh4ZiAAoJELSic+t+oim9RPsP/jxmLHu4wCW8hXusLkEBK8J8
+SqrL4Q5MoDubi0aap6LjoW0U2KgV4+pGNzSg2ri3V/Je5Sy1/SpzhZVA4JwQHnzi
+503ajmxGjy7/NFReEXR/3P1y6XUV8Mwk0eZHQCC0v3djid4PfJaWjBtk1kajdNXB
+qfS0/ONULjFmM6/5BEHE7R4QQHrfuw1VyG/6oMrcX22yMP5DryLBjnvPZOhjCt88
+ssf+y8rUnPJh/GexSEEgLdTfsNxwUWHkgPtlEVZmVSI7kdEFKNNs8f5Rs2va4fIn
+dXHPviIOboP0CJfNVOtjr3iRl/oRTzzoGivvjNt1OruUcrDY09y8ho+M8POgWF5f
+YgwjViRvubU4XkZzDflqT9Z4PPA73ryh9B3dSrStEzQlTO1yQk+6iSvZqU0Ua+9h
+z/leGybASmFlsgMCmkeu+IVVFy5KAcN2jqoqEhKBZvSqaBjV6FJoVeoBLExEEbqm
+oRK5rkdDC16N9eb0hka1MiDKi6BhaUr50pTRu6nRsQ/X/exB+vZNBhrMHxVV6Ln5
+bJtTJb7xR2se6y54MpxhGAIp8G/txAzF75Jx4X4AW4VC380V41Q+/fX+pNOf5zPd
+36LqVXuMfVsiKcHqa5GBiN70RIEbIwGGSlzK/t8RyTCp0ozlD5t+fFSJQmrKW/kT
+4cfAV9DPwNMsbrSAbii9
+=ZNp6
+-----END PGP SIGNATURE-----
+
+--9zSXsLTf0vkW971A--

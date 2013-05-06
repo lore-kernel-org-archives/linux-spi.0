@@ -1,69 +1,81 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v6 01/16] spi/spi-atmel: fix probing failure after
- xfer->speed_hz set
-Date: Mon, 6 May 2013 11:31:05 +0100
-Message-ID: <20130506103105.GB13472@opensource.wolfsonmicro.com>
-References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com>
- <1362626815-6628-1-git-send-email-wenyou.yang@atmel.com>
- <CAGhQ9VwW18LXY5Jn0FUFCaAzKxP1W3QADG=JBp9JbgaAwo=F2Q@mail.gmail.com>
- <B256D81BAE5131468A838E5D7A24364154236AB5@penmbx02>
- <CACQ1gAhZO3stjrwf5SiZf7jOO8T5bAJZiz97M7+7vwFmk2e65g@mail.gmail.com>
- <5182414F.1000201@atmel.com>
+From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH 07/13] spi: spi-imx: Let device core handle pinctrl
+Date: Mon, 6 May 2013 15:05:55 -0300
+Message-ID: <1367863561-11534-7-git-send-email-fabio.estevam@freescale.com>
+References: <1367863561-11534-1-git-send-email-fabio.estevam@freescale.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="9zSXsLTf0vkW971A"
-Cc: "grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
-	Grant Likely <grant.likely@linaro.org>,
-	Richard Genoud <richard.genoud@gmail.com>,
-	"Yang, Wenyou" <Wenyou.Yang@atmel.com>,
-	Joachim Eastwood <manabian@gmail.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"plagnioj@jcrosoft.com" <plagnioj@jcrosoft.com>,
-	"Lin, JM" <JM.Lin@atmel.com>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Nicolas Ferre <nicolas.ferre@atmel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <5182414F.1000201@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1367863561-11534-1-git-send-email-fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Since commit ab78029 (drivers/pinctrl: grab default handles from device core),
+we can rely on device core for handling pinctrl.
 
---9zSXsLTf0vkW971A
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+So remove devm_pinctrl_get_select_default() from the driver. 
 
-On Thu, May 02, 2013 at 12:34:55PM +0200, Nicolas Ferre wrote:
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Cc: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+---
+ drivers/spi/spi-imx.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
-> Can you tell us if this SPI patch will be merged upstream using one
-> of your paths?
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 0befeeb..9821ef1 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -37,7 +37,6 @@
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/of_gpio.h>
+-#include <linux/pinctrl/consumer.h>
+ 
+ #include <linux/platform_data/spi-imx.h>
+ 
+@@ -760,7 +759,6 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 	struct spi_master *master;
+ 	struct spi_imx_data *spi_imx;
+ 	struct resource *res;
+-	struct pinctrl *pinctrl;
+ 	int i, ret, num_cs;
+ 
+ 	if (!np && !mxc_platform_info) {
+@@ -848,12 +846,6 @@ static int spi_imx_probe(struct platform_device *pdev)
+ 		goto out_iounmap;
+ 	}
+ 
+-	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
+-	if (IS_ERR(pinctrl)) {
+-		ret = PTR_ERR(pinctrl);
+-		goto out_free_irq;
+-	}
+-
+ 	spi_imx->clk_ipg = devm_clk_get(&pdev->dev, "ipg");
+ 	if (IS_ERR(spi_imx->clk_ipg)) {
+ 		ret = PTR_ERR(spi_imx->clk_ipg);
+-- 
+1.7.9.5
 
-I have no idea what patch this is but if it's not in my tree -next it's
-unlikely to be merged.
 
---9zSXsLTf0vkW971A
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRh4ZiAAoJELSic+t+oim9RPsP/jxmLHu4wCW8hXusLkEBK8J8
-SqrL4Q5MoDubi0aap6LjoW0U2KgV4+pGNzSg2ri3V/Je5Sy1/SpzhZVA4JwQHnzi
-503ajmxGjy7/NFReEXR/3P1y6XUV8Mwk0eZHQCC0v3djid4PfJaWjBtk1kajdNXB
-qfS0/ONULjFmM6/5BEHE7R4QQHrfuw1VyG/6oMrcX22yMP5DryLBjnvPZOhjCt88
-ssf+y8rUnPJh/GexSEEgLdTfsNxwUWHkgPtlEVZmVSI7kdEFKNNs8f5Rs2va4fIn
-dXHPviIOboP0CJfNVOtjr3iRl/oRTzzoGivvjNt1OruUcrDY09y8ho+M8POgWF5f
-YgwjViRvubU4XkZzDflqT9Z4PPA73ryh9B3dSrStEzQlTO1yQk+6iSvZqU0Ua+9h
-z/leGybASmFlsgMCmkeu+IVVFy5KAcN2jqoqEhKBZvSqaBjV6FJoVeoBLExEEbqm
-oRK5rkdDC16N9eb0hka1MiDKi6BhaUr50pTRu6nRsQ/X/exB+vZNBhrMHxVV6Ln5
-bJtTJb7xR2se6y54MpxhGAIp8G/txAzF75Jx4X4AW4VC380V41Q+/fX+pNOf5zPd
-36LqVXuMfVsiKcHqa5GBiN70RIEbIwGGSlzK/t8RyTCp0ozlD5t+fFSJQmrKW/kT
-4cfAV9DPwNMsbrSAbii9
-=ZNp6
------END PGP SIGNATURE-----
-
---9zSXsLTf0vkW971A--
+------------------------------------------------------------------------------
+Learn Graph Databases - Download FREE O'Reilly Book
+"Graph Databases" is the definitive new guide to graph databases and 
+their applications. This 200-page book is written by three acclaimed 
+leaders in the field. The early access version is available now. 
+Download your free book today! http://p.sf.net/sfu/neotech_d2d_may

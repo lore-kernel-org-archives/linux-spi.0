@@ -1,7 +1,7 @@
 From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH 07/13] spi: spi-imx: Let device core handle pinctrl
-Date: Mon, 6 May 2013 15:05:55 -0300
-Message-ID: <1367863561-11534-7-git-send-email-fabio.estevam@freescale.com>
+Subject: [PATCH 08/13] spi: spi-mxs: Let device core handle pinctrl
+Date: Mon, 6 May 2013 15:05:56 -0300
+Message-ID: <1367863561-11534-8-git-send-email-fabio.estevam@freescale.com>
 References: <1367863561-11534-1-git-send-email-fabio.estevam@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -32,42 +32,40 @@ Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
 Cc: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
- drivers/spi/spi-imx.c |    8 --------
- 1 file changed, 8 deletions(-)
+ drivers/spi/spi-mxs.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 0befeeb..9821ef1 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -37,7 +37,6 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/of_gpio.h>
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index 22a0af0..333a9d5 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -46,7 +46,6 @@
+ #include <linux/gpio.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/module.h>
 -#include <linux/pinctrl/consumer.h>
- 
- #include <linux/platform_data/spi-imx.h>
- 
-@@ -760,7 +759,6 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct spi_imx_data *spi_imx;
- 	struct resource *res;
+ #include <linux/stmp_device.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/mxs-spi.h>
+@@ -521,7 +520,6 @@ static int mxs_spi_probe(struct platform_device *pdev)
+ 	struct mxs_spi *spi;
+ 	struct mxs_ssp *ssp;
+ 	struct resource *iores, *dmares;
 -	struct pinctrl *pinctrl;
- 	int i, ret, num_cs;
- 
- 	if (!np && !mxc_platform_info) {
-@@ -848,12 +846,6 @@ static int spi_imx_probe(struct platform_device *pdev)
- 		goto out_iounmap;
- 	}
+ 	struct clk *clk;
+ 	void __iomem *base;
+ 	int devid, dma_channel, clk_freq;
+@@ -545,10 +543,6 @@ static int mxs_spi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
  
 -	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
--	if (IS_ERR(pinctrl)) {
--		ret = PTR_ERR(pinctrl);
--		goto out_free_irq;
--	}
+-	if (IS_ERR(pinctrl))
+-		return PTR_ERR(pinctrl);
 -
- 	spi_imx->clk_ipg = devm_clk_get(&pdev->dev, "ipg");
- 	if (IS_ERR(spi_imx->clk_ipg)) {
- 		ret = PTR_ERR(spi_imx->clk_ipg);
+ 	clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
 -- 
 1.7.9.5
 

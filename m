@@ -1,12 +1,11 @@
-From: "Chemises en coton" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
-Subject: =?UTF-8?Q?la_deuxi=C3=A8me_chemise_=C3=A0_1_euro?=
-Date: Tue, 07 May 2013 05:49:23 +0000 (CET)
-Message-ID: <130507054923.102335027300004388@fmo43.com>
+From: "=?windows-1252?Q?Patrick_Thomas_|_EBUSA?=" <PTNoReply13-Jbz+COfnBihBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] business question
+Date: Mon, 6 May 2013 23:23:43 -0700
+Message-ID: <d0cafc94c213786b8422e8a10014a211@address.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,34 +17,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CsKgCihodHRwOi8vZm1vNDMuY29tL2pkamQ1bHp2ZTBtY3Nyb2VsbC9pbmRleDAuaHRtbCkKKGh0
-dHA6Ly9mbW80My5jb20vcW9qb3lsamxld2gxdG1nZXN5L2luZGV4MS5odG1sKQooaHR0cDovL2Zt
-bzQzLmNvbS9veWp5bmxtMWVpMWNraWp3ZGQvaW5kZXgyLmh0bWwpCkNIRU1JU0UgSE9NTUUgKGh0
-dHA6Ly9mbW80My5jb20vZ2dqZ2dsbG1lcWcxNGhxd3lzL2luZGV4My5odG1sKSDCoMKgwqAgfCDC
-oMKgwqAgQ0hFTUlTSUVSIEZFTU1FIChodHRwOi8vZm1vNDMuY29tL215eWNubnljd2R4Y3l2amt1
-eS9pbmRleDQuaHRtbCkgwqDCoMKgIHwgwqDCoMKgIE5PVVZFQVVURVMgKGh0dHA6Ly9mbW80My5j
-b20vcGd5dGduNXJ3ZWoxYmVxa2VsL2luZGV4NS5odG1sKSDCoMKgwqAgfCDCoMKgwqAgQk9OTkVT
-IEFGRkFJUkVTIChodHRwOi8vZm1vNDMuY29tL3JkeXg1bmdld3I1Y3VubzRrcy9pbmRleDYuaHRt
-bCkKKGh0dHA6Ly9mbW80My5jb20vNW95MnlubmR3Y2ExendnNHZkL2luZGV4Ny5odG1sKQpDSEVN
-SVNFUyBIT01NRQooaHR0cDovL2ZtbzQzLmNvbS9hZGEwcDI0a2ViemNxZG9jbmwvaW5kZXg4Lmh0
-bWwpCkNIRU1JU0lFUlMgRkVNTUUKKGh0dHA6Ly9mbW80My5jb20vaW9hZnMyb3NlenUxY2xnYzR5
-L2luZGV4OS5odG1sKQpPem9hLWNoZW1pc2VzLmNvbSBlc3QgbGUgbsKwMSBkZSBsYSB2ZW50ZSBk
-ZSBjaGVtaXNlcyBldCBjaGVtaXNpZXJzIGVuIGxpZ25lLiBOb3RyZSBvYmplY3RpZiBlc3QgZGUg
-dm91cyBwcm9wb3NlciBlbiBwZXJtYW5lbmNlIGRlcyBtb2RlbGVzIGVuIGVkaXRpb24gbGltaXRl
-ZSBxdWkgZm9udCBsYSBtb2RlLiBQbHVzIGRlIDMwMCBjaGVtaXNlcyBldCBjaGVtaXNpZXJzIHNv
-bnQgZGlzcG9uaWJsZXMgZW4gY291cGUgY2ludHJlZSBldCBjb3VwZSBkcm9pdGUuIFRvdXMgbGVz
-IHN0eWxlcyBzb250IHJlcHJlc2VudGVzIDogY2FzdWFsLCBjaGljLCBzcG9ydHN3ZWFyLCBldGMu
-Li4gVHJvdXZleiB2b3RyZSBtb2RlbGUgZXQgY29tbWFuZGV6IGVuIHVuIG1pbmltdW0gZGUgY2xp
-Y3MsIGVuIHRvdXRlIGNvbmZpYW5jZSA6IHZvdXMgYmVuZWZpY2lleiBkZSBsYSBnYXJhbnRpZSBz
-YXRpc2ZhaXQgb3UgcmVtYm91cnNlIGV0IGR1IHBhaWVtZW50IDEwMCUgc2VjdXJpc2UuCsKpIDIw
-MTIgd3d3Lm96b2EtY2hlbWlzZXMuY29tCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMZWFybiBHcmFw
-aCBEYXRhYmFzZXMgLSBEb3dubG9hZCBGUkVFIE8nUmVpbGx5IEJvb2sKIkdyYXBoIERhdGFiYXNl
-cyIgaXMgdGhlIGRlZmluaXRpdmUgbmV3IGd1aWRlIHRvIGdyYXBoIGRhdGFiYXNlcyBhbmQgCnRo
-ZWlyIGFwcGxpY2F0aW9ucy4gVGhpcyAyMDAtcGFnZSBib29rIGlzIHdyaXR0ZW4gYnkgdGhyZWUg
-YWNjbGFpbWVkIApsZWFkZXJzIGluIHRoZSBmaWVsZC4gVGhlIGVhcmx5IGFjY2VzcyB2ZXJzaW9u
-IGlzIGF2YWlsYWJsZSBub3cuIApEb3dubG9hZCB5b3VyIGZyZWUgYm9vayB0b2RheSEgaHR0cDov
-L3Auc2YubmV0L3NmdS9uZW90ZWNoX2QyZF9tYXkKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
-cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hello, 
+
+If you are reading this message, you are proving that e-mail marketing works.	
+Use e-mail marketing to drive sales and leads for less than any other marketing.	
+	
+Our Offer:	
+	
+> Use our targeted database of 200MM consumers | 45MM Businesses	
+> Use our servers to send your messages	
+> No contracts | Month to Month	
+> Flat Rate for Unlimited Mailing	
+
+E-mail Marketing has been proven to be tremendously cost-effective and efficient.	
+	
+Call us at 1 (800) 676-2011 for a DEMO and to receive a special discount.	
+	
+We look forward to working with your company!	
+	
+Sincerely,	
+
+Patrick Thomas 	
+Senior Prospect Specialist 	
+E-mail Marketing Services 	
+1 (800) 676-2011	
+
+
+
+------------------------------------------------------------------------------
+Learn Graph Databases - Download FREE O'Reilly Book
+"Graph Databases" is the definitive new guide to graph databases and 
+their applications. This 200-page book is written by three acclaimed 
+leaders in the field. The early access version is available now. 
+Download your free book today! http://p.sf.net/sfu/neotech_d2d_may

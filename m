@@ -1,20 +1,13 @@
-From: "Hebbar, Gururaja" <gururaja.hebbar-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH] spi/omap2: Let device core handle pinctrl
-Date: Tue, 7 May 2013 03:56:09 +0000
-Message-ID: <1BAFE6F6C881BF42822005164F1491C33EBE473A@DBDE04.ent.ti.com>
-References: <1367868998-12667-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: "Chemises en coton" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
+Subject: =?UTF-8?Q?la_deuxi=C3=A8me_chemise_=C3=A0_1_euro?=
+Date: Tue, 07 May 2013 05:49:23 +0000 (CET)
+Message-ID: <130507054923.102335027300004388@fmo43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	"linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1367868998-12667-1-git-send-email-broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,84 +18,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 07, 2013 at 01:06:38, Mark Brown wrote:
-> Since commit ab78029 (drivers/pinctrl: grab default handles from device
-> core) we can rely on device core for handling pinctrl so remove
-> devm_pinctrl_get_select_default() from the driver.
-
-NACK.
-
-There are cases where driver('s) needs to place pin-mux's to sleep on suspend
-& default/idle on resume. For such cases Pinctrl needs to be handled inside 
-the driver. Example [1].
-
-I will be submitting a patch to enhance the existing pinctrl support for 
-spi omap2 shortly which does above work.
-
-Regards
-Gururaja
-
-
-[1]
-http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/drivers/spi/spi-pl022.c
-
-pl022_suspend_resources() & pl022_resume_resources()
-
-
-> 
-> Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-> ---
->  drivers/spi/spi-omap2-mcspi.c |    7 -------
->  1 file changed, 7 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-> index 893c3d7..3777bd5 100644
-> --- a/drivers/spi/spi-omap2-mcspi.c
-> +++ b/drivers/spi/spi-omap2-mcspi.c
-> @@ -38,7 +38,6 @@
->  #include <linux/pm_runtime.h>
->  #include <linux/of.h>
->  #include <linux/of_device.h>
-> -#include <linux/pinctrl/consumer.h>
->  
->  #include <linux/spi/spi.h>
->  
-> @@ -1170,7 +1169,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
->  	static int		bus_num = 1;
->  	struct device_node	*node = pdev->dev.of_node;
->  	const struct of_device_id *match;
-> -	struct pinctrl *pinctrl;
->  
->  	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
->  	if (master == NULL) {
-> @@ -1268,11 +1266,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
->  	if (status < 0)
->  		goto dma_chnl_free;
->  
-> -	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
-> -	if (IS_ERR(pinctrl))
-> -		dev_warn(&pdev->dev,
-> -				"pins are not configured from the driver\n");
-> -
->  	pm_runtime_use_autosuspend(&pdev->dev);
->  	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
->  	pm_runtime_enable(&pdev->dev);
-> -- 
-> 1.7.10.4
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
-
-
-Regards, 
-Gururaja
-
-------------------------------------------------------------------------------
-Learn Graph Databases - Download FREE O'Reilly Book
-"Graph Databases" is the definitive new guide to graph databases and 
-their applications. This 200-page book is written by three acclaimed 
-leaders in the field. The early access version is available now. 
-Download your free book today! http://p.sf.net/sfu/neotech_d2d_may
+CsKgCihodHRwOi8vZm1vNDMuY29tL2pkamQ1bHp2ZTBtY3Nyb2VsbC9pbmRleDAuaHRtbCkKKGh0
+dHA6Ly9mbW80My5jb20vcW9qb3lsamxld2gxdG1nZXN5L2luZGV4MS5odG1sKQooaHR0cDovL2Zt
+bzQzLmNvbS9veWp5bmxtMWVpMWNraWp3ZGQvaW5kZXgyLmh0bWwpCkNIRU1JU0UgSE9NTUUgKGh0
+dHA6Ly9mbW80My5jb20vZ2dqZ2dsbG1lcWcxNGhxd3lzL2luZGV4My5odG1sKSDCoMKgwqAgfCDC
+oMKgwqAgQ0hFTUlTSUVSIEZFTU1FIChodHRwOi8vZm1vNDMuY29tL215eWNubnljd2R4Y3l2amt1
+eS9pbmRleDQuaHRtbCkgwqDCoMKgIHwgwqDCoMKgIE5PVVZFQVVURVMgKGh0dHA6Ly9mbW80My5j
+b20vcGd5dGduNXJ3ZWoxYmVxa2VsL2luZGV4NS5odG1sKSDCoMKgwqAgfCDCoMKgwqAgQk9OTkVT
+IEFGRkFJUkVTIChodHRwOi8vZm1vNDMuY29tL3JkeXg1bmdld3I1Y3VubzRrcy9pbmRleDYuaHRt
+bCkKKGh0dHA6Ly9mbW80My5jb20vNW95MnlubmR3Y2ExendnNHZkL2luZGV4Ny5odG1sKQpDSEVN
+SVNFUyBIT01NRQooaHR0cDovL2ZtbzQzLmNvbS9hZGEwcDI0a2ViemNxZG9jbmwvaW5kZXg4Lmh0
+bWwpCkNIRU1JU0lFUlMgRkVNTUUKKGh0dHA6Ly9mbW80My5jb20vaW9hZnMyb3NlenUxY2xnYzR5
+L2luZGV4OS5odG1sKQpPem9hLWNoZW1pc2VzLmNvbSBlc3QgbGUgbsKwMSBkZSBsYSB2ZW50ZSBk
+ZSBjaGVtaXNlcyBldCBjaGVtaXNpZXJzIGVuIGxpZ25lLiBOb3RyZSBvYmplY3RpZiBlc3QgZGUg
+dm91cyBwcm9wb3NlciBlbiBwZXJtYW5lbmNlIGRlcyBtb2RlbGVzIGVuIGVkaXRpb24gbGltaXRl
+ZSBxdWkgZm9udCBsYSBtb2RlLiBQbHVzIGRlIDMwMCBjaGVtaXNlcyBldCBjaGVtaXNpZXJzIHNv
+bnQgZGlzcG9uaWJsZXMgZW4gY291cGUgY2ludHJlZSBldCBjb3VwZSBkcm9pdGUuIFRvdXMgbGVz
+IHN0eWxlcyBzb250IHJlcHJlc2VudGVzIDogY2FzdWFsLCBjaGljLCBzcG9ydHN3ZWFyLCBldGMu
+Li4gVHJvdXZleiB2b3RyZSBtb2RlbGUgZXQgY29tbWFuZGV6IGVuIHVuIG1pbmltdW0gZGUgY2xp
+Y3MsIGVuIHRvdXRlIGNvbmZpYW5jZSA6IHZvdXMgYmVuZWZpY2lleiBkZSBsYSBnYXJhbnRpZSBz
+YXRpc2ZhaXQgb3UgcmVtYm91cnNlIGV0IGR1IHBhaWVtZW50IDEwMCUgc2VjdXJpc2UuCsKpIDIw
+MTIgd3d3Lm96b2EtY2hlbWlzZXMuY29tCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMZWFybiBHcmFw
+aCBEYXRhYmFzZXMgLSBEb3dubG9hZCBGUkVFIE8nUmVpbGx5IEJvb2sKIkdyYXBoIERhdGFiYXNl
+cyIgaXMgdGhlIGRlZmluaXRpdmUgbmV3IGd1aWRlIHRvIGdyYXBoIGRhdGFiYXNlcyBhbmQgCnRo
+ZWlyIGFwcGxpY2F0aW9ucy4gVGhpcyAyMDAtcGFnZSBib29rIGlzIHdyaXR0ZW4gYnkgdGhyZWUg
+YWNjbGFpbWVkIApsZWFkZXJzIGluIHRoZSBmaWVsZC4gVGhlIGVhcmx5IGFjY2VzcyB2ZXJzaW9u
+IGlzIGF2YWlsYWJsZSBub3cuIApEb3dubG9hZCB5b3VyIGZyZWUgYm9vayB0b2RheSEgaHR0cDov
+L3Auc2YubmV0L3NmdS9uZW90ZWNoX2QyZF9tYXkKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

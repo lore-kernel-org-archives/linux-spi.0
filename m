@@ -1,76 +1,54 @@
-From: Nicolas Ferre <nicolas.ferre@atmel.com>
-Subject: Re: [PATCH v6 01/16] spi/spi-atmel: fix probing failure after xfer->speed_hz
- set
-Date: Tue, 7 May 2013 11:31:24 +0200
-Message-ID: <5188C9EC.7000303@atmel.com>
-References: <1362626715-6549-1-git-send-email-wenyou.yang@atmel.com> <1362626815-6628-1-git-send-email-wenyou.yang@atmel.com> <CAGhQ9VwW18LXY5Jn0FUFCaAzKxP1W3QADG=JBp9JbgaAwo=F2Q@mail.gmail.com> <B256D81BAE5131468A838E5D7A24364154236AB5@penmbx02> <CACQ1gAhZO3stjrwf5SiZf7jOO8T5bAJZiz97M7+7vwFmk2e65g@mail.gmail.com> <5182414F.1000201@atmel.com> <20130506103105.GB13472@opensource.wolfsonmicro.com> <B256D81BAE5131468A838E5D7A24364154238AF5@penmbx02>
+From: "Hebbar, Gururaja" <gururaja.hebbar@ti.com>
+Subject: RE: [PATCH] spi/omap2: Let device core handle pinctrl
+Date: Tue, 7 May 2013 10:47:31 +0000
+Message-ID: <1BAFE6F6C881BF42822005164F1491C33EBE4E07@DBDE04.ent.ti.com>
+References: <1367868998-12667-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+ <1BAFE6F6C881BF42822005164F1491C33EBE473A@DBDE04.ent.ti.com>
+ <20130507085535.GN7478@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie@kernel.org>,
-	"grant.likely@secretlab.ca" <grant.likely@secretlab.ca>,
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: 8BIT
+Cc: "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
 	Grant Likely <grant.likely@linaro.org>,
-	"Richard Genoud" <richard.genoud@gmail.com>,
-	Joachim Eastwood <manabian@gmail.com>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"plagnioj@jcrosoft.com" <plagnioj@jcrosoft.com>,
-	"Lin, JM" <JM.Lin@atmel.com>,
 	"spi-devel-general@lists.sourceforge.net"
 	<spi-devel-general@lists.sourceforge.net>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Yang, Wenyou" <Wenyou.Yang@atmel.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <B256D81BAE5131468A838E5D7A24364154238AF5@penmbx02>
+In-Reply-To: <20130507085535.GN7478@sirena.org.uk>
+Content-Language: en-US
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/05/2013 03:11, Yang, Wenyou :
-> Hi, Mark
->=20
->> From: Mark Brown [mailto:broonie@kernel.org]
->> Sent: 2013=C4=EA5=D4=C26=C8=D5 18:31
->> To: Ferre, Nicolas
->> Cc: grant.likely@secretlab.ca; Grant Likely; Richard Genoud; Yang, W=
-enyou;
->> Joachim Eastwood; linux-arm-kernel@lists.infradead.org;
->> plagnioj@jcrosoft.com; Lin, JM; spi-devel-general@lists.sourceforge.=
-net;
->> linux-kernel@vger.kernel.org
->> Subject: Re: [PATCH v6 01/16] spi/spi-atmel: fix probing failure aft=
-er
->> xfer->speed_hz set
->>
->> On Thu, May 02, 2013 at 12:34:55PM +0200, Nicolas Ferre wrote:
->>
->>> Can you tell us if this SPI patch will be merged upstream using one=
- of
->>> your paths?
->>
->> I have no idea what patch this is but if it's not in my tree -next i=
-t's unlikely to be
->> merged.
-> This is dropped patch, no need to be merged.
->=20
-> We tested Atmel spi in your tree-next , but it doesn't work, the reas=
-on is the Joachim Eastwood's patch is not included.
-> https://patchwork.kernel.org/patch/2165301/
-> which Joachim said that Grant said he applied.
+On Tue, May 07, 2013 at 14:25:35, Mark Brown wrote:
+> On Tue, May 07, 2013 at 03:56:09AM +0000, Hebbar, Gururaja wrote:
+> 
+> > There are cases where driver('s) needs to place pin-mux's to sleep on suspend
+> > & default/idle on resume. For such cases Pinctrl needs to be handled inside 
+> > the driver. Example [1].
+> 
+> Well, obviously - but at the minute the driver is pure boilerplate.
 
-Hi Wenyou,
+Correct. 
 
-Sorry for not having communicating with you after Mark told me the stor=
-y
-about this patch: Mark merged Grant's material in his SPI tree (with is
-the official one nowadays). You can see that by browsing linux-next:
+> There's also been some discussion about factoring out the suspend/resume
+> code since it's going to get equally repetitive.
 
- Merge remote-tracking branch 'spi/fix/grant' into spi-linus
+Really. Any link/referenceso that I can follow.
+But I think each module will have its own work to do. May be I can confirm once 
+I look at the factoring-out discussion.
 
-Joachim's patch is well included in it. We still have to monitor
-inclusion of it in Linus' tree...
+> 
+> > I will be submitting a patch to enhance the existing pinctrl support for 
+> > spi omap2 shortly which does above work.
+> 
+> How soon is shortly?
 
-Mark, sorry for the noise.
+Since I am adding this Pinctrl PM mode support to many other drivers (i2c, 
+cpsw, da8xx-fb, hsmmc, ti-pwm, usb ...), I would say Shortly = 1 week - 10 days.
 
-Bye,
---=20
-Nicolas Ferre
+> 
+
+
+Regards, 
+Gururaja

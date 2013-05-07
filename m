@@ -1,12 +1,18 @@
-From: "=?windows-1252?Q?Patrick_Thomas_|_EBUSA?=" <PTNoReply13-Jbz+COfnBihBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] business question
-Date: Mon, 6 May 2013 23:23:43 -0700
-Message-ID: <d0cafc94c213786b8422e8a10014a211@address.com>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi/sirf: Let device core handle pinctrl
+Date: Tue, 7 May 2013 16:12:55 +0800
+Message-ID: <CAGsJ_4yeyavmuxttBxCTZWJb+aHPRetdU5nc905zNQOrnpus8A@mail.gmail.com>
+References: <1367868678-12492-1-git-send-email-broonie@opensource.wolfsonmicro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
+	Barry Song <baohua.song-kQvG35nSl+M@public.gmane.org>
+To: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1367868678-12492-1-git-send-email-broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,32 +23,75 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello, 
+2013/5/7 Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>:
+> Since commit ab78029 (drivers/pinctrl: grab default handles from device
+> core) we can rely on device core for handling pinctrl so remove
+> devm_pinctrl_get_select_default() from the driver.
+>
+> Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 
-If you are reading this message, you are proving that e-mail marketing works.	
-Use e-mail marketing to drive sales and leads for less than any other marketing.	
-	
-Our Offer:	
-	
-> Use our targeted database of 200MM consumers | 45MM Businesses	
-> Use our servers to send your messages	
-> No contracts | Month to Month	
-> Flat Rate for Unlimited Mailing	
+Acked-by: Barry Song <baohua.song-kQvG35nSl+M@public.gmane.org>
 
-E-mail Marketing has been proven to be tremendously cost-effective and efficient.	
-	
-Call us at 1 (800) 676-2011 for a DEMO and to receive a special discount.	
-	
-We look forward to working with your company!	
-	
-Sincerely,	
-
-Patrick Thomas 	
-Senior Prospect Specialist 	
-E-mail Marketing Services 	
-1 (800) 676-2011	
-
-
+> ---
+>  drivers/spi/spi-sirf.c |   12 +-----------
+>  1 file changed, 1 insertion(+), 11 deletions(-)
+>
+> diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+> index f59d417..899dc3b 100644
+> --- a/drivers/spi/spi-sirf.c
+> +++ b/drivers/spi/spi-sirf.c
+> @@ -19,7 +19,6 @@
+>  #include <linux/of_gpio.h>
+>  #include <linux/spi/spi.h>
+>  #include <linux/spi/spi_bitbang.h>
+> -#include <linux/pinctrl/consumer.h>
+>
+>  #define DRIVER_NAME "sirfsoc_spi"
+>
+> @@ -127,7 +126,6 @@ struct sirfsoc_spi {
+>         void __iomem *base;
+>         u32 ctrl_freq;  /* SPI controller clock speed */
+>         struct clk *clk;
+> -       struct pinctrl *p;
+>
+>         /* rx & tx bufs from the spi_transfer */
+>         const void *tx;
+> @@ -558,15 +556,10 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+>         master->bus_num = pdev->id;
+>         sspi->bitbang.master->dev.of_node = pdev->dev.of_node;
+>
+> -       sspi->p = pinctrl_get_select_default(&pdev->dev);
+> -       ret = IS_ERR(sspi->p);
+> -       if (ret)
+> -               goto free_master;
+> -
+>         sspi->clk = clk_get(&pdev->dev, NULL);
+>         if (IS_ERR(sspi->clk)) {
+>                 ret = -EINVAL;
+> -               goto free_pin;
+> +               goto free_master;
+>         }
+>         clk_prepare_enable(sspi->clk);
+>         sspi->ctrl_freq = clk_get_rate(sspi->clk);
+> @@ -594,8 +587,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+>  free_clk:
+>         clk_disable_unprepare(sspi->clk);
+>         clk_put(sspi->clk);
+> -free_pin:
+> -       pinctrl_put(sspi->p);
+>  free_master:
+>         spi_master_put(master);
+>  err_cs:
+> @@ -618,7 +609,6 @@ static int  spi_sirfsoc_remove(struct platform_device *pdev)
+>         }
+>         clk_disable_unprepare(sspi->clk);
+>         clk_put(sspi->clk);
+> -       pinctrl_put(sspi->p);
+>         spi_master_put(master);
+>         return 0;
+>  }
+> --
+> 1.7.10.4
 
 ------------------------------------------------------------------------------
 Learn Graph Databases - Download FREE O'Reilly Book

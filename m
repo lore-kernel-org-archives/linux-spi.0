@@ -1,54 +1,37 @@
-From: "Hebbar, Gururaja" <gururaja.hebbar@ti.com>
-Subject: RE: [PATCH] spi/omap2: Let device core handle pinctrl
-Date: Tue, 7 May 2013 10:47:31 +0000
-Message-ID: <1BAFE6F6C881BF42822005164F1491C33EBE4E07@DBDE04.ent.ti.com>
-References: <1367868998-12667-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <1BAFE6F6C881BF42822005164F1491C33EBE473A@DBDE04.ent.ti.com>
- <20130507085535.GN7478@sirena.org.uk>
+From: "Enquete Vacances" <contact-rpgDg82rM6BGWvitb5QawA@public.gmane.org>
+Subject: Tentez de remporter : une semaine de vacances dans un Club Belambra
+Date: Wed, 08 May 2013 07:18:21 +0000 (CET)
+Message-ID: <130508071821.29723311400005432@fmo40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20130507085535.GN7478@sirena.org.uk>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 07, 2013 at 14:25:35, Mark Brown wrote:
-> On Tue, May 07, 2013 at 03:56:09AM +0000, Hebbar, Gururaja wrote:
-> 
-> > There are cases where driver('s) needs to place pin-mux's to sleep on suspend
-> > & default/idle on resume. For such cases Pinctrl needs to be handled inside 
-> > the driver. Example [1].
-> 
-> Well, obviously - but at the minute the driver is pure boilerplate.
-
-Correct. 
-
-> There's also been some discussion about factoring out the suspend/resume
-> code since it's going to get equally repetitive.
-
-Really. Any link/referenceso that I can follow.
-But I think each module will have its own work to do. May be I can confirm once 
-I look at the factoring-out discussion.
-
-> 
-> > I will be submitting a patch to enhance the existing pinctrl support for 
-> > spi omap2 shortly which does above work.
-> 
-> How soon is shortly?
-
-Since I am adding this Pinctrl PM mode support to many other drivers (i2c, 
-cpsw, da8xx-fb, hsmmc, ti-pwm, usb ...), I would say Shortly = 1 week - 10 days.
-
-> 
-
-
-Regards, 
-Gururaja
+CgoKCgoKCgoKQm9uam91ciAlVkFSX1BSRU5PTSUgJVZBUl9OT00lLAoKVm91cyBhdmV6IMOpdMOp
+IHPDqWxlY3Rpb25uw6kgcG91ciBwYXJ0aWNpcGVyIMOgIG5vdHJlIGVucXXDqnRlLiAKClBhcnRp
+Y2lwZXogbWFpbnRlbmFudCBlbiBjbGlxdWFudCBJQ0kgKGh0dHA6Ly9mbW80MC5jb20vYTNqMHRk
+enF5dHViYXV3ZXZqL2luZGV4MC5odG1sKQoKVGVudGV6IGRlIHJlbXBvcnRlciA6IHVuZSBzZW1h
+aW5lIGRlIHZhY2FuY2VzIGRhbnMgdW4gQ2x1YiBCZWxhbWJyYSAhCgozIG1pbnV0ZXMgc3VmZmlz
+ZW50LgoKQ29yZGlhbGVtZW50LApMJ8OpcXVpcGUgQmVsYW1icmEuCgoKCi0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQpMZWFybiBHcmFwaCBEYXRhYmFzZXMgLSBEb3dubG9hZCBGUkVFIE8nUmVpbGx5IEJv
+b2sKIkdyYXBoIERhdGFiYXNlcyIgaXMgdGhlIGRlZmluaXRpdmUgbmV3IGd1aWRlIHRvIGdyYXBo
+IGRhdGFiYXNlcyBhbmQgCnRoZWlyIGFwcGxpY2F0aW9ucy4gVGhpcyAyMDAtcGFnZSBib29rIGlz
+IHdyaXR0ZW4gYnkgdGhyZWUgYWNjbGFpbWVkIApsZWFkZXJzIGluIHRoZSBmaWVsZC4gVGhlIGVh
+cmx5IGFjY2VzcyB2ZXJzaW9uIGlzIGF2YWlsYWJsZSBub3cuIApEb3dubG9hZCB5b3VyIGZyZWUg
+Ym9vayB0b2RheSEgaHR0cDovL3Auc2YubmV0L3NmdS9uZW90ZWNoX2QyZF9tYXkKX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwg
+bWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRw
+czovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJh
+bAo=

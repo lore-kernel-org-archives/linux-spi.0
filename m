@@ -1,80 +1,60 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi/omap2: Let device core handle pinctrl
-Date: Fri, 10 May 2013 10:56:29 +0100
-Message-ID: <20130510095629.GM3200@sirena.org.uk>
-References: <1367868998-12667-1-git-send-email-broonie@opensource.wolfsonmicro.com>
- <1BAFE6F6C881BF42822005164F1491C33EBE473A@DBDE04.ent.ti.com>
- <20130507085535.GN7478@sirena.org.uk>
- <1BAFE6F6C881BF42822005164F1491C33EBE4E07@DBDE04.ent.ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [RFC 23/42] drivers/spi: don't check resource with
+ devm_ioremap_resource
+Date: Fri, 10 May 2013 11:55:45 +0100
+Message-ID: <20130510105545.GO3200@sirena.org.uk>
+References: <1368173847-5661-1-git-send-email-wsa@the-dreams.de>
+ <1368173847-5661-24-git-send-email-wsa@the-dreams.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2YJj5f1P6Th4nBRw"
-Cc: "linux-omap@vger.kernel.org" <linux-omap@vger.kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: "Hebbar, Gururaja" <gururaja.hebbar@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="0UhZIN3Sa23/ILEd"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Barry Song <baohua.song-kQvG35nSl+M@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1BAFE6F6C881BF42822005164F1491C33EBE4E07@DBDE04.ent.ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1368173847-5661-24-git-send-email-wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
 
---2YJj5f1P6Th4nBRw
+--0UhZIN3Sa23/ILEd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 07, 2013 at 10:47:31AM +0000, Hebbar, Gururaja wrote:
-> On Tue, May 07, 2013 at 14:25:35, Mark Brown wrote:
+On Fri, May 10, 2013 at 10:17:08AM +0200, Wolfram Sang wrote:
+> devm_ioremap_resource does sanity checks on the given resource. No need to
+> duplicate this in the driver.
 
-> > There's also been some discussion about factoring out the suspend/resume
-> > code since it's going to get equally repetitive.
+Acked-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
 
-> Really. Any link/referenceso that I can follow.
-> But I think each module will have its own work to do. May be I can confir=
-m once=20
-> I look at the factoring-out discussion.
-
-It was part of the threads where the idea of adding the helper for the
-boilerplate stuff to the core was discussed initially IIRC.
-
-> > > I will be submitting a patch to enhance the existing pinctrl support =
-for=20
-> > > spi omap2 shortly which does above work.
-
-> > How soon is shortly?
-
-> Since I am adding this Pinctrl PM mode support to many other drivers (i2c=
-,=20
-> cpsw, da8xx-fb, hsmmc, ti-pwm, usb ...), I would say Shortly =3D 1 week -=
- 10 days.
-
-Well, I guess I'll keep the patch for now and drop it when you send out
-the PM code.
-
---2YJj5f1P6Th4nBRw
+--0UhZIN3Sa23/ILEd
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.19 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRjMRKAAoJELSic+t+oim9ZS0QAIn43m48yW11NEHJAuRGVsh3
-+rtkMNjhE1oR8ShV8Qmo03fs6Ky1c0d5sJP/xRP4tQE4VArFrEN/CoPAnXk9GOmS
-g7DfOUE/Q6V79NFpX+AO/+s6dBsHMu90/jJtGH2tZTz0mz5G5uYFgWm4ydzC/f4y
-Ag0ur3j0N1v+l9luaZCp07mEw0WyHHqShEHA/z184CfQssTDieLfMckQtqfEzk+s
-6Lg8+DDvv1VjMOGxg0D8dPAAKOmkBklslpLdJVXcQHzKtDAzIZnjX+K+vaWU8Lsy
-8Hg2hWsLc6EYDVxLRDxHKjdh3PRvhDfvYwBFMQaKEhguKJIHtISjKC4iQUVm9dd6
-NRg+RLzsTnAdmAgXkc2+l2JtRpynVn59bTv3mA5j8WSSINxtj9w3CiRSCijRRFdv
-jhriqeo30qoTdTF8dStrBR0+v4XikOnq7UStK+IseBnVsvgwK4txaeKNCk4Ft6PI
-WSt5Uhl8HeMYcRlvuqrlmJFcRSnUPWqhVAIui/SBYul+RxizJPiKXGn14F8JCZTZ
-g7q1WfvXbPcWzEvmOGQq3zb6PRfPZhq5fTq5QqN5e88C8nP+IMB+P4SPRr6F5+xF
-02PS0/+5uuQlDpd8+kJ5f48YEu4RWCfvAUx4uEMDOBvEF8WjizPsxThZSI4e5+Z/
-uDeQI4J0vLETEoDvgKls
-=RGoy
+iQIcBAEBAgAGBQJRjNIuAAoJELSic+t+oim9EeAP/3F5K6xUKoR1bkGZRU/CHceB
+yG7qHKrgOSNrzkSa7HR/KlahfszLl8BQ9dCo2CzAEWhpxmbzDtX7Ift3CDG+sI9W
+WxKNxOib39VRHYE2CkbXHAabX/cUWA498zxfMAfkRJzPnLDakkqhq8Vnk8JDDwzq
+cjedISrRRtwIzQLea/dr0l3Ad2ipkI55GJScwv7BGunglTLg4mhoT+w32WqPXC4u
+yTo5r79o2qfF2UkU6o3XJkoWG8Kblr26HAEPRMPwmeVzqjLrNiFT6BhdRVW6nvEq
+KEobD06ZQ6AKrcs4/GZoVN2aAz288vRZLSEOiFVMPA0nQyNa6sEW88DBhhke3LVj
+zzfTiy+0AU0yaJd8Qxxgg8H2Ps4N0C9f+o9YFABWyt0SHKXPldSg6mfIoYyvcKEj
+fRa/k1l2cHaYaFdwPRm8MjjKgRO5Pcrsl4kp/idIwLTQHxr3VztDyeDpwzeeRMZ3
+X2VsjlBlkw+kmlD1BR2FffsaXaJ6QM/YREju97Zzw5A/WrwY5w1AXJo7gTy+R7Vt
+9x79t/3Vr6yujHwfKSnj3pvfbch5Do8RTjXocji3vTxP8KyYvC+sFGYKLTDxwhaB
+pXSC6DIgWxr+uUmiqYJ/UkS16WfgTPrGNNsPQ4MXGL7B8J29D9agEtoqNXDGa82X
+BUEfIfHkMPsyK/ct6wDs
+=kFrz
 -----END PGP SIGNATURE-----
 
---2YJj5f1P6Th4nBRw--
+--0UhZIN3Sa23/ILEd--

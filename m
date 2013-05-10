@@ -1,51 +1,48 @@
-From: Stephen Warren <swarren@wwwdotorg.org>
-Subject: Re: [RFC 23/42] drivers/spi: don't check resource with devm_ioremap_resource
-Date: Fri, 10 May 2013 10:37:44 -0600
-Message-ID: <518D2258.2090403@wwwdotorg.org>
-References: <1368173847-5661-1-git-send-email-wsa@the-dreams.de> <1368173847-5661-24-git-send-email-wsa@the-dreams.de>
+From: Santosh Shilimkar <santosh.shilimkar-l0cyMroinI0@public.gmane.org>
+Subject: Re: Qspi flash device  driver - framework to use?
+Date: Sat, 11 May 2013 00:25:11 +0530
+Message-ID: <518D428F.9020008@ti.com>
+References: <518CD57E.2020705@ti.com> <20130510111757.GS3200@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	Ben Dooks <ben-linux@fluff.org>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Barry Song <baohua.song@csr.com>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
-To: Wolfram Sang <wsa@the-dreams.de>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1368173847-5661-24-git-send-email-wsa@the-dreams.de>
-Sender: linux-samsung-soc-owner@vger.kernel.org
+Cc: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>, Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>,
+	Pekon Gupta <pekon-l0cyMroinI0@public.gmane.org>, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130510111757.GS3200-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05/10/2013 02:17 AM, Wolfram Sang wrote:
-> devm_ioremap_resource does sanity checks on the given resource. No need to
-> duplicate this in the driver.
+On Friday 10 May 2013 04:47 PM, Mark Brown wrote:
+> On Fri, May 10, 2013 at 04:39:50PM +0530, Sourav Poddar wrote:
+> 
+>> I saw a device(m25p80) using mtd framework for some similar usecase.
+>> Is it the mtd which should be used? OR will it be a
+>> good idea to go for a generic qspi framework(drivers/qspi) which can be
+>> used by qspi flash devices having a memory mapped interface. ?
+> 
+> MTD does seem like a much better fit here - if you're memory mapping
+> things the whole goal is to make the fact that there's SPI involved
+> totally transparent to the processor so there shouldn't really be
+> anything for the SPI subsystem to do.
+> 
++1 for MTD
 
-> diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+Regards,
+Santosh
 
-> -	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (!r) {
-> -		dev_err(&pdev->dev, "No IO memory resource\n");
-> -		ret = -ENODEV;
-> -		goto exit_free_master;
-> -	}
->  	tspi->phys = r->start;
-> +	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-
-The tspi->phy assignment is broken there now.
-
-> diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-
-> -	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (!r) {
-> -		dev_err(&pdev->dev, "No IO memory resource\n");
-> -		ret = -ENODEV;
-> -		goto exit_free_master;
-> -	}
->  	tspi->phys = r->start;
-> +	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-
-Same here.
+------------------------------------------------------------------------------
+Learn Graph Databases - Download FREE O'Reilly Book
+"Graph Databases" is the definitive new guide to graph databases and 
+their applications. This 200-page book is written by three acclaimed 
+leaders in the field. The early access version is available now. 
+Download your free book today! http://p.sf.net/sfu/neotech_d2d_may

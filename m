@@ -1,14 +1,12 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: Qspi flash device  driver - framework to use?
-Date: Fri, 10 May 2013 16:39:50 +0530
-Message-ID: <518CD57E.2020705@ti.com>
+From: "Aterno" <contact-ITtWA3W4OX1QFI55V6+gNQ@public.gmane.org>
+Subject: Demandez votre catalogue radiateurs innovants
+Date: Fri, 10 May 2013 12:59:42 +0000 (CET)
+Message-ID: <130510125942.130831496900004064@fmo41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>, Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>,
-	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, Santosh Shilimkar <santosh.shilimkar-l0cyMroinI0@public.gmane.org>,
-	Pekon Gupta <pekon-l0cyMroinI0@public.gmane.org>
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -20,40 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-I am trying to work out a way to write a QSPI serial flash interface driver
-for my IP. The idea is to have an execute in place usecase.
-
-We have a configuration port from which the spi core can be configured and a
-memory mapped port from which the data can be read/write from/to serial
-flash device.
-
-As far as I can understand, I dont think it will be correct/possible to 
-write this
-driver making use of the generice spi framework(drivers/spi/spi.c) as that
-framework is more suited for generic spi use case, where in you can load
-your Image from external SPI devices into DDR and then execute. ?
-
-But for cases, where qspi is connected to serial flash device (XIP is 
-needed) what
-we might need is some framework which just passes the buffers and its 
-length to
-our driver which in turn will configure the qspi to initiate the transfer.
-
-What can be the best framework to use for the above use case?
-
-I saw a device(m25p80) using mtd framework for some similar usecase.
-Is it the mtd which should be used? OR will it be a
-good idea to go for a generic qspi framework(drivers/qspi) which can be
-used by qspi flash devices having a memory mapped interface. ?
-
-Thanks,
-Sourav
-
-------------------------------------------------------------------------------
-Learn Graph Databases - Download FREE O'Reilly Book
-"Graph Databases" is the definitive new guide to graph databases and 
-their applications. This 200-page book is written by three acclaimed 
-leaders in the field. The early access version is available now. 
-Download your free book today! http://p.sf.net/sfu/neotech_d2d_may
+CihodHRwOi8vZm1vNDEuY29tL2dwa3FidXNqYXFoYTBnYmZ5ai9pbmRleDAuaHRtbCkKKGh0dHA6
+Ly9mbW80MS5jb20vb3drc2F1cGFhaW0zZHEwZmRnL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQx
+LmNvbS9xbWtqMXVxemF3Z2F3MXRvc28vaW5kZXgyLmh0bWwpCihodHRwOi8vZm1vNDEuY29tL2p6
+a2x2dXdiYTAxM2VjMm9scS9pbmRleDMuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vNW0zMDFiNDQ1
+Y2phMjB0Y3ZnL2luZGV4NC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9yejNmdmJvdDVyeDNsMjJj
+a2ovaW5kZXg1Lmh0bWwpCkNoZXogQXRlcm5vLCBub3VzIGF2b25zIG1pcyBhdSBwb2ludCB1biBz
+eXN0w6htZSBkZSBjaGF1ZmZhZ2UgdW5pcXVlLCBiYXPDqSBzdXIgbGEgdGVjaG5vbG9naWUgbGEg
+cGx1cyDDqXZvbHXDqWUgZW4gbWF0acOocmUgZGUgY2hhdWZmYWdlIMOpbGVjdHJpcXVlLiAKTm91
+cyBhdm9ucyBwcmlzIGV4ZW1wbGUgc3VyIGxhIG5hdHVyZSBhZmluIGTCtHV0aWxpc2VyIGF1IG1p
+ZXV4IGNlIHF1wrRlbGxlIG5vdXMgb2ZmcmUuIEPCtGVzdCBwb3VycXVvaSwgbm91cyB2b3VzIHBy
+b3Bvc29ucywgZW4gZ3Vpc2UgZGUgY29ldXIgZGUgY2hhdWZmZSAKLWdhcmFudGkgw6AgdmllIGNo
+ZXogQXRlcm5vLSBkZXMgYnJpcXVlcyBLYWxpdGgsIMOpbGFib3LDqWVzIMOgIHBhcnRpciBkZXMg
+Y8OpcmFtaXF1ZXMgbGVzIHBsdXMgcHVyZXMgZXQgcXVpIGNvbmbDqHJlbnQgZGVzIHF1YWxpdMOp
+cyBleGNlcHRpb25uZWxsZXMgw6Agbm9zIHByb2R1aXRzLiAKSWwgc8K0YWdpdCBwb3VyIG5vdXMg
+ZGUgbm91cyBhZGFwdGVyIHBhcmZhaXRlbWVudCBhdSBtb2RlIGRlIHZpZSBkZSBub3MgY2xpZW50
+cyBldCDDoCBsZXVycyBhdHRlbnRlcyBlbiBtYXRpw6hyZSBkwrTDqWNvbG9naWUgZXQgZMK0w6lj
+b25vbWllIGTCtMOpbmVyZ2llLiAKTGVzIGlubm92YXRpb25zIHRlY2hub2xvZ2lxdWVzIG5vdXMg
+cGVybWV0dGVudCDDqWdhbGVtZW50IGRlIHByb3Bvc2VyIGRlIHBsdXMgZW4gcGx1cyBkZSBzZXJ2
+aWNlcyDDoCBub3MgY2xpZW50cyBkYW5zIGxlIGJ1dCBkZSBmYWNpbGl0ZXIgbMK0dXRpbGlzYXRp
+b24gCmRlIGxldXIgY2hhdWZmYWdlIGF1IHF1b3RpZGllbi4gRGFucyBub3RyZSByw6lnaW9uLCBs
+ZXMgaGl2ZXJzIHNvbnQgcnVkZXMsIGFsb3JzIHZvdXMgcG91dmV6IGltYWdpbmVyIGNvbWJpZW4g
+bm91cyBzb21tZXMgZXhpZ2VhbnRzIHZpcy3DoC12aXMgZGUgbm9zIHN5c3TDqG1lcyBkZSBjaGF1
+ZmZhZ2UuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gR3JhcGggRGF0YWJhc2VzIC0gRG93
+bmxvYWQgRlJFRSBPJ1JlaWxseSBCb29rCiJHcmFwaCBEYXRhYmFzZXMiIGlzIHRoZSBkZWZpbml0
+aXZlIG5ldyBndWlkZSB0byBncmFwaCBkYXRhYmFzZXMgYW5kIAp0aGVpciBhcHBsaWNhdGlvbnMu
+IFRoaXMgMjAwLXBhZ2UgYm9vayBpcyB3cml0dGVuIGJ5IHRocmVlIGFjY2xhaW1lZCAKbGVhZGVy
+cyBpbiB0aGUgZmllbGQuIFRoZSBlYXJseSBhY2Nlc3MgdmVyc2lvbiBpcyBhdmFpbGFibGUgbm93
+LiAKRG93bmxvYWQgeW91ciBmcmVlIGJvb2sgdG9kYXkhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvbmVv
+dGVjaF9kMmRfbWF5Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
+cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
+dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

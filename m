@@ -1,53 +1,51 @@
-From: "Aterno" <contact-ITtWA3W4OX1QFI55V6+gNQ@public.gmane.org>
-Subject: Demandez votre catalogue radiateurs innovants
-Date: Fri, 10 May 2013 12:59:42 +0000 (CET)
-Message-ID: <130510125942.130831496900004064@fmo41.com>
+From: Stephen Warren <swarren@wwwdotorg.org>
+Subject: Re: [RFC 23/42] drivers/spi: don't check resource with devm_ioremap_resource
+Date: Fri, 10 May 2013 10:37:44 -0600
+Message-ID: <518D2258.2090403@wwwdotorg.org>
+References: <1368173847-5661-1-git-send-email-wsa@the-dreams.de> <1368173847-5661-24-git-send-email-wsa@the-dreams.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>,
+	Barry Song <baohua.song@csr.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org
+To: Wolfram Sang <wsa@the-dreams.de>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1368173847-5661-24-git-send-email-wsa@the-dreams.de>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vZm1vNDEuY29tL2dwa3FidXNqYXFoYTBnYmZ5ai9pbmRleDAuaHRtbCkKKGh0dHA6
-Ly9mbW80MS5jb20vb3drc2F1cGFhaW0zZHEwZmRnL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQx
-LmNvbS9xbWtqMXVxemF3Z2F3MXRvc28vaW5kZXgyLmh0bWwpCihodHRwOi8vZm1vNDEuY29tL2p6
-a2x2dXdiYTAxM2VjMm9scS9pbmRleDMuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vNW0zMDFiNDQ1
-Y2phMjB0Y3ZnL2luZGV4NC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9yejNmdmJvdDVyeDNsMjJj
-a2ovaW5kZXg1Lmh0bWwpCkNoZXogQXRlcm5vLCBub3VzIGF2b25zIG1pcyBhdSBwb2ludCB1biBz
-eXN0w6htZSBkZSBjaGF1ZmZhZ2UgdW5pcXVlLCBiYXPDqSBzdXIgbGEgdGVjaG5vbG9naWUgbGEg
-cGx1cyDDqXZvbHXDqWUgZW4gbWF0acOocmUgZGUgY2hhdWZmYWdlIMOpbGVjdHJpcXVlLiAKTm91
-cyBhdm9ucyBwcmlzIGV4ZW1wbGUgc3VyIGxhIG5hdHVyZSBhZmluIGTCtHV0aWxpc2VyIGF1IG1p
-ZXV4IGNlIHF1wrRlbGxlIG5vdXMgb2ZmcmUuIEPCtGVzdCBwb3VycXVvaSwgbm91cyB2b3VzIHBy
-b3Bvc29ucywgZW4gZ3Vpc2UgZGUgY29ldXIgZGUgY2hhdWZmZSAKLWdhcmFudGkgw6AgdmllIGNo
-ZXogQXRlcm5vLSBkZXMgYnJpcXVlcyBLYWxpdGgsIMOpbGFib3LDqWVzIMOgIHBhcnRpciBkZXMg
-Y8OpcmFtaXF1ZXMgbGVzIHBsdXMgcHVyZXMgZXQgcXVpIGNvbmbDqHJlbnQgZGVzIHF1YWxpdMOp
-cyBleGNlcHRpb25uZWxsZXMgw6Agbm9zIHByb2R1aXRzLiAKSWwgc8K0YWdpdCBwb3VyIG5vdXMg
-ZGUgbm91cyBhZGFwdGVyIHBhcmZhaXRlbWVudCBhdSBtb2RlIGRlIHZpZSBkZSBub3MgY2xpZW50
-cyBldCDDoCBsZXVycyBhdHRlbnRlcyBlbiBtYXRpw6hyZSBkwrTDqWNvbG9naWUgZXQgZMK0w6lj
-b25vbWllIGTCtMOpbmVyZ2llLiAKTGVzIGlubm92YXRpb25zIHRlY2hub2xvZ2lxdWVzIG5vdXMg
-cGVybWV0dGVudCDDqWdhbGVtZW50IGRlIHByb3Bvc2VyIGRlIHBsdXMgZW4gcGx1cyBkZSBzZXJ2
-aWNlcyDDoCBub3MgY2xpZW50cyBkYW5zIGxlIGJ1dCBkZSBmYWNpbGl0ZXIgbMK0dXRpbGlzYXRp
-b24gCmRlIGxldXIgY2hhdWZmYWdlIGF1IHF1b3RpZGllbi4gRGFucyBub3RyZSByw6lnaW9uLCBs
-ZXMgaGl2ZXJzIHNvbnQgcnVkZXMsIGFsb3JzIHZvdXMgcG91dmV6IGltYWdpbmVyIGNvbWJpZW4g
-bm91cyBzb21tZXMgZXhpZ2VhbnRzIHZpcy3DoC12aXMgZGUgbm9zIHN5c3TDqG1lcyBkZSBjaGF1
-ZmZhZ2UuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gR3JhcGggRGF0YWJhc2VzIC0gRG93
-bmxvYWQgRlJFRSBPJ1JlaWxseSBCb29rCiJHcmFwaCBEYXRhYmFzZXMiIGlzIHRoZSBkZWZpbml0
-aXZlIG5ldyBndWlkZSB0byBncmFwaCBkYXRhYmFzZXMgYW5kIAp0aGVpciBhcHBsaWNhdGlvbnMu
-IFRoaXMgMjAwLXBhZ2UgYm9vayBpcyB3cml0dGVuIGJ5IHRocmVlIGFjY2xhaW1lZCAKbGVhZGVy
-cyBpbiB0aGUgZmllbGQuIFRoZSBlYXJseSBhY2Nlc3MgdmVyc2lvbiBpcyBhdmFpbGFibGUgbm93
-LiAKRG93bmxvYWQgeW91ciBmcmVlIGJvb2sgdG9kYXkhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvbmVv
-dGVjaF9kMmRfbWF5Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On 05/10/2013 02:17 AM, Wolfram Sang wrote:
+> devm_ioremap_resource does sanity checks on the given resource. No need to
+> duplicate this in the driver.
+
+> diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+
+> -	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (!r) {
+> -		dev_err(&pdev->dev, "No IO memory resource\n");
+> -		ret = -ENODEV;
+> -		goto exit_free_master;
+> -	}
+>  	tspi->phys = r->start;
+> +	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+
+The tspi->phy assignment is broken there now.
+
+> diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+
+> -	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (!r) {
+> -		dev_err(&pdev->dev, "No IO memory resource\n");
+> -		ret = -ENODEV;
+> -		goto exit_free_master;
+> -	}
+>  	tspi->phys = r->start;
+> +	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+
+Same here.

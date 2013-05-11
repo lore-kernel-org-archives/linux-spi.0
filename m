@@ -1,139 +1,81 @@
-From: "Cartouches et toners" <contact-GE0/2U7jJN5QFI55V6+gNQ@public.gmane.org>
-Subject: =?UTF-8?Q?1_pack_achet=C3=A9=2C_le_2=C3=A8me_=C3=A0_moiti=C3=A9_prix?=
-Date: Sat, 11 May 2013 03:05:30 +0000 (CET)
-Message-ID: <130511030530.135906354700003536@fmo41.com>
+From: Jingoo Han <jg1.han@samsung.com>
+Subject: Re: [RFC 23/42] drivers/spi: don't check resource with
+ devm_ioremap_resource
+Date: Sat, 11 May 2013 14:24:35 +0900
+Message-ID: <002b01ce4e07$d3087ed0$79197c70$@samsung.com>
+References: <1368173847-5661-1-git-send-email-wsa@the-dreams.de>
+ <1368173847-5661-24-git-send-email-wsa@the-dreams.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: 'Mark Brown' <broonie@kernel.org>,
+	'Grant Likely' <grant.likely@linaro.org>,
+	'Ben Dooks' <ben-linux@fluff.org>,
+	'Kukjin Kim' <kgene.kim@samsung.com>,
+	'Barry Song' <baohua.song@csr.com>,
+	'Stephen Warren' <swarren@wwwdotorg.org>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
+	Jingoo Han <jg1.han@samsung.com>
+To: 'Wolfram Sang' <wsa@the-dreams.de>, linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-reply-to: <1368173847-5661-24-git-send-email-wsa@the-dreams.de>
+Content-language: ko
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vZm1vNDEuY29tLzN4amJkZG0wNTNiMmp4bXdlby9pbmRleDAuaHRtbCkKKGh0dHA6
-Ly9mbW80MS5jb20vaDJqMXJkbHc1b3kweGZwd3VxL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQx
-LmNvbS9hY2owb2R6aTV0ejJhanJldmovaW5kZXgyLmh0bWwpCkNhcnRvdWNoZXMKZCdlbmNyZSBl
-dCB0b25lcnMgKGh0dHA6Ly9mbW80MS5jb20vaXRqZjRkanE1NHUwNW81ZWtnL2luZGV4My5odG1s
-KQooaHR0cDovL2ZtbzQxLmNvbS9jY3lqb3dnaGFwbjJvc3I0c3EvaW5kZXg0Lmh0bWwpCihodHRw
-Oi8vZm1vNDEuY29tL3h0eWw0d25nYWZ2MGZ5NTRsby9pbmRleDUuaHRtbCkKKGh0dHA6Ly9mbW80
-MS5jb20vMXh5cWR3eTJhczIyM3Rta3lnL2luZGV4Ni5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9m
-Mnlzcnc1bmFrbDBwYnBrZGovaW5kZXg3Lmh0bWwpCihodHRwOi8vZm1vNDEuY29tL294YXlsMHJi
-NWgxMmx1bXEwby9pbmRleDguaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vZzJhZ20wZHo1Z2cwMmtw
-cWJxL2luZGV4OS5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9jYnBqd3RnbHo1MmVndGFyc2QvaW5k
-ZXgxMC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS94eDJsZHJ3MnhjMmx0Ym15bGQvaW5kZXgxMS5o
-dG1sKQooaHR0cDovL2ZtbzQxLmNvbS9uaHlpMXdiazNzb2IzaXdramcvaW5kZXgxMi5odG1sKQoo
-aHR0cDovL2ZtbzQxLmNvbS80dmlraGYzNHN2bzRuaGsxcWcvaW5kZXgxMy5odG1sKQooaHR0cDov
-L2ZtbzQxLmNvbS9temMxdmpkc2RxeHBiM2JseWwvaW5kZXgxNC5odG1sKQooaHR0cDovL2ZtbzQx
-LmNvbS9wNXpiMnZtdGlheHhxYWxwZGwvaW5kZXgxNS5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9u
-cWNoamowM2xxcG1icmNsamcvaW5kZXgxNi5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS80ZHp1NXZo
-cGhhcGNxbW9wcWcvaW5kZXgxNy5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS81MDUyNTBucDV4NTAx
-NXBybHkvaW5kZXgxOC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9yYzB4anBxM2JyNW5zcGl5c3kv
-aW5kZXgxOS5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9pMnFmcm9qd3k0eXc1ZjN2c2wvaW5kZXgy
-MC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9hMXUwcWU0ZWEyeTJleHJmbGwvaW5kZXgyMS5odG1s
-KQooaHR0cDovL2ZtbzQxLmNvbS9oeXoxd3ZsZGhqYmNjZmpweWwvaW5kZXgyMi5odG1sKQooaHR0
-cDovL2ZtbzQxLmNvbS8zamNiZGpyMGxpYm15eDFsZGwvaW5kZXgyMy5odG1sKQooaHR0cDovL2Zt
-bzQxLmNvbS9pd2J4M25xcmlyemZzb3Nzc2wvaW5kZXgyNC5odG1sKQooaHR0cDovL2ZtbzQxLmNv
-bS9hcnIyZnhuaWR4ejUxajBtbGwvaW5kZXgyNS5odG1sKQpUT05FUlMgKGh0dHA6Ly9mbW80MS5j
-b20vaGtpY2tmc3FzbHU0dm91MXlsL2luZGV4MjYuaHRtbCkgOgpwcm9mZXNzaW9ubmVscywgZmFp
-dGVzIG5vdXMgY29uZmlhbmNlIGV0IHRlc3RlegoKbGUgY29tcGF0aWJsZSB0csOocyBoYXV0ZSBx
-dWFsaXTDqS4gUGx1cyBkZSA3MDAKcsOpZsOpcmVuY2VzIGVuIChodHRwOi8vZm1vNDEuY29tLzMz
-eXR0dzVjM2t1YnBqbmtkbC9pbmRleDI3Lmh0bWwpCnN0b2NrLgoKTm9ybWVzIGlzbyA5MDAxIC8g
-MTQwMDEgLyBTVE1DIChodHRwOi8vZm1vNDEuY29tL3hucWxpam5uZGZscHhidG5mbC9pbmRleDI4
-Lmh0bWwpCihodHRwOi8vZm1vNDEuY29tL2NtdWpjdnF2aW1seGR0ZG8xbC9pbmRleDI5Lmh0bWwp
-CihodHRwOi8vZm1vNDEuY29tLzBoY3Bjb2Z2c3dkenowZTIyai9pbmRleDMwLmh0bWwpCihodHRw
-Oi8vZm1vNDEuY29tL2J2endpZXVuM2JkdGkyNDN0ai9pbmRleDMxLmh0bWwpClRyb3V2ZXogdm90
-cmUKaW1wcmltYW50ZSAoaHR0cDovL2ZtbzQxLmNvbS9jdGNvNG9vZ3l3dnd6c2EyMXkvaW5kZXgz
-Mi5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS94Znpkc2V6MWFidjJpeW0zZnkvaW5kZXgzMy5odG1s
-KQooaHR0cDovL2ZtbzQxLmNvbS8wcXk1b24xaGhwdzFvZHE0MmovaW5kZXgzNC5odG1sKQooaHR0
-cDovL2ZtbzQxLmNvbS9iZGlucHhlbWwxd3IybGZndGovaW5kZXgzNS5odG1sKQooaHR0cDovL2Zt
-bzQxLmNvbS9zMWY0Z3MzdXplcXZ6dmkwYmcvaW5kZXgzNi5odG1sKQooaHR0cDovL2ZtbzQxLmNv
-bS9sMm5ybWlienh5cWRpZXBhMGcvaW5kZXgzNy5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9xbG1v
-bTFqemd6Z3Fta29oMXkvaW5kZXgzOC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9qZ3RkZ3o0dXYw
-Z2hrdWN0ZnkvaW5kZXgzOS5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9zZ2J6Z25pdWhpcTFzdnFz
-YnEvaW5kZXg0MC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9sbHJtbXgyemxqcXIxZWZtMHEvaW5k
-ZXg0MS5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS95eGl3bGZrYnkyY252dmgxdHEvaW5kZXg0Mi5o
-dG1sKQpTdXIgdG91dCBsZSBzaXRlLCDDoCBwYXJ0aXIgZGUgMzkK4oKsIGRlIGNvbW1hbmRlIDog
-KGh0dHA6Ly9mbW80MS5jb20vZGJ5cG53eHlhNGMwcGU1azJxL2luZGV4NDMuaHRtbCkKKGh0dHA6
-Ly9mbW80MS5jb20vdWhudmNpdmVmeHN5YzF3NXRnL2luZGV4NDQuaHRtbCkKKGh0dHA6Ly9mbW80
-MS5jb20vZXZmYWlzY3c0cnNreWNrZDJnL2luZGV4NDUuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20v
-azVvazB5YTB3a3RhNTEyZWJnL2luZGV4NDYuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vdnp2aWVo
-dGRjbHRvZWN5eDBnL2luZGV4NDcuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vdm90aHN6MGN2cWto
-dHExczBqL2luZGV4NDguaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20va3NtdTQxaHFnYWtxZ2dqbWJq
-L2luZGV4NDkuaHRtbCkKNCBQSUxFUyBEVVJBQ0VMTCBQTFVTIExSNiAtCkFBIChodHRwOi8vZm1v
-NDEuY29tLzN0c3Q0NDVxdWt1ZXBqYWt4bC9pbmRleDUwLmh0bWwpCgpPRkZFUlRFUyAoaHR0cDov
-L2ZtbzQxLmNvbS9oZmhjc2NzY2psdWx2b20xY2wvaW5kZXg1MS5odG1sKSBBVkVDIExFIENPREUK
-PSAoaHR0cDovL2ZtbzQxLmNvbS9yeXh4bmxxc21yeGN5M2pkMXkvaW5kZXg1Mi5odG1sKQooaHR0
-cDovL2ZtbzQxLmNvbS81ancybGFudDJ4eG1jYTE1ZnkvaW5kZXg1My5odG1sKQo0UElMRVMgKGh0
-dHA6Ly9mbW80MS5jb20vdzFkM2dweGtiNG9ucGlpdTJqL2luZGV4NTQuaHRtbCkKKGh0dHA6Ly9m
-bW80MS5jb20vejJhZW0wazQ1Mm8wdmhwY3RqL2luZGV4NTUuaHRtbCkKKGh0dHA6Ly9mbW80MS5j
-b20vcmtkZnVwam90NGE0cHB1dTF5L2luZGV4NTYuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vNTNh
-MGIwNGZwMmFidjVuY2Z5L2luZGV4NTcuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vNHB1a2J2M2Zp
-djN4d21sZmJnL2luZGV4NTguaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vbjRxaXVqYm9kczNwYXJi
-djBnL2luZGV4NTkuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vZ2FvcTJzeWI0czF1YWt2ZWRqL2lu
-ZGV4NjAuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vb3V2c3ZpcHlmdjFzd3V6eHlqL2luZGV4NjEu
-aHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vcW1uajFoZ3VjNWdqcWtkNWxqL2luZGV4NjIuaHRtbCkK
-U8OpbGVjdGlvbm5leiBsYSBtYXJxdWUgZGUgdm90cmUKaW1wcmltYW50ZSAoaHR0cDovL2ZtbzQx
-LmNvbS9qbmZsaHl3endjZzNidXRkc2ovaW5kZXg2My5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9n
-bzJneW1keDFxaGd0NGd5ZGovaW5kZXg2NC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9vc3B5emJt
-am5haGlnenhyeWovaW5kZXg2NS5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9xYzNvanRvYXpubXZu
-NGljbGovaW5kZXg2Ni5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9qMGxkNXJ6NXh0bWQzenB1c2ov
-aW5kZXg2Ny5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS8yeWFydzJ0bG1sMGN2MGpjcXkvaW5kZXg2
-OC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS90amQ0ZDVhMjJrMG1wMjF1ankvaW5kZXg2OS5odG1s
-KQooaHR0cDovL2ZtbzQxLmNvbS9meDV5ZDBtMjVhMjJnYm1yeWcvaW5kZXg3MC5odG1sKQooaHR0
-cDovL2ZtbzQxLmNvbS8xYjBnd3BkbGJxMnd0dGF5ZGcvaW5kZXg3MS5odG1sKQooaHR0cDovL2Zt
-bzQxLmNvbS90ZTV6MzBobXBhd3RnbDRyamwvaW5kZXg3Mi5odG1sKQooaHR0cDovL2ZtbzQxLmNv
-bS8yaTBtZnAwaHRxd3p0ZGV5cWwvaW5kZXg3My5odG1sKQpTaXRlIGNlcnRpZmnDqQpGSUFCSUxJ
-V0VCIChodHRwOi8vZm1vNDEuY29tL2ZwZXN0YXAxMHZ2NXd5Mnh5Zy9pbmRleDc0Lmh0bWwpCiho
-dHRwOi8vZm1vNDEuY29tLzE0anFrbHlncnN2ZmFzeWVkZy9pbmRleDc1Lmh0bWwpCkZyYWlzIGRl
-IHBvcnQgb2ZmZXJ0cyDDoCBwYXJ0aXIgZGUgNDkKZXVyb3MgZGUgY29tbWFuZGUgKGh0dHA6Ly9m
-bW80MS5jb20vemQxdjVnZXBnY3BxYm1vbG9kL2luZGV4NzYuaHRtbCkKKGh0dHA6Ly9mbW80MS5j
-b20vd3E0YWp1MTN2NXBocXJjcGdkL2luZGV4NzcuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vbWNw
-MWp0bDN6ajV2MXBpcmRvL2luZGV4NzguaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vcDAyYjVycnB4
-aTVkczVweXlvL2luZGV4NzkuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vM2hzYmM0bWVrM3l1b3hl
-NGJxL2luZGV4ODAuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vaHZoMWljZHdvZ3lzMmY0ZzBxL2lu
-ZGV4ODEuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vYTVtMDAxejBxYmJqaHhsaHRxL2luZGV4ODIu
-aHRtbCkKQVNTSVNUQU5DRSBURUxFUEhPTklRVUUgQUlNQUJMRSBFVApUT1VKT1VSUyBESVNQT05J
-QkxFIChodHRwOi8vZm1vNDEuY29tL2l6dGZlem9kZXdiMzRmYnQycS9pbmRleDgzLmh0bWwpCiho
-dHRwOi8vZm1vNDEuY29tL3drZGF1cDFvdHAzNG9ydXoxcy9pbmRleDg0Lmh0bWwpCihodHRwOi8v
-Zm1vNDEuY29tL3ozYXZiMGVmcDEzYjJtbnFmcy9pbmRleDg1Lmh0bWwpCihodHRwOi8vZm1vNDEu
-Y29tL253NWlhMmJwcnlwZmhyc2ljcy9pbmRleDg2Lmh0bWwpCihodHRwOi8vZm1vNDEuY29tLzRy
-MGt4NTMzMGVwNTRtMGJ4cy9pbmRleDg3Lmh0bWwpCihodHRwOi8vZm1vNDEuY29tLzRsdXVtdmk0
-aGhvY2Rob294ZC9pbmRleDg4Lmh0bWwpCihodHRwOi8vZm1vNDEuY29tL25ncWhnajJrbG9vbXhp
-Y25jZC9pbmRleDg5Lmh0bWwpCihodHRwOi8vZm1vNDEuY29tL20xemNnZXlrYXlqMmkzcjMwby9p
-bmRleDkwLmh0bWwpCihodHRwOi8vZm1vNDEuY29tL3AyY3Rtb3A0eWVqd3phMzJiby9pbmRleDkx
-Lmh0bWwpCihodHRwOi8vZm1vNDEuY29tLzNiaGJ3Y3JkamhiZGx4NWdoeS9pbmRleDkyLmh0bWwp
-Ck9wLWVuY3JlIGVzdCB1biBzaXRlIHdlYiBpbmTDqXBlbmRhbnQKZGUgdG91dGVzIG1hcnF1ZXMg
-Y29uc3RydWN0ZXVycyBkJ2ltcHJpbWFudGVzLiBOb3MgY2FydG91Y2hlcwpldCB0b25lcnMgc29u
-dCAxMDAlIGNvbXBhdGlibGVzIGF2ZWMgbGVzIGltcHJpbWFudGVzIGxlcyBwbHVzCnZlbmR1ZXMg
-ZW4gRXVyb3BlLgoKTm90cmUgb2JqZWN0aWYgZXN0IGRlIGxpYsOpcmVyIHZvdHJlIHBvdXZvaXIg
-ZCdhY2hhdCBlbgp2b3VzIHByb3Bvc2FudCBkZXMgY2FydG91Y2hlcyBkJ2VuY3JlIGV0IHRvbmVy
-cyBwb3VyIGltcHJpbWFudGUKYXUgcGx1cyBiYXMgcHJpeCBkdSBtYXJjaMOpLiAoaHR0cDovL2Zt
-bzQxLmNvbS9oeHMxZDRsMHVvYnZmZmg0M3kvaW5kZXg5My5odG1sKQooaHR0cDovL2ZtbzQxLmNv
-bS9rZzRrcXVhZXZ1c2hyMWMzdmovaW5kZXg5NC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS92bDFp
-cmd0d2dkc3F1Y28ya2ovaW5kZXg5NS5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS8zNDR0a3U1cWV1
-dTNyamIzaHkvaW5kZXg5Ni5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9ocDFjdGdzY3FkdWp1b2wy
-M3kvaW5kZXg5Ny5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9lMzIzdHJmY2Z3a3k0cW5idWcvaW5k
-ZXg5OC5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS91a3Bla3R1cTRia2toZ3VpZWcvaW5kZXg5OS5o
-dG1sKQoqIChodHRwOi8vZm1vNDEuY29tL2ZodHNjNHB2a2VsdTRiZXRnZy9pbmRleDEwMC5odG1s
-KSBTZWxvbiBsZXMKc3RvY2tzIGRpc3BvbmlibGVzLCBPcC1lbmNyZSBzJ2F1dG9yaXNlIGEgc3Vz
-cGVuZHJlIGwnb2ZmcmUKc2FucyBwcsOpYXZpcyAvIE9mZnJlIHZhbGFibGUganVzcXUnYXUKMzEv
-MTIvMjAxMyAoaHR0cDovL2ZtbzQxLmNvbS9ycWp4amxnM21wNTFqcHF3YWQvaW5kZXgxMDEuaHRt
-bCkKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxlYXJuIEdyYXBoIERhdGFiYXNlcyAtIERvd25sb2Fk
-IEZSRUUgTydSZWlsbHkgQm9vawoiR3JhcGggRGF0YWJhc2VzIiBpcyB0aGUgZGVmaW5pdGl2ZSBu
-ZXcgZ3VpZGUgdG8gZ3JhcGggZGF0YWJhc2VzIGFuZCAKdGhlaXIgYXBwbGljYXRpb25zLiBUaGlz
-IDIwMC1wYWdlIGJvb2sgaXMgd3JpdHRlbiBieSB0aHJlZSBhY2NsYWltZWQgCmxlYWRlcnMgaW4g
-dGhlIGZpZWxkLiBUaGUgZWFybHkgYWNjZXNzIHZlcnNpb24gaXMgYXZhaWxhYmxlIG5vdy4gCkRv
-d25sb2FkIHlvdXIgZnJlZSBib29rIHRvZGF5ISBodHRwOi8vcC5zZi5uZXQvc2Z1L25lb3RlY2hf
-ZDJkX21heQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
-cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
-L3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Friday, May 10, 2013 5:17 PM, Wolfram Sang wrote:
+> 
+> devm_ioremap_resource does sanity checks on the given resource. No need to
+> duplicate this in the driver.
+> 
+> Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
+> ---
+>  drivers/spi/spi-bcm63xx.c        |    8 +-------
+>  drivers/spi/spi-ep93xx.c         |    8 +-------
+>  drivers/spi/spi-omap2-mcspi.c    |    7 +------
+>  drivers/spi/spi-s3c64xx.c        |    7 +------
+>  drivers/spi/spi-sirf.c           |    7 +------
+>  drivers/spi/spi-tegra114.c       |    7 +------
+>  drivers/spi/spi-tegra20-sflash.c |    5 -----
+>  drivers/spi/spi-tegra20-slink.c  |    7 +------
+>  8 files changed, 7 insertions(+), 49 deletions(-)
+> 
+
+[.....]
+
+> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+> index 5000586..fd763cc 100644
+> --- a/drivers/spi/spi-s3c64xx.c
+> +++ b/drivers/spi/spi-s3c64xx.c
+> @@ -1243,12 +1243,6 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>  		return -ENODEV;
+>  	}
+> 
+> -	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (mem_res == NULL) {
+> -		dev_err(&pdev->dev, "Unable to get SPI MEM resource\n");
+> -		return -ENXIO;
+> -	}
+> -
+
+It breaks 'sdd->sfr_start' assignment as below:
+
+1272         sdd->sfr_start = mem_res->start;
+
+
+Best regards,
+Jingoo Han
+
+>  	irq = platform_get_irq(pdev, 0);
+>  	if (irq < 0) {
+>  		dev_warn(&pdev->dev, "Failed to get IRQ: %d\n", irq);
+> @@ -1318,6 +1312,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+>  	/* the spi->mode bits understood by this driver: */
+>  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+> 
+> +	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>  	sdd->regs = devm_ioremap_resource(&pdev->dev, mem_res);
+>  	if (IS_ERR(sdd->regs)) {
+>  		ret = PTR_ERR(sdd->regs);

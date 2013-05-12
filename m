@@ -1,81 +1,38 @@
-From: Jingoo Han <jg1.han@samsung.com>
-Subject: Re: [RFC 23/42] drivers/spi: don't check resource with
- devm_ioremap_resource
-Date: Sat, 11 May 2013 14:24:35 +0900
-Message-ID: <002b01ce4e07$d3087ed0$79197c70$@samsung.com>
-References: <1368173847-5661-1-git-send-email-wsa@the-dreams.de>
- <1368173847-5661-24-git-send-email-wsa@the-dreams.de>
+From: "Sepia" <noreply-SKCABPrSvGI@public.gmane.org>
+Subject: =?UTF-8?Q?Cartouches_d=27encre_jusqu=27=C3=A0_moins70_pourcent.?=
+Date: Sun, 12 May 2013 05:50:48 +0000 (CET)
+Message-ID: <130512055048.117364880700005060@fmo42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: 'Mark Brown' <broonie@kernel.org>,
-	'Grant Likely' <grant.likely@linaro.org>,
-	'Ben Dooks' <ben-linux@fluff.org>,
-	'Kukjin Kim' <kgene.kim@samsung.com>,
-	'Barry Song' <baohua.song@csr.com>,
-	'Stephen Warren' <swarren@wwwdotorg.org>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-tegra@vger.kernel.org,
-	Jingoo Han <jg1.han@samsung.com>
-To: 'Wolfram Sang' <wsa@the-dreams.de>, linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-reply-to: <1368173847-5661-24-git-send-email-wsa@the-dreams.de>
-Content-language: ko
-Sender: linux-kernel-owner@vger.kernel.org
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday, May 10, 2013 5:17 PM, Wolfram Sang wrote:
-> 
-> devm_ioremap_resource does sanity checks on the given resource. No need to
-> duplicate this in the driver.
-> 
-> Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
-> ---
->  drivers/spi/spi-bcm63xx.c        |    8 +-------
->  drivers/spi/spi-ep93xx.c         |    8 +-------
->  drivers/spi/spi-omap2-mcspi.c    |    7 +------
->  drivers/spi/spi-s3c64xx.c        |    7 +------
->  drivers/spi/spi-sirf.c           |    7 +------
->  drivers/spi/spi-tegra114.c       |    7 +------
->  drivers/spi/spi-tegra20-sflash.c |    5 -----
->  drivers/spi/spi-tegra20-slink.c  |    7 +------
->  8 files changed, 7 insertions(+), 49 deletions(-)
-> 
 
-[.....]
-
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index 5000586..fd763cc 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -1243,12 +1243,6 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->  		return -ENODEV;
->  	}
-> 
-> -	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (mem_res == NULL) {
-> -		dev_err(&pdev->dev, "Unable to get SPI MEM resource\n");
-> -		return -ENXIO;
-> -	}
-> -
-
-It breaks 'sdd->sfr_start' assignment as below:
-
-1272         sdd->sfr_start = mem_res->start;
-
-
-Best regards,
-Jingoo Han
-
->  	irq = platform_get_irq(pdev, 0);
->  	if (irq < 0) {
->  		dev_warn(&pdev->dev, "Failed to get IRQ: %d\n", irq);
-> @@ -1318,6 +1312,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
->  	/* the spi->mode bits understood by this driver: */
->  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-> 
-> +	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->  	sdd->regs = devm_ioremap_resource(&pdev->dev, mem_res);
->  	if (IS_ERR(sdd->regs)) {
->  		ret = PTR_ERR(sdd->regs);
+(http://fmo42.com/isgf4gjfd5uqjhgvky/index0.html)
+(http://fmo42.com/aqg0ogzpdxzgxiovvl/index1.html)
+(http://fmo42.com/hlg1rglkdyyqamqnus/index2.html)
+(http://fmo42.com/3jgbdgmsdubg5rjned/index3.html)
+(http://fmo42.com/fllsrm5u0alqowqudl/index4.html)
+(http://fmo42.com/1jlqdmyy0j2gfnjuyy/index5.html)
+(http://fmo42.com/xsll4mnx0bvq3egzld/index6.html)
+(http://fmo42.com/cqljomg50zngpvozss/index7.html)
+(http://fmo42.com/qshoz1o1drhql2g1ty/index8.html)
+(http://fmo42.com/jqhdj14mdcmg20o12l/index9.html)
+(http://fmo42.com/att0444f31uetihtnl/index10.html)
+------------------------------------------------------------------------------
+Learn Graph Databases - Download FREE O'Reilly Book
+"Graph Databases" is the definitive new guide to graph databases and 
+their applications. This 200-page book is written by three acclaimed 
+leaders in the field. The early access version is available now. 
+Download your free book today! http://p.sf.net/sfu/neotech_d2d_may

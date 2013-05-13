@@ -1,12 +1,11 @@
-From: "Sepia" <noreply-SKCABPrSvGI@public.gmane.org>
-Subject: =?UTF-8?Q?Cartouches_d=27encre_jusqu=27=C3=A0_moins70_pourcent.?=
-Date: Sun, 12 May 2013 05:50:48 +0000 (CET)
-Message-ID: <130512055048.117364880700005060@fmo42.com>
+From: ruth.shank-LzLNWnyri4YvJsYlp49lxw@public.gmane.org
+Subject: It featured on CBS News
+Date: Mon, 13 May 2013 10:31:29 +0900
+Message-ID: <E1Ubhld-0000pe-Dn@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,18 +17,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+How to make USD 1 Billion in flicks production investment? Just like an 
+adviser who purchased 32% of Lions Gate and earned $1 Bill you purchase 
+new players. The deal precisely like this is G T_RL. This company shows 
+all signals to soar. Don't wait til traders make big profits trading small 
+players. Trade asap begin trading 110000 shares of G T_RL on May 13.
 
-(http://fmo42.com/isgf4gjfd5uqjhgvky/index0.html)
-(http://fmo42.com/aqg0ogzpdxzgxiovvl/index1.html)
-(http://fmo42.com/hlg1rglkdyyqamqnus/index2.html)
-(http://fmo42.com/3jgbdgmsdubg5rjned/index3.html)
-(http://fmo42.com/fllsrm5u0alqowqudl/index4.html)
-(http://fmo42.com/1jlqdmyy0j2gfnjuyy/index5.html)
-(http://fmo42.com/xsll4mnx0bvq3egzld/index6.html)
-(http://fmo42.com/cqljomg50zngpvozss/index7.html)
-(http://fmo42.com/qshoz1o1drhql2g1ty/index8.html)
-(http://fmo42.com/jqhdj14mdcmg20o12l/index9.html)
-(http://fmo42.com/att0444f31uetihtnl/index10.html)
+
 ------------------------------------------------------------------------------
 Learn Graph Databases - Download FREE O'Reilly Book
 "Graph Databases" is the definitive new guide to graph databases and 

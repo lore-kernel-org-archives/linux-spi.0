@@ -1,55 +1,88 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] drivers: spi: convert to devm_ioremap_resource()
-Date: Mon, 13 May 2013 18:16:49 +0400
-Message-ID: <20130513141649.GA16673@sirena.org.uk>
-References: <1368453886-6852-1-git-send-email-silviupopescu1990@gmail.com>
+Subject: [GIT PULL] SPI updates for v3.10
+Date: Mon, 13 May 2013 18:40:39 +0400
+Message-ID: <20130513144039.GD16673@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
-Cc: spi-devel-general@lists.sourceforge.net,
-	Stephen Warren <swarren@wwwdotorg.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	linux-rpi-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-To: Silviu-Mihai Popescu <silviupopescu1990@gmail.com>
+	protocol="application/pgp-signature"; boundary="0/kgSOzhNoDC5T3a"
+Cc: linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net,
+	Grant Likely <grant.likely@linaro.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1368453886-6852-1-git-send-email-silviupopescu1990@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---n8g4imXOkfNTN/H1
+--0/kgSOzhNoDC5T3a
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, May 13, 2013 at 05:04:46PM +0300, Silviu-Mihai Popescu wrote:
-> Convert  use of devm_request_and_ioremap() to the newly introduced
-> devm_ioremap_resource() which provides more consistent error handling.
+The following changes since commit f722406faae2d073cc1d01063d1123c35425939e:
 
-A version of this patch has already been applied.  Please make sure to
-generate patches against the relevant development tree (or -next) to
-catch such things.
+  Linux 3.10-rc1 (2013-05-11 17:14:08 -0700)
 
---n8g4imXOkfNTN/H1
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3.10-rc1
+
+for you to fetch changes up to 88b0357dde1c2721a64268e4601d1c2dec1158b0:
+
+  Merge remote-tracking branch 'spi/fix/grant' into spi-linus (2013-05-13 18:27:18 +0400)
+
+----------------------------------------------------------------
+
+spi: Updates for v3.10
+
+A few driver specific fixes plus improved error handling in the generic
+DT GPIO chipselect handling - not exciting but useful.
+
+----------------------------------------------------------------
+Andreas Larsson (2):
+      spi: Initialize cs_gpio and cs_gpios with -ENOENT
+      spi: Return error from of_spi_register_master on bad "cs-gpios" property
+
+Joachim Eastwood (1):
+      spi/atmel: fix speed_hz check in atmel_spi_transfer()
+
+Manjunathappa, Prakash (1):
+      spi/davinci: fix module build error
+
+Mark Brown (3):
+      Merge branch 'spi/merge' of git://git.secretlab.ca/git/linux into spi-fix-grant
+      Merge remote-tracking branch 'spi/fix/atmel' into spi-linus
+      Merge remote-tracking branch 'spi/fix/grant' into spi-linus
+
+Richard Genoud (1):
+      spi/spi-atmel: BUG: fix doesn' support 16 bits transfers using PIO
+
+ drivers/spi/spi-atmel.c   |   51 +++++++++++++++++++++++++++++++++++----------
+ drivers/spi/spi-davinci.c |    2 +-
+ drivers/spi/spi.c         |    9 +++++---
+ include/linux/spi/spi.h   |    4 ++--
+ 4 files changed, 49 insertions(+), 17 deletions(-)
+
+--0/kgSOzhNoDC5T3a
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.19 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRkPXNAAoJELSic+t+oim98OQP/3eV9cT2GCnZBPD2vGKcLUkk
-zBuK81IT0kHRNyRmsyXmtbDV6Jm7D17vMD4hxZRUoy27vJGk+avuXnetF9uHnbtf
-hknd6+NGTonTNt9Rw/FjCC+M0QrQkW3DXVap/XELEsYPBN5aHgzAVwtVbvHG9VXS
-mYK/NExUYgJcFIr6gSJHE/HWYStpkJv4G+zpsoSR180m2JncXooVqoT4NArsTgAr
-rErcv4utZM7vj0UK7s6C8wST9Zbr02auRt2XkiphKrLIjQqIoyKL1re/I2BmqjgQ
-UoJDm5E/b9GAkrT02z58dWqK9T3fCUHJqUJDgRyn7rzGLHQImrmaxGKpp0OS74iU
-3EoVhktoUTR1g40qraQBGqn4oEBjfnSJZAqk99+rp8N4SBd/uBJT2DFhqdcqWuQD
-m5LtftQWAUQ3WFkrkc4YR92yuvo2ABHIBAxhfkAWClAe7fBS504WN94TUpXZ/fhq
-r5/+ycZwmeFWd5vTng5dlsurL5keUAlZph9em0xgptWLIwElidlwLNjMrRKs99Gy
-s+eXFt37wPbQiojKi1WCeeFe8P1XMWgA8qOs/XA6oZJkzbh0CilTyoSRb9HlyUz9
-N71Xla+VNRNqaQBkAd3+d8WyVolrNrjdAGkdcwI1lyFb8PhqjOusxYgNOgVYBlDc
-DSfJQzQLd/N3igPGMKqH
-=7ll1
+iQIcBAEBAgAGBQJRkPtkAAoJELSic+t+oim9QOwP/32M1CQjC4d9ihVYuyWyjTTh
+2uxI37JjtOEiDLzF3csiZyhbNHhrqKXqhiQ3eUWoK6szWmeVEdSiQGhj0f9yaPtc
+t0h34v6ZL82INEVh41Cc85eR3p/V2AwemhHNi/SFUYXDhCe/DXkmN68kPJLiNcgL
+H7LaKmhr7bUAOjFsqqLCLqHVdHd2xU8xoQLWv7p3Xa5h412gavPywbw2TwDwO9ND
+e44qASdJtmTs0VEcf/EWvSmudqGyBfAdw6WB5YmRWo881ax4S+l1dRrwH5XPmcGD
+SeBgLzap2ISaOB99tRSFPmvsQY76uRrr7pT/7Rtp6l/hAocPby/7a3AwCoC6tUjH
+OuVYKbDh7zpBD6QtbPAfvnQFh7OLTBvq7Nn+7FezsCSWevTV9FEnkbl4fQTP2n++
+VMKaYuPv+n0VVquUGRbXgDP685z2oe4mA/DLDwRaAfydgvnMqKJF3alD6cp8J0mY
+BKodoLAKqMVuEn16uq90eF74vbb6Gqu8c0g2m5mhrPuh7lagw7j3VQPjfcx6O373
+4MfDFJI9lCPfGQy2bEomXc63rT1SdtXEb/ee/kWM4HtQrlNTsu4J2ZSyoj5v70dg
+I56BpYy8Jke0QVAI/LVSu+ajmon75GONCTrfhvIu5ix3LTRQR3gNyppFOP1vvw4n
+qQJNESZ0J22LO4by2s4b
+=E11b
 -----END PGP SIGNATURE-----
 
---n8g4imXOkfNTN/H1--
+--0/kgSOzhNoDC5T3a--

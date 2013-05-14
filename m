@@ -1,45 +1,46 @@
-From: Illia Smyrnov <x0194613@ti.com>
-Subject: Re: [PATCH] spi: spi-omap2-mcspi.c: Add dts for slave device configuration.
-Date: Tue, 14 May 2013 12:53:31 +0300
-Message-ID: <5192099B.4000203@ti.com>
-References: <1364252415-3613-1-git-send-email-matthias.bgg@gmail.com> <CAB=otbTtRN9xyO0whNz-UbW+Xo0_X8XWLcWZt=7MfUfrnNqwww@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Rob Landley <rob@landley.net>, Daniel Mack <zonque@gmail.com>,
-	Enric Balletbo Serra <eballetbo@gmail.com>,
-	Javier Martinez Canillas <martinez.javier@gmail.com>,
-	<devicetree-discuss@lists.ozlabs.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-omap@vger.kernel.org>, <ezequiel.garcia@free-electrons.com>
-To: Matthias Brugger <matthias.bgg@gmail.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <CAB=otbTtRN9xyO0whNz-UbW+Xo0_X8XWLcWZt=7MfUfrnNqwww@mail.gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
+From: Laurent Navet <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] drivers/spi/spi-tegra114.c clean use of devm_ioremap_resource()
+Date: Tue, 14 May 2013 12:07:12 +0200
+Message-ID: <1368526032-31371-1-git-send-email-laurent.navet@gmail.com>
+Cc: swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Laurent Navet <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Check of 'r' and calls to dev_err are already done in devm_ioremap_resource,
+so no need to do them twice.
 
-> @@ -745,6 +781,11 @@ static int omap2_mcspi_setup_transfer(struct
-> spi_device *spi,
->          mcspi = spi_master_get_devdata(spi->master);
->          spi_cntrl = mcspi->master;
->
-> +       if (!cd && spi->dev.of_node) {
-> +               cd = omap2_mcspi_get_slave_ctrldata(spi);
- > +               spi->controller_data = cd;
+Signed-off-by: Laurent Navet <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-tegra114.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-Here you call omap2_mcspi_get_slave_ctrldata function that allocate 
-memory for cd structure, but this memory never freed.
-
-Also, why do you read DT data in omap2_mcspi_setup_transfer function?
-Under certain conditions the omap2_mcspi_setup_transfer function may be 
-calling for each transfer and each call it will check (!cd && 
-spi->dev.of_node) condition.
-
-Consider to move DT data read code from omap2_mcspi_setup_transfer to
-omap2_mcspi_setup function and free spi->controller_data pointer in 
-omap2_mcspi_cleanup function.
-
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 598eb45..18a6592 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -1059,18 +1059,12 @@ static int tegra_spi_probe(struct platform_device *pdev)
+ 	spin_lock_init(&tspi->lock);
+ 
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!r) {
+-		dev_err(&pdev->dev, "No IO memory resource\n");
+-		ret = -ENODEV;
+-		goto exit_free_master;
+-	}
+-	tspi->phys = r->start;
+ 	tspi->base = devm_ioremap_resource(&pdev->dev, r);
+ 	if (IS_ERR(tspi->base)) {
+ 		ret = PTR_ERR(tspi->base);
+-		dev_err(&pdev->dev, "ioremap failed: err = %d\n", ret);
+ 		goto exit_free_master;
+ 	}
++	tspi->phys = r->start;
+ 
+ 	spi_irq = platform_get_irq(pdev, 0);
+ 	tspi->irq = spi_irq;
+-- 
+1.7.10.4

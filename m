@@ -1,46 +1,58 @@
-From: Laurent Navet <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] drivers/spi/spi-tegra114.c clean use of devm_ioremap_resource()
-Date: Tue, 14 May 2013 12:07:12 +0200
-Message-ID: <1368526032-31371-1-git-send-email-laurent.navet@gmail.com>
-Cc: swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Laurent Navet <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: La Pointe de Penmarc'h par Manato <contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org>
+Subject: Offrez le meilleur de la Bretagne pour la =?utf-8?Q?f=C3=AAte?= des
+	=?utf-8?Q?m=C3=A8res?=
+Date: Tue, 14 May 2013 11:02:14 +0000
+Message-ID: <1368529351.thing519219c77608d@mach10.generated>
+Reply-To: contact-zYbTcSUkD6JQFI55V6+gNQ@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Check of 'r' and calls to dev_err are already done in devm_ioremap_resource,
-so no need to do them twice.
-
-Signed-off-by: Laurent Navet <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-tegra114.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 598eb45..18a6592 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -1059,18 +1059,12 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 	spin_lock_init(&tspi->lock);
- 
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!r) {
--		dev_err(&pdev->dev, "No IO memory resource\n");
--		ret = -ENODEV;
--		goto exit_free_master;
--	}
--	tspi->phys = r->start;
- 	tspi->base = devm_ioremap_resource(&pdev->dev, r);
- 	if (IS_ERR(tspi->base)) {
- 		ret = PTR_ERR(tspi->base);
--		dev_err(&pdev->dev, "ioremap failed: err = %d\n", ret);
- 		goto exit_free_master;
- 	}
-+	tspi->phys = r->start;
- 
- 	spi_irq = platform_get_irq(pdev, 0);
- 	tspi->irq = spi_irq;
--- 
-1.7.10.4
+UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
+bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
+L1lUMHhNeVppUFRNMk5ETTRKbU05TWpNMk5ESW1aRDB5TURFekxUQTFMVEUwSURFeE9qQXdPakF3
+Sm1VOU1TWm9QVE0yTkRZeEptWTlNelkyTmpRbVp6MHpOalkyTkE9PQoKTGllbiBkZSBkZXNpbnNj
+cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE0yTkRNNEpt
+TTlNak0yTkRJbVpEMHlNREV6TFRBMUxURTBJREV4T2pBd09qQXdKbVU5TVNab1BUTTJORFl4Sm1Z
+OU16WTJOalFtWnowek5qWTJOQT09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
+cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KT2ZmcmV6IGxlIG1laWxsZXVyIGRl
+IGxhIEJyZXRhZ25lIHBvdXIgbGEgZsOqdGUgZGVzIG3DqHJlcyBhdmVjIG5vdHJlIE9GRlJFIERF
+Q09VVkVSVEUgRVhDTFVTSVZFIDogIDEgYXNzb3J0aW1lbnQgKyAxIGNhZGVhdSArIGxlcyBmcmFp
+cyBkZSBwb3J0IG9mZmVydHMqIFZvdHJlIENPREUgT0ZGUkUgOiBSVzAwMwoxIHZlcnJpbmUgZGUg
+UmlsbGV0dGVzIGF1IENyYWJlIFRvdXJ0ZWF1ICgxMDAgZykxIHZlcnJpbmUgZGUgUmlsbGV0dGVz
+IGRlIFNhaW50LUphY3F1ZXMgYXV4IGFsZ3VlcyAoODcgZykxIHZlcnJpbmUgZGUgUmlsbGV0dGVz
+IGRlIE1hcXVlcmVhdXggYXUgZnJvbWFnZSBkZSBjaMOodnJlMSB2ZXJyaW5lIGRlIFJpbGxldHRl
+cyBkZSBUaG9uIGF1IGJhc2lsaWMgKDEwMCBnKTEgdmVycmluZSBkZSBSaWxsZXR0ZXMgZGUgU2F1
+bW9uIMOgIGwnYW5ldGggKDEwMCBnKTEgdmVycmluZSBkZSBDcsOobWUgZGUgU2F1bW9uIGF1IGNo
+b3UgZmxldXIgKDEwMCBnKTEgdmVycmluZSBkZSBDcsOobWUgZCdBbmNob2lzIHJlY2V0dGUgYnJl
+dG9ubmUgKDEwMCBnKTEgdmVycmluZSBkZSBDcsOobWUgZGUgU2FyZGluZXMgYXUgd2hpc2t5ICgx
+MDAgZykxIGJvw650ZSBkJ0hhdmlvcmlnIGF1eCBvZXVmcyBkZSBjYWJpbGxhdWQgKDgwIGcpMSBz
+YWNoZXQgZGUgVG9hc3RzIGF1eCBhbGd1ZXMgKDU4IGcpClVuIHN1cGVyYmUgY2FoaWVyIHBvdXIg
+bm90ZXIgdm9zIG1laWxsZXVyZXMgcmVjZXR0ZXMgISBDb27Dp3UgZGFucyB1biBlc3ByaXQgZGUg
+dHJhZGl0aW9uLCBzYSBjb3V2ZXJ0dXJlIGVzdCBkw6ljb3LDqWUgZCd1bmUgc3VwZXJiZSB0b2ls
+ZSBkZSBsaW4gYnJvZMOpZSDDoCBRdWltcGVyLCByZXByw6lzZW50YW50IG5vcyBpbGx1c3RyZXMg
+ZmVtbWVzIGR1IFBheXMgQmlnb3VkZW4gZGFucyBsZXVycyB0ZW51ZXMgdHlwaXF1ZXMuIFZvdXMg
+eSBub3RlcmV6IHZvcyBtZWlsbGV1cmVzIHJlY2V0dGVzIG91IGF1c3NpIHZvcyBwbHVzIGJlYXV4
+IHNvdXZlbmlycy4uLgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIGNsaXF1ZXogaWNpLgotLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0KQWxpZW5WYXVsdCBVbmlmaWVkIFNlY3VyaXR5IE1hbmFnZW1lbnQgKFVT
+TSkgcGxhdGZvcm0gZGVsaXZlcnMgY29tcGxldGUKc2VjdXJpdHkgdmlzaWJpbGl0eSB3aXRoIHRo
+ZSBlc3NlbnRpYWwgc2VjdXJpdHkgY2FwYWJpbGl0aWVzLiBFYXNpbHkgYW5kCmVmZmljaWVudGx5
+IGNvbmZpZ3VyZSwgbWFuYWdlLCBhbmQgb3BlcmF0ZSBhbGwgb2YgeW91ciBzZWN1cml0eSBjb250
+cm9scwpmcm9tIGEgc2luZ2xlIGNvbnNvbGUgYW5kIG9uZSB1bmlmaWVkIGZyYW1ld29yay4gRG93
+bmxvYWQgYSBmcmVlIHRyaWFsLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FsaWVudmF1bHRfZDJkCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

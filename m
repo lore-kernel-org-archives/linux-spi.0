@@ -1,53 +1,24 @@
-From: "Aterno" <contact-ITtWA3W4OX1QFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Demandez votre catalogue radiateurs innovants
-Date: Tue, 14 May 2013 12:43:12 +0000 (CET)
-Message-ID: <130514124312.83512023900006580@fmo40.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH] drivers/spi/spi-tegra114.c clean use of devm_ioremap_resource()
+Date: Tue, 14 May 2013 10:12:51 -0600
+Message-ID: <51926283.7010401@wwwdotorg.org>
+References: <1368526032-31371-1-git-send-email-laurent.navet@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+To: Laurent Navet <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1368526032-31371-1-git-send-email-laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vZm1vNDAuY29tL3VhZWUwM2thbjJ0emZ6a3hoby9pbmRleDAuaHRtbCkKKGh0dHA6
-Ly9mbW80MC5jb20vZXZlM2kzZmpubnM0bzR2eDNxL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQw
-LmNvbS9raWV1ZjNpYm5oNHpwdXVqaWovaW5kZXgyLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3Zr
-ZWhrMzB6bmdrNDNrZWphZy9pbmRleDMuaHRtbCkKKGh0dHA6Ly9mbW80MC5jb20vMmlpcmZmdHR2
-bHd6eDN1MWpxL2luZGV4NC5odG1sKQooaHR0cDovL2ZtbzQwLmNvbS90a2k0a2YzNHZ2ZTRqYWUx
-cW8vaW5kZXg1Lmh0bWwpCkNoZXogQXRlcm5vLCBub3VzIGF2b25zIG1pcyBhdSBwb2ludCB1biBz
-eXN0w6htZSBkZSBjaGF1ZmZhZ2UgdW5pcXVlLCBiYXPDqSBzdXIgbGEgdGVjaG5vbG9naWUgbGEg
-cGx1cyDDqXZvbHXDqWUgZW4gbWF0acOocmUgZGUgY2hhdWZmYWdlIMOpbGVjdHJpcXVlLiAKTm91
-cyBhdm9ucyBwcmlzIGV4ZW1wbGUgc3VyIGxhIG5hdHVyZSBhZmluIGTCtHV0aWxpc2VyIGF1IG1p
-ZXV4IGNlIHF1wrRlbGxlIG5vdXMgb2ZmcmUuIEPCtGVzdCBwb3VycXVvaSwgbm91cyB2b3VzIHBy
-b3Bvc29ucywgZW4gZ3Vpc2UgZGUgY29ldXIgZGUgY2hhdWZmZSAKLWdhcmFudGkgw6AgdmllIGNo
-ZXogQXRlcm5vLSBkZXMgYnJpcXVlcyBLYWxpdGgsIMOpbGFib3LDqWVzIMOgIHBhcnRpciBkZXMg
-Y8OpcmFtaXF1ZXMgbGVzIHBsdXMgcHVyZXMgZXQgcXVpIGNvbmbDqHJlbnQgZGVzIHF1YWxpdMOp
-cyBleGNlcHRpb25uZWxsZXMgw6Agbm9zIHByb2R1aXRzLiAKSWwgc8K0YWdpdCBwb3VyIG5vdXMg
-ZGUgbm91cyBhZGFwdGVyIHBhcmZhaXRlbWVudCBhdSBtb2RlIGRlIHZpZSBkZSBub3MgY2xpZW50
-cyBldCDDoCBsZXVycyBhdHRlbnRlcyBlbiBtYXRpw6hyZSBkwrTDqWNvbG9naWUgZXQgZMK0w6lj
-b25vbWllIGTCtMOpbmVyZ2llLiAKTGVzIGlubm92YXRpb25zIHRlY2hub2xvZ2lxdWVzIG5vdXMg
-cGVybWV0dGVudCDDqWdhbGVtZW50IGRlIHByb3Bvc2VyIGRlIHBsdXMgZW4gcGx1cyBkZSBzZXJ2
-aWNlcyDDoCBub3MgY2xpZW50cyBkYW5zIGxlIGJ1dCBkZSBmYWNpbGl0ZXIgbMK0dXRpbGlzYXRp
-b24gCmRlIGxldXIgY2hhdWZmYWdlIGF1IHF1b3RpZGllbi4gRGFucyBub3RyZSByw6lnaW9uLCBs
-ZXMgaGl2ZXJzIHNvbnQgcnVkZXMsIGFsb3JzIHZvdXMgcG91dmV6IGltYWdpbmVyIGNvbWJpZW4g
-bm91cyBzb21tZXMgZXhpZ2VhbnRzIHZpcy3DoC12aXMgZGUgbm9zIHN5c3TDqG1lcyBkZSBjaGF1
-ZmZhZ2UuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxpZW5WYXVsdCBVbmlmaWVkIFNlY3VyaXR5
-IE1hbmFnZW1lbnQgKFVTTSkgcGxhdGZvcm0gZGVsaXZlcnMgY29tcGxldGUKc2VjdXJpdHkgdmlz
-aWJpbGl0eSB3aXRoIHRoZSBlc3NlbnRpYWwgc2VjdXJpdHkgY2FwYWJpbGl0aWVzLiBFYXNpbHkg
-YW5kCmVmZmljaWVudGx5IGNvbmZpZ3VyZSwgbWFuYWdlLCBhbmQgb3BlcmF0ZSBhbGwgb2YgeW91
-ciBzZWN1cml0eSBjb250cm9scwpmcm9tIGEgc2luZ2xlIGNvbnNvbGUgYW5kIG9uZSB1bmlmaWVk
-IGZyYW1ld29yay4gRG93bmxvYWQgYSBmcmVlIHRyaWFsLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2Fs
-aWVudmF1bHRfZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On 05/14/2013 04:07 AM, Laurent Navet wrote:
+> Check of 'r' and calls to dev_err are already done in devm_ioremap_resource,
+> so no need to do them twice.
+
+I think this duplicates part of a much wider patch series that Wolfram
+is working on; I CC'd him here.

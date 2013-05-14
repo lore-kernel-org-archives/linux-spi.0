@@ -1,88 +1,33 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI updates for v3.10
-Date: Mon, 13 May 2013 18:40:39 +0400
-Message-ID: <20130513144039.GD16673@sirena.org.uk>
+From: 15919444412-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Tue, 14 May 2013 09:43:08 +0800
+Message-ID: <E1Uc4Gl-0005MH-3f@sfs-ml-2.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0/kgSOzhNoDC5T3a"
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net,
-	Grant Likely <grant.likely@linaro.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---0/kgSOzhNoDC5T3a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-The following changes since commit f722406faae2d073cc1d01063d1123c35425939e:
-
-  Linux 3.10-rc1 (2013-05-11 17:14:08 -0700)
-
-are available in the git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3.10-rc1
-
-for you to fetch changes up to 88b0357dde1c2721a64268e4601d1c2dec1158b0:
-
-  Merge remote-tracking branch 'spi/fix/grant' into spi-linus (2013-05-13 18:27:18 +0400)
-
-----------------------------------------------------------------
-
-spi: Updates for v3.10
-
-A few driver specific fixes plus improved error handling in the generic
-DT GPIO chipselect handling - not exciting but useful.
-
-----------------------------------------------------------------
-Andreas Larsson (2):
-      spi: Initialize cs_gpio and cs_gpios with -ENOENT
-      spi: Return error from of_spi_register_master on bad "cs-gpios" property
-
-Joachim Eastwood (1):
-      spi/atmel: fix speed_hz check in atmel_spi_transfer()
-
-Manjunathappa, Prakash (1):
-      spi/davinci: fix module build error
-
-Mark Brown (3):
-      Merge branch 'spi/merge' of git://git.secretlab.ca/git/linux into spi-fix-grant
-      Merge remote-tracking branch 'spi/fix/atmel' into spi-linus
-      Merge remote-tracking branch 'spi/fix/grant' into spi-linus
-
-Richard Genoud (1):
-      spi/spi-atmel: BUG: fix doesn' support 16 bits transfers using PIO
-
- drivers/spi/spi-atmel.c   |   51 +++++++++++++++++++++++++++++++++++----------
- drivers/spi/spi-davinci.c |    2 +-
- drivers/spi/spi.c         |    9 +++++---
- include/linux/spi/spi.h   |    4 ++--
- 4 files changed, 49 insertions(+), 17 deletions(-)
-
---0/kgSOzhNoDC5T3a
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRkPtkAAoJELSic+t+oim9QOwP/32M1CQjC4d9ihVYuyWyjTTh
-2uxI37JjtOEiDLzF3csiZyhbNHhrqKXqhiQ3eUWoK6szWmeVEdSiQGhj0f9yaPtc
-t0h34v6ZL82INEVh41Cc85eR3p/V2AwemhHNi/SFUYXDhCe/DXkmN68kPJLiNcgL
-H7LaKmhr7bUAOjFsqqLCLqHVdHd2xU8xoQLWv7p3Xa5h412gavPywbw2TwDwO9ND
-e44qASdJtmTs0VEcf/EWvSmudqGyBfAdw6WB5YmRWo881ax4S+l1dRrwH5XPmcGD
-SeBgLzap2ISaOB99tRSFPmvsQY76uRrr7pT/7Rtp6l/hAocPby/7a3AwCoC6tUjH
-OuVYKbDh7zpBD6QtbPAfvnQFh7OLTBvq7Nn+7FezsCSWevTV9FEnkbl4fQTP2n++
-VMKaYuPv+n0VVquUGRbXgDP685z2oe4mA/DLDwRaAfydgvnMqKJF3alD6cp8J0mY
-BKodoLAKqMVuEn16uq90eF74vbb6Gqu8c0g2m5mhrPuh7lagw7j3VQPjfcx6O373
-4MfDFJI9lCPfGQy2bEomXc63rT1SdtXEb/ee/kWM4HtQrlNTsu4J2ZSyoj5v70dg
-I56BpYy8Jke0QVAI/LVSu+ajmon75GONCTrfhvIu5ix3LTRQR3gNyppFOP1vvw4n
-qQJNESZ0J22LO4by2s4b
-=E11b
------END PGP SIGNATURE-----
-
---0/kgSOzhNoDC5T3a--
+xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
+qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaOjqLG+uavLvrjf
+vNu72MrV1PbWtcuwt6LGsaOpCrnzuavLvsjn09DQ6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6
+IAq4utTwyMujutXFz8jJ+igwKTE1OTE5NDQ0NDEyCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxp
+ZW5WYXVsdCBVbmlmaWVkIFNlY3VyaXR5IE1hbmFnZW1lbnQgKFVTTSkgcGxhdGZvcm0gZGVsaXZl
+cnMgY29tcGxldGUKc2VjdXJpdHkgdmlzaWJpbGl0eSB3aXRoIHRoZSBlc3NlbnRpYWwgc2VjdXJp
+dHkgY2FwYWJpbGl0aWVzLiBFYXNpbHkgYW5kCmVmZmljaWVudGx5IGNvbmZpZ3VyZSwgbWFuYWdl
+LCBhbmQgb3BlcmF0ZSBhbGwgb2YgeW91ciBzZWN1cml0eSBjb250cm9scwpmcm9tIGEgc2luZ2xl
+IGNvbnNvbGUgYW5kIG9uZSB1bmlmaWVkIGZyYW1ld29yay4gRG93bmxvYWQgYSBmcmVlIHRyaWFs
+LgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FsaWVudmF1bHRfZDJkCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
+dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
+b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

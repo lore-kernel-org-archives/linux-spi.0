@@ -1,33 +1,45 @@
-From: 15919444412-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 14 May 2013 09:43:08 +0800
-Message-ID: <E1Uc4Gl-0005MH-3f@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Illia Smyrnov <x0194613@ti.com>
+Subject: Re: [PATCH] spi: spi-omap2-mcspi.c: Add dts for slave device configuration.
+Date: Tue, 14 May 2013 12:53:31 +0300
+Message-ID: <5192099B.4000203@ti.com>
+References: <1364252415-3613-1-git-send-email-matthias.bgg@gmail.com> <CAB=otbTtRN9xyO0whNz-UbW+Xo0_X8XWLcWZt=7MfUfrnNqwww@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Rob Landley <rob@landley.net>, Daniel Mack <zonque@gmail.com>,
+	Enric Balletbo Serra <eballetbo@gmail.com>,
+	Javier Martinez Canillas <martinez.javier@gmail.com>,
+	<devicetree-discuss@lists.ozlabs.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<linux-omap@vger.kernel.org>, <ezequiel.garcia@free-electrons.com>
+To: Matthias Brugger <matthias.bgg@gmail.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <CAB=otbTtRN9xyO0whNz-UbW+Xo0_X8XWLcWZt=7MfUfrnNqwww@mail.gmail.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
-qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaOjqLG+uavLvrjf
-vNu72MrV1PbWtcuwt6LGsaOpCrnzuavLvsjn09DQ6NKqo6y7ttOtxPq1xMC0tefT687SwarPtaO6
-IAq4utTwyMujutXFz8jJ+igwKTE1OTE5NDQ0NDEyCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxp
-ZW5WYXVsdCBVbmlmaWVkIFNlY3VyaXR5IE1hbmFnZW1lbnQgKFVTTSkgcGxhdGZvcm0gZGVsaXZl
-cnMgY29tcGxldGUKc2VjdXJpdHkgdmlzaWJpbGl0eSB3aXRoIHRoZSBlc3NlbnRpYWwgc2VjdXJp
-dHkgY2FwYWJpbGl0aWVzLiBFYXNpbHkgYW5kCmVmZmljaWVudGx5IGNvbmZpZ3VyZSwgbWFuYWdl
-LCBhbmQgb3BlcmF0ZSBhbGwgb2YgeW91ciBzZWN1cml0eSBjb250cm9scwpmcm9tIGEgc2luZ2xl
-IGNvbnNvbGUgYW5kIG9uZSB1bmlmaWVkIGZyYW1ld29yay4gRG93bmxvYWQgYSBmcmVlIHRyaWFs
-LgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FsaWVudmF1bHRfZDJkCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+
+> @@ -745,6 +781,11 @@ static int omap2_mcspi_setup_transfer(struct
+> spi_device *spi,
+>          mcspi = spi_master_get_devdata(spi->master);
+>          spi_cntrl = mcspi->master;
+>
+> +       if (!cd && spi->dev.of_node) {
+> +               cd = omap2_mcspi_get_slave_ctrldata(spi);
+ > +               spi->controller_data = cd;
+
+Here you call omap2_mcspi_get_slave_ctrldata function that allocate 
+memory for cd structure, but this memory never freed.
+
+Also, why do you read DT data in omap2_mcspi_setup_transfer function?
+Under certain conditions the omap2_mcspi_setup_transfer function may be 
+calling for each transfer and each call it will check (!cd && 
+spi->dev.of_node) condition.
+
+Consider to move DT data read code from omap2_mcspi_setup_transfer to
+omap2_mcspi_setup function and free spi->controller_data pointer in 
+omap2_mcspi_cleanup function.
+

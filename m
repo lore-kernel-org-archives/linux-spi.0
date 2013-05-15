@@ -1,11 +1,12 @@
-From: "=?windows-1252?Q?Pat_Thomas_|_EBUSA?=" <Pthomas13-Jbz+COfnBihBDgjK7y7TUQ@public.gmane.org>
-Subject: business question
-Date: Tue, 14 May 2013 15:50:18 -0700
-Message-ID: <05acdfe6ac8067e72ee15122001d2dc7@address.com>
+From: "Tout le sport" <contact-FqQuqE7uPTdGWvitb5QawA@public.gmane.org>
+Subject: [SPAM] Liquidation des stocks et remises à -70%
+Date: Wed, 15 May 2013 11:24:04 +0000 (CET)
+Message-ID: <130515112404.91677283300005860@fmo40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,36 +18,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello, 
-
-If you are reading this message, you are proving that e-mail marketing works.	
-Use e-mail marketing to drive sales and leads for less than any other marketing.	
-	
-Our Offer:	
-	
-> Use our targeted database of 200MM consumers | 45MM Businesses	
-> Use our servers to send your messages	
-> No contracts | Month to Month	
-> Flat Rate for Unlimited Mailing	
-
-E-mail Marketing has been proven to be tremendously cost-effective and efficient.	
-	
-Call us at 1 (800) 676-2011 for a DEMO and to receive a special discount.	
-	
-We look forward to working with your company!	
-	
-Sincerely,	
-
-Patrick Thomas 	
-Senior Prospect Specialist 	
-E-mail Marketing Services 	
-1 (800) 676-2011	
-
-
-
-------------------------------------------------------------------------------
-AlienVault Unified Security Management (USM) platform delivers complete
-security visibility with the essential security capabilities. Easily and
-efficiently configure, manage, and operate all of your security controls
-from a single console and one unified framework. Download a free trial.
-http://p.sf.net/sfu/alienvault_d2d
+CihodHRwOi8vZm1vNDAuY29tL2w1em0ydjJxa2pjeGNmbHBqby9pbmRleDAuaHRtbCkKKGh0dHA6
+Ly9mbW80MC5jb20vc256emh2aGlrYXFmcXhzcHFxL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQw
+LmNvbS9kcnpweHZ4d2t6cnhyb2Qzb2ovaW5kZXgyLmh0bWwpCsKgClByaXZhdGVzcG9ydHNob3Ag
+ZXN0IGxlIHNpdGUgZGUgdmVudGVzIHByaXbDqWVzIGTDqWRpw6kgYXUgc3BvcnQuIFByb2ZpdGV6
+IGRlcyBwbHVzIGdyYW5kZXMgbWFycXVlcyBkZSBtYXTDqXJpZWwgZXQgdsOqdGVtZW50IGRlIHNw
+b3J0IMOgIGRlcyBwcml4IGltYmF0dGFibGVzLiBQcm9maXRleiBkZSByZW1pc2VzIGV4Y2VwdGlv
+bm5lbGxlcyBhbGxhbnQganVzcXXCtMOgIC03MCUuIFBvdXIgYWNjw6lkZXIgYXV4IHZlbnRlcyBw
+cml2w6llcywgY8K0ZXN0IHNpbXBsZSBldCBjwrRlc3QgZ3JhdHVpdC4KVm91cyByZWNoZXJjaGV6
+IGxlcyBwbHVzIGdyYW5kZXMgbWFycXVlcyBhdXggbWVpbGxldXJzIHByaXggPyBEZXMgdmVudGVz
+IHByaXbDqWVzIHJ1bm5pbmcsIGRlcyB2ZW50ZXMgcHJpdsOpZXMgVlRULCBSdWdieSwgRm9vdCwg
+SGFuZGJhbGwsIFRyaWF0aGxvbiwgU25vd2JvYXJkLCBTdXJmLCBLaXRlLCBOYXRhdGlvbiwgQ3lj
+bGlzbWUuLi4gU3VyIG5vdHJlIHNpdGUgdG91cyBsZXMgc3BvcnRzIHNvbnQgdHJhaXTDqXMgZMK0
+w6lnYWwgw6Agw6lnYWwgYXZlYyBwbHVzIGRlIDcwIGRpc2NpcGxpbmVzIGRpZmbDqXJlbnRlcyBw
+cm9wb3PDqWVzICEKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFsaWVuVmF1bHQgVW5pZmllZCBTZWN1
+cml0eSBNYW5hZ2VtZW50IChVU00pIHBsYXRmb3JtIGRlbGl2ZXJzIGNvbXBsZXRlCnNlY3VyaXR5
+IHZpc2liaWxpdHkgd2l0aCB0aGUgZXNzZW50aWFsIHNlY3VyaXR5IGNhcGFiaWxpdGllcy4gRWFz
+aWx5IGFuZAplZmZpY2llbnRseSBjb25maWd1cmUsIG1hbmFnZSwgYW5kIG9wZXJhdGUgYWxsIG9m
+IHlvdXIgc2VjdXJpdHkgY29udHJvbHMKZnJvbSBhIHNpbmdsZSBjb25zb2xlIGFuZCBvbmUgdW5p
+ZmllZCBmcmFtZXdvcmsuIERvd25sb2FkIGEgZnJlZSB0cmlhbC4KaHR0cDovL3Auc2YubmV0L3Nm
+dS9hbGllbnZhdWx0X2QyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

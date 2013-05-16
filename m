@@ -1,57 +1,47 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: coldfire-qspi: fix error return code in
- mcfqspi_probe()
-Date: Thu, 16 May 2013 19:22:11 +0100
-Message-ID: <20130516182211.GH1627@sirena.org.uk>
-References: <CAPgLHd93xOKX3ot+RUP5FXM_Nz6xZD-ODU_=ZEebBEJm=OM76g@mail.gmail.com>
+From: Stephen Warren <swarren@wwwdotorg.org>
+Subject: Re: [PATCH 00/33] devm improvement series, part 1, take 2
+Date: Thu, 16 May 2013 12:29:19 -0600
+Message-ID: <5195257F.3060309@wwwdotorg.org>
+References: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PW0Eas8rCkcu1VkF"
-Cc: grant.likely@linaro.org, yongjun_wei@trendmicro.com.cn,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-To: Wei Yongjun <weiyj.lk@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAPgLHd93xOKX3ot+RUP5FXM_Nz6xZD-ODU_=ZEebBEJm=OM76g@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
+ linux-usb@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Linus Walleij <linus.walleij@linaro.org>, Matt Mackall <mpm@selenic.com>,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Jaroslav Kysela <perex@perex.cz>, linux-ide@vger.kernel.org,
+ netdev@vger.kernel.org, linux-mtd@lists.infradead.org,
+ linux-i2c@vger.kernel.org, Evgeniy Polyakov <zbr@ioremap.net>,
+ Wan ZongShun <mcuos.com@gmail.com>, ac100@lists.launchpad.net,
+ devel@driverdev.osuosl.org, Kukjin Kim <kgene.kim@samsung.com>,
+ Russell King <linux@arm.linux.org.uk>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
+ "Rafael J. Wysocki" <rjw@sisk.pl>, cpufreq@vger.kernel.org,
+ Eduardo Valentin <eduardo.v
+To: Wolfram Sang <wsa@the-dreams.de>
+Return-path: <devel-bounces@linuxdriverproject.org>
+In-Reply-To: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/devel>,
+ <mailto:devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/devel/>
+List-Post: <mailto:devel@linuxdriverproject.org>
+List-Help: <mailto:devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/devel>,
+ <mailto:devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: devel-bounces@linuxdriverproject.org
+Sender: "devel" <devel-bounces@linuxdriverproject.org>
 List-Id: linux-spi.vger.kernel.org
 
+On 05/16/2013 05:15 AM, Wolfram Sang wrote:
+> Lately, I have been experimenting how to improve the devm interface to make
+> writing device drivers easier and less error prone while also getting rid of
+> its subtle issues. I think it has more potential but still needs work and
+> definately conistency, especiall in its usage.
+...
 
---PW0Eas8rCkcu1VkF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, May 16, 2013 at 01:11:32PM +0800, Wei Yongjun wrote:
-> From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
->=20
-> If pdev->dev.platform_data is not set, mcfqspi_probe() will return 0
-> and release all the resources, in this case, we should return a error
-> code instead of 0.
-
-Applied, thanks.
-
---PW0Eas8rCkcu1VkF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRlSPQAAoJELSic+t+oim9fGsP/Rd7ghUlvuqvcr2NLx/QXIab
-631Qg5+zkCD40lehZEG9SZCsooTm5ca0FcuLa9yP8j4fzkGAnvLAvZ426I70W9oj
-CLYnB/NvzGt3EGuPCA9L5T7tAIM+aAuSQTWJ8skQ5XlbZOVvMpeeWTemng1VjcjW
-QN4OJ/t+JMZpPHZfIByqHLVAg4Ob1JZ03TbM79HgqFK/118unEEMN8FCAOjHDnBS
-bzjHN1fMtmz83OPzsew60Jm/+tjKda1GsIrxS+kiRbVQuCiIf/2RPzrSX4a+VIfQ
-R3oSDpHOR/4TCKFqT/OvYHvPwiXoCbN6R3KQtNr/JzwyP04+T5HStMuxNyAY+SX9
-qmAtBKjO9ABqpyYghMgpH3rXF5Vdy6KCISttkx2bRMyBhvZVpBdqD+GMcWLJNmFK
-cadSYPNuM+ir5sBxqLjHRWFTr42N9r7U8uICGcSHhnMBaUtVRua/puBUZVRXqbND
-nyFNFAcy8LMHRpKImWVQt4nMehHSxTICeW3hKQ2oWHJlfQ29BB8Se19CK3be6v15
-P5myQIVlnXSa6CAu1oySuYjz7dvO3Jte/YvYXrGfTa3cDhhXCrsgnpV9NYC0GTil
-XH920pjueTjbAbVSmBHxogwcrYFF601Q8NYpNzZmiJcSlEl2v5AbWg1yRhaCRCpp
-2HnhSAVI+r7jeD4QcIZD
-=mSnn
------END PGP SIGNATURE-----
-
---PW0Eas8rCkcu1VkF--
+The Tegra parts in patches 4, 5, 8, 15, 16, 17, 29 all,
+Acked-by: Stephen Warren <swarren@nvidia.com>

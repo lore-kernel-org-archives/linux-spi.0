@@ -1,19 +1,13 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: sirf: fix the issue while transferring more than 256
-	words
-Date: Wed, 15 May 2013 20:59:47 +0800
-Message-ID: <CAGsJ_4wamqzwLZkUz4h6ex=oVQZhzhw7S6r41wt9tTUoMR=aXw@mail.gmail.com>
-References: <1363592828-6347-1-git-send-email-Barry.Song@csr.com>
+From: "Renault Paris" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?RGlmZmljaWxlIGRlIHJlc2lzdGVyIMOgIGxhIHF1YWxpdGUgZGUgc2VydmljZSBSZW5hdWx0IFJlbnQ=?=
+Date: Thu, 16 May 2013 04:04:10 +0100
+Message-ID: <0.0.6B.BAB.1CE51E2096BE66E.0@mta146.pur3.net>
+Reply-To: Renault Paris <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1363592828-6347-1-git-send-email-Barry.Song-kQvG35nSl+M@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,120 +18,90 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-ping Mark, Ping Grant.
-
-2013/3/18 Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>:
-> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
->
-> currently, spi irq handler only does rx processing and  fetching data from rx
-> fifo when "FRM_END" irq happens. FRM_END indicates one transfer completes. if
-> rx size is less than 256, it works well.
-> but the problem is that spi rx fifo size is only 256 bytes, then if data size
-> of one frame is more than 256, before FRM_END comes, rx fifo will be filled with
-> RXFIFO_OFLOW overflow interrupt, it will make us lose some data due to fifo
-> overflow.
-> Explicitly we need do fetch work from device rx fifo in irq handler not only in
-> "FRM_END" irq but also in "THD_REACH" irq. THD_REACH means rx fifo has come to
-> its threshold and will come to overflow if we don't take data from it in time.
->
-> In this patch, we fix this issue. we take data from rx fifo when either FRM_END
-> or RX_THD_REACH irq comes, we put data into tx fifo when either TX_FIFO_EMPTY
-> or TX_THD_REACH irq comes.
->
-> Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
-> Signed-off-by: Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
-> Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-> ---
->  drivers/spi/spi-sirf.c |   43 +++++++++++++------------------------------
->  1 files changed, 13 insertions(+), 30 deletions(-)
->
-> diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-> index f59d417..d2bd1e5 100644
-> --- a/drivers/spi/spi-sirf.c
-> +++ b/drivers/spi/spi-sirf.c
-> @@ -142,9 +142,6 @@ struct sirfsoc_spi {
->         unsigned int left_tx_cnt;
->         unsigned int left_rx_cnt;
->
-> -       /* tasklet to push tx msg into FIFO */
-> -       struct tasklet_struct tasklet_tx;
-> -
->         int chipselect[0];
->  };
->
-> @@ -236,17 +233,6 @@ static void spi_sirfsoc_tx_word_u32(struct sirfsoc_spi *sspi)
->         sspi->left_tx_cnt--;
->  }
->
-> -static void spi_sirfsoc_tasklet_tx(unsigned long arg)
-> -{
-> -       struct sirfsoc_spi *sspi = (struct sirfsoc_spi *)arg;
-> -
-> -       /* Fill Tx FIFO while there are left words to be transmitted */
-> -       while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS) &
-> -                       SIRFSOC_SPI_FIFO_FULL)) &&
-> -                       sspi->left_tx_cnt)
-> -               sspi->tx_word(sspi);
-> -}
-> -
->  static irqreturn_t spi_sirfsoc_irq(int irq, void *dev_id)
->  {
->         struct sirfsoc_spi *sspi = dev_id;
-> @@ -261,25 +247,25 @@ static irqreturn_t spi_sirfsoc_irq(int irq, void *dev_id)
->                 writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
->         }
->
-> -       if (spi_stat & SIRFSOC_SPI_FRM_END) {
-> +       if (spi_stat & (SIRFSOC_SPI_FRM_END
-> +                       | SIRFSOC_SPI_RXFIFO_THD_REACH))
->                 while (!((readl(sspi->base + SIRFSOC_SPI_RXFIFO_STATUS)
->                                 & SIRFSOC_SPI_FIFO_EMPTY)) &&
->                                 sspi->left_rx_cnt)
->                         sspi->rx_word(sspi);
->
-> -               /* Received all words */
-> -               if ((sspi->left_rx_cnt == 0) && (sspi->left_tx_cnt == 0)) {
-> -                       complete(&sspi->done);
-> -                       writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-> -               }
-> -       }
-> -
-> -       if (spi_stat & SIRFSOC_SPI_RXFIFO_THD_REACH ||
-> -               spi_stat & SIRFSOC_SPI_TXFIFO_THD_REACH ||
-> -               spi_stat & SIRFSOC_SPI_RX_FIFO_FULL ||
-> -               spi_stat & SIRFSOC_SPI_TXFIFO_EMPTY)
-> -               tasklet_schedule(&sspi->tasklet_tx);
-> +       if (spi_stat & (SIRFSOC_SPI_FIFO_EMPTY
-> +                       | SIRFSOC_SPI_TXFIFO_THD_REACH))
-> +               while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS)
-> +                               & SIRFSOC_SPI_FIFO_FULL)) &&
-> +                               sspi->left_tx_cnt)
-> +                       sspi->tx_word(sspi);
->
-> +       /* Received all words */
-> +       if ((sspi->left_rx_cnt == 0) && (sspi->left_tx_cnt == 0)) {
-> +               complete(&sspi->done);
-> +               writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-> +       }
->         return IRQ_HANDLED;
->  }
->
-> @@ -573,9 +559,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
->
->         init_completion(&sspi->done);
->
-> -       tasklet_init(&sspi->tasklet_tx, spi_sirfsoc_tasklet_tx,
-> -                    (unsigned long)sspi);
-> -
->         writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
->         writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
->         writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-> --
-> 1.7.5.4
-
-------------------------------------------------------------------------------
-AlienVault Unified Security Management (USM) platform delivers complete
-security visibility with the essential security capabilities. Easily and
-efficiently configure, manage, and operate all of your security controls
-from a single console and one unified framework. Download a free trial.
-http://p.sf.net/sfu/alienvault_d2d
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTMyODQzMjIwNTM3MTg0JnV0bV9jYW1wYWlnbj0mdXRtX3NvdXJjZT1lbWFpbENhbXBhaWduJnV0
+bV9tZWRpdW09ZW1haWwmdXRtX2NvbnRlbnQ9e35tYWlsVmFyaWF0aW9uSWR+fQoKCgrCoCDCoCDC
+oAoKwqAgKFJlbmF1bHQgUmVudCAtIExvY2F0aW9uIGRlIHbDqWhpY3VsZXMpwqAKCihEaWZmaWNp
+bGUgZGUgcsOpc2lzdGVyIMOgIGxhIHF1YWxpdMOpIGRlIHNlcnZpY2UgUmVuYXVsdCBSZW50KToK
+aHR0cDovL3d3dy5yZW5hdWx0LXJldGFpbC1ncm91cC5mci9yZW5hdWx0LXJlbnQvbG91ZXItdW4t
+dmVoaWN1bGUtcGFydGljdWxpZXIuaHQ/dXRtX2NhbXBhaWduPSZ1dG1fc291cmNlPWVtYWlsQ2Ft
+cGFpZ24mdXRtX21lZGl1bT1lbWFpbCZ1dG1fY29udGVudD17fm1haWxWYXJpYXRpb25JZH59Cm1s
+CgooOTglIGRlIGNsaWVudHMgc2F0aXNmYWl0cyk6Cmh0dHA6Ly93d3cucmVuYXVsdC1yZXRhaWwt
+Z3JvdXAuZnIvcmVuYXVsdC1yZW50L2xvdWVyLXVuLXZlaGljdWxlLXBhcnRpY3VsaWVyLmh0P3V0
+bV9jYW1wYWlnbj0mdXRtX3NvdXJjZT1lbWFpbENhbXBhaWduJnV0bV9tZWRpdW09ZW1haWwmdXRt
+X2NvbnRlbnQ9e35tYWlsVmFyaWF0aW9uSWR+fQptbAoKCk1hZGFtZSwgTW9uc2lldXIsCgpOb3Vz
+IHZvdXMgaW52aXRvbnMgw6AgZMOpY291dnJpciBsZSBjb25jZXB0ICJSZW5hdWx0IFJlbnQiIDoK
+dGFyaWZzIGFkYXB0w6lzLCBmb3JmYWl0cyBzdXItbWVzdXJlICjDoCBsYSBqb3VybsOpZSwgw6Ag
+bGEgc2VtYWluZSwgYXUKbW9pcykuCgpQcm9maXRleiBkZSBjZXR0ZSBvcHBvcnR1bml0w6kgcG91
+ciBwYXJ0aXIgc3VyIGxlcyByb3V0ZXMgYXUgdm9sYW50IGQndW5lCm5vdXZlYXV0w6kgUmVuYXVs
+dCB0ZWwgcXVlIGxhIFpPRSwgQ0FQVFVSLi4uCgpOb3VzIHNlcm9ucyBoZXVyZXV4IGRlIHZvdXMg
+YWNjdWVpbGxpciBkYW5zIGwndW4gZGUgbm9zIMOpdGFibGlzc2VtZW50cy4KClVuIGNhZGVhdSBk
+ZSBiaWVudmVudWUqIHNlcmEgb2ZmZXJ0IGF1eCBub3V2ZWF1eCBjbGllbnRzIGF2ZWMgbGUgY29k
+ZSA6ClBBUkEwMS4KKENsaW8gLSA0NMKsL2pvdXIpOgpodHRwOi8vd3d3LnJlbmF1bHQtcmV0YWls
+LWdyb3VwLmZyL3JlbmF1bHQtcmVudC9sb3Vlci11bi12ZWhpY3VsZS1wYXJ0aWN1bGllci5odD91
+dG1fY2FtcGFpZ249JnV0bV9zb3VyY2U9ZW1haWxDYW1wYWlnbiZ1dG1fbWVkaXVtPWVtYWlsJnV0
+bV9jb250ZW50PXt+bWFpbFZhcmlhdGlvbklkfn0KbWwKCihWw6loaWN1bGUgcGFydGljdWxpZXIp
+OgpodHRwOi8vd3d3LnJlbmF1bHQtcmV0YWlsLWdyb3VwLmZyL3JlbmF1bHQtcmVudC9sb3Vlci11
+bi12ZWhpY3VsZS1wYXJ0aWN1bGllci5odD91dG1fY2FtcGFpZ249JnV0bV9zb3VyY2U9ZW1haWxD
+YW1wYWlnbiZ1dG1fbWVkaXVtPWVtYWlsJnV0bV9jb250ZW50PXt+bWFpbFZhcmlhdGlvbklkfn0K
+bWwKwqDCoAoKKFbDqWhpY3VsZSB1dGlsaXRhaXJlKToKaHR0cDovL3d3dy5yZW5hdWx0LXJldGFp
+bC1ncm91cC5mci9yZW5hdWx0LXJlbnQvbG91ZXItdW4tdmVoaWN1bGUtdXRpbGl0YWlyZS5odG0/
+dXRtX2NhbXBhaWduPSZ1dG1fc291cmNlPWVtYWlsQ2FtcGFpZ24mdXRtX21lZGl1bT1lbWFpbCZ1
+dG1fY29udGVudD17fm1haWxWYXJpYXRpb25JZH59CmwKCgpCw6luw6lmaWNpZXogZCdhdmFudGFn
+ZXMgTW9iaWxpdMOpCgooQ2FydGUgUmVudCArKToKaHR0cDovL3d3dy5yZW5hdWx0LXJldGFpbC1n
+cm91cC5mci9yZW5hdWx0LXJlbnQvbG91ZXItdW4tdmVoaWN1bGUtcGFydGljdWxpZXIuaHQ/dXRt
+X2NhbXBhaWduPSZ1dG1fc291cmNlPWVtYWlsQ2FtcGFpZ24mdXRtX21lZGl1bT1lbWFpbCZ1dG1f
+Y29udGVudD17fm1haWxWYXJpYXRpb25JZH59Cm1sCmF2ZWMgbGEgY2FydGUgUkVOVCsKCihHYW1t
+ZSBSZW5hdWx0IFJlbnQpOgpodHRwOi8vd3d3LnJlbmF1bHQtcmV0YWlsLWdyb3VwLmZyL3JlbmF1
+bHQtcmVudC9sb3Vlci11bi12ZWhpY3VsZS1wYXJ0aWN1bGllci5odD91dG1fY2FtcGFpZ249JnV0
+bV9zb3VyY2U9ZW1haWxDYW1wYWlnbiZ1dG1fbWVkaXVtPWVtYWlsJnV0bV9jb250ZW50PXt+bWFp
+bFZhcmlhdGlvbklkfn0KbWwKCgpQcml4IHRyYW5zcGFyZW50cwpGb3JmYWl0cyBhZGFwdMOpcyDD
+oCB2b3MgYmVzb2lucwpWw6loaWN1bGVzIHLDqWNlbnRzCk1pc2UgZW4gbWFpbiBwZXJzb25uYWxp
+c8OpZQoKCsKgICpMZSBjYWRlYXUgZGUgYmllbnZlbnVlIGVzdCBwcm9wb3PDqSBwYXIgbGVzIMOp
+dGFibGlzc2VtZW50cyBSZW5hdWx0ClJldGFpbCBHcm91cCBJbGUgZGUgRnJhbmNlIDogUGFyaXMg
+Q291cmNlbGxlcywgUGFyaXMgUmVwdWJsaXF1ZSwgUGFyaXMgU3QKSmFjcXVlcywgUGFyaXMgR3Jl
+bmVsbGUsIE1hbnRlcywgU3QgUXVlbnRpbiBlbiBZdmVsaW5lcywgQnVjLCBWZXJzYWlsbGVzLApC
+b3Vsb2duZSwgQ291cmJldm9pZSwgTW9udHJldWlsLCBQYW50aW4sIEZyZXNuZXMsIEFyZ2VudGV1
+aWwuIERhbnMgbGEgbGltaXRlCmRlcyBzdG9ja3MgZGlzcG9uaWJsZXMuICAoICkKCihSZW5hdWx0
+IFJldGFpbCBHcm91cClSZW5hdWx0IFJlbnQgUGFyaXMKd3d3LnJlbmF1bHRwYXJpcy5mciAoUmVu
+YXVsdCkKKDEpIEwnb3JnYW5pc21lIE1heGlwaG9uZSBhIG1lbsOpIHVuZSBlbnF1w6p0ZSBxdWFs
+aXTDqSBkdSAwNS8xMS8yMDEyIGF1CjE3LzEyLzIwMTIgYXVwcsOocyBkJ3VuIMOpY2hhbnRpbGxv
+biBkZSAxIDk3MSBjbGllbnRzLiA5OCwyICUgZGVzIDEgOTcxCmNsaWVudHMgYXlhbnQgcsOpcG9u
+ZHUgw6AgY2V0dGUgZW5xdcOqdGUgc2Ugc29udCBkw6ljbGFyw6lzIHNhdGlzZmFpdHMKYXByw6hz
+IGF2b2lyIHLDqXBvbmR1IMOgIGxhIHF1ZXN0aW9uIHN1aXZhbnRlIDogIkdsb2JhbGVtZW50LCBj
+b21tZW50Cmp1Z2V6LXZvdXMgdm90cmUgY29uY2Vzc2lvbiBSZW5hdWx0IHN1ciBsYSBmYcOnb24g
+ZG9udCBzJ2VzdCBkw6lyb3Vsw6llIGxhCmxvY2F0aW9uIGRlIHZvdHJlIHbDqWhpY3VsZSA/Igoo
+MikgVGFyaWYgY29uc2VpbGzDqSBhdSAxMC8xMi8yMDEyLCBmb3JmYWl0IGpvdXIgdmFsYWJsZSAy
+NCBoIG5vbiBjdW11bGFibGUKcG91ciAxMDAga20sIGhvcnMgdGFyaWYgaGF1dGUgc2Fpc29uIC4g
+QXNzdXJhbmNlcyBDRFcrUEFJIGluY2x1c2VzCgoKCkNldHRlIG9mZnJlIHZvdXMgZXN0IHByb3Bv
+c8OpZSBhZmluIHF1ZSB2b3VzIHB1aXNzaWV6IGLDqW7DqWZpY2llciBkZSBib25zIHBsYW5zCnRv
+dXRlIGwnYW5uw6llIHF1ZSBjZSBzb2l0IHBvdXIgZGVzIHLDqWR1Y3Rpb25zLCBkZXMgc29sZGVz
+LCBkZXMgdmVudGVzIHByaXbDqWVzLApub3VzIHZvdXMgdGllbmRyb25zIGluZm9ybcOpcyBlbiBw
+cmlvcml0w6kuCgpOb3Mgb2ZmcmVzIGRlIGJvbnMgcGxhbnMsIHNob3BwaW5nLCB2b3lhZ2VzLCBz
+ZXJ2aWNlcywgc29pbnMgZGUgbGEgcGVyc29ubmUKcGFybWkgZGVzIGNlbnRhaW5lcyBkJ29mZnJl
+cyBzb250IMOgIHZvdHJlIGRpc3Bvc2l0aW9uLCBhbG9ycyBwcm9maXRleiBlbi4KCkLDqW7DqWZp
+Y2lleiDDqWdhbGVtZW50IGQnaW5mb3JtYXRpb25zIHN1ciBsZXMgamV1eCBjb25jb3VycywgbGVz
+IHNlcnZpY2VzIGTDqWRpw6lzCmV0IGxlIHRvdXQgw6AgZGV1eCBwYXMgZGUgY2hleiB2b3VzLgoK
+Q2V0dGUgbmV3c2xldHRlciBlc3QgYWNjZXNzaWJsZSDDqWdhbGVtZW50IHN1ciB2b3RyZSBtb2Jp
+bGUsIHZvdXMgbidhdmV6IHF1J8OgCmNsaXF1ZXIgZGVzc3VzIHBvdXIgYsOpbsOpZmljaWVyIGR1
+IHByb2dyYW1tZSBkZSB2b3RyZSBjaG9peC4KCkFmaW4gZGUgcmVzcGVjdGVyIGxlcyBkaXNwb3Np
+dGlvbnMgbMOpZ2FsZXMgY29uY2VybmFudCBsZXMgY291cnJpZXJzCsOpbGVjdHJvbmlxdWVzLgoK
+Vm91cyBkaXNwb3NleiBkJ3VuIGRyb2l0IGQnYWNjw6lzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJl
+Y3RpZmljYXRpb24gZXQgCmRlIHN1cHByZXNzaW9uIGRlcyBkb25uw6llcyBxdWkgdm91cyBjb25j
+ZXJuZW50IChhcnRpY2xlcyAzOCBldCBzdWl2YW50cyBkZSBsYQpsb2kgZHUgNiBqYW52aWVyIDE5
+NzggcmVsYXRpdmUgw6AgbCdpbmZvcm1hdGlxdWUsIGF1eCBmaWNoaWVycyBldCAKYXV4IGxpYmVy
+dMOpcykuCgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9w
+dGluY2FrZS5jb20vX2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxMzI4NDMyMjA1MzcxODQK
+CgoKCgoKe35BSjg0NjQxODY2MjUxMzI4NDMyMjA1MzcxODR+fQotLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KQWxpZW5WYXVsdCBVbmlmaWVkIFNlY3VyaXR5IE1hbmFnZW1lbnQgKFVTTSkgcGxhdGZvcm0g
+ZGVsaXZlcnMgY29tcGxldGUKc2VjdXJpdHkgdmlzaWJpbGl0eSB3aXRoIHRoZSBlc3NlbnRpYWwg
+c2VjdXJpdHkgY2FwYWJpbGl0aWVzLiBFYXNpbHkgYW5kCmVmZmljaWVudGx5IGNvbmZpZ3VyZSwg
+bWFuYWdlLCBhbmQgb3BlcmF0ZSBhbGwgb2YgeW91ciBzZWN1cml0eSBjb250cm9scwpmcm9tIGEg
+c2luZ2xlIGNvbnNvbGUgYW5kIG9uZSB1bmlmaWVkIGZyYW1ld29yay4gRG93bmxvYWQgYSBmcmVl
+IHRyaWFsLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FsaWVudmF1bHRfZDJkCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
+bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

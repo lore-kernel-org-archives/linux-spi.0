@@ -1,81 +1,57 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: sirf: fix the issue while transferring more than
- 256 words
-Date: Thu, 16 May 2013 18:23:58 +0100
-Message-ID: <20130516172358.GA1627@sirena.org.uk>
-References: <1363592828-6347-1-git-send-email-Barry.Song@csr.com>
- <CAGsJ_4wamqzwLZkUz4h6ex=oVQZhzhw7S6r41wt9tTUoMR=aXw@mail.gmail.com>
+Subject: Re: [PATCH] spi: coldfire-qspi: fix error return code in
+ mcfqspi_probe()
+Date: Thu, 16 May 2013 19:22:11 +0100
+Message-ID: <20130516182211.GH1627@sirena.org.uk>
+References: <CAPgLHd93xOKX3ot+RUP5FXM_Nz6xZD-ODU_=ZEebBEJm=OM76g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7079180506282066074=="
-Cc: Qipan Li <Qipan.Li@csr.com>, workgroup.linux@csr.com,
- Zhiwu Song <Zhiwu.Song@csr.com>, grant.likely@secretlab.ca,
- Barry Song <Baohua.Song@csr.com>, spi-devel-general@lists.sourceforge.net,
- linux-arm-kernel@lists.infradead.org
-To: Barry Song <21cnbao@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <CAGsJ_4wamqzwLZkUz4h6ex=oVQZhzhw7S6r41wt9tTUoMR=aXw@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="PW0Eas8rCkcu1VkF"
+Cc: grant.likely@linaro.org, yongjun_wei@trendmicro.com.cn,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Wei Yongjun <weiyj.lk@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAPgLHd93xOKX3ot+RUP5FXM_Nz6xZD-ODU_=ZEebBEJm=OM76g@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---===============7079180506282066074==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Nq2Wo0NMKNjxTN9z"
-Content-Disposition: inline
-
-
---Nq2Wo0NMKNjxTN9z
+--PW0Eas8rCkcu1VkF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 15, 2013 at 08:59:47PM +0800, Barry Song wrote:
-> ping Mark, Ping Grant.
+On Thu, May 16, 2013 at 01:11:32PM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+>=20
+> If pdev->dev.platform_data is not set, mcfqspi_probe() will return 0
+> and release all the resources, in this case, we should return a error
+> code instead of 0.
 
-Don't top post, don't send contentless pings.  At a guess you didn't CC
-me...
+Applied, thanks.
 
---Nq2Wo0NMKNjxTN9z
+--PW0Eas8rCkcu1VkF
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.19 (GNU/Linux)
 
-iQIcBAEBAgAGBQJRlRYrAAoJELSic+t+oim93yAQAIUez6vHcem3kS5U6vji//me
-XXbrhYH/gC5POlWmYH9eFOv2MsRYrM3oOk+ptn49HdTsdhVjz/o1ZT6+QS0kH8Mw
-Wls2ajwegQp/ZZPIB45dm1IdMER0wpIs3IEeSym6W+HlqpWUuSh/jwWpcrkd2Hap
-w9Uh9NuAE3joc9+1h9JSSuBVp3OyCm5adrLIcugP9ZF+R0hU0CVQ2W8zNE9QrK08
-P8PeMNFSsIflXdIq1g7O6C3GJB8MB2qY3WMoIuyLJ6Q9mBMpBm1ZxaTxJKvkdj2c
-NEFvQG+PPjSmdlXjylIGCtwfDUShGGJ/iRnOSBFX4CZ/AykE5quKJU9heH/jvAnR
-FXy+h9Q4HquxHY+4rrwg2mnxTduC5Fed6durNQV4z6Ny52ffnpJlHWTxWaBBYEAn
-WPrjB3w5UREFxp4stPejyN+nAfSzA+qTu8t4zJzwKmkx0CSF9aYD/vKIjXfZTvca
-DTjgwcj/hq53smzbntgxb25TfcMlFgdpbH0Y3gyMGxEBFf/ANszI+WtnDvracPKz
-sa0XujXgrfqlDTb2dtQ5pUWcgaQUHsFSDjq4o5ly22oetzboSU+62Ji6nk9j4BMR
-NKKWulhhwLyNGJZ9q34KeIKZHO2xyNZnAy/62eUO92WM3GQ3v56e/KfS5kkq6lzQ
-YgXKnNjQuXkwFTjyq+Q0
-=57d/
+iQIcBAEBAgAGBQJRlSPQAAoJELSic+t+oim9fGsP/Rd7ghUlvuqvcr2NLx/QXIab
+631Qg5+zkCD40lehZEG9SZCsooTm5ca0FcuLa9yP8j4fzkGAnvLAvZ426I70W9oj
+CLYnB/NvzGt3EGuPCA9L5T7tAIM+aAuSQTWJ8skQ5XlbZOVvMpeeWTemng1VjcjW
+QN4OJ/t+JMZpPHZfIByqHLVAg4Ob1JZ03TbM79HgqFK/118unEEMN8FCAOjHDnBS
+bzjHN1fMtmz83OPzsew60Jm/+tjKda1GsIrxS+kiRbVQuCiIf/2RPzrSX4a+VIfQ
+R3oSDpHOR/4TCKFqT/OvYHvPwiXoCbN6R3KQtNr/JzwyP04+T5HStMuxNyAY+SX9
+qmAtBKjO9ABqpyYghMgpH3rXF5Vdy6KCISttkx2bRMyBhvZVpBdqD+GMcWLJNmFK
+cadSYPNuM+ir5sBxqLjHRWFTr42N9r7U8uICGcSHhnMBaUtVRua/puBUZVRXqbND
+nyFNFAcy8LMHRpKImWVQt4nMehHSxTICeW3hKQ2oWHJlfQ29BB8Se19CK3be6v15
+P5myQIVlnXSa6CAu1oySuYjz7dvO3Jte/YvYXrGfTa3cDhhXCrsgnpV9NYC0GTil
+XH920pjueTjbAbVSmBHxogwcrYFF601Q8NYpNzZmiJcSlEl2v5AbWg1yRhaCRCpp
+2HnhSAVI+r7jeD4QcIZD
+=mSnn
 -----END PGP SIGNATURE-----
 
---Nq2Wo0NMKNjxTN9z--
-
-
---===============7079180506282066074==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============7079180506282066074==--
+--PW0Eas8rCkcu1VkF--

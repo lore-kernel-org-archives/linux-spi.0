@@ -1,48 +1,81 @@
-From: Wolfram Sang <wsa@the-dreams.de>
-Subject: Re: [PATCH 00/33] devm improvement series, part 1, take 2
-Date: Thu, 16 May 2013 18:13:58 +0200
-Message-ID: <20130516161355.GA3032@katana>
-References: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
- <1368705452.15764.217.camel@sauron.fi.intel.com>
- <CAKohpokUy7QfvKkzGH025Zs5VkUhr8zRLeo3caG3LAnLfptzww@mail.gmail.com>
- <1368709862.15764.224.camel@sauron.fi.intel.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: sirf: fix the issue while transferring more than
+ 256 words
+Date: Thu, 16 May 2013 18:23:58 +0100
+Message-ID: <20130516172358.GA1627@sirena.org.uk>
+References: <1363592828-6347-1-git-send-email-Barry.Song@csr.com>
+ <CAGsJ_4wamqzwLZkUz4h6ex=oVQZhzhw7S6r41wt9tTUoMR=aXw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-        linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-        alsa-devel@alsa-project.org, linux-usb@vger.kernel.org,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Matt Mackall <mpm@selenic.com>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Jaroslav Kysela <perex@perex.cz>,
-        linux-ide@vger.kernel.org, Wim Van Sebroeck <wim@iguana.be>,
-        netdev@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-i2c@vger.kernel.org, Evgeniy Polyakov <zbr@ioremap.net>,
-        Wan ZongShun <mcuos.com@gmail.com>, ac100@lists.launchpad.net,
-        devel@driverdev.osuosl.org, Kukjin Kim <kgene.kim@samsung.com>,
-        Russell King <linux@arm.linux.org.uk>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Florian Tobias Sc
-To: Artem Bityutskiy <dedekind1@gmail.com>
-Return-path: <linux-mips-bounce@linux-mips.org>
-Content-Disposition: inline
-In-Reply-To: <1368709862.15764.224.camel@sauron.fi.intel.com>
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-List-help: <mailto:ecartis@linux-mips.org?Subject=help>
-List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
-List-software: Ecartis version 1.0.0
-List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
-List-owner: <mailto:ralf@linux-mips.org>
-List-post: <mailto:linux-mips@linux-mips.org>
-List-archive: <http://www.linux-mips.org/archives/linux-mips/>
+Content-Type: multipart/mixed; boundary="===============7079180506282066074=="
+Cc: Qipan Li <Qipan.Li@csr.com>, workgroup.linux@csr.com,
+ Zhiwu Song <Zhiwu.Song@csr.com>, grant.likely@secretlab.ca,
+ Barry Song <Baohua.Song@csr.com>, spi-devel-general@lists.sourceforge.net,
+ linux-arm-kernel@lists.infradead.org
+To: Barry Song <21cnbao@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <CAGsJ_4wamqzwLZkUz4h6ex=oVQZhzhw7S6r41wt9tTUoMR=aXw@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 
-> I need a defconfig which would have this driver enabled. 
+--===============7079180506282066074==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Nq2Wo0NMKNjxTN9z"
+Content-Disposition: inline
 
-My wish would be a minimal config. Right now, I try to build the driver
-with the current config and when that fails I grep through the
-(uncompressed) defconfigs for the symbol needed. Gives me 45/57 success
-rate on this series. Not perfect, but the best I could come up with
-without writing a .config-generator myself.
+
+--Nq2Wo0NMKNjxTN9z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, May 15, 2013 at 08:59:47PM +0800, Barry Song wrote:
+> ping Mark, Ping Grant.
+
+Don't top post, don't send contentless pings.  At a guess you didn't CC
+me...
+
+--Nq2Wo0NMKNjxTN9z
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRlRYrAAoJELSic+t+oim93yAQAIUez6vHcem3kS5U6vji//me
+XXbrhYH/gC5POlWmYH9eFOv2MsRYrM3oOk+ptn49HdTsdhVjz/o1ZT6+QS0kH8Mw
+Wls2ajwegQp/ZZPIB45dm1IdMER0wpIs3IEeSym6W+HlqpWUuSh/jwWpcrkd2Hap
+w9Uh9NuAE3joc9+1h9JSSuBVp3OyCm5adrLIcugP9ZF+R0hU0CVQ2W8zNE9QrK08
+P8PeMNFSsIflXdIq1g7O6C3GJB8MB2qY3WMoIuyLJ6Q9mBMpBm1ZxaTxJKvkdj2c
+NEFvQG+PPjSmdlXjylIGCtwfDUShGGJ/iRnOSBFX4CZ/AykE5quKJU9heH/jvAnR
+FXy+h9Q4HquxHY+4rrwg2mnxTduC5Fed6durNQV4z6Ny52ffnpJlHWTxWaBBYEAn
+WPrjB3w5UREFxp4stPejyN+nAfSzA+qTu8t4zJzwKmkx0CSF9aYD/vKIjXfZTvca
+DTjgwcj/hq53smzbntgxb25TfcMlFgdpbH0Y3gyMGxEBFf/ANszI+WtnDvracPKz
+sa0XujXgrfqlDTb2dtQ5pUWcgaQUHsFSDjq4o5ly22oetzboSU+62Ji6nk9j4BMR
+NKKWulhhwLyNGJZ9q34KeIKZHO2xyNZnAy/62eUO92WM3GQ3v56e/KfS5kkq6lzQ
+YgXKnNjQuXkwFTjyq+Q0
+=57d/
+-----END PGP SIGNATURE-----
+
+--Nq2Wo0NMKNjxTN9z--
+
+
+--===============7079180506282066074==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============7079180506282066074==--

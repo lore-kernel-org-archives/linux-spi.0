@@ -1,13 +1,19 @@
-From: "Quelle Energie" <contact-ITtWA3W4OX1QFI55V6+gNQ@public.gmane.org>
-Subject: =?UTF-8?Q?Comment_r=C3=A9duire_vos_factures_de_chauffage?=
-Date: Thu, 16 May 2013 10:33:10 +0000 (CET)
-Message-ID: <130516103310.181792086000006088@fmo41.com>
+From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Subject: [PATCH 17/33] drivers/spi: don't check resource with
+	devm_ioremap_resource
+Date: Thu, 16 May 2013 13:15:45 +0200
+Message-ID: <1368702961-4325-18-git-send-email-wsa@the-dreams.de>
+References: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1368702961-4325-1-git-send-email-wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,72 +24,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKCgoKCgoKCgpEw6ljb3V2cmV6IGdyYXR1aXRlbWVudCBjb21tZW50IHLDqWR1aXJlIHZvcyBm
-YWN0dXJlcyBkZSBjaGF1ZmZhZ2UKCgoKCgoKCgpRdWVsbGVFbmVyZ2llLmZyCkluZm9ybWF0aW9u
-cyBDaGF1ZmZhZ2UKCgogKGh0dHA6Ly9mbW80MS5jb20vdXZ6dmlldmpnMXN0ZHh3cGhkL2luZGV4
-MC5odG1sKQoKCgoKCgoKCgoKCgoKCgoKQ29tbWVudCByw6lkdWlyZSB2b3MgZmFjdHVyZXMgZGUg
-Y2hhdWZmYWdlID8gKGh0dHA6Ly9mbW80MS5jb20vZWF6YTBlMWFnbXRiMGZ6cDNzL2luZGV4MS5o
-dG1sKQoKCgoKCgoKCgoKCiAoaHR0cDovL2ZtbzQxLmNvbS9ra3pra2Vhemd2a3Rlam4zaWwvaW5k
-ZXgyLmh0bWwpCgoKClF1ZWwgc3lzdMOobWUgZGUgY2hhdWZmYWdlIGVzdCBhZGFwdMOpIMOgIHZv
-dHJlIG1haXNvbiA/IFF1ZWxsZSBFbmVyZ2llIHZvdXMgcHJvcG9zZSBkJ2VmZmVjdHVlciB1biBi
-aWxhbiBlbmVyZ8OpdGlxdWUgZ3JhdHVpdCBkZSB2b3RyZSBtYWlzb24gcG91ciB2b3VzIGluZGlx
-dWVyIGNvbW1lbnQgcsOpZHVpcmUgdm9zIGZhY3R1cmVzIGRlIGNoYXVmZmFnZSBlbiBvcHRhbnQg
-cG91ciB1bmUgc29sdXRpb24gcGx1cyDDqWNvbm9taXF1ZSBldCBwbHVzIMOpY29sb2dpcXVlLgoK
-CgoKCkNhbGN1bGVyIHZvcyDDqWNvbm9taWVzIChodHRwOi8vZm1vNDEuY29tL3ZpemlmZWJiZ2w0
-YndvNDNheS9pbmRleDMuaHRtbCkKCgoKCgoKCgogCgoKCgoKCgoKCgoKUEFDIEfDqW90aGVybWlx
-dWUgKGh0dHA6Ly9mbW80MS5jb20vMms1bWswMjQxZ2V0bHNucmpzL2luZGV4NC5odG1sKQogClBv
-w6psZSDDoCBCb2lzIChodHRwOi8vZm1vNDEuY29tL3RpNXpmMGh0MWh3YjJ5NHJxZC9pbmRleDUu
-aHRtbCkKIApDaGF1ZGnDqHJlIEJvaXMgKGh0dHA6Ly9mbW80MS5jb20vMHY1cGkweG8xbmR0dnR3
-aW95L2luZGV4Ni5odG1sKQoKCgoKCgoKCiAoaHR0cDovL2ZtbzQxLmNvbS9iYTV3MDB1MzEyMGJu
-YnppZ2wvaW5kZXg3Lmh0bWwpCiAKKGh0dHA6Ly9mbW80MS5jb20veXZibmh3ZXFnZnF0b3V3czFk
-L2luZGV4OC5odG1sKQogCihodHRwOi8vZm1vNDEuY29tL2RhYjUyd2NpZ3BjYmZrenNmcy9pbmRl
-eDkuaHRtbCkKCgoKCgoKCgpMYSBQQUMgKFBvbXBlIMOgIENoYWxldXIpIGfDqW90aGVybWlxdWUg
-ZXN0IGZhaXRlIHBvdXIgbGVzIGdyYW5kZSBzdXJmYWNlcyBldCBwZXV0IHZvdXMgZmFpcmUgcsOp
-YWxpc2VyIGp1c3F1J8OgIDgwJSBkJ8OpY29ub21pZSBzdXIgdm9zIGZhY3R1cmVzLgpDcsOpZGl0
-IGQnSW1ww7R0IDogMjYlCiAKVW4gcG/DqmxlIMOgIGJvaXMgKGdyYW51bMOpcyBvdSBiw7tjaGVz
-KSBzJ2luc3RhbGxlIGZhY2lsZW1lbnQgZXQgdm91cyBwZXJtZXQgZGUgcHJvZml0ZXIgZCd1biBj
-b21idXN0aWJsZSB0csOocyBib24gbWFyY2jDqSA6IGxlIGJvaXMuIENyw6lkaXQgZCdJbXDDtHQg
-OiAxNSUtMjYlCiAKTGEgY2hhdWRpw6hyZSBib2lzIGVzdCB0csOocyBlZmZpY2FjZSBwb3VyIGNo
-YXVmZmVyIGxlcyBncmFuZHMgZXNwYWNlcyBldCBjZWxhIGRlIG1hbmnDqHJlIMOpY29ub21pcXVl
-IGV0IMOpY29sb2dpcXVlLiBDcsOpZGl0IGQnSW1ww7R0IDogMTUlLTI2JQoKCgoKCkRldmlzIEdy
-YXR1aXQgKGh0dHA6Ly9mbW80MS5jb20vYzRob2sxbzRhenZvaGRsMXNsL2luZGV4MTAuaHRtbCkK
-CgoKIAoKCgpEZXZpcyBHcmF0dWl0IChodHRwOi8vZm1vNDEuY29tL3hwc2R0enpreTB2YTRsYmts
-bC9pbmRleDExLmh0bWwpCgoKCiAKCgoKRGV2aXMgR3JhdHVpdCAoaHR0cDovL2ZtbzQxLmNvbS9u
-cTBoajUwMjRvcG1vcGZ5anEvaW5kZXgxMi5odG1sKQoKCgoKCgoKCgoKCgoKClBBQyBBw6lyb3Ro
-ZXJtaXF1ZSAoaHR0cDovL2ZtbzQxLmNvbS80ZDV1NTJobGZocGMyNXFycXEvaW5kZXgxMy5odG1s
-KQogCkNoYXVkacOocmUgR2F6IChodHRwOi8vZm1vNDEuY29tL210amN6ZHluY2RhMHpybWV5ZC9p
-bmRleDE0Lmh0bWwpCiAKU29sYWlyZSBDb21iaW7DqSAoaHR0cDovL2ZtbzQxLmNvbS9wZmV0eTNw
-dnd1YW5pbWF4ZGQvaW5kZXgxNS5odG1sKQoKCgoKCgoKCiAoaHR0cDovL2ZtbzQxLmNvbS9uaGpp
-MWRiMTFkb2J6MzRlanEvaW5kZXgxNi5odG1sKQogCihodHRwOi8vZm1vNDEuY29tLzR2ZWtoMzNn
-bnVvNGlhZXhxcS9pbmRleDE3Lmh0bWwpCiAKKGh0dHA6Ly9mbW80MS5jb20vNW5pMGh4NGd1Ympw
-bWgwMWxzL2luZGV4MTguaHRtbCkKCgoKCgoKCgpMZXMgcG9tcGVzIMOgIGNoYWxldXIgYWlyLWFp
-ciAocsOpdmVyc2libGUpIGV0IGFpci1lYXUgdm91cyBwZXJtZXR0ZW50IGRlIGNvbnNvbW1lciAz
-IGZvaXMgbW9pbnMgZXQgcmVzdGVudCBzaW1wbGUgw6AgZmFpcmUgaW5zdGFsbGVyLiBDcsOpZGl0
-IGQnSW1ww7R0IDogMCUtMTUlCiAKTGUgY2hhdWRpw6hyZSBjb25kZW5zYXRpb24gZ2F6IChvdSBj
-b25kZW5zYXRpb24gZmlvdWwpIHZvdXMgcGVybWV0IGQnw6ljb25vbWlzZXIgMzAlIHN1ciB2b3Mg
-ZmFjdHVyZXMgZGUgY2hhdWZmYWdlLiBDcsOpZGl0IGQnSW1ww7R0IDogMTAlCiAKQXZlYyBsZSBz
-eXN0w6htZSBzb2xhaXJlIGNvbWJpbsOpLCBwcm9maXRleiBkJ3VuZSDDqW5lcmdpZSBncmF0dWl0
-ZSAobGUgc29sZWlsKSBwb3VyIGxlIGNoYXVmZmFnZSBldCBsJ2VhdSBjaGF1ZGUgc2FuaXRhaXJl
-LiBDcsOpZGl0IGQnSW1ww7R0IDogMzIlCgoKCgoKRGV2aXMgR3JhdHVpdCAoaHR0cDovL2ZtbzQx
-LmNvbS9ybXlmMW5qMWp3anhraXNrc3MvaW5kZXgxOS5odG1sKQoKCgogCgoKCkRldmlzIEdyYXR1
-aXQgKGh0dHA6Ly9mbW80MS5jb20vaXd4eDNscXl4cHpmeHFkZHNkL2luZGV4MjAuaHRtbCkKCgoK
-IAoKCgpEZXZpcyBHcmF0dWl0IChodHRwOi8vZm1vNDEuY29tL2FydzJmYW5iejF6NWRndDVsZC9p
-bmRleDIxLmh0bWwpCgoKCgoKCgoKCgoKIAoKwqkgMjAxMyBRdWVsbGUgRW5lcmdpZSAtIFRvdXMg
-ZHJvaXRzIHLDqXNlcnbDqXMgLSB3d3cucXVlbGxlZW5lcmdpZS5mciAoaHR0cDovL2ZtbzQxLmNv
-bS9oa2VjazNzem55dTRycXZ4eWQvaW5kZXgyMi5odG1sKQoKQ29uZmlkZW50aWFsaXTDqSBkZXMg
-ZG9ubsOpZXMgOiBjb25mb3Jtw6ltZW50IMOgIGxhIGxvaSBJbmZvcm1hdGlxdWUgZXQgTGliZXJ0
-w6lzIGR1IDYgamFudmllciAxOTc4LCB2b3VzIGRpc3Bvc2V6IGTCtHVuIGRyb2l0IGTCtGFjY8Oo
-cywgZGUgcmVjdGlmaWNhdGlvbiBldCBkZSBzdXBwcmVzc2lvbiBkZXMgZG9ubsOpZXMgdm91cyBj
-b25jZXJuYW50IHF1ZSB2b3VzIHBvdXZleiBleGVyY2VyIMOgIHRvdXQgbW9tZW50IGVuIGVuIGZh
-aXNhbnQgbGEgZGVtYW5kZSBkaXJlY3RlbWVudCB2aWEgbGEgcnVicmlxdWUgQ29udGFjdCBkdSBT
-aXRlLgoKCgoKCgoKCgoKCgoKCgoKIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxpZW5WYXVsdCBV
-bmlmaWVkIFNlY3VyaXR5IE1hbmFnZW1lbnQgKFVTTSkgcGxhdGZvcm0gZGVsaXZlcnMgY29tcGxl
-dGUKc2VjdXJpdHkgdmlzaWJpbGl0eSB3aXRoIHRoZSBlc3NlbnRpYWwgc2VjdXJpdHkgY2FwYWJp
-bGl0aWVzLiBFYXNpbHkgYW5kCmVmZmljaWVudGx5IGNvbmZpZ3VyZSwgbWFuYWdlLCBhbmQgb3Bl
-cmF0ZSBhbGwgb2YgeW91ciBzZWN1cml0eSBjb250cm9scwpmcm9tIGEgc2luZ2xlIGNvbnNvbGUg
-YW5kIG9uZSB1bmlmaWVkIGZyYW1ld29yay4gRG93bmxvYWQgYSBmcmVlIHRyaWFsLgpodHRwOi8v
-cC5zZi5uZXQvc2Z1L2FsaWVudmF1bHRfZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+devm_ioremap_resource does sanity checks on the given resource. No need to
+duplicate this in the driver.
+
+Signed-off-by: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+---
+ drivers/spi/spi-tegra20-sflash.c |    5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index d65c000..09df8e2 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -489,11 +489,6 @@ static int tegra_sflash_probe(struct platform_device *pdev)
+ 	tegra_sflash_parse_dt(tsd);
+ 
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!r) {
+-		dev_err(&pdev->dev, "No IO memory resource\n");
+-		ret = -ENODEV;
+-		goto exit_free_master;
+-	}
+ 	tsd->base = devm_ioremap_resource(&pdev->dev, r);
+ 	if (IS_ERR(tsd->base)) {
+ 		ret = PTR_ERR(tsd->base);
+-- 
+1.7.10.4
+
+
+------------------------------------------------------------------------------
+AlienVault Unified Security Management (USM) platform delivers complete
+security visibility with the essential security capabilities. Easily and
+efficiently configure, manage, and operate all of your security controls
+from a single console and one unified framework. Download a free trial.
+http://p.sf.net/sfu/alienvault_d2d

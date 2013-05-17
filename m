@@ -1,44 +1,87 @@
-From: "Gomoinscher" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Nouveautés High Tech jusqu'à moins70 pourcent
-Date: Fri, 17 May 2013 07:54:48 +0000 (CET)
-Message-ID: <130517075448.107701652000004988@fmo40.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: sirf: fix the issue while transferring more than
+ 256 words
+Date: Fri, 17 May 2013 12:03:30 +0100
+Message-ID: <20130517110330.GJ1627@sirena.org.uk>
+References: <1363592828-6347-1-git-send-email-Barry.Song@csr.com>
+ <CAGsJ_4wamqzwLZkUz4h6ex=oVQZhzhw7S6r41wt9tTUoMR=aXw@mail.gmail.com>
+ <20130516172358.GA1627@sirena.org.uk>
+ <CAGsJ_4z9=2RYkwntnCD4X-JVsZoYEgzwdWO_uryp3RpbEHu7fA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============4295352428486731395=="
+Cc: Qipan Li <Qipan.Li@csr.com>, workgroup.linux@csr.com,
+ Zhiwu Song <Zhiwu.Song@csr.com>, grant.likely@secretlab.ca,
+ Barry Song <Baohua.Song@csr.com>, spi-devel-general@lists.sourceforge.net,
+ linux-arm-kernel@lists.infradead.org
+To: Barry Song <21cnbao@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <CAGsJ_4z9=2RYkwntnCD4X-JVsZoYEgzwdWO_uryp3RpbEHu7fA@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vZm1vNDAuY29tL3ZkZGlwNWJ6eXk0cjBkeHVhbC9pbmRleDAuaHRtbCkKTGUgTnVt
-w6lybyAxIGRlcyBCb25uZXMgQWZmYWlyZXMsIHZvdXMgb2ZmcmUgZGVzIHByb2R1aXRzIMOpbGVj
-dHJvbmlxdWVzIGRlcyBncmFuZGVzIG1hcnF1ZXMgw6AgUFJJWCBESVNDT1VOVC4KKGh0dHA6Ly9m
-bW80MC5jb20va29ka3M1YWJ5dWttZGxjdWl5L2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQwLmNv
-bS9leWRhdzUxank1dHJ3MGZ6M2QvaW5kZXgyLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3VnZHZx
-NXZheXhzbWUyMXpocy9pbmRleDMuaHRtbCkKKGh0dHA6Ly9mbW80MC5jb20vYnlxd3dqdW9iYjBy
-MjFmdmd5L2luZGV4NC5odG1sKQooaHR0cDovL2ZtbzQwLmNvbS8wZ3FwcWp4M2J6ZG1sYzF2b2wv
-aW5kZXg1Lmh0bWwpCgooaHR0cDovL2ZtbzQwLmNvbS90ZHF6cGpoNGJhd3JuZ3hucXMvaW5kZXg2
-Lmh0bWwpCgooaHR0cDovL2ZtbzQwLmNvbS8yb3Ftc2oydGJqZW12cWNuamQvaW5kZXg3Lmh0bWwp
-CihodHRwOi8vZm1vNDAuY29tL2xkZXI1YXR3eWRycmZyeHh4bC9pbmRleDguaHRtbCkKCihodHRw
-Oi8vZm1vNDAuY29tL3NvZTR5YTMweWVpbW9tY3hjeS9pbmRleDkuaHRtbCkKCihodHRwOi8vZm1v
-NDAuY29tL24wNGg1azJubm9wZWt3YXBheS9pbmRleDEwLmh0bWwpCihodHRwOi8vZm1vNDAuY29t
-LzRjMXVqcWl2MWhwbG1ubWxpeS9pbmRleDExLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2Mzam90
-ZGp0aXp2Ymxvd2Vrby9pbmRleDEyLmh0bWwpCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpBbGllblZh
-dWx0IFVuaWZpZWQgU2VjdXJpdHkgTWFuYWdlbWVudCAoVVNNKSBwbGF0Zm9ybSBkZWxpdmVycyBj
-b21wbGV0ZQpzZWN1cml0eSB2aXNpYmlsaXR5IHdpdGggdGhlIGVzc2VudGlhbCBzZWN1cml0eSBj
-YXBhYmlsaXRpZXMuIEVhc2lseSBhbmQKZWZmaWNpZW50bHkgY29uZmlndXJlLCBtYW5hZ2UsIGFu
-ZCBvcGVyYXRlIGFsbCBvZiB5b3VyIHNlY3VyaXR5IGNvbnRyb2xzCmZyb20gYSBzaW5nbGUgY29u
-c29sZSBhbmQgb25lIHVuaWZpZWQgZnJhbWV3b3JrLiBEb3dubG9hZCBhIGZyZWUgdHJpYWwuCmh0
-dHA6Ly9wLnNmLm5ldC9zZnUvYWxpZW52YXVsdF9kMmQKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
-ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+--===============4295352428486731395==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="UlxN1C6awaFNesUv"
+Content-Disposition: inline
+
+
+--UlxN1C6awaFNesUv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, May 17, 2013 at 09:58:24AM +0800, Barry Song wrote:
+> 2013/5/17 Mark Brown <broonie@kernel.org>:
+
+> > Don't top post, don't send contentless pings.  At a guess you didn't CC
+> > me...
+
+> yes. i missed you in CC. sorry for that, Mark. so do you want me to resend it?
+
+Yes, please.
+
+--UlxN1C6awaFNesUv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRlg5/AAoJELSic+t+oim9zgMP/0FFsgPJAK/48ZYKrXfIXzy5
+ez/Y/mqfz1tV0LROA1jE+p9TbtzSVtYLWZCigNulMCrZpyaKIQq2WQLLny+C4oGd
+Dw7AdKCCA4A2esgQ9SDDzb0eJMtWfySNT9ai2XqV3t8ZzWAxDb9LwUcPPXRsEyO9
+jUv7SeYQlv8yveEKhxDM91wQrtyfJGVdLAPERjnI4WM7BPJx+CsG7fONZrUrGD9U
+tk3WOFoDwGpN4m09jY/Ycss9o6UVTv8akL3zsRi+Ku9PqpPeEjL2ub/L4iCa4Lck
+9msN2r+CyHyUSo/XIJw2r4tIxcUt6M21MnjXjUYH1mNIqeoFacXKCtuFuJmT+AcP
+ZWcCJlL02Z0Chp+rthlYHhuaFWchH10kCLqZpR5tnieht+1U3cbHvfLHr0orkpmD
+BrinvcmBWQQFhQpGZqMVBssYbLr1/VUv2TxmlYvSrtLKnAIBGmGO9yWORr0gztNT
+TbzntNJQuWziBcX7gyMx+7y4hagv9QF7+bFrBi7eQttp7soBgpu7GDyx9+KAYH4P
+u3tf6f+tL05RhfvRB0RF88qIlFeVRXaEkLXtnSRRZIzGkUv3LbQf6sS4UJAbdTEg
+4e0kete2EtWDT739R60y4c+BkuPPZLkw2WC53EgQHcseB6imFIN/fJRy+Jqw1Rss
+JkgUsfIyzhhcMF/k4IE8
+=Yiok
+-----END PGP SIGNATURE-----
+
+--UlxN1C6awaFNesUv--
+
+
+--===============4295352428486731395==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============4295352428486731395==--

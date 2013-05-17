@@ -1,47 +1,45 @@
-From: Stephen Warren <swarren@wwwdotorg.org>
-Subject: Re: [PATCH 00/33] devm improvement series, part 1, take 2
-Date: Thu, 16 May 2013 12:29:19 -0600
-Message-ID: <5195257F.3060309@wwwdotorg.org>
-References: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: sirf: fix the issue while transferring more than 256
+	words
+Date: Fri, 17 May 2013 09:58:24 +0800
+Message-ID: <CAGsJ_4z9=2RYkwntnCD4X-JVsZoYEgzwdWO_uryp3RpbEHu7fA@mail.gmail.com>
+References: <1363592828-6347-1-git-send-email-Barry.Song@csr.com>
+	<CAGsJ_4wamqzwLZkUz4h6ex=oVQZhzhw7S6r41wt9tTUoMR=aXw@mail.gmail.com>
+	<20130516172358.GA1627@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
- linux-usb@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Linus Walleij <linus.walleij@linaro.org>, Matt Mackall <mpm@selenic.com>,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Jaroslav Kysela <perex@perex.cz>, linux-ide@vger.kernel.org,
- netdev@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-i2c@vger.kernel.org, Evgeniy Polyakov <zbr@ioremap.net>,
- Wan ZongShun <mcuos.com@gmail.com>, ac100@lists.launchpad.net,
- devel@driverdev.osuosl.org, Kukjin Kim <kgene.kim@samsung.com>,
- Russell King <linux@arm.linux.org.uk>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
- "Rafael J. Wysocki" <rjw@sisk.pl>, cpufreq@vger.kernel.org,
- Eduardo Valentin <eduardo.v
-To: Wolfram Sang <wsa@the-dreams.de>
-Return-path: <devel-bounces@linuxdriverproject.org>
-In-Reply-To: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/devel>,
- <mailto:devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/devel/>
-List-Post: <mailto:devel@linuxdriverproject.org>
-List-Help: <mailto:devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/devel>,
- <mailto:devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: devel-bounces@linuxdriverproject.org
-Sender: "devel" <devel-bounces@linuxdriverproject.org>
+Cc: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, workgroup.linux-kQvG35nSl+M@public.gmane.org,
+	Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130516172358.GA1627-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 05/16/2013 05:15 AM, Wolfram Sang wrote:
-> Lately, I have been experimenting how to improve the devm interface to make
-> writing device drivers easier and less error prone while also getting rid of
-> its subtle issues. I think it has more potential but still needs work and
-> definately conistency, especiall in its usage.
-...
+2013/5/17 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+> On Wed, May 15, 2013 at 08:59:47PM +0800, Barry Song wrote:
+>> ping Mark, Ping Grant.
+>
+> Don't top post, don't send contentless pings.  At a guess you didn't CC
+> me...
 
-The Tegra parts in patches 4, 5, 8, 15, 16, 17, 29 all,
-Acked-by: Stephen Warren <swarren@nvidia.com>
+yes. i missed you in CC. sorry for that, Mark. so do you want me to resend it?
+
+-barry
+
+------------------------------------------------------------------------------
+AlienVault Unified Security Management (USM) platform delivers complete
+security visibility with the essential security capabilities. Easily and
+efficiently configure, manage, and operate all of your security controls
+from a single console and one unified framework. Download a free trial.
+http://p.sf.net/sfu/alienvault_d2d

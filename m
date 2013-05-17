@@ -1,12 +1,12 @@
-From: "Coleccion Full Carlos Gardel" <info2-mf9eSrDaph+ZOkyqavakixL4W9x8LtSr@public.gmane.org>
-Subject: [SPAM] Una Coleccion UNICA En Su Genero
-Date: Thu, 16 May 2013 20:56:37 -0300
-Message-ID: <77f61f630e1c552c60e97ea9edd7b63d@www.ofertasxmail.com>
-Reply-To: info2-QIgLS/ehzBg7lZ9V/NTDHw@public.gmane.org
+From: "Gomoinscher" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Nouveautés High Tech jusqu'à moins70 pourcent
+Date: Fri, 17 May 2013 07:54:48 +0000 (CET)
+Message-ID: <130517075448.107701652000004988@fmo40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,16 +18,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Your email client cannot read this email.
-To view it online, please go here:
-http://www.ofertasxmail.com/display.php?M=4500555&C=fa09df7d833dc045ca7948e5c405bb7e&S=87&L=69&N=85
-
-
-To stop receiving these
-emails:http://www.ofertasxmail.com/unsubscribe.php?M=4500555&C=fa09df7d833dc045ca7948e5c405bb7e&L=69&N=87
-------------------------------------------------------------------------------
-AlienVault Unified Security Management (USM) platform delivers complete
-security visibility with the essential security capabilities. Easily and
-efficiently configure, manage, and operate all of your security controls
-from a single console and one unified framework. Download a free trial.
-http://p.sf.net/sfu/alienvault_d2d
+CihodHRwOi8vZm1vNDAuY29tL3ZkZGlwNWJ6eXk0cjBkeHVhbC9pbmRleDAuaHRtbCkKTGUgTnVt
+w6lybyAxIGRlcyBCb25uZXMgQWZmYWlyZXMsIHZvdXMgb2ZmcmUgZGVzIHByb2R1aXRzIMOpbGVj
+dHJvbmlxdWVzIGRlcyBncmFuZGVzIG1hcnF1ZXMgw6AgUFJJWCBESVNDT1VOVC4KKGh0dHA6Ly9m
+bW80MC5jb20va29ka3M1YWJ5dWttZGxjdWl5L2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQwLmNv
+bS9leWRhdzUxank1dHJ3MGZ6M2QvaW5kZXgyLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3VnZHZx
+NXZheXhzbWUyMXpocy9pbmRleDMuaHRtbCkKKGh0dHA6Ly9mbW80MC5jb20vYnlxd3dqdW9iYjBy
+MjFmdmd5L2luZGV4NC5odG1sKQooaHR0cDovL2ZtbzQwLmNvbS8wZ3FwcWp4M2J6ZG1sYzF2b2wv
+aW5kZXg1Lmh0bWwpCgooaHR0cDovL2ZtbzQwLmNvbS90ZHF6cGpoNGJhd3JuZ3hucXMvaW5kZXg2
+Lmh0bWwpCgooaHR0cDovL2ZtbzQwLmNvbS8yb3Ftc2oydGJqZW12cWNuamQvaW5kZXg3Lmh0bWwp
+CihodHRwOi8vZm1vNDAuY29tL2xkZXI1YXR3eWRycmZyeHh4bC9pbmRleDguaHRtbCkKCihodHRw
+Oi8vZm1vNDAuY29tL3NvZTR5YTMweWVpbW9tY3hjeS9pbmRleDkuaHRtbCkKCihodHRwOi8vZm1v
+NDAuY29tL24wNGg1azJubm9wZWt3YXBheS9pbmRleDEwLmh0bWwpCihodHRwOi8vZm1vNDAuY29t
+LzRjMXVqcWl2MWhwbG1ubWxpeS9pbmRleDExLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2Mzam90
+ZGp0aXp2Ymxvd2Vrby9pbmRleDEyLmh0bWwpCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpBbGllblZh
+dWx0IFVuaWZpZWQgU2VjdXJpdHkgTWFuYWdlbWVudCAoVVNNKSBwbGF0Zm9ybSBkZWxpdmVycyBj
+b21wbGV0ZQpzZWN1cml0eSB2aXNpYmlsaXR5IHdpdGggdGhlIGVzc2VudGlhbCBzZWN1cml0eSBj
+YXBhYmlsaXRpZXMuIEVhc2lseSBhbmQKZWZmaWNpZW50bHkgY29uZmlndXJlLCBtYW5hZ2UsIGFu
+ZCBvcGVyYXRlIGFsbCBvZiB5b3VyIHNlY3VyaXR5IGNvbnRyb2xzCmZyb20gYSBzaW5nbGUgY29u
+c29sZSBhbmQgb25lIHVuaWZpZWQgZnJhbWV3b3JrLiBEb3dubG9hZCBhIGZyZWUgdHJpYWwuCmh0
+dHA6Ly9wLnNmLm5ldC9zZnUvYWxpZW52YXVsdF9kMmQKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

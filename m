@@ -1,10 +1,12 @@
-From: =?GB2312?B?xeDRtQ==?= <il-29drmp5Rtbo@public.gmane.org>
-Subject: =?GB2312?B?ufq8ysDrsLbDs9LXstnX9w==?=
-Date: Sun, 19 May 2013 00:14:05 +0800
-Message-ID: <E1Udjm5-0000h8-PS@sfs-ml-4.v29.ch3.sourceforge.com>
+From: "Disparo Digital" <naoresponder-bx+qqBH26W1JSr/Wt0+DRCcKsSwZJoeGXyfzbpz6HZ8@public.gmane.org>
+Subject: [SPAM] E-mail Marketing com Ips balanceados, rDNS, SPF, Dkim - R$139,
+	00 (Unico cliente por servidor)
+Date: Sat, 18 May 2013 20:46:15 -0300
+Message-ID: <8b93ffd15d234e1eb9bcbc122ef35b74@compraremailmarketing.com.br>
+Reply-To: contato-m8mT22500k7m3cQGBu7GGXAWrOxMfm7/@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="=_NextPart_2rfkindysadvnqw3nerasdf";charset="GB2312"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,49 +19,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a multi-part message in MIME format
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-
-国际贸易离岸业务操作技巧
-
-时间地点：2013年5月25-26日      深圳
-时间地点：2013年8月24-25日      上海 
-时间地点：2013年8月31日-9月1日  深圳
-时间地点：2013年11月23-24日     上海 
-时间地点：2013年11月30日-12月1日深圳
-
-2800 /人（包括资料费、午餐及上下午茶点等）
-公司老总、外贸人员、涉外财离岸贸易操作、国际避税与保税物流务人员,国际货运代理、私营公司老板,个人外贸SOHO一族
-
-咨询电话：020-80560638   0755-61287552  021-51602856  （不需要此类信件请回复电邮至tuixin2013-KN7UnAbNpbg@public.gmane.org退信）
----------------------------------------------------------------------------------
-
-课程详情请参考附件
-
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-AlienVault Unified Security Management (USM) platform delivers complete
-security visibility with the essential security capabilities. Easily and
-efficiently configure, manage, and operate all of your security controls
-from a single console and one unified framework. Download a free trial.
-http://p.sf.net/sfu/alienvault_d2d
---=_NextPart_2rfkindysadvnqw3nerasdf
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---=_NextPart_2rfkindysadvnqw3nerasdf--
+U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
+dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vY29tcHJh
+cmVtYWlsbWFya2V0aW5nLmNvbS5ici9kaXNwbGF5LnBocD9NPTc3NzQ0OTcmQz00YjhlNGE2OTI0
+ZDgzN2VkZDI5ZDY0NjgzNjgyODhhMSZTPTM3Jkw9MzUmTj0xCgoKUGFyYSBwYXJhciBkZSByZWNl
+YmVyIG5vc3NvcwpFbWFpbHM6aHR0cDovL2NvbXByYXJlbWFpbG1hcmtldGluZy5jb20uYnIvdW5z
+dWJzY3JpYmUucGhwP009Nzc3NDQ5NyZDPTRiOGU0YTY5MjRkODM3ZWRkMjlkNjQ2ODM2ODI4OGEx
+Jkw9MzUmTj0zNwoKIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxpZW5WYXVsdCBVbmlmaWVkIFNl
+Y3VyaXR5IE1hbmFnZW1lbnQgKFVTTSkgcGxhdGZvcm0gZGVsaXZlcnMgY29tcGxldGUKc2VjdXJp
+dHkgdmlzaWJpbGl0eSB3aXRoIHRoZSBlc3NlbnRpYWwgc2VjdXJpdHkgY2FwYWJpbGl0aWVzLiBF
+YXNpbHkgYW5kCmVmZmljaWVudGx5IGNvbmZpZ3VyZSwgbWFuYWdlLCBhbmQgb3BlcmF0ZSBhbGwg
+b2YgeW91ciBzZWN1cml0eSBjb250cm9scwpmcm9tIGEgc2luZ2xlIGNvbnNvbGUgYW5kIG9uZSB1
+bmlmaWVkIGZyYW1ld29yay4gRG93bmxvYWQgYSBmcmVlIHRyaWFsLgpodHRwOi8vcC5zZi5uZXQv
+c2Z1L2FsaWVudmF1bHRfZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
+dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

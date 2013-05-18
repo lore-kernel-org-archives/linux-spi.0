@@ -1,13 +1,12 @@
-From: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
-Subject: [PATCH] spi: Move mailing list to vger
-Date: Fri, 17 May 2013 13:14:13 +0100
-Message-ID: <1368792853-10494-1-git-send-email-broonie@opensource.wolfsonmicro.com>
+From: "Visa" <lisa@a.optincake.com>
+Subject: Profitez d'offres exceptionnelles avec Visa
+Date: Sat, 18 May 2013 03:23:19 +0100
+Message-ID: <0.0.CB.EE.1CE536EA9476202.0@mta147.pur3.net>
+Reply-To: Visa <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,34 +18,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Given the spam and other problems with the existing list move to a newly
-created list on vger.
-
-Signed-off-by: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
----
- MAINTAINERS |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3d7782b..d45a7d1 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -7589,7 +7589,7 @@ F:	drivers/clk/spear/
- SPI SUBSYSTEM
- M:	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
- M:	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
--L:	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-+L:	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
- Q:	http://patchwork.kernel.org/project/spi-devel-general/list/
- S:	Maintained
--- 
-1.7.10.4
-
-
-------------------------------------------------------------------------------
-AlienVault Unified Security Management (USM) platform delivers complete
-security visibility with the essential security capabilities. Easily and
-efficiently configure, manage, and operate all of your security controls
-from a single console and one unified framework. Download a free trial.
-http://p.sf.net/sfu/alienvault_d2d
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTMzODYzMjIwNTM3MjE0JnV0bV9jYW1wYWlnbj0mdXRtX3NvdXJjZT1lbWFpbENhbXBhaWduJnV0
+bV9tZWRpdW09ZW1haWwmdXRtX2NvbnRlbnQ9e35tYWlsVmFyaWF0aW9uSWR+fQoKCgoKKER1IDE3
+IG1haSBhdSAxZXIganVpbiwgcHJvZml0ZXogZCdvZmZyZXMgZXhjZXB0aW9ubmVsbGVzIHN1ciB1
+bmUgc8OpbGVjdGlvbgpkZSBncmFuZGVzIG1hcnF1ZXMgZ3LDomNlIMOgIHZvdHJlIGNhcnRlIFZp
+c2EgUHJlbWllci4pOgpodHRwOi8vd3d3LmRwYm9sdncubmV0L2NsaWNrLTU2NzA0NjktMTEzNjkw
+Mzc/dXJsPWh0dHAlM0ElMkYlMkZhZC5kb3VibGVjbGljay5uZSZ1dG1fY2FtcGFpZ249JnV0bV9z
+b3VyY2U9ZW1haWxDYW1wYWlnbiZ1dG1fbWVkaXVtPWVtYWlsJnV0bV9jb250ZW50PXt+bWFpbFZh
+cmlhdGlvbklkfn0KdCUyRmNsayUzQjI3MTk2NDI2NyUzQjk3NzA3Mzk0JTNCZAoKKENsaXF1ZXog
+aWNpIHBvdXIgZMOpY291dnJpciB0b3V0ZXMgbGVzIG9mZnJlcyk6Cmh0dHA6Ly93d3cuamRvcW9j
+eS5jb20vY2xpY2stNTY3MDQ2OS0xMTM2OTAzNz91cmw9aHR0cCUzQSUyRiUyRmFkLmRvdWJsZWNs
+aWNrLm5lJnV0bV9jYW1wYWlnbj0mdXRtX3NvdXJjZT1lbWFpbENhbXBhaWduJnV0bV9tZWRpdW09
+ZW1haWwmdXRtX2NvbnRlbnQ9e35tYWlsVmFyaWF0aW9uSWR+fQp0JTJGY2xrJTNCMjcxOTY0MjY3
+JTNCOTc3MDczOTQlM0JkCgoKTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVh
+dSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgCmTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNv
+bnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncsOiY2Ugw6AKbm91cywgdm91
+cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3Qg
+cHJvZHVpdCBhCmJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIEJlc29pbiBkZSB2b3lh
+Z2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZQp2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29y
+dGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1CmxvbmcgZGUgbCdh
+bm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIg
+bGVzCnByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0
+dG9ucyDDoCBqb3VyCnLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS4gRW52aWUgZGUg
+dm91cyBmYWlyZSB1bmUgYmVhdXTDqSDDoAptb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9uZyBkZSBs
+J2FubsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMKZCfDqXTDqSDDoCBt
+b2luZHJlIGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBi
+dWRnZXRzCnJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5v
+cyBwcm9wb3NpdGlvbnMgcG91ciB2b3VzCnBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21i
+cmV1c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQKcGxhaXNpciDDoCB0b3V0ZSBs
+YSBmYW1pbGxlLiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2Fy
+ZAphZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFu
+dCBtaWV1eCB0b3V0ZQpsJ2FubsOpZS4gQWluc2ksIGdyw6JjZSDDoCBub3VzLCB2b3VzIGFsbGV6
+IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0
+IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gQmVzb2luIGRlCnZveWFnZXIsIGRl
+IHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUg
+bWVpbGxldXIKcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwg
+YWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyCnVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMgcHJv
+cG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cwptZXR0b25zIMOg
+IGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLgoKCgoKCi0tCgpQb3VyIHZv
+dXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0
+X3Jjci5waHA/QUo4NDY0MTg2NjI1MTMzODYzMjIwNTM3MjE0CgoKCgoKCnt+QUo4NDY0MTg2NjI1
+MTMzODYzMjIwNTM3MjE0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFsaWVuVmF1bHQgVW5pZmll
+ZCBTZWN1cml0eSBNYW5hZ2VtZW50IChVU00pIHBsYXRmb3JtIGRlbGl2ZXJzIGNvbXBsZXRlCnNl
+Y3VyaXR5IHZpc2liaWxpdHkgd2l0aCB0aGUgZXNzZW50aWFsIHNlY3VyaXR5IGNhcGFiaWxpdGll
+cy4gRWFzaWx5IGFuZAplZmZpY2llbnRseSBjb25maWd1cmUsIG1hbmFnZSwgYW5kIG9wZXJhdGUg
+YWxsIG9mIHlvdXIgc2VjdXJpdHkgY29udHJvbHMKZnJvbSBhIHNpbmdsZSBjb25zb2xlIGFuZCBv
+bmUgdW5pZmllZCBmcmFtZXdvcmsuIERvd25sb2FkIGEgZnJlZSB0cmlhbC4KaHR0cDovL3Auc2Yu
+bmV0L3NmdS9hbGllbnZhdWx0X2QyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

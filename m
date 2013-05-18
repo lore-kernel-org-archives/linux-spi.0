@@ -1,12 +1,17 @@
-From: "Cartouches et toners" <contact-GE0/2U7jJN5QFI55V6+gNQ@public.gmane.org>
-Subject: =?UTF-8?Q?1_pack_achet=C3=A9=2C_le_2=C3=A8me_=C3=A0_moiti=C3=A9_prix?=
-Date: Sat, 18 May 2013 03:04:24 +0000 (CET)
-Message-ID: <130518030424.196385521600004768@fmo43.com>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH RESEND] spi: sirf: fix the issue while transferring more than
+	256 words
+Date: Sat, 18 May 2013 19:46:06 +0800
+Message-ID: <1368877566-27812-1-git-send-email-Baohua.Song@csr.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Workgroup.Linux-kQvG35nSl+M@public.gmane.org,
+	Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,122 +23,118 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vZm1vNDMuY29tL2doa2cxa2Rqd3lndTBpdm95cS9pbmRleDAuaHRtbCkKKGh0dHA6
-Ly9mbW80My5jb20vb3VreXZrcmF3dTFrZGhrb2RvL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQz
-LmNvbS9xM2tvYmtvenc1aHV3cmVmc2cvaW5kZXgyLmh0bWwpCkNhcnRvdWNoZXMKZCdlbmNyZSBl
-dCB0b25lcnMgKGh0dHA6Ly9mbW80My5jb20vamVrZGFrNGJ3eG1rZW11ZmxqL2luZGV4My5odG1s
-KQooaHR0cDovL2ZtbzQzLmNvbS81MzMyYnR3NGViYXUybmVxdm8vaW5kZXg0Lmh0bWwpCihodHRw
-Oi8vZm1vNDMuY29tL3JlM3hhdHF0ZXo1a2x3dXFrcS9pbmRleDUuaHRtbCkKKGh0dHA6Ly9mbW80
-My5jb20vcGgzdDF0cG9lYWp1bnZ2Y2VqL2luZGV4Ni5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9t
-dTNjdnRzM2VqeGt2ZWtjdWcvaW5kZXg3Lmh0bWwpCihodHRwOi8vZm1vNDMuY29tL2hoczFjNGxx
-d2R5dWYwdjR6cS9pbmRleDguaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vM3VzYmU0bWl3ZWJrbzJr
-NHdvL2luZGV4OS5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS8wa3Q1azRjdnc0ZWtzb2tzb2wvaW5k
-ZXgxMC5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9iM21udGN2bmMyZXkxandtZ2wvaW5kZXgxMS5o
-dG1sKQooaHR0cDovL2ZtbzQzLmNvbS9tY2FjajBzc2hqNTJ2d21jeXEvaW5kZXgxMi5odG1sKQoo
-aHR0cDovL2ZtbzQzLmNvbS9wMGR0NXA1dGxpNXdwbmF1ZHEvaW5kZXgxMy5odG1sKQooaHR0cDov
-L2ZtbzQzLmNvbS9uc3doemEya3lsM3JjNGY1amQvaW5kZXgxNC5odG1sKQooaHR0cDovL2ZtbzQz
-LmNvbS80b3h1eWxpNGFrMzF5enFkcWQvaW5kZXgxNS5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9t
-bXcxMWFsb3NsajVjZTI1eXEvaW5kZXgxNi5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9wbnhiaGxy
-ZjNramZ5dnlkZHEvaW5kZXgxNy5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS96dmJ2aHdlZnJ0b3R0
-dXpzZ3MvaW5kZXgxOC5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS93aHJhMWYxbzBub3pna3Ztb3Mv
-aW5kZXgxOS5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9lZWUzMzNmMGQ1NDR3c3V4b2QvaW5kZXgy
-MC5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS91aWplZmR1ZGljNGJheW5lZ2QvaW5kZXgyMS5odG1s
-KQooaHR0cDovL2ZtbzQzLmNvbS92NHhoa2wwZTNza2Zic3NkamQvaW5kZXgyMi5odG1sKQooaHR0
-cDovL2ZtbzQzLmNvbS9rcHd1dGFod3N2azVxeTA1cWQvaW5kZXgyMy5odG1sKQooaHR0cDovL2Zt
-bzQzLmNvbS9lbDVhcjIxY2Fuc2NndGpyb2QvaW5kZXgyNC5odG1sKQooaHR0cDovL2ZtbzQzLmNv
-bS91ZzB2cTVlcXl0c210YjF5Z2QvaW5kZXgyNS5odG1sKQpUT05FUlMgKGh0dHA6Ly9mbW80My5j
-b20vdmJkaXdwYmlscXR3M3QzdWpkL2luZGV4MjYuaHRtbCkgOgpwcm9mZXNzaW9ubmVscywgZmFp
-dGVzIG5vdXMgY29uZmlhbmNlIGV0IHRlc3RlegoKbGUgY29tcGF0aWJsZSB0csOocyBoYXV0ZSBx
-dWFsaXTDqS4gUGx1cyBkZSA3MDAKcsOpZsOpcmVuY2VzIGVuIChodHRwOi8vZm1vNDMuY29tL2t4
-YWtkMDNyaGF0Mm5icmNxZC9pbmRleDI3Lmh0bWwpCnN0b2NrLgoKTm9ybWVzIGlzbyA5MDAxIC8g
-MTQwMDEgLyBTVE1DIChodHRwOi8vZm1vNDMuY29tL2JkZW5wYWUyeWJ3cjBqeGp0ZC9pbmRleDI4
-Lmh0bWwpCihodHRwOi8vZm1vNDMuY29tLzBxajVvbDFsYXd3MWpvZ3cyZC9pbmRleDI5Lmh0bWwp
-CihodHRwOi8vZm1vNDMuY29tL2Njd29vM2psbG1ubnJxaGExby9pbmRleDMwLmh0bWwpCihodHRw
-Oi8vZm1vNDMuY29tL3gweGRwZDQyaGZuMHVnNTBmby9pbmRleDMxLmh0bWwpClRyb3V2ZXogdm90
-cmUKaW1wcmltYW50ZSAoaHR0cDovL2ZtbzQzLmNvbS8wdXdwZTN4aGRtMDRyZmthMnMvaW5kZXgz
-Mi5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9iYXh3MGRrbWlmMGJ1eHcwdHMvaW5kZXgzMy5odG1s
-KQooaHR0cDovL2ZtbzQzLmNvbS9jbWFqYzJxZzN6bHhsY2xxMW8vaW5kZXgzNC5odG1sKQooaHR0
-cDovL2ZtbzQzLmNvbS94bmRsaTVuMXMwbHBmMWJ6Zm8vaW5kZXgzNS5odG1sKQooaHR0cDovL2Zt
-bzQzLmNvbS9vaTRzeGs1eXdobXVybXYzeHEvaW5kZXgzNi5odG1sKQooaHR0cDovL2ZtbzQzLmNv
-bS9nZTFxYXFzYmNvbXN1cnoyY3EvaW5kZXgzNy5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9kdzJw
-YW1mYm9wcm80cHliMnMvaW5kZXgzOC5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS95cnB3eGJ1eWsx
-cmFoNTJpdHMvaW5kZXgzOS5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9vcjV5eDJteTN2bXhnbWxy
-eGcvaW5kZXg0MC5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9ndzBnYTVkYnNzbXB0cmJ5Y2cvaW5k
-ZXg0MS5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9qM2RkYnB6emRjaHozbWV1ZmcvaW5kZXg0Mi5o
-dG1sKQpTdXIgdG91dCBsZSBzaXRlLCDDoCBwYXJ0aXIgZGUgMzkK4oKsIGRlIGNvbW1hbmRlIDog
-KGh0dHA6Ly9mbW80My5jb20vcWthb3Uwb3VpNWh0bnI0YzFnL2luZGV4NDMuaHRtbCkKKGh0dHA6
-Ly9mbW80My5jb20vYWMxMm9xd2QxdHpsYmxtbGZxL2luZGV4NDQuaHRtbCkKKGh0dHA6Ly9mbW80
-My5jb20vaTA0eHBrZzBubnplcWRhcDFxL2luZGV4NDUuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20v
-M29rdHN1cHd6YXVod2xjZnhxL2luZGV4NDYuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vaHNnYzRn
-eWV4cXVxYWRvdmNxL2luZGV4NDcuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vaDVwMTBibHJrbGJh
-MTAwcmNvL2luZGV4NDguaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vM3oyYmVtcmlva2JvczJzeXhv
-L2luZGV4NDkuaHRtbCkKNCBQSUxFUyBEVVJBQ0VMTCBQTFVTIExSNiAtCkFBIChodHRwOi8vZm1v
-NDMuY29tL2t1M2tldDNpZWF0a25ia2NiZC9pbmRleDUwLmh0bWwpCgpPRkZFUlRFUyAoaHR0cDov
-L2ZtbzQzLmNvbS92YWxpMHJicnFxdHkzdHd1MGQvaW5kZXg1MS5odG1sKSBBVkVDIExFIENPREUK
-PSAoaHR0cDovL2ZtbzQzLmNvbS93NHphdXYxa3BuM2ZxNHNwMnMvaW5kZXg1Mi5odG1sKQooaHR0
-cDovL2ZtbzQzLmNvbS96cGN2YmplNHR0MzViejBsdHMvaW5kZXg1My5odG1sKQo0UElMRVMgKGh0
-dHA6Ly9mbW80My5jb20vcmlpZnhmb3MwNTV6bnd2MTFvL2luZGV4NTQuaHRtbCkKKGh0dHA6Ly9m
-bW80My5jb20vNWV5MGF3enRyYzV0M256a2ZvL2luZGV4NTUuaHRtbCkKKGh0dHA6Ly9mbW80My5j
-b20vd2JpM25mZjMyNWZ3bmszMTJzL2luZGV4NTYuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20venh5
-ZWx3dXBtY2YyM3Vya3RzL2luZGV4NTcuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vcGpqdGxsNXBh
-aXgxNXZxZXhxL2luZGV4NTguaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vbXllY25hczN5anhyZWVm
-eGNxL2luZGV4NTkuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vbGZrcnlrdHpuaml2ZXBpZnFvL2lu
-ZGV4NjAuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vc3RnNHpxYXUxaWlkNTVwdmpvL2luZGV4NjEu
-aHRtbCkKKGh0dHA6Ly9mbW80My5jb20vZHExNWpnY3l4NHJneXBnbGdvL2luZGV4NjIuaHRtbCkK
-U8OpbGVjdGlvbm5leiBsYSBtYXJxdWUgZGUgdm90cmUKaW1wcmltYW50ZSAoaHR0cDovL2ZtbzQz
-LmNvbS95ZDRuNXV2YnoycmljNXhwb28vaW5kZXg2My5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9s
-NW1tMjEyNWZsY2oxM2RtcW8vaW5kZXg2NC5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9zenR6dnpp
-YTRrYzNzYXRzam8vaW5kZXg2NS5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9kaHNwMTR4andycXVw
-M3ZrZ28vaW5kZXg2Ni5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS95dmh3aGNreGN4cXN2YXoxb28v
-aW5kZXg2Ny5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS8xNHlxa255dnBxdmYzcXNrZHMvaW5kZXg2
-OC5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9mcGlzdHhwbnRhdjVuZzAxeXMvaW5kZXg2OS5odG1s
-KQooaHR0cDovL2ZtbzQzLmNvbS90M2J6dHdpbnJrZWJzandzanEvaW5kZXg3MC5odG1sKQooaHR0
-cDovL2ZtbzQzLmNvbS8ya3Jta2YydjBsZTQxb2ttcXEvaW5kZXg3MS5odG1sKQooaHR0cDovL2Zt
-bzQzLmNvbS9mMmJ5cndyMW1rbDBzMTVzeWQvaW5kZXg3Mi5odG1sKQooaHR0cDovL2ZtbzQzLmNv
-bS8xMXJncWZsZzJsbG4xY2htZGQvaW5kZXg3My5odG1sKQpTaXRlIGNlcnRpZmnDqQpGSUFCSUxJ
-V0VCIChodHRwOi8vZm1vNDMuY29tL3RqcTRkamFtYmkwbTV4Y3ZqcS9pbmRleDc0Lmh0bWwpCiho
-dHRwOi8vZm1vNDMuY29tLzJ5dXJ3dnRoNWowY2Vmb2ZxcS9pbmRleDc1Lmh0bWwpCkZyYWlzIGRl
-IHBvcnQgb2ZmZXJ0cyDDoCBwYXJ0aXIgZGUgNDkKZXVyb3MgZGUgY29tbWFuZGUgKGh0dHA6Ly9m
-bW80My5jb20vNW5uMmhobmZvMmpvY3Z5NXNsL2luZGV4NzYuaHRtbCkKKGh0dHA6Ly9mbW80My5j
-b20vcm1meDF5cW9rNGpheWUyZGxsL2luZGV4NzcuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vbmh0
-aDE0MG93c291dGt2c3FqL2luZGV4NzguaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vNHZtdWhjaGZj
-dm9zZ3V6bWpqL2luZGV4NzkuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20va2MzdW90aWR2dTR2bHlo
-cXhnL2luZGV4ODAuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vdjBsaHByMjBnZDRkZnM1emNnL2lu
-ZGV4ODEuaHRtbCkKKGh0dHA6Ly9mbW80My5jb20vdW8yZXNta3dqZmtna3lxYmZnL2luZGV4ODIu
-aHRtbCkKQVNTSVNUQU5DRSBURUxFUEhPTklRVUUgQUlNQUJMRSBFVApUT1VKT1VSUyBESVNQT05J
-QkxFIChodHRwOi8vZm1vNDMuY29tL2VzcDM0YnhldW1raW1zZmkxZy9pbmRleDgzLmh0bWwpCiho
-dHRwOi8vZm1vNDMuY29tL3JiaXhuZnEzMnp4d2xlM2cyeS9pbmRleDg0Lmh0bWwpCihodHRwOi8v
-Zm1vNDMuY29tLzV4eTJsd25wbTB4MmZ2cjR0eS9pbmRleDg1Lmh0bWwpCihodHRwOi8vZm1vNDMu
-Y29tL21sYmNtbnNmNW9qY2tlanQweS9pbmRleDg2Lmh0bWwpCihodHRwOi8vZm1vNDMuY29tL3Bn
-cnRneDVvYmhqbW12MWhieS9pbmRleDg3Lmh0bWwpCihodHRwOi8vZm1vNDMuY29tL3B3amJhbG10
-M2U1ZmpueXdibC9pbmRleDg4Lmh0bWwpCihodHRwOi8vZm1vNDMuY29tL21yZTF4YWRzc3k1NTB3
-MmowbC9pbmRleDg5Lmh0bWwpCihodHRwOi8vZm1vNDMuY29tL25peGl4ZHRzaW9wYnU0bjBjai9p
-bmRleDkwLmh0bWwpCihodHRwOi8vZm1vNDMuY29tLzRld2thM2F0ZGhwNHJ6dWF4ai9pbmRleDkx
-Lmh0bWwpCihodHRwOi8vZm1vNDMuY29tL2trbHVrcmhlcWVrc295NHp2cy9pbmRleDkyLmh0bWwp
-Ck9wLWVuY3JlIGVzdCB1biBzaXRlIHdlYiBpbmTDqXBlbmRhbnQKZGUgdG91dGVzIG1hcnF1ZXMg
-Y29uc3RydWN0ZXVycyBkJ2ltcHJpbWFudGVzLiBOb3MgY2FydG91Y2hlcwpldCB0b25lcnMgc29u
-dCAxMDAlIGNvbXBhdGlibGVzIGF2ZWMgbGVzIGltcHJpbWFudGVzIGxlcyBwbHVzCnZlbmR1ZXMg
-ZW4gRXVyb3BlLgoKTm90cmUgb2JqZWN0aWYgZXN0IGRlIGxpYsOpcmVyIHZvdHJlIHBvdXZvaXIg
-ZCdhY2hhdCBlbgp2b3VzIHByb3Bvc2FudCBkZXMgY2FydG91Y2hlcyBkJ2VuY3JlIGV0IHRvbmVy
-cyBwb3VyIGltcHJpbWFudGUKYXUgcGx1cyBiYXMgcHJpeCBkdSBtYXJjaMOpLiAoaHR0cDovL2Zt
-bzQzLmNvbS92MzNodHQwd2V5a3Uyc2Vxa3MvaW5kZXg5My5odG1sKQooaHR0cDovL2ZtbzQzLmNv
-bS8zcmZ0ZnlwZGszemF6bDIwaG8vaW5kZXg5NC5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9od25j
-M2h5MG9nem9pZHlhM28vaW5kZXg5NS5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9reWZrd3kzaXUz
-dGl6YmYwdnMvaW5kZXg5Ni5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS92am5pZGhicmpndGdpdHFh
-a3MvaW5kZXg5Ny5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9peG1mZGNqcjFtYmxtMHJoYXEvaW5k
-ZXg5OC5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS9hYnQwdzQ0aW5mYmVrMjN0aXEvaW5kZXg5OS5o
-dG1sKQoqIChodHRwOi8vZm1vNDMuY29tL2NwZW90YW9uczV2NXdxMHhqby9pbmRleDEwMC5odG1s
-KSBTZWxvbiBsZXMKc3RvY2tzIGRpc3BvbmlibGVzLCBPcC1lbmNyZSBzJ2F1dG9yaXNlIGEgc3Vz
-cGVuZHJlIGwnb2ZmcmUKc2FucyBwcsOpYXZpcyAvIE9mZnJlIHZhbGFibGUganVzcXUnYXUKMzEv
-MTIvMjAxMyAoaHR0cDovL2ZtbzQzLmNvbS9weG1ibGNtcDF2eGxndnJtaHkvaW5kZXgxMDEuaHRt
-bCkKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFsaWVuVmF1bHQgVW5pZmllZCBTZWN1cml0eSBNYW5h
-Z2VtZW50IChVU00pIHBsYXRmb3JtIGRlbGl2ZXJzIGNvbXBsZXRlCnNlY3VyaXR5IHZpc2liaWxp
-dHkgd2l0aCB0aGUgZXNzZW50aWFsIHNlY3VyaXR5IGNhcGFiaWxpdGllcy4gRWFzaWx5IGFuZApl
-ZmZpY2llbnRseSBjb25maWd1cmUsIG1hbmFnZSwgYW5kIG9wZXJhdGUgYWxsIG9mIHlvdXIgc2Vj
-dXJpdHkgY29udHJvbHMKZnJvbSBhIHNpbmdsZSBjb25zb2xlIGFuZCBvbmUgdW5pZmllZCBmcmFt
-ZXdvcmsuIERvd25sb2FkIGEgZnJlZSB0cmlhbC4KaHR0cDovL3Auc2YubmV0L3NmdS9hbGllbnZh
-dWx0X2QyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
-cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
-L3NwaS1kZXZlbC1nZW5lcmFsCg==
+From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+
+currently, spi irq handler only does rx processing and fetching data from rx
+fifo when "FRM_END" irq happens. FRM_END indicates one transfer completes. if
+rx size is less than 256, it works well.
+but the problem is that spi rx fifo size is only 256 bytes, then if data size
+of one frame is more than 256, before FRM_END comes, rx fifo will be filled with
+RXFIFO_OFLOW overflow interrupt, it will make us lose some data due to fifo
+overflow.
+Explicitly we need do fetch work from device rx fifo in irq handler not only in
+"FRM_END" irq but also in "THD_REACH" irq. THD_REACH means rx fifo has come to
+its threshold and will come to overflow if we don't take data from it in time.
+
+In this patch, we fix this issue. we take data from rx fifo when either FRM_END
+or RX_THD_REACH irq comes, we put data into tx fifo when either TX_FIFO_EMPTY
+or TX_THD_REACH irq comes.
+
+Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+Signed-off-by: Zhiwu Song <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
+Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+---
+ drivers/spi/spi-sirf.c | 43 +++++++++++++------------------------------
+ 1 file changed, 13 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index 0808cd5..ac98cec 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -142,9 +142,6 @@ struct sirfsoc_spi {
+ 	unsigned int left_tx_cnt;
+ 	unsigned int left_rx_cnt;
+ 
+-	/* tasklet to push tx msg into FIFO */
+-	struct tasklet_struct tasklet_tx;
+-
+ 	int chipselect[0];
+ };
+ 
+@@ -236,17 +233,6 @@ static void spi_sirfsoc_tx_word_u32(struct sirfsoc_spi *sspi)
+ 	sspi->left_tx_cnt--;
+ }
+ 
+-static void spi_sirfsoc_tasklet_tx(unsigned long arg)
+-{
+-	struct sirfsoc_spi *sspi = (struct sirfsoc_spi *)arg;
+-
+-	/* Fill Tx FIFO while there are left words to be transmitted */
+-	while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS) &
+-			SIRFSOC_SPI_FIFO_FULL)) &&
+-			sspi->left_tx_cnt)
+-		sspi->tx_word(sspi);
+-}
+-
+ static irqreturn_t spi_sirfsoc_irq(int irq, void *dev_id)
+ {
+ 	struct sirfsoc_spi *sspi = dev_id;
+@@ -261,25 +247,25 @@ static irqreturn_t spi_sirfsoc_irq(int irq, void *dev_id)
+ 		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
+ 	}
+ 
+-	if (spi_stat & SIRFSOC_SPI_FRM_END) {
++	if (spi_stat & (SIRFSOC_SPI_FRM_END
++			| SIRFSOC_SPI_RXFIFO_THD_REACH))
+ 		while (!((readl(sspi->base + SIRFSOC_SPI_RXFIFO_STATUS)
+ 				& SIRFSOC_SPI_FIFO_EMPTY)) &&
+ 				sspi->left_rx_cnt)
+ 			sspi->rx_word(sspi);
+ 
+-		/* Received all words */
+-		if ((sspi->left_rx_cnt == 0) && (sspi->left_tx_cnt == 0)) {
+-			complete(&sspi->done);
+-			writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
+-		}
+-	}
+-
+-	if (spi_stat & SIRFSOC_SPI_RXFIFO_THD_REACH ||
+-		spi_stat & SIRFSOC_SPI_TXFIFO_THD_REACH ||
+-		spi_stat & SIRFSOC_SPI_RX_FIFO_FULL ||
+-		spi_stat & SIRFSOC_SPI_TXFIFO_EMPTY)
+-		tasklet_schedule(&sspi->tasklet_tx);
++	if (spi_stat & (SIRFSOC_SPI_FIFO_EMPTY
++			| SIRFSOC_SPI_TXFIFO_THD_REACH))
++		while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS)
++				& SIRFSOC_SPI_FIFO_FULL)) &&
++				sspi->left_tx_cnt)
++			sspi->tx_word(sspi);
+ 
++	/* Received all words */
++	if ((sspi->left_rx_cnt == 0) && (sspi->left_tx_cnt == 0)) {
++		complete(&sspi->done);
++		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
++	}
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -573,9 +559,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 
+ 	init_completion(&sspi->done);
+ 
+-	tasklet_init(&sspi->tasklet_tx, spi_sirfsoc_tasklet_tx,
+-		     (unsigned long)sspi);
+-
+ 	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
+ 	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
+ 	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
+-- 
+1.8.2.3
+
+
+------------------------------------------------------------------------------
+AlienVault Unified Security Management (USM) platform delivers complete
+security visibility with the essential security capabilities. Easily and
+efficiently configure, manage, and operate all of your security controls
+from a single console and one unified framework. Download a free trial.
+http://p.sf.net/sfu/alienvault_d2d

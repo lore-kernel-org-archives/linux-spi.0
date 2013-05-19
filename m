@@ -1,13 +1,12 @@
-From: "Pacote de Emails" <naoresponder-UWc4wopOEeNuJQJsDs3aN9Di0UtHxfmf@public.gmane.org>
-Subject: [SPAM]
-	=?UTF-8?B?UGFjb3RlcyBkZSBFLW1haWxzIGRlIFPDo28gUGF1bG8gdmFsaWRhZG9zIGFwYXJ0aXIgUiQ1OSAwMCBlbSBhdMOpIDEyeC4=?=
-Date: Sun, 19 May 2013 12:00:15 -0300
-Message-ID: <ccf0ada6a54003a6ce5ff6a595566367@pacotesdeemails.com.br>
-Reply-To: contato-hH3WmDE1XU3v7XzRZ4w9D3AWrOxMfm7/@public.gmane.org
+From: "Robot" <contact-3faWG7v0n/dQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Gagnez un robot kMix KENWOOD d une valeur de 400 euros
+Date: Sun, 19 May 2013 15:34:56 +0000 (CET)
+Message-ID: <130519153456.181349049500007008@fmo42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,20 +18,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IGNsaWVudGUgZGUgZS1tYWlsIG7Do28gcG9kZSBsZXIgZXN0ZSBlLW1haWwuClBhcmEgdmlz
-dWFsaXrDoS1sbyBvbi1saW5lLCBwb3IgZmF2b3IsIGNsaXF1ZSBhcXVpOgpodHRwOi8vcGFjb3Rl
-c2RlZW1haWxzLmNvbS5ici9kaXNwbGF5LnBocD9NPTY3ODY5NTcmQz01ZTQ5NTI3MTNiMDdlN2E4
-NjFhMDJiN2Y1MjQ4NDMzMiZTPTI5Jkw9MzAmTj0xCgoKUGFyYSBwYXJhciBkZSByZWNlYmVyIG5v
-c3NvcwpFbWFpbHM6aHR0cDovL3BhY290ZXNkZWVtYWlscy5jb20uYnIvdW5zdWJzY3JpYmUucGhw
-P009Njc4Njk1NyZDPTVlNDk1MjcxM2IwN2U3YTg2MWEwMmI3ZjUyNDg0MzMyJkw9MzAmTj0yOQoK
-IAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KQWxpZW5WYXVsdCBVbmlmaWVkIFNlY3VyaXR5IE1hbmFn
-ZW1lbnQgKFVTTSkgcGxhdGZvcm0gZGVsaXZlcnMgY29tcGxldGUKc2VjdXJpdHkgdmlzaWJpbGl0
-eSB3aXRoIHRoZSBlc3NlbnRpYWwgc2VjdXJpdHkgY2FwYWJpbGl0aWVzLiBFYXNpbHkgYW5kCmVm
-ZmljaWVudGx5IGNvbmZpZ3VyZSwgbWFuYWdlLCBhbmQgb3BlcmF0ZSBhbGwgb2YgeW91ciBzZWN1
-cml0eSBjb250cm9scwpmcm9tIGEgc2luZ2xlIGNvbnNvbGUgYW5kIG9uZSB1bmlmaWVkIGZyYW1l
-d29yay4gRG93bmxvYWQgYSBmcmVlIHRyaWFsLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FsaWVudmF1
-bHRfZDJkCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNw
-aS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8v
-c3BpLWRldmVsLWdlbmVyYWwK
+
+
+
+ (http://fmo42.com/0d15pgcv3nwqxbglfl/index0.html)
+ (http://fmo42.com/bo1nsgel32egjtol1y/index1.html)
+ (http://fmo42.com/2y1rwgt13g0q5yq2xd/index2.html)
+ (http://fmo42.com/tg14qg3m3hdgasj2cs/index3.html)
+ (http://fmo42.com/ky2uwmicpvtqfoqyry/index4.html)
+
+
+ (http://fmo42.com/vg2hqm0rplsgojjy5l/index5.html)
+ (http://fmo42.com/ud2epmkep14qpfgbms/index6.html)
+ (http://fmo42.com/eo23smfdpmkg3xobpd/index7.html)
+ (http://fmo42.com/wdma511k34pq2agm3l/index8.html)
+ (http://fmo42.com/zomvy1vs3t3gl3omhy/index9.html)
+
+
+ (http://fmo42.com/vcsio4bwdj4v4xak5j/index10.html)
+ (http://fmo42.com/k0hkpc3eii4dhfm1rj/index11.html)
+ (http://fmo42.com/qk5ju0gb14ht2vwr4s/index12.html)
+ (http://fmo42.com/j30lbpwyn2hzoekyns/index13.html)
+ (http://fmo42.com/drepxafzzrr5iubxpo/index14.html)
+
+
+
+------------------------------------------------------------------------------
+AlienVault Unified Security Management (USM) platform delivers complete
+security visibility with the essential security capabilities. Easily and
+efficiently configure, manage, and operate all of your security controls
+from a single console and one unified framework. Download a free trial.
+http://p.sf.net/sfu/alienvault_d2d

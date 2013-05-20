@@ -1,16 +1,13 @@
-From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v1 3/3] spi: s3c64xx: Added support for exynos5440 spi
-Date: Mon, 20 May 2013 12:21:34 +0530
-Message-ID: <1369032694-13183-4-git-send-email-ks.giri@samsung.com>
-References: <1369032694-13183-1-git-send-email-ks.giri@samsung.com>
+From: "Teatower" <noreply-193CG9riSBJWk0Htik3J/w@public.gmane.org>
+Subject: [SPAM] 5 échantillons de thé gratuits + 21 pourcent de réduction
+Date: Mon, 20 May 2013 13:50:55 +0000 (CET)
+Message-ID: <130520135055.-211958299900004756@fmo41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1369032694-13183-1-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,55 +18,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
-This patch adds support for the exynos5440 spi controller.
-The integration of the spi IP in exynos5440 is different from
-other SoC's. The I/O pins are no more configured via gpio, they
-have dedicated pins.
-
-Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c |   12 ++++++++++++
- 1 files changed, 12 insertions(+), 0 deletions(-)
-
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index eaf9e1c..bd43888 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -1608,6 +1608,15 @@ static struct s3c64xx_spi_port_config exynos4_spi_port_config = {
- 	.clk_from_cmu	= true,
- };
- 
-+static struct s3c64xx_spi_port_config exynos5440_spi_port_config = {
-+	.fifo_lvl_mask	= { 0x1ff },
-+	.rx_lvl_offset	= 15,
-+	.tx_st_done	= 25,
-+	.high_speed	= true,
-+	.clk_from_cmu	= true,
-+	.quirks		= S3C64XX_SPI_QUIRK_POLL,
-+};
-+
- static struct platform_device_id s3c64xx_spi_driver_ids[] = {
- 	{
- 		.name		= "s3c2443-spi",
-@@ -1636,6 +1645,9 @@ static const struct of_device_id s3c64xx_spi_dt_match[] = {
- 	{ .compatible = "samsung,exynos4210-spi",
- 			.data = (void *)&exynos4_spi_port_config,
- 	},
-+	{ .compatible = "samsung,exynos5440-spi",
-+			.data = (void *)&exynos5440_spi_port_config,
-+	},
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, s3c64xx_spi_dt_match);
--- 
-1.7.5.4
-
-
-------------------------------------------------------------------------------
-AlienVault Unified Security Management (USM) platform delivers complete
-security visibility with the essential security capabilities. Easily and
-efficiently configure, manage, and operate all of your security controls
-from a single console and one unified framework. Download a free trial.
-http://p.sf.net/sfu/alienvault_d2d
+ClJlY2V2ZXogNSDDqWNoYW50aWxsb25zIGRlIHRow6kgZ3JhdHVpdHMgYXZlYyBURUFUT1dFUgoo
+aHR0cDovL3d3dy50ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKQooaHR0cDov
+L3d3dy50ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKQooaHR0cDovL3d3dy50
+ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKQooaHR0cDovL2ZtbzQxLmNvbS8y
+ZjVyczBicGhzZTJtMHBpeGwvaW5kZXgzLmh0bWwpCgooaHR0cDovL3d3dy50ZWF0b3dlci5jb20v
+ZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKSAoaHR0cDovL3d3dy50ZWF0b3dlci5jb20vZnIvaW5k
+ZXgucGhwP3NhbXBsZT1tYWlsKQrCoApURUFUT1dFUiAvIFRUIFBBQ0tBR0lORyBTUFJMCgpSdWUg
+U2FpbnQtRGVuaXMgMTEyIC0gMTE5MCBCcnV4ZWxsZXMgLSBCZWxnaXF1ZSAtIFTDqWwgMDAuMzIu
+MjguMDguMDEuMjcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFsaWVuVmF1bHQgVW5pZmllZCBTZWN1
+cml0eSBNYW5hZ2VtZW50IChVU00pIHBsYXRmb3JtIGRlbGl2ZXJzIGNvbXBsZXRlCnNlY3VyaXR5
+IHZpc2liaWxpdHkgd2l0aCB0aGUgZXNzZW50aWFsIHNlY3VyaXR5IGNhcGFiaWxpdGllcy4gRWFz
+aWx5IGFuZAplZmZpY2llbnRseSBjb25maWd1cmUsIG1hbmFnZSwgYW5kIG9wZXJhdGUgYWxsIG9m
+IHlvdXIgc2VjdXJpdHkgY29udHJvbHMKZnJvbSBhIHNpbmdsZSBjb25zb2xlIGFuZCBvbmUgdW5p
+ZmllZCBmcmFtZXdvcmsuIERvd25sb2FkIGEgZnJlZSB0cmlhbC4KaHR0cDovL3Auc2YubmV0L3Nm
+dS9hbGllbnZhdWx0X2QyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

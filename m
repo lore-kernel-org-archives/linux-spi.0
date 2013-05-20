@@ -1,26 +1,166 @@
-From: Girish K S <girishks2000@gmail.com>
-Subject: [PATCH v1 0/3] Polling support for s3c64xx spi controller
-Date: Mon, 20 May 2013 12:21:31 +0530
-Message-ID: <1369032694-13183-1-git-send-email-ks.giri@samsung.com>
-Cc: grant.likely@secretlab.ca, broonie@opensource.wolfsonmicro.com
-To: spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v1 2/3] spi: s3c64xx: Added provision for dedicated cs pin
+Date: Mon, 20 May 2013 12:21:33 +0530
+Message-ID: <1369032694-13183-3-git-send-email-ks.giri@samsung.com>
+References: <1369032694-13183-1-git-send-email-ks.giri@samsung.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1369032694-13183-1-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch series adds support for the polling mode only. Also 2nd patch
-in the series adds support for dedicated cs pin. After Thomas's patch for
-using default gpio is merged(commit id: 00ab539), one of the patch in this
-series is dropped and new series is generated.
+From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Girish K S (3):
-  spi: s3c64xx: added support for polling mode
-  spi: s3c64xx: Added provision for dedicated cs pin
-  spi: s3c64xx: Added support for exynos5440 spi
+The existing driver supports gpio based /cs signal.
+For controller's that have one device per controller,
+the slave device's /cs signal might be internally controlled
+by the chip select bit of slave select register. They are not
+externally asserted/deasserted using gpio pin.
 
- drivers/spi/spi-s3c64xx.c |  197 ++++++++++++++++++++++++++++++++-------------
- 1 files changed, 140 insertions(+), 57 deletions(-)
+This patch adds support for controllers with dedicated /cs pin.
+if "cs-gpio" property doesnt exist in a spi dts node, the controller
+would treat the /cs pin as dedicated.
 
+Signed-off-by: Girish K S <ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+changes in v1:
+		Added the missing data structure that caused the
+compilation error
+
+ drivers/spi/spi-s3c64xx.c |   34 ++++++++++++++++++++++++++--------
+ 1 files changed, 26 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 0a80692..eaf9e1c 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -208,6 +208,7 @@ struct s3c64xx_spi_driver_data {
+ 	struct s3c64xx_spi_port_config	*port_conf;
+ 	unsigned int			port_id;
+ 	unsigned long			gpios[4];
++	bool				cs_gpio;
+ };
+ 
+ static void flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+@@ -570,14 +571,16 @@ static inline void enable_cs(struct s3c64xx_spi_driver_data *sdd,
+ 		if (sdd->tgl_spi != spi) { /* if last mssg on diff device */
+ 			/* Deselect the last toggled device */
+ 			cs = sdd->tgl_spi->controller_data;
+-			gpio_set_value(cs->line,
+-				spi->mode & SPI_CS_HIGH ? 0 : 1);
++			if (sdd->cs_gpio)
++				gpio_set_value(cs->line,
++					spi->mode & SPI_CS_HIGH ? 0 : 1);
+ 		}
+ 		sdd->tgl_spi = NULL;
+ 	}
+ 
+ 	cs = spi->controller_data;
+-	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
++	if (sdd->cs_gpio)
++		gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 1 : 0);
+ 
+ 	/* Start the signals */
+ 	writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+@@ -709,7 +712,8 @@ static inline void disable_cs(struct s3c64xx_spi_driver_data *sdd,
+ 	if (sdd->tgl_spi == spi)
+ 		sdd->tgl_spi = NULL;
+ 
+-	gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
++	if (sdd->cs_gpio)
++		gpio_set_value(cs->line, spi->mode & SPI_CS_HIGH ? 0 : 1);
+ 
+ 	/* Quiese the signals */
+ 	writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
+@@ -997,8 +1001,10 @@ static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
+ {
+ 	struct s3c64xx_spi_csinfo *cs;
+ 	struct device_node *slave_np, *data_np = NULL;
++	struct s3c64xx_spi_driver_data *sdd;
+ 	u32 fb_delay = 0;
+ 
++	sdd = spi_master_get_devdata(spi->master);
+ 	slave_np = spi->dev.of_node;
+ 	if (!slave_np) {
+ 		dev_err(&spi->dev, "device node not found\n");
+@@ -1018,7 +1024,10 @@ static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-	cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
++	/* The CS line is asserted/deasserted by the gpio pin */
++	if (sdd->cs_gpio)
++		cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
++
+ 	if (!gpio_is_valid(cs->line)) {
+ 		dev_err(&spi->dev, "chip select gpio is not specified or invalid\n");
+ 		kfree(cs);
+@@ -1058,7 +1067,8 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 		return -ENODEV;
+ 	}
+ 
+-	if (!spi_get_ctldata(spi)) {
++	/* Request gpio only if cs line is asserted by gpio pins */
++	if (sdd->cs_gpio) {
+ 		err = gpio_request_one(cs->line, GPIOF_OUT_INIT_HIGH,
+ 				       dev_name(&spi->dev));
+ 		if (err) {
+@@ -1067,9 +1077,11 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 				cs->line, err);
+ 			goto err_gpio_req;
+ 		}
+-		spi_set_ctldata(spi, cs);
+ 	}
+ 
++	if (!spi_get_ctldata(spi))
++		spi_set_ctldata(spi, cs);
++
+ 	sci = sdd->cntrlr_info;
+ 
+ 	spin_lock_irqsave(&sdd->lock, flags);
+@@ -1147,8 +1159,10 @@ err_gpio_req:
+ static void s3c64xx_spi_cleanup(struct spi_device *spi)
+ {
+ 	struct s3c64xx_spi_csinfo *cs = spi_get_ctldata(spi);
++	struct s3c64xx_spi_driver_data *sdd;
+ 
+-	if (cs) {
++	sdd = spi_master_get_devdata(spi->master);
++	if (cs && sdd->cs_gpio) {
+ 		gpio_free(cs->line);
+ 		if (spi->dev.of_node)
+ 			kfree(cs);
+@@ -1325,7 +1339,11 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	sdd->cntrlr_info = sci;
+ 	sdd->pdev = pdev;
+ 	sdd->sfr_start = mem_res->start;
++	sdd->cs_gpio = false;
+ 	if (pdev->dev.of_node) {
++		if (of_find_property(pdev->dev.of_node, "cs-gpio", NULL))
++			sdd->cs_gpio = true;
++
+ 		ret = of_alias_get_id(pdev->dev.of_node, "spi");
+ 		if (ret < 0) {
+ 			dev_err(&pdev->dev, "failed to get alias id, errno %d\n",
 -- 
 1.7.5.4
+
+
+------------------------------------------------------------------------------
+AlienVault Unified Security Management (USM) platform delivers complete
+security visibility with the essential security capabilities. Easily and
+efficiently configure, manage, and operate all of your security controls
+from a single console and one unified framework. Download a free trial.
+http://p.sf.net/sfu/alienvault_d2d

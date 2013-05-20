@@ -1,39 +1,58 @@
-From: "Teatower" <noreply-193CG9riSBJWk0Htik3J/w@public.gmane.org>
-Subject: [SPAM] 5 échantillons de thé gratuits + 21 pourcent de réduction
-Date: Mon, 20 May 2013 13:50:55 +0000 (CET)
-Message-ID: <130520135055.-211958299900004756@fmo41.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH] spi: topcliff-pch: Pass correct pointer to free_irq()
+Date: Mon, 20 May 2013 17:54:35 +0200
+Message-ID: <1369065275-32323-1-git-send-email-lars@metafoo.de>
+Cc: Tomoya MORINAGA <tomoya.rohm@gmail.com>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+To: Mark Brown <broonie@kernel.org>,
+	Grant Likely <grant.likely@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-ClJlY2V2ZXogNSDDqWNoYW50aWxsb25zIGRlIHRow6kgZ3JhdHVpdHMgYXZlYyBURUFUT1dFUgoo
-aHR0cDovL3d3dy50ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKQooaHR0cDov
-L3d3dy50ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKQooaHR0cDovL3d3dy50
-ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKQooaHR0cDovL2ZtbzQxLmNvbS8y
-ZjVyczBicGhzZTJtMHBpeGwvaW5kZXgzLmh0bWwpCgooaHR0cDovL3d3dy50ZWF0b3dlci5jb20v
-ZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKSAoaHR0cDovL3d3dy50ZWF0b3dlci5jb20vZnIvaW5k
-ZXgucGhwP3NhbXBsZT1tYWlsKQrCoApURUFUT1dFUiAvIFRUIFBBQ0tBR0lORyBTUFJMCgpSdWUg
-U2FpbnQtRGVuaXMgMTEyIC0gMTE5MCBCcnV4ZWxsZXMgLSBCZWxnaXF1ZSAtIFTDqWwgMDAuMzIu
-MjguMDguMDEuMjcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFsaWVuVmF1bHQgVW5pZmllZCBTZWN1
-cml0eSBNYW5hZ2VtZW50IChVU00pIHBsYXRmb3JtIGRlbGl2ZXJzIGNvbXBsZXRlCnNlY3VyaXR5
-IHZpc2liaWxpdHkgd2l0aCB0aGUgZXNzZW50aWFsIHNlY3VyaXR5IGNhcGFiaWxpdGllcy4gRWFz
-aWx5IGFuZAplZmZpY2llbnRseSBjb25maWd1cmUsIG1hbmFnZSwgYW5kIG9wZXJhdGUgYWxsIG9m
-IHlvdXIgc2VjdXJpdHkgY29udHJvbHMKZnJvbSBhIHNpbmdsZSBjb25zb2xlIGFuZCBvbmUgdW5p
-ZmllZCBmcmFtZXdvcmsuIERvd25sb2FkIGEgZnJlZSB0cmlhbC4KaHR0cDovL3Auc2YubmV0L3Nm
-dS9hbGllbnZhdWx0X2QyZApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
-L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+free_irq() expects the same pointer that was passed to request_irq(), otherwise
+the IRQ is not freed.
+
+The issue was found using the following coccinelle script:
+
+<smpl>
+@r1@
+type T;
+T devid;
+@@
+request_irq(..., devid)
+
+@r2@
+type r1.T;
+T devid;
+position p;
+@@
+free_irq@p(..., devid)
+
+@@
+position p != r2.p;
+@@
+*free_irq@p(...)
+</smpl>
+
+Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
+---
+ drivers/spi/spi-topcliff-pch.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index 35f60bd..963e0f3 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1487,7 +1487,7 @@ static int pch_spi_pd_probe(struct platform_device *plat_dev)
+ 	return 0;
+ 
+ err_spi_register_master:
+-	free_irq(board_dat->pdev->irq, board_dat);
++	free_irq(board_dat->pdev->irq, data);
+ err_request_irq:
+ 	pch_spi_free_resources(board_dat, data);
+ err_spi_get_resources:
+-- 
+1.8.0

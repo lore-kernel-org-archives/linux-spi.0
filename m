@@ -1,33 +1,56 @@
-From: 15989349144-KN7UnAbNpbg@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Wed, 22 May 2013 04:52:21 +0800
-Message-ID: <E1UetXj-0000SI-UL@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
+Subject: Re: [PATCH] MIPS: OCTEON: Rename Kconfig
+ CAVIUM_OCTEON_REFERENCE_BOARD to CAVIUM_OCTEON_SOC
+Date: Wed, 22 May 2013 01:04:57 +0300
+Message-ID: <20130521220457.GF31836@blackmetal.musicnaut.iki.fi>
+References: <1369088378-13957-1-git-send-email-ddaney.cavm@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-mips@linux-mips.org, ralf@linux-mips.org,
+        David Daney <david.daney@cavium.com>,
+        linux-ide@vger.kernel.org, linux-edac@vger.kernel.org,
+        linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
+        spi-devel-general@lists.sourceforge.net,
+        devel@driverdev.osuosl.org, linux-usb@vger.kernel.org
+To: David Daney <ddaney.cavm@gmail.com>
+Return-path: <linux-mips-bounce@linux-mips.org>
+Content-Disposition: inline
+In-Reply-To: <1369088378-13957-1-git-send-email-ddaney.cavm@gmail.com>
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+List-help: <mailto:ecartis@linux-mips.org?Subject=help>
+List-unsubscribe: <mailto:ecartis@linux-mips.org?subject=unsubscribe%20linux-mips>
+List-software: Ecartis version 1.0.0
+List-subscribe: <mailto:ecartis@linux-mips.org?subject=subscribe%20linux-mips>
+List-owner: <mailto:ralf@linux-mips.org>
+List-post: <mailto:linux-mips@linux-mips.org>
+List-archive: <http://www.linux-mips.org/archives/linux-mips/>
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CgogICAgztK5q8u+1Nooye7b2srQoaLPw8PFytChosnPuqPK0KGiuePW3crQtci12KOp
-09DBvLrDtcTG89K10M7P86Gjz9axvrmry77T0NK7sr+31teo08PLsKGqoarGsbT6v6qjuwq587mr
-y77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAgCgogIAoKICAgILi61PDIy6O61cXP
-yMn6KDApMTU5ODkzNDkxNDQKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUcnkgTmV3IFJlbGljIE5v
-dyAmIFdlJ2xsIFNlbmQgWW91IHRoaXMgQ29vbCBTaGlydApOZXcgUmVsaWMgaXMgdGhlIG9ubHkg
-U2FhUy1iYXNlZCBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZSBtb25pdG9yaW5nIHNlcnZpY2UgCnRo
-YXQgZGVsaXZlcnMgcG93ZXJmdWwgZnVsbCBzdGFjayBhbmFseXRpY3MuIE9wdGltaXplIGFuZCBt
-b25pdG9yIHlvdXIKYnJvd3NlciwgYXBwLCAmIHNlcnZlcnMgd2l0aCBqdXN0IGEgZmV3IGxpbmVz
-IG9mIGNvZGUuIFRyeSBOZXcgUmVsaWMKYW5kIGdldCB0aGlzIGF3ZXNvbWUgTmVyZCBMaWZlIHNo
-aXJ0ISBodHRwOi8vcC5zZi5uZXQvc2Z1L25ld3JlbGljX2QyZF9tYXkKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
-ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
-c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hi,
+
+What about OCTEON_WDT, should it be changed too:
+
+        tristate "Cavium OCTEON SOC family Watchdog Timer"
+        depends on CPU_CAVIUM_OCTEON
+
+On Mon, May 20, 2013 at 03:19:38PM -0700, David Daney wrote:
+>  config OCTEON_MGMT_ETHERNET
+>  	tristate "Octeon Management port ethernet driver (CN5XXX, CN6XXX)"
+> -	depends on  CPU_CAVIUM_OCTEON
+> +	depends on  CAVIUM_OCTEON_SOC
+
+>  config MDIO_OCTEON
+>  	tristate "Support for MDIO buses on Octeon SOCs"
+> -	depends on  CPU_CAVIUM_OCTEON
+> +	depends on  CAVIUM_OCTEON_SOC
+
+>  config USB_OCTEON_OHCI
+>  	bool "Octeon on-chip OHCI support"
+> -	depends on CPU_CAVIUM_OCTEON
+> +	depends on  CAVIUM_OCTEON_SOC
+
+Just a minor comment, here the extra whitespace after "depends on"
+could be eliminated.
+
+A.

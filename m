@@ -1,42 +1,52 @@
-From: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>
-Subject: Re: [PATCH] MIPS: OCTEON: Rename Kconfig
- CAVIUM_OCTEON_REFERENCE_BOARD to CAVIUM_OCTEON_SOC
-Date: Wed, 22 May 2013 14:22:32 +0200
-Message-ID: <20130522122232.GD10769@linux-mips.org>
-References: <1369088378-13957-1-git-send-email-ddaney.cavm@gmail.com>
- <20130521220457.GF31836@blackmetal.musicnaut.iki.fi>
- <519BF01B.1010600@caviumnetworks.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: introduce macros to set bits_per_word_mask
+Date: Wed, 22 May 2013 10:58:16 -0500
+Message-ID: <20130522155816.GL1627@sirena.org.uk>
+References: <1369190195-14598-1-git-send-email-swarren@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Aaro Koskinen <aaro.koskinen-X3B1VOXEql0@public.gmane.org>,
-	David Daney <ddaney.cavm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org,
-	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	linux-ide-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-edac-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	devel-gWbeCf7V1WCQmaza687I9mD2FQJk+8+b@public.gmane.org, linux-usb-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: David Daney <ddaney-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="uvMug2t/eFzFwVce"
+Cc: Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org
+To: Stephen Warren <swarren@wwwdotorg.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <519BF01B.1010600-M3mlKVOIwJVv6pq1l3V1OdBPR1lH4CV8@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+In-Reply-To: <1369190195-14598-1-git-send-email-swarren@wwwdotorg.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, May 21, 2013 at 03:07:23PM -0700, David Daney wrote:
 
-> >>  config USB_OCTEON_OHCI
-> >>  	bool "Octeon on-chip OHCI support"
-> >>-	depends on CPU_CAVIUM_OCTEON
-> >>+	depends on  CAVIUM_OCTEON_SOC
-> >
-> >Just a minor comment, here the extra whitespace after "depends on"
-> >could be eliminated.
-> >
-> 
-> Good point.  I will regenerate the patch to correct this.
+--uvMug2t/eFzFwVce
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I took care of that and queued the patch.
+On Tue, May 21, 2013 at 08:36:34PM -0600, Stephen Warren wrote:
+> Introduce two macros to make setting up spi_master.bits_per_word_mask
+> easier, and avoid mistakes like writing BIT(n) instead of BIT(n - 1).
 
-Thanks,
+Applied, thanks.
 
-  Ralf
+--uvMug2t/eFzFwVce
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRnOsVAAoJELSic+t+oim9sPgP/07LLCxJyEyfMeKKq09X/JAW
+KSVFdFh0PrXpICvXDbF1tTq0Nql0IXCe9+YPWNQNaxDQbj9NcY16J6XCn1XlMYuL
+rPu4wUMAe0NQ8hO5Wu4DHX0T6p8BEaNQdkcLElYA5eZZSbbuRF8E4/o4EN9QjCAR
+L7Y5jtJOuBDsWjrQ6Fc0ttZUDaHPvt0/HlC2OAfgA51h3FNMp7EwaCR1t4oD8uu4
+F3nBxkVDmpWMeEseipaqI088WY4orkdbtPQ+Isy6YDh5ADTf+necy4ICvrqyPXub
+Jla+1ziiMaccNygO0FV415mhUYbPruHd2GOHS6sDDX+Ccoykb9EPJim3de9x0u9l
+UmRYwYGAOAMjR6PiE93jUNFdur73IXHKvbJYvXSyplhT2AuO8tIoFz/6YwoLqu6B
+sX0/gNj5raMrukElE1ny6QVvW0UPp4OyR/WvndqVJrVSDNVmxJBv0M/NnyxYSB6S
+nV3BW/OvaD4AqZZRX3fisjp/cURQT4sXAY50MrzRYVxdQe5F8l4bsbse5u/bogHL
+gxGqXsWwB1nW6D55jG0Oe1jj/OVm8nxf/676Qx0jy8Poqs2hhjFJ5Wx6FxSDNzKj
+6kFg+f7IWY51YrM0OpGNkeBTZYC/dlVF2B7i9yLbOyR25xqfmqRaXyTBGDCgvifF
+3oo5/kSHglTgvVw2qEfG
+=9Ljz
+-----END PGP SIGNATURE-----
+
+--uvMug2t/eFzFwVce--

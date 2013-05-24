@@ -1,125 +1,80 @@
-From: "Optic2ooo" <lisa@a.optincake.com>
-Subject: Special fete des meres -15% sur les solaires Vogue, YvesSaintLaurent,
-	RayBan, Fendi...
-Date: Fri, 24 May 2013 04:36:07 +0100
-Message-ID: <0.0.1A9.FB1.1CE582FD3657FCC.0@mta209.pur3.net>
-Reply-To: Optic2ooo <lisa@a.optincake.com>
+From: H Hartley Sweeten <hartleys@visionengravers.com>
+Subject: RE: [PATCH 2/2] spi: convert drivers to use bits_per_word_mask
+Date: Fri, 24 May 2013 12:16:40 -0500
+Message-ID: <ADE657CA350FB648AAC2C43247A983F0021DA656FEA0@AUSP01VMBX24.collaborationhost.net>
+References: <1369190195-14598-1-git-send-email-swarren@wwwdotorg.org>
+ <1369190195-14598-2-git-send-email-swarren@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	Mike Frysinger <vapier@gentoo.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"device-drivers-devel@blackfin.uclinux.org"
+	<device-drivers-devel@blackfin.uclinux.org>
+To: Stephen Warren <swarren@wwwdotorg.org>,
+	Mark Brown <broonie@kernel.org>,
+	Grant Likely <grant.likely@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1369190195-14598-2-git-send-email-swarren@wwwdotorg.org>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTM2NjQzMjIwNTM3MjA0CgoKCgoKKE9wdGljIDIwMDAgLSBVbmUgbm91dmVsbGUgdmlzaW9uIGRl
-IGxhIHZpZSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwt
-YUhSMGNITTZMeTkzZDNjdWIzQjBhV015TURBd0xtTnZiClM4P3Jncm91cD1wXzY2NjUmdHJhY2th
-ZmY9Jmdyb3VwPQoKKExVTkVUVEVTIERFIFZVRSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3Iv
-Y2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNITTZMeTkzZDNjdWIzQjBhV015TURBd0xtTnZiClM5
-c2RXNWxkSFJsY3k1b2RHMXM/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooTFVORVRU
-RVMgREUgU09MRUlMKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkwLTM3MC0xNjgw
-LXVybC1hSFIwY0hNNkx5OTNkM2N1YjNCMGFXTXlNREF3TG1OdmIKUzlzZFc1bGRIUmxjeTFrWlMx
-emIyeGxhV3d1YUhSdGJBP3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKExFTlRJTExF
-UyBERSBDT05UQUNUKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkwLTM3MC0xNjgw
-LXVybC1hSFIwY0hNNkx5OTNkM2N1YjNCMGFXTXlNREF3TG1OdmIKUzlzWlc1MGFXeHNaWE10WkdV
-dFkyOXVkR0ZqZEM1b2RHMXM/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooTk9TIDEy
-MDAgTUFHQVNJTlMpOgpodHRwOi8vbm9kZXMuZGdrZXlzLmNvbS9yL2NsaWMtOTAtMzcwLTE2ODAt
-dXJsLWFIUjBjSE02THk5M2QzY3ViM0IwYVdNeU1EQXdMbU52YgpTOXRZV2RoYzJsdWN5OXBibVJs
-ZUM4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKERJVEVTIExVSSBCT05ORSBGw4pU
-RSBBVkVDIERFUyBMVU5FVFRFUyAtIC0xNSUgU1VSIExFUyBTT0xBSVJFUyBGRU1NRVMgQVZFQwpM
-RSBDT0RFIFBST01PIE1BTUFOMjAxMyAtIEonRU4gUFJPRklURSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tl
-eXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNEb3ZMM2QzZHpRdWMyMWhjblJoWkhO
-bGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpDODRNVGMwTlRJM0x6RTNOVGN3TWk5
-YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9
-Jmdyb3VwPQoKKFJBWS1CQU4sIEdVRVNTLCBHVUNDSSwgWVZFUyBTQUlOVCBMQVVSRU5ULCBaQURJ
-RyAmIFZPTFRBSVJFLCBWT0dVRSwgUEFVTCAmCkpPRSwgTklOQSBSSUNDSSBLQVJMIExBR0VSRkVM
-RCwgSlVTVCBDQVZBTExJLCBNSVNTIFNJWFRZLCBNT1JHQU4sIEZFTkRJLApDQUxWSU4gS0xFSU4s
-IEJBTkFOQSBNT09OLCBDSFJJU1RJQU4gTEFDUk9JWCk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29t
-L3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNEb3ZMM2QzZHpRdWMyMWhjblJoWkhObGNuWmxj
-Cmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpDODRNVGMwTlRJM0x6RTNOVGN3TWk5YmRHbHRa
-WE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3Vw
-PQoKKFZPR1VFIC0gVk9HVUUgLSBWT0dVRS1WTzI3NDNTLUdSSVMgLSA2MSw0McKsIC0gTUFNQU4g
-MjAxMyAtMTUlKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkwLTM3MC0xNjgwLXVy
-bC1hSFIwY0RvdkwzZDNkelF1YzIxaGNuUmhaSE5sY25abGMKaTVqYjIwdlkyRnNiQzlqYkdsalky
-OXRiV0Z1WkM4NE1UYzBOVFF6THpFM05UY3dNaTliZEdsdFpYTjBZVzF3WFM5YmNtVm1aWEpsYm1O
-bFgKVDg/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooWVZFUyBTQUlOVCBMQVVSRU5U
-IC0gWVNMIC0gWVNMMjMyMS9TIMOiPz8gR3JpcyAgLSAxMzYsNTXCrCAtIE1BTUFOIDIwMTMKLTE1
-JSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNE
-b3ZMM2QzZHpRdWMyMWhjblJoWkhObGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpD
-ODRNVGMwTlRVekx6RTNOVGN3TWk5YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jn
-cm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKFJheS1iYW4gLSBPUklHSU5BTCBXQVlGQVJF
-UiAtIFJCMjE0MCDDoj8/IEVDQUlMTEUgIC0gOTMsMjDCrCAtIE1BTUFOIDIwMTMKLTE1JSk6Cmh0
-dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNEb3ZMM2Qz
-ZHpRdWMyMWhjblJoWkhObGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpDODRNVGMx
-TVRRMUx6RTNOVGN3TWk5YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jncm91cD1w
-XzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKFJheS1iYW4gLSBSQVkgQkFOIC0gSkFDS0lFIE9ISCBS
-QjQxMDEgw6I/PyBOT0lSIC0gMTA1LDQwwqwgLSBNQU1BTiAyMDEzCi0xNSUpOgpodHRwOi8vbm9k
-ZXMuZGdrZXlzLmNvbS9yL2NsaWMtOTAtMzcwLTE2ODAtdXJsLWFIUjBjRG92TDNkM2R6UXVjMjFo
-Y25SaFpITmxjblpsYwppNWpiMjB2WTJGc2JDOWpiR2xqWTI5dGJXRnVaQzg0TVRjMU1UY3dMekUz
-TlRjd01pOWJkR2x0WlhOMFlXMXdYUzliY21WbVpYSmxibU5sWApUOD9yZ3JvdXA9cF82NjY1JnRy
-YWNrYWZmPSZncm91cD0KCihSYXktYmFuIC0gQVZJQVRPUiBMQVJHRSAtIFJCMzAyNSDDoj8/IE5P
-SVIgIC0gMTA5LDQwwqwgLSBNQU1BTiAyMDEzIC0xNSUpOgpodHRwOi8vbm9kZXMuZGdrZXlzLmNv
-bS9yL2NsaWMtOTAtMzcwLTE2ODAtdXJsLWFIUjBjRG92TDNkM2R6UXVjMjFoY25SaFpITmxjblps
-YwppNWpiMjB2WTJGc2JDOWpiR2xqWTI5dGJXRnVaQzg0TVRjMU1qTTVMekUzTlRjd01pOWJkR2x0
-WlhOMFlXMXdYUzliY21WbVpYSmxibU5sWApUOD9yZ3JvdXA9cF82NjY1JnRyYWNrYWZmPSZncm91
-cD0KCihGRU5ESSAtIEZFTkRJIC0gRlM1Mjc1IMOiPz8gTk9JUiAtIDEwNSw0MMKsIC0gTUFNQU4g
-MjAxMyAtMTUlKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkwLTM3MC0xNjgwLXVy
-bC1hSFIwY0RvdkwzZDNkelF1YzIxaGNuUmhaSE5sY25abGMKaTVqYjIwdlkyRnNiQzlqYkdsalky
-OXRiV0Z1WkM4NE1UYzFNamMxTHpFM05UY3dNaTliZEdsdFpYTjBZVzF3WFM5YmNtVm1aWEpsYm1O
-bFgKVDg/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooTElWUkFJU09OIEVOIDI0SCBH
-UkFUVUlURSAtIENvbW1hbmRleiBhdmFudCAxNmggZXQgcmVjZXZleiBncmF0dWl0ZW1lbnQgdm9z
-CmFydGljbGVzIGxlIGxlbmRlbWFpbiogZGFucyBsZSBtYWdhc2lucyBkZSB2b3RyZSBjaG9peCwg
-b3Ugc291cyA0OGggbWluaW11bQrDoCBkb21pY2lsZS4gKCpzYXVmIGFydGljbGVzIG5vbi1zdG9j
-a8Opcywgb3UgY29tbWFuZGUgcGFzc8OpZXMgbGUgc2FtZWRpIG91CmRpbWFuY2hlKSk6Cmh0dHA6
-Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNEb3ZMM2QzZHpR
-dWMyMWhjblJoWkhObGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpDODRNVGMwTlRJ
-M0x6RTNOVGN3TWk5YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jncm91cD1wXzY2
-NjUmdHJhY2thZmY9Jmdyb3VwPQoKKFJFVE9VUiBHUkFUVUlUIEVOIE1BR0FTSU4gLSBWb3VzIGRp
-c3Bvc2V6IGRlIDMwIGpvdXJzIHBvdXIgcmV0b3VybmVyCmdyYXR1aXRlbWVudCB2b3MgcHJvZHVp
-dHMgZGFucyBsZSBtYWdhc2luIE9wdGljIDIwMDAgZGUgdm90cmUgY2hvaXggZXQgw6p0cmUKcmVt
-Ym91cnPDqSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwt
-YUhSMGNEb3ZMM2QzZHpRdWMyMWhjblJoWkhObGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0
-YldGdVpDODRNVGMwTlRJM0x6RTNOVGN3TWk5YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxY
-ClQ4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKDFFUkUgRU5TRUlHTkUgRlJBTkNB
-SVNFIC0gTm9zIDEyMDAgb3B0aWNpZW5zIGNvbnN0aXR1ZW50IGxlIDFlciByw6lzZWF1CkZyYW7D
-p2FpcyBkJ29wdGlxdWUgZXQgdm91cyBnYXJhbnRpc3NlbnQgcHJveGltaXTDqSBldCBhY2NvbXBh
-Z25lbWVudCBhdQpxdW90aWRpZW4uKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkw
-LTM3MC0xNjgwLXVybC1hSFIwY0RvdkwzZDNkelF1YzIxaGNuUmhaSE5sY25abGMKaTVqYjIwdlky
-RnNiQzlqYkdsalkyOXRiV0Z1WkM4NE1UYzBOVEkzTHpFM05UY3dNaTliZEdsdFpYTjBZVzF3WFM5
-YmNtVm1aWEpsYm1ObFgKVDg/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooUmVqb2ln
-bmV6LW5vdXMgc3VyIG5vdHJlIHBhZ2UgZmFuIGZhY2Vib29rKToKaHR0cDovL25vZGVzLmRna2V5
-cy5jb20vci9jbGljLTkwLTM3MC0xNjgwLXVybC1hSFIwY0hNNkx5OTNkM2N1Wm1GalpXSnZiMnN1
-WTI5dEwKMjl3ZEdsak1qQXdNQT9yZ3JvdXA9cF82NjY1JnRyYWNrYWZmPSZncm91cD0KCihPUFRJ
-QyAyMDAwIEEgVk9UUkUgw4lDT1VURSAtIDAxIDQxIDczIDI2IDI2KQoKKiBMYSByZW1pc2Ugcydh
-cHBsaXF1ZSBzdXIgbGUgcHJpeCBkZSB2ZW50ZSBUVEMgZGVzIHNvbGFpcmVzIGZlbW1lIGNvbnRl
-bnVlcwpkYW5zIGxlIHBhbmllciwgZW4gc2Fpc2lzc2FudCBsZSBjb2RlIGRlIHLDqWR1Y3Rpb24g
-TUFNQU4yMDEzIMOgIGwnw6l0YXBlICIKTWEgY29tbWFuZGUgIi4gT2ZmcmUgdmFsYWJsZSBleGNs
-dXNpdmVtZW50IHN1ciBsZSBzaXRlIE9wdGljMjAwMC5jb206Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMu
-Y29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNITTZMeTkzZDNjdWIzQjBhV015TURBd0xt
-TnZiClM4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKCiwgcG91ciB1biBhY2hhdCBl
-bnRyZSBsZSAxMyBtYWkgZXQgbGUgMjYgbWFpIDIwMTMuIFZpc3VlbHMgbm9uIGNvbnRyYWN0dWVs
-cy4KCgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5v
-cHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTM2NjQzMjIwNTM3MjA0
-CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTM2NjQzMjIwNTM3MjA0fn0KLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tClRyeSBOZXcgUmVsaWMgTm93ICYgV2UnbGwgU2VuZCBZb3UgdGhpcyBDb29sIFNoaXJ0Ck5l
-dyBSZWxpYyBpcyB0aGUgb25seSBTYWFTLWJhc2VkIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlIG1v
-bml0b3Jpbmcgc2VydmljZSAKdGhhdCBkZWxpdmVycyBwb3dlcmZ1bCBmdWxsIHN0YWNrIGFuYWx5
-dGljcy4gT3B0aW1pemUgYW5kIG1vbml0b3IgeW91cgpicm93c2VyLCBhcHAsICYgc2VydmVycyB3
-aXRoIGp1c3QgYSBmZXcgbGluZXMgb2YgY29kZS4gVHJ5IE5ldyBSZWxpYwphbmQgZ2V0IHRoaXMg
-YXdlc29tZSBOZXJkIExpZmUgc2hpcnQhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvbmV3cmVsaWNfZDJk
-X21heQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+On Tuesday, May 21, 2013 7:37 PM, Stephen Warren wrote:
+>
+> Fill in the recently added spi_master.bits_per_word_mask field in as
+> many drivers as possible. Make related cleanups, such as removing any
+> redundant error-checking, or empty setup callbacks.
+>
+> Cc: device-drivers-devel@blackfin.uclinux.org
+> Cc: Mike Frysinger <vapier@gentoo.org>
+> Signed-off-by: Stephen Warren <swarren@wwwdotorg.org>
+> ---
+
+<snip>
+
+>  drivers/spi/spi-ep93xx.c        |   11 +----------
+
+<snip>
+
+> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+> index d7bac60..f1b1497 100644
+> --- a/drivers/spi/spi-ep93xx.c
+> +++ b/drivers/spi/spi-ep93xx.c
+> @@ -296,12 +296,6 @@ static int ep93xx_spi_setup(struct spi_device *spi)
+>  	struct ep93xx_spi *espi = spi_master_get_devdata(spi->master);
+>  	struct ep93xx_spi_chip *chip;
+>  
+> -	if (spi->bits_per_word < 4 || spi->bits_per_word > 16) {
+> -		dev_err(&espi->pdev->dev, "invalid bits per word %d\n",
+> -			spi->bits_per_word);
+> -		return -EINVAL;
+> -	}
+> -
+>  	chip = spi_get_ctldata(spi);
+>  	if (!chip) {
+>  		dev_dbg(&espi->pdev->dev, "initial setup for %s\n",
+> @@ -365,10 +359,6 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+>  
+>  	/* first validate each transfer */
+>  	list_for_each_entry(t, &msg->transfers, transfer_list) {
+> -		if (t->bits_per_word) {
+> -			if (t->bits_per_word < 4 || t->bits_per_word > 16)
+> -				return -EINVAL;
+> -		}
+>  		if (t->speed_hz && t->speed_hz < espi->min_rate)
+>  				return -EINVAL;
+>  	}
+> @@ -1046,6 +1036,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+>  	master->bus_num = pdev->id;
+>  	master->num_chipselect = info->num_chipselect;
+>  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+> +	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 16);
+>  
+>  	platform_set_drvdata(pdev, master);
+
+Seems reasonable. For the spi-ep93xx driver:
+
+Acked-by: H Hartley Sweeten <hsweeten@visionengravers.com>

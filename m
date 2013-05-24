@@ -1,114 +1,125 @@
-From: Thierry Reding <thierry.reding@avionic-design.de>
-Subject: Re: [PATCH 00/33] devm improvement series, part 1, take 2
-Date: Thu, 23 May 2013 22:32:43 +0200
-Message-ID: <20130523203243.GA18069@avionic-0098.adnet.avionic-design.de>
-References: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
+From: "Optic2ooo" <lisa@a.optincake.com>
+Subject: Special fete des meres -15% sur les solaires Vogue, YvesSaintLaurent,
+	RayBan, Fendi...
+Date: Fri, 24 May 2013 04:36:07 +0100
+Message-ID: <0.0.1A9.FB1.1CE582FD3657FCC.0@mta209.pur3.net>
+Reply-To: Optic2ooo <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1637291975=="
-Cc: linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
- linux-usb@vger.kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Linus Walleij <linus.walleij@linaro.org>, Matt Mackall <mpm@selenic.com>,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Jaroslav Kysela <perex@perex.cz>, linux-ide@vger.kernel.org,
- netdev@vger.kernel.org, linux-mtd@lists.infradead.org,
- linux-i2c@vger.kernel.org, Evgeniy Polyakov <zbr@ioremap.net>,
- Wan ZongShun <mcuos.com@gmail.com>, ac100@lists.launchpad.net,
- devel@driverdev.osuosl.org, Kukjin Kim <kgene.kim@samsung.com>,
- Russell King <linux@arm.linux.org.uk>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Florian Tobias Schandinat <FlorianSchandinat@gmx.de>,
- Stephen Warren <swarren@wwwdotorg.org>, "Rafael J. Wysocki" <rjw@sisk.pl>,
- cpufreq@vger
-To: Wolfram Sang <wsa@the-dreams.de>
-Return-path: <devel-bounces@linuxdriverproject.org>
-In-Reply-To: <1368702961-4325-1-git-send-email-wsa@the-dreams.de>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/devel>,
- <mailto:devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/devel/>
-List-Post: <mailto:devel@linuxdriverproject.org>
-List-Help: <mailto:devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/devel>,
- <mailto:devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: devel-bounces@linuxdriverproject.org
-Sender: "devel" <devel-bounces@linuxdriverproject.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============1637291975==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="cWoXeonUoKmBZSoM"
-Content-Disposition: inline
-
-
---cWoXeonUoKmBZSoM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, May 16, 2013 at 01:15:28PM +0200, Wolfram Sang wrote:
-> Lately, I have been experimenting how to improve the devm interface to ma=
-ke
-> writing device drivers easier and less error prone while also getting rid=
- of
-> its subtle issues. I think it has more potential but still needs work and
-> definately conistency, especiall in its usage.
->=20
-> The first thing I come up with is a low hanging fruit regarding
-> devm_ioremap_resouce(). This function already checks if the passed resour=
-ce is
-> valid and gives an error message if not. So, we can remove similar checks=
- from
-> the drivers and get rid of a bit of code and a number of inconsistent err=
-or
-> strings.
-
-Sorry for jumping in so late. I generally like the idea. One small
-inconvenience is that devm_ioremap_resource() returns -EINVAL if
-res =3D=3D NULL, which means that drivers will now also return -EINVAL
-in cases where no resource was returned. Typically drivers handle
-this by returning something like -ENODEV, -ENXIO, -ENOENT. Some do
-return -EINVAL but perhaps having a separate error code (and maybe
-error message as well) for a missing resource would be helpful.
-
-Doing this would be rather easy now that you've paved the way by
-making devm_ioremap_resource() usage consistent across drivers.
-
-Thierry
-
---cWoXeonUoKmBZSoM
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRnnzqAAoJEN0jrNd/PrOh7SQP/0805wibt2DFxkTSFnZBxDGZ
-hU1p6eTzQ5Nh3uDq449RqWs8GsB+f2osxomSH71KMqGJmlKi0jc0gtcINotD6FH+
-F8ABG95AKXi5TmG9hEcdIv6eAzfI0AUAgx1izHLxQWLHIcVoca5GpptWPrkOlW6U
-NujE+Lz3rYYtbNMoK8jexasO9uQzo/V6fB3IMVdnEx80CE5o6TbTYBQz5fInVcs8
-QlA0w37qFEcmOq1BsEJNdlcm0JUJ+3sXoFUdnN9jPGcrTgiOg8jXx6GpKLMRJyA3
-cToFc9kVXqgOOtYPw08CUkrzkqF/E0i11IaBOtlvXG489AbvlUOeF95JQEZvLgu9
-ScBNy/PqNN9Z3jZhoiqsTd//QGBb5kNUKEs5v30o4zHpy+3buWpOSiUgJLvX18la
-o8Krom/w4KEH01JRqLSCJLHwZXvyOj6DWW/ogPPMpirX+TTdyDLt4XbGP5GU6iVh
-um0drkT9bUruG2pQVDeNkVwpTMedd5xa96kTXLu0D3MB7Lvfp43mVDVAuYG/FjhU
-m4NkG0SY8N07Upidbb2LZSvAEydzHVJcF7kobEMRnQwH99VYyRUmviKHhoP469T0
-VyKKbTxfTlSWkLQqvgS3eVraylffA8O6eV4RHpAYZyZlsoa+5JulahO69B0yebx2
-atBr1eUuDOTwTR9IUz59
-=pYVl
------END PGP SIGNATURE-----
-
---cWoXeonUoKmBZSoM--
-
---===============1637291975==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-devel mailing list
-devel@linuxdriverproject.org
-http://driverdev.linuxdriverproject.org/mailman/listinfo/devel
-
---===============1637291975==--
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTM2NjQzMjIwNTM3MjA0CgoKCgoKKE9wdGljIDIwMDAgLSBVbmUgbm91dmVsbGUgdmlzaW9uIGRl
+IGxhIHZpZSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwt
+YUhSMGNITTZMeTkzZDNjdWIzQjBhV015TURBd0xtTnZiClM4P3Jncm91cD1wXzY2NjUmdHJhY2th
+ZmY9Jmdyb3VwPQoKKExVTkVUVEVTIERFIFZVRSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3Iv
+Y2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNITTZMeTkzZDNjdWIzQjBhV015TURBd0xtTnZiClM5
+c2RXNWxkSFJsY3k1b2RHMXM/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooTFVORVRU
+RVMgREUgU09MRUlMKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkwLTM3MC0xNjgw
+LXVybC1hSFIwY0hNNkx5OTNkM2N1YjNCMGFXTXlNREF3TG1OdmIKUzlzZFc1bGRIUmxjeTFrWlMx
+emIyeGxhV3d1YUhSdGJBP3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKExFTlRJTExF
+UyBERSBDT05UQUNUKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkwLTM3MC0xNjgw
+LXVybC1hSFIwY0hNNkx5OTNkM2N1YjNCMGFXTXlNREF3TG1OdmIKUzlzWlc1MGFXeHNaWE10WkdV
+dFkyOXVkR0ZqZEM1b2RHMXM/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooTk9TIDEy
+MDAgTUFHQVNJTlMpOgpodHRwOi8vbm9kZXMuZGdrZXlzLmNvbS9yL2NsaWMtOTAtMzcwLTE2ODAt
+dXJsLWFIUjBjSE02THk5M2QzY3ViM0IwYVdNeU1EQXdMbU52YgpTOXRZV2RoYzJsdWN5OXBibVJs
+ZUM4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKERJVEVTIExVSSBCT05ORSBGw4pU
+RSBBVkVDIERFUyBMVU5FVFRFUyAtIC0xNSUgU1VSIExFUyBTT0xBSVJFUyBGRU1NRVMgQVZFQwpM
+RSBDT0RFIFBST01PIE1BTUFOMjAxMyAtIEonRU4gUFJPRklURSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tl
+eXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNEb3ZMM2QzZHpRdWMyMWhjblJoWkhO
+bGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpDODRNVGMwTlRJM0x6RTNOVGN3TWk5
+YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9
+Jmdyb3VwPQoKKFJBWS1CQU4sIEdVRVNTLCBHVUNDSSwgWVZFUyBTQUlOVCBMQVVSRU5ULCBaQURJ
+RyAmIFZPTFRBSVJFLCBWT0dVRSwgUEFVTCAmCkpPRSwgTklOQSBSSUNDSSBLQVJMIExBR0VSRkVM
+RCwgSlVTVCBDQVZBTExJLCBNSVNTIFNJWFRZLCBNT1JHQU4sIEZFTkRJLApDQUxWSU4gS0xFSU4s
+IEJBTkFOQSBNT09OLCBDSFJJU1RJQU4gTEFDUk9JWCk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29t
+L3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNEb3ZMM2QzZHpRdWMyMWhjblJoWkhObGNuWmxj
+Cmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpDODRNVGMwTlRJM0x6RTNOVGN3TWk5YmRHbHRa
+WE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3Vw
+PQoKKFZPR1VFIC0gVk9HVUUgLSBWT0dVRS1WTzI3NDNTLUdSSVMgLSA2MSw0McKsIC0gTUFNQU4g
+MjAxMyAtMTUlKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkwLTM3MC0xNjgwLXVy
+bC1hSFIwY0RvdkwzZDNkelF1YzIxaGNuUmhaSE5sY25abGMKaTVqYjIwdlkyRnNiQzlqYkdsalky
+OXRiV0Z1WkM4NE1UYzBOVFF6THpFM05UY3dNaTliZEdsdFpYTjBZVzF3WFM5YmNtVm1aWEpsYm1O
+bFgKVDg/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooWVZFUyBTQUlOVCBMQVVSRU5U
+IC0gWVNMIC0gWVNMMjMyMS9TIMOiPz8gR3JpcyAgLSAxMzYsNTXCrCAtIE1BTUFOIDIwMTMKLTE1
+JSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNE
+b3ZMM2QzZHpRdWMyMWhjblJoWkhObGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpD
+ODRNVGMwTlRVekx6RTNOVGN3TWk5YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jn
+cm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKFJheS1iYW4gLSBPUklHSU5BTCBXQVlGQVJF
+UiAtIFJCMjE0MCDDoj8/IEVDQUlMTEUgIC0gOTMsMjDCrCAtIE1BTUFOIDIwMTMKLTE1JSk6Cmh0
+dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNEb3ZMM2Qz
+ZHpRdWMyMWhjblJoWkhObGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpDODRNVGMx
+TVRRMUx6RTNOVGN3TWk5YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jncm91cD1w
+XzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKFJheS1iYW4gLSBSQVkgQkFOIC0gSkFDS0lFIE9ISCBS
+QjQxMDEgw6I/PyBOT0lSIC0gMTA1LDQwwqwgLSBNQU1BTiAyMDEzCi0xNSUpOgpodHRwOi8vbm9k
+ZXMuZGdrZXlzLmNvbS9yL2NsaWMtOTAtMzcwLTE2ODAtdXJsLWFIUjBjRG92TDNkM2R6UXVjMjFo
+Y25SaFpITmxjblpsYwppNWpiMjB2WTJGc2JDOWpiR2xqWTI5dGJXRnVaQzg0TVRjMU1UY3dMekUz
+TlRjd01pOWJkR2x0WlhOMFlXMXdYUzliY21WbVpYSmxibU5sWApUOD9yZ3JvdXA9cF82NjY1JnRy
+YWNrYWZmPSZncm91cD0KCihSYXktYmFuIC0gQVZJQVRPUiBMQVJHRSAtIFJCMzAyNSDDoj8/IE5P
+SVIgIC0gMTA5LDQwwqwgLSBNQU1BTiAyMDEzIC0xNSUpOgpodHRwOi8vbm9kZXMuZGdrZXlzLmNv
+bS9yL2NsaWMtOTAtMzcwLTE2ODAtdXJsLWFIUjBjRG92TDNkM2R6UXVjMjFoY25SaFpITmxjblps
+YwppNWpiMjB2WTJGc2JDOWpiR2xqWTI5dGJXRnVaQzg0TVRjMU1qTTVMekUzTlRjd01pOWJkR2x0
+WlhOMFlXMXdYUzliY21WbVpYSmxibU5sWApUOD9yZ3JvdXA9cF82NjY1JnRyYWNrYWZmPSZncm91
+cD0KCihGRU5ESSAtIEZFTkRJIC0gRlM1Mjc1IMOiPz8gTk9JUiAtIDEwNSw0MMKsIC0gTUFNQU4g
+MjAxMyAtMTUlKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkwLTM3MC0xNjgwLXVy
+bC1hSFIwY0RvdkwzZDNkelF1YzIxaGNuUmhaSE5sY25abGMKaTVqYjIwdlkyRnNiQzlqYkdsalky
+OXRiV0Z1WkM4NE1UYzFNamMxTHpFM05UY3dNaTliZEdsdFpYTjBZVzF3WFM5YmNtVm1aWEpsYm1O
+bFgKVDg/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooTElWUkFJU09OIEVOIDI0SCBH
+UkFUVUlURSAtIENvbW1hbmRleiBhdmFudCAxNmggZXQgcmVjZXZleiBncmF0dWl0ZW1lbnQgdm9z
+CmFydGljbGVzIGxlIGxlbmRlbWFpbiogZGFucyBsZSBtYWdhc2lucyBkZSB2b3RyZSBjaG9peCwg
+b3Ugc291cyA0OGggbWluaW11bQrDoCBkb21pY2lsZS4gKCpzYXVmIGFydGljbGVzIG5vbi1zdG9j
+a8Opcywgb3UgY29tbWFuZGUgcGFzc8OpZXMgbGUgc2FtZWRpIG91CmRpbWFuY2hlKSk6Cmh0dHA6
+Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNEb3ZMM2QzZHpR
+dWMyMWhjblJoWkhObGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0YldGdVpDODRNVGMwTlRJ
+M0x6RTNOVGN3TWk5YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxYClQ4P3Jncm91cD1wXzY2
+NjUmdHJhY2thZmY9Jmdyb3VwPQoKKFJFVE9VUiBHUkFUVUlUIEVOIE1BR0FTSU4gLSBWb3VzIGRp
+c3Bvc2V6IGRlIDMwIGpvdXJzIHBvdXIgcmV0b3VybmVyCmdyYXR1aXRlbWVudCB2b3MgcHJvZHVp
+dHMgZGFucyBsZSBtYWdhc2luIE9wdGljIDIwMDAgZGUgdm90cmUgY2hvaXggZXQgw6p0cmUKcmVt
+Ym91cnPDqSk6Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMuY29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwt
+YUhSMGNEb3ZMM2QzZHpRdWMyMWhjblJoWkhObGNuWmxjCmk1amIyMHZZMkZzYkM5amJHbGpZMjl0
+YldGdVpDODRNVGMwTlRJM0x6RTNOVGN3TWk5YmRHbHRaWE4wWVcxd1hTOWJjbVZtWlhKbGJtTmxY
+ClQ4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKKDFFUkUgRU5TRUlHTkUgRlJBTkNB
+SVNFIC0gTm9zIDEyMDAgb3B0aWNpZW5zIGNvbnN0aXR1ZW50IGxlIDFlciByw6lzZWF1CkZyYW7D
+p2FpcyBkJ29wdGlxdWUgZXQgdm91cyBnYXJhbnRpc3NlbnQgcHJveGltaXTDqSBldCBhY2NvbXBh
+Z25lbWVudCBhdQpxdW90aWRpZW4uKToKaHR0cDovL25vZGVzLmRna2V5cy5jb20vci9jbGljLTkw
+LTM3MC0xNjgwLXVybC1hSFIwY0RvdkwzZDNkelF1YzIxaGNuUmhaSE5sY25abGMKaTVqYjIwdlky
+RnNiQzlqYkdsalkyOXRiV0Z1WkM4NE1UYzBOVEkzTHpFM05UY3dNaTliZEdsdFpYTjBZVzF3WFM5
+YmNtVm1aWEpsYm1ObFgKVDg/cmdyb3VwPXBfNjY2NSZ0cmFja2FmZj0mZ3JvdXA9CgooUmVqb2ln
+bmV6LW5vdXMgc3VyIG5vdHJlIHBhZ2UgZmFuIGZhY2Vib29rKToKaHR0cDovL25vZGVzLmRna2V5
+cy5jb20vci9jbGljLTkwLTM3MC0xNjgwLXVybC1hSFIwY0hNNkx5OTNkM2N1Wm1GalpXSnZiMnN1
+WTI5dEwKMjl3ZEdsak1qQXdNQT9yZ3JvdXA9cF82NjY1JnRyYWNrYWZmPSZncm91cD0KCihPUFRJ
+QyAyMDAwIEEgVk9UUkUgw4lDT1VURSAtIDAxIDQxIDczIDI2IDI2KQoKKiBMYSByZW1pc2Ugcydh
+cHBsaXF1ZSBzdXIgbGUgcHJpeCBkZSB2ZW50ZSBUVEMgZGVzIHNvbGFpcmVzIGZlbW1lIGNvbnRl
+bnVlcwpkYW5zIGxlIHBhbmllciwgZW4gc2Fpc2lzc2FudCBsZSBjb2RlIGRlIHLDqWR1Y3Rpb24g
+TUFNQU4yMDEzIMOgIGwnw6l0YXBlICIKTWEgY29tbWFuZGUgIi4gT2ZmcmUgdmFsYWJsZSBleGNs
+dXNpdmVtZW50IHN1ciBsZSBzaXRlIE9wdGljMjAwMC5jb206Cmh0dHA6Ly9ub2Rlcy5kZ2tleXMu
+Y29tL3IvY2xpYy05MC0zNzAtMTY4MC11cmwtYUhSMGNITTZMeTkzZDNjdWIzQjBhV015TURBd0xt
+TnZiClM4P3Jncm91cD1wXzY2NjUmdHJhY2thZmY9Jmdyb3VwPQoKCiwgcG91ciB1biBhY2hhdCBl
+bnRyZSBsZSAxMyBtYWkgZXQgbGUgMjYgbWFpIDIwMTMuIFZpc3VlbHMgbm9uIGNvbnRyYWN0dWVs
+cy4KCgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5v
+cHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTM2NjQzMjIwNTM3MjA0
+CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTM2NjQzMjIwNTM3MjA0fn0KLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tClRyeSBOZXcgUmVsaWMgTm93ICYgV2UnbGwgU2VuZCBZb3UgdGhpcyBDb29sIFNoaXJ0Ck5l
+dyBSZWxpYyBpcyB0aGUgb25seSBTYWFTLWJhc2VkIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlIG1v
+bml0b3Jpbmcgc2VydmljZSAKdGhhdCBkZWxpdmVycyBwb3dlcmZ1bCBmdWxsIHN0YWNrIGFuYWx5
+dGljcy4gT3B0aW1pemUgYW5kIG1vbml0b3IgeW91cgpicm93c2VyLCBhcHAsICYgc2VydmVycyB3
+aXRoIGp1c3QgYSBmZXcgbGluZXMgb2YgY29kZS4gVHJ5IE5ldyBSZWxpYwphbmQgZ2V0IHRoaXMg
+YXdlc29tZSBOZXJkIExpZmUgc2hpcnQhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvbmV3cmVsaWNfZDJk
+X21heQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
+ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
+Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
+aS1kZXZlbC1nZW5lcmFsCg==

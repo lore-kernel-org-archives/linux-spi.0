@@ -1,80 +1,67 @@
-From: H Hartley Sweeten <hartleys@visionengravers.com>
-Subject: RE: [PATCH 2/2] spi: convert drivers to use bits_per_word_mask
-Date: Fri, 24 May 2013 12:16:40 -0500
-Message-ID: <ADE657CA350FB648AAC2C43247A983F0021DA656FEA0@AUSP01VMBX24.collaborationhost.net>
-References: <1369190195-14598-1-git-send-email-swarren@wwwdotorg.org>
- <1369190195-14598-2-git-send-email-swarren@wwwdotorg.org>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH 01/17 v2] spi: hspi: fixup long delay time
+Date: Sat, 25 May 2013 10:47:40 +0900
+Message-ID: <20130525014739.GA28458@verge.net.au>
+References: <87li7fwgk8.wl%kuninori.morimoto.gx@renesas.com>
+ <87d2si4cdn.wl%kuninori.morimoto.gx@renesas.com>
+ <87bo824cbu.wl%kuninori.morimoto.gx@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	Mike Frysinger <vapier@gentoo.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"device-drivers-devel@blackfin.uclinux.org"
-	<device-drivers-devel@blackfin.uclinux.org>
-To: Stephen Warren <swarren@wwwdotorg.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Magnus <magnus.damm@gmail.com>,
+	Linux-SH <linux-sh@vger.kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@gmail.com>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
 	Mark Brown <broonie@kernel.org>,
-	Grant Likely <grant.likely@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1369190195-14598-2-git-send-email-swarren@wwwdotorg.org>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <87bo824cbu.wl%kuninori.morimoto.gx@renesas.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday, May 21, 2013 7:37 PM, Stephen Warren wrote:
->
-> Fill in the recently added spi_master.bits_per_word_mask field in as
-> many drivers as possible. Make related cleanups, such as removing any
-> redundant error-checking, or empty setup callbacks.
->
-> Cc: device-drivers-devel@blackfin.uclinux.org
-> Cc: Mike Frysinger <vapier@gentoo.org>
-> Signed-off-by: Stephen Warren <swarren@wwwdotorg.org>
+On Wed, May 22, 2013 at 08:14:33PM -0700, Kuninori Morimoto wrote:
+> Current HSPI driver is using msleep(20) on hspi_status_check_timeout(),
+> but it was too long delay for SPI device.
+> Bock-W board SPI access was too slow without this patch.
+> This patch uses udelay(10) for it.
+> 
+> Tested-by: Yusuke Goda <yusuke.goda.sx@renesas.com>
+> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+
+Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
+
+I'm not quite sure of the history of this patch,
+but I have added Mark Brown, Grant Likely and spi-devel-general
+to the recipients of this email. Mark, Grant, is it possible
+for you to pick this patch up?
+
 > ---
-
-<snip>
-
->  drivers/spi/spi-ep93xx.c        |   11 +----------
-
-<snip>
-
-> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-> index d7bac60..f1b1497 100644
-> --- a/drivers/spi/spi-ep93xx.c
-> +++ b/drivers/spi/spi-ep93xx.c
-> @@ -296,12 +296,6 @@ static int ep93xx_spi_setup(struct spi_device *spi)
->  	struct ep93xx_spi *espi = spi_master_get_devdata(spi->master);
->  	struct ep93xx_spi_chip *chip;
+> v1 -> v2
+> 
+>  - no change
+> 
+>  drivers/spi/spi-sh-hspi.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+> index 60cfae5..eab593e 100644
+> --- a/drivers/spi/spi-sh-hspi.c
+> +++ b/drivers/spi/spi-sh-hspi.c
+> @@ -89,7 +89,7 @@ static int hspi_status_check_timeout(struct hspi_priv *hspi, u32 mask, u32 val)
+>  		if ((mask & hspi_read(hspi, SPSR)) == val)
+>  			return 0;
 >  
-> -	if (spi->bits_per_word < 4 || spi->bits_per_word > 16) {
-> -		dev_err(&espi->pdev->dev, "invalid bits per word %d\n",
-> -			spi->bits_per_word);
-> -		return -EINVAL;
-> -	}
-> -
->  	chip = spi_get_ctldata(spi);
->  	if (!chip) {
->  		dev_dbg(&espi->pdev->dev, "initial setup for %s\n",
-> @@ -365,10 +359,6 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
->  
->  	/* first validate each transfer */
->  	list_for_each_entry(t, &msg->transfers, transfer_list) {
-> -		if (t->bits_per_word) {
-> -			if (t->bits_per_word < 4 || t->bits_per_word > 16)
-> -				return -EINVAL;
-> -		}
->  		if (t->speed_hz && t->speed_hz < espi->min_rate)
->  				return -EINVAL;
+> -		msleep(20);
+> +		udelay(10);
 >  	}
-> @@ -1046,6 +1036,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
->  	master->bus_num = pdev->id;
->  	master->num_chipselect = info->num_chipselect;
->  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-> +	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 16);
 >  
->  	platform_set_drvdata(pdev, master);
-
-Seems reasonable. For the spi-ep93xx driver:
-
-Acked-by: H Hartley Sweeten <hsweeten@visionengravers.com>
+>  	dev_err(hspi->dev, "timeout\n");
+> -- 
+> 1.7.9.5
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-sh" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 

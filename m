@@ -1,67 +1,55 @@
-From: Simon Horman <horms@verge.net.au>
-Subject: Re: [PATCH 01/17 v2] spi: hspi: fixup long delay time
-Date: Sat, 25 May 2013 10:47:40 +0900
-Message-ID: <20130525014739.GA28458@verge.net.au>
-References: <87li7fwgk8.wl%kuninori.morimoto.gx@renesas.com>
- <87d2si4cdn.wl%kuninori.morimoto.gx@renesas.com>
- <87bo824cbu.wl%kuninori.morimoto.gx@renesas.com>
+From: "Cafe Coton" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?Q2hlbWlzZXMgZW4gY290b24gZGUgR2l6YSDDoCAtNDAl?=
+Date: Sat, 25 May 2013 03:35:22 +0100
+Message-ID: <0.0.1B9.7C9.1CE58F0813DAAF0.0@mta209.pur3.net>
+Reply-To: Cafe Coton <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Magnus <magnus.damm@gmail.com>,
-	Linux-SH <linux-sh@vger.kernel.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@gmail.com>
-To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <87bo824cbu.wl%kuninori.morimoto.gx@renesas.com>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 22, 2013 at 08:14:33PM -0700, Kuninori Morimoto wrote:
-> Current HSPI driver is using msleep(20) on hspi_status_check_timeout(),
-> but it was too long delay for SPI device.
-> Bock-W board SPI access was too slow without this patch.
-> This patch uses udelay(10) for it.
-> 
-> Tested-by: Yusuke Goda <yusuke.goda.sx@renesas.com>
-> Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-
-Reviewed-by: Simon Horman <horms+renesas@verge.net.au>
-
-I'm not quite sure of the history of this patch,
-but I have added Mark Brown, Grant Likely and spi-devel-general
-to the recipients of this email. Mark, Grant, is it possible
-for you to pick this patch up?
-
-> ---
-> v1 -> v2
-> 
->  - no change
-> 
->  drivers/spi/spi-sh-hspi.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-> index 60cfae5..eab593e 100644
-> --- a/drivers/spi/spi-sh-hspi.c
-> +++ b/drivers/spi/spi-sh-hspi.c
-> @@ -89,7 +89,7 @@ static int hspi_status_check_timeout(struct hspi_priv *hspi, u32 mask, u32 val)
->  		if ((mask & hspi_read(hspi, SPSR)) == val)
->  			return 0;
->  
-> -		msleep(20);
-> +		udelay(10);
->  	}
->  
->  	dev_err(hspi->dev, "timeout\n");
-> -- 
-> 1.7.9.5
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-sh" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTM2OTMzMjIwNTM3MjI0CgoKCgpDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVt
+aXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbgpjb3RvbiBkZSBHaXphIMOg
+IC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBk
+ZSBHaXphIMOgCi00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBl
+biBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbgpjb3RvbiBkZSBHaXphIMOgIC00MCVD
+aGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXph
+IMOgCi00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3Rv
+biBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbgpjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNl
+cyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgCi00
+MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBH
+aXphIMOgIC00MCVDaGVtaXNlcyBlbgpjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBj
+b3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgCi00MCVDaGVt
+aXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOg
+IC00MCVDaGVtaXNlcyBlbgpjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBk
+ZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgCi00MCVDaGVtaXNlcyBl
+biBjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgIC00MCVD
+aGVtaXNlcyBlbgpjb3RvbiBkZSBHaXphIMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXph
+IMOgIC00MCVDaGVtaXNlcyBlbiBjb3RvbiBkZSBHaXphIMOgCi00MCVDaGVtaXNlcyBlbiBjb3Rv
+biBkZSBHaXphIMOgIC00MCUKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXog
+OgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTM2
+OTMzMjIwNTM3MjI0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTM2OTMzMjIwNTM3MjI0fn0KLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tClRyeSBOZXcgUmVsaWMgTm93ICYgV2UnbGwgU2VuZCBZb3UgdGhpcyBD
+b29sIFNoaXJ0Ck5ldyBSZWxpYyBpcyB0aGUgb25seSBTYWFTLWJhc2VkIGFwcGxpY2F0aW9uIHBl
+cmZvcm1hbmNlIG1vbml0b3Jpbmcgc2VydmljZSAKdGhhdCBkZWxpdmVycyBwb3dlcmZ1bCBmdWxs
+IHN0YWNrIGFuYWx5dGljcy4gT3B0aW1pemUgYW5kIG1vbml0b3IgeW91cgpicm93c2VyLCBhcHAs
+ICYgc2VydmVycyB3aXRoIGp1c3QgYSBmZXcgbGluZXMgb2YgY29kZS4gVHJ5IE5ldyBSZWxpYwph
+bmQgZ2V0IHRoaXMgYXdlc29tZSBOZXJkIExpZmUgc2hpcnQhIGh0dHA6Ly9wLnNmLm5ldC9zZnUv
+bmV3cmVsaWNfZDJkX21heQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

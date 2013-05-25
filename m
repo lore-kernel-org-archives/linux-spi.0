@@ -1,33 +1,61 @@
-From: Henrietta Lutunku <inu-ooduxAEi7gXtt0EhB6fy4g@public.gmane.org>
-Subject: [SPAM] complements
-Date: Sat, 25 May 2013 01:06:02 -0700
-Message-ID: <7MBCS4FG-FCGL-FO-8DEH-4T0MLL3F6X60@netspace.net.au>
-Reply-To: henlutunku1-jtpRmYsQNJU@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 01/17 v2] spi: hspi: fixup long delay time
+Date: Sat, 25 May 2013 10:32:19 -0400
+Message-ID: <20130525143219.GE7660@sirena.org.uk>
+References: <87li7fwgk8.wl%kuninori.morimoto.gx@renesas.com>
+ <87d2si4cdn.wl%kuninori.morimoto.gx@renesas.com>
+ <87bo824cbu.wl%kuninori.morimoto.gx@renesas.com>
+ <20130525014739.GA28458@verge.net.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="vv4Sf/kQfcwinyKX"
+Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
+	Magnus <magnus.damm@gmail.com>,
+	Linux-SH <linux-sh@vger.kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@gmail.com>
+To: Simon Horman <horms@verge.net.au>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20130525014739.GA28458@verge.net.au>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Good day am Henriette, i do pray that this email meets you well,Though we
-haven't met or seen each other before but i believe that nature has a way of
-Bringing people together for a Particular Purpose.if you need a female friend Contact me back.
 
+--vv4Sf/kQfcwinyKX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Sat, May 25, 2013 at 10:47:40AM +0900, Simon Horman wrote:
 
+> I'm not quite sure of the history of this patch,
+> but I have added Mark Brown, Grant Likely and spi-devel-general
+> to the recipients of this email. Mark, Grant, is it possible
+> for you to pick this patch up?
 
-------------------------------------------------------------------------------
-Try New Relic Now & We'll Send You this Cool Shirt
-New Relic is the only SaaS-based application performance monitoring service 
-that delivers powerful full stack analytics. Optimize and monitor your
-browser, app, & servers with just a few lines of code. Try New Relic
-and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_may
+If someone sends me the patch...
+
+--vv4Sf/kQfcwinyKX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRoMtwAAoJELSic+t+oim9zg4QAJkuOGuLk71phSfmqTpXQfUn
+KpvjaHCHcIjzK/U/UeecbPwToeTv6SAkqe0WLyGOxSCkeLsr1Ec+7QmQETY91JAE
+nYtk0UZIX8fTqlBOhz8ZXD8YfETloicLEhPQa83w7q1rcnyPCNZ7B/ar6IoYIW5C
+GGedmELL1qO5RjM4aBwWojXNt5nCIrZjXUkJGJGjrpv/QLjc0RXK7KeLLrbHS+0O
+LFPMuE7O/KtV6wUPD1aF0rk7+zinoNbSdaVxhuocLcavkNWCyuRAge4xEPgRpkvx
+T19sO046SLIP91h1C71FhUreUFAAwlQz4wPtztagpjdQdI61dVCKWhkTHRO2WRYy
+woxU7niq4VAFDStkm/CUFCYc731ajISUFCbmoHqdTao6i6jNYHSbd80iSAuD/H4X
+BV9nQ+6tOdwavWT9yHzKATH3mqs+ivEnSxYAouHCPC8SnnlpNaSZnInSLjiSKeqx
+s8dIZ10rZG7ThP/WLxeZ3z9eiuvjLBF38NdILYpqMxnIgY9gNOxWsZ484CrW4RFp
+vHRGYmAI7m3mGF/jfPib1/vSLwHjzVccT3zRPsfpYdx49QIjkNeOn1mvjNsDVeYq
+9xsYdfAydR03EIzM3uDqiQNxtflo8rsbFVKJp+JakhHuHa8qJMocwpmpnwqVbdKA
+qlJQnWe+5hPyH6YwGa5p
+=vww4
+-----END PGP SIGNATURE-----
+
+--vv4Sf/kQfcwinyKX--

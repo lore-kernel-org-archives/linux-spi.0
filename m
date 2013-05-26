@@ -1,52 +1,40 @@
-From: "Teddy Smith par nl-promos" <lisa@a.optincake.com>
-Subject: Prolongation du Destockage Teddy Smith
-Date: Sun, 26 May 2013 06:21:06 +0100
-Message-ID: <0.0.119.116.1CE59D0D2C6DB5E.0@mta205.pur3.net>
-Reply-To: Teddy Smith par nl-promos <lisa@a.optincake.com>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH 01/17 v2] spi: hspi: fixup long delay time
+Date: Sun, 26 May 2013 22:28:48 +0900
+Message-ID: <20130526132848.GG11134@verge.net.au>
+References: <87li7fwgk8.wl%kuninori.morimoto.gx@renesas.com>
+ <87d2si4cdn.wl%kuninori.morimoto.gx@renesas.com>
+ <87bo824cbu.wl%kuninori.morimoto.gx@renesas.com>
+ <20130525014739.GA28458@verge.net.au>
+ <20130525143219.GE7660@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
+	Magnus <magnus.damm@gmail.com>,
+	Linux-SH <linux-sh@vger.kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20130525143219.GE7660@sirena.org.uk>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTM3MjkzMjIwNTM3MjI0CgoKCgoKUHJvbG9uZ2F0aW9uIGR1IERlc3RvY2thZ2UgVGVkZHkgU21p
-dGhQcm9sb25nYXRpb24gZHUgRGVzdG9ja2FnZSBUZWRkeQpTbWl0aFByb2xvbmdhdGlvbiBkdSBE
-ZXN0b2NrYWdlIFRlZGR5IFNtaXRoUHJvbG9uZ2F0aW9uIGR1IERlc3RvY2thZ2UgVGVkZHkKU21p
-dGhQcm9sb25nYXRpb24gZHUgRGVzdG9ja2FnZSBUZWRkeSBTbWl0aFByb2xvbmdhdGlvbiBkdSBE
-ZXN0b2NrYWdlIFRlZGR5ClNtaXRoUHJvbG9uZ2F0aW9uIGR1IERlc3RvY2thZ2UgVGVkZHkgU21p
-dGhQcm9sb25nYXRpb24gZHUgRGVzdG9ja2FnZSBUZWRkeQpTbWl0aFByb2xvbmdhdGlvbiBkdSBE
-ZXN0b2NrYWdlIFRlZGR5IFNtaXRoUHJvbG9uZ2F0aW9uIGR1IERlc3RvY2thZ2UgVGVkZHkKU21p
-dGhQcm9sb25nYXRpb24gZHUgRGVzdG9ja2FnZSBUZWRkeSBTbWl0aFByb2xvbmdhdGlvbiBkdSBE
-ZXN0b2NrYWdlIFRlZGR5ClNtaXRoUHJvbG9uZ2F0aW9uIGR1IERlc3RvY2thZ2UgVGVkZHkgU21p
-dGhQcm9sb25nYXRpb24gZHUgRGVzdG9ja2FnZSBUZWRkeQpTbWl0aFByb2xvbmdhdGlvbiBkdSBE
-ZXN0b2NrYWdlIFRlZGR5IFNtaXRoUHJvbG9uZ2F0aW9uIGR1IERlc3RvY2thZ2UgVGVkZHkKU21p
-dGhQcm9sb25nYXRpb24gZHUgRGVzdG9ja2FnZSBUZWRkeSBTbWl0aFByb2xvbmdhdGlvbiBkdSBE
-ZXN0b2NrYWdlIFRlZGR5ClNtaXRoUHJvbG9uZ2F0aW9uIGR1IERlc3RvY2thZ2UgVGVkZHkgU21p
-dGhQcm9sb25nYXRpb24gZHUgRGVzdG9ja2FnZSBUZWRkeQpTbWl0aFByb2xvbmdhdGlvbiBkdSBE
-ZXN0b2NrYWdlIFRlZGR5IFNtaXRoUHJvbG9uZ2F0aW9uIGR1IERlc3RvY2thZ2UgVGVkZHkKU21p
-dGhQcm9sb25nYXRpb24gZHUgRGVzdG9ja2FnZSBUZWRkeSBTbWl0aAoKCgoKLS0KClBvdXIgdm91
-cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRf
-cmNyLnBocD9BSjg0NjQxODY2MjUxMzcyOTMyMjA1MzcyMjQKCgoKCgoKe35BSjg0NjQxODY2MjUx
-MzcyOTMyMjA1MzcyMjR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVHJ5IE5ldyBSZWxpYyBOb3cg
-JiBXZSdsbCBTZW5kIFlvdSB0aGlzIENvb2wgU2hpcnQKTmV3IFJlbGljIGlzIHRoZSBvbmx5IFNh
-YVMtYmFzZWQgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UgbW9uaXRvcmluZyBzZXJ2aWNlIAp0aGF0
-IGRlbGl2ZXJzIHBvd2VyZnVsIGZ1bGwgc3RhY2sgYW5hbHl0aWNzLiBPcHRpbWl6ZSBhbmQgbW9u
-aXRvciB5b3VyCmJyb3dzZXIsIGFwcCwgJiBzZXJ2ZXJzIHdpdGgganVzdCBhIGZldyBsaW5lcyBv
-ZiBjb2RlLiBUcnkgTmV3IFJlbGljCmFuZCBnZXQgdGhpcyBhd2Vzb21lIE5lcmQgTGlmZSBzaGly
-dCEgaHR0cDovL3Auc2YubmV0L3NmdS9uZXdyZWxpY19kMmRfbWF5Cl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
-bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
-cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Sat, May 25, 2013 at 10:32:19AM -0400, Mark Brown wrote:
+> On Sat, May 25, 2013 at 10:47:40AM +0900, Simon Horman wrote:
+> 
+> > I'm not quite sure of the history of this patch,
+> > but I have added Mark Brown, Grant Likely and spi-devel-general
+> > to the recipients of this email. Mark, Grant, is it possible
+> > for you to pick this patch up?
+> 
+> If someone sends me the patch...
+
+Morimoto-san,
+
+could you please repost the patch with Mark, Grant and spi-devel-general
+included in the recipient list?
+
+

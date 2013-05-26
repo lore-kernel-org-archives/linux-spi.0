@@ -1,40 +1,39 @@
-From: Simon Horman <horms@verge.net.au>
-Subject: Re: [PATCH 01/17 v2] spi: hspi: fixup long delay time
-Date: Sun, 26 May 2013 22:28:48 +0900
-Message-ID: <20130526132848.GG11134@verge.net.au>
-References: <87li7fwgk8.wl%kuninori.morimoto.gx@renesas.com>
- <87d2si4cdn.wl%kuninori.morimoto.gx@renesas.com>
- <87bo824cbu.wl%kuninori.morimoto.gx@renesas.com>
- <20130525014739.GA28458@verge.net.au>
- <20130525143219.GE7660@sirena.org.uk>
+From: "Teatower" <noreply-193CG9riSBJWk0Htik3J/w@public.gmane.org>
+Subject: [SPAM] 5 échantillons de thé gratuits + 21 pourcent de réduction
+Date: Sun, 26 May 2013 13:48:46 +0000 (CET)
+Message-ID: <130526134846.-188305501500008000@fmo42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Grant Likely <grant.likely@linaro.org>,
-	spi-devel-general@lists.sourceforge.net,
-	Magnus <magnus.damm@gmail.com>,
-	Linux-SH <linux-sh@vger.kernel.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20130525143219.GE7660@sirena.org.uk>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sat, May 25, 2013 at 10:32:19AM -0400, Mark Brown wrote:
-> On Sat, May 25, 2013 at 10:47:40AM +0900, Simon Horman wrote:
-> 
-> > I'm not quite sure of the history of this patch,
-> > but I have added Mark Brown, Grant Likely and spi-devel-general
-> > to the recipients of this email. Mark, Grant, is it possible
-> > for you to pick this patch up?
-> 
-> If someone sends me the patch...
-
-Morimoto-san,
-
-could you please repost the patch with Mark, Grant and spi-devel-general
-included in the recipient list?
-
-
+ClJlY2V2ZXogNSDDqWNoYW50aWxsb25zIGRlIHRow6kgZ3JhdHVpdHMgYXZlYyBURUFUT1dFUgoo
+aHR0cDovL3d3dy50ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKQooaHR0cDov
+L3d3dy50ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKQooaHR0cDovL3d3dy50
+ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKQooaHR0cDovL2ZtbzQyLmNvbS94
+b2FsczJ3MWhjdjFsdWpxMmwvaW5kZXgzLmh0bWwpCgooaHR0cDovL3d3dy50ZWF0b3dlci5jb20v
+ZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsKSAoaHR0cDovL3d3dy50ZWF0b3dlci5jb20vZnIvaW5k
+ZXgucGhwP3NhbXBsZT1tYWlsKQrCoApURUFUT1dFUiAvIFRUIFBBQ0tBR0lORyBTUFJMCgpSdWUg
+U2FpbnQtRGVuaXMgMTEyIC0gMTE5MCBCcnV4ZWxsZXMgLSBCZWxnaXF1ZSAtIFTDqWwgMDAuMzIu
+MjguMDguMDEuMjcKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRyeSBOZXcgUmVsaWMgTm93ICYgV2Un
+bGwgU2VuZCBZb3UgdGhpcyBDb29sIFNoaXJ0Ck5ldyBSZWxpYyBpcyB0aGUgb25seSBTYWFTLWJh
+c2VkIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlIG1vbml0b3Jpbmcgc2VydmljZSAKdGhhdCBkZWxp
+dmVycyBwb3dlcmZ1bCBmdWxsIHN0YWNrIGFuYWx5dGljcy4gT3B0aW1pemUgYW5kIG1vbml0b3Ig
+eW91cgpicm93c2VyLCBhcHAsICYgc2VydmVycyB3aXRoIGp1c3QgYSBmZXcgbGluZXMgb2YgY29k
+ZS4gVHJ5IE5ldyBSZWxpYwphbmQgZ2V0IHRoaXMgYXdlc29tZSBOZXJkIExpZmUgc2hpcnQhIGh0
+dHA6Ly9wLnNmLm5ldC9zZnUvbmV3cmVsaWNfZDJkX21heQpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
+cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

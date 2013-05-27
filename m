@@ -1,57 +1,63 @@
-From: "Offres capsules" <lisa@a.optincake.com>
-Subject: 21 euros les 100 capsules Nespresso compatibles
-Date: Mon, 27 May 2013 03:29:09 +0100
-Message-ID: <0.0.6D.CC8.1CE5A81F7A6722A.0@mta40.pur3.net>
-Reply-To: Offres capsules <lisa@a.optincake.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: hspi: fixup long delay time
+Date: Mon, 27 May 2013 08:17:54 -0400
+Message-ID: <20130527121754.GB3660@sirena.org.uk>
+References: <87li7fwgk8.wl%kuninori.morimoto.gx@renesas.com>
+ <87d2si4cdn.wl%kuninori.morimoto.gx@renesas.com>
+ <87bo824cbu.wl%kuninori.morimoto.gx@renesas.com>
+ <20130525014739.GA28458@verge.net.au>
+ <20130525143219.GE7660@sirena.org.uk>
+ <20130526132848.GG11134@verge.net.au>
+ <87k3ml8cgr.wl%kuninori.morimoto.gx@renesas.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gatW/ieO32f1wygP"
+Cc: Simon Horman <horms@verge.net.au>,
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
+	Magnus <magnus.damm@gmail.com>,
+	Linux-SH <linux-sh@vger.kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@gmail.com>
+To: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <87k3ml8cgr.wl%kuninori.morimoto.gx@renesas.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTM3NDYzMjIwNTM3MjE0CgoKCgoyMSBldXJvcyBsZXMgMTAwIGNhcHN1bGVzIE5lc3ByZXNzbyBj
-b21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMKTmVzcHJlc3NvIGNvbXBhdGlibGVz
-MjEgZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28gY29tcGF0aWJsZXMyMSBldXJvcwps
-ZXMgMTAwIGNhcHN1bGVzIE5lc3ByZXNzbyBjb21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fw
-c3VsZXMgTmVzcHJlc3NvCmNvbXBhdGlibGVzMjEgZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNw
-cmVzc28gY29tcGF0aWJsZXMyMSBldXJvcyBsZXMgMTAwCmNhcHN1bGVzIE5lc3ByZXNzbyBjb21w
-YXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMgTmVzcHJlc3NvIGNvbXBhdGlibGVzMjEK
-ZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28gY29tcGF0aWJsZXMyMSBldXJvcyBsZXMg
-MTAwIGNhcHN1bGVzIE5lc3ByZXNzbwpjb21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fwc3Vs
-ZXMgTmVzcHJlc3NvIGNvbXBhdGlibGVzMjEgZXVyb3MgbGVzIDEwMApjYXBzdWxlcyBOZXNwcmVz
-c28gY29tcGF0aWJsZXMyMSBldXJvcyBsZXMgMTAwIGNhcHN1bGVzIE5lc3ByZXNzbyBjb21wYXRp
-YmxlczIxCmV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMgTmVzcHJlc3NvIGNvbXBhdGlibGVzMjEgZXVy
-b3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28KY29tcGF0aWJsZXMyMSBldXJvcyBsZXMgMTAw
-IGNhcHN1bGVzIE5lc3ByZXNzbyBjb21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAKY2Fwc3VsZXMg
-TmVzcHJlc3NvIGNvbXBhdGlibGVzMjEgZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28g
-Y29tcGF0aWJsZXMyMQpldXJvcyBsZXMgMTAwIGNhcHN1bGVzIE5lc3ByZXNzbyBjb21wYXRpYmxl
-czIxIGV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMgTmVzcHJlc3NvCmNvbXBhdGlibGVzMjEgZXVyb3Mg
-bGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28gY29tcGF0aWJsZXMyMSBldXJvcyBsZXMgMTAwCmNh
-cHN1bGVzIE5lc3ByZXNzbyBjb21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMgTmVz
-cHJlc3NvIGNvbXBhdGlibGVzMjEKZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28gY29t
-cGF0aWJsZXMKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8v
-YS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTM3NDYzMjIwNTM3
-MjE0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTM3NDYzMjIwNTM3MjE0fn0KLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tClRyeSBOZXcgUmVsaWMgTm93ICYgV2UnbGwgU2VuZCBZb3UgdGhpcyBDb29sIFNoaXJ0
-Ck5ldyBSZWxpYyBpcyB0aGUgb25seSBTYWFTLWJhc2VkIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNl
-IG1vbml0b3Jpbmcgc2VydmljZSAKdGhhdCBkZWxpdmVycyBwb3dlcmZ1bCBmdWxsIHN0YWNrIGFu
-YWx5dGljcy4gT3B0aW1pemUgYW5kIG1vbml0b3IgeW91cgpicm93c2VyLCBhcHAsICYgc2VydmVy
-cyB3aXRoIGp1c3QgYSBmZXcgbGluZXMgb2YgY29kZS4gVHJ5IE5ldyBSZWxpYwphbmQgZ2V0IHRo
-aXMgYXdlc29tZSBOZXJkIExpZmUgc2hpcnQhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvbmV3cmVsaWNf
-ZDJkX21heQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
-cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
-L3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+--gatW/ieO32f1wygP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Sun, May 26, 2013 at 05:59:20PM -0700, Kuninori Morimoto wrote:
+> Current HSPI driver is using msleep(20) on hspi_status_check_timeout(),
+> but it was too long delay for SPI device.
+> Bock-W board SPI access was too slow without this patch.
+> This patch uses udelay(10) for it.
+
+Applied, thanks.
+
+--gatW/ieO32f1wygP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRo07vAAoJELSic+t+oim9oGYP/3IIF4sV7TQuAqQbzg9rvLIq
+qQgr/LS5wpsB+XO84TU7IPqYqeeij4regIn217fSZbf8IQliQKjSR+hGVF3GtgxK
++wvhVSysbeQ9AOZpNQHNr4zXg6pct3kLoWLG+/lmK1C5rp7n1dPCnXMKiU543TmW
+EN+Y8Q8sDMIKaQ3Kww7UqC0B92NP9YV5cKYpA5hVj+vaM3pXBF6fiN6buJIL/oij
+JQoYBUlBV1P5ognpdZrz/jsFlD/SQl1MxyRpYc6oOkyBXT8/nhWmd433AyWV/B1E
+w5MHi9AmZF4mmv8+KWWCBwJKxAMH3rU/YqWwM0McrIWH9WKOXoDRACQWtUzpUvCm
+76H3nnCYbwbft5A+Juh1WJE37JAyc9NH/QMHGzXfMXL9N/VozH+yEiPgSKN7puB/
+MEP3iu6TFjaogyAWO/F/gu0OOFBUl7tDoQN+wbc7Q5pMD6KaSG4uDmKkZruWXebk
+wEyTR+GYsF3TS/QtbLEtJjC3i4e2f5eKCwa400u5nZOGgSkZew6QDfgYkVbOGYew
+GiyWJNQCKBdUG7CvAdd7yELtqezit10wk2yFCzAN1RlqzDWLo25qnaIWmN/r5tui
+/HKZFKXKzX/y1uSCxsSLA3f8TleQLRU2oBBQdWW/t7h7GSJIwyJzHU1JUeGj6bsT
+zp0ttr4ktBtl5NjpyWjP
+=226m
+-----END PGP SIGNATURE-----
+
+--gatW/ieO32f1wygP--

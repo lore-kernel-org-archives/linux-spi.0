@@ -1,13 +1,12 @@
-From: "Google+" <noreply-nve28etl28HF11Dp+j+f1g@public.gmane.org>
-Subject: Thank you from Google.
-Date: Mon, 27 May 2013 01:37:22 +0100
-Message-ID: <EMPIREPCf3e082ab3eb944adacafe678449e03ef@EmpirePC>
-Reply-To: gpateam1-B9n1sLibSko@public.gmane.org
+From: "Offres capsules" <lisa@a.optincake.com>
+Subject: 21 euros les 100 capsules Nespresso compatibles
+Date: Mon, 27 May 2013 03:29:09 +0100
+Message-ID: <0.0.6D.CC8.1CE5A81F7A6722A.0@mta40.pur3.net>
+Reply-To: Offres capsules <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="_=aspNetEmail=_33b1769cdab743b1ad6ba82bf28c13f8"
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,37 +18,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---_=aspNetEmail=_33b1769cdab743b1ad6ba82bf28c13f8
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Dear Google User=2E=0D=0A=0D=0AAttached to this email is your anniversary=
- notification for being an active user of Google=2E=0D=0A=0D=0ASincerely=2E=
-=0D=0ADr=2E Donald Lloyd=2E=0D=0AGoogle Promotion Award Team=2E=0D=0A=0D=0A=
-----------------------------------------------------------------=0D=0AThi=
-s message was sent using Google Messaging Program (GMP)=2E
-
---_=aspNetEmail=_33b1769cdab743b1ad6ba82bf28c13f8
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
-Try New Relic Now & We'll Send You this Cool Shirt
-New Relic is the only SaaS-based application performance monitoring service 
-that delivers powerful full stack analytics. Optimize and monitor your
-browser, app, & servers with just a few lines of code. Try New Relic
-and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_may
---_=aspNetEmail=_33b1769cdab743b1ad6ba82bf28c13f8
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---_=aspNetEmail=_33b1769cdab743b1ad6ba82bf28c13f8--
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTM3NDYzMjIwNTM3MjE0CgoKCgoyMSBldXJvcyBsZXMgMTAwIGNhcHN1bGVzIE5lc3ByZXNzbyBj
+b21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMKTmVzcHJlc3NvIGNvbXBhdGlibGVz
+MjEgZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28gY29tcGF0aWJsZXMyMSBldXJvcwps
+ZXMgMTAwIGNhcHN1bGVzIE5lc3ByZXNzbyBjb21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fw
+c3VsZXMgTmVzcHJlc3NvCmNvbXBhdGlibGVzMjEgZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNw
+cmVzc28gY29tcGF0aWJsZXMyMSBldXJvcyBsZXMgMTAwCmNhcHN1bGVzIE5lc3ByZXNzbyBjb21w
+YXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMgTmVzcHJlc3NvIGNvbXBhdGlibGVzMjEK
+ZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28gY29tcGF0aWJsZXMyMSBldXJvcyBsZXMg
+MTAwIGNhcHN1bGVzIE5lc3ByZXNzbwpjb21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fwc3Vs
+ZXMgTmVzcHJlc3NvIGNvbXBhdGlibGVzMjEgZXVyb3MgbGVzIDEwMApjYXBzdWxlcyBOZXNwcmVz
+c28gY29tcGF0aWJsZXMyMSBldXJvcyBsZXMgMTAwIGNhcHN1bGVzIE5lc3ByZXNzbyBjb21wYXRp
+YmxlczIxCmV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMgTmVzcHJlc3NvIGNvbXBhdGlibGVzMjEgZXVy
+b3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28KY29tcGF0aWJsZXMyMSBldXJvcyBsZXMgMTAw
+IGNhcHN1bGVzIE5lc3ByZXNzbyBjb21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAKY2Fwc3VsZXMg
+TmVzcHJlc3NvIGNvbXBhdGlibGVzMjEgZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28g
+Y29tcGF0aWJsZXMyMQpldXJvcyBsZXMgMTAwIGNhcHN1bGVzIE5lc3ByZXNzbyBjb21wYXRpYmxl
+czIxIGV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMgTmVzcHJlc3NvCmNvbXBhdGlibGVzMjEgZXVyb3Mg
+bGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28gY29tcGF0aWJsZXMyMSBldXJvcyBsZXMgMTAwCmNh
+cHN1bGVzIE5lc3ByZXNzbyBjb21wYXRpYmxlczIxIGV1cm9zIGxlcyAxMDAgY2Fwc3VsZXMgTmVz
+cHJlc3NvIGNvbXBhdGlibGVzMjEKZXVyb3MgbGVzIDEwMCBjYXBzdWxlcyBOZXNwcmVzc28gY29t
+cGF0aWJsZXMKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8v
+YS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTM3NDYzMjIwNTM3
+MjE0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTM3NDYzMjIwNTM3MjE0fn0KLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tClRyeSBOZXcgUmVsaWMgTm93ICYgV2UnbGwgU2VuZCBZb3UgdGhpcyBDb29sIFNoaXJ0
+Ck5ldyBSZWxpYyBpcyB0aGUgb25seSBTYWFTLWJhc2VkIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNl
+IG1vbml0b3Jpbmcgc2VydmljZSAKdGhhdCBkZWxpdmVycyBwb3dlcmZ1bCBmdWxsIHN0YWNrIGFu
+YWx5dGljcy4gT3B0aW1pemUgYW5kIG1vbml0b3IgeW91cgpicm93c2VyLCBhcHAsICYgc2VydmVy
+cyB3aXRoIGp1c3QgYSBmZXcgbGluZXMgb2YgY29kZS4gVHJ5IE5ldyBSZWxpYwphbmQgZ2V0IHRo
+aXMgYXdlc29tZSBOZXJkIExpZmUgc2hpcnQhIGh0dHA6Ly9wLnNmLm5ldC9zZnUvbmV3cmVsaWNf
+ZDJkX21heQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

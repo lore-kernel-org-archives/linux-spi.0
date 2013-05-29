@@ -1,14 +1,13 @@
-From: Tati par Neezz <news-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
-Subject: =?iso-8859-1?Q?Profitez=20de=20la=20collection=20mode=20=C3=A9t=C3=A9?=
-Date: Wed, 29 May 2013 16:54:21 -0100
-Message-ID: <lOpYoDip_i5DcfRLqmJAtofOAFCu8c5MAYDRG8iV4dI@youluvit.net>
-Reply-To: Tati par Neezz <news-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
+From: Giovanni Alves <noreply-vhTTEZhGJowP48s/oLjRZg@public.gmane.org>
+Subject: Novos Planos Fisioaula com Livro + Tablet
+Date: Wed, 29 May 2013 18:34:21 +0000 (UTC)
+Message-ID: <1369852461.7649213443251095@mf101>
+Reply-To: secretaria-vhTTEZhGJowP48s/oLjRZg@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,14 +18,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- News - TATI Pour visualiser correctement ce message, acc=C3=A9dez =C3=
-=A0 la version en ligne, ou signaler comme ind=C3=A9sirable Si vous ne souh=
-aitez plus recevoir nos emails, veuillez suivre ce lien. Si vous n''arrivez=
- pas =C3=A0 vous d=C3=A9sabonner, merci d''=C3=A9crire =C3=A0 stop-gj8JX9gLJgKjvlOcnV+i4EEOCMrvLtNR@public.gmane.org=
-
-------------------------------------------------------------------------------
-Introducing AppDynamics Lite, a free troubleshooting tool for Java/.NET
-Get 100% visibility into your production application - at no cost.
-Code-level diagnostics for performance bottlenecks with <2% overhead
-Download for free and get started troubleshooting in minutes.
-http://p.sf.net/sfu/appdyn_d2d_ap1
+KCBodHRwOi8vd3d3LmZpc2lvYXVsYS5jb20uYnIvP3V0bV9zb3VyY2U9TmV3c2xldHRlciZ1dG1f
+bWVkaXVtPWVtYWlsJnV0bV9jYW1wYWlnbj1OZXdzbGV0dGVyJTJCTm92ZW1icm8lMkIyMDEyICkK
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBQcmVwYXJhw6fDo28gcGFyYSBDb25jdXJzb3MgZSBBdHVhbGl6YcOnw6Nv
+IGVtIEZpc2lvdGVyYXBpYQoKICAgICAgICAgICAgICAgICAoIGh0dHA6Ly93d3cuYXVsYWJyYXNp
+bC5jb20uYnIvcHJvZHVjdHMvcHJlcGFyYXRvcmlvLWUtYXR1YWxpemFjYW8tZW0tZmlzaW90ZXJh
+cGlhP3V0bV9zb3VyY2U9TmV3c2xldHRlciZ1dG1fbWVkaXVtPWVtYWlsJnV0bV9jYW1wYWlnbj1O
+ZXdzbGV0dGVyICkKCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgTm92b3Mg
+UGxhbm9zIEZpc2lvYXVsYSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IAogIC0gQXBlbmFzIGFzIGF1bGFzIG9ubGluZSBlIHByb3ZhcwpSJCAyMTYsMDAKICAgICAgICAg
+ICAgICAgICAgICAgIAogIC0gQXVsYXMgb25saW5lICsgUHJvdmFzICsgTGl2cm8gZGUgUXVlc3TD
+tWVzIENvbWVudGFkYXMgY29tIFJlc3Vtb3MKUiQgMzI1LDAwCiAgICAgICAgICAgICAgICAgICAg
+ICAKICAtIEF1bGFzIG9ubGluZSArIFByb3ZhcyArIExpdnJvIFRyYXRhZG8gZGUgRmlzaW90ZXJh
+cGlhIC0gMTIwMCBwZ3MKUiQgNTI1LDAwCiAgICAgICAgICAgICAgICAgICAgICAKICAtIEF1bGFz
+IG9ubGluZSArIFByb3ZhcyArIExpdnJvIGRlIFF1ZXN0w7VlcyArIFRyYXRhZG8gZGUgRmlzaW90
+ZXJhcGlhClIkIDYyNSwwMAogICAgICAgICAgICAgICAgICAgICAgCiAgLSBBdWxhcyBvbmxpbmUg
+KyBQcm92YXMgKyBMaXZybyBkZSBRdWVzdMO1ZXMgKyBUcmF0YWRvIGRlIEZpc2lvICsgVGFibGV0
+IEFuZHJvaWQKUiQgOTI2LDAwICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIAog
+ICAgICAgICAgICAgICAgUG9yIHF1ZSBlc2NvbGhlciBvIEZpc2lvYXVsYT8KCiAgICAgICAgICAg
+ICAgICBGYXplciBvIEN1cnNvcyBPbmxpbmUgw6kgdW1hIGZvcm1hIHLDoXBpZGEgZSBwcsOhdGlj
+YSBkZSBhcHJlbmRlciB2b2PDqiBwb2RlIGVzdHVkYXIgYSBxdWFscXVlciBob3JhIGUgbHVnYXIs
+IHBvZGVuZG8gZXN0dWRhciBhdMOpIG5vIGVzY3JpdMOzcmlvLiAKICAgICAgICAgICAgICAgIAog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAoIGh0dHA6Ly93d3cuZmlzaW9hdWxhLmNvbS5ici9maXNpb2F1bGEvZXh0ZW5zaXZv
+LmFzcD91dG1fc291cmNlPU5ld3NsZXR0ZXImdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249
+TmV3c2xldHRlciUyQk5vdmVtYnJvJTJCMjAxMiApCgogICAgICAgICAgICAKICAgICAoIGh0dHA6
+Ly93d3cuZmlzaW9hdWxhLmNvbS5ici8/dXRtX3NvdXJjZT1OZXdzbGV0dGVyJnV0bV9tZWRpdW09
+ZW1haWwmdXRtX2NhbXBhaWduPU5ld3NsZXR0ZXIlMkJOb3ZlbWJybyUyQjIwMTIgKQoKICAgICAg
+ICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFVt
+YSBwYXJjZXJpYSBGaXNpb2F1bGEgZSBNZWRBdWxhCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRy
+b2R1Y2luZyBBcHBEeW5hbWljcyBMaXRlLCBhIGZyZWUgdHJvdWJsZXNob290aW5nIHRvb2wgZm9y
+IEphdmEvLk5FVApHZXQgMTAwJSB2aXNpYmlsaXR5IGludG8geW91ciBwcm9kdWN0aW9uIGFwcGxp
+Y2F0aW9uIC0gYXQgbm8gY29zdC4KQ29kZS1sZXZlbCBkaWFnbm9zdGljcyBmb3IgcGVyZm9ybWFu
+Y2UgYm90dGxlbmVja3Mgd2l0aCA8MiUgb3ZlcmhlYWQKRG93bmxvYWQgZm9yIGZyZWUgYW5kIGdl
+dCBzdGFydGVkIHRyb3VibGVzaG9vdGluZyBpbiBtaW51dGVzLgpodHRwOi8vcC5zZi5uZXQvc2Z1
+L2FwcGR5bl9kMmRfYXAxCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
+bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

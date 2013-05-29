@@ -1,63 +1,56 @@
-From: Giovanni Alves <noreply-vhTTEZhGJowP48s/oLjRZg@public.gmane.org>
-Subject: Novos Planos Fisioaula com Livro + Tablet
-Date: Wed, 29 May 2013 18:34:21 +0000 (UTC)
-Message-ID: <1369852461.7649213443251095@mf101>
-Reply-To: secretaria-vhTTEZhGJowP48s/oLjRZg@public.gmane.org
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/2] spi: convert drivers to use bits_per_word_mask
+Date: Wed, 29 May 2013 20:49:51 +0100
+Message-ID: <20130529194950.GC5180@sirena.org.uk>
+References: <1369190195-14598-1-git-send-email-swarren@wwwdotorg.org>
+ <1369190195-14598-2-git-send-email-swarren@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="JWEK1jqKZ6MHAcjA"
+Cc: Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	device-drivers-devel@blackfin.uclinux.org,
+	Mike Frysinger <vapier@gentoo.org>
+To: Stephen Warren <swarren@wwwdotorg.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1369190195-14598-2-git-send-email-swarren@wwwdotorg.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-KCBodHRwOi8vd3d3LmZpc2lvYXVsYS5jb20uYnIvP3V0bV9zb3VyY2U9TmV3c2xldHRlciZ1dG1f
-bWVkaXVtPWVtYWlsJnV0bV9jYW1wYWlnbj1OZXdzbGV0dGVyJTJCTm92ZW1icm8lMkIyMDEyICkK
-CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBQcmVwYXJhw6fDo28gcGFyYSBDb25jdXJzb3MgZSBBdHVhbGl6YcOnw6Nv
-IGVtIEZpc2lvdGVyYXBpYQoKICAgICAgICAgICAgICAgICAoIGh0dHA6Ly93d3cuYXVsYWJyYXNp
-bC5jb20uYnIvcHJvZHVjdHMvcHJlcGFyYXRvcmlvLWUtYXR1YWxpemFjYW8tZW0tZmlzaW90ZXJh
-cGlhP3V0bV9zb3VyY2U9TmV3c2xldHRlciZ1dG1fbWVkaXVtPWVtYWlsJnV0bV9jYW1wYWlnbj1O
-ZXdzbGV0dGVyICkKCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgTm92b3Mg
-UGxhbm9zIEZpc2lvYXVsYSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IAogIC0gQXBlbmFzIGFzIGF1bGFzIG9ubGluZSBlIHByb3ZhcwpSJCAyMTYsMDAKICAgICAgICAg
-ICAgICAgICAgICAgIAogIC0gQXVsYXMgb25saW5lICsgUHJvdmFzICsgTGl2cm8gZGUgUXVlc3TD
-tWVzIENvbWVudGFkYXMgY29tIFJlc3Vtb3MKUiQgMzI1LDAwCiAgICAgICAgICAgICAgICAgICAg
-ICAKICAtIEF1bGFzIG9ubGluZSArIFByb3ZhcyArIExpdnJvIFRyYXRhZG8gZGUgRmlzaW90ZXJh
-cGlhIC0gMTIwMCBwZ3MKUiQgNTI1LDAwCiAgICAgICAgICAgICAgICAgICAgICAKICAtIEF1bGFz
-IG9ubGluZSArIFByb3ZhcyArIExpdnJvIGRlIFF1ZXN0w7VlcyArIFRyYXRhZG8gZGUgRmlzaW90
-ZXJhcGlhClIkIDYyNSwwMAogICAgICAgICAgICAgICAgICAgICAgCiAgLSBBdWxhcyBvbmxpbmUg
-KyBQcm92YXMgKyBMaXZybyBkZSBRdWVzdMO1ZXMgKyBUcmF0YWRvIGRlIEZpc2lvICsgVGFibGV0
-IEFuZHJvaWQKUiQgOTI2LDAwICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIAog
-ICAgICAgICAgICAgICAgUG9yIHF1ZSBlc2NvbGhlciBvIEZpc2lvYXVsYT8KCiAgICAgICAgICAg
-ICAgICBGYXplciBvIEN1cnNvcyBPbmxpbmUgw6kgdW1hIGZvcm1hIHLDoXBpZGEgZSBwcsOhdGlj
-YSBkZSBhcHJlbmRlciB2b2PDqiBwb2RlIGVzdHVkYXIgYSBxdWFscXVlciBob3JhIGUgbHVnYXIs
-IHBvZGVuZG8gZXN0dWRhciBhdMOpIG5vIGVzY3JpdMOzcmlvLiAKICAgICAgICAgICAgICAgIAog
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAoIGh0dHA6Ly93d3cuZmlzaW9hdWxhLmNvbS5ici9maXNpb2F1bGEvZXh0ZW5zaXZv
-LmFzcD91dG1fc291cmNlPU5ld3NsZXR0ZXImdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249
-TmV3c2xldHRlciUyQk5vdmVtYnJvJTJCMjAxMiApCgogICAgICAgICAgICAKICAgICAoIGh0dHA6
-Ly93d3cuZmlzaW9hdWxhLmNvbS5ici8/dXRtX3NvdXJjZT1OZXdzbGV0dGVyJnV0bV9tZWRpdW09
-ZW1haWwmdXRtX2NhbXBhaWduPU5ld3NsZXR0ZXIlMkJOb3ZlbWJybyUyQjIwMTIgKQoKICAgICAg
-ICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFVt
-YSBwYXJjZXJpYSBGaXNpb2F1bGEgZSBNZWRBdWxhCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRy
-b2R1Y2luZyBBcHBEeW5hbWljcyBMaXRlLCBhIGZyZWUgdHJvdWJsZXNob290aW5nIHRvb2wgZm9y
-IEphdmEvLk5FVApHZXQgMTAwJSB2aXNpYmlsaXR5IGludG8geW91ciBwcm9kdWN0aW9uIGFwcGxp
-Y2F0aW9uIC0gYXQgbm8gY29zdC4KQ29kZS1sZXZlbCBkaWFnbm9zdGljcyBmb3IgcGVyZm9ybWFu
-Y2UgYm90dGxlbmVja3Mgd2l0aCA8MiUgb3ZlcmhlYWQKRG93bmxvYWQgZm9yIGZyZWUgYW5kIGdl
-dCBzdGFydGVkIHRyb3VibGVzaG9vdGluZyBpbiBtaW51dGVzLgpodHRwOi8vcC5zZi5uZXQvc2Z1
-L2FwcGR5bl9kMmRfYXAxCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
-bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+
+--JWEK1jqKZ6MHAcjA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, May 21, 2013 at 08:36:35PM -0600, Stephen Warren wrote:
+> Fill in the recently added spi_master.bits_per_word_mask field in as
+> many drivers as possible. Make related cleanups, such as removing any
+> redundant error-checking, or empty setup callbacks.
+
+Applied, thanks.
+
+--JWEK1jqKZ6MHAcjA
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRplvbAAoJELSic+t+oim9NcEP/jQlSi4rxx6f/33hz3GTb8tO
+uTl1q2uuYT7AotzGbgFYX4Vjbuc1qqWhJ1wz2HKQd09/jHTqixQric/nrpai5dee
+SeWRbeiyxaBdNt2oqvQSbOrr7CLP0E/hShZfSL2jPYWHXh40KY4ncYE0XLkws9Rt
+lVBJHs5Mcy+IPGWkTjb4q9aqZ24q9w63k6t31w2/P3EQ9uyZvQ7vxV9BZDN9KYIF
+hcn3SZTkky/iDdES0M4EkjxyZfUM1ppiu1YVClnFAMZrshWQR/k6tHW8BnYLd5vX
+A7vcpDATs+3DQlASykuePV9eBUrquqFtgS1Opz8rdoDbROFmMJZWZ9mR3n19nIad
+9j2JxRenyPRgLRx2iyeNyOuYxVT14RITQFjDLaW2LIyNaUqLofrZqOd6YpSK7wHg
+VxV9DpbFh1rNmkpf3/n1h0mHMCBjNzDlrY8/+G/S1BH6upkITvABoTxv9B6bT9WX
+KHoqADGqX+4Zmp6l016zdcfHVusopQvi40T/lDFO/WJd4GHl6qxoJx+ihy3355ms
+xOmDoYkbkoo2pBjphvdPa7qSuBw1GogcA6vSpAjvRezbaNO0Pw1OfbzvQnhV3oHa
+po0+5xoogSy0p0nUnVfSSLrYHCCEQaM1s1zNuVcu+c7k63fYKfGUArjq9g2f7EjS
+DAcs47oR9c7WPRU2JOPO
+=yEGr
+-----END PGP SIGNATURE-----
+
+--JWEK1jqKZ6MHAcjA--

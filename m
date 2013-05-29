@@ -1,7 +1,7 @@
-From: "Jens Renner (EFE)" <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
-Subject: [v2] spi: spi-xilinx: Use DT information for bits_per_word value
-Date: Tue, 28 May 2013 16:05:41 +0200
-Message-ID: <51A4B9B5.6010203@efe-gmbh.de>
+From: =?GB2312?B?0OzHvg==?= <xuqiang.xjtu-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: can't find spidevB.C in /dev
+Date: Wed, 29 May 2013 17:57:07 +0800
+Message-ID: <CAPFhN+CvMX+qkBy6-6-iEGxdeQxwkpvcTMcnvmU7yyk-=SJR0w@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -17,122 +17,167 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch overrides the default value of bits_per_word with the actual value
-of "xlnx,num-transfer-bits" from the DTS file to allow for 16 and 32 bit word
-lengths. In case of a non-existing entry this will be ignored. 
+Hi all
+I am working on linux 2.6.31, to support our SOC SPI module.
 
-Signed-off-by: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
----
-Changes in v2:
-- use of_property_read_u32() instead of of_get_property()
-- added some documentation
-- original patch v1 #2124911
+But after linux boot up, I can't find spidev* in /dev
 
-Grant Likely - March 2, 2013, 9:22 p.m.
+# find / -name "spidev"
+/sys/devices/platform/XXXXX_spi_poe.0/spi0.0/spidev
+/sys/bus/spi/drivers/spidev
+/sys/class/spidev
+/sys/module/spidev
 
-On Mon, 11 Feb 2013 17:28:01 +0100, "Jens Renner (EFE)" <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org> wrote:
-> From: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
-> 
-> This patch overrides the default value of bits_per_word with the actual value
-> of "xlnx,num-transfer-bits" from the DTS file to allow for 16 and 32 bit word
-> lengths.
-> 
-> Signed-off-by: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
-> ---
-> diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-> index e1d7696..03abdfa 100644
-> --- a/drivers/spi/spi-xilinx.c
-> +++ b/drivers/spi/spi-xilinx.c
-> @@ -487,6 +487,12 @@ static int xilinx_spi_probe(struct platform_device *dev)
-> 				       &len);
-> 		if (prop && len >= sizeof(*prop))
-> 			num_cs = __be32_to_cpup(prop);
-> +
-> +		/* override default number of bits per word */
-> +		prop = of_get_property(dev->dev.of_node,
-> +				       "xlnx,num-transfer-bits", &len);
-> +		if (prop && len >= sizeof(*prop))
-> +			bits_per_word = __be32_to_cpup(prop);
+~ # ls /dev/spidev*
+ls: /dev/spidev*: No such file or directory
 
-Hi Jens,
+My code is :
 
-Please remember to update documentation when modifying a DT binding.
 
-Also, if you use of_property_read_u32() the code will be a lot simpler.
+in my arch/platform.c, I register XXXXX_spi_poe driver and register spi
+board whose modalias is "spidev"
+struct platform_device XXXXX_spi0 = {
+     .name = "XXXXX_spi_poe",
+     .id = 0,
+     .num_resources = ARRAY_SIZE(XXXXX_spi0_resource),
+     .resource = XXXXX_spi0_resource
+};
 
-g.
+static struct spi_board_info XXXXX_spi0_board[] = {
+     [0] = {
+         .modalias = "spidev",
+         .bus_num = 0,
+         .chip_select = 0,
+         .max_speed_hz = 500*1000,
+     },
+};
 
- drivers/spi/spi-xilinx.c                                     |   13 ++++++-------
- Documentation/devicetree/bindings/spi/spi-xilinx.txt         |   32 ++++++++++++++++++++
- 2 files changed, 38 insertions(+), 7 deletions(-)
+__init int
+XXXXX_spi_platform_init(void)
+{
+     platform_device_register(&XXXXX_spi0);
+     spi_register_board_info(XXXXX_spi0_board,
+    ARRAY_SIZE(XXXXX_spi0_board));//for spi
+     return 0;
+}
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index e1d7696..6859833 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -479,14 +479,13 @@ static int xilinx_spi_probe(struct platform_device *dev)
 
- #ifdef CONFIG_OF
-        if (dev->dev.of_node) {
--               const __be32 *prop;
--               int len;
--
-                /* number of slave select bits is required */
--               prop = of_get_property(dev->dev.of_node, "xlnx,num-ss-bits",
--                                      &len);
--               if (prop && len >= sizeof(*prop))
--                       num_cs = __be32_to_cpup(prop);
-+               of_property_read_u32(dev->dev.of_node, "xlnx,num-ss-bits",
-+                                    &num_cs);
-+
-+               /* override default number of bits per word */
-+               of_property_read_u32(dev->dev.of_node, "xlnx,num-transfer-bits",
-+                                    &bits_per_word);
-        }
- #endif
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-xilinx.txt b/Documentation/devicetree/bindings/spi/spi-xilinx.txt
-new file mode 100644
-index 0000000..768a1ea
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-xilinx.txt
-@@ -0,0 +1,32 @@
-+Xilinx SPI controller:
-+
-+Required properties:
-+- compatible : Must be "xlnx,axi-1.02.a" or "xlnx,xps-spi-2.00.a"
-+- interrupt-parent : reference to parent interrupt controller
-+- interrupts : SPI controller interrupt
-+- reg : SPI register location and length
-+
-+Optional properties:
-+- xlnx,num-ss-bits : # of slave select bits
-+- xlnx,num-transfer_bits : # of data transfer bits (defaults to 8)
-+- xlnx,... : not considered by kernel module
-+- #address-cells = <1> : if child nodes are defined
-+- #size-cells = <0> : if child nodes are defined
-+- Child nodes conforming to SPI bus binding
-+
-+Example with 3 slave select bits and 32 bit transfer size:
-+
-+       axi_spi_0: spi@40a00000 {
-+               compatible = "xlnx,axi-spi-1.02.a", "xlnx,xps-spi-2.00.a";
-+               interrupt-parent = <&axi_intc_0>;
-+               interrupts = < 2 2 >;
-+               reg = < 0x40a00000 0x10000 >;
-+               xlnx,family = "spartan6";
-+               xlnx,fifo-exist = <0x1>;
-+               xlnx,instance = "axi_spi_0";
-+               xlnx,num-ss-bits = <0x3>;
-+               xlnx,num-transfer-bits = <0x20>;
-+               xlnx,sck-ratio = <0x4>;
-+               #address-cells = <1>;
-+               #size-cells = <0>;
-+       } ;
+in my module file which realize SPI driver.
+The __init code is XXXXX_spi_driver_init
+and __exit funciton is  XXXXX_spi_driver_cleanup
 
+
+static struct platform_driver XXXXX_spi_driver = {
+     .driver = {
+         .name = "XXXXX_spi_poe",
+         .owner = THIS_MODULE,
+     },
+    .remove = __exit_p(XXXXX_spi_remove),
+};
+
+
+int __init
+XXXXX_spi_driver_init(void)
+{
+     XXXXX_spi_wq = create_singlethread_workqueue(
+                XXXXX_spi_driver.driver.name);
+
+    if (XXXXX_spi_wq == NULL)
+        return -ENOMEM;
+     return platform_driver_probe(&XXXXX_spi_driver, XXXXX_spi_probe);
+}
+
+void __exit
+XXXXX_spi_driver_cleanup(void)
+{
+     flush_workqueue(XXXXX_spi_wq);
+     platform_driver_unregister(&XXXXX_spi_driver);
+     destroy_workqueue(XXXXX_spi_wq);
+     printk("XXXXX unregister SPI: success\n");
+     return;
+}
+
+ XXXXX_spi_probe will call function spi_register_master
+
+
+
+
+static int __init
+XXXXX_spi_probe(struct platform_device *pdev)
+{
+     struct spi_master *master;
+     struct XXXXX_spi_dev *XXXXX_spi;
+     struct resource *XXXXX_spi_resource;
+     struct XXXXX_spi_info *spi_info;
+     int status = 0;
+
+     spi_info = pdev->dev.platform_data;
+     master = spi_alloc_master(&pdev->dev, sizeof *XXXXX_spi);
+     if (master == NULL) {
+         osal_print("MUSIC spi master allocation failed\n");
+         return -ENOMEM;
+     }
+
+     if (pdev->id != -1)
+         master->bus_num = pdev->id;
+
+     /* we support only mode 0, and no options */
+    master->mode_bits = 0;
+    master->num_chipselect = XXXXX_NUM_CHIPSELECTS;
+     master->setup = XXXXX_spi_setup;
+     master->transfer = XXXXX_spi_transfer;
+
+     dev_set_drvdata(&pdev->dev, master);
+
+     XXXXX_spi = spi_master_get_devdata(master);
+     XXXXX_spi->spi_info = spi_info;
+     XXXXX_spi->master = master;
+
+     XXXXX_spi_resource = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+     if (XXXXX_spi_resource == NULL) {
+         printk("XXXXX spi request platform resource failed\n");
+        status = -ENODEV;
+         goto XXXXX_spi_probe_failed;
+    }
+
+     if (!request_mem_region(XXXXX_spi_resource->start,
+             (XXXXX_spi_resource->end - XXXXX_spi_resource->start) + 1,
+            dev_name(&pdev->dev))) {
+                  PRINTK("XXXXXspi request platform memory region
+failed\n");
+                  status = -EBUSY;
+            goto XXXXX_spi_probe_failed;
+      }
+
+      INIT_WORK(&XXXXX_spi->work, XXXXX_spi_work);
+
+     spin_lock_init(&XXXXX_spi->lock);
+     INIT_LIST_HEAD(&XXXXX_spi->msg_queue);
+
+     status = spi_register_master(master);
+     if (status < 0) {
+         PRINTK("XXXXXspi request platform memory region failed\n");
+         goto XXXXX_spi_probe_failed_no_mem;
+     }
+
+     printK("XXXXX register SPI: success\n");
+     return status;
+
+XXXXX_spi_probe_failed_no_mem:
+     release_mem_region(XXXXX_spi_resource->start,
+         (XXXXX_spi_resource->end - XXXXX_spi_resource->start) + 1);
+
+XXXXX_spi_probe_failed:
+     spi_master_put(master);
+     return status;
+}
+
+
+Anybody please check it with me, thanks very much
 ------------------------------------------------------------------------------
-Try New Relic Now & We'll Send You this Cool Shirt
-New Relic is the only SaaS-based application performance monitoring service 
-that delivers powerful full stack analytics. Optimize and monitor your
-browser, app, & servers with just a few lines of code. Try New Relic
-and get this awesome Nerd Life shirt! http://p.sf.net/sfu/newrelic_d2d_may
+Introducing AppDynamics Lite, a free troubleshooting tool for Java/.NET
+Get 100% visibility into your production application - at no cost.
+Code-level diagnostics for performance bottlenecks with <2% overhead
+Download for free and get started troubleshooting in minutes.
+http://p.sf.net/sfu/appdyn_d2d_ap1

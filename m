@@ -1,12 +1,19 @@
-From: iPhone <contact-onwg5PPfWvlGWvitb5QawA@public.gmane.org>
-Subject: Comment economiser sur l'iPhone 5
-Date: Fri, 31 May 2013 17:06:04 +0000
-Message-ID: <e413dcb1da7b8b14c01d127c2bf9b8f4@mach10.generated>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: convert drivers to use bits_per_word_mask
+Date: Fri, 31 May 2013 23:23:33 +0200
+Message-ID: <201305312323.33706.arnd@arndb.de>
+References: <1369190195-14598-1-git-send-email-swarren@wwwdotorg.org>
+	<1528437.8btZmmDHhd@wuerfel> <51A8CB87.80201@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, device-drivers-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <51A8CB87.80201-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -17,50 +24,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
-bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
-L1lUMHhNeVppUFRNM01qZzBKbU05TWpNMk5ESW1aRDB5TURFekxUQTFMVE14SURFeE9qTXdPakF3
-Sm1VOU1TWm9QVE0zTXpNMkptWTlNemMyTkRVbVp6MHpOelkwTlE9PQoKTGllbiBkZSBkZXNpbnNj
-cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE0zTWpnMEpt
-TTlNak0yTkRJbVpEMHlNREV6TFRBMUxUTXhJREV4T2pNd09qQXdKbVU5TVNab1BUTTNNek0ySm1Z
-OU16YzJORFVtWnowek56WTBOUT09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
-cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KTm91cyBzb21tZXMgYWxsw6lzIGTD
-qW5pY2hlciBsZXMgZGVybmnDqHJlcyBhc3R1Y2VzIHBvdXIgw6ljb25vbWlzZXIKwqAKw4AgTEEg
-VU5FCkNvbW1lbnQgw6ljb25vbWlzZXIgOTAlIHN1ciB1biBpUGFkIDQgb3Ugc3VyIHVuIGlQaG9u
-ZSA1ID8KVm91cyBsJ2F1cmV6IHN1cmVtZW50IHJlbWFycXXDqSwgdW4gbm91dmVhdSBwaMOpbm9t
-w6huZSBlc3QgZW4gdHJhaW4gZGUgc2UgZMOpdmVsb3BwZXIgZW4gRXVyb3BlIGV0IGVuIEFtw6ly
-aXF1ZSBkdSBOb3JkIDogbGVzIHNpdGVzIGludGVybmV0IGRlIHZlbnRlcyBhdXggZW5jaMOocmVz
-IGRlIGTDqXN0b2NrYWdlLiBQYXJ0b3V0IHN1ciBsZSBuZXQsIGRhbnMgbGVzIGJsb2dzLCBvbiBw
-ZXV0IGxpcmUgbGVzIGhpc3RvaXJlcyBkJ2hldXJldXggZ2FnbmFudHMgcXVpIG9udCByZW1wb3J0
-w6kgZGUgZmFidWxldXggYXJ0aWNsZXMgaGFiaXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91
-ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMg
-Y29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOp
-Y2lkw6kgZGUgbGVzIHRlc3Rlci4gUG91ciBub3VzIGFzc3VyZXIgcXVlIGxlcyBib25uZXMgYWZm
-YWlyZXMgcHJvcG9zw6llcyBwYXIgY2VzIHNpdGVzIGRlIHZlbnRlcyBhdXggZW5jaMOocmVzIGRl
-IGTDqXN0b2NrYWdlIMOpdGFpZW50IGJpZW4gcsOpZWxsZXMuIEV0IHF1ZWxsZSBtZWlsbGV1cmUg
-cmFpc29uIHBvdXIgcydlbiBhc3N1cmVyIHF1ZSBkZSBsZXMgdGVzdGVyIG5vdXMtbcOqbWUgPwps
-aXJlIGxhIHN1aXRlCsKgCkxBIFJFVlVFIENPTlNPCkplIHZvdWxhaXMgYWNoZXRlciB1biBub3V2
-ZWwgaVBhZCBSZXRpbmEgZGUgQXBwbGUsIGMnZXN0IGRvbmMgbW9pIHF1aSBhaSDDqXTDqSBjaGFy
-Z8OpZSBkdSB0ZXN0LgoiSidhaSBjb21tZW5jw6kgcGFyIGZhaXJlIHVuZSB0b25uZSBkZSByZWNo
-ZXJjaGVzIHN1ciBsZSBzdWpldCBwb3VyIGTDqXRlcm1pbmVyIHF1ZWwgc2l0ZSBkJ2VuY2jDqHJl
-cyBkZSBkw6lzdG9ja2FnZSDDqXRhaXQgbGUgcGx1cyBmaWFibGUsIGV0IGRvbmMgbGUgbWlldXgg
-YWRhcHTDqSDDoCBtb24gdGVzdC4gQXByw6hzIGRlcyBoZXVyZXMgZGUgcmVjaGVyY2hlcywgaidl
-biBzdWlzIHZlbnVlIMOgIGxhIGNvbmNsdXNpb24gcXVlLCBkdSBmYWl0IGRlIHNhIGxhcmdlIGdh
-bW1lIGQnYXJ0aWNsZXMgZXQgc29uIGV4Y2VsbGVudGUgcsOpcHV0YXRpb24sIEVuY2jDqHJlVmlw
-IMOpdGFpdCBsZSBzaXRlIMOgIHRlc3Rlci4iCmxpcmUgbGEgc3VpdGUKwqAKQ29tbWVudGFpcmVz
-IGRlIG5vcyBsZWN0ZXVyZXMKwqAKTWFyaWUgU2FtZWRpIDIgTWFycwoiSidhaSBkZSBxdW9pIHZv
-aXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBwb3VyIHVuIGJvbiBt
-b21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIKwqAKUGF0b3UgTHVuZGkg
-NCBNYXJzCiJKJ2FpIHZ1IHVuIHJlcG9ydGFnZSBzdXIgbGVzIGVuY2jDqHJlcyBhdSBjZW50aW1l
-IMOgIGxhIHTDqWzDqSwgcHVpcyBqJ2FpIGx1IGNldCBhcnRpY2xlLiBJbCBtZSB0YXJkZSBkJ2Vz
-c2F5ZXIiCsKgCsKgCsKgCsKgCsKgClBvdXIgdm91cyBkw6lzYWJvbm5lciwgY2xpcXVleiBpY2ku
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpHZXQgMTAwJSB2aXNpYmlsaXR5IGludG8gSmF2YS8uTkVU
-IGNvZGUgd2l0aCBBcHBEeW5hbWljcyBMaXRlCkl0J3MgYSBmcmVlIHRyb3VibGVzaG9vdGluZyB0
-b29sIGRlc2lnbmVkIGZvciBwcm9kdWN0aW9uCkdldCBkb3duIHRvIGNvZGUtbGV2ZWwgZGV0YWls
-IGZvciBib3R0bGVuZWNrcywgd2l0aCA8MiUgb3ZlcmhlYWQuCkRvd25sb2FkIGZvciBmcmVlIGFu
-ZCBnZXQgc3RhcnRlZCB0cm91Ymxlc2hvb3RpbmcgaW4gbWludXRlcy4KaHR0cDovL3Auc2YubmV0
-L3NmdS9hcHBkeW5fZDJkX2FwMgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
-c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Friday 31 May 2013, Stephen Warren wrote:
+> > drivers/spi/spi-pxa2xx.c: In function 'pxa2xx_spi_probe':
+> > drivers/spi/spi-pxa2xx.c:1152:3: warning: left shift count >= width of type [enabled by default]
+> >    master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+> >    ^
+> 
+> That should be fixed by the patches I sent yesterday.
+
+Cool, thanks!
+
+	Arnd
+
+------------------------------------------------------------------------------
+Get 100% visibility into Java/.NET code with AppDynamics Lite
+It's a free troubleshooting tool designed for production
+Get down to code-level detail for bottlenecks, with <2% overhead.
+Download for free and get started troubleshooting in minutes.
+http://p.sf.net/sfu/appdyn_d2d_ap2

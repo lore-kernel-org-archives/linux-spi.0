@@ -1,19 +1,21 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: convert drivers to use bits_per_word_mask
-Date: Fri, 31 May 2013 10:45:32 +0200
-Message-ID: <1528437.8btZmmDHhd@wuerfel>
-References: <1369190195-14598-1-git-send-email-swarren@wwwdotorg.org>
-	<1369190195-14598-2-git-send-email-swarren@wwwdotorg.org>
+From: Hebbar Gururaja <gururaja.hebbar-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 05/11] spi: omap2-mcspi: enhance pinctrl support
+Date: Fri, 31 May 2013 15:43:05 +0530
+Message-ID: <1369995191-20855-6-git-send-email-gururaja.hebbar@ti.com>
+References: <1369995191-20855-1-git-send-email-gururaja.hebbar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, device-drivers-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Cc: davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org, sudhakar.raj-l0cyMroinI0@public.gmane.org,
+	linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, vaibhav.bedia-l0cyMroinI0@public.gmane.org,
+	gururaja.hebbar-l0cyMroinI0@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: <khilman-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	<linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1369190195-14598-2-git-send-email-swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <1369995191-20855-1-git-send-email-gururaja.hebbar-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,68 +26,199 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Can you check this part again:
+Amend the spi omap controller to optionally take a pin control
+handle and set the state of the pins to:
 
-On Tuesday 21 May 2013 20:36:35 Stephen Warren wrote:
-> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-> index f5d84d6..7de2ca1 100644
-> --- a/drivers/spi/spi-pxa2xx.c
-> +++ b/drivers/spi/spi-pxa2xx.c
-> @@ -881,21 +881,6 @@ static int setup(struct spi_device *spi)
->                 rx_thres = RX_THRESH_DFLT;
->         }
->  
-> -       if (!pxa25x_ssp_comp(drv_data)
-> -               && (spi->bits_per_word < 4 || spi->bits_per_word > 32)) {
-> -               dev_err(&spi->dev, "failed setup: ssp_type=%d, bits/wrd=%d "
-> -                               "b/w not 4-32 for type non-PXA25x_SSP\n",
-> -                               drv_data->ssp_type, spi->bits_per_word);
-> -               return -EINVAL;
-> -       } else if (pxa25x_ssp_comp(drv_data)
-> -                       && (spi->bits_per_word < 4
-> -                               || spi->bits_per_word > 16)) {
-> -               dev_err(&spi->dev, "failed setup: ssp_type=%d, bits/wrd=%d "
-> -                               "b/w not 4-16 for type PXA25x_SSP\n",
-> -                               drv_data->ssp_type, spi->bits_per_word);
-> -               return -EINVAL;
-> -       }
-> -
->         /* Only alloc on first setup */
->         chip = spi_get_ctldata(spi);
->         if (!chip) {
-> @@ -1011,9 +996,6 @@ static int setup(struct spi_device *spi)
->                 chip->n_bytes = 4;
->                 chip->read = u32_reader;
->                 chip->write = u32_writer;
-> -       } else {
-> -               dev_err(&spi->dev, "invalid wordsize\n");
-> -               return -ENODEV;
->         }
->         chip->bits_per_word = spi->bits_per_word;
->  
-> @@ -1190,11 +1172,13 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
->         drv_data->ioaddr = ssp->mmio_base;
->         drv_data->ssdr_physical = ssp->phys_base + SSDR;
->         if (pxa25x_ssp_comp(drv_data)) {
-> +               master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 16);
->                 drv_data->int_cr1 = SSCR1_TIE | SSCR1_RIE;
->                 drv_data->dma_cr1 = 0;
->                 drv_data->clear_sr = SSSR_ROR;
->                 drv_data->mask_sr = SSSR_RFS | SSSR_TFS | SSSR_ROR;
->         } else {
-> +               master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
->                 drv_data->int_cr1 = SSCR1_TIE | SSCR1_RIE | SSCR1_TINTE;
->                 drv_data->dma_cr1 = DEFAULT_DMA_CR1;
->                 drv_data->clear_sr = SSSR_ROR | SSSR_TINT;
+- "default" on boot, resume and before performing an spi transfer
+- "idle" after initial default, after resume default, and after each
+spi xfer
+- "sleep" on suspend()
 
-I get a new build warning
+By optionally putting the pins into sleep state in the suspend callback
+we can accomplish two things.
+- One is to minimize current leakage from pins and thus save power,
+- second, we can prevent the IP from driving pins output in an
+uncontrolled manner, which may happen if the power domain drops the
+domain regulator.
 
-drivers/spi/spi-pxa2xx.c: In function 'pxa2xx_spi_probe':
-drivers/spi/spi-pxa2xx.c:1152:3: warning: left shift count >= width of type [enabled by default]
-   master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
-   ^
+If any of the above pin states are missing in dt, a warning message
+about the missing state is displayed.
+If certain pin-states are not available, to remove this warning message
+pass respective state name with null phandler.
 
-	Arnd
+(Changes based on i2c-nomadik.c & spi-pl022.c)
+
+Note:
+A .suspend callback is added which simply puts the pins to sleep state.
+They are moved to default & idle state by the .resume callback.
+
+Signed-off-by: Hebbar Gururaja <gururaja.hebbar-l0cyMroinI0@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+---
+:100644 100644 86d2158... 146dd16... M	drivers/spi/spi-omap2-mcspi.c
+ drivers/spi/spi-omap2-mcspi.c |   89 ++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 84 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 86d2158..146dd16 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -130,6 +130,12 @@ struct omap2_mcspi {
+ 	struct device		*dev;
+ 	struct omap2_mcspi_regs ctx;
+ 	unsigned int		pin_dir:1;
++
++	/* Three pin states - default, idle & sleep */
++	struct pinctrl			*pinctrl;
++	struct pinctrl_state		*pins_default;
++	struct pinctrl_state		*pins_idle;
++	struct pinctrl_state		*pins_sleep;
+ };
+ 
+ struct omap2_mcspi_cs {
+@@ -267,6 +273,12 @@ static int omap2_prepare_transfer(struct spi_master *master)
+ 	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
+ 
+ 	pm_runtime_get_sync(mcspi->dev);
++
++	/* Optionaly enable pins to be muxed in and configured */
++	if (!IS_ERR(mcspi->pins_default))
++		if (pinctrl_select_state(mcspi->pinctrl, mcspi->pins_default))
++			dev_err(mcspi->dev, "could not set default pins\n");
++
+ 	return 0;
+ }
+ 
+@@ -274,6 +286,12 @@ static int omap2_unprepare_transfer(struct spi_master *master)
+ {
+ 	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
+ 
++	/* Optionally let pins go into idle state */
++	if (!IS_ERR(mcspi->pins_idle))
++		if (pinctrl_select_state(mcspi->pinctrl, mcspi->pins_idle))
++			dev_err(mcspi->dev,
++				"could not set pins to idle state\n");
++
+ 	pm_runtime_mark_last_busy(mcspi->dev);
+ 	pm_runtime_put_autosuspend(mcspi->dev);
+ 	return 0;
+@@ -1186,7 +1204,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	static int		bus_num = 1;
+ 	struct device_node	*node = pdev->dev.of_node;
+ 	const struct of_device_id *match;
+-	struct pinctrl *pinctrl;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof *mcspi);
+ 	if (master == NULL) {
+@@ -1284,10 +1301,46 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	if (status < 0)
+ 		goto dma_chnl_free;
+ 
+-	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
+-	if (IS_ERR(pinctrl))
+-		dev_warn(&pdev->dev,
+-				"pins are not configured from the driver\n");
++	mcspi->pinctrl = devm_pinctrl_get(&pdev->dev);
++	if (!IS_ERR(mcspi->pinctrl)) {
++		mcspi->pins_default = pinctrl_lookup_state(mcspi->pinctrl,
++							 PINCTRL_STATE_DEFAULT);
++		if (IS_ERR(mcspi->pins_default))
++			dev_dbg(&pdev->dev, "could not get default pinstate\n");
++		else
++			if (pinctrl_select_state(mcspi->pinctrl,
++						 mcspi->pins_default))
++				dev_err(&pdev->dev,
++					"could not set default pinstate\n");
++
++		mcspi->pins_idle = pinctrl_lookup_state(mcspi->pinctrl,
++						      PINCTRL_STATE_IDLE);
++		if (IS_ERR(mcspi->pins_idle))
++			dev_dbg(&pdev->dev, "could not get idle pinstate\n");
++		else
++			/* If possible, let's idle until the first transfer */
++			if (pinctrl_select_state(mcspi->pinctrl,
++						 mcspi->pins_idle))
++				dev_err(&pdev->dev,
++					"could not set idle pinstate\n");
++
++		mcspi->pins_sleep = pinctrl_lookup_state(mcspi->pinctrl,
++						       PINCTRL_STATE_SLEEP);
++		if (IS_ERR(mcspi->pins_sleep))
++			dev_dbg(&pdev->dev, "could not get sleep pinstate\n");
++	} else {
++		/*
++		* Since we continue even when pinctrl node is not found,
++		* Invalidate pins as not available. This is to make sure that
++		* IS_ERR(pins_xxx) results in failure when used.
++		*/
++		mcspi->pins_default = ERR_PTR(-ENODATA);
++		mcspi->pins_idle = ERR_PTR(-ENODATA);
++		mcspi->pins_sleep = ERR_PTR(-ENODATA);
++
++		dev_dbg(&pdev->dev, "did not get pins for i2c error: %li\n",
++			PTR_ERR(mcspi->pinctrl));
++	}
+ 
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+@@ -1335,6 +1388,18 @@ static int omap2_mcspi_remove(struct platform_device *pdev)
+ MODULE_ALIAS("platform:omap2_mcspi");
+ 
+ #ifdef	CONFIG_SUSPEND
++static int omap2_mcspi_suspend(struct device *dev)
++{
++	struct spi_master	*master = dev_get_drvdata(dev);
++	struct omap2_mcspi	*mcspi = spi_master_get_devdata(master);
++
++	if (!IS_ERR(mcspi->pins_sleep))
++		if (pinctrl_select_state(mcspi->pinctrl, mcspi->pins_sleep))
++			dev_err(dev, "could not set pins to sleep state\n");
++
++	return 0;
++}
++
+ /*
+  * When SPI wake up from off-mode, CS is in activate state. If it was in
+  * unactive state when driver was suspend, then force it to unactive state at
+@@ -1348,6 +1413,17 @@ static int omap2_mcspi_resume(struct device *dev)
+ 	struct omap2_mcspi_cs	*cs;
+ 
+ 	pm_runtime_get_sync(mcspi->dev);
++
++	/* First go to the default state */
++	if (!IS_ERR(mcspi->pins_default))
++		if (pinctrl_select_state(mcspi->pinctrl, mcspi->pins_default))
++			dev_err(dev, "could not set pins to default state\n");
++
++	/* Then let's idle the pins until the next transfer happens */
++	if (!IS_ERR(mcspi->pins_idle))
++		if (pinctrl_select_state(mcspi->pinctrl, mcspi->pins_idle))
++			dev_err(dev, "could not set pins to idle state\n");
++
+ 	list_for_each_entry(cs, &ctx->cs, node) {
+ 		if ((cs->chconf0 & OMAP2_MCSPI_CHCONF_FORCE) == 0) {
+ 			/*
+@@ -1364,12 +1440,15 @@ static int omap2_mcspi_resume(struct device *dev)
+ 	pm_runtime_put_autosuspend(mcspi->dev);
+ 	return 0;
+ }
++
+ #else
++#define	omap2_mcspi_suspend	NULL
+ #define	omap2_mcspi_resume	NULL
+ #endif
+ 
+ static const struct dev_pm_ops omap2_mcspi_pm_ops = {
+ 	.resume = omap2_mcspi_resume,
++	.suspend = omap2_mcspi_suspend,
+ 	.runtime_resume	= omap_mcspi_runtime_resume,
+ };
+ 
+-- 
+1.7.9.5
+
 
 ------------------------------------------------------------------------------
 Get 100% visibility into Java/.NET code with AppDynamics Lite

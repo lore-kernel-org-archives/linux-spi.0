@@ -1,19 +1,13 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: convert drivers to use bits_per_word_mask
-Date: Fri, 31 May 2013 23:23:33 +0200
-Message-ID: <201305312323.33706.arnd@arndb.de>
-References: <1369190195-14598-1-git-send-email-swarren@wwwdotorg.org>
-	<1528437.8btZmmDHhd@wuerfel> <51A8CB87.80201@wwwdotorg.org>
+From: "Bons d'achat" <contact-hhaQ0cWoGSNQFI55V6+gNQ@public.gmane.org>
+Subject: =?UTF-8?Q?4000_Eur_=C3=A0_d=C3=A9penser_chez_Castorama?=
+Date: Sat, 01 Jun 2013 00:14:49 +0000 (CET)
+Message-ID: <130601001449.38747260900003476@fmo40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mike Frysinger <vapier-aBrp7R+bbdUdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, device-drivers-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <51A8CB87.80201-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,21 +18,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 31 May 2013, Stephen Warren wrote:
-> > drivers/spi/spi-pxa2xx.c: In function 'pxa2xx_spi_probe':
-> > drivers/spi/spi-pxa2xx.c:1152:3: warning: left shift count >= width of type [enabled by default]
-> >    master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
-> >    ^
-> 
-> That should be fixed by the patches I sent yesterday.
-
-Cool, thanks!
-
-	Arnd
-
-------------------------------------------------------------------------------
-Get 100% visibility into Java/.NET code with AppDynamics Lite
-It's a free troubleshooting tool designed for production
-Get down to code-level detail for bottlenecks, with <2% overhead.
-Download for free and get started troubleshooting in minutes.
-http://p.sf.net/sfu/appdyn_d2d_ap2
+CihodHRwOi8vZm1vNDAuY29tL2VyM2FmYmNncTQ0YTV2YnEzZy9pbmRleDAuaHRtbCkKKGh0dHA6
+Ly9mbW80MC5jb20vdTQzdmtiZWhxdGszYWUwcWhqL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQw
+LmNvbS92NTNpMGJ0bnFvdGF4bnRjYXEvaW5kZXgyLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2tu
+M2tpYjMycTNzM2p3MmNpby9pbmRleDMuaHRtbCkKQm9uam91ciwKCnZvdXMgYXZleiDDqXTDqSBz
+ZWxlY3Rpb25uw6kgcGFybWkgCgo1MCAwMDAgcHJpdmlsw6lnacOpcyBwb3VyIHBhcnRpY2lwZXIK
+w6Agbm90cmUgR3JhbmQgQ29uY291cnMgIQpHYWduZXogNDAwMOKCrCBlbiBib25zIGQnYWNoYXQg
+KGh0dHA6Ly9mbW80MC5jb20vdDVrejB1aXdjazBhcHJ0b3FqL2luZGV4NC5odG1sKQooaHR0cDov
+L2ZtbzQwLmNvbS8ybmttaXUwMGNzZDMzbTJvamcvaW5kZXg1Lmh0bWwpClBob3RvIG5vbiBjb250
+cmFjdHVlbGxlLiAKQXVjdW5lIG1hcnF1ZSBuJ2VzdCBsZSBjb21tYW5kaXRhaXJlIGRlIGxhIGRv
+dGF0aW9uLgrCoAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KR2V0IDEwMCUgdmlzaWJpbGl0eSBpbnRv
+IEphdmEvLk5FVCBjb2RlIHdpdGggQXBwRHluYW1pY3MgTGl0ZQpJdCdzIGEgZnJlZSB0cm91Ymxl
+c2hvb3RpbmcgdG9vbCBkZXNpZ25lZCBmb3IgcHJvZHVjdGlvbgpHZXQgZG93biB0byBjb2RlLWxl
+dmVsIGRldGFpbCBmb3IgYm90dGxlbmVja3MsIHdpdGggPDIlIG92ZXJoZWFkLgpEb3dubG9hZCBm
+b3IgZnJlZSBhbmQgZ2V0IHN0YXJ0ZWQgdHJvdWJsZXNob290aW5nIGluIG1pbnV0ZXMuCmh0dHA6
+Ly9wLnNmLm5ldC9zZnUvYXBwZHluX2QyZF9hcDIKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

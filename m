@@ -1,10 +1,10 @@
-From: "Jens Renner (EFE)" <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
-Subject: [v3] spi: spi-xilinx: Use DT information for bits_per_word value
-Date: Sun, 02 Jun 2013 18:10:59 +0200
-Message-ID: <51AB6E93.7090007@efe-gmbh.de>
+From: GAGGLON <contact-onwg5PPfWvlGWvitb5QawA@public.gmane.org>
+Subject: groupons nous pour payer moins cher
+Date: Sun, 02 Jun 2013 20:45:03 +0000
+Message-ID: <f0b9250d3049cf5b1bcb1b9039c8aad2@mach10.generated>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,125 +17,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch overrides the default value of bits_per_word with the actual value
-of "xlnx,num-transfer-bits" from the DTS file to allow for 16 and 32 bit word
-lengths. In case of a non-existing entry this will be ignored. 
-
-Signed-off-by: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
----
-Changes in v3:
-- fix whitespace problem
-
-Changes in v2:
-- use of_property_read_u32() instead of of_get_property()
-- added some documentation
-- original patch v1 #2124911
-
-Grant Likely - March 2, 2013, 9:22 p.m.
-
-On Mon, 11 Feb 2013 17:28:01 +0100, "Jens Renner (EFE)" <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org> wrote:
-> From: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
->
-> This patch overrides the default value of bits_per_word with the actual value
-> of "xlnx,num-transfer-bits" from the DTS file to allow for 16 and 32 bit word
-> lengths.
->
-> Signed-off-by: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
-> ---
-> diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-> index e1d7696..03abdfa 100644
-> --- a/drivers/spi/spi-xilinx.c
-> +++ b/drivers/spi/spi-xilinx.c
-> @@ -487,6 +487,12 @@ static int xilinx_spi_probe(struct platform_device *dev)
-> 				       &len);
-> 		if (prop && len >= sizeof(*prop))
-> 			num_cs = __be32_to_cpup(prop);
-> +
-> +		/* override default number of bits per word */
-> +		prop = of_get_property(dev->dev.of_node,
-> +				       "xlnx,num-transfer-bits", &len);
-> +		if (prop && len >= sizeof(*prop))
-> +			bits_per_word = __be32_to_cpup(prop);
-
-Hi Jens,
-
-Please remember to update documentation when modifying a DT binding.
-
-Also, if you use of_property_read_u32() the code will be a lot simpler.
-
-g.
-
- drivers/spi/spi-xilinx.c                                     |   13 ++++++-------
- Documentation/devicetree/bindings/spi/spi-xilinx.txt         |   32 ++++++++++++++++++++
- 2 files changed, 38 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index e1d7696..6859833 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -479,14 +479,13 @@ static int xilinx_spi_probe(struct platform_device *dev)
- 
- #ifdef CONFIG_OF
- 	if (dev->dev.of_node) {
--		const __be32 *prop;
--		int len;
--
- 		/* number of slave select bits is required */
--		prop = of_get_property(dev->dev.of_node, "xlnx,num-ss-bits",
--				       &len);
--		if (prop && len >= sizeof(*prop))
--			num_cs = __be32_to_cpup(prop);
-+		of_property_read_u32(dev->dev.of_node, "xlnx,num-ss-bits",
-+				     &num_cs);
-+
-+		/* override default number of bits per word */
-+		of_property_read_u32(dev->dev.of_node, "xlnx,num-transfer-bits",
-+				     &bits_per_word);
- 	}
- #endif
- 
-diff --git a/Documentation/devicetree/bindings/spi/spi-xilinx.txt b/Documentation/devicetree/bindings/spi/spi-xilinx.txt
-new file mode 100644
-index 0000000..768a1ea
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-xilinx.txt
-@@ -0,0 +1,32 @@
-+Xilinx SPI controller:
-+
-+Required properties:
-+- compatible : Must be "xlnx,axi-1.02.a" or "xlnx,xps-spi-2.00.a"
-+- interrupt-parent : reference to parent interrupt controller
-+- interrupts : SPI controller interrupt
-+- reg : SPI register location and length
-+
-+Optional properties:
-+- xlnx,num-ss-bits : # of slave select bits
-+- xlnx,num-transfer_bits : # of data transfer bits (defaults to 8)
-+- xlnx,... : not considered by kernel module
-+- #address-cells = <1> : if child nodes are defined
-+- #size-cells = <0> : if child nodes are defined
-+- Child nodes conforming to SPI bus binding
-+
-+Example with 3 slave select bits and 32 bit transfer size:
-+
-+	axi_spi_0: spi@40a00000 {
-+		compatible = "xlnx,axi-spi-1.02.a", "xlnx,xps-spi-2.00.a";
-+		interrupt-parent = <&axi_intc_0>;
-+		interrupts = < 2 2 >;
-+		reg = < 0x40a00000 0x10000 >;
-+		xlnx,family = "spartan6";
-+		xlnx,fifo-exist = <0x1>;
-+		xlnx,instance = "axi_spi_0";
-+		xlnx,num-ss-bits = <0x3>;
-+		xlnx,num-transfer-bits = <0x20>;
-+		xlnx,sck-ratio = <0x4>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	} ;
-
-------------------------------------------------------------------------------
-Get 100% visibility into Java/.NET code with AppDynamics Lite
-It's a free troubleshooting tool designed for production
-Get down to code-level detail for bottlenecks, with <2% overhead.
-Download for free and get started troubleshooting in minutes.
-http://p.sf.net/sfu/appdyn_d2d_ap2
+UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
+bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
+L1lUMHhNeVppUFRNM01qZzNKbU05TWpNMk5ESW1aRDB5TURFekxUQTJMVEF4SURFeU9qRXdPakF3
+Sm1VOU1TWm9QVE0zTXpNNUptWTlNemMyTkRnbVp6MHpOelkwT0E9PQoKTGllbiBkZSBkZXNpbnNj
+cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE0zTWpnM0pt
+TTlNak0yTkRJbVpEMHlNREV6TFRBMkxUQXhJREV5T2pFd09qQXdKbVU5TVNab1BUTTNNek01Sm1Z
+OU16YzJORGdtWnowek56WTBPQT09CgrCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCBTaSB2b3VzIG5l
+IHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNvcnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGlj
+aS4KUGxhdGVmb3JtZSBzb2NpYWxlIGRlIGRlYWxzCkdyb3Vwb25zLW5vdXMgcG91ciBmYWlyZSBi
+YWlzc2VyIGxlcyBwcml4ICEKwqAKwqAKwqAKMTAKMTIKMDUKwqAKwqAKSm91cnMKSGV1cmVzCk1p
+bnV0ZXMKwqAKwqAKwqAKT3V2ZXJ0dXJlIG5hdGlvbmFsZSA6IFByb2ZpdGV6IGRlcyBtZWlsbGV1
+cnMgZGVhbHMgcG91ciBsZSBsYW5jZW1lbnQKwqAKSU5TQ1JJVkVaLVZPVVMgUE9VUiBGQUlSRSBC
+QUlTU0VSIExFUyBQUklYCkdhZ2dsb24gLSB0b3VzIGRyb2l0cyByw6lzZXJ2w6lzIC0gMjAxMwog
+ICDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoMKgUG91ciB2b3VzIGTDqXNhYm9ubmVyLCBjbGlxdWV6IGljaS4KLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tCkdldCAxMDAlIHZpc2liaWxpdHkgaW50byBKYXZhLy5ORVQgY29kZSB3aXRoIEFwcER5
+bmFtaWNzIExpdGUKSXQncyBhIGZyZWUgdHJvdWJsZXNob290aW5nIHRvb2wgZGVzaWduZWQgZm9y
+IHByb2R1Y3Rpb24KR2V0IGRvd24gdG8gY29kZS1sZXZlbCBkZXRhaWwgZm9yIGJvdHRsZW5lY2tz
+LCB3aXRoIDwyJSBvdmVyaGVhZC4KRG93bmxvYWQgZm9yIGZyZWUgYW5kIGdldCBzdGFydGVkIHRy
+b3VibGVzaG9vdGluZyBpbiBtaW51dGVzLgpodHRwOi8vcC5zZi5uZXQvc2Z1L2FwcGR5bl9kMmRf
+YXAyCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
+ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
+LWRldmVsLWdlbmVyYWwK

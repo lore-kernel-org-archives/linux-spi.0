@@ -1,336 +1,1106 @@
-From: "Decathlon par Neezz" <lisa@a.optincake.com>
-Subject: Jusqu'a -60% chez Decathlon
-Date: Mon, 03 Jun 2013 03:30:29 +0100
-Message-ID: <0.0.133.4FF.1CE6002503DB7CE.0@mta152.pur3.net>
-Reply-To: Decathlon par Neezz <lisa@a.optincake.com>
+From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: add spi controller master driver
+	for Blackfin 6xx processor
+Date: Mon, 3 Jun 2013 17:43:34 -0400
+Message-ID: <1370295814-28723-1-git-send-email-scott.jiang.linux@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        <uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
+List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
+List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
+Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTQwNjUzMjIwNTM3MTY0CgoKClNpIHZvdXMgbidhcnJpdmV6IHBhcyBhIHZpc3VhbGlzZXIgY2Ug
-bWVzc2FnZSwgdmV1aWxsZXogY2xpcXVlciBpY2k6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vaW50
-ZXJmYWNlL2V4dGVybmFsX3ZpZXdfZW1haWwucGhwP0FKODQ2NDE4NjYyNTE0MDY1MzIyMDUzNzE2
-NCZ2YXJJZD17fm1haQpsVmFyaWF0aW9uSWR+fQoKKERFQ0FUSExPTik6Cmh0dHA6Ly9hY3Rpb24u
-bWV0YWZmaWxpYXRpb24uY29tL3N1aXZpLnBocD9tY2xpYz1TM0NFMTU0MUVGQjFBMTY3NzcyNDYm
-dXJscnY9aHR0CnAlM0ElMkYlMkZkYXRhLmRlY2F0aGxvbi5mciUyRmMlMkYlM0Z0Y3MlM0QyNzEl
-MjZhZmZfYyUzREVtYWlsaW5nJTI2YWZmX3B1YiUzREVjCm9tbWVyY2UlMjZhZmZfdiUzREdlbmVy
-aWMlMjZjbXAlM0RFY29tbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyUyNmNobiUzREFmZmls
-CmlhdGlvbiUyNm1lZCUzRENQQSUyNnNyYyUzRE5FVEFGRklMSUFUSU9OJTI2dXJsJTNEaHR0cCUz
-QSUyRiUyRnd3dy5kZWNhdGhsb24uZnIlCjNGdXRtX3NvdXJjZSUzRE5FVEFGRklMSUFUSU9OJTI2
-dXRtX21lZGl1bSUzRENQQSUyNnV0bV9jb250ZW50JTNERU1BSUxJTkclMjZ1dG1fCmNhbXBhaWdu
-JTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMmdXJsdj02YzQ0NTc0MjUxYmQ0Y2E5
-YWUxZjg4NzgyMGEwZmQ1CmQKCigrIGRlIDc1IHNwb3J0cyBldCA1NDAwMCByw6lmw6lyZW5jZXMp
-OgpodHRwOi8vYWN0aW9uLm1ldGFmZmlsaWF0aW9uLmNvbS9zdWl2aS5waHA/bWNsaWM9UzNDRTE1
-NDFFRkIxQTMzNTU0NDYyJnVybHJ2PWh0dApwJTNBJTJGJTJGZGF0YS5kZWNhdGhsb24uZnIlMkZj
-JTJGJTNGdGNzJTNEMjcxJTI2YWZmX2MlM0RFbWFpbGluZyUyNmFmZl9wdWIlM0RFYwpvbW1lcmNl
-JTI2YWZmX3YlM0RHZW5lcmljJTI2Y21wJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1
-MTMlMjZjaG4lM0RBZmZpbAppYXRpb24lMjZtZWQlM0RDUEElMjZzcmMlM0RORVRBRkZJTElBVElP
-TiUyNnVybCUzRGh0dHAlM0ElMkYlMkZ3d3cuZGVjYXRobG9uLmZyJQozRnV0bV9zb3VyY2UlM0RO
-RVRBRkZJTElBVElPTiUyNnV0bV9tZWRpdW0lM0RDUEElMjZ1dG1fY29udGVudCUzREVNQUlMSU5H
-JTI2dXRtXwpjYW1wYWlnbiUzREVjb21tZXJjZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJnVybHY9
-NmM0NDU3NDI1MWJkNGNhOWFlMWY4ODc4MjBhMGZkNQpkCgooTGl2cmFpc29uIGV0IHJldG91ciBl
-biBtYWdhc2luIGdyYXR1aXRzKToKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlvbi5jb20vc3Vp
-dmkucGhwP21jbGljPVMzQ0UxNTQxRUZCMUE1MDMzMTY3OCZ1cmxydj1odHQKcCUzQSUyRiUyRmRh
-dGEuZGVjYXRobG9uLmZyJTJGYyUyRiUzRnRjcyUzRDI3MSUyNmFmZl9jJTNERW1haWxpbmclMjZh
-ZmZfcHViJTNERWMKb21tZXJjZSUyNmFmZl92JTNER2VuZXJpYyUyNmNtcCUzREVjb21tZXJjZV9i
-b25uZXNfYWZmYWlyZXNfMTMwNTEzJTI2Y2huJTNEQWZmaWwKaWF0aW9uJTI2bWVkJTNEQ1BBJTI2
-c3JjJTNETkVUQUZGSUxJQVRJT04lMjZ1cmwlM0RodHRwJTNBJTJGJTJGd3d3LmRlY2F0aGxvbi5m
-ciUKMkZsaXZyYWlzb24tYS1sYS1jYXJ0ZS5odG1sJTNGdXRtX3NvdXJjZSUzRE5FVEFGRklMSUFU
-SU9OJTI2dXRtX21lZGl1bSUzRENQQSUyNnUKdG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRtX2Nh
-bXBhaWduJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMmdXJsdj0yNmEKZDU1Yzkz
-YTA3MTJkZTFmZDY5N2RmODg2ZTI4NzIKCihtYWlsMTBfMzBfNS5qcGcpOgpodHRwOi8vYWN0aW9u
-Lm1ldGFmZmlsaWF0aW9uLmNvbS9zdWl2aS5waHA/bWNsaWM9UzNDRTE1NDFFRkIxQTY3MTA4ODk0
-JnVybHJ2PWh0dApwJTNBJTJGJTJGZGF0YS5kZWNhdGhsb24uZnIlMkZjJTJGJTNGdGNzJTNEMjcx
-JTI2YWZmX2MlM0RFbWFpbGluZyUyNmFmZl9wdWIlM0RFYwpvbW1lcmNlJTI2YWZmX3YlM0RHZW5l
-cmljJTI2Y21wJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMlMjZjaG4lM0RBZmZp
-bAppYXRpb24lMjZtZWQlM0RDUEElMjZzcmMlM0RORVRBRkZJTElBVElPTiUyNnVybCUzRGh0dHAl
-M0ElMkYlMkZ3d3cuZGVjYXRobG9uLmZyJQoyRkMtNDY2OTcwLXRvdXRlcy1ub3MtYm9ubmVzLWFm
-ZmFpcmVzJTNGdXRtX3NvdXJjZSUzRE5FVEFGRklMSUFUSU9OJTI2dXRtX21lZGl1bQolM0RDUEEl
-MjZ1dG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRtX2NhbXBhaWduJTNERWNvbW1lcmNlX2Jvbm5l
-c19hZmZhaXJlc18xMzA1MQozJnVybHY9ZTU1YzQyZTM4YjhiZTI4Y2I1YjFhNjI5OWRhMjczMGYK
-CihEdSBzb2xlaWwgZXQgZGVzIGJvbm5lcyBhZmZhaXJlcyAhKToKaHR0cDovL2FjdGlvbi5tZXRh
-ZmZpbGlhdGlvbi5jb20vc3VpdmkucGhwP21jbGljPVMzQ0UxNTQxRUZCMUE4Mzg4NjExMCZ1cmxy
-dj1odHQKcCUzQSUyRiUyRmRhdGEuZGVjYXRobG9uLmZyJTJGYyUyRiUzRnRjcyUzRDI3MSUyNmFm
-Zl9jJTNERW1haWxpbmclMjZhZmZfcHViJTNERWMKb21tZXJjZSUyNmFmZl92JTNER2VuZXJpYyUy
-NmNtcCUzREVjb21tZXJjZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJTI2Y2huJTNEQWZmaWwKaWF0
-aW9uJTI2bWVkJTNEQ1BBJTI2c3JjJTNETkVUQUZGSUxJQVRJT04lMjZ1cmwlM0RodHRwJTNBJTJG
-JTJGd3d3LmRlY2F0aGxvbi5mciUKMkZDLTQ2Njk3MC10b3V0ZXMtbm9zLWJvbm5lcy1hZmZhaXJl
-cyUzRnV0bV9zb3VyY2UlM0RORVRBRkZJTElBVElPTiUyNnV0bV9tZWRpdW0KJTNEQ1BBJTI2dXRt
-X2NvbnRlbnQlM0RFTUFJTElORyUyNnV0bV9jYW1wYWlnbiUzREVjb21tZXJjZV9ib25uZXNfYWZm
-YWlyZXNfMTMwNTEKMyZ1cmx2PWU1NWM0MmUzOGI4YmUyOGNiNWIxYTYyOTlkYTI3MzBmCgooRGUg
-NTAgw6AgNjAlKToKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlvbi5jb20vc3VpdmkucGhwP21j
-bGljPVMzQ0UxNTQxRUZCMUExMDA2NjMzMjYmdXJscnY9aHQKdHAlM0ElMkYlMkZkYXRhLmRlY2F0
-aGxvbi5mciUyRmMlMkYlM0Z0Y3MlM0QyNzElMjZhZmZfYyUzREVtYWlsaW5nJTI2YWZmX3B1YiUz
-REUKY29tbWVyY2UlMjZhZmZfdiUzREdlbmVyaWMlMjZjbXAlM0RFY29tbWVyY2VfYm9ubmVzX2Fm
-ZmFpcmVzXzEzMDUxMyUyNmNobiUzREFmZmkKbGlhdGlvbiUyNm1lZCUzRENQQSUyNnNyYyUzRE5F
-VEFGRklMSUFUSU9OJTI2dXJsJTNEaHR0cCUzQSUyRiUyRnd3dy5kZWNhdGhsb24uZnIKJTJGQy00
-NjY5NzAtdG91dGVzLW5vcy1ib25uZXMtYWZmYWlyZXMlMkZOLTEzNzMwMC1yZW1pc2V+ZGUtNTAt
-YS02MH4lM0Z1dG1fc291cmMKZSUzRE5FVEFGRklMSUFUSU9OJTI2dXRtX21lZGl1bSUzRENQQSUy
-NnV0bV9jb250ZW50JTNERU1BSUxJTkclMjZ1dG1fY2FtcGFpZ24lM0QKRWNvbW1lcmNlX2Jvbm5l
-c19hZmZhaXJlc18xMzA1MTMmdXJsdj1iYWRhY2ZjOGFiY2E3YzllNDA2MjY3YTZmMmM5ZTg5NwoK
-KERlIDQwIMOgIDUwJSk6Cmh0dHA6Ly9hY3Rpb24ubWV0YWZmaWxpYXRpb24uY29tL3N1aXZpLnBo
-cD9tY2xpYz1TM0NFMTU0MUVGQjFBMTE3NDQwNTQyJnVybHJ2PWh0CnRwJTNBJTJGJTJGZGF0YS5k
-ZWNhdGhsb24uZnIlMkZjJTJGJTNGdGNzJTNEMjcxJTI2YWZmX2MlM0RFbWFpbGluZyUyNmFmZl9w
-dWIlM0RFCmNvbW1lcmNlJTI2YWZmX3YlM0RHZW5lcmljJTI2Y21wJTNERWNvbW1lcmNlX2Jvbm5l
-c19hZmZhaXJlc18xMzA1MTMlMjZjaG4lM0RBZmZpCmxpYXRpb24lMjZtZWQlM0RDUEElMjZzcmMl
-M0RORVRBRkZJTElBVElPTiUyNnVybCUzRGh0dHAlM0ElMkYlMkZ3d3cuZGVjYXRobG9uLmZyCiUy
-RkMtNDY2OTcwLXRvdXRlcy1ub3MtYm9ubmVzLWFmZmFpcmVzJTJGTi0xMzczMDAtcmVtaXNlfmRl
-LTQwLWEtNTB+JTNGdXRtX3NvdXJjCmUlM0RORVRBRkZJTElBVElPTiUyNnV0bV9tZWRpdW0lM0RD
-UEElMjZ1dG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRtX2NhbXBhaWduJTNECkVjb21tZXJjZV9i
-b25uZXNfYWZmYWlyZXNfMTMwNTEzJnVybHY9YjI2YmIzZGI1N2U3NzIzYmM4NmM5Yjg5MTJlNjk1
-NTkKCihEZSAzMCDDoCA0MCUpOgpodHRwOi8vYWN0aW9uLm1ldGFmZmlsaWF0aW9uLmNvbS9zdWl2
-aS5waHA/bWNsaWM9UzNDRTE1NDFFRkIxQTEzNDIxNzc1OCZ1cmxydj1odAp0cCUzQSUyRiUyRmRh
-dGEuZGVjYXRobG9uLmZyJTJGYyUyRiUzRnRjcyUzRDI3MSUyNmFmZl9jJTNERW1haWxpbmclMjZh
-ZmZfcHViJTNERQpjb21tZXJjZSUyNmFmZl92JTNER2VuZXJpYyUyNmNtcCUzREVjb21tZXJjZV9i
-b25uZXNfYWZmYWlyZXNfMTMwNTEzJTI2Y2huJTNEQWZmaQpsaWF0aW9uJTI2bWVkJTNEQ1BBJTI2
-c3JjJTNETkVUQUZGSUxJQVRJT04lMjZ1cmwlM0RodHRwJTNBJTJGJTJGd3d3LmRlY2F0aGxvbi5m
-cgolMkZDLTQ2Njk3MC10b3V0ZXMtbm9zLWJvbm5lcy1hZmZhaXJlcyUyRk4tMTM3MzAwLXJlbWlz
-ZX5kZS0zMC1hLTQwfiUzRnV0bV9zb3VyYwplJTNETkVUQUZGSUxJQVRJT04lMjZ1dG1fbWVkaXVt
-JTNEQ1BBJTI2dXRtX2NvbnRlbnQlM0RFTUFJTElORyUyNnV0bV9jYW1wYWlnbiUzRApFY29tbWVy
-Y2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyZ1cmx2PTEzNWYyZGYxNjJjNDA3N2Y5ZGViZGI0M2M1
-NTkxYzI0CgooRGUgMjAgw6AgMzAlKToKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlvbi5jb20v
-c3VpdmkucGhwP21jbGljPVMzQ0UxNTQxRUZCMUExNTA5OTQ5NzQmdXJscnY9aHQKdHAlM0ElMkYl
-MkZkYXRhLmRlY2F0aGxvbi5mciUyRmMlMkYlM0Z0Y3MlM0QyNzElMjZhZmZfYyUzREVtYWlsaW5n
-JTI2YWZmX3B1YiUzREUKY29tbWVyY2UlMjZhZmZfdiUzREdlbmVyaWMlMjZjbXAlM0RFY29tbWVy
-Y2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyUyNmNobiUzREFmZmkKbGlhdGlvbiUyNm1lZCUzRENQ
-QSUyNnNyYyUzRE5FVEFGRklMSUFUSU9OJTI2dXJsJTNEaHR0cCUzQSUyRiUyRnd3dy5kZWNhdGhs
-b24uZnIKJTJGQy00NjY5NzAtdG91dGVzLW5vcy1ib25uZXMtYWZmYWlyZXMlMkZOLTEzNzMwMC1y
-ZW1pc2V+ZGUtMjAtYS0zMH4lM0Z1dG1fc291cmMKZSUzRE5FVEFGRklMSUFUSU9OJTI2dXRtX21l
-ZGl1bSUzRENQQSUyNnV0bV9jb250ZW50JTNERU1BSUxJTkclMjZ1dG1fY2FtcGFpZ24lM0QKRWNv
-bW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMmdXJsdj1hMzY0ZDU5NjQxYzFhOWM0Yzg0OWJi
-ODM4YmJjNWNhNwoKKERlIDEwIMOgIDIwJSk6Cmh0dHA6Ly9hY3Rpb24ubWV0YWZmaWxpYXRpb24u
-Y29tL3N1aXZpLnBocD9tY2xpYz1TM0NFMTU0MUVGQjFBMTY3NzcyMTkwJnVybHJ2PWh0CnRwJTNB
-JTJGJTJGZGF0YS5kZWNhdGhsb24uZnIlMkZjJTJGJTNGdGNzJTNEMjcxJTI2YWZmX2MlM0RFbWFp
-bGluZyUyNmFmZl9wdWIlM0RFCmNvbW1lcmNlJTI2YWZmX3YlM0RHZW5lcmljJTI2Y21wJTNERWNv
-bW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMlMjZjaG4lM0RBZmZpCmxpYXRpb24lMjZtZWQl
-M0RDUEElMjZzcmMlM0RORVRBRkZJTElBVElPTiUyNnVybCUzRGh0dHAlM0ElMkYlMkZ3d3cuZGVj
-YXRobG9uLmZyCiUyRkMtNDY2OTcwLXRvdXRlcy1ub3MtYm9ubmVzLWFmZmFpcmVzJTJGTi0xMzcz
-MDAtcmVtaXNlfmRlLTEwLWEtMjB+JTNGdXRtX3NvdXJjCmUlM0RORVRBRkZJTElBVElPTiUyNnV0
-bV9tZWRpdW0lM0RDUEElMjZ1dG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRtX2NhbXBhaWduJTNE
-CkVjb21tZXJjZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJnVybHY9OTZiOWE4NzY3NTAxMjZiOWM3
-YTE4ZjA2MTdjZTFhYzgKCgrCoAooVm9pciB0b3V0ZXMgbGVzIGJvbm5lcyBhZmZhaXJlcyAhKToK
-aHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlvbi5jb20vc3VpdmkucGhwP21jbGljPVMzQ0UxNTQx
-RUZCMUExODQ1NDk0MDYmdXJscnY9aHQKdHAlM0ElMkYlMkZkYXRhLmRlY2F0aGxvbi5mciUyRmMl
-MkYlM0Z0Y3MlM0QyNzElMjZhZmZfYyUzREVtYWlsaW5nJTI2YWZmX3B1YiUzREUKY29tbWVyY2Ul
-MjZhZmZfdiUzREdlbmVyaWMlMjZjbXAlM0RFY29tbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUx
-MyUyNmNobiUzREFmZmkKbGlhdGlvbiUyNm1lZCUzRENQQSUyNnNyYyUzRE5FVEFGRklMSUFUSU9O
-JTI2dXJsJTNEaHR0cCUzQSUyRiUyRnd3dy5kZWNhdGhsb24uZnIKJTJGQy00NjY5NzAtdG91dGVz
-LW5vcy1ib25uZXMtYWZmYWlyZXMlM0Z1dG1fc291cmNlJTNETkVUQUZGSUxJQVRJT04lMjZ1dG1f
-bWVkaXUKbSUzRENQQSUyNnV0bV9jb250ZW50JTNERU1BSUxJTkclMjZ1dG1fY2FtcGFpZ24lM0RF
-Y29tbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUKMTMmdXJsdj1lNTVjNDJlMzhiOGJlMjhjYjVi
-MWE2Mjk5ZGEyNzMwZgoKCsKgCsKgCihTcG9ydHMgZCdlYXUgISk6Cmh0dHA6Ly9kYXRhLmRlY2F0
-aGxvbi5mci9jLz90Y3M9MjcxJmFmZl9jPUVtYWlsaW5nJmFmZl9wdWI9RWNvbW1lcmNlJmFmZl92
-PUdlbmVyCmljJmNtcD1FY29tbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyZjaG49QWZmaWxp
-YXRpb24mbWVkPUNQQSZzcmM9TkVUQUZGSUxJQVRJCk9OJnVybD1odHRwOi8vd3d3LmRlY2F0aGxv
-bi5mci9DLTQ2Njk3MC1ib25uZXMtYWZmYWlyZXMvTi0xMzczMDEtc3BvcnR+YmF0ZWF1L04tCjEz
-NzMwMS1zcG9ydH5uYXRhdGlvbi9OLTEzNzMwMS1zcG9ydH5zcG9ydHMtZCdlYXUvTi0xMzczMDEt
-c3BvcnR+cGxvbmdlZT91dG1fc291CnJjZT1ORVRBRkZJTElBVElPTiZ1dG1fbWVkaXVtPUNQQSZ1
-dG1fY29udGVudD1FTUFJTElORyZ1dG1fY2FtcGFpZ249RWNvbW1lcmNlX2JvCm5uZXNfYWZmYWly
-ZXNfMTMwNTEzCgooRml0bmVzcyAhKToKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlvbi5jb20v
-c3VpdmkucGhwP21jbGljPVMzQ0UxNTQxRUZCMUEyMDEzMjY2MjImdXJscnY9aHQKdHAlM0ElMkYl
-MkZkYXRhLmRlY2F0aGxvbi5mciUyRmMlMkYlM0Z0Y3MlM0QyNzElMjZhZmZfYyUzREVtYWlsaW5n
-JTI2YWZmX3B1YiUzREUKY29tbWVyY2UlMjZhZmZfdiUzREdlbmVyaWMlMjZjbXAlM0RFY29tbWVy
-Y2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyUyNmNobiUzREFmZmkKbGlhdGlvbiUyNm1lZCUzRENQ
-QSUyNnNyYyUzRE5FVEFGRklMSUFUSU9OJTI2dXJsJTNEaHR0cCUzQSUyRiUyRnd3dy5kZWNhdGhs
-b24uZnIKJTJGQy00NjY5NzAtdG91dGVzLW5vcy1ib25uZXMtYWZmYWlyZXMlMkZOLTEzNzMwMS1z
-cG9ydH5maXRuZXNzJTNGdXRtX3NvdXJjZSUzRE4KRVRBRkZJTElBVElPTiUyNnV0bV9tZWRpdW0l
-M0RDUEElMjZ1dG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRtX2NhbXBhaWduJTNERWNvbW0KZXJj
-ZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJnVybHY9NDNjMTZiMzBhYWE2ZDJjNTMzMWJiM2NmM2I3
-YmYxMTQKCgrCoArCoAooUmFuZG9ubsOpZSAtIENhbXBpbmcgISk6Cmh0dHA6Ly9hY3Rpb24ubWV0
-YWZmaWxpYXRpb24uY29tL3N1aXZpLnBocD9tY2xpYz1TM0NFMTU0MUVGQjFBMjE4MTAzODM4JnVy
-bHJ2PWh0CnRwJTNBJTJGJTJGZGF0YS5kZWNhdGhsb24uZnIlMkZjJTJGJTNGdGNzJTNEMjcxJTI2
-YWZmX2MlM0RFbWFpbGluZyUyNmFmZl9wdWIlM0RFCmNvbW1lcmNlJTI2YWZmX3YlM0RHZW5lcmlj
-JTI2Y21wJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMlMjZjaG4lM0RBZmZpCmxp
-YXRpb24lMjZtZWQlM0RDUEElMjZzcmMlM0RORVRBRkZJTElBVElPTiUyNnVybCUzRGh0dHAlM0El
-MkYlMkZ3d3cuZGVjYXRobG9uLmZyCiUyRkMtNDY2OTcwLXRvdXRlcy1ub3MtYm9ubmVzLWFmZmFp
-cmVzJTJGTi0xMzczMDEtc3BvcnR+cmFuZG9ubmVlJTNGdXRtX3NvdXJjZSUzCkRORVRBRkZJTElB
-VElPTiUyNnV0bV9tZWRpdW0lM0RDUEElMjZ1dG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRtX2Nh
-bXBhaWduJTNERWNvCm1tZXJjZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJnVybHY9YjkwZjI4Mzlk
-MWE2MmNjMjRhYmU4YWE0YmVkZTcwMzgKCihDeWNsaXNtZSAhKToKaHR0cDovL2FjdGlvbi5tZXRh
-ZmZpbGlhdGlvbi5jb20vc3VpdmkucGhwP21jbGljPVMzQ0UxNTQxRUZCMUEyMzQ4ODEwNTQmdXJs
-cnY9aHQKdHAlM0ElMkYlMkZkYXRhLmRlY2F0aGxvbi5mciUyRmMlMkYlM0Z0Y3MlM0QyNzElMjZh
-ZmZfYyUzREVtYWlsaW5nJTI2YWZmX3B1YiUzREUKY29tbWVyY2UlMjZhZmZfdiUzREdlbmVyaWMl
-MjZjbXAlM0RFY29tbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyUyNmNobiUzREFmZmkKbGlh
-dGlvbiUyNm1lZCUzRENQQSUyNnNyYyUzRE5FVEFGRklMSUFUSU9OJTI2dXJsJTNEaHR0cCUzQSUy
-RiUyRnd3dy5kZWNhdGhsb24uZnIKJTJGQy00NjY5NzAtdG91dGVzLW5vcy1ib25uZXMtYWZmYWly
-ZXMlMkZOLTEzNzMwMS1zcG9ydH5jeWNsaXNtZSUzRnV0bV9zb3VyY2UlM0QKTkVUQUZGSUxJQVRJ
-T04lMjZ1dG1fbWVkaXVtJTNEQ1BBJTI2dXRtX2NvbnRlbnQlM0RFTUFJTElORyUyNnV0bV9jYW1w
-YWlnbiUzREVjb20KbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyZ1cmx2PTIxMDdhZDA2ODgx
-YTkzMzQ3MDIwNDU4ODBkMmUxOTNkCgoKwqAKwqAKKE1hcmNoZSAhKToKaHR0cDovL2FjdGlvbi5t
-ZXRhZmZpbGlhdGlvbi5jb20vc3VpdmkucGhwP21jbGljPVMzQ0UxNTQxRUZCMUEyNTE2NTgyNzAm
-dXJscnY9aHQKdHAlM0ElMkYlMkZkYXRhLmRlY2F0aGxvbi5mciUyRmMlMkYlM0Z0Y3MlM0QyNzEl
-MjZhZmZfYyUzREVtYWlsaW5nJTI2YWZmX3B1YiUzREUKY29tbWVyY2UlMjZhZmZfdiUzREdlbmVy
-aWMlMjZjbXAlM0RFY29tbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyUyNmNobiUzREFmZmkK
-bGlhdGlvbiUyNm1lZCUzRENQQSUyNnNyYyUzRE5FVEFGRklMSUFUSU9OJTI2dXJsJTNEaHR0cCUz
-QSUyRiUyRnd3dy5kZWNhdGhsb24uZnIKJTJGQy00NjY5NzAtYm9ubmVzLWFmZmFpcmVzJTJGTi0x
-MzczMDEtc3BvcnR+bWFyY2hlJTNGdXRtX3NvdXJjZSUzRE5FVEFGRklMSUFUSU8KTiUyNnV0bV9t
-ZWRpdW0lM0RDUEElMjZ1dG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRtX2NhbXBhaWduJTNERWNv
-bW1lcmNlX2Jvbm5lc18KYWZmYWlyZXNfMTMwNTEzJnVybHY9ZDk5N2RiMTZkYmI1MmQzZjIzYjFh
-OGY2Mzg4Y2E2NTEKCihSb2xsZXIgLSBTa2F0ZSAhKToKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlh
-dGlvbi5jb20vc3VpdmkucGhwP21jbGljPVMzQ0UxNTQxRUZCMUEyNjg0MzU0ODYmdXJscnY9aHQK
-dHAlM0ElMkYlMkZkYXRhLmRlY2F0aGxvbi5mciUyRmMlMkYlM0Z0Y3MlM0QyNzElMjZhZmZfYyUz
-REVtYWlsaW5nJTI2YWZmX3B1YiUzREUKY29tbWVyY2UlMjZhZmZfdiUzREdlbmVyaWMlMjZjbXAl
-M0RFY29tbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyUyNmNobiUzREFmZmkKbGlhdGlvbiUy
-Nm1lZCUzRENQQSUyNnNyYyUzRE5FVEFGRklMSUFUSU9OJTI2dXJsJTNEaHR0cCUzQSUyRiUyRnd3
-dy5kZWNhdGhsb24uZnIKJTJGQy00NjY5NzAtYm9ubmVzLWFmZmFpcmVzJTJGTi0xMzczMDEtc3Bv
-cnR+cm9sbGVyJTJDLXRyb3R0aW5ldHRlJTJDLXNrYXRlJTNGdXQKbV9zb3VyY2UlM0RORVRBRkZJ
-TElBVElPTiUyNnV0bV9tZWRpdW0lM0RDUEElMjZ1dG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRt
-X2NhbXAKYWlnbiUzREVjb21tZXJjZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJnVybHY9YTM4MWY2
-OWVlZDYwY2YzMDM1NjFmMTUzMTA5MTZlMmIKCgrCoArCoAooR29sZiAhKToKaHR0cDovL2FjdGlv
-bi5tZXRhZmZpbGlhdGlvbi5jb20vc3VpdmkucGhwP21jbGljPVMzQ0UxNTQxRUZCMUEyODUyMTI3
-MDImdXJscnY9aHQKdHAlM0ElMkYlMkZkYXRhLmRlY2F0aGxvbi5mciUyRmMlMkYlM0Z0Y3MlM0Qy
-NzElMjZhZmZfYyUzREVtYWlsaW5nJTI2YWZmX3B1YiUzREUKY29tbWVyY2UlMjZhZmZfdiUzREdl
-bmVyaWMlMjZjbXAlM0RFY29tbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyUyNmNobiUzREFm
-ZmkKbGlhdGlvbiUyNm1lZCUzRENQQSUyNnNyYyUzRE5FVEFGRklMSUFUSU9OJTI2dXJsJTNEaHR0
-cCUzQSUyRiUyRnd3dy5kZWNhdGhsb24uZnIKJTJGQy00NjY5NzAtdG91dGVzLW5vcy1ib25uZXMt
-YWZmYWlyZXMlMkZOLTEzNzMwMS1zcG9ydH5nb2xmJTNGdXRtX3NvdXJjZSUzRE5FVEEKRkZJTElB
-VElPTiUyNnV0bV9tZWRpdW0lM0RDUEElMjZ1dG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRtX2Nh
-bXBhaWduJTNERWNvbW1lcmMKZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJnVybHY9Mjc3YjI5Njhl
-YTA0ZGQ5YzAwOGJkOTE5NjEzZDA1N2UKCihSdW5uaW5nICEpOgpodHRwOi8vYWN0aW9uLm1ldGFm
-ZmlsaWF0aW9uLmNvbS9zdWl2aS5waHA/bWNsaWM9UzNDRTE1NDFFRkIxQTMwMTk4OTkxOCZ1cmxy
-dj1odAp0cCUzQSUyRiUyRmRhdGEuZGVjYXRobG9uLmZyJTJGYyUyRiUzRnRjcyUzRDI3MSUyNmFm
-Zl9jJTNERW1haWxpbmclMjZhZmZfcHViJTNERQpjb21tZXJjZSUyNmFmZl92JTNER2VuZXJpYyUy
-NmNtcCUzREVjb21tZXJjZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJTI2Y2huJTNEQWZmaQpsaWF0
-aW9uJTI2bWVkJTNEQ1BBJTI2c3JjJTNETkVUQUZGSUxJQVRJT04lMjZ1cmwlM0RodHRwJTNBJTJG
-JTJGd3d3LmRlY2F0aGxvbi5mcgolMkZDLTQ2Njk3MC10b3V0ZXMtbm9zLWJvbm5lcy1hZmZhaXJl
-cyUyRk4tMTM3MzAxLXNwb3J0fnJ1bm5pbmclM0Z1dG1fc291cmNlJTNETgpFVEFGRklMSUFUSU9O
-JTI2dXRtX21lZGl1bSUzRENQQSUyNnV0bV9jb250ZW50JTNERU1BSUxJTkclMjZ1dG1fY2FtcGFp
-Z24lM0RFY29tbQplcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMmdXJsdj03Y2ZiYzE1NTQ5MGQy
-ZWUxODM4ZDM5OTc0NWRmYmE0YgoKCsKgCgooRm9vdGJhbGwgISk6Cmh0dHA6Ly9hY3Rpb24ubWV0
-YWZmaWxpYXRpb24uY29tL3N1aXZpLnBocD9tY2xpYz1TM0NFMTU0MUVGQjFBMzE4NzY3MTM0JnVy
-bHJ2PWh0CnRwJTNBJTJGJTJGZGF0YS5kZWNhdGhsb24uZnIlMkZjJTJGJTNGdGNzJTNEMjcxJTI2
-YWZmX2MlM0RFbWFpbGluZyUyNmFmZl9wdWIlM0RFCmNvbW1lcmNlJTI2YWZmX3YlM0RHZW5lcmlj
-JTI2Y21wJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMlMjZjaG4lM0RBZmZpCmxp
-YXRpb24lMjZtZWQlM0RDUEElMjZzcmMlM0RORVRBRkZJTElBVElPTiUyNnVybCUzRGh0dHAlM0El
-MkYlMkZ3d3cuZGVjYXRobG9uLmZyCiUyRkMtNDY2OTcwLWJvbm5lcy1hZmZhaXJlcyUyRk4tMTM3
-MzAxLXNwb3J0fmZvb3RiYWxsJTNGdXRtX3NvdXJjZSUzRE5FVEFGRklMSUFUCklPTiUyNnV0bV9t
-ZWRpdW0lM0RDUEElMjZ1dG1fY29udGVudCUzREVNQUlMSU5HJTI2dXRtX2NhbXBhaWduJTNERWNv
-bW1lcmNlX2Jvbm5lCnNfYWZmYWlyZXNfMTMwNTEzJnVybHY9N2UyYmEwNmZiODNlZWRjZDhiMGU2
-NGRkY2RlNTU4YmIKCihUZW5uaXMgISk6Cmh0dHA6Ly9hY3Rpb24ubWV0YWZmaWxpYXRpb24uY29t
-L3N1aXZpLnBocD9tY2xpYz1TM0NFMTU0MUVGQjFBMzM1NTQ0MzUwJnVybHJ2PWh0CnRwJTNBJTJG
-JTJGZGF0YS5kZWNhdGhsb24uZnIlMkZjJTJGJTNGdGNzJTNEMjcxJTI2YWZmX2MlM0RFbWFpbGlu
-ZyUyNmFmZl9wdWIlM0RFCmNvbW1lcmNlJTI2YWZmX3YlM0RHZW5lcmljJTI2Y21wJTNERWNvbW1l
-cmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMlMjZjaG4lM0RBZmZpCmxpYXRpb24lMjZtZWQlM0RD
-UEElMjZzcmMlM0RORVRBRkZJTElBVElPTiUyNnVybCUzRGh0dHAlM0ElMkYlMkZ3d3cuZGVjYXRo
-bG9uLmZyCiUyRkMtNDY2OTcwLWJvbm5lcy1hZmZhaXJlcyUyRk4tMTM3MzAxLXNwb3J0fnRlbm5p
-cyUzRnV0bV9zb3VyY2UlM0RORVRBRkZJTElBVElPCk4lMjZ1dG1fbWVkaXVtJTNEQ1BBJTI2dXRt
-X2NvbnRlbnQlM0RFTUFJTElORyUyNnV0bV9jYW1wYWlnbiUzREVjb21tZXJjZV9ib25uZXNfCmFm
-ZmFpcmVzXzEzMDUxMyZ1cmx2PTYxM2ViMTQzNmJiMTdiNjkxYjJmNThkYjQ4YTk5Mjk4CgoKwqAK
-KFZvaXIgdG91dGVzIGxlcyBib25uZXMgYWZmYWlyZXMgISk6Cmh0dHA6Ly9hY3Rpb24ubWV0YWZm
-aWxpYXRpb24uY29tL3N1aXZpLnBocD9tY2xpYz1TM0NFMTU0MUVGQjFBMzUyMzIxNTY2JnVybHJ2
-PWh0CnRwJTNBJTJGJTJGZGF0YS5kZWNhdGhsb24uZnIlMkZjJTJGJTNGdGNzJTNEMjcxJTI2YWZm
-X2MlM0RFbWFpbGluZyUyNmFmZl9wdWIlM0RFCmNvbW1lcmNlJTI2YWZmX3YlM0RHZW5lcmljJTI2
-Y21wJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMlMjZjaG4lM0RBZmZpCmxpYXRp
-b24lMjZtZWQlM0RDUEElMjZzcmMlM0RORVRBRkZJTElBVElPTiUyNnVybCUzRGh0dHAlM0ElMkYl
-MkZ3d3cuZGVjYXRobG9uLmZyCiUyRkMtNDY2OTcwLXRvdXRlcy1ub3MtYm9ubmVzLWFmZmFpcmVz
-JTNGdXRtX3NvdXJjZSUzRE5FVEFGRklMSUFUSU9OJTI2dXRtX21lZGl1Cm0lM0RDUEElMjZ1dG1f
-Y29udGVudCUzREVNQUlMSU5HJTI2dXRtX2NhbXBhaWduJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZh
-aXJlc18xMzA1CjEzJnVybHY9ZTU1YzQyZTM4YjhiZTI4Y2I1YjFhNjI5OWRhMjczMGYKCgrCoArC
-oAoKKG1haWwxMF8zMF8yOS5qcGcpOgpodHRwOi8vYWN0aW9uLm1ldGFmZmlsaWF0aW9uLmNvbS9z
-dWl2aS5waHA/bWNsaWM9UzNDRTE1NDFFRkIxQTM2OTA5ODc4MiZ1cmxydj1odAp0cCUzQSUyRiUy
-RmRhdGEuZGVjYXRobG9uLmZyJTJGYyUyRiUzRnRjcyUzRDI3MSUyNmFmZl9jJTNERW1haWxpbmcl
-MjZhZmZfcHViJTNERQpjb21tZXJjZSUyNmFmZl92JTNER2VuZXJpYyUyNmNtcCUzREVjb21tZXJj
-ZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJTI2Y2huJTNEQWZmaQpsaWF0aW9uJTI2bWVkJTNEQ1BB
-JTI2c3JjJTNETkVUQUZGSUxJQVRJT04lMjZ1cmwlM0RodHRwJTNBJTJGJTJGd3d3LmRlY2F0aGxv
-bi5mcgolMkY5MC1qb3Vycy1wb3VyLWVzc2F5ZXIuaHRtbCUzRnV0bV9zb3VyY2UlM0RORVRBRkZJ
-TElBVElPTiUyNnV0bV9tZWRpdW0lM0RDUEElMgo2dXRtX2NvbnRlbnQlM0RFTUFJTElORyUyNnV0
-bV9jYW1wYWlnbiUzREVjb21tZXJjZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJnVybHY9Ygo3ODIw
-NDBkMzVkMDliMDcxMzE0ZmEyN2NkYjU5M2Y1CgoobWFpbDEwXzMwXzMxLmpwZyk6Cmh0dHA6Ly9h
-Y3Rpb24ubWV0YWZmaWxpYXRpb24uY29tL3N1aXZpLnBocD9tY2xpYz1TM0NFMTU0MUVGQjFBMzg1
-ODc1OTk4JnVybHJ2PWh0CnRwJTNBJTJGJTJGZGF0YS5kZWNhdGhsb24uZnIlMkZjJTJGJTNGdGNz
-JTNEMjcxJTI2YWZmX2MlM0RFbWFpbGluZyUyNmFmZl9wdWIlM0RFCmNvbW1lcmNlJTI2YWZmX3Yl
-M0RHZW5lcmljJTI2Y21wJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJlc18xMzA1MTMlMjZjaG4l
-M0RBZmZpCmxpYXRpb24lMjZtZWQlM0RDUEElMjZzcmMlM0RORVRBRkZJTElBVElPTiUyNnVybCUz
-RGh0dHBzJTNBJTJGJTJGd3d3LmZhY2Vib29rLmNvCm0lMkZEZWNhdGhsb24uRnJhbmNlJTNGdXRt
-X3NvdXJjZSUzRE5FVEFGRklMSUFUSU9OJTI2dXRtX21lZGl1bSUzRENQQSUyNnV0bV9jb250CmVu
-dCUzREVNQUlMSU5HJTI2dXRtX2NhbXBhaWduJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJlc18x
-MzA1MTMmdXJsdj1lYzlhZDEzMTQ2CmQ0Y2QyYWU4MmQyMzM3M2NhNjAzYmIKCihtYWlsMTBfMzBf
-MzIuanBnKToKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlvbi5jb20vc3VpdmkucGhwP21jbGlj
-PVMzQ0UxNTQxRUZCMUE0MDI2NTMyMTQmdXJscnY9aHQKdHAlM0ElMkYlMkZkYXRhLmRlY2F0aGxv
-bi5mciUyRmMlMkYlM0Z0Y3MlM0QyNzElMjZhZmZfYyUzREVtYWlsaW5nJTI2YWZmX3B1YiUzREUK
-Y29tbWVyY2UlMjZhZmZfdiUzREdlbmVyaWMlMjZjbXAlM0RFY29tbWVyY2VfYm9ubmVzX2FmZmFp
-cmVzXzEzMDUxMyUyNmNobiUzREFmZmkKbGlhdGlvbiUyNm1lZCUzRENQQSUyNnNyYyUzRE5FVEFG
-RklMSUFUSU9OJTI2dXJsJTNEaHR0cHMlM0ElMkYlMkZ0d2l0dGVyLmNvbSUyRmQKZWNhdGhsb25m
-cmFuY2UlM0Z1dG1fc291cmNlJTNETkVUQUZGSUxJQVRJT04lMjZ1dG1fbWVkaXVtJTNEQ1BBJTI2
-dXRtX2NvbnRlbnQlM0QKRU1BSUxJTkclMjZ1dG1fY2FtcGFpZ24lM0RFY29tbWVyY2VfYm9ubmVz
-X2FmZmFpcmVzXzEzMDUxMyZ1cmx2PTc3NmNkMjZmNDkwM2JmNmMKZjU1ZWE5YWY5NTE4ZjUzZgoK
-KG1haWwxMF8zMF8zMy5qcGcpOgpodHRwOi8vYWN0aW9uLm1ldGFmZmlsaWF0aW9uLmNvbS9zdWl2
-aS5waHA/bWNsaWM9UzNDRTE1NDFFRkIxQTQxOTQzMDQzMCZ1cmxydj1odAp0cCUzQSUyRiUyRmRh
-dGEuZGVjYXRobG9uLmZyJTJGYyUyRiUzRnRjcyUzRDI3MSUyNmFmZl9jJTNERW1haWxpbmclMjZh
-ZmZfcHViJTNERQpjb21tZXJjZSUyNmFmZl92JTNER2VuZXJpYyUyNmNtcCUzREVjb21tZXJjZV9i
-b25uZXNfYWZmYWlyZXNfMTMwNTEzJTI2Y2huJTNEQWZmaQpsaWF0aW9uJTI2bWVkJTNEQ1BBJTI2
-c3JjJTNETkVUQUZGSUxJQVRJT04lMjZ1cmwlM0RodHRwJTNBJTJGJTJGd3d3LnlvdXR1YmUuY29t
-JQoyRnVzZXIlMkZkZWNhdGhmcmFuY2UlM0Z1dG1fc291cmNlJTNETkVUQUZGSUxJQVRJT04lMjZ1
-dG1fbWVkaXVtJTNEQ1BBJTI2dXRtX2Nvbgp0ZW50JTNERU1BSUxJTkclMjZ1dG1fY2FtcGFpZ24l
-M0RFY29tbWVyY2VfYm9ubmVzX2FmZmFpcmVzXzEzMDUxMyZ1cmx2PWYwZDNhY2FhZQpiNGIzZDQ0
-ZWI0MjkyN2NmZjk5NjAxZgoKKG1haWwxMF8zMF8zNC5qcGcpOgpodHRwOi8vYWN0aW9uLm1ldGFm
-ZmlsaWF0aW9uLmNvbS9zdWl2aS5waHA/bWNsaWM9UzNDRTE1NDFFRkIxQTQzNjIwNzY0NiZ1cmxy
-dj1odAp0cCUzQSUyRiUyRmRhdGEuZGVjYXRobG9uLmZyJTJGYyUyRiUzRnRjcyUzRDI3MSUyNmFm
-Zl9jJTNERW1haWxpbmclMjZhZmZfcHViJTNERQpjb21tZXJjZSUyNmFmZl92JTNER2VuZXJpYyUy
-NmNtcCUzREVjb21tZXJjZV9ib25uZXNfYWZmYWlyZXNfMTMwNTEzJTI2Y2huJTNEQWZmaQpsaWF0
-aW9uJTI2bWVkJTNEQ1BBJTI2c3JjJTNETkVUQUZGSUxJQVRJT04lMjZ1cmwlM0RodHRwcyUzQSUy
-RiUyRnBsdXMuZ29vZ2xlLmNvbQolMkYxMDQ5MjU0MDU1NTY4NDAxNzIzNjQlMkZwb3N0cyUzRnV0
-bV9zb3VyY2UlM0RORVRBRkZJTElBVElPTiUyNnV0bV9tZWRpdW0lM0RDUApBJTI2dXRtX2NvbnRl
-bnQlM0RFTUFJTElORyUyNnV0bV9jYW1wYWlnbiUzREVjb21tZXJjZV9ib25uZXNfYWZmYWlyZXNf
-MTMwNTEzJnVybAp2PTlkODUwNTBmZjYxZmZmNDUyZGY4NTY0OTZjNGUyYTliCgoKwqAKCihtYWls
-MTBfMzBfMzYuanBnKToKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlvbi5jb20vc3VpdmkucGhw
-P21jbGljPVMzQ0UxNTQxRUZCMUE0NTI5ODQ4NjImdXJscnY9aHQKdHAlM0ElMkYlMkZkYXRhLmRl
-Y2F0aGxvbi5mciUyRmMlMkYlM0Z0Y3MlM0QyNzElMjZhZmZfYyUzREVtYWlsaW5nJTI2YWZmX3B1
-YiUzREUKY29tbWVyY2UlMjZhZmZfdiUzREdlbmVyaWMlMjZjbXAlM0RFY29tbWVyY2VfYm9ubmVz
-X2FmZmFpcmVzXzEzMDUxMyUyNmNobiUzREFmZmkKbGlhdGlvbiUyNm1lZCUzRENQQSUyNnNyYyUz
-RE5FVEFGRklMSUFUSU9OJTI2dXJsJTNEaHR0cCUzQSUyRiUyRnd3dy5kZWNhdGhsb24uZnIKJTNG
-dXRtX3NvdXJjZSUzRE5FVEFGRklMSUFUSU9OJTI2dXRtX21lZGl1bSUzRENQQSUyNnV0bV9jb250
-ZW50JTNERU1BSUxJTkclMjZ1dG0KX2NhbXBhaWduJTNERWNvbW1lcmNlX2Jvbm5lc19hZmZhaXJl
-c18xMzA1MTMmdXJsdj02YzQ0NTc0MjUxYmQ0Y2E5YWUxZjg4NzgyMGEwZmQKNWQKCgpOb3VzIHNv
-dWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlk
-ZXIgw6AKZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZSBsJ2Fu
-bsOpZS4gQWluc2ksIGdyw6JjZSDDoApub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2
-b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEKYmFzIGNvdXQsIG9wcG9y
-dHVuaXTDqSwgaW5mb3MuLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRl
-CnZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBx
-dWFsaXTDqSBwcml4IHRvdXQgYXUKbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUg
-cGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJvcG9zaXRpb25zIHF1ZSBub3Vz
-IHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpvdXIKcsOpZ3VsacOocmVt
-ZW50IGV0IHRvdXRlIGwnYW5uw6llLiBFbnZpZSBkZSB2b3VzIGZhaXJlIHVuZSBiZWF1dMOpIMOg
-Cm1vaW5kcmUgY2/Du3QgdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBkZSBwcsOpdm9pciB2b3Mg
-cHJvY2hhaW5lcyB2YWNhbmNlcwpkJ8OpdMOpIMOgIG1vaW5kcmUgZnJhaXMgZXQgb3UgZW5jb3Jl
-IGQnaGFiaWxsZXIgdm9zIGVuZmFudHMgw6AgZGVzIGJ1ZGdldHMKcmFpc29ubmFibGVzLCBhbG9y
-cyBjb25zdWx0ZXIgZGUgdGVtcHMgw6AgYXV0cmUgbm9zIHByb3Bvc2l0aW9ucyBwb3VyIHZvdXMK
-cGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRlIG5vbWJyZXVzZXMgw6ljb25vbWllcyB0b3V0IGVu
-IHZvdXMgZmFpc2FudApwbGFpc2lyIMOgIHRvdXRlIGxhIGZhbWlsbGUuIE5vdXMgc291aGFpdG9u
-cyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkCmFmaW4gZGUgdm91cyBhaWRlciDDoCBk
-w6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlCmwnYW5uw6llLiBB
-aW5zaSwgZ3LDomNlIMOgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJv
-Zml0ZXIgZGUKdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwgb3Bwb3J0dW5pdMOp
-LCBpbmZvcy4uLiBCZXNvaW4gZGUKdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBj
-aGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1cgpyYXBwb3J0IHF1YWxpdMOp
-IHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0
-ZXIKdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBh
-ZHJlc3NvbnMsIGV0IHF1ZSBub3VzCm1ldHRvbnMgw6Agam91ciByw6lndWxpw6hyZW1lbnQgZXQg
-dG91dGUgbCdhbm7DqWUuCgoKCgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoK
-aHR0cDovL2Eub3B0aW5jYWtlLmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4NjYyNTE0MDY1
-MzIyMDUzNzE2NAoKCgoKCgp7fkFKODQ2NDE4NjYyNTE0MDY1MzIyMDUzNzE2NH59Ci0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQpHZXQgMTAwJSB2aXNpYmlsaXR5IGludG8gSmF2YS8uTkVUIGNvZGUgd2l0
-aCBBcHBEeW5hbWljcyBMaXRlCkl0J3MgYSBmcmVlIHRyb3VibGVzaG9vdGluZyB0b29sIGRlc2ln
-bmVkIGZvciBwcm9kdWN0aW9uCkdldCBkb3duIHRvIGNvZGUtbGV2ZWwgZGV0YWlsIGZvciBib3R0
-bGVuZWNrcywgd2l0aCA8MiUgb3ZlcmhlYWQuCkRvd25sb2FkIGZvciBmcmVlIGFuZCBnZXQgc3Rh
-cnRlZCB0cm91Ymxlc2hvb3RpbmcgaW4gbWludXRlcy4KaHR0cDovL3Auc2YubmV0L3NmdS9hcHBk
-eW5fZDJkX2FwMgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
-c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
-bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+New spi controller is integrated into Blackfin 6xx processor.
+Comparing to bf5xx spi controller, we support 32 bits word size
+and independent receive and transmit DMA channels now.
+Also mode 0 and 2 (CPHA = 0) can get fully supported
+becasue cs line may be controlled by the software.
+
+Signed-off-by: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/Kconfig       |    8 +-
+ drivers/spi/Makefile      |    1 +
+ drivers/spi/spi-bfin6xx.c | 1026 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 1034 insertions(+), 1 deletions(-)
+ create mode 100644 drivers/spi/spi-bfin6xx.c
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 864d87f..d64bbeb 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -87,10 +87,16 @@ config SPI_BCM2835
+ 
+ config SPI_BFIN5XX
+ 	tristate "SPI controller driver for ADI Blackfin5xx"
+-	depends on BLACKFIN
++	depends on BLACKFIN && !BF60x
+ 	help
+ 	  This is the SPI controller master driver for Blackfin 5xx processor.
+ 
++config SPI_BFIN6XX
++	tristate "SPI controller driver for ADI Blackfin6xx"
++	depends on BF60x
++	help
++	  This is the SPI controller master driver for Blackfin 6xx processor.
++
+ config SPI_BFIN_SPORT
+ 	tristate "SPI bus via Blackfin SPORT"
+ 	depends on BLACKFIN
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index 33f9c09..0114a26 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -17,6 +17,7 @@ obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
+ obj-$(CONFIG_SPI_BCM2835)		+= spi-bcm2835.o
+ obj-$(CONFIG_SPI_BCM63XX)		+= spi-bcm63xx.o
+ obj-$(CONFIG_SPI_BFIN5XX)		+= spi-bfin5xx.o
++obj-$(CONFIG_SPI_BFIN6XX)               += spi-bfin6xx.o
+ obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfin-sport.o
+ obj-$(CONFIG_SPI_BITBANG)		+= spi-bitbang.o
+ obj-$(CONFIG_SPI_BUTTERFLY)		+= spi-butterfly.o
+diff --git a/drivers/spi/spi-bfin6xx.c b/drivers/spi/spi-bfin6xx.c
+new file mode 100644
+index 0000000..bd38ff4
+--- /dev/null
++++ b/drivers/spi/spi-bfin6xx.c
+@@ -0,0 +1,1026 @@
++/*
++ * Analog Devices SPI3 controller driver
++ *
++ * Copyright (c) 2013 Analog Devices Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ */
++
++#include <linux/delay.h>
++#include <linux/device.h>
++#include <linux/dma-mapping.h>
++#include <linux/errno.h>
++#include <linux/gpio.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/ioport.h>
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/spi/spi.h>
++#include <linux/types.h>
++#include <linux/workqueue.h>
++
++#include <asm/bfin6xx_spi.h>
++#include <asm/cacheflush.h>
++#include <asm/dma.h>
++#include <asm/portmux.h>
++
++#define START_STATE	((void *)0)
++#define RUNNING_STATE	((void *)1)
++#define DONE_STATE	((void *)2)
++#define ERROR_STATE	((void *)-1)
++
++struct bfin_spi_master;
++
++struct bfin_spi_transfer_ops {
++	void (*write) (struct bfin_spi_master *);
++	void (*read) (struct bfin_spi_master *);
++	void (*duplex) (struct bfin_spi_master *);
++};
++
++/* runtime info for spi master */
++struct bfin_spi_master {
++	/* SPI framework hookup */
++	struct spi_master *master;
++
++	/* Regs base of SPI controller */
++	struct bfin_spi_regs __iomem *regs;
++
++	/* Pin request list */
++	u16 *pin_req;
++
++	/* Message Transfer pump */
++	struct tasklet_struct pump_transfers;
++
++	/* Current message transfer state info */
++	struct spi_message *cur_msg;
++	struct spi_transfer *cur_transfer;
++	struct bfin_spi_device *cur_chip;
++	unsigned transfer_len;
++	unsigned cs_change;
++
++	/* transfer buffer */
++	void *tx;
++	void *tx_end;
++	void *rx;
++	void *rx_end;
++
++	/* dma info */
++	unsigned int tx_dma;
++	unsigned int rx_dma;
++	dma_addr_t tx_dma_addr;
++	dma_addr_t rx_dma_addr;
++	unsigned long dummy_buffer; /* used in unidirectional transfer */
++	unsigned long tx_dma_size;
++	unsigned long rx_dma_size;
++	int tx_num;
++	int rx_num;
++
++	/* store register value for suspend/resume */
++	u32 control;
++	u32 ssel;
++
++	const struct bfin_spi_transfer_ops *ops;
++};
++
++struct bfin_spi_device {
++	u32 control;
++	u32 clock;
++	u32 ssel;
++
++	u8 cs;
++	u16 cs_chg_udelay; /* Some devices require > 255usec delay */
++	u32 cs_gpio;
++	u32 tx_dummy_val; /* tx value for rx only transfer */
++	bool enable_dma;
++	const struct bfin_spi_transfer_ops *ops;
++};
++
++static void bfin_spi_enable(struct bfin_spi_master *drv_data)
++{
++	bfin_write_or(&drv_data->regs->control, SPI_CTL_EN);
++}
++
++static void bfin_spi_disable(struct bfin_spi_master *drv_data)
++{
++	bfin_write_and(&drv_data->regs->control, ~SPI_CTL_EN);
++}
++
++static unsigned long sclk;
++/* Caculate the SPI_CLOCK register value based on input HZ */
++static u32 hz_to_spi_clock(u32 speed_hz)
++{
++	u32 spi_clock = sclk / speed_hz;
++
++	if (spi_clock)
++		spi_clock--;
++	return spi_clock;
++}
++
++static int bfin_spi_flush(struct bfin_spi_master *drv_data)
++{
++	unsigned long limit = loops_per_jiffy << 1;
++
++	/* wait for stop and clear stat */
++	while (!(bfin_read(&drv_data->regs->status) & SPI_STAT_SPIF) && --limit)
++		cpu_relax();
++
++	bfin_write(&drv_data->regs->status, 0xFFFFFFFF);
++
++	return limit;
++}
++
++/* Chip select operation functions for cs_change flag */
++static void bfin_spi_cs_active(struct bfin_spi_master *drv_data, struct bfin_spi_device *chip)
++{
++	if (likely(chip->cs < MAX_CTRL_CS))
++		bfin_write_and(&drv_data->regs->ssel, ~chip->ssel);
++	else
++		gpio_set_value(chip->cs_gpio, 0);
++}
++
++static void bfin_spi_cs_deactive(struct bfin_spi_master *drv_data,
++				struct bfin_spi_device *chip)
++{
++	if (likely(chip->cs < MAX_CTRL_CS))
++		bfin_write_or(&drv_data->regs->ssel, chip->ssel);
++	else
++		gpio_set_value(chip->cs_gpio, 1);
++
++	/* Move delay here for consistency */
++	if (chip->cs_chg_udelay)
++		udelay(chip->cs_chg_udelay);
++}
++
++/* enable or disable the pin muxed by GPIO and SPI CS to work as SPI CS */
++static inline void bfin_spi_cs_enable(struct bfin_spi_master *drv_data,
++					struct bfin_spi_device *chip)
++{
++	if (chip->cs < MAX_CTRL_CS)
++		bfin_write_or(&drv_data->regs->ssel, chip->ssel >> 8);
++}
++
++static inline void bfin_spi_cs_disable(struct bfin_spi_master *drv_data,
++					struct bfin_spi_device *chip)
++{
++	if (chip->cs < MAX_CTRL_CS)
++		bfin_write_and(&drv_data->regs->ssel, ~(chip->ssel >> 8));
++}
++
++/* stop controller and re-config current chip*/
++static void bfin_spi_restore_state(struct bfin_spi_master *drv_data)
++{
++	struct bfin_spi_device *chip = drv_data->cur_chip;
++
++	/* Clear status and disable clock */
++	bfin_write(&drv_data->regs->status, 0xFFFFFFFF);
++	bfin_write(&drv_data->regs->rx_control, 0x0);
++	bfin_write(&drv_data->regs->tx_control, 0x0);
++	bfin_spi_disable(drv_data);
++
++	SSYNC();
++
++	/* Load the registers */
++	bfin_write(&drv_data->regs->control, chip->control);
++	bfin_write(&drv_data->regs->clock, chip->clock);
++
++	bfin_spi_enable(drv_data);
++	drv_data->tx_num = drv_data->rx_num = 0;
++	/* we always choose tx transfer initiate */
++	bfin_write(&drv_data->regs->rx_control, SPI_RXCTL_REN);
++	bfin_write(&drv_data->regs->tx_control,
++			SPI_TXCTL_TEN | SPI_TXCTL_TTI);
++	bfin_spi_cs_active(drv_data, chip);
++}
++
++/* discard invalid rx data and empty rfifo */
++static inline void dummy_read(struct bfin_spi_master *drv_data)
++{
++	while (!(bfin_read(&drv_data->regs->status) & SPI_STAT_RFE))
++		bfin_read(&drv_data->regs->rfifo);
++}
++
++static void bfin_spi_u8_write(struct bfin_spi_master *drv_data)
++{
++	dummy_read(drv_data);
++	while (drv_data->tx < drv_data->tx_end) {
++		bfin_write(&drv_data->regs->tfifo, (*(u8 *)(drv_data->tx++)));
++		while (bfin_read(&drv_data->regs->status) & SPI_STAT_RFE)
++			cpu_relax();
++		bfin_read(&drv_data->regs->rfifo);
++	}
++}
++
++static void bfin_spi_u8_read(struct bfin_spi_master *drv_data)
++{
++	u32 tx_val = drv_data->cur_chip->tx_dummy_val;
++
++	dummy_read(drv_data);
++	while (drv_data->rx < drv_data->rx_end) {
++		bfin_write(&drv_data->regs->tfifo, tx_val);
++		while (bfin_read(&drv_data->regs->status) & SPI_STAT_RFE)
++			cpu_relax();
++		*(u8 *)(drv_data->rx++) = bfin_read(&drv_data->regs->rfifo);
++	}
++}
++
++static void bfin_spi_u8_duplex(struct bfin_spi_master *drv_data)
++{
++	dummy_read(drv_data);
++	while (drv_data->rx < drv_data->rx_end) {
++		bfin_write(&drv_data->regs->tfifo, (*(u8 *)(drv_data->tx++)));
++		while (bfin_read(&drv_data->regs->status) & SPI_STAT_RFE)
++			cpu_relax();
++		*(u8 *)(drv_data->rx++) = bfin_read(&drv_data->regs->rfifo);
++	}
++}
++
++static const struct bfin_spi_transfer_ops bfin_bfin_spi_transfer_ops_u8 = {
++	.write  = bfin_spi_u8_write,
++	.read   = bfin_spi_u8_read,
++	.duplex = bfin_spi_u8_duplex,
++};
++
++static void bfin_spi_u16_write(struct bfin_spi_master *drv_data)
++{
++	dummy_read(drv_data);
++	while (drv_data->tx < drv_data->tx_end) {
++		bfin_write(&drv_data->regs->tfifo, (*(u16 *)drv_data->tx));
++		drv_data->tx += 2;
++		while (bfin_read(&drv_data->regs->status) & SPI_STAT_RFE)
++			cpu_relax();
++		bfin_read(&drv_data->regs->rfifo);
++	}
++}
++
++static void bfin_spi_u16_read(struct bfin_spi_master *drv_data)
++{
++	u32 tx_val = drv_data->cur_chip->tx_dummy_val;
++
++	dummy_read(drv_data);
++	while (drv_data->rx < drv_data->rx_end) {
++		bfin_write(&drv_data->regs->tfifo, tx_val);
++		while (bfin_read(&drv_data->regs->status) & SPI_STAT_RFE)
++			cpu_relax();
++		*(u16 *)drv_data->rx = bfin_read(&drv_data->regs->rfifo);
++		drv_data->rx += 2;
++	}
++}
++
++static void bfin_spi_u16_duplex(struct bfin_spi_master *drv_data)
++{
++	dummy_read(drv_data);
++	while (drv_data->rx < drv_data->rx_end) {
++		bfin_write(&drv_data->regs->tfifo, (*(u16 *)drv_data->tx));
++		drv_data->tx += 2;
++		while (bfin_read(&drv_data->regs->status) & SPI_STAT_RFE)
++			cpu_relax();
++		*(u16 *)drv_data->rx = bfin_read(&drv_data->regs->rfifo);
++		drv_data->rx += 2;
++	}
++}
++
++static const struct bfin_spi_transfer_ops bfin_bfin_spi_transfer_ops_u16 = {
++	.write  = bfin_spi_u16_write,
++	.read   = bfin_spi_u16_read,
++	.duplex = bfin_spi_u16_duplex,
++};
++
++static void bfin_spi_u32_write(struct bfin_spi_master *drv_data)
++{
++	dummy_read(drv_data);
++	while (drv_data->tx < drv_data->tx_end) {
++		bfin_write(&drv_data->regs->tfifo, (*(u32 *)drv_data->tx));
++		drv_data->tx += 4;
++		while (bfin_read(&drv_data->regs->status) & SPI_STAT_RFE)
++			cpu_relax();
++		bfin_read(&drv_data->regs->rfifo);
++	}
++}
++
++static void bfin_spi_u32_read(struct bfin_spi_master *drv_data)
++{
++	u32 tx_val = drv_data->cur_chip->tx_dummy_val;
++
++	dummy_read(drv_data);
++	while (drv_data->rx < drv_data->rx_end) {
++		bfin_write(&drv_data->regs->tfifo, tx_val);
++		while (bfin_read(&drv_data->regs->status) & SPI_STAT_RFE)
++			cpu_relax();
++		*(u32 *)drv_data->rx = bfin_read(&drv_data->regs->rfifo);
++		drv_data->rx += 4;
++	}
++}
++
++static void bfin_spi_u32_duplex(struct bfin_spi_master *drv_data)
++{
++	dummy_read(drv_data);
++	while (drv_data->rx < drv_data->rx_end) {
++		bfin_write(&drv_data->regs->tfifo, (*(u32 *)drv_data->tx));
++		drv_data->tx += 4;
++		while (bfin_read(&drv_data->regs->status) & SPI_STAT_RFE)
++			cpu_relax();
++		*(u32 *)drv_data->rx = bfin_read(&drv_data->regs->rfifo);
++		drv_data->rx += 4;
++	}
++}
++
++static const struct bfin_spi_transfer_ops bfin_bfin_spi_transfer_ops_u32 = {
++	.write  = bfin_spi_u32_write,
++	.read   = bfin_spi_u32_read,
++	.duplex = bfin_spi_u32_duplex,
++};
++
++
++/* test if there is more transfer to be done */
++static void *bfin_spi_next_transfer(struct bfin_spi_master *drv_data)
++{
++	struct spi_message *msg = drv_data->cur_msg;
++	struct spi_transfer *trans = drv_data->cur_transfer;
++
++	/* Move to next transfer */
++	if (trans->transfer_list.next != &msg->transfers) {
++		drv_data->cur_transfer =
++		    list_entry(trans->transfer_list.next,
++			       struct spi_transfer, transfer_list);
++		return RUNNING_STATE;
++	} else
++		return DONE_STATE;
++}
++
++static void bfin_spi_giveback(struct bfin_spi_master *drv_data)
++{
++	struct bfin_spi_device *chip = drv_data->cur_chip;
++
++	if (!drv_data->cs_change)
++		bfin_spi_cs_deactive(drv_data, chip);
++
++	spi_finalize_current_message(drv_data->master);
++}
++
++static void bfin_spi_pump_transfers(unsigned long data)
++{
++	struct bfin_spi_master *drv_data = (struct bfin_spi_master *)data;
++	struct spi_message *message = NULL;
++	struct spi_transfer *transfer = NULL;
++	struct spi_transfer *previous = NULL;
++	struct bfin_spi_device *chip = NULL;
++	unsigned int bits_per_word;
++	u32 cr, cr_width;
++	bool tranf_success = true;
++	bool full_duplex = false;
++
++	/* Get current state information */
++	message = drv_data->cur_msg;
++	transfer = drv_data->cur_transfer;
++	chip = drv_data->cur_chip;
++
++	/* Handle for abort */
++	if (message->state == ERROR_STATE) {
++		message->status = -EIO;
++		bfin_spi_giveback(drv_data);
++		return;
++	}
++
++	/* Handle end of message */
++	if (message->state == DONE_STATE) {
++		message->status = 0;
++		bfin_spi_flush(drv_data);
++		bfin_spi_giveback(drv_data);
++		return;
++	}
++
++	/* Delay if requested at end of transfer */
++	if (message->state == RUNNING_STATE) {
++		previous = list_entry(transfer->transfer_list.prev,
++				      struct spi_transfer, transfer_list);
++		if (previous->delay_usecs)
++			udelay(previous->delay_usecs);
++	}
++
++	/* Flush any existing transfers that may be sitting in the hardware */
++	if (bfin_spi_flush(drv_data) == 0) {
++		message->status = -EIO;
++		bfin_spi_giveback(drv_data);
++		return;
++	}
++
++	if ((transfer->len == 0) || (transfer->tx_buf == NULL
++				&& transfer->rx_buf == NULL)) {
++		/* Move to next transfer of this msg */
++		message->state = bfin_spi_next_transfer(drv_data);
++		/* Schedule next transfer tasklet */
++		tasklet_schedule(&drv_data->pump_transfers);
++		return;
++	}
++
++	if (transfer->tx_buf != NULL) {
++		drv_data->tx = (void *)transfer->tx_buf;
++		drv_data->tx_end = drv_data->tx + transfer->len;
++	} else {
++		drv_data->tx = NULL;
++	}
++
++	if (transfer->rx_buf != NULL) {
++		full_duplex = (transfer->tx_buf != NULL) ? true : false;
++		drv_data->rx = transfer->rx_buf;
++		drv_data->rx_end = drv_data->rx + transfer->len;
++	} else {
++		drv_data->rx = NULL;
++	}
++
++	drv_data->transfer_len = transfer->len;
++	drv_data->cs_change = transfer->cs_change;
++
++	/* Bits per word setup */
++	bits_per_word = transfer->bits_per_word ? :
++		message->spi->bits_per_word ? : 8;
++	switch (bits_per_word) {
++	case 8:
++		cr_width = SPI_CTL_SIZE08;
++		drv_data->ops = &bfin_bfin_spi_transfer_ops_u8;
++		break;
++	case 16:
++		cr_width = SPI_CTL_SIZE16;
++		drv_data->ops = &bfin_bfin_spi_transfer_ops_u16;
++		break;
++	case 32:
++		cr_width = SPI_CTL_SIZE32;
++		drv_data->ops = &bfin_bfin_spi_transfer_ops_u32;
++		break;
++	default:
++		message->status = -EINVAL;
++		bfin_spi_giveback(drv_data);
++		return;
++	}
++	cr = bfin_read(&drv_data->regs->control) & ~SPI_CTL_SIZE;
++	cr |= cr_width;
++	bfin_write(&drv_data->regs->control, cr);
++
++	message->state = RUNNING_STATE;
++
++	/* Speed setup (surely valid because already checked) */
++	if (transfer->speed_hz)
++		bfin_write(&drv_data->regs->clock, hz_to_spi_clock(transfer->speed_hz));
++	else
++		bfin_write(&drv_data->regs->clock, chip->clock);
++
++	bfin_write(&drv_data->regs->status, 0xFFFFFFFF);
++	bfin_spi_cs_active(drv_data, chip);
++
++	if (chip->enable_dma) {
++		u32 dma_config;
++		unsigned long word_count, word_size;
++		void *tx_buf, *rx_buf;
++
++		switch (bits_per_word) {
++		case 8:
++			dma_config = WDSIZE_8 | PSIZE_8;
++			word_count = drv_data->transfer_len;
++			word_size = 1;
++			break;
++		case 16:
++			dma_config = WDSIZE_16 | PSIZE_16;
++			word_count = drv_data->transfer_len / 2;
++			word_size = 2;
++			break;
++		default:
++			dma_config = WDSIZE_32 | PSIZE_32;
++			word_count = drv_data->transfer_len / 4;
++			word_size = 4;
++			break;
++		}
++
++		if (full_duplex) {
++			WARN_ON((drv_data->tx_end - drv_data->tx)
++					!= (drv_data->rx_end - drv_data->rx));
++			tx_buf = drv_data->tx;
++			rx_buf = drv_data->rx;
++			drv_data->tx_dma_size = drv_data->rx_dma_size
++						= drv_data->transfer_len;
++			set_dma_x_modify(drv_data->tx_dma, word_size);
++			set_dma_x_modify(drv_data->rx_dma, word_size);
++		} else if (drv_data->tx) {
++			tx_buf = drv_data->tx;
++			rx_buf = &drv_data->dummy_buffer;
++			drv_data->tx_dma_size = drv_data->transfer_len;
++			drv_data->rx_dma_size = sizeof(drv_data->dummy_buffer);
++			set_dma_x_modify(drv_data->tx_dma, word_size);
++			set_dma_x_modify(drv_data->rx_dma, 0);
++		} else {
++			drv_data->dummy_buffer = chip->tx_dummy_val;
++			tx_buf = &drv_data->dummy_buffer;
++			rx_buf = drv_data->rx;
++			drv_data->tx_dma_size = sizeof(drv_data->dummy_buffer);
++			drv_data->rx_dma_size = drv_data->transfer_len;
++			set_dma_x_modify(drv_data->tx_dma, 0);
++			set_dma_x_modify(drv_data->rx_dma, word_size);
++		}
++
++		drv_data->tx_dma_addr = dma_map_single(&message->spi->dev,
++					(void *)tx_buf,
++					drv_data->tx_dma_size,
++					DMA_TO_DEVICE);
++		if (dma_mapping_error(&message->spi->dev,
++					drv_data->tx_dma_addr)) {
++			message->state = ERROR_STATE;
++			return;
++		}
++
++		drv_data->rx_dma_addr = dma_map_single(&message->spi->dev,
++					(void *)rx_buf,
++					drv_data->rx_dma_size,
++					DMA_FROM_DEVICE);
++		if (dma_mapping_error(&message->spi->dev,
++					drv_data->rx_dma_addr)) {
++			message->state = ERROR_STATE;
++			dma_unmap_single(&message->spi->dev,
++					drv_data->tx_dma_addr,
++					drv_data->tx_dma_size,
++					DMA_TO_DEVICE);
++			return;
++		}
++
++		dummy_read(drv_data);
++		set_dma_x_count(drv_data->tx_dma, word_count);
++		set_dma_x_count(drv_data->rx_dma, word_count);
++		set_dma_start_addr(drv_data->tx_dma, drv_data->tx_dma_addr);
++		set_dma_start_addr(drv_data->rx_dma, drv_data->rx_dma_addr);
++		dma_config |= DMAFLOW_STOP | RESTART | DI_EN;
++		set_dma_config(drv_data->tx_dma, dma_config);
++		set_dma_config(drv_data->rx_dma, dma_config | WNR);
++		enable_dma(drv_data->tx_dma);
++		enable_dma(drv_data->rx_dma);
++		SSYNC();
++
++		bfin_write(&drv_data->regs->rx_control, SPI_RXCTL_REN | SPI_RXCTL_RDR_NE);
++		SSYNC();
++		bfin_write(&drv_data->regs->tx_control,
++				SPI_TXCTL_TEN | SPI_TXCTL_TTI | SPI_TXCTL_TDR_NF);
++
++		return;
++	}
++
++	if (full_duplex) {
++		/* full duplex mode */
++		WARN_ON((drv_data->tx_end - drv_data->tx)
++				!= (drv_data->rx_end - drv_data->rx));
++
++		drv_data->ops->duplex(drv_data);
++
++		if (drv_data->tx != drv_data->tx_end)
++			tranf_success = false;
++	} else if (drv_data->tx != NULL) {
++		/* write only half duplex */
++		drv_data->ops->write(drv_data);
++
++		if (drv_data->tx != drv_data->tx_end)
++			tranf_success = false;
++	} else {
++		/* read only half duplex */
++		drv_data->ops->read(drv_data);
++		if (drv_data->rx != drv_data->rx_end)
++			tranf_success = false;
++	}
++
++	if (!tranf_success) {
++		message->state = ERROR_STATE;
++	} else {
++		/* Update total byte transferred */
++		message->actual_length += drv_data->transfer_len;
++		/* Move to next transfer of this msg */
++		message->state = bfin_spi_next_transfer(drv_data);
++		if (drv_data->cs_change && message->state != DONE_STATE) {
++			bfin_spi_flush(drv_data);
++			bfin_spi_cs_deactive(drv_data, chip);
++		}
++	}
++
++	/* Schedule next transfer tasklet */
++	tasklet_schedule(&drv_data->pump_transfers);
++}
++
++static int bfin_spi_transfer_one_message(struct spi_master *master,
++					struct spi_message *m)
++{
++	struct bfin_spi_master *drv_data = spi_master_get_devdata(master);
++
++	drv_data->cur_msg = m;
++	drv_data->cur_chip = spi_get_ctldata(drv_data->cur_msg->spi);
++	bfin_spi_restore_state(drv_data);
++
++	drv_data->cur_msg->state = START_STATE;
++	drv_data->cur_transfer = list_entry(drv_data->cur_msg->transfers.next,
++					    struct spi_transfer, transfer_list);
++
++	tasklet_schedule(&drv_data->pump_transfers);
++	return 0;
++}
++
++#define MAX_SPI_SSEL	7
++
++static const u16 ssel[][MAX_SPI_SSEL] = {
++	{P_SPI0_SSEL1, P_SPI0_SSEL2, P_SPI0_SSEL3,
++	P_SPI0_SSEL4, P_SPI0_SSEL5,
++	P_SPI0_SSEL6, P_SPI0_SSEL7},
++
++	{P_SPI1_SSEL1, P_SPI1_SSEL2, P_SPI1_SSEL3,
++	P_SPI1_SSEL4, P_SPI1_SSEL5,
++	P_SPI1_SSEL6, P_SPI1_SSEL7},
++
++	{P_SPI2_SSEL1, P_SPI2_SSEL2, P_SPI2_SSEL3,
++	P_SPI2_SSEL4, P_SPI2_SSEL5,
++	P_SPI2_SSEL6, P_SPI2_SSEL7},
++};
++
++static int bfin_spi_setup(struct spi_device *spi)
++{
++	struct bfin_spi_master *drv_data = spi_master_get_devdata(spi->master);
++	struct bfin_spi_device *chip = spi_get_ctldata(spi);
++	u32 bfin_ctl_reg = SPI_CTL_ODM | SPI_CTL_PSSE;
++	int ret = -EINVAL;
++
++	if (spi->bits_per_word != 8
++		&& spi->bits_per_word != 16
++		&& spi->bits_per_word != 32) {
++		dev_err(&spi->dev, "%d bits_per_word is not supported\n",
++				spi->bits_per_word);
++		return -EINVAL;
++	}
++
++	if (!chip) {
++		struct bfin6xx_spi_chip *chip_info = spi->controller_data;
++
++		chip = kzalloc(sizeof(*chip), GFP_KERNEL);
++		if (!chip) {
++			dev_err(&spi->dev, "can not allocate chip data\n");
++			return -ENOMEM;
++		}
++		if (chip_info) {
++			if (chip_info->control & ~bfin_ctl_reg) {
++				dev_err(&spi->dev, "do not set bits "
++					"that the SPI framework manages\n");
++				goto error;
++			}
++			chip->control = chip_info->control;
++			chip->cs_chg_udelay = chip_info->cs_chg_udelay;
++			chip->tx_dummy_val = chip_info->tx_dummy_val;
++			chip->enable_dma = chip_info->enable_dma;
++		}
++		chip->cs = spi->chip_select;
++		if (chip->cs < MAX_CTRL_CS) {
++			chip->ssel = (1 << chip->cs) << 8;
++			ret = peripheral_request(ssel[spi->master->bus_num]
++					[chip->cs-1], dev_name(&spi->dev));
++			if (ret) {
++				dev_err(&spi->dev, "peripheral_request() error\n");
++				goto error;
++			}
++		} else {
++			chip->cs_gpio = chip->cs - MAX_CTRL_CS;
++			ret = gpio_request_one(chip->cs_gpio, GPIOF_OUT_INIT_HIGH,
++						dev_name(&spi->dev));
++			if (ret) {
++				dev_err(&spi->dev, "gpio_request_one() error\n");
++				goto error;
++			}
++		}
++		spi_set_ctldata(spi, chip);
++	}
++
++	/* force a default base state */
++	chip->control &= bfin_ctl_reg;
++
++	/* translate common spi framework into our register */
++	if (spi->mode & ~(SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST)) {
++		dev_err(&spi->dev, "unsupported spi modes detected\n");
++		goto pin_error;
++	}
++	if (spi->mode & SPI_CPOL)
++		chip->control |= SPI_CTL_CPOL;
++	if (spi->mode & SPI_CPHA)
++		chip->control |= SPI_CTL_CPHA;
++	if (spi->mode & SPI_LSB_FIRST)
++		chip->control |= SPI_CTL_LSBF;
++	chip->control |= SPI_CTL_MSTR;
++	/* we choose software to controll cs */
++	chip->control &= ~SPI_CTL_ASSEL;
++
++	chip->clock = hz_to_spi_clock(spi->max_speed_hz);
++
++	bfin_spi_cs_enable(drv_data, chip);
++	bfin_spi_cs_deactive(drv_data, chip);
++
++	return 0;
++pin_error:
++	if (chip->cs < MAX_CTRL_CS)
++		peripheral_free(ssel[spi->master->bus_num][chip->cs - 1]);
++	else
++		gpio_free(chip->cs_gpio);
++error:
++	if (chip) {
++		kfree(chip);
++		spi_set_ctldata(spi, NULL);
++	}
++
++	return ret;
++}
++
++static void bfin_spi_cleanup(struct spi_device *spi)
++{
++	struct bfin_spi_device *chip = spi_get_ctldata(spi);
++	struct bfin_spi_master *drv_data = spi_master_get_devdata(spi->master);
++
++	if (!chip)
++		return;
++
++	if (chip->cs < MAX_CTRL_CS) {
++		peripheral_free(ssel[spi->master->bus_num]
++					[chip->cs-1]);
++		bfin_spi_cs_disable(drv_data, chip);
++	} else
++		gpio_free(chip->cs_gpio);
++
++	kfree(chip);
++	spi_set_ctldata(spi, NULL);
++}
++
++static irqreturn_t bfin_spi_tx_dma_isr(int irq, void *dev_id)
++{
++	struct bfin_spi_master *drv_data = dev_id;
++	u32 dma_stat = get_dma_curr_irqstat(drv_data->tx_dma);
++
++	clear_dma_irqstat(drv_data->tx_dma);
++	if (dma_stat & DMA_DONE)
++		drv_data->tx_num++;
++	if (dma_stat & DMA_ERR)
++		dev_err(&drv_data->master->dev,
++				"spi tx dma error: %d\n", dma_stat);
++	bfin_write_and(&drv_data->regs->tx_control, ~SPI_TXCTL_TDR_NF);
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t bfin_spi_rx_dma_isr(int irq, void *dev_id)
++{
++	struct bfin_spi_master *drv_data = dev_id;
++	struct bfin_spi_device *chip = drv_data->cur_chip;
++	struct spi_message *msg = drv_data->cur_msg;
++	u32 dma_stat = get_dma_curr_irqstat(drv_data->rx_dma);
++
++	clear_dma_irqstat(drv_data->rx_dma);
++	if (dma_stat & DMA_DONE)
++		drv_data->rx_num++;
++	if (dma_stat & DMA_ERR) {
++		msg->state = ERROR_STATE;
++		dev_err(&drv_data->master->dev,
++				"spi rx dma error: %d\n", dma_stat);
++	} else {
++		msg->actual_length += drv_data->transfer_len;
++		if (drv_data->cs_change)
++			bfin_spi_cs_deactive(drv_data, chip);
++		msg->state = bfin_spi_next_transfer(drv_data);
++	}
++	bfin_write(&drv_data->regs->tx_control, 0);
++	bfin_write(&drv_data->regs->rx_control, 0);
++	if (drv_data->rx_num != drv_data->tx_num)
++		dev_dbg(&drv_data->master->dev,
++				"dma interrupt missing: tx=%d,rx=%d\n",
++				drv_data->tx_num, drv_data->rx_num);
++	tasklet_schedule(&drv_data->pump_transfers);
++	return IRQ_HANDLED;
++}
++
++static int bfin_spi_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct bfin6xx_spi_master *info = dev->platform_data;
++	struct spi_master *master;
++	struct bfin_spi_master *drv_data;
++	struct resource *mem, *res;
++	unsigned int tx_dma, rx_dma;
++	int ret;
++
++	if (!info) {
++		dev_err(dev, "platform data missing!\n");
++		return -ENODEV;
++	}
++
++	sclk = get_sclk1();
++	if (!sclk) {
++		dev_err(dev, "can not get sclk1\n");
++		return -ENXIO;
++	}
++
++	/* get register base and tx/rx dma */
++	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!mem) {
++		dev_err(dev, "can not get register base\n");
++		return -ENXIO;
++	}
++
++	res = platform_get_resource(pdev, IORESOURCE_DMA, 0);
++	if (!res) {
++		dev_err(dev, "can not get tx dma resource\n");
++		return -ENXIO;
++	}
++	tx_dma = res->start;
++
++	res = platform_get_resource(pdev, IORESOURCE_DMA, 1);
++	if (!res) {
++		dev_err(dev, "can not get rx dma resource\n");
++		return -ENXIO;
++	}
++	rx_dma = res->start;
++
++	/* allocate master with space for drv_data */
++	master = spi_alloc_master(dev, sizeof(*drv_data));
++	if (!master) {
++		dev_err(dev, "can not alloc spi_master\n");
++		return -ENOMEM;
++	}
++	platform_set_drvdata(pdev, master);
++
++	/* the mode bits supported by this driver */
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
++
++	master->bus_num = pdev->id;
++	master->num_chipselect = info->num_chipselect;
++	master->cleanup = bfin_spi_cleanup;
++	master->setup = bfin_spi_setup;
++	master->transfer_one_message = bfin_spi_transfer_one_message;
++
++	drv_data = spi_master_get_devdata(master);
++	drv_data->master = master;
++	drv_data->tx_dma = tx_dma;
++	drv_data->rx_dma = rx_dma;
++	drv_data->pin_req = info->pin_req;
++
++	drv_data->regs = devm_ioremap_resource(dev, mem);
++	if (IS_ERR(drv_data->regs)) {
++		dev_err(dev, "can not map register memory\n");
++		ret = PTR_ERR(drv_data->regs);
++		goto err_put_master;
++	}
++
++	/* request tx and rx dma */
++	ret = request_dma(tx_dma, "SPI_TX_DMA");
++	if (ret) {
++		dev_err(dev, "can not request SPI TX DMA channel\n");
++		goto err_put_master;
++	}
++	set_dma_callback(tx_dma, bfin_spi_tx_dma_isr, drv_data);
++
++	ret = request_dma(rx_dma, "SPI_RX_DMA");
++	if (ret) {
++		dev_err(dev, "can not request SPI RX DMA channel\n");
++		goto err_free_tx_dma;
++	}
++	set_dma_callback(drv_data->rx_dma, bfin_spi_rx_dma_isr, drv_data);
++
++	/* request CLK, MOSI and MISO */
++	ret = peripheral_request_list(drv_data->pin_req, "bfin-spi");
++	if (ret < 0) {
++		dev_err(dev, "can not request spi pins\n");
++		goto err_free_rx_dma;
++	}
++
++	bfin_write(&drv_data->regs->control, SPI_CTL_MSTR | SPI_CTL_CPHA);
++	bfin_write(&drv_data->regs->ssel, 0x0000FE00);
++	bfin_write(&drv_data->regs->delay, 0x0);
++
++	tasklet_init(&drv_data->pump_transfers,
++			bfin_spi_pump_transfers, (unsigned long)drv_data);
++	/* register with the SPI framework */
++	ret = spi_register_master(master);
++	if (ret) {
++		dev_err(dev, "can not  register spi master\n");
++		goto err_free_peripheral;
++	}
++
++	dev_info(dev, "bfin-spi probe success\n");
++	return ret;
++
++err_free_peripheral:
++	peripheral_free_list(drv_data->pin_req);
++err_free_rx_dma:
++	free_dma(rx_dma);
++err_free_tx_dma:
++	free_dma(tx_dma);
++err_put_master:
++	platform_set_drvdata(pdev, NULL);
++	spi_master_put(master);
++
++	return ret;
++}
++
++static int bfin_spi_remove(struct platform_device *pdev)
++{
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct bfin_spi_master *drv_data = spi_master_get_devdata(master);
++
++	bfin_spi_disable(drv_data);
++
++	peripheral_free_list(drv_data->pin_req);
++	free_dma(drv_data->rx_dma);
++	free_dma(drv_data->tx_dma);
++
++	platform_set_drvdata(pdev, NULL);
++	spi_unregister_master(drv_data->master);
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int bfin_spi_suspend(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct bfin_spi_master *drv_data = spi_master_get_devdata(master);
++
++	spi_master_suspend(master);
++
++	drv_data->control = bfin_read(&drv_data->regs->control);
++	drv_data->ssel = bfin_read(&drv_data->regs->ssel);
++
++	bfin_write(&drv_data->regs->control, SPI_CTL_MSTR | SPI_CTL_CPHA);
++	bfin_write(&drv_data->regs->ssel, 0x0000FE00);
++	free_dma(drv_data->rx_dma);
++	free_dma(drv_data->tx_dma);
++
++	return 0;
++}
++
++static int bfin_spi_resume(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct bfin_spi_master *drv_data = spi_master_get_devdata(master);
++	int ret = 0;
++
++	ret = request_dma(drv_data->tx_dma, "SPI_TX_DMA");
++	if (ret) {
++		dev_err(dev, "cannot request SPI TX DMA channel\n");
++		return ret;
++	}
++	set_dma_callback(drv_data->tx_dma, bfin_spi_tx_dma_isr, drv_data);
++
++	ret = request_dma(drv_data->rx_dma, "SPI_RX_DMA");
++	if (ret) {
++		dev_err(dev, "cannot request SPI RX DMA channel\n");
++		free_dma(drv_data->tx_dma);
++		return ret;
++	}
++	/* rx dma is enabled when resume in spi boot mode */
++	disable_dma(drv_data->rx_dma);
++	set_dma_callback(drv_data->rx_dma, bfin_spi_rx_dma_isr, drv_data);
++
++	bfin_write(&drv_data->regs->control, drv_data->control);
++	bfin_write(&drv_data->regs->ssel, drv_data->ssel);
++
++	ret = spi_master_resume(master);
++	if (ret) {
++		free_dma(drv_data->rx_dma);
++		free_dma(drv_data->tx_dma);
++	}
++
++	return ret;
++}
++static const struct dev_pm_ops bfin_spi_pm_ops = {
++	.suspend = bfin_spi_suspend,
++	.resume  = bfin_spi_resume,
++};
++#endif /* CONFIG_PM */
++
++MODULE_ALIAS("platform:bfin-spi");
++static struct platform_driver bfin_spi_driver = {
++	.driver	= {
++		.name	= "bfin-spi",
++		.owner	= THIS_MODULE,
++#ifdef CONFIG_PM
++		.pm     = &bfin_spi_pm_ops,
++#endif
++	},
++	.remove		= bfin_spi_remove,
++};
++
++static int __init bfin_spi_init(void)
++{
++	return platform_driver_probe(&bfin_spi_driver, bfin_spi_probe);
++}
++subsys_initcall(bfin_spi_init);
++
++static void __exit bfin_spi_exit(void)
++{
++	platform_driver_unregister(&bfin_spi_driver);
++}
++module_exit(bfin_spi_exit);
++
++MODULE_DESCRIPTION("Analog Devices SPI3 controller driver");
++MODULE_AUTHOR("Scott Jiang <Scott.Jiang.Linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>");
++MODULE_LICENSE("GPL v2");
+-- 
+1.7.0.4

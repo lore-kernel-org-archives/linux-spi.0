@@ -1,85 +1,73 @@
-From: "Quelle Energie" <contact-ITtWA3W4OX1QFI55V6+gNQ@public.gmane.org>
-Subject: =?UTF-8?Q?Faites_des_=C3=A9conomies_d=C2=92=C3=A9nergie?=
-Date: Tue, 04 Jun 2013 11:19:11 +0000 (CET)
-Message-ID: <130604111911.70070554100000868@fmo42.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Michal Simek <michal.simek@xilinx.com>
+Subject: [PATCH 2/3] spi: spi-xilinx: Clear dma_mask for xilinx spi controller
+Date: Tue,  4 Jun 2013 16:02:35 +0200
+Message-ID: <c5f546072e530c42e7ca15745ffa16729d72a5ac.1370354549.git.michal.simek@xilinx.com>
+References: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
+Content-Type: multipart/signed;
+    boundary="=_mimegpg-monstr-desktop-11173-1370354569-0001";
+    micalg=pgp-sha1; protocol="application/pgp-signature"
+Cc: Michal Simek <monstr@monstr.eu>,
+	Michal Simek <michal.simek@xilinx.com>,
+	Peter Crosthwaite <pcrost@xilinx.com>,
+	Mark Brown <broonie@kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net
+To: linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
+In-Reply-To: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
+References: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CkTDqWNvdXZyZXogZ3JhdHVpdGVtZW50IGNvbW1lbnQgcsOpZHVpcmUgdm9zIGZhY3R1cmVzIGRl
-IGNoYXVmZmFnZQpRdWVsbGVFbmVyZ2llLmZyCgpJbmZvcm1hdGlvbnMgQ2hhdWZmYWdlCihodHRw
-Oi8vZm1vNDIuY29tL2R6bDV2bTFxYXBjb2s1eXpvcy9pbmRleDAuaHRtbCkKQ29tbWVudCByw6lk
-dWlyZSB2b3MgZmFjdHVyZXMgZGUgY2hhdWZmYWdlID8gKGh0dHA6Ly9mbW80Mi5jb20veW1sbjFt
-dmlhZnFqNHBkemdkL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQyLmNvbS9sd2xyYW1id2Fzcm9z
-YXN1ankvaW5kZXgyLmh0bWwpClF1ZWwgc3lzdMOobWUgZGUgY2hhdWZmYWdlIGVzdCBhZGFwdMOp
-IMOgIHZvdHJlIG1haXNvbiA/IFF1ZWxsZSBFbmVyZ2llIHZvdXMgcHJvcG9zZSBkJ2VmZmVjdHVl
-ciB1biBiaWxhbiBlbmVyZ8OpdGlxdWUgZ3JhdHVpdCBkZSB2b3RyZSBtYWlzb24gcG91ciB2b3Vz
-IGluZGlxdWVyIGNvbW1lbnQgcsOpZHVpcmUgdm9zIGZhY3R1cmVzIGRlIGNoYXVmZmFnZSBlbiBv
-cHRhbnQgcG91ciB1bmUgc29sdXRpb24gcGx1cyDDqWNvbm9taXF1ZSBldCBwbHVzIMOpY29sb2dp
-cXVlLgpDYWxjdWxlciB2b3Mgw6ljb25vbWllcyAoaHR0cDovL2ZtbzQyLmNvbS9zcGw0Ym1hMGFr
-aWp0M2x1cWwvaW5kZXgzLmh0bWwpClBBQyBHw6lvdGhlcm1pcXVlIChodHRwOi8vZm1vNDIuY29t
-LzR3Z3VhZ2huNTNwb3Vrc25pZC9pbmRleDQuaHRtbCkKClBvw6psZSDDoCBCb2lzIChodHRwOi8v
-Zm1vNDIuY29tL25wZ2hiZzIyNW8zanp1bG5hcy9pbmRleDUuaHRtbCkKCkNoYXVkacOocmUgQm9p
-cyAoaHR0cDovL2ZtbzQyLmNvbS96emdldmd1ZzV0Zm95NHl2aGwvaW5kZXg2Lmh0bWwpCihodHRw
-Oi8vZm1vNDIuY29tL3dtZzMxZ3hoNTRvamJ6ZHYzeS9pbmRleDcuaHRtbCkKCihodHRwOi8vZm1v
-NDIuY29tL2V6dmFlaGNqYW10b2l5eWpwcy9pbmRleDguaHRtbCkKCihodHRwOi8vZm1vNDIuY29t
-L3VtdnZjaGVhYTFzanJzZGptZC9pbmRleDkuaHRtbCkKTGEgUEFDIChQb21wZSDDoCBDaGFsZXVy
-KSBnw6lvdGhlcm1pcXVlIGVzdCBmYWl0ZSBwb3VyIGxlcyBncmFuZGUgc3VyZmFjZXMgZXQgcGV1
-dCB2b3VzIGZhaXJlIHLDqWFsaXNlciBqdXNxdSfDoCA4MCUgZCfDqWNvbm9taWUgc3VyIHZvcyBm
-YWN0dXJlcy4KQ3LDqWRpdCBkJ0ltcMO0dCA6IDI2JQoKVW4gcG/DqmxlIMOgIGJvaXMgKGdyYW51
-bMOpcyBvdSBiw7tjaGVzKSBzJ2luc3RhbGxlIGZhY2lsZW1lbnQgZXQgdm91cyBwZXJtZXQgZGUg
-cHJvZml0ZXIgZCd1biBjb21idXN0aWJsZSB0csOocyBib24gbWFyY2jDqSA6IGxlIGJvaXMuIENy
-w6lkaXQgZCdJbXDDtHQgOiAxNSUtMjYlCgpMYSBjaGF1ZGnDqHJlIGJvaXMgZXN0IHRyw6hzIGVm
-ZmljYWNlIHBvdXIgY2hhdWZmZXIgbGVzIGdyYW5kcyBlc3BhY2VzIGV0IGNlbGEgZGUgbWFuacOo
-cmUgw6ljb25vbWlxdWUgZXQgw6ljb2xvZ2lxdWUuIENyw6lkaXQgZCdJbXDDtHQgOiAxNSUtMjYl
-CkRldmlzIEdyYXR1aXQgKGh0dHA6Ly9mbW80Mi5jb20va2Zoa3NjM2JydmtsMXRtMXJnL2luZGV4
-MTAuaHRtbCkKRGV2aXMgR3JhdHVpdCAoaHR0cDovL2ZtbzQyLmNvbS92dHNpNDRieTBza2VzYmFr
-NWcvaW5kZXgxMS5odG1sKQpEZXZpcyBHcmF0dWl0IChodHRwOi8vZm1vNDIuY29tL2plMGxhcHd3
-dmNtNHBpa3luZC9pbmRleDEyLmh0bWwpClBBQyBBw6lyb3RoZXJtaXF1ZSAoaHR0cDovL2ZtbzQy
-LmNvbS9xaTVqeDBnZWc1bWJ2aHdyNGQvaW5kZXgxMy5odG1sKQoKQ2hhdWRpw6hyZSBHYXogKGh0
-dHA6Ly9mbW80Mi5jb20veXBqd2JsdTBqdGl4eTNsZW1xL2luZGV4MTQuaHRtbCkKClNvbGFpcmUg
-Q29tYmluw6kgKGh0dHA6Ly9mbW80Mi5jb20vZDRlcHVhZmR1bmlwY2FieHBxL2luZGV4MTUuaHRt
-bCkKKGh0dHA6Ly9mbW80Mi5jb20vamxqZG1senJvdGdjeXJvZW5kL2luZGV4MTYuaHRtbCkKCiho
-dHRwOi8vZm1vNDIuY29tL3FnZW9nYW9pa25nbWNtY3g0ZC9pbmRleDE3Lmh0bWwpCgooaHR0cDov
-L2ZtbzQyLmNvbS9sMWlyZ2Z0aXdscW5nNWkxNW8vaW5kZXgxOC5odG1sKQpMZXMgcG9tcGVzIMOg
-IGNoYWxldXIgYWlyLWFpciAocsOpdmVyc2libGUpIGV0IGFpci1lYXUgdm91cyBwZXJtZXR0ZW50
-IGRlIGNvbnNvbW1lciAzIGZvaXMgbW9pbnMgZXQgcmVzdGVudCBzaW1wbGUgw6AgZmFpcmUgaW5z
-dGFsbGVyLiBDcsOpZGl0IGQnSW1ww7R0IDogMCUtMTUlCgpMZSBjaGF1ZGnDqHJlIGNvbmRlbnNh
-dGlvbiBnYXogKG91IGNvbmRlbnNhdGlvbiBmaW91bCkgdm91cyBwZXJtZXQgZCfDqWNvbm9taXNl
-ciAzMCUgc3VyIHZvcyBmYWN0dXJlcyBkZSBjaGF1ZmZhZ2UuIENyw6lkaXQgZCdJbXDDtHQgOiAx
-MCUKCkF2ZWMgbGUgc3lzdMOobWUgc29sYWlyZSBjb21iaW7DqSwgcHJvZml0ZXogZCd1bmUgw6lu
-ZXJnaWUgZ3JhdHVpdGUgKGxlIHNvbGVpbCkgcG91ciBsZSBjaGF1ZmZhZ2UgZXQgbCdlYXUgY2hh
-dWRlIHNhbml0YWlyZS4gQ3LDqWRpdCBkJ0ltcMO0dCA6IDMyJQpEZXZpcyBHcmF0dWl0IChodHRw
-Oi8vZm1vNDIuY29tL3MyeTRtd2FyY2txMHRwcGtyby9pbmRleDE5Lmh0bWwpCkRldmlzIEdyYXR1
-aXQgKGh0dHA6Ly9mbW80Mi5jb20vdGN4em9kaWtxaXcyYWZyZHJxL2luZGV4MjAuaHRtbCkKRGV2
-aXMgR3JhdHVpdCAoaHR0cDovL2ZtbzQyLmNvbS8yMHdtcDMyNGVqd3d3eDM1NXEvaW5kZXgyMS5o
-dG1sKQrCqSAyMDEzIFF1ZWxsZSBFbmVyZ2llIC0gVG91cyBkcm9pdHMgcsOpc2VydsOpcyAtIHd3
-dy5xdWVsbGVlbmVyZ2llLmZyIChodHRwOi8vZm1vNDIuY29tL2JvZXdzYWt0azJlbXFmMXhtcS9p
-bmRleDIyLmh0bWwpCkNvbmZpZGVudGlhbGl0w6kgZGVzIGRvbm7DqWVzIDogY29uZm9ybcOpbWVu
-dCDDoCBsYSBsb2kgSW5mb3JtYXRpcXVlIGV0IExpYmVydMOpcyBkdSA2IGphbnZpZXIgMTk3OCwg
-dm91cyBkaXNwb3NleiBkwrR1biBkcm9pdCBkwrRhY2PDqHMsIGRlIHJlY3RpZmljYXRpb24gZXQg
-ZGUgc3VwcHJlc3Npb24gZGVzIGRvbm7DqWVzIHZvdXMgY29uY2VybmFudCBxdWUgdm91cyBwb3V2
-ZXogZXhlcmNlciDDoCB0b3V0IG1vbWVudCBlbiBlbiBmYWlzYW50IGxhIGRlbWFuZGUgZGlyZWN0
-ZW1lbnQgdmlhIGxhIHJ1YnJpcXVlIENvbnRhY3QgZHUgU2l0ZS4KLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCkhvdyBTZXJ2aWNlTm93IGhlbHBzIElUIHBlb3BsZSB0cmFuc2Zvcm0gSVQgZGVwYXJ0bWVu
-dHM6CjEuIEEgY2xvdWQgc2VydmljZSB0byBhdXRvbWF0ZSBJVCBkZXNpZ24sIHRyYW5zaXRpb24g
-YW5kIG9wZXJhdGlvbnMKMi4gRGFzaGJvYXJkcyB0aGF0IG9mZmVyIGhpZ2gtbGV2ZWwgdmlld3Mg
-b2YgZW50ZXJwcmlzZSBzZXJ2aWNlcwozLiBBIHNpbmdsZSBzeXN0ZW0gb2YgcmVjb3JkIGZvciBh
-bGwgSVQgcHJvY2Vzc2VzCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc2VydmljZW5vdy1kMmQtagpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
-ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
-Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
-ZW5lcmFsCg==
+This is a MIME GnuPG-signed message.  If you see this text, it means that
+your E-mail or Usenet software does not support MIME signed messages.
+The Internet standard for MIME PGP messages, RFC 2015, was published in 1996.
+To open this message correctly you will need to install E-mail or Usenet
+software that supports modern Internet standards.
+
+--=_mimegpg-monstr-desktop-11173-1370354569-0001
+
+From: Michal Simek <monstr@monstr.eu>
+
+mmc_spi driver tests if dma is available
+through spi->master->dev.parent->dma_mask.
+Microblaze supports DMA but xilinx_spi IP doesn't.
+That's why clear dma_mask in the driver.
+
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+---
+ drivers/spi/spi-xilinx.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 34d18dc..d690756 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -365,6 +365,9 @@ struct spi_master *xilinx_spi_init(struct device *dev, struct resource *mem,
+ 	if (!master)
+ 		return NULL;
+
++	/* clear the dma_mask, to try to disable use of dma */
++	master->dev.dma_mask = 0;
++
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA;
+
+--
+1.8.2.3
+
+
+--=_mimegpg-monstr-desktop-11173-1370354569-0001
+Content-Type: application/pgp-signature
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEABECAAYFAlGt84kACgkQykllyylKDCGz3ACfS21iks94Xw6NYdhalm0PQdze
+zgoAoJvw+q+mHR1k8SAWqbNDLzsDwuiZ
+=YTp1
+-----END PGP SIGNATURE-----
+
+--=_mimegpg-monstr-desktop-11173-1370354569-0001--

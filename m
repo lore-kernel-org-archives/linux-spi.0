@@ -1,19 +1,12 @@
-From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v1 1/3] spi: mpc512x: minor prep before feature change
-Date: Tue, 4 Jun 2013 20:45:14 +0200
-Message-ID: <20130604184514.GJ2571@book.gsilab.sittig.org>
-References: <1370261031-28572-1-git-send-email-gsi@denx.de>
-	<1370261031-28572-2-git-send-email-gsi@denx.de>
-	<20130604172059.GI31367@sirena.org.uk>
+From: 13544100624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
+Subject: [SPAM] 代/开――发/票
+Date: Wed, 5 Jun 2013 03:01:15 +0800
+Message-ID: <E1UjwUE-0002TW-5i@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dzu-ynQEQJNshbs@public.gmane.org
-To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20130604172059.GI31367-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,30 +17,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jun 04, 2013 at 18:21 +0100, Mark Brown wrote:
-> 
-> On Mon, Jun 03, 2013 at 02:03:49PM +0200, Gerhard Sittig wrote:
-> > mechanical edits before changing functionality, to reduce diffs
-> > [ ... ]
-> 
-> Applied but in future if you're submitting a bunch of unrelated changes
-> each change should go in a separate patch.  This makes review easier as
-> it makes it easier to tell if the patch does what the description
-> claims.
-
-Understood.  Thank you for the review and feedback.
-
-
-virtually yours
-Gerhard Sittig
--- 
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
-
-------------------------------------------------------------------------------
-How ServiceNow helps IT people transform IT departments:
-1. A cloud service to automate IT design, transition and operations
-2. Dashboards that offer high-level views of enterprise services
-3. A single system of record for all IT processes
-http://p.sf.net/sfu/servicenow-d2d-j
+xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
+59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
+utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KSG93IFNlcnZpY2VO
+b3cgaGVscHMgSVQgcGVvcGxlIHRyYW5zZm9ybSBJVCBkZXBhcnRtZW50czoKMS4gQSBjbG91ZCBz
+ZXJ2aWNlIHRvIGF1dG9tYXRlIElUIGRlc2lnbiwgdHJhbnNpdGlvbiBhbmQgb3BlcmF0aW9ucwoy
+LiBEYXNoYm9hcmRzIHRoYXQgb2ZmZXIgaGlnaC1sZXZlbCB2aWV3cyBvZiBlbnRlcnByaXNlIHNl
+cnZpY2VzCjMuIEEgc2luZ2xlIHN5c3RlbSBvZiByZWNvcmQgZm9yIGFsbCBJVCBwcm9jZXNzZXMK
+aHR0cDovL3Auc2YubmV0L3NmdS9zZXJ2aWNlbm93LWQyZC1qCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
+dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
+b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,55 +1,53 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 3/3] spi: spi-xilinx: Add run run-time endian detection
-Date: Tue, 4 Jun 2013 18:37:49 +0100
-Message-ID: <20130604173749.GN31367@sirena.org.uk>
-References: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
- <85e2cc9ef188d475c531780d9ee338705a1df673.1370354549.git.michal.simek@xilinx.com>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v1 1/3] spi: mpc512x: minor prep before feature change
+Date: Tue, 4 Jun 2013 20:45:14 +0200
+Message-ID: <20130604184514.GJ2571@book.gsilab.sittig.org>
+References: <1370261031-28572-1-git-send-email-gsi@denx.de>
+	<1370261031-28572-2-git-send-email-gsi@denx.de>
+	<20130604172059.GI31367@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="i6ZTfQE1Row3TVml"
-Cc: linux-kernel@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
-	Peter Crosthwaite <pcrost@xilinx.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Grant Likely <grant.likely@linaro.org>,
-	spi-devel-general@lists.sourceforge.net
-To: Michal Simek <michal.simek@xilinx.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, dzu-ynQEQJNshbs@public.gmane.org
+To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <85e2cc9ef188d475c531780d9ee338705a1df673.1370354549.git.michal.simek@xilinx.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20130604172059.GI31367-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, Jun 04, 2013 at 18:21 +0100, Mark Brown wrote:
+> 
+> On Mon, Jun 03, 2013 at 02:03:49PM +0200, Gerhard Sittig wrote:
+> > mechanical edits before changing functionality, to reduce diffs
+> > [ ... ]
+> 
+> Applied but in future if you're submitting a bunch of unrelated changes
+> each change should go in a separate patch.  This makes review easier as
+> it makes it easier to tell if the patch does what the description
+> claims.
 
---i6ZTfQE1Row3TVml
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Understood.  Thank you for the review and feedback.
 
-On Tue, Jun 04, 2013 at 04:02:36PM +0200, Michal Simek wrote:
-> Do not load endian value from platform data
-> and rather autodetect it.
 
-Applied, thanks.
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 
---i6ZTfQE1Row3TVml
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRriXqAAoJELSic+t+oim9drQP/0PYdm0lZnLnnS8NqfgAWuuT
-Lvit7fiNGEjF5AvAj5FtF2MOZazBZGMmIV1TrmtLfupgde0ezoITZexaQFIQYxas
-XAjCvp6kVRYVvlfeG6igGo7+d9Sh9/yUWm5plrnPG7XK74dffhof72YfIueLPVqa
-zcz+6hnTyauzhKWevVCtIkCvO+9h4qIi2lHwMqCYZd06CqFDLn5bo45KJLR08PSy
-70zrw6rNVbxOCedHxurLnELmba5XiTBOSHlDppt0SANV8Jh/MF0BTVCElqYj3omW
-UFUXoVwbfS9ePUDVRHnP7SYhCkJZv/+sJPv9Zw8PoajEY3vLPwYCxAfUfS17e3Ev
-mRLv7kp12Nje+rKEtDg0IbnFhBOY9QQ4yyC34B7K4FipX36Avp3m2kdD4pbGN5Me
-/eHVL9b1cfkcvrokq5j9yVOfe0LRwGKuW2UugUPvIGai5jnUPS0nBhPP4bmlAUcH
-S3WxV3FmW+PbCZee9Qp3cvX+BEPyvxopuwwqOPpL7NS84u5Lsr2XfYvfda0H3Hhf
-xS2HfdhRbPb4H+Pqz3/p3MsMGFMFW+04YbZ7DRvnHV8zzASnUS384QXv2CXwr8XJ
-XfVrRp3TAVaHxRyl+WtuomhZz833i2Juoza+joMj2Njg8kfO2AdLAPSN7IJMGP0a
-fhLenXAFpZ9jleItdJbZ
-=y3NL
------END PGP SIGNATURE-----
-
---i6ZTfQE1Row3TVml--
+------------------------------------------------------------------------------
+How ServiceNow helps IT people transform IT departments:
+1. A cloud service to automate IT design, transition and operations
+2. Dashboards that offer high-level views of enterprise services
+3. A single system of record for all IT processes
+http://p.sf.net/sfu/servicenow-d2d-j

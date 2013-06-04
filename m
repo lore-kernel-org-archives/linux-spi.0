@@ -1,23 +1,19 @@
 From: Michal Simek <michal.simek@xilinx.com>
-Subject: [PATCH 3/3] spi: spi-xilinx: Add run run-time endian detection
-Date: Tue,  4 Jun 2013 16:02:36 +0200
-Message-ID: <85e2cc9ef188d475c531780d9ee338705a1df673.1370354549.git.michal.simek@xilinx.com>
-References: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
+Subject: [PATCH 1/3] spi: spi-xilinx: Remove ISR race condition
+Date: Tue,  4 Jun 2013 16:02:34 +0200
+Message-ID: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
 Content-Type: multipart/signed;
-    boundary="=_mimegpg-monstr-desktop-11188-1370354572-0001";
+    boundary="=_mimegpg-monstr-desktop-11158-1370354557-0001";
     micalg=pgp-sha1; protocol="application/pgp-signature"
 Cc: Michal Simek <monstr@monstr.eu>,
 	Michal Simek <michal.simek@xilinx.com>,
 	Peter Crosthwaite <pcrost@xilinx.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
+	Peter Crosthwaite <peter.crosthwaite@petalogix.com>,
 	Mark Brown <broonie@kernel.org>,
 	Grant Likely <grant.likely@linaro.org>,
 	spi-devel-general@lists.sourceforge.net
 To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
-In-Reply-To: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
-References: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
@@ -27,137 +23,146 @@ The Internet standard for MIME PGP messages, RFC 2015, was published in 1996.
 To open this message correctly you will need to install E-mail or Usenet
 software that supports modern Internet standards.
 
---=_mimegpg-monstr-desktop-11188-1370354572-0001
+--=_mimegpg-monstr-desktop-11158-1370354557-0001
 
-Do not load endian value from platform data
-and rather autodetect it.
+From: Peter Crosthwaite <peter.crosthwaite@petalogix.com>
 
+The ISR currently consumes the rx buffer data and re-enables transmission
+from within interrupt context. This is bad because if the interrupt
+occurs again before the ISR exits, the new interrupt will be erroneously
+cleared by the still completing ISR.
+
+Simplified the ISR by just setting the completion variable and exiting with
+no action. Then just looped the transmit functionality in
+xilinx_spi_txrx_bufs().
+
+Signed-off-by: Peter Crosthwaite <peter.crosthwaite@xilinx.com>
 Signed-off-by: Michal Simek <michal.simek@xilinx.com>
 ---
- drivers/mfd/timberdale.c       |  1 -
- drivers/spi/spi-xilinx.c       | 29 +++++++++++++++++++++--------
- include/linux/spi/xilinx_spi.h |  1 -
- 3 files changed, 21 insertions(+), 10 deletions(-)
+ drivers/spi/spi-xilinx.c | 74 +++++++++++++++++++++++-------------------------
+ 1 file changed, 35 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/mfd/timberdale.c b/drivers/mfd/timberdale.c
-index 59e0ee2..0c1fcbc 100644
---- a/drivers/mfd/timberdale.c
-+++ b/drivers/mfd/timberdale.c
-@@ -145,7 +145,6 @@ static struct spi_board_info timberdale_spi_8bit_board_info[] = {
-
- static struct xspi_platform_data timberdale_xspi_platform_data = {
- 	.num_chipselect = 3,
--	.little_endian = true,
- 	/* bits per word and devices will be filled in runtime depending
- 	 * on the HW config
- 	 */
 diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index d690756..0b7b8d7 100644
+index e1d7696..34d18dc 100644
 --- a/drivers/spi/spi-xilinx.c
 +++ b/drivers/spi/spi-xilinx.c
-@@ -30,6 +30,7 @@
-  */
- #define XSPI_CR_OFFSET		0x60	/* Control Register */
-
-+#define XSPI_CR_LOOP		0x01
- #define XSPI_CR_ENABLE		0x02
- #define XSPI_CR_MASTER_MODE	0x04
- #define XSPI_CR_CPOL		0x08
-@@ -355,11 +356,12 @@ static const struct of_device_id xilinx_spi_of_match[] = {
- MODULE_DEVICE_TABLE(of, xilinx_spi_of_match);
-
- struct spi_master *xilinx_spi_init(struct device *dev, struct resource *mem,
--	u32 irq, s16 bus_num, int num_cs, int little_endian, int bits_per_word)
-+	u32 irq, s16 bus_num, int num_cs, int bits_per_word)
+@@ -267,7 +267,6 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
  {
- 	struct spi_master *master;
- 	struct xilinx_spi *xspi;
- 	int ret;
-+	u32 tmp;
+ 	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
+ 	u32 ipif_ier;
+-	u16 cr;
 
- 	master = spi_alloc_master(dev, sizeof(struct xilinx_spi));
- 	if (!master)
-@@ -395,13 +397,25 @@ struct spi_master *xilinx_spi_init(struct device *dev, struct resource *mem,
+ 	/* We get here with transmitter inhibited */
 
- 	xspi->mem = *mem;
- 	xspi->irq = irq;
--	if (little_endian) {
--		xspi->read_fn = xspi_read32;
--		xspi->write_fn = xspi_write32;
--	} else {
+@@ -276,7 +275,6 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	xspi->remaining_bytes = t->len;
+ 	INIT_COMPLETION(xspi->done);
+
+-	xilinx_spi_fill_tx_fifo(xspi);
+
+ 	/* Enable the transmit empty interrupt, which we use to determine
+ 	 * progress on the transmission.
+@@ -285,12 +283,41 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 	xspi->write_fn(ipif_ier | XSPI_INTR_TX_EMPTY,
+ 		xspi->regs + XIPIF_V123B_IIER_OFFSET);
+
+-	/* Start the transfer by not inhibiting the transmitter any longer */
+-	cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET) &
+-		~XSPI_CR_TRANS_INHIBIT;
+-	xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
++	for (;;) {
++		u16 cr;
++		u8 sr;
 +
-+	/*
-+	 * Detect endianess on the IP via loop bit in CR. Detection
-+	 * must be done before reset is sent because incorrect reset
-+	 * value generates error interrupt.
-+	 * Setup little endian helper functions first and try to use them
-+	 * and check if bit was correctly setup or not.
-+	 */
-+	xspi->read_fn = xspi_read32;
-+	xspi->write_fn = xspi_write32;
++		xilinx_spi_fill_tx_fifo(xspi);
 +
-+	xspi->write_fn(XSPI_CR_LOOP, xspi->regs + XSPI_CR_OFFSET);
-+	tmp = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
-+	tmp &= XSPI_CR_LOOP;
-+	if (tmp != XSPI_CR_LOOP) {
- 		xspi->read_fn = xspi_read32_be;
- 		xspi->write_fn = xspi_write32_be;
++		/* Start the transfer by not inhibiting the transmitter any
++		 * longer
++		 */
++		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET) &
++							~XSPI_CR_TRANS_INHIBIT;
++		xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
++
++		wait_for_completion(&xspi->done);
++
++		/* A transmit has just completed. Process received data and
++		 * check for more data to transmit. Always inhibit the
++		 * transmitter while the Isr refills the transmit register/FIFO,
++		 * or make sure it is stopped if we're done.
++		 */
++		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
++		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
++			       xspi->regs + XSPI_CR_OFFSET);
++
++		/* Read out all the data from the Rx FIFO */
++		sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
++		while ((sr & XSPI_SR_RX_EMPTY_MASK) == 0) {
++			xspi->rx_fn(xspi);
++			sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
++		}
+
+-	wait_for_completion(&xspi->done);
++		/* See if there is more data to send */
++		if (!xspi->remaining_bytes > 0)
++			break;
++	}
+
+ 	/* Disable the transmit empty interrupt */
+ 	xspi->write_fn(ipif_ier, xspi->regs + XIPIF_V123B_IIER_OFFSET);
+@@ -314,38 +341,7 @@ static irqreturn_t xilinx_spi_irq(int irq, void *dev_id)
+ 	xspi->write_fn(ipif_isr, xspi->regs + XIPIF_V123B_IISR_OFFSET);
+
+ 	if (ipif_isr & XSPI_INTR_TX_EMPTY) {	/* Transmission completed */
+-		u16 cr;
+-		u8 sr;
+-
+-		/* A transmit has just completed. Process received data and
+-		 * check for more data to transmit. Always inhibit the
+-		 * transmitter while the Isr refills the transmit register/FIFO,
+-		 * or make sure it is stopped if we're done.
+-		 */
+-		cr = xspi->read_fn(xspi->regs + XSPI_CR_OFFSET);
+-		xspi->write_fn(cr | XSPI_CR_TRANS_INHIBIT,
+-			xspi->regs + XSPI_CR_OFFSET);
+-
+-		/* Read out all the data from the Rx FIFO */
+-		sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
+-		while ((sr & XSPI_SR_RX_EMPTY_MASK) == 0) {
+-			xspi->rx_fn(xspi);
+-			sr = xspi->read_fn(xspi->regs + XSPI_SR_OFFSET);
+-		}
+-
+-		/* See if there is more data to send */
+-		if (xspi->remaining_bytes > 0) {
+-			xilinx_spi_fill_tx_fifo(xspi);
+-			/* Start the transfer by not inhibiting the
+-			 * transmitter any longer
+-			 */
+-			xspi->write_fn(cr, xspi->regs + XSPI_CR_OFFSET);
+-		} else {
+-			/* No more data to send.
+-			 * Indicate the transfer is completed.
+-			 */
+-			complete(&xspi->done);
+-		}
++		complete(&xspi->done);
  	}
-+
- 	xspi->bits_per_word = bits_per_word;
- 	if (xspi->bits_per_word == 8) {
- 		xspi->tx_fn = xspi_tx8;
-@@ -465,14 +479,13 @@ static int xilinx_spi_probe(struct platform_device *dev)
- {
- 	struct xspi_platform_data *pdata;
- 	struct resource *r;
--	int irq, num_cs = 0, little_endian = 0, bits_per_word = 8;
-+	int irq, num_cs = 0, bits_per_word = 8;
- 	struct spi_master *master;
- 	u8 i;
 
- 	pdata = dev->dev.platform_data;
- 	if (pdata) {
- 		num_cs = pdata->num_chipselect;
--		little_endian = pdata->little_endian;
- 		bits_per_word = pdata->bits_per_word;
- 	}
-
-@@ -504,7 +517,7 @@ static int xilinx_spi_probe(struct platform_device *dev)
- 		return -ENXIO;
-
- 	master = xilinx_spi_init(&dev->dev, r, irq, dev->id, num_cs,
--				 little_endian, bits_per_word);
-+				 bits_per_word);
- 	if (!master)
- 		return -ENODEV;
-
-diff --git a/include/linux/spi/xilinx_spi.h b/include/linux/spi/xilinx_spi.h
-index 6f17278..333ecdf 100644
---- a/include/linux/spi/xilinx_spi.h
-+++ b/include/linux/spi/xilinx_spi.h
-@@ -11,7 +11,6 @@
-  */
- struct xspi_platform_data {
- 	u16 num_chipselect;
--	bool little_endian;
- 	u8 bits_per_word;
- 	struct spi_board_info *devices;
- 	u8 num_devices;
+ 	return IRQ_HANDLED;
 --
 1.8.2.3
 
 
---=_mimegpg-monstr-desktop-11188-1370354572-0001
+--=_mimegpg-monstr-desktop-11158-1370354557-0001
 Content-Type: application/pgp-signature
 Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iEYEABECAAYFAlGt84wACgkQykllyylKDCE70wCffu2N+maeuc6B3jdlbcKoxLZz
-+5UAoJraYusPHM0mA5OZdB3ofUaAYzGX
-=aARs
+iEYEABECAAYFAlGt830ACgkQykllyylKDCGLEgCdEAFOnKlLkeEYrW/xgFBCuZ6x
+HIAAn17Ru16T7x/2rBoSuECyK6rSUleb
+=2kW5
 -----END PGP SIGNATURE-----
 
---=_mimegpg-monstr-desktop-11188-1370354572-0001--
+--=_mimegpg-monstr-desktop-11158-1370354557-0001--

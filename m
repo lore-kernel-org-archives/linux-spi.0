@@ -1,69 +1,85 @@
-From: "Hebbar, Gururaja" <gururaja.hebbar-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH 05/11] spi: omap2-mcspi: enhance pinctrl support
-Date: Tue, 4 Jun 2013 09:53:04 +0000
-Message-ID: <1BAFE6F6C881BF42822005164F1491C33EC22370@DBDE04.ent.ti.com>
-References: <1369995191-20855-1-git-send-email-gururaja.hebbar@ti.com>
-	<1369995191-20855-6-git-send-email-gururaja.hebbar@ti.com>
-	<20130601192726.GS16790@sirena.org.uk>
+From: "Quelle Energie" <contact-ITtWA3W4OX1QFI55V6+gNQ@public.gmane.org>
+Subject: =?UTF-8?Q?Faites_des_=C3=A9conomies_d=C2=92=C3=A9nergie?=
+Date: Tue, 04 Jun 2013 11:19:11 +0000 (CET)
+Message-ID: <130604111911.70070554100000868@fmo42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org"
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        "linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org"
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-        "linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org"
-	<linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        "rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org"
-	<rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        "grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org"
-	<grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        "devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org" <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <20130601192726.GS16790-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Sun, Jun 02, 2013 at 00:57:26, Mark Brown wrote:
-> On Fri, May 31, 2013 at 03:43:05PM +0530, Hebbar Gururaja wrote:
-> > Amend the spi omap controller to optionally take a pin control
-> > handle and set the state of the pins to:
-> > 
-> > - "default" on boot, resume and before performing an spi transfer
-> > - "idle" after initial default, after resume default, and after each
-> > spi xfer
-> > - "sleep" on suspend()
-> 
-> Looking at this code I can't really see what's OMAP-specific about it -
-> exactly the same flow should apply to pretty much any SPI controller,
-> especially given that the code will happily ignore missing states.
-> We're just setting the idle state when not actively transferring data
-> which seems sensible and generic.
-> 
-> This suggests to me that we should be adding this code into the core,
-> probably joined up with the transfer_one_message stuff, so that any
-> hardware which has an idle state will be able to get the benefit.  Can
-> anyone think of a reason why we shouldn't do that?
-
-Let me pull out some info about these and come back
-
-> 
-
-
-Regards, 
-Gururaja
+CkTDqWNvdXZyZXogZ3JhdHVpdGVtZW50IGNvbW1lbnQgcsOpZHVpcmUgdm9zIGZhY3R1cmVzIGRl
+IGNoYXVmZmFnZQpRdWVsbGVFbmVyZ2llLmZyCgpJbmZvcm1hdGlvbnMgQ2hhdWZmYWdlCihodHRw
+Oi8vZm1vNDIuY29tL2R6bDV2bTFxYXBjb2s1eXpvcy9pbmRleDAuaHRtbCkKQ29tbWVudCByw6lk
+dWlyZSB2b3MgZmFjdHVyZXMgZGUgY2hhdWZmYWdlID8gKGh0dHA6Ly9mbW80Mi5jb20veW1sbjFt
+dmlhZnFqNHBkemdkL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQyLmNvbS9sd2xyYW1id2Fzcm9z
+YXN1ankvaW5kZXgyLmh0bWwpClF1ZWwgc3lzdMOobWUgZGUgY2hhdWZmYWdlIGVzdCBhZGFwdMOp
+IMOgIHZvdHJlIG1haXNvbiA/IFF1ZWxsZSBFbmVyZ2llIHZvdXMgcHJvcG9zZSBkJ2VmZmVjdHVl
+ciB1biBiaWxhbiBlbmVyZ8OpdGlxdWUgZ3JhdHVpdCBkZSB2b3RyZSBtYWlzb24gcG91ciB2b3Vz
+IGluZGlxdWVyIGNvbW1lbnQgcsOpZHVpcmUgdm9zIGZhY3R1cmVzIGRlIGNoYXVmZmFnZSBlbiBv
+cHRhbnQgcG91ciB1bmUgc29sdXRpb24gcGx1cyDDqWNvbm9taXF1ZSBldCBwbHVzIMOpY29sb2dp
+cXVlLgpDYWxjdWxlciB2b3Mgw6ljb25vbWllcyAoaHR0cDovL2ZtbzQyLmNvbS9zcGw0Ym1hMGFr
+aWp0M2x1cWwvaW5kZXgzLmh0bWwpClBBQyBHw6lvdGhlcm1pcXVlIChodHRwOi8vZm1vNDIuY29t
+LzR3Z3VhZ2huNTNwb3Vrc25pZC9pbmRleDQuaHRtbCkKClBvw6psZSDDoCBCb2lzIChodHRwOi8v
+Zm1vNDIuY29tL25wZ2hiZzIyNW8zanp1bG5hcy9pbmRleDUuaHRtbCkKCkNoYXVkacOocmUgQm9p
+cyAoaHR0cDovL2ZtbzQyLmNvbS96emdldmd1ZzV0Zm95NHl2aGwvaW5kZXg2Lmh0bWwpCihodHRw
+Oi8vZm1vNDIuY29tL3dtZzMxZ3hoNTRvamJ6ZHYzeS9pbmRleDcuaHRtbCkKCihodHRwOi8vZm1v
+NDIuY29tL2V6dmFlaGNqYW10b2l5eWpwcy9pbmRleDguaHRtbCkKCihodHRwOi8vZm1vNDIuY29t
+L3VtdnZjaGVhYTFzanJzZGptZC9pbmRleDkuaHRtbCkKTGEgUEFDIChQb21wZSDDoCBDaGFsZXVy
+KSBnw6lvdGhlcm1pcXVlIGVzdCBmYWl0ZSBwb3VyIGxlcyBncmFuZGUgc3VyZmFjZXMgZXQgcGV1
+dCB2b3VzIGZhaXJlIHLDqWFsaXNlciBqdXNxdSfDoCA4MCUgZCfDqWNvbm9taWUgc3VyIHZvcyBm
+YWN0dXJlcy4KQ3LDqWRpdCBkJ0ltcMO0dCA6IDI2JQoKVW4gcG/DqmxlIMOgIGJvaXMgKGdyYW51
+bMOpcyBvdSBiw7tjaGVzKSBzJ2luc3RhbGxlIGZhY2lsZW1lbnQgZXQgdm91cyBwZXJtZXQgZGUg
+cHJvZml0ZXIgZCd1biBjb21idXN0aWJsZSB0csOocyBib24gbWFyY2jDqSA6IGxlIGJvaXMuIENy
+w6lkaXQgZCdJbXDDtHQgOiAxNSUtMjYlCgpMYSBjaGF1ZGnDqHJlIGJvaXMgZXN0IHRyw6hzIGVm
+ZmljYWNlIHBvdXIgY2hhdWZmZXIgbGVzIGdyYW5kcyBlc3BhY2VzIGV0IGNlbGEgZGUgbWFuacOo
+cmUgw6ljb25vbWlxdWUgZXQgw6ljb2xvZ2lxdWUuIENyw6lkaXQgZCdJbXDDtHQgOiAxNSUtMjYl
+CkRldmlzIEdyYXR1aXQgKGh0dHA6Ly9mbW80Mi5jb20va2Zoa3NjM2JydmtsMXRtMXJnL2luZGV4
+MTAuaHRtbCkKRGV2aXMgR3JhdHVpdCAoaHR0cDovL2ZtbzQyLmNvbS92dHNpNDRieTBza2VzYmFr
+NWcvaW5kZXgxMS5odG1sKQpEZXZpcyBHcmF0dWl0IChodHRwOi8vZm1vNDIuY29tL2plMGxhcHd3
+dmNtNHBpa3luZC9pbmRleDEyLmh0bWwpClBBQyBBw6lyb3RoZXJtaXF1ZSAoaHR0cDovL2ZtbzQy
+LmNvbS9xaTVqeDBnZWc1bWJ2aHdyNGQvaW5kZXgxMy5odG1sKQoKQ2hhdWRpw6hyZSBHYXogKGh0
+dHA6Ly9mbW80Mi5jb20veXBqd2JsdTBqdGl4eTNsZW1xL2luZGV4MTQuaHRtbCkKClNvbGFpcmUg
+Q29tYmluw6kgKGh0dHA6Ly9mbW80Mi5jb20vZDRlcHVhZmR1bmlwY2FieHBxL2luZGV4MTUuaHRt
+bCkKKGh0dHA6Ly9mbW80Mi5jb20vamxqZG1senJvdGdjeXJvZW5kL2luZGV4MTYuaHRtbCkKCiho
+dHRwOi8vZm1vNDIuY29tL3FnZW9nYW9pa25nbWNtY3g0ZC9pbmRleDE3Lmh0bWwpCgooaHR0cDov
+L2ZtbzQyLmNvbS9sMWlyZ2Z0aXdscW5nNWkxNW8vaW5kZXgxOC5odG1sKQpMZXMgcG9tcGVzIMOg
+IGNoYWxldXIgYWlyLWFpciAocsOpdmVyc2libGUpIGV0IGFpci1lYXUgdm91cyBwZXJtZXR0ZW50
+IGRlIGNvbnNvbW1lciAzIGZvaXMgbW9pbnMgZXQgcmVzdGVudCBzaW1wbGUgw6AgZmFpcmUgaW5z
+dGFsbGVyLiBDcsOpZGl0IGQnSW1ww7R0IDogMCUtMTUlCgpMZSBjaGF1ZGnDqHJlIGNvbmRlbnNh
+dGlvbiBnYXogKG91IGNvbmRlbnNhdGlvbiBmaW91bCkgdm91cyBwZXJtZXQgZCfDqWNvbm9taXNl
+ciAzMCUgc3VyIHZvcyBmYWN0dXJlcyBkZSBjaGF1ZmZhZ2UuIENyw6lkaXQgZCdJbXDDtHQgOiAx
+MCUKCkF2ZWMgbGUgc3lzdMOobWUgc29sYWlyZSBjb21iaW7DqSwgcHJvZml0ZXogZCd1bmUgw6lu
+ZXJnaWUgZ3JhdHVpdGUgKGxlIHNvbGVpbCkgcG91ciBsZSBjaGF1ZmZhZ2UgZXQgbCdlYXUgY2hh
+dWRlIHNhbml0YWlyZS4gQ3LDqWRpdCBkJ0ltcMO0dCA6IDMyJQpEZXZpcyBHcmF0dWl0IChodHRw
+Oi8vZm1vNDIuY29tL3MyeTRtd2FyY2txMHRwcGtyby9pbmRleDE5Lmh0bWwpCkRldmlzIEdyYXR1
+aXQgKGh0dHA6Ly9mbW80Mi5jb20vdGN4em9kaWtxaXcyYWZyZHJxL2luZGV4MjAuaHRtbCkKRGV2
+aXMgR3JhdHVpdCAoaHR0cDovL2ZtbzQyLmNvbS8yMHdtcDMyNGVqd3d3eDM1NXEvaW5kZXgyMS5o
+dG1sKQrCqSAyMDEzIFF1ZWxsZSBFbmVyZ2llIC0gVG91cyBkcm9pdHMgcsOpc2VydsOpcyAtIHd3
+dy5xdWVsbGVlbmVyZ2llLmZyIChodHRwOi8vZm1vNDIuY29tL2JvZXdzYWt0azJlbXFmMXhtcS9p
+bmRleDIyLmh0bWwpCkNvbmZpZGVudGlhbGl0w6kgZGVzIGRvbm7DqWVzIDogY29uZm9ybcOpbWVu
+dCDDoCBsYSBsb2kgSW5mb3JtYXRpcXVlIGV0IExpYmVydMOpcyBkdSA2IGphbnZpZXIgMTk3OCwg
+dm91cyBkaXNwb3NleiBkwrR1biBkcm9pdCBkwrRhY2PDqHMsIGRlIHJlY3RpZmljYXRpb24gZXQg
+ZGUgc3VwcHJlc3Npb24gZGVzIGRvbm7DqWVzIHZvdXMgY29uY2VybmFudCBxdWUgdm91cyBwb3V2
+ZXogZXhlcmNlciDDoCB0b3V0IG1vbWVudCBlbiBlbiBmYWlzYW50IGxhIGRlbWFuZGUgZGlyZWN0
+ZW1lbnQgdmlhIGxhIHJ1YnJpcXVlIENvbnRhY3QgZHUgU2l0ZS4KLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCkhvdyBTZXJ2aWNlTm93IGhlbHBzIElUIHBlb3BsZSB0cmFuc2Zvcm0gSVQgZGVwYXJ0bWVu
+dHM6CjEuIEEgY2xvdWQgc2VydmljZSB0byBhdXRvbWF0ZSBJVCBkZXNpZ24sIHRyYW5zaXRpb24g
+YW5kIG9wZXJhdGlvbnMKMi4gRGFzaGJvYXJkcyB0aGF0IG9mZmVyIGhpZ2gtbGV2ZWwgdmlld3Mg
+b2YgZW50ZXJwcmlzZSBzZXJ2aWNlcwozLiBBIHNpbmdsZSBzeXN0ZW0gb2YgcmVjb3JkIGZvciBh
+bGwgSVQgcHJvY2Vzc2VzCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc2VydmljZW5vdy1kMmQtagpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

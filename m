@@ -1,93 +1,80 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] spi: omap2-mcspi: Add FIFO buffer support
-Date: Wed, 5 Jun 2013 13:03:46 +0100
-Message-ID: <20130605120346.GZ31367@sirena.org.uk>
-References: <1370432398-7796-1-git-send-email-illia.smyrnov@ti.com>
- <1370432398-7796-3-git-send-email-illia.smyrnov@ti.com>
+From: Michal Simek <monstr@monstr.eu>
+Subject: Re: [PATCH 2/3] spi: spi-xilinx: Clear dma_mask for xilinx spi controller
+Date: Wed, 05 Jun 2013 16:39:25 +0200
+Message-ID: <51AF4D9D.6070808@monstr.eu>
+References: <041d7ca272ef9499fab630294e3395110b3e31ac.1370354549.git.michal.simek@xilinx.com> <c5f546072e530c42e7ca15745ffa16729d72a5ac.1370354549.git.michal.simek@xilinx.com> <20130604173632.GM31367@sirena.org.uk>
+Reply-To: monstr@monstr.eu
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="VxJb6WgA6MoA+arP"
-Cc: Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Rob Landley <rob@landley.net>, Daniel Mack <zonque@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
+ protocol="application/pgp-signature";
+ boundary="----enig2FJUXOAVGOWQCQWOJOUDC"
+Cc: Michal Simek <michal.simek@xilinx.com>,
 	linux-kernel@vger.kernel.org,
+	Peter Crosthwaite <pcrost@xilinx.com>,
+	Grant Likely <grant.likely@linaro.org>,
 	spi-devel-general@lists.sourceforge.net
-To: Illia Smyrnov <illia.smyrnov@ti.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1370432398-7796-3-git-send-email-illia.smyrnov@ti.com>
-Sender: linux-doc-owner@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20130604173632.GM31367@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+------enig2FJUXOAVGOWQCQWOJOUDC
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
---VxJb6WgA6MoA+arP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 06/04/2013 07:36 PM, Mark Brown wrote:
+> On Tue, Jun 04, 2013 at 04:02:35PM +0200, Michal Simek wrote:
+>> From: Michal Simek <monstr@monstr.eu>
+>>
+>> mmc_spi driver tests if dma is available
+>> through spi->master->dev.parent->dma_mask.
+>> Microblaze supports DMA but xilinx_spi IP doesn't.
+>> That's why clear dma_mask in the driver.
+>=20
+>> +	/* clear the dma_mask, to try to disable use of dma */
+>> +	master->dev.dma_mask =3D 0;
+>> +
+>=20
+> This looks like a bodge in the wrong place.  Either the device
+> registration is incorrect in that it advertises DMA when none is
+> available or the SPI driver ought to be offering the MMC driver a more
+> sensible way of advertising this limitation.  My first thought is the
+> former but I didn't check where dma_mask is getting set.
 
-On Wed, Jun 05, 2013 at 02:39:58PM +0300, Illia Smyrnov wrote:
+I have looked at history of this change and we have done it 3 years ago
+based on one custom configuration.
 
->  - The spi slave nodes can provide the following information which is used
->    by the spi controller:
->    - ti,spi-turbo-mode: Set turbo mode for this device.
-> +  - ti,spi-fifo-depth: Enable FIFO and set up buffer depth.
+It is shame that I don't have hw to test this but there was
+something wrong in connection to mmc_spi.c.
+I will try to find out hw for this to test but probably
+won't be available. :-( And I will just revert this change in my tree.
 
-Why is this defined for slaves?  Surely the size of the FIFO in the
-controller is a property of the controller not the slave?
+Thanks,
+Michal
 
-> +		bytes_per_word = (cs->word_len <= 8) ? 1 :
-> +				(cs->word_len <= 16) ? 2 :
-> +				/* cs->word_len <= 32 */ 4;
+--=20
+Michal Simek, Ing. (M.Eng), OpenPGP -> KeyID: FE3D1F91
+w: www.monstr.eu p: +42-0-721842854
+Maintainer of Linux kernel - Microblaze cpu - http://www.monstr.eu/fdt/
+Maintainer of Linux kernel - Xilinx Zynq ARM architecture
+Microblaze U-BOOT custodian and responsible for u-boot arm zynq platform
 
-This isn't legible.  Use a switch statement, or better yet just divide.
 
-> +		level = (t->len < mcspi->fifo_depth ? t->len :
-> +			mcspi->fifo_depth) - 1;
-> +
-> +		mcspi_write_reg(master, OMAP2_MCSPI_XFERLEVEL,
-> +			((wcnt << 16) | (level << (is_read ? 8 : 0))));
-> +
-> +		chconf |= is_read ? OMAP2_MCSPI_CHCONF_FFER :
-> +			OMAP2_MCSPI_CHCONF_FFET;
 
-Please avoid such extensive use of the ternery operator, it's not good
-for legibility.
-
-> +	} else {
-> +		mcspi->fifo_depth = 0;
-> +		chconf &= ~(is_read ? OMAP2_MCSPI_CHCONF_FFER :
-> +			OMAP2_MCSPI_CHCONF_FFET);
-> +	}
-> +
-> +	mcspi_write_chconf0(spi, chconf);
-
-We have a bunch of return statements further up the function in cases
-where the FIFO can't be used which means that if we're in FIFO mode then
-hit one of those we'll not disable FIFO mode as far as I can tell?
-
---VxJb6WgA6MoA+arP
+------enig2FJUXOAVGOWQCQWOJOUDC
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
 
-iQIcBAEBAgAGBQJRrykfAAoJELSic+t+oim9eJEP/joKALEnFkt8oXivnsrol9xe
-uGySAwG15nrE5BrWF89aL9WamkC6KxiTU724RAhNUrFPstrqqcymVR7Zw9H+BzNm
-Ip89zG2flFSG9u0vaHUUVfhiLIkN/y4Yn1kLMb8zygAEU8NEWCm67GV96F38Ln+w
-m4sHaRudlW4byZVvjuVcWwrqzPS5c3BqtSQk8YgM/K8S/VKRU/P1mWlMoYb0UfHe
-Sac4tdFEMDJL+qJdglCNDNOdrbdcQvfk/Nztkowzvn7QW4nrG9+5eF5rvjcK793b
-a/2bh2sHlz/x7jSU1neUm1BdocnOmwuu/yE4VPXCqtRPmBMQPKX/FqLNCx0W7v2i
-zsow8hgvAiL03kdGRbke+zd9tuwJPjG0aFqatNGFmeSH7ap5JS+3pi2yS1r/1NMU
-7g2JJ7QcxDil7GUJD3WykuvwS6Rot5cjzpI5X2LS75CymXHBVlVWx8qBJH7rvx98
-lIUgr1cvRXovFOP1x+9EpMDRH9wIV+L5O6mIX7M/aP/fk+i+sXRAv7xXHC90PPlC
-89N2MzhN1iawDGVKqeVTGci1TDv+HrnlE3GX4qTOR7uCBieNg7q8zjaTgvmLSnRE
-fKVxUqbzWHBSw+Dmo7/BP+GEYTWysT/lscHu0RBnEGe2bFG4uQoDaNSM1bL2K4k1
-6+z3O91lP/W318TbuvJb
-=Ks4Y
+iEYEARECAAYFAlGvTaMACgkQykllyylKDCFMoQCggbK+i2sJoQYcGZ6tq5AThklh
+dxMAnAq2G6HAjx29MdksrH6Rlrx14uxF
+=FsxK
 -----END PGP SIGNATURE-----
 
---VxJb6WgA6MoA+arP--
+------enig2FJUXOAVGOWQCQWOJOUDC--

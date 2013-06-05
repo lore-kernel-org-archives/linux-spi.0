@@ -1,74 +1,141 @@
-From: "ChoisirSaBanqueEnLigne - Nl promos" <lisa@a.optincake.com>
-Subject: Les tarifs de vos banques
-Date: Wed, 05 Jun 2013 11:22:24 +0100
-Message-ID: <0.0.98.7E.1CE61D692698D78.0@mta199.pur3.net>
-Reply-To: ChoisirSaBanqueEnLigne - Nl promos <lisa@a.optincake.com>
+From: Illia Smyrnov <illia.smyrnov@ti.com>
+Subject: [PATCH 1/2] spi: spi-omap2-mcspi.c: Add dts for slave device configuration.
+Date: Wed, 5 Jun 2013 14:39:57 +0300
+Message-ID: <1370432398-7796-2-git-send-email-illia.smyrnov@ti.com>
+References: <1370432398-7796-1-git-send-email-illia.smyrnov@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Cc: Illia Smyrnov <illia.smyrnov@ti.com>,
+	Daniel Mack <zonque@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<devicetree-discuss@lists.ozlabs.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<spi-devel-general@lists.sourceforge.net>
+To: Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Rob Landley <rob@landley.net>, Mark Brown <broonie@kernel.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1370432398-7796-1-git-send-email-illia.smyrnov@ti.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTQxNTYzMjIwNTM3MTc0CgoKCgooRW52aWUgZGUgY2hhbmdlciBkZSBiYW5xdWUgPyAtIENob2lz
-aXJTYUJhbnF1ZUVuTGlnbmUuY29tKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNr
-P3A9MjEwODk1JmE9MjE4OTYyNyZnPTE5OTEwNjE2JnVybD1odHRwOi8vcmVkcGQKbC5jb20vMTIv
-Cgoob2J0ZW5pcmRlcyBpbmZvcm1hdGlvbnMgc3VyIGxlcyBiYW5xdWVzIGxlcyBtb2lucyBjaMOo
-cmVzIHBvdXIgbGVzCmNvbXBhcmVyKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNr
-P3A9MjEwODk1JmE9MjE4OTYyNyZnPTE5OTEwNjE2JnVybD1odHRwOi8vcmVkcGQKbC5jb20vMTIv
-CgoKY29tcGFyZXogbGVzIG1laWxsZXVyZXMgb2ZmcmVzCmF2YW50IGRlIHZvdXMgZMOpY2lkZXIK
-CihqJ2VuIHByb2ZpdGUpOgpodHRwOi8vY2xrLnRyYWRlZG91Ymxlci5jb20vY2xpY2s/cD0yMTA4
-OTUmYT0yMTg5NjI3Jmc9MTk5MTA2MTYmdXJsPWh0dHA6Ly9yZWRwZApsLmNvbS8xMi8KCgpzZXJ2
-aWNlIGdyYXR1aXQgZXQgc2FucyBlbmdhZ2VtZW50CnByb3Bvc8ODwqkgcGFyIGxlIGNvbXBhcmF0
-ZXVyIGRlIGJhbnF1ZXMKQ2hvaXNpclNhQmFucXVlRW5MaWduZS5jb20KCipzZSByw4PCqWZlcmVy
-IGF1eCBjb25kaXRpb25zIGfDg8KpbsODwqlyYWxlcyBkZSBjaGFxdWUgYmFucXVlLgpDcsOpZGl0
-IHBob3RvIDogQ29tcGFzc2lvbmF0ZSBFeWUgRm91bmRhdGlvbi9EYXZpZCBPeGJlcnJ5L09KTyBJ
-bWFnZXMgTHRkTm91cwpzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQg
-YWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlcgptb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQg
-bWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncsOiY2Ugw6Agbm91cywgdm91cwphbGxleiBw
-YXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBh
-IGJhcyBjb3V0LApvcHBvcnR1bml0w6ksIGluZm9zLi4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2
-b3VzIGhhYmlsbGVyLCBkZSB2b3VzCmNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1l
-aWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcKZGUgbCdhbm7DqWUsIGFs
-b3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzCnByb3Bv
-c2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBq
-b3VyCnLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS4gRW52aWUgZGUgdm91cyBmYWly
-ZSB1bmUgYmVhdXTDqSDDoAptb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwg
-ZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMKZCfDqXTDqSDDoCBtb2luZHJlIGZy
-YWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRzCnJh
-aXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5vcyBwcm9wb3Np
-dGlvbnMgcG91ciB2b3VzCnBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21icmV1c2VzIMOp
-Y29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQKcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1pbGxl
-LiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZAphZmluIGRl
-IHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0
-b3V0ZQpsJ2FubsOpZS4gQWluc2ksIGdyw6JjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVt
-cGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNv
-dXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gQmVzb2luIGRlCnZveWFnZXIsIGRlIHZvdXMgaGFi
-aWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIK
-cmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMgcG91
-cnF1b2kgbmUgcGFzIGpldGVyCnVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRpb25z
-IHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cwptZXR0b25zIMOgIGpvdXIgcsOp
-Z3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fi
-b25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/
-QUo4NDY0MTg2NjI1MTQxNTYzMjIwNTM3MTc0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTQxNTYzMjIw
-NTM3MTc0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkhvdyBTZXJ2aWNlTm93IGhlbHBzIElUIHBl
-b3BsZSB0cmFuc2Zvcm0gSVQgZGVwYXJ0bWVudHM6CjEuIEEgY2xvdWQgc2VydmljZSB0byBhdXRv
-bWF0ZSBJVCBkZXNpZ24sIHRyYW5zaXRpb24gYW5kIG9wZXJhdGlvbnMKMi4gRGFzaGJvYXJkcyB0
-aGF0IG9mZmVyIGhpZ2gtbGV2ZWwgdmlld3Mgb2YgZW50ZXJwcmlzZSBzZXJ2aWNlcwozLiBBIHNp
-bmdsZSBzeXN0ZW0gb2YgcmVjb3JkIGZvciBhbGwgSVQgcHJvY2Vzc2VzCmh0dHA6Ly9wLnNmLm5l
-dC9zZnUvc2VydmljZW5vdy1kMmQtagpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+From: Matthias Brugger <matthias.bgg@gmail.com>
+
+TI omap2 mcspi allows the slave devices to configure the behavior of
+the SPI master. This patch adds device tree support to the existing
+options.
+
+[Illia: added changes discussed at
+https://patchwork.kernel.org/patch/2333911/]
+
+Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Illia Smyrnov <illia.smyrnov@ti.com>
+---
+ Documentation/devicetree/bindings/spi/omap-spi.txt |   17 ++++++++
+ drivers/spi/spi-omap2-mcspi.c                      |   40 ++++++++++++++++++++
+ 2 files changed, 57 insertions(+), 0 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/omap-spi.txt b/Documentation/devicetree/bindings/spi/omap-spi.txt
+index 938809c..87b2841 100644
+--- a/Documentation/devicetree/bindings/spi/omap-spi.txt
++++ b/Documentation/devicetree/bindings/spi/omap-spi.txt
+@@ -10,8 +10,15 @@ Required properties:
+ 			  input. The default is D0 as input and
+ 			  D1 as output.
+ 
++SPI Controller specific data in SPI slave nodes:
++- The spi slave nodes can provide the following information which is used
++  by the spi controller:
++  - ti,spi-turbo-mode: Set turbo mode for this device.
++
+ Example:
+ 
++- SoC Specific Portion:
++
+ mcspi1: mcspi@1 {
+     #address-cells = <1>;
+     #size-cells = <0>;
+@@ -20,3 +27,13 @@ mcspi1: mcspi@1 {
+     ti,spi-num-cs = <4>;
+ };
+ 
++- Board Specific Portion:
++
++	spi-device@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		controller-data {
++			ti,spi-turbo-mode;
++		};
++	};
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 86d2158..67d0409 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -735,6 +735,38 @@ static u32 omap2_mcspi_calc_divisor(u32 speed_hz)
+ 	return 15;
+ }
+ 
++static struct omap2_mcspi_device_config *omap2_mcspi_get_slave_ctrldata(
++			struct spi_device *spi)
++{
++	struct omap2_mcspi_device_config *cd;
++	struct device_node *slave_np, *data_np = NULL;
++
++	slave_np = spi->dev.of_node;
++	if (!slave_np) {
++		dev_err(&spi->dev, "device node not found\n");
++		return ERR_PTR(-EINVAL);
++	}
++
++	data_np = of_get_child_by_name(slave_np, "controller-data");
++	if (!data_np) {
++		dev_err(&spi->dev, "child node 'controller-data' not found\n");
++		return ERR_PTR(-EINVAL);
++	}
++
++	cd = kzalloc(sizeof(*cd), GFP_KERNEL);
++	if (!cd) {
++		dev_err(&spi->dev, "could not allocate memory for controller data\n");
++		of_node_put(data_np);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	if (of_find_property(data_np, "ti,spi-turbo-mode", NULL))
++		cd->turbo_mode = 1;
++
++	of_node_put(data_np);
++	return cd;
++}
++
+ /* called only when no transfer is active to this device */
+ static int omap2_mcspi_setup_transfer(struct spi_device *spi,
+ 		struct spi_transfer *t)
+@@ -856,6 +888,11 @@ static int omap2_mcspi_setup(struct spi_device *spi)
+ 	struct omap2_mcspi_regs	*ctx = &mcspi->ctx;
+ 	struct omap2_mcspi_dma	*mcspi_dma;
+ 	struct omap2_mcspi_cs	*cs = spi->controller_state;
++	struct omap2_mcspi_device_config *cd;
++
++	if (spi->dev.of_node)
++		spi->controller_data = omap2_mcspi_get_slave_ctrldata(spi);
++	cd = spi->controller_data;
+ 
+ 	if (spi->bits_per_word < 4 || spi->bits_per_word > 32) {
+ 		dev_dbg(&spi->dev, "setup: unsupported %d bit words\n",
+@@ -902,6 +939,9 @@ static void omap2_mcspi_cleanup(struct spi_device *spi)
+ 
+ 	mcspi = spi_master_get_devdata(spi->master);
+ 
++	if (spi->dev.of_node && spi->controller_data)
++		kfree(spi->controller_data);
++
+ 	if (spi->controller_state) {
+ 		/* Unlink controller state from context save list */
+ 		cs = spi->controller_state;
+-- 
+1.7.0.4
+

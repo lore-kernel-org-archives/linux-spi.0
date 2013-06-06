@@ -1,13 +1,19 @@
-From: "iPhone" <lisa@a.optincake.com>
-Subject: Trouvez votre iphone5 a moins de 100 euros
-Date: Thu, 06 Jun 2013 03:53:16 +0100
-Message-ID: <0.0.123.1A6.1CE6260FE87B6A8.0@mta144.pur3.net>
-Reply-To: iPhone <lisa@a.optincake.com>
+From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: add spi controller master driver for Blackfin 6xx
+	processor
+Date: Thu, 6 Jun 2013 17:36:07 +0800
+Message-ID: <CAHG8p1D8mXq_=3DOBsRMCyRQ9UpWOLbU4y0VYO7PzERxknO7ow@mail.gmail.com>
+References: <1370295814-28723-1-git-send-email-scott.jiang.linux@gmail.com>
+	<20130603142809.GJ31367@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	"uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
+	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130603142809.GJ31367-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,70 +24,103 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTQxOTAzMjIwNTM3MTU0CgoKClNpIHZvdXMgbidhcnJpdmV6IHBhcyBhIHZpc3VhbGlzZXIgY2Ug
-bWVzc2FnZSwgdmV1aWxsZXogY2xpcXVlciBpY2k6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vaW50
-ZXJmYWNlL2V4dGVybmFsX3ZpZXdfZW1haWwucGhwP0FKODQ2NDE4NjYyNTE0MTkwMzIyMDUzNzE1
-NCZ2YXJJZD17fm1haQpsVmFyaWF0aW9uSWR+fQoKCkVjb25vbWlzZXoganVzcXUnw6AgOTAgcG91
-cmNlbnRzIHN1ciBsZXMgbWVpbGxldXJzIHByb2R1aXRzIEhpZ2hUZWNoIDogLTkwJToKaHR0cDov
-L3JmbWwwMy5jb20vdS8zMC8xNDg2LzI0NC96ZXRyZW5kLzkwMy9FTUFJTC9OQU1FL0ZJUlNUTkFN
-RS9pcGhvbmUKRWNvbm9taXNleiBqdXNxdSfDoCA5MCBwb3VyY2VudHMgc3VyIGxlcyBtZWlsbGV1
-cnMgcHJvZHVpdHMgSGlnaFRlY2ggOiAtOTAlCgooRWNvbm9taXNleiBqdXNxdSfDoCA5MCBwb3Vy
-Y2VudHMgc3VyIGxlcyBtZWlsbGV1cnMgcHJvZHVpdHMgSGlnaFRlY2ggOgotOTAlKToKaHR0cDov
-L3JmbWwwMy5jb20vdS8zMC8xNDg2LzI0NC96ZXRyZW5kLzkwMy9FTUFJTC9OQU1FL0ZJUlNUTkFN
-RS9pcGhvbmUKCihFY29ub21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxs
-ZXVycyBwcm9kdWl0cyBIaWdoVGVjaCA6Ci05MCUpOgpodHRwOi8vcmZtbDAzLmNvbS91LzMwLzE0
-ODYvMjQ0L3pldHJlbmQvOTAzL0VNQUlML05BTUUvRklSU1ROQU1FL2lwaG9uZQoKKEVjb25vbWlz
-ZXoganVzcXUnw6AgOTAgcG91cmNlbnRzIHN1ciBsZXMgbWVpbGxldXJzIHByb2R1aXRzIEhpZ2hU
-ZWNoIDoKLTkwJSk6Cmh0dHA6Ly9yZm1sMDMuY29tL3UvMzAvMTQ4Ni8yNDQvemV0cmVuZC85MDMv
-RU1BSUwvTkFNRS9GSVJTVE5BTUUvaXBob25lCgooRWNvbm9taXNleiBqdXNxdSfDoCA5MCBwb3Vy
-Y2VudHMgc3VyIGxlcyBtZWlsbGV1cnMgcHJvZHVpdHMgSGlnaFRlY2ggOgotOTAlKToKaHR0cDov
-L3JmbWwwMy5jb20vdS8zMC8xNDg2LzI0NC96ZXRyZW5kLzkwMy9FTUFJTC9OQU1FL0ZJUlNUTkFN
-RS9pcGhvbmUKCihFY29ub21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxs
-ZXVycyBwcm9kdWl0cyBIaWdoVGVjaCA6Ci05MCUpOgpodHRwOi8vcmZtbDAzLmNvbS91LzMwLzE0
-ODYvMjQ0L3pldHJlbmQvOTAzL0VNQUlML05BTUUvRklSU1ROQU1FL2lwaG9uZQoKCkNvcHlyaWdo
-dCDCqSAyMDA4LTIwMTEgU29waG9yYSBNZWRpYSAtIFRvdXMgZHJvaXRzIHLDqXNlcnbDqXMuIEVu
-Y2jDqHJlVklQCmVzdCB1bmUgbWFycXVlIGTDqXBvc8OpZS46ICU1QmxpZW5fdW5yZWdpc3RlciU1
-RApDb3B5cmlnaHQgwqkgMjAwOC0yMDExIFNvcGhvcmEgTWVkaWEgLSBUb3VzIGRyb2l0cyByw6lz
-ZXJ2w6lzLgpFbmNow6hyZVZJUCBlc3QgdW5lIG1hcnF1ZSBkw6lwb3PDqWUuClByaXZhY3kgcG9s
-aWN5OiAlNUJsaWVuX3ByaXZhY3klNUQKUHJpdmFjeSBwb2xpY3kKTm91cyBzb3VoYWl0b25zIHZv
-dXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgCmTDqXBl
-bnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNp
-LCBncsOiY2Ugw6AKbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRl
-ciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhCmJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGlu
-Zm9zLi4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZQp2b3VzIGNoYXVz
-c2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJp
-eCB0b3V0IGF1CmxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1
-biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzCnByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVz
-c29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyCnLDqWd1bGnDqHJlbWVudCBldCB0b3V0
-ZSBsJ2FubsOpZS4gRW52aWUgZGUgdm91cyBmYWlyZSB1bmUgYmVhdXTDqSDDoAptb2luZHJlIGNv
-w7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMg
-dmFjYW5jZXMKZCfDqXTDqSDDoCBtb2luZHJlIGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVy
-IHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRzCnJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVy
-IGRlIHRlbXBzIMOgIGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMgcG91ciB2b3VzCnBlcm1ldHRyZSBh
-aW5zaSBkZSBmYWlyZSBkZSBub21icmV1c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNh
-bnQKcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1pbGxlLiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBv
-cnRlciB1biBub3V2ZWF1IHJlZ2FyZAphZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1v
-aW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZQpsJ2FubsOpZS4gQWluc2ksIGdyw6Jj
-ZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRv
-dXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4g
-QmVzb2luIGRlCnZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRl
-IG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIKcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQg
-YXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyCnVuIHBldGl0
-IG9laWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBl
-dCBxdWUgbm91cwptZXR0b25zIMOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5u
-w6llLgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5v
-cHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTQxOTAzMjIwNTM3MTU0
-CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTQxOTAzMjIwNTM3MTU0fn0KLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCkhvdyBTZXJ2aWNlTm93IGhlbHBzIElUIHBlb3BsZSB0cmFuc2Zvcm0gSVQgZGVwYXJ0bWVu
-dHM6CjEuIEEgY2xvdWQgc2VydmljZSB0byBhdXRvbWF0ZSBJVCBkZXNpZ24sIHRyYW5zaXRpb24g
-YW5kIG9wZXJhdGlvbnMKMi4gRGFzaGJvYXJkcyB0aGF0IG9mZmVyIGhpZ2gtbGV2ZWwgdmlld3Mg
-b2YgZW50ZXJwcmlzZSBzZXJ2aWNlcwozLiBBIHNpbmdsZSBzeXN0ZW0gb2YgcmVjb3JkIGZvciBh
-bGwgSVQgcHJvY2Vzc2VzCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc2VydmljZW5vdy1kMmQtagpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
-ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
-Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
-ZW5lcmFsCg==
+Hi Mark,
+
+2013/6/3 Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>:
+> On Mon, Jun 03, 2013 at 05:43:34PM -0400, Scott Jiang wrote:
+>
+>> +#define START_STATE  ((void *)0)
+>> +#define RUNNING_STATE        ((void *)1)
+>> +#define DONE_STATE   ((void *)2)
+>> +#define ERROR_STATE  ((void *)-1)
+>
+> This looks icky due to the casts.  Why not just store the state in the
+> driver data for the device, it's not possible to have multiple messages
+> active at once anyway?
+>
+Yes, I can move it to driver data. But struct spi_message has state field for
+this message, I just want to make use of it.
+
+>
+>> +                     if (chip_info->control & ~bfin_ctl_reg) {
+>> +                             dev_err(&spi->dev, "do not set bits "
+>> +                                     "that the SPI framework manages\n");
+>> +                             goto error;
+>
+> Don't split error messages over lines.
+>
+It outputs in one line.
+
+>> +             if (chip->cs < MAX_CTRL_CS) {
+>> +                     chip->ssel = (1 << chip->cs) << 8;
+>> +                     ret = peripheral_request(ssel[spi->master->bus_num]
+>> +                                     [chip->cs-1], dev_name(&spi->dev));
+>> +                     if (ret) {
+>> +                             dev_err(&spi->dev, "peripheral_request() error\n");
+>> +                             goto error;
+>> +                     }
+>> +             } else {
+>> +                     chip->cs_gpio = chip->cs - MAX_CTRL_CS;
+>> +                     ret = gpio_request_one(chip->cs_gpio, GPIOF_OUT_INIT_HIGH,
+>> +                                             dev_name(&spi->dev));
+>> +                     if (ret) {
+>> +                             dev_err(&spi->dev, "gpio_request_one() error\n");
+>> +                             goto error;
+>> +                     }
+>> +             }
+>> +             spi_set_ctldata(spi, chip);
+>
+> Why is all this resource allocation not being done in the probe()
+> function?
+>
+You can't know the cs line that the spi device uses in probe()
+
+>> +static irqreturn_t bfin_spi_tx_dma_isr(int irq, void *dev_id)
+>> +{
+>> +     struct bfin_spi_master *drv_data = dev_id;
+>> +     u32 dma_stat = get_dma_curr_irqstat(drv_data->tx_dma);
+>> +
+>> +     clear_dma_irqstat(drv_data->tx_dma);
+>> +     if (dma_stat & DMA_DONE)
+>> +             drv_data->tx_num++;
+>> +     if (dma_stat & DMA_ERR)
+>> +             dev_err(&drv_data->master->dev,
+>> +                             "spi tx dma error: %d\n", dma_stat);
+>> +     bfin_write_and(&drv_data->regs->tx_control, ~SPI_TXCTL_TDR_NF);
+>> +     return IRQ_HANDLED;
+>> +}
+>
+> This doesn't check that it got a sane state from the hardware - what
+> happens if neither DMA_DONE nor DMA_ERR is true?  I'd also expect us to
+> fail the transfer if we get an error state.
+>
+DMA_DONE means correct, while DMA_ERR means error. Others only tell you
+current status, so when DMA_ERR I output the whole register value to check what
+error is.
+
+>> +static int bfin_spi_suspend(struct device *dev)
+>> +{
+>> +     struct spi_master *master = dev_get_drvdata(dev);
+>> +     struct bfin_spi_master *drv_data = spi_master_get_devdata(master);
+>> +
+>> +     spi_master_suspend(master);
+>> +
+>> +     drv_data->control = bfin_read(&drv_data->regs->control);
+>> +     drv_data->ssel = bfin_read(&drv_data->regs->ssel);
+>> +
+>> +     bfin_write(&drv_data->regs->control, SPI_CTL_MSTR | SPI_CTL_CPHA);
+>> +     bfin_write(&drv_data->regs->ssel, 0x0000FE00);
+>> +     free_dma(drv_data->rx_dma);
+>> +     free_dma(drv_data->tx_dma);
+>
+> Why free and reallocate the DMA over suspend?
+
+It's a boot rom bug. If it starts from spi flash, it will polute spi
+and dma status.
+
+------------------------------------------------------------------------------
+How ServiceNow helps IT people transform IT departments:
+1. A cloud service to automate IT design, transition and operations
+2. Dashboards that offer high-level views of enterprise services
+3. A single system of record for all IT processes
+http://p.sf.net/sfu/servicenow-d2d-j

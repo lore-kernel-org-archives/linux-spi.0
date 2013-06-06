@@ -1,33 +1,45 @@
-From: Christian Eggers <ceggers@gmx.de>
-Subject: [resubmit] spi: spi-davinci: Fix direction in dma_map_single()
-Date: Thu, 06 Jun 2013 14:00:44 +0200
-Message-ID: <6095249.c3oSPaheWH@p2400>
+From: Bruleur de graisse <contact-zIwo4Cd8WZRQFI55V6+gNQ@public.gmane.org>
+Subject: La fin de mes complexes et 12 kilos en moins
+Date: Thu, 06 Jun 2013 16:33:04 +0000
+Message-ID: <9b16b4dffecd2c333cad0df3c2244a09@mach10.generated>
+Reply-To: contact-zIwo4Cd8WZRQFI55V6+gNQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Matt Porter <mporter@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Commit 048177ce3b3962852fd34a7e04938959271c7e70 (spi: spi-davinci: 
-convert to DMA engine API) introduced a regression: dma_map_single() 
-is called with direction DMA_FROM_DEVICE for rx and for tx.
-
-Signed-off-by: Christian Eggers <ceggers@gmx.de>
-Cc: stable@vger.kernel.org # v3.7.x+
-Acked-by: Matt Porter <mporter@ti.com>
----
---- drivers/spi/spi-davinci.c.orig	2013-04-18 20:54:02.728719412 +0200
-+++ drivers/spi/spi-davinci.c	2013-04-18 20:54:51.900623956 +0200
-@@ -608,7 +608,7 @@ static int davinci_spi_bufs(struct spi_d
- 		else
- 			buf = (void *)t->tx_buf;
- 		t->tx_dma = dma_map_single(&spi->dev, buf,
--				t->len, DMA_FROM_DEVICE);
-+				t->len, DMA_TO_DEVICE);
- 		if (!t->tx_dma) {
- 			ret = -EFAULT;
- 			goto err_tx_map;
+UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
+bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
+L1lUMHhNeVppUFRNM05EWXpKbU05TWpNMk5ESW1aRDB5TURFekxUQTJMVEEySURFMk9qTXdPakF3
+Sm1VOU1TWm9QVE0zTlRFMEptWTlNemM0TWpNbVp6MHpOemd5TXc9PQoKTGllbiBkZSBkZXNpbnNj
+cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE0zTkRZekpt
+TTlNak0yTkRJbVpEMHlNREV6TFRBMkxUQTJJREUyT2pNd09qQXdKbVU5TVNab1BUTTNOVEUwSm1Z
+OU16YzRNak1tWnowek56Z3lNdz09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
+cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KICAKIETDqWNvdXZyZXogdm91cyBh
+dXNzaSBsZSBzZWNyZXQgbWluY2V1ciBkZXMgU3RhcnMgISAKICAKICAKICAKICAKICAKICBBdWN1
+biByw6lnaW1lIGRvbmMgYXVjdW5lIHJlcHJpc2UgZGUgcG9pZHMgUmVzdWx0YXRzIGdhcmFudGlz
+IDEwMCUgc2F0aXNmYWl0IFBhcyBk4oCZZWZmZXQgeW8teW8gQWdpdCBpbW1lZGlhdGVtZW50IHN1
+ciBsZXMgdGlzc3VzIGFkaXBldXggU2FucyBjaGFuZ2VyIHZvcyBoYWJpdHVkZXMgYWxpbWVudGFp
+cmVzIAogIAogIC02MCUgZGUgcmVkdWN0aW9uICBzdXIgbGEgY3VyZSDCq3RvdGFsZSBwbHVzwrsg
+cG91ciB2b3VzIHBlcm1ldHRyZSBkZSB0ZXN0ZXIgc29uIGluY3JveWFibGUgZWZmaWNhY2l0w6kg
+ISAKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCBjbGlxdWV6IGljaS4KLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCkhvdyBTZXJ2aWNlTm93IGhlbHBzIElUIHBlb3BsZSB0cmFuc2Zvcm0gSVQgZGVwYXJ0bWVu
+dHM6CjEuIEEgY2xvdWQgc2VydmljZSB0byBhdXRvbWF0ZSBJVCBkZXNpZ24sIHRyYW5zaXRpb24g
+YW5kIG9wZXJhdGlvbnMKMi4gRGFzaGJvYXJkcyB0aGF0IG9mZmVyIGhpZ2gtbGV2ZWwgdmlld3Mg
+b2YgZW50ZXJwcmlzZSBzZXJ2aWNlcwozLiBBIHNpbmdsZSBzeXN0ZW0gb2YgcmVjb3JkIGZvciBh
+bGwgSVQgcHJvY2Vzc2VzCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc2VydmljZW5vdy1kMmQtagpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

@@ -1,21 +1,13 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi/sirf: fix error propagation in spi_sirfsoc_probe()
-Date: Thu, 6 Jun 2013 09:40:23 +0800
-Message-ID: <CAGsJ_4x4iv-36WQeQgueKZ3_QYOnyTYnJWFa7rewUoTyQCcPNg@mail.gmail.com>
-References: <1370467796-4641-1-git-send-email-khoroshilov@ispras.ru>
-	<CAGsJ_4w6o9aSRDrH-nZRk77bRMxLUHDY5auePz_NzPC0pH1cjw@mail.gmail.com>
+From: "iPhone" <lisa@a.optincake.com>
+Subject: Trouvez votre iphone5 a moins de 100 euros
+Date: Thu, 06 Jun 2013 03:53:16 +0100
+Message-ID: <0.0.123.1A6.1CE6260FE87B6A8.0@mta144.pur3.net>
+Reply-To: iPhone <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: ldv-project-tpLiQldItUH5n4uC9ZG1Ww@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Barry Song <baohua.song-kQvG35nSl+M@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Alexey Khoroshilov <khoroshilov-ufN2psIa012HXe+LvDLADg@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAGsJ_4w6o9aSRDrH-nZRk77bRMxLUHDY5auePz_NzPC0pH1cjw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,50 +18,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2013/6/6 Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> 2013/6/6 Alexey Khoroshilov <khoroshilov-ufN2psIa012HXe+LvDLADg@public.gmane.org>:
->> If pinctrl_get_select_default() fails, spi_sirfsoc_probe()
->> returns IS_ERR(sspi->p) instead of PTR_ERR(sspi->p).
->>
->> Found by Linux Driver Verification project (linuxtesting.org).
->>
->> Signed-off-by: Alexey Khoroshilov <khoroshilov-ufN2psIa012HXe+LvDLADg@public.gmane.org>
->
-> Acked-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-
-sorry. nack, i think pinctrl_get_select_default(&pdev->dev) should
-have been dropped in another patch.
-
->
->> ---
->>  drivers/spi/spi-sirf.c | 5 +++--
->>  1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
->> index 0808cd5..94c3920 100644
->> --- a/drivers/spi/spi-sirf.c
->> +++ b/drivers/spi/spi-sirf.c
->> @@ -559,9 +559,10 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
->>         sspi->bitbang.master->dev.of_node = pdev->dev.of_node;
->>
->>         sspi->p = pinctrl_get_select_default(&pdev->dev);
->> -       ret = IS_ERR(sspi->p);
->> -       if (ret)
->> +       if (IS_ERR(sspi->p)) {
->> +               ret = PTR_ERR(sspi->p);
->>                 goto free_master;
->> +       }
->>
->>         sspi->clk = clk_get(&pdev->dev, NULL);
->>         if (IS_ERR(sspi->clk)) {
->> --
->> 1.8.1.2
-
--barry
-
-------------------------------------------------------------------------------
-How ServiceNow helps IT people transform IT departments:
-1. A cloud service to automate IT design, transition and operations
-2. Dashboards that offer high-level views of enterprise services
-3. A single system of record for all IT processes
-http://p.sf.net/sfu/servicenow-d2d-j
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTQxOTAzMjIwNTM3MTU0CgoKClNpIHZvdXMgbidhcnJpdmV6IHBhcyBhIHZpc3VhbGlzZXIgY2Ug
+bWVzc2FnZSwgdmV1aWxsZXogY2xpcXVlciBpY2k6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vaW50
+ZXJmYWNlL2V4dGVybmFsX3ZpZXdfZW1haWwucGhwP0FKODQ2NDE4NjYyNTE0MTkwMzIyMDUzNzE1
+NCZ2YXJJZD17fm1haQpsVmFyaWF0aW9uSWR+fQoKCkVjb25vbWlzZXoganVzcXUnw6AgOTAgcG91
+cmNlbnRzIHN1ciBsZXMgbWVpbGxldXJzIHByb2R1aXRzIEhpZ2hUZWNoIDogLTkwJToKaHR0cDov
+L3JmbWwwMy5jb20vdS8zMC8xNDg2LzI0NC96ZXRyZW5kLzkwMy9FTUFJTC9OQU1FL0ZJUlNUTkFN
+RS9pcGhvbmUKRWNvbm9taXNleiBqdXNxdSfDoCA5MCBwb3VyY2VudHMgc3VyIGxlcyBtZWlsbGV1
+cnMgcHJvZHVpdHMgSGlnaFRlY2ggOiAtOTAlCgooRWNvbm9taXNleiBqdXNxdSfDoCA5MCBwb3Vy
+Y2VudHMgc3VyIGxlcyBtZWlsbGV1cnMgcHJvZHVpdHMgSGlnaFRlY2ggOgotOTAlKToKaHR0cDov
+L3JmbWwwMy5jb20vdS8zMC8xNDg2LzI0NC96ZXRyZW5kLzkwMy9FTUFJTC9OQU1FL0ZJUlNUTkFN
+RS9pcGhvbmUKCihFY29ub21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxs
+ZXVycyBwcm9kdWl0cyBIaWdoVGVjaCA6Ci05MCUpOgpodHRwOi8vcmZtbDAzLmNvbS91LzMwLzE0
+ODYvMjQ0L3pldHJlbmQvOTAzL0VNQUlML05BTUUvRklSU1ROQU1FL2lwaG9uZQoKKEVjb25vbWlz
+ZXoganVzcXUnw6AgOTAgcG91cmNlbnRzIHN1ciBsZXMgbWVpbGxldXJzIHByb2R1aXRzIEhpZ2hU
+ZWNoIDoKLTkwJSk6Cmh0dHA6Ly9yZm1sMDMuY29tL3UvMzAvMTQ4Ni8yNDQvemV0cmVuZC85MDMv
+RU1BSUwvTkFNRS9GSVJTVE5BTUUvaXBob25lCgooRWNvbm9taXNleiBqdXNxdSfDoCA5MCBwb3Vy
+Y2VudHMgc3VyIGxlcyBtZWlsbGV1cnMgcHJvZHVpdHMgSGlnaFRlY2ggOgotOTAlKToKaHR0cDov
+L3JmbWwwMy5jb20vdS8zMC8xNDg2LzI0NC96ZXRyZW5kLzkwMy9FTUFJTC9OQU1FL0ZJUlNUTkFN
+RS9pcGhvbmUKCihFY29ub21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxs
+ZXVycyBwcm9kdWl0cyBIaWdoVGVjaCA6Ci05MCUpOgpodHRwOi8vcmZtbDAzLmNvbS91LzMwLzE0
+ODYvMjQ0L3pldHJlbmQvOTAzL0VNQUlML05BTUUvRklSU1ROQU1FL2lwaG9uZQoKCkNvcHlyaWdo
+dCDCqSAyMDA4LTIwMTEgU29waG9yYSBNZWRpYSAtIFRvdXMgZHJvaXRzIHLDqXNlcnbDqXMuIEVu
+Y2jDqHJlVklQCmVzdCB1bmUgbWFycXVlIGTDqXBvc8OpZS46ICU1QmxpZW5fdW5yZWdpc3RlciU1
+RApDb3B5cmlnaHQgwqkgMjAwOC0yMDExIFNvcGhvcmEgTWVkaWEgLSBUb3VzIGRyb2l0cyByw6lz
+ZXJ2w6lzLgpFbmNow6hyZVZJUCBlc3QgdW5lIG1hcnF1ZSBkw6lwb3PDqWUuClByaXZhY3kgcG9s
+aWN5OiAlNUJsaWVuX3ByaXZhY3klNUQKUHJpdmFjeSBwb2xpY3kKTm91cyBzb3VoYWl0b25zIHZv
+dXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgCmTDqXBl
+bnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNp
+LCBncsOiY2Ugw6AKbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRl
+ciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhCmJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGlu
+Zm9zLi4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZQp2b3VzIGNoYXVz
+c2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJp
+eCB0b3V0IGF1CmxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1
+biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzCnByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVz
+c29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyCnLDqWd1bGnDqHJlbWVudCBldCB0b3V0
+ZSBsJ2FubsOpZS4gRW52aWUgZGUgdm91cyBmYWlyZSB1bmUgYmVhdXTDqSDDoAptb2luZHJlIGNv
+w7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMg
+dmFjYW5jZXMKZCfDqXTDqSDDoCBtb2luZHJlIGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVy
+IHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRzCnJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVy
+IGRlIHRlbXBzIMOgIGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMgcG91ciB2b3VzCnBlcm1ldHRyZSBh
+aW5zaSBkZSBmYWlyZSBkZSBub21icmV1c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNh
+bnQKcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1pbGxlLiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBv
+cnRlciB1biBub3V2ZWF1IHJlZ2FyZAphZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1v
+aW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZQpsJ2FubsOpZS4gQWluc2ksIGdyw6Jj
+ZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRv
+dXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4g
+QmVzb2luIGRlCnZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRl
+IG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIKcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQg
+YXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyCnVuIHBldGl0
+IG9laWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBl
+dCBxdWUgbm91cwptZXR0b25zIMOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5u
+w6llLgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5v
+cHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTQxOTAzMjIwNTM3MTU0
+CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTQxOTAzMjIwNTM3MTU0fn0KLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCkhvdyBTZXJ2aWNlTm93IGhlbHBzIElUIHBlb3BsZSB0cmFuc2Zvcm0gSVQgZGVwYXJ0bWVu
+dHM6CjEuIEEgY2xvdWQgc2VydmljZSB0byBhdXRvbWF0ZSBJVCBkZXNpZ24sIHRyYW5zaXRpb24g
+YW5kIG9wZXJhdGlvbnMKMi4gRGFzaGJvYXJkcyB0aGF0IG9mZmVyIGhpZ2gtbGV2ZWwgdmlld3Mg
+b2YgZW50ZXJwcmlzZSBzZXJ2aWNlcwozLiBBIHNpbmdsZSBzeXN0ZW0gb2YgcmVjb3JkIGZvciBh
+bGwgSVQgcHJvY2Vzc2VzCmh0dHA6Ly9wLnNmLm5ldC9zZnUvc2VydmljZW5vdy1kMmQtagpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2Vu
+ZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1n
+ZW5lcmFsCg==

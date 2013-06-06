@@ -1,93 +1,74 @@
-From: Illia Smyrnov <x0194613-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: omap2-mcspi: Add FIFO buffer support
-Date: Thu, 6 Jun 2013 13:08:56 +0300
-Message-ID: <51B05FB8.6050903@ti.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: spi-omap2-mcspi.c: Add dts for slave device
+ configuration.
+Date: Thu, 6 Jun 2013 11:19:19 +0100
+Message-ID: <20130606101919.GQ31367@sirena.org.uk>
 References: <1370432398-7796-1-git-send-email-illia.smyrnov@ti.com>
-	<1370432398-7796-3-git-send-email-illia.smyrnov@ti.com>
-	<20130605120346.GZ31367@sirena.org.uk>
+ <1370432398-7796-2-git-send-email-illia.smyrnov@ti.com>
+ <20130605115734.GY31367@sirena.org.uk>
+ <51B05FAE.60508@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Illia Smyrnov <illia.smyrnov-l0cyMroinI0@public.gmane.org>, Greg,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130605120346.GZ31367-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="NhnzZsTWd+R/yp6D"
+Cc: Illia Smyrnov <illia.smyrnov@ti.com>,
+	Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Rob Landley <rob@landley.net>, Daniel Mack <zonque@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Illia Smyrnov <x0194613@ti.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <51B05FAE.60508@ti.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-On 06/05/2013 03:03 PM, Mark Brown wrote:
-> On Wed, Jun 05, 2013 at 02:39:58PM +0300, Illia Smyrnov wrote:
->
->>   - The spi slave nodes can provide the following information which is used
->>     by the spi controller:
->>     - ti,spi-turbo-mode: Set turbo mode for this device.
->> +  - ti,spi-fifo-depth: Enable FIFO and set up buffer depth.
->
-> Why is this defined for slaves?  Surely the size of the FIFO in the
-> controller is a property of the controller not the slave?
+--NhnzZsTWd+R/yp6D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-According to OMAP TRM [1] the FIFO buffer can be used by only one 
-channel at a time. If several channels are selected and several FIFO 
-enable bit fields are set to 1, the controller forces the buffer not to 
-be used.
+On Thu, Jun 06, 2013 at 01:08:46PM +0300, Illia Smyrnov wrote:
+> On 06/05/2013 02:57 PM, Mark Brown wrote:
 
-If there are several slaves on the controller we must select which of 
-slaves will use the FIFO for SPI transfers. Also, optimal FIFO size is 
-heavily dependent of the SPI transfers length specific for certain slave.
+> Turbo mode gives the expected results not for all cases. There are
+> some limitations:
+> - works only if a single channel is enabled (no effect when several
+> channels are enable);
+> - improves the throughput on RX direction only;
+> - effective only when a transfer exceeds two words. For single SPI
+> word transfers OMAP TRM [1] recommends deactivate turbo mode.
 
->
->> +		bytes_per_word = (cs->word_len <= 8) ? 1 :
->> +				(cs->word_len <= 16) ? 2 :
->> +				/* cs->word_len <= 32 */ 4;
->
-> This isn't legible.  Use a switch statement, or better yet just divide.
->
->> +		level = (t->len < mcspi->fifo_depth ? t->len :
->> +			mcspi->fifo_depth) - 1;
->> +
->> +		mcspi_write_reg(master, OMAP2_MCSPI_XFERLEVEL,
->> +			((wcnt << 16) | (level << (is_read ? 8 : 0))));
->> +
->> +		chconf |= is_read ? OMAP2_MCSPI_CHCONF_FFER :
->> +			OMAP2_MCSPI_CHCONF_FFET;
->
-> Please avoid such extensive use of the ternery operator, it's not good
-> for legibility.
->> +	} else {
->> +		mcspi->fifo_depth = 0;
->> +		chconf &= ~(is_read ? OMAP2_MCSPI_CHCONF_FFER :
->> +			OMAP2_MCSPI_CHCONF_FFET);
->> +	}
->> +
->> +	mcspi_write_chconf0(spi, chconf);
->
-> We have a bunch of return statements further up the function in cases
-> where the FIFO can't be used which means that if we're in FIFO mode then
-> hit one of those we'll not disable FIFO mode as far as I can tell?
->
+> So it is useful to have the property in DT, that allow us to switch
+> turbo mode off/on for certain slave.
 
-I will rework this in the next patch version.
+Why?  These sound like conditions that can readily be detected at
+runtime.
 
-[1]: http://www.ti.com/lit/ug/swpu235z/swpu235z.pdf
+--NhnzZsTWd+R/yp6D
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-------------------------------------------------------------------------------
-How ServiceNow helps IT people transform IT departments:
-1. A cloud service to automate IT design, transition and operations
-2. Dashboards that offer high-level views of enterprise services
-3. A single system of record for all IT processes
-http://p.sf.net/sfu/servicenow-d2d-j
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRsGIkAAoJELSic+t+oim9RocP/R1iT4kg2Q+gyyMmYSWK+dyY
+CYCn6FZ9drlQKYYaQTqnr8eCpDL2/6gPzRbF+xhBB6Zp1AGedlT9qdvQqySVGxCZ
+0CjtipwXfm7n+Nn5doXlx+SbpvUtKSJBY4yPR94/tEBJvshw5LODBghMiUgIPLtv
+kx2b6ot7ma+Lliw8NUa7Js+dDCgArYz9dTK8Kxezz0/Ujlfv1eeu9SuhwakaT5eQ
+JvsgqNHRSPgkcWpstU2zOpiqV9Fd9SoyxD7SJ8RcKsrKJ1zFP82vDMQOOG7oBcMj
+n3/qVtzAiPl1Vmj0qljZsf3EhLzyxRBxPtr3oRx5KfhaRI9rh2aOrFpy92K5L573
+cT9FOiGC9zvr7mCuPA1sGsOBl7zN7RzBP42meS4qSJbVUNpMFvZlr+bCGdUluC2x
+fDYHoCKyJGkvgU2esotWg9/bTfe5wGbGu1e+ian5bJHZMagfnAkmw3Yz1abpXfgI
+zZAm7uqu6g8Se+mHqaNv4WeHf+QdT9NU4qXbcEro/36YyP4bn1KI2CBjyNa2v3ov
+DOFEezQO6pUMmhVGM7jG9lfLFXj+Ara5i4VrfMb7KJKveU49AKewVUOM7E1YCOpV
+drZahuIHYPnUIFOB/lddMYPJ2MketnjBV7qW1ZUO+bay9jzPKQfl1/4b2Uu5WMSa
+rMamq1XMSMk1SybCmHgB
+=kwNA
+-----END PGP SIGNATURE-----
+
+--NhnzZsTWd+R/yp6D--

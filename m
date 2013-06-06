@@ -1,74 +1,59 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi: spi-omap2-mcspi.c: Add dts for slave device
- configuration.
-Date: Thu, 6 Jun 2013 11:19:19 +0100
-Message-ID: <20130606101919.GQ31367@sirena.org.uk>
-References: <1370432398-7796-1-git-send-email-illia.smyrnov@ti.com>
- <1370432398-7796-2-git-send-email-illia.smyrnov@ti.com>
- <20130605115734.GY31367@sirena.org.uk>
- <51B05FAE.60508@ti.com>
+From: iPhone <contact-onwg5PPfWvlGWvitb5QawA@public.gmane.org>
+Subject: Destockage iPhone 5
+Date: Thu, 06 Jun 2013 10:20:03 +0000
+Message-ID: <1a073392f23c301c9991ef7aa414bb41@mach10.generated>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="NhnzZsTWd+R/yp6D"
-Cc: Illia Smyrnov <illia.smyrnov@ti.com>,
-	Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Rob Landley <rob@landley.net>, Daniel Mack <zonque@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	devicetree-discuss@lists.ozlabs.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Illia Smyrnov <x0194613@ti.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <51B05FAE.60508@ti.com>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---NhnzZsTWd+R/yp6D
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, Jun 06, 2013 at 01:08:46PM +0300, Illia Smyrnov wrote:
-> On 06/05/2013 02:57 PM, Mark Brown wrote:
-
-> Turbo mode gives the expected results not for all cases. There are
-> some limitations:
-> - works only if a single channel is enabled (no effect when several
-> channels are enable);
-> - improves the throughput on RX direction only;
-> - effective only when a transfer exceeds two words. For single SPI
-> word transfers OMAP TRM [1] recommends deactivate turbo mode.
-
-> So it is useful to have the property in DT, that allow us to switch
-> turbo mode off/on for certain slave.
-
-Why?  These sound like conditions that can readily be detected at
-runtime.
-
---NhnzZsTWd+R/yp6D
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRsGIkAAoJELSic+t+oim9RocP/R1iT4kg2Q+gyyMmYSWK+dyY
-CYCn6FZ9drlQKYYaQTqnr8eCpDL2/6gPzRbF+xhBB6Zp1AGedlT9qdvQqySVGxCZ
-0CjtipwXfm7n+Nn5doXlx+SbpvUtKSJBY4yPR94/tEBJvshw5LODBghMiUgIPLtv
-kx2b6ot7ma+Lliw8NUa7Js+dDCgArYz9dTK8Kxezz0/Ujlfv1eeu9SuhwakaT5eQ
-JvsgqNHRSPgkcWpstU2zOpiqV9Fd9SoyxD7SJ8RcKsrKJ1zFP82vDMQOOG7oBcMj
-n3/qVtzAiPl1Vmj0qljZsf3EhLzyxRBxPtr3oRx5KfhaRI9rh2aOrFpy92K5L573
-cT9FOiGC9zvr7mCuPA1sGsOBl7zN7RzBP42meS4qSJbVUNpMFvZlr+bCGdUluC2x
-fDYHoCKyJGkvgU2esotWg9/bTfe5wGbGu1e+ian5bJHZMagfnAkmw3Yz1abpXfgI
-zZAm7uqu6g8Se+mHqaNv4WeHf+QdT9NU4qXbcEro/36YyP4bn1KI2CBjyNa2v3ov
-DOFEezQO6pUMmhVGM7jG9lfLFXj+Ara5i4VrfMb7KJKveU49AKewVUOM7E1YCOpV
-drZahuIHYPnUIFOB/lddMYPJ2MketnjBV7qW1ZUO+bay9jzPKQfl1/4b2Uu5WMSa
-rMamq1XMSMk1SybCmHgB
-=kwNA
------END PGP SIGNATURE-----
-
---NhnzZsTWd+R/yp6D--
+UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
+bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
+L1lUMHhNeVppUFRNM05ERTRKbU05TWpNMk5ESW1aRDB5TURFekxUQTJMVEEySURBNU9qVXdPakF3
+Sm1VOU1TWm9QVE0zTkRZNUptWTlNemMzTnpnbVp6MHpOemMzT0E9PQoKTGllbiBkZSBkZXNpbnNj
+cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE0zTkRFNEpt
+TTlNak0yTkRJbVpEMHlNREV6TFRBMkxUQTJJREE1T2pVd09qQXdKbVU5TVNab1BUTTNORFk1Sm1Z
+OU16YzNOemdtWnowek56YzNPQT09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
+cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KwqAKTGVzIGVuY2jDqHJlcyBhdSBj
+ZW50aW1lIGV4cGxpcXXDqWVzIDogRXN0LWNlIHZyYWltZW50IHBvc3NpYmxlIGQnw6ljb25vbWlz
+ZXIgOTUgJSAgc3VyIGxlIHByaXggZGUgdmVudGUgPyAgClZvdXMgbCdhdXJleiBzdXJlbWVudCBy
+ZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWluIGRlIHNlIGTDqXZl
+bG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxlcyBzaXRlcyBpbnRl
+cm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4gUGFydG91dCBzdXIg
+bGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0b2lyZXMgZCdoZXVy
+ZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4uICAKSGFiaXR1ZWxs
+ZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4g
+TWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3Vy
+IGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gCsKgCkxJUkUgTEEg
+U1VJVEUgPj4KwqAKTGEgUmV2dWUgQ29uc28gw6AgdGVzdMOpIFN3b2dnaSByw6ljZW1tZW50IGV0
+IGxlcyByw6lzdWx0YXRzIG9udCDDqXTDqSB0csOocyBzdXJwcmVuYW50cy4gICAKIlN3b2dnaSBh
+IGTDqXBhc3PDqSB0b3V0ZXMgbm9zIGF0dGVudGVzIGVuIGNlIHF1aSBjb25jZXJuYWl0IGxlcyDD
+qWNvbm9taWVzIHLDqWFsaXNhYmxlcyBncsOiY2Ugw6AgbGV1cnMgb2ZmcmVzLiBUb3VzIGxlcyBq
+b3VycywgZGVzIGdlbnMgw6ljb25vbWlzZW50IGp1c3F1J8OgIDk1ICUgc3VyIGxlcyBwcml4IGhh
+Yml0dWVscyBkZSB2ZW50ZS4gQydlc3QgaW5jcm95YWJsZSAhIiAKwqAKTElSRSBMQSBTVUlURSA+
+PgrCoArCoAogIApNYXJpZSBTYW1lZGkgMjMganVpbiAzaDI1CsKgCiJKJ2FpIGRlIHF1b2kgdm9p
+ciB2ZW5pciBsZXMgYW5uaXZlcnNhaXJlcyBldCBhdXRyZXMgZsOqdGVzIHBvdXIgdW4gYm9uIG1v
+bWVudCBldCBqJ2FpIGZhaXQgZGUgc2FjcsOpcyDDqWNvbm9taWVzIgpQYXRvdSAgU2FtZWRpIDIz
+IGp1aW4gNGgzNwrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hyZXMgYXUg
+Y2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwgbWUgdGFy
+ZGUgZCdlc3NheWVyIgrCoApQb3VyIHZvdXMgZMOpc2Fib25uZXIsIGNsaXF1ZXogaWNpLgotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KSG93IFNlcnZpY2VOb3cgaGVscHMgSVQgcGVvcGxlIHRyYW5zZm9y
+bSBJVCBkZXBhcnRtZW50czoKMS4gQSBjbG91ZCBzZXJ2aWNlIHRvIGF1dG9tYXRlIElUIGRlc2ln
+biwgdHJhbnNpdGlvbiBhbmQgb3BlcmF0aW9ucwoyLiBEYXNoYm9hcmRzIHRoYXQgb2ZmZXIgaGln
+aC1sZXZlbCB2aWV3cyBvZiBlbnRlcnByaXNlIHNlcnZpY2VzCjMuIEEgc2luZ2xlIHN5c3RlbSBv
+ZiByZWNvcmQgZm9yIGFsbCBJVCBwcm9jZXNzZXMKaHR0cDovL3Auc2YubmV0L3NmdS9zZXJ2aWNl
+bm93LWQyZC1qCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
+Zm8vc3BpLWRldmVsLWdlbmVyYWwK

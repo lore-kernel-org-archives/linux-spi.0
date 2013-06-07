@@ -1,63 +1,73 @@
-From: Chris Ball <cjb@laptop.org>
-Subject: Re: [PATCH v9 1/9] ARM: davinci: move private EDMA API to arm/common
-Date: Fri, 07 Jun 2013 07:15:39 -0400
-Message-ID: <878v2m5fz8.fsf@octavius.laptop.org>
-References: <1362586540-10393-1-git-send-email-mporter@ti.com>
-	<1362586540-10393-2-git-send-email-mporter@ti.com>
-	<51B17AE7.4070403@ti.com>
+From: "Tati par Nlpromos" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?UHJvZml0ZXogZGUgbGEgY29sbGVjdGlvbiDDiXTDqSBUYXRp?=
+Date: Fri, 07 Jun 2013 13:19:05 +0100
+Message-ID: <0.0.113.17C.1CE637933B811D8.0@mta148.pur3.net>
+Reply-To: Tati par Nlpromos <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Mark Brown <broonie@kernel.org>, Matt Porter <matt@ohporter.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Benoit Cousson <b-cousson@ti.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Rob Landley <rob@landley.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>,
-	Arnd Bergmann <arnd@arndb.de>
-To: Sekhar Nori <nsekhar@ti.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <51B17AE7.4070403@ti.com> (Sekhar Nori's message of "Fri, 7 Jun
-	2013 11:47:11 +0530")
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On Fri, Jun 07 2013, Sekhar Nori wrote:
-> + Chris since the patch has some davinci_mmc.c changes.
->
-> Chris, Mark,
->
-> On 3/6/2013 9:45 PM, Matt Porter wrote:
->> Move mach-davinci/dma.c to common/edma.c so it can be used
->> by OMAP (specifically AM33xx) as well.
->> 
->> Signed-off-by: Matt Porter <mporter@ti.com>
->> Acked-by: Sekhar Nori <nsekhar@ti.com>
->
-> Can you please ack changes in mmc and sound respectively? I would like
-> to take the patch for v3.11.
-
-For davinci_mmc.c:
-
-Acked-by: Chris Ball <cjb@laptop.org>
-
-Thanks,
-
-- Chris.
--- 
-Chris Ball   <cjb@laptop.org>   <http://printf.net/>
-One Laptop Per Child
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTQyNTQzMjIwNTM3MTY0CgoKClNpIHZvdXMgbidhcnJpdmV6IHBhcyBhIHZpc3VhbGlzZXIgY2Ug
+bWVzc2FnZSwgdmV1aWxsZXogY2xpcXVlciBpY2k6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vaW50
+ZXJmYWNlL2V4dGVybmFsX3ZpZXdfZW1haWwucGhwP0FKODQ2NDE4NjYyNTE0MjU0MzIyMDUzNzE2
+NCZ2YXJJZD17fm1haQpsVmFyaWF0aW9uSWR+fQoKKFBhcnJhaW5hZ2UpOgpodHRwOi8vbXRyYzEu
+ZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1mNjZjNWY5NjNiMzNkM2M5NTMzZTUy
+ZGVmYmU5MDY1NAoKKFRBVEkgT1IpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2Ns
+aWMucGhwP3BhcmFtcz0wNzhmMmE2NzM1OGExMzQ3ZWZkOGUwYWQyMWU3ZDFhZQoKKExlcyBudS1w
+aWVkcyk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWEy
+ZDNhN2NlM2E3OWNiYzBiMTY4YTFlZmMxZWY1M2E5CgooTGVzIHRvbmdzKToKaHR0cDovL210cmMx
+LmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9ZTU0Yzk0N2EzZTNlNmZkYTYyYzA2
+YWE5ZTRmMWI0OGYKCihMJ2Vuc2VtYmxlIHQtc2hpcnQgZXQgYmVybXVkYSk6Cmh0dHA6Ly9tdHJj
+MS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTM4YmEzMzM5NTFjYjJhYjJiZmQ0
+MWJjMTc4MWY1MzE2CgoKTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSBy
+ZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgCmTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNv
+bW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncsOiY2Ugw6AKbm91cywgdm91cyBh
+bGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJv
+ZHVpdCBhCmJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIEJlc29pbiBkZSB2b3lhZ2Vy
+LCBkZSB2b3VzIGhhYmlsbGVyLCBkZQp2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGly
+IGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1CmxvbmcgZGUgbCdhbm7D
+qWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVz
+CnByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9u
+cyDDoCBqb3VyCnLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS4gRW52aWUgZGUgdm91
+cyBmYWlyZSB1bmUgYmVhdXTDqSDDoAptb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2Fu
+bsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMKZCfDqXTDqSDDoCBtb2lu
+ZHJlIGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRn
+ZXRzCnJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5vcyBw
+cm9wb3NpdGlvbnMgcG91ciB2b3VzCnBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21icmV1
+c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQKcGxhaXNpciDDoCB0b3V0ZSBsYSBm
+YW1pbGxlLiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZAph
+ZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBt
+aWV1eCB0b3V0ZQpsJ2FubsOpZS4gQWluc2ksIGdyw6JjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBh
+ciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEg
+YmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gQmVzb2luIGRlCnZveWFnZXIsIGRlIHZv
+dXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVp
+bGxldXIKcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxv
+cnMgcG91cnF1b2kgbmUgcGFzIGpldGVyCnVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMgcHJvcG9z
+aXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cwptZXR0b25zIMOgIGpv
+dXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLgoKCgoKCi0tCgpQb3VyIHZvdXMg
+ZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jj
+ci5waHA/QUo4NDY0MTg2NjI1MTQyNTQzMjIwNTM3MTY0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTQy
+NTQzMjIwNTM3MTY0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkhvdyBTZXJ2aWNlTm93IGhlbHBz
+IElUIHBlb3BsZSB0cmFuc2Zvcm0gSVQgZGVwYXJ0bWVudHM6CjEuIEEgY2xvdWQgc2VydmljZSB0
+byBhdXRvbWF0ZSBJVCBkZXNpZ24sIHRyYW5zaXRpb24gYW5kIG9wZXJhdGlvbnMKMi4gRGFzaGJv
+YXJkcyB0aGF0IG9mZmVyIGhpZ2gtbGV2ZWwgdmlld3Mgb2YgZW50ZXJwcmlzZSBzZXJ2aWNlcwoz
+LiBBIHNpbmdsZSBzeXN0ZW0gb2YgcmVjb3JkIGZvciBhbGwgSVQgcHJvY2Vzc2VzCmh0dHA6Ly9w
+LnNmLm5ldC9zZnUvc2VydmljZW5vdy1kMmQtagpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRl
+dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9y
+Z2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

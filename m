@@ -1,15 +1,12 @@
-From: Sricharan R <r.sricharan-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] spi: omap2-mcspi: Skip platform_get_resource_byname() for dt
-	case
-Date: Sat, 8 Jun 2013 22:05:38 +0530
-Message-ID: <1370709338-19810-1-git-send-email-r.sricharan@ti.com>
+From: "Tati par Nlpromos" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?UHJvZml0ZXogZGUgbGEgY29sbGVjdGlvbiDDiXTDqSBUYXRp?=
+Date: Sun, 09 Jun 2013 02:01:08 +0100
+Message-ID: <0.0.63.B1B.1CE64ACD33D1AC6.0@mta144.pur3.net>
+Reply-To: Tati par Nlpromos <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: paul-DWxLp4Yu+b8AvxtiuMwx3w@public.gmane.org, b-cousson-l0cyMroinI0@public.gmane.org, tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org, rnayak-l0cyMroinI0@public.gmane.org,
-	r.sricharan-l0cyMroinI0@public.gmane.org, santosh.shilimkar-l0cyMroinI0@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -21,75 +18,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-McSPI driver probe will abort for DT case because of failed
-platform_get_resource_byname() lookup. Fix it by skipping resource
-byname lookup for device tree build.
-
-Issue comes out when dma entries are removed from the hwmod data.
-
-Signed-off-by: Sricharan R <r.sricharan-l0cyMroinI0@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c |   36 +++++++++++++++++++++---------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index e4829aa..99172d2 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1275,25 +1275,31 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 		struct resource *dma_res;
- 
- 		sprintf(dma_rx_ch_name, "rx%d", i);
--		dma_res = platform_get_resource_byname(pdev, IORESOURCE_DMA,
--				dma_rx_ch_name);
--		if (!dma_res) {
--			dev_dbg(&pdev->dev, "cannot get DMA RX channel\n");
--			status = -ENODEV;
--			break;
-+
-+		if (!pdev->dev.of_node) {
-+			dma_res = platform_get_resource_byname(pdev,
-+					IORESOURCE_DMA, dma_rx_ch_name);
-+			if (!dma_res) {
-+				dev_dbg(&pdev->dev, "cannot get DMA RX channel\n");
-+				status = -ENODEV;
-+				break;
-+			}
-+			mcspi->dma_channels[i].dma_rx_sync_dev = dma_res->start;
- 		}
- 
--		mcspi->dma_channels[i].dma_rx_sync_dev = dma_res->start;
- 		sprintf(dma_tx_ch_name, "tx%d", i);
--		dma_res = platform_get_resource_byname(pdev, IORESOURCE_DMA,
--				dma_tx_ch_name);
--		if (!dma_res) {
--			dev_dbg(&pdev->dev, "cannot get DMA TX channel\n");
--			status = -ENODEV;
--			break;
--		}
- 
--		mcspi->dma_channels[i].dma_tx_sync_dev = dma_res->start;
-+		if (!pdev->dev.of_node) {
-+			dma_res = platform_get_resource_byname(pdev,
-+					IORESOURCE_DMA, dma_tx_ch_name);
-+
-+			if (!dma_res) {
-+				dev_dbg(&pdev->dev, "cannot get DMA TX channel\n");
-+				status = -ENODEV;
-+				break;
-+			}
-+			mcspi->dma_channels[i].dma_tx_sync_dev = dma_res->start;
-+		}
- 	}
- 
- 	if (status < 0)
--- 
-1.7.9.5
-
-
-------------------------------------------------------------------------------
-How ServiceNow helps IT people transform IT departments:
-1. A cloud service to automate IT design, transition and operations
-2. Dashboards that offer high-level views of enterprise services
-3. A single system of record for all IT processes
-http://p.sf.net/sfu/servicenow-d2d-j
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTQzMTAzMjIwNDM3OTQKCgoKCgooUGFycmFpbmFnZSk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1l
+dHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWY2NmM1Zjk2M2IzM2QzYzk1MzNlNTJkZWZiZTkwNjU0
+CgooVEFUSSBPUik6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFy
+YW1zPTA3OGYyYTY3MzU4YTEzNDdlZmQ4ZTBhZDIxZTdkMWFlCgooTGVzIG51LXBpZWRzKToKaHR0
+cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9YTJkM2E3Y2UzYTc5
+Y2JjMGIxNjhhMWVmYzFlZjUzYTkKCihMZXMgdG9uZ3MpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1t
+ZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1lNTRjOTQ3YTNlM2U2ZmRhNjJjMDZhYTllNGYxYjQ4
+ZgoKKEwnZW5zZW1ibGUgdC1zaGlydCBldCBiZXJtdWRhKToKaHR0cDovL210cmMxLmRpZ2l0YWwt
+bWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MzhiYTMzMzk1MWNiMmFiMmJmZDQxYmMxNzgxZjUz
+MTYKCgpOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZCBhZmlu
+IGRlIHZvdXMgYWlkZXIgw6AKZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1
+eCB0b3V0ZSBsJ2FubsOpZS4gQWluc2ksIGdyw6JjZSDDoApub3VzLCB2b3VzIGFsbGV6IHBhciBl
+eGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEKYmFz
+IGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMg
+aGFiaWxsZXIsIGRlCnZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxl
+dXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUKbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMg
+cG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJvcG9zaXRp
+b25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpvdXIK
+csOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLiBFbnZpZSBkZSB2b3VzIGZhaXJlIHVu
+ZSBiZWF1dMOpIMOgCm1vaW5kcmUgY2/Du3QgdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBkZSBw
+csOpdm9pciB2b3MgcHJvY2hhaW5lcyB2YWNhbmNlcwpkJ8OpdMOpIMOgIG1vaW5kcmUgZnJhaXMg
+ZXQgb3UgZW5jb3JlIGQnaGFiaWxsZXIgdm9zIGVuZmFudHMgw6AgZGVzIGJ1ZGdldHMKcmFpc29u
+bmFibGVzLCBhbG9ycyBjb25zdWx0ZXIgZGUgdGVtcHMgw6AgYXV0cmUgbm9zIHByb3Bvc2l0aW9u
+cyBwb3VyIHZvdXMKcGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRlIG5vbWJyZXVzZXMgw6ljb25v
+bWllcyB0b3V0IGVuIHZvdXMgZmFpc2FudApwbGFpc2lyIMOgIHRvdXRlIGxhIGZhbWlsbGUuIE5v
+dXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkCmFmaW4gZGUgdm91
+cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRl
+CmwnYW5uw6llLiBBaW5zaSwgZ3LDomNlIMOgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUs
+IHBvdXZvaXIgcHJvZml0ZXIgZGUKdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwg
+b3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiBCZXNvaW4gZGUKdm95YWdlciwgZGUgdm91cyBoYWJpbGxl
+ciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1cgpyYXBw
+b3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVv
+aSBuZSBwYXMgamV0ZXIKdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVl
+IG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzCm1ldHRvbnMgw6Agam91ciByw6lndWxp
+w6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuCgoKCgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5l
+ciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRfcmNyLnBocD9BSjg0
+NjQxODY2MjUxNDMxMDMyMjA0Mzc5NAoKCgoKCgp7fkFKODQ2NDE4NjYyNTE0MzEwMzIyMDQzNzk0
+fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkhvdyBTZXJ2aWNlTm93IGhlbHBzIElUIHBlb3BsZSB0
+cmFuc2Zvcm0gSVQgZGVwYXJ0bWVudHM6CjEuIEEgY2xvdWQgc2VydmljZSB0byBhdXRvbWF0ZSBJ
+VCBkZXNpZ24sIHRyYW5zaXRpb24gYW5kIG9wZXJhdGlvbnMKMi4gRGFzaGJvYXJkcyB0aGF0IG9m
+ZmVyIGhpZ2gtbGV2ZWwgdmlld3Mgb2YgZW50ZXJwcmlzZSBzZXJ2aWNlcwozLiBBIHNpbmdsZSBz
+eXN0ZW0gb2YgcmVjb3JkIGZvciBhbGwgSVQgcHJvY2Vzc2VzCmh0dHA6Ly9wLnNmLm5ldC9zZnUv
+c2VydmljZW5vdy1kMmQtagpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3Rz
+L2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,32 +1,49 @@
-From: <rushineaw-k+cT0dCbe1g@public.gmane.org>
-Subject: =?GBK?B?YMT6YLrDICE=?=
-Date: Mon, 10 Jun 2013 22:43:51 +0800
-Message-ID: <20130610144352.14B184800A9@webmail.sinamail.sina.com.cn>
-Reply-To: rushineaw-k+cT0dCbe1g@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset="gbk"
-Content-Transfer-Encoding: base64
-To: "" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: [PATCH RESEND] spi: s3c64xx: Fix pm_runtime_get_sync() return value
+ check
+Date: Mon, 10 Jun 2013 18:22:26 +0200
+Message-ID: <1370881346-28000-1-git-send-email-s.nawrocki@samsung.com>
+Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	kyungmin.park@samsung.com, spi-devel-general@lists.sourceforge.net,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>
+To: broonie@kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Cg0KIA0KIA0Kob7pX6G/KqG+sGyhvyAgKiChvsaxob8NCuuK1JI6IDEzOS0xNjMtMjgyMjgKIFEg
-IFE6IDI3MDUwNDg4OQ0KwarPtcjLo7rC3tChveMKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpIb3cg
-U2VydmljZU5vdyBoZWxwcyBJVCBwZW9wbGUgdHJhbnNmb3JtIElUIGRlcGFydG1lbnRzOgoxLiBB
-IGNsb3VkIHNlcnZpY2UgdG8gYXV0b21hdGUgSVQgZGVzaWduLCB0cmFuc2l0aW9uIGFuZCBvcGVy
-YXRpb25zCjIuIERhc2hib2FyZHMgdGhhdCBvZmZlciBoaWdoLWxldmVsIHZpZXdzIG9mIGVudGVy
-cHJpc2Ugc2VydmljZXMKMy4gQSBzaW5nbGUgc3lzdGVtIG9mIHJlY29yZCBmb3IgYWxsIElUIHBy
-b2Nlc3NlcwpodHRwOi8vcC5zZi5uZXQvc2Z1L3NlcnZpY2Vub3ctZDJkLWoKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+If the device is already in a runtime PM enabled state
+pm_runtime_get_sync() will return 1, so a test for negative
+value should be used to check for errors.
+
+Without this patch there are seen errors like:
+
+[    8.540000] s3c64xx-spi 13930000.spi: Failed to enable device: 1
+[    8.545000] spi_master spi1: failed to prepare transfer hardware
+
+Likely because the driver uses synchronous API to runtime enable
+the device and asynchronous one to disable it.
+
+Signed-off-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
+---
+I used broonie@kernel.org e-mail address this time, as found in MAINATAINERS,
+instead of broonie@opensource.wolfsonmicro.com which seems to be inactive.
+
+ drivers/spi/spi-s3c64xx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 5000586..71cc3e6 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -444,7 +444,7 @@ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
+ 	}
+
+ 	ret = pm_runtime_get_sync(&sdd->pdev->dev);
+-	if (ret != 0) {
++	if (ret < 0) {
+ 		dev_err(dev, "Failed to enable device: %d\n", ret);
+ 		goto out_tx;
+ 	}
+--
+1.7.9.5

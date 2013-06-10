@@ -1,16 +1,14 @@
-From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v1 0/3] Polling support for s3c64xx spi controller
-Date: Mon, 10 Jun 2013 08:58:33 +0530
-Message-ID: <CAKrE-Kd22BM=zS=KZN_a69yAN8zSSdq-Rh-x_dsNRZD4JffPwg@mail.gmail.com>
-References: <1369032694-13183-1-git-send-email-ks.giri@samsung.com>
+From: <rushineaw-k+cT0dCbe1g@public.gmane.org>
+Subject: =?GBK?B?YMT6YLrDICE=?=
+Date: Mon, 10 Jun 2013 22:43:51 +0800
+Message-ID: <20130610144352.14B184800A9@webmail.sinamail.sina.com.cn>
+Reply-To: rushineaw-k+cT0dCbe1g@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Type: text/plain; charset="gbk"
+Content-Transfer-Encoding: base64
+To: "" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1369032694-13183-1-git-send-email-ks.giri-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,33 +19,14 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello Mark,
-
-pls let me know if there is any issue with this series
-
-
-
-On Mon, May 20, 2013 at 12:21 PM, Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> This patch series adds support for the polling mode only. Also 2nd patch
-> in the series adds support for dedicated cs pin. After Thomas's patch for
-> using default gpio is merged(commit id: 00ab539), one of the patch in this
-> series is dropped and new series is generated.
->
-> Girish K S (3):
->   spi: s3c64xx: added support for polling mode
->   spi: s3c64xx: Added provision for dedicated cs pin
->   spi: s3c64xx: Added support for exynos5440 spi
->
->  drivers/spi/spi-s3c64xx.c |  197 ++++++++++++++++++++++++++++++++-------------
->  1 files changed, 140 insertions(+), 57 deletions(-)
->
-> --
-> 1.7.5.4
->
-
-------------------------------------------------------------------------------
-How ServiceNow helps IT people transform IT departments:
-1. A cloud service to automate IT design, transition and operations
-2. Dashboards that offer high-level views of enterprise services
-3. A single system of record for all IT processes
-http://p.sf.net/sfu/servicenow-d2d-j
+Cg0KIA0KIA0Kob7pX6G/KqG+sGyhvyAgKiChvsaxob8NCuuK1JI6IDEzOS0xNjMtMjgyMjgKIFEg
+IFE6IDI3MDUwNDg4OQ0KwarPtcjLo7rC3tChveMKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpIb3cg
+U2VydmljZU5vdyBoZWxwcyBJVCBwZW9wbGUgdHJhbnNmb3JtIElUIGRlcGFydG1lbnRzOgoxLiBB
+IGNsb3VkIHNlcnZpY2UgdG8gYXV0b21hdGUgSVQgZGVzaWduLCB0cmFuc2l0aW9uIGFuZCBvcGVy
+YXRpb25zCjIuIERhc2hib2FyZHMgdGhhdCBvZmZlciBoaWdoLWxldmVsIHZpZXdzIG9mIGVudGVy
+cHJpc2Ugc2VydmljZXMKMy4gQSBzaW5nbGUgc3lzdGVtIG9mIHJlY29yZCBmb3IgYWxsIElUIHBy
+b2Nlc3NlcwpodHRwOi8vcC5zZi5uZXQvc2Z1L3NlcnZpY2Vub3ctZDJkLWoKX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
+bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
+L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

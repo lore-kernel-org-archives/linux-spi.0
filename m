@@ -1,35 +1,57 @@
-From: Mutuelle Pas Chere par neezz <news-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
-Subject: Chute des prix des mutuelles
-Date: Tue, 11 Jun 2013 10:20:59 -0100
-Message-ID: <k2SF-xFeAr46e2oXR23iwLEFYrCIExt65i4Uqi2XGDg@youluvit.net>
-Reply-To: Mutuelle Pas Chere par neezz <news-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
+From: Illia Smyrnov <illia.smyrnov@ti.com>
+Subject: [PATCH v2 0/2] spi: omap2-mcspi: add FIFO buffer support
+Date: Tue, 11 Jun 2013 20:09:13 +0300
+Message-ID: <1370970556-11713-1-git-send-email-illia.smyrnov@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Cc: Illia Smyrnov <illia.smyrnov@ti.com>,
+	Daniel Mack <zonque@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<devicetree-discuss@lists.ozlabs.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<linux-omap@vger.kernel.org>
+To: Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Rob Landley <rob@landley.net>, Mark Brown <broonie@kernel.org>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
- Pour visualiser correctement ce message, acc=C3=A9dez =C3=A0 la version en=
- ligne, ou signaler comme ind=C3=A9sirable Mutuelle-pas-chere.net, les mutu=
-elles les moins ch=C3=A8res du march=C3=A9. Attention !ICI : chute des prix=
- des mutuelles ! Comparez en 1 clicplus de 340 mutuelles S=C3=A9lectionnez =
-la mutuelleadapt=C3=A9e =C3=A0 vos besoins Economisez du temps et de l'arge=
-nt Soins courants Optique Dentaire Hospitalisation Si vous ne souhaitez plu=
-s recevoir nos emails, veuillez suivre ce lien. Si vous n''arrivez pas =
-=C3=A0 vous d=C3=A9sabonner, merci d''=C3=A9crire =C3=A0 stop-gj8JX9gLJgKjvlOcnV+i4EEOCMrvLtNR@public.gmane.org
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
+These patches introduce FIFO support for TI OMAP4/OMAP5 MCSPI controller.
+Using FIFO unload the DMA and improve data throughput. On Blaze (OMAP 4460) 
+ethernet throughput with MTU 1500 was increased:
+* for TX from 6.9476 Mbps (FIFO disabled) to 7.7982 Mbps (FIFO enabled),
+* for RX from 6.5120 Mbps (FIFO disabled) to 7.5461 Mbps (FIFO enabled).
 
-Build for Windows Store.
+The FIFO sanity test on OMAP5 Panda board also has been done. 
 
-http://p.sf.net/sfu/windows-dev2dev
+The FIFO could be enabled for MCSPI by "ti,spi-fifo-enabled" in DT. If enabled,
+driver will calculate the largest possible FIFO buffer size taking into account
+MCSPI FIFO constraints for each SPI transfer.
+
+The MCSPI FIFO constraints are:
+* FIFO depth size defined as a multiple of the SPI word length;
+* transfer's data size is a multiple of FIFO depth;
+* transfer's words count less or equal 65535.
+
+Also FIFO buffer with 1 byte size is insignificant, so driver will setup FIFO if
+calculated size is within the 2 to 64 bytes range.
+
+--------------------
+v2:
+* driver calculate and setup optimal FIFO size for each SPI transfer;
+* "ti,spi-fifo-enabled" parameter in MCSPI DT node to enable FIFO;
+* no FIFO settings in SPI slaves nodes in DT;
+* Matthias Brugger patch was excluded from patch set.
+
+Illia Smyrnov (2):
+  spi: omap2-mcspi: Move bytes per word calculation to the function
+  spi: omap2-mcspi: Add FIFO buffer support
+
+ Documentation/devicetree/bindings/spi/omap-spi.txt |    8 +
+ drivers/spi/spi-omap2-mcspi.c                      |  173 +++++++++++++++++---
+ 2 files changed, 158 insertions(+), 23 deletions(-)
+

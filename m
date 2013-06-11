@@ -1,25 +1,13 @@
-From: Illia Smyrnov <x0194613-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: omap2-mcspi: Add FIFO buffer support
-Date: Tue, 11 Jun 2013 20:09:27 +0300
-Message-ID: <51B759C7.7080806@ti.com>
-References: <1370432398-7796-1-git-send-email-illia.smyrnov@ti.com>
-	<1370432398-7796-3-git-send-email-illia.smyrnov@ti.com>
-	<20130605120346.GZ31367@sirena.org.uk> <51B05FB8.6050903@ti.com>
-	<20130606103032.GR31367@sirena.org.uk>
+From: La Pointe de Penmarch par Mutuli <contact-oSgpC8xvnUvQT0dZR+AlfA@public.gmane.org>
+Subject: Offrez le meilleur de la Bretagne pour la =?utf-8?Q?f=C3=AAte?= des
+	=?utf-8?Q?p=C3=A8res?=
+Date: Tue, 11 Jun 2013 18:12:03 +0000
+Message-ID: <26eb026e5baaaa1721b08d1bfb08439f@mach10.generated>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Illia Smyrnov <illia.smyrnov-l0cyMroinI0@public.gmane.org>, Greg,
-	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130606103032.GR31367-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -30,51 +18,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 06/06/2013 01:30 PM, Mark Brown wrote:
-> On Thu, Jun 06, 2013 at 01:08:56PM +0300, Illia Smyrnov wrote:
->> On 06/05/2013 03:03 PM, Mark Brown wrote:
->
->>> Why is this defined for slaves?  Surely the size of the FIFO in the
->>> controller is a property of the controller not the slave?
->
->> According to OMAP TRM [1] the FIFO buffer can be used by only one
->> channel at a time. If several channels are selected and several FIFO
->> enable bit fields are set to 1, the controller forces the buffer not
->> to be used.
->
-> The controller ought to be able to figure this out for itself.  As a
-> first pass just grabbing the FIFO on a first come first served basis
-> will probably work well most of the time, the device would have to be
-> very active for it to constantly be doing transfers on all channels.
->
-> If there's more contention than that we probably ought to be looking at
-> how we handle this in general, it seems like we'd have more problems
-> than just the FIFO to worry about.
->
->> If there are several slaves on the controller we must select which
->> of slaves will use the FIFO for SPI transfers. Also, optimal FIFO
->
-> A single controller is only going to be able to talk to one slave at
-> once, everything on the bus except chip select is shared.
->
->> size is heavily dependent of the SPI transfers length specific for
->> certain slave.
->
-> The transfer length doesn't seem like something that we want to be
-> encoding in DT, particularly not indirectly - it is obviously readily
-> available at runtime, variable during runtime (eg, firmware download may
-> do large transfers on a device that only does small transfers most of
-> the time) and is something that updates to the drivers could change.
-
-I sent patches for v2 of the MCSPI FIFO support implementation. In this 
-version driver will calculate the largest possible FIFO buffer size for 
-each SPI transfer.
-Also FIFO could be enabled by setting up parameter in the MCSPI 
-controller (master) DT node.
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
+bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
+L1lUMHhNeVppUFRNM05qVTBKbU05TWpNMk5ESW1aRDB5TURFekxUQTJMVEV4SURFNE9qRXdPakF3
+Sm1VOU1TWm9QVE0zTnpFeUptWTlNemd3TWpFbVp6MHpPREF5TVE9PQoKTGllbiBkZSBkZXNpbnNj
+cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE0zTmpVMEpt
+TTlNak0yTkRJbVpEMHlNREV6TFRBMkxURXhJREU0T2pFd09qQXdKbVU5TVNab1BUTTNOekV5Sm1Z
+OU16Z3dNakVtWnowek9EQXlNUT09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
+cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KMSB2ZXJyaW5lIGRlIFJpbGxldHRl
+cyBhdSBDcmFiZSBUb3VydGVhdSAoMTAwIGcpCisKMSB2ZXJyaW5lIGRlIFJpbGxldHRlcyBkZSBT
+YWludC1KYWNxdWVzIGF1eCBhbGd1ZXMgKDg3IGcpCisKIDEgdmVycmluZSBkZSBSaWxsZXR0ZXMg
+ZGUgTWFxdWVyZWF1eCBhdSBmcm9tYWdlIGRlIGNow6h2cmUgKDEwMCBnKQorCiAxIHZlcnJpbmUg
+ZGUgUmlsbGV0dGVzIGRlIFRob24gYXUgYmFzaWxpYyAoMTAwIGcpCisKMSB2ZXJyaW5lIGRlIFJp
+bGxldHRlcyBkZSBTYXVtb24gw6AgbCdhbmV0aCAoMTAwIGcpCisKMSB2ZXJyaW5lIGRlIENyw6ht
+ZSBkZSBTYXVtb24gYXUgY2hvdSBmbGV1ciAoMTAwIGcpCisKMSB2ZXJyaW5lIGRlIENyw6htZSBk
+J0FuY2hvaXMgcmVjZXR0ZSBicmV0b25uZSAoMTAwIGcpCiArCiAxIHZlcnJpbmUgZGUgQ3LDqG1l
+IGRlIFNhcmRpbmVzIGF1IHdoaXNreSAoMTAwIGcpCiArCjEgYm/DrnRlIGQnSGF2aW9yaWcgYXV4
+IMWTdWZzIGRlIGNhYmlsbGF1ZCAoODAgZykKICsKMSBzYWNoZXQgZGUgVG9hc3RzIGF1eCBhbGd1
+ZXMgKDU4IGcpCkZhaXRlcyB1bmUgcGF1c2UgZ2FsZXR0ZXMgISAgRmluZXMgZXQgY3JvdXN0aWxs
+YW50ZXMsIGxlcyBHYWxldHRlcyBmaW5lcyBzb250IGRvcsOpZXMgw6Agc291aGFpdCAhIENlIHBy
+b2R1aXQgP21haXNvbj8gZXN0IGZhYnJpcXXDqSDDoCBQb250LUF2ZW4gZGUgbWFuacOocmUgYXJ0
+aXNhbmFsZSBhdmVjIGRlcyBpbmdyw6lkaWVudHMgZGUgcXVhbGl0w6ksIHJpZ291cmV1c2VtZW50
+IHPDqWxlY3Rpb25uw6lzLCBkb250IGR1IHZyYWkgYmV1cnJlIGRlIGJhcmF0dGUgZGVtaS1zZWwu
+ClBvdXIgdm91cyBkw6lzYWJvbm5lciwgY2xpcXVleiBpY2kuCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgV2luZG93czoKCkJ1aWxkIGZvciBX
+aW5kb3dzIFN0b3JlLgoKaHR0cDovL3Auc2YubmV0L3NmdS93aW5kb3dzLWRldjJkZXYKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
+YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
+dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
+ZXJhbAo=

@@ -1,13 +1,14 @@
-From: iPhone <contact-zIwo4Cd8WZRQFI55V6+gNQ@public.gmane.org>
-Subject: Destockage iPhone 5
-Date: Tue, 11 Jun 2013 10:22:03 +0000
-Message-ID: <d8151ab8317746903673e5d553086d39@mach10.generated>
-Reply-To: contact-zIwo4Cd8WZRQFI55V6+gNQ@public.gmane.org
+From: Mutuelle Pas Chere par neezz <news-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
+Subject: Chute des prix des mutuelles
+Date: Tue, 11 Jun 2013 10:20:59 -0100
+Message-ID: <k2SF-xFeAr46e2oXR23iwLEFYrCIExt65i4Uqi2XGDg@youluvit.net>
+Reply-To: Mutuelle Pas Chere par neezz <news-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,40 +19,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
-bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
-L1lUMHhNeVppUFRNM05qSXdKbU05TWpNMk5ESW1aRDB5TURFekxUQTJMVEV4SURFd09qSXdPakF3
-Sm1VOU1TWm9QVE0zTmpjMEptWTlNemM1T0RNbVp6MHpOems0TXc9PQoKTGllbiBkZSBkZXNpbnNj
-cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE0zTmpJd0pt
-TTlNak0yTkRJbVpEMHlNREV6TFRBMkxURXhJREV3T2pJd09qQXdKbVU5TVNab1BUTTNOamMwSm1Z
-OU16YzVPRE1tWnowek56azRNdz09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
-cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KwqAKTGVzIGVuY2jDqHJlcyBhdSBj
-ZW50aW1lIGV4cGxpcXXDqWVzIDogRXN0LWNlIHZyYWltZW50IHBvc3NpYmxlIGQnw6ljb25vbWlz
-ZXIgOTUgJSAgc3VyIGxlIHByaXggZGUgdmVudGUgPyAgClZvdXMgbCdhdXJleiBzdXJlbWVudCBy
-ZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWluIGRlIHNlIGTDqXZl
-bG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxlcyBzaXRlcyBpbnRl
-cm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4gUGFydG91dCBzdXIg
-bGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0b2lyZXMgZCdoZXVy
-ZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4uICAKSGFiaXR1ZWxs
-ZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4g
-TWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3Vy
-IGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gCsKgCkxJUkUgTEEg
-U1VJVEUgPj4KwqAKTGEgUmV2dWUgQ29uc28gw6AgdGVzdMOpIFN3b2dnaSByw6ljZW1tZW50IGV0
-IGxlcyByw6lzdWx0YXRzIG9udCDDqXTDqSB0csOocyBzdXJwcmVuYW50cy4gICAKIlN3b2dnaSBh
-IGTDqXBhc3PDqSB0b3V0ZXMgbm9zIGF0dGVudGVzIGVuIGNlIHF1aSBjb25jZXJuYWl0IGxlcyDD
-qWNvbm9taWVzIHLDqWFsaXNhYmxlcyBncsOiY2Ugw6AgbGV1cnMgb2ZmcmVzLiBUb3VzIGxlcyBq
-b3VycywgZGVzIGdlbnMgw6ljb25vbWlzZW50IGp1c3F1J8OgIDk1ICUgc3VyIGxlcyBwcml4IGhh
-Yml0dWVscyBkZSB2ZW50ZS4gQydlc3QgaW5jcm95YWJsZSAhIiAKwqAKTElSRSBMQSBTVUlURSA+
-PgrCoArCoAogIApNYXJpZSBTYW1lZGkgMjMganVpbiAzaDI1CsKgCiJKJ2FpIGRlIHF1b2kgdm9p
-ciB2ZW5pciBsZXMgYW5uaXZlcnNhaXJlcyBldCBhdXRyZXMgZsOqdGVzIHBvdXIgdW4gYm9uIG1v
-bWVudCBldCBqJ2FpIGZhaXQgZGUgc2FjcsOpcyDDqWNvbm9taWVzIgpQYXRvdSAgU2FtZWRpIDIz
-IGp1aW4gNGgzNwrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hyZXMgYXUg
-Y2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwgbWUgdGFy
-ZGUgZCdlc3NheWVyIgrCoApQb3VyIHZvdXMgZMOpc2Fib25uZXIsIGNsaXF1ZXogaWNpLgotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IFdpbmRv
-d3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9wLnNmLm5ldC9zZnUvd2luZG93
-cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+ Pour visualiser correctement ce message, acc=C3=A9dez =C3=A0 la version en=
+ ligne, ou signaler comme ind=C3=A9sirable Mutuelle-pas-chere.net, les mutu=
+elles les moins ch=C3=A8res du march=C3=A9. Attention !ICI : chute des prix=
+ des mutuelles ! Comparez en 1 clicplus de 340 mutuelles S=C3=A9lectionnez =
+la mutuelleadapt=C3=A9e =C3=A0 vos besoins Economisez du temps et de l'arge=
+nt Soins courants Optique Dentaire Hospitalisation Si vous ne souhaitez plu=
+s recevoir nos emails, veuillez suivre ce lien. Si vous n''arrivez pas =
+=C3=A0 vous d=C3=A9sabonner, merci d''=C3=A9crire =C3=A0 stop-gj8JX9gLJgKjvlOcnV+i4EEOCMrvLtNR@public.gmane.org
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

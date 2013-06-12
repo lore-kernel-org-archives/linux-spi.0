@@ -1,13 +1,14 @@
-From: "Croisierenet par nlpromos" <lisa@a.optincake.com>
-Subject: [SPAM] Votre vol pas cher en 1 clic
-Date: Wed, 12 Jun 2013 04:11:27 +0100
-Message-ID: <0.0.138.903.1CE671A873DE310.0@mta199.pur3.net>
-Reply-To: Croisierenet par nlpromos <lisa@a.optincake.com>
+From: Gstar - Jeanstory <news-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
+Subject: G-Star : 8 euros offerts et livraison gratuite
+Date: Wed, 12 Jun 2013 13:13:45 -0100
+Message-ID: <yxj61NeaG8ayH7qDWHcjcOzv73PUO-9wSqINwQcmNMI@youluvit.net>
+Reply-To: Gstar - Jeanstory <news-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-7qaiSUeYP3Xk1uMJSBkQmQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,58 +19,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTQ0NDgzMjIwNTM3MjE0CgoKCgoKKGluZGV4XzAzLmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlh
-cGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzA1LmdpZik6IGh0dHA6
-Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4
-XzA3LmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUt
-NDcyMzgtMAoKKGluZGV4XzA5LmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQv
-Y2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzEwLmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1l
-ZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzEzLmdpZik6IGh0
-dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGlu
-ZGV4XzE3LmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIy
-OTUtNDcyMzgtMAoKKGluZGV4XzE4LmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20v
-YWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzE5LmdpZik6IGh0dHA6Ly9hbHRmYXJt
-Lm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzIxLmdpZik6
-IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoK
-KGluZGV4XzIyLmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0x
-NTIyOTUtNDcyMzgtMAoKKHNwYWNlci5naWYpOiBodHRwOi8vYWx0ZmFybS5tZWRpYXBsZXguY29t
-L2FkL2NrLzk1ODgtMTUyMjk1LTQ3MjM4LTAKCihpbmRleF8yNC5naWYpOiBodHRwOi8vYWx0ZmFy
-bS5tZWRpYXBsZXguY29tL2FkL2NrLzk1ODgtMTUyMjk1LTQ3MjM4LTAKCsKgIE5vdXMgc291aGFp
-dG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDD
-oApkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6ll
-LiBBaW5zaSwgZ3LDomNlIMOgCm5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIg
-cHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYQpiYXMgY291dCwgb3Bwb3J0dW5p
-dMOpLCBpbmZvcy4uLiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUKdm91
-cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxp
-dMOpIHByaXggdG91dCBhdQpsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMg
-amV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91
-cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1lbnQg
-ZXQgdG91dGUgbCdhbm7DqWUuIEVudmllIGRlIHZvdXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AKbW9p
-bmRyZSBjb8O7dCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGRlIHByw6l2b2lyIHZvcyBwcm9j
-aGFpbmVzIHZhY2FuY2VzCmQnw6l0w6kgw6AgbW9pbmRyZSBmcmFpcyBldCBvdSBlbmNvcmUgZCdo
-YWJpbGxlciB2b3MgZW5mYW50cyDDoCBkZXMgYnVkZ2V0cwpyYWlzb25uYWJsZXMsIGFsb3JzIGNv
-bnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBub3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cwpwZXJt
-ZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJldXNlcyDDqWNvbm9taWVzIHRvdXQgZW4gdm91
-cyBmYWlzYW50CnBsYWlzaXIgw6AgdG91dGUgbGEgZmFtaWxsZS4gTm91cyBzb3VoYWl0b25zIHZv
-dXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQKYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBl
-bnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUKbCdhbm7DqWUuIEFpbnNp
-LCBncsOiY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRl
-ciBkZQp0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGlu
-Zm9zLi4uIEJlc29pbiBkZQp2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVz
-c2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyCnJhcHBvcnQgcXVhbGl0w6kgcHJp
-eCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlcgp1
-biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVz
-c29ucywgZXQgcXVlIG5vdXMKbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0
-ZSBsJ2FubsOpZS4KCgoKCgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0
-cDovL2Eub3B0aW5jYWtlLmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4NjYyNTE0NDQ4MzIy
-MDUzNzIxNAoKCgoKCgp7fkFKODQ2NDE4NjYyNTE0NDQ4MzIyMDUzNzIxNH59Ci0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgV2luZG93czoKCkJ1
-aWxkIGZvciBXaW5kb3dzIFN0b3JlLgoKaHR0cDovL3Auc2YubmV0L3NmdS93aW5kb3dzLWRldjJk
-ZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
-dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
-ZGV2ZWwtZ2VuZXJhbAo=
+ G-star externe&nbsp;-&nbsp;Newsletter JeanStory Pour visualiser correcteme=
+nt ce message, acc=C3=A9dez =C3=A0 la version en ligne, ou signaler comme i=
+nd=C3=A9sirable &nbsp; &nbsp; Tee shirt G-STAR Art Lenon r t White G-star 2=
+9,90 &acirc;&#130;&not; &nbsp; &nbsp; Tee shirt G-Star Ny Rg D V Tee Dark A=
+zur G-star 29,90 &acirc;&#130;&not; &nbsp; &nbsp; Sweat G-STAR Aero Bomber =
+Vest Grey grain G-star 89,90 &acirc;&#130;&not; &nbsp; &nbsp; Jeans G-STAR =
+Attac Low Straight Dark Aged G-star 119,90 &acirc;&#130;&not; &nbsp; &nbsp;=
+ Chemise G-STAR Rco Base Shirt Black G-star 79,90 &acirc;&#130;&not; &nbsp;=
+ &nbsp; Tee shirt G-STAR Art bue v t s/s chalk G-star 39,90 &acirc;&#130;&n=
+ot; &nbsp; &nbsp; Tee shirt G-STAR Art bue v t s/s old delft G-star 39,90 &=
+acirc;&#130;&not; &nbsp; &nbsp; Tee shirt G-STAR Art c p r t s/s Black G-st=
+ar 39,90 &acirc;&#130;&not; &nbsp; &nbsp; Sweat G-STAR Aero Bomber Vest Noi=
+r G-star 89,90 &acirc;&#130;&not; &nbsp; &nbsp; Tee shirt G-STAR Art horex =
+r t l/s brick G-star 39,90 &acirc;&#130;&not; &nbsp; &nbsp; Tee shirt G-STA=
+R Matador R T White G-star 39,90 &acirc;&#130;&not; &nbsp; &nbsp; Short G-S=
+TAR Art Pitster Slim 1/2 Raven G-star 89,90 &acirc;&#130;&not; &nbsp; &nbsp=
+; Boxer G-STAR Ohio Sport Dk Python G-star 27,00 &acirc;&#130;&not; &nbsp; =
+&nbsp; Tee shirt G-STAR Art avn r t s/s White Hea... G-star 39,90 &acirc;&#=
+130;&not; &nbsp; &nbsp; Tee shirt G-STAR Charger R T Swedish Blue G-star 29=
+,90 &acirc;&#130;&not; &nbsp; &nbsp; Pack de 2 d&Atilde;&copy;bardeur G-STA=
+R 8752 MARCEL Gre... G-star 29,90 &acirc;&#130;&not; &nbsp; Voir toute la s=
+&Atilde;&copy;lection &Acirc;&raquo; &nbsp; Si vous ne souhaitez plus recev=
+oir nos emails, veuillez suivre ce lien. Si vous n''arrivez pas =C3=A0 vous=
+ d=C3=A9sabonner, merci d''=C3=A9crire =C3=A0 stop-gj8JX9gLJgKjvlOcnV+i4EEOCMrvLtNR@public.gmane.org
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

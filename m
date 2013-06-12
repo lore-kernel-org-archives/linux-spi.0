@@ -1,90 +1,89 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/2] spi: omap2-mcspi: Add FIFO buffer support
-Date: Wed, 12 Jun 2013 16:47:55 +0100
-Message-ID: <20130612154755.GJ1403@sirena.org.uk>
-References: <1370970556-11713-1-git-send-email-illia.smyrnov@ti.com>
- <1370970556-11713-3-git-send-email-illia.smyrnov@ti.com>
+From: "Aramis Auto par Neezz" <lisa@a.optincake.com>
+Subject: [SPAM]
+	=?UTF-8?B?SnVzcXUnw6AgLTM1JSBzdXIgcGx1cyBkZSAzMCBtYXJxdWVzIGRlIHZvaXR1cmVz?=
+Date: Wed, 12 Jun 2013 16:55:27 +0100
+Message-ID: <0.0.89.BBC.1CE67854233A21C.0@mta43.pur3.net>
+Reply-To: Aramis Auto par Neezz <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6938546434052653239=="
-Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
- devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
- Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
- Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
- spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Illia Smyrnov <illia.smyrnov-l0cyMroinI0@public.gmane.org>
-Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-In-Reply-To: <1370970556-11713-3-git-send-email-illia.smyrnov-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
-List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
-List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
- <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
-Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-Sender: "devicetree-discuss"
- <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============6938546434052653239==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="K511Q2pAJ3dpTMb/"
-Content-Disposition: inline
-
-
---K511Q2pAJ3dpTMb/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Jun 11, 2013 at 08:09:15PM +0300, Illia Smyrnov wrote:
-> The MCSPI controller has a built-in FIFO buffer to unload the DMA or interrupt
-> handler and improve data throughput. This patch adds FIFO buffer support for SPI
-> transfers in DMA mode.
-
-> The FIFO could be enabled for SPI module by setting up the "ti,spi-fifo-enabled"
-> configuration parameter in DT.
-> If FIFO enabled, the largest possible FIFO buffer size will be calculated and
-> setup for each SPI transfer. Even if the FIFO is enabled in DT, it won't be used
-> for the SPI transfers when: calculated FIFO buffer size is less then 2 bytes or
-> the FIFO buffer size isn't multiple of the SPI word length.
-
-Why is the default to disable the FIFO?
-
---K511Q2pAJ3dpTMb/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRuJgoAAoJELSic+t+oim9pRkP/2I71IggOYucK0rAHt0i0XUx
-kDLv2kkdn7D8LJCWLTvMvIwaUDtL7/Xz6BTDnK88YUmmbeBMNxhRksFPg2Mto6+u
-QK2qlQEwErIK7JPonWEq3Chr9iRaeCx1IHGFFE5RzYkI5RZtVrnHfQNtW8pfWj1Q
-xGj77W+2Nvm+C5XWTWwXjQEdQ3cgAu7Xeumolsv9Kari8CqbFAxNI3ly42wN3rR7
-8fjYpL4t2YtQBYveSy4DH9GppRyJf+ngAqv9Aqg6UoCgnEuxc0NEEJbuRwjqM6hM
-DtLxDWrAcElZxxCW4XV93G0pMcX3P2NCcUoTH75FW4Z7hHFKS4Zg86i7L0/++tg+
-YDLa1GKofUgWBcFUpHsz8/Pt0azdzkJpyPbuZuMSErxZaUHavXZ5wf13Uznqtiyg
-9oiXM8tyAUELJTHOWaVnlvYSTuQ424gD9PCjYEQIDUlnMwwSbagxemCLYskNcsxy
-zHv9SHWZn9B6itSNzFn9+21n/cjmFYWObUy4PoGlctvGOs5xWmkxE/KzB7UmbqQQ
-RWb6MdRvbQkAuBiKgfd5vwXpTYdoaeIq1buP40vRLXEvTQxpSYrITBhIL359J9o2
-6bxtxqAGDU6HURkL0pTIfSmYRUXHjhlUQIpslaVusqSJXXOAcKy1phJQr8r8DaQ6
-C6xtBg4SLHzz3SOfdgBJ
-=F1IR
------END PGP SIGNATURE-----
-
---K511Q2pAJ3dpTMb/--
-
---===============6938546434052653239==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-devicetree-discuss mailing list
-devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
-https://lists.ozlabs.org/listinfo/devicetree-discuss
-
---===============6938546434052653239==--
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTQ0NzQzMjIwNTM3MjA0CgoKCgooQXJhbWlzQXV0by5jb20gLSBTYW5zIGRvdXRlIGxhIG1laWxs
+ZXVyZSBmYT9uIGQnQUNIRVRFUiBvdSBkZSBWRU5EUkUgc2EKdm9pdHVyZSk6Cmh0dHA6Ly9zZXJ2
+aWNlcy5qYXRhay5kay9jbGljay5hZ2VudC9pMTMyM2VhYmViMTdlOGYzL2V4dC50cmFja2luZ3dp
+ei5jb20vQXNweC9yCmVkaXIuYXNweD90c2lkPWkxNzhmZDViZGRhM2QyZDkmc3ViaWQ9aTE3OGZk
+NWJkZDdmZWUxZSZ0cGlkPWkxMDk0YzQ1YSZwaHN0cj1pMTMyCjNlYWJlYjE3ZThmMyZ4PXgKCihM
+YSByw6l2b2x1dGlvbiBkZSBsJ29jY2FzaW9uLCBjJ2VzdCBtYWludGVuYW50ICEpOgpodHRwOi8v
+c2VydmljZXMuamF0YWsuZGsvY2xpY2suYWdlbnQvaTEzMjNlYWJlYjE3ZThmMy9leHQudHJhY2tp
+bmd3aXouY29tL0FzcHgvcgplZGlyLmFzcHg/dHNpZD1pMTc4ZmQ1YmRkYTNkMmQ5JnN1YmlkPWkx
+NzhmZDViZGQ3ZmVlMWUmdHBpZD1pMTA5NGM0NWEmcGhzdHI9aTEzMgozZWFiZWIxN2U4ZjMmeD14
+CgooVsOpaGljdWxlcyAxMDAlIGNvbnRyw7Rsw6lzIGV0IHNhdGlzZmFpdCBvdSAxMDAlIHJlbWJv
+dXJzw6kpOgpodHRwOi8vc2VydmljZXMuamF0YWsuZGsvY2xpY2suYWdlbnQvaTEzMjNlYWJlYjE3
+ZThmMy9leHQudHJhY2tpbmd3aXouY29tL0FzcHgvcgplZGlyLmFzcHg/dHNpZD1pMTc4ZmQ1YmRk
+YTNkMmQ5JnN1YmlkPWkxNzhmZDViZGQ3ZmVlMWUmdHBpZD1pMTA5NGM0NWEmcGhzdHI9aTEzMgoz
+ZWFiZWIxN2U4ZjMmeD14CgooICk6Cmh0dHA6Ly9zZXJ2aWNlcy5qYXRhay5kay9jbGljay5hZ2Vu
+dC9pMTMyM2VhYmViMTdlOGYzL2V4dC50cmFja2luZ3dpei5jb20vQXNweC9yCmVkaXIuYXNweD90
+c2lkPWkxNzhmZDViZGRhM2QyZDkmc3ViaWQ9aTE3OGZkNWJkZDdmZWUxZSZ0cGlkPWkxMDk0YzQ1
+YSZwaHN0cj1pMTMyCjNlYWJlYjE3ZThmMyZ4PXgKCihQcm9maXRlei1lbiAhKToKaHR0cDovL3Nl
+cnZpY2VzLmphdGFrLmRrL2NsaWNrLmFnZW50L2kxMzIzZWFiZWIxN2U4ZjMvZXh0LnRyYWNraW5n
+d2l6LmNvbS9Bc3B4L3IKZWRpci5hc3B4P3RzaWQ9aTE3OGZkNWJkZGEzZDJkOSZzdWJpZD1pMTc4
+ZmQ1YmRkN2ZlZTFlJnRwaWQ9aTEwOTRjNDVhJnBoc3RyPWkxMzIKM2VhYmViMTdlOGYzJng9eAoK
+KExlIGNob2l4IGFzc3Vyw6kgLyBsZXMgcHJpeCBsZXMgcGx1cyBqdXN0ZXMgLyBQYXMgZGUgbWF1
+dmFpc2VzIHN1cnByaXNlcyk6Cmh0dHA6Ly9zZXJ2aWNlcy5qYXRhay5kay9jbGljay5hZ2VudC9p
+MTMyM2VhYmViMTdlOGYzL2V4dC50cmFja2luZ3dpei5jb20vQXNweC9yCmVkaXIuYXNweD90c2lk
+PWkxNzhmZDViZGRhM2QyZDkmc3ViaWQ9aTE3OGZkNWJkZDdmZWUxZSZ0cGlkPWkxMDk0YzQ1YSZw
+aHN0cj1pMTMyCjNlYWJlYjE3ZThmMyZ4PXgKCigxMiBhbnMgZGUgY29uZmlhbmNlIC0gNzUwMDAg
+Y2xpZW50cyBzw6lkdWl0cyAtIHNhdGlzZmFpdCBvdSByZW1ib3Vyc8OpIDcKam91cnMvNTAwIGtt
+IC0gQXBwZWxlei1ub3VzIDA4IDExIDM2IDAwIDgzKToKaHR0cDovL3NlcnZpY2VzLmphdGFrLmRr
+L2NsaWNrLmFnZW50L2kxMzIzZWFiZWIxN2U4ZjMvZXh0LnRyYWNraW5nd2l6LmNvbS9Bc3B4L3IK
+ZWRpci5hc3B4P3RzaWQ9aTE3OGZkNWJkZGEzZDJkOSZzdWJpZD1pMTc4ZmQ1YmRkN2ZlZTFlJnRw
+aWQ9aTEwOTRjNDVhJnBoc3RyPWkxMzIKM2VhYmViMTdlOGYzJng9eAoKCk5vdXMgc291aGFpdG9u
+cyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoApk
+w6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLiBB
+aW5zaSwgZ3LDomNlIMOgCm5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJv
+Zml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYQpiYXMgY291dCwgb3Bwb3J0dW5pdMOp
+LCBpbmZvcy4uLiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUKdm91cyBj
+aGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOp
+IHByaXggdG91dCBhdQpsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0
+ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBh
+ZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQg
+dG91dGUgbCdhbm7DqWUuIEVudmllIGRlIHZvdXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AKbW9pbmRy
+ZSBjb8O7dCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGRlIHByw6l2b2lyIHZvcyBwcm9jaGFp
+bmVzIHZhY2FuY2VzCmQnw6l0w6kgw6AgbW9pbmRyZSBmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJp
+bGxlciB2b3MgZW5mYW50cyDDoCBkZXMgYnVkZ2V0cwpyYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1
+bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBub3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cwpwZXJtZXR0
+cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJldXNlcyDDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBm
+YWlzYW50CnBsYWlzaXIgw6AgdG91dGUgbGEgZmFtaWxsZS4gTm91cyBzb3VoYWl0b25zIHZvdXMg
+YXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQKYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNl
+ciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUKbCdhbm7DqWUuIEFpbnNpLCBn
+csOiY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBk
+ZQp0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9z
+Li4uIEJlc29pbiBkZQp2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2Vy
+LCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyCnJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0
+b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlcgp1biBw
+ZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29u
+cywgZXQgcXVlIG5vdXMKbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBs
+J2FubsOpZS4KCgoKCgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0cDov
+L2Eub3B0aW5jYWtlLmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4NjYyNTE0NDc0MzIyMDUz
+NzIwNAoKCgoKCgp7fkFKODQ2NDE4NjYyNTE0NDc0MzIyMDUzNzIwNH59Ci0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgV2luZG93czoKCkJ1aWxk
+IGZvciBXaW5kb3dzIFN0b3JlLgoKaHR0cDovL3Auc2YubmV0L3NmdS93aW5kb3dzLWRldjJkZXYK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
+LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
+Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
+ZWwtZ2VuZXJhbAo=

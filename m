@@ -1,46 +1,44 @@
-From: Illia Smyrnov <x0194613@ti.com>
-Subject: Re: [PATCH v2 2/2] spi: omap2-mcspi: Add FIFO buffer support
-Date: Fri, 14 Jun 2013 19:16:12 +0300
-Message-ID: <51BB41CC.9080403@ti.com>
-References: <1370970556-11713-1-git-send-email-illia.smyrnov@ti.com> <1370970556-11713-3-git-send-email-illia.smyrnov@ti.com> <20130612154755.GJ1403@sirena.org.uk>
+From: eshqi41-yg+vqG8rR/Mox3rIn2DAYQ@public.gmane.org
+Subject: [SPAM] Looking to end the week strong
+Date: Fri, 14 Jun 2013 23:08:44 +0400
+Message-ID: <E1UnZQe-0000eC-LP@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Illia Smyrnov <illia.smyrnov@ti.com>,
-	Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Rob Landley <rob@landley.net>, Daniel Mack <zonque@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<devicetree-discuss@lists.ozlabs.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-omap@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <20130612154755.GJ1403@sirena.org.uk>
-Sender: linux-doc-owner@vger.kernel.org
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Biostem had been proposed as the number 1 stock for today so make your move 
+quick traders since HA I R is a liquid rally about to create a Giant move 
+here short-run. We see today is the better act to become involved since HA 
+I R is very inexpensive selling next to the underside and performing. HA I 
+R is getting well known at the work. We sense something big is originating 
+tomorrow possibly at those low levels, the possible gains could possibly 
+Awesome short term as HA I R's story will go unroll. Biostem may see some 
+big Momentum today and Tuesday at the base spike right here consider 
+getting be equipped brokers. HA I R seems to get the top selection play in 
+the Micro-Cap markets for any Bottom jump right here and right now. 58 hour 
+highest is USD 3.50. As headlines accumulating and buyer knowledge gonna go 
+peak we feel HA I R is a superb profiting opportunity for our traders that 
+want to see urgent temporary term dividents. For this simple fact we feel 
+SuperExcited because it we can to alert HA I R to vip traders right as its 
+needs to take off again short term. Biostem US Corp recently announced hot 
+updates. We forsee huge performance from HA I R and we suggest that you 
+begin accumulating shares on June 14th.
 
 
-On 06/12/2013 06:47 PM, Mark Brown wrote:
-> On Tue, Jun 11, 2013 at 08:09:15PM +0300, Illia Smyrnov wrote:
->> The MCSPI controller has a built-in FIFO buffer to unload the DMA or interrupt
->> handler and improve data throughput. This patch adds FIFO buffer support for SPI
->> transfers in DMA mode.
->
->> The FIFO could be enabled for SPI module by setting up the "ti,spi-fifo-enabled"
->> configuration parameter in DT.
->> If FIFO enabled, the largest possible FIFO buffer size will be calculated and
->> setup for each SPI transfer. Even if the FIFO is enabled in DT, it won't be used
->> for the SPI transfers when: calculated FIFO buffer size is less then 2 bytes or
->> the FIFO buffer size isn't multiple of the SPI word length.
->
-> Why is the default to disable the FIFO?
->
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
 
-I have changed this and sent v3 patches of the MCSPI FIFO support 
-implementation. In this version driver set up the FIFO (if possible) for 
-all the SPI transfers in DMA mode.
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

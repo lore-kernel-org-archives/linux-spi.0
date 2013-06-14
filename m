@@ -1,14 +1,24 @@
-From: "Yves rocher - Nl promos" <lisa@a.optincake.com>
-Subject: Livraison offerte : 10 senteurs et un lait hydratant 3 en 1 pour
-	seulement 14.90 euros
-Date: Fri, 14 Jun 2013 13:34:30 +0100
-Message-ID: <0.0.F2.C17.1CE68FB844B1852.0@mta199.pur3.net>
-Reply-To: Yves rocher - Nl promos <lisa@a.optincake.com>
+From: Illia Smyrnov <illia.smyrnov-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH v3 1/2] spi: omap2-mcspi: Move bytes per word calculation to
+	the function
+Date: Fri, 14 Jun 2013 19:12:07 +0300
+Message-ID: <1371226328-24147-2-git-send-email-illia.smyrnov@ti.com>
+References: <1371226328-24147-1-git-send-email-illia.smyrnov@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Daniel Mack <zonque-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Illia Smyrnov <illia.smyrnov-l0cyMroinI0@public.gmane.org>,
+	Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Rob Herring
+	<rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, Mark Brown
+	<broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1371226328-24147-1-git-send-email-illia.smyrnov-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,91 +29,74 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTQ1NTkzMjIwNTM3MjQ0CgoKCgoKTWEgY29sbGVjdGlvbiBkw6ljb3V2ZXJ0ZSBkZSAxMCBHZWxz
-IERvdWNoZSBwb3VyIDE0LDkw4oKsIHNldWxlbWVudCAhCisgTGl2cmFpc29uIGVuIDQ4SCBvZmZl
-cnRlIHBvdXIgbCdhY2hhdCBkZSBjZXR0ZSBjb2xsZWN0aW9uCisgVW4gY2FkZWF1IG9mZmVydCBl
-biByZW1lcmNpZW1lbnQgZGUgdm90cmUgY29tbWFuZGUKSmUgY3JhcXVlICE6Cmh0dHA6Ly90cmFj
-a2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXpqZ3ZwZ2E1
-YTdtbGtyc3NhMDc1Cml2em52azY5MmUKCihZdmVzIFJvY2hlciwgY3JlYXRldXIgZGUgbGEgY29z
-bcOpdGlxdWUgdmVnZXRhbGUpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUv
-P2FjdGlvbj1tYWlscmVkaXJlY3QmYz16amd2cGdhNWE3bWxrcnNzYTA3NQp0c3J4am82OTJmCgoo
-TGEgc8OpbGVjdGlvbiBkw6ljb3V2ZXJ0ZSB5dmVzLXJvY2hlci5mcik6Cmh0dHA6Ly90cmFja2Vy
-LmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXpqZ3ZwZ2E1YTdt
-bGtyc3NhMDc1Cml1cXJzdDY5MzAKCigzIMOpY2hhbnRpbGxvbnMgb2ZmZXJ0cyk6Cmh0dHA6Ly90
-cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXpqZ3Zw
-Z2E1YTdtbGtyc3NhMDc1CnF5a2dpejY5MzEKCihMaXZyYWlzb24gT2ZmZXJ0ZSBjaGV6IHZvdXMg
-ZW4gNDhIKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFp
-bHJlZGlyZWN0JmM9empndnBnYTVhN21sa3Jzc2EwNzUKeGdzd3N1NjkzMgoKKDEwIHNlbnRldXJz
-IMOgIGTDqWNvdXZyaXIpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2Fj
-dGlvbj1tYWlscmVkaXJlY3QmYz16amd2cGdhNWE3bWxrcnNzYTA3NQp1c2tydHc2OTMzCgooKyBM
-ZSBsYWl0IGh5ZHJhdGFudCBvZmZlcnQpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29s
-bGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz16amd2cGdhNWE3bWxrcnNzYTA3NQpueW5temg2
-OTMzCgooSmFyZGlucyBkdSBtb25kZSk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xs
-ZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXpqZ3ZwZ2E1YTdtbGtyc3NhMDc1CmlqcHRzdjY5
-MzMKCihKYXJkaW5zIGR1IG1vbmRlKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxl
-Y3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9empndnBnYTVhN21sa3Jzc2EwNzUKd2p0Z2p4Njkz
-MwoKKEphcmRpbnMgZHUgbW9uZGUpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVj
-dGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz16amd2cGdhNWE3bWxrcnNzYTA3NQpzcmhycXA2OTMz
-CgooVml0ZSAhIEonYWNow6h0ZSAhKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxl
-Y3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9empndnBnYTVhN21sa3Jzc2EwNzUKcHl0bHB2Njkz
-MwoKKENob2lzaXNzZXogdm90cmUgY2FkZWF1IHN1cnByaXNlIGVuIHJlbWVyY2llbWVudCBkZSB2
-b3RyZSBjb21tYW5kZSk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0
-aW9uPW1haWxyZWRpcmVjdCZjPXpqZ3ZwZ2E1YTdtbGtyc3NhMDc1CnZodWp0dDY5MzQKCihDYWRl
-YXUgc3VycHJpc2UgbsKwMSk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/
-YWN0aW9uPW1haWxyZWRpcmVjdCZjPXpqZ3ZwZ2E1YTdtbGtyc3NhMDc1CmlveWlxcTY5MzQKCihD
-YWRlYXUgc3VycHJpc2UgbsKwMik6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0
-ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXpqZ3ZwZ2E1YTdtbGtyc3NhMDc1CnFvenZyazY5MzQK
-CihDYWRlYXUgc3VycHJpc2UgbsKwMyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xs
-ZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXpqZ3ZwZ2E1YTdtbGtyc3NhMDc1CmtwcXVtdTY5
-MzQKCihKZSBjaG9pc2lzIG1vbiBjYWRlYXUpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20v
-Y29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz16amd2cGdhNWE3bWxrcnNzYTA3NQpqbGlv
-cHI2OTM0CgooUmV0cm91dmV6IHRvdXRlcyBsZXMgcHJvbW90aW9ucyBldCBib25zIHBsYW5zIGJl
-YXV0ZSBhIHNhaXNpciBkP3VyZ2VuY2UpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29s
-bGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz16amd2cGdhNWE3bWxrcnNzYTA3NQppeWd4eGs2
-OTM1CgooUmVqb2lnbmV6IGxhIGNvbW11bmF1dMOpIGRlcyBmYW5zIGRlIGxhIG1hcnF1ZSBZdmVz
-IFJvY2hlcik6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1h
-aWxyZWRpcmVjdCZjPXpqZ3ZwZ2E1YTdtbGtyc3NhMDc1Cmx3dGl1bTY5MzYKCig1IGJvbm5lcyBy
-YWlzb24gZD9hY2hldGVyIHN1ciB5dmVzLXJvY2hlci5mcik6Cmh0dHA6Ly90cmFja2VyLmFmZmls
-aXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXpqZ3ZwZ2E1YTdtbGtyc3Nh
-MDc1CnR6dXRyczY5MzcKCgpPZmZyZSB2YWxhYmxlIGp1c3F1J2F1IDI1IGp1aW4gMjAxMyB1bmlx
-dWVtZW50IGRlcHVpcyBjZXR0ZSBuZXdzbGV0dGVyLgoqIE7CsDEgZGVzIHNpdGVzIGUtYmVhdXTD
-qSAoRkVWQUQgZXQgRS1Db21tZXJjZSBNYWdhemluZSkKKDEpIFBvdXIgdG91dCBhY2hhdCBzdXDD
-qXJpZXVyIMOgIDE0LDkw4oKsIHN1ciBsZSBzaXRlIHd3dy55dmVzLXJvY2hlci5mciBlbgpjbGlx
-dWFudCBzdXIgY2V0dGUgb2ZmcmUuICBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBu
-b3V2ZWF1IHJlZ2FyZAphZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQg
-ZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZQpsJ2FubsOpZS4gQWluc2ksIGdyw6JjZSDDoCBub3Vz
-LCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRvdXQgY2UgcXVp
-IGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gQmVzb2luIGRl
-CnZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBv
-dSBzb3J0aXIgYXUgbWVpbGxldXIKcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBk
-ZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyCnVuIHBldGl0IG9laWwgcGFy
-IHN1ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91
-cwptZXR0b25zIMOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLiBFbnZp
-ZSBkZSB2b3VzIGZhaXJlIHVuZQpiZWF1dMOpIMOgIG1vaW5kcmUgY2/Du3QgdG91dCBhdSBsb25n
-IGRlIGwnYW5uw6llLCBkZSBwcsOpdm9pciB2b3MKcHJvY2hhaW5lcyB2YWNhbmNlcyBkJ8OpdMOp
-IMOgIG1vaW5kcmUgZnJhaXMgZXQgb3UgZW5jb3JlIGQnaGFiaWxsZXIgdm9zCmVuZmFudHMgw6Ag
-ZGVzIGJ1ZGdldHMgcmFpc29ubmFibGVzLCBhbG9ycyBjb25zdWx0ZXIgZGUgdGVtcHMgw6AgYXV0
-cmUgbm9zCnByb3Bvc2l0aW9ucyBwb3VyIHZvdXMgcGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRl
-IG5vbWJyZXVzZXMgw6ljb25vbWllcwp0b3V0IGVuIHZvdXMgZmFpc2FudCBwbGFpc2lyIMOgIHRv
-dXRlIGxhIGZhbWlsbGUuIE5vdXMgc291aGFpdG9ucyB2b3VzCmFwcG9ydGVyIHVuIG5vdXZlYXUg
-cmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbgpjb25z
-b21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLiBBaW5zaSwgZ3LDomNlIMOgIG5vdXMsIHZvdXMg
-YWxsZXogcGFyCmV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHBy
-b2R1aXQgYSBiYXMgY291dCwKb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiBCZXNvaW4gZGUgdm95YWdl
-ciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cwpjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRp
-ciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nCmRlIGwnYW5u
-w6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxl
-cwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRv
-bnMgw6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuCgoKCgoKLS0KClBv
-dXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2Fj
-dC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxNDU1OTMyMjA1MzcyNDQKCgoKCgoKe35BSjg0NjQx
-ODY2MjUxNDU1OTMyMjA1MzcyNDR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQg
-ZW1haWwgaXMgc3BvbnNvcmVkIGJ5IFdpbmRvd3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4K
-Cmh0dHA6Ly9wLnNmLm5ldC9zZnUvd2luZG93cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlz
-dApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5z
-b3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Introduce mcspi_bytes_per_word function as replacement for the next code
+fragment:
+
+int c = (word_len <= 8)  ? 1 :
+	(word_len <= 16) ? 2 :
+	/* word_len <= 32 */ 4;
+
+This code used 2 times in current driver code and will be used 2 times in
+the next FIFO buffer support patch. Replace it with inline function with clear
+name to improve code legibility.
+
+Signed-off-by: Illia Smyrnov <illia.smyrnov-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c |   19 +++++++++++++------
+ 1 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 86d2158..707f1db 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -187,6 +187,16 @@ static inline void mcspi_write_chconf0(const struct spi_device *spi, u32 val)
+ 	mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHCONF0);
+ }
+ 
++static inline int mcspi_bytes_per_word(int word_len)
++{
++	if (word_len <= 8)
++		return 1;
++	else if (word_len <= 16)
++		return 2;
++	else /* word_len <= 32 */
++		return 4;
++}
++
+ static void omap2_mcspi_set_dma_req(const struct spi_device *spi,
+ 		int is_read, int enable)
+ {
+@@ -433,10 +443,9 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			else /* word_len <= 32 */
+ 				((u32 *)xfer->rx_buf)[elements++] = w;
+ 		} else {
++			int bytes_per_word = mcspi_bytes_per_word(word_len);
+ 			dev_err(&spi->dev, "DMA RX penultimate word empty");
+-			count -= (word_len <= 8)  ? 2 :
+-				(word_len <= 16) ? 4 :
+-				/* word_len <= 32 */ 8;
++			count -= (bytes_per_word << 1);
+ 			omap2_mcspi_set_enable(spi, 1);
+ 			return count;
+ 		}
+@@ -454,9 +463,7 @@ omap2_mcspi_rx_dma(struct spi_device *spi, struct spi_transfer *xfer,
+ 			((u32 *)xfer->rx_buf)[elements] = w;
+ 	} else {
+ 		dev_err(&spi->dev, "DMA RX last word empty");
+-		count -= (word_len <= 8)  ? 1 :
+-			 (word_len <= 16) ? 2 :
+-		       /* word_len <= 32 */ 4;
++		count -= mcspi_bytes_per_word(word_len);
+ 	}
+ 	omap2_mcspi_set_enable(spi, 1);
+ 	return count;
+-- 
+1.7.0.4
+
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

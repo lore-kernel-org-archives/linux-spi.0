@@ -1,13 +1,14 @@
-From: "=?UTF-8?Q?Beaut=C3=A9_Secr=C3=A8te?=" <contact-e1gcX6M/Ez0osYvDPTJxlQC/G2K4zDHf@public.gmane.org>
-Subject: [SPAM] Offre Exclusive : -20% sur la lingerie de marque
-Date: Sat, 15 Jun 2013 09:00:10 +0000 (CET)
-Message-ID: <130615090010.10935981400003592@obfm41.com>
+From: "=?GBK?B?yNXFtQ==?=" <giffenea-k+cT0dCbe1g@public.gmane.org>
+Subject: =?GBK?B?ufq80reiuMTOr7/GvLy39rPWINeoz+7J6rGoIMbw1ti7+rHk0M68pLnisuLBv9LH0dDWxr+qt6Igbzc4ODdk?=
+Date: Sun, 16 Jun 2013 02:03:02 +0800
+Message-ID: <20130615180302.27A18B280EB@webmail.sinamail.sina.com.cn>
+Reply-To: giffenea-k+cT0dCbe1g@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,17 +19,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-Si vous ne visualisez pas correctement cet email, suivez ce lien (http://obfm41.com/nokiyuswdq3hw4cfnq.htm)
-(http://obfm41.com/1wpg3b2b2sn3gqbrbl/index0.html)
-(http://obfm41.com/fppytbhz2kva1g0r0y/index1.html)
-(http://obfm41.com/czpoebxa2p23hctitd/index2.html)
-(http://obfm41.com/xmpdcbuj2flam12i2s/index3.html)
-(http://obfm41.com/az42euv3ltb3q2tpny/index4.html)
-Si vous ne souhaitez plus recevoir d'email de notre part, suivez ce lien (http://obfm41.com/y45wu2zv1fifm5siyq.htm)
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+5oKo5aW9OgogICAg5Zu95a625Y+R5pS55aeU5Z+56K6t5Lit5b+DIOWwhuS6jiAyMDEz5bm0Nuac
+iDI35pel4oCUMzDml6XlnKgg5aSn6L+e5biCIOS4vuWKnuKAnOWbveWutuenkeaKgOmhueebrui1
+hOmHkeeUs+aKpeS4juenkeeglOaKpeWRiue8luWItuWPiue7j+i0uemihOeul+euoeeQhuOAgee8
+luWItuOAgemhueebrumqjOaUtuS4k+mimOeglOiuqOePreKAnSAgIAogICAg5YW35L2T6YCa55+l
+77yM6K+35LiL6L295paH5Lu244CCCiAgICDmlofku7bkuIvovb3lnLDlnYDvvJrngrnmraTkuIvo
+vb0g77yb6Iul5LiN6IO95LiL6L2977yM6K+35Y+R6YKu5Lu26IezIHdhbmdsaWFuZzIwMThAMTM5
+LmNvbSAs57uZ5oKo6YeN5paw5Y+R6YCB44CCIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIOeOiyDkuq4KDQogDQogDQogDQrmlrDlnovlhajoh6rl
+iqjnlLXop6PotKjmuIXnkIboo4Xnva4g6LS15bee6I6x5Yip5pav5py65qKw6K6+6K6h5Yi26YCg
+5pyJ6ZmQ6LSj5Lu75YWs5Y+4IArpo57mnLrokpnnmq7mlbDlrZfljJblpJrngrnmn5TmgKflt6Xo
+o4Ug6KW/5a6J6YOR6aOe5Yqo5Yqb56eR5oqA5pyJ6ZmQ5YWs5Y+4IArlha3ovbTmmbrog73mlbDm
+jqfpmIDpl6jloIbnhIroo4XlpIcg5a6B5rOi5biC5ouT5paw54SK5o6l5oqA5pyv5pyJ6ZmQ5YWs
+5Y+4IArnlLHpm4boo4XnrrHmqKHlnZflsZXlvIDnmoTnlJ/mgIHmmbrog73miL/lsYvns7vnu58g
+5LiK5rW35piT5omY6YKm5bu66K6+5Y+R5bGV5pyJ6ZmQ5YWs5Y+4IArlup/lvIPmsrnohILnlJ/k
+uqfnlJ/nianotKjkvY7norPmsb3msrnmoLjlv4PliYLmr43mtrIg5rKz5YyX56aP5a6955Sf54mp
+5rK56ISC5pyJ6ZmQ5YWs5Y+4IArnu7/oibLoioLog73lnovml6DovazlrZDml6DnlLXmnLrliIbn
+uqfmnLog5LiK5rW355uK6Z2e5Lqa57KJ5L2T5oqA5pyv6K6+5aSH5pyJ6ZmQ5YWs5Y+4IAotLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IFdpbmRv
+d3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9wLnNmLm5ldC9zZnUvd2luZG93
+cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
+Zm8vc3BpLWRldmVsLWdlbmVyYWwK

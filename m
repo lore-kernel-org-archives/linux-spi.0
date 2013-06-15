@@ -1,30 +1,13 @@
-From: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v10 8/8] ARM: dts: add AM33XX SPI DMA support
-Date: Fri, 14 Jun 2013 21:32:50 -0500
-Message-ID: <1371263570-9323-8-git-send-email-joelagnel@ti.com>
-References: <1371263570-9323-1-git-send-email-joelagnel@ti.com>
+From: "Teddy Smith par nlpromos" <lisa@a.optincake.com>
+Subject: [SPAM] Vente très privée -32% sur tout le site
+Date: Sat, 15 Jun 2013 04:14:03 +0100
+Message-ID: <0.0.30.C3A.1CE697663405480.0@mta154.pur3.net>
+Reply-To: Teddy Smith par nlpromos <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>,
-	Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Matt
-	Porter <matt-agtwNxEcTQJWk0Htik3J/w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob
-	Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark
-	Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, Benoit Cousson
-	<b-cousson-l0cyMroinI0@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Rob Landley
-	<rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, Jason Kridner
-	<jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>, Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1371263570-9323-1-git-send-email-joelagnel-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -35,51 +18,77 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-
-Adds DMA resources to the AM33XX SPI nodes.
-
-Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>
----
- arch/arm/boot/dts/am33xx.dtsi |   10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-index f8a8f19..119f8a9 100644
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -352,6 +352,11 @@
- 			interrupts = <65>;
- 			ti,spi-num-cs = <2>;
- 			ti,hwmods = "spi0";
-+			dmas = <&edma 16
-+				&edma 17
-+				&edma 18
-+				&edma 19>;
-+			dma-names = "tx0", "rx0", "tx1", "rx1";
- 			status = "disabled";
- 		};
- 
-@@ -363,6 +368,11 @@
- 			interrupts = <125>;
- 			ti,spi-num-cs = <2>;
- 			ti,hwmods = "spi1";
-+			dmas = <&edma 42
-+				&edma 43
-+				&edma 44
-+				&edma 45>;
-+			dma-names = "tx0", "rx0", "tx1", "rx1";
- 			status = "disabled";
- 		};
- 
--- 
-1.7.9.5
-
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTQ2MTMzMjIwNTM3MTU0CgoKCgooVGVkZHkgU21pdGgpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1t
+ZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz01ZTIxZjRlMjYxMGMxYWZhYzllYzlhOGI3NDVkMDkw
+YQoKKFZlbnRlIHRyw6hzIHByaXbDqWUpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29t
+L2NsaWMucGhwP3BhcmFtcz0zYTE5N2I2MTBjMzY2MTNiNDBjMjdmNmYyOThjMWY1MgoKKER1IG5l
+dWYganVpbiBhdSB2aW5ndCBqdWluIGRldXggbWlsbGUgdHJlaXplKToKaHR0cDovL210cmMxLmRp
+Z2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9OGJhMjYyYTI5M2YzMTY0ZDgwODU0MDg3
+MzhiYzgwYjYKCihNb2lucyB0cmVudGUgZGV1eCBwb3VyIGNlbnQgc3VyIHRvdXQgbGUgc2l0ZSk6
+Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTA4NGYzMTRh
+Y2Y2MTYzNmE5OGU0NzYzNmM3OGZmOWFjCgooQXZlYyB2b3RyZSBjb2RlIHByaXZpbMOoZ2UgVlBU
+RUREWSk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWE4
+YTFhNzUzM2Y2ZmQ5NmM5ZTk1NDc4NmMxZTAxZmM5CgooSG9ycyBWZW50ZSBmbGFzaCk6Cmh0dHA6
+Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTU3NDg5NjE2OWQxYWMz
+ZmExNGY4YWFmMmFjMmI4ZDdjCgooSG9tbWUpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMu
+Y29tL2NsaWMucGhwP3BhcmFtcz02YWMzMjkyODk2ZWQ3NDA4MjNlNzJlNjgxODY3N2IxYgoKKEZl
+bW1lKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MDdj
+ZWM0Njg0NTU2M2U0MTdmMDQ0YjQ5MzZjOTU5MjgKCihKdW5pb3IpOgpodHRwOi8vbXRyYzEuZGln
+aXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz04ODkyMTU5YzRlMTI1NzM4YzU1ZmFmYjg5
+M2VlNTIxNQoKKENvbW1lbnQgdXRpbGlzZXIgY2UgY29kZSk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFs
+LW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWExNWNlNDg5ZWQ5ZjRhZmVmNDcxZDEzNDIyMGQ0
+ZTYyCgooSW5zY3JpdmV6IGxlIGNvZGUgcHVpcyB2YWxpZGV6IHZvdHJlIHBhbmllcik6Cmh0dHA6
+Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWM4MDFjMjA1YWZhNjc1
+ODk3ZjIzM2U4NzY2NTY0MTllCgooUmVqb2lnbmV6IHN1ciBGYWNlYm9vayBldCBkZXZlbmV6IGZh
+biBkZSBUZWRkeSBTbWl0aCk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5w
+aHA/cGFyYW1zPTAyNDdmYmNlMWRkYWFkYzBmYWY4ZjFiOWFiMWY3ZDdkCgooTGl2cmFpc29uIG9m
+ZmVydGUgw6AgcGFydGlyIGRlIHNvaXhhbnRlIGV1cm9zKToKaHR0cDovL210cmMxLmRpZ2l0YWwt
+bWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MGU4N2RiNDU1NTQ1ZTc5ZmFhZjc0YjE2NDM0YzUy
+ZTAKCihSZXRvdXIgZ3JhdHVpdCk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xp
+Yy5waHA/cGFyYW1zPWM5NzkzYmU2MjUwMGEzN2NmNDEwMTUxZjFhNjZkODY4CgooUGFpZW1lbnQg
+c8OpY3VyaXPDqSk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFy
+YW1zPWE4MWRiZGQ3OGUwZjM3ZmI0N2QzYmYyZjdhZmI5OGVjCgooUmVtYm91cnNlbWVudCk6Cmh0
+dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTM4MDg5MzhjMzM4
+MDYyNzM2NzI1MmVmZmFiZjAxYWFkCgooVGVkZHkgU21pdGgpOgpodHRwOi8vbXRyYzEuZGlnaXRh
+bC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz02NTVlZWJkN2JiNjFiMTIxZWIxMzE4NTRmNjEz
+NDczMgoKCjE1OCBhdmVudWUgSmVhbiBDaGF1YmV0IDMxNTAwIFRvdWxvdXNlIFBvbGl0aXF1ZSBk
+ZSBjb25maWRlbnRpYWxpdMOpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMu
+cGhwP3BhcmFtcz0wYTFhYjlmODg2Y2RjZjNkMDYzZDY4YzQ3MGU5NDg5NQoKClBvbGl0aXF1ZSBk
+ZSBjb25maWRlbnRpYWxpdMOpTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVh
+dSByZWdhcmQKYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNv
+bnNvbW1hbnQgbWlldXggdG91dGUKbCdhbm7DqWUuIEFpbnNpLCBncsOiY2Ugw6Agbm91cywgdm91
+cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZQp0b3V0IGNlIHF1aSBlc3Qg
+cHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIEJlc29pbiBkZQp2b3lh
+Z2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29y
+dGlyIGF1IG1laWxsZXVyCnJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdh
+bm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlcgp1biBwZXRpdCBvZWlsIHBhciBzdXIg
+bGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMKbWV0
+dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS4gRW52aWUgZGUg
+dm91cyBmYWlyZSB1bmUKYmVhdXTDqSDDoCBtb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9uZyBkZSBs
+J2FubsOpZSwgZGUgcHLDqXZvaXIgdm9zCnByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqSDDoCBt
+b2luZHJlIGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcwplbmZhbnRzIMOgIGRlcyBi
+dWRnZXRzIHJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5v
+cwpwcm9wb3NpdGlvbnMgcG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21i
+cmV1c2VzIMOpY29ub21pZXMKdG91dCBlbiB2b3VzIGZhaXNhbnQgcGxhaXNpciDDoCB0b3V0ZSBs
+YSBmYW1pbGxlLiBOb3VzIHNvdWhhaXRvbnMgdm91cwphcHBvcnRlciB1biBub3V2ZWF1IHJlZ2Fy
+ZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4KY29uc29tbWFu
+dCBtaWV1eCB0b3V0ZSBsJ2FubsOpZS4gQWluc2ksIGdyw6JjZSDDoCBub3VzLCB2b3VzIGFsbGV6
+IHBhcgpleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0
+IGEgYmFzIGNvdXQsCm9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gQmVzb2luIGRlIHZveWFnZXIsIGRl
+IHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMKY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUg
+bWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZwpkZSBsJ2FubsOpZSwg
+YWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJv
+cG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOg
+IGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLgoKCgoKCi0tCgpQb3VyIHZv
+dXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0
+X3Jjci5waHA/QUo4NDY0MTg2NjI1MTQ2MTMzMjIwNTM3MTU0CgoKCgoKCnt+QUo4NDY0MTg2NjI1
+MTQ2MTMzMjIwNTM3MTU0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVtYWls
+IGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3MgU3RvcmUuCgpodHRw
+Oi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
+Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

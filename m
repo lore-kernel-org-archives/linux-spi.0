@@ -1,39 +1,71 @@
-From: Illia Smyrnov <x0194613@ti.com>
-Subject: Re: [PATCH v3 2/2] spi: omap2-mcspi: Add FIFO buffer support
-Date: Mon, 17 Jun 2013 16:39:02 +0300
-Message-ID: <51BF1176.7070608@ti.com>
-References: <1371226328-24147-1-git-send-email-illia.smyrnov@ti.com> <1371226328-24147-3-git-send-email-illia.smyrnov@ti.com> <20130617091630.GZ1403@sirena.org.uk>
+From: "Fernandes, Joel A" <joelagnel@ti.com>
+Subject: RE: [PATCH v10 5/8] dmaengine: edma: Add TI EDMA device tree binding
+Date: Mon, 17 Jun 2013 15:05:55 +0000
+Message-ID: <083BC63EECB6FD41B8E81CF7FD87CC0F2E4E92DA@DLEE08.ent.ti.com>
+References: <1371263570-9323-1-git-send-email-joelagnel@ti.com>
+ <1371263570-9323-5-git-send-email-joelagnel@ti.com> <51BEEC84.1080102@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Illia Smyrnov <illia.smyrnov@ti.com>,
-	Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Rob Landley <rob@landley.net>, Daniel Mack <zonque@gmail.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<devicetree-discuss@lists.ozlabs.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<linux-omap@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <20130617091630.GZ1403@sirena.org.uk>
-Sender: linux-doc-owner@vger.kernel.org
+Cc: Linux DaVinci Kernel List <davinci-linux-open-source@linux.davincidsp.com>,
+ Russell King <linux@arm.linux.org.uk>, "Cousson, Benoit" <b-cousson@ti.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Linux Documentation List <linux-doc@vger.kernel.org>,
+ Tony Lindgren <tony@atomide.com>,
+ Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+ Mark Brown <broonie@opensource.wolfsonmicro.com>,
+ Linux MMC List <linux-mmc@vger.kernel.org>, Koen Kooi <koen@beagleboard.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Vinod
+ Koul <vinod.koul@intel.com>, Jason Kridner <jkridner@beagleboard.org>,
+ Rob Landley <rob@landley.net>,
+ Linux SPI Devel List <spi-devel-general@lists.sourceforge.net>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux OMAP List <linux-omap@vger.kernel.org>,
+ Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+ Matt Porter <matt@ohporter.com>
+To: "Nori, Sekhar" <nsekhar@ti.com>, Grant Likely <grant.likely@secretlab.ca>,
+ Rob Herring <rob.herring@calxeda.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <51BEEC84.1080102@ti.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Sekhar,
 
+> -----Original Message-----
+> From: Nori, Sekhar
+> Sent: Monday, June 17, 2013 6:01 AM
+> To: Fernandes, Joel A; Grant Likely; Rob Herring
+> Cc: Tony Lindgren; Matt Porter; Vinod Koul; Mark Brown; Cousson, Benoit;
+> Russell King; Rob Landley; Andrew Morton; Jason Kridner; Koen Kooi;
+> Devicetree Discuss; Linux OMAP List; Linux ARM Kernel List; Linux DaVinci
+> Kernel List; Linux Kernel Mailing List; Linux Documentation List; Linux MMC
+> List; Linux SPI Devel List; Arnd Bergmann
+> Subject: Re: [PATCH v10 5/8] dmaengine: edma: Add TI EDMA device tree
+> binding
+> 
+> Grant, Rob,
+> 
+> Can one of you please take a look at this patch and see if you have any
+> comments on the binding definition?
+> 
+> Joel,
+> 
+> Ideally the bindings are described before they are used or along with its
+> usage. In that aspect, this patch is present too far back in the series. Can you
+> please fix this if you get to posting another version. I think I gave the same
+> comment on v9 as well.
+ 
+[Joel] Yes, sure, I will make a note to push this up the series during the next posting.
 
-On 06/17/2013 12:16 PM, Mark Brown wrote:
-> On Fri, Jun 14, 2013 at 07:12:08PM +0300, Illia Smyrnov wrote:
->> The MCSPI controller has a built-in FIFO buffer to unload the DMA or interrupt
->> handler and improve data throughput. This patch adds FIFO buffer support for SPI
->> transfers in DMA mode.
->
-> This looks good but doesn't apply against my topic/omap branch - can you
-> please check and resend?  Probably something that applies against -next
-> will be fine.
->
-
-I fixed it and sent v4 of "spi: omap2-mcspi: Add FIFO buffer support" patch.
+Thanks,
+Joel

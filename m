@@ -1,56 +1,66 @@
-From: "=?UTF-8?Q?Ma_Sant=C3=A9_sur_mesure_via__Manato?=" <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
-Subject: [SPAM] Profitez de la loi Chatel pour changer de Mutuelle
-Date: Mon, 17 Jun 2013 11:47:26 +0000 (CET)
-Message-ID: <130617114726.181141604600004028@obfm40.com>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH v10 5/8] dmaengine: edma: Add TI EDMA device tree binding
+Date: Mon, 17 Jun 2013 13:12:32 +0200
+Message-ID: <3940138.jZFEtfGGLz@wuerfel>
+References: <1371263570-9323-1-git-send-email-joelagnel@ti.com>
+ <1371263570-9323-5-git-send-email-joelagnel@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+ Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+ Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+ Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
+ Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>, Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+ Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+ Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+ Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+ Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+ Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1371263570-9323-5-git-send-email-joelagnel-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-CkF2ZWMgTW9uZGV2aXNtdXR1ZWxsZS5jb20gdHJvdXZleiB1bmUgYXNzdXJhbmNlIHNhbnTDqSBx
-dWkgcyZhY3V0ZTthZGFwdGUgw6Agdm9zIGJlc29pbnMgcsOpZWxzLgpSZW1wbGlzc2V6IHZvdHJl
-IGRlbWFuZGUgZCZhY3V0ZTvDqXR1ZGUgZ3JhdHVpdGUgZXQgcGVyc29ubmFsaXPDqWUgZXQgcHJv
-Zml0ZXogZGVzIG1laWxsZXVycyB0YXJpZnMgZGUgbm9zIHBhcnRlbmFpcmVzIGFzc3VyZXVycy4g
-Ck11dHVlbGxlIFNhbnTDqSA6CgphbGzDqWdleiB2b3MgZMOpcGVuc2VzIQrigKIgRGVzIHRhcmlm
-cyBhZGFwdMOpcyDDoCBjaGFxdWUgc2l0dWF0aW9uCgrigKIgUmVtYm91cnNlbWVudHMgcmFwaWRl
-cwoK4oCiIERlIG5vbWJyZXV4IGNhcyBkZSBncmF0dWl0w6kgOiBtYXJpYWdlLCBldGMuLgoK4oCi
-IFVuZSBhc3Npc3RhbmNlIDI0aC8yNCA3ai83CgrigKIgQ29uc3VsdGF0aW9uIGRlcyBwcmVzdGF0
-aW9ucyBzdXIgSW50ZXJuZXQKCuKAoiBQYXMgZGUgcXVlc3Rpb25uYWlyZSBtw6lkaWNhbCBkJmFj
-dXRlO2VudHLDqWUKKGh0dHA6Ly9vYmZtNDAuY29tL3ljYXdqMDR2NWZyMmpzNWNnZy9pbmRleDAu
-aHRtbCkKKGh0dHA6Ly9vYmZtNDAuY29tL2R0YXB6MG9sNXBpMHh5cmNvai9pbmRleDEuaHRtbCkK
-KGh0dHA6Ly9vYmZtNDAuY29tL3N4YXpsMHIxNWtjMmF0cHFxcS9pbmRleDIuaHRtbCkKKGh0dHA6
-Ly9vYmZtNDAuY29tL2wyYW1tMGRtNXNxMDVibXFqby9pbmRleDMuaHRtbCkKQXZlYyBNb25kZXZp
-c211dHVlbGxlLmNvbSB0cm91dmV6IHVuZSBhc3N1cmFuY2Ugc2FudMOpIHF1aSBzJmFjdXRlO2Fk
-YXB0ZSDDoCB2b3MgYmVzb2lucyByw6llbHMuClJlbXBsaXNzZXogdm90cmUgZGVtYW5kZSBkJmFj
-dXRlO8OpdHVkZSBncmF0dWl0ZSBldCBwZXJzb25uYWxpc8OpZSBldCBwcm9maXRleiBkZXMgbWVp
-bGxldXJzIHRhcmlmcyBkZSBub3MgcGFydGVuYWlyZXMgYXNzdXJldXJzLiAKTGVzIGluZm9ybWF0
-aW9ucyByZWN1ZWlsbGllcyBmb250IGwmYWN1dGU7b2JqZXQgZCZhY3V0ZTt1biB0cmFpdGVtZW50
-IGluZm9ybWF0aXF1ZQpkZXN0aW7DqSDDoCByw6lhbGlzZXIgdm90cmUgw6l0dWRlIHBlcnNvbm5h
-bGlzw6llIGVuIGNvbXBsw6ltZW50YWlyZSBzYW50w6kuIExlcwpkb25uw6llcyBzb250IGRlc3Rp
-bsOpZXMgw6Agbm9zIHBhcnRlbmFpcmVzLiBDb25mb3Jtw6ltZW50IMOgIGxhIGxvaQoiaW5mb3Jt
-YXRpcXVlIGV0IGxpYmVydMOpcyIgZHUgNiBqYW52aWVyIDE5NzgsIHZvdXMgYsOpbsOpZmljaWV6
-IGQmYWN1dGU7dW4gZHJvaXQKZCZhY3V0ZTthY2PDqHMgZXQgZGUgcmVjdGlmaWNhdGlvbiBhdXgg
-aW5mb3JtYXRpb25zIHF1aSB2b3VzIGNvbmNlcm5lbnQuIFNpIHZvdXMKc291aGFpdGV6IGV4ZXJj
-ZXIgY2UgZHJvaXQgZXQgb2J0ZW5pciBjb21tdW5pY2F0aW9uIGRlcyBpbmZvcm1hdGlvbnMgdm91
-cwpjb25jZXJuYW50IG91IHZvdXMgb3Bwb3Nlciwgc2FucyBmcmFpcywgw6AgbCZhY3V0ZTt1dGls
-aXNhdGlvbiBkZSB2b3MgZG9ubsOpZXMKcGVyc29ubmVsbGVzIMOgIGRlcyBmaW5zIGRlIHByb3Nw
-ZWN0aW9uIGVuIG5vdXMgY29udGFjdGFudCBwYXIgY291cnJpZXIgOiBQbGFjZWRlc2xlYWRzIC0g
-UnVlIGRlcyByaXZlcwpkZSBsJmFjdXRlO09pc2UgLSBQYXJjIHRlY2hub2xvZ2lxdWUgLSA2MDI4
-MCBWZW5ldHRlLgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3Bv
-bnNvcmVkIGJ5IFdpbmRvd3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9wLnNm
-Lm5ldC9zZnUvd2luZG93cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
-Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Friday 14 June 2013 21:32:47 Joel A Fernandes wrote:
+> 
+> diff --git a/Documentation/devicetree/bindings/dma/ti-edma.txt b/Documentation/devicetree/bindings/dma/ti-edma.txt
+> new file mode 100644
+> index 0000000..ada0018
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/dma/ti-edma.txt
+> @@ -0,0 +1,26 @@
+> +TI EDMA
+> +
+> +Required properties:
+> +- compatible : "ti,edma3"
+> +- ti,hwmods: Name of the hwmods associated to the EDMA
+> +- ti,edma-regions: Number of regions
+> +- ti,edma-slots: Number of slots
+> +
+> +Optional properties:
+> +- ti,edma-xbar-event-map: Crossbar event to channel map
+
+You need to list #dma-cells as required here, and which values are accepted by
+the driver (I suppose only <1>). You should also explain the format of the
+dma-specifier for a slave here for each possible value of #dma-cells.
+
+For each of the standard properties (reg, interrupts, dma-channels), list
+whether they are optional or required. Since the example has three interrupts,
+you should probably list how many interrupts need to be specified (minimum
+and maximum if the number is variable) and in what order to expect them.
+
+	Arnd

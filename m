@@ -1,10 +1,10 @@
-From: "Bons d'achat" <contact-6iRbmuqo1C7QT0dZR+AlfA@public.gmane.org>
-Subject: =?UTF-8?Q?4000_Eur_=C3=A0_d=C3=A9penser_chez_Castorama?=
-Date: Sun, 16 Jun 2013 07:56:22 +0000 (CET)
-Message-ID: <130616075622.172532591100003196@obfm42.com>
+From: "Sales Finances" <contact-zIwo4Cd8WZRQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Regroupez vos crédits en 1 seul
+Date: Mon, 17 Jun 2013 03:05:37 +0000 (CET)
+Message-ID: <130617030537.179428044300001868@obfm42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -18,19 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQyLmNvbS8wd3Q1M3pjMGlwdzN0MnRzZmwvaW5kZXgwLmh0bWwpCihodHRw
-Oi8vb2JmbTQyLmNvbS9icHRudHpld2lmZWFzMDJzMXkvaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
-bTQyLmNvbS8yenRyZXp0aWlzMDM0bGJ0eGQvaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQyLmNv
-bS90bXQ0Y3ozcWlrZGFrZDB0Y3MvaW5kZXgzLmh0bWwpCkJvbmpvdXIsCgp2b3VzIGF2ZXogw6l0
-w6kgc2VsZWN0aW9ubsOpIHBhcm1pIAoKNTAgMDAwIHByaXZpbMOpZ2nDqXMgcG91ciBwYXJ0aWNp
-cGVyCsOgIG5vdHJlIEdyYW5kIENvbmNvdXJzICEKR2FnbmV6IDQwMDDigqwgZW4gYm9ucyBkJ2Fj
-aGF0IChodHRwOi8vb2JmbTQyLmNvbS9remZ1ZXlpaHIzdDNicWJkcnkvaW5kZXg0Lmh0bWwpCiho
-dHRwOi8vb2JmbTQyLmNvbS92bWZoY3kwZ3Jvc2F5ZzBkNWwvaW5kZXg1Lmh0bWwpClBob3RvIG5v
-biBjb250cmFjdHVlbGxlLiAKQXVjdW5lIG1hcnF1ZSBuJ2VzdCBsZSBjb21tYW5kaXRhaXJlIGRl
-IGxhIGRvdGF0aW9uLgrCoAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwg
-aXMgc3BvbnNvcmVkIGJ5IFdpbmRvd3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6
-Ly9wLnNmLm5ldC9zZnUvd2luZG93cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
-b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+
+(http://obfm42.com/i0lfprj2kwzd3lrukl/index0.html)
+(http://obfm42.com/afl0srznk0ulpd5uvy/index1.html)
+(http://obfm42.com/hbl1wrlhkqbdo2mzud/index2.html)
+(http://obfm42.com/31lbqrmgkiylf0pzes/index3.html)
+(http://obfm42.com/fbgswq5i4e2dacmvdy/index4.html)
+(http://obfm42.com/11gqqqyq4dll51pvyl/index5.html)
+(http://obfm42.com/x0glpqn04cndjqrnls/index6.html)
+(http://obfm42.com/cfgjsqgw4rvlxg5nsd/index7.html)
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

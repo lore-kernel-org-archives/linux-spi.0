@@ -1,120 +1,82 @@
-From: "Fernandes, Joel A" <joelagnel-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH v10 5/8] dmaengine: edma: Add TI EDMA device tree binding
-Date: Mon, 17 Jun 2013 15:40:29 +0000
-Message-ID: <083BC63EECB6FD41B8E81CF7FD87CC0F2E4E9395@DLEE08.ent.ti.com>
-References: <1371263570-9323-1-git-send-email-joelagnel@ti.com>
-	<1371263570-9323-5-git-send-email-joelagnel@ti.com>
-	<3940138.jZFEtfGGLz@wuerfel>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v4] spi: omap2-mcspi: Add FIFO buffer support
+Date: Mon, 17 Jun 2013 17:17:52 +0100
+Message-ID: <20130617161752.GI1403@sirena.org.uk>
+References: <1371475866-9647-1-git-send-email-illia.smyrnov@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Russell King
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-        "Cousson,  Benoit" <b-cousson-l0cyMroinI0@public.gmane.org>,
-        Linux
- Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Tony Lindgren
-	<tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-        Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Devicetree
- Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        Mark Brown
-	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-        Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Rob
- Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        Linux Kernel Mailing List
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-        Linux SPI Devel List
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Andrew Morton
-	<akpm
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <3940138.jZFEtfGGLz@wuerfel>
-Content-Language: en-US
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0682759445681606976=="
+Cc: linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+ devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+ Matthias Brugger <matthias.bgg-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+ Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+ spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Illia Smyrnov <illia.smyrnov-l0cyMroinI0@public.gmane.org>
+Return-path: <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+In-Reply-To: <1371475866-9647-1-git-send-email-illia.smyrnov-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/devicetree-discuss/>
+List-Post: <mailto:devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
+List-Help: <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/devicetree-discuss>,
+ <mailto:devicetree-discuss-request-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org?subject=subscribe>
+Errors-To: devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+Sender: "devicetree-discuss"
+ <devicetree-discuss-bounces+gldd-devicetree-discuss=m.gmane.org-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
-Hi Arnd,
 
-> -----Original Message-----
-> From: Arnd Bergmann [mailto:arnd-r2nGTMty4D4@public.gmane.org]
-> Sent: Monday, June 17, 2013 6:13 AM
-> To: Fernandes, Joel A
-> Cc: Tony Lindgren; Nori, Sekhar; Matt Porter; Grant Likely; Rob Herring; Vinod
-> Koul; Mark Brown; Cousson, Benoit; Russell King; Rob Landley; Andrew
-> Morton; Jason Kridner; Koen Kooi; Devicetree Discuss; Linux OMAP List; Linux
-> ARM Kernel List; Linux DaVinci Kernel List; Linux Kernel Mailing List; Linux
-> Documentation List; Linux MMC List; Linux SPI Devel List
-> Subject: Re: [PATCH v10 5/8] dmaengine: edma: Add TI EDMA device tree
-> binding
-> 
-> On Friday 14 June 2013 21:32:47 Joel A Fernandes wrote:
-> >
-> > diff --git a/Documentation/devicetree/bindings/dma/ti-edma.txt
-> > b/Documentation/devicetree/bindings/dma/ti-edma.txt
-> > new file mode 100644
-> > index 0000000..ada0018
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/dma/ti-edma.txt
-> > @@ -0,0 +1,26 @@
-> > +TI EDMA
-> > +
-> > +Required properties:
-> > +- compatible : "ti,edma3"
-> > +- ti,hwmods: Name of the hwmods associated to the EDMA
-> > +- ti,edma-regions: Number of regions
-> > +- ti,edma-slots: Number of slots
-> > +
-> > +Optional properties:
-> > +- ti,edma-xbar-event-map: Crossbar event to channel map
-> 
-> You need to list #dma-cells as required here, and which values are accepted
-> by the driver (I suppose only <1>). You should also explain the format of the
-> dma-specifier for a slave here for each possible value of #dma-cells.
-> 
-> For each of the standard properties (reg, interrupts, dma-channels), list
-> whether they are optional or required. Since the example has three
-> interrupts, you should probably list how many interrupts need to be specified
-> (minimum and maximum if the number is variable) and in what order to
-> expect them.
- 
-[Joel] Thanks for the suggestion, I updated it and it looks like this now:
-                                                                                                             
-Required properties:                                                                                                                   
-- compatible : "ti,edma3"                                                                                                              
-- ti,hwmods: Name of the hwmods associated to the EDMA                                                                                 
-- ti,edma-regions: Number of regions                                                                                                   
-- ti,edma-slots: Number of slots
-- #dma-cells: Should be set to <1> 
-              Clients should use a single number per DMA channel request.
-- dma-channels: Specify total DMA channels per CC                                                                                      
-- reg: Memory map for accessing module                                                                                                 
-- interrupt-parent: Interrupt controller the interrupt is routed through                                                               
-- interrupts: Exactly 3 interrupts need to be specified in the order:                                                                  
-              1. Transfer completion interrupt.                                                                                        
-              2. Memory protection interrupt.                                                                                          
-              3. Error interrupt.                                                                                                      
-Optional properties: 
-- ti,edma-xbar-event-map: Crossbar event to channel map
+--===============0682759445681606976==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="tNAYc2YbOB0rJD4X"
+Content-Disposition: inline
 
 
-Hope this looks ok. I will respin this patch and repost it in the next series spin.
+--tNAYc2YbOB0rJD4X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks,
-Joel
+On Mon, Jun 17, 2013 at 04:31:06PM +0300, Illia Smyrnov wrote:
+> The MCSPI controller has a built-in FIFO buffer to unload the DMA or interrupt
+> handler and improve data throughput. This patch adds FIFO buffer support for SPI
+> transfers in DMA mode.
+
+Applied, thanks.
+
+--tNAYc2YbOB0rJD4X
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRvzatAAoJELSic+t+oim9b/MP/3IQ+uSE3C14YNAac/ZZbrk4
++y+Bw/CuDouuzQIBB1RgOzvY3Frv9Et4Mn+DdS5eXhPgDzGJRRujNA9OA/3gAJVx
+ygKiUmlFo0i+sudW3Oa0hgTbu8vgV6LVvNUvrrHbNMW8Z+Jk0l+yasbfXHtlFvlz
+hpL6spaIBAkCy4u0VYvcP8WPgJwl6nr9lulaHjFq6gvKFRpSM97+EzU2m6eoQnEr
+zOp6tNvflGolmZn1aWOoIh17eTA0qBZaO+DONMBgZqTb2zYYEO+tZrf6VbpgDdZR
+bdt6rCs39xN0iCNuf1t/eCgE0DzcpKI4FhzCSbQc8Nhms1VIS5C4ycWR9o5p4nj4
+vAa+ERWpR7FqiLhVObFDur15LO1jw8GLdor/s3E5a11Uh172y+4feJsMuicvg/+x
+1MejAu8Ow9WCeOUpTx91juDolqEExjtM+mPRL97gWp4cRpEBg9MBCaf3DTp9E+Lh
+Mvkh3bRhksPEdeTlTSsjRht+KuHjRbu8rJxAycTR7pxUDmASQq0Thw5oQVq4+nfX
+y3gUqY+A6pmEQVL90dkTgBuveHqFmq2zQ7SOp3Rk1A+aFO1jsC66JxA0id+sxABE
+qmqC02wdq6WWwEYNG49qlEXv1p31SguN21yA1m3hCDQchU+56e481YO0pEudfVde
+PsJ4XBAbvyI03mWIcjUj
+=vHgD
+-----END PGP SIGNATURE-----
+
+--tNAYc2YbOB0rJD4X--
+
+--===============0682759445681606976==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+devicetree-discuss mailing list
+devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org
+https://lists.ozlabs.org/listinfo/devicetree-discuss
+
+--===============0682759445681606976==--

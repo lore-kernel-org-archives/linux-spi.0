@@ -1,71 +1,69 @@
-From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v11 3/8] ARM: edma: Add EDMA crossbar event mux support
-Date: Thu, 20 Jun 2013 10:19:32 +0530
-Message-ID: <51C289DC.1080604@ti.com>
-References: <1371537499-12970-1-git-send-email-joelagnel@ti.com>
-	<1371537499-12970-4-git-send-email-joelagnel@ti.com>
-	<51C0344F.6010709@ti.com>
-	<CAD=GYpbVUu4H8vkLHYAGPUMqdzmbJncX4yOR+5k+5B8NJhfgAQ@mail.gmail.com>
+From: "destockage" <contact-X3uiiclsbTtBDgjK7y7TUQ@public.gmane.org>
+Subject: -90% sur l'iPhone 5
+Date: Thu, 20 Jun 2013 06:55:41 +0000 (CET)
+Message-ID: <130620065541.206728150600002520@obfm42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Tony Lindgren
-	<tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Grant Likely
-	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-        Vinod
- Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-        Devicetree
- Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        Rob Herring
-	<rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Linux
- OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux ARM Kernel List
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>,
-        Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Benoit Cousson <b-cousson-l0cyMroinI0@public.gmane.org>,
-        Mark Brown
-	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-        Linux MMC List
-	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Ker
-To: Joel A Fernandes <agnel.joel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <CAD=GYpbVUu4H8vkLHYAGPUMqdzmbJncX4yOR+5k+5B8NJhfgAQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-On 6/20/2013 6:06 AM, Joel A Fernandes wrote:
-
->>> +             /* Clear the xbar mapped channels in unused list */
->>> +             xbar_chans = info[j]->xbar_chans;
->>> +             if (xbar_chans) {
->>> +                     for (i = 0; xbar_chans[i][1] != -1; i++) {
->>> +                             off = xbar_chans[i][1];
->>> +                             clear_bits(off, 1,
->>> +                                     edma_cc[j]->edma_unused);
->>
->> Please fix the alignment here.
-> 
-> I noticed the alignment was off in a few other places in that driver.
-> Fixed those up too.
-
-If you do, please make it a separate (pre)patch.
-
-Thanks,
-Sekhar
+CgoKIChodHRwOi8vb2JmbTQyLmNvbS9sc3dyemFidHdqaWlrdXhhankvaW5kZXgwLmh0bWwpCgoK
+CgoKIChodHRwOi8vb2JmbTQyLmNvbS9zcXc0amFhNHdhcmg0a2NhcWwvaW5kZXgxLmh0bWwpCgoK
+wqAKTGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50
+IHBvc3NpYmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0
+cDovL29iZm00Mi5jb20vZGx3NW1hMTN3enFpc3pmNW9zL2luZGV4Mi5odG1sKSAKCgoKIChodHRw
+Oi8vb2JmbTQyLmNvbS95andubGF2b3diY2h0NDE1Z2QvaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJl
+eiBzdXJlbWVudCByZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWlu
+IGRlIHNlIGTDqXZlbG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxl
+cyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4g
+UGFydG91dCBzdXIgbGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0
+b2lyZXMgZCdoZXVyZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4u
+IAogKGh0dHA6Ly9vYmZtNDIuY29tL3pscmVteHVhZXhvaXVwZmhobC9pbmRleDQuaHRtbCkKSGFi
+aXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUg
+cGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2Vz
+dCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6
+Ly9vYmZtNDIuY29tL3dqcjNseHhqZTVmaHo1MWgzeS9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExB
+IFNVSVRFID4+IChodHRwOi8vb2JmbTQyLmNvbS80c3J1enhoYmV1M2l5M3htaWQvaW5kZXg2Lmh0
+bWwpCgogKGh0dHA6Ly9vYmZtNDIuY29tL25xcmhqeDJ6ZXlwaGJhY21hcy9pbmRleDcuaHRtbCkK
+CgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLD
+qXN1bHRhdHMgb250IMOpdMOpIHRyw6hzIHN1cnByZW5hbnRzLiAoaHR0cDovL29iZm00Mi5jb20v
+dnMwaTQ1dDJ3cWtpaXh4YjV5L2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vb2JmbTQyLmNvbS9r
+cTBrbzUzbndpNGhyZmNicmwvaW5kZXg5Lmh0bWwpCiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVz
+IG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2VybmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlz
+YWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4gVG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOp
+Y29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBsZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUu
+IEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8vb2JmbTQyLmNvbS93bGlhbXhjYWVub2lqNWZn
+M3MvaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJVEUgPj4gKGh0dHA6Ly9vYmZtNDIuY29t
+L3pneXZnbnY1cXRvZzBwcTRocy9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vb2JmbTQyLmNv
+bS8xNTJxMG1zcW1xMnhpbGxidWovaW5kZXgxMi5odG1sKQogKGh0dHA6Ly9vYmZtNDIuY29tL2Z6
+cHNlYjVjMmEycHpkYmllai9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9vYmZtNDIuY29tLzJ2b21p
+czJpYnNkNDJ5a3dheS9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vb2JmbTQyLmNvbS90aHZ6
+Y2lpcjV2ZGJvc3dqaXkvaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1IChodHRwOi8v
+b2JmbTQyLmNvbS8xZm9nc3NsZHRzdm4yMmh3dWovaW5kZXgxNi5odG1sKQoKCgoKCgrCoAoiSidh
+aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
+b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIgKGh0
+dHA6Ly9vYmZtNDIuY29tL2Z0dnk0aXIwcHZ2MG8wNWplai9pbmRleDE3Lmh0bWwpCgoKCgoKCgog
+KGh0dHA6Ly9vYmZtNDIuY29tL2JzaG40MWUwaTJlY3h0amdobC9pbmRleDE4Lmh0bWwpClBhdG91
+IChodHRwOi8vb2JmbTQyLmNvbS8wb3M1c3oxZGQ0ZW1kYjE0M2wvaW5kZXgxOS5odG1sKQogU2Ft
+ZWRpIDIzIGp1aW4gNGgzNyAoaHR0cDovL29iZm00Mi5jb20vZHlmcG55ZmYwcmNybXp4MDN5L2lu
+ZGV4MjAuaHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hy
+ZXMgYXUgY2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwg
+bWUgdGFyZGUgZCdlc3NheWVyIiAoaHR0cDovL29iZm00Mi5jb20veWpud2xodW9yeGMxazRnYWh5
+L2luZGV4MjEuaHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
+U0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3Mg
+U3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
+aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
+bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

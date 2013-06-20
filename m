@@ -1,142 +1,71 @@
-From: Joel A Fernandes <agnel.joel@gmail.com>
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
 Subject: Re: [PATCH v11 3/8] ARM: edma: Add EDMA crossbar event mux support
-Date: Wed, 19 Jun 2013 19:36:48 -0500
-Message-ID: <CAD=GYpbVUu4H8vkLHYAGPUMqdzmbJncX4yOR+5k+5B8NJhfgAQ@mail.gmail.com>
+Date: Thu, 20 Jun 2013 10:19:32 +0530
+Message-ID: <51C289DC.1080604@ti.com>
 References: <1371537499-12970-1-git-send-email-joelagnel@ti.com>
 	<1371537499-12970-4-git-send-email-joelagnel@ti.com>
 	<51C0344F.6010709@ti.com>
+	<CAD=GYpbVUu4H8vkLHYAGPUMqdzmbJncX4yOR+5k+5B8NJhfgAQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Joel A Fernandes <joelagnel@ti.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Matt Porter <matt@ohporter.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Rob Herring <rob.herring@calxeda.com>,
-	Vinod Koul <vinod.koul@intel.com>,
-	Mark Brown <broonie@opensource.wolfsonmicro.com>,
-	Benoit Cousson <b-cousson@ti.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Rob Landley <rob@landley.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Kridner <jkridner@beagleboard.org>,
-	Koen Kooi <koen@beagleboard.org>,
-	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	Linux DaVinci Kernel List
-	<davinci-linux-open-source@linux.davincidsp.com>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Linux MMC List <linux-mmc@v
-To: Sekhar Nori <nsekhar@ti.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <51C0344F.6010709@ti.com>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Tony Lindgren
+	<tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
+        Grant Likely
+	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+        Vinod
+ Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+        Devicetree
+ Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+        Rob Herring
+	<rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
+        Linux
+ OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux ARM Kernel List
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>,
+        Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        Benoit Cousson <b-cousson-l0cyMroinI0@public.gmane.org>,
+        Mark Brown
+	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+        Linux MMC List
+	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Ker
+To: Joel A Fernandes <agnel.joel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <CAD=GYpbVUu4H8vkLHYAGPUMqdzmbJncX4yOR+5k+5B8NJhfgAQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Sekhar,
-Thanks for the feedback.
 
-On Tue, Jun 18, 2013 at 5:19 AM, Sekhar Nori <nsekhar@ti.com> wrote:
-> On 6/18/2013 12:08 PM, Joel A Fernandes wrote:
->> From: Matt Porter <mporter@ti.com>
+
+On 6/20/2013 6:06 AM, Joel A Fernandes wrote:
+
+>>> +             /* Clear the xbar mapped channels in unused list */
+>>> +             xbar_chans = info[j]->xbar_chans;
+>>> +             if (xbar_chans) {
+>>> +                     for (i = 0; xbar_chans[i][1] != -1; i++) {
+>>> +                             off = xbar_chans[i][1];
+>>> +                             clear_bits(off, 1,
+>>> +                                     edma_cc[j]->edma_unused);
 >>
->> Changes by Joel:
->> * Split EDMA xbar support out of original EDMA DT parsing patch
->> to keep it easier for review.
->> * Rewrite shift and offset calculation.
->>
->> Suggested-by: Sekhar Nori <nsekhar@ti.com>
->> Suggested by: Andy Shevchenko <andy.shevchenko@gmail.com>
->> Signed-off-by: Joel A Fernandes <joelagnel@ti.com>
->>
->> Reference:
->> [1] https://patchwork.kernel.org/patch/2226991/
->> ---
->>  arch/arm/common/edma.c             |   59 ++++++++++++++++++++++++++++++++++++
->>  include/linux/platform_data/edma.h |    1 +
->>  2 files changed, 60 insertions(+)
->>
->> diff --git a/arch/arm/common/edma.c b/arch/arm/common/edma.c
->> index 9823b79..1c2fb15 100644
->> --- a/arch/arm/common/edma.c
->> +++ b/arch/arm/common/edma.c
->> @@ -1410,6 +1410,52 @@ static int edma_of_read_u32_to_s16_array(const struct device_node *np,
->>       return 0;
->>  }
->>
->> +static int edma_xbar_event_map(struct device *dev,
->> +                            struct device_node *node,
->> +                            struct edma_soc_info *pdata, int len)
->> +{
->> +     int ret = 0;
->> +     int i;
->> +     struct resource res;
->> +     void *xbar;
->
-> void __iomem *xbar;
+>> Please fix the alignment here.
+> 
+> I noticed the alignment was off in a few other places in that driver.
+> Fixed those up too.
 
-OK.
-
->> +     const s16 (*xbar_chans)[2];
->> +     u32 shift, offset, mux;
->> +
->> +     xbar_chans = devm_kzalloc(dev,
->> +                               len/sizeof(s16) + 2*sizeof(s16),
->> +                               GFP_KERNEL);
->> +     if (!xbar_chans)
->> +             return -ENOMEM;
->> +
->> +     ret = of_address_to_resource(node, 1, &res);
->> +     if (ret)
->> +             return -EIO;
->> +
->> +     xbar = devm_ioremap(dev, res.start, resource_size(&res));
->> +     if (!xbar)
->> +             return -ENOMEM;
->> +
->> +     ret = edma_of_read_u32_to_s16_array(node,
->> +                                         "ti,edma-xbar-event-map",
->> +                                         (s16 *)xbar_chans,
->> +                                         len/sizeof(u32));
->> +     if (ret)
->> +             return -EIO;
->> +
->> +     for (i = 0; xbar_chans[i][0] != -1; i++) {
->> +             shift = (xbar_chans[i][1] & 0x03) << 3;
->> +             offset = xbar_chans[i][1] & 0xfffffffc;
->> +             mux = readl((void *)((u32)xbar + offset));
->
-> Please drop unnecessary casting. Simply:
-
-Done.
-
->
->         mux = readl(xbar + offset);
->
->> +             mux &= ~(0xff << shift);
->> +             mux |= xbar_chans[i][0] << shift;
->> +             writel(mux, (void *)((u32)xbar + offset));
->
-> Fix the writel likewise.
-
-Done.
-
-
->>               }
->>
->> +             /* Clear the xbar mapped channels in unused list */
->> +             xbar_chans = info[j]->xbar_chans;
->> +             if (xbar_chans) {
->> +                     for (i = 0; xbar_chans[i][1] != -1; i++) {
->> +                             off = xbar_chans[i][1];
->> +                             clear_bits(off, 1,
->> +                                     edma_cc[j]->edma_unused);
->
-> Please fix the alignment here.
-
-I noticed the alignment was off in a few other places in that driver.
-Fixed those up too.
+If you do, please make it a separate (pre)patch.
 
 Thanks,
-Joel
+Sekhar

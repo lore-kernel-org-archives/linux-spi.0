@@ -1,13 +1,18 @@
-From: "destockage" <contact-X3uiiclsbTtBDgjK7y7TUQ@public.gmane.org>
-Subject: -90% sur l'iPhone 5
-Date: Thu, 20 Jun 2013 06:55:41 +0000 (CET)
-Message-ID: <130620065541.206728150600002520@obfm42.com>
+From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v1 2/3] spi: s3c64xx: Added provision for dedicated cs pin
+Date: Thu, 20 Jun 2013 14:52:07 +0530
+Message-ID: <CAKrE-KciiPe5Zx7ggxzh=x0xY0xGDhX+=Lt7aL-EgkxinO214w@mail.gmail.com>
+References: <1369032694-13183-1-git-send-email-ks.giri@samsung.com>
+	<1369032694-13183-3-git-send-email-ks.giri@samsung.com>
+	<20130619182354.GD1403@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130619182354.GD1403-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,52 +23,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKIChodHRwOi8vb2JmbTQyLmNvbS9sc3dyemFidHdqaWlrdXhhankvaW5kZXgwLmh0bWwpCgoK
-CgoKIChodHRwOi8vb2JmbTQyLmNvbS9zcXc0amFhNHdhcmg0a2NhcWwvaW5kZXgxLmh0bWwpCgoK
-wqAKTGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50
-IHBvc3NpYmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0
-cDovL29iZm00Mi5jb20vZGx3NW1hMTN3enFpc3pmNW9zL2luZGV4Mi5odG1sKSAKCgoKIChodHRw
-Oi8vb2JmbTQyLmNvbS95andubGF2b3diY2h0NDE1Z2QvaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJl
-eiBzdXJlbWVudCByZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWlu
-IGRlIHNlIGTDqXZlbG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxl
-cyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4g
-UGFydG91dCBzdXIgbGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0
-b2lyZXMgZCdoZXVyZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4u
-IAogKGh0dHA6Ly9vYmZtNDIuY29tL3pscmVteHVhZXhvaXVwZmhobC9pbmRleDQuaHRtbCkKSGFi
-aXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUg
-cGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2Vz
-dCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6
-Ly9vYmZtNDIuY29tL3dqcjNseHhqZTVmaHo1MWgzeS9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExB
-IFNVSVRFID4+IChodHRwOi8vb2JmbTQyLmNvbS80c3J1enhoYmV1M2l5M3htaWQvaW5kZXg2Lmh0
-bWwpCgogKGh0dHA6Ly9vYmZtNDIuY29tL25xcmhqeDJ6ZXlwaGJhY21hcy9pbmRleDcuaHRtbCkK
-CgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLD
-qXN1bHRhdHMgb250IMOpdMOpIHRyw6hzIHN1cnByZW5hbnRzLiAoaHR0cDovL29iZm00Mi5jb20v
-dnMwaTQ1dDJ3cWtpaXh4YjV5L2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vb2JmbTQyLmNvbS9r
-cTBrbzUzbndpNGhyZmNicmwvaW5kZXg5Lmh0bWwpCiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVz
-IG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2VybmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlz
-YWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4gVG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOp
-Y29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBsZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUu
-IEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8vb2JmbTQyLmNvbS93bGlhbXhjYWVub2lqNWZn
-M3MvaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJVEUgPj4gKGh0dHA6Ly9vYmZtNDIuY29t
-L3pneXZnbnY1cXRvZzBwcTRocy9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vb2JmbTQyLmNv
-bS8xNTJxMG1zcW1xMnhpbGxidWovaW5kZXgxMi5odG1sKQogKGh0dHA6Ly9vYmZtNDIuY29tL2Z6
-cHNlYjVjMmEycHpkYmllai9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9vYmZtNDIuY29tLzJ2b21p
-czJpYnNkNDJ5a3dheS9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vb2JmbTQyLmNvbS90aHZ6
-Y2lpcjV2ZGJvc3dqaXkvaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1IChodHRwOi8v
-b2JmbTQyLmNvbS8xZm9nc3NsZHRzdm4yMmh3dWovaW5kZXgxNi5odG1sKQoKCgoKCgrCoAoiSidh
-aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
-b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIgKGh0
-dHA6Ly9vYmZtNDIuY29tL2Z0dnk0aXIwcHZ2MG8wNWplai9pbmRleDE3Lmh0bWwpCgoKCgoKCgog
-KGh0dHA6Ly9vYmZtNDIuY29tL2JzaG40MWUwaTJlY3h0amdobC9pbmRleDE4Lmh0bWwpClBhdG91
-IChodHRwOi8vb2JmbTQyLmNvbS8wb3M1c3oxZGQ0ZW1kYjE0M2wvaW5kZXgxOS5odG1sKQogU2Ft
-ZWRpIDIzIGp1aW4gNGgzNyAoaHR0cDovL29iZm00Mi5jb20vZHlmcG55ZmYwcmNybXp4MDN5L2lu
-ZGV4MjAuaHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hy
-ZXMgYXUgY2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwg
-bWUgdGFyZGUgZCdlc3NheWVyIiAoaHR0cDovL29iZm00Mi5jb20veWpud2xodW9yeGMxazRnYWh5
-L2luZGV4MjEuaHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
-U0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3Mg
-U3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Wed, Jun 19, 2013 at 11:53 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Mon, May 20, 2013 at 12:21:33PM +0530, Girish K S wrote:
+>> From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>>
+>> The existing driver supports gpio based /cs signal.
+>> For controller's that have one device per controller,
+>> the slave device's /cs signal might be internally controlled
+>> by the chip select bit of slave select register. They are not
+>> externally asserted/deasserted using gpio pin.
+>>
+>> This patch adds support for controllers with dedicated /cs pin.
+>> if "cs-gpio" property doesnt exist in a spi dts node, the controller
+>> would treat the /cs pin as dedicated.
+>
+> This breaks SPI operation on my s3c64xx based system since...
+>
+>>       if (pdev->dev.of_node) {
+>> +             if (of_find_property(pdev->dev.of_node, "cs-gpio", NULL))
+>> +                     sdd->cs_gpio = true;
+>> +
+>>               ret = of_alias_get_id(pdev->dev.of_node, "spi");
+>>               if (ret < 0) {
+>>                       dev_err(&pdev->dev, "failed to get alias id, errno %d\n",
+>
+> sdd->cs_gpio is only set to true by this code so if you're using a board
+> file then the GPIO will be ignored.
+
+Reversing the default assignment for "sdd->cs_gpio" and the following
+"if condition" shall handle both dt and non-dt case. Will do it and
+resubmit only this patch in the series.
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

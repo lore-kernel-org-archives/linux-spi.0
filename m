@@ -1,18 +1,12 @@
-From: Girish KS <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v1 2/3] spi: s3c64xx: Added provision for dedicated cs pin
-Date: Thu, 20 Jun 2013 14:52:07 +0530
-Message-ID: <CAKrE-KciiPe5Zx7ggxzh=x0xY0xGDhX+=Lt7aL-EgkxinO214w@mail.gmail.com>
-References: <1369032694-13183-1-git-send-email-ks.giri@samsung.com>
-	<1369032694-13183-3-git-send-email-ks.giri@samsung.com>
-	<20130619182354.GD1403@sirena.org.uk>
+From: iPhone <contact-oSgpC8xvnUvQT0dZR+AlfA@public.gmane.org>
+Subject: Comment economiser sur l'iPhone 5
+Date: Thu, 20 Jun 2013 09:32:03 +0000
+Message-ID: <f37cd59ebd6187fadf056f9128e16e74@mach10.generated>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130619182354.GD1403-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,40 +17,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jun 19, 2013 at 11:53 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Mon, May 20, 2013 at 12:21:33PM +0530, Girish K S wrote:
->> From: Girish K S <girishks2000-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->>
->> The existing driver supports gpio based /cs signal.
->> For controller's that have one device per controller,
->> the slave device's /cs signal might be internally controlled
->> by the chip select bit of slave select register. They are not
->> externally asserted/deasserted using gpio pin.
->>
->> This patch adds support for controllers with dedicated /cs pin.
->> if "cs-gpio" property doesnt exist in a spi dts node, the controller
->> would treat the /cs pin as dedicated.
->
-> This breaks SPI operation on my s3c64xx based system since...
->
->>       if (pdev->dev.of_node) {
->> +             if (of_find_property(pdev->dev.of_node, "cs-gpio", NULL))
->> +                     sdd->cs_gpio = true;
->> +
->>               ret = of_alias_get_id(pdev->dev.of_node, "spi");
->>               if (ret < 0) {
->>                       dev_err(&pdev->dev, "failed to get alias id, errno %d\n",
->
-> sdd->cs_gpio is only set to true by this code so if you're using a board
-> file then the GPIO will be ignored.
-
-Reversing the default assignment for "sdd->cs_gpio" and the following
-"if condition" shall handle both dt and non-dt case. Will do it and
-resubmit only this patch in the series.
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
+bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
+L1lUMHhNeVppUFRNM09UZ3hKbU05TWpNMk5ESW1aRDB5TURFekxUQTJMVEl3SURBNU9qTXdPakF3
+Sm1VOU1TWm9QVE00TURRd0ptWTlNemd6TkRrbVp6MHpPRE0wT1E9PQoKTGllbiBkZSBkZXNpbnNj
+cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE0zT1RneEpt
+TTlNak0yTkRJbVpEMHlNREV6TFRBMkxUSXdJREE1T2pNd09qQXdKbVU5TVNab1BUTTRNRFF3Sm1Z
+OU16Z3pORGttWnowek9ETTBPUT09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
+cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KTm91cyBzb21tZXMgYWxsw6lzIGTD
+qW5pY2hlciBsZXMgZGVybmnDqHJlcyBhc3R1Y2VzIHBvdXIgw6ljb25vbWlzZXIKwqAKw4AgTEEg
+VU5FCkNvbW1lbnQgw6ljb25vbWlzZXIgOTAlIHN1ciB1biBpUGFkIDQgb3Ugc3VyIHVuIGlQaG9u
+ZSA1ID8KVm91cyBsJ2F1cmV6IHN1cmVtZW50IHJlbWFycXXDqSwgdW4gbm91dmVhdSBwaMOpbm9t
+w6huZSBlc3QgZW4gdHJhaW4gZGUgc2UgZMOpdmVsb3BwZXIgZW4gRXVyb3BlIGV0IGVuIEFtw6ly
+aXF1ZSBkdSBOb3JkIDogbGVzIHNpdGVzIGludGVybmV0IGRlIHZlbnRlcyBhdXggZW5jaMOocmVz
+IGRlIGTDqXN0b2NrYWdlLiBQYXJ0b3V0IHN1ciBsZSBuZXQsIGRhbnMgbGVzIGJsb2dzLCBvbiBw
+ZXV0IGxpcmUgbGVzIGhpc3RvaXJlcyBkJ2hldXJldXggZ2FnbmFudHMgcXVpIG9udCByZW1wb3J0
+w6kgZGUgZmFidWxldXggYXJ0aWNsZXMgaGFiaXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91
+ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMg
+Y29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOp
+Y2lkw6kgZGUgbGVzIHRlc3Rlci4gUG91ciBub3VzIGFzc3VyZXIgcXVlIGxlcyBib25uZXMgYWZm
+YWlyZXMgcHJvcG9zw6llcyBwYXIgY2VzIHNpdGVzIGRlIHZlbnRlcyBhdXggZW5jaMOocmVzIGRl
+IGTDqXN0b2NrYWdlIMOpdGFpZW50IGJpZW4gcsOpZWxsZXMuIEV0IHF1ZWxsZSBtZWlsbGV1cmUg
+cmFpc29uIHBvdXIgcydlbiBhc3N1cmVyIHF1ZSBkZSBsZXMgdGVzdGVyIG5vdXMtbcOqbWUgPwps
+aXJlIGxhIHN1aXRlCsKgCkxBIFJFVlVFIENPTlNPCkplIHZvdWxhaXMgYWNoZXRlciB1biBub3V2
+ZWwgaVBhZCBSZXRpbmEgZGUgQXBwbGUsIGMnZXN0IGRvbmMgbW9pIHF1aSBhaSDDqXTDqSBjaGFy
+Z8OpZSBkdSB0ZXN0LgoiSidhaSBjb21tZW5jw6kgcGFyIGZhaXJlIHVuZSB0b25uZSBkZSByZWNo
+ZXJjaGVzIHN1ciBsZSBzdWpldCBwb3VyIGTDqXRlcm1pbmVyIHF1ZWwgc2l0ZSBkJ2VuY2jDqHJl
+cyBkZSBkw6lzdG9ja2FnZSDDqXRhaXQgbGUgcGx1cyBmaWFibGUsIGV0IGRvbmMgbGUgbWlldXgg
+YWRhcHTDqSDDoCBtb24gdGVzdC4gQXByw6hzIGRlcyBoZXVyZXMgZGUgcmVjaGVyY2hlcywgaidl
+biBzdWlzIHZlbnVlIMOgIGxhIGNvbmNsdXNpb24gcXVlLCBkdSBmYWl0IGRlIHNhIGxhcmdlIGdh
+bW1lIGQnYXJ0aWNsZXMgZXQgc29uIGV4Y2VsbGVudGUgcsOpcHV0YXRpb24sIEVuY2jDqHJlVmlw
+IMOpdGFpdCBsZSBzaXRlIMOgIHRlc3Rlci4iCmxpcmUgbGEgc3VpdGUKwqAKQ29tbWVudGFpcmVz
+IGRlIG5vcyBsZWN0ZXVyZXMKwqAKTWFyaWUgU2FtZWRpIDIgTWFycwoiSidhaSBkZSBxdW9pIHZv
+aXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBwb3VyIHVuIGJvbiBt
+b21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIKwqAKUGF0b3UgTHVuZGkg
+NCBNYXJzCiJKJ2FpIHZ1IHVuIHJlcG9ydGFnZSBzdXIgbGVzIGVuY2jDqHJlcyBhdSBjZW50aW1l
+IMOgIGxhIHTDqWzDqSwgcHVpcyBqJ2FpIGx1IGNldCBhcnRpY2xlLiBJbCBtZSB0YXJkZSBkJ2Vz
+c2F5ZXIiCsKgCsKgCsKgCsKgCsKgClBvdXIgdm91cyBkw6lzYWJvbm5lciwgY2xpcXVleiBpY2ku
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkg
+V2luZG93czoKCkJ1aWxkIGZvciBXaW5kb3dzIFN0b3JlLgoKaHR0cDovL3Auc2YubmV0L3NmdS93
+aW5kb3dzLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
+aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

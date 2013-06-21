@@ -1,104 +1,63 @@
-From: "iPhone" <lisa@a.optincake.com>
-Subject: Trouvez votre iphone5 a moins de 100 euros
-Date: Fri, 21 Jun 2013 12:33:12 +0100
-Message-ID: <0.0.1C0.3E2.1CE6E731D223822.0@mta141.pur3.net>
-Reply-To: iPhone <lisa@a.optincake.com>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v12 09/11] spi: omap2-mcspi: convert to
+	dma_request_slave_channel_compat()
+Date: Fri, 21 Jun 2013 17:52:37 +0530
+Message-ID: <51C4458D.4060202@ti.com>
+References: <1371762407-24544-1-git-send-email-joelagnel@ti.com>
+	<1371762407-24544-10-git-send-email-joelagnel@ti.com>
+	<51C42A71.1090403@ti.com> <51C42CFF.10002@ti.com>
+	<20130621112832.GS27646@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Tony Lindgren
+	<tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
+        Grant Likely
+	<grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+        Vinod
+ Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+        Devicetree
+ Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+        Rob Herring
+	<rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
+        Linux
+ OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux ARM Kernel List
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>,
+        Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        Benoit Cousson <b-cousson-l0cyMroinI0@public.gmane.org>,
+        Linux MMC List
+	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Kernel Mailing List
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        R
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <20130621112832.GS27646-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTQ5MjYzMjIwNTM3MjI0CgoKCgpFY29ub21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIg
-bGVzIG1laWxsZXVycyBwcm9kdWl0cyBIaWdoVGVjaCA6IC05MCU6Cmh0dHA6Ly9yZm1sMDMuY29t
-L3UvMzAvMTQ4Ni8yNDQvc3BvcnQvOTAzL0VNQUlML05BTUUvRklSU1ROQU1FL2lwaG9uZQpFY29u
-b21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxsZXVycyBwcm9kdWl0cyBI
-aWdoVGVjaCA6IC05MCUKCihFY29ub21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVz
-IG1laWxsZXVycyBwcm9kdWl0cyBIaWdoVGVjaCA6Ci05MCUpOiBodHRwOi8vcmZtbDAzLmNvbS91
-LzMwLzE0ODYvMjQ0L3Nwb3J0LzkwMy9FTUFJTC9OQU1FL0ZJUlNUTkFNRS9pcGhvbmUKCihFY29u
-b21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxsZXVycyBwcm9kdWl0cyBI
-aWdoVGVjaCA6Ci05MCUpOiBodHRwOi8vcmZtbDAzLmNvbS91LzMwLzE0ODYvMjQ0L3Nwb3J0Lzkw
-My9FTUFJTC9OQU1FL0ZJUlNUTkFNRS9pcGhvbmUKCihFY29ub21pc2V6IGp1c3F1J8OgIDkwIHBv
-dXJjZW50cyBzdXIgbGVzIG1laWxsZXVycyBwcm9kdWl0cyBIaWdoVGVjaCA6Ci05MCUpOiBodHRw
-Oi8vcmZtbDAzLmNvbS91LzMwLzE0ODYvMjQ0L3Nwb3J0LzkwMy9FTUFJTC9OQU1FL0ZJUlNUTkFN
-RS9pcGhvbmUKCihFY29ub21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxs
-ZXVycyBwcm9kdWl0cyBIaWdoVGVjaCA6Ci05MCUpOiBodHRwOi8vcmZtbDAzLmNvbS91LzMwLzE0
-ODYvMjQ0L3Nwb3J0LzkwMy9FTUFJTC9OQU1FL0ZJUlNUTkFNRS9pcGhvbmUKCihFY29ub21pc2V6
-IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxsZXVycyBwcm9kdWl0cyBIaWdoVGVj
-aCA6Ci05MCUpOiBodHRwOi8vcmZtbDAzLmNvbS91LzMwLzE0ODYvMjQ0L3Nwb3J0LzkwMy9FTUFJ
-TC9OQU1FL0ZJUlNUTkFNRS9pcGhvbmUKCgpDb3B5cmlnaHQgwqkgMjAwOC0yMDExIFNvcGhvcmEg
-TWVkaWEgLSBUb3VzIGRyb2l0cyByw6lzZXJ2w6lzLgpFbmNow6hyZVZJUCBlc3QgdW5lIG1hcnF1
-ZSBkw6lwb3PDqWUuClByaXZhY3kgcG9saWN5CkEgbGEgcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmln
-aW5hbCA/IE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUKcmVnYXJkIGFm
-aW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1p
-ZXV4IHRvdXRlCmwnYW5uw6llLiBBaW5zaSwgZ3JhY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIg
-ZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZQp0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJh
-cyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIC4uLiBCZXNvaW4gZGUKdm95YWdlciwgZGUg
-dm91cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBt
-ZWlsbGV1cgpyYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBh
-bG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIKdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9w
-b3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzCm1ldHRvbnMgw6Ag
-am91ciByw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuQWluc2ksIGdyw6JjZSDDoCBu
-b3VzLAp2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2Ug
-cXVpIGVzdCBwcm9kdWl0IGEgYmFzCmNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLkJlc29p
-biBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzCmNoYXVzc2VyLCBkZSBtYW5n
-ZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxv
-bmcKZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWls
-IHBhciBzdXIgbGVzCnByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVl
-IG5vdXMgbWV0dG9ucyDDoCBqb3VyCnLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS4u
-IE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUKcmVnYXJkIGFmaW4gZGUg
-dm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRv
-dXRlCmwnYW5uw6llLkVudmllIGRlIHZvdXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZSBj
-b8O7dCB0b3V0IGF1IGxvbmcgZGUKbCdhbm7DqWUsIGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVz
-IHZhY2FuY2VzIGQnw6l0w6kgw6AgbW9pbmRyZSBmcmFpcyBldCBvdQplbmNvcmUgZCdoYWJpbGxl
-ciB2b3MgZW5mYW50cyDDoCBkZXMgYnVkZ2V0cyByYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRl
-cgpkZSB0ZW1wcyDDoCBhdXRyZSBub3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cyBwZXJtZXR0cmUg
-YWluc2kgZGUgZmFpcmUgZGUKbm9tYnJldXNlcyDDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlz
-YW50IHBsYWlzaXIgw6AgdG91dGUgbGEgZmFtaWxsZS5BIGxhCnJlY2hlcmNoZSBkdSBjYWRlYXUg
-b3JpZ2luYWwgPyBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1CnJlZ2Fy
-ZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFu
-dCBtaWV1eCB0b3V0ZQpsJ2FubsOpZS4gQWluc2ksIGdyYWNlIMOgIG5vdXMsIHZvdXMgYWxsZXog
-cGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUKdG91dCBjZSBxdWkgZXN0IHByb2R1aXQg
-YSBiYXMgY291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuLi4gQmVzb2luIGRlCnZveWFnZXIs
-IGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIg
-YXUgbWVpbGxldXIKcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOp
-ZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyCnVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMg
-cHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cwptZXR0b25z
-IMOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkFpbnNpLCBncsOiY2Ug
-w6Agbm91cywKdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0
-IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcwpjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIC5C
-ZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cwpjaGF1c3NlciwgZGUg
-bWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBh
-dSBsb25nCmRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQg
-b2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0
-IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7D
-qWUuLiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1CnJlZ2FyZCBhZmlu
-IGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1
-eCB0b3V0ZQpsJ2FubsOpZS5FbnZpZSBkZSB2b3VzIGZhaXJlIHVuZSBiZWF1dMOpIMOgIG1vaW5k
-cmUgY2/Du3QgdG91dCBhdSBsb25nIGRlCmwnYW5uw6llLCBkZSBwcsOpdm9pciB2b3MgcHJvY2hh
-aW5lcyB2YWNhbmNlcyBkJ8OpdMOpIMOgIG1vaW5kcmUgZnJhaXMgZXQgb3UKZW5jb3JlIGQnaGFi
-aWxsZXIgdm9zIGVuZmFudHMgw6AgZGVzIGJ1ZGdldHMgcmFpc29ubmFibGVzLCBhbG9ycyBjb25z
-dWx0ZXIKZGUgdGVtcHMgw6AgYXV0cmUgbm9zIHByb3Bvc2l0aW9ucyBwb3VyIHZvdXMgcGVybWV0
-dHJlIGFpbnNpIGRlIGZhaXJlIGRlCm5vbWJyZXVzZXMgw6ljb25vbWllcyB0b3V0IGVuIHZvdXMg
-ZmFpc2FudCBwbGFpc2lyIMOgIHRvdXRlIGxhIGZhbWlsbGUuCgoKCgoKLS0KClBvdXIgdm91cyBk
-w6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRfcmNy
-LnBocD9BSjg0NjQxODY2MjUxNDkyNjMyMjA1MzcyMjQKCgoKCgoKe35BSjg0NjQxODY2MjUxNDky
-NjMyMjA1MzcyMjR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMg
-c3BvbnNvcmVkIGJ5IFdpbmRvd3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9w
-LnNmLm5ldC9zZnUvd2luZG93cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Hi Mark,
+On Friday 21 June 2013 04:58 PM, Mark Brown wrote:
+> On Fri, Jun 21, 2013 at 04:07:51PM +0530, Sekhar Nori wrote:
+>
+>> We can resend the patch if you don't have it from the mailing list.
+> I'll probably have it assuming it's been sent to some mailing list I
+> read (the CC list here looks absurldy large...) but if you don't send me
+> the patch and/or ignore bounces then it's going to take longer.
+I have send you this patch seperately.
+
+Thanks ,
+Sourav

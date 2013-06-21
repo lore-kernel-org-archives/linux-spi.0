@@ -1,30 +1,13 @@
-From: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v12 04/11] dmaengine: edma: enable build for AM33XX
-Date: Thu, 20 Jun 2013 16:06:40 -0500
-Message-ID: <1371762407-24544-5-git-send-email-joelagnel@ti.com>
-References: <1371762407-24544-1-git-send-email-joelagnel@ti.com>
+From: "Aterno" <contact-0DuxYMxadEVQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Demandez votre catalogue radiateurs innovants
+Date: Fri, 21 Jun 2013 00:36:54 +0000 (CET)
+Message-ID: <130621003654.213095465600004800@obfm42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>,
-	Linux DaVinci Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-	Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>, Matt
-	Porter <matt-agtwNxEcTQJWk0Htik3J/w@public.gmane.org>, Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, Rob
-	Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark
-	Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>, Benoit Cousson
-	<b-cousson-l0cyMroinI0@public.gmane.org>, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Rob Landley
-	<rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>, Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>, Jason Kridner
-	<jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>, Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1371762407-24544-1-git-send-email-joelagnel-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -35,49 +18,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-
-Enable TI EDMA option on OMAP and TI_PRIV_EDMA
-
-Signed-off-by: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>
----
- arch/arm/mach-omap2/Kconfig |    1 +
- drivers/dma/Kconfig         |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm/mach-omap2/Kconfig b/arch/arm/mach-omap2/Kconfig
-index f49cd51..f91b07f 100644
---- a/arch/arm/mach-omap2/Kconfig
-+++ b/arch/arm/mach-omap2/Kconfig
-@@ -17,6 +17,7 @@ config ARCH_OMAP2PLUS
- 	select PROC_DEVICETREE if PROC_FS
- 	select SOC_BUS
- 	select SPARSE_IRQ
-+	select TI_PRIV_EDMA
- 	select USE_OF
- 	help
- 	  Systems based on OMAP2, OMAP3, OMAP4 or OMAP5
-diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
-index e992489..3215a3c 100644
---- a/drivers/dma/Kconfig
-+++ b/drivers/dma/Kconfig
-@@ -213,7 +213,7 @@ config SIRF_DMA
- 
- config TI_EDMA
- 	tristate "TI EDMA support"
--	depends on ARCH_DAVINCI
-+	depends on ARCH_DAVINCI || ARCH_OMAP
- 	select DMA_ENGINE
- 	select DMA_VIRTUAL_CHANNELS
- 	default n
--- 
-1.7.9.5
-
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+CihodHRwOi8vb2JmbTQyLmNvbS9yNTR4MnVneGs1eGFkbjBwNG8vaW5kZXgwLmh0bWwpCihodHRw
+Oi8vb2JmbTQyLmNvbS81bjQyaHVuNWt4ajMwd2JwbnEvaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
+bTQyLmNvbS9tcjRjeHV5dWt5NWFldjIzemovaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQyLmNv
+bS9wNDR0dXU1eWt1YTN3ZXQzd2cvaW5kZXgzLmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS9vcnB5
+eGJtazRhbWFsaTJyMHEvaW5kZXg0Lmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS9nNHBndWJsczRq
+aDMyaHRyYm8vaW5kZXg1Lmh0bWwpCkNoZXogQXRlcm5vLCBub3VzIGF2b25zIG1pcyBhdSBwb2lu
+dCB1biBzeXN0w6htZSBkZSBjaGF1ZmZhZ2UgdW5pcXVlLCBiYXPDqSBzdXIgbGEgdGVjaG5vbG9n
+aWUgbGEgcGx1cyDDqXZvbHXDqWUgZW4gbWF0acOocmUgZGUgY2hhdWZmYWdlIMOpbGVjdHJpcXVl
+LiAKTm91cyBhdm9ucyBwcmlzIGV4ZW1wbGUgc3VyIGxhIG5hdHVyZSBhZmluIGTCtHV0aWxpc2Vy
+IGF1IG1pZXV4IGNlIHF1wrRlbGxlIG5vdXMgb2ZmcmUuIEPCtGVzdCBwb3VycXVvaSwgbm91cyB2
+b3VzIHByb3Bvc29ucywgZW4gZ3Vpc2UgZGUgY29ldXIgZGUgY2hhdWZmZSAKLWdhcmFudGkgw6Ag
+dmllIGNoZXogQXRlcm5vLSBkZXMgYnJpcXVlcyBLYWxpdGgsIMOpbGFib3LDqWVzIMOgIHBhcnRp
+ciBkZXMgY8OpcmFtaXF1ZXMgbGVzIHBsdXMgcHVyZXMgZXQgcXVpIGNvbmbDqHJlbnQgZGVzIHF1
+YWxpdMOpcyBleGNlcHRpb25uZWxsZXMgw6Agbm9zIHByb2R1aXRzLiAKSWwgc8K0YWdpdCBwb3Vy
+IG5vdXMgZGUgbm91cyBhZGFwdGVyIHBhcmZhaXRlbWVudCBhdSBtb2RlIGRlIHZpZSBkZSBub3Mg
+Y2xpZW50cyBldCDDoCBsZXVycyBhdHRlbnRlcyBlbiBtYXRpw6hyZSBkwrTDqWNvbG9naWUgZXQg
+ZMK0w6ljb25vbWllIGTCtMOpbmVyZ2llLiAKTGVzIGlubm92YXRpb25zIHRlY2hub2xvZ2lxdWVz
+IG5vdXMgcGVybWV0dGVudCDDqWdhbGVtZW50IGRlIHByb3Bvc2VyIGRlIHBsdXMgZW4gcGx1cyBk
+ZSBzZXJ2aWNlcyDDoCBub3MgY2xpZW50cyBkYW5zIGxlIGJ1dCBkZSBmYWNpbGl0ZXIgbMK0dXRp
+bGlzYXRpb24gCmRlIGxldXIgY2hhdWZmYWdlIGF1IHF1b3RpZGllbi4gRGFucyBub3RyZSByw6ln
+aW9uLCBsZXMgaGl2ZXJzIHNvbnQgcnVkZXMsIGFsb3JzIHZvdXMgcG91dmV6IGltYWdpbmVyIGNv
+bWJpZW4gbm91cyBzb21tZXMgZXhpZ2VhbnRzIHZpcy3DoC12aXMgZGUgbm9zIHN5c3TDqG1lcyBk
+ZSBjaGF1ZmZhZ2UuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMg
+c3BvbnNvcmVkIGJ5IFdpbmRvd3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9w
+LnNmLm5ldC9zZnUvd2luZG93cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
+ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

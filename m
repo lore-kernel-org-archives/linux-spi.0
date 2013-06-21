@@ -1,13 +1,19 @@
-From: "Aterno" <contact-0DuxYMxadEVQFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] Demandez votre catalogue radiateurs innovants
-Date: Fri, 21 Jun 2013 00:36:54 +0000 (CET)
-Message-ID: <130621003654.213095465600004800@obfm42.com>
+From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2] spi: add spi controller master driver for Blackfin 6xx
+	processor
+Date: Fri, 21 Jun 2013 12:48:42 +0800
+Message-ID: <CAHG8p1C0DjPt_vNiqYtkVUWYy4M-doj50K1MAEocPs+AkXdhPw@mail.gmail.com>
+References: <1371583828-23788-1-git-send-email-scott.jiang.linux@gmail.com>
+	<20130619183928.GE1403@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	"uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
+	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130619183928.GE1403-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,32 +24,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQyLmNvbS9yNTR4MnVneGs1eGFkbjBwNG8vaW5kZXgwLmh0bWwpCihodHRw
-Oi8vb2JmbTQyLmNvbS81bjQyaHVuNWt4ajMwd2JwbnEvaW5kZXgxLmh0bWwpCihodHRwOi8vb2Jm
-bTQyLmNvbS9tcjRjeHV5dWt5NWFldjIzemovaW5kZXgyLmh0bWwpCihodHRwOi8vb2JmbTQyLmNv
-bS9wNDR0dXU1eWt1YTN3ZXQzd2cvaW5kZXgzLmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS9vcnB5
-eGJtazRhbWFsaTJyMHEvaW5kZXg0Lmh0bWwpCihodHRwOi8vb2JmbTQyLmNvbS9nNHBndWJsczRq
-aDMyaHRyYm8vaW5kZXg1Lmh0bWwpCkNoZXogQXRlcm5vLCBub3VzIGF2b25zIG1pcyBhdSBwb2lu
-dCB1biBzeXN0w6htZSBkZSBjaGF1ZmZhZ2UgdW5pcXVlLCBiYXPDqSBzdXIgbGEgdGVjaG5vbG9n
-aWUgbGEgcGx1cyDDqXZvbHXDqWUgZW4gbWF0acOocmUgZGUgY2hhdWZmYWdlIMOpbGVjdHJpcXVl
-LiAKTm91cyBhdm9ucyBwcmlzIGV4ZW1wbGUgc3VyIGxhIG5hdHVyZSBhZmluIGTCtHV0aWxpc2Vy
-IGF1IG1pZXV4IGNlIHF1wrRlbGxlIG5vdXMgb2ZmcmUuIEPCtGVzdCBwb3VycXVvaSwgbm91cyB2
-b3VzIHByb3Bvc29ucywgZW4gZ3Vpc2UgZGUgY29ldXIgZGUgY2hhdWZmZSAKLWdhcmFudGkgw6Ag
-dmllIGNoZXogQXRlcm5vLSBkZXMgYnJpcXVlcyBLYWxpdGgsIMOpbGFib3LDqWVzIMOgIHBhcnRp
-ciBkZXMgY8OpcmFtaXF1ZXMgbGVzIHBsdXMgcHVyZXMgZXQgcXVpIGNvbmbDqHJlbnQgZGVzIHF1
-YWxpdMOpcyBleGNlcHRpb25uZWxsZXMgw6Agbm9zIHByb2R1aXRzLiAKSWwgc8K0YWdpdCBwb3Vy
-IG5vdXMgZGUgbm91cyBhZGFwdGVyIHBhcmZhaXRlbWVudCBhdSBtb2RlIGRlIHZpZSBkZSBub3Mg
-Y2xpZW50cyBldCDDoCBsZXVycyBhdHRlbnRlcyBlbiBtYXRpw6hyZSBkwrTDqWNvbG9naWUgZXQg
-ZMK0w6ljb25vbWllIGTCtMOpbmVyZ2llLiAKTGVzIGlubm92YXRpb25zIHRlY2hub2xvZ2lxdWVz
-IG5vdXMgcGVybWV0dGVudCDDqWdhbGVtZW50IGRlIHByb3Bvc2VyIGRlIHBsdXMgZW4gcGx1cyBk
-ZSBzZXJ2aWNlcyDDoCBub3MgY2xpZW50cyBkYW5zIGxlIGJ1dCBkZSBmYWNpbGl0ZXIgbMK0dXRp
-bGlzYXRpb24gCmRlIGxldXIgY2hhdWZmYWdlIGF1IHF1b3RpZGllbi4gRGFucyBub3RyZSByw6ln
-aW9uLCBsZXMgaGl2ZXJzIHNvbnQgcnVkZXMsIGFsb3JzIHZvdXMgcG91dmV6IGltYWdpbmVyIGNv
-bWJpZW4gbm91cyBzb21tZXMgZXhpZ2VhbnRzIHZpcy3DoC12aXMgZGUgbm9zIHN5c3TDqG1lcyBk
-ZSBjaGF1ZmZhZ2UuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMg
-c3BvbnNvcmVkIGJ5IFdpbmRvd3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9w
-LnNmLm5ldC9zZnUvd2luZG93cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Hi Mark,
+>
+>> +MODULE_DESCRIPTION("Analog Devices SPI3 controller driver");
+>
+> Why not call the driver something like bfin_spi3 then?
+
+Do you mean the driver name or file name? It's the same with spi-bfin5xx driver.
+The test script may use the same name for 5xx and 6xx boards.
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

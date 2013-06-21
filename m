@@ -1,38 +1,85 @@
-From: "Sepia" <contact-6iRbmuqo1C7QT0dZR+AlfA@public.gmane.org>
-Subject: Cartouches d'encre jusqu'a moins70 pourcent
-Date: Fri, 21 Jun 2013 14:18:21 +0000 (CET)
-Message-ID: <130621141821.-212889757800006244@obfm40.com>
+From: Joel A Fernandes <agnel.joel@gmail.com>
+Subject: Re: [PATCH v12 05/11] edma: config: Enable config options for EDMA
+Date: Fri, 21 Jun 2013 09:20:01 -0500
+Message-ID: <CAD=GYpZ_5Lp1La=f+2BQfmuj+sc3FgygZRD4gfj4JGGZ0Do=_Q@mail.gmail.com>
+References: <1371762407-24544-1-git-send-email-joelagnel@ti.com>
+	<51C427E1.2000800@ti.com>
+	<CAD=GYpb54bitcg0gnfhzxbvig3etRPY6fs=FOQu5nYkio5NRZw@mail.gmail.com>
+	<201306211600.04986.arnd@arndb.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Sekhar Nori <nsekhar@ti.com>, Joel A Fernandes <joelagnel@ti.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Matt Porter <matt@ohporter.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Rob Landley <rob@landley.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Kridner <jkridner@beagleboard.org>,
+	Koen Kooi <koen@beagleboard.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <201306211600.04986.arnd@arndb.de>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Fri, Jun 21, 2013 at 9:00 AM, Arnd Bergmann <arnd@arndb.de> wrote:
+> On Friday 21 June 2013, Joel A Fernandes wrote:
+>> >> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+>> >> index b1c66a4..7d58cd9 100644
+>> >> --- a/arch/arm/Kconfig
+>> >> +++ b/arch/arm/Kconfig
+>> >> @@ -841,6 +841,7 @@ config ARCH_DAVINCI
+>> >>       select HAVE_IDE
+>> >>       select NEED_MACH_GPIO_H
+>> >>       select TI_PRIV_EDMA
+>> >> +     select DMADEVICES
+>> >
+>> > It is generally a bad idea to force select on something that can be
+>> > enabled using menuconfig. Unless used carefully, select causes "unmet
+>> > direct dependency" warnings which folks are already fighting hard to
+>> > fix. This leads to what Russell referred in the past as "select madness" [1]
+>>
+>> Are you concerned with bloat issues? I know your point of view but the idea
+>> was to build these options by default for these platforms even though
+>> in some cases
+>> it might not be used. I have seen folks including myself select the wrong
+>> option. Having the build system automatically select the correct option for the
+>> most common cases can be very useful I feel and not require manual
+>> configuration.
+>
+> For defaults, you should use the defconfig, not 'select' in Kconfig.
+>
+> A lot of the 'select' statements are actually wrong because they
+> do not take dependencies into account where A selects B but not C,
+> and B depends on C, which leads to broken builds when C is disabled
+> by a user (or randconfig).
 
-(http://obfm40.com/1vkqiktycglknekfbd/index0.html)
-(http://obfm40.com/faks0k3uch2uvvvf0s/index1.html)
-(http://obfm40.com/ckkjkkc5cnvk2wuotl/index2.html)
-(http://obfm40.com/xiklfkexc2nulneo2y/index3.html)
-(http://obfm40.com/ak30ktkpq1ukwmucns/index4.html)
-(http://obfm40.com/ii3fftffqmzuerec4d/index5.html)
-(http://obfm40.com/3v3bitisqvyk0hkqwy/index6.html)
-(http://obfm40.com/ha310t0kqlbudivqzl/index7.html)
-(http://obfm40.com/mvsch4bdcojk5ckkud/index8.html)
-(http://obfm40.com/past24aec3xua1vkes/index9.html)
-(http://obfm40.com/c3cotofarrvzkwv2sg/index10.html)
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
+I haven't come across this problem but- are you saying there is a
+shortcoming in Kbuild/Kconfig that selects an option even if its
+dependency is not met?
 
-Build for Windows Store.
+The problem with defconfig is also too many options I feel for a common case.
+CONFIG_DMADEVICES=y
+CONFIG_TI_EDMA=y
 
-http://p.sf.net/sfu/windows-dev2dev
+Most if not all future OMAPs from will use EDMA. Why not we can be
+explicit about it and just built it in anyway. If ARCH_OMAP and
+DMADEVICES are selected, then we can just build EDMA in by default.
+
+I agree maybe the option can be dropped from Davinci but I suggest
+let's keep it for OMAP. Is that ok?
+
+Thanks,
+Joel

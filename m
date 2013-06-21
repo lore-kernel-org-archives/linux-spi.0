@@ -1,90 +1,187 @@
-From: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Subject: Re: [PATCH v2] spi: add spi controller master
- driver for Blackfin 6xx processor
-Date: Fri, 21 Jun 2013 10:57:28 +0100
-Message-ID: <20130621095728.GN27646@sirena.org.uk>
-References: <1371583828-23788-1-git-send-email-scott.jiang.linux@gmail.com>
-	<20130619183928.GE1403@sirena.org.uk>
-	<CAHG8p1C0DjPt_vNiqYtkVUWYy4M-doj50K1MAEocPs+AkXdhPw@mail.gmail.com>
+From: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v12 03/11] ARM: edma: Add EDMA crossbar event mux support
+Date: Fri, 21 Jun 2013 15:42:21 +0530
+Message-ID: <51C42705.1060803@ti.com>
+References: <1371762407-24544-1-git-send-email-joelagnel@ti.com>
+	<1371762407-24544-4-git-send-email-joelagnel@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4476046533025970179=="
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-        "uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
-	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-To: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-In-Reply-To: <CAHG8p1C0DjPt_vNiqYtkVUWYy4M-doj50K1MAEocPs+AkXdhPw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
-List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
-List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
-	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
-Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Linux DaVinci Kernel List
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        Russell King
+	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+        Benoit Cousson <b-cousson-l0cyMroinI0@public.gmane.org>, Arnd Bergmann
+	<arnd-r2nGTMty4D4@public.gmane.org>,
+        Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Tony
+ Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+        Devicetree Discuss
+	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+        Mark Brown
+	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
+        Linux MMC List
+	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
+        Rob Herring
+	<rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+        Linux Kernel Mailing List
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
+        Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
+        Linux SPI Devel List
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+To: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <1371762407-24544-4-git-send-email-joelagnel-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On 6/21/2013 2:36 AM, Joel A Fernandes wrote:
+> From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+> 
+> 
 
---===============4476046533025970179==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EqVOK5mkaJAMmtSx"
-Content-Disposition: inline
+You should add a description apart from just documenting what you
+changed in this patch.
 
+Changes by Joel:
+> * Split EDMA xbar support out of original EDMA DT parsing patch
+> to keep it easier for review.
+> * Rewrite shift and offset calculation.
+> 
+> Suggested-by: Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>
+> Suggested by: Andy Shevchenko <andy.shevchenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Signed-off-by: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>
+> 
+> Reference:
+> [1] https://patchwork.kernel.org/patch/2226991/
+> ---
+>  arch/arm/common/edma.c             |   62 +++++++++++++++++++++++++++++++++++-
+>  include/linux/platform_data/edma.h |    1 +
+>  2 files changed, 62 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/common/edma.c b/arch/arm/common/edma.c
+> index 407e01e..a03d4f0 100644
+> --- a/arch/arm/common/edma.c
+> +++ b/arch/arm/common/edma.c
+> @@ -568,7 +568,7 @@ static int prepare_unused_channel_list(struct device *dev, void *data)
+>  				(int)pdev->resource[i].start >= 0) {
+>  			ctlr = EDMA_CTLR(pdev->resource[i].start);
+>  			clear_bit(EDMA_CHAN_SLOT(pdev->resource[i].start),
+> -					edma_cc[ctlr]->edma_unused);
+> +						edma_cc[ctlr]->edma_unused);
 
---EqVOK5mkaJAMmtSx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+There are two problems with this hunk:
 
-On Fri, Jun 21, 2013 at 12:48:42PM +0800, Scott Jiang wrote:
-> Hi Mark,
+1) It does not belong to this patch. I said that earlier.
+2) It actually introduces a new checkpatch issue.
 
-> >> +MODULE_DESCRIPTION("Analog Devices SPI3 controller driver");
+I dropped this hunk.
 
-> > Why not call the driver something like bfin_spi3 then?
+>  		}
+>  	}
+>  
+> @@ -1393,6 +1393,52 @@ static int edma_of_read_u32_to_s16_array(const struct device_node *np,
+>  	return 0;
+>  }
+>  
+> +static int edma_xbar_event_map(struct device *dev,
+> +			       struct device_node *node,
+> +			       struct edma_soc_info *pdata, int len)
+> +{
+> +	int ret = 0;
 
-> Do you mean the driver name or file name? It's the same with spi-bfin5xx driver.
+No need to initialize ret here since you use it only after init.
+I fixed that.
 
-Both.  What happens when someone use the IP in a different device, say
-bf7xx.
+> +	int i;
+> +	struct resource res;
+> +	void __iomem *xbar;
+> +	const s16 (*xbar_chans)[2];
+> +	u32 shift, offset, mux;
+> +
+> +	xbar_chans = devm_kzalloc(dev,
+> +				  len/sizeof(s16) + 2*sizeof(s16),
+> +				  GFP_KERNEL);
+> +	if (!xbar_chans)
+> +		return -ENOMEM;
+> +
+> +	ret = of_address_to_resource(node, 1, &res);
+> +	if (ret)
+> +		return -EIO;
+> +
+> +	xbar = devm_ioremap(dev, res.start, resource_size(&res));
+> +	if (!xbar)
+> +		return -ENOMEM;
+> +
+> +	ret = edma_of_read_u32_to_s16_array(node,
+> +					    "ti,edma-xbar-event-map",
+> +					    (s16 *)xbar_chans,
+> +					    len/sizeof(u32));
+> +	if (ret)
+> +		return -EIO;
+> +
+> +	for (i = 0; xbar_chans[i][0] != -1; i++) {
+> +		shift = (xbar_chans[i][1] & 0x03) << 3;
+> +		offset = xbar_chans[i][1] & 0xfffffffc;
+> +		mux = readl(xbar + offset);
+> +		mux &= ~(0xff << shift);
+> +		mux |= xbar_chans[i][0] << shift;
+> +		writel(mux, (xbar + offset));
+> +	}
+> +
+> +	pdata->xbar_chans = xbar_chans;
+> +
+> +	return 0;
+> +}
+> +
+>  static int edma_of_parse_dt(struct device *dev,
+>  			    struct device_node *node,
+>  			    struct edma_soc_info *pdata)
+> @@ -1458,6 +1504,10 @@ static int edma_of_parse_dt(struct device *dev,
+>  
+>  	pdata->default_queue = 0;
+>  
+> +	prop = of_find_property(node, "ti,edma-xbar-event-map", &sz);
+> +	if (prop)
+> +		ret = edma_xbar_event_map(dev, node, pdata, sz);
+> +
+>  	return ret;
+>  }
+>  
+> @@ -1476,6 +1526,7 @@ static int edma_probe(struct platform_device *pdev)
+>  	int			status = -1;
+>  	const s16		(*rsv_chans)[2];
+>  	const s16		(*rsv_slots)[2];
+> +	const s16		(*xbar_chans)[2];
+>  	int			irq[EDMA_MAX_CC] = {0, 0};
+>  	int			err_irq[EDMA_MAX_CC] = {0, 0};
+>  	struct resource		*r[EDMA_MAX_CC] = {NULL};
+> @@ -1591,6 +1642,15 @@ static int edma_probe(struct platform_device *pdev)
+>  			}
+>  		}
+>  
+> +		/* Clear the xbar mapped channels in unused list */
+> +		xbar_chans = info[j]->xbar_chans;
+> +		if (xbar_chans) {
+> +			for (i = 0; xbar_chans[i][1] != -1; i++) {
+> +				off = xbar_chans[i][1];
+> +				clear_bits(off, 1,
+> +					  edma_cc[j]->edma_unused);
 
-> The test script may use the same name for 5xx and 6xx boards.
+You ignored my request to fix the alignment issue here. I will send the
+updated patch separately.
 
-That sounds like something it's not impossible to fix...
-
---EqVOK5mkaJAMmtSx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJRxCOFAAoJELSic+t+oim9bagP/1kDBBpM8Npv/wRWnFGmYw1w
-UExKzVPOPPqzlAaxarN5nkQ1/DOdRTfnarpDoQp6FB/8lBUI2OorF9ihWRxPz2pT
-U+ZPcAt59H8ljHfnf5L6sIwyqLfXD/d6wchEGgiUSppPM3r97QGUE92vxEF8qBd4
-2JUIqWde7WsICWv5vNrD17xLHXKbnqmjtnC4IpY6AAE5aY/3bRmo27xweD03U3DZ
-aNRaC41U/TIZgDxuPRP8XnYFjt14qvLvRIcO9dShvYqP51R/j8kSzO3SdR2AJOFO
-GhaPYZT33Hcy1FDBfoQtRuSSoyFc/ZGihv67ELcz1rnrB3lHS10MKZBvp3Wfv3cr
-cF0my2sV67wDIV6DzqP4wAfYksgMcCf+f8eSvDTqaUIYNbVPfOmDD6hS3+I33aaV
-Yma3f2O9+glsuw5pTLSnJbpZferSD4ugdN0f6lbPFRDDXSokXC7xj7nwpduzNCce
-Fi7MhZz8+CG93AlaxxmI84KCac9tql0vMycsdRhsHmI/6vLSSIIhTSACjc25N1Q2
-26saL2d++rHYWG09F4PRzexAGDZox4LlGGbXkS15GeSlGSMfcFMPYD+9TUlj1t+4
-V71S24S2VqB0Bca1bNXwzg5bIDekBDANMpuAK+D91mahWewOGdme+zLY9aqwNX5h
-C9Ytv74JHgen1jq/4RBb
-=YHfp
------END PGP SIGNATURE-----
-
---EqVOK5mkaJAMmtSx--
-
---===============4476046533025970179==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Uclinux-dist-devel mailing list
-Uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel
---===============4476046533025970179==--
+Thanks,
+Sekhar

@@ -1,41 +1,27 @@
-From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2] spi: add spi controller master driver for Blackfin 6xx
-	processor
-Date: Fri, 21 Jun 2013 12:48:42 +0800
-Message-ID: <CAHG8p1C0DjPt_vNiqYtkVUWYy4M-doj50K1MAEocPs+AkXdhPw@mail.gmail.com>
-References: <1371583828-23788-1-git-send-email-scott.jiang.linux@gmail.com>
-	<20130619183928.GE1403@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	"uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
-	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130619183928.GE1403-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+From: Girish K S <girishks2000@gmail.com>
+Subject: [PATCH 0/2] support for non-gpio cs pin
+Date: Fri, 21 Jun 2013 11:26:11 +0530
+Message-ID: <1371794173-27266-1-git-send-email-ks.giri@samsung.com>
+Cc: broonie@kernel.org
+To: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
->
->> +MODULE_DESCRIPTION("Analog Devices SPI3 controller driver");
->
-> Why not call the driver something like bfin_spi3 then?
+This patch series adds support for the dedicated cs pin and
+support for exynos5440 spi controller. The first patch
+"Polling support for s3c64xx spi controller" in the previous
+serias is already applied to Mark's spi-next branch. So created
+a new series with remaining 2 patches.
 
-Do you mean the driver name or file name? It's the same with spi-bfin5xx driver.
-The test script may use the same name for 5xx and 6xx boards.
 
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
+Girish K S (2):
+  spi: s3c64xx: Added provision for dedicated cs pin
+  spi: s3c64xx: Added support for exynos5440 spi
 
-Build for Windows Store.
+ drivers/spi/spi-s3c64xx.c |   46 +++++++++++++++++++++++++++++++++++++-------
+ 1 files changed, 38 insertions(+), 8 deletions(-)
 
-http://p.sf.net/sfu/windows-dev2dev
+-- 
+1.7.5.4

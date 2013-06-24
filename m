@@ -1,10 +1,10 @@
-From: "destockage" <contact-X3uiiclsbTtBDgjK7y7TUQ@public.gmane.org>
-Subject: -90% sur l'iPhone 5
-Date: Sun, 23 Jun 2013 08:21:26 +0000 (CET)
-Message-ID: <130623082126.-197751582800007364@obfm40.com>
+From: "Lot 18 - Ventes Privees de Vins fins" <contact-HqX2e3LHUgzQT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] Jusqu'a 60 pourcent de reduction et livraison offerte
+Date: Mon, 24 Jun 2013 05:01:18 +0000 (CET)
+Message-ID: <130624050118.87262517300003004@obfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -18,52 +18,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKIChodHRwOi8vb2JmbTQwLmNvbS9hbXEwY2p1NGZjeTVkMzB2dnEvaW5kZXgwLmh0bWwpCgoK
-CgoKIChodHRwOi8vb2JmbTQwLmNvbS9penFmZWp4dGZyYnAwYWJ2a28vaW5kZXgxLmh0bWwpCgoK
-wqAKTGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50
-IHBvc3NpYmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0
-cDovL29iZm00MC5jb20vM3BxYnRqaG9mZXU1ZXAybmVnL2luZGV4Mi5odG1sKSAKCgoKIChodHRw
-Oi8vb2JmbTQwLmNvbS9od3ExM2oyM2ZkenB3NXRudWovaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJl
-eiBzdXJlbWVudCByZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWlu
-IGRlIHNlIGTDqXZlbG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxl
-cyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4g
-UGFydG91dCBzdXIgbGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0
-b2lyZXMgZCdoZXVyZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4u
-IAogKGh0dHA6Ly9vYmZtNDAuY29tLzFwZHF0NWJqb3F2NWx6MnV5by9pbmRleDQuaHRtbCkKSGFi
-aXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUg
-cGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2Vz
-dCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6
-Ly9vYmZtNDAuY29tL2Z3ZHMzNWFhb2lucDI0dHVkcS9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExB
-IFNVSVRFID4+IChodHRwOi8vb2JmbTQwLmNvbS9jbWRqYzUxem93bDV2dTB6c2ovaW5kZXg2Lmh0
-bWwpCgogKGh0dHA6Ly9vYmZtNDAuY29tL3h6ZGxlNXZibzAycG5rYnpsZy9pbmRleDcuaHRtbCkK
-CgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLD
-qXN1bHRhdHMgb250IMOpdMOpIHRyw6hzIHN1cnByZW5hbnRzLiAoaHR0cDovL29iZm00MC5jb20v
-am1pZDF4a25meGc1b3QwMTJxL2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vb2JmbTQwLmNvbS9x
-emlvdnhmMmY1MXBmYmIxdG8vaW5kZXg5Lmh0bWwpCiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVz
-IG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2VybmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlz
-YWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4gVG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOp
-Y29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBsZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUu
-IEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8vb2JmbTQwLmNvbS93ZGwzNW1qaXlycHEyZ291
-M3kvaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJVEUgPj4gKGh0dHA6Ly9vYmZtNDAuY29t
-L3pxM2VqYjRyYXhwaG9xY2NoeS9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vb2JmbTQwLmNv
-bS8xcHJndHgyamZsdjU0ejJtdW8vaW5kZXgxMi5odG1sKQogKGh0dHA6Ly9vYmZtNDAuY29tL2Y0
-Ynlrbml4NGt2Zmg0eXNlby9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9vYmZtNDAuY29tLzJldXIz
-ZXNhd2p3dGpuNGZhcy9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vb2JmbTQwLmNvbS90aXE0
-Zm81NWNpd3owd2V2aXMvaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1IChodHRwOi8v
-b2JmbTQwLmNvbS8xeHVxZGV0eW5qMjJqdW1mdW8vaW5kZXgxNi5odG1sKQoKCgoKCgrCoAoiSidh
-aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
-b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIgKGh0
-dHA6Ly9vYmZtNDAuY29tL2ZicXN3b2FiMWkydzBrYXZlby9pbmRleDE3Lmh0bWwpCgoKCgoKCgog
-KGh0dHA6Ly9vYmZtNDAuY29tL2J5ZHd3NXpiamMwcmxleHVoZC9pbmRleDE4Lmh0bWwpClBhdG91
-IChodHRwOi8vb2JmbTQwLmNvbS8wamFwZDJveXU1MDFmdmdjM2QvaW5kZXgxOS5odG1sKQogU2Ft
-ZWRpIDIzIGp1aW4gNGgzNyAoaHR0cDovL29iZm00MC5jb20vZHN6NXp2ZzF6bmljdWxqcDNzL2lu
-ZGV4MjAuaHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hy
-ZXMgYXUgY2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwg
-bWUgdGFyZGUgZCdlc3NheWVyIiAoaHR0cDovL29iZm00MC5jb20veW9jbnlqd2d4dGltcmQxbGhz
-L2luZGV4MjEuaHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
-U0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3Mg
-U3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+(http://obfm41.com/kxakd0pkdat2m1mcio/index0.html)
+(http://obfm41.com/v2air0ssdjs0hcpcaq/index1.html)
+(http://obfm41.com/ucavo0wfdb421grqhj/index2.html)
+(http://obfm41.com/etaa40qpdzk0gq5q3g/index3.html)
+(http://obfm41.com/0cupoeox05w2rdrfoq/index4.html)
+(http://obfm41.com/btuw4e450xe0il5fgo/index5.html)
+(http://obfm41.com/2xumdedu0y02c0mojg/index6.html)
+(http://obfm41.com/t2uzrery0ud0q2poqj/index7.html)
+(http://obfm41.com/sxj4ld5vdic2zvmeco/index8.html)
+(http://obfm41.com/l2jrmdyldqq0uepexq/index9.html)
+(http://obfm41.com/bqrnoxnxp2wm2lcmgj/index10.html)
+(http://obfm41.com/0db5pnqjt4wcodosoj/index11.html)
+(http://obfm41.com/p4ltumaruiao45yuds/index12.html)
+L&#8217;abus d&#8217;alcool est dangereux pour la sant&#233;, &#224; consommer avec mod&#233;ration.
+
+Cr&#233;dit photos : Istockphoto - document non contractuel, pour toutes informations, nous consulter ...
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

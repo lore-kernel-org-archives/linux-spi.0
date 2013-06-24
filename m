@@ -1,133 +1,91 @@
-From: "Monoprix via Nlpromos" <FWU3-sVi5de4ipzTqaPlLqCKUq1aTQe2KTcn/@public.gmane.org>
-Subject: =?UTF-8?B?c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IGEgw6l0w6kgc8OpbGVjdGlvbm7DqSAh?=
-Date: Mon, 24 Jun 2013 19:59:15 +0100
-Message-ID: <0.0.1F9.93B.1CE710CEC3A0E50.0@mta20130.pur3.net>
-Reply-To: Monoprix via Nlpromos <FWU3-sVi5de4ipzTqaPlLqCKUq1aTQe2KTcn/@public.gmane.org>
+From: Joel A Fernandes <agnel.joel@gmail.com>
+Subject: Re: [PATCH v12 05/11] edma: config: Enable config options for EDMA
+Date: Mon, 24 Jun 2013 15:10:15 -0500
+Message-ID: <CAD=GYparFQPMH801j9N2tRA6VnMidn23qUS9=yW8amOLSDLOzA@mail.gmail.com>
+References: <1371762407-24544-1-git-send-email-joelagnel@ti.com>
+	<201306211632.12577.arnd@arndb.de>
+	<CAD=GYpbhBAaSkMtcJaPtVpWar7AcW37QpAk3A0qgwX6G5PDoZg@mail.gmail.com>
+	<201306212044.26677.arnd@arndb.de>
+	<CAD=GYpY4koXd9f6_ijQfDHsiULD4d53cdu=9X421WXSAit_YQg@mail.gmail.com>
+	<51C82C3C.8040506@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Arnd Bergmann <arnd@arndb.de>, Joel A Fernandes <joelagnel@ti.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Matt Porter <matt@ohporter.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Rob Landley <rob@landley.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Kridner <jkridner@beagleboard.org>,
+	Koen Kooi <koen@beagleboard.org>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org
+To: Sekhar Nori <nsekhar@ti.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <51C82C3C.8040506@ti.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-U2kgdm91cyBuJ2Fycml2ZXogcGFzIGEgdmlzdWFsaXNlciBjZSBtZXNzYWdlLCB2ZXVpbGxleiBj
-bGlxdWVyIGljaToKaHR0cDovL3Jlc3BvbnNlLnB1cmUzNjAuY29tL2ludGVyZmFjZS9leHRlcm5h
-bF92aWV3X2VtYWlsLnBocD9COTIxNzM4MzQ2OTc2ODUzMzE1NDI3NTQ2NDMzMTE4JnZhcklkPXt+
-bWFpCmxWYXJpYXRpb25JZH59CgooZW1haWxfbGFuY2VtZW50X3IxX2MxLmpwZyk6Cmh0dHA6Ly9t
-b25vcHJpeC5zZXJ2Mm1lLmNvbS8/ZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0JnByZW5vbT0mbm9tPSZjcD0mbmFpc3NhbmNlPSZwaGFzZT10CmVzdCZzb3VyY2U9
-MTQ3NAoKKGVtYWlsX2xhbmNlbWVudF9yMl9jMS5qcGcpOgpodHRwOi8vbW9ub3ByaXguc2VydjJt
-ZS5jb20vP2VtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZwcmVu
-b209Jm5vbT0mY3A9Jm5haXNzYW5jZT0mcGhhc2U9dAplc3Qmc291cmNlPTE0NzQKCihlbWFpbF9s
-YW5jZW1lbnRfcjNfYzEuanBnKToKaHR0cDovL21vbm9wcml4LnNlcnYybWUuY29tLz9lbWFpbD1z
-cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmcHJlbm9tPSZub209JmNwPSZu
-YWlzc2FuY2U9JnBoYXNlPXQKZXN0JnNvdXJjZT0xNDc0CgoKQm9uam91ciwgIEdyYW5kcyBtYWdh
-c2lucywgYm91dGlxdWUgY3LDqWF0ZXVyIG91IGZyaXBlcmllID8gRmFpdGVzLXZvdXMKcGxhaXNp
-ciBncsOiY2Ugw6AgTW9ub3ByaXggZXQgdGVudGV6IGRlIGdhZ25lciB2b3RyZSB3ZWVrLWVuZCBz
-aG9wcGluZyBkYW5zCmxhIGNhcGl0YWxlIGxhIHBsdXMgYnJhbmNow6llIGQnRXVyb3BlIGVuIHBh
-cnRpY2lwYW50IMOgIG5vdHJlIGpldQpjb25jb3Vycy46Cmh0dHA6Ly9tb25vcHJpeC5zZXJ2Mm1l
-LmNvbS8/ZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnByZW5v
-bT0mbm9tPSZjcD0mbmFpc3NhbmNlPSZwaGFzZT10CmVzdCZzb3VyY2U9MTQ3NAoKCkZhaXRlcy12
-b3VzIHBsYWlzaXIgZ3LDomNlIMOgIE1vbm9wcml4d2Vlay1lbmQgc2hvcHBpbmcgZGFucyBsYSBj
-YXBpdGFsZSBsYQpwbHVzIGJyYW5jaMOpZSBkJ0V1cm9wZQoKCkluc2NyaXZlei12b3VzIGTDqHMg
-bWFpbnRlbmFudCAhOgpodHRwOi8vbW9ub3ByaXguc2VydjJtZS5jb20vP2VtYWlsPXNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZwcmVub209Jm5vbT0mY3A9Jm5haXNzYW5j
-ZT0mcGhhc2U9dAplc3Qmc291cmNlPTE0NzQKCihlbWFpbF9sYW5jZW1lbnRfcjNfYzkuanBnKToK
-aHR0cDovL21vbm9wcml4LnNlcnYybWUuY29tLz9lbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQmcHJlbm9tPSZub209JmNwPSZuYWlzc2FuY2U9JnBoYXNlPXQKZXN0
-JnNvdXJjZT0xNDc0CgooZW1haWxfbGFuY2VtZW50X3I0X2MxLmpwZyk6Cmh0dHA6Ly9tb25vcHJp
-eC5zZXJ2Mm1lLmNvbS8/ZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0JnByZW5vbT0mbm9tPSZjcD0mbmFpc3NhbmNlPSZwaGFzZT10CmVzdCZzb3VyY2U9MTQ3NAoK
-CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAooZW1haWxfbGFuY2VtZW50
-X3I0X2M2LmpwZyk6Cmh0dHA6Ly9tb25vcHJpeC5zZXJ2Mm1lLmNvbS8/ZW1haWw9c3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnByZW5vbT0mbm9tPSZjcD0mbmFpc3NhbmNl
-PSZwaGFzZT10CmVzdCZzb3VyY2U9MTQ3NAoKKGVtYWlsX2xhbmNlbWVudF9yNF9jOC5qcGcpOgpo
-dHRwOi8vbW9ub3ByaXguc2VydjJtZS5jb20vP2VtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldCZwcmVub209Jm5vbT0mY3A9Jm5haXNzYW5jZT0mcGhhc2U9dAplc3Qm
-c291cmNlPTE0NzQKCihlbWFpbF9sYW5jZW1lbnRfcjVfYzEuanBnKToKaHR0cDovL21vbm9wcml4
-LnNlcnYybWUuY29tLz9lbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQmcHJlbm9tPSZub209JmNwPSZuYWlzc2FuY2U9JnBoYXNlPXQKZXN0JnNvdXJjZT0xNDc0Cgoo
-ZW1haWxfbGFuY2VtZW50X3I2X2MxLmdpZik6Cmh0dHA6Ly9tb25vcHJpeC5zZXJ2Mm1lLmNvbS8/
-ZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnByZW5vbT0mbm9t
-PSZjcD0mbmFpc3NhbmNlPSZwaGFzZT10CmVzdCZzb3VyY2U9MTQ3NAoKKGVtYWlsX2xhbmNlbWVu
-dF9yNl9jNC5naWYpOgpodHRwOi8vbW9ub3ByaXguc2VydjJtZS5jb20vP2VtYWlsPXNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZwcmVub209Jm5vbT0mY3A9Jm5haXNzYW5j
-ZT0mcGhhc2U9dAplc3Qmc291cmNlPTE0NzQKCihlbWFpbF9sYW5jZW1lbnRfcjZfYzcuanBnKToK
-aHR0cDovL21vbm9wcml4LnNlcnYybWUuY29tLz9lbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQmcHJlbm9tPSZub209JmNwPSZuYWlzc2FuY2U9JnBoYXNlPXQKZXN0
-JnNvdXJjZT0xNDc0CgooZW1haWxfbGFuY2VtZW50X3I3X2MxLmpwZyk6Cmh0dHA6Ly9tb25vcHJp
-eC5zZXJ2Mm1lLmNvbS8/ZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0JnByZW5vbT0mbm9tPSZjcD0mbmFpc3NhbmNlPSZwaGFzZT10CmVzdCZzb3VyY2U9MTQ3NAoK
-CsKgCihlbWFpbF9sYW5jZW1lbnRfcjhfYzUuanBnKToKaHR0cDovL21vbm9wcml4LnNlcnYybWUu
-Y29tLz9lbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmcHJlbm9t
-PSZub209JmNwPSZuYWlzc2FuY2U9JnBoYXNlPXQKZXN0JnNvdXJjZT0xNDc0CgoKQWluc2ksIGdy
-w6JjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRl
-IHRvdXQgY2UKcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3Mu
-Li4gLkJlc29pbiBkZSB2b3lhZ2VyLCBkZQp2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2Vy
-LCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQKcXVhbGl0w6kgcHJpeCB0
-b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBw
-ZXRpdApvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29u
-cywgZXQgcXVlIG5vdXMgbWV0dG9ucwrDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBs
-J2FubsOpZS4uIE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuCm5vdXZlYXUgcmVnYXJk
-IGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50
-Cm1pZXV4IHRvdXRlIGwnYW5uw6llLkEgbGEgcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmlnaW5hbCA/
-IE5vdXMgc291aGFpdG9ucwp2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUg
-dm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dAplbiBjb25zb21tYW50IG1pZXV4IHRv
-dXRlIGwnYW5uw6llLiBBaW5zaSwgZ3JhY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIKZXhlbXBs
-ZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0
-LApvcHBvcnR1bml0w6ksIGluZm9zLi4uIC4uLiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBo
-YWJpbGxlciwgZGUgdm91cwpjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1
-ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nCmRlIGwnYW5uw6llLCBhbG9ycyBw
-b3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlv
-bnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpy
-w6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuRW52aWUgZGUgdm91cyBmYWlyZSB1bmUg
-YmVhdXTDqSDDoCBtb2luZHJlCmNvw7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgZGUgcHLD
-qXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqQrDoCBtb2luZHJlIGZyYWlzIGV0
-IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRzCnJhaXNvbm5h
-YmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMg
-cG91ciB2b3VzCnBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21icmV1c2VzIMOpY29ub21p
-ZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQKcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1pbGxlLkFpbnNp
-LCBncsOiY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwKcG91dm9pciBwcm9maXRl
-ciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w6ksCmlu
-Zm9zLi4uIC5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1
-c3NlciwgZGUgbWFuZ2VyCm91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHBy
-aXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycwpwb3VycXVvaSBuZSBwYXMgamV0ZXIg
-dW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cwphZHJl
-c3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91ciByw6lndWxpw6hyZW1lbnQgZXQgdG91
-dGUgbCdhbm7DqWUuLgpOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJl
-Z2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AKZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29t
-bWFudCBtaWV1eCB0b3V0ZSBsJ2FubsOpZS5BIGxhIHJlY2hlcmNoZSBkdQpjYWRlYXUgb3JpZ2lu
-YWwgPyBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZCBhZmlu
-IGRlCnZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1
-eCB0b3V0ZSBsJ2FubsOpZS4KQWluc2ksIGdyYWNlIMOgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4
-ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZQpxdWkgZXN0IHByb2R1aXQgYSBiYXMg
-Y291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlCnZv
-dXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVp
-bGxldXIgcmFwcG9ydApxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxv
-cnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0Cm9laWwgcGFyIHN1ciBsZXMgcHJvcG9z
-aXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zCsOgIGpv
-dXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkVudmllIGRlIHZvdXMgZmFpcmUg
-dW5lIGJlYXV0w6kgw6AKbW9pbmRyZSBjb8O7dCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGRl
-IHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzCmQnw6l0w6kgw6AgbW9pbmRyZSBmcmFp
-cyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDDoCBkZXMgYnVkZ2V0cwpyYWlz
-b25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBub3MgcHJvcG9zaXRp
-b25zIHBvdXIgdm91cwpwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJldXNlcyDDqWNv
-bm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50CnBsYWlzaXIgw6AgdG91dGUgbGEgZmFtaWxsZS4K
-CgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9yZXNwb25zZS5w
-dXJlMzYwLmNvbS9fYWN0L2dldF9yY3IucGhwP0I5MjE3MzgzNDY5NzY4NTMzMTU0Mjc1NDY0MzMx
-MTgKCgoKCgoKe35COTIxNzM4MzQ2OTc2ODUzMzE1NDI3NTQ2NDMzMTE4fn0KLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tClRoaXMgU0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVp
-bGQgZm9yIFdpbmRvd3MgU3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRl
-dgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
-ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
-Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
-ZXZlbC1nZW5lcmFsCg==
+On Mon, Jun 24, 2013 at 6:23 AM, Sekhar Nori <nsekhar@ti.com> wrote:
+> On 6/22/2013 3:23 AM, Joel A Fernandes wrote:
+>> Hi Arnd,
+>>
+>> On Fri, Jun 21, 2013 at 1:44 PM, Arnd Bergmann <arnd@arndb.de> wrote:
+>>> On Friday 21 June 2013, Joel A Fernandes wrote:
+>>>> I think we are talking about different things, I agree the 'select
+>>>> DMADEVICES' can be dropped but lets please keep the default y option
+>>>> (not adding new select statements, just saying that if someone select
+>>>> DMADEVICES in menuconfig and if they're ARCH_OMAP=1 , then default to
+>>>> EDMA). This will simply allow people to have a default. Thanks.
+>>>
+>>> Yes, that's ok.
+>>
+>> Ok, thanks. I will follow up with a patch in my next submissions that builds it.
+>>
+>> Perhaps a:
+>> default y if 'ARCH_OMAP2PLUS'
+>>
+>> and leave the existing as it is...
+>> default n if  'ARCH_DAVINCI || ARCH_OMAP1 || ARCH_OMAP2'
+>>
+>> would make most sense to me. Basically EDMA is seen on current and all
+>> new OMAP2PLUS.
+>
+> OMAP2PLUS devices like OMAP3/4 do not have EDMA so this is not really true.
+
+Sure. Right now though, and from what I've seen, all future SoCs are
+supporting EDMA.
+
+>>
+>>>
+>>> config TI_EDMA
+>>>         tristate "TI EDMA support"
+>>>         default m if 'ARCH_DAVINCI || ARCH_OMAP1 || ARCH_OMAP2
+>>>         select DMA_ENGINE
+>>>         select DMA_VIRTUAL_CHANNELS
+>>
+>>
+>>
+>> MMC depends on EDMA specially on AM33xx there's no PIO mode AFAIK. The
+>> 'm' option will require some initramfs to load the module when needing
+>> to MMC boot, I suggest lets leave it as y.
+>
+> But there is no reason why it cannot work with PIO, right? Sounds like
+> the right fix is in driver.
+
+I am not sure about this. I agree no reason it cannot do PIO. I will check.
+But even if it did, loading EDMA as a module will require omap_hsmmc to switch
+to DMA mode which I am sure the driver doesn't support today.
+
+Thanks,
+Joel

@@ -1,89 +1,127 @@
-From: "Fernandes, Joel A" <joelagnel-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCH v12 05/11] edma: config: Enable config options for EDMA
-Date: Mon, 24 Jun 2013 21:09:58 +0000
-Message-ID: <083BC63EECB6FD41B8E81CF7FD87CC0F2E4EE5A1@DLEE08.ent.ti.com>
-References: <1371762407-24544-1-git-send-email-joelagnel@ti.com>
-	<201306242228.23297.arnd@arndb.de>
-	<CAD=GYpYwswOYGHRzZ6SeKD+sEfi-7s3HuqKr7G0OXQWFCA_EtQ@mail.gmail.com>
-	<201306242307.35840.arnd@arndb.de>
+From: "Mathon" <contact-U2bUC7DWwF3EIuZ0ZFnJtQ@public.gmane.org>
+Subject: [SPAM] -20% sur votre commande avec le code CARTEC2L. Livraison
+	gratuite.
+Date: Tue, 25 Jun 2013 02:14:44 +0000 (CET)
+Message-ID: <130625021444.-181254589700005116@obfm42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Russell King
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-        "Cousson,  Benoit" <b-cousson-l0cyMroinI0@public.gmane.org>,
-        Linux
- Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Tony Lindgren
-	<tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-        Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Devicetree
- Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        Mark Brown
-	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-        Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Rob
- Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        Linux Kernel Mailing List
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-        Linux SPI Devel List
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Andrew Morton
-	<akpm
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>, Joel A Fernandes <agnel.joel-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <201306242307.35840.arnd-r2nGTMty4D4@public.gmane.org>
-Content-Language: en-US
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> -----Original Message-----
-> From: Arnd Bergmann [mailto:arnd-r2nGTMty4D4@public.gmane.org]
-> Sent: Monday, June 24, 2013 4:08 PM
-> To: Joel A Fernandes
-> Cc: Nori, Sekhar; Fernandes, Joel A; Tony Lindgren; Matt Porter; Grant Likely;
-> Rob Herring; Vinod Koul; Mark Brown; Cousson, Benoit; Russell King; Rob
-> Landley; Andrew Morton; Jason Kridner; Koen Kooi; Devicetree Discuss; Linux
-> OMAP List; Linux ARM Kernel List; Linux DaVinci Kernel List; Linux Kernel
-> Mailing List; Linux Documentation List; Linux MMC List; Linux SPI Devel List
-> Subject: Re: [PATCH v12 05/11] edma: config: Enable config options for EDMA
-> 
-> On Monday 24 June 2013, Joel A Fernandes wrote:
-> > >> Yes sure, right now they are defined  as follows in include/linux/edma.h:
-> > >>
-> > >> #if defined(CONFIG_TI_EDMA) || defined(CONFIG_TI_EDMA_MODULE)
-> bool
-> > >> edma_filter_fn(struct dma_chan *, void *); #else static inline bool
-> > >> edma_filter_fn(struct dma_chan *chan, void *param) { return false;
-> > >> } #endif
-> > >
-> > > It's best to just define the filter function in the platform code
-> > > and pass a pointer to it through platform data. The way you do it
-> > > above makes the slave drivers inherently nonportable.
-> >
-> > But with DT-only platforms, can you really do that?
-> 
-> The nice thing about this is that with a DT-only platform, the filter function will
-> automatically go away: you have no platform_data, which means that if you
-> are using dma_request_slave_channel_compat, you just pass NULL as the filter
-> and the filter-data, same as just calling dma_request_slave_channel.
-> 
- 
-[Joel] Ah yes! Thanks for that. Right, edma_filter_fn is not passed explicitly for DT case.
-
-Thanks,
-Joel
+CgotMjAlKiBzdXIgdG91dGUgdm90cmUgY29tbWFuZGUgYXZlYyBsZSBjb2RlIENBUlRFQzJMICsg
+bGl2cmFpc29uIGdyYXR1aXRlCihodHRwOi8vY2xpY2sucGRsNHRyYWNraW5nLmNvbS8/c2M9NjQ1
+JnQ9MCZsPTEyODE5JnA9MjEmdXJsPWh0dHA6Ly9ldWxlcmlhbi5tYXRob24uZnIvZHluY2xpY2sv
+bWF0aG9uLz9lbWwtcHVibGlzaGVyPWNsaWMtbGVhZCZlbWwtbmFtZT1wZGwtYzJsJmV1cmw9aHR0
+cDovL3d3dy5tYXRob24uZnIvP2U9JnV0bV9tZWRpdW09ZW1haWxpbmcmdXRtX3NvdXJjZXBkbC1j
+MmwmZWVtYWlsPSZlc2VnLW5hbWU9c2VnbWVudC1tYWlsaW5nJmVzZWctaXRlbT0pCihodHRwOi8v
+Y2xpY2sucGRsNHRyYWNraW5nLmNvbS8/c2M9NjQ1JnQ9MCZsPTEyODE5JnA9MjEmdXJsPWh0dHA6
+Ly9ldWxlcmlhbi5tYXRob24uZnIvZHluY2xpY2svbWF0aG9uLz9lbWwtcHVibGlzaGVyPWNsaWMt
+bGVhZCZlbWwtbmFtZT1wZGwtYzJsJmV1cmw9aHR0cDovL3d3dy5tYXRob24uZnIvP2U9JnV0bV9t
+ZWRpdW09ZW1haWxpbmcmdXRtX3NvdXJjZXBkbC1jMmwmZWVtYWlsPSZlc2VnLW5hbWU9c2VnbWVu
+dC1tYWlsaW5nJmVzZWctaXRlbT0pCihodHRwOi8vY2xpY2sucGRsNHRyYWNraW5nLmNvbS8/c2M9
+NjQ1JnQ9MCZsPTEyODE5JnA9MjEmdXJsPWh0dHA6Ly9ldWxlcmlhbi5tYXRob24uZnIvZHluY2xp
+Y2svbWF0aG9uLz9lbWwtcHVibGlzaGVyPWNsaWMtbGVhZCZlbWwtbmFtZT1wZGwtYzJsJmV1cmw9
+aHR0cDovL3d3dy5mYWNlYm9vay5jb20vbWF0aG9uLmZyP2U9JnV0bV9tZWRpdW09ZW1haWxpbmcm
+dXRtX3NvdXJjZXBkbC1jMmwmZWVtYWlsPSZlc2VnLW5hbWU9c2VnbWVudC1tYWlsaW5nJmVzZWct
+aXRlbT0pCihodHRwOi8vY2xpY2sucGRsNHRyYWNraW5nLmNvbS8/c2M9NjQ1JnQ9MCZsPTEyODE5
+JnA9MjEmdXJsPWh0dHA6Ly9ldWxlcmlhbi5tYXRob24uZnIvZHluY2xpY2svbWF0aG9uLz9lbWwt
+cHVibGlzaGVyPWNsaWMtbGVhZCZlbWwtbmFtZT1wZGwtYzJsJmV1cmw9aHR0cDovL3R3aXR0ZXIu
+Y29tLyMhL21hdGhvbmZyP2U9JnV0bV9tZWRpdW09ZW1haWxpbmcmdXRtX3NvdXJjZXBkbC1jMmwm
+ZWVtYWlsPSZlc2VnLW5hbWU9c2VnbWVudC1tYWlsaW5nJmVzZWctaXRlbT0pCihodHRwOi8vY2xp
+Y2sucGRsNHRyYWNraW5nLmNvbS8/c2M9NjQ1JnQ9MCZsPTEyODE5JnA9MjEmdXJsPWh0dHA6Ly9l
+dWxlcmlhbi5tYXRob24uZnIvZHluY2xpY2svbWF0aG9uLz9lbWwtcHVibGlzaGVyPWNsaWMtbGVh
+ZCZlbWwtbmFtZT1wZGwtYzJsJmV1cmw9aHR0cDovL3d3dy5tYXRob24uZnIvY2F0LWN1aXNzb24/
+ZT0mdXRtX21lZGl1bT1lbWFpbGluZyZ1dG1fc291cmNlcGRsLWMybCZlZW1haWw9JmVzZWctbmFt
+ZT1zZWdtZW50LW1haWxpbmcmZXNlZy1pdGVtPSkKKGh0dHA6Ly9jbGljay5wZGw0dHJhY2tpbmcu
+Y29tLz9zYz02NDUmdD0wJmw9MTI4MTkmcD0yMSZ1cmw9aHR0cDovL2V1bGVyaWFuLm1hdGhvbi5m
+ci9keW5jbGljay9tYXRob24vP2VtbC1wdWJsaXNoZXI9Y2xpYy1sZWFkJmVtbC1uYW1lPXBkbC1j
+MmwmZXVybD1odHRwOi8vd3d3Lm1hdGhvbi5mci9jYXQtZWxlY3Ryb21lbmFnZXI/ZT0mdXRtX21l
+ZGl1bT1lbWFpbGluZyZ1dG1fc291cmNlcGRsLWMybCZlZW1haWw9JmVzZWctbmFtZT1zZWdtZW50
+LW1haWxpbmcmZXNlZy1pdGVtPSkKKGh0dHA6Ly9jbGljay5wZGw0dHJhY2tpbmcuY29tLz9zYz02
+NDUmdD0wJmw9MTI4MTkmcD0yMSZ1cmw9aHR0cDovL2V1bGVyaWFuLm1hdGhvbi5mci9keW5jbGlj
+ay9tYXRob24vP2VtbC1wdWJsaXNoZXI9Y2xpYy1sZWFkJmVtbC1uYW1lPXBkbC1jMmwmZXVybD1o
+dHRwOi8vd3d3Lm1hdGhvbi5mci9jYXQtcGF0aXNzZXJpZT9lPSZ1dG1fbWVkaXVtPWVtYWlsaW5n
+JnV0bV9zb3VyY2VwZGwtYzJsJmVlbWFpbD0mZXNlZy1uYW1lPXNlZ21lbnQtbWFpbGluZyZlc2Vn
+LWl0ZW09KQooaHR0cDovL2NsaWNrLnBkbDR0cmFja2luZy5jb20vP3NjPTY0NSZ0PTAmbD0xMjgx
+OSZwPTIxJnVybD1odHRwOi8vZXVsZXJpYW4ubWF0aG9uLmZyL2R5bmNsaWNrL21hdGhvbi8/ZW1s
+LXB1Ymxpc2hlcj1jbGljLWxlYWQmZW1sLW5hbWU9cGRsLWMybCZldXJsPWh0dHA6Ly93d3cubWF0
+aG9uLmZyL2NhdC11c3RlbnNpbGVzP2U9JnV0bV9tZWRpdW09ZW1haWxpbmcmdXRtX3NvdXJjZXBk
+bC1jMmwmZWVtYWlsPSZlc2VnLW5hbWU9c2VnbWVudC1tYWlsaW5nJmVzZWctaXRlbT0pCihodHRw
+Oi8vY2xpY2sucGRsNHRyYWNraW5nLmNvbS8/c2M9NjQ1JnQ9MCZsPTEyODE5JnA9MjEmdXJsPWh0
+dHA6Ly9ldWxlcmlhbi5tYXRob24uZnIvZHluY2xpY2svbWF0aG9uLz9lbWwtcHVibGlzaGVyPWNs
+aWMtbGVhZCZlbWwtbmFtZT1wZGwtYzJsJmV1cmw9aHR0cDovL3d3dy5tYXRob24uZnIvY2F0LWNv
+dXRlYXV4LXJhcGVzLWhhY2hvaXJzLWNpc2VhdXg/ZT0mdXRtX21lZGl1bT1lbWFpbGluZyZ1dG1f
+c291cmNlcGRsLWMybCZlZW1haWw9JmVzZWctbmFtZT1zZWdtZW50LW1haWxpbmcmZXNlZy1pdGVt
+PSkKKGh0dHA6Ly9jbGljay5wZGw0dHJhY2tpbmcuY29tLz9zYz02NDUmdD0wJmw9MTI4MTkmcD0y
+MSZ1cmw9aHR0cDovL2V1bGVyaWFuLm1hdGhvbi5mci9keW5jbGljay9tYXRob24vP2VtbC1wdWJs
+aXNoZXI9Y2xpYy1sZWFkJmVtbC1uYW1lPXBkbC1jMmwmZXVybD1odHRwOi8vd3d3Lm1hdGhvbi5m
+ci9jYXQtbGl2cmUtZGUtY3Vpc2luZS1ldC1yZWNldHRlcz9lPSZ1dG1fbWVkaXVtPWVtYWlsaW5n
+JnV0bV9zb3VyY2VwZGwtYzJsJmVlbWFpbD0mZXNlZy1uYW1lPXNlZ21lbnQtbWFpbGluZyZlc2Vn
+LWl0ZW09KQooaHR0cDovL2NsaWNrLnBkbDR0cmFja2luZy5jb20vP3NjPTY0NSZ0PTAmbD0xMjgx
+OSZwPTIxJnVybD1odHRwOi8vZXVsZXJpYW4ubWF0aG9uLmZyL2R5bmNsaWNrL21hdGhvbi8/ZW1s
+LXB1Ymxpc2hlcj1jbGljLWxlYWQmZW1sLW5hbWU9cGRsLWMybCZldXJsPWh0dHA6Ly93d3cubWF0
+aG9uLmZyL2NhdC1hcnQtZGUtbGEtdGFibGU/ZT0mdXRtX21lZGl1bT1lbWFpbGluZyZ1dG1fc291
+cmNlcGRsLWMybCZlZW1haWw9JmVzZWctbmFtZT1zZWdtZW50LW1haWxpbmcmZXNlZy1pdGVtPSkK
+KGh0dHA6Ly9jbGljay5wZGw0dHJhY2tpbmcuY29tLz9zYz02NDUmdD0wJmw9MTI4MTkmcD0yMSZ1
+cmw9aHR0cDovL2V1bGVyaWFuLm1hdGhvbi5mci9keW5jbGljay9tYXRob24vP2VtbC1wdWJsaXNo
+ZXI9Y2xpYy1sZWFkJmVtbC1uYW1lPXBkbC1jMmwmZXVybD1odHRwOi8vd3d3Lm1hdGhvbi5mci8/
+ZT0mdXRtX21lZGl1bT1lbWFpbGluZyZ1dG1fc291cmNlPXBkbC1jMmwmZWVtYWlsPSZlc2VnLW5h
+bWU9c2VnbWVudC1tYWlsaW5nJmVzZWctaXRlbT0pCihodHRwOi8vY2xpY2sucGRsNHRyYWNraW5n
+LmNvbS8/c2M9NjQ1JnQ9MCZsPTEyODE5JnA9MjEmdXJsPWh0dHA6Ly9ldWxlcmlhbi5tYXRob24u
+ZnIvZHluY2xpY2svbWF0aG9uLz9lbWwtcHVibGlzaGVyPWNsaWMtbGVhZCZlbWwtbmFtZT1wZGwt
+YzJsJmV1cmw9aHR0cDovL3d3dy5tYXRob24uZnIvP2U9JnV0bV9tZWRpdW09ZW1haWxpbmcmdXRt
+X3NvdXJjZT1wZGwtYzJsJmVlbWFpbD0mZXNlZy1uYW1lPXNlZ21lbnQtbWFpbGluZyZlc2VnLWl0
+ZW09KQooaHR0cDovL2NsaWNrLnBkbDR0cmFja2luZy5jb20vP3NjPTY0NSZ0PTAmbD0xMjgxOSZw
+PTIxJnVybD1odHRwOi8vZXVsZXJpYW4ubWF0aG9uLmZyL2R5bmNsaWNrL21hdGhvbi8/ZW1sLXB1
+Ymxpc2hlcj1jbGljLWxlYWQmZW1sLW5hbWU9cGRsLWMybCZldXJsPWh0dHA6Ly93d3cubWF0aG9u
+LmZyLz9lPSZ1dG1fbWVkaXVtPWVtYWlsaW5nJnV0bV9zb3VyY2U9cGRsLWMybCZlZW1haWw9JmVz
+ZWctbmFtZT1zZWdtZW50LW1haWxpbmcmZXNlZy1pdGVtPSkKKGh0dHA6Ly9jbGljay5wZGw0dHJh
+Y2tpbmcuY29tLz9zYz02NDUmdD0wJmw9MTI4MTkmcD0yMSZ1cmw9aHR0cDovL2V1bGVyaWFuLm1h
+dGhvbi5mci9keW5jbGljay9tYXRob24vP2VtbC1wdWJsaXNoZXI9Y2xpYy1sZWFkJmVtbC1uYW1l
+PXBkbC1jMmwmZXVybD1odHRwOi8vd3d3Lm1hdGhvbi5mci8/ZT0mdXRtX21lZGl1bT1lbWFpbGlu
+ZyZ1dG1fc291cmNlPXBkbC1jMmwmZWVtYWlsPSZlc2VnLW5hbWU9c2VnbWVudC1tYWlsaW5nJmVz
+ZWctaXRlbT0pCihodHRwOi8vY2xpY2sucGRsNHRyYWNraW5nLmNvbS8/c2M9NjQ1JnQ9MCZsPTEy
+ODE5JnA9MjEmdXJsPWh0dHA6Ly9ldWxlcmlhbi5tYXRob24uZnIvZHluY2xpY2svbWF0aG9uLz9l
+bWwtcHVibGlzaGVyPWNsaWMtbGVhZCZlbWwtbmFtZT1wZGwtYzJsJmV1cmw9aHR0cDovL3d3dy5t
+YXRob24uZnIvP2U9JnV0bV9tZWRpdW09ZW1haWxpbmcmdXRtX3NvdXJjZT1wZGwtYzJsJmVlbWFp
+bD0mZXNlZy1uYW1lPXNlZ21lbnQtbWFpbGluZyZlc2VnLWl0ZW09KQooaHR0cDovL2NsaWNrLnBk
+bDR0cmFja2luZy5jb20vP3NjPTY0NSZ0PTAmbD0xMjgxOSZwPTIxJnVybD1odHRwOi8vZXVsZXJp
+YW4ubWF0aG9uLmZyL2R5bmNsaWNrL21hdGhvbi8/ZW1sLXB1Ymxpc2hlcj1jbGljLWxlYWQmZW1s
+LW5hbWU9cGRsLWMybCZldXJsPWh0dHA6Ly93d3cubWF0aG9uLmZyLz9lPSZ1dG1fbWVkaXVtPWVt
+YWlsaW5nJnV0bV9zb3VyY2U9cGRsLWMybCZlZW1haWw9JmVzZWctbmFtZT1zZWdtZW50LW1haWxp
+bmcmZXNlZy1pdGVtPSkKKGh0dHA6Ly9jbGljay5wZGw0dHJhY2tpbmcuY29tLz9zYz02NDUmdD0w
+Jmw9MTI4MTkmcD0yMSZ1cmw9aHR0cDovL2V1bGVyaWFuLm1hdGhvbi5mci9keW5jbGljay9tYXRo
+b24vP2VtbC1wdWJsaXNoZXI9Y2xpYy1sZWFkJmVtbC1uYW1lPXBkbC1jMmwmZXVybD1odHRwOi8v
+d3d3Lm1hdGhvbi5mci8/ZT0mdXRtX21lZGl1bT1lbWFpbGluZyZ1dG1fc291cmNlPXBkbC1jMmwm
+ZWVtYWlsPSZlc2VnLW5hbWU9c2VnbWVudC1tYWlsaW5nJmVzZWctaXRlbT0pCmF2ZWMgbCdhZHJl
+c3NlICYjOTE7RU1BSUwmIzkzOyAKRW4gY2xpcXVhbnQgaWNpLCBqwrRhY2NlcHRlIGRlIHJlY2V2
+b2lyIGxlcyBvZmZyZXMgZGUgTWF0aG9uIAoqIC0yMCUgc3VyIHRvdXRlIHZvdHJlIGNvbW1hbmRl
+IGF2ZWMgbGUgY29kZSBDQVJURUMyTCwgw6Agc2Fpc2lyIHN1ciBsYSBwYWdlIHBhbmllci4gT2Zm
+cmUgdmFsYWJsZSB1bmlxdWVtZW50IHN1ciBsZSBzaXRlIG1hdGhvbi5mciBqdXNxdSdhdSAyNS8w
+Ni8yMDEzIGluY2x1cywgZGFucyBsYSBsaW1pdGUgZGVzIHN0b2NrcyBkaXNwb25pYmxlcywgaG9y
+cyBsaXZyZXMsIGhvcnMgZnJhaXMgZGUgcG9ydCBldCBub24gY3VtdWxhYmxlIGF2ZWMgZCdhdXRy
+ZXMgY29kZXMgcHJvbW90aW9ubmVscy4KTWF0aG9uIGVzdCBsZSBsZWFkZXIgZGUgbGEgdmVudGUg
+ZCd1c3RlbnNpbGVzIGV0IGQnYXJ0aWNsZXMgZGUgY3Vpc2luZS4gQSBsYSByZWNoZXJjaGUgcGVy
+bWFuZW50ZSBkZSBwcm9kdWl0cyBpbm5vdmFudHMsIG5vdHJlIMOpcXVpcGUgZCdhY2hldGV1cnMg
+ZMOpbmljaGUsIHPDqWxlY3Rpb25uZSBldCB0ZXN0ZSBsZXMgcHJvZHVpdHMgcXVpIHNlcm9udCBk
+ZW1haW4gZGFucyB2b3RyZSBjdWlzaW5lLiBUb3Vqb3VycyBzb3VjaWV1eCBkZSB2b3VzIG9mZnJp
+ciB1biBzZXJ2aWNlIGRlIHF1YWxpdMOpLCB0b3VzIGxlcyBwcm9kdWl0cyB2ZW5kdXMgcGFyIE1h
+dGhvbiBzb250IGdhcmFudGlzIDMgYW5zLCBxdWVsbGUgcXVlIHNvaXQgbGEgZ2FyYW50aWUgZHUg
+ZmFicmljYW50LgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3Bv
+bnNvcmVkIGJ5IFdpbmRvd3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9wLnNm
+Lm5ldC9zZnUvd2luZG93cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
+Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

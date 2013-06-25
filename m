@@ -1,97 +1,55 @@
-From: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH v12 00/11] DMA Engine support for AM33XX
-Date: Mon, 24 Jun 2013 23:54:50 -0700
-Message-ID: <20130625065450.GY5523@atomide.com>
-References: <1371762407-24544-1-git-send-email-joelagnel@ti.com>
-	<20130624101903.GV5523@atomide.com> <51C85958.9030502@ti.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: s3c64xx: Added provision for dedicated cs pin
+Date: Tue, 25 Jun 2013 11:15:53 +0100
+Message-ID: <20130625101553.GZ27646@sirena.org.uk>
+References: <1371794173-27266-1-git-send-email-ks.giri@samsung.com>
+ <1371794173-27266-2-git-send-email-ks.giri@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org>,
-        Linux DaVinci Kernel List
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Russell King
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-        Linux Documentation
- List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Linux
- MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Devicetree Discuss
-	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        Mark Brown
-	<broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-        Koen Kooi <koen-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Rob
- Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        Linux Kernel Mailing List
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-        Linux SPI Devel List <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Andrew Morton
-	<akpm@linux-foundat
-To: Benoit Cousson <b-cousson-l0cyMroinI0@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="dlFvqfizQ5ooaSx9"
+Cc: spi-devel-general@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Girish K S <girishks2000@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <51C85958.9030502-l0cyMroinI0@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+In-Reply-To: <1371794173-27266-2-git-send-email-ks.giri@samsung.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-* Benoit Cousson <b-cousson-l0cyMroinI0@public.gmane.org> [130624 07:42]:
-> Hi Tony,
-> 
-> On 06/24/2013 12:19 PM, Tony Lindgren wrote:
-> > Hi,
-> > 
-> > For merging this series, I suggest the following sets:
-> > 
-> > * Joel A Fernandes <joelagnel-l0cyMroinI0@public.gmane.org> [130620 14:13]:
-> >>
-> >> Joel A Fernandes (3):
-> >>   edma: config: Enable config options for EDMA
-> >>   da8xx: config: Enable MMC and FS options
-> >>   ARM: davinci: Fix compiler warnings in devices-da8xx
-> >>
-> >> Matt Porter (8):
-> >>   dmaengine: edma: Add TI EDMA device tree binding
-> >>   ARM: edma: Add DT and runtime PM support to the private EDMA API
-> >>   ARM: edma: Add EDMA crossbar event mux support
-> >>   dmaengine: edma: enable build for AM33XX
-> > 
-> > Sekhar should queue the above patches, I've acked the
-> > mach-omap2/Kconfig change.
-> > 
-> >>   spi: omap2-mcspi: add generic DMA request support to the DT binding
-> >>   spi: omap2-mcspi: convert to dma_request_slave_channel_compat()
-> > 
-> > 
-> > The spi changes should get merged via the driver list.
-> > 
-> >>   ARM: dts: add AM33XX EDMA support
-> >>   ARM: dts: add AM33XX SPI DMA support
-> > 
-> > Benoit should queue the .dts changes.
-> 
-> I'll do that, but do you consider them for 3.11?
 
-Yes right after -rc1 if it makes the DMA work. We almost
-certainly need to send few branches of fixes after -rc1 once
-we find out what might have broken by the removal of the
-hwmod data..
+--dlFvqfizQ5ooaSx9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-But let's stick to minimal changes for the -rc series
-naturally.
+On Fri, Jun 21, 2013 at 11:26:12AM +0530, Girish K S wrote:
+> From: Girish K S <girishks2000@gmail.com>
+>=20
+> The existing driver supports gpio based /cs signal.
+> For controller's that have one device per controller,
 
-Regards,
+Applied both, thanks.
 
-Tony
+--dlFvqfizQ5ooaSx9
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRyW3QAAoJELSic+t+oim90fEP/2y46wbntcSs+GkQcLR4ffvo
+KGIDHJr612D7U5iD79yUSpGaV3WSmNyXVN0TpF8oXmUq+/Y+kmmXjICUr083+P0Y
+Cf4msopAlojPet3PbQTWLl4qRr9u4VqNrwRucPCRYTirc+EVmpL0a1iCm8K1Zk3i
+X0R7B+RH0oVWIh5d3a6YRqD4i0G8ILnzOnCQDM7BkzAm5hMerDHGSOoai37I/Vw2
+VGAQkvB92febpzzWzea+Y8ou8Qdp0rdMah7f9jnG1PA9nmjHlszrWPoEACfBY2X0
+Ctf+X0xKnnySQOZmGirXAhu1W5l9TtA+W2HlLHZX+julk3J3fpKkV6vXfB+1b+oA
+jfS2MPV3xfMGsHfMNfy0kRu9+bRRTYBYR9xesnJmE5XqYsn6gNc2zoTbUgFm3kL6
+RWnUaubRDo5vEJHEF9u/H7meVHnulwZNJ3Gtz4/2nzSjsGTDzVeZKV0knWFbC9j9
+zfBNnhIAxqD89yJ7HBnJAJEfoF/n27apr0VJkCHm98uHgy/LafpDNGd5/KWojONR
+lUt0u9eg4S3IhzCqgpvqUGhtY0I3ADLThhhrHS/tN9t8dE8MBlkkYrijRTN0nyL4
+Y4SN53TMy82FmRIEYUAZkNqGpQIa84BTsadV8t/ue4wyaEQ5+xp7HzLe1j0lmvBS
+SyeQW6Jl+x3xy4C5D95B
+=rfNh
+-----END PGP SIGNATURE-----
+
+--dlFvqfizQ5ooaSx9--

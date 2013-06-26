@@ -1,14 +1,14 @@
-From: Soldes Levi's <news-PkcECQhVGYM@public.gmane.org>
-Subject: Jusqu'a moins 30 pourcent sur Levi's, stock limite
-Date: Wed, 26 Jun 2013 19:42:47 -0100
-Message-ID: <QVM7GicvvDM9Gb79ogqq7bQOEOAQU-fZ4vjDqkW8Rvk@zaloo.fr>
-Reply-To: Soldes Levi's <news-PkcECQhVGYM@public.gmane.org>
+From: Soldes Levi's <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Jusqu'=E0_moins_30_pourcent_sur_Levi's,
+	_stock_limit=E9?=
+Date: Wed, 26 Jun 2013 23:15:29 +0200 (CEST)
+Message-ID: <p1rq1p.hif0vefs5chrrnz7tl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-PkcECQhVGYM@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,20 +19,85 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Pour visualiser correctement ce message, acc=C3=A9dez =C3=A0 la version en=
- ligne, ou signaler comme ind=C3=A9sirable Livraison Gratuite=C2=A0=C2=
-=A0|=C2=A0=C2=A0Retour Gratuit=C2=A0=C2=A0|=C2=A0=C2=A0Paiement 100% s=
-=C3=A9curis=C3=A9 =C2=A0 Jeans Homme =C2=A0=C2=A0|=C2=A0=C2=A0 Jeans Femme =
-=C2=A0=C2=A0|=C2=A0=C2=A0 Ceinture =C2=A0=C2=A0|=C2=A0=C2=A0 Tee shirt =
-=C2=A0=C2=A0|=C2=A0=C2=A0 Chemise =C2=A0=C2=A0|=C2=A0=C2=A0 Veste Top Vente=
- Homme Jeans 501 glassy river 109 =E2=82=AC=C2=A0=C2=A0 76.3 =E2=82=AC Jean=
-s 501 Stonewash 69 =E2=82=AC Jeans 501 Black 75 =E2=82=AC Top Vente Femme J=
-eans water color stripe shade print 109 =E2=82=AC=C2=A0=C2=A0 Jeans palm fl=
-oral print 109 =E2=82=AC Jeans Modern Demi Curve 79 =E2=82=AC Si vous ne so=
-uhaitez plus recevoir nos emails, veuillez suivre ce lien. Si vous n''arriv=
-ez pas =C3=A0 vous d=C3=A9sabonner, merci d''=C3=A9crire =C3=A0 stop@~domai=
-n~
-------------------------------------------------------------------------------
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBqgpc7yI7gfk57dIhif0vd37I&u=3Dhttp%3A%2F%2Fnews.t=
+eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1372281327641%26custid%3D164=
+44%26uid%3D16231069273%26sig%3DJDCBMMOCOOKHDHBP%26mid%3D1600176670&s=3DIFOO=
+HEEBPBDHHLLF
+ =
+
+Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 po=
+urcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, st=
+ock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0=
+ moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent su=
+r Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=
+=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30=
+ pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's,=
+ stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=
+=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent=
+ sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock li=
+mit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins=
+ 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi=
+'s, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jus=
+qu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourc=
+ent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock=
+ limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 mo=
+ins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur L=
+evi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9=
+Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 po=
+urcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, st=
+ock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0=
+ moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent su=
+r Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=
+=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30=
+ pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's,=
+ stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=
+=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent=
+ sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock li=
+mit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins=
+ 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi=
+'s, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jus=
+qu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourc=
+ent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock=
+ limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 mo=
+ins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur L=
+evi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9=
+Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 po=
+urcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, st=
+ock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0=
+ moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent su=
+r Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=
+=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30=
+ pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's,=
+ stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=
+=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent=
+ sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock li=
+mit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins=
+ 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi=
+'s, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jus=
+qu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourc=
+ent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock=
+ limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 mo=
+ins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur L=
+evi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9=
+Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 po=
+urcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, st=
+ock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0=
+ moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent su=
+r Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=
+=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30=
+ pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's,=
+ stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=
+=E0 moins 30 pourcent sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent=
+ sur Levi's, stock limit=E9Jusqu'=E0 moins 30 pourcent sur Levi's, stock li=
+mit=E9
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600176670&sig=3DDILAOGONMBBAPDPD
+---------------------------------------------------------------------------=
+---
 This SF.net email is sponsored by Windows:
 
 Build for Windows Store.

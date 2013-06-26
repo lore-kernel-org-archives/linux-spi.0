@@ -1,104 +1,69 @@
-From: Balaji T K <balajitk@ti.com>
-Subject: Re: [PATCH 3/5] ARM: dts: am33xx: Add interrupts and memory resources
- for MMC
-Date: Wed, 26 Jun 2013 22:03:54 +0530
-Message-ID: <51CB17F2.5060504@ti.com>
-References: <1372209888-6649-1-git-send-email-joelagnel@ti.com>
+From: "destockage" <contact-X3uiiclsbTtBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] -90% sur l'iPhone 5
+Date: Wed, 26 Jun 2013 18:08:53 +0000 (CET)
+Message-ID: <130626180853.109267987600002696@obfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@linaro.org>, Tony Lindgren <tony@atomide.com>,
- Sekhar Nori <nsekhar@ti.com>, Koen Kooi <koen@beagleboard.org>,
- Grant Likely <grant.likely@secretlab.ca>,
- Russell King <linux@arm.linux.org.uk>, Vinod Koul <vinod.koul@intel.com>,
- Linux Documentation List <linux-doc@vger.kernel.org>,
- Chris Ball <cjb@laptop.org>, Arnd Bergmann <arnd@arndb.de>,
- Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
- Rob Herring <rob.herring@calxeda.com>,
- Jason Kridner <jkridner@beagleboard.org>,
- Linux OMAP List <linux-omap@vger.kernel.org>,
- Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
- Linux DaVinci Kernel List <davinci-linux-open-source@linux.davincidsp.com>,
- Benoit Cousson <b-cousson@ti.com>, Linux MMC List <linux-mmc@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Rob Landley <rob@landley.net>,
- Linux SPI Devel List <spi-dev
-To: Joel A Fernandes <agnel.joel@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1372209888-6649-1-git-send-email-joelagnel@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Joel,
-
-On Wednesday 26 June 2013 06:54 AM, Joel A Fernandes wrote:
-> From: Joel A Fernandes <agnel.joel@gmail.com>
->
-> HWMOD irq entries for MMC were removed. We provide the same from DT for MMC.
->
-> This fixes issue where memory resource could not be found during probe.
-> Also, added the reg-offset property to account for the offset from start.
->
-> Signed-off-by: Joel A Fernandes <agnel.joel@gmail.com>
-> ---
->   arch/arm/boot/dts/am33xx.dtsi |   12 ++++++++++++
->   1 file changed, 12 insertions(+)
->
-> diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-> index 119f8a9..e0a5741 100644
-> --- a/arch/arm/boot/dts/am33xx.dtsi
-> +++ b/arch/arm/boot/dts/am33xx.dtsi
-> @@ -237,6 +237,10 @@
->   			dmas = <&edma 24
->   				&edma 25>;
->   			dma-names = "tx", "rx";
-> +			interrupts = <64>;
-> +			interrupt-parent = <&intc>;
-> +			reg = <0x48060000 0x1000>;
-> +			reg-offset = <0x100>;
->   			status = "disabled";
->   		};
->
-> @@ -247,6 +251,10 @@
->   			dmas = <&edma 2
->   				&edma 3>;
->   			dma-names = "tx", "rx";
-> +			interrupts = <24>;
-
-s/24/28
-
-> +			interrupt-parent = <&intc>;
-> +			reg = <0x481d8000 0x1000>;
-> +			reg-offset = <0x100>;
->   			status = "disabled";
->   		};
->
-> @@ -254,6 +262,10 @@
->   			compatible = "ti,omap3-hsmmc";
-
-compatible should be ti,omap4-hsmmc since omap4 hsmmc IP is re-used in am33xx
-and reg-offset property is not needed.
-combine this patch with 2/5 ARM: dts: add AM33XX MMC support and please add
-your signed-off to that patch.
-
->   			ti,hwmods = "mmc3";
->   			ti,needs-special-reset;
-> +			interrupts = <25>;
-
-s/25/29
-
-> +			interrupt-parent = <&intc>;
-> +			reg = <0x47810000 0x1000>;
-> +			reg-offset = <0x100>;
->   			status = "disabled";
->   		};
->
->
+CgoKIChodHRwOi8vb2JmbTQxLmNvbS96Z3V2Z3Z3ZXdjbzFuY2dvbXEvaW5kZXgwLmh0bWwpCgoK
+CgoKIChodHRwOi8vb2JmbTQxLmNvbS93eXVhbnZxZHdyZmN2MW9vcG8vaW5kZXgxLmh0bWwpCgoK
+wqAKTGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50
+IHBvc3NpYmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0
+cDovL29iZm00MS5jb20vNG91a3l2cGN3ZTMxMnFxZnJnL2luZGV4Mi5odG1sKSAKCgoKIChodHRw
+Oi8vb2JmbTQxLmNvbS9uZHVpNXZzcndkcGNsZ2pmNWovaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJl
+eiBzdXJlbWVudCByZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWlu
+IGRlIHNlIGTDqXZlbG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxl
+cyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4g
+UGFydG91dCBzdXIgbGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0
+b2lyZXMgZCdoZXVyZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4u
+IAogKGh0dHA6Ly9vYmZtNDEuY29tL2xvYW15MmQxZXFpMXdscXF4by9pbmRleDQuaHRtbCkKSGFi
+aXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUg
+cGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2Vz
+dCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6
+Ly9vYmZtNDEuY29tL3NkYXo1MnJtZWlyY2VkanFjcS9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExB
+IFNVSVRFID4+IChodHRwOi8vb2JmbTQxLmNvbS9kZ2FwZzJvdmV3cTEwMmdjZmovaW5kZXg2Lmh0
+bWwpCgogKGh0dHA6Ly9vYmZtNDEuY29tL3l5YXduMjRsZTBjY2Qwb2MxZy9pbmRleDcuaHRtbCkK
+CgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLD
+qXN1bHRhdHMgb250IMOpdMOpIHRyw6hzIHN1cnByZW5hbnRzLiAoaHR0cDovL29iZm00MS5jb20v
+Ymd5bnFubnV3eGQxNWVnNGdxL2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vb2JmbTQxLmNvbS8w
+eXk1d25neXc1MGNhdm80b28vaW5kZXg5Lmh0bWwpCiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVz
+IG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2VybmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlz
+YWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4gVG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOp
+Y29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBsZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUu
+IEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8vb2JmbTQxLmNvbS9xMjNvbXRmbjN3Z2UwYmFj
+dHMvaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJVEUgPj4gKGh0dHA6Ly9vYmZtNDEuY29t
+L2oxbGRncnV2c2JnbGp0bXUycy9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vb2JmbTQxLmNv
+bS92YWJoMHdkdHpndGJ6aHdzeGovaW5kZXgxMi5odG1sKQogKGh0dHA6Ly9vYmZtNDEuY29tL2t1
+cnVlZm1zeDN0NGlpa21jai9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9vYmZtNDEuY29tL2hucWNp
+amI0MXl5cG9hYnZieS9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vb2JmbTQxLmNvbS8zbXV0
+Y3Yza25leXgyM2xmMHkvaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1IChodHRwOi8v
+b2JmbTQxLmNvbS92b3Fpc2p5ZmN5a21vbWN2eGovaW5kZXgxNi5odG1sKQoKCgoKCgrCoAoiSidh
+aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
+b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIgKGh0
+dHA6Ly9vYmZtNDEuY29tL2tzdWs0dnBvd2VrYzJyb2Zjai9pbmRleDE3Lmh0bWwpCgoKCgoKCgog
+KGh0dHA6Ly9vYmZtNDEuY29tL2F0YTA0MGtvazB1MGRwcGMybC9pbmRleDE4Lmh0bWwpClBhdG91
+IChodHRwOi8vb2JmbTQxLmNvbS9pZmRmc3B4Zm96dW54NWl1dGwvaW5kZXgxOS5odG1sKQogU2Ft
+ZWRpIDIzIGp1aW4gNGgzNyAoaHR0cDovL29iZm00MS5jb20vcmJjeG5vY2RmbXh3a3gzbHR5L2lu
+ZGV4MjAuaHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hy
+ZXMgYXUgY2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwg
+bWUgdGFyZGUgZCdlc3NheWVyIiAoaHR0cDovL29iZm00MS5jb20vNXh6MmxldjA0ZngybWZycDJ5
+L2luZGV4MjEuaHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
+U0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3Mg
+U3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
+aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
+bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

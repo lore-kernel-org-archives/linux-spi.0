@@ -1,79 +1,104 @@
-From: "Kamlakant Patel" <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH 1/3] drivers: mtd: spinand: Add generic spinand
-	frameowrk and micron driver.
-Date: Wed, 26 Jun 2013 20:52:44 +0530
-Message-ID: <20130626152243.GA9414@kpatel.netlogicmircro.com>
-References: <1372232472-2641-1-git-send-email-sourav.poddar@ti.com>
-	<1372232472-2641-2-git-send-email-sourav.poddar@ti.com>
+From: Balaji T K <balajitk@ti.com>
+Subject: Re: [PATCH 3/5] ARM: dts: am33xx: Add interrupts and memory resources
+ for MMC
+Date: Wed, 26 Jun 2013 22:03:54 +0530
+Message-ID: <51CB17F2.5060504@ti.com>
+References: <1372209888-6649-1-git-send-email-joelagnel@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Content-Transfer-Encoding: 7bit
-Cc: rnayak-l0cyMroinI0@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org,
-	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	tqnguyen-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, manonuevo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org
-To: "Sourav Poddar" <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <1372232472-2641-2-git-send-email-sourav.poddar-l0cyMroinI0@public.gmane.org>
-Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Mark Brown <broonie@linaro.org>, Tony Lindgren <tony@atomide.com>,
+ Sekhar Nori <nsekhar@ti.com>, Koen Kooi <koen@beagleboard.org>,
+ Grant Likely <grant.likely@secretlab.ca>,
+ Russell King <linux@arm.linux.org.uk>, Vinod Koul <vinod.koul@intel.com>,
+ Linux Documentation List <linux-doc@vger.kernel.org>,
+ Chris Ball <cjb@laptop.org>, Arnd Bergmann <arnd@arndb.de>,
+ Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+ Rob Herring <rob.herring@calxeda.com>,
+ Jason Kridner <jkridner@beagleboard.org>,
+ Linux OMAP List <linux-omap@vger.kernel.org>,
+ Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+ Linux DaVinci Kernel List <davinci-linux-open-source@linux.davincidsp.com>,
+ Benoit Cousson <b-cousson@ti.com>, Linux MMC List <linux-mmc@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Rob Landley <rob@landley.net>,
+ Linux SPI Devel List <spi-dev
+To: Joel A Fernandes <agnel.joel@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1372209888-6649-1-git-send-email-joelagnel@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jun 26, 2013 at 01:11:10PM +0530, Sourav Poddar wrote:
-> From: Mona Anonuevo <manonuevo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>
-> 
-> This patch adds support for a generic spinand framework(spinand_mtd.c).
-> This frameowrk can be used for other spi based flash devices also. The idea
-> is to have a common model under drivers/mtd, as also present for other no spi
-> devices(there is a generic framework and device part simply attaches itself to it.)
-> 
-> The generic frework will be used later by me for a SPI based spansion S25FL256 device.
-> The patch also contains a micron driver attaching itself to generic framework.
-> 
-> Signed-off-by: Mona Anonuevo <manonuevo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: Tuan Nguyen <tqnguyen-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>
-> Signed-off-by: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-> ----
-> [I picked this as a standalone patch, can split it into generic and device part
-> based on community feedback.]
-> 
->  drivers/mtd/Kconfig               |    2 +
->  drivers/mtd/Makefile              |    2 +
->  drivers/mtd/spinand/Kconfig       |   24 ++
->  drivers/mtd/spinand/Makefile      |   10 +
->  drivers/mtd/spinand/spinand_lld.c |  776 +++++++++++++++++++++++++++++++++++++
->  drivers/mtd/spinand/spinand_mtd.c |  690 +++++++++++++++++++++++++++++++++
->  include/linux/mtd/spinand.h       |  155 ++++++++
->  7 files changed, 1659 insertions(+), 0 deletions(-)
->  create mode 100644 drivers/mtd/spinand/Kconfig
->  create mode 100644 drivers/mtd/spinand/Makefile
->  create mode 100644 drivers/mtd/spinand/spinand_lld.c
->  create mode 100644 drivers/mtd/spinand/spinand_mtd.c
->  create mode 100644 include/linux/mtd/spinand.h
-> 
+Hi Joel,
 
-I am working on Micron SPINAND(Micron MT29F1G01ZACH). I tried this patch, but it's not working.
-It is throwing following error message while mounting:
-[  260.232000] jffs2: cannot read OOB for EB at 00000000, requested 8 bytes, read 0 bytes, error -22
-mount: mounting /dev/mtdblock5 on /mnt/ failed: Input/output error
+On Wednesday 26 June 2013 06:54 AM, Joel A Fernandes wrote:
+> From: Joel A Fernandes <agnel.joel@gmail.com>
+>
+> HWMOD irq entries for MMC were removed. We provide the same from DT for MMC.
+>
+> This fixes issue where memory resource could not be found during probe.
+> Also, added the reg-offset property to account for the offset from start.
+>
+> Signed-off-by: Joel A Fernandes <agnel.joel@gmail.com>
+> ---
+>   arch/arm/boot/dts/am33xx.dtsi |   12 ++++++++++++
+>   1 file changed, 12 insertions(+)
+>
+> diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+> index 119f8a9..e0a5741 100644
+> --- a/arch/arm/boot/dts/am33xx.dtsi
+> +++ b/arch/arm/boot/dts/am33xx.dtsi
+> @@ -237,6 +237,10 @@
+>   			dmas = <&edma 24
+>   				&edma 25>;
+>   			dma-names = "tx", "rx";
+> +			interrupts = <64>;
+> +			interrupt-parent = <&intc>;
+> +			reg = <0x48060000 0x1000>;
+> +			reg-offset = <0x100>;
+>   			status = "disabled";
+>   		};
+>
+> @@ -247,6 +251,10 @@
+>   			dmas = <&edma 2
+>   				&edma 3>;
+>   			dma-names = "tx", "rx";
+> +			interrupts = <24>;
 
-I am working on it to fix into the driver, will send an updated patch with the fix.
+s/24/28
 
-Thanks,
-Kamlakant Patel
+> +			interrupt-parent = <&intc>;
+> +			reg = <0x481d8000 0x1000>;
+> +			reg-offset = <0x100>;
+>   			status = "disabled";
+>   		};
+>
+> @@ -254,6 +262,10 @@
+>   			compatible = "ti,omap3-hsmmc";
 
+compatible should be ti,omap4-hsmmc since omap4 hsmmc IP is re-used in am33xx
+and reg-offset property is not needed.
+combine this patch with 2/5 ARM: dts: add AM33XX MMC support and please add
+your signed-off to that patch.
 
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
+>   			ti,hwmods = "mmc3";
+>   			ti,needs-special-reset;
+> +			interrupts = <25>;
 
-Build for Windows Store.
+s/25/29
 
-http://p.sf.net/sfu/windows-dev2dev
+> +			interrupt-parent = <&intc>;
+> +			reg = <0x47810000 0x1000>;
+> +			reg-offset = <0x100>;
+>   			status = "disabled";
+>   		};
+>
+>

@@ -1,13 +1,14 @@
-From: "destockage" <contact-X3uiiclsbTtBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] -90% sur l'iPhone 5
-Date: Wed, 26 Jun 2013 18:08:53 +0000 (CET)
-Message-ID: <130626180853.109267987600002696@obfm41.com>
+From: Soldes Levi's <news-PkcECQhVGYM@public.gmane.org>
+Subject: Jusqu'a moins 30 pourcent sur Levi's, stock limite
+Date: Wed, 26 Jun 2013 19:42:47 -0100
+Message-ID: <QVM7GicvvDM9Gb79ogqq7bQOEOAQU-fZ4vjDqkW8Rvk@zaloo.fr>
+Reply-To: Soldes Levi's <news-PkcECQhVGYM@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-PkcECQhVGYM@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,52 +19,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKIChodHRwOi8vb2JmbTQxLmNvbS96Z3V2Z3Z3ZXdjbzFuY2dvbXEvaW5kZXgwLmh0bWwpCgoK
-CgoKIChodHRwOi8vb2JmbTQxLmNvbS93eXVhbnZxZHdyZmN2MW9vcG8vaW5kZXgxLmh0bWwpCgoK
-wqAKTGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50
-IHBvc3NpYmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0
-cDovL29iZm00MS5jb20vNG91a3l2cGN3ZTMxMnFxZnJnL2luZGV4Mi5odG1sKSAKCgoKIChodHRw
-Oi8vb2JmbTQxLmNvbS9uZHVpNXZzcndkcGNsZ2pmNWovaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJl
-eiBzdXJlbWVudCByZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWlu
-IGRlIHNlIGTDqXZlbG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxl
-cyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4g
-UGFydG91dCBzdXIgbGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0
-b2lyZXMgZCdoZXVyZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4u
-IAogKGh0dHA6Ly9vYmZtNDEuY29tL2xvYW15MmQxZXFpMXdscXF4by9pbmRleDQuaHRtbCkKSGFi
-aXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUg
-cGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2Vz
-dCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6
-Ly9vYmZtNDEuY29tL3NkYXo1MnJtZWlyY2VkanFjcS9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExB
-IFNVSVRFID4+IChodHRwOi8vb2JmbTQxLmNvbS9kZ2FwZzJvdmV3cTEwMmdjZmovaW5kZXg2Lmh0
-bWwpCgogKGh0dHA6Ly9vYmZtNDEuY29tL3l5YXduMjRsZTBjY2Qwb2MxZy9pbmRleDcuaHRtbCkK
-CgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLD
-qXN1bHRhdHMgb250IMOpdMOpIHRyw6hzIHN1cnByZW5hbnRzLiAoaHR0cDovL29iZm00MS5jb20v
-Ymd5bnFubnV3eGQxNWVnNGdxL2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vb2JmbTQxLmNvbS8w
-eXk1d25neXc1MGNhdm80b28vaW5kZXg5Lmh0bWwpCiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVz
-IG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2VybmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlz
-YWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4gVG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOp
-Y29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBsZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUu
-IEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8vb2JmbTQxLmNvbS9xMjNvbXRmbjN3Z2UwYmFj
-dHMvaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJVEUgPj4gKGh0dHA6Ly9vYmZtNDEuY29t
-L2oxbGRncnV2c2JnbGp0bXUycy9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vb2JmbTQxLmNv
-bS92YWJoMHdkdHpndGJ6aHdzeGovaW5kZXgxMi5odG1sKQogKGh0dHA6Ly9vYmZtNDEuY29tL2t1
-cnVlZm1zeDN0NGlpa21jai9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9vYmZtNDEuY29tL2hucWNp
-amI0MXl5cG9hYnZieS9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vb2JmbTQxLmNvbS8zbXV0
-Y3Yza25leXgyM2xmMHkvaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1IChodHRwOi8v
-b2JmbTQxLmNvbS92b3Fpc2p5ZmN5a21vbWN2eGovaW5kZXgxNi5odG1sKQoKCgoKCgrCoAoiSidh
-aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
-b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIgKGh0
-dHA6Ly9vYmZtNDEuY29tL2tzdWs0dnBvd2VrYzJyb2Zjai9pbmRleDE3Lmh0bWwpCgoKCgoKCgog
-KGh0dHA6Ly9vYmZtNDEuY29tL2F0YTA0MGtvazB1MGRwcGMybC9pbmRleDE4Lmh0bWwpClBhdG91
-IChodHRwOi8vb2JmbTQxLmNvbS9pZmRmc3B4Zm96dW54NWl1dGwvaW5kZXgxOS5odG1sKQogU2Ft
-ZWRpIDIzIGp1aW4gNGgzNyAoaHR0cDovL29iZm00MS5jb20vcmJjeG5vY2RmbXh3a3gzbHR5L2lu
-ZGV4MjAuaHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hy
-ZXMgYXUgY2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwg
-bWUgdGFyZGUgZCdlc3NheWVyIiAoaHR0cDovL29iZm00MS5jb20vNXh6MmxldjA0ZngybWZycDJ5
-L2luZGV4MjEuaHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
-U0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3Mg
-U3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+ Pour visualiser correctement ce message, acc=C3=A9dez =C3=A0 la version en=
+ ligne, ou signaler comme ind=C3=A9sirable Livraison Gratuite=C2=A0=C2=
+=A0|=C2=A0=C2=A0Retour Gratuit=C2=A0=C2=A0|=C2=A0=C2=A0Paiement 100% s=
+=C3=A9curis=C3=A9 =C2=A0 Jeans Homme =C2=A0=C2=A0|=C2=A0=C2=A0 Jeans Femme =
+=C2=A0=C2=A0|=C2=A0=C2=A0 Ceinture =C2=A0=C2=A0|=C2=A0=C2=A0 Tee shirt =
+=C2=A0=C2=A0|=C2=A0=C2=A0 Chemise =C2=A0=C2=A0|=C2=A0=C2=A0 Veste Top Vente=
+ Homme Jeans 501 glassy river 109 =E2=82=AC=C2=A0=C2=A0 76.3 =E2=82=AC Jean=
+s 501 Stonewash 69 =E2=82=AC Jeans 501 Black 75 =E2=82=AC Top Vente Femme J=
+eans water color stripe shade print 109 =E2=82=AC=C2=A0=C2=A0 Jeans palm fl=
+oral print 109 =E2=82=AC Jeans Modern Demi Curve 79 =E2=82=AC Si vous ne so=
+uhaitez plus recevoir nos emails, veuillez suivre ce lien. Si vous n''arriv=
+ez pas =C3=A0 vous d=C3=A9sabonner, merci d''=C3=A9crire =C3=A0 stop@~domai=
+n~
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

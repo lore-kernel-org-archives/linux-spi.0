@@ -1,159 +1,215 @@
-From: "Vertbaudet par nlpromos" <FWU3@a.fly-wu.com>
-Subject: =?UTF-8?B?U29sZGVzIDoganVzcXUnw6AgLTYwJSBkw6hzIG1haW50ZW5hbnQ=?=
-Date: Wed, 26 Jun 2013 23:19:17 +0100
-Message-ID: <0.0.1F6.37A.1CE72BB32B201BC.0@mta14326.pur3.net>
-Reply-To: Vertbaudet par nlpromos <FWU3@a.fly-wu.com>
+From: Joel Fernandes <joelf@ti.com>
+Subject: [PATCH v2] ARM: dts: add AM33XX MMC support
+Date: Wed, 26 Jun 2013 22:32:36 -0500
+Message-ID: <1372303956-30208-1-git-send-email-joelf@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Cc: Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>,
+	Arnd Bergmann <arnd@arndb.de>, Joel Fernandes <joelf@ti.com>
+To: Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
+	Matt Porter <matt@ohporter.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Mark Brown <broonie@linaro.org>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Balaji TK <balajitk@ti.com>,
+	Gururaja Hebbar <gururaja.hebbar@ti.com>,
+	Chris Ball <cjb@laptop.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-U2kgdm91cyBuJ2Fycml2ZXogcGFzIGEgdmlzdWFsaXNlciBjZSBtZXNzYWdlLCB2ZXVpbGxleiBj
-bGlxdWVyIGljaToKaHR0cDovL2EuZmx5LXd1LmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19l
-bWFpbC5waHA/QjkyMTczODM0Njk3Njg3MDMzMjQyNzU0NjQzMjkxOCZ2YXJJZD17fm1haQpsVmFy
-aWF0aW9uSWR+fQoKClNvbGRlcyBqdXNxdSfDoCAtNjAlKiA6IGMnZXN0IHBhcnRpIGF2ZWMgdm90
-cmUgY29kZSA1OTYzICE6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0
-aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3NjVzcGtuc3BhMDc1Cm16cHJpdzdiNTkKCihsb2dv
-LnBuZyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxy
-ZWRpcmVjdCZjPXNxcGxtbGE3NjVzcGtuc3BhMDc1CnBqeXlxbjdiNWEKCihMZG5Ub3AucG5nKToK
-aHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0
-JmM9c3FwbG1sYTc2NXNwa25zcGEwNzUKbmxnZ2hrN2I1YgoKKEZpbGxlLnBuZyk6Cmh0dHA6Ly90
-cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxt
-bGE3NjVzcGtuc3BhMDc1CnBocWt1czdiNWMKCihHYXJjb24ucG5nKToKaHR0cDovL3RyYWNrZXIu
-YWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1sYTc2NXNw
-a25zcGEwNzUKbnFpbnh2N2I1ZAoKKEJlYmUucG5nKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHku
-Y29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1sYTc2NXNwa25zcGEwNzUK
-bXd1dHR2N2I1ZQoKKENoYXVzc3VyZXMucG5nKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29t
-L2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1sYTc2NXNwa25zcGEwNzUKam92
-cnFsN2I1ZgoKKEZ1dHVyZV9tYW1hbi5wbmcpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20v
-Y29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz1zcXBsbWxhNzY1c3BrbnNwYTA3NQpvcG5z
-b243YjYwCgooUHVlcmljdWx0dXJlLnBuZyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9j
-b2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3NjVzcGtuc3BhMDc1CnJucnVt
-azdiNjEKCihDaGFtYnJlX2JlYmUucG5nKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2Nv
-bGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1sYTc2NXNwa25zcGEwNzUKb2t6bXhu
-N2I2MgoKKENoYW1icmVfZW5mYW50LnBuZyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9j
-b2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3NjVzcGtuc3BhMDc1Cmxsampr
-eTdiNjMKCihKb3VldHMucG5nKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3Rl
-Lz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1sYTc2NXNwa25zcGEwNzUKdXJyeXd2N2I2NAoK
-KFNvbGRlcy5wbmcpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlv
-bj1tYWlscmVkaXJlY3QmYz1zcXBsbWxhNzY1c3BrbnNwYTA3NQptbmh3eXk3YjU5CgooU09MREVT
-X01pZC5wbmcpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1t
-YWlscmVkaXJlY3QmYz1zcXBsbWxhNzY1c3BrbnNwYTA3NQpnbHlobGg3YjU5CgooNjAucG5nKToK
-aHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0
-JmM9c3FwbG1sYTc2NXNwa25zcGEwNzUKbnBpcHp4N2I1OQoKKEplX3ZhbGlkZV8wMS5wbmcpOgpo
-dHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3Qm
-Yz1zcXBsbWxhNzY1c3BrbnNwYTA3NQpwbGxndm43YjU5CgooSmVfdmFsaWRlXzAyLnBuZyk6Cmh0
-dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZj
-PXNxcGxtbGE3NjVzcGtuc3BhMDc1CnNnenJyazdiNjUKCihKeV92YWlzLnBuZyk6Cmh0dHA6Ly90
-cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxt
-bGE3NjVzcGtuc3BhMDc1Cm1neWhsajdiNTkKCihGSUxMRV9CT1RUT00ucG5nKToKaHR0cDovL3Ry
-YWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1s
-YTc2NXNwa25zcGEwNzUKaG94emtoN2I1YwoKKEdBUkNPTl9CT1RUT00ucG5nKToKaHR0cDovL3Ry
-YWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1s
-YTc2NXNwa25zcGEwNzUKc3J6a252N2I1ZAoKKEJFQkVfQk9UVE9NLnBuZyk6Cmh0dHA6Ly90cmFj
-a2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3
-NjVzcGtuc3BhMDc1CmloeG91eTdiNWUKCihDSEFVU1NVUkVTX0JPVFRPTS5wbmcpOgpodHRwOi8v
-dHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz1zcXBs
-bWxhNzY1c3BrbnNwYTA3NQpudGt6emw3YjVmCgooRk1fQk9UVE9NLnBuZyk6Cmh0dHA6Ly90cmFj
-a2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3
-NjVzcGtuc3BhMDc1Cnp2amh6bDdiNjAKCihQVUVSSV9CT1RUT00ucG5nKToKaHR0cDovL3RyYWNr
-ZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1sYTc2
-NXNwa25zcGEwNzUKb3N1cGxqN2I2MQoKKENIQkJfQk9UVE9NLnBuZyk6Cmh0dHA6Ly90cmFja2Vy
-LmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3NjVz
-cGtuc3BhMDc1CnR6d3hocTdiNjIKCihDSEVORl9CT1RUT00ucG5nKToKaHR0cDovL3RyYWNrZXIu
-YWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1sYTc2NXNw
-a25zcGEwNzUKb29xaHdrN2I2MwoKKEpPVUVUU19CT1RUT00ucG5nKToKaHR0cDovL3RyYWNrZXIu
-YWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1sYTc2NXNw
-a25zcGEwNzUKZ2h1c3Z4N2I2NAoKKHNwYWNlci5naWYpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0
-eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz1zcXBsbWxhNzY1c3BrbnNwYTA3
-NQpnenR6eXM3YjY2Cgooc2F0aXNmYWl0LnBuZyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNv
-bS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3NjVzcGtuc3BhMDc1Cnpp
-bG9odTdiNjcKCihsaXZyYWlzb24ucG5nKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2Nv
-bGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9c3FwbG1sYTc2NXNwa25zcGEwNzUKdXZscGd4
-N2I2OAoKKHBhaWVtZW50LnBuZyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0
-ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3NjVzcGtuc3BhMDc1CnJxbHF2ajdiNjkK
-CihtYWdhc2luLnBuZyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0
-aW9uPW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3NjVzcGtuc3BhMDc1Cnh0Z3JzbjdiNmEKCihzaXRl
-TW9iaWxlLnBuZyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9u
-PW1haWxyZWRpcmVjdCZjPXNxcGxtbGE3NjVzcGtuc3BhMDc1CnNzcXVpdDdiNjYKCihmYWNlYm9v
-ay5wbmcpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWls
-cmVkaXJlY3QmYz1zcXBsbWxhNzY1c3BrbnNwYTA3NQpxdW95eW83YjZiCgooTGRuQm90dG9tLnBu
-Zyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRp
-cmVjdCZjPXNxcGxtbGE3NjVzcGtuc3BhMDc1CnNsd3JucTdiNWIKCihFbnZveWV6IGxlIG1lc3Nh
-Z2Ugw6Agdm9zIGFtaShlKXMpCgoKKk9mZnJlIHN0cmljdGVtZW50IHBlcnNvbm5lbGxlLCBub24g
-Y3VtdWxhYmxlIGF2ZWMgdG91dGUgYXV0cmUgb2ZmcmUKcHJvbW90aW9ubmVsbGUsIHZhbGFibGUg
-ZHUgMjYvMDYvLzIwMTMgYXUgMzAvMDcyMDEzLiBCw6luw6lmaWNpZXogZGUKcsOpZHVjdGlvbnMg
-ZGUgLTEwJSwgLTIwJSwgLTMwJSwgLTQwJSwgLTUwJSBldCAtNjAlIHVuaXF1ZW1lbnQgc3VyIGxh
-CnPDqWxlY3Rpb24gIkxlcyBTb2xkZXMiIGRlIGxhIGNvbGxlY3Rpb24gUHJpbnRlbXBzLcOpdMOp
-IDIwMTMuCkJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVz
-c2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1Cm1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJp
-eCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lCnBhcyBqZXRlciB1
-biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVz
-c29ucywgZXQKcXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0
-ZSBsJ2FubsOpZS5BaW5zaSwgZ3LDomNlIMOgCm5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUs
-IHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYQpiYXMgY291dCwg
-b3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuRW52aWUgZGUgdm91cyBmYWlyZSB1bmUgYmVhdXTDqSDD
-oCBtb2luZHJlCmNvw7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgZGUgcHLDqXZvaXIgdm9z
-IHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqQrDoCBtb2luZHJlIGZyYWlzIGV0IG91IGVuY29y
-ZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRzCnJhaXNvbm5hYmxlcywgYWxv
-cnMgY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMgcG91ciB2b3Vz
-CnBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21icmV1c2VzIMOpY29ub21pZXMgdG91dCBl
-biB2b3VzIGZhaXNhbnQKcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1pbGxlLi4uLiBCZXNvaW4gZGUg
-dm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cwpjaGF1c3NlciwgZGUgbWFuZ2VyIG91
-IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nCmRl
-IGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIg
-c3VyIGxlcwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3Vz
-IG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuQSBsYSBy
-ZWNoZXJjaGUgZHUgY2FkZWF1IG9yaWdpbmFsID8gTm91cwpzb3VoYWl0b25zIHZvdXMgYXBwb3J0
-ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlcgptb2lu
-cyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncmFjZSDD
-oCBub3VzLCB2b3VzCmFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQg
-Y2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsCm9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLiBO
-b3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZAphZmluIGRlIHZv
-dXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0
-ZQpsJ2FubsOpZS5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBj
-aGF1c3NlciwgZGUgbWFuZ2VyIG91CnNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOp
-IHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycwpwb3VycXVvaSBuZSBwYXMgamV0
-ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cwph
-ZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91ciByw6lndWxpw6hyZW1lbnQgZXQg
-dG91dGUKbCdhbm7DqWUuQWluc2ksIGdyw6JjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVt
-cGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNv
-dXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLkVudmllIGRlIHZvdXMKZmFpcmUgdW5lIGJlYXV0
-w6kgw6AgbW9pbmRyZSBjb8O7dCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGRlIHByw6l2b2ly
-IHZvcwpwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw6l0w6kgw6AgbW9pbmRyZSBmcmFpcyBldCBvdSBl
-bmNvcmUgZCdoYWJpbGxlciB2b3MKZW5mYW50cyDDoCBkZXMgYnVkZ2V0cyByYWlzb25uYWJsZXMs
-IGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBub3MKcHJvcG9zaXRpb25zIHBvdXIg
-dm91cyBwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJldXNlcyDDqWNvbm9taWVzCnRv
-dXQgZW4gdm91cyBmYWlzYW50IHBsYWlzaXIgw6AgdG91dGUgbGEgZmFtaWxsZS4uLi4gQmVzb2lu
-IGRlIHZveWFnZXIsIGRlCnZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdl
-ciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydApxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9u
-ZyBkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0Cm9laWwg
-cGFyIHN1ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUg
-bm91cyBtZXR0b25zCsOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkEg
-bGEgcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmlnaW5hbAo/IE5vdXMgc291aGFpdG9ucyB2b3VzIGFw
-cG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoApkw6lwZW5zZXIg
-bW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLiBBaW5zaSwgZ3Jh
-Y2Ugw6AKbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0
-b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhCmJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4u
-IC4gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdQpyZWdhcmQgYWZpbiBk
-ZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXgg
-dG91dGUKbCdhbm7DqWUuCgoKCkNsaXF1ZXogc3VyIGNlIGxpZW4gcG91ciB2b3VzIGTDqXNhYm9u
-bmVyIApodHRwOi8vYS5mbHktd3UuY29tL19hY3Qvb3B0b3V0LnBocD9COTIxNzM4MzQ2OTc2ODcw
-MzMyNDI3NTQ2NDMyOTE4Cgp7fkI5MjE3MzgzNDY5NzY4NzAzMzI0Mjc1NDY0MzI5MTh+fQotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IFdpbmRv
-d3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9wLnNmLm5ldC9zZnUvd2luZG93
-cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+From: Matt Porter <mporter@ti.com>
+
+Adds AM33XX MMC support for am335x-bone, am335x-evm, and am335x-evmsk.
+Also added is the DMA binding definitions based on the generic DMA
+request binding.
+
+The HWMOD data removal was breaking MMC so some new properties like reg,
+interrupt etc were added.
+
+Changes to DTS:
+Interrupt and reg added by: Joel Fernandes <joelf@ti.com>
+Compatible added by Balaji TK <balajitk@ti.com>
+ti,needs-special-hs-handling added by Gururaja Hebbar <gururaja.hebbar@ti.com>
+
+Signed-off-by: Matt Porter <mporter@ti.com>
+Acked-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Joel Fernandes <joelf@ti.com>
+---
+ .../devicetree/bindings/mmc/ti-omap-hsmmc.txt      |   26 +++++++++++++-
+ arch/arm/boot/dts/am335x-bone.dts                  |    7 ++++
+ arch/arm/boot/dts/am335x-evm.dts                   |    7 ++++
+ arch/arm/boot/dts/am335x-evmsk.dts                 |    7 ++++
+ arch/arm/boot/dts/am33xx.dtsi                      |   38 ++++++++++++++++++++
+ 5 files changed, 84 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt b/Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt
+index ed271fc..8c8908a 100644
+--- a/Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt
++++ b/Documentation/devicetree/bindings/mmc/ti-omap-hsmmc.txt
+@@ -20,8 +20,29 @@ ti,dual-volt: boolean, supports dual voltage cards
+ ti,non-removable: non-removable slot (like eMMC)
+ ti,needs-special-reset: Requires a special softreset sequence
+ ti,needs-special-hs-handling: HSMMC IP needs special setting for handling High Speed
++dmas: List of DMA specifiers with the controller specific format
++as described in the generic DMA client binding. A tx and rx
++specifier is required.
++dma-names: List of DMA request names. These strings correspond
++1:1 with the DMA specifiers listed in dmas. The string naming is
++to be "rx" and "tx" for RX and TX DMA requests, respectively.
++
++Examples:
++
++[hwmod populated DMA resources]
++
++	mmc1: mmc@0x4809c000 {
++		compatible = "ti,omap4-hsmmc";
++		reg = <0x4809c000 0x400>;
++		ti,hwmods = "mmc1";
++		ti,dual-volt;
++		bus-width = <4>;
++		vmmc-supply = <&vmmc>; /* phandle to regulator node */
++		ti,non-removable;
++	};
++
++[generic DMA request binding]
+ 
+-Example:
+ 	mmc1: mmc@0x4809c000 {
+ 		compatible = "ti,omap4-hsmmc";
+ 		reg = <0x4809c000 0x400>;
+@@ -30,4 +51,7 @@ Example:
+ 		bus-width = <4>;
+ 		vmmc-supply = <&vmmc>; /* phandle to regulator node */
+ 		ti,non-removable;
++		dmas = <&edma 24
++			&edma 25>;
++		dma-names = "tx", "rx";
+ 	};
+diff --git a/arch/arm/boot/dts/am335x-bone.dts b/arch/arm/boot/dts/am335x-bone.dts
+index 5302f79..80bff9c 100644
+--- a/arch/arm/boot/dts/am335x-bone.dts
++++ b/arch/arm/boot/dts/am335x-bone.dts
+@@ -120,6 +120,8 @@
+ 		};
+ 
+ 		ldo3_reg: regulator@5 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <3300000>;
+ 			regulator-always-on;
+ 		};
+ 
+@@ -136,3 +138,8 @@
+ &cpsw_emac1 {
+ 	phy_id = <&davinci_mdio>, <1>;
+ };
++
++&mmc1 {
++	status = "okay";
++	vmmc-supply = <&ldo3_reg>;
++};
+diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
+index 0423298..62af561 100644
+--- a/arch/arm/boot/dts/am335x-evm.dts
++++ b/arch/arm/boot/dts/am335x-evm.dts
+@@ -232,6 +232,8 @@
+ 		};
+ 
+ 		vmmc_reg: regulator@12 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <3300000>;
+ 			regulator-always-on;
+ 		};
+ 	};
+@@ -244,3 +246,8 @@
+ &cpsw_emac1 {
+ 	phy_id = <&davinci_mdio>, <1>;
+ };
++
++&mmc1 {
++	status = "okay";
++	vmmc-supply = <&vmmc_reg>;
++};
+diff --git a/arch/arm/boot/dts/am335x-evmsk.dts b/arch/arm/boot/dts/am335x-evmsk.dts
+index f67c360..8904b88 100644
+--- a/arch/arm/boot/dts/am335x-evmsk.dts
++++ b/arch/arm/boot/dts/am335x-evmsk.dts
+@@ -244,7 +244,14 @@
+ 		};
+ 
+ 		vmmc_reg: regulator@12 {
++			regulator-min-microvolt = <1800000>;
++			regulator-max-microvolt = <3300000>;
+ 			regulator-always-on;
+ 		};
+ 	};
+ };
++
++&mmc1 {
++	status = "okay";
++	vmmc-supply = <&vmmc_reg>;
++};
+diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+index b4fda12..8ab566f 100644
+--- a/arch/arm/boot/dts/am33xx.dtsi
++++ b/arch/arm/boot/dts/am33xx.dtsi
+@@ -229,6 +229,44 @@
+ 			status = "disabled";
+ 		};
+ 
++		mmc1: mmc@48060000 {
++			compatible = "ti,omap4-hsmmc";
++			ti,hwmods = "mmc1";
++			ti,dual-volt;
++			ti,needs-special-reset;
++			ti,needs-special-hs-handling;
++			dmas = <&edma 24
++				&edma 25>;
++			dma-names = "tx", "rx";
++			interrupts = <64>;
++			interrupt-parent = <&intc>;
++			reg = <0x48060000 0x1000>;
++			status = "disabled";
++		};
++
++		mmc2: mmc@481d8000 {
++			compatible = "ti,omap4-hsmmc";
++			ti,hwmods = "mmc2";
++			ti,needs-special-reset;
++			dmas = <&edma 2
++				&edma 3>;
++			dma-names = "tx", "rx";
++			interrupts = <28>;
++			interrupt-parent = <&intc>;
++			reg = <0x481d8000 0x1000>;
++			status = "disabled";
++		};
++
++		mmc3: mmc@47810000 {
++			compatible = "ti,omap4-hsmmc";
++			ti,hwmods = "mmc3";
++			ti,needs-special-reset;
++			interrupts = <29>;
++			interrupt-parent = <&intc>;
++			reg = <0x47810000 0x1000>;
++			status = "disabled";
++		};
++
+ 		wdt2: wdt@44e35000 {
+ 			compatible = "ti,omap3-wdt";
+ 			ti,hwmods = "wd_timer2";
+-- 
+1.7.9.5
+

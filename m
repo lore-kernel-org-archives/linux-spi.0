@@ -1,103 +1,84 @@
-From: Joel Fernandes <joelf-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v2 2/2] DMA: EDMA: Add comments for A-sync case calculations
-Date: Wed, 26 Jun 2013 22:42:28 -0500
-Message-ID: <1372304548-30777-1-git-send-email-joelf@ti.com>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 1/3] drivers: mtd: spinand: Add generic spinand frameowrk
+	and micron driver.
+Date: Thu, 27 Jun 2013 10:21:21 +0530
+Message-ID: <51CBC4C9.7080809@ti.com>
+References: <1372232472-2641-1-git-send-email-sourav.poddar@ti.com>
+	<1372232472-2641-2-git-send-email-sourav.poddar@ti.com>
+	<20130626152243.GA9414@kpatel.netlogicmircro.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linux DaVinci Kernel List
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Linux Documentation List
-	<linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Joel Fernandes <joelf-l0cyMroinI0@public.gmane.org>,
-        Devicetree
- Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        Linux MMC List
-	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux SPI Devel List
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-        Linux OMAP List
-	<linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux ARM Kernel List
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
-        Matt
- Porter <matt-agtwNxEcTQJWk0Htik3J/w@public.gmane.org>,
-        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        Rob
- Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark
- Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Benoit Cousson <b-cousson-l0cyMroinI0@public.gmane.org>,
-        Russell King
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-        Andrew Morton
-	<akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
-        Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Cc: rnayak-l0cyMroinI0@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	tqnguyen-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, manonuevo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org
+To: Kamlakant Patel <kamlakant.patel-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130626152243.GA9414-+J/lxNz7zLijYOuY2elzOeoJsYJ2OyzEAL8bYrjMMd8@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-A-sync case in EDMA driver is tricky and not so obvious.
-Document the reasons for the calculations and the scenarious
-they are used.
+Hi Kamlakant,
+On Wednesday 26 June 2013 08:52 PM, Kamlakant Patel wrote:
+> On Wed, Jun 26, 2013 at 01:11:10PM +0530, Sourav Poddar wrote:
+>> From: Mona Anonuevo<manonuevo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>
+>>
+>> This patch adds support for a generic spinand framework(spinand_mtd.c).
+>> This frameowrk can be used for other spi based flash devices also. The idea
+>> is to have a common model under drivers/mtd, as also present for other no spi
+>> devices(there is a generic framework and device part simply attaches itself to it.)
+>>
+>> The generic frework will be used later by me for a SPI based spansion S25FL256 device.
+>> The patch also contains a micron driver attaching itself to generic framework.
+>>
+>> Signed-off-by: Mona Anonuevo<manonuevo-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>
+>> Signed-off-by: Tuan Nguyen<tqnguyen-AL4WhLSQfzjQT0dZR+AlfA@public.gmane.org>
+>> Signed-off-by: Sourav Poddar<sourav.poddar-l0cyMroinI0@public.gmane.org>
+>> ----
+>> [I picked this as a standalone patch, can split it into generic and device part
+>> based on community feedback.]
+>>
+>>   drivers/mtd/Kconfig               |    2 +
+>>   drivers/mtd/Makefile              |    2 +
+>>   drivers/mtd/spinand/Kconfig       |   24 ++
+>>   drivers/mtd/spinand/Makefile      |   10 +
+>>   drivers/mtd/spinand/spinand_lld.c |  776 +++++++++++++++++++++++++++++++++++++
+>>   drivers/mtd/spinand/spinand_mtd.c |  690 +++++++++++++++++++++++++++++++++
+>>   include/linux/mtd/spinand.h       |  155 ++++++++
+>>   7 files changed, 1659 insertions(+), 0 deletions(-)
+>>   create mode 100644 drivers/mtd/spinand/Kconfig
+>>   create mode 100644 drivers/mtd/spinand/Makefile
+>>   create mode 100644 drivers/mtd/spinand/spinand_lld.c
+>>   create mode 100644 drivers/mtd/spinand/spinand_mtd.c
+>>   create mode 100644 include/linux/mtd/spinand.h
+>>
+> I am working on Micron SPINAND(Micron MT29F1G01ZACH). I tried this patch, but it's not working.
+> It is throwing following error message while mounting:
+> [  260.232000] jffs2: cannot read OOB for EB at 00000000, requested 8 bytes, read 0 bytes, error -22
+> mount: mounting /dev/mtdblock5 on /mnt/ failed: Input/output error
+>
+> I am working on it to fix into the driver, will send an updated patch with the fix.
+>
+Thanks for replying on this.
+Since, this patch is already posted, I think it will be better if you post
+the delta fix on top of this patch.
+> Thanks,
+> Kamlakant Patel
+>
 
-Signed-off-by: Joel Fernandes <joelf-l0cyMroinI0@public.gmane.org>
----
- drivers/dma/edma.c |   22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/dma/edma.c b/drivers/dma/edma.c
-index e008ed2..a1d9f3785 100644
---- a/drivers/dma/edma.c
-+++ b/drivers/dma/edma.c
-@@ -284,8 +284,24 @@ static struct dma_async_tx_descriptor *edma_prep_slave_sg(
- 		 */
- 		if (burst == 1) {
- 			edesc->absync = false;
-+			/*
-+			 * For the A-sync case, bcnt and ccnt are the remainder
-+			 * and quotient respectively of the division of:
-+			 * (sg_dma_len(sg) / acnt) by (SZ_64K -1). This is so
-+			 * that in case bcnt over flows, we have ccnt to use.
-+			 * Note: In A-sync tranfer only, bcntrld is used, but it
-+			 * only applies for sg_dma_len(sg) >= SZ_64K.
-+			 * In this case, the best way adopted is- bccnt for the
-+			 * first frame will be the remainder below. Then for
-+			 * every successive frame, bcnt will be SZ_64K-1. This
-+			 * is assured as bcntrld = 0xffff in end of function.
-+			 */
- 			ccnt = sg_dma_len(sg) / acnt / (SZ_64K - 1);
- 			bcnt = sg_dma_len(sg) / acnt - ccnt * (SZ_64K - 1);
-+			/*
-+			 * If bcnt is non-zero, we have a remainder and hence an
-+			 * extra frame to transfer, so increment ccnt.
-+			 */
- 			if (bcnt)
- 				ccnt++;
- 			else
-@@ -343,6 +359,12 @@ static struct dma_async_tx_descriptor *edma_prep_slave_sg(
- 
- 		edesc->pset[i].a_b_cnt = bcnt << 16 | acnt;
- 		edesc->pset[i].ccnt = ccnt;
-+		/*
-+		 * Only time when (bcntrld) auto reload is required is for
-+		 * A-sync case, and in this case, a requirement of reload value
-+		 * of SZ_64K-1 only is assured. 'link' is initially set to NULL
-+		 * and then later will be populated by edma_execute.
-+		 */
- 		edesc->pset[i].link_bcntrld = 0xffffffff;
- 
- 	}
--- 
-1.7.9.5
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

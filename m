@@ -1,7 +1,7 @@
 From: H Hartley Sweeten <hartleys@visionengravers.com>
-Subject: [PATCH 3/8] spi: spi-ep93xx: always handle transfer specific settings
-Date: Fri, 28 Jun 2013 11:43:34 -0700
-Message-ID: <201306281143.35130.hartleys@visionengravers.com>
+Subject: [PATCH 4/8] spi: spi-ep93xx: remove bits_per_word() helper
+Date: Fri, 28 Jun 2013 11:44:04 -0700
+Message-ID: <201306281144.04549.hartleys@visionengravers.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -14,15 +14,9 @@ Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-__spi_async(), which starts every SPI message transfer, initializes
-the bits_per_word and max speed for every transfer in the message.
-Since the conditional test in ep93xx_spi_process_transfer() will
-always succeed just remove it and always call ep93xx_spi_chip_setup()
-to configure the hardware for each transfer in the message.
-
-Remove the redundant ep93xx_spi_chp_setup() in ep93xx_spi_process_transfer()
-which just initializes the hardware to the "default" based on the SPI
-device.
+This inline helper function is only used to determine the bus width
+of the current transfer (8 or 16 bit). Add a bool flag to the private
+structure and set it appropriately for each transfer.
 
 Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
 Cc: Ryan Mallon <rmallon@gmail.com>
@@ -30,82 +24,65 @@ Cc: Mika Westerberg <mika.westerberg@iki.fi>
 Cc: Mark Brown <broonie@kernel.org>
 Cc: Grant Likely <grant.likely@linaro.org>
 ---
- drivers/spi/spi-ep93xx.c | 43 ++++++++++---------------------------------
- 1 file changed, 10 insertions(+), 33 deletions(-)
+ drivers/spi/spi-ep93xx.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index 93ae7b6..bcfd35a 100644
+index bcfd35a..4fab3bb 100644
 --- a/drivers/spi/spi-ep93xx.c
 +++ b/drivers/spi/spi-ep93xx.c
-@@ -684,38 +684,20 @@ static void ep93xx_spi_process_transfer(struct ep93xx_spi *espi,
- 					struct spi_transfer *t)
- {
- 	struct ep93xx_spi_chip *chip = spi_get_ctldata(msg->spi);
-+	int err;
- 
- 	msg->state = t;
- 
--	/*
--	 * Handle any transfer specific settings if needed. We use
--	 * temporary chip settings here and restore original later when
--	 * the transfer is finished.
--	 */
--	if (t->speed_hz || t->bits_per_word) {
--		struct ep93xx_spi_chip tmp_chip = *chip;
--
--		if (t->speed_hz) {
--			int err;
--
--			err = ep93xx_spi_calc_divisors(espi, &tmp_chip,
--						       t->speed_hz);
--			if (err) {
--				dev_err(&espi->pdev->dev,
--					"failed to adjust speed\n");
--				msg->status = err;
--				return;
--			}
--		}
-+	err = ep93xx_spi_calc_divisors(espi, chip, t->speed_hz);
-+	if (err) {
-+		dev_err(&espi->pdev->dev, "failed to adjust speed\n");
-+		msg->status = err;
-+		return;
-+	}
- 
--		if (t->bits_per_word)
--			tmp_chip.dss = bits_per_word_to_dss(t->bits_per_word);
-+	chip->dss = bits_per_word_to_dss(t->bits_per_word);
- 
--		/*
--		 * Set up temporary new hw settings for this transfer.
--		 */
--		ep93xx_spi_chip_setup(espi, &tmp_chip);
--	}
-+	ep93xx_spi_chip_setup(espi, chip);
- 
- 	espi->rx = 0;
- 	espi->tx = 0;
-@@ -759,9 +741,6 @@ static void ep93xx_spi_process_transfer(struct ep93xx_spi *espi,
- 			ep93xx_spi_cs_control(msg->spi, true);
- 		}
- 	}
--
--	if (t->speed_hz || t->bits_per_word)
--		ep93xx_spi_chip_setup(espi, chip);
+@@ -116,6 +116,7 @@ struct ep93xx_spi {
+ 	unsigned long			min_rate;
+ 	unsigned long			max_rate;
+ 	bool				running;
++	bool				word_xfer;
+ 	struct workqueue_struct		*wq;
+ 	struct work_struct		msg_work;
+ 	struct completion		wait;
+@@ -407,17 +408,9 @@ static void ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
+ 	writew(cr0, espi->regs_base + SSPCR0);
  }
  
- /*
-@@ -814,10 +793,8 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
- 	espi->fifo_level = 0;
+-static inline int bits_per_word(const struct ep93xx_spi *espi)
+-{
+-	struct spi_message *msg = espi->current_msg;
+-	struct spi_transfer *t = msg->state;
+-
+-	return t->bits_per_word;
+-}
+-
+ static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
+ {
+-	if (bits_per_word(espi) > 8) {
++	if (espi->word_xfer) {
+ 		u16 tx_val = 0;
  
- 	/*
--	 * Update SPI controller registers according to spi device and assert
--	 * the chipselect.
-+	 * Assert the chipselect.
- 	 */
--	ep93xx_spi_chip_setup(espi, spi_get_ctldata(msg->spi));
- 	ep93xx_spi_cs_control(msg->spi, true);
+ 		if (t->tx_buf)
+@@ -436,7 +429,7 @@ static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
  
- 	list_for_each_entry(t, &msg->transfers, transfer_list) {
+ static void ep93xx_do_read(struct ep93xx_spi *espi, struct spi_transfer *t)
+ {
+-	if (bits_per_word(espi) > 8) {
++	if (espi->word_xfer) {
+ 		u16 rx_val;
+ 
+ 		rx_val = readw(espi->regs_base + SSPDR);
+@@ -522,7 +515,7 @@ ep93xx_spi_dma_prepare(struct ep93xx_spi *espi, enum dma_transfer_direction dir)
+ 	size_t len = t->len;
+ 	int i, ret, nents;
+ 
+-	if (bits_per_word(espi) > 8)
++	if (espi->word_xfer)
+ 		buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
+ 	else
+ 		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
+@@ -699,6 +692,7 @@ static void ep93xx_spi_process_transfer(struct ep93xx_spi *espi,
+ 
+ 	ep93xx_spi_chip_setup(espi, chip);
+ 
++	espi->word_xfer = (t->bits_per_word > 8) ? true : false;
+ 	espi->rx = 0;
+ 	espi->tx = 0;
+ 
 -- 
 1.8.1.4

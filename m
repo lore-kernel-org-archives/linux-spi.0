@@ -1,18 +1,13 @@
-From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: add bits_per_word_mask check in spi_setup
-Date: Fri, 28 Jun 2013 10:51:44 +0800
-Message-ID: <CAHG8p1DeSojQ-kn=GZTFpaepUTDCme7NA+=Vani3zK1QePDCzA@mail.gmail.com>
-References: <1372287286-12682-1-git-send-email-scott.jiang.linux@gmail.com>
-	<20130627113522.GZ27646@sirena.org.uk>
+From: "Yves Rocher - Nlpromos" <FWU4@a.fly-wu.com>
+Subject: =?UTF-8?B?U29sZGVzIDogVG91dGUgbGEgYmVhdXTDqSBqdXNxdSfDoCBtb2lucyA2MCBwb3VyY2VudA==?=
+Date: Fri, 28 Jun 2013 05:23:35 +0100
+Message-ID: <0.0.227.626.1CE73B74154AA6A.0@mta14326.pur3.net>
+Reply-To: Yves Rocher - Nlpromos <FWU4@a.fly-wu.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	"uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
-	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130627113522.GZ27646-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -23,32 +18,64 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
->> +     if (spi->master->bits_per_word_mask) {
->> +             /* Only 32 bits fit in the mask */
->> +             if (spi->bits_per_word > 32)
->> +                     return -EINVAL;
->> +             if (!(spi->master->bits_per_word_mask &
->> +                             BIT(spi->bits_per_word - 1)))
->> +                     return -EINVAL;
->> +     }
->
-> Thinking about this a bit it might reject a valid transfer - it only
-> checks the setting in the SPI device, not the setting in the transfer.
-> This means that if the transfer overrides an unsuitable setting in the
-> controller then an error will be generated as the fixed setting won't be
-> seen.  It's hard to imagine when that would happen without something
-> being very confused but still feels better to check the bits per word
-> from the first transfer too.
-
-But the API description said that this call would fail if the protocol
-driver specifies an option
-that the underlying controller or its driver does not support. It's
-strange if I request 9 bits per
-word in setup successfully while calling it in transfer fail.
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+U2kgdm91cyBuJ2Fycml2ZXogcGFzIGEgdmlzdWFsaXNlciBjZSBtZXNzYWdlLCB2ZXVpbGxleiBj
+bGlxdWVyIGljaToKaHR0cDovL2EuZmx5LXd1LmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19l
+bWFpbC5waHA/QjkyMjE4ODM1Nzk3Njg3ODE5ODQyODA4NjQ1NDcxOCZ2YXJJZD17fm1haQpsVmFy
+aWF0aW9uSWR+fQoKCkxlcyBzb2xkZXMgYydlc3QgbWFpbnRlbmFudCAhCisgTGl2cmFpc29uIGVu
+IDQ4SCBvZmZlcnRlIGTDqHMgMTXigqwgZCdhY2hhdAorIFVuIGNhZGVhdSBvZmZlcnQgZW4gcmVt
+ZXJjaWVtZW50IGRlIHZvdHJlIGNvbW1hbmRlCkplIGNyYXF1ZSAhOgpodHRwOi8vdHJhY2tlci5h
+ZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz1ucnNoeXVhNzUzbnd4
+enpvYTA3NQpucGlydXM3N2IyCgooWXZlcyBSb2NoZXIpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0
+eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz1ucnNoeXVhNzUzbnd4enpvYTA3
+NQp5aWt2eXU3N2IzCgoKTGVzIHNvbGRlcyBjJ2VzdCBtYWludGVuYW50ICEKCihTbWlsZXkpOgpo
+dHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3Qm
+Yz1ucnNoeXVhNzUzbnd4enpvYTA3NQpsd25ydG83N2I0CgoKU2F0aXNmYWl0b3VyZW1ib3Vyc8OJ
+Ck1hIGdhcmFudGllIHPDqXLDqW5pdMOpCihDYW1pb24pOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0
+eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz1ucnNoeXVhNzUzbnd4enpvYTA3
+NQpuaXVwcWo3N2I1CgoKTElWUkFJU09OIEdSQVRVSVRFZW40OEgKZMOocyAxNeKCrCBkP2FjaGF0
+CgooU09MREVTKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249
+bWFpbHJlZGlyZWN0JmM9bnJzaHl1YTc1M253eHp6b2EwNzUKeG5raW52NzdiNgoKKFNUT0NLUyBM
+SU1JVMOJUyAhKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249
+bWFpbHJlZGlyZWN0JmM9bnJzaHl1YTc1M253eHp6b2EwNzUKc3FpcHloNzdiNgoKKEp1c3F1J8Og
+IC02MCUpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWls
+cmVkaXJlY3QmYz1ucnNoeXVhNzUzbnd4enpvYTA3NQpwbGd3cXE3N2I2CgooVklURSBKJ0VOIFBS
+T0ZJVEUgISk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1h
+aWxyZWRpcmVjdCZjPW5yc2h5dWE3NTNud3h6em9hMDc1CnNoeWpteDc3YjYKCihPZmZyZSB2YWxh
+YmxlIGR1IDI2LzA2IGF1IDMwLzA3KToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxl
+Y3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9bnJzaHl1YTc1M253eHp6b2EwNzUKeHFwdG52Nzdi
+NgoKKEV0IGVuIHBsdXMsIG1vbiBDQURFQVUgZGUgYmllbnZlbnVlICEpOgpodHRwOi8vdHJhY2tl
+ci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz1ucnNoeXVhNzUz
+bnd4enpvYTA3NQp2bW9ndnE3N2I3CgooVW4gYmVzdC1zZWxsZXIgT0ZGRVJUIHBhcm1pIDEwKToK
+aHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0
+JmM9bnJzaHl1YTc1M253eHp6b2EwNzUKc2x4dGd4NzdiNwoKKE9GRkVSVCBwb3VyIHRvdXRlIGNv
+bW1hbmRlKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFp
+bHJlZGlyZWN0JmM9bnJzaHl1YTc1M253eHp6b2EwNzUKaGpva2xrNzdiNwoKKFVuIGJlc3Qtc2Vs
+bGVyIE9GRkVSVCBwYXJtaSAxMCk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0
+ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPW5yc2h5dWE3NTNud3h6em9hMDc1Cmt0bGl0czc3YjcK
+CihKZSBjaG9pc2lzIG1vbiBjYWRlYXUgISk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9j
+b2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPW5yc2h5dWE3NTNud3h6em9hMDc1CnhwcXV6
+ejc3YjcKCihWT0lSIFRPVVRFUyBMRVMgUFJPTU9USU9OUyA+Pik6Cmh0dHA6Ly90cmFja2VyLmFm
+ZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPW5yc2h5dWE3NTNud3h6
+em9hMDc1CnBtcWlpdTc3YjgKCihSZWpvaW5kcmUgbGEgY29tbXVuYXV0w6kgWVIgc3VyIEZhY2Vi
+b29rID4+KToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFp
+bHJlZGlyZWN0JmM9bnJzaHl1YTc1M253eHp6b2EwNzUKbW9wcm51NzdiOQoKCjUgYm9ubmVzIHJh
+aXNvbnPCoMKgIGQ/YWNoZXRlciBzdXIgeXZlcy1yb2NoZXIuZnLCoMKgOgpodHRwOi8vdHJhY2tl
+ci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz1ucnNoeXVhNzUz
+bnd4enpvYTA3NQpncHRudHg3N2JhCgoKNSBib25uZXMgcmFpc29uc8KgwqAKZD9hY2hldGVyIHN1
+ciB5dmVzLXJvY2hlci5mcsKgwqBwYWllbWVudApzw4ljdXJpc8OJbGl2cmFpc29uCmVuNDhIMwpE
+T1NFUyBkJ2Vzc2FpCmdyYXR1aXRlc3NhdGlzZmFpdGUKb3UKcmVtYm91cnPDiWUKKMOJY2hhbmdl
+IGVuIG1hZ2FzaW4pOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlv
+bj1tYWlscmVkaXJlY3QmYz1ucnNoeXVhNzUzbnd4enpvYTA3NQpzeG1yaXU3N2JhCgoKwqDCoMKg
+wqDCoAoqVW4gY2FkZWF1IGF1IGNob2l4IHBhcm1pIDEwIG9mZmVydCBwb3VyIHRvdXRlIGNvbW1h
+bmRlLgpPZmZyZXMgdmFsYWJsZXMganVzcXUnYXUgMzAgSnVpbGxldCAyMDEzIHVuaXF1ZW1lbnQg
+ZGVwdWlzIGNldHRlIG5ld3NsZXR0ZXIuCk9mZnJlcyBub24gY3VtdWxhYmxlcyBhdmVjIGQnYXV0
+cmVzIG9mZnJlcyBwcm9tb3Rpb25uZWxsZXMuCgoKCkNsaXF1ZXogc3VyIGNlIGxpZW4gcG91ciB2
+b3VzIGTDqXNhYm9ubmVyIApodHRwOi8vYS5mbHktd3UuY29tL19hY3Qvb3B0b3V0LnBocD9COTIy
+MTg4MzU3OTc2ODc4MTk4NDI4MDg2NDU0NzE4Cgp7fkI5MjIxODgzNTc5NzY4NzgxOTg0MjgwODY0
+NTQ3MTh+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNv
+cmVkIGJ5IFdpbmRvd3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9wLnNmLm5l
+dC9zZnUvd2luZG93cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2Vu
+ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQv
+bGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

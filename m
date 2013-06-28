@@ -1,157 +1,75 @@
-From: H Hartley Sweeten <hartleys@visionengravers.com>
-Subject: [PATCH 7/8] spi: spi-ep93xx: move the clock divider calcs into ep93xx_spi_chip_setup()
-Date: Fri, 28 Jun 2013 11:45:28 -0700
-Message-ID: <201306281145.29079.hartleys@visionengravers.com>
+From: Parfums moins cher <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Les soldes parfums moins cher
+Date: Fri, 28 Jun 2013 21:05:16 +0200 (CEST)
+Message-ID: <lc1zpe.hihr3na2lyp2kjt4l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Cc: <spi-devel-general@lists.sourceforge.net>,
-	Ryan Mallon <rmallon@gmail.com>, <mika.westerberg@iki.fi>,
-	<broonie@kernel.org>, <grant.likely@linaro.org>
-To: Linux Kernel <linux-kernel@vger.kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The divider values stored in the per chip data are only used to set the
-registers in the hardware to generate the desired SPI clock. Since these
-are calculated per transfer based on the t->speed_hz there is no reason
-keep them in the per chip data.
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBqgpfemI7gfk57dIhihr3c0nI&u=3Dhttp%3A%2F%2Fnews.t=
+eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1372446301865%26custid%3D164=
+44%26uid%3D16231069273%26sig%3DHKJHKFHJEIPDFLPF%26mid%3D1600180798&s=3DGBGM=
+JDCEIDMNDGJK
+ =
 
-Move the ep93xx_spi_calc_divisors() call into ep93xx_spi_chip_setup()
-and return the dividers thru pointers. Remove the divider values from
-the per chip data structure.
+Les soldes parfums moins cherLes soldes parfums moins cherLes soldes parfum=
+s moins cherLes soldes parfums moins cherLes soldes parfums moins cherLes s=
+oldes parfums moins cherLes soldes parfums moins cherLes soldes parfums moi=
+ns cherLes soldes parfums moins cherLes soldes parfums moins cherLes soldes=
+ parfums moins cherLes soldes parfums moins cherLes soldes parfums moins ch=
+erLes soldes parfums moins cherLes soldes parfums moins cherLes soldes parf=
+ums moins cherLes soldes parfums moins cherLes soldes parfums moins cherLes=
+ soldes parfums moins cherLes soldes parfums moins cherLes soldes parfums m=
+oins cherLes soldes parfums moins cherLes soldes parfums moins cherLes sold=
+es parfums moins cherLes soldes parfums moins cherLes soldes parfums moins =
+cherLes soldes parfums moins cherLes soldes parfums moins cherLes soldes pa=
+rfums moins cherLes soldes parfums moins cherLes soldes parfums moins cherL=
+es soldes parfums moins cherLes soldes parfums moins cherLes soldes parfums=
+ moins cherLes soldes parfums moins cherLes soldes parfums moins cherLes so=
+ldes parfums moins cherLes soldes parfums moins cherLes soldes parfums moin=
+s cherLes soldes parfums moins cherLes soldes parfums moins cherLes soldes =
+parfums moins cherLes soldes parfums moins cherLes soldes parfums moins che=
+rLes soldes parfums moins cherLes soldes parfums moins cherLes soldes parfu=
+ms moins cherLes soldes parfums moins cherLes soldes parfums moins cherLes =
+soldes parfums moins cherLes soldes parfums moins cherLes soldes parfums mo=
+ins cherLes soldes parfums moins cherLes soldes parfums moins cherLes solde=
+s parfums moins cherLes soldes parfums moins cherLes soldes parfums moins c=
+herLes soldes parfums moins cherLes soldes parfums moins cherLes soldes par=
+fums moins cherLes soldes parfums moins cherLes soldes parfums moins cherLe=
+s soldes parfums moins cherLes soldes parfums moins cherLes soldes parfums =
+moins cherLes soldes parfums moins cherLes soldes parfums moins cherLes sol=
+des parfums moins cherLes soldes parfums moins cherLes soldes parfums moins=
+ cherLes soldes parfums moins cherLes soldes parfums moins cherLes soldes p=
+arfums moins cherLes soldes parfums moins cherLes soldes parfums moins cher=
+Les soldes parfums moins cherLes soldes parfums moins cherLes soldes parfum=
+s moins cherLes soldes parfums moins cherLes soldes parfums moins cherLes s=
+oldes parfums moins cherLes soldes parfums moins cherLes soldes parfums moi=
+ns cherLes soldes parfums moins cherLes soldes parfums moins cherLes soldes=
+ parfums moins cherLes soldes parfums moins cherLes soldes parfums moins ch=
+erLes soldes parfums moins cherLes soldes parfums moins cherLes soldes parf=
+ums moins cherLes soldes parfums moins cherLes soldes parfums moins cher
+ =
 
-Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
-Cc: Ryan Mallon <rmallon@gmail.com>
-Cc: Mika Westerberg <mika.westerberg@iki.fi>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Grant Likely <grant.likely@linaro.org>
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600180798&sig=3DDNCCKFJACBDEDOCN
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-ep93xx.c | 58 +++++++++++++++++++++---------------------------
- 1 file changed, 25 insertions(+), 33 deletions(-)
+This SF.net email is sponsored by Windows:
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index 2f2d51a..56305d3 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -137,18 +137,10 @@ struct ep93xx_spi {
- /**
-  * struct ep93xx_spi_chip - SPI device hardware settings
-  * @spi: back pointer to the SPI device
-- * @div_cpsr: cpsr (pre-scaler) divider
-- * @div_scr: scr divider
-  * @ops: private chip operations
-- *
-- * This structure is used to store hardware register specific settings for each
-- * SPI device. Settings are written to hardware by function
-- * ep93xx_spi_chip_setup().
-  */
- struct ep93xx_spi_chip {
- 	const struct spi_device		*spi;
--	u8				div_cpsr;
--	u8				div_scr;
- 	struct ep93xx_spi_chip_ops	*ops;
- };
- 
-@@ -200,17 +192,13 @@ static void ep93xx_spi_disable_interrupts(const struct ep93xx_spi *espi)
- /**
-  * ep93xx_spi_calc_divisors() - calculates SPI clock divisors
-  * @espi: ep93xx SPI controller struct
-- * @chip: divisors are calculated for this chip
-  * @rate: desired SPI output clock rate
-- *
-- * Function calculates cpsr (clock pre-scaler) and scr divisors based on
-- * given @rate and places them to @chip->div_cpsr and @chip->div_scr. If,
-- * for some reason, divisors cannot be calculated nothing is stored and
-- * %-EINVAL is returned.
-+ * @div_cpsr: pointer to return the cpsr (pre-scaler) divider
-+ * @div_scr: pointer to return the scr divider
-  */
- static int ep93xx_spi_calc_divisors(const struct ep93xx_spi *espi,
--				    struct ep93xx_spi_chip *chip,
--				    unsigned long rate)
-+				    unsigned long rate,
-+				    u8 *div_cpsr, u8 *div_scr)
- {
- 	unsigned long spi_clk_rate = clk_get_rate(espi->clk);
- 	int cpsr, scr;
-@@ -233,8 +221,8 @@ static int ep93xx_spi_calc_divisors(const struct ep93xx_spi *espi,
- 	for (cpsr = 2; cpsr <= 254; cpsr += 2) {
- 		for (scr = 0; scr <= 255; scr++) {
- 			if ((spi_clk_rate / (cpsr * (scr + 1))) <= rate) {
--				chip->div_scr = (u8)scr;
--				chip->div_cpsr = (u8)cpsr;
-+				*div_scr = (u8)scr;
-+				*div_cpsr = (u8)cpsr;
- 				return 0;
- 			}
- 		}
-@@ -365,29 +353,34 @@ static void ep93xx_spi_cleanup(struct spi_device *spi)
-  * ep93xx_spi_chip_setup() - configures hardware according to given @chip
-  * @espi: ep93xx SPI controller struct
-  * @chip: chip specific settings
-+ * @speed_hz: transfer speed
-  * @bits_per_word: transfer bits_per_word
-- *
-- * This function sets up the actual hardware registers with settings given in
-- * @chip. Note that no validation is done so make sure that callers validate
-- * settings before calling this.
-  */
--static void ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
--				  const struct ep93xx_spi_chip *chip,
--				  u8 bits_per_word)
-+static int ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
-+				 struct ep93xx_spi_chip *chip,
-+				 u32 speed_hz, u8 bits_per_word)
- {
-+	u8 div_cpsr = 0;
-+	u8 div_scr = 0;
- 	u16 cr0;
-+	int err;
-+
-+	err = ep93xx_spi_calc_divisors(espi, speed_hz, &div_cpsr, &div_scr);
-+	if (err)
-+		return err;
- 
--	cr0 = chip->div_scr << SSPCR0_SCR_SHIFT;
-+	cr0 = div_scr << SSPCR0_SCR_SHIFT;
- 	cr0 |= (chip->spi->mode & (SPI_CPHA|SPI_CPOL)) << SSPCR0_MODE_SHIFT;
- 	cr0 |= (bits_per_word - 1);
- 
- 	dev_dbg(&espi->pdev->dev, "setup: mode %d, cpsr %d, scr %d, dss %d\n",
--		chip->spi->mode, chip->div_cpsr, chip->div_scr,
--		bits_per_word - 1);
-+		chip->spi->mode, div_cpsr, div_scr, bits_per_word - 1);
- 	dev_dbg(&espi->pdev->dev, "setup: cr0 %#x", cr0);
- 
--	writeb(chip->div_cpsr, espi->regs_base + SSPCPSR);
-+	writeb(div_cpsr, espi->regs_base + SSPCPSR);
- 	writew(cr0, espi->regs_base + SSPCR0);
-+
-+	return 0;
- }
- 
- static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
-@@ -663,15 +656,14 @@ static void ep93xx_spi_process_transfer(struct ep93xx_spi *espi,
- 
- 	msg->state = t;
- 
--	err = ep93xx_spi_calc_divisors(espi, chip, t->speed_hz);
-+	err = ep93xx_spi_chip_setup(espi, chip, t->speed_hz, t->bits_per_word);
- 	if (err) {
--		dev_err(&espi->pdev->dev, "failed to adjust speed\n");
-+		dev_err(&espi->pdev->dev,
-+			"failed to setup chip for transfer\n");
- 		msg->status = err;
- 		return;
- 	}
- 
--	ep93xx_spi_chip_setup(espi, chip, t->bits_per_word);
--
- 	espi->word_xfer = (t->bits_per_word > 8) ? true : false;
- 	espi->rx = 0;
- 	espi->tx = 0;
--- 
-1.8.1.4
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

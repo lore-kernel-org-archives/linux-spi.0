@@ -1,69 +1,89 @@
-From: "iPhone" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Destockage iPhone 5
-Date: Fri, 28 Jun 2013 07:57:48 +0000 (CET)
-Message-ID: <130628075748.-153276169200001064@obfm42.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: add bits_per_word_mask check
+	in spi_setup
+Date: Fri, 28 Jun 2013 11:40:47 +0100
+Message-ID: <20130628104047.GB27646@sirena.org.uk>
+References: <1372287286-12682-1-git-send-email-scott.jiang.linux@gmail.com>
+	<20130627113522.GZ27646@sirena.org.uk>
+	<CAHG8p1DeSojQ-kn=GZTFpaepUTDCme7NA+=Vani3zK1QePDCzA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============3129787904781381832=="
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        "uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
+	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+To: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+In-Reply-To: <CAHG8p1DeSojQ-kn=GZTFpaepUTDCme7NA+=Vani3zK1QePDCzA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
+List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
+List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
+Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKIChodHRwOi8vb2JmbTQyLmNvbS9iMHp3cGV1cnRidzBxdXAzMWwvaW5kZXgwLmh0bWwpCgoK
-CgoKIChodHRwOi8vb2JmbTQyLmNvbS8wZnpwc2V4Y3R6ZTJja20zZnkvaW5kZXgxLmh0bWwpCgoK
-wqAKTGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50
-IHBvc3NpYmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0
-cDovL29iZm00Mi5jb20vdGJ6endlaGR0YTAwaXo1cGNkL2luZGV4Mi5odG1sKSAKCgoKIChodHRw
-Oi8vb2JmbTQyLmNvbS8yMXptcWUyZXRqZDJyNHJweHMvaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJl
-eiBzdXJlbWVudCByZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWlu
-IGRlIHNlIGTDqXZlbG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxl
-cyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4g
-UGFydG91dCBzdXIgbGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0
-b2lyZXMgZCdoZXVyZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4u
-IAogKGh0dHA6Ly9vYmZtNDIuY29tL3ZiNWl3MGJsc3l0MGdwNWk1eS9pbmRleDQuaHRtbCkKSGFi
-aXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUg
-cGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2Vz
-dCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6
-Ly9vYmZtNDIuY29tL2sxNWtxMGF2c3VzMjE1cmlybC9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExB
-IFNVSVRFID4+IChodHRwOi8vb2JmbTQyLmNvbS9lMDVhcDAxbXM1NDBoM3BycHMvaW5kZXg2Lmh0
-bWwpCgogKGh0dHA6Ly9vYmZtNDIuY29tL3VmNXZzMHYxc3hrMm1hbXJtZC9pbmRleDcuaHRtbCkK
-CgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLD
-qXN1bHRhdHMgb250IMOpdMOpIHRyw6hzIHN1cnByZW5hbnRzLiAoaHR0cDovL29iZm00Mi5jb20v
-ejBiZTV3azV0MHAwc3hwdGhsL2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vb2JmbTQyLmNvbS93
-ZmIzeXdmeHR3MzJ0Zm10M3kvaW5kZXg5Lmh0bWwpCiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVz
-IG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2VybmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlz
-YWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4gVG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOp
-Y29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBsZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUu
-IEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8vb2JmbTQyLmNvbS9sb3hteWwwZmRxaTF6dGdk
-eGcvaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJVEUgPj4gKGh0dHA6Ly9vYmZtNDIuY29t
-L3Nzd3p6YWhvaWFpcmlieDVjZy9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vb2JmbTQyLmNv
-bS9pd2tmM3VvbTFuejMwaXRmdGQvaW5kZXgxMi5odG1sKQogKGh0dHA6Ly9vYmZtNDIuY29tL2Fy
-ZzBmZ3pobnR6ampoZHYyZC9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9vYmZtNDIuY29tL2UzbWF0
-YzExejVreWgzbm1mcS9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vb2JmbTQyLmNvbS91a3R2
-azRlZ3hja2s0YXVzMXEvaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1IChodHRwOi8v
-b2JmbTQyLmNvbS9pMm14cmNnbjQ1eWRocnBtdGQvaW5kZXgxNi5odG1sKQoKCgoKCgrCoAoiSidh
-aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
-b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIgKGh0
-dHA6Ly9vYmZtNDIuY29tL2ExdDJxNHd2ZmN5djRtaXMyZC9pbmRleDE3Lmh0bWwpCgoKCgoKCgog
-KGh0dHA6Ly9vYmZtNDIuY29tL2tnZnVxeWl2cWlzaHU1Y2Rjby9pbmRleDE4Lmh0bWwpClBhdG91
-IChodHRwOi8vb2JmbTQyLmNvbS92bG5ocmgybmVqc3FycG81eG8vaW5kZXgxOS5odG1sKQogU2Ft
-ZWRpIDIzIGp1aW4gNGgzNyAoaHR0cDovL29iZm00Mi5jb20vbnFoaWoxdGF3bHBnbGZxMXhxL2lu
-ZGV4MjAuaHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hy
-ZXMgYXUgY2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwg
-bWUgdGFyZGUgZCdlc3NheWVyIiAoaHR0cDovL29iZm00Mi5jb20vNGRzazV6YTVja3BpZnhma2Nx
-L2luZGV4MjEuaHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
-U0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3Mg
-U3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+
+--===============3129787904781381832==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="3uGfvy/wIzDEoxfv"
+Content-Disposition: inline
+
+
+--3uGfvy/wIzDEoxfv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Jun 28, 2013 at 10:51:44AM +0800, Scott Jiang wrote:
+
+> > Thinking about this a bit it might reject a valid transfer - it only
+> > checks the setting in the SPI device, not the setting in the transfer.
+
+> But the API description said that this call would fail if the protocol
+> driver specifies an option
+> that the underlying controller or its driver does not support. It's
+> strange if I request 9 bits per
+> word in setup successfully while calling it in transfer fail.
+
+Yes, it's a bit odd (and I'd never expect a failure to actually trigger
+here that wasn't going to be repeated in the actual transfer) but it
+seems more robust.
+
+--3uGfvy/wIzDEoxfv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJRzWgrAAoJELSic+t+oim94IAQAI9bzH5ztqEvji809xUj0kFZ
+2DWsLO//m2DDJl6SPYoNbc++9dN3QemoL8+T+VR8++YU+Og5iXMm/plcyoavK8e3
+mJpugoRX1eAnv/B8HGqF8t1gRRfZSOI6nQJUPNvOFu7HUNX5Ovv+3j+sb25g/6tU
+/uvI3q5Z5VVkjMtQRgjWIO0siMTuq3mUG4PkKVs+k3Zev1A5HAj2abmDRThM/f0L
+mTbjyAJ+hngc/Bk6PunTnBVyMzKUlnCEjp8dp81KQcBAFs0fwOvv8mNfMnXHaEJI
+G4STwNmVWvs7+HBuPk7DvtVB8WnQxHItA3QImS2feGXqb3U6OyCvE2GRdjQeS1Oi
+mSYsx1H4k9Gaki0+PZhF98X+4gqooryBVGAGFitoIEX5SrULHaPFHzKKcAHP6W3A
+Aqn6Pd2eyfYDf1gEo2JY9mymHFy15i4hEEfI8xsc/hsXIXYftf5E9ioPi1y+y4tN
+zRiuodiehEgNfqc7iwIzsX7IaxV8Wyd2uLUy48uBc0aRcfXTUMf6idwOoNSZa6vP
+rktjCCtAzg8TS8CtvPLXKMD9KRDG7ZxDc4Z8tDoEDZirGqvSAzc3+WSBjQHUDKH+
+TBusO2XFYuDUfwFzRiXShYCIwbz5ZbF4VTgBnD3N4+8ZvL5yX958BBYDhZFlXgoc
+lWwVnVI4JP8VbcLJ72pg
+=6xRV
+-----END PGP SIGNATURE-----
+
+--3uGfvy/wIzDEoxfv--
+
+--===============3129787904781381832==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Uclinux-dist-devel mailing list
+Uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel
+--===============3129787904781381832==--

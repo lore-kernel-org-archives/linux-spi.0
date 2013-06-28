@@ -1,7 +1,7 @@
 From: H Hartley Sweeten <hartleys@visionengravers.com>
-Subject: [PATCH 1/8] spi: spi-ep93xx: use read,write instead of __raw_* variants
-Date: Fri, 28 Jun 2013 11:42:36 -0700
-Message-ID: <201306281142.36525.hartleys@visionengravers.com>
+Subject: [PATCH 2/8] spi: spi-ep93xx: use bits_per_word_mask
+Date: Fri, 28 Jun 2013 11:43:07 -0700
+Message-ID: <201306281143.07615.hartleys@visionengravers.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
@@ -14,11 +14,8 @@ Content-Disposition: inline
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The memory resource used by this driver is ioremap()'d and the normal
-read,write calls can be used instead of the __raw_* variants.
-
-Remove the inline read,write helpers and just do the read,write
-directly in the callers.
+This driver supports 16 to 4 bits per work. Set the bits_per_word_mask
+to allows the spi core to handle validation.
 
 Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
 Cc: Ryan Mallon <rmallon@gmail.com>
@@ -26,188 +23,44 @@ Cc: Mika Westerberg <mika.westerberg@iki.fi>
 Cc: Mark Brown <broonie@kernel.org>
 Cc: Grant Likely <grant.likely@linaro.org>
 ---
- drivers/spi/spi-ep93xx.c | 64 +++++++++++++++---------------------------------
- 1 file changed, 20 insertions(+), 44 deletions(-)
+ drivers/spi/spi-ep93xx.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
 diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index d7bac60..c633cd0 100644
+index c633cd0..93ae7b6 100644
 --- a/drivers/spi/spi-ep93xx.c
 +++ b/drivers/spi/spi-ep93xx.c
-@@ -158,30 +158,6 @@ struct ep93xx_spi_chip {
- /* converts bits per word to CR0.DSS value */
- #define bits_per_word_to_dss(bpw)	((bpw) - 1)
+@@ -272,12 +272,6 @@ static int ep93xx_spi_setup(struct spi_device *spi)
+ 	struct ep93xx_spi *espi = spi_master_get_devdata(spi->master);
+ 	struct ep93xx_spi_chip *chip;
  
--static inline void
--ep93xx_spi_write_u8(const struct ep93xx_spi *espi, u16 reg, u8 value)
--{
--	__raw_writeb(value, espi->regs_base + reg);
--}
+-	if (spi->bits_per_word < 4 || spi->bits_per_word > 16) {
+-		dev_err(&espi->pdev->dev, "invalid bits per word %d\n",
+-			spi->bits_per_word);
+-		return -EINVAL;
+-	}
 -
--static inline u8
--ep93xx_spi_read_u8(const struct ep93xx_spi *spi, u16 reg)
--{
--	return __raw_readb(spi->regs_base + reg);
--}
--
--static inline void
--ep93xx_spi_write_u16(const struct ep93xx_spi *espi, u16 reg, u16 value)
--{
--	__raw_writew(value, espi->regs_base + reg);
--}
--
--static inline u16
--ep93xx_spi_read_u16(const struct ep93xx_spi *spi, u16 reg)
--{
--	return __raw_readw(spi->regs_base + reg);
--}
--
- static int ep93xx_spi_enable(const struct ep93xx_spi *espi)
- {
- 	u8 regval;
-@@ -191,9 +167,9 @@ static int ep93xx_spi_enable(const struct ep93xx_spi *espi)
- 	if (err)
- 		return err;
+ 	chip = spi_get_ctldata(spi);
+ 	if (!chip) {
+ 		dev_dbg(&espi->pdev->dev, "initial setup for %s\n",
+@@ -341,10 +335,6 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
  
--	regval = ep93xx_spi_read_u8(espi, SSPCR1);
-+	regval = readb(espi->regs_base + SSPCR1);
- 	regval |= SSPCR1_SSE;
--	ep93xx_spi_write_u8(espi, SSPCR1, regval);
-+	writeb(regval, espi->regs_base + SSPCR1);
- 
- 	return 0;
- }
-@@ -202,9 +178,9 @@ static void ep93xx_spi_disable(const struct ep93xx_spi *espi)
- {
- 	u8 regval;
- 
--	regval = ep93xx_spi_read_u8(espi, SSPCR1);
-+	regval = readb(espi->regs_base + SSPCR1);
- 	regval &= ~SSPCR1_SSE;
--	ep93xx_spi_write_u8(espi, SSPCR1, regval);
-+	writeb(regval, espi->regs_base + SSPCR1);
- 
- 	clk_disable(espi->clk);
- }
-@@ -213,18 +189,18 @@ static void ep93xx_spi_enable_interrupts(const struct ep93xx_spi *espi)
- {
- 	u8 regval;
- 
--	regval = ep93xx_spi_read_u8(espi, SSPCR1);
-+	regval = readb(espi->regs_base + SSPCR1);
- 	regval |= (SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
--	ep93xx_spi_write_u8(espi, SSPCR1, regval);
-+	writeb(regval, espi->regs_base + SSPCR1);
- }
- 
- static void ep93xx_spi_disable_interrupts(const struct ep93xx_spi *espi)
- {
- 	u8 regval;
- 
--	regval = ep93xx_spi_read_u8(espi, SSPCR1);
-+	regval = readb(espi->regs_base + SSPCR1);
- 	regval &= ~(SSPCR1_RORIE | SSPCR1_TIE | SSPCR1_RIE);
--	ep93xx_spi_write_u8(espi, SSPCR1, regval);
-+	writeb(regval, espi->regs_base + SSPCR1);
- }
- 
- /**
-@@ -437,8 +413,8 @@ static void ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
- 		chip->spi->mode, chip->div_cpsr, chip->div_scr, chip->dss);
- 	dev_dbg(&espi->pdev->dev, "setup: cr0 %#x", cr0);
- 
--	ep93xx_spi_write_u8(espi, SSPCPSR, chip->div_cpsr);
--	ep93xx_spi_write_u16(espi, SSPCR0, cr0);
-+	writeb(chip->div_cpsr, espi->regs_base + SSPCPSR);
-+	writew(cr0, espi->regs_base + SSPCR0);
- }
- 
- static inline int bits_per_word(const struct ep93xx_spi *espi)
-@@ -456,14 +432,14 @@ static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
- 
- 		if (t->tx_buf)
- 			tx_val = ((u16 *)t->tx_buf)[espi->tx];
--		ep93xx_spi_write_u16(espi, SSPDR, tx_val);
-+		writew(tx_val, espi->regs_base + SSPDR);
- 		espi->tx += sizeof(tx_val);
- 	} else {
- 		u8 tx_val = 0;
- 
- 		if (t->tx_buf)
- 			tx_val = ((u8 *)t->tx_buf)[espi->tx];
--		ep93xx_spi_write_u8(espi, SSPDR, tx_val);
-+		writeb(tx_val, espi->regs_base + SSPDR);
- 		espi->tx += sizeof(tx_val);
+ 	/* first validate each transfer */
+ 	list_for_each_entry(t, &msg->transfers, transfer_list) {
+-		if (t->bits_per_word) {
+-			if (t->bits_per_word < 4 || t->bits_per_word > 16)
+-				return -EINVAL;
+-		}
+ 		if (t->speed_hz && t->speed_hz < espi->min_rate)
+ 				return -EINVAL;
  	}
- }
-@@ -473,14 +449,14 @@ static void ep93xx_do_read(struct ep93xx_spi *espi, struct spi_transfer *t)
- 	if (bits_per_word(espi) > 8) {
- 		u16 rx_val;
+@@ -1022,6 +1012,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = info->num_chipselect;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	master->bits_per_word_mask = 0xfff8;	/* 16 to 4 bits per word */
  
--		rx_val = ep93xx_spi_read_u16(espi, SSPDR);
-+		rx_val = readw(espi->regs_base + SSPDR);
- 		if (t->rx_buf)
- 			((u16 *)t->rx_buf)[espi->rx] = rx_val;
- 		espi->rx += sizeof(rx_val);
- 	} else {
- 		u8 rx_val;
+ 	platform_set_drvdata(pdev, master);
  
--		rx_val = ep93xx_spi_read_u8(espi, SSPDR);
-+		rx_val = readb(espi->regs_base + SSPDR);
- 		if (t->rx_buf)
- 			((u8 *)t->rx_buf)[espi->rx] = rx_val;
- 		espi->rx += sizeof(rx_val);
-@@ -504,7 +480,7 @@ static int ep93xx_spi_read_write(struct ep93xx_spi *espi)
- 	struct spi_transfer *t = msg->state;
- 
- 	/* read as long as RX FIFO has frames in it */
--	while ((ep93xx_spi_read_u8(espi, SSPSR) & SSPSR_RNE)) {
-+	while ((readb(espi->regs_base + SSPSR) & SSPSR_RNE)) {
- 		ep93xx_do_read(espi, t);
- 		espi->fifo_level--;
- 	}
-@@ -831,14 +807,14 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
- 	 * Just to be sure: flush any data from RX FIFO.
- 	 */
- 	timeout = jiffies + msecs_to_jiffies(SPI_TIMEOUT);
--	while (ep93xx_spi_read_u16(espi, SSPSR) & SSPSR_RNE) {
-+	while (readw(espi->regs_base + SSPSR) & SSPSR_RNE) {
- 		if (time_after(jiffies, timeout)) {
- 			dev_warn(&espi->pdev->dev,
- 				 "timeout while flushing RX FIFO\n");
- 			msg->status = -ETIMEDOUT;
- 			return;
- 		}
--		ep93xx_spi_read_u16(espi, SSPDR);
-+		readw(espi->regs_base + SSPDR);
- 	}
- 
- 	/*
-@@ -917,7 +893,7 @@ static void ep93xx_spi_work(struct work_struct *work)
- static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
- {
- 	struct ep93xx_spi *espi = dev_id;
--	u8 irq_status = ep93xx_spi_read_u8(espi, SSPIIR);
-+	u8 irq_status = readb(espi->regs_base + SSPIIR);
- 
- 	/*
- 	 * If we got ROR (receive overrun) interrupt we know that something is
-@@ -925,7 +901,7 @@ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
- 	 */
- 	if (unlikely(irq_status & SSPIIR_RORIS)) {
- 		/* clear the overrun interrupt */
--		ep93xx_spi_write_u8(espi, SSPICR, 0);
-+		writeb(0, espi->regs_base + SSPICR);
- 		dev_warn(&espi->pdev->dev,
- 			 "receive overrun, aborting the message\n");
- 		espi->current_msg->status = -EIO;
-@@ -1111,7 +1087,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 	espi->running = true;
- 
- 	/* make sure that the hardware is disabled */
--	ep93xx_spi_write_u8(espi, SSPCR1, 0);
-+	writeb(0, espi->regs_base + SSPCR1);
- 
- 	error = spi_register_master(master);
- 	if (error) {
 -- 
 1.8.1.4

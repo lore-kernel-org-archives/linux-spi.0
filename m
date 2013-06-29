@@ -1,23 +1,13 @@
-From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: RE: [PATCH 3/8] spi: spi-ep93xx: always handle transfer specific
-	settings
-Date: Fri, 28 Jun 2013 18:42:59 -0500
-Message-ID: <ADE657CA350FB648AAC2C43247A983F0021DAC38FE45@AUSP01VMBX24.collaborationhost.net>
-References: <201306281143.35130.hartleys@visionengravers.com>
-	<51CE199A.4040606@gmail.com>
+From: "Lot 18 - Ventes Privees de Vins fins" <contact-HqX2e3LHUgzQT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] Jusqu'a 60 pourcent de reduction et livraison offerte
+Date: Sat, 29 Jun 2013 03:45:45 +0000 (CET)
+Message-ID: <130629034545.-147566014000003532@obfm40.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"mika.westerberg-X3B1VOXEql0@public.gmane.org" <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
-	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Linux Kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ryan Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <51CE199A.4040606-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,60 +18,23 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday, June 28, 2013 4:18 PM, Ryan Mallon wrote:
-> On 29/06/13 04:43, H Hartley Sweeten wrote:
->> __spi_async(), which starts every SPI message transfer, initializes
->> the bits_per_word and max speed for every transfer in the message.
->> Since the conditional test in ep93xx_spi_process_transfer() will
->> always succeed just remove it and always call ep93xx_spi_chip_setup()
->> to configure the hardware for each transfer in the message.
->> 
->> Remove the redundant ep93xx_spi_chp_setup() in ep93xx_spi_process_transfer()
->> which just initializes the hardware to the "default" based on the SPI
->> device.
->> 
->> Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
->> Cc: Ryan Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> Cc: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
->> Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
->> Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->> ---
->
->
->> +	err = ep93xx_spi_calc_divisors(espi, chip, t->speed_hz);
->> +	if (err) {
->> +		dev_err(&espi->pdev->dev, "failed to adjust speed\n");
->
->
-> Printing out the speed it was trying to set might be useful here?
 
-Technically I don't think this can ever happen.
+(http://obfm40.com/mru1xv0tyy5xdddozg/index0.html)
+(http://obfm40.com/p4ubuvi4yuaf0lyowj/index1.html)
+(http://obfm40.com/r5uf2vf3y5xxe0lf4q/index2.html)
+(http://obfm40.com/5nu0hvkoyxjfw2sfno/index3.html)
+(http://obfm40.com/j5al22eabb1xl1lq2j/index4.html)
+(http://obfm40.com/qnajh2cjbzgf2csqtg/index5.html)
+(http://obfm40.com/orasx23bbamxvgdc0o/index6.html)
+(http://obfm40.com/g4aqu2tzbjhfnqycbq/index7.html)
+(http://obfm40.com/1rygfn22ydnxord4yg/index8.html)
+(http://obfm40.com/f4yyknhnyevffmy4dj/index9.html)
+(http://obfm40.com/1n1gig0gusloyislys/index10.html)
+(http://obfm40.com/fm4ycuh1jvlach0pds/index11.html)
+(http://obfm40.com/wje3lao3p5fmet1xoj/index12.html)
+L&#8217;abus d&#8217;alcool est dangereux pour la sant&#233;, &#224; consommer avec mod&#233;ration.
 
-The minimum and maximum possible speeds are determined during the probe.
-
-	espi->max_rate = clk_get_rate(espi->clk) / 2;
-	espi->min_rate = clk_get_rate(espi->clk) / (254 * 256);
-
-Each transfer is validated to make sure the speed is greater than the
-minimum.
-
-		if (t->speed_hz < espi->min_rate)
-			return -EINVAL;
-
-Then the rate is clamped to the min/max rates.
-
-	rate = clamp(rate, espi->min_rate, espi->max_rate);
-
-The calculations for the div_csr and div_cpsr values needed to produce
-the desired rate should always succeed.
-
-Patch 7/8 actually replaces that dev_err() message with a more generic
-one. In reality, even the new message, and the error checking, could
-probably be removed.
-
-Regards,
-Hartley
-
+Cr&#233;dit photos : Istockphoto - document non contractuel, pour toutes informations, nous consulter ...
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Windows:
 

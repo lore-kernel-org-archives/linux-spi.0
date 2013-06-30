@@ -1,66 +1,106 @@
 From: Mika Westerberg <mika.westerberg@iki.fi>
-Subject: Re: [PATCH 2/8] spi: spi-ep93xx: use bits_per_word_mask
-Date: Sun, 30 Jun 2013 19:13:58 +0300
-Message-ID: <20130630161358.GA786@mwesterb-mobl.lan>
-References: <201306281143.07615.hartleys@visionengravers.com>
+Subject: Re: [PATCH 4/8] spi: spi-ep93xx: remove bits_per_word() helper
+Date: Sun, 30 Jun 2013 19:17:48 +0300
+Message-ID: <20130630161748.GB786@mwesterb-mobl.lan>
+References: <201306281144.04549.hartleys@visionengravers.com>
+ <51CE1A8C.7070703@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net,
-	Ryan Mallon <rmallon@gmail.com>, broonie@kernel.org,
+Cc: H Hartley Sweeten <hartleys@visionengravers.com>,
+	Linux Kernel <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net, broonie@kernel.org,
 	grant.likely@linaro.org
-To: H Hartley Sweeten <hartleys@visionengravers.com>
+To: Ryan Mallon <rmallon@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <201306281143.07615.hartleys@visionengravers.com>
+In-Reply-To: <51CE1A8C.7070703@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jun 28, 2013 at 11:43:07AM -0700, H Hartley Sweeten wrote:
-> This driver supports 16 to 4 bits per work. Set the bits_per_word_mask
-> to allows the spi core to handle validation.
+On Sat, Jun 29, 2013 at 09:21:48AM +1000, Ryan Mallon wrote:
+> On 29/06/13 04:44, H Hartley Sweeten wrote:
 > 
-> Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
-> Cc: Ryan Mallon <rmallon@gmail.com>
-> Cc: Mika Westerberg <mika.westerberg@iki.fi>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Grant Likely <grant.likely@linaro.org>
-> ---
->  drivers/spi/spi-ep93xx.c | 11 +----------
->  1 file changed, 1 insertion(+), 10 deletions(-)
+> > This inline helper function is only used to determine the bus width
+> > of the current transfer (8 or 16 bit). Add a bool flag to the private
+> > structure and set it appropriately for each transfer.
+> > 
+> > Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
+> > Cc: Ryan Mallon <rmallon@gmail.com>
+> > Cc: Mika Westerberg <mika.westerberg@iki.fi>
+> > Cc: Mark Brown <broonie@kernel.org>
+> > Cc: Grant Likely <grant.likely@linaro.org>
+> > ---
+> >  drivers/spi/spi-ep93xx.c | 16 +++++-----------
+> >  1 file changed, 5 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+> > index bcfd35a..4fab3bb 100644
+> > --- a/drivers/spi/spi-ep93xx.c
+> > +++ b/drivers/spi/spi-ep93xx.c
+> > @@ -116,6 +116,7 @@ struct ep93xx_spi {
+> >  	unsigned long			min_rate;
+> >  	unsigned long			max_rate;
+> >  	bool				running;
+> > +	bool				word_xfer;
 > 
-> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-> index c633cd0..93ae7b6 100644
-> --- a/drivers/spi/spi-ep93xx.c
-> +++ b/drivers/spi/spi-ep93xx.c
-> @@ -272,12 +272,6 @@ static int ep93xx_spi_setup(struct spi_device *spi)
->  	struct ep93xx_spi *espi = spi_master_get_devdata(spi->master);
->  	struct ep93xx_spi_chip *chip;
->  
-> -	if (spi->bits_per_word < 4 || spi->bits_per_word > 16) {
-> -		dev_err(&espi->pdev->dev, "invalid bits per word %d\n",
-> -			spi->bits_per_word);
-> -		return -EINVAL;
-> -	}
-> -
->  	chip = spi_get_ctldata(spi);
->  	if (!chip) {
->  		dev_dbg(&espi->pdev->dev, "initial setup for %s\n",
-> @@ -341,10 +335,6 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
->  
->  	/* first validate each transfer */
->  	list_for_each_entry(t, &msg->transfers, transfer_list) {
-> -		if (t->bits_per_word) {
-> -			if (t->bits_per_word < 4 || t->bits_per_word > 16)
-> -				return -EINVAL;
-> -		}
->  		if (t->speed_hz && t->speed_hz < espi->min_rate)
->  				return -EINVAL;
->  	}
-> @@ -1022,6 +1012,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
->  	master->bus_num = pdev->id;
->  	master->num_chipselect = info->num_chipselect;
->  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-> +	master->bits_per_word_mask = 0xfff8;	/* 16 to 4 bits per word */
+> 
+> I think this is a slightly confusing name. Maybe something like
+> is_16bit_xfer would be better?
+> 
+> >  	struct workqueue_struct		*wq;
+> >  	struct work_struct		msg_work;
+> >  	struct completion		wait;
+> > @@ -407,17 +408,9 @@ static void ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
+> >  	writew(cr0, espi->regs_base + SSPCR0);
+> >  }
+> >  
+> > -static inline int bits_per_word(const struct ep93xx_spi *espi)
+> > -{
+> > -	struct spi_message *msg = espi->current_msg;
+> > -	struct spi_transfer *t = msg->state;
+> > -
+> > -	return t->bits_per_word;
+> > -}
+> > -
+> >  static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
+> >  {
+> > -	if (bits_per_word(espi) > 8) {
+> > +	if (espi->word_xfer) {
+> >  		u16 tx_val = 0;
+> >  
+> >  		if (t->tx_buf)
+> > @@ -436,7 +429,7 @@ static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
+> >  
+> >  static void ep93xx_do_read(struct ep93xx_spi *espi, struct spi_transfer *t)
+> >  {
+> > -	if (bits_per_word(espi) > 8) {
+> > +	if (espi->word_xfer) {
+> >  		u16 rx_val;
+> >  
+> >  		rx_val = readw(espi->regs_base + SSPDR);
+> > @@ -522,7 +515,7 @@ ep93xx_spi_dma_prepare(struct ep93xx_spi *espi, enum dma_transfer_direction dir)
+> >  	size_t len = t->len;
+> >  	int i, ret, nents;
+> >  
+> > -	if (bits_per_word(espi) > 8)
+> > +	if (espi->word_xfer)
+> >  		buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
+> >  	else
+> >  		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
+> > @@ -699,6 +692,7 @@ static void ep93xx_spi_process_transfer(struct ep93xx_spi *espi,
+> >  
+> >  	ep93xx_spi_chip_setup(espi, chip);
+> >  
+> > +	espi->word_xfer = (t->bits_per_word > 8) ? true : false;
+> 
+> 
+> 	espi->word_xfer = (t->bits_per_word > 8);
 
-Please use SPI_BPW_RANGE_MASK(4, 16) here.
+Or even
+	espi->word_xfer = t->bits_per_word > 8;
+
+> This patch is fine, but not sure it is entirely worth it. The
+> information is already stored in t->bits_per_word and the cost
+> of retrieving it is pretty minimal.
+
+I agree.

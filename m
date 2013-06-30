@@ -1,9 +1,9 @@
 From: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Subject: Re: [PATCH 5/8] spi: spi-ep93xx: remove 'dss' from per chip private
-	data
-Date: Sun, 30 Jun 2013 19:20:09 +0300
-Message-ID: <20130630162009.GC786@mwesterb-mobl.lan>
-References: <201306281144.34074.hartleys@visionengravers.com>
+Subject: Re: [PATCH 3/8] spi: spi-ep93xx: always handle transfer specific
+	settings
+Date: Sun, 30 Jun 2013 19:26:50 +0300
+Message-ID: <20130630162650.GD786@mwesterb-mobl.lan>
+References: <201306281143.35130.hartleys@visionengravers.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -13,7 +13,7 @@ Cc: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, spi-devel-general-5NWG
 To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <201306281144.34074.hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+In-Reply-To: <201306281143.35130.hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -24,85 +24,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jun 28, 2013 at 11:44:33AM -0700, H Hartley Sweeten wrote:
-> This value is only needed to set the bits per word for each transfer
-> of a message. There is no reason to set the value in ep93xx_spi_enable()
-> because ep93xx_spi_process_transfer() sets it again for each transfer.
+On Fri, Jun 28, 2013 at 11:43:34AM -0700, H Hartley Sweeten wrote:
+> __spi_async(), which starts every SPI message transfer, initializes
+> the bits_per_word and max speed for every transfer in the message.
+> Since the conditional test in ep93xx_spi_process_transfer() will
+> always succeed just remove it and always call ep93xx_spi_chip_setup()
+> to configure the hardware for each transfer in the message.
 > 
-> Just pass the t->bits_per_word directly to ep93xx_spi_chip_setup() in
-> ep93xx_spi_process_transfer() and remove 'dss' from the per chip private
-> data.
+> Remove the redundant ep93xx_spi_chp_setup() in ep93xx_spi_process_transfer()
+> which just initializes the hardware to the "default" based on the SPI
+> device.
 > 
 > Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 > Cc: Ryan Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > Cc: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-> Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->  drivers/spi/spi-ep93xx.c | 20 +++++++-------------
->  1 file changed, 7 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-> index 4fab3bb..cb22c89 100644
-> --- a/drivers/spi/spi-ep93xx.c
-> +++ b/drivers/spi/spi-ep93xx.c
-> @@ -140,7 +140,6 @@ struct ep93xx_spi {
->   * @rate: max rate in hz this chip supports
->   * @div_cpsr: cpsr (pre-scaler) divider
->   * @div_scr: scr divider
-> - * @dss: bits per word (4 - 16 bits)
->   * @ops: private chip operations
->   *
->   * This structure is used to store hardware register specific settings for each
-> @@ -152,13 +151,9 @@ struct ep93xx_spi_chip {
->  	unsigned long			rate;
->  	u8				div_cpsr;
->  	u8				div_scr;
-> -	u8				dss;
->  	struct ep93xx_spi_chip_ops	*ops;
->  };
->  
-> -/* converts bits per word to CR0.DSS value */
-> -#define bits_per_word_to_dss(bpw)	((bpw) - 1)
 
-I think you should keep this macro...
-
-> -
->  static int ep93xx_spi_enable(const struct ep93xx_spi *espi)
->  {
->  	u8 regval;
-> @@ -308,8 +303,6 @@ static int ep93xx_spi_setup(struct spi_device *spi)
->  		chip->rate = spi->max_speed_hz;
->  	}
->  
-> -	chip->dss = bits_per_word_to_dss(spi->bits_per_word);
-> -
->  	ep93xx_spi_cs_control(spi, false);
->  	return 0;
->  }
-> @@ -386,22 +379,25 @@ static void ep93xx_spi_cleanup(struct spi_device *spi)
->   * ep93xx_spi_chip_setup() - configures hardware according to given @chip
->   * @espi: ep93xx SPI controller struct
->   * @chip: chip specific settings
-> + * @bits_per_word: transfer bits_per_word
->   *
->   * This function sets up the actual hardware registers with settings given in
->   * @chip. Note that no validation is done so make sure that callers validate
->   * settings before calling this.
->   */
->  static void ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
-> -				  const struct ep93xx_spi_chip *chip)
-> +				  const struct ep93xx_spi_chip *chip,
-> +				  u8 bits_per_word)
->  {
->  	u16 cr0;
->  
->  	cr0 = chip->div_scr << SSPCR0_SCR_SHIFT;
->  	cr0 |= (chip->spi->mode & (SPI_CPHA|SPI_CPOL)) << SSPCR0_MODE_SHIFT;
-> -	cr0 |= chip->dss;
-> +	cr0 |= (bits_per_word - 1);
-
-... and use it here. It makes things less confusing, at least to me.
+Acked-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Windows:

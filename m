@@ -1,11 +1,11 @@
-From: Croisierenet par Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Croisieres a partir de 284 euros
-Date: Sat, 29 Jun 2013 20:07:36 +0200 (CEST)
-Message-ID: <1jf69x.hij4hc6tc9s0hwjmql@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Optic 2ooo par Nl promos" <FWU4@a.fly-wu.com>
+Subject: Offre exclusive sur les solaires Karl Lagerfeld chez Optic2000.com
+Date: Sun, 30 Jun 2013 01:01:23 +0100
+Message-ID: <0.0.1F.954.1CE7524F507B5CA.0@ukrs394971.pur3.net>
+Reply-To: Optic 2ooo par Nl promos <FWU4@a.fly-wu.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,66 +18,101 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgpgztI7gfk57dIhij4gxqxI&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1372529237749%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DODHNADJELMPJKCFA%26mid%3D1600182857&s=3DLPEF=
-LBMDIMALKGCP
- =
-
-Croisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres =
-a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de=
- 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosC=
-roisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a=
- partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de =
-284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCr=
-oisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a =
-partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 2=
-84 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCro=
-isieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a p=
-artir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 28=
-4 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroi=
-sieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a pa=
-rtir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284=
- eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCrois=
-ieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a par=
-tir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 =
-eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisi=
-eres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a part=
-ir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 e=
-urosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisie=
-res a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a parti=
-r de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eu=
-rosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisier=
-es a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir=
- de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eur=
-osCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisiere=
-s a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir =
-de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 euro=
-sCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres=
- a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir d=
-e 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 euros=
-Croisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres =
-a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de=
- 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosC=
-roisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a=
- partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de =
-284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCr=
-oisieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a =
-partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 2=
-84 eurosCroisieres a partir de 284 eurosCroisieres a partir de 284 eurosCro=
-isieres a partir de 284 eurosCroisieres a partir de 284 eurosCroisieres a p=
-artir de 284 eurosCroisieres a partir de 284 eurosCroisieres a partir de 28=
-4 eurosCroisieres a partir de 284 euros
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600182857&sig=3DBBOMEOMJODBGGJJA
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+U2kgdm91cyBuJ2Fycml2ZXogcGFzIGEgdmlzdWFsaXNlciBjZSBtZXNzYWdlLCB2ZXVpbGxleiBj
+bGlxdWVyIGljaToKaHR0cDovL2EuZmx5LXd1LmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19l
+bWFpbC5waHA/QjkyMjE4ODM1Nzk3Njg4ODk4NzQyODA4NjQ1NTQxOCZ2YXJJZD17fm1haQpsVmFy
+aWF0aW9uSWR+fQoKKE9wdGljIDIwMDAgLSBVbmUgbm91dmVsbGUgdmlzaW9uIGRlIGxhIHZpZSk6
+Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTZhODNkYTYy
+ZGU3NDQwMjE4NjIzNTJiNzk5NmZjMTYwCgooTFVORVRURVMgREUgVlVFKToKaHR0cDovL210cmMx
+LmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MWE1ZTdiOTg3N2M2YTY2YmI4OTM4
+ZTFmMjhiZmM0NzYKCihMVU5FVFRFUyBERSBTT0xFSUwpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1t
+ZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz04MTNiMjk5NGZlZTM3ODU2ZGVjNGU1MDVhNzVjMjZm
+MgoKKExFTlRJTExFUyBERSBDT05UQUNUKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNv
+bS9jbGljLnBocD9wYXJhbXM9OGZkNTcwNGE1NzQyZjJiOTQzOThjMTg4MDBiYzFhNWYKCihOT1Mg
+MTIwMCBNQUdBU0lOUyk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/
+cGFyYW1zPWU2NGY3MTU4N2ViNDQwYTZhZjM5Yzc4YmFjY2M3ZmQxCgoodmlzdWFsLmpwZyk6Cmh0
+dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTQxZWViZWZiOWYx
+NGFkZjBkZTQ0MGQwNTIyNWNkYzI5CgooMSBFVFVJIElQSE9ORSBLQVJLIExBR0VSRkVMRCBPRkZF
+UlQgUE9VUiAxIFNPTEFJUkUgS0wgQUNIRVTDiUUqIC0gSiBFTgpQUk9GSVRFKToKaHR0cDovL210
+cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9OTQzMTgwMzY5YjkwMWViNzZj
+M2I0NTJhYTQ0NzBjNDAKCihTQU5TIE9VQkxJRVIgOiAtMTUlIFNVUiBUT1VURVMgTEVTIFNPTEFJ
+UkVTIEFWRUMgTEUgQ09ERSBQUk9NTyBFVEUyMDEzKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0
+cmljLmNvbS9jbGljLnBocD9wYXJhbXM9M2Y3N2IzMzJjYzYwY2YwZDgwZTIyNjY5NTA1Y2M2YjcK
+CihSZWpvaWduZXotbm91cyBzdXIgbm90cmUgcGFnZSBmYW4gZmFjZWJvb2spOgpodHRwOi8vbXRy
+YzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz02NTQ5NjEzMWQ0YmY5NjRmNDM3
+YmIzNjJlZDM1MWMxNAoKKE9QVElDIDIwMDAgQSBWT1RSRSDDiUNPVVRFIC0gMDEgNDEgNzMgMjYg
+MjYpCgoqUG91ciB0b3V0IGFjaGF0IGQndW5lIHBhaXJlIGRlIGx1bmV0dGVzIGRlIHNvbGVpbCBu
+b24tY29ycmVjdHJpY2VzIEthcmwKTGFnZXJmZWxkLCB2b3VzIHBvdXZleiBiw6luw6lmaWNpZXIg
+YXUgY2hvaXggZCd1bmUgY29xdWUgaVBob25lIDQvNFMgb3UKaVBob25lIDUgS2FybCBMYWdlcmZl
+bGQgb2ZmZXJ0ZS4gT2ZmcmUgdmFsYWJsZSBkdSAxOSBqdWluIDIwMTMgYXUgMzEganVpbGxldAoy
+MDEzLCBzdXIgd3d3Lm9wdGljMjAwMC5jb206Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5j
+b20vY2xpYy5waHA/cGFyYW1zPWM0MGI1NTUxNjdmZTFlYjExMzc0ZjdmMmRjYzc3OGE0CgoKb3Ug
+ZGFucyBsZXMgbWFnYXNpbnMgT3B0aWMgMm9vbyBwYXJ0aWNpcGFudCDDoCBsJ29ww6lyYXRpb24g
+KGxpc3RlIGRpc3BvbmlibGUKc3VyIHd3dy5vcHRpYzIwMDAuY29tOgpodHRwOi8vbXRyYzEuZGln
+aXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1mMDBhMWQwNmMzMjZjNDljNzJkMzZhYmM4
+ZGE1OWMwZgoKCikuIE9mZnJlIGN1bXVsYWJsZSBhdmVjIGwnb2ZmcmUgRXTDqSAyMDEzIC0xNSUg
+c3VyIHd3dy5vcHRpYzIwMDAuY29tOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2Ns
+aWMucGhwP3BhcmFtcz0yNjhhN2NlODUzZWUxYWVhODI1YTIzOTE5ZjNkMzMxZgoKCiwgbWFpcyBu
+b24tY3VtdWxhYmxlIGF2ZWMgZCdhdXRyZXMgb2ZmcmVzIGV0IGF2YW50YWdlcy4gVmlzdWVscyBu
+b24KY29udHJhY3R1ZWxzLgoKTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVh
+dSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgCmTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNv
+bnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuLi4uIEJlc29pbiBkZQp2b3lhZ2VyLCBkZSB2
+b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1l
+aWxsZXVyCnJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFs
+b3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlcgp1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bv
+c2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMKbWV0dG9ucyDDoCBq
+b3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS5CZXNvaW4gZGUgdm95YWdlciwg
+ZGUgdm91cwpoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBh
+dSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpCnByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6ll
+LCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIKc3VyIGxlcyBw
+cm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMg
+w6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuRW52aWUgZGUgdm91cyBm
+YWlyZSB1bmUgYmVhdXTDqSDDoCBtb2luZHJlCmNvw7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOp
+ZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqQrDoCBtb2luZHJl
+IGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRz
+CnJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5vcyBwcm9w
+b3NpdGlvbnMgcG91ciB2b3VzCnBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21icmV1c2Vz
+IMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQKcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1p
+bGxlLkEgbGEgcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmlnaW5hbCA/IE5vdXMKc291aGFpdG9ucyB2
+b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lw
+ZW5zZXIKbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLiBBaW5z
+aSwgZ3JhY2Ugw6Agbm91cywgdm91cwphbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRl
+ciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LApvcHBvcnR1bml0w6ksIGlu
+Zm9zLi4uIEFpbnNpLCBncsOiY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwKcG91
+dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBv
+cnR1bml0w6ksCmluZm9zLi4uIC4uIE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5v
+dXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cwphaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBl
+biBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLi4uLiBCZXNvaW4KZGUgdm95YWdlciwg
+ZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBh
+dQptZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6ll
+LCBhbG9ycyBwb3VycXVvaSBuZQpwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBw
+cm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0CnF1ZSBub3VzIG1ldHRvbnMg
+w6Agam91ciByw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuQmVzb2luIGRlCnZveWFn
+ZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0
+aXIgYXUgbWVpbGxldXIKcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2Fu
+bsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyCnVuIHBldGl0IG9laWwgcGFyIHN1ciBs
+ZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cwptZXR0
+b25zIMOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkVudmllIGRlIHZv
+dXMgZmFpcmUgdW5lCmJlYXV0w6kgw6AgbW9pbmRyZSBjb8O7dCB0b3V0IGF1IGxvbmcgZGUgbCdh
+bm7DqWUsIGRlIHByw6l2b2lyIHZvcwpwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw6l0w6kgw6AgbW9p
+bmRyZSBmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MKZW5mYW50cyDDoCBkZXMgYnVk
+Z2V0cyByYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBub3MK
+cHJvcG9zaXRpb25zIHBvdXIgdm91cyBwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJl
+dXNlcyDDqWNvbm9taWVzCnRvdXQgZW4gdm91cyBmYWlzYW50IHBsYWlzaXIgw6AgdG91dGUgbGEg
+ZmFtaWxsZS5BIGxhIHJlY2hlcmNoZSBkdSBjYWRlYXUKb3JpZ2luYWwgPyBOb3VzIHNvdWhhaXRv
+bnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMKYWlkZXIgw6Ag
+ZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZSBsJ2FubsOpZS4g
+QWluc2ksCmdyYWNlIMOgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJv
+Zml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0CnByb2R1aXQgYSBiYXMgY291dCwgb3Bwb3J0dW5pdMOp
+LCBpbmZvcy4uLiBBaW5zaSwgZ3LDomNlIMOgIG5vdXMsIHZvdXMgYWxsZXoKcGFyIGV4ZW1wbGUs
+IHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwK
+b3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuCgoKCkNsaXF1ZXogc3VyIGNlIGxpZW4gcG91ciB2b3Vz
+IGTDqXNhYm9ubmVyIApodHRwOi8vYS5mbHktd3UuY29tL19hY3Qvb3B0b3V0LnBocD9COTIyMTg4
+MzU3OTc2ODg4OTg3NDI4MDg2NDU1NDE4Cgp7fkI5MjIxODgzNTc5NzY4ODg5ODc0MjgwODY0NTU0
+MTh+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVk
+IGJ5IFdpbmRvd3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9wLnNmLm5ldC9z
+ZnUvd2luZG93cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
+dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

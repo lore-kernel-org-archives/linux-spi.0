@@ -1,127 +1,66 @@
-From: "Cdiscount - Flywithus" <lisa@a.optincake.com>
-Subject: Cdiscount Ventes a pertes et livraison gratuite
-Date: Sun, 30 Jun 2013 04:46:32 +0100
-Message-ID: <0.0.1B8.4EC.1CE754469040D10.0@mta199.pur3.net>
-Reply-To: Cdiscount - Flywithus <lisa@a.optincake.com>
+From: Mika Westerberg <mika.westerberg@iki.fi>
+Subject: Re: [PATCH 2/8] spi: spi-ep93xx: use bits_per_word_mask
+Date: Sun, 30 Jun 2013 19:13:58 +0300
+Message-ID: <20130630161358.GA786@mwesterb-mobl.lan>
+References: <201306281143.07615.hartleys@visionengravers.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
+	spi-devel-general@lists.sourceforge.net,
+	Ryan Mallon <rmallon@gmail.com>, broonie@kernel.org,
+	grant.likely@linaro.org
+To: H Hartley Sweeten <hartleys@visionengravers.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <201306281143.07615.hartleys@visionengravers.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTU2MjQzMjIwNTM3MTg0CgoKCgoyOC8wNi8xMwoKQ2Rpc2NvdW50Ck7CsDEgZHUgZS1jb21tZXJj
-ZSBlbiBGcmFuY2UgIU9mZnJlIGR1IGpvdXIKVmVudGVzIMOgIHBlcnRlICFEZXZlbmV6IGZhbiBk
-ZSBDZGlzY291bnQKCihmYWNlYm9vay1oZWFkZXIucG5nKTogaHR0cDovL3d3dy5mYWNlYm9vay5j
-b20vQ2Rpc2NvdW50CgoKRHUgMjYgSnVpbiBhdSAzMCBKdWlsbGV0CgooU09MREVTKiA6IFZlbnRl
-cyDDoCBwZXJ0ZSAhKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9NDQ2MDEm
-YT0yMjU4ODQwJmc9MTY5OTY0ODgmdXJsPWh0dHA6Ly93d3cuY2QKaXNjb3VudC5jb20vCgooVklU
-RSAhKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9NDQ2MDEmYT0yMjU4ODQw
-Jmc9MTY5OTY0ODgmdXJsPWh0dHA6Ly93d3cuY2QKaXNjb3VudC5jb20vCgooQ2EgY29udGludWUp
-OgpodHRwOi8vY2xrLnRyYWRlZG91Ymxlci5jb20vY2xpY2s/cD00NDYwMSZhPTIyNTg4NDAmZz0x
-Njk5NjQ4OCZ1cmw9aHR0cDovL3d3dy5jZAppc2NvdW50LmNvbS8KCihWSVRFICEpOgpodHRwOi8v
-Y2xrLnRyYWRlZG91Ymxlci5jb20vY2xpY2s/cD00NDYwMSZhPTIyNTg4NDAmZz0xNjk5NjQ4OCZ1
-cmw9aHR0cDovL3d3dy5jZAppc2NvdW50LmNvbS8KCihWZW50ZXMgw6AgcGVydGUgISk6Cmh0dHA6
-Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTQ0NjAxJmE9MjI1ODg0MCZnPTE2OTk2NDg4
-JnVybD1odHRwOi8vd3d3LmNkCmlzY291bnQuY29tLwoKKEV0IGxpdnJhaXNvbiBncmF0dWl0ZSgx
-KSk6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTQ0NjAxJmE9MjI1ODg0MCZn
-PTE2OTk2NDg4JnVybD1odHRwOi8vd3d3LmNkCmlzY291bnQuY29tLwoKCjFlciBBcnJpdsOpLCAx
-ZXIgU2VydmnCoCE6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTQ0NjAxJmE9
-MjI1ODg0MCZnPTE2OTk2NDg4JnVybD1odHRwOi8vd3d3LmNkCmlzY291bnQuY29tLwoKCjFlciBB
-cnJpdsOpLCAxZXIgU2VydmnCoCEKCihDZGlzY291bnQgcyBlbmdhZ2Ugc3VyLi4uKToKaHR0cDov
-L2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9NDQ2MDEmYT0yMjU4ODQwJmc9MTY5OTY0ODgm
-dXJsPWh0dHA6Ly93d3cuY2QKaXNjb3VudC5jb20vCgooLi4ubGVzIHByaXggISk6Cmh0dHA6Ly9j
-bGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTQ0NjAxJmE9MjI1ODg0MCZnPTE2OTk2NDg4JnVy
-bD1odHRwOi8vd3d3LmNkCmlzY291bnQuY29tLwoKKC4uLiBsZSBjaG9peCAhKToKaHR0cDovL2Ns
-ay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9NDQ2MDEmYT0yMjU4ODQwJmc9MTY5OTY0ODgmdXJs
-PWh0dHA6Ly93d3cuY2QKaXNjb3VudC5jb20vCgooLi4uIGxlIGNvbnNlaWwgYXZhbnQgdmVudGUg
-ISk6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTQ0NjAxJmE9MjI1ODg0MCZn
-PTE2OTk2NDg4JnVybD10ZWw6Mzk3OQoKKC4uLiBsYSBzw6ljdXJpdMOpIGRlcyBwYWltZW50cyAh
-KToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9NDQ2MDEmYT0yMjU4ODQwJmc9
-MTY5OTY0ODgmdXJsPWh0dHA6Ly93d3cuY2QKaXNjb3VudC5jb20vCgooLi4uIGxlIHNlcnZpY2Ug
-Y2xpZW50ICEpOgpodHRwOi8vY2xrLnRyYWRlZG91Ymxlci5jb20vY2xpY2s/cD00NDYwMSZhPTIy
-NTg4NDAmZz0xNjk5NjQ4OCZ1cmw9aHR0cDovL3d3dy5jZAppc2NvdW50LmNvbS8KCihTdWl2ZXot
-bm91cyBzdXIuLi4pOgpodHRwOi8vY2xrLnRyYWRlZG91Ymxlci5jb20vY2xpY2s/cD00NDYwMSZh
-PTIyNTg4NDAmZz0xNjk5NjQ4OCZ1cmw9aHR0cDovL3d3dy5jZAppc2NvdW50LmNvbS8KCiguLi4g
-VHdpdHRlcik6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTQ0NjAxJmE9MjI1
-ODg0MCZnPTE2OTk2NDg4JnVybD1odHRwOi8vdHdpdHRlCnIuY29tLyMlMjEvY2Rpc2NvdW50Cgoo
-Li4uIEZhY2Vib29rKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9NDQ2MDEm
-YT0yMjU4ODQwJmc9MTY5OTY0ODgmdXJsPWh0dHA6Ly93d3cuZmEKY2Vib29rLmNvbS9DZGlzY291
-bnQKCgrCoApMZXMgb2ZmcmVzIHByw6lzZW50w6llcyBkYW5zIGNldHRlIG5ld3NsZXR0ZXIgc29u
-dCB2YWxhYmxlcyBkYW5zIGxhIGxpbWl0ZQpkZXMgc3RvY2tzIGRpc3BvbmlibGVzLgoqIFN1ciBw
-cm9kdWl0cyBzaWduYWzDqXMuIFNvbGRlcyBwZW5kYW50IGxhIHDDqXJpb2RlIGR1IDI2IGp1aW4g
-YXUgMzAganVpbGxldAoyMDEzLgoqKiBSw6lkdWN0aW9uIG1heGltYWxlIGNvbnN0YXTDqWUgc3Vy
-IHVuZSBzw6lsZWN0aW9uIGQnYXJ0aWNsZXMuCigxKSBWb2lyIGNvbmRpdGlvbnMgc3VyIHNpdGUu
-CgoKQWluc2ksIGdyw6JjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2ly
-IHByb2ZpdGVyIGRlIHRvdXQgY2UKcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVu
-aXTDqSwgaW5mb3MuLi4gLkJlc29pbiBkZSB2b3lhZ2VyLCBkZQp2b3VzIGhhYmlsbGVyLCBkZSB2
-b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQKcXVh
-bGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBh
-cyBqZXRlciB1biBwZXRpdApvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2
-b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucwrDoCBqb3VyIHLDqWd1bGnDqHJlbWVu
-dCBldCB0b3V0ZSBsJ2FubsOpZS4uIE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuCm5v
-dXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBl
-biBjb25zb21tYW50Cm1pZXV4IHRvdXRlIGwnYW5uw6llLi4uLiBCZXNvaW4gZGUgdm95YWdlciwg
-ZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cwpjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBh
-dSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nCmRlIGwnYW5uw6ll
-LCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcwpw
-cm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMg
-w6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuQSBsYSByZWNoZXJjaGUg
-ZHUgY2FkZWF1IG9yaWdpbmFsID8gTm91cwpzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91
-dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlcgptb2lucyB0b3V0IGVu
-IGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncmFjZSDDoCBub3VzLCB2
-b3VzCmFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVz
-dCBwcm9kdWl0IGEgYmFzIGNvdXQsCm9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gRW52aWUgZGUgdm91
-cyBmYWlyZSB1bmUgYmVhdXTDqSDDoCBtb2luZHJlIGNvw7t0IHRvdXQKYXUgbG9uZyBkZSBsJ2Fu
-bsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqSDDoCBtb2lu
-ZHJlCmZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRn
-ZXRzIHJhaXNvbm5hYmxlcywgYWxvcnMKY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5vcyBw
-cm9wb3NpdGlvbnMgcG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZQpmYWlyZSBkZSBub21icmV1
-c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQgcGxhaXNpciDDoCB0b3V0ZSBsYQpm
-YW1pbGxlLkFpbnNpLCBncsOiY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91
-dm9pciBwcm9maXRlciBkZQp0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBv
-cnR1bml0w6ksIGluZm9zLi4uIC5CZXNvaW4gZGUKdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwg
-ZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1cgpyYXBwb3J0
-IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBu
-ZSBwYXMgamV0ZXIKdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5v
-dXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzCm1ldHRvbnMgw6Agam91ciByw6lndWxpw6hy
-ZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuLiBOb3VzIHNvdWhhaXRvbnMgdm91cwphcHBvcnRlciB1
-biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRv
-dXQgZW4KY29uc29tbWFudCBtaWV1eCB0b3V0ZSBsJ2FubsOpZS4uLi4gQmVzb2luIGRlIHZveWFn
-ZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlCnZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0
-aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUKbG9uZyBkZSBsJ2Fu
-bsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBs
-ZXMKcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0
-b25zIMOgIGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkEgbGEgcmVjaGVy
-Y2hlIGR1IGNhZGVhdSBvcmlnaW5hbCA/IE5vdXMKc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVu
-IG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIKbW9pbnMgdG91
-dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLiBBaW5zaSwgZ3JhY2Ugw6Agbm91
-cywgdm91cwphbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1
-aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LApvcHBvcnR1bml0w6ksIGluZm9zLi4uIEVudmllIGRl
-IHZvdXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZSBjb8O7dCB0b3V0CmF1IGxvbmcgZGUg
-bCdhbm7DqWUsIGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw6l0w6kgw6Ag
-bW9pbmRyZQpmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDDoCBkZXMg
-YnVkZ2V0cyByYWlzb25uYWJsZXMsIGFsb3JzCmNvbnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBu
-b3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cyBwZXJtZXR0cmUgYWluc2kgZGUKZmFpcmUgZGUgbm9t
-YnJldXNlcyDDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50IHBsYWlzaXIgw6AgdG91dGUg
-bGEKZmFtaWxsZS4KCgoKCgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0
-cDovL2Eub3B0aW5jYWtlLmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4NjYyNTE1NjI0MzIy
-MDUzNzE4NAoKCgoKCgp7fkFKODQ2NDE4NjYyNTE1NjI0MzIyMDUzNzE4NH59Ci0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBpcyBzcG9uc29yZWQgYnkgV2luZG93czoKCkJ1
-aWxkIGZvciBXaW5kb3dzIFN0b3JlLgoKaHR0cDovL3Auc2YubmV0L3NmdS93aW5kb3dzLWRldjJk
-ZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
-dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
-ZGV2ZWwtZ2VuZXJhbAo=
+On Fri, Jun 28, 2013 at 11:43:07AM -0700, H Hartley Sweeten wrote:
+> This driver supports 16 to 4 bits per work. Set the bits_per_word_mask
+> to allows the spi core to handle validation.
+> 
+> Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
+> Cc: Ryan Mallon <rmallon@gmail.com>
+> Cc: Mika Westerberg <mika.westerberg@iki.fi>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Grant Likely <grant.likely@linaro.org>
+> ---
+>  drivers/spi/spi-ep93xx.c | 11 +----------
+>  1 file changed, 1 insertion(+), 10 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
+> index c633cd0..93ae7b6 100644
+> --- a/drivers/spi/spi-ep93xx.c
+> +++ b/drivers/spi/spi-ep93xx.c
+> @@ -272,12 +272,6 @@ static int ep93xx_spi_setup(struct spi_device *spi)
+>  	struct ep93xx_spi *espi = spi_master_get_devdata(spi->master);
+>  	struct ep93xx_spi_chip *chip;
+>  
+> -	if (spi->bits_per_word < 4 || spi->bits_per_word > 16) {
+> -		dev_err(&espi->pdev->dev, "invalid bits per word %d\n",
+> -			spi->bits_per_word);
+> -		return -EINVAL;
+> -	}
+> -
+>  	chip = spi_get_ctldata(spi);
+>  	if (!chip) {
+>  		dev_dbg(&espi->pdev->dev, "initial setup for %s\n",
+> @@ -341,10 +335,6 @@ static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+>  
+>  	/* first validate each transfer */
+>  	list_for_each_entry(t, &msg->transfers, transfer_list) {
+> -		if (t->bits_per_word) {
+> -			if (t->bits_per_word < 4 || t->bits_per_word > 16)
+> -				return -EINVAL;
+> -		}
+>  		if (t->speed_hz && t->speed_hz < espi->min_rate)
+>  				return -EINVAL;
+>  	}
+> @@ -1022,6 +1012,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+>  	master->bus_num = pdev->id;
+>  	master->num_chipselect = info->num_chipselect;
+>  	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+> +	master->bits_per_word_mask = 0xfff8;	/* 16 to 4 bits per word */
+
+Please use SPI_BPW_RANGE_MASK(4, 16) here.

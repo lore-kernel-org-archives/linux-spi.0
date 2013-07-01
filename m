@@ -1,66 +1,81 @@
-From: "Monoprix via Nl promos" <FWU4@a.fly-wu.com>
-Subject: [SPAM]
-	=?UTF-8?B?Vm90cmUgZW1haWwgc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IGEgw6l0w6kgc8OpbGVjdGlvbm7DqSAh?=
-Date: Mon, 01 Jul 2013 06:17:11 +0100
-Message-ID: <0.0.7.73.1CE761A3DE31514.0@ukrs394971.pur3.net>
-Reply-To: Monoprix via Nl promos <FWU4@a.fly-wu.com>
+From: Sourav Poddar <sourav.poddar@ti.com>
+Subject: Re: [PATCH 0/3] spi/mtd generic framework,ti qspi controller and
+ spansion driver
+Date: Mon, 1 Jul 2013 10:47:16 +0530
+Message-ID: <51D110DC.2050107@ti.com>
+References: <1372232472-2641-1-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: rnayak@ti.com, linux-kernel@vger.kernel.org, balbi@ti.com,
+ broonie@kernel.org, linux-mtd@lists.infradead.org, tqnguyen@micron.com,
+ grant.likely@linaro.org, spi-devel-general@lists.sourceforge.net,
+ linux-omap@vger.kernel.org, dwmw2@infradead.org, manonuevo@micron.com
+To: Sourav Poddar <sourav.poddar@ti.com>, <artem.bityutskiy@linux.intel.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <1372232472-2641-1-git-send-email-sourav.poddar@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-U2kgdm91cyBuJ2Fycml2ZXogcGFzIGEgdmlzdWFsaXNlciBjZSBtZXNzYWdlLCB2ZXVpbGxleiBj
-bGlxdWVyIGljaToKaHR0cDovL2EuZmx5LXd1LmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19l
-bWFpbC5waHA/QjkyMjE4ODM1Nzk3Njg5MTg1ODQyODA4NjQ1NDUxOCZ2YXJJZD17fm1haQpsVmFy
-aWF0aW9uSWR+fQoKClRlbnRleiBkZSByZW1wb3J0ZXIgdW4gd2Vlay1lbmQgc2hvcHBpbmcgw6Ag
-TG9uZHJlcwplbiBwYXJ0aWNpcGFudCBhdSBncmFuZCBqZXUgY29uY291cnMgISBKRSBGT05DRSAh
-OgpodHRwOi8vbW9ub3ByaXguc2VydjJtZS5jb20vP2VtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldCZwcmVub209Jm5vbT0mY3A9Jm5haXNzYW5jZT0mcGhhc2U9dApl
-c3Qmc291cmNlPTE0NzMKCgp1biB3ZWVrLWVuZCBzaG9wcGluZyDDoCBMb25kcmVzCkpFIEZPTkNF
-ICEKCihNT05PUFJJWCk6Cmh0dHA6Ly9tb25vcHJpeC5zZXJ2Mm1lLmNvbS8/ZW1haWw9c3BpLWRl
-dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnByZW5vbT0mbm9tPSZjcD0mbmFpc3Nh
-bmNlPSZwaGFzZT10CmVzdCZzb3VyY2U9MTQ3MwoKCsKgCgrCoCAgQm9uam91ciwKwqAKR3LDomNl
-IMOgIE1vbm9wcml4LCBnYWduZXogdm90cmVXZWVrLWVuZCBzaG9wcGluZyBwb3VyIDIgcGVyc29u
-bmVzCsOgIExvbmRyZXMgZCd1bmUgdmFsZXVyIGRlIDLCoDAwMOKCrMKgIToKaHR0cDovL21vbm9w
-cml4LnNlcnYybWUuY29tLz9lbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQmcHJlbm9tPSZub209JmNwPSZuYWlzc2FuY2U9JnBoYXNlPXQKZXN0JnNvdXJjZT0xNDcz
-CgoKV2Vlay1lbmQgc2hvcHBpbmcgcG91ciAyIHBlcnNvbm5lcwrDoCBMb25kcmVzClRFTlRFWiBE
-RSBHQUdORVI6Cmh0dHA6Ly9tb25vcHJpeC5zZXJ2Mm1lLmNvbS8/ZW1haWw9c3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnByZW5vbT0mbm9tPSZjcD0mbmFpc3NhbmNlPSZw
-aGFzZT10CmVzdCZzb3VyY2U9MTQ3MwoKKFVOIFdFRUstRU5EIFNIT1BQSU5HIMOAIExPTkRSRVMp
-OgpodHRwOi8vbW9ub3ByaXguc2VydjJtZS5jb20vP2VtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldCZwcmVub209Jm5vbT0mY3A9Jm5haXNzYW5jZT0mcGhhc2U9dApl
-c3Qmc291cmNlPTE0NzMKCgpJbnNjcml2ZXotdm91cyBkw6hzIG1haW50ZW5hbnQgIToKaHR0cDov
-L21vbm9wcml4LnNlcnYybWUuY29tLz9lbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQmcHJlbm9tPSZub209JmNwPSZuYWlzc2FuY2U9JnBoYXNlPXQKZXN0JnNvdXJj
-ZT0xNDczCgoKPiAgSidZIFZBSVM6Cmh0dHA6Ly9tb25vcHJpeC5zZXJ2Mm1lLmNvbS8/ZW1haWw9
-c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnByZW5vbT0mbm9tPSZjcD0m
-bmFpc3NhbmNlPSZwaGFzZT10CmVzdCZzb3VyY2U9MTQ3MwoKKFNob3BwaW5nIMOgIExvbmRyZXMp
-OgpodHRwOi8vbW9ub3ByaXguc2VydjJtZS5jb20vP2VtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldCZwcmVub209Jm5vbT0mY3A9Jm5haXNzYW5jZT0mcGhhc2U9dApl
-c3Qmc291cmNlPTE0NzMKCgpKZXUgZ3JhdHVpdCBzYW5zIG9ibGlnYXRpb24gZCdhY2hhdC4gUGhv
-dG9zIG5vbiBjb250cmFjdHVlbGxlcy4KQ29uZm9ybcOpbWVudCDDoCBsYSBsb2kgImluZm9ybWF0
-aXF1ZSBldCBsaWJlcnTDqXMiIGR1IDYgamFudmllciAxOTc4Cm1vZGlmacOpZSwgdm91cyBwb3V2
-ZXogw6AgdG91dCBtb21lbnQgZGVtYW5kZXIgw6AgYWNjw6lkZXIsIGZhaXJlIHJlY3RpZmllcgpv
-dSBzdXBwcmltZXIgbGVzIGluZm9ybWF0aW9ucyBwZXJzb25uZWxsZXMgdm91cyBjb25jZXJuYW50
-IG91IHZvdXMgb3Bwb3NlcgrDoCBsZXVyIHRyYWl0ZW1lbnQgcGFyIE1vbm9wcml4LiBQb3VyIHZv
-dXMgZMOpc2luc2NyaXJlLCAgc3VpdmV6IGNlIGxpZW46ICMKCgoKQ2xpcXVleiBzdXIgY2UgbGll
-biBwb3VyIHZvdXMgZMOpc2Fib25uZXIgCmh0dHA6Ly9hLmZseS13dS5jb20vX2FjdC9vcHRvdXQu
-cGhwP0I5MjIxODgzNTc5NzY4OTE4NTg0MjgwODY0NTQ1MTgKCnt+QjkyMjE4ODM1Nzk3Njg5MTg1
-ODQyODA4NjQ1NDUxOH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBp
-cyBzcG9uc29yZWQgYnkgV2luZG93czoKCkJ1aWxkIGZvciBXaW5kb3dzIFN0b3JlLgoKaHR0cDov
-L3Auc2YubmV0L3NmdS93aW5kb3dzLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
-cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
++ Artem
+On Wednesday 26 June 2013 01:11 PM, Sourav Poddar wrote:
+> This patch series add support for the generic spi based flash
+> framework(spinand_mtd), which can be used used by any spi based flash device to
+> attach itself to mtd framework.
+>
+> The first patch of this series includes both the generic framework and the
+> the micron device(spinand_lld) making use of the framework.
+> I picked the first patch as a standalone patch. Can split the generic and
+> the lld part based on community suggestions.
+>
+> The second patch is the ti qspi controller driver.
+> The third patch is the spansion s25fl256s driver, making use of the the
+> generic spinand_mtd frameowrk.
+>
+> Test info:
+> Tested the generic framework(spinand_mtd.c) along with patch(2&3) on my dra7xx board
+> for write/erase/read using nand utils.
+>
+> Compile tested(spinand_lld.c).
+>
+> Mona Anonuevo (1):
+>    drivers: mtd: spinand: Add generic spinand frameowrk and micron
+>      driver.
+>
+> Sourav Poddar (2):
+>    drivers: spi: Add qspi flash controller
+>    drivers: mtd: spinand: Add qspi spansion flash controller
+>
+>   drivers/mtd/Kconfig                 |    2 +
+>   drivers/mtd/Makefile                |    2 +
+>   drivers/mtd/spinand/Kconfig         |   31 ++
+>   drivers/mtd/spinand/Makefile        |   10 +
+>   drivers/mtd/spinand/spinand_lld.c   |  776 +++++++++++++++++++++++++++++++++++
+>   drivers/mtd/spinand/spinand_mtd.c   |  690 +++++++++++++++++++++++++++++++
+>   drivers/mtd/spinand/ti-qspi-flash.c |  373 +++++++++++++++++
+>   drivers/spi/Kconfig                 |    6 +
+>   drivers/spi/Makefile                |    1 +
+>   drivers/spi/ti-qspi.c               |  352 ++++++++++++++++
+>   include/linux/mtd/spinand.h         |  155 +++++++
+>   11 files changed, 2398 insertions(+), 0 deletions(-)
+>   create mode 100644 drivers/mtd/spinand/Kconfig
+>   create mode 100644 drivers/mtd/spinand/Makefile
+>   create mode 100644 drivers/mtd/spinand/spinand_lld.c
+>   create mode 100644 drivers/mtd/spinand/spinand_mtd.c
+>   create mode 100644 drivers/mtd/spinand/ti-qspi-flash.c
+>   create mode 100644 drivers/spi/ti-qspi.c
+>   create mode 100644 include/linux/mtd/spinand.h
+>
+
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

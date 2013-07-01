@@ -1,11 +1,12 @@
-From: tati via Neezz <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Soldes Tati profitez jusqu'a moins 60%
-Date: Sun, 30 Jun 2013 18:44:50 +0200 (CEST)
-Message-ID: <egkb96.hikgyrdbau4g41johl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Monoprix via Nl promos" <FWU4@a.fly-wu.com>
+Subject: [SPAM]
+	=?UTF-8?B?Vm90cmUgZW1haWwgc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IGEgw6l0w6kgc8OpbGVjdGlvbm7DqSAh?=
+Date: Mon, 01 Jul 2013 06:17:11 +0100
+Message-ID: <0.0.7.73.1CE761A3DE31514.0@ukrs394971.pur3.net>
+Reply-To: Monoprix via Nl promos <FWU4@a.fly-wu.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,47 +19,48 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgphipI7gfk57dIhikgymifI&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1372610684555%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DDFCFJPBOJMJNLNFN%26mid%3D1600183537&s=3DOIDO=
-JGAKPBELCGLO
- =
-
-Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 60=
-%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 6=
-0%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a moins =
-60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a moins=
- 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a moin=
-s 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a moi=
-ns 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a mo=
-ins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a m=
-oins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a =
-moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'a=
- moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu'=
-a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusqu=
-'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jusq=
-u'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez jus=
-qu'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez ju=
-squ'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez j=
-usqu'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez =
-jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profitez=
- jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profite=
-z jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profit=
-ez jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati profi=
-tez jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati prof=
-itez jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati pro=
-fitez jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 60%Soldes Tati pr=
-ofitez jusqu'a moins 60%Soldes Tati profitez jusqu'a moins 60%
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600183537&sig=3DHJOBCGCMFAPKENPO
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+U2kgdm91cyBuJ2Fycml2ZXogcGFzIGEgdmlzdWFsaXNlciBjZSBtZXNzYWdlLCB2ZXVpbGxleiBj
+bGlxdWVyIGljaToKaHR0cDovL2EuZmx5LXd1LmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19l
+bWFpbC5waHA/QjkyMjE4ODM1Nzk3Njg5MTg1ODQyODA4NjQ1NDUxOCZ2YXJJZD17fm1haQpsVmFy
+aWF0aW9uSWR+fQoKClRlbnRleiBkZSByZW1wb3J0ZXIgdW4gd2Vlay1lbmQgc2hvcHBpbmcgw6Ag
+TG9uZHJlcwplbiBwYXJ0aWNpcGFudCBhdSBncmFuZCBqZXUgY29uY291cnMgISBKRSBGT05DRSAh
+OgpodHRwOi8vbW9ub3ByaXguc2VydjJtZS5jb20vP2VtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldCZwcmVub209Jm5vbT0mY3A9Jm5haXNzYW5jZT0mcGhhc2U9dApl
+c3Qmc291cmNlPTE0NzMKCgp1biB3ZWVrLWVuZCBzaG9wcGluZyDDoCBMb25kcmVzCkpFIEZPTkNF
+ICEKCihNT05PUFJJWCk6Cmh0dHA6Ly9tb25vcHJpeC5zZXJ2Mm1lLmNvbS8/ZW1haWw9c3BpLWRl
+dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnByZW5vbT0mbm9tPSZjcD0mbmFpc3Nh
+bmNlPSZwaGFzZT10CmVzdCZzb3VyY2U9MTQ3MwoKCsKgCgrCoCAgQm9uam91ciwKwqAKR3LDomNl
+IMOgIE1vbm9wcml4LCBnYWduZXogdm90cmVXZWVrLWVuZCBzaG9wcGluZyBwb3VyIDIgcGVyc29u
+bmVzCsOgIExvbmRyZXMgZCd1bmUgdmFsZXVyIGRlIDLCoDAwMOKCrMKgIToKaHR0cDovL21vbm9w
+cml4LnNlcnYybWUuY29tLz9lbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQmcHJlbm9tPSZub209JmNwPSZuYWlzc2FuY2U9JnBoYXNlPXQKZXN0JnNvdXJjZT0xNDcz
+CgoKV2Vlay1lbmQgc2hvcHBpbmcgcG91ciAyIHBlcnNvbm5lcwrDoCBMb25kcmVzClRFTlRFWiBE
+RSBHQUdORVI6Cmh0dHA6Ly9tb25vcHJpeC5zZXJ2Mm1lLmNvbS8/ZW1haWw9c3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnByZW5vbT0mbm9tPSZjcD0mbmFpc3NhbmNlPSZw
+aGFzZT10CmVzdCZzb3VyY2U9MTQ3MwoKKFVOIFdFRUstRU5EIFNIT1BQSU5HIMOAIExPTkRSRVMp
+OgpodHRwOi8vbW9ub3ByaXguc2VydjJtZS5jb20vP2VtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldCZwcmVub209Jm5vbT0mY3A9Jm5haXNzYW5jZT0mcGhhc2U9dApl
+c3Qmc291cmNlPTE0NzMKCgpJbnNjcml2ZXotdm91cyBkw6hzIG1haW50ZW5hbnQgIToKaHR0cDov
+L21vbm9wcml4LnNlcnYybWUuY29tLz9lbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQmcHJlbm9tPSZub209JmNwPSZuYWlzc2FuY2U9JnBoYXNlPXQKZXN0JnNvdXJj
+ZT0xNDczCgoKPiAgSidZIFZBSVM6Cmh0dHA6Ly9tb25vcHJpeC5zZXJ2Mm1lLmNvbS8/ZW1haWw9
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnByZW5vbT0mbm9tPSZjcD0m
+bmFpc3NhbmNlPSZwaGFzZT10CmVzdCZzb3VyY2U9MTQ3MwoKKFNob3BwaW5nIMOgIExvbmRyZXMp
+OgpodHRwOi8vbW9ub3ByaXguc2VydjJtZS5jb20vP2VtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldCZwcmVub209Jm5vbT0mY3A9Jm5haXNzYW5jZT0mcGhhc2U9dApl
+c3Qmc291cmNlPTE0NzMKCgpKZXUgZ3JhdHVpdCBzYW5zIG9ibGlnYXRpb24gZCdhY2hhdC4gUGhv
+dG9zIG5vbiBjb250cmFjdHVlbGxlcy4KQ29uZm9ybcOpbWVudCDDoCBsYSBsb2kgImluZm9ybWF0
+aXF1ZSBldCBsaWJlcnTDqXMiIGR1IDYgamFudmllciAxOTc4Cm1vZGlmacOpZSwgdm91cyBwb3V2
+ZXogw6AgdG91dCBtb21lbnQgZGVtYW5kZXIgw6AgYWNjw6lkZXIsIGZhaXJlIHJlY3RpZmllcgpv
+dSBzdXBwcmltZXIgbGVzIGluZm9ybWF0aW9ucyBwZXJzb25uZWxsZXMgdm91cyBjb25jZXJuYW50
+IG91IHZvdXMgb3Bwb3NlcgrDoCBsZXVyIHRyYWl0ZW1lbnQgcGFyIE1vbm9wcml4LiBQb3VyIHZv
+dXMgZMOpc2luc2NyaXJlLCAgc3VpdmV6IGNlIGxpZW46ICMKCgoKQ2xpcXVleiBzdXIgY2UgbGll
+biBwb3VyIHZvdXMgZMOpc2Fib25uZXIgCmh0dHA6Ly9hLmZseS13dS5jb20vX2FjdC9vcHRvdXQu
+cGhwP0I5MjIxODgzNTc5NzY4OTE4NTg0MjgwODY0NTQ1MTgKCnt+QjkyMjE4ODM1Nzk3Njg5MTg1
+ODQyODA4NjQ1NDUxOH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpUaGlzIFNGLm5ldCBlbWFpbCBp
+cyBzcG9uc29yZWQgYnkgV2luZG93czoKCkJ1aWxkIGZvciBXaW5kb3dzIFN0b3JlLgoKaHR0cDov
+L3Auc2YubmV0L3NmdS93aW5kb3dzLWRldjJkZXYKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

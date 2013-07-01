@@ -1,49 +1,64 @@
-From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: RE: [PATCH 2/8] spi: spi-ep93xx: use bits_per_word_mask
-Date: Mon, 1 Jul 2013 13:28:58 -0500
-Message-ID: <ADE657CA350FB648AAC2C43247A983F0021DAC38FFC3@AUSP01VMBX24.collaborationhost.net>
-References: <201306281143.07615.hartleys@visionengravers.com>
-	<20130630161358.GA786@mwesterb-mobl.lan>
-	<ADE657CA350FB648AAC2C43247A983F0021DAC38FFBD@AUSP01VMBX24.collaborationhost.net>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/8] spi: spi-ep93xx: always handle transfer specific
+ settings
+Date: Mon, 1 Jul 2013 20:11:22 +0100
+Message-ID: <20130701191122.GN27646@sirena.org.uk>
+References: <201306281143.35130.hartleys@visionengravers.com>
+ <20130701102757.GF27646@sirena.org.uk>
+ <ADE657CA350FB648AAC2C43247A983F0021DAC38FFB9@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, Linux Kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Ryan, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>, Mika Westerberg
-	<mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <ADE657CA350FB648AAC2C43247A983F0021DAC38FFBD-gaq956PjLg32KbjnnMDalRurcAul1UnsRrxOEX5GOmysTnJN9+BGXg@public.gmane.org>
-Content-Language: en-US
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="YqRRwTcmsyYCeoLs"
+Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	Ryan Mallon <rmallon@gmail.com>,
+	"mika.westerberg@iki.fi" <mika.westerberg@iki.fi>,
+	"grant.likely@linaro.org" <grant.likely@linaro.org>
+To: H Hartley Sweeten <hartleys@visionengravers.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <ADE657CA350FB648AAC2C43247A983F0021DAC38FFB9@AUSP01VMBX24.collaborationhost.net>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday, July 01, 2013 11:23 AM, H Hartley Sweeten wrote:
-> On Sunday, June 30, 2013 9:14 AM, Mika Westerberg wrote:
->> Please use SPI_BPW_RANGE_MASK(4, 16) here.
->
-> I thought there was a macro for this, just couldn't find it. I'll fix this.
 
-Doh... This patch is already in linux-next.
+--YqRRwTcmsyYCeoLs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I'll need to rebase this series.
+On Mon, Jul 01, 2013 at 01:15:40PM -0500, H Hartley Sweeten wrote:
+> On Monday, July 01, 2013 3:28 AM, Mark Brown wrote:
 
-Regards,
-Hartley
+> > Applied, thanks.
 
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
+> I was going to redo this series based on the comments I have received
+> so far. Did you already apply this one? Should I push it to the front of my
+> patchset?
 
-Build for Windows Store.
+That's what I said.  You shouldn't resend it at all, you should base
+your updates off the relevant topic branch.
 
-http://p.sf.net/sfu/windows-dev2dev
+--YqRRwTcmsyYCeoLs
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR0dRXAAoJELSic+t+oim94WsP+QFmdF95A3xx3vo2zfKVD26W
+nyV3mmMakxxLe2NII/dlCPmnFuc+S1bwtqXqA6c3R54G/kr3t9dNEMsPn69Q9Woj
+4YUJzOfPT/rKWVCa0c3aAB7GG34A8WO4417nLsT3Z6rgAZxgSalRBWSAwOsrySAB
+AFOB4wzYgjih2qJ5LSpB+g7P7G5zk9UK2tRQ+X1WNrYsvIPh5YjjMArBlRxH6q9f
+6D2wmEdF8gmWrajj5vGhDxEq/MWnAplArOq1IUirtxZ4iePnH3hv7l+OQglwQlJi
+fJggsKzkJJp6r27VmvMRxhmEI+vaaFw3tm8zl09JUmydSD8T02vsgIk2pKl1iOFE
+vEmcC6YPEFUc8SrmVWF1TLgGInx9S6J8C6FN01HSPlYCH/lSgvLOIC/IqagiNWLX
+DFteDGSZFItVl51qJvL1KQwMw54n7RpN2+BzuG3OTveaHXVWYsPRdY6nx74XsrXY
+INyC9zGoZNn71E/04ET8VJaG7oybYoujySDa2+OEf5KQXcX6l8rHWNFMW2441ECE
+f3SwZip9EhAW1la3E9l7X/TpZNGBymi/Z/LV15I8LC+8lOpoJAcggmNfmvIBas+R
+hqd3GhLxDS///unCGO05ku2LyFWqBPVctyQLYhtnq0RPEONQIrWv2fLVs+zZfJ0y
+d+JvO8lBgaBG8TadYS4J
+=s85i
+-----END PGP SIGNATURE-----
+
+--YqRRwTcmsyYCeoLs--

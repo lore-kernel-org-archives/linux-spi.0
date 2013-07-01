@@ -1,82 +1,41 @@
-From: Visa sans contact <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?UTF-8?Q?Tentez_de_remporter_l=E2=80=99un_des_500?=
-	=?UTF-8?Q?_cadeaux_du_jeu_Visa_sans_contact?=
-Date: Mon, 1 Jul 2013 19:11:13 +0200 (CEST)
-Message-ID: <a9fzjq.hilxcjm85ksi9u2m0l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: H Hartley Sweeten <hartleys@visionengravers.com>
+Subject: RE: [PATCH 3/8] spi: spi-ep93xx: always handle transfer specific
+ settings
+Date: Mon, 1 Jul 2013 13:15:40 -0500
+Message-ID: <ADE657CA350FB648AAC2C43247A983F0021DAC38FFB9@AUSP01VMBX24.collaborationhost.net>
+References: <201306281143.35130.hartleys@visionengravers.com>
+ <20130701102757.GF27646@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	Ryan Mallon <rmallon@gmail.com>,
+	"mika.westerberg@iki.fi" <mika.westerberg@iki.fi>,
+	"grant.likely@linaro.org" <grant.likely@linaro.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20130701102757.GF27646@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgphnbI7gfk57dIhilxca02I&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1372698661565%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DJIIPPBGHOAAOHCAE%26mid%3D1600183703&s=3DFMFG=
-CGCGEMJGHLLB
- =
+On Monday, July 01, 2013 3:28 AM, Mark Brown wrote:
+> On Fri, Jun 28, 2013 at 11:43:34AM -0700, H Hartley Sweeten wrote:
+>> __spi_async(), which starts every SPI message transfer, initializes
+>> the bits_per_word and max speed for every transfer in the message.
+>> Since the conditional test in ep93xx_spi_process_transfer() will
+>> always succeed just remove it and always call ep93xx_spi_chip_setup()
+>> to configure the hardware for each transfer in the message.
+>
+> Applied, thanks.
 
-Tentez de remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de =
-remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter =
-l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter l?un des 5=
-00 cadeaux du jeu Visa sans contactTentez de remporter l?un des 500 cadeaux=
- du jeu Visa sans contactTentez de remporter l?un des 500 cadeaux du jeu Vi=
-sa sans contactTentez de remporter l?un des 500 cadeaux du jeu Visa sans co=
-ntactTentez de remporter l?un des 500 cadeaux du jeu Visa sans contactTente=
-z de remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de rempo=
-rter l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter l?un =
-des 500 cadeaux du jeu Visa sans contactTentez de remporter l?un des 500 ca=
-deaux du jeu Visa sans contactTentez de remporter l?un des 500 cadeaux du j=
-eu Visa sans contactTentez de remporter l?un des 500 cadeaux du jeu Visa sa=
-ns contactTentez de remporter l?un des 500 cadeaux du jeu Visa sans contact=
-Tentez de remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de =
-remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter =
-l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter l?un des 5=
-00 cadeaux du jeu Visa sans contactTentez de remporter l?un des 500 cadeaux=
- du jeu Visa sans contactTentez de remporter l?un des 500 cadeaux du jeu Vi=
-sa sans contactTentez de remporter l?un des 500 cadeaux du jeu Visa sans co=
-ntactTentez de remporter l?un des 500 cadeaux du jeu Visa sans contactTente=
-z de remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de rempo=
-rter l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter l?un =
-des 500 cadeaux du jeu Visa sans contactTentez de remporter l?un des 500 ca=
-deaux du jeu Visa sans contactTentez de remporter l?un des 500 cadeaux du j=
-eu Visa sans contactTentez de remporter l?un des 500 cadeaux du jeu Visa sa=
-ns contactTentez de remporter l?un des 500 cadeaux du jeu Visa sans contact=
-Tentez de remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de =
-remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter =
-l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter l?un des 5=
-00 cadeaux du jeu Visa sans contactTentez de remporter l?un des 500 cadeaux=
- du jeu Visa sans contactTentez de remporter l?un des 500 cadeaux du jeu Vi=
-sa sans contactTentez de remporter l?un des 500 cadeaux du jeu Visa sans co=
-ntactTentez de remporter l?un des 500 cadeaux du jeu Visa sans contactTente=
-z de remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de rempo=
-rter l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter l?un =
-des 500 cadeaux du jeu Visa sans contactTentez de remporter l?un des 500 ca=
-deaux du jeu Visa sans contactTentez de remporter l?un des 500 cadeaux du j=
-eu Visa sans contactTentez de remporter l?un des 500 cadeaux du jeu Visa sa=
-ns contactTentez de remporter l?un des 500 cadeaux du jeu Visa sans contact=
-Tentez de remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de =
-remporter l?un des 500 cadeaux du jeu Visa sans contactTentez de remporter =
-l?un des 500 cadeaux du jeu Visa sans contact
- =
+Mark,
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600183703&sig=3DABBPEONBBNIAIAGI
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by Windows:
+I was going to redo this series based on the comments I have received
+so far. Did you already apply this one? Should I push it to the front of my
+patchset?
 
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+Regards,
+Hartley

@@ -1,41 +1,80 @@
-From: "Gagnant Garanti" <contact-9T/2b4cqpp/QT0dZR+AlfA@public.gmane.org>
-Subject: [SPAM] Gagnez votre SAMSUNG GALAXY S3
-Date: Mon, 01 Jul 2013 15:05:36 +0000 (CET)
-Message-ID: <130701150536.151367948600004980@obfm41.com>
+From: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Subject: Re: [PATCH v3] spi: add spi controller v3
+	master driver for Blackfin
+Date: Mon, 1 Jul 2013 11:41:18 +0100
+Message-ID: <20130701104118.GG27646@sirena.org.uk>
+References: <1372284460-3827-1-git-send-email-scott.jiang.linux@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============4406349429799375024=="
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+        uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+To: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+In-Reply-To: <1372284460-3827-1-git-send-email-scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://blackfin.uclinux.org/mailman/options/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://blackfin.uclinux.org/pipermail/uclinux-dist-devel>
+List-Post: <mailto:uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
+List-Help: <mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=help>
+List-Subscribe: <https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel>,
+	<mailto:uclinux-dist-devel-request-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org?subject=subscribe>
+Sender: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+Errors-To: uclinux-dist-devel-bounces-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2JmbTQxLmNvbS90MGE0cDBwdmYzdzAyc3JjY2wvaW5kZXgwLmh0bWwpCihodHRw
-Oi8vb2JmbTQxLmNvbS8yZmFyczBzbGZvZTJseTVjeHkvaW5kZXgxLmh0bWwpCkJvbmpvdXIsCgp2
-b3VzIGF2ZXogw6l0w6kgc2VsZWN0aW9ubsOpKGUpIHBhcm1pCgo1MCAwMDAgcHJpdmlsw6lnacOp
-cyBwb3VyIHBhcnRpY2lwZXIgw6Agbm90cmUKCmdyYW5kIGNvbmNvdXJzICEKR2FnbmV6IHZvdHJl
-CgpTQU1TVU5HIEdBTEFYWSBTMwooaHR0cDovL29iZm00MS5jb20vYmJhbncwdzFmdDAwbnRtcTFk
-L2luZGV4Mi5odG1sKQooaHR0cDovL29iZm00MS5jb20vMDFhNXEwcW1mNGQydmJwcWZzL2luZGV4
-My5odG1sKQooaHR0cDovL29iZm00MS5jb20vZWJ1M3dlb2NvcHQwMHhtZnB5L2luZGV4NC5odG1s
-KQooaHR0cDovL29iZm00MS5jb20vdTF1ZXFlNHJvZnMyZGZwZm1sL2luZGV4NS5odG1sKQooaHR0
-cDovL29iZm00MS5jb20vdjB1aHBlZGVvczQwd2pybzVzL2luZGV4Ni5odG1sKQpFbWFpbCBzw6ls
-ZWN0aW9ubsOpIDogRU1BSUwgKGh0dHA6Ly9vYmZtNDEuY29tL2tmdXVzZXJkb2trMmVvNW9yZC9p
-bmRleDcuaHRtbCkKClRvdXRlcyBub3MgZsOpbGljaXRhdGlvbnMgcG91ciBjZXR0ZSBjaGFuY2Ug
-dW5pcXVlIGRlIHJlbXBvcnRlciB1biBTQU1TVU5HIEdBTEFYWSBTMywgc3VpdmV6IGNlIGxpZW4g
-KGh0dHA6Ly9vYmZtNDEuY29tLzQwams1ZDVrZmhwMHhwcmVpbC9pbmRleDguaHRtbCkKQm9ubmUg
-Y2hhbmNlIGV0IHNpbmPDqHJlcyBzYWx1dGF0aW9ucy4KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRo
-aXMgU0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRv
-d3MgU3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBt
-YWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBz
-Oi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFs
-Cg==
+
+--===============4406349429799375024==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="eVUvLhJy3aWqIBaz"
+Content-Disposition: inline
+
+
+--eVUvLhJy3aWqIBaz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Jun 26, 2013 at 06:07:40PM -0400, Scott Jiang wrote:
+> New spi controller(version 3) is integrated into Blackfin
+> 60x processor. Comparing to bf5xx spi controller, we support
+> 32 bits word size and independent receive and transmit DMA
+> channels now. Also mode 0 and 2 (CPHA = 0) can get fully
+> supported becasue cs line may be controlled by the software.
+
+Applied, thanks.
+
+--eVUvLhJy3aWqIBaz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR0VzLAAoJELSic+t+oim9DTYP/0mKKj9w1LRk0Z2y5/dFXv3B
+Orh9Aa8BqXgyf/dKPfRqvFFAZPP57IevJlFMzUiK6WAuuZ359xkQLJzba5CwnSKT
+SvEmRgiIPsPjRyJFAZ2Us/qVaPFNCsjRPCMa4NTYOZqGCLUK3o3PRZxNCSP3gofl
+L9OnMX0md28l63SjacGa3zBFdvEsB2WBDZHRa/r5xF+RlwYPetofFVciwyet7wIW
+6gdlNegycPpGMJ0/Kou/jfWF43IhourpVOUatNc7h4/pNLM8NwfpehzOTlZ/QzI3
+VhhRoOX/oE7cmospmqBCAI2b3UjcGAScTFatwRR37m5wjVSaRwC3kHzcGwsAbHBv
+9xNLl/++rC1AShenegd8Ljrw1D4qb2hprS7E0AFQmLdsWEtSmUtnCqOgG25X2yr2
+zxzoULd3dJccN+2VvJnfd6XPk3tYiuvf2iKM6xOPMoW9OjnVKt/3HJZb3OupHaIN
+jXEJDpAYEWnMxXbLum7Sks8liZnFKzD2ROFNdrA7tJCfNDloAcnvxNuKkyljqdp4
+lCYIhK9TYJUHOv/fdnrvmkJ7IAXRe+TcrzWpvdiLusYvbaTWkWRMtBqKVSt/XI27
+gwd095kolxYsw69887l8k3Qju3+TUv3/RlSERY/+Jwey3o67+i8ZQ1t9UNiWlCtT
+v6P9aLqvlLVZOY7FugQG
+=Dx+y
+-----END PGP SIGNATURE-----
+
+--eVUvLhJy3aWqIBaz--
+
+--===============4406349429799375024==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Uclinux-dist-devel mailing list
+Uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
+https://blackfin.uclinux.org/mailman/listinfo/uclinux-dist-devel
+--===============4406349429799375024==--

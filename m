@@ -1,57 +1,119 @@
-From: iPhone <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
-Subject: Destockage iPhone 5
-Date: Tue, 02 Jul 2013 10:12:04 +0000
-Message-ID: <4b04b9b4a1233d84271805b5f4934605@mach10.generated>
-Reply-To: contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org
+From: Felipe Balbi <balbi@ti.com>
+Subject: Re: [PATCHv2] drivers: spi: Add qspi flash controller
+Date: Tue, 2 Jul 2013 13:16:08 +0300
+Message-ID: <20130702101608.GO3352@arwen.pp.htv.fi>
+References: <1372755399-21769-1-git-send-email-sourav.poddar@ti.com>
+ <20130702092458.GI3352@arwen.pp.htv.fi>
+ <51D2A4CA.5030804@ti.com>
+Reply-To: <balbi@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="SavPGzlo48F1Gxyz"
+Cc: <balbi@ti.com>, <broonie@kernel.org>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<grant.likely@linaro.org>, <rnayak@ti.com>,
+	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: Sourav Poddar <sourav.poddar@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <51D2A4CA.5030804@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
-bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
-L1lUMHhNeVppUFRNNE5URTNKbU05TWpNMk5ESW1aRDB5TURFekxUQTNMVEF5SURFd09qRXdPakF3
-Sm1VOU1TWm9QVE00TlRVeUptWTlNemc0T0RRbVp6MHpPRGc0TVE9PQoKTGllbiBkZSBkZXNpbnNj
-cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE00TlRFM0pt
-TTlNak0yTkRJbVpEMHlNREV6TFRBM0xUQXlJREV3T2pFd09qQXdKbVU5TVNab1BUTTROVFV5Sm1Z
-OU16ZzRPRFFtWnowek9EZzRNUT09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
-cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KwqAKTGVzIGVuY2jDqHJlcyBhdSBj
-ZW50aW1lIGV4cGxpcXXDqWVzIDogRXN0LWNlIHZyYWltZW50IHBvc3NpYmxlIGQnw6ljb25vbWlz
-ZXIgOTUgJSAgc3VyIGxlIHByaXggZGUgdmVudGUgPyAgClZvdXMgbCdhdXJleiBzdXJlbWVudCBy
-ZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWluIGRlIHNlIGTDqXZl
-bG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxlcyBzaXRlcyBpbnRl
-cm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4gUGFydG91dCBzdXIg
-bGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0b2lyZXMgZCdoZXVy
-ZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4uICAKSGFiaXR1ZWxs
-ZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4g
-TWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3Vy
-IGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gCsKgCkxJUkUgTEEg
-U1VJVEUgPj4KwqAKTGEgUmV2dWUgQ29uc28gw6AgdGVzdMOpIFN3b2dnaSByw6ljZW1tZW50IGV0
-IGxlcyByw6lzdWx0YXRzIG9udCDDqXTDqSB0csOocyBzdXJwcmVuYW50cy4gICAKIlN3b2dnaSBh
-IGTDqXBhc3PDqSB0b3V0ZXMgbm9zIGF0dGVudGVzIGVuIGNlIHF1aSBjb25jZXJuYWl0IGxlcyDD
-qWNvbm9taWVzIHLDqWFsaXNhYmxlcyBncsOiY2Ugw6AgbGV1cnMgb2ZmcmVzLiBUb3VzIGxlcyBq
-b3VycywgZGVzIGdlbnMgw6ljb25vbWlzZW50IGp1c3F1J8OgIDk1ICUgc3VyIGxlcyBwcml4IGhh
-Yml0dWVscyBkZSB2ZW50ZS4gQydlc3QgaW5jcm95YWJsZSAhIiAKwqAKTElSRSBMQSBTVUlURSA+
-PgrCoArCoAogIApNYXJpZSBTYW1lZGkgMjMganVpbiAzaDI1CsKgCiJKJ2FpIGRlIHF1b2kgdm9p
-ciB2ZW5pciBsZXMgYW5uaXZlcnNhaXJlcyBldCBhdXRyZXMgZsOqdGVzIHBvdXIgdW4gYm9uIG1v
-bWVudCBldCBqJ2FpIGZhaXQgZGUgc2FjcsOpcyDDqWNvbm9taWVzIgpQYXRvdSAgU2FtZWRpIDIz
-IGp1aW4gNGgzNwrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hyZXMgYXUg
-Y2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwgbWUgdGFy
-ZGUgZCdlc3NheWVyIgrCoApQb3VyIHZvdXMgZMOpc2Fib25uZXIsIGNsaXF1ZXogaWNpLgotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IFdpbmRv
-d3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9wLnNmLm5ldC9zZnUvd2luZG93
-cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+--SavPGzlo48F1Gxyz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Tue, Jul 02, 2013 at 03:30:42PM +0530, Sourav Poddar wrote:
+> >>+static int dra7xxx_qspi_setup(struct spi_device *spi)
+> >>+{
+> >>+	struct dra7xxx_qspi	*qspi =3D
+> >>+			spi_master_get_devdata(spi->master);
+> >>+
+> >>+	int clk_div;
+> >>+
+> >>+	if (!qspi->spi_max_frequency)
+> >>+		clk_div =3D 0;
+> >won't this generate division by zero ?
+> >
+> Yes, Probably only an error should be thrown here. ?
+> since min clk_div should be kept at 1.
+
+right, if spi_max_frequency isn't passed, this is a broken DT binding.
+Bail out.
+
+> >>+	pm_runtime_get_sync(qspi->dev);
+> >>+
+> >>+	/* disable SCLK */
+> >>+	dra7xxx_writel(qspi, dra7xxx_readl(qspi, QSPI_SPI_CLOCK_CNTRL_REG)
+> >>+			&  ~QSPI_CLK_EN, QSPI_SPI_CLOCK_CNTRL_REG);
+> >>+
+> >>+	if (clk_div<  0) {
+
+btw, add a space between clk_div and <
+
+> >>+			dra7xxx_writel(qspi, *txbuf++, QSPI_SPI_DATA_REG);
+> >>+			dra7xxx_writel(qspi, qspi->dc, QSPI_SPI_DC_REG);
+> >>+			dra7xxx_writel(qspi, qspi->cmd | QSPI_WR_SNGL,
+> >>+					QSPI_SPI_CMD_REG);
+> >>+			status =3D dra7xxx_readl(qspi, QSPI_SPI_STATUS_REG);
+> >>+			timeout =3D QSPI_TIMEOUT;
+> >>+			while ((status&  QSPI_WC_BUSY) !=3D QSPI_XFER_DONE) {
+> >do you really need to poll ? No IRQ available ?
+> >
+> There is an interrupt available, I will try using that.
+
+look at how i2c-omap.c synchronizes interrupt with the transfer_msg
+code. It just uses a wait_for_completion().
+
+> >>+static int dra7xxx_qspi_start_transfer_one(struct spi_master *master,
+> >>+		struct spi_message *m)
+> >>+{
+> >>+	struct dra7xxx_qspi *qspi =3D spi_master_get_devdata(master);
+> >>+	struct spi_device *spi =3D m->spi;
+> >>+	struct spi_transfer *t;
+> >>+	int status =3D 0;
+> >>+	int flags =3D 0;
+> >>+
+> >>+	/* setup command reg */
+> >>+	qspi->cmd =3D 0;
+> >>+	qspi->cmd |=3D QSPI_WLEN(8);
+> >>+	qspi->cmd |=3D QSPI_EN_CS(0);
+> >>+	qspi->cmd |=3D 0xfff;
+> Since, we dont know the number of frame lenght that need to be
+> transferred and it comes from the spi framework, we keep the frame
+> lenght to maximum.
+> Then depending on the count value above in while loop, we terminate
+> our trasnfer.
+
+what ? seriously didn't get what you meant.
+
+--=20
+balbi
+
+--SavPGzlo48F1Gxyz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR0qhoAAoJEIaOsuA1yqREP5AP+QGI/eQ3znaX9WBL4nqPcL5J
+1+4mz/qOgMtEHOQdc4njPyaaq+fay2qVwQ0IqezE65nlVKcEv+RX5IA4FC4aCXE/
+oqO+I4P3PL1lUQDdusVoZf2VUeq9yZI55z/m2tuFu88QcLK4qKxWig6Ji/MRfaXK
+GRCGNz0eUMWyXCfWh/tYCUWctibHg6Rjp4F/73spQC/5ni0L9dsdcNHYaeVKOfL4
++HJBvpMAwsLufrXLkhbIPexr2E2dKtTLHvn3ibxSHnsZJGmEkOoaBCobw+wBCH1g
+xuvEAybHxhgukVMR4DAH/pTLK4cFthHHYllgMM/Kx86385+cUuHYcgz4bPUBQpN1
+BCNBgqirSFtZgpUsalFh/MNf5CboYs2FZsgR+pO4G3/3WSOxyxk4Ng9dgrWIatQN
+ZtmHP1CGifv3E5iLQXKgbnifZUaGU98PRbxYTSm+kdQhoCpXKxXaWmm1p8r+sGUX
+/OnQ0uGMXb6VRWRJsEqOr6qqZDkWhT8j2wnCpKqJK1D8Y7wyPyr67nckOJ9haHMw
+vngvnCMHbDV2M1HV22wKBn15U1+5QNfLA051ZnuVtHWoXSEv5XO8YD0D+o3KMecG
+ReeF/fV4Le6f9kr4Hxi9susqFOSOX1Ich0ayifg8P6wu2Tx2m6OnTsW//lHj1pin
+D0x/UqrNCw3bNFAvb3h3
+=hyWc
+-----END PGP SIGNATURE-----
+
+--SavPGzlo48F1Gxyz--

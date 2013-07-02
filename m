@@ -1,15 +1,16 @@
 From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: [PATCH v2 09/11] spi: spi-ep93xx: move the clock divider calcs into
-	ep93xx_spi_chip_setup()
-Date: Tue, 2 Jul 2013 10:10:29 -0700
-Message-ID: <201307021010.30326.hartleys@visionengravers.com>
+Subject: [PATCH v2 10/11] spi: spi-ep93xx: convert to the queued driver
+	infrastructure
+Date: Tue, 2 Jul 2013 10:10:58 -0700
+Message-ID: <201307021010.59345.hartleys@visionengravers.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Ryan Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, mika.westerberg-X3B1VOXEql0@public.gmane.org,
-	hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: Linux Kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: David Brownell <dbrownell-Rn4VEauK+AKRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Ryan Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, mika.westerberg-X3B1VOXEql0@public.gmane.org,
+	hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: linux-mtd <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Content-Disposition: inline
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -22,14 +23,8 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The divider values stored in the per chip data are only used to set the
-registers in the hardware to generate the desired SPI clock. Since these
-are calculated per transfer based on the t->speed_hz there is no reason
-keep them in the per chip data.
-
-Move the ep93xx_spi_calc_divisors() call into ep93xx_spi_chip_setup()
-and return the dividers thru pointers. Remove the divider values from
-the per chip data structure.
+The SPI core provides infrastructure for standard message queueing. Use
+that instead of handling it in the driver.
 
 Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
 Acked-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
@@ -37,130 +32,284 @@ Cc: Ryan Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-ep93xx.c | 57 +++++++++++++++++++++---------------------------
- 1 file changed, 25 insertions(+), 32 deletions(-)
+ drivers/spi/spi-ep93xx.c | 165 ++++++-----------------------------------------
+ 1 file changed, 19 insertions(+), 146 deletions(-)
 
 diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index 6cdfc40..2e64806 100644
+index 2e64806..4c9a50c 100644
 --- a/drivers/spi/spi-ep93xx.c
 +++ b/drivers/spi/spi-ep93xx.c
-@@ -136,18 +136,10 @@ struct ep93xx_spi {
+@@ -26,7 +26,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+-#include <linux/workqueue.h>
+ #include <linux/sched.h>
+ #include <linux/scatterlist.h>
+ #include <linux/spi/spi.h>
+@@ -70,19 +69,13 @@
+ 
  /**
-  * struct ep93xx_spi_chip - SPI device hardware settings
-  * @spi: back pointer to the SPI device
-- * @div_cpsr: cpsr (pre-scaler) divider
-- * @div_scr: scr divider
-  * @ops: private chip operations
+  * struct ep93xx_spi - EP93xx SPI controller structure
+- * @lock: spinlock that protects concurrent accesses to fields @running,
+- *        @current_msg and @msg_queue
+  * @pdev: pointer to platform device
+  * @clk: clock for the controller
+  * @regs_base: pointer to ioremap()'d registers
+  * @sspdr_phys: physical address of the SSPDR register
+  * @min_rate: minimum clock rate (in Hz) supported by the controller
+  * @max_rate: maximum clock rate (in Hz) supported by the controller
+- * @running: is the queue running
+- * @wq: workqueue used by the driver
+- * @msg_work: work that is queued for the driver
+  * @wait: wait here until given transfer is completed
+- * @msg_queue: queue for the messages
+  * @current_msg: message that is currently processed (or %NULL if none)
+  * @tx: current byte in transfer to transmit
+  * @rx: current byte in transfer to receive
+@@ -96,30 +89,15 @@
+  * @tx_sgt: sg table for TX transfers
+  * @zeropage: dummy page used as RX buffer when only TX buffer is passed in by
+  *            the client
 - *
-- * This structure is used to store hardware register specific settings for each
-- * SPI device. Settings are written to hardware by function
-- * ep93xx_spi_chip_setup().
+- * This structure holds EP93xx SPI controller specific information. When
+- * @running is %true, driver accepts transfer requests from protocol drivers.
+- * @current_msg is used to hold pointer to the message that is currently
+- * processed. If @current_msg is %NULL, it means that no processing is going
+- * on.
+- *
+- * Most of the fields are only written once and they can be accessed without
+- * taking the @lock. Fields that are accessed concurrently are: @current_msg,
+- * @running, and @msg_queue.
   */
- struct ep93xx_spi_chip {
- 	const struct spi_device		*spi;
--	u8				div_cpsr;
--	u8				div_scr;
- 	struct ep93xx_spi_chip_ops	*ops;
- };
+ struct ep93xx_spi {
+-	spinlock_t			lock;
+ 	const struct platform_device	*pdev;
+ 	struct clk			*clk;
+ 	void __iomem			*regs_base;
+ 	unsigned long			sspdr_phys;
+ 	unsigned long			min_rate;
+ 	unsigned long			max_rate;
+-	bool				running;
+-	struct workqueue_struct		*wq;
+-	struct work_struct		msg_work;
+ 	struct completion		wait;
+-	struct list_head		msg_queue;
+ 	struct spi_message		*current_msg;
+ 	size_t				tx;
+ 	size_t				rx;
+@@ -230,7 +208,7 @@ static int ep93xx_spi_calc_divisors(const struct ep93xx_spi *espi,
+ 	/*
+ 	 * Make sure that max value is between values supported by the
+ 	 * controller. Note that minimum value is already checked in
+-	 * ep93xx_spi_transfer().
++	 * ep93xx_spi_transfer_one_message().
+ 	 */
+ 	rate = clamp(rate, espi->min_rate, espi->max_rate);
  
-@@ -224,17 +216,13 @@ static void ep93xx_spi_disable_interrupts(const struct ep93xx_spi *espi)
+@@ -306,54 +284,6 @@ static int ep93xx_spi_setup(struct spi_device *spi)
+ }
+ 
  /**
-  * ep93xx_spi_calc_divisors() - calculates SPI clock divisors
-  * @espi: ep93xx SPI controller struct
-- * @chip: divisors are calculated for this chip
-  * @rate: desired SPI output clock rate
+- * ep93xx_spi_transfer() - queue message to be transferred
+- * @spi: target SPI device
+- * @msg: message to be transferred
 - *
-- * Function calculates cpsr (clock pre-scaler) and scr divisors based on
-- * given @rate and places them to @chip->div_cpsr and @chip->div_scr. If,
-- * for some reason, divisors cannot be calculated nothing is stored and
-- * %-EINVAL is returned.
-+ * @div_cpsr: pointer to return the cpsr (pre-scaler) divider
-+ * @div_scr: pointer to return the scr divider
-  */
- static int ep93xx_spi_calc_divisors(const struct ep93xx_spi *espi,
--				    struct ep93xx_spi_chip *chip,
--				    unsigned long rate)
-+				    unsigned long rate,
-+				    u8 *div_cpsr, u8 *div_scr)
- {
- 	unsigned long spi_clk_rate = clk_get_rate(espi->clk);
- 	int cpsr, scr;
-@@ -257,8 +245,8 @@ static int ep93xx_spi_calc_divisors(const struct ep93xx_spi *espi,
- 	for (cpsr = 2; cpsr <= 254; cpsr += 2) {
- 		for (scr = 0; scr <= 255; scr++) {
- 			if ((spi_clk_rate / (cpsr * (scr + 1))) <= rate) {
--				chip->div_scr = (u8)scr;
--				chip->div_cpsr = (u8)cpsr;
-+				*div_scr = (u8)scr;
-+				*div_cpsr = (u8)cpsr;
- 				return 0;
- 			}
- 		}
-@@ -389,29 +377,35 @@ static void ep93xx_spi_cleanup(struct spi_device *spi)
-  * ep93xx_spi_chip_setup() - configures hardware according to given @chip
-  * @espi: ep93xx SPI controller struct
-  * @chip: chip specific settings
-+ * @speed_hz: transfer speed
-  * @bits_per_word: transfer bits_per_word
+- * This function is called by SPI device drivers when they are going to transfer
+- * a new message. It simply puts the message in the queue and schedules
+- * workqueue to perform the actual transfer later on.
 - *
-- * This function sets up the actual hardware registers with settings given in
-- * @chip. Note that no validation is done so make sure that callers validate
-- * settings before calling this.
-  */
--static void ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
--				  const struct ep93xx_spi_chip *chip,
--				  u8 bits_per_word)
-+static int ep93xx_spi_chip_setup(const struct ep93xx_spi *espi,
-+				 const struct ep93xx_spi_chip *chip,
-+				 u32 speed_hz, u8 bits_per_word)
+- * Returns %0 on success and negative error in case of failure.
+- */
+-static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
+-{
+-	struct ep93xx_spi *espi = spi_master_get_devdata(spi->master);
+-	struct spi_transfer *t;
+-	unsigned long flags;
+-
+-	if (!msg || !msg->complete)
+-		return -EINVAL;
+-
+-	/* first validate each transfer */
+-	list_for_each_entry(t, &msg->transfers, transfer_list) {
+-		if (t->speed_hz && t->speed_hz < espi->min_rate)
+-				return -EINVAL;
+-	}
+-
+-	/*
+-	 * Now that we own the message, let's initialize it so that it is
+-	 * suitable for us. We use @msg->status to signal whether there was
+-	 * error in transfer and @msg->state is used to hold pointer to the
+-	 * current transfer (or %NULL if no active current transfer).
+-	 */
+-	msg->state = NULL;
+-	msg->status = 0;
+-	msg->actual_length = 0;
+-
+-	spin_lock_irqsave(&espi->lock, flags);
+-	if (!espi->running) {
+-		spin_unlock_irqrestore(&espi->lock, flags);
+-		return -ESHUTDOWN;
+-	}
+-	list_add_tail(&msg->queue, &espi->msg_queue);
+-	queue_work(espi->wq, &espi->msg_work);
+-	spin_unlock_irqrestore(&espi->lock, flags);
+-
+-	return 0;
+-}
+-
+-/**
+  * ep93xx_spi_cleanup() - cleans up master controller specific state
+  * @spi: SPI device to cleanup
+  *
+@@ -801,50 +731,29 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
+ 	ep93xx_spi_disable(espi);
+ }
+ 
+-#define work_to_espi(work) (container_of((work), struct ep93xx_spi, msg_work))
+-
+-/**
+- * ep93xx_spi_work() - EP93xx SPI workqueue worker function
+- * @work: work struct
+- *
+- * Workqueue worker function. This function is called when there are new
+- * SPI messages to be processed. Message is taken out from the queue and then
+- * passed to ep93xx_spi_process_message().
+- *
+- * After message is transferred, protocol driver is notified by calling
+- * @msg->complete(). In case of error, @msg->status is set to negative error
+- * number, otherwise it contains zero (and @msg->actual_length is updated).
+- */
+-static void ep93xx_spi_work(struct work_struct *work)
++static int ep93xx_spi_transfer_one_message(struct spi_master *master,
++					   struct spi_message *msg)
  {
- 	u8 dss = bits_per_word_to_dss(bits_per_word);
-+	u8 div_cpsr = 0;
-+	u8 div_scr = 0;
- 	u16 cr0;
-+	int err;
-+
-+	err = ep93xx_spi_calc_divisors(espi, speed_hz, &div_cpsr, &div_scr);
-+	if (err)
-+		return err;
+-	struct ep93xx_spi *espi = work_to_espi(work);
+-	struct spi_message *msg;
++	struct ep93xx_spi *espi = spi_master_get_devdata(master);
++	struct spi_transfer *t;
  
--	cr0 = chip->div_scr << SSPCR0_SCR_SHIFT;
-+	cr0 = div_scr << SSPCR0_SCR_SHIFT;
- 	cr0 |= (chip->spi->mode & (SPI_CPHA|SPI_CPOL)) << SSPCR0_MODE_SHIFT;
- 	cr0 |= dss;
+-	spin_lock_irq(&espi->lock);
+-	if (!espi->running || espi->current_msg ||
+-		list_empty(&espi->msg_queue)) {
+-		spin_unlock_irq(&espi->lock);
+-		return;
++	/* first validate each transfer */
++	list_for_each_entry(t, &msg->transfers, transfer_list) {
++		if (t->speed_hz < espi->min_rate)
++			return -EINVAL;
+ 	}
+-	msg = list_first_entry(&espi->msg_queue, struct spi_message, queue);
+-	list_del_init(&msg->queue);
+-	espi->current_msg = msg;
+-	spin_unlock_irq(&espi->lock);
  
- 	dev_dbg(&espi->pdev->dev, "setup: mode %d, cpsr %d, scr %d, dss %d\n",
--		chip->spi->mode, chip->div_cpsr, chip->div_scr, dss);
-+		chip->spi->mode, div_cpsr, div_scr, dss);
- 	dev_dbg(&espi->pdev->dev, "setup: cr0 %#x", cr0);
+-	ep93xx_spi_process_message(espi, msg);
++	msg->state = NULL;
++	msg->status = 0;
++	msg->actual_length = 0;
  
--	ep93xx_spi_write_u8(espi, SSPCPSR, chip->div_cpsr);
-+	ep93xx_spi_write_u8(espi, SSPCPSR, div_cpsr);
- 	ep93xx_spi_write_u16(espi, SSPCR0, cr0);
+-	/*
+-	 * Update the current message and re-schedule ourselves if there are
+-	 * more messages in the queue.
+-	 */
+-	spin_lock_irq(&espi->lock);
++	espi->current_msg = msg;
++	ep93xx_spi_process_message(espi, msg);
+ 	espi->current_msg = NULL;
+-	if (espi->running && !list_empty(&espi->msg_queue))
+-		queue_work(espi->wq, &espi->msg_work);
+-	spin_unlock_irq(&espi->lock);
+ 
+-	/* notify the protocol driver that we are done with this message */
+-	msg->complete(msg->context);
++	spi_finalize_current_message(master);
 +
 +	return 0;
  }
  
- static void ep93xx_do_write(struct ep93xx_spi *espi, struct spi_transfer *t)
-@@ -687,15 +681,14 @@ static void ep93xx_spi_process_transfer(struct ep93xx_spi *espi,
+ static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
+@@ -984,7 +893,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
- 	msg->state = t;
- 
--	err = ep93xx_spi_calc_divisors(espi, chip, t->speed_hz);
-+	err = ep93xx_spi_chip_setup(espi, chip, t->speed_hz, t->bits_per_word);
- 	if (err) {
--		dev_err(&espi->pdev->dev, "failed to adjust speed\n");
-+		dev_err(&espi->pdev->dev,
-+			"failed to setup chip for transfer\n");
- 		msg->status = err;
- 		return;
+ 	master->setup = ep93xx_spi_setup;
+-	master->transfer = ep93xx_spi_transfer;
++	master->transfer_one_message = ep93xx_spi_transfer_one_message;
+ 	master->cleanup = ep93xx_spi_cleanup;
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = info->num_chipselect;
+@@ -1002,7 +911,6 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+ 		goto fail_release_master;
  	}
  
--	ep93xx_spi_chip_setup(espi, chip, t->bits_per_word);
--
- 	espi->rx = 0;
- 	espi->tx = 0;
+-	spin_lock_init(&espi->lock);
+ 	init_completion(&espi->wait);
  
+ 	/*
+@@ -1031,23 +939,13 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+ 	if (info->use_dma && ep93xx_spi_setup_dma(espi))
+ 		dev_warn(&pdev->dev, "DMA setup failed. Falling back to PIO\n");
+ 
+-	espi->wq = create_singlethread_workqueue("ep93xx_spid");
+-	if (!espi->wq) {
+-		dev_err(&pdev->dev, "unable to create workqueue\n");
+-		error = -ENOMEM;
+-		goto fail_free_dma;
+-	}
+-	INIT_WORK(&espi->msg_work, ep93xx_spi_work);
+-	INIT_LIST_HEAD(&espi->msg_queue);
+-	espi->running = true;
+-
+ 	/* make sure that the hardware is disabled */
+ 	ep93xx_spi_write_u8(espi, SSPCR1, 0);
+ 
+ 	error = spi_register_master(master);
+ 	if (error) {
+ 		dev_err(&pdev->dev, "failed to register SPI master\n");
+-		goto fail_free_queue;
++		goto fail_free_dma;
+ 	}
+ 
+ 	dev_info(&pdev->dev, "EP93xx SPI Controller at 0x%08lx irq %d\n",
+@@ -1055,8 +953,6 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
+ 
+ 	return 0;
+ 
+-fail_free_queue:
+-	destroy_workqueue(espi->wq);
+ fail_free_dma:
+ 	ep93xx_spi_release_dma(espi);
+ fail_release_master:
+@@ -1070,29 +966,6 @@ static int ep93xx_spi_remove(struct platform_device *pdev)
+ 	struct spi_master *master = platform_get_drvdata(pdev);
+ 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
+ 
+-	spin_lock_irq(&espi->lock);
+-	espi->running = false;
+-	spin_unlock_irq(&espi->lock);
+-
+-	destroy_workqueue(espi->wq);
+-
+-	/*
+-	 * Complete remaining messages with %-ESHUTDOWN status.
+-	 */
+-	spin_lock_irq(&espi->lock);
+-	while (!list_empty(&espi->msg_queue)) {
+-		struct spi_message *msg;
+-
+-		msg = list_first_entry(&espi->msg_queue,
+-				       struct spi_message, queue);
+-		list_del_init(&msg->queue);
+-		msg->status = -ESHUTDOWN;
+-		spin_unlock_irq(&espi->lock);
+-		msg->complete(msg->context);
+-		spin_lock_irq(&espi->lock);
+-	}
+-	spin_unlock_irq(&espi->lock);
+-
+ 	ep93xx_spi_release_dma(espi);
+ 
+ 	spi_unregister_master(master);
 -- 
 1.8.1.4
 

@@ -1,86 +1,64 @@
-From: Photo Cite <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Enfin les vacances, prenez des photos
-Date: Tue, 2 Jul 2013 17:22:57 +0200 (CEST)
-Message-ID: <1d1j3x.hin8x5b1yg953s6tol@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCHv2] drivers: spi: Add qspi flash controller
+Date: Tue, 2 Jul 2013 16:49:25 +0100
+Message-ID: <20130702154925.GR27646@sirena.org.uk>
+References: <1372755399-21769-1-git-send-email-sourav.poddar@ti.com>
+ <20130702093247.GY27646@sirena.org.uk>
+ <20130702094404.GL3352@arwen.pp.htv.fi>
+ <20130702101718.GE27646@sirena.org.uk>
+ <20130702104338.GA5107@arwen.pp.htv.fi>
+ <20130702110432.GJ27646@sirena.org.uk>
+ <20130702151947.GD7013@arwen.pp.htv.fi>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="4MYbgvGoS9GHC/6/"
+Cc: Sourav Poddar <sourav.poddar@ti.com>,
+	spi-devel-general@lists.sourceforge.net, grant.likely@linaro.org,
+	rnayak@ti.com, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Felipe Balbi <balbi@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20130702151947.GD7013@arwen.pp.htv.fi>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgpi7iI7gfk57dIhin8wrprI&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1372778559587%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DAFCNGJENPAOLLPOB%26mid%3D1600184430&s=3DAFFC=
-MAMOHMHFIBCC
- =
 
-Enfin les vacances, prenez des photosEnfin les vacances, prenez des photosE=
-nfin les vacances, prenez des photosEnfin les vacances, prenez des photosEn=
-fin les vacances, prenez des photosEnfin les vacances, prenez des photosEnf=
-in les vacances, prenez des photosEnfin les vacances, prenez des photosEnfi=
-n les vacances, prenez des photosEnfin les vacances, prenez des photosEnfin=
- les vacances, prenez des photosEnfin les vacances, prenez des photosEnfin =
-les vacances, prenez des photosEnfin les vacances, prenez des photosEnfin l=
-es vacances, prenez des photosEnfin les vacances, prenez des photosEnfin le=
-s vacances, prenez des photosEnfin les vacances, prenez des photosEnfin les=
- vacances, prenez des photosEnfin les vacances, prenez des photosEnfin les =
-vacances, prenez des photosEnfin les vacances, prenez des photosEnfin les v=
-acances, prenez des photosEnfin les vacances, prenez des photosEnfin les va=
-cances, prenez des photosEnfin les vacances, prenez des photosEnfin les vac=
-ances, prenez des photosEnfin les vacances, prenez des photosEnfin les vaca=
-nces, prenez des photosEnfin les vacances, prenez des photosEnfin les vacan=
-ces, prenez des photosEnfin les vacances, prenez des photosEnfin les vacanc=
-es, prenez des photosEnfin les vacances, prenez des photosEnfin les vacance=
-s, prenez des photosEnfin les vacances, prenez des photosEnfin les vacances=
-, prenez des photosEnfin les vacances, prenez des photosEnfin les vacances,=
- prenez des photosEnfin les vacances, prenez des photosEnfin les vacances, =
-prenez des photosEnfin les vacances, prenez des photosEnfin les vacances, p=
-renez des photosEnfin les vacances, prenez des photosEnfin les vacances, pr=
-enez des photosEnfin les vacances, prenez des photosEnfin les vacances, pre=
-nez des photosEnfin les vacances, prenez des photosEnfin les vacances, pren=
-ez des photosEnfin les vacances, prenez des photosEnfin les vacances, prene=
-z des photosEnfin les vacances, prenez des photosEnfin les vacances, prenez=
- des photosEnfin les vacances, prenez des photosEnfin les vacances, prenez =
-des photosEnfin les vacances, prenez des photosEnfin les vacances, prenez d=
-es photosEnfin les vacances, prenez des photosEnfin les vacances, prenez de=
-s photosEnfin les vacances, prenez des photosEnfin les vacances, prenez des=
- photosEnfin les vacances, prenez des photosEnfin les vacances, prenez des =
-photosEnfin les vacances, prenez des photosEnfin les vacances, prenez des p=
-hotosEnfin les vacances, prenez des photosEnfin les vacances, prenez des ph=
-otosEnfin les vacances, prenez des photosEnfin les vacances, prenez des pho=
-tosEnfin les vacances, prenez des photosEnfin les vacances, prenez des phot=
-osEnfin les vacances, prenez des photosEnfin les vacances, prenez des photo=
-sEnfin les vacances, prenez des photosEnfin les vacances, prenez des photos=
-Enfin les vacances, prenez des photosEnfin les vacances, prenez des photosE=
-nfin les vacances, prenez des photosEnfin les vacances, prenez des photosEn=
-fin les vacances, prenez des photosEnfin les vacances, prenez des photosEnf=
-in les vacances, prenez des photosEnfin les vacances, prenez des photosEnfi=
-n les vacances, prenez des photosEnfin les vacances, prenez des photosEnfin=
- les vacances, prenez des photosEnfin les vacances, prenez des photosEnfin =
-les vacances, prenez des photosEnfin les vacances, prenez des photosEnfin l=
-es vacances, prenez des photosEnfin les vacances, prenez des photosEnfin le=
-s vacances, prenez des photosEnfin les vacances, prenez des photosEnfin les=
- vacances, prenez des photosEnfin les vacances, prenez des photos
- =
+--4MYbgvGoS9GHC/6/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600184430&sig=3DAKEBAOENHAIODEIF
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by Windows:
+On Tue, Jul 02, 2013 at 06:19:47PM +0300, Felipe Balbi wrote:
+> On Tue, Jul 02, 2013 at 12:04:32PM +0100, Mark Brown wrote:
 
-Build for Windows Store.
+> > One thing I really want to get round to doing with the SPI core is
+> > providing an easy to pick up GPIO chip select as standard=20
 
-http://p.sf.net/sfu/windows-dev2dev
+> that should be fairly simple I guess. Just lack of time, I'm assuming ?
+
+That and all the refactoring of drivers required to adopt it.
+
+--4MYbgvGoS9GHC/6/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR0vaCAAoJELSic+t+oim9VC0P/2NgzbSZELo8W8N5tK6bkCUM
+Em2hWX/C0DgoXER+7CaKKUKHIcblkNEMkMdUGQOiNf+I8FHZ8TjbES652d/JdW5h
+ZzDpIIGPjMPgK6BftKs9aVd99RRWKhJ2mmqAEoIJirwiZUdNHX5x9MR9AXIk94k1
+ix1cDV9VIx7p3RLaaGxXQtzgzAZuymS2kj4AxZtcaBx72hJa4PXvjTxcvSGzFHCN
+NHs+CPh+n6Ic5QWYWehboM5zy0Wx+/vauxRw8AJ6304d7t76aopx7YOCxST1V/MZ
+9llZENnAesY86Qabte48XNoN9rEsniElOaGJthlrvBdWMjUwr6OtQb9Bhbe9OQEY
+uKhyz2Z45JLWQ6ahanCgcs9y4Rw00v3iyo6km+pNFBbMEuJG7htTLxS2GHSNRDEC
+DequUwpejvdKoxkSJ6hE/KcCPynrImu5/Ja6AzUwJ3LJzSuJVSSu+Rxj1KfzcZmL
++8JxuwL2HDm7pJYVBEQ8/4RvAIUQgvgMTVOy0YYYyIndHPaNR6xWIiLBalux4w1q
+1RqNrYaqgsO/9ie1Ei0EccFsGMH0Zd3O8aaBGePQS8jkb3XlxjA56wpEZT5UkyNm
+sgVdomEMbT6QblDGYpm+8KpOOoMHPHmPx8kMAabjcckqN6FfR2XYRz6CMtjdKhGL
+FC3gh42T8bp27VFD3W5W
+=vA5d
+-----END PGP SIGNATURE-----
+
+--4MYbgvGoS9GHC/6/--

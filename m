@@ -1,54 +1,55 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: s3c64xx: add missing check for polling mode
-Date: Tue, 2 Jul 2013 10:26:37 +0100
-Message-ID: <20130702092637.GW27646@sirena.org.uk>
-References: <1372316213-30671-1-git-send-email-ks.giri@samsung.com>
- <20130627111518.GX27646@sirena.org.uk>
- <CAKrE-KcOVCipc9BfmVgvg5BAgKv2=V0F6WhFqFWP6vsLy7OOKA@mail.gmail.com>
+Subject: Re: [PATCHv2] drivers: spi: Add qspi flash controller
+Date: Tue, 2 Jul 2013 10:32:47 +0100
+Message-ID: <20130702093247.GY27646@sirena.org.uk>
+References: <1372755399-21769-1-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="GYFUIf6OKvquWRcX"
-Cc: linux-kernel@vger.kernel.org,
-	spi-devel-general@lists.sourceforge.net
-To: Girish KS <girishks2000@gmail.com>
+	protocol="application/pgp-signature"; boundary="NpaPS9owJKTasCT/"
+Cc: spi-devel-general@lists.sourceforge.net, grant.likely@linaro.org,
+	balbi@ti.com, rnayak@ti.com, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Sourav Poddar <sourav.poddar@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAKrE-KcOVCipc9BfmVgvg5BAgKv2=V0F6WhFqFWP6vsLy7OOKA@mail.gmail.com>
+In-Reply-To: <1372755399-21769-1-git-send-email-sourav.poddar@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---GYFUIf6OKvquWRcX
+--NpaPS9owJKTasCT/
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jul 02, 2013 at 12:22:14PM +0530, Girish KS wrote:
+On Tue, Jul 02, 2013 at 02:26:39PM +0530, Sourav Poddar wrote:
 
-> Hello Mark, This patch is missing in your pull request for 3.11. is it
-> possible to add it?
+> 1. Placed pm specific calls in prepare/unprepare apis.
+> 2. Put a mask to support upto 32 bits word length.
 
-No, the pull request has already been sent.
+Does this hardware really support anything other than 8 bits per word?
+There is no code in the driver which pays any attention to the word
+size...
 
---GYFUIf6OKvquWRcX
+--NpaPS9owJKTasCT/
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.20 (GNU/Linux)
 
-iQIcBAEBAgAGBQJR0pzJAAoJELSic+t+oim9GlYQAJgtzmDBmRLoaFro2Cm0h++L
-T0mRVc876HMCTqxaN1xC7FoAennVkg9DAHhuitYSFscey3LU5q7GqnYjCb45ftq7
-0jtF8t4nIf/yEzf2Q4GVZfT32xVAp3sEIaLhh7SUPs2GdQMhUzGeOUyreYEo4q0s
-AIa261Lrp+7hEUrNyVPYM7cq1pynq9WudH89KmexUebtWI6zFpM49OszZ/Kd1Zso
-dj0QPHN2uV5CHZxgLYagTlpEm+ph4pxWHe9ygl0xZqjY7BYybFyuQ1lVIcPlbPie
-StpBccz8to8Kgn3ZBwjigylV6kkUYktb2irroLQgsNXThyUVa2Y1g0zLKRCJiWGN
-DwUed4C14TidddszcwZEqhxg+3uxyvDchwYTtlh8EFrc9QuNxNHfCN8HMw/CDWVL
-sr/EKVuu6jD/l0pspVNUTAVaF6CYWzUmQ9pYq2XN+ZqQrFgBkay9bAgopUgaZ9kR
-V6SAUM3a35Ltjt3RUpknJod7tKNOwFTRTdgz0fWuAldxtaXckkds3mVq9+CM4d93
-mBT90UsSWcdPX6DAkVDnYWdqDzSKNYvPoEX/vOe9hlGvSOKUhV/ubvjekb/pZgqo
-fzhINbZFatiEo9px0EuK3I6rBM+S++jiZILajdpESpyOnlp7/38U6+7C5WAr254/
-DwjElEcVnUSqP4U3DZB5
-=9rUj
+iQIcBAEBAgAGBQJR0p48AAoJELSic+t+oim9bE4P/0UQFX4/5QXH5LyjWfd44EN2
+iurf/whFO9kWNUnzGoh689RnJTl7sQfnBPLiBTuan7qs10pIbzhSEmBNyzK5wUKd
+jzvonHg3/gMKzZbEcALhzYB1dQb7OKspsq6aDk7kWZMvKP2JxjjeSJtfIay7LWSV
+KLAFmtu2ujaM+NfS8iXb6+WGSbxqUlnjfR8KKvObj0IEEOn+o5TVFTomrI2p3krj
+dIVTqaRM1bXKG2vk3tk2GbPE4GKOAsZvSrOSLaHJtT8Nsotzfinfl60Xhzo9xGAK
+TTmFMDGQmoGiNESLI90LcJEAi6pXC4aG7s7zB0LUJVSdDUa3KuwFI+J/BemJ/HG+
+5NQdBUngO82u/AosR36MnXhODlnI98pyHbOWFbhjYQs61CY7hbkhDUSVHLD4w3K3
+sM73Nu92m3XaDBXbgBLZkGpEEy/5e3MeykFuSzenNbb/tR+rg+QHKXIg/KX3eu92
+eM+fpmpuD2EwdsFjlT93dwZIGtM8XEksfz0AVCaiR52GIm20MDMMhnv9UrSBovSc
+Bi18ZEJopDtwaKNEwjffY5HHiCuI9czWj5TXiXRgJQMpRPXbRpDfouIP/84rGHZN
+3OQ0X4kEw7Qzc5LH5XDYNbSabeRHJ339UDHiipekWVtn2+w5mZAr6jSTlZ4SaTI+
+1cxmtN09THWyfLd/3f62
+=XLbc
 -----END PGP SIGNATURE-----
 
---GYFUIf6OKvquWRcX--
+--NpaPS9owJKTasCT/--

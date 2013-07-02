@@ -1,64 +1,30 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 3/8] spi: spi-ep93xx: always handle transfer specific
- settings
-Date: Mon, 1 Jul 2013 20:11:22 +0100
-Message-ID: <20130701191122.GN27646@sirena.org.uk>
-References: <201306281143.35130.hartleys@visionengravers.com>
- <20130701102757.GF27646@sirena.org.uk>
- <ADE657CA350FB648AAC2C43247A983F0021DAC38FFB9@AUSP01VMBX24.collaborationhost.net>
+From: Girish KS <girishks2000@gmail.com>
+Subject: Re: [PATCH] spi: s3c64xx: add missing check for polling mode
+Date: Tue, 2 Jul 2013 12:22:14 +0530
+Message-ID: <CAKrE-KcOVCipc9BfmVgvg5BAgKv2=V0F6WhFqFWP6vsLy7OOKA@mail.gmail.com>
+References: <1372316213-30671-1-git-send-email-ks.giri@samsung.com>
+	<20130627111518.GX27646@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="YqRRwTcmsyYCeoLs"
-Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	Ryan Mallon <rmallon@gmail.com>,
-	"mika.westerberg@iki.fi" <mika.westerberg@iki.fi>,
-	"grant.likely@linaro.org" <grant.likely@linaro.org>
-To: H Hartley Sweeten <hartleys@visionengravers.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: linux-kernel@vger.kernel.org,
+	spi-devel-general@lists.sourceforge.net
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <ADE657CA350FB648AAC2C43247A983F0021DAC38FFB9@AUSP01VMBX24.collaborationhost.net>
+In-Reply-To: <20130627111518.GX27646@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Thu, Jun 27, 2013 at 4:45 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Thu, Jun 27, 2013 at 12:26:53PM +0530, Girish K S wrote:
+>> After the patch "spi/s3c64xx: Fix non-dmaengine usage"
+>> with commit id 563b444e33810f3120838620c990480304e24e63
+>> submitted by Mark Brown, the spi device detection in polling
+>> mode breaks. This revealed the missing check for polling during
+>> dma prepare. This patch adds the missing check.
+>
+> Applied with a fixed commit message - since the dmaengine stuff was
+> already in mainline at the time that polling mode was added the isse was
+> that the patch hadn't been tested with current mainline code.
 
---YqRRwTcmsyYCeoLs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Jul 01, 2013 at 01:15:40PM -0500, H Hartley Sweeten wrote:
-> On Monday, July 01, 2013 3:28 AM, Mark Brown wrote:
-
-> > Applied, thanks.
-
-> I was going to redo this series based on the comments I have received
-> so far. Did you already apply this one? Should I push it to the front of my
-> patchset?
-
-That's what I said.  You shouldn't resend it at all, you should base
-your updates off the relevant topic branch.
-
---YqRRwTcmsyYCeoLs
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR0dRXAAoJELSic+t+oim94WsP+QFmdF95A3xx3vo2zfKVD26W
-nyV3mmMakxxLe2NII/dlCPmnFuc+S1bwtqXqA6c3R54G/kr3t9dNEMsPn69Q9Woj
-4YUJzOfPT/rKWVCa0c3aAB7GG34A8WO4417nLsT3Z6rgAZxgSalRBWSAwOsrySAB
-AFOB4wzYgjih2qJ5LSpB+g7P7G5zk9UK2tRQ+X1WNrYsvIPh5YjjMArBlRxH6q9f
-6D2wmEdF8gmWrajj5vGhDxEq/MWnAplArOq1IUirtxZ4iePnH3hv7l+OQglwQlJi
-fJggsKzkJJp6r27VmvMRxhmEI+vaaFw3tm8zl09JUmydSD8T02vsgIk2pKl1iOFE
-vEmcC6YPEFUc8SrmVWF1TLgGInx9S6J8C6FN01HSPlYCH/lSgvLOIC/IqagiNWLX
-DFteDGSZFItVl51qJvL1KQwMw54n7RpN2+BzuG3OTveaHXVWYsPRdY6nx74XsrXY
-INyC9zGoZNn71E/04ET8VJaG7oybYoujySDa2+OEf5KQXcX6l8rHWNFMW2441ECE
-f3SwZip9EhAW1la3E9l7X/TpZNGBymi/Z/LV15I8LC+8lOpoJAcggmNfmvIBas+R
-hqd3GhLxDS///unCGO05ku2LyFWqBPVctyQLYhtnq0RPEONQIrWv2fLVs+zZfJ0y
-d+JvO8lBgaBG8TadYS4J
-=s85i
------END PGP SIGNATURE-----
-
---YqRRwTcmsyYCeoLs--
+Hello Mark, This patch is missing in your pull request for 3.11. is it
+possible to add it?

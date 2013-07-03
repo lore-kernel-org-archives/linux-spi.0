@@ -1,66 +1,69 @@
-From: H Hartley Sweeten <hartleys@visionengravers.com>
-Subject: RE: [PATCH v2 05/11] spi: spi-ep93xx: use devm_clk_get()
-Date: Wed, 3 Jul 2013 16:12:39 -0500
-Message-ID: <ADE657CA350FB648AAC2C43247A983F0021DAC39039F@AUSP01VMBX24.collaborationhost.net>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 05/11] spi: spi-ep93xx: use devm_clk_get()
+Date: Wed, 3 Jul 2013 23:51:17 +0100
+Message-ID: <20130703225117.GH27646@sirena.org.uk>
 References: <201307021008.22347.hartleys@visionengravers.com>
  <20130703182125.GZ27646@sirena.org.uk>
+ <ADE657CA350FB648AAC2C43247A983F0021DAC39039F@AUSP01VMBX24.collaborationhost.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Q3ujDxr0EyD34e0X"
 Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
 	"spi-devel-general@lists.sourceforge.net"
 	<spi-devel-general@lists.sourceforge.net>,
 	Ryan Mallon <rmallon@gmail.com>,
 	"mika.westerberg@iki.fi" <mika.westerberg@iki.fi>,
 	"grant.likely@linaro.org" <grant.likely@linaro.org>
-To: Mark Brown <broonie@kernel.org>
+To: H Hartley Sweeten <hartleys@visionengravers.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20130703182125.GZ27646@sirena.org.uk>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <ADE657CA350FB648AAC2C43247A983F0021DAC39039F@AUSP01VMBX24.collaborationhost.net>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday, July 03, 2013 11:21 AM, Mark Brown wrote:
-> On Tue, Jul 02, 2013 at 10:08:21AM -0700, H Hartley Sweeten wrote:
->> Use devm_clk_get() so that the clk_put() happens automatically when
->> the last reference to this driver is dropped.
->
-> This doesn't apply against current code - always submit against the
-> relevant development tree, in this case topic/ep93xx.  I've applied it
-> with a manual fixup.
 
-Hello Mark,
+--Q3ujDxr0EyD34e0X
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It appears your topic/ep93xx branch is missing this:
+On Wed, Jul 03, 2013 at 04:12:39PM -0500, H Hartley Sweeten wrote:
 
-commit 24778be20f87d5aadb19624fc768b3159fa43efc
-Author: Stephen Warren <swarren@wwwdotorg.org>
-Date:   Tue May 21 20:36:35 2013 -0600
+> This commit is in linux-next which is what the patch series was based on.
+> I'm not sure what branch you applied that patch to.
 
-    spi: convert drivers to use bits_per_word_mask
+I'll apply anything to topic/ep83xx branch.  Which I'll probably rebase
+against spi-v3.11 now since Linus pulled the tree for the merge window.
+The bits per word change was a cross subsystem thing so ended up on its
+own topic branch.
 
-This commit is in linux-next which is what the patch series was based on.
-I'm not sure what branch you applied that patch to.
+> If you need to drop my previous patches that you applied to topic/ep93xx
+> in order to sync things up please let me know how to proceed. There are
+> four more patches pending for spi-ep93xx to finish the cleanup and convert
+> it to the SPI queued driver infrastructure.
 
-If you need to drop my previous patches that you applied to topic/ep93xx
-in order to sync things up please let me know how to proceed. There are
-four more patches pending for spi-ep93xx to finish the cleanup and convert
-it to the SPI queued driver infrastructure.
+I'm waiting for others to review and/or test them since there seem to be
+several interested people.
 
-These are the relevant commits in topic/spi-ep93xx:
+--Q3ujDxr0EyD34e0X
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-kernel / pub/scm/linux/kernel/git/broonie/spi / topic/ep93xx / drivers / spi / spi-ep93xx.c
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
 
-3051c43  spi: spi-ep93xx: use devm_clk_get() by H Hartley Sweeten - 28 hours ago topic/ep93xx
-e5ae625  spi: spi-ep93xx: remove 'dss' from per chip private data by H Hartley Sweeten - 28 hours ago
-4af59ef  spi: spi-ep93xx: remove dev_err() for kzalloc() failure by H Hartley Sweeten - 28 hours ago
-8b9d957  spi: spi-ep93xx: get platform resources early in (*probe) by H Hartley Sweeten - 28 hours ago
-c6b7f14  spi: spi-ep93xx: remove bits_per_word() helper by H Hartley Sweeten - 28 hours ago
-75c7444  spi: spi-ep93xx: use read,write instead of __raw_* variants by H Hartley Sweeten - 28 hours ago
-eb41eeb  spi: spi-ep93xx: always handle transfer specific settings by H Hartley Sweeten - 5 days ago
+iQIcBAEBAgAGBQJR1KriAAoJELSic+t+oim9D/gP/0wARntDbJGr5n6wj4DltuZW
+YZkONLHs1+mxZ/ZpkRQJDIHS7hmFPBGkO6omh0SsX8XkFRGkY92xkMhCKjjH+x6F
+5Nc9676uOWtX3tAN1bqEfhB8T0sDVikk8srJIsej404t7d6jngzxW5Kf/0PAlWBQ
+5XrtaKoM6mcETREDq9mSTQSKZtoV373UOp9Mc5uZ18QjOyUzMQiwFE5TsjDGZXDK
+KljxOEv5QzDZ5ppKAIY5V2JOTAATaO0DCpqbFa7NhhXIEa/wXDYZiF+jFYnWoXQ/
+n35V7WfCfv7RiknpNVQf5zYYNP0aM6RTJ5i11vA/fDKHjr/39ZxnygMLXgxsVCQr
+kmpabVCjAkPur1BiT4gl3nw6uWTCLATmD61s/oJDETiJ/u0ILdX2pGr2e0sjKV8v
+qu4EvIooTSntB0LE1LdoPp1p/XSZihhH9P0f8XxfBSYaRQ7ULtG7bM2RtGXmx42b
+yzC9W0ZC35PEKMHwuugmxfgd7Z/zQGfI2I5v/lme8+GeWMMNAVtfucZEoZx4BGOd
+9Ic+ouAuBvKyS+3pQLvPt1gGQ2plC5m2w7S9yrHkzBRdSZDb7lYd3GicEB78ATQW
+q3KMfIZPG/MF5EMxbFjrR0LuyMObIZL24kMgCS63eM2SUuv+LA+jozBnZoNfIYn8
+PUycjfBTIBwIFdSCZGxY
+=Yqmc
+-----END PGP SIGNATURE-----
 
-Sorry about the trouble. I don't have your tree pulled so I was starting
-from linux-next under the assumption that it was current to your tree.
-
-Regards,
-Hartley
+--Q3ujDxr0EyD34e0X--

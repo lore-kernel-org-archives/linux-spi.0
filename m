@@ -1,117 +1,66 @@
-From: VVF Villages par Nl Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Jusqu'=E0_-30_%_en_r=E9servant_vos_vacances_d'=E9t=E9?=
-Date: Wed, 3 Jul 2013 23:00:21 +0200 (CEST)
-Message-ID: <pgb63o.hip0ewgqwuzl7el@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: H Hartley Sweeten <hartleys@visionengravers.com>
+Subject: RE: [PATCH v2 05/11] spi: spi-ep93xx: use devm_clk_get()
+Date: Wed, 3 Jul 2013 16:12:39 -0500
+Message-ID: <ADE657CA350FB648AAC2C43247A983F0021DAC39039F@AUSP01VMBX24.collaborationhost.net>
+References: <201307021008.22347.hartleys@visionengravers.com>
+ <20130703182125.GZ27646@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	Ryan Mallon <rmallon@gmail.com>,
+	"mika.westerberg@iki.fi" <mika.westerberg@iki.fi>,
+	"grant.likely@linaro.org" <grant.likely@linaro.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20130703182125.GZ27646@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgpivbI7gfk57dIhip0eibdI&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1372885203025%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DIHCJCJAKFPOLNANN%26mid%3D1600185287&s=3DCGCN=
-MCMEPJCHBELF
- =
+On Wednesday, July 03, 2013 11:21 AM, Mark Brown wrote:
+> On Tue, Jul 02, 2013 at 10:08:21AM -0700, H Hartley Sweeten wrote:
+>> Use devm_clk_get() so that the clk_put() happens automatically when
+>> the last reference to this driver is dropped.
+>
+> This doesn't apply against current code - always submit against the
+> relevant development tree, in this case topic/ep93xx.  I've applied it
+> with a manual fixup.
 
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9tJusqu'=E0 -30 % en r=E9servant vos vacances d=
-'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -30 % en r=
-=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
-Jusqu'=E0 -30 % en r=E9servant vos vacances d'=E9t=E9
- =
+Hello Mark,
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600185287&sig=3DJBEEMPNDLDLNFEGL
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by Windows:
+It appears your topic/ep93xx branch is missing this:
 
-Build for Windows Store.
+commit 24778be20f87d5aadb19624fc768b3159fa43efc
+Author: Stephen Warren <swarren@wwwdotorg.org>
+Date:   Tue May 21 20:36:35 2013 -0600
 
-http://p.sf.net/sfu/windows-dev2dev
+    spi: convert drivers to use bits_per_word_mask
+
+This commit is in linux-next which is what the patch series was based on.
+I'm not sure what branch you applied that patch to.
+
+If you need to drop my previous patches that you applied to topic/ep93xx
+in order to sync things up please let me know how to proceed. There are
+four more patches pending for spi-ep93xx to finish the cleanup and convert
+it to the SPI queued driver infrastructure.
+
+These are the relevant commits in topic/spi-ep93xx:
+
+kernel / pub/scm/linux/kernel/git/broonie/spi / topic/ep93xx / drivers / spi / spi-ep93xx.c
+
+3051c43  spi: spi-ep93xx: use devm_clk_get() by H Hartley Sweeten - 28 hours ago topic/ep93xx
+e5ae625  spi: spi-ep93xx: remove 'dss' from per chip private data by H Hartley Sweeten - 28 hours ago
+4af59ef  spi: spi-ep93xx: remove dev_err() for kzalloc() failure by H Hartley Sweeten - 28 hours ago
+8b9d957  spi: spi-ep93xx: get platform resources early in (*probe) by H Hartley Sweeten - 28 hours ago
+c6b7f14  spi: spi-ep93xx: remove bits_per_word() helper by H Hartley Sweeten - 28 hours ago
+75c7444  spi: spi-ep93xx: use read,write instead of __raw_* variants by H Hartley Sweeten - 28 hours ago
+eb41eeb  spi: spi-ep93xx: always handle transfer specific settings by H Hartley Sweeten - 5 days ago
+
+Sorry about the trouble. I don't have your tree pulled so I was starting
+from linux-next under the assumption that it was current to your tree.
+
+Regards,
+Hartley

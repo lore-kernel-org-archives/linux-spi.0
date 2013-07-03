@@ -1,9 +1,8 @@
 From: Mika Westerberg <mika.westerberg@iki.fi>
-Subject: Re: [PATCH v2 02/11] spi: spi-ep93xx: use read,write instead of
- __raw_* variants
-Date: Wed, 3 Jul 2013 21:00:39 +0300
-Message-ID: <20130703180039.GA26568@mwesterb-mobl.lan>
-References: <201307021006.26694.hartleys@visionengravers.com>
+Subject: Re: [PATCH v2 03/11] spi: spi-ep93xx: remove bits_per_word() helper
+Date: Wed, 3 Jul 2013 21:02:10 +0300
+Message-ID: <20130703180210.GB26568@mwesterb-mobl.lan>
+References: <201307021007.01896.hartleys@visionengravers.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
@@ -13,19 +12,17 @@ Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
 To: H Hartley Sweeten <hartleys@visionengravers.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <201307021006.26694.hartleys@visionengravers.com>
+In-Reply-To: <201307021007.01896.hartleys@visionengravers.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jul 02, 2013 at 10:06:26AM -0700, H Hartley Sweeten wrote:
-> The memory resource used by this driver is ioremap()'d and the normal
-> read,write calls can be used instead of the __raw_* variants.
-> 
-> Also, remove the inline tag on the helper functions and let the compiler
-> decide if they are inlined.
+On Tue, Jul 02, 2013 at 10:07:01AM -0700, H Hartley Sweeten wrote:
+> Check t->bits_per_word directly and remove the inline helper function.
 > 
 > Signed-off-by: H Hartley Sweeten <hsweeten@visionengravers.com>
 > Cc: Ryan Mallon <rmallon@gmail.com>
 > Cc: Mika Westerberg <mika.westerberg@iki.fi>
+
+I wonder why the helper was there in the first place.
 
 Acked-by: Mika Westerberg <mika.westerberg@iki.fi>

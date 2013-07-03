@@ -1,12 +1,12 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 06/11] spi: spi-ep93xx: remove dev_err() for kzalloc()
- failure
-Date: Wed, 3 Jul 2013 19:22:24 +0100
-Message-ID: <20130703182224.GD27646@sirena.org.uk>
-References: <201307021009.00176.hartleys@visionengravers.com>
+Subject: Re: [PATCH v2 07/11] spi: spi-ep93xx: remove 'dss' from per chip
+ private data
+Date: Wed, 3 Jul 2013 19:22:54 +0100
+Message-ID: <20130703182254.GE27646@sirena.org.uk>
+References: <201307021009.30230.hartleys@visionengravers.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="fzqeIE+j4cN25Pqf"
+	protocol="application/pgp-signature"; boundary="4vXjQNnSxf1+t97G"
 Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
 	spi-devel-general@lists.sourceforge.net,
 	Ryan Mallon <rmallon@gmail.com>, mika.westerberg@iki.fi,
@@ -14,40 +14,42 @@ Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
 To: H Hartley Sweeten <hartleys@visionengravers.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <201307021009.00176.hartleys@visionengravers.com>
+In-Reply-To: <201307021009.30230.hartleys@visionengravers.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---fzqeIE+j4cN25Pqf
+--4vXjQNnSxf1+t97G
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jul 02, 2013 at 10:08:59AM -0700, H Hartley Sweeten wrote:
-> The kzalloc() failure will have already output a message.
+On Tue, Jul 02, 2013 at 10:09:29AM -0700, H Hartley Sweeten wrote:
+> This value is only needed to set the bits per word for each transfer
+> of a message. There is no reason to set the value in ep93xx_spi_enable()
+> because ep93xx_spi_process_transfer() sets it again for each transfer.
 
 Applied, thanks.
 
---fzqeIE+j4cN25Pqf
+--4vXjQNnSxf1+t97G
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.20 (GNU/Linux)
 
-iQIcBAEBAgAGBQJR1GvdAAoJELSic+t+oim9g5AP/1uFRYDfa4Fclshb1MqePv/9
-4n6ep42kQrDuyNcV9Bv5DHjUNpwRbblm/5w+TsYSd8/P5cYs0v6xQ+MeZjrYfd1q
-bXTDPeGpxwNL2xGUpd0bELmM5cmj+C38J3RkPJ4QeOEC0tnAcpJbx6PIDeJdVuj+
-x3GEMisEur8oKQGyl+Db/Qpe0y+IxKfJJXDgaJbEx4DymegDHR8gnC7BJbBzniXw
-NNszEeqR3nN0iw7LGNLmjkf3btSqenoen1y6GsHKhxSaJQPsgyKcdhjytAquiIaI
-hXunOLhnCnRMgfyZIRRnor2BTlXOer7KxD1fgPOSIJNARQD9ji7GGAmqAE0nG/uw
-ScbGWfGMDZlMIMrEPlTxbOUGAgwlQPcoaYsXgF5VgtRlbgYdjZEsiahym4h47nM3
-Uyan8xZkFyEbk3qtAm8RN1PZWBV8fMA/+Ms8EpeVCNdccX0phuIU3uFwSnMskX3n
-aA/YfIpWBDYmudXpM4l8+Zh1OdrtAbqLnxGKi/kUmIspTzzT/nCOrPobquG13BcC
-hUD8JQOi/fR4sntgNBAm4KPZTBp1dROc0/zcen7+U1cafzCDdhdTTUW2XMPwfMM6
-8H5YjRpiqE/hpwnEsNl0+IyYsyYP0ud/Kie0gP5yI/lzKDt28A1yx88yjPtiFcLH
-B/VYQ3Zz8Aj5s9EjZkfB
-=eYyE
+iQIcBAEBAgAGBQJR1Gv7AAoJELSic+t+oim9Kk4P/1TK1/teZ5P2ZhfHQ/NDXtfK
+Os53h2qwVfjYNZwosaJDaIulUToRDdUSVck4nPQX4YwkWo+1Fdpk6SU+cAoe4IQg
+gnb8TLieMyBoh9VECTLLzvowbI7VY1Rtmlqx4I7nRHm2JfNVudh/3JnYA+GfcSLn
+RmeoFFe6fW/zLWOsWHhinemn+Bvvjs2EM2f03256qggSRGht1on4LE/nR1hRbXfS
+0mjNFqGSARrtVlLTl3kDmqkdtTiDmHJSw6i4jGVnFV/XozXxBuzFS7Z3qwZ7OJy1
+KjJFbYVl+MPKduw/YDAQdRSkKCVEPgkdE2VLaUpNx3mJ3twh5WrgskV+MdKl4lj2
+4wcYuHz0mTixFjyQ1XnD4xWnCMx4GLA6CAMKyt2fWMINCvQvPNlVBm4H8okYfDwL
+ym2sX/jVr6mBQIuqtjBOw6WwIeJ2GmsLQHDJjtHm2mReptXjZcuuCnzmVxjm6gx/
+qZwcr3PEAsD0gsKe2yxYQnPIGaT3JzNEY2BVRHLQRJ69lsvmNooE322Sx0KlkI8y
+J/P6eZbFg/Uw3WJCd+b+QRfIjsjonCIWAtD34s7c9LPoCUoPnrPsJJKGDQotyl7+
+dLXPaWek7UGYH1HB/ocNYt4iHCSF0OeotsLx1O11fkaMD1rbuZOuGnxskt96Iccs
+vh8iDOgGy4eFg6ffSW24
+=2v6/
 -----END PGP SIGNATURE-----
 
---fzqeIE+j4cN25Pqf--
+--4vXjQNnSxf1+t97G--

@@ -1,89 +1,53 @@
-From: Mark Brown <broonie@kernel.org>
+From: Thomas.Betker-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org
 Subject: Re: SPI: DUAL/QUAD support
-Date: Thu, 4 Jul 2013 16:49:27 +0100
-Message-ID: <20130704154927.GE27646@sirena.org.uk>
+Date: Thu, 4 Jul 2013 18:04:14 +0200
+Message-ID: <OFAD729A05.8C915625-ONC1257B9E.00576B25-C1257B9E.0058477D@rohde-schwarz.com>
 References: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg@mail.gmail.com>
- <20130704130017.GA25997@sig21.net>
- <OFA0D5839D.0594EA10-ONC1257B9E.004A7347-C1257B9E.00524BA5@rohde-schwarz.com>
+	<20130704130017.GA25997@sig21.net>
+	<OFA0D5839D.0594EA10-ONC1257B9E.004A7347-C1257B9E.00524BA5@rohde-schwarz.com>
+	<20130704154927.GE27646@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2495884557310337075=="
-Cc: linux-mtd <linux-mtd-bounces@lists.infradead.org>,
- Johannes Stezenbach <js@sig21.net>, Grant Likely <grant.likely@secretlab.ca>,
- linux-mtd@lists.infradead.org, spi-devel-general@lists.sourceforge.net,
- yuhang wang <wangyuhang2014@gmail.com>, linux-arm-kernel@lists.infradead.org
-To: Thomas.Betker@rohde-schwarz.com
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <OFA0D5839D.0594EA10-ONC1257B9E.004A7347-C1257B9E.00524BA5@rohde-schwarz.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd <linux-mtd-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Johannes Stezenbach <js-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130704154927.GE27646-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello Mark:
 
---===============2495884557310337075==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="u57qSRWxBnzOWp9B"
-Content-Disposition: inline
+> Well, there's two bits here.  One is the support in the client drivers
+> for using the extra data lines and the other is the support in the SPI
+> core for telling controllers to do this.  We need that second bit in
+> place before the first one can be implemented.
 
+I am not sure if we do. In the system I am working on, the QSPI controller 
+recognizes the quad mode commands from the Tx data and automatically 
+switches modes; no manual intervention by the flash driver is needed.
 
---u57qSRWxBnzOWp9B
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I agree that this may not be the case for all SPI controllers. Yuhang, can 
+you tell us what your controller will do?
 
-On Thu, Jul 04, 2013 at 04:58:52PM +0200, Thomas.Betker@rohde-schwarz.com w=
-rote:
-
-> This situation is certainly a bit special. To me, the patch looks like a=
-=20
-> short-time workaround; I would rather see the flash driver support actual=
-=20
-> dual or quad mode commands. Is there any work in progress?
-
-Well, there's two bits here.  One is the support in the client drivers
-for using the extra data lines and the other is the support in the SPI
-core for telling controllers to do this.  We need that second bit in
-place before the first one can be implemented.
-
---u57qSRWxBnzOWp9B
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR1ZmEAAoJELSic+t+oim9ZAAP/ja6QWkpO7xP1J8TDcBs18QW
-zh/jJUqo3PQJ6FifH8wsqYh+ONDN+RXUQ7QX/zKrqCzgoQ14o4SmchUPKwkuIbwc
-GZbAoXeVYbJE7yItR++r/mhNeVlxgMJ1o7aU4fM1U6jIrp6kBqjqumlLgGmxGJ7L
-4JBRmotC7gYy7970L5slpMmeYLEA+o1TaNi7SqRHIaAHbx0Wto2MhwDWzFQQyu8o
-F0Fc/uCYjzdYYRI9X4tHBc9pDUPe7PLFTYzqefqYHoYkmUD27cTe3OALhQlllKjF
-YHScPv83+tGnctZD9opURK1Z3Nj+t4O1WfZxV0golfpRmakndCjDCR/vQqpzDde2
-OtgKB93MQ5lOCINs6NJNqgkFa7+e/G8nerrg1ApX8Vz3pIw1yRAU6KETE0Uni7bJ
-xdjd3Np4iDHJl3sCytAEtauWEoSVyYnCHnAuICJoe/plfMlN6RTUF2k0mw0swYu6
-fsplKD1jLX0OGqr+ZgvzAjjDKsGK7KxlG+iPymFGFTI2x7OdHX8UEMXcd3/rMAC5
-ksymgjJuv5xeG5/xjyhWI1cB/zNhxyLu9knqYXvc8R792J/UvbfczpEPIW5Y4qF5
-cUVzvXYHkDzf2V//PLodtiuBPjQiGgpJCx56eyICs7gtNtjmikWjEET77QquB3eT
-109xV+u7yIRIeXvLTIgy
-=E6Yp
------END PGP SIGNATURE-----
-
---u57qSRWxBnzOWp9B--
+Best regards,
+Thomas
 
 
---===============2495884557310337075==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+Build for Windows Store.
 
---===============2495884557310337075==--
+http://p.sf.net/sfu/windows-dev2dev

@@ -1,215 +1,42 @@
-From: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: SPI: DUAL/QUAD support
-Date: Thu, 4 Jul 2013 19:36:48 +0800
-Message-ID: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg@mail.gmail.com>
+From: Tony Lindgren <tony@atomide.com>
+Subject: Re: [PATCH v2 1/2] ARM: configs: Enable TI_EDMA in
+ omap2plus_defconfig
+Date: Thu, 4 Jul 2013 05:05:23 -0700
+Message-ID: <20130704120523.GM5523@atomide.com>
+References: <1372304523-30742-1-git-send-email-joelf@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Sekhar Nori <nsekhar@ti.com>, Matt Porter <matt@ohporter.com>,
+	Grant Likely <grant.likely@secretlab.ca>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Vinod Koul <vinod.koul@intel.com>,
+	Mark Brown <broonie@linaro.org>,
+	Benoit Cousson <b-cousson@ti.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Rob Landley <rob@landley.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Devicetree Discuss <devicetree-discuss@lists.ozlabs.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux DaVinci Kernel List
+	<davinci-linux-open-source@linux.davincidsp.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>
+To: Joel Fernandes <joelf@ti.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1372304523-30742-1-git-send-email-joelf@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+* Joel Fernandes <joelf@ti.com> [130626 20:48]:
+> Build EDMA in by default to avoid fewer people stepping on their toes
+> with broken DMA on drivers needing EDMA.
 
-Thanks for your reply.
-I have added the kerneldoc into the patch below to explain the "DUAL"
-and "QUAD" modes.
-Hope for your suggestions.
+Thanks applying this one into omap-for-v3.11/fixes.
 
-Documentation/spi/spi-dual_quad |  102 +++++++++++++++++++++++++++++++++++++++
- drivers/mtd/devices/m25p80.c    |    2 +
- drivers/spi/spi.c               |    2 +
- include/linux/spi/spi.h         |    8 +++
- 4 files changed, 114 insertions(+)
- create mode 100644 Documentation/spi/spi-dual_quad
-
-diff --git a/Documentation/spi/spi-dual_quad b/Documentation/spi/spi-dual_quad
-new file mode 100644
-index 0000000..06a2f9e
---- /dev/null
-+++ b/Documentation/spi/spi-dual_quad
-@@ -0,0 +1,102 @@
-+spi-dual_quad: make spi support DUAL/QUAD
-+============================================
-+
-+Description
-+----------------------
-+DUAL/QUAD means spi can transfer in 2bits/4bits at the same time.
-+These spi controllers provide 8 data lines(4-tx and 4-rx). User can
-+choose tranfer mode(SINGLE/DUAL/QUAD) by setting the certain register.
-+Though SPI is a serial interface, some spi controllers can support
-+transmitting and receiving in DUAL and QUAD modes aimed to improve
-+the performance. Also as spi slave lots of flashes do support this attribute,
-+such as serial-norflash in spansion company.
-+
-+Serial-flash such as s25fl129p in spansion company.
-+In common way, the flash has two data pins(IO0,IO1) supporting SINGLE/DUAL.
-+The flash also can work in QUAD mode, there are still other two
-pins(HOLD,W#)which
-+in other usage will be regarded as data pins.
-+
-+The members added below is used to provide the transfer information from slave
-+to master. Thus spi controller driver can distinguish the transfer mode(SINGLE
-+/DUAL/QUAD) and set the certain controlling register.
-+
-+
-+Members added
-+----------------------
-+struct spi_device {
-++       u8     rx_bitwidth;
-++       u8     tx_bitwidth;
-+}
-+
-+struct spi_transfer {
-++       u8     bitwidth;
-++#define        SPI_BITWIDTH_SINGLE     0x01; /* 1bit transfer */
-++#define        SPI_BITWIDTH_DUAL       0x02; /* 2bits transfer */
-++#define        SPI_BITWIDTH_QUAD       0x03; /* 4bits transfer */
-+}
-+
-+struct spi_board_info {
-++       u8     rx_bitwidth;
-++       u8     tx_bitwidth;
-+}
-+
-+
-+How to use the added members
-+----------------------
-+
-+DECLARE SLAVE DEVICES
-+
-+Normally your arch/.../mach-*/board-*.c files would provide a small table
-+listing the SPI devices on each board.  Details refered to "spi-summary".
-+At the same time, if your slave device support DUAL/QUAD transfer, you can
-+set as below:
-+
-+       static struct spi_board_info spi_board_info[] __initdata = {
-+       {
-+               .modalias       = "xxxxx",
-+               .......
-+               .chip_select    = 0,
-+               .rx_bitwidth = SPI_BITWIDTH_DUAL,
-+               .tx_bitwidth = SPI_BITWIDTH_QUAD,
-+       },
-+       };
-+
-+ORGANISE SPI PACKAGE
-+
-+When your slave is registered by:
-+
-+       spi_register_board_info(spi_board_info, ARRAY_SIZE(spi_board_info));
-+
-+rx_bitwidth and tx_bitwidth members will be delivered into "struct spi_device".
-+Thus the flash driver can notice the tranfer mode that user has appointed.
-+Flash driver receives the data from the uplayer and organise the spi_transfer
-+package as below:
-+
-+       ......
-+       struct spi_transfer t[2];
-+       struct spi_message m;
-+       spi_message_init(&m);
-+       memset(t, 0, (sizeof t));
-+       ......
-+       t[0].rx_buf = buf;
-+       t[0].len = len;
-+       t[0].bitwidth = spi->rx_bitwidth/spi->tx_bitwidth;
-+       spi_message_add_tail(&t[0], &m);
-+       ......
-+       spi_sync(spi, &m);
-+       ......
-+
-+finally, spi controller driver will deal with the spi_tranfer package.
-+Controller driver will pick the bitwidth member out due to which set
-the transfer
-+mode register.
-+
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 5b6b072..1411678 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -354,6 +354,7 @@ static int m25p80_read(struct mtd_info *mtd,
-loff_t from, size_t len,
-
-        t[1].rx_buf = buf;
-        t[1].len = len;
-+       t[1].bitwidth = flash->spi->rx_bitwidth;
-        spi_message_add_tail(&t[1], &m);
-
-        mutex_lock(&flash->lock);
-@@ -409,6 +410,7 @@ static int m25p80_write(struct mtd_info *mtd,
-loff_t to, size_t len,
-        spi_message_add_tail(&t[0], &m);
-
-        t[1].tx_buf = buf;
-+       t[1].bitwidth = flash->spi->tx_bitwidth;
-        spi_message_add_tail(&t[1], &m);
-
-        mutex_lock(&flash->lock);
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 004b10f..cd99022 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -452,6 +452,8 @@ struct spi_device *spi_new_device(struct spi_master *master,
-        proxy->irq = chip->irq;
-        strlcpy(proxy->modalias, chip->modalias, sizeof(proxy->modalias));
-        proxy->dev.platform_data = (void *) chip->platform_data;
-+       proxy->rx_bitwidth = chip->rx_bitwidth;
-+       proxy->tx_bitwidth = chip->tx_bitwidth;
-        proxy->controller_data = chip->controller_data;
-        proxy->controller_state = NULL;
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 38c2b92..ddcf308 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -93,6 +93,8 @@ struct spi_device {
-        void                    *controller_data;
-        char                    modalias[SPI_NAME_SIZE];
-        int                     cs_gpio;        /* chip select gpio */
-+       u8                      rx_bitwidth;
-+       u8                      tx_bitwidth;
-
-        /*
-         * likely need more hooks for more protocol options affecting how
-@@ -511,6 +513,10 @@ struct spi_transfer {
-        dma_addr_t      rx_dma;
-
-        unsigned        cs_change:1;
-+       u8              bitwidth;
-+#define        SPI_BITWIDTH_SINGLE     0x01; /* 1bit transfer */
-+#define        SPI_BITWIDTH_DUAL       0x02; /* 2bits transfer */
-+#define        SPI_BITWIDTH_QUAD       0x03; /* 4bits transfer */
-        u8              bits_per_word;
-        u16             delay_usecs;
-        u32             speed_hz;
-@@ -859,6 +865,8 @@ struct spi_board_info {
-         * where the default of SPI_CS_HIGH = 0 is wrong.
-         */
-        u8              mode;
-+       u8              rx_bitwidth;
-+       u8              tx_bitwidth;
-
-        /* ... may need additional spi_device chip config data here.
-         * avoid stuff protocol drivers can set; but include stuff
-
---
-1.7.9.5
-
-Best regards
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+Tony

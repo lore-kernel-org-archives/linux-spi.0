@@ -1,130 +1,81 @@
-From: =?GB2312?B?zfXT7rq9?= <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: SPI : DUAL/QUAD support
-Date: Thu, 4 Jul 2013 15:07:31 +0800
-Message-ID: <CAHSAbzMGqQgCLL9ymQ6qSeJRybv2jJfm-sbzZVgayVyKYgufLQ@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: SPI : DUAL/QUAD support
+Date: Thu, 4 Jul 2013 10:00:49 +0100
+Message-ID: <20130704090049.GJ27646@sirena.org.uk>
+References: <CAHSAbzMGqQgCLL9ymQ6qSeJRybv2jJfm-sbzZVgayVyKYgufLQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1823085700866186687=="
+Cc: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
+ linux-mtd@lists.infradead.org, linux-arm-kernel@lists.infradead.org
+To: =?utf-8?B?546L5a6H6Iiq?= <wangyuhang2014@gmail.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <CAHSAbzMGqQgCLL9ymQ6qSeJRybv2jJfm-sbzZVgayVyKYgufLQ@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi
 
-Now some SPI controllers and Slave Devices have supported
-DUAL and QUAD transfer mode. But SPI controller driver in kernel
-has no member to deliver this information from Slave to Master.
-So in my opinion, adding transfer mode members to deal with the problem.
-
-In my SPI system, slave device is a Nor-Flash chip(s25fl129p) which
-use m25p80 driver. My patch below aims to make spi controller know
-the way that the slave want.
-
-Firstly user provides the SPI slave information into spi_board_info,
-including tx_bitwidth and rx_bitwidth. When the SPI slave is registered,
-information in spi_board_info is delivered to spi_device. Then SPI slave
-driver will add the transfer mode information into the spi_tranfer package
-and send it out to SPI controller driver. SPI controller driver will
-analyse the transfer package and set the certain transfer mode to
-its register.
-
-This patch do not support device tree....
+--===============1823085700866186687==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="mqabeeRFEDQfpoIl"
+Content-Disposition: inline
 
 
-Signed-off-by: wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/mtd/devices/m25p80.c |    2 ++
- drivers/spi/spi.c            |    2 ++
- include/linux/spi/spi.h      |    8 ++++++++
- 3 files changed, 12 insertions(+)
+--mqabeeRFEDQfpoIl
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 5b6b072..1411678 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -354,6 +354,7 @@ static int m25p80_read(struct mtd_info *mtd,
-loff_t from, size_t len,
+On Thu, Jul 04, 2013 at 03:07:31PM +0800, =E7=8E=8B=E5=AE=87=E8=88=AA wrote:
 
-        t[1].rx_buf = buf;
-        t[1].len = len;
-+       t[1].bitwidth = flash->spi->rx_bitwidth;
-        spi_message_add_tail(&t[1], &m);
+> Now some SPI controllers and Slave Devices have supported
+> DUAL and QUAD transfer mode. But SPI controller driver in kernel
+> has no member to deliver this information from Slave to Master.
+> So in my opinion, adding transfer mode members to deal with the problem.
 
-        mutex_lock(&flash->lock);
-@@ -409,6 +410,7 @@ static int m25p80_write(struct mtd_info *mtd,
-loff_t to, size_t len,
-        spi_message_add_tail(&t[0], &m);
+You'll need to tell us what "DUAL" and "QUAD" modes are and provide some
+kerneldoc for the new fields.
 
-        t[1].tx_buf = buf;
-+       t[1].bitwidth = flash->spi->tx_bitwidth;
-        spi_message_add_tail(&t[1], &m);
+--mqabeeRFEDQfpoIl
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-        mutex_lock(&flash->lock);
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 004b10f..cd99022 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -452,6 +452,8 @@ struct spi_device *spi_new_device(struct spi_master *master,
-        proxy->irq = chip->irq;
-        strlcpy(proxy->modalias, chip->modalias, sizeof(proxy->modalias));
-        proxy->dev.platform_data = (void *) chip->platform_data;
-+       proxy->rx_bitwidth = chip->rx_bitwidth;
-+       proxy->tx_bitwidth = chip->tx_bitwidth;
-        proxy->controller_data = chip->controller_data;
-        proxy->controller_state = NULL;
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 38c2b92..ddcf308 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -93,6 +93,8 @@ struct spi_device {
-        void                    *controller_data;
-        char                    modalias[SPI_NAME_SIZE];
-        int                     cs_gpio;        /* chip select gpio */
-+       u8                      rx_bitwidth;
-+       u8                      tx_bitwidth;
+iQIcBAEBAgAGBQJR1Tm+AAoJELSic+t+oim9owwQAJ14oNu1NoWmkr4tHLQOD/W9
+N3HcHzRkbomjk098ZqmyBaW1tYC5+sGOdDKrcgNMQbnX5jUhghxArw3LGJ5bRcr4
+5xK7sPdU1/PlXYEhb2WcwMYtxhlbz+WhDVCoerpDeuamF45FtjdSvkflViPC8phC
+1mrtFd09D2Yrtv94bmCIl2qbGlEg7fS+wZsUhtQmKM+xejw7jCPhPoxHGdsILCAN
+tAjxPOgTbobKw2lbkJJtDf7wthZ5e9JbroiwrqQjl71BBV5Ch9qHvCD8xx4h+FVA
+vrTHigBfZHs729TNbOmLLFuELRA64rBnRPH+/QTy4FcYKodzSqipjeHO+E1zGa4D
+TFL1P/bYlSFIW6HVmnBkHTXvADDvNSC90OQJ6KfG16/vjuFPum2ahqzLtwsLE8Dj
+/6qNrbtvQrSzhjTZNbrefF/eo2on44FftMpksSQwhKaU8As7wrxJCPl3poxusaB0
+e4NMLZssJ0RJ+tU1yGDYUUa05S1u6qxpeCddmZMJ6/s77UenaaTGsm4QJglbIbmP
+djxxyXJa9MQjraEEGBmz8imCabl4DomCQ9bfF85mx88APQo53q9IYJkDyB4+dDbo
+m49gGHfgVxIJRUHjEM5sY/lEyJhIyu7BN6o6JzvXePt76VAaF/Dg+V2zphrpNqXC
+nynWeNuYM9cpTDpoCEAr
+=CsKC
+-----END PGP SIGNATURE-----
 
-        /*
-         * likely need more hooks for more protocol options affecting how
-@@ -511,6 +513,10 @@ struct spi_transfer {
-        dma_addr_t      rx_dma;
+--mqabeeRFEDQfpoIl--
 
-        unsigned        cs_change:1;
-+       u8              bitwidth;
-+#define        SPI_BITWIDTH_SINGLE     0x01; /* 1bit transfer */
-+#define        SPI_BITWIDTH_DUAL       0x02; /* 2bits transfer */
-+#define        SPI_BITWIDTH_QUAD       0x03; /* 4bits transfer */
-        u8              bits_per_word;
-        u16             delay_usecs;
-        u32             speed_hz;
-@@ -859,6 +865,8 @@ struct spi_board_info {
-         * where the default of SPI_CS_HIGH = 0 is wrong.
-         */
-        u8              mode;
-+       u8              rx_bitwidth;
-+       u8              tx_bitwidth;
 
-        /* ... may need additional spi_device chip config data here.
-         * avoid stuff protocol drivers can set; but include stuff
---
-1.7.9.5
+--===============1823085700866186687==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Best regards
-Jay
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
 
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+--===============1823085700866186687==--

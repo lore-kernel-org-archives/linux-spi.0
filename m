@@ -1,13 +1,19 @@
-From: Tati via Neezz <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Soldes Tati profitez jusqu'a moins 70%
-Date: Thu, 4 Jul 2013 16:38:43 +0200 (CEST)
-Message-ID: <dh6lf6.hiq27zautwwrgtl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Thomas.Betker-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org
+Subject: Re: SPI: DUAL/QUAD support
+Date: Thu, 4 Jul 2013 16:58:52 +0200
+Message-ID: <OFA0D5839D.0594EA10-ONC1257B9E.004A7347-C1257B9E.00524BA5@rohde-schwarz.com>
+References: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg@mail.gmail.com>
+	<20130704130017.GA25997@sig21.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd <linux-mtd-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Johannes Stezenbach <js-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130704130017.GA25997-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,48 +24,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgpjqqI7gfk57dIhiq27qqlI&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1372948712764%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DLLILDOMNJCJHCFCH%26mid%3D1600186418&s=3DGIJL=
-DNEDPNIHDCBD
- =
+Hello Johannes:
 
-Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70=
-%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 7=
-0%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins =
-70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins=
- 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moin=
-s 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moi=
-ns 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a mo=
-ins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a m=
-oins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a =
-moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a=
- moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'=
-a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu=
-'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusq=
-u'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jus=
-qu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez ju=
-squ'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez j=
-usqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez =
-jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez=
- jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profite=
-z jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profit=
-ez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profi=
-tez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati prof=
-itez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati pro=
-fitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati pr=
-ofitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati p=
-rofitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati =
-profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati=
- profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%
- =
+> Doesn't m25p80 need to use different commands (OPCODEs)
+> for 2x and 4x speed?  It seems this change is incomplete.
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600186418&sig=3DAHMFFBNMCEAKNDPE
----------------------------------------------------------------------------=
----
+Yes, there are usually different opcodes, and as far as I know, they are 
+not supported by the m25p80 driver. It seems we are missing some 
+background info here.
+
+My guess is that the flash chip in question is configured to treat single 
+mode opcodes as dual or quad mode commands (some chips support this), and 
+that the SPI controller needs to be told, for each transfer, which mode to 
+use.
+
+E.g., you would send a READ command with the command bytes in single mode 
+(t[0].bitwidth is missing in the patch) and the data bytes in dual or quad 
+mode. No dummy bytes are used -- the SPI is running at slower speed.
+
+This situation is certainly a bit special. To me, the patch looks like a 
+short-time workaround; I would rather see the flash driver support actual 
+dual or quad mode commands. Is there any work in progress?
+
+Best regards,
+Thomas
+
+
+------------------------------------------------------------------------------
 This SF.net email is sponsored by Windows:
 
 Build for Windows Store.

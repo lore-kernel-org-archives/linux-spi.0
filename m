@@ -1,17 +1,14 @@
-From: Johannes Stezenbach <js-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>
-Subject: Re: SPI: DUAL/QUAD support
-Date: Thu, 4 Jul 2013 15:00:17 +0200
-Message-ID: <20130704130017.GA25997@sig21.net>
-References: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg@mail.gmail.com>
+From: Damart par zetrend <news-PkcECQhVGYM@public.gmane.org>
+Subject: [SPAM] Damart 2eme demarque c'est parti
+Date: Thu, 04 Jul 2013 13:27:07 -0100
+Message-ID: <qQUPP5xYoOU98zKf50kOrCAZ7g40Ptwh1wgW8bNkuss@zaloo.fr>
+Reply-To: Damart par zetrend <news-PkcECQhVGYM@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Abuse: <mailto:abuse-PkcECQhVGYM@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,49 +19,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Jul 04, 2013 at 07:36:48PM +0800, yuhang wang wrote:
-> 
-> I have added the kerneldoc into the patch below to explain the "DUAL"
-> and "QUAD" modes.
-> Hope for your suggestions.
-> 
-> Documentation/spi/spi-dual_quad |  102 +++++++++++++++++++++++++++++++++++++++
->  drivers/mtd/devices/m25p80.c    |    2 +
->  drivers/spi/spi.c               |    2 +
->  include/linux/spi/spi.h         |    8 +++
-
-I think what Mark meant is to add new fields to the /** comments
-in include/linux/spi/spi.h, then documentation could be generated
-(but it seems only outdated copies are online, everyone prefers
-to look at the code):
-https://www.kernel.org/doc/htmldocs/device-drivers/
-
-> --- a/drivers/mtd/devices/m25p80.c
-> +++ b/drivers/mtd/devices/m25p80.c
-> @@ -354,6 +354,7 @@ static int m25p80_read(struct mtd_info *mtd,
-> loff_t from, size_t len,
-> 
->         t[1].rx_buf = buf;
->         t[1].len = len;
-> +       t[1].bitwidth = flash->spi->rx_bitwidth;
->         spi_message_add_tail(&t[1], &m);
-> 
->         mutex_lock(&flash->lock);
-> @@ -409,6 +410,7 @@ static int m25p80_write(struct mtd_info *mtd,
-> loff_t to, size_t len,
->         spi_message_add_tail(&t[0], &m);
-> 
->         t[1].tx_buf = buf;
-> +       t[1].bitwidth = flash->spi->tx_bitwidth;
->         spi_message_add_tail(&t[1], &m);
-> 
->         mutex_lock(&flash->lock);
-
-Doesn't m25p80 need to use different commands (OPCODEs)
-for 2x and 4x speed?  It seems this change is incomplete.
-
-Thanks,
-Johannes
+ Pour visualiser correctement ce message, acc=C3=A9dez =C3=A0 la version en=
+ ligne, ou signaler comme ind=C3=A9sirable 23806 * Offre valable sur les si=
+tes www.damart.fr et www.damartsport.com, par t=EF=BF=BDl=EF=BF=BDphone (0,=
+34 euros / min + surco=EF=BF=BDt =EF=BF=BDventuel de l'op=EF=BF=BDrateur) e=
+t dans les boutiques Damart en France (hors Damart Sport et Happy D. by Dam=
+art) du 26/06/2013 au 30/07/2013, sur une s=EF=BF=BDlection d'articles de l=
+a collection Printemps-=EF=BF=BDt=EF=BF=BD 2013. R=EF=BF=BDduction non cumu=
+lable avec une autre offre promotionnelle. Les d=EF=BF=BDcotes peuvent vari=
+er en fonction des mod=EF=BF=BDles. Non valable dans les magasins Happy.D b=
+y Damart . ** Frais de port (5,50 euros) offerts d=EF=BF=BDs 45 euros d'ach=
+ats, r=EF=BF=BDduction d=EF=BF=BDduite jusqu'au 07/07/2013. Si vous ne souh=
+aitez plus recevoir nos emails, veuillez suivre ce lien. Si vous n''arrivez=
+ pas =C3=A0 vous d=C3=A9sabonner, merci d''=C3=A9crire =C3=A0 stop-PkcECQhVGYM@public.gmane.org=
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Windows:

@@ -1,9 +1,18 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+From: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: SPI: DUAL/QUAD support
-Date: Fri, 5 Jul 2013 14:38:36 +0530
-Message-ID: <51D68D14.7090606@ti.com>
-References: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg@mail.gmail.com>	<20130704130017.GA25997@sig21.net>	<OFA0D5839D.0594EA10-ONC1257B9E.004A7347-C1257B9E.00524BA5@rohde-schwarz.com>	<20130704154927.GE27646@sirena.org.uk>	<OFAD729A05.8C915625-ONC1257B9E.00576B25-C1257B9E.0058477D@rohde-schwarz.com>	<CAHSAbzOg+uHndydSC43moF7pijc67pqzB2rPnY69ynXHEzw79g@mail.gmail.com>	<51D67851.8020402@ti.com>	<CAHSAbzNvMo_oeaqtzO8-xDm-L-f8wVccVqfuVqbR=OwqWJhVwg@mail.gmail.com>	<51D689F3.3070605@ti.com>
+Date: Fri, 5 Jul 2013 17:17:41 +0800
+Message-ID: <CAHSAbzMfvfdDtTh=3zeBni4fNMAHEMdTJLJU-Oc13HJUqCUj0A@mail.gmail.com>
+References: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg@mail.gmail.com>
+	<20130704130017.GA25997@sig21.net>
+	<OFA0D5839D.0594EA10-ONC1257B9E.004A7347-C1257B9E.00524BA5@rohde-schwarz.com>
+	<20130704154927.GE27646@sirena.org.uk>
+	<OFAD729A05.8C915625-ONC1257B9E.00576B25-C1257B9E.0058477D@rohde-schwarz.com>
+	<CAHSAbzOg+uHndydSC43moF7pijc67pqzB2rPnY69ynXHEzw79g@mail.gmail.com>
+	<51D67851.8020402@ti.com>
+	<CAHSAbzNvMo_oeaqtzO8-xDm-L-f8wVccVqfuVqbR=OwqWJhVwg@mail.gmail.com>
+	<51D689F3.3070605@ti.com>
 	<CAHSAbzM1PGoMXFNOmB7guDsVWYnRoRy89-bufHYpPz5+odnd8w@mail.gmail.com>
+	<51D68D14.7090606@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -12,9 +21,9 @@ Cc: linux-mtd <linux-mtd-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.o
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Thomas.Betker-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAHSAbzM1PGoMXFNOmB7guDsVWYnRoRy89-bufHYpPz5+odnd8w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <51D68D14.7090606-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,19 +34,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 05 July 2013 02:37 PM, yuhang wang wrote:
->>                      if (!quad_mode)
->>                              dra7xxx_writel(qspi, qspi->cmd | QSPI_RD_SNGL,
->>                                              QSPI_SPI_CMD_REG);
->>                      else
->>                              dra7xxx_writel(qspi, qspi->cmd | QSPI_RD_QUAD,
->>                                              QSPI_SPI_CMD_REG);
->>                   .......
->>                  }
-> So what do you based on to set variable quad_mode.
-Best way should be to check for flash device id and manufacture data. 
-Based on which you
-can decide whether your flash supports quad bits or not.
+2013/7/5 Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>:
+> On Friday 05 July 2013 02:37 PM, yuhang wang wrote:
+>>>
+>>>                      if (!quad_mode)
+>>>                              dra7xxx_writel(qspi, qspi->cmd |
+>>> QSPI_RD_SNGL,
+>>>                                              QSPI_SPI_CMD_REG);
+>>>                      else
+>>>                              dra7xxx_writel(qspi, qspi->cmd |
+>>> QSPI_RD_QUAD,
+>>>                                              QSPI_SPI_CMD_REG);
+>>>                   .......
+>>>                  }
+>>
+>> So what do you based on to set variable quad_mode.
+>
+> Best way should be to check for flash device id and manufacture data. Based
+> on which you
+> can decide whether your flash supports quad bits or not.
+
+Perhaps I did not said it clearly. Your flash supports quad and you
+set it into quad
+mode. But how can your controller driver notice that. In other word,
+In which way
+provide this information from flash to spi controller.
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Windows:

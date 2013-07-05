@@ -1,13 +1,23 @@
-From: "iPhone" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
-Subject: Destockage iPhone 5
-Date: Fri, 05 Jul 2013 02:45:32 +0000 (CET)
-Message-ID: <130705024532.126983968300001856@ocfm43.com>
+From: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: SPI: DUAL/QUAD support
+Date: Fri, 5 Jul 2013 14:25:09 +0800
+Message-ID: <CAHSAbzOg+uHndydSC43moF7pijc67pqzB2rPnY69ynXHEzw79g@mail.gmail.com>
+References: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg@mail.gmail.com>
+	<20130704130017.GA25997@sig21.net>
+	<OFA0D5839D.0594EA10-ONC1257B9E.004A7347-C1257B9E.00524BA5@rohde-schwarz.com>
+	<20130704154927.GE27646@sirena.org.uk>
+	<OFAD729A05.8C915625-ONC1257B9E.00576B25-C1257B9E.0058477D@rohde-schwarz.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd <linux-mtd-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Johannes Stezenbach <js-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Thomas.Betker-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <OFAD729A05.8C915625-ONC1257B9E.00576B25-C1257B9E.0058477D-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,52 +28,52 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKIChodHRwOi8vb2NmbTQzLmNvbS9weXFibmptNW9heHJpaGZud3MvaW5kZXgwLmh0bWwpCgoK
-CgoKIChodHRwOi8vb2NmbTQzLmNvbS9tZ3ExZ2pseG9qam1yaTFuemQvaW5kZXgxLmh0bWwpCgoK
-wqAKTGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50
-IHBvc3NpYmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0
-cDovL29jZm00My5jb20vNWRxMDVqenlvYjVycW14dm55L2luZGV4Mi5odG1sKSAKCgoKIChodHRw
-Oi8vb2NmbTQzLmNvbS9yb3FmeWpqdW96YW1jcmN2NGwvaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJl
-eiBzdXJlbWVudCByZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWlu
-IGRlIHNlIGTDqXZlbG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxl
-cyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4g
-UGFydG91dCBzdXIgbGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0
-b2lyZXMgZCdoZXVyZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4u
-IAogKGh0dHA6Ly9vY2ZtNDMuY29tL3FkZGo1NWdzZjVtcmh3eHp0ZC9pbmRleDQuaHRtbCkKSGFi
-aXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUg
-cGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2Vz
-dCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6
-Ly9vY2ZtNDMuY29tL2pvZGx5NW5rZnhobW1uY3oycy9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExB
-IFNVSVRFID4+IChodHRwOi8vb2NmbTQzLmNvbS9neWRxbjV5cGZ5MXJnZWZ1YmwvaW5kZXg2Lmh0
-bWwpCgogKGh0dHA6Ly9vY2ZtNDMuY29tL29nZHNnNTVmZnVnbTF2MXUweS9pbmRleDcuaHRtbCkK
-CgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLD
-qXN1bHRhdHMgb250IMOpdMOpIHRyw6hzIHN1cnByZW5hbnRzLiAoaHR0cDovL29jZm00My5jb20v
-ZnlpeXd4cnJvaTJyazJmZ2RzL2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vb2NmbTQzLmNvbS8x
-Z2lncXhkY29xbG00MDFneWQvaW5kZXg5Lmh0bWwpCiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVz
-IG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2VybmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlz
-YWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4gVG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOp
-Y29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBsZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUu
-IEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8vb2NmbTQzLmNvbS9ocTFjb2dzMnNsemdkcWcy
-emovaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJVEUgPj4gKGh0dHA6Ly9vY2ZtNDMuY29t
-LzNkNHRwdTVsM2t6aXhneDN3ai9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vb2NmbTQzLmNv
-bS9kNGU1dWFjNHhyaXB1NHRqcHMvaW5kZXgxMi5odG1sKQogKGh0dHA6Ly9vY2ZtNDMuY29tL3lw
-am5ibHZrenhpeHJ6ZHdtcy9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9vY2ZtNDMuY29tL3FpNW94
-MGp0bjRtYmZ3bmk0by9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vb2NmbTQzLmNvbS9qZTBk
-YXA0czEybTRsbnVibm8vaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1IChodHRwOi8v
-b2NmbTQzLmNvbS9kYjVwbjB4cHc0YzBma3BpcHMvaW5kZXgxNi5odG1sKQoKCgoKCgrCoAoiSidh
-aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
-b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIgKGh0
-dHA6Ly9vY2ZtNDMuY29tL3l4MHdscGszYzJjbmx1aWJtcy9pbmRleDE3Lmh0bWwpCgoKCgoKCgog
-KGh0dHA6Ly9vY2ZtNDMuY29tL29qY3NsanAzb3YxbTB2YzJ3cS9pbmRleDE4Lmh0bWwpClBhdG91
-IChodHRwOi8vb2NmbTQzLmNvbS9neXpxbnZ5cGtzMWNqZW8zenEvaW5kZXgxOS5odG1sKQogU2Ft
-ZWRpIDIzIGp1aW4gNGgzNyAoaHR0cDovL29jZm00My5jb20vMW9hZ3MyZGU0cXYxNGRxcXpvL2lu
-ZGV4MjAuaHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hy
-ZXMgYXUgY2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwg
-bWUgdGFyZGUgZCdlc3NheWVyIiAoaHR0cDovL29jZm00My5jb20vZnNkeTQ1bXdmYXZyaGxmendv
-L2luZGV4MjEuaHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
-U0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3Mg
-U3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Hi Thomas:
+
+>> Well, there's two bits here.  One is the support in the client drivers
+>> for using the extra data lines and the other is the support in the SPI
+>> core for telling controllers to do this.  We need that second bit in
+>> place before the first one can be implemented.
+>
+> I am not sure if we do. In the system I am working on, the QSPI controller
+> recognizes the quad mode commands from the Tx data and automatically
+> switches modes; no manual intervention by the flash driver is needed.
+>
+> I agree that this may not be the case for all SPI controllers. Yuhang, can
+> you tell us what your controller will do?
+
+OK, well my spi controller just sets the certain transfer mode in the register
+to make it in that mode(single,dual,quad). Then it will send and receive datas
+with the specific lines. As master, it should be told the transfer lines by the
+slave. Thus I need some members to deliver the information.
+
+But what you said "QSPI controller recognizes the quad mode commands
+from the Tx data and automatically switches modes;"  I can not figure out.
+The communication is launched by SPI master, so how can the controller
+recognizes the Tx data in the first transmission.
+
+>Yes, there are usually different opcodes, and as far as I know, they are
+>not supported by the m25p80 driver. It seems we are missing some
+>background info here.
+>My guess is that the flash chip in question is configured to treat single
+>mode opcodes as dual or quad mode commands (some chips support this), and
+>that the SPI controller needs to be told, for each transfer, which mode to
+>use.
+Just as Johannes said. In my patch m25p80's changes is incomplete.
+Because my inicial aim is to add the transfer width member to tell controller
+the mode flash in. And I will attach new patch about m25p80 later.
+Also you are right. There are really series of flashes do not support dual/quad
+transfer. So I don't know whether there are any standard for serial-flash just
+like the CFI for parallel-flash. Personally, to make a general standard and
+a general code for serial-flash is necessary. So that we do not need to add
+special function in m25p80.c.
+
+Thanks,
+yuhang
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

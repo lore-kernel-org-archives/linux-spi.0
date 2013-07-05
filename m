@@ -1,13 +1,20 @@
-From: "Clementina Frog" <contact-s237+1wDWEiMog0Jp1P/CQ@public.gmane.org>
-Subject: =?UTF-8?Q?Profitez_de_l=27=C3=A9t=C3=A9_pour_ranger_votre_maison?=
-Date: Fri, 05 Jul 2013 09:10:22 +0000 (CET)
-Message-ID: <130705091022.183796197000004472@ocfm41.com>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: Re: SPI: DUAL/QUAD support
+Date: Fri, 5 Jul 2013 14:57:51 +0530
+Message-ID: <51D69197.7060802@ti.com>
+References: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg@mail.gmail.com>	<20130704130017.GA25997@sig21.net>	<OFA0D5839D.0594EA10-ONC1257B9E.004A7347-C1257B9E.00524BA5@rohde-schwarz.com>	<20130704154927.GE27646@sirena.org.uk>	<OFAD729A05.8C915625-ONC1257B9E.00576B25-C1257B9E.0058477D@rohde-schwarz.com>	<CAHSAbzOg+uHndydSC43moF7pijc67pqzB2rPnY69ynXHEzw79g@mail.gmail.com>	<51D67851.8020402@ti.com>	<CAHSAbzNvMo_oeaqtzO8-xDm-L-f8wVccVqfuVqbR=OwqWJhVwg@mail.gmail.com>	<51D689F3.3070605@ti.com>	<CAHSAbzM1PGoMXFNOmB7guDsVWYnRoRy89-bufHYpPz5+odnd8w@mail.gmail.com>	<51D68D14.7090606@ti.com>
+	<CAHSAbzMfvfdDtTh=3zeBni4fNMAHEMdTJLJU-Oc13HJUqCUj0A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd <linux-mtd-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Johannes Stezenbach <js-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Thomas.Betker-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CAHSAbzMfvfdDtTh=3zeBni4fNMAHEMdTJLJU-Oc13HJUqCUj0A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,25 +25,38 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CkNsZW1lbnRpbmEgZnJvZywgbGUgc3DDqWNpYWxpc3RlIGR1IHJhbmdlbWVudCBldCBkZXMgYmFn
-YWdlcwp2b3VzIHByb3Bvc2UgdW5lIHPDqWxlY3Rpb24gZGUgcHJvZHVpdHMgZGUgcXVhbGl0w6kg
-w6AgdG91dCBwZXRpdHMgcHJpeCAhIAoKKGh0dHA6Ly9vY2ZtNDEuY29tLzFrbnFraWJtb3l2c2Vv
-bmFieS9pbmRleDAuaHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tL2ZpbnNmaWExb3VueXdqNGEwbC9p
-bmRleDEuaHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tL2N2bmppaTFsbzVsc2RmdzV0cy9pbmRleDIu
-aHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tL3hhbmwwaXZ2b3gyeTB4ejUyZC9pbmRleDMuaHRtbCkK
-KGh0dHA6Ly9vY2ZtNDEuY29tL2F2bTBpY3VkZmJ5c3Zid2hubC9pbmRleDQuaHRtbCkKQ8K0ZXN0
-IGzCtMOpdMOpLAoKbWV0dGV6IGzCtGhpdmVyIGF1IHBsYWNhcmQgISAKRMOpY291dnJleiB2aXRl
-IG5vdHJlIHPDqWxlY3Rpb24gZGUgCnByb2R1aXRzIGRlIHJhbmdlbWVudCBldCDDqWNvbm9taXNl
-egpqdXNxdcK0w6AgLTUwJQoKc3VyIHRvdXRlIGxhIGdhbW1lICEhClJldHJvdXZleiBub3Mgc29s
-dXRpb25zIGx1ZGlxdWVzCmV0IHByYXRpcXVlcyBlbiBjbGlxdWFudCBjaS1kZXNzb3VzICEKKGh0
-dHA6Ly9vY2ZtNDEuY29tL2lhbWYwY3hlZnpieW50emg0eS9pbmRleDUuaHRtbCkKKGh0dHA6Ly9v
-Y2ZtNDEuY29tLzNrbWJrY2hyZmF1c2x5bm13ZC9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vY2ZtNDEu
-Y29tL2hpbTFmYzJjZmp6eTJzNG16cy9pbmRleDcuaHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tL21r
-MmN1cnRwb2RhczM0bmJ1eS9pbmRleDguaHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tL3BpMnR4cjNm
-b2U1eXB6NGJlbC9pbmRleDkuaHRtbCkKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0
-IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3MgU3RvcmUu
-CgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
-c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
-c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Friday 05 July 2013 02:47 PM, yuhang wang wrote:
+> 2013/7/5 Sourav Poddar<sourav.poddar-l0cyMroinI0@public.gmane.org>:
+>> On Friday 05 July 2013 02:37 PM, yuhang wang wrote:
+>>>>                       if (!quad_mode)
+>>>>                               dra7xxx_writel(qspi, qspi->cmd |
+>>>> QSPI_RD_SNGL,
+>>>>                                               QSPI_SPI_CMD_REG);
+>>>>                       else
+>>>>                               dra7xxx_writel(qspi, qspi->cmd |
+>>>> QSPI_RD_QUAD,
+>>>>                                               QSPI_SPI_CMD_REG);
+>>>>                    .......
+>>>>                   }
+>>> So what do you based on to set variable quad_mode.
+>> Best way should be to check for flash device id and manufacture data. Based
+>> on which you
+>> can decide whether your flash supports quad bits or not.
+> Perhaps I did not said it clearly. Your flash supports quad and you
+> set it into quad
+> mode. But how can your controller driver notice that. In other word,
+> In which way
+> provide this information from flash to spi controller.
+Perhaps, I understood you initial patch wrong. :(
+Yes, this is little confusing, and I am trying to figure out that.
+As of now, I have tested it with some extern variable, though
+we need to see how it can be done cleanly.
+I am trying to see if your patch can be used in some way now.
+
+
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

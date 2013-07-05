@@ -1,31 +1,13 @@
-From: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: SPI: DUAL/QUAD support
-Date: Fri, 5 Jul 2013 18:24:40 +0800
-Message-ID: <CAHSAbzP1-RVot+hhtY_DcBK=u5n2234eb9WOKLESwvUNax7+pA@mail.gmail.com>
-References: <CAHSAbzPNDSr_6N79fh0DTWSEg8buRRPyiw8SPodtKLPjzWXJsg@mail.gmail.com>
-	<20130704130017.GA25997@sig21.net>
-	<OFA0D5839D.0594EA10-ONC1257B9E.004A7347-C1257B9E.00524BA5@rohde-schwarz.com>
-	<20130704154927.GE27646@sirena.org.uk>
-	<OFAD729A05.8C915625-ONC1257B9E.00576B25-C1257B9E.0058477D@rohde-schwarz.com>
-	<CAHSAbzOg+uHndydSC43moF7pijc67pqzB2rPnY69ynXHEzw79g@mail.gmail.com>
-	<51D67851.8020402@ti.com>
-	<CAHSAbzNvMo_oeaqtzO8-xDm-L-f8wVccVqfuVqbR=OwqWJhVwg@mail.gmail.com>
-	<51D689F3.3070605@ti.com>
-	<CAHSAbzM1PGoMXFNOmB7guDsVWYnRoRy89-bufHYpPz5+odnd8w@mail.gmail.com>
-	<51D68D14.7090606@ti.com>
-	<CAHSAbzMfvfdDtTh=3zeBni4fNMAHEMdTJLJU-Oc13HJUqCUj0A@mail.gmail.com>
-	<51D69197.7060802@ti.com>
+From: "Yves Rocher - Nlpromos" <lisa@a.optincake.com>
+Subject: [SPAM] Yves Rocher - Nl promos
+Date: Fri, 05 Jul 2013 11:50:10 +0100
+Message-ID: <0.0.229.754.1CE796D6B639C10.0@mta199.pur3.net>
+Reply-To: Yves Rocher - Nlpromos <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-mtd <linux-mtd-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Johannes Stezenbach <js-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Thomas.Betker-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <51D69197.7060802-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -36,314 +18,116 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2013/7/5 Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>:
-> On Friday 05 July 2013 02:47 PM, yuhang wang wrote:
->>
->> 2013/7/5 Sourav Poddar<sourav.poddar-l0cyMroinI0@public.gmane.org>:
->>>
->>> On Friday 05 July 2013 02:37 PM, yuhang wang wrote:
->>>>>
->>>>>                       if (!quad_mode)
->>>>>                               dra7xxx_writel(qspi, qspi->cmd |
->>>>> QSPI_RD_SNGL,
->>>>>                                               QSPI_SPI_CMD_REG);
->>>>>                       else
->>>>>                               dra7xxx_writel(qspi, qspi->cmd |
->>>>> QSPI_RD_QUAD,
->>>>>                                               QSPI_SPI_CMD_REG);
->>>>>                    .......
->>>>>                   }
->>>>
->>>> So what do you based on to set variable quad_mode.
->>>
->>> Best way should be to check for flash device id and manufacture data.
->>> Based
->>> on which you
->>> can decide whether your flash supports quad bits or not.
->>
->> Perhaps I did not said it clearly. Your flash supports quad and you
->> set it into quad
->> mode. But how can your controller driver notice that. In other word,
->> In which way
->> provide this information from flash to spi controller.
->
-> Perhaps, I understood you initial patch wrong. :(
-> Yes, this is little confusing, and I am trying to figure out that.
-> As of now, I have tested it with some extern variable, though
-> we need to see how it can be done cleanly.
-> I am trying to see if your patch can be used in some way now.
->
-
-Got it. In fact the kernel version I am working in is 3.0.77.
-And I modified m25p80.c in Ver 3.0.90 to fit to the dual and quad.
-But the driver is not general because I don't find any standard for
-serial-flash. Also to the member name, just as Mark said, the
-meaning is not suitable enough. Finally, do not support device tree.
-
-2 Questions here:
-1.In m25p80.c probe, the kmalloc below I feel very strange.
-      flash->command = kmalloc(MAX_CMD_SIZE + (flash->fast_read ? 1 : 0),
-                                      GFP_KERNEL);
-
- (flash->fast_read ? 1 : 0) must be 0! So why do it like that.
-
-2.Is that any need to add wait_till_ready in the erase function to wait for the
-  end of erase. But it will really take a long time.
-
-Signed-off-by: wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/mtd/devices/m25p80.c |   93 ++++++++++++++++++++++++++++++++----------
- drivers/spi/spi.c            |    2 +
- include/linux/spi/spi.h      |    8 ++++
- 3 files changed, 82 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 5b6b072..267c8af 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -47,6 +47,10 @@
- #define        OPCODE_CHIP_ERASE       0xc7    /* Erase whole flash chip */
- #define        OPCODE_SE               0xd8    /* Sector erase
-(usually 64KiB) */
- #define        OPCODE_RDID             0x9f    /* Read JEDEC ID */
-+#define        OPCODE_DOR              0x3B    /* Dual Output Read */
-+#define        OPCODE_QOR              0x6B    /* Quad Output Read */
-+#define        OPCODE_QPP              0x32    /* Quad Page Programming */
-+#define        OPCODE_QEN              0x02 /* Quad Mode Enable Flag */
-
- /* Used for SST flashes only. */
- #define        OPCODE_BP               0x02    /* Byte program */
-@@ -73,6 +77,14 @@
- #define        MAX_READY_WAIT_JIFFIES  (40 * HZ)       /* M25P16
-specs 40s max chip erase */
- #define        MAX_CMD_SIZE            5
-
-+#ifdef CONFIG_M25PXX_USE_FAST_READ
-+#define OPCODE_READ    OPCODE_FAST_READ
-+#define FAST_READ_DUMMY_BYTE 1
-+#else
-+#define OPCODE_READ    OPCODE_NORM_READ
-+#define FAST_READ_DUMMY_BYTE 0
-+#endif
-+
- #define JEDEC_MFR(_jedec_id)   ((_jedec_id) >> 16)
-
- /****************************************************************************/
-@@ -85,7 +97,9 @@ struct m25p {
-        u16                     addr_width;
-        u8                      erase_opcode;
-        u8                      *command;
--       bool                    fast_read;
-+       u8                      read_opcode;
-+       u8                      read_dummy;
-+       u8                      write_opcode;
- };
-
- static inline struct m25p *mtd_to_m25p(struct mtd_info *mtd)
-@@ -94,6 +108,18 @@ static inline struct m25p *mtd_to_m25p(struct mtd_info *mtd)
- }
-
- /****************************************************************************/
-+/*
-+ * Write configuration register 2 byte
-+ * Returns negative if error occurred.
-+ */
-+static int write_cr(struct m25p *flash, u16 val)
-+{
-+       flash->command[0] = OPCODE_WRSR;
-+       flash->command[1] = val >> 8;
-+       flash->command[2] = val;
-+
-+       return spi_write(flash->spi, flash->command, 3);
-+}
-
- /*
-  * Internal helper functions
-@@ -336,7 +362,6 @@ static int m25p80_read(struct mtd_info *mtd,
-loff_t from, size_t len,
-        struct m25p *flash = mtd_to_m25p(mtd);
-        struct spi_transfer t[2];
-        struct spi_message m;
--       uint8_t opcode;
-
-        pr_debug("%s: %s from 0x%08x, len %zd\n", dev_name(&flash->spi->dev),
-                        __func__, (u32)from, len);
-@@ -349,11 +374,12 @@ static int m25p80_read(struct mtd_info *mtd,
-loff_t from, size_t len,
-         * Should add 1 byte DUMMY_BYTE.
-         */
-        t[0].tx_buf = flash->command;
--       t[0].len = m25p_cmdsz(flash) + (flash->fast_read ? 1 : 0);
-+       t[0].len = m25p_cmdsz(flash) + flash->read_dummy;
-        spi_message_add_tail(&t[0], &m);
-
-        t[1].rx_buf = buf;
-        t[1].len = len;
-+       t[1].bitwidth = flash->spi->rx_bitwidth;
-        spi_message_add_tail(&t[1], &m);
-
-        mutex_lock(&flash->lock);
-@@ -370,15 +396,13 @@ static int m25p80_read(struct mtd_info *mtd,
-loff_t from, size_t len,
-         * supports that opcode.
-         */
-
--       /* Set up the write data buffer. */
--       opcode = flash->fast_read ? OPCODE_FAST_READ : OPCODE_NORM_READ;
--       flash->command[0] = opcode;
-+       /* Set up opcode in read buffer */
-+       flash->command[0] = flash->read_opcode;
-        m25p_addr2cmd(flash, from, flash->command);
-
-        spi_sync(flash->spi, &m);
-
--       *retlen = m.actual_length - m25p_cmdsz(flash) -
--                       (flash->fast_read ? 1 : 0);
-+       *retlen = m.actual_length - m25p_cmdsz(flash) - flash->read_dummy;
-
-        mutex_unlock(&flash->lock);
-
-@@ -409,6 +433,7 @@ static int m25p80_write(struct mtd_info *mtd,
-loff_t to, size_t len,
-        spi_message_add_tail(&t[0], &m);
-
-        t[1].tx_buf = buf;
-+       t[1].bitwidth = flash->spi->tx_bitwidth;
-        spi_message_add_tail(&t[1], &m);
-
-        mutex_lock(&flash->lock);
-@@ -422,7 +447,7 @@ static int m25p80_write(struct mtd_info *mtd,
-loff_t to, size_t len,
-        write_enable(flash);
-
-        /* Set up the opcode in the write buffer. */
--       flash->command[0] = OPCODE_PP;
-+       flash->command[0] = flash->write_opcode;
-        m25p_addr2cmd(flash, to, flash->command);
-
-        page_offset = to & (flash->page_size - 1);
-@@ -958,8 +983,7 @@ static int m25p_probe(struct spi_device *spi)
-        flash = kzalloc(sizeof *flash, GFP_KERNEL);
-        if (!flash)
-                return -ENOMEM;
--       flash->command = kmalloc(MAX_CMD_SIZE + (flash->fast_read ? 1 : 0),
--                                       GFP_KERNEL);
-+       flash->command = kmalloc(MAX_CMD_SIZE + FAST_READ_DUMMY_BYTE,
-GFP_KERNEL);
-        if (!flash->command) {
-                kfree(flash);
-                return -ENOMEM;
-@@ -1022,16 +1046,6 @@ static int m25p_probe(struct spi_device *spi)
-        flash->page_size = info->page_size;
-        flash->mtd.writebufsize = flash->page_size;
-
--       flash->fast_read = false;
--#ifdef CONFIG_OF
--       if (np && of_property_read_bool(np, "m25p,fast-read"))
--               flash->fast_read = true;
--#endif
--
--#ifdef CONFIG_M25PXX_USE_FAST_READ
--       flash->fast_read = true;
--#endif
--
-        if (info->addr_width)
-                flash->addr_width = info->addr_width;
-        else {
-@@ -1063,6 +1077,43 @@ static int m25p_probe(struct spi_device *spi)
-                                flash->mtd.eraseregions[i].erasesize / 1024,
-                                flash->mtd.eraseregions[i].numblocks);
-
-+       if ((flash->spi->rx_bitwidth == SPI_BITWIDTH_QUAD) ||
-+               (flash->spi->tx_bitwidth == SPI_BITWIDTH_QUAD)) {
-+               write_enable(flash);
-+               write_cr(flash, OPCODE_QEN);
-+       }
-+
-+       switch (flash->spi->rx_bitwidth) {
-+       case SPI_BITWIDTH_SINGLE:
-+               flash->read_opcode = OPCODE_READ;
-+               flash->read_dummy = FAST_READ_DUMMY_BYTE;
-+               break;
-+       case SPI_BITWIDTH_DUAL:
-+               flash->read_opcode = OPCODE_DOR;
-+               flash->read_dummy = 1;
-+               break;
-+       case SPI_BITWIDTH_QUAD:
-+               flash->read_opcode = OPCODE_QOR;
-+               flash->read_dummy = 1;
-+               break;
-+       default:
-+               dev_err(&spi->dev, "invalid rx_bitwidth %d\n",
-+                       flash->spi->rx_bitwidth);
-+               return -EINVAL;
-+       }
-+
-+       switch (flash->spi->tx_bitwidth) {
-+       case SPI_BITWIDTH_SINGLE:
-+               flash->write_opcode = OPCODE_PP;
-+               break;
-+       case SPI_BITWIDTH_QUAD:
-+               flash->write_opcode = OPCODE_QPP;
-+               break;
-+       default:
-+               dev_err(&spi->dev, "invalid tx_bitwidth %d\n",
-+                       flash->spi->tx_bitwidth);
-+               return -EINVAL;
-+       }
-
-        /* partitions should match sector boundaries; and it may be good to
-         * use readonly partitions for writeprotected sectors (BP2..BP0).
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 004b10f..cd99022 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -452,6 +452,8 @@ struct spi_device *spi_new_device(struct spi_master *master,
-        proxy->irq = chip->irq;
-        strlcpy(proxy->modalias, chip->modalias, sizeof(proxy->modalias));
-        proxy->dev.platform_data = (void *) chip->platform_data;
-+       proxy->rx_bitwidth = chip->rx_bitwidth;
-+       proxy->tx_bitwidth = chip->tx_bitwidth;
-        proxy->controller_data = chip->controller_data;
-        proxy->controller_state = NULL;
-
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 38c2b92..ddcf308 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -93,6 +93,8 @@ struct spi_device {
-        void                    *controller_data;
-        char                    modalias[SPI_NAME_SIZE];
-        int                     cs_gpio;        /* chip select gpio */
-+       u8                      rx_bitwidth;
-+       u8                      tx_bitwidth;
-
-        /*
-         * likely need more hooks for more protocol options affecting how
-@@ -511,6 +513,10 @@ struct spi_transfer {
-        dma_addr_t      rx_dma;
-
-        unsigned        cs_change:1;
-+       u8              bitwidth;
-+#define        SPI_BITWIDTH_SINGLE     0x01; /* 1bit transfer */
-+#define        SPI_BITWIDTH_DUAL       0x02; /* 2bits transfer */
-+#define        SPI_BITWIDTH_QUAD       0x03; /* 4bits transfer */
-        u8              bits_per_word;
-        u16             delay_usecs;
-        u32             speed_hz;
-@@ -859,6 +865,8 @@ struct spi_board_info {
-         * where the default of SPI_CS_HIGH = 0 is wrong.
-         */
-        u8              mode;
-+       u8              rx_bitwidth;
-+       u8              tx_bitwidth;
-
-        /* ... may need additional spi_device chip config data here.
-         * avoid stuff protocol drivers can set; but include stuff
-
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTU4NzczMjIwNTM3Mjg0CgoKCgpMZXMgc29sZGVzIGMnZXN0IG1haW50ZW5hbnQgIQorIExpdnJh
+aXNvbiBlbiA0OEggb2ZmZXJ0ZSBkw6hzIDE14oKsIGQnYWNoYXQKKyBVbiBjYWRlYXUgb2ZmZXJ0
+IGVuIHJlbWVyY2llbWVudCBkZSB2b3RyZSBjb21tYW5kZQpKZSBjcmFxdWUgIToKaHR0cDovL3Ry
+YWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9dHVpcGlq
+YTc1NGpnb2psdGEwNzUKc3pqbXlvODEwOAoKKFl2ZXMgUm9jaGVyKToKaHR0cDovL3RyYWNrZXIu
+YWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9dHVpcGlqYTc1NGpn
+b2psdGEwNzUKcXhueHRzODEwOQoKCkxlcyBzb2xkZXMgYydlc3QgbWFpbnRlbmFudCAhCgooU21p
+bGV5KToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJl
+ZGlyZWN0JmM9dHVpcGlqYTc1NGpnb2psdGEwNzUKem5pdG9xODEwYQoKClNhdGlzZmFpdG91cmVt
+Ym91cnPDiQpNYSBnYXJhbnRpZSBzw6lyw6luaXTDqQooQ2FtaW9uKToKaHR0cDovL3RyYWNrZXIu
+YWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9dHVpcGlqYTc1NGpn
+b2psdGEwNzUKb254bndsODEwYgoKCkxJVlJBSVNPTiBHUkFUVUlURWVuNDhICmTDqHMgMTXigqwg
+ZCdhY2hhdAoKKFNPTERFUyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/
+YWN0aW9uPW1haWxyZWRpcmVjdCZjPXR1aXBpamE3NTRqZ29qbHRhMDc1CnVvbnJydTgxMGMKCihT
+VE9DS1MgTElNSVTDiVMgISk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/
+YWN0aW9uPW1haWxyZWRpcmVjdCZjPXR1aXBpamE3NTRqZ29qbHRhMDc1CmdubG96eDgxMGMKCihK
+dXNxdSfDoCAtNjAlKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rp
+b249bWFpbHJlZGlyZWN0JmM9dHVpcGlqYTc1NGpnb2psdGEwNzUKaXh5amx5ODEwYwoKKFZJVEUg
+SidFTiBQUk9GSVRFICEpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2Fj
+dGlvbj1tYWlscmVkaXJlY3QmYz10dWlwaWphNzU0amdvamx0YTA3NQpzZ3Jsc3o4MTBjCgooT2Zm
+cmUgdmFsYWJsZSBkdSAyNi8wNiBhdSAzMC8wNyk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNv
+bS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxyZWRpcmVjdCZjPXR1aXBpamE3NTRqZ29qbHRhMDc1Cm56
+dHV3dDgxMGMKCihFdCBlbiBwbHVzLCBtb24gQ0FERUFVIGRlIGJpZW52ZW51ZSAhKToKaHR0cDov
+L3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9dHVp
+cGlqYTc1NGpnb2psdGEwNzUKbXRsbXR5ODEwZAoKKFVuIGJlc3Qtc2VsbGVyIE9GRkVSVCBwYXJt
+aSAxMCk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0aW9uPW1haWxy
+ZWRpcmVjdCZjPXR1aXBpamE3NTRqZ29qbHRhMDc1Cmtxc3l1ajgxMGQKCihPRkZFUlQgcG91ciB0
+b3V0ZSBjb21tYW5kZSk6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0
+aW9uPW1haWxyZWRpcmVjdCZjPXR1aXBpamE3NTRqZ29qbHRhMDc1CnZ1bnFneDgxMGQKCihVbiBi
+ZXN0LXNlbGxlciBPRkZFUlQgcGFybWkgMTApOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0eS5jb20v
+Y29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz10dWlwaWphNzU0amdvamx0YTA3NQpqa3Nn
+c3E4MTBkCgooSmUgY2hvaXNpcyBtb24gY2FkZWF1ICEpOgpodHRwOi8vdHJhY2tlci5hZmZpbGl0
+eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz10dWlwaWphNzU0amdvamx0YTA3
+NQp2aGttdHQ4MTBkCgooVk9JUiBUT1VURVMgTEVTIFBST01PVElPTlMgPj4pOgpodHRwOi8vdHJh
+Y2tlci5hZmZpbGl0eS5jb20vY29sbGVjdGUvP2FjdGlvbj1tYWlscmVkaXJlY3QmYz10dWlwaWph
+NzU0amdvamx0YTA3NQpwa2l3cXQ4MTBlCgooUmVqb2luZHJlIGxhIGNvbW11bmF1dMOpIFlSIHN1
+ciBGYWNlYm9vayA+Pik6Cmh0dHA6Ly90cmFja2VyLmFmZmlsaXR5LmNvbS9jb2xsZWN0ZS8/YWN0
+aW9uPW1haWxyZWRpcmVjdCZjPXR1aXBpamE3NTRqZ29qbHRhMDc1CnFnd3B2azgxMGYKCgo1IGJv
+bm5lcyByYWlzb25zwqDCoCBkJ2FjaGV0ZXIgc3VyIHl2ZXMtcm9jaGVyLmZywqDCoDoKaHR0cDov
+L3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3RlLz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9dHVp
+cGlqYTc1NGpnb2psdGEwNzUKcWpwcHluODExMAoKCjUgYm9ubmVzIHJhaXNvbnPCoMKgCmQnYWNo
+ZXRlciBzdXIgeXZlcy1yb2NoZXIuZnLCoMKgcGFpZW1lbnQKc8OJY3VyaXPDiWxpdnJhaXNvbgpl
+bjQ4SDMKRE9TRVMgZCdlc3NhaQpncmF0dWl0ZXNzYXRpc2ZhaXRlCm91CnJlbWJvdXJzw4llCijD
+iWNoYW5nZSBlbiBtYWdhc2luKToKaHR0cDovL3RyYWNrZXIuYWZmaWxpdHkuY29tL2NvbGxlY3Rl
+Lz9hY3Rpb249bWFpbHJlZGlyZWN0JmM9dHVpcGlqYTc1NGpnb2psdGEwNzUKcWl4enJ1ODExMAoK
+CsKgwqDCoMKgwqAKKlVuIGNhZGVhdSBhdSBjaG9peCBwYXJtaSAxMCBvZmZlcnQgcG91ciB0b3V0
+ZSBjb21tYW5kZS4KT2ZmcmVzIHZhbGFibGVzIGp1c3F1J2F1IDMwIEp1aWxsZXQgMjAxMyB1bmlx
+dWVtZW50IGRlcHVpcyBjZXR0ZSBuZXdzbGV0dGVyLgpPZmZyZXMgbm9uIGN1bXVsYWJsZXMgYXZl
+YyBkJ2F1dHJlcyBvZmZyZXMgcHJvbW90aW9ubmVsbGVzLiAuLi4gQmVzb2luIGRlCnZveWFnZXIs
+IGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIg
+YXUgbWVpbGxldXIKcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOp
+ZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyCnVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMg
+cHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cwptZXR0b25z
+IMOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLi4gTm91cyBzb3VoYWl0
+b25zIHZvdXMKYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOg
+IGTDqXBlbnNlciBtb2lucyB0b3V0IGVuCmNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUu
+RW52aWUgZGUgdm91cyBmYWlyZSB1bmUgYmVhdXTDqSDDoCBtb2luZHJlCmNvw7t0IHRvdXQgYXUg
+bG9uZyBkZSBsJ2FubsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfD
+qXTDqQrDoCBtb2luZHJlIGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRz
+IMOgIGRlcyBidWRnZXRzCnJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMOg
+IGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMgcG91ciB2b3VzCnBlcm1ldHRyZSBhaW5zaSBkZSBmYWly
+ZSBkZSBub21icmV1c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQKcGxhaXNpciDD
+oCB0b3V0ZSBsYSBmYW1pbGxlLkFpbnNpLCBncsOiY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIg
+ZXhlbXBsZSwKcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJh
+cyBjb3V0LCBvcHBvcnR1bml0w6ksCmluZm9zLi4uIC5BIGxhIHJlY2hlcmNoZSBkdSBjYWRlYXUg
+b3JpZ2luYWwgPyBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlcgp1biBub3V2ZWF1IHJlZ2Fy
+ZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFu
+dAptaWV1eCB0b3V0ZSBsJ2FubsOpZS4gQWluc2ksIGdyYWNlIMOgIG5vdXMsIHZvdXMgYWxsZXog
+cGFyIGV4ZW1wbGUsIHBvdXZvaXIKcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQg
+YSBiYXMgY291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLgpCZXNvaW4gZGUgdm95YWdlciwgZGUg
+dm91cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpcgphdSBt
+ZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBh
+bG9ycyBwb3VycXVvaQpuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9w
+b3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsCmV0IHF1ZSBub3VzIG1ldHRvbnMgw6Ag
+am91ciByw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuLi4uIEJlc29pbiBkZQp2b3lh
+Z2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29y
+dGlyIGF1IG1laWxsZXVyCnJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdh
+bm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlcgp1biBwZXRpdCBvZWlsIHBhciBzdXIg
+bGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMKbWV0
+dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS4uIE5vdXMgc291
+aGFpdG9ucyB2b3VzCmFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRl
+ciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbgpjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5u
+w6llLkVudmllIGRlIHZvdXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZQpjb8O7dCB0b3V0
+IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2Vz
+IGQnw6l0w6kKw6AgbW9pbmRyZSBmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5m
+YW50cyDDoCBkZXMgYnVkZ2V0cwpyYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1w
+cyDDoCBhdXRyZSBub3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cwpwZXJtZXR0cmUgYWluc2kgZGUg
+ZmFpcmUgZGUgbm9tYnJldXNlcyDDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50CnBsYWlz
+aXIgw6AgdG91dGUgbGEgZmFtaWxsZS5BaW5zaSwgZ3LDomNlIMOgIG5vdXMsIHZvdXMgYWxsZXog
+cGFyIGV4ZW1wbGUsCnBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQg
+YSBiYXMgY291dCwgb3Bwb3J0dW5pdMOpLAppbmZvcy4uLiAuQSBsYSByZWNoZXJjaGUgZHUgY2Fk
+ZWF1IG9yaWdpbmFsID8gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIKdW4gbm91dmVhdSBy
+ZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNv
+bW1hbnQKbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncmFjZSDDoCBub3VzLCB2b3VzIGFs
+bGV6IHBhciBleGVtcGxlLCBwb3V2b2lyCnByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9k
+dWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4KQmVzb2luIGRlIHZveWFnZXIs
+IGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIK
+YXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOp
+ZSwgYWxvcnMgcG91cnF1b2kKbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMg
+cHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLApldCBxdWUgbm91cyBtZXR0b25z
+IMOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLgoKCgoKCi0tCgpQb3Vy
+IHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3Qv
+Z2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTU4NzczMjIwNTM3Mjg0CgoKCgoKCnt+QUo4NDY0MTg2
+NjI1MTU4NzczMjIwNTM3Mjg0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVt
+YWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3MgU3RvcmUuCgpo
+dHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
+cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

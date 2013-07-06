@@ -1,28 +1,13 @@
-From: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: SPI: DUAL/QUAD support
-Date: Fri, 5 Jul 2013 23:41:08 +0800
-Message-ID: <CAHSAbzPiy1TVypP6xvHkBrhMozjifDdVSuErZY-av4RMbT1MTw@mail.gmail.com>
-References: <OFAD729A05.8C915625-ONC1257B9E.00576B25-C1257B9E.0058477D@rohde-schwarz.com>
-	<CAHSAbzOg+uHndydSC43moF7pijc67pqzB2rPnY69ynXHEzw79g@mail.gmail.com>
-	<51D67851.8020402@ti.com>
-	<CAHSAbzNvMo_oeaqtzO8-xDm-L-f8wVccVqfuVqbR=OwqWJhVwg@mail.gmail.com>
-	<51D689F3.3070605@ti.com>
-	<CAHSAbzM1PGoMXFNOmB7guDsVWYnRoRy89-bufHYpPz5+odnd8w@mail.gmail.com>
-	<51D68D14.7090606@ti.com>
-	<CAHSAbzMfvfdDtTh=3zeBni4fNMAHEMdTJLJU-Oc13HJUqCUj0A@mail.gmail.com>
-	<51D69197.7060802@ti.com>
-	<CAHSAbzP1-RVot+hhtY_DcBK=u5n2234eb9WOKLESwvUNax7+pA@mail.gmail.com>
-	<20130705143452.GA7738@sig21.net>
+From: "=?UTF-8?Q?Tous_les_h=C3=A9ros?=" <contact-s237+1wDWEiMog0Jp1P/CQ@public.gmane.org>
+Subject: Photos moins25 pourcent sur tout le site avec le code UEICBQG6ET
+Date: Sat, 06 Jul 2013 01:34:32 +0000 (CET)
+Message-ID: <130706013432.-86456949000003032@ocfm42.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-mtd <linux-mtd-bounces-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Thomas.Betker-Bf/A/FSCP0w3s4ca2cGeAgC/G2K4zDHf@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Johannes Stezenbach <js-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130705143452.GA7738-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -33,78 +18,13 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-2013/7/5 Johannes Stezenbach <js-FF7aIK3TAVNeoWH0uzbU5w@public.gmane.org>:
-> On Fri, Jul 05, 2013 at 06:24:40PM +0800, yuhang wang wrote:
->>
->> 2 Questions here:
->> 1.In m25p80.c probe, the kmalloc below I feel very strange.
->>       flash->command = kmalloc(MAX_CMD_SIZE + (flash->fast_read ? 1 : 0),
->>                                       GFP_KERNEL);
->>
->>  (flash->fast_read ? 1 : 0) must be 0! So why do it like that.
->
-> Maybe just increase MAX_CMD_SIZE by 1 unconditonally?
-> Yeah, looks like a bug in m25p80.c, flash->fast_read
-> is initialized too late.
->
->> +#define        OPCODE_DOR              0x3B    /* Dual Output Read */
->> +#define        OPCODE_QOR              0x6B    /* Quad Output Read */
->> +#define        OPCODE_QPP              0x32    /* Quad Page Programming */
->> +#define        OPCODE_QEN              0x02 /* Quad Mode Enable Flag */
->
-> Which flash chip are these for?  The OPCODE_DOR and OPCODE_QOR
-> match MX25L25635E, but OPCODE_QPP not (Macronix uses 0x38).
->
-Thanks for the review. And I have said that it is not a general code to support
-dual and quad, it is just a situation to fit my system. Perhaps it is very hard
-to provide a general code before a serial-norflash standard comes out.
 
->> +#ifdef CONFIG_M25PXX_USE_FAST_READ
->> +#define OPCODE_READ    OPCODE_FAST_READ
->> +#define FAST_READ_DUMMY_BYTE 1
->> +#else
->> +#define OPCODE_READ    OPCODE_NORM_READ
->> +#define FAST_READ_DUMMY_BYTE 0
->> +#endif
->
-> this doesn't work with the flash->fast_read setting from DT
->
-> BTW, if we add "bitwidths" to spi_board_info, wouldn't
-> it make sense to also add "use_fast_read" and remove the
-> CONFIG_M25PXX_USE_FAST_READ option?
->
-
-Well, I think we should make sure that whether all spi slave has the "fast read"
-feature before we add "use_fast_read" into the  spi_board_info.
-There should be some other flash or slaves do not support this
-feature. So in my opinion, Fast read still supported as a M25p config
-should be more suitable.
->> +/*
->> + * Write configuration register 2 byte
->> + * Returns negative if error occurred.
->> + */
->> +static int write_cr(struct m25p *flash, u16 val)
->> +{
->> +       flash->command[0] = OPCODE_WRSR;
->> +       flash->command[1] = val >> 8;
->> +       flash->command[2] = val;
->> +
->> +       return spi_write(flash->spi, flash->command, 3);
->> +}
->
->> +       if ((flash->spi->rx_bitwidth == SPI_BITWIDTH_QUAD) ||
->> +               (flash->spi->tx_bitwidth == SPI_BITWIDTH_QUAD)) {
->> +               write_enable(flash);
->> +               write_cr(flash, OPCODE_QEN);
->> +       }
->
-> MX25L25635E doesn't have a cr, instead a bit needs to be set in the sr
->
-> Maybe we need to add some fields to m25p_ids[] to manage variation
-> between flash devices.
->
-similar to the first answer. Also a standard is the solution to these questions.
-Thanks a lot.
+(http://ocfm42.com/g4pqubbh2qh31btiyy/index0.html) (http://ocfm42.com/orpsxbag2imagt2idl/index1.html)
+(http://ocfm42.com/qnpjhb122wg3mybrss/index2.html) (http://ocfm42.com/j5pl2bvn201ahs0rld/index3.html) (http://ocfm42.com/5n40huu0lcj3cob3vl/index4.html) (http://ocfm42.com/r54f2uxwlrxaqj03ky/index5.html) (http://ocfm42.com/p44buuhilea3rftped/index6.html)
+(http://ocfm42.com/mr41xu2qld5aix2pus/index7.html)
+(http://ocfm42.com/h4fckyt32ju3bat0zy/index8.html)
+(http://ocfm42.com/3rftfy3o2azay320wl/index9.html)
+(http://ocfm42.com/ggmgg12lidgghygmbo/index10.html)
 
 ------------------------------------------------------------------------------
 This SF.net email is sponsored by Windows:

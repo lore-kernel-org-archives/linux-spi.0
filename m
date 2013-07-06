@@ -1,12 +1,12 @@
-From: iPhone <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
-Subject: Destockage iPhone 5
-Date: Sat, 06 Jul 2013 11:52:04 +0000
-Message-ID: <0811f41e803276570d4799ee09d3c533@mach10.generated>
-Reply-To: contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org
+From: "Sepia" <contact-6iRbmuqo1C7QT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] Cartouches d'encre jusqu'a moins70 pourcent
+Date: Sat, 06 Jul 2013 12:35:52 +0000 (CET)
+Message-ID: <130706123552.193669212600000204@ocfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,40 +18,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
-bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
-L1lUMHhNeVppUFRNNE9ERTJKbU05TWpNMk5ESW1aRDB5TURFekxUQTNMVEEySURFeE9qVXdPakF3
-Sm1VOU1TWm9QVE00T0RJNUptWTlNemt4T0RVbVp6MHpPVEU0TVE9PQoKTGllbiBkZSBkZXNpbnNj
-cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE00T0RFMkpt
-TTlNak0yTkRJbVpEMHlNREV6TFRBM0xUQTJJREV4T2pVd09qQXdKbVU5TVNab1BUTTRPREk1Sm1Z
-OU16a3hPRFVtWnowek9URTRNUT09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
-cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KwqAKTGVzIGVuY2jDqHJlcyBhdSBj
-ZW50aW1lIGV4cGxpcXXDqWVzIDogRXN0LWNlIHZyYWltZW50IHBvc3NpYmxlIGQnw6ljb25vbWlz
-ZXIgOTUgJSAgc3VyIGxlIHByaXggZGUgdmVudGUgPyAgClZvdXMgbCdhdXJleiBzdXJlbWVudCBy
-ZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWluIGRlIHNlIGTDqXZl
-bG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxlcyBzaXRlcyBpbnRl
-cm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4gUGFydG91dCBzdXIg
-bGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0b2lyZXMgZCdoZXVy
-ZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4uICAKSGFiaXR1ZWxs
-ZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4g
-TWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3Vy
-IGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gCsKgCkxJUkUgTEEg
-U1VJVEUgPj4KwqAKTGEgUmV2dWUgQ29uc28gw6AgdGVzdMOpIFN3b2dnaSByw6ljZW1tZW50IGV0
-IGxlcyByw6lzdWx0YXRzIG9udCDDqXTDqSB0csOocyBzdXJwcmVuYW50cy4gICAKIlN3b2dnaSBh
-IGTDqXBhc3PDqSB0b3V0ZXMgbm9zIGF0dGVudGVzIGVuIGNlIHF1aSBjb25jZXJuYWl0IGxlcyDD
-qWNvbm9taWVzIHLDqWFsaXNhYmxlcyBncsOiY2Ugw6AgbGV1cnMgb2ZmcmVzLiBUb3VzIGxlcyBq
-b3VycywgZGVzIGdlbnMgw6ljb25vbWlzZW50IGp1c3F1J8OgIDk1ICUgc3VyIGxlcyBwcml4IGhh
-Yml0dWVscyBkZSB2ZW50ZS4gQydlc3QgaW5jcm95YWJsZSAhIiAKwqAKTElSRSBMQSBTVUlURSA+
-PgrCoArCoAogIApNYXJpZSBTYW1lZGkgMjMganVpbiAzaDI1CsKgCiJKJ2FpIGRlIHF1b2kgdm9p
-ciB2ZW5pciBsZXMgYW5uaXZlcnNhaXJlcyBldCBhdXRyZXMgZsOqdGVzIHBvdXIgdW4gYm9uIG1v
-bWVudCBldCBqJ2FpIGZhaXQgZGUgc2FjcsOpcyDDqWNvbm9taWVzIgpQYXRvdSAgU2FtZWRpIDIz
-IGp1aW4gNGgzNwrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hyZXMgYXUg
-Y2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwgbWUgdGFy
-ZGUgZCdlc3NheWVyIgrCoApQb3VyIHZvdXMgZMOpc2Fib25uZXIsIGNsaXF1ZXogaWNpLgotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KVGhpcyBTRi5uZXQgZW1haWwgaXMgc3BvbnNvcmVkIGJ5IFdpbmRv
-d3M6CgpCdWlsZCBmb3IgV2luZG93cyBTdG9yZS4KCmh0dHA6Ly9wLnNmLm5ldC9zZnUvd2luZG93
-cy1kZXYyZGV2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+
+(http://ocfm41.com/vhehc3d0njsz0fejaq/index0.html)
+(http://ocfm41.com/kueue3rwnat4dxujio/index1.html)
+(http://ocfm41.com/e3e3t3oinzkzwovx3g/index2.html)
+(http://ocfm41.com/ueee334qnb44ejkxhj/index3.html)
+(http://ocfm41.com/b3intfwhvxez2yvggo/index4.html)
+(http://ocfm41.com/0ei53fqgv5w4lskgoq/index5.html)
+(http://ocfm41.com/thi4cfp2vudznbe1qj/index6.html)
+(http://ocfm41.com/2uirefsnvy04vtu1jg/index7.html)
+(http://ocfm41.com/lhdm1plbnqqzfkezxq/index8.html)
+(http://ocfm41.com/sudzvpmznic4ouuzco/index9.html)
+(http://ocfm41.com/i3jxtd1i1rubjqnw4g/index10.html)
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

@@ -1,12 +1,11 @@
-From: "Trend corner" <lisa@a.optincake.com>
-Subject: [SPAM]
-	=?UTF-8?B?TGVzIHNvbGRlcyBjaGV6IHRyZW5kLWNvcm5lci5jb20gMmVtZSBkw6ltYXJxdWUganVzcXUnw6AgLTcwJQ==?=
-Date: Sun, 07 Jul 2013 04:59:11 +0100
-Message-ID: <0.0.178.E94.1CE7AC65670111C.0@mta142.pur3.net>
-Reply-To: Trend corner <lisa@a.optincake.com>
+From: Tati via Neezz <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Soldes Tati profitez jusqu'a moins 70%
+Date: Sun, 7 Jul 2013 16:42:55 +0200 (CEST)
+Message-ID: <59157g.hiucoxkoey0v9xl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,29 +18,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTU5ODAzMjIwNTM3MjM0CgoKCgooU09MREVTMkRFTV8wMS5qcGcpOgpodHRwOi8vY2xrLnRyYWRl
-ZG91Ymxlci5jb20vY2xpY2s/cD0yMzQ3OTgmYT0yMjg4MTg1Jmc9MjEzMTY1MDgKCihTT0xERVMy
-REVNXzAyLmpwZyk6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTIzNDc5OCZh
-PTIyODgxODUmZz0yMTMxNjUwOAoKKFNPTERFUzJERU1fMDMuanBnKToKaHR0cDovL2Nsay50cmFk
-ZWRvdWJsZXIuY29tL2NsaWNrP3A9MjM0Nzk4JmE9MjI4ODE4NSZnPTIxMzE2NTA4CgooU09MREVT
-MkRFTV8wNC5qcGcpOgpodHRwOi8vY2xrLnRyYWRlZG91Ymxlci5jb20vY2xpY2s/cD0yMzQ3OTgm
-YT0yMjg4MTg1Jmc9MjEzMTY1MDgKCihTT0xERVMyREVNXzA1LmpwZyk6Cmh0dHA6Ly9jbGsudHJh
-ZGVkb3VibGVyLmNvbS9jbGljaz9wPTIzNDc5OCZhPTIyODgxODUmZz0yMTMxNjUwOAoKKFNPTERF
-UzJERU1fMDYuanBnKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjM0Nzk4
-JmE9MjI4ODE4NSZnPTIxMzE2NTA4CgooU09MREVTMkRFTV8wNy5qcGcpOgpodHRwOi8vY2xrLnRy
-YWRlZG91Ymxlci5jb20vY2xpY2s/cD0yMzQ3OTgmYT0yMjg4MTg1Jmc9MjEzMTY1MDgKCihTT0xE
-RVMyREVNXzA4LmpwZyk6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTIzNDc5
-OCZhPTIyODgxODUmZz0yMTMxNjUwOAoKKFNPTERFUzJERU1fMDkuanBnKToKaHR0cDovL2Nsay50
-cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjM0Nzk4JmE9MjI4ODE4NSZnPTIxMzE2NTA4CgoKCgoK
-Ci0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2Uu
-Y29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTU5ODAzMjIwNTM3MjM0CgoKCgoKCnt+
-QUo4NDY0MTg2NjI1MTU5ODAzMjIwNTM3MjM0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMg
-U0YubmV0IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3Mg
-U3RvcmUuCgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBqgplvpI7gfk57dIhiucosw9I&u=3Dhttp%3A%2F%2Fnews.t=
+eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373208169560%26custid%3D164=
+44%26uid%3D16231069273%26sig%3DIIAIKMEFAMGNBAGJ%26mid%3D1600189189&s=3DJMFG=
+AJCCMPIOCFLL
+ =
+
+Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70=
+%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 7=
+0%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins =
+70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins=
+ 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moin=
+s 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moi=
+ns 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a mo=
+ins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a m=
+oins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a =
+moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a=
+ moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'=
+a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu=
+'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusq=
+u'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jus=
+qu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez ju=
+squ'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez j=
+usqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez =
+jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez=
+ jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profite=
+z jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profit=
+ez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profi=
+tez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati prof=
+itez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati pro=
+fitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati pr=
+ofitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600189189&sig=3DCFFKHPPOFHEKGEMG
+---------------------------------------------------------------------------=
+---
+This SF.net email is sponsored by Windows:
+
+Build for Windows Store.
+
+http://p.sf.net/sfu/windows-dev2dev

@@ -1,12 +1,12 @@
-From: Tati via Neezz <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Soldes Tati profitez jusqu'a moins 70%
-Date: Sun, 7 Jul 2013 16:42:55 +0200 (CEST)
-Message-ID: <59157g.hiucoxkoey0v9xl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Clementina Frog" <contact-s237+1wDWEiMog0Jp1P/CQ@public.gmane.org>
+Subject: =?UTF-8?Q?Profitez_de_l=27=C3=A9t=C3=A9_pour_ranger_votre_maison?=
+Date: Mon, 08 Jul 2013 07:56:20 +0000 (CET)
+Message-ID: <130708075620.209271925100000684@ocfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,47 +18,25 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgplvpI7gfk57dIhiucosw9I&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373208169560%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DIIAIKMEFAMGNBAGJ%26mid%3D1600189189&s=3DJMFG=
-AJCCMPIOCFLL
- =
-
-Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70=
-%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 7=
-0%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins =
-70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins=
- 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moin=
-s 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moi=
-ns 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a mo=
-ins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a m=
-oins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a =
-moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'a=
- moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu'=
-a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusqu=
-'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jusq=
-u'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez jus=
-qu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez ju=
-squ'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez j=
-usqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez =
-jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profitez=
- jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profite=
-z jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profit=
-ez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati profi=
-tez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati prof=
-itez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati pro=
-fitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%Soldes Tati pr=
-ofitez jusqu'a moins 70%Soldes Tati profitez jusqu'a moins 70%
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600189189&sig=3DCFFKHPPOFHEKGEMG
----------------------------------------------------------------------------=
----
-This SF.net email is sponsored by Windows:
-
-Build for Windows Store.
-
-http://p.sf.net/sfu/windows-dev2dev
+CkNsZW1lbnRpbmEgZnJvZywgbGUgc3DDqWNpYWxpc3RlIGR1IHJhbmdlbWVudCBldCBkZXMgYmFn
+YWdlcwp2b3VzIHByb3Bvc2UgdW5lIHPDqWxlY3Rpb24gZGUgcHJvZHVpdHMgZGUgcXVhbGl0w6kg
+w6AgdG91dCBwZXRpdHMgcHJpeCAhIAoKKGh0dHA6Ly9vY2ZtNDEuY29tL29hMXkycWl5emgxeWx5
+bmxkby9pbmRleDAuaHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tL2d2MWdocTB1emdnczJzNGx5cS9p
+bmRleDEuaHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tL2ppMWR4cWs1ejJteXZidzJsai9pbmRleDIu
+aHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tL3FrMW91cWZ4em5oc250ejJzZy9pbmRleDMuaHRtbCkK
+KGh0dHA6Ly9vY2ZtNDEuY29tL3JpMnh4cmNwdW01eWRmd3lrcS9pbmRleDQuaHRtbCkKQ8K0ZXN0
+IGzCtMOpdMOpLAoKbWV0dGV6IGzCtGhpdmVyIGF1IHBsYWNhcmQgISAKRMOpY291dnJleiB2aXRl
+IG5vdHJlIHPDqWxlY3Rpb24gZGUgCnByb2R1aXRzIGRlIHJhbmdlbWVudCBldCDDqWNvbm9taXNl
+egpqdXNxdcK0w6AgLTUwJQoKc3VyIHRvdXRlIGxhIGdhbW1lICEhClJldHJvdXZleiBub3Mgc29s
+dXRpb25zIGx1ZGlxdWVzCmV0IHByYXRpcXVlcyBlbiBjbGlxdWFudCBjaS1kZXNzb3VzICEKKGh0
+dHA6Ly9vY2ZtNDEuY29tLzVrMjJ1cmVmdTFhczB4enl2by9pbmRleDUuaHRtbCkKKGh0dHA6Ly9v
+Y2ZtNDEuY29tL21hMmMycnRzdWx4eWVvbmJ1Zy9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vY2ZtNDEu
+Y29tL3B2MnRocjNrdXZqc3dqNGJlai9pbmRleDcuaHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tLzNh
+bWIwY2hkejNieWo1bm13by9pbmRleDguaHRtbCkKKGh0dHA6Ly9vY2ZtNDEuY29tL2h2bTFpYzJl
+em95c3hwNG16cS9pbmRleDkuaHRtbCkKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0
+IGVtYWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3MgU3RvcmUu
+CgpodHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
+c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
+c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

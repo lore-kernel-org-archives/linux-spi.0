@@ -1,87 +1,54 @@
-From: Michal Simek <monstr@monstr.eu>
-Subject: Re: [PATCH v1 3/4] spi/xilinx: Simplify irq allocation
-Date: Mon, 08 Jul 2013 17:48:14 +0200
-Message-ID: <51DADF3E.1000802@monstr.eu>
-References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com> <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com> <20130708144930.GG27646@sirena.org.uk>
-Reply-To: monstr@monstr.eu
+From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
+Subject: RE: [PATCH v2 09/11] spi: spi-ep93xx: move the clock divider calcs
+	into ep93xx_spi_chip_setup()
+Date: Mon, 8 Jul 2013 11:10:10 -0500
+Message-ID: <ADE657CA350FB648AAC2C43247A983F0021DAC390575@AUSP01VMBX24.collaborationhost.net>
+References: <201307021010.30326.hartleys@visionengravers.com>
+	<20130708121002.GZ27646@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="----enig2TQIMIDSORAPMILXNPEAQ"
-Cc: Michal Simek <michal.simek@xilinx.com>,
-	linux-kernel@vger.kernel.org,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	spi-devel-general@lists.sourceforge.net
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20130708144930.GG27646@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	"mika.westerberg-X3B1VOXEql0@public.gmane.org" <mika.westerberg-X3B1VOXEql0@public.gmane.org>,
+	Linux Kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Ryan Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130708121002.GZ27646-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
-------enig2TQIMIDSORAPMILXNPEAQ
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+On Monday, July 08, 2013 5:10 AM, Mark Brown wrote:
+> On Tue, Jul 02, 2013 at 10:10:29AM -0700, H Hartley Sweeten wrote:
+>> The divider values stored in the per chip data are only used to set the
+>> registers in the hardware to generate the desired SPI clock. Since these
+>> are calculated per transfer based on the t->speed_hz there is no reason
+>> keep them in the per chip data.
+>
+> Applied, thanks.  I don't seem to have been sent patch 10?
 
-On 07/08/2013 04:49 PM, Mark Brown wrote:
-> On Mon, Jul 08, 2013 at 03:29:16PM +0200, Michal Simek wrote:
->> Use devm_request_irq() for irq allocation which
->> simplify driver code.
->=20
->> @@ -495,7 +493,6 @@ static int xilinx_spi_remove(struct platform_devic=
-e *pdev)
->>  	struct xilinx_spi *xspi =3D platform_get_drvdata(pdev);
->>
->>  	spi_bitbang_stop(&xspi->bitbang);
->> -	free_irq(xspi->irq, xspi);
->>
->>  	spi_master_put(xspi->bitbang.master);
->=20
-> Is it definitely safe to leave the IRQ hanging around after the master
-> has been freed - there's no possibility of a late error interrupt or
-> something?
+Thanks.
 
-I think it is more generic question if this race condition is fine
-for all drivers which are using devres groups.
+Looks like I fat-fingered the To: address on patches 10 and 11 of the series.
 
-I have just looked at it and devres_release_all() is called where
-driver is unload and irq are disabled there.
+I'll repost them in just a sec.
 
-It means that all handlers should be unregistered and if IRQ happen
-after it then it should be handled by Linux kernel if driver
-doesn't disable it.
+Regards,
+Hartley
 
-btw: What's the proper way for spi driver unregistration?
+------------------------------------------------------------------------------
+This SF.net email is sponsored by Windows:
 
-spi_unregistered_master() (which also free private structure)
-and
-spi_master_put()?
+Build for Windows Store.
 
-Thanks,
-Michal
-
---=20
-Michal Simek, Ing. (M.Eng), OpenPGP -> KeyID: FE3D1F91
-w: www.monstr.eu p: +42-0-721842854
-Maintainer of Linux kernel - Microblaze cpu - http://www.monstr.eu/fdt/
-Maintainer of Linux kernel - Xilinx Zynq ARM architecture
-Microblaze U-BOOT custodian and responsible for u-boot arm zynq platform
-
-
-
-------enig2TQIMIDSORAPMILXNPEAQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
-
-iEYEARECAAYFAlHa3z4ACgkQykllyylKDCF+pACcCPp6bPsiNWyqP7rrLR81vTzX
-+oYAoI9Mk4V8eznOWuktCXR3NC4og/ec
-=RMv3
------END PGP SIGNATURE-----
-
-------enig2TQIMIDSORAPMILXNPEAQ--
+http://p.sf.net/sfu/windows-dev2dev

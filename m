@@ -1,56 +1,70 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 09/11] spi: spi-ep93xx: move the clock divider calcs
- into ep93xx_spi_chip_setup()
-Date: Mon, 8 Jul 2013 13:10:02 +0100
-Message-ID: <20130708121002.GZ27646@sirena.org.uk>
-References: <201307021010.30326.hartleys@visionengravers.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5OeNRVRLQ41UuqCe"
-Cc: Linux Kernel <linux-kernel@vger.kernel.org>,
-	spi-devel-general@lists.sourceforge.net,
-	Ryan Mallon <rmallon@gmail.com>, mika.westerberg@iki.fi,
-	grant.likely@linaro.org, hsweeten@visionengravers.com
-To: H Hartley Sweeten <hartleys@visionengravers.com>
+From: Michal Simek <michal.simek@xilinx.com>
+Subject: [PATCH v1 1/4] spi/xilinx: Remove CONFIG_OF from the driver
+Date: Mon,  8 Jul 2013 15:29:14 +0200
+Message-ID: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
+Content-Type: multipart/signed;
+    boundary="=_mimegpg-monstr-desktop-25808-1373290157-0001";
+    micalg=pgp-sha1; protocol="application/pgp-signature"
+Cc: Michal Simek <monstr@monstr.eu>,
+	Michal Simek <michal.simek@xilinx.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net
+To: linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <201307021010.30326.hartleys@visionengravers.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This is a MIME GnuPG-signed message.  If you see this text, it means that
+your E-mail or Usenet software does not support MIME signed messages.
+The Internet standard for MIME PGP messages, RFC 2015, was published in 1996.
+To open this message correctly you will need to install E-mail or Usenet
+software that supports modern Internet standards.
 
---5OeNRVRLQ41UuqCe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--=_mimegpg-monstr-desktop-25808-1373290157-0001
 
-On Tue, Jul 02, 2013 at 10:10:29AM -0700, H Hartley Sweeten wrote:
-> The divider values stored in the per chip data are only used to set the
-> registers in the hardware to generate the desired SPI clock. Since these
-> are calculated per transfer based on the t->speed_hz there is no reason
-> keep them in the per chip data.
+dev.of_node is in struct device all the time.
 
-Applied, thanks.  I don't seem to have been sent patch 10?
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+---
+ drivers/spi/spi-xilinx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---5OeNRVRLQ41UuqCe
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 35503b4..f3de5e5 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -375,7 +375,6 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 		bits_per_word = pdata->bits_per_word;
+ 	}
+
+-#ifdef CONFIG_OF
+ 	if (pdev->dev.of_node) {
+ 		const __be32 *prop;
+ 		int len;
+@@ -386,7 +385,6 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 		if (prop && len >= sizeof(*prop))
+ 			num_cs = __be32_to_cpup(prop);
+ 	}
+-#endif
+
+ 	if (!num_cs) {
+ 		dev_err(&pdev->dev,
+--
+1.8.2.3
+
+
+--=_mimegpg-monstr-desktop-25808-1373290157-0001
+Content-Type: application/pgp-signature
+Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
+Version: GnuPG v1.4.10 (GNU/Linux)
 
-iQIcBAEBAgAGBQJR2qwXAAoJELSic+t+oim9G+oQAJwnzZqNrtgRtFfXtmnwWqjt
-H2rBAKJqbIlfY/ekm+uTrv3qzvkQjbMD7zcLTi9j7JmyzegFbuH4Pe3VewvMaSDO
-GU+JTYYxn1KVQFnhHRZdAgJJbZ+ObUsV5BQ4cOVUcMp+dJshaoAi3gsJQXmkEDan
-8tqZoFOrk2WMJTTrHUMrSsBOEYKOq0isdCQEaEhiFezjmZ6dGv5VrzvwtmQ98ZeZ
-9bOc69U2bC2a9ndmkQa3T+g85Tzc4dUNTZSlDp+oHJ0qqjXOMEKAyPR5Dn+93qdR
-Np2FcR1rMIw+KN81BDaGA/Oecz+WzqcfiapiX2Gkf9kfb81yf60mC1be+2JlQLHi
-PR1DA5F2TvEQhEJt7GSFPNKTpV26dhG6/YXnrK8zsmXWdrbqXqr8pwQO3FfCzZKZ
-GrIWrevn4hMjq39UEfW4aErYHmuOnshc2fu4x6nTNOGuaKgTrosX6mtcwjR8kD67
-bJIRXx2/by/eGkh8oayV7nWE0g9RX1XEpp8wTOfU9Wjtr8FptQxk3/zfNEhg8Bqv
-GqARZstdZo1R3to3+Mgt/AqzFdWJwNoDMh7eNziSJFqURk6QUbtTsiBe3Ht2Dyzx
-5ZAw7j2SBVwZgm71aPEQ/8eH1CjKqowKl0/4CPMzcsrvI/Jl+FubP34UX2ZHoFeo
-rblQ/I11i4UPz8q3EQNl
-=Px7C
+iEYEABECAAYFAlHavq0ACgkQykllyylKDCE5sACglQAYrddQ8oLj9Kd0MT6ROq8s
+AeYAoIR14RsU9s3bjSUT5TF6KyEMsxl6
+=grs1
 -----END PGP SIGNATURE-----
 
---5OeNRVRLQ41UuqCe--
+--=_mimegpg-monstr-desktop-25808-1373290157-0001--

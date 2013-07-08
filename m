@@ -1,134 +1,64 @@
-From: Michal Simek <michal.simek@xilinx.com>
-Subject: [PATCH v1 3/4] spi/xilinx: Simplify irq allocation
-Date: Mon,  8 Jul 2013 15:29:16 +0200
-Message-ID: <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com>
-References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
-Content-Type: multipart/signed;
-    boundary="=_mimegpg-monstr-desktop-25837-1373290165-0001";
-    micalg=pgp-sha1; protocol="application/pgp-signature"
-Cc: Michal Simek <monstr@monstr.eu>,
-	Michal Simek <michal.simek@xilinx.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	spi-devel-general@lists.sourceforge.net
-To: linux-kernel@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
-In-Reply-To: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
-References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Linvosges par Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Soldes_2=E8me_d=E9marque_jusqu'=E0_-60_pourcent?=
+Date: Mon, 8 Jul 2013 15:36:37 +0200 (CEST)
+Message-ID: <qeelq7.hivprj0v1ywqujl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is a MIME GnuPG-signed message.  If you see this text, it means that
-your E-mail or Usenet software does not support MIME signed messages.
-The Internet standard for MIME PGP messages, RFC 2015, was published in 1996.
-To open this message correctly you will need to install E-mail or Usenet
-software that supports modern Internet standards.
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBqgpm1gI7gfk57dIhivpr5nkI&u=3Dhttp%3A%2F%2Fnews.t=
+eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373290580595%26custid%3D164=
+44%26uid%3D16231069273%26sig%3DEBLEJEHAOPFLPPKM%26mid%3D1600189396&s=3DKHGJ=
+JGMDDFACGDOP
+ =
 
---=_mimegpg-monstr-desktop-25837-1373290165-0001
+Soldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jus=
+qu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=
+=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -=
+60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=
+=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pour=
+centSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque=
+ jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSolde=
+s 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=
+=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8m=
+e d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 p=
+ourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9mar=
+que jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSo=
+ldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu=
+'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8=
+me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 =
+pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9ma=
+rque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentS=
+oldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusq=
+u'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=
+=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -=
+60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=
+=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pour=
+centSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque=
+ jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSolde=
+s 2=E8me d=E9marque jusqu'=E0 -60 pourcent
+ =
 
-Use devm_request_irq() for irq allocation which
-simplify driver code.
-
-Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600189396&sig=3DBBMEPJDOODOLAKAD
+---------------------------------------------------------------------------=
 ---
- drivers/spi/spi-xilinx.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+This SF.net email is sponsored by Windows:
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index c99c37b..a6bb5b0 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -363,7 +363,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 	struct xilinx_spi *xspi;
- 	struct xspi_platform_data *pdata;
- 	struct resource *res;
--	int ret, irq, num_cs = 0, bits_per_word = 8;
-+	int ret, num_cs = 0, bits_per_word = 8;
- 	struct spi_master *master;
- 	u32 tmp;
- 	u8 i;
-@@ -391,10 +391,6 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+Build for Windows Store.
 
--	irq = platform_get_irq(pdev, 0);
--	if (irq < 0)
--		return -ENXIO;
--
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct xilinx_spi));
- 	if (!master)
- 		return -ENODEV;
-@@ -421,8 +417,6 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 	master->num_chipselect = num_cs;
- 	master->dev.of_node = pdev->dev.of_node;
-
--	xspi->irq = irq;
--
- 	/*
- 	 * Detect endianess on the IP via loop bit in CR. Detection
- 	 * must be done before reset is sent because incorrect reset
-@@ -456,19 +450,25 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 		goto put_master;
- 	}
-
--
- 	/* SPI controller initializations */
- 	xspi_init_hw(xspi);
-
-+	xspi->irq = platform_get_irq(pdev, 0);
-+	if (xspi->irq < 0) {
-+		ret = xspi->irq;
-+		goto put_master;
-+	}
-+
- 	/* Register for SPI Interrupt */
--	ret = request_irq(xspi->irq, xilinx_spi_irq, 0, XILINX_SPI_NAME, xspi);
-+	ret = devm_request_irq(&pdev->dev, xspi->irq, xilinx_spi_irq, 0,
-+			       dev_name(&pdev->dev), xspi);
- 	if (ret)
- 		goto put_master;
-
- 	ret = spi_bitbang_start(&xspi->bitbang);
- 	if (ret) {
- 		dev_err(&pdev->dev, "spi_bitbang_start FAILED\n");
--		goto free_irq;
-+		goto put_master;
- 	}
-
- 	dev_info(&pdev->dev, "at 0x%08llX mapped to 0x%p, irq=%d\n",
-@@ -482,8 +482,6 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, master);
- 	return 0;
-
--free_irq:
--	free_irq(xspi->irq, xspi);
- put_master:
- 	spi_master_put(master);
-
-@@ -495,7 +493,6 @@ static int xilinx_spi_remove(struct platform_device *pdev)
- 	struct xilinx_spi *xspi = platform_get_drvdata(pdev);
-
- 	spi_bitbang_stop(&xspi->bitbang);
--	free_irq(xspi->irq, xspi);
-
- 	spi_master_put(xspi->bitbang.master);
-
---
-1.8.2.3
-
-
---=_mimegpg-monstr-desktop-25837-1373290165-0001
-Content-Type: application/pgp-signature
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-
-iEYEABECAAYFAlHavrUACgkQykllyylKDCFgjwCgh9kqRzvnmOcg1PuQc+JwJnhj
-zUYAmgOvssjCrBVPJqU2BqcMW98fu2D9
-=/bEO
------END PGP SIGNATURE-----
-
---=_mimegpg-monstr-desktop-25837-1373290165-0001--
+http://p.sf.net/sfu/windows-dev2dev

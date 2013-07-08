@@ -1,321 +1,82 @@
-From: H Hartley Sweeten <hartleys-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Subject: [PATCH v2 10/11] spi: spi-ep93xx: convert to the queued driver
-	infrastructure
-Date: Mon, 8 Jul 2013 09:12:37 -0700
-Message-ID: <201307080912.37827.hartleys@visionengravers.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v1 3/4] spi/xilinx: Simplify irq allocation
+Date: Mon, 8 Jul 2013 17:26:42 +0100
+Message-ID: <20130708162642.GM27646@sirena.org.uk>
+References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
+ <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com>
+ <20130708144930.GG27646@sirena.org.uk>
+ <51DADF3E.1000802@monstr.eu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Ryan Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, mika.westerberg-X3B1VOXEql0@public.gmane.org,
-	hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-To: linux-mtd <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Hx9R4F7eQNhw7Y0Z"
+Cc: Michal Simek <michal.simek@xilinx.com>,
+	linux-kernel@vger.kernel.org,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net
+To: Michal Simek <monstr@monstr.eu>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+In-Reply-To: <51DADF3E.1000802@monstr.eu>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The SPI core provides infrastructure for standard message queueing. Use
-that instead of handling it in the driver.
 
-Signed-off-by: H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>
-Acked-by: Mika Westerberg <mika.westerberg-X3B1VOXEql0@public.gmane.org>
-Cc: Ryan Mallon <rmallon-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-ep93xx.c | 165 ++++++-----------------------------------------
- 1 file changed, 19 insertions(+), 146 deletions(-)
+--Hx9R4F7eQNhw7Y0Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-ep93xx.c b/drivers/spi/spi-ep93xx.c
-index 2e64806..4c9a50c 100644
---- a/drivers/spi/spi-ep93xx.c
-+++ b/drivers/spi/spi-ep93xx.c
-@@ -26,7 +26,6 @@
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/platform_device.h>
--#include <linux/workqueue.h>
- #include <linux/sched.h>
- #include <linux/scatterlist.h>
- #include <linux/spi/spi.h>
-@@ -70,19 +69,13 @@
- 
- /**
-  * struct ep93xx_spi - EP93xx SPI controller structure
-- * @lock: spinlock that protects concurrent accesses to fields @running,
-- *        @current_msg and @msg_queue
-  * @pdev: pointer to platform device
-  * @clk: clock for the controller
-  * @regs_base: pointer to ioremap()'d registers
-  * @sspdr_phys: physical address of the SSPDR register
-  * @min_rate: minimum clock rate (in Hz) supported by the controller
-  * @max_rate: maximum clock rate (in Hz) supported by the controller
-- * @running: is the queue running
-- * @wq: workqueue used by the driver
-- * @msg_work: work that is queued for the driver
-  * @wait: wait here until given transfer is completed
-- * @msg_queue: queue for the messages
-  * @current_msg: message that is currently processed (or %NULL if none)
-  * @tx: current byte in transfer to transmit
-  * @rx: current byte in transfer to receive
-@@ -96,30 +89,15 @@
-  * @tx_sgt: sg table for TX transfers
-  * @zeropage: dummy page used as RX buffer when only TX buffer is passed in by
-  *            the client
-- *
-- * This structure holds EP93xx SPI controller specific information. When
-- * @running is %true, driver accepts transfer requests from protocol drivers.
-- * @current_msg is used to hold pointer to the message that is currently
-- * processed. If @current_msg is %NULL, it means that no processing is going
-- * on.
-- *
-- * Most of the fields are only written once and they can be accessed without
-- * taking the @lock. Fields that are accessed concurrently are: @current_msg,
-- * @running, and @msg_queue.
-  */
- struct ep93xx_spi {
--	spinlock_t			lock;
- 	const struct platform_device	*pdev;
- 	struct clk			*clk;
- 	void __iomem			*regs_base;
- 	unsigned long			sspdr_phys;
- 	unsigned long			min_rate;
- 	unsigned long			max_rate;
--	bool				running;
--	struct workqueue_struct		*wq;
--	struct work_struct		msg_work;
- 	struct completion		wait;
--	struct list_head		msg_queue;
- 	struct spi_message		*current_msg;
- 	size_t				tx;
- 	size_t				rx;
-@@ -230,7 +208,7 @@ static int ep93xx_spi_calc_divisors(const struct ep93xx_spi *espi,
- 	/*
- 	 * Make sure that max value is between values supported by the
- 	 * controller. Note that minimum value is already checked in
--	 * ep93xx_spi_transfer().
-+	 * ep93xx_spi_transfer_one_message().
- 	 */
- 	rate = clamp(rate, espi->min_rate, espi->max_rate);
- 
-@@ -306,54 +284,6 @@ static int ep93xx_spi_setup(struct spi_device *spi)
- }
- 
- /**
-- * ep93xx_spi_transfer() - queue message to be transferred
-- * @spi: target SPI device
-- * @msg: message to be transferred
-- *
-- * This function is called by SPI device drivers when they are going to transfer
-- * a new message. It simply puts the message in the queue and schedules
-- * workqueue to perform the actual transfer later on.
-- *
-- * Returns %0 on success and negative error in case of failure.
-- */
--static int ep93xx_spi_transfer(struct spi_device *spi, struct spi_message *msg)
--{
--	struct ep93xx_spi *espi = spi_master_get_devdata(spi->master);
--	struct spi_transfer *t;
--	unsigned long flags;
--
--	if (!msg || !msg->complete)
--		return -EINVAL;
--
--	/* first validate each transfer */
--	list_for_each_entry(t, &msg->transfers, transfer_list) {
--		if (t->speed_hz && t->speed_hz < espi->min_rate)
--				return -EINVAL;
--	}
--
--	/*
--	 * Now that we own the message, let's initialize it so that it is
--	 * suitable for us. We use @msg->status to signal whether there was
--	 * error in transfer and @msg->state is used to hold pointer to the
--	 * current transfer (or %NULL if no active current transfer).
--	 */
--	msg->state = NULL;
--	msg->status = 0;
--	msg->actual_length = 0;
--
--	spin_lock_irqsave(&espi->lock, flags);
--	if (!espi->running) {
--		spin_unlock_irqrestore(&espi->lock, flags);
--		return -ESHUTDOWN;
--	}
--	list_add_tail(&msg->queue, &espi->msg_queue);
--	queue_work(espi->wq, &espi->msg_work);
--	spin_unlock_irqrestore(&espi->lock, flags);
--
--	return 0;
--}
--
--/**
-  * ep93xx_spi_cleanup() - cleans up master controller specific state
-  * @spi: SPI device to cleanup
-  *
-@@ -801,50 +731,29 @@ static void ep93xx_spi_process_message(struct ep93xx_spi *espi,
- 	ep93xx_spi_disable(espi);
- }
- 
--#define work_to_espi(work) (container_of((work), struct ep93xx_spi, msg_work))
--
--/**
-- * ep93xx_spi_work() - EP93xx SPI workqueue worker function
-- * @work: work struct
-- *
-- * Workqueue worker function. This function is called when there are new
-- * SPI messages to be processed. Message is taken out from the queue and then
-- * passed to ep93xx_spi_process_message().
-- *
-- * After message is transferred, protocol driver is notified by calling
-- * @msg->complete(). In case of error, @msg->status is set to negative error
-- * number, otherwise it contains zero (and @msg->actual_length is updated).
-- */
--static void ep93xx_spi_work(struct work_struct *work)
-+static int ep93xx_spi_transfer_one_message(struct spi_master *master,
-+					   struct spi_message *msg)
- {
--	struct ep93xx_spi *espi = work_to_espi(work);
--	struct spi_message *msg;
-+	struct ep93xx_spi *espi = spi_master_get_devdata(master);
-+	struct spi_transfer *t;
- 
--	spin_lock_irq(&espi->lock);
--	if (!espi->running || espi->current_msg ||
--		list_empty(&espi->msg_queue)) {
--		spin_unlock_irq(&espi->lock);
--		return;
-+	/* first validate each transfer */
-+	list_for_each_entry(t, &msg->transfers, transfer_list) {
-+		if (t->speed_hz < espi->min_rate)
-+			return -EINVAL;
- 	}
--	msg = list_first_entry(&espi->msg_queue, struct spi_message, queue);
--	list_del_init(&msg->queue);
--	espi->current_msg = msg;
--	spin_unlock_irq(&espi->lock);
- 
--	ep93xx_spi_process_message(espi, msg);
-+	msg->state = NULL;
-+	msg->status = 0;
-+	msg->actual_length = 0;
- 
--	/*
--	 * Update the current message and re-schedule ourselves if there are
--	 * more messages in the queue.
--	 */
--	spin_lock_irq(&espi->lock);
-+	espi->current_msg = msg;
-+	ep93xx_spi_process_message(espi, msg);
- 	espi->current_msg = NULL;
--	if (espi->running && !list_empty(&espi->msg_queue))
--		queue_work(espi->wq, &espi->msg_work);
--	spin_unlock_irq(&espi->lock);
- 
--	/* notify the protocol driver that we are done with this message */
--	msg->complete(msg->context);
-+	spi_finalize_current_message(master);
-+
-+	return 0;
- }
- 
- static irqreturn_t ep93xx_spi_interrupt(int irq, void *dev_id)
-@@ -984,7 +893,7 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	master->setup = ep93xx_spi_setup;
--	master->transfer = ep93xx_spi_transfer;
-+	master->transfer_one_message = ep93xx_spi_transfer_one_message;
- 	master->cleanup = ep93xx_spi_cleanup;
- 	master->bus_num = pdev->id;
- 	master->num_chipselect = info->num_chipselect;
-@@ -1002,7 +911,6 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 		goto fail_release_master;
- 	}
- 
--	spin_lock_init(&espi->lock);
- 	init_completion(&espi->wait);
- 
- 	/*
-@@ -1031,23 +939,13 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 	if (info->use_dma && ep93xx_spi_setup_dma(espi))
- 		dev_warn(&pdev->dev, "DMA setup failed. Falling back to PIO\n");
- 
--	espi->wq = create_singlethread_workqueue("ep93xx_spid");
--	if (!espi->wq) {
--		dev_err(&pdev->dev, "unable to create workqueue\n");
--		error = -ENOMEM;
--		goto fail_free_dma;
--	}
--	INIT_WORK(&espi->msg_work, ep93xx_spi_work);
--	INIT_LIST_HEAD(&espi->msg_queue);
--	espi->running = true;
--
- 	/* make sure that the hardware is disabled */
- 	ep93xx_spi_write_u8(espi, SSPCR1, 0);
- 
- 	error = spi_register_master(master);
- 	if (error) {
- 		dev_err(&pdev->dev, "failed to register SPI master\n");
--		goto fail_free_queue;
-+		goto fail_free_dma;
- 	}
- 
- 	dev_info(&pdev->dev, "EP93xx SPI Controller at 0x%08lx irq %d\n",
-@@ -1055,8 +953,6 @@ static int ep93xx_spi_probe(struct platform_device *pdev)
- 
- 	return 0;
- 
--fail_free_queue:
--	destroy_workqueue(espi->wq);
- fail_free_dma:
- 	ep93xx_spi_release_dma(espi);
- fail_release_master:
-@@ -1070,29 +966,6 @@ static int ep93xx_spi_remove(struct platform_device *pdev)
- 	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct ep93xx_spi *espi = spi_master_get_devdata(master);
- 
--	spin_lock_irq(&espi->lock);
--	espi->running = false;
--	spin_unlock_irq(&espi->lock);
--
--	destroy_workqueue(espi->wq);
--
--	/*
--	 * Complete remaining messages with %-ESHUTDOWN status.
--	 */
--	spin_lock_irq(&espi->lock);
--	while (!list_empty(&espi->msg_queue)) {
--		struct spi_message *msg;
--
--		msg = list_first_entry(&espi->msg_queue,
--				       struct spi_message, queue);
--		list_del_init(&msg->queue);
--		msg->status = -ESHUTDOWN;
--		spin_unlock_irq(&espi->lock);
--		msg->complete(msg->context);
--		spin_lock_irq(&espi->lock);
--	}
--	spin_unlock_irq(&espi->lock);
--
- 	ep93xx_spi_release_dma(espi);
- 
- 	spi_unregister_master(master);
--- 
-1.8.1.4
+On Mon, Jul 08, 2013 at 05:48:14PM +0200, Michal Simek wrote:
+> On 07/08/2013 04:49 PM, Mark Brown wrote:
 
+> > Is it definitely safe to leave the IRQ hanging around after the master
+> > has been freed - there's no possibility of a late error interrupt or
+> > something?
 
-------------------------------------------------------------------------------
-This SF.net email is sponsored by Windows:
+> I think it is more generic question if this race condition is fine
+> for all drivers which are using devres groups.
 
-Build for Windows Store.
+Well, it's mainly an issue for IRQs - the other resources don't initiate
+events by themselves which is what causes the issue.  It just needs a
+bit of extra care so I wanted to check that this has been thought of.
 
-http://p.sf.net/sfu/windows-dev2dev
+> I have just looked at it and devres_release_all() is called where
+> driver is unload and irq are disabled there.
+
+The problem is the gap between the resources used to handle the IRQ
+being freed and the IRQ itself being freed - if the hardware can be
+guaranteed to be idle then that's fine but we need to be sure that is
+OK.  Otherwise the interrupt handler may get run and be looking at a
+resource which was freed which would be unfortunate.
+
+> btw: What's the proper way for spi driver unregistration?
+
+> spi_unregistered_master() (which also free private structure)
+> and
+> spi_master_put()?
+
+Yes.
+
+--Hx9R4F7eQNhw7Y0Z
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR2ug6AAoJELSic+t+oim9sSsP/iTf8C79MeNgA9J0J6U/ylSj
+y5DS61VGjF9p34TlPpGoFRacgPDd1ghtiPo5KtaK6SUoS+lCcSGWOR/Xxo9uxJ/5
+TIR48FIm6Y9mBx0IBJ7i2CNymn0duVpbIJM+VywVEtSGCX3+qSWvQGGGcGx3ZGAn
+A3tLuwN6GT6bhd/ClqpR/dv/YQj0dppbTjAZhf39QrrvMCFSnANg944yTDTFrn/t
+UN/BFaLcXEF+n9txLspH5bYzpKQ1fMXg3QyfV0KTFX4hNtqnEfGEPpsK1QC5kFNX
+XZadqgnf+zepl1RzTM3isBElA4yCMwp3p4xqW+TZt3u6XfcisDe62FJig2rRFn4h
+jWCjG7Tjsr15wGSZ4GARdze5maGSq6UZVaVBC26sfzBlyhHkkLpncDTo9I4nOsDP
+eb2cUJn7uAq7YpjEbF8AQXnlXW8AmTUSHLW83PaR7Msy3E3z3CXACBJMd5yhXsez
+Tix+bQQQBiW/s+S7MLcev5fLCs12dcnwfm6oI1b7gEp5NP4lRDnjHAwZQ3bhy+py
+j3wTSERMhDDsFEgA+9d58aFzw/Qcbs0yIdBfSkm0HNTob03Ba3qRpJztFkEke2ZG
+OJK/VTPgL0tDBW7yKQ/ypCYqTGuwVFoTh3L9FHXybLZa8MT6B4tb2VDcY0kuS9Ny
+JysYW+H31XrmVu6MqtbZ
+=kyd8
+-----END PGP SIGNATURE-----
+
+--Hx9R4F7eQNhw7Y0Z--

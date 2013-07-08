@@ -1,105 +1,66 @@
-From: Felipe Balbi <balbi@ti.com>
-Subject: Re: [RFC/PATCH 3/3] driver: spi: Add quad spi read support
-Date: Mon, 8 Jul 2013 17:36:51 +0300
-Message-ID: <20130708143651.GH31221@arwen.pp.htv.fi>
-References: <1373290980-17883-1-git-send-email-sourav.poddar@ti.com>
- <1373290980-17883-4-git-send-email-sourav.poddar@ti.com>
-Reply-To: <balbi@ti.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v1 3/4] spi/xilinx: Simplify irq allocation
+Date: Mon, 8 Jul 2013 15:49:30 +0100
+Message-ID: <20130708144930.GG27646@sirena.org.uk>
+References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
+ <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="VbfcI4OLZ4XW0yH2"
-Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <balbi@ti.com>, <rnayak@ti.com>,
-	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: Sourav Poddar <sourav.poddar@ti.com>
+	protocol="application/pgp-signature"; boundary="5wAPvwbAcQJrmmvx"
+Cc: linux-kernel@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net
+To: Michal Simek <michal.simek@xilinx.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1373290980-17883-4-git-send-email-sourav.poddar@ti.com>
+In-Reply-To: <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---VbfcI4OLZ4XW0yH2
+
+--5wAPvwbAcQJrmmvx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 08, 2013 at 07:13:00PM +0530, Sourav Poddar wrote:
-> Since, qspi controller uses quad read.
+On Mon, Jul 08, 2013 at 03:29:16PM +0200, Michal Simek wrote:
+> Use devm_request_irq() for irq allocation which
+> simplify driver code.
+
+> @@ -495,7 +493,6 @@ static int xilinx_spi_remove(struct platform_device *=
+pdev)
+>  	struct xilinx_spi *xspi =3D platform_get_drvdata(pdev);
 >=20
-> Configuring the command register, if the transfer of data needs
-> quad lines.
+>  	spi_bitbang_stop(&xspi->bitbang);
+> -	free_irq(xspi->irq, xspi);
 >=20
-> This patch has been done on top of the following patch[1], which is still
-> under review/comments.
-> This patch will also go changes, as the parent patch[1] does.
->=20
-> [1]: http://comments.gmane.org/gmane.linux.kernel.spi.devel/14047
->=20
-> Signed-off-by: Sourav Poddar <sourav.poddar@ti.com>
-> ---
->  drivers/spi/spi-ti-qspi.c |    8 ++++++--
->  1 files changed, 6 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-> index 430de9c..307cbed 100644
-> --- a/drivers/spi/spi-ti-qspi.c
-> +++ b/drivers/spi/spi-ti-qspi.c
-> @@ -258,8 +258,12 @@ static int qspi_read_msg(struct dra7xxx_qspi *qspi, =
-struct spi_transfer *t)
->  			qspi->cmd | QSPI_RD_SNGL, qspi->dc);
->  		dra7xxx_writel(qspi, QSPI_WC_INT_EN, QSPI_INTR_ENABLE_SET_REG);
->  		dra7xxx_writel(qspi, qspi->dc, QSPI_SPI_DC_REG);
-> -		dra7xxx_writel(qspi, qspi->cmd | QSPI_RD_SNGL,
-> -			QSPI_SPI_CMD_REG);
-> +		if (t->bitwidth =3D=3D SPI_BITWIDTH_QUAD)
-> +			dra7xxx_writel(qspi, qspi->cmd | QSPI_RD_QUAD,
-> +				QSPI_SPI_CMD_REG);
-> +		else
-> +			dra7xxx_writel(qspi, qspi->cmd | QSPI_RD_SNGL,
-> +				QSPI_SPI_CMD_REG);
+>  	spi_master_put(xspi->bitbang.master);
 
-we also have read dual, in order to make this code a little better you
-could:
+Is it definitely safe to leave the IRQ hanging around after the master
+has been freed - there's no possibility of a late error interrupt or
+something?
 
-	unsigned cmd =3D qspi->cmd;
-
-	switch (t->bitwidth)
-	case SPI_BITWIDTH_QUAD:
-		cmd |=3D QSPI_RD_QUAD;
-		break;
-	case SPI_BITWIDTH_DUAL:
-		cmd |=3D QSPI_RD_DUAL;
-		break;
-	case SPI_BITWIDTH_SINGLE:
-	default:
-		cmd |=3D QSPI_RD_SNGL;
-	}
-
-	dra7xx_writel(qspi, cmd, QSPI_SPI_CMD_REG);
-
---=20
-balbi
-
---VbfcI4OLZ4XW0yH2
+--5wAPvwbAcQJrmmvx
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+Version: GnuPG v2.0.20 (GNU/Linux)
 
-iQIcBAEBAgAGBQJR2s6DAAoJEIaOsuA1yqRE2BsQAJW+05dztetj0tVqUtHAwz/S
-LGBd1ke63nBFMKsieKJzGRxsD7lRV3L2STzljIajvVfehhUuEab8xXIQ8tZNY2+m
-gNftfX9JFM59D3LFjHaKeLA2vKpPe8A/JEL+BZcwm35vyTRKTW5W++OS7cjp1dHV
-nsULDWeI89zzbEI0lFalyFvn4k9/YBQqKccfld/lTCHO8js7ctcbVEdZQW7I2EgE
-fH9z2nz7fby6xo3TWnR/+kACz/gKHMqBZZsSPdSOcvQfcKEtttgS4kEzOtivKkp/
-CPftx7FUiahR/ORAbhvc5ov5OjWV7E179EiW9XX6Dfd4qzsZOIroFcpPUnMPFFcI
-oEP0LfUkMKqAVTkACWdwSU5zPFo8HhcuJr1vI36/zTtdcolrKX+EXCjiNuj/IJ5f
-Nwtu8M4FEvIn2mG6VPjy5kO7fZw2bEacO3XEuy8bDXvGh1DYG+otlpgqFfwgWAAn
-GQJtqQ122woYESPUjfFBg8WmQHfBC0vjHVJ26PXetVwNhFNJ+7k6SiT+yf6cq2MJ
-WKp0pBQ6cMrMciWkWt999A9exSTsVuTZWsDAZmoI78cxJa4mhQ8BnwVJbGdzP4Of
-FY1DiG/pATVucaL/NQSa0EfEPKlWgZas8fE4QTtMF+oxowS3rQGFBMxwlBCpIq9f
-pFTY2G6aEJ4A5Lqk/0l1
-=UlaK
+iQIcBAEBAgAGBQJR2tF3AAoJELSic+t+oim9EKMP/1xBt9VO3AJi2/jSXyfX5+Ah
+Xh/qzvSQUmW1VDr2l2oQvDDfH3uO1QZolXpBxreINVFdzrqBQ4PObsIgFWYS4MhJ
+f107fxby+1Fy2D64aCAA0hZjZSqetlOq3ZPe2EJDJxIM7nkmm8RzxN+Ru13bYEM9
+KsFU7fHaxMwegg80Pv/rmiisR5CqqdOdnXrbWFy3ocnk1xAN7D/DjwqOG0KqzM6N
+DCJytl574Ocs6thnojlS5TL2JjBkcEvEFkxfxXNTNGDv08M6B56S2oZQm2l0tPaZ
+iu1X+Xg96W49KKKUvf2YAAmrloltDW9LtD6sPR8wUmtCkjL0zmj8ItG2UWa59AVQ
+T6KUnfzIJLMbTeaerJjH5WE4/Nkju6OvW1UK/LvHnrlCAQQUH/aWedXpLB3TbhMy
+w/Jv5dUILu2/cNeSMwegTH29HDofAgAv6+tQnXj3oGPr1+Smn4BJwSZj8hXqofFH
+EFlEYpZTcm13aMjo2SKsg608vesmy9PIC/6Xny8dlSPAS8PrTWe2nam1BrriJgBm
+g+YqH8ETVUjPaHyHew8RaKIbN4eJj86UiW1+oXa8sgvSlEXUTZp51ZAs6HkrEQa9
+3iRJEsU+55PF4RV54eEmkOeqCnB41XHuSyOQ1aciByvjXShXqT8DUPyi6zNISXD0
+s+swoSPnzwLdo3cBi4N9
+=2Q0u
 -----END PGP SIGNATURE-----
 
---VbfcI4OLZ4XW0yH2--
+--5wAPvwbAcQJrmmvx--

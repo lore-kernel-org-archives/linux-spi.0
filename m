@@ -1,12 +1,14 @@
-From: Linvosges par Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Soldes_2=E8me_d=E9marque_jusqu'=E0_-60_pourcent?=
-Date: Mon, 8 Jul 2013 15:36:37 +0200 (CEST)
-Message-ID: <qeelq7.hivprj0v1ywqujl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 0/3] spi changes and ti quad spi controller.
+Date: Mon, 8 Jul 2013 19:12:57 +0530
+Message-ID: <1373290980-17883-1-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	rnayak-l0cyMroinI0@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,45 +20,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgpm1gI7gfk57dIhivpr5nkI&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373290580595%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DEBLEJEHAOPFLPPKM%26mid%3D1600189396&s=3DKHGJ=
-JGMDDFACGDOP
- =
+Add support for calculating message length in spi framework.
 
-Soldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jus=
-qu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=
-=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -=
-60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=
-=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pour=
-centSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque=
- jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSolde=
-s 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=
-=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8m=
-e d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 p=
-ourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9mar=
-que jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSo=
-ldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu=
-'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8=
-me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 =
-pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9ma=
-rque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentS=
-oldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusq=
-u'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=
-=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -=
-60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=
-=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pour=
-centSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque=
- jusqu'=E0 -60 pourcentSoldes 2=E8me d=E9marque jusqu'=E0 -60 pourcentSolde=
-s 2=E8me d=E9marque jusqu'=E0 -60 pourcent
- =
+Add support for quad spi controller.
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600189396&sig=3DBBMEPJDOODOLAKAD
----------------------------------------------------------------------------=
----
+Patch 2 of this series had been posted before. Sending along 
+with the series along with ather propsed change.
+
+Sourav Poddar (3):
+  driver: spi: Modify core to compute the message length
+  drivers: spi: Add qspi flash controller
+  driver: spi: Add quad spi read support
+
+ Documentation/devicetree/bindings/spi/ti_qspi.txt |   22 +
+ drivers/spi/Kconfig                               |    8 +
+ drivers/spi/Makefile                              |    1 +
+ drivers/spi/spi-ti-qspi.c                         |  489 +++++++++++++++++++++
+ drivers/spi/spi.c                                 |    1 +
+ include/linux/spi/spi.h                           |    1 +
+ 6 files changed, 522 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/ti_qspi.txt
+ create mode 100644 drivers/spi/spi-ti-qspi.c
+
+
+------------------------------------------------------------------------------
 This SF.net email is sponsored by Windows:
 
 Build for Windows Store.

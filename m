@@ -1,130 +1,450 @@
-From: "iPhone" <FWU4@a.fly-wu.com>
-Subject: =?UTF-8?B?UGx1cyBmb3J0IHF1ZSBsZXMgc29sZGVzIDogaVBob25lIMOgIC05MCU=?=
-Date: Mon, 08 Jul 2013 17:46:16 +0100
-Message-ID: <0.0.AA.9C0.1CE7BFAAA423E2A.0@ukrs394971.pur3.net>
-Reply-To: iPhone <FWU4@a.fly-wu.com>
+From: Nishanth Menon <nm@ti.com>
+Subject: Re: [PATCHv3 2/3] drivers: spi: Add qspi flash controller
+Date: Mon, 8 Jul 2013 15:33:30 -0500
+Message-ID: <20130708203330.GA28322@kahuna>
+References: <1373290980-17883-1-git-send-email-sourav.poddar@ti.com>
+ <1373290980-17883-3-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
+	<grant.likely@linaro.org>, <balbi@ti.com>, <rnayak@ti.com>,
+	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: Sourav Poddar <sourav.poddar@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1373290980-17883-3-git-send-email-sourav.poddar@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-U2kgdm91cyBuJ2Fycml2ZXogcGFzIGEgdmlzdWFsaXNlciBjZSBtZXNzYWdlLCB2ZXVpbGxleiBj
-bGlxdWVyIGljaToKaHR0cDovL2EuZmx5LXd1LmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19l
-bWFpbC5waHA/QjkyMjE4ODM1Nzk3Njk0NzYwMTQyODA4NjQ1MzMxOCZ2YXJJZD17fm1haQpsVmFy
-aWF0aW9uSWR+fQoKCkVjb25vbWlzZXoganVzcXUnw6AgOTAgcG91cmNlbnRzIHN1ciBsZXMgbWVp
-bGxldXJzIHByb2R1aXRzIEhpZ2hUZWNoIDogLTkwJToKaHR0cDovL3JmbWwwMi5jb20vdS8zMC8x
-NDg2LzI0NC96ZXRyZW5kLzk2My9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMDYyNTIwMTMKCgpF
-Y29ub21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxsZXVycyBwcm9kdWl0
-cyBIaWdoVGVjaCA6IC05MCUKCihBdWt0aW9uZW4gZsO8ciBOZXUgLSB1bmQgVHJlbmRwcm9kdWt0
-ZSk6Cmh0dHA6Ly9yZm1sMDIuY29tL3UvMzAvMTQ4Ni8yNDQvemV0cmVuZC85NjMvRU1BSUwvTkFN
-RS9GSVJTVE5BTUUvMjAxMzA2MjUyMDEzCgooQXVrdGlvbmVuIGbDvHIgTmV1IC0gdW5kIFRyZW5k
-cHJvZHVrdGUpOgpodHRwOi8vcmZtbDAyLmNvbS91LzMwLzE0ODYvMjQ0L3pldHJlbmQvOTYzL0VN
-QUlML05BTUUvRklSU1ROQU1FLzIwMTMwNjI1MjAxMwoKKEF1a3Rpb25lbiBmw7xyIE5ldSAtIHVu
-ZCBUcmVuZHByb2R1a3RlKToKaHR0cDovL3JmbWwwMi5jb20vdS8zMC8xNDg2LzI0NC96ZXRyZW5k
-Lzk2My9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMDYyNTIwMTMKCihBdWt0aW9uZW4gZsO8ciBO
-ZXUgLSB1bmQgVHJlbmRwcm9kdWt0ZSk6Cmh0dHA6Ly9yZm1sMDIuY29tL3UvMzAvMTQ4Ni8yNDQv
-emV0cmVuZC85NjMvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAxMzA2MjUyMDEzCgooQXVrdGlvbmVu
-IGbDvHIgTmV1IC0gdW5kIFRyZW5kcHJvZHVrdGUpOgpodHRwOi8vcmZtbDAyLmNvbS91LzMwLzE0
-ODYvMjQ0L3pldHJlbmQvOTYzL0VNQUlML05BTUUvRklSU1ROQU1FLzIwMTMwNjI1MjAxMwoKKEF1
-a3Rpb25lbiBmw7xyIE5ldSAtIHVuZCBUcmVuZHByb2R1a3RlKToKaHR0cDovL3JmbWwwMi5jb20v
-dS8zMC8xNDg2LzI0NC96ZXRyZW5kLzk2My9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMDYyNTIw
-MTMKCihBdWt0aW9uZW4gZsO8ciBOZXUgLSB1bmQgVHJlbmRwcm9kdWt0ZSk6Cmh0dHA6Ly9yZm1s
-MDIuY29tL3UvMzAvMTQ4Ni8yNDQvemV0cmVuZC85NjMvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAx
-MzA2MjUyMDEzCgooQXVrdGlvbmVuIGbDvHIgTmV1IC0gdW5kIFRyZW5kcHJvZHVrdGUpOgpodHRw
-Oi8vcmZtbDAyLmNvbS91LzMwLzE0ODYvMjQ0L3pldHJlbmQvOTYzL0VNQUlML05BTUUvRklSU1RO
-QU1FLzIwMTMwNjI1MjAxMwoKKEVjb25vbWlzZXoganVzcXUnw6AgOTAgcG91cmNlbnRzIHN1ciBs
-ZXMgbWVpbGxldXJzIHByb2R1aXRzIEhpZ2hUZWNoIDoKLTkwJSk6Cmh0dHA6Ly9yZm1sMDIuY29t
-L3UvMzAvMTQ4Ni8yNDQvemV0cmVuZC85NjMvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAxMzA2MjUy
-MDEzCgooRWNvbm9taXNleiBqdXNxdSfDoCA5MCBwb3VyY2VudHMgc3VyIGxlcyBtZWlsbGV1cnMg
-cHJvZHVpdHMgSGlnaFRlY2ggOgotOTAlKToKaHR0cDovL3JmbWwwMi5jb20vdS8zMC8xNDg2LzI0
-NC96ZXRyZW5kLzk2My9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMDYyNTIwMTMKCihFY29ub21p
-c2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxsZXVycyBwcm9kdWl0cyBIaWdo
-VGVjaCA6Ci05MCUpOgpodHRwOi8vcmZtbDAyLmNvbS91LzMwLzE0ODYvMjQ0L3pldHJlbmQvOTYz
-L0VNQUlML05BTUUvRklSU1ROQU1FLzIwMTMwNjI1MjAxMwoKKEVjb25vbWlzZXoganVzcXUnw6Ag
-OTAgcG91cmNlbnRzIHN1ciBsZXMgbWVpbGxldXJzIHByb2R1aXRzIEhpZ2hUZWNoIDoKLTkwJSk6
-Cmh0dHA6Ly9yZm1sMDIuY29tL3UvMzAvMTQ4Ni8yNDQvemV0cmVuZC85NjMvRU1BSUwvTkFNRS9G
-SVJTVE5BTUUvMjAxMzA2MjUyMDEzCgooRWNvbm9taXNleiBqdXNxdSfDoCA5MCBwb3VyY2VudHMg
-c3VyIGxlcyBtZWlsbGV1cnMgcHJvZHVpdHMgSGlnaFRlY2ggOgotOTAlKToKaHR0cDovL3JmbWww
-Mi5jb20vdS8zMC8xNDg2LzI0NC96ZXRyZW5kLzk2My9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEz
-MDYyNTIwMTMKCihFY29ub21pc2V6IGp1c3F1J8OgIDkwIHBvdXJjZW50cyBzdXIgbGVzIG1laWxs
-ZXVycyBwcm9kdWl0cyBIaWdoVGVjaCA6Ci05MCUpOgpodHRwOi8vcmZtbDAyLmNvbS91LzMwLzE0
-ODYvMjQ0L3pldHJlbmQvOTYzL0VNQUlML05BTUUvRklSU1ROQU1FLzIwMTMwNjI1MjAxMwoKKEVj
-b25vbWlzZXoganVzcXUnw6AgOTAgcG91cmNlbnRzIHN1ciBsZXMgbWVpbGxldXJzIHByb2R1aXRz
-IEhpZ2hUZWNoIDoKLTkwJSk6Cmh0dHA6Ly9yZm1sMDIuY29tL3UvMzAvMTQ4Ni8yNDQvemV0cmVu
-ZC85NjMvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAxMzA2MjUyMDEzCgoKQ29weXJpZ2h0IMKpIDIw
-MDgtMjAxMSBTb3Bob3JhIE1lZGlhIC0gVG91cyBkcm9pdHMgcsOpc2VydsOpcy4gRW5jaMOocmVW
-SVAKZXN0IHVuZSBtYXJxdWUgZMOpcG9zw6llLjogJTVCbGllbl91bnJlZ2lzdGVyJTVECkNvcHly
-aWdodCDCqSAyMDA4LTIwMTEgU29waG9yYSBNZWRpYSAtIFRvdXMgZHJvaXRzIHLDqXNlcnbDqXMu
-CkVuY2jDqHJlVklQIGVzdCB1bmUgbWFycXVlIGTDqXBvc8OpZS4KUHJpdmFjeSBwb2xpY3k6ICU1
-QmxpZW5fcHJpdmFjeSU1RApQcml2YWN5IHBvbGljeQpBaW5zaSwgZ3LDomNlIMOgIG5vdXMsIHZv
-dXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZQpxdWkgZXN0
-IHByb2R1aXQgYSBiYXMgY291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuQSBsYSByZWNoZXJj
-aGUgZHUgY2FkZWF1Cm9yaWdpbmFsID8gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4g
-bm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzCmFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0
-IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLApncmFjZSDDoCBub3Vz
-LCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVp
-IGVzdApwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLiBOb3VzIHNv
-dWhhaXRvbnMgdm91cyBhcHBvcnRlcgp1biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlk
-ZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudAptaWV1eCB0b3V0ZSBsJ2Fu
-bsOpZS4uLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMKY2hh
-dXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBw
-cml4IHRvdXQgYXUgbG9uZwpkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVy
-IHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRy
-ZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRv
-dXRlIGwnYW5uw6llLkJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZQp2b3Vz
-IGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0
-w6kgcHJpeCB0b3V0IGF1CmxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBq
-ZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzCnByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3Vz
-IGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyCnLDqWd1bGnDqHJlbWVudCBl
-dCB0b3V0ZSBsJ2FubsOpZS5FbnZpZSBkZSB2b3VzIGZhaXJlIHVuZSBiZWF1dMOpIMOgIG1vaW5k
-cmUKY2/Du3QgdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBkZSBwcsOpdm9pciB2b3MgcHJvY2hh
-aW5lcyB2YWNhbmNlcyBkJ8OpdMOpCsOgIG1vaW5kcmUgZnJhaXMgZXQgb3UgZW5jb3JlIGQnaGFi
-aWxsZXIgdm9zIGVuZmFudHMgw6AgZGVzIGJ1ZGdldHMKcmFpc29ubmFibGVzLCBhbG9ycyBjb25z
-dWx0ZXIgZGUgdGVtcHMgw6AgYXV0cmUgbm9zIHByb3Bvc2l0aW9ucyBwb3VyIHZvdXMKcGVybWV0
-dHJlIGFpbnNpIGRlIGZhaXJlIGRlIG5vbWJyZXVzZXMgw6ljb25vbWllcyB0b3V0IGVuIHZvdXMg
-ZmFpc2FudApwbGFpc2lyIMOgIHRvdXRlIGxhIGZhbWlsbGUuQWluc2ksIGdyw6JjZSDDoCBub3Vz
-LCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLApwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVp
-IGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwKaW5mb3MuLi4gLkEgbGEgcmVj
-aGVyY2hlIGR1IGNhZGVhdSBvcmlnaW5hbCA/IE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVy
-CnVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMg
-dG91dCBlbiBjb25zb21tYW50Cm1pZXV4IHRvdXRlIGwnYW5uw6llLiBBaW5zaSwgZ3JhY2Ugw6Ag
-bm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pcgpwcm9maXRlciBkZSB0b3V0IGNl
-IHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIC4KTm91
-cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3Vz
-IGFpZGVyIMOgCmTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUg
-bCdhbm7DqWUuLi4uIEJlc29pbiBkZQp2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3Vz
-IGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyCnJhcHBvcnQgcXVhbGl0
-w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBq
-ZXRlcgp1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3Vz
-IGFkcmVzc29ucywgZXQgcXVlIG5vdXMKbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBl
-dCB0b3V0ZSBsJ2FubsOpZS5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cwpoYWJpbGxlciwgZGUg
-dm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1
-YWxpdMOpCnByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBw
-YXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIKc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMg
-dm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1l
-bnQgZXQgdG91dGUgbCdhbm7DqWUuRW52aWUgZGUgdm91cyBmYWlyZSB1bmUgYmVhdXTDqSDDoCBt
-b2luZHJlCmNvw7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgZGUgcHLDqXZvaXIgdm9zIHBy
-b2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqQrDoCBtb2luZHJlIGZyYWlzIGV0IG91IGVuY29yZSBk
-J2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRzCnJhaXNvbm5hYmxlcywgYWxvcnMg
-Y29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMgcG91ciB2b3VzCnBl
-cm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21icmV1c2VzIMOpY29ub21pZXMgdG91dCBlbiB2
-b3VzIGZhaXNhbnQKcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1pbGxlLgoKCgpDbGlxdWV6IHN1ciBj
-ZSBsaWVuIHBvdXIgdm91cyBkw6lzYWJvbm5lciAKaHR0cDovL2EuZmx5LXd1LmNvbS9fYWN0L29w
-dG91dC5waHA/QjkyMjE4ODM1Nzk3Njk0NzYwMTQyODA4NjQ1MzMxOAoKe35COTIyMTg4MzU3OTc2
-OTQ3NjAxNDI4MDg2NDUzMzE4fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClRoaXMgU0YubmV0IGVt
-YWlsIGlzIHNwb25zb3JlZCBieSBXaW5kb3dzOgoKQnVpbGQgZm9yIFdpbmRvd3MgU3RvcmUuCgpo
-dHRwOi8vcC5zZi5uZXQvc2Z1L3dpbmRvd3MtZGV2MmRldgpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QK
-c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291
-cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On 19:12-20130708, Sourav Poddar wrote:
+[..]
+generic comment, given our historical mistakes of making drivers
+specific to a SoC family, it never is.
+
+Now, ti-qspi in file name is a step in the right direction, but, rest
+of the code(function names etc) is just married to DRA7 family of
+processor, when it should not be.
+
+> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+> new file mode 100644
+> index 0000000..430de9c
+> --- /dev/null
+> +++ b/drivers/spi/spi-ti-qspi.c
+[...]
+> +static inline unsigned long dra7xxx_readl(struct dra7xxx_qspi *qspi,
+> +		unsigned long reg)
+> +{
+> +	return readl(qspi->base + reg);
+> +}
+> +
+> +static inline void dra7xxx_writel(struct dra7xxx_qspi *qspi,
+> +		unsigned long val, unsigned long reg)
+> +{
+> +	writel(val, qspi->base + reg);
+> +}
+> +
+> +static inline unsigned long dra7xxx_readl_data(struct dra7xxx_qspi *qspi,
+> +		unsigned long reg, int wlen)
+> +{
+> +	switch (wlen) {
+> +	case 8:
+> +		return readw(qspi->base + reg);
+> +		break;
+> +	case 16:
+> +		return readb(qspi->base + reg);
+> +		break;
+> +	case 32:
+> +		return readl(qspi->base + reg);
+> +		break;
+> +	default:
+> +		return -1;
+> +	}
+> +}
+> +
+> +static inline void dra7xxx_writel_data(struct dra7xxx_qspi *qspi,
+> +		unsigned long val, unsigned long reg, int wlen)
+> +{
+> +	switch (wlen) {
+> +	case 8:
+> +		writew(val, qspi->base + reg);
+> +		break;
+> +	case 16:
+> +		writeb(val, qspi->base + reg);
+> +		break;
+> +	case 32:
+> +		writeb(val, qspi->base + reg);
+> +		break;
+> +	default:
+> +		dev_dbg(qspi->dev, "word lenght out of range");
+> +		break;
+> +	}
+> +}
+Looks like a case to use regmap?
+Dumb q: why cant we use regmap_spi? worst case, you should be able to
+use mmio if regmap_spi cant be used. The commit message was not clear
+about this.
+
+> +
+> +static int dra7xxx_qspi_setup(struct spi_device *spi)
+> +{
+> +	struct dra7xxx_qspi	*qspi = spi_master_get_devdata(spi->master);
+> +	int clk_div = 0;
+> +	u32 clk_ctrl_reg, clk_rate;
+> +
+> +	clk_rate = clk_get_rate(qspi->fclk);
+> +
+> +	if (!qspi->spi_max_frequency) {
+> +		dev_err(qspi->dev, "spi max frequency not defined\n");
+> +		return -1;
+> +	} else
+> +		clk_div = (clk_rate / qspi->spi_max_frequency) - 1;
+
+did you run checkpatch --strict here?
+Also, would you prefer to use DIV_ROUND_UP?
+
+> +
+> +	dev_dbg(qspi->dev, "%s: hz: %d, clock divider %d\n", __func__,
+> +			qspi->spi_max_frequency, clk_div);
+> +
+> +	pm_runtime_get_sync(qspi->dev);
+error check?
+> +
+> +	clk_ctrl_reg = dra7xxx_readl(qspi, QSPI_SPI_CLOCK_CNTRL_REG);
+> +
+> +	clk_ctrl_reg &= ~QSPI_CLK_EN;
+> +
+> +	/* disable SCLK */
+> +	dra7xxx_writel(qspi, clk_ctrl_reg, QSPI_SPI_CLOCK_CNTRL_REG);
+> +
+> +	if (clk_div < 0) {
+> +		dev_dbg(qspi->dev, "%s: clock divider < 0, using /1 divider\n",
+> +				__func__);
+> +		clk_div = 1;
+should you not fail here?
+> +	}
+> +
+> +	if (clk_div > QSPI_CLK_DIV_MAX) {
+> +		dev_dbg(qspi->dev, "%s: clock divider >%d , using /%d divider\n",
+> +			__func__, QSPI_CLK_DIV_MAX, QSPI_CLK_DIV_MAX + 1);
+> +		clk_div = QSPI_CLK_DIV_MAX;
+should you not fail here?
+> +	}
+> +
+> +	/* enable SCLK */
+> +	dra7xxx_writel(qspi, QSPI_CLK_EN | clk_div, QSPI_SPI_CLOCK_CNTRL_REG);
+> +
+> +	pm_runtime_mark_last_busy(qspi->dev);
+> +	pm_runtime_put_autosuspend(qspi->dev);
+error check?
+> +
+> +	return 0;
+> +}
+> +
+> +static int dra7xxx_qspi_prepare_xfer(struct spi_master *master)
+> +{
+> +	struct dra7xxx_qspi *qspi = spi_master_get_devdata(master);
+> +
+> +	pm_runtime_get_sync(qspi->dev);
+error check?
+> +
+> +	return 0;
+> +}
+> +
+> +static int dra7xxx_qspi_unprepare_xfer(struct spi_master *master)
+> +{
+> +	struct dra7xxx_qspi *qspi = spi_master_get_devdata(master);
+> +
+> +	pm_runtime_mark_last_busy(qspi->dev);
+> +	pm_runtime_put_autosuspend(qspi->dev);
+error check?
+> +
+> +	return 0;
+> +}
+> +
+> +static int qspi_write_msg(struct dra7xxx_qspi *qspi, struct spi_transfer *t)
+> +{
+> +	const u8 *txbuf;
+> +	int wlen, count;
+> +
+> +	count = t->len;
+> +	txbuf = t->tx_buf;
+> +	wlen = t->bits_per_word;
+> +
+> +	while (count--) {
+> +		dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %02x\n",
+> +			qspi->cmd | QSPI_WR_SNGL, qspi->dc, *txbuf);
+> +		dra7xxx_writel(qspi, QSPI_WC_INT_EN, QSPI_INTR_ENABLE_SET_REG);
+> +		dra7xxx_writel_data(qspi, *txbuf++, QSPI_SPI_DATA_REG, wlen);
+> +		dra7xxx_writel(qspi, qspi->dc, QSPI_SPI_DC_REG);
+> +		dra7xxx_writel(qspi, qspi->cmd | QSPI_WR_SNGL,
+> +			QSPI_SPI_CMD_REG);
+> +		wait_for_completion(&qspi->word_complete);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int qspi_read_msg(struct dra7xxx_qspi *qspi, struct spi_transfer *t)
+> +{
+> +	u8 *rxbuf;
+> +	int wlen, count;
+> +
+> +	count = t->len;
+> +	rxbuf = t->rx_buf;
+> +	wlen = t->bits_per_word;
+> +
+> +	while (count--) {
+> +		dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n",
+> +			qspi->cmd | QSPI_RD_SNGL, qspi->dc);
+> +		dra7xxx_writel(qspi, QSPI_WC_INT_EN, QSPI_INTR_ENABLE_SET_REG);
+> +		dra7xxx_writel(qspi, qspi->dc, QSPI_SPI_DC_REG);
+> +		dra7xxx_writel(qspi, qspi->cmd | QSPI_RD_SNGL,
+> +			QSPI_SPI_CMD_REG);
+> +		wait_for_completion(&qspi->word_complete);
+> +		*rxbuf++ = dra7xxx_readl_data(qspi, QSPI_SPI_DATA_REG, wlen);
+*rxbuf =
+> +		dev_dbg(qspi->dev, "rx done, read %02x\n", *(rxbuf-1));
+rxbuf++ after dev_dbg?
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int qspi_transfer_msg(struct dra7xxx_qspi *qspi, struct spi_transfer *t)
+> +{
+> +	if (t->tx_buf)
+> +		qspi_write_msg(qspi, t);
+what is the point of the function returning error when we dont use it?
+> +	if (t->rx_buf)
+> +		qspi_read_msg(qspi, t);
+what is the point of the function returning error when we dont use it?
+> +
+> +	return 0;
+> +}
+> +
+> +static int dra7xxx_qspi_start_transfer_one(struct spi_master *master,
+> +		struct spi_message *m)
+> +{
+> +	struct dra7xxx_qspi *qspi = spi_master_get_devdata(master);
+> +	struct spi_device *spi = m->spi;
+> +	struct spi_transfer *t;
+> +	int status = 0;
+> +	int frame_length;
+> +
+> +	/* setup device control reg */
+> +	qspi->dc = 0;
+> +
+> +	if (spi->mode & SPI_CPHA)
+> +		qspi->dc |= QSPI_CKPHA(spi->chip_select);
+> +	if (spi->mode & SPI_CPOL)
+> +		qspi->dc |= QSPI_CKPOL(spi->chip_select);
+> +	if (spi->mode & SPI_CS_HIGH)
+> +		qspi->dc |= QSPI_CSPOL(spi->chip_select);
+> +
+> +	frame_length = DIV_ROUND_UP(m->frame_length * spi->bits_per_word,
+> +				spi->bits_per_word);
+> +
+> +	frame_length = clamp(frame_length, 0, QSPI_FRAME_MAX);
+> +
+> +	/* setup command reg */
+> +	qspi->cmd = 0;
+> +	qspi->cmd |= QSPI_EN_CS(spi->chip_select);
+> +	qspi->cmd |= QSPI_FLEN(frame_length);
+> +
+how does one ensure pm runtime has not disabled clocks in
+background? e.g. long latency between transfers.
+> +	list_for_each_entry(t, &m->transfers, transfer_list) {
+> +		qspi->cmd |= QSPI_WLEN(t->bits_per_word);
+> +		qspi->cmd |= QSPI_WC_CMD_INT_EN;
+> +
+> +		qspi_transfer_msg(qspi, t);
+error handling?
+> +
+> +		m->actual_length += t->len;
+> +
+> +		if (list_is_last(&t->transfer_list, &m->transfers))
+> +			goto out;
+> +	}
+> +
+> +out:
+> +	m->status = status;
+> +	spi_finalize_current_message(master);
+> +
+> +	dra7xxx_writel(qspi, qspi->cmd | QSPI_INVAL, QSPI_SPI_CMD_REG);
+> +
+> +	return status;
+> +}
+> +
+> +static irqreturn_t dra7xxx_qspi_isr(int irq, void *dev_id)
+> +{
+> +	struct dra7xxx_qspi *qspi = dev_id;
+> +	u16 mask, stat;
+> +
+> +	irqreturn_t ret = IRQ_HANDLED;
+> +
+> +	spin_lock(&qspi->lock);
+> +
+what if autosuspend has triggered here? before ISR was scheduled?
+> +	stat = dra7xxx_readl(qspi, QSPI_SPI_STATUS_REG);
+> +	mask = dra7xxx_readl(qspi, QSPI_SPI_CMD_REG);
+> +
+> +	if ((stat & QSPI_WC) && (mask & QSPI_WC_CMD_INT_EN))
+> +		ret = IRQ_WAKE_THREAD;
+> +
+> +	spin_unlock(&qspi->lock);
+> +
+> +	return ret;
+> +}
+> +
+> +static irqreturn_t dra7xxx_qspi_threaded_isr(int this_irq, void *dev_id)
+> +{
+> +	struct dra7xxx_qspi *qspi = dev_id;
+> +	unsigned long flags;
+> +
+> +	spin_lock_irqsave(&qspi->lock, flags);
+> +
+what if autosuspend has triggered here? before ISR was scheduled?
+> +	dra7xxx_writel(qspi, QSPI_WC_INT_DISABLE, QSPI_INTR_ENABLE_CLEAR_REG);
+> +	dra7xxx_writel(qspi, QSPI_WC_INT_DISABLE,
+> +			QSPI_INTR_STATUS_ENABLED_CLEAR);
+> +
+> +	complete(&qspi->word_complete);
+> +
+> +	spin_unlock_irqrestore(&qspi->lock, flags);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static const struct of_device_id dra7xxx_qspi_match[] = {
+> +	{.compatible = "ti,dra7xxx-qspi" },
+> +	{},
+> +};
+> +MODULE_DEVICE_TABLE(of, dra7xxx_qspi_match);
+> +
+> +static int dra7xxx_qspi_probe(struct platform_device *pdev)
+> +{
+> +	struct  dra7xxx_qspi *qspi;
+> +	struct spi_master *master;
+> +	struct resource         *r;
+> +	struct device_node *np = pdev->dev.of_node;
+> +	u32 max_freq;
+> +	int ret = 0, num_cs, irq;
+> +
+> +	master = spi_alloc_master(&pdev->dev, sizeof(*qspi));
+> +	if (!master)
+> +		return -ENOMEM;
+> +
+> +	master->mode_bits = SPI_CPOL | SPI_CPHA;
+> +
+> +	master->num_chipselect = 1;
+> +	master->bus_num = -1;
+> +	master->setup = dra7xxx_qspi_setup;
+> +	master->prepare_transfer_hardware = dra7xxx_qspi_prepare_xfer;
+> +	master->transfer_one_message = dra7xxx_qspi_start_transfer_one;
+> +	master->unprepare_transfer_hardware = dra7xxx_qspi_unprepare_xfer;
+> +	master->dev.of_node = pdev->dev.of_node;
+> +	master->bits_per_word_mask = BIT(32 - 1) | BIT(16 - 1) | BIT(8 - 1);
+> +
+> +	if (!of_property_read_u32(np, "ti,spi-num-cs", &num_cs))
+> +		master->num_chipselect = num_cs;
+> +
+> +	platform_set_drvdata(pdev, master);
+> +
+> +	qspi = spi_master_get_devdata(master);
+> +	qspi->master = master;
+> +	qspi->dev = &pdev->dev;
+> +
+> +	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> +	if (r == NULL) {
+> +		ret = -ENODEV;
+> +		goto free_master;
+> +	}
+> +
+> +	irq = platform_get_irq(pdev, 0);
+> +	if (irq < 0) {
+> +		dev_err(&pdev->dev, "no irq resource?\n");
+> +		return irq;
+> +	}
+> +
+> +	spin_lock_init(&qspi->lock);
+> +
+> +	qspi->base = devm_ioremap_resource(&pdev->dev, r);
+> +	if (IS_ERR(qspi->base)) {
+> +		ret = -ENOMEM;
+> +		goto free_master;
+> +	}
+why not use devm_request_and_ioremap? Lock that region down so that no
+two drivers can manage the same region?
+> +
+> +	ret = devm_request_threaded_irq(&pdev->dev, irq, dra7xxx_qspi_isr,
+> +		dra7xxx_qspi_threaded_isr, IRQF_NO_SUSPEND | IRQF_ONESHOT,
+> +			dev_name(&pdev->dev), qspi);
+> +	if (ret < 0) {
+> +		dev_err(&pdev->dev, "Failed to register ISR for IRQ %d\n",
+> +				irq);
+> +		goto free_master;
+> +	}
+> +
+> +	qspi->fclk = devm_clk_get(&pdev->dev, "fck");
+> +	if (IS_ERR(qspi->fclk)) {
+> +		ret = PTR_ERR(qspi->fclk);
+> +		dev_err(&pdev->dev, "could not get clk: %d\n", ret);
+> +	}
+> +
+> +	init_completion(&qspi->word_complete);
+> +
+> +	pm_runtime_use_autosuspend(&pdev->dev);
+> +	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+> +	pm_runtime_enable(&pdev->dev);
+> +
+> +	if (!of_property_read_u32(np, "spi-max-frequency", &max_freq))
+> +		qspi->spi_max_frequency = max_freq;
+> +
+> +	ret = spi_register_master(master);
+> +	if (ret)
+> +		goto free_master;
+> +
+> +	return ret;
+> +
+> +free_master:
+> +	spi_master_put(master);
+> +	return ret;
+> +}
+> +
+> +static int dra7xxx_qspi_remove(struct platform_device *pdev)
+> +{
+> +	struct  dra7xxx_qspi *qspi = platform_get_drvdata(pdev);
+> +
+> +	spi_unregister_master(qspi->master);
+> +
+> +	return 0;
+> +}
+> +
+> +static struct platform_driver dra7xxx_qspi_driver = {
+> +	.probe	= dra7xxx_qspi_probe,
+> +	.remove	= dra7xxx_qspi_remove,
+> +	.driver = {
+> +		.name	= "ti,dra7xxx-qspi",
+> +		.owner	= THIS_MODULE,
+> +		.of_match_table = dra7xxx_qspi_match,
+> +	}
+no need for pm_ops?
+> +};
+> +
+> +module_platform_driver(dra7xxx_qspi_driver);
+> +
+> +MODULE_LICENSE("GPL");
+GPL V2?
+> +MODULE_DESCRIPTION("TI QSPI controller driver");
+MODULE_AUTHOR?
+> -- 
+> 1.7.1
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+-- 
+Regards,
+Nishanth Menon

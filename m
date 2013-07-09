@@ -1,66 +1,84 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCHv3 2/3] drivers: spi: Add qspi flash controller
-Date: Tue, 9 Jul 2013 15:40:43 +0100
-Message-ID: <20130709144043.GV27646@sirena.org.uk>
-References: <1373290980-17883-1-git-send-email-sourav.poddar@ti.com>
- <1373290980-17883-3-git-send-email-sourav.poddar@ti.com>
- <20130708203330.GA28322@kahuna>
- <20130709065143.GC5552@arwen.pp.htv.fi>
- <51DC072F.40704@ti.com>
+Subject: Re: [PATCH v1 3/4] spi/xilinx: Simplify irq allocation
+Date: Tue, 9 Jul 2013 15:47:04 +0100
+Message-ID: <20130709144704.GY27646@sirena.org.uk>
+References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
+ <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com>
+ <20130708144930.GG27646@sirena.org.uk>
+ <51DADF3E.1000802@monstr.eu>
+ <20130708162642.GM27646@sirena.org.uk>
+ <51DC1AF1.3090401@monstr.eu>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="W8H4ZJu+ON5Wa/ox"
-Cc: balbi@ti.com, Sourav Poddar <sourav.poddar@ti.com>,
-	spi-devel-general@lists.sourceforge.net, grant.likely@linaro.org,
-	rnayak@ti.com, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Nishanth Menon <nm@ti.com>
+	protocol="application/pgp-signature"; boundary="qVdROpInvt/uIoBf"
+Cc: Michal Simek <michal.simek@xilinx.com>,
+	linux-kernel@vger.kernel.org,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net
+To: Michal Simek <monstr@monstr.eu>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <51DC072F.40704@ti.com>
+In-Reply-To: <51DC1AF1.3090401@monstr.eu>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---W8H4ZJu+ON5Wa/ox
+--qVdROpInvt/uIoBf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jul 09, 2013 at 07:50:55AM -0500, Nishanth Menon wrote:
+On Tue, Jul 09, 2013 at 04:15:13PM +0200, Michal Simek wrote:
 
-> with this input and looking closer, I think I see what you are saying now:
-> dra7xxx_qspi_prepare_xfer -> does a pm_runtime_get_sync
-> dra7xxx_qspi_unprepare_xfer -> does a pm_runtime_mark_last_busy,
-> pm_runtime_put_autosuspend
+> 4. spi_master_release()
+> 5. devres_release() with irq
 
-> In between these calls, you have the remaining xfer calls going on.
-> we are assuming here that autosuspend timeout should be greater than
-> the time to complete the worst case transfer.
+> If interrupt happends between 4 and 5 than it can be the problem.
+> Do I understand you correctly?
 
-No, autosuspend will do nothing so long as there are references to the
-device held.  The effect of autosuspend is to delay power down after the
-last reference has been dropped, otherwise things run normally.
+Yes.
 
---W8H4ZJu+ON5Wa/ox
+> If this is problematic case we can disable local and global interrupts
+> and add it between 2 and 3 or 3-4.
+> 	/* Disable all the interrupts just in case */
+> 	xspi->write_fn(0, regs_base + XIPIF_V123B_IIER_OFFSET);
+> 	/* Disable the global IPIF interrupt */
+> 	xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
+
+> What do you think about this solution?
+
+That's fine, though if just manually freeing the IRQ works that's also
+OK...
+
+> I have also tried to run one thing with and without this patch
+> and the results are below.
+
+> When I add this irq disable function between 1 and 2 then
+> module removing stucks.
+
+You'll need to wait until the device is quiesced at least if it's
+relying on the interrupt to complete operations.
+
+--qVdROpInvt/uIoBf
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.20 (GNU/Linux)
 
-iQIcBAEBAgAGBQJR3CDoAAoJELSic+t+oim9mlQP/1O+Zz4BGus/wyIG4C7J3ypQ
-kcnb4c0jRkB+8qr0827e3FBaxf9+acKEHD6D62l0aJjtlbyNKbg9WNFEVxFHRcdC
-niNie4ImofcIrlBkf4xKZ4h20jYEN+Mf9GdmEWd6QR5Df6RrGRJfCTNcZVjA3GhZ
-DbaeCt1bAejD/hRv7sEwlUy9sKl+Ggx42im/zf1sGdL7bbJwAn8aZ7T0LQGyv1uX
-a8p24UXX+sLCnHYQUUANUdL9H9dfGHxz9/f/q0/VVG8NXHjB5Ck1HvlzAtDLR4p1
-IRCQ34zOKDlnix0ltH/2MOendAQzO0VeDU1g2a68TQjHkIolTOMr/jFDqdKjf8L0
-p+go/0gYSFYFoTo3vhVIe5LQ6e1gO5OMwX8vcI6yrGKaN5lJutQ32mcrZ4TOym4W
-MEfIG0VZK8UPD8GEcgcCI6NEYUyGwGlosxk8g2C5l7OWi8T2ksbWj1rM6LnInYwB
-tgw7IPjfj3XPpwJOWOjAboMcEKyZ4w2/wrhDiIUZYtnDIlzZKVq+lI6OrQi1bOv8
-3pQ9sROQHGBCzjyulyU9HMQoNF8ZUqZNaffIy75G7ydQ1yUPtlIUIsscD+DTU87z
-beGkcRV4jrDW/M7iTPwlUvjvknoeVBIDbWWFo7crVK8Jj+EoqtSIxKtcRcGnTr26
-Cjci4NzQqXFaOLSIXndk
-=LrUV
+iQIcBAEBAgAGBQJR3CJkAAoJELSic+t+oim9fOYQAJADbFS77xLs6ortOeovxv5M
+ZacmWAcElcu2uytl7ceJgyZJiu3UnDQu5S5/eGT2cJR/Gi8pQmBffGA9mu9ho2AA
+z9kAaRkeF4Sfl6lNMjM3AYj7kvvGtxOomuMwGo2Jsxo8+dgNF+3EchYQl3tD1tkM
+B6MpeIGUtg+eQQ7QBv08VX7w6zSiJZvMfTpdkIkAzL2bVWFKT+Xf2mlExRsBNwbI
+rNhBDgPwfdj+talHwhrTAPe4KsN9YamhowkMY7N4WC7kMFVNKIL4+CmDAjpB76fY
+EsPnFgcxF6gqaNtshNmtSNgqpk6YbMQWgWydmxNtVAZV/GUcQHtTsiR6kWyQYXTw
+B+j1sb7jtbFl6Z4kAQIZ+sZL6MM9D6uULDnTXNZ7+X5noQKd3T8clwq69r1CTUw1
+cBHFCXPuy/heWLLg6dOWiq1jtttHKKMLiVC2RtriiN4JCVakUJ1rQu/QJ54fawZq
+OWopaSE0f5OLnAauo2s3YqxAC5vVKeRpGKVpPXb8nj6KTcI4a3Vcnh8+D89XqXXE
+n/QIoWBi0705AUXBAX7XzA0nM+XydxNFolXIEdwpz1AM9yHkg4CECdA5GxanidGP
+sQb/gN6TF7Qqb4KUFyHRtxa3RHnwjATW8Aa2fEaWNWZZFfIVLftijy3pBZh5KhG0
+V670GHTR9UIc68ytryLe
+=H1r9
 -----END PGP SIGNATURE-----
 
---W8H4ZJu+ON5Wa/ox--
+--qVdROpInvt/uIoBf--

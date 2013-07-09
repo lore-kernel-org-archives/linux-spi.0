@@ -1,67 +1,66 @@
-From: Mark Brown <broonie@kernel.org>
+From: Nishanth Menon <nm-l0cyMroinI0@public.gmane.org>
 Subject: Re: [PATCHv3 2/3] drivers: spi: Add qspi flash controller
-Date: Tue, 9 Jul 2013 11:05:26 +0100
-Message-ID: <20130709100525.GR27646@sirena.org.uk>
+Date: Tue, 9 Jul 2013 07:32:43 -0500
+Message-ID: <51DC02EB.8070905@ti.com>
 References: <1373290980-17883-1-git-send-email-sourav.poddar@ti.com>
- <1373290980-17883-3-git-send-email-sourav.poddar@ti.com>
- <20130708203330.GA28322@kahuna>
- <20130709065143.GC5552@arwen.pp.htv.fi>
+	<1373290980-17883-3-git-send-email-sourav.poddar@ti.com>
+	<20130708203330.GA28322@kahuna>
+	<20130709065143.GC5552@arwen.pp.htv.fi>
+	<20130709100525.GR27646@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="xuphU+ty49MprRdU"
-Cc: Nishanth Menon <nm@ti.com>, Sourav Poddar <sourav.poddar@ti.com>,
-	spi-devel-general@lists.sourceforge.net, grant.likely@linaro.org,
-	rnayak@ti.com, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Felipe Balbi <balbi@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20130709065143.GC5552@arwen.pp.htv.fi>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: rnayak-l0cyMroinI0@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Felipe Balbi <balbi-l0cyMroinI0@public.gmane.org>,
+	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130709100525.GR27646-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On 07/09/2013 05:05 AM, Mark Brown wrote:
+> On Tue, Jul 09, 2013 at 09:51:43AM +0300, Felipe Balbi wrote:
+>
+>>> Looks like a case to use regmap?
+>>> Dumb q: why cant we use regmap_spi? worst case, you should be able to
+>
+>> read regmap-spi and you'll see why it can't be used in this case.
+>
+>> regmap-spi is for SPI clients who want to read their register map
+>> through SPI commands. This is a driver for the SPI master which has its
+>> registers memory mapped.
+>
+> Indeed, regmap-spi would be a client of this driver.  Though there is
+> regmap-mmio which may be helpful, on the other hand it's relatively
+> heavyweight and SPI can be a bit performance sensitive so perhaps it's
+> not awesome here.  Russell did mention the idea of some helpers along a
+> similar style though, they may be a good idea but nobody wrote them yet.
+>
+Fair enough. I am starting to see at least a second driver (internally 
+for DRA7 IRQ/DMA crossbar) doing the same handling for different bit 
+sized registers. maybe now is the time for us to create a lighter 
+version of mmio. mmio at least the last I looked uses spinlocks and is 
+fairly fast. But, I agree, when the client of regmap uses locks to 
+protect operations of their own, regmap might be a bit of an overhead. 
+that said, replicating regmap logic in the driver looks a bit weird and 
+might allow the basis for other drivers to do the same as well as some 
+users of mmio would consider themselves performance sensitive :(.
 
---xuphU+ty49MprRdU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+-- 
+Regards,
+Nishanth Menon
 
-On Tue, Jul 09, 2013 at 09:51:43AM +0300, Felipe Balbi wrote:
-
-> > Looks like a case to use regmap?
-> > Dumb q: why cant we use regmap_spi? worst case, you should be able to
-
-> read regmap-spi and you'll see why it can't be used in this case.
-
-> regmap-spi is for SPI clients who want to read their register map
-> through SPI commands. This is a driver for the SPI master which has its
-> registers memory mapped.
-
-Indeed, regmap-spi would be a client of this driver.  Though there is
-regmap-mmio which may be helpful, on the other hand it's relatively
-heavyweight and SPI can be a bit performance sensitive so perhaps it's
-not awesome here.  Russell did mention the idea of some helpers along a
-similar style though, they may be a good idea but nobody wrote them yet.
-
---xuphU+ty49MprRdU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR2+BdAAoJELSic+t+oim9hAUP/jMKcQ5yJDkGq08a+NUKybbA
-/1vzSBvFMwyZVeuludCMfL4JSlFNvuaW3+VJIowNwOdysIBAgT3NA23KrTE6iCap
-OymJIwrldbiqnb0705DNw3OzJ/0jJyXgiRruhogwcH7e1TCV9zQcW5/inAKkkOL5
-OKr42c1fs7bR/aKUee7OJXYwOgyAeHt4M0RAN3HLLoK6PX4c5nFd1/Pv2y1ortfZ
-o3uO2GXQgbNbo0T2LBJN76XXqqlogBFbuxrQOx90yCRDGFmYswmwd6xQfR/UxE3c
-+7jE+GpyWeZctMBrS23wqGQ1aFE7a03sv5tr3pUNNwQ/t2f1AmZ2HCjy0JFkOMNg
-/Brn1Upr+FpgY7ZfGLr90ZuHpB4EyYOfy6gxn1ruTDUd7PVYV2Mt7pPtDiI/Z/d0
-FyV/Dt9PRwdSJiY7DpCqD3WScTbdth2a+tgRVrJ/sQc8nGB6aaDz4PsSJhqJ6Lfo
-L5p6lkj1ajHWNXQ8RCPkcClw3aQV+Oj2Gf0fXwlFuzernuUX24U928nxVABLG4FY
-riiqAqpJtB3cF53w/g1IfHMrUO0azvZz9hr0GT73VUr7wFkva8C2MKXI9HK1aRuM
-WVIaPaYt/hg5b7bIS8LWNIoOrKE6oW8ZxncacydT6h6Ql6NuEbbceqq6wXgSzJSZ
-SxglcxwzGphJwUO5vHCI
-=LHL1
------END PGP SIGNATURE-----
-
---xuphU+ty49MprRdU--
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

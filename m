@@ -1,95 +1,81 @@
-From: Michal Simek <michal.simek@xilinx.com>
-Subject: Re: [PATCH v1 3/4] spi/xilinx: Simplify irq allocation
-Date: Tue, 9 Jul 2013 16:53:25 +0200
-Message-ID: <cab4ad33-0aee-4bc4-be36-6610f19c403d@AM1EHSMHS015.ehs.local>
-References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com> <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com> <20130708144930.GG27646@sirena.org.uk> <51DADF3E.1000802@monstr.eu> <20130708162642.GM27646@sirena.org.uk> <51DC1AF1.3090401@monstr.eu> <20130709144704.GY27646@sirena.org.uk>
+From: Capsules Nespresso <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: 100 capsules Nespresso a 21 euros
+Date: Tue, 9 Jul 2013 17:20:50 +0200 (CEST)
+Message-ID: <uskneg.hix8xe0yibi9jyl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature";
-	boundary="----enig2CPXEQERUWJVTAQBQSBFQ"
-Cc: Michal Simek <monstr@monstr.eu>,
-	Michal Simek <michal.simek@xilinx.com>,
-	<linux-kernel@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	<spi-devel-general@lists.sourceforge.net>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20130709144704.GY27646@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-------enig2CPXEQERUWJVTAQBQSBFQ
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBqgpnjjI7gfk57dIhix8wzmxI&u=3Dhttp%3A%2F%2Fnews.t=
+eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373383231607%26custid%3D164=
+44%26uid%3D16231069273%26sig%3DPOEKNBGPEABJPLIA%26mid%3D1600191343&s=3DLOCH=
+CDLKAMHKOHGO
+ =
 
-On 07/09/2013 04:47 PM, Mark Brown wrote:
-> On Tue, Jul 09, 2013 at 04:15:13PM +0200, Michal Simek wrote:
-> =
+100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsu=
+les Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespr=
+esso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21=
+ euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100=
+ capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules=
+ Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespress=
+o a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 eu=
+ros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 ca=
+psules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Ne=
+spresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a=
+ 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros=
+100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsu=
+les Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespr=
+esso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21=
+ euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100=
+ capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules=
+ Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespress=
+o a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 eu=
+ros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 ca=
+psules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Ne=
+spresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a=
+ 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros=
+100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsu=
+les Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespr=
+esso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21=
+ euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100=
+ capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules=
+ Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespress=
+o a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 eu=
+ros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 ca=
+psules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Ne=
+spresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a=
+ 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros=
+100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsu=
+les Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespr=
+esso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21=
+ euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100=
+ capsules Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules=
+ Nespresso a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespress=
+o a 21 euros100 capsules Nespresso a 21 euros100 capsules Nespresso a 21 eu=
+ros100 capsules Nespresso a 21 euros
+ =
 
->> 4. spi_master_release()
->> 5. devres_release() with irq
-> =
-
->> If interrupt happends between 4 and 5 than it can be the problem.
->> Do I understand you correctly?
-> =
-
-> Yes.
-
-great.
-
-> =
-
->> If this is problematic case we can disable local and global interrupts
->> and add it between 2 and 3 or 3-4.
->> 	/* Disable all the interrupts just in case */
->> 	xspi->write_fn(0, regs_base + XIPIF_V123B_IIER_OFFSET);
->> 	/* Disable the global IPIF interrupt */
->> 	xspi->write_fn(0, regs_base + XIPIF_V123B_DGIER_OFFSET);
-> =
-
->> What do you think about this solution?
-> =
-
-> That's fine, though if just manually freeing the IRQ works that's also
-> OK...
-
-yeah.
-
-
->> I have also tried to run one thing with and without this patch
->> and the results are below.
-> =
-
->> When I add this irq disable function between 1 and 2 then
->> module removing stucks.
-> =
-
-> You'll need to wait until the device is quiesced at least if it's
-> relying on the interrupt to complete operations.
-> =
-
-
-ok. Will send v2 of this patch.
-
-Thanks,
-Michal
-
-
-------enig2CPXEQERUWJVTAQBQSBFQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
-
-iEYEARECAAYFAlHcI+UACgkQykllyylKDCHHcQCePC7ImYcQwBUODfLFTpgeZOz6
-ciMAmQEFccuRrgh3/vEQXW7vloz4K0Gh
-=ktlc
------END PGP SIGNATURE-----
-
-
-------enig2CPXEQERUWJVTAQBQSBFQ--
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600191343&sig=3DOFJJPIFIPDDNCPLN
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

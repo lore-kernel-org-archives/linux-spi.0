@@ -1,84 +1,55 @@
-From: Zed Lighting par Neezz <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Soldes_jusqu'=E0_-_60%_chez_Zed_Lighting?=
-Date: Wed, 10 Jul 2013 16:38:46 +0200 (CEST)
-Message-ID: <q94mv8.hiymv5q7xi47s7l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: =?utf-8?Q?Lothar_Wa=C3=9Fmann?= <LW@KARO-electronics.de>
+Subject: Re: [PATCH V2 01/12] spi/mxs: Always set LOCK_CS
+Date: Wed, 10 Jul 2013 17:29:26 +0200
+Message-ID: <20957.32214.721252.361301@ipc1.ka-ro>
+References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
+ <201304030118.42976.marex@denx.de>
+ <CAOMZO5AEU3D3o-8fKLQJvsRSwBMNn0jfwZFC6R93TKaUpxffSw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Marek Vasut <marex@denx.de>, Fabio Estevam <fabio.estevam@freescale.com>,
+ Shawn Guo <shawn.guo@linaro.org>, spi-devel-general@lists.sourceforge.net,
+ Trent Piepho <tpiepho@gmail.com>, linux-arm-kernel@lists.infradead.org
+To: Fabio Estevam <festevam@gmail.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <CAOMZO5AEU3D3o-8fKLQJvsRSwBMNn0jfwZFC6R93TKaUpxffSw@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgpokwI7gfk57dIhiymuttmI&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373467111572%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DKNMNJKPFJHNNEIKB%26mid%3D1600192688&s=3DHIFM=
-CIDMNJGADOAJ
- =
-
-Soldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed Lig=
-htingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Ze=
-d LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% ch=
-ez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 6=
-0% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=
-=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes j=
-usqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSol=
-des jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed Lighti=
-ngSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed L=
-ightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez =
-Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% =
-chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 -=
- 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=
-=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes j=
-usqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSol=
-des jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed Lighti=
-ngSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed L=
-ightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez =
-Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% =
-chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 -=
- 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=
-=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes j=
-usqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSol=
-des jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed Lighti=
-ngSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed L=
-ightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez =
-Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% =
-chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 -=
- 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=
-=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes j=
-usqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSol=
-des jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed Lighti=
-ngSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed L=
-ightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez =
-Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% =
-chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 -=
- 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=
-=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes j=
-usqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSol=
-des jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed Lighti=
-ngSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez Zed L=
-ightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% chez =
-Zed LightingSoldes jusqu'=E0 - 60% chez Zed LightingSoldes jusqu'=E0 - 60% =
-chez Zed Lighting
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600192688&sig=3DDNHIPFABIHNNOBKP
----------------------------------------------------------------------------=
----
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
-ktrk
+SGksCgpGYWJpbyBFc3RldmFtIHdyaXRlczoKPiBPbiBUdWUsIEFwciAyLCAyMDEzIGF0IDg6MTgg
+UE0sIE1hcmVrIFZhc3V0IDxtYXJleEBkZW54LmRlPiB3cm90ZToKPiA+IERlYXIgVHJlbnQgUGll
+cGhvLAo+ID4KPiA+PiBUaGVyZSBhcmUgdHdvIGJpdHMgd2hpY2ggY29udHJvbCB0aGUgQ1MgbGlu
+ZSBpbiB0aGUgQ1RSTDAgcmVnaXN0ZXI6Cj4gPj4gTE9DS19DUyBhbmQgSUdOT1JFX0NSQy4gIFRo
+ZSBsYXR0ZXIgd291bGQgYmUgYmV0dGVyIG5hbWVkIERFQVNTRVJUX0NTCj4gPj4gaW4gU1BJIG1v
+ZGUuCj4gPj4KPiA+PiBMT0NLX0NTIGtlZXBzIENTIGFzc2VydGVkIHRob3VnaCB0aGUgZW50aXJl
+IHRyYW5zZmVyLiAgVGhpcyBzaG91bGQKPiA+PiBhbHdheXMgYmUgc2V0LiAgVGhlIERNQSBjb2Rl
+IHdpbGwgYWx3YXlzIHNldCBpdCwgZXhwbGljaXRseSBvbiB0aGUKPiA+PiBmaXJzdCBzZWdtZW50
+IG9mIHRoZSBmaXJzdCB0cmFuc2ZlciwgYW5kIHRoZW4gaW1wbGljaXRseSBvbiBhbGwgdGhlCj4g
+Pj4gcmVzdCBieSBuZXZlciBjbGVhcmluZyB0aGUgYml0IGZyb20gdGhlIHZhbHVlIHJlYWQgZnJv
+bSB0aGUgY3RybDAKPiA+PiByZWdpc3Rlci4KPiA+Pgo+ID4+IFRoZSBvbmx5IHJlYXNvbiB0byBu
+b3Qgc2V0IExPQ0tfQ1Mgd291bGQgYmUgdG8gYXR0ZW1wdCBhbiBhbHRlcmVkCj4gPj4gcHJvdG9j
+b2wgd2hlcmUgQ1MgcHVsc2VzIGJldHdlZW4gZWFjaCB3b3JkLiAgVGhvdWdoIGRvbid0IGdldCB5
+b3VyCj4gPj4gaG9wZXMgdXAgaWYgeW91IHdhbnQgdG8gZG8gdGhpcywgYXMgdGhlIGhhcmR3YXJl
+IGRvZXNuJ3QgYXBwZWFyIHRvIGRvCj4gPj4gdGhpcyBpbiBhbnkgc2FuZSBtYW5uZXIuCj4gPgo+
+ID4gQ2FuIHlvdSBwbGVhc2UgZWxhYm9yYXRlIG9uIHRoaXMgcGFydCBhYm92ZT8gVGhlIGRlc2Ny
+aXB0aW9uIGlzIHZlcnkgdmFndWUuCj4gPgpGcm9tIG15IGV4cGVyaWVuY2UgdGhlIEhXIGRlYXNz
+ZXJ0cyBDUyB3aGVuZXZlciB0aGUgb3V0cHV0IGZpZm8gcnVucwplbXB0eS4KCgpMb3RoYXIgV2HD
+n21hbm4KLS0gCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCgpLYS1SbyBlbGVjdHJvbmljcyBHbWJIIHwgUGFzY2Fsc3RyYcOfZSAyMiB8
+IEQgLSA1MjA3NiBBYWNoZW4KUGhvbmU6ICs0OSAyNDA4IDE0MDItMCB8IEZheDogKzQ5IDI0MDgg
+MTQwMi0xMApHZXNjaMOkZnRzZsO8aHJlcjogTWF0dGhpYXMgS2F1c3NlbgpIYW5kZWxzcmVnaXN0
+ZXJlaW50cmFnOiBBbXRzZ2VyaWNodCBBYWNoZW4sIEhSQiA0OTk2Cgp3d3cua2Fyby1lbGVjdHJv
+bmljcy5kZSB8IGluZm9Aa2Fyby1lbGVjdHJvbmljcy5kZQpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwoKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxp
+c3QKbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZy
+YWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=

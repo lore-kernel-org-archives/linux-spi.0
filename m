@@ -1,66 +1,72 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] spi: convert drivers to use bits_per_word_mask
-Date: Tue, 9 Jul 2013 22:56:57 +0100
-Message-ID: <20130709215657.GB3179@sirena.org.uk>
-References: <1369190195-14598-1-git-send-email-swarren@wwwdotorg.org>
- <1369190195-14598-2-git-send-email-swarren@wwwdotorg.org>
- <51DC3078.5090602@monstr.eu>
- <20130709214910.GA3179@sirena.org.uk>
+From: "iPhone" <contact-oSgpC8xvnUvQT0dZR+AlfA@public.gmane.org>
+Subject: Comment economiser sur l'iPhone 5
+Date: Wed, 10 Jul 2013 02:49:35 +0000 (CET)
+Message-ID: <130710024935.-52863579600003548@ocfm40.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tsOsTdHNUZQcU9Ye"
-Cc: Stephen Warren <swarren@wwwdotorg.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	spi-devel-general@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	device-drivers-devel@blackfin.uclinux.org,
-	Mike Frysinger <vapier@gentoo.org>
-To: Michal Simek <monstr@monstr.eu>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20130709214910.GA3179@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---tsOsTdHNUZQcU9Ye
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Jul 09, 2013 at 10:49:10PM +0100, Mark Brown wrote:
-> On Tue, Jul 09, 2013 at 05:47:04PM +0200, Michal Simek wrote:
->=20
-> > Probably the best solution is just revert this part of patch.
-> > Mark: What do you think?
->=20
-> We should make it so that the user does not need to supply empty
-> functions if none are needed.
-
-=2E..though this is stuff that went to Linus in the merge window so as a
-bug fix we should restore that function then for v3.12 we should do the
-proper fix.
-
---tsOsTdHNUZQcU9Ye
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR3IcmAAoJELSic+t+oim9nWMP/3ITlUQEwNmT/5NH/E8Tk7au
-OTul/6/3BTyoIlJdv0HljoXUUaExc5W4Fz0W4G8nG/GWlrdDm9ywPMBsrSEZkQWH
-CQQva/gZvK0JbyDpQhZW8yBzVQUbqkynpNYIVVoBdhBCF7FTmvsckYMe7X2De9Sg
-hiJv4jUVdMB7scyBzZ+oVWFyq5NTvhNxYYCn4/+tzUogm/fgXk786yXEZwu2aebD
-uJF2jptNRm6nfcwQ/BNUICroxaje7CL2D/vO2s17ljCMhiNMwplyqyWctOvKgyzu
-sEK8fqHF0U6lffUEQRaP+UaD0k6tPXFBZb521Yy+zLxvC/EWSOi4YckQh9SqTOTV
-CDOkmxO1CNTsGDxhqQTb2C2fbPL6cR49/1ygP3ItgJNjTGPoKRvpMKvs8aaV4ZcY
-bjVXX133kMw6ssfawg2/CfuOvJSAXXu0oBUtUfww3oGmIpF/fzgQDMFv/UHL00sD
-I2ZX4WC1yZaCJgNpS5RtlqqNEXr2soTeO0jy5adCyrufxQTTHerx3HGBJ7PsTI8i
-aSIwWS3ZQNrMuZjE66++OMEBbvKsFuDE994hKdp9FwgB+1SppB/OMz3geVhO9zlR
-pzGnnWKuuAG4KKdOw6n29rHk66HZLB2A6LfK1cnddVLeEj7om/5Hy8kOiV5AyK4J
-wcqnkbDugMwu4zUdyce3
-=43kJ
------END PGP SIGNATURE-----
-
---tsOsTdHNUZQcU9Ye--
+CihodHRwOi8vb2NmbTQwLmNvbS90MnV6cmVyZm91ZDBwbG1vY2QvaW5kZXgwLmh0bWwpCihodHRw
+Oi8vb2NmbTQwLmNvbS8yeHVtZGVkcG95MDIzZHBveHMvaW5kZXgxLmh0bWwpCgpOb3VzIHNvbW1l
+cyBhbGzDqXMgZMOpbmljaGVyIGxlcyBkZXJuacOocmVzIGFzdHVjZXMgcG91ciDDqWNvbm9taXNl
+cgooaHR0cDovL29jZm00MC5jb20vYnR1dzRlNGtveGUwZjJyZjFsL2luZGV4Mi5odG1sKQrDgCBM
+QSBVTkUKQ29tbWVudCDDqWNvbm9taXNlciA5MCUgc3VyIHVuIGlQYWQgNCBvdSBzdXIgdW4gaVBo
+b25lIDUgPwpWb3VzIGwnYXVyZXogc3VyZW1lbnQgcmVtYXJxdcOpLCB1biBub3V2ZWF1IHBow6lu
+b23DqG5lIGVzdCBlbiB0cmFpbiBkZSBzZSBkw6l2ZWxvcHBlciBlbiBFdXJvcGUgZXQgZW4gQW3D
+qXJpcXVlIGR1IE5vcmQgOiBsZXMgc2l0ZXMgaW50ZXJuZXQgZGUgdmVudGVzIGF1eCBlbmNow6hy
+ZXMgZGUgZMOpc3RvY2thZ2UuIFBhcnRvdXQgc3VyIGxlIG5ldCwgZGFucyBsZXMgYmxvZ3MsIG9u
+IHBldXQgbGlyZSBsZXMgaGlzdG9pcmVzIGQnaGV1cmV1eCBnYWduYW50cyBxdWkgb250IHJlbXBv
+cnTDqSBkZSBmYWJ1bGV1eCBhcnRpY2xlcyBoYWJpdHVlbGxlbWVudCB0csOocyBvbsOpcmV1eCBw
+b3VyIMOgIHBlaW5lIHVuZSBib3VjaMOpZSBkZSBwYWluLiBNYWlzIG5vdXMgbifDqXRpb25zIHBh
+cyBjb252YWluY3VzIMOgIDEwMCAlIGV0IGMnZXN0IHBvdXIgY2VsYSBxdWUgbm91cyBhdm9ucyBk
+w6ljaWTDqSBkZSBsZXMgdGVzdGVyLiBQb3VyIG5vdXMgYXNzdXJlciBxdWUgbGVzIGJvbm5lcyBh
+ZmZhaXJlcyBwcm9wb3PDqWVzIHBhciBjZXMgc2l0ZXMgZGUgdmVudGVzIGF1eCBlbmNow6hyZXMg
+ZGUgZMOpc3RvY2thZ2Ugw6l0YWllbnQgYmllbiByw6llbGxlcy4gRXQgcXVlbGxlIG1laWxsZXVy
+ZSByYWlzb24gcG91ciBzJ2VuIGFzc3VyZXIgcXVlIGRlIGxlcyB0ZXN0ZXIgbm91cy1tw6ptZSA/
+IApsaXJlIGxhIHN1aXRlIChodHRwOi8vb2NmbTQwLmNvbS8wY3Vwb2Vvc281dzJvMDVmZnkvaW5k
+ZXgzLmh0bWwpCihodHRwOi8vb2NmbTQwLmNvbS9ldGFhNDBxdWZ6azA1Y3JxcHMvaW5kZXg0Lmh0
+bWwpCihodHRwOi8vb2NmbTQwLmNvbS91Y2F2bzB3eWZiNDJhMTVxbWQvaW5kZXg1Lmh0bWwpCkxB
+IFJFVlVFIENPTlNPCkplIHZvdWxhaXMgYWNoZXRlciB1biBub3V2ZWwgaVBhZCBSZXRpbmEgZGUg
+QXBwbGUsIGMnZXN0IGRvbmMgbW9pIHF1aSBhaSDDqXTDqSBjaGFyZ8OpZSBkdSB0ZXN0LgoiSidh
+aSBjb21tZW5jw6kgcGFyIGZhaXJlIHVuZSB0b25uZSBkZSByZWNoZXJjaGVzIHN1ciBsZSBzdWpl
+dCBwb3VyIGTDqXRlcm1pbmVyIHF1ZWwgc2l0ZSBkJ2VuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZSDD
+qXRhaXQgbGUgcGx1cyBmaWFibGUsIGV0IGRvbmMgbGUgbWlldXggYWRhcHTDqSDDoCBtb24gdGVz
+dC4gQXByw6hzIGRlcyBoZXVyZXMgZGUgcmVjaGVyY2hlcywgaidlbiBzdWlzIHZlbnVlIMOgIGxh
+IGNvbmNsdXNpb24gcXVlLCBkdSBmYWl0IGRlIHNhIGxhcmdlIGdhbW1lIGQnYXJ0aWNsZXMgZXQg
+c29uIGV4Y2VsbGVudGUgcsOpcHV0YXRpb24sIEVuY2jDqHJlVmlwIMOpdGFpdCBsZSBzaXRlIMOg
+IHRlc3Rlci4iCmxpcmUgbGEgc3VpdGUgKGh0dHA6Ly9vY2ZtNDAuY29tL3YyYWlyMHN4ZmpzMHhx
+bWM1eS9pbmRleDYuaHRtbCkKKGh0dHA6Ly9vY2ZtNDAuY29tL2t4YWtkMHA1ZmF0MmpncGNybC9p
+bmRleDcuaHRtbCkKKGh0dHA6Ly9vY2ZtNDAuY29tLzQyeXVtd20xb2VvMHdtbTRpZC9pbmRleDgu
+aHRtbCkKCkNvbW1lbnRhaXJlcyBkZSBub3MgbGVjdGV1cmVzCihodHRwOi8vb2NmbTQwLmNvbS9u
+eHlobHdsbW9kZjJlcnA0YXMvaW5kZXg5Lmh0bWwpCk1hcmllCgpTYW1lZGkgMiBNYXJzCgoiSidh
+aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
+b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIKKGh0
+dHA6Ly9vY2ZtNDAuY29tL2p3aWxheGUwdmJtcGF1MmcyeS9pbmRleDEwLmh0bWwpClBhdG91CgpM
+dW5kaSA0IE1hcnMKIkonYWkgdnUgdW4gcmVwb3J0YWdlIHN1ciBsZXMgZW5jaMOocmVzIGF1IGNl
+bnRpbWUgw6AgbGEgdMOpbMOpLCBwdWlzIGonYWkgbHUgY2V0IGFydGljbGUuIElsIG1lIHRhcmRl
+IGQnZXNzYXllciIKKGh0dHA6Ly9vY2ZtNDAuY29tL3FyeWp4bjFkZ3dteHdreTR0eS9pbmRleDEx
+Lmh0bWwpCihodHRwOi8vb2NmbTQwLmNvbS9rbzJrc21wenIza2dxMW9iY28vaW5kZXgxMi5odG1s
+KQooaHR0cDovL29jZm00MC5jb20vdnNwaTRieXUwZ2tpYmNjaXhvL2luZGV4MTMuaHRtbCkKwqAK
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTZWUgZXZlcnl0aGluZyBmcm9tIHRoZSBicm93c2VyIHRv
+IHRoZSBkYXRhYmFzZSB3aXRoIEFwcER5bmFtaWNzCkdldCBlbmQtdG8tZW5kIHZpc2liaWxpdHkg
+d2l0aCBhcHBsaWNhdGlvbiBtb25pdG9yaW5nIGZyb20gQXBwRHluYW1pY3MKSXNvbGF0ZSBib3R0
+bGVuZWNrcyBhbmQgZGlhZ25vc2Ugcm9vdCBjYXVzZSBpbiBzZWNvbmRzLgpTdGFydCB5b3VyIGZy
+ZWUgdHJpYWwgb2YgQXBwRHluYW1pY3MgUHJvIHRvZGF5IQpodHRwOi8vcHViYWRzLmcuZG91Ymxl
+Y2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NDg4MDg4MzEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
+bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
+Z2VuZXJhbAo=

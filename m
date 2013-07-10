@@ -1,13 +1,18 @@
-From: "La Pointe de Penmarc'h via Club Affaire" <contact-s237+1wDWEiMog0Jp1P/CQ@public.gmane.org>
-Subject: =?UTF-8?Q?Choisissez_le_meilleur_de_la_p=C3=AAche_bretonne?=
-Date: Wed, 10 Jul 2013 13:26:46 +0000 (CET)
-Message-ID: <130710132646.-47624109900003512@ocfm42.com>
+From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V2 01/12] spi/mxs: Always set LOCK_CS
+Date: Wed, 10 Jul 2013 10:49:44 -0300
+Message-ID: <CAOMZO5AEU3D3o-8fKLQJvsRSwBMNn0jfwZFC6R93TKaUpxffSw@mail.gmail.com>
+References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
+	<201304030118.42976.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <201304030118.42976.marex-ynQEQJNshbs@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,35 +23,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKCgomIzkxO0NpdmlsaXRlJiM5MzsgJiM5MTtOb20mIzkzOyAmIzkxO1ByZW5vbSYjOTM7LCBs
-ZSBtZWlsbGV1ciBkZSBsYSBww6pjaGUgYnJldG9ubmUgdm91cyBhdHRlbmQgYXZlYyB1bmUgT0ZG
-UkUgREVDT1VWRVJURSBFWENMVVNJVkUKCgogKGh0dHA6Ly9vY2ZtNDIuY29tL2dweGdibDAxcG9o
-eG4xbGR5ai9pbmRleDAuaHRtbCkKCkxlIFRob24gZGFucyB0b3VzIHNlcyDDqXRhdHMgcG91ciB2
-b3Mgc2FsYWRlcyBlc3RpdmFsZXMgIQpSZWTDqWNvdXZyZXogbGUgdnJhaSBnb8O7dCBkdSBUaG9u
-IGF2ZWMgbm9zIHJlY2V0dGVzIGRlIHF1YWxpdMOpLiBMYSBzw6lsZWN0aW9uIHJpZ291cmV1c2Ug
-ZGUgbm9zIHBvaXNzb25zLApsZSBzYXZvaXItZmFpcmUgZGUgbm90cmUgY29uc2VydmVyaWUgZXQg
-bGEgcXVhbGl0w6kgZGUgbm9zIGluZ3LDqWRpZW50cyB2b3VzIG9mZnJlbnQgOCByZWNldHRlcyBz
-YXZvdXJldXNlcyAhCgogKGh0dHA6Ly9vY2ZtNDIuY29tL293eHlhbGltcDNtZnZjc2RkZy9pbmRl
-eDEuaHRtbCkKCkNvbXBvc2l0aW9uIGRlIHZvdHJlIGFzc29ydGltZW50IDoKMSBNw6lkYWlsbG9u
-IGRlIHRob24gZW4gZ2Vsw6llICgxMjUgZykgKyAxIFBlcnNpbGzDqSBkZSB0aG9uIGVuIGdlbMOp
-ZSAoMTI1IGcpICsgMSBUaG9uIGJsYW5jIGF1IG5hdHVyZWwgKDE2MCBnKSArIDEgw6ltaWV0dMOp
-cyBkZSBUaG9uIGJsYW5jIGNvbmZpdGVyZWxsZXPCriAoODAgZykgKyAxIFRob24gYmxhbmMgw6Ag
-bCdodWlsZSBkJ29saXZlIGV0IGF1IGNpdHJvbiAoODAgZykgKyAxIFRob24gw6AgbGEgQ2F0YWxh
-bmUgKDE2MCBnKSArIDEgVGhvbiBibGFuYyDDoCBsJ2h1aWxlIGQnb2xpdmUgKDE2MCBnKSArIDEg
-VGhvbiBibGFuYyBhdXggYXJ0aWNoYXV0cyAoMTYwIGcpCgogKGh0dHA6Ly9vY2ZtNDIuY29tL3Ft
-eG8xbGZ2cDRneDJnZDBzby9pbmRleDIuaHRtbCkKCj4gUHJvZml0ZXogc2FucyB0YXJkZXIgZGUg
-Y2V0dGUgb2ZmcmUgZXhjZXB0aW9ubmVsbGUgKGh0dHA6Ly9vY2ZtNDIuY29tL2p6eGR2bGtscHQx
-ZmxxeTBscS9pbmRleDMuaHRtbCkKQXZlYyBsZSBDb2RlIDogUlcwMDUKCiAoaHR0cDovL29jZm00
-Mi5jb20vNW1iMjFuZWUzZmp4d2Rkc3ZnL2luZGV4NC5odG1sKQoKCk9mZnJlIHZhbGFibGUganVz
-cXUnYXUgMzEvMDgvMjAxMy4gTGVzIG1pc2VzIGVuIGFtYmlhbmNlcyBkZSBub3MgcHJvZHVpdHMg
-c29udCBkZXMgc3VnZ2VzdGlvbnMgZGUgcHLDqXNlbnRhdGlvbi4KCgoKLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tClNlZSBldmVyeXRoaW5nIGZyb20gdGhlIGJyb3dzZXIgdG8gdGhlIGRhdGFiYXNlIHdp
-dGggQXBwRHluYW1pY3MKR2V0IGVuZC10by1lbmQgdmlzaWJpbGl0eSB3aXRoIGFwcGxpY2F0aW9u
-IG1vbml0b3JpbmcgZnJvbSBBcHBEeW5hbWljcwpJc29sYXRlIGJvdHRsZW5lY2tzIGFuZCBkaWFn
-bm9zZSByb290IGNhdXNlIGluIHNlY29uZHMuClN0YXJ0IHlvdXIgZnJlZSB0cmlhbCBvZiBBcHBE
-eW5hbWljcyBQcm8gdG9kYXkhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFk
-L2Nsaz9pZD00ODgwODgzMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
-c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
-c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Tue, Apr 2, 2013 at 8:18 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+> Dear Trent Piepho,
+>
+>> There are two bits which control the CS line in the CTRL0 register:
+>> LOCK_CS and IGNORE_CRC.  The latter would be better named DEASSERT_CS
+>> in SPI mode.
+>>
+>> LOCK_CS keeps CS asserted though the entire transfer.  This should
+>> always be set.  The DMA code will always set it, explicitly on the
+>> first segment of the first transfer, and then implicitly on all the
+>> rest by never clearing the bit from the value read from the ctrl0
+>> register.
+>>
+>> The only reason to not set LOCK_CS would be to attempt an altered
+>> protocol where CS pulses between each word.  Though don't get your
+>> hopes up if you want to do this, as the hardware doesn't appear to do
+>> this in any sane manner.
+>
+> Can you please elaborate on this part above? The description is very vague.
+>
+> Fabio, can you review this too please?
+
+Sure, it would be nice if Trent could resend this series and copy the
+SPI maintainer, Mark Brown.
+
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

@@ -1,294 +1,172 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: Re: [PATCHv3 2/3] drivers: spi: Add qspi flash controller
-Date: Thu, 11 Jul 2013 14:42:27 +0530
-Message-ID: <51DE76FB.8080303@ti.com>
-References: <1373290980-17883-1-git-send-email-sourav.poddar@ti.com> <1373290980-17883-3-git-send-email-sourav.poddar@ti.com> <20130708143251.GG31221@arwen.pp.htv.fi>
+From: "Daxon par Zetrend" <lisa@a.optincake.com>
+Subject: [SPAM]
+	=?UTF-8?B?M8OobWUgZMOpbWFycXVlIERheG9uID0gU29sZGVzIGp1c3F1J8OgIC03NSUgKyAxMCUgc3VwcGzDqW1lbnRhaXJlcyAh?=
+Date: Thu, 11 Jul 2013 11:40:04 +0100
+Message-ID: <0.0.55.F91.1CE7E23012ECF12.0@mta37.pur3.net>
+Reply-To: Daxon par Zetrend <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <rnayak@ti.com>,
-	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: <balbi@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20130708143251.GG31221@arwen.pp.htv.fi>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 08 July 2013 08:02 PM, Felipe Balbi wrote:
-> Hi,
->
-> On Mon, Jul 08, 2013 at 07:12:59PM +0530, Sourav Poddar wrote:
->> +static inline unsigned long dra7xxx_readl(struct dra7xxx_qspi *qspi,
->> +		unsigned long reg)
->> +{
->> +	return readl(qspi->base + reg);
->> +}
->> +
->> +static inline void dra7xxx_writel(struct dra7xxx_qspi *qspi,
->> +		unsigned long val, unsigned long reg)
->> +{
->> +	writel(val, qspi->base + reg);
->> +}
->> +
->> +static inline unsigned long dra7xxx_readl_data(struct dra7xxx_qspi *qspi,
->> +		unsigned long reg, int wlen)
->> +{
->> +	switch (wlen) {
->> +	case 8:
->> +		return readw(qspi->base + reg);
->> +		break;
->> +	case 16:
->> +		return readb(qspi->base + reg);
->> +		break;
->> +	case 32:
->> +		return readl(qspi->base + reg);
->> +		break;
->> +	default:
->> +		return -1;
-> return -EINVAL ? or some other error code ?
->
->> +	}
->> +}
->> +
->> +static inline void dra7xxx_writel_data(struct dra7xxx_qspi *qspi,
->> +		unsigned long val, unsigned long reg, int wlen)
->> +{
->> +	switch (wlen) {
->> +	case 8:
->> +		writew(val, qspi->base + reg);
->> +		break;
->> +	case 16:
->> +		writeb(val, qspi->base + reg);
->> +		break;
->> +	case 32:
->> +		writeb(val, qspi->base + reg);
->> +		break;
->> +	default:
->> +		dev_dbg(qspi->dev, "word lenght out of range");
->> +		break;
->> +	}
->> +}
->> +
->> +static int dra7xxx_qspi_setup(struct spi_device *spi)
->> +{
->> +	struct dra7xxx_qspi	*qspi = spi_master_get_devdata(spi->master);
->> +	int clk_div = 0;
->> +	u32 clk_ctrl_reg, clk_rate;
->> +
->> +	clk_rate = clk_get_rate(qspi->fclk);
->> +
->> +	if (!qspi->spi_max_frequency) {
->> +		dev_err(qspi->dev, "spi max frequency not defined\n");
->> +		return -1;
-> same here
->
->> +	} else
-> this needs to have curly braces too, per CodingStyle
->
->> +		clk_div = (clk_rate / qspi->spi_max_frequency) - 1;
->> +
->> +	dev_dbg(qspi->dev, "%s: hz: %d, clock divider %d\n", __func__,
->> +			qspi->spi_max_frequency, clk_div);
->> +
->> +	pm_runtime_get_sync(qspi->dev);
->> +
->> +	clk_ctrl_reg = dra7xxx_readl(qspi, QSPI_SPI_CLOCK_CNTRL_REG);
->> +
->> +	clk_ctrl_reg&= ~QSPI_CLK_EN;
->> +
->> +	/* disable SCLK */
->> +	dra7xxx_writel(qspi, clk_ctrl_reg, QSPI_SPI_CLOCK_CNTRL_REG);
->> +
->> +	if (clk_div<  0) {
->> +		dev_dbg(qspi->dev, "%s: clock divider<  0, using /1 divider\n",
->> +				__func__);
->> +		clk_div = 1;
->> +	}
->> +
->> +	if (clk_div>  QSPI_CLK_DIV_MAX) {
->> +		dev_dbg(qspi->dev, "%s: clock divider>%d , using /%d divider\n",
->> +			__func__, QSPI_CLK_DIV_MAX, QSPI_CLK_DIV_MAX + 1);
->> +		clk_div = QSPI_CLK_DIV_MAX;
->> +	}
->> +
->> +	/* enable SCLK */
->> +	dra7xxx_writel(qspi, QSPI_CLK_EN | clk_div, QSPI_SPI_CLOCK_CNTRL_REG);
->> +
->> +	pm_runtime_mark_last_busy(qspi->dev);
->> +	pm_runtime_put_autosuspend(qspi->dev);
->> +
->> +	return 0;
->> +}
->> +
->> +static int dra7xxx_qspi_prepare_xfer(struct spi_master *master)
->> +{
->> +	struct dra7xxx_qspi *qspi = spi_master_get_devdata(master);
->> +
->> +	pm_runtime_get_sync(qspi->dev);
-> not going to check return value ?
->
->> +	return 0;
->> +}
->> +
->> +static int dra7xxx_qspi_unprepare_xfer(struct spi_master *master)
->> +{
->> +	struct dra7xxx_qspi *qspi = spi_master_get_devdata(master);
->> +
->> +	pm_runtime_mark_last_busy(qspi->dev);
->> +	pm_runtime_put_autosuspend(qspi->dev);
-> what about on these two ?
->
-Just realised this, pm_runtime_mark_last_busy does not need a check, it 
-returns nothing.
->> +	return 0;
->> +}
->> +
->> +static int qspi_write_msg(struct dra7xxx_qspi *qspi, struct spi_transfer *t)
->> +{
->> +	const u8 *txbuf;
->> +	int wlen, count;
->> +
->> +	count = t->len;
->> +	txbuf = t->tx_buf;
->> +	wlen = t->bits_per_word;
->> +
->> +	while (count--) {
->> +		dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %02x\n",
->> +			qspi->cmd | QSPI_WR_SNGL, qspi->dc, *txbuf);
->> +		dra7xxx_writel(qspi, QSPI_WC_INT_EN, QSPI_INTR_ENABLE_SET_REG);
-> you should enable the interrupt as the last step. Also, why aren't you
-> using frame interrupt ?
->
->> +		dra7xxx_writel_data(qspi, *txbuf++, QSPI_SPI_DATA_REG, wlen);
->> +		dra7xxx_writel(qspi, qspi->dc, QSPI_SPI_DC_REG);
->> +		dra7xxx_writel(qspi, qspi->cmd | QSPI_WR_SNGL,
->> +			QSPI_SPI_CMD_REG);
->> +		wait_for_completion(&qspi->word_complete);
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int qspi_read_msg(struct dra7xxx_qspi *qspi, struct spi_transfer *t)
->> +{
->> +	u8 *rxbuf;
->> +	int wlen, count;
->> +
->> +	count = t->len;
->> +	rxbuf = t->rx_buf;
->> +	wlen = t->bits_per_word;
->> +
->> +	while (count--) {
->> +		dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n",
->> +			qspi->cmd | QSPI_RD_SNGL, qspi->dc);
->> +		dra7xxx_writel(qspi, QSPI_WC_INT_EN, QSPI_INTR_ENABLE_SET_REG);
-> ditto
->
->> +		dra7xxx_writel(qspi, qspi->dc, QSPI_SPI_DC_REG);
->> +		dra7xxx_writel(qspi, qspi->cmd | QSPI_RD_SNGL,
->> +			QSPI_SPI_CMD_REG);
->> +		wait_for_completion(&qspi->word_complete);
->> +		*rxbuf++ = dra7xxx_readl_data(qspi, QSPI_SPI_DATA_REG, wlen);
->> +		dev_dbg(qspi->dev, "rx done, read %02x\n", *(rxbuf-1));
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->> +static int qspi_transfer_msg(struct dra7xxx_qspi *qspi, struct spi_transfer *t)
->> +{
->> +	if (t->tx_buf)
->> +		qspi_write_msg(qspi, t);
->> +	if (t->rx_buf)
->> +		qspi_read_msg(qspi, t);
->> +
->> +	return 0;
->> +}
->> +
->> +static int dra7xxx_qspi_start_transfer_one(struct spi_master *master,
->> +		struct spi_message *m)
->> +{
->> +	struct dra7xxx_qspi *qspi = spi_master_get_devdata(master);
->> +	struct spi_device *spi = m->spi;
->> +	struct spi_transfer *t;
->> +	int status = 0;
->> +	int frame_length;
->> +
->> +	/* setup device control reg */
->> +	qspi->dc = 0;
->> +
->> +	if (spi->mode&  SPI_CPHA)
->> +		qspi->dc |= QSPI_CKPHA(spi->chip_select);
->> +	if (spi->mode&  SPI_CPOL)
->> +		qspi->dc |= QSPI_CKPOL(spi->chip_select);
->> +	if (spi->mode&  SPI_CS_HIGH)
->> +		qspi->dc |= QSPI_CSPOL(spi->chip_select);
->> +
->> +	frame_length = DIV_ROUND_UP(m->frame_length * spi->bits_per_word,
-> why this multiplication ? Frame is not counted in bits but in number of
-> words. Which means that m->framelength / spi->bits_per_word should be
-> enough.
->
-> Also, this actually brings up a mistake I made, if I read the TRM
-> correclty this time, frame length is nothing but the t->len which
-> renders patch 1 in this series unnecessary, my mistake.
->
->> +				spi->bits_per_word);
->> +
->> +	frame_length = clamp(frame_length, 0, QSPI_FRAME_MAX);
->> +
->> +	/* setup command reg */
->> +	qspi->cmd = 0;
->> +	qspi->cmd |= QSPI_EN_CS(spi->chip_select);
->> +	qspi->cmd |= QSPI_FLEN(frame_length);
-> right, right, so far so good...
->
->> +	list_for_each_entry(t,&m->transfers, transfer_list) {
->> +		qspi->cmd |= QSPI_WLEN(t->bits_per_word);
-> sure about this ? according to TRM a write of 0 means 1 bit, 1, means 2
-> bits, 2 means 3 bits, etc... So this should be t->bits_per_word - 1.
->
->> +		qspi->cmd |= QSPI_WC_CMD_INT_EN;
-> ... but why are you still interrupting on every word ????
->
-> as I said before, we want to interrupt on every frame. one spi_transfer
-> is one frame, if that frame has a length of 1MiB, I want to be
-> interrupted after 1MiB.
->
->> +		qspi_transfer_msg(qspi, t);
->> +		m->actual_length += t->len;
->> +
->> +		if (list_is_last(&t->transfer_list,&m->transfers))
->> +			goto out;
->> +	}
->> +
->> +out:
->> +	m->status = status;
->> +	spi_finalize_current_message(master);
->> +
->> +	dra7xxx_writel(qspi, qspi->cmd | QSPI_INVAL, QSPI_SPI_CMD_REG);
->> +
->> +	return status;
->> +}
->> +
->> +static irqreturn_t dra7xxx_qspi_isr(int irq, void *dev_id)
->> +{
->> +	struct dra7xxx_qspi *qspi = dev_id;
->> +	u16 mask, stat;
->> +
->> +	irqreturn_t ret = IRQ_HANDLED;
->> +
->> +	spin_lock(&qspi->lock);
->> +
->> +	stat = dra7xxx_readl(qspi, QSPI_SPI_STATUS_REG);
->> +	mask = dra7xxx_readl(qspi, QSPI_SPI_CMD_REG);
->> +
->> +	if ((stat&  QSPI_WC)&&  (mask&  QSPI_WC_CMD_INT_EN))
-> this is wrong, everytime you want to handle another IRQ bit, you will
-> have to update this line.
->
-> 	if (stat&  mask)
->
-> sounds like it's enough
->
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTYyNzMzMjIwNTM3MTk0CgoKCgooRGF4b24uZnIpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRy
+aWMuY29tL2NsaWMucGhwP3BhcmFtcz0zMDMxYjFhMGIxOGM1ZjE1OTYyY2I4YzZmOGNkZGIxMwoK
+KHNlcDEuZ2lmKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJh
+bXM9YjkzMjMzYTJiMjk0ODRlYzdmMGFlMzNlMDUzYzE4MmIKCihGZW1tZSk6Cmh0dHA6Ly9tdHJj
+MS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTIyN2MxNjFlOGJiN2QxZDJjMmVl
+ZmUzNTMwZjExMDgzCgooTGluZ2VyaWUpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29t
+L2NsaWMucGhwP3BhcmFtcz02NjQzYzYxMzJkMWE2MmMxNGI5ZTg5NWIyOWI2NmFkMgoKKENoYXVz
+c3VyZXMpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz03
+NGM2NDY0MDIyYzI1ZWEwOTAyMmE5MmNmNzdhOTVhNgoKKGhvbW1lLmdpZik6Cmh0dHA6Ly9tdHJj
+MS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTJlZDljODQ0NzlmZTdmYzNiOTZj
+NzlhMjYxZTQwMDdhCgooTGluZ2UgZGUgbWFpc29uKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0
+cmljLmNvbS9jbGljLnBocD9wYXJhbXM9NjZlMTdlMWZkOTkzYmNkYzAxZTZhMGUxZDZmYzhlMGIK
+CihzZXAyLmdpZik6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFy
+YW1zPTU3ODYxOGI0NTNmOTc3OGM4YWU3MDBjNzQxYzY3MDMwCgooU09MREVTIDPEgsWhbWUgZMSC
+wqltYXJxdWUpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFt
+cz02ZGZkOWEwZDk0ZDE4YzJhZDdmNzNjNjZiNjlkNTJkMQoKKHZpc3UxLmpwZyk6Cmh0dHA6Ly9t
+dHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWM5MGNiOGVlYjc1Y2M5MjI2
+NzFlNGY1OWM2NmVlZTVkCgooT2ggISk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20v
+Y2xpYy5waHA/cGFyYW1zPTA1MTg2MDFkNGE5MDhhMjMyMmEwM2QxMDI5OGE5NjdiCgooSnVzcXUn
+xILCoCAtNzUlIC0xMCUgc3VwcGzEgsKpbWVudGFpcmVzKToKaHR0cDovL210cmMxLmRpZ2l0YWwt
+bWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9ZTMwYzgyZDEwZWYzNzQ5NjlmMWNmOWZjNjU5ZjBl
+ODQKCih2aXN1czIuanBnKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBo
+cD9wYXJhbXM9MzhiYTViNDc2NDI2OTY4OTJjYWJkN2MzZTE2ZjA1ZmMKCigtMTAlIHN1cHBsxILC
+qW1lbnRhaXJlcyBzdXIgdG91cyBsZXMgYXJ0aWNsZXMgZMSCwqlqxILCoCBzb2xkxILCqXMgISk6
+Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPThjYTlhYTNh
+NjJjZGZlMmIwNDlhOTIwZjE3ZjQwY2YwCgooTGl2cmFpc29uIMSCwqAgc2V1bGVtZW50IDLDguKC
+rCBkxILFoXMgNDnDguKCrCBkJ2FjaGF0cyk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5j
+b20vY2xpYy5waHA/cGFyYW1zPWZmNDAzNDcyZTA0YmI4N2FlNjU2YWJlZmQwYzM4ZmZiCgoodmlz
+dTMuanBnKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9
+NmZmYjg1MDhhY2Y5MzU1MmNjOTcxOGZjMWVjNTM3YzUKCihKJ2VuIHByb2ZpdGUgYXZlYyBsZSBD
+b2RlIFByaXZpbMSCxaFnZSA3MjA0KToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9j
+bGljLnBocD9wYXJhbXM9MmZiMDRkZjQ3MGNjNjllYmUxNzE2MTA3MmNiNWNhNTEKCgpGRU1NRToK
+aHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9NzMzYjQ0NzRh
+Zjg1NjZhYjNiNTg5MDM2NjE0ZDNmNTAKCgpMSU5HRVJJRToKaHR0cDovL210cmMxLmRpZ2l0YWwt
+bWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9ZDNmNmQ0NWQ3NGRkOGEyZTc2ZjY4M2E5MGM0N2Y1
+ZGYKCgpDSEFVU1NVUkVTOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhw
+P3BhcmFtcz01YTFmYTFmZDJjNjRmMzRkMzYwOTI3NWMwN2Y2NjQxMQoKCkhPTU1FOgpodHRwOi8v
+bXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz0xOGFlYjM0OWJmOTUxZTcy
+NjA2MzcwNjUwYTRlNzQ1YgoKCkxJTkdFIERFIE1BSVNPTjoKaHR0cDovL210cmMxLmRpZ2l0YWwt
+bWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9NzlmZTAyYjkzMTVlNTI3OTExMGMyMzhiMGRmYjI5
+MTEKCgpNQUlTT046Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFy
+YW1zPWIzYWEyMmU2NTljY2UwMzg1NjY0NjhhNDAxZDAxMDVjCgoKQklFTi3EgsKKVFJFOgpodHRw
+Oi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1jYmNlODMyZjU1YjU5
+M2ViYWRhMTU5MDMwNzM3ZjcwOAoKCkluZGlxdWV6IGltcMSCwqlyYXRpdmVtZW50IHZvdHJlIENv
+ZGUgUHJpdmlsxILFoWdlIDcyMDRwb3VyIGVuCmLEgsKpbsSCwqlmaWNpZXIuCkNvbW1hbmRleiBl
+biB0b3V0ZSBzaW1wbGljaXTEgsKpLCBEYXhvbiBzJ29jY3VwZSBkZSB0b3V0ICEKCihMaXZyYWlz
+b24gUmVsYWlzIENvbGlzKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBo
+cD9wYXJhbXM9MGU4NTU4OGMyZDg4MGQ0MzQyNGM5N2NmMmIxNGNiNTgKCihMaXZyYWlzb24gZW4g
+MiDEgsKgIDQgam91cnMgY2hleiB2b3VzKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNv
+bS9jbGljLnBocD9wYXJhbXM9OGM5ZjU0ZTI4ZDFlYjU4MTlhOGY5NDY4NjFmNTVkMTgKCigzMCBq
+b3VycyBwb3VyIGNoYW5nZXIgZCdhdmlzICEpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMu
+Y29tL2NsaWMucGhwP3BhcmFtcz1hNDJhZmVkNDBlNjY3ODE2NGFlZjkxMDUwMzgxZTcwMQoKKFLE
+gsKpZ2xleiBwYXIgY2jEgsWhcXVlKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9j
+bGljLnBocD9wYXJhbXM9ZmM0YjE2ZmNlMDJjNWUwOGMwZDMyMmIyOWM0MzRjYWUKCihSxILCqWds
+ZXogcGFyIENhcnRlIEthbmdvdXJvdSk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20v
+Y2xpYy5waHA/cGFyYW1zPWEzMGM5YjQ1NzFkODZlZWFjZjFiZjJkYWZmZTg4NTdkCgooUGFpZW1l
+bnQgMTAwJSBzxILCqWN1cmlzxILCqSk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20v
+Y2xpYy5waHA/cGFyYW1zPTU0YTcyMjE3MDI0YzQ4NjFkOWNjOGY4ZmNiODY0ZmQ5CgoKKkMnZXN0
+IGxhIDPEgsWhbWUgZMSCwqltYXJxdWUgZGVzIFNvbGRlcyBzdXIgRGF4b24uZnIgISBQcm9maXRl
+eiBkZSAtNzUlLAotNzAlLCAtNjAlLCAtNTAlLCAtNDUlLCAtNDAlLC0zNSUgc3VyIHRvdXMgbGVz
+IGFydGljbGVzIHNpZ25hbMSCwqlzIGRlIGxhCmNvbGxlY3Rpb24gUHJpbnRlbXBzLUV0xILCqSAy
+MDEzKi4gUHJvZml0ZXogxILCqWdhbGVtZW50IGRlIHLEgsKpZHVjdGlvbnMKanVzcXUnYSAtMzAl
+IHN1ciB1bmUgc8SCwqlsZWN0aW9uIGQnYXJ0aWNsZXMgZGUgbGEgQ29sbGVjdGlvbgpQcmludGVt
+cHMtRXTEgsKpIDIwMTMqLCBldCBkZSBsYSBsaXZyYWlzb24gxILCg8OCwqAgMsOC4oKsIGTEgsWh
+cyA0OcOC4oKsCmQnYWNoYXQqKi4KRW4gcGx1cywgc2kgdm91cyBsZSBzb3VoYWl0ZXosIHZvdXMg
+cG91dmV6IHJlcG9ydGVyIGxlIHBhaWVtZW50IGRlIHZvdHJlCmNvbW1hbmRlIGF1IDMwIHNlcHRl
+bWJyZSAyMDEzKioqCipPZmZyZSB2YWxhYmxlIGp1c3F1J2F1IDYgQW/EgsKDInQgMjAxMy4gTm9u
+IGN1bXVsYWJsZSBhdmVjIHRvdXRlIGF1dHJlIG9mZnJlCnByb21vdGlvbm5lbGxlIGVuIGNvdXJz
+LiBMZXMgcHJpeCBpbmRpcXXEgsKpcyBzdXIgbGUgc2l0ZSB0aWVubmVudApkxILCqWrEgsKDw4LC
+oCBjb21wdGUgZGUgbGEgcsSCwqlkdWN0aW9uLgoqKk9mZnJlIHZhbGFibGUgaG9ycyBDb2xpc3Np
+bW8uCioqKlNpIHZvdXMgY2hvaXNpc3NleiBkZSBwYXllciBwbHVzIHRhcmQsIGxlIG1vbnRhbnQg
+ZGUgdm9zIGFjaGF0cyBuZSBzZXJhCmTEgsKpYml0xILCqSBxdWUgbGUgMzAgU2VwdGVtYnJlIDIw
+MTMuIExhIGRhdGUgZGUgdmFsaWRpdMSCwqkgZGUgdm90cmUgY2FydGUKZGUgY3LEgsKpZGl0IGRv
+aXQgxILImHRyZSBhdS1kZWzEgsKDw4LCoCBkZSBTZXB0ZW1icmUgMjAxMy4gUHJlbmV6IHNvaW4K
+ZCdhc3N1cmVyIHVuIGFwcHJvdmlzaW9ubmVtZW50IHN1ZmZpc2FudCBkZSB2b3RyZSBjb21wdGUg
+cG91ciBsZSAzMC8wOS8xMy4KQSBsYSByZWNoZXJjaGUgZHUgY2FkZWF1IG9yaWdpbmFsID8gTm91
+cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdQpyZWdhcmQgYWZpbiBkZSB2b3Vz
+IGFpZGVyIMSCwoPDgsKgIGTEgsKDw4LCqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQK
+bWlldXggdG91dGUgbCdhbm7EgsKDw4LCqWUuIEFpbnNpLCBncmFjZSDEgsKDw4LCoCBub3VzLCB2
+b3VzIGFsbGV6IHBhcgpleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVz
+dCBwcm9kdWl0IGEgYmFzIGNvdXQsCm9wcG9ydHVuaXTEgsKDw4LCqSwgaW5mb3MuLi4gLiBOb3Vz
+IHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1CnJlZ2FyZCBhZmluIGRlIHZvdXMg
+YWlkZXIgxILCg8OCwqAgZMSCwoPDgsKpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudApt
+aWV1eCB0b3V0ZSBsJ2FubsSCwoPDgsKpZS5BaW5zaSwgZ3LEgsKDw4LEhWNlIMSCwoPDgsKgIG5v
+dXMsIHZvdXMgYWxsZXogcGFyCmV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBx
+dWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwKb3Bwb3J0dW5pdMSCwoPDgsKpLCBpbmZvcy4uLiAu
+RW52aWUgZGUgdm91cyBmYWlyZSB1bmUgYmVhdXTEgsKDw4LCqSDEgsKDw4LCoAptb2luZHJlIGNv
+xILCgyJ0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsSCwoPDgsKpZSwgZGUgcHLEgsKDw4LCqXZvaXIg
+dm9zCnByb2NoYWluZXMgdmFjYW5jZXMgZCfEgsKDw4LCqXTEgsKDw4LCqSDEgsKDw4LCoCBtb2lu
+ZHJlIGZyYWlzIGV0IG91IGVuY29yZQpkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMSCwoPDgsKgIGRl
+cyBidWRnZXRzIHJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlCnRlbXBzIMSCwoPDgsKg
+IGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMgcG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBmYWly
+ZSBkZQpub21icmV1c2VzIMSCwoPDgsKpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQgcGxh
+aXNpciDEgsKDw4LCoCB0b3V0ZSBsYQpmYW1pbGxlLkJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3Vz
+IGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3UKc29ydGlyIGF1IG1laWxs
+ZXVyIHJhcHBvcnQgcXVhbGl0xILCg8OCwqkgcHJpeCB0b3V0IGF1IGxvbmcgZGUKbCdhbm7EgsKD
+w4LCqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIg
+bGVzCnByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0
+dG9ucyDEgsKDw4LCoCBqb3VyCnLEgsKDw4LCqWd1bGnEgsKDw4LFoXJlbWVudCBldCB0b3V0ZSBs
+J2FubsSCwoPDgsKpZS4uLi4gQmVzb2luIGRlIHZveWFnZXIsCmRlIHZvdXMgaGFiaWxsZXIsIGRl
+IHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydApx
+dWFsaXTEgsKDw4LCqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsSCwoPDgsKpZSwgYWxvcnMg
+cG91cnF1b2kgbmUgcGFzCmpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRp
+b25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUKbm91cyBtZXR0b25zIMSCwoPDgsKg
+IGpvdXIgcsSCwoPDgsKpZ3VsacSCwoPDgsWhcmVtZW50IGV0IHRvdXRlCmwnYW5uxILCg8OCwqll
+LkEgbGEgcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmlnaW5hbCA/IE5vdXMgc291aGFpdG9ucyB2b3Vz
+CmFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDEgsKDw4LCoCBk
+xILCg8OCwqlwZW5zZXIgbW9pbnMKdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5u
+xILCg8OCwqllLiBBaW5zaSwgZ3JhY2UgxILCg8OCwqAgbm91cywKdm91cyBhbGxleiBwYXIgZXhl
+bXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcwpj
+b3V0LCBvcHBvcnR1bml0xILCg8OCwqksIGluZm9zLi4uIC4gTm91cyBzb3VoYWl0b25zIHZvdXMg
+YXBwb3J0ZXIgdW4Kbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMSCwoPDgsKgIGTE
+gsKDw4LCqXBlbnNlciBtb2lucyB0b3V0IGVuCmNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7E
+gsKDw4LCqWUuQWluc2ksIGdyxILCg8OCxIVjZSDEgsKDw4LCoCBub3VzLAp2b3VzIGFsbGV6IHBh
+ciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEg
+YmFzCmNvdXQsIG9wcG9ydHVuaXTEgsKDw4LCqSwgaW5mb3MuLi4gLkVudmllIGRlIHZvdXMgZmFp
+cmUgdW5lIGJlYXV0xILCg8OCwqkKxILCg8OCwqAgbW9pbmRyZSBjb8SCwoMidCB0b3V0IGF1IGxv
+bmcgZGUgbCdhbm7EgsKDw4LCqWUsIGRlIHByxILCg8OCwql2b2lyCnZvcyBwcm9jaGFpbmVzIHZh
+Y2FuY2VzIGQnxILCg8OCwql0xILCg8OCwqkgxILCg8OCwqAgbW9pbmRyZSBmcmFpcyBldCBvdQpl
+bmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDEgsKDw4LCoCBkZXMgYnVkZ2V0cyByYWlzb25u
+YWJsZXMsIGFsb3JzCmNvbnN1bHRlciBkZSB0ZW1wcyDEgsKDw4LCoCBhdXRyZSBub3MgcHJvcG9z
+aXRpb25zIHBvdXIgdm91cyBwZXJtZXR0cmUgYWluc2kKZGUgZmFpcmUgZGUgbm9tYnJldXNlcyDE
+gsKDw4LCqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50IHBsYWlzaXIKxILCg8OCwqAgdG91
+dGUgbGEgZmFtaWxsZS5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91
+cwpjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxp
+dMSCwoPDgsKpIHByaXggdG91dAphdSBsb25nIGRlIGwnYW5uxILCg8OCwqllLCBhbG9ycyBwb3Vy
+cXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyCmxlcyBwcm9wb3NpdGlvbnMg
+cXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgxILCg8OCwqAgam91
+cgpyxILCg8OCwqlndWxpxILCg8OCxaFyZW1lbnQgZXQgdG91dGUgbCdhbm7EgsKDw4LCqWUuLi4u
+IEJlc29pbiBkZSB2b3lhZ2VyLApkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBk
+ZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQKcXVhbGl0xILCg8OCwqkgcHJp
+eCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7EgsKDw4LCqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcwpq
+ZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3Vz
+IGFkcmVzc29ucywgZXQgcXVlCm5vdXMgbWV0dG9ucyDEgsKDw4LCoCBqb3VyIHLEgsKDw4LCqWd1
+bGnEgsKDw4LFoXJlbWVudCBldCB0b3V0ZQpsJ2FubsSCwoPDgsKpZS4KCgoKCgotLQoKUG91ciB2
+b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0cDovL2Eub3B0aW5jYWtlLmNvbS9fYWN0L2dl
+dF9yY3IucGhwP0FKODQ2NDE4NjYyNTE2MjczMzIyMDUzNzE5NAoKCgoKCgp7fkFKODQ2NDE4NjYy
+NTE2MjczMzIyMDUzNzE5NH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTZWUgZXZlcnl0aGluZyBm
+cm9tIHRoZSBicm93c2VyIHRvIHRoZSBkYXRhYmFzZSB3aXRoIEFwcER5bmFtaWNzCkdldCBlbmQt
+dG8tZW5kIHZpc2liaWxpdHkgd2l0aCBhcHBsaWNhdGlvbiBtb25pdG9yaW5nIGZyb20gQXBwRHlu
+YW1pY3MKSXNvbGF0ZSBib3R0bGVuZWNrcyBhbmQgZGlhZ25vc2Ugcm9vdCBjYXVzZSBpbiBzZWNv
+bmRzLgpTdGFydCB5b3VyIGZyZWUgdHJpYWwgb2YgQXBwRHluYW1pY3MgUHJvIHRvZGF5IQpodHRw
+Oi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NDg4MDg4MzEmaXU9LzQx
+NDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
+aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

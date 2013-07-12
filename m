@@ -1,72 +1,33 @@
-From: Grant Likely <grant.likely@linaro.org>
-Subject: [PATCH] MAINTAINERS: Remove Grant Likely
-Date: Fri, 12 Jul 2013 01:52:16 +0100
-Message-ID: <1373590336-14560-1-git-send-email-grant.likely@linaro.org>
-Cc: Grant Likely <grant.likely@linaro.org>
-To: linux-kernel@vger.kernel.org, devicetree-discuss@lists.ozlabs.org,
-	spi-devel-general@lists.sourceforge.net
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Budget Mobile par Neezz <news-PkcECQhVGYM@public.gmane.org>
+Subject: [SPAM] 15.99 euro/mois Appels illimitÃ©s, SMS illimitÃ©s et 1 GO
+Date: Fri, 12 Jul 2013 01:26:14 -0100
+Message-ID: <5g62_LD8drRTBWAS5EewQAUYYz9lX7NxyhH-Hil6AgY@zaloo.fr>
+Reply-To: Budget Mobile par Neezz <news-PkcECQhVGYM@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-PkcECQhVGYM@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Unfortunately, I'm no longer to spend the time needed on maintainership.
-It is time for me to step aside and pass maintainership to other
-engineers. I'm not disappearing from Linux development, but it would be
-irresponsible for me to hold onto a job that I am unable to do.
-
-GPIO and SPI are in good hands with Linus and Mark. Rob Herring has a
-really good grasp on the DT core code, and in the last week there have
-been several volunteers to create and maintain a DT bindings tree. You
-can expect to see an email about that hit the list shortly.
-
-Signed-off-by: Grant Likely <grant.likely@linaro.org>
----
- MAINTAINERS | 8 --------
- 1 file changed, 8 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 250dc97..339fcdd 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3564,10 +3564,8 @@ F:	drivers/isdn/gigaset/
- F:	include/uapi/linux/gigaset_dev.h
- 
- GPIO SUBSYSTEM
--M:	Grant Likely <grant.likely@linaro.org>
- M:	Linus Walleij <linus.walleij@linaro.org>
- S:	Maintained
--T:	git git://git.secretlab.ca/git/linux-2.6.git
- F:	Documentation/gpio.txt
- F:	drivers/gpio/
- F:	include/linux/gpio*
-@@ -4411,8 +4409,6 @@ F:	drivers/irqchip/
- 
- IRQ DOMAINS (IRQ NUMBER MAPPING LIBRARY)
- M:	Benjamin Herrenschmidt <benh@kernel.crashing.org>
--M:	Grant Likely <grant.likely@linaro.org>
--T:	git git://git.secretlab.ca/git/linux-2.6.git irqdomain/next
- S:	Maintained
- F:	Documentation/IRQ-domain.txt
- F:	include/linux/irqdomain.h
-@@ -5945,11 +5941,8 @@ F:	Documentation/i2c/busses/i2c-ocores
- F:	drivers/i2c/busses/i2c-ocores.c
- 
- OPEN FIRMWARE AND FLATTENED DEVICE TREE
--M:	Grant Likely <grant.likely@linaro.org>
- M:	Rob Herring <rob.herring@calxeda.com>
- L:	devicetree-discuss@lists.ozlabs.org (moderated for non-subscribers)
--W:	http://fdt.secretlab.ca
--T:	git git://git.secretlab.ca/git/linux-2.6.git
- S:	Maintained
- F:	Documentation/devicetree
- F:	drivers/of
-@@ -7623,7 +7616,6 @@ F:	drivers/clk/spear/
- 
- SPI SUBSYSTEM
- M:	Mark Brown <broonie@kernel.org>
--M:	Grant Likely <grant.likely@linaro.org>
- L:	spi-devel-general@lists.sourceforge.net
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
- Q:	http://patchwork.kernel.org/project/spi-devel-general/list/
--- 
-1.8.1.2
+ Pour visualiser correctement ce message, acc=C3=A9dez =C3=A0 la version en=
+ ligne, ou signaler comme ind=C3=A9sirable Avec le code NEEZZ : payez 14,99=
+=E2=82=AC/mois pendant un an =EF=BF=BD offre valable uniquement jusqu'au 14=
+ juillet 23h59... Si vous ne souhaitez plus recevoir nos emails, veuillez s=
+uivre ce lien. Si vous n''arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d'=
+'=C3=A9crire =C3=A0 stop-PkcECQhVGYM@public.gmane.org
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

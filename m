@@ -1,104 +1,94 @@
-From: Michal Simek <monstr@monstr.eu>
-Subject: Re: [PATCH v1 3/4] spi/xilinx: Simplify irq allocation
-Date: Fri, 12 Jul 2013 16:00:24 +0200
-Message-ID: <51E00BF8.2020608@monstr.eu>
-References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com> <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com> <20130708144930.GG27646@sirena.org.uk> <51DADF3E.1000802@monstr.eu> <20130708162642.GM27646@sirena.org.uk>
-Reply-To: monstr@monstr.eu
+From: "Etam.com" <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: [SPAM] SOLDES : Jusqu'à -70%
+Date: Fri, 12 Jul 2013 17:07:30 +0200 (CEST)
+Message-ID: <y9v0s2.hj1irsltlb1nn1l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="----enig2TIBOSLFMUIRUJWWMQXXS"
-Cc: Michal Simek <michal.simek@xilinx.com>,
-	linux-kernel@vger.kernel.org,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	spi-devel-general@lists.sourceforge.net
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20130708162642.GM27646@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
-------enig2TIBOSLFMUIRUJWWMQXXS
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBqgpq6pI7gfk57dIhj1iriztI&u=3Dhttp%3A%2F%2Fnews.t=
+eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373641637639%26custid%3D164=
+44%26uid%3D16231069273%26sig%3DJBDJBKOHABLBMPAF%26mid%3D1600194769&s=3DNJJO=
+BCJEHJAAGJBA
+ =
 
-On 07/08/2013 06:26 PM, Mark Brown wrote:
-> On Mon, Jul 08, 2013 at 05:48:14PM +0200, Michal Simek wrote:
->> On 07/08/2013 04:49 PM, Mark Brown wrote:
->=20
->>> Is it definitely safe to leave the IRQ hanging around after the maste=
-r
->>> has been freed - there's no possibility of a late error interrupt or
->>> something?
->=20
->> I think it is more generic question if this race condition is fine
->> for all drivers which are using devres groups.
->=20
-> Well, it's mainly an issue for IRQs - the other resources don't initiat=
-e
-> events by themselves which is what causes the issue.  It just needs a
-> bit of extra care so I wanted to check that this has been thought of.
->=20
->> I have just looked at it and devres_release_all() is called where
->> driver is unload and irq are disabled there.
->=20
-> The problem is the gap between the resources used to handle the IRQ
-> being freed and the IRQ itself being freed - if the hardware can be
-> guaranteed to be idle then that's fine but we need to be sure that is
-> OK.  Otherwise the interrupt handler may get run and be looking at a
-> resource which was freed which would be unfortunate.
->=20
->> btw: What's the proper way for spi driver unregistration?
->=20
->> spi_unregistered_master() (which also free private structure)
->> and
->> spi_master_put()?
->=20
-> Yes.
+SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES=
+ : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jus=
+qu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0=
+ -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%S=
+OLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES =
+: Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusq=
+u'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 =
+-70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SO=
+LDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES :=
+ Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu=
+'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -=
+70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOL=
+DES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : =
+Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
+=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
+0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
+ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
+usqu'=E0 -70%
+ =
 
-Just a follow up on this.
-Which function free private structures registered by spi_alloc_master fun=
-ction?
-Is it in spi_master_put()?
-
-The reason why I am asking is where clk_xx functions should be added.
-I see them between these two functions in sifr for example.
-
-And also I see in drivers in error probe path that drivers are calling kf=
-ree(master)
-but they are not doing in remove part (like spi-davinci.c).
-
-I just want to clear this in our zynq drivers before we send them out.
-
-Thanks,
-Michal
-
-
-
-
---=20
-Michal Simek, Ing. (M.Eng), OpenPGP -> KeyID: FE3D1F91
-w: www.monstr.eu p: +42-0-721842854
-Maintainer of Linux kernel - Microblaze cpu - http://www.monstr.eu/fdt/
-Maintainer of Linux kernel - Xilinx Zynq ARM architecture
-Microblaze U-BOOT custodian and responsible for u-boot arm zynq platform
-
-
-
-------enig2TIBOSLFMUIRUJWWMQXXS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
-
-iEYEARECAAYFAlHgC/gACgkQykllyylKDCEikwCfZ2bqYj8NZBZW0QITBwpGt9af
-WMsAnRu+cgpIcFB6jocDvtgFl1pYGCtK
-=AbsD
------END PGP SIGNATURE-----
-
-------enig2TIBOSLFMUIRUJWWMQXXS--
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600194769&sig=3DNGOHNJEBEIOPLNPI
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

@@ -1,11 +1,11 @@
-From: "Etam.com" <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: [SPAM] SOLDES : Jusqu'à -70%
-Date: Fri, 12 Jul 2013 17:07:30 +0200 (CEST)
-Message-ID: <y9v0s2.hj1irsltlb1nn1l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Club vacances express" <lisa@a.optincake.com>
+Subject: [SPAM] Trouvez les vacances les moins cheres
+Date: Sat, 13 Jul 2013 01:38:09 +0100
+Message-ID: <0.0.F5.D37.1CE7F613FAEB452.0@mta38.pur3.net>
+Reply-To: Club vacances express <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,77 +18,120 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBqgpq6pI7gfk57dIhj1iriztI&u=3Dhttp%3A%2F%2Fnews.t=
-eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373641637639%26custid%3D164=
-44%26uid%3D16231069273%26sig%3DJBDJBKOHABLBMPAF%26mid%3D1600194769&s=3DNJJO=
-BCJEHJAAGJBA
- =
-
-SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES=
- : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jus=
-qu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0=
- -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%S=
-OLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES =
-: Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusq=
-u'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 =
--70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SO=
-LDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES :=
- Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu=
-'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -=
-70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOL=
-DES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : =
-Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=
-=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -7=
-0%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLD=
-ES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : Jusqu'=E0 -70%SOLDES : J=
-usqu'=E0 -70%
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600194769&sig=3DNGOHNJEBEIOPLNPI
----------------------------------------------------------------------------=
----
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
-ktrk
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTYzNzczMjIwNTM3MjQ0CgoKCgooQ2x1YiBWYWNhbmNlcyBFeHByZXNzKToKaHR0cDovL210cmMx
+LmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9ZmUwYWE1MGJlODBjZWM2OTQ0YTM1
+YjZlMzI0MTg0NWEKCgpMZSBjb21wYXJhdGV1ciBkZXMgdmFjYW5jZXMgZW4gY2x1YgoKKExlIGNv
+bXBhcmF0ZXVyIGRlcyB2YWNhbmNlcyBlbiBjbHViKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0
+cmljLmNvbS9jbGljLnBocD9wYXJhbXM9N2FjZDAwMmYxZDY0Yjc3MzYyNDI0M2MwN2I3M2VlYjAK
+CihWYWNhbmNlcyBlbiBjbHViIGVuIGZhbWlsbGUgUXVpIGVzdCBsZSBtb2lucyBjaGVyKToKaHR0
+cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9NThlMzcwYWYyZDE4
+MTJmZjkwNDAxZTJhNjk1MTVjZmMKCihsb2NhdGlvbl92YWNhbmNlc18wNS5qcGcpOgpodHRwOi8v
+bXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1mYzEwODA2N2IxM2Q2NWQw
+OTg4ZDVkZGI2NTVjNWUyNQoKKFRyb3V2ZXogbGUgY2x1YiBxdWkgY29ycmVzcG9uZCDDoCB2b3Ry
+ZSBmYW1pbGxlIGF1IHByaXggbGUgcGx1cyBiYXMpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRy
+aWMuY29tL2NsaWMucGhwP3BhcmFtcz01ZjdkOWNhNmVhY2E3YWIzOWM3Mzg3OGMwMTcxZGYyYwoK
+KENvbXBhcmV6IGV0IHRyb3V2ZXogdG91dGVzIGxlcyBzw6lqb3VycyBlbiBjbHViIMOgIG1vaW5z
+IGRlIHRyb2lzIGNlbnQKZXVyb3MgcGFyIHNlbWFpbmUpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1t
+ZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1mYmJmMzhlZDRmYTkyZGZhZTc3Mzc2M2Q5Yzk2YzQ5
+MgoKKExlIHBsdXMgZ3JhbmQgbm9tYnJlIGRlIHNpdGVzIGNvbXBhcsOpcyBjIGVzdCBDbHViIFZh
+Y2FuY2VzIEV4cHJlc3MpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhw
+P3BhcmFtcz03MDRhYTg4ODY5NzI1NTgxYWJhNzFiMDlkZjAxZTJmZAoKKEJlbGFtYnJhIExhc3Rt
+aW51dGUpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1h
+YjY4YTNkNWNlNmEyZDY0OGU4YmJmZGFjOTIxNjdlZAoKKE5lbWVhIE9kYWx5cyBHcmFuZCBCbGV1
+IHZhY2FuY2VzIEZyYW5jZSBmdXRlKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9j
+bGljLnBocD9wYXJhbXM9NGFjZWVjNjE0YjgzY2QyZDMwMDk0MTBkNjJiOGZiYmYKCihWYWNhbmNl
+cyDDoCBtb2lucyB0cm9pcyBjZW50IGV1cm9zKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmlj
+LmNvbS9jbGljLnBocD9wYXJhbXM9MjAxMGZiZWNjZTc1MDhjN2NkZGU0MGI2NTY2NTUwYTAKCihW
+YWNhbmNlcyBzY29sYWlyZXMpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMu
+cGhwP3BhcmFtcz03NGJjNmE0YzQ4MjZhZDliNzFlNDc4MzBkZmM3NmIzNQoKKERlcm5pw6hyZSBt
+aW51dGUpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz01
+NWRlODBjOWQ1NTZmY2YxNWQyMTEyMjllNTBiZjJjYQoKCkNsdWIgVmFjYW5jZXMgRXhwcmVzcywg
+ZXN0IGxlIGNvbXBhcmF0ZXVyIGxlYWRlciBzcMOpY2lhbGlzw6kgc3VyIGxlcyBjbHVicwpkZSB2
+YWNhbmNlcy4gQ2Ugc2l0ZSByZWdyb3VwZSBsZXMgc8Opam91cnMgZGlzcG9uaWJsZXMgZW4gY2x1
+YnMgZGUgdmFjYW5jZXMKZW4gRnJhbmNlLCBlbiBFc3BhZ25lIG91IGVuIEl0YWxpZSwgZXQgcGVy
+bWV0IGF1eCBpbnRlcm5hdXRlcyBkZSB0cm91dmVyIGxlCmNsdWIgZGUgbGV1ciBjaG9peCBlbiBm
+b25jdGlvbiBkZSBkaWZmw6lyZW50cyBjcml0w6hyZXMuIENsdWIgVmFjYW5jZXMKRXhwcmVzcyBl
+c3QgdW4gY29tcGFyYXRldXIgw6l0aGlxdWUgcXVpIHLDqXBvbmQgw6AgdHJvaXMgdmFsZXVycyA6
+CmV4aGF1c3Rpdml0w6ksIGltcGFydGlhbGl0w6kgZXQgb3JpZW50YXRpb24gY29uc29tbWF0ZXVy
+LgoKQ2x1YiBWYWNhbmNlcyBFeHByZXNzIHZvdXMgb3JpZW50ZSB2ZXJzIGRlcyBzaXRlcyBtYXJj
+aGFuZHMgcGFydGVuYWlyZXMgcG91cgplZmZlY3R1ZXIgdm90cmUgcsOpc2VydmF0aW9uLCB1bmUg
+Zm9pcyB2b3RyZSByZWNoZXJjaGUgdGVybWluw6llLiBOb3RyZQpjb25jZXB0IGVzdCBub3ZhdGV1
+ciBwdWlzcXUnaWwgcGVybWV0IMOgIGxhIGZvaXMgZGUgY29tcGFyZXIgdW5pcXVlbWVudCBkZXMK
+c8Opam91cnMgZGlzcG9uaWJsZXMgc2Vsb24gZGVzIGNyaXTDqHJlcyBwcm9wcmVzIGF1eCB2YWNh
+bmNlcyBlbiBjbHViLCBwdWlzCmQnYWNoZXRlciBlbiBsaWduZSBkZXMgcHJvZHVpdHMgZW4gdG91
+dGUgc8OpY3VyaXTDqSBzdXIgdW4gc2l0ZSBtYXJjaGFuZApyw6lmw6lyZW5jw6ksIHBhcm1pIHVu
+ZSBvZmZyZSBsYSBwbHVzIGxhcmdlIGRlIHPDqWpvdXJzIGVuIGNsdWIuCgpDbHViIFZhY2FuY2Vz
+IEV4cHJlc3MuY29tIHByb3Bvc2UgZGFucyBsZXMgcsOpc3VsdGF0cyB0cm91dsOpcywgdW5lIG1p
+c2UgZW4KdmFsZXVyIHZpYSBkZXMgIiBjb3VwcyBkZSBjb3VyICIgbGVzIGNsdWJzIG9mZnJhbnQg
+bGVzIG1laWxsZXVycyByYXBwb3J0cwpxdWFsaXTDqS9wcml4IGR1IG1hcmNow6ksIGFmaW4gZGUg
+dm91cyBndWlkZXIgZGFucyB2b3RyZSBjaG9peCB2ZXJzIGRlcwpvZmZyZXMgc2UgcmFwcHJvY2hh
+bnQgbGUgcGx1cyBwb3NzaWJsZSBkZSB2b3RyZSByZWNoZXJjaGUuCgoKRGVzdGluYXRpb24gRXhw
+cmVzcyAtIFNBUyBhdSBjYXBpdGFsIGRlIDYwIDAwMCBldXJvcyAtIFJDUyBDcmV0ZWlsIDUxNSAw
+MzgKMjQ4IEEgbGEgcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmlnaW5hbCA/IE5vdXMgc291aGFpdG9u
+cyB2b3VzIGFwcG9ydGVyIHVuCm5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBk
+w6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50Cm1pZXV4IHRvdXRlIGwnYW5uw6llLiBB
+aW5zaSwgZ3JhY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pcgpwcm9m
+aXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w6ks
+IGluZm9zLi4uIC4KTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdh
+cmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgCmTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1h
+bnQgbWlldXggdG91dGUgbCdhbm7DqWUuLi4uIEJlc29pbiBkZQp2b3lhZ2VyLCBkZSB2b3VzIGhh
+YmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVy
+CnJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBv
+dXJxdW9pIG5lIHBhcyBqZXRlcgp1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9u
+cyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMKbWV0dG9ucyDDoCBqb3VyIHLD
+qWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS5BaW5zaSwgZ3LDomNlIMOgIG5vdXMsCnZv
+dXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0
+IHByb2R1aXQgYSBiYXMKY291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuQmVzb2luIGRlIHZv
+eWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMKY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBz
+b3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZwpkZSBs
+J2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1
+ciBsZXMKcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBt
+ZXR0b25zIMOgIGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkVudmllIGRl
+IHZvdXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZQpjb8O7dCB0b3V0IGF1IGxvbmcgZGUg
+bCdhbm7DqWUsIGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw6l0w6kKw6Ag
+bW9pbmRyZSBmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDDoCBkZXMg
+YnVkZ2V0cwpyYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBu
+b3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cwpwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9t
+YnJldXNlcyDDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50CnBsYWlzaXIgw6AgdG91dGUg
+bGEgZmFtaWxsZS5BIGxhIHJlY2hlcmNoZSBkdSBjYWRlYXUgb3JpZ2luYWwgPyBOb3VzCnNvdWhh
+aXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIg
+w6AgZMOpcGVuc2VyCm1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZSBsJ2FubsOp
+ZS4gQWluc2ksIGdyYWNlIMOgIG5vdXMsIHZvdXMKYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIg
+cHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwKb3Bwb3J0dW5p
+dMOpLCBpbmZvcy4uLiAuIE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUg
+cmVnYXJkCmFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25z
+b21tYW50IG1pZXV4IHRvdXRlCmwnYW5uw6llLi4uLiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91
+cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUKbWFuZ2VyIG91IHNvcnRpciBhdSBtZWls
+bGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLAphbG9y
+cyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3Np
+dGlvbnMgcXVlIG5vdXMKdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91
+ciByw6lndWxpw6hyZW1lbnQgZXQgdG91dGUKbCdhbm7DqWUuQWluc2ksIGdyw6JjZSDDoCBub3Vz
+LCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRvdXQgY2UgcXVp
+IGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLkJlc29pbiBk
+ZQp2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIg
+b3Ugc29ydGlyIGF1IG1laWxsZXVyCnJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcg
+ZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlcgp1biBwZXRpdCBvZWlsIHBh
+ciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5v
+dXMKbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS5FbnZp
+ZSBkZSB2b3VzIGZhaXJlIHVuZQpiZWF1dMOpIMOgIG1vaW5kcmUgY2/Du3QgdG91dCBhdSBsb25n
+IGRlIGwnYW5uw6llLCBkZSBwcsOpdm9pciB2b3MKcHJvY2hhaW5lcyB2YWNhbmNlcyBkJ8OpdMOp
+IMOgIG1vaW5kcmUgZnJhaXMgZXQgb3UgZW5jb3JlIGQnaGFiaWxsZXIgdm9zCmVuZmFudHMgw6Ag
+ZGVzIGJ1ZGdldHMgcmFpc29ubmFibGVzLCBhbG9ycyBjb25zdWx0ZXIgZGUgdGVtcHMgw6AgYXV0
+cmUgbm9zCnByb3Bvc2l0aW9ucyBwb3VyIHZvdXMgcGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRl
+IG5vbWJyZXVzZXMgw6ljb25vbWllcwp0b3V0IGVuIHZvdXMgZmFpc2FudCBwbGFpc2lyIMOgIHRv
+dXRlIGxhIGZhbWlsbGUuCgoKCgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6
+Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxNjM3
+NzMyMjA1MzcyNDQKCgoKCgoKe35BSjg0NjQxODY2MjUxNjM3NzMyMjA1MzcyNDR+fQotLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0KU2VlIGV2ZXJ5dGhpbmcgZnJvbSB0aGUgYnJvd3NlciB0byB0aGUgZGF0
+YWJhc2Ugd2l0aCBBcHBEeW5hbWljcwpHZXQgZW5kLXRvLWVuZCB2aXNpYmlsaXR5IHdpdGggYXBw
+bGljYXRpb24gbW9uaXRvcmluZyBmcm9tIEFwcER5bmFtaWNzCklzb2xhdGUgYm90dGxlbmVja3Mg
+YW5kIGRpYWdub3NlIHJvb3QgY2F1c2UgaW4gc2Vjb25kcy4KU3RhcnQgeW91ciBmcmVlIHRyaWFs
+IG9mIEFwcER5bmFtaWNzIFBybyB0b2RheSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5l
+dC9nYW1wYWQvY2xrP2lkPTQ4ODA4ODMxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1h
+aWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6
+Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

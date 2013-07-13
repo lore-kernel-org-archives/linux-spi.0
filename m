@@ -1,12 +1,12 @@
-From: "=?UTF-8?Q?Tranquilit=C3=A9_sant=C3=A9?=" <contact-EWsqmiUisApGWvitb5QawA@public.gmane.org>
-Subject: Ne vous laissez pas surprendre
-Date: Sat, 13 Jul 2013 09:52:48 +0000 (CET)
-Message-ID: <130713095248.198636943500004776@ocfm43.com>
+From: Linvosges <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?2=E9me_d=E9marque_:_jusqu'=E0_-60%?=
+Date: Sat, 13 Jul 2013 17:11:30 +0200 (CEST)
+Message-ID: <qlrr65.hj2yct2qys5rzql@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,40 +18,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2NmbTQzLmNvbS9iMzB3dHBrcTUxZXpjdHZiMWovaW5kZXgwLmh0bWwpCihodHRw
-Oi8vb2NmbTQzLmNvbS8wZTBwM3BmaTVtdzRxYmtiZmcvaW5kZXgxLmh0bWwpClZvcyBhdmFudGFn
-ZXMKUGFzIGRlIHF1ZXN0aW9ubmFpcmUgc2FudMOpLApuaSBkJmFjdXRlO2V4YW1lbiBtw6lkaWNh
-bApDb3V2ZXJ0dXJlIGltbcOpZGlhdGUgZMOocyBsJmFjdXRlO2FkaMOpc2lvbiAqKgpDaGFxdWUg
-bW9pcyBsYSBtw6ptZSBjb3Rpc2F0aW9uIGV0IGphbWFpcyBkJmFjdXRlO2F1Z21lbnRhdGlvbgpE
-w6lzaWduZXogZW4gdG91dGUgbGliZXJ0w6kgbGUgb3UgbGVzIGLDqW7DqWZpY2lhaXJlcyBkZSB2
-b3RyZSBjaG9peApVbiBjYXBpdGFsIGRpc3BvbmlibGUgcmFwaWRlbWVudApVbmUgZ2FyYW50aWUg
-YXNzaXN0YW5jZSA3ai83IGV0IDI0aC8yNAooaHR0cDovL29jZm00My5jb20vdGgwemNwaXc1dmR6
-cnNleWNvL2luZGV4Mi5odG1sKSAoaHR0cDovL29jZm00My5jb20vMnUwbWVwMDA1bDA0aXl1eXhx
-L2luZGV4My5odG1sKQpDb3V2ZXJ0dXJlIGltbcOpZGlhdGUKZMOocyByw6ljZXB0aW9uIGRlIHZv
-dHJlIGFkaMOpc2lvbgooaHR0cDovL29jZm00My5jb20vdmhjaWNvdG5hZ3N6MWplMjVnL2luZGV4
-NC5odG1sKQoqIGNvdGlzYXRpb24gbWVuc3VlbGxlIHBvdXIgdW4gdmVyc2VtZW50IGQmYWN1dGU7
-dW4gY2FwaXRhbCBkZSAzMDAw4oKsIHBvdXIgbGVzIHBlcnNvbm5lcyBhZ8OpZXMgZGUgNDAgw6Ag
-NDQgYW5zLgoKKiogc291cyByw6lzZXJ2ZSBkJmFjdXRlO2VuY2Fpc3NlbWVudCBkZSB2b3RyZSBw
-cmVtacOocmUgY290aXNhdGlvbgpILkQuIEFzc3VyYW5jZXMgNTEtNTUgcnVlIEhvY2hlIDk0NzY3
-IEl2cnkgc3VyIHNlaW5lIGNlZGV4IFTDqWwgMCA4MDUgMjA1IDIwNS0gRmF4IDAxIDU2IDIwIDU5
-IDMyIC0gd3d3LnRyYW5xdWlsbGl0ZXNhbnRlLmZyIC0gUy5BLlMuIGRlIGNvdXJ0YWdlIGQmYWN1
-dGU7YXNzdXJhbmNlcyBhdSBjYXBpdGFsIGRlIDYwMC4wMDAg4oKsIC0gUkNTIENyw6l0ZWlsIDM5
-NSAzMjUgMDUzIC0gR2FyYW50aWUgZmluYW5jacOocmUgZXQgcmVzcG9uc2FiaWxpdMOpIGNpdmls
-ZSBwcm9mZXNzaW9ubmVsbGUgY29uZm9ybWVzIMOgIGxhIGxvaSAtIEltbWF0cmljdWxhdGlvbiBk
-wrRpbnRlcm3DqWRpYWlyZSBhc3N1cmFuY2VzIDA3IDAwMiA5NCB2w6lyaWZpYWJsZSBhdXByw6hz
-IGRlIGzCtE9SSUFTIDogMSBydWUgSnVsZXMgTGVmZWJ2cmUgNzUzMTEgUGFyaXMgQ2VkZXggOSAo
-d3d3Lm9yaWFzLmZyKSAtIEV4ZXJjZSBzb3VzIGxlIGNvbnRyw7RsZSBkZSBswrRBQ0FNIDogNjEs
-IHJ1ZSBUYWl0Ym91dCA3NTAwOSBQYXJpcyAtIFJlY291cnMvUsOpY2xhbWF0aW9uIDogdHJhbnNt
-ZXR0cmUgdm90cmUgZGVtYW5kZSBwYXIgY291cnJpZXIgc2ltcGxlIMOgIDogSC5ELiBBc3N1cmFu
-Y2VzIFNlcnZpY2UgUXVhbGl0w6kgNTEtNTUgcnVlIEhvY2hlIDk0NzY3IEl2cnkgc3VyIHNlaW5l
-IGNlZGV4LgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2VlIGV2ZXJ5dGhpbmcgZnJvbSB0aGUgYnJv
-d3NlciB0byB0aGUgZGF0YWJhc2Ugd2l0aCBBcHBEeW5hbWljcwpHZXQgZW5kLXRvLWVuZCB2aXNp
-YmlsaXR5IHdpdGggYXBwbGljYXRpb24gbW9uaXRvcmluZyBmcm9tIEFwcER5bmFtaWNzCklzb2xh
-dGUgYm90dGxlbmVja3MgYW5kIGRpYWdub3NlIHJvb3QgY2F1c2UgaW4gc2Vjb25kcy4KU3RhcnQg
-eW91ciBmcmVlIHRyaWFsIG9mIEFwcER5bmFtaWNzIFBybyB0b2RheSEKaHR0cDovL3B1YmFkcy5n
-LmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODA4ODMxJml1PS80MTQwL29zdGcuY2xr
-dHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
-ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
-b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
-LWRldmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBqgpr0hI7gfk57dIhj2ycezhI&u=3Dhttp%3A%2F%2Fnews.t=
+eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373728272621%26custid%3D164=
+44%26uid%3D16231069273%26sig%3DABLDLBANHADPPCPG%26mid%3D1600195841&s=3DHPIF=
+NOLPFLKKCLEP
+ =
+
+2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me =
+d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9mar=
+que : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : j=
+usqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=
+=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60=
+%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me=
+ d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9ma=
+rque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : =
+jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=
+=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60=
+%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me=
+ d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9ma=
+rque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : =
+jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=
+=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60=
+%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me=
+ d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9ma=
+rque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : =
+jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=
+=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60=
+%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me=
+ d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9ma=
+rque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : =
+jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=
+=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60=
+%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me=
+ d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9ma=
+rque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : =
+jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=
+=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60=
+%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me=
+ d=E9marque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%2=E9me d=E9ma=
+rque : jusqu'=E0 -60%2=E9me d=E9marque : jusqu'=E0 -60%v
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600195841&sig=3DELCFICLKLPEPILAF
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

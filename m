@@ -1,12 +1,13 @@
-From: "La Pointe de Penmarc'h via Club Affaire" <contact-s237+1wDWEiMog0Jp1P/CQ@public.gmane.org>
-Subject: [SPAM] Choisissez le meilleur de la pêche bretonne
-Date: Mon, 15 Jul 2013 13:26:01 +0000 (CET)
-Message-ID: <130715132601.-5845421800008184@ocfm40.com>
+From: =?ISO-8859-1?Q?Kooka=EF_via_Nlpromos?= <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Madame_K._pique_sa_krise_3=E8me?=
+	=?ISO-8859-1?Q?_d=E9marque_:_jusqu'=E0_moins_70%?=
+Date: Mon, 15 Jul 2013 15:28:52 +0200 (CEST)
+Message-ID: <znloi.hj5pkiw99i0spjl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,35 +19,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKCgomIzkxO0NpdmlsaXRlJiM5MzsgJiM5MTtOb20mIzkzOyAmIzkxO1ByZW5vbSYjOTM7LCBs
-ZSBtZWlsbGV1ciBkZSBsYSBww6pjaGUgYnJldG9ubmUgdm91cyBhdHRlbmQgYXZlYyB1bmUgT0ZG
-UkUgREVDT1VWRVJURSBFWENMVVNJVkUKCgogKGh0dHA6Ly9vY2ZtNDAuY29tL3FzMW96Z2YwdHBo
-cW53ajJzeS9pbmRleDAuaHRtbCkKCkxlIFRob24gZGFucyB0b3VzIHNlcyDDqXRhdHMgcG91ciB2
-b3Mgc2FsYWRlcyBlc3RpdmFsZXMgIQpSZWTDqWNvdXZyZXogbGUgdnJhaSBnb8O7dCBkdSBUaG9u
-IGF2ZWMgbm9zIHJlY2V0dGVzIGRlIHF1YWxpdMOpLiBMYSBzw6lsZWN0aW9uIHJpZ291cmV1c2Ug
-ZGUgbm9zIHBvaXNzb25zLApsZSBzYXZvaXItZmFpcmUgZGUgbm90cmUgY29uc2VydmVyaWUgZXQg
-bGEgcXVhbGl0w6kgZGUgbm9zIGluZ3LDqWRpZW50cyB2b3VzIG9mZnJlbnQgOCByZWNldHRlcyBz
-YXZvdXJldXNlcyAhCgogKGh0dHA6Ly9vY2ZtNDAuY29tL2pxMWRqZ2t3dGZtZ3ZucTJsbC9pbmRl
-eDEuaHRtbCkKCkNvbXBvc2l0aW9uIGRlIHZvdHJlIGFzc29ydGltZW50IDoKMSBNw6lkYWlsbG9u
-IGRlIHRob24gZW4gZ2Vsw6llICgxMjUgZykgKyAxIFBlcnNpbGzDqSBkZSB0aG9uIGVuIGdlbMOp
-ZSAoMTI1IGcpICsgMSBUaG9uIGJsYW5jIGF1IG5hdHVyZWwgKDE2MCBnKSArIDEgw6ltaWV0dMOp
-cyBkZSBUaG9uIGJsYW5jIGNvbmZpdGVyZWxsZXPCriAoODAgZykgKyAxIFRob24gYmxhbmMgw6Ag
-bCdodWlsZSBkJ29saXZlIGV0IGF1IGNpdHJvbiAoODAgZykgKyAxIFRob24gw6AgbGEgQ2F0YWxh
-bmUgKDE2MCBnKSArIDEgVGhvbiBibGFuYyDDoCBsJ2h1aWxlIGQnb2xpdmUgKDE2MCBnKSArIDEg
-VGhvbiBibGFuYyBhdXggYXJ0aWNoYXV0cyAoMTYwIGcpCgogKGh0dHA6Ly9vY2ZtNDAuY29tL2ds
-MWdtZzBpdHNncTJlb2x5cy9pbmRleDIuaHRtbCkKCj4gUHJvZml0ZXogc2FucyB0YXJkZXIgZGUg
-Y2V0dGUgb2ZmcmUgZXhjZXB0aW9ubmVsbGUgKGh0dHA6Ly9vY2ZtNDAuY29tL29qMXlsZ2lxdGsx
-Z2x2Z2xkZC9pbmRleDMuaHRtbCkKQXZlYyBsZSBDb2RlIDogUlcwMDUKCiAoaHR0cDovL29jZm00
-MC5jb20vcGwydG1tM2hzM2pxd2hvYmVsL2luZGV4NC5odG1sKQoKCk9mZnJlIHZhbGFibGUganVz
-cXUnYXUgMzEvMDgvMjAxMy4gTGVzIG1pc2VzIGVuIGFtYmlhbmNlcyBkZSBub3MgcHJvZHVpdHMg
-c29udCBkZXMgc3VnZ2VzdGlvbnMgZGUgcHLDqXNlbnRhdGlvbi4KCgoKLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tClNlZSBldmVyeXRoaW5nIGZyb20gdGhlIGJyb3dzZXIgdG8gdGhlIGRhdGFiYXNlIHdp
-dGggQXBwRHluYW1pY3MKR2V0IGVuZC10by1lbmQgdmlzaWJpbGl0eSB3aXRoIGFwcGxpY2F0aW9u
-IG1vbml0b3JpbmcgZnJvbSBBcHBEeW5hbWljcwpJc29sYXRlIGJvdHRsZW5lY2tzIGFuZCBkaWFn
-bm9zZSByb290IGNhdXNlIGluIHNlY29uZHMuClN0YXJ0IHlvdXIgZnJlZSB0cmlhbCBvZiBBcHBE
-eW5hbWljcyBQcm8gdG9kYXkhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFk
-L2Nsaz9pZD00ODgwODgzMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
-c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
-c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBqgprxtI7gfk57dIhj5pkfjaI&u=3Dhttp%3A%2F%2Fnews.t=
+eradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1373894928569%26custid%3D164=
+44%26uid%3D16231069273%26sig%3DMIMHICGLMMAOECJJ%26mid%3D1600197041&s=3DEFOO=
+CNDPAMDMHKFM
+ =
+
+Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. p=
+ique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa kri=
+se 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=
+=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque :=
+ jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 =
+moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Ma=
+dame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. piq=
+ue sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise=
+ 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=
+=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque :=
+ jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 =
+moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Ma=
+dame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. piq=
+ue sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise=
+ 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=
+=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque :=
+ jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 =
+moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Ma=
+dame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. piq=
+ue sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise=
+ 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=
+=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque :=
+ jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 =
+moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Ma=
+dame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. piq=
+ue sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise=
+ 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=
+=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque :=
+ jusqu'=E0 moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 =
+moins 70%Madame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Ma=
+dame K. pique sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. piq=
+ue sa krise 3=E8me d=E9marque : jusqu'=E0 moins 70%Madame K. pique sa krise=
+ 3=E8me d=E9marque : jusqu'=E0 moins 70%
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600197041&sig=3DKBGGHGLNABMNHMIL
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

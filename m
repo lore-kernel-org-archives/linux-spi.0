@@ -1,12 +1,12 @@
-From: "iPhone" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
-Subject: Destockage iPhone 5
-Date: Wed, 17 Jul 2013 02:36:01 +0000 (CET)
-Message-ID: <130717023601.-198939479300003940@ocfm43.com>
+From: la maison de valerie par Zetrend <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?2eme_demarque_la_maison_de_val=E9rie?=
+Date: Wed, 17 Jul 2013 11:41:10 +0200 (CEST)
+Message-ID: <oxzqu4.hj8cbeex0siqq5l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,56 +18,66 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKIChodHRwOi8vb2NmbTQzLmNvbS9xajVvbDJ4bWFwMTF5eGppc28vaW5kZXgwLmh0bWwpCgoK
-CgoKIChodHRwOi8vb2NmbTQzLmNvbS9qbDVkbTJ1MWFmZ2NiZnFpbHEvaW5kZXgxLmh0bWwpCgoK
-wqAKTGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50
-IHBvc3NpYmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0
-cDovL29jZm00My5jb20vZ3E1Z2oyMmxhc20xdWpvcnlqL2luZGV4Mi5odG1sKSAKCgoKIChodHRw
-Oi8vb2NmbTQzLmNvbS9vczV5ejJodmFraGN6b2dyZGcvaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJl
-eiBzdXJlbWVudCByZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWlu
-IGRlIHNlIGTDqXZlbG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxl
-cyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4g
-UGFydG91dCBzdXIgbGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0
-b2lyZXMgZCdoZXVyZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4u
-IAogKGh0dHA6Ly9vY2ZtNDMuY29tL3BxenRqdmFkNTM1MXNzbzNlcS9pbmRleDQuaHRtbCkKSGFi
-aXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUg
-cGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2Vz
-dCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6
-Ly9vY2ZtNDMuY29tL21zemN6dmJlNW9hY3R5ZzN1by9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExB
-IFNVSVRFID4+IChodHRwOi8vb2NmbTQzLmNvbS81anoybHZ2cjV0eDFrdGpwdmcvaW5kZXg2Lmh0
-bWwpCgogKGh0dHA6Ly9vY2ZtNDMuY29tL3JsenhtdjFjNTRqYzRicXBrai9pbmRleDcuaHRtbCkK
-CgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLD
-qXN1bHRhdHMgb250IMOpdMOpIHRyw6hzIHN1cnByZW5hbnRzLiAoaHR0cDovL29jZm00My5jb20v
-aWp4ZmRsZnBhbWIxZ3VqMDRvL2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vb2NmbTQzLmNvbS9h
-bHgwcmxrZmExeWMxa3EwbnEvaW5kZXg5Lmh0bWwpCiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVz
-IG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2VybmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlz
-YWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4gVG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOp
-Y29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBsZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUu
-IEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8vb2NmbTQzLmNvbS90anB6ZGJtNXVrMGh6aXhy
-cXEvaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJVEUgPj4gKGh0dHA6Ly9vY2ZtNDMuY29t
-LzJ5Mm13bWRhamwwcWloZ3lqcS9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vb2NmbTQzLmNv
-bS81bnkwaG51Y3B4amYwdGRrbGwvaW5kZXgxMi5odG1sKQogKGh0dHA6Ly9vY2ZtNDMuY29tL3Jt
-aWYxeGZxdHJqNWpidDFzbC9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9vY2ZtNDMuY29tL3phY3Yy
-b3dyMDJmemgwdWxnZy9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vb2NmbTQzLmNvbS93dXph
-dmVnaXI0ZnQ0Mm5wb2cvaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1IChodHRwOi8v
-b2NmbTQzLmNvbS81MGMyNW9lMDIyNXdoc2lsbGwvaW5kZXgxNi5odG1sKQoKCgoKCgrCoAoiSidh
-aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
-b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIgKGh0
-dHA6Ly9vY2ZtNDMuY29tL3JjenhqZTFkbTQ1MjR5cHBzbC9pbmRleDE3Lmh0bWwpCgoKCgoKCgog
-KGh0dHA6Ly9vY2ZtNDMuY29tL25xNWhqMmxkYXNwMXVsb3Jqai9pbmRleDE4Lmh0bWwpClBhdG91
-IChodHRwOi8vb2NmbTQzLmNvbS80ZDB1NTVyMHl2cHJyZGN5cWovaW5kZXgxOS5odG1sKQogU2Ft
-ZWRpIDIzIGp1aW4gNGgzNyAoaHR0cDovL29jZm00My5jb20va2dxa3FqNW9iYXNtbGVmdnFnL2lu
-ZGV4MjAuaHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hy
-ZXMgYXUgY2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwg
-bWUgdGFyZGUgZCdlc3NheWVyIiAoaHR0cDovL29jZm00My5jb20vdmx1aXJ2c2Y1cXNjZnZxZmpn
-L2luZGV4MjEuaHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNlZSBl
-dmVyeXRoaW5nIGZyb20gdGhlIGJyb3dzZXIgdG8gdGhlIGRhdGFiYXNlIHdpdGggQXBwRHluYW1p
-Y3MKR2V0IGVuZC10by1lbmQgdmlzaWJpbGl0eSB3aXRoIGFwcGxpY2F0aW9uIG1vbml0b3Jpbmcg
-ZnJvbSBBcHBEeW5hbWljcwpJc29sYXRlIGJvdHRsZW5lY2tzIGFuZCBkaWFnbm9zZSByb290IGNh
-dXNlIGluIHNlY29uZHMuClN0YXJ0IHlvdXIgZnJlZSB0cmlhbCBvZiBBcHBEeW5hbWljcyBQcm8g
-dG9kYXkhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD00ODgw
-ODgzMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgpth1I7gfk57dIhj8cb88pI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374054062743%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DHINFHKMPNACHNKBD%26mid%3D1600199029&s=3DO=
+MMAFPLFDOKLDFDI
+ =
+
+2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2em=
+e demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme d=
+emarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme dema=
+rque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarqu=
+e la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque l=
+a maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la m=
+aison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la mais=
+on de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison =
+de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de =
+val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=
+=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9=
+rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie=
+2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2em=
+e demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme d=
+emarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme dema=
+rque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarqu=
+e la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque l=
+a maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la m=
+aison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la mais=
+on de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison =
+de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de =
+val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=
+=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9=
+rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie=
+2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2em=
+e demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme d=
+emarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme dema=
+rque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarqu=
+e la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque l=
+a maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la m=
+aison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la mais=
+on de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison =
+de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de =
+val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=
+=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9=
+rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie=
+2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2em=
+e demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme d=
+emarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme dema=
+rque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarqu=
+e la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque l=
+a maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la m=
+aison de val=E9rie2eme demarque la maison de val=E9rie
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600199029&sig=3DEIJDKIFOOKJKPGAD
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

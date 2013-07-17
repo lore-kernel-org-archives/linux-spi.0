@@ -1,41 +1,67 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig@pengutronix.de>
-Subject: Re: [v2,2/2] spi: bitbang: convert to using core message queue
-Date: Wed, 17 Jul 2013 16:33:43 +0200
-Message-ID: <20130717143343.GA32014@pengutronix.de>
-References: <Pine.LNX.4.64.1301091507120.13376@axis700.grange>
+From: iPhone <contact-oSgpC8xvnUvQT0dZR+AlfA@public.gmane.org>
+Subject: Comment economiser sur l'iPhone 5
+Date: Wed, 17 Jul 2013 15:22:04 +0000
+Message-ID: <13f338c4f77e4ef6d108036f8efed840@mach10.generated>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	spi-devel-general@lists.sourceforge.net,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-sh@vger.kernel.org,
-	kernel@pengutronix.de
-To: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.1301091507120.13376@axis700.grange>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jan 09, 2013 at 03:08:59PM +0100, Guennadi Liakhovetski wrote:
-> The SPI subsystem core now manages message queues internally. Remove =
-the
-> local message queue implementation from the spi-bitbang driver and
-> migrate to the common one.
->=20
-> Signed-off-by: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-It works fine for me on an efm32 board communicating with an ks8851.
-Maybe the mmc problem is to be found in the mmc subsystem?
-
-Tested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig        =
-    |
-Industrial Linux Solutions                 | http://www.pengutronix.de/=
-  |
+UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
+bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
+L1lUMHhNeVppUFRNNU16TTNKbU05TWpNMk5ESW1aRDB5TURFekxUQTNMVEUzSURFMU9qSXdPakF3
+Sm1VOU1TWm9QVE01TWpnNEptWTlNemszTURRbVp6MHpPVGN3TkE9PQoKTGllbiBkZSBkZXNpbnNj
+cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE01TXpNM0pt
+TTlNak0yTkRJbVpEMHlNREV6TFRBM0xURTNJREUxT2pJd09qQXdKbVU5TVNab1BUTTVNamc0Sm1Z
+OU16azNNRFFtWnowek9UY3dOQT09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
+cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KTm91cyBzb21tZXMgYWxsw6lzIGTD
+qW5pY2hlciBsZXMgZGVybmnDqHJlcyBhc3R1Y2VzIHBvdXIgw6ljb25vbWlzZXIKwqAKw4AgTEEg
+VU5FCkNvbW1lbnQgw6ljb25vbWlzZXIgOTAlIHN1ciB1biBpUGFkIDQgb3Ugc3VyIHVuIGlQaG9u
+ZSA1ID8KVm91cyBsJ2F1cmV6IHN1cmVtZW50IHJlbWFycXXDqSwgdW4gbm91dmVhdSBwaMOpbm9t
+w6huZSBlc3QgZW4gdHJhaW4gZGUgc2UgZMOpdmVsb3BwZXIgZW4gRXVyb3BlIGV0IGVuIEFtw6ly
+aXF1ZSBkdSBOb3JkIDogbGVzIHNpdGVzIGludGVybmV0IGRlIHZlbnRlcyBhdXggZW5jaMOocmVz
+IGRlIGTDqXN0b2NrYWdlLiBQYXJ0b3V0IHN1ciBsZSBuZXQsIGRhbnMgbGVzIGJsb2dzLCBvbiBw
+ZXV0IGxpcmUgbGVzIGhpc3RvaXJlcyBkJ2hldXJldXggZ2FnbmFudHMgcXVpIG9udCByZW1wb3J0
+w6kgZGUgZmFidWxldXggYXJ0aWNsZXMgaGFiaXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91
+ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMg
+Y29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOp
+Y2lkw6kgZGUgbGVzIHRlc3Rlci4gUG91ciBub3VzIGFzc3VyZXIgcXVlIGxlcyBib25uZXMgYWZm
+YWlyZXMgcHJvcG9zw6llcyBwYXIgY2VzIHNpdGVzIGRlIHZlbnRlcyBhdXggZW5jaMOocmVzIGRl
+IGTDqXN0b2NrYWdlIMOpdGFpZW50IGJpZW4gcsOpZWxsZXMuIEV0IHF1ZWxsZSBtZWlsbGV1cmUg
+cmFpc29uIHBvdXIgcydlbiBhc3N1cmVyIHF1ZSBkZSBsZXMgdGVzdGVyIG5vdXMtbcOqbWUgPwps
+aXJlIGxhIHN1aXRlCsKgCkxBIFJFVlVFIENPTlNPCkplIHZvdWxhaXMgYWNoZXRlciB1biBub3V2
+ZWwgaVBhZCBSZXRpbmEgZGUgQXBwbGUsIGMnZXN0IGRvbmMgbW9pIHF1aSBhaSDDqXTDqSBjaGFy
+Z8OpZSBkdSB0ZXN0LgoiSidhaSBjb21tZW5jw6kgcGFyIGZhaXJlIHVuZSB0b25uZSBkZSByZWNo
+ZXJjaGVzIHN1ciBsZSBzdWpldCBwb3VyIGTDqXRlcm1pbmVyIHF1ZWwgc2l0ZSBkJ2VuY2jDqHJl
+cyBkZSBkw6lzdG9ja2FnZSDDqXRhaXQgbGUgcGx1cyBmaWFibGUsIGV0IGRvbmMgbGUgbWlldXgg
+YWRhcHTDqSDDoCBtb24gdGVzdC4gQXByw6hzIGRlcyBoZXVyZXMgZGUgcmVjaGVyY2hlcywgaidl
+biBzdWlzIHZlbnVlIMOgIGxhIGNvbmNsdXNpb24gcXVlLCBkdSBmYWl0IGRlIHNhIGxhcmdlIGdh
+bW1lIGQnYXJ0aWNsZXMgZXQgc29uIGV4Y2VsbGVudGUgcsOpcHV0YXRpb24sIEVuY2jDqHJlVmlw
+IMOpdGFpdCBsZSBzaXRlIMOgIHRlc3Rlci4iCmxpcmUgbGEgc3VpdGUKwqAKQ29tbWVudGFpcmVz
+IGRlIG5vcyBsZWN0ZXVyZXMKwqAKTWFyaWUgU2FtZWRpIDIgTWFycwoiSidhaSBkZSBxdW9pIHZv
+aXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBwb3VyIHVuIGJvbiBt
+b21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIKwqAKUGF0b3UgTHVuZGkg
+NCBNYXJzCiJKJ2FpIHZ1IHVuIHJlcG9ydGFnZSBzdXIgbGVzIGVuY2jDqHJlcyBhdSBjZW50aW1l
+IMOgIGxhIHTDqWzDqSwgcHVpcyBqJ2FpIGx1IGNldCBhcnRpY2xlLiBJbCBtZSB0YXJkZSBkJ2Vz
+c2F5ZXIiCsKgCsKgCsKgCsKgCsKgClBvdXIgdm91cyBkw6lzYWJvbm5lciwgY2xpcXVleiBpY2ku
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTZWUgZXZlcnl0aGluZyBmcm9tIHRoZSBicm93c2VyIHRv
+IHRoZSBkYXRhYmFzZSB3aXRoIEFwcER5bmFtaWNzCkdldCBlbmQtdG8tZW5kIHZpc2liaWxpdHkg
+d2l0aCBhcHBsaWNhdGlvbiBtb25pdG9yaW5nIGZyb20gQXBwRHluYW1pY3MKSXNvbGF0ZSBib3R0
+bGVuZWNrcyBhbmQgZGlhZ25vc2Ugcm9vdCBjYXVzZSBpbiBzZWNvbmRzLgpTdGFydCB5b3VyIGZy
+ZWUgdHJpYWwgb2YgQXBwRHluYW1pY3MgUHJvIHRvZGF5IQpodHRwOi8vcHViYWRzLmcuZG91Ymxl
+Y2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NDg4MDg4MzEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdl
+bmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwt
+Z2VuZXJhbAo=

@@ -1,83 +1,78 @@
-From: la maison de valerie par Zetrend <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?2eme_demarque_la_maison_de_val=E9rie?=
-Date: Wed, 17 Jul 2013 11:41:10 +0200 (CEST)
-Message-ID: <oxzqu4.hj8cbeex0siqq5l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 10/11] spi: spi-ep93xx: convert to the queued driver
+ infrastructure
+Date: Wed, 17 Jul 2013 11:11:33 +0100
+Message-ID: <20130717101133.GM22506@sirena.org.uk>
+References: <201307080912.37827.hartleys@visionengravers.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============2067587295279157913=="
+Cc: Ryan Mallon <rmallon@gmail.com>, mika.westerberg@iki.fi,
+ hsweeten@visionengravers.com, linux-mtd <linux-mtd@lists.infradead.org>,
+ grant.likely@linaro.org, spi-devel-general@lists.sourceforge.net
+To: H Hartley Sweeten <hartleys@visionengravers.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <201307080912.37827.hartleys@visionengravers.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgpth1I7gfk57dIhj8cb88pI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374054062743%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DHINFHKMPNACHNKBD%26mid%3D1600199029&s=3DO=
-MMAFPLFDOKLDFDI
- =
 
-2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2em=
-e demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme d=
-emarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme dema=
-rque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarqu=
-e la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque l=
-a maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la m=
-aison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la mais=
-on de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison =
-de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de =
-val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=
-=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9=
-rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie=
-2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2em=
-e demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme d=
-emarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme dema=
-rque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarqu=
-e la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque l=
-a maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la m=
-aison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la mais=
-on de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison =
-de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de =
-val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=
-=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9=
-rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie=
-2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2em=
-e demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme d=
-emarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme dema=
-rque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarqu=
-e la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque l=
-a maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la m=
-aison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la mais=
-on de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison =
-de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de =
-val=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=
-=E9rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9=
-rie2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie=
-2eme demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2em=
-e demarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme d=
-emarque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme dema=
-rque la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarqu=
-e la maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque l=
-a maison de val=E9rie2eme demarque la maison de val=E9rie2eme demarque la m=
-aison de val=E9rie2eme demarque la maison de val=E9rie
- =
+--===============2067587295279157913==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="j1TzbQBGf+ftliiX"
+Content-Disposition: inline
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600199029&sig=3DEIJDKIFOOKJKPGAD
----------------------------------------------------------------------------=
----
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
-ktrk
+
+--j1TzbQBGf+ftliiX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Jul 08, 2013 at 09:12:37AM -0700, H Hartley Sweeten wrote:
+> The SPI core provides infrastructure for standard message queueing. Use
+> that instead of handling it in the driver.
+
+Applied, thanks.
+
+--j1TzbQBGf+ftliiX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR5m3SAAoJELSic+t+oim9rnMP/24Ro6tH3tw/bPmLtvD4D3Wk
+nkg1EzatWi9fm43k/TA/GfAbsKgPDGVP7SghshiXfbyAsBvjjiJhfhJ7W+8WJv0w
+iSYosrTUl6C0/ZAunw8x6MTk0hDHxmNa+cj9eKLOI3sqHF49ODu3SmKj6Eh5MKV3
+jy6v5vKotE37UELbsEEpo4tThT+UHWuIMYa/gitfb9JNlvSjl04d9I80HBpIeEj7
+WOe1q3oBk0JxNO/yczs4oUlRQYWF8n/rv6yZKd3Z1PyBB5iCBVa7RCnYupPg3HwY
+o9KVA6b1Kx4I5S+y7Uk08IHDMp717X8tPZe5ANryrrFkiOJ4+YPmH0jD1UALQspv
+2AGl2Anox9Aingnw7E5uVX6MGg3KsAqI8PQt5lKQX2V0FbPcWCGLlA6AB9KJbT7E
+iitQ1kLTdg6u8JN4pakTw+vmKiog7Lut+zPUtV3RLIqkTYWPZzzxzjlw1r+LYBC5
+0ekd4zeDMgJ9I/wlFiO3i13uDz1W5FW8pQHdQ2/9OaVd0a4DKUfypI6Se+2rQLj4
+GpT9CT14MgzAJycPyFg+Ii2L3dt0TKbFkMYkTGTY+6z4aNMkVbbfMoXetvfbejR3
+jcr7R/mi7F7MSjSlpUUW+MBVVEvtk5Hzk4GkKT9GLuihdxY/M6Q4G19F4dFQXkAE
+pxNak2Q/ljj2at1kdnoU
+=9bhF
+-----END PGP SIGNATURE-----
+
+--j1TzbQBGf+ftliiX--
+
+
+--===============2067587295279157913==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============2067587295279157913==--

@@ -1,63 +1,74 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCHv4 2/3] drivers: spi: Add qspi flash controller
-Date: Thu, 18 Jul 2013 16:28:37 +0100
-Message-ID: <20130718152837.GS22506@sirena.org.uk>
-References: <1374141687-10790-1-git-send-email-sourav.poddar@ti.com>
- <1374141687-10790-3-git-send-email-sourav.poddar@ti.com>
- <20130718104233.GG22506@sirena.org.uk>
- <51E7D569.2010709@ti.com>
- <20130718131822.GN22506@sirena.org.uk>
- <20130718133158.GA1628@arwen.pp.htv.fi>
- <20130718144241.GO22506@sirena.org.uk>
- <51E801C9.60609@ti.com>
+From: Joel Fernandes <joelf-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 0/3] Pending dmaengine patches
+Date: Thu, 18 Jul 2013 11:46:38 -0500
+Message-ID: <1374166001-31340-1-git-send-email-joelf@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CUHu8oqV+HCwPlU/"
-Cc: Felipe Balbi <balbi@ti.com>,
-	spi-devel-general@lists.sourceforge.net, grant.likely@linaro.org,
-	rnayak@ti.com, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <51E801C9.60609@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Linux DaVinci Kernel List
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        Arnd Bergmann
+	<arnd-r2nGTMty4D4@public.gmane.org>, Mark Jackson <mpfj-list-2FZW7xY0fHgqdlJmJB21zg@public.gmane.org>,
+        Devicetree Discuss
+	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+        Linux Documentation List
+	<linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux MMC List <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Jason Kridner
+	<jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
+        Linux SPI Devel List
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+        Linux OMAP List
+	<linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux ARM Kernel List
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>, Sekhar Nori <nsekhar-l0cyMroinI0@public.gmane.org>,
+        Matt
+ Porter <matt-agtwNxEcTQJWk0Htik3J/w@public.gmane.org>,
+        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        Rob
+ Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+        Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark
+ Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Benoit Cousson <benoit.cousson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Balaji TK <balajitk-l0cyMroinI0@public.gmane.org>,
+        Gururaja
+ Hebbar <gururaja.hebbar-l0cyMroinI0@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+I've reworked Matt's dmaegine sg_limits series addressing review comments at [1].
 
---CUHu8oqV+HCwPlU/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Currently MMC on AM33xx requires EDMA which was posted and accepted, following
+it is a series that are fixes that have to go in for it to work correctly.
+Without this series, DMA fails on MMC resulting in I/O errors.
 
-On Thu, Jul 18, 2013 at 08:25:05PM +0530, Sourav Poddar wrote:
+A subsequent MMC DT patch for AM33xx is also on hold [2] for the same reason.
 
-> there is a QSPI_INTR_STATUS_ENABLED_CLEAR register, which indicated
-> the interrupt
-> status.
-> if nothing is set in the above register, I should return IRQ_NONE.
+Tested on AM335x (Beaglebone Rev A5A).
 
-Yes, and/or complain in the log.
+[1] http://linux.davincidsp.com/pipermail/davinci-linux-open-source/2013-March/026658.html
+[2] http://lkml.indiana.edu/hypermail/linux/kernel/1306.3/03766.html
 
---CUHu8oqV+HCwPlU/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Matt Porter (3):
+  dmaengine: add dma_get_slave_sg_limits()
+  mmc: omap_hsmmc: set max_segs based on dma engine limits
+  dma: edma: add device_slave_sg_limits() support
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
+ drivers/dma/edma.c            |   14 +++++++++++++
+ drivers/mmc/host/omap_hsmmc.c |    9 +++++++++
+ include/linux/dmaengine.h     |   45 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 68 insertions(+)
 
-iQIcBAEBAgAGBQJR6AmiAAoJELSic+t+oim9g44P/1rjoLOGRA2eKexrsxH8Vg2r
-LrHGRH04kkrxYFrRLY8TUKxyxwrKmS/n4mVg3fSec+z+kIAsCmwdeolkmQLeBCJq
-iwyCxneI0V5+Dvo5+8WCjESpB1My4hV+3yH1LDdFYdZKToPXVssAMSogz0LX6VsO
-iXIoPwf5P0gfXI4WCWpdhKXsg3eoHy14KQKz8eRDr+4Ft+XpCoxuGJTUAqk6FKPE
-1EkQtY3bPPjmj3gmlHknaiawQboAnMI7juNEzyHuWQ5sIjdwQGkg4R+Dve3IwCny
-bfxv48QGVp0gQAI33OEnN7U+UlW2JqcEw0iEjKH1JGfg5a8p3NnMYsY0K0ahlmfC
-bhw3nhujVoC4dujud8oI4GwWC6xNCLP4kGxTjFxjARLflXFW+LmVMwc7mOtGzcwc
-KwSwR6zdWZTJhBbtacgL1rzYGBoZPYnBQg31zSd79fmb35Dx2mgmK/Ygpss8Jd16
-dqHMPS829SsOyZYpTh7iHEw0D9qGfQwuBpTXJcvFi2vzrUVTqMBv7bdpmjDKIWc3
-bPYOUHUYFfffKkq5ypCKUpleZ40mD6GNEbb5ZfZvfsA+UTKwXozMbGgPQUARspvS
-GGTdS72HeAxdehPUbWwXijrMxwT5F8IsQVTg0dBDCd7qaagDo+cXA3Z2JHPOvJxk
-hXNL7vGhRM913eK7YkdP
-=6pML
------END PGP SIGNATURE-----
-
---CUHu8oqV+HCwPlU/--
+-- 
+1.7.9.5

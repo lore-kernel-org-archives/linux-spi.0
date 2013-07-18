@@ -1,13 +1,20 @@
-From: "Bricolage et jardinage" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Tout_l=27univers_Bricolage_et_Jardinage_jusqu=27=E0_-70%?=
-Date: Thu, 18 Jul 2013 00:20:22 +0000 (CET)
-Message-ID: <130718002022.-136561099800004408@ocfm41.com>
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V2 01/12] spi/mxs: Always set LOCK_CS
+Date: Wed, 17 Jul 2013 18:08:35 -0700
+Message-ID: <CA+7tXijy8zVuU6t8s1GUq_domKdFWtE0hvsnX9bjgZLK+iZPow@mail.gmail.com>
+References: <1364905195-24286-1-git-send-email-tpiepho@gmail.com>
+	<201304030118.42976.marex@denx.de>
+	<CAOMZO5AEU3D3o-8fKLQJvsRSwBMNn0jfwZFC6R93TKaUpxffSw@mail.gmail.com>
+	<20957.32214.721252.361301@ipc1.ka-ro>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: =?ISO-8859-1?Q?Lothar_Wa=DFmann?= <LW-AvR2QvxeiV7DiMYJYoSAnRvVK+yQ3ZXh@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20957.32214.721252.361301-VjFSrY7JcPWvSplVBqRQBQ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,42 +25,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jul 10, 2013 at 8:29 AM, Lothar Wa=DFmann <LW-AvR2QvxeiV7DiMYJYoSAnRvVK+yQ3ZXh@public.gmane.org>w=
+rote:
 
-Vente priv=E9e BRICOLAGE & JARDINAGE : des remises jusqu'=E0 -80% (http://o=
-cfm41.com/tqc4ojpkp3wmbcx2cg/index0.html)
-(http://ocfm41.com/2scr4jsspoery1c2xj/index1.html)
-(http://ocfm41.com/bjcndjwfpt0mzqfl1q/index2.html)
-(http://ocfm41.com/0lc5rjqpp4drug1lfo/index3.html)
-=A0
-Bricoprive.com (http://ocfm41.com/ej03d5ox3ptmtlfbpj/index4.html) est le si=
-te de ventes priv=E9es d=E9di=E9 au bricolage et au jardinage.
-Tous les jours de nouvelles ventes. Profitez de remises exceptionnelles all=
-ant jusqu'=E0 -80%.
-Pour acc=E9der aux ventes priv=E9es inscrivez-vous... c'est simple et c'est=
- gratuit !
-Pour un tr=E8s grand nombre de fran=E7aises et de fran=E7ais, le bricolage =
-et le jardinage sont des passions, parfois une n=E9cessit=E9 et toujours un=
- plaisir ! Mais il n=B4y a pas de bons artisans sans bons outils?
-En cr=E9ant BRICOPRIVE (http://ocfm41.com/ul0er5453fsrsd1bmg/index5.html), =
-nous avons souhait=E9 permettre aux bricoleurs confirm=E9s comme occasionne=
-ls, aux amateurs de jardinage et d'am=E9nagement ext=E9rieur, d'avoir acc=
-=E8s =E0 du mat=E9riel de grande marque et de qualit=E9 professionnelle =E0=
- moindre co=FBt.
-Nombreux sont les nouveaux sites de ventes priv=E9es qui se lancent, mais r=
-ares sont ceux qui se d=E9dient =E0 un segment et en deviennent de v=E9rita=
-bles sp=E9cialistes. Notre challenge est de devenir le num=E9ro un en Franc=
-e de la vente priv=E9e sur le march=E9 du bricolage et du jardinage.
-Nos =E9quipes s=B4efforcent de r=E9f=E9rencer les meilleures marques et de =
-vous faire profiter de r=E9ductions pouvant aller jusqu=B4=E0 -80% par rapp=
-ort aux prix pratiqu=E9s en magasins. La qualit=E9 de nos produits est une =
-priorit=E9, mais la qualit=E9 de notre service est une obsession. D=E9tail =
-des fiches produits, qualit=E9 des visuels, prix n=E9goci=E9s, respect des =
-d=E9lais de livraison? autant de points qui concentrent notre attention afi=
-n de r=E9pondre =E0 vos exigences.
-Que vous soyez passionn=E9, amateur =E9clair=E9, en plein chantier ou que v=
-ous souhaitiez simplement vous =E9quiper pour am=E9liorer votre int=E9rieur=
- et votre ext=E9rieur, rejoignez BRICOPRIVE (http://ocfm41.com/vq0ho5du3s4m=
-42xy5o/index6.html) et invitez vos amis !
+> > >> always be set.  The DMA code will always set it, explicitly on the
+> > >> first segment of the first transfer, and then implicitly on all the
+> > >> rest by never clearing the bit from the value read from the ctrl0
+> > >> register.
+> > >>
+> > >> The only reason to not set LOCK_CS would be to attempt an altered
+> > >> protocol where CS pulses between each word.  Though don't get your
+> > >> hopes up if you want to do this, as the hardware doesn't appear to do
+> > >> this in any sane manner.
+> > >
+> > > Can you please elaborate on this part above? The description is very
+> vague.
+> > >
+> > >> LOCK_CS keeps CS asserted though the entire transfer.  This should
+> From my experience the HW deasserts CS whenever the output fifo runs
+> empty.
+>
+>
+I think that might be the case.  Since I have no need to add support for
+some non-standard SPI protocol nobody has wanted, I didn't spend the time
+to reverse engineer how exactly it worked.  I think what would happen is
+that if you used multi-word transfers (and the current PIO mode in the
+driver ONLY uses single word transfers!) you would sometimes get a CS pulse
+between each word and sometimes every four words.  It seemed to make a
+difference if one used multi-word PIO with a FIFO, which the current driver
+doesn't support, or multi-word DMA.
+
+I did spend enough time on it to determine that, "always set LOCK_CS all
+the time for normal SPI," is correct.  The driver's method of setting in
+for all transfers but the last, except in DMA mode where it's set on the
+last transfer too, apparently by accident, is unnecessarily complex and
+inefficient.  It only "works" because the current PIO code only supports
+single word transfers at the hardware level.
 ---------------------------------------------------------------------------=
 ---
 See everything from the browser to the database with AppDynamics

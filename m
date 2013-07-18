@@ -1,116 +1,133 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCHv4 2/3] drivers: spi: Add qspi flash controller
-Date: Thu, 18 Jul 2013 17:54:33 +0530
-Message-ID: <51E7DE81.3010609@ti.com>
+Date: Thu, 18 Jul 2013 14:18:22 +0100
+Message-ID: <20130718131822.GN22506@sirena.org.uk>
 References: <1374141687-10790-1-git-send-email-sourav.poddar@ti.com>
-	<1374141687-10790-3-git-send-email-sourav.poddar@ti.com>
-	<20130718102404.GH11251@arwen.pp.htv.fi> <51E7CF11.5030301@ti.com>
-	<20130718112458.GJ11251@arwen.pp.htv.fi>
+ <1374141687-10790-3-git-send-email-sourav.poddar@ti.com>
+ <20130718104233.GG22506@sirena.org.uk>
+ <51E7D569.2010709@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: rnayak-l0cyMroinI0@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: <balbi-l0cyMroinI0@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130718112458.GJ11251-S8G//mZuvNWo5Im9Ml3/Zg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="MUgosN8HgFyWu2R6"
+Cc: spi-devel-general@lists.sourceforge.net, grant.likely@linaro.org,
+	balbi@ti.com, rnayak@ti.com, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Sourav Poddar <sourav.poddar@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <51E7D569.2010709@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 18 July 2013 04:54 PM, Felipe Balbi wrote:
-> On Thu, Jul 18, 2013 at 04:48:41PM +0530, Sourav Poddar wrote:
->>>> +static void qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
->>>> +{
->>>> +	const u8 *txbuf;
->>>> +	int wlen, count;
->>>> +
->>>> +	count = t->len;
->>>> +	txbuf = t->tx_buf;
->>>> +	wlen = t->bits_per_word;
->>>> +
->>>> +	while (count--) {
->>>> +		dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %02x\n",
->>>> +			qspi->cmd | QSPI_WR_SNGL, qspi->dc, *txbuf);
->>>> +		ti_qspi_writel_data(qspi, *txbuf++, QSPI_SPI_DATA_REG, wlen);
->>> you always increment by each byte. Here, if you used writel(), you wrote
->>> 4 bytes and should increment txbuf by 4.
->> hmm..got this point. Yes, my mistake, here I agree if wlen is not 8 bits
->> txbuf++ is not valid.
->>>   Same goes for read_data(),
->>> below. Another thing. Even though your wlen might be 8 bits, if you
->>> write 4 bytes to write, you can save a few CPU cycles by using writel().
->>>
->> Do you mean 4 words of 8 bits?
-> yeah. Say you have wlen = 8 but the transfer length is 8 bytes (64
-> bits). If you use writeb(), you will do 8 writes, if you use writel()
-> you'll do 2 writes.
->
-hmm.. I will check this out.
-If our wlen is 8, after every 8 bits there will be
-an interrupt. Will check that out, how that interrupt
-should be tackled if we desired to read 4 bytes in a single writel/readl.
->>>> +static int ti_qspi_start_transfer_one(struct spi_master *master,
->>>> +		struct spi_message *m)
->>>> +{
->>>> +	struct ti_qspi *qspi = spi_master_get_devdata(master);
->>>> +	struct spi_device *spi = m->spi;
->>>> +	struct spi_transfer *t;
->>>> +	int status = 0, ret;
->>>> +	int frame_length;
->>>> +
->>>> +	/* setup device control reg */
->>>> +	qspi->dc = 0;
->>>> +
->>>> +	if (spi->mode&   SPI_CPHA)
->>>> +		qspi->dc |= QSPI_CKPHA(spi->chip_select);
->>>> +	if (spi->mode&   SPI_CPOL)
->>>> +		qspi->dc |= QSPI_CKPOL(spi->chip_select);
->>>> +	if (spi->mode&   SPI_CS_HIGH)
->>>> +		qspi->dc |= QSPI_CSPOL(spi->chip_select);
->>>> +
->>>> +	frame_length = DIV_ROUND_UP(m->frame_length * spi->bits_per_word,
->>>> +				spi->bits_per_word);
->>> this calculation doesn't look correct.
->>>
->>> 	(m->frame_length * spi->bits_per_word) /
->>> 		spi->bits_per_word = m->frame_length
->>>
->>> What are you trying to achieve here ? frame_length should be counted in
->>> words right ? And we get that value in bytes. So what's the best
->>> calculation to convert bytes into words ? If you have 8 bits_per_word
->>> you don't need any calculation, but if you have 32 bits_per_word, you
->>> _do_ need something.
->>>
->> Yes, just derive this formulae with 8 bits per word in mind.
->> Will change.
->> It should be (m->frame_length * 8) / spi->bits_per_word
-> right on. To make sure this will execute a little faster (you never know
-> what several different versions of GCC will do), instead of multiplying
-> by 8, left shift by 3.
->
-Ok. Will do.
->>> How will you achieve the number you want ? (hint: 1 byte == 8 bits)
->>>
->>> And btw, all of these mistakes pretty much tell me that this driver
->>> hasn't been tested. How have you tested this driver ?
->> After bootup, I checked for deive detting enumerated as /proc/mtd.
->> After which I am using mtdutils(erase, dump and write utilied to
->> check for the communication with the flash device.)
-> alright, make that clear in your commit log.
->
-Ok.
 
-------------------------------------------------------------------------------
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk
+--MUgosN8HgFyWu2R6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Jul 18, 2013 at 05:15:45PM +0530, Sourav Poddar wrote:
+> On Thursday 18 July 2013 04:12 PM, Mark Brown wrote:
+
+> >>+	list_for_each_entry(t,&m->transfers, transfer_list) {
+> >>+		qspi->cmd |=3D QSPI_WLEN(t->bits_per_word);
+> >>+		qspi->cmd |=3D QSPI_WC_CMD_INT_EN;
+> >>+
+> >>+		ret =3D qspi_transfer_msg(qspi, t);
+> >>+		if (ret) {
+> >>+			dev_dbg(qspi->dev, "transfer message failed\n");
+> >>+			return -EINVAL;
+> >>+		}
+> >>+
+> >>+		m->actual_length +=3D t->len;
+> >>+
+> >>+		if (list_is_last(&t->transfer_list,&m->transfers))
+> >>+			goto out;
+> >>+	}
+> >The use of list_is_last() here is *realy* strange - what's going on
+> >there?
+
+> We are checking if there is any transfer left, if no we are signalling the
+> flash device about the end of transfer.
+
+Please be more specific.  How will you ever reach the end of the
+transfer list in a way which wouldn't cause the for loop to terminate?
+
+> >>+static irqreturn_t ti_qspi_isr(int irq, void *dev_id)
+> >>+{
+> >>+	struct ti_qspi *qspi =3D dev_id;
+> >>+	u16 mask, stat;
+> >>+
+> >>+	irqreturn_t ret =3D IRQ_HANDLED;
+> >>+
+> >>+	spin_lock(&qspi->lock);
+> >>+
+> >>+	stat =3D ti_qspi_readl(qspi, QSPI_SPI_STATUS_REG);
+> >>+	mask =3D ti_qspi_readl(qspi, QSPI_INTR_ENABLE_SET_REG);
+> >>+
+> >>+	if (stat&&  mask)
+> >>+		ret =3D IRQ_WAKE_THREAD;
+> >>+
+> >>+	spin_unlock(&qspi->lock);
+> >>+
+> >>+	return ret;
+
+> >According to the above code we might interrupt for masked events...
+> >that's a bit worrying isn't it?
+
+> Yes, there is WC interrupt enable bit which enables the interrupt.
+> This interrupt
+> gets disabled by writing to the CLEAR reg in the threaded irq.
+
+So why do we report that we handled the interrupt then?  Shouldn't we at
+least warn if we're getting spurious IRQs?
+
+> >>+	ret =3D devm_request_threaded_irq(&pdev->dev, irq, ti_qspi_isr,
+> >>+			ti_qspi_threaded_isr, IRQF_NO_SUSPEND | IRQF_ONESHOT,
+> >>+			dev_name(&pdev->dev), qspi);
+> >>+	if (ret<  0) {
+> >>+		dev_err(&pdev->dev, "Failed to register ISR for IRQ %d\n",
+> >>+				irq);
+> >>+		goto free_master;
+> >>+	}
+> >Standard question about devm_request_threaded_irq() - how can we be
+> >certain it's safe to use during removal?
+> I am not sure about the exact flow. If we see the api description,
+> it says about irq getting
+> freed automatically.
+> Practically, I will check that on removing the driver, cat
+> /proc/interrupts  should not show
+> the required interrupt getting registered.
+> Though, I see an api also existing "devm_free_irq", which explicitly
+> un allocate your irq requested
+> through devm_* variants.
+
+You're missing the point here - how can you be sure that the interrupt
+can't fire?
+
+>=20
+>=20
+>=20
+
+--MUgosN8HgFyWu2R6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR5+saAAoJELSic+t+oim9ahIP/RiffQsGKM+PGMJD/A0lZUYT
+njhqFLlCCDn9KdVEECzS+27d8kpnMFu+dsxndZDcZy8/LbA4gZbN7lNw9caTkAI2
+ZUcJ2WDY7JZkputNFQRtJAbeq7JtztkM8obgsnOQiBBjfshCpbyZUlLAhbeuVUqb
+udFgKmf0UdO2dg4F16OF1dkuctsBG777LqYKDESmyIBYc0LNjQTV36yiUuZsFtkt
+yCw/aQOIJUBnU6yrtRz6GTvANDgp5vCdUTYoNWCYk7kkCgvHmkXxS31HyVjAWgLK
+/OfRNAOxyWLwSwNcxbj0JENR+3z9o5sjvDmPVfAKFire07SGiIqyURmHcgz6LoCX
+f2WpO3ksyEo/FOgHc4tAiMBfpufymHIOZk9tkMsrG9kQtvKsx3kc39oeTYu50dQL
+VG1s6Aqol1o5bzmkB6GfOwHLhixUWD/jg/LrZPzMAKtvhiOUk9FUUrlGT3Vk8nf6
+j/F62ALiIVdzLqASJvsBLZoCalU5SsD/UHf1FN0lEAbqW0ihWSCcDO9caCrqb6Rl
+t/bveviWERGucikFYjPb4JScV74SqesSGELlVkecleOg5JbNEHyhOym+vhZEReFo
+EBO6CkYzNkgkiNRbHgE1ejMgUGc1+VXTVEsz10PwKw24rzrCtqlWa/MEv5lBOOtO
+GCkTB44I2HRxMH3h+XNt
+=TYyn
+-----END PGP SIGNATURE-----
+
+--MUgosN8HgFyWu2R6--

@@ -1,13 +1,14 @@
-From: Trivago Bons Plans <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Derni=E8res_minutes_=E9t=E9_:_h=F4t?=
-	=?ISO-8859-1?Q?els_4*_=E0_partir_de_41_euros?=
-Date: Thu, 18 Jul 2013 11:04:47 +0200 (CEST)
-Message-ID: <vblxwg.hj9qgghdt4h5tml@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 0/3] spi changes and ti quad spi controller.
+Date: Thu, 18 Jul 2013 15:31:24 +0530
+Message-ID: <1374141687-10790-1-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	rnayak-l0cyMroinI0@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,101 +20,32 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgpua4I7gfk57dIhj9qfxhdI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374138262886%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DHPJBHFBEBGANBODP%26mid%3D1600200076&s=3DB=
-EENBEPPHHGCLNOE
- =
+Add support for calculating message length in spi framework.
 
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros
- =
+Add support for quad spi controller.
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600200076&sig=3DJPNJAHCPOKJNJFOI&st=3D0
----------------------------------------------------------------------------=
----
+Patch 2 of this series had been posted before. Sending along
+with the series along with ather propsed change.
+
+Sourav Poddar (3):
+  driver: spi: Modify core to compute the message length
+  drivers: spi: Add qspi flash controller
+  driver: spi: Add quad spi read support
+
+ Documentation/devicetree/bindings/spi/ti_qspi.txt |   22 +
+ drivers/spi/Kconfig                               |    8 +
+ drivers/spi/Makefile                              |    1 +
+ drivers/spi/spi-ti-qspi.c                         |  550 +++++++++++++++++++++
+ drivers/spi/spi.c                                 |    1 +
+ include/linux/spi/spi.h                           |    1 +
+ 6 files changed, 583 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/ti_qspi.txt
+ create mode 100644 drivers/spi/spi-ti-qspi.c
+
+
+------------------------------------------------------------------------------
 See everything from the browser to the database with AppDynamics
 Get end-to-end visibility with application monitoring from AppDynamics
 Isolate bottlenecks and diagnose root cause in seconds.
 Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
-ktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

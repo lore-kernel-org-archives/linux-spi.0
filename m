@@ -1,65 +1,158 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC/PATCHv2 3/3] driver: spi: Add quad spi read support
-Date: Thu, 18 Jul 2013 11:44:14 +0100
-Message-ID: <20130718104414.GH22506@sirena.org.uk>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCHv4 2/3] drivers: spi: Add qspi flash controller
+Date: Thu, 18 Jul 2013 16:48:41 +0530
+Message-ID: <51E7CF11.5030301@ti.com>
 References: <1374141687-10790-1-git-send-email-sourav.poddar@ti.com>
- <1374141687-10790-4-git-send-email-sourav.poddar@ti.com>
+	<1374141687-10790-3-git-send-email-sourav.poddar@ti.com>
+	<20130718102404.GH11251@arwen.pp.htv.fi>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="yBTt7CTH+yMq4SuJ"
-Cc: spi-devel-general@lists.sourceforge.net, grant.likely@linaro.org,
-	balbi@ti.com, rnayak@ti.com, linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1374141687-10790-4-git-send-email-sourav.poddar@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: rnayak-l0cyMroinI0@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: <balbi-l0cyMroinI0@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130718102404.GH11251-S8G//mZuvNWo5Im9Ml3/Zg@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Felipe,
+On Thursday 18 July 2013 03:54 PM, Felipe Balbi wrote:
+> Hi,
+>
+> it might be just me, but ...
+>
+> On Thu, Jul 18, 2013 at 03:31:26PM +0530, Sourav Poddar wrote:
+>> +static inline unsigned long ti_qspi_readl_data(struct ti_qspi *qspi,
+>> +		unsigned long reg, int wlen)
+>> +{
+>> +	switch (wlen) {
+>> +	case 8:
+>> +		return readw(qspi->base + reg);
+>> +		break;
+>> +	case 16:
+>> +		return readb(qspi->base + reg);
+>> +		break;
+>> +	case 32:
+>> +		return readl(qspi->base + reg);
+>> +		break;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
+>> +static inline void ti_qspi_writel_data(struct ti_qspi *qspi,
+>> +		unsigned long val, unsigned long reg, int wlen)
+>> +{
+>> +	switch (wlen) {
+>> +	case 8:
+>> +		writew(val, qspi->base + reg);
+>> +		break;
+>> +	case 16:
+>> +		writeb(val, qspi->base + reg);
+>> +		break;
+>> +	case 32:
+>> +		writeb(val, qspi->base + reg);
+>> +		break;
+>> +	default:
+>> +		dev_dbg(qspi->dev, "word lenght out of range");
+>> +		break;
+>> +	}
+>> +}
+> because of these two functions you have the hability to read/write
+> *more* than one byte, and yet ...
+>
+>> +static void qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
+>> +{
+>> +	const u8 *txbuf;
+>> +	int wlen, count;
+>> +
+>> +	count = t->len;
+>> +	txbuf = t->tx_buf;
+>> +	wlen = t->bits_per_word;
+>> +
+>> +	while (count--) {
+>> +		dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %02x\n",
+>> +			qspi->cmd | QSPI_WR_SNGL, qspi->dc, *txbuf);
+>> +		ti_qspi_writel_data(qspi, *txbuf++, QSPI_SPI_DATA_REG, wlen);
+> you always increment by each byte. Here, if you used writel(), you wrote
+> 4 bytes and should increment txbuf by 4.
 
---yBTt7CTH+yMq4SuJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+hmm..got this point. Yes, my mistake, here I agree if wlen is not 8 bits
+txbuf++ is not valid.
+>   Same goes for read_data(),
+> below. Another thing. Even though your wlen might be 8 bits, if you
+> write 4 bytes to write, you can save a few CPU cycles by using writel().
+>
+Do you mean 4 words of 8 bits?
+> You only use writew() if you have exactly 2 bytes to write and writeb()
+> if you have exactly 1 byte to write. 3 bytes we'll be left as an
+> exercise.
+hmm..yes.
+>> +static int ti_qspi_start_transfer_one(struct spi_master *master,
+>> +		struct spi_message *m)
+>> +{
+>> +	struct ti_qspi *qspi = spi_master_get_devdata(master);
+>> +	struct spi_device *spi = m->spi;
+>> +	struct spi_transfer *t;
+>> +	int status = 0, ret;
+>> +	int frame_length;
+>> +
+>> +	/* setup device control reg */
+>> +	qspi->dc = 0;
+>> +
+>> +	if (spi->mode&  SPI_CPHA)
+>> +		qspi->dc |= QSPI_CKPHA(spi->chip_select);
+>> +	if (spi->mode&  SPI_CPOL)
+>> +		qspi->dc |= QSPI_CKPOL(spi->chip_select);
+>> +	if (spi->mode&  SPI_CS_HIGH)
+>> +		qspi->dc |= QSPI_CSPOL(spi->chip_select);
+>> +
+>> +	frame_length = DIV_ROUND_UP(m->frame_length * spi->bits_per_word,
+>> +				spi->bits_per_word);
+> this calculation doesn't look correct.
+>
+> 	(m->frame_length * spi->bits_per_word) /
+> 		spi->bits_per_word = m->frame_length
+>
+> What are you trying to achieve here ? frame_length should be counted in
+> words right ? And we get that value in bytes. So what's the best
+> calculation to convert bytes into words ? If you have 8 bits_per_word
+> you don't need any calculation, but if you have 32 bits_per_word, you
+> _do_ need something.
+>
+Yes, just derive this formulae with 8 bits per word in mind.
+Will change.
+It should be (m->frame_length * 8) / spi->bits_per_word
+> How will you achieve the number you want ? (hint: 1 byte == 8 bits)
+>
+> And btw, all of these mistakes pretty much tell me that this driver
+> hasn't been tested. How have you tested this driver ?
+After bootup, I checked for deive detting enumerated as /proc/mtd.
+After which I am using mtdutils(erase, dump and write utilied to
+check for the communication with the flash device.)
+> Is your spansion
+> memory accessed with 8 bits_per_word only ?
+Yes, most of the places is like that and data is sapmled in 8 bits.
+For some opcodes, we need to send 3 bytes addresses after instruction
+  to the flash chip.
+>   Is there anyway to use
+> 32 bits_per_word with that device ? That would uncover quite a few
+> mistakes in $subject.
+>
 
-On Thu, Jul 18, 2013 at 03:31:27PM +0530, Sourav Poddar wrote:
-> Since, qspi controller uses quad read.
->=20
-> Configuring the command register, if the transfer of data needs
-> dual or quad lines.
->=20
-> This patch has been done on top of the following patch[1], which is just =
-the=20
-> basic idea of adding dual/quad support in spi framework. =20
-> $subject patch will undergo changes as the parent patch goes[1]
->=20
-> [1]: http://comments.gmane.org/gmane.linux.kernel.spi.devel/14047
 
-Just as with commit IDs you should include a plain text description of
-anything you link to so that people reading your e-mail can tell what
-you're talking about without going on line.
-
---yBTt7CTH+yMq4SuJ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR58b7AAoJELSic+t+oim9jwMP/Asz1edR2cgkUy0hsKMh8dr4
-wibv6McCcJrnEy3f4CawpiuJ7QQC2I1hS1S+zn45eTaiI4SWibxKWKLp3INnY8k4
-gvnEmlbSaggRpDPdsyS6nnOpFeGOpmlcJWgqjbIkPCMIUsh5zAYN4W3G2aOLI5se
-blz7lpn9+L7zmFe8VeO1GtWl1QGngRdni/U0/d5iA9Qz+5aiZ3djwzKF1Nk9dO5v
-dghJnsP/rA5ll+sXMgGd0U07bmeVG4deicwdpPqiST2SK+MTx5TgU+/K3RVfs0h8
-YH5PVcPVjYYnRQUiO2cHvSwl2XWE4Yqbzp26cYsNK80kD2wAPUM/5Z2/MCFwKsoK
-oR/lzuvKjFu2lIxY/HVORTSaqZgttIDQRyB753//xqoQ6kXQnX5LQ19cyNHExGM3
-3kDUMICXZqvn5koBo1HWfg4U4ZThi/RUm+wA/s+bXaY/7HRXc5CtoZWLD7J2vnhn
-FYcRnx9sqtLRM5fdn1F+i2+sqWVaFzm5kSXBKSrT+iWtJV4SnGlfRlwRVA6baZuE
-fQL1m4qs7xBNjC9JKavlId2F6xDd9v/Tb/HdIyj5RFNhP9FMZ2X7tzfwwu3YrYvy
-cySGwOGXJOgFFKWXriuda6DqbT9tt5SwzCCV3/dvpZuLYaTEEq7rB7nSZZ1HlQKu
-ZeGMkRl2FftAlPrLzOzW
-=Nt+Z
------END PGP SIGNATURE-----
-
---yBTt7CTH+yMq4SuJ--
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

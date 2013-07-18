@@ -1,18 +1,17 @@
-From: Vinod Koul <vinod.koul@intel.com>
+From: Russell King - ARM Linux <linux@arm.linux.org.uk>
 Subject: Re: [PATCH 1/3] dmaengine: add dma_get_slave_sg_limits()
-Date: Thu, 18 Jul 2013 21:46:58 +0530
-Message-ID: <20130718161658.GW16653@intel.com>
-References: <1374166001-31340-1-git-send-email-joelf@ti.com>
- <1374166001-31340-2-git-send-email-joelf@ti.com>
+Date: Thu, 18 Jul 2013 18:08:25 +0100
+Message-ID: <20130718170825.GZ21614@n2100.arm.linux.org.uk>
+References: <1374166001-31340-1-git-send-email-joelf@ti.com> <1374166001-31340-2-git-send-email-joelf@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
 	Matt Porter <matt@ohporter.com>,
 	Grant Likely <grant.likely@secretlab.ca>,
 	Rob Herring <rob.herring@calxeda.com>,
+	Vinod Koul <vinod.koul@intel.com>,
 	Mark Brown <broonie@linaro.org>,
 	Benoit Cousson <benoit.cousson@linaro.org>,
-	Russell King <linux@arm.linux.org.uk>,
 	Balaji TK <balajitk@ti.com>,
 	Gururaja Hebbar <gururaja.hebbar@ti.com>,
 	Chris Ball <cjb@laptop.org>,
@@ -26,31 +25,71 @@ Cc: Tony Lindgren <tony@atomide.com>, Sekhar Nori <nsekhar@ti.com>,
 	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	Linux Documentation List <linux-doc@vger.kernel.org>,
 	Linux MMC List <linux-mmc@vger.kernel.org>,
-	L
+	Linux
 To: Joel Fernandes <joelf@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
 In-Reply-To: <1374166001-31340-2-git-send-email-joelf@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 On Thu, Jul 18, 2013 at 11:46:39AM -0500, Joel Fernandes wrote:
-> From: Matt Porter <mporter@ti.com>
-> 
-> Add a dmaengine API to retrieve slave SG transfer limits.
-> 
 > The API is optionally implemented by dmaengine drivers and when
 > unimplemented will return a NULL pointer. A client driver using
 > this API provides the required dma channel, address width, and
 > burst size of the transfer. dma_get_slave_sg_limits() returns an
 > SG limits structure with the maximum number and size of SG segments
 > that the given channel can handle.
-Hi Joel,
 
-I have already resurrected this and generalized the API to get the slave
-capablities. 
-https://lkml.org/lkml/2013/7/15/147
+Please look at what's already in struct device:
 
-Please start using this API
+struct device {
+...
+        struct device_dma_parameters *dma_parms;
+...
+};
 
-~Vinod
+This provides:
+
+struct device_dma_parameters {
+        /*
+         * a low level driver may set these to teach IOMMU code about
+         * sg limitations.
+         */
+        unsigned int max_segment_size;
+        unsigned long segment_boundary_mask;
+};
+
+Now, these are helpfully accessed via:
+
+dma_get_max_seg_size(dev)
+dma_set_max_seg_size(dev)
+dma_get_seg_boundary(dev)
+dma_set_seg_boundary(dev, mask)
+
+Drivers already use these to work out how to construct the scatterlist
+before passing it to the DMA API, which means that they should also be
+used when creating a scatterlist for the DMA engine (think about it -
+you have to use the DMA API to map the buffers for the DMA engine too.)
+
+So, we already have two properties defined on a per-device basis: the
+maximum size of a scatterlist segment, and the boundary over which any
+segment must not cross.
+
+The former ties up with your max_seg_len() property, though arguably it
+may depend on the DMA engine access size.  The problem with implementing
+this new API though is that the subsystems (such as SCSI) which already
+use dma_get_max_seg_size() will be at odds with what is possible via the
+DMA engine.
+
+I strongly suggest using the infrastructure at device level and not
+implementing some private DMA engine API to convey this information.
+
+As for the maximum number of scatterlist entries, really that's a bug in
+the DMA engine implementations if they can't accept arbitary lengths.
+I've created DMA engine drivers for implementations where you have to
+program each segment individually, ones which can have the current and
+next segments, as well as those which can walk a list.  Provided you get
+informed of a transfer being completed, there really is no reason for a
+DMA engine driver to limit the number of scatterlist entries that it
+will accept.

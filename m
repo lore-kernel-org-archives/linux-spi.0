@@ -1,125 +1,118 @@
-From: Joel Fernandes <joelf-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 1/3] dmaengine: add dma_get_slave_sg_limits()
-Date: Thu, 18 Jul 2013 13:57:33 -0500
-Message-ID: <51E83A9D.5020008@ti.com>
-References: <1374166001-31340-1-git-send-email-joelf@ti.com>
-	<1374166001-31340-2-git-send-email-joelf@ti.com>
-	<20130718170825.GZ21614@n2100.arm.linux.org.uk>
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCHv4 2/3] drivers: spi: Add qspi flash controller
+Date: Thu, 18 Jul 2013 12:08:30 -0700
+Message-ID: <CA+7tXij7W_F0ZTQZ=YvK+qOLO+O-6WpTKxLerv8NXyrdydt7FA@mail.gmail.com>
+References: <1374141687-10790-1-git-send-email-sourav.poddar@ti.com>
+	<1374141687-10790-3-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Tony Lindgren
-	<tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-        Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Chris Ball
-	<cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
-        Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-        Devicetree Discuss
-	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Benoit Cousson
-	<benoit.cousson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Linux DaVinci
- Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Balaji TK
-	<balajitk-l0cyMroinI0@public.gmane.org>, Mark Jackson <mpfj-list-2FZW7xY0fHgqdlJmJB21zg@public.gmane.org>,
-        Linux MMC List
-	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List
-	<linux-kernel-u79uwXL29Tb/PtFMR13I2A@public.gmane.org
-To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <20130718170825.GZ21614-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Cc: rnayak-l0cyMroinI0@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1374141687-10790-3-git-send-email-sourav.poddar-l0cyMroinI0@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/18/2013 12:08 PM, Russell King - ARM Linux wrote:
-> On Thu, Jul 18, 2013 at 11:46:39AM -0500, Joel Fernandes wrote:
->> The API is optionally implemented by dmaengine drivers and when
->> unimplemented will return a NULL pointer. A client driver using
->> this API provides the required dma channel, address width, and
->> burst size of the transfer. dma_get_slave_sg_limits() returns an
->> SG limits structure with the maximum number and size of SG segments
->> that the given channel can handle.
-> 
-> Please look at what's already in struct device:
-> 
-> struct device {
-> ...
->         struct device_dma_parameters *dma_parms;
-> ...
-> };
-> 
-> This provides:
-> 
-> struct device_dma_parameters {
->         /*
->          * a low level driver may set these to teach IOMMU code about
->          * sg limitations.
->          */
->         unsigned int max_segment_size;
->         unsigned long segment_boundary_mask;
-> };
-> 
-> Now, these are helpfully accessed via:
-> 
-> dma_get_max_seg_size(dev)
-> dma_set_max_seg_size(dev)
-> dma_get_seg_boundary(dev)
-> dma_set_seg_boundary(dev, mask)
-> Drivers already use these to work out how to construct the scatterlist
-> before passing it to the DMA API, which means that they should also be
-> used when creating a scatterlist for the DMA engine (think about it -
-> you have to use the DMA API to map the buffers for the DMA engine too.)
-> 
-> So, we already have two properties defined on a per-device basis: the
-> maximum size of a scatterlist segment, and the boundary over which any
-> segment must not cross.
-> 
-> The former ties up with your max_seg_len() property, though arguably it
-> may depend on the DMA engine access size.  The problem with implementing
-> this new API though is that the subsystems (such as SCSI) which already
-> use dma_get_max_seg_size() will be at odds with what is possible via the
-> DMA engine.
+On Thu, Jul 18, 2013 at 3:01 AM, Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org> wrote:
+> +Required properties:
+> +- compatible : should be "ti,dra7xxx-qspi".
+> +- reg: Should contain QSPI registers location and length.
+> +- #address-cells, #size-cells : Must be present if the device has sub-nodes
+> +- ti,hwmods: Name of the hwmod associated to the QSPI
 
-Not very clear for this particular case, are you saying the DMAEngine
-driver implementation should set the max_seg_size of its own struct dev,
-and then the drivers retrieve it from the channel they are allocated?
+What is ti,hwmods?  It's not clear from the description.  It also
+doesn't appear to be used in the driver.  At least, I did not find any
+occurrence of "hwmods" in the driver code.
 
-> I strongly suggest using the infrastructure at device level and not
-> implementing some private DMA engine API to convey this information.
+> +static inline unsigned long ti_qspi_readl_data(struct ti_qspi *qspi,
+> +               unsigned long reg, int wlen)
 
-Certainly see the value. OK with either approach. Can Vinod add to the
-discussion here, and we can decide a way forward? Is it ok to use the
-new CAPS API added for now so that we can keep AM33xx MMC alive?
-seg_size atleast is a real regression, the number of slots limit however
-is related more to MMC grabbing a lot of slots. Atleast for -rc cycle
-the seg_size and MMC fixes should go in.
+"readl" means read LONG.  That's what the L is for.  But this does
+different widths.
 
-> As for the maximum number of scatterlist entries, really that's a bug in
-> the DMA engine implementations if they can't accept arbitary lengths.
-> I've created DMA engine drivers for implementations where you have to
-> program each segment individually, ones which can have the current and
-> next segments, as well as those which can walk a list.  Provided you get
-> informed of a transfer being completed, there really is no reason for a
-> DMA engine driver to limit the number of scatterlist entries that it
-> will accept.
+> +{
+> +       switch (wlen) {
+> +       case 8:
+> +               return readw(qspi->base + reg);
+> +               break;
+wlen == 8, but readw == 16 bit read?
 
-Sure, that makes sense. Can you point to such a typical example
-implementation to get some ideas?
+The break after the return isn't necessary.
 
-Thanks,
+> +       case 16:
+> +               return readb(qspi->base + reg);
+> +               break;
+wlen == 16, but readb == 8 bit read?
 
--Joel
+> +       case 32:
+> +               return readl(qspi->base + reg);
+
+wlen == 32, readl == 32, this one makes sense, but....
+
+> +static inline void ti_qspi_writel_data(struct ti_qspi *qspi,
+> +               unsigned long val, unsigned long reg, int wlen)
+
+> +       case 32:
+> +               writeb(val, qspi->base + reg);
+> +               break;
+
+A 32 bit write uses an 8 bit write command, while read is 32 bits??
+
+This doesn't make a lot of sense.  If it's actually correct, there
+should be come kind of comment about it.
+
+> +
+> +static int ti_qspi_setup(struct spi_device *spi)
+> +{
+
+> +
+> +       clk_ctrl_reg = ti_qspi_readl(qspi, QSPI_SPI_CLOCK_CNTRL_REG);
+> +
+> +       clk_ctrl_reg &= ~QSPI_CLK_EN;
+> +
+> +       /* disable SCLK */
+> +       ti_qspi_writel(qspi, clk_ctrl_reg, QSPI_SPI_CLOCK_CNTRL_REG);
+
+Did you read this from Documentation/spi/spi-summary?
+                ** BUG ALERT:  for some reason the first version of
+                ** many spi_master drivers seems to get this wrong.
+                ** When you code setup(), ASSUME that the controller
+                ** is actively processing transfers for another device.
+
+> +static int ti_qspi_probe(struct platform_device *pdev)
+> +{
+> +
+> +       master->mode_bits = SPI_CPOL | SPI_CPHA;
+
+Does your device support full duplex?  It doesn't look like it does.
+You should set the SPI_MASER_HALF_DUPLEX flag in master->flags.
+
+> +
+> +       if (!of_property_read_u32(np, "ti,spi-num-cs", &num_cs))
+> +               master->num_chipselect = num_cs;
+
+You didn't document this property.  How is this different than the
+"num-cs" property already documented in spi-bus bindings?
+
+> +       qspi->base = devm_ioremap_resource(&pdev->dev, r);
+> +       if (IS_ERR(qspi->base)) {
+> +               ret = -ENOMEM;
+
+Shouldn't that be ret = PTR_ERR(qspi->base)
+
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

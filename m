@@ -1,30 +1,54 @@
-From: "Samsung Galaxy" <contact-X3uiiclsbTtBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Jouez votre Samsung Galaxy S3
-Date: Thu, 18 Jul 2013 15:10:05 +0000 (CET)
-Message-ID: <130718151005.-131222993500004480@ocfm41.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC/PATCHv2 1/3] driver: spi: Modify core to compute the
+ message length
+Date: Thu, 18 Jul 2013 16:22:14 +0100
+Message-ID: <20130718152214.GR22506@sirena.org.uk>
+References: <1374141687-10790-1-git-send-email-sourav.poddar@ti.com>
+ <1374141687-10790-2-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gb6VZqxBV+KJ1lA0"
+Cc: spi-devel-general@lists.sourceforge.net, grant.likely@linaro.org,
+	balbi@ti.com, rnayak@ti.com, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Sourav Poddar <sourav.poddar@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1374141687-10790-2-git-send-email-sourav.poddar@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
-(http://track.mdsmatch8.com/aff_c?params=%2526email%253DVALEUR&offer_id=2771&aff_id=2051&aff_sub=forcemarketing&source=AF&file_id=10737)
-(http://track.mdsmatch8.com/aff_c?params=%2526email%253DVALEUR&offer_id=2771&aff_id=2051&aff_sub=forcemarketing&source=AF&file_id=10737)
-(http://track.mdsmatch8.com/aff_c?params=%2526email%253DVALEUR&offer_id=2771&aff_id=2051&aff_sub=forcemarketing&source=AF&file_id=10737)
-------------------------------------------------------------------------------
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk
+--gb6VZqxBV+KJ1lA0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Jul 18, 2013 at 03:31:25PM +0530, Sourav Poddar wrote:
+> Make spi core calculate the message length while
+> populating the other transfer parameters.
+
+Applied, thanks.
+
+--gb6VZqxBV+KJ1lA0
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR6AgjAAoJELSic+t+oim9v4QP/0bmwo+Khybpw5bjzUVo3RIp
+/ZGRBntxX1krc2JW974r67fHrlbbV1tW/x8EN6xI4NK6HFOOlTI4kK9RtW0BLTD9
+QTy2OKe8AVh7Db6OXU2WGD1lQOFHbVAzoPDGZmBnfyhiWNVHlLBm9ZyHz98CpnDh
+9TFJnt89AhJ8vdIavRTARsojvolG7OmghnQM5vqgK6H3eZmwc6SGvckETpH+iqHK
+BhpZUim54YYe0+PZlYJ8vhYbOp5tG1nBFg7QNss8XgPaGKiQunbh7/cGRl2FuQAd
+4Ny8IeU6SWjLyLXIDGLB8w8qJjpTHAKWDOnlXmEUMmquAW2qZWkU8qvNUPXCBkDV
+s6ggkzD4EUqABqHoqEqBOSDBplmS3+rFnSrX0Mb1Iom8LB4byBbpV4LH2zaA8yOr
+1L0kCl3DLDaPwkieyw4m6VHJGvel6t9OGFSP6ols5ctiAFYngH1clXO70ryWulZ0
+MC5mYBkxxTJ912FjGNIThJk9lGAmZ2WJ6obU1Unek/rB42GUSgjdmW32wlmfY5t6
+9kw96SgHw9nRcOYeDj1BqvbLmHmJEQXFaApYKXfcr2xA2sudeCGi+DvHib0COl6y
+6dI8Rd5CG3RTeH0hDFpRYdVb3PtItQZo7/jfBUmCtOQjws5FGLNA8/gpyD24bCDr
+5WA5o1S6YGxZjR+PKH2g
+=DCcK
+-----END PGP SIGNATURE-----
+
+--gb6VZqxBV+KJ1lA0--

@@ -1,99 +1,75 @@
-From: Felipe Balbi <balbi@ti.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCHv4 2/3] drivers: spi: Add qspi flash controller
-Date: Thu, 18 Jul 2013 16:31:58 +0300
-Message-ID: <20130718133158.GA1628@arwen.pp.htv.fi>
+Date: Thu, 18 Jul 2013 15:42:41 +0100
+Message-ID: <20130718144241.GO22506@sirena.org.uk>
 References: <1374141687-10790-1-git-send-email-sourav.poddar@ti.com>
  <1374141687-10790-3-git-send-email-sourav.poddar@ti.com>
  <20130718104233.GG22506@sirena.org.uk>
  <51E7D569.2010709@ti.com>
  <20130718131822.GN22506@sirena.org.uk>
-Reply-To: <balbi@ti.com>
+ <20130718133158.GA1628@arwen.pp.htv.fi>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="RnlQjJ0d97Da+TV1"
+	protocol="application/pgp-signature"; boundary="mkFcsau6kMcX4bpT"
 Cc: Sourav Poddar <sourav.poddar@ti.com>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <balbi@ti.com>, <rnayak@ti.com>,
-	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	spi-devel-general@lists.sourceforge.net, grant.likely@linaro.org,
+	rnayak@ti.com, linux-omap@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Felipe Balbi <balbi@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20130718131822.GN22506@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20130718133158.GA1628@arwen.pp.htv.fi>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---RnlQjJ0d97Da+TV1
+
+--mkFcsau6kMcX4bpT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, Jul 18, 2013 at 04:31:58PM +0300, Felipe Balbi wrote:
+> On Thu, Jul 18, 2013 at 02:18:22PM +0100, Mark Brown wrote:
 
-On Thu, Jul 18, 2013 at 02:18:22PM +0100, Mark Brown wrote:
-> > >>+static irqreturn_t ti_qspi_isr(int irq, void *dev_id)
-> > >>+{
-> > >>+	struct ti_qspi *qspi =3D dev_id;
-> > >>+	u16 mask, stat;
-> > >>+
-> > >>+	irqreturn_t ret =3D IRQ_HANDLED;
-> > >>+
-> > >>+	spin_lock(&qspi->lock);
-> > >>+
-> > >>+	stat =3D ti_qspi_readl(qspi, QSPI_SPI_STATUS_REG);
-> > >>+	mask =3D ti_qspi_readl(qspi, QSPI_INTR_ENABLE_SET_REG);
-> > >>+
-> > >>+	if (stat&&  mask)
-> > >>+		ret =3D IRQ_WAKE_THREAD;
-> > >>+
-> > >>+	spin_unlock(&qspi->lock);
-> > >>+
-> > >>+	return ret;
->=20
-> > >According to the above code we might interrupt for masked events...
-> > >that's a bit worrying isn't it?
->=20
-> > Yes, there is WC interrupt enable bit which enables the interrupt.
-> > This interrupt
-> > gets disabled by writing to the CLEAR reg in the threaded irq.
->=20
-> So why do we report that we handled the interrupt then?  Shouldn't we at
-> least warn if we're getting spurious IRQs?
+> > So why do we report that we handled the interrupt then?  Shouldn't we at
+> > least warn if we're getting spurious IRQs?
 
-not spurious. OMAP has two sets of IRQ status registers. One is call
-IRQSTATUS$n (n =3D 0, 1, ...) and IRQSTATUS_RAW$n.
+> not spurious. OMAP has two sets of IRQ status registers. One is call
+> IRQSTATUS$n (n = 0, 1, ...) and IRQSTATUS_RAW$n.
 
-IRQSTATUS$n will only enable the bits which fired IRQs and aren't
-masked while IRQSTATUS_RAW$n will also enable the bits which are masked.
-I could never come up with a use case where we would need to handle IRQs
-which we decided to mask, but perhaps there might be some cases, I don't
-know.
+> IRQSTATUS$n will only enable the bits which fired IRQs and aren't
+> masked while IRQSTATUS_RAW$n will also enable the bits which are masked.
+> I could never come up with a use case where we would need to handle IRQs
+> which we decided to mask, but perhaps there might be some cases, I don't
+> know.
 
-Based on that, I believe Sourav is reading IRQSTATUS_RAW$n, then he need
-to clear the masked bits.
+> Based on that, I believe Sourav is reading IRQSTATUS_RAW$n, then he need
+> to clear the masked bits.
 
---=20
-balbi
+That's not the issue - the issue is that if none of the unmasked
+interrupts are being asserted we shouldn't be in the interrupt handler
+in the first place but the driver silently accepts that and reports that
+it handled the interrupt.
 
---RnlQjJ0d97Da+TV1
+--mkFcsau6kMcX4bpT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
+Version: GnuPG v2.0.20 (GNU/Linux)
 
-iQIcBAEBAgAGBQJR5+5OAAoJEIaOsuA1yqREC3oP/1JMFGVDgtocw9+tkQ8PjAJK
-8FTZepYulE+n4xdK9DOzlpOTG86NeRj/yKDbnCc08sUlbl98atbbo2XYtcA0R5eJ
-U9LtlCDetFODqW9MYAglJ0i9whzjMfnY8ieVqOpih3zvvrkoVZi6kER00TtoTj6E
-sAYRUJSEpwy+V7NV0WxC+y+mYTTxmzsj8SAY8UFSyCfQm5hlTmmBPrLz80f/U7TT
-vT+lEIHF1FJd2TRwtWvmWYBimrNWsHgs5eUEifRS2YEL6sR0p/tvZJ+5ZOzUAC78
-RuF1Bv7EN4398+dVC2ghwoWbj1KJI0TcstBO7URnBdVEo4zbXmSpMhZ9yulRbeRI
-yEhKx/69HtiNCv8gxNE+7aX6mVhsOkVJdPTqxp9Whs95hjfHseTF9QTsNTSIzqd4
-3Jj9NXzH5LP75SOF915WpBToXJ457QJYhTRcA7cqNnIG/s/IjXPTt0Nl4jljDbJ0
-WD1D4zb9kyemOUWtgbygzSdvYIB+WbSzrzw6WJh2GpPLg8DTNQlsRE39L5oGXVDF
-881hL84IWdPV44ZRBUdb8DO9FX512GJXwb8NjB1obDt+ki8HeGaNHBLSGzCrUnIY
-W4pJ9Tw8V8cjhsVo+7vEgl7g5NXE1V5fzUOWWfGpAwJBlkRHUQcy4wbWuVirSOAP
-89k2MZ57pC2lKObviv7S
-=zaXD
+iQIcBAEBAgAGBQJR5/7eAAoJELSic+t+oim9keQP/3SJe7J2pK0LjYO+/4lS1LV2
+bTBysL9rcqADayeXAGPIOGtQGGXLRwtwc1di/UyIz/U+nhf5ugevw7GBuTGJYyBe
+wQEZxyF3rTFSETfs63NikBfPM8Qu0Y62i9tpwqkp9Wshs29NYteFP1RjbTdm3leB
+vqb9gnzgAAtKOfedMick+HAd2zKp7HZfM35MHklaSfNRVyXLWKgqL7ZqWPEGM0N2
+3nkRuOYhjL49801mNDF8EN/H69eNsH2wWatCPxDbKEHXD2Jrc7IFQcGMupMA18CH
+hwEnVyH7mvGr/3N9TcuKbKr6kweDDKOKZqK8C9wEJOByCe/T+gQCROVIF+KXoEen
+fjJA+8YfR2HqZnlq8me9JetIL49qSnIvY5VEb7fTJXredgMRFROh+/QgITE/X8tF
+q17agXrggedHb7z4YXohKAkUCXBs7u9SgqVlh9o9NaDuOjQwG+EGAFPF5yGh7zQy
+mABC5zl5DaQ5jtDJuP6A1YKOdS8bXavbXK0vtAp/ub8fqh19en0JnlFEuePuOR2G
++RjOebes9zgGbVBkVj2KonoP6oPoeou96aZlgXaam4Ln0ZIizQs7+L+84Rudi3zw
+GuOqfEy4SirfjOS1EfJd0HgkRQXCFXT0shy8zQCTjxc0YVDQKT+zgS1aHJPDvOiN
+oNkDgy71ty0pciZtIrlI
+=rsqo
 -----END PGP SIGNATURE-----
 
---RnlQjJ0d97Da+TV1--
+--mkFcsau6kMcX4bpT--

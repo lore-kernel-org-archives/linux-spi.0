@@ -1,26 +1,14 @@
-From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: support DUAL and QUAD[patch v1]
-Date: Wed, 17 Jul 2013 19:25:55 -0700
-Message-ID: <CA+7tXihoZZhpoyvxj58c+Zi-Zy631kK5s-kDoSxPKq=ej0qyvA@mail.gmail.com>
-References: <CAHSAbzP0Nc1ahf_ra6yDuMvV998_+EGcUOGDv5ifKaagYf+NOg@mail.gmail.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9E84D2@DBDE04.ent.ti.com>
-	<CAHSAbzMDOWo5oBqUHqMxybuDwUjFbczYwN+85gH+rxZ9z8u2Pw@mail.gmail.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9E851E@DBDE04.ent.ti.com>
-	<593AEF6C47F46446852B067021A273D6D93B49E1@MUCSE039.lantiq.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9E85D0@DBDE04.ent.ti.com>
-	<CAHSAbzP5jqHwCm0qhu=DiNzpP0swqWHsQ0=MnF+EKaSN22E5hg@mail.gmail.com>
+From: Trivago Bons Plans <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Derni=E8res_minutes_=E9t=E9_:_h=F4t?=
+	=?ISO-8859-1?Q?els_4*_=E0_partir_de_41_euros?=
+Date: Thu, 18 Jul 2013 11:04:47 +0200 (CEST)
+Message-ID: <vblxwg.hj9qgghdt4h5tml@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org" <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
-	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>, "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Poddar,
-	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>
-To: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAHSAbzP5jqHwCm0qhu=DiNzpP0swqWHsQ0=MnF+EKaSN22E5hg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -31,76 +19,101 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Jul 17, 2013 at 6:58 PM, yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> >> > >
-> >> > > > [Pekon]: Instead of adding new fields you can use existing 'mode'
-> >> > > > field
-> >> to
-> >> > > > pass on the platform specific configurations. And if 'u8 mode'
-> >> > > > does not
-> >> > > > suffice you can increase it to 'u32'.
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgpua4I7gfk57dIhj9qfxhdI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374138262886%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DHPJBHFBEBGANBODP%26mid%3D1600200076&s=3DB=
+EENBEPPHHGCLNOE
+ =
 
-But what about spidev?
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros
+ =
 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 004b10f..36d2451 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -868,6 +868,14 @@ static void of_register_spi_devices(struct
-> spi_master *master)
->   spi->mode |= SPI_CS_HIGH;
->   if (of_find_property(nc, "spi-3wire", NULL))
->   spi->mode |= SPI_3WIRE;
-> + if (of_find_property(nc, "spi-tx-dual", NULL))
-> + spi->mode |= SPI_TX_DUAL;
-> + if (of_find_property(nc, "spi-tx-quad", NULL))
-> + spi->mode |= SPI_TX_QUAD;
-> + if (of_find_property(nc, "spi-rx-dual", NULL))
-> + spi->mode |= SPI_RX_DUAL;
-> + if (of_find_property(nc, "spi-rx-quad", NULL))
-> + spi->mode |= SPI_RX_QUAD;
->
->   /* Device speed */
->   prop = of_get_property(nc, "spi-max-frequency", &len);
-> @@ -1316,6 +1324,12 @@ int spi_setup(struct spi_device *spi)
->   /* help drivers fail *cleanly* when they need options
->   * that aren't supported with their current master
->   */
-> + if (((spi->mode >> 8) & 0x03) == 0x03 ||
-> + ((spi->mode >> 10) & 0x03) == 0x03) {
-> + dev_err(&spi->dev,
-> + "setup: can not select dual and quad at the same time\n");
-> + return -EINVAL;
-> + }
-
-Maybe it would make more sense to have a spi-rx-width and spi-tx-width
-than can be set to 1, 2, 4, etc. bits instead of a bunch of properties
-that are mutually exclusive?  Sooner or later someone is going to want
-8 bits.
-
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 38c2b92..e9ba1cf 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -74,7 +74,7 @@ struct spi_device {
->   struct spi_master *master;
->   u32 max_speed_hz;
->   u8 chip_select;
-> - u8 mode;
-> + u16 mode;
-
-What about this, from include/uapi/linux/spi/spidev.h:
-
-/* Read / Write of SPI mode (SPI_MODE_0..SPI_MODE_3) */
-#define SPI_IOC_RD_MODE                 _IOR(SPI_IOC_MAGIC, 1, __u8)
-#define SPI_IOC_WR_MODE                 _IOW(SPI_IOC_MAGIC, 1, __u8)
-
-Note that you can't just change the type in the ioctl define, as it
-won't be backward compatible.
-
-------------------------------------------------------------------------------
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600200076&sig=3DJPNJAHCPOKJNJFOI&st=3D0
+---------------------------------------------------------------------------=
+---
 See everything from the browser to the database with AppDynamics
 Get end-to-end visibility with application monitoring from AppDynamics
 Isolate bottlenecks and diagnose root cause in seconds.
 Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

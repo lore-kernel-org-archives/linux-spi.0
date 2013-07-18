@@ -1,12 +1,12 @@
-From: iPhone <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
-Subject: Destockage iPhone 5
-Date: Wed, 17 Jul 2013 15:22:05 +0000
-Message-ID: <0f6c9278589802d995e2c1f9fa6be586@mach10.generated>
-Reply-To: contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org
+From: "Bricolage et jardinage" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Tout_l=27univers_Bricolage_et_Jardinage_jusqu=27=E0_-70%?=
+Date: Thu, 18 Jul 2013 00:20:22 +0000 (CET)
+Message-ID: <130718002022.-136561099800004408@ocfm41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,44 +18,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
-bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
-L1lUMHhNeVppUFRNNU16TTVKbU05TWpNMk5ESW1aRDB5TURFekxUQTNMVEUzSURFMU9qSXdPakF3
-Sm1VOU1TWm9QVE01TWprd0ptWTlNemszTURZbVp6MHpPVGN3Tmc9PQoKTGllbiBkZSBkZXNpbnNj
-cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE01TXpNNUpt
-TTlNak0yTkRJbVpEMHlNREV6TFRBM0xURTNJREUxT2pJd09qQXdKbVU5TVNab1BUTTVNamt3Sm1Z
-OU16azNNRFltWnowek9UY3dOZz09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
-cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KwqAKTGVzIGVuY2jDqHJlcyBhdSBj
-ZW50aW1lIGV4cGxpcXXDqWVzIDogRXN0LWNlIHZyYWltZW50IHBvc3NpYmxlIGQnw6ljb25vbWlz
-ZXIgOTUgJSAgc3VyIGxlIHByaXggZGUgdmVudGUgPyAgClZvdXMgbCdhdXJleiBzdXJlbWVudCBy
-ZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWluIGRlIHNlIGTDqXZl
-bG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxlcyBzaXRlcyBpbnRl
-cm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4gUGFydG91dCBzdXIg
-bGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0b2lyZXMgZCdoZXVy
-ZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4uICAKSGFiaXR1ZWxs
-ZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4g
-TWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3Vy
-IGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gCsKgCkxJUkUgTEEg
-U1VJVEUgPj4KwqAKTGEgUmV2dWUgQ29uc28gw6AgdGVzdMOpIFN3b2dnaSByw6ljZW1tZW50IGV0
-IGxlcyByw6lzdWx0YXRzIG9udCDDqXTDqSB0csOocyBzdXJwcmVuYW50cy4gICAKIlN3b2dnaSBh
-IGTDqXBhc3PDqSB0b3V0ZXMgbm9zIGF0dGVudGVzIGVuIGNlIHF1aSBjb25jZXJuYWl0IGxlcyDD
-qWNvbm9taWVzIHLDqWFsaXNhYmxlcyBncsOiY2Ugw6AgbGV1cnMgb2ZmcmVzLiBUb3VzIGxlcyBq
-b3VycywgZGVzIGdlbnMgw6ljb25vbWlzZW50IGp1c3F1J8OgIDk1ICUgc3VyIGxlcyBwcml4IGhh
-Yml0dWVscyBkZSB2ZW50ZS4gQydlc3QgaW5jcm95YWJsZSAhIiAKwqAKTElSRSBMQSBTVUlURSA+
-PgrCoArCoAogIApNYXJpZSBTYW1lZGkgMjMganVpbiAzaDI1CsKgCiJKJ2FpIGRlIHF1b2kgdm9p
-ciB2ZW5pciBsZXMgYW5uaXZlcnNhaXJlcyBldCBhdXRyZXMgZsOqdGVzIHBvdXIgdW4gYm9uIG1v
-bWVudCBldCBqJ2FpIGZhaXQgZGUgc2FjcsOpcyDDqWNvbm9taWVzIgpQYXRvdSAgU2FtZWRpIDIz
-IGp1aW4gNGgzNwrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hyZXMgYXUg
-Y2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwgbWUgdGFy
-ZGUgZCdlc3NheWVyIgrCoApQb3VyIHZvdXMgZMOpc2Fib25uZXIsIGNsaXF1ZXogaWNpLgotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KU2VlIGV2ZXJ5dGhpbmcgZnJvbSB0aGUgYnJvd3NlciB0byB0aGUg
-ZGF0YWJhc2Ugd2l0aCBBcHBEeW5hbWljcwpHZXQgZW5kLXRvLWVuZCB2aXNpYmlsaXR5IHdpdGgg
-YXBwbGljYXRpb24gbW9uaXRvcmluZyBmcm9tIEFwcER5bmFtaWNzCklzb2xhdGUgYm90dGxlbmVj
-a3MgYW5kIGRpYWdub3NlIHJvb3QgY2F1c2UgaW4gc2Vjb25kcy4KU3RhcnQgeW91ciBmcmVlIHRy
-aWFsIG9mIEFwcER5bmFtaWNzIFBybyB0b2RheSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNr
-Lm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODA4ODMxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+
+Vente priv=E9e BRICOLAGE & JARDINAGE : des remises jusqu'=E0 -80% (http://o=
+cfm41.com/tqc4ojpkp3wmbcx2cg/index0.html)
+(http://ocfm41.com/2scr4jsspoery1c2xj/index1.html)
+(http://ocfm41.com/bjcndjwfpt0mzqfl1q/index2.html)
+(http://ocfm41.com/0lc5rjqpp4drug1lfo/index3.html)
+=A0
+Bricoprive.com (http://ocfm41.com/ej03d5ox3ptmtlfbpj/index4.html) est le si=
+te de ventes priv=E9es d=E9di=E9 au bricolage et au jardinage.
+Tous les jours de nouvelles ventes. Profitez de remises exceptionnelles all=
+ant jusqu'=E0 -80%.
+Pour acc=E9der aux ventes priv=E9es inscrivez-vous... c'est simple et c'est=
+ gratuit !
+Pour un tr=E8s grand nombre de fran=E7aises et de fran=E7ais, le bricolage =
+et le jardinage sont des passions, parfois une n=E9cessit=E9 et toujours un=
+ plaisir ! Mais il n=B4y a pas de bons artisans sans bons outils?
+En cr=E9ant BRICOPRIVE (http://ocfm41.com/ul0er5453fsrsd1bmg/index5.html), =
+nous avons souhait=E9 permettre aux bricoleurs confirm=E9s comme occasionne=
+ls, aux amateurs de jardinage et d'am=E9nagement ext=E9rieur, d'avoir acc=
+=E8s =E0 du mat=E9riel de grande marque et de qualit=E9 professionnelle =E0=
+ moindre co=FBt.
+Nombreux sont les nouveaux sites de ventes priv=E9es qui se lancent, mais r=
+ares sont ceux qui se d=E9dient =E0 un segment et en deviennent de v=E9rita=
+bles sp=E9cialistes. Notre challenge est de devenir le num=E9ro un en Franc=
+e de la vente priv=E9e sur le march=E9 du bricolage et du jardinage.
+Nos =E9quipes s=B4efforcent de r=E9f=E9rencer les meilleures marques et de =
+vous faire profiter de r=E9ductions pouvant aller jusqu=B4=E0 -80% par rapp=
+ort aux prix pratiqu=E9s en magasins. La qualit=E9 de nos produits est une =
+priorit=E9, mais la qualit=E9 de notre service est une obsession. D=E9tail =
+des fiches produits, qualit=E9 des visuels, prix n=E9goci=E9s, respect des =
+d=E9lais de livraison? autant de points qui concentrent notre attention afi=
+n de r=E9pondre =E0 vos exigences.
+Que vous soyez passionn=E9, amateur =E9clair=E9, en plein chantier ou que v=
+ous souhaitiez simplement vous =E9quiper pour am=E9liorer votre int=E9rieur=
+ et votre ext=E9rieur, rejoignez BRICOPRIVE (http://ocfm41.com/vq0ho5du3s4m=
+42xy5o/index6.html) et invitez vos amis !
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

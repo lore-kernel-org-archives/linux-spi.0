@@ -1,115 +1,127 @@
-From: Felipe Balbi <balbi@ti.com>
-Subject: Re: [PATCHv4 2/3] drivers: spi: Add qspi flash controller
-Date: Fri, 19 Jul 2013 15:20:29 +0300
-Message-ID: <20130719122029.GE16115@arwen.pp.htv.fi>
-References: <1374141687-10790-1-git-send-email-sourav.poddar@ti.com>
- <1374141687-10790-3-git-send-email-sourav.poddar@ti.com>
- <20130718102404.GH11251@arwen.pp.htv.fi>
- <51E7CF11.5030301@ti.com>
- <20130718112458.GJ11251@arwen.pp.htv.fi>
- <51E9279F.6010601@ti.com>
-Reply-To: <balbi@ti.com>
+From: "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
+Subject: RE: support DUAL and QUAD[patch v1]
+Date: Fri, 19 Jul 2013 19:34:45 +0000
+Message-ID: <20980858CB6D3A4BAE95CA194937D5E73E9E967D@DBDE04.ent.ti.com>
+References: <CAHSAbzP0Nc1ahf_ra6yDuMvV998_+EGcUOGDv5ifKaagYf+NOg@mail.gmail.com>
+	<20980858CB6D3A4BAE95CA194937D5E73E9E84D2@DBDE04.ent.ti.com>
+	<CAHSAbzMDOWo5oBqUHqMxybuDwUjFbczYwN+85gH+rxZ9z8u2Pw@mail.gmail.com>
+	<20980858CB6D3A4BAE95CA194937D5E73E9E851E@DBDE04.ent.ti.com>
+	<593AEF6C47F46446852B067021A273D6D93B49E1@MUCSE039.lantiq.com>
+	<20980858CB6D3A4BAE95CA194937D5E73E9E85D0@DBDE04.ent.ti.com>
+	<CAHSAbzP5jqHwCm0qhu=DiNzpP0swqWHsQ0=MnF+EKaSN22E5hg@mail.gmail.com>
+	<CA+7tXihoZZhpoyvxj58c+Zi-Zy631kK5s-kDoSxPKq=ej0qyvA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ILuaRSyQpoVaJ1HG"
-Cc: <balbi@ti.com>, <broonie@kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <rnayak@ti.com>,
-	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <51E9279F.6010601@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org" <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>, "Poddar,
+	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CA+7tXihoZZhpoyvxj58c+Zi-Zy631kK5s-kDoSxPKq=ej0qyvA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---ILuaRSyQpoVaJ1HG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Fri, Jul 19, 2013 at 05:18:47PM +0530, Sourav Poddar wrote:
-> On Thursday 18 July 2013 04:54 PM, Felipe Balbi wrote:
-> >On Thu, Jul 18, 2013 at 04:48:41PM +0530, Sourav Poddar wrote:
-> >>>>+static void qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer=
- *t)
-> >>>>+{
-> >>>>+	const u8 *txbuf;
-> >>>>+	int wlen, count;
-> >>>>+
-> >>>>+	count =3D t->len;
-> >>>>+	txbuf =3D t->tx_buf;
-> >>>>+	wlen =3D t->bits_per_word;
-> >>>>+
-> >>>>+	while (count--) {
-> >>>>+		dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %02x\n",
-> >>>>+			qspi->cmd | QSPI_WR_SNGL, qspi->dc, *txbuf);
-> >>>>+		ti_qspi_writel_data(qspi, *txbuf++, QSPI_SPI_DATA_REG, wlen);
-> >>>you always increment by each byte. Here, if you used writel(), you wro=
-te
-> >>>4 bytes and should increment txbuf by 4.
-> >>hmm..got this point. Yes, my mistake, here I agree if wlen is not 8 bits
-> >>txbuf++ is not valid.
-> >>>  Same goes for read_data(),
-> >>>below. Another thing. Even though your wlen might be 8 bits, if you
-> >>>write 4 bytes to write, you can save a few CPU cycles by using writel(=
-).
-> >>>
-> >>Do you mean 4 words of 8 bits?
-> >yeah. Say you have wlen =3D 8 but the transfer length is 8 bytes (64
-> >bits). If you use writeb(), you will do 8 writes, if you use writel()
-> >you'll do 2 writes.
+> 
+> On Wed, Jul 17, 2013 at 6:58 PM, yuhang wang
+> <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> > >> > >
+> > >> > > > [Pekon]: Instead of adding new fields you can use existing 'mode'
+> > >> > > > field
+> > >> to
+> > >> > > > pass on the platform specific configurations. And if 'u8 mode'
+> > >> > > > does not
+> > >> > > > suffice you can increase it to 'u32'.
+> 
+> But what about spidev?
+> 
+> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> > index 004b10f..36d2451 100644
+> > --- a/drivers/spi/spi.c
+> > +++ b/drivers/spi/spi.c
+> > @@ -868,6 +868,14 @@ static void of_register_spi_devices(struct
+> > spi_master *master)
+> >   spi->mode |= SPI_CS_HIGH;
+> >   if (of_find_property(nc, "spi-3wire", NULL))
+> >   spi->mode |= SPI_3WIRE;
+> > + if (of_find_property(nc, "spi-tx-dual", NULL))
+> > + spi->mode |= SPI_TX_DUAL;
+> > + if (of_find_property(nc, "spi-tx-quad", NULL))
+> > + spi->mode |= SPI_TX_QUAD;
+> > + if (of_find_property(nc, "spi-rx-dual", NULL))
+> > + spi->mode |= SPI_RX_DUAL;
+> > + if (of_find_property(nc, "spi-rx-quad", NULL))
+> > + spi->mode |= SPI_RX_QUAD;
 > >
-> Just some more findings on this, after wlen bits are transferred we
-> need an WC interrupt.
-> So, if I try to pack 4 words of 8bits and use readl/writel, there
-> will be an interrupt after every
-> wlen bits transferred and things will get screwd up.
+> >   /* Device speed */
+> >   prop = of_get_property(nc, "spi-max-frequency", &len);
+> > @@ -1316,6 +1324,12 @@ int spi_setup(struct spi_device *spi)
+> >   /* help drivers fail *cleanly* when they need options
+> >   * that aren't supported with their current master
+> >   */
+> > + if (((spi->mode >> 8) & 0x03) == 0x03 ||
+> > + ((spi->mode >> 10) & 0x03) == 0x03) {
+> > + dev_err(&spi->dev,
+> > + "setup: can not select dual and quad at the same time\n");
+> > + return -EINVAL;
+> > + }
+> 
+> Maybe it would make more sense to have a spi-rx-width and spi-tx-width
+> than can be set to 1, 2, 4, etc. bits instead of a bunch of properties
+> that are mutually exclusive?  Sooner or later someone is going to want
+> 8 bits.
+> 
+Then it would not remain a serial interface (Serial Peripheral Interface),
+rather it would be more of parallel memory like interface.
+And you would not like to use SPI controller for it, instead you would use
+On-chip General Purpose External Interface controllers (like GPMC)
+because it gives you more options to tweak and configure.
 
-they will not if you throttle the IRQs or add some knowledge about the
-FIFO sizes. I mean, there are ways to get this working.
+In general, If the place-holders are already there (like 'mode' field in 
+struct spi_device), I would prefer to re-use them.
+But if you are adding new ones just ensure its scalability and usage.
+Names don't matter much there then, except for good readability.
 
-> So, for 8 bits word we need to use readb, for 16 bits word readw.
+> > diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+> > index 38c2b92..e9ba1cf 100644
+> > --- a/include/linux/spi/spi.h
+> > +++ b/include/linux/spi/spi.h
+> > @@ -74,7 +74,7 @@ struct spi_device {
+> >   struct spi_master *master;
+> >   u32 max_speed_hz;
+> >   u8 chip_select;
+> > - u8 mode;
+> > + u16 mode;
+> 
+> What about this, from include/uapi/linux/spi/spidev.h:
+> 
+> /* Read / Write of SPI mode (SPI_MODE_0..SPI_MODE_3) */
+> #define SPI_IOC_RD_MODE                 _IOR(SPI_IOC_MAGIC, 1, __u8)
+> #define SPI_IOC_WR_MODE                 _IOW(SPI_IOC_MAGIC, 1, __u8)
+> 
+> Note that you can't just change the type in the ioctl define, as it
+> won't be backward compatible.
+> 
+Thanks, for pointing this out. Yes this is a constrain, if we change the
+existing type. But I don't think u8 -> u32 is really required, it was just
+a thought, not deep-dived.
 
-not entirely true...
 
-I mean, you have a 32-bit FIFO, why would underutilize the FIFO by
-always writing 8-bits ? Write 32 bits, when you get the first word
-completion, you know you have 8-bits of space in the FIFO, then you
-can fill those 8 bits with new data. (all of this is assuming word
-length is 8-bits, clearly if it is more, then you need to change the
-assumptions).
+with regards, pekon
 
-Another thing which might help, is checking if the HW will even access
-the other DATA registers even if word length is <=3D 32 bits. If it does,
-then you have a total of 128 bits to shift data into, which can save you
-a lot of time filling up FIFOs and waiting for them to empty.
-
---=20
-balbi
-
---ILuaRSyQpoVaJ1HG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR6S8NAAoJEIaOsuA1yqREcxAQAJ3fzcYXPhzrs/UkmLCYktEJ
-XBBvsLuWxHSQpDCrdJOHM3c6KPw+EXeWBwbL94d3GeViInt4a5rPT89TdshHgex4
-VFmKkX6meREDZjy0YBO9KPrhxHn2XzuUQsOf+omOG9UOpGuw1mu3y/oERoZBjQB8
-g6KYu5ZHp2nZEjl1/vXoSXFF2Yd6CGzTEhuKOzN31mxxWyiqWz8LBLsjbeiuMQp3
-EEOvujxUQI64LrgB1y+jp6rfF2u0zQroOjHj1IfFxhH02tFSE/cLZ1b3DaQ3T0vH
-sGOKiVRO23pbGGmUZFUYPau7LMJ9dHzKB9jCWBhVy+N1Ni1uo7saALZ2As7+K0LU
-13IgrteV5ZvRzXxmrZZCq9BFrOVME+3so3i9g9IF01P0N68IaKPCjesX5Ll2t/te
-PwV3mMj+8k9iQ8KehFi+XJ6jgaHEiExxyhvERoQQwlXN9TmIgMNajguL75IXtdIH
-T+6H9SYk9iODunAT3M/A87j1KUfbQ9NTu1g5BWRxQrvu0CI4oZZ3llGmCVG3jqnW
-d/Z0kCSHNDvY9DHtYb8+wFS8hwZWZA/OzgU+nN1oqJ75ho38D/KHZ4MvG4A4/hOC
-l9f5juv5vavJHNARpUSMx6x+Zgm1sNV83PqEC94JtQ7MCFabbuwPz6EIb3oYnv1f
-Kg5GuoqMpWzx42ARb6vN
-=jiHB
------END PGP SIGNATURE-----
-
---ILuaRSyQpoVaJ1HG--
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

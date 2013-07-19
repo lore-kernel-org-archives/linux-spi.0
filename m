@@ -1,108 +1,74 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: Re: [PATCHv4 2/3] drivers: spi: Add qspi flash controller
-Date: Fri, 19 Jul 2013 10:32:50 +0530
-Message-ID: <51E8C87A.3030007@ti.com>
-References: <1374141687-10790-1-git-send-email-sourav.poddar@ti.com>	<1374141687-10790-3-git-send-email-sourav.poddar@ti.com> <CA+7tXij7W_F0ZTQZ=YvK+qOLO+O-6WpTKxLerv8NXyrdydt7FA@mail.gmail.com>
+From: Lentilles moins cheres par Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Livraison offerte en juillet !
+Date: Fri, 19 Jul 2013 10:49:38 +0200 (CEST)
+Message-ID: <471aqq.hjb5ctx7ksjq0el@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <linux-omap@vger.kernel.org>,
-	<rnayak@ti.com>, <linux-kernel@vger.kernel.org>, <balbi@ti.com>
-To: Trent Piepho <tpiepho@gmail.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <CA+7tXij7W_F0ZTQZ=YvK+qOLO+O-6WpTKxLerv8NXyrdydt7FA@mail.gmail.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday 19 July 2013 12:38 AM, Trent Piepho wrote:
-> On Thu, Jul 18, 2013 at 3:01 AM, Sourav Poddar<sourav.poddar@ti.com>  wrote:
->> +Required properties:
->> +- compatible : should be "ti,dra7xxx-qspi".
->> +- reg: Should contain QSPI registers location and length.
->> +- #address-cells, #size-cells : Must be present if the device has sub-nodes
->> +- ti,hwmods: Name of the hwmod associated to the QSPI
-> What is ti,hwmods?  It's not clear from the description.  It also
-> doesn't appear to be used in the driver.  At least, I did not find any
-> occurrence of "hwmods" in the driver code.
->
->> +static inline unsigned long ti_qspi_readl_data(struct ti_qspi *qspi,
->> +               unsigned long reg, int wlen)
-> "readl" means read LONG.  That's what the L is for.  But this does
-> different widths.
->
->> +{
->> +       switch (wlen) {
->> +       case 8:
->> +               return readw(qspi->base + reg);
->> +               break;
-> wlen == 8, but readw == 16 bit read?
-Yes, I need to change this. should be readb.
-> The break after the return isn't necessary.
->
->> +       case 16:
->> +               return readb(qspi->base + reg);
->> +               break;
-> wlen == 16, but readb == 8 bit read?
->
-same here.
->> +       case 32:
->> +               return readl(qspi->base + reg);
-> wlen == 32, readl == 32, this one makes sense, but....
->
->> +static inline void ti_qspi_writel_data(struct ti_qspi *qspi,
->> +               unsigned long val, unsigned long reg, int wlen)
->> +       case 32:
->> +               writeb(val, qspi->base + reg);
->> +               break;
-> A 32 bit write uses an 8 bit write command, while read is 32 bits??
->
-> This doesn't make a lot of sense.  If it's actually correct, there
-> should be come kind of comment about it.
->
-Yes, I will change this in the next version.
->> +
->> +static int ti_qspi_setup(struct spi_device *spi)
->> +{
->> +
->> +       clk_ctrl_reg = ti_qspi_readl(qspi, QSPI_SPI_CLOCK_CNTRL_REG);
->> +
->> +       clk_ctrl_reg&= ~QSPI_CLK_EN;
->> +
->> +       /* disable SCLK */
->> +       ti_qspi_writel(qspi, clk_ctrl_reg, QSPI_SPI_CLOCK_CNTRL_REG);
-> Did you read this from Documentation/spi/spi-summary?
->                  ** BUG ALERT:  for some reason the first version of
->                  ** many spi_master drivers seems to get this wrong.
->                  ** When you code setup(), ASSUME that the controller
->                  ** is actively processing transfers for another device.
->
-But I see in this documentation, that setup is usually used for setting up
-device clock rate, modes etc.
-So, what do you recommend here, should we move clk settings to prepare
-hardware ?
->> +static int ti_qspi_probe(struct platform_device *pdev)
->> +{
->> +
->> +       master->mode_bits = SPI_CPOL | SPI_CPHA;
-> Does your device support full duplex?  It doesn't look like it does.
-> You should set the SPI_MASER_HALF_DUPLEX flag in master->flags.
->
-hmm. Ok, will add.
->> +
->> +       if (!of_property_read_u32(np, "ti,spi-num-cs",&num_cs))
->> +               master->num_chipselect = num_cs;
-> You didn't document this property.  How is this different than the
-> "num-cs" property already documented in spi-bus bindings?
->
-Actually, it is no different. This also means the total number of 
-chipselects.
-I used it from omap mcspi. I will make this property in accordance with the
-generic binding.
-Will also send a seperate patch for omap mcspi.
->> +       qspi->base = devm_ioremap_resource(&pdev->dev, r);
->> +       if (IS_ERR(qspi->base)) {
->> +               ret = -ENOMEM;
-> Shouldn't that be ret = PTR_ERR(qspi->base)
-hmm.will change.
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgpva1I7gfk57dIhjb5cm8xI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374223768761%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DFPJIKENBBNBDPILM%26mid%3D1600201369&s=3DJ=
+LPCFBOHHIEPKHOJ
+ =
 
+Livraison offerte en juillet Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !Livraison offerte en juillet !L=
+ivraison offerte en juillet !Livraison offerte en juillet !Livraison offert=
+e en juillet !Livraison offerte en juillet !
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600201369&sig=3DOKMCNIMIHLPAMCBB&st=3D0
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

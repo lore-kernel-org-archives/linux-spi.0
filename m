@@ -1,21 +1,13 @@
-From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2] spi: add spi controller master driver for Blackfin 6xx
-	processor
-Date: Fri, 19 Jul 2013 18:22:11 +0800
-Message-ID: <CAHG8p1BSg4ye-kL7fqzzRWbE0Nbi9jKU621my3kJNfPfUSprpA@mail.gmail.com>
-References: <1371583828-23788-1-git-send-email-scott.jiang.linux@gmail.com>
-	<20130619183928.GE1403@sirena.org.uk>
-	<CAHG8p1AK_sp42mT+Hf1ZYn3iJy4_BO148v1YwXzw=H8hAn564A@mail.gmail.com>
-	<20130719100815.GE9858@sirena.org.uk>
+From: "iPhone" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
+Subject: Destockage iPhone 5
+Date: Fri, 19 Jul 2013 11:07:17 +0000 (CET)
+Message-ID: <130719110717.-178604298100001172@ocfm43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	"uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org"
-	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>
-To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130719100815.GE9858-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,30 +18,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
-
->> > Should really use module_platform_driver() on modern systems, the
->> > deferred probe infrastructure should remove the need for faffing around
->> > with init order.
->
->> When I convert to use module_platform_driver(), I found some driver depend on
->> SPI_MASTER start up before spi master probe driver. So how can I control this
->> init order?
->
-> Could you be more explicit about the dependencies here?  Are these other
-> drivers using -EPROBE_DEFER as they should?
-
-No, it returns ENODEV if spi_busnum_to_master(0) fail. It's a fb
-driver and /drivers/video
-is before /drivers/spi in link order. So I should do more work on this
-fb driver instead of
-spi master driver to make probe deferral mechanism work, right?
-
-Scott
-
-------------------------------------------------------------------------------
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk
+CgoKIChodHRwOi8vb2NmbTQzLmNvbS8wb2k1c3hxeXlyZW1hdzFnZmovaW5kZXgwLmh0bWwpCgoK
+CgoKIChodHRwOi8vb2NmbTQzLmNvbS9iZGlucHh3dXljd3I1bmZnMWcvaW5kZXgxLmh0bWwpCgoK
+wqAKTGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50
+IHBvc3NpYmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0
+cDovL29jZm00My5jb20vMmdpcnF4czV5ZGRtamVjMXhvL2luZGV4Mi5odG1sKSAKCgoKIChodHRw
+Oi8vb2NmbTQzLmNvbS90eWk0d3hweHllMHJ4dngxY3EvaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJl
+eiBzdXJlbWVudCByZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWlu
+IGRlIHNlIGTDqXZlbG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxl
+cyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4g
+UGFydG91dCBzdXIgbGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0
+b2lyZXMgZCdoZXVyZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4u
+IAogKGh0dHA6Ly9vY2ZtNDMuY29tL2tnZXVxYXJwYmlzbTNoY2pyZy9pbmRleDQuaHRtbCkKSGFi
+aXR1ZWxsZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUg
+cGFpbi4gTWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2Vz
+dCBwb3VyIGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6
+Ly9vY2ZtNDMuY29tL3Z5ZWh3YWRmYnF0cnBpeGo1ai9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExB
+IFNVSVRFID4+IChodHRwOi8vb2NmbTQzLmNvbS91b2Vlc2E0c2Iwa21vbTF4bXEvaW5kZXg2Lmh0
+bWwpCgogKGh0dHA6Ly9vY2ZtNDMuY29tL2VkZTNwYW9rYnc0cmZyZnhwby9pbmRleDcuaHRtbCkK
+CgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLD
+qXN1bHRhdHMgb250IMOpdMOpIHRyw6hzIHN1cnByZW5hbnRzLiAoaHR0cDovL29jZm00My5jb20v
+d29xYXlqZ2R5NTNtdnExbjNqL2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vb2NmbTQzLmNvbS96
+ZHF2NWpuZXl4cHJuZ2ZuaGcvaW5kZXg5Lmh0bWwpCiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVz
+IG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2VybmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlz
+YWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4gVG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOp
+Y29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBsZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUu
+IEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8vb2NmbTQzLmNvbS8zanViZHZpb2FpYjEzYWdv
+d3EvaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJVEUgPj4gKGh0dHA6Ly9vY2ZtNDMuY29t
+L2h5cTF3ajJmeWpicm4zeG56cS9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vb2NmbTQzLmNv
+bS95bmZ3aHk0aDQycTNnMnQwbWwvaW5kZXgxMi5odG1sKQogKGh0dHA6Ly9vY2ZtNDMuY29tL2Rt
+bnAxaGptZjRxanQwZGFwbC9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9vY2ZtNDMuY29tL2phbGwy
+cnZnY3gxeXdibnpuZy9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vb2NmbTQzLmNvbS9xdTNq
+dnRjMXdyMWthdHVxNGcvaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1IChodHRwOi8v
+b2NmbTQzLmNvbS95MGxuNXJudjF4cmR3bHB6bWwvaW5kZXgxNi5odG1sKQoKCgoKCgrCoAoiSidh
+aSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbDqnRlcyBw
+b3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWllcyIgKGh0
+dHA6Ly9vY2ZtNDMuY29tL2RjMzVqdHFubnJydmFkaXFwbC9pbmRleDE3Lmh0bWwpCgoKCgoKCgog
+KGh0dHA6Ly9vY2ZtNDMuY29tL2dxa2dqdTBudXFtaHBzY296ai9pbmRleDE4Lmh0bWwpClBhdG91
+IChodHRwOi8vb2NmbTQzLmNvbS9vZGd5NWdodmphbXF2eW9ud2ovaW5kZXgxOS5odG1sKQogU2Ft
+ZWRpIDIzIGp1aW4gNGgzNyAoaHR0cDovL29jZm00My5jb20vZmcyc3FtMzV4dmxnY3VxYndnL2lu
+ZGV4MjAuaHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hy
+ZXMgYXUgY2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwg
+bWUgdGFyZGUgZCdlc3NheWVyIiAoaHR0cDovL29jZm00My5jb20vMWxwcXJiYmF6c2xpeWtmaXpn
+L2luZGV4MjEuaHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNlZSBl
+dmVyeXRoaW5nIGZyb20gdGhlIGJyb3dzZXIgdG8gdGhlIGRhdGFiYXNlIHdpdGggQXBwRHluYW1p
+Y3MKR2V0IGVuZC10by1lbmQgdmlzaWJpbGl0eSB3aXRoIGFwcGxpY2F0aW9uIG1vbml0b3Jpbmcg
+ZnJvbSBBcHBEeW5hbWljcwpJc29sYXRlIGJvdHRsZW5lY2tzIGFuZCBkaWFnbm9zZSByb290IGNh
+dXNlIGluIHNlY29uZHMuClN0YXJ0IHlvdXIgZnJlZSB0cmlhbCBvZiBBcHBEeW5hbWljcyBQcm8g
+dG9kYXkhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD00ODgw
+ODgzMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
+LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

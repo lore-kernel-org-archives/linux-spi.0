@@ -1,27 +1,12 @@
-From: "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
-Subject: RE: support DUAL and QUAD[patch v1]
-Date: Fri, 19 Jul 2013 19:34:45 +0000
-Message-ID: <20980858CB6D3A4BAE95CA194937D5E73E9E967D@DBDE04.ent.ti.com>
-References: <CAHSAbzP0Nc1ahf_ra6yDuMvV998_+EGcUOGDv5ifKaagYf+NOg@mail.gmail.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9E84D2@DBDE04.ent.ti.com>
-	<CAHSAbzMDOWo5oBqUHqMxybuDwUjFbczYwN+85gH+rxZ9z8u2Pw@mail.gmail.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9E851E@DBDE04.ent.ti.com>
-	<593AEF6C47F46446852B067021A273D6D93B49E1@MUCSE039.lantiq.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9E85D0@DBDE04.ent.ti.com>
-	<CAHSAbzP5jqHwCm0qhu=DiNzpP0swqWHsQ0=MnF+EKaSN22E5hg@mail.gmail.com>
-	<CA+7tXihoZZhpoyvxj58c+Zi-Zy631kK5s-kDoSxPKq=ej0qyvA@mail.gmail.com>
+From: =?GB2312?B?x+vXqtDox/Oyv8PF?= <ugi-sRNoYJPIgos@public.gmane.org>
+Subject: [SPAM] 有效运用绩效管理进行违纪员工处理
+Date: Sat, 20 Jul 2013 11:05:30 +0800
+Message-ID: <E1V0NUM-0004Yw-IY@sfs-ml-4.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org" <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>, "Poddar,
-	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CA+7tXihoZZhpoyvxj58c+Zi-Zy631kK5s-kDoSxPKq=ej0qyvA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -32,96 +17,159 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-> 
-> On Wed, Jul 17, 2013 at 6:58 PM, yuhang wang
-> <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> > >> > >
-> > >> > > > [Pekon]: Instead of adding new fields you can use existing 'mode'
-> > >> > > > field
-> > >> to
-> > >> > > > pass on the platform specific configurations. And if 'u8 mode'
-> > >> > > > does not
-> > >> > > > suffice you can increase it to 'u32'.
-> 
-> But what about spidev?
-> 
-> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> > index 004b10f..36d2451 100644
-> > --- a/drivers/spi/spi.c
-> > +++ b/drivers/spi/spi.c
-> > @@ -868,6 +868,14 @@ static void of_register_spi_devices(struct
-> > spi_master *master)
-> >   spi->mode |= SPI_CS_HIGH;
-> >   if (of_find_property(nc, "spi-3wire", NULL))
-> >   spi->mode |= SPI_3WIRE;
-> > + if (of_find_property(nc, "spi-tx-dual", NULL))
-> > + spi->mode |= SPI_TX_DUAL;
-> > + if (of_find_property(nc, "spi-tx-quad", NULL))
-> > + spi->mode |= SPI_TX_QUAD;
-> > + if (of_find_property(nc, "spi-rx-dual", NULL))
-> > + spi->mode |= SPI_RX_DUAL;
-> > + if (of_find_property(nc, "spi-rx-quad", NULL))
-> > + spi->mode |= SPI_RX_QUAD;
-> >
-> >   /* Device speed */
-> >   prop = of_get_property(nc, "spi-max-frequency", &len);
-> > @@ -1316,6 +1324,12 @@ int spi_setup(struct spi_device *spi)
-> >   /* help drivers fail *cleanly* when they need options
-> >   * that aren't supported with their current master
-> >   */
-> > + if (((spi->mode >> 8) & 0x03) == 0x03 ||
-> > + ((spi->mode >> 10) & 0x03) == 0x03) {
-> > + dev_err(&spi->dev,
-> > + "setup: can not select dual and quad at the same time\n");
-> > + return -EINVAL;
-> > + }
-> 
-> Maybe it would make more sense to have a spi-rx-width and spi-tx-width
-> than can be set to 1, 2, 4, etc. bits instead of a bunch of properties
-> that are mutually exclusive?  Sooner or later someone is going to want
-> 8 bits.
-> 
-Then it would not remain a serial interface (Serial Peripheral Interface),
-rather it would be more of parallel memory like interface.
-And you would not like to use SPI controller for it, instead you would use
-On-chip General Purpose External Interface controllers (like GPMC)
-because it gives you more options to tweak and configure.
-
-In general, If the place-holders are already there (like 'mode' field in 
-struct spi_device), I would prefer to re-use them.
-But if you are adding new ones just ensure its scalability and usage.
-Names don't matter much there then, except for good readability.
-
-> > diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> > index 38c2b92..e9ba1cf 100644
-> > --- a/include/linux/spi/spi.h
-> > +++ b/include/linux/spi/spi.h
-> > @@ -74,7 +74,7 @@ struct spi_device {
-> >   struct spi_master *master;
-> >   u32 max_speed_hz;
-> >   u8 chip_select;
-> > - u8 mode;
-> > + u16 mode;
-> 
-> What about this, from include/uapi/linux/spi/spidev.h:
-> 
-> /* Read / Write of SPI mode (SPI_MODE_0..SPI_MODE_3) */
-> #define SPI_IOC_RD_MODE                 _IOR(SPI_IOC_MAGIC, 1, __u8)
-> #define SPI_IOC_WR_MODE                 _IOW(SPI_IOC_MAGIC, 1, __u8)
-> 
-> Note that you can't just change the type in the ioctl define, as it
-> won't be backward compatible.
-> 
-Thanks, for pointing this out. Yes this is a constrain, if we change the
-existing type. But I don't think u8 -> u32 is really required, it was just
-a thought, not deep-dived.
-
-
-with regards, pekon
-
-------------------------------------------------------------------------------
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk
+09DQp9TL08O8qNCnudzA7b340NC197jatffQvaGiveK5zbTHzcu8sLSmwO3OpbzNzsrM4tSxuaQK
+CjIwMTPE6jfUwjI0LS0yNcjVLS0tLbTzIMGsCjIwMTPE6jfUwjI3LS0yOMjVLS0tLbfwIMm9CjIw
+MTPE6jjUwjItLTPI1S0tLS0tLcnPuqMKMjAxM8TqONTCOS0tMTDI1S0tLS0guePW3QoyMDEzxOo4
+1MIyMC0tMjHI1S0tLS26vNbdCjIwMTPE6jjUwjIzLS0yNMjVLS0tLbGxvqkKMjAxM8TqONTCMzAt
+LTMxyNUtLS0tye7b2goyMDEzxOo51MI2LS03yNUtLS0tLS3Jz7qjCjIwMTPE6jnUwjEzLS0xNMjV
+LS0tLbnj1t0KMjAxM8TqOdTCMjctLTI4yNUtLS0tsbG+qQoyMDEzxOoxMNTCMTItLTEzyNUtLS22
+q924CjIwMTPE6jEw1MIxOC0tMTnI1S0tLcnu29oKMjAxM8TqMTDUwjI1LS0yNsjVLS0tyc+6owq2
+1CDP86O6tq3KwrOkoaLX3L6twO2horix19y+rcDtoaLIy8Gm18rUtNfcvOAvvq3A7S/XqNSxvLDI
+y8rC0NDV/rncwO3Iy9SxoaK5pLvhuMmyv6Git6jO8cjL1LG8sM/gudi53MDtyMvUsaGiz+C52MLJ
+yqa1yKGjCrHq17y30dPDo7oyNTAw1KovMszsL8jLo6i6rMXg0bWhota4tqjF4NG1vcyyxKGizuey
+zaGisui147fRtcijqSAKCtfJ0a+157uwo7owMjAtODA1NjA2MzggICAwNzU1LTYxMjg3NTUyICAw
+MjEtNTE2MDI4NTYgIKOosrvQ6NKqtMvA4NDFvP7H67vYuLS159PK1sF0dWl4aW4yMDEzQDEyNi5j
+b23Ny9DFo6kKqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlCtfKX8nuX8DN
+X7avX7eoX9eoX7zSX9bTX9PAX+mmCrn6xNrW+MP7wM22r7eo0+vUsbmkudjPtbncwO3KtdW916i8
+0qOswM22r9bZssPUsaOsufrE2rXa0rvOu7OrtbyhorSrsqWhosq1yqmhsLn6vNLAzbavt6jT68bz
+0rXQvbPqvKjQp9PQu/rV+7rPobEKtcTPyNDQ1d+jrLn6vNLIy8Gm18rUtLncwO3KptfKuPHIz9ak
+xeDRtbW8yqajrLn6xNrUrbS00M2hosq11b3QzaGiucvOytDNtcTWsNK1xeDRtcqmoaPP1sjO1tC7
+qrS0ysC8zcbz0rXF4NG1zfjK1wrPr8DNtq+3qL2yyqajrLzmyM7KsbT6ueK7qrncwO3Rp9S6oaK5
+49bdytDIy8Gm18rUtLrNyee74bGj1c++1qGiueO2q8qhyMvBptfK1LS53MDt0K274aGiye7b2s3i
+yczG89K10K274bXINTC24LzSCtX+uK67+rm5oaLF4NG1u/q5uaGiucvOyrmry76hotDQ0rXQrbvh
+tcTHqdS8vbLKpqGizNjGuLnLzsqhowrW08DPyqa+q82owM22r9X+st+3qMLJt6i55rrNwM22r9bZ
+ssOhosvfy8+zzNDyo6zJw7OkwM22r9PDuaS358/VtcTT0NCn1KS3wNPrwM22r9X50umwuLz+tcS+
+q9e806a21KOsycbT2rDRwM22r7eoCsLJt6i55tPrxvPStcjLwabXytS0udzA7dPQu/rV+7rPo6zN
+qM/+xvPStcDNtq/V+dLpt8C3trv61sa1xLm5vai6zcDNtq/Tw7mkudzA7czlz7W1xNDe1f3N6snG
+oaPW08DPyqa+rbOj1Nq/zbunsOwKuavP1rOhoaLF4NG1z9azoc6qv827p6Gi0afUsby0yrHG8LLd
+oaLJ87LpoaLQ3rjEz+C52NbGtsihorrPzayhos7EyumjrLvyt9bO9r7fzOWwuLz+tcTTprbUy7zC
+t6O71tPAz8qmtsC1vbXEz9azoQq1xNeo0rW5prXXo6zDv7TOtrzTrrXDueO087/Nu6ehotGn1LG3
+otfUxNrQxLXEusPGwNPrMTAwJbXE0MW3/qOhCtbTwM/KptT4yM7XqNawwM22r9bZssPUsaOs1Pi7
+8aGwuePW3crQ08XQ48DNtq/W2bLD1LGhsbPGusWjrMnzxdDAzbav1fnS6bC4vP40MDC24Nfao7u0
++sDtwM22r9X50uk1MDC24Nfao6yyztPru/IK1vez1tC9s+q8qNCn18nRr8/uxL8yMLbguPajrMnz
+sunN6snGMzAwtuC80sbz0rW1xMjLwabXytS0udzA7bnm1cLWxrbIoaO49sjLs6TG2rWjyM4zMLbg
+vNKjqMDbvMYyMDC24LzSo6nG89K1tcTIywrBptfK1LS53MDtt6jCybnLzsqju9LU1tPAz8qmwezP
+zrXE16i80rbTzumjrLOkxtrOqsbz0rXM4bmpwM22r7eos6PE6rnLzsq8sLj31tbXqM/u18nRr7f+
+zvGjrL/Nu6fC+tLitsi437TvOTUloaMK1tPAz8qmz8i689TaobbIy8Gm18rUtKG3oaKhtsTPt722
+vMrQsaiht6Gioba549bdyNWxqKG3tcjXqNK11NPWvqGiw73M5beise3AzbavudjPtcDgzsTVwjIw
+tuDGqqOs1PjOqtLUz8K/zbunzOG5qdfJCtGvucvOyqOot8e5q7+qv86jqbf+zvGjutbQufrIy8rZ
+oaK547ei0vjQ0KGi0K+zzMLD0NDN+KGiu6q2prWjsaOhor2oyejS+NDQoaLFqdK10vjQ0KGiuaTJ
+zNL40NChotbQzPq8r83FoaLJ7tvau/qzoaGiCrnj1t2159DFoaK5+tG2zajQxaGiy8nPw8Dkxvih
+otLmuqO8r83FoaLN+rTzvK/NxaGi1tDUts7vwfehosPAtcS8r83FoaLJ7tvau6rHyLPHoaLQxdS0
+vK/NxaGi1tC5+tPK1f4tx6fT4LzSxvPStaGjIAqppamlqaWppamlqaWppamlqaWppamlqaWppaml
+qaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWppamlqaWp
+pamlqaWppamlqaUgCtK7oaLI57rO09DQp7X3uNq199C9CjGhosbz0rXNqLOjuPm+3b6t06rQ6NKq
+tvi199X71LG5pLXEuNrOu7vytdi146OstavKx9SxuaS/yczhs/axu8bIveKz/bKiy/fF4r6tvMOy
+ubOlo6zG89K1yNWzo9bQuMPI57rO1/ajrLLFxNy7r73it+cKz9W78rHcw+KwuLz+sNzL36O/CjKh
+osDNtq+6z82s1Ly2qLXEuNrOu8q1vMrJz7eiyfqx5Luvo6y1q8O709Cw7MDtz+C52MrW0PijrNSx
+uaS1vdDCuNrOu9K7ts7KsbzkuvOjrMi00qrH87vWuLS1vdStuNrOu6OszfnN+bPJwaKjrMTHw7QK
+xvPStbjDyOe6zr+5seehorjDyOe6ztSkt8CjvwozoaK8qNCnxL+x6rK7us+3qLrPwO21xKOszfnN
++bK7xNzX986quuLBv8DNtq/V38rHt/GhsMqkyM65pNf3obG1xNLAvt2jrMbz0rW4w9T10fnJ6Lao
+vKjQp8S/seqjrLLFxNzX986quuLBv7Hq17yjvwo0oaK8tMq5xvPStcTc1qTD98DNtq/V3yChsLK7
+yqTIzrmk1/ehsaOstavKx9Ta1q6687XEtfe42rX30L3V+dLp1tC7ucrHsbvIz7aotaW3vbfHt6ix
+5Lj8wM22r7rPzayjrMbz0rWw3Mvfo6zOqsqyw7SjvwrG89K1uMPI57rOt8C3tqO/CjWhosDNtq/V
+37bUvKjQp8S/seqyu8i3yM+jrMrHt/HS4s6218W4w8S/serO3tCno7/I57n7sdjQ676twM22r9Xf
+yLfIz7LFyfrQp6OsxMfDtMbz0rW1xMjVs6O53MDtvau6zsilus6006O/CjahotSxuaTIz82svKjQ
+p7+8usu94bn7o6y1q8rHxvPStdTaobC7+dPasrvKpMjOuaTX97b4tfe42rX30L2hor3iuc20x83L
+obG1xLC4vP7W0Lu5ysew3Mvfo6zEx8O0xvPStbjDyOe6zr+5see78sjVs6PW0ArU9dH51/ajrLLF
+xNyx3MPisNzL37fnz9Wjvwo3oaLG89K1uPm+3byo0Ke/vLrLveG5+7/bvPXUsbmkvKjQp72xvfCj
+rLrctuDKsbrysbvIz7aot8e3qL/Lv9u5pNfKo6zG89K1uMPI57rOv7mx57vyyNWzo9bQ1PXR+df2
+o6yyxcTcu6+94rfnz9W78rHcw+Kw3Mvfo78KOKGi1LG5pLK7yqTIzrmk1/ejrMbz0rXE3LfxtffV
++8bkuNrOu6Ostfe42rrzxNy38bWlt729tbXNxuTQvbPqo7/I57rOstnX96OsssXE3LX3uNq9tdC9
+o78KOaGivNnJ6MWu1LG5pLnMtqjUwtC9zqozMDAw1KqjrLihtq/UwtC9zqoyMDAw1KqjrLn9yKUx
+Mrj21MK1xMa9vvm5pNfKzqo0ODAw1KqjrLuz1NDG2rzkvr++ubjDsLTKssO0serXvNanuLajrLmr
+y77Po837sLQKMzAwMNSqo6zUsbmkz6PN+7C0NTAwMNSqo6zW2bLDveG5+7/JxNzKxzQ4MDDUqqO7
+xvPStbjDyOe6zr/Y1sbTw8jLs8mxvqO/CjEwoaLFrtawuaTQ3bL6vNnN6rHPuvOjrM35zfnUrbja
+zrvS0b6t09DG5Mv7zazKwri61PCjrMWu1rC5pM35zfmyu73TytzQwrjazrujrM6qtMu3osn6wM22
+r9X50umjrMbz0rW4w8jnus7X9qOsssXE3LuvveIKsNzL37XEt+fP1aO/Cgq2/qGiyOe6ztPQ0Ke9
+4rnNtMfNywoxoaLKtdDQxKnOu8zUzK3WxqOs0tTEqc67xcXD+86q08m94rnN1LG5pKOs1tmyw7v6
+ubnN+c35yM+2qMbz0rW3x7eoveK5zdSxuaSjrMTHw7TG89K1yNWzo9bQuMPI57rO1/ajrLLFsdzD
+4rC4vP6w3Mvfo6yx3ArD4tanuLa+rbzDsrmzpbvyxeKzpb3wo78KMqGi0tShsNfp1q+83Lm5tffV
++6Oszt66z8rKuNrOu7CyxcWhsc6q08m94rnN1LG5pKOsyse3x7Ojt/u6z7OjwO21xNf2t6ijrLWr
+zfnN+bG71tmyw7v6ubnIz7aoxvPStbfHt6i94rnNo6zG89K1uMPI57rO1/ajrAqyxbHcw+KwuLz+
+sNzL36O/CjOhosbz0rXS1KGwvq28w9DUssPUsaGxw/vS5b3iuc3Usbmko6zKx7fHs6O3+7rPs6PA
+7bXE1/a3qKOszfnN+bG7yM+2qLfHt6i94rnNo6zG89K1uMPI57rOstnX96O/ttShsL6tvMPQzbLD
+1LGhsdf3s/a55raoCrXEt6jCyc7EvP61vbXX09DExNCpo78KNKGixvPStdPrwM22r9Xf0K3JzL3i
+s/3Azbavus/NrLKiyunD5tS8tqjWp7i2ysq1sbXEvq28w7K5s6XK/bbuo6zKwrrzwM22r9Xf17fM
+1r6tvMOyubOltcSy7rbusr+31qOs1tmyw7v6ubm63L/JxNzWp7PWwM0Ktq/V37XEy9/H86OsxvPS
+tcjVs6PW0LjDyOe6zrS01sahosrVvK/WpL7do6yyxbHcw+KwuLz+sNzL36O/CjWhosXg0bW3/s7x
+xtrOtLW9xtqjrLb4wM22r7rPzay1vcbao6zG89K11tXWucDNtq+6z82stcSjrNbZssPG2rzkzfnN
++bG7yM+2qMr009rM4cewt8e3qL3is/3Azbavus/NrKOsxvPStbjDyOe6ztf2o6yyxbHcCsPisLi8
+/rDcy9+jvwo2oaLUsbmkzrTM4cewMzDI1c2o1qrG89K1vLTX1NDQwOvWsKOsyse38bm5s8nAzbav
+1d/OpbeoveKz/aO/xvPStbjDyOe6ztf2o6yyxcTcvbW1zbfnz9WzybG+o7+21NPawM22r9XftcS0
+x9awu7e92qOs09DExArQqbHY0OvXotLitcS358/Vv9jWxrXjo78KN6GiwM22r7rPzay1vcbauvOj
+rL6ts6Oz9s/WuMPW1da5tcTN/LzHsOzA7dbV1rnK1tD4o6y4w9D4x6m1xM38vMew7MDt0PjHqcrW
+0PijrL6tuf3Su7bOyrG85LrzxvPStbLFzOGz9rK5sOzP4LnYytbQ+KOstasKysfUsbmkyLTM4bP2
+xeKzpdKqx/OjrMbz0rW358/Vt8ezo7Tzo7vEx8O0xvPStbjDyOe6ztf2o6yyxci3saO55rHcyc/K
+9rDcy9+358/Vo78KOKGiveKz/cDNtq+6z82sx7DOtM2o1qq8sNX3x/O5pLvhtcTS4rz7o6zKx7fx
+ubmzybfHt6i94rP9o78KOaGioba94rP9wM22r7rPzazNqNaqyumht8jnufux7cr2sru1saOszfnN
++bPJzqrAzbav1d+08tOuudnLvrXE09DBptakvt2jrMbz0rW4w8jnus7K6dC0o6yyxbHcw+KwuLz+
+sNzL37b4s9C1o7eowsnU8MjOo78KMTChosTE0KnH6dDOz8LK9NPat8e3qL3iuc3Usbmko6zQ67PQ
+taPExNCpt6jCydTwyM6jrMrHs9C1ozHE6jG49tTCuaTXyrXEvq28w7K5s6W7ucrHMcTqMrj21MK5
+pNfKtcTF4rOlvfCjrLT6zajWqr3wyse38QrSqrPQtaOjrMDNtq/V38Tct/HSqsfzu9a4tMDNtq+5
+2M+1o78KCsj9oaLI57rO09DQp7SmwO3OpbzNzqW55tSxuaQKMaGitKa31qGiveK5zcDNtq/V36Os
+zfnN+dPJ09rAzbav1d++3L74x6nK1bjDzajWqsrptvi1vNbCxvPStbXEtKa31qGiveK5zdDQzqqx
+u8jPtqjOqs7e0Ke78rfHt6jQ0M6qo6zEx8O0xvPStdTayNWzo9bQCrjDyOe6ztf2o6yyxbHcw+Kw
+uLz+sNzL36O/CjKhosDNtq/V38bb1anTpsa4o6zKwrrzsbvG89K1veK5zaOs1NrW2bLDxtq85KOs
+wM22r9Xfv8nE3Nf3s/bIw8bz0rW068rWsru8sLXEv7mx57nbteOjrMbz0rW4w8jnus672NOmu/LV
+39TayNWzo9bQssnIoQrExNCpt8C3trLfwtSjvwozoaK21NPazqW8zc6luea1xLbx0uLOyszi1LG5
+pKOsy/vDx835zfm+3L74zOG9u6G2vOzM1srpobe78rfxyM/OpbzNzqW55rXEysLKtaOsxvPStbjD
+yOe6zrS01sahosrVvK/WpL7do6yyxbHcw+KwuLz+sNwKy9+2+LPQtaO3qMLJ1PDIzqO/CjShosjn
+us69+NDQzqW8zdSxuaS1xMrCyrW197LpoaLWpL7ducy2qKOsttTT2s6lvM3Usbmko6yyv8PFvq3A
+7dOm16LS4sTE0KnI1bOjz7i92s7KzOKjvyAKNaGittTT2s6lvM3Usbmko6zKwreiuvPKssO0yrG8
+5LSmwO2jrMjnus7K6dC0obbOpbzNzqW55rSmt9bNqNaqyumht6O/CjahotT10fnA7b3iobDRz9bY
+zqW3tNPDyMu1pc67tcS55tXC1sa2yLXEobGjrMjnus7U2qG2s823o8z1wP2ht9bQz+rPuMP3yLfO
+pbzNzqW55rXEobDSu7DjzqW3tKGxoaKhsL3P1tjOpbe0obG8sKGw0c/W2ArOpbe0obGjvyAKN6Gi
+1rHP37K/w8W+rcDtycPX1L/azbe0x83L1LG5pKOs1tmyw7v6ubnN+c35yM+2qMbz0rW3x7eoveK5
+zdSxuaSjrMTHw7TG89K1yNWzo9bQuMPI57rO1/ajrLLFsdzD4rC4vP6w3Mvfo6yx3MPi1rHP376t
+CsDt1L3IqLSmt9bUsbmko78KOKGiwM22r9Xfsru0x7b4sfChos7eucq/9bmkuaSjrMi01vfVxbG7
+xvPStb/azbe94rnNo6zN+c35tcO1vdbZssO7+rm5tcTWp7PWo6zEx8O0xvPStcjVs6PW0LjDyOe6
+ztf2o6yyxbHcw+KwuLz+sNzL36O/Cjmhosjnus6957aoobDW2LTzy/C6pqGxo6yhsNbYtPPL8Lqm
+obHKx7fxsdjQ68zlz9bOqtTss8nWsb3TtcS+rbzDy/DKp6O/CjEwoaKyydPDobDCvNL0wrzP86Gx
+t73KvbS01sahorGjwfS1xNakvt2jrLeo1LrKx7fxssnQxaOsxvPStcTasr9PQc+1zbO78kVSUM+1
+zbPJz7XE18rBz8Tct/HX986q1qS+3cq508OjrLXn19PTyrz+oaLK1gq7+rbM0MXE3Lfx1/fOqtak
+vt3KudPDo78gCgrLxKGiobbJ57vhsaPP1beoobfKtc7x06a21LLfwtQKMaGi08PIy7Wlzruyu7Ds
+wO3J57vhsaPP1bXHvMe78tXfzc/Ht8nnsaO30bXEo6zT0Mqyw7S3qMLJ1PDIzqO/CjKhotPDyMu1
+pc67srvX47buvcnEycnnu+Gxo8/VyOe6zrSmwO2jvwozoaLUsbmksrvUuNLiwvLJ57Gju/LUsbmk
+19TUuL21tc3NtrGju/nK/aOssqLT67WlzrvHqdPQ0K3S6bXEx+m/9s/Co6y4w9Ct0unKx7fx09DQ
+p6O/CjShosrU08PG2rzko6zKx7fxsdjQ673JxMnJ57vhsaPP1aO/CjWhotLytdrI/be9tcTU8MjO
+tviy+sn60r3BxrfR08O1xKOsxNy38bGoz/qjvwo2oaLB7MihyqfStbGjz9W98LXEx7DM4cz1vP7T
+0MTE0Kmjv9T10fnA7b3iobC3x9Lysb7Iy9Li1LjW0LbPvs3StbXEobGjvwo3oaLG89K10K3W+rTH
+1rDUsbmkxq3Iocqn0rWxo8/VvfCjrNPQyrLDtLeowsm358/Vo78KOKGiyfrT/dK9wca30dPDsPzA
+qMTE0KmjrMqyw7TH6b/2z8K/ydLUz+3K3Mn60/298sz5o78KOaGi08PIy7Wlzruyu7P2vt+htsDr
+1rDWpMP3obe1xKOs09DKssO0t6jCydTwyM6jvwoxMKGiv+e12Mf4vs3StbXEo6zJ57vhsaPP1cjn
+us621L3To6zP1r3Xts61xNf2t6jT0MTE0KmjvwoxMaGizrS9ydfjMTXE6rXEyMvKv6OsxNy38c3L
+0N2jrMjnus60psDtzcvQ3crC0sujvwoxMqGisOzA7dawuaTM2MriuaTW1szhx7DNy9DdyrHTptei
+0uLExNCpzsrM4qO/CgrO5aGioba5pMnLsaPP1cz1wP2ht8q1zvHTprbUst/C1AoxoaLK9NPauaTJ
+y7e2zqe1xMfp0M7T0MTE0Kmjv7K7tcPIz7aozqq5pMnLtcTH6dDO09DExNCpo78KMqGi1PXR+cDt
+veLJz8/CsODNvtbQo7/U9dH5v9jWxsbavOS1xLfnz9WjvwozoaLS8rmk1/fQ6NKq06az6rrIvsa1
+vNbCy8DN9qOsxNy38cjPtqjOqrmkycujvwo0oaLS7LXYss6807mkycuxo8/VtcSjrMjnus7Iz7ao
+uaTJy6O/CjWhos2juaTB9NC9xtq85Ln9uvOjrLeiyfq1xNK9wca30dPDo6zI57rOtKbA7aO/Cjah
+ormkycvUsbmkvei5yr7cvvi4tLmko6zI57rOtKbA7aO/CjehormkycvUsbmkvei5yr7cvvjF5LrP
+1/bJy7LQvPi2qKOsyOe6zrSmwO2jvwo4oaLS0b6tyM+2qM6quaTJy7XE1rC5pNHP1tjOpbzNo6zG
+89K1xNy38b3is/26z82so78KOaGittTT2rXayP3Iy9Tss8m1xLmkycvKwrnKo6zI59LytdrI/cjL
+0v23orXEvbvNqMrCucrW0KOsztK3vcu+u/rK3MnLo6zI57rOtKbA7aO/yty6psjLy767+sTct/HS
+qsfzuaTJy7T90/bT1tKqx/O12grI/be9tcTIy8ntycu6psXis6WjvwoxMKGitaXOu8Tct/HS1MnM
+0rWxo8/VwO3F4r/uz+7M5rT61rC5pLmkycvF4rOltP3T9qO/CjExoaK3osn6uaTJy8rCucq686Os
+xvPStdPrwM22r9Xfy73PwrrNveKjrMeptqm1xLK5s6XQrdLpyse38dPQ0KejvwoxMqGitNO5pMnL
+ysK5yrXEt6LJ+rW9yKuyv7eotqizzNDyzeq94aOsyrG85L/JxNyzrLn9M8Tqo6zKx8D7u7nKx7HX
+o78KCsH5oaLAzc7xxcnHssq1zvHTprbUst/C1AoxoaLQwreoz8LAzc7xxcnHssPmwdm1xNb30qq3
+58/V09DExNCpo78KMqGi0rXO8c3isPzT68DNzvHFyceyyOe6zruut9ajvwozoaLTw7mktaXOu8jn
+us655rHczay5pM2ss+q358/Vo78KNKGi08O5pLWlzrvI57rO0NDKubbUxcnHstSxuaS1xM3Lu7m7
+8s3Lu7vIqKO/CjWhotPDuaS1pc67yOe6zte3vr/Fycey1LG5pLXEy/DKp8Xis6XU8MjOo78KNqGi
+1PXR+bnmtqjFycey1LG5pLXEtMfWsLPM0PK6zcDr1rDU8MjOo78KN6Gi08O5pLWlzrvI57rO06a2
+1MXJx7K6z9f31fnS6brNwM22r9X50umjvwo4oaLFycey1LG5pM3Lu9jG2rzktcS5pNfKuKPA+7T9
+0/bI57rOyei8xqO/CjmhosDNzvHFyceyz8K1xLmk18qhormkyrGhotDdvNmhosnnsaOhormkycvO
+ysziyOe6zrSmwO2jvwoxMKGiyOe6zrSmwO3Opbe008O5pLWlzru55tXC1sa2yLXExcnHstSxuaSj
+vwoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNlZSBldmVyeXRoaW5nIGZyb20gdGhlIGJyb3dzZXIg
+dG8gdGhlIGRhdGFiYXNlIHdpdGggQXBwRHluYW1pY3MKR2V0IGVuZC10by1lbmQgdmlzaWJpbGl0
+eSB3aXRoIGFwcGxpY2F0aW9uIG1vbml0b3JpbmcgZnJvbSBBcHBEeW5hbWljcwpJc29sYXRlIGJv
+dHRsZW5lY2tzIGFuZCBkaWFnbm9zZSByb290IGNhdXNlIGluIHNlY29uZHMuClN0YXJ0IHlvdXIg
+ZnJlZSB0cmlhbCBvZiBBcHBEeW5hbWljcyBQcm8gdG9kYXkhCmh0dHA6Ly9wdWJhZHMuZy5kb3Vi
+bGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD00ODgwODgzMSZpdT0vNDE0MC9vc3RnLmNsa3Ryawpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
+Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
+bC1nZW5lcmFsCg==

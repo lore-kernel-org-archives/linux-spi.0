@@ -1,101 +1,82 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: support DUAL and QUAD[patch v1]
-Date: Mon, 22 Jul 2013 10:33:42 +0100
-Message-ID: <20130722093342.GJ9858@sirena.org.uk>
-References: <CAHSAbzP0Nc1ahf_ra6yDuMvV998_+EGcUOGDv5ifKaagYf+NOg@mail.gmail.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E84D2@DBDE04.ent.ti.com>
- <CAHSAbzMDOWo5oBqUHqMxybuDwUjFbczYwN+85gH+rxZ9z8u2Pw@mail.gmail.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E851E@DBDE04.ent.ti.com>
- <593AEF6C47F46446852B067021A273D6D93B49E1@MUCSE039.lantiq.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E85D0@DBDE04.ent.ti.com>
- <CAHSAbzP5jqHwCm0qhu=DiNzpP0swqWHsQ0=MnF+EKaSN22E5hg@mail.gmail.com>
- <CA+7tXihoZZhpoyvxj58c+Zi-Zy631kK5s-kDoSxPKq=ej0qyvA@mail.gmail.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E967D@DBDE04.ent.ti.com>
+From: VVF Villages par Nl Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Jusqu'=E0_-40_%_en_r=E9servant_vos_vacances_d'=E9t=E9?=
+Date: Mon, 22 Jul 2013 14:51:33 +0200 (CEST)
+Message-ID: <xgw0f6.hjfobhvuo7hd7vl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============5423557569479053209=="
-Cc: "thomas.langer@lantiq.com" <thomas.langer@lantiq.com>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>, "Poddar,
- Sourav" <sourav.poddar@ti.com>, Trent Piepho <tpiepho@gmail.com>,
- yuhang wang <wangyuhang2014@gmail.com>
-To: "Gupta, Pekon" <pekon@ti.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20980858CB6D3A4BAE95CA194937D5E73E9E967D@DBDE04.ent.ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgpx8iI7gfk57dIhjfob9a5I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374497482717%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DMLDKDJAABLLGCELK%26mid%3D1600203906&s=3DL=
+IDIHFCLDKCDGFGJ
+ =
 
---===============5423557569479053209==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="QPZaqi6af6gbSrAE"
-Content-Disposition: inline
+Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=
+=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacance=
+s d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -=
+40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vo=
+s vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Ju=
+squ'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9s=
+ervant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=
+=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 %=
+ en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos va=
+cances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=
+=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9serva=
+nt vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=
+=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en =
+r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacanc=
+es d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 =
+-40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant v=
+os vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9J=
+usqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9=
+servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d=
+'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 =
+% en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos v=
+acances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu=
+'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9serv=
+ant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9=
+t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en=
+ r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacan=
+ces d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0=
+ -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant =
+vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9=
+Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=
+=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacance=
+s d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -=
+40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vo=
+s vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Ju=
+squ'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9s=
+ervant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=
+=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 %=
+ en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos va=
+cances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=
+=E0 -40 % en r=E9servant vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9serva=
+nt vos vacances d'=E9t=E9Jusqu'=E0 -40 % en r=E9servant vos vacances d'=E9t=
+=E9
+ =
 
-
---QPZaqi6af6gbSrAE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Fri, Jul 19, 2013 at 07:34:45PM +0000, Gupta, Pekon wrote:
-
-> > Maybe it would make more sense to have a spi-rx-width and spi-tx-width
-> > than can be set to 1, 2, 4, etc. bits instead of a bunch of properties
-> > that are mutually exclusive?  Sooner or later someone is going to want
-> > 8 bits.
-
-> Then it would not remain a serial interface (Serial Peripheral Interface),
-> rather it would be more of parallel memory like interface.
-> And you would not like to use SPI controller for it, instead you would use
-> On-chip General Purpose External Interface controllers (like GPMC)
-> because it gives you more options to tweak and configure.
-
-It's still not beyoond the bounds of possibility, and of course some
-bright spark might decide to use 3 wires.  Unless it's expensive to do
-so in some way it seems better to keep the interface as generic as
-possible even if we've no expectation that some of the flexibility will
-be used.
-
---QPZaqi6af6gbSrAE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR7PxzAAoJELSic+t+oim93zMP/iaSGf2AwMeCLjtodncJwdlT
-2J1tksjA4Cssv6Mdr1IZZTnP/5pbnP3WzTzJImHl9HrNAz7RDSBRm0VowUmZu0Ss
-kB5wKwEfuKTz0Xb8Oc65hEKG6rVWQDf9DY4/7sp92NDvke7BwjWW8NtP50W58bj9
-UN4uQFe/EwjaS4WjcIQ5tqLYXdHAXMo19U3JDR44QyhVuvsThDAoxRhGu02v21cE
-QkTF6zvOP6SO9T8TN2NIoD8JUrMX+QMzRqJbYMkvjp9es/74gyYJU+vRNUf3sBwL
-AliYZut7XQG+33CBqShlGsD6Y/ELBJ5LIyCDbKMf1FZkW/+kVu+WstRjmyvjvdKI
-Tyfl9Uz1drmqsCBIrOIabwVboMsvwY3zjWZx4Fg3CLGUnGt8KpMX2vb8m6CVtHHj
-a55KCZ8XG1J7pziwG+pYPOy3vwJB/caa1Bcublp5VE7Pxt4OB5TteptxH9NXG/F7
-EdjBxzK4giv5dSj8OR4SWm8bGuAoXzp+rJYVCPR9Bxywloo7mhyEChGNgkrW9Orl
-0Xch5SCAqe7isHDICEhEGNn0m7QuvbHOAVhE5HrnAhJZlUIJBIu/2ZSBH3tz1bR6
-W1+myS7DFQ8xFjUNVxjAtnFcBeAM/YV12/x+chP7CuDvauuWfLD48NDL+MJgQijd
-/oToHw/iqMJ7K+0rfmXs
-=sv+M
------END PGP SIGNATURE-----
-
---QPZaqi6af6gbSrAE--
-
-
---===============5423557569479053209==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
-
---===============5423557569479053209==--
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600203906&sig=3DKONJFAMPOIJIINBN&st=3D0
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

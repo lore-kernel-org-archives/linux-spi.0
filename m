@@ -1,53 +1,66 @@
-From: Huang Shijie <b32955@freescale.com>
-Subject: Re: support DUAL and QUAD[patch v1]
-Date: Mon, 22 Jul 2013 18:32:55 +0800
-Message-ID: <51ED0A57.4060105@freescale.com>
+From: <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
+Subject: RE: support DUAL and QUAD[patch v1]
+Date: Mon, 22 Jul 2013 11:21:58 +0000
+Message-ID: <593AEF6C47F46446852B067021A273D6D97E2ED4@MUCSE039.lantiq.com>
 References: <CAHSAbzP0Nc1ahf_ra6yDuMvV998_+EGcUOGDv5ifKaagYf+NOg@mail.gmail.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E84D2@DBDE04.ent.ti.com>
- <CAHSAbzMDOWo5oBqUHqMxybuDwUjFbczYwN+85gH+rxZ9z8u2Pw@mail.gmail.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E851E@DBDE04.ent.ti.com>
- <593AEF6C47F46446852B067021A273D6D93B49E1@MUCSE039.lantiq.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E85D0@DBDE04.ent.ti.com>
- <CAHSAbzP5jqHwCm0qhu=DiNzpP0swqWHsQ0=MnF+EKaSN22E5hg@mail.gmail.com>
- <CA+7tXihoZZhpoyvxj58c+Zi-Zy631kK5s-kDoSxPKq=ej0qyvA@mail.gmail.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E967D@DBDE04.ent.ti.com>
- <20130722093342.GJ9858@sirena.org.uk>
- <20980858CB6D3A4BAE95CA194937D5E73E9EC9B1@DBDE04.ent.ti.com>
+	<20980858CB6D3A4BAE95CA194937D5E73E9E84D2@DBDE04.ent.ti.com>
+	<CAHSAbzMDOWo5oBqUHqMxybuDwUjFbczYwN+85gH+rxZ9z8u2Pw@mail.gmail.com>
+	<20980858CB6D3A4BAE95CA194937D5E73E9E851E@DBDE04.ent.ti.com>
+	<593AEF6C47F46446852B067021A273D6D93B49E1@MUCSE039.lantiq.com>
+	<20980858CB6D3A4BAE95CA194937D5E73E9E85D0@DBDE04.ent.ti.com>
+	<CAHSAbzP5jqHwCm0qhu=DiNzpP0swqWHsQ0=MnF+EKaSN22E5hg@mail.gmail.com>
+	<CA+7tXihoZZhpoyvxj58c+Zi-Zy631kK5s-kDoSxPKq=ej0qyvA@mail.gmail.com>
+	<20980858CB6D3A4BAE95CA194937D5E73E9E967D@DBDE04.ent.ti.com>
+	<20130722093342.GJ9858@sirena.org.uk>
+	<20980858CB6D3A4BAE95CA194937D5E73E9EC9B1@DBDE04.ent.ti.com>
+	<51ED0A57.4060105@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
-Cc: "thomas.langer@lantiq.com" <thomas.langer@lantiq.com>,
- Mark Brown <broonie@kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>, "Poddar,
- Sourav" <sourav.poddar@ti.com>, Trent Piepho <tpiepho@gmail.com>,
- yuhang wang <wangyuhang2014@gmail.com>
-To: "Gupta, Pekon" <pekon@ti.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20980858CB6D3A4BAE95CA194937D5E73E9EC9B1@DBDE04.ent.ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
+	tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <pekon-l0cyMroinI0@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <51ED0A57.4060105-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Content-Language: en-US
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-5LqOIDIwMTPlubQwN+aciDIy5pelIDE3OjU2LCBHdXB0YSwgUGVrb24g5YaZ6YGTOgo+IChiKSBz
-dHJ1Y3Qgc3BpX3RyYW5zZmVyOiBpZiBlYWNoIHRyYW5zZmVyIG9mIHNhbWUgbWVzc2FnZSBuZWVk
-IHRvIGJlCj4gdHJhbnNmZXJyZWQgYXQgZGlmZmVyZW50IHdpZHRoLiAJRXhhbXBsZTogQ29tbWFu
-ZCBAIFNpbmdsZS1TUEkKPiAgIGZvbGxvd2VkIGJ5IERhdGEgQCBRdWFkLVNQSQo+CkkgYW0gY29k
-aW5nIHRoZSBRdWFkU3BpIGRyaXZlciBmb3IgRnJlZXNjYWxlJ3MgVnlicmlkIG5vdy4KCkkgdGhp
-bmsgd2UgZG90IG5lZWQgdG8gY2hhbmdlIHRoZSBzcGkgY29kZS4KdGhlIHNwaSBsYXllciBzaG91
-bGQgbm90IGtub3cgdGhlIGRpZmZlcmVudCB3aWR0aCBvZiB0aGUgY29tbWFuZCBhbmQgdGhlIApk
-YXRhLApsZXQgdGhlIHFzcGkgZHJpdmVyIGRvZXMgaXQuCgpJbiB0aGUgbTI1cF9wcm9iZSgpLCBh
-ZnRlciB3ZSBrbm93cyB0aGF0IHRoZSBxc3BpIGRyaXZlciBhbmQgZmxhc2ggCnN1cHBvcnQgdGhl
-IFF1YWQgcmVhZCwgc28gd2UgY2FuIHNldCB0aGUKbTI1cC0+cmVhZF9vcGNvZGUgdG8gMHhlYiBv
-ciAweGVjLiBJbiB0aGUgcXNwaSBkcml2ZXIsIGl0IGNhbiBkbyB0aGUgCnJlYWwgam9iLgoKCnRo
-YW5rcwpIdWFuZyBTaGlqaWUKCgoKCgoKCgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcgbGlz
-dApodHRwOi8vbGlzdHMuaW5mcmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW10ZC8K
+SGVsbG8gSHVhbmcsDQoNCkh1YW5nIFNoaWppZSB3cm90ZSBvbsKgMjAxMy0wNy0yMjoNCj4g5LqO
+IDIwMTPlubQwN+aciDIy5pelIDE3OjU2LCBHdXB0YSwgUGVrb24g5YaZ6YGTOg0KPj4gKGIpIHN0
+cnVjdCBzcGlfdHJhbnNmZXI6IGlmIGVhY2ggdHJhbnNmZXIgb2Ygc2FtZSBtZXNzYWdlIG5lZWQg
+dG8gYmUNCj4+IHRyYW5zZmVycmVkIGF0IGRpZmZlcmVudCB3aWR0aC4gCUV4YW1wbGU6IENvbW1h
+bmQgQCBTaW5nbGUtU1BJDQo+PiAgIGZvbGxvd2VkIGJ5IERhdGEgQCBRdWFkLVNQSQ0KPiBJIGFt
+IGNvZGluZyB0aGUgUXVhZFNwaSBkcml2ZXIgZm9yIEZyZWVzY2FsZSdzIFZ5YnJpZCBub3cuDQo+
+IA0KPiBJIHRoaW5rIHdlIGRvdCBuZWVkIHRvIGNoYW5nZSB0aGUgc3BpIGNvZGUuIHRoZSBzcGkg
+bGF5ZXIgc2hvdWxkIG5vdA0KPiBrbm93IHRoZSBkaWZmZXJlbnQgd2lkdGggb2YgdGhlIGNvbW1h
+bmQgYW5kIHRoZSBkYXRhLCBsZXQgdGhlIHFzcGkNCj4gZHJpdmVyIGRvZXMgaXQuDQpOTyENCj4g
+DQo+IEluIHRoZSBtMjVwX3Byb2JlKCksIGFmdGVyIHdlIGtub3dzIHRoYXQgdGhlIHFzcGkgZHJp
+dmVyIGFuZCBmbGFzaA0KPiBzdXBwb3J0IHRoZSBRdWFkIHJlYWQsIHNvIHdlIGNhbiBzZXQgdGhl
+DQo+IG0yNXAtPnJlYWRfb3Bjb2RlIHRvIDB4ZWIgb3IgMHhlYy4gSW4gdGhlIHFzcGkgZHJpdmVy
+LCBpdCBjYW4gZG8gdGhlDQo+IHJlYWwgam9iLg0KTm8sIHRoZSBxc3BpIGRyaXZlciAoYXMgZXhh
+bXBsZSBoZXJlKSBzaG91bGQgcHJvdmlkZSBhIHRyYW5zcGFyZW50IGludGVyZmFjZSBvbmx5LA0K
+YW5kIHRoZSBtcDI1cDgwIGRyaXZlciwgd2hpY2gga25vd3MgdGhlIGRldGFpbHMgb2YgdGhlIGZs
+YXNoLCBoYXMgdG8gcHJvdmlkZSB0aGUgaW5mb3JtYXRpb24NCndoaWNoIHBhcnRzIG9mIGEgdHJh
+bnNmZXIgaGFzIHRvIGJlIGRvbmUgaW4gc2luZ2xlLS9kdWFsLSBvciBxdWFkLW1vZGUuDQpPdGhl
+cndpc2UgeW91IGFsd2F5cyBuZWVkIHRvIGV4dGVuZCB0aGUgcXNwaSBkcml2ZXIgZm9yIG5ldyBm
+bGFzaGVzLg0KDQo+IA0KPiB0aGFua3MNCj4gSHVhbmcgU2hpamllDQo+IA0KQmVzdCBSZWdhcmRz
+LA0KVGhvbWFzDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpTZWUgZXZlcnl0aGluZyBmcm9tIHRo
+ZSBicm93c2VyIHRvIHRoZSBkYXRhYmFzZSB3aXRoIEFwcER5bmFtaWNzCkdldCBlbmQtdG8tZW5k
+IHZpc2liaWxpdHkgd2l0aCBhcHBsaWNhdGlvbiBtb25pdG9yaW5nIGZyb20gQXBwRHluYW1pY3MK
+SXNvbGF0ZSBib3R0bGVuZWNrcyBhbmQgZGlhZ25vc2Ugcm9vdCBjYXVzZSBpbiBzZWNvbmRzLgpT
+dGFydCB5b3VyIGZyZWUgdHJpYWwgb2YgQXBwRHluYW1pY3MgUHJvIHRvZGF5IQpodHRwOi8vcHVi
+YWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NDg4MDg4MzEmaXU9LzQxNDAvb3N0
+Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
+dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
+by9zcGktZGV2ZWwtZ2VuZXJhbAo=

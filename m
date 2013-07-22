@@ -1,78 +1,90 @@
-From: "Gupta, Pekon" <pekon@ti.com>
-Subject: RE: support DUAL and QUAD[patch v1]
-Date: Mon, 22 Jul 2013 12:55:53 +0000
-Message-ID: <20980858CB6D3A4BAE95CA194937D5E73E9ECAFC@DBDE04.ent.ti.com>
-References: <CAHSAbzP0Nc1ahf_ra6yDuMvV998_+EGcUOGDv5ifKaagYf+NOg@mail.gmail.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E84D2@DBDE04.ent.ti.com>
- <CAHSAbzMDOWo5oBqUHqMxybuDwUjFbczYwN+85gH+rxZ9z8u2Pw@mail.gmail.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E851E@DBDE04.ent.ti.com>
- <593AEF6C47F46446852B067021A273D6D93B49E1@MUCSE039.lantiq.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E85D0@DBDE04.ent.ti.com>
- <CAHSAbzP5jqHwCm0qhu=DiNzpP0swqWHsQ0=MnF+EKaSN22E5hg@mail.gmail.com>
- <CA+7tXihoZZhpoyvxj58c+Zi-Zy631kK5s-kDoSxPKq=ej0qyvA@mail.gmail.com>
- <20980858CB6D3A4BAE95CA194937D5E73E9E967D@DBDE04.ent.ti.com>
- <20130722093342.GJ9858@sirena.org.uk>
- <20980858CB6D3A4BAE95CA194937D5E73E9EC9B1@DBDE04.ent.ti.com>
- <51ED0A57.4060105@freescale.com>
- <593AEF6C47F46446852B067021A273D6D97E2ED4@MUCSE039.lantiq.com>
+From: Joel Fernandes <joelf-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 1/3] dmaengine: add dma_get_slave_sg_limits()
+Date: Mon, 22 Jul 2013 16:45:51 -0500
+Message-ID: <51EDA80F.7060606@ti.com>
+References: <1374166001-31340-1-git-send-email-joelf@ti.com>
+	<1374166001-31340-2-git-send-email-joelf@ti.com>
+	<20130718161658.GW16653@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>, "Poddar,
- Sourav" <sourav.poddar@ti.com>, "tpiepho@gmail.com" <tpiepho@gmail.com>,
- "wangyuhang2014@gmail.com" <wangyuhang2014@gmail.com>
-To: "thomas.langer@lantiq.com" <thomas.langer@lantiq.com>,
- "b32955@freescale.com" <b32955@freescale.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <593AEF6C47F46446852B067021A273D6D97E2ED4@MUCSE039.lantiq.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+        Grant
+ Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+        Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+        Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Chris Ball
+	<cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+        Devicetree Discuss
+	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+        Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
+        Benoit Cousson
+	<benoit.cousson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+        Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+        Linux DaVinci
+ Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        Balaji TK
+	<balajitk-l0cyMroinI0@public.gmane.org>, Mark Jackson <mpfj-list-2FZW7xY0fHgqdlJmJB21zg@public.gmane.org>,
+        Linux MMC List
+	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        Linux Kernel Mailing List
+	<linux-k
+To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <20130718161658.GW16653-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgU2hpamllLA0KPiANCj4gSGVsbG8gSHVhbmcsDQo+IA0KPiBIdWFuZyBTaGlqaWUgd3JvdGUg
-b27CoDIwMTMtMDctMjI6DQo+ID4g5LqOIDIwMTPlubQwN+aciDIy5pelIDE3OjU2LCBHdXB0YSwg
-UGVrb24g5YaZ6YGTOg0KPiA+PiAoYikgc3RydWN0IHNwaV90cmFuc2ZlcjogaWYgZWFjaCB0cmFu
-c2ZlciBvZiBzYW1lIG1lc3NhZ2UgbmVlZCB0byBiZQ0KPiA+PiB0cmFuc2ZlcnJlZCBhdCBkaWZm
-ZXJlbnQgd2lkdGguIAlFeGFtcGxlOiBDb21tYW5kIEAgU2luZ2xlLVNQSQ0KPiA+PiAgIGZvbGxv
-d2VkIGJ5IERhdGEgQCBRdWFkLVNQSQ0KPiA+IEkgYW0gY29kaW5nIHRoZSBRdWFkU3BpIGRyaXZl
-ciBmb3IgRnJlZXNjYWxlJ3MgVnlicmlkIG5vdy4NCj4gPg0KPiA+IEkgdGhpbmsgd2UgZG90IG5l
-ZWQgdG8gY2hhbmdlIHRoZSBzcGkgY29kZS4gdGhlIHNwaSBsYXllciBzaG91bGQgbm90DQo+ID4g
-a25vdyB0aGUgZGlmZmVyZW50IHdpZHRoIG9mIHRoZSBjb21tYW5kIGFuZCB0aGUgZGF0YSwgbGV0
-IHRoZSBxc3BpDQo+ID4gZHJpdmVyIGRvZXMgaXQuDQo+IE5PIQ0KPiA+DQo+ID4gSW4gdGhlIG0y
-NXBfcHJvYmUoKSwgYWZ0ZXIgd2Uga25vd3MgdGhhdCB0aGUgcXNwaSBkcml2ZXIgYW5kIGZsYXNo
-DQo+ID4gc3VwcG9ydCB0aGUgUXVhZCByZWFkLCBzbyB3ZSBjYW4gc2V0IHRoZQ0KPiA+IG0yNXAt
-PnJlYWRfb3Bjb2RlIHRvIDB4ZWIgb3IgMHhlYy4gSW4gdGhlIHFzcGkgZHJpdmVyLCBpdCBjYW4g
-ZG8gdGhlDQo+ID4gcmVhbCBqb2IuDQo+IE5vLCB0aGUgcXNwaSBkcml2ZXIgKGFzIGV4YW1wbGUg
-aGVyZSkgc2hvdWxkIHByb3ZpZGUgYSB0cmFuc3BhcmVudCBpbnRlcmZhY2UNCj4gb25seSwNCj4g
-YW5kIHRoZSBtcDI1cDgwIGRyaXZlciwgd2hpY2gga25vd3MgdGhlIGRldGFpbHMgb2YgdGhlIGZs
-YXNoLCBoYXMgdG8gcHJvdmlkZQ0KPiB0aGUgaW5mb3JtYXRpb24NCj4gd2hpY2ggcGFydHMgb2Yg
-YSB0cmFuc2ZlciBoYXMgdG8gYmUgZG9uZSBpbiBzaW5nbGUtL2R1YWwtIG9yIHF1YWQtbW9kZS4N
-Cj4gT3RoZXJ3aXNlIHlvdSBhbHdheXMgbmVlZCB0byBleHRlbmQgdGhlIHFzcGkgZHJpdmVyIGZv
-ciBuZXcgZmxhc2hlcy4NCj4gDQpBIFFTUEkgaW50ZXJmYWNlIGNhbiBiZSBjb25uZWN0ZWQgdG8g
-ZXh0ZXJuYWwtRmxhc2ggYW5kIHRvIENhbWVyYSBhbHNvLg0KDQotIEEgY2FtZXJhIGludGVyZmFj
-ZSBtYXkgb25seSByZXF1aXJlIHN0YXRpYyBjb25maWcgb2YgUXVhZC1tb2RlLg0KDQotIEEgRmxh
-c2ggbWF5IHJlcXVpcmUgZHluYW1pYyBzd2l0Y2hpbmcgYmV0d2VlbiBTaW5nbGUtU1BJIG9yIFF1
-YWQtU1BJDQpiYXNlZCBvbiB0eXBlIG9mIG1lc3NhZ2UsIGxpa2UgRmxhc2ggZXJhc2UgY29tbWFu
-ZCBuZWVkIHRvIGJlIHNlbnQgDQpvbmx5IFNpbmdsZS1TUEkgbW9kZSwgd2hlcmUgYXMgUmVhZC9X
-cml0ZSBEYXRhIGNhbiBiZSBkb25lIG9uDQpRdWFkLVNQSSBtb2RlIHRvIGluY3JlYXNlIHRocm91
-Z2hwdXQuIEhlcmUgb25seSB0aGUgZmxhc2ggZHJpdmVyIHdvdWxkIA0Ka25vdywgd2hpY2ggY29t
-bWFuZHMgdG8gc2VuZCBvbiBTaW5nbGUtU1BJIGFuZCB3aGljaCBvbiBRdWFkLVNQSS4gDQoNClRo
-dXMsIGl0cyBiZXR0ZXIgdGhhdCBjaGFubmVsLXdpZHRoIGluZm9ybWF0aW9uIGlzIHBhc3NlZCBi
-eSB1cHBlciBsYXllcg0KZHJpdmVyIGFsb25nIHdpdGggc3BpX21lc3NhZ2UsIHNvIHRoYXQgUVNQ
-SS1jb250cm9sbGVyIGRyaXZlciBjYW4NCmR5bmFtaWNhbGx5IHN3aXRjaCBiZXR3ZWVuIHRoZSBt
-b2Rlcy4NClRoaXMgYWxzbyBrZWVwcyBRU1BJIGRyaXZlciBnZW5lcmljIGlycmVzcGVjdGl2ZSBv
-ZiBkZXZpY2VzIGNvbm5lY3RlZCB0byBpdC4NCg0KDQp3aXRoIHJlZ2FyZHMsIHBla29uDQpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgg
-TVREIGRpc2N1c3Npb24gbWFpbGluZyBsaXN0Cmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21h
-aWxtYW4vbGlzdGluZm8vbGludXgtbXRkLwo=
+On 07/18/2013 11:16 AM, Vinod Koul wrote:> On Thu, Jul 18, 2013 at
+11:46:39AM -0500, Joel Fernandes wrote:
+>> From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
+>>
+>> Add a dmaengine API to retrieve slave SG transfer limits.
+>>
+>> The API is optionally implemented by dmaengine drivers and when
+>> unimplemented will return a NULL pointer. A client driver using
+>> this API provides the required dma channel, address width, and
+>> burst size of the transfer. dma_get_slave_sg_limits() returns an
+>> SG limits structure with the maximum number and size of SG segments
+>> that the given channel can handle.
+> Hi Joel,
+>
+> I have already resurrected this and generalized the API to get the slave
+> capablities.
+> https://lkml.org/lkml/2013/7/15/147
+
+Hi Vinod,
+
+get_caps and get_sg_limits are 2 different things, looks like this was
+already discussed earlier, and this patch series is a separate API that
+adds support for SG limits.
+
+Infact, you can already see here that he changed the name of the
+function from caps to dma_get_slave_sg_limits:
+http://linux.davincidsp.com/pipermail/davinci-linux-open-source/2013-March/026601.html
+
+Considering this, what is the way forward? Can this patch series be
+merged as it is a different API as discussed above?
+
+Summarizing:
+* get_caps API cannot be used for this same purpose, as get_caps is done
+_before_ the DMA channel can be configured from what it looks like:
+* get_sg_limits, on the other hand is supposed to already have the
+parameters required for configuring the DMA channel before hand.
+
+Are there any other changes to the get_sg_limits series you would like
+before it can be applied? Any other suggestions?
+
+Thanks,
+
+-Joel

@@ -1,12 +1,12 @@
-From: ETAM <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Moins 20 pourcent sur la nouvelle collection
-Date: Tue, 23 Jul 2013 12:12:35 +0200 (CEST)
-Message-ID: <e19kh4.hjgy2x2gnr38ndl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Chonoregime" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Perdez 8 kilos avant la plage sans privation
+Date: Tue, 23 Jul 2013 14:43:08 +0000 (CET)
+Message-ID: <130723144308.63736773500007156@ocfm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,92 +18,33 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgpxtmI7gfk57dIhjgy2thhI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374574351326%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DICIPELABPHEGOMHB%26mid%3D1600204666&s=3DC=
-COPBNLPPCCDNFDP
- =
-
-Moins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvel=
-le collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent =
-sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins=
- 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle co=
-llectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur l=
-a nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 p=
-ourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collect=
-ionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nou=
-velle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pource=
-nt sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMo=
-ins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle=
- collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent su=
-r la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 2=
-0 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle coll=
-ectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la =
-nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pou=
-rcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectio=
-nMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouve=
-lle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent=
- sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoin=
-s 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle c=
-ollectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur =
-la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 =
-pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collec=
-tionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la no=
-uvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourc=
-ent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionM=
-oins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvell=
-e collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent s=
-ur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins =
-20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle col=
-lectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la=
- nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 po=
-urcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collecti=
-onMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouv=
-elle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcen=
-t sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoi=
-ns 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle =
-collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur=
- la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20=
- pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle colle=
-ctionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la n=
-ouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pour=
-cent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collection=
-Moins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvel=
-le collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent =
-sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins=
- 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle co=
-llectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur l=
-a nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 p=
-ourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collect=
-ionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nou=
-velle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pource=
-nt sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMo=
-ins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle=
- collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent su=
-r la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 2=
-0 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle coll=
-ectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la =
-nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pou=
-rcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectio=
-nMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouve=
-lle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent=
- sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoin=
-s 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle c=
-ollectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur =
-la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 =
-pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collec=
-tion
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600204666&sig=3DNNBPAJJMPHHKAOBN&st=3D0
----------------------------------------------------------------------------=
----
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
-ktrk
+CgoKIApKdXNxdSfDoCA4IGtpbG9zIGVuIG1vaW5zIGRhbnMgY2V0IGVtYWlsLiAKQWZpbiBkZSB2
+b2lyIGNldHRlIGxldHRyZSBlbiBpbWFnZXMsIGNvbnN1bHRleiBsYSB2ZXJzaW9uIGVuIGxpZ25l
+IChodHRwOi8vb2NmbTQwLmNvbS9kM241YmlnYzJyaXk0eXc1b2ovaW5kZXgwLmh0bWwpCgoKCgog
+KGh0dHA6Ly9vY2ZtNDAuY29tL3llbm5haW5yMmNyc2tzejVnZy9pbmRleDEuaHRtbCkKCiAoaHR0
+cDovL29jZm00MC5jb20vbGhucjFpeWUyZHF5dGJuYWpvL2luZGV4Mi5odG1sKQoKIChodHRwOi8v
+b2NmbTQwLmNvbS9zdW40dmk1ZDJlY3NzdDRhcXEvaW5kZXgzLmh0bWwpCgogKGh0dHA6Ly9vY2Zt
+NDAuY29tLzRobXUxY212bGlveXpmbm1pZy9pbmRleDQuaHRtbCkKCiAoaHR0cDovL29jZm00MC5j
+b20vbnVtaHZjbGxscWZzdXg0bWFqL2luZGV4NS5odG1sKQoKIChodHRwOi8vb2NmbTQwLmNvbS96
+M21lYmN6MWwwM3lib3doaHEvaW5kZXg2Lmh0bWwpCgrCoAoKClRvdXRlcyBhY2Nyb3Mgw6AgbGEg
+Y2hyb25vbnV0cml0aW9uICEgKGh0dHA6Ly9vY2ZtNDAuY29tL3dlbTNhY2ptbHdwc3lqemgzby9p
+bmRleDcuaHRtbCkKCgo5MyUgZGUgbm9zIGNsaWVudGVzIHBlcmRlbnQgcGx1cyBkZSA0Ljcga2cg
+ZMOocyBsZSBwcmVtaWVyIG1vaXMuCkVsbGVzIHNvbnQgODklIMOgIGNvbnNlcnZlciBsZXVyIHBv
+aWRzIGlkw6lhbCAyIGFucyBhcHLDqHMgbCdhcnLDqnQgZGUgbGEgQ2hyb25vbnV0cml0aW9uLiAo
+aHR0cDovL29jZm00MC5jb20vZTMyYXRycXgyNWt5cjV3eXBqL2luZGV4OC5odG1sKQoKIChodHRw
+Oi8vb2NmbTQwLmNvbS91ZTJ2M3J3NTJ4NHNpcHp5bWcvaW5kZXg5Lmh0bWwpCgogKGh0dHA6Ly9v
+Y2ZtNDAuY29tL2VmMmFzcnF4MDVrbHI1cnlwZy9pbmRleDEwLmh0bWwpCgogKGh0dHA6Ly9vY2Zt
+NDAuY29tL3V0cHY0dG5qcmNrZXVwM3JtZy9pbmRleDExLmh0bWwpCgoKCgpSZW5kZXotdm91cyDD
+oCBjZXR0ZSBhZHJlc3NlIChodHRwOi8vb2NmbTQwLmNvbS9nZWlxYWZ0cmdzbTR4bHUxemQvaW5k
+ZXgxMi5odG1sKSBwb3VyIMOqdHJlIHJldGlyw6koZSkgZGUgbm90cmUgbGlzdGUgZGUgZGlmZnVz
+aW9uLgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNlZSBldmVyeXRoaW5nIGZyb20gdGhlIGJy
+b3dzZXIgdG8gdGhlIGRhdGFiYXNlIHdpdGggQXBwRHluYW1pY3MKR2V0IGVuZC10by1lbmQgdmlz
+aWJpbGl0eSB3aXRoIGFwcGxpY2F0aW9uIG1vbml0b3JpbmcgZnJvbSBBcHBEeW5hbWljcwpJc29s
+YXRlIGJvdHRsZW5lY2tzIGFuZCBkaWFnbm9zZSByb290IGNhdXNlIGluIHNlY29uZHMuClN0YXJ0
+IHlvdXIgZnJlZSB0cmlhbCBvZiBBcHBEeW5hbWljcyBQcm8gdG9kYXkhCmh0dHA6Ly9wdWJhZHMu
+Zy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD00ODgwODgzMSZpdT0vNDE0MC9vc3RnLmNs
+a3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
+ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
+Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
+aS1kZXZlbC1nZW5lcmFsCg==

@@ -1,90 +1,77 @@
-From: Joel Fernandes <joelf-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 1/3] dmaengine: add dma_get_slave_sg_limits()
-Date: Mon, 22 Jul 2013 16:45:51 -0500
-Message-ID: <51EDA80F.7060606@ti.com>
-References: <1374166001-31340-1-git-send-email-joelf@ti.com>
-	<1374166001-31340-2-git-send-email-joelf@ti.com>
-	<20130718161658.GW16653@intel.com>
+From: "M&M's" <contact-6iRbmuqo1C7QT0dZR+AlfA@public.gmane.org>
+Subject: Pour son anniversaire offrez lui une photo a croquer sur des M&M's
+Date: Tue, 23 Jul 2013 00:54:29 +0000 (CET)
+Message-ID: <130723005429.60180986300001544@ocfm42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-        Grant
- Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-        Linux Documentation List <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Chris Ball
-	<cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
-        Devicetree Discuss
-	<devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        Jason Kridner <jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Benoit Cousson
-	<benoit.cousson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Linux OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux ARM Kernel List <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Linux DaVinci
- Kernel List <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Balaji TK
-	<balajitk-l0cyMroinI0@public.gmane.org>, Mark Jackson <mpfj-list-2FZW7xY0fHgqdlJmJB21zg@public.gmane.org>,
-        Linux MMC List
-	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux Kernel Mailing List
-	<linux-k
-To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <20130718161658.GW16653-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/18/2013 11:16 AM, Vinod Koul wrote:> On Thu, Jul 18, 2013 at
-11:46:39AM -0500, Joel Fernandes wrote:
->> From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
->>
->> Add a dmaengine API to retrieve slave SG transfer limits.
->>
->> The API is optionally implemented by dmaengine drivers and when
->> unimplemented will return a NULL pointer. A client driver using
->> this API provides the required dma channel, address width, and
->> burst size of the transfer. dma_get_slave_sg_limits() returns an
->> SG limits structure with the maximum number and size of SG segments
->> that the given channel can handle.
-> Hi Joel,
->
-> I have already resurrected this and generalized the API to get the slave
-> capablities.
-> https://lkml.org/lkml/2013/7/15/147
-
-Hi Vinod,
-
-get_caps and get_sg_limits are 2 different things, looks like this was
-already discussed earlier, and this patch series is a separate API that
-adds support for SG limits.
-
-Infact, you can already see here that he changed the name of the
-function from caps to dma_get_slave_sg_limits:
-http://linux.davincidsp.com/pipermail/davinci-linux-open-source/2013-March/026601.html
-
-Considering this, what is the way forward? Can this patch series be
-merged as it is a different API as discussed above?
-
-Summarizing:
-* get_caps API cannot be used for this same purpose, as get_caps is done
-_before_ the DMA channel can be configured from what it looks like:
-* get_sg_limits, on the other hand is supposed to already have the
-parameters required for configuring the DMA channel before hand.
-
-Are there any other changes to the get_sg_limits series you would like
-before it can be applied? Any other suggestions?
-
-Thanks,
-
--Joel
+CihodHRwOi8vb2NmbTQyLmNvbS92c2ppNGx5cmNza2Nhd2plYXkvaW5kZXgwLmh0bWwpClNpIHZv
+dXMgbmUgcGFydmVuZXogcGFzIMOgIGxpcmUgY2V0IGVtYWlsLCBjbGlxdWV6IHN1ciBjZSBsaWVu
+IChodHRwOi8vb2NmbTQyLmNvbS9rcWprb2w1Y2NrNDE1bnFlaWwvaW5kZXgxLmh0bWwpwqDCoMKg
+wqDCoCAKKGh0dHA6Ly9vY2ZtNDIuY29tL2VsamFybGdkY3BzY2plb3czcy9pbmRleDIuaHRtbCkK
+KGh0dHA6Ly9vY2ZtNDIuY29tL3VqanZkbG5lY2Z0MXh2Z3doZC9pbmRleDMuaHRtbCkKKGh0dHA6
+Ly9vY2ZtNDIuY29tL2JseXdybnpscXRkYzNob2tnbC9pbmRleDQuaHRtbCkKKGh0dHA6Ly9vY2Zt
+NDIuY29tLzBqeXBkbmp2cTQwMXBpZ2tveS9pbmRleDUuaHRtbCkKKGh0dHA6Ly9vY2ZtNDIuY29t
+L3RzeXo0bm1tcTNlY29tajRxZC9pbmRleDYuaHRtbCkKCi014oKsIHN1ciB2b3RyZSBjb21tYW5k
+ZSoKCkNPREUgUFJPTU8gOiBBTk5JVgooaHR0cDovL29jZm00Mi5jb20vMnF5bW9ubDFxb3cxZnJx
+NGpzL2luZGV4Ny5odG1sKQooaHR0cDovL29jZm00Mi5jb20vbHNhcnoyczVjbGljdnFqY3h5L2lu
+ZGV4OC5odG1sKQoKKGh0dHA6Ly9vY2ZtNDIuY29tL3NxYTRqMnB4Y3ZyMW5ncWNjbC9pbmRleDku
+aHRtbCkKCihodHRwOi8vb2NmbTQyLmNvbS9iM2x3dHJ6aDV0ZXkzbW51Z2cvaW5kZXgxMC5odG1s
+KQooaHR0cDovL29jZm00Mi5jb20vMGszcGt0b21ibmVrbnJ1Y29nL2luZGV4MTEuaHRtbCkKUG91
+ciBjZWxhIHJpZW4gZGUgcGx1cyBzaW1wbGUsIHJlbmRlei12b3VzIHN1ciB3d3cubXltbXMuZnIg
+KGh0dHA6Ly9vY2ZtNDIuY29tL3AwcmI1Zmhva2E1d2d5M21kZC9pbmRleDEyLmh0bWwpICEKCiho
+dHRwOi8vb2NmbTQyLmNvbS9tY2IxancwZm9xNTJ0c3JzeWQvaW5kZXgxMy5odG1sKQooaHR0cDov
+L29jZm00Mi5jb20vNG91a3l2cDNxdjMxd2xnZnFxL2luZGV4MTQuaHRtbCkKCihodHRwOi8vb2Nm
+bTQyLmNvbS9uc3Fpemp5cGVzM3JhZHh2anEvaW5kZXgxNS5odG1sKQooaHR0cDovL29jZm00Mi5j
+b20vcG51dGh2M3Nndmpmd2JzZmRkL2luZGV4MTYuaHRtbCkKCihodHRwOi8vb2NmbTQyLmNvbS9t
+bXFjMWpidHZzajVhdDB2eWQvaW5kZXgxNy5odG1sKQooaHR0cDovL29jZm00Mi5jb20vd2hkMzFw
+anR6NG96cDBldW9vL2luZGV4MTguaHRtbCkKCihodHRwOi8vb2NmbTQyLmNvbS96dmFlaDA0c3gy
+b3R2MjRjZ28vaW5kZXgxOS5odG1sKQoKKGh0dHA6Ly9vY2ZtNDIuY29tL3VpenZmZW5jang0YmNu
+d3BncS9pbmRleDIwLmh0bWwpCihodHRwOi8vb2NmbTQyLmNvbS9lZWNhM29xcXVyNDR5d2tsb3Ev
+aW5kZXgyMS5odG1sKQoKKGh0dHA6Ly9vY2ZtNDIuY29tL2twcWt0ajVpdmtrNTVuMnZxcS9pbmRl
+eDIyLmh0bWwpCihodHRwOi8vb2NmbTQyLmNvbS92NHVpa3Zzcmdsa2Zld3lmanEvaW5kZXgyMy5o
+dG1sKQp3d3cubXltbXMuZnIgCihodHRwOi8vb2NmbTQyLmNvbS91Z2llcXg0MGUyc212dmMxZ3Ev
+aW5kZXgyNC5odG1sKQooaHR0cDovL29jZm00Mi5jb20va3hidWR3cmVvaXQyc3Ztc3FxL2luZGV4
+MjYuaHRtbCkKCihodHRwOi8vb2NmbTQyLmNvbS92YnJod2Zsd2tqdHcxZWFtanEvaW5kZXgyNy5o
+dG1sKQoKKGh0dHA6Ly9vY2ZtNDIuY29tLzBxenBvdmoxcXp3MXJycTMycS9pbmRleDI4Lmh0bWwp
+CihodHRwOi8vb2NmbTQyLmNvbS9iZGN3cGo0Z2Uwd3J1bWYydHEvaW5kZXgyOS5odG1sKQpQb3Vy
+IHRvdXQgYmVzb2luIGTCtGluZm9ybWF0aW9uIG91IGRlIGNvbnNlaWwsIHZvdXMgcG91dmV6IGNv
+bnRhY3RlciBub3RyZSBzZXJ2aWNlIGNsaWVudCBhdSA6IDAgOTY5IDMyMCA1MDEgCihodHRwOi8v
+b2NmbTQyLmNvbS94MHVscGVlZ28xbjAwNXBvZnMvaW5kZXgzMC5odG1sKQooaHR0cDovL29jZm00
+Mi5jb20vY2Nxam9vMTFrcG5uanBpbjFzL2luZGV4MzEuaHRtbCkKUG91ciB2b3RyZSBzYW50w6ks
+IHByYXRpcXVleiB1bmUgYWN0aXZpdMOpIHNwb3J0aXZlIHLDqWd1bGnDqHJlLgp3d3cubWFuZ2Vy
+Ym91Z2VyLmZyIChodHRwOi8vb2NmbTQyLmNvbS9iYXVuMGV3dmoxMGIwaG5vdG8vaW5kZXgzMi5o
+dG1sKQoqT2ZmcmUgcHJvbW90aW9ubmVsbGUgbm9uIGN1bXVsYWJsZSwgdmFsYWJsZSBzdXIgdm90
+cmUgY29tbWFuZGUganVzcXXCtGF1IDI4LzAyLzIwMTQsIGhvcnMgZnJhaXMgZGUgcG9ydC4KQ29w
+eXJpZ2h0IDIwMTMgLSBNQVJTIENIT0NPTEFUIEZyYW5jZSBTQVMgLSBSQ1MgU3RyYXNib3VyZyA0
+OTQgODg3IDg1NApDb25mb3Jtw6ltZW50IMOgIGxhIGxvaSDCqyBpbmZvcm1hdGlxdWUgZXQgbGli
+ZXJ0w6lzIMK7IGR1IDYvMDEvMTk3OCwgbW9kaWZpw6llIHBhciBsYSBsb2kgZHUgNi8xMC8yMDA0
+LCB2b3VzIGLDqW7DqWZpY2lleiBkJ3VuIGRyb2l0CgpkJ2FjY8OocywgZGUgcmVjdGlmaWNhdGlv
+biBldCBkZSBzdXBwcmVzc2lvbiBkZXMgaW5mb3JtYXRpb25zIHF1aSB2b3VzIGNvbmNlcm5lbnQs
+IGRvbnQgc2V1bGUgTWFycyBDaG9jb2xhdCBGcmFuY2XCrgoKZXN0IGRlc3RpbmF0YWlyZS4gUG91
+ciBleGVyY2VyIGNlcyBkcm9pdHMsIGlsIHZvdXMgc3VmZml0IGRlIGNvbnRhY3RlciBub3RyZSBT
+ZXJ2aWNlIFJlbGF0aW9uIENsaWVudCBlbiBjbGlxdWFudCBpY2kgKGh0dHA6Ly9vY2ZtNDIuY29t
+LzB1cTVlb2dudXAwNGppdW4yby9pbmRleDMzLmh0bWwpCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+U2VlIGV2ZXJ5dGhpbmcgZnJvbSB0aGUgYnJvd3NlciB0byB0aGUgZGF0YWJhc2Ugd2l0aCBBcHBE
+eW5hbWljcwpHZXQgZW5kLXRvLWVuZCB2aXNpYmlsaXR5IHdpdGggYXBwbGljYXRpb24gbW9uaXRv
+cmluZyBmcm9tIEFwcER5bmFtaWNzCklzb2xhdGUgYm90dGxlbmVja3MgYW5kIGRpYWdub3NlIHJv
+b3QgY2F1c2UgaW4gc2Vjb25kcy4KU3RhcnQgeW91ciBmcmVlIHRyaWFsIG9mIEFwcER5bmFtaWNz
+IFBybyB0b2RheSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lk
+PTQ4ODA4ODMxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vm
+b3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

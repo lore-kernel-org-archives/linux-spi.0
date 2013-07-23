@@ -1,135 +1,109 @@
-From: Joel Fernandes <joelf-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 1/3] dmaengine: add dma_get_slave_sg_limits()
-Date: Tue, 23 Jul 2013 01:50:00 -0500
-Message-ID: <51EE2798.9020008@ti.com>
-References: <1374166001-31340-1-git-send-email-joelf@ti.com>
-	<1374166001-31340-2-git-send-email-joelf@ti.com>
-	<20130718161658.GW16653@intel.com> <51EDA80F.7060606@ti.com>
-	<51EE25A4.7000609@metafoo.de>
+From: ETAM <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Moins 20 pourcent sur la nouvelle collection
+Date: Tue, 23 Jul 2013 12:12:35 +0200 (CEST)
+Message-ID: <e19kh4.hjgy2x2gnr38ndl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-        Grant
- Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-        Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-        Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-        Linux Documentation List
-	<linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>, Arnd Bergmann
-	<arnd-r2nGTMty4D4@public.gmane.org>,
-        Devicetree Discuss <devicetree-discuss-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-        Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
-        Jason Kridner
-	<jkridner-hcmAuCOw+vXj4SYmN/TMmA@public.gmane.org>,
-        Benoit Cousson <benoit.cousson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-        Linux
- OMAP List <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        Linux ARM Kernel List
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-        Linux DaVinci Kernel List
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Balaji TK
-	<balajitk-l0cyMroinI0@public.gmane.org>, Mark Jackson <mpfj-list-2FZW7xY0fHgqdlJmJB21zg@public.gmane.org>,
-        Linux MMC List
-	<linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <51EE25A4.7000609-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 07/23/2013 01:41 AM, Lars-Peter Clausen wrote:
-> On 07/22/2013 11:45 PM, Joel Fernandes wrote:
->> On 07/18/2013 11:16 AM, Vinod Koul wrote:> On Thu, Jul 18, 2013 at
->> 11:46:39AM -0500, Joel Fernandes wrote:
->>>> From: Matt Porter <mporter-l0cyMroinI0@public.gmane.org>
->>>>
->>>> Add a dmaengine API to retrieve slave SG transfer limits.
->>>>
->>>> The API is optionally implemented by dmaengine drivers and when
->>>> unimplemented will return a NULL pointer. A client driver using
->>>> this API provides the required dma channel, address width, and
->>>> burst size of the transfer. dma_get_slave_sg_limits() returns an
->>>> SG limits structure with the maximum number and size of SG segments
->>>> that the given channel can handle.
->>> Hi Joel,
->>>
->>> I have already resurrected this and generalized the API to get the slave
->>> capablities.
->>> https://lkml.org/lkml/2013/7/15/147
->>
->> Hi Vinod,
->>
->> get_caps and get_sg_limits are 2 different things, looks like this was
->> already discussed earlier, and this patch series is a separate API that
->> adds support for SG limits.
->>
->> Infact, you can already see here that he changed the name of the
->> function from caps to dma_get_slave_sg_limits:
->> http://linux.davincidsp.com/pipermail/davinci-linux-open-source/2013-March/026601.html
->>
->>
-> 
-> And it was changed back, since we need to provide more information than
-> just the sg limits. So the name didn't fit anymore. The
-> dma_get_slave_caps() API patch was based on the
-> dma_get_slave_sg_limits() patch.
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgpxtmI7gfk57dIhjgy2thhI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374574351326%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DICIPELABPHEGOMHB%26mid%3D1600204666&s=3DC=
+COPBNLPPCCDNFDP
+ =
 
-Well including the functionality together with it doesn't seem to solve
-the problem, but correct me if I'm wrong..
+Moins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvel=
+le collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent =
+sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins=
+ 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle co=
+llectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur l=
+a nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 p=
+ourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collect=
+ionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nou=
+velle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pource=
+nt sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMo=
+ins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle=
+ collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent su=
+r la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 2=
+0 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle coll=
+ectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la =
+nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pou=
+rcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectio=
+nMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouve=
+lle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent=
+ sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoin=
+s 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle c=
+ollectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur =
+la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 =
+pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collec=
+tionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la no=
+uvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourc=
+ent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionM=
+oins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvell=
+e collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent s=
+ur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins =
+20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle col=
+lectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la=
+ nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 po=
+urcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collecti=
+onMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouv=
+elle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcen=
+t sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoi=
+ns 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle =
+collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur=
+ la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20=
+ pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle colle=
+ctionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la n=
+ouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pour=
+cent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collection=
+Moins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvel=
+le collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent =
+sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins=
+ 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle co=
+llectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur l=
+a nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 p=
+ourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collect=
+ionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nou=
+velle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pource=
+nt sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMo=
+ins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle=
+ collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent su=
+r la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 2=
+0 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle coll=
+ectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la =
+nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pou=
+rcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectio=
+nMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouve=
+lle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent=
+ sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoin=
+s 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle c=
+ollectionMoins 20 pourcent sur la nouvelle collectionMoins 20 pourcent sur =
+la nouvelle collectionMoins 20 pourcent sur la nouvelle collectionMoins 20 =
+pourcent sur la nouvelle collectionMoins 20 pourcent sur la nouvelle collec=
+tion
+ =
 
-The only I have with get_slave_caps is due to the other additional
-information it provides like "addr widths allowed" etc.. it seems that
-it should called *before* the channel configuration. Is this not true?
-
-If that's the case then we can't use it, because we want a caps API that
-can be called either after a channel is configured or the available
-address widths are already known..
-
-So the flow would go something like:
-1. Determine address widths, etc before hand (driver already knows..)
-2. Configure the channel or store this info somewhere.
-3. Pass this information to get_caps and the max segment size which is
-calculated by the get_caps implementation based on the data passed in 1.
-
-So 3. depends on 1.
-Is that an acceptable use? If semantically we can use it as above then
-I'm ok.. we will just ignore the extra "possible widths" and other info
-stored in get_caps..
-
--Joel
-
-> 
->> Considering this, what is the way forward? Can this patch series be
->> merged as it is a different API as discussed above?
->>
->> Summarizing:
->> * get_caps API cannot be used for this same purpose, as get_caps is done
->> _before_ the DMA channel can be configured from what it looks like:
->> * get_sg_limits, on the other hand is supposed to already have the
->> parameters required for configuring the DMA channel before hand.
->>
->> Are there any other changes to the get_sg_limits series you would like
->> before it can be applied? Any other suggestions?
-> 
-> If you need to calculate the limit based on a certain configuration I'd
-> suggest to add a optional dma_slave_config parameter to the
-> dma_slave_get_caps() function.
-> 
-> - Lars
-> 
-
-
--- 
-Thanks,
-
--Joel
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600204666&sig=3DNNBPAJJMPHHKAOBN&st=3D0
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

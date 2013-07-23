@@ -1,13 +1,13 @@
-From: "Chonoregime" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Perdez 8 kilos avant la plage sans privation
-Date: Tue, 23 Jul 2013 14:43:08 +0000 (CET)
-Message-ID: <130723144308.63736773500007156@ocfm40.com>
+From: "Aromalife" <sonikashop-PkbjNfxxIARBDgjK7y7TUQ@public.gmane.org>
+Subject: A un click de aumentar sus ingresos...
+Date: Tue, 23 Jul 2013 13:34:41 -0300
+Message-ID: <C4755985294A4E268D3D02B119AC0D32@dnsxx>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Class: urn:content-classes:message
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,33 +18,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKIApKdXNxdSfDoCA4IGtpbG9zIGVuIG1vaW5zIGRhbnMgY2V0IGVtYWlsLiAKQWZpbiBkZSB2
-b2lyIGNldHRlIGxldHRyZSBlbiBpbWFnZXMsIGNvbnN1bHRleiBsYSB2ZXJzaW9uIGVuIGxpZ25l
-IChodHRwOi8vb2NmbTQwLmNvbS9kM241YmlnYzJyaXk0eXc1b2ovaW5kZXgwLmh0bWwpCgoKCgog
-KGh0dHA6Ly9vY2ZtNDAuY29tL3llbm5haW5yMmNyc2tzejVnZy9pbmRleDEuaHRtbCkKCiAoaHR0
-cDovL29jZm00MC5jb20vbGhucjFpeWUyZHF5dGJuYWpvL2luZGV4Mi5odG1sKQoKIChodHRwOi8v
-b2NmbTQwLmNvbS9zdW40dmk1ZDJlY3NzdDRhcXEvaW5kZXgzLmh0bWwpCgogKGh0dHA6Ly9vY2Zt
-NDAuY29tLzRobXUxY212bGlveXpmbm1pZy9pbmRleDQuaHRtbCkKCiAoaHR0cDovL29jZm00MC5j
-b20vbnVtaHZjbGxscWZzdXg0bWFqL2luZGV4NS5odG1sKQoKIChodHRwOi8vb2NmbTQwLmNvbS96
-M21lYmN6MWwwM3lib3doaHEvaW5kZXg2Lmh0bWwpCgrCoAoKClRvdXRlcyBhY2Nyb3Mgw6AgbGEg
-Y2hyb25vbnV0cml0aW9uICEgKGh0dHA6Ly9vY2ZtNDAuY29tL3dlbTNhY2ptbHdwc3lqemgzby9p
-bmRleDcuaHRtbCkKCgo5MyUgZGUgbm9zIGNsaWVudGVzIHBlcmRlbnQgcGx1cyBkZSA0Ljcga2cg
-ZMOocyBsZSBwcmVtaWVyIG1vaXMuCkVsbGVzIHNvbnQgODklIMOgIGNvbnNlcnZlciBsZXVyIHBv
-aWRzIGlkw6lhbCAyIGFucyBhcHLDqHMgbCdhcnLDqnQgZGUgbGEgQ2hyb25vbnV0cml0aW9uLiAo
-aHR0cDovL29jZm00MC5jb20vZTMyYXRycXgyNWt5cjV3eXBqL2luZGV4OC5odG1sKQoKIChodHRw
-Oi8vb2NmbTQwLmNvbS91ZTJ2M3J3NTJ4NHNpcHp5bWcvaW5kZXg5Lmh0bWwpCgogKGh0dHA6Ly9v
-Y2ZtNDAuY29tL2VmMmFzcnF4MDVrbHI1cnlwZy9pbmRleDEwLmh0bWwpCgogKGh0dHA6Ly9vY2Zt
-NDAuY29tL3V0cHY0dG5qcmNrZXVwM3JtZy9pbmRleDExLmh0bWwpCgoKCgpSZW5kZXotdm91cyDD
-oCBjZXR0ZSBhZHJlc3NlIChodHRwOi8vb2NmbTQwLmNvbS9nZWlxYWZ0cmdzbTR4bHUxemQvaW5k
-ZXgxMi5odG1sKSBwb3VyIMOqdHJlIHJldGlyw6koZSkgZGUgbm90cmUgbGlzdGUgZGUgZGlmZnVz
-aW9uLgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tClNlZSBldmVyeXRoaW5nIGZyb20gdGhlIGJy
-b3dzZXIgdG8gdGhlIGRhdGFiYXNlIHdpdGggQXBwRHluYW1pY3MKR2V0IGVuZC10by1lbmQgdmlz
-aWJpbGl0eSB3aXRoIGFwcGxpY2F0aW9uIG1vbml0b3JpbmcgZnJvbSBBcHBEeW5hbWljcwpJc29s
-YXRlIGJvdHRsZW5lY2tzIGFuZCBkaWFnbm9zZSByb290IGNhdXNlIGluIHNlY29uZHMuClN0YXJ0
-IHlvdXIgZnJlZSB0cmlhbCBvZiBBcHBEeW5hbWljcyBQcm8gdG9kYXkhCmh0dHA6Ly9wdWJhZHMu
-Zy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD00ODgwODgzMSZpdT0vNDE0MC9vc3RnLmNs
-a3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+ <http://www.aromalife.com.ar/> 
+
+ <http://www.aromalife.com.ar/> 
+
+ <http://www.facebook.com/AromatizadorDigital> 
+
+ 
+
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

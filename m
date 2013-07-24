@@ -1,12 +1,13 @@
-From: "Soldes Tradition des Vosges" <contact-3bYfB9qlBhHQT0dZR+AlfA@public.gmane.org>
-Subject: =?UTF-8?Q?Votre_linge_de_maison_jusqu=27=C3=A0_moins60_pourcent?=
-Date: Wed, 24 Jul 2013 10:55:55 +0000 (CET)
-Message-ID: <130724105555.72429359500004496@ocfm42.com>
+From: Soldes Mathon <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Jusqu'=E0_moins_70_pourcent_sur_Mathon,
+	_stock_limit=E9?=
+Date: Wed, 24 Jul 2013 12:40:26 +0200 (CEST)
+Message-ID: <8qp8m1.hjieikcyaj4eiel@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,51 +19,70 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2NmbTQyLmNvbS80aTRreGs1cGFhcHVjcWUzcmcvaW5kZXgwLmh0bWwpClZvdHJl
-IGxpbmdlIGRlIG1haXNvbgpkYW5zIGxhIHBsdXMgcHVyZSB0cmFkaXRpb24gZGVzIFZvc2dlcwoo
-aHR0cDovL29jZm00Mi5jb20vbms0aXVreWZhajNrcWd1MzVqL2luZGV4MS5odG1sKQooaHR0cDov
-L29jZm00Mi5jb20vemE0djJrbnNhYmZ1cmN2cG1xL2luZGV4Mi5odG1sKQooaHR0cDovL29jZm00
-Mi5jb20vd3Y0YWhrZ2them9raTFrcHBvL2luZGV4My5odG1sKQooaHR0cDovL29jZm00Mi5jb20v
-ZGFwcDJ0ank1NWN1MTJ2aWZqL2luZGV4NC5odG1sKQooaHR0cDovL29jZm00Mi5jb20veXZwd2h0
-enU1eHFrZzBraTFnL2luZGV4NS5odG1sKQooaHR0cDovL29jZm00Mi5jb20vbGlwbXh0bDU1eXJ1
-bWxlcnhvL2luZGV4Ni5odG1sKQooaHR0cDovL29jZm00Mi5jb20vc2twenV0bXg1dWlraGR1cmNx
-L2luZGV4Ny5odG1sKQooaHR0cDovL29jZm00Mi5jb20vdGl0NGY0cG1haXd1dHdldHFnL2luZGV4
-OC5odG1sKQooaHR0cDovL29jZm00Mi5jb20vMmt0cms0czFhcWVrc251dGpqL2luZGV4OS5odG1s
-KQooaHR0cDovL29jZm00Mi5jb20vZnFreW91aW1pdm5oZTRjb2RqL2luZGV4MTAuaHRtbCkKKGh0
-dHA6Ly9vY2ZtNDIuY29tLzFkZ2dwZzJoZHNucTV6b255ai9pbmRleDExLmh0bWwpCihodHRwOi8v
-b2NmbTQyLmNvbS96NHhldWw0Zm5jM2Z5cXkwZ3MvaW5kZXgxMi5odG1sKQooaHR0cDovL29jZm00
-Mi5jb20vd3B3M2Jham8xNTM1Y2cyYW9zL2luZGV4MTMuaHRtbCkKKGh0dHA6Ly9vY2ZtNDIuY29t
-LzVpZDJ4cHZweHQ1enBvZXpsby9pbmRleDE0Lmh0bWwpCihodHRwOi8vb2NmbTQyLmNvbS9yZWF4
-YTBjM3puNXR2ajRxc28vaW5kZXgxNS5odG1sKQooaHR0cDovL29jZm00Mi5jb20vemJkdm5wbnRm
-dGZ3cGNhemdzL2luZGV4MTYuaHRtbCkKKGh0dHA6Ly9vY2ZtNDIuY29tL3d4YWFsMHFzNG5mMnYx
-bXFvcy9pbmRleDE3Lmh0bWwpCkxpdnJhaXNvbgpjb2xpc3NpbW8KCihodHRwOi8vb2NmbTQyLmNv
-bS9tanUxbHYwc2VseDF3eGdveXEvaW5kZXgxOC5odG1sKQooaHR0cDovL29jZm00Mi5jb20vcHlx
-Ym5qaHRxa3hyYWZ4bmRxL2luZGV4MTkuaHRtbCkKUGFpZW1lbnQKMTAwJSBzw6ljdXJpc8OpCgoo
-aHR0cDovL29jZm00Mi5jb20vM28wdHM1M3FjaXVtdHAxYmRvL2luZGV4MjAuaHRtbCkKKGh0dHA6
-Ly9vY2ZtNDIuY29tL2hzNWM0MmJjd2p1Y2c1aml5by9pbmRleDIxLmh0bWwpClNhdm9pci1GYWly
-ZQomIFRyYWRpdGlvbgoKKGh0dHA6Ly9vY2ZtNDIuY29tL2FjYTJvMGVyNDJ6Mm5wcnFsby9pbmRl
-eDIyLmh0bWwpCihodHRwOi8vb2NmbTQyLmNvbS9pMGR4cHAxaWY0enczNTN6c28vaW5kZXgyMy5o
-dG1sKQoqIE9mZnJlIHZhbGFibGUganVzcXUnYXUgMzAvMDcvMjAxMwpMYSBTb2Npw6l0w6kgZGVz
-IFRleHRpbGVzIGRlIEdyYW5nZXMgc3VyIFZvbG9nbmUgZXN0IHNww6ljaWFsaXPDqWUgZGFucyBs
-YSBjb25jZXB0aW9uIGV0IGxhIGRpc3RyaWJ1dGlvbiBkJ2FydGljbGVzIGRlIExpbmdlIGRlIE1h
-aXNvbi4KCk5vcyBwcm9kdWN0aW9ucyB1dGlsaXNlbnQgZGVzIG1hdGnDqHJlcyB0ZXh0aWxlcyBh
-dXNzaSByaWNoZXMgcXVlIHZhcmnDqWVzIChjb3RvbiA1NyBmaWxzLCBzYXRpbiBkZSBjb3RvbiBw
-ZWlnbsOpLCBwZXJjYWxlLCBsaW4sLikgCmV0IGLDqW7DqWZpY2llbnQgZGVzIHByb2PDqWTDqXMg
-ZGUgdGVpbnR1cmUgZXQgZCdpbXByZXNzaW9uIGxlcyBwbHVzIGF2YW50LWdhcmRpc3Rlcy4KQ8K0
-ZXN0IGxlIHRvcCBkw6lwYXJ0IGRlcyBzb2xkZXMgYXZlYyBkZXMgY2VudGFpbmVzIGRlIHByb2R1
-aXRzIMOgIHByaXggcsOpZHVpdHMgIQoKQsOpbsOpZmljaWV6IGRlIC03MCUgc3VyIHVuZSBzw6ls
-ZWN0aW9uIGRlIGxpbmdlIGRlIGxpdCwKCi02MCUgc3VyIGxlIGxpbiBsYXbDqSBldCB1bmUgbGFy
-Z2Ugc8OpbGVjdGlvbiBkZSBwcm9kdWl0cyBzdXIgbGUgc2l0ZSBpbnRlcm5ldCwKCi01MCAlIHN1
-ciBUT1VURSBsYSBub3V2ZWxsZSBjb2xsZWN0aW9uIDIwMTMsCgotNDAlIHN1ciBsZXMgdW5pcyBj
-b3RvbiwgcGVyY2FsZSwgc2F0aW4gZmluZXMgcmF5dXJlcyBldCBwcm90ZWN0aW9uIGRlIGxpdGVy
-aWUuCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2VlIGV2ZXJ5dGhpbmcgZnJvbSB0aGUgYnJvd3Nl
-ciB0byB0aGUgZGF0YWJhc2Ugd2l0aCBBcHBEeW5hbWljcwpHZXQgZW5kLXRvLWVuZCB2aXNpYmls
-aXR5IHdpdGggYXBwbGljYXRpb24gbW9uaXRvcmluZyBmcm9tIEFwcER5bmFtaWNzCklzb2xhdGUg
-Ym90dGxlbmVja3MgYW5kIGRpYWdub3NlIHJvb3QgY2F1c2UgaW4gc2Vjb25kcy4KU3RhcnQgeW91
-ciBmcmVlIHRyaWFsIG9mIEFwcER5bmFtaWNzIFBybyB0b2RheSEKaHR0cDovL3B1YmFkcy5nLmRv
-dWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODA4ODMxJml1PS80MTQwL29zdGcuY2xrdHJr
-Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZl
-bC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRl
-dmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgpyp7I7gfk57dIhjiei497I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374662405173%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DIJGEEEPJEBHJAGAK%26mid%3D1600205803&s=3DH=
+EPCMIGFBKBKKMIM
+ =
+
+Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 po=
+urcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, st=
+ock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0=
+ moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent su=
+r Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=
+=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70=
+ pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon,=
+ stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=
+=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent=
+ sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock li=
+mit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins=
+ 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Math=
+on, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jus=
+qu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourc=
+ent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock=
+ limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 mo=
+ins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur M=
+athon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9=
+Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 po=
+urcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, st=
+ock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0=
+ moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent su=
+r Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=
+=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70=
+ pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon,=
+ stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=
+=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent=
+ sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock li=
+mit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins=
+ 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Math=
+on, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jus=
+qu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourc=
+ent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock=
+ limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 mo=
+ins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur M=
+athon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9=
+Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 po=
+urcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, st=
+ock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0=
+ moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent su=
+r Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=
+=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70=
+ pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon,=
+ stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=
+=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent=
+ sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock li=
+mit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600205803&sig=3DJGJIGAOOJANCOBOA&st=3D0
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

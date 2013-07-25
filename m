@@ -1,12 +1,12 @@
-From: "Le robot de cuisine" <contact-s237+1wDWEgWWyKbBho1ZA@public.gmane.org>
-Subject: [SPAM] Gagnez un robot kMix KENWOOD d une valeur de 400 euros
-Date: Thu, 25 Jul 2013 08:48:10 +0000 (CET)
-Message-ID: <130725084810.78886926600007404@ocfm40.com>
+From: Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Votre vol pas cher en 1 clic
+Date: Thu, 25 Jul 2013 12:15:10 +0200 (CEST)
+Message-ID: <11qd3k.hjjt1xty86ete3l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,34 +18,73 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgq0wuI7gfk57dIhjjt1ajyI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374747280578%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DFDNBELGEONHPLIOG%26mid%3D1600208670&s=3DJ=
+IBJKAEGABHBPDKM
+ =
 
+Votre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher =
+en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol =
+pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicV=
+otre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher e=
+n 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol p=
+as cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVo=
+tre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en=
+ 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pa=
+s cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVot=
+re vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en =
+1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas=
+ cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotr=
+e vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1=
+ clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas =
+cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre=
+ vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 =
+clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas c=
+her en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre =
+vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 c=
+licVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas ch=
+er en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre v=
+ol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 cl=
+icVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas che=
+r en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vo=
+l pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 cli=
+cVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher=
+ en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol=
+ pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clic=
+Votre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher =
+en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol =
+pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicV=
+otre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher e=
+n 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol p=
+as cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVo=
+tre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en=
+ 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pa=
+s cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVot=
+re vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en =
+1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas=
+ cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotr=
+e vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1=
+ clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas =
+cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre=
+ vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 =
+clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas c=
+her en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre =
+vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 c=
+licVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas ch=
+er en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre v=
+ol pas cher en 1 clicVotre vol pas cher en 1 clic
+ =
 
-
- (http://ocfm40.com/4wdua5mbuhppd1tzrl/index0.html)
- (http://ocfm40.com/npdhb5lzug350c2z5y/index1.html)
- (http://ocfm40.com/zzdev5zau2fpegbumd/index2.html)
- (http://ocfm40.com/wmd315jjuno5wq0ups/index3.html)
- (http://ocfm40.com/dzq5vjg3zmcpldbnfy/index4.html)
-
-
- (http://ocfm40.com/ymqn1jnoz1q52l0n1l/index5.html)
- (http://ocfm40.com/lwqrajytzlrpv0tvxs/index6.html)
- (http://ocfm40.com/spq4bj54zvi5n22vcd/index7.html)
- (http://ocfm40.com/twez3ar0u3wpovtjql/index8.html)
- (http://ocfm40.com/2pemtadwuoe5fe2jjy/index9.html)
-
-
- (http://ocfm40.com/iqpfobxlswzhz3ci4j/index10.html)
- (http://ocfm40.com/ad20pmk23bzqiaobnj/index11.html)
- (http://ocfm40.com/l4ymunlkxgif00y45s/index12.html)
- (http://ocfm40.com/spizbxr4z3i5j22grs/index13.html)
- (http://ocfm40.com/gicqxotsnymzhte2zo/index14.html)
-
-
-
-------------------------------------------------------------------------------
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600208670&sig=3DHJBFMAKBCPGAMNLP&st=3D0
+---------------------------------------------------------------------------=
+---
 See everything from the browser to the database with AppDynamics
 Get end-to-end visibility with application monitoring from AppDynamics
 Isolate bottlenecks and diagnose root cause in seconds.
 Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

@@ -1,13 +1,12 @@
-From: Soldes Mathon <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Jusqu'=E0_moins_70_pourcent_sur_Mathon,
-	_stock_limit=E9?=
-Date: Wed, 24 Jul 2013 12:40:26 +0200 (CEST)
-Message-ID: <8qp8m1.hjieikcyaj4eiel@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Le robot de cuisine" <contact-s237+1wDWEgWWyKbBho1ZA@public.gmane.org>
+Subject: [SPAM] Gagnez un robot kMix KENWOOD d une valeur de 400 euros
+Date: Thu, 25 Jul 2013 08:48:10 +0000 (CET)
+Message-ID: <130725084810.78886926600007404@ocfm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,70 +18,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgpyp7I7gfk57dIhjiei497I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1374662405173%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DIJGEEEPJEBHJAGAK%26mid%3D1600205803&s=3DH=
-EPCMIGFBKBKKMIM
- =
 
-Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 po=
-urcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, st=
-ock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0=
- moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent su=
-r Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=
-=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70=
- pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon,=
- stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=
-=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent=
- sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock li=
-mit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins=
- 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Math=
-on, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jus=
-qu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourc=
-ent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock=
- limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 mo=
-ins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur M=
-athon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9=
-Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 po=
-urcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, st=
-ock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0=
- moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent su=
-r Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=
-=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70=
- pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon,=
- stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=
-=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent=
- sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock li=
-mit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins=
- 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Math=
-on, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jus=
-qu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourc=
-ent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock=
- limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 mo=
-ins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur M=
-athon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9=
-Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 po=
-urcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, st=
-ock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0=
- moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent su=
-r Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=
-=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70=
- pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon,=
- stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=
-=E0 moins 70 pourcent sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent=
- sur Mathon, stock limit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock li=
-mit=E9Jusqu'=E0 moins 70 pourcent sur Mathon, stock limit=E9
- =
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600205803&sig=3DJGJIGAOOJANCOBOA&st=3D0
----------------------------------------------------------------------------=
----
+
+ (http://ocfm40.com/4wdua5mbuhppd1tzrl/index0.html)
+ (http://ocfm40.com/npdhb5lzug350c2z5y/index1.html)
+ (http://ocfm40.com/zzdev5zau2fpegbumd/index2.html)
+ (http://ocfm40.com/wmd315jjuno5wq0ups/index3.html)
+ (http://ocfm40.com/dzq5vjg3zmcpldbnfy/index4.html)
+
+
+ (http://ocfm40.com/ymqn1jnoz1q52l0n1l/index5.html)
+ (http://ocfm40.com/lwqrajytzlrpv0tvxs/index6.html)
+ (http://ocfm40.com/spq4bj54zvi5n22vcd/index7.html)
+ (http://ocfm40.com/twez3ar0u3wpovtjql/index8.html)
+ (http://ocfm40.com/2pemtadwuoe5fe2jjy/index9.html)
+
+
+ (http://ocfm40.com/iqpfobxlswzhz3ci4j/index10.html)
+ (http://ocfm40.com/ad20pmk23bzqiaobnj/index11.html)
+ (http://ocfm40.com/l4ymunlkxgif00y45s/index12.html)
+ (http://ocfm40.com/spizbxr4z3i5j22grs/index13.html)
+ (http://ocfm40.com/gicqxotsnymzhte2zo/index14.html)
+
+
+
+------------------------------------------------------------------------------
 See everything from the browser to the database with AppDynamics
 Get end-to-end visibility with application monitoring from AppDynamics
 Isolate bottlenecks and diagnose root cause in seconds.
 Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
-ktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

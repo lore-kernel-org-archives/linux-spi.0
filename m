@@ -1,11 +1,14 @@
-From: 333346-+QQlqcZu2dLQT0dZR+AlfA@public.gmane.org
-Subject: [SPAM] 发/票--代/开
-Date: Fri, 26 Jul 2013 20:45:46 +0800
-Message-ID: <E1V2hPE-0008BD-WA@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: [PATCHv5 0/2] Add qspi controller
+Date: Fri, 26 Jul 2013 22:45:20 +0530
+Message-ID: <1374858922-14637-1-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rnayak-l0cyMroinI0@public.gmane.org, Sourav,
+	Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, balbi-l0cyMroinI0@public.gmane.org
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,17 +20,31 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DSu7K/t9bXqNPDy7AtLcaxL7T6v6qjuwrI5zoKICAgKDEpxtXN
-qMnMxrfP+srby7AtLcaxo7sKICAgKDIpueO45tK1oaK498Dgt/7O8dK1y7AtLcaxL7XItcihowq5
-87mry77I59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4
-utTwyMujutXFz8jJ+igwKTEzNTM4MDMzMzM0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2VlIGV2
-ZXJ5dGhpbmcgZnJvbSB0aGUgYnJvd3NlciB0byB0aGUgZGF0YWJhc2Ugd2l0aCBBcHBEeW5hbWlj
-cwpHZXQgZW5kLXRvLWVuZCB2aXNpYmlsaXR5IHdpdGggYXBwbGljYXRpb24gbW9uaXRvcmluZyBm
-cm9tIEFwcER5bmFtaWNzCklzb2xhdGUgYm90dGxlbmVja3MgYW5kIGRpYWdub3NlIHJvb3QgY2F1
-c2UgaW4gc2Vjb25kcy4KU3RhcnQgeW91ciBmcmVlIHRyaWFsIG9mIEFwcER5bmFtaWNzIFBybyB0
-b2RheSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODA4
-ODMxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
-Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+This patch series add support for ti qspi controller.
+
+The previous version link is here:
+https://lkml.org/lkml/2013/7/18/154
+
+patch 1 of the previous version already picked.
+
+Resending other two with comments fixed.
+
+Sourav Poddar (2):
+  drivers: spi: Add qspi flash controller
+  driver: spi: Add quad spi read support
+
+ Documentation/devicetree/bindings/spi/ti_qspi.txt |   22 +
+ drivers/spi/Kconfig                               |    8 +
+ drivers/spi/Makefile                              |    1 +
+ drivers/spi/spi-ti-qspi.c                         |  559 +++++++++++++++++++++
+ 4 files changed, 590 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/ti_qspi.txt
+ create mode 100644 drivers/spi/spi-ti-qspi.c
+
+
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

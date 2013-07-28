@@ -1,12 +1,12 @@
-From: Tradition des Vosges par Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Soldes_jusqu'=E0_moins_60%?=
-Date: Sun, 28 Jul 2013 13:47:06 +0200 (CEST)
-Message-ID: <oeysw4.hjo6npvk5p3hssl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Morphoregime" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Effectuez votre bilan minceur en 2 minutes chrono
+Date: Sun, 28 Jul 2013 11:49:18 +0000 (CET)
+Message-ID: <130728114918.105893086000004892@ocfm40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,46 +18,42 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgq2qxI7gfk57dIhjo6njqkI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375012018627%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DBNCMKMFAJJCGEEOJ%26mid%3D1600211049&s=3DJ=
-MPKNBIKOIGHNLAH
- =
-
-Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins =
-60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moi=
-ns 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 =
-moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=
-=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jus=
-qu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes =
-jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Sold=
-es jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%S=
-oldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 6=
-0%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moin=
-s 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 m=
-oins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=
-=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jus=
-qu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes =
-jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Sold=
-es jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%S=
-oldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 6=
-0%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moin=
-s 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 m=
-oins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=
-=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jus=
-qu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes =
-jusqu'=E0 moins 60%
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600211049&sig=3DOBMLPFHBIEDPPANF&st=3D0
----------------------------------------------------------------------------=
----
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
-ktrk
+CgoKCkp1c3F1J8OgIDgga2lsb3MgZW4gbW9pbnMgZGFucyBjZXQgZW1haWwuIEFmaW4gZGUgdm9p
+ciBjZXR0ZSBsZXR0cmUgZW4gaW1hZ2VzLCBjb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAo
+aHR0cDovL29jZm00MC5jb20vaWJseHdyMTFrcmJkd25yemtzL2luZGV4MC5odG1sKQoKCgoKICho
+dHRwOi8vb2NmbTQwLmNvbS9hMWwycXJ2bWtjeWxldzV6dmQvaW5kZXgxLmh0bWwpCgogKGh0dHA6
+Ly9vY2ZtNDAuY29tL2gwbGNwcmJ2a2R6ZDB2bXV1eS9pbmRleDIuaHRtbCkKCiAoaHR0cDovL29j
+Zm00MC5jb20vM2ZsdHNyYWxrZXVsZGVwdWVsL2luZGV4My5odG1sKQoKIChodHRwOi8vb2NmbTQw
+LmNvbS9mMGd5cHFoZTRpbmRuaW1uZGQvaW5kZXg0Lmh0bWwpCgogKGh0dHA6Ly9vY2ZtNDAuY29t
+LzFmZ2dzcTJkNHF2bHZocG55cy9pbmRleDUuaHRtbCkKCsKgCgoKCsKgCjEwMCUKR1JBVFVJVAog
+Cj4gRUZGRUNUVUVaIFZPVFJFIEJJTEFOIE1JTkNFVVIKRU4gMk1OIENIUk9OTwooaHR0cDovL29j
+Zm00MC5jb20veGJnZHdxdWM0MDJkMnJydmxsL2luZGV4Ni5odG1sKQrCoCAKCgoKwqAKCgoKICho
+dHRwOi8vb2NmbTQwLmNvbS9jMWdvcXF4cjR3bGxsbTV2c3kvaW5kZXg3Lmh0bWwpCkonYWkgYXR0
+ZWludCBtb24gb2JqZWN0aWYsIGplIHZvdXMgcmVtZXJjaWUgZGUgbSdhdm9pciBhY2NvbXBhZ27D
+qWUKZXQgamUgcmVjb21tYW5kZSDDoCB0b3V0ZXMgcGVyc29ubmVzIGRlIG1vbiBlbnRvdXJhZ2Ug
+dm90cmUgc2l0ZSwgYydlc3QgZXhjZWxsZW50IC4uLCBLZWx0b3VtLCA0OCBhbnMKPiBWb3VzIGF1
+c3NpLCBjb21tZW5jZXogbWFpbnRlbmFudCAoaHR0cDovL29jZm00MC5jb20vcWJ2am5pY2ZrNTFk
+cGdyanRzL2luZGV4OC5odG1sKQrCoAoKCgoKCiAoaHR0cDovL29jZm00MC5jb20vajF2bGdpZXBr
+eGdsM3E1ajJkL2luZGV4OS5odG1sKQpKZSBzdWlzIHRyw6hzIHNhdGlzZmFpdGUgZGUgdm90cmUg
+c3lzdMOobWUsIHF1ZSBqZSB0cm91dmUgdHLDqHMgYmllbiBjb27Dp3UgZXQganVzcXUnw6AgcHLD
+qXNlbnQsIExFIFNFVUwgcXVpIGFpdCDDqXTDqSwgZW4gdG91dCBjYXMgcG91ciBNT0ksIGFic29s
+dW1lbnQgY29uZm9ybWUgw6Agdm9zIHByb3Bvc2l0aW9ucy1vZmZyZXMhIC4uLiBDb3Jpbm5lLCAz
+NyBhbnMKPiBWb3VzIGF1c3NpLCBjb21tZW5jZXogbWFpbnRlbmFudCAoaHR0cDovL29jZm00MC5j
+b20vdzVpYTJ4cWptNWY1NXl0ZzNxL2luZGV4MTAuaHRtbCkKwqAKCgoKCgogKGh0dHA6Ly9vY2Zt
+NDAuY29tL3p6eXZ2bm54MmNmZmVzZDRocS9pbmRleDExLmh0bWwpCkonYWkgdHJvdXbDqSB2b3Ry
+ZSBzaXRlIHZyYWltZW50IGJpZW4gZmFpdCBldCBsZXMgZmljaGVzIHRlY2huaXF1ZXMKdHLDqHMg
+dXRpbGVzIC4uLiBBbGFpbiwgNDMgYW5zCj4gVm91cyBhdXNzaSwgY29tbWVuY2V6IG1haW50ZW5h
+bnQgKGh0dHA6Ly9vY2ZtNDAuY29tLzFsMnFybXRpZXNscWNtZ2J1bC9pbmRleDEyLmh0bWwpCsKg
+CgoKCgoKClJlbmRlei12b3VzIMOgIGNldHRlIGFkcmVzc2UgKGh0dHA6Ly9vY2ZtNDAuY29tL2Zn
+cHNxYmFycXZsaHlyeGllbC9pbmRleDEzLmh0bWwpIHBvdXIgw6p0cmUgcmV0aXLDqShlKSBkZSBu
+b3RyZSBsaXN0ZSBkZSBkaWZmdXNpb24uCgoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2VlIGV2
+ZXJ5dGhpbmcgZnJvbSB0aGUgYnJvd3NlciB0byB0aGUgZGF0YWJhc2Ugd2l0aCBBcHBEeW5hbWlj
+cwpHZXQgZW5kLXRvLWVuZCB2aXNpYmlsaXR5IHdpdGggYXBwbGljYXRpb24gbW9uaXRvcmluZyBm
+cm9tIEFwcER5bmFtaWNzCklzb2xhdGUgYm90dGxlbmVja3MgYW5kIGRpYWdub3NlIHJvb3QgY2F1
+c2UgaW4gc2Vjb25kcy4KU3RhcnQgeW91ciBmcmVlIHRyaWFsIG9mIEFwcER5bmFtaWNzIFBybyB0
+b2RheSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODA4
+ODMxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
+Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

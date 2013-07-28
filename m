@@ -1,11 +1,11 @@
-From: iPhone <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
-Subject: Destockage iPhone 5
-Date: Sat, 27 Jul 2013 14:25:08 +0000
-Message-ID: <c7ea1f85380965d82d66561e972895eb@mach10.generated>
-Reply-To: contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org
+From: Tradition des Vosges par Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Soldes_jusqu'=E0_moins_60%?=
+Date: Sun, 28 Jul 2013 13:47:06 +0200 (CEST)
+Message-ID: <oeysw4.hjo6npvk5p3hssl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,44 +18,46 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-UG91ciB2b2lyIGxlIG1lc3NhZ2UsIHZldWlsbGV6IHV0aWxpc2VyIHVuIGxlY3RldXIgZGUgbWFp
-bCBjb21wYXRpYmxlIEhUTUwKCkxpZW4gbWlyb2lyIDogaHR0cDovL20xMC1mci5jb20vbWMxMF9t
-L1lUMHhNeVppUFRNNU56a3dKbU05TWpNMk5ESW1aRDB5TURFekxUQTNMVEkzSURFME9qSXdPakF3
-Sm1VOU1TWm9QVE01TmpreEptWTlOREF4TlRRbVp6MDBNREUxTWc9PQoKTGllbiBkZSBkZXNpbnNj
-cmlwdGlvbiA6IGh0dHA6Ly9tMTAtZnIuY29tL21jMTBfdW5zdWIvWVQweE15WmlQVE01Tnprd0pt
-TTlNak0yTkRJbVpEMHlNREV6TFRBM0xUSTNJREUwT2pJd09qQXdKbVU5TVNab1BUTTVOamt4Sm1Z
-OU5EQXhOVFFtWnowME1ERTFNZz09CgpTaSB2b3VzIG5lIHBhcnZlbmV6IHBhcyDDoCBsaXJlIGNv
-cnJlY3RlbWVudCBjZSBtZXNzYWdlLCBjbGlxdWV6IGljaS4KwqAKTGVzIGVuY2jDqHJlcyBhdSBj
-ZW50aW1lIGV4cGxpcXXDqWVzIDogRXN0LWNlIHZyYWltZW50IHBvc3NpYmxlIGQnw6ljb25vbWlz
-ZXIgOTUgJSAgc3VyIGxlIHByaXggZGUgdmVudGUgPyAgClZvdXMgbCdhdXJleiBzdXJlbWVudCBy
-ZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWluIGRlIHNlIGTDqXZl
-bG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxlcyBzaXRlcyBpbnRl
-cm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4gUGFydG91dCBzdXIg
-bGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0b2lyZXMgZCdoZXVy
-ZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4uICAKSGFiaXR1ZWxs
-ZW1lbnQgdHLDqHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4g
-TWFpcyBub3VzIG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3Vy
-IGNlbGEgcXVlIG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gCsKgCkxJUkUgTEEg
-U1VJVEUgPj4KwqAKTGEgUmV2dWUgQ29uc28gw6AgdGVzdMOpIFN3b2dnaSByw6ljZW1tZW50IGV0
-IGxlcyByw6lzdWx0YXRzIG9udCDDqXTDqSB0csOocyBzdXJwcmVuYW50cy4gICAKIlN3b2dnaSBh
-IGTDqXBhc3PDqSB0b3V0ZXMgbm9zIGF0dGVudGVzIGVuIGNlIHF1aSBjb25jZXJuYWl0IGxlcyDD
-qWNvbm9taWVzIHLDqWFsaXNhYmxlcyBncsOiY2Ugw6AgbGV1cnMgb2ZmcmVzLiBUb3VzIGxlcyBq
-b3VycywgZGVzIGdlbnMgw6ljb25vbWlzZW50IGp1c3F1J8OgIDk1ICUgc3VyIGxlcyBwcml4IGhh
-Yml0dWVscyBkZSB2ZW50ZS4gQydlc3QgaW5jcm95YWJsZSAhIiAKwqAKTElSRSBMQSBTVUlURSA+
-PgrCoArCoAogIApNYXJpZSBTYW1lZGkgMjMganVpbiAzaDI1CsKgCiJKJ2FpIGRlIHF1b2kgdm9p
-ciB2ZW5pciBsZXMgYW5uaXZlcnNhaXJlcyBldCBhdXRyZXMgZsOqdGVzIHBvdXIgdW4gYm9uIG1v
-bWVudCBldCBqJ2FpIGZhaXQgZGUgc2FjcsOpcyDDqWNvbm9taWVzIgpQYXRvdSAgU2FtZWRpIDIz
-IGp1aW4gNGgzNwrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hyZXMgYXUg
-Y2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwgbWUgdGFy
-ZGUgZCdlc3NheWVyIgrCoApQb3VyIHZvdXMgZMOpc2Fib25uZXIsIGNsaXF1ZXogaWNpLgotLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0KU2VlIGV2ZXJ5dGhpbmcgZnJvbSB0aGUgYnJvd3NlciB0byB0aGUg
-ZGF0YWJhc2Ugd2l0aCBBcHBEeW5hbWljcwpHZXQgZW5kLXRvLWVuZCB2aXNpYmlsaXR5IHdpdGgg
-YXBwbGljYXRpb24gbW9uaXRvcmluZyBmcm9tIEFwcER5bmFtaWNzCklzb2xhdGUgYm90dGxlbmVj
-a3MgYW5kIGRpYWdub3NlIHJvb3QgY2F1c2UgaW4gc2Vjb25kcy4KU3RhcnQgeW91ciBmcmVlIHRy
-aWFsIG9mIEFwcER5bmFtaWNzIFBybyB0b2RheSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNr
-Lm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODA4ODMxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgq2qxI7gfk57dIhjo6njqkI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375012018627%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DBNCMKMFAJJCGEEOJ%26mid%3D1600211049&s=3DJ=
+MPKNBIKOIGHNLAH
+ =
+
+Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins =
+60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moi=
+ns 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 =
+moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=
+=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jus=
+qu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes =
+jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Sold=
+es jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%S=
+oldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 6=
+0%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moin=
+s 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 m=
+oins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=
+=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jus=
+qu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes =
+jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Sold=
+es jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%S=
+oldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 6=
+0%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moin=
+s 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 m=
+oins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=
+=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jus=
+qu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes jusqu'=E0 moins 60%Soldes =
+jusqu'=E0 moins 60%
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600211049&sig=3DOBMLPFHBIEDPPANF&st=3D0
+---------------------------------------------------------------------------=
+---
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

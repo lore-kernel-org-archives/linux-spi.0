@@ -1,23 +1,14 @@
-From: Matthieu CASTET <matthieu.castet-ITF29qwbsa/QT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] SPI: DUAL and QUAD support
-Date: Mon, 29 Jul 2013 17:35:11 +0200
-Message-ID: <20130729173511.65caa07d@parrot.com>
-References: <20130729064234.GS9858@sirena.org.uk>
-	<1375095194-7093-1-git-send-email-wangyuhang2014@gmail.com>
-	<20130729145626.6c227aa0@parrot.com>
-	<CAHSAbzOPfpbPHohG7-EzftiPr5T2m19qgrKg7KS2jSKD-B=goA@mail.gmail.com>
+From: Tele-protect <news-PkcECQhVGYM@public.gmane.org>
+Subject: [SPAM] La telesurveillance au coeur de votre securite
+Date: Mon, 29 Jul 2013 16:42:07 -0100
+Message-ID: <a3rgkqU11t2Pfcjy7Eq7M6-5To5tiIaGtdUfOci3Oss@zaloo.fr>
+Reply-To: Tele-protect <news-PkcECQhVGYM@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-Cc: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"pekon-l0cyMroinI0@public.gmane.org" <pekon-l0cyMroinI0@public.gmane.org>, "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"sourav.poddar-l0cyMroinI0@public.gmane.org" <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	"tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAHSAbzOPfpbPHohG7-EzftiPr5T2m19qgrKg7KS2jSKD-B=goA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Abuse: <mailto:abuse-PkcECQhVGYM@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,107 +19,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Le Mon, 29 Jul 2013 15:25:51 +0100,
-yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> a =E9crit :
-
-> Hi,
-> =
-
-> 2013/7/29 Matthieu CASTET <matthieu.castet-ITF29qwbsa/QT0dZR+AlfA@public.gmane.org>:
-> > Le Mon, 29 Jul 2013 11:53:14 +0100,
-> > wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> a =E9crit :
-> >
-> >> Hi,
-> >>
-> >> modify two things.
-> >> 1:
-> >> >> @@ -1316,6 +1324,12 @@ int spi_setup(struct spi_device *spi)
-> >> >>         /* help drivers fail *cleanly* when they need options
-> >> >>          * that aren't supported with their current master
-> >> >>          */
-> >> >> +       if (((spi->mode >> 8) & 0x03) =3D=3D 0x03 ||
-> >> >> +               ((spi->mode >> 10) & 0x03) =3D=3D 0x03) {
-> >> >> +               dev_err(&spi->dev,
-> >> >> +               "setup: can not select dual and quad at the same
-> >> >> time\n")
-> >> >> +               return -EINVAL;
-> >> >> +       }
-> >> >> +               return -EINVAL;
-> >> >> +       }
-> >>
-> >> >This code won't work if the constants you added for mode flags
-> >> >change value.  More importantly, anyone searching the code for
-> >> >SPI_TX_DUAL, etc. won't find this code.
-> >>
-> >> so use the certain macro to replace.
-> >>
-> >> 2:
-> >> >You need to make sure that existing userspace binaries can run
-> >> >unmodified, changing the types will change the layout of the ioctl
-> >> >arguments.  This may mean that you need to add new ioctls if you
-> >> >need to change types.
-> >>
-> >> I recovered the SPI_IOC_RD_LSB_FIRST ioctl.
-> >> Add new ioctl to fit u16 mode.
-> >> In addition,may SPI_IOC_RD_LSB_FIRST should be del in a better way.
-> >>
-> >> Signed-off-by: wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> >> ---
-> >
-> >>  /* IOCTL commands */
-> >> @@ -54,6 +61,8 @@
-> >>   * @tx_buf: Holds pointer to userspace buffer with transmit data,
-> >> or null.
-> >>   *     If no data is provided, zeroes are shifted out.
-> >>   * @rx_buf: Holds pointer to userspace buffer for receive data, or
-> >> null.
-> >> + * @tx_nbits: number of bits used for writting.
-> >> + * @rx_nbits: number of bits used for reading.
-> >>   * @len: Length of tx and rx buffers, in bytes.
-> >>   * @speed_hz: Temporary override of the device's bitrate.
-> >>   * @bits_per_word: Temporary override of the device's wordsize.
-> >> @@ -85,6 +94,8 @@
-> >>  struct spi_ioc_transfer {
-> >>         __u64           tx_buf;
-> >>         __u64           rx_buf;
-> >> +       __u8            tx_nbits;
-> >> +       __u8            rx_nbits;
-> >>
-> >>         __u32           len;
-> >>         __u32           speed_hz;
-> > You still break old userspace ABI.
-> >
-> > You need to create a new structure, if you need to add fields.
-> >
-> I dont think adding the members will cause the program in userspace
-> any errors. User do not have to set these members.
-Did you try to run on your patch kernel a program build without the
-patch ?
-
-
-if I build my program with :
-
-> >>  struct spi_ioc_transfer {
-> >>         __u64           tx_buf;
-> >>         __u64           rx_buf;
-> >>
-> >>         __u32           len;
-> >>         __u32           speed_hz;
-
-Now I run it on a new kernel.
-The kernel won't parse correctly my structure : len will go in
-tx_nbits, rx_nbits and len.
-
-Keep in mind that it is binary interface, not source interface. You
-should not have to rebuild your binary.
-
-Matthieu
-
----------------------------------------------------------------------------=
----
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
-ktrk
+ Tele-protect /**/ Pour visualiser correctement ce message, acc=C3=A9dez =
+=C3=A0 la version en ligne, ou signaler comme ind=C3=A9sirable Acc=C3=A9dez=
+ =C3=A0 la version en ligne du message. La t=C3=89l=C3=89surveillanceau coe=
+ur de votre s=C3=A9curit=C3=A9 Alerte =C3=A0 la police2 protection 24h/24 C=
+ontr=C3=B4le =C3=A0 distance =C2=A0 1 Sur l'abonnement de t=C3=A9l=C3=A9sur=
+veillance.2 Apr=C3=A8s lev=C3=A9e de doute av=C3=A9r=C3=A9e selon les condi=
+tions de l'article L.613-6 du code de la s=C3=A9curit=C3=A9 int=C3=A9rieure=
+. =C2=A0 Si vous ne souhaitez plus recevoir nos emails, veuillez suivre ce =
+lien. Si vous n''arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d''=C3=
+=A9crire =C3=A0 stop-PkcECQhVGYM@public.gmane.org
+------------------------------------------------------------------------------
+Get your SQL database under version control now!
+Version control is standard for application code, but databases havent 
+caught up. So what steps can you take to put your SQL databases under 
+version control? Why should you start doing it? Read more to find out.
+http://pubads.g.doubleclick.net/gampad/clk?id=49501711&iu=/4140/ostg.clktrk

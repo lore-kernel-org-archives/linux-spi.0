@@ -1,57 +1,92 @@
-From: "Databases for Sale" <d4S.Noreply-Jbz+COfnBihBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] 4.8MM Business Contacts - $99
-Date: Sun, 28 Jul 2013 21:32:54 -0700
-Message-ID: <5635dd881d062cbb585ce07c00160b07@address.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH V2] SPI: DUAL and QUAD support
+Date: Mon, 29 Jul 2013 07:42:34 +0100
+Message-ID: <20130729064234.GS9858@sirena.org.uk>
+References: <1374917973-7083-1-git-send-email-wangyuhang2014@gmail.com>
+ <CA+7tXihU+JODQec-h2joUYiVY=otuSOu8BwADn+mtgELCFHPng@mail.gmail.com>
+ <CAHSAbzNTUpsftZ1-fpv7UefuSdUvUidg9-SLOUXCTmSBhM0ZJQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============0915014743891228327=="
+Cc: "spi-devel-general@lists.sourceforge.net"
+ <spi-devel-general@lists.sourceforge.net>,
+ Sourav Poddar <sourav.poddar@ti.com>, Trent Piepho <tpiepho@gmail.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "Gupta,
+ Pekon" <pekon@ti.com>
+To: yuhang wang <wangyuhang2014@gmail.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <CAHSAbzNTUpsftZ1-fpv7UefuSdUvUidg9-SLOUXCTmSBhM0ZJQ@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Limited Time Offer - 4.8 Million U.S. Businesses - $99 
 
-Database Delivered Via E-mail in .CSV and Includes:
-	
-> Website	
-> E-mail Address	
-> Company Name	
-> Address	
-> City	
-> State	
-> Zip Code	
-> Phone	
-> Fax	
-> # of Employees	
-> Net Profit	
-> SIC	
-> SIC Description	
-	
-
-** Please See The Attached Brochure for Details and a Sample!**
-
-Increase your contact list with this limited time offer. We are offering our 4.8 Million U.S. Businesses Database for only $99. 
-Call us at 1 (800) 676-2011 Ext 520 or view the attached brochure to buy the database and receive it the same day!
-
-Cheers,
-
-Albert Siciliano | National Account Manager
-Databases International, Inc.
-1 (800) 676-2011 Ext 520
+--===============0915014743891228327==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="BHAjPJTFBOjGMyr2"
+Content-Disposition: inline
 
 
+--BHAjPJTFBOjGMyr2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-------------------------------------------------------------------------------
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk
+On Mon, Jul 29, 2013 at 10:44:43AM +0800, yuhang wang wrote:
+
+> > Your changes to spidev are not backward compatible at all.  You can
+> > not change the data types in the ioctl and maintain backward
+> > compatibility.  You can also not delete ioctls!
+
+> well, please give me some details or specific situations. Why ioctl
+> can not be changed. The operation that SPI_IOC_RD_LSB_FIRST do can be
+> done in SPI_IOC_RD_MODE, so I dont think there is any necessary using
+> SPI_IOC_RD_LSB_FIRST. What you worry about is the user already used
+> SPI_IOC_RD_LSB_FIRST?
+
+You need to make sure that existing userspace binaries can run
+unmodified, changing the types will change the layout of the ioctl
+arguments.  This may mean that you need to add new ioctls if you need to
+change types.
+
+--BHAjPJTFBOjGMyr2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR9g7XAAoJELSic+t+oim97XkP/35ldbY8ckpgh16STPv3AtCi
+vdftc2y7jmkF5RqPCEGZYAxryXIZCxRCkWKIoFSAC34geQ0mNMYpVUstDUL3pne4
+/6RE3uO00x4TnVXgKyNrt9Mcd7j2FsV3ym0kTy6Q66mfUzQlUCOrQwgpuak2FR+P
+JNmLGxA/mzan19UIxKfQKldXis9esBnGYJyUCDwwvVOBe0gShPagw7Ps7uNkuWGP
+gEv1HL7UAINVXtQX6nLUuq+eoUAepSCIRwTjaXB93sVvXySTAk5T8Ez1h6Os1DiQ
+qynKiK+hksyFtwPoba5WNWjkd3qmpYq/oeSIlb4B/kDTCI1Cf28473gTekoDLJIT
+3ipnmrcvwOEyeouwgkPdoPP7WdOTx6r4nbuZsgtvFEW8qHQEK1YqG1EMWkEqH2Fo
+fw8i43UFuOcjHx8u2EP0CG20eckJd4Vat6WDZ9Z1/k1sOrJR4cTv9NvXeFbM6jkD
+/7zmmdvpEIQHqyW3w+m+HxJ/dky4zf1m1/gFDfJ9R1tFn1oEfVRynTDU1q1+HhFm
+yBeEDJ3mXRApc1fNaTebf0b/SFiLTPOsowdQW7Xpxo8gZr4ZCmFJnH8lXOHugLsx
+xZX+3AGY9D1TP5YFqNYoxNkwwj4xhUPOrwyoDVdp6Z0bBy69WAg1yreC+4G0UTe0
+mdiUUCJosjQpct1oO9oE
+=WGQ3
+-----END PGP SIGNATURE-----
+
+--BHAjPJTFBOjGMyr2--
+
+
+--===============0915014743891228327==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============0915014743891228327==--

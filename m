@@ -1,72 +1,55 @@
-From: Trent Piepho <tpiepho@gmail.com>
-Subject: Re: [PATCHv5 1/2] drivers: spi: Add qspi flash controller
-Date: Sun, 28 Jul 2013 17:13:53 -0700
-Message-ID: <CA+7tXiiQGfYN6sck3YQo8RinPad0e8bgW3J6rBc9sCq_J48fTg@mail.gmail.com>
-References: <1374858922-14637-1-git-send-email-sourav.poddar@ti.com>
-	<1374858922-14637-2-git-send-email-sourav.poddar@ti.com>
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V2] SPI: DUAL and QUAD support
+Date: Sun, 28 Jul 2013 17:32:16 -0700
+Message-ID: <CA+7tXihU+JODQec-h2joUYiVY=otuSOu8BwADn+mtgELCFHPng@mail.gmail.com>
+References: <1374917973-7083-1-git-send-email-wangyuhang2014@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: broonie@kernel.org, spi-devel-general@lists.sourceforge.net,
-	grant.likely@linaro.org, linux-omap@vger.kernel.org, rnayak@ti.com,
-	balbi@ti.com
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1374858922-14637-2-git-send-email-sourav.poddar@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org
+To: wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <1374917973-7083-1-git-send-email-wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 26, 2013 at 10:15 AM, Sourav Poddar <sourav.poddar@ti.com> wrote:
-> +
-> +static inline void ti_qspi_read_data(struct ti_qspi *qspi,
-> +               unsigned long reg, int wlen, u8 **rxbuf)
-> +{
-> +       switch (wlen) {
-> +       case 8:
-> +               **rxbuf = readw(qspi->base + reg);
-> +               dev_dbg(qspi->dev, "rx done, read %02x\n", *(*rxbuf-1));
-> +               *rxbuf += 1;
+On Sat, Jul 27, 2013 at 2:39 AM, wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> 2:To spidev, in order to backward compatible, still use
+>  SPI_IOC_RD_MODE to deal with user who use <u8 mode>. Add
+>  SPI_IOC_EXTRD_MODE to fix the <u16 mode>. And SPI_IOC_RD_LSB_FIRST
+>  seems a little redundant, so del it.
 
-You still have readw() paired with 8 bit length, readb() with 16, and
-so on.  I do not think your 16 and 32 bit cases will even work.  Since
-**rxbuf will always be an pointer to an 8-bit value, it will always
-just use the lower 8 bits of the register.  You also always increment
-the address by 1.  And the printout, which is the same in every case
-so maybe you shouldn't duplicate it, isn't correct.  It will print out
-the previous byte in the buffer.  It will possibly crash on the first
-byte, since you will be reading before the beginning of the buffer.
+Your changes to spidev are not backward compatible at all.  You can
+not change the data types in the ioctl and maintain backward
+compatibility.  You can also not delete ioctls!
 
-You probably only tested this with 8 bit word length.  Since that has
-readw(), it probably does not matter what
-size is used for the read.
 
-> +static int ti_qspi_setup(struct spi_device *spi)
-> +{
-> +
-> +       clk_ctrl_reg = ti_qspi_read(qspi, QSPI_SPI_CLOCK_CNTRL_REG);
-> +
-> +       clk_ctrl_reg &= ~QSPI_CLK_EN;
-> +
-> +       /* disable SCLK */
-> +       ti_qspi_write(qspi, clk_ctrl_reg, QSPI_SPI_CLOCK_CNTRL_REG);
+> @@ -1316,6 +1324,12 @@ int spi_setup(struct spi_device *spi)
+>         /* help drivers fail *cleanly* when they need options
+>          * that aren't supported with their current master
+>          */
+> +       if (((spi->mode >> 8) & 0x03) == 0x03 ||
+> +               ((spi->mode >> 10) & 0x03) == 0x03) {
+> +               dev_err(&spi->dev,
+> +               "setup: can not select dual and quad at the same time\n");
+> +               return -EINVAL;
+> +       }
 
-This looks like to are still not taking into account that setup() can
-be called while a transfer for another slave is in progress.
+This code won't work if the constants you added for mode flags change
+value.  More importantly, anyone searching the code for SPI_TX_DUAL,
+etc. won't find this code.
 
-> +
-> +       /* setup command reg */
-> +       qspi->cmd = 0;
-> +       qspi->cmd |= QSPI_EN_CS(spi->chip_select);
-> +       qspi->cmd |= QSPI_FLEN(frame_length);
-> +
-> +       list_for_each_entry(t, &m->transfers, transfer_list) {
-> +               qspi->cmd |= QSPI_WLEN(t->bits_per_word);
-> +               qspi->cmd |= QSPI_WC_CMD_INT_EN;
-
-Why is the QSPI_WC_CMD_INT_EN bit set inside the loop but the
-QSPI_EN_CS() and QSPI_FLEN() bits are set outside the loop?
-
-> +
-> +       if (!of_property_read_u32(np, "ti,num-cs", &num_cs))
-> +               master->num_chipselect = num_cs;
-
-You are still not using standard "num-cs" property?
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

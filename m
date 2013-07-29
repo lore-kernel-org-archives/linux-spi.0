@@ -1,86 +1,111 @@
-From: Trivago Bons Plans <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Derni=E8res_minutes_=E9t=E9_:_h=F4t?=
-	=?ISO-8859-1?Q?els_4*_=E0_partir_de_41_euros?=
-Date: Mon, 29 Jul 2013 13:46:02 +0200 (CEST)
-Message-ID: <fv67pw.hjpm2732mlxig3l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Felipe Balbi <balbi@ti.com>
+Subject: Re: [PATCHv6 1/2] drivers: spi: Add qspi flash controller
+Date: Mon, 29 Jul 2013 15:35:35 +0300
+Message-ID: <20130729123515.GJ24801@radagast>
+References: <1375082550-30544-1-git-send-email-sourav.poddar@ti.com>
+ <1375082550-30544-2-git-send-email-sourav.poddar@ti.com>
+ <20130729093128.GE23710@radagast>
+ <51F63FF3.5070304@ti.com>
+ <20130729102038.GK23710@radagast>
+ <51F64C49.4080606@ti.com>
+ <20130729110902.GE24801@radagast>
+ <51F64EB6.5020807@ti.com>
+Reply-To: <balbi@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="5dNcufZ4prhark0F"
+Cc: <balbi@ti.com>, <broonie@kernel.org>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<grant.likely@linaro.org>, <linux-omap@vger.kernel.org>,
+	<rnayak@ti.com>
+To: Sourav Poddar <sourav.poddar@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <51F64EB6.5020807@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgq33pI7gfk57dIhjpm233gI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375098357320%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DLKDONHCJHBEANGJH%26mid%3D1600211509&s=3DL=
-DNDPBHMJPMFPOBO
- =
+--5dNcufZ4prhark0F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 euros
- =
+Hi,
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600211509&sig=3DAMPMBGJOELAGDDCJ&st=3D0
----------------------------------------------------------------------------=
----
-See everything from the browser to the database with AppDynamics
-Get end-to-end visibility with application monitoring from AppDynamics
-Isolate bottlenecks and diagnose root cause in seconds.
-Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
-ktrk
+On Mon, Jul 29, 2013 at 04:45:02PM +0530, Sourav Poddar wrote:
+> >>>>>>+	irq =3D platform_get_irq(pdev, 0);
+> >>>>>>+	if (irq<    0) {
+> >>>>>>+		dev_err(&pdev->dev, "no irq resource?\n");
+> >>>>>>+		return irq;
+> >>>>>>+	}
+> >>>>>>+
+> >>>>>>+	spin_lock_init(&qspi->lock);
+> >>>>>>+
+> >>>>>>+	qspi->base =3D devm_ioremap_resource(&pdev->dev, r);
+> >>>>>>+	if (IS_ERR(qspi->base)) {
+> >>>>>>+		ret =3D PTR_ERR(qspi->base);
+> >>>>>>+		goto free_master;
+> >>>>>>+	}
+> >>>>>>+
+> >>>>>>+	ret =3D devm_request_threaded_irq(&pdev->dev, irq, ti_qspi_isr,
+> >>>>>>+			ti_qspi_threaded_isr, IRQF_NO_SUSPEND | IRQF_ONESHOT,
+> >>>>>why do you need IRQF_NO_SUSPEND ?
+> >>>>>
+> >>>>I should get away with this.
+> >>>why ? Do you need or do you *not* need it ? And in either case, why ?
+> >>>
+> >>I was thinking, this will keep the irqs up even when we are
+> >>hitting suspend, we will not be prepared to handle it. ?
+> >won't be prepared in what way ?
+> >
+> Our driver will be down, so the irq might go un-serviced.
+
+only if you wrote the driver that way. IRQ subsystem doesn't know the
+state of the device, all it knows is that in case an IRQ fires, it needs
+to call the registered IRQ handler.
+
+Now the thing is:
+
+Initially you had the flag setup, so I asked why you needed it. I
+expected you to tell me why you think QSPI's IRQ shouldn't be disabled
+during suspend and the implications of disabling it.
+
+Instead you just changed your mind and decided to remove the flag.
+
+Because you changed your mind with no explanation, that tells me you
+haven't fully grasped how that flag works and what it means to set (or
+not set) it.
+
+My question now is simply: why don't you need that flag ? What are the
+implications of setting that flag ? How would your driver behave if an
+IRQ fired while your driver was suspended ? Unless you understand what
+it does, how can you understand the behavior or the driver ?
+
+cheers
+
+--=20
+balbi
+
+--5dNcufZ4prhark0F
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR9mGXAAoJEIaOsuA1yqREBk0P/jJgUqsrkekg7n1oaIPUZdrB
+xbtx5CtKGtuUjCYlq8YABCAkrGKyIoVx7slmSF2DOL2J2oau2SYWE1XPpkvWXZwD
+KS+3JBqUM3DLMUXFyzAvnZ4cX15hJ4IVKy1ENAtAx19Agay8Pbydjr5koc3cnwFG
+ieVMS7NAIltmA9SbEsmcaIsmk3phv9SDpYhukL/BRerWy6RrK5KbzybOtJxZJ5aH
+OUH7KcVXZBPHJZFe8Tux1hCGyxi7CFXghk5xB0Qzd8fx/dYNwctGfb1UHIWLcuFe
+L1Jf+btTy2LHDa/FDwpK43xUiEKDLT4o/dFGOwvUU/2Q2aKoin5nFkHO0Qwdd7w3
+cJVchVElq/Umc8gVt5ipaTGdB763wMcfiFShgUQdcU2ZuzSbjx/+aI6lbu4lMue0
+R+ILmz1Q0FOH1NzZ9dXGf36I2MjadoHFt8dSn69r2fe+wAv2tGBm09jQugTmq0P5
+k+4T9oNh4yQm+uXdbflNdBSkbk3ZT5oOL9YXRHcR/hXK/ZduBqusqajM7Nussm25
+UM5aYyH5x9oMheaa/uJShjYzn2gbqpNncF2oRCDMnXpsQOtfYlxThId2GN9BJY6I
+c0skpzmWZ+jpf2EVou6zpsx2NhwuStJSCW5INDgbf4LI8ncmSLTG9snt61uW5MWe
+D8r4HGH0vbRw8C5RipAm
+=b7+6
+-----END PGP SIGNATURE-----
+
+--5dNcufZ4prhark0F--

@@ -1,59 +1,72 @@
-From: "Morphoregime" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Effectuez votre bilan minceur en 2 minutes chrono
-Date: Sun, 28 Jul 2013 11:49:18 +0000 (CET)
-Message-ID: <130728114918.105893086000004892@ocfm40.com>
+From: Trent Piepho <tpiepho@gmail.com>
+Subject: Re: [PATCHv5 1/2] drivers: spi: Add qspi flash controller
+Date: Sun, 28 Jul 2013 17:13:53 -0700
+Message-ID: <CA+7tXiiQGfYN6sck3YQo8RinPad0e8bgW3J6rBc9sCq_J48fTg@mail.gmail.com>
+References: <1374858922-14637-1-git-send-email-sourav.poddar@ti.com>
+	<1374858922-14637-2-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: broonie@kernel.org, spi-devel-general@lists.sourceforge.net,
+	grant.likely@linaro.org, linux-omap@vger.kernel.org, rnayak@ti.com,
+	balbi@ti.com
+To: Sourav Poddar <sourav.poddar@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <1374858922-14637-2-git-send-email-sourav.poddar@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKCkp1c3F1J8OgIDgga2lsb3MgZW4gbW9pbnMgZGFucyBjZXQgZW1haWwuIEFmaW4gZGUgdm9p
-ciBjZXR0ZSBsZXR0cmUgZW4gaW1hZ2VzLCBjb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAo
-aHR0cDovL29jZm00MC5jb20vaWJseHdyMTFrcmJkd25yemtzL2luZGV4MC5odG1sKQoKCgoKICho
-dHRwOi8vb2NmbTQwLmNvbS9hMWwycXJ2bWtjeWxldzV6dmQvaW5kZXgxLmh0bWwpCgogKGh0dHA6
-Ly9vY2ZtNDAuY29tL2gwbGNwcmJ2a2R6ZDB2bXV1eS9pbmRleDIuaHRtbCkKCiAoaHR0cDovL29j
-Zm00MC5jb20vM2ZsdHNyYWxrZXVsZGVwdWVsL2luZGV4My5odG1sKQoKIChodHRwOi8vb2NmbTQw
-LmNvbS9mMGd5cHFoZTRpbmRuaW1uZGQvaW5kZXg0Lmh0bWwpCgogKGh0dHA6Ly9vY2ZtNDAuY29t
-LzFmZ2dzcTJkNHF2bHZocG55cy9pbmRleDUuaHRtbCkKCsKgCgoKCsKgCjEwMCUKR1JBVFVJVAog
-Cj4gRUZGRUNUVUVaIFZPVFJFIEJJTEFOIE1JTkNFVVIKRU4gMk1OIENIUk9OTwooaHR0cDovL29j
-Zm00MC5jb20veGJnZHdxdWM0MDJkMnJydmxsL2luZGV4Ni5odG1sKQrCoCAKCgoKwqAKCgoKICho
-dHRwOi8vb2NmbTQwLmNvbS9jMWdvcXF4cjR3bGxsbTV2c3kvaW5kZXg3Lmh0bWwpCkonYWkgYXR0
-ZWludCBtb24gb2JqZWN0aWYsIGplIHZvdXMgcmVtZXJjaWUgZGUgbSdhdm9pciBhY2NvbXBhZ27D
-qWUKZXQgamUgcmVjb21tYW5kZSDDoCB0b3V0ZXMgcGVyc29ubmVzIGRlIG1vbiBlbnRvdXJhZ2Ug
-dm90cmUgc2l0ZSwgYydlc3QgZXhjZWxsZW50IC4uLCBLZWx0b3VtLCA0OCBhbnMKPiBWb3VzIGF1
-c3NpLCBjb21tZW5jZXogbWFpbnRlbmFudCAoaHR0cDovL29jZm00MC5jb20vcWJ2am5pY2ZrNTFk
-cGdyanRzL2luZGV4OC5odG1sKQrCoAoKCgoKCiAoaHR0cDovL29jZm00MC5jb20vajF2bGdpZXBr
-eGdsM3E1ajJkL2luZGV4OS5odG1sKQpKZSBzdWlzIHRyw6hzIHNhdGlzZmFpdGUgZGUgdm90cmUg
-c3lzdMOobWUsIHF1ZSBqZSB0cm91dmUgdHLDqHMgYmllbiBjb27Dp3UgZXQganVzcXUnw6AgcHLD
-qXNlbnQsIExFIFNFVUwgcXVpIGFpdCDDqXTDqSwgZW4gdG91dCBjYXMgcG91ciBNT0ksIGFic29s
-dW1lbnQgY29uZm9ybWUgw6Agdm9zIHByb3Bvc2l0aW9ucy1vZmZyZXMhIC4uLiBDb3Jpbm5lLCAz
-NyBhbnMKPiBWb3VzIGF1c3NpLCBjb21tZW5jZXogbWFpbnRlbmFudCAoaHR0cDovL29jZm00MC5j
-b20vdzVpYTJ4cWptNWY1NXl0ZzNxL2luZGV4MTAuaHRtbCkKwqAKCgoKCgogKGh0dHA6Ly9vY2Zt
-NDAuY29tL3p6eXZ2bm54MmNmZmVzZDRocS9pbmRleDExLmh0bWwpCkonYWkgdHJvdXbDqSB2b3Ry
-ZSBzaXRlIHZyYWltZW50IGJpZW4gZmFpdCBldCBsZXMgZmljaGVzIHRlY2huaXF1ZXMKdHLDqHMg
-dXRpbGVzIC4uLiBBbGFpbiwgNDMgYW5zCj4gVm91cyBhdXNzaSwgY29tbWVuY2V6IG1haW50ZW5h
-bnQgKGh0dHA6Ly9vY2ZtNDAuY29tLzFsMnFybXRpZXNscWNtZ2J1bC9pbmRleDEyLmh0bWwpCsKg
-CgoKCgoKClJlbmRlei12b3VzIMOgIGNldHRlIGFkcmVzc2UgKGh0dHA6Ly9vY2ZtNDAuY29tL2Zn
-cHNxYmFycXZsaHlyeGllbC9pbmRleDEzLmh0bWwpIHBvdXIgw6p0cmUgcmV0aXLDqShlKSBkZSBu
-b3RyZSBsaXN0ZSBkZSBkaWZmdXNpb24uCgoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KU2VlIGV2
-ZXJ5dGhpbmcgZnJvbSB0aGUgYnJvd3NlciB0byB0aGUgZGF0YWJhc2Ugd2l0aCBBcHBEeW5hbWlj
-cwpHZXQgZW5kLXRvLWVuZCB2aXNpYmlsaXR5IHdpdGggYXBwbGljYXRpb24gbW9uaXRvcmluZyBm
-cm9tIEFwcER5bmFtaWNzCklzb2xhdGUgYm90dGxlbmVja3MgYW5kIGRpYWdub3NlIHJvb3QgY2F1
-c2UgaW4gc2Vjb25kcy4KU3RhcnQgeW91ciBmcmVlIHRyaWFsIG9mIEFwcER5bmFtaWNzIFBybyB0
-b2RheSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODA4
-ODMxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
-Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+On Fri, Jul 26, 2013 at 10:15 AM, Sourav Poddar <sourav.poddar@ti.com> wrote:
+> +
+> +static inline void ti_qspi_read_data(struct ti_qspi *qspi,
+> +               unsigned long reg, int wlen, u8 **rxbuf)
+> +{
+> +       switch (wlen) {
+> +       case 8:
+> +               **rxbuf = readw(qspi->base + reg);
+> +               dev_dbg(qspi->dev, "rx done, read %02x\n", *(*rxbuf-1));
+> +               *rxbuf += 1;
+
+You still have readw() paired with 8 bit length, readb() with 16, and
+so on.  I do not think your 16 and 32 bit cases will even work.  Since
+**rxbuf will always be an pointer to an 8-bit value, it will always
+just use the lower 8 bits of the register.  You also always increment
+the address by 1.  And the printout, which is the same in every case
+so maybe you shouldn't duplicate it, isn't correct.  It will print out
+the previous byte in the buffer.  It will possibly crash on the first
+byte, since you will be reading before the beginning of the buffer.
+
+You probably only tested this with 8 bit word length.  Since that has
+readw(), it probably does not matter what
+size is used for the read.
+
+> +static int ti_qspi_setup(struct spi_device *spi)
+> +{
+> +
+> +       clk_ctrl_reg = ti_qspi_read(qspi, QSPI_SPI_CLOCK_CNTRL_REG);
+> +
+> +       clk_ctrl_reg &= ~QSPI_CLK_EN;
+> +
+> +       /* disable SCLK */
+> +       ti_qspi_write(qspi, clk_ctrl_reg, QSPI_SPI_CLOCK_CNTRL_REG);
+
+This looks like to are still not taking into account that setup() can
+be called while a transfer for another slave is in progress.
+
+> +
+> +       /* setup command reg */
+> +       qspi->cmd = 0;
+> +       qspi->cmd |= QSPI_EN_CS(spi->chip_select);
+> +       qspi->cmd |= QSPI_FLEN(frame_length);
+> +
+> +       list_for_each_entry(t, &m->transfers, transfer_list) {
+> +               qspi->cmd |= QSPI_WLEN(t->bits_per_word);
+> +               qspi->cmd |= QSPI_WC_CMD_INT_EN;
+
+Why is the QSPI_WC_CMD_INT_EN bit set inside the loop but the
+QSPI_EN_CS() and QSPI_FLEN() bits are set outside the loop?
+
+> +
+> +       if (!of_property_read_u32(np, "ti,num-cs", &num_cs))
+> +               master->num_chipselect = num_cs;
+
+You are still not using standard "num-cs" property?

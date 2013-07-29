@@ -1,34 +1,66 @@
-From: "Darty" <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
-Subject: Gagnez un bon d'achat de 500 euros
-Date: Mon, 29 Jul 2013 09:37:49 +0000 (CET)
-Message-ID: <130729093749.115160337500003272@ocfm42.com>
+From: Sourav Poddar <sourav.poddar@ti.com>
+Subject: Re: [RFC/PATCH 2/2] driver: spi: Add quad spi read support
+Date: Mon, 29 Jul 2013 15:13:07 +0530
+Message-ID: <51F6392B.8030809@ti.com>
+References: <1375082550-30544-1-git-send-email-sourav.poddar@ti.com> <1375082550-30544-3-git-send-email-sourav.poddar@ti.com> <20130729093258.GF23710@radagast>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
+	<grant.likely@linaro.org>, <linux-omap@vger.kernel.org>,
+	<rnayak@ti.com>
+To: <balbi@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20130729093258.GF23710@radagast>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vb2NmbTQyLmNvbS9hNGQwazV1ejN0dXAzaGJ1dnkvaW5kZXgwLmh0bWwpCk9yZGlu
-YXRldXJzIMKg4oCiwqAgR2FtaW5nIMKg4oCiwqAgTW9iaWxlIMKg4oCiwqAgQXBwYXJlaWxzCkdh
-Z25leiB1biBib24gZCdhY2hhdCBkZQoKNTAw4oKsIENoZXogRGFydHkKKGh0dHA6Ly9vY2ZtNDIu
-Y29tL2lyZGZmNXhiMzR6NXBpMHVrbC9pbmRleDEuaHRtbCkKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-ClNlZSBldmVyeXRoaW5nIGZyb20gdGhlIGJyb3dzZXIgdG8gdGhlIGRhdGFiYXNlIHdpdGggQXBw
-RHluYW1pY3MKR2V0IGVuZC10by1lbmQgdmlzaWJpbGl0eSB3aXRoIGFwcGxpY2F0aW9uIG1vbml0
-b3JpbmcgZnJvbSBBcHBEeW5hbWljcwpJc29sYXRlIGJvdHRsZW5lY2tzIGFuZCBkaWFnbm9zZSBy
-b290IGNhdXNlIGluIHNlY29uZHMuClN0YXJ0IHlvdXIgZnJlZSB0cmlhbCBvZiBBcHBEeW5hbWlj
-cyBQcm8gdG9kYXkhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9p
-ZD00ODgwODgzMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
-Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+On Monday 29 July 2013 03:02 PM, Felipe Balbi wrote:
+> On Mon, Jul 29, 2013 at 12:52:30PM +0530, Sourav Poddar wrote:
+>> Since, qspi controller uses quad read.
+>>
+>> Configuring the command register, if the transfer of data needs
+>> dual or quad lines.
+>>
+>> This patch has been done on top of the following patch[1], which is just the
+>> basic idea of adding dual/quad support in spi framework.
+>> $subject patch will undergo changes with the ongoing discussion in the
+>> community.
+>>
+>> This patch is posted to demonstrate how patch 1 of the series will support
+>> quad read.
+>>
+>> [1]: http://comments.gmane.org/gmane.linux.kernel.spi.devel/14047
+>>
+>> Signed-off-by: Sourav Poddar<sourav.poddar@ti.com>
+>> ---
+>>   drivers/spi/spi-ti-qspi.c |   16 ++++++++++++++--
+>>   1 files changed, 14 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+>> index 51fe95f..8a32b1c 100644
+>> --- a/drivers/spi/spi-ti-qspi.c
+>> +++ b/drivers/spi/spi-ti-qspi.c
+>> @@ -86,6 +86,7 @@ struct ti_qspi {
+>>   #define QSPI_3_PIN			(1<<  18)
+>>   #define QSPI_RD_SNGL			(1<<  16)
+>>   #define QSPI_WR_SNGL			(2<<  16)
+>> +#define	QSPI_RD_DUAL			(3<<  16)
+>>   #define QSPI_RD_QUAD			(7<<  16)
+> so RD_QUAD is defined in previous patch but not RD_DUAL ? What gives ?
+>
+I think I will define RD_DUAL in the previous patch...
+> IMHO, just merge this patch with previous and make the entire driver
+> depend on the other patch.
+>
+but I was thinking of keeping rest of the $subject patch seperate, since the
+idea of implementing dual/quad read in spi framework is still under 
+discussion.
+and this patch will change.
+
+So, it would be good if we can get the basic previous patch in, and then 
+when the
+other discussion is sorted out, we can get this in?
+
+~Sourav
+

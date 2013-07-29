@@ -1,89 +1,34 @@
-From: Felipe Balbi <balbi@ti.com>
-Subject: Re: [RFC/PATCH 2/2] driver: spi: Add quad spi read support
-Date: Mon, 29 Jul 2013 12:32:58 +0300
-Message-ID: <20130729093258.GF23710@radagast>
-References: <1375082550-30544-1-git-send-email-sourav.poddar@ti.com>
- <1375082550-30544-3-git-send-email-sourav.poddar@ti.com>
-Reply-To: <balbi@ti.com>
+From: "Darty" <contact-yGSCEJzUJ/9GWvitb5QawA@public.gmane.org>
+Subject: Gagnez un bon d'achat de 500 euros
+Date: Mon, 29 Jul 2013 09:37:49 +0000 (CET)
+Message-ID: <130729093749.115160337500003272@ocfm42.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="oxV4ZoPwBLqAyY+a"
-Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <linux-omap@vger.kernel.org>,
-	<rnayak@ti.com>, <balbi@ti.com>
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1375082550-30544-3-git-send-email-sourav.poddar@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---oxV4ZoPwBLqAyY+a
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Jul 29, 2013 at 12:52:30PM +0530, Sourav Poddar wrote:
-> Since, qspi controller uses quad read.
->=20
-> Configuring the command register, if the transfer of data needs
-> dual or quad lines.
->=20
-> This patch has been done on top of the following patch[1], which is just =
-the
-> basic idea of adding dual/quad support in spi framework.
-> $subject patch will undergo changes with the ongoing discussion in the
-> community.
->=20
-> This patch is posted to demonstrate how patch 1 of the series will support
-> quad read.
->=20
-> [1]: http://comments.gmane.org/gmane.linux.kernel.spi.devel/14047
->=20
-> Signed-off-by: Sourav Poddar <sourav.poddar@ti.com>
-> ---
->  drivers/spi/spi-ti-qspi.c |   16 ++++++++++++++--
->  1 files changed, 14 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-> index 51fe95f..8a32b1c 100644
-> --- a/drivers/spi/spi-ti-qspi.c
-> +++ b/drivers/spi/spi-ti-qspi.c
-> @@ -86,6 +86,7 @@ struct ti_qspi {
->  #define QSPI_3_PIN			(1 << 18)
->  #define QSPI_RD_SNGL			(1 << 16)
->  #define QSPI_WR_SNGL			(2 << 16)
-> +#define	QSPI_RD_DUAL			(3 << 16)
->  #define QSPI_RD_QUAD			(7 << 16)
-
-so RD_QUAD is defined in previous patch but not RD_DUAL ? What gives ?
-
-IMHO, just merge this patch with previous and make the entire driver
-depend on the other patch.
-
---=20
-balbi
-
---oxV4ZoPwBLqAyY+a
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR9jbKAAoJEIaOsuA1yqREyqkP/0Hlz02fH1NExj8nI7xfEyVt
-uhoWRa80zjZKFXmKymHkkA2XYt/M2vAAAU2YBLifA7g3R/v0UdgBfm0ZG1QKJEin
-gbxAiwxelGifJx5VOzh+SyJ/TrnU0o9TUC3QFJ5E9bImpDE73dboB/xxiQ+r4pov
-BPieUV6gCVXxN39H0lo9dzC4MKZfzzeUQ7gPr08qndcpsG4UuQgU6hdqNWcacJBh
-ba5XZWn6yWBRDLXkarTeYZboYoXPGBfx5vE2tETFQgqq6gncFIFuBwl/Il+g5GgT
-AMA2/INgb/ZisgiXBFDXCxHQMZYCUoQ9BWLFpQaJCcHnIXDjhldsP4u1FAGQJZz9
-Jw7fMC2qtEZ//7TqALks1/uxA/x/ubi9OYA/N8bkj1IExev9ohRNtQptJyJY/nE1
-ApDwucW0RQaO7o1fXwECd0rh/WMgHM+W9Haeo2/gaYHJv9NcFUgBTfbxCxNjE8X8
-kc2HFnbP1A9oHazWDaPgHHjw4E7KGe7nisN0tv9RdMtcJPgdJxJTNEK7MjJ0gG8k
-Z+gS/B/1BhW324QJRvO9BZTNTutHsNxADn4aSlpvjw8BQscMicR3gdzXaIqWnnn6
-zW3CmFTDVIGVXJNNp0aNAco/DKszqizhQBgqEtsX/e7tYdY/jeuRY4yWRuWUs48/
-kxjDsWG0SoH5/n53j30F
-=TQey
------END PGP SIGNATURE-----
-
---oxV4ZoPwBLqAyY+a--
+CihodHRwOi8vb2NmbTQyLmNvbS9hNGQwazV1ejN0dXAzaGJ1dnkvaW5kZXgwLmh0bWwpCk9yZGlu
+YXRldXJzIMKg4oCiwqAgR2FtaW5nIMKg4oCiwqAgTW9iaWxlIMKg4oCiwqAgQXBwYXJlaWxzCkdh
+Z25leiB1biBib24gZCdhY2hhdCBkZQoKNTAw4oKsIENoZXogRGFydHkKKGh0dHA6Ly9vY2ZtNDIu
+Y29tL2lyZGZmNXhiMzR6NXBpMHVrbC9pbmRleDEuaHRtbCkKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+ClNlZSBldmVyeXRoaW5nIGZyb20gdGhlIGJyb3dzZXIgdG8gdGhlIGRhdGFiYXNlIHdpdGggQXBw
+RHluYW1pY3MKR2V0IGVuZC10by1lbmQgdmlzaWJpbGl0eSB3aXRoIGFwcGxpY2F0aW9uIG1vbml0
+b3JpbmcgZnJvbSBBcHBEeW5hbWljcwpJc29sYXRlIGJvdHRsZW5lY2tzIGFuZCBkaWFnbm9zZSBy
+b290IGNhdXNlIGluIHNlY29uZHMuClN0YXJ0IHlvdXIgZnJlZSB0cmlhbCBvZiBBcHBEeW5hbWlj
+cyBQcm8gdG9kYXkhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9p
+ZD00ODgwODgzMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
+Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

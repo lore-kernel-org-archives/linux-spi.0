@@ -1,20 +1,14 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCHv6 1/2] drivers: spi: Add qspi flash controller
-Date: Mon, 29 Jul 2013 16:45:02 +0530
-Message-ID: <51F64EB6.5020807@ti.com>
-References: <1375082550-30544-1-git-send-email-sourav.poddar@ti.com>
-	<1375082550-30544-2-git-send-email-sourav.poddar@ti.com>
-	<20130729093128.GE23710@radagast> <51F63FF3.5070304@ti.com>
-	<20130729102038.GK23710@radagast> <51F64C49.4080606@ti.com>
-	<20130729110902.GE24801@radagast>
+From: Trivago Bons Plans <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Derni=E8res_minutes_=E9t=E9_:_h=F4t?=
+	=?ISO-8859-1?Q?els_4*_=E0_partir_de_41_euros?=
+Date: Mon, 29 Jul 2013 13:46:02 +0200 (CEST)
+Message-ID: <fv67pw.hjpm2732mlxig3l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, rnayak-l0cyMroinI0@public.gmane.org
-To: <balbi-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130729110902.GE24801@radagast>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -25,41 +19,68 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday 29 July 2013 04:39 PM, Felipe Balbi wrote:
-> Hi,
->
-> On Mon, Jul 29, 2013 at 04:34:41PM +0530, Sourav Poddar wrote:
->>>>>> +	irq = platform_get_irq(pdev, 0);
->>>>>> +	if (irq<    0) {
->>>>>> +		dev_err(&pdev->dev, "no irq resource?\n");
->>>>>> +		return irq;
->>>>>> +	}
->>>>>> +
->>>>>> +	spin_lock_init(&qspi->lock);
->>>>>> +
->>>>>> +	qspi->base = devm_ioremap_resource(&pdev->dev, r);
->>>>>> +	if (IS_ERR(qspi->base)) {
->>>>>> +		ret = PTR_ERR(qspi->base);
->>>>>> +		goto free_master;
->>>>>> +	}
->>>>>> +
->>>>>> +	ret = devm_request_threaded_irq(&pdev->dev, irq, ti_qspi_isr,
->>>>>> +			ti_qspi_threaded_isr, IRQF_NO_SUSPEND | IRQF_ONESHOT,
->>>>> why do you need IRQF_NO_SUSPEND ?
->>>>>
->>>> I should get away with this.
->>> why ? Do you need or do you *not* need it ? And in either case, why ?
->>>
->> I was thinking, this will keep the irqs up even when we are
->> hitting suspend, we will not be prepared to handle it. ?
-> won't be prepared in what way ?
->
-Our driver will be down, so the irq might go un-serviced.
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgq33pI7gfk57dIhjpm233gI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375098357320%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DLKDONHCJHBEANGJH%26mid%3D1600211509&s=3DL=
+DNDPBHMJPMFPOBO
+ =
 
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
+=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
+=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
+de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
+Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
+ minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
+=E9t=E9 : h=F4tels 4* =E0 partir de 41 euros
+ =
 
-------------------------------------------------------------------------------
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600211509&sig=3DAMPMBGJOELAGDDCJ&st=3D0
+---------------------------------------------------------------------------=
+---
 See everything from the browser to the database with AppDynamics
 Get end-to-end visibility with application monitoring from AppDynamics
 Isolate bottlenecks and diagnose root cause in seconds.
 Start your free trial of AppDynamics Pro today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48808831&iu=3D/4140/ostg.cl=
+ktrk

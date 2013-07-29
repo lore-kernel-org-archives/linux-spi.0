@@ -1,133 +1,283 @@
-From: Felipe Balbi <balbi@ti.com>
-Subject: Re: [PATCHv6 1/2] drivers: spi: Add qspi flash controller
-Date: Mon, 29 Jul 2013 13:20:38 +0300
-Message-ID: <20130729102038.GK23710@radagast>
-References: <1375082550-30544-1-git-send-email-sourav.poddar@ti.com>
- <1375082550-30544-2-git-send-email-sourav.poddar@ti.com>
- <20130729093128.GE23710@radagast>
- <51F63FF3.5070304@ti.com>
-Reply-To: <balbi@ti.com>
+From: wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] SPI: DUAL and QUAD support
+Date: Mon, 29 Jul 2013 18:53:14 +0800
+Message-ID: <1375095194-7093-1-git-send-email-wangyuhang2014@gmail.com>
+References: <20130729064234.GS9858@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="GOzekVbrLdOLv44p"
-Cc: <balbi@ti.com>, <broonie@kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <linux-omap@vger.kernel.org>,
-	<rnayak@ti.com>
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <51F63FF3.5070304@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
+	tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130729064234.GS9858-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
-
---GOzekVbrLdOLv44p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Mon, Jul 29, 2013 at 03:42:03PM +0530, Sourav Poddar wrote:
-> >>+	frame_length =3D (m->frame_length<<  3) / spi->bits_per_word;
-> >there's another way to optimize this. If you assume bits_per_word to
-> >always be power of two you can:
-> >
-> >	frame_length =3D (m->frame_length<<  3)>>  __ffs(spi->bits_per_word);
-> >
-> >but that would need a comment stating that you're assuming bits_per_word
-> >to always be a power of two. Not sure if this is a correct assumption.
-> >
-> I dont think it will be a correct assumption, since our controller is
-> flexible to
-> handle anything from 1 to 128 as bits_per_word.
+modify two things.
+1:
+>> @@ -1316,6 +1324,12 @@ int spi_setup(struct spi_device *spi)
+>>         /* help drivers fail *cleanly* when they need options
+>>          * that aren't supported with their current master
+>>          */
+>> +       if (((spi->mode >> 8) & 0x03) == 0x03 ||
+>> +               ((spi->mode >> 10) & 0x03) == 0x03) {
+>> +               dev_err(&spi->dev,
+>> +               "setup: can not select dual and quad at the same time\n")
+>> +               return -EINVAL;
+>> +       }
+>> +               return -EINVAL;
+>> +       }
 
-right, but can the framework handle non-power-of-two bits_per_word ?
+>This code won't work if the constants you added for mode flags change
+>value.  More importantly, anyone searching the code for SPI_TX_DUAL,
+>etc. won't find this code.
 
-> >>+	spin_unlock(&qspi->lock);
-> >You should, before releasing the lock, mask your IRQs, so that you can
-> >get rid of IRQF_ONESHOT. Unmask them before returning from the IRQ
-> >thread.
-> >
-> Sorry, did not get  you here?
->  I am reading interrupt status register before and clearing them in
-> the threaded irq.
+so use the certain macro to replace.
 
-you need to mask the IRQs, clear WC and FIRQ in IRQENABLE register...
-set them back at the end of the thread handler.
+2:
+>You need to make sure that existing userspace binaries can run
+>unmodified, changing the types will change the layout of the ioctl
+>arguments.  This may mean that you need to add new ioctls if you need to
+>change types.
 
-> >>+static int ti_qspi_probe(struct platform_device *pdev)
-> >>+{
-> >>+	struct  ti_qspi *qspi;
-> >>+	struct spi_master *master;
-> >>+	struct resource         *r;
-> >>+	struct device_node *np =3D pdev->dev.of_node;
-> >>+	u32 max_freq;
-> >>+	int ret =3D 0, num_cs, irq;
-> >>+
-> >>+	master =3D spi_alloc_master(&pdev->dev, sizeof(*qspi));
-> >>+	if (!master)
-> >>+		return -ENOMEM;
-> >>+
-> >>+	master->mode_bits =3D SPI_CPOL | SPI_CPHA;
-> >>+
-> >>+	master->num_chipselect =3D 1;
-> >again with the num_chipselect =3D 1 ? IIRC this controller has 4
-> >chipselects, just read 24.5.1 on your TRM.
-> >
-> this is unnecessary. I intended to configure chip selects through
-> dt)as done below).
-> Will remove.
+I recovered the SPI_IOC_RD_LSB_FIRST ioctl.
+Add new ioctl to fit u16 mode.
+In addition,may SPI_IOC_RD_LSB_FIRST should be del in a better way.
 
-which brings me to the point of:
+Signed-off-by: wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi.c               |   14 ++++++++++++++
+ drivers/spi/spidev.c            |   29 ++++++++++++++++++++++++++++-
+ include/linux/spi/spi.h         |   20 ++++++++++++++++++--
+ include/uapi/linux/spi/spidev.h |   17 ++++++++++++++++-
+ 4 files changed, 76 insertions(+), 4 deletions(-)
 
-Do you review your own code before sending it out ? Doesn't look like...
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 004b10f..3f6dc93 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -868,6 +868,14 @@ static void of_register_spi_devices(struct spi_master *master)
+ 			spi->mode |= SPI_CS_HIGH;
+ 		if (of_find_property(nc, "spi-3wire", NULL))
+ 			spi->mode |= SPI_3WIRE;
++		if (of_find_property(nc, "spi-tx-dual", NULL))
++			spi->mode |= SPI_TX_DUAL;
++		if (of_find_property(nc, "spi-tx-quad", NULL))
++			spi->mode |= SPI_TX_QUAD;
++		if (of_find_property(nc, "spi-rx-dual", NULL))
++			spi->mode |= SPI_RX_DUAL;
++		if (of_find_property(nc, "spi-rx-quad", NULL))
++			spi->mode |= SPI_RX_QUAD;
+ 
+ 		/* Device speed */
+ 		prop = of_get_property(nc, "spi-max-frequency", &len);
+@@ -1316,6 +1324,12 @@ int spi_setup(struct spi_device *spi)
+ 	/* help drivers fail *cleanly* when they need options
+ 	 * that aren't supported with their current master
+ 	 */
++	if (((spi->mode & SPI_TX_DUAL) && (spi->mode & SPI_TX_QUAD)) ||
++		((spi->mode & SPI_RX_DUAL) && (spi->mode & SPI_RX_QUAD))) {
++		dev_err(&spi->dev,
++		"setup: can not select dual and quad at the same time\n");
++		return -EINVAL;
++	}
+ 	bad_bits = spi->mode & ~spi->master->mode_bits;
+ 	if (bad_bits) {
+ 		dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 2e0655d..0b776de 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -75,6 +75,9 @@ static DECLARE_BITMAP(minors, N_SPI_MINORS);
+ 				| SPI_LSB_FIRST | SPI_3WIRE | SPI_LOOP \
+ 				| SPI_NO_CS | SPI_READY)
+ 
++#define SPI_EXTMODE_MASK	(SPI_MODE_MASK | SPI_TX_DUAL \
++				| SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)
++
+ struct spidev_data {
+ 	dev_t			devt;
+ 	spinlock_t		spi_lock;
+@@ -268,6 +271,8 @@ static int spidev_message(struct spidev_data *spidev,
+ 		k_tmp->bits_per_word = u_tmp->bits_per_word;
+ 		k_tmp->delay_usecs = u_tmp->delay_usecs;
+ 		k_tmp->speed_hz = u_tmp->speed_hz;
++		k_tmp->tx_nbits = u_tmp->tx_nbits;
++		k_tmp->rx_nbits = u_tmp->rx_nbits;
+ #ifdef VERBOSE
+ 		dev_dbg(&spidev->spi->dev,
+ 			"  xfer len %zd %s%s%s%dbits %u usec %uHz\n",
+@@ -369,7 +374,10 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 	case SPI_IOC_RD_MAX_SPEED_HZ:
+ 		retval = __put_user(spi->max_speed_hz, (__u32 __user *)arg);
+ 		break;
+-
++	case SPI_IOC_EXTRD_MODE:
++		retval = __put_user(spi->mode & SPI_EXTMODE_MASK,
++					(__u16 __user *)arg);
++		break;
+ 	/* write requests */
+ 	case SPI_IOC_WR_MODE:
+ 		retval = __get_user(tmp, (u8 __user *)arg);
+@@ -433,6 +441,25 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 				dev_dbg(&spi->dev, "%d Hz (max)\n", tmp);
+ 		}
+ 		break;
++	case SPI_IOC_EXTWR_MODE:
++		retval = __get_user(tmp, (u16 __user *)arg);
++		if (retval == 0) {
++			u16	save = spi->mode;
++
++			if (tmp & ~SPI_EXTMODE_MASK) {
++				retval = -EINVAL;
++				break;
++			}
++
++			tmp |= spi->mode & ~SPI_EXTMODE_MASK;
++			spi->mode = (u16)tmp;
++			retval = spi_setup(spi);
++			if (retval < 0)
++				spi->mode = save;
++			else
++				dev_dbg(&spi->dev, "spi mode %02x\n", tmp);
++		}
++		break;
+ 
+ 	default:
+ 		/* segmented and/or full-duplex I/O request */
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 38c2b92..222e49e 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -74,7 +74,7 @@ struct spi_device {
+ 	struct spi_master	*master;
+ 	u32			max_speed_hz;
+ 	u8			chip_select;
+-	u8			mode;
++	u16			mode;
+ #define	SPI_CPHA	0x01			/* clock phase */
+ #define	SPI_CPOL	0x02			/* clock polarity */
+ #define	SPI_MODE_0	(0|0)			/* (original MicroWire) */
+@@ -87,6 +87,10 @@ struct spi_device {
+ #define	SPI_LOOP	0x20			/* loopback mode */
+ #define	SPI_NO_CS	0x40			/* 1 dev/bus, no chipselect */
+ #define	SPI_READY	0x80			/* slave pulls low to pause */
++#define	SPI_TX_DUAL	0x100			/* transmit with 2 wires */
++#define	SPI_TX_QUAD	0x200			/* transmit with 4 wires */
++#define	SPI_RX_DUAL	0x400			/* receive with 2 wires */
++#define	SPI_RX_QUAD	0x800			/* receive with 4 wires */
+ 	u8			bits_per_word;
+ 	int			irq;
+ 	void			*controller_state;
+@@ -437,6 +441,8 @@ extern struct spi_master *spi_busnum_to_master(u16 busnum);
+  * @rx_buf: data to be read (dma-safe memory), or NULL
+  * @tx_dma: DMA address of tx_buf, if @spi_message.is_dma_mapped
+  * @rx_dma: DMA address of rx_buf, if @spi_message.is_dma_mapped
++ * @tx_nbits: number of bits used for writting
++ * @rx_nbits: number of bits used for reading
+  * @len: size of rx and tx buffers (in bytes)
+  * @speed_hz: Select a speed other than the device default for this
+  *      transfer. If 0 the default (from @spi_device) is used.
+@@ -491,6 +497,11 @@ extern struct spi_master *spi_busnum_to_master(u16 busnum);
+  * by the results of previous messages and where the whole transaction
+  * ends when the chipselect goes intactive.
+  *
++ * When SPI can transfer in 1x,2x or 4x. It can get this tranfer information
++ * from device through @tx_nbits and @rx_nbits. In Bi-direction, these
++ * two should both be set. User can set transfer mode with SPI_NBITS_SINGLE(1x)
++ * SPI_NBITS_DUAL(2x) and SPI_NBITS_QUAD(4x) to support these three transfer.
++ *
+  * The code that submits an spi_message (and its spi_transfers)
+  * to the lower layers is responsible for managing its memory.
+  * Zero-initialize every field you don't set up explicitly, to
+@@ -511,6 +522,11 @@ struct spi_transfer {
+ 	dma_addr_t	rx_dma;
+ 
+ 	unsigned	cs_change:1;
++	u8		tx_nbits;
++	u8		rx_nbits;
++#define	SPI_NBITS_SINGLE	0x0; /* 1bit transfer */
++#define	SPI_NBITS_DUAL		0x01; /* 2bits transfer */
++#define	SPI_NBITS_QUAD		0x02; /* 4bits transfer */
+ 	u8		bits_per_word;
+ 	u16		delay_usecs;
+ 	u32		speed_hz;
+@@ -858,7 +874,7 @@ struct spi_board_info {
+ 	/* mode becomes spi_device.mode, and is essential for chips
+ 	 * where the default of SPI_CS_HIGH = 0 is wrong.
+ 	 */
+-	u8		mode;
++	u16		mode;
+ 
+ 	/* ... may need additional spi_device chip config data here.
+ 	 * avoid stuff protocol drivers can set; but include stuff
+diff --git a/include/uapi/linux/spi/spidev.h b/include/uapi/linux/spi/spidev.h
+index 52d9ed0..4d47e8a 100644
+--- a/include/uapi/linux/spi/spidev.h
++++ b/include/uapi/linux/spi/spidev.h
+@@ -42,7 +42,14 @@
+ #define SPI_LOOP		0x20
+ #define SPI_NO_CS		0x40
+ #define SPI_READY		0x80
+-
++#define	SPI_TX_DUAL		0x100
++#define	SPI_TX_QUAD		0x200
++#define	SPI_RX_DUAL		0x400
++#define	SPI_RX_QUAD		0x800
++
++#define	SPI_NBITS_SINGLE	0x0; /* 1bit transfer */
++#define	SPI_NBITS_DUAL		0x01; /* 2bits transfer */
++#define	SPI_NBITS_QUAD		0x02; /* 4bits transfer */
+ /*---------------------------------------------------------------------------*/
+ 
+ /* IOCTL commands */
+@@ -54,6 +61,8 @@
+  * @tx_buf: Holds pointer to userspace buffer with transmit data, or null.
+  *	If no data is provided, zeroes are shifted out.
+  * @rx_buf: Holds pointer to userspace buffer for receive data, or null.
++ * @tx_nbits: number of bits used for writting.
++ * @rx_nbits: number of bits used for reading.
+  * @len: Length of tx and rx buffers, in bytes.
+  * @speed_hz: Temporary override of the device's bitrate.
+  * @bits_per_word: Temporary override of the device's wordsize.
+@@ -85,6 +94,8 @@
+ struct spi_ioc_transfer {
+ 	__u64		tx_buf;
+ 	__u64		rx_buf;
++	__u8		tx_nbits;
++	__u8		rx_nbits;
+ 
+ 	__u32		len;
+ 	__u32		speed_hz;
+@@ -126,6 +137,10 @@ struct spi_ioc_transfer {
+ #define SPI_IOC_RD_MAX_SPEED_HZ		_IOR(SPI_IOC_MAGIC, 4, __u32)
+ #define SPI_IOC_WR_MAX_SPEED_HZ		_IOW(SPI_IOC_MAGIC, 4, __u32)
+ 
++/* Read / Write of SPI mode (including SPI DUAL/QUAD) */
++#define SPI_IOC_EXTRD_MODE		_IOR(SPI_IOC_MAGIC, 5, __u16)
++#define SPI_IOC_EXTWR_MODE		_IOW(SPI_IOC_MAGIC, 5, __u16)
++
+ 
+ 
+ #endif /* SPIDEV_H */
+-- 
+1.7.9.5
 
-> >>+	irq =3D platform_get_irq(pdev, 0);
-> >>+	if (irq<  0) {
-> >>+		dev_err(&pdev->dev, "no irq resource?\n");
-> >>+		return irq;
-> >>+	}
-> >>+
-> >>+	spin_lock_init(&qspi->lock);
-> >>+
-> >>+	qspi->base =3D devm_ioremap_resource(&pdev->dev, r);
-> >>+	if (IS_ERR(qspi->base)) {
-> >>+		ret =3D PTR_ERR(qspi->base);
-> >>+		goto free_master;
-> >>+	}
-> >>+
-> >>+	ret =3D devm_request_threaded_irq(&pdev->dev, irq, ti_qspi_isr,
-> >>+			ti_qspi_threaded_isr, IRQF_NO_SUSPEND | IRQF_ONESHOT,
-> >why do you need IRQF_NO_SUSPEND ?
-> >
-> I should get away with this.
 
-why ? Do you need or do you *not* need it ? And in either case, why ?
-
---=20
-balbi
-
---GOzekVbrLdOLv44p
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR9kH2AAoJEIaOsuA1yqRE6m4QAK3cwXOJ8v0kAoG0DoSmIUVi
-xpWDr+cDsaUHgNqG+GiZElVZ7se62ig+ET5qjamsOmZmfYG4K4/LfvaIbU3Oot1L
-sbFZckdfCYLBcowRUhDoWB9Nm4cFX1Tz+9P+5BT8INHXJjbygcP+L9bgowgAkxRS
-zkkhENVaCCcT09NE+YAoZNEidgr+2aAPQjDxC9Lmfuamim89czKX6vpxpyHaa6ZA
-z8GeHOP0eIx7i/7GgozhVVCWCC4sm3iRUwh1UAqf/bJDafNbCkB6JnlefsbmYixG
-MHZ67mqwrA2K5dpY3NZjU4sf3XsSmIGf51CXYQASrUJ2HJrpUafAnMvkefi5lWiJ
-G+I0pIJIohwbExPgjkht3+7Y4tt1QFwdUhvytNYWHM408lVhyqIDmOkhe36DQaEZ
-CfDhTdBriJ3+FDydkhVDbzsKNrEUrcNTeofk7lmVE6CEvafjePjr+v1+n3ivskEa
-Vj/4vW8iPBa1NuMBQrvyDGi9H3IePZmkUexZL+hMBoj188VLpxvn1MhcH+txzpwp
-Ymwp9VmFvL21RrFmi4SFfEkSz8HiVH4/zxRzZYlTUwb66fN7THQ8B8Ay3QLhyXh4
-SVF5TSq8d7KXhVGqN6qar+MbUtRDKfwOhirRWySCJ8DKwvOjlZHL0NGFxBxdTd0v
-l8aoWZHnWjJysHlLe6bz
-=otby
------END PGP SIGNATURE-----
-
---GOzekVbrLdOLv44p--
+------------------------------------------------------------------------------
+See everything from the browser to the database with AppDynamics
+Get end-to-end visibility with application monitoring from AppDynamics
+Isolate bottlenecks and diagnose root cause in seconds.
+Start your free trial of AppDynamics Pro today!
+http://pubads.g.doubleclick.net/gampad/clk?id=48808831&iu=/4140/ostg.clktrk

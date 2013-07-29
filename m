@@ -1,37 +1,36 @@
-From: Tele-protect <news-PkcECQhVGYM@public.gmane.org>
-Subject: [SPAM] La telesurveillance au coeur de votre securite
-Date: Mon, 29 Jul 2013 16:42:07 -0100
-Message-ID: <a3rgkqU11t2Pfcjy7Eq7M6-5To5tiIaGtdUfOci3Oss@zaloo.fr>
-Reply-To: Tele-protect <news-PkcECQhVGYM@public.gmane.org>
+From: Christian Eggers <ceggers@gmx.de>
+Subject: [resubmit2] [PATCH] spi: spi-davinci: Fix direction in dma_map_single()
+Date: Mon, 29 Jul 2013 20:54:09 +0200
+Message-ID: <1388690.s58sU4PUYE@p2400>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-PkcECQhVGYM@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Transfer-Encoding: 7Bit
+Cc: linux-kernel@vger.kernel.org, trivial@kernel.org
+To: spi-devel-general@lists.sourceforge.net,
+	Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
- Tele-protect /**/ Pour visualiser correctement ce message, acc=C3=A9dez =
-=C3=A0 la version en ligne, ou signaler comme ind=C3=A9sirable Acc=C3=A9dez=
- =C3=A0 la version en ligne du message. La t=C3=89l=C3=89surveillanceau coe=
-ur de votre s=C3=A9curit=C3=A9 Alerte =C3=A0 la police2 protection 24h/24 C=
-ontr=C3=B4le =C3=A0 distance =C2=A0 1 Sur l'abonnement de t=C3=A9l=C3=A9sur=
-veillance.2 Apr=C3=A8s lev=C3=A9e de doute av=C3=A9r=C3=A9e selon les condi=
-tions de l'article L.613-6 du code de la s=C3=A9curit=C3=A9 int=C3=A9rieure=
-. =C2=A0 Si vous ne souhaitez plus recevoir nos emails, veuillez suivre ce =
-lien. Si vous n''arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d''=C3=
-=A9crire =C3=A0 stop-PkcECQhVGYM@public.gmane.org
-------------------------------------------------------------------------------
-Get your SQL database under version control now!
-Version control is standard for application code, but databases havent 
-caught up. So what steps can you take to put your SQL databases under 
-version control? Why should you start doing it? Read more to find out.
-http://pubads.g.doubleclick.net/gampad/clk?id=49501711&iu=/4140/ostg.clktrk
+The following patch I already sent on 2013-04-18 and 2013-06-06. 
+Unfortunately it hasn't been committed yet.
+
+Commit 048177ce3b3962852fd34a7e04938959271c7e70 (spi: spi-davinci: 
+convert to DMA engine API) introduced a regression: dma_map_single() 
+is called with direction DMA_FROM_DEVICE for rx and for tx.
+
+Signed-off-by: Christian Eggers <ceggers@gmx.de>
+Cc: stable@vger.kernel.org # v3.7.x+
+Acked-by: Matt Porter <mporter@ti.com>
+---
+--- drivers/spi/spi-davinci.c.orig	2013-04-18 20:54:02.728719412 +0200
++++ drivers/spi/spi-davinci.c	2013-04-18 20:54:51.900623956 +0200
+@@ -608,7 +608,7 @@ static int davinci_spi_bufs(struct spi_d
+ 		else
+ 			buf = (void *)t->tx_buf;
+ 		t->tx_dma = dma_map_single(&spi->dev, buf,
+-				t->len, DMA_FROM_DEVICE);
++				t->len, DMA_TO_DEVICE);
+ 		if (!t->tx_dma) {
+ 			ret = -EFAULT;
+ 			goto err_tx_map;

@@ -1,140 +1,102 @@
-From: Felipe Balbi <balbi@ti.com>
-Subject: Re: [PATCHv6 1/2] drivers: spi: Add qspi flash controller
-Date: Tue, 30 Jul 2013 10:38:21 +0300
-Message-ID: <20130730073821.GF16441@radagast>
-References: <1375082550-30544-1-git-send-email-sourav.poddar@ti.com>
- <1375082550-30544-2-git-send-email-sourav.poddar@ti.com>
- <20130729093128.GE23710@radagast>
- <51F63FF3.5070304@ti.com>
- <20130729102038.GK23710@radagast>
- <51F64C49.4080606@ti.com>
- <20130729110902.GE24801@radagast>
- <51F64EB6.5020807@ti.com>
- <20130729123515.GJ24801@radagast>
- <51F76C84.8080601@ti.com>
-Reply-To: <balbi@ti.com>
+From: Royal-Slim <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Jusqu'=E0_45_kilos_en_tout_juste_4_mois._Naturellement?=
+Date: Tue, 30 Jul 2013 12:42:54 +0200 (CEST)
+Message-ID: <fzpi13.hjqz8uxy2ps158l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="bGR76rFJjkSxVeRa"
-Cc: <balbi@ti.com>, <broonie@kernel.org>,
-	<spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <linux-omap@vger.kernel.org>,
-	<rnayak@ti.com>
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <51F76C84.8080601@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---bGR76rFJjkSxVeRa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgq3mmI7gfk57dIhjqz8lrgI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375180962622%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DMLHPIJBPNILBDOHF%26mid%3D1600212190&s=3DI=
+ALDFNCLLOIHFFNE
+ =
 
-Hi,
+Jusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en=
+ tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. N=
+aturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0=
+ 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout jus=
+te 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturellem=
+entJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos=
+ en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois=
+. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=
+=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout =
+juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturel=
+lementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 ki=
+los en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 m=
+ois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJus=
+qu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en to=
+ut juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Natu=
+rellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45=
+ kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste =
+4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturellement=
+Jusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en=
+ tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. N=
+aturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0=
+ 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout jus=
+te 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturellem=
+entJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos=
+ en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois=
+. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=
+=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout =
+juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturel=
+lementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 ki=
+los en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 m=
+ois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJus=
+qu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en to=
+ut juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Natu=
+rellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45=
+ kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste =
+4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturellement=
+Jusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en=
+ tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. N=
+aturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0=
+ 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout jus=
+te 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturellem=
+entJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos=
+ en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois=
+. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=
+=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout =
+juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturel=
+lementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 ki=
+los en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 m=
+ois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJus=
+qu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en to=
+ut juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Natu=
+rellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45=
+ kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste =
+4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturellement=
+Jusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en=
+ tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. N=
+aturellementJusqu'=E0 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0=
+ 45 kilos en tout juste 4 mois. NaturellementJusqu'=E0 45 kilos en tout jus=
+te 4 mois. NaturellementJusqu'=E0 45 kilos en tout juste 4 mois. Naturellem=
+ent
+ =
 
-On Tue, Jul 30, 2013 at 01:04:28PM +0530, Sourav Poddar wrote:
-> Hi Felipe,
-> On Monday 29 July 2013 06:05 PM, Felipe Balbi wrote:
-> >Hi,
-> >
-> >On Mon, Jul 29, 2013 at 04:45:02PM +0530, Sourav Poddar wrote:
-> >>>>>>>>+	irq =3D platform_get_irq(pdev, 0);
-> >>>>>>>>+	if (irq<     0) {
-> >>>>>>>>+		dev_err(&pdev->dev, "no irq resource?\n");
-> >>>>>>>>+		return irq;
-> >>>>>>>>+	}
-> >>>>>>>>+
-> >>>>>>>>+	spin_lock_init(&qspi->lock);
-> >>>>>>>>+
-> >>>>>>>>+	qspi->base =3D devm_ioremap_resource(&pdev->dev, r);
-> >>>>>>>>+	if (IS_ERR(qspi->base)) {
-> >>>>>>>>+		ret =3D PTR_ERR(qspi->base);
-> >>>>>>>>+		goto free_master;
-> >>>>>>>>+	}
-> >>>>>>>>+
-> >>>>>>>>+	ret =3D devm_request_threaded_irq(&pdev->dev, irq, ti_qspi_isr,
-> >>>>>>>>+			ti_qspi_threaded_isr, IRQF_NO_SUSPEND | IRQF_ONESHOT,
-> >>>>>>>why do you need IRQF_NO_SUSPEND ?
-> >>>>>>>
-> >>>>>>I should get away with this.
-> >>>>>why ? Do you need or do you *not* need it ? And in either case, why ?
-> >>>>>
-> >>>>I was thinking, this will keep the irqs up even when we are
-> >>>>hitting suspend, we will not be prepared to handle it. ?
-> >>>won't be prepared in what way ?
-> >>>
-> >>Our driver will be down, so the irq might go un-serviced.
-> >only if you wrote the driver that way. IRQ subsystem doesn't know the
-> >state of the device, all it knows is that in case an IRQ fires, it needs
-> >to call the registered IRQ handler.
-> >
-> >Now the thing is:
-> >
-> >Initially you had the flag setup, so I asked why you needed it. I
-> >expected you to tell me why you think QSPI's IRQ shouldn't be disabled
-> >during suspend and the implications of disabling it.
-> >
-> >Instead you just changed your mind and decided to remove the flag.
-> >
-> >Because you changed your mind with no explanation, that tells me you
-> >haven't fully grasped how that flag works and what it means to set (or
-> >not set) it.
-> >
-> >My question now is simply: why don't you need that flag ? What are the
-> >implications of setting that flag ? How would your driver behave if an
-> >IRQ fired while your driver was suspended ? Unless you understand what
-> >it does, how can you understand the behavior or the driver ?
-> >
-> >cheers
-> >
-> We dont need IRQF_NO_SUSPEND flag in our qspi controller.
->=20
-> Qspi driver need to be prevented from receiving interrupts during
-> system wide suspend/hibernation.
-> "suspend_device_irqs" in kernel/irq/pm.c marks interrupt line in use
-> and sets IRQS_SUSPENDED
-> for them.
-> If we use "IRQF_NO_SUSPEND", we will bypass setting this
-> IRQS_SUSPENDED flag, which is not.
-> desired
->=20
->=20
-> For this, interrupt lines need to
->  and this function is provided for this purpose.
->  * It marks all interrupt lines in use, except for the timer ones, as
-> disabled
->  * and sets the IRQS_SUSPENDED flag for each of them.
->=20
-> This flag gets used in __disable_irq api(kernel/irq/manage.c) which
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600212190&sig=3DCNAHIHLPMPEPELEO&st=3D0
+---------------------------------------------------------------------------=
+---
+Get your SQL database under version control now!
+Version control is standard for application code, but databases havent =
 
-some formatting issues in the mail, but good that you looked at the
-code. Cheers
+caught up. So what steps can you take to put your SQL databases under =
 
---=20
-balbi
-
---bGR76rFJjkSxVeRa
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR921tAAoJEIaOsuA1yqREsQgP/2qaiU/Np8HxgQGRZaFdDN+4
-sJMy0nMlYafAM1HcaEetZXiz9vYBf9Svx1ziEkV0dSH5SDKNZMUg0JbY8lZgTsUf
-FQxynbXFJCBST4TVp0nHIT/na+tdXe26gevMMahUusS/CX4zDFpynWRZKnbMwdC3
-ARIRCczQ6C1L6nlKJpFzofmgozvSlKYkJQBNQmNOScHM4MBPFOP2Y+4nATLaDrQQ
-MRObH+8wazvg4ByfOiQhcChF0W0GxUBMfkZlMW8eTHJ979JIekVYVQpi+23u3o1C
-D4JNW8tXwnGoPTPu2u1N97UrbOlCgFHYVeZIVrrpmZg+ih9csn5cpmdXMBXLoBvv
-ozqMKGPMaFnN6ue11aOz0gsSJ8clyOEw9RVkmFEllkfgmg9smAgHcBeNW/hVosvf
-LgJTg9kJwmfj9W/XtdT0B/wDgSmS8veX4IjxEYwvsRKr5AVEOyr+RITXmVBY6qZ2
-uG8VNPkrzM18xzBGsfyg0j04ZfxvqF6qhfzpPh2GAO9xApb5WhhrIJr6lLcOusq2
-jsBR8vp87JmUvy9qNeq05GIrgRwq6yEhpYZJsPU/0VOS+eqjRwXK9z6ZwN+va9hY
-/mW/aRD0dWBGAKQVAtuE9KolkCw/bzDNUNhzLkpqqm9imdmYatrnq4F3LDSzb9Jw
-q3DnD34TuM57HNCjxT7R
-=fPPH
------END PGP SIGNATURE-----
-
---bGR76rFJjkSxVeRa--
+version control? Why should you start doing it? Read more to find out.
+http://pubads.g.doubleclick.net/gampad/clk?id=3D49501711&iu=3D/4140/ostg.cl=
+ktrk

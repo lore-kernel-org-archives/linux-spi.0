@@ -1,24 +1,14 @@
-From: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] SPI: DUAL and QUAD support
-Date: Tue, 30 Jul 2013 09:13:41 +0800
-Message-ID: <CAHSAbzO9GRSSTkO23E-Ay6oZapk3qQRjy4ifxeYNLk=Lb-V4xg@mail.gmail.com>
-References: <20130729064234.GS9858@sirena.org.uk>
-	<1375095194-7093-1-git-send-email-wangyuhang2014@gmail.com>
-	<20130729145626.6c227aa0@parrot.com>
-	<CAHSAbzOPfpbPHohG7-EzftiPr5T2m19qgrKg7KS2jSKD-B=goA@mail.gmail.com>
-	<20130729173511.65caa07d@parrot.com>
+From: PosterXXL par Nl-promos <news-PkcECQhVGYM@public.gmane.org>
+Subject: [SPAM] Soldes ! Votre photo en grand a moins de 10 euros
+Date: Tue, 30 Jul 2013 01:24:30 -0100
+Message-ID: <Dppd9wkybdA9MqX92_W5yAXYFe3VYsQtAa1zKidSRyw@zaloo.fr>
+Reply-To: PosterXXL par Nl-promos <news-PkcECQhVGYM@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Cc: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"pekon-l0cyMroinI0@public.gmane.org" <pekon-l0cyMroinI0@public.gmane.org>, "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	"sourav.poddar-l0cyMroinI0@public.gmane.org" <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	"tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Matthieu CASTET <matthieu.castet-ITF29qwbsa/QT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130729173511.65caa07d-ITF29qwbsa/QT0dZR+AlfA@public.gmane.org>
+List-Abuse: <mailto:abuse-PkcECQhVGYM@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -29,115 +19,27 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-Yes, you are right. I will correct it.
-
-Thanks
-
-2013/7/29 Matthieu CASTET <matthieu.castet-ITF29qwbsa/QT0dZR+AlfA@public.gmane.org>:
-> Le Mon, 29 Jul 2013 15:25:51 +0100,
-> yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> a =E9crit :
->
->> Hi,
->>
->> 2013/7/29 Matthieu CASTET <matthieu.castet-ITF29qwbsa/QT0dZR+AlfA@public.gmane.org>:
->> > Le Mon, 29 Jul 2013 11:53:14 +0100,
->> > wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> a =E9crit :
->> >
->> >> Hi,
->> >>
->> >> modify two things.
->> >> 1:
->> >> >> @@ -1316,6 +1324,12 @@ int spi_setup(struct spi_device *spi)
->> >> >>         /* help drivers fail *cleanly* when they need options
->> >> >>          * that aren't supported with their current master
->> >> >>          */
->> >> >> +       if (((spi->mode >> 8) & 0x03) =3D=3D 0x03 ||
->> >> >> +               ((spi->mode >> 10) & 0x03) =3D=3D 0x03) {
->> >> >> +               dev_err(&spi->dev,
->> >> >> +               "setup: can not select dual and quad at the same
->> >> >> time\n")
->> >> >> +               return -EINVAL;
->> >> >> +       }
->> >> >> +               return -EINVAL;
->> >> >> +       }
->> >>
->> >> >This code won't work if the constants you added for mode flags
->> >> >change value.  More importantly, anyone searching the code for
->> >> >SPI_TX_DUAL, etc. won't find this code.
->> >>
->> >> so use the certain macro to replace.
->> >>
->> >> 2:
->> >> >You need to make sure that existing userspace binaries can run
->> >> >unmodified, changing the types will change the layout of the ioctl
->> >> >arguments.  This may mean that you need to add new ioctls if you
->> >> >need to change types.
->> >>
->> >> I recovered the SPI_IOC_RD_LSB_FIRST ioctl.
->> >> Add new ioctl to fit u16 mode.
->> >> In addition,may SPI_IOC_RD_LSB_FIRST should be del in a better way.
->> >>
->> >> Signed-off-by: wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->> >> ---
->> >
->> >>  /* IOCTL commands */
->> >> @@ -54,6 +61,8 @@
->> >>   * @tx_buf: Holds pointer to userspace buffer with transmit data,
->> >> or null.
->> >>   *     If no data is provided, zeroes are shifted out.
->> >>   * @rx_buf: Holds pointer to userspace buffer for receive data, or
->> >> null.
->> >> + * @tx_nbits: number of bits used for writting.
->> >> + * @rx_nbits: number of bits used for reading.
->> >>   * @len: Length of tx and rx buffers, in bytes.
->> >>   * @speed_hz: Temporary override of the device's bitrate.
->> >>   * @bits_per_word: Temporary override of the device's wordsize.
->> >> @@ -85,6 +94,8 @@
->> >>  struct spi_ioc_transfer {
->> >>         __u64           tx_buf;
->> >>         __u64           rx_buf;
->> >> +       __u8            tx_nbits;
->> >> +       __u8            rx_nbits;
->> >>
->> >>         __u32           len;
->> >>         __u32           speed_hz;
->> > You still break old userspace ABI.
->> >
->> > You need to create a new structure, if you need to add fields.
->> >
->> I dont think adding the members will cause the program in userspace
->> any errors. User do not have to set these members.
-> Did you try to run on your patch kernel a program build without the
-> patch ?
->
->
-> if I build my program with :
->
->> >>  struct spi_ioc_transfer {
->> >>         __u64           tx_buf;
->> >>         __u64           rx_buf;
->> >>
->> >>         __u32           len;
->> >>         __u32           speed_hz;
->
-> Now I run it on a new kernel.
-> The kernel won't parse correctly my structure : len will go in
-> tx_nbits, rx_nbits and len.
->
-> Keep in mind that it is binary interface, not source interface. You
-> should not have to rebuild your binary.
->
-> Matthieu
-
----------------------------------------------------------------------------=
----
+ posterXXL - Votre photo sur Toile Pour visualiser correctement ce message,=
+ acc=C3=A9dez =C3=A0 la version en ligne, ou signaler comme ind=C3=A9sirabl=
+e =EF=BF=BD =EF=BF=BD =EF=BF=BD =EF=BF=BD =EF=BF=BD Bonjour, C'est l'=
+=EF=BF=BDt=EF=BF=BD et c'est les soldes chez posterXXL ! Deux occasions r=
+=EF=BF=BDv=EF=BF=BDes pour imprimer votre photo sur Toile =EF=BF=BD partir =
+de 9,99 =E2=82=AC au lieu de 18,99 =E2=82=AC soit 50% de r=EF=BF=BDduction =
+!Les points forts : - Faites de votre photo un v=EF=BF=BDritable tableau - =
+Une id=EF=BF=BDe d=EF=BF=BDco ou un superbe cadeau - Facile =EF=BF=BD cr=
+=EF=BF=BDer, sans logiciel =EF=BF=BD t=EF=BF=BDl=EF=BF=BDcharger Profitez v=
+ite de nos soldes pour afficher en grand vos plus belles photos !Cr=
+=EF=BF=BDez d=EF=BF=BDs maintenant votre toile !Votre =EF=BF=BDquipe poster=
+XXL* Prix TTC - Hors frais d'envoi - France m=EF=BF=BDtropolitaine. N=
+=EF=BF=BD1 de l'impression grand format, posterXXL a d=EF=BF=BDj=EF=BF=
+=BD =EF=BF=BDt=EF=BF=BD choisi par plus d'un million de clients. =EF=BF=
+=BD =EF=BF=BD =EF=BF=BD 2013 posterXXL AG | Mentions l=EF=BF=BDgales Si vou=
+s ne souhaitez plus recevoir nos emails, veuillez suivre ce lien. Si vous n=
+''arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d''=C3=A9crire =C3=A0 stop=
+@zaloo.fr
+------------------------------------------------------------------------------
 Get your SQL database under version control now!
-Version control is standard for application code, but databases havent =
-
-caught up. So what steps can you take to put your SQL databases under =
-
+Version control is standard for application code, but databases havent 
+caught up. So what steps can you take to put your SQL databases under 
 version control? Why should you start doing it? Read more to find out.
-http://pubads.g.doubleclick.net/gampad/clk?id=3D49501711&iu=3D/4140/ostg.cl=
-ktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=49501711&iu=/4140/ostg.clktrk

@@ -1,144 +1,92 @@
-From: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] SPI: DUAL and QUAD support
-Date: Tue, 30 Jul 2013 15:30:12 +0800
-Message-ID: <CAHSAbzPjk1M9RzMahYOUkFDJiU8pRWXO2-np0HgQefxEC+WXeA@mail.gmail.com>
-References: <20130729064234.GS9858@sirena.org.uk>
-	<1375095194-7093-1-git-send-email-wangyuhang2014@gmail.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9EE267@DBDE04.ent.ti.com>
-	<CAHSAbzNdvgTSPqDPHT2n3zXFwe7HBqTfyk4fB_-GsW1WSUXqRA@mail.gmail.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9EE356@DBDE04.ent.ti.com>
-	<CA+7tXijduVqFdao3L3oJcFBYw_cffdyo-fwyAS2cBASfEMExpA@mail.gmail.com>
+From: Sourav Poddar <sourav.poddar@ti.com>
+Subject: Re: [PATCHv6 1/2] drivers: spi: Add qspi flash controller
+Date: Tue, 30 Jul 2013 13:04:28 +0530
+Message-ID: <51F76C84.8080601@ti.com>
+References: <1375082550-30544-1-git-send-email-sourav.poddar@ti.com> <1375082550-30544-2-git-send-email-sourav.poddar@ti.com> <20130729093128.GE23710@radagast> <51F63FF3.5070304@ti.com> <20130729102038.GK23710@radagast> <51F64C49.4080606@ti.com> <20130729110902.GE24801@radagast> <51F64EB6.5020807@ti.com> <20130729123515.GJ24801@radagast>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Poddar,
-	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
-To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CA+7tXijduVqFdao3L3oJcFBYw_cffdyo-fwyAS2cBASfEMExpA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
+	<grant.likely@linaro.org>, <linux-omap@vger.kernel.org>,
+	<rnayak@ti.com>
+To: <balbi@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <20130729123515.GJ24801@radagast>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,Trent
+Hi Felipe,
+On Monday 29 July 2013 06:05 PM, Felipe Balbi wrote:
+> Hi,
+>
+> On Mon, Jul 29, 2013 at 04:45:02PM +0530, Sourav Poddar wrote:
+>>>>>>>> +	irq = platform_get_irq(pdev, 0);
+>>>>>>>> +	if (irq<     0) {
+>>>>>>>> +		dev_err(&pdev->dev, "no irq resource?\n");
+>>>>>>>> +		return irq;
+>>>>>>>> +	}
+>>>>>>>> +
+>>>>>>>> +	spin_lock_init(&qspi->lock);
+>>>>>>>> +
+>>>>>>>> +	qspi->base = devm_ioremap_resource(&pdev->dev, r);
+>>>>>>>> +	if (IS_ERR(qspi->base)) {
+>>>>>>>> +		ret = PTR_ERR(qspi->base);
+>>>>>>>> +		goto free_master;
+>>>>>>>> +	}
+>>>>>>>> +
+>>>>>>>> +	ret = devm_request_threaded_irq(&pdev->dev, irq, ti_qspi_isr,
+>>>>>>>> +			ti_qspi_threaded_isr, IRQF_NO_SUSPEND | IRQF_ONESHOT,
+>>>>>>> why do you need IRQF_NO_SUSPEND ?
+>>>>>>>
+>>>>>> I should get away with this.
+>>>>> why ? Do you need or do you *not* need it ? And in either case, why ?
+>>>>>
+>>>> I was thinking, this will keep the irqs up even when we are
+>>>> hitting suspend, we will not be prepared to handle it. ?
+>>> won't be prepared in what way ?
+>>>
+>> Our driver will be down, so the irq might go un-serviced.
+> only if you wrote the driver that way. IRQ subsystem doesn't know the
+> state of the device, all it knows is that in case an IRQ fires, it needs
+> to call the registered IRQ handler.
+>
+> Now the thing is:
+>
+> Initially you had the flag setup, so I asked why you needed it. I
+> expected you to tell me why you think QSPI's IRQ shouldn't be disabled
+> during suspend and the implications of disabling it.
+>
+> Instead you just changed your mind and decided to remove the flag.
+>
+> Because you changed your mind with no explanation, that tells me you
+> haven't fully grasped how that flag works and what it means to set (or
+> not set) it.
+>
+> My question now is simply: why don't you need that flag ? What are the
+> implications of setting that flag ? How would your driver behave if an
+> IRQ fired while your driver was suspended ? Unless you understand what
+> it does, how can you understand the behavior or the driver ?
+>
+> cheers
+>
+We dont need IRQF_NO_SUSPEND flag in our qspi controller.
 
-Thanks for so many details.
-2013/7/30 Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> On Mon, Jul 29, 2013 at 7:21 AM, Gupta, Pekon <pekon-l0cyMroinI0@public.gmane.org> wrote:
->>> >>                       spi->mode |= SPI_CS_HIGH;
->>> >>               if (of_find_property(nc, "spi-3wire", NULL))
->>> >>                       spi->mode |= SPI_3WIRE;
->>> >> +             if (of_find_property(nc, "spi-tx-dual", NULL))
->>> >> +                     spi->mode |= SPI_TX_DUAL;
->>> >> +             if (of_find_property(nc, "spi-tx-quad", NULL))
->>> >> +                     spi->mode |= SPI_TX_QUAD;
->>> >> +             if (of_find_property(nc, "spi-rx-dual", NULL))
->>> >> +                     spi->mode |= SPI_RX_DUAL;
->>> >> +             if (of_find_property(nc, "spi-rx-quad", NULL))
->>> >> +                     spi->mode |= SPI_RX_QUAD;
->>> >>
->>> >  [Pekon] I think its cleaner to use similar parameters for channel-width
->>> >  info everywhere. Like you have added separate fields  'tx_nbits' and
->>> >  'rx_nbits' in spi_transfer, Why not do similar here for 'spi_master' ?
->
-> There are I think a total of five places that channel width can be
-> used in the Linux SPI stack.
->
-> a) In the master driver (spi_master)
-> b) In a slave driver (spi_device)
-> c) In a spi_message
-> d) In a spi_transfer
-> e) In the OF device tree, for DT nodes of a and/or b, as they appear in the dt.
->
-> For a, all the widths supported would be specified.  In b, c, and d,
-> only the width to be used would be specified.  So, there is some
-> difference here, as we need a method that allows multiple modes to be
-> specified for a but not for the others.
->
-> Since some slaves will want to send a single spi message with multiple
-> transfers of different widths (e.g., single bit read command followed
-> by quad bit data xfer) it's necessary to specify the width in d.  With
-> the widths specified at the lowest level, it is not actually necessary
-> to supply the width for C or B.
->
-> While it's not necessary to specify the width for B, doing so would be
-> consistent with other fields that can be specified in the spi_transfer
-> and in the spi_device, like bits_per_word and speed_hz.  It's worth
-> pointing out that none of the mode bits from the spi_device can be
-> specified in in a spi_transfer.  Currently, if you want to change
-> anything in mode you must call spi_setup() on the device.  Since width
-> can be changed on a transfer by transfer basis, maybe that is a good
-> reason to say it doesn't belong in mode.
->
-what you said is ok. But b) and d) are not the same. d) will be set
-based on b), but not equal to d)=b)(bits_per_word and speed_hz). So
-don't you think that b) is more like a transfer mode and d) is the
-detailed functions related to the mode. Also b) should be set in
-spi_setup(), only d) width can be changed by transfer, but b) should
-not be modifyed. But none of the mode bits from the spi_device can be
-specified in in a spi_transfer, that is a point. Is that necessary to
-add members like "transfer_mode" in spi_master and spi_device which do
-the similar operation to "mode"?
+Qspi driver need to be prevented from receiving interrupts during system 
+wide suspend/hibernation.
+"suspend_device_irqs" in kernel/irq/pm.c marks interrupt line in use and 
+sets IRQS_SUSPENDED
+for them.
+If we use "IRQF_NO_SUSPEND", we will bypass setting this IRQS_SUSPENDED 
+flag, which is not.
+desired
 
-> If the default width is in the spi_device, then a spi_transfer needs a
-> width state to mean "unspecified".  I.e., the read width can be one,
-> two, four, (eight), or unspecified bits.  Unspecified gets changed to
-> the default from the spi_device, whereas one bit wide means one bit
-> wide.
->
-what do you mean by default, is that without init value? Do you want
-to use bit by bit in spi_transfer?
 
-> Allowing the spi_device to have a width means the width can be checked
-> against the master's supported widths at spi_setup() time, like the
-> other mode bits.  But, since width can be set on a transfer by
-> transfer basis and each transfer is not checked in the spi core, this
-> doesn't really do the master driver much good.  The master driver
-> still needs to check each transfer to see if the width is allowed.
->
-agree. so do it in __spi_async() and to make sure that spi_transfer <=
-spi_device.
+For this, interrupt lines need to
+  and this function is provided for this purpose.
+  * It marks all interrupt lines in use, except for the timer ones, as 
+disabled
+  * and sets the IRQS_SUSPENDED flag for each of them.
 
-> I don't see the point of putting the width in C.  Current a
-> spi_message can't change any of the settings from the spi_device or
-> supply a default for the the settings in a spi_transfer, and I don't
-> see why width is any different here.
->
-> For the OF device tree, I don't think the master's node should have
-> anything about the widths supported.  There is nothing about any of
-> the other spi master capabilities in the DT.  The master driver
-> supplies this information.
->
-> For the OF slave device node, it's not clear it needs to be there
-> either.  The current existing use cases are for memories that only use
-> dual and quad for certain parts of certain commands.  Setting the
-> width for the slave overall doesn't make sense.
->
-> But, the memory might have four data lines connected on the board or
-> it might just have one.  That does seem like information about board
-> layout that belongs in the device tree.  So there does need to be done
-> "enable quad mode" property.  However, is this a SPI property or a
-> property of the memory device's driver?  Turning on quad mode support
-> isn't the same that as setting the clock polarity.  Clock polarity it
-> a SPI property supplied to spi_setup.  Quad mode means the driver
-> should use the quad read command and the appropriate spi_transfers for
-> using it.
-How to set DT depend on whether to seperate the dual and quad from mode.
+This flag gets used in __disable_irq api(kernel/irq/manage.c) which
 
-Best regards.
 
-------------------------------------------------------------------------------
-Get your SQL database under version control now!
-Version control is standard for application code, but databases havent 
-caught up. So what steps can you take to put your SQL databases under 
-version control? Why should you start doing it? Read more to find out.
-http://pubads.g.doubleclick.net/gampad/clk?id=49501711&iu=/4140/ostg.clktrk

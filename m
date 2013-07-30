@@ -1,23 +1,14 @@
-From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] SPI: DUAL and QUAD support
-Date: Mon, 29 Jul 2013 16:26:38 -0700
-Message-ID: <CA+7tXijduVqFdao3L3oJcFBYw_cffdyo-fwyAS2cBASfEMExpA@mail.gmail.com>
-References: <20130729064234.GS9858@sirena.org.uk>
-	<1375095194-7093-1-git-send-email-wangyuhang2014@gmail.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9EE267@DBDE04.ent.ti.com>
-	<CAHSAbzNdvgTSPqDPHT2n3zXFwe7HBqTfyk4fB_-GsW1WSUXqRA@mail.gmail.com>
-	<20980858CB6D3A4BAE95CA194937D5E73E9EE356@DBDE04.ent.ti.com>
+From: "Soldes Mathon" <lisa@a.optincake.com>
+Subject: [SPAM]
+	=?UTF-8?B?SnVzcXUnw6AgbW9pbnMgNzAgcG91cmNlbnQgc3VyIE1hdGhvbiwgc3RvY2sgbGltaXTDqQ==?=
+Date: Tue, 30 Jul 2013 01:20:04 +0100
+Message-ID: <0.0.6D.C50.1CE8CBA89B474F4.0@mta39.pur3.net>
+Reply-To: Soldes Mathon <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Poddar,
-	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20980858CB6D3A4BAE95CA194937D5E73E9EE356-yXqyApvAXouIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,93 +19,140 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jul 29, 2013 at 7:21 AM, Gupta, Pekon <pekon-l0cyMroinI0@public.gmane.org> wrote:
->> >>                       spi->mode |= SPI_CS_HIGH;
->> >>               if (of_find_property(nc, "spi-3wire", NULL))
->> >>                       spi->mode |= SPI_3WIRE;
->> >> +             if (of_find_property(nc, "spi-tx-dual", NULL))
->> >> +                     spi->mode |= SPI_TX_DUAL;
->> >> +             if (of_find_property(nc, "spi-tx-quad", NULL))
->> >> +                     spi->mode |= SPI_TX_QUAD;
->> >> +             if (of_find_property(nc, "spi-rx-dual", NULL))
->> >> +                     spi->mode |= SPI_RX_DUAL;
->> >> +             if (of_find_property(nc, "spi-rx-quad", NULL))
->> >> +                     spi->mode |= SPI_RX_QUAD;
->> >>
->> >  [Pekon] I think its cleaner to use similar parameters for channel-width
->> >  info everywhere. Like you have added separate fields  'tx_nbits' and
->> >  'rx_nbits' in spi_transfer, Why not do similar here for 'spi_master' ?
-
-There are I think a total of five places that channel width can be
-used in the Linux SPI stack.
-
-a) In the master driver (spi_master)
-b) In a slave driver (spi_device)
-c) In a spi_message
-d) In a spi_transfer
-e) In the OF device tree, for DT nodes of a and/or b, as they appear in the dt.
-
-For a, all the widths supported would be specified.  In b, c, and d,
-only the width to be used would be specified.  So, there is some
-difference here, as we need a method that allows multiple modes to be
-specified for a but not for the others.
-
-Since some slaves will want to send a single spi message with multiple
-transfers of different widths (e.g., single bit read command followed
-by quad bit data xfer) it's necessary to specify the width in d.  With
-the widths specified at the lowest level, it is not actually necessary
-to supply the width for C or B.
-
-While it's not necessary to specify the width for B, doing so would be
-consistent with other fields that can be specified in the spi_transfer
-and in the spi_device, like bits_per_word and speed_hz.  It's worth
-pointing out that none of the mode bits from the spi_device can be
-specified in in a spi_transfer.  Currently, if you want to change
-anything in mode you must call spi_setup() on the device.  Since width
-can be changed on a transfer by transfer basis, maybe that is a good
-reason to say it doesn't belong in mode.
-
-If the default width is in the spi_device, then a spi_transfer needs a
-width state to mean "unspecified".  I.e., the read width can be one,
-two, four, (eight), or unspecified bits.  Unspecified gets changed to
-the default from the spi_device, whereas one bit wide means one bit
-wide.
-
-Allowing the spi_device to have a width means the width can be checked
-against the master's supported widths at spi_setup() time, like the
-other mode bits.  But, since width can be set on a transfer by
-transfer basis and each transfer is not checked in the spi core, this
-doesn't really do the master driver much good.  The master driver
-still needs to check each transfer to see if the width is allowed.
-
-I don't see the point of putting the width in C.  Current a
-spi_message can't change any of the settings from the spi_device or
-supply a default for the the settings in a spi_transfer, and I don't
-see why width is any different here.
-
-For the OF device tree, I don't think the master's node should have
-anything about the widths supported.  There is nothing about any of
-the other spi master capabilities in the DT.  The master driver
-supplies this information.
-
-For the OF slave device node, it's not clear it needs to be there
-either.  The current existing use cases are for memories that only use
-dual and quad for certain parts of certain commands.  Setting the
-width for the slave overall doesn't make sense.
-
-But, the memory might have four data lines connected on the board or
-it might just have one.  That does seem like information about board
-layout that belongs in the device tree.  So there does need to be done
-"enable quad mode" property.  However, is this a SPI property or a
-property of the memory device's driver?  Turning on quad mode support
-isn't the same that as setting the clock polarity.  Clock polarity it
-a SPI property supplied to spi_setup.  Quad mode means the driver
-should use the quad read command and the appropriate spi_transfers for
-using it.
-
-------------------------------------------------------------------------------
-Get your SQL database under version control now!
-Version control is standard for application code, but databases havent 
-caught up. So what steps can you take to put your SQL databases under 
-version control? Why should you start doing it? Read more to find out.
-http://pubads.g.doubleclick.net/gampad/clk?id=49501711&iu=/4140/ostg.clktrk
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTcxNjkzMjIwNTM3MjQ0CgoKCgpTT0xERVMganVzcXUnw6AgLTcwJSogc3VyIHBsdXMgZGUgMzAw
+IDAwMCBwcm9kdWl0cwoKKE1hdGhvbi5mcik6Cmh0dHA6Ly9jbGljay50cmNrLTMwMDUtMi5jb20v
+P3NjPTY0NSZ0PTAmbD0xNDExMyZwPTMwMDUmdXJsPWh0dHA6Ly9yZWRwZGwuY29tLzIwCi8/aWRf
+ZGVsaXZlcnk9OTU5Jm9yaWdpbj0zMDA1JmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
+dXJjZWZvcmdlLm5ldAoKKFNvbGRlcyBqdXNxdSfDoCAtNzAlKik6Cmh0dHA6Ly9jbGljay50cmNr
+LTMwMDUtMi5jb20vP3NjPTY0NSZ0PTAmbD0xNDExMyZwPTMwMDUmdXJsPWh0dHA6Ly9yZWRwZGwu
+Y29tLzIwCi8/aWRfZGVsaXZlcnk9OTU5Jm9yaWdpbj0zMDA1JmVtYWlsPXNwaS1kZXZlbC1nZW5l
+cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKKGZhY2Vib29rKToKaHR0cDovL2NsaWNrLnRyY2st
+MzAwNS0yLmNvbS8/c2M9NjQ1JnQ9MCZsPTE0MTEzJnA9MzAwNSZ1cmw9aHR0cDovL3JlZHBkbC5j
+b20vMjAKLz9pZF9kZWxpdmVyeT05NTkmb3JpZ2luPTMwMDUmZW1haWw9c3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgoodHdpdHRlcik6Cmh0dHA6Ly9jbGljay50cmNrLTMw
+MDUtMi5jb20vP3NjPTY0NSZ0PTAmbD0xNDExMyZwPTMwMDUmdXJsPWh0dHA6Ly9yZWRwZGwuY29t
+LzIwCi8/aWRfZGVsaXZlcnk9OTU5Jm9yaWdpbj0zMDA1JmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKKEN1aXNzb24pOgpodHRwOi8vY2xpY2sudHJjay0zMDA1
+LTIuY29tLz9zYz02NDUmdD0wJmw9MTQxMTMmcD0zMDA1JnVybD1odHRwOi8vcmVkcGRsLmNvbS8y
+MAovP2lkX2RlbGl2ZXJ5PTk1OSZvcmlnaW49MzAwNSZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBs
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQKCihFbGVjdHJvbcOpbmFnZXIpOgpodHRwOi8vY2xpY2sudHJj
+ay0zMDA1LTIuY29tLz9zYz02NDUmdD0wJmw9MTQxMTMmcD0zMDA1JnVybD1odHRwOi8vcmVkcGRs
+LmNvbS8yMAovP2lkX2RlbGl2ZXJ5PTk1OSZvcmlnaW49MzAwNSZlbWFpbD1zcGktZGV2ZWwtZ2Vu
+ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCihQYWluIGV0IHDDonRpc3NlcmllKToKaHR0cDov
+L2NsaWNrLnRyY2stMzAwNS0yLmNvbS8/c2M9NjQ1JnQ9MCZsPTE0MTEzJnA9MzAwNSZ1cmw9aHR0
+cDovL3JlZHBkbC5jb20vMjAKLz9pZF9kZWxpdmVyeT05NTkmb3JpZ2luPTMwMDUmZW1haWw9c3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgooVXN0ZW5zaWxlcyk6Cmh0dHA6
+Ly9jbGljay50cmNrLTMwMDUtMi5jb20vP3NjPTY0NSZ0PTAmbD0xNDExMyZwPTMwMDUmdXJsPWh0
+dHA6Ly9yZWRwZGwuY29tLzIwCi8/aWRfZGVsaXZlcnk9OTU5Jm9yaWdpbj0zMDA1JmVtYWlsPXNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKKETDqWNvdXBlKToKaHR0cDov
+L2NsaWNrLnRyY2stMzAwNS0yLmNvbS8/c2M9NjQ1JnQ9MCZsPTE0MTEzJnA9MzAwNSZ1cmw9aHR0
+cDovL3JlZHBkbC5jb20vMjAKLz9pZF9kZWxpdmVyeT05NTkmb3JpZ2luPTMwMDUmZW1haWw9c3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgooQm9pc3NvbnMpOgpodHRwOi8v
+Y2xpY2sudHJjay0zMDA1LTIuY29tLz9zYz02NDUmdD0wJmw9MTQxMTMmcD0zMDA1JnVybD1odHRw
+Oi8vcmVkcGRsLmNvbS8yMAovP2lkX2RlbGl2ZXJ5PTk1OSZvcmlnaW49MzAwNSZlbWFpbD1zcGkt
+ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCihBcnQgZGUgbGEgdGFibGUpOgpo
+dHRwOi8vY2xpY2sudHJjay0zMDA1LTIuY29tLz9zYz02NDUmdD0wJmw9MTQxMTMmcD0zMDA1JnVy
+bD1odHRwOi8vcmVkcGRsLmNvbS8yMAovP2lkX2RlbGl2ZXJ5PTk1OSZvcmlnaW49MzAwNSZlbWFp
+bD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCihBdmVjIGxlcyBib25z
+IHVzdGVuc2lsZXMsIHRvdXQgZXN0IHBsdXMgZmFjaWxlICEpOgpodHRwOi8vY2xpY2sudHJjay0z
+MDA1LTIuY29tLz9zYz02NDUmdD0wJmw9MTQxMTMmcD0zMDA1JnVybD1odHRwOi8vcmVkcGRsLmNv
+bS8yMAovP2lkX2RlbGl2ZXJ5PTk1OSZvcmlnaW49MzAwNSZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCihKdXNxdSfDoCAtNzDDuSogc3VyIHBsdXMgZGUgMzAw
+IDAwMCBwcm9kdWl0cyk6Cmh0dHA6Ly9jbGljay50cmNrLTMwMDUtMi5jb20vP3NjPTY0NSZ0PTAm
+bD0xNDExMyZwPTMwMDUmdXJsPWh0dHA6Ly9yZWRwZGwuY29tLzIwCi8/aWRfZGVsaXZlcnk9OTU5
+Jm9yaWdpbj0zMDA1JmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dAoKKFNPTERFUyk6Cmh0dHA6Ly9jbGljay50cmNrLTMwMDUtMi5jb20vP3NjPTY0NSZ0PTAmbD0x
+NDExMyZwPTMwMDUmdXJsPWh0dHA6Ly9yZWRwZGwuY29tLzIwCi8/aWRfZGVsaXZlcnk9OTU5Jm9y
+aWdpbj0zMDA1JmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoK
+KCsgbGl2cmFpc29uIGdyYXR1aXRlIGTDqHMgNDnCrCBkJ2FjaGF0cyBhdmVjIE1vbmRpYWwgUmVs
+YXkpOgpodHRwOi8vY2xpY2sudHJjay0zMDA1LTIuY29tLz9zYz02NDUmdD0wJmw9MTQxMTMmcD0z
+MDA1JnVybD1odHRwOi8vcmVkcGRsLmNvbS8yMAovP2lkX2RlbGl2ZXJ5PTk1OSZvcmlnaW49MzAw
+NSZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCgpFbiBjbGlx
+dWFudCBpY2ksIGonYWNjZXB0ZSBkZSByZWNldm9pciBsZXMgb2ZmcmVzIGRlIE1hdGhvbgoKKE5M
+MTNfc29sZGVzLWRlY18wNi5qcGcpOgpodHRwOi8vY2xpY2sudHJjay0zMDA1LTIuY29tLz9zYz02
+NDUmdD0wJmw9MTQxMTMmcD0zMDA1JnVybD1odHRwOi8vcmVkcGRsLmNvbS8yMAovP2lkX2RlbGl2
+ZXJ5PTk1OSZvcmlnaW49MzAwNSZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKCgphdmVjIGwnYWRyZXNzZQoKKExlcyBzZXJ2aWNlcyBNYXRob24pCgoqIFZvaXIg
+Y29uZGl0aW9ucyBzdXIgIHd3dy5tYXRob24uZnI6Cmh0dHA6Ly9jbGljay50cmNrLTMwMDUtMi5j
+b20vP3NjPTY0NSZ0PTAmbD0xNDExMyZwPTMwMDUmdXJsPWh0dHA6Ly9yZWRwZGwuY29tLzIwCi8/
+aWRfZGVsaXZlcnk9OTU5Jm9yaWdpbj0zMDA1JmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldAoKCi0gU09MREVTIGR1IDI2LzA2LzIwMTMgOGgwMCBhdSAzMC8wNy8y
+MDEzIGluY2x1cyBkYW5zIGxhIGxpbWl0ZSBkZXMgc3RvY2tzCmRpc3BvbmlibGVzLgoKCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQoKTWF0aG9uIGVzdCBsZSBsZWFkZXIgZGUgbGEgdmVudGUgZCd1c3Rl
+bnNpbGVzIGV0IGQnYXJ0aWNsZXMgZGUgY3Vpc2luZS4gQSBsYQpyZWNoZXJjaGUgcGVybWFuZW50
+ZSBkZSBwcm9kdWl0cyBpbm5vdmFudHMsIG5vdHJlIMOpcXVpcGUgZCdhY2hldGV1cnMKZMOpbmlj
+aGUsIHPDqWxlY3Rpb25uZSBldCB0ZXN0ZSBsZXMgcHJvZHVpdHMgcXVpIHNlcm9udCBkZW1haW4g
+ZGFucyB2b3RyZQpjdWlzaW5lLiBUb3Vqb3VycyBzb3VjaWV1eCBkZSB2b3VzIG9mZnJpciB1biBz
+ZXJ2aWNlIGRlIHF1YWxpdMOpLCB0b3VzIGxlcwpwcm9kdWl0cyB2ZW5kdXMgcGFyIE1hdGhvbiBz
+b250IGdhcmFudGlzIDMgYW5zLCBxdWVsbGUgcXVlIHNvaXQgbGEgZ2FyYW50aWUKZHUgZmFicmlj
+YW50LgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCgpFbnZpZSBkZSB2b3VzIGZhaXJlIHVuZSBiZWF1
+dMOpIMOgIG1vaW5kcmUgY2/Du3QgdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBkZQpwcsOpdm9p
+ciB2b3MgcHJvY2hhaW5lcyB2YWNhbmNlcyBkJ8OpdMOpIMOgIG1vaW5kcmUgZnJhaXMgZXQgb3Ug
+ZW5jb3JlCmQnaGFiaWxsZXIgdm9zIGVuZmFudHMgw6AgZGVzIGJ1ZGdldHMgcmFpc29ubmFibGVz
+LCBhbG9ycyBjb25zdWx0ZXIgZGUgdGVtcHMKw6AgYXV0cmUgbm9zIHByb3Bvc2l0aW9ucyBwb3Vy
+IHZvdXMgcGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRlIG5vbWJyZXVzZXMKw6ljb25vbWllcyB0
+b3V0IGVuIHZvdXMgZmFpc2FudCBwbGFpc2lyIMOgIHRvdXRlIGxhIGZhbWlsbGUuLiBOb3VzCnNv
+dWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlk
+ZXIgw6AgZMOpcGVuc2VyCm1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZSBsJ2Fu
+bsOpZS5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cwpoYWJpbGxlciwgZGUgdm91cyBjaGF1c3Nl
+ciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpCnByaXgg
+dG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4g
+cGV0aXQgb2VpbCBwYXIKc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3Nv
+bnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUg
+bCdhbm7DqWUuQSBsYSByZWNoZXJjaGUgZHUgY2FkZWF1IG9yaWdpbmFsID8gTm91cwpzb3VoYWl0
+b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOg
+IGTDqXBlbnNlcgptb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUu
+IEFpbnNpLCBncmFjZSDDoCBub3VzLCB2b3VzCmFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHBy
+b2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsCm9wcG9ydHVuaXTD
+qSwgaW5mb3MuLi4gQWluc2ksIGdyw6JjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxl
+LApwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQs
+IG9wcG9ydHVuaXTDqSwKaW5mb3MuLi4gLi4uLiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBo
+YWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUKbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1
+ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLAphbG9ycyBw
+b3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlv
+bnMgcXVlIG5vdXMKdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91ciBy
+w6lndWxpw6hyZW1lbnQgZXQgdG91dGUKbCdhbm7DqWUuRW52aWUgZGUgdm91cyBmYWlyZSB1bmUg
+YmVhdXTDqSDDoCBtb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9uZyBkZQpsJ2FubsOpZSwgZGUgcHLD
+qXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqSDDoCBtb2luZHJlIGZyYWlzIGV0
+IG91CmVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRzIHJhaXNvbm5h
+YmxlcywgYWxvcnMgY29uc3VsdGVyCmRlIHRlbXBzIMOgIGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMg
+cG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZQpub21icmV1c2VzIMOpY29ub21p
+ZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQgcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1pbGxlLi4KTm91
+cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3Vz
+IGFpZGVyIMOgCmTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUg
+bCdhbm7DqWUuQmVzb2luIGRlIHZveWFnZXIsCmRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hh
+dXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydApxdWFsaXTDqSBw
+cml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVy
+IHVuIHBldGl0Cm9laWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRy
+ZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zCsOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRv
+dXRlIGwnYW5uw6llLkEgbGEgcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmlnaW5hbAo/IE5vdXMgc291
+aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRl
+ciDDoApkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5u
+w6llLiBBaW5zaSwgZ3JhY2Ugw6AKbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9p
+ciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhCmJhcyBjb3V0LCBvcHBvcnR1
+bml0w6ksIGluZm9zLi4uIEFpbnNpLCBncsOiY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIKZXhl
+bXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBj
+b3V0LApvcHBvcnR1bml0w6ksIGluZm9zLi4uIC4uLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlIHZv
+dXMgaGFiaWxsZXIsIGRlIHZvdXMKY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVp
+bGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZwpkZSBsJ2FubsOpZSwgYWxv
+cnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJvcG9z
+aXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpv
+dXIKcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLgoKCgoKCi0tCgpQb3VyIHZvdXMg
+ZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jj
+ci5waHA/QUo4NDY0MTg2NjI1MTcxNjkzMjIwNTM3MjQ0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTcx
+NjkzMjIwNTM3MjQ0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkdldCB5b3VyIFNRTCBkYXRhYmFz
+ZSB1bmRlciB2ZXJzaW9uIGNvbnRyb2wgbm93IQpWZXJzaW9uIGNvbnRyb2wgaXMgc3RhbmRhcmQg
+Zm9yIGFwcGxpY2F0aW9uIGNvZGUsIGJ1dCBkYXRhYmFzZXMgaGF2ZW50IApjYXVnaHQgdXAuIFNv
+IHdoYXQgc3RlcHMgY2FuIHlvdSB0YWtlIHRvIHB1dCB5b3VyIFNRTCBkYXRhYmFzZXMgdW5kZXIg
+CnZlcnNpb24gY29udHJvbD8gV2h5IHNob3VsZCB5b3Ugc3RhcnQgZG9pbmcgaXQ/IFJlYWQgbW9y
+ZSB0byBmaW5kIG91dC4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xr
+P2lkPTQ5NTAxNzExJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
+cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

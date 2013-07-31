@@ -1,32 +1,108 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: Re: [PATCHv7 1/2] drivers: spi: Add qspi flash controller
-Date: Wed, 31 Jul 2013 15:23:07 +0530
-Message-ID: <51F8DE83.9010901@ti.com>
-References: <1375249673-2585-1-git-send-email-sourav.poddar@ti.com> <1375249673-2585-2-git-send-email-sourav.poddar@ti.com> <20130731074952.GA14517@radagast> <51F8D49B.2090307@ti.com> <20130731092008.GC14517@radagast> <51F8DB98.70709@ti.com> <20130731094857.GA15583@radagast>
+From: Canal+ par Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Gagnez_des_cadeaux_en_s=E9rie_avec_Canal+?=
+Date: Wed, 31 Jul 2013 12:33:35 +0200 (CEST)
+Message-ID: <a2dfh8.hjsecqcnhfwo3hl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <linux-omap@vger.kernel.org>,
-	<rnayak@ti.com>
-To: <balbi@ti.com>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20130731094857.GA15583@radagast>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 31 July 2013 03:18 PM, Felipe Balbi wrote:
-> Hi,
->
-> On Wed, Jul 31, 2013 at 03:10:40PM +0530, Sourav Poddar wrote:
->>>> words can be of any length (1, 2 or 4) bytes. So, I think it should be
->>>> decremented by 1 only.
->>> this is wrong.
->>>
->> hmm..got the point.
->> I will pass the count address also to ti_qspi_read_data/write_data and make
->> use of the switch statement to decrement the count.
-> why don't you return the amount of bytes to decrement in case of
-> success ?
->
-Yes, that can be done to tackle this. Thanks!
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgq4eoI7gfk57dIhjseclubI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375266809786%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DHADKCCIABBJFOKAM%26mid%3D1600213200&s=3DC=
+ENDJLNMCCOKAFPM
+ =
+
+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec=
+ Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9r=
+ie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux e=
+n s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des ca=
+deaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez=
+ des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal=
++Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie ave=
+c Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9=
+rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux =
+en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des c=
+adeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagne=
+z des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Cana=
+l+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie av=
+ec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=
+=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadea=
+ux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez de=
+s cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Ga=
+gnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec C=
+anal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie=
+ avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en =
+s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cade=
+aux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez d=
+es cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+G=
+agnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec =
+Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9ri=
+e avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en=
+ s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cad=
+eaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez =
+des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+=
+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec=
+ Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9r=
+ie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux e=
+n s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des ca=
+deaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez=
+ des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal=
++Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie ave=
+c Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9=
+rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux =
+en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des c=
+adeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagne=
+z des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Cana=
+l+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie av=
+ec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=
+=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadea=
+ux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez de=
+s cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Ga=
+gnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec C=
+anal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie=
+ avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en =
+s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cade=
+aux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez d=
+es cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+G=
+agnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec =
+Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9ri=
+e avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en=
+ s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cad=
+eaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez =
+des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+=
+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec=
+ Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9r=
+ie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux e=
+n s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des ca=
+deaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez=
+ des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal=
++Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie ave=
+c Canal+
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600213200&sig=3DDEJKFHNDMMPMPPAP&st=3D0
+---------------------------------------------------------------------------=
+---
+Get your SQL database under version control now!
+Version control is standard for application code, but databases havent =
+
+caught up. So what steps can you take to put your SQL databases under =
+
+version control? Why should you start doing it? Read more to find out.
+http://pubads.g.doubleclick.net/gampad/clk?id=3D49501711&iu=3D/4140/ostg.cl=
+ktrk

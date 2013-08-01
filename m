@@ -1,90 +1,50 @@
-From: Felipe Balbi <balbi@ti.com>
-Subject: Re: [PATCHv8 1/2] drivers: spi: Add qspi flash controller
-Date: Thu, 1 Aug 2013 17:07:06 +0300
-Message-ID: <20130801140706.GT7918@radagast>
-References: <1375365602-31321-1-git-send-email-sourav.poddar@ti.com>
- <1375365602-31321-2-git-send-email-sourav.poddar@ti.com>
-Reply-To: <balbi@ti.com>
+From: "Chonoregime" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Perdez 8 kilos avant la plage sans privation
+Date: Thu, 01 Aug 2013 14:44:02 +0000 (CET)
+Message-ID: <130801144402.142917277200004576@ocfm42.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Zd8I2GZVcdxtyaG/"
-Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <balbi@ti.com>, <rnayak@ti.com>,
-	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1375365602-31321-2-git-send-email-sourav.poddar@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---Zd8I2GZVcdxtyaG/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi,
-
-On Thu, Aug 01, 2013 at 07:30:01PM +0530, Sourav Poddar wrote:
-> +static int ti_qspi_setup(struct spi_device *spi)
-> +{
-
-[snip]
-
-> +	pm_runtime_mark_last_busy(qspi->dev);
-> +	ret =3D pm_runtime_put_autosuspend(qspi->dev);
-> +	if (ret < 0) {
-> +		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
-
-wrong error message.
-
-> +static int qspi_transfer_msg(struct ti_qspi *qspi, struct spi_transfer *=
-t)
-> +{
-> +	int ret;
-> +
-> +	if (t->tx_buf) {
-> +		ret =3D qspi_write_msg(qspi, t);
-> +		if (ret) {
-> +			dev_dbg(qspi->dev, "Error while writing\n");
-> +			return -ETIMEDOUT;
-
-return ret;
-
-> +		}
-> +	}
-> +
-> +	if (t->rx_buf) {
-> +		ret =3D qspi_read_msg(qspi, t);
-> +		if (ret) {
-> +			dev_dbg(qspi->dev, "Error while writing\n");
-> +			return -ETIMEDOUT;
-
-return ret;
-
---=20
-balbi
-
---Zd8I2GZVcdxtyaG/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJR+muKAAoJEIaOsuA1yqREbksP/2eGxzCF6eL9Pp7mrV+lmLUo
-QlUUwHecFFkRK+eN/OvEq0PJtWTDoNUtKOj+au3PhIWFndj11vwSY8CYotsMvBoj
-S9XLjV8gD7tMqun74dqZ8GAV+tvX+0iI9hHrX++KcuQlqnMcSqYfL4fDMiZc0fNy
-mAq/LHN4iaHISxOYiqEmKhK5mFvaYT1Muc8W0uD2Eqqyck6d3hAWN9xJmCMbXIFo
-1FqCsLwL9XRDLHYexDPZVYGUqo0igwlRcrBANozpR8NtqTDX22hXfPsrdzXJ73UL
-9LP1yP638w7UB4UE++E5pMj+yp4W1CgM9RVeJMgPV7Y9W2ZFo5ayLhfSqbpB52ft
-waluXiO8QphOczIdhKvsPwYEAgqQzFaCKdNrScWpO0zgNtQPgEMTWzdOKtt73Zrx
-twjoLPhUjc7QaSyuoW5TqlJskp1iXhkgeBEQTWL+huFrxJbLC++K2pZX3xaay/Xe
-vRqDsL5tNjxhafT09kKVSo7Y2ytsVPFJAyY6CiW9NqIX0uDThf2uBlOk86q8C4uZ
-9poODj8mF1H8WqP+Iy4WpYPi2nxTvq9wn2e+wZc5s7GA1pdUsQvOiFcUXUzY0eSv
-p+3/v6czY3Zu7yauYMrizPFEAQRRnT6mF/Wo9MoiyBCFDQU2pKSt6UW/sUZqojjr
-XA8yp6k6SZFKxLFIHl2H
-=NR8W
------END PGP SIGNATURE-----
-
---Zd8I2GZVcdxtyaG/--
+CgoKIApKdXNxdSfDoCA4IGtpbG9zIGVuIG1vaW5zIGRhbnMgY2V0IGVtYWlsLiAKQWZpbiBkZSB2
+b2lyIGNldHRlIGxldHRyZSBlbiBpbWFnZXMsIGNvbnN1bHRleiBsYSB2ZXJzaW9uIGVuIGxpZ25l
+IChodHRwOi8vb2NmbTQyLmNvbS9iMmJ3cnc0cDJ4ZDBrenJ0MWQvaW5kZXgwLmh0bWwpCgoKCgog
+KGh0dHA6Ly9vY2ZtNDIuY29tLzB4YnBkd29mMjUwMjQ0NXRmcy9pbmRleDEuaHRtbCkKCiAoaHR0
+cDovL29jZm00Mi5jb20vdHRiejR3cnMydWUwc3Vtc2NsL2luZGV4Mi5odG1sKQoKIChodHRwOi8v
+b2NmbTQyLmNvbS8yY2Jtb3dkazJ5dzJ0a3BzeHkvaW5kZXgzLmh0bWwpCgogKGh0dHA6Ly9vY2Zt
+NDIuY29tL3Z0eGk0ZHN5bGprMHUzbTA1cy9pbmRleDQuaHRtbCkKCiAoaHR0cDovL29jZm00Mi5j
+b20va2N4a29kcHVsYTQyemFwMHJkL2luZGV4NS5odG1sKQoKIChodHRwOi8vb2NmbTQyLmNvbS9l
+MnhhcmRxNWx6czB5cHJkcHkvaW5kZXg2Lmh0bWwpCgrCoAoKClRvdXRlcyBhY2Nyb3Mgw6AgbGEg
+Y2hyb25vbnV0cml0aW9uICEgKGh0dHA6Ly9vY2ZtNDIuY29tL3V4eHZkZHd4bGJ0MmI1NWRtbC9p
+bmRleDcuaHRtbCkKCgo5MyUgZGUgbm9zIGNsaWVudGVzIHBlcmRlbnQgcGx1cyBkZSA0Ljcga2cg
+ZMOocyBsZSBwcmVtaWVyIG1vaXMuCkVsbGVzIHNvbnQgODklIMOgIGNvbnNlcnZlciBsZXVyIHBv
+aWRzIGlkw6lhbCAyIGFucyBhcHLDqHMgbCdhcnLDqnQgZGUgbGEgQ2hyb25vbnV0cml0aW9uLiAo
+aHR0cDovL29jZm00Mi5jb20vejJ6ZW1lem0yY28waWpyM2hkL2luZGV4OC5odG1sKQoKIChodHRw
+Oi8vb2NmbTQyLmNvbS93eHozbGVqMTJyZjJybzUzM3MvaW5kZXg5Lmh0bWwpCgogKGh0dHA6Ly9v
+Y2ZtNDIuY29tL3MxM3pndHJpZ2txdmx5M3Fjby9pbmRleDEwLmh0bWwpCgogKGh0dHA6Ly9vY2Zt
+NDIuY29tL2wybG1tcmxydmxxZGZzcnp4by9pbmRleDExLmh0bWwpCgoKCgpSZW5kZXotdm91cyDD
+oCBjZXR0ZSBhZHJlc3NlIChodHRwOi8vb2NmbTQyLmNvbS9hdWIwZXdrajB4YnRrbW50MnkvaW5k
+ZXgxMi5odG1sKSBwb3VyIMOqdHJlIHJldGlyw6koZSkgZGUgbm90cmUgbGlzdGUgZGUgZGlmZnVz
+aW9uLgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkdldCB5b3VyIFNRTCBkYXRhYmFzZSB1bmRl
+ciB2ZXJzaW9uIGNvbnRyb2wgbm93IQpWZXJzaW9uIGNvbnRyb2wgaXMgc3RhbmRhcmQgZm9yIGFw
+cGxpY2F0aW9uIGNvZGUsIGJ1dCBkYXRhYmFzZXMgaGF2ZW50IApjYXVnaHQgdXAuIFNvIHdoYXQg
+c3RlcHMgY2FuIHlvdSB0YWtlIHRvIHB1dCB5b3VyIFNRTCBkYXRhYmFzZXMgdW5kZXIgCnZlcnNp
+b24gY29udHJvbD8gV2h5IHNob3VsZCB5b3Ugc3RhcnQgZG9pbmcgaXQ/IFJlYWQgbW9yZSB0byBm
+aW5kIG91dC4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ5
+NTAxNzExJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2
+ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

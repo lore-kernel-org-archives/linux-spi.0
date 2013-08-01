@@ -1,7 +1,7 @@
-From: IdealDouche <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Remplacez votre baignoire par une douche sur-mesure en moins de 24h
-Date: Thu, 1 Aug 2013 12:40:20 +0200 (CEST)
-Message-ID: <a6v7wr.hjtu19p59b6kg4l@news.teradoo.com>
+From: Disney <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Des_weekends_=E0_gagner?=
+Date: Thu, 1 Aug 2013 13:07:40 +0200 (CEST)
+Message-ID: <yoh18o.hjtv0ex553frell@news.teradoo.com>
 Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -19,109 +19,68 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgq58bI7gfk57dIhjtu0v04I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375353601816%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DCPMNALGAGADGCMOO%26mid%3D1600214267&s=3DH=
-KHKLGPOBHPFNIOM
+//news.teradoo.com/re?l=3DBD0Iqgq4xzI7gfk57dIhjtv01t3I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375355243635%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DNAECMFLLGHAGLNPF%26mid%3D1600213895&s=3DN=
+FCDDINCLCNNALBE
  =
 
-Remplacez votre baignoire par une douche sur-mesure en moins de 24hRemplace=
-z votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre =
-baignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoir=
-e par une douche sur-mesure en moins de 24hRemplacez votre baignoire par un=
-e douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche=
- sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mes=
-ure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en m=
-oins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de =
-24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRempl=
-acez votre baignoire par une douche sur-mesure en moins de 24hRemplacez vot=
-re baignoire par une douche sur-mesure en moins de 24hRemplacez votre baign=
-oire par une douche sur-mesure en moins de 24hRemplacez votre baignoire par=
- une douche sur-mesure en moins de 24hRemplacez votre baignoire par une dou=
-che sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-=
-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure e=
-n moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins =
-de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRe=
-mplacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez =
-votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre ba=
-ignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire =
-par une douche sur-mesure en moins de 24hRemplacez votre baignoire par une =
-douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche s=
-ur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesur=
-e en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moi=
-ns de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24=
-hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRemplac=
-ez votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre=
- baignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoi=
-re par une douche sur-mesure en moins de 24hRemplacez votre baignoire par u=
-ne douche sur-mesure en moins de 24hRemplacez votre baignoire par une douch=
-e sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-me=
-sure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en =
-moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de=
- 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRemp=
-lacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez vo=
-tre baignoire par une douche sur-mesure en moins de 24hRemplacez votre baig=
-noire par une douche sur-mesure en moins de 24hRemplacez votre baignoire pa=
-r une douche sur-mesure en moins de 24hRemplacez votre baignoire par une do=
-uche sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur=
--mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure =
-en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins=
- de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hR=
-emplacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez=
- votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre b=
-aignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire=
- par une douche sur-mesure en moins de 24hRemplacez votre baignoire par une=
- douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche =
-sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesu=
-re en moins de 24hRemplacez votre baignoire par une douche sur-mesure en mo=
-ins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 2=
-4hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRempla=
-cez votre baignoire par une douche sur-mesure en moins de 24hRemplacez votr=
-e baignoire par une douche sur-mesure en moins de 24hRemplacez votre baigno=
-ire par une douche sur-mesure en moins de 24hRemplacez votre baignoire par =
-une douche sur-mesure en moins de 24hRemplacez votre baignoire par une douc=
-he sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-m=
-esure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en=
- moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins d=
-e 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRem=
-placez votre baignoire par une douche sur-mesure en moins de 24hRemplacez v=
-otre baignoire par une douche sur-mesure en moins de 24hRemplacez votre bai=
-gnoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire p=
-ar une douche sur-mesure en moins de 24hRemplacez votre baignoire par une d=
-ouche sur-mesure en moins de 24hRemplacez votre baignoire par une douche su=
-r-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure=
- en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moin=
-s de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24h=
-Remplacez votre baignoire par une douche sur-mesure en moins de 24hRemplace=
-z votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre =
-baignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoir=
-e par une douche sur-mesure en moins de 24hRemplacez votre baignoire par un=
-e douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche=
- sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mes=
-ure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en m=
-oins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de =
-24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRempl=
-acez votre baignoire par une douche sur-mesure en moins de 24hRemplacez vot=
-re baignoire par une douche sur-mesure en moins de 24hRemplacez votre baign=
-oire par une douche sur-mesure en moins de 24hRemplacez votre baignoire par=
- une douche sur-mesure en moins de 24hRemplacez votre baignoire par une dou=
-che sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-=
-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure e=
-n moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins =
-de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRe=
-mplacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez =
-votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre ba=
-ignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire =
-par une douche sur-mesure en moins de 24hRemplacez votre baignoire par une =
-douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche s=
-ur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesur=
-e en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moi=
-ns de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24h
+Des weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes we=
+ekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends=
+ =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 g=
+agnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerD=
+es weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes wee=
+kends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagner
  =
 
 Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
 c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600214267&sig=3DLCNAEKJAAFKFPBJG&st=3D0
+600034637&uid=3D16231069273&mid=3D1600213895&sig=3DNJFIGOFJCHHMECIJ&st=3D0
 ---------------------------------------------------------------------------=
 ---
 Get your SQL database under version control now!

@@ -1,97 +1,90 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: [RFC/PATCH 2/2] driver: spi: Add quad spi read support
-Date: Thu, 1 Aug 2013 19:30:02 +0530
-Message-ID: <1375365602-31321-3-git-send-email-sourav.poddar@ti.com>
+From: Felipe Balbi <balbi@ti.com>
+Subject: Re: [PATCHv8 1/2] drivers: spi: Add qspi flash controller
+Date: Thu, 1 Aug 2013 17:07:06 +0300
+Message-ID: <20130801140706.GT7918@radagast>
 References: <1375365602-31321-1-git-send-email-sourav.poddar@ti.com>
+ <1375365602-31321-2-git-send-email-sourav.poddar@ti.com>
+Reply-To: <balbi@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <balbi@ti.com>, <rnayak@ti.com>, <linux-omap@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	Sourav Poddar <sourav.poddar@ti.com>
-To: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1375365602-31321-1-git-send-email-sourav.poddar@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Zd8I2GZVcdxtyaG/"
+Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
+	<grant.likely@linaro.org>, <balbi@ti.com>, <rnayak@ti.com>,
+	<linux-omap@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: Sourav Poddar <sourav.poddar@ti.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1375365602-31321-2-git-send-email-sourav.poddar@ti.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Since, qspi controller uses quad read.
+--Zd8I2GZVcdxtyaG/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Configuring the command register, if the transfer of data needs
-dual or quad lines.
+Hi,
 
-This patch has been done on top of the following patch[1], which is just the
-basic idea of adding dual/quad support in spi framework.
-$subject patch will undergo changes once the ongoing discussion in the
-community is freezed.
+On Thu, Aug 01, 2013 at 07:30:01PM +0530, Sourav Poddar wrote:
+> +static int ti_qspi_setup(struct spi_device *spi)
+> +{
 
-This patch is posted to demonstrate how patch 1 of the series will support
-quad read.
+[snip]
 
-[1]: http://comments.gmane.org/gmane.linux.kernel.spi.devel/14047
+> +	pm_runtime_mark_last_busy(qspi->dev);
+> +	ret =3D pm_runtime_put_autosuspend(qspi->dev);
+> +	if (ret < 0) {
+> +		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
 
-Signed-off-by: Sourav Poddar <sourav.poddar@ti.com>
----
- drivers/spi/spi-ti-qspi.c |   22 ++++++++++++++++------
- 1 files changed, 16 insertions(+), 6 deletions(-)
+wrong error message.
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 73a1675..fac1722 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -265,18 +265,30 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
- static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t)
- {
- 	int wlen, count, ret;
-+	unsigned cmd = qspi->cmd;
- 
- 	count = t->len;
- 	wlen = t->bits_per_word;
- 
-+	switch (t->bitwidth) {
-+	case SPI_BITWIDTH_QUAD:
-+		cmd |= QSPI_RD_QUAD;
-+		break;
-+	case SPI_BITWIDTH_DUAL:
-+		cmd |= QSPI_RD_DUAL;
-+		break;
-+	case SPI_BITWIDTH_SINGLE:
-+	default:
-+		cmd |= QSPI_RD_SNGL;
-+	}
-+
- 	if (wlen == 8) {
- 		u8        *rxbuf;
- 		rxbuf = t->rx_buf;
- 		do {
- 			dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n",
- 				qspi->cmd | QSPI_RD_SNGL, qspi->dc);
--			ti_qspi_write(qspi, qspi->cmd | QSPI_RD_SNGL,
--				QSPI_SPI_CMD_REG);
-+			ti_qspi_write(qspi, cmd, QSPI_SPI_CMD_REG);
- 			ret = wait_for_completion_timeout(&qspi->transfer_complete,
- 				QSPI_COMPLETION_TIMEOUT);
- 			if (ret == 0) {
-@@ -294,8 +306,7 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t)
- 		do {
- 			dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n",
- 				qspi->cmd | QSPI_RD_SNGL, qspi->dc);
--			ti_qspi_write(qspi, qspi->cmd | QSPI_RD_SNGL,
--				QSPI_SPI_CMD_REG);
-+			ti_qspi_write(qspi, cmd, QSPI_SPI_CMD_REG);
- 			ret = wait_for_completion_timeout(&qspi->transfer_complete,
- 					QSPI_COMPLETION_TIMEOUT);
- 			if (ret == 0) {
-@@ -313,8 +324,7 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t)
- 		do {
- 			dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n",
- 				qspi->cmd | QSPI_RD_SNGL, qspi->dc);
--			ti_qspi_write(qspi, qspi->cmd | QSPI_RD_SNGL,
--				QSPI_SPI_CMD_REG);
-+			ti_qspi_write(qspi, cmd, QSPI_SPI_CMD_REG);
- 			ret = wait_for_completion_timeout(&qspi->transfer_complete,
- 					QSPI_COMPLETION_TIMEOUT);
- 			if (ret == 0) {
--- 
-1.7.1
+> +static int qspi_transfer_msg(struct ti_qspi *qspi, struct spi_transfer *=
+t)
+> +{
+> +	int ret;
+> +
+> +	if (t->tx_buf) {
+> +		ret =3D qspi_write_msg(qspi, t);
+> +		if (ret) {
+> +			dev_dbg(qspi->dev, "Error while writing\n");
+> +			return -ETIMEDOUT;
 
+return ret;
+
+> +		}
+> +	}
+> +
+> +	if (t->rx_buf) {
+> +		ret =3D qspi_read_msg(qspi, t);
+> +		if (ret) {
+> +			dev_dbg(qspi->dev, "Error while writing\n");
+> +			return -ETIMEDOUT;
+
+return ret;
+
+--=20
+balbi
+
+--Zd8I2GZVcdxtyaG/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJR+muKAAoJEIaOsuA1yqREbksP/2eGxzCF6eL9Pp7mrV+lmLUo
+QlUUwHecFFkRK+eN/OvEq0PJtWTDoNUtKOj+au3PhIWFndj11vwSY8CYotsMvBoj
+S9XLjV8gD7tMqun74dqZ8GAV+tvX+0iI9hHrX++KcuQlqnMcSqYfL4fDMiZc0fNy
+mAq/LHN4iaHISxOYiqEmKhK5mFvaYT1Muc8W0uD2Eqqyck6d3hAWN9xJmCMbXIFo
+1FqCsLwL9XRDLHYexDPZVYGUqo0igwlRcrBANozpR8NtqTDX22hXfPsrdzXJ73UL
+9LP1yP638w7UB4UE++E5pMj+yp4W1CgM9RVeJMgPV7Y9W2ZFo5ayLhfSqbpB52ft
+waluXiO8QphOczIdhKvsPwYEAgqQzFaCKdNrScWpO0zgNtQPgEMTWzdOKtt73Zrx
+twjoLPhUjc7QaSyuoW5TqlJskp1iXhkgeBEQTWL+huFrxJbLC++K2pZX3xaay/Xe
+vRqDsL5tNjxhafT09kKVSo7Y2ytsVPFJAyY6CiW9NqIX0uDThf2uBlOk86q8C4uZ
+9poODj8mF1H8WqP+Iy4WpYPi2nxTvq9wn2e+wZc5s7GA1pdUsQvOiFcUXUzY0eSv
+p+3/v6czY3Zu7yauYMrizPFEAQRRnT6mF/Wo9MoiyBCFDQU2pKSt6UW/sUZqojjr
+XA8yp6k6SZFKxLFIHl2H
+=NR8W
+-----END PGP SIGNATURE-----
+
+--Zd8I2GZVcdxtyaG/--

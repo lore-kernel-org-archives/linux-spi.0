@@ -1,17 +1,13 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCHv7 1/2] drivers: spi: Add qspi flash controller
-Date: Thu, 1 Aug 2013 09:45:17 +0530
-Message-ID: <51F9E0D5.4050707@ti.com>
-References: <1375249673-2585-1-git-send-email-sourav.poddar@ti.com>	<1375249673-2585-2-git-send-email-sourav.poddar@ti.com>
-	<CA+7tXijn2V7LMCKuOKxcda6r6a=JFBeSFNqGqNtYZuTF=irF1g@mail.gmail.com>
+From: IdealDouche <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Remplacez votre baignoire par une douche sur-mesure en moins de 24h
+Date: Thu, 1 Aug 2013 12:40:20 +0200 (CEST)
+Message-ID: <a6v7wr.hjtu19p59b6kg4l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: rnayak-l0cyMroinI0@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CA+7tXijn2V7LMCKuOKxcda6r6a=JFBeSFNqGqNtYZuTF=irF1g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,52 +18,117 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 01 August 2013 12:09 AM, Trent Piepho wrote:
-> On Tue, Jul 30, 2013 at 10:47 PM, Sourav Poddar<sourav.poddar-l0cyMroinI0@public.gmane.org>  wrote:
->> Test details:
->> -------------
->> Tested this on dra7 board.
->> Test1: Ran mtd_stesstest for 40000 iterations.
->>     - All iterations went through without failure.
->> Test2: Use mtd utilities:
->>    - flash_erase to erase the flash device
->>    - nanddump to read data back.
->>    - nandwrite to write to the data flash.
->>   diff between the write and read data shows zero.
-> You've obviously never tested word lengths other than 8, because...
->
->> +static inline void ti_qspi_read_data(struct ti_qspi *qspi,
->> +               unsigned long reg, int wlen, u8 **rxbuf)
->> +{
->> +       switch (wlen) {
->> +       case 8:
->> +               **rxbuf = readb(qspi->base + reg);
->> +               dev_vdbg(qspi->dev, "rx done, read %02x\n", *(*rxbuf));
->> +               *rxbuf += 1;
->> +               break;
->> +       case 16:
->> +               **rxbuf = readw(qspi->base + reg);
-> *rxbuf is a u8*.  This means when you assign to **rxbuf the type of
-> the lvalue is u8.  8 bits.  It does not matter what type the rvalue
-> is, u8, u16, or u32, the result will always be truncated to 8 bits.
->
-May be, I can typecast the lvalue correspondingly before assigning.
-> IMHO, I toss the design of ti_qspi_read/write_data().  They look like
-> a function to read a generic register, yet it only makes sense with
-> QSPI_SPI_DATA_REG.  Passing the pointer by address so it can be
-> incremented is ugly.  And doesn't work at all, since the type of the
-> pointer isn't going to be the same for different word lengths.  The
-> case statement inside the inner loop is inefficient.  Each case is
-> largely duplicated code.
-Yes, type of word length is not going to be the same. Hence, I kept it
-as u8, then increment the pointer accordingly according to the case to
-which it belongs.
-Due to the different kind of variants used(read(b/w/l), each case has to
-be replicated.
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgq58bI7gfk57dIhjtu0v04I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375353601816%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DCPMNALGAGADGCMOO%26mid%3D1600214267&s=3DH=
+KHKLGPOBHPFNIOM
+ =
 
-------------------------------------------------------------------------------
+Remplacez votre baignoire par une douche sur-mesure en moins de 24hRemplace=
+z votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre =
+baignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoir=
+e par une douche sur-mesure en moins de 24hRemplacez votre baignoire par un=
+e douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche=
+ sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mes=
+ure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en m=
+oins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de =
+24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRempl=
+acez votre baignoire par une douche sur-mesure en moins de 24hRemplacez vot=
+re baignoire par une douche sur-mesure en moins de 24hRemplacez votre baign=
+oire par une douche sur-mesure en moins de 24hRemplacez votre baignoire par=
+ une douche sur-mesure en moins de 24hRemplacez votre baignoire par une dou=
+che sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-=
+mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure e=
+n moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins =
+de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRe=
+mplacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez =
+votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre ba=
+ignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire =
+par une douche sur-mesure en moins de 24hRemplacez votre baignoire par une =
+douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche s=
+ur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesur=
+e en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moi=
+ns de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24=
+hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRemplac=
+ez votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre=
+ baignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoi=
+re par une douche sur-mesure en moins de 24hRemplacez votre baignoire par u=
+ne douche sur-mesure en moins de 24hRemplacez votre baignoire par une douch=
+e sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-me=
+sure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en =
+moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de=
+ 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRemp=
+lacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez vo=
+tre baignoire par une douche sur-mesure en moins de 24hRemplacez votre baig=
+noire par une douche sur-mesure en moins de 24hRemplacez votre baignoire pa=
+r une douche sur-mesure en moins de 24hRemplacez votre baignoire par une do=
+uche sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur=
+-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure =
+en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins=
+ de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hR=
+emplacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez=
+ votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre b=
+aignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire=
+ par une douche sur-mesure en moins de 24hRemplacez votre baignoire par une=
+ douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche =
+sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesu=
+re en moins de 24hRemplacez votre baignoire par une douche sur-mesure en mo=
+ins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 2=
+4hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRempla=
+cez votre baignoire par une douche sur-mesure en moins de 24hRemplacez votr=
+e baignoire par une douche sur-mesure en moins de 24hRemplacez votre baigno=
+ire par une douche sur-mesure en moins de 24hRemplacez votre baignoire par =
+une douche sur-mesure en moins de 24hRemplacez votre baignoire par une douc=
+he sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-m=
+esure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en=
+ moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins d=
+e 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRem=
+placez votre baignoire par une douche sur-mesure en moins de 24hRemplacez v=
+otre baignoire par une douche sur-mesure en moins de 24hRemplacez votre bai=
+gnoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire p=
+ar une douche sur-mesure en moins de 24hRemplacez votre baignoire par une d=
+ouche sur-mesure en moins de 24hRemplacez votre baignoire par une douche su=
+r-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure=
+ en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moin=
+s de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24h=
+Remplacez votre baignoire par une douche sur-mesure en moins de 24hRemplace=
+z votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre =
+baignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoir=
+e par une douche sur-mesure en moins de 24hRemplacez votre baignoire par un=
+e douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche=
+ sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mes=
+ure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en m=
+oins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de =
+24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRempl=
+acez votre baignoire par une douche sur-mesure en moins de 24hRemplacez vot=
+re baignoire par une douche sur-mesure en moins de 24hRemplacez votre baign=
+oire par une douche sur-mesure en moins de 24hRemplacez votre baignoire par=
+ une douche sur-mesure en moins de 24hRemplacez votre baignoire par une dou=
+che sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-=
+mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure e=
+n moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins =
+de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRe=
+mplacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez =
+votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre ba=
+ignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire =
+par une douche sur-mesure en moins de 24hRemplacez votre baignoire par une =
+douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche s=
+ur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesur=
+e en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moi=
+ns de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24h
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600214267&sig=3DLCNAEKJAAFKFPBJG&st=3D0
+---------------------------------------------------------------------------=
+---
 Get your SQL database under version control now!
-Version control is standard for application code, but databases havent 
-caught up. So what steps can you take to put your SQL databases under 
+Version control is standard for application code, but databases havent =
+
+caught up. So what steps can you take to put your SQL databases under =
+
 version control? Why should you start doing it? Read more to find out.
-http://pubads.g.doubleclick.net/gampad/clk?id=49501711&iu=/4140/ostg.clktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=3D49501711&iu=3D/4140/ostg.cl=
+ktrk

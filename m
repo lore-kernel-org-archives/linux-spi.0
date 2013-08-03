@@ -1,12 +1,12 @@
-From: Album Photo <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Offert : livre photo ou toile ?
-Date: Sat, 3 Aug 2013 13:06:27 +0200 (CEST)
-Message-ID: <gg9ydw.hjwpujo5imzl8ul@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Widiyana Samudra" <info-poKJjummKoKJEwTITx3sHfOzj3ZlY2QQ@public.gmane.org>
+Subject: Salam
+Date: Sat, 03 Aug 2013 16:20:22 +0800
+Message-ID: <8F5E6BC77C00BD18771F23B4D88198F94F6DD711@DONLITTLE-PC>
+Reply-To: widiyana26-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,80 +18,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgq6ziI7gfk57dIhjwpuigvI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375527985680%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DAIPKAPAHDBHBAMKJ%26mid%3D1600216542&s=3DI=
-CJPLDPNCLGAGCEK
- =
+Assalamualaikum Wr.Wb...
 
-Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livr=
-e photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou to=
-ile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert :=
- livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo =
-ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Off=
-ert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre p=
-hoto ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile=
- ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : li=
-vre photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou =
-toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert=
- : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre phot=
-o ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?O=
-ffert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre=
- photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toi=
-le ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : =
-livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo o=
-u toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offe=
-rt : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre ph=
-oto ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile =
-?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : liv=
-re photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou t=
-oile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert =
-: livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo=
- ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Of=
-fert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre =
-photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toil=
-e ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : l=
-ivre photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou=
- toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offer=
-t : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre pho=
-to ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?=
-Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livr=
-e photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou to=
-ile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert :=
- livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo =
-ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Off=
-ert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre p=
-hoto ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile=
- ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : li=
-vre photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou =
-toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert=
- : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre phot=
-o ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?O=
-ffert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre=
- photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toi=
-le ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : =
-livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo o=
-u toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offe=
-rt : livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre ph=
-oto ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou toile =
-?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert : liv=
-re photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo ou t=
-oile ?Offert : livre photo ou toile ?Offert : livre photo ou toile ?Offert =
-: livre photo ou toile ?Offert : livre photo ou toile ?Offert : livre photo=
- ou toile ?Offert : livre photo ou toile ?
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600216542&sig=3DJPGOMBCACDAJOOFG&st=3D0
----------------------------------------------------------------------------=
----
+Sebelum dan sesudahnya saya ingin memperkenalkan diri saya,nama saya WIDIYANA SAMUDRA berasal dari Indonesia dan bekerja di London (United Kingdom), ingin berkenalan dengan anda di sana.
+Saya ingin menawarkan satu peluang bisnis yang begitu bagus,dan  bagi Anda yang berminat dengan bisnis ... Inilah kesempatan Anda,kapan lagi kalau bukan sekarang bukan.???
+Produk ini di namakan (MULITE CLEANSER) kegunaannya untuk mencuci barangan yang sangat berharga sekali seperti batu intan permata yg masih mentah.
+Dan pada waktu yang sama perusahaan di tempat saya bekerja membutuhkan MULITE CLEANSER dimana mineral tersbut tersedia dari operator yg di Indonesia.
+Jadi bagi anda yang berminat dengan bisnis ini, saya ingin Anda menjadi Agent untuk menjual produk tersebut ke pada perusahaan tempat saya bekerja, (Anda membeli produk tersebut dari operator yang di Indonesia terlebih dahulu dengan harga 200USD per karton dan dijualnya kembali ke pada perusahaan  di tempat saya bekerja dengan harga 600USD
+Yang paling penting Niat dan ikhlas untuk mencari rezeki semata-mata karena Allah. Insya Allah, Allah akan membantu kita untuk mencari rezeki yang halal dan berkat,saya ingin Anda buat keputusan yang bijak, Anda bisa merubahnya .. Insya Allah '
+Apa bila ada berminat atau ada pertanyaan, silahkan balas email terus ke saya berdasarkan alamat di bawah atau silahkan berikan number supaya bisa di hubungi dan saya akan menerangkannya lebih lanjut di telepon: Insya Allah saya mencoba membantu Anda. Semoga ikatan silaturahmi sesama kita diberkati Allah. Selamat berkenalan.
+widiyana26-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+Yang benar...
+WIDIYANA SAMUDRA
+------------------------------------------------------------------------------
 Get your SQL database under version control now!
-Version control is standard for application code, but databases havent =
-
-caught up. So what steps can you take to put your SQL databases under =
-
+Version control is standard for application code, but databases havent 
+caught up. So what steps can you take to put your SQL databases under 
 version control? Why should you start doing it? Read more to find out.
-http://pubads.g.doubleclick.net/gampad/clk?id=3D49501711&iu=3D/4140/ostg.cl=
-ktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=49501711&iu=/4140/ostg.clktrk

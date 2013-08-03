@@ -1,12 +1,11 @@
-From: Optic2ooo <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
-Subject: Vente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit,
-	Chevignon
-Date: Fri, 2 Aug 2013 17:00:57 +0200
-Message-ID: <7137633442ba1d0d6ee4f780155b758a@localhost.localdomain>
-Reply-To: Optic2ooo <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
+From: Levi's <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
+Subject: =?UTF-8?Q?15%_de_r=C3=A9duction_sur_la_nouvelle_collection_Levi's?=
+Date: Sat, 3 Aug 2013 03:38:48 +0200
+Message-ID: <5f3f4c8cac73a09b9caefd7db9eaa0fb@localhost.localdomain>
+Reply-To: Levi's <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,26 +18,201 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, Chevignon
- Vente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur
-Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur 
- Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit,
-ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, 
- ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les
-solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les 
- solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle,
-Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, 
- Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur
-les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur 
- les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess,
-Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, 
- Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash
--70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, ChevignonVente Flash 
- -70% sur les solaires sur Nina Ricci, Guess, Elle, Esprit, Chevignon
-
-------------------------------------------------------------------------------
-Get your SQL database under version control now!
-Version control is standard for application code, but databases havent 
-caught up. So what steps can you take to put your SQL databases under 
-version control? Why should you start doing it? Read more to find out.
-http://pubads.g.doubleclick.net/gampad/clk?id=49501711&iu=/4140/ostg.clktrk
+U2kgdm91cyBuZSBwb3V2ZXogcGFzIGxpcmUgY2V0IGVtYWlsLCBzdWl2cmUgY2UgbGllbgoKICAg
+IAogICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAg
+ICAgIAogICAgICAgICAgICAgICAgICAgICAgICDCoAogICAgICAgICAgICAgICAgICAgIAoKICAg
+ICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAgICAg
+ICAgICAgICAgICBKZWFucyBGZW1tZQoKICAgICAgICAgICAgICAgICAgICAgICAgSmVhbnMgSG9t
+bWUKCiAgICAgICAgICAgICAgICAgICAgICAgIFQtU2hpcnRzCgogICAgICAgICAgICAgICAgICAg
+ICAgICBWZXN0ZXMKCiAgICAgICAgICAgICAgICAgICAgICAgIEFjY2Vzc29pcmVzCiAgICAgICAg
+ICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAg
+ICDCoAogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgCiAgICAgICAgICAgIAog
+ICAgICAgIAogICAgCgogICAgCiAgICAgICAgCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgwqAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAKICAgICAg
+ICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIAogICAgICAgICAgICAKICAgICAgICAKICAg
+IAoKCgoKICAgIAogICAgICAgIAogICAgICAgICAgICAKCiAgICAgICAgICAgIAogICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgIAogICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICDCoAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgIAog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICBMZXZpJ3MgSmVhbnMgNTAxIENvdXBlIERyb2l0ZSBEw6lsYXbD
+qSAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDY5IOKCrCAKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgTUFJTlRFTkFOVCA1OCw2NSDigqwKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCgogICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgSmUgbGUgdmV1eCAh
+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAg
+ICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIAoKICAgICAg
+ICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAK
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgwqAKCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgTGV2aSdzIEplYW5zIDUwMSBDb3VwZSBEcm9pdGUgTm9p
+ciAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDc1IOKCrCAKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgTUFJTlRFTkFOVCA2Myw3NSDigqwKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCgogICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgSmUgbGUgdmV1eCAh
+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAg
+ICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIAoKICAgICAg
+ICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAK
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgwqAKCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgTGV2aSdzIEplYW5zIDUwMSBDb3VwZSBEcm9pdGUgQnJ1
+dCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDc5IOKCrCAKICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgTUFJTlRFTkFOVCA2NywxNSDigqwKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCgogICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgSmUgbGUgdmV1eCAh
+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAg
+ICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIAogICAgICAg
+ICAgICAKICAgICAgICAKICAgIAogICAgCgogICAgCiAgICAgICAgCiAgICAgICAgICAgIAoKICAg
+ICAgICAgICAgCiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAKICAgICAgICAg
+ICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgIMKgCgogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIExldmkncyBKZWFucyBDbGFz
+c2ljIEN1cnZlIEJsZXUgZm9uY8OpIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoK
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAg4oKsIDg5IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBNQUlOVEVOQU5UIDc1LDY1IOKC
+rAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBKZSBsZSB2ZXV4ICEgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgCgogICAg
+ICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgIAogICAg
+ICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgCiAgICAg
+ICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICDCoAoKICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAog
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBMZXZpJ3MgSmVhbnMg
+Q2xhc3NpYyBDdXJ2ZSBDb3VwZSBEcm9pdGUgTm9pciAKICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoK
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIDk5IOKCrCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTUFJTlRFTkFO
+VCA4NCwxNSDigqwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgSmUgbGUgdmV1eCAhIAogICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAg
+ICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgCgogICAg
+ICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAg
+ICAgICAKICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAg
+ICAgIAogICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAg
+wqAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCgogICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgTGV2
+aSdzIEplYW5zIE1vZGVybiBDdXJ2ZSBUYWlsbGUgaGF1dGUgQmxldSBEw6lsYXbDqSAKICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEwOSDigqwgCiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgCgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIE1BSU5URU5BTlQgOTIsNjUg4oKsCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgCgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKCiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAoKICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEplIGxlIHZldXggISAKICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgIAog
+ICAgICAgICAgICAgICAgICAgICAgICAKCiAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAg
+ICAgICAgICAgICAgIAoKICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAg
+ICAgCiAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgCiAg
+ICAgICAgCiAgICAKCiAgIAoKICAgCiAgICAKIFNpIHZvdXMgdm91bGV6IHZvdXMgZMOpc2luc2Ny
+aXJlLCBzdWl2cmUgY2UgbGllbgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkdldCB5b3VyIFNRTCBk
+YXRhYmFzZSB1bmRlciB2ZXJzaW9uIGNvbnRyb2wgbm93IQpWZXJzaW9uIGNvbnRyb2wgaXMgc3Rh
+bmRhcmQgZm9yIGFwcGxpY2F0aW9uIGNvZGUsIGJ1dCBkYXRhYmFzZXMgaGF2ZW50IApjYXVnaHQg
+dXAuIFNvIHdoYXQgc3RlcHMgY2FuIHlvdSB0YWtlIHRvIHB1dCB5b3VyIFNRTCBkYXRhYmFzZXMg
+dW5kZXIgCnZlcnNpb24gY29udHJvbD8gV2h5IHNob3VsZCB5b3Ugc3RhcnQgZG9pbmcgaXQ/IFJl
+YWQgbW9yZSB0byBmaW5kIG91dC4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1w
+YWQvY2xrP2lkPTQ5NTAxNzExJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
+bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
+cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

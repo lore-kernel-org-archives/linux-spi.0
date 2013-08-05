@@ -1,11 +1,12 @@
-From: 0624-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 6 Aug 2013 05:28:10 +0800
-Message-ID: <E1V6SKP-0000yH-OU@sfs-ml-1.v29.ch3.sourceforge.com>
+From: Nl promos <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
+Subject: Votre vol pas cher en 1 clic
+Date: Tue, 6 Aug 2013 00:55:45 +0200
+Message-ID: <fec3418f7386610474b59153fb183f8b@localhost.localdomain>
+Reply-To: Nl promos <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6CiAgICCxvrmry77TxbvdtPrA7cirufq497XYtPOzx8rQt6LGsTsKCiAgICC587mry77I
-59PQ0OjSqqOsu7bTrcT6tcTAtLXn0+vO0sGqz7WjuiAKICAgICAgICAgICAgICAgICC4utTwyMuj
-utXFz8jJ+igwKTEzNTQ0MTAwNjI0CgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KR2V0IHlvdXIgU1FM
-IGRhdGFiYXNlIHVuZGVyIHZlcnNpb24gY29udHJvbCBub3chClZlcnNpb24gY29udHJvbCBpcyBz
-dGFuZGFyZCBmb3IgYXBwbGljYXRpb24gY29kZSwgYnV0IGRhdGFiYXNlcyBoYXZlbnQgCmNhdWdo
-dCB1cC4gU28gd2hhdCBzdGVwcyBjYW4geW91IHRha2UgdG8gcHV0IHlvdXIgU1FMIGRhdGFiYXNl
-cyB1bmRlciAKdmVyc2lvbiBjb250cm9sPyBXaHkgc2hvdWxkIHlvdSBzdGFydCBkb2luZyBpdD8g
-UmVhZCBtb3JlIHRvIGZpbmQgb3V0LgpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dh
-bXBhZC9jbGs/aWQ9NDk1MDE3MTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
-ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
-c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Votre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas ch
+ er en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas
+cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVo
+ tre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1
+clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pa
+ s cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas
+cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVo
+ tre vol pas cher en 1 clicVotre vol pas cher en 1 clic
+
+------------------------------------------------------------------------------
+Get your SQL database under version control now!
+Version control is standard for application code, but databases havent 
+caught up. So what steps can you take to put your SQL databases under 
+version control? Why should you start doing it? Read more to find out.
+http://pubads.g.doubleclick.net/gampad/clk?id=48897031&iu=/4140/ostg.clktrk

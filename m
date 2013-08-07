@@ -1,10 +1,11 @@
-From: roger-D92D/G+/+HlqsxJxrFhBYg@public.gmane.org
-Subject: [SPAM] Could be the next small stock to Explode, Read Inside
-Date: Wed, 7 Aug 2013 16:10:05 +0700
-Message-ID: <E1V6znz-0005mG-Gx@sfs-ml-4.v29.ch3.sourceforge.com>
+From: Autogrill par Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Imprimez_votre_bon_de_r=E9duction?=
+Date: Wed, 7 Aug 2013 12:33:26 +0200 (CEST)
+Message-ID: <65trll.hk2efhxz3xxnfwl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,20 +18,88 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-I unearthed a superb public company that can be benefiting from most 
-significant momentum and it looks really like it can be heading to $1 
-efficiently. Imogo (I M_TC) products serves as a should have for any 
-individual getting into business enterprise about the world wide web 
-and I am taken aback the ticker of I M_TC is indeed , discounted at the 
-present time. It's actually a exceptional prospect to utilize the next 
-necessary direction in on line advances. But nonetheless , this 
-particular likelihood simply can't continue for long as a consequence 
-react expediently!!!
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgq92pI7gfk57dIhk2efdeuI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375871600581%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DGNOBOFFHBPLCNFNM%26mid%3D1600219249&s=3DH=
+IMKBEMLKNFHODCK
+ =
 
+Imprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez =
+votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon=
+ de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9d=
+uctionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImp=
+rimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vot=
+re bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de=
+ r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duct=
+ionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprim=
+ez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre =
+bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
+mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
+ bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
+mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
+ bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
+mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
+ bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
+mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
+ bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tion
+ =
 
-------------------------------------------------------------------------------
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600219249&sig=3DKKDKAOPDNMCGJGBP&st=3D0
+---------------------------------------------------------------------------=
+---
 Get 100% visibility into Java/.NET code with AppDynamics Lite!
 It's a free troubleshooting tool designed for production.
-Get down to code-level detail for bottlenecks, with <2% overhead. 
-Download for free and get started troubleshooting in minutes. 
-http://pubads.g.doubleclick.net/gampad/clk?id=48897031&iu=/4140/ostg.clktrk
+Get down to code-level detail for bottlenecks, with <2% overhead. =
+
+Download for free and get started troubleshooting in minutes. =
+
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897031&iu=3D/4140/ostg.cl=
+ktrk

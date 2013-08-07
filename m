@@ -1,7 +1,7 @@
-From: Autogrill par Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Imprimez_votre_bon_de_r=E9duction?=
-Date: Wed, 7 Aug 2013 12:33:26 +0200 (CEST)
-Message-ID: <65trll.hk2efhxz3xxnfwl@news.teradoo.com>
+From: Canal+ par Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Gagnez_des_cadeaux_en_s=E9rie_avec_Canal+?=
+Date: Wed, 7 Aug 2013 13:28:22 +0200 (CEST)
+Message-ID: <6iegup.hk2ge5ebw03hl23l@news.teradoo.com>
 Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
@@ -19,80 +19,77 @@ Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gma
 List-Id: linux-spi.vger.kernel.org
 
 Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgq92pI7gfk57dIhk2efdeuI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375871600581%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DGNOBOFFHBPLCNFNM%26mid%3D1600219249&s=3DH=
-IMKBEMLKNFHODCK
+//news.teradoo.com/re?l=3DBD0Iqgq92yI7gfk57dIhk2gdzv3I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1375874895591%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DGHFJNGHHFMDEAPFB%26mid%3D1600219258&s=3DC=
+GGACGJLGNNIEFMP
  =
 
-Imprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez =
-votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon=
- de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9d=
-uctionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImp=
-rimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vot=
-re bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de=
- r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duct=
-ionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprim=
-ez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre =
-bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
-mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
- bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
-mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
- bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
-mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
- bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
-mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
- bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tion
+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec=
+ Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9r=
+ie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux e=
+n s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des ca=
+deaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez=
+ des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal=
++Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie ave=
+c Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9=
+rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux =
+en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des c=
+adeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagne=
+z des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Cana=
+l+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie av=
+ec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=
+=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadea=
+ux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez de=
+s cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Ga=
+gnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec C=
+anal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie=
+ avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en =
+s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cade=
+aux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez d=
+es cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+G=
+agnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec =
+Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9ri=
+e avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en=
+ s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cad=
+eaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez =
+des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+=
+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec=
+ Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9r=
+ie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux e=
+n s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des ca=
+deaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez=
+ des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal=
++Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie ave=
+c Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9=
+rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux =
+en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des c=
+adeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagne=
+z des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Cana=
+l+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie av=
+ec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=
+=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadea=
+ux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez de=
+s cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Ga=
+gnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec C=
+anal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie=
+ avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en =
+s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cade=
+aux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez d=
+es cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+G=
+agnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec =
+Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9ri=
+e avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en=
+ s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cad=
+eaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez =
+des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec Canal+=
+Gagnez des cadeaux en s=E9rie avec Canal+Gagnez des cadeaux en s=E9rie avec=
+ Canal+
  =
 
 Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
 c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600219249&sig=3DKKDKAOPDNMCGJGBP&st=3D0
+600034637&uid=3D16231069273&mid=3D1600219258&sig=3DAJIOGBCLPJJEPKFA&st=3D0
 ---------------------------------------------------------------------------=
 ---
 Get 100% visibility into Java/.NET code with AppDynamics Lite!

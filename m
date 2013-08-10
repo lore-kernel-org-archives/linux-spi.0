@@ -1,13 +1,12 @@
-From: =?UTF-8?Q?Master_Lopes_Corretora_de_Seguros?=
-	<vida-BI4EdlX38PuBVCvgEe3TS9Di0UtHxfmf@public.gmane.org>
-Subject: [SPAM] Sua Vida Sempre Segura
-Date: Fri, 09 Aug 2013 15:51:29 -0300 (BRT)
-Message-ID: <13344.29.257812.1376074289@3420h3ef14h05277cc9.static.p01me.com>
-Reply-To: vida-BI4EdlX38PuBVCvgEe3TS9Di0UtHxfmf@public.gmane.org
+From: Coupon lot <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Ouvrez ce mail, un lot vous attend
+Date: Sat, 10 Aug 2013 11:55:06 +0200 (CEST)
+Message-ID: <e3r4dz.hk6ndrdcgktijvl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,18 +18,82 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-U2V1IHZpc3VhbGl6YWRvciBkZSBlLW1haWwgZXN0w6EgY29uZmlndXJhZG8gcGFyYSBtb3N0cmFy
-IGEgbWVuc2FnZW0gZW0gZm9ybWF0byB0ZXh0by4KIFBhcmEgdmlzdWFsaXphciBjb3JyZXRhbWVu
-dGUgbyBjb250ZcO6ZG8gZGVzc2UgZS1tYWlsIGNvcGllIGUgY29sZSBvIGxpbmsgYWJhaXhvIGVt
-IHNldSBuYXZlZ2Fkb3I6CiBodHRwOi8vZC1hcHAuYnJhc2lsYmVtc2VndXJvLmNvbS5ici9lLzEz
-MzQ0LzI5LzI1NzgxMi9iYzI4NwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KR2V0IDEwMCUgdmlzaWJp
-bGl0eSBpbnRvIEphdmEvLk5FVCBjb2RlIHdpdGggQXBwRHluYW1pY3MgTGl0ZSEKSXQncyBhIGZy
-ZWUgdHJvdWJsZXNob290aW5nIHRvb2wgZGVzaWduZWQgZm9yIHByb2R1Y3Rpb24uCkdldCBkb3du
-IHRvIGNvZGUtbGV2ZWwgZGV0YWlsIGZvciBib3R0bGVuZWNrcywgd2l0aCA8MiUgb3ZlcmhlYWQu
-IApEb3dubG9hZCBmb3IgZnJlZSBhbmQgZ2V0IHN0YXJ0ZWQgdHJvdWJsZXNob290aW5nIGluIG1p
-bnV0ZXMuIApodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NDg4
-OTcwMzEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdl
-Lm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgqbcuI7gfk57dIhk6ndqkgI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1376128505558%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DCBELODFEIIJGCEIC%26mid%3D1600222206&s=3DK=
+HHPCJEANJNDEJBB
+ =
+
+Ouvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez =
+ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail=
+, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lo=
+t vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous =
+attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendO=
+uvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez c=
+e mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail,=
+ un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot=
+ vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous a=
+ttendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOu=
+vrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce=
+ mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, =
+un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot =
+vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous at=
+tendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuv=
+rez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce =
+mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, u=
+n lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot v=
+ous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous att=
+endOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvr=
+ez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce m=
+ail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un=
+ lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vo=
+us attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous atte=
+ndOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvre=
+z ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce ma=
+il, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un =
+lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vou=
+s attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous atten=
+dOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez=
+ ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mai=
+l, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un l=
+ot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous=
+ attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attend=
+Ouvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez =
+ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail=
+, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lo=
+t vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous =
+attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendO=
+uvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez c=
+e mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail,=
+ un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot=
+ vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous a=
+ttendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOu=
+vrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce=
+ mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, =
+un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot =
+vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous at=
+tendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuv=
+rez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce =
+mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, u=
+n lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot v=
+ous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous att=
+endOuvrez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvr=
+ez ce mail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce m=
+ail, un lot vous attendOuvrez ce mail, un lot vous attendOuvrez ce mail, un=
+ lot vous attend
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600222206&sig=3DHFPKDJNCKEGCKDNL&st=3D0
+---------------------------------------------------------------------------=
+---
+Get 100% visibility into Java/.NET code with AppDynamics Lite!
+It's a free troubleshooting tool designed for production.
+Get down to code-level detail for bottlenecks, with <2% overhead. =
+
+Download for free and get started troubleshooting in minutes. =
+
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897031&iu=3D/4140/ostg.cl=
+ktrk

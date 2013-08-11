@@ -1,7 +1,7 @@
 From: wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v3 1/2]spi: DUAL and QUAD support
-Date: Sun, 11 Aug 2013 18:15:17 +0800
-Message-ID: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
+Subject: [PATCH v3 2/2]spi: DUAL and QUAD support
+Date: Sun, 11 Aug 2013 18:23:50 +0800
+Message-ID: <1376216630-5915-1-git-send-email-wangyuhang2014@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,222 +19,155 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-fix the previous patch some mistake below:
-1. DT in slave node, use "spi-tx-nbits = <1/2/4>" in place of using
-   "spi-tx-dual, spi-tx-quad" directly, same to rx. So correct the
-   previous way to get the property in @of_register_spi_devices().
-2. Change the value of transfer bit macro(SPI_NBITS_SINGLE, SPI_NBITS_DUAL
-   SPI_NBITS_QUAD) to 0x01, 0x02 and 0x04 to match the actual wires.
-3. Add the following check
-   (1)keep the tx_nbits and rx_nbits in spi_transfer is not beyond the
-      single, dual and quad.
-   (2)keep tx_nbits and rx_nbits are contained by @spi_device->mode
-      example: if @spi_device->mode = DUAL, then tx/rx_nbits can not be set
-               to QUAD(SPI_NBITS_QUAD)
-   (3)if "@spi_device->mode & SPI_3WIRE", then tx/rx_nbits should be in
-      single(SPI_NBITS_SINGLE)
+fix two things in previous patch
+1. Change the value of transfer bit macro(SPI_NBITS_SINGLE, SPI_NBITS_DUAL
+   SPI_NBITS_QUAD) to 0x01, 0x02 and 0x04 to match the actual wires in
+   spidev.h.
+2. To keep tx_nbits and rx_nbits in @spi_ioc_transfer compatible to existed
+   binary in userspace, add SPI_SPIDEV_TRPBIT in Kconfig to make user select
+   appropriate spi_ioc_transfer.
 
 Signed-off-by: wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi.c       |   96 +++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h |   22 ++++++++++-
- 2 files changed, 116 insertions(+), 2 deletions(-)
+ drivers/spi/Kconfig             |   10 ++++++++++
+ drivers/spi/spidev.c            |   30 ++++++++++++++++++++++++++++++
+ include/uapi/linux/spi/spidev.h |   19 ++++++++++++++++++-
+ 3 files changed, 58 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 004b10f..78f257a 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -869,6 +869,51 @@ static void of_register_spi_devices(struct spi_master *master)
- 		if (of_find_property(nc, "spi-3wire", NULL))
- 			spi->mode |= SPI_3WIRE;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 2be0de9..55ad87c 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -496,6 +496,16 @@ config SPI_SPIDEV
+ 	  Note that this application programming interface is EXPERIMENTAL
+ 	  and hence SUBJECT TO CHANGE WITHOUT NOTICE while it stabilizes.
  
-+		/* Device DUAL/QUAD mode */
-+		prop = of_get_property(nc, "spi-tx-nbits", &len);
-+		if (!prop || len < sizeof(*prop)) {
-+			dev_err(&master->dev, "%s has no 'spi-tx-nbits' property\n",
-+				nc->full_name);
-+			spi_dev_put(spi);
-+			continue;
-+		}
-+		switch(be32_to_cpup(prop)) {
-+		case SPI_NBITS_SINGLE:
-+			break;
-+		case SPI_NBITS_DUAL:
-+			spi->mode |= SPI_TX_DUAL;
-+			break;
-+		case SPI_NBITS_QUAD:
-+			spi->mode |= SPI_TX_QUAD;
-+			break;
-+		default:
-+			dev_err(&master->dev, "spi-tx-nbits value is not supported\n");
-+			spi_dev_put(spi);
-+			continue;
-+		}
-+		
-+		prop = of_get_property(nc, "spi-rx-nbits", &len);
-+		if (!prop || len < sizeof(*prop)) {
-+			dev_err(&master->dev, "%s has no 'spi-rx-nbits' property\n",
-+				nc->full_name);
-+			spi_dev_put(spi);
-+			continue;
-+		}
-+		switch(be32_to_cpup(prop)) {
-+		case SPI_NBITS_SINGLE:
-+			break;
-+		case SPI_NBITS_DUAL:
-+			spi->mode |= SPI_RX_DUAL;
-+			break;
-+		case SPI_NBITS_QUAD:
-+			spi->mode |= SPI_RX_QUAD;
-+			break;
-+		default:
-+			dev_err(&master->dev, "spi-rx-nbits value is not supported\n");
-+			spi_dev_put(spi);
-+			continue;
-+		}
++config SPI_SPIDEV_TRPBIT
++	bool "Spidev support set transfer bit in user space"
++	depends on SPI_SPIDEV
++	default n
++	help
++	  This supports user set transfer bit(SINGLE,DUAL,QUAD).
++	  this will expand the struct spi_ioc_transfer with tx_nbits and
++	  rx_nbits. Then you should set that with SPI_NBITS_SINGLE/
++	  SPI_NBITS_DUAL/SPI_NBITS_QUAD depend on your demand.
 +
- 		/* Device speed */
- 		prop = of_get_property(nc, "spi-max-frequency", &len);
- 		if (!prop || len < sizeof(*prop)) {
-@@ -1313,6 +1358,19 @@ int spi_setup(struct spi_device *spi)
- 	unsigned	bad_bits;
- 	int		status = 0;
+ config SPI_TLE62X0
+ 	tristate "Infineon TLE62X0 (for power switching)"
+ 	depends on SYSFS
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 2e0655d..33d7d24 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -75,6 +75,9 @@ static DECLARE_BITMAP(minors, N_SPI_MINORS);
+ 				| SPI_LSB_FIRST | SPI_3WIRE | SPI_LOOP \
+ 				| SPI_NO_CS | SPI_READY)
  
-+	/* check mode to prevent that DUAL and QUAD set at the same time
-+	 */
-+	if (((spi->mode & SPI_TX_DUAL) && (spi->mode & SPI_TX_QUAD)) ||
-+		((spi->mode & SPI_RX_DUAL) && (spi->mode & SPI_RX_QUAD))) {
-+		dev_err(&spi->dev,
-+		"setup: can not select dual and quad at the same time\n");
-+		return -EINVAL;
-+	}
-+	/* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
-+	 */
-+	if ((spi->mode & SPI_3WIRE) && (spi->mode &
-+		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)))
-+		return -EINVAL;
- 	/* help drivers fail *cleanly* when they need options
- 	 * that aren't supported with their current master
- 	 */
-@@ -1370,12 +1428,50 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
- 	/**
- 	 * Set transfer bits_per_word and max speed as spi device default if
- 	 * it is not set for this transfer.
-+	 * Set transfer tx_nbits and rx_nbits as single transfer default
-+	 * (SPI_NBITS_SINGLE) if it is not set for this transfer.
- 	 */
- 	list_for_each_entry(xfer, &message->transfers, transfer_list) {
- 		if (!xfer->bits_per_word)
- 			xfer->bits_per_word = spi->bits_per_word;
- 		if (!xfer->speed_hz)
- 			xfer->speed_hz = spi->max_speed_hz;
-+		if (xfer->tx_buf && !xfer->tx_nbits)
-+			xfer->tx_nbits = SPI_NBITS_SINGLE;
-+		if (xfer->rx_buf && !xfer->rx_nbits)
-+			xfer->rx_nbits = SPI_NBITS_SINGLE;
-+		/* check transfer tx/rx_nbits:
-+		 * 1. keep the value is not out of single, dual and quad
-+		 * 2. keep tx/rx_nbits is contained by mode in spi_device
-+		 * 3. if SPI_3WIRE, tx/rx_nbits should be in single
-+		 */
-+		if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
-+			xfer->tx_nbits != SPI_NBITS_DUAL &&
-+			xfer->tx_nbits != SPI_NBITS_QUAD)
-+			return -EINVAL;
-+		if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
-+			!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
-+			return -EINVAL;
-+		if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
-+			!(spi->mode & SPI_TX_QUAD))
-+			return -EINVAL;
-+		if ((spi->mode & SPI_3WIRE) &&
-+			(xfer->tx_nbits != SPI_NBITS_SINGLE))
-+			return -EINVAL;
-+		/* check transfer rx_nbits */
-+		if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
-+			xfer->rx_nbits != SPI_NBITS_DUAL &&
-+			xfer->rx_nbits != SPI_NBITS_QUAD)
-+			return -EINVAL;
-+		if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
-+			!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
-+			return -EINVAL;
-+		if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
-+			!(spi->mode & SPI_RX_QUAD))
-+			return -EINVAL;
-+		if ((spi->mode & SPI_3WIRE) &&
-+			(xfer->rx_nbits != SPI_NBITS_SINGLE))
-+			return -EINVAL;
- 	}
++#define SPI_EXTMODE_MASK	(SPI_MODE_MASK | SPI_TX_DUAL \
++				| SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)
++
+ struct spidev_data {
+ 	dev_t			devt;
+ 	spinlock_t		spi_lock;
+@@ -268,6 +271,10 @@ static int spidev_message(struct spidev_data *spidev,
+ 		k_tmp->bits_per_word = u_tmp->bits_per_word;
+ 		k_tmp->delay_usecs = u_tmp->delay_usecs;
+ 		k_tmp->speed_hz = u_tmp->speed_hz;
++#ifdef CONFIG_SPI_SPIDEV_TRPBIT
++		k_tmp->tx_nbits = u_tmp->tx_nbits;
++		k_tmp->rx_nbits = u_tmp->rx_nbits;
++#endif
+ #ifdef VERBOSE
+ 		dev_dbg(&spidev->spi->dev,
+ 			"  xfer len %zd %s%s%s%dbits %u usec %uHz\n",
+@@ -369,6 +376,10 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 	case SPI_IOC_RD_MAX_SPEED_HZ:
+ 		retval = __put_user(spi->max_speed_hz, (__u32 __user *)arg);
+ 		break;
++	case SPI_IOC_EXTRD_MODE:
++		retval = __put_user(spi->mode & SPI_EXTMODE_MASK,
++					(__u16 __user *)arg);
++		break;
  
- 	message->spi = spi;
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 38c2b92..3dc0a86 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -74,7 +74,7 @@ struct spi_device {
- 	struct spi_master	*master;
- 	u32			max_speed_hz;
- 	u8			chip_select;
--	u8			mode;
-+	u16			mode;
- #define	SPI_CPHA	0x01			/* clock phase */
- #define	SPI_CPOL	0x02			/* clock polarity */
- #define	SPI_MODE_0	(0|0)			/* (original MicroWire) */
-@@ -87,6 +87,10 @@ struct spi_device {
- #define	SPI_LOOP	0x20			/* loopback mode */
- #define	SPI_NO_CS	0x40			/* 1 dev/bus, no chipselect */
- #define	SPI_READY	0x80			/* slave pulls low to pause */
-+#define	SPI_TX_DUAL	0x100			/* transmit with 2 wires */
-+#define	SPI_TX_QUAD	0x200			/* transmit with 4 wires */
-+#define	SPI_RX_DUAL	0x400			/* receive with 2 wires */
-+#define	SPI_RX_QUAD	0x800			/* receive with 4 wires */
- 	u8			bits_per_word;
- 	int			irq;
- 	void			*controller_state;
-@@ -437,6 +441,10 @@ extern struct spi_master *spi_busnum_to_master(u16 busnum);
-  * @rx_buf: data to be read (dma-safe memory), or NULL
-  * @tx_dma: DMA address of tx_buf, if @spi_message.is_dma_mapped
-  * @rx_dma: DMA address of rx_buf, if @spi_message.is_dma_mapped
-+ * @tx_nbits: number of bits used for writting. If 0 the default
-+ *      (SPI_NBITS_SINGLE) is used.
-+ * @rx_nbits: number of bits used for reading. If 0 the default
-+ *      (SPI_NBITS_SINGLE) is used.
-  * @len: size of rx and tx buffers (in bytes)
-  * @speed_hz: Select a speed other than the device default for this
-  *      transfer. If 0 the default (from @spi_device) is used.
-@@ -491,6 +499,11 @@ extern struct spi_master *spi_busnum_to_master(u16 busnum);
-  * by the results of previous messages and where the whole transaction
-  * ends when the chipselect goes intactive.
-  *
-+ * When SPI can transfer in 1x,2x or 4x. It can get this tranfer information
-+ * from device through @tx_nbits and @rx_nbits. In Bi-direction, these
-+ * two should both be set. User can set transfer mode with SPI_NBITS_SINGLE(1x)
-+ * SPI_NBITS_DUAL(2x) and SPI_NBITS_QUAD(4x) to support these three transfer.
-+ *
-  * The code that submits an spi_message (and its spi_transfers)
-  * to the lower layers is responsible for managing its memory.
-  * Zero-initialize every field you don't set up explicitly, to
-@@ -511,6 +524,11 @@ struct spi_transfer {
- 	dma_addr_t	rx_dma;
+ 	/* write requests */
+ 	case SPI_IOC_WR_MODE:
+@@ -433,6 +444,25 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 				dev_dbg(&spi->dev, "%d Hz (max)\n", tmp);
+ 		}
+ 		break;
++	case SPI_IOC_EXTWR_MODE:
++		retval = __get_user(tmp, (u16 __user *)arg);
++		if (retval == 0) {
++			u16	save = spi->mode;
++
++			if (tmp & ~SPI_EXTMODE_MASK) {
++				retval = -EINVAL;
++				break;
++			}
++
++			tmp |= spi->mode & ~SPI_EXTMODE_MASK;
++			spi->mode = (u16)tmp;
++			retval = spi_setup(spi);
++			if (retval < 0)
++				spi->mode = save;
++			else
++				dev_dbg(&spi->dev, "spi mode %02x\n", tmp);
++		}
++		break;
  
- 	unsigned	cs_change:1;
-+	u8		tx_nbits;
-+	u8		rx_nbits;
+ 	default:
+ 		/* segmented and/or full-duplex I/O request */
+diff --git a/include/uapi/linux/spi/spidev.h b/include/uapi/linux/spi/spidev.h
+index 52d9ed0..c3a0244 100644
+--- a/include/uapi/linux/spi/spidev.h
++++ b/include/uapi/linux/spi/spidev.h
+@@ -42,7 +42,14 @@
+ #define SPI_LOOP		0x20
+ #define SPI_NO_CS		0x40
+ #define SPI_READY		0x80
+-
++#define	SPI_TX_DUAL		0x100
++#define	SPI_TX_QUAD		0x200
++#define	SPI_RX_DUAL		0x400
++#define	SPI_RX_QUAD		0x800
++
 +#define	SPI_NBITS_SINGLE	0x01 /* 1bit transfer */
 +#define	SPI_NBITS_DUAL		0x02 /* 2bits transfer */
 +#define	SPI_NBITS_QUAD		0x04 /* 4bits transfer */
- 	u8		bits_per_word;
- 	u16		delay_usecs;
- 	u32		speed_hz;
-@@ -858,7 +876,7 @@ struct spi_board_info {
- 	/* mode becomes spi_device.mode, and is essential for chips
- 	 * where the default of SPI_CS_HIGH = 0 is wrong.
- 	 */
--	u8		mode;
-+	u16		mode;
+ /*---------------------------------------------------------------------------*/
  
- 	/* ... may need additional spi_device chip config data here.
- 	 * avoid stuff protocol drivers can set; but include stuff
+ /* IOCTL commands */
+@@ -54,6 +61,8 @@
+  * @tx_buf: Holds pointer to userspace buffer with transmit data, or null.
+  *	If no data is provided, zeroes are shifted out.
+  * @rx_buf: Holds pointer to userspace buffer for receive data, or null.
++ * @tx_nbits: number of bits used for writting.
++ * @rx_nbits: number of bits used for reading.
+  * @len: Length of tx and rx buffers, in bytes.
+  * @speed_hz: Temporary override of the device's bitrate.
+  * @bits_per_word: Temporary override of the device's wordsize.
+@@ -86,6 +95,10 @@ struct spi_ioc_transfer {
+ 	__u64		tx_buf;
+ 	__u64		rx_buf;
+ 
++#ifdef CONFIG_SPI_SPIDEV_TRPBIT
++	__u8		tx_nbits;
++	__u8		rx_nbits;
++#endif
+ 	__u32		len;
+ 	__u32		speed_hz;
+ 
+@@ -126,6 +139,10 @@ struct spi_ioc_transfer {
+ #define SPI_IOC_RD_MAX_SPEED_HZ		_IOR(SPI_IOC_MAGIC, 4, __u32)
+ #define SPI_IOC_WR_MAX_SPEED_HZ		_IOW(SPI_IOC_MAGIC, 4, __u32)
+ 
++/* Read / Write of SPI mode (including SPI DUAL/QUAD) */
++#define SPI_IOC_EXTRD_MODE		_IOR(SPI_IOC_MAGIC, 5, __u16)
++#define SPI_IOC_EXTWR_MODE		_IOW(SPI_IOC_MAGIC, 5, __u16)
++
+ 
+ 
+ #endif /* SPIDEV_H */
 -- 
 1.7.9.5
 

@@ -1,7 +1,7 @@
 From: Monte-escaliers <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
 Subject: Demandez votre catalogue gratuit
-Date: Mon, 12 Aug 2013 12:45:02 +0200
-Message-ID: <65a38818973d7b8fc00300341e66689e@localhost.localdomain>
+Date: Mon, 12 Aug 2013 12:39:31 +0200
+Message-ID: <0f6b7d61a8c12bb6b14b3c05f3532ac4@localhost.localdomain>
 Reply-To: Monte-escaliers <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"

@@ -1,12 +1,11 @@
-From: Yves Rocher via Neezz <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Les_produits_stars_de_l'Et=E9!_1_?=
-	=?ISO-8859-1?Q?produit_achet=E9,_1_produit_offert?=
-Date: Mon, 12 Aug 2013 11:04:49 +0200 (CEST)
-Message-ID: <k6isny.hk9ggstcdz2rjxl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Monte-escaliers <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
+Subject: Demandez votre catalogue gratuit
+Date: Mon, 12 Aug 2013 12:45:02 +0200
+Message-ID: <65a38818973d7b8fc00300341e66689e@localhost.localdomain>
+Reply-To: Monte-escaliers <newsletter-LRGM+OOURYZBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,83 +18,15 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqc28I7gfk57dIhk9ggmliI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1376298281593%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DPPEDIOJKKCIMKABE%26mid%3D1600223120&s=3DG=
-CPNIGCNNADPLNIK
- =
+Demandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuit
+ Demandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue
+gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue 
+ gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue
+gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuitDemandez votre catalogue gratuit
 
-Les produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes prod=
-uits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits sta=
-rs de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'=
-Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1=
- produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit=
- achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=
-=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 p=
-roduit offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit o=
-ffertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes=
- produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produit=
-s stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars =
-de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=
-=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 p=
-roduit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit a=
-chet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=E9,=
- 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produ=
-it offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offer=
-tLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes pro=
-duits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits st=
-ars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l=
-'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! =
-1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produi=
-t achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=
-=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 p=
-roduit offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit o=
-ffertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes=
- produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produit=
-s stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars =
-de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=
-=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 p=
-roduit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit a=
-chet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=E9,=
- 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produ=
-it offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offer=
-tLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes pro=
-duits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits st=
-ars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l=
-'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! =
-1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produi=
-t achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=
-=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 p=
-roduit offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit o=
-ffertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes=
- produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produit=
-s stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars =
-de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=
-=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 p=
-roduit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit a=
-chet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=E9,=
- 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produ=
-it offertLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offer=
-tLes produits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes pro=
-duits stars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits st=
-ars de l'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l=
-'Et=E9! 1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! =
-1 produit achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produi=
-t achet=E9, 1 produit offertLes produits stars de l'Et=E9! 1 produit achet=
-=E9, 1 produit offert
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600223120&sig=3DGJNPEPENNKDIDDEO&st=3D0
----------------------------------------------------------------------------=
----
+------------------------------------------------------------------------------
 Get 100% visibility into Java/.NET code with AppDynamics Lite!
 It's a free troubleshooting tool designed for production.
-Get down to code-level detail for bottlenecks, with <2% overhead. =
-
-Download for free and get started troubleshooting in minutes. =
-
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897031&iu=3D/4140/ostg.cl=
-ktrk
+Get down to code-level detail for bottlenecks, with <2% overhead. 
+Download for free and get started troubleshooting in minutes. 
+http://pubads.g.doubleclick.net/gampad/clk?id=48897031&iu=/4140/ostg.clktrk

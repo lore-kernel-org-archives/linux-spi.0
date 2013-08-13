@@ -1,11 +1,11 @@
-From: "Vente Apple" <lisa@a.optincake.com>
-Subject: iPhone vendu 19eur
-Date: Tue, 13 Aug 2013 01:45:09 +0100
-Message-ID: <0.0.65.BFF.1CE97BE5CA209F4.0@mta35.pur3.net>
-Reply-To: Vente Apple <lisa@a.optincake.com>
+From: Etam par Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?-20%_sur_votre_premi=E8re_commande?=
+Date: Tue, 13 Aug 2013 11:19:44 +0200 (CEST)
+Message-ID: <w4niiy.hkawfu2lvgeklyl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,129 +18,94 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTc4NzIzMjIwNTM3MjU0CgoKCgoKKFJldnVlIENvbnNvKToKaHR0cDovL2NwbmV0d29yazAyLmV1
-L3UvMzAvMTQ4Ni8yNDQvYmF6b2JhMi85ODAvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAxMzA3MTBy
-ZXYKdWVjb25zbwoKKEVucXVldGUgZXhjbHVzaXZlKToKaHR0cDovL2NwbmV0d29yazAyLmV1L3Uv
-MzAvMTQ4Ni8yNDQvYmF6b2JhMi85ODAvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAxMzA3MTByZXYK
-dWVjb25zbwoKCk5vdXMgc29tbWVzIGFsbMOpcyBkw6luaWNoZXIgbGVzIGRlcm5pw6hyZXMgYXN0
-dWNlcyBwb3VyIMOpY29ub21pc2VyCgood29tYW4pOgpodHRwOi8vY3BuZXR3b3JrMDIuZXUvdS8z
-MC8xNDg2LzI0NC9iYXpvYmEyLzk4MC9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMDcxMHJldgp1
-ZWNvbnNvCgoKw4AgTEEgVU5FCkNvbW1lbnQgw6ljb25vbWlzZXIgOTAlIHN1ciB1biBpUGFkIDQg
-b3Ugc3VyIHVuIGlQaG9uZSA1ID8KVm91cyBsJ2F1cmV6IHN1cmVtZW50IHJlbWFycXXDqSwgdW4g
-bm91dmVhdSBwaMOpbm9tw6huZSBlc3QgZW4gdHJhaW4gZGUgc2UKZMOpdmVsb3BwZXIgZW4gRXVy
-b3BlIGV0IGVuIEFtw6lyaXF1ZSBkdSBOb3JkIDogbGVzIHNpdGVzIGludGVybmV0IGRlIHZlbnRl
-cwphdXggZW5jaMOocmVzIGRlIGTDqXN0b2NrYWdlLiBQYXJ0b3V0IHN1ciBsZSBuZXQsIGRhbnMg
-bGVzIGJsb2dzLCBvbiBwZXV0CmxpcmUgbGVzIGhpc3RvaXJlcyBkJ2hldXJldXggZ2FnbmFudHMg
-cXVpIG9udCByZW1wb3J0w6kgZGUgZmFidWxldXggYXJ0aWNsZXMKaGFiaXR1ZWxsZW1lbnQgdHLD
-qHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4gTWFpcyBub3Vz
-Cm4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3VyIGNlbGEgcXVl
-IG5vdXMgYXZvbnMgZMOpY2lkw6kKZGUgbGVzIHRlc3Rlci4gUG91ciBub3VzIGFzc3VyZXIgcXVl
-IGxlcyBib25uZXMgYWZmYWlyZXMgcHJvcG9zw6llcyBwYXIgY2VzCnNpdGVzIGRlIHZlbnRlcyBh
-dXggZW5jaMOocmVzIGRlIGTDqXN0b2NrYWdlIMOpdGFpZW50IGJpZW4gcsOpZWxsZXMuIEV0CnF1
-ZWxsZSBtZWlsbGV1cmUgcmFpc29uIHBvdXIgcydlbiBhc3N1cmVyIHF1ZSBkZSBsZXMgdGVzdGVy
-IG5vdXMtbcOqbWUgPwpsaXJlIGxhIHN1aXRlCmxpcmUgbGEgc3VpdGUobGlyZSBsYSBzdWl0ZSk6
-Cmh0dHA6Ly9jcG5ldHdvcmswMi5ldS91LzMwLzE0ODYvMjQ0L2Jhem9iYTIvOTgwL0VNQUlML05B
-TUUvRklSU1ROQU1FLzIwMTMwNzEwcmV2CnVlY29uc28KCihzZXBhcmF0b3IpOgpodHRwOi8vY3Bu
-ZXR3b3JrMDIuZXUvdS8zMC8xNDg2LzI0NC9iYXpvYmEyLzk4MC9FTUFJTC9OQU1FL0ZJUlNUTkFN
-RS8yMDEzMDcxMHJldgp1ZWNvbnNvCgooZ3V5KToKaHR0cDovL2NwbmV0d29yazAyLmV1L3UvMzAv
-MTQ4Ni8yNDQvYmF6b2JhMi85ODAvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAxMzA3MTByZXYKdWVj
-b25zbwoKCkxBIFJFVlVFIENPTlNPCkplIHZvdWxhaXMgYWNoZXRlciB1biBub3V2ZWwgaVBhZCBS
-ZXRpbmEgZGUgQXBwbGUsIGMnZXN0IGRvbmMgbW9pIHF1aSBhaQrDqXTDqSBjaGFyZ8OpZSBkdSB0
-ZXN0LgoiSidhaSBjb21tZW5jw6kgcGFyIGZhaXJlIHVuZSB0b25uZSBkZSByZWNoZXJjaGVzIHN1
-ciBsZSBzdWpldCBwb3VyCmTDqXRlcm1pbmVyIHF1ZWwgc2l0ZSBkJ2VuY2jDqHJlcyBkZSBkw6lz
-dG9ja2FnZSDDqXRhaXQgbGUgcGx1cyBmaWFibGUsIGV0CmRvbmMgbGUgbWlldXggYWRhcHTDqSDD
-oCBtb24gdGVzdC4gQXByw6hzIGRlcyBoZXVyZXMgZGUgcmVjaGVyY2hlcywgaidlbgpzdWlzIHZl
-bnVlIMOgIGxhIGNvbmNsdXNpb24gcXVlLCBkdSBmYWl0IGRlIHNhIGxhcmdlIGdhbW1lIGQnYXJ0
-aWNsZXMgZXQgc29uCmV4Y2VsbGVudGUgcsOpcHV0YXRpb24sIEVuY2jDqHJlVmlwIMOpdGFpdCBs
-ZSBzaXRlIMOgIHRlc3Rlci4iCmxpcmUgbGEgc3VpdGUKbGlyZSBsYSBzdWl0ZShsaXJlIGxhIHN1
-aXRlKToKaHR0cDovL2NwbmV0d29yazAyLmV1L3UvMzAvMTQ4Ni8yNDQvYmF6b2JhMi85ODAvRU1B
-SUwvTkFNRS9GSVJTVE5BTUUvMjAxMzA3MTByZXYKdWVjb25zbwoKKHNlcGFyYXRvcik6Cmh0dHA6
-Ly9jcG5ldHdvcmswMi5ldS91LzMwLzE0ODYvMjQ0L2Jhem9iYTIvOTgwL0VNQUlML05BTUUvRklS
-U1ROQU1FLzIwMTMwNzEwcmV2CnVlY29uc28KCgpDb21tZW50YWlyZXMgZGUgbm9zIGxlY3RldXJl
-cwoKKGdpcmwpOgpodHRwOi8vY3BuZXR3b3JrMDIuZXUvdS8zMC8xNDg2LzI0NC9iYXpvYmEyLzk4
-MC9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMDcxMHJldgp1ZWNvbnNvCgoKTWFyaWUKU2FtZWRp
-IDIgTWFycyAiSidhaSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0
-cmVzIGbDqnRlcwpwb3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6lj
-b25vbWllcyIKCihndXkpOgpodHRwOi8vY3BuZXR3b3JrMDIuZXUvdS8zMC8xNDg2LzI0NC9iYXpv
-YmEyLzk4MC9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMDcxMHJldgp1ZWNvbnNvCgoKUGF0b3UK
-THVuZGkgNCBNYXJzICJKJ2FpIHZ1IHVuIHJlcG9ydGFnZSBzdXIgbGVzIGVuY2jDqHJlcyBhdSBj
-ZW50aW1lIMOgIGxhIHTDqWzDqSwKcHVpcyBqJ2FpIGx1IGNldCBhcnRpY2xlLiBJbCBtZSB0YXJk
-ZSBkJ2Vzc2F5ZXIiCgooVnUgc3VyOiBMZSBNb25kZSwgRnJhbmNlIDI0LCBNWVRGMSk6Cmh0dHA6
-Ly9jcG5ldHdvcmswMi5ldS91LzMwLzE0ODYvMjQ0L2Jhem9iYTIvOTgwL0VNQUlML05BTUUvRklS
-U1ROQU1FLzIwMTMwNzEwcmV2CnVlY29uc28KCihpUGhvbmUgNSk6Cmh0dHA6Ly9jcG5ldHdvcmsw
-Mi5ldS91LzMwLzE0ODYvMjQ0L2Jhem9iYTIvOTgwL0VNQUlML05BTUUvRklSU1ROQU1FLzIwMTMw
-NzEwcmV2CnVlY29uc28KCihpUGhvbmUgNSk6Cmh0dHA6Ly9jcG5ldHdvcmswMi5ldS91LzMwLzE0
-ODYvMjQ0L2Jhem9iYTIvOTgwL0VNQUlML05BTUUvRklSU1ROQU1FLzIwMTMwNzEwcmV2CnVlY29u
-c28KCgrCoCAuUmVhZE1zZ0JvZHkge3dpZHRoOiAxMDAlO30gLkV4dGVybmFsQ2xhc3Mge3dpZHRo
-OiAxMDAlO30gc3Bhbi55c2hvcnRjdXRzCnsgY29sb3I6IzAwMDsgYmFja2dyb3VuZC1jb2xvcjpu
-b25lOyBib3JkZXI6bm9uZTt9IHNwYW4ueXNob3J0Y3V0czpob3ZlciwKc3Bhbi55c2hvcnRjdXRz
-OmFjdGl2ZSwgc3Bhbi55c2hvcnRjdXRzOmZvY3VzIHtjb2xvcjojMDAwOwpiYWNrZ3JvdW5kLWNv
-bG9yOm5vbmU7IGJvcmRlcjpub25lO31BIGxhIHJlY2hlcmNoZSBkdSBjYWRlYXUgb3JpZ2luYWwg
-PyBOb3VzCnNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRl
-IHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyCm1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0
-b3V0ZSBsJ2FubsOpZS4gQWluc2ksIGdyYWNlIMOgIG5vdXMsIHZvdXMKYWxsZXogcGFyIGV4ZW1w
-bGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291
-dCwKb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMg
-aGFiaWxsZXIsIGRlIHZvdXMKY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxl
-dXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZwpkZSBsJ2FubsOpZSwgYWxvcnMg
-cG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJvcG9zaXRp
-b25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpvdXIK
-csOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2
-b3VzIGhhYmlsbGVyLCBkZQp2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1l
-aWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1CmxvbmcgZGUgbCdhbm7DqWUsIGFs
-b3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzCnByb3Bv
-c2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBq
-b3VyCnLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS5BaW5zaSwgZ3LDomNlIMOgIG5v
-dXMsIHZvdXMgYWxsZXogcGFyCmV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBx
-dWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwKb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuRW52aWUg
-ZGUgdm91cyBmYWlyZSB1bmUgYmVhdXTDqSDDoCBtb2luZHJlIGNvw7t0CnRvdXQgYXUgbG9uZyBk
-ZSBsJ2FubsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqSDD
-oAptb2luZHJlIGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRl
-cyBidWRnZXRzCnJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJl
-IG5vcyBwcm9wb3NpdGlvbnMgcG91ciB2b3VzCnBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBu
-b21icmV1c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQKcGxhaXNpciDDoCB0b3V0
-ZSBsYSBmYW1pbGxlLi4gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdQpy
-ZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNv
-bW1hbnQgbWlldXggdG91dGUKbCdhbm7DqWUuQSBsYSByZWNoZXJjaGUgZHUgY2FkZWF1IG9yaWdp
-bmFsID8gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIKdW4gbm91dmVhdSByZWdhcmQgYWZp
-biBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQKbWll
-dXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncmFjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBl
-eGVtcGxlLCBwb3V2b2lyCnByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFz
-IGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLi4uCkJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2
-b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyCmF1IG1l
-aWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFs
-b3JzIHBvdXJxdW9pCm5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bv
-c2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywKZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBq
-b3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS5CZXNvaW4gZGUKdm95YWdlciwg
-ZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBh
-dSBtZWlsbGV1cgpyYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6ll
-LCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIKdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBw
-cm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzCm1ldHRvbnMg
-w6Agam91ciByw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuQWluc2ksIGdyw6JjZSDD
-oCBub3VzLAp2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQg
-Y2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzCmNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLkVu
-dmllIGRlIHZvdXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZQpjb8O7dCB0b3V0IGF1IGxv
-bmcgZGUgbCdhbm7DqWUsIGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw6l0
-w6kKw6AgbW9pbmRyZSBmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDD
-oCBkZXMgYnVkZ2V0cwpyYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDDoCBh
-dXRyZSBub3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cwpwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUg
-ZGUgbm9tYnJldXNlcyDDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50CnBsYWlzaXIgw6Ag
-dG91dGUgbGEgZmFtaWxsZS4uIE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZl
-YXUKcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBj
-b25zb21tYW50IG1pZXV4IHRvdXRlCmwnYW5uw6llLgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fi
-b25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/
-QUo4NDY0MTg2NjI1MTc4NzIzMjIwNTM3MjU0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTc4NzIzMjIw
-NTM3MjU0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkdldCAxMDAlIHZpc2liaWxpdHkgaW50byBK
-YXZhLy5ORVQgY29kZSB3aXRoIEFwcER5bmFtaWNzIExpdGUhCkl0J3MgYSBmcmVlIHRyb3VibGVz
-aG9vdGluZyB0b29sIGRlc2lnbmVkIGZvciBwcm9kdWN0aW9uLgpHZXQgZG93biB0byBjb2RlLWxl
-dmVsIGRldGFpbCBmb3IgYm90dGxlbmVja3MsIHdpdGggPDIlIG92ZXJoZWFkLiAKRG93bmxvYWQg
-Zm9yIGZyZWUgYW5kIGdldCBzdGFydGVkIHRyb3VibGVzaG9vdGluZyBpbiBtaW51dGVzLiAKaHR0
-cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODk3MDMxJml1PS80
-MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
-bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgqcj7I7gfk57dIhkawfpf9I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1376385578633%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DPANFLMBNJFEPLEDL%26mid%3D1600223731&s=3DN=
+OHNKIHLLCPHEFLJ
+ =
+
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=E8re c=
+ommande-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande=
+-20% sur votre premi=E8re commande-20% sur votre premi=E8re commande-20% su=
+r votre premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre=
+ premi=E8re commande-20% sur votre premi=E8re commande-20% sur votre premi=
+=E8re commande
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600223731&sig=3DPEMENDOAGPDGCFCG
+---------------------------------------------------------------------------=
+---
+Get 100% visibility into Java/.NET code with AppDynamics Lite!
+It's a free troubleshooting tool designed for production.
+Get down to code-level detail for bottlenecks, with <2% overhead. =
+
+Download for free and get started troubleshooting in minutes. =
+
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897031&iu=3D/4140/ostg.cl=
+ktrk

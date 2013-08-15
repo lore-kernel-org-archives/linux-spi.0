@@ -1,12 +1,14 @@
-From: Autogrill par Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Imprimez_votre_bon_de_r=E9duction?=
-Date: Thu, 15 Aug 2013 12:27:06 +0200 (CEST)
-Message-ID: <leq190.hkdtq64u4zw64ac0l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Yves Rocher via Neezz <newsletter-D2VM3j8jEUZQFI55V6+gNQ@public.gmane.org>
+Subject: =?utf-8?Q?Les_produits_stars_de_l'Et=C3=A9!_1_produit_achet=C3=A9,
+	_1_prod?= =?utf-8?Q?uit_offert!?=
+Date: Thu, 15 Aug 2013 13:16:05 +0200
+Message-ID: <79737f5416c7411ca002a7202f5934be@localhost.localdomain>
+Reply-To: Yves Rocher via Neezz <newsletter-D2VM3j8jEUZQFI55V6+gNQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,97 +20,26 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqdx5I7gfk57dIhkdtpyuxI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1376562417106%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DPOEDOOJBJPCFDIEB%26mid%3D1600225529&s=3DK=
-OFAIFKKANJNMGOK
- =
-
-Imprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez =
-votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon=
- de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9d=
-uctionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImp=
-rimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vot=
-re bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de=
- r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duct=
-ionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprim=
-ez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre =
-bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
-mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
- bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
-mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
- bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
-mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
- bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
-mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
- bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
-e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
-tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
-mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
- bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
-=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
-nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
- votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
-n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
-ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
-primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
-tre bon de r=E9duction
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600225529&sig=3DBIAMMELINMGENFCJ
----------------------------------------------------------------------------=
----
+Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produ
+ it offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&co
+ py;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit ache
+ t&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 
+ produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atild
+ e;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars d
+ e l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les prod
+ uits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit off
+ ert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1
+  produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atil
+ de;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produi
+ t achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&cop
+ y;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et
+ &Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits s
+ tars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Le
+ s produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produit offert!Les produits stars de l'Et&Atilde;&copy;! 1 produit achet&Atilde;&copy;, 1 produ
+ it offert!
+------------------------------------------------------------------------------
 Get 100% visibility into Java/.NET code with AppDynamics Lite!
 It's a free troubleshooting tool designed for production.
-Get down to code-level detail for bottlenecks, with <2% overhead. =
-
-Download for free and get started troubleshooting in minutes. =
-
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897031&iu=3D/4140/ostg.cl=
-ktrk
+Get down to code-level detail for bottlenecks, with <2% overhead. 
+Download for free and get started troubleshooting in minutes. 
+http://pubads.g.doubleclick.net/gampad/clk?id=48897031&iu=/4140/ostg.clktrk

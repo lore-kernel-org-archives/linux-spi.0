@@ -1,12 +1,11 @@
-From: "Tea Tower" <lisa@a.optincake.com>
-Subject: [SPAM]
-	=?UTF-8?B?NSDDqWNoYW50aWxsb25zIGRlIHRow6kgZ3JhdHVpdHMgYXV0YW50IGRlIGZvaXMgcXVlIHZvdXMgbGUgdm91bGV6?=
-Date: Thu, 15 Aug 2013 05:32:24 +0100
-Message-ID: <0.0.1E8.69D.1CE997070E1185C.0@mta199.pur3.net>
-Reply-To: Tea Tower <lisa@a.optincake.com>
+From: Autogrill par Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Imprimez_votre_bon_de_r=E9duction?=
+Date: Thu, 15 Aug 2013 12:27:06 +0200 (CEST)
+Message-ID: <leq190.hkdtq64u4zw64ac0l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,80 +18,97 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTc5NzMzMjIwNTM3Mjc0CgoKClJlY2V2ZXogNSDDqWNoYW50aWxsb25zIGRlIHRow6kgZ3JhdHVp
-dHMgYXZlYyBURUFUT1dFUgoKKDAxLmpwZyk6IGh0dHA6Ly93d3cudGVhdG93ZXIuY29tL2ZyL2lu
-ZGV4LnBocD9zYW1wbGU9bWFpbDU1JmFkdmM9TkVFMDEKCigwMi5qcGcpOiBodHRwOi8vd3d3LnRl
-YXRvd2VyLmNvbS9mci9pbmRleC5waHA/c2FtcGxlPW1haWw1NSZhZHZjPU5FRTAxCgooMDMuanBn
-KTogaHR0cDovL3d3dy50ZWF0b3dlci5jb20vZnIvaW5kZXgucGhwP3NhbXBsZT1tYWlsNTUmYWR2
-Yz1ORUUwMQoKKDA0ei5qcGcpOiBodHRwOi8vd3d3LnRlYXRvd2VyLmNvbS9mci9pbmRleC5waHA/
-c2FtcGxlPW1haWw1NSZhZHZjPU5FRTAxCgrCoFRFQVRPV0VSIC8gVFQgUEFDS0FHSU5HIFNQUkwK
-UnVlIFNhaW50LURlbmlzIDExMiAtIDExOTAgQnJ1eGVsbGVzIC0gQmVsZ2lxdWUgLSBUw6lsIDAw
-LjMyLjI4LjA4LjAxLjI3Li4uCkJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBk
-ZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyCmF1IG1laWxsZXVyIHJhcHBvcnQg
-cXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pCm5l
-IHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91
-cyB2b3VzIGFkcmVzc29ucywKZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJl
-bWVudCBldCB0b3V0ZSBsJ2FubsOpZS5FbnZpZSBkZSB2b3VzCmZhaXJlIHVuZSBiZWF1dMOpIMOg
-IG1vaW5kcmUgY2/Du3QgdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBkZSBwcsOpdm9pciB2b3MK
-cHJvY2hhaW5lcyB2YWNhbmNlcyBkJ8OpdMOpIMOgIG1vaW5kcmUgZnJhaXMgZXQgb3UgZW5jb3Jl
-IGQnaGFiaWxsZXIgdm9zCmVuZmFudHMgw6AgZGVzIGJ1ZGdldHMgcmFpc29ubmFibGVzLCBhbG9y
-cyBjb25zdWx0ZXIgZGUgdGVtcHMgw6AgYXV0cmUgbm9zCnByb3Bvc2l0aW9ucyBwb3VyIHZvdXMg
-cGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRlIG5vbWJyZXVzZXMgw6ljb25vbWllcwp0b3V0IGVu
-IHZvdXMgZmFpc2FudCBwbGFpc2lyIMOgIHRvdXRlIGxhIGZhbWlsbGUuQSBsYSByZWNoZXJjaGUg
-ZHUgY2FkZWF1Cm9yaWdpbmFsID8gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91
-dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzCmFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVu
-IGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLApncmFjZSDDoCBub3VzLCB2
-b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVz
-dApwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gQWluc2ksIGdyw6Jj
-ZSDDoCBub3VzLCB2b3VzIGFsbGV6CnBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRv
-dXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsCm9wcG9ydHVuaXTDqSwgaW5mb3MuLi4g
-Li4gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQKYWZpbiBk
-ZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXgg
-dG91dGUKbCdhbm7DqWUuQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZv
-dXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdQpzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFs
-aXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMKcG91cnF1b2kgbmUgcGFz
-IGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZv
-dXMKYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpvdXIgcsOpZ3VsacOocmVtZW50
-IGV0IHRvdXRlIGwnYW5uw6llLi4uLgpCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxl
-ciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpcgphdSBtZWlsbGV1ciByYXBw
-b3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVv
-aQpuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVl
-IG5vdXMgdm91cyBhZHJlc3NvbnMsCmV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91ciByw6lndWxp
-w6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuRW52aWUgZGUgdm91cwpmYWlyZSB1bmUgYmVhdXTD
-qSDDoCBtb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgZGUgcHLDqXZvaXIg
-dm9zCnByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqSDDoCBtb2luZHJlIGZyYWlzIGV0IG91IGVu
-Y29yZSBkJ2hhYmlsbGVyIHZvcwplbmZhbnRzIMOgIGRlcyBidWRnZXRzIHJhaXNvbm5hYmxlcywg
-YWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMOgIGF1dHJlIG5vcwpwcm9wb3NpdGlvbnMgcG91ciB2
-b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21icmV1c2VzIMOpY29ub21pZXMKdG91
-dCBlbiB2b3VzIGZhaXNhbnQgcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1pbGxlLkEgbGEgcmVjaGVy
-Y2hlIGR1IGNhZGVhdQpvcmlnaW5hbCA/IE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVu
-IG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cwphaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91
-dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLiBBaW5zaSwKZ3JhY2Ugw6Agbm91
-cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1
-aSBlc3QKcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIEFpbnNpLCBn
-csOiY2Ugw6Agbm91cywgdm91cyBhbGxlegpwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBk
-ZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LApvcHBvcnR1bml0w6ksIGluZm9z
-Li4uIC4uIE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkCmFm
-aW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1p
-ZXV4IHRvdXRlCmwnYW5uw6llLkJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBk
-ZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3UKc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQg
-cXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzCnBvdXJxdW9pIG5l
-IHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91
-cyB2b3VzCmFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJl
-bWVudCBldCB0b3V0ZSBsJ2FubsOpZS4KCgoKCgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2
-aXNpdGV6IDoKaHR0cDovL2Eub3B0aW5jYWtlLmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4
-NjYyNTE3OTczMzIyMDUzNzI3NAoKCgoKCgp7fkFKODQ2NDE4NjYyNTE3OTczMzIyMDUzNzI3NH59
-Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpHZXQgMTAwJSB2aXNpYmlsaXR5IGludG8gSmF2YS8uTkVU
-IGNvZGUgd2l0aCBBcHBEeW5hbWljcyBMaXRlIQpJdCdzIGEgZnJlZSB0cm91Ymxlc2hvb3Rpbmcg
-dG9vbCBkZXNpZ25lZCBmb3IgcHJvZHVjdGlvbi4KR2V0IGRvd24gdG8gY29kZS1sZXZlbCBkZXRh
-aWwgZm9yIGJvdHRsZW5lY2tzLCB3aXRoIDwyJSBvdmVyaGVhZC4gCkRvd25sb2FkIGZvciBmcmVl
-IGFuZCBnZXQgc3RhcnRlZCB0cm91Ymxlc2hvb3RpbmcgaW4gbWludXRlcy4gCmh0dHA6Ly9wdWJh
-ZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD00ODg5NzAzMSZpdT0vNDE0MC9vc3Rn
-LmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
-cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
-L3NwaS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgqdx5I7gfk57dIhkdtpyuxI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1376562417106%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DPOEDOOJBJPCFDIEB%26mid%3D1600225529&s=3DK=
+OFAIFKKANJNMGOK
+ =
+
+Imprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez =
+votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon=
+ de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9d=
+uctionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImp=
+rimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vot=
+re bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de=
+ r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duct=
+ionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprim=
+ez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre =
+bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
+mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
+ bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
+mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
+ bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
+mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
+ bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
+mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
+ bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon d=
+e r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9duc=
+tionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImpri=
+mez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre=
+ bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=
+=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductio=
+nImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez=
+ votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bo=
+n de r=E9ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9=
+ductionImprimez votre bon de r=E9ductionImprimez votre bon de r=E9ductionIm=
+primez votre bon de r=E9ductionImprimez votre bon de r=E9ductionImprimez vo=
+tre bon de r=E9duction
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600225529&sig=3DBIAMMELINMGENFCJ
+---------------------------------------------------------------------------=
+---
+Get 100% visibility into Java/.NET code with AppDynamics Lite!
+It's a free troubleshooting tool designed for production.
+Get down to code-level detail for bottlenecks, with <2% overhead. =
+
+Download for free and get started troubleshooting in minutes. =
+
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897031&iu=3D/4140/ostg.cl=
+ktrk

@@ -1,11 +1,10 @@
-From: Capsules compatibles Nespresso <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: 100 capsules compatibles Nespresso a 21 euros
-Date: Fri, 16 Aug 2013 11:54:40 +0200 (CEST)
-Message-ID: <1zi9n4.hkf80b1lvdd1iyl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: obero.it-oaO/Zqjt2G0qdlJmJB21zg@public.gmane.org
+Subject: [SPAM] Get Ready Huge Bounce Alert Coming Tomorrow
+Date: Fri, 16 Aug 2013 10:58:47 +0000
+Message-ID: <E1VAHjz-0006te-1b@sfs-ml-1.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,97 +17,21 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgqefyI7gfk57dIhkf8074bI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1376646875165%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DIODBPHLBEAKDADIK%26mid%3D1600226206&s=3DL=
-GIJJDIPIAKGHKGN
- =
+This Company has started to Bounce, chart inside. My next 10-bagger!
 
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros
- =
+Market: .1
+4-Day Target: $0.45
+Sym: I M TC
+Date: Aug 16
+Company: Imogo Mobile
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600226206&sig=3DGEMEDFNCHCHJICLE
----------------------------------------------------------------------------=
----
+This company is making another move! New Trading Idea Coming for 
+Tomorrow!
+
+
+------------------------------------------------------------------------------
 Get 100% visibility into Java/.NET code with AppDynamics Lite!
 It's a free troubleshooting tool designed for production.
-Get down to code-level detail for bottlenecks, with <2% overhead. =
-
-Download for free and get started troubleshooting in minutes. =
-
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897031&iu=3D/4140/ostg.cl=
-ktrk
+Get down to code-level detail for bottlenecks, with <2% overhead. 
+Download for free and get started troubleshooting in minutes. 
+http://pubads.g.doubleclick.net/gampad/clk?id=48897031&iu=/4140/ostg.clktrk

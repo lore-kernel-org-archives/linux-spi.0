@@ -1,11 +1,12 @@
-From: obero.it-oaO/Zqjt2G0qdlJmJB21zg@public.gmane.org
-Subject: [SPAM] Get Ready Huge Bounce Alert Coming Tomorrow
-Date: Fri, 16 Aug 2013 10:58:47 +0000
-Message-ID: <E1VAHjz-0006te-1b@sfs-ml-1.v29.ch3.sourceforge.com>
+From: "=?windows-1252?Q?Travis_Smith_|_MMS?=" <noreply13-Jbz+COfnBihBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Please Confirm Your Email:
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Date: Fri, 16 Aug 2013 08:57:13 -0700
+Message-ID: <cf930b3a864851d0fa7eb5790013affb@address.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This Company has started to Bounce, chart inside. My next 10-bagger!
+Hello,
 
-Market: .1
-4-Day Target: $0.45
-Sym: I M TC
-Date: Aug 16
-Company: Imogo Mobile
+I have a list of potential customers in your area. The list includes several ways for you to contact them.
+I would like to send you a sample of this list to the address I have on file: spi-devel-general-5NWGOfrQmneRv+LV9MX5uti2KpX7p8Fi@public.gmane.org
 
-This company is making another move! New Trading Idea Coming for 
-Tomorrow!
+Can you call me today at 1 (800) 676-2011 Ext 619 to confirm your email?
+
+Thanks,
+
+Travis Smith
+Targeted Data Engineer
+1 (800) 676-2011 Ext 619
+
 
 
 ------------------------------------------------------------------------------

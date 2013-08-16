@@ -1,14 +1,14 @@
-From: Disney <newsletter-D2VM3j8jEUZQFI55V6+gNQ@public.gmane.org>
-Subject: =?utf-8?Q?Des_weekends_=C3=A0_gagner?=
-Date: Fri, 16 Aug 2013 10:44:30 +0200
-Message-ID: <cc6ae814b554e3149640e79ff9763314@localhost.localdomain>
-Reply-To: Disney <newsletter-D2VM3j8jEUZQFI55V6+gNQ@public.gmane.org>
+From: Photo cite <update-4HWW7oIKeWb+bSMTg7oGWdHuzzzSOjJt@public.gmane.org>
+Subject: Enfin les vacances, prenez des photos
+Date: Fri, 16 Aug 2013 08:21:00 -0100
+Message-ID: <L0rQoN-8-gXxi1GjtoYpCduDAxZKo4kQXMwZgkOhi7I@mail30.out5.senderboard.net>
+Reply-To: Photo cite <update-4HWW7oIKeWb+bSMTg7oGWdHuzzzSOjJt@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-OVAqtIliDNaw1w2v3rPpMg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,51 +19,29 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-RGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMg
-w6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMg
-d2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBn
-YWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVr
-ZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25l
-ckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRz
-IMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVz
-IHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6Ag
-Z2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vl
-a2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWdu
-ZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5k
-cyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRl
-cyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOg
-IGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdl
-ZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2Fn
-bmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2Vu
-ZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJE
-ZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDD
-oCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3
-ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdh
-Z25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtl
-bmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVy
-RGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMg
-w6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMg
-d2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBn
-YWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVr
-ZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25l
-ckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRz
-IMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVz
-IHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6Ag
-Z2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vl
-a2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWdu
-ZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5k
-cyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOgIGdhZ25lckRl
-cyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdlZWtlbmRzIMOg
-IGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2FnbmVyRGVzIHdl
-ZWtlbmRzIMOgIGdhZ25lckRlcyB3ZWVrZW5kcyDDoCBnYWduZXJEZXMgd2Vla2VuZHMgw6AgZ2Fn
-bmVyCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpHZXQgMTAwJSB2aXNpYmlsaXR5IGludG8gSmF2YS8u
-TkVUIGNvZGUgd2l0aCBBcHBEeW5hbWljcyBMaXRlIQpJdCdzIGEgZnJlZSB0cm91Ymxlc2hvb3Rp
-bmcgdG9vbCBkZXNpZ25lZCBmb3IgcHJvZHVjdGlvbi4KR2V0IGRvd24gdG8gY29kZS1sZXZlbCBk
-ZXRhaWwgZm9yIGJvdHRsZW5lY2tzLCB3aXRoIDwyJSBvdmVyaGVhZC4gCkRvd25sb2FkIGZvciBm
-cmVlIGFuZCBnZXQgc3RhcnRlZCB0cm91Ymxlc2hvb3RpbmcgaW4gbWludXRlcy4gCmh0dHA6Ly9w
-dWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD00ODg5NzAzMSZpdT0vNDE0MC9v
-c3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
-c291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3Rp
-bmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+ Enfin le temps des vacances et des belles photos /**/ Pour visualiser corr=
+ectement ce message, acc=C3=A9dez =C3=A0 la version en ligne, ou signaler c=
+omme ind=C3=A9sirable Que faites vous de vos meilleures photos ? Pensez don=
+c ? les faire imprimer. Developpement photo Livre photo Cadeaux photos POST=
+ER PHOTO ET TOILE Logiciel Photo Cit? Note 4,2 / 5 sur 3650 avis clients ce=
+rtifies par Trustpilot 100 tirages photo pour 5=E2=82=AC Profitez de cette =
+offre maintenant et developpez vos photos plus tard. code promo :100FOTO5 O=
+FFRE DECOUVERTELIVRES PHOTOS PHOTO SUR TOILEBAISSE DES PRIX Mettez en scene=
+ vos plus beaux souvenirs dans un vrai livre photo. N'h?sitez plus, affiche=
+z vos photos dans votre salon ! Vos avantages Livraison Gratuite dans + de =
+200 magasins en France Assistance d'aide ? la cr?ation (en ligne et par t?l=
+?phone) Des promotions newsletter chaque semaine Satisfait ou rembours? sur=
+ vos livres photos Service clients 6 jours sur 7 Moyens de paiements securi=
+ses Suivez-nous Photo Cit? est la marque photo du groupe France Loisirs, l'=
+un des principaux leaders sur le march? des loisirs culturels. S'appuyant s=
+ur ses 40 ans d'exp?rience en mati?re de produits et services photo, Photo =
+Cit? dispose aujourd'hui de l'une des gammes les plus compl?tes du march? d=
+ans l'univers de la photo num?rique. Si vous ne souhaitez plus recevoir nos=
+ emails, veuillez suivre ce lien. Si vous n'arrivez pas =C3=A0 vous d=C3=
+=A9sabonner, merci d'=C3=A9crire =C3=A0 stop-OVAqtIliDNb3XKjYc++fXQ@public.gmane.org
+------------------------------------------------------------------------------
+Get 100% visibility into Java/.NET code with AppDynamics Lite!
+It's a free troubleshooting tool designed for production.
+Get down to code-level detail for bottlenecks, with <2% overhead. 
+Download for free and get started troubleshooting in minutes. 
+http://pubads.g.doubleclick.net/gampad/clk?id=48897031&iu=/4140/ostg.clktrk

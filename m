@@ -1,13 +1,14 @@
-From: Vos bagages via Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Prolongation_op=E9ration_coup_de_balai_jusqu'=E0_-80%?=
-Date: Sun, 18 Aug 2013 13:07:19 +0200 (CEST)
-Message-ID: <i2tkuj.hki5hfq00akcz2l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Autogrill par Nl-Promos <update-4HWW7oIKeWb+bSMTg7oGWdHuzzzSOjJt@public.gmane.org>
+Subject: =?iso-8859-1?Q?Imprimez=20votre=20bon=20de=20r=C3=A9duction?=
+Date: Sun, 18 Aug 2013 21:08:28 -0100
+Message-ID: <lSgoNIjXyeXmN6KIp0gb3SgDZdgA4mMqlSpqj1CAHBg@mail12.out5.senderboard.net>
+Reply-To: Autogrill par Nl-Promos <update-4HWW7oIKeWb+bSMTg7oGWdHuzzzSOjJt@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Abuse: <mailto:abuse-OVAqtIliDNaw1w2v3rPpMg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,77 +19,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqfc4I7gfk57dIhki5gyt4I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1376824017255%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DHOOCGMJLNJPOEJMG%26mid%3D1600227364&s=3DD=
-POFNILCPOADICEK
- =
-
-Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9rati=
-on coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu=
-'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation =
-op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de ba=
-lai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prol=
-ongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration c=
-oup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0=
- -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=
-=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de bala=
-i jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolon=
-gation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration cou=
-p de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -=
-80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9r=
-ation coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai ju=
-squ'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongati=
-on op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de=
- balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%P=
-rolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ratio=
-n coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=
-=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation o=
-p=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de bal=
-ai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolo=
-ngation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration co=
-up de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 =
--80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9=
-ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai j=
-usqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongat=
-ion op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup d=
-e balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%=
-Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9rati=
-on coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu=
-'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation =
-op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de ba=
-lai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prol=
-ongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration c=
-oup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0=
- -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=
-=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de bala=
-i jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolon=
-gation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration cou=
-p de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -=
-80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9r=
-ation coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai ju=
-squ'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongati=
-on op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de=
- balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%P=
-rolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ratio=
-n coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=
-=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolongation o=
-p=E9ration coup de balai jusqu'=E0 -80%Prolongation op=E9ration coup de bal=
-ai jusqu'=E0 -80%Prolongation op=E9ration coup de balai jusqu'=E0 -80%Prolo=
-ngation op=E9ration coup de balai jusqu'=E0 -80%
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600227364&sig=3DOJPMBDKDDILKBMEE
----------------------------------------------------------------------------=
----
+ Vyaggio /* /*]]>*/ Pour visualiser correctement ce message, acc=C3=A9dez =
+=C3=A0 la version en ligne, ou signaler comme ind=C3=A9sirable Avec Vyaggio=
+, b=C3=A9n=C3=A9ficiez de tous les bons plans Autogrill sur la route de vos=
+ vacances !1 formule achet=C3=A9e =3D 1 formule offerte ! autogrill vous pr=
+oposevotre site bons planssur la route de vos vacances ! Si vous ne souhait=
+ez plus recevoir nos emails, veuillez suivre ce lien. Si vous n'arrivez pas=
+ =C3=A0 vous d=C3=A9sabonner, merci d'=C3=A9crire =C3=A0 stop@senderboard.c=
+om
+------------------------------------------------------------------------------
 Get 100% visibility into Java/.NET code with AppDynamics Lite!
 It's a free troubleshooting tool designed for production.
-Get down to code-level detail for bottlenecks, with <2% overhead. =
-
-Download for free and get started troubleshooting in minutes. =
-
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897031&iu=3D/4140/ostg.cl=
-ktrk
+Get down to code-level detail for bottlenecks, with <2% overhead. 
+Download for free and get started troubleshooting in minutes. 
+http://pubads.g.doubleclick.net/gampad/clk?id=48897031&iu=/4140/ostg.clktrk

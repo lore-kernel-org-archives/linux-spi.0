@@ -1,43 +1,73 @@
-From: MutuelleBleue <update-4HWW7oIKeWb+bSMTg7oGWdHuzzzSOjJt@public.gmane.org>
-Subject: =?iso-8859-1?Q?Avec=20Mutuelle=20Bleue,=20prenez=20votre=20?=
-	=?iso-8859-1?Q?sant=C3=A9=20en=20main?=
-Date: Mon, 19 Aug 2013 16:21:03 -0100
-Message-ID: <f_3CULJTaI-hKmPRN0L_VNi5uYYbIyQ3OEi0KrDVWoc@mail5.out1.senderboard.net>
-Reply-To: MutuelleBleue <update-4HWW7oIKeWb+bSMTg7oGWdHuzzzSOjJt@public.gmane.org>
+From: Felipe Balbi <balbi@ti.com>
+Subject: Re: [PATCHv9 1/2] drivers: spi: Add qspi flash controller
+Date: Mon, 19 Aug 2013 13:55:01 -0500
+Message-ID: <20130819185501.GL26587@radagast>
+References: <1375606690-834-1-git-send-email-sourav.poddar@ti.com>
+ <1375606690-834-2-git-send-email-sourav.poddar@ti.com>
+ <20130813152624.GG27954@radagast>
+ <521244DC.9080600@ti.com>
+Reply-To: <balbi@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-OVAqtIliDNaw1w2v3rPpMg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="UeXZ3FjlYZvuln/G"
+Cc: <balbi@ti.com>, <broonie@kernel.org>,
+	<spi-devel-general@lists.sourceforge.net>,
+	<grant.likely@linaro.org>, <rnayak@ti.com>,
+	<linux-omap@vger.kernel.org>
+To: Sourav Poddar <sourav.poddar@ti.com>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <521244DC.9080600@ti.com>
+Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
- email_mutuelle_bleue Pour visualiser correctement ce message, acc=C3=A9dez=
- =C3=A0 la version en ligne, ou signaler comme ind=C3=A9sirable Hospi Soins=
- Pour la prise en charge des soins courants et des frais d=E2=80=99hospital=
-isation A chacun sa garantie sant=EF=BF=BD ! D=EF=BF=BDcouvrez toutes nos s=
-olutions sant=EF=BF=BD =EF=BF=BD tarifs attractifs : Hospi Equipement Cap E=
-co Pack Bleu Sant=EF=BF=BD pour la prise en charge en hospitalisation, opti=
-que et dentaire pour une couverture sant=EF=BF=BD compl=EF=BF=BDte =
-=EF=BF=BD prix mini pour une couverture sant=EF=BF=BD modulable adapt=
-=EF=BF=BDe =EF=BF=BD toute la famille *Cotisation Hospi Soins pour un adult=
-e de 20 ans r=EF=BF=BDsidant en Is=EF=BF=BDre. Mutuelle soumise aux disposi=
-tions du Livre II du Code de la Mutualit=EF=BF=BD. SIREN n=EF=BF=BD 775 671=
- 993. Cr=EF=BF=BDdits photos : Corbis Document et photo non contractuels.. =
-Si vous ne souhaitez plus recevoir nos emails, veuillez suivre ce lien. Si =
-vous n'arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d'=C3=A9crire =C3=
-=A0 stop-OVAqtIliDNb3XKjYc++fXQ@public.gmane.org
-------------------------------------------------------------------------------
-Introducing Performance Central, a new site from SourceForge and 
-AppDynamics. Performance Central is your source for news, insights, 
-analysis and resources for efficient Application Performance Management. 
-Visit us today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48897511&iu=/4140/ostg.clktrk
+--UeXZ3FjlYZvuln/G
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Mon, Aug 19, 2013 at 09:46:28PM +0530, Sourav Poddar wrote:
+> >>+	} else if (wlen =3D=3D 32) {
+> >if else if else if else if .... this looks like a switch to me. I know
+> >someone else commented that switch wasn't the best construct, but to my
+> >eyes, switch looks a lot cleaner.
+> >
+> My previous switch implementation was implemented as a seperate
+> function, as a result of which there was the need to pass pointers, other
+> variables, then collect it as a double pointer, making things a bit untid=
+y.
+>=20
+> What I can do is to convert these portion into switch here itself,
+> which will
+> make the code a lot more cleaner. ?
+
+perhaps, at least to me it looks cleaner.
+
+--=20
+balbi
+
+--UeXZ3FjlYZvuln/G
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSEmoFAAoJEIaOsuA1yqREQAEP/3V7Uq5eklq3oq3I7m/GL3jI
+P+bnklWvucKlK2vjx+acI9JKqY62oqfmfWPb4Y3a5LMosAlZ+mMKzPfW1Sysp5XE
+Pk2x7oL0CY3MJmjiqMHiY8F4RPBPUe9H40X6j1D1+u+uRebQ7To++DuppZF6iK8g
+W9NUYnTB+WL4SVIkOPLtmqualbuUNoPEoPi4mVHQTqB96H2K1DoGFxFZy7TFyMeG
+d2JeJEQy7HpsoXeC+wNKwNiLbiA1J6UuGWTLjceIaru/rPy522Zpfw0B5BR0VR+C
+wQW149JTWjrFQzAlFOBuRS9m/iHY22TlnTg2WVANB44VMLloKpooFdWwt9tTFiTY
+r0S9LYPal8E8e5prI2TZKWJT5SUXDmsy5Ar5kdSUEvSpFuiI1+U19A1ThdphpCai
+tMMo2iWcoEspJawMdvEjJM/p7lNKHgzIXt17MRSUyNJxBF5D817t9IACv5Sx3xxC
+P5QUzJ6TaEWJ9+vRrI/1NqCqJIyT327cO43QGLQrek7v6DWYWZddiyZwsk/+oG41
+X3vEn0w++LO3KQVGl/2GWD5L66xfWg8M0zi2LwVRgSQ2mUfUdj6iKNnt9X9Fz2R5
+cHMqw0AxHG+UxnGwRqPbpJXCElp/GZVyHpzTE13zHZl6it4hcqDVR46xH7GYUp7P
+BnSytaEBTs1fEr9Gsi1b
+=8pXZ
+-----END PGP SIGNATURE-----
+
+--UeXZ3FjlYZvuln/G--

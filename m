@@ -1,118 +1,53 @@
-From: =?ISO-8859-1?Q?Mutuelle_Mcd_recommand=E9e_par_Nl-Promos?=
-	<nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Votre_mutuelle_=E0_partir_de_5,69_eur?=
-	=?ISO-8859-1?Q?os,_devis_gratuit_et_sans_engagement?=
-Date: Tue, 20 Aug 2013 11:53:26 +0200 (CEST)
-Message-ID: <xf8o8a.hkkxq4rl21fu0ol@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] drivers/spi/spi-tegra114.c clean use of
+ devm_ioremap_resource()
+Date: Tue, 20 Aug 2013 11:44:27 +0100
+Message-ID: <20130820104427.GJ30073@sirena.org.uk>
+References: <1368526032-31371-1-git-send-email-laurent.navet@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="FgWTvDHj0r903stt"
+Cc: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laurent Navet <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1368526032-31371-1-git-send-email-laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgqgnqI7gfk57dIhkkxq3emI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1376992404704%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DPEPLKDLGMBFNCLGF%26mid%3D1600229078&s=3DL=
-EAPHOGKPBIODGNH
- =
 
-Votre mutuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVo=
-tre mutuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotr=
-e mutuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre =
-mutuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mu=
-tuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutu=
-elle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuel=
-le =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle=
- =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
-=E0 partir de 5,69 euros, devis gratuit et sans engagement
- =
+--FgWTvDHj0r903stt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600229078&sig=3DBINPFJOGGKFGIIOM
----------------------------------------------------------------------------=
----
-Introducing Performance Central, a new site from SourceForge and =
+On Tue, May 14, 2013 at 12:07:12PM +0200, Laurent Navet wrote:
+> Check of 'r' and calls to dev_err are already done in devm_ioremap_resource,
+> so no need to do them twice.
 
-AppDynamics. Performance Central is your source for news, insights, =
+Applied, thanks.
 
-analysis and resources for efficient Application Performance Management. =
+--FgWTvDHj0r903stt
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Visit us today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
-ktrk
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSE0iIAAoJELSic+t+oim90cAP/jgwvpA7n3C92Y1/ULcQHb84
+samV9m0MchaPC7llFvdRhmnN5qdTn7R8y0hz+tjBQzWq1ys5qbV8e49srcUl86Ot
+yYOXZNIWQKle30mfMfQXlOGozxCdawfNzqQvTJE4yikMaR4XMP4ggp6dV2IRuHAy
+0QFUcZuRMVZs4eR7suyQ4x4mFg2Y2kIbzyVvz96QfBz3Ml/8D3NLEsM/fK5ezJwb
+WfzkRHh1nwN+Tjp0tW0KNtzzkOQPibO2lYi+TfgJ02fWNL4XOTbnw7oc85ADlYXA
+j293RZguP4M4wTE/4BWrVShi4udzuXZeQUx2GXLKUVlyFQ40664gQhG9p12nmvgv
+sb1CYB8iBLvhhNRqkjfqt83Dtl33vhrKpLHESGaVHs0AofDmA4RA4ppunnhQuwaN
+nYmxX9Wv+7Zo6R2JJz6GXxTHG1ecPest6naJkVqUihW0dZoSdcgDNRWMvqZ1LsXl
+nyYjBIMjyagmo38nACQulkRD1xRe9exG5EfYCHCB0+ER7QRIrCWF804ADTSWLfVE
+kMt2193YJV+HIGCQY9lUbjGq4BhQu5x+4RhC0r3iRR8QFrAV5Ub5GX0zR6w2/VQ3
+E8ZX67cTHO2xVA9yOfreKS6OfqO5A289zrayoevVkVh47BNHc8RrxVWeaqTllF83
+xbhsEktpvuwJBEz2vaqn
+=OaPF
+-----END PGP SIGNATURE-----
+
+--FgWTvDHj0r903stt--

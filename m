@@ -1,78 +1,47 @@
-From: Felipe Balbi <balbi@ti.com>
+From: Sourav Poddar <sourav.poddar@ti.com>
 Subject: Re: [PATCHv10] drivers: spi: Add qspi flash controller
-Date: Tue, 20 Aug 2013 08:14:29 -0500
-Message-ID: <20130820131429.GB26587@radagast>
-References: <1377003925-6284-1-git-send-email-sourav.poddar@ti.com>
-Reply-To: <balbi@ti.com>
+Date: Tue, 20 Aug 2013 18:48:02 +0530
+Message-ID: <52136C8A.1020000@ti.com>
+References: <1377003925-6284-1-git-send-email-sourav.poddar@ti.com> <20130820131429.GB26587@radagast>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="3T9UM0G5oz8hnqz/"
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
 Cc: <broonie@kernel.org>, <spi-devel-general@lists.sourceforge.net>,
-	<grant.likely@linaro.org>, <balbi@ti.com>,
-	<linux-omap@vger.kernel.org>
-To: Sourav Poddar <sourav.poddar@ti.com>
+	<grant.likely@linaro.org>, <linux-omap@vger.kernel.org>
+To: <balbi@ti.com>
 Return-path: <linux-omap-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1377003925-6284-1-git-send-email-sourav.poddar@ti.com>
+In-Reply-To: <20130820131429.GB26587@radagast>
 Sender: linux-omap-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
---3T9UM0G5oz8hnqz/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tuesday 20 August 2013 06:44 PM, Felipe Balbi wrote:
+> Hi,
+>
+> On Tue, Aug 20, 2013 at 06:35:25PM +0530, Sourav Poddar wrote:
+>> +static int qspi_transfer_msg(struct ti_qspi *qspi, struct spi_transfer *t)
+>> +{
+>> +	int ret;
+>> +
+>> +	if (t->tx_buf) {
+>> +		ret = qspi_write_msg(qspi, t);
+>> +		if (ret) {
+>> +			dev_dbg(qspi->dev, "Error while writing\n");
+>> +			return ret;
+>> +		}
+>> +	}
+>> +
+>> +	if (t->rx_buf) {
+>> +		ret = qspi_read_msg(qspi, t);
+>> +		if (ret) {
+>> +			dev_dbg(qspi->dev, "Error while writing\n");
+> *READING*
+>
+hmm..got missed while folding local changes:(.
+Will submit an updated patch.
+> other than that:
+>
+> Acked-by: Felipe Balbi<balbi@ti.com>
+> Reviewed-by: Felipe Balbi<balbi@ti.com>
+>
+Thanks!
 
-Hi,
-
-On Tue, Aug 20, 2013 at 06:35:25PM +0530, Sourav Poddar wrote:
-> +static int qspi_transfer_msg(struct ti_qspi *qspi, struct spi_transfer *=
-t)
-> +{
-> +	int ret;
-> +
-> +	if (t->tx_buf) {
-> +		ret =3D qspi_write_msg(qspi, t);
-> +		if (ret) {
-> +			dev_dbg(qspi->dev, "Error while writing\n");
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	if (t->rx_buf) {
-> +		ret =3D qspi_read_msg(qspi, t);
-> +		if (ret) {
-> +			dev_dbg(qspi->dev, "Error while writing\n");
-
-*READING*
-
-other than that:
-
-Acked-by: Felipe Balbi <balbi@ti.com>
-Reviewed-by: Felipe Balbi <balbi@ti.com>
-
---=20
-balbi
-
---3T9UM0G5oz8hnqz/
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.12 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSE2u1AAoJEIaOsuA1yqREd4sP/j0l4Lo3LiauKccCpGXQEhkD
-aHtR7ktLopqGkXPhOxPhPiz0l4bkoqtQGDLhsSvU2Q+rFc2MrlbpUzryVKWex60K
-l8WUBEIscQXH8VE3VMILyc/YyS1cJCKIwrRLOPlZMdovi+qBdgtLJ7s21Ow6toiB
-HEBbcYII210Ail9WGXxdRo9xRNMzl35aA1zlQTlQgGyKwAkg+Frq1AsEVU/L1ixk
-mj3iNB++VsCtPelvBWqnq7Zj+KE39XPbQ9z2B0EWq8Y9wr9MyUzm7Cvq+mIl+t/L
-iDTbn71FP6rvrBzI5RWel7eJewlKmwJlJSQQL77+ym08T8RVPmIlnVzqzVOucocd
-eHtISCqY/zLnd+bWqdFsBU2i2r84cmCQ8fEm4wGgG1XRoUcnfRzyxhfcpKGdU9az
-Zeg6StL+Diu5jii0639G3j6T3rqymVWj2G1wJgLG7qUc5NVuXvUtbyCZoUPAsrpS
-5fHduE1GJCto10+DeAvbwtzhLQLtDpyUvjh0ZXeVwEI31CMfCISbTn+AOdk2594q
-BYX/hl4Fr1fxiY66JvS9jhPGGBPPOpBcch7NlZD451bRZJihy8bbYQBf7zUwoq+4
-DSzFA3H29EtRsAUhdMrljEFxI4koOTo3ngtU+u+C2a3gu0wseWKtaM6Xsyhk0Sx4
-OI7+SoHA24qtaOlUsDlT
-=QBj/
------END PGP SIGNATURE-----
-
---3T9UM0G5oz8hnqz/--

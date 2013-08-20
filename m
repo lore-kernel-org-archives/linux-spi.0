@@ -1,11 +1,14 @@
-From: 4412-UCt1IcQrhjgAvxtiuMwx3w@public.gmane.org
-Subject: [SPAM] 代/开――发/票
-Date: Tue, 20 Aug 2013 17:42:57 +0800
-Message-ID: <E1VBiTD-0003gK-Jg@sfs-ml-1.v29.ch3.sourceforge.com>
+From: =?ISO-8859-1?Q?Mutuelle_Mcd_recommand=E9e_par_Nl-Promos?=
+	<nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Votre_mutuelle_=E0_partir_de_5,69_eur?=
+	=?ISO-8859-1?Q?os,_devis_gratuit_et_sans_engagement?=
+Date: Tue, 20 Aug 2013 11:53:26 +0200 (CEST)
+Message-ID: <xf8o8a.hkkxq4rl21fu0ol@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general" <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -17,16 +20,99 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-xPq6w6O6IAogICAgztK5q8u+09DLsKGqoarGsS+0+r+qo7sKyOc6KDEpxtXNqMnMxrfP+srby7Ch
-qqGqxrGjuwogICAoMim547jm0rWhorj3wOC3/s7x0rXLsKGqoarGsS+1yLXIoaMKufO5q8u+yOfT
-0NDo0qqjrLu2063E+rXEwLS159PrztLBqs+1o7ogCri61PDIy6O61cXPyMn6KDApMTU5MTk0NDQ0
-MTIKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRyb2R1Y2luZyBQZXJmb3JtYW5jZSBDZW50cmFs
-LCBhIG5ldyBzaXRlIGZyb20gU291cmNlRm9yZ2UgYW5kIApBcHBEeW5hbWljcy4gUGVyZm9ybWFu
-Y2UgQ2VudHJhbCBpcyB5b3VyIHNvdXJjZSBmb3IgbmV3cywgaW5zaWdodHMsIAphbmFseXNpcyBh
-bmQgcmVzb3VyY2VzIGZvciBlZmZpY2llbnQgQXBwbGljYXRpb24gUGVyZm9ybWFuY2UgTWFuYWdl
-bWVudC4gClZpc2l0IHVzIHRvZGF5IQpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dh
-bXBhZC9jbGs/aWQ9NDg4OTc1MTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
-ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
-c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgqgnqI7gfk57dIhkkxq3emI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1376992404704%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DPEPLKDLGMBFNCLGF%26mid%3D1600229078&s=3DL=
+EAPHOGKPBIODGNH
+ =
+
+Votre mutuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVo=
+tre mutuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotr=
+e mutuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre =
+mutuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mu=
+tuelle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutu=
+elle =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuel=
+le =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle=
+ =E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagementVotre mutuelle =
+=E0 partir de 5,69 euros, devis gratuit et sans engagement
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600229078&sig=3DBINPFJOGGKFGIIOM
+---------------------------------------------------------------------------=
+---
+Introducing Performance Central, a new site from SourceForge and =
+
+AppDynamics. Performance Central is your source for news, insights, =
+
+analysis and resources for efficient Application Performance Management. =
+
+Visit us today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
+ktrk

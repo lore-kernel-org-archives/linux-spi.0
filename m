@@ -1,11 +1,11 @@
-From: "Album Photo" <lisa@a.optincake.com>
-Subject: Offert : livre photo ou toile ?
-Date: Wed, 21 Aug 2013 01:45:03 +0100
-Message-ID: <0.0.57.945.1CE9E07AC86E6AC.0@mta37.pur3.net>
-Reply-To: Album Photo <lisa@a.optincake.com>
+From: Plusdemags par Neezz <anne-+SWa8+tIKU1Wk0Htik3J/w@public.gmane.org>
+Subject: =?ISO-8859-1?Q?50%_pendant_8_mois_sur_vos_magazines_pr=E9f=E9r=E9s?=
+Date: Wed, 21 Aug 2013 09:47:26 +0200 (CEST)
+Message-ID: <qh8ir8.hkm8nxs1bh5vzll@bs.miify.com>
+Reply-To: Anne <info-hoh7hF1A3YGohgF03p4UXg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,159 +18,107 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTgyMDYzMjIwNTM3MTc0CgoKCsKgCgoobGVmdDAwMDAuZ2lmKToKaHR0cDovL2Jhc2Vjby5zb2x1
-dGlvbi53ZWJvcmFtYS5mci9mY2dpLWJpbi9wZXJmb3JtYW5jZS5mY2dpP0lEPTMxMDcwMyZBPTEm
-TD05MDEKODYxJkM9MzIzMjkmZj0xMCZQPTQ5NjI2JlQ9RSZXPTEmQ1JFQT0xMjgwMiZVUkw9aHR0
-cDovL3d3dy5tb25hbGJ1bXBob3RvLmZyL2luZGUKeC5hc3B4P3N0cj0xNDE3JmVudGVyPW1hbmRh
-bnQmbT1iYXNlY29scHRnJmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
-Lm5ldCZ1dG1fc291cmNlPWJhc2VhbmRjbyYKdXRtX21lZGl1bT1lbWFpbGluZy1hY3F1aXNpdGlv
-biZ1dG1fY2FtcGFpZ249YmFzZWNvbHB0ZwoKKHRvcDAwMDAwLmdpZik6Cmh0dHA6Ly9iYXNlY28u
-c29sdXRpb24ud2Vib3JhbWEuZnIvZmNnaS1iaW4vcGVyZm9ybWFuY2UuZmNnaT9JRD0zMTA3MDMm
-QT0xJkw9OTAxCjg2MSZDPTMyMzI5JmY9MTAmUD00OTYyNiZUPUUmVz0xJkNSRUE9MTI4MDImVVJM
-PWh0dHA6Ly93d3cubW9uYWxidW1waG90by5mci9pbmRlCnguYXNweD9zdHI9MTQxNyZlbnRlcj1t
-YW5kYW50Jm09YmFzZWNvbHB0ZyZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
-b3JnZS5uZXQmdXRtX3NvdXJjZT1iYXNlYW5kY28mCnV0bV9tZWRpdW09ZW1haWxpbmctYWNxdWlz
-aXRpb24mdXRtX2NhbXBhaWduPWJhc2Vjb2xwdGcKCihyaWdodDAwMC5naWYpOgpodHRwOi8vYmFz
-ZWNvLnNvbHV0aW9uLndlYm9yYW1hLmZyL2ZjZ2ktYmluL3BlcmZvcm1hbmNlLmZjZ2k/SUQ9MzEw
-NzAzJkE9MSZMPTkwMQo4NjEmQz0zMjMyOSZmPTEwJlA9NDk2MjYmVD1FJlc9MSZDUkVBPTEyODAy
-JlVSTD1odHRwOi8vd3d3Lm1vbmFsYnVtcGhvdG8uZnIvaW5kZQp4LmFzcHg/c3RyPTE0MTcmZW50
-ZXI9bWFuZGFudCZtPWJhc2Vjb2xwdGcmZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0JnV0bV9zb3VyY2U9YmFzZWFuZGNvJgp1dG1fbWVkaXVtPWVtYWlsaW5nLWFj
-cXVpc2l0aW9uJnV0bV9jYW1wYWlnbj1iYXNlY29scHRnCgoKwqAgIDIwMCAwMDAgcGVyc29ubmVz
-OgpodHRwOi8vYmFzZWNvLnNvbHV0aW9uLndlYm9yYW1hLmZyL2ZjZ2ktYmluL3BlcmZvcm1hbmNl
-LmZjZ2k/SUQ9MzEwNzAzJkE9MSZMPTkwMQo4NjEmQz0zMjMyOSZmPTEwJlA9NDk2MjYmVD1FJlc9
-MSZDUkVBPTEyODAyJlVSTD1odHRwOi8vd3d3Lm1vbmFsYnVtcGhvdG8uZnIvaW5kZQp4LmFzcHg/
-c3RyPTE0MTcmZW50ZXI9bWFuZGFudCZtPWJhc2Vjb2xwdGcmZW1haWw9c3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnV0bV9zb3VyY2U9YmFzZWFuZGNvJgp1dG1fbWVkaXVt
-PWVtYWlsaW5nLWFjcXVpc2l0aW9uJnV0bV9jYW1wYWlnbj1iYXNlY29scHRnCgoKb250IGTDqWrD
-oCBwcm9maXTDqSBkZSBub3Mgb2ZmcmVzIGdyYXR1aXRlcyAhOgpodHRwOi8vYmFzZWNvLnNvbHV0
-aW9uLndlYm9yYW1hLmZyL2ZjZ2ktYmluL3BlcmZvcm1hbmNlLmZjZ2k/SUQ9MzEwNzAzJkE9MSZM
-PTkwMQo4NjEmQz0zMjMyOSZmPTEwJlA9NDk2MjYmVD1FJlc9MSZDUkVBPTEyODAyJlVSTD1odHRw
-Oi8vd3d3Lm1vbmFsYnVtcGhvdG8uZnIvaW5kZQp4LmFzcHg/c3RyPTE0MTcmZW50ZXI9bWFuZGFu
-dCZtPWJhc2Vjb2xwdGcmZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0JnV0bV9zb3VyY2U9YmFzZWFuZGNvJgp1dG1fbWVkaXVtPWVtYWlsaW5nLWFjcXVpc2l0aW9u
-JnV0bV9jYW1wYWlnbj1iYXNlY29scHRnCgoKwqAKwqAgIFVuIGxpdnJlIHBob3RvcyBHUkFUVUlU
-OgpodHRwOi8vYmFzZWNvLnNvbHV0aW9uLndlYm9yYW1hLmZyL2ZjZ2ktYmluL3BlcmZvcm1hbmNl
-LmZjZ2k/SUQ9MzEwNzAzJkE9MSZMPTkwMQo4NjEmQz0zMjMyOSZmPTEwJlA9NDk2MjYmVD1FJlc9
-MSZDUkVBPTEyODAyJlVSTD1odHRwOi8vd3d3Lm1vbmFsYnVtcGhvdG8uZnIvaW5kZQp4LmFzcHg/
-c3RyPTE0MTcmZW50ZXI9bWFuZGFudCZtPWJhc2Vjb2xwdGcmZW1haWw9c3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnV0bV9zb3VyY2U9YmFzZWFuZGNvJgp1dG1fbWVkaXVt
-PWVtYWlsaW5nLWFjcXVpc2l0aW9uJnV0bV9jYW1wYWlnbj1iYXNlY29scHRnCgoKVW5lIHRvaWxl
-IHBob3RvIEdSQVRVSVRFOgpodHRwOi8vYmFzZWNvLnNvbHV0aW9uLndlYm9yYW1hLmZyL2ZjZ2kt
-YmluL3BlcmZvcm1hbmNlLmZjZ2k/SUQ9MzEwNzAzJkE9MSZMPTkwMQo4NjEmQz0zMjMyOSZmPTEw
-JlA9NDk2MjYmVD1FJlc9MSZDUkVBPTEyODAyJlVSTD1odHRwOi8vd3d3Lm1vbmFsYnVtcGhvdG8u
-ZnIvaW5kZQp4LmFzcHg/c3RyPTE0MTcmZW50ZXI9bWFuZGFudCZtPWJhc2Vjb2xwdGcmZW1haWw9
-c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnV0bV9zb3VyY2U9YmFzZWFu
-ZGNvJgp1dG1fbWVkaXVtPWVtYWlsaW5nLWFjcXVpc2l0aW9uJnV0bV9jYW1wYWlnbj1iYXNlY29s
-cHRnCgooT2ZmcmUgbGltaXTvv71lIGRhbnMgbGUgdGVtcHMpOgpodHRwOi8vYmFzZWNvLnNvbHV0
-aW9uLndlYm9yYW1hLmZyL2ZjZ2ktYmluL3BlcmZvcm1hbmNlLmZjZ2k/SUQ9MzEwNzAzJkE9MSZM
-PTkwMQo4NjEmQz0zMjMyOSZmPTEwJlA9NDk2MjYmVD1FJlc9MSZDUkVBPTEyODAyJlVSTD1odHRw
-Oi8vd3d3Lm1vbmFsYnVtcGhvdG8uZnIvaW5kZQp4LmFzcHg/c3RyPTE0MTcmZW50ZXI9bWFuZGFu
-dCZtPWJhc2Vjb2xwdGcmZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0JnV0bV9zb3VyY2U9YmFzZWFuZGNvJgp1dG1fbWVkaXVtPWVtYWlsaW5nLWFjcXVpc2l0aW9u
-JnV0bV9jYW1wYWlnbj1iYXNlY29scHRnCgooc3BhY2VyMDAuZ2lmKToKaHR0cDovL2Jhc2Vjby5z
-b2x1dGlvbi53ZWJvcmFtYS5mci9mY2dpLWJpbi9wZXJmb3JtYW5jZS5mY2dpP0lEPTMxMDcwMyZB
-PTEmTD05MDEKODYxJkM9MzIzMjkmZj0xMCZQPTQ5NjI2JlQ9RSZXPTEmQ1JFQT0xMjgwMiZVUkw9
-aHR0cDovL3d3dy5tb25hbGJ1bXBob3RvLmZyL2luZGUKeC5hc3B4P3N0cj0xNDE3JmVudGVyPW1h
-bmRhbnQmbT1iYXNlY29scHRnJmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldCZ1dG1fc291cmNlPWJhc2VhbmRjbyYKdXRtX21lZGl1bT1lbWFpbGluZy1hY3F1aXNp
-dGlvbiZ1dG1fY2FtcGFpZ249YmFzZWNvbHB0ZwoKKExpdnJlIHBob3RvKToKaHR0cDovL2Jhc2Vj
-by5zb2x1dGlvbi53ZWJvcmFtYS5mci9mY2dpLWJpbi9wZXJmb3JtYW5jZS5mY2dpP0lEPTMxMDcw
-MyZBPTEmTD05MDEKODYxJkM9MzIzMjkmZj0xMCZQPTQ5NjI2JlQ9RSZXPTEmQ1JFQT0xMjgwMiZV
-Ukw9aHR0cDovL3d3dy5tb25hbGJ1bXBob3RvLmZyL2luZGUKeC5hc3B4P3N0cj0xNDE3JmVudGVy
-PW1hbmRhbnQmbT1iYXNlY29scHRnJmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
-ZWZvcmdlLm5ldCZ1dG1fc291cmNlPWJhc2VhbmRjbyYKdXRtX21lZGl1bT1lbWFpbGluZy1hY3F1
-aXNpdGlvbiZ1dG1fY2FtcGFpZ249YmFzZWNvbHB0ZwoKKFBvc3Rlcik6Cmh0dHA6Ly9iYXNlY28u
-c29sdXRpb24ud2Vib3JhbWEuZnIvZmNnaS1iaW4vcGVyZm9ybWFuY2UuZmNnaT9JRD0zMTA3MDMm
-QT0xJkw9OTAxCjg2MSZDPTMyMzI5JmY9MTAmUD00OTYyNiZUPUUmVz0xJkNSRUE9MTI4MDImVVJM
-PWh0dHA6Ly93d3cubW9uYWxidW1waG90by5mci9pbmRlCnguYXNweD9zdHI9MTQxNyZlbnRlcj1t
-YW5kYW50Jm09YmFzZWNvbHB0ZyZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
-b3JnZS5uZXQmdXRtX3NvdXJjZT1iYXNlYW5kY28mCnV0bV9tZWRpdW09ZW1haWxpbmctYWNxdWlz
-aXRpb24mdXRtX2NhbXBhaWduPWJhc2Vjb2xwdGcKCgo+IFNveWV6IGNyw6lhdGlmICEKPiBQZXJz
-b25uYWxpc2F0aW9uIGVuIDUgbWluCj4gUGx1cyBkZSAyMDAwIG1pc2VzIGVuIHBhZ2VzCj4gU2F0
-aXNmYWN0aW9uIGdhcmFudGllOgpodHRwOi8vYmFzZWNvLnNvbHV0aW9uLndlYm9yYW1hLmZyL2Zj
-Z2ktYmluL3BlcmZvcm1hbmNlLmZjZ2k/SUQ9MzEwNzAzJkE9MSZMPTkwMQo4NjEmQz0zMjMyOSZm
-PTEwJlA9NDk2MjYmVD1FJlc9MSZDUkVBPTEyODAyJlVSTD1odHRwOi8vd3d3Lm1vbmFsYnVtcGhv
-dG8uZnIvaW5kZQp4LmFzcHg/c3RyPTE0MTcmZW50ZXI9bWFuZGFudCZtPWJhc2Vjb2xwdGcmZW1h
-aWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnV0bV9zb3VyY2U9YmFz
-ZWFuZGNvJgp1dG1fbWVkaXVtPWVtYWlsaW5nLWFjcXVpc2l0aW9uJnV0bV9jYW1wYWlnbj1iYXNl
-Y29scHRnCgooSidlbiBwcm9maXRlKToKaHR0cDovL2Jhc2Vjby5zb2x1dGlvbi53ZWJvcmFtYS5m
-ci9mY2dpLWJpbi9wZXJmb3JtYW5jZS5mY2dpP0lEPTMxMDcwMyZBPTEmTD05MDEKODYxJkM9MzIz
-MjkmZj0xMCZQPTQ5NjI2JlQ9RSZXPTEmQ1JFQT0xMjgwMiZVUkw9aHR0cDovL3d3dy5tb25hbGJ1
-bXBob3RvLmZyL2luZGUKeC5hc3B4P3N0cj0xNDE3JmVudGVyPW1hbmRhbnQmbT1iYXNlY29scHRn
-JmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZ1dG1fc291cmNl
-PWJhc2VhbmRjbyYKdXRtX21lZGl1bT1lbWFpbGluZy1hY3F1aXNpdGlvbiZ1dG1fY2FtcGFpZ249
-YmFzZWNvbHB0ZwoKKE1vbkFsYnVtUGhvdG8uZnIpOgpodHRwOi8vYmFzZWNvLnNvbHV0aW9uLndl
-Ym9yYW1hLmZyL2ZjZ2ktYmluL3BlcmZvcm1hbmNlLmZjZ2k/SUQ9MzEwNzAzJkE9MSZMPTkwMQo4
-NjEmQz0zMjMyOSZmPTEwJlA9NDk2MjYmVD1FJlc9MSZDUkVBPTEyODAyJlVSTD1odHRwOi8vd3d3
-Lm1vbmFsYnVtcGhvdG8uZnIvaW5kZQp4LmFzcHg/c3RyPTE0MTcmZW50ZXI9bWFuZGFudCZtPWJh
-c2Vjb2xwdGcmZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JnV0
-bV9zb3VyY2U9YmFzZWFuZGNvJgp1dG1fbWVkaXVtPWVtYWlsaW5nLWFjcXVpc2l0aW9uJnV0bV9j
-YW1wYWlnbj1iYXNlY29scHRnCgoKRMOpdGFpbHMgZGUgbCdvZmZyZQpWb3RyZSBsaXZyZSBwaG90
-b3Mgb3UgdG9pbGUgdnJhaW1lbnQgR1JBVFVJVCA6IELDqW7DqWZpY2lleiBkZSA5LDk1IOKCrCAo
-cG91cgp1biBsaXZyZSBwaG90b3MpIG91IGRlIDE4LDUw4oKsIChwb3VyIHVuZSB0b2lsZSkgZGUg
-cmVtaXNlICBzdXIgdm90cmUKcHJlbWnDqHJlIGNvbW1hbmRlLiBPZmZyZSBzYW5zIG1pbmltdW0g
-ZCdhY2hhdCwgdmFsYWJsZSBqdXNxdSfDoCA3IGpvdXJzIMOgCmNvbXB0ZXIgZGUgbCdpbnNjcmlw
-dGlvbiBzdXIgdG91dGUgbGEgZ2FtbWUgZGUgbGl2cmVzIHBob3RvcyBldCBkZSB0b2lsZXMKTW9u
-QWxidW1QaG90by4KQ29tbWVudCBlbiBwcm9maXRlciA/CkNsaXF1ZXogc3VyIGxlIGJvdXRvbiAi
-SidlbiBwcm9maXRlICIuIFZvdXMgcmVjZXZyZXogdW4gY29kZSBkZSByw6lkdWN0aW9uCnBhciBl
-LW1haWwgYXUgbW9tZW50IGRlIHZvdHJlIGluc2NyaXB0aW9uLiBJbnPDqXJlciBjZSBjb2RlIGRl
-IHLDqWR1Y3Rpb24Kc3VyIGxhIHBhZ2UgZGUgcsOpY2FwaXR1bGF0aWYgZGUgY29tbWFuZGUsIGF2
-YW50IGRlIHBheWVyLCAgZXQgYsOpbsOpZmljaWV6CmRlIDksOTUg4oKsIG91IGRlIDE4LDUwIOKC
-rCBkZSByZW1pc2UsIHNvaXQgcmVzcGVjdGl2ZW1lbnQgZCd1biBsaXZyZSBwaG90b3MKcGVyc29u
-bmFsaXPDqSBvdSBkJ3VuZSB0b2lsZSBHUkFUVUlURSouCiogT2ZmcmUgdmFsYWJsZSBzdXIgdG91
-dGUgMcOocmUgY29tbWFuZGUgZCd1biBsaXZyZSBwaG90b3Mgb3UgZCd1bmUgdG9pbGUKcGhvdG8s
-IGhvcnMgb3B0aW9ucyBldCBmcmFpcyBkJ2V4cMOpZGl0aW9uLjoKaHR0cDovL2Jhc2Vjby5zb2x1
-dGlvbi53ZWJvcmFtYS5mci9mY2dpLWJpbi9wZXJmb3JtYW5jZS5mY2dpP0lEPTMxMDcwMyZBPTEm
-TD05MDEKODYxJkM9MzIzMjkmZj0xMCZQPTQ5NjI2JlQ9RSZXPTEmQ1JFQT0xMjgwMiZVUkw9aHR0
-cDovL3d3dy5tb25hbGJ1bXBob3RvLmZyL2luZGUKeC5hc3B4P3N0cj0xNDE3JmVudGVyPW1hbmRh
-bnQmbT1iYXNlY29scHRnJmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
-Lm5ldCZ1dG1fc291cmNlPWJhc2VhbmRjbyYKdXRtX21lZGl1bT1lbWFpbGluZy1hY3F1aXNpdGlv
-biZ1dG1fY2FtcGFpZ249YmFzZWNvbHB0ZwoKCkNldHRlIG5ld3NsZXR0ZXIgZXN0IGFjY2Vzc2li
-bGUgw6lnYWxlbWVudCBzdXIgdm90cmUgbW9iaWxlLCB2b3VzIG4nYXZlegpxdSfDoCBjbGlxdWVy
-IGRlc3N1cyBwb3VyIGLDqW7DqWZpY2llciBkdSBwcm9ncmFtbWUgZGUgdm90cmUKY2hvaXguQsOp
-bsOpZmljaWV6IMOpZ2FsZW1lbnQgZCdpbmZvcm1hdGlvbnMgc3VyIGxlcyBzZXJ2aWNlcyBkw6lk
-acOpcywgbGVzCmpldXggY29uY291cnMsIGV0IGxlIHRvdXQgw6AgZGV1eCBwYXMgZGUgY2hleiB2
-b3VzLlZvdXMgZGlzcG9zZXogZCd1biBkcm9pdApkJ2FjY8OpcywgZGUgcmVjdGlmaWNhdGlvbiwg
-ZGUgbW9kaWZpY2F0aW9uIGV0IGRlIHN1cHByZXNzaW9uIGRlcyBkb25uw6llcwpxdWkgdm91cyBj
-b25jZXJuZW50IChhcnRpY2xlcyAzOCBldCBzdWl2YW50cyBkZSBsYSBsb2kgZHUgNiBqYW52aWVy
-IDE5NzgKcmVsYXRpdmUgw6AgbCdpbmZvcm1hdGlxdWUsIGF1eCBmaWNoaWVycyBldCBhdXggbGli
-ZXJ0w6lzKS5BZmluIGRlIHJlc3BlY3RlcgpsZXMgZGlzcG9zaXRpb25zIGzDqWdhbGVzIGNvbmNl
-cm5hbnQgbGVzIGNvdXJyaWVycyDDqWxlY3Ryb25pcXVlcy5Ob3Mgb2ZmcmVzCmRlIGJvbnMgcGxh
-bnMsIHZveWFnZXMsIHNob3BwaW5nLCBzZXJ2aWNlcywgc29pbnMgZGUgbGEgcGVyc29ubmUgcGFy
-bWkgZGVzCmNlbnRhaW5lcyBkJ29mZnJlcyBzb250IMOgIHZvdHJlIGRpc3Bvc2l0aW9uLkNlIGJv
-biBwbGFuIHZvdXMgZXN0IHByb3Bvc8OpZQphZmluIHF1ZSB2b3VzIHB1aXNzaWV6IGLDqW7DqWZp
-Y2llciBkJ29mZnJlcyB0b3V0ZSBsJ2FubsOpZSBxdWUgY2Ugc29pdCBwb3VyCmRlcyByw6lkdWN0
-aW9ucywgZGVzIHNvbGRlcywgZGVzIHZlbnRlcyBwcml2w6llcywgbm91cyB2b3VzIHRpZW5kcm9u
-cwppbmZvcm3DqXMgZW4gcHJpb3JpdMOpLkNldHRlIG5ld3NsZXR0ZXIgZXN0IGFjY2Vzc2libGUg
-w6lnYWxlbWVudCBzdXIgdm90cmUKbW9iaWxlLCB2b3VzIG4nYXZleiBxdSfDoCBjbGlxdWVyIGRl
-c3N1cyBwb3VyIGLDqW7DqWZpY2llciBkdSBwcm9ncmFtbWUgZGUKdm90cmUgY2hvaXguQsOpbsOp
-ZmljaWV6IMOpZ2FsZW1lbnQgZCdpbmZvcm1hdGlvbnMgc3VyIGxlcyBzZXJ2aWNlcwpkw6lkacOp
-cywgbGVzIGpldXggY29uY291cnMsIGV0IGxlIHRvdXQgw6AgZGV1eCBwYXMgZGUgY2hleiB2b3Vz
-LlZvdXMKZGlzcG9zZXogZCd1biBkcm9pdCBkJ2FjY8OpcywgZGUgcmVjdGlmaWNhdGlvbiwgZGUg
-bW9kaWZpY2F0aW9uIGV0IGRlCnN1cHByZXNzaW9uIGRlcyBkb25uw6llcyBxdWkgdm91cyBjb25j
-ZXJuZW50IChhcnRpY2xlcyAzOCBldCBzdWl2YW50cyBkZSBsYQpsb2kgZHUgNiBqYW52aWVyIDE5
-NzggcmVsYXRpdmUgw6AgbCdpbmZvcm1hdGlxdWUsIGF1eCBmaWNoaWVycyBldCBhdXgKbGliZXJ0
-w6lzKS5BZmluIGRlIHJlc3BlY3RlciBsZXMgZGlzcG9zaXRpb25zIGzDqWdhbGVzIGNvbmNlcm5h
-bnQgbGVzCmNvdXJyaWVycyDDqWxlY3Ryb25pcXVlcy5Ob3Mgb2ZmcmVzIGRlIGJvbnMgcGxhbnMs
-IHZveWFnZXMsIHNob3BwaW5nLApzZXJ2aWNlcywgc29pbnMgZGUgbGEgcGVyc29ubmUgcGFybWkg
-ZGVzIGNlbnRhaW5lcyBkJ29mZnJlcyBzb250IMOgIHZvdHJlCmRpc3Bvc2l0aW9uLkNlIGJvbiBw
-bGFuIHZvdXMgZXN0IHByb3Bvc8OpZSBhZmluIHF1ZSB2b3VzIHB1aXNzaWV6CmLDqW7DqWZpY2ll
-ciBkJ29mZnJlcyB0b3V0ZSBsJ2FubsOpZSBxdWUgY2Ugc29pdCBwb3VyIGRlcyByw6lkdWN0aW9u
-cywgZGVzCnNvbGRlcywgZGVzIHZlbnRlcyBwcml2w6llcywgbm91cyB2b3VzIHRpZW5kcm9ucyBp
-bmZvcm3DqXMgZW4gcHJpb3JpdMOpLgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZp
-c2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2
-NjI1MTgyMDYzMjIwNTM3MTc0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTgyMDYzMjIwNTM3MTc0fn0K
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tCkludHJvZHVjaW5nIFBlcmZvcm1hbmNlIENlbnRyYWwsIGEg
-bmV3IHNpdGUgZnJvbSBTb3VyY2VGb3JnZSBhbmQgCkFwcER5bmFtaWNzLiBQZXJmb3JtYW5jZSBD
-ZW50cmFsIGlzIHlvdXIgc291cmNlIGZvciBuZXdzLCBpbnNpZ2h0cywgCmFuYWx5c2lzIGFuZCBy
-ZXNvdXJjZXMgZm9yIGVmZmljaWVudCBBcHBsaWNhdGlvbiBQZXJmb3JtYW5jZSBNYW5hZ2VtZW50
-LiAKVmlzaXQgdXMgdG9kYXkhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFk
-L2Nsaz9pZD00ODg5NzUxMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
-c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
-c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//bs.miify.com/re?l=3DBD0Iqgqi90I7h5ovq2Ihkm8nd0zI&u=3Dhttp%3A%2F%2Fbs.miif=
+y.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377071219308%26custid%3D16468%26=
+uid%3D16274960282%26sig%3DGJFEJIAGFBGAOLDJ%26mid%3D1600231140&s=3DKCNKGHNCG=
+NPEGGJH
+ =
+
+50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur v=
+os magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=
+=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois s=
+ur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=
+=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mo=
+is sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=
+=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant =
+8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines=
+ pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% penda=
+nt 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazi=
+nes pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pe=
+ndant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos mag=
+azines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50%=
+ pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos =
+magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s=
+50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur v=
+os magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=
+=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois s=
+ur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=
+=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mo=
+is sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=
+=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant =
+8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines=
+ pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% penda=
+nt 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazi=
+nes pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pe=
+ndant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos mag=
+azines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50%=
+ pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos =
+magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s=
+50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur v=
+os magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=
+=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois s=
+ur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=
+=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mo=
+is sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=
+=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant =
+8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines=
+ pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% penda=
+nt 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazi=
+nes pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pe=
+ndant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos mag=
+azines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50%=
+ pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos =
+magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s=
+50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur v=
+os magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=
+=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois s=
+ur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=
+=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mo=
+is sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=
+=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant =
+8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines=
+ pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% penda=
+nt 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazi=
+nes pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pe=
+ndant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos mag=
+azines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50%=
+ pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos =
+magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s=
+50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur v=
+os magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=
+=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois s=
+ur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=
+=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mo=
+is sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=
+=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant =
+8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines=
+ pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% penda=
+nt 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazi=
+nes pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pe=
+ndant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos mag=
+azines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50%=
+ pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos =
+magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s=
+50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur v=
+os magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=
+=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois s=
+ur vos magazines pr=E9f=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=
+=E9r=E9s50% pendant 8 mois sur vos magazines pr=E9f=E9r=E9s50% pendant 8 mo=
+is sur vos magazines pr=E9f=E9r=E9s
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://bs.miify.com/public/unsubscribe.jsp?gid=3D16000=
+57156&uid=3D16274960282&mid=3D1600231140&sig=3DIOEDGNJKBDLJNLHG
+---------------------------------------------------------------------------=
+---
+Introducing Performance Central, a new site from SourceForge and =
+
+AppDynamics. Performance Central is your source for news, insights, =
+
+analysis and resources for efficient Application Performance Management. =
+
+Visit us today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
+ktrk

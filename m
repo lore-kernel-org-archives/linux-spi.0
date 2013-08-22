@@ -1,14 +1,13 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH v3 1/2]spi: DUAL and QUAD support
-Date: Thu, 22 Aug 2013 18:05:11 +0530
-Message-ID: <5216057F.4010900@ti.com>
+Date: Thu, 22 Aug 2013 13:37:35 +0100
+Message-ID: <20130822123735.GA9902@sirena.org.uk>
 References: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net, tpiepho@gmail.com,
- linux-mtd@lists.infradead.org, pekon@ti.com
-To: wangyuhang <wangyuhang2014@gmail.com>, <broonie@kernel.org>
+Content-Type: multipart/mixed; boundary="===============8330416264503987166=="
+Cc: spi-devel-general@lists.sourceforge.net, sourav.poddar@ti.com,
+ tpiepho@gmail.com, linux-mtd@lists.infradead.org, pekon@ti.com
+To: wangyuhang <wangyuhang2014@gmail.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
 In-Reply-To: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
@@ -22,238 +21,58 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark, Wang,
-On Sunday 11 August 2013 03:45 PM, wangyuhang wrote:
+
+--===============8330416264503987166==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="YiEDa0DAkWCtVeE4"
+Content-Disposition: inline
+
+
+--YiEDa0DAkWCtVeE4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Sun, Aug 11, 2013 at 06:15:17PM +0800, wangyuhang wrote:
 > fix the previous patch some mistake below:
-> 1. DT in slave node, use "spi-tx-nbits =<1/2/4>" in place of using
->     "spi-tx-dual, spi-tx-quad" directly, same to rx. So correct the
->     previous way to get the property in @of_register_spi_devices().
-> 2. Change the value of transfer bit macro(SPI_NBITS_SINGLE, SPI_NBITS_DUAL
->     SPI_NBITS_QUAD) to 0x01, 0x02 and 0x04 to match the actual wires.
-> 3. Add the following check
->     (1)keep the tx_nbits and rx_nbits in spi_transfer is not beyond the
->        single, dual and quad.
->     (2)keep tx_nbits and rx_nbits are contained by @spi_device->mode
->        example: if @spi_device->mode = DUAL, then tx/rx_nbits can not be set
->                 to QUAD(SPI_NBITS_QUAD)
->     (3)if "@spi_device->mode&  SPI_3WIRE", then tx/rx_nbits should be in
->        single(SPI_NBITS_SINGLE)
->
-> Signed-off-by: wangyuhang<wangyuhang2014@gmail.com>
-> ---
->   drivers/spi/spi.c       |   96 +++++++++++++++++++++++++++++++++++++++++++++++
->   include/linux/spi/spi.h |   22 ++++++++++-
->   2 files changed, 116 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 004b10f..78f257a 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -869,6 +869,51 @@ static void of_register_spi_devices(struct spi_master *master)
->   		if (of_find_property(nc, "spi-3wire", NULL))
->   			spi->mode |= SPI_3WIRE;
->
-> +		/* Device DUAL/QUAD mode */
-> +		prop = of_get_property(nc, "spi-tx-nbits",&len);
-> +		if (!prop || len<  sizeof(*prop)) {
-> +			dev_err(&master->dev, "%s has no 'spi-tx-nbits' property\n",
-> +				nc->full_name);
-> +			spi_dev_put(spi);
-> +			continue;
-> +		}
-> +		switch(be32_to_cpup(prop)) {
-> +		case SPI_NBITS_SINGLE:
-> +			break;
-> +		case SPI_NBITS_DUAL:
-> +			spi->mode |= SPI_TX_DUAL;
-> +			break;
-> +		case SPI_NBITS_QUAD:
-> +			spi->mode |= SPI_TX_QUAD;
-> +			break;
-> +		default:
-> +			dev_err(&master->dev, "spi-tx-nbits value is not supported\n");
-> +			spi_dev_put(spi);
-> +			continue;
-> +		}
-> +		
-> +		prop = of_get_property(nc, "spi-rx-nbits",&len);
-> +		if (!prop || len<  sizeof(*prop)) {
-> +			dev_err(&master->dev, "%s has no 'spi-rx-nbits' property\n",
-> +				nc->full_name);
-> +			spi_dev_put(spi);
-> +			continue;
-> +		}
-> +		switch(be32_to_cpup(prop)) {
-> +		case SPI_NBITS_SINGLE:
-> +			break;
-> +		case SPI_NBITS_DUAL:
-> +			spi->mode |= SPI_RX_DUAL;
-> +			break;
-> +		case SPI_NBITS_QUAD:
-> +			spi->mode |= SPI_RX_QUAD;
-> +			break;
-> +		default:
-> +			dev_err(&master->dev, "spi-rx-nbits value is not supported\n");
-> +			spi_dev_put(spi);
-> +			continue;
-> +		}
-> +
->   		/* Device speed */
->   		prop = of_get_property(nc, "spi-max-frequency",&len);
->   		if (!prop || len<  sizeof(*prop)) {
-> @@ -1313,6 +1358,19 @@ int spi_setup(struct spi_device *spi)
->   	unsigned	bad_bits;
->   	int		status = 0;
->
-> +	/* check mode to prevent that DUAL and QUAD set at the same time
-> +	 */
-> +	if (((spi->mode&  SPI_TX_DUAL)&&  (spi->mode&  SPI_TX_QUAD)) ||
-> +		((spi->mode&  SPI_RX_DUAL)&&  (spi->mode&  SPI_RX_QUAD))) {
-> +		dev_err(&spi->dev,
-> +		"setup: can not select dual and quad at the same time\n");
-> +		return -EINVAL;
-> +	}
-> +	/* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
-> +	 */
-> +	if ((spi->mode&  SPI_3WIRE)&&  (spi->mode&
-> +		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)))
-> +		return -EINVAL;
->   	/* help drivers fail *cleanly* when they need options
->   	 * that aren't supported with their current master
->   	 */
-> @@ -1370,12 +1428,50 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
->   	/**
->   	 * Set transfer bits_per_word and max speed as spi device default if
->   	 * it is not set for this transfer.
-> +	 * Set transfer tx_nbits and rx_nbits as single transfer default
-> +	 * (SPI_NBITS_SINGLE) if it is not set for this transfer.
->   	 */
->   	list_for_each_entry(xfer,&message->transfers, transfer_list) {
->   		if (!xfer->bits_per_word)
->   			xfer->bits_per_word = spi->bits_per_word;
->   		if (!xfer->speed_hz)
->   			xfer->speed_hz = spi->max_speed_hz;
-> +		if (xfer->tx_buf&&  !xfer->tx_nbits)
-> +			xfer->tx_nbits = SPI_NBITS_SINGLE;
-> +		if (xfer->rx_buf&&  !xfer->rx_nbits)
-> +			xfer->rx_nbits = SPI_NBITS_SINGLE;
-> +		/* check transfer tx/rx_nbits:
-> +		 * 1. keep the value is not out of single, dual and quad
-> +		 * 2. keep tx/rx_nbits is contained by mode in spi_device
-> +		 * 3. if SPI_3WIRE, tx/rx_nbits should be in single
-> +		 */
-Sorry for pitchin in a bit late on this.
-I was trying to use this for my use case today. I realise this check 
-should be under...
 
-> +		if (xfer->tx_nbits != SPI_NBITS_SINGLE&&
-> +			xfer->tx_nbits != SPI_NBITS_DUAL&&
-> +			xfer->tx_nbits != SPI_NBITS_QUAD)
-> +			return -EINVAL;
-> +		if ((xfer->tx_nbits == SPI_NBITS_DUAL)&&
-> +			!(spi->mode&  (SPI_TX_DUAL | SPI_TX_QUAD)))
-> +			return -EINVAL;
-> +		if ((xfer->tx_nbits == SPI_NBITS_QUAD)&&
-> +			!(spi->mode&  SPI_TX_QUAD))
-> +			return -EINVAL;
-> +		if ((spi->mode&  SPI_3WIRE)&&
-> +			(xfer->tx_nbits != SPI_NBITS_SINGLE))
-> +			return -EINVAL;
-if (xfer->tx_buf) {
-      ......
+One other thing: this wasn't sent against current code, it seems to have
+been generated against an old kernel version.  Please make sure when you
+submit that you submit against either Linus' tree or ideally the latest
+development code for the subsystem.
 
-} and
-> +		/* check transfer rx_nbits */
-> +		if (xfer->rx_nbits != SPI_NBITS_SINGLE&&
-> +			xfer->rx_nbits != SPI_NBITS_DUAL&&
-> +			xfer->rx_nbits != SPI_NBITS_QUAD)
-> +			return -EINVAL;
-> +		if ((xfer->rx_nbits == SPI_NBITS_DUAL)&&
-> +			!(spi->mode&  (SPI_RX_DUAL | SPI_RX_QUAD)))
-> +			return -EINVAL;
-> +		if ((xfer->rx_nbits == SPI_NBITS_QUAD)&&
-> +			!(spi->mode&  SPI_RX_QUAD))
-> +			return -EINVAL;
-> +		if ((spi->mode&  SPI_3WIRE)&&
-> +			(xfer->rx_nbits != SPI_NBITS_SINGLE))
-> +			return -EINVAL;
-this should be under
-  if (xfer->rx_buf) {
-.....
-}
->   	}
->
->   	message->spi = spi;
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 38c2b92..3dc0a86 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -74,7 +74,7 @@ struct spi_device {
->   	struct spi_master	*master;
->   	u32			max_speed_hz;
->   	u8			chip_select;
-> -	u8			mode;
-> +	u16			mode;
->   #define	SPI_CPHA	0x01			/* clock phase */
->   #define	SPI_CPOL	0x02			/* clock polarity */
->   #define	SPI_MODE_0	(0|0)			/* (original MicroWire) */
-> @@ -87,6 +87,10 @@ struct spi_device {
->   #define	SPI_LOOP	0x20			/* loopback mode */
->   #define	SPI_NO_CS	0x40			/* 1 dev/bus, no chipselect */
->   #define	SPI_READY	0x80			/* slave pulls low to pause */
-> +#define	SPI_TX_DUAL	0x100			/* transmit with 2 wires */
-> +#define	SPI_TX_QUAD	0x200			/* transmit with 4 wires */
-> +#define	SPI_RX_DUAL	0x400			/* receive with 2 wires */
-> +#define	SPI_RX_QUAD	0x800			/* receive with 4 wires */
->   	u8			bits_per_word;
->   	int			irq;
->   	void			*controller_state;
-> @@ -437,6 +441,10 @@ extern struct spi_master *spi_busnum_to_master(u16 busnum);
->    * @rx_buf: data to be read (dma-safe memory), or NULL
->    * @tx_dma: DMA address of tx_buf, if @spi_message.is_dma_mapped
->    * @rx_dma: DMA address of rx_buf, if @spi_message.is_dma_mapped
-> + * @tx_nbits: number of bits used for writting. If 0 the default
-> + *      (SPI_NBITS_SINGLE) is used.
-> + * @rx_nbits: number of bits used for reading. If 0 the default
-> + *      (SPI_NBITS_SINGLE) is used.
->    * @len: size of rx and tx buffers (in bytes)
->    * @speed_hz: Select a speed other than the device default for this
->    *      transfer. If 0 the default (from @spi_device) is used.
-> @@ -491,6 +499,11 @@ extern struct spi_master *spi_busnum_to_master(u16 busnum);
->    * by the results of previous messages and where the whole transaction
->    * ends when the chipselect goes intactive.
->    *
-> + * When SPI can transfer in 1x,2x or 4x. It can get this tranfer information
-> + * from device through @tx_nbits and @rx_nbits. In Bi-direction, these
-> + * two should both be set. User can set transfer mode with SPI_NBITS_SINGLE(1x)
-> + * SPI_NBITS_DUAL(2x) and SPI_NBITS_QUAD(4x) to support these three transfer.
-> + *
->    * The code that submits an spi_message (and its spi_transfers)
->    * to the lower layers is responsible for managing its memory.
->    * Zero-initialize every field you don't set up explicitly, to
-> @@ -511,6 +524,11 @@ struct spi_transfer {
->   	dma_addr_t	rx_dma;
->
->   	unsigned	cs_change:1;
-> +	u8		tx_nbits;
-> +	u8		rx_nbits;
-> +#define	SPI_NBITS_SINGLE	0x01 /* 1bit transfer */
-> +#define	SPI_NBITS_DUAL		0x02 /* 2bits transfer */
-> +#define	SPI_NBITS_QUAD		0x04 /* 4bits transfer */
->   	u8		bits_per_word;
->   	u16		delay_usecs;
->   	u32		speed_hz;
-> @@ -858,7 +876,7 @@ struct spi_board_info {
->   	/* mode becomes spi_device.mode, and is essential for chips
->   	 * where the default of SPI_CS_HIGH = 0 is wrong.
->   	 */
-> -	u8		mode;
-> +	u16		mode;
->
->   	/* ... may need additional spi_device chip config data here.
->   	 * avoid stuff protocol drivers can set; but include stuff
+--YiEDa0DAkWCtVeE4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSFgYMAAoJELSic+t+oim9U9oP/2qOfnQ4SIMeRcGdD7Ee2yap
+ylbbdECwA/duEyv5+lSfyh3/QrYsLDCFCjHM+dNhUkp7n4/33grh7lXe/p3YlFcH
+krSd2PcvW7r/9QF0pqY8oOsJFlmjzKfDBX1C01GLNrwK/0y/+Bl6quDHnyq+9dJC
+hg72m3DaHL+g0Ebt/uPc6SwzVeu2MdMX1XOgY/bso+XsZIp4aO3s7ikpS8v9VIBc
+aHFdoPfe/zMWBMjlzPkgLklIqGbABpW23HqLygNbuifTbhs2CFQjkP5KlaJxtPy1
+kihvBEogpxx/p7FjUm70I1Im/kxuhAZxXe66Rb15yu3fgr5ZXwPUIdfZp/lJrZ92
+SxBitsp7pkIV+0rPcw0pXy0pq9DHTBeEkjCjgA/gmbghMTk6aotjTN04S6WjzXS2
+WdLjimuqKfqd1rWTkozMTJ3FtpVBPxnGnQLH9WITh9ba23TLXfrq+c9oixCy6mPK
+T5ENCJR94ffqH0SZ47t9wjbXTjaQBKkUd1eFP1qMURNM881TyHru0p1DejqeorhP
+BwgWLqazRR2G4jfxq+86uYBkdCxWTwoJRLQATef6G5eRAEUHcfZYBhhc+onj8LDY
+gFLWPCl84HhNb9mViQn0xWJCO/BhEttfISqY8SnKjGneWtifvH8baO6XGIKuBjsQ
+SS88i8fyHRZrJkTqPpgj
+=aVw4
+-----END PGP SIGNATURE-----
+
+--YiEDa0DAkWCtVeE4--
+
+
+--===============8330416264503987166==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ______________________________________________________
 Linux MTD discussion mailing list
 http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============8330416264503987166==--

@@ -1,75 +1,87 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v1 3/4] spi/xilinx: Simplify irq allocation
-Date: Thu, 22 Aug 2013 14:10:51 +0100
-Message-ID: <20130822131051.GI26118@sirena.org.uk>
-References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
- <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com>
- <20130708144930.GG27646@sirena.org.uk>
- <51DADF3E.1000802@monstr.eu>
- <20130708162642.GM27646@sirena.org.uk>
- <51E00BF8.2020608@monstr.eu>
+Subject: Re: [PATCH v3 1/2]spi: DUAL and QUAD support
+Date: Thu, 22 Aug 2013 14:21:22 +0100
+Message-ID: <20130822132122.GK26118@sirena.org.uk>
+References: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
+ <5216057F.4010900@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="H6o9R95t2FPeZmf3"
-Cc: Michal Simek <michal.simek@xilinx.com>,
-	linux-kernel@vger.kernel.org,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	spi-devel-general@lists.sourceforge.net
-To: Michal Simek <monstr@monstr.eu>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <51E00BF8.2020608@monstr.eu>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/mixed; boundary="===============6253138168387790420=="
+Cc: spi-devel-general@lists.sourceforge.net, tpiepho@gmail.com,
+ linux-mtd@lists.infradead.org, wangyuhang <wangyuhang2014@gmail.com>,
+ pekon@ti.com
+To: Sourav Poddar <sourav.poddar@ti.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <5216057F.4010900@ti.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
 
---H6o9R95t2FPeZmf3
+--===============6253138168387790420==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="M9YpAf2t6OxtMGzg"
+Content-Disposition: inline
+
+
+--M9YpAf2t6OxtMGzg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Jul 12, 2013 at 04:00:24PM +0200, Michal Simek wrote:
+On Thu, Aug 22, 2013 at 06:05:11PM +0530, Sourav Poddar wrote:
+> On Sunday 11 August 2013 03:45 PM, wangyuhang wrote:
 
-> Just a follow up on this.
+> >+		/* check transfer tx/rx_nbits:
+> >+		 * 1. keep the value is not out of single, dual and quad
+> >+		 * 2. keep tx/rx_nbits is contained by mode in spi_device
+> >+		 * 3. if SPI_3WIRE, tx/rx_nbits should be in single
+> >+		 */
 
-Sorry, this one fell through the cracks - apologies for the delay.
+> Sorry for pitchin in a bit late on this.
+> I was trying to use this for my use case today. I realise this check
+> should be under...
 
-> Which function free private structures registered by spi_alloc_master function?
-> Is it in spi_master_put()?
+Can you send a patch for this please?
 
-Yes, or spi_master_unregister() after it's been registered.
-
-> The reason why I am asking is where clk_xx functions should be added.
-> I see them between these two functions in sifr for example.
-
-> And also I see in drivers in error probe path that drivers are calling kfree(master)
-> but they are not doing in remove part (like spi-davinci.c).
-
-> I just want to clear this in our zynq drivers before we send them out.
-
-I'd not be surprised if there were errors in the error handling paths,
-it's (hopefully!) not the best tested code out there.
-
---H6o9R95t2FPeZmf3
+--M9YpAf2t6OxtMGzg
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.20 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSFg3YAAoJELSic+t+oim9UIMQAJxTGqkFBYk9lZjcpLYgjWwt
-KiBNY+7wL5EnzhgRutm1MLfSeCUmEk+Nej28c6q2zcaWa1nK8fmn2MeSIMvFcXfF
-SzWhat4x/5MBNfrmDpHEuh6msLekFcLbp6EJkI9UILNnrrtVkXlPHm6BpL/+2tsJ
-FWCF75koGTxrlLxL7GocQipEYZ+Q2ByfJMazhJY7EJCdscm4YmKIX368+NGvkbYY
-r4ygI8iQQbBdWJlBlcL1M4n0XHxU+GrRA/PowFIA0cGD+Y6AfbEsgyhZrhxRohxm
-qSrwxeHgglQlh+9btchYEmp7NyYufU5Mg6cLrje8c17IXLxnIWLnCxuKH54kRVnF
-n/v+FFNBKo2t5wKEwnVY9NmPD8YeKureTNEq7bVOB4Kt6ZF9K0IMCv3lT/xpS2r5
-KgPrsDxaqCzXPf+201eRhBXIjB99ImLkgAd/RyyyichTapeauLGYPkWwuY0dgm89
-MDYCYi4f6w/ONjk3PN6mle/cTVTyDnSSPseGAK9eY6KE54l4YCk/z4kpzwMPY7Vo
-L7aD83ZKgPpD30dv5RTRV8dfOYmSjsD9Bsj3z/HTyjAS+N+25qR1vK5KgkQecPdf
-5h+1tTTneVHyEbuLWCORUJYM+7zpUKoBL+SfXYCVl/+t40dhBUKUmsOGlKs1QF3l
-xE4T8Dq2XoIo4igR+3Mj
-=FQKR
+iQIcBAEBAgAGBQJSFhBPAAoJELSic+t+oim9bN8QAJgt6UCqMhttRR+GLj2aHBhW
+aVYW9LDa5mPMEi3HVCa5Snd8EuUGPwBkCw6xgTK/TU855HOZ8R5mOsQp2k1wLgxs
+ppM/w47opU2AaNGbjXO5aqcwMCQw90UqiFsCp+lkS5LPOhzG6CmQVwYaAfjYb6BO
+vT7jRUcUFElhefccLMMLJ/6rDuFceVA5p3lP7JJsyyW81m9n7y/TLhc47wHViYmX
+ZqfbsTmW0JF55AvdGXidz/aiJyUlZx8fLUQ6fF5xh4NBSWZvNIPcjABXnoswyALm
+IYtLs4ii8xMigxIW+jr13UkZ/t5v1BDI78t+2tUtzMATcZY8gFiQQN/BnmM55S5b
+41hde07h3npq9xlkJSxQrq5z6wAnGs7IANyqNtp+rintyYzQHtfsLcbQvrzjtPmF
+K+zM59t31cYDmK0i28ZDPWAfk/6e/0gNRM3Ee53AcuzGJEdqfxscpIYjQuKqpG+Q
+TfI7Zy0gTkImImt+odh7AHglMUvnO5821hZeNzBcDQ5S43uuNNhgzf/B1Ml7ru1G
+zMNI0BFv0w5ItJw5tU30AbddwV8AA9G7uK2kecyTS0zseyNJ2Sepi6ams9mg3jK5
+IbUklun4Ok+YE2JX/99oiQAD8+mxxa787PBchZtgMCB8feAGwPeEqYUKHIH+aO/C
+UEsr0NwNCmmCfb8l1VAr
+=v0k7
 -----END PGP SIGNATURE-----
 
---H6o9R95t2FPeZmf3--
+--M9YpAf2t6OxtMGzg--
+
+
+--===============6253138168387790420==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============6253138168387790420==--

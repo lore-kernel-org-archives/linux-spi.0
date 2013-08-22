@@ -1,13 +1,14 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] spi: conditional checking of mode and transfer bits.
-Date: Thu, 22 Aug 2013 21:20:48 +0530
-Message-ID: <1377186648-16616-1-git-send-email-sourav.poddar@ti.com>
+From: Thalasseo via Nl-Promos <newsletter-D2VM3j8jEUZQFI55V6+gNQ@public.gmane.org>
+Subject: =?utf-8?Q?Special_petit_budget:_jusqu'=C3=A0_moins_70_pour_cent_sur_les_s?=
+	=?utf-8?Q?=C3=A9jours_Thalasso_et_bien-=C3=AAtre?=
+Date: Fri, 23 Aug 2013 01:10:34 +0200
+Message-ID: <16d0c08693c45da97f5db9217486b91e@localhost.localdomain>
+Reply-To: Thalasseo via Nl-Promos <newsletter-D2VM3j8jEUZQFI55V6+gNQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,114 +20,65 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-There is a bug in the following patch:
-http://comments.gmane.org/gmane.linux.kernel.spi.devel/14420
-
-spi: DUAL and QUAD support
-
-    fix the previous patch some mistake below:
-    1. DT in slave node, use "spi-tx-nbits = <1/2/4>" in place of using
-       "spi-tx-dual, spi-tx-quad" directly, same to rx. So correct the
-       previous way to get the property in @of_register_spi_devices().
-    2. Change the value of transfer bit macro(SPI_NBITS_SINGLE, SPI_NBITS_DUAL
-       SPI_NBITS_QUAD) to 0x01, 0x02 and 0x04 to match the actual wires.
-    3. Add the following check
-       (1)keep the tx_nbits and rx_nbits in spi_transfer is not beyond the
-          single, dual and quad.
-       (2)keep tx_nbits and rx_nbits are contained by @spi_device->mode
-          example: if @spi_device->mode = DUAL, then tx/rx_nbits can not be set
-                   to QUAD(SPI_NBITS_QUAD)
-       (3)if "@spi_device->mode & SPI_3WIRE", then tx/rx_nbits should be in
-          single(SPI_NBITS_SINGLE)
-
-Checking of the tx/rx transfer bits and mode bits should be done conditionally
-based on type of buffer filled else EINVAL condition will
-always get hit either for rx or tx.
-
-Signed-off-by: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
----
-This patch is developed on top of Mark Brown SPI tree[1]:
-[1]: git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
-branch: remotes/brownspi/topic/quad
-This branch has the parent patch with the bug.
- drivers/spi/spi.c |   56 ++++++++++++++++++++++++++++------------------------
- 1 files changed, 30 insertions(+), 26 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 39d3875..50f7fc3 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1473,33 +1473,37 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
- 		 * 2. keep tx/rx_nbits is contained by mode in spi_device
- 		 * 3. if SPI_3WIRE, tx/rx_nbits should be in single
- 		 */
--		if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
--			xfer->tx_nbits != SPI_NBITS_DUAL &&
--			xfer->tx_nbits != SPI_NBITS_QUAD)
--			return -EINVAL;
--		if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
--			!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
--			return -EINVAL;
--		if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
--			!(spi->mode & SPI_TX_QUAD))
--			return -EINVAL;
--		if ((spi->mode & SPI_3WIRE) &&
--			(xfer->tx_nbits != SPI_NBITS_SINGLE))
--			return -EINVAL;
-+		if (xfer->tx_buf) {
-+			if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
-+				xfer->tx_nbits != SPI_NBITS_DUAL &&
-+				xfer->tx_nbits != SPI_NBITS_QUAD)
-+				return -EINVAL;
-+			if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
-+				!(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
-+				return -EINVAL;
-+			if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
-+				!(spi->mode & SPI_TX_QUAD))
-+				return -EINVAL;
-+			if ((spi->mode & SPI_3WIRE) &&
-+				(xfer->tx_nbits != SPI_NBITS_SINGLE))
-+				return -EINVAL;
-+		}
- 		/* check transfer rx_nbits */
--		if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
--			xfer->rx_nbits != SPI_NBITS_DUAL &&
--			xfer->rx_nbits != SPI_NBITS_QUAD)
--			return -EINVAL;
--		if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
--			!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
--			return -EINVAL;
--		if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
--			!(spi->mode & SPI_RX_QUAD))
--			return -EINVAL;
--		if ((spi->mode & SPI_3WIRE) &&
--			(xfer->rx_nbits != SPI_NBITS_SINGLE))
--			return -EINVAL;
-+		if (xfer->rx_buf) {
-+			if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
-+				xfer->rx_nbits != SPI_NBITS_DUAL &&
-+				xfer->rx_nbits != SPI_NBITS_QUAD)
-+				return -EINVAL;
-+			if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
-+				!(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
-+				return -EINVAL;
-+			if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
-+				!(spi->mode & SPI_RX_QUAD))
-+				return -EINVAL;
-+			if ((spi->mode & SPI_3WIRE) &&
-+				(xfer->rx_nbits != SPI_NBITS_SINGLE))
-+				return -EINVAL;
-+		}
- 	}
- 
- 	message->spi = spi;
--- 
-1.7.1
-
-
-------------------------------------------------------------------------------
-Introducing Performance Central, a new site from SourceForge and 
-AppDynamics. Performance Central is your source for news, insights, 
-analysis and resources for efficient Application Performance Management. 
-Visit us today!
-http://pubads.g.doubleclick.net/gampad/clk?id=48897511&iu=/4140/ostg.clktrk
+U3BlY2lhbCBwZXRpdCBidWRnZXQ6IGp1c3F1J8OgIG1vaW5zIDcwIHBvdXIgY2VudCBzdXIgbGVz
+IHPDqWpvdXJzIFRoYWxhc3NvIGV0IGJpZW4tw6p0cmVTcGVjaWFsIHBldGl0IGJ1ZGdldDoganVz
+cXUnw6AgbW9pbnMgNzAgcG91ciBjZW50IHN1ciBsZXMgc8Opam91cnMgVGhhbGFzc28gZXQgYmll
+bi3DqnRyZVNwZWNpYWwgcGV0aXQgYnVkZ2V0OiBqdXNxdSfDoCBtb2lucyA3MCBwb3VyIGNlbnQg
+c3VyIGxlcyBzw6lqb3VycyBUaGFsYXNzbyBldCBiaWVuLcOqdHJlU3BlY2lhbCBwZXRpdCBidWRn
+ZXQ6IGp1c3F1J8OgIG1vaW5zIDcwIHBvdXIgY2VudCBzdXIgbGVzIHPDqWpvdXJzIFRoYWxhc3Nv
+IGV0IGJpZW4tw6p0cmVTcGVjaWFsIHBldGl0IGJ1ZGdldDoganVzcXUnw6AgbW9pbnMgNzAgcG91
+ciBjZW50IHN1ciBsZXMgc8Opam91cnMgVGhhbGFzc28gZXQgYmllbi3DqnRyZVNwZWNpYWwgcGV0
+aXQgYnVkZ2V0OiBqdXNxdSfDoCBtb2lucyA3MCBwb3VyIGNlbnQgc3VyIGxlcyBzw6lqb3VycyBU
+aGFsYXNzbyBldCBiaWVuLcOqdHJlU3BlY2lhbCBwZXRpdCBidWRnZXQ6IGp1c3F1J8OgIG1vaW5z
+IDcwIHBvdXIgY2VudCBzdXIgbGVzIHPDqWpvdXJzIFRoYWxhc3NvIGV0IGJpZW4tw6p0cmVTcGVj
+aWFsIHBldGl0IGJ1ZGdldDoganVzcXUnw6AgbW9pbnMgNzAgcG91ciBjZW50IHN1ciBsZXMgc8Op
+am91cnMgVGhhbGFzc28gZXQgYmllbi3DqnRyZVNwZWNpYWwgcGV0aXQgYnVkZ2V0OiBqdXNxdSfD
+oCBtb2lucyA3MCBwb3VyIGNlbnQgc3VyIGxlcyBzw6lqb3VycyBUaGFsYXNzbyBldCBiaWVuLcOq
+dHJlU3BlY2lhbCBwZXRpdCBidWRnZXQ6IGp1c3F1J8OgIG1vaW5zIDcwIHBvdXIgY2VudCBzdXIg
+bGVzIHPDqWpvdXJzIFRoYWxhc3NvIGV0IGJpZW4tw6p0cmVTcGVjaWFsIHBldGl0IGJ1ZGdldDog
+anVzcXUnw6AgbW9pbnMgNzAgcG91ciBjZW50IHN1ciBsZXMgc8Opam91cnMgVGhhbGFzc28gZXQg
+Ymllbi3DqnRyZVNwZWNpYWwgcGV0aXQgYnVkZ2V0OiBqdXNxdSfDoCBtb2lucyA3MCBwb3VyIGNl
+bnQgc3VyIGxlcyBzw6lqb3VycyBUaGFsYXNzbyBldCBiaWVuLcOqdHJlU3BlY2lhbCBwZXRpdCBi
+dWRnZXQ6IGp1c3F1J8OgIG1vaW5zIDcwIHBvdXIgY2VudCBzdXIgbGVzIHPDqWpvdXJzIFRoYWxh
+c3NvIGV0IGJpZW4tw6p0cmVTcGVjaWFsIHBldGl0IGJ1ZGdldDoganVzcXUnw6AgbW9pbnMgNzAg
+cG91ciBjZW50IHN1ciBsZXMgc8Opam91cnMgVGhhbGFzc28gZXQgYmllbi3DqnRyZVNwZWNpYWwg
+cGV0aXQgYnVkZ2V0OiBqdXNxdSfDoCBtb2lucyA3MCBwb3VyIGNlbnQgc3VyIGxlcyBzw6lqb3Vy
+cyBUaGFsYXNzbyBldCBiaWVuLcOqdHJlU3BlY2lhbCBwZXRpdCBidWRnZXQ6IGp1c3F1J8OgIG1v
+aW5zIDcwIHBvdXIgY2VudCBzdXIgbGVzIHPDqWpvdXJzIFRoYWxhc3NvIGV0IGJpZW4tw6p0cmVT
+cGVjaWFsIHBldGl0IGJ1ZGdldDoganVzcXUnw6AgbW9pbnMgNzAgcG91ciBjZW50IHN1ciBsZXMg
+c8Opam91cnMgVGhhbGFzc28gZXQgYmllbi3DqnRyZVNwZWNpYWwgcGV0aXQgYnVkZ2V0OiBqdXNx
+dSfDoCBtb2lucyA3MCBwb3VyIGNlbnQgc3VyIGxlcyBzw6lqb3VycyBUaGFsYXNzbyBldCBiaWVu
+LcOqdHJlU3BlY2lhbCBwZXRpdCBidWRnZXQ6IGp1c3F1J8OgIG1vaW5zIDcwIHBvdXIgY2VudCBz
+dXIgbGVzIHPDqWpvdXJzIFRoYWxhc3NvIGV0IGJpZW4tw6p0cmVTcGVjaWFsIHBldGl0IGJ1ZGdl
+dDoganVzcXUnw6AgbW9pbnMgNzAgcG91ciBjZW50IHN1ciBsZXMgc8Opam91cnMgVGhhbGFzc28g
+ZXQgYmllbi3DqnRyZVNwZWNpYWwgcGV0aXQgYnVkZ2V0OiBqdXNxdSfDoCBtb2lucyA3MCBwb3Vy
+IGNlbnQgc3VyIGxlcyBzw6lqb3VycyBUaGFsYXNzbyBldCBiaWVuLcOqdHJlU3BlY2lhbCBwZXRp
+dCBidWRnZXQ6IGp1c3F1J8OgIG1vaW5zIDcwIHBvdXIgY2VudCBzdXIgbGVzIHPDqWpvdXJzIFRo
+YWxhc3NvIGV0IGJpZW4tw6p0cmVTcGVjaWFsIHBldGl0IGJ1ZGdldDoganVzcXUnw6AgbW9pbnMg
+NzAgcG91ciBjZW50IHN1ciBsZXMgc8Opam91cnMgVGhhbGFzc28gZXQgYmllbi3DqnRyZVNwZWNp
+YWwgcGV0aXQgYnVkZ2V0OiBqdXNxdSfDoCBtb2lucyA3MCBwb3VyIGNlbnQgc3VyIGxlcyBzw6lq
+b3VycyBUaGFsYXNzbyBldCBiaWVuLcOqdHJlU3BlY2lhbCBwZXRpdCBidWRnZXQ6IGp1c3F1J8Og
+IG1vaW5zIDcwIHBvdXIgY2VudCBzdXIgbGVzIHPDqWpvdXJzIFRoYWxhc3NvIGV0IGJpZW4tw6p0
+cmVTcGVjaWFsIHBldGl0IGJ1ZGdldDoganVzcXUnw6AgbW9pbnMgNzAgcG91ciBjZW50IHN1ciBs
+ZXMgc8Opam91cnMgVGhhbGFzc28gZXQgYmllbi3DqnRyZVNwZWNpYWwgcGV0aXQgYnVkZ2V0OiBq
+dXNxdSfDoCBtb2lucyA3MCBwb3VyIGNlbnQgc3VyIGxlcyBzw6lqb3VycyBUaGFsYXNzbyBldCBi
+aWVuLcOqdHJlU3BlY2lhbCBwZXRpdCBidWRnZXQ6IGp1c3F1J8OgIG1vaW5zIDcwIHBvdXIgY2Vu
+dCBzdXIgbGVzIHPDqWpvdXJzIFRoYWxhc3NvIGV0IGJpZW4tw6p0cmVTcGVjaWFsIHBldGl0IGJ1
+ZGdldDoganVzcXUnw6AgbW9pbnMgNzAgcG91ciBjZW50IHN1ciBsZXMgc8Opam91cnMgVGhhbGFz
+c28gZXQgYmllbi3DqnRyZVNwZWNpYWwgcGV0aXQgYnVkZ2V0OiBqdXNxdSfDoCBtb2lucyA3MCBw
+b3VyIGNlbnQgc3VyIGxlcyBzw6lqb3VycyBUaGFsYXNzbyBldCBiaWVuLcOqdHJlU3BlY2lhbCBw
+ZXRpdCBidWRnZXQ6IGp1c3F1J8OgIG1vaW5zIDcwIHBvdXIgY2VudCBzdXIgbGVzIHPDqWpvdXJz
+IFRoYWxhc3NvIGV0IGJpZW4tw6p0cmVTcGVjaWFsIHBldGl0IGJ1ZGdldDoganVzcXUnw6AgbW9p
+bnMgNzAgcG91ciBjZW50IHN1ciBsZXMgc8Opam91cnMgVGhhbGFzc28gZXQgYmllbi3DqnRyZVNw
+ZWNpYWwgcGV0aXQgYnVkZ2V0OiBqdXNxdSfDoCBtb2lucyA3MCBwb3VyIGNlbnQgc3VyIGxlcyBz
+w6lqb3VycyBUaGFsYXNzbyBldCBiaWVuLcOqdHJlCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRy
+b2R1Y2luZyBQZXJmb3JtYW5jZSBDZW50cmFsLCBhIG5ldyBzaXRlIGZyb20gU291cmNlRm9yZ2Ug
+YW5kIApBcHBEeW5hbWljcy4gUGVyZm9ybWFuY2UgQ2VudHJhbCBpcyB5b3VyIHNvdXJjZSBmb3Ig
+bmV3cywgaW5zaWdodHMsIAphbmFseXNpcyBhbmQgcmVzb3VyY2VzIGZvciBlZmZpY2llbnQgQXBw
+bGljYXRpb24gUGVyZm9ybWFuY2UgTWFuYWdlbWVudC4gClZpc2l0IHVzIHRvZGF5IQpodHRwOi8v
+cHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NDg4OTc1MTEmaXU9LzQxNDAv
+b3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
+aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

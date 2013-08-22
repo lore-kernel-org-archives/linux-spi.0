@@ -1,114 +1,75 @@
-From: Record Perte de Poids <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Regardez_3_kilos_dispara=EEtre_en_tout_juste_6_jours?=
-Date: Thu, 22 Aug 2013 15:08:03 +0200 (CEST)
-Message-ID: <y340x0.hknzk49em5g813l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v1 3/4] spi/xilinx: Simplify irq allocation
+Date: Thu, 22 Aug 2013 14:10:51 +0100
+Message-ID: <20130822131051.GI26118@sirena.org.uk>
+References: <ff70173bee5f9223ffea2b92b903b4e46ef8b323.1373290150.git.michal.simek@xilinx.com>
+ <b4458c93742bd9dfe69e3553cf377a703c945f81.1373290150.git.michal.simek@xilinx.com>
+ <20130708144930.GG27646@sirena.org.uk>
+ <51DADF3E.1000802@monstr.eu>
+ <20130708162642.GM27646@sirena.org.uk>
+ <51E00BF8.2020608@monstr.eu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="H6o9R95t2FPeZmf3"
+Cc: Michal Simek <michal.simek@xilinx.com>,
+	linux-kernel@vger.kernel.org,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	spi-devel-general@lists.sourceforge.net
+To: Michal Simek <monstr@monstr.eu>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <51E00BF8.2020608@monstr.eu>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgqjjpI7gfk57dIhknzjzl5I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377176877569%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DDJJJOMIKKJFPMAKM%26mid%3D1600232821&s=3DB=
-FNJMPPPECLDKGLB
- =
 
-Regardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispar=
-a=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6=
- joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos =
-dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout j=
-uste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 =
-kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en =
-tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegar=
-dez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEt=
-re en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jour=
-sRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispa=
-ra=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste =
-6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos=
- dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout =
-juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3=
- kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en=
- tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRega=
-rdez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EE=
-tre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jou=
-rsRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos disp=
-ara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste=
- 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilo=
-s dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout=
- juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez =
-3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre e=
-n tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursReg=
-ardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=
-=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 =
-joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos d=
-ispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout ju=
-ste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 k=
-ilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en t=
-out juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegard=
-ez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtr=
-e en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jours=
-Regardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispar=
-a=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6=
- joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos =
-dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout j=
-uste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 =
-kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en =
-tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegar=
-dez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEt=
-re en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jour=
-sRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispa=
-ra=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste =
-6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos=
- dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout =
-juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3=
- kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en=
- tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRega=
-rdez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EE=
-tre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jou=
-rsRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos disp=
-ara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste=
- 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilo=
-s dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout=
- juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez =
-3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre e=
-n tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursReg=
-ardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=
-=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 =
-joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos d=
-ispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout ju=
-ste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 k=
-ilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en t=
-out juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegard=
-ez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtr=
-e en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jours=
-Regardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispar=
-a=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6=
- joursRegardez 3 kilos dispara=EEtre en tout juste 6 jours
- =
+--H6o9R95t2FPeZmf3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600232821&sig=3DJKAENBAOFOKHJGCE
----------------------------------------------------------------------------=
----
-Introducing Performance Central, a new site from SourceForge and =
+On Fri, Jul 12, 2013 at 04:00:24PM +0200, Michal Simek wrote:
 
-AppDynamics. Performance Central is your source for news, insights, =
+> Just a follow up on this.
 
-analysis and resources for efficient Application Performance Management. =
+Sorry, this one fell through the cracks - apologies for the delay.
 
-Visit us today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
-ktrk
+> Which function free private structures registered by spi_alloc_master function?
+> Is it in spi_master_put()?
+
+Yes, or spi_master_unregister() after it's been registered.
+
+> The reason why I am asking is where clk_xx functions should be added.
+> I see them between these two functions in sifr for example.
+
+> And also I see in drivers in error probe path that drivers are calling kfree(master)
+> but they are not doing in remove part (like spi-davinci.c).
+
+> I just want to clear this in our zynq drivers before we send them out.
+
+I'd not be surprised if there were errors in the error handling paths,
+it's (hopefully!) not the best tested code out there.
+
+--H6o9R95t2FPeZmf3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSFg3YAAoJELSic+t+oim9UIMQAJxTGqkFBYk9lZjcpLYgjWwt
+KiBNY+7wL5EnzhgRutm1MLfSeCUmEk+Nej28c6q2zcaWa1nK8fmn2MeSIMvFcXfF
+SzWhat4x/5MBNfrmDpHEuh6msLekFcLbp6EJkI9UILNnrrtVkXlPHm6BpL/+2tsJ
+FWCF75koGTxrlLxL7GocQipEYZ+Q2ByfJMazhJY7EJCdscm4YmKIX368+NGvkbYY
+r4ygI8iQQbBdWJlBlcL1M4n0XHxU+GrRA/PowFIA0cGD+Y6AfbEsgyhZrhxRohxm
+qSrwxeHgglQlh+9btchYEmp7NyYufU5Mg6cLrje8c17IXLxnIWLnCxuKH54kRVnF
+n/v+FFNBKo2t5wKEwnVY9NmPD8YeKureTNEq7bVOB4Kt6ZF9K0IMCv3lT/xpS2r5
+KgPrsDxaqCzXPf+201eRhBXIjB99ImLkgAd/RyyyichTapeauLGYPkWwuY0dgm89
+MDYCYi4f6w/ONjk3PN6mle/cTVTyDnSSPseGAK9eY6KE54l4YCk/z4kpzwMPY7Vo
+L7aD83ZKgPpD30dv5RTRV8dfOYmSjsD9Bsj3z/HTyjAS+N+25qR1vK5KgkQecPdf
+5h+1tTTneVHyEbuLWCORUJYM+7zpUKoBL+SfXYCVl/+t40dhBUKUmsOGlKs1QF3l
+xE4T8Dq2XoIo4igR+3Mj
+=FQKR
+-----END PGP SIGNATURE-----
+
+--H6o9R95t2FPeZmf3--

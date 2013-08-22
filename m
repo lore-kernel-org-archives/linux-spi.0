@@ -1,78 +1,114 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 1/2]spi: DUAL and QUAD support
-Date: Thu, 22 Aug 2013 13:37:35 +0100
-Message-ID: <20130822123735.GA9902@sirena.org.uk>
-References: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
+From: Record Perte de Poids <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Regardez_3_kilos_dispara=EEtre_en_tout_juste_6_jours?=
+Date: Thu, 22 Aug 2013 15:08:03 +0200 (CEST)
+Message-ID: <y340x0.hknzk49em5g813l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8330416264503987166=="
-Cc: spi-devel-general@lists.sourceforge.net, sourav.poddar@ti.com,
- tpiepho@gmail.com, linux-mtd@lists.infradead.org, pekon@ti.com
-To: wangyuhang <wangyuhang2014@gmail.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgqjjpI7gfk57dIhknzjzl5I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377176877569%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DDJJJOMIKKJFPMAKM%26mid%3D1600232821&s=3DB=
+FNJMPPPECLDKGLB
+ =
 
---===============8330416264503987166==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="YiEDa0DAkWCtVeE4"
-Content-Disposition: inline
+Regardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispar=
+a=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6=
+ joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos =
+dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout j=
+uste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 =
+kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en =
+tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegar=
+dez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEt=
+re en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jour=
+sRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispa=
+ra=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste =
+6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos=
+ dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout =
+juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3=
+ kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en=
+ tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRega=
+rdez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EE=
+tre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jou=
+rsRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos disp=
+ara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste=
+ 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilo=
+s dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout=
+ juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez =
+3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre e=
+n tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursReg=
+ardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=
+=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 =
+joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos d=
+ispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout ju=
+ste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 k=
+ilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en t=
+out juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegard=
+ez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtr=
+e en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jours=
+Regardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispar=
+a=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6=
+ joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos =
+dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout j=
+uste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 =
+kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en =
+tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegar=
+dez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEt=
+re en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jour=
+sRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispa=
+ra=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste =
+6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos=
+ dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout =
+juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3=
+ kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en=
+ tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRega=
+rdez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EE=
+tre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jou=
+rsRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos disp=
+ara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste=
+ 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilo=
+s dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout=
+ juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez =
+3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre e=
+n tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursReg=
+ardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=
+=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 =
+joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos d=
+ispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout ju=
+ste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 k=
+ilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en t=
+out juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegard=
+ez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtr=
+e en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jours=
+Regardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispar=
+a=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6=
+ joursRegardez 3 kilos dispara=EEtre en tout juste 6 jours
+ =
 
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600232821&sig=3DJKAENBAOFOKHJGCE
+---------------------------------------------------------------------------=
+---
+Introducing Performance Central, a new site from SourceForge and =
 
---YiEDa0DAkWCtVeE4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+AppDynamics. Performance Central is your source for news, insights, =
 
-On Sun, Aug 11, 2013 at 06:15:17PM +0800, wangyuhang wrote:
-> fix the previous patch some mistake below:
+analysis and resources for efficient Application Performance Management. =
 
-One other thing: this wasn't sent against current code, it seems to have
-been generated against an old kernel version.  Please make sure when you
-submit that you submit against either Linus' tree or ideally the latest
-development code for the subsystem.
-
---YiEDa0DAkWCtVeE4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.20 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSFgYMAAoJELSic+t+oim9U9oP/2qOfnQ4SIMeRcGdD7Ee2yap
-ylbbdECwA/duEyv5+lSfyh3/QrYsLDCFCjHM+dNhUkp7n4/33grh7lXe/p3YlFcH
-krSd2PcvW7r/9QF0pqY8oOsJFlmjzKfDBX1C01GLNrwK/0y/+Bl6quDHnyq+9dJC
-hg72m3DaHL+g0Ebt/uPc6SwzVeu2MdMX1XOgY/bso+XsZIp4aO3s7ikpS8v9VIBc
-aHFdoPfe/zMWBMjlzPkgLklIqGbABpW23HqLygNbuifTbhs2CFQjkP5KlaJxtPy1
-kihvBEogpxx/p7FjUm70I1Im/kxuhAZxXe66Rb15yu3fgr5ZXwPUIdfZp/lJrZ92
-SxBitsp7pkIV+0rPcw0pXy0pq9DHTBeEkjCjgA/gmbghMTk6aotjTN04S6WjzXS2
-WdLjimuqKfqd1rWTkozMTJ3FtpVBPxnGnQLH9WITh9ba23TLXfrq+c9oixCy6mPK
-T5ENCJR94ffqH0SZ47t9wjbXTjaQBKkUd1eFP1qMURNM881TyHru0p1DejqeorhP
-BwgWLqazRR2G4jfxq+86uYBkdCxWTwoJRLQATef6G5eRAEUHcfZYBhhc+onj8LDY
-gFLWPCl84HhNb9mViQn0xWJCO/BhEttfISqY8SnKjGneWtifvH8baO6XGIKuBjsQ
-SS88i8fyHRZrJkTqPpgj
-=aVw4
------END PGP SIGNATURE-----
-
---YiEDa0DAkWCtVeE4--
-
-
---===============8330416264503987166==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
-
---===============8330416264503987166==--
+Visit us today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
+ktrk

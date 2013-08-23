@@ -1,11 +1,11 @@
-From: "Capsules Compatibles Nespresso" <lisa@a.optincake.com>
-Subject: 100 capsules compatibles Nespresso a 21 euros
-Date: Fri, 23 Aug 2013 04:02:12 +0100
-Message-ID: <0.0.71.FB0.1CE9FAD29FF2A9E.0@mta148.pur3.net>
-Reply-To: Capsules Compatibles Nespresso <lisa@a.optincake.com>
+From: Disney <anne-+SWa8+tIKU1Wk0Htik3J/w@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Des_weekends_=E0_gagner?=
+Date: Fri, 23 Aug 2013 10:57:56 +0200 (CEST)
+Message-ID: <rdi6bh.hkp62biyz05qhpl@bs.miify.com>
+Reply-To: Anne <info-hoh7hF1A3YGohgF03p4UXg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,103 +18,72 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTgzMTMzMjIwNTM3MTY0CgoKCjEwMCBjYXBzdWxlcyBjb21wYXRpYmxlcyBOZXNwcmVzc2/DgsKu
-IMODwqAgMjEg4oKsCgpTaSB2b3VzIGF2ZXogZGVzIGRpZmZpY3VsdMODwqlzIHBvdXIgdmlzdWFs
-aXNlciBjZSBtZXNzYWdlIDogICBvdXZyaXIgZGFucyB1bgpuYXZpZ2F0ZXVyOgpodHRwOi8vYWN0
-aW9uLm1ldGFmZmlsaWF0aW9uLmNvbS9zdWl2aS5waHA/bWNsaWM9UzQ4QURENTU0MDNCMTMxNjc3
-NzIyMiZ1cmxydj1odAp0cCUzQSUyRiUyRnd3dy5tb25leHByZXNzby5jb20lMkYmdXJsdj1iZDZj
-NTRmYjFjMzFmMzMxYzc0YzQ4YjNhNmE5MTcyYwoKClBvdXIgw4PCqnRyZSBzw4MicihlKSBkZSBy
-ZWNldm9pciB0b3V0ZXMgbm9zIG9mZnJlcywgYWpvdXRleiBub3RyZSBhZHJlc3NlCm5ld3NAbW9u
-ZXhwcmVzc28uY29tOiBtYWlsdG86bmV3c0Btb25leHByZXNzby5jb20KCmRhbnMgdm90cmUgY2Fy
-bmV0IGQnYWRyZXNzZSBvdSBkYW5zIHZvdHJlIGxpc3RlIGQnZXhww4PCqWRpdGV1cnMKYXV0b3Jp
-c8ODwqlzLgoKKDEwMCBjYXBzdWxlcyBjb21wYXRpYmxlcyBOZXNwcmVzc2/DgsKuIMODwqAgMjEg
-4oKsICk6Cmh0dHA6Ly9hY3Rpb24ubWV0YWZmaWxpYXRpb24uY29tL3N1aXZpLnBocD9tY2xpYz1T
-NDhBREQ1NTQwM0IxMzMzNTU0NDM4JnVybHJ2PWh0CnRwJTNBJTJGJTJGd3d3Lm1vbmV4cHJlc3Nv
-LmNvbSUyRiZ1cmx2PWJkNmM1NGZiMWMzMWYzMzFjNzRjNDhiM2E2YTkxNzJjCgooY29kZSBwcm9t
-byA6IEVYUFJFU1NPKQoKKGonZW4gcHJvZml0ZSk6Cmh0dHA6Ly9hY3Rpb24ubWV0YWZmaWxpYXRp
-b24uY29tL3N1aXZpLnBocD9tY2xpYz1TNDhBREQ1NTQwM0IxMzUwMzMxNjU0JnVybHJ2PWh0CnRw
-JTNBJTJGJTJGd3d3Lm1vbmV4cHJlc3NvLmNvbSUyRiZ1cmx2PWJkNmM1NGZiMWMzMWYzMzFjNzRj
-NDhiM2E2YTkxNzJjCgooTGVzIG1laWxsZXVyZXMgY2Fwc3VsZXMgY29tcGF0aWJsZXMgTmVzcHJl
-c3NvIMODwqAgcGFydGlyIGRlIDAsMTnigqwpCihDYWbDg8KpIHRvcnLDg8KpZmnDg8KpIGV0IG1p
-cyBlbiBjYXBzdWxlIGVuIEl0YWxpZSApCihDYXBzdWxlcyBjb21wYXRpYmxlcyBhdmVjIHRvdXRl
-cyBsZXMgbWFjaGluZXMgTmVzcHJlc3Nvw4LCriogKQooKiBNYXJxdWUgYXBwYXJ0ZW5hbnQgw4PC
-oCB1biB0aWVycyBuJ2F5YW50IGF1Y3VuIGxpZW4gYXZlYyBNb25leHByZXNzbykKClBvdXIgbmUg
-cGx1cyByZWNldm9pciBsZXMgb2ZmcmVzIGRlIG1vbmV4cHJlc3NvIDogICBzZSBkw4PCqXNhYm9u
-bmVyOgpodHRwOi8vYWN0aW9uLm1ldGFmZmlsaWF0aW9uLmNvbS9zdWl2aS5waHA/bWNsaWM9UzQ4
-QURENTU0MDNCMTM2NzEwODg3MCZ1cmxydj1odAp0cCUzQSUyRiUyRnd3dy5leHByZXNzby5jb20l
-MkYmdXJsdj1lNzY5MDViZmU0ODE4N2E3ZTdmMjA3ZGVhNWJhMTE1OAoKCkFpbnNpLCBncsODwoPD
-gsKiY2Ugw4PCg8OCwqAgbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9m
-aXRlcgpkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w4PC
-g8OCwqksIGluZm9zLi4uIC5BIGxhCnJlY2hlcmNoZSBkdSBjYWRlYXUgb3JpZ2luYWwgPyBOb3Vz
-IHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1CnJlZ2FyZCBhZmluIGRlIHZvdXMg
-YWlkZXIgw4PCg8OCwqAgZMODwoPDgsKpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudApt
-aWV1eCB0b3V0ZSBsJ2FubsODwoPDgsKpZS4gQWluc2ksIGdyYWNlIMODwoPDgsKgIG5vdXMsIHZv
-dXMgYWxsZXogcGFyCmV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0
-IHByb2R1aXQgYSBiYXMgY291dCwKb3Bwb3J0dW5pdMODwoPDgsKpLCBpbmZvcy4uLiBFbnZpZSBk
-ZSB2b3VzIGZhaXJlIHVuZSBiZWF1dMODwoPDgsKpIMODwoPDgsKgCm1vaW5kcmUgY2/Dg8KDInQg
-dG91dCBhdSBsb25nIGRlIGwnYW5uw4PCg8OCwqllLCBkZSBwcsODwoPDgsKpdm9pciB2b3MKcHJv
-Y2hhaW5lcyB2YWNhbmNlcyBkJ8ODwoPDgsKpdMODwoPDgsKpIMODwoPDgsKgIG1vaW5kcmUgZnJh
-aXMgZXQgb3UgZW5jb3JlCmQnaGFiaWxsZXIgdm9zIGVuZmFudHMgw4PCg8OCwqAgZGVzIGJ1ZGdl
-dHMgcmFpc29ubmFibGVzLCBhbG9ycyBjb25zdWx0ZXIgZGUKdGVtcHMgw4PCg8OCwqAgYXV0cmUg
-bm9zIHByb3Bvc2l0aW9ucyBwb3VyIHZvdXMgcGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRlCm5v
-bWJyZXVzZXMgw4PCg8OCwqljb25vbWllcyB0b3V0IGVuIHZvdXMgZmFpc2FudCBwbGFpc2lyIMOD
-woPDgsKgIHRvdXRlIGxhCmZhbWlsbGUuLi4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhh
-YmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIKb3Ugc29ydGlyIGF1IG1laWxsZXVy
-IHJhcHBvcnQgcXVhbGl0w4PCg8OCwqkgcHJpeCB0b3V0IGF1IGxvbmcgZGUKbCdhbm7Dg8KDw4LC
-qWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVz
-CnByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9u
-cyDDg8KDw4LCoCBqb3VyCnLDg8KDw4LCqWd1bGnDg8KDw4LCqHJlbWVudCBldCB0b3V0ZSBsJ2Fu
-bsODwoPDgsKpZS4uIE5vdXMgc291aGFpdG9ucyB2b3VzCmFwcG9ydGVyIHVuIG5vdXZlYXUgcmVn
-YXJkIGFmaW4gZGUgdm91cyBhaWRlciDDg8KDw4LCoCBkw4PCg8OCwqlwZW5zZXIgbW9pbnMKdG91
-dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw4PCg8OCwqllLkJlc29pbiBkZSB2b3lh
-Z2VyLCBkZSB2b3VzCmhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29y
-dGlyIGF1IG1laWxsZXVyIHJhcHBvcnQKcXVhbGl0w4PCg8OCwqkgcHJpeCB0b3V0IGF1IGxvbmcg
-ZGUgbCdhbm7Dg8KDw4LCqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcwpqZXRlciB1biBwZXRpdCBv
-ZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQg
-cXVlCm5vdXMgbWV0dG9ucyDDg8KDw4LCoCBqb3VyIHLDg8KDw4LCqWd1bGnDg8KDw4LCqHJlbWVu
-dCBldCB0b3V0ZQpsJ2FubsODwoPDgsKpZS5BaW5zaSwgZ3LDg8KDw4LComNlIMODwoPDgsKgIG5v
-dXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsCnBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBx
-dWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwgb3Bwb3J0dW5pdMODwoPDgsKpLAppbmZvcy4uLiAu
-QSBsYSByZWNoZXJjaGUgZHUgY2FkZWF1IG9yaWdpbmFsID8gTm91cyBzb3VoYWl0b25zIHZvdXMg
-YXBwb3J0ZXIKdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMODwoPDgsKgIGTD
-g8KDw4LCqXBlbnNlciBtb2lucyB0b3V0IGVuCmNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7D
-g8KDw4LCqWUuIEFpbnNpLCBncmFjZSDDg8KDw4LCoCBub3VzLCB2b3VzCmFsbGV6IHBhciBleGVt
-cGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNv
-dXQsCm9wcG9ydHVuaXTDg8KDw4LCqSwgaW5mb3MuLi4gRW52aWUgZGUgdm91cyBmYWlyZSB1bmUg
-YmVhdXTDg8KDw4LCqSDDg8KDw4LCoAptb2luZHJlIGNvw4PCgyJ0IHRvdXQgYXUgbG9uZyBkZSBs
-J2FubsODwoPDgsKpZSwgZGUgcHLDg8KDw4LCqXZvaXIgdm9zCnByb2NoYWluZXMgdmFjYW5jZXMg
-ZCfDg8KDw4LCqXTDg8KDw4LCqSDDg8KDw4LCoCBtb2luZHJlIGZyYWlzIGV0IG91IGVuY29yZQpk
-J2hhYmlsbGVyIHZvcyBlbmZhbnRzIMODwoPDgsKgIGRlcyBidWRnZXRzIHJhaXNvbm5hYmxlcywg
-YWxvcnMgY29uc3VsdGVyIGRlCnRlbXBzIMODwoPDgsKgIGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMg
-cG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZQpub21icmV1c2VzIMODwoPDgsKp
-Y29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQgcGxhaXNpciDDg8KDw4LCoCB0b3V0ZSBsYQpm
-YW1pbGxlLi4uLiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBj
-aGF1c3NlciwgZGUgbWFuZ2VyCm91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOD
-woPDgsKpIHByaXggdG91dCBhdSBsb25nIGRlCmwnYW5uw4PCg8OCwqllLCBhbG9ycyBwb3VycXVv
-aSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlvbnMgcXVl
-IG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw4PCg8OCwqAgam91cgpy
-w4PCg8OCwqlndWxpw4PCg8OCwqhyZW1lbnQgZXQgdG91dGUgbCdhbm7Dg8KDw4LCqWUuLiBOb3Vz
-IHNvdWhhaXRvbnMgdm91cwphcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMg
-YWlkZXIgw4PCg8OCwqAgZMODwoPDgsKpcGVuc2VyIG1vaW5zCnRvdXQgZW4gY29uc29tbWFudCBt
-aWV1eCB0b3V0ZSBsJ2FubsODwoPDgsKpZS5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cwpoYWJp
-bGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciBy
-YXBwb3J0CnF1YWxpdMODwoPDgsKpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw4PCg8OCwqll
-LCBhbG9ycyBwb3VycXVvaSBuZSBwYXMKamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBw
-cm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZQpub3VzIG1ldHRvbnMg
-w4PCg8OCwqAgam91ciByw4PCg8OCwqlndWxpw4PCg8OCwqhyZW1lbnQgZXQgdG91dGUKbCdhbm7D
-g8KDw4LCqWUuCgoKCgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6
-Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxODMxMzMyMjA1
-MzcxNjQKCgoKCgoKe35BSjg0NjQxODY2MjUxODMxMzMyMjA1MzcxNjR+fQotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KSW50cm9kdWNpbmcgUGVyZm9ybWFuY2UgQ2VudHJhbCwgYSBuZXcgc2l0ZSBmcm9t
-IFNvdXJjZUZvcmdlIGFuZCAKQXBwRHluYW1pY3MuIFBlcmZvcm1hbmNlIENlbnRyYWwgaXMgeW91
-ciBzb3VyY2UgZm9yIG5ld3MsIGluc2lnaHRzLCAKYW5hbHlzaXMgYW5kIHJlc291cmNlcyBmb3Ig
-ZWZmaWNpZW50IEFwcGxpY2F0aW9uIFBlcmZvcm1hbmNlIE1hbmFnZW1lbnQuIApWaXNpdCB1cyB0
-b2RheSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODk3
-NTExJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
-Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//bs.miify.com/re?l=3DBD0IqgqkmfI7h5ovq2Ihkp61w09I&u=3Dhttp%3A%2F%2Fbs.miif=
+y.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377248256615%26custid%3D16468%26=
+uid%3D16274960282%26sig%3DBHBBMIELIAONLONC%26mid%3D1600234215&s=3DFOALCBLPI=
+JNOFAMO
+ =
+
+Des weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes we=
+ekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends=
+ =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 g=
+agnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerD=
+es weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes wee=
+kends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
+=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
+gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
+s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
+ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagner
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://bs.miify.com/public/unsubscribe.jsp?gid=3D16000=
+57156&uid=3D16274960282&mid=3D1600234215&sig=3DEDHCDENFBOGNDHAN
+---------------------------------------------------------------------------=
+---
+Introducing Performance Central, a new site from SourceForge and =
+
+AppDynamics. Performance Central is your source for news, insights, =
+
+analysis and resources for efficient Application Performance Management. =
+
+Visit us today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
+ktrk

@@ -1,12 +1,11 @@
-From: JEF Chaussures via Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?-30%_sur_des_centaines_de_mod=E8l?=
-	=?ISO-8859-1?Q?e_de_la_collection_Automne/Hiver?=
-Date: Fri, 23 Aug 2013 14:35:45 +0200 (CEST)
-Message-ID: <xpbtj9.hkpdufqoqh2rz5l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "USA 2014" <selectionpremium-5DDAqSTHTz5LQGOaHaWmzF8DPIj7SoFj@public.gmane.org>
+Subject: Vous avez ete tire au sort
+Date: Fri, 23 Aug 2013 18:47:20 +0200
+Message-ID: <OTTO02A0001NZ005000S2FKV4657134475@foru.selectionpremium.fr>
+Reply-To: abuse-bxJNC2EmtRdQFI55V6+gNQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,106 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqkn2I7gfk57dIhkpdu3ynI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377261330597%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DIKFPJIHHHKKBNFHH%26mid%3D1600234238&s=3DI=
-ELJGACBGDBKDNBH
- =
-
--30% sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur d=
-es centaines de mod=E8le de la collection Automne/Hiver-30% sur des centain=
-es de mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=
-=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le de l=
-a collection Automne/Hiver-30% sur des centaines de mod=E8le de la collecti=
-on Automne/Hiver-30% sur des centaines de mod=E8le de la collection Automne=
-/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30%=
- sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur des c=
-entaines de mod=E8le de la collection Automne/Hiver-30% sur des centaines d=
-e mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le=
- de la collection Automne/Hiver-30% sur des centaines de mod=E8le de la col=
-lection Automne/Hiver-30% sur des centaines de mod=E8le de la collection Au=
-tomne/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hive=
-r-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur =
-des centaines de mod=E8le de la collection Automne/Hiver-30% sur des centai=
-nes de mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=
-=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le de l=
-a collection Automne/Hiver-30% sur des centaines de mod=E8le de la collecti=
-on Automne/Hiver-30% sur des centaines de mod=E8le de la collection Automne=
-/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30%=
- sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur des c=
-entaines de mod=E8le de la collection Automne/Hiver-30% sur des centaines d=
-e mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le=
- de la collection Automne/Hiver-30% sur des centaines de mod=E8le de la col=
-lection Automne/Hiver-30% sur des centaines de mod=E8le de la collection Au=
-tomne/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hive=
-r-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur =
-des centaines de mod=E8le de la collection Automne/Hiver-30% sur des centai=
-nes de mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=
-=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le de l=
-a collection Automne/Hiver-30% sur des centaines de mod=E8le de la collecti=
-on Automne/Hiver-30% sur des centaines de mod=E8le de la collection Automne=
-/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30%=
- sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur des c=
-entaines de mod=E8le de la collection Automne/Hiver-30% sur des centaines d=
-e mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le=
- de la collection Automne/Hiver-30% sur des centaines de mod=E8le de la col=
-lection Automne/Hiver-30% sur des centaines de mod=E8le de la collection Au=
-tomne/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hive=
-r-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur =
-des centaines de mod=E8le de la collection Automne/Hiver-30% sur des centai=
-nes de mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=
-=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le de l=
-a collection Automne/Hiver-30% sur des centaines de mod=E8le de la collecti=
-on Automne/Hiver-30% sur des centaines de mod=E8le de la collection Automne=
-/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30%=
- sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur des c=
-entaines de mod=E8le de la collection Automne/Hiver-30% sur des centaines d=
-e mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le=
- de la collection Automne/Hiver-30% sur des centaines de mod=E8le de la col=
-lection Automne/Hiver-30% sur des centaines de mod=E8le de la collection Au=
-tomne/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hive=
-r-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur =
-des centaines de mod=E8le de la collection Automne/Hiver-30% sur des centai=
-nes de mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=
-=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le de l=
-a collection Automne/Hiver-30% sur des centaines de mod=E8le de la collecti=
-on Automne/Hiver-30% sur des centaines de mod=E8le de la collection Automne=
-/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30%=
- sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur des c=
-entaines de mod=E8le de la collection Automne/Hiver-30% sur des centaines d=
-e mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le=
- de la collection Automne/Hiver-30% sur des centaines de mod=E8le de la col=
-lection Automne/Hiver-30% sur des centaines de mod=E8le de la collection Au=
-tomne/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hive=
-r-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur =
-des centaines de mod=E8le de la collection Automne/Hiver-30% sur des centai=
-nes de mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=
-=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le de l=
-a collection Automne/Hiver-30% sur des centaines de mod=E8le de la collecti=
-on Automne/Hiver-30% sur des centaines de mod=E8le de la collection Automne=
-/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30%=
- sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur des c=
-entaines de mod=E8le de la collection Automne/Hiver-30% sur des centaines d=
-e mod=E8le de la collection Automne/Hiver-30% sur des centaines de mod=E8le=
- de la collection Automne/Hiver-30% sur des centaines de mod=E8le de la col=
-lection Automne/Hiver-30% sur des centaines de mod=E8le de la collection Au=
-tomne/Hiver-30% sur des centaines de mod=E8le de la collection Automne/Hive=
-r-30% sur des centaines de mod=E8le de la collection Automne/Hiver-30% sur =
-des centaines de mod=E8le de la collection Automne/Hiver
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600234238&sig=3DHICMCAAJABCBAIHO
----------------------------------------------------------------------------=
----
-Introducing Performance Central, a new site from SourceForge and =
-
-AppDynamics. Performance Central is your source for news, insights, =
-
-analysis and resources for efficient Application Performance Management. =
-
-Visit us today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
-ktrk
+aHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAw
+MDAwMDAxTlowMDAxTTZBMDAwUzJGS1YmbXB2cnM9MDAwMDE5NEEwNjYzQkE5NjkgCjwldXNlci5F
+bWFpbCU+IGEgw6l0w6kgc2VsZWN0aW9ubsOpZQoKaHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJl
+bWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAwMDAwMDAxTlowMDAxTTY4MDAwUzJGS1YmZmd1
+aWR2NT0wMDAwOU0mbXB2cnM9MDAwMDE5NEEwNjYzQkE5NjkgCkplIHNvdWhhaXRlIHF1J29uIG5l
+IG1lIHByb3Bvc2UgcGx1cyBsZXMgc8OpbGVjdGlvbnMgZGUgU8OpbMOpY3Rpb24gUHJlbWl1bQoK
+aHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAw
+MDAwMDAxTlowMDAxTTZCMDAwUzJGS1YmbXB2cnM9MDAwMDE5NEEwNjYzQkE5NjkgCgpodHRwOi8v
+dHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL2RvPzAyNjRCOEU2NUY4MkZGRUQ4OEFCODdFODUw
+M0I5Q0YwREYwQUMwMkNGMzc0MjQwM0UyM0E4RDJCMEI3N0RCQkYwRUJFQjREQzFFNkFFQzI5QjBC
+OTI5NzFGMTFCQzQwMUVGNTNCNEEyODcwRDg1OTdFRkU5MkFDMkQ3RjREMDc5IApWaXN1YWxpc2V6
+IGxhIHZlcnNpb24gZW4gbGlnbmUgCkZMQVNIIElORk9STUFUSU9OIDoKQydlc3QgdsOpcmlmacOp
+LCBWT1VTIGF2ZXogw6l0w6kgc8OpbGVjdGlvbm7DqQoKICBwb3VyIHBhcnRpY2lwZXIgw6AgbGEg
+bG90ZXJpZSBvZmZpY2llbGxlIHBvdXIgZ2FnbmVyIGxhIENhcnRlIFZlcnRlIEFtw6lyaWNhaW5l
+ICEKCmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0uZnIvcjUuYXNweD9HVjE9T1RUTzAy
+QTAwMDAwMDAwMU5aMDAwMU02NjAwMFMyRktWJm1wdnJzPTAwMDAxOTRBMDY2M0JBOTY5IAoKTCfD
+qWNow6lhbmNlIGRlIHZhbGlkYXRpb24gZGUgdm90cmUgcGFydGljaXBhdGlvbiBlc3QgaW1taW5l
+bnRlICEKCgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9U
+VE8wMkEwMDAwMDAwMDFOWjAwMDFNNjcwMDBTMkZLViZtcHZycz0wMDAwMTk0QTA2NjNCQTk2OSAK
+ClZvdXMgYXVyZXogw6AgdG91dCBtb21lbnQgbGEgcG9zc2liaWxpdMOpIG5lIHBsdXMgcmVjZXZv
+aXIgbGVzIG9mZnJlcyBkdSBwcm9ncmFtbWUgU8OpbMOpY3Rpb24gUHJlbWl1bS4KClNpIHZvdXMg
+bmUgc291aGFpdGV6IHBsdXMgYsOpbsOpZmljaWVyIGRlIG5vcyBwcm9wb3NpdGlvbnMgY29tbWVy
+Y2lhbGVzIDoKCmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0uZnIvcjUuYXNweD9HVjE9
+T1RUTzAyQTAwMDAwMDAwMU5aMDAwMU02OTAwMFMyRktWJmZndWlkdjU9MDAwMDlNJm1wdnJzPTAw
+MDAxOTRBMDY2M0JBOTY5IApKZSBzb3VoYWl0ZSBxdeKAmW9uIG5lIG1lIHByb3Bvc2UgcGx1cyBs
+ZXMgc8OpbGVjdGlvbnMgZGUgU8OpbMOpY3Rpb24gUHJlbWl1bQotLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0KSW50cm9kdWNpbmcgUGVyZm9ybWFuY2UgQ2VudHJhbCwgYSBuZXcgc2l0ZSBmcm9tIFNvdXJj
+ZUZvcmdlIGFuZCAKQXBwRHluYW1pY3MuIFBlcmZvcm1hbmNlIENlbnRyYWwgaXMgeW91ciBzb3Vy
+Y2UgZm9yIG5ld3MsIGluc2lnaHRzLCAKYW5hbHlzaXMgYW5kIHJlc291cmNlcyBmb3IgZWZmaWNp
+ZW50IEFwcGxpY2F0aW9uIFBlcmZvcm1hbmNlIE1hbmFnZW1lbnQuIApWaXNpdCB1cyB0b2RheSEK
+aHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODk3NTExJml1
+PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
+dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

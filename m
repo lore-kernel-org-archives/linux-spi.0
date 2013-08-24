@@ -1,12 +1,11 @@
-From: Trivago Bons Plans <anne-+SWa8+tIKU1Wk0Htik3J/w@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Derni=E8res_minutes_=E9t=E9_:_h=F4t?=
-	=?ISO-8859-1?Q?els_4*_=E0_partir_de_41_euros?=
-Date: Sat, 24 Aug 2013 10:34:55 +0200 (CEST)
-Message-ID: <rgki31.hkqkok93y8ux5nl@bs.miify.com>
-Reply-To: Anne <info-hoh7hF1A3YGohgF03p4UXg@public.gmane.org>
+From: "=?utf-8?Q?Resultat_du_tirage_au_sort_?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org_partez_en_Thailande?=
+Date: Sat, 24 Aug 2013 10:41:40 +0000
+Message-ID: <1043=d928a53c-4856-456e-9406-b20172c9e6e7=4=3266566@clicks.conso-deal.com>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,128 +18,20 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//bs.miify.com/re?l=3DBD0IqgqlndI7h5ovq2IhkqknzmyI&u=3Dhttp%3A%2F%2Fbs.miif=
-y.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377333268549%26custid%3D16468%26=
-uid%3D16274960282%26sig%3DCJBPFPEPHKHPLJHI%26mid%3D1600235545&s=3DLLDEKJJLG=
-INKGKOE
- =
-
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 euros
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://bs.miify.com/public/unsubscribe.jsp?gid=3D16000=
-57156&uid=3D16274960282&mid=3D1600235545&sig=3DNGKGNBPDHHIKBKDI
----------------------------------------------------------------------------=
----
-Introducing Performance Central, a new site from SourceForge and =
-
-AppDynamics. Performance Central is your source for news, insights, =
-
-analysis and resources for efficient Application Performance Management. =
-
-Visit us today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFodHRwOi8vY2xpY2tz
+LmNvbnNvLWRlYWwuY29tL2MvYXMvNldLL3JYSU1fTnQ3ZGhnSUYxN0Z4NFVKWjMvYi9rbFFML2E0
+MTdmNDA5CgpzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgcGFydGV6IGVu
+IFRoYWlsYW5kZQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KSW50cm9kdWNpbmcgUGVyZm9ybWFuY2Ug
+Q2VudHJhbCwgYSBuZXcgc2l0ZSBmcm9tIFNvdXJjZUZvcmdlIGFuZCAKQXBwRHluYW1pY3MuIFBl
+cmZvcm1hbmNlIENlbnRyYWwgaXMgeW91ciBzb3VyY2UgZm9yIG5ld3MsIGluc2lnaHRzLCAKYW5h
+bHlzaXMgYW5kIHJlc291cmNlcyBmb3IgZWZmaWNpZW50IEFwcGxpY2F0aW9uIFBlcmZvcm1hbmNl
+IE1hbmFnZW1lbnQuIApWaXNpdCB1cyB0b2RheSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNr
+Lm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODk3NTExJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
+IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
+cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
+YWwK

@@ -1,11 +1,11 @@
-From: "=?utf-8?Q?Melania?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?Ce_que_j'ai_vu_m'inqui=C3=A8te?=
-Date: Sun, 25 Aug 2013 11:29:33 +0000
-Message-ID: <1043=c7e70ba6-9e35-4bd3-81dc-5fc402c22548=4=3266566@clicks.conso-deal.com>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: Tati par Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Livraison_offerte_pour_la_rentr=E9e?=
+Date: Sun, 25 Aug 2013 14:23:43 +0200 (CEST)
+Message-ID: <ehzlgt.hks8ao3emmygkzl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,19 +18,97 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFDZSBxdWUgaidhaSB2
-dSBtJ2lucXVpw6h0ZQoKaHR0cDovL2NsaWNrcy5jb25zby1kZWFsLmNvbS9jL2FzLzZ3Zy8tUVNV
-ek9nQUREd0Y5bzBieTQ3VGp5L2Iva2xRTC9lZmRkZTRkZgotLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-SW50cm9kdWNpbmcgUGVyZm9ybWFuY2UgQ2VudHJhbCwgYSBuZXcgc2l0ZSBmcm9tIFNvdXJjZUZv
-cmdlIGFuZCAKQXBwRHluYW1pY3MuIFBlcmZvcm1hbmNlIENlbnRyYWwgaXMgeW91ciBzb3VyY2Ug
-Zm9yIG5ld3MsIGluc2lnaHRzLCAKYW5hbHlzaXMgYW5kIHJlc291cmNlcyBmb3IgZWZmaWNpZW50
-IEFwcGxpY2F0aW9uIFBlcmZvcm1hbmNlIE1hbmFnZW1lbnQuIApWaXNpdCB1cyB0b2RheSEKaHR0
-cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTQ4ODk3NTExJml1PS80
-MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBs
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMv
-bGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgqn35I7gfk57dIhks8akoqI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377433419598%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DHMGDAKJMDFFNOAPG%26mid%3D1600237409&s=3DP=
+CKGDFBADIACBBDH
+ =
+
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
+ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
+offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
+te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
+ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
+ rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
+r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
+Livraison offerte pour la rentr=E9e
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600237409&sig=3DNEJPJCADKJCMHBKA
+---------------------------------------------------------------------------=
+---
+Introducing Performance Central, a new site from SourceForge and =
+
+AppDynamics. Performance Central is your source for news, insights, =
+
+analysis and resources for efficient Application Performance Management. =
+
+Visit us today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
+ktrk

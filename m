@@ -1,11 +1,11 @@
-From: Tati par Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Livraison_offerte_pour_la_rentr=E9e?=
-Date: Sun, 25 Aug 2013 14:23:43 +0200 (CEST)
-Message-ID: <ehzlgt.hks8ao3emmygkzl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Devenir Paneliste" <lisa@a.optincake.com>
+Subject: Ton invitation pour rejoindre notre panel
+Date: Mon, 26 Aug 2013 02:28:18 +0100
+Message-ID: <0.0.2A7.FDB.1CEA1FB8B588C5E.0@mta42.pur3.net>
+Reply-To: Devenir Paneliste <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,97 +18,122 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqn35I7gfk57dIhks8akoqI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377433419598%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DHMGDAKJMDFFNOAPG%26mid%3D1600237409&s=3DP=
-CKGDFBADIACBBDH
- =
-
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivra=
-ison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison =
-offerte pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offer=
-te pour la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte po=
-ur la rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la=
- rentr=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rent=
-r=E9eLivraison offerte pour la rentr=E9eLivraison offerte pour la rentr=E9e=
-Livraison offerte pour la rentr=E9e
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600237409&sig=3DNEJPJCADKJCMHBKA
----------------------------------------------------------------------------=
----
-Introducing Performance Central, a new site from SourceForge and =
-
-AppDynamics. Performance Central is your source for news, insights, =
-
-analysis and resources for efficient Application Performance Management. =
-
-Visit us today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
-ktrk
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTg0MTczMjIwNTM3MjE0CgoKCgooVE5TIHdvcmxkcGFuZWwgLSBuMSBlbiBGcmFuY2UgZGVzIHNv
+Y2lldGVzIGQgZXR1ZGVzKToKaHR0cDovL3NlcnZpY2VzLmphdGFrLmRrL2NsaWNrLmFnZW50L2kx
+MzIzZWFiZWIyYzJmMzIvZXh0LnRyYWNraW5nd2l6LmNvbS9Bc3B4L3IKZWRpci5hc3B4P3RzaWQ9
+aTE3OGZlMDljYTRmY2QxZCZzdWJpZD1pMTc4ZmUwOWNhMmI1YzFlJnRwaWQ9aTEwOTRiOTcyJnBo
+c3RyPWkxMzIKM2VhYmViMmMyZjMyJng9eCZFTUFJTD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQKCihFeHByaW1lei12b3VzKToKaHR0cDovL3NlcnZpY2VzLmphdGFrLmRr
+L2NsaWNrLmFnZW50L2kxMzIzZWFiZWIyYzJmMzIvZXh0LnRyYWNraW5nd2l6LmNvbS9Bc3B4L3IK
+ZWRpci5hc3B4P3RzaWQ9aTE3OGZlMDljYTRmY2QxZCZzdWJpZD1pMTc4ZmUwOWNhMmI1YzFlJnRw
+aWQ9aTEwOTRiOTcyJnBoc3RyPWkxMzIKM2VhYmViMmMyZjMyJng9eCZFTUFJTD1zcGktZGV2ZWwt
+Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCihFMV8wMy5qcGcpOgpodHRwOi8vc2Vydmlj
+ZXMuamF0YWsuZGsvY2xpY2suYWdlbnQvaTEzMjNlYWJlYjJjMmYzMi9leHQudHJhY2tpbmd3aXou
+Y29tL0FzcHgvcgplZGlyLmFzcHg/dHNpZD1pMTc4ZmUwOWNhNGZjZDFkJnN1YmlkPWkxNzhmZTA5
+Y2EyYjVjMWUmdHBpZD1pMTA5NGI5NzImcGhzdHI9aTEzMgozZWFiZWIyYzJmMzImeD14JkVNQUlM
+PXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKKEUxXzA0LmpwZyk6Cmh0
+dHA6Ly9zZXJ2aWNlcy5qYXRhay5kay9jbGljay5hZ2VudC9pMTMyM2VhYmViMmMyZjMyL2V4dC50
+cmFja2luZ3dpei5jb20vQXNweC9yCmVkaXIuYXNweD90c2lkPWkxNzhmZTA5Y2E0ZmNkMWQmc3Vi
+aWQ9aTE3OGZlMDljYTJiNWMxZSZ0cGlkPWkxMDk0Yjk3MiZwaHN0cj1pMTMyCjNlYWJlYjJjMmYz
+MiZ4PXgmRU1BSUw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgooRTFf
+MDUuanBnKToKaHR0cDovL3NlcnZpY2VzLmphdGFrLmRrL2NsaWNrLmFnZW50L2kxMzIzZWFiZWIy
+YzJmMzIvZXh0LnRyYWNraW5nd2l6LmNvbS9Bc3B4L3IKZWRpci5hc3B4P3RzaWQ9aTE3OGZlMDlj
+YTRmY2QxZCZzdWJpZD1pMTc4ZmUwOWNhMmI1YzFlJnRwaWQ9aTEwOTRiOTcyJnBoc3RyPWkxMzIK
+M2VhYmViMmMyZjMyJng9eCZFTUFJTD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQKCihKZSBtIGluc2NyaXMpOgpodHRwOi8vc2VydmljZXMuamF0YWsuZGsvY2xpY2suYWdl
+bnQvaTEzMjNlYWJlYjJjMmYzMi9leHQudHJhY2tpbmd3aXouY29tL0FzcHgvcgplZGlyLmFzcHg/
+dHNpZD1pMTc4ZmUwOWNhNGZjZDFkJnN1YmlkPWkxNzhmZTA5Y2EyYjVjMWUmdHBpZD1pMTA5NGI5
+NzImcGhzdHI9aTEzMgozZWFiZWIyYzJmMzImeD14JkVNQUlMPXNwaS1kZXZlbC1nZW5lcmFsQGxp
+c3RzLnNvdXJjZWZvcmdlLm5ldAoKKEUxXzA4LmpwZyk6Cmh0dHA6Ly9zZXJ2aWNlcy5qYXRhay5k
+ay9jbGljay5hZ2VudC9pMTMyM2VhYmViMmMyZjMyL2V4dC50cmFja2luZ3dpei5jb20vQXNweC9y
+CmVkaXIuYXNweD90c2lkPWkxNzhmZTA5Y2E0ZmNkMWQmc3ViaWQ9aTE3OGZlMDljYTJiNWMxZSZ0
+cGlkPWkxMDk0Yjk3MiZwaHN0cj1pMTMyCjNlYWJlYjJjMmYzMiZ4PXgmRU1BSUw9c3BpLWRldmVs
+LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgooY29tbWVudCBmYWlyZSA/KToKaHR0cDov
+L3NlcnZpY2VzLmphdGFrLmRrL2NsaWNrLmFnZW50L2kxMzIzZWFiZWIyYzJmMzIvZXh0LnRyYWNr
+aW5nd2l6LmNvbS9Bc3B4L3IKZWRpci5hc3B4P3RzaWQ9aTE3OGZlMDljYTRmY2QxZCZzdWJpZD1p
+MTc4ZmUwOWNhMmI1YzFlJnRwaWQ9aTEwOTRiOTcyJnBoc3RyPWkxMzIKM2VhYmViMmMyZjMyJng9
+eCZFTUFJTD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCgoxLyBJbnNj
+cml2ZXotdm91cyBtYWludGVuYW50CjIvIEVucmVnaXN0cmV6IHZvcyBhY2hhdHMgY2hhcXVlIHNl
+bWFpbmUgc3VyIG1vbmVzcGFjZWNvbnNvLmNvbQozLyBDdW11bGV6IGRlcyBwb2ludHMgZXQgY2hv
+aXNpc3NleiB2b3RyZSBjYWRlYXUgc3VyIG5vdHJlIHNpdGUgIQooRTFfMTAuanBnKToKaHR0cDov
+L3NlcnZpY2VzLmphdGFrLmRrL2NsaWNrLmFnZW50L2kxMzIzZWFiZWIyYzJmMzIvZXh0LnRyYWNr
+aW5nd2l6LmNvbS9Bc3B4L3IKZWRpci5hc3B4P3RzaWQ9aTE3OGZlMDljYTRmY2QxZCZzdWJpZD1p
+MTc4ZmUwOWNhMmI1YzFlJnRwaWQ9aTEwOTRiOTcyJnBoc3RyPWkxMzIKM2VhYmViMmMyZjMyJng9
+eCZFTUFJTD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCihFMV8xMi5q
+cGcpOgpodHRwOi8vc2VydmljZXMuamF0YWsuZGsvY2xpY2suYWdlbnQvaTEzMjNlYWJlYjJjMmYz
+Mi9leHQudHJhY2tpbmd3aXouY29tL0FzcHgvcgplZGlyLmFzcHg/dHNpZD1pMTc4ZmUwOWNhNGZj
+ZDFkJnN1YmlkPWkxNzhmZTA5Y2EyYjVjMWUmdHBpZD1pMTA5NGI5NzImcGhzdHI9aTEzMgozZWFi
+ZWIyYzJmMzImeD14JkVNQUlMPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dAoKClBob3RvcyBub24gY29udHJhY3R1ZWxsZXMKKEUxXzE0LmpwZyk6Cmh0dHA6Ly9zZXJ2aWNl
+cy5qYXRhay5kay9jbGljay5hZ2VudC9pMTMyM2VhYmViMmMyZjMyL2V4dC50cmFja2luZ3dpei5j
+b20vQXNweC9yCmVkaXIuYXNweD90c2lkPWkxNzhmZTA5Y2E0ZmNkMWQmc3ViaWQ9aTE3OGZlMDlj
+YTJiNWMxZSZ0cGlkPWkxMDk0Yjk3MiZwaHN0cj1pMTMyCjNlYWJlYjJjMmYzMiZ4PXgmRU1BSUw9
+c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgoKRW52aWUgZGUgdm91cyBm
+YWlyZSB1bmUgYmVhdXTDqSDDoCBtb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOp
+ZSwgZGUKcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqSDDoCBtb2luZHJl
+IGZyYWlzIGV0IG91IGVuY29yZQpkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRz
+IHJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzCsOgIGF1dHJlIG5vcyBwcm9w
+b3NpdGlvbnMgcG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZSBub21icmV1c2Vz
+CsOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQgcGxhaXNpciDDoCB0b3V0ZSBsYSBmYW1p
+bGxlLkFpbnNpLCBncsOiY2Ugw6AKbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9p
+ciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhCmJhcyBjb3V0LCBvcHBvcnR1
+bml0w6ksIGluZm9zLi4uIC5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUK
+dm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1
+YWxpdMOpIHByaXggdG91dCBhdQpsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBw
+YXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMg
+dm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1l
+bnQgZXQgdG91dGUgbCdhbm7DqWUuLi4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmls
+bGVyLApkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJh
+cHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0CmF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJx
+dW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzCnByb3Bvc2l0aW9ucyBx
+dWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyCnLDqWd1
+bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS4uIE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9y
+dGVyIHVuIG5vdXZlYXUKcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9p
+bnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlCmwnYW5uw6llLkEgbGEgcmVjaGVyY2hl
+IGR1IGNhZGVhdSBvcmlnaW5hbCA/IE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyCnVuIG5v
+dXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBl
+biBjb25zb21tYW50Cm1pZXV4IHRvdXRlIGwnYW5uw6llLiBBaW5zaSwgZ3JhY2Ugw6Agbm91cywg
+dm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pcgpwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBl
+c3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIEVudmllCmRlIHZv
+dXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZSBjb8O7dCB0b3V0IGF1IGxvbmcgZGUgbCdh
+bm7DqWUsIGRlCnByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw6l0w6kgw6AgbW9p
+bmRyZSBmcmFpcyBldCBvdSBlbmNvcmUKZCdoYWJpbGxlciB2b3MgZW5mYW50cyDDoCBkZXMgYnVk
+Z2V0cyByYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcwrDoCBhdXRyZSBub3Mg
+cHJvcG9zaXRpb25zIHBvdXIgdm91cyBwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJl
+dXNlcwrDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50IHBsYWlzaXIgw6AgdG91dGUgbGEg
+ZmFtaWxsZS5BaW5zaSwgZ3LDomNlIMOgCm5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBv
+dXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYQpiYXMgY291dCwgb3Bw
+b3J0dW5pdMOpLCBpbmZvcy4uLiAuQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIs
+IGRlCnZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9y
+dCBxdWFsaXTDqSBwcml4IHRvdXQgYXUKbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kg
+bmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJvcG9zaXRpb25zIHF1ZSBu
+b3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpvdXIKcsOpZ3VsacOo
+cmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLi4uLiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBo
+YWJpbGxlciwKZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1
+ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dAphdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBw
+b3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlv
+bnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpy
+w6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuLiBOb3VzIHNvdWhhaXRvbnMgdm91cyBh
+cHBvcnRlciB1biBub3V2ZWF1CnJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2Vy
+IG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZQpsJ2FubsOpZS5BIGxhIHJlY2hl
+cmNoZSBkdSBjYWRlYXUgb3JpZ2luYWwgPyBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlcgp1
+biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRv
+dXQgZW4gY29uc29tbWFudAptaWV1eCB0b3V0ZSBsJ2FubsOpZS4gQWluc2ksIGdyYWNlIMOgIG5v
+dXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIKcHJvZml0ZXIgZGUgdG91dCBjZSBx
+dWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLgoKCgoKCi0t
+CgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29t
+L19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTg0MTczMjIwNTM3MjE0CgoKCgoKCnt+QUo4
+NDY0MTg2NjI1MTg0MTczMjIwNTM3MjE0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkludHJvZHVj
+aW5nIFBlcmZvcm1hbmNlIENlbnRyYWwsIGEgbmV3IHNpdGUgZnJvbSBTb3VyY2VGb3JnZSBhbmQg
+CkFwcER5bmFtaWNzLiBQZXJmb3JtYW5jZSBDZW50cmFsIGlzIHlvdXIgc291cmNlIGZvciBuZXdz
+LCBpbnNpZ2h0cywgCmFuYWx5c2lzIGFuZCByZXNvdXJjZXMgZm9yIGVmZmljaWVudCBBcHBsaWNh
+dGlvbiBQZXJmb3JtYW5jZSBNYW5hZ2VtZW50LiAKVmlzaXQgdXMgdG9kYXkhCmh0dHA6Ly9wdWJh
+ZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD00ODg5NzUxMSZpdT0vNDE0MC9vc3Rn
+LmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
+cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
+L3NwaS1kZXZlbC1nZW5lcmFsCg==

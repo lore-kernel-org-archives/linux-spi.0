@@ -1,13 +1,12 @@
-From: Vos bagages via Reedan <newsletter-D2VM3j8jEUZQFI55V6+gNQ@public.gmane.org>
-Subject: =?utf-8?Q?Rendez-vous_lundi_26_ao=C3=BBt_d=C3=A8s_minuit_!?=
-Date: Mon, 26 Aug 2013 10:53:30 +0200
-Message-ID: <262471596e5050473ef021507f872ebc@localhost.localdomain>
-Reply-To: Vos bagages via Reedan <newsletter-D2VM3j8jEUZQFI55V6+gNQ@public.gmane.org>
+From: Maggi via Zetrend <anne-+SWa8+tIKU1Wk0Htik3J/w@public.gmane.org>
+Subject: Tentez de gagner un week-end en famille
+Date: Mon, 26 Aug 2013 12:05:26 +0200 (CEST)
+Message-ID: <arqdls.hktisob280jhy1l@bs.miify.com>
+Reply-To: Anne <info-hoh7hF1A3YGohgF03p4UXg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,34 +18,76 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-UmVuZGV6LXZvdXMgbHVuZGkgMjYgYW/Du3QgZMOocyBtaW51aXQgIVJlbmRlei12b3VzIGx1bmRp
-IDI2IGFvw7t0IGTDqHMgbWludWl0ICFSZW5kZXotdm91cyBsdW5kaSAyNiBhb8O7dCBkw6hzIG1p
-bnVpdCAhUmVuZGV6LXZvdXMgbHVuZGkgMjYgYW/Du3QgZMOocyBtaW51aXQgIVJlbmRlei12b3Vz
-IGx1bmRpIDI2IGFvw7t0IGTDqHMgbWludWl0ICFSZW5kZXotdm91cyBsdW5kaSAyNiBhb8O7dCBk
-w6hzIG1pbnVpdCAhUmVuZGV6LXZvdXMgbHVuZGkgMjYgYW/Du3QgZMOocyBtaW51aXQgIVJlbmRl
-ei12b3VzIGx1bmRpIDI2IGFvw7t0IGTDqHMgbWludWl0ICFSZW5kZXotdm91cyBsdW5kaSAyNiBh
-b8O7dCBkw6hzIG1pbnVpdCAhUmVuZGV6LXZvdXMgbHVuZGkgMjYgYW/Du3QgZMOocyBtaW51aXQg
-IVJlbmRlei12b3VzIGx1bmRpIDI2IGFvw7t0IGTDqHMgbWludWl0ICFSZW5kZXotdm91cyBsdW5k
-aSAyNiBhb8O7dCBkw6hzIG1pbnVpdCAhUmVuZGV6LXZvdXMgbHVuZGkgMjYgYW/Du3QgZMOocyBt
-aW51aXQgIVJlbmRlei12b3VzIGx1bmRpIDI2IGFvw7t0IGTDqHMgbWludWl0ICFSZW5kZXotdm91
-cyBsdW5kaSAyNiBhb8O7dCBkw6hzIG1pbnVpdCAhUmVuZGV6LXZvdXMgbHVuZGkgMjYgYW/Du3Qg
-ZMOocyBtaW51aXQgIVJlbmRlei12b3VzIGx1bmRpIDI2IGFvw7t0IGTDqHMgbWludWl0ICFSZW5k
-ZXotdm91cyBsdW5kaSAyNiBhb8O7dCBkw6hzIG1pbnVpdCAhUmVuZGV6LXZvdXMgbHVuZGkgMjYg
-YW/Du3QgZMOocyBtaW51aXQgIVJlbmRlei12b3VzIGx1bmRpIDI2IGFvw7t0IGTDqHMgbWludWl0
-ICFSZW5kZXotdm91cyBsdW5kaSAyNiBhb8O7dCBkw6hzIG1pbnVpdCAhUmVuZGV6LXZvdXMgbHVu
-ZGkgMjYgYW/Du3QgZMOocyBtaW51aXQgIVJlbmRlei12b3VzIGx1bmRpIDI2IGFvw7t0IGTDqHMg
-bWludWl0ICFSZW5kZXotdm91cyBsdW5kaSAyNiBhb8O7dCBkw6hzIG1pbnVpdCAhUmVuZGV6LXZv
-dXMgbHVuZGkgMjYgYW/Du3QgZMOocyBtaW51aXQgIVJlbmRlei12b3VzIGx1bmRpIDI2IGFvw7t0
-IGTDqHMgbWludWl0ICFSZW5kZXotdm91cyBsdW5kaSAyNiBhb8O7dCBkw6hzIG1pbnVpdCAhUmVu
-ZGV6LXZvdXMgbHVuZGkgMjYgYW/Du3QgZMOocyBtaW51aXQgIVJlbmRlei12b3VzIGx1bmRpIDI2
-IGFvw7t0IGTDqHMgbWludWl0ICFSZW5kZXotdm91cyBsdW5kaSAyNiBhb8O7dCBkw6hzIG1pbnVp
-dCAhCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRyb2R1Y2luZyBQZXJmb3JtYW5jZSBDZW50cmFs
-LCBhIG5ldyBzaXRlIGZyb20gU291cmNlRm9yZ2UgYW5kIApBcHBEeW5hbWljcy4gUGVyZm9ybWFu
-Y2UgQ2VudHJhbCBpcyB5b3VyIHNvdXJjZSBmb3IgbmV3cywgaW5zaWdodHMsIAphbmFseXNpcyBh
-bmQgcmVzb3VyY2VzIGZvciBlZmZpY2llbnQgQXBwbGljYXRpb24gUGVyZm9ybWFuY2UgTWFuYWdl
-bWVudC4gClZpc2l0IHVzIHRvZGF5IQpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dh
-bXBhZC9jbGs/aWQ9NDg4OTc1MTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
-ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
-c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//bs.miify.com/re?l=3DBD0Iqgqo09I7h5ovq2Ihktiqxp4I&u=3Dhttp%3A%2F%2Fbs.miif=
+y.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377511445320%26custid%3D16468%26=
+uid%3D16274960282%26sig%3DGBLDNOBFDAIOENKO%26mid%3D1600238601&s=3DCHOEAGNLN=
+CMHFBMK
+ =
+
+Tentez de gagner un week-end en familleTentez de gagner un week-end en fami=
+lleTentez de gagner un week-end en familleTentez de gagner un week-end en f=
+amilleTentez de gagner un week-end en familleTentez de gagner un week-end e=
+n familleTentez de gagner un week-end en familleTentez de gagner un week-en=
+d en familleTentez de gagner un week-end en familleTentez de gagner un week=
+-end en familleTentez de gagner un week-end en familleTentez de gagner un w=
+eek-end en familleTentez de gagner un week-end en familleTentez de gagner u=
+n week-end en familleTentez de gagner un week-end en familleTentez de gagne=
+r un week-end en familleTentez de gagner un week-end en familleTentez de ga=
+gner un week-end en familleTentez de gagner un week-end en familleTentez de=
+ gagner un week-end en familleTentez de gagner un week-end en familleTentez=
+ de gagner un week-end en familleTentez de gagner un week-end en familleTen=
+tez de gagner un week-end en familleTentez de gagner un week-end en famille=
+Tentez de gagner un week-end en familleTentez de gagner un week-end en fami=
+lleTentez de gagner un week-end en familleTentez de gagner un week-end en f=
+amilleTentez de gagner un week-end en familleTentez de gagner un week-end e=
+n familleTentez de gagner un week-end en familleTentez de gagner un week-en=
+d en familleTentez de gagner un week-end en familleTentez de gagner un week=
+-end en familleTentez de gagner un week-end en familleTentez de gagner un w=
+eek-end en familleTentez de gagner un week-end en familleTentez de gagner u=
+n week-end en familleTentez de gagner un week-end en familleTentez de gagne=
+r un week-end en familleTentez de gagner un week-end en familleTentez de ga=
+gner un week-end en familleTentez de gagner un week-end en familleTentez de=
+ gagner un week-end en familleTentez de gagner un week-end en familleTentez=
+ de gagner un week-end en familleTentez de gagner un week-end en familleTen=
+tez de gagner un week-end en familleTentez de gagner un week-end en famille=
+Tentez de gagner un week-end en familleTentez de gagner un week-end en fami=
+lleTentez de gagner un week-end en familleTentez de gagner un week-end en f=
+amilleTentez de gagner un week-end en familleTentez de gagner un week-end e=
+n familleTentez de gagner un week-end en familleTentez de gagner un week-en=
+d en familleTentez de gagner un week-end en familleTentez de gagner un week=
+-end en familleTentez de gagner un week-end en familleTentez de gagner un w=
+eek-end en familleTentez de gagner un week-end en familleTentez de gagner u=
+n week-end en familleTentez de gagner un week-end en familleTentez de gagne=
+r un week-end en familleTentez de gagner un week-end en familleTentez de ga=
+gner un week-end en familleTentez de gagner un week-end en familleTentez de=
+ gagner un week-end en familleTentez de gagner un week-end en familleTentez=
+ de gagner un week-end en familleTentez de gagner un week-end en familleTen=
+tez de gagner un week-end en familleTentez de gagner un week-end en famille=
+Tentez de gagner un week-end en familleTentez de gagner un week-end en fami=
+lleTentez de gagner un week-end en familleTentez de gagner un week-end en f=
+amilleTentez de gagner un week-end en familleTentez de gagner un week-end e=
+n familleTentez de gagner un week-end en familleTentez de gagner un week-en=
+d en familleTentez de gagner un week-end en familleTentez de gagner un week=
+-end en familleTentez de gagner un week-end en familleTentez de gagner un w=
+eek-end en familleTentez de gagner un week-end en familleTentez de gagner u=
+n week-end en familleTentez de gagner un week-end en familleTentez de gagne=
+r un week-end en familleTentez de gagner un week-end en familleTentez de ga=
+gner un week-end en familleTentez de gagner un week-end en familleTentez de=
+ gagner un week-end en famille
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://bs.miify.com/public/unsubscribe.jsp?gid=3D16000=
+57156&uid=3D16274960282&mid=3D1600238601&sig=3DOGDICBBCABNKBDDE
+---------------------------------------------------------------------------=
+---
+Introducing Performance Central, a new site from SourceForge and =
+
+AppDynamics. Performance Central is your source for news, insights, =
+
+analysis and resources for efficient Application Performance Management. =
+
+Visit us today!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
+ktrk

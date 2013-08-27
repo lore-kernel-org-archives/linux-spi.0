@@ -1,11 +1,11 @@
-From: OuiCar - Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: [SPAM] Louez une voiture sans vous ruiner
-Date: Tue, 27 Aug 2013 14:01:36 +0200 (CEST)
-Message-ID: <f70hx4.hkv2dx777igzful@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "=?utf-8?Q?GO_Sport_-_Consodeal?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?-20%_sur_toutes_les_grandes_marques_chez_GO_Sport?=
+Date: Tue, 27 Aug 2013 12:03:06 +0000
+Message-ID: <1043=79ad0b38-675d-420e-946b-503eb0ac4598=4=3266566@clicks.conso-deal.com>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,75 +18,35 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqp8eI7gfk57dIhkv2dojeI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377604885408%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DPHDOKCEOCGKHBPJA%26mid%3D1600240190&s=3DL=
-KDBMPBLECLEGGEE
- =
-
-Louez une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez u=
-ne voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une voit=
-ure sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture san=
-s vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous =
-ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous ruinerL=
-ouez une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez un=
-e voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une voitu=
-re sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans=
- vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous r=
-uinerLouez une voiture sans vous ruinerLouez une voiture sans vous ruinerLo=
-uez une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une=
- voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une voitur=
-e sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans =
-vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous ru=
-inerLouez une voiture sans vous ruinerLouez une voiture sans vous ruinerLou=
-ez une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une =
-voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture=
- sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans v=
-ous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous rui=
-nerLouez une voiture sans vous ruinerLouez une voiture sans vous ruinerLoue=
-z une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une v=
-oiture sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture =
-sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vo=
-us ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous ruin=
-erLouez une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez=
- une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une vo=
-iture sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture s=
-ans vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vou=
-s ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous ruine=
-rLouez une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez =
-une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une voi=
-ture sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture sa=
-ns vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous=
- ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous ruiner=
-Louez une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez u=
-ne voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une voit=
-ure sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture san=
-s vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous =
-ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous ruinerL=
-ouez une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez un=
-e voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une voitu=
-re sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans=
- vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous r=
-uinerLouez une voiture sans vous ruinerLouez une voiture sans vous ruinerLo=
-uez une voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une=
- voiture sans vous ruinerLouez une voiture sans vous ruinerLouez une voitur=
-e sans vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans =
-vous ruinerLouez une voiture sans vous ruinerLouez une voiture sans vous ru=
-iner
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600240190&sig=3DCOFEJJEKFBNGNBPE
----------------------------------------------------------------------------=
----
-Introducing Performance Central, a new site from SourceForge and =
-
-AppDynamics. Performance Central is your source for news, insights, =
-
-analysis and resources for efficient Application Performance Management. =
-
-Visit us today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICEtMjAlIHN1ciB0b3V0
+ZXMgbGVzIGdyYW5kZXMgbWFycXVlcyBjaGV6IEdPIFNwb3J0CgpodHRwOi8vY2xpY2tzLmNvbnNv
+LWRlYWwuY29tL2MvYXMvNl80L0V5d1dBTkJVbWhYSXFCeXU0WHpvSnkvYi9rbFFMLzExZGM4NWQ3
+CgoKVm91cyByZWNldmV6IGNlIG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOq
+dGVzIGluc2NyaXQoZSkgYXZlYyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
+cmNlZm9yZ2UubmV0IHN1ciBsZSBzaXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUgYSBmYWl0IGwn
+b2JqZXQgZCd1bmUgZMOpY2xhcmF0aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOp
+cm8gMTU0NTE0OC4gQ29uZm9ybcOpbWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5m
+b3JtYXRpcXVlIGV0IExpYmVydMOpc8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBl
+eGVyY2VyIHZvdHJlIGRyb2l0IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmlj
+YXRpb24gb3UgZW5jb3JlIGRlIHN1cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29u
+bmVsbGVzIHZpYSBsZSBsaWVuIHN1aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBk
+w6lzYWJvbm5lciwgbWVyY2kgZGUgY2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8K
+Q29uc29kZWFsIGVzdCB1bmUgbmV3c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBs
+YSBzb2Npw6l0w6kgTmF0ZXhvLCBxdWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJv
+bnMgcGxhbnMuIEVuIMOpdGFudCBhYm9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24s
+IHZvdXMgcmVjZXZyZXogbGUgdG9wIGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1v
+bWVudCBwb3VyIHRvdXMgdm9zIHRyYXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOg
+IGRlcyBlc3NhaXMgZXQgdmVudGVzIHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4gCi0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLQpJbnRyb2R1Y2luZyBQZXJmb3JtYW5jZSBDZW50cmFsLCBhIG5ldyBz
+aXRlIGZyb20gU291cmNlRm9yZ2UgYW5kIApBcHBEeW5hbWljcy4gUGVyZm9ybWFuY2UgQ2VudHJh
+bCBpcyB5b3VyIHNvdXJjZSBmb3IgbmV3cywgaW5zaWdodHMsIAphbmFseXNpcyBhbmQgcmVzb3Vy
+Y2VzIGZvciBlZmZpY2llbnQgQXBwbGljYXRpb24gUGVyZm9ybWFuY2UgTWFuYWdlbWVudC4gClZp
+c2l0IHVzIHRvZGF5IQpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/
+aWQ9NDg4OTc1MTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

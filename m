@@ -1,12 +1,11 @@
-From: Trivago Bons Plans <anne-+SWa8+tIKU1Wk0Htik3J/w@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Derni=E8res_minutes_=E9t=E9_:_h=F4t?=
-	=?ISO-8859-1?Q?els_4*_=E0_partir_de_41_euros?=
-Date: Tue, 27 Aug 2013 09:25:13 +0200 (CEST)
-Message-ID: <bvrriv.hkusihfi2b4fl9l@bs.miify.com>
-Reply-To: Anne <info-hoh7hF1A3YGohgF03p4UXg@public.gmane.org>
+From: Produit Minceur <Julie-dgaluaVmgh9BDgjK7y7TUQ@public.gmane.org>
+Subject: =?UTF-8?Q?Perdez_16kg_en_2_mois_une_silhouette_ideale_a_votre_port=C3=A9e?=
+Date: Tue, 27 Aug 2013 11:49:00 +0200
+Message-ID: <fe257aa5a26bdf9322f9735ecae416ce@localhost.localdomain>
+Reply-To: Produit Minceur <Julie-dgaluaVmgh9BDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,92 +18,71 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//bs.miify.com/re?l=3DBD0Iqgqp8tI7h5ovq2Ihkusic82I&u=3Dhttp%3A%2F%2Fbs.miif=
-y.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377588306558%26custid%3D16468%26=
-uid%3D16274960282%26sig%3DEJPAJGPLIJMDFAPC%26mid%3D1600240205&s=3DBHELHNDKC=
-MFLEGNL
- =
-
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros=
-Derni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res=
- minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =
-=E9t=E9 : h=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=
-=F4tels 4* =E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =
-=E0 partir de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir =
-de 41 eurosDerni=E8res minutes =E9t=E9 : h=F4tels 4* =E0 partir de 41 euros
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://bs.miify.com/public/unsubscribe.jsp?gid=3D16000=
-57156&uid=3D16274960282&mid=3D1600240205&sig=3DKFHLIOGAMBDCNEBC
----------------------------------------------------------------------------=
----
-Introducing Performance Central, a new site from SourceForge and =
-
-AppDynamics. Performance Central is your source for news, insights, =
-
-analysis and resources for efficient Application Performance Management. =
-
-Visit us today!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D48897511&iu=3D/4140/ostg.cl=
-ktrk
+UGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTD
+qWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9y
+dMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBw
+b3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJl
+IHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90
+cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2
+b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBh
+IHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxl
+IGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVh
+bGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlk
+ZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUg
+aWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0
+ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3Vl
+dHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhv
+dWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2ls
+aG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBz
+aWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5l
+IHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUKcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1
+bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lz
+IHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1v
+aXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIg
+bW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4g
+MiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBl
+biAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtn
+IGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2
+a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXog
+MTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRl
+eiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVy
+ZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQ
+ZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOp
+ZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0
+w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBv
+cnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUg
+cG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3Ry
+ZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhCnZv
+dHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEg
+dm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUg
+YSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFs
+ZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRl
+YWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBp
+ZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRl
+IGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0
+dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91
+ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxo
+b3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNp
+bGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9pcyB1bmUg
+c2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBtb2lzIHVu
+ZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAyIG1vaXMg
+dW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVuIDIgbW9p
+cyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cgZW4gMiBt
+b2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZrZyBlbiAy
+IG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAxNmtnIGVu
+IDIgbW9pcyB1bmUgc2lsaG91ZXR0ZQppZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6IDE2a2cg
+ZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJkZXogMTZr
+ZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZVBlcmRleiAx
+NmtnIGVuIDIgbW9pcyB1bmUgc2lsaG91ZXR0ZSBpZGVhbGUgYSB2b3RyZSBwb3J0w6llUGVyZGV6
+IDE2a2cgZW4gMiBtb2lzIHVuZSBzaWxob3VldHRlIGlkZWFsZSBhIHZvdHJlIHBvcnTDqWVQZXJk
+ZXogMTZrZyBlbiAyIG1vaXMgdW5lIHNpbGhvdWV0dGUgaWRlYWxlIGEgdm90cmUgcG9ydMOpZQoK
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCkludHJvZHVjaW5nIFBlcmZvcm1hbmNlIENlbnRyYWwsIGEg
+bmV3IHNpdGUgZnJvbSBTb3VyY2VGb3JnZSBhbmQgCkFwcER5bmFtaWNzLiBQZXJmb3JtYW5jZSBD
+ZW50cmFsIGlzIHlvdXIgc291cmNlIGZvciBuZXdzLCBpbnNpZ2h0cywgCmFuYWx5c2lzIGFuZCBy
+ZXNvdXJjZXMgZm9yIGVmZmljaWVudCBBcHBsaWNhdGlvbiBQZXJmb3JtYW5jZSBNYW5hZ2VtZW50
+LiAKVmlzaXQgdXMgdG9kYXkhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFk
+L2Nsaz9pZD00ODg5NzUxMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxp
+c3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMu
+c291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

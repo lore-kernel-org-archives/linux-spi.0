@@ -1,11 +1,11 @@
-From: Capsules compatibles Nespresso <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: 100 capsules compatibles Nespresso a 21 euros
-Date: Wed, 28 Aug 2013 13:51:08 +0200 (CEST)
-Message-ID: <a17q20.hkwhgbfebvrxr2l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "=?utf-8?Q?Ch=C3=A8que_en_attente?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Confirmez_vos_coordonn=C3=A9es?=
+Date: Wed, 28 Aug 2013 19:37:24 +0000
+Message-ID: <1043=45e7d40e-6bc8-474c-84d4-d46d38e1a3b2=4=3266566@clicks.conso-deal.com>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,94 +18,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqq3iI7gfk57dIhkwhg9brI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377690666106%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DEDBJIHCADGKMPIPA%26mid%3D1600241310&s=3DN=
-ANKBDGMLCIOKALE
- =
-
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600241310&sig=3DNDMJDODDCNANHHMI
----------------------------------------------------------------------------=
----
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58040911&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFodHRwOi8vY2xpY2tz
+LmNvbnNvLWRlYWwuY29tL2MvYXMvNmV4L21Xc1VueHAxc2JBYkJIbldFRUxDNFEvYi9rbFFMLzIx
+OTkzNjBhOi8vaHN0ZC5pbWFnZS1jb25jb3Vycy5jb20vaHN0ZHdjLnBocD9lbWFpbD1zcGktZGV2
+ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmbm9tPSZwcmVub209JmNwPSZoc3RkPWFI
+UjBjRG92TDJOdmJuTnZiVzFoZEdsdmJpNTJiM1J5WldGamRIVXVZMjl0TDJsa1pXNTBhV1pwWTJG
+MGFXOXVMbkJvY0ElM0QlM0QKCkNvbmZpcm1leiB2b3MgY29vcmRvbm7DqWVzCgoKVm91cyByZWNl
+dmV6IGNlIG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQo
+ZSkgYXZlYyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
+IHN1ciBsZSBzaXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUgYSBmYWl0IGwnb2JqZXQgZCd1bmUg
+ZMOpY2xhcmF0aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOpcm8gMTU0NTE0OC4g
+Q29uZm9ybcOpbWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5mb3JtYXRpcXVlIGV0
+IExpYmVydMOpc8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBleGVyY2VyIHZvdHJl
+IGRyb2l0IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gb3UgZW5j
+b3JlIGRlIHN1cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29ubmVsbGVzIHZpYSBs
+ZSBsaWVuIHN1aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBkw6lzYWJvbm5lciwg
+bWVyY2kgZGUgY2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8KQ29uc29kZWFsIGVz
+dCB1bmUgbmV3c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kg
+TmF0ZXhvLCBxdWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVu
+IMOpdGFudCBhYm9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZy
+ZXogbGUgdG9wIGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRv
+dXMgdm9zIHRyYXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMg
+ZXQgdmVudGVzIHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4gCi0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQpMZWFybiB0aGUgbGF0ZXN0LS1WaXN1YWwgU3R1ZGlvIDIwMTIsIFNoYXJlUG9pbnQgMjAx
+MywgU1FMIDIwMTIsIG1vcmUhCkRpc2NvdmVyIHRoZSBlYXN5IHdheSB0byBtYXN0ZXIgY3VycmVu
+dCBhbmQgcHJldmlvdXMgTWljcm9zb2Z0IHRlY2hub2xvZ2llcwphbmQgYWR2YW5jZSB5b3VyIGNh
+cmVlci4gR2V0IGFuIGluY3JlZGlibGUgMSw1MDArIGhvdXJzIG9mIHN0ZXAtYnktc3RlcAp0dXRv
+cmlhbCB2aWRlb3Mgd2l0aCBMZWFybkRldk5vdy4gU3Vic2NyaWJlIHRvZGF5IGFuZCBzYXZlIQpo
+dHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NTgwNDA5MTEmaXU9
+LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
+QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
+cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

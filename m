@@ -1,12 +1,14 @@
-From: BMW France <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?R=E9servez_votre_essai_personnalis=E9_d'une_BMW?=
-Date: Thu, 29 Aug 2013 15:03:31 +0200 (CEST)
-Message-ID: <mi4268.hkxzh98bnj9d8cl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: =?UTF-8?Q?Master_Lopes_Corretora_de_Seguros?=
+	<advogado-BI4EdlX38PuBVCvgEe3TS9Di0UtHxfmf@public.gmane.org>
+Subject: [SPAM] Advogado,
+	proteja sua carreira. Adquira o Seguro de Responsabilidade Civil
+Date: Thu, 29 Aug 2013 15:49:33 -0300 (BRT)
+Message-ID: <13344.31.257812.1377802173@3420h3ef14h0587f203-static.p01me.com>
+Reply-To: advogado-BI4EdlX38PuBVCvgEe3TS9Di0UtHxfmf@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,112 +20,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqr78I7gfk57dIhkxzgztgI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377781399659%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DPGAHBMOMFJLLKDOK%26mid%3D1600242740&s=3DA=
-CMINHIMPCPOIPEH
- =
-
-R=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai perso=
-nnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9serve=
-z votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9=
- d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre e=
-ssai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BM=
-WR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai pers=
-onnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9serv=
-ez votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=
-=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votr=
-e essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une=
- BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai p=
-ersonnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9s=
-ervez votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnali=
-s=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez vot=
-re essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'un=
-e BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai =
-personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9=
-servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnal=
-is=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez vo=
-tre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'u=
-ne BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai=
- personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=
-=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai person=
-nalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez=
- votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 =
-d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre es=
-sai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMW=
-R=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai perso=
-nnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9serve=
-z votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9=
- d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre e=
-ssai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BM=
-WR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai pers=
-onnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9serv=
-ez votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=
-=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votr=
-e essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une=
- BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai p=
-ersonnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9s=
-ervez votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnali=
-s=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez vot=
-re essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'un=
-e BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai =
-personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9=
-servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnal=
-is=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez vo=
-tre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'u=
-ne BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai=
- personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=
-=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai person=
-nalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez=
- votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 =
-d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre es=
-sai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMW=
-R=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai perso=
-nnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9serve=
-z votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9=
- d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre e=
-ssai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BM=
-WR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai pers=
-onnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9serv=
-ez votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=
-=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votr=
-e essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une=
- BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai p=
-ersonnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9s=
-ervez votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnali=
-s=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez vot=
-re essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'un=
-e BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai =
-personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9=
-servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnal=
-is=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez vo=
-tre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'u=
-ne BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai=
- personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=
-=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai person=
-nalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez=
- votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 =
-d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre es=
-sai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMW=
-R=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai perso=
-nnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9serve=
-z votre essai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9=
- d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre e=
-ssai personnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BM=
-WR=E9servez votre essai personnalis=E9 d'une BMWR=E9servez votre essai pers=
-onnalis=E9 d'une BMWR=E9servez votre essai personnalis=E9 d'une BMWR=E9serv=
-ez votre essai personnalis=E9 d'une BMW
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600242740&sig=3DLKICLJCCDIBMMADE
----------------------------------------------------------------------------=
----
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58040911&iu=3D/4140/ostg.cl=
-ktrk
+U2V1IHZpc3VhbGl6YWRvciBkZSBlLW1haWwgZXN0w6EgY29uZmlndXJhZG8gcGFyYSBtb3N0cmFy
+IGEgbWVuc2FnZW0gZW0gZm9ybWF0byB0ZXh0by4KIFBhcmEgdmlzdWFsaXphciBjb3JyZXRhbWVu
+dGUgbyBjb250ZcO6ZG8gZGVzc2UgZS1tYWlsIGNvcGllIGUgY29sZSBvIGxpbmsgYWJhaXhvIGVt
+IHNldSBuYXZlZ2Fkb3I6CiBodHRwOi8vZC1hcHAuYnJhc2lsYmVtc2VndXJvLmNvbS5ici9lLzEz
+MzQ0LzMxLzI1NzgxMi8wZjFkMwotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gdGhlIGxhdGVz
+dC0tVmlzdWFsIFN0dWRpbyAyMDEyLCBTaGFyZVBvaW50IDIwMTMsIFNRTCAyMDEyLCBtb3JlIQpE
+aXNjb3ZlciB0aGUgZWFzeSB3YXkgdG8gbWFzdGVyIGN1cnJlbnQgYW5kIHByZXZpb3VzIE1pY3Jv
+c29mdCB0ZWNobm9sb2dpZXMKYW5kIGFkdmFuY2UgeW91ciBjYXJlZXIuIEdldCBhbiBpbmNyZWRp
+YmxlIDEsNTAwKyBob3VycyBvZiBzdGVwLWJ5LXN0ZXAKdHV0b3JpYWwgdmlkZW9zIHdpdGggTGVh
+cm5EZXZOb3cuIFN1YnNjcmliZSB0b2RheSBhbmQgc2F2ZSEKaHR0cDovL3B1YmFkcy5nLmRvdWJs
+ZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQwOTExJml1PS80MTQwL29zdGcuY2xrdHJrCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

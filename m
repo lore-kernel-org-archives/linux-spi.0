@@ -1,11 +1,11 @@
-From: "Nl Promos" <lisa@a.optincake.com>
-Subject: Votre vol pas cher en 1 clic
-Date: Fri, 30 Aug 2013 01:39:05 +0100
-Message-ID: <0.0.E6.758.1CEA519548B44CA.0@mta142.pur3.net>
-Reply-To: Nl Promos <lisa@a.optincake.com>
+From: Vos bagages via Zetrend <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Les_vacances_continuent_!_Jusqu'=E0_-80%_de_remise?=
+Date: Fri, 30 Aug 2013 15:07:11 +0200 (CEST)
+Message-ID: <yrvjnf.hkzf1t0nmh8zdtl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,89 +18,97 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTg2MTAzMjIwNTM3MTY0CgoKCgoKKGluZGV4XzAzLmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlh
-cGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzA1LmdpZik6IGh0dHA6
-Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4
-XzA3LmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUt
-NDcyMzgtMAoKKGluZGV4XzA5LmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQv
-Y2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzEwLmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1l
-ZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzEzLmdpZik6IGh0
-dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGlu
-ZGV4XzE3LmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIy
-OTUtNDcyMzgtMAoKKGluZGV4XzE4LmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20v
-YWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzE5LmdpZik6IGh0dHA6Ly9hbHRmYXJt
-Lm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoKKGluZGV4XzIxLmdpZik6
-IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0xNTIyOTUtNDcyMzgtMAoK
-KGluZGV4XzIyLmdpZik6IGh0dHA6Ly9hbHRmYXJtLm1lZGlhcGxleC5jb20vYWQvY2svOTU4OC0x
-NTIyOTUtNDcyMzgtMAoKKHNwYWNlci5naWYpOiBodHRwOi8vYWx0ZmFybS5tZWRpYXBsZXguY29t
-L2FkL2NrLzk1ODgtMTUyMjk1LTQ3MjM4LTAKCihpbmRleF8yNC5naWYpOiBodHRwOi8vYWx0ZmFy
-bS5tZWRpYXBsZXguY29tL2FkL2NrLzk1ODgtMTUyMjk1LTQ3MjM4LTAKCsKgIC4uLiBCZXNvaW4g
-ZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2Vy
-IG91CnNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25n
-IGRlIGwnYW5uw6llLCBhbG9ycwpwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBw
-YXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cwphZHJlc3NvbnMsIGV0IHF1ZSBu
-b3VzIG1ldHRvbnMgw6Agam91ciByw6lndWxpw6hyZW1lbnQgZXQgdG91dGUKbCdhbm7DqWUuRW52
-aWUgZGUgdm91cyBmYWlyZSB1bmUgYmVhdXTDqSDDoCBtb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9u
-ZyBkZQpsJ2FubsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTD
-qSDDoCBtb2luZHJlIGZyYWlzIGV0IG91CmVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOg
-IGRlcyBidWRnZXRzIHJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyCmRlIHRlbXBzIMOgIGF1
-dHJlIG5vcyBwcm9wb3NpdGlvbnMgcG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBk
-ZQpub21icmV1c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQgcGxhaXNpciDDoCB0
-b3V0ZSBsYSBmYW1pbGxlLkEgbGEKcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmlnaW5hbCA/IE5vdXMg
-c291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUKcmVnYXJkIGFmaW4gZGUgdm91cyBh
-aWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlCmwn
-YW5uw6llLiBBaW5zaSwgZ3JhY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91
-dm9pciBwcm9maXRlciBkZQp0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBv
-cnR1bml0w6ksIGluZm9zLi4uIEFpbnNpLCBncsOiY2Ugw6AKbm91cywgdm91cyBhbGxleiBwYXIg
-ZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhCmJh
-cyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIC5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91
-cyBoYWJpbGxlciwgZGUKdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWls
-bGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdQpsb25nIGRlIGwnYW5uw6llLCBhbG9y
-cyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3Np
-dGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91
-cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuLiBOb3VzIHNvdWhhaXRvbnMgdm91
-cyBhcHBvcnRlciB1biBub3V2ZWF1CnJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVu
-c2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZQpsJ2FubsOpZS4uLi4gQmVz
-b2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlCm1h
-bmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUg
-bG9uZyBkZSBsJ2FubsOpZSwKYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9l
-aWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzCnZvdXMgYWRyZXNzb25zLCBldCBx
-dWUgbm91cyBtZXR0b25zIMOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlCmwnYW5uw6ll
-LkVudmllIGRlIHZvdXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZSBjb8O7dCB0b3V0IGF1
-IGxvbmcgZGUKbCdhbm7DqWUsIGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzIGQn
-w6l0w6kgw6AgbW9pbmRyZSBmcmFpcyBldCBvdQplbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50
-cyDDoCBkZXMgYnVkZ2V0cyByYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlcgpkZSB0ZW1wcyDD
-oCBhdXRyZSBub3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cyBwZXJtZXR0cmUgYWluc2kgZGUgZmFp
-cmUgZGUKbm9tYnJldXNlcyDDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50IHBsYWlzaXIg
-w6AgdG91dGUgbGEgZmFtaWxsZS5BIGxhCnJlY2hlcmNoZSBkdSBjYWRlYXUgb3JpZ2luYWwgPyBO
-b3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1CnJlZ2FyZCBhZmluIGRlIHZv
-dXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0
-ZQpsJ2FubsOpZS4gQWluc2ksIGdyYWNlIMOgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUs
-IHBvdXZvaXIgcHJvZml0ZXIgZGUKdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwg
-b3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiBBaW5zaSwgZ3LDomNlIMOgCm5vdXMsIHZvdXMgYWxsZXog
-cGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQg
-YQpiYXMgY291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuQmVzb2luIGRlIHZveWFnZXIsIGRl
-IHZvdXMgaGFiaWxsZXIsIGRlCnZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUg
-bWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUKbG9uZyBkZSBsJ2FubsOpZSwg
-YWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJv
-cG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOg
-IGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLi4gTm91cyBzb3VoYWl0b25z
-IHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdQpyZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTD
-qXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUKbCdhbm7DqWUuCgoK
-CgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2Fr
-ZS5jb20vX2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxODYxMDMyMjA1MzcxNjQKCgoKCgoK
-e35BSjg0NjQxODY2MjUxODYxMDMyMjA1MzcxNjR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVh
-cm4gdGhlIGxhdGVzdC0tVmlzdWFsIFN0dWRpbyAyMDEyLCBTaGFyZVBvaW50IDIwMTMsIFNRTCAy
-MDEyLCBtb3JlIQpEaXNjb3ZlciB0aGUgZWFzeSB3YXkgdG8gbWFzdGVyIGN1cnJlbnQgYW5kIHBy
-ZXZpb3VzIE1pY3Jvc29mdCB0ZWNobm9sb2dpZXMKYW5kIGFkdmFuY2UgeW91ciBjYXJlZXIuIEdl
-dCBhbiBpbmNyZWRpYmxlIDEsNTAwKyBob3VycyBvZiBzdGVwLWJ5LXN0ZXAKdHV0b3JpYWwgdmlk
-ZW9zIHdpdGggTGVhcm5EZXZOb3cuIFN1YnNjcmliZSB0b2RheSBhbmQgc2F2ZSEKaHR0cDovL3B1
-YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQwOTExJml1PS80MTQwL29z
-dGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgqrquI7gfk57dIhkzf1n91I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377868023564%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DEDLLGDLPBIFNKIEL%26mid%3D1600243446&s=3DF=
+CGNOFKKDIKCLDKB
+ =
+
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remiseLes vacances continuent ! Jusqu'=E0 -80% de remise=
+Les vacances continuent ! Jusqu'=E0 -80% de remiseLes vacances continuent !=
+ Jusqu'=E0 -80% de remise
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600243446&sig=3DAFCPCFONDCKGJEBD
+---------------------------------------------------------------------------=
+---
+Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
+Discover the easy way to master current and previous Microsoft technologies
+and advance your career. Get an incredible 1,500+ hours of step-by-step
+tutorial videos with LearnDevNow. Subscribe today and save!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D58040911&iu=3D/4140/ostg.cl=
+ktrk

@@ -1,11 +1,12 @@
-From: "=?utf-8?Q?Cdiscount_-_Consodeal_?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?Prix_Choc:_=C3=A0_saisir_d'urgence!?=
-Date: Sat, 31 Aug 2013 03:59:47 +0000
-Message-ID: <1043=bdf71f12-89d0-4691-9f90-75053ca26818=4=3266566@clicks.conso-deal.com>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: Clarins <anne-+SWa8+tIKU1Wk0Htik3J/w@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Inscrivez-vous_et_profitez_d?=
+	=?ISO-8859-1?Q?e_la_Vente_Priv=E9e_Clarins.com?=
+Date: Sat, 31 Aug 2013 07:36:35 +0200 (CEST)
+Message-ID: <69uq5r.hl0ee79qh7ttinl@bs.miify.com>
+Reply-To: Anne <info-hoh7hF1A3YGohgF03p4UXg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,36 +19,92 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFQcml4IENob2M6IMOg
-IHNhaXNpciBkJ3VyZ2VuY2UhCgpodHRwOi8vY2xpY2tzLmNvbnNvLWRlYWwuY29tL2MvYXMva0VY
-L2JwMDlTbGMyaElxUmhpSW9yWDJNTHkvYi9rbFFMLzhjZjI2ZGY2ClZvdXMgcmVjZXZleiBjZSBt
-ZXNzYWdlIGRlIG5vdHJlIHBhcnQgY2FyIHZvdXMgdm91cyDDqnRlcyBpbnNjcml0KGUpIGF2ZWMg
-bCdhZHJlc3NlIHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCBzdXIgbGUg
-c2l0ZSBDb25zb2RlYWwuY29tLiBDZSBzaXRlIGEgZmFpdCBsJ29iamV0IGQndW5lIGTDqWNsYXJh
-dGlvbiBhdXByw6hzIGRlIGxhIENOSUwgc291cyBsZSBudW3DqXJvIDE1NDUxNDguIENvbmZvcm3D
-qW1lbnQgw6AgbCdhcnRpY2xlIDM0IGRlIGxhIGxvaSDCq0luZm9ybWF0aXF1ZSBldCBMaWJlcnTD
-qXPCuyBkdSA2IGphbnZpZXIgMTk3OCwgdm91cyBwb3V2ZXogZXhlcmNlciB2b3RyZSBkcm9pdCBk
-J2FjY8OocywgZGUgbW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIG91IGVuY29yZSBkZSBz
-dXBwcmVzc2lvbiBkZSB2b3MgaW5mb3JtYXRpb25zIHBlcnNvbm5lbGxlcyB2aWEgbGUgbGllbiBz
-dWl2YW50IDogTWVzIEFib25uZW1lbnRzLgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIG1lcmNpIGRl
-IGNsaXF1ZXIgaWNpIGljaS4KCVF1aSBzb21tZXMtbm91cyA/CkNvbnNvZGVhbCBlc3QgdW5lIG5l
-d3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDDqWRpdMOpZSBwYXIgbGEgc29jacOpdMOpIE5hdGV4bywg
-cXVpIHZvdXMgcHJvcG9zZSB1bmUgc8OpbGVjdGlvbiBkZSBib25zIHBsYW5zLiBFbiDDqXRhbnQg
-YWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBkJ2luZm9ybWF0aW9uLCB2b3VzIHJlY2V2cmV6IGxlIHRv
-cCBkZXMgamV1eCBjb25jb3VycywgbGVzIG9mZnJlcyBkdSBtb21lbnQgcG91ciB0b3VzIHZvcyB0
-cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMgZXhjbHVzaXZlcyDDoCBkZXMgZXNzYWlzIGV0IHZlbnRl
-cyBwcml2w6llcyBkZSBncmFuZGVzIG1hcnF1ZXMuIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVh
-cm4gdGhlIGxhdGVzdC0tVmlzdWFsIFN0dWRpbyAyMDEyLCBTaGFyZVBvaW50IDIwMTMsIFNRTCAy
-MDEyLCBtb3JlIQpEaXNjb3ZlciB0aGUgZWFzeSB3YXkgdG8gbWFzdGVyIGN1cnJlbnQgYW5kIHBy
-ZXZpb3VzIE1pY3Jvc29mdCB0ZWNobm9sb2dpZXMKYW5kIGFkdmFuY2UgeW91ciBjYXJlZXIuIEdl
-dCBhbiBpbmNyZWRpYmxlIDEsNTAwKyBob3VycyBvZiBzdGVwLWJ5LXN0ZXAKdHV0b3JpYWwgdmlk
-ZW9zIHdpdGggTGVhcm5EZXZOb3cuIFN1YnNjcmliZSB0b2RheSBhbmQgc2F2ZSEKaHR0cDovL3B1
-YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQwOTExJml1PS80MTQwL29z
-dGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGlu
-Zm8vc3BpLWRldmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//bs.miify.com/re?l=3DBD0Iqgqsn0I7h5ovq2Ihl0edzfdI&u=3Dhttp%3A%2F%2Fbs.miif=
+y.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377927385768%26custid%3D16468%26=
+uid%3D16274960282%26sig%3DANLLJOJLPMFALCHP%26mid%3D1600244604&s=3DKKMOHPEDO=
+PLDBHGJ
+ =
+
+Inscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous e=
+t profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la=
+ Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e =
+Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscr=
+ivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et pro=
+fitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vent=
+e Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clari=
+ns.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-=
+vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez=
+ de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Pri=
+v=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.co=
+mInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous =
+et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de l=
+a Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e=
+ Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInsc=
+rivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et pr=
+ofitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Ven=
+te Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clar=
+ins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez=
+-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profite=
+z de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Pr=
+iv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.c=
+omInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous=
+ et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de =
+la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9=
+e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comIns=
+crivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et p=
+rofitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Ve=
+nte Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Cla=
+rins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrive=
+z-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profit=
+ez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente P=
+riv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.=
+comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vou=
+s et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de=
+ la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=
+=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.com=
+Inscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous e=
+t profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la=
+ Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e =
+Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscr=
+ivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et pro=
+fitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vent=
+e Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clari=
+ns.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-=
+vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez=
+ de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Pri=
+v=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.co=
+mInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous =
+et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de l=
+a Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e=
+ Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInsc=
+rivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et pr=
+ofitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Ven=
+te Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clar=
+ins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez=
+-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profite=
+z de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Pr=
+iv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.c=
+omInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous=
+ et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de =
+la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9=
+e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comIns=
+crivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et p=
+rofitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profitez de la Ve=
+nte Priv=E9e Clarins.comInscrivez-vous et profitez de la Vente Priv=E9e Cla=
+rins.comInscrivez-vous et profitez de la Vente Priv=E9e Clarins.comInscrive=
+z-vous et profitez de la Vente Priv=E9e Clarins.comInscrivez-vous et profit=
+ez de la Vente Priv=E9e Clarins.com
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://bs.miify.com/public/unsubscribe.jsp?gid=3D16000=
+57156&uid=3D16274960282&mid=3D1600244604&sig=3DMMMIBEEENBJMEBAB
+---------------------------------------------------------------------------=
+---
+Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
+Discover the easy way to master current and previous Microsoft technologies
+and advance your career. Get an incredible 1,500+ hours of step-by-step
+tutorial videos with LearnDevNow. Subscribe today and save!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D58040911&iu=3D/4140/ostg.cl=
+ktrk

@@ -1,11 +1,11 @@
-From: Disney <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Des_weekends_=E0_gagner?=
-Date: Sat, 31 Aug 2013 11:59:02 +0200 (CEST)
-Message-ID: <d7t7sf.hl0nrp6uii3yqkl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "=?utf-8?Q?Tf1?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org_a_=C3=A9t=C3=A9_selectionn=C3=A9_pour_participer_=C3=A0_notre_jeu_Les_12_Coups_de_Midi?=
+Date: Sun, 01 Sep 2013 01:54:31 +0000
+Message-ID: <1043=a93816d3-6ae8-40f3-9cc6-7d715ceada33=4=3266566@clicks.conso-deal.com>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,62 +18,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgqsmzI7gfk57dIhl0nrlmhI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1377943137835%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DCOJMPOHPABJFPBLM%26mid%3D1600244603&s=3DM=
-LLAOCNELKHELNIG
- =
-
-Des weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes we=
-ekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends=
- =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 g=
-agnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerD=
-es weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes wee=
-kends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagner
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600244603&sig=3DCEMCDOPHGPFIOEIC
----------------------------------------------------------------------------=
----
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58040911&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFzcGktZGV2ZWwtZ2Vu
+ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgYSDDqXTDqSBzZWxlY3Rpb25uw6kgcG91ciBwYXJ0
+aWNpcGVyIMOgIG5vdHJlIGpldSBMZXMgMTIgQ291cHMgZGUgTWlkaQoKaHR0cDovL2NsaWNrcy5j
+b25zby1kZWFsLmNvbS9jL2FzL2tJZy9EenZWS0FwS2VEY3h6VUJ6NUUxcWszL2Iva2xRTC9kYzI1
+OTdkZApWb3VzIHJlY2V2ZXogY2UgbWVzc2FnZSBkZSBub3RyZSBwYXJ0IGNhciB2b3VzIHZvdXMg
+w6p0ZXMgaW5zY3JpdChlKSBhdmVjIGwnYWRyZXNzZSBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQgc3VyIGxlIHNpdGUgQ29uc29kZWFsLmNvbS4gQ2Ugc2l0ZSBhIGZhaXQg
+bCdvYmpldCBkJ3VuZSBkw6ljbGFyYXRpb24gYXVwcsOocyBkZSBsYSBDTklMIHNvdXMgbGUgbnVt
+w6lybyAxNTQ1MTQ4LiBDb25mb3Jtw6ltZW50IMOgIGwnYXJ0aWNsZSAzNCBkZSBsYSBsb2kgwqtJ
+bmZvcm1hdGlxdWUgZXQgTGliZXJ0w6lzwrsgZHUgNiBqYW52aWVyIDE5NzgsIHZvdXMgcG91dmV6
+IGV4ZXJjZXIgdm90cmUgZHJvaXQgZCdhY2PDqHMsIGRlIG1vZGlmaWNhdGlvbiwgZGUgcmVjdGlm
+aWNhdGlvbiBvdSBlbmNvcmUgZGUgc3VwcHJlc3Npb24gZGUgdm9zIGluZm9ybWF0aW9ucyBwZXJz
+b25uZWxsZXMgdmlhIGxlIGxpZW4gc3VpdmFudCA6IE1lcyBBYm9ubmVtZW50cy4KUG91ciB2b3Vz
+IGTDqXNhYm9ubmVyLCBtZXJjaSBkZSBjbGlxdWVyIGljaSBpY2kuCglRdWkgc29tbWVzLW5vdXMg
+PwpDb25zb2RlYWwgZXN0IHVuZSBuZXdzbGV0dGVyIHF1b3RpZGllbm5lICwgw6lkaXTDqWUgcGFy
+IGxhIHNvY2nDqXTDqSBOYXRleG8sIHF1aSB2b3VzIHByb3Bvc2UgdW5lIHPDqWxlY3Rpb24gZGUg
+Ym9ucyBwbGFucy4gRW4gw6l0YW50IGFib25uw6kgw6Agbm90cmUgbGlzdGUgZCdpbmZvcm1hdGlv
+biwgdm91cyByZWNldnJleiBsZSB0b3AgZGVzIGpldXggY29uY291cnMsIGxlcyBvZmZyZXMgZHUg
+bW9tZW50IHBvdXIgdG91cyB2b3MgdHJhdmF1eCwgZGVzIGludml0YXRpb25zIGV4Y2x1c2l2ZXMg
+w6AgZGVzIGVzc2FpcyBldCB2ZW50ZXMgcHJpdsOpZXMgZGUgZ3JhbmRlcyBtYXJxdWVzLiAKLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCkxlYXJuIHRoZSBsYXRlc3QtLVZpc3VhbCBTdHVkaW8gMjAxMiwg
+U2hhcmVQb2ludCAyMDEzLCBTUUwgMjAxMiwgbW9yZSEKRGlzY292ZXIgdGhlIGVhc3kgd2F5IHRv
+IG1hc3RlciBjdXJyZW50IGFuZCBwcmV2aW91cyBNaWNyb3NvZnQgdGVjaG5vbG9naWVzCmFuZCBh
+ZHZhbmNlIHlvdXIgY2FyZWVyLiBHZXQgYW4gaW5jcmVkaWJsZSAxLDUwMCsgaG91cnMgb2Ygc3Rl
+cC1ieS1zdGVwCnR1dG9yaWFsIHZpZGVvcyB3aXRoIExlYXJuRGV2Tm93LiBTdWJzY3JpYmUgdG9k
+YXkgYW5kIHNhdmUhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9p
+ZD01ODA0MDkxMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
+Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

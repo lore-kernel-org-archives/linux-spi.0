@@ -1,11 +1,11 @@
-From: "=?utf-8?Q?Soutien_financier_pour_tous?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?Financement_sans_bulletin_de_paye=2C_sans_frais_et_possibilit=C3=A9_de_sauter_une_mensualit=C3=A9?=
-Date: Mon, 02 Sep 2013 02:31:42 +0000
-Message-ID: <1043=6b7d7749-f500-43a5-a7bd-7c8d631d0c00=4=3266566@clicks.conso-deal.com>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: Citroen <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Grand_jeu_Citro=EBn_DS3?=
+Date: Mon, 2 Sep 2013 11:19:40 +0200 (CEST)
+Message-ID: <6hqme9.hl3h8sarjmy1wrl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,37 +18,94 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFGaW5hbmNlbWVudCBz
-YW5zIGJ1bGxldGluIGRlIHBheWUsIHNhbnMgZnJhaXMgZXQgcG9zc2liaWxpdMOpIGRlIHNhdXRl
-ciB1bmUgbWVuc3VhbGl0w6kKCmh0dHA6Ly9jbGlja3MuY29uc28tZGVhbC5jb20vYy9hcy9rNXQv
-ajVsZnEzbUItSUVVUzVHSHZ6RGt5eS9iL2tsUUwvYmYzZmY4MjUrcGVyc29ubmVsClZvdXMgcmVj
-ZXZleiBjZSBtZXNzYWdlIGRlIG5vdHJlIHBhcnQgY2FyIHZvdXMgdm91cyDDqnRlcyBpbnNjcml0
-KGUpIGF2ZWMgbCdhZHJlc3NlIHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
-dCBzdXIgbGUgc2l0ZSBDb25zb2RlYWwuY29tLiBDZSBzaXRlIGEgZmFpdCBsJ29iamV0IGQndW5l
-IGTDqWNsYXJhdGlvbiBhdXByw6hzIGRlIGxhIENOSUwgc291cyBsZSBudW3DqXJvIDE1NDUxNDgu
-IENvbmZvcm3DqW1lbnQgw6AgbCdhcnRpY2xlIDM0IGRlIGxhIGxvaSDCq0luZm9ybWF0aXF1ZSBl
-dCBMaWJlcnTDqXPCuyBkdSA2IGphbnZpZXIgMTk3OCwgdm91cyBwb3V2ZXogZXhlcmNlciB2b3Ry
-ZSBkcm9pdCBkJ2FjY8OocywgZGUgbW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIG91IGVu
-Y29yZSBkZSBzdXBwcmVzc2lvbiBkZSB2b3MgaW5mb3JtYXRpb25zIHBlcnNvbm5lbGxlcyB2aWEg
-bGUgbGllbiBzdWl2YW50IDogTWVzIEFib25uZW1lbnRzLgpQb3VyIHZvdXMgZMOpc2Fib25uZXIs
-IG1lcmNpIGRlIGNsaXF1ZXIgaWNpIGljaS4KCVF1aSBzb21tZXMtbm91cyA/CkNvbnNvZGVhbCBl
-c3QgdW5lIG5ld3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDDqWRpdMOpZSBwYXIgbGEgc29jacOpdMOp
-IE5hdGV4bywgcXVpIHZvdXMgcHJvcG9zZSB1bmUgc8OpbGVjdGlvbiBkZSBib25zIHBsYW5zLiBF
-biDDqXRhbnQgYWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBkJ2luZm9ybWF0aW9uLCB2b3VzIHJlY2V2
-cmV6IGxlIHRvcCBkZXMgamV1eCBjb25jb3VycywgbGVzIG9mZnJlcyBkdSBtb21lbnQgcG91ciB0
-b3VzIHZvcyB0cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMgZXhjbHVzaXZlcyDDoCBkZXMgZXNzYWlz
-IGV0IHZlbnRlcyBwcml2w6llcyBkZSBncmFuZGVzIG1hcnF1ZXMuIAotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KTGVhcm4gdGhlIGxhdGVzdC0tVmlzdWFsIFN0dWRpbyAyMDEyLCBTaGFyZVBvaW50IDIw
-MTMsIFNRTCAyMDEyLCBtb3JlIQpEaXNjb3ZlciB0aGUgZWFzeSB3YXkgdG8gbWFzdGVyIGN1cnJl
-bnQgYW5kIHByZXZpb3VzIE1pY3Jvc29mdCB0ZWNobm9sb2dpZXMKYW5kIGFkdmFuY2UgeW91ciBj
-YXJlZXIuIEdldCBhbiBpbmNyZWRpYmxlIDEsNTAwKyBob3VycyBvZiBzdGVwLWJ5LXN0ZXAKdHV0
-b3JpYWwgdmlkZW9zIHdpdGggTGVhcm5EZXZOb3cuIFN1YnNjcmliZSB0b2RheSBhbmQgc2F2ZSEK
-aHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQwOTExJml1
-PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
-bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
-dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgqtecI7gfk57dIhl3h8lgoI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378113571777%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DFLEBIABFOPINMHHD%26mid%3D1600245588&s=3DD=
+LPKMEPMOFMDJAAO
+ =
+
+Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand =
+jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Ci=
+tro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EB=
+n DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3G=
+rand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand j=
+eu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Cit=
+ro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn=
+ DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gr=
+and jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand je=
+u Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citr=
+o=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn =
+DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gra=
+nd jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu=
+ Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn D=
+S3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Gran=
+d jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu =
+Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=EBn DS3Grand jeu Citro=
+=EBn DS3Grand jeu Citro=EBn DS3
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600245588&sig=3DJKAFGCDMMNILEHCJ
+---------------------------------------------------------------------------=
+---
+Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
+Discover the easy way to master current and previous Microsoft technologies
+and advance your career. Get an incredible 1,500+ hours of step-by-step
+tutorial videos with LearnDevNow. Subscribe today and save!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D58040911&iu=3D/4140/ostg.cl=
+ktrk

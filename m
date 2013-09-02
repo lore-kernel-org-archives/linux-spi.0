@@ -1,11 +1,11 @@
-From: Syndic+ Votre gestionnaire immobilier <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: [SPAM] Changez pour un syndic innovant
-Date: Sun, 1 Sep 2013 12:14:39 +0200 (CEST)
-Message-ID: <i05ffq.hl23rn5ft1ap0hl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Perdez meme 10 kilos en dormant" <lisa@a.optincake.com>
+Subject: Perdez meme 10 kilos en dormant
+Date: Mon, 02 Sep 2013 01:30:07 +0100
+Message-ID: <0.0.1C5.D1.1CEA7739327E344.0@mta38.pur3.net>
+Reply-To: Perdez meme 10 kilos en dormant <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,78 +18,103 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqt0rI7gfk57dIhl23rlsuI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378030477888%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DNNIBGJAGMJFPLIHF%26mid%3D1600245099&s=3DA=
-IFEBKGLDMJCJHBO
- =
-
-Changez pour un syndic innovantChangez pour un syndic innovantChangez pour =
-un syndic innovantChangez pour un syndic innovantChangez pour un syndic inn=
-ovantChangez pour un syndic innovantChangez pour un syndic innovantChangez =
-pour un syndic innovantChangez pour un syndic innovantChangez pour un syndi=
-c innovantChangez pour un syndic innovantChangez pour un syndic innovantCha=
-ngez pour un syndic innovantChangez pour un syndic innovantChangez pour un =
-syndic innovantChangez pour un syndic innovantChangez pour un syndic innova=
-ntChangez pour un syndic innovantChangez pour un syndic innovantChangez pou=
-r un syndic innovantChangez pour un syndic innovantChangez pour un syndic i=
-nnovantChangez pour un syndic innovantChangez pour un syndic innovantChange=
-z pour un syndic innovantChangez pour un syndic innovantChangez pour un syn=
-dic innovantChangez pour un syndic innovantChangez pour un syndic innovantC=
-hangez pour un syndic innovantChangez pour un syndic innovantChangez pour u=
-n syndic innovantChangez pour un syndic innovantChangez pour un syndic inno=
-vantChangez pour un syndic innovantChangez pour un syndic innovantChangez p=
-our un syndic innovantChangez pour un syndic innovantChangez pour un syndic=
- innovantChangez pour un syndic innovantChangez pour un syndic innovantChan=
-gez pour un syndic innovantChangez pour un syndic innovantChangez pour un s=
-yndic innovantChangez pour un syndic innovantChangez pour un syndic innovan=
-tChangez pour un syndic innovantChangez pour un syndic innovantChangez pour=
- un syndic innovantChangez pour un syndic innovantChangez pour un syndic in=
-novantChangez pour un syndic innovantChangez pour un syndic innovantChangez=
- pour un syndic innovantChangez pour un syndic innovantChangez pour un synd=
-ic innovantChangez pour un syndic innovantChangez pour un syndic innovantCh=
-angez pour un syndic innovantChangez pour un syndic innovantChangez pour un=
- syndic innovantChangez pour un syndic innovantChangez pour un syndic innov=
-antChangez pour un syndic innovantChangez pour un syndic innovantChangez po=
-ur un syndic innovantChangez pour un syndic innovantChangez pour un syndic =
-innovantChangez pour un syndic innovantChangez pour un syndic innovantChang=
-ez pour un syndic innovantChangez pour un syndic innovantChangez pour un sy=
-ndic innovantChangez pour un syndic innovantChangez pour un syndic innovant=
-Changez pour un syndic innovantChangez pour un syndic innovantChangez pour =
-un syndic innovantChangez pour un syndic innovantChangez pour un syndic inn=
-ovantChangez pour un syndic innovantChangez pour un syndic innovantChangez =
-pour un syndic innovantChangez pour un syndic innovantChangez pour un syndi=
-c innovantChangez pour un syndic innovantChangez pour un syndic innovantCha=
-ngez pour un syndic innovantChangez pour un syndic innovantChangez pour un =
-syndic innovantChangez pour un syndic innovantChangez pour un syndic innova=
-ntChangez pour un syndic innovantChangez pour un syndic innovantChangez pou=
-r un syndic innovantChangez pour un syndic innovantChangez pour un syndic i=
-nnovantChangez pour un syndic innovantChangez pour un syndic innovantChange=
-z pour un syndic innovantChangez pour un syndic innovantChangez pour un syn=
-dic innovantChangez pour un syndic innovantChangez pour un syndic innovantC=
-hangez pour un syndic innovantChangez pour un syndic innovantChangez pour u=
-n syndic innovantChangez pour un syndic innovantChangez pour un syndic inno=
-vantChangez pour un syndic innovantChangez pour un syndic innovantChangez p=
-our un syndic innovantChangez pour un syndic innovantChangez pour un syndic=
- innovantChangez pour un syndic innovantChangez pour un syndic innovantChan=
-gez pour un syndic innovantChangez pour un syndic innovantChangez pour un s=
-yndic innovantChangez pour un syndic innovantChangez pour un syndic innovan=
-tChangez pour un syndic innovantChangez pour un syndic innovantChangez pour=
- un syndic innovantChangez pour un syndic innovantChangez pour un syndic in=
-novantChangez pour un syndic innovantChangez pour un syndic innovantChangez=
- pour un syndic innovantChangez pour un syndic innovantChangez pour un synd=
-ic innovantChangez pour un syndic innovantChangez pour un syndic innovant
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600245099&sig=3DLOOMMEBBNEPBDJHO
----------------------------------------------------------------------------=
----
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58040911&iu=3D/4140/ostg.cl=
-ktrk
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTg3MjQzMjIwNTM3MjI0CgoKCjwhRE9DVFlQRSBodG1sIFBVQkxJQyAiLS8vVzNDLy9EVEQgSFRN
+TCA0LjAgVHJhbnNpdGlvbmFsLy9FTiIKImh0dHA6Ly93d3cudzMub3JnL1RSL1JFQy1odG1sNDAv
+bG9vc2UuZHRkIj4KPGh0bWw+CjxoZWFkPgo8dGl0bGU+TW9vblNsaW08L3RpdGxlPgo8bWV0YSBo
+dHRwLWVxdWl2PSJDb250ZW50LVR5cGUiIGNvbnRlbnQ9InRleHQvaHRtbDsgY2hhcnNldD1pc28t
+ODg1OS0xNSI+CjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+CgoqIHtwYWRkaW5nOjBweDttYXJnaW46
+MHB4O30KCjwvc3R5bGU+CjwvaGVhZD4KPGJvZHk+CjxpbWcKc3JjPSJodHRwOi8vcHJpbnQudHJh
+Y2tuZy0zMDA1LTYuZnIvP3NjPTcyOCZhbXA7dD0wJmFtcDtsPTE2OTgzJmFtcDtwPTMwMDUiCndp
+ZHRoPSIxIiBoZWlnaHQ9IjEiIGJvcmRlcj0iMCIgYWx0PSIiPjx0YWJsZSBib3JkZXI9IjAiIGNl
+bGxwYWRkaW5nPSIwIgpjZWxsc3BhY2luZz0iMCIKc3R5bGU9IndpZHRoOjEwMCU7YmFja2dyb3Vu
+ZDojMDAwMDAwO3BhZGRpbmctdG9wOjEwcHg7cGFkZGluZy1sZWZ0OjEwcHg7cGFkZGluZy0KYm90
+dG9tOjQwMHB4OyI+PHRyPgo8dGQgc3R5bGU9ImJvcmRlci1jb2xsYXBzZTpjb2xsYXBzZTsiIGFs
+aWduPSJjZW50ZXIiPgoKCQkJPHRhYmxlIGJvcmRlcj0iMCIgY2VsbHBhZGRpbmc9IjAiIGNlbGxz
+cGFjaW5nPSIwIgpzdHlsZT0id2lkdGg6NjAwcHg7YmFja2dyb3VuZDojMDAwMDAwOyI+Cjx0cj4K
+PHRkIHN0eWxlPSJib3JkZXItY29sbGFwc2U6Y29sbGFwc2U7d2lkdGg6NjAwcHg7Ij4KCgkJCQkJ
+CTxhCmhyZWY9Imh0dHA6Ly9jbGljay50cmFja25nLTMwMDUtNi5mci8/c2M9NzI4JmFtcDt0PTAm
+YW1wO2w9MTY5ODMmYW1wO3A9MzAwNSZhbXA7CnVybD1odHRwOi8vd3d3Lm1vb25zbGltLm5ldC9p
+bmRleDA3LnBocCIKc3R5bGU9ImNvbG9yOiNmZmZmMDA7Zm9udC1zaXplOjIzcHg7dGV4dC1kZWNv
+cmF0aW9uOm5vbmU7Ij48aW1nCnNyYz0iaHR0cDovL3d3dy5zdGMtMzAwNS0xLmZyL21vb25zbGlt
+L21fMDEuZ2lmIgpzdHlsZT0id2lkdGg6NjAwcHg7aGVpZ2h0OjM4N3B4O2Rpc3BsYXk6YmxvY2s7
+Ym9yZGVyOjBweCIgYWx0PSJBdmVjIE1PT04gU0xJTQpwZXJkZXogbWVtZSAxMCBLSUxPUyBlbiBk
+b3JtYW50ICEiPjwvYT4KCgkJCQkJPC90ZD4KCgkJCQk8L3RyPgo8dHI+Cjx0ZCBzdHlsZT0iYm9y
+ZGVyLWNvbGxhcHNlOmNvbGxhcHNlO3dpZHRoOjYwMHB4OyI+CgoJCQkJCQk8YQpocmVmPSJodHRw
+Oi8vY2xpY2sudHJhY2tuZy0zMDA1LTYuZnIvP3NjPTcyOCZhbXA7dD0wJmFtcDtsPTE2OTgzJmFt
+cDtwPTMwMDUmYW1wOwp1cmw9aHR0cDovL3d3dy5tb29uc2xpbS5uZXQvaW5kZXgwNy5waHAiPjxp
+bWcKc3JjPSJodHRwOi8vd3d3LnN0Yy0zMDA1LTEuZnIvbW9vbnNsaW0vbV8wMi5qcGciCnN0eWxl
+PSJ3aWR0aDo2MDBweDtoZWlnaHQ6MjYzcHg7ZGlzcGxheTpibG9jaztib3JkZXI6MHB4IiBhbHQ9
+IiI+PC9hPgoKCQkJCQk8L3RkPgoKCQkJCTwvdHI+CjwvdGFibGU+CjwvdGQ+CgoJPC90cj48L3Rh
+YmxlPgoKPHAgc3R5bGU9ImZvbnQtc2l6ZTowO2hlaWdodDowO292ZXJmbG93OjAiPgpBIGxhIHJl
+Y2hlcmNoZSBkdSBjYWRlYXUgb3JpZ2luYWwgPyBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRl
+ciB1biBub3V2ZWF1CnJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw4PCoCBkw4PCqXBlbnNlciBt
+b2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUKbCdhbm7Dg8KpZS4gQWluc2ksIGdy
+YWNlIMODwqAgbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBk
+ZQp0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w4PCqSwgaW5m
+b3MuLi4gLiBOb3VzIHNvdWhhaXRvbnMKdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2FyZCBh
+ZmluIGRlIHZvdXMgYWlkZXIgw4PCoCBkw4PCqXBlbnNlciBtb2lucyB0b3V0IGVuCmNvbnNvbW1h
+bnQgbWlldXggdG91dGUgbCdhbm7Dg8KpZS5FbnZpZSBkZSB2b3VzIGZhaXJlIHVuZSBiZWF1dMOD
+wqkgw4PCoCBtb2luZHJlCmNvw4MidCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7Dg8KpZSwgZGUgcHLD
+g8Kpdm9pciB2b3MgcHJvY2hhaW5lcyB2YWNhbmNlcyBkJ8ODwql0w4PCqSDDg8KgCm1vaW5kcmUg
+ZnJhaXMgZXQgb3UgZW5jb3JlIGQnaGFiaWxsZXIgdm9zIGVuZmFudHMgw4PCoCBkZXMgYnVkZ2V0
+cyByYWlzb25uYWJsZXMsCmFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDDg8KgIGF1dHJlIG5vcyBw
+cm9wb3NpdGlvbnMgcG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZQpmYWlyZSBkZSBub21icmV1
+c2VzIMODwqljb25vbWllcyB0b3V0IGVuIHZvdXMgZmFpc2FudCBwbGFpc2lyIMODwqAgdG91dGUg
+bGEKZmFtaWxsZS4uLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZv
+dXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdQpzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFs
+aXTDg8KpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw4PCqWUsIGFsb3JzCnBvdXJxdW9pIG5l
+IHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91
+cyB2b3VzCmFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDg8KgIGpvdXIgcsODwqlndWxp
+w4PFoXJlbWVudCBldCB0b3V0ZSBsJ2FubsODwqllLkJlc29pbgpkZSB2b3lhZ2VyLCBkZSB2b3Vz
+IGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxs
+ZXVyCnJhcHBvcnQgcXVhbGl0w4PCqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsODwqllLCBh
+bG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4KcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9w
+b3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzCm1ldHRvbnMgw4PC
+oCBqb3VyIHLDg8KpZ3VsacODxaFyZW1lbnQgZXQgdG91dGUgbCdhbm7Dg8KpZS5BaW5zaSwgZ3LD
+g8KiY2Ugw4PCoCBub3VzLCB2b3VzCmFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVy
+IGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsCm9wcG9ydHVuaXTDg8KpLCBp
+bmZvcy4uLiAuQSBsYSByZWNoZXJjaGUgZHUgY2FkZWF1IG9yaWdpbmFsID8gTm91cyBzb3VoYWl0
+b25zCnZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOD
+wqAgZMODwqlwZW5zZXIgbW9pbnMgdG91dCBlbgpjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5u
+w4PCqWUuIEFpbnNpLCBncmFjZSDDg8KgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsCnBv
+dXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwgb3Bw
+b3J0dW5pdMODwqksIGluZm9zLi4uCiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBu
+b3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw4PCoApkw4PCqXBlbnNlciBtb2lucyB0
+b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7Dg8KpZS5FbnZpZSBkZSB2b3VzIGZh
+aXJlIHVuZQpiZWF1dMODwqkgw4PCoCBtb2luZHJlIGNvw4MidCB0b3V0IGF1IGxvbmcgZGUgbCdh
+bm7Dg8KpZSwgZGUgcHLDg8Kpdm9pciB2b3MgcHJvY2hhaW5lcwp2YWNhbmNlcyBkJ8ODwql0w4PC
+qSDDg8KgIG1vaW5kcmUgZnJhaXMgZXQgb3UgZW5jb3JlIGQnaGFiaWxsZXIgdm9zIGVuZmFudHMg
+w4PCoCBkZXMKYnVkZ2V0cyByYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDD
+g8KgIGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMgcG91cgp2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBm
+YWlyZSBkZSBub21icmV1c2VzIMODwqljb25vbWllcyB0b3V0IGVuIHZvdXMgZmFpc2FudApwbGFp
+c2lyIMODwqAgdG91dGUgbGEgZmFtaWxsZS4uLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMg
+aGFiaWxsZXIsIGRlIHZvdXMKY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxl
+dXIgcmFwcG9ydCBxdWFsaXTDg8KpIHByaXggdG91dCBhdSBsb25nIGRlCmwnYW5uw4PCqWUsIGFs
+b3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bv
+c2l0aW9ucwpxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDg8Kg
+IGpvdXIgcsODwqlndWxpw4PFoXJlbWVudCBldCB0b3V0ZQpsJ2FubsODwqllLkJlc29pbiBkZSB2
+b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3UK
+c29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w4PCqSBwcml4IHRvdXQgYXUgbG9uZyBk
+ZSBsJ2FubsODwqllLCBhbG9ycwpwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBw
+YXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cwphZHJlc3NvbnMsIGV0IHF1ZSBu
+b3VzIG1ldHRvbnMgw4PCoCBqb3VyIHLDg8KpZ3VsacODxaFyZW1lbnQgZXQgdG91dGUgbCdhbm7D
+g8KpZS5BaW5zaSwKZ3LDg8KiY2Ugw4PCoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBw
+b3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdApwcm9kdWl0IGEgYmFzIGNvdXQsIG9w
+cG9ydHVuaXTDg8KpLCBpbmZvcy4uLiAuCjwvcD4KCgoKPC9ib2R5Pgo8L2h0bWw+CgoKCgoKLS0K
+ClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20v
+X2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxODcyNDMyMjA1MzcyMjQKCgoKCgoKe35BSjg0
+NjQxODY2MjUxODcyNDMyMjA1MzcyMjR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gdGhl
+IGxhdGVzdC0tVmlzdWFsIFN0dWRpbyAyMDEyLCBTaGFyZVBvaW50IDIwMTMsIFNRTCAyMDEyLCBt
+b3JlIQpEaXNjb3ZlciB0aGUgZWFzeSB3YXkgdG8gbWFzdGVyIGN1cnJlbnQgYW5kIHByZXZpb3Vz
+IE1pY3Jvc29mdCB0ZWNobm9sb2dpZXMKYW5kIGFkdmFuY2UgeW91ciBjYXJlZXIuIEdldCBhbiBp
+bmNyZWRpYmxlIDEsNTAwKyBob3VycyBvZiBzdGVwLWJ5LXN0ZXAKdHV0b3JpYWwgdmlkZW9zIHdp
+dGggTGVhcm5EZXZOb3cuIFN1YnNjcmliZSB0b2RheSBhbmQgc2F2ZSEKaHR0cDovL3B1YmFkcy5n
+LmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQwOTExJml1PS80MTQwL29zdGcuY2xr
+dHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1k
+ZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vm
+b3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3Bp
+LWRldmVsLWdlbmVyYWwK

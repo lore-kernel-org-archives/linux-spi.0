@@ -1,10 +1,11 @@
-From: Manuel Reimer <Manuel.Spam-Xv0xCBoRcaZkYx7DZD8BGw@public.gmane.org>
-Subject: How to use spidev on IMX233 platform?
-Date: Mon, 02 Sep 2013 18:31:41 +0200
-Message-ID: <l02ee0$e7v$1@ger.gmane.org>
+From: "Touslesheros par neezz" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?Tm91dmVsbGUgY29sbGVjdGlvbiBwb3VyIGxhIHJlbnRyw6llIGRlcyBow6lyb3M=?=
+Date: Tue, 03 Sep 2013 02:04:18 +0100
+Message-ID: <0.0.1ED.7CE.1CEA84183FC8112.0@mta40.pur3.net>
+Reply-To: Touslesheros par neezz <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,31 +18,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
-
-can someone please help me with using SPI via spidev on IMX233 
-(Olinuxino Maxi)?
-
-I tried to enable spidev as described here:
-
-http://pragungoyal.com/?/blog/olinuxino_spi_part1/
-
-I get a /dev/spidev with this, but it has a pretty crappy name 
-(/dev/spidev72766.1).
-
-MOSI and SCK seem to do it's job but I can't get CS to do anything. It 
-always keeps "high" without ever going "low" to trigger me connected device.
-
-Thank you very much in advance.
-
-Greetings,
-
-Manuel
-
-
-------------------------------------------------------------------------------
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=58040911&iu=/4140/ostg.clktrk
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTg3NzAzMjIwNTM3MjM0CgoKCgoKKFBhcnJhaW5hZ2UpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1t
+ZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1mNWYxYjExNzI1MWI2YzhjMDViZjhhYzljNWI4YjFh
+NQoKKERlc3RvY2thZ2UpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhw
+P3BhcmFtcz05Y2YzNjg3ZWM4OWNlZjY1ZWZmMTkwNTU0ZGMxZTU5NAoKKE5vdXZlbGxlIGNvbGxl
+Y3Rpb24gcG91ciBsYSByZW50csOpZSBkZXMgSMOpcm9zKToKaHR0cDovL210cmMxLmRpZ2l0YWwt
+bWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9NTIwMzJmNjkyYTM1NTc2YmE2ZTYzNTZlYTE2MWY0
+MmUKCihKZSBmb25jZSAhKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBo
+cD9wYXJhbXM9Yzc2MGYwYWNjNGUzYmFhMTI2YTM1MTNjYzUxM2Y2MmQKCihKdXNxdSfDoCAtNzAl
+IHN1ciBsZXMgbm91dmVhdXTDqXMgZGUgbGEgYm91dGlxdWUgZGVzdG9ja2FnZSk6Cmh0dHA6Ly9t
+dHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTlhMTg4MjhlZmMxMDE4ODEz
+Yzc3NjhkNDFmOWEzYjM5CgooTWlubmllKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNv
+bS9jbGljLnBocD9wYXJhbXM9YWQ2OTBmNzVlYTQzNTUwODFmOTA5ZmViMjI0MmMyYjMKCihKJ2Vu
+IHByb2ZpdGUgISk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFy
+YW1zPTA3OTgxYmNhMTU4M2E3YmVhZGFkMTkwNjNhNzExYjYxCgoKCgoKCgotLQoKUG91ciB2b3Vz
+IGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0cDovL2Eub3B0aW5jYWtlLmNvbS9fYWN0L2dldF9y
+Y3IucGhwP0FKODQ2NDE4NjYyNTE4NzcwMzIyMDUzNzIzNAoKCgoKCgp7fkFKODQ2NDE4NjYyNTE4
+NzcwMzIyMDUzNzIzNH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMZWFybiB0aGUgbGF0ZXN0LS1W
+aXN1YWwgU3R1ZGlvIDIwMTIsIFNoYXJlUG9pbnQgMjAxMywgU1FMIDIwMTIsIG1vcmUhCkRpc2Nv
+dmVyIHRoZSBlYXN5IHdheSB0byBtYXN0ZXIgY3VycmVudCBhbmQgcHJldmlvdXMgTWljcm9zb2Z0
+IHRlY2hub2xvZ2llcwphbmQgYWR2YW5jZSB5b3VyIGNhcmVlci4gR2V0IGFuIGluY3JlZGlibGUg
+MSw1MDArIGhvdXJzIG9mIHN0ZXAtYnktc3RlcAp0dXRvcmlhbCB2aWRlb3Mgd2l0aCBMZWFybkRl
+dk5vdy4gU3Vic2NyaWJlIHRvZGF5IGFuZCBzYXZlIQpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xp
+Y2submV0L2dhbXBhZC9jbGs/aWQ9NTgwNDA5MTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVy
+YWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApo
+dHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2Vu
+ZXJhbAo=

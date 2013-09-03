@@ -1,12 +1,12 @@
-From: "=?utf-8?Q?Rappel?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?R=C3=A9f_Z15XB992:_commande_en_attente?=
-Date: Tue, 03 Sep 2013 02:28:36 +0000
-Message-ID: <1043=03841292-31dd-4462-8217-e15272be2979=4=3266566@clicks.conso-deal.com>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: "Sales Finances" <contact-zIwo4Cd8WZRQFI55V6+gNQ@public.gmane.org>
+Subject: =?UTF-8?Q?Regroupez_vos_cr=C3=A9dits_en_1_seul?=
+Date: Tue, 03 Sep 2013 09:38:57 +0000 (CET)
+Message-ID: <130903093857.-3293154300001272@ocfm42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,36 +18,18 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFSw6lmIFoxNVhCOTky
-OiBjb21tYW5kZSBlbiBhdHRlbnRlCgpodHRwOi8vY2xpY2tzLmNvbnNvLWRlYWwuY29tL2MvYXMv
-a3g0L2hwWGJ5ZkR6dmhqY291b2p4MVYtQWEvYi9rbFFMLzUwMTQ3YWUzCgoKVm91cyByZWNldmV6
-IGNlIG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQoZSkg
-YXZlYyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IHN1
-ciBsZSBzaXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUgYSBmYWl0IGwnb2JqZXQgZCd1bmUgZMOp
-Y2xhcmF0aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOpcm8gMTU0NTE0OC4gQ29u
-Zm9ybcOpbWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5mb3JtYXRpcXVlIGV0IExp
-YmVydMOpc8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBleGVyY2VyIHZvdHJlIGRy
-b2l0IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gb3UgZW5jb3Jl
-IGRlIHN1cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29ubmVsbGVzIHZpYSBsZSBs
-aWVuIHN1aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBkw6lzYWJvbm5lciwgbWVy
-Y2kgZGUgY2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8KQ29uc29kZWFsIGVzdCB1
-bmUgbmV3c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kgTmF0
-ZXhvLCBxdWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVuIMOp
-dGFudCBhYm9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZyZXog
-bGUgdG9wIGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRvdXMg
-dm9zIHRyYXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMgZXQg
-dmVudGVzIHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4gCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQpMZWFybiB0aGUgbGF0ZXN0LS1WaXN1YWwgU3R1ZGlvIDIwMTIsIFNoYXJlUG9pbnQgMjAxMywg
-U1FMIDIwMTIsIG1vcmUhCkRpc2NvdmVyIHRoZSBlYXN5IHdheSB0byBtYXN0ZXIgY3VycmVudCBh
-bmQgcHJldmlvdXMgTWljcm9zb2Z0IHRlY2hub2xvZ2llcwphbmQgYWR2YW5jZSB5b3VyIGNhcmVl
-ci4gR2V0IGFuIGluY3JlZGlibGUgMSw1MDArIGhvdXJzIG9mIHN0ZXAtYnktc3RlcAp0dXRvcmlh
-bCB2aWRlb3Mgd2l0aCBMZWFybkRldk5vdy4gU3Vic2NyaWJlIHRvZGF5IGFuZCBzYXZlIQpodHRw
-Oi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NTgwNDA5MTEmaXU9LzQx
-NDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
-aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+(http://ocfm42.com/b5nw0hz4cb0ji5la1o/index0.html)
+(http://ocfm42.com/0nnpihjtczdorpsafq/index1.html)
+(http://ocfm42.com/trnzfhmocawjqad5cj/index2.html)
+(http://ocfm42.com/24nmkhl3cjeoc3y5xg/index3.html)
+(http://ocfm42.com/vrmif1yjqy4jhkdh5q/index4.html)
+(http://ocfm42.com/k4mkk15aqukomuyhro/index5.html)
+(http://ocfm42.com/e5ma01gzq5tjg4lmpg/index6.html)
+(http://ocfm42.com/unmvi1nbqxso1zsmmj/index7.html)
+------------------------------------------------------------------------------
+Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
+Discover the easy way to master current and previous Microsoft technologies
+and advance your career. Get an incredible 1,500+ hours of step-by-step
+tutorial videos with LearnDevNow. Subscribe today and save!
+http://pubads.g.doubleclick.net/gampad/clk?id=58040911&iu=/4140/ostg.clktrk

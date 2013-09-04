@@ -1,176 +1,84 @@
-From: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH v3 1/2]spi: DUAL and QUAD support
-Date: Wed, 4 Sep 2013 15:07:58 +0800
-Message-ID: <CAHSAbzOCRhpxMzQRtD2po3LrmNExscoYESPPi_-jnZQaEBuFTg@mail.gmail.com>
+Date: Wed, 4 Sep 2013 10:45:29 +0100
+Message-ID: <20130904094529.GO3084@sirena.org.uk>
 References: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
-	<CA+7tXih4XkhZ8xGcaUdGU6O4ZN1ZLfqyjb2UEKsRxsZBA+=DZw@mail.gmail.com>
+ <CA+7tXih4XkhZ8xGcaUdGU6O4ZN1ZLfqyjb2UEKsRxsZBA+=DZw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Poddar,
-	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
-To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CA+7tXih4XkhZ8xGcaUdGU6O4ZN1ZLfqyjb2UEKsRxsZBA+=DZw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============8730847346797631172=="
+Cc: "spi-devel-general@lists.sourceforge.net"
+ <spi-devel-general@lists.sourceforge.net>, "Poddar,
+ Sourav" <sourav.poddar@ti.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ wangyuhang <wangyuhang2014@gmail.com>, "Gupta, Pekon" <pekon@ti.com>
+To: Trent Piepho <tpiepho@gmail.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <CA+7tXih4XkhZ8xGcaUdGU6O4ZN1ZLfqyjb2UEKsRxsZBA+=DZw@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-2013/9/4 Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> On Sun, Aug 11, 2013 at 3:15 AM, wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> fix the previous patch some mistake below:
->
-> This isn't a very good commit message.  "the previous patch" will have
-> no meaning in the kernel git repo.  The rest of the message only
-> describes changes since a previous version of the patch and not the
-> actual patch in full.
->
->>
->> +               /* Device DUAL/QUAD mode */
->> +               prop = of_get_property(nc, "spi-tx-nbits", &len);
->
-> Why not use of_property_read_u32() here?
->
->> +               if (!prop || len < sizeof(*prop)) {
->> +                       dev_err(&master->dev, "%s has no 'spi-tx-nbits' property\n",
->> +                               nc->full_name);
->> +                       spi_dev_put(spi);
->> +                       continue;
->
+
+--===============8730847346797631172==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="6kpOI20Kt7FNSDww"
+Content-Disposition: inline
+
+
+--6kpOI20Kt7FNSDww
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Sep 03, 2013 at 08:24:08PM -0700, Trent Piepho wrote:
+
 > So if no spi-tx-nbits property is supplied, the device is rejected and
 > the loop continues to the next device entry?  This means ALL EXISTING
 > DEVICE TREES with SPI devices will be rejected, since none of them
 > have this new property!  Was this patch tested at all with any system
 > before being accepted?
->
-This part has been fixed in patch[commit
-id:a822e99c70f448c4068ea85bb195dac0b2eb3afe]
 
->> +       /* check mode to prevent that DUAL and QUAD set at the same time
->> +        */
->> +       if (((spi->mode & SPI_TX_DUAL) && (spi->mode & SPI_TX_QUAD)) ||
->> +               ((spi->mode & SPI_RX_DUAL) && (spi->mode & SPI_RX_QUAD))) {
->> +               dev_err(&spi->dev,
->> +               "setup: can not select dual and quad at the same time\n");
->> +               return -EINVAL;
->
-> This test can be done with fewer operations as:
-> if ((spi->mode & (SPI_TX_DUAL|SPI_TX_QUAD)) == (SPI_TX_DUAL|SPI_TX_QUAD) ||
->     (spi->mode & (SPI_RX_DUAL|SPI_RX_QUAD)) == (SPI_RX_DUAL|SPI_RX_QUAD)) {
->
->
->> +       }
->> +       /* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
->> +        */
->> +       if ((spi->mode & SPI_3WIRE) && (spi->mode &
->> +               (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)))
->> +               return -EINVAL;
->
-> No dev_err message for this possibility?  What's different than the
-> previous check that does produce a message?
->
-OK, should be added. Thanks.
+This particular issue is already fixed properly anyway.
 
->>         /* help drivers fail *cleanly* when they need options
->>          * that aren't supported with their current master
->>          */
-> Following this comment is the code:
->         bad_bits = spi->mode & ~spi->master->mode_bits;
->         if (bad_bits) {
->                 dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
->                         bad_bits);
->                 return -EINVAL;
->         }
->
-> Won't this always trigger for anything that sets one of the dual or quad bits?
->
-I can't get your idea clearly. Please provide more infomation.
+--6kpOI20Kt7FNSDww
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
->> @@ -1370,12 +1428,50 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
->>         /**
->>          * Set transfer bits_per_word and max speed as spi device default if
->>          * it is not set for this transfer.
->> +        * Set transfer tx_nbits and rx_nbits as single transfer default
->> +        * (SPI_NBITS_SINGLE) if it is not set for this transfer.
->>          */
->>         list_for_each_entry(xfer, &message->transfers, transfer_list) {
->>                 if (!xfer->bits_per_word)
->>                         xfer->bits_per_word = spi->bits_per_word;
->>                 if (!xfer->speed_hz)
->>                         xfer->speed_hz = spi->max_speed_hz;
->> +               if (xfer->tx_buf && !xfer->tx_nbits)
->> +                       xfer->tx_nbits = SPI_NBITS_SINGLE;
->> +               if (xfer->rx_buf && !xfer->rx_nbits)
->> +                       xfer->rx_nbits = SPI_NBITS_SINGLE;
->> +               /* check transfer tx/rx_nbits:
->> +                * 1. keep the value is not out of single, dual and quad
->> +                * 2. keep tx/rx_nbits is contained by mode in spi_device
->> +                * 3. if SPI_3WIRE, tx/rx_nbits should be in single
->> +                */
->> +               if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
->> +                       xfer->tx_nbits != SPI_NBITS_DUAL &&
->> +                       xfer->tx_nbits != SPI_NBITS_QUAD)
->> +                       return -EINVAL;
->> +               if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
->> +                       !(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
->> +                       return -EINVAL;
->> +               if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
->> +                       !(spi->mode & SPI_TX_QUAD))
->> +                       return -EINVAL;
->> +               if ((spi->mode & SPI_3WIRE) &&
->> +                       (xfer->tx_nbits != SPI_NBITS_SINGLE))
->> +                       return -EINVAL;
->> +               /* check transfer rx_nbits */
->> +               if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
->> +                       xfer->rx_nbits != SPI_NBITS_DUAL &&
->> +                       xfer->rx_nbits != SPI_NBITS_QUAD)
->> +                       return -EINVAL;
->> +               if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
->> +                       !(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
->> +                       return -EINVAL;
->> +               if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
->> +                       !(spi->mode & SPI_RX_QUAD))
->> +                       return -EINVAL;
->> +               if ((spi->mode & SPI_3WIRE) &&
->> +                       (xfer->rx_nbits != SPI_NBITS_SINGLE))
->> +                       return -EINVAL;
->>         }
->
-> What a lot of code to check the transfer bits.  It really needs this much?
->
-This part is also corrected in patch [commit
-id:db90a44177ac39fc22b2da5235b231fccdd4c673].
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.21 (GNU/Linux)
 
->> @@ -511,6 +524,11 @@ struct spi_transfer {
->>         dma_addr_t      rx_dma;
->>
->>         unsigned        cs_change:1;
->> +       u8              tx_nbits;
->> +       u8              rx_nbits;
->> +#define        SPI_NBITS_SINGLE        0x01 /* 1bit transfer */
->> +#define        SPI_NBITS_DUAL          0x02 /* 2bits transfer */
->> +#define        SPI_NBITS_QUAD          0x04 /* 4bits transfer */
->
-> These fields increase the size of a spi_transfer by 4 bytes.  If you
-> used bitfields instead it wouldn't increase the size at all since
-> there are still 7 bits left after cs_change.
-Yes, it will increase the size by 4 bytes, but using bitfields here
-will make it logically weird. Bitfields may mean that really have the
-restriction of number of bits. If just for saving memory, then what
-about the other members such as bits_per_world, delay_usecs.
+iQIcBAEBAgAGBQJSJwE2AAoJELSic+t+oim9tYgQAIKN67VNInqRIYw/lRd0r+X8
+mcC0MC6/0mZt5yYnQvvJXklG7LLngjKtqV0Gy7G4NK+TN/aL85vFIjvMWF/9yxfC
+G/J5DgTq18hHLrj4hS7//jjpkgzJkVTTYzEVt+1ZWPtDoyIUrOna8Ygb8wSHwfX+
+6igKYvEVDgA5vcE3Xdyh07Eg7hQX0A0tn68ZTypMVndslLBGqQCBm9bUOGL468j1
+33zwxeg/W20rBVVU4AFeOAQtPoEzqaeod8lrDS9blmaJ46nDP8og4d2PixQt8uHd
+0QbmWWQaup6n2NHDtkaxLMtoQWuOI8Rt8j38L2StTXnG92816HGYAtOZ/Y9lTeRa
+bGBY62GoCUt38uQgZU/JsCAfcWhOlpkETp7XvehTaYGlnBO83izgoSlVakAkJRmW
+YTITmfqEHVu3yg/VD63jE7Z3zhKn6LsWKXJEKppZvAYJsOy+/jad17PXhtgYcYXz
+OlalxoyTbI29HHIt7MgcFp9Cth1oKyCVNTWriUHDYYPoS3kv/PpuPCIN4WcD1yWB
+aGMkg+eVsibnD4+uC+uCzj92DyvaXweWMtVTtLXiZNlHDptSEvtS/jlhrzgcRK/H
+5A1u5EEXUflj9DxAT5dSGwddhUwAVJVrNtyIZvhqMNwTobYCEG74iSHEXFebLhWE
+3Ksjwar6SdeBkPqbUGkn
+=Tlc+
+-----END PGP SIGNATURE-----
 
-------------------------------------------------------------------------------
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=58040911&iu=/4140/ostg.clktrk
+--6kpOI20Kt7FNSDww--
+
+
+--===============8730847346797631172==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============8730847346797631172==--

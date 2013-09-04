@@ -1,13 +1,20 @@
-From: "IdealDouche" <lisa@a.optincake.com>
-Subject: Remplacez votre baignoire par une douche sur-mesure en moins de 24h
-Date: Wed, 04 Sep 2013 06:09:23 +0100
-Message-ID: <0.0.13D.C06.1CEA92CEB8A133A.0@mta152.pur3.net>
-Reply-To: IdealDouche <lisa@a.optincake.com>
+From: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 1/2]spi: DUAL and QUAD support
+Date: Wed, 4 Sep 2013 15:07:58 +0800
+Message-ID: <CAHSAbzOCRhpxMzQRtD2po3LrmNExscoYESPPi_-jnZQaEBuFTg@mail.gmail.com>
+References: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
+	<CA+7tXih4XkhZ8xGcaUdGU6O4ZN1ZLfqyjb2UEKsRxsZBA+=DZw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Poddar,
+	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
+To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CA+7tXih4XkhZ8xGcaUdGU6O4ZN1ZLfqyjb2UEKsRxsZBA+=DZw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,129 +25,152 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTg4MDkzMjIwNTM3MjY0CgoKCgooVW4gY29uZGVuc8OpIGQnaW5ub3ZhdGlvbnMgYXUgc2Vydmlj
-ZSBkZSBsYSBzaW1wbGljaXTDqS4uLik6Cmh0dHA6Ly9iYXNlY28uc29sdXRpb24ud2Vib3JhbWEu
-ZnIvZmNnaS1iaW4vcGVyZm9ybWFuY2UuZmNnaT9JRD0zMTA3MDMmQT0xJkw9OTc4CjA1NyZDPTQx
-NDQzJmY9MTAmUD00OTYyNiZUPUUmVz0xJkNSRUE9MTU4MTkmVVJMPWh0dHA6Ly93d3cuaW5kZXBl
-bmRhbmNlcm95YWxlLmNvCm0vaWRlYWwtZG91Y2hlLz91dG1fc291cmNlPWJhc2VjbyZ1dG1fbWVk
-aXVtPWVtYWlsJnV0bV9jYW1wYWlnbj1pZGVhbGRvdWNoZSZlbWFpCmw9c3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgooSWRlYWxEb3VjaGUsIHNpbXBsZSDDoCBpbnN0YWxs
-ZXIsIHNpbXBsZSDDoCB1dGlsaXNlciAhKToKaHR0cDovL2Jhc2Vjby5zb2x1dGlvbi53ZWJvcmFt
-YS5mci9mY2dpLWJpbi9wZXJmb3JtYW5jZS5mY2dpP0lEPTMxMDcwMyZBPTEmTD05NzgKMDU3JkM9
-NDE0NDMmZj0xMCZQPTQ5NjI2JlQ9RSZXPTEmQ1JFQT0xNTgxOSZVUkw9aHR0cDovL3d3dy5pbmRl
-cGVuZGFuY2Vyb3lhbGUuY28KbS9pZGVhbC1kb3VjaGUvP3V0bV9zb3VyY2U9YmFzZWNvJnV0bV9t
-ZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPWlkZWFsZG91Y2hlJmVtYWkKbD1zcGktZGV2ZWwtZ2Vu
-ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCihsZWZ0LmdpZik6Cmh0dHA6Ly9iYXNlY28uc29s
-dXRpb24ud2Vib3JhbWEuZnIvZmNnaS1iaW4vcGVyZm9ybWFuY2UuZmNnaT9JRD0zMTA3MDMmQT0x
-Jkw9OTc4CjA1NyZDPTQxNDQzJmY9MTAmUD00OTYyNiZUPUUmVz0xJkNSRUE9MTU4MTkmVVJMPWh0
-dHA6Ly93d3cuaW5kZXBlbmRhbmNlcm95YWxlLmNvCm0vaWRlYWwtZG91Y2hlLz91dG1fc291cmNl
-PWJhc2VjbyZ1dG1fbWVkaXVtPWVtYWlsJnV0bV9jYW1wYWlnbj1pZGVhbGRvdWNoZSZlbWFpCmw9
-c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgooUHJhdGlxdWUgZXQgMTAw
-JSBzw6ljdXJpc8OpKToKaHR0cDovL2Jhc2Vjby5zb2x1dGlvbi53ZWJvcmFtYS5mci9mY2dpLWJp
-bi9wZXJmb3JtYW5jZS5mY2dpP0lEPTMxMDcwMyZBPTEmTD05NzgKMDU3JkM9NDE0NDMmZj0xMCZQ
-PTQ5NjI2JlQ9RSZXPTEmQ1JFQT0xNTgxOSZVUkw9aHR0cDovL3d3dy5pbmRlcGVuZGFuY2Vyb3lh
-bGUuY28KbS9pZGVhbC1kb3VjaGUvP3V0bV9zb3VyY2U9YmFzZWNvJnV0bV9tZWRpdW09ZW1haWwm
-dXRtX2NhbXBhaWduPWlkZWFsZG91Y2hlJmVtYWkKbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQKCgpJZGVhbERvdWNoZSByZW1wbGFjZSB2b3RyZSBhbmNpZW5uZSBiYWln
-bm9pcmUgb3UgZG91Y2hlIGVuIG1vaW5zIGQndW5lCmpvdXJuw6llLgoKU2EgY29uY2VwdGlvbiBp
-bm5vdmFudGUgMTAwJSBtb2R1bGFibGUgcGVybWV0IHVuZSBpbnN0YWxsYXRpb24gc3VyLW1lc3Vy
-ZQpxdWVsbGUgcXVlIHNvaXQgbGEgY29uZmlndXJhdGlvbiBkZSB2b3RyZSBzYWxsZSBkZSBiYWlu
-LgpTZXMgYXRvdXRzIDoKKiBTdXItbWVzdXJlCiogU2nDqGdlIGVyZ29ub21pcXVlIHJhYmF0dGFi
-bGUKKiBTb2wgYW50aWTDqXJhcGFudAoqIFNldWlsIHRyw6hzIGJhcwoqIEJhcnJlIGRlIG1haW50
-aWVuCgooSmUgZGVtYW5kZSBtb24gZGV2aXMpOgpodHRwOi8vYmFzZWNvLnNvbHV0aW9uLndlYm9y
-YW1hLmZyL2ZjZ2ktYmluL3BlcmZvcm1hbmNlLmZjZ2k/SUQ9MzEwNzAzJkE9MSZMPTk3OAowNTcm
-Qz00MTQ0MyZmPTEwJlA9NDk2MjYmVD1FJlc9MSZDUkVBPTE1ODE5JlVSTD1odHRwOi8vd3d3Lmlu
-ZGVwZW5kYW5jZXJveWFsZS5jbwptL2lkZWFsLWRvdWNoZS8/dXRtX3NvdXJjZT1iYXNlY28mdXRt
-X21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249aWRlYWxkb3VjaGUmZW1haQpsPXNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKCk4nYXR0ZW5kZXogcGx1cy4uLgpERU1BTkRF
-WiBVTiBERVZJUyBHUkFUVUlUIEVUIFBFUlNPTk5BTElTw4kKSWRlYWxEb3VjaGUgZXN0IHVuZSBt
-YXJxdWUgZHUgZ3JvdXBlIEluZMOpcGVuZGFuY2UgUm95YWxlLgoKTWVtYnJlIGZvbmRhdGV1ciBk
-ZSBsJ0luc3RpdHV0IGR1IE1haW50aWVuIMOgIERvbWljaWxlLgpDZXR0ZSByZWNvbm5haXNzYW5j
-ZSBkZXMgbWlsaWV1eCBwcm9mZXNzaW9ubmVscyB0cmFkdWl0IGwnZXhjZWxsZW5jZSBkZSBub3Ry
-ZQpyw6lwdXRhdGlvbiwgcGx1cyBkZSAyMCAwMDAgY2xpZW50cyBub3VzIGZvbnQgY29uZmlhbmNl
-LgoKTGVzIDMgZW5nYWdlbWVudHMgZGUgcXVhbGl0w6kgZCdJZGVhbERvdWNoZSA6CjEuIE3DqWRh
-aWxsw6kgZCdPciBhdSBDb25jb3VycyBMw6lwaW5lIDIwMTIKMi4gVW5lIGdhcmFudGllIGV1cm9w
-w6llbm5lIGNvbnN0cnVjdGV1ciwgMiBhbnMgc3VyIGxlcyBwacOoY2VzIGV0IGxhIG1haW4KZCfF
-k3V2cmUgZXQgMTAgYW5zIHN1ciBsZXMgcGFubmVhdXggZXQgcmVjZXZldXJzICEKMy4gVW4gcsOp
-c2VhdSBkZSBwbHVzIGRlIDEyMCB0ZWNobmljaWVucyBjb25zZWlscyBldCBpbnN0YWxsYXRldXJz
-IGRlCnByb3hpbWl0w6kgc3VyIGwnZW5zZW1ibGUgZHUgdGVycml0b2lyZSBmcmFuw6dhaXMuCgoo
-cmlnaHQuZ2lmKToKaHR0cDovL2Jhc2Vjby5zb2x1dGlvbi53ZWJvcmFtYS5mci9mY2dpLWJpbi9w
-ZXJmb3JtYW5jZS5mY2dpP0lEPTMxMDcwMyZBPTEmTD05NzgKMDU3JkM9NDE0NDMmZj0xMCZQPTQ5
-NjI2JlQ9RSZXPTEmQ1JFQT0xNTgxOSZVUkw9aHR0cDovL3d3dy5pbmRlcGVuZGFuY2Vyb3lhbGUu
-Y28KbS9pZGVhbC1kb3VjaGUvP3V0bV9zb3VyY2U9YmFzZWNvJnV0bV9tZWRpdW09ZW1haWwmdXRt
-X2NhbXBhaWduPWlkZWFsZG91Y2hlJmVtYWkKbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQKCihmb290ZXIuZ2lmKToKaHR0cDovL2Jhc2Vjby5zb2x1dGlvbi53ZWJvcmFt
-YS5mci9mY2dpLWJpbi9wZXJmb3JtYW5jZS5mY2dpP0lEPTMxMDcwMyZBPTEmTD05NzgKMDU3JkM9
-NDE0NDMmZj0xMCZQPTQ5NjI2JlQ9RSZXPTEmQ1JFQT0xNTgxOSZVUkw9aHR0cDovL3d3dy5pbmRl
-cGVuZGFuY2Vyb3lhbGUuY28KbS9pZGVhbC1kb3VjaGUvP3V0bV9zb3VyY2U9YmFzZWNvJnV0bV9t
-ZWRpdW09ZW1haWwmdXRtX2NhbXBhaWduPWlkZWFsZG91Y2hlJmVtYWkKbD1zcGktZGV2ZWwtZ2Vu
-ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCgouLiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91
-cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91CnNvcnRpciBhdSBtZWls
-bGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9y
-cwpwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3Np
-dGlvbnMgcXVlIG5vdXMgdm91cwphZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91
-ciByw6lndWxpw6hyZW1lbnQgZXQgdG91dGUKbCdhbm7DqWUuRW52aWUgZGUgdm91cyBmYWlyZSB1
-bmUgYmVhdXTDqSDDoCBtb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9uZyBkZQpsJ2FubsOpZSwgZGUg
-cHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqSDDoCBtb2luZHJlIGZyYWlz
-IGV0IG91CmVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRnZXRzIHJhaXNv
-bm5hYmxlcywgYWxvcnMgY29uc3VsdGVyCmRlIHRlbXBzIMOgIGF1dHJlIG5vcyBwcm9wb3NpdGlv
-bnMgcG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZQpub21icmV1c2VzIMOpY29u
-b21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQgcGxhaXNpciDDoCB0b3V0ZSBsYQpmYW1pbGxlLkJl
-c29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBt
-YW5nZXIgb3UKc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1
-IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzCnBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBv
-ZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzCmFkcmVzc29ucywgZXQg
-cXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOp
-ZS4uCk5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4g
-ZGUgdm91cyBhaWRlciDDoApkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4
-IHRvdXRlIGwnYW5uw6llLkEgbGEgcmVjaGVyY2hlIGR1CmNhZGVhdSBvcmlnaW5hbCA/IE5vdXMg
-c291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4gZGUKdm91cyBh
-aWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwn
-YW5uw6llLgpBaW5zaSwgZ3JhY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91
-dm9pciBwcm9maXRlciBkZSB0b3V0IGNlCnF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBv
-cnR1bml0w6ksIGluZm9zLi4uIEFpbnNpLCBncsOiY2Ugw6Agbm91cywKdm91cyBhbGxleiBwYXIg
-ZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJh
-cwpjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIC4uLi4gQmVzb2luIGRlIHZveWFnZXIsIGRl
-IHZvdXMgaGFiaWxsZXIsIGRlCnZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUg
-bWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUKbG9uZyBkZSBsJ2FubsOpZSwg
-YWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJv
-cG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOg
-IGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkVudmllIGRlIHZvdXMgZmFp
-cmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZQpjb8O7dCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUs
-IGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw6l0w6kKw6AgbW9pbmRyZSBm
-cmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDDoCBkZXMgYnVkZ2V0cwpy
-YWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBub3MgcHJvcG9z
-aXRpb25zIHBvdXIgdm91cwpwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJldXNlcyDD
-qWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50CnBsYWlzaXIgw6AgdG91dGUgbGEgZmFtaWxs
-ZS5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cwpjaGF1c3Nlciwg
-ZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91
-dCBhdSBsb25nCmRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0
-aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMs
-IGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdh
-bm7DqWUuLiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1CnJlZ2FyZCBh
-ZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBt
-aWV1eCB0b3V0ZQpsJ2FubsOpZS5BIGxhIHJlY2hlcmNoZSBkdSBjYWRlYXUgb3JpZ2luYWwgPyBO
-b3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlcgp1biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZv
-dXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudAptaWV1eCB0b3V0
-ZSBsJ2FubsOpZS4gQWluc2ksIGdyYWNlIMOgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUs
-IHBvdXZvaXIKcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwg
-b3Bwb3J0dW5pdMOpLCBpbmZvcy4uLgpBaW5zaSwgZ3LDomNlIMOgIG5vdXMsIHZvdXMgYWxsZXog
-cGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZQpxdWkgZXN0IHByb2R1aXQg
-YSBiYXMgY291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuCgoKCgoKLS0KClBvdXIgdm91cyBk
-w6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRfcmNy
-LnBocD9BSjg0NjQxODY2MjUxODgwOTMyMjA1MzcyNjQKCgoKCgoKe35BSjg0NjQxODY2MjUxODgw
-OTMyMjA1MzcyNjR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gdGhlIGxhdGVzdC0tVmlz
-dWFsIFN0dWRpbyAyMDEyLCBTaGFyZVBvaW50IDIwMTMsIFNRTCAyMDEyLCBtb3JlIQpEaXNjb3Zl
-ciB0aGUgZWFzeSB3YXkgdG8gbWFzdGVyIGN1cnJlbnQgYW5kIHByZXZpb3VzIE1pY3Jvc29mdCB0
-ZWNobm9sb2dpZXMKYW5kIGFkdmFuY2UgeW91ciBjYXJlZXIuIEdldCBhbiBpbmNyZWRpYmxlIDEs
-NTAwKyBob3VycyBvZiBzdGVwLWJ5LXN0ZXAKdHV0b3JpYWwgdmlkZW9zIHdpdGggTGVhcm5EZXZO
-b3cuIFN1YnNjcmliZSB0b2RheSBhbmQgc2F2ZSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNr
-Lm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQwOTExJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+2013/9/4 Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+> On Sun, Aug 11, 2013 at 3:15 AM, wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>> fix the previous patch some mistake below:
+>
+> This isn't a very good commit message.  "the previous patch" will have
+> no meaning in the kernel git repo.  The rest of the message only
+> describes changes since a previous version of the patch and not the
+> actual patch in full.
+>
+>>
+>> +               /* Device DUAL/QUAD mode */
+>> +               prop = of_get_property(nc, "spi-tx-nbits", &len);
+>
+> Why not use of_property_read_u32() here?
+>
+>> +               if (!prop || len < sizeof(*prop)) {
+>> +                       dev_err(&master->dev, "%s has no 'spi-tx-nbits' property\n",
+>> +                               nc->full_name);
+>> +                       spi_dev_put(spi);
+>> +                       continue;
+>
+> So if no spi-tx-nbits property is supplied, the device is rejected and
+> the loop continues to the next device entry?  This means ALL EXISTING
+> DEVICE TREES with SPI devices will be rejected, since none of them
+> have this new property!  Was this patch tested at all with any system
+> before being accepted?
+>
+This part has been fixed in patch[commit
+id:a822e99c70f448c4068ea85bb195dac0b2eb3afe]
+
+>> +       /* check mode to prevent that DUAL and QUAD set at the same time
+>> +        */
+>> +       if (((spi->mode & SPI_TX_DUAL) && (spi->mode & SPI_TX_QUAD)) ||
+>> +               ((spi->mode & SPI_RX_DUAL) && (spi->mode & SPI_RX_QUAD))) {
+>> +               dev_err(&spi->dev,
+>> +               "setup: can not select dual and quad at the same time\n");
+>> +               return -EINVAL;
+>
+> This test can be done with fewer operations as:
+> if ((spi->mode & (SPI_TX_DUAL|SPI_TX_QUAD)) == (SPI_TX_DUAL|SPI_TX_QUAD) ||
+>     (spi->mode & (SPI_RX_DUAL|SPI_RX_QUAD)) == (SPI_RX_DUAL|SPI_RX_QUAD)) {
+>
+>
+>> +       }
+>> +       /* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
+>> +        */
+>> +       if ((spi->mode & SPI_3WIRE) && (spi->mode &
+>> +               (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)))
+>> +               return -EINVAL;
+>
+> No dev_err message for this possibility?  What's different than the
+> previous check that does produce a message?
+>
+OK, should be added. Thanks.
+
+>>         /* help drivers fail *cleanly* when they need options
+>>          * that aren't supported with their current master
+>>          */
+> Following this comment is the code:
+>         bad_bits = spi->mode & ~spi->master->mode_bits;
+>         if (bad_bits) {
+>                 dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
+>                         bad_bits);
+>                 return -EINVAL;
+>         }
+>
+> Won't this always trigger for anything that sets one of the dual or quad bits?
+>
+I can't get your idea clearly. Please provide more infomation.
+
+>> @@ -1370,12 +1428,50 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
+>>         /**
+>>          * Set transfer bits_per_word and max speed as spi device default if
+>>          * it is not set for this transfer.
+>> +        * Set transfer tx_nbits and rx_nbits as single transfer default
+>> +        * (SPI_NBITS_SINGLE) if it is not set for this transfer.
+>>          */
+>>         list_for_each_entry(xfer, &message->transfers, transfer_list) {
+>>                 if (!xfer->bits_per_word)
+>>                         xfer->bits_per_word = spi->bits_per_word;
+>>                 if (!xfer->speed_hz)
+>>                         xfer->speed_hz = spi->max_speed_hz;
+>> +               if (xfer->tx_buf && !xfer->tx_nbits)
+>> +                       xfer->tx_nbits = SPI_NBITS_SINGLE;
+>> +               if (xfer->rx_buf && !xfer->rx_nbits)
+>> +                       xfer->rx_nbits = SPI_NBITS_SINGLE;
+>> +               /* check transfer tx/rx_nbits:
+>> +                * 1. keep the value is not out of single, dual and quad
+>> +                * 2. keep tx/rx_nbits is contained by mode in spi_device
+>> +                * 3. if SPI_3WIRE, tx/rx_nbits should be in single
+>> +                */
+>> +               if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
+>> +                       xfer->tx_nbits != SPI_NBITS_DUAL &&
+>> +                       xfer->tx_nbits != SPI_NBITS_QUAD)
+>> +                       return -EINVAL;
+>> +               if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
+>> +                       !(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
+>> +                       return -EINVAL;
+>> +               if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
+>> +                       !(spi->mode & SPI_TX_QUAD))
+>> +                       return -EINVAL;
+>> +               if ((spi->mode & SPI_3WIRE) &&
+>> +                       (xfer->tx_nbits != SPI_NBITS_SINGLE))
+>> +                       return -EINVAL;
+>> +               /* check transfer rx_nbits */
+>> +               if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
+>> +                       xfer->rx_nbits != SPI_NBITS_DUAL &&
+>> +                       xfer->rx_nbits != SPI_NBITS_QUAD)
+>> +                       return -EINVAL;
+>> +               if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
+>> +                       !(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
+>> +                       return -EINVAL;
+>> +               if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
+>> +                       !(spi->mode & SPI_RX_QUAD))
+>> +                       return -EINVAL;
+>> +               if ((spi->mode & SPI_3WIRE) &&
+>> +                       (xfer->rx_nbits != SPI_NBITS_SINGLE))
+>> +                       return -EINVAL;
+>>         }
+>
+> What a lot of code to check the transfer bits.  It really needs this much?
+>
+This part is also corrected in patch [commit
+id:db90a44177ac39fc22b2da5235b231fccdd4c673].
+
+>> @@ -511,6 +524,11 @@ struct spi_transfer {
+>>         dma_addr_t      rx_dma;
+>>
+>>         unsigned        cs_change:1;
+>> +       u8              tx_nbits;
+>> +       u8              rx_nbits;
+>> +#define        SPI_NBITS_SINGLE        0x01 /* 1bit transfer */
+>> +#define        SPI_NBITS_DUAL          0x02 /* 2bits transfer */
+>> +#define        SPI_NBITS_QUAD          0x04 /* 4bits transfer */
+>
+> These fields increase the size of a spi_transfer by 4 bytes.  If you
+> used bitfields instead it wouldn't increase the size at all since
+> there are still 7 bits left after cs_change.
+Yes, it will increase the size by 4 bytes, but using bitfields here
+will make it logically weird. Bitfields may mean that really have the
+restriction of number of bits. If just for saving memory, then what
+about the other members such as bits_per_world, delay_usecs.
+
+------------------------------------------------------------------------------
+Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
+Discover the easy way to master current and previous Microsoft technologies
+and advance your career. Get an incredible 1,500+ hours of step-by-step
+tutorial videos with LearnDevNow. Subscribe today and save!
+http://pubads.g.doubleclick.net/gampad/clk?id=58040911&iu=/4140/ostg.clktrk

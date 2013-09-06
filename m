@@ -1,11 +1,11 @@
-From: "=?utf-8?Q?Leclerc?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?Votre_catalogue_promos_rentr=C3=A9e_2013?=
-Date: Thu, 05 Sep 2013 15:49:33 +0000
-Message-ID: <1043=afc4192d-00cb-4e4c-ba68-e60fe69b83b6=4=3266566@clicks.trackdom.fr>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: A qui S par Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Choisissez vos etiquettes
+Date: Fri, 6 Sep 2013 11:26:26 +0200 (CEST)
+Message-ID: <crszfn.hl978w9b2sacstl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,36 +18,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFodHRwOi8vY2xpY2tz
-LnRyYWNrZG9tLmZyL2MvYXMva1drLzZuVWIxZTR5c2I4OHFFdnJaLXdtV1EvYi9rbFFMLzYxMTdk
-MmU0CgpWb3RyZSBjYXRhbG9ndWUgcHJvbW9zIHJlbnRyw6llIDIwMTMKVm91cyByZWNldmV6IGNl
-IG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQoZSkgYXZl
-YyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IHN1ciBs
-ZSBzaXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUgYSBmYWl0IGwnb2JqZXQgZCd1bmUgZMOpY2xh
-cmF0aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOpcm8gMTU0NTE0OC4gQ29uZm9y
-bcOpbWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5mb3JtYXRpcXVlIGV0IExpYmVy
-dMOpc8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBleGVyY2VyIHZvdHJlIGRyb2l0
-IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gb3UgZW5jb3JlIGRl
-IHN1cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29ubmVsbGVzIHZpYSBsZSBsaWVu
-IHN1aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBkw6lzYWJvbm5lciwgbWVyY2kg
-ZGUgY2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8KQ29uc29kZWFsIGVzdCB1bmUg
-bmV3c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kgTmF0ZXhv
-LCBxdWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVuIMOpdGFu
-dCBhYm9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZyZXogbGUg
-dG9wIGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRvdXMgdm9z
-IHRyYXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMgZXQgdmVu
-dGVzIHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4gCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpM
-ZWFybiB0aGUgbGF0ZXN0LS1WaXN1YWwgU3R1ZGlvIDIwMTIsIFNoYXJlUG9pbnQgMjAxMywgU1FM
-IDIwMTIsIG1vcmUhCkRpc2NvdmVyIHRoZSBlYXN5IHdheSB0byBtYXN0ZXIgY3VycmVudCBhbmQg
-cHJldmlvdXMgTWljcm9zb2Z0IHRlY2hub2xvZ2llcwphbmQgYWR2YW5jZSB5b3VyIGNhcmVlci4g
-R2V0IGFuIGluY3JlZGlibGUgMSw1MDArIGhvdXJzIG9mIHN0ZXAtYnktc3RlcAp0dXRvcmlhbCB2
-aWRlb3Mgd2l0aCBMZWFybkRldk5vdy4gU3Vic2NyaWJlIHRvZGF5IGFuZCBzYXZlIQpodHRwOi8v
-cHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NTgwNDEzOTEmaXU9LzQxNDAv
-b3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0
-aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgqwohI7gfk57dIhl978qx3I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378459579738%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DFGKKFILPGBFDIFDD%26mid%3D1600249841&s=3DO=
+LMFBPLBEENAECHD
+ =
+
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes=
+Choisissez vos etiquettesChoisissez vos etiquettesChoisissez vos etiquettes
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600249841&sig=3DMHIMFPIIMNJIANGC
+---------------------------------------------------------------------------=
+---
+Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
+Discover the easy way to master current and previous Microsoft technologies
+and advance your career. Get an incredible 1,500+ hours of step-by-step
+tutorial videos with LearnDevNow. Subscribe today and save!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D58041391&iu=3D/4140/ostg.cl=
+ktrk

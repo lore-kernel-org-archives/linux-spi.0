@@ -1,11 +1,11 @@
-From: Locatour <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: [SPAM] gagnez 3 séjours et 10 week-ends
-Date: Sat, 7 Sep 2013 10:55:52 +0200 (CEST)
-Message-ID: <d54pz2.hlallfdnj375cdl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "=?utf-8?Q?Rappel_-_R=C3=A9f_WEB-GEN22S?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Barbecue_Weber_Genesis_pour_spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?=
+Date: Sat, 07 Sep 2013 22:07:37 +0000
+Message-ID: <1043=358e015a-96c6-4be0-bc5c-3363d62385ea=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,73 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqxt4I7gfk57dIhlallbv4I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378544147557%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DCKIMANIMNGABIJAH%26mid%3D1600251304&s=3DK=
-KJPPDBHECKIDAGD
- =
-
-gagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez =
-3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9j=
-ours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et=
- 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 wee=
-k-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsg=
-agnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3=
- s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jo=
-urs et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et =
-10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week=
--endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsga=
-gnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 =
-s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jou=
-rs et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 1=
-0 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-=
-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgag=
-nez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=
-=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jour=
-s et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10=
- week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-e=
-ndsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagn=
-ez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=
-=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jour=
-s et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10=
- week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-e=
-ndsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagn=
-ez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=
-=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jour=
-s et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10=
- week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-e=
-ndsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagn=
-ez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=
-=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jour=
-s et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10=
- week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-e=
-ndsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagn=
-ez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=
-=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jour=
-s et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10=
- week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-e=
-ndsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagn=
-ez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=
-=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jour=
-s et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10=
- week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-e=
-ndsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagn=
-ez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=
-=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jour=
-s et 10 week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10=
- week-endsgagnez 3 s=E9jours et 10 week-endsgagnez 3 s=E9jours et 10 week-e=
-ndsgagnez 3 s=E9jours et 10 week-ends
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600251304&sig=3DJOADMCLPKOIKLMOJ
----------------------------------------------------------------------------=
----
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58041391&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFCYXJiZWN1ZSBXZWJl
+ciBHZW5lc2lzIHBvdXIgc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cgpo
+dHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSHliL2dRTEVIeHFnVmJ3ZTVtSENCUEVvOFEv
+Yi9rbFFMLzJhMTdmMzhmClZvdXMgcmVjZXZleiBjZSBtZXNzYWdlIGRlIG5vdHJlIHBhcnQgY2Fy
+IHZvdXMgdm91cyDDqnRlcyBpbnNjcml0KGUpIGF2ZWMgbCdhZHJlc3NlIHNwaS1kZXZlbC1nZW5l
+cmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCBzdXIgbGUgc2l0ZSBDb25zb2RlYWwuY29tLiBDZSBz
+aXRlIGEgZmFpdCBsJ29iamV0IGQndW5lIGTDqWNsYXJhdGlvbiBhdXByw6hzIGRlIGxhIENOSUwg
+c291cyBsZSBudW3DqXJvIDE1NDUxNDguIENvbmZvcm3DqW1lbnQgw6AgbCdhcnRpY2xlIDM0IGRl
+IGxhIGxvaSDCq0luZm9ybWF0aXF1ZSBldCBMaWJlcnTDqXPCuyBkdSA2IGphbnZpZXIgMTk3OCwg
+dm91cyBwb3V2ZXogZXhlcmNlciB2b3RyZSBkcm9pdCBkJ2FjY8OocywgZGUgbW9kaWZpY2F0aW9u
+LCBkZSByZWN0aWZpY2F0aW9uIG91IGVuY29yZSBkZSBzdXBwcmVzc2lvbiBkZSB2b3MgaW5mb3Jt
+YXRpb25zIHBlcnNvbm5lbGxlcyB2aWEgbGUgbGllbiBzdWl2YW50IDogTWVzIEFib25uZW1lbnRz
+LgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIG1lcmNpIGRlIGNsaXF1ZXIgaWNpIGljaS4KCVF1aSBz
+b21tZXMtbm91cyA/CkNvbnNvZGVhbCBlc3QgdW5lIG5ld3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDD
+qWRpdMOpZSBwYXIgbGEgc29jacOpdMOpIE5hdGV4bywgcXVpIHZvdXMgcHJvcG9zZSB1bmUgc8Op
+bGVjdGlvbiBkZSBib25zIHBsYW5zLiBFbiDDqXRhbnQgYWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBk
+J2luZm9ybWF0aW9uLCB2b3VzIHJlY2V2cmV6IGxlIHRvcCBkZXMgamV1eCBjb25jb3VycywgbGVz
+IG9mZnJlcyBkdSBtb21lbnQgcG91ciB0b3VzIHZvcyB0cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMg
+ZXhjbHVzaXZlcyDDoCBkZXMgZXNzYWlzIGV0IHZlbnRlcyBwcml2w6llcyBkZSBncmFuZGVzIG1h
+cnF1ZXMuIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gdGhlIGxhdGVzdC0tVmlzdWFsIFN0
+dWRpbyAyMDEyLCBTaGFyZVBvaW50IDIwMTMsIFNRTCAyMDEyLCBtb3JlIQpEaXNjb3ZlciB0aGUg
+ZWFzeSB3YXkgdG8gbWFzdGVyIGN1cnJlbnQgYW5kIHByZXZpb3VzIE1pY3Jvc29mdCB0ZWNobm9s
+b2dpZXMKYW5kIGFkdmFuY2UgeW91ciBjYXJlZXIuIEdldCBhbiBpbmNyZWRpYmxlIDEsNTAwKyBo
+b3VycyBvZiBzdGVwLWJ5LXN0ZXAKdHV0b3JpYWwgdmlkZW9zIHdpdGggTGVhcm5EZXZOb3cuIFN1
+YnNjcmliZSB0b2RheSBhbmQgc2F2ZSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9n
+YW1wYWQvY2xrP2lkPTU4MDQxMzkxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
+bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

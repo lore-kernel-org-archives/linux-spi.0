@@ -1,11 +1,11 @@
-From: Disney <anne-+SWa8+tIKU1Wk0Htik3J/w@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Des_weekends_=E0_gagner?=
-Date: Sat, 7 Sep 2013 07:29:47 +0200 (CEST)
-Message-ID: <4t6km5.hlae8ex1xcck0rl@bs.miify.com>
-Reply-To: Anne <info-hoh7hF1A3YGohgF03p4UXg@public.gmane.org>
+From: "=?utf-8?Q?Sophie_Lefebvre?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Exp=C3=A9dition_de_commande_=C3=A0_l'ordre_de___=3F?=
+Date: Sat, 07 Sep 2013 06:11:27 +0000
+Message-ID: <1043=eab36a7c-37b0-4ff9-8726-ba2cf15ae3a5=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,69 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//bs.miify.com/re?l=3DBD0IqgqxtuI7h5ovq2Ihlae8b2wI&u=3Dhttp%3A%2F%2Fbs.miif=
-y.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378531782695%26custid%3D16468%26=
-uid%3D16274960282%26sig%3DBABDPFKGHFIEJMFK%26mid%3D1600251330&s=3DPLOHFDMGP=
-JHPNCEJ
- =
-
-Des weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes we=
-ekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends=
- =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 g=
-agnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerD=
-es weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes wee=
-kends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =
-=E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 ga=
-gnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDe=
-s weekends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagnerDes week=
-ends =E0 gagnerDes weekends =E0 gagnerDes weekends =E0 gagner
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://bs.miify.com/public/unsubscribe.jsp?gid=3D16000=
-57156&uid=3D16274960282&mid=3D1600251330&sig=3DPCGMHKODDGBFABAA
----------------------------------------------------------------------------=
----
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58041391&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFFeHDDqWRpdGlvbiBk
+ZSBjb21tYW5kZSDDoCBsJ29yZHJlIGRlICAgPwoKaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9j
+L2FzL2t1ZC9STEtPODF5OXVJdWkyMU00ZU4xQy1hL2Iva2xRTC8zYWRlYjkyYQoKClZvdXMgcmVj
+ZXZleiBjZSBtZXNzYWdlIGRlIG5vdHJlIHBhcnQgY2FyIHZvdXMgdm91cyDDqnRlcyBpbnNjcml0
+KGUpIGF2ZWMgbCdhZHJlc3NlIHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5l
+dCBzdXIgbGUgc2l0ZSBDb25zb2RlYWwuY29tLiBDZSBzaXRlIGEgZmFpdCBsJ29iamV0IGQndW5l
+IGTDqWNsYXJhdGlvbiBhdXByw6hzIGRlIGxhIENOSUwgc291cyBsZSBudW3DqXJvIDE1NDUxNDgu
+IENvbmZvcm3DqW1lbnQgw6AgbCdhcnRpY2xlIDM0IGRlIGxhIGxvaSDCq0luZm9ybWF0aXF1ZSBl
+dCBMaWJlcnTDqXPCuyBkdSA2IGphbnZpZXIgMTk3OCwgdm91cyBwb3V2ZXogZXhlcmNlciB2b3Ry
+ZSBkcm9pdCBkJ2FjY8OocywgZGUgbW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIG91IGVu
+Y29yZSBkZSBzdXBwcmVzc2lvbiBkZSB2b3MgaW5mb3JtYXRpb25zIHBlcnNvbm5lbGxlcyB2aWEg
+bGUgbGllbiBzdWl2YW50IDogTWVzIEFib25uZW1lbnRzLgpQb3VyIHZvdXMgZMOpc2Fib25uZXIs
+IG1lcmNpIGRlIGNsaXF1ZXIgaWNpIGljaS4KCVF1aSBzb21tZXMtbm91cyA/CkNvbnNvZGVhbCBl
+c3QgdW5lIG5ld3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDDqWRpdMOpZSBwYXIgbGEgc29jacOpdMOp
+IE5hdGV4bywgcXVpIHZvdXMgcHJvcG9zZSB1bmUgc8OpbGVjdGlvbiBkZSBib25zIHBsYW5zLiBF
+biDDqXRhbnQgYWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBkJ2luZm9ybWF0aW9uLCB2b3VzIHJlY2V2
+cmV6IGxlIHRvcCBkZXMgamV1eCBjb25jb3VycywgbGVzIG9mZnJlcyBkdSBtb21lbnQgcG91ciB0
+b3VzIHZvcyB0cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMgZXhjbHVzaXZlcyDDoCBkZXMgZXNzYWlz
+IGV0IHZlbnRlcyBwcml2w6llcyBkZSBncmFuZGVzIG1hcnF1ZXMuIAotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KTGVhcm4gdGhlIGxhdGVzdC0tVmlzdWFsIFN0dWRpbyAyMDEyLCBTaGFyZVBvaW50IDIw
+MTMsIFNRTCAyMDEyLCBtb3JlIQpEaXNjb3ZlciB0aGUgZWFzeSB3YXkgdG8gbWFzdGVyIGN1cnJl
+bnQgYW5kIHByZXZpb3VzIE1pY3Jvc29mdCB0ZWNobm9sb2dpZXMKYW5kIGFkdmFuY2UgeW91ciBj
+YXJlZXIuIEdldCBhbiBpbmNyZWRpYmxlIDEsNTAwKyBob3VycyBvZiBzdGVwLWJ5LXN0ZXAKdHV0
+b3JpYWwgdmlkZW9zIHdpdGggTGVhcm5EZXZOb3cuIFN1YnNjcmliZSB0b2RheSBhbmQgc2F2ZSEK
+aHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQxMzkxJml1
+PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
+dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

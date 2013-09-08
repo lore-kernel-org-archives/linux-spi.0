@@ -1,12 +1,11 @@
-From: Dodo par Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Jusqu'=E0_-60%_sur_les_couettes,_oreill?=
-	=?ISO-8859-1?Q?ers,_surmatelas_et_articles_de_literie?=
-Date: Sun, 8 Sep 2013 10:47:41 +0200 (CEST)
-Message-ID: <r3ylzj.hlc0qrrkgse2ncl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: =?UTF-8?Q?Guide_du_chauffage_=C3=A9lectrique?= <Julie-dgaluaVmgh9BDgjK7y7TUQ@public.gmane.org>
+Subject: =?UTF-8?Q?R=C3=A9duisez_jusqu'=C3=A0_40%_votre_facture_de_chauffage?=
+Date: Sun, 8 Sep 2013 12:48:19 +0200
+Message-ID: <aa7b6a41007444e2dab81ca2369fcd68@localhost.localdomain>
+Reply-To: =?UTF-8?Q?Guide_du_chauffage_=C3=A9lectrique?= <Julie-dgaluaVmgh9BDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,130 +18,87 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgqy1eI7gfk57dIhlc0qqstI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378630060602%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DHOEMACLHGBKHLFAK%26mid%3D1600251602&s=3DF=
-DDNEAACPGIOAFJB
- =
-
-Jusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de liter=
-ieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de lit=
-erieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de l=
-iterieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de=
- literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles =
-de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et article=
-s de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et artic=
-les de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et art=
-icles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et a=
-rticles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et=
- articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas =
-et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatela=
-s et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmate=
-las et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surma=
-telas et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, sur=
-matelas et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, s=
-urmatelas et articles de literieJusqu'=E0 -60% sur les couettes, oreillers,=
- surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, oreiller=
-s, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, oreill=
-ers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, orei=
-llers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, or=
-eillers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, =
-oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes=
-, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les couett=
-es, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les coue=
-ttes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les co=
-uettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les =
-couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur le=
-s couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur =
-les couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% su=
-r les couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% =
-sur les couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60=
-% sur les couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -=
-60% sur les couettes, oreillers, surmatelas et articles de literieJusqu'=E0=
- -60% sur les couettes, oreillers, surmatelas et articles de literieJusqu'=
-=E0 -60% sur les couettes, oreillers, surmatelas et articles de literieJusq=
-u'=E0 -60% sur les couettes, oreillers, surmatelas et articles de literieJu=
-squ'=E0 -60% sur les couettes, oreillers, surmatelas et articles de literie=
-Jusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de liter=
-ieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de lit=
-erieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de l=
-iterieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de=
- literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles =
-de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et article=
-s de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et artic=
-les de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et art=
-icles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et a=
-rticles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et=
- articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas =
-et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatela=
-s et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmate=
-las et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surma=
-telas et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, sur=
-matelas et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, s=
-urmatelas et articles de literieJusqu'=E0 -60% sur les couettes, oreillers,=
- surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, oreiller=
-s, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, oreill=
-ers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, orei=
-llers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, or=
-eillers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, =
-oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes=
-, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les couett=
-es, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les coue=
-ttes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les co=
-uettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les =
-couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur le=
-s couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur =
-les couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% su=
-r les couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% =
-sur les couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60=
-% sur les couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -=
-60% sur les couettes, oreillers, surmatelas et articles de literieJusqu'=E0=
- -60% sur les couettes, oreillers, surmatelas et articles de literieJusqu'=
-=E0 -60% sur les couettes, oreillers, surmatelas et articles de literieJusq=
-u'=E0 -60% sur les couettes, oreillers, surmatelas et articles de literieJu=
-squ'=E0 -60% sur les couettes, oreillers, surmatelas et articles de literie=
-Jusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de liter=
-ieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de lit=
-erieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de l=
-iterieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles de=
- literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et articles =
-de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et article=
-s de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et artic=
-les de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et art=
-icles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et a=
-rticles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas et=
- articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatelas =
-et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmatela=
-s et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surmate=
-las et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, surma=
-telas et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, sur=
-matelas et articles de literieJusqu'=E0 -60% sur les couettes, oreillers, s=
-urmatelas et articles de literieJusqu'=E0 -60% sur les couettes, oreillers,=
- surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, oreiller=
-s, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, oreill=
-ers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, orei=
-llers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, or=
-eillers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes, =
-oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les couettes=
-, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les couett=
-es, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les coue=
-ttes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les co=
-uettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur les =
-couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur le=
-s couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% sur =
-les couettes, oreillers, surmatelas et articles de literieJusqu'=E0 -60% su=
-r les couettes, oreillers, surmatelas et articles de literie
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600251602&sig=3DKNLGFGJGBLKALEOF
----------------------------------------------------------------------------=
----
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58041391&iu=3D/4140/ostg.cl=
-ktrk
+UsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNl
+eiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUn
+w6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2
+b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFj
+dHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUg
+Y2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFn
+ZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlz
+ZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1
+J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUg
+dm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZh
+Y3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRl
+IGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZh
+Z2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVp
+c2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNx
+dSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAl
+IHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBm
+YWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBk
+ZSBjaGF1ZmZhZ2VSw6lkdWlzZXoKanVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZm
+YWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1
+aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVz
+cXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQw
+JSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUg
+ZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUg
+ZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVm
+ZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lk
+dWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1
+c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0
+MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJl
+IGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJl
+IGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1
+ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOp
+ZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBq
+dXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6Ag
+NDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3Ry
+ZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUKdm90cmUgZmFjdHVy
+ZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hh
+dWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLD
+qWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXog
+anVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8Og
+IDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90
+cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1
+cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNo
+YXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VS
+w6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6
+IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfD
+oCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZv
+dHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0
+dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBj
+aGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdl
+UsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNl
+eiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUn
+w6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2
+b3RyZSBmYWN0dXJlIGRlCmNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFj
+dHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUg
+Y2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFn
+ZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlz
+ZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1
+J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUg
+dm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZh
+Y3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRl
+IGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZh
+Z2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVp
+c2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNx
+dSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAl
+IHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBm
+YWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBk
+ZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUgY2hhdWZm
+YWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQwJSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1
+aXNleiBqdXNxdSfDoCA0MCUgdm90cmUgZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVz
+cXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUgZGUKY2hhdWZmYWdlUsOpZHVpc2V6IGp1c3F1J8OgIDQw
+JSB2b3RyZSBmYWN0dXJlIGRlIGNoYXVmZmFnZVLDqWR1aXNleiBqdXNxdSfDoCA0MCUgdm90cmUg
+ZmFjdHVyZSBkZSBjaGF1ZmZhZ2VSw6lkdWlzZXoganVzcXUnw6AgNDAlIHZvdHJlIGZhY3R1cmUg
+ZGUgY2hhdWZmYWdlCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTGVhcm4gdGhlIGxhdGVzdC0tVmlz
+dWFsIFN0dWRpbyAyMDEyLCBTaGFyZVBvaW50IDIwMTMsIFNRTCAyMDEyLCBtb3JlIQpEaXNjb3Zl
+ciB0aGUgZWFzeSB3YXkgdG8gbWFzdGVyIGN1cnJlbnQgYW5kIHByZXZpb3VzIE1pY3Jvc29mdCB0
+ZWNobm9sb2dpZXMKYW5kIGFkdmFuY2UgeW91ciBjYXJlZXIuIEdldCBhbiBpbmNyZWRpYmxlIDEs
+NTAwKyBob3VycyBvZiBzdGVwLWJ5LXN0ZXAKdHV0b3JpYWwgdmlkZW9zIHdpdGggTGVhcm5EZXZO
+b3cuIFN1YnNjcmliZSB0b2RheSBhbmQgc2F2ZSEKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNr
+Lm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQxMzkxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
+IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
+cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
+YWwK

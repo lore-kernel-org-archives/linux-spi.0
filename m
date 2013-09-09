@@ -1,11 +1,11 @@
-From: "Yoopala par Nl-Promos" <lisa@a.optincake.com>
-Subject: Trouvez votre baby-sitter
-Date: Mon, 09 Sep 2013 01:43:24 +0100
-Message-ID: <0.0.148.190.1CEACF59724230E.0@mta199.pur3.net>
-Reply-To: Yoopala par Nl-Promos <lisa@a.optincake.com>
+From: Chemises en coton <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: [SPAM] Faites le plein de nouveautes: 1 chemise achetee 1 offerte
+Date: Mon, 9 Sep 2013 11:45:57 +0200 (CEST)
+Message-ID: <62igzt.hldi9jlcm7r7qal@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,156 +18,106 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTkwNTYzMjIwNTM3MjE0CgoKCgoKKExvZ28gWU9PUEFMQSk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFs
-LW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTNjZTU3N2Y1YjhlZTExMmZlYzM1YjVjZjQwMzhj
-OTFhCiZ1cmw9aHR0cCUzQSUyRiUyRnd3dy55b29wYWxhLmNvbSUyRnBhZ2VzJTJGcGFydGVuYWly
-ZV9hZG1lLTA2X3BhcmVudHNfYmFieS1zaXR0CmVyLmFzcHglM0Zzb3VyY2UlM0RhZHZlcnRpc2Vt
-ZSUyNnV0bV9zb3VyY2UlM0RhZHZlcnRpc2UtbWUuZnIlMjZ1dG1fbWVkaXVtJTNEZW1hCmlsJTI2
-dXRtX2NvbnRlbnQlM0QwNiUyNnV0bV9jYW1wYWlnbiUzRHBhcmVudHMtcmVudHJlZSUyNmVtYWls
-JTNEc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgoKR2FyZGUgZCdlbmZh
-bnRzIMOgIGRvbWljaWxlOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhw
-P3BhcmFtcz00YTUzYmU3YWJkZThiY2UyYWFkYTI2YmE5NDQxYjZkNAomdXJsPWh0dHAlM0ElMkYl
-MkZ3d3cueW9vcGFsYS5jb20lMkZwYWdlcyUyRnBhcnRlbmFpcmVfYWRtZS0wNl9wYXJlbnRzX2Jh
-Ynktc2l0dAplci5hc3B4JTNGc291cmNlJTNEYWR2ZXJ0aXNlbWUlMjZ1dG1fc291cmNlJTNEYWR2
-ZXJ0aXNlLW1lLmZyJTI2dXRtX21lZGl1bSUzRGVtYQppbCUyNnV0bV9jb250ZW50JTNEMDYlMjZ1
-dG1fY2FtcGFpZ24lM0RwYXJlbnRzLXJlbnRyZWUlMjZlbWFpbCUzRHNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKCjAtMTIgYW5zLiA0aCDDoCAxMmggcGFyIHNlbWFpbmU6
-Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWRiMTc4MTFi
-OTRiYTYxNWZhODZlOTMzNGUwYmEyYjMwCiZ1cmw9aHR0cCUzQSUyRiUyRnd3dy55b29wYWxhLmNv
-bSUyRnBhZ2VzJTJGcGFydGVuYWlyZV9hZG1lLTA2X3BhcmVudHNfYmFieS1zaXR0CmVyLmFzcHgl
-M0Zzb3VyY2UlM0RhZHZlcnRpc2VtZSUyNnV0bV9zb3VyY2UlM0RhZHZlcnRpc2UtbWUuZnIlMjZ1
-dG1fbWVkaXVtJTNEZW1hCmlsJTI2dXRtX2NvbnRlbnQlM0QwNiUyNnV0bV9jYW1wYWlnbiUzRHBh
-cmVudHMtcmVudHJlZSUyNmVtYWlsJTNEc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
-Z2UubmV0CgoKwqAKCihhZHZlcnRpc2VtZS0wNC5qcGcpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1t
-ZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1lZTI5NGU5YWQwMzE4NzgxZmU3OGEwOThkN2M3MTQ5
-ZgomdXJsPWh0dHAlM0ElMkYlMkZ3d3cueW9vcGFsYS5jb20lMkZwYWdlcyUyRnBhcnRlbmFpcmVf
-YWRtZS0wNl9wYXJlbnRzX2JhYnktc2l0dAplci5hc3B4JTNGc291cmNlJTNEYWR2ZXJ0aXNlbWUl
-MjZ1dG1fc291cmNlJTNEYWR2ZXJ0aXNlLW1lLmZyJTI2dXRtX21lZGl1bSUzRGVtYQppbCUyNnV0
-bV9jb250ZW50JTNEMDYlMjZ1dG1fY2FtcGFpZ24lM0RwYXJlbnRzLXJlbnRyZWUlMjZlbWFpbCUz
-RHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKCkFwcsOpcyBsJ8OpY29s
-ZSBvdSBsYSBjcsOoY2hlID8gUG91ciBsZXMgbG9pc2lycyA/OgpodHRwOi8vbXRyYzEuZGlnaXRh
-bC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1mOGI5YjI1MWI5NGJlMjBmMzZiNzZlMmI4NzYw
-MzNlNwomdXJsPWh0dHAlM0ElMkYlMkZ3d3cueW9vcGFsYS5jb20lMkZwYWdlcyUyRnBhcnRlbmFp
-cmVfYWRtZS0wNl9wYXJlbnRzX2JhYnktc2l0dAplci5hc3B4JTNGc291cmNlJTNEYWR2ZXJ0aXNl
-bWUlMjZ1dG1fc291cmNlJTNEYWR2ZXJ0aXNlLW1lLmZyJTI2dXRtX21lZGl1bSUzRGVtYQppbCUy
-NnV0bV9jb250ZW50JTNEMDYlMjZ1dG1fY2FtcGFpZ24lM0RwYXJlbnRzLXJlbnRyZWUlMjZlbWFp
-bCUzRHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKCkRlcyBjZW50YWlu
-ZXMgZGUgYmFieS1zaXR0ZXJzIHF1YWxpZmnDqWVzIHNvbnQgc3VyIHlvb3BhbGEuY29tLgpJbnNj
-cml2ZXotdm91cyBncmF0dWl0ZW1lbnQgZXQgZMOpY291dnJleiBsZXMgcHJvZmlscyBwcm9jaGVz
-IGRlIGNoZXogdm91cy46Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/
-cGFyYW1zPWI0ZTc1NmMzNmNiYTRhYWFmZWFmOWM5ZmUzYzFjNGJhCiZ1cmw9aHR0cCUzQSUyRiUy
-Rnd3dy55b29wYWxhLmNvbSUyRnBhZ2VzJTJGcGFydGVuYWlyZV9hZG1lLTA2X3BhcmVudHNfYmFi
-eS1zaXR0CmVyLmFzcHglM0Zzb3VyY2UlM0RhZHZlcnRpc2VtZSUyNnV0bV9zb3VyY2UlM0RhZHZl
-cnRpc2UtbWUuZnIlMjZ1dG1fbWVkaXVtJTNEZW1hCmlsJTI2dXRtX2NvbnRlbnQlM0QwNiUyNnV0
-bV9jYW1wYWlnbiUzRHBhcmVudHMtcmVudHJlZSUyNmVtYWlsJTNEc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0CgooTG9nbyBZT09QQUxBKSAyNzAuMDAwIEJhYnlzaXR0ZXJz
-OgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1lMjcxZmUy
-NTAxMTIzOGQyODMzYjI5YTJjNDBkMmQ4NAomdXJsPWh0dHAlM0ElMkYlMkZ3d3cueW9vcGFsYS5j
-b20lMkZwYWdlcyUyRnBhcnRlbmFpcmVfYWRtZS0wNl9wYXJlbnRzX2JhYnktc2l0dAplci5hc3B4
-JTNGc291cmNlJTNEYWR2ZXJ0aXNlbWUlMjZ1dG1fc291cmNlJTNEYWR2ZXJ0aXNlLW1lLmZyJTI2
-dXRtX21lZGl1bSUzRGVtYQppbCUyNnV0bV9jb250ZW50JTNEMDYlMjZ1dG1fY2FtcGFpZ24lM0Rw
-YXJlbnRzLXJlbnRyZWUlMjZlbWFpbCUzRHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldAoKClRyb3V2ZXogZmFjaWxlbWVudCB1bmUgYmFieS1zaXR0ZXIgcHJvY2hlIGRlIGNo
-ZXogdm91cy46Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1z
-PWRhMGRiZTIzNTZiMGU2YTMzMDhkOGRlNjFhMjUyN2U2CiZ1cmw9aHR0cCUzQSUyRiUyRnd3dy55
-b29wYWxhLmNvbSUyRnBhZ2VzJTJGcGFydGVuYWlyZV9hZG1lLTA2X3BhcmVudHNfYmFieS1zaXR0
-CmVyLmFzcHglM0Zzb3VyY2UlM0RhZHZlcnRpc2VtZSUyNnV0bV9zb3VyY2UlM0RhZHZlcnRpc2Ut
-bWUuZnIlMjZ1dG1fbWVkaXVtJTNEZW1hCmlsJTI2dXRtX2NvbnRlbnQlM0QwNiUyNnV0bV9jYW1w
-YWlnbiUzRHBhcmVudHMtcmVudHJlZSUyNmVtYWlsJTNEc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
-c291cmNlZm9yZ2UubmV0CgoKwqAKKExvZ28gWU9PUEFMQSkgQWdyw6nDqSBwYXIgbCfDqXRhdDoK
-aHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MGY1ODVmMjI3
-N2MzNzE4NWMwMjU1NTRjNDcyZWE0ODEKJnVybD1odHRwJTNBJTJGJTJGd3d3Lnlvb3BhbGEuY29t
-JTJGcGFnZXMlMkZwYXJ0ZW5haXJlX2FkbWUtMDZfcGFyZW50c19iYWJ5LXNpdHQKZXIuYXNweCUz
-RnNvdXJjZSUzRGFkdmVydGlzZW1lJTI2dXRtX3NvdXJjZSUzRGFkdmVydGlzZS1tZS5mciUyNnV0
-bV9tZWRpdW0lM0RlbWEKaWwlMjZ1dG1fY29udGVudCUzRDA2JTI2dXRtX2NhbXBhaWduJTNEcGFy
-ZW50cy1yZW50cmVlJTI2ZW1haWwlM0RzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQKCgpEZXB1aXMgMjAwNiwgcG91ciBsYSBnYXJkZSBkJ2VuZmFudHMgZMOocyBsYSBuYWlz
-c2FuY2UuOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz04
-NDNhNDVkZmYyMTI5YmI5MGVjYzY2ODNlMzE5M2U2YQomdXJsPWh0dHAlM0ElMkYlMkZ3d3cueW9v
-cGFsYS5jb20lMkZwYWdlcyUyRnBhcnRlbmFpcmVfYWRtZS0wNl9wYXJlbnRzX2JhYnktc2l0dApl
-ci5hc3B4JTNGc291cmNlJTNEYWR2ZXJ0aXNlbWUlMjZ1dG1fc291cmNlJTNEYWR2ZXJ0aXNlLW1l
-LmZyJTI2dXRtX21lZGl1bSUzRGVtYQppbCUyNnV0bV9jb250ZW50JTNEMDYlMjZ1dG1fY2FtcGFp
-Z24lM0RwYXJlbnRzLXJlbnRyZWUlMjZlbWFpbCUzRHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldAoKKExvZ28gWU9PUEFMQSkgVm9zIGF2YW50YWdlczoKaHR0cDovL210cmMx
-LmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9NmE1NjAxNGNlNTMzOTkwZDc1N2Q3
-OGY5OTNlMTRhM2IKJnVybD1odHRwJTNBJTJGJTJGd3d3Lnlvb3BhbGEuY29tJTJGcGFnZXMlMkZw
-YXJ0ZW5haXJlX2FkbWUtMDZfcGFyZW50c19iYWJ5LXNpdHQKZXIuYXNweCUzRnNvdXJjZSUzRGFk
-dmVydGlzZW1lJTI2dXRtX3NvdXJjZSUzRGFkdmVydGlzZS1tZS5mciUyNnV0bV9tZWRpdW0lM0Rl
-bWEKaWwlMjZ1dG1fY29udGVudCUzRDA2JTI2dXRtX2NhbXBhaWduJTNEcGFyZW50cy1yZW50cmVl
-JTI2ZW1haWwlM0RzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCgpSw6lk
-dWN0aW9uIGQnaW1ww7R0cyBkZSA1MCUgZXQgYWlkZSBDQUYgcmV2YWxvcmlzw6llLjoKaHR0cDov
-L210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MGJlMDUwMDk5MWE3YjRm
-MDlkMjEwZDNiNDUzOThhYzkKJnVybD1odHRwJTNBJTJGJTJGd3d3Lnlvb3BhbGEuY29tJTJGcGFn
-ZXMlMkZwYXJ0ZW5haXJlX2FkbWUtMDZfcGFyZW50c19iYWJ5LXNpdHQKZXIuYXNweCUzRnNvdXJj
-ZSUzRGFkdmVydGlzZW1lJTI2dXRtX3NvdXJjZSUzRGFkdmVydGlzZS1tZS5mciUyNnV0bV9tZWRp
-dW0lM0RlbWEKaWwlMjZ1dG1fY29udGVudCUzRDA2JTI2dXRtX2NhbXBhaWduJTNEcGFyZW50cy1y
-ZW50cmVlJTI2ZW1haWwlM0RzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
-CgpFbnZpZSBkZSB2b3VzIGZhaXJlIHVuZSBiZWF1dMOpIMOgIG1vaW5kcmUgY2/Du3QgdG91dCBh
-dSBsb25nIGRlIGwnYW5uw6llLCBkZQpwcsOpdm9pciB2b3MgcHJvY2hhaW5lcyB2YWNhbmNlcyBk
-J8OpdMOpIMOgIG1vaW5kcmUgZnJhaXMgZXQgb3UgZW5jb3JlCmQnaGFiaWxsZXIgdm9zIGVuZmFu
-dHMgw6AgZGVzIGJ1ZGdldHMgcmFpc29ubmFibGVzLCBhbG9ycyBjb25zdWx0ZXIgZGUgdGVtcHMK
-w6AgYXV0cmUgbm9zIHByb3Bvc2l0aW9ucyBwb3VyIHZvdXMgcGVybWV0dHJlIGFpbnNpIGRlIGZh
-aXJlIGRlIG5vbWJyZXVzZXMKw6ljb25vbWllcyB0b3V0IGVuIHZvdXMgZmFpc2FudCBwbGFpc2ly
-IMOgIHRvdXRlIGxhIGZhbWlsbGUuQSBsYSByZWNoZXJjaGUKZHUgY2FkZWF1IG9yaWdpbmFsID8g
-Tm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZQp2
-b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91
-dGUgbCdhbm7DqWUuCkFpbnNpLCBncmFjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxl
-LCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UKcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQs
-IG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLiBOb3VzIHNvdWhhaXRvbnMgdm91cwphcHBvcnRlciB1
-biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRv
-dXQgZW4KY29uc29tbWFudCBtaWV1eCB0b3V0ZSBsJ2FubsOpZS5BaW5zaSwgZ3LDomNlIMOgIG5v
-dXMsIHZvdXMgYWxsZXogcGFyCmV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBx
-dWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwKb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuQmVzb2lu
-IGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMKY2hhdXNzZXIsIGRlIG1hbmdl
-ciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9u
-ZwpkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwg
-cGFyIHN1ciBsZXMKcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUg
-bm91cyBtZXR0b25zIMOgIGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLi4u
-LiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwKZGUgdm91cyBjaGF1c3Nlciwg
-ZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91
-dAphdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0
-aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMs
-IGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdh
-bm7DqWUuRW52aWUgZGUgdm91cyBmYWlyZSB1bmUgYmVhdXTDqSDDoCBtb2luZHJlCmNvw7t0IHRv
-dXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5j
-ZXMgZCfDqXTDqQrDoCBtb2luZHJlIGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVyIHZvcyBl
-bmZhbnRzIMOgIGRlcyBidWRnZXRzCnJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyIGRlIHRl
-bXBzIMOgIGF1dHJlIG5vcyBwcm9wb3NpdGlvbnMgcG91ciB2b3VzCnBlcm1ldHRyZSBhaW5zaSBk
-ZSBmYWlyZSBkZSBub21icmV1c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQKcGxh
-aXNpciDDoCB0b3V0ZSBsYSBmYW1pbGxlLkEgbGEgcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmlnaW5h
-bCA/IE5vdXMKc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4g
-ZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIKbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4
-IHRvdXRlIGwnYW5uw6llLiBBaW5zaSwgZ3JhY2Ugw6Agbm91cywgdm91cwphbGxleiBwYXIgZXhl
-bXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBj
-b3V0LApvcHBvcnR1bml0w6ksIGluZm9zLi4uIC4gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0
-ZXIgdW4gbm91dmVhdSByZWdhcmQKYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lu
-cyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUKbCdhbm7DqWUuQWluc2ksIGdyw6JjZSDD
-oCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRvdXQg
-Y2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLkJl
-c29pbiBkZQp2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBt
-YW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyCnJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1
-IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlcgp1biBwZXRpdCBv
-ZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQg
-cXVlIG5vdXMKbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOp
-ZS4uLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlCnZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNz
-ZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydApxdWFsaXTDqSBwcml4
-IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVu
-IHBldGl0Cm9laWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNz
-b25zLCBldCBxdWUgbm91cyBtZXR0b25zCsOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRl
-IGwnYW5uw6llLgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRw
-Oi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTkwNTYzMjIw
-NTM3MjE0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTkwNTYzMjIwNTM3MjE0fn0KLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tCkxlYXJuIHRoZSBsYXRlc3QtLVZpc3VhbCBTdHVkaW8gMjAxMiwgU2hhcmVQb2lu
-dCAyMDEzLCBTUUwgMjAxMiwgbW9yZSEKRGlzY292ZXIgdGhlIGVhc3kgd2F5IHRvIG1hc3RlciBj
-dXJyZW50IGFuZCBwcmV2aW91cyBNaWNyb3NvZnQgdGVjaG5vbG9naWVzCmFuZCBhZHZhbmNlIHlv
-dXIgY2FyZWVyLiBHZXQgYW4gaW5jcmVkaWJsZSAxLDUwMCsgaG91cnMgb2Ygc3RlcC1ieS1zdGVw
-CnR1dG9yaWFsIHZpZGVvcyB3aXRoIExlYXJuRGV2Tm93LiBTdWJzY3JpYmUgdG9kYXkgYW5kIHNh
-dmUhCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD01ODA0MTM5
-MSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgqyfpI7gfk57dIhldi9dkoI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378719949576%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DEGHHGOINDMJNLCLE%26mid%3D1600252117&s=3DI=
+KBCOFKDLOIDBLNB
+ =
+
+Faites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein d=
+e nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 c=
+hemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 =
+offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le =
+plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaut=
+es: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ach=
+etee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFai=
+tes le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de n=
+ouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chem=
+ise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 off=
+erteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le ple=
+in de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes:=
+ 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achete=
+e 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites=
+ le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouv=
+eautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise=
+ achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offert=
+eFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein =
+de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 =
+chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1=
+ offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le=
+ plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveau=
+tes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ac=
+hetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFa=
+ites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de =
+nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 che=
+mise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 of=
+ferteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le pl=
+ein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes=
+: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achet=
+ee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaite=
+s le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nou=
+veautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemis=
+e achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offer=
+teFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein=
+ de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1=
+ chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee =
+1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites l=
+e plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouvea=
+utes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise a=
+chetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteF=
+aites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de=
+ nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 ch=
+emise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 o=
+fferteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le p=
+lein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaute=
+s: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ache=
+tee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFait=
+es le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de no=
+uveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemi=
+se achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offe=
+rteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plei=
+n de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: =
+1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee=
+ 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites =
+le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouve=
+autes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise =
+achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerte=
+Faites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein d=
+e nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 c=
+hemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 =
+offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le =
+plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaut=
+es: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ach=
+etee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFai=
+tes le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de n=
+ouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chem=
+ise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 off=
+erteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le ple=
+in de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes:=
+ 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achete=
+e 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites=
+ le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouv=
+eautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise=
+ achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offert=
+eFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein =
+de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 =
+chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1=
+ offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le=
+ plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveau=
+tes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ac=
+hetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFa=
+ites le plein de nouveautes: 1 chemise achetee 1 offerte
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600252117&sig=3DLDHMGNINGJCADJOJ
+---------------------------------------------------------------------------=
+---
+Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
+Discover the easy way to master current and previous Microsoft technologies
+and advance your career. Get an incredible 1,500+ hours of step-by-step
+tutorial videos with LearnDevNow. Subscribe today and save!
+http://pubads.g.doubleclick.net/gampad/clk?id=3D58041391&iu=3D/4140/ostg.cl=
+ktrk

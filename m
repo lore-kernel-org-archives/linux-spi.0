@@ -1,11 +1,11 @@
-From: Chemises en coton <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: [SPAM] Faites le plein de nouveautes: 1 chemise achetee 1 offerte
-Date: Mon, 9 Sep 2013 11:45:57 +0200 (CEST)
-Message-ID: <62igzt.hldi9jlcm7r7qal@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "=?utf-8?Q?Bon_plan?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Billets_TGV_=C3=A0_partir_de_10_euros?=
+Date: Mon, 09 Sep 2013 11:19:41 +0000
+Message-ID: <1043=71cdcb72-f56c-4e07-ac50-a0c0f81ddfd9=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,106 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgqyfpI7gfk57dIhldi9dkoI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378719949576%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DEGHHGOINDMJNLCLE%26mid%3D1600252117&s=3DI=
-KBCOFKDLOIDBLNB
- =
-
-Faites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein d=
-e nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 c=
-hemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 =
-offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le =
-plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaut=
-es: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ach=
-etee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFai=
-tes le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de n=
-ouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chem=
-ise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 off=
-erteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le ple=
-in de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes:=
- 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achete=
-e 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites=
- le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouv=
-eautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise=
- achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offert=
-eFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein =
-de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 =
-chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1=
- offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le=
- plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveau=
-tes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ac=
-hetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFa=
-ites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de =
-nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 che=
-mise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 of=
-ferteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le pl=
-ein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes=
-: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achet=
-ee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaite=
-s le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nou=
-veautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemis=
-e achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offer=
-teFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein=
- de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1=
- chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee =
-1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites l=
-e plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouvea=
-utes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise a=
-chetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteF=
-aites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de=
- nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 ch=
-emise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 o=
-fferteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le p=
-lein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaute=
-s: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ache=
-tee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFait=
-es le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de no=
-uveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemi=
-se achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offe=
-rteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plei=
-n de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: =
-1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee=
- 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites =
-le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouve=
-autes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise =
-achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerte=
-Faites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein d=
-e nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 c=
-hemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 =
-offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le =
-plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaut=
-es: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ach=
-etee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFai=
-tes le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de n=
-ouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chem=
-ise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 off=
-erteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le ple=
-in de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes:=
- 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achete=
-e 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites=
- le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouv=
-eautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise=
- achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offert=
-eFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein =
-de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 =
-chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1=
- offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le=
- plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveau=
-tes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ac=
-hetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFa=
-ites le plein de nouveautes: 1 chemise achetee 1 offerte
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600252117&sig=3DLDHMGNINGJCADJOJ
----------------------------------------------------------------------------=
----
-Learn the latest--Visual Studio 2012, SharePoint 2013, SQL 2012, more!
-Discover the easy way to master current and previous Microsoft technologies
-and advance your career. Get an incredible 1,500+ hours of step-by-step
-tutorial videos with LearnDevNow. Subscribe today and save!
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58041391&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFCaWxsZXRzIFRHViDD
+oCBwYXJ0aXIgZGUgMTAgZXVyb3MKCmh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9Ib3kv
+eDRTSHhnT0JGRDg0SVhteXVGOVJfYS9iL2tsUUwvNWQ4NzI1ZTAKVm91cyByZWNldmV6IGNlIG1l
+c3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQoZSkgYXZlYyBs
+J2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IHN1ciBsZSBz
+aXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUgYSBmYWl0IGwnb2JqZXQgZCd1bmUgZMOpY2xhcmF0
+aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOpcm8gMTU0NTE0OC4gQ29uZm9ybcOp
+bWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5mb3JtYXRpcXVlIGV0IExpYmVydMOp
+c8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBleGVyY2VyIHZvdHJlIGRyb2l0IGQn
+YWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gb3UgZW5jb3JlIGRlIHN1
+cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29ubmVsbGVzIHZpYSBsZSBsaWVuIHN1
+aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBkw6lzYWJvbm5lciwgbWVyY2kgZGUg
+Y2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8KQ29uc29kZWFsIGVzdCB1bmUgbmV3
+c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kgTmF0ZXhvLCBx
+dWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVuIMOpdGFudCBh
+Ym9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZyZXogbGUgdG9w
+IGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRvdXMgdm9zIHRy
+YXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMgZXQgdmVudGVz
+IHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4gCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMZWFy
+biB0aGUgbGF0ZXN0LS1WaXN1YWwgU3R1ZGlvIDIwMTIsIFNoYXJlUG9pbnQgMjAxMywgU1FMIDIw
+MTIsIG1vcmUhCkRpc2NvdmVyIHRoZSBlYXN5IHdheSB0byBtYXN0ZXIgY3VycmVudCBhbmQgcHJl
+dmlvdXMgTWljcm9zb2Z0IHRlY2hub2xvZ2llcwphbmQgYWR2YW5jZSB5b3VyIGNhcmVlci4gR2V0
+IGFuIGluY3JlZGlibGUgMSw1MDArIGhvdXJzIG9mIHN0ZXAtYnktc3RlcAp0dXRvcmlhbCB2aWRl
+b3Mgd2l0aCBMZWFybkRldk5vdy4gU3Vic2NyaWJlIHRvZGF5IGFuZCBzYXZlIQpodHRwOi8vcHVi
+YWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NTgwNDEzOTEmaXU9LzQxNDAvb3N0
+Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+c3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
+dXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5m
+by9zcGktZGV2ZWwtZ2VuZXJhbAo=

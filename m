@@ -1,37 +1,63 @@
-From: Ben Gardiner <ben.l.gardiner@gmail.com>
-Subject: [PATCH] spi: spi-davinci: deassert CS on setup()
-Date: Tue, 10 Sep 2013 13:10:22 -0400
-Message-ID: <1378833022-31046-1-git-send-email-ben.l.gardiner@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-To: grant.likely@secretlab.ca, spi-devel-general@lists.sourceforge.net,
-	davinci-linux-open-source@linux.davincidsp.com
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Joel Fernandes <joelf@ti.com>
+Subject: [PATCH 2/3] ARM: dts: add AM33XX SPI DMA support
+Date: Tue, 10 Sep 2013 14:24:38 -0500
+Message-ID: <1378841079-15796-3-git-send-email-joelf@ti.com>
+References: <1378841079-15796-1-git-send-email-joelf@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: Nishanth Menon <nm@ti.com>,
+	Devicetree Discuss <devicetree@vger.kernel.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>
+To: Benoit Cousson <bcousson@baylibre.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <1378841079-15796-1-git-send-email-joelf@ti.com>
+Sender: linux-mmc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The mmc_spi driver's mmc_cs_off() function states that "chipselect will always
-be inactive after setup()"; however, the spi-davinci driver's setup() leaves CS
-state unchanged.
+From: Matt Porter <mporter@ti.com>
 
-Add a call to davinci_spi_chipselect(spi, BITBANG_CS_INACTIVE) to the spi-
-davinci drivers' setup() function.
+Adds DMA resources to the AM33XX SPI nodes.
 
-Signed-off-by: Ben Gardiner <ben.l.gardiner@gmail.com>
+Signed-off-by: Matt Porter <mporter@ti.com>
+Signed-off-by: Joel A Fernandes <joelagnel@ti.com>
 ---
- drivers/spi/spi-davinci.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/am33xx.dtsi | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 707966b..f0f4dbd 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -404,6 +404,7 @@ static int davinci_spi_setup(struct spi_device *spi)
- 		    (pdata->chip_sel[spi->chip_select] == SPI_INTERN_CS))
- 			set_io_bits(dspi->base + SPIPC0, 1 << spi->chip_select);
+diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+index 19a1c1d..9ce85e5 100644
+--- a/arch/arm/boot/dts/am33xx.dtsi
++++ b/arch/arm/boot/dts/am33xx.dtsi
+@@ -335,6 +335,11 @@
+ 			interrupts = <65>;
+ 			ti,spi-num-cs = <2>;
+ 			ti,hwmods = "spi0";
++			dmas = <&edma 16
++				&edma 17
++				&edma 18
++				&edma 19>;
++			dma-names = "tx0", "rx0", "tx1", "rx1";
+ 			status = "disabled";
+ 		};
  
-+		davinci_spi_chipselect(spi, BITBANG_CS_INACTIVE);
- 	}
+@@ -346,6 +351,11 @@
+ 			interrupts = <125>;
+ 			ti,spi-num-cs = <2>;
+ 			ti,hwmods = "spi1";
++			dmas = <&edma 42
++				&edma 43
++				&edma 44
++				&edma 45>;
++			dma-names = "tx0", "rx0", "tx1", "rx1";
+ 			status = "disabled";
+ 		};
  
- 	if (spi->mode & SPI_READY)
 -- 
 1.8.1.2
+

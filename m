@@ -1,65 +1,60 @@
-From: Trent Piepho <tpiepho@gmail.com>
-Subject: Re: [PATCH] spi: spi-davinci: deassert CS on setup()
-Date: Tue, 10 Sep 2013 19:44:11 -0700
-Message-ID: <CA+7tXih464v2xwf41rLzG5_mSFG2x7-2Wgde=g-y7d56g_2HeA@mail.gmail.com>
-References: <1378833022-31046-1-git-send-email-ben.l.gardiner@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Grant Likely <grant.likely@secretlab.ca>,
-	"spi-devel-general@lists.sourceforge.net"
-	<spi-devel-general@lists.sourceforge.net>,
-	davinci-linux-open-source@linux.davincidsp.com,
-	linux-kernel@vger.kernel.org
-To: Ben Gardiner <ben.l.gardiner@gmail.com>
+From: Koen Kooi <koen@dominion.thruhere.net>
+Subject: Re: [PATCH 0/3] ARM: dts: Enable EDMA, MMC and SPI on AM33XX for v3.13
+Date: Wed, 11 Sep 2013 07:18:32 +0200
+Message-ID: <88E4C15C-B1AA-4A39-A5E1-CF9E8420C2BE@dominion.thruhere.net>
+References: <1378841079-15796-1-git-send-email-joelf@ti.com> <5EB8AE91-A996-4CF1-86B7-C8FDEC177E89@dominion.thruhere.net> <522F7DC0.7030603@ti.com>
+Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Cc: Benoit Cousson <bcousson@baylibre.com>, Nishanth Menon <nm@ti.com>,
+	Devicetree Discuss <devicetree@vger.kernel.org>,
+	Linux OMAP List <linux-omap@vger.kernel.org>,
+	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation List <linux-doc@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	Linux SPI Devel List
+	<spi-devel-general@lists.sourceforge.net>
+To: Joel Fernandes <joelf@ti.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1378833022-31046-1-git-send-email-ben.l.gardiner@gmail.com>
+In-Reply-To: <522F7DC0.7030603@ti.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-It is supposed to be possible to call setup() on one slave while
-transfers on another slave attached to the same master are in
-progress.
 
-A cursory look at the code makes it seem that all the CS control bits
-share SPIDAT1?  Will writing to SPIDAT1 in davinci_spi_chipselect()
-cause a race if another chipselect is being used?
+Op 10 sep. 2013, om 22:14 heeft Joel Fernandes <joelf@ti.com> het volgende geschreven:
 
-On Tue, Sep 10, 2013 at 10:10 AM, Ben Gardiner <ben.l.gardiner@gmail.com> wrote:
-> The mmc_spi driver's mmc_cs_off() function states that "chipselect will always
-> be inactive after setup()"; however, the spi-davinci driver's setup() leaves CS
-> state unchanged.
->
-> Add a call to davinci_spi_chipselect(spi, BITBANG_CS_INACTIVE) to the spi-
-> davinci drivers' setup() function.
->
-> Signed-off-by: Ben Gardiner <ben.l.gardiner@gmail.com>
-> ---
->  drivers/spi/spi-davinci.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-> index 707966b..f0f4dbd 100644
-> --- a/drivers/spi/spi-davinci.c
-> +++ b/drivers/spi/spi-davinci.c
-> @@ -404,6 +404,7 @@ static int davinci_spi_setup(struct spi_device *spi)
->                     (pdata->chip_sel[spi->chip_select] == SPI_INTERN_CS))
->                         set_io_bits(dspi->base + SPIPC0, 1 << spi->chip_select);
->
-> +               davinci_spi_chipselect(spi, BITBANG_CS_INACTIVE);
->         }
->
->         if (spi->mode & SPI_READY)
-> --
-> 1.8.1.2
->
->
-> ------------------------------------------------------------------------------
-> How ServiceNow helps IT people transform IT departments:
-> 1. Consolidate legacy IT systems to a single system of record for IT
-> 2. Standardize and globalize service processes across IT
-> 3. Implement zero-touch automation to replace manual, redundant tasks
-> http://pubads.g.doubleclick.net/gampad/clk?id=51271111&iu=/4140/ostg.clktrk
-> _______________________________________________
-> spi-devel-general mailing list
-> spi-devel-general@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+> On 09/10/2013 02:39 PM, Koen Kooi wrote:
+>> 
+>> Op 10 sep. 2013, om 21:24 heeft Joel Fernandes <joelf@ti.com> het volgende geschreven:
+>> 
+>>> Here are last few patches required to add EDMA and MMC/SPI support for AM33xx.
+>>> 
+>>> Now that all dependent DMA patches and fixes are in linux next or mainline, except
+>>> for [1] which should go in for 3.12 -rc cycle, it is safe to enable MMC and SPI support
+>>> and this patch series enables it. These are originally Matt Porter's patches with
+>>> changes to make it work with recent kernels, addition of irq, memory resources and
+>>> enable other extra properties.
+>>> 
+>>> These patches should cleanly apply on master branch after Koen's patch [2] for basic
+>>> BBB DT support is applied.
+>>> 
+>>> MMC support is enabled for: Beaglebone, AM335x EVM and EVM-SK boards. MMC support
+>>> for BBB is intentionally not added due to custom fixes and other patches that are
+>>> in Koen's tree and which will be separately submitted by him.
+>> 
+>> Correct, but your patches for MMC support on BBW are missing the card detect entries to make it hotplug work.
+> 
+> I thought it was determined that this would be submitted by you separately after
+> rebasing as we discussed [1] and [2].
+
+I have no problem submitting that, I just think it's weird that the patch you submitted contains a known broken version for BBW.
+
+> 
+> [1] https://lkml.org/lkml/2013/9/6/183
+> [2] http://marc.info/?l=linux-omap&m=137879246709612&w=2
+> 
+> 
+> Regards,
+> 
+> -Joel

@@ -1,120 +1,65 @@
-From: "Dodo par Nl-Promos" <lisa@a.optincake.com>
-Subject: =?UTF-8?B?SnVzcXUnw6AgLTYwJSBzdXIgbGVzIGNvdWV0dGVzLCBvcmVpbGxlcnMsIHN1cm1hdGVsYXMgZXQgYXJ0aWNsZXMgZGUgbGl0ZXJpZQ==?=
-Date: Wed, 11 Sep 2013 02:07:07 +0100
-Message-ID: <0.0.85.2EC.1CEAE8B3C099DF4.0@mta40.pur3.net>
-Reply-To: Dodo par Nl-Promos <lisa@a.optincake.com>
+From: Trent Piepho <tpiepho@gmail.com>
+Subject: Re: [PATCH] spi: spi-davinci: deassert CS on setup()
+Date: Tue, 10 Sep 2013 19:44:11 -0700
+Message-ID: <CA+7tXih464v2xwf41rLzG5_mSFG2x7-2Wgde=g-y7d56g_2HeA@mail.gmail.com>
+References: <1378833022-31046-1-git-send-email-ben.l.gardiner@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	davinci-linux-open-source@linux.davincidsp.com,
+	linux-kernel@vger.kernel.org
+To: Ben Gardiner <ben.l.gardiner@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1378833022-31046-1-git-send-email-ben.l.gardiner@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTkxMzMzMjIwNTM3MTc0CgoKCgooRG9kbyBUb3V0ZSBsYSBkb3VjZXVyIGR1IG1vbmRlKToKaHR0
-cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9N2VlNWNmM2RhYTBj
-NWQ3YjE4Njk5N2JiZTJjMThkOTcKCihDIGVzdCBsYSByZW50csOpZSBkZXMgYm9ubmVzIGFmZmFp
-cmVzKToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MTI0
-ZjgxOTBkMDE2MTU4NTczNTQ1N2FjZjQ0ODlkMmYKCihDb3VldHRlcyAgb3JlaWxsZXJzICBzdXJt
-YXRlbGFzIGV0IGFydGljbGVzIGRlIGxpdGVyaWUpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRy
-aWMuY29tL2NsaWMucGhwP3BhcmFtcz0yNDczNmI3OWM3ZDhmMTZjYTk5NWQzZmExMzY3YjZhOQoK
-KEp1c3F1IMOgIG1vaW5zIHNvaXhhbnRlIHBvdXIgY2VudCk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFs
-LW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTFlOWU1YTNiNTY1ZDgwZDllNmQzYzU0YzlhYTli
-MTE5CgooVml0ZSBqIGVuIHByb2ZpdGUpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29t
-L2NsaWMucGhwP3BhcmFtcz0wMDY5MGFjYTk0NzAwNWJkYTM2NTY4ZGQwNTg5MDQ3ZAoKKE5vcyBj
-b3VwcyBkZSBjb2V1cik6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/
-cGFyYW1zPTVhMjFhMzEyMjBiMGYyNjkwYzg1Nzg1ZDFlNTc0MGQ1CgooTW9pbnMgc29peGFudGUg
-cG91ciBjZW50KToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJh
-bXM9NmNiMmVhMjQ4MTRlY2ZkYTIwNDM4YmRjZjk0OTU4MDAKCihNb2lucyBjaW5xdWFudGUgcG91
-ciBjZW50KToKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9
-NGQ4ZTMzM2M5MGQzY2RlMzkxMDc5NDdjNWJlYzhmNWUKCihNb2lucyBxdWFyYW50ZSBwb3VyIGNl
-bnQpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz0xYTI3
-MzliYzdiZWUyZTRmMTJlZTBjNTQ1YmExNGJlNwoKCkNvdWV0dGVEdXZldCBkJ29pZToKaHR0cDov
-L210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9ODdiZGJiY2VmYWEyZDYy
-MTNjNzgzMGRhYmI2Yzc4M2EKCgpTdXJtYXRlbGFzIFN1cmNvbmZvcnTCrk1pbGzDqW5pdW06Cmh0
-dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWFmMWI4YjU5ODBi
-ZDAwMDQ5N2Q5MGNlODI2NWMxMzBjCgoKUGFjayBSZW50csOpZUNvdWV0dGUgKyBvcmVpbGxlcjoK
-aHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9OWI1NTE1MmM0
-MzU3ZGQ1YjU4ZWZkYmM4ZTNhMDFjNTYKCgoqT2ZmcmUgU3DDqWNpYWxlIFJlbnRyw6llIHZhbGFi
-bGUganVzcXUnYXUgMjAvMDkvMjAxMywgc3VyIHVuZSBzw6lsZWN0aW9uIGRlCnByb2R1aXRzLgoK
-RGVwdWlzIHByw6hzIGRlIDc1IGFucywgRE9ETyBlc3QgcmVjb25udSBwb3VyIGxhIHF1YWxpdMOp
-IGRlIHNlcyBjb3VldHRlcywKc2VzIG9yZWlsbGVycywgc2VzIFN1cmNvbmZvcnRzIGRlIG1hdGVs
-YXMsIHNlcyBjb3V2ZXJ0dXJlcyBldCBzYSBwcm90ZWN0aW9uCmRlIGxpdGVyaWUuIEZpZXIgZCd1
-bmUgcHJvZHVjdGlvbiBmcmFuw6dhaXNlIGVjby1yZXNwb25zYWJsZSwgRE9ETyBuZSBjZXNzZQpk
-J2lubm92ZXIgcG91ciBhcHBvcnRlciDDoCB2b3MgbnVpdHMgdG91am91cnMgcGx1cyBkZSBjb25m
-b3J0IGV0IGRlIGRvdWNldXIuCkFpbnNpLCBncsOiY2Ugw6Agbm91cywgdm91cyBhbGxleiBwYXIg
-ZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlCnF1aSBlc3QgcHJvZHVpdCBhIGJh
-cyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIC4uLi4gQmVzb2luIGRlIHZveWFnZXIsCmRl
-IHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUg
-bWVpbGxldXIgcmFwcG9ydApxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwg
-YWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0Cm9laWwgcGFyIHN1ciBsZXMgcHJv
-cG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zCsOg
-IGpvdXIgcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkVudmllIGRlIHZvdXMgZmFp
-cmUgdW5lIGJlYXV0w6kgw6AKbW9pbmRyZSBjb8O7dCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUs
-IGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzCmQnw6l0w6kgw6AgbW9pbmRyZSBm
-cmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDDoCBkZXMgYnVkZ2V0cwpy
-YWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBub3MgcHJvcG9z
-aXRpb25zIHBvdXIgdm91cwpwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJldXNlcyDD
-qWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50CnBsYWlzaXIgw6AgdG91dGUgbGEgZmFtaWxs
-ZS5CZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cwpjaGF1c3Nlciwg
-ZGUgbWFuZ2VyIG91IHNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91
-dCBhdSBsb25nCmRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0
-aXQgb2VpbCBwYXIgc3VyIGxlcwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMs
-IGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91cgpyw6lndWxpw6hyZW1lbnQgZXQgdG91dGUgbCdh
-bm7DqWUuLiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1CnJlZ2FyZCBh
-ZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudCBt
-aWV1eCB0b3V0ZQpsJ2FubsOpZS5BIGxhIHJlY2hlcmNoZSBkdSBjYWRlYXUgb3JpZ2luYWwgPyBO
-b3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlcgp1biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZv
-dXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFudAptaWV1eCB0b3V0
-ZSBsJ2FubsOpZS4gQWluc2ksIGdyYWNlIMOgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUs
-IHBvdXZvaXIKcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwg
-b3Bwb3J0dW5pdMOpLCBpbmZvcy4uLgpBaW5zaSwgZ3LDomNlIMOgIG5vdXMsIHZvdXMgYWxsZXog
-cGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZQpxdWkgZXN0IHByb2R1aXQg
-YSBiYXMgY291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuLi4uIEJlc29pbiBkZSB2b3lhZ2Vy
-LApkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGly
-IGF1IG1laWxsZXVyIHJhcHBvcnQKcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7D
-qWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdApvZWlsIHBhciBzdXIgbGVz
-IHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9u
-cwrDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS5FbnZpZSBkZSB2b3Vz
-IGZhaXJlIHVuZSBiZWF1dMOpIMOgCm1vaW5kcmUgY2/Du3QgdG91dCBhdSBsb25nIGRlIGwnYW5u
-w6llLCBkZSBwcsOpdm9pciB2b3MgcHJvY2hhaW5lcyB2YWNhbmNlcwpkJ8OpdMOpIMOgIG1vaW5k
-cmUgZnJhaXMgZXQgb3UgZW5jb3JlIGQnaGFiaWxsZXIgdm9zIGVuZmFudHMgw6AgZGVzIGJ1ZGdl
-dHMKcmFpc29ubmFibGVzLCBhbG9ycyBjb25zdWx0ZXIgZGUgdGVtcHMgw6AgYXV0cmUgbm9zIHBy
-b3Bvc2l0aW9ucyBwb3VyIHZvdXMKcGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRlIG5vbWJyZXVz
-ZXMgw6ljb25vbWllcyB0b3V0IGVuIHZvdXMgZmFpc2FudApwbGFpc2lyIMOgIHRvdXRlIGxhIGZh
-bWlsbGUuQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMKY2hhdXNz
-ZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4
-IHRvdXQgYXUgbG9uZwpkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVu
-IHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNz
-b25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRvdXRl
-IGwnYW5uw6llLi4gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdQpyZWdh
-cmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1h
-bnQgbWlldXggdG91dGUKbCdhbm7DqWUuQSBsYSByZWNoZXJjaGUgZHUgY2FkZWF1IG9yaWdpbmFs
-ID8gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIKdW4gbm91dmVhdSByZWdhcmQgYWZpbiBk
-ZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQKbWlldXgg
-dG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncmFjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVt
-cGxlLCBwb3V2b2lyCnByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNv
-dXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4KCgoKCgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVy
-LCB2aXNpdGV6IDoKaHR0cDovL2Eub3B0aW5jYWtlLmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2
-NDE4NjYyNTE5MTMzMzIyMDUzNzE3NAoKCgoKCgp7fkFKODQ2NDE4NjYyNTE5MTMzMzIyMDUzNzE3
-NH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpIb3cgU2VydmljZU5vdyBoZWxwcyBJVCBwZW9wbGUg
-dHJhbnNmb3JtIElUIGRlcGFydG1lbnRzOgoxLiBDb25zb2xpZGF0ZSBsZWdhY3kgSVQgc3lzdGVt
-cyB0byBhIHNpbmdsZSBzeXN0ZW0gb2YgcmVjb3JkIGZvciBJVAoyLiBTdGFuZGFyZGl6ZSBhbmQg
-Z2xvYmFsaXplIHNlcnZpY2UgcHJvY2Vzc2VzIGFjcm9zcyBJVAozLiBJbXBsZW1lbnQgemVyby10
-b3VjaCBhdXRvbWF0aW9uIHRvIHJlcGxhY2UgbWFudWFsLCByZWR1bmRhbnQgdGFza3MKaHR0cDov
-L3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTUxMjcxMTExJml1PS80MTQw
-L29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlz
-dGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+It is supposed to be possible to call setup() on one slave while
+transfers on another slave attached to the same master are in
+progress.
+
+A cursory look at the code makes it seem that all the CS control bits
+share SPIDAT1?  Will writing to SPIDAT1 in davinci_spi_chipselect()
+cause a race if another chipselect is being used?
+
+On Tue, Sep 10, 2013 at 10:10 AM, Ben Gardiner <ben.l.gardiner@gmail.com> wrote:
+> The mmc_spi driver's mmc_cs_off() function states that "chipselect will always
+> be inactive after setup()"; however, the spi-davinci driver's setup() leaves CS
+> state unchanged.
+>
+> Add a call to davinci_spi_chipselect(spi, BITBANG_CS_INACTIVE) to the spi-
+> davinci drivers' setup() function.
+>
+> Signed-off-by: Ben Gardiner <ben.l.gardiner@gmail.com>
+> ---
+>  drivers/spi/spi-davinci.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+> index 707966b..f0f4dbd 100644
+> --- a/drivers/spi/spi-davinci.c
+> +++ b/drivers/spi/spi-davinci.c
+> @@ -404,6 +404,7 @@ static int davinci_spi_setup(struct spi_device *spi)
+>                     (pdata->chip_sel[spi->chip_select] == SPI_INTERN_CS))
+>                         set_io_bits(dspi->base + SPIPC0, 1 << spi->chip_select);
+>
+> +               davinci_spi_chipselect(spi, BITBANG_CS_INACTIVE);
+>         }
+>
+>         if (spi->mode & SPI_READY)
+> --
+> 1.8.1.2
+>
+>
+> ------------------------------------------------------------------------------
+> How ServiceNow helps IT people transform IT departments:
+> 1. Consolidate legacy IT systems to a single system of record for IT
+> 2. Standardize and globalize service processes across IT
+> 3. Implement zero-touch automation to replace manual, redundant tasks
+> http://pubads.g.doubleclick.net/gampad/clk?id=51271111&iu=/4140/ostg.clktrk
+> _______________________________________________
+> spi-devel-general mailing list
+> spi-devel-general@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/spi-devel-general

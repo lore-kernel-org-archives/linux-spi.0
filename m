@@ -1,11 +1,11 @@
-From: Chemises en coton <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: [SPAM] Faites le plein de nouveautes: 1 chemise achetee 1 offerte
-Date: Wed, 11 Sep 2013 10:58:25 +0200 (CEST)
-Message-ID: <ggp4xx.hlgbg4206c56dil@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "=?utf-8?Q?Voitures_neuves_=C3=A0_prix_bas?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Prix_exceptionnels_sur_voitures_neuves_?=
+Date: Wed, 11 Sep 2013 17:47:38 +0000
+Message-ID: <1043=0ab38abb-ee89-47d1-afa6-71f2810da242=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,94 +18,67 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgr06bI7gfk57dIhlgbg0q7I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378889900743%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DKJAHPKLMLJEDCBLL%26mid%3D1600254371&s=3DE=
-JDJGOEFNPDPMKDC
- =
-
-Faites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein d=
-e nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 c=
-hemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 =
-offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le =
-plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaut=
-es: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ach=
-etee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFai=
-tes le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de n=
-ouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chem=
-ise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 off=
-erteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le ple=
-in de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes:=
- 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achete=
-e 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites=
- le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouv=
-eautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise=
- achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offert=
-eFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein =
-de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 =
-chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1=
- offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le=
- plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveau=
-tes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ac=
-hetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFa=
-ites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de =
-nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 che=
-mise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 of=
-ferteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le pl=
-ein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes=
-: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achet=
-ee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaite=
-s le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nou=
-veautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemis=
-e achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offer=
-teFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein=
- de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1=
- chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee =
-1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites l=
-e plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouvea=
-utes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise a=
-chetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteF=
-aites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de=
- nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 ch=
-emise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 o=
-fferteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le p=
-lein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaute=
-s: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ache=
-tee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFait=
-es le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de no=
-uveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemi=
-se achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offe=
-rteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plei=
-n de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: =
-1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee=
- 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites =
-le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouve=
-autes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise =
-achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerte=
-Faites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein d=
-e nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 c=
-hemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 =
-offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le =
-plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaut=
-es: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ach=
-etee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFai=
-tes le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de n=
-ouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chem=
-ise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 off=
-erteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le ple=
-in de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes:=
- 1 chemise achetee 1 offerte
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600254371&sig=3DENBHGJGJGDLGMEAI
----------------------------------------------------------------------------=
----
-How ServiceNow helps IT people transform IT departments:
-1. Consolidate legacy IT systems to a single system of record for IT
-2. Standardize and globalize service processes across IT
-3. Implement zero-touch automation to replace manual, redundant tasks
-http://pubads.g.doubleclick.net/gampad/clk?id=3D51271111&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICEKICAgWzFdRW52aWUg
+ZCd1bmUgbm91dmVsbGUgdm9pdHVyZSA/CiAgIFsyXXN1ciBsJ2FjaGF0IGRlIHZvdHJlIHZvaXR1
+cmUgbmV1dmUgIQogICBbM11Wb2lyIHRvdXRlcyBsZXMgbWFycXVlcyBldCBtb2TDqGxlcwogICAK
+ClJlZmVyZW5jZXMKCiAgIFZpc2libGUgbGlua3MKICAgMS4gaHR0cDovL2NsaWNrcy50cmFja2Rv
+bS5mci9jL2FzL0hqcy93VktPY01Vd0RJQVMtVWlHUWFfUGFRL2Iva2xRTC8xN2Y4Y2NmOAogICAy
+LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSGpJL3dWS09jTVV3RElBUy1VaUdRYV9Q
+YVEvYi9rbFFMLzY4MzBiODY3CiAgIDMuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9I
+ak4vd1ZLT2NNVXdESUFTLVVpR1FhX1BhUS9iL2tsUUwvNGVkZGZkN2IKCiAgIEhpZGRlbiBsaW5r
+czoKICAgNC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hqZy93VktPY01Vd0RJQVMt
+VWlHUWFfUGFRL2Iva2xRTC9hZTkzYmFiMwogICA1LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZy
+L2MvYXMvSGo1L3dWS09jTVV3RElBUy1VaUdRYV9QYVEvYi9rbFFML2I1N2UzMzYyCiAgIDYuIGh0
+dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9IanYvd1ZLT2NNVXdESUFTLVVpR1FhX1BhUS9i
+L2tsUUwvYTJjNmQzZGEKICAgNy4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hqdC93
+VktPY01Vd0RJQVMtVWlHUWFfUGFRL2Iva2xRTC8zMTE1ODllNAogICA4LiBodHRwOi8vY2xpY2tz
+LnRyYWNrZG9tLmZyL2MvYXMvSGpxL3dWS09jTVV3RElBUy1VaUdRYV9QYVEvYi9rbFFMLzg0MmI5
+NmM2CiAgIDkuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9IamQvd1ZLT2NNVXdESUFT
+LVVpR1FhX1BhUS9iL2tsUUwvNzRhOTRkOTIKICAxMC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5m
+ci9jL2FzL0hqeC93VktPY01Vd0RJQVMtVWlHUWFfUGFRL2Iva2xRTC9lZjFjNTllMgogIDExLiBo
+dHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSGpsL3dWS09jTVV3RElBUy1VaUdRYV9QYVEv
+Yi9rbFFMLzU2NzcyZmE5CiAgMTIuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9IakEv
+d1ZLT2NNVXdESUFTLVVpR1FhX1BhUS9iL2tsUUwvNGFlZWRhNWMKICAxMy4gaHR0cDovL2NsaWNr
+cy50cmFja2RvbS5mci9jL2FzL0hqUi93VktPY01Vd0RJQVMtVWlHUWFfUGFRL2Iva2xRTC9kNTY4
+ZTkwYgogIDE0LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSGpRL3dWS09jTVV3RElB
+Uy1VaUdRYV9QYVEvYi9rbFFMLzBmNTIxZTJhCiAgMTUuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20u
+ZnIvYy9hcy9IanAvd1ZLT2NNVXdESUFTLVVpR1FhX1BhUS9iL2tsUUwvY2RjMjNiZDkKICAxNi4g
+aHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hqUC93VktPY01Vd0RJQVMtVWlHUWFfUGFR
+L2Iva2xRTC80NmJiYjMzNQogIDE3LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSGpD
+L3dWS09jTVV3RElBUy1VaUdRYV9QYVEvYi9rbFFML2Q5M2Q4MDYyCiAgMTguIGh0dHA6Ly9jbGlj
+a3MudHJhY2tkb20uZnIvYy9hcy9Iamgvd1ZLT2NNVXdESUFTLVVpR1FhX1BhUS9iL2tsUUwvYWFh
+MDlkOTQKICAxOS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hqVC93VktPY01Vd0RJ
+QVMtVWlHUWFfUGFRL2Iva2xRTC9iYTZjMDEwOAogIDIwLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9t
+LmZyL2MvYXMvSGpKL3dWS09jTVV3RElBUy1VaUdRYV9QYVEvYi9rbFFML2IyMGE0ZjQ2CiAgMjEu
+IGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9IalUvd1ZLT2NNVXdESUFTLVVpR1FhX1Bh
+US9iL2tsUUwvZjM4NWFjMTcKICAyMi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hq
+TS93VktPY01Vd0RJQVMtVWlHUWFfUGFRL2Iva2xRTC85NGU3MGE1YQoKVm91cyByZWNldmV6IGNl
+IG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQoZSkgYXZl
+YyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IHN1ciBs
+ZSBzaXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUgYSBmYWl0IGwnb2JqZXQgZCd1bmUgZMOpY2xh
+cmF0aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOpcm8gMTU0NTE0OC4gQ29uZm9y
+bcOpbWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5mb3JtYXRpcXVlIGV0IExpYmVy
+dMOpc8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBleGVyY2VyIHZvdHJlIGRyb2l0
+IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gb3UgZW5jb3JlIGRl
+IHN1cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29ubmVsbGVzIHZpYSBsZSBsaWVu
+IHN1aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBkw6lzYWJvbm5lciwgbWVyY2kg
+ZGUgY2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8KQ29uc29kZWFsIGVzdCB1bmUg
+bmV3c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kgTmF0ZXhv
+LCBxdWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVuIMOpdGFu
+dCBhYm9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZyZXogbGUg
+dG9wIGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRvdXMgdm9z
+IHRyYXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMgZXQgdmVu
+dGVzIHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4gCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpI
+b3cgU2VydmljZU5vdyBoZWxwcyBJVCBwZW9wbGUgdHJhbnNmb3JtIElUIGRlcGFydG1lbnRzOgox
+LiBDb25zb2xpZGF0ZSBsZWdhY3kgSVQgc3lzdGVtcyB0byBhIHNpbmdsZSBzeXN0ZW0gb2YgcmVj
+b3JkIGZvciBJVAoyLiBTdGFuZGFyZGl6ZSBhbmQgZ2xvYmFsaXplIHNlcnZpY2UgcHJvY2Vzc2Vz
+IGFjcm9zcyBJVAozLiBJbXBsZW1lbnQgemVyby10b3VjaCBhdXRvbWF0aW9uIHRvIHJlcGxhY2Ug
+bWFudWFsLCByZWR1bmRhbnQgdGFza3MKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9n
+YW1wYWQvY2xrP2lkPTUxMjcxMTExJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
+bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

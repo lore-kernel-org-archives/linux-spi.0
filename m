@@ -1,90 +1,111 @@
-From: Koen Kooi <koen@dominion.thruhere.net>
-Subject: Re: [PATCH 0/3] ARM: dts: Enable EDMA, MMC and SPI on AM33XX for v3.13
-Date: Wed, 11 Sep 2013 08:06:15 +0200
-Message-ID: <9A0C149F-8BF4-4970-859F-A8E59EAC31E4@dominion.thruhere.net>
-References: <1378841079-15796-1-git-send-email-joelf@ti.com> <5EB8AE91-A996-4CF1-86B7-C8FDEC177E89@dominion.thruhere.net> <522F7DC0.7030603@ti.com> <88E4C15C-B1AA-4A39-A5E1-CF9E8420C2BE@dominion.thruhere.net> <523006E8.5080104@ti.com>
-Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Cc: Benoit Cousson <bcousson@baylibre.com>, Nishanth Menon <nm@ti.com>,
-	Devicetree Discuss <devicetree@vger.kernel.org>,
-	Linux OMAP List <linux-omap@vger.kernel.org>,
-	Linux ARM Kernel List <linux-arm-kernel@lists.infradead.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation List <linux-doc@vger.kernel.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	Linux SPI Devel List
-	<spi-devel-general@lists.sourceforge.net>
-To: Joel Fernandes <joelf@ti.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <523006E8.5080104@ti.com>
-Sender: linux-mmc-owner@vger.kernel.org
+From: Chemises en coton <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: [SPAM] Faites le plein de nouveautes: 1 chemise achetee 1 offerte
+Date: Wed, 11 Sep 2013 10:58:25 +0200 (CEST)
+Message-ID: <ggp4xx.hlgbg4206c56dil@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgr06bI7gfk57dIhlgbg0q7I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378889900743%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DKJAHPKLMLJEDCBLL%26mid%3D1600254371&s=3DE=
+JDJGOEFNPDPMKDC
+ =
 
-Op 11 sep. 2013, om 08:00 heeft Joel Fernandes <joelf@ti.com> het volgende geschreven:
+Faites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein d=
+e nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 c=
+hemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 =
+offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le =
+plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaut=
+es: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ach=
+etee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFai=
+tes le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de n=
+ouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chem=
+ise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 off=
+erteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le ple=
+in de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes:=
+ 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achete=
+e 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites=
+ le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouv=
+eautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise=
+ achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offert=
+eFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein =
+de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 =
+chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1=
+ offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le=
+ plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveau=
+tes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ac=
+hetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFa=
+ites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de =
+nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 che=
+mise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 of=
+ferteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le pl=
+ein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes=
+: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achet=
+ee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaite=
+s le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nou=
+veautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemis=
+e achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offer=
+teFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein=
+ de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1=
+ chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee =
+1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites l=
+e plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouvea=
+utes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise a=
+chetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteF=
+aites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de=
+ nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 ch=
+emise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 o=
+fferteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le p=
+lein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaute=
+s: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ache=
+tee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFait=
+es le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de no=
+uveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemi=
+se achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offe=
+rteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plei=
+n de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: =
+1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee=
+ 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites =
+le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouve=
+autes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise =
+achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerte=
+Faites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein d=
+e nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 c=
+hemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 =
+offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le =
+plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveaut=
+es: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chemise ach=
+etee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFai=
+tes le plein de nouveautes: 1 chemise achetee 1 offerteFaites le plein de n=
+ouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes: 1 chem=
+ise achetee 1 offerteFaites le plein de nouveautes: 1 chemise achetee 1 off=
+erteFaites le plein de nouveautes: 1 chemise achetee 1 offerteFaites le ple=
+in de nouveautes: 1 chemise achetee 1 offerteFaites le plein de nouveautes:=
+ 1 chemise achetee 1 offerte
+ =
 
-> On 09/11/2013 12:18 AM, Koen Kooi wrote:
->> 
->> Op 10 sep. 2013, om 22:14 heeft Joel Fernandes <joelf@ti.com> het volgende geschreven:
->> 
->>> On 09/10/2013 02:39 PM, Koen Kooi wrote:
->>>> 
->>>> Op 10 sep. 2013, om 21:24 heeft Joel Fernandes <joelf@ti.com> het volgende geschreven:
->>>> 
->>>>> Here are last few patches required to add EDMA and MMC/SPI support for AM33xx.
->>>>> 
->>>>> Now that all dependent DMA patches and fixes are in linux next or mainline, except
->>>>> for [1] which should go in for 3.12 -rc cycle, it is safe to enable MMC and SPI support
->>>>> and this patch series enables it. These are originally Matt Porter's patches with
->>>>> changes to make it work with recent kernels, addition of irq, memory resources and
->>>>> enable other extra properties.
->>>>> 
->>>>> These patches should cleanly apply on master branch after Koen's patch [2] for basic
->>>>> BBB DT support is applied.
->>>>> 
->>>>> MMC support is enabled for: Beaglebone, AM335x EVM and EVM-SK boards. MMC support
->>>>> for BBB is intentionally not added due to custom fixes and other patches that are
->>>>> in Koen's tree and which will be separately submitted by him.
->>>> 
->>>> Correct, but your patches for MMC support on BBW are missing the card detect entries to make it hotplug work.
->>> 
->>> I thought it was determined that this would be submitted by you separately after
->>> rebasing as we discussed [1] and [2].
->> 
->> I have no problem submitting that, I just think it's weird that the patch you submitted contains a known broken version for BBW.
-> 
-> There's nothing "broken" about $subject series. Please don't confuse maintainers
-> by using wrong words like that. This series is perfectly OK as such to be merged.
-
-But plugging in an SD card doesn't work in this series, I'd call that broken.
-
-> Further, I am puzzled by all this noise because card-detect additions were
-> initially agreed to be posted separately by you along with other custom DTS for
-> BBW MMC.
-
-I agreed to post the mmc fixes needed for BBW and BBB, so I assumed you'd drop all beaglebone entries from your series.
-
-> Its obvious I wouldn't squash patches that we _agreed_ you would send
-> out- and that are especially additions than any real fixes. Hopefully this makes
-> it clear, if you need any help please let me know.
-
-Right, so now your patch series will add a half-assed DT entry which only works if the uSD card is present at boot. Anyway, fixup series underway already
-
-> 
-> Thanks!
-> 
-> -Joel
-> 
-> 
->>> 
->>> [1] https://lkml.org/lkml/2013/9/6/183
->>> [2] http://marc.info/?l=linux-omap&m=137879246709612&w=2
->>> 
->>> 
->>> Regards,
->>> 
->>> -Joel
->> 
-> 
-
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600254371&sig=3DENBHGJGJGDLGMEAI
+---------------------------------------------------------------------------=
+---
+How ServiceNow helps IT people transform IT departments:
+1. Consolidate legacy IT systems to a single system of record for IT
+2. Standardize and globalize service processes across IT
+3. Implement zero-touch automation to replace manual, redundant tasks
+http://pubads.g.doubleclick.net/gampad/clk?id=3D51271111&iu=3D/4140/ostg.cl=
+ktrk

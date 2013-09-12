@@ -1,11 +1,11 @@
-From: "Votre Sony XPERIA" <lisa@a.optincake.com>
-Subject: [SPAM] Votre avis = 1 Xperia
-Date: Thu, 12 Sep 2013 04:13:09 +0100
-Message-ID: <0.0.2C5.D1.1CEAF6601C9613E.0@mta41.pur3.net>
-Reply-To: Votre Sony XPERIA <lisa@a.optincake.com>
+From: Mathon via Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: [SPAM] jusqu'à -70% sur plus de 150 000 produits
+Date: Thu, 12 Sep 2013 10:44:10 +0200 (CEST)
+Message-ID: <yr10ti.hlhqdnnmygv9wll@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,158 +18,106 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTkxODYzMjIwNTM3MjU0CgoKCi8qKi8KCk5vdHJlIGluc3RpdHV0IGRlIHNvbmRhZ2Ugdm91cyBh
-IHPDqWxlY3Rpb25uw6kgcG91cgpwYXJ0aWNpcGVyIMOgIG5vdHJlIGVucXXDqnRlIEhpZ2gtdGVj
-aC46Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsLWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2lu
-ZT00MzUmZW1haWxfcmVjPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZo
-CnN0ZD1hSFIwY0RvdkwyTnZibk52TG14bFptbG5ZWEp2TG1aeUx3JTNEJTNECgooaW1nMS5qcGcp
-OgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9
-NDM1JmVtYWlsX3JlYz1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmaApz
-dGQ9YUhSMGNEb3ZMMk52Ym5OdkxteGxabWxuWVhKdkxtWnlMdyUzRCUzRAoKKGltZzIuanBnKToK
-aHR0cDovL2hzdGQuaW1hZ2UtcGFuZWwtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQz
-NSZlbWFpbF9yZWM9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JmgKc3Rk
-PWFIUjBjRG92TDJOdmJuTnZMbXhsWm1sbllYSnZMbVp5THclM0QlM0QKCihpbWczLmpwZyk6Cmh0
-dHA6Ly9oc3RkLmltYWdlLXBhbmVsLWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUm
-ZW1haWxfcmVjPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZoCnN0ZD1h
-SFIwY0RvdkwyTnZibk52TG14bFptbG5ZWEp2TG1aeUx3JTNEJTNECgooaW1nNC5qcGcpOgpodHRw
-Oi8vaHN0ZC5pbWFnZS1wYW5lbC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVt
-YWlsX3JlYz1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmaApzdGQ9YUhS
-MGNEb3ZMMk52Ym5OdkxteGxabWxuWVhKdkxtWnlMdyUzRCUzRAoKKGltZzUuanBnKToKaHR0cDov
-L2hzdGQuaW1hZ2UtcGFuZWwtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFp
-bF9yZWM9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBj
-RG92TDJOdmJuTnZMbXhsWm1sbllYSnZMbVp5THclM0QlM0QKCihpbWc2LmpwZyk6Cmh0dHA6Ly9o
-c3RkLmltYWdlLXBhbmVsLWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxf
-cmVjPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZoCnN0ZD1hSFIwY0Rv
-dkwyTnZibk52TG14bFptbG5ZWEp2TG1aeUx3JTNEJTNECgooaW1nNy5qcGcpOgpodHRwOi8vaHN0
-ZC5pbWFnZS1wYW5lbC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3Jl
-Yz1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmaApzdGQ9YUhSMGNEb3ZM
-Mk52Ym5OdkxteGxabWxuWVhKdkxtWnlMdyUzRCUzRAoKKGltZzguanBnKToKaHR0cDovL2hzdGQu
-aW1hZ2UtcGFuZWwtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9
-c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJO
-dmJuTnZMbXhsWm1sbllYSnZMbVp5THclM0QlM0QKCihpbWc5LmpwZyk6Cmh0dHA6Ly9oc3RkLmlt
-YWdlLXBhbmVsLWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPXNw
-aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZoCnN0ZD1hSFIwY0RvdkwyTnZi
-bk52TG14bFptbG5ZWEp2TG1aeUx3JTNEJTNECgooaW1nMTAuanBnKToKaHR0cDovL2hzdGQuaW1h
-Z2UtcGFuZWwtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9c3Bp
-LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJOdmJu
-TnZMbXhsWm1sbllYSnZMbVp5THclM0QlM0QKCihpbWcxMS5qcGcpOgpodHRwOi8vaHN0ZC5pbWFn
-ZS1wYW5lbC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz1zcGkt
-ZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmaApzdGQ9YUhSMGNEb3ZMMk52Ym5O
-dkxteGxabWxuWVhKdkxtWnlMdyUzRCUzRAoKKGltZzEyLmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdl
-LXBhbmVsLWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPXNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZoCnN0ZD1hSFIwY0RvdkwyTnZibk52
-TG14bFptbG5ZWEp2TG1aeUx3JTNEJTNECgooaW1nMTMuanBnKToKaHR0cDovL2hzdGQuaW1hZ2Ut
-cGFuZWwtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9c3BpLWRl
-dmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJOdmJuTnZM
-bXhsWm1sbllYSnZMbVp5THclM0QlM0QKCihpbWcxNC5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1w
-YW5lbC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz1zcGktZGV2
-ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmaApzdGQ9YUhSMGNEb3ZMMk52Ym5Odkxt
-eGxabWxuWVhKdkxtWnlMdyUzRCUzRAoKKGltZzE1LmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdlLXBh
-bmVsLWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPXNwaS1kZXZl
-bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZoCnN0ZD1hSFIwY0RvdkwyTnZibk52TG14
-bFptbG5ZWEp2TG1aeUx3JTNEJTNECgooaW1nMTYuanBnKToKaHR0cDovL2hzdGQuaW1hZ2UtcGFu
-ZWwtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9c3BpLWRldmVs
-LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJOdmJuTnZMbXhs
-Wm1sbllYSnZMbVp5THclM0QlM0QKCihpbWcxNy5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5l
-bC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz1zcGktZGV2ZWwt
-Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmaApzdGQ9YUhSMGNEb3ZMMk52Ym5OdkxteGxa
-bWxuWVhKdkxtWnlMdyUzRCUzRAoKKGltZzE4LmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVs
-LWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPXNwaS1kZXZlbC1n
-ZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCZoCnN0ZD1hSFIwY0RvdkwyTnZibk52TG14bFpt
-bG5ZWEp2TG1aeUx3JTNEJTNECgooaW1nMTkuanBnKToKaHR0cDovL2hzdGQuaW1hZ2UtcGFuZWwt
-ZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9c3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJOdmJuTnZMbXhsWm1s
-bllYSnZMbVp5THclM0QlM0QKCihpbWcyMC5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbC1l
-bnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz1zcGktZGV2ZWwtZ2Vu
-ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmaApzdGQ9YUhSMGNEb3ZMMk52Ym5OdkxteGxabWxu
-WVhKdkxtWnlMdyUzRCUzRAoKKGltZzIxLmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsLWVu
-cXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT0xJmVtYWlsX3JlYz1zcGktZGV2ZWwtZ2VuZXJh
-bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmaHN0CmQ9YUhSMGNEb3ZMMk52Ym5OdkxteGxabWxuWVhK
-dkxtWnlMdyUzRCUzRAoKKGltZzIyLmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsLWVucXVl
-dGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT0xJmVtYWlsX3JlYz1zcGktZGV2ZWwtZ2VuZXJhbEBs
-aXN0cy5zb3VyY2Vmb3JnZS5uZXQmaHN0CmQ9YUhSMGNEb3ZMMk52Ym5OdkxteGxabWxuWVhKdkxt
-WnlMdyUzRCUzRAoKKGltZzIzLmdpZik6Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsLWVucXVldGUu
-Y29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPXNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldCZoCnN0ZD1hSFIwY0RvdkwyTnZibk52TG14bFptbG5ZWEp2TG1a
-eUx3JTNEJTNECgooaW1nMjQuZ2lmKToKaHR0cDovL2hzdGQuaW1hZ2UtcGFuZWwtZW5xdWV0ZS5j
-b20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9c3BpLWRldmVsLWdlbmVyYWxAbGlz
-dHMuc291cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJOdmJuTnZMbXhsWm1sbllYSnZMbVp5
-THclM0QlM0QKCihpbWcyNS5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbC1lbnF1ZXRlLmNv
-bS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0
-cy5zb3VyY2Vmb3JnZS5uZXQmaApzdGQ9YUhSMGNEb3ZMMk52Ym5OdkxteGxabWxuWVhKdkxtWnlM
-dyUzRCUzRAoKKGltZzI2LmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsLWVucXVldGUuY29t
-L2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
-LnNvdXJjZWZvcmdlLm5ldCZoCnN0ZD1hSFIwY0RvdkwyTnZibk52TG14bFptbG5ZWEp2TG1aeUx3
-JTNEJTNECgooaW1nMjcuanBnKToKaHR0cDovL2hzdGQuaW1hZ2UtcGFuZWwtZW5xdWV0ZS5jb20v
-aHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
-c291cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJOdmJuTnZMbXhsWm1sbllYSnZMbVp5THcl
-M0QlM0QKCihpbWcyOC5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbC1lbnF1ZXRlLmNvbS9o
-c3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
-b3VyY2Vmb3JnZS5uZXQmaApzdGQ9YUhSMGNEb3ZMMk52Ym5OdkxteGxabWxuWVhKdkxtWnlMdyUz
-RCUzRAoKKGltZzI5LmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsLWVucXVldGUuY29tL2hz
-dGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldCZoCnN0ZD1hSFIwY0RvdkwyTnZibk52TG14bFptbG5ZWEp2TG1aeUx3JTNE
-JTNECgooaW1nMzAuanBnKToKaHR0cDovL2hzdGQuaW1hZ2UtcGFuZWwtZW5xdWV0ZS5jb20vaHN0
-ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJOdmJuTnZMbXhsWm1sbllYSnZMbVp5THclM0Ql
-M0QKCihpbWczMS5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbC1lbnF1ZXRlLmNvbS9oc3Rk
-d2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQmaApzdGQ9YUhSMGNEb3ZMMk52Ym5OdkxteGxabWxuWVhKdkxtWnlMdyUzRCUz
-RAoKKGltZzMyLmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsLWVucXVldGUuY29tL2hzdGR3
-Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJj
-ZWZvcmdlLm5ldCZoCnN0ZD1hSFIwY0RvdkwyTnZibk52TG14bFptbG5ZWEp2TG1aeUx3JTNEJTNE
-CgooaW1nMzMuanBnKToKaHR0cDovL2hzdGQuaW1hZ2UtcGFuZWwtZW5xdWV0ZS5jb20vaHN0ZHdj
-LnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJOdmJuTnZMbXhsWm1sbllYSnZMbVp5THclM0QlM0QK
-CgrCoENlIHNtYXJ0cGhvbmXCoGFsbGllIMOpbMOpZ2FuY2UgZXQgZmluZXNzZSBkYW5zIHVuIGRl
-c2lnbiDDoCBlZmZldCBtaXJvaXIKZMOpdG9ubmFudC4gSWwgZXN0IMOpcXVpcMOpIGRlIHRvdXQg
-Y2UgcXVlIHZvdXMgcG91dmV6IGTDqXNpcmV6IDogSERNSSwKRExOQSwgTkZDLCB1biBzeXN0w6ht
-ZSBmbHVpZGUsIGJlYXUgZXQgZm9uY3Rpb25uZWwuIElsIHNlcmEgdW4gcGFyZmFpdApjb21wYWdu
-b24gZGUgdHJhdmFpbCBjb21tZSBkZSBsb2lzaXIgYXUgcXVvdGlkaWVuLjoKaHR0cDovL2hzdGQu
-aW1hZ2UtcGFuZWwtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9
-c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0JmgKc3RkPWFIUjBjRG92TDJO
-dmJuTnZMbXhsWm1sbllYSnZMbVp5THclM0QlM0QKCgoqIENvbnN1bHRlciBsZSByw6hnbGVtZW50
-LgomU2Vsb24gVm91cwpEZXB1aXMgMjAwNSBsJ2luc3RpdHV0IGRlIHNvbmRhZ2UgJlNlbG9uVm91
-cyBwdWJsaWUgY2hhcXVlIG1vaXMgZGVzIGVucXXDqnRlcwp0aMOpbWF0aXF1ZXMgYXlhbnQgcG91
-ciBidXQgbCfDqXR1ZGUgZGUgdm90cmUgb3BpbmlvbiBldCB2b3MgbW9kZXMgZGUKY29uc29tbWF0
-aW9uIHN1ciBJbnRlcm5ldC4gRGFucyBsZSBjYWRyZSBkZSBjaGFxdWUgbm91dmVhdSBzb25kYWdl
-IHVuZQpkb3RhdGlvbiDDoCBnYWduZXIgZXN0IHByb3Bvc8OpZSDDoCBsJ2Vuc2VtYmxlIGRlcyBy
-w6lwb25kYW50cyBjYXIKbCdpbnN0aXR1dCBuZSBwb3VycmFpdCBleGlzdGVyIHNhbnMgdm91cyAh
-IENlIEpldSBncmF0dWl0IGV0IHNhbnMgb2JsaWdhdGlvbgpkJ2FjaGF0IGVzdCBvdXZlcnQgw6Ag
-dG91dGUgcGVyc29ubmUgbWFqZXVyZSByZXNpZGFudCBlbiBGcmFuY2UKbcOpdHJvcG9saXRhaW5l
-IGV4Y2x1c2l2ZW1lbnQgKGluY2x1YW50IGxhIENvcnNlKSwgw6AgbCdleGNsdXNpb24gZGVzCm1l
-bWJyZXMgZHUgcGVyc29ubmVsIGRlIGwnT3JnYW5pc2F0ZXVyLCBldCBkJ3VuZSBmYWNvbiBnw6lu
-w6lyYWxlIGRlcwpzb2Npw6l0w6lzIHBhcnRpY2lwYW50IMOgIGxhIG1pc2UgZW4gxZN1dnJlIGRl
-IGNlIEpldS4gTGVzIGluZm9ybWF0aW9ucwpub21pbmF0aXZlcyByZWN1ZWlsbGllcyBkYW5zIGxl
-IGNhZHJlIGR1IHByw6lzZW50IGpldSBzb250IHRyYWl0w6llcwpjb25mb3Jtw6ltZW50IMOgIGxh
-IGxvaSBkdSA2IGphbnZpZXIgMTk3OCwgZGl0ZSAiSW5mb3JtYXRpcXVlIGV0IExpYmVydMOpIgoo
-bW9kaWZpw6llIHBhciBsYSBsb2kgZHUgNiBhb3V0IDIwMDQpIHJlbGF0aXZlIMOgIGxhIHByb3Rl
-Y3Rpb24gZGVzCnBlcnNvbm5lcyBwaHlzaXF1ZXMgw6AgbCfDqWdhcmQgZGVzIHRyYWl0ZW1lbnRz
-IGRlIGRvbm7DqWVzIMOgIGNhcmFjdMOocmUKcGVyc29ubmVsLiBMZXMgcGFydGljaXBhbnRzIHNv
-bnQgaW5mb3Jtw6lzIHF1ZSBsZXMgZG9ubsOpZXMgbm9taW5hdGl2ZXMgbGVzCmNvbmNlcm5hbnQg
-ZW5yZWdpc3Ryw6llcyBkYW5zIGxlIGNhZHJlIGR1IGpldSBzb250IG7DqWNlc3NhaXJlcyDDoCBs
-YSBwcmlzZQplbiBjb21wdGUgZGUgbGV1ciBwYXJ0aWNpcGF0aW9uLiBUb3V0IHBhcnRpY2lwYW50
-IGF1IGpldSwgZGlzcG9zZSwgZW4KYXBwbGljYXRpb24gZGUgbCdhcnRpY2xlIDI3IGRlIGNldHRl
-IGxvaSwgZCd1biBkcm9pdCBkJ2FjY8OpcyBldCBkZQpyZWN0aWZpY2F0aW9uIGF1eCBkb25uw6ll
-cyBsZXMgY29uY2VybmFudC4gVG91dGUgZGVtYW5kZSBkJ2FjY8OpcywgZGUKcmVjdGlmaWNhdGlv
-biBvdSBkJ29wcG9zaXRpb24gZG9pdCDDqnRyZSBhZHJlc3PDqWUgw6AgTmF0ZXhvIDIzMywgcnVl
-IGRlIGxhCkNyb2l4IE5pdmVydCAtIDc1MDE1IFBhcmlzOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5l
-bC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz1zcGktZGV2ZWwt
-Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQmaApzdGQ9YUhSMGNEb3ZMMk52Ym5OdkxteGxa
-bWxuWVhKdkxtWnlMdyUzRCUzRAoKCgoKCgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlz
-aXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2
-MjUxOTE4NjMyMjA1MzcyNTQKCgoKCgoKe35BSjg0NjQxODY2MjUxOTE4NjMyMjA1MzcyNTR+fQot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0KSG93IFNlcnZpY2VOb3cgaGVscHMgSVQgcGVvcGxlIHRyYW5z
-Zm9ybSBJVCBkZXBhcnRtZW50czoKMS4gQ29uc29saWRhdGUgbGVnYWN5IElUIHN5c3RlbXMgdG8g
-YSBzaW5nbGUgc3lzdGVtIG9mIHJlY29yZCBmb3IgSVQKMi4gU3RhbmRhcmRpemUgYW5kIGdsb2Jh
-bGl6ZSBzZXJ2aWNlIHByb2Nlc3NlcyBhY3Jvc3MgSVQKMy4gSW1wbGVtZW50IHplcm8tdG91Y2gg
-YXV0b21hdGlvbiB0byByZXBsYWNlIG1hbnVhbCwgcmVkdW5kYW50IHRhc2tzCmh0dHA6Ly9wdWJh
-ZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD01MTI3MTExMSZpdT0vNDE0MC9vc3Rn
-LmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpz
-cGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291
-cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZv
-L3NwaS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgr1acI7gfk57dIhlhqdkmaI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1378975447008%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DHFHIEIHKCFEOLOCA%26mid%3D1600255812&s=3DM=
+AGCEELMLHDNPPHB
+ =
+
+jusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 0=
+00 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur pl=
+us de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 =
+-70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produit=
+sjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 =
+000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur p=
+lus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0=
+ -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produi=
+tsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150=
+ 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur =
+plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=
+=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 pro=
+duitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de =
+150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% s=
+ur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu=
+'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 pr=
+oduitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de=
+ 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% =
+sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusq=
+u'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 p=
+roduitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus d=
+e 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70%=
+ sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjus=
+qu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 =
+produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus =
+de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70=
+% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsju=
+squ'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000=
+ produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus=
+ de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -7=
+0% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsj=
+usqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 00=
+0 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plu=
+s de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -=
+70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produits=
+jusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 0=
+00 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur pl=
+us de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 =
+-70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produit=
+sjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 =
+000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur p=
+lus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0=
+ -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produi=
+tsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150=
+ 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur =
+plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=
+=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 pro=
+duitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de =
+150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% s=
+ur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu=
+'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 pr=
+oduitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de=
+ 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% =
+sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusq=
+u'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 p=
+roduitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus d=
+e 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70%=
+ sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjus=
+qu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 =
+produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus =
+de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70=
+% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsju=
+squ'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000=
+ produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus=
+ de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -7=
+0% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsj=
+usqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 00=
+0 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plu=
+s de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -=
+70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produits=
+jusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 0=
+00 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur pl=
+us de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 =
+-70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produit=
+sjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 =
+000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur p=
+lus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0=
+ -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produi=
+tsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150=
+ 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur =
+plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 produitsjusqu'=
+=E0 -70% sur plus de 150 000 produitsjusqu'=E0 -70% sur plus de 150 000 pro=
+duitsjusqu'=E0 -70% sur plus de 150 000 produits
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600255812&sig=3DDGAOLEHCFLFNBMIJ
+---------------------------------------------------------------------------=
+---
+How ServiceNow helps IT people transform IT departments:
+1. Consolidate legacy IT systems to a single system of record for IT
+2. Standardize and globalize service processes across IT
+3. Implement zero-touch automation to replace manual, redundant tasks
+http://pubads.g.doubleclick.net/gampad/clk?id=3D51271111&iu=3D/4140/ostg.cl=
+ktrk

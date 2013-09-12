@@ -1,52 +1,40 @@
-From: "=?utf-8?Q?Avis_de_Passage?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?Confirmation_livraison_=C3=A0_domicile___=3F?=
-Date: Thu, 12 Sep 2013 11:40:52 +0000
-Message-ID: <1043=50e48b9a-0bc9-41ea-8755-f94ce8b067c6=4=3266566@clicks.trackdom.fr>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: Ben Gardiner <ben.l.gardiner@gmail.com>
+Subject: Re: [PATCH] spi: spi-davinci: deassert CS on setup()
+Date: Thu, 12 Sep 2013 09:01:48 -0400
+Message-ID: <CA+5vRUXL6HR5NNopxWb7XP9PFg49t8yXOJdg4f3epVqmWKyDbQ@mail.gmail.com>
+References: <1378833022-31046-1-git-send-email-ben.l.gardiner@gmail.com>
+	<CA+7tXih464v2xwf41rLzG5_mSFG2x7-2Wgde=g-y7d56g_2HeA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Grant Likely <grant.likely@secretlab.ca>,
+	"spi-devel-general@lists.sourceforge.net"
+	<spi-devel-general@lists.sourceforge.net>,
+	davinci-linux-open-source@linux.davincidsp.com,
+	linux-kernel@vger.kernel.org
+To: Trent Piepho <tpiepho@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CA+7tXih464v2xwf41rLzG5_mSFG2x7-2Wgde=g-y7d56g_2HeA@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFDb25maXJtYXRpb24g
-bGl2cmFpc29uIMOgIGRvbWljaWxlICAgPwoKaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2Fz
-L0hzTS9KTVNoSWtoNjhoTGlOUlRrODZGVXpRL2Iva2xRTC8wNTVhNWEwYwpWb3VzIHJlY2V2ZXog
-Y2UgbWVzc2FnZSBkZSBub3RyZSBwYXJ0IGNhciB2b3VzIHZvdXMgw6p0ZXMgaW5zY3JpdChlKSBh
-dmVjIGwnYWRyZXNzZSBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgc3Vy
-IGxlIHNpdGUgQ29uc29kZWFsLmNvbS4gQ2Ugc2l0ZSBhIGZhaXQgbCdvYmpldCBkJ3VuZSBkw6lj
-bGFyYXRpb24gYXVwcsOocyBkZSBsYSBDTklMIHNvdXMgbGUgbnVtw6lybyAxNTQ1MTQ4LiBDb25m
-b3Jtw6ltZW50IMOgIGwnYXJ0aWNsZSAzNCBkZSBsYSBsb2kgwqtJbmZvcm1hdGlxdWUgZXQgTGli
-ZXJ0w6lzwrsgZHUgNiBqYW52aWVyIDE5NzgsIHZvdXMgcG91dmV6IGV4ZXJjZXIgdm90cmUgZHJv
-aXQgZCdhY2PDqHMsIGRlIG1vZGlmaWNhdGlvbiwgZGUgcmVjdGlmaWNhdGlvbiBvdSBlbmNvcmUg
-ZGUgc3VwcHJlc3Npb24gZGUgdm9zIGluZm9ybWF0aW9ucyBwZXJzb25uZWxsZXMgdmlhIGxlIGxp
-ZW4gc3VpdmFudCA6IE1lcyBBYm9ubmVtZW50cy4KUG91ciB2b3VzIGTDqXNhYm9ubmVyLCBtZXJj
-aSBkZSBjbGlxdWVyIGljaSBpY2kuCglRdWkgc29tbWVzLW5vdXMgPwpDb25zb2RlYWwgZXN0IHVu
-ZSBuZXdzbGV0dGVyIHF1b3RpZGllbm5lICwgw6lkaXTDqWUgcGFyIGxhIHNvY2nDqXTDqSBOYXRl
-eG8sIHF1aSB2b3VzIHByb3Bvc2UgdW5lIHPDqWxlY3Rpb24gZGUgYm9ucyBwbGFucy4gRW4gw6l0
-YW50IGFib25uw6kgw6Agbm90cmUgbGlzdGUgZCdpbmZvcm1hdGlvbiwgdm91cyByZWNldnJleiBs
-ZSB0b3AgZGVzIGpldXggY29uY291cnMsIGxlcyBvZmZyZXMgZHUgbW9tZW50IHBvdXIgdG91cyB2
-b3MgdHJhdmF1eCwgZGVzIGludml0YXRpb25zIGV4Y2x1c2l2ZXMgw6AgZGVzIGVzc2FpcyBldCB2
-ZW50ZXMgcHJpdsOpZXMgZGUgZ3JhbmRlcyBtYXJxdWVzLiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-CkhvdyBTZXJ2aWNlTm93IGhlbHBzIElUIHBlb3BsZSB0cmFuc2Zvcm0gSVQgZGVwYXJ0bWVudHM6
-CjEuIENvbnNvbGlkYXRlIGxlZ2FjeSBJVCBzeXN0ZW1zIHRvIGEgc2luZ2xlIHN5c3RlbSBvZiBy
-ZWNvcmQgZm9yIElUCjIuIFN0YW5kYXJkaXplIGFuZCBnbG9iYWxpemUgc2VydmljZSBwcm9jZXNz
-ZXMgYWNyb3NzIElUCjMuIEltcGxlbWVudCB6ZXJvLXRvdWNoIGF1dG9tYXRpb24gdG8gcmVwbGFj
-ZSBtYW51YWwsIHJlZHVuZGFudCB0YXNrcwpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0
-L2dhbXBhZC9jbGs/aWQ9NTEyNzExMTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFp
-bGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczov
-L2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Hi Trent,
+
+Thanks for the quick review.
+
+On Tue, Sep 10, 2013 at 10:44 PM, Trent Piepho <tpiepho@gmail.com> wrote:
+>
+> It is supposed to be possible to call setup() on one slave while
+> transfers on another slave attached to the same master are in
+> progress.
+>
+> A cursory look at the code makes it seem that all the CS control bits
+> share SPIDAT1?  Will writing to SPIDAT1 in davinci_spi_chipselect()
+> cause a race if another chipselect is being used?
+
+Good point. I think you're right there could be a race.
+
+I tested with multiple slaves and hammered the bus with concurrent
+accesses; but that doesn't mean that there _isn't_ still a race.
+
+Can you recommend an existing implementation in-tree upon which I can
+base a new patch to add concurrency protection to SPIDAT1 accesses?

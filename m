@@ -1,12 +1,12 @@
-From: Levis <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?-15%_sur_la_nouvelle_collection,_stock_limit=E9?=
-Date: Fri, 13 Sep 2013 11:45:58 +0200 (CEST)
-Message-ID: <tbcy9s.hlj80ysercrhxul@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Ehpad" <contact-6iRbmuqo1C7QT0dZR+AlfA@public.gmane.org>
+Subject: Investissez intelligemment et anticipez votre retraite
+Date: Fri, 13 Sep 2013 12:55:30 +0000 (CET)
+Message-ID: <130913125530.82870503300006472@fmo40.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,91 +18,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgr23gI7gfk57dIhlj7zvtuI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1379065507590%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DOCIDDJALOALHLOKG%26mid%3D1600256860&s=3DL=
-EAELJNFGNKBMLKH
- =
+Ehpad : L' investissement immobilier avec 11 % de r=E9duction d'imp=F4t san=
+s risque locatif
 
--15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collect=
-ion, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur =
-la nouvelle collection, stock limit=E9-15% sur la nouvelle collection, stoc=
-k limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvel=
-le collection, stock limit=E9-15% sur la nouvelle collection, stock limit=
-=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle coll=
-ection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% s=
-ur la nouvelle collection, stock limit=E9-15% sur la nouvelle collection, s=
-tock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nou=
-velle collection, stock limit=E9-15% sur la nouvelle collection, stock limi=
-t=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle col=
-lection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% =
-sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collection, =
-stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la no=
-uvelle collection, stock limit=E9-15% sur la nouvelle collection, stock lim=
-it=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle co=
-llection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15%=
- sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collection,=
- stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la n=
-ouvelle collection, stock limit=E9-15% sur la nouvelle collection, stock li=
-mit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle c=
-ollection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15=
-% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collection=
-, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la =
-nouvelle collection, stock limit=E9-15% sur la nouvelle collection, stock l=
-imit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle =
-collection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-1=
-5% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collectio=
-n, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la=
- nouvelle collection, stock limit=E9-15% sur la nouvelle collection, stock =
-limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle=
- collection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-=
-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collecti=
-on, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur l=
-a nouvelle collection, stock limit=E9-15% sur la nouvelle collection, stock=
- limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvell=
-e collection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9=
--15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collect=
-ion, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur =
-la nouvelle collection, stock limit=E9-15% sur la nouvelle collection, stoc=
-k limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvel=
-le collection, stock limit=E9-15% sur la nouvelle collection, stock limit=
-=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle coll=
-ection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% s=
-ur la nouvelle collection, stock limit=E9-15% sur la nouvelle collection, s=
-tock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nou=
-velle collection, stock limit=E9-15% sur la nouvelle collection, stock limi=
-t=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle col=
-lection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% =
-sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collection, =
-stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la no=
-uvelle collection, stock limit=E9-15% sur la nouvelle collection, stock lim=
-it=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle co=
-llection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15%=
- sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collection,=
- stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la n=
-ouvelle collection, stock limit=E9-15% sur la nouvelle collection, stock li=
-mit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle c=
-ollection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15=
-% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collection=
-, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la =
-nouvelle collection, stock limit=E9-15% sur la nouvelle collection, stock l=
-imit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle =
-collection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-1=
-5% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collectio=
-n, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la=
- nouvelle collection, stock limit=E9-15% sur la nouvelle collection, stock =
-limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle=
- collection, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-=
-15% sur la nouvelle collection, stock limit=E9-15% sur la nouvelle collecti=
-on, stock limit=E9-15% sur la nouvelle collection, stock limit=E9-15% sur l=
-a nouvelle collection, stock limit=E9-15% sur la nouvelle collection, stock=
- limit=E9
- =
+Le dispositif ehpad, qui tire sa sp=E9cificit=E9 de la loi Bouvard et du r=
+=E9gime de la location meubl=E9e non professionnelle, est devenu encore plu=
+s incitatif ces derni=E8res ann=E9es.
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600256860&sig=3DPDNLCCPKLEEJFGCK
+C=B4est aujourd'hui =AB un parfait outil de d=E9fiscalisation=BB.
+
+Il a pour avantage de permettre aux investisseurs individuels de b=E9n=E9fi=
+cier :=A0
+
+D'une r=E9duction d'imp=F4t de 11 % jusqu'=E0 300 000 euros =E9tal=E9e sur =
+neuf ans ehpad
+De r=E9cup=E9rer le montant total de la TVA =E0 19,6 % investissement ehpad
+De profiter en outre d'une imposition favorable des loyers ehpad
+
+Avec une rentabilit=E9 assur=E9e aux alentours de 4,50 % =E0 5,50 % par an,=
+ l'investissement en Ehpad permet de b=E9n=E9ficier d'un revenu =E0 long te=
+rme.
+
+Les particuliers qui d=E9sirent investir en un programme Ehpad ou de la def=
+iscalisation expatri=E9s peuvent se constituer un revenu compl=E9mentaire p=
+our leur retraite mais =E9galement r=E9duire leur taux d'imposition.
+
+De fait, cet investissement permet de b=E9n=E9ficier d'une r=E9duction d'im=
+p=F4t de 11% du prix d'acquisition.
+
+Ehpad propose aussi des programmes dedefiscalisation solidaire
+
+L'investissement EHPAD permet de b=E9n=E9ficier de nombreux avantages fisca=
+ux et financiers =E0 condition de s=E9lectionner ses partenaires avec pr=E9=
+caution (http://fmo40.com/e1n3qijvvrslttpa3q/index0.html).
+
+C'est entre autres sur ce point que nous vous accompagnons. (http://fmo40.c=
+om/ubnewizlvctdsbmaho/index1.html)
+
+L'investissement immobilier avec11% de r=E9duction d'imp=F4t sans risque lo=
+catif =3D L'EHPAD
+
+Pour savoir si vous pouvez b=E9n=E9ficier de cet investissement, contactez =
+nous sans aucun engagement (http://fmo40.com/vfnhsil1vdkl4s55ag/index2.html)
+
+PS: la seule condition, est d'avoir un revenu minimum de 2 500 ? par foyer =
+!=A0
+
+A tout de suite,=A0
+
+Service EHPAD France
 ---------------------------------------------------------------------------=
 ---
 How ServiceNow helps IT people transform IT departments:

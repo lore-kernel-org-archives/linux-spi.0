@@ -1,11 +1,11 @@
-From: "=?utf-8?Q?Avis_de_Livraison?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?Confirmation_RDV____le_14-09-2013_entre_8h_et_13h_=3F?=
-Date: Sat, 14 Sep 2013 06:45:45 +0000
-Message-ID: <1043=0105b575-6221-4072-be6f-aabf4971984f=4=3266566@clicks.trackdom.fr>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: Leroy Merlin par Neezz <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Gagnez_5000_euros_de_ch=E8que_cadeaux?=
+Date: Sat, 14 Sep 2013 11:01:27 +0200 (CEST)
+Message-ID: <dvxc7b.hlklvktb2i1naml@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,78 +18,75 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICEKICAgw6AgbCdhdHRl
-bnRpb24gZGU6CiAgICAKICAgCiAgICAKICAgCiAgIAoKUmVmZXJlbmNlcwoKICAgVmlzaWJsZSBs
-aW5rcwogICBIaWRkZW4gbGlua3M6CiAgIDEuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9h
-cy9ISmkvbGRJb3lqb1B4aGN1ZDhLMGo1THZzMy9iL2tsUUwvMzE1ODM1ODYKICAgMi4gaHR0cDov
-L2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hKNy9sZElveWpvUHhoY3VkOEswajVMdnMzL2Iva2xR
-TC9mNGJjNmM1MQogICAzLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSEoyL2xkSW95
-am9QeGhjdWQ4SzBqNUx2czMvYi9rbFFMLzQxODI3MzczCiAgIDQuIGh0dHA6Ly9jbGlja3MudHJh
-Y2tkb20uZnIvYy9hcy9ISlgvbGRJb3lqb1B4aGN1ZDhLMGo1THZzMy9iL2tsUUwvYjY3NGQ0MDMK
-ICAgNS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hKNi9sZElveWpvUHhoY3VkOEsw
-ajVMdnMzL2Iva2xRTC9iZDU1YzE0ZQogICA2LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2Mv
-YXMvSEprL2xkSW95am9QeGhjdWQ4SzBqNUx2czMvYi9rbFFML2EyOGI2ZmI4CiAgIDcuIGh0dHA6
-Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ISkgvbGRJb3lqb1B4aGN1ZDhLMGo1THZzMy9iL2ts
-UUwvZjNjODEwNzUKICAgOC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hKRS9sZElv
-eWpvUHhoY3VkOEswajVMdnMzL2Iva2xRTC82NDI4NmQ2YwogICA5LiBodHRwOi8vY2xpY2tzLnRy
-YWNrZG9tLmZyL2MvYXMvSEpyL2xkSW95am9QeGhjdWQ4SzBqNUx2czMvYi9rbFFMLzhjMDA2NGVh
-CiAgMTAuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ISmEvbGRJb3lqb1B4aGN1ZDhL
-MGo1THZzMy9iL2tsUUwvMTM4NjU3YmQKICAxMS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9j
-L2FzL0hKbi9sZElveWpvUHhoY3VkOEswajVMdnMzL2Iva2xRTC8xN2I1NzA5YQogIDEyLiBodHRw
-Oi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSEpqL2xkSW95am9QeGhjdWQ4SzBqNUx2czMvYi9r
-bFFML2ViNjJjMmE3CiAgMTMuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ISnMvbGRJ
-b3lqb1B4aGN1ZDhLMGo1THZzMy9iL2tsUUwvYzVlOWM5ZjUKICAxNC4gaHR0cDovL2NsaWNrcy50
-cmFja2RvbS5mci9jL2FzL0hKSS9sZElveWpvUHhoY3VkOEswajVMdnMzL2Iva2xRTC9iYTIxYmQ2
-YQogIDE1LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSEpOL2xkSW95am9QeGhjdWQ4
-SzBqNUx2czMvYi9rbFFMLzljY2NmODc2CiAgMTYuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIv
-Yy9hcy9ISmcvbGRJb3lqb1B4aGN1ZDhLMGo1THZzMy9iL2tsUUwvN2M4MmJmYmUKICAxNy4gaHR0
-cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hKNS9sZElveWpvUHhoY3VkOEswajVMdnMzL2Iv
-a2xRTC82NzZmMzY2ZgogIDE4LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSEp2L2xk
-SW95am9QeGhjdWQ4SzBqNUx2czMvYi9rbFFMLzcwZDdkNmQ3CiAgMTkuIGh0dHA6Ly9jbGlja3Mu
-dHJhY2tkb20uZnIvYy9hcy9ISnQvbGRJb3lqb1B4aGN1ZDhLMGo1THZzMy9iL2tsUUwvZTMwNDhj
-ZTkKICAyMC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hKcS9sZElveWpvUHhoY3Vk
-OEswajVMdnMzL2Iva2xRTC81NjNhOTNjYgogIDIxLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZy
-L2MvYXMvSEpkL2xkSW95am9QeGhjdWQ4SzBqNUx2czMvYi9rbFFML2E2Yjg0ODlmCiAgMjIuIGh0
-dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ISngvbGRJb3lqb1B4aGN1ZDhLMGo1THZzMy9i
-L2tsUUwvM2QwZDVjZWYKICAyMy4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0hKbC9s
-ZElveWpvUHhoY3VkOEswajVMdnMzL2Iva2xRTC84NDY2MmFhNAogIDI0LiBodHRwOi8vY2xpY2tz
-LnRyYWNrZG9tLmZyL2MvYXMvSEpBL2xkSW95am9QeGhjdWQ4SzBqNUx2czMvYi9rbFFMLzk4ZmZk
-ZjUxCiAgMjUuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ISlIvbGRJb3lqb1B4aGN1
-ZDhLMGo1THZzMy9iL2tsUUwvMDc3OWVjMDYKICAyNi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5m
-ci9jL2FzL0hKUS9sZElveWpvUHhoY3VkOEswajVMdnMzL2Iva2xRTC9kZDQzMWIyNwogIDI3LiBo
-dHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSEpwL2xkSW95am9QeGhjdWQ4SzBqNUx2czMv
-Yi9rbFFMLzFmZDMzZWQ0CiAgMjguIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ISlAv
-bGRJb3lqb1B4aGN1ZDhLMGo1THZzMy9iL2tsUUwvOTRhYWI2MzgKICAyOS4gaHR0cDovL2NsaWNr
-cy50cmFja2RvbS5mci9jL2FzL0hKQy9sZElveWpvUHhoY3VkOEswajVMdnMzL2Iva2xRTC8wYjJj
-ODU2ZgogIDMwLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSEpoL2xkSW95am9QeGhj
-dWQ4SzBqNUx2czMvYi9rbFFMLzc4YjE5ODk5CgpWb3VzIHJlY2V2ZXogY2UgbWVzc2FnZSBkZSBu
-b3RyZSBwYXJ0IGNhciB2b3VzIHZvdXMgw6p0ZXMgaW5zY3JpdChlKSBhdmVjIGwnYWRyZXNzZSBz
-cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgc3VyIGxlIHNpdGUgQ29uc29k
-ZWFsLmNvbS4gQ2Ugc2l0ZSBhIGZhaXQgbCdvYmpldCBkJ3VuZSBkw6ljbGFyYXRpb24gYXVwcsOo
-cyBkZSBsYSBDTklMIHNvdXMgbGUgbnVtw6lybyAxNTQ1MTQ4LiBDb25mb3Jtw6ltZW50IMOgIGwn
-YXJ0aWNsZSAzNCBkZSBsYSBsb2kgwqtJbmZvcm1hdGlxdWUgZXQgTGliZXJ0w6lzwrsgZHUgNiBq
-YW52aWVyIDE5NzgsIHZvdXMgcG91dmV6IGV4ZXJjZXIgdm90cmUgZHJvaXQgZCdhY2PDqHMsIGRl
-IG1vZGlmaWNhdGlvbiwgZGUgcmVjdGlmaWNhdGlvbiBvdSBlbmNvcmUgZGUgc3VwcHJlc3Npb24g
-ZGUgdm9zIGluZm9ybWF0aW9ucyBwZXJzb25uZWxsZXMgdmlhIGxlIGxpZW4gc3VpdmFudCA6IE1l
-cyBBYm9ubmVtZW50cy4KUG91ciB2b3VzIGTDqXNhYm9ubmVyLCBtZXJjaSBkZSBjbGlxdWVyIGlj
-aSBpY2kuCglRdWkgc29tbWVzLW5vdXMgPwpDb25zb2RlYWwgZXN0IHVuZSBuZXdzbGV0dGVyIHF1
-b3RpZGllbm5lICwgw6lkaXTDqWUgcGFyIGxhIHNvY2nDqXTDqSBOYXRleG8sIHF1aSB2b3VzIHBy
-b3Bvc2UgdW5lIHPDqWxlY3Rpb24gZGUgYm9ucyBwbGFucy4gRW4gw6l0YW50IGFib25uw6kgw6Ag
-bm90cmUgbGlzdGUgZCdpbmZvcm1hdGlvbiwgdm91cyByZWNldnJleiBsZSB0b3AgZGVzIGpldXgg
-Y29uY291cnMsIGxlcyBvZmZyZXMgZHUgbW9tZW50IHBvdXIgdG91cyB2b3MgdHJhdmF1eCwgZGVz
-IGludml0YXRpb25zIGV4Y2x1c2l2ZXMgw6AgZGVzIGVzc2FpcyBldCB2ZW50ZXMgcHJpdsOpZXMg
-ZGUgZ3JhbmRlcyBtYXJxdWVzLiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxJTUlURUQgVElNRSBT
-QUxFIC0gRnVsbCBZZWFyIG9mIE1pY3Jvc29mdCBUcmFpbmluZyBGb3IgSnVzdCAkNDkuOTkhCjEs
-NTAwKyBob3VycyBvZiB0dXRvcmlhbHMgaW5jbHVkaW5nIFZpc3VhbFN0dWRpbyAyMDEyLCBXaW5k
-b3dzIDgsIFNoYXJlUG9pbnQKMjAxMywgU1FMIDIwMTIsIE1WQyA0LCBtb3JlLiBCRVNUIFZBTFVF
-OiBOZXcgTXVsdGktTGlicmFyeSBQb3dlciBQYWNrIGluY2x1ZGVzCk1vYmlsZSwgQ2xvdWQsIEph
-dmEsIGFuZCBVWCBEZXNpZ24uIExvd2VzdCBwcmljZSBldmVyISBFbmRzIDkvMjIvMTMuIApodHRw
-Oi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NjQ1NDU4NzEmaXU9LzQx
-NDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxp
-c3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9s
-aXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgr34fI7gfk57dIhlklvgb4I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1379149281639%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DCFODLHKHIPNNDFDB%26mid%3D1600258191&s=3DB=
+EHGJGJJKHMFBDBO
+ =
+
+Gagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxG=
+agnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGa=
+gnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGag=
+nez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagn=
+ez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagne=
+z 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez=
+ 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez =
+5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5=
+000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 50=
+00 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 500=
+0 euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000=
+ euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 =
+euros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 e=
+uros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 eu=
+ros de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 eur=
+os de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euro=
+s de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros=
+ de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros =
+de ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros d=
+e ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de=
+ ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de =
+ch=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de c=
+h=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeauxGagnez 5000 euros de ch=
+=E8que cadeauxGagnez 5000 euros de ch=E8que cadeaux
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600258191&sig=3DKIIINOPGGLCAPPBO
+---------------------------------------------------------------------------=
+---
+LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
+1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
+2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack inclu=
+des
+Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/22/13. =
+
+http://pubads.g.doubleclick.net/gampad/clk?id=3D64545871&iu=3D/4140/ostg.cl=
+ktrk

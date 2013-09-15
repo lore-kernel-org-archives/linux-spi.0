@@ -1,11 +1,11 @@
-From: "=?utf-8?Q?Leroy_Merlin?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?Offre_limit=C3=A9e:_distribution_de_bons_d'achat?=
-Date: Sun, 15 Sep 2013 05:33:36 +0000
-Message-ID: <1043=e0e22420-ead9-4f21-ab43-a297db3a9020=4=3266566@clicks.trackdom.fr>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: IdealDouche <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Remplacez votre baignoire par une douche sur-mesure en moins de 24h
+Date: Sun, 15 Sep 2013 11:53:14 +0200 (CEST)
+Message-ID: <z2w6wp.hlm3619i2hmfrhl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,66 +18,92 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICEKICAgQm9uam91ciAg
-LAogICBQQVJUSUNJUEVaIEEgTk9UUkUgR1JBTkQgVElSQUdFIEFVIFNPUlQgZXQgdGVudGV6IGRl
-IHJlbXBvcnRlciA1MDAw4oKsCiAgIGVuIGJvbnMgc2hvcHBpbmcgY2hleiBEZWxhbWFpc29uIGV0
-IExlcm95IE1lcmxpbiBwb3VyIHJlbG9va2VyIHZvdHJlCiAgIGludMOpcmlldXIuCiAgIAoKUmVm
-ZXJlbmNlcwoKICAgVmlzaWJsZSBsaW5rcwogICBIaWRkZW4gbGlua3M6CiAgIDEuIGh0dHA6Ly9j
-bGlja3MudHJhY2tkb20uZnIvYy9hcy9ILUYvN2NzUFZIVUs3SXUxYThYNV9PS2E3eS9iL2tsUUwv
-OWU4MWIzODkKICAgMi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0gtYy83Y3NQVkhV
-SzdJdTFhOFg1X09LYTd5L2Iva2xRTC9hMGM2MjQ0NwogICAzLiBodHRwOi8vY2xpY2tzLnRyYWNr
-ZG9tLmZyL2MvYXMvSC1tLzdjc1BWSFVLN0l1MWE4WDVfT0thN3kvYi9rbFFML2VkMWNhZTdmCiAg
-IDQuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ILWIvN2NzUFZIVUs3SXUxYThYNV9P
-S2E3eS9iL2tsUUwvZTkyZjg5NTgKICAgNS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2Fz
-L0gtby83Y3NQVkhVSzdJdTFhOFg1X09LYTd5L2Iva2xRTC83ZWNmZjQ0MQogICA2LiBodHRwOi8v
-Y2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSC1MLzdjc1BWSFVLN0l1MWE4WDVfT0thN3kvYi9rbFFM
-LzJmOGM4YjhjCiAgIDcuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ILWkvN2NzUFZI
-VUs3SXUxYThYNV9PS2E3eS9iL2tsUUwvMTFjYjFjNDIKICAgOC4gaHR0cDovL2NsaWNrcy50cmFj
-a2RvbS5mci9jL2FzL0gtNy83Y3NQVkhVSzdJdTFhOFg1X09LYTd5L2Iva2xRTC9kNDJmNDU5NQog
-ICA5LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSC0yLzdjc1BWSFVLN0l1MWE4WDVf
-T0thN3kvYi9rbFFMLzYxMTE1YWI3CiAgMTAuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9h
-cy9ILVgvN2NzUFZIVUs3SXUxYThYNV9PS2E3eS9iL2tsUUwvOTZlN2ZkYzcKICAxMS4gaHR0cDov
-L2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0gtNi83Y3NQVkhVSzdJdTFhOFg1X09LYTd5L2Iva2xR
-TC85ZGM2ZTg4YQogIDEyLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvSC1rLzdjc1BW
-SFVLN0l1MWE4WDVfT0thN3kvYi9rbFFMLzgyMTg0NjdjCiAgMTMuIGh0dHA6Ly9jbGlja3MudHJh
-Y2tkb20uZnIvYy9hcy9ILUgvN2NzUFZIVUs3SXUxYThYNV9PS2E3eS9iL2tsUUwvZDM1YjM5YjEK
-ICAxNC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0gtRS83Y3NQVkhVSzdJdTFhOFg1
-X09LYTd5L2Iva2xRTC80NGJiNDRhOAogIDE1LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2Mv
-YXMvSC1yLzdjc1BWSFVLN0l1MWE4WDVfT0thN3kvYi9rbFFML2FjOTM0ZDJlCiAgMTYuIGh0dHA6
-Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ILWEvN2NzUFZIVUs3SXUxYThYNV9PS2E3eS9iL2ts
-UUwvMzMxNTdlNzkKICAxNy4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0gtbi83Y3NQ
-VkhVSzdJdTFhOFg1X09LYTd5L2Iva2xRTC8zNzI2NTk1ZQogIDE4LiBodHRwOi8vY2xpY2tzLnRy
-YWNrZG9tLmZyL2MvYXMvSC1qLzdjc1BWSFVLN0l1MWE4WDVfT0thN3kvYi9rbFFML2NiZjFlYjYz
-CiAgMTkuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ILXMvN2NzUFZIVUs3SXUxYThY
-NV9PS2E3eS9iL2tsUUwvZTU3YWUwMzEKICAyMC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9j
-L2FzL0gtSS83Y3NQVkhVSzdJdTFhOFg1X09LYTd5L2Iva2xRTC85YWIyOTRhZQoKVm91cyByZWNl
-dmV6IGNlIG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQo
-ZSkgYXZlYyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0
-IHN1ciBsZSBzaXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUgYSBmYWl0IGwnb2JqZXQgZCd1bmUg
-ZMOpY2xhcmF0aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOpcm8gMTU0NTE0OC4g
-Q29uZm9ybcOpbWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5mb3JtYXRpcXVlIGV0
-IExpYmVydMOpc8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBleGVyY2VyIHZvdHJl
-IGRyb2l0IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gb3UgZW5j
-b3JlIGRlIHN1cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29ubmVsbGVzIHZpYSBs
-ZSBsaWVuIHN1aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBkw6lzYWJvbm5lciwg
-bWVyY2kgZGUgY2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8KQ29uc29kZWFsIGVz
-dCB1bmUgbmV3c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kg
-TmF0ZXhvLCBxdWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVu
-IMOpdGFudCBhYm9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZy
-ZXogbGUgdG9wIGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRv
-dXMgdm9zIHRyYXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMg
-ZXQgdmVudGVzIHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4gCi0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLQpMSU1JVEVEIFRJTUUgU0FMRSAtIEZ1bGwgWWVhciBvZiBNaWNyb3NvZnQgVHJhaW5pbmcg
-Rm9yIEp1c3QgJDQ5Ljk5IQoxLDUwMCsgaG91cnMgb2YgdHV0b3JpYWxzIGluY2x1ZGluZyBWaXN1
-YWxTdHVkaW8gMjAxMiwgV2luZG93cyA4LCBTaGFyZVBvaW50CjIwMTMsIFNRTCAyMDEyLCBNVkMg
-NCwgbW9yZS4gQkVTVCBWQUxVRTogTmV3IE11bHRpLUxpYnJhcnkgUG93ZXIgUGFjayBpbmNsdWRl
-cwpNb2JpbGUsIENsb3VkLCBKYXZhLCBhbmQgVVggRGVzaWduLiBMb3dlc3QgcHJpY2UgZXZlciEg
-RW5kcyA5LzIyLzEzLiAKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xr
-P2lkPTY0NTQ1ODcxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
-cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgr3ltI7gfk57dIhlm35u1kI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1379238785651%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DKJNKBGBDDBBJFKLF%26mid%3D1600258817&s=3DE=
+PBPBHEFFEJJNDNJ
+ =
+
+Remplacez votre baignoire par une douche sur-mesure en moins de 24hRemplace=
+z votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre =
+baignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoir=
+e par une douche sur-mesure en moins de 24hRemplacez votre baignoire par un=
+e douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche=
+ sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mes=
+ure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en m=
+oins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de =
+24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRempl=
+acez votre baignoire par une douche sur-mesure en moins de 24hRemplacez vot=
+re baignoire par une douche sur-mesure en moins de 24hRemplacez votre baign=
+oire par une douche sur-mesure en moins de 24hRemplacez votre baignoire par=
+ une douche sur-mesure en moins de 24hRemplacez votre baignoire par une dou=
+che sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-=
+mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure e=
+n moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins =
+de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRe=
+mplacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez =
+votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre ba=
+ignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire =
+par une douche sur-mesure en moins de 24hRemplacez votre baignoire par une =
+douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche s=
+ur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesur=
+e en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moi=
+ns de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24=
+hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRemplac=
+ez votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre=
+ baignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoi=
+re par une douche sur-mesure en moins de 24hRemplacez votre baignoire par u=
+ne douche sur-mesure en moins de 24hRemplacez votre baignoire par une douch=
+e sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-me=
+sure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en =
+moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de=
+ 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRemp=
+lacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez vo=
+tre baignoire par une douche sur-mesure en moins de 24hRemplacez votre baig=
+noire par une douche sur-mesure en moins de 24hRemplacez votre baignoire pa=
+r une douche sur-mesure en moins de 24hRemplacez votre baignoire par une do=
+uche sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur=
+-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure =
+en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins=
+ de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hR=
+emplacez votre baignoire par une douche sur-mesure en moins de 24hRemplacez=
+ votre baignoire par une douche sur-mesure en moins de 24hRemplacez votre b=
+aignoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire=
+ par une douche sur-mesure en moins de 24hRemplacez votre baignoire par une=
+ douche sur-mesure en moins de 24hRemplacez votre baignoire par une douche =
+sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesu=
+re en moins de 24hRemplacez votre baignoire par une douche sur-mesure en mo=
+ins de 24hRemplacez votre baignoire par une douche sur-mesure en moins de 2=
+4hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRempla=
+cez votre baignoire par une douche sur-mesure en moins de 24hRemplacez votr=
+e baignoire par une douche sur-mesure en moins de 24hRemplacez votre baigno=
+ire par une douche sur-mesure en moins de 24hRemplacez votre baignoire par =
+une douche sur-mesure en moins de 24hRemplacez votre baignoire par une douc=
+he sur-mesure en moins de 24hRemplacez votre baignoire par une douche sur-m=
+esure en moins de 24hRemplacez votre baignoire par une douche sur-mesure en=
+ moins de 24hRemplacez votre baignoire par une douche sur-mesure en moins d=
+e 24hRemplacez votre baignoire par une douche sur-mesure en moins de 24hRem=
+placez votre baignoire par une douche sur-mesure en moins de 24hRemplacez v=
+otre baignoire par une douche sur-mesure en moins de 24hRemplacez votre bai=
+gnoire par une douche sur-mesure en moins de 24hRemplacez votre baignoire p=
+ar une douche sur-mesure en moins de 24hRemplacez votre baignoire par une d=
+ouche sur-mesure en moins de 24hRemplacez votre baignoire par une douche su=
+r-mesure en moins de 24hRemplacez votre baignoire par une douche sur-mesure=
+ en moins de 24hRemplacez votre baignoire par une douche sur-mesure en moin=
+s de 24h
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600258817&sig=3DAGKILPDJIDLNDGMB
+---------------------------------------------------------------------------=
+---
+LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
+1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
+2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack inclu=
+des
+Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/22/13. =
+
+http://pubads.g.doubleclick.net/gampad/clk?id=3D64545871&iu=3D/4140/ostg.cl=
+ktrk

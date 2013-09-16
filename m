@@ -1,12 +1,12 @@
-From: "Loi Duflot" <contact-X3uiiclsbTtBDgjK7y7TUQ@public.gmane.org>
-Subject: [SPAM] Devenez propriétaire grâce à vos impôts et sans apport
-Date: Mon, 16 Sep 2013 09:21:43 +0000 (CET)
-Message-ID: <130916092143.108922335100005096@fmo42.com>
+From: "=?utf-8?Q?Livraison_Commande?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Etape_2:_Confirmation_de_commande?=
+Date: Mon, 16 Sep 2013 15:50:45 +0000
+Message-ID: <1043=a5a15ef0-b075-4ea9-8c4f-02b0b6343667=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,10 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-------------------------------------------------------------------------------
-LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
-1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
-2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack includes
-Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/20/13. 
-http://pubads.g.doubleclick.net/gampad/clk?id=58041151&iu=/4140/ostg.clktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFFdGFwZSAyOiBDb25m
+aXJtYXRpb24gZGUgY29tbWFuZGUKCmh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9Id0kv
+ZW84cC01ZzNLSThrczNYM1dDYV90My9iL2tsUUwvN2U0N2M2MTUKVm91cyByZWNldmV6IGNlIG1l
+c3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQoZSkgYXZlYyBs
+J2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IHN1ciBsZSBz
+aXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUgYSBmYWl0IGwnb2JqZXQgZCd1bmUgZMOpY2xhcmF0
+aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOpcm8gMTU0NTE0OC4gQ29uZm9ybcOp
+bWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5mb3JtYXRpcXVlIGV0IExpYmVydMOp
+c8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBleGVyY2VyIHZvdHJlIGRyb2l0IGQn
+YWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gb3UgZW5jb3JlIGRlIHN1
+cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29ubmVsbGVzIHZpYSBsZSBsaWVuIHN1
+aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBkw6lzYWJvbm5lciwgbWVyY2kgZGUg
+Y2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8KQ29uc29kZWFsIGVzdCB1bmUgbmV3
+c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kgTmF0ZXhvLCBx
+dWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVuIMOpdGFudCBh
+Ym9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZyZXogbGUgdG9w
+IGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRvdXMgdm9zIHRy
+YXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMgZXQgdmVudGVz
+IHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4gCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMSU1J
+VEVEIFRJTUUgU0FMRSAtIEZ1bGwgWWVhciBvZiBNaWNyb3NvZnQgVHJhaW5pbmcgRm9yIEp1c3Qg
+JDQ5Ljk5IQoxLDUwMCsgaG91cnMgb2YgdHV0b3JpYWxzIGluY2x1ZGluZyBWaXN1YWxTdHVkaW8g
+MjAxMiwgV2luZG93cyA4LCBTaGFyZVBvaW50CjIwMTMsIFNRTCAyMDEyLCBNVkMgNCwgbW9yZS4g
+QkVTVCBWQUxVRTogTmV3IE11bHRpLUxpYnJhcnkgUG93ZXIgUGFjayBpbmNsdWRlcwpNb2JpbGUs
+IENsb3VkLCBKYXZhLCBhbmQgVVggRGVzaWduLiBMb3dlc3QgcHJpY2UgZXZlciEgRW5kcyA5LzIw
+LzEzLiAKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQx
+MTUxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwt
+Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

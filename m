@@ -1,11 +1,12 @@
-From: "Syndic+ Votre gestionnaire immobilier" <lisa@a.optincake.com>
-Subject: [SPAM] Changez pour un syndic innovant
-Date: Mon, 16 Sep 2013 01:07:27 +0100
-Message-ID: <0.0.95.E69.1CEB270BAC4614A.0@mta153.pur3.net>
-Reply-To: Syndic+ Votre gestionnaire immobilier <lisa@a.optincake.com>
+From: Cheap Monday <anne-+SWa8+tIKU1Wk0Htik3J/w@public.gmane.org>
+Subject: =?ISO-8859-1?Q?-15%_sur_la_nouvelle_collecti?=
+	=?ISO-8859-1?Q?on_Cheap_Monday,_stock_limit=E9?=
+Date: Mon, 16 Sep 2013 07:34:32 +0200 (CEST)
+Message-ID: <tkk70z.hln9d70qkti74ll@bs.miify.com>
+Reply-To: Anne <info-hoh7hF1A3YGohgF03p4UXg@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,154 +19,83 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTkzMTMzMjIwNTM3MTc0CgoKCgoKKHN5bmRpYysgdm90cmUgZ2VzdGlvbm5haXJlIGltbW9iaWxp
-ZXIpOgpodHRwOi8vYWN0aW9uLm1ldGFmZmlsaWF0aW9uLmNvbS90cmsucGhwP21jbGljPVA0N0RE
-NTU1NDAzQjEzMTY3NzcyMjEmdXJscnY9aHR0cAolM0ElMkYlMkZ3d3cuc3luZGljcGx1cy5mciUy
-Rmdlc3Rpb24taW1tb2JpbGllcmUtZ2xvYmFsJTJGJTNGdXRtX3NvdXJjZSUzRE5UQSUyNgp1dG1f
-bWVkaXVtJTNEZW1haWwlMjZ1dG1fY2FtcGFpZ24lM0RzeW5kaWNjb3BybzIlMjZsZWFkc291cmNl
-JTNETlRBJnVybHY9YjgxZGRlYwoxYjkzMzA2ZjhhM2NjZGY0ZTZjZDkxNTRkCgoKQSB0b3VzIGxl
-cwpjb3Byb3ByacODwql0YWlyZXMgaW5zYXRpc2ZhaXRzCgooc3luZGljX2NwX2NvbnRlbnRfMDQu
-anBnKToKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlvbi5jb20vdHJrLnBocD9tY2xpYz1QNDdE
-RDU1NTQwM0IxMzMzNTU0NDM3JnVybHJ2PWh0dHAKJTNBJTJGJTJGd3d3LnN5bmRpY3BsdXMuZnIl
-MkZnZXN0aW9uLWltbW9iaWxpZXJlLWdsb2JhbCUyRiUzRnV0bV9zb3VyY2UlM0ROVEElMjYKdXRt
-X21lZGl1bSUzRGVtYWlsJTI2dXRtX2NhbXBhaWduJTNEc3luZGljY29wcm8yJTI2bGVhZHNvdXJj
-ZSUzRE5UQSZ1cmx2PWI4MWRkZWMKMWI5MzMwNmY4YTNjY2RmNGU2Y2Q5MTU0ZAoKClZvdXMgZmFp
-dGVzIHBldXQtw4PCqnRyZSBwYXJ0aWUgZHUgbm9tYnJlIHRyw4PCqHMgaW1wb3J0YW50IGRlCmNv
-cHJvcHJpw4PCqXRhaXJlcyBpbnNhdGlzZmFpdHMgZGUgbGV1ciBzeW5kaWMuIFZvdXMgYXZleiBk
-ZXMgZGlmZmljdWx0w4PCqXMKw6AgbGUgam9pbmRyZSA/IEEgb2J0ZW5pciBkZXMgcsODwqlwb25z
-ZXMgw4PCoCB2b3MgcXVlc3Rpb25zID8gQQpjb21wcmVuZHJlIHNlcyB0YXJpZnMgPyBBIHBlcmNl
-dm9pciBzb24gZXhwZXJ0aXNlIGV0IHNvbiDDg8KpY291dGUgPyBDaGFuZ2V6CnBvdXIgdW4gc3lu
-ZGljIHBsdXMgcHJvY2hlLCBwbHVzIHRyYW5zcGFyZW50LApwbHVzIGVmZmljYWNlLgoKKHN5bmRp
-Y19jcF9jb250ZW50XzA5LmpwZyk6Cmh0dHA6Ly9hY3Rpb24ubWV0YWZmaWxpYXRpb24uY29tL3Ry
-ay5waHA/bWNsaWM9UDQ3REQ1NTU0MDNCMTM1MDMzMTY1MyZ1cmxydj1odHRwCiUzQSUyRiUyRnd3
-dy5zeW5kaWNwbHVzLmZyJTJGZ2VzdGlvbi1pbW1vYmlsaWVyZS1nbG9iYWwlMkYlM0Z1dG1fc291
-cmNlJTNETlRBJTI2CnV0bV9tZWRpdW0lM0RlbWFpbCUyNnV0bV9jYW1wYWlnbiUzRHN5bmRpY2Nv
-cHJvMiUyNmxlYWRzb3VyY2UlM0ROVEEmdXJsdj1iODFkZGVjCjFiOTMzMDZmOGEzY2NkZjRlNmNk
-OTE1NGQKCihzeW5kaWNfY3BfY29udGVudF8xMS5qcGcpOgpodHRwOi8vYWN0aW9uLm1ldGFmZmls
-aWF0aW9uLmNvbS90cmsucGhwP21jbGljPVA0N0RENTU1NDAzQjEzNjcxMDg4NjkmdXJscnY9aHR0
-cAolM0ElMkYlMkZ3d3cuc3luZGljcGx1cy5mciUyRmdlc3Rpb24taW1tb2JpbGllcmUtZ2xvYmFs
-JTJGJTNGdXRtX3NvdXJjZSUzRE5UQSUyNgp1dG1fbWVkaXVtJTNEZW1haWwlMjZ1dG1fY2FtcGFp
-Z24lM0RzeW5kaWNjb3BybzIlMjZsZWFkc291cmNlJTNETlRBJnVybHY9YjgxZGRlYwoxYjkzMzA2
-ZjhhM2NjZGY0ZTZjZDkxNTRkCgooc3luZGljX2NwX2NvbnRlbnRfMTMuanBnKToKaHR0cDovL2Fj
-dGlvbi5tZXRhZmZpbGlhdGlvbi5jb20vdHJrLnBocD9tY2xpYz1QNDdERDU1NTQwM0IxMzgzODg2
-MDg1JnVybHJ2PWh0dHAKJTNBJTJGJTJGd3d3LnN5bmRpY3BsdXMuZnIlMkZnZXN0aW9uLWltbW9i
-aWxpZXJlLWdsb2JhbCUyRiUzRnV0bV9zb3VyY2UlM0ROVEElMjYKdXRtX21lZGl1bSUzRGVtYWls
-JTI2dXRtX2NhbXBhaWduJTNEc3luZGljY29wcm8yJTI2bGVhZHNvdXJjZSUzRE5UQSZ1cmx2PWI4
-MWRkZWMKMWI5MzMwNmY4YTNjY2RmNGU2Y2Q5MTU0ZAoKCkRlcyBwcm9mZXNzaW9ubmVscyBqb2ln
-bmFibGVzIGVuIHBlcm1hbmVuY2UsIGRlcyBidXJlYXV4IGltcGxhbnTDg8KpcyBhdXggNApjb2lu
-cyBkZSBQYXJpcyBldCBlbiDDg8KObGUtZGUtRnJhbmNlLgpFbiBzYXZvaXIgKzoKaHR0cDovL2Fj
-dGlvbi5tZXRhZmZpbGlhdGlvbi5jb20vdHJrLnBocD9tY2xpYz1QNDdERDU1NTQwM0IxMzEwMDY2
-MzMwMSZ1cmxydj1odHQKcCUzQSUyRiUyRnd3dy5zeW5kaWNwbHVzLmZyJTJGZ2VzdGlvbi1pbW1v
-YmlsaWVyZS1nbG9iYWwlMkYlM0Z1dG1fc291cmNlJTNETlRBJTIKNnV0bV9tZWRpdW0lM0RlbWFp
-bCUyNnV0bV9jYW1wYWlnbiUzRHN5bmRpY2NvcHJvMiUyNmxlYWRzb3VyY2UlM0ROVEEmdXJsdj1i
-ODFkZGUKYzFiOTMzMDZmOGEzY2NkZjRlNmNkOTE1NGQKCgpVbiBjb21wdGUgc8ODwqlwYXLDg8Kp
-IHBhciBpbW1ldWJsZSwgZGVzIGNvbmRpdGlvbnMgdGFyaWZhaXJlcyBzaW1wbGVzLgpFbiBzYXZv
-aXIgKzoKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlvbi5jb20vdHJrLnBocD9tY2xpYz1QNDdE
-RDU1NTQwM0IxMzExNzQ0MDUxNyZ1cmxydj1odHQKcCUzQSUyRiUyRnd3dy5zeW5kaWNwbHVzLmZy
-JTJGZ2VzdGlvbi1pbW1vYmlsaWVyZS1nbG9iYWwlMkYlM0Z1dG1fc291cmNlJTNETlRBJTIKNnV0
-bV9tZWRpdW0lM0RlbWFpbCUyNnV0bV9jYW1wYWlnbiUzRHN5bmRpY2NvcHJvMiUyNmxlYWRzb3Vy
-Y2UlM0ROVEEmdXJsdj1iODFkZGUKYzFiOTMzMDZmOGEzY2NkZjRlNmNkOTE1NGQKCgpVbmUgcXVh
-bGl0w4PCqSBldCB1bmUgcmFwaWRpdMODwqkgZCdpbmZvcm1hdGlvbiBxdWkgZm9udCB0b3V0ZSBs
-YQpkaWZmw4PCqXJlbmNlLgpFbiBzYXZvaXIgKzoKaHR0cDovL2FjdGlvbi5tZXRhZmZpbGlhdGlv
-bi5jb20vdHJrLnBocD9tY2xpYz1QNDdERDU1NTQwM0IxMzEzNDIxNzczMyZ1cmxydj1odHQKcCUz
-QSUyRiUyRnd3dy5zeW5kaWNwbHVzLmZyJTJGZ2VzdGlvbi1pbW1vYmlsaWVyZS1nbG9iYWwlMkYl
-M0Z1dG1fc291cmNlJTNETlRBJTIKNnV0bV9tZWRpdW0lM0RlbWFpbCUyNnV0bV9jYW1wYWlnbiUz
-RHN5bmRpY2NvcHJvMiUyNmxlYWRzb3VyY2UlM0ROVEEmdXJsdj1iODFkZGUKYzFiOTMzMDZmOGEz
-Y2NkZjRlNmNkOTE1NGQKCihzeW5kaWNfY3BfY29udGVudF8yOS5qcGcpOgpodHRwOi8vYWN0aW9u
-Lm1ldGFmZmlsaWF0aW9uLmNvbS90cmsucGhwP21jbGljPVA0N0RENTU1NDAzQjEzMTUwOTk0OTQ5
-JnVybHJ2PWh0dApwJTNBJTJGJTJGd3d3LnN5bmRpY3BsdXMuZnIlMkZnZXN0aW9uLWltbW9iaWxp
-ZXJlLWdsb2JhbCUyRiUzRnV0bV9zb3VyY2UlM0ROVEElMgo2dXRtX21lZGl1bSUzRGVtYWlsJTI2
-dXRtX2NhbXBhaWduJTNEc3luZGljY29wcm8yJTI2bGVhZHNvdXJjZSUzRE5UQSZ1cmx2PWI4MWRk
-ZQpjMWI5MzMwNmY4YTNjY2RmNGU2Y2Q5MTU0ZAoKKHN5bmRpY19jcF9jb250ZW50XzMwLmpwZyk6
-Cmh0dHA6Ly9hY3Rpb24ubWV0YWZmaWxpYXRpb24uY29tL3Ryay5waHA/bWNsaWM9UDQ3REQ1NTU0
-MDNCMTMxNjc3NzIxNjUmdXJscnY9aHR0CnAlM0ElMkYlMkZ3d3cuc3luZGljcGx1cy5mciUyRmdl
-c3Rpb24taW1tb2JpbGllcmUtZ2xvYmFsJTJGJTNGdXRtX3NvdXJjZSUzRE5UQSUyCjZ1dG1fbWVk
-aXVtJTNEZW1haWwlMjZ1dG1fY2FtcGFpZ24lM0RzeW5kaWNjb3BybzIlMjZsZWFkc291cmNlJTNE
-TlRBJnVybHY9YjgxZGRlCmMxYjkzMzA2ZjhhM2NjZGY0ZTZjZDkxNTRkCgoKRGVzIHByb2Zlc3Np
-b25uZWxzIMODwqAgdm90cmUgw4PCg8OGwpLDg8KCw4LCqWNvdXRlIGVuIHBlcm1hbmVuY2UKVW4g
-c2l0ZSBpbnRlcm5ldCBwYXIgaW1tZXVibGUgcG91ciB1bmUgZ2VzdGlvbiBjb2xsZWN0aXZlIGV0
-IHRyYW5zcGFyZW50ZQplbnRyZSBsZXMgZGlmZsODwqlyZW50cyBhY3RldXJzClVuZSBpbmZvcm1h
-dGlvbiBlbiB0ZW1wcyByw4PCqWVsLCBhY2Nlc3NpYmxlIGV0IHbDg8KpcmlmaWFibGUgMjQvMjRo
-LCA3LzcgagpVbiBjb21wdGUgc8ODwqlwYXLDg8KpIHBhciBpbW1ldWJsZSBwb3VyIHBsdXMgZGUg
-dHJhbnNwYXJlbmNlCihzeW5kaWNfY3BfY29udGVudF8zMy5qcGcpOgpodHRwOi8vYWN0aW9uLm1l
-dGFmZmlsaWF0aW9uLmNvbS90cmsucGhwP21jbGljPVA0N0RENTU1NDAzQjEzMTg0NTQ5MzgxJnVy
-bHJ2PWh0dApwJTNBJTJGJTJGd3d3LnN5bmRpY3BsdXMuZnIlMkZnZXN0aW9uLWltbW9iaWxpZXJl
-LWdsb2JhbCUyRiUzRnV0bV9zb3VyY2UlM0ROVEElMgo2dXRtX21lZGl1bSUzRGVtYWlsJTI2dXRt
-X2NhbXBhaWduJTNEc3luZGljY29wcm8yJTI2bGVhZHNvdXJjZSUzRE5UQSZ1cmx2PWI4MWRkZQpj
-MWI5MzMwNmY4YTNjY2RmNGU2Y2Q5MTU0ZAoKCkVudmllIGRlIHZvdXMgZmFpcmUgdW5lIGJlYXV0
-w4PCg8OCwqkgw4PCg8OCwqAgbW9pbmRyZSBjb8ODwoMidCB0b3V0IGF1IGxvbmcKZGUgbCdhbm7D
-g8KDw4LCqWUsIGRlIHByw4PCg8OCwql2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzCmQnw4PC
-g8OCwql0w4PCg8OCwqkgw4PCg8OCwqAgbW9pbmRyZSBmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJp
-bGxlciB2b3MKZW5mYW50cyDDg8KDw4LCoCBkZXMgYnVkZ2V0cyByYWlzb25uYWJsZXMsIGFsb3Jz
-IGNvbnN1bHRlciBkZSB0ZW1wcyDDg8KDw4LCoAphdXRyZSBub3MgcHJvcG9zaXRpb25zIHBvdXIg
-dm91cyBwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJldXNlcwrDg8KDw4LCqWNvbm9t
-aWVzIHRvdXQgZW4gdm91cyBmYWlzYW50IHBsYWlzaXIgw4PCg8OCwqAgdG91dGUgbGEKZmFtaWxs
-ZS5BaW5zaSwgZ3LDg8KDw4LComNlIMODwoPDgsKgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1w
-bGUsIHBvdXZvaXIKcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291
-dCwgb3Bwb3J0dW5pdMODwoPDgsKpLCBpbmZvcy4uLgouLi4gQmVzb2luIGRlIHZveWFnZXIsIGRl
-IHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdQpzb3J0aXIgYXUg
-bWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDg8KDw4LCqSBwcml4IHRvdXQgYXUgbG9uZyBkZQpsJ2Fu
-bsODwoPDgsKpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFy
-IHN1ciBsZXMKcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91
-cyBtZXR0b25zIMODwoPDgsKgIGpvdXIKcsODwoPDgsKpZ3VsacODwoPDgsKocmVtZW50IGV0IHRv
-dXRlIGwnYW5uw4PCg8OCwqllLi4gTm91cyBzb3VoYWl0b25zIHZvdXMKYXBwb3J0ZXIgdW4gbm91
-dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMODwoPDgsKgIGTDg8KDw4LCqXBlbnNlciBt
-b2lucwp0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7Dg8KDw4LCqWUuQSBsYSBy
-ZWNoZXJjaGUgZHUgY2FkZWF1Cm9yaWdpbmFsID8gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0
-ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZSB2b3VzCmFpZGVyIMODwoPDgsKgIGTDg8KDw4LC
-qXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUKbCdhbm7Dg8KDw4LC
-qWUuIEFpbnNpLCBncmFjZSDDg8KDw4LCoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVtcGxlLCBw
-b3V2b2lyCnByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNvdXQsIG9w
-cG9ydHVuaXTDg8KDw4LCqSwgaW5mb3MuLi4KQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFi
-aWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIKYXUgbWVpbGxldXIg
-cmFwcG9ydCBxdWFsaXTDg8KDw4LCqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsODwoPDgsKp
-ZSwKYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMg
-cHJvcG9zaXRpb25zIHF1ZSBub3VzCnZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25z
-IMODwoPDgsKgIGpvdXIKcsODwoPDgsKpZ3VsacODwoPDgsKocmVtZW50IGV0IHRvdXRlIGwnYW5u
-w4PCg8OCwqllLkVudmllIGRlIHZvdXMgZmFpcmUgdW5lCmJlYXV0w4PCg8OCwqkgw4PCg8OCwqAg
-bW9pbmRyZSBjb8ODwoMidCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7Dg8KDw4LCqWUsIGRlCnByw4PC
-g8OCwql2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw4PCg8OCwql0w4PCg8OCwqkgw4PC
-g8OCwqAgbW9pbmRyZQpmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDD
-g8KDw4LCoCBkZXMgYnVkZ2V0cyByYWlzb25uYWJsZXMsCmFsb3JzIGNvbnN1bHRlciBkZSB0ZW1w
-cyDDg8KDw4LCoCBhdXRyZSBub3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cyBwZXJtZXR0cmUKYWlu
-c2kgZGUgZmFpcmUgZGUgbm9tYnJldXNlcyDDg8KDw4LCqWNvbm9taWVzIHRvdXQgZW4gdm91cyBm
-YWlzYW50IHBsYWlzaXIKw4PCg8OCwqAgdG91dGUgbGEgZmFtaWxsZS5BaW5zaSwgZ3LDg8KDw4LC
-omNlIMODwoPDgsKgIG5vdXMsIHZvdXMgYWxsZXogcGFyCmV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0
-ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwKb3Bwb3J0dW5pdMODwoPD
-gsKpLCBpbmZvcy4uLiAuLi4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBk
-ZQp2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQg
-cXVhbGl0w4PCg8OCwqkgcHJpeAp0b3V0IGF1IGxvbmcgZGUgbCdhbm7Dg8KDw4LCqWUsIGFsb3Jz
-IHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsCnBhciBzdXIgbGVzIHByb3Bvc2l0
-aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucwrDg8KDw4LC
-oCBqb3VyIHLDg8KDw4LCqWd1bGnDg8KDw4LCqHJlbWVudCBldCB0b3V0ZSBsJ2FubsODwoPDgsKp
-ZS4uIE5vdXMKc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFmaW4g
-ZGUgdm91cyBhaWRlciDDg8KDw4LCoApkw4PCg8OCwqlwZW5zZXIgbW9pbnMgdG91dCBlbiBjb25z
-b21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw4PCg8OCwqllLkEgbGEKcmVjaGVyY2hlIGR1IGNhZGVh
-dSBvcmlnaW5hbCA/IE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUKcmVn
-YXJkIGFmaW4gZGUgdm91cyBhaWRlciDDg8KDw4LCoCBkw4PCg8OCwqlwZW5zZXIgbW9pbnMgdG91
-dCBlbiBjb25zb21tYW50Cm1pZXV4IHRvdXRlIGwnYW5uw4PCg8OCwqllLiBBaW5zaSwgZ3JhY2Ug
-w4PCg8OCwqAgbm91cywgdm91cyBhbGxleiBwYXIKZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBk
-ZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJhcyBjb3V0LApvcHBvcnR1bml0w4PCg8OCwqks
-IGluZm9zLi4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzCmNo
-YXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w4PC
-g8OCwqkgcHJpeCB0b3V0CmF1IGxvbmcgZGUgbCdhbm7Dg8KDw4LCqWUsIGFsb3JzIHBvdXJxdW9p
-IG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIKbGVzIHByb3Bvc2l0aW9ucyBxdWUg
-bm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDg8KDw4LCoCBqb3VyCnLD
-g8KDw4LCqWd1bGnDg8KDw4LCqHJlbWVudCBldCB0b3V0ZSBsJ2FubsODwoPDgsKpZS4KCgoKCgot
-LQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0cDovL2Eub3B0aW5jYWtlLmNv
-bS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4NjYyNTE5MzEzMzIyMDUzNzE3NAoKCgoKCgp7fkFK
-ODQ2NDE4NjYyNTE5MzEzMzIyMDUzNzE3NH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpMSU1JVEVE
-IFRJTUUgU0FMRSAtIEZ1bGwgWWVhciBvZiBNaWNyb3NvZnQgVHJhaW5pbmcgRm9yIEp1c3QgJDQ5
-Ljk5IQoxLDUwMCsgaG91cnMgb2YgdHV0b3JpYWxzIGluY2x1ZGluZyBWaXN1YWxTdHVkaW8gMjAx
-MiwgV2luZG93cyA4LCBTaGFyZVBvaW50CjIwMTMsIFNRTCAyMDEyLCBNVkMgNCwgbW9yZS4gQkVT
-VCBWQUxVRTogTmV3IE11bHRpLUxpYnJhcnkgUG93ZXIgUGFjayBpbmNsdWRlcwpNb2JpbGUsIENs
-b3VkLCBKYXZhLCBhbmQgVVggRGVzaWduLiBMb3dlc3QgcHJpY2UgZXZlciEgRW5kcyA5LzIwLzEz
-LiAKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTU4MDQxMTUx
-Jml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2Vu
-ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQv
-bGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//bs.miify.com/re?l=3DBD0Iqgr3y6I7h5ovq2Ihln9d56xI&u=3Dhttp%3A%2F%2Fbs.miif=
+y.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1379309670566%26custid%3D16468%26=
+uid%3D16274960282%26sig%3DAHBIPDJCCLJECEEG%26mid%3D1600259262&s=3DFDAPEABDF=
+OHFNDKE
+ =
+
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9-15% sur la nouvelle collectio=
+n Cheap Monday, stock limit=E9-15% sur la nouvelle collection Cheap Monday,=
+ stock limit=E9-15% sur la nouvelle collection Cheap Monday, stock limit=E9=
+-15% sur la nouvelle collection Cheap Monday, stock limit=E9-15% sur la nou=
+velle collection Cheap Monday, stock limit=E9
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://bs.miify.com/public/unsubscribe.jsp?gid=3D16000=
+57156&uid=3D16274960282&mid=3D1600259262&sig=3DAFENCBONLIKOCFCO
+---------------------------------------------------------------------------=
+---
+LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
+1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
+2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack inclu=
+des
+Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/20/13. =
+
+http://pubads.g.doubleclick.net/gampad/clk?id=3D58041151&iu=3D/4140/ostg.cl=
+ktrk

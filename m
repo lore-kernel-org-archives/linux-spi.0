@@ -1,12 +1,12 @@
-From: BMW i <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?D=E9couvrez_la_Nouvelle_BMW_i3?=
-Date: Tue, 17 Sep 2013 11:06:04 +0200 (CEST)
-Message-ID: <i4yqwu.hlowd2vd9ob17ul@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Avantages sur vos impots" <contact-HqX2e3LHUgzQT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] Ne payez plus d'impôts pendant 9 ans
+Date: Tue, 17 Sep 2013 13:03:19 +0000 (CET)
+Message-ID: <130917130319.-34443510600001996@fmo41.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,78 +18,30 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgr52gI7gfk57dIhlowcvnzI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1379408755566%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DBIDOOKLKCBCCBIMG%26mid%3D1600260712&s=3DF=
-PFOLEDMCFNDAKOP
- =
-
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la =
-Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3D=E9couvrez la Nouvelle BMW i3=
-D=E9couvrez la Nouvelle BMW i3
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600260712&sig=3DNLNDCBNMIKFJOMAB
----------------------------------------------------------------------------=
----
-LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
-1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
-2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack inclu=
-des
-Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/20/13. =
-
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58041151&iu=3D/4140/ostg.cl=
-ktrk
+CihodHRwOi8vZm1vNDEuY29tL2ppY2x4b2RsZHhtemIxdmxsZy9pbmRleDAuaHRtbCkKKGh0dHA6
+Ly9mbW80MS5jb20vcWtjanVvcnZkNWg0eWNrbHNqL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQx
+LmNvbS9vYWNzMm9vbWR1MXp6Z2UyZHEvaW5kZXgyLmh0bWwpCgooaHR0cDovL2ZtbzQxLmNvbS9n
+dmNxaG80MWR5ZzR1cXUyeW8vaW5kZXgzLmh0bWwpCihodHRwOi8vZm1vNDEuY29tL21hMDEycHdy
+MGp4enRkZXl1ai9pbmRleDQuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vcHYwYmhwcWMwYWo0c2x1
+eWVnL2luZGV4NS5odG1sKQooaHR0cDovL2ZtbzQxLmNvbS9yaTBmeHBwZDB6NXo0MHZia28vaW5k
+ZXg2Lmh0bWwpClFVwrRFU1QgQ0UgUVVFIExBIExPSSBEVUZMT1QgPwpMYSBMb2kgRHVmbG90IDIw
+MTMgYWNjb3JkZSBhdXggcGFydGljdWxpZXJzIHF1aSBpbnZlc3Rpc3NlbnQgZGFucyB1biBsb2dl
+bWVudCBuZXVmIEJCQywgdW5lIGZvcnRlIHLDqWR1Y3Rpb24gZMK0SW1ww7R0IHN1ciBsZSBSZXZl
+bnUgcGVuZGFudCB0b3V0ZSBsYSBww6lyaW9kZSBkZSBtaXNlIGVuIGxvY2F0aW9uIGR1IGxvZ2Vt
+ZW50LCBkwrR1bmUKZHVyw6llIG1pbmltdW0gZGUgOSBhbnMuIApTYW5zIGFwcG9ydCwgYXZlYyBs
+YSBMb2kgRHVmbG90IDIwMTMgOiAKCsKgwqDCoMKgwqDCoMKgwqDigKIgSmUgcsOpZHVpcyBtZXMg
+aW1ww7R0cyAKCsKgwqDCoMKgwqDCoMKgwqDigKIgSmUgbWUgY29uc3RpdHVlIHVuIHBhdHJpbW9p
+bmUgCgrCoMKgwqDCoMKgwqDCoMKg4oCiIEplIHByw6lwYXJlIG1hIHJldHJhaXRlClTDqWzDqWNo
+YXJnZXogZ3JhdHVpdGVtZW50IG5vdHJlIGd1aWRlIHBvdXIgZW4gc2F2b2lyIHBsdXMgSUNJICho
+dHRwOi8vZm1vNDEuY29tLzVrMDB1cHNlMGJhNGsya2J2cS9pbmRleDcuaHRtbCkKLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCkxJTUlURUQgVElNRSBTQUxFIC0gRnVsbCBZZWFyIG9mIE1pY3Jvc29mdCBU
+cmFpbmluZyBGb3IgSnVzdCAkNDkuOTkhCjEsNTAwKyBob3VycyBvZiB0dXRvcmlhbHMgaW5jbHVk
+aW5nIFZpc3VhbFN0dWRpbyAyMDEyLCBXaW5kb3dzIDgsIFNoYXJlUG9pbnQKMjAxMywgU1FMIDIw
+MTIsIE1WQyA0LCBtb3JlLiBCRVNUIFZBTFVFOiBOZXcgTXVsdGktTGlicmFyeSBQb3dlciBQYWNr
+IGluY2x1ZGVzCk1vYmlsZSwgQ2xvdWQsIEphdmEsIGFuZCBVWCBEZXNpZ24uIExvd2VzdCBwcmlj
+ZSBldmVyISBFbmRzIDkvMjAvMTMuIApodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dh
+bXBhZC9jbGs/aWQ9NTgwNDExNTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGlu
+ZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xp
+c3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

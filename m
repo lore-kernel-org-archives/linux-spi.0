@@ -1,43 +1,169 @@
-From: "Service Gain" <contact-6iRbmuqo1C7QT0dZR+AlfA@public.gmane.org>
-Subject: [SPAM] 150 euros par mois de courses gratuites
-Date: Wed, 18 Sep 2013 15:55:41 +0000 (CET)
-Message-ID: <130918155541.-24769380900003396@fmo41.com>
+From: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: [IP REVIEW] spi/tegra114: Correct support for cs_change
+Date: Wed, 18 Sep 2013 14:13:39 -0400
+Message-ID: <1379528019-6042-1-git-send-email-rklein@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain
+Cc: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKCgoKCgoKIChodHRwOi8vZm1vNDEuY29tL2RubXBoMWFncW5xb2gwbGhvZC9pbmRleDAuaHRt
-bCkKCgoKCgoKCgpQYXJpcywgbGUgMjAvMDEvMjAxMgpBIGzCtGF0dGVudGlvbiBkZQpDSVYgTk9N
-IFBSRU5PTSAoaHR0cDovL2ZtbzQxLmNvbS95NW13MjFiaHEyY2ptMnNoZ3MvaW5kZXgxLmh0bWwp
-CihodHRwOi8vZm1vNDEuY29tL2w0bW11MXZucWdpb2dkZG1qbC9pbmRleDIuaHRtbCkKCgoKCgoK
-ClZvdXMgYXZleiDDqXTDqSBzw6lsw6ljdGlvbm7DqShlKSBwYXJtaSA1MCAwMDAgcHJpdmlsw6ln
-acOpcyBwb3VyCnBhcnRpY2lwZXIgw6Agbm90cmUgZ3JhbmQgY29uY291cnMgcG91ciBnYWduZXIg
-MSBhbiBkZSBjb3Vyc2VzCnNvaXQgMTUwIOKCrC9tb2lzICEgKGh0dHA6Ly9mbW80MS5jb20vc3Jt
-engxMTJxaHJqMWx5bXF5L2luZGV4My5odG1sKQoKCiAoaHR0cDovL2ZtbzQxLmNvbS80NG5rdWh4
-d2N2M29pZ2RhaXMvaW5kZXg0Lmh0bWwpCihodHRwOi8vZm1vNDEuY29tL25ybml4aHUwY2xwanJx
-eWFhZC9pbmRleDUuaHRtbCkKKGh0dHA6Ly9mbW80MS5jb20vem5udmhoMnFjMW9vcTFsNWh5L2lu
-ZGV4Ni5odG1sKQoKIChodHRwOi8vZm1vNDEuY29tL3c1bmEyaGhpY21mamNjczUzbC9pbmRleDcu
-aHRtbCkKCgoKCgoKCsKgCsKgCsKgCsKgCsKgCsKgCsKgCsKgCsKgCsKgCgoKCi0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQpMSU1JVEVEIFRJTUUgU0FMRSAtIEZ1bGwgWWVhciBvZiBNaWNyb3NvZnQgVHJh
-aW5pbmcgRm9yIEp1c3QgJDQ5Ljk5IQoxLDUwMCsgaG91cnMgb2YgdHV0b3JpYWxzIGluY2x1ZGlu
-ZyBWaXN1YWxTdHVkaW8gMjAxMiwgV2luZG93cyA4LCBTaGFyZVBvaW50CjIwMTMsIFNRTCAyMDEy
-LCBNVkMgNCwgbW9yZS4gQkVTVCBWQUxVRTogTmV3IE11bHRpLUxpYnJhcnkgUG93ZXIgUGFjayBp
-bmNsdWRlcwpNb2JpbGUsIENsb3VkLCBKYXZhLCBhbmQgVVggRGVzaWduLiBMb3dlc3QgcHJpY2Ug
-ZXZlciEgRW5kcyA5LzIwLzEzLiAKaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1w
-YWQvY2xrP2lkPTU4MDQxMTUxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcg
-bGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0
-cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+The tegra114 driver wasn't currently handling the cs_change functionality.
+It is meant to invert normal behavior, and we were only using it to possibly
+delay at the end of a transfer.
+
+This patch modifies the logic so that the cs state will be toggled after
+every individual transfer or NOT toggled at the end of the last transfer
+if cs_change is set in that transfer struct.
+
+Also, this builds in logic so that if a different device tries to start
+a transfer while CS is active from a different device, it will abort the
+previous transfer and start a new one for the new device.
+
+This work was based on the spi-atmel driver.
+
+Signed-off-by: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-tegra114.c |   59 ++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 52 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 145dd43..a9973de 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -182,6 +182,7 @@ struct tegra_spi_data {
+ 	u32					cur_speed;
+ 
+ 	struct spi_device			*cur_spi;
++	struct spi_device			*cs_control;
+ 	unsigned				cur_pos;
+ 	unsigned				cur_len;
+ 	unsigned				words_per_32bit;
+@@ -717,7 +718,12 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
+ 		else if (req_mode == SPI_MODE_3)
+ 			command1 |= SPI_CONTROL_MODE_3;
+ 
+-		tegra_spi_writel(tspi, command1, SPI_COMMAND1);
++		if (tspi->cs_control) {
++			if (tspi->cs_control != spi)
++				tegra_spi_writel(tspi, command1, SPI_COMMAND1);
++			tspi->cs_control = NULL;
++		} else
++			tegra_spi_writel(tspi, command1, SPI_COMMAND1);
+ 
+ 		command1 |= SPI_CS_SW_HW;
+ 		if (spi->mode & SPI_CS_HIGH)
+@@ -732,6 +738,9 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
+ 		command1 |= SPI_BIT_LENGTH(bits_per_word - 1);
+ 	}
+ 
++	if (t->len == 0 && !t->tx_buf && !t->rx_buf)
++		return 0;
++
+ 	if (tspi->is_packed)
+ 		command1 |= SPI_PACKED;
+ 
+@@ -803,6 +812,17 @@ static int tegra_spi_setup(struct spi_device *spi)
+ 	return 0;
+ }
+ 
++static void tegra_spi_transfer_delay(int delay)
++{
++	if (!delay)
++		return;
++
++	if (delay >= 1000)
++		mdelay(delay / 1000);
++
++	udelay(delay % 1000);
++}
++
+ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 			struct spi_message *msg)
+ {
+@@ -812,6 +832,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 	struct spi_transfer *xfer;
+ 	struct spi_device *spi = msg->spi;
+ 	int ret;
++	bool skip = false;
+ 
+ 	msg->status = 0;
+ 	msg->actual_length = 0;
+@@ -819,13 +840,20 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 	single_xfer = list_is_singular(&msg->transfers);
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		INIT_COMPLETION(tspi->xfer_completion);
++
+ 		ret = tegra_spi_start_transfer_one(spi, xfer,
+ 					is_first_msg, single_xfer);
+ 		if (ret < 0) {
+ 			dev_err(tspi->dev,
+ 				"spi can not start transfer, err %d\n", ret);
+-			goto exit;
++			goto complete_xfer;
++		}
++
++		if (xfer->len == 0 && !xfer->tx_buf && !xfer->rx_buf) {
++			skip = true;
++			goto complete_xfer;
+ 		}
++
+ 		is_first_msg = false;
+ 		ret = wait_for_completion_timeout(&tspi->xfer_completion,
+ 						SPI_DMA_TIMEOUT);
+@@ -833,24 +861,41 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
+ 			dev_err(tspi->dev,
+ 				"spi trasfer timeout, err %d\n", ret);
+ 			ret = -EIO;
+-			goto exit;
++			goto complete_xfer;
+ 		}
+ 
+ 		if (tspi->tx_status ||  tspi->rx_status) {
+ 			dev_err(tspi->dev, "Error in Transfer\n");
+ 			ret = -EIO;
+-			goto exit;
++			goto complete_xfer;
+ 		}
+ 		msg->actual_length += xfer->len;
+-		if (xfer->cs_change && xfer->delay_usecs) {
++
++complete_xfer:
++		if (ret < 0 || skip) {
+ 			tegra_spi_writel(tspi, tspi->def_command1_reg,
+ 					SPI_COMMAND1);
+-			udelay(xfer->delay_usecs);
++			tegra_spi_transfer_delay(xfer->delay_usecs);
++			goto exit;
++		} else if (msg->transfers.prev == &xfer->transfer_list) {
++			/* This is the last transfer in message */
++			if (xfer->cs_change)
++				tspi->cs_control = spi;
++			else {
++				tegra_spi_writel(tspi, tspi->def_command1_reg,
++						SPI_COMMAND1);
++				tegra_spi_transfer_delay(xfer->delay_usecs);
++			}
++		} else if (xfer->cs_change) {
++			tegra_spi_writel(tspi, tspi->def_command1_reg,
++					SPI_COMMAND1);
++			tegra_spi_transfer_delay(xfer->delay_usecs);
+ 		}
++
+ 	}
+ 	ret = 0;
+ exit:
+-	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
++
+ 	msg->status = ret;
+ 	spi_finalize_current_message(master);
+ 	return ret;
+-- 
+1.7.9.5

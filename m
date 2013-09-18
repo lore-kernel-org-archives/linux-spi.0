@@ -1,7 +1,7 @@
 From: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: [IP REVIEW] spi/tegra114: Correct support for cs_change
-Date: Wed, 18 Sep 2013 14:13:39 -0400
-Message-ID: <1379528019-6042-1-git-send-email-rklein@nvidia.com>
+Subject: [RESEND] spi/tegra114: Correct support for cs_change
+Date: Wed, 18 Sep 2013 14:17:25 -0400
+Message-ID: <1379528245-6283-1-git-send-email-rklein@nvidia.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
@@ -31,6 +31,9 @@ This work was based on the spi-atmel driver.
 
 Signed-off-by: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 ---
+
+RESEND WITH CORRECT PATCH ANNOTATION IN SUBJECT
+
  drivers/spi/spi-tegra114.c |   59 ++++++++++++++++++++++++++++++++++++++------
  1 file changed, 52 insertions(+), 7 deletions(-)
 

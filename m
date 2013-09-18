@@ -1,12 +1,12 @@
-From: "Ehpad" <contact-6iRbmuqo1C7QT0dZR+AlfA@public.gmane.org>
-Subject: Investissez intelligemment et anticipez votre retraite
-Date: Wed, 18 Sep 2013 14:43:40 +0000 (CET)
-Message-ID: <130918144340.-25201412200000188@fmo41.com>
+From: "=?utf-8?Q?Julien_Devergnes?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Je_n'y_croyais_pas?=
+Date: Wed, 18 Sep 2013 15:05:51 +0000
+Message-ID: <1043=64d62c20-c96f-41cd-bfc6-2aca8c9a3ae7=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,62 +18,76 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Ehpad : L' investissement immobilier avec 11 % de r=E9duction d'imp=F4t san=
-s risque locatif
-
-Le dispositif ehpad, qui tire sa sp=E9cificit=E9 de la loi Bouvard et du r=
-=E9gime de la location meubl=E9e non professionnelle, est devenu encore plu=
-s incitatif ces derni=E8res ann=E9es.
-
-C=B4est aujourd'hui =AB un parfait outil de d=E9fiscalisation=BB.
-
-Il a pour avantage de permettre aux investisseurs individuels de b=E9n=E9fi=
-cier :=A0
-
-D'une r=E9duction d'imp=F4t de 11 % jusqu'=E0 300 000 euros =E9tal=E9e sur =
-neuf ans ehpad
-De r=E9cup=E9rer le montant total de la TVA =E0 19,6 % investissement ehpad
-De profiter en outre d'une imposition favorable des loyers ehpad
-
-Avec une rentabilit=E9 assur=E9e aux alentours de 4,50 % =E0 5,50 % par an,=
- l'investissement en Ehpad permet de b=E9n=E9ficier d'un revenu =E0 long te=
-rme.
-
-Les particuliers qui d=E9sirent investir en un programme Ehpad ou de la def=
-iscalisation expatri=E9s peuvent se constituer un revenu compl=E9mentaire p=
-our leur retraite mais =E9galement r=E9duire leur taux d'imposition.
-
-De fait, cet investissement permet de b=E9n=E9ficier d'une r=E9duction d'im=
-p=F4t de 11% du prix d'acquisition.
-
-Ehpad propose aussi des programmes dedefiscalisation solidaire
-
-L'investissement EHPAD permet de b=E9n=E9ficier de nombreux avantages fisca=
-ux et financiers =E0 condition de s=E9lectionner ses partenaires avec pr=E9=
-caution (http://fmo41.com/sh2z1rcg2uqytlwyqq/index0.html).
-
-C'est entre autres sur ce point que nous vous accompagnons. (http://fmo41.c=
-om/lu2mvreh2ycssdzyjo/index1.html)
-
-L'investissement immobilier avec11% de r=E9duction d'imp=F4t sans risque lo=
-catif =3D L'EHPAD
-
-Pour savoir si vous pouvez b=E9n=E9ficier de cet investissement, contactez =
-nous sans aucun engagement (http://fmo41.com/y32wbrtn2xiy42nbgg/index2.html)
-
-PS: la seule condition, est d'avoir un revenu minimum de 2 500 ? par foyer =
-!=A0
-
-A tout de suite,=A0
-
-Service EHPAD France
----------------------------------------------------------------------------=
----
-LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
-1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
-2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack inclu=
-des
-Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/20/13. =
-
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58041151&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICEKICAgKk9mZnJlIHNv
+dW1pc2UgYSBs4oCZb3V2ZXJ0dXJlIGTigJl1biBjb21wdGUgZXQgZOKAmXVuZSBwb3NpdGlvbiBz
+dXIgbOKAmW9yLgogICBPZmZyZSByw6lzZXJ2w6llIGF1eCBwZXJzb25uZXMgbWFqZXVyZXMsIGNh
+cGFibGVzLCByw6lzaWRhbnQgZmlzY2FsZW1lbnQKICAgZW4gRnJhbmNlLCBzb3VzIHLDqXNlcnZl
+IGQnYWNjZXB0YXRpb24gZHUgZG9zc2llci4gRm9yZXhUcmFkaW9uIEx0ZCBlc3QKICAgdW5lIHNv
+Y2nDqXTDqSBkZSBUcmFkaW5nIHN1ciBsZSBGb3JleCBlbnJlZ2lzdHLDqWUgw6AgQmVsaXplLgog
+ICBBdmVydGlzc2VtZW50OiBMZSBUcmFkaW5nIGVzdCBzcMOpY3VsYXRpZiBldCBjb21wb3J0ZSBk
+ZXMgcmlzcXVlcyBkZQogICBwZXJ0ZXMgcG91ciBsJ2ludmVzdGlzc2V1ci4gVm91cyBkZXZleiB2
+b3VzIGFzc3VyZXIgYXZhbnQgdG91dGUKICAgbsOpZ29jaWF0aW9uIHF1ZSB2b3VzIGVuIGNvbXBy
+ZW5leiBsZXMgcmlzcXVlcyBldCBlbiBhc3N1bWV6IGxlcwogICBjb25zw6lxdWVuY2VzLiBDZXR0
+ZSBtaXNlIGVuIGdhcmRlIGVzdCB1bmlxdWVtZW50IGluZm9ybWF0aXZlIGV0CiAgIEZvcmV4VHJh
+ZGlvbiBMdGQgbmUgcG91cnJhIHBhcyDDqnRyZSB0ZW51IHJlc3BvbnNhYmxlLCB2aXMtw6Atdmlz
+IGRlCiAgIHRvdXQgY2xpZW50LCBkJ8OpdmVudHVlbGxlcyBwZXJ0ZXMuCiAgIENvcHlyaWdodCDC
+qSAyMDEyIEZvcmV4VHJhZGl0aW9uIC0gQWxsIHJpZ2h0cyByZXNlcnZlZC4KClJlZmVyZW5jZXMK
+CiAgIFZpc2libGUgbGlua3MKICAgSGlkZGVuIGxpbmtzOgogICAxLiBodHRwOi8vY2xpY2tzLnRy
+YWNrZG9tLmZyL2MvYXMvRXJfLzdjT2d0TDAyT0lMMHpQMVhDMk04WjMvYi9rbFFMLzRhNDU0NDJj
+CiAgIDIuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9FcjkvN2NPZ3RMMDJPSUwwelAx
+WEMyTThaMy9iL2tsUUwvNjNiYTMzNWEKICAgMy4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9j
+L2FzL0VyVi83Y09ndEwwMk9JTDB6UDFYQzJNOFozL2Iva2xRTC8yMTcyOGIwOAogICA0LiBodHRw
+Oi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvRXJaLzdjT2d0TDAyT0lMMHpQMVhDMk04WjMvYi9r
+bFFML2ZmN2I1YjBlCiAgIDUuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9FcjgvN2NP
+Z3RMMDJPSUwwelAxWEMyTThaMy9iL2tsUUwvMmE1MzllNDUKICAgNi4gaHR0cDovL2NsaWNrcy50
+cmFja2RvbS5mci9jL2FzL0VyWS83Y09ndEwwMk9JTDB6UDFYQzJNOFozL2Iva2xRTC8yNTQxYWMy
+ZgogICA3LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvRXJlLzdjT2d0TDAyT0lMMHpQ
+MVhDMk04WjMvYi9rbFFMLzM1OGQzMGIzCiAgIDguIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIv
+Yy9hcy9FcmYvN2NPZ3RMMDJPSUwwelAxWEMyTThaMy9iL2tsUUwvZWZiN2M3OTIKICAgOS4gaHR0
+cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0VydS83Y09ndEwwMk9JTDB6UDFYQzJNOFozL2Iv
+a2xRTC83MDMxZjRjNQogIDEwLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvRXIwLzdj
+T2d0TDAyT0lMMHpQMVhDMk04WjMvYi9rbFFMLzA4OGRmYzdlCiAgMTEuIGh0dHA6Ly9jbGlja3Mu
+dHJhY2tkb20uZnIvYy9hcy9FYXkvN2NPZ3RMMDJPSUwwelAxWEMyTThaMy9iL2tsUUwvNWJhODY2
+YTcKICAxMi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0VhRi83Y09ndEwwMk9JTDB6
+UDFYQzJNOFozL2Iva2xRTC85MTVlMGQxYQogIDEzLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZy
+L2MvYXMvRWFjLzdjT2d0TDAyT0lMMHpQMVhDMk04WjMvYi9rbFFML2FmMTk5YWQ0CiAgMTQuIGh0
+dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9FYW0vN2NPZ3RMMDJPSUwwelAxWEMyTThaMy9i
+L2tsUUwvZTJjMzEwZWMKICAxNS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0VhYi83
+Y09ndEwwMk9JTDB6UDFYQzJNOFozL2Iva2xRTC9lNmYwMzdjYgogIDE2LiBodHRwOi8vY2xpY2tz
+LnRyYWNrZG9tLmZyL2MvYXMvRWFvLzdjT2d0TDAyT0lMMHpQMVhDMk04WjMvYi9rbFFMLzcxMTA0
+YWQyCiAgMTcuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9FYUwvN2NPZ3RMMDJPSUww
+elAxWEMyTThaMy9iL2tsUUwvMjA1MzM1MWYKICAxOC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5m
+ci9jL2FzL0VhaS83Y09ndEwwMk9JTDB6UDFYQzJNOFozL2Iva2xRTC8xZTE0YTJkMQogIDE5LiBo
+dHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvRWE3LzdjT2d0TDAyT0lMMHpQMVhDMk04WjMv
+Yi9rbFFML2RiZjBmYjA2CiAgMjAuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9FYTIv
+N2NPZ3RMMDJPSUwwelAxWEMyTThaMy9iL2tsUUwvNmVjZWU0MjQKClZvdXMgcmVjZXZleiBjZSBt
+ZXNzYWdlIGRlIG5vdHJlIHBhcnQgY2FyIHZvdXMgdm91cyDDqnRlcyBpbnNjcml0KGUpIGF2ZWMg
+bCdhZHJlc3NlIHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCBzdXIgbGUg
+c2l0ZSBDb25zb2RlYWwuY29tLiBDZSBzaXRlIGEgZmFpdCBsJ29iamV0IGQndW5lIGTDqWNsYXJh
+dGlvbiBhdXByw6hzIGRlIGxhIENOSUwgc291cyBsZSBudW3DqXJvIDE1NDUxNDguIENvbmZvcm3D
+qW1lbnQgw6AgbCdhcnRpY2xlIDM0IGRlIGxhIGxvaSDCq0luZm9ybWF0aXF1ZSBldCBMaWJlcnTD
+qXPCuyBkdSA2IGphbnZpZXIgMTk3OCwgdm91cyBwb3V2ZXogZXhlcmNlciB2b3RyZSBkcm9pdCBk
+J2FjY8OocywgZGUgbW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIG91IGVuY29yZSBkZSBz
+dXBwcmVzc2lvbiBkZSB2b3MgaW5mb3JtYXRpb25zIHBlcnNvbm5lbGxlcyB2aWEgbGUgbGllbiBz
+dWl2YW50IDogTWVzIEFib25uZW1lbnRzLgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIG1lcmNpIGRl
+IGNsaXF1ZXIgaWNpIGljaS4KCVF1aSBzb21tZXMtbm91cyA/CkNvbnNvZGVhbCBlc3QgdW5lIG5l
+d3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDDqWRpdMOpZSBwYXIgbGEgc29jacOpdMOpIE5hdGV4bywg
+cXVpIHZvdXMgcHJvcG9zZSB1bmUgc8OpbGVjdGlvbiBkZSBib25zIHBsYW5zLiBFbiDDqXRhbnQg
+YWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBkJ2luZm9ybWF0aW9uLCB2b3VzIHJlY2V2cmV6IGxlIHRv
+cCBkZXMgamV1eCBjb25jb3VycywgbGVzIG9mZnJlcyBkdSBtb21lbnQgcG91ciB0b3VzIHZvcyB0
+cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMgZXhjbHVzaXZlcyDDoCBkZXMgZXNzYWlzIGV0IHZlbnRl
+cyBwcml2w6llcyBkZSBncmFuZGVzIG1hcnF1ZXMuIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTElN
+SVRFRCBUSU1FIFNBTEUgLSBGdWxsIFllYXIgb2YgTWljcm9zb2Z0IFRyYWluaW5nIEZvciBKdXN0
+ICQ0OS45OSEKMSw1MDArIGhvdXJzIG9mIHR1dG9yaWFscyBpbmNsdWRpbmcgVmlzdWFsU3R1ZGlv
+IDIwMTIsIFdpbmRvd3MgOCwgU2hhcmVQb2ludAoyMDEzLCBTUUwgMjAxMiwgTVZDIDQsIG1vcmUu
+IEJFU1QgVkFMVUU6IE5ldyBNdWx0aS1MaWJyYXJ5IFBvd2VyIFBhY2sgaW5jbHVkZXMKTW9iaWxl
+LCBDbG91ZCwgSmF2YSwgYW5kIFVYIERlc2lnbi4gTG93ZXN0IHByaWNlIGV2ZXIhIEVuZHMgOS8y
+MC8xMy4gCmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD01ODA0
+MTE1MSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVs
+LWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

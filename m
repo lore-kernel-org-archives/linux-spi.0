@@ -1,11 +1,11 @@
-From: "Votre machine Krups" <lisa@a.optincake.com>
-Subject: =?UTF-8?B?QXZlei12b3VzIHJlbXBvcnTDqSB2b3RyZSBtYWNoaW5lIMOgIGNhZsOpID8=?=
-Date: Wed, 18 Sep 2013 06:17:09 +0100
-Message-ID: <0.0.2A8.B12.1CEB42E53301276.0@mta199.pur3.net>
-Reply-To: Votre machine Krups <lisa@a.optincake.com>
+From: Camaieu via Neezz <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Jusque -60 pourcent : Les 10 jours
+Date: Wed, 18 Sep 2013 11:56:26 +0200 (CEST)
+Message-ID: <e27o4y.hlqdlosb4xfnc4l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,125 +18,71 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTk0NjgzMjIwNTM3Mjg0CgoKCi8qKi8KClLDqXBvbmRleiDDoCBjZXR0ZSBlbnF1w6p0ZSBwb3Vy
-IHBhcnRpY2lwZXIuCkV4Y2x1c2lmIDogUmVwYXJ0ZXogYXZlYyAxIG1hY2hpbmUgw6AgY2Fmw6kg
-KyAxMDAwIGRvc2V0dGVzOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5jb20vaHN0
-ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9KltzdWJzY3JpYgplcl9lbWFpbF0qJmhzdGQ9
-YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1aeUx3JTNEJTNECgooaW1nMS5q
-cGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmln
-aW5lPTQzNSZlbWFpbF9yZWM9KltzdWJzY3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2
-WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1aeUx3JTNEJTNECgooaW1nMi5qcGcpOgpodHRwOi8v
-aHN0ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFp
-bF9yZWM9KltzdWJzY3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1
-Y3k1c1pXMXZibVJsTG1aeUx3JTNEJTNECgooaW1nMy5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1w
-YW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9KltzdWJz
-Y3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJs
-TG1aeUx3JTNEJTNECgooaW1nNC5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbDQtZW5xdWV0
-ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9KltzdWJzY3JpYgplcl9lbWFp
-bF0qJmhzdGQ9YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1aeUx3JTNEJTNE
-CgooaW1nNS5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdj
-LnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9KltzdWJzY3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhS
-MGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1aeUx3JTNEJTNECgooaW1nNi5qcGcp
-OgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5l
-PTQzNSZlbWFpbF9yZWM9KltzdWJzY3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2WkdV
-dVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1aeUx3JTNEJTNECgooaW1nNy5qcGcpOgpodHRwOi8vaHN0
-ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9y
-ZWM9KltzdWJzY3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1
-c1pXMXZibVJsTG1aeUx3JTNEJTNECgooaW1nOC5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5l
-bDQtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9KltzdWJzY3Jp
-Ygplcl9lbWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1a
-eUx3JTNEJTNECgooaW1nOS5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5j
-b20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9KltzdWJzY3JpYgplcl9lbWFpbF0q
-JmhzdGQ9YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1aeUx3JTNEJTNECgoo
-aW1nMTAuanBnKToKaHR0cDovL2hzdGQuaW1hZ2UtcGFuZWw0LWVucXVldGUuY29tL2hzdGR3Yy5w
-aHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPSpbc3Vic2NyaWIKZXJfZW1haWxdKiZoc3RkPWFIUjBj
-RG92TDIxdlpHVXVZV04wYVc5dWN5NXNaVzF2Ym1SbExtWnlMdyUzRCUzRAoKKGltZzExLmpwZyk6
-Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsNC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9
-NDM1JmVtYWlsX3JlYz0qW3N1YnNjcmliCmVyX2VtYWlsXSomaHN0ZD1hSFIwY0RvdkwyMXZaR1V1
-WVdOMGFXOXVjeTVzWlcxdmJtUmxMbVp5THclM0QlM0QKCihpbWcxMi5qcGcpOgpodHRwOi8vaHN0
-ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9y
-ZWM9KltzdWJzY3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1
-c1pXMXZibVJsTG1aeUx3JTNEJTNECgooaW1nMTMuanBnKToKaHR0cDovL2hzdGQuaW1hZ2UtcGFu
-ZWw0LWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPSpbc3Vic2Ny
-aWIKZXJfZW1haWxdKiZoc3RkPWFIUjBjRG92TDIxdlpHVXVZV04wYVc5dWN5NXNaVzF2Ym1SbExt
-WnlMdyUzRCUzRAoKKGltZzE0LmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsNC1lbnF1ZXRl
-LmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz0qW3N1YnNjcmliCmVyX2VtYWls
-XSomaHN0ZD1hSFIwY0RvdkwyMXZaR1V1WVdOMGFXOXVjeTVzWlcxdmJtUmxMbVp5THclM0QlM0QK
-CihpbWcxNS5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdj
-LnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9KltzdWJzY3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhS
-MGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1aeUx3JTNEJTNECgooaW1nMTYuanBn
-KToKaHR0cDovL2hzdGQuaW1hZ2UtcGFuZWw0LWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2lu
-ZT00MzUmZW1haWxfcmVjPSpbc3Vic2NyaWIKZXJfZW1haWxdKiZoc3RkPWFIUjBjRG92TDIxdlpH
-VXVZV04wYVc5dWN5NXNaVzF2Ym1SbExtWnlMdyUzRCUzRAoKKGltZzE3LmpwZyk6Cmh0dHA6Ly9o
-c3RkLmltYWdlLXBhbmVsNC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWls
-X3JlYz0qW3N1YnNjcmliCmVyX2VtYWlsXSomaHN0ZD1hSFIwY0RvdkwyMXZaR1V1WVdOMGFXOXVj
-eTVzWlcxdmJtUmxMbVp5THclM0QlM0QKCihpbWcxOC5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1w
-YW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9KltzdWJz
-Y3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJs
-TG1aeUx3JTNEJTNECgooaW1nMTkuanBnKToKaHR0cDovL2hzdGQuaW1hZ2UtcGFuZWw0LWVucXVl
-dGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPSpbc3Vic2NyaWIKZXJfZW1h
-aWxdKiZoc3RkPWFIUjBjRG92TDIxdlpHVXVZV04wYVc5dWN5NXNaVzF2Ym1SbExtWnlMdyUzRCUz
-RAoKKGltZzIwLmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdlLXBhbmVsNC1lbnF1ZXRlLmNvbS9oc3Rk
-d2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz0qW3N1YnNjcmliCmVyX2VtYWlsXSomaHN0ZD1h
-SFIwY0RvdkwyMXZaR1V1WVdOMGFXOXVjeTVzWlcxdmJtUmxMbVp5THclM0QlM0QKCihpbWcyMS5q
-cGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbDQtZW5xdWV0ZS5jb20vaHN0ZHdjLnBocD9vcmln
-aW5lPTQzNSZlbWFpbF9yZWM9KltzdWJzY3JpYgplcl9lbWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2
-WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1aeUx3JTNEJTNECgooaW1nMjIuanBnKToKaHR0cDov
-L2hzdGQuaW1hZ2UtcGFuZWw0LWVucXVldGUuY29tL2hzdGR3Yy5waHA/b3JpZ2luZT00MzUmZW1h
-aWxfcmVjPSpbc3Vic2NyaWIKZXJfZW1haWxdKiZoc3RkPWFIUjBjRG92TDIxdlpHVXVZV04wYVc5
-dWN5NXNaVzF2Ym1SbExtWnlMdyUzRCUzRAoKKGltZzIzLmpwZyk6Cmh0dHA6Ly9oc3RkLmltYWdl
-LXBhbmVsNC1lbnF1ZXRlLmNvbS9oc3Rkd2MucGhwP29yaWdpbmU9NDM1JmVtYWlsX3JlYz0qW3N1
-YnNjcmliCmVyX2VtYWlsXSomaHN0ZD1hSFIwY0RvdkwyMXZaR1V1WVdOMGFXOXVjeTVzWlcxdmJt
-UmxMbVp5THclM0QlM0QKCihpbWcyNC5qcGcpOgpodHRwOi8vaHN0ZC5pbWFnZS1wYW5lbDQtZW5x
-dWV0ZS5jb20vaHN0ZHdjLnBocD9vcmlnaW5lPTQzNSZlbWFpbF9yZWM9KltzdWJzY3JpYgplcl9l
-bWFpbF0qJmhzdGQ9YUhSMGNEb3ZMMjF2WkdVdVlXTjBhVzl1Y3k1c1pXMXZibVJsTG1aeUx3JTNE
-JTNECgoKKiBDb25zdWx0ZXIgbGUgcsOoZ2xlbWVudC4KQ29yc8OpLCBOb2lyIFN1YnRpbCwgRMOp
-Y2Fmw6lpbsOpIG91IENsYXNzaXF1ZSwgZMOpY291dnJleiB0b3V0ZXMgbGVzIHNhdmV1cnMKZGVz
-IGRvc2V0dGVzLiBFbiByw6lwb25kYW50IMOgIG5vdHJlIHNvbmRhZ2Ugdm91cyBwb3VycmV6IHJl
-bXBvcnRlciB1bmUKbWFjaGluZSDDoCBjYWbDqSBldCB1biBhbiBkZSBkb3NldHRlcyBwb3VyIHZv
-dXMgZmFpcmUgcGxhaXNpciDDoCB0b3V0IG1vbWVudApkZSBsYSBqb3VybsOpZSAhIE4naMOpc2l0
-ZXogcGx1cyBldCBwYXJ0aWNpcGV6IGTDqHMgbWFpbnRlbmFudC4KJlNlbG9uIFZvdXMKRGVwdWlz
-IDIwMDUgbCdpbnN0aXR1dCBkZSBzb25kYWdlICZTZWxvblZvdXMgcHVibGllIGNoYXF1ZSBtb2lz
-IGRlcyBlbnF1w6p0ZXMKdGjDqW1hdGlxdWVzIGF5YW50IHBvdXIgYnV0IGwnw6l0dWRlIGRlIHZv
-dHJlIG9waW5pb24gZXQgdm9zIG1vZGVzIGRlCmNvbnNvbW1hdGlvbiBzdXIgSW50ZXJuZXQuIERh
-bnMgbGUgY2FkcmUgZGUgY2hhcXVlIG5vdXZlYXUgc29uZGFnZSB1bmUKZG90YXRpb24gw6AgZ2Fn
-bmVyIGVzdCBwcm9wb3PDqWUgw6AgbCdlbnNlbWJsZSBkZXMgcsOpcG9uZGFudHMgY2FyCmwnaW5z
-dGl0dXQgbmUgcG91cnJhaXQgZXhpc3RlciBzYW5zIHZvdXMgISBDZSBKZXUgZ3JhdHVpdCBldCBz
-YW5zIG9ibGlnYXRpb24KZCdhY2hhdCBlc3Qgb3V2ZXJ0IMOgIHRvdXRlIHBlcnNvbm5lIG1hamV1
-cmUgcmVzaWRhbnQgZW4gRnJhbmNlCm3DqXRyb3BvbGl0YWluZSBleGNsdXNpdmVtZW50IChpbmNs
-dWFudCBsYSBDb3JzZSksIMOgIGwnZXhjbHVzaW9uIGRlcwptZW1icmVzIGR1IHBlcnNvbm5lbCBk
-ZSBsJ09yZ2FuaXNhdGV1ciwgZXQgZCd1bmUgZmFjb24gZ8OpbsOpcmFsZSBkZXMKc29jacOpdMOp
-cyBwYXJ0aWNpcGFudCDDoCBsYSBtaXNlIGVuIMWTdXZyZSBkZSBjZSBKZXUuIExlcyBpbmZvcm1h
-dGlvbnMKbm9taW5hdGl2ZXMgcmVjdWVpbGxpZXMgZGFucyBsZSBjYWRyZSBkdSBwcsOpc2VudCBq
-ZXUgc29udCB0cmFpdMOpZXMKY29uZm9ybcOpbWVudCDDoCBsYSBsb2kgZHUgNiBqYW52aWVyIDE5
-NzgsIGRpdGUgIkluZm9ybWF0aXF1ZSBldCBMaWJlcnTDqSIKKG1vZGlmacOpZSBwYXIgbGEgbG9p
-IGR1IDYgYW91dCAyMDA0KSByZWxhdGl2ZSDDoCBsYSBwcm90ZWN0aW9uIGRlcwpwZXJzb25uZXMg
-cGh5c2lxdWVzIMOgIGwnw6lnYXJkIGRlcyB0cmFpdGVtZW50cyBkZSBkb25uw6llcyDDoCBjYXJh
-Y3TDqHJlCnBlcnNvbm5lbC4gTGVzIHBhcnRpY2lwYW50cyBzb250IGluZm9ybcOpcyBxdWUgbGVz
-IGRvbm7DqWVzIG5vbWluYXRpdmVzIGxlcwpjb25jZXJuYW50IGVucmVnaXN0csOpZXMgZGFucyBs
-ZSBjYWRyZSBkdSBqZXUgc29udCBuw6ljZXNzYWlyZXMgw6AgbGEgcHJpc2UKZW4gY29tcHRlIGRl
-IGxldXIgcGFydGljaXBhdGlvbi4gVG91dCBwYXJ0aWNpcGFudCBhdSBqZXUsIGRpc3Bvc2UsIGVu
-CmFwcGxpY2F0aW9uIGRlIGwnYXJ0aWNsZSAyNyBkZSBjZXR0ZSBsb2ksIGQndW4gZHJvaXQgZCdh
-Y2PDqXMgZXQgZGUKcmVjdGlmaWNhdGlvbiBhdXggZG9ubsOpZXMgbGVzIGNvbmNlcm5hbnQuIFRv
-dXRlIGRlbWFuZGUgZCdhY2PDqXMsIGRlCnJlY3RpZmljYXRpb24gb3UgZCdvcHBvc2l0aW9uIGRv
-aXQgw6p0cmUgYWRyZXNzw6llIMOgIE5hdGV4byAyMzMsIHJ1ZSBkZSBsYQpDcm9peCBOaXZlcnQg
-LSA3NTAxNSBQYXJpczoKaHR0cDovL2hzdGQuaW1hZ2UtcGFuZWw0LWVucXVldGUuY29tL2hzdGR3
-Yy5waHA/b3JpZ2luZT00MzUmZW1haWxfcmVjPSpbc3Vic2NyaWIKZXJfZW1haWxdKiZoc3RkPWFI
-UjBjRG92TDIxdlpHVXVZV04wYVc5dWN5NXNaVzF2Ym1SbExtWnlMdyUzRCUzRAoKCgoKCgoKLS0K
-ClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20v
-X2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxOTQ2ODMyMjA1MzcyODQKCgoKCgoKe35BSjg0
-NjQxODY2MjUxOTQ2ODMyMjA1MzcyODR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTElNSVRFRCBU
-SU1FIFNBTEUgLSBGdWxsIFllYXIgb2YgTWljcm9zb2Z0IFRyYWluaW5nIEZvciBKdXN0ICQ0OS45
-OSEKMSw1MDArIGhvdXJzIG9mIHR1dG9yaWFscyBpbmNsdWRpbmcgVmlzdWFsU3R1ZGlvIDIwMTIs
-IFdpbmRvd3MgOCwgU2hhcmVQb2ludAoyMDEzLCBTUUwgMjAxMiwgTVZDIDQsIG1vcmUuIEJFU1Qg
-VkFMVUU6IE5ldyBNdWx0aS1MaWJyYXJ5IFBvd2VyIFBhY2sgaW5jbHVkZXMKTW9iaWxlLCBDbG91
-ZCwgSmF2YSwgYW5kIFVYIERlc2lnbi4gTG93ZXN0IHByaWNlIGV2ZXIhIEVuZHMgOS8yMC8xMy4g
-Cmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD01ODA0MTE1MSZp
-dT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVy
-YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xp
-c3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgr6i2I7gfk57dIhlqdlicgI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1379498177850%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DPBFKJKBAOGACNKHD%26mid%3D1600262570&s=3DE=
+FILPKGEJJKACJJF
+ =
+
+Jusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque =
+-60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pou=
+rcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent :=
+ Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10=
+ joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJ=
+usque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -=
+60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pour=
+cent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : =
+Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 =
+joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJu=
+sque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -6=
+0 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourc=
+ent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : L=
+es 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 j=
+oursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJus=
+que -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60=
+ pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pource=
+nt : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Le=
+s 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 jo=
+ursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusq=
+ue -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 =
+pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcen=
+t : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les=
+ 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 jou=
+rsJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusqu=
+e -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 p=
+ourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent=
+ : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les =
+10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 jour=
+sJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque=
+ -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 po=
+urcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent =
+: Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 1=
+0 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 jours=
+Jusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque =
+-60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pou=
+rcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent :=
+ Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10=
+ joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJ=
+usque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -=
+60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pour=
+cent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : =
+Les 10 joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 =
+joursJusque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJu=
+sque -60 pourcent : Les 10 joursJusque -60 pourcent : Les 10 joursJusque -6=
+0 pourcent : Les 10 jours
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600262570&sig=3DNFMOJHOMDEECCLDL
+---------------------------------------------------------------------------=
+---
+LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
+1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
+2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack inclu=
+des
+Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/20/13. =
+
+http://pubads.g.doubleclick.net/gampad/clk?id=3D58041151&iu=3D/4140/ostg.cl=
+ktrk

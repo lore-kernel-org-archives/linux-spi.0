@@ -1,13 +1,13 @@
-From: Les contes de la petite boutique <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Et_si_votre_enfant_=E9tait_le_personna?=
-	=?ISO-8859-1?Q?ge_principal_de_contes_fantastiques_=3F?=
-Date: Thu, 19 Sep 2013 11:06:22 +0200 (CEST)
-Message-ID: <c80opj.hlrr95xgnwordil@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: =?UTF-8?Q?Master_Lopes_Corretora_de_Seguros?=
+	<veiculo-BI4EdlX38PuBVCvgEe3TS9Di0UtHxfmf@public.gmane.org>
+Subject: [SPAM] Garanta já o melhor seguro para seu veículo.
+Date: Thu, 19 Sep 2013 10:19:07 -0300 (BRT)
+Message-ID: <13344.37.257812.1379596747@3420h3ef14h0587f229-static.p01me.com>
+Reply-To: veiculo-BI4EdlX38PuBVCvgEe3TS9Di0UtHxfmf@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,109 +19,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgr8cfI7gfk57dIhlrr91gdI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1379581576887%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DBGFKHBDFMFHPCIME%26mid%3D1600264959&s=3DC=
-PMGMNHHEJFILMAP
- =
-
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?=
-Et si votre enfant =E9tait le personnage principal de contes fantastiques ?
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600264959&sig=3DNALBLCFIOFIIAPOP
----------------------------------------------------------------------------=
----
-LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
-1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
-2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack inclu=
-des
-Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/20/13. =
-
-http://pubads.g.doubleclick.net/gampad/clk?id=3D58041151&iu=3D/4140/ostg.cl=
-ktrk
+U2V1IHZpc3VhbGl6YWRvciBkZSBlLW1haWwgZXN0w6EgY29uZmlndXJhZG8gcGFyYSBtb3N0cmFy
+IGEgbWVuc2FnZW0gZW0gZm9ybWF0byB0ZXh0by4KIFBhcmEgdmlzdWFsaXphciBjb3JyZXRhbWVu
+dGUgbyBjb250ZcO6ZG8gZGVzc2UgZS1tYWlsIGNvcGllIGUgY29sZSBvIGxpbmsgYWJhaXhvIGVt
+IHNldSBuYXZlZ2Fkb3I6CiBodHRwOi8vZC1hcHAuYnJhc2lsYmVtc2VndXJvLmNvbS5ici9lLzEz
+MzQ0LzM3LzI1NzgxMi82YTU0MAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTElNSVRFRCBUSU1FIFNB
+TEUgLSBGdWxsIFllYXIgb2YgTWljcm9zb2Z0IFRyYWluaW5nIEZvciBKdXN0ICQ0OS45OSEKMSw1
+MDArIGhvdXJzIG9mIHR1dG9yaWFscyBpbmNsdWRpbmcgVmlzdWFsU3R1ZGlvIDIwMTIsIFdpbmRv
+d3MgOCwgU2hhcmVQb2ludAoyMDEzLCBTUUwgMjAxMiwgTVZDIDQsIG1vcmUuIEJFU1QgVkFMVUU6
+IE5ldyBNdWx0aS1MaWJyYXJ5IFBvd2VyIFBhY2sgaW5jbHVkZXMKTW9iaWxlLCBDbG91ZCwgSmF2
+YSwgYW5kIFVYIERlc2lnbi4gTG93ZXN0IHByaWNlIGV2ZXIhIEVuZHMgOS8yMC8xMy4gCmh0dHA6
+Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD01ODA0MTE1MSZpdT0vNDE0
+MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlz
+dHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xp
+c3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

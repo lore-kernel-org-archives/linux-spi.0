@@ -1,172 +1,89 @@
-From: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: [RESEND] spi/tegra114: Correct support for cs_change
-Date: Wed, 18 Sep 2013 14:17:25 -0400
-Message-ID: <1379528245-6283-1-git-send-email-rklein@nvidia.com>
+From: "Nutrilife Probiotic" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?RGltaW51ZXogdm90cmUgdG91ciBkZSB0YWlsbGUgZ3LDomNlIGF1eCBiYWN0w6lyaWVz?=
+Date: Thu, 19 Sep 2013 01:18:07 +0100
+Message-ID: <0.0.B4.B1D.1CEB4CDB6F7C3F4.0@mta41.pur3.net>
+Reply-To: Nutrilife Probiotic <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-The tegra114 driver wasn't currently handling the cs_change functionality.
-It is meant to invert normal behavior, and we were only using it to possibly
-delay at the end of a transfer.
-
-This patch modifies the logic so that the cs state will be toggled after
-every individual transfer or NOT toggled at the end of the last transfer
-if cs_change is set in that transfer struct.
-
-Also, this builds in logic so that if a different device tries to start
-a transfer while CS is active from a different device, it will abort the
-previous transfer and start a new one for the new device.
-
-This work was based on the spi-atmel driver.
-
-Signed-off-by: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
----
-
-RESEND WITH CORRECT PATCH ANNOTATION IN SUBJECT
-
- drivers/spi/spi-tegra114.c |   59 ++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 52 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 145dd43..a9973de 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -182,6 +182,7 @@ struct tegra_spi_data {
- 	u32					cur_speed;
- 
- 	struct spi_device			*cur_spi;
-+	struct spi_device			*cs_control;
- 	unsigned				cur_pos;
- 	unsigned				cur_len;
- 	unsigned				words_per_32bit;
-@@ -717,7 +718,12 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
- 		else if (req_mode == SPI_MODE_3)
- 			command1 |= SPI_CONTROL_MODE_3;
- 
--		tegra_spi_writel(tspi, command1, SPI_COMMAND1);
-+		if (tspi->cs_control) {
-+			if (tspi->cs_control != spi)
-+				tegra_spi_writel(tspi, command1, SPI_COMMAND1);
-+			tspi->cs_control = NULL;
-+		} else
-+			tegra_spi_writel(tspi, command1, SPI_COMMAND1);
- 
- 		command1 |= SPI_CS_SW_HW;
- 		if (spi->mode & SPI_CS_HIGH)
-@@ -732,6 +738,9 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
- 		command1 |= SPI_BIT_LENGTH(bits_per_word - 1);
- 	}
- 
-+	if (t->len == 0 && !t->tx_buf && !t->rx_buf)
-+		return 0;
-+
- 	if (tspi->is_packed)
- 		command1 |= SPI_PACKED;
- 
-@@ -803,6 +812,17 @@ static int tegra_spi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
-+static void tegra_spi_transfer_delay(int delay)
-+{
-+	if (!delay)
-+		return;
-+
-+	if (delay >= 1000)
-+		mdelay(delay / 1000);
-+
-+	udelay(delay % 1000);
-+}
-+
- static int tegra_spi_transfer_one_message(struct spi_master *master,
- 			struct spi_message *msg)
- {
-@@ -812,6 +832,7 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- 	struct spi_transfer *xfer;
- 	struct spi_device *spi = msg->spi;
- 	int ret;
-+	bool skip = false;
- 
- 	msg->status = 0;
- 	msg->actual_length = 0;
-@@ -819,13 +840,20 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- 	single_xfer = list_is_singular(&msg->transfers);
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
- 		INIT_COMPLETION(tspi->xfer_completion);
-+
- 		ret = tegra_spi_start_transfer_one(spi, xfer,
- 					is_first_msg, single_xfer);
- 		if (ret < 0) {
- 			dev_err(tspi->dev,
- 				"spi can not start transfer, err %d\n", ret);
--			goto exit;
-+			goto complete_xfer;
-+		}
-+
-+		if (xfer->len == 0 && !xfer->tx_buf && !xfer->rx_buf) {
-+			skip = true;
-+			goto complete_xfer;
- 		}
-+
- 		is_first_msg = false;
- 		ret = wait_for_completion_timeout(&tspi->xfer_completion,
- 						SPI_DMA_TIMEOUT);
-@@ -833,24 +861,41 @@ static int tegra_spi_transfer_one_message(struct spi_master *master,
- 			dev_err(tspi->dev,
- 				"spi trasfer timeout, err %d\n", ret);
- 			ret = -EIO;
--			goto exit;
-+			goto complete_xfer;
- 		}
- 
- 		if (tspi->tx_status ||  tspi->rx_status) {
- 			dev_err(tspi->dev, "Error in Transfer\n");
- 			ret = -EIO;
--			goto exit;
-+			goto complete_xfer;
- 		}
- 		msg->actual_length += xfer->len;
--		if (xfer->cs_change && xfer->delay_usecs) {
-+
-+complete_xfer:
-+		if (ret < 0 || skip) {
- 			tegra_spi_writel(tspi, tspi->def_command1_reg,
- 					SPI_COMMAND1);
--			udelay(xfer->delay_usecs);
-+			tegra_spi_transfer_delay(xfer->delay_usecs);
-+			goto exit;
-+		} else if (msg->transfers.prev == &xfer->transfer_list) {
-+			/* This is the last transfer in message */
-+			if (xfer->cs_change)
-+				tspi->cs_control = spi;
-+			else {
-+				tegra_spi_writel(tspi, tspi->def_command1_reg,
-+						SPI_COMMAND1);
-+				tegra_spi_transfer_delay(xfer->delay_usecs);
-+			}
-+		} else if (xfer->cs_change) {
-+			tegra_spi_writel(tspi, tspi->def_command1_reg,
-+					SPI_COMMAND1);
-+			tegra_spi_transfer_delay(xfer->delay_usecs);
- 		}
-+
- 	}
- 	ret = 0;
- exit:
--	tegra_spi_writel(tspi, tspi->def_command1_reg, SPI_COMMAND1);
-+
- 	msg->status = ret;
- 	spi_finalize_current_message(master);
- 	return ret;
--- 
-1.7.9.5
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTk1MDkzMjIwNTM3MjQ0CgoKCkpvdXIgYXByw6hzIGpvdXIsIGVuIHLDqcOpcXVpbGlicmFudCBs
+YSBmbG9yZSBpbnRlc3RpbmFsZSwgY2V0dGUgYmFjdMOpcmllCnBlcm1ldCBkJ2FmZmluZXIgbmF0
+dXJlbGxlbWVudCB1bmUgc2lsaG91ZXR0ZSBpbsOpbMOpZ2FudGUgIQpTaSBjZSBtZXNzYWdlIG5l
+IHPCtGFmZmljaGUgcGFzIGNvcnJlY3RlbWVudCwgY29uc3VsdGV6IHNhIHZlcnNpb24gZW4KbGln
+bmUuOiAjQTdfbWlyb3IjCgooTnV0cmlMaWZlLVNob3ApIDogaHR0cDovL3d3dy5udXRyaWxpZmVz
+aG9wLmNvbS9pbmRleC5waHA/cmVmSUQ9cHJvYmlvdGljX2ZyCgooY2V0dGUgYmFjdMODwqlyaWUg
+YWZmaW5lIG5hdHVyZWxsZW1lbnQgdm90cmUgc2lsaG91ZXR0ZSk6Cmh0dHA6Ly93d3cubnV0cmls
+aWZlc2hvcC5jb20vcHJvZHVjdF9pbmZvLnBocC9pbmZvL3AxOTQzX2xlLW1pY3JvYmUtZHUtdmVu
+dHJlLXBsCmF0ODIzMC1sYS1iYWN0ZXJpZS1jb3V0dXJpZXJlLWRlLXZvdHJlLXNpbGhvdWV0dGUu
+aHRtbD9yZWZJRD1wcm9iaW90aWNfZnIKCgpNaW5jZXVyLCBpbW11bml0w6kgZXQgdml0YWxpdMOp
+IHNvbnQgbGVzIGF0dHJpYnV0cyBwcmltb3JkaWF1eCBkZSBsYSBzYW50w6kgIQpPbiBuJ2F1cmFp
+dCBqYW1haXMgcHUgaW1hZ2luZXIgcXVlIHRvdXMgY2VzIGF0b3V0cyBwdWlzc2VudCDDqnRyZSBh
+cHBvcnTDqXMKcGFyIHVuIHNpbXBsZSBtaWNyb2JlID8KCkV0IHBvdXIgYXV0YW50Li4uCgpQbHVz
+IGRlIDEwMDAgZXNww6hjZXMgZGUgYmFjdMOpcmllcyBldCBkZSBsZXZ1cmVzIHBldXBsZW50IG5v
+dHJlIHN5c3TDqG1lCmRpZ2VzdGlmLgpQZXJkcmUgZHUgdmVudHJlIGV0IGRpbWludWVyIGxlIHRv
+dXIgZGUgdGFpbGxlLCBncsOiY2UgYXV4IGJhY3TDqXJpZXMgPyBDZQpuJ2VzdCBwYXMgc2kgYXVz
+c2kgYWJzdXJkZSBxdWUgw6dhLi4uIENlcnRhaW5zIHLDqXNpZGVudHMgaW50ZXN0aW5hdXgKb3V2
+cmVudCBsYSBwb3J0ZSDDoCBkZSBub3V2ZWxsZXMgcGlzdGVzIGluw6lkaXRlcyBkZSBsYSBnZXN0
+aW9uIGR1IHBvaWRzIQoKTGUgTGFjdG9iYWNpbGx1cyBnYXNzZXJpLCBjZSBwcm9iaW90aXF1ZSBl
+c3QgbGUgbW95ZW4gbGUgcGx1cyBmYWNpbGUgZXQgbGUKcGx1cyBlZmZpY2FjZSBkYW5zIGxhIGx1
+dHRlIGNvbnRyZSBsJ2VtYm9ucG9pbnQgIQoKUXVlbHF1ZXMgZ8OpbHVsZXMgcXVvdGlkaWVubmVz
+IGRlIExhY3RvYmFjaWxsdXMgZ2Fzc2VyaSwgc3RvcHBlbnQgbGEKY3JvaXNzYW5jZSBkZXMgZ2Vy
+bWVzIHF1aSBmYXZvcmlzZW50IGwnYWJzb3JwdGlvbiBkZXMgY2Fsb3JpZXMgc3VwZXJmbHVlcy4K
+CkpvdXIgYXByw6hzIGpvdXIsIGVuIHLDqcOpcXVpbGlicmFudCBsYSBmbG9yZSBpbnRlc3RpbmFs
+ZSwgY2V0dGUgYmFjdMOpcmllCnBlcm1ldCBkJ2FmZmluZXIgbmF0dXJlbGxlbWVudCB1bmUgc2ls
+aG91ZXR0ZSBpbsOpbMOpZ2FudGUgIQoKRW4gc2F2b2lyIHBsdXMgZXQgYWNjw6lkZXIgw6AgbGEg
+ZmljaGUgY29tcGzDqHRlIGR1IHByb2R1aXQgIlByb2Jpb3RpYwpMaWZlIjoKaHR0cDovL3d3dy5u
+dXRyaWxpZmVzaG9wLmNvbS9wcm9kdWN0X2luZm8ucGhwL2luZm8vcDE5NDNfbGUtbWljcm9iZS1k
+dS12ZW50cmUtcGwKYXQ4MjMwLWxhLWJhY3RlcmllLWNvdXR1cmllcmUtZGUtdm90cmUtc2lsaG91
+ZXR0ZS5odG1sP3JlZklEPXByb2Jpb3RpY19mcgoKCmh0dHA6Ly93d3cubnV0cmlsaWZlc2hvcC5j
+b20vcHJvZHVjdF9pbmZvLnBocC9pbmZvL3AxOTQzX2xlLW1pY3JvYmUtZHUtdmVudHJlLXBsCmF0
+ODIzMC1sYS1iYWN0ZXJpZS1jb3V0dXJpZXJlLWRlLXZvdHJlLXNpbGhvdWV0dGUuaHRtbAoKCjog
+aHR0cDovL3d3dy5udXRyaWxpZmVzaG9wLmNvbS9zcGVjaWFscy5waHA/cmVmSUQ9cHJvYmlvdGlj
+X2ZyCjogaHR0cDovL3d3dy5udXRyaWxpZmVzaG9wLmNvbS9zcGVjaWFscy5waHA/cmVmSUQ9ZmRw
+CihzbGlkZS1zZXB0ZW1icmUuanBnKTogaHR0cDovL3d3dy5udXRyaWxpZmVzaG9wLmNvbS9pbmRl
+eC5waHAKClZhbGFibGUganVzcXUnYXUgMzAgc2VwdGVtYnJlIDIwMTMgTWludWl0ClZvdXMgcmVj
+ZXZleiBjZXQgZW1haWwgY2FyIHZvdXMgw6p0ZXMgaW5zY3JpdCBzdXIgbm90cmUgc2l0ZSBvdSBs
+J3VuIGRlIHNlcwpwYXJ0ZW5haXJlcy4KTGVzIGNvbmRpdGlvbnMgZ8OpbsOpcmFsZXMgZGUgdmVu
+dGU6Cmh0dHA6Ly93d3cubnV0cmlsaWZlc2hvcC5jb20vc2hvcF9jb250ZW50LnBocC9jb0lELzMv
+Y29udGVudC9jb25kaXRpb25zLWdlbmVyYWxlCnMtZGUtdmVudGUKCgpzJ2FwcGxpcXVlbnQgw6Ag
+Y2V0dGUgb2ZmcmUuCgpTaSB2b3VzIGTDqXNpcmV6IG5lIHBsdXMgcmVjZXZvaXIgbm9zIG9mZnJl
+cywgdmV1aWxsZXogIHN1aXZyZSBjZSBsaWVuOgpodHRwOi8vbnV0cmlsaWZlc2hvcC1pbmZvLmNv
+bS91bnN1YnNjcmliZV9jb25maXJtYXRpb25fZnIuaHRtbCNBN191bnN1YnNjcmliZV9kZQpzYWJv
+X251dHJpbGlmZSMKCgpDb25mb3Jtw6ltZW50IMOgIGxhIExvaSBJbmZvcm1hdGlxdWUgZXQgTGli
+ZXJ0w6lzLCBsZXMgaW5mb3JtYXRpb25zCmRlbWFuZMOpZXMgc2Vyb250IHV0aWxpc8OpZXMgcGFy
+IEZpZGRpYW0gU0EuIHBvdXIgbGUgdHJhaXRlbWVudCBkZSB2b3MKY29tbWFuZGVzLCBsYSBnZXN0
+aW9uIGRlIHZvdHJlIGNvbXB0ZSBjbGllbnQsIGV0IGRhbnMgdW4gYnV0IGRlIHByb3NwZWN0aW9u
+CmNvbW1lcmNpYWxlLiBWb3VzIGRpc3Bvc2V6IGQndW4gZHJvaXQgZCdhY2PDqHMsIGRlIHJlY3Rp
+ZmljYXRpb24sIGRlCnN1cHByZXNzaW9uIGV0IGQnb3Bwb3NpdGlvbiBhdSB0cmFpdGVtZW50IGRl
+IHZvcyBkb25uw6llcyBxdWkgcGV1dCBzJ2V4ZXJjZXIKcGFyIGludGVybmV0IHN1ciB3d3cubnV0
+cmlsaWZlc2hvcC5jb20sIHJ1YnJpcXVlICJDb250YWN0ZXotbm91cyIuIFBvdXIgcGx1cwpkJ2lu
+Zm9ybWF0aW9ucywgY29uc3VsdGV6ICBOdXRyaWxpZmVTaG9wOiBodHRwOi8vd3d3Lm51dHJpbGlm
+ZXNob3AuY29tCgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRw
+Oi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MTk1MDkzMjIw
+NTM3MjQ0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTk1MDkzMjIwNTM3MjQ0fn0KLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tCkxJTUlURUQgVElNRSBTQUxFIC0gRnVsbCBZZWFyIG9mIE1pY3Jvc29mdCBUcmFp
+bmluZyBGb3IgSnVzdCAkNDkuOTkhCjEsNTAwKyBob3VycyBvZiB0dXRvcmlhbHMgaW5jbHVkaW5n
+IFZpc3VhbFN0dWRpbyAyMDEyLCBXaW5kb3dzIDgsIFNoYXJlUG9pbnQKMjAxMywgU1FMIDIwMTIs
+IE1WQyA0LCBtb3JlLiBCRVNUIFZBTFVFOiBOZXcgTXVsdGktTGlicmFyeSBQb3dlciBQYWNrIGlu
+Y2x1ZGVzCk1vYmlsZSwgQ2xvdWQsIEphdmEsIGFuZCBVWCBEZXNpZ24uIExvd2VzdCBwcmljZSBl
+dmVyISBFbmRzIDkvMjAvMTMuIApodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBh
+ZC9jbGs/aWQ9NTgwNDExNTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
+aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
+LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

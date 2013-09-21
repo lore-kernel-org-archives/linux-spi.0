@@ -1,12 +1,12 @@
-From: Record Perte de Poids <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: [SPAM] Regardez 3 kilos disparaître en tout juste 6 jours
-Date: Sat, 21 Sep 2013 10:59:08 +0200 (CEST)
-Message-ID: <hcdosi.hlulvkchrntg7nl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "iPhone" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Destockage iPhone 5
+Date: Sat, 21 Sep 2013 11:39:54 +0000 (CET)
+Message-ID: <130921113954.151536447000004688@fmo40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,84 +18,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgragfI7gfk57dIhlulvexuI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1379753941636%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DBCLPFGOGHGHIDIEH%26mid%3D1600267695&s=3DC=
-DNCOMBIBNOPJGIH
- =
-
-Regardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispar=
-a=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6=
- joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos =
-dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout j=
-uste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 =
-kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en =
-tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegar=
-dez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEt=
-re en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jour=
-sRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispa=
-ra=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste =
-6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos=
- dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout =
-juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3=
- kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en=
- tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRega=
-rdez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EE=
-tre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jou=
-rsRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos disp=
-ara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste=
- 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilo=
-s dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout=
- juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez =
-3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre e=
-n tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursReg=
-ardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=
-=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 =
-joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos d=
-ispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout ju=
-ste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 k=
-ilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en t=
-out juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegard=
-ez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtr=
-e en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jours=
-Regardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispar=
-a=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6=
- joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos =
-dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout j=
-uste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 =
-kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en =
-tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegar=
-dez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEt=
-re en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jour=
-sRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispa=
-ra=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste =
-6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos=
- dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout =
-juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3=
- kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en=
- tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRega=
-rdez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EE=
-tre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 jou=
-rsRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos disp=
-ara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste=
- 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilo=
-s dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre en tout=
- juste 6 joursRegardez 3 kilos dispara=EEtre en tout juste 6 joursRegardez =
-3 kilos dispara=EEtre en tout juste 6 joursRegardez 3 kilos dispara=EEtre e=
-n tout juste 6 jours
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600267695&sig=3DKKFIKPMHDFEHMBCM
----------------------------------------------------------------------------=
----
-LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
-1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
-2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack inclu=
-des
-Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/22/13. =
-
-http://pubads.g.doubleclick.net/gampad/clk?id=3D64545871&iu=3D/4140/ostg.cl=
-ktrk
+CgoKIChodHRwOi8vZm1vNDAuY29tL3V6a3ZldTBvdjB0M3lsYm9ocy9pbmRleDAuaHRtbCkKCgoK
+CgogKGh0dHA6Ly9mbW80MC5jb20vZW1rYWN1aTN2d3NhYmQwbzNkL2luZGV4MS5odG1sKQoKCsKg
+CkxlcyBlbmNow6hyZXMgYXUgY2VudGltZSBleHBsaXF1w6llcyA6CkVzdC1jZSB2cmFpbWVudCBw
+b3NzaWJsZSBkJ8OpY29ub21pc2VyIDk1ICUgCnN1ciBsZSBwcml4IGRlIHZlbnRlID8gKGh0dHA6
+Ly9mbW80MC5jb20va3drazN1ZjR2aTQzdTJ0Zml5L2luZGV4Mi5odG1sKSAKCgoKIChodHRwOi8v
+Zm1vNDAuY29tL3Zwa2l0dWt0dnFrYXowMmZhbC9pbmRleDMuaHRtbCkKVm91cyBsJ2F1cmV6IHN1
+cmVtZW50IHJlbWFycXXDqSwgdW4gbm91dmVhdSBwaMOpbm9tw6huZSBlc3QgZW4gdHJhaW4gZGUg
+c2UgZMOpdmVsb3BwZXIgZW4gRXVyb3BlIGV0IGVuIEFtw6lyaXF1ZSBkdSBOb3JkIDogbGVzIHNp
+dGVzIGludGVybmV0IGRlIHZlbnRlcyBhdXggZW5jaMOocmVzIGRlIGTDqXN0b2NrYWdlLiBQYXJ0
+b3V0IHN1ciBsZSBuZXQsIGRhbnMgbGVzIGJsb2dzLCBvbiBwZXV0IGxpcmUgbGVzIGhpc3RvaXJl
+cyBkJ2hldXJldXggcXVpIG9udCByZW1wb3J0w6kgZGUgZmFidWxldXggYXJ0aWNsZXMuLi4gCiAo
+aHR0cDovL2ZtbzQwLmNvbS8ydzNtM2Jlem5kdzNzY3RxamQvaW5kZXg0Lmh0bWwpCkhhYml0dWVs
+bGVtZW50IHRyw6hzIG9uw6lyZXV4IHBvdXIgw6AgcGVpbmUgdW5lIGJvdWNow6llIGRlIHBhaW4u
+IE1haXMgbm91cyBuJ8OpdGlvbnMgcGFzIGNvbnZhaW5jdXMgw6AgMTAwICUgZXQgYydlc3QgcG91
+ciBjZWxhIHF1ZSBub3VzIGF2b25zIGTDqWNpZMOpIGRlIGxlcyB0ZXN0ZXIuIChodHRwOi8vZm1v
+NDAuY29tL3RwM3p0YmNibmVlYXQxMnFxcy9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExBIFNVSVRF
+ID4+IChodHRwOi8vZm1vNDAuY29tLzB6M3BlYjNqbnIwM2txYmNvbC9pbmRleDYuaHRtbCkKCiAo
+aHR0cDovL2ZtbzQwLmNvbS9ibTN3Y2J0YW5jZGE0ZzBjZ3kvaW5kZXg3Lmh0bWwpCgoKwqAKTGEg
+UmV2dWUgQ29uc28gw6AgdGVzdMOpIFN3b2dnaSByw6ljZW1tZW50CmV0IGxlcyByw6lzdWx0YXRz
+IG9udCDDqXTDqSB0csOocyBzdXJwcmVuYW50cy4gKGh0dHA6Ly9mbW80MC5jb20veXpzbnZ6Mmd2
+YmMzZ21iNDFzL2luZGV4OC5odG1sKSAKCgoKIChodHRwOi8vZm1vNDAuY29tL2RtczUxemhodnpx
+YTFyMDRmZC9pbmRleDkuaHRtbCkKIlN3b2dnaSBhIGTDqXBhc3PDqSB0b3V0ZXMgbm9zIGF0dGVu
+dGVzIGVuIGNlIHF1aSBjb25jZXJuYWl0IGxlcyDDqWNvbm9taWVzIHLDqWFsaXNhYmxlcyBncsOi
+Y2Ugw6AgbGV1cnMgb2ZmcmVzLiBUb3VzIGxlcyBqb3VycywgZGVzIGdlbnMgw6ljb25vbWlzZW50
+IGp1c3F1J8OgIDk1ICUgc3VyIGxlcyBwcml4IGhhYml0dWVscyBkZSB2ZW50ZS4gQydlc3QgaW5j
+cm95YWJsZSAhIgogKGh0dHA6Ly9mbW80MC5jb20vYnVsd2VyYmp4eDBzbWd6dWdkL2luZGV4MTAu
+aHRtbCkKCgoKCgpMSVJFIExBIFNVSVRFID4+IChodHRwOi8vZm1vNDAuY29tLzBhM3AwdDN4enIw
+dWtxdmNvZC9pbmRleDExLmh0bWwpCgrCoAoKIChodHRwOi8vZm1vNDAuY29tL3AxcmJnZmdpc2tq
+bmZ6aW1kZy9pbmRleDEyLmh0bWwpCiAoaHR0cDovL2ZtbzQwLmNvbS9tMmIxbXd3cjNsajBsNHBz
+eWcvaW5kZXgxMy5odG1sKQoKIChodHRwOi8vZm1vNDAuY29tLzR5dWtudmZxaWlmY3VuamZxbC9p
+bmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vZm1vNDAuY29tL25qcWlsanVjZGpmbXJ3MXZqbC9p
+bmRleDE1Lmh0bWwpClNhbWVkaSAyMyBqdWluIDNoMjUgKGh0dHA6Ly9mbW80MC5jb20vcHJ1dHh2
+b2VoaTV4dXVkZmRnL2luZGV4MTYuaHRtbCkKCgoKCgoKwqAKIkonYWkgZGUgcXVvaSB2b2lyIHZl
+bmlyIGxlcyBhbm5pdmVyc2FpcmVzIGV0IGF1dHJlcyBmw6p0ZXMgcG91ciB1biBib24gbW9tZW50
+IGV0IGonYWkgZmFpdCBkZSBzYWNyw6lzIMOpY29ub21pZXMiIChodHRwOi8vZm1vNDAuY29tL213
+cWNhanp3bGo1cHJrdHZ5Zy9pbmRleDE3Lmh0bWwpCgoKCgoKCgogKGh0dHA6Ly9mbW80MC5jb20v
+d2VkM2FwYXdiNXA0aGVrdW95L2luZGV4MTguaHRtbCkKUGF0b3UgKGh0dHA6Ly9mbW80MC5jb20v
+emlhZXgwdGU1Y3BiNHZ3Y2d5L2luZGV4MTkuaHRtbCkKIFNhbWVkaSAyMyBqdWluIDRoMzcgKGh0
+dHA6Ly9mbW80MC5jb20vdXZ6dmllMnBhdHN0amw0cGdsL2luZGV4MjAuaHRtbCkKCgoKCgrCoAoi
+SidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hyZXMgYXUgY2VudGltZSDDoCBsYSB0
+w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwgbWUgdGFyZGUgZCdlc3NheWVyIiAo
+aHR0cDovL2ZtbzQwLmNvbS9laGNhY29pM3luc3owZGVsb2wvaW5kZXgyMS5odG1sKQoKCgrCoAoK
+CgoKCgoKCgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KTElNSVRFRCBUSU1FIFNBTEUgLSBGdWxsIFll
+YXIgb2YgTWljcm9zb2Z0IFRyYWluaW5nIEZvciBKdXN0ICQ0OS45OSEKMSw1MDArIGhvdXJzIG9m
+IHR1dG9yaWFscyBpbmNsdWRpbmcgVmlzdWFsU3R1ZGlvIDIwMTIsIFdpbmRvd3MgOCwgU2hhcmVQ
+b2ludAoyMDEzLCBTUUwgMjAxMiwgTVZDIDQsIG1vcmUuIEJFU1QgVkFMVUU6IE5ldyBNdWx0aS1M
+aWJyYXJ5IFBvd2VyIFBhY2sgaW5jbHVkZXMKTW9iaWxlLCBDbG91ZCwgSmF2YSwgYW5kIFVYIERl
+c2lnbi4gTG93ZXN0IHByaWNlIGV2ZXIhIEVuZHMgOS8yMi8xMy4gCmh0dHA6Ly9wdWJhZHMuZy5k
+b3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD02NDU0NTg3MSZpdT0vNDE0MC9vc3RnLmNsa3Ry
+awpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2
+ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
+Z2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1k
+ZXZlbC1nZW5lcmFsCg==

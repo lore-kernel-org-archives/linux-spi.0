@@ -1,12 +1,12 @@
-From: Nutrilife Probiotic <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Diminuez_votre_tour_de_taille_gr=E2ce_aux_bact=E9ries?=
-Date: Sun, 22 Sep 2013 11:19:14 +0200 (CEST)
-Message-ID: <glpwrp.hlw219au1t55tfl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "trivago" <contact-Kye7tDnrQRBBDgjK7y7TUQ@public.gmane.org>
+Subject: [SPAM] Bons plans Hotels
+Date: Sun, 22 Sep 2013 13:38:45 +0000 (CET)
+Message-ID: <130922133845.162303941200005084@fmo42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,94 +18,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgrar7I7gfk57dIhlw213hfI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1379841546797%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DFJGJKOPFJFBPHANL%26mid%3D1600268083&s=3DJ=
-OLDAGJKHFFOOMCN
- =
-
-Diminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de=
- taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux ba=
-ct=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votr=
-e tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2=
-ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDimi=
-nuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de tai=
-lle gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=
-=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre =
-tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce=
- aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminu=
-ez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taill=
-e gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9r=
-iesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour=
- de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux=
- bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez v=
-otre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=
-=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesD=
-iminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de =
-taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bac=
-t=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre=
- tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2c=
-e aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDimin=
-uez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de tail=
-le gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9=
-riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tou=
-r de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce au=
-x bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez =
-votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille g=
-r=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9ries=
-Diminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de=
- taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux ba=
-ct=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votr=
-e tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2=
-ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDimi=
-nuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de tai=
-lle gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=
-=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre =
-tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce=
- aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminu=
-ez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taill=
-e gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9r=
-iesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour=
- de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux=
- bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez v=
-otre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=
-=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesD=
-iminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de =
-taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bac=
-t=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre=
- tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2c=
-e aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDimin=
-uez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de tail=
-le gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9=
-riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tou=
-r de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce au=
-x bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez =
-votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille g=
-r=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9ries=
-Diminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de=
- taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux ba=
-ct=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votr=
-e tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2=
-ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDimi=
-nuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de tai=
-lle gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=
-=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminuez votre =
-tour de taille gr=E2ce aux bact=E9riesDiminuez votre tour de taille gr=E2ce=
- aux bact=E9riesDiminuez votre tour de taille gr=E2ce aux bact=E9riesDiminu=
-ez votre tour de taille gr=E2ce aux bact=E9ries
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600268083&sig=3DKLCIIOHPBCPOHAKH
----------------------------------------------------------------------------=
----
-LIMITED TIME SALE - Full Year of Microsoft Training For Just $49.99!
-1,500+ hours of tutorials including VisualStudio 2012, Windows 8, SharePoint
-2013, SQL 2012, MVC 4, more. BEST VALUE: New Multi-Library Power Pack inclu=
-des
-Mobile, Cloud, Java, and UX Design. Lowest price ever! Ends 9/22/13. =
-
-http://pubads.g.doubleclick.net/gampad/clk?id=3D64545871&iu=3D/4140/ostg.cl=
-ktrk
+CjYwMC4wMDAgaMO0dGVscyAtIENvbXBhcmV6IGxlcyBwcml4IGV0IMOpY29ub21pc2V6IGp1c3F1
+JmFjdXRlO8OgIDc4JQpCb25zIHBsYW5zIGjDtHRlbHMKwqAKKGh0dHA6Ly9mbW80Mi5jb20veXF4
+bmpsdzQ1MXIxdWxxZGdnL2luZGV4MC5odG1sKQrCoApOZXdzbGV0dGVyCsKgZXguOiBQYXJpcyAo
+aHR0cDovL2ZtbzQyLmNvbS9kc3g1emxxdDVtaWN6ZGpkb2ovaW5kZXgxLmh0bWwpCgrCoApTYSwg
+MTYuMTEuMjAxMwoKRGksIDE3LjExLjIwMTMgKGh0dHA6Ly9mbW80Mi5jb20vc2p4NGxscG81dmMx
+eTJnMHFxL2luZGV4Mi5odG1sKQoKwqAKCihodHRwOi8vZm1vNDIuY29tL2xseHJtbHMzNWxxY2Iw
+bzBqby9pbmRleDMuaHRtbCkKwqAKKGh0dHA6Ly9mbW80Mi5jb20vbmpiaGxuZGphZ2Yxa2Nnc2Fq
+L2luZGV4NC5odG1sKQpWb3MgZGVzdGluYXRpb25zIHByw4lmw4lyw4llcwooaHR0cDovL2ZtbzQy
+LmNvbS80bGJ1bW5yYWFob2M0MW9zaWcvaW5kZXg1Lmh0bWwpCkJhcmNlbG9uZQrDoCBwYXJ0aXIg
+ZGUKNjPigqwgKGh0dHA6Ly9mbW80Mi5jb20vd3FiM2pub3phbnAxc3FxdDNvL2luZGV4Ni5odG1s
+KQooaHR0cDovL2ZtbzQyLmNvbS96c2Jlem40YmEyM2N0Z2p0aHEvaW5kZXg3Lmh0bWwpCkxvbmRy
+ZXMKw6AgcGFydGlyIGRlCjU14oKsIChodHRwOi8vZm1vNDIuY29tL3VxNXZvMm5uNWY0MWhtcXJt
+Zy9pbmRleDguaHRtbCkKKGh0dHA6Ly9mbW80Mi5jb20vZXM1YTQyZzI1cGtjbXJqcnBqL2luZGV4
+OS5odG1sKQpQYXJpcwrDoCBwYXJ0aXIgZGUKNjnigqwgKGh0dHA6Ly9mbW80Mi5jb20vMXdjZzNq
+MGVzZ25wdTR0bHl5L2luZGV4MTAuaHRtbCkKKGh0dHA6Ly9mbW80Mi5jb20vZnJ6eWZ2aHczM254
+cnpkcGR5L2luZGV4MTEuaHRtbCkKTWFycmFrZWNoCsOgIHBhcnRpciBkZQo2OOKCrCAoaHR0cDov
+L2ZtbzQyLmNvbS93b3YzeWhveXh3M2dkcWd4b28vaW5kZXgxMi5odG1sKQpEw4lDT1VWUkVaIEFV
+U1NJ4oCmCkJydXhlbGxlcyA0KgrDoCBwYXJ0aXIgZGUgNTXigqwgwrsgKGh0dHA6Ly9mbW80Mi5j
+b20venNvZXp5emJ6YjNpeGd4ZWdvL2luZGV4MTMuaHRtbCkKQ2FubmVzIDMqCsOgIHBhcnRpciBk
+ZSA2OOKCrCDCuyAoaHR0cDovL2ZtbzQyLmNvbS9yMHB4NXQxdW5wNWVtbzNyc3MvaW5kZXgxNC5o
+dG1sKQpBbXN0ZXJkYW0gMyoKw6AgcGFydGlyIGRlIDc54oKsIMK7IChodHRwOi8vZm1vNDIuY29t
+LzVjMjJqcmV6MTE1bGtqcnlscy9pbmRleDE1Lmh0bWwpCkx5b24gMyoKw6AgcGFydGlyIGRlIDM3
+4oKsIMK7IChodHRwOi8vZm1vNDIuY29tL3dhcGEydGdqd3BmdW1jdnJvby9pbmRleDE2Lmh0bWwp
+CkJ1ZGFwZXN0IDUqCsOgIHBhcnRpciBkZSA1N+KCrCDCuyAoaHR0cDovL2ZtbzQyLmNvbS96dTJ2
+dnJ3eGMxZnNrMXp5Z28vaW5kZXgxNy5odG1sKQpMaXNib25uZSA0KgrDoCBwYXJ0aXIgZGUgNTbi
+gqwgwrsgKGh0dHA6Ly9mbW80Mi5jb20vcHoxYnZnaXhvaHhvenh5bGRkL2luZGV4MTguaHRtbCkK
+QmVybGluIDQqCsOgIHBhcnRpciBkZSA1OeKCrCDCuyAoaHR0cDovL2ZtbzQyLmNvbS9tNTQxMnUy
+amtveGFpZjJweWQvaW5kZXgxOS5odG1sKQpTYW50b3JpbiA0KgrDoCBwYXJ0aXIgZGUgNDXigqwg
+wrsgKGh0dHA6Ly9mbW80Mi5jb20vaDQzY2tidDI0ZHUzMnBiY3lzL2luZGV4MjAuaHRtbCkKQXRo
+w6huZXMgNCoKw6AgcGFydGlyIGRlIDQ54oKsIMK7IChodHRwOi8vZm1vNDIuY29tLzNwbHR0bWFs
+ZnV1am81bHVkcy9pbmRleDIxLmh0bWwpClByYWd1ZSA0KgrDoCBwYXJ0aXIgZGUgNTPigqwgwrsg
+KGh0dHA6Ly9mbW80Mi5jb20vaWUyeDNyY3ZjbXpzNHA0eXNzL2luZGV4MjIuaHRtbCkKdHJpdmFn
+by5mciAoaHR0cDovL2ZtbzQyLmNvbS9haXAyZnR2bndmenVoNWVybHMvaW5kZXgyMy5odG1sKSBw
+ZXJtZXQgYXV4IHZveWFnZXVycyBkZSB0cm91dmVyIGzCtGjDtHRlbCBpZMOpYWwgYXUgbWVpbGxl
+dXIgdGFyaWYsIHBhcm1pIHBsdXMgZGUgMTYwIHBvcnRhaWxzIGRlIHLDqXNlcnZhdGlvbiByZWNl
+bnNhbnQgNjAwIDAwMCBow7R0ZWxzIGRhbnMgbGUgbW9uZGUuIFRvdXMgbGVzIHByaXggY2ktZGVz
+c3VzIG5lIHNvbnQgZm91cm5pcyBxdSfDoCB0aXRyZSBpbmRpY2F0aWYgZXQgc291cyByw6lzZXJ2
+ZSBkZSBkaXNwb25pYmlsaXTDqSBjaGV6IGxlcyBwYXJ0ZW5haXJlcy4KwqkgMjAwNCAtIDIwMTMg
+VG91cyBkcm9pdHMgcsOpc2VydsOpcwooaHR0cDovL2ZtbzQyLmNvbS9oYm4xd2kyMTFvYmRpMzU1
+eXMvaW5kZXgyNC5odG1sKQoKKGh0dHA6Ly9mbW80Mi5jb20vM3hmYmRzaWduaGJ2emFoZGRzL2lu
+ZGV4MjUuaHRtbCkKwqAKKGh0dHA6Ly9mbW80Mi5jb20vaWxvZnJ5eGh6enlpajNmZXNzL2luZGV4
+MjYuaHRtbCkKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxJTUlURUQgVElNRSBTQUxFIC0gRnVsbCBZ
+ZWFyIG9mIE1pY3Jvc29mdCBUcmFpbmluZyBGb3IgSnVzdCAkNDkuOTkhCjEsNTAwKyBob3VycyBv
+ZiB0dXRvcmlhbHMgaW5jbHVkaW5nIFZpc3VhbFN0dWRpbyAyMDEyLCBXaW5kb3dzIDgsIFNoYXJl
+UG9pbnQKMjAxMywgU1FMIDIwMTIsIE1WQyA0LCBtb3JlLiBCRVNUIFZBTFVFOiBOZXcgTXVsdGkt
+TGlicmFyeSBQb3dlciBQYWNrIGluY2x1ZGVzCk1vYmlsZSwgQ2xvdWQsIEphdmEsIGFuZCBVWCBE
+ZXNpZ24uIExvd2VzdCBwcmljZSBldmVyISBFbmRzIDkvMjIvMTMuIApodHRwOi8vcHViYWRzLmcu
+ZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NjQ1NDU4NzEmaXU9LzQxNDAvb3N0Zy5jbGt0
+cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRl
+dmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
+cmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGkt
+ZGV2ZWwtZ2VuZXJhbAo=

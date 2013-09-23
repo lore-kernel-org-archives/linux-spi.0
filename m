@@ -1,97 +1,92 @@
-From: "=?utf-8?Q?Vueling?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?Faites_durer_l'=C3=A9t=C3=A9_avec_Vueling!?=
-Date: Mon, 23 Sep 2013 14:05:43 +0000
-Message-ID: <1043=cf416393-a76f-4423-8ad8-991fab53f72d=4=3266566@clicks.trackdom.fr>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [RESEND] spi/tegra114: Correct support for cs_change
+Date: Mon, 23 Sep 2013 12:51:52 -0600
+Message-ID: <52408DC8.3020407@wwwdotorg.org>
+References: <1379528245-6283-1-git-send-email-rklein@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+To: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1379528245-6283-1-git-send-email-rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICEKICAgCiAgIExlIHBy
-aXggaW5kaXF1w6kgY29ycmVzcG9uZCBhdXggb2ZmcmVzIGRpc3BvbmlibGVzIGF1IG1vbWVudCBk
-dQogICBsYW5jZW1lbnQgZGUgY2V0dGUgcHJvbW90aW9uIHN1ciBbMV13d3cudnVlbGluZy5jb20g
-Qydlc3QgdW4gcHJpeAogICBmaW5hbCBwYXIgdHJhamV0LCBuZSBjb21wcmVuYW50IHBhcyBsZXMg
-ZnJhaXMgZGUgc2VydmljZQogICBzdXBwbMOpbWVudGFpcmVzIGV0IGxlIHBhaWVtZW50IHBhciBj
-YXJ0ZSBiYW5jYWlyZS4gWzJdQ2xpcXVleiBpY2kgcG91cgogICBjb25zdWx0ZXIgbGUgZMOpdGFp
-bCBkZXMgdGFyaWZzIGRlIHNlcnZpY2VzIHN1cHBsw6ltZW50YWlyZXMgYXUgdm9sLgogICBQb3Vy
-IHBsdXMgZCdpbmZvcm1hdGlvbnMsIHZldWlsbGV6IGNvbnRhY3RlciBub3RyZSBbM11TZXJ2aWNl
-CiAgIGNsaWVudMOobGUuCiAgIFTDqWxlY2hhcmdleiBncmF0aXMgbCdhcGxpY2F0aW9uIGRlIFZ1
-ZWxpbmcgcG91ciB2b3MgcGxhdGUtZm9ybWVzCiAgIGZhdm9yaXRlczoKICAgCiAgICAgIEFqb3V0
-ZXogWzRddnVlbGluZ0BuZXdzLnZ1ZWxpbmcuY29tIMOgIHZvdHJlIGNhcm5ldCBkJ2FkcmVzc2Ug
-ZXQKICAgICBhc3N1cmV6LXZvdXMgZGUgcmVjZXZvaXIgdG91dGVzIG5vcyBjb3JyZXNwb25kYW5j
-ZXMuIMKpMjAxMyBWdWVsaW5nCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQWlybGlu
-ZXMgU0EKClJlZmVyZW5jZXMKCiAgIFZpc2libGUgbGlua3MKICAgMS4gaHR0cDovL2NsaWNrcy50
-cmFja2RvbS5mci9jL2FzL0VWUS9oX0hGT191VTdEalhfMmhSS0JyOTZhL2Iva2xRTC84MDc1N2Jj
-YwogICAyLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvRVZwL2hfSEZPX3VVN0RqWF8y
-aFJLQnI5NmEvYi9rbFFMLzQyZTU1ZTNmCiAgIDMuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIv
-Yy9hcy9FVlAvaF9IRk9fdVU3RGpYXzJoUktCcjk2YS9iL2tsUUwvYzk5Y2Q2ZDMKICAgNC4gaHR0
-cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0VWQy9oX0hGT191VTdEalhfMmhSS0JyOTZhL2Iv
-a2xRTC81NjFhZTU4NAoKICAgSGlkZGVuIGxpbmtzOgogICA1LiBodHRwOi8vY2xpY2tzLnRyYWNr
-ZG9tLmZyL2MvYXMvRVZoL2hfSEZPX3VVN0RqWF8yaFJLQnI5NmEvYi9rbFFMLzI1ODdmODcyCiAg
-IDYuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9FVlQvaF9IRk9fdVU3RGpYXzJoUktC
-cjk2YS9iL2tsUUwvMzU0YjY0ZWUKICAgNy4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2Fz
-L0VWSi9oX0hGT191VTdEalhfMmhSS0JyOTZhL2Iva2xRTC8zZDJkMmFhMAogICA4LiBodHRwOi8v
-Y2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvRVZVL2hfSEZPX3VVN0RqWF8yaFJLQnI5NmEvYi9rbFFM
-LzdjYTJjOWYxCiAgIDkuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9FVk0vaF9IRk9f
-dVU3RGpYXzJoUktCcjk2YS9iL2tsUUwvMWJjMDZmYmMKICAxMC4gaHR0cDovL2NsaWNrcy50cmFj
-a2RvbS5mci9jL2FzL0VWLS9oX0hGT191VTdEalhfMmhSS0JyOTZhL2Iva2xRTC81ZDNiZjBjOQog
-IDExLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvRVZLL2hfSEZPX3VVN0RqWF8yaFJL
-QnI5NmEvYi9rbFFMLzc0YzQ4N2JmCiAgMTIuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9h
-cy9FVjEvaF9IRk9fdVU3RGpYXzJoUktCcjk2YS9iL2tsUUwvYzY4ZWU0YjkKICAxMy4gaHR0cDov
-L2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0VWNC9oX0hGT191VTdEalhfMmhSS0JyOTZhL2Iva2xR
-TC83M2IwZmI5YgogIDE0LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvRVZXL2hfSEZP
-X3VVN0RqWF8yaFJLQnI5NmEvYi9rbFFML2VmNzE5M2NmCiAgMTUuIGh0dHA6Ly9jbGlja3MudHJh
-Y2tkb20uZnIvYy9hcy9FVncvaF9IRk9fdVU3RGpYXzJoUktCcjk2YS9iL2tsUUwvNjQwODFiMjMK
-ICAxNi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0VWUy9oX0hGT191VTdEalhfMmhS
-S0JyOTZhL2Iva2xRTC8xM2E2MjFmMgogIDE3LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2Mv
-YXMvRVYzL2hfSEZPX3VVN0RqWF8yaFJLQnI5NmEvYi9rbFFMLzU1NWRiZTg3CiAgMTguIGh0dHA6
-Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9FVnovaF9IRk9fdVU3RGpYXzJoUktCcjk2YS9iL2ts
-UUwvZjNlODY2M2EKICAxOS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL0VWRy9oX0hG
-T191VTdEalhfMmhSS0JyOTZhL2Iva2xRTC9hYWNkNTdiOQogIDIwLiBodHRwOi8vY2xpY2tzLnRy
-YWNrZG9tLmZyL2MvYXMvRVZPL2hfSEZPX3VVN0RqWF8yaFJLQnI5NmEvYi9rbFFMLzg4MTMzNTgy
-CiAgMjEuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9FVkQvaF9IRk9fdVU3RGpYXzJo
-UktCcjk2YS9iL2tsUUwvNzBmN2EwOTgKICAyMi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9j
-L2FzL0VWQi9oX0hGT191VTdEalhfMmhSS0JyOTZhL2Iva2xRTC8xZmYzNDg5YgogIDIzLiBodHRw
-Oi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvRVZfL2hfSEZPX3VVN0RqWF8yaFJLQnI5NmEvYi9r
-bFFML2NkYWZmMWY0CgpWb3VzIHJlY2V2ZXogY2UgbWVzc2FnZSBkZSBub3RyZSBwYXJ0IGNhciB2
-b3VzIHZvdXMgw6p0ZXMgaW5zY3JpdChlKSBhdmVjIGwnYWRyZXNzZSBzcGktZGV2ZWwtZ2VuZXJh
-bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgc3VyIGxlIHNpdGUgQ29uc29kZWFsLmNvbS4gQ2Ugc2l0
-ZSBhIGZhaXQgbCdvYmpldCBkJ3VuZSBkw6ljbGFyYXRpb24gYXVwcsOocyBkZSBsYSBDTklMIHNv
-dXMgbGUgbnVtw6lybyAxNTQ1MTQ4LiBDb25mb3Jtw6ltZW50IMOgIGwnYXJ0aWNsZSAzNCBkZSBs
-YSBsb2kgwqtJbmZvcm1hdGlxdWUgZXQgTGliZXJ0w6lzwrsgZHUgNiBqYW52aWVyIDE5NzgsIHZv
-dXMgcG91dmV6IGV4ZXJjZXIgdm90cmUgZHJvaXQgZCdhY2PDqHMsIGRlIG1vZGlmaWNhdGlvbiwg
-ZGUgcmVjdGlmaWNhdGlvbiBvdSBlbmNvcmUgZGUgc3VwcHJlc3Npb24gZGUgdm9zIGluZm9ybWF0
-aW9ucyBwZXJzb25uZWxsZXMgdmlhIGxlIGxpZW4gc3VpdmFudCA6IE1lcyBBYm9ubmVtZW50cy4K
-UG91ciB2b3VzIGTDqXNhYm9ubmVyLCBtZXJjaSBkZSBjbGlxdWVyIGljaSBpY2kuCglRdWkgc29t
-bWVzLW5vdXMgPwpDb25zb2RlYWwgZXN0IHVuZSBuZXdzbGV0dGVyIHF1b3RpZGllbm5lICwgw6lk
-aXTDqWUgcGFyIGxhIHNvY2nDqXTDqSBOYXRleG8sIHF1aSB2b3VzIHByb3Bvc2UgdW5lIHPDqWxl
-Y3Rpb24gZGUgYm9ucyBwbGFucy4gRW4gw6l0YW50IGFib25uw6kgw6Agbm90cmUgbGlzdGUgZCdp
-bmZvcm1hdGlvbiwgdm91cyByZWNldnJleiBsZSB0b3AgZGVzIGpldXggY29uY291cnMsIGxlcyBv
-ZmZyZXMgZHUgbW9tZW50IHBvdXIgdG91cyB2b3MgdHJhdmF1eCwgZGVzIGludml0YXRpb25zIGV4
-Y2x1c2l2ZXMgw6AgZGVzIGVzc2FpcyBldCB2ZW50ZXMgcHJpdsOpZXMgZGUgZ3JhbmRlcyBtYXJx
-dWVzLiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkxJTUlURUQgVElNRSBTQUxFIC0gRnVsbCBZZWFy
-IG9mIE1pY3Jvc29mdCBUcmFpbmluZyBGb3IgSnVzdCAkNDkuOTkhCjEsNTAwKyBob3VycyBvZiB0
-dXRvcmlhbHMgaW5jbHVkaW5nIFZpc3VhbFN0dWRpbyAyMDEyLCBXaW5kb3dzIDgsIFNoYXJlUG9p
-bnQKMjAxMywgU1FMIDIwMTIsIE1WQyA0LCBtb3JlLiBCRVNUIFZBTFVFOiBOZXcgTXVsdGktTGli
-cmFyeSBQb3dlciBQYWNrIGluY2x1ZGVzCk1vYmlsZSwgQ2xvdWQsIEphdmEsIGFuZCBVWCBEZXNp
-Z24uIExvd2VzdCBwcmljZSBldmVyISBFbmRzIDkvMjAvMTMuIApodHRwOi8vcHViYWRzLmcuZG91
-YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NTgwNDExNTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
-LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
-Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
-ZWwtZ2VuZXJhbAo=
+On 09/18/2013 12:17 PM, Rhyland Klein wrote:
+> The tegra114 driver wasn't currently handling the cs_change functionality.
+> It is meant to invert normal behavior, and we were only using it to possibly
+> delay at the end of a transfer.
+
+I don't really follow this patch description well. It may help if you
+fully spelled out the definition of normal behaviour, what the driver
+was doing, and what it should be doing (which is presumable what it does
+do after this patch).
+
+> This patch modifies the logic so that the cs state will be toggled after
+> every individual transfer or NOT toggled at the end of the last transfer
+> if cs_change is set in that transfer struct.
+> 
+> Also, this builds in logic so that if a different device tries to start
+> a transfer while CS is active from a different device, it will abort the
+> previous transfer and start a new one for the new device.
+
+What user-visible impact does this patch have. Does it solve a bug, or
+improve performance, or ...? In other words, how would I test this
+patch, other that testing for regressions in SPI functionality that I
+know already works.
+
+BTW, I don't think you're using get_maintainer.pl, since Mark Brown is
+the SPI maintainer now, not Grant Likely.
+
+> diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+> index 145dd43..a9973de 100644
+> --- a/drivers/spi/spi-tegra114.c
+> +++ b/drivers/spi/spi-tegra114.c
+> @@ -182,6 +182,7 @@ struct tegra_spi_data {
+>  	u32					cur_speed;
+>  
+>  	struct spi_device			*cur_spi;
+> +	struct spi_device			*cs_control;
+>  	unsigned				cur_pos;
+>  	unsigned				cur_len;
+>  	unsigned				words_per_32bit;
+> @@ -717,7 +718,12 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
+>  		else if (req_mode == SPI_MODE_3)
+>  			command1 |= SPI_CONTROL_MODE_3;
+>  
+> -		tegra_spi_writel(tspi, command1, SPI_COMMAND1);
+> +		if (tspi->cs_control) {
+> +			if (tspi->cs_control != spi)
+> +				tegra_spi_writel(tspi, command1, SPI_COMMAND1);
+
+Do you really need a separate write call there? The value of command1
+isn't fully set up there (the CS bits are all set up immediately after),
+so won't that glitch the CS lines in some cases?
+
+> +			tspi->cs_control = NULL;
+> +		} else
+> +			tegra_spi_writel(tspi, command1, SPI_COMMAND1);
+>  
+>  		command1 |= SPI_CS_SW_HW;
+>  		if (spi->mode & SPI_CS_HIGH)
+> @@ -732,6 +738,9 @@ static int tegra_spi_start_transfer_one(struct spi_device *spi,
+>  		command1 |= SPI_BIT_LENGTH(bits_per_word - 1);
+>  	}
+>  
+> +	if (t->len == 0 && !t->tx_buf && !t->rx_buf)
+> +		return 0;
+
+What if !t->len, but t->tx_buf || t->rx_buf ?
+
+This code is also duplicated in tegra_spi_transfer_one_message() after
+this patch. Instead, perhaps the first N lines of
+tegra_spi_start_transfer_one() should be split out into e.g.
+tegra_spi_setup_transfer_one(), such that
+tegra_spi_transfer_one_message() can always call it, plus have
+tegra_spi_transfer_one_message() only call
+tegra_spi_start_transfer_one() if (t->len != 0).

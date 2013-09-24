@@ -1,12 +1,12 @@
-From: =?ISO-8859-1?Q?Sp=E9cial_Minceur?= <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?D=E9couvrez_la_cure_qui_fait_maigrir_les_stars?=
-Date: Tue, 24 Sep 2013 10:33:58 +0200 (CEST)
-Message-ID: <rq03ah.hlyvarepx6bklxl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "iPhone" <contact-oSgpC8xvnUvQT0dZR+AlfA@public.gmane.org>
+Subject: Comment economiser sur l'iPhone 5
+Date: Tue, 24 Sep 2013 11:02:20 +0000 (CET)
+Message-ID: <130924110220.-29390542900006080@fmo43.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,70 +18,55 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgrc12I7gfk57dIhlyvapr7I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380011636730%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DNJGKMOANOIDIDILE%26mid%3D1600269734&s=3DB=
-KAHJFENPHLGNAJG
- =
-
-D=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait =
-maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez =
-la cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les =
-starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui =
-fait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9cou=
-vrez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir=
- les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure=
- qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=
-=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait m=
-aigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez l=
-a cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les s=
-tarsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui f=
-ait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couv=
-rez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir =
-les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure =
-qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=
-=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait m=
-aigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez l=
-a cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les s=
-tarsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui f=
-ait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couv=
-rez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir =
-les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure =
-qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=
-=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait m=
-aigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez l=
-a cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les s=
-tarsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui f=
-ait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couv=
-rez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir =
-les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure =
-qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=
-=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait m=
-aigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez l=
-a cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les s=
-tarsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui f=
-ait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couv=
-rez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir =
-les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure =
-qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=
-=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui fait m=
-aigrir les starsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez l=
-a cure qui fait maigrir les starsD=E9couvrez la cure qui fait maigrir les s=
-tarsD=E9couvrez la cure qui fait maigrir les starsD=E9couvrez la cure qui f=
-ait maigrir les starsD=E9couvrez la cure qui fait maigrir les stars
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600269734&sig=3DFILCGDJJDDPLONBI
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60133471&iu=3D/4140/ostg.cl=
-ktrk
+CihodHRwOi8vZm1vNDMuY29tL3p4dGVsNDRoYjFmdnF5YXRtby9pbmRleDAuaHRtbCkKKGh0dHA6
+Ly9mbW80My5jb20vdzJ0M200b2dibW9lY3NpdHBxL2luZGV4MS5odG1sKQoKTm91cyBzb21tZXMg
+YWxsw6lzIGTDqW5pY2hlciBsZXMgZGVybmnDqHJlcyBhc3R1Y2VzIHBvdXIgw6ljb25vbWlzZXIK
+KGh0dHA6Ly9mbW80My5jb20vNGN0dWo0cjJidnB2aWIzc3JqL2luZGV4Mi5odG1sKQrDgCBMQSBV
+TkUKQ29tbWVudCDDqWNvbm9taXNlciA5MCUgc3VyIHVuIGlQYWQgNCBvdSBzdXIgdW4gaVBob25l
+IDUgPwpWb3VzIGwnYXVyZXogc3VyZW1lbnQgcmVtYXJxdcOpLCB1biBub3V2ZWF1IHBow6lub23D
+qG5lIGVzdCBlbiB0cmFpbiBkZSBzZSBkw6l2ZWxvcHBlciBlbiBFdXJvcGUgZXQgZW4gQW3DqXJp
+cXVlIGR1IE5vcmQgOiBsZXMgc2l0ZXMgaW50ZXJuZXQgZGUgdmVudGVzIGF1eCBlbmNow6hyZXMg
+ZGUgZMOpc3RvY2thZ2UuIFBhcnRvdXQgc3VyIGxlIG5ldCwgZGFucyBsZXMgYmxvZ3MsIG9uIHBl
+dXQgbGlyZSBsZXMgaGlzdG9pcmVzIGQnaGV1cmV1eCBnYWduYW50cyBxdWkgb250IHJlbXBvcnTD
+qSBkZSBmYWJ1bGV1eCBhcnRpY2xlcyBoYWJpdHVlbGxlbWVudCB0csOocyBvbsOpcmV1eCBwb3Vy
+IMOgIHBlaW5lIHVuZSBib3VjaMOpZSBkZSBwYWluLiBNYWlzIG5vdXMgbifDqXRpb25zIHBhcyBj
+b252YWluY3VzIMOgIDEwMCAlIGV0IGMnZXN0IHBvdXIgY2VsYSBxdWUgbm91cyBhdm9ucyBkw6lj
+aWTDqSBkZSBsZXMgdGVzdGVyLiBQb3VyIG5vdXMgYXNzdXJlciBxdWUgbGVzIGJvbm5lcyBhZmZh
+aXJlcyBwcm9wb3PDqWVzIHBhciBjZXMgc2l0ZXMgZGUgdmVudGVzIGF1eCBlbmNow6hyZXMgZGUg
+ZMOpc3RvY2thZ2Ugw6l0YWllbnQgYmllbiByw6llbGxlcy4gRXQgcXVlbGxlIG1laWxsZXVyZSBy
+YWlzb24gcG91ciBzJ2VuIGFzc3VyZXIgcXVlIGRlIGxlcyB0ZXN0ZXIgbm91cy1tw6ptZSA/IAps
+aXJlIGxhIHN1aXRlIChodHRwOi8vZm1vNDMuY29tL250dGh6NGRuYmwzZXJ0aHM1Zy9pbmRleDMu
+aHRtbCkKKGh0dHA6Ly9mbW80My5jb20vbGNmcmpzczB5Z3J2Z2YzMHhxL2luZGV4NC5odG1sKQoo
+aHR0cDovL2ZtbzQzLmNvbS9zdGY0enNwd3loaWUxeGgwY28vaW5kZXg1Lmh0bWwpCkxBIFJFVlVF
+IENPTlNPCkplIHZvdWxhaXMgYWNoZXRlciB1biBub3V2ZWwgaVBhZCBSZXRpbmEgZGUgQXBwbGUs
+IGMnZXN0IGRvbmMgbW9pIHF1aSBhaSDDqXTDqSBjaGFyZ8OpZSBkdSB0ZXN0LgoiSidhaSBjb21t
+ZW5jw6kgcGFyIGZhaXJlIHVuZSB0b25uZSBkZSByZWNoZXJjaGVzIHN1ciBsZSBzdWpldCBwb3Vy
+IGTDqXRlcm1pbmVyIHF1ZWwgc2l0ZSBkJ2VuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZSDDqXRhaXQg
+bGUgcGx1cyBmaWFibGUsIGV0IGRvbmMgbGUgbWlldXggYWRhcHTDqSDDoCBtb24gdGVzdC4gQXBy
+w6hzIGRlcyBoZXVyZXMgZGUgcmVjaGVyY2hlcywgaidlbiBzdWlzIHZlbnVlIMOgIGxhIGNvbmNs
+dXNpb24gcXVlLCBkdSBmYWl0IGRlIHNhIGxhcmdlIGdhbW1lIGQnYXJ0aWNsZXMgZXQgc29uIGV4
+Y2VsbGVudGUgcsOpcHV0YXRpb24sIEVuY2jDqHJlVmlwIMOpdGFpdCBsZSBzaXRlIMOgIHRlc3Rl
+ci4iCmxpcmUgbGEgc3VpdGUgKGh0dHA6Ly9mbW80My5jb20vZHhmNWxzcWl5bmN2aG9hZGZnL2lu
+ZGV4Ni5odG1sKQooaHR0cDovL2ZtbzQzLmNvbS95MmZubXN3cXkycWVtamlkMWovaW5kZXg3Lmh0
+bWwpCihodHRwOi8vZm1vNDMuY29tL2J4NHdka3ozYmYwdnM1YTNnby9pbmRleDguaHRtbCkKCkNv
+bW1lbnRhaXJlcyBkZSBub3MgbGVjdGV1cmVzCihodHRwOi8vZm1vNDMuY29tLzAyNHBya2pvYnBk
+ZXRwaTNvcS9pbmRleDkuaHRtbCkKTWFyaWUKClNhbWVkaSAyIE1hcnMKCiJKJ2FpIGRlIHF1b2kg
+dm9pciB2ZW5pciBsZXMgYW5uaXZlcnNhaXJlcyBldCBhdXRyZXMgZsOqdGVzIHBvdXIgdW4gYm9u
+IG1vbWVudCBldCBqJ2FpIGZhaXQgZGUgc2FjcsOpcyDDqWNvbm9taWVzIgooaHR0cDovL2ZtbzQz
+LmNvbS9xeGxvbHJ4aWE1MWwwcTV1dHEvaW5kZXgxMC5odG1sKQpQYXRvdQoKTHVuZGkgNCBNYXJz
+CiJKJ2FpIHZ1IHVuIHJlcG9ydGFnZSBzdXIgbGVzIGVuY2jDqHJlcyBhdSBjZW50aW1lIMOgIGxh
+IHTDqWzDqSwgcHVpcyBqJ2FpIGx1IGNldCBhcnRpY2xlLiBJbCBtZSB0YXJkZSBkJ2Vzc2F5ZXIi
+CihodHRwOi8vZm1vNDMuY29tL2piM2RudGtyeWMxZWpnaGMycS9pbmRleDExLmh0bWwpCihodHRw
+Oi8vZm1vNDMuY29tL3Z2cmhpZmxqNHNzNHo0ZW14bC9pbmRleDEyLmh0bWwpCihodHRwOi8vZm1v
+NDMuY29tL2toYnVjd3J4ZnZzYml6NHNjbC9pbmRleDEzLmh0bWwpCsKgCgotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KT2N0b2JlciBXZWJpbmFyczogQ29kZSBmb3IgUGVyZm9ybWFuY2UKRnJlZSBJbnRl
+bCB3ZWJpbmFycyBjYW4gaGVscCB5b3UgYWNjZWxlcmF0ZSBhcHBsaWNhdGlvbiBwZXJmb3JtYW5j
+ZS4KRXhwbG9yZSB0aXBzIGZvciBNUEksIE9wZW5NUCwgYWR2YW5jZWQgcHJvZmlsaW5nLCBhbmQg
+bW9yZS4gR2V0IHRoZSBtb3N0IGZyb20gCnRoZSBsYXRlc3QgSW50ZWwgcHJvY2Vzc29ycyBhbmQg
+Y29wcm9jZXNzb3JzLiBTZWUgYWJzdHJhY3RzIGFuZCByZWdpc3RlciA+Cmh0dHA6Ly9wdWJhZHMu
+Zy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD02MDEzMzQ3MSZpdT0vNDE0MC9vc3RnLmNs
+a3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
+ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
+Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
+aS1kZXZlbC1nZW5lcmFsCg==

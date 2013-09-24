@@ -1,95 +1,92 @@
-From: "NouvelObs.com - Selection Premium"
-	<newsletter-5DDAqSTHTz5LQGOaHaWmzF8DPIj7SoFj@public.gmane.org>
-Subject: =?utf-8?B?TGUgdG9wIGRlcyB2aWTDqW9zIGluc29saXRlcyAh?=
-Date: Tue, 24 Sep 2013 15:00:10 +0200
-Message-ID: <OTTO02A0001ZN002000S2FKV1964035634@foru.selectionpremium.fr>
-Reply-To: abuse-bxJNC2EmtRdQFI55V6+gNQ@public.gmane.org
+From: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [RESEND] spi/tegra114: Correct support for cs_change
+Date: Tue, 24 Sep 2013 12:33:48 -0400
+Message-ID: <5241BEEC.9000508@nvidia.com>
+References: <1379528245-6283-1-git-send-email-rklein@nvidia.com> <52408DC8.3020407@wwwdotorg.org>	<52409B1E.3030405@nvidia.com> <52409D63.3020909@wwwdotorg.org>	<5240AC3A.9060206@nvidia.com> <5240AF20.8030301@wwwdotorg.org> <CA+7tXiiNMwyQh9sCsW4Qkid9Tn8RTcQ-uUmNse+kK-PZro1pyQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CA+7tXiiNMwyQh9sCsW4Qkid9Tn8RTcQ-uUmNse+kK-PZro1pyQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-aHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAw
-MDAwMDAxWk4wMDAyQlA0MDAwUzJGS1YmbXB2cnM9MDAwMDIxMDYwOEMyODY3RjkgCgpodHRwOi8v
-dHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL2RvPzA4N0REMTcyQzk3QjZCOTQ0RjE5NEVGRjM3
-MkVBMTdGNkREMThDQzI4MzUyMDZBQUY3NkNCM0QyMzlBMzNFODk2RDQ3NkQ5RTM0MzFGNkRDREU2
-QzhCMUJBQTFBNEZGQzIxRTgxRTg2N0Q4OUI5OTAxQTA4MEVFMDE4MkVGMjY3IApWaXN1YWxpc2V6
-IGxhIHZlcnNpb24gZW4gbGlnbmUgIHwgIApodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVt
-LmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDFaTjAwMDJCUDgwMDBTMkZLViZtcHZycz0w
-MDAwMjEwNjA4QzI4NjdGOSAKU2UgZMOpc2Fib25uZXIgIHwgIApodHRwOi8vdHIuZm9ydS5zZWxl
-Y3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDFaTjAwMDJCUDAwMDBT
-MkZLViZtcHZycz0wMDAwMjEwNjA4QzI4NjdGOSAKTWV0dHJlIGNldCBlbWFpbCBkYW5zIG1lcyBj
-b3VycmllciBpbmTDqXNpcmFibGUKQm9uam91ciAgCgrCoApTZXVsZXMgbGVzIHB1YmxpY2l0w6lz
-ZmFpdGVzIHBvdXIgdm91cyAhCgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL3I1
-LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDFaTjAwMDJCUDIwMDBTMkZLViZtcHZycz0wMDAwMjEw
-NjA4QzI4NjdGOSAKCmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0uZnIvcjUuYXNweD9H
-VjE9T1RUTzAyQTAwMDAwMDAwMVpOMDAwMkJPVDAwMFMyRktWJm1wdnJzPTAwMDAyMTA2MDhDMjg2
-N0Y5IAoKaHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRP
-MDJBMDAwMDAwMDAxWk4wMDAyQk9VMDAwUzJGS1YmbXB2cnM9MDAwMDIxMDYwOEMyODY3RjkgCgoK
-aHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAw
-MDAwMDAxWk4wMDAyQk9SMDAwUzJGS1YmbXB2cnM9MDAwMDIxMDYwOEMyODY3RjkgCgpodHRwOi8v
-dHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDFa
-TjAwMDJCT1MwMDBTMkZLViZtcHZycz0wMDAwMjEwNjA4QzI4NjdGOSAKVklEw4lPUyA6IElsIHLD
-qXVzc2l0IMOgIHMnw6ljaGFwcGVyIGQndW5lIGJvw650ZSBjYWRlbmFzc8OpZSAKZXQgamV0w6ll
-IGQndW4gYXZpb24gw6AgNDAwMCBtIGQnYWx0aXR1ZGUgcHJvcHVsc8OpZSDDoCBwbHVzIApkZSAy
-MDAga20vaC4gRMOpY291dnJleiBsYSB2aWTDqW8gaW5zb2xpdGUgIQpodHRwOi8vdHIuZm9ydS5z
-ZWxlY3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDFaTjAwMDJCT1cw
-MDBTMkZLViZtcHZycz0wMDAwMjEwNjA4QzI4NjdGOSAKCgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rp
-b25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDFaTjAwMDJCUDUwMDBTMkZL
-ViZtcHZycz0wMDAwMjEwNjA4QzI4NjdGOSAKCmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1p
-dW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAwMVpOMDAwMkJPWTAwMFMyRktWJm1wdnJz
-PTAwMDAyMTA2MDhDMjg2N0Y5IAoKaHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9y
-NS5hc3B4P0dWMT1PVFRPMDJBMDAwMDAwMDAxWk4wMDAyQk9WMDAwUzJGS1YmbXB2cnM9MDAwMDIx
-MDYwOEMyODY3RjkgCgoKaHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4
-P0dWMT1PVFRPMDJBMDAwMDAwMDAxWk4wMDAyQlAzMDAwUzJGS1YmbXB2cnM9MDAwMDIxMDYwOEMy
-ODY3RjkgCgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9U
-VE8wMkEwMDAwMDAwMDFaTjAwMDJCUDYwMDBTMkZLViZtcHZycz0wMDAwMjEwNjA4QzI4NjdGOSAK
-Cmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAw
-MDAwMDAwMVpOMDAwMkJPUTAwMFMyRktWJm1wdnJzPTAwMDAyMTA2MDhDMjg2N0Y5IAoKCmh0dHA6
-Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAw
-MVpOMDAwMkJPTzAwMFMyRktWJm1wdnJzPTAwMDAyMTA2MDhDMjg2N0Y5IAoKaHR0cDovL3RyLmZv
-cnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAwMDAwMDAxWk4wMDAy
-Qk9QMDAwUzJGS1YmbXB2cnM9MDAwMDIxMDYwOEMyODY3RjkgCgpodHRwOi8vdHIuZm9ydS5zZWxl
-Y3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDFaTjAwMDJCT1gwMDBT
-MkZLViZtcHZycz0wMDAwMjEwNjA4QzI4NjdGOSAKCkNvbW1lbnQgw6dhIG1hcmNoZSA/CgpWb3Vz
-IHJlY2V2ZXogY2UgbWVzc2FnZSBkZSBub3RyZSBwYXJ0IGNhciB2b3VzIHZvdXMgw6p0ZXMgaW5z
-Y3JpdChlKSBhdmVjIGwnYWRyZXNzZSBzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQgc3VyIGxlIHNpdGUgc2VsZWN0aW9ucHJlbWl1bS5jb20uIENlIHNpdGUgYSBmYWl0IGwn
-b2JqZXQgZCd1bmUgZMOpY2xhcmF0aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOp
-cm8gMTU0NTE0OC4gQ29uZm9ybcOpbWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5m
-b3JtYXRpcXVlIGV0IExpYmVydMOpc8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBl
-eGVyY2VyIHZvdHJlIGRyb2l0IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmlj
-YXRpb24gb3UgZW5jb3JlIGRlIHN1cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29u
-bmVsbGVzIHZpYSBsZSBsaWVuIHN1aXZhbnQgOiAKaHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJl
-bWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAwMDAwMDAxWk4wMDAyQk9aMDAwUzJGS1YmbXB2
-cnM9MDAwMDIxMDYwOEMyODY3RjkgCk1lcyBBYm9ubmVtZW50cy4gCgpTaW5vbiB2b3VzIHBvdXZl
-eiB2b3VzIGTDqXNhYm9ubmVyIApodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL3I1
-LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDFaTjAwMDJCUDcwMDBTMkZLViZtcHZycz0wMDAwMjEw
-NjA4QzI4NjdGOSAKaWNpLgoKUXVpIHNvbW1lcy1ub3VzID8KClNlbGVjdGlvbiBQcmVtaXVtIGVz
-dCB1bmUgbmV3c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kg
-TmF0ZXhvLCBxdWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVu
-IMOpdGFudCBhYm9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZy
-ZXogbGUgdG9wIGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRv
-dXMgdm9zIHRyYXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMg
-ZXQgdmVudGVzIHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4KLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tCk9jdG9iZXIgV2ViaW5hcnM6IENvZGUgZm9yIFBlcmZvcm1hbmNlCkZyZWUgSW50ZWwgd2Vi
-aW5hcnMgY2FuIGhlbHAgeW91IGFjY2VsZXJhdGUgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UuCkV4
-cGxvcmUgdGlwcyBmb3IgTVBJLCBPcGVuTVAsIGFkdmFuY2VkIHByb2ZpbGluZywgYW5kIG1vcmUu
-IEdldCB0aGUgbW9zdCBmcm9tIAp0aGUgbGF0ZXN0IEludGVsIHByb2Nlc3NvcnMgYW5kIGNvcHJv
-Y2Vzc29ycy4gU2VlIGFic3RyYWN0cyBhbmQgcmVnaXN0ZXIgPgpodHRwOi8vcHViYWRzLmcuZG91
-YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NjAxMzM0NzEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
-LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
-Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
-ZWwtZ2VuZXJhbAo=
+On 9/23/2013 7:08 PM, Trent Piepho wrote:
+> On Mon, Sep 23, 2013 at 2:14 PM, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
+>>
+>> That sounds broken. Normally, shouldn't CS assert before a transaction,
+>> stay asserted during a transaction, then deassert after the transaction?
+>> It shouldn't rise and fall very quickly in between parts of the transaction.
+> 
+> That is normal, where a transaction is a spi_message made up of
+> multiple spi_transfers.  The cs_change bit for a transfer will insert
+> a de-asserted pulse after a transfer or leave CS de-asserted after the
+> last transfer.
+> 
+>>>>> need to generate a falling-edge to trigger the beginning of a SPI
+>>>>> transaction. Doing this write with the default value of SPI_COMMAND1
+>>>>> causes a brief rise and fall of CS, giving us our falling-edge.
+> 
+> I wonder, is the real problem that the spi layer allows CS to possibly
+> remain asserted between transactions to the same device?  Normally you
+> would expect it to be de-asserted at the end of a spi_message, but I
+> believe the Linux spi semantics are that it may or may not actually be
+> de-asserted at that time.  It only guarantees that is will be
+> de-asserted before a message to a different device starts.
+> 
+> I guess this is supposed to be an optimization.  Some drivers, like
+> gpio bit-banging, probably have a cost associated with any CS change.
+> Usually many messages in a row are to the same device.  Most devices
+> don't care if CS pulses between messages.  Thus not pulsing CS between
+> each message is faster.
+> 
+>>>
+>>> Otherwise, this logic allows us to skip the spi of COMMAND1 which would
+>>> normally be used to create the falling edge to start a new transaction,
+>>> leaving the previous one open for more transfers.
+>>
+>> This sounds like something the SPI core should be managing. If a driver
+>> is using the SPI bus to communicate with a device in a way that needs CS
+>> left active while outside a transaction, it shouldn't be possible for
+>> another driver to come along and communicate with another device before
+>> the first transaction is all complete. The bus should be locked.
+>> Allowing anything else could corrupt the protocol that required specific
+>> CS states outside the transaction.
+> 
+> If the transaction is one message, which can be multiple transfers and
+> multiple CS pulses, then the spi core always does it atomically.  The
+> limitation is the driver can't get the result of the transaction until
+> the entire transaction is finished.
+> 
+> If a driver needs to get part of a transaction to complete the rest,
+> e.g. read a 16-bit length from the device and then read that many
+> bytes, it can still be done.  It doesn't seem to be documented in
+> spi-summary, but the way to do this is with spi_bus_(un)lock() and
+> spi_(a)sync_locked() calls.  The driver must lock the bus, used the
+> _locked versions to issue spi_messages, then unlock when done.  This
+> should prevent another device on the bus from getting a messages, and
+> thus CS pulses, in the middle of the transaction.
+
+I suppose I can should reword my comment then on the code which checked:
+
++		if (tspi->cs_control) {
++			if (tspi->cs_control != spi)
++				tegra_spi_writel(tspi, command1, SPI_COMMAND1);
+
+While this does do exactly what I said, ending a previous "on-going"
+transaction in favor of a new one, this shouldn't be expected to be the
+way for clients to guarantee that they have locked a bus. This is more
+of a way internally to the Tegra SPI driver to clear its state.
+
+-rhyland
+-- 
+nvpublic

@@ -1,23 +1,13 @@
-From: Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [RESEND] spi/tegra114: Correct support for cs_change
-Date: Mon, 23 Sep 2013 16:23:21 -0600
-Message-ID: <CAPnjgZ1t3cFHoGe4gZ4TLFtS8Oc4zBU_0mb6g-U-RJ-uTdwV_Q@mail.gmail.com>
-References: <1379528245-6283-1-git-send-email-rklein@nvidia.com>
-	<52408DC8.3020407@wwwdotorg.org> <52409B1E.3030405@nvidia.com>
-	<52409D63.3020909@wwwdotorg.org> <5240AC3A.9060206@nvidia.com>
-	<5240AF20.8030301@wwwdotorg.org>
+From: "Trivago" <lisa@a.optincake.com>
+Subject: =?UTF-8?B?QWxsw6lnZXogdm90cmUgYnVkZ2V0IGFzc3VyYW5jZSBzYW50w6k=?=
+Date: Tue, 24 Sep 2013 02:00:49 +0100
+Message-ID: <0.0.105.99B.1CEB8C1827318CA.0@mta199.pur3.net>
+Reply-To: Trivago <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>, Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <5240AF20.8030301-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -28,109 +18,146 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
-
-On Mon, Sep 23, 2013 at 3:14 PM, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>wrote:
-
-> On 09/23/2013 03:01 PM, Rhyland Klein wrote:
-> > On 9/23/2013 3:58 PM, Stephen Warren wrote:
-> >> On 09/23/2013 01:48 PM, Rhyland Klein wrote:
-> >>> On 9/23/2013 2:51 PM, Stephen Warren wrote:
-> >>>> On 09/18/2013 12:17 PM, Rhyland Klein wrote:
-> >>>>> The tegra114 driver wasn't currently handling the cs_change
-> functionality.
-> >>>>> It is meant to invert normal behavior, and we were only using it to
-> possibly
-> >>>>> delay at the end of a transfer.
-> >> ...
-> >>>>> diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-> >> ...
-> >>>>> @@ -717,7 +718,12 @@ static int tegra_spi_start_transfer_one(struct
-> spi_device *spi,
-> >>>>>           else if (req_mode == SPI_MODE_3)
-> >>>>>                   command1 |= SPI_CONTROL_MODE_3;
-> >>>>>
-> >>>>> -         tegra_spi_writel(tspi, command1, SPI_COMMAND1);
-> >>>>> +         if (tspi->cs_control) {
-> >>>>> +                 if (tspi->cs_control != spi)
-> >>>>> +                         tegra_spi_writel(tspi, command1,
-> SPI_COMMAND1);
-> >>>>
-> >>>> Do you really need a separate write call there? The value of command1
-> >>>> isn't fully set up there (the CS bits are all set up immediately
-> after),
-> >>>> so won't that glitch the CS lines in some cases?
-> >>>
-> >>> On our hardware (as far as I've seen), the CS line is normally low. We
-> >>
-> >> I assume you meant "normally *active* low", not "normally low"?
-> >
-> > I mean that when I look at CS, before a transaction starts, the line is
-> > low. Then we do a write like this (default SPI_COMMAND1) you see CS rise
-> > and fall very soon after. This is purely how we generate the edge
-> > triggers (as far as I can tell on all Tegra hw, though Laxman can
-> > correct me if I am wrong).
->
-> That sounds broken. Normally, shouldn't CS assert before a transaction,
-> stay asserted during a transaction, then deassert after the transaction?
-> It shouldn't rise and fall very quickly in between parts of the
-> transaction.
->
-> >>> need to generate a falling-edge to trigger the beginning of a SPI
-> >>> transaction. Doing this write with the default value of SPI_COMMAND1
-> >>> causes a brief rise and fall of CS, giving us our falling-edge.
-> >>
-> >> That sounds like exactly the glitch I was talking about.
-> >>
-> >> Assuming CS isn't held constantly asserted (low), isn't CS de-asserted
-> >> (rises) at the end of transaction n-1, and re-asserted (falls) at the
-> >> start of transaction n? If so, I'm not sure why the setup for
-> >> transaction n needs to both de-assert and then re-assert it? It seems
-> >> like cs_control should be handled at the end of a transaction, not at
-> >> the start of the next one.
-> >
-> > cs_change has to maintain state over spi_message boundries, not just
-> > between spi_transfers within a spi_message.
-> >
-> > In this specific case, this is a safe guard.
-> >
-> >>>>> +         if (tspi->cs_control) {
-> > This sees that the previous transfer stored its spi_device pointer,
-> > meaning it had cs_change set on the last part of the last spi_message
-> > (I.E. CS hasn't been deasserted, so the SPI transaction is still
-> on-going).
-> >
-> >>>>> +                 if (tspi->cs_control != spi)
-> > This however finds that the device trying to send a SPI message isn't
-> > the same one that was in the middle of its transaction. This is a
-> > collision between 2 clients on 1 bus. This simply ends the previous
-> > transaction (the ongoing one) in favor of starting a new transaction.
-> >
-> > Otherwise, this logic allows us to skip the spi of COMMAND1 which would
-> > normally be used to create the falling edge to start a new transaction,
-> > leaving the previous one open for more transfers.
->
-> This sounds like something the SPI core should be managing. If a driver
-> is using the SPI bus to communicate with a device in a way that needs CS
-> left active while outside a transaction, it shouldn't be possible for
-> another driver to come along and communicate with another device before
-> the first transaction is all complete. The bus should be locked.
-> Allowing anything else could corrupt the protocol that required specific
-> CS states outside the transaction.
->
-
-Perhaps the client driver should use spi_sync_locked() instead if it wants
-to avoid this problem? To me this driver code seems reasonable in the
-circumstances.
-
-Note: at present the Chrome OS EC driver does not support sharing a SPI bus
-with anything else, and neither does the EC.
-
-Regards,
-Simon
-------------------------------------------------------------------------------
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60133471&iu=/4140/ostg.clktrk
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MTk2OTgzMjIwNTM3MzM0CgoKCjYwMC4wMDAgaMO0dGVscyAtIENvbXBhcmV6IGxlcyBwcml4IGV0
+IMOpY29ub21pc2V6IGp1c3F1wrTDoCA3OCUKCkJvbnMgcGxhbnMgaMO0dGVscyDCoAoodHJpdmFn
+byk6Cmh0dHA6Ly9yZWRpci5hZHZ0Mi5mci9wL1RSSTA0L05FRTAxLzAvP3I9aHR0cCUzQSUyRiUy
+RmFkLmRvdWJsZWNsaWNrLm5ldCUyRmNsayUzCkIyNzYxNzQ3MzUlM0IxMDMyNDk4MTUlM0JrCgoK
+wqAgTmV3c2xldHRlcgoKCsKgZXguOiBQYXJpcwrCoGV4LjogUGFyaXMoc3RyaWNoLmdpZik6Cmh0
+dHA6Ly9yZWRpci5hZHZ0Mi5mci9wL1RSSTA0L05FRTAxLzAvP3I9aHR0cCUzQSUyRiUyRmFkLmRv
+dWJsZWNsaWNrLm5ldCUyRmNsayUzCkIyNzYxNzQ3MzQlM0IxMDMyNDk4MTUlM0JqCgoKwqAgIFNh
+LCAxNi4xMS4yMDEzCkRpLCAxNy4xMS4yMDEzOgpodHRwOi8vcmVkaXIuYWR2dDIuZnIvcC9UUkkw
+NC9ORUUwMS8wLz9yPWh0dHAlM0ElMkYlMkZhZC5kb3VibGVjbGljay5uZXQlMkZjbGslMwpCMjc2
+MTc0NzMzJTNCMTAzMjQ5ODE1JTNCaQoKCsKgCihDaGVyY2hlcik6Cmh0dHA6Ly9yZWRpci5hZHZ0
+Mi5mci9wL1RSSTA0L05FRTAxLzAvP3I9aHR0cCUzQSUyRiUyRmFkLmRvdWJsZWNsaWNrLm5ldCUy
+RmNsayUzCkIyNzYxNzQ3MzIlM0IxMDMyNDk4MTUlM0JoCgoKwqAKCihVbiBhdXRvbW5lIHRyw6hz
+IGx1eGUgw6AgTmV3LXlvcmshIEp1c3F1J8OgIC03OCUpOgpodHRwOi8vcmVkaXIuYWR2dDIuZnIv
+cC9UUkkwNC9ORUUwMS8wLz9yPWh0dHAlM0ElMkYlMkZhZC5kb3VibGVjbGljay5uZXQlMkZjbGsl
+MwpCMjc2MTc0NzMxJTNCMTAzMjQ5ODE1JTNCZwoKClZvcyBkZXN0aW5hdGlvbnMgcHLDiWbDiXLD
+iWVzCgooQmFyY2Vsb25lKToKaHR0cDovL3JlZGlyLmFkdnQyLmZyL3AvVFJJMDQvTkVFMDEvMC8/
+cj1odHRwJTNBJTJGJTJGYWQuZG91YmxlY2xpY2submV0JTJGY2xrJTMKQjI3NjE3NDczMCUzQjEw
+MzI0OTgxNSUzQmYKCig0KikKQmFyY2Vsb25lCsOgIHBhcnRpciBkZQo2M+KCrDoKaHR0cDovL3Jl
+ZGlyLmFkdnQyLmZyL3AvVFJJMDQvTkVFMDEvMC8/cj1odHRwJTNBJTJGJTJGYWQuZG91YmxlY2xp
+Y2submV0JTJGY2xrJTMKQjI3NjE3NDcyOSUzQjEwMzI0OTgxNSUzQm4KCihMb25kcmVzKToKaHR0
+cDovL3JlZGlyLmFkdnQyLmZyL3AvVFJJMDQvTkVFMDEvMC8/cj1odHRwJTNBJTJGJTJGYWQuZG91
+YmxlY2xpY2submV0JTJGY2xrJTMKQjI3NjE3NDcyOCUzQjEwMzI0OTgxNSUzQm0KCigzKikKTG9u
+ZHJlcwrDoCBwYXJ0aXIgZGUKNTXigqw6Cmh0dHA6Ly9yZWRpci5hZHZ0Mi5mci9wL1RSSTA0L05F
+RTAxLzAvP3I9aHR0cCUzQSUyRiUyRmFkLmRvdWJsZWNsaWNrLm5ldCUyRmNsayUzCkIyNzYxNzQ3
+MjclM0IxMDMyNDk4MTUlM0JsCgooUGFyaXMpOgpodHRwOi8vcmVkaXIuYWR2dDIuZnIvcC9UUkkw
+NC9ORUUwMS8wLz9yPWh0dHAlM0ElMkYlMkZhZC5kb3VibGVjbGljay5uZXQlMkZjbGslMwpCMjc2
+MTc0NzI2JTNCMTAzMjQ5ODE1JTNCawoKKDMqKQpQYXJpcwrDoCBwYXJ0aXIgZGUKNjnigqw6Cmh0
+dHA6Ly9yZWRpci5hZHZ0Mi5mci9wL1RSSTA0L05FRTAxLzAvP3I9aHR0cCUzQSUyRiUyRmFkLmRv
+dWJsZWNsaWNrLm5ldCUyRmNsayUzCkIyNzYxNzQ3MjUlM0IxMDMyNDk4MTUlM0JqCgooTWFycmFr
+ZWNoKToKaHR0cDovL3JlZGlyLmFkdnQyLmZyL3AvVFJJMDQvTkVFMDEvMC8/cj1odHRwJTNBJTJG
+JTJGYWQuZG91YmxlY2xpY2submV0JTJGY2xrJTMKQjI3NjE3NDcyNCUzQjEwMzI0OTgxNSUzQmkK
+Cig1KikKTWFycmFrZWNoCsOgIHBhcnRpciBkZQo2OOKCrDoKaHR0cDovL3JlZGlyLmFkdnQyLmZy
+L3AvVFJJMDQvTkVFMDEvMC8/cj1odHRwJTNBJTJGJTJGYWQuZG91YmxlY2xpY2submV0JTJGY2xr
+JTMKQjI3NjE3NDcyMyUzQjEwMzI0OTgxNSUzQmgKCgpEw4lDT1VWUkVaIEFVU1NJ4oCmCgoKQnJ1
+eGVsbGVzIDQqICDDoCBwYXJ0aXIgZGUgNTXigqwgIjoKaHR0cDovL3JlZGlyLmFkdnQyLmZyL3Av
+VFJJMDQvTkVFMDEvMC8/cj1odHRwJTNBJTJGJTJGYWQuZG91YmxlY2xpY2submV0JTJGY2xrJTMK
+QjI3NjE3NDcyMiUzQjEwMzI0OTgxNSUzQmcKCgpDYW5uZXMgMyogIMOgIHBhcnRpciBkZSA2OOKC
+rCAiOgpodHRwOi8vcmVkaXIuYWR2dDIuZnIvcC9UUkkwNC9ORUUwMS8wLz9yPWh0dHAlM0ElMkYl
+MkZhZC5kb3VibGVjbGljay5uZXQlMkZjbGslMwpCMjc2MTc0NzIxJTNCMTAzMjQ5ODE1JTNCZgoK
+CkFtc3RlcmRhbSAzKiAgw6AgcGFydGlyIGRlIDc54oKsICI6Cmh0dHA6Ly9yZWRpci5hZHZ0Mi5m
+ci9wL1RSSTA0L05FRTAxLzAvP3I9aHR0cCUzQSUyRiUyRmFkLmRvdWJsZWNsaWNrLm5ldCUyRmNs
+ayUzCkIyNzYxNzQ3MjAlM0IxMDMyNDk4MTUlM0JlCgoKTHlvbiAzKiAgw6AgcGFydGlyIGRlIDM3
+4oKsICI6Cmh0dHA6Ly9yZWRpci5hZHZ0Mi5mci9wL1RSSTA0L05FRTAxLzAvP3I9aHR0cCUzQSUy
+RiUyRmFkLmRvdWJsZWNsaWNrLm5ldCUyRmNsayUzCkIyNzYxNzQ3MTklM0IxMDMyNDk4MTUlM0Jt
+CgoKQnVkYXBlc3QgNSogIMOgIHBhcnRpciBkZSA1N+KCrCAiOgpodHRwOi8vcmVkaXIuYWR2dDIu
+ZnIvcC9UUkkwNC9ORUUwMS8wLz9yPWh0dHAlM0ElMkYlMkZhZC5kb3VibGVjbGljay5uZXQlMkZj
+bGslMwpCMjc2MTc0NzE4JTNCMTAzMjQ5ODE1JTNCbAoKCkxpc2Jvbm5lIDQqICDDoCBwYXJ0aXIg
+ZGUgNTbigqwgIjoKaHR0cDovL3JlZGlyLmFkdnQyLmZyL3AvVFJJMDQvTkVFMDEvMC8/cj1odHRw
+JTNBJTJGJTJGYWQuZG91YmxlY2xpY2submV0JTJGY2xrJTMKQjI3NjE3NDcxNyUzQjEwMzI0OTgx
+NSUzQmsKCgpCZXJsaW4gNCogIMOgIHBhcnRpciBkZSA1OeKCrCAiOgpodHRwOi8vcmVkaXIuYWR2
+dDIuZnIvcC9UUkkwNC9ORUUwMS8wLz9yPWh0dHAlM0ElMkYlMkZhZC5kb3VibGVjbGljay5uZXQl
+MkZjbGslMwpCMjc2MTc0NzE2JTNCMTAzMjQ5ODE1JTNCagoKClNhbnRvcmluIDQqICDDoCBwYXJ0
+aXIgZGUgNDXigqwgIjoKaHR0cDovL3JlZGlyLmFkdnQyLmZyL3AvVFJJMDQvTkVFMDEvMC8/cj1o
+dHRwJTNBJTJGJTJGYWQuZG91YmxlY2xpY2submV0JTJGY2xrJTMKQjI3NjE3NDcxNSUzQjEwMzI0
+OTgxNSUzQmkKCgpBdGjDqG5lcyA0KiAgw6AgcGFydGlyIGRlIDQ54oKsICI6Cmh0dHA6Ly9yZWRp
+ci5hZHZ0Mi5mci9wL1RSSTA0L05FRTAxLzAvP3I9aHR0cCUzQSUyRiUyRmFkLmRvdWJsZWNsaWNr
+Lm5ldCUyRmNsayUzCkIyNzYxNzQ3MTQlM0IxMDMyNDk4MTUlM0JoCgoKUHJhZ3VlIDQqICDDoCBw
+YXJ0aXIgZGUgNTPigqwgIjoKaHR0cDovL3JlZGlyLmFkdnQyLmZyL3AvVFJJMDQvTkVFMDEvMC8/
+cj1odHRwJTNBJTJGJTJGYWQuZG91YmxlY2xpY2submV0JTJGY2xrJTMKQjI3NjE3NDcxMyUzQjEw
+MzI0OTgxNSUzQmcKCgp0cml2YWdvLmZyOgpodHRwOi8vcmVkaXIuYWR2dDIuZnIvcC9UUkkwNC9O
+RUUwMS8wLz9yPWh0dHAlM0ElMkYlMkZhZC5kb3VibGVjbGljay5uZXQlMkZjbGslMwpCMjc2MTc0
+NzAxJTNCMTAzMjQ5ODE1JTNCZCUyMgoKCnBlcm1ldCBhdXggdm95YWdldXJzIGRlIHRyb3V2ZXIg
+bMK0aMO0dGVsIGlkw6lhbCBhdSBtZWlsbGV1ciB0YXJpZiwgcGFybWkKcGx1cyBkZSAxNjAgcG9y
+dGFpbHMgZGUgcsOpc2VydmF0aW9uIHJlY2Vuc2FudCA2MDAgMDAwIGjDtHRlbHMgZGFucyBsZQpt
+b25kZS4gVG91cyBsZXMgcHJpeCBjaS1kZXNzdXMgbmUgc29udCBmb3VybmlzIHF1J8OgIHRpdHJl
+IGluZGljYXRpZiBldCBzb3VzCnLDqXNlcnZlIGRlIGRpc3BvbmliaWxpdMOpIGNoZXogbGVzIHBh
+cnRlbmFpcmVzLgrCqSAyMDA0IC0gMjAxMyBUb3VzIGRyb2l0cyByw6lzZXJ2w6lzCihGYWNlYm9v
+ayk6Cmh0dHA6Ly9yZWRpci5hZHZ0Mi5mci9wL1RSSTA0L05FRTAxLzAvP3I9aHR0cCUzQSUyRiUy
+RmFkLmRvdWJsZWNsaWNrLm5ldCUyRmNsayUzCkIyNzYxNzQ3MTIlM0IxMDMyNDk4MTUlM0JmCgoo
+RmFjZWJvb2spOgpodHRwOi8vcmVkaXIuYWR2dDIuZnIvcC9UUkkwNC9ORUUwMS8wLz9yPWh0dHAl
+M0ElMkYlMkZhZC5kb3VibGVjbGljay5uZXQlMkZjbGslMwpCMjc2MTc0NzExJTNCMTAzMjQ5ODE1
+JTNCZQoKCsKgCihBZHZlcnRpc2VtZW50KToKaHR0cDovL3JlZGlyLmFkdnQyLmZyL3AvVFJJMDQv
+TkVFMDEvMC8/cj1odHRwJTNBJTJGJTJGYWQuZG91YmxlY2xpY2submV0JTJGanVtcCUKMkZONjcw
+MC4xNzgyMzM5LkFEVkVOVFVSRUNPTlNFSUwuQyUyRkI3ODc3Mzg4LjIlM0JzeiUzRDF4MSUzQm9y
+ZCUzRCU1QnRpbWVzdGFtcCUKNUQlM0YKCgpCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJp
+bGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpciBhdQptZWlsbGV1ciBy
+YXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3Vy
+cXVvaSBuZQpwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMg
+cXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0CnF1ZSBub3VzIG1ldHRvbnMgw6Agam91ciByw6ln
+dWxpw6hyZW1lbnQgZXQgdG91dGUgbCdhbm7DqWUuQWluc2ksIGdyw6JjZSDDoApub3VzLCB2b3Vz
+IGFsbGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBw
+cm9kdWl0IGEKYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLkEgbGEgcmVjaGVyY2hl
+IGR1IGNhZGVhdSBvcmlnaW5hbCA/IE5vdXMKc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5v
+dXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIKbW9pbnMgdG91dCBl
+biBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLiBBaW5zaSwgZ3JhY2Ugw6Agbm91cywg
+dm91cwphbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBl
+c3QgcHJvZHVpdCBhIGJhcyBjb3V0LApvcHBvcnR1bml0w6ksIGluZm9zLi4uIEVudmllIGRlIHZv
+dXMgZmFpcmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZSBjb8O7dCB0b3V0CmF1IGxvbmcgZGUgbCdh
+bm7DqWUsIGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw6l0w6kgw6AgbW9p
+bmRyZQpmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDDoCBkZXMgYnVk
+Z2V0cyByYWlzb25uYWJsZXMsIGFsb3JzCmNvbnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBub3Mg
+cHJvcG9zaXRpb25zIHBvdXIgdm91cyBwZXJtZXR0cmUgYWluc2kgZGUKZmFpcmUgZGUgbm9tYnJl
+dXNlcyDDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50IHBsYWlzaXIgw6AgdG91dGUgbGEK
+ZmFtaWxsZS4uLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMg
+Y2hhdXNzZXIsIGRlIG1hbmdlcgpvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTD
+qSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMKcG91cnF1b2kgbmUgcGFzIGpl
+dGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMK
+YWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpvdXIgcsOpZ3VsacOocmVtZW50IGV0
+IHRvdXRlIGwnYW5uw6llLi4KTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVh
+dSByZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgCmTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNv
+bnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuQmVzb2luIGRlIHZveWFnZXIsCmRlIHZvdXMg
+aGFiaWxsZXIsIGRlIHZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxl
+dXIgcmFwcG9ydApxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsOpZSwgYWxvcnMg
+cG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0Cm9laWwgcGFyIHN1ciBsZXMgcHJvcG9zaXRp
+b25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zCsOgIGpvdXIg
+csOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkFpbnNpLCBncsOiY2Ugw6Agbm91cywg
+dm91cyBhbGxlegpwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBl
+c3QgcHJvZHVpdCBhIGJhcyBjb3V0LApvcHBvcnR1bml0w6ksIGluZm9zLi4uIC5BIGxhIHJlY2hl
+cmNoZSBkdSBjYWRlYXUgb3JpZ2luYWwgPyBOb3VzIHNvdWhhaXRvbnMKdm91cyBhcHBvcnRlciB1
+biBub3V2ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5zIHRv
+dXQKZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZSBsJ2FubsOpZS4gQWluc2ksIGdyYWNlIMOgIG5v
+dXMsIHZvdXMgYWxsZXogcGFyCmV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBx
+dWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwKb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiBFbnZpZSBk
+ZSB2b3VzIGZhaXJlIHVuZSBiZWF1dMOpIMOgIG1vaW5kcmUgY2/Du3QgdG91dAphdSBsb25nIGRl
+IGwnYW5uw6llLCBkZSBwcsOpdm9pciB2b3MgcHJvY2hhaW5lcyB2YWNhbmNlcyBkJ8OpdMOpIMOg
+IG1vaW5kcmUKZnJhaXMgZXQgb3UgZW5jb3JlIGQnaGFiaWxsZXIgdm9zIGVuZmFudHMgw6AgZGVz
+IGJ1ZGdldHMgcmFpc29ubmFibGVzLCBhbG9ycwpjb25zdWx0ZXIgZGUgdGVtcHMgw6AgYXV0cmUg
+bm9zIHByb3Bvc2l0aW9ucyBwb3VyIHZvdXMgcGVybWV0dHJlIGFpbnNpIGRlCmZhaXJlIGRlIG5v
+bWJyZXVzZXMgw6ljb25vbWllcyB0b3V0IGVuIHZvdXMgZmFpc2FudCBwbGFpc2lyIMOgIHRvdXRl
+IGxhCmZhbWlsbGUuLi4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2
+b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIKb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVh
+bGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7DqWUsIGFsb3JzCnBvdXJxdW9pIG5lIHBh
+cyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2
+b3VzCmFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyIHLDqWd1bGnDqHJlbWVu
+dCBldCB0b3V0ZSBsJ2FubsOpZS4uCk5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5v
+dXZlYXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDoApkw6lwZW5zZXIgbW9pbnMgdG91dCBl
+biBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOp
+c2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5w
+aHA/QUo4NDY0MTg2NjI1MTk2OTgzMjIwNTM3MzM0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTk2OTgz
+MjIwNTM3MzM0fn0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk9jdG9iZXIgV2ViaW5hcnM6IENvZGUg
+Zm9yIFBlcmZvcm1hbmNlCkZyZWUgSW50ZWwgd2ViaW5hcnMgY2FuIGhlbHAgeW91IGFjY2VsZXJh
+dGUgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UuCkV4cGxvcmUgdGlwcyBmb3IgTVBJLCBPcGVuTVAs
+IGFkdmFuY2VkIHByb2ZpbGluZywgYW5kIG1vcmUuIEdldCB0aGUgbW9zdCBmcm9tIAp0aGUgbGF0
+ZXN0IEludGVsIHByb2Nlc3NvcnMgYW5kIGNvcHJvY2Vzc29ycy4gU2VlIGFic3RyYWN0cyBhbmQg
+cmVnaXN0ZXIgPgpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9
+NjAxMzM0NzEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

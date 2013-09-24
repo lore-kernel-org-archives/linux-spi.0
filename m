@@ -1,92 +1,97 @@
-From: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [RESEND] spi/tegra114: Correct support for cs_change
-Date: Tue, 24 Sep 2013 12:33:48 -0400
-Message-ID: <5241BEEC.9000508@nvidia.com>
-References: <1379528245-6283-1-git-send-email-rklein@nvidia.com> <52408DC8.3020407@wwwdotorg.org>	<52409B1E.3030405@nvidia.com> <52409D63.3020909@wwwdotorg.org>	<5240AC3A.9060206@nvidia.com> <5240AF20.8030301@wwwdotorg.org> <CA+7tXiiNMwyQh9sCsW4Qkid9Tn8RTcQ-uUmNse+kK-PZro1pyQ@mail.gmail.com>
+From: "=?utf-8?Q?Grande_enquete_Apple?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org_Repartez_avec_l'iPhone_5_C_immediatement?=
+Date: Tue, 24 Sep 2013 17:01:29 +0000
+Message-ID: <1043=d82afb31-d729-4c98-a0b5-3912078d66b8=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	"linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CA+7tXiiNMwyQh9sCsW4Qkid9Tn8RTcQ-uUmNse+kK-PZro1pyQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 9/23/2013 7:08 PM, Trent Piepho wrote:
-> On Mon, Sep 23, 2013 at 2:14 PM, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org> wrote:
->>
->> That sounds broken. Normally, shouldn't CS assert before a transaction,
->> stay asserted during a transaction, then deassert after the transaction?
->> It shouldn't rise and fall very quickly in between parts of the transaction.
-> 
-> That is normal, where a transaction is a spi_message made up of
-> multiple spi_transfers.  The cs_change bit for a transfer will insert
-> a de-asserted pulse after a transfer or leave CS de-asserted after the
-> last transfer.
-> 
->>>>> need to generate a falling-edge to trigger the beginning of a SPI
->>>>> transaction. Doing this write with the default value of SPI_COMMAND1
->>>>> causes a brief rise and fall of CS, giving us our falling-edge.
-> 
-> I wonder, is the real problem that the spi layer allows CS to possibly
-> remain asserted between transactions to the same device?  Normally you
-> would expect it to be de-asserted at the end of a spi_message, but I
-> believe the Linux spi semantics are that it may or may not actually be
-> de-asserted at that time.  It only guarantees that is will be
-> de-asserted before a message to a different device starts.
-> 
-> I guess this is supposed to be an optimization.  Some drivers, like
-> gpio bit-banging, probably have a cost associated with any CS change.
-> Usually many messages in a row are to the same device.  Most devices
-> don't care if CS pulses between messages.  Thus not pulsing CS between
-> each message is faster.
-> 
->>>
->>> Otherwise, this logic allows us to skip the spi of COMMAND1 which would
->>> normally be used to create the falling edge to start a new transaction,
->>> leaving the previous one open for more transfers.
->>
->> This sounds like something the SPI core should be managing. If a driver
->> is using the SPI bus to communicate with a device in a way that needs CS
->> left active while outside a transaction, it shouldn't be possible for
->> another driver to come along and communicate with another device before
->> the first transaction is all complete. The bus should be locked.
->> Allowing anything else could corrupt the protocol that required specific
->> CS states outside the transaction.
-> 
-> If the transaction is one message, which can be multiple transfers and
-> multiple CS pulses, then the spi core always does it atomically.  The
-> limitation is the driver can't get the result of the transaction until
-> the entire transaction is finished.
-> 
-> If a driver needs to get part of a transaction to complete the rest,
-> e.g. read a 16-bit length from the device and then read that many
-> bytes, it can still be done.  It doesn't seem to be documented in
-> spi-summary, but the way to do this is with spi_bus_(un)lock() and
-> spi_(a)sync_locked() calls.  The driver must lock the bus, used the
-> _locked versions to issue spi_messages, then unlock when done.  This
-> should prevent another device on the bus from getting a messages, and
-> thus CS pulses, in the middle of the transaction.
-
-I suppose I can should reword my comment then on the code which checked:
-
-+		if (tspi->cs_control) {
-+			if (tspi->cs_control != spi)
-+				tegra_spi_writel(tspi, command1, SPI_COMMAND1);
-
-While this does do exactly what I said, ending a previous "on-going"
-transaction in favor of a new one, this shouldn't be expected to be the
-way for clients to guarantee that they have locked a bus. This is more
-of a way internally to the Tegra SPI driver to clear its state.
-
--rhyland
--- 
-nvpublic
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFWaXN1YWxpc2VyIGxh
+IHZlcnNpb24gZW4gbGlnbmUgfCBTZSBkw6lzYWJvbm5lcgoJQm9uam91ciBzcGktZGV2ZWwtZ2Vu
+ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKU2V1bGVzIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMg
+cG91ciB2b3VzICEKSW5jcm95YWJsZSAhIFJlcGFydGV6IGF2ZWMgbCdpUGhvbmU1QwplbiByw6lw
+b25kYW50IMOgIG5vdHJlIGVucXXDqnRlICEKRW4gZXhjbHVzaXZpdMOpClJlcGFydGV6CmltbcOp
+ZGlhdGVtZW50CmF2ZWMgbCdpUGhvbmUgNUMKSmUgcGFydGljaXBlCjIgbWluIENocm9ubwpFbnZv
+eWV6IGxlcyBjb3VsZXVycwomU2Vsb25Wb3VzLmNvbQomU2Vsb24gVm91cwoKRGVwdWlzIDIwMDUg
+bCdpbnN0aXR1dCBkZSBzb25kYWdlICZTZWxvblZvdXMgcHVibGllIGNoYXF1ZSBtb2lzIGRlcyBl
+bnF1w6p0ZXMgdGjDqW1hdGlxdWVzIGF5YW50IHBvdXIgYnV0IGwnw6l0dWRlIGRlIHZvdHJlIG9w
+aW5pb24gZXQgdm9zIG1vZGVzIGRlIGNvbnNvbW1hdGlvbiBzdXIgSW50ZXJuZXQuIERhbnMgbGUg
+Y2FkcmUgZGUgY2hhcXVlIG5vdXZlYXUgc29uZGFnZSB1bmUgZG90YXRpb24gw6AgZ2FnbmVyIGVz
+dCBwcm9wb3PDqWUgw6AgbCdlbnNlbWJsZSBkZXMgcsOpcG9uZGFudHMgY2FyIGwnaW5zdGl0dXQg
+bmUgcG91cnJhaXQgZXhpc3RlciBzYW5zIHZvdXMgISBDZSBKZXUgZ3JhdHVpdCBldCBzYW5zIG9i
+bGlnYXRpb24gZCdhY2hhdCBlc3Qgb3V2ZXJ0IMOgIHRvdXRlIHBlcnNvbm5lIG1hamV1cmUgcmVz
+aWRhbnQgZW4gRnJhbmNlIG3DqXRyb3BvbGl0YWluZSBleGNsdXNpdmVtZW50IChpbmNsdWFudCBs
+YSBDb3JzZSksIMOgIGwnZXhjbHVzaW9uIGRlcyBtZW1icmVzIGR1IHBlcnNvbm5lbCBkZSBsJ09y
+Z2FuaXNhdGV1ciwgZXQgZCd1bmUgZmFjb24gZ8OpbsOpcmFsZSBkZXMgc29jacOpdMOpcyBwYXJ0
+aWNpcGFudCDDoCBsYSBtaXNlIGVuIMWTdXZyZSBkZSBjZSBKZXUuIExlcyBpbmZvcm1hdGlvbnMg
+bm9taW5hdGl2ZXMgcmVjdWVpbGxpZXMgZGFucyBsZSBjYWRyZSBkdSBwcsOpc2VudCBqZXUgc29u
+dCB0cmFpdMOpZXMgY29uZm9ybcOpbWVudCDDoCBsYSBsb2kgZHUgNiBqYW52aWVyIDE5NzgsIGRp
+dGUgwqtJbmZvcm1hdGlxdWUgZXQgTGliZXJ0w6nCuyAobW9kaWZpw6llIHBhciBsYSBsb2kgZHUg
+NiBhb3V0IDIwMDQpIHJlbGF0aXZlIMOgIGxhIHByb3RlY3Rpb24gZGVzIHBlcnNvbm5lcyBwaHlz
+aXF1ZXMgw6AgbCfDqWdhcmQgZGVzIHRyYWl0ZW1lbnRzIGRlIGRvbm7DqWVzIMOgIGNhcmFjdMOo
+cmUgcGVyc29ubmVsLiBMZXMgcGFydGljaXBhbnRzIHNvbnQgaW5mb3Jtw6lzIHF1ZSBsZXMgZG9u
+bsOpZXMgbm9taW5hdGl2ZXMgbGVzIGNvbmNlcm5hbnQgZW5yZWdpc3Ryw6llcyBkYW5zIGxlIGNh
+ZHJlIGR1IGpldSBzb250IG7DqWNlc3NhaXJlcyDDoCBsYSBwcmlzZSBlbiBjb21wdGUgZGUgbGV1
+ciBwYXJ0aWNpcGF0aW9uLiBUb3V0IHBhcnRpY2lwYW50IGF1IGpldSwgZGlzcG9zZSwgZW4gYXBw
+bGljYXRpb24gZGUgbCdhcnRpY2xlIDI3IGRlIGNldHRlIGxvaSwgZCd1biBkcm9pdCBkJ2FjY8Op
+cyBldCBkZSByZWN0aWZpY2F0aW9uIGF1eCBkb25uw6llcyBsZXMgY29uY2VybmFudC4gVG91dGUg
+ZGVtYW5kZSBkJ2FjY8OpcywgZGUgcmVjdGlmaWNhdGlvbiBvdSBkJ29wcG9zaXRpb24gZG9pdCDD
+qnRyZSBhZHJlc3PDqWUgw6AgTmF0ZXhvIDIzMywgcnVlIGRlIGxhIENyb2l4IE5pdmVydCAtIDc1
+MDE1IFBhcmlzCkNvbW1lbnQgw6dhIG1hcmNoZSA/ClZvdXMgcmVjZXZleiBjZSBtZXNzYWdlIGRl
+IG5vdHJlIHBhcnQgY2FyIHZvdXMgdm91cyDDqnRlcyBpbnNjcml0KGUpIGF2ZWMgbCdhZHJlc3Nl
+IHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCBzdXIgbGUgc2l0ZSBDb25z
+b2RlYWwuZnIuIENlIHNpdGUgYSBmYWl0IGwnb2JqZXQgZCd1bmUgZMOpY2xhcmF0aW9uIGF1cHLD
+qHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOpcm8gMTU0NTE0OC4gQ29uZm9ybcOpbWVudCDDoCBs
+J2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5mb3JtYXRpcXVlIGV0IExpYmVydMOpc8K7IGR1IDYg
+amFudmllciAxOTc4LCB2b3VzIHBvdXZleiBleGVyY2VyIHZvdHJlIGRyb2l0IGQnYWNjw6hzLCBk
+ZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gb3UgZW5jb3JlIGRlIHN1cHByZXNzaW9u
+IGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29ubmVsbGVzIHZpYSBsZSBsaWVuIHN1aXZhbnQgOiBN
+ZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBkw6lzYWJvbm5lciwgbWVyY2kgZGUgY2xpcXVlciBp
+Y2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8KQ29uc29kZWFsIGVzdCB1bmUgbmV3c2xldHRlciBx
+dW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kgTmF0ZXhvLCBxdWkgdm91cyBw
+cm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVuIMOpdGFudCBhYm9ubsOpIMOg
+IG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZyZXogbGUgdG9wIGRlcyBqZXV4
+IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRvdXMgdm9zIHRyYXZhdXgsIGRl
+cyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMgZXQgdmVudGVzIHByaXbDqWVz
+IGRlIGdyYW5kZXMgbWFycXVlcy4gCQpWb3VzIHJlY2V2ZXogY2UgbWVzc2FnZSBkZSBub3RyZSBw
+YXJ0IGNhciB2b3VzIHZvdXMgw6p0ZXMgaW5zY3JpdChlKSBhdmVjIGwnYWRyZXNzZSBzcGktZGV2
+ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgc3VyIGxlIHNpdGUgQ29uc29kZWFsLmNv
+bS4gQ2Ugc2l0ZSBhIGZhaXQgbCdvYmpldCBkJ3VuZSBkw6ljbGFyYXRpb24gYXVwcsOocyBkZSBs
+YSBDTklMIHNvdXMgbGUgbnVtw6lybyAxNTQ1MTQ4LiBDb25mb3Jtw6ltZW50IMOgIGwnYXJ0aWNs
+ZSAzNCBkZSBsYSBsb2kgwqtJbmZvcm1hdGlxdWUgZXQgTGliZXJ0w6lzwrsgZHUgNiBqYW52aWVy
+IDE5NzgsIHZvdXMgcG91dmV6IGV4ZXJjZXIgdm90cmUgZHJvaXQgZCdhY2PDqHMsIGRlIG1vZGlm
+aWNhdGlvbiwgZGUgcmVjdGlmaWNhdGlvbiBvdSBlbmNvcmUgZGUgc3VwcHJlc3Npb24gZGUgdm9z
+IGluZm9ybWF0aW9ucyBwZXJzb25uZWxsZXMgdmlhIGxlIGxpZW4gc3VpdmFudCA6IE1lcyBBYm9u
+bmVtZW50cy4KUG91ciB2b3VzIGTDqXNhYm9ubmVyLCBtZXJjaSBkZSBjbGlxdWVyIGljaSBpY2ku
+CglRdWkgc29tbWVzLW5vdXMgPwpDb25zb2RlYWwgZXN0IHVuZSBuZXdzbGV0dGVyIHF1b3RpZGll
+bm5lICwgw6lkaXTDqWUgcGFyIGxhIHNvY2nDqXTDqSBOYXRleG8sIHF1aSB2b3VzIHByb3Bvc2Ug
+dW5lIHPDqWxlY3Rpb24gZGUgYm9ucyBwbGFucy4gRW4gw6l0YW50IGFib25uw6kgw6Agbm90cmUg
+bGlzdGUgZCdpbmZvcm1hdGlvbiwgdm91cyByZWNldnJleiBsZSB0b3AgZGVzIGpldXggY29uY291
+cnMsIGxlcyBvZmZyZXMgZHUgbW9tZW50IHBvdXIgdG91cyB2b3MgdHJhdmF1eCwgZGVzIGludml0
+YXRpb25zIGV4Y2x1c2l2ZXMgw6AgZGVzIGVzc2FpcyBldCB2ZW50ZXMgcHJpdsOpZXMgZGUgZ3Jh
+bmRlcyBtYXJxdWVzLiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk9jdG9iZXIgV2ViaW5hcnM6IENv
+ZGUgZm9yIFBlcmZvcm1hbmNlCkZyZWUgSW50ZWwgd2ViaW5hcnMgY2FuIGhlbHAgeW91IGFjY2Vs
+ZXJhdGUgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UuCkV4cGxvcmUgdGlwcyBmb3IgTVBJLCBPcGVu
+TVAsIGFkdmFuY2VkIHByb2ZpbGluZywgYW5kIG1vcmUuIEdldCB0aGUgbW9zdCBmcm9tIAp0aGUg
+bGF0ZXN0IEludGVsIHByb2Nlc3NvcnMgYW5kIGNvcHJvY2Vzc29ycy4gU2VlIGFic3RyYWN0cyBh
+bmQgcmVnaXN0ZXIgPgpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/
+aWQ9NjAxMzM0NzEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNw
+aS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJj
+ZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

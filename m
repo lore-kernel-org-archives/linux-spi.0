@@ -1,21 +1,16 @@
 From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 1/2]spi: DUAL and QUAD support
-Date: Wed, 25 Sep 2013 16:33:56 -0700
-Message-ID: <CA+7tXigzKW8sydfnktr4F5uY-SKk0JAMjaxFn74XLbw_NTYVXg@mail.gmail.com>
-References: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
-	<CA+7tXih4XkhZ8xGcaUdGU6O4ZN1ZLfqyjb2UEKsRxsZBA+=DZw@mail.gmail.com>
-	<CAHSAbzOCRhpxMzQRtD2po3LrmNExscoYESPPi_-jnZQaEBuFTg@mail.gmail.com>
+Subject: [PATCH 1/4] spi: Use of_property_read_u32
+Date: Wed, 25 Sep 2013 16:52:05 -0700
+Message-ID: <20130925235205.22061.2228.stgit@Graphine>
+References: <CA+7tXigzKW8sydfnktr4F5uY-SKk0JAMjaxFn74XLbw_NTYVXg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Poddar,
-	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
-To: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAHSAbzOCRhpxMzQRtD2po3LrmNExscoYESPPi_-jnZQaEBuFTg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <CA+7tXigzKW8sydfnktr4F5uY-SKk0JAMjaxFn74XLbw_NTYVXg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,170 +21,129 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Sep 4, 2013 at 12:07 AM, yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>>         dma_addr_t      rx_dma;
->>>
->>>         unsigned        cs_change:1;
->>> +       u8              tx_nbits;
->>> +       u8              rx_nbits;
->>> +#define        SPI_NBITS_SINGLE        0x01 /* 1bit transfer */
->>> +#define        SPI_NBITS_DUAL          0x02 /* 2bits transfer */
->>> +#define        SPI_NBITS_QUAD          0x04 /* 4bits transfer */
->>
->> These fields increase the size of a spi_transfer by 4 bytes.  If you
->> used bitfields instead it wouldn't increase the size at all since
->> there are still 7 bits left after cs_change.
-> Yes, it will increase the size by 4 bytes, but using bitfields here
-> will make it logically weird. Bitfields may mean that really have the
-> restriction of number of bits. If just for saving memory, then what
-> about the other members such as bits_per_world, delay_usecs.
+Instead of getting the raw property, checking the length, and doing
+endian conversion each time, use the OF function
+of_property_read_u32() that does all that.
 
-Rather than just talk about it, I'll make patches to do it.  Then it
-will be clear.
+Error messages are slightly improved with error codes from
+of_property_read_u32() for different ways the property may be invalid
+(missing, too short, etc.)
 
-On Wed, Sep 4, 2013 at 12:07 AM, yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> 2013/9/4 Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
->> On Sun, Aug 11, 2013 at 3:15 AM, wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>> fix the previous patch some mistake below:
->>
->> This isn't a very good commit message.  "the previous patch" will have
->> no meaning in the kernel git repo.  The rest of the message only
->> describes changes since a previous version of the patch and not the
->> actual patch in full.
->>
->>>
->>> +               /* Device DUAL/QUAD mode */
->>> +               prop = of_get_property(nc, "spi-tx-nbits", &len);
->>
->> Why not use of_property_read_u32() here?
->>
->>> +               if (!prop || len < sizeof(*prop)) {
->>> +                       dev_err(&master->dev, "%s has no 'spi-tx-nbits' property\n",
->>> +                               nc->full_name);
->>> +                       spi_dev_put(spi);
->>> +                       continue;
->>
->> So if no spi-tx-nbits property is supplied, the device is rejected and
->> the loop continues to the next device entry?  This means ALL EXISTING
->> DEVICE TREES with SPI devices will be rejected, since none of them
->> have this new property!  Was this patch tested at all with any system
->> before being accepted?
->>
-> This part has been fixed in patch[commit
-> id:a822e99c70f448c4068ea85bb195dac0b2eb3afe]
->
->>> +       /* check mode to prevent that DUAL and QUAD set at the same time
->>> +        */
->>> +       if (((spi->mode & SPI_TX_DUAL) && (spi->mode & SPI_TX_QUAD)) ||
->>> +               ((spi->mode & SPI_RX_DUAL) && (spi->mode & SPI_RX_QUAD))) {
->>> +               dev_err(&spi->dev,
->>> +               "setup: can not select dual and quad at the same time\n");
->>> +               return -EINVAL;
->>
->> This test can be done with fewer operations as:
->> if ((spi->mode & (SPI_TX_DUAL|SPI_TX_QUAD)) == (SPI_TX_DUAL|SPI_TX_QUAD) ||
->>     (spi->mode & (SPI_RX_DUAL|SPI_RX_QUAD)) == (SPI_RX_DUAL|SPI_RX_QUAD)) {
->>
->>
->>> +       }
->>> +       /* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
->>> +        */
->>> +       if ((spi->mode & SPI_3WIRE) && (spi->mode &
->>> +               (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)))
->>> +               return -EINVAL;
->>
->> No dev_err message for this possibility?  What's different than the
->> previous check that does produce a message?
->>
-> OK, should be added. Thanks.
->
->>>         /* help drivers fail *cleanly* when they need options
->>>          * that aren't supported with their current master
->>>          */
->> Following this comment is the code:
->>         bad_bits = spi->mode & ~spi->master->mode_bits;
->>         if (bad_bits) {
->>                 dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
->>                         bad_bits);
->>                 return -EINVAL;
->>         }
->>
->> Won't this always trigger for anything that sets one of the dual or quad bits?
->>
-> I can't get your idea clearly. Please provide more infomation.
->
->>> @@ -1370,12 +1428,50 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
->>>         /**
->>>          * Set transfer bits_per_word and max speed as spi device default if
->>>          * it is not set for this transfer.
->>> +        * Set transfer tx_nbits and rx_nbits as single transfer default
->>> +        * (SPI_NBITS_SINGLE) if it is not set for this transfer.
->>>          */
->>>         list_for_each_entry(xfer, &message->transfers, transfer_list) {
->>>                 if (!xfer->bits_per_word)
->>>                         xfer->bits_per_word = spi->bits_per_word;
->>>                 if (!xfer->speed_hz)
->>>                         xfer->speed_hz = spi->max_speed_hz;
->>> +               if (xfer->tx_buf && !xfer->tx_nbits)
->>> +                       xfer->tx_nbits = SPI_NBITS_SINGLE;
->>> +               if (xfer->rx_buf && !xfer->rx_nbits)
->>> +                       xfer->rx_nbits = SPI_NBITS_SINGLE;
->>> +               /* check transfer tx/rx_nbits:
->>> +                * 1. keep the value is not out of single, dual and quad
->>> +                * 2. keep tx/rx_nbits is contained by mode in spi_device
->>> +                * 3. if SPI_3WIRE, tx/rx_nbits should be in single
->>> +                */
->>> +               if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
->>> +                       xfer->tx_nbits != SPI_NBITS_DUAL &&
->>> +                       xfer->tx_nbits != SPI_NBITS_QUAD)
->>> +                       return -EINVAL;
->>> +               if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
->>> +                       !(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
->>> +                       return -EINVAL;
->>> +               if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
->>> +                       !(spi->mode & SPI_TX_QUAD))
->>> +                       return -EINVAL;
->>> +               if ((spi->mode & SPI_3WIRE) &&
->>> +                       (xfer->tx_nbits != SPI_NBITS_SINGLE))
->>> +                       return -EINVAL;
->>> +               /* check transfer rx_nbits */
->>> +               if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
->>> +                       xfer->rx_nbits != SPI_NBITS_DUAL &&
->>> +                       xfer->rx_nbits != SPI_NBITS_QUAD)
->>> +                       return -EINVAL;
->>> +               if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
->>> +                       !(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
->>> +                       return -EINVAL;
->>> +               if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
->>> +                       !(spi->mode & SPI_RX_QUAD))
->>> +                       return -EINVAL;
->>> +               if ((spi->mode & SPI_3WIRE) &&
->>> +                       (xfer->rx_nbits != SPI_NBITS_SINGLE))
->>> +                       return -EINVAL;
->>>         }
->>
->> What a lot of code to check the transfer bits.  It really needs this much?
->>
-> This part is also corrected in patch [commit
-> id:db90a44177ac39fc22b2da5235b231fccdd4c673].
->
->>> @@ -511,6 +524,11 @@ struct spi_transfer {
->>>         dma_addr_t      rx_dma;
->>>
->>>         unsigned        cs_change:1;
->>> +       u8              tx_nbits;
->>> +       u8              rx_nbits;
->>> +#define        SPI_NBITS_SINGLE        0x01 /* 1bit transfer */
->>> +#define        SPI_NBITS_DUAL          0x02 /* 2bits transfer */
->>> +#define        SPI_NBITS_QUAD          0x04 /* 4bits transfer */
->>
->> These fields increase the size of a spi_transfer by 4 bytes.  If you
->> used bitfields instead it wouldn't increase the size at all since
->> there are still 7 bits left after cs_change.
-> Yes, it will increase the size by 4 bytes, but using bitfields here
-> will make it logically weird. Bitfields may mean that really have the
-> restriction of number of bits. If just for saving memory, then what
-> about the other members such as bits_per_world, delay_usecs.
+Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi.c |   49 +++++++++++++++++++++++--------------------------
+ 1 file changed, 23 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 9e039c6..8fcffe0 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -838,10 +838,9 @@ static void of_register_spi_devices(struct spi_master *master)
+ {
+ 	struct spi_device *spi;
+ 	struct device_node *nc;
+-	const __be32 *prop;
+ 	char modalias[SPI_NAME_SIZE + 4];
+ 	int rc;
+-	int len;
++	u32 value;
+ 
+ 	if (!master->dev.of_node)
+ 		return;
+@@ -866,14 +865,14 @@ static void of_register_spi_devices(struct spi_master *master)
+ 		}
+ 
+ 		/* Device address */
+-		prop = of_get_property(nc, "reg", &len);
+-		if (!prop || len < sizeof(*prop)) {
+-			dev_err(&master->dev, "%s has no 'reg' property\n",
+-				nc->full_name);
++		rc = of_property_read_u32(nc, "reg", &value);
++		if (rc) {
++			dev_err(&master->dev, "%s has no valid 'reg' property (%d)\n",
++				nc->full_name, rc);
+ 			spi_dev_put(spi);
+ 			continue;
+ 		}
+-		spi->chip_select = be32_to_cpup(prop);
++		spi->chip_select = value;
+ 
+ 		/* Mode (clock phase/polarity/etc.) */
+ 		if (of_find_property(nc, "spi-cpha", NULL))
+@@ -886,55 +885,53 @@ static void of_register_spi_devices(struct spi_master *master)
+ 			spi->mode |= SPI_3WIRE;
+ 
+ 		/* Device DUAL/QUAD mode */
+-		prop = of_get_property(nc, "spi-tx-bus-width", &len);
+-		if (prop && len == sizeof(*prop)) {
+-			switch (be32_to_cpup(prop)) {
+-			case SPI_NBITS_SINGLE:
++		if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
++			switch (value) {
++			case 1:
+ 				break;
+-			case SPI_NBITS_DUAL:
++			case 2:
+ 				spi->mode |= SPI_TX_DUAL;
+ 				break;
+-			case SPI_NBITS_QUAD:
++			case 4:
+ 				spi->mode |= SPI_TX_QUAD;
+ 				break;
+ 			default:
+ 				dev_err(&master->dev,
+ 					"spi-tx-bus-width %d not supported\n",
+-					be32_to_cpup(prop));
++					value);
+ 				spi_dev_put(spi);
+ 				continue;
+ 			}
+ 		}
+ 
+-		prop = of_get_property(nc, "spi-rx-bus-width", &len);
+-		if (prop && len == sizeof(*prop)) {
+-			switch (be32_to_cpup(prop)) {
+-			case SPI_NBITS_SINGLE:
++		if (!of_property_read_u32(nc, "spi-rx-bus-width", &value)) {
++			switch (value) {
++			case 1:
+ 				break;
+-			case SPI_NBITS_DUAL:
++			case 2:
+ 				spi->mode |= SPI_RX_DUAL;
+ 				break;
+-			case SPI_NBITS_QUAD:
++			case 4:
+ 				spi->mode |= SPI_RX_QUAD;
+ 				break;
+ 			default:
+ 				dev_err(&master->dev,
+ 					"spi-rx-bus-width %d not supported\n",
+-					be32_to_cpup(prop));
++					value);
+ 				spi_dev_put(spi);
+ 				continue;
+ 			}
+ 		}
+ 
+ 		/* Device speed */
+-		prop = of_get_property(nc, "spi-max-frequency", &len);
+-		if (!prop || len < sizeof(*prop)) {
+-			dev_err(&master->dev, "%s has no 'spi-max-frequency' property\n",
+-				nc->full_name);
++		rc = of_property_read_u32(nc, "spi-max-frequency", &value);
++		if (rc) {
++			dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
++				nc->full_name, rc);
+ 			spi_dev_put(spi);
+ 			continue;
+ 		}
+-		spi->max_speed_hz = be32_to_cpup(prop);
++		spi->max_speed_hz = value;
+ 
+ 		/* IRQ */
+ 		spi->irq = irq_of_parse_and_map(nc, 0);
+
 
 ------------------------------------------------------------------------------
 October Webinars: Code for Performance

@@ -1,13 +1,21 @@
-From: "Chien et Chat" <contact-9T/2b4cqpp/QT0dZR+AlfA@public.gmane.org>
-Subject: Il le ferait pour vous
-Date: Wed, 25 Sep 2013 09:42:35 +0000 (CET)
-Message-ID: <130925094235.185392262600006740@fmo40.com>
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v3 1/2]spi: DUAL and QUAD support
+Date: Wed, 25 Sep 2013 16:33:56 -0700
+Message-ID: <CA+7tXigzKW8sydfnktr4F5uY-SKk0JAMjaxFn74XLbw_NTYVXg@mail.gmail.com>
+References: <1376216117-5864-1-git-send-email-wangyuhang2014@gmail.com>
+	<CA+7tXih4XkhZ8xGcaUdGU6O4ZN1ZLfqyjb2UEKsRxsZBA+=DZw@mail.gmail.com>
+	<CAHSAbzOCRhpxMzQRtD2po3LrmNExscoYESPPi_-jnZQaEBuFTg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Poddar,
+	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
+To: yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <CAHSAbzOCRhpxMzQRtD2po3LrmNExscoYESPPi_-jnZQaEBuFTg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,56 +26,174 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vZm1vNDAuY29tL2ZtYXNjMm9ibWVseGpyZGMwcS9pbmRleDAuaHRtbCkKKGh0dHA6
-Ly9mbW80MC5jb20vMXphcWUyNHptZDJmeG15Y2JvL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQw
-LmNvbS94cGFsdDJkYW1jdnhhaWxxMmcvaW5kZXgyLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2N3
-YWozMnJqbXJuZjVoc3F0ai9pbmRleDMuaHRtbCkKKGh0dHA6Ly9mbW80MC5jb20vaXB1ZnR2cDNo
-d3V4b3ZsZjRvL2luZGV4NC5odG1sKQooaHR0cDovL2ZtbzQwLmNvbS9hd3UwM3Zzb2gwemZmZXNm
-bnEvaW5kZXg1Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2htdTFjdnd0aHF5eDNuZG96ai9pbmRl
-eDYuaHRtbCkKKGh0dHA6Ly9mbW80MC5jb20vM3p1YmV2cTRoaWJmcHd5b3dnL2luZGV4Ny5odG1s
-KQooaHR0cDovL2ZtbzQwLmNvbS9wbWp0MWxqMG11anhsZGRlZXEvaW5kZXg4Lmh0bWwpCihodHRw
-Oi8vZm1vNDAuY29tL216amN2bHp3bXl4ZjJseWV1by9pbmRleDkuaHRtbCkKKGh0dHA6Ly9mbW80
-MC5jb20vbGh2cjFpazJ4ZHF5Zmp3eHhvL2luZGV4MTAuaHRtbCkKQ2hvaXNpc3NleiBsYSBwcm90
-ZWN0aW9uIGxhIHBsdXMgZWZmaWNhY2UKcG91ciB2b3RyZSBhbmltYWwgZGUgY29tcGFnbmllICEK
-CihodHRwOi8vZm1vNDAuY29tL3N2bzRoc3hsenVxa2xva2Vjby9pbmRleDExLmh0bWwpCihodHRw
-Oi8vZm1vNDAuY29tL2liY3h3b3I0c21id21uYWx0eS9pbmRleDEyLmh0bWwpCihodHRwOi8vZm1v
-NDAuY29tL2F4ejJkZWxrM2ZiMmt3bXAyeS9pbmRleDEzLmh0bWwpCihodHRwOi8vZm1vNDAuY29t
-L2VneTNxbmF0aXpzMWR6cWtmai9pbmRleDE0Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3VsaWVy
-eHRzZDBzcng0ZjExai9pbmRleDE1Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2k0eWZrbjVwaHp1
-ZmR2eWt0eS9pbmRleDE2Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2FwaTB0eHMzbDB1NXhlMjEy
-eS9pbmRleDE3Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2szZWt0M2YzYmVrem9rdnhjZy9pbmRl
-eDE4Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3ZramlrZHVwNXlrdDJ1emV4Zy9pbmRleDE5Lmh0
-bWwpCihodHRwOi8vZm1vNDAuY29tL25hYmgyd2VlYWdmYml5bnN4ai9pbmRleDIwLmh0bWwpCiho
-dHRwOi8vZm1vNDAuY29tLzR1cnV2ZjF3eTNmNHpzdW1jai9pbmRleDIxLmh0bWwpCihodHRwOi8v
-Zm1vNDAuY29tL3dtaTMxeDMwbHdvNWp5MDFmai9pbmRleDIyLmh0bWwpCihodHRwOi8vZm1vNDAu
-Y29tL3pueWVobmJkaGJvZjBzc2sxai9pbmRleDIzLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL25v
-cWl5anVpZHkzbTJiMXZ4ai9pbmRleDI0Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tLzRzdWt6dmZy
-aWUzY290amZjai9pbmRleDI1Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3djemFqZWhjM3BwMjRi
-cnBmai9pbmRleDI2Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3owY3Y1bzBxczFwd2h0M2wxai9p
-bmRleDI3Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3NqYjRsbmZ2aXZjMXFvZ3R5ai9pbmRleDI4
-Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2x5cnJueHVuZHNjcmJqeGhkai9pbmRleDI5Lmh0bWwp
-CihodHRwOi8vZm1vNDAuY29tL2dieWdud25uM2oxMGVnNTRxbC9pbmRleDMwLmh0bWwpCihodHRw
-Oi8vZm1vNDAuY29tL294aXlsZnF2c2kxbjVxaGdqbC9pbmRleDMxLmh0bWwpCihodHRwOi8vZm1v
-NDAuY29tL2xpeW14d3YxYWpyYmV4dzRkZy9pbmRleDMyLmh0bWwpCihodHRwOi8vZm1vNDAuY29t
-L3NlaXphZmNneWlyNDVma2d5Zy9pbmRleDMzLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2c0Y3F1
-ajRtbGxocDExYjJxbC9pbmRleDM0Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL29wenNidmpoaGto
-eHNjbDNqbC9pbmRleDM1Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3h1bGxlcmx6eHgyc2Vyenpv
-eS9pbmRleDM2Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2NhM2owdHJ1enIydTVtdnFneS9pbmRl
-eDM3Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tLzI1a20wdWV1dnEwYTM1Mm9kZy9pbmRleDM4Lmh0
-bWwpCihodHRwOi8vZm1vNDAuY29tL3R6Z3plZzF6Z2Ewb25weW55Zy9pbmRleDM5Lmh0bWwpCiho
-dHRwOi8vZm1vNDAuY29tL3h6cWRlanl6bGIycDJyYnZvcy9pbmRleDQwLmh0bWwpCihodHRwOi8v
-Zm1vNDAuY29tL2M1dW8wdnB1aHcyeG9tbGZncy9pbmRleDQxLmh0bWwpCihodHRwOi8vZm1vNDAu
-Y29tL2Z2enlpZWd5YTNsdDRyNHBqcy9pbmRleDQyLmh0bWwpClZhY2NpbnMsIGhvbm9yYWlyZXMg
-dsOpdMOpcmluYWlyZXMsIG3DqWRpY2FtZW50cyBwcmVzY3JpdHMsIAphbmFseXNlcywgb3DDqXJh
-dGlvbnMsIGZyYWlzIGRlIHN0w6lyaWxpc2F0aW9uLCAuLi4gCi0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LQpPY3RvYmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmlu
-YXJzIGNhbiBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBs
-b3JlIHRpcHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBH
-ZXQgdGhlIG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nl
-c3NvcnMuIFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJs
-ZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTYwMTMzNDcxJml1PS80MTQwL29zdGcuY2xrdHJrCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
-ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
-ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
-LWdlbmVyYWwK
+On Wed, Sep 4, 2013 at 12:07 AM, yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>>         dma_addr_t      rx_dma;
+>>>
+>>>         unsigned        cs_change:1;
+>>> +       u8              tx_nbits;
+>>> +       u8              rx_nbits;
+>>> +#define        SPI_NBITS_SINGLE        0x01 /* 1bit transfer */
+>>> +#define        SPI_NBITS_DUAL          0x02 /* 2bits transfer */
+>>> +#define        SPI_NBITS_QUAD          0x04 /* 4bits transfer */
+>>
+>> These fields increase the size of a spi_transfer by 4 bytes.  If you
+>> used bitfields instead it wouldn't increase the size at all since
+>> there are still 7 bits left after cs_change.
+> Yes, it will increase the size by 4 bytes, but using bitfields here
+> will make it logically weird. Bitfields may mean that really have the
+> restriction of number of bits. If just for saving memory, then what
+> about the other members such as bits_per_world, delay_usecs.
+
+Rather than just talk about it, I'll make patches to do it.  Then it
+will be clear.
+
+On Wed, Sep 4, 2013 at 12:07 AM, yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> 2013/9/4 Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
+>> On Sun, Aug 11, 2013 at 3:15 AM, wangyuhang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+>>> fix the previous patch some mistake below:
+>>
+>> This isn't a very good commit message.  "the previous patch" will have
+>> no meaning in the kernel git repo.  The rest of the message only
+>> describes changes since a previous version of the patch and not the
+>> actual patch in full.
+>>
+>>>
+>>> +               /* Device DUAL/QUAD mode */
+>>> +               prop = of_get_property(nc, "spi-tx-nbits", &len);
+>>
+>> Why not use of_property_read_u32() here?
+>>
+>>> +               if (!prop || len < sizeof(*prop)) {
+>>> +                       dev_err(&master->dev, "%s has no 'spi-tx-nbits' property\n",
+>>> +                               nc->full_name);
+>>> +                       spi_dev_put(spi);
+>>> +                       continue;
+>>
+>> So if no spi-tx-nbits property is supplied, the device is rejected and
+>> the loop continues to the next device entry?  This means ALL EXISTING
+>> DEVICE TREES with SPI devices will be rejected, since none of them
+>> have this new property!  Was this patch tested at all with any system
+>> before being accepted?
+>>
+> This part has been fixed in patch[commit
+> id:a822e99c70f448c4068ea85bb195dac0b2eb3afe]
+>
+>>> +       /* check mode to prevent that DUAL and QUAD set at the same time
+>>> +        */
+>>> +       if (((spi->mode & SPI_TX_DUAL) && (spi->mode & SPI_TX_QUAD)) ||
+>>> +               ((spi->mode & SPI_RX_DUAL) && (spi->mode & SPI_RX_QUAD))) {
+>>> +               dev_err(&spi->dev,
+>>> +               "setup: can not select dual and quad at the same time\n");
+>>> +               return -EINVAL;
+>>
+>> This test can be done with fewer operations as:
+>> if ((spi->mode & (SPI_TX_DUAL|SPI_TX_QUAD)) == (SPI_TX_DUAL|SPI_TX_QUAD) ||
+>>     (spi->mode & (SPI_RX_DUAL|SPI_RX_QUAD)) == (SPI_RX_DUAL|SPI_RX_QUAD)) {
+>>
+>>
+>>> +       }
+>>> +       /* if it is SPI_3WIRE mode, DUAL and QUAD should be forbidden
+>>> +        */
+>>> +       if ((spi->mode & SPI_3WIRE) && (spi->mode &
+>>> +               (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)))
+>>> +               return -EINVAL;
+>>
+>> No dev_err message for this possibility?  What's different than the
+>> previous check that does produce a message?
+>>
+> OK, should be added. Thanks.
+>
+>>>         /* help drivers fail *cleanly* when they need options
+>>>          * that aren't supported with their current master
+>>>          */
+>> Following this comment is the code:
+>>         bad_bits = spi->mode & ~spi->master->mode_bits;
+>>         if (bad_bits) {
+>>                 dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
+>>                         bad_bits);
+>>                 return -EINVAL;
+>>         }
+>>
+>> Won't this always trigger for anything that sets one of the dual or quad bits?
+>>
+> I can't get your idea clearly. Please provide more infomation.
+>
+>>> @@ -1370,12 +1428,50 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
+>>>         /**
+>>>          * Set transfer bits_per_word and max speed as spi device default if
+>>>          * it is not set for this transfer.
+>>> +        * Set transfer tx_nbits and rx_nbits as single transfer default
+>>> +        * (SPI_NBITS_SINGLE) if it is not set for this transfer.
+>>>          */
+>>>         list_for_each_entry(xfer, &message->transfers, transfer_list) {
+>>>                 if (!xfer->bits_per_word)
+>>>                         xfer->bits_per_word = spi->bits_per_word;
+>>>                 if (!xfer->speed_hz)
+>>>                         xfer->speed_hz = spi->max_speed_hz;
+>>> +               if (xfer->tx_buf && !xfer->tx_nbits)
+>>> +                       xfer->tx_nbits = SPI_NBITS_SINGLE;
+>>> +               if (xfer->rx_buf && !xfer->rx_nbits)
+>>> +                       xfer->rx_nbits = SPI_NBITS_SINGLE;
+>>> +               /* check transfer tx/rx_nbits:
+>>> +                * 1. keep the value is not out of single, dual and quad
+>>> +                * 2. keep tx/rx_nbits is contained by mode in spi_device
+>>> +                * 3. if SPI_3WIRE, tx/rx_nbits should be in single
+>>> +                */
+>>> +               if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
+>>> +                       xfer->tx_nbits != SPI_NBITS_DUAL &&
+>>> +                       xfer->tx_nbits != SPI_NBITS_QUAD)
+>>> +                       return -EINVAL;
+>>> +               if ((xfer->tx_nbits == SPI_NBITS_DUAL) &&
+>>> +                       !(spi->mode & (SPI_TX_DUAL | SPI_TX_QUAD)))
+>>> +                       return -EINVAL;
+>>> +               if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
+>>> +                       !(spi->mode & SPI_TX_QUAD))
+>>> +                       return -EINVAL;
+>>> +               if ((spi->mode & SPI_3WIRE) &&
+>>> +                       (xfer->tx_nbits != SPI_NBITS_SINGLE))
+>>> +                       return -EINVAL;
+>>> +               /* check transfer rx_nbits */
+>>> +               if (xfer->rx_nbits != SPI_NBITS_SINGLE &&
+>>> +                       xfer->rx_nbits != SPI_NBITS_DUAL &&
+>>> +                       xfer->rx_nbits != SPI_NBITS_QUAD)
+>>> +                       return -EINVAL;
+>>> +               if ((xfer->rx_nbits == SPI_NBITS_DUAL) &&
+>>> +                       !(spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD)))
+>>> +                       return -EINVAL;
+>>> +               if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
+>>> +                       !(spi->mode & SPI_RX_QUAD))
+>>> +                       return -EINVAL;
+>>> +               if ((spi->mode & SPI_3WIRE) &&
+>>> +                       (xfer->rx_nbits != SPI_NBITS_SINGLE))
+>>> +                       return -EINVAL;
+>>>         }
+>>
+>> What a lot of code to check the transfer bits.  It really needs this much?
+>>
+> This part is also corrected in patch [commit
+> id:db90a44177ac39fc22b2da5235b231fccdd4c673].
+>
+>>> @@ -511,6 +524,11 @@ struct spi_transfer {
+>>>         dma_addr_t      rx_dma;
+>>>
+>>>         unsigned        cs_change:1;
+>>> +       u8              tx_nbits;
+>>> +       u8              rx_nbits;
+>>> +#define        SPI_NBITS_SINGLE        0x01 /* 1bit transfer */
+>>> +#define        SPI_NBITS_DUAL          0x02 /* 2bits transfer */
+>>> +#define        SPI_NBITS_QUAD          0x04 /* 4bits transfer */
+>>
+>> These fields increase the size of a spi_transfer by 4 bytes.  If you
+>> used bitfields instead it wouldn't increase the size at all since
+>> there are still 7 bits left after cs_change.
+> Yes, it will increase the size by 4 bytes, but using bitfields here
+> will make it logically weird. Bitfields may mean that really have the
+> restriction of number of bits. If just for saving memory, then what
+> about the other members such as bits_per_world, delay_usecs.
+
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60133471&iu=/4140/ostg.clktrk

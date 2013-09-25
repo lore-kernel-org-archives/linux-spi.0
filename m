@@ -1,13 +1,12 @@
-From: Bons d'achat Carrefour <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Remportez_2_000euro_=E0_d=E9pens?=
-	=?ISO-8859-1?Q?er_chez_Cultura_et_Carrefour?=
-Date: Wed, 25 Sep 2013 10:37:11 +0200 (CEST)
-Message-ID: <hmq1bd.hm0auql8678wj4al@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Chien et Chat" <contact-9T/2b4cqpp/QT0dZR+AlfA@public.gmane.org>
+Subject: Il le ferait pour vous
+Date: Wed, 25 Sep 2013 09:42:35 +0000 (CET)
+Message-ID: <130925094235.185392262600006740@fmo40.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,104 +18,56 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgrcrxI7gfk57dIhm0aukmzI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380098223628%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DCDBKCICHBHMGDMOC%26mid%3D1600270701&s=3DF=
-JNHKCOACJJIBKJB
- =
-
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultu=
-ra et CarrefourRemportez 2 000euro =E0 d=E9penser chez Cultura et Carrefour=
-Remportez 2 000euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000=
-euro =E0 d=E9penser chez Cultura et CarrefourRemportez 2 000euro =E0 d=E9pe=
-nser chez Cultura et Carrefour
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600270701&sig=3DNLMAMNDKDDIJEFEC
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60133471&iu=3D/4140/ostg.cl=
-ktrk
+CihodHRwOi8vZm1vNDAuY29tL2ZtYXNjMm9ibWVseGpyZGMwcS9pbmRleDAuaHRtbCkKKGh0dHA6
+Ly9mbW80MC5jb20vMXphcWUyNHptZDJmeG15Y2JvL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQw
+LmNvbS94cGFsdDJkYW1jdnhhaWxxMmcvaW5kZXgyLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2N3
+YWozMnJqbXJuZjVoc3F0ai9pbmRleDMuaHRtbCkKKGh0dHA6Ly9mbW80MC5jb20vaXB1ZnR2cDNo
+d3V4b3ZsZjRvL2luZGV4NC5odG1sKQooaHR0cDovL2ZtbzQwLmNvbS9hd3UwM3Zzb2gwemZmZXNm
+bnEvaW5kZXg1Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2htdTFjdnd0aHF5eDNuZG96ai9pbmRl
+eDYuaHRtbCkKKGh0dHA6Ly9mbW80MC5jb20vM3p1YmV2cTRoaWJmcHd5b3dnL2luZGV4Ny5odG1s
+KQooaHR0cDovL2ZtbzQwLmNvbS9wbWp0MWxqMG11anhsZGRlZXEvaW5kZXg4Lmh0bWwpCihodHRw
+Oi8vZm1vNDAuY29tL216amN2bHp3bXl4ZjJseWV1by9pbmRleDkuaHRtbCkKKGh0dHA6Ly9mbW80
+MC5jb20vbGh2cjFpazJ4ZHF5Zmp3eHhvL2luZGV4MTAuaHRtbCkKQ2hvaXNpc3NleiBsYSBwcm90
+ZWN0aW9uIGxhIHBsdXMgZWZmaWNhY2UKcG91ciB2b3RyZSBhbmltYWwgZGUgY29tcGFnbmllICEK
+CihodHRwOi8vZm1vNDAuY29tL3N2bzRoc3hsenVxa2xva2Vjby9pbmRleDExLmh0bWwpCihodHRw
+Oi8vZm1vNDAuY29tL2liY3h3b3I0c21id21uYWx0eS9pbmRleDEyLmh0bWwpCihodHRwOi8vZm1v
+NDAuY29tL2F4ejJkZWxrM2ZiMmt3bXAyeS9pbmRleDEzLmh0bWwpCihodHRwOi8vZm1vNDAuY29t
+L2VneTNxbmF0aXpzMWR6cWtmai9pbmRleDE0Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3VsaWVy
+eHRzZDBzcng0ZjExai9pbmRleDE1Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2k0eWZrbjVwaHp1
+ZmR2eWt0eS9pbmRleDE2Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2FwaTB0eHMzbDB1NXhlMjEy
+eS9pbmRleDE3Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2szZWt0M2YzYmVrem9rdnhjZy9pbmRl
+eDE4Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3ZramlrZHVwNXlrdDJ1emV4Zy9pbmRleDE5Lmh0
+bWwpCihodHRwOi8vZm1vNDAuY29tL25hYmgyd2VlYWdmYml5bnN4ai9pbmRleDIwLmh0bWwpCiho
+dHRwOi8vZm1vNDAuY29tLzR1cnV2ZjF3eTNmNHpzdW1jai9pbmRleDIxLmh0bWwpCihodHRwOi8v
+Zm1vNDAuY29tL3dtaTMxeDMwbHdvNWp5MDFmai9pbmRleDIyLmh0bWwpCihodHRwOi8vZm1vNDAu
+Y29tL3pueWVobmJkaGJvZjBzc2sxai9pbmRleDIzLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL25v
+cWl5anVpZHkzbTJiMXZ4ai9pbmRleDI0Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tLzRzdWt6dmZy
+aWUzY290amZjai9pbmRleDI1Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3djemFqZWhjM3BwMjRi
+cnBmai9pbmRleDI2Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3owY3Y1bzBxczFwd2h0M2wxai9p
+bmRleDI3Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3NqYjRsbmZ2aXZjMXFvZ3R5ai9pbmRleDI4
+Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2x5cnJueHVuZHNjcmJqeGhkai9pbmRleDI5Lmh0bWwp
+CihodHRwOi8vZm1vNDAuY29tL2dieWdud25uM2oxMGVnNTRxbC9pbmRleDMwLmh0bWwpCihodHRw
+Oi8vZm1vNDAuY29tL294aXlsZnF2c2kxbjVxaGdqbC9pbmRleDMxLmh0bWwpCihodHRwOi8vZm1v
+NDAuY29tL2xpeW14d3YxYWpyYmV4dzRkZy9pbmRleDMyLmh0bWwpCihodHRwOi8vZm1vNDAuY29t
+L3NlaXphZmNneWlyNDVma2d5Zy9pbmRleDMzLmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2c0Y3F1
+ajRtbGxocDExYjJxbC9pbmRleDM0Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL29wenNidmpoaGto
+eHNjbDNqbC9pbmRleDM1Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL3h1bGxlcmx6eHgyc2Vyenpv
+eS9pbmRleDM2Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tL2NhM2owdHJ1enIydTVtdnFneS9pbmRl
+eDM3Lmh0bWwpCihodHRwOi8vZm1vNDAuY29tLzI1a20wdWV1dnEwYTM1Mm9kZy9pbmRleDM4Lmh0
+bWwpCihodHRwOi8vZm1vNDAuY29tL3R6Z3plZzF6Z2Ewb25weW55Zy9pbmRleDM5Lmh0bWwpCiho
+dHRwOi8vZm1vNDAuY29tL3h6cWRlanl6bGIycDJyYnZvcy9pbmRleDQwLmh0bWwpCihodHRwOi8v
+Zm1vNDAuY29tL2M1dW8wdnB1aHcyeG9tbGZncy9pbmRleDQxLmh0bWwpCihodHRwOi8vZm1vNDAu
+Y29tL2Z2enlpZWd5YTNsdDRyNHBqcy9pbmRleDQyLmh0bWwpClZhY2NpbnMsIGhvbm9yYWlyZXMg
+dsOpdMOpcmluYWlyZXMsIG3DqWRpY2FtZW50cyBwcmVzY3JpdHMsIAphbmFseXNlcywgb3DDqXJh
+dGlvbnMsIGZyYWlzIGRlIHN0w6lyaWxpc2F0aW9uLCAuLi4gCi0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQpPY3RvYmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmlu
+YXJzIGNhbiBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBs
+b3JlIHRpcHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBH
+ZXQgdGhlIG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nl
+c3NvcnMuIFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJs
+ZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTYwMTMzNDcxJml1PS80MTQwL29zdGcuY2xrdHJrCl9f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1n
+ZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5u
+ZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVs
+LWdlbmVyYWwK

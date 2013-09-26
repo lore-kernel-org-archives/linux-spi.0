@@ -1,11 +1,11 @@
-From: Croisierenet par Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Des_destinations_de_r=EAve_=E0_bas_prix?=
-Date: Thu, 26 Sep 2013 11:19:01 +0200 (CEST)
-Message-ID: <kxans2.hm1rse5rva0tpul@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "=?utf-8?Q?Notification_Client?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Carte_n=C2=BAXXXX0258_expiration_fin_05/2015_en_attente_de_r=C3=A9ception?=
+Date: Thu, 26 Sep 2013 09:56:47 +0000
+Message-ID: <1043=44407213-0426-4b0e-a7ea-25e914488442=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,99 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgrdqwI7gfk57dIhm1rs0b2I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380187123640%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DEDLHMOPKGECCIBIB%26mid%3D1600271960&s=3DF=
-GBLPEGMMADLOBAB
- =
-
-Des destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas p=
-rixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 ba=
-s prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0=
- bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =
-=E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EA=
-ve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=
-=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations d=
-e r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destination=
-s de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinat=
-ions de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes desti=
-nations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes de=
-stinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes=
- destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prix=
-Des destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas p=
-rixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 ba=
-s prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0=
- bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =
-=E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EA=
-ve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=
-=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations d=
-e r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destination=
-s de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinat=
-ions de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes desti=
-nations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes de=
-stinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes=
- destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prix=
-Des destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas p=
-rixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 ba=
-s prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0=
- bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =
-=E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EA=
-ve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=
-=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations d=
-e r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destination=
-s de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinat=
-ions de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes desti=
-nations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes de=
-stinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes=
- destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prix=
-Des destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas p=
-rixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 ba=
-s prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0=
- bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =
-=E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EA=
-ve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=
-=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations d=
-e r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destination=
-s de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinat=
-ions de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes desti=
-nations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes de=
-stinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes=
- destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prix=
-Des destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas p=
-rixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 ba=
-s prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0=
- bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =
-=E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EA=
-ve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=
-=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations d=
-e r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destination=
-s de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinat=
-ions de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes desti=
-nations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes de=
-stinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes=
- destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prix=
-Des destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas p=
-rixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0 ba=
-s prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =E0=
- bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EAve =
-=E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=EA=
-ve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations de r=
-=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destinations d=
-e r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prixDes destination=
-s de r=EAve =E0 bas prixDes destinations de r=EAve =E0 bas prix
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600271960&sig=3DNBHNFALGBLDLPGDJ
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60133471&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFWb3RyZSBjYXJ0ZSBj
+YXJidXJhbnQgZXN0IGRpc3BvbmlibGUKCmh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9y
+Ym8vYjkyeW5jdmJtaHdVOFA1LW9iUGJhUS9iL2tsUUwvNWJjYjEyYTgKVm91cyByZWNldmV6IGNl
+IG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQoZSkgYXZl
+YyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IHN1ciBs
+ZSBzaXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUgYSBmYWl0IGwnb2JqZXQgZCd1bmUgZMOpY2xh
+cmF0aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3VzIGxlIG51bcOpcm8gMTU0NTE0OC4gQ29uZm9y
+bcOpbWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEgbG9pIMKrSW5mb3JtYXRpcXVlIGV0IExpYmVy
+dMOpc8K7IGR1IDYgamFudmllciAxOTc4LCB2b3VzIHBvdXZleiBleGVyY2VyIHZvdHJlIGRyb2l0
+IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRlIHJlY3RpZmljYXRpb24gb3UgZW5jb3JlIGRl
+IHN1cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlvbnMgcGVyc29ubmVsbGVzIHZpYSBsZSBsaWVu
+IHN1aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBvdXIgdm91cyBkw6lzYWJvbm5lciwgbWVyY2kg
+ZGUgY2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1lcy1ub3VzID8KQ29uc29kZWFsIGVzdCB1bmUg
+bmV3c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0w6llIHBhciBsYSBzb2Npw6l0w6kgTmF0ZXhv
+LCBxdWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0aW9uIGRlIGJvbnMgcGxhbnMuIEVuIMOpdGFu
+dCBhYm9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5mb3JtYXRpb24sIHZvdXMgcmVjZXZyZXogbGUg
+dG9wIGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2ZmcmVzIGR1IG1vbWVudCBwb3VyIHRvdXMgdm9z
+IHRyYXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNsdXNpdmVzIMOgIGRlcyBlc3NhaXMgZXQgdmVu
+dGVzIHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVlcy4gCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpP
+Y3RvYmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmluYXJz
+IGNhbiBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3Jl
+IHRpcHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBHZXQg
+dGhlIG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3Nv
+cnMuIFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNs
+aWNrLm5ldC9nYW1wYWQvY2xrP2lkPTYwMTMzNDcxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5l
+cmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
+aHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdl
+bmVyYWwK

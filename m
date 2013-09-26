@@ -1,17 +1,13 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: Simplify bit width checking code
-Date: Thu, 26 Sep 2013 11:44:55 +0530
-Message-ID: <5243D0DF.60703@ti.com>
-References: <CA+7tXigzKW8sydfnktr4F5uY-SKk0JAMjaxFn74XLbw_NTYVXg@mail.gmail.com>
-	<20130925235230.22061.63402.stgit@Graphine>
+From: "Chevrolet France" <contact-s237+1wDWEjhkK7MSXb13w@public.gmane.org>
+Subject: [SPAM] Essayez gratuitement  la Chevrolet TRAX
+Date: Thu, 26 Sep 2013 08:17:41 +0000 (CET)
+Message-ID: <130926081741.194937264700001276@fmo42.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130925235230.22061.63402.stgit@Graphine>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -22,118 +18,58 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thursday 26 September 2013 05:22 AM, Trent Piepho wrote:
-> The code that checks [tr]x_nbits for every transfer is more complex than it
-> needs to be.
->
-> Checking for SPI_3WIRE isn't needed.  spi_config() already prevents 3WIRE
-> mode from being combined with DUAL or QUAD mode support.  So there is no
-> need to differentiate between a single bit device with SPI_3WIRE set and one
-> with without.  It doesn't change the allowed bit widths.
->
-> By using the sensible rule that the width codes should be sequential, it's
-> possible to avoid checking for every single valid code individually and
-> instead use a single comparison to check for codes greater than the largest
-> valid code.
->
-> Signed-off-by: Trent Piepho<tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
->   drivers/spi/spi.c       |   49 +++++++++++++++++++----------------------------
->   include/linux/spi/spi.h |    2 ++
->   2 files changed, 22 insertions(+), 29 deletions(-)
->
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 0e8e5e8..fd79767 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -1447,6 +1447,8 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
->   	 * it is not set for this transfer.
->   	 */
->   	list_for_each_entry(xfer,&message->transfers, transfer_list) {
-> +		int max_width;
-> +
->   		message->frame_length += xfer->len;
->   		if (!xfer->bits_per_word)
->   			xfer->bits_per_word = spi->bits_per_word;
-> @@ -1473,40 +1475,29 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
->   		    xfer->speed_hz>  master->max_speed_hz)
->   			return -EINVAL;
->
-> -		/* check transfer tx/rx_nbits:
-> -		 * 1. keep the value is not out of single, dual and quad
-> -		 * 2. keep tx/rx_nbits is contained by mode in spi_device
-> -		 * 3. if SPI_3WIRE, tx/rx_nbits should be in single
-> +		/* Check transfer's tx/rx_nbits.  Do not allow a width greater
-> +		 * than the max the device supports.  As the width codes are
-> +		 * assigned sequentially, a non-existent width code will also be
-> +		 * greater than the largest allowed value.
->   		 */
->   		if (xfer->tx_buf) {
-> -			if (xfer->tx_nbits != SPI_NBITS_SINGLE&&
-> -				xfer->tx_nbits != SPI_NBITS_DUAL&&
-> -				xfer->tx_nbits != SPI_NBITS_QUAD)
-> -				return -EINVAL;
-> -			if ((xfer->tx_nbits == SPI_NBITS_DUAL)&&
-> -				!(spi->mode&  (SPI_TX_DUAL | SPI_TX_QUAD)))
-> -				return -EINVAL;
-> -			if ((xfer->tx_nbits == SPI_NBITS_QUAD)&&
-> -				!(spi->mode&  SPI_TX_QUAD))
-> -				return -EINVAL;
-> -			if ((spi->mode&  SPI_3WIRE)&&
-> -				(xfer->tx_nbits != SPI_NBITS_SINGLE))
-> +			if (spi->mode&  SPI_TX_QUAD)
-> +				max_width = SPI_NBITS_QUAD;
-> +			else if (spi->mode&  SPI_TX_DUAL)
-> +				max_width = SPI_NBITS_DUAL;
-> +			else
-> +				max_width = SPI_NBITS_SINGLE;
-> +			if (xfer->tx_nbits>  max_width)
->   				return -EINVAL;
->   		}
-> -		/* check transfer rx_nbits */
->   		if (xfer->rx_buf) {
-> -			if (xfer->rx_nbits != SPI_NBITS_SINGLE&&
-> -				xfer->rx_nbits != SPI_NBITS_DUAL&&
-> -				xfer->rx_nbits != SPI_NBITS_QUAD)
-> -				return -EINVAL;
-> -			if ((xfer->rx_nbits == SPI_NBITS_DUAL)&&
-> -				!(spi->mode&  (SPI_RX_DUAL | SPI_RX_QUAD)))
-> -				return -EINVAL;
-> -			if ((xfer->rx_nbits == SPI_NBITS_QUAD)&&
-> -				!(spi->mode&  SPI_RX_QUAD))
-> -				return -EINVAL;
-> -			if ((spi->mode&  SPI_3WIRE)&&
-> -				(xfer->rx_nbits != SPI_NBITS_SINGLE))
-> +			if (spi->mode&  SPI_RX_QUAD)
-> +				max_width = SPI_NBITS_QUAD;
-> +			else if (spi->mode&  SPI_RX_DUAL)
-> +				max_width = SPI_NBITS_DUAL;
-> +			else
-> +				max_width = SPI_NBITS_SINGLE;
-> +			if (xfer->rx_nbits>  max_width)
->   				return -EINVAL;
->   		}
->   	}
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 4dbf40e..ffccfdd 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -549,6 +549,8 @@ struct spi_transfer {
->   	unsigned	cs_change:1;
->   	unsigned	tx_nbits:2;
->   	unsigned	rx_nbits:2;
-> +/* These should be assigned sequentially, so that numeric comparisons produce
-> + * the correct result, e.g. SPI_NBITS_DUAL<  SPI_NBITS_QUAD.  */
->   #define	SPI_NBITS_SINGLE	0x00 /* 1x wide transfer */
->   #define	SPI_NBITS_DUAL		0x01 /* 2x wide transfer */
->   #define	SPI_NBITS_QUAD		0x02 /* 4x wide transfer */
->
-Reviewed-by: Sourav Poddar<sourav.poddar-l0cyMroinI0@public.gmane.org>
-Tested-by: Sourav Poddar<sourav.poddar-l0cyMroinI0@public.gmane.org>
-
-------------------------------------------------------------------------------
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60133471&iu=/4140/ostg.clktrk
+CihodHRwOi8vZm1vNDIuY29tLzN5YnR3bjN2MmFiY3RkanRlcy9pbmRleDAuaHRtbCkKKGh0dHA6
+Ly9mbW80Mi5jb20vaGdiY3FudGwyankxc2xxdHVkL2luZGV4MS5odG1sKQooaHR0cDovL2ZtbzQy
+LmNvbS9hZGIycG5lMTJiemM0MG9zdnkvaW5kZXgyLmh0bWwpCihodHRwOi8vZm1vNDIuY29tL2lv
+YnhzbmNtMnp1MWsyZ3NrbC9pbmRleDMuaHRtbCkKKGh0dHA6Ly9mbW80Mi5jb20vY2R4b3BsZmNs
+NW5jYjFvMHNkL2luZGV4NC5odG1sKQooaHR0cDovL2ZtbzQyLmNvbS94b3hkc2xrcmx4djF5Y2cw
+bHMvaW5kZXg1Lmh0bWwpCihodHRwOi8vZm1vNDIuY29tLzF5eGd3bDBlbHkyY3pnamR5bC9pbmRl
+eDYuaHRtbCkKKGh0dHA6Ly9mbW80Mi5jb20vZmd4eXFsaWRsdWwxdXFxZGR5L2luZGV4Ny5odG1s
+KQrigKIgTGUgbm91dmVhdSBDaGV2cm9sZXQgVHJheCBlc3QgdW4gU1VWCgp1cmJhaW4gcG91dmFu
+dCBhY2N1ZWlsbGlyIDUgcGVyc29ubmVzLgoKKGh0dHA6Ly9mbW80Mi5jb20vb3l6c252YWsyaTFj
+Y3JqMzBzL2luZGV4OC5odG1sKQrigKIgRCd1biBzdHlsZSBhdXRoZW50aXF1ZSBtYWlzIGNvbsOn
+dSBwb3VyIGxhIHZpbGxlLAoKaWwgb2ZmcmUgdW4gZ3JhbmQgY29uZm9ydCBhdXggcGFzc2FnZXJz
+IGFpbnNpCnF1J3VuIGVzcGFjZSBkZSBjaGFyZ2VtZW50IHRyw6hzIGZsZXhpYmxlLgoKKGh0dHA6
+Ly9mbW80Mi5jb20vZ2d6cWd2YnMycWcxcW1xM2JkL2luZGV4OS5odG1sKQooaHR0cDovL2ZtbzQy
+LmNvbS9scm5teGhsb2VkcmpyYWQ1eGovaW5kZXgxMC5odG1sKQoqIENoZXZyb2xldCBUcmF4IDEu
+NiAxNnYgTFMgaG9ycyBvcHRpb24gOiAxNyA5OTAg4oKsLiBNb2TEguKAnsOi4oKsxaHEgsuYw6Li
+gJrCrMS5xL7DhOKAmsOLIMSCy5jDouKCrMWhw4LCrMOExIXDi+KAocSC4oCew6LigqzFocSC4oC5
+IMOE4oCaw4sgxILLmMOi4oCawqzEucuHxILigJrDgsKsxILigJ7DhOKApsSC4oCew4TEvsOE4oCa
+w6LigqzFvsSCy5jDouKAmsKsxLnLh8OE4oCaw6LigqzEhSDEguKAnsOi4oKsxaHEguKAuSDDhOKA
+msOLIMSCy5jDouKCrMWhw4LCrMOExIXDi+KAocOE4oCaw6LigqzFocSC4oCaw4LCrMOE4oCaw6Li
+gqzFvsSC4oCew6LigqzCpsOE4oCaw6LigqzEhcSCy5jDouKAmsKsw4vigKHEguKAnsOi4oKsxaHE
+gsuYw6LigJrCrMS5xL7DhOKAmsOLIMSCy5jDouKCrMWhw4LCrMOExIXDi+KAocSC4oCew6LigqzF
+ocSCy5jDouKAmsKsw4TigKYgw4TigJrDouKCrMW+xILLmMOi4oCawqzEucuHw4TigJrDouKCrMSF
+IMSC4oCew6LigqzFocSC4oC5IMOE4oCaw4sgxILLmMOi4oCawqzEucuHxILigJrDgsKsxILigJ7D
+hOKApsSC4oC5w6LigqzLh8SC4oCew6LigqzFocSCy5jDouKAmsKsxLnLh8OE4oCaw6LigqzFocSC
+4oCaw4LCrMSC4oCew6LigqzFocSCy5jDouKAmsKsxLnEvsOE4oCaw6LigqzFvsSCy5jDouKAmsKs
+w4LCpsSC4oCew6LigqzFocSCy5jDouKAmsKsxLnEvsOE4oCaw6LigqzFvsSC4oCew4TEvsSC4oCe
+w6LigqzFocSCy5jDouKAmsKsxLnEvsOE4oCaw4sgxILLmMOi4oKsxaHDgsKsw4TEhcOL4oChxILi
+gJ7DouKCrMWhxILigLkgw4TigJrDiyDEgsuYw6LigJrCrMS5y4fEguKAmsOCwqzEguKAnsOE4oCm
+xILigJ7DhMS+w4TigJrDouKCrMW+xILLmMOi4oCawqzEucuHw4TigJrDiyDEgsuYw6LigqzFocOC
+wqzDhMSFw4TEvsSC4oCew6LigqzFocSC4oC5IMOE4oCaw4sgxILLmMOi4oCawqzEucuHxILigJrD
+gsKsw4TigJrDouKCrMWhxILigJrDgsKmxILigJ7DouKCrMWhxILLmMOi4oCawqzEucS+w4TigJrD
+iyDEgsuYw6LigqzFocOCwqzDhMSFw4vigKHEguKAnsOi4oKsxaHEguKAuSDDhOKAmsOLIMSCy5jD
+ouKAmsKsxLnLh8SC4oCaw4LCrMSC4oCew4TigKbEguKAucOi4oKsy4fDhOKAmsOi4oKsxb7EgsuY
+w6LigJrCrMS5y4fDhOKAmsOLIMSCy5jDouKCrMWhw4LCrMOExIXDi+KAocSC4oCew6LigqzFocSC
+y5jDouKAmsKsxLnLh8OE4oCaw6LigqzFocSC4oCaw4LCpGxlIHByw6lzZW50w6kgQ2hldnJvbGV0
+IFRyYXggMS43IFZDRGkgMTMwIExUIGF2ZWMgcGVpbnR1cmUgbcOpdGFsbGlzw6llIGV0IGphbnRl
+cyAxOCcgOiAyMSAzNTAg4oKsIGRvbnQgMiAwMDAg4oKsZGUgcHJpbWUgZMOpZHVpdGUuIEdhbW1l
+IFRyYXggLSBjb25zbyBtaXh0ZSAobC8xMDBrbSkgZGUgNCw1IMOgIDYsNSBldCDDqW1pc3Npb25z
+IGRlIENPwrIgKGcva20pIGRlIDEyMCDDoCAxNTMuIChkb25uw6llcyBwcm92aXNvaXJlcykuIE1Z
+MTQgLSBUYXJpZiBwdWJsaWMgVFRDIGNvbnNlaWxsw6kgYXUgMDEvMDkvMjAxMy4gT2ZmcmUgbm9u
+IGN1bXVsYWJsZSwgcsOpc2VydsOpZSBhdXggcGFydGljdWxpZXJzIGVuIEZyYW5jZSBtw6l0cm9w
+b2xpdGFpbmUsIHZhbGFibGUgcG91ciB0b3V0ZSBjb21tYW5kZSBldCBsaXZyYWlzb24gZCd1biBu
+b3V2ZWF1IENoZXZyb2xldCBUcmF4IG5ldWYgZHUgMDEvMDkvMjAxMyBhdSAzMS8xMi8yMDEzIGRh
+bnMgbGEgbGltaXRlIGRlcyBzdG9ja3MgZGlzcG9uaWJsZXMgY2hleiBjaGFjdW4gZGVzIERpc3Ry
+aWJ1dGV1cnMgcGFydGljaXBhbnRzLgotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KT2N0b2JlciBXZWJp
+bmFyczogQ29kZSBmb3IgUGVyZm9ybWFuY2UKRnJlZSBJbnRlbCB3ZWJpbmFycyBjYW4gaGVscCB5
+b3UgYWNjZWxlcmF0ZSBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZS4KRXhwbG9yZSB0aXBzIGZvciBN
+UEksIE9wZW5NUCwgYWR2YW5jZWQgcHJvZmlsaW5nLCBhbmQgbW9yZS4gR2V0IHRoZSBtb3N0IGZy
+b20gCnRoZSBsYXRlc3QgSW50ZWwgcHJvY2Vzc29ycyBhbmQgY29wcm9jZXNzb3JzLiBTZWUgYWJz
+dHJhY3RzIGFuZCByZWdpc3RlciA+Cmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2Ft
+cGFkL2Nsaz9pZD02MDEzMzQ3MSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5n
+IGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlz
+dHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

@@ -1,16 +1,13 @@
-From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2] spi: Use of_property_read_u32
-Date: Fri, 27 Sep 2013 05:37:25 -0700
-Message-ID: <20130927123725.15420.62151.stgit@Graphine>
-References: <20130926105448.GB14323@sirena.org.uk>
+From: "=?utf-8?Q?GO_Sport_par_Consodeal?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?SOLDES_!_jusqu'=C3=A0_-70%_chez_GO_Sport?=
+Date: Fri, 27 Sep 2013 15:22:56 +0000
+Message-ID: <1043=787c7769-859c-487b-a0f7-00b26c858f04=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20130926105448.GB14323-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,132 +18,124 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Instead of getting the raw property, checking the length, and doing
-endian conversion each time, use the OF function
-of_property_read_u32() that does all that.
-
-Error messages are slightly improved with error codes from
-of_property_read_u32() for different ways the property may be invalid
-(missing, too short, etc.)
-
-Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi.c |   49 +++++++++++++++++++++++--------------------------
- 1 file changed, 23 insertions(+), 26 deletions(-)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 8a2e685..001cdc4 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -838,9 +838,8 @@ static void of_register_spi_devices(struct spi_master *master)
- {
- 	struct spi_device *spi;
- 	struct device_node *nc;
--	const __be32 *prop;
- 	int rc;
--	int len;
-+	u32 value;
- 
- 	if (!master->dev.of_node)
- 		return;
-@@ -865,14 +864,14 @@ static void of_register_spi_devices(struct spi_master *master)
- 		}
- 
- 		/* Device address */
--		prop = of_get_property(nc, "reg", &len);
--		if (!prop || len < sizeof(*prop)) {
--			dev_err(&master->dev, "%s has no 'reg' property\n",
--				nc->full_name);
-+		rc = of_property_read_u32(nc, "reg", &value);
-+		if (rc) {
-+			dev_err(&master->dev, "%s has no valid 'reg' property (%d)\n",
-+				nc->full_name, rc);
- 			spi_dev_put(spi);
- 			continue;
- 		}
--		spi->chip_select = be32_to_cpup(prop);
-+		spi->chip_select = value;
- 
- 		/* Mode (clock phase/polarity/etc.) */
- 		if (of_find_property(nc, "spi-cpha", NULL))
-@@ -885,55 +884,53 @@ static void of_register_spi_devices(struct spi_master *master)
- 			spi->mode |= SPI_3WIRE;
- 
- 		/* Device DUAL/QUAD mode */
--		prop = of_get_property(nc, "spi-tx-bus-width", &len);
--		if (prop && len == sizeof(*prop)) {
--			switch (be32_to_cpup(prop)) {
--			case SPI_NBITS_SINGLE:
-+		if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
-+			switch (value) {
-+			case 1:
- 				break;
--			case SPI_NBITS_DUAL:
-+			case 2:
- 				spi->mode |= SPI_TX_DUAL;
- 				break;
--			case SPI_NBITS_QUAD:
-+			case 4:
- 				spi->mode |= SPI_TX_QUAD;
- 				break;
- 			default:
- 				dev_err(&master->dev,
- 					"spi-tx-bus-width %d not supported\n",
--					be32_to_cpup(prop));
-+					value);
- 				spi_dev_put(spi);
- 				continue;
- 			}
- 		}
- 
--		prop = of_get_property(nc, "spi-rx-bus-width", &len);
--		if (prop && len == sizeof(*prop)) {
--			switch (be32_to_cpup(prop)) {
--			case SPI_NBITS_SINGLE:
-+		if (!of_property_read_u32(nc, "spi-rx-bus-width", &value)) {
-+			switch (value) {
-+			case 1:
- 				break;
--			case SPI_NBITS_DUAL:
-+			case 2:
- 				spi->mode |= SPI_RX_DUAL;
- 				break;
--			case SPI_NBITS_QUAD:
-+			case 4:
- 				spi->mode |= SPI_RX_QUAD;
- 				break;
- 			default:
- 				dev_err(&master->dev,
- 					"spi-rx-bus-width %d not supported\n",
--					be32_to_cpup(prop));
-+					value);
- 				spi_dev_put(spi);
- 				continue;
- 			}
- 		}
- 
- 		/* Device speed */
--		prop = of_get_property(nc, "spi-max-frequency", &len);
--		if (!prop || len < sizeof(*prop)) {
--			dev_err(&master->dev, "%s has no 'spi-max-frequency' property\n",
--				nc->full_name);
-+		rc = of_property_read_u32(nc, "spi-max-frequency", &value);
-+		if (rc) {
-+			dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
-+				nc->full_name, rc);
- 			spi_dev_put(spi);
- 			continue;
- 		}
--		spi->max_speed_hz = be32_to_cpup(prop);
-+		spi->max_speed_hz = value;
- 
- 		/* IRQ */
- 		spi->irq = irq_of_parse_and_map(nc, 0);
-
-
-------------------------------------------------------------------------------
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60133471&iu=/4140/ostg.clktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICEKICAgICAgIFsxXVNQ
+T1JUUyBbMl1Ww4pURU1FTlRTIFszXUNIQVVTU1VSRVMgWzRdQUNDRVNTT0lSRVMgWzVdTUFSUVVF
+UwogICBbNl3DiVbDiE5FTUVOVFMKICAgU09MREVTICEgU09MREVTICEgU09MREVTICEKICAgRHUg
+MjUgc2VwdGVtYnJlIGF1IDggb2N0b2JyZSAyMDEzCiAgIFByb2ZpdGV6IGRlIHNvbGRlcyBleGNl
+cHRpb25uZWxzIGNoZXogR08gU3BvcnQgIQogICBQb3VyIGZhaXJlIGxlIHBsZWluIGRlIHRlbnVl
+cyBzcG9ydGl2ZXMsIGp1c3F1J8OgIC03MCUgc3VyIHVuZQogICBzw6lsZWN0aW9uIGRlIHByb2R1
+aXRzIGRlIGdyYW5kZXMgbWFycXVlcyAhCiAgIENvdXJleiB2aXRlIGTDqWNvdXZyaXIgbm90cmUg
+c8OpbGVjdGlvbiAhCiAgICBGYWNlYm9vayAgR29vZ2xlKyAgTm90cmUgYmxvZwogICAqVmFsYWJs
+ZSBzdXIgdW5lIHPDqWxlY3Rpb24gZCdhcnRpY2xlcyBzaWduYWzDqWUgZW4gbWFnYXNpbiBldCBk
+YW5zIGxhCiAgIGxpbWl0ZSBkZXMgc3RvY2tzIGRpc3BvbmlibGVzLiBPZmZyZSB2YWxhYmxlIGRh
+bnMgbGVzIG1hZ2FzaW5zIEdPCiAgIFNwb3J0IHNpdHXDqXMgZW4gRnJhbmNlIG3DqXRyb3BvbGl0
+YWluZSBob3JzIENow6Jsb25zLWVuLUNoYW1wYWduZSwKICAgTsOubWVzLCBCcml2ZSwgTW9udGFp
+Z3UgZXQgQ2hlcmJvdXJnIGV0IHN1ciBsZSBzaXRlIHd3dy5nby1zcG9ydC5jb20uCgpSZWZlcmVu
+Y2VzCgogICBWaXNpYmxlIGxpbmtzCiAgIDEuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9h
+cy9yMjkvcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvYmQwODVkYjUKICAgMi4gaHR0cDov
+L2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3IyVi9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xR
+TC9mZmMwZTVlNwogICAzLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvcjJaL3E1bGVB
+MkdvQURQUWYzY0dkN2dyRnkvYi9rbFFMLzIxYzkzNWUxCiAgIDQuIGh0dHA6Ly9jbGlja3MudHJh
+Y2tkb20uZnIvYy9hcy9yMjgvcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvZjRlMWYwYWEK
+ICAgNS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3IyWS9xNWxlQTJHb0FEUFFmM2NH
+ZDdnckZ5L2Iva2xRTC9mYmYzYzJjMAogICA2LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2Mv
+YXMvcjJlL3E1bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9rbFFML2ViM2Y1ZTVjCgogICBIaWRkZW4g
+bGlua3M6CiAgIDcuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yMmYvcTVsZUEyR29B
+RFBRZjNjR2Q3Z3JGeS9iL2tsUUwvMzEwNWE5N2QKICAgOC4gaHR0cDovL2NsaWNrcy50cmFja2Rv
+bS5mci9jL2FzL3IydS9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC9hZTgzOWEyYQogICA5
+LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvcjIwL3E1bGVBMkdvQURQUWYzY0dkN2dy
+RnkvYi9rbFFML2Q2M2Y5MjkxCiAgMTAuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9y
+WHkvcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvMjA3OGNkYjcKICAxMS4gaHR0cDovL2Ns
+aWNrcy50cmFja2RvbS5mci9jL2FzL3JYRi9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC9l
+YThlYTYwYQogIDEyLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvclhjL3E1bGVBMkdv
+QURQUWYzY0dkN2dyRnkvYi9rbFFML2Q0YzkzMWM0CiAgMTMuIGh0dHA6Ly9jbGlja3MudHJhY2tk
+b20uZnIvYy9hcy9yWG0vcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvOTkxM2JiZmMKICAx
+NC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JYYi9xNWxlQTJHb0FEUFFmM2NHZDdn
+ckZ5L2Iva2xRTC85ZDIwOWNkYgogIDE1LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMv
+clhvL3E1bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9rbFFMLzBhYzBlMWMyCiAgMTYuIGh0dHA6Ly9j
+bGlja3MudHJhY2tkb20uZnIvYy9hcy9yWEwvcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwv
+NWI4MzllMGYKICAxNy4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JYaS9xNWxlQTJH
+b0FEUFFmM2NHZDdnckZ5L2Iva2xRTC82NWM0MDljMQogIDE4LiBodHRwOi8vY2xpY2tzLnRyYWNr
+ZG9tLmZyL2MvYXMvclg3L3E1bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9rbFFML2EwMjA1MDE2CiAg
+MTkuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yWDIvcTVsZUEyR29BRFBRZjNjR2Q3
+Z3JGeS9iL2tsUUwvMTUxZTRmMzQKICAyMC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2Fz
+L3JYWC9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC9lMmU4ZTg0NAogIDIxLiBodHRwOi8v
+Y2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvclg2L3E1bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9rbFFM
+L2U5YzlmZDA5CiAgMjIuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yWGsvcTVsZUEy
+R29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvZjYxNzUzZmYKICAyMy4gaHR0cDovL2NsaWNrcy50cmFj
+a2RvbS5mci9jL2FzL3JYSC9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC9hNzU0MmMzMgog
+IDI0LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvclhFL3E1bGVBMkdvQURQUWYzY0dk
+N2dyRnkvYi9rbFFMLzMwYjQ1MTJiCiAgMjUuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9h
+cy9yWHIvcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvZDg5YzU4YWQKICAyNi4gaHR0cDov
+L2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JYYS9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xR
+TC80NzFhNmJmYQogIDI3LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvclhuL3E1bGVB
+MkdvQURQUWYzY0dkN2dyRnkvYi9rbFFMLzQzMjk0Y2RkCiAgMjguIGh0dHA6Ly9jbGlja3MudHJh
+Y2tkb20uZnIvYy9hcy9yWGovcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvYmZmZWZlZTAK
+ICAyOS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JYcy9xNWxlQTJHb0FEUFFmM2NH
+ZDdnckZ5L2Iva2xRTC85MTc1ZjViMgogIDMwLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2Mv
+YXMvclhJL3E1bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9rbFFML2VlYmQ4MTJkCiAgMzEuIGh0dHA6
+Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yWE4vcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2ts
+UUwvYzg1MGM0MzEKICAzMi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JYZy9xNWxl
+QTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC8yODFlODNmOQogIDMzLiBodHRwOi8vY2xpY2tzLnRy
+YWNrZG9tLmZyL2MvYXMvclg1L3E1bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9rbFFMLzMzZjMwYTI4
+CiAgMzQuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yWHYvcTVsZUEyR29BRFBRZjNj
+R2Q3Z3JGeS9iL2tsUUwvMjQ0YmVhOTAKICAzNS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9j
+L2FzL3JYdC9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC9iNzk4YjBhZQogIDM2LiBodHRw
+Oi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvclhxL3E1bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9r
+bFFMLzAyYTZhZjhjCiAgMzcuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yWGQvcTVs
+ZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvZjIyNDc0ZDgKICAzOC4gaHR0cDovL2NsaWNrcy50
+cmFja2RvbS5mci9jL2FzL3JYeC9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC82OTkxNjBh
+OAogIDM5LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvclhsL3E1bGVBMkdvQURQUWYz
+Y0dkN2dyRnkvYi9rbFFML2QwZmExNmUzCiAgNDAuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIv
+Yy9hcy9yWEEvcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvY2M2M2UzMTYKICA0MS4gaHR0
+cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JYUi9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iv
+a2xRTC81M2U1ZDA0MQogIDQyLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvclhRL3E1
+bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9rbFFMLzg5ZGYyNzYwCiAgNDMuIGh0dHA6Ly9jbGlja3Mu
+dHJhY2tkb20uZnIvYy9hcy9yWHAvcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvNGI0ZjAy
+OTMKICA0NC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JYUC9xNWxlQTJHb0FEUFFm
+M2NHZDdnckZ5L2Iva2xRTC9jMDM2OGE3ZgogIDQ1LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZy
+L2MvYXMvclhDL3E1bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9rbFFMLzVmYjBiOTI4CiAgNDYuIGh0
+dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yWGgvcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9i
+L2tsUUwvMmMyZGE0ZGUKICA0Ny4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JYVC9x
+NWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC8zY2UxMzg0MgogIDQ4LiBodHRwOi8vY2xpY2tz
+LnRyYWNrZG9tLmZyL2MvYXMvclhKL3E1bGVBMkdvQURQUWYzY0dkN2dyRnkvYi9rbFFMLzM0ODc3
+NjBjCiAgNDkuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yWFUvcTVsZUEyR29BRFBR
+ZjNjR2Q3Z3JGeS9iL2tsUUwvNzUwODk1NWQKICA1MC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5m
+ci9jL2FzL3JYTS9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC8xMjZhMzMxMAogIDUxLiBo
+dHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvclgtL3E1bGVBMkdvQURQUWYzY0dkN2dyRnkv
+Yi9rbFFMLzU0OTFhYzY1CiAgNTIuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yWEsv
+cTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvN2Q2ZWRiMTMKICA1My4gaHR0cDovL2NsaWNr
+cy50cmFja2RvbS5mci9jL2FzL3JYMS9xNWxlQTJHb0FEUFFmM2NHZDdnckZ5L2Iva2xRTC9jZjI0
+YjgxNQogIDU0LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvclg0L3E1bGVBMkdvQURQ
+UWYzY0dkN2dyRnkvYi9rbFFMLzdhMWFhNzM3CiAgNTUuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20u
+ZnIvYy9hcy9yWFcvcTVsZUEyR29BRFBRZjNjR2Q3Z3JGeS9iL2tsUUwvZTZkYmNmNjMKClZvdXMg
+cmVjZXZleiBjZSBtZXNzYWdlIGRlIG5vdHJlIHBhcnQgY2FyIHZvdXMgdm91cyDDqnRlcyBpbnNj
+cml0KGUpIGF2ZWMgbCdhZHJlc3NlIHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
+Lm5ldCBzdXIgbGUgc2l0ZSBDb25zb2RlYWwuY29tLiBDZSBzaXRlIGEgZmFpdCBsJ29iamV0IGQn
+dW5lIGTDqWNsYXJhdGlvbiBhdXByw6hzIGRlIGxhIENOSUwgc291cyBsZSBudW3DqXJvIDE1NDUx
+NDguIENvbmZvcm3DqW1lbnQgw6AgbCdhcnRpY2xlIDM0IGRlIGxhIGxvaSDCq0luZm9ybWF0aXF1
+ZSBldCBMaWJlcnTDqXPCuyBkdSA2IGphbnZpZXIgMTk3OCwgdm91cyBwb3V2ZXogZXhlcmNlciB2
+b3RyZSBkcm9pdCBkJ2FjY8OocywgZGUgbW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIG91
+IGVuY29yZSBkZSBzdXBwcmVzc2lvbiBkZSB2b3MgaW5mb3JtYXRpb25zIHBlcnNvbm5lbGxlcyB2
+aWEgbGUgbGllbiBzdWl2YW50IDogTWVzIEFib25uZW1lbnRzLgpQb3VyIHZvdXMgZMOpc2Fib25u
+ZXIsIG1lcmNpIGRlIGNsaXF1ZXIgaWNpIGljaS4KCVF1aSBzb21tZXMtbm91cyA/CkNvbnNvZGVh
+bCBlc3QgdW5lIG5ld3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDDqWRpdMOpZSBwYXIgbGEgc29jacOp
+dMOpIE5hdGV4bywgcXVpIHZvdXMgcHJvcG9zZSB1bmUgc8OpbGVjdGlvbiBkZSBib25zIHBsYW5z
+LiBFbiDDqXRhbnQgYWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBkJ2luZm9ybWF0aW9uLCB2b3VzIHJl
+Y2V2cmV6IGxlIHRvcCBkZXMgamV1eCBjb25jb3VycywgbGVzIG9mZnJlcyBkdSBtb21lbnQgcG91
+ciB0b3VzIHZvcyB0cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMgZXhjbHVzaXZlcyDDoCBkZXMgZXNz
+YWlzIGV0IHZlbnRlcyBwcml2w6llcyBkZSBncmFuZGVzIG1hcnF1ZXMuIAotLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0KT2N0b2JlciBXZWJpbmFyczogQ29kZSBmb3IgUGVyZm9ybWFuY2UKRnJlZSBJbnRl
+bCB3ZWJpbmFycyBjYW4gaGVscCB5b3UgYWNjZWxlcmF0ZSBhcHBsaWNhdGlvbiBwZXJmb3JtYW5j
+ZS4KRXhwbG9yZSB0aXBzIGZvciBNUEksIE9wZW5NUCwgYWR2YW5jZWQgcHJvZmlsaW5nLCBhbmQg
+bW9yZS4gR2V0IHRoZSBtb3N0IGZyb20gCnRoZSBsYXRlc3QgSW50ZWwgcHJvY2Vzc29ycyBhbmQg
+Y29wcm9jZXNzb3JzLiBTZWUgYWJzdHJhY3RzIGFuZCByZWdpc3RlciA+Cmh0dHA6Ly9wdWJhZHMu
+Zy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD02MDEzMzQ3MSZpdT0vNDE0MC9vc3RnLmNs
+a3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
+ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
+Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
+aS1kZXZlbC1nZW5lcmFsCg==

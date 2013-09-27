@@ -1,11 +1,11 @@
-From: "Tati par Nl-Promos" <lisa@a.optincake.com>
-Subject: Les petits prix sont de retour
-Date: Fri, 27 Sep 2013 01:08:04 +0100
-Message-ID: <0.0.45.D77.1CEBB15A2F58E06.0@mta199.pur3.net>
-Reply-To: Tati par Nl-Promos <lisa@a.optincake.com>
+From: Trivago <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: New York pour moins de 200euros en 4*
+Date: Fri, 27 Sep 2013 10:28:52 +0200 (CEST)
+Message-ID: <iuha6w.hm35fqodn49zu9l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,40 +18,77 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTk4MjgzMjIwNTM3Mjg0CgoKCgoKKFBhcnJhaW5hZ2UpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1t
-ZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1hMzM4NDQyMmI3Mjg5NTc5OWY2MDJmYmU0YjExNWY3
-ZQoKCkZFTU1FOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFt
-cz02NTA2NWJkNWU1N2RlY2M3YWY3OTFlYTNlYzBhMzVmMgoKCkhPTU1FOgpodHRwOi8vbXRyYzEu
-ZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz0yMDU5ZTU1ZThmZjYxMjIyNzc5YTUy
-MDJmZDIzNDdmZQoKCkVORkFOVDoKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGlj
-LnBocD9wYXJhbXM9YmZmODZlNjFhNTU2NmE4Y2ZkOWE0NTI2NWEyMTA1ZjYKCgpDSEFVU1NVUkVT
-OgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz04MjdmMjIx
-MGY1N2Y1OTZmOGFkYTVhZWZiMzY2NDFmOQoKCk1BSVNPTjoKaHR0cDovL210cmMxLmRpZ2l0YWwt
-bWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MzFiODJhZjg1ZWIyZjg5YTcyYjk2YmJmOTRmZmY5
-NWEKCgpNRVVCTEVTOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3Bh
-cmFtcz04ZWJmMmI4NjhmYmQ1YmJiYzE0ZWU1NTg2YjZiN2UxMAoKCk1BUklBR0U6Cmh0dHA6Ly9t
-dHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWFkMGQyOWY5MGE0YTc4YmZi
-ZGJiZTliN2U0ZDllODBkCgoKVEFUSSBPUjoKaHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNv
-bS9jbGljLnBocD9wYXJhbXM9NzJkOGJlNTljOWRiOGM0OWEzMzY4ODNjMjUwZmQzZTkKCihMZXMg
-Ym9vdHMgTW90YXJkZXMpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhw
-P3BhcmFtcz05M2JjY2JiNGFiNGExOWJmNDNkMzQzNWQ4ZjI4ZTU2NAoKKExlIFB1bGwpOgpodHRw
-Oi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1iYmYyYTI1NjEwOTVj
-NTljN2Y1ZWE5ZjVlOTAyMTdmOQoKKExlIGJsb3Vzb24gY291cnQpOgpodHRwOi8vbXRyYzEuZGln
-aXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz0zNTRmNzRlZGM2ZjBhNDE4NWZjMzFmOTA4
-ZDVlODUyYgoKCipKJ2FpbWUgVGF0aQoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZp
-c2l0ZXogOgpodHRwOi8vYS5vcHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2
-NjI1MTk4MjgzMjIwNTM3Mjg0CgoKCgoKCnt+QUo4NDY0MTg2NjI1MTk4MjgzMjIwNTM3Mjg0fn0K
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tCk9jdG9iZXIgV2ViaW5hcnM6IENvZGUgZm9yIFBlcmZvcm1h
-bmNlCkZyZWUgSW50ZWwgd2ViaW5hcnMgY2FuIGhlbHAgeW91IGFjY2VsZXJhdGUgYXBwbGljYXRp
-b24gcGVyZm9ybWFuY2UuCkV4cGxvcmUgdGlwcyBmb3IgTVBJLCBPcGVuTVAsIGFkdmFuY2VkIHBy
-b2ZpbGluZywgYW5kIG1vcmUuIEdldCB0aGUgbW9zdCBmcm9tIAp0aGUgbGF0ZXN0IEludGVsIHBy
-b2Nlc3NvcnMgYW5kIGNvcHJvY2Vzc29ycy4gU2VlIGFic3RyYWN0cyBhbmQgcmVnaXN0ZXIgPgpo
-dHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NjAxMzM0NzEmaXU9
-LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0
-cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgrejrI7gfk57dIhm35fh8dI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380270519839%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DIEBMAFOIHFCKOLEB%26mid%3D1600272999&s=3DN=
+KIICAIGAJLJGLLJ
+ =
+
+New York pour moins de 200euros en 4*New York pour moins de 200euros en 4*N=
+ew York pour moins de 200euros en 4*New York pour moins de 200euros en 4*Ne=
+w York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New=
+ York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New =
+York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Y=
+ork pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Yo=
+rk pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Yor=
+k pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York=
+ pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York =
+pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York p=
+our moins de 200euros en 4*New York pour moins de 200euros en 4*New York po=
+ur moins de 200euros en 4*New York pour moins de 200euros en 4*New York pou=
+r moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour=
+ moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour =
+moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour m=
+oins de 200euros en 4*New York pour moins de 200euros en 4*New York pour mo=
+ins de 200euros en 4*New York pour moins de 200euros en 4*New York pour moi=
+ns de 200euros en 4*New York pour moins de 200euros en 4*New York pour moin=
+s de 200euros en 4*New York pour moins de 200euros en 4*New York pour moins=
+ de 200euros en 4*New York pour moins de 200euros en 4*New York pour moins =
+de 200euros en 4*New York pour moins de 200euros en 4*New York pour moins d=
+e 200euros en 4*New York pour moins de 200euros en 4*New York pour moins de=
+ 200euros en 4*New York pour moins de 200euros en 4*New York pour moins de =
+200euros en 4*New York pour moins de 200euros en 4*New York pour moins de 2=
+00euros en 4*New York pour moins de 200euros en 4*New York pour moins de 20=
+0euros en 4*New York pour moins de 200euros en 4*New York pour moins de 200=
+euros en 4*New York pour moins de 200euros en 4*New York pour moins de 200e=
+uros en 4*New York pour moins de 200euros en 4*New York pour moins de 200eu=
+ros en 4*New York pour moins de 200euros en 4*New York pour moins de 200eur=
+os en 4*New York pour moins de 200euros en 4*New York pour moins de 200euro=
+s en 4*New York pour moins de 200euros en 4*New York pour moins de 200euros=
+ en 4*New York pour moins de 200euros en 4*New York pour moins de 200euros =
+en 4*New York pour moins de 200euros en 4*New York pour moins de 200euros e=
+n 4*New York pour moins de 200euros en 4*New York pour moins de 200euros en=
+ 4*New York pour moins de 200euros en 4*New York pour moins de 200euros en =
+4*New York pour moins de 200euros en 4*New York pour moins de 200euros en 4=
+*New York pour moins de 200euros en 4*New York pour moins de 200euros en 4*=
+New York pour moins de 200euros en 4*New York pour moins de 200euros en 4*N=
+ew York pour moins de 200euros en 4*New York pour moins de 200euros en 4*Ne=
+w York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New=
+ York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New =
+York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Y=
+ork pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Yo=
+rk pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Yor=
+k pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York=
+ pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York =
+pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York p=
+our moins de 200euros en 4*New York pour moins de 200euros en 4*New York po=
+ur moins de 200euros en 4*New York pour moins de 200euros en 4*New York pou=
+r moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour=
+ moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour =
+moins de 200euros en 4*
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600272999&sig=3DFEIIEEOLCEMILJMI
+---------------------------------------------------------------------------=
+---
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
+om =
+
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=3D60133471&iu=3D/4140/ostg.cl=
+ktrk

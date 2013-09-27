@@ -1,13 +1,16 @@
-From: Trivago <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: New York pour moins de 200euros en 4*
-Date: Fri, 27 Sep 2013 10:28:52 +0200 (CEST)
-Message-ID: <iuha6w.hm35fqodn49zu9l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2] spi: Use of_property_read_u32
+Date: Fri, 27 Sep 2013 05:37:25 -0700
+Message-ID: <20130927123725.15420.62151.stgit@Graphine>
+References: <20130926105448.GB14323@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	yuhang wang <wangyuhang2014-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20130926105448.GB14323-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,77 +21,132 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgrejrI7gfk57dIhm35fh8dI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380270519839%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DIEBMAFOIHFCKOLEB%26mid%3D1600272999&s=3DN=
-KIICAIGAJLJGLLJ
- =
+Instead of getting the raw property, checking the length, and doing
+endian conversion each time, use the OF function
+of_property_read_u32() that does all that.
 
-New York pour moins de 200euros en 4*New York pour moins de 200euros en 4*N=
-ew York pour moins de 200euros en 4*New York pour moins de 200euros en 4*Ne=
-w York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New=
- York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New =
-York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Y=
-ork pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Yo=
-rk pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Yor=
-k pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York=
- pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York =
-pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York p=
-our moins de 200euros en 4*New York pour moins de 200euros en 4*New York po=
-ur moins de 200euros en 4*New York pour moins de 200euros en 4*New York pou=
-r moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour=
- moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour =
-moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour m=
-oins de 200euros en 4*New York pour moins de 200euros en 4*New York pour mo=
-ins de 200euros en 4*New York pour moins de 200euros en 4*New York pour moi=
-ns de 200euros en 4*New York pour moins de 200euros en 4*New York pour moin=
-s de 200euros en 4*New York pour moins de 200euros en 4*New York pour moins=
- de 200euros en 4*New York pour moins de 200euros en 4*New York pour moins =
-de 200euros en 4*New York pour moins de 200euros en 4*New York pour moins d=
-e 200euros en 4*New York pour moins de 200euros en 4*New York pour moins de=
- 200euros en 4*New York pour moins de 200euros en 4*New York pour moins de =
-200euros en 4*New York pour moins de 200euros en 4*New York pour moins de 2=
-00euros en 4*New York pour moins de 200euros en 4*New York pour moins de 20=
-0euros en 4*New York pour moins de 200euros en 4*New York pour moins de 200=
-euros en 4*New York pour moins de 200euros en 4*New York pour moins de 200e=
-uros en 4*New York pour moins de 200euros en 4*New York pour moins de 200eu=
-ros en 4*New York pour moins de 200euros en 4*New York pour moins de 200eur=
-os en 4*New York pour moins de 200euros en 4*New York pour moins de 200euro=
-s en 4*New York pour moins de 200euros en 4*New York pour moins de 200euros=
- en 4*New York pour moins de 200euros en 4*New York pour moins de 200euros =
-en 4*New York pour moins de 200euros en 4*New York pour moins de 200euros e=
-n 4*New York pour moins de 200euros en 4*New York pour moins de 200euros en=
- 4*New York pour moins de 200euros en 4*New York pour moins de 200euros en =
-4*New York pour moins de 200euros en 4*New York pour moins de 200euros en 4=
-*New York pour moins de 200euros en 4*New York pour moins de 200euros en 4*=
-New York pour moins de 200euros en 4*New York pour moins de 200euros en 4*N=
-ew York pour moins de 200euros en 4*New York pour moins de 200euros en 4*Ne=
-w York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New=
- York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New =
-York pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Y=
-ork pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Yo=
-rk pour moins de 200euros en 4*New York pour moins de 200euros en 4*New Yor=
-k pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York=
- pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York =
-pour moins de 200euros en 4*New York pour moins de 200euros en 4*New York p=
-our moins de 200euros en 4*New York pour moins de 200euros en 4*New York po=
-ur moins de 200euros en 4*New York pour moins de 200euros en 4*New York pou=
-r moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour=
- moins de 200euros en 4*New York pour moins de 200euros en 4*New York pour =
-moins de 200euros en 4*
- =
+Error messages are slightly improved with error codes from
+of_property_read_u32() for different ways the property may be invalid
+(missing, too short, etc.)
 
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600272999&sig=3DFEIIEEOLCEMILJMI
----------------------------------------------------------------------------=
+Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
+ drivers/spi/spi.c |   49 +++++++++++++++++++++++--------------------------
+ 1 file changed, 23 insertions(+), 26 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 8a2e685..001cdc4 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -838,9 +838,8 @@ static void of_register_spi_devices(struct spi_master *master)
+ {
+ 	struct spi_device *spi;
+ 	struct device_node *nc;
+-	const __be32 *prop;
+ 	int rc;
+-	int len;
++	u32 value;
+ 
+ 	if (!master->dev.of_node)
+ 		return;
+@@ -865,14 +864,14 @@ static void of_register_spi_devices(struct spi_master *master)
+ 		}
+ 
+ 		/* Device address */
+-		prop = of_get_property(nc, "reg", &len);
+-		if (!prop || len < sizeof(*prop)) {
+-			dev_err(&master->dev, "%s has no 'reg' property\n",
+-				nc->full_name);
++		rc = of_property_read_u32(nc, "reg", &value);
++		if (rc) {
++			dev_err(&master->dev, "%s has no valid 'reg' property (%d)\n",
++				nc->full_name, rc);
+ 			spi_dev_put(spi);
+ 			continue;
+ 		}
+-		spi->chip_select = be32_to_cpup(prop);
++		spi->chip_select = value;
+ 
+ 		/* Mode (clock phase/polarity/etc.) */
+ 		if (of_find_property(nc, "spi-cpha", NULL))
+@@ -885,55 +884,53 @@ static void of_register_spi_devices(struct spi_master *master)
+ 			spi->mode |= SPI_3WIRE;
+ 
+ 		/* Device DUAL/QUAD mode */
+-		prop = of_get_property(nc, "spi-tx-bus-width", &len);
+-		if (prop && len == sizeof(*prop)) {
+-			switch (be32_to_cpup(prop)) {
+-			case SPI_NBITS_SINGLE:
++		if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
++			switch (value) {
++			case 1:
+ 				break;
+-			case SPI_NBITS_DUAL:
++			case 2:
+ 				spi->mode |= SPI_TX_DUAL;
+ 				break;
+-			case SPI_NBITS_QUAD:
++			case 4:
+ 				spi->mode |= SPI_TX_QUAD;
+ 				break;
+ 			default:
+ 				dev_err(&master->dev,
+ 					"spi-tx-bus-width %d not supported\n",
+-					be32_to_cpup(prop));
++					value);
+ 				spi_dev_put(spi);
+ 				continue;
+ 			}
+ 		}
+ 
+-		prop = of_get_property(nc, "spi-rx-bus-width", &len);
+-		if (prop && len == sizeof(*prop)) {
+-			switch (be32_to_cpup(prop)) {
+-			case SPI_NBITS_SINGLE:
++		if (!of_property_read_u32(nc, "spi-rx-bus-width", &value)) {
++			switch (value) {
++			case 1:
+ 				break;
+-			case SPI_NBITS_DUAL:
++			case 2:
+ 				spi->mode |= SPI_RX_DUAL;
+ 				break;
+-			case SPI_NBITS_QUAD:
++			case 4:
+ 				spi->mode |= SPI_RX_QUAD;
+ 				break;
+ 			default:
+ 				dev_err(&master->dev,
+ 					"spi-rx-bus-width %d not supported\n",
+-					be32_to_cpup(prop));
++					value);
+ 				spi_dev_put(spi);
+ 				continue;
+ 			}
+ 		}
+ 
+ 		/* Device speed */
+-		prop = of_get_property(nc, "spi-max-frequency", &len);
+-		if (!prop || len < sizeof(*prop)) {
+-			dev_err(&master->dev, "%s has no 'spi-max-frequency' property\n",
+-				nc->full_name);
++		rc = of_property_read_u32(nc, "spi-max-frequency", &value);
++		if (rc) {
++			dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
++				nc->full_name, rc);
+ 			spi_dev_put(spi);
+ 			continue;
+ 		}
+-		spi->max_speed_hz = be32_to_cpup(prop);
++		spi->max_speed_hz = value;
+ 
+ 		/* IRQ */
+ 		spi->irq = irq_of_parse_and_map(nc, 0);
+
+
+------------------------------------------------------------------------------
 October Webinars: Code for Performance
 Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
 the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60133471&iu=3D/4140/ostg.cl=
-ktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=60133471&iu=/4140/ostg.clktrk

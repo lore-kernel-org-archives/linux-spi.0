@@ -1,11 +1,11 @@
-From: "Trigano Store par Neezz" <lisa@a.optincake.com>
-Subject: Moins 10 pourcent sur tout le site et la livraison gratuite !
-Date: Sat, 28 Sep 2013 01:13:02 +0100
-Message-ID: <0.0.15.48D.1CEBBDF7F3C5146.0@mta148.pur3.net>
-Reply-To: Trigano Store par Neezz <lisa@a.optincake.com>
+From: La Chaise Longue par Neezz <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Moins 20 pourcent sur tous les meubles et luminaires !
+Date: Sat, 28 Sep 2013 11:07:22 +0200 (CEST)
+Message-ID: <i3rllw.hm4m940q57hjg0l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,154 +18,118 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTk4ODkzMjIwNTM3MzU0CgoKCi0xMCBwb3VyIGNlbnQgc3VyIHRvdXQgbGUgc2l0ZToKaHR0cDov
-L2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2
-JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tP3V0bV9zb3VyY2U9TmV3c2xldHRlcitB
-TWVkaWEmdXRtX21lZGl1bT1lLW1haWwmdXRtX2NhbXBhaWduPU5ld3MKbGV0dGVyK0FNZWRpYTEw
-CgooVHJpZ2FubyBTdG9yZSk6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTIx
-NTI0NyZhPTE5MDUzODkmZz0yMTQ2NjMxNiZ1cmw9aHR0cDovL3d3dy50CnJpZ2Fub3N0b3JlLmNv
-bT91dG1fc291cmNlPU5ld3NsZXR0ZXIrQU1lZGlhJnV0bV9tZWRpdW09ZS1tYWlsJnV0bV9jYW1w
-YWlnbj1OZXdzCmxldHRlcitBTWVkaWExMAoKKERpcmVjdCBVc2luZSAtIExpdnJhaXNvbiBncmF0
-dWl0ZSk6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTIxNTI0NyZhPTE5MDUz
-ODkmZz0yMTQ2NjMxNiZ1cmw9aHR0cDovL3d3dy50CnJpZ2Fub3N0b3JlLmNvbT91dG1fc291cmNl
-PU5ld3NsZXR0ZXIrQU1lZGlhJnV0bV9tZWRpdW09ZS1tYWlsJnV0bV9jYW1wYWlnbj1OZXdzCmxl
-dHRlcitBTWVkaWExMAoKKG1lbnUuanBnKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2Ns
-aWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2JnVybD1odHRwOi8vd3d3LnQKcmlnYW5v
-c3RvcmUuY29tP3V0bV9zb3VyY2U9TmV3c2xldHRlcitBTWVkaWEmdXRtX21lZGl1bT1lLW1haWwm
-dXRtX2NhbXBhaWduPU5ld3MKbGV0dGVyK0FNZWRpYTEwCgooLTEwJSBzdXIgdG91dCBsZSBzaXRl
-IGF2ZWMgbGUgY29kZSBwcm9tbyBBTTEwKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2Ns
-aWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2JnVybD1odHRwOi8vd3d3LnQKcmlnYW5v
-c3RvcmUuY29tP3V0bV9zb3VyY2U9TmV3c2xldHRlcitBTWVkaWEmdXRtX21lZGl1bT1lLW1haWwm
-dXRtX2NhbXBhaWduPU5ld3MKbGV0dGVyK0FNZWRpYTEwCgooRGVzIGlkw6llcyDDoCBuZSBwYXMg
-bWFucXVlcik6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTIxNTI0NyZhPTE5
-MDUzODkmZz0yMTQ2NjMxNiZ1cmw9aHR0cDovL3d3dy50CnJpZ2Fub3N0b3JlLmNvbT91dG1fc291
-cmNlPU5ld3NsZXR0ZXIrQU1lZGlhJnV0bV9tZWRpdW09ZS1tYWlsJnV0bV9jYW1wYWlnbj1OZXdz
-CmxldHRlcitBTWVkaWExMAoKKEFicmkgZGUgamFyZGluIG3DqXRhbCk6Cmh0dHA6Ly9jbGsudHJh
-ZGVkb3VibGVyLmNvbS9jbGljaz9wPTIxNTI0NyZhPTE5MDUzODkmZz0yMTQ2NjMxNiZ1cmw9aHR0
-cDovL3d3dy50CnJpZ2Fub3N0b3JlLmNvbS9hYnJpcy1qYXJkaW4tZ2FyYWdlcy9hYnJpcy1qYXJk
-aW4tbWV0YWwvYWJyaS1qYXJkaW4tbWV0YWwteWFyZG1hCnN0ZXItNCwyMC1tMi4vcHJvZC02MTM5
-Lmh0bWw/dXRtX3NvdXJjZT1OZXdzbGV0dGVyK0FNZWRpYSZ1dG1fbWVkaXVtPWUtbWFpbCZ1dG1f
-CmNhbXBhaWduPU5ld3NsZXR0ZXIrQU1lZGlhMTAKCihEdSByYW5nZW1lbnQgcG91ciBsYSByZW50
-csOpZSAtMTAlKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9
-MTkwNTM4OSZnPTIxNDY2MzE2JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2Ficmlz
-LWphcmRpbi1nYXJhZ2VzL2FicmlzLWphcmRpbi1tZXRhbC9hYnJpLWphcmRpbi1tZXRhbC15YXJk
-bWEKc3Rlci00LDIwLW0yLi9wcm9kLTYxMzkuaHRtbD91dG1fc291cmNlPU5ld3NsZXR0ZXIrQU1l
-ZGlhJnV0bV9tZWRpdW09ZS1tYWlsJnV0bV8KY2FtcGFpZ249TmV3c2xldHRlcitBTWVkaWExMAoK
-CkFicmkgZGUgamFyZGluIG3DqXRhbCBnYWx2YW5pc8OpCmdhcmFudGkgMTIgYW5zLjoKaHR0cDov
-L2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2
-JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2FicmlzLWphcmRpbi1nYXJhZ2VzL2Fi
-cmlzLWphcmRpbi1tZXRhbC9hYnJpLWphcmRpbi1tZXRhbC15YXJkbWEKc3Rlci00LDIwLW0yLi9w
-cm9kLTYxMzkuaHRtbD91dG1fc291cmNlPU5ld3NsZXR0ZXIrQU1lZGlhJnV0bV9tZWRpdW09ZS1t
-YWlsJnV0bV8KY2FtcGFpZ249TmV3c2xldHRlcitBTWVkaWExMAoKCjI2OSwxMOKCrDoKaHR0cDov
-L2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2
-JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2FicmlzLWphcmRpbi1nYXJhZ2VzL2Fi
-cmlzLWphcmRpbi1tZXRhbC9hYnJpLWphcmRpbi1tZXRhbC15YXJkbWEKc3Rlci00LDIwLW0yLi9w
-cm9kLTYxMzkuaHRtbD91dG1fc291cmNlPU5ld3NsZXR0ZXIrQU1lZGlhJnV0bV9tZWRpdW09ZS1t
-YWlsJnV0bV8KY2FtcGFpZ249TmV3c2xldHRlcitBTWVkaWExMAoKCjI5OeKCrDoKaHR0cDovL2Ns
-ay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2JnVy
-bD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2FicmlzLWphcmRpbi1nYXJhZ2VzL2Ficmlz
-LWphcmRpbi1tZXRhbC9hYnJpLWphcmRpbi1tZXRhbC15YXJkbWEKc3Rlci00LDIwLW0yLi9wcm9k
-LTYxMzkuaHRtbD91dG1fc291cmNlPU5ld3NsZXR0ZXIrQU1lZGlhJnV0bV9tZWRpdW09ZS1tYWls
-JnV0bV8KY2FtcGFpZ249TmV3c2xldHRlcitBTWVkaWExMAoKKEplIGNvdXJzKToKaHR0cDovL2Ns
-ay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2JnVy
-bD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2FicmlzLWphcmRpbi1nYXJhZ2VzL2Ficmlz
-LWphcmRpbi1tZXRhbC9hYnJpLWphcmRpbi1tZXRhbC15YXJkbWEKc3Rlci00LDIwLW0yLi9wcm9k
-LTYxMzkuaHRtbD91dG1fc291cmNlPU5ld3NsZXR0ZXIrQU1lZGlhJnV0bV9tZWRpdW09ZS1tYWls
-JnV0bV8KY2FtcGFpZ249TmV3c2xldHRlcitBTWVkaWExMAoKKFBvcnRpcXVlIGVuIGJvaXMpOgpo
-dHRwOi8vY2xrLnRyYWRlZG91Ymxlci5jb20vY2xpY2s/cD0yMTUyNDcmYT0xOTA1Mzg5Jmc9MjE0
-NjYzMTYmdXJsPWh0dHA6Ly93d3cudApyaWdhbm9zdG9yZS5jb20vamV1eC1wbGVpbi1haXIvcG9y
-dGlxdWVzLWJhbGFuY29pcmVzL3BvcnRpcXVlcy1ib2lzL3BvcnRpcXVlLWVuLQpib2lzLXRyaWdh
-bm8tMiw1MC1tLi0rLXRvYm9nZ2FuLi0zLWVuZmFudHMuL3Byb2QtNDg4NC5odG1sP3V0bV9zb3Vy
-Y2U9TmV3c2xldHRlcgorQU1lZGlhJnV0bV9tZWRpdW09ZS1tYWlsJnV0bV9jYW1wYWlnbj1OZXdz
-bGV0dGVyK0FNZWRpYTEwCgooTW9uIGphcmRpbiB2YSBwcmVuZHJlIGRlcyBjb3VsZXVycyAtMTAl
-KToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZn
-PTIxNDY2MzE2JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2pldXgtcGxlaW4tYWly
-L3BvcnRpcXVlcy1iYWxhbmNvaXJlcy9wb3J0aXF1ZXMtYm9pcy9wb3J0aXF1ZS1lbi0KYm9pcy10
-cmlnYW5vLTIsNTAtbS4tKy10b2JvZ2dhbi4tMy1lbmZhbnRzLi9wcm9kLTQ4ODQuaHRtbD91dG1f
-c291cmNlPU5ld3NsZXR0ZXIKK0FNZWRpYSZ1dG1fbWVkaXVtPWUtbWFpbCZ1dG1fY2FtcGFpZ249
-TmV3c2xldHRlcitBTWVkaWExMAoKCjIsNTAgTS4gMyBFTkZBTlRTLgoyIGJhbGFuw6dvaXJlcyAr
-IDEgcGxhdGUtZm9ybWUKZXQKMSB0b2JvZ2dhbjoKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29t
-L2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2JnVybD1odHRwOi8vd3d3LnQKcmln
-YW5vc3RvcmUuY29tL2pldXgtcGxlaW4tYWlyL3BvcnRpcXVlcy1iYWxhbmNvaXJlcy9wb3J0aXF1
-ZXMtYm9pcy9wb3J0aXF1ZS1lbi0KYm9pcy10cmlnYW5vLTIsNTAtbS4tKy10b2JvZ2dhbi4tMy1l
-bmZhbnRzLi9wcm9kLTQ4ODQuaHRtbD91dG1fc291cmNlPU5ld3NsZXR0ZXIKK0FNZWRpYSZ1dG1f
-bWVkaXVtPWUtbWFpbCZ1dG1fY2FtcGFpZ249TmV3c2xldHRlcitBTWVkaWExMAoKCjI0MiwxMOKC
-rDoKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZn
-PTIxNDY2MzE2JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2pldXgtcGxlaW4tYWly
-L3BvcnRpcXVlcy1iYWxhbmNvaXJlcy9wb3J0aXF1ZXMtYm9pcy9wb3J0aXF1ZS1lbi0KYm9pcy10
-cmlnYW5vLTIsNTAtbS4tKy10b2JvZ2dhbi4tMy1lbmZhbnRzLi9wcm9kLTQ4ODQuaHRtbD91dG1f
-c291cmNlPU5ld3NsZXR0ZXIKK0FNZWRpYSZ1dG1fbWVkaXVtPWUtbWFpbCZ1dG1fY2FtcGFpZ249
-TmV3c2xldHRlcitBTWVkaWExMAoKCjI2OeKCrDoKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29t
-L2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2JnVybD1odHRwOi8vd3d3LnQKcmln
-YW5vc3RvcmUuY29tL2pldXgtcGxlaW4tYWlyL3BvcnRpcXVlcy1iYWxhbmNvaXJlcy9wb3J0aXF1
-ZXMtYm9pcy9wb3J0aXF1ZS1lbi0KYm9pcy10cmlnYW5vLTIsNTAtbS4tKy10b2JvZ2dhbi4tMy1l
-bmZhbnRzLi9wcm9kLTQ4ODQuaHRtbD91dG1fc291cmNlPU5ld3NsZXR0ZXIKK0FNZWRpYSZ1dG1f
-bWVkaXVtPWUtbWFpbCZ1dG1fY2FtcGFpZ249TmV3c2xldHRlcitBTWVkaWExMAoKKEoneSB2YWlz
-KToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZn
-PTIxNDY2MzE2JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2pldXgtcGxlaW4tYWly
-L3BvcnRpcXVlcy1iYWxhbmNvaXJlcy9wb3J0aXF1ZXMtYm9pcy9wb3J0aXF1ZS1lbi0KYm9pcy10
-cmlnYW5vLTIsNTAtbS4tKy10b2JvZ2dhbi4tMy1lbmZhbnRzLi9wcm9kLTQ4ODQuaHRtbD91dG1f
-c291cmNlPU5ld3NsZXR0ZXIKK0FNZWRpYSZ1dG1fbWVkaXVtPWUtbWFpbCZ1dG1fY2FtcGFpZ249
-TmV3c2xldHRlcitBTWVkaWExMAoKKFRyYW1wb2xpbmUgZW5mYW50KToKaHR0cDovL2Nsay50cmFk
-ZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2JnVybD1odHRw
-Oi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2pldXgtcGxlaW4tYWlyL3RyYW1wb2xpbmVzL3RyYW1w
-b2xpbmUtZW5mYW50LWRpYW0uLTMsNjYtbS4tKy1maWwKZXQtcHJvdGVjdGlvbi4vcHJvZC01NjY3
-Lmh0bWw/dXRtX3NvdXJjZT1OZXdzbGV0dGVyK0FNZWRpYSZ1dG1fbWVkaXVtPWUtbWFpbCZ1dG0K
-X2NhbXBhaWduPU5ld3NsZXR0ZXIrQU1lZGlhMTAKCihTYXV0ZXogZGUgam9pZSAtMTAlKToKaHR0
-cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2
-MzE2JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2pldXgtcGxlaW4tYWlyL3RyYW1w
-b2xpbmVzL3RyYW1wb2xpbmUtZW5mYW50LWRpYW0uLTMsNjYtbS4tKy1maWwKZXQtcHJvdGVjdGlv
-bi4vcHJvZC01NjY3Lmh0bWw/dXRtX3NvdXJjZT1OZXdzbGV0dGVyK0FNZWRpYSZ1dG1fbWVkaXVt
-PWUtbWFpbCZ1dG0KX2NhbXBhaWduPU5ld3NsZXR0ZXIrQU1lZGlhMTAKCgpVbiB0cmFtcG9saW5l
-IHBvdXIgc2UgZMOpZm91bGVyIGV0CnMnYW11c2VyIGVuIHRvdXRlIHPDqWN1cml0w6kgIToKaHR0
-cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2
-MzE2JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tL2pldXgtcGxlaW4tYWlyL3RyYW1w
-b2xpbmVzL3RyYW1wb2xpbmUtZW5mYW50LWRpYW0uLTMsNjYtbS4tKy1maWwKZXQtcHJvdGVjdGlv
-bi4vcHJvZC01NjY3Lmh0bWw/dXRtX3NvdXJjZT1OZXdzbGV0dGVyK0FNZWRpYSZ1dG1fbWVkaXVt
-PWUtbWFpbCZ1dG0KX2NhbXBhaWduPU5ld3NsZXR0ZXIrQU1lZGlhMTAKCgoyNDIsMTDigqw6Cmh0
-dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTIxNTI0NyZhPTE5MDUzODkmZz0yMTQ2
-NjMxNiZ1cmw9aHR0cDovL3d3dy50CnJpZ2Fub3N0b3JlLmNvbS9qZXV4LXBsZWluLWFpci90cmFt
-cG9saW5lcy90cmFtcG9saW5lLWVuZmFudC1kaWFtLi0zLDY2LW0uLSstZmlsCmV0LXByb3RlY3Rp
-b24uL3Byb2QtNTY2Ny5odG1sP3V0bV9zb3VyY2U9TmV3c2xldHRlcitBTWVkaWEmdXRtX21lZGl1
-bT1lLW1haWwmdXRtCl9jYW1wYWlnbj1OZXdzbGV0dGVyK0FNZWRpYTEwCgoKMjY54oKsOgpodHRw
-Oi8vY2xrLnRyYWRlZG91Ymxlci5jb20vY2xpY2s/cD0yMTUyNDcmYT0xOTA1Mzg5Jmc9MjE0NjYz
-MTYmdXJsPWh0dHA6Ly93d3cudApyaWdhbm9zdG9yZS5jb20vamV1eC1wbGVpbi1haXIvdHJhbXBv
-bGluZXMvdHJhbXBvbGluZS1lbmZhbnQtZGlhbS4tMyw2Ni1tLi0rLWZpbApldC1wcm90ZWN0aW9u
-Li9wcm9kLTU2NjcuaHRtbD91dG1fc291cmNlPU5ld3NsZXR0ZXIrQU1lZGlhJnV0bV9tZWRpdW09
-ZS1tYWlsJnV0bQpfY2FtcGFpZ249TmV3c2xldHRlcitBTWVkaWExMAoKKEplIHNhdXRlIGTDqWrD
-oCk6Cmh0dHA6Ly9jbGsudHJhZGVkb3VibGVyLmNvbS9jbGljaz9wPTIxNTI0NyZhPTE5MDUzODkm
-Zz0yMTQ2NjMxNiZ1cmw9aHR0cDovL3d3dy50CnJpZ2Fub3N0b3JlLmNvbS9qZXV4LXBsZWluLWFp
-ci90cmFtcG9saW5lcy90cmFtcG9saW5lLWVuZmFudC1kaWFtLi0zLDY2LW0uLSstZmlsCmV0LXBy
-b3RlY3Rpb24uL3Byb2QtNTY2Ny5odG1sP3V0bV9zb3VyY2U9TmV3c2xldHRlcitBTWVkaWEmdXRt
-X21lZGl1bT1lLW1haWwmdXRtCl9jYW1wYWlnbj1OZXdzbGV0dGVyK0FNZWRpYTEwCgoocmVhc3N1
-cmFuY2UuanBnKToKaHR0cDovL2Nsay50cmFkZWRvdWJsZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9
-MTkwNTM4OSZnPTIxNDY2MzE2JnVybD1odHRwOi8vd3d3LnQKcmlnYW5vc3RvcmUuY29tP3V0bV9z
-b3VyY2U9TmV3c2xldHRlcitBTWVkaWEmdXRtX21lZGl1bT1lLW1haWwmdXRtX2NhbXBhaWduPU5l
-d3MKbGV0dGVyK0FNZWRpYTEwCgooZmFjZWJvb2suanBnKToKaHR0cDovL2Nsay50cmFkZWRvdWJs
-ZXIuY29tL2NsaWNrP3A9MjE1MjQ3JmE9MTkwNTM4OSZnPTIxNDY2MzE2JnVybD1odHRwOi8vd3d3
-LmYKYWNlYm9vay5jb20vc2hhcmUucGhwP3U9JiYmCgoodHdpdHRlci5qcGcpOgpodHRwOi8vY2xr
-LnRyYWRlZG91Ymxlci5jb20vY2xpY2s/cD0yMTUyNDcmYT0xOTA1Mzg5Jmc9MjE0NjYzMTYmdXJs
-PWh0dHA6Ly90d2l0dAplci5jb20vaG9tZT9zdGF0dXM9LTEwK3BvdXJjZW50K3N1cit0b3V0K2xl
-K3NpdGUrZXQrbGErbGl2cmFpc29uK2dyYXR1aXRlKyErJiYmCgoKKiBqdXNxdT9hdSAzMC8wOS8y
-MDEzIC0gUmVtaXNlIGRlIDEwJSBhdmVjIGxlIGNvZGUgQU0xMAoxIC0gVm9pciBsZXMgcHJvZHVp
-dHMgc2lnbmFsw6lzIHN1ciBsZSBzaXRlIHRyaWdhbm9zdG9yZS5jb206Cmh0dHA6Ly9jbGsudHJh
-ZGVkb3VibGVyLmNvbS9jbGljaz9wPTIxNTI0NyZhPTE5MDUzODkmZz0yMTQ2NjMxNiZ1cmw9aHR0
-cDovL3d3dy50CnJpZ2Fub3N0b3JlLmNvbT91dG1fc291cmNlPU5ld3NsZXR0ZXIrQU1lZGlhJnV0
-bV9tZWRpdW09ZS1tYWlsJnV0bV9jYW1wYWlnbj1OZXdzCmxldHRlcitBTWVkaWExMAoKCgoKCgoK
-LS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5j
-b20vX2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUxOTg4OTMyMjA1MzczNTQKCgoKCgoKe35B
-Sjg0NjQxODY2MjUxOTg4OTMyMjA1MzczNTR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KT2N0b2Jl
-ciBXZWJpbmFyczogQ29kZSBmb3IgUGVyZm9ybWFuY2UKRnJlZSBJbnRlbCB3ZWJpbmFycyBjYW4g
-aGVscCB5b3UgYWNjZWxlcmF0ZSBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZS4KRXhwbG9yZSB0aXBz
-IGZvciBNUEksIE9wZW5NUCwgYWR2YW5jZWQgcHJvZmlsaW5nLCBhbmQgbW9yZS4gR2V0IHRoZSBt
-b3N0IGZyb20gCnRoZSBsYXRlc3QgSW50ZWwgcHJvY2Vzc29ycyBhbmQgY29wcm9jZXNzb3JzLiBT
-ZWUgYWJzdHJhY3RzIGFuZCByZWdpc3RlciA+Cmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5u
-ZXQvZ2FtcGFkL2Nsaz9pZD02MDEzMzQ3MSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBt
-YWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBz
-Oi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFs
-Cg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgrfl4I7gfk57dIhm4m8zp4I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380359236829%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DOGEJEJPEGBOLCHJC%26mid%3D1600274344&s=3DG=
+NLEDBAEOLIDLKFK
+ =
+
+Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur=
+ tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles et =
+luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 =
+pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les=
+ meubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaire=
+s !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent =
+sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles =
+et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins =
+20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous =
+les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lumina=
+ires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pource=
+nt sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubl=
+es et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moi=
+ns 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur to=
+us les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lum=
+inaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pou=
+rcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les me=
+ubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !=
+Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur=
+ tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles et =
+luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 =
+pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les=
+ meubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaire=
+s !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent =
+sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles =
+et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins =
+20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous =
+les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lumina=
+ires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pource=
+nt sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubl=
+es et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moi=
+ns 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur to=
+us les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lum=
+inaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pou=
+rcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les me=
+ubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !=
+Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur=
+ tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles et =
+luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 =
+pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les=
+ meubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaire=
+s !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent =
+sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles =
+et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins =
+20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous =
+les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lumina=
+ires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pource=
+nt sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubl=
+es et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moi=
+ns 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur to=
+us les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lum=
+inaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pou=
+rcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les me=
+ubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !=
+Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur=
+ tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles et =
+luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 =
+pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les=
+ meubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaire=
+s !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent =
+sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles =
+et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins =
+20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous =
+les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lumina=
+ires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pource=
+nt sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubl=
+es et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moi=
+ns 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur to=
+us les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lum=
+inaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pou=
+rcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les me=
+ubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !=
+Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur=
+ tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles et =
+luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 =
+pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les=
+ meubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaire=
+s !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent =
+sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles =
+et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins =
+20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous =
+les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lumina=
+ires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pource=
+nt sur tous les meubles et luminaires !Moins 20 pourcent sur tous les meubl=
+es et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !Moi=
+ns 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur to=
+us les meubles et luminaires !Moins 20 pourcent sur tous les meubles et lum=
+inaires !Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pou=
+rcent sur tous les meubles et luminaires !Moins 20 pourcent sur tous les me=
+ubles et luminaires !Moins 20 pourcent sur tous les meubles et luminaires !=
+Moins 20 pourcent sur tous les meubles et luminaires !Moins 20 pourcent sur=
+ tous les meubles et luminaires !Moins 20 pourcent sur tous les meubles et =
+luminaires !
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600274344&sig=3DCFMEDFDOACLAJJEH
+---------------------------------------------------------------------------=
+---
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
+om =
+
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=3D60133471&iu=3D/4140/ostg.cl=
+ktrk

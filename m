@@ -1,10 +1,10 @@
-From: "MonAlbumPhoto - Relation Client" <push-+1VtI2zVWXfI0LktM6/w5RZz6M8BI87H@public.gmane.org>
-Subject: Confirmation de votre compte et mot de passe
-Date: Sat, 28 Sep 2013 21:01:08 +0200
-Message-ID: <20130928210108.fhqtm9@px69.yosmail.com>
-Reply-To: MonAlbumPhoto - Relation Client <ne-pas-repondre-Pz/5ZgEFv6gokx4wo90clw@public.gmane.org>
+From: sebastian.sperlich-8hnSGAMnoX7QOoTI7HeIbw@public.gmane.org
+Subject: [SPAM] It Is About to Soar!
+Date: Sat, 28 Sep 2013 20:07:08 -0000
+Message-ID: <E1VQ0zJ-0005hH-Gc@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3941045367208142050=="
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,20 +17,17 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============3941045367208142050==
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+This Stock Has Formed A Double-Bottom And More. You Know We Can Call 
+A Chart. High Alert Today! Major News Issued This Morning!!!
 
-  MonAlbumPhoto.fr    Mon message envoyé automatiquement
- prénom=
-email=spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-nom=
-language_id=  
---===============3941045367208142050==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Today Price: $.018
+Trading Date: Monday, Sep 30
+Target Price: .20
+Sym: S G-A-E
+Company Name: SIGA RESOURCES INC.
+
+Potential Bounce Play Opportunity! The Perfect Stock!
+
 
 ------------------------------------------------------------------------------
 October Webinars: Code for Performance
@@ -38,15 +35,3 @@ Free Intel webinars can help you accelerate application performance.
 Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
 the latest Intel processors and coprocessors. See abstracts and register >
 http://pubads.g.doubleclick.net/gampad/clk?id=60133471&iu=/4140/ostg.clktrk
---===============3941045367208142050==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============3941045367208142050==--

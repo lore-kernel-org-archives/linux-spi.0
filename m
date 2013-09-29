@@ -1,11 +1,11 @@
-From: Etam via Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Jusqu'=E0_moins_50_pourcent_sur_toutes_les_collections_!?=
-Date: Sun, 29 Sep 2013 10:49:32 +0200 (CEST)
-Message-ID: <fnpktv.hm612137uvi3e5l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "=?utf-8?Q?Service_client_Disneyland_Paris?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Invitation_VIP_=C3=A0_Disneyland_pour_spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?=
+Date: Sun, 29 Sep 2013 16:48:41 +0000
+Message-ID: <1043=3b62108c-946e-4916-b9a0-34fbebb706a3=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,67 +18,36 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgrfzzI7gfk57dIhm611zmxI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380444570555%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DFMAFPJKJJOOCCILG%26mid%3D1600274879&s=3DH=
-KDCMMACPPCNFMIF
- =
-
-Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 =
-pourcent sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes=
- les collections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !J=
-usqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 p=
-ourcent sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes =
-les collections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Ju=
-squ'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 po=
-urcent sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes l=
-es collections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jus=
-qu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pou=
-rcent sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes le=
-s collections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusq=
-u'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pour=
-cent sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les=
- collections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu=
-'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pourc=
-ent sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les =
-collections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=
-=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pource=
-nt sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les c=
-ollections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=
-=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pource=
-nt sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les c=
-ollections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=
-=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pource=
-nt sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les c=
-ollections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=
-=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pource=
-nt sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les c=
-ollections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=
-=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pource=
-nt sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les c=
-ollections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=
-=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pource=
-nt sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les c=
-ollections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=
-=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pource=
-nt sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les c=
-ollections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !Jusqu'=
-=E0 moins 50 pourcent sur toutes les collections !Jusqu'=E0 moins 50 pource=
-nt sur toutes les collections !Jusqu'=E0 moins 50 pourcent sur toutes les c=
-ollections !Jusqu'=E0 moins 50 pourcent sur toutes les collections !
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600274879&sig=3DOPDOAFANCDCBBLOG
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60133471&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFJbnZpdGF0aW9uIFZJ
+UCDDoCBEaXNuZXlsYW5kIHBvdXIgc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0CgpodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvcnZiL0NGRlBFXzhJb2hKWk1tc1k4
+WXhMTTMvYi9rbFFML2YyOWM4ZjJiClZvdXMgcmVjZXZleiBjZSBtZXNzYWdlIGRlIG5vdHJlIHBh
+cnQgY2FyIHZvdXMgdm91cyDDqnRlcyBpbnNjcml0KGUpIGF2ZWMgbCdhZHJlc3NlIHNwaS1kZXZl
+bC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCBzdXIgbGUgc2l0ZSBDb25zb2RlYWwuY29t
+LiBDZSBzaXRlIGEgZmFpdCBsJ29iamV0IGQndW5lIGTDqWNsYXJhdGlvbiBhdXByw6hzIGRlIGxh
+IENOSUwgc291cyBsZSBudW3DqXJvIDE1NDUxNDguIENvbmZvcm3DqW1lbnQgw6AgbCdhcnRpY2xl
+IDM0IGRlIGxhIGxvaSDCq0luZm9ybWF0aXF1ZSBldCBMaWJlcnTDqXPCuyBkdSA2IGphbnZpZXIg
+MTk3OCwgdm91cyBwb3V2ZXogZXhlcmNlciB2b3RyZSBkcm9pdCBkJ2FjY8OocywgZGUgbW9kaWZp
+Y2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIG91IGVuY29yZSBkZSBzdXBwcmVzc2lvbiBkZSB2b3Mg
+aW5mb3JtYXRpb25zIHBlcnNvbm5lbGxlcyB2aWEgbGUgbGllbiBzdWl2YW50IDogTWVzIEFib25u
+ZW1lbnRzLgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIG1lcmNpIGRlIGNsaXF1ZXIgaWNpIGljaS4K
+CVF1aSBzb21tZXMtbm91cyA/CkNvbnNvZGVhbCBlc3QgdW5lIG5ld3NsZXR0ZXIgcXVvdGlkaWVu
+bmUgLCDDqWRpdMOpZSBwYXIgbGEgc29jacOpdMOpIE5hdGV4bywgcXVpIHZvdXMgcHJvcG9zZSB1
+bmUgc8OpbGVjdGlvbiBkZSBib25zIHBsYW5zLiBFbiDDqXRhbnQgYWJvbm7DqSDDoCBub3RyZSBs
+aXN0ZSBkJ2luZm9ybWF0aW9uLCB2b3VzIHJlY2V2cmV6IGxlIHRvcCBkZXMgamV1eCBjb25jb3Vy
+cywgbGVzIG9mZnJlcyBkdSBtb21lbnQgcG91ciB0b3VzIHZvcyB0cmF2YXV4LCBkZXMgaW52aXRh
+dGlvbnMgZXhjbHVzaXZlcyDDoCBkZXMgZXNzYWlzIGV0IHZlbnRlcyBwcml2w6llcyBkZSBncmFu
+ZGVzIG1hcnF1ZXMuIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KT2N0b2JlciBXZWJpbmFyczogQ29k
+ZSBmb3IgUGVyZm9ybWFuY2UKRnJlZSBJbnRlbCB3ZWJpbmFycyBjYW4gaGVscCB5b3UgYWNjZWxl
+cmF0ZSBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZS4KRXhwbG9yZSB0aXBzIGZvciBNUEksIE9wZW5N
+UCwgYWR2YW5jZWQgcHJvZmlsaW5nLCBhbmQgbW9yZS4gR2V0IHRoZSBtb3N0IGZyb20gCnRoZSBs
+YXRlc3QgSW50ZWwgcHJvY2Vzc29ycyBhbmQgY29wcm9jZXNzb3JzLiBTZWUgYWJzdHJhY3RzIGFu
+ZCByZWdpc3RlciA+Cmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9p
+ZD02MDEzMzQ3MSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3Bp
+LWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNl
+Zm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

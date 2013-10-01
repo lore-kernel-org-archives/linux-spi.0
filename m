@@ -1,16 +1,13 @@
-From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 13/13] spi: spi-mxs: Use u32 instead of uint32_t
-Date: Tue, 01 Oct 2013 13:15:54 -0700
-Message-ID: <20131001201554.13660.4423.stgit@Graphine>
-References: <20131001201425.13660.72740.stgit@Graphine>
+From: "=?utf-8?Q?Guide_offert?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?Recevez_votre_guide_immobilier_2013?=
+Date: Tue, 01 Oct 2013 21:29:32 +0000
+Message-ID: <1043=ec3e3c46-f0ce-4b7f-9d45-a2d3d444dd9b=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20131001201425.13660.72740.stgit@Graphine>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,60 +18,57 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-It's consistent with all the other spi drivers that way.
-
-Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-mxs.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 759de70..2a819f7 100644
---- a/drivers/spi/spi-mxs.c
-+++ b/drivers/spi/spi-mxs.c
-@@ -119,9 +119,9 @@ static int mxs_spi_setup(struct spi_device *dev)
- 	return 0;
- }
- 
--static uint32_t mxs_spi_cs_to_reg(unsigned cs)
-+static u32 mxs_spi_cs_to_reg(unsigned cs)
- {
--	uint32_t select = 0;
-+	u32 select = 0;
- 
- 	/*
- 	 * i.MX28 Datasheet: 17.10.1: HW_SSP_CTRL0
-@@ -143,7 +143,7 @@ static int mxs_ssp_wait(struct mxs_spi *spi, int offset, int mask, bool set)
- {
- 	const unsigned long timeout = jiffies + msecs_to_jiffies(SSP_TIMEOUT);
- 	struct mxs_ssp *ssp = &spi->ssp;
--	uint32_t reg;
-+	u32 reg;
- 
- 	do {
- 		reg = readl_relaxed(ssp->base + offset);
-@@ -187,11 +187,11 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi,
- 	const int sgs = DIV_ROUND_UP(len, desc_len);
- 	int sg_count;
- 	int min, ret;
--	uint32_t ctrl0;
-+	u32 ctrl0;
- 	struct page *vm_page;
- 	void *sg_buf;
- 	struct {
--		uint32_t		pio[4];
-+		u32			pio[4];
- 		struct scatterlist	sg;
- 	} *dma_xfer;
- 
-
-
-------------------------------------------------------------------------------
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60134791&iu=/4140/ostg.clktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICEKICAgWzFdUVUnRVNU
+IENFIFFVRSBMQSBMT0kgRFVGTE9UID8KICAgTGEgTG9pIER1ZmxvdCAyMDEzIGFjY29yZGUgYXV4
+IHBhcnRpY3VsaWVycyBxdWkgaW52ZXN0aXNzZW50IGRhbnMgdW4KICAgbG9nZW1lbnQgbmV1ZiBC
+QkMsIHVuZSBmb3J0ZSByw6lkdWN0aW9uIGQnSW1ww7R0IHN1ciBsZSBSZXZlbnUgcGVuZGFudAog
+ICB0b3V0ZSBsYSBww6lyaW9kZSBkZSBtaXNlIGVuIGxvY2F0aW9uIGR1IGxvZ2VtZW50LCBkJ3Vu
+ZSBkdXLDqWUgbWluaW11bQogICBkZSA5IGFucy4KICAgU2FucyBhcHBvcnQsIGF2ZWMgbGEgTG9p
+IER1ZmxvdCAyMDEzIDoKICAgICAgICAgICA/IEplIHLDqWR1aXMgbWVzIGltcMO0dHMKICAgICAg
+ICAgICA/IEplIG1lIGNvbnN0aXR1ZSB1biBwYXRyaW1vaW5lCiAgICAgICAgICAgPyBKZSBwcsOp
+cGFyZSBtYSByZXRyYWl0ZQogICBUw6lsw6ljaGFyZ2V6IGdyYXR1aXRlbWVudCBub3RyZSBndWlk
+ZSBwb3VyIGVuIHNhdm9pciBwbHVzIElDSQoKUmVmZXJlbmNlcwoKICAgVmlzaWJsZSBsaW5rcwog
+ICAxLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvcnE3L25DM3VZa1kzUkR3bG5xNnNC
+YnNsSjMvYi9rbFFML2RjMTk3MjZjCgogICBIaWRkZW4gbGlua3M6CiAgIDIuIGh0dHA6Ly9jbGlj
+a3MudHJhY2tkb20uZnIvYy9hcy9ycTIvbkMzdVlrWTNSRHdsbnE2c0Jic2xKMy9iL2tsUUwvNjky
+NzZkNGUKICAgMy4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JxWC9uQzN1WWtZM1JE
+d2xucTZzQmJzbEozL2Iva2xRTC85ZWQxY2EzZQogICA0LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9t
+LmZyL2MvYXMvcnE2L25DM3VZa1kzUkR3bG5xNnNCYnNsSjMvYi9rbFFMLzk1ZjBkZjczCiAgIDUu
+IGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ycWsvbkMzdVlrWTNSRHdsbnE2c0Jic2xK
+My9iL2tsUUwvOGEyZTcxODUKICAgNi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3Jx
+SC9uQzN1WWtZM1JEd2xucTZzQmJzbEozL2Iva2xRTC9kYjZkMGU0OAogICA3LiBodHRwOi8vY2xp
+Y2tzLnRyYWNrZG9tLmZyL2MvYXMvcnFFL25DM3VZa1kzUkR3bG5xNnNCYnNsSjMvYi9rbFFMLzRj
+OGQ3MzUxCiAgIDguIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9ycXIvbkMzdVlrWTNS
+RHdsbnE2c0Jic2xKMy9iL2tsUUwvYTRhNTdhZDcKICAgOS4gaHR0cDovL2NsaWNrcy50cmFja2Rv
+bS5mci9jL2FzL3JxYS9uQzN1WWtZM1JEd2xucTZzQmJzbEozL2Iva2xRTC8zYjIzNDk4MAogIDEw
+LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvcnFuL25DM3VZa1kzUkR3bG5xNnNCYnNs
+SjMvYi9rbFFMLzNmMTA2ZWE3CgpWb3VzIHJlY2V2ZXogY2UgbWVzc2FnZSBkZSBub3RyZSBwYXJ0
+IGNhciB2b3VzIHZvdXMgw6p0ZXMgaW5zY3JpdChlKSBhdmVjIGwnYWRyZXNzZSBzcGktZGV2ZWwt
+Z2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgc3VyIGxlIHNpdGUgQ29uc29kZWFsLmNvbS4g
+Q2Ugc2l0ZSBhIGZhaXQgbCdvYmpldCBkJ3VuZSBkw6ljbGFyYXRpb24gYXVwcsOocyBkZSBsYSBD
+TklMIHNvdXMgbGUgbnVtw6lybyAxNTQ1MTQ4LiBDb25mb3Jtw6ltZW50IMOgIGwnYXJ0aWNsZSAz
+NCBkZSBsYSBsb2kgwqtJbmZvcm1hdGlxdWUgZXQgTGliZXJ0w6lzwrsgZHUgNiBqYW52aWVyIDE5
+NzgsIHZvdXMgcG91dmV6IGV4ZXJjZXIgdm90cmUgZHJvaXQgZCdhY2PDqHMsIGRlIG1vZGlmaWNh
+dGlvbiwgZGUgcmVjdGlmaWNhdGlvbiBvdSBlbmNvcmUgZGUgc3VwcHJlc3Npb24gZGUgdm9zIGlu
+Zm9ybWF0aW9ucyBwZXJzb25uZWxsZXMgdmlhIGxlIGxpZW4gc3VpdmFudCA6IE1lcyBBYm9ubmVt
+ZW50cy4KUG91ciB2b3VzIGTDqXNhYm9ubmVyLCBtZXJjaSBkZSBjbGlxdWVyIGljaSBpY2kuCglR
+dWkgc29tbWVzLW5vdXMgPwpDb25zb2RlYWwgZXN0IHVuZSBuZXdzbGV0dGVyIHF1b3RpZGllbm5l
+ICwgw6lkaXTDqWUgcGFyIGxhIHNvY2nDqXTDqSBOYXRleG8sIHF1aSB2b3VzIHByb3Bvc2UgdW5l
+IHPDqWxlY3Rpb24gZGUgYm9ucyBwbGFucy4gRW4gw6l0YW50IGFib25uw6kgw6Agbm90cmUgbGlz
+dGUgZCdpbmZvcm1hdGlvbiwgdm91cyByZWNldnJleiBsZSB0b3AgZGVzIGpldXggY29uY291cnMs
+IGxlcyBvZmZyZXMgZHUgbW9tZW50IHBvdXIgdG91cyB2b3MgdHJhdmF1eCwgZGVzIGludml0YXRp
+b25zIGV4Y2x1c2l2ZXMgw6AgZGVzIGVzc2FpcyBldCB2ZW50ZXMgcHJpdsOpZXMgZGUgZ3JhbmRl
+cyBtYXJxdWVzLiAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk9jdG9iZXIgV2ViaW5hcnM6IENvZGUg
+Zm9yIFBlcmZvcm1hbmNlCkZyZWUgSW50ZWwgd2ViaW5hcnMgY2FuIGhlbHAgeW91IGFjY2VsZXJh
+dGUgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UuCkV4cGxvcmUgdGlwcyBmb3IgTVBJLCBPcGVuTVAs
+IGFkdmFuY2VkIHByb2ZpbGluZywgYW5kIG1vcmUuIEdldCB0aGUgbW9zdCBmcm9tIAp0aGUgbGF0
+ZXN0IEludGVsIHByb2Nlc3NvcnMgYW5kIGNvcHJvY2Vzc29ycy4gU2VlIGFic3RyYWN0cyBhbmQg
+cmVnaXN0ZXIgPgpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9
+NjAxMzQ3OTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZv
+cmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=

@@ -1,11 +1,10 @@
-From: "Braderie Apple" <lisa@a.optincake.com>
-Subject: iPhone vendu 17euros
-Date: Tue, 01 Oct 2013 02:16:17 +0100
-Message-ID: <0.0.125.20C.1CEBE43D4484D78.0@mta199.pur3.net>
-Reply-To: Braderie Apple <lisa@a.optincake.com>
+From: "MonAlbumPhoto - Relation Client" <push-MHlsXkFZmLas8yGkUwA2TBXaG6MH5uyT@public.gmane.org>
+Subject: Astuces pour votre =?UTF-8?Q?cr=C3=A9ation?=
+Date: Tue, 01 Oct 2013 09:20:19 +0200
+Message-ID: <20131001092019.aklj5k@px70.yosmail.com>
+Reply-To: MonAlbumPhoto - Relation Client <ne-pas-repondre-Pz/5ZgEFv6gokx4wo90clw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============7776883145686785773=="
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,132 +17,95 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MTk5NDYzMjIwNTM3Mjk0CgoKCgoKKFJldnVlIENvbnNvKToKaHR0cDovL3JmbWwwNC5jb20vdS8z
-MC8xNDg2LzI0NC9BRkZJTElBVEVJRC85ODAvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAxMzEwMDNy
-ZXYKdWVjb25zbwoKKEVucXVldGUgZXhjbHVzaXZlKToKaHR0cDovL3JmbWwwNC5jb20vdS8zMC8x
-NDg2LzI0NC9BRkZJTElBVEVJRC85ODAvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAxMzEwMDNyZXYK
-dWVjb25zbwoKCk5vdXMgc29tbWVzIGFsbMOpcyBkw6luaWNoZXIgbGVzIGRlcm5pw6hyZXMgYXN0
-dWNlcyBwb3VyIMOpY29ub21pc2VyCgood29tYW4pOgpodHRwOi8vcmZtbDA0LmNvbS91LzMwLzE0
-ODYvMjQ0L0FGRklMSUFURUlELzk4MC9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMTAwM3Jldgp1
-ZWNvbnNvCgoKw4AgTEEgVU5FCkNvbW1lbnQgw6ljb25vbWlzZXIgOTAlIHN1ciB1biBpUGFkIDQg
-b3Ugc3VyIHVuIGlQaG9uZSA1YyA/ClZvdXMgbCdhdXJleiBzdXJlbWVudCByZW1hcnF1w6ksIHVu
-IG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWluIGRlIHNlCmTDqXZlbG9wcGVyIGVuIEV1
-cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxlcyBzaXRlcyBpbnRlcm5ldCBkZSB2ZW50
-ZXMKYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4gUGFydG91dCBzdXIgbGUgbmV0LCBkYW5z
-IGxlcyBibG9ncywgb24gcGV1dApsaXJlIGxlcyBoaXN0b2lyZXMgZCdoZXVyZXV4IGdhZ25hbnRz
-IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzCmhhYml0dWVsbGVtZW50IHRy
-w6hzIG9uw6lyZXV4IHBvdXIgw6AgcGVpbmUgdW5lIGJvdWNow6llIGRlIHBhaW4uIE1haXMgbm91
-cwpuJ8OpdGlvbnMgcGFzIGNvbnZhaW5jdXMgw6AgMTAwICUgZXQgYydlc3QgcG91ciBjZWxhIHF1
-ZSBub3VzIGF2b25zIGTDqWNpZMOpCmRlIGxlcyB0ZXN0ZXIuIFBvdXIgbm91cyBhc3N1cmVyIHF1
-ZSBsZXMgYm9ubmVzIGFmZmFpcmVzIHByb3Bvc8OpZXMgcGFyIGNlcwpzaXRlcyBkZSB2ZW50ZXMg
-YXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZSDDqXRhaWVudCBiaWVuIHLDqWVsbGVzLiBFdApx
-dWVsbGUgbWVpbGxldXJlIHJhaXNvbiBwb3VyIHMnZW4gYXNzdXJlciBxdWUgZGUgbGVzIHRlc3Rl
-ciBub3VzLW3Dqm1lID8KbGlyZSBsYSBzdWl0ZQpsaXJlIGxhIHN1aXRlKGxpcmUgbGEgc3VpdGUp
-OgpodHRwOi8vcmZtbDA0LmNvbS91LzMwLzE0ODYvMjQ0L0FGRklMSUFURUlELzk4MC9FTUFJTC9O
-QU1FL0ZJUlNUTkFNRS8yMDEzMTAwM3Jldgp1ZWNvbnNvCgooc2VwYXJhdG9yKToKaHR0cDovL3Jm
-bWwwNC5jb20vdS8zMC8xNDg2LzI0NC9BRkZJTElBVEVJRC85ODAvRU1BSUwvTkFNRS9GSVJTVE5B
-TUUvMjAxMzEwMDNyZXYKdWVjb25zbwoKKGd1eSk6Cmh0dHA6Ly9yZm1sMDQuY29tL3UvMzAvMTQ4
-Ni8yNDQvQUZGSUxJQVRFSUQvOTgwL0VNQUlML05BTUUvRklSU1ROQU1FLzIwMTMxMDAzcmV2CnVl
-Y29uc28KCgpMQSBSRVZVRSBDT05TTwpKZSB2b3VsYWlzIGFjaGV0ZXIgdW4gbm91dmVsIGlQYWQg
-UmV0aW5hIGRlIEFwcGxlLCBjJ2VzdCBkb25jIG1vaSBxdWkgYWkKw6l0w6kgY2hhcmfDqWUgZHUg
-dGVzdC4KIkonYWkgY29tbWVuY8OpIHBhciBmYWlyZSB1bmUgdG9ubmUgZGUgcmVjaGVyY2hlcyBz
-dXIgbGUgc3VqZXQgcG91cgpkw6l0ZXJtaW5lciBxdWVsIHNpdGUgZCdlbmNow6hyZXMgZGUgZMOp
-c3RvY2thZ2Ugw6l0YWl0IGxlIHBsdXMgZmlhYmxlLCBldApkb25jIGxlIG1pZXV4IGFkYXB0w6kg
-w6AgbW9uIHRlc3QuIEFwcsOocyBkZXMgaGV1cmVzIGRlIHJlY2hlcmNoZXMsIGonZW4Kc3VpcyB2
-ZW51ZSDDoCBsYSBjb25jbHVzaW9uIHF1ZSwgZHUgZmFpdCBkZSBzYSBsYXJnZSBnYW1tZSBkJ2Fy
-dGljbGVzIGV0IHNvbgpleGNlbGxlbnRlIHLDqXB1dGF0aW9uLCBFbmNow6hyZVZpcCDDqXRhaXQg
-bGUgc2l0ZSDDoCB0ZXN0ZXIuIgpsaXJlIGxhIHN1aXRlCmxpcmUgbGEgc3VpdGUobGlyZSBsYSBz
-dWl0ZSk6Cmh0dHA6Ly9yZm1sMDQuY29tL3UvMzAvMTQ4Ni8yNDQvQUZGSUxJQVRFSUQvOTgwL0VN
-QUlML05BTUUvRklSU1ROQU1FLzIwMTMxMDAzcmV2CnVlY29uc28KCihzZXBhcmF0b3IpOgpodHRw
-Oi8vcmZtbDA0LmNvbS91LzMwLzE0ODYvMjQ0L0FGRklMSUFURUlELzk4MC9FTUFJTC9OQU1FL0ZJ
-UlNUTkFNRS8yMDEzMTAwM3Jldgp1ZWNvbnNvCgoKQ29tbWVudGFpcmVzIGRlIG5vcyBsZWN0ZXVy
-cwoKKGdpcmwpOgpodHRwOi8vcmZtbDA0LmNvbS91LzMwLzE0ODYvMjQ0L0FGRklMSUFURUlELzk4
-MC9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMTAwM3Jldgp1ZWNvbnNvCgoKTWFyaWUKU2FtZWRp
-IDIgTWFycyAiSidhaSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0
-cmVzIGbDqnRlcwpwb3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6lj
-b25vbWllcyIKCihndXkpOgpodHRwOi8vcmZtbDA0LmNvbS91LzMwLzE0ODYvMjQ0L0FGRklMSUFU
-RUlELzk4MC9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEzMTAwM3Jldgp1ZWNvbnNvCgoKUGF0b3UK
-THVuZGkgNCBNYXJzICJKJ2FpIHZ1IHVuIHJlcG9ydGFnZSBzdXIgbGVzIGVuY2jDqHJlcyBhdSBj
-ZW50aW1lIMOgIGxhIHTDqWzDqSwKcHVpcyBqJ2FpIGx1IGNldCBhcnRpY2xlLiBJbCBtZSB0YXJk
-ZSBkJ2Vzc2F5ZXIiCgooVnUgc3VyOiBMZSBNb25kZSwgRnJhbmNlIDI0LCBNWVRGMSk6Cmh0dHA6
-Ly9yZm1sMDQuY29tL3UvMzAvMTQ4Ni8yNDQvQUZGSUxJQVRFSUQvOTgwL0VNQUlML05BTUUvRklS
-U1ROQU1FLzIwMTMxMDAzcmV2CnVlY29uc28KCihpUGhvbmUgNWMpOgpodHRwOi8vcmZtbDA0LmNv
-bS91LzMwLzE0ODYvMjQ0L0FGRklMSUFURUlELzk4MC9FTUFJTC9OQU1FL0ZJUlNUTkFNRS8yMDEz
-MTAwM3Jldgp1ZWNvbnNvCgooaVBob25lIDVjKToKaHR0cDovL3JmbWwwNC5jb20vdS8zMC8xNDg2
-LzI0NC9BRkZJTElBVEVJRC85ODAvRU1BSUwvTkFNRS9GSVJTVE5BTUUvMjAxMzEwMDNyZXYKdWVj
-b25zbwoKClJlYWRNc2dCb2R5IHt3aWR0aDogMTAwJTt9IC5FeHRlcm5hbENsYXNzIHt3aWR0aDog
-MTAwJTt9IHNwYW4ueXNob3J0Y3V0cyB7CmNvbG9yOiMwMDA7IGJhY2tncm91bmQtY29sb3I6bm9u
-ZTsgYm9yZGVyOm5vbmU7fSBzcGFuLnlzaG9ydGN1dHM6aG92ZXIsCnNwYW4ueXNob3J0Y3V0czph
-Y3RpdmUsIHNwYW4ueXNob3J0Y3V0czpmb2N1cyB7Y29sb3I6IzAwMDsKYmFja2dyb3VuZC1jb2xv
-cjpub25lOyBib3JkZXI6bm9uZTt9Li4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmls
-bGVyLApkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJh
-cHBvcnQgcXVhbGl0w4PCqSBwcml4CnRvdXQgYXUgbG9uZyBkZSBsJ2FubsODwqllLCBhbG9ycyBw
-b3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIKc3VyIGxlcyBwcm9wb3NpdGlv
-bnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw4PCoCBqb3Vy
-CnLDg8KpZ3VsacODwqhyZW1lbnQgZXQgdG91dGUgbCdhbm7Dg8KpZS5BIGxhIHJlY2hlcmNoZSBk
-dSBjYWRlYXUgb3JpZ2luYWwgPwpOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2
-ZWF1IHJlZ2FyZCBhZmluIGRlIHZvdXMgYWlkZXIgw4PCoApkw4PCqXBlbnNlciBtb2lucyB0b3V0
-IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUgbCdhbm7Dg8KpZS4gQWluc2ksIGdyYWNlCsODwqAg
-bm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNl
-IHF1aSBlc3QKcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w4PCqSwgaW5mb3MuLi4gRW52
-aWUgZGUgdm91cyBmYWlyZSB1bmUKYmVhdXTDg8KpIMODwqAgbW9pbmRyZSBjb8ODInQgdG91dCBh
-dSBsb25nIGRlIGwnYW5uw4PCqWUsIGRlIHByw4PCqXZvaXIgdm9zCnByb2NoYWluZXMgdmFjYW5j
-ZXMgZCfDg8KpdMODwqkgw4PCoCBtb2luZHJlIGZyYWlzIGV0IG91IGVuY29yZSBkJ2hhYmlsbGVy
-CnZvcyBlbmZhbnRzIMODwqAgZGVzIGJ1ZGdldHMgcmFpc29ubmFibGVzLCBhbG9ycyBjb25zdWx0
-ZXIgZGUgdGVtcHMgw4PCoAphdXRyZSBub3MgcHJvcG9zaXRpb25zIHBvdXIgdm91cyBwZXJtZXR0
-cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJldXNlcwrDg8KpY29ub21pZXMgdG91dCBlbiB2b3Vz
-IGZhaXNhbnQgcGxhaXNpciDDg8KgIHRvdXRlIGxhIGZhbWlsbGUuQWluc2ksCmdyw4PComNlIMOD
-wqAgbm91cywgdm91cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0
-IGNlIHF1aQplc3QgcHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w4PCqSwgaW5mb3MuLi4g
-Li4gTm91cyBzb3VoYWl0b25zIHZvdXMKYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBk
-ZSB2b3VzIGFpZGVyIMODwqAgZMODwqlwZW5zZXIgbW9pbnMgdG91dCBlbgpjb25zb21tYW50IG1p
-ZXV4IHRvdXRlIGwnYW5uw4PCqWUuQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIs
-IGRlCnZvdXMgY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9y
-dCBxdWFsaXTDg8KpIHByaXggdG91dAphdSBsb25nIGRlIGwnYW5uw4PCqWUsIGFsb3JzIHBvdXJx
-dW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzCnByb3Bvc2l0aW9ucyBx
-dWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDg8KgIGpvdXIKcsOD
-wqlndWxpw4PCqHJlbWVudCBldCB0b3V0ZSBsJ2FubsODwqllLi4uLiBCZXNvaW4gZGUgdm95YWdl
-ciwgZGUgdm91cwpoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRp
-ciBhdSBtZWlsbGV1ciByYXBwb3J0CnF1YWxpdMODwqkgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdh
-bm7Dg8KpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuCnBldGl0IG9laWwgcGFyIHN1
-ciBsZXMgcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cwpt
-ZXR0b25zIMODwqAgam91ciByw4PCqWd1bGnDg8KocmVtZW50IGV0IHRvdXRlIGwnYW5uw4PCqWUu
-QSBsYSByZWNoZXJjaGUgZHUKY2FkZWF1IG9yaWdpbmFsID8gTm91cyBzb3VoYWl0b25zIHZvdXMg
-YXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBkZQp2b3VzIGFpZGVyIMODwqAgZMODwqlw
-ZW5zZXIgbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw4PCqWUuCkFp
-bnNpLCBncmFjZSDDg8KgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJv
-Zml0ZXIgZGUgdG91dCBjZQpxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwgb3Bwb3J0dW5pdMOD
-wqksIGluZm9zLi4uIEVudmllIGRlIHZvdXMgZmFpcmUgdW5lCmJlYXV0w4PCqSDDg8KgIG1vaW5k
-cmUgY2/DgyJ0IHRvdXQgYXUgbG9uZyBkZSBsJ2FubsODwqllLCBkZSBwcsODwql2b2lyIHZvcwpw
-cm9jaGFpbmVzIHZhY2FuY2VzIGQnw4PCqXTDg8KpIMODwqAgbW9pbmRyZSBmcmFpcyBldCBvdSBl
-bmNvcmUgZCdoYWJpbGxlcgp2b3MgZW5mYW50cyDDg8KgIGRlcyBidWRnZXRzIHJhaXNvbm5hYmxl
-cywgYWxvcnMgY29uc3VsdGVyIGRlIHRlbXBzIMODwqAKYXV0cmUgbm9zIHByb3Bvc2l0aW9ucyBw
-b3VyIHZvdXMgcGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRlIG5vbWJyZXVzZXMKw4PCqWNvbm9t
-aWVzIHRvdXQgZW4gdm91cyBmYWlzYW50IHBsYWlzaXIgw4PCoCB0b3V0ZSBsYSBmYW1pbGxlLkFp
-bnNpLApncsODwqJjZSDDg8KgIG5vdXMsIHZvdXMgYWxsZXogcGFyIGV4ZW1wbGUsIHBvdXZvaXIg
-cHJvZml0ZXIgZGUgdG91dCBjZSBxdWkKZXN0IHByb2R1aXQgYSBiYXMgY291dCwgb3Bwb3J0dW5p
-dMODwqksIGluZm9zLi4uIC4uIE5vdXMgc291aGFpdG9ucyB2b3VzCmFwcG9ydGVyIHVuIG5vdXZl
-YXUgcmVnYXJkIGFmaW4gZGUgdm91cyBhaWRlciDDg8KgIGTDg8KpcGVuc2VyIG1vaW5zIHRvdXQg
-ZW4KY29uc29tbWFudCBtaWV1eCB0b3V0ZSBsJ2FubsODwqllLkJlc29pbiBkZSB2b3lhZ2VyLCBk
-ZSB2b3VzIGhhYmlsbGVyLCBkZQp2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1
-IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w4PCqSBwcml4IHRvdXQKYXUgbG9uZyBkZSBsJ2FubsOD
-wqllLCBhbG9ycyBwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxl
-cwpwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBhZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRv
-bnMgw4PCoCBqb3VyCnLDg8KpZ3VsacODwqhyZW1lbnQgZXQgdG91dGUgbCdhbm7Dg8KpZS4KCgoK
-CgotLQoKUG91ciB2b3VzIGTDqXNhYm9ubmVyLCB2aXNpdGV6IDoKaHR0cDovL2Eub3B0aW5jYWtl
-LmNvbS9fYWN0L2dldF9yY3IucGhwP0FKODQ2NDE4NjYyNTE5OTQ2MzIyMDUzNzI5NAoKCgoKCgp7
-fkFKODQ2NDE4NjYyNTE5OTQ2MzIyMDUzNzI5NH59Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPY3Rv
-YmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmluYXJzIGNh
-biBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3JlIHRp
-cHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBHZXQgdGhl
-IG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3NvcnMu
-IFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNr
-Lm5ldC9nYW1wYWQvY2xrP2lkPTYwMTM0NzkxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+--===============7776883145686785773==
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+   monAlbumPhoto, le seul moyen d'être vraiment créatif !    
+
+ 		 MonAlbumPhoto - Mon plus beau cadeau [1] 
+ 		 Accédez à votre compte personnel [2] 
+
+ 		 Le seul moyen d'être vraiment créatif ! 
+
+  Cher utilisateur,
+
+ MonAlbumPhoto vous invite à la CRéATIVITé ! Le logiciel de création de livre photos intuitif vous permettra de créer et de personnaliser facilement vos albums pour rassembler tous vos souvenirs dans un VéRITABLE LIVRE.  
+
+ 		 Découvrez le logiciel de création et toutes ses fonctionnalités : 
+
+ 		 1 
+
+ 		 Des mises en pages originales : 
+
+ 		 Des mises en pages originales 
+
+ 		 2 
+
+ 		 Un large choix de polices et de couleurs : 
+
+ 		 Large choix de polices et de couleurs 
+
+ 		 3 
+
+ 		 Des outils précis et facile d'utilisation : 
+
+  la retouche photo, l'encadrement, la rotation, le détourage, l'ajustement automatique...
+
+ Outils du logiciel  
+
+ 		 Vous n'avez pas encore essayé ? 
+ 		 Cliquez ici pour activer votre compte [3] 
+
+  A très bientôt !
+ Cordialement,
+
+ 		 L'équipe MonAlbumPhoto 
+
+ 		 Contact [4] 
+
+  Vous pouvez nous contacter par mail [5] ou bien 
+ par téléphone au 0892 230 054 (0.34cts/min).  
+
+ 		 Si vous ne souhaitez plus recevoir d'informations de la part de MonAlbumPhoto.fr, veuillez suivre ce lien [6] 
+
+  
+
+Liens :
+-------
+[1] http://www.monalbumphoto.fr/index.aspx?utm_content=header-map
+
+[2] http://www.monalbumphoto.fr/validate.aspx?enter=customer&id=&email=&utm_content=header-espace-client
+
+[3] http://www.monalbumphoto.fr/frmdlreg3.aspx
+
+[4] http://www.monalbumphoto.fr/index.aspx?str=9&utm_content=contact
+
+[5] http://www.monalbumphoto.fr/index.aspx?str=9&utm_content=contact
+
+[6] http://forms.yosmail.com/desaboMap.php?email=&uid=&news=inscription_a_j3
+
+--===============7776883145686785773==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60134791&iu=/4140/ostg.clktrk
+--===============7776883145686785773==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============7776883145686785773==--

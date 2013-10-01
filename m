@@ -1,8 +1,8 @@
 From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 07/13] spi: spi-mxs: Remove full duplex check,
-	spi core already does it
-Date: Tue, 01 Oct 2013 13:15:11 -0700
-Message-ID: <20131001201511.13660.36973.stgit@Graphine>
+Subject: [PATCH 05/13] spi: spi-mxs: Fix extra CS pulses and read mode in
+	multi-transfer messages
+Date: Tue, 01 Oct 2013 13:14:57 -0700
+Message-ID: <20131001201457.13660.87395.stgit@Graphine>
 References: <20131001201425.13660.72740.stgit@Graphine>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,35 +22,43 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Because the driver sets the SPI_MASTER_HALF_DUPLEX flag, the spi core
-will check transfers to insure they are not full duplex.  It's not
-necessary to check that in the spi-mxs driver as well.
+There are two bits which control the CS line in the CTRL0 register:
+LOCK_CS and IGNORE_CRC.  The latter would be better named DEASSERT_CS
+in SPI mode.
+
+Setting DEASSERT_CS causes CS to be de-asserted at the end of the transfer.
+It should normally be set only for the final segment of the final transfer.
+The DMA code explicitly sets it in this case, but because it never clears
+the bit from the ctrl0 register, it will remain set for all transfers in
+subsequent messages.  This results in a CS pulse between transfers.
+
+There is a similar problem with the read mode bit never being cleared
+in DMA mode.
+
+This patch fixes DEASSERT_CS and READ being left on in DMA mode.
 
 Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mxs.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/spi/spi-mxs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index a9a273e..de7387e 100644
+index 090930a..68ea507 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -399,12 +399,6 @@ static int mxs_spi_transfer_one(struct spi_master *master,
- 		/* De-assert on last transfer, inverted by cs_change flag */
- 		flag = (&t->transfer_list == m->transfers.prev) ^ t->cs_change ?
- 		       TXRX_DEASSERT_CS : 0;
--		if ((t->rx_buf && t->tx_buf) || (t->rx_dma && t->tx_dma)) {
--			dev_err(ssp->dev,
--				"Cannot send and receive simultaneously\n");
--			status = -EINVAL;
--			break;
--		}
+@@ -218,7 +218,8 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
+ 	INIT_COMPLETION(spi->c);
  
- 		/*
- 		 * Small blocks can be transfered via PIO.
+ 	ctrl0 = readl(ssp->base + HW_SSP_CTRL0);
+-	ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT;
++	ctrl0 &= ~(BM_SSP_CTRL0_XFER_COUNT | BM_SSP_CTRL0_IGNORE_CRC |
++		 BM_SSP_CTRL0_READ);
+ 	ctrl0 |= BM_SSP_CTRL0_DATA_XFER | mxs_spi_cs_to_reg(cs);
+ 
+ 	if (!(flags & TXRX_WRITE))
 
 
 ------------------------------------------------------------------------------

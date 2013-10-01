@@ -1,8 +1,7 @@
 From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 05/13] spi: spi-mxs: Fix extra CS pulses and read mode in
-	multi-transfer messages
-Date: Tue, 01 Oct 2013 13:14:57 -0700
-Message-ID: <20131001201457.13660.87395.stgit@Graphine>
+Subject: [PATCH 08/13] spi: spi-mxs: Remove bogus setting of ssp clk rate field
+Date: Tue, 01 Oct 2013 13:15:18 -0700
+Message-ID: <20131001201518.13660.34120.stgit@Graphine>
 References: <20131001201425.13660.72740.stgit@Graphine>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -22,43 +21,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-There are two bits which control the CS line in the CTRL0 register:
-LOCK_CS and IGNORE_CRC.  The latter would be better named DEASSERT_CS
-in SPI mode.
+The ssp struct has a clock rate field, to provide the actual value, in Hz,
+of the SSP output clock (the rate of SSP_SCK) after mxs_ssp_set_clk_rate()
+is called.  It is set by mxs_ssp_set_clk_rate(), for SSP using drivers (like
+SPI and MMC) to *read* if they want to know the actual clock rate.  The SPI
+driver isn't supposed to *write* to it.
 
-Setting DEASSERT_CS causes CS to be de-asserted at the end of the transfer.
-It should normally be set only for the final segment of the final transfer.
-The DMA code explicitly sets it in this case, but because it never clears
-the bit from the ctrl0 register, it will remain set for all transfers in
-subsequent messages.  This results in a CS pulse between transfers.
-
-There is a similar problem with the read mode bit never being cleared
-in DMA mode.
-
-This patch fixes DEASSERT_CS and READ being left on in DMA mode.
+For some reason the spi-mxs driver decides to write to this field on init,
+and sets it to the value of the SSP input clock (clk_sspN, from the MXS
+clocking block) in kHz.  It shouldn't be setting the value, and certainly
+shouldn't be setting it with the wrong clock in the wrong units.
 
 Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mxs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-mxs.c |    1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 090930a..68ea507 100644
+index de7387e..8cb5d8b 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -218,7 +218,8 @@ static int mxs_spi_txrx_dma(struct mxs_spi *spi, int cs,
- 	INIT_COMPLETION(spi->c);
+@@ -536,7 +536,6 @@ static int mxs_spi_probe(struct platform_device *pdev)
+ 		goto out_dma_release;
  
- 	ctrl0 = readl(ssp->base + HW_SSP_CTRL0);
--	ctrl0 &= ~BM_SSP_CTRL0_XFER_COUNT;
-+	ctrl0 &= ~(BM_SSP_CTRL0_XFER_COUNT | BM_SSP_CTRL0_IGNORE_CRC |
-+		 BM_SSP_CTRL0_READ);
- 	ctrl0 |= BM_SSP_CTRL0_DATA_XFER | mxs_spi_cs_to_reg(cs);
+ 	clk_set_rate(ssp->clk, clk_freq);
+-	ssp->clk_rate = clk_get_rate(ssp->clk) / 1000;
  
- 	if (!(flags & TXRX_WRITE))
+ 	ret = stmp_reset_block(ssp->base);
+ 	if (ret)
 
 
 ------------------------------------------------------------------------------

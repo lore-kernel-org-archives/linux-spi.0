@@ -1,7 +1,8 @@
 From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 02/13] spi: spi-mxs: Remove mxs_spi_enable and mxs_spi_disable
-Date: Tue, 01 Oct 2013 13:14:32 -0700
-Message-ID: <20131001201432.13660.6230.stgit@Graphine>
+Subject: [PATCH 03/13] spi: spi-mxs: Always clear INGORE_CRC,
+	to keep CS asserted
+Date: Tue, 01 Oct 2013 13:14:39 -0700
+Message-ID: <20131001201439.13660.75380.stgit@Graphine>
 References: <20131001201425.13660.72740.stgit@Graphine>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -21,66 +22,37 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-These functions consist of nothing but one single writel call and are
-only called once.  And the names really aren't accurate or clear,
-since they don't enable or disble SPI.  Rather they set the bit that
-controls the state of CS at the end of transfer.  It easier to follow
-the code to just set this bit with a writel() along with all the other
-bits being set in the same function.
+INGORE_CRC, better named DEASSERT_CS, should be cleared on all tranfers
+except the last.  So instead of only clearing it on the first transfer, we
+can just always clear it.  It will set on the last transfer.
+
+This removes the only use of the "first" flag in the transfer functions, so
+that flag can be then be removed.
 
 Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mxs.c |   22 ++++------------------
- 1 file changed, 4 insertions(+), 18 deletions(-)
+ drivers/spi/spi-mxs.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index e6172ae..991ee01 100644
+index 991ee01..e2a9cc2 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -145,22 +145,6 @@ static void mxs_spi_set_cs(struct mxs_spi *spi, unsigned cs)
- 	writel(select, ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
- }
- 
--static inline void mxs_spi_enable(struct mxs_spi *spi)
--{
--	struct mxs_ssp *ssp = &spi->ssp;
--
--	writel(BM_SSP_CTRL0_IGNORE_CRC,
--		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
--}
--
--static inline void mxs_spi_disable(struct mxs_spi *spi)
--{
--	struct mxs_ssp *ssp = &spi->ssp;
--
--	writel(BM_SSP_CTRL0_IGNORE_CRC,
--		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
--}
--
- static int mxs_ssp_wait(struct mxs_spi *spi, int offset, int mask, bool set)
+@@ -318,9 +318,8 @@ static int mxs_spi_txrx_pio(struct mxs_spi *spi, int cs,
  {
- 	const unsigned long timeout = jiffies + msecs_to_jiffies(SSP_TIMEOUT);
-@@ -335,13 +319,15 @@ static int mxs_spi_txrx_pio(struct mxs_spi *spi, int cs,
  	struct mxs_ssp *ssp = &spi->ssp;
  
- 	if (*first)
--		mxs_spi_enable(spi);
-+		writel(BM_SSP_CTRL0_IGNORE_CRC,
-+		       ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
+-	if (*first)
+-		writel(BM_SSP_CTRL0_IGNORE_CRC,
+-		       ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
++	writel(BM_SSP_CTRL0_IGNORE_CRC,
++	       ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_CLR);
  
  	mxs_spi_set_cs(spi, cs);
  
- 	while (len--) {
- 		if (*last && len == 0)
--			mxs_spi_disable(spi);
-+			writel(BM_SSP_CTRL0_IGNORE_CRC,
-+			       ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
- 
- 		if (ssp->devid == IMX23_SSP) {
- 			writel(BM_SSP_CTRL0_XFER_COUNT,
 
 
 ------------------------------------------------------------------------------

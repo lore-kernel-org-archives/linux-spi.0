@@ -1,7 +1,7 @@
 From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 12/13] spi: spi-mxs: Don't set clock for each xfer
-Date: Tue, 01 Oct 2013 13:15:47 -0700
-Message-ID: <20131001201547.13660.33199.stgit@Graphine>
+Subject: [PATCH 11/13] spi: spi-mxs: Clean up setup_transfer function
+Date: Tue, 01 Oct 2013 13:15:40 -0700
+Message-ID: <20131001201539.13660.12669.stgit@Graphine>
 References: <20131001201425.13660.72740.stgit@Graphine>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -21,59 +21,69 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-mxs_spi_setup_transfer() would set the SSP SCK rate every time it was
-called, which is before every transfer.  It is uncommon for the SCK rate to
-change between transfers (or at all of that matter) and this causes many
-unnecessary reprogrammings of the clock registers.
+It can't be called with a NULL transfer anymore so it can be simplified
+to not check for that.
 
-Code changed to only set the rate when it changes.  This significantly
-speeds up short SPI messages, especially messages made up of many transfers,
-as the calculation of the clock divisors is rather costly.  On an iMX287,
-using spidev with messages that consist of 511 transfers of 4 bytes each at
-an SCK of 48 MHz, the effective transfer rate more than doubles from about
-290 KB/sec to 600 KB/sec!
+Fix indention of line-wrapped code to Linux standard.
+
+The transfer pointer can be const.
+
+It's not necessary to check if the spi_transfer's speed_hz is zero, as
+the spi core also fills it in from the spi_device.  However, the spi
+core does not check if spi_device's speed is zero so we have to do
+that still.
 
 Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-mxs.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/spi/spi-mxs.c |   19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
-index 9e6101a..759de70 100644
+index 23cc412..9e6101a 100644
 --- a/drivers/spi/spi-mxs.c
 +++ b/drivers/spi/spi-mxs.c
-@@ -67,6 +67,7 @@
- struct mxs_spi {
- 	struct mxs_ssp		ssp;
- 	struct completion	c;
-+	unsigned int		sck;	/* Rate requested (vs actual) */
+@@ -70,17 +70,14 @@ struct mxs_spi {
  };
  
  static int mxs_spi_setup_transfer(struct spi_device *dev,
-@@ -81,7 +82,19 @@ static int mxs_spi_setup_transfer(struct spi_device *dev,
+-				struct spi_transfer *t)
++				  const struct spi_transfer *t)
+ {
+ 	struct mxs_spi *spi = spi_master_get_devdata(dev->master);
+ 	struct mxs_ssp *ssp = &spi->ssp;
+-	uint32_t hz = 0;
++	const unsigned int hz = min(dev->max_speed_hz, t->speed_hz);
+ 
+-	hz = dev->max_speed_hz;
+-	if (t && t->speed_hz)
+-		hz = min(hz, t->speed_hz);
+ 	if (hz == 0) {
+-		dev_err(&dev->dev, "Cannot continue with zero clock\n");
++		dev_err(&dev->dev, "SPI clock rate of zero not allowed\n");
  		return -EINVAL;
  	}
  
--	mxs_ssp_set_clk_rate(ssp, hz);
-+	if (hz != spi->sck) {
-+		mxs_ssp_set_clk_rate(ssp, hz);
-+		/*
-+		 * Save requested rate, hz, rather than the actual rate,
-+		 * ssp->clk_rate.  Otherwise we would set the rate every trasfer
-+		 * when the actual rate is not quite the same as requested rate.
-+		 */
-+		spi->sck = hz;
-+		/*
-+		 * Perhaps we should return an error if the actual clock is
-+		 * nowhere close to what was requested?
-+		 */
-+	}
+@@ -88,12 +85,12 @@ static int mxs_spi_setup_transfer(struct spi_device *dev,
  
  	writel(BM_SSP_CTRL0_LOCK_CS,
  		ssp->base + HW_SSP_CTRL0 + STMP_OFFSET_REG_SET);
++
+ 	writel(BF_SSP_CTRL1_SSP_MODE(BV_SSP_CTRL1_SSP_MODE__SPI) |
+-		     BF_SSP_CTRL1_WORD_LENGTH
+-		     (BV_SSP_CTRL1_WORD_LENGTH__EIGHT_BITS) |
+-		     ((dev->mode & SPI_CPOL) ? BM_SSP_CTRL1_POLARITY : 0) |
+-		     ((dev->mode & SPI_CPHA) ? BM_SSP_CTRL1_PHASE : 0),
+-		     ssp->base + HW_SSP_CTRL1(ssp));
++	       BF_SSP_CTRL1_WORD_LENGTH(BV_SSP_CTRL1_WORD_LENGTH__EIGHT_BITS) |
++	       ((dev->mode & SPI_CPOL) ? BM_SSP_CTRL1_POLARITY : 0) |
++	       ((dev->mode & SPI_CPHA) ? BM_SSP_CTRL1_PHASE : 0),
++	       ssp->base + HW_SSP_CTRL1(ssp));
+ 
+ 	writel(0x0, ssp->base + HW_SSP_CMD0);
+ 	writel(0x0, ssp->base + HW_SSP_CMD1);
 
 
 ------------------------------------------------------------------------------

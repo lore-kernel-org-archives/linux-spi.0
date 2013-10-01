@@ -1,10 +1,12 @@
-From: "MonAlbumPhoto - Relation Client" <push-MHlsXkFZmLas8yGkUwA2TBXaG6MH5uyT@public.gmane.org>
-Subject: Astuces pour votre =?UTF-8?Q?cr=C3=A9ation?=
-Date: Tue, 01 Oct 2013 09:20:19 +0200
-Message-ID: <20131001092019.aklj5k@px70.yosmail.com>
-Reply-To: MonAlbumPhoto - Relation Client <ne-pas-repondre-Pz/5ZgEFv6gokx4wo90clw@public.gmane.org>
+From: IdealDouche <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Nouveau,_enfin_une_douche_pratiq?=
+	=?ISO-8859-1?Q?ue_et_s=E9curis=E9e._Devis_gratuit_!?=
+Date: Tue, 1 Oct 2013 14:28:13 +0200 (CEST)
+Message-ID: <ahh8la.hm93qydvlvx02ql@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============7776883145686785773=="
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,95 +19,116 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
---===============7776883145686785773==
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgrgu1I7gfk57dIhm93q17dI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380630456441%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DNFPPDKLFGEAKEIJN%26mid%3D1600275961&s=3DL=
+ODAAIFHHIHIGPDJ
+ =
 
-   monAlbumPhoto, le seul moyen d'être vraiment créatif !    
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !
+ =
 
- 		 MonAlbumPhoto - Mon plus beau cadeau [1] 
- 		 Accédez à votre compte personnel [2] 
-
- 		 Le seul moyen d'être vraiment créatif ! 
-
-  Cher utilisateur,
-
- MonAlbumPhoto vous invite à la CRéATIVITé ! Le logiciel de création de livre photos intuitif vous permettra de créer et de personnaliser facilement vos albums pour rassembler tous vos souvenirs dans un VéRITABLE LIVRE.  
-
- 		 Découvrez le logiciel de création et toutes ses fonctionnalités : 
-
- 		 1 
-
- 		 Des mises en pages originales : 
-
- 		 Des mises en pages originales 
-
- 		 2 
-
- 		 Un large choix de polices et de couleurs : 
-
- 		 Large choix de polices et de couleurs 
-
- 		 3 
-
- 		 Des outils précis et facile d'utilisation : 
-
-  la retouche photo, l'encadrement, la rotation, le détourage, l'ajustement automatique...
-
- Outils du logiciel  
-
- 		 Vous n'avez pas encore essayé ? 
- 		 Cliquez ici pour activer votre compte [3] 
-
-  A très bientôt !
- Cordialement,
-
- 		 L'équipe MonAlbumPhoto 
-
- 		 Contact [4] 
-
-  Vous pouvez nous contacter par mail [5] ou bien 
- par téléphone au 0892 230 054 (0.34cts/min).  
-
- 		 Si vous ne souhaitez plus recevoir d'informations de la part de MonAlbumPhoto.fr, veuillez suivre ce lien [6] 
-
-  
-
-Liens :
--------
-[1] http://www.monalbumphoto.fr/index.aspx?utm_content=header-map
-
-[2] http://www.monalbumphoto.fr/validate.aspx?enter=customer&id=&email=&utm_content=header-espace-client
-
-[3] http://www.monalbumphoto.fr/frmdlreg3.aspx
-
-[4] http://www.monalbumphoto.fr/index.aspx?str=9&utm_content=contact
-
-[5] http://www.monalbumphoto.fr/index.aspx?str=9&utm_content=contact
-
-[6] http://forms.yosmail.com/desaboMap.php?email=&uid=&news=inscription_a_j3
-
---===============7776883145686785773==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-------------------------------------------------------------------------------
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600275961&sig=3DMEJEMLFFALBHFAMM
+---------------------------------------------------------------------------=
+---
 October Webinars: Code for Performance
 Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
+om =
+
 the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60134791&iu=/4140/ostg.clktrk
---===============7776883145686785773==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-spi-devel-general mailing list
-spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-https://lists.sourceforge.net/lists/listinfo/spi-devel-general
-
---===============7776883145686785773==--
+http://pubads.g.doubleclick.net/gampad/clk?id=3D60134791&iu=3D/4140/ostg.cl=
+ktrk

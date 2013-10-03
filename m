@@ -1,10 +1,10 @@
-From: "iPhone" <contact-3Vk+1NJiquVBDgjK7y7TUQ@public.gmane.org>
-Subject: Destockage iPhone 5
-Date: Thu, 03 Oct 2013 09:18:33 +0000 (CET)
-Message-ID: <131003091833.-173715125100004696@fm03.eu>
+From: "Dossier Mutuelle" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] 3 mois offerts en 2013
+Date: Thu, 03 Oct 2013 09:31:45 +0000 (CET)
+Message-ID: <131003093145.-175050023200007760@fm01.eu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
 	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
@@ -18,55 +18,40 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoKIChodHRwOi8vZm0wMy5ldS9wemNidmppeTBleHB5ZjJsd3MvaW5kZXgwLmh0bWwpCgoKCgoK
-IChodHRwOi8vZm0wMy5ldS9tbWMxMWowdTBkajVieHRsemQvaW5kZXgxLmh0bWwpCgoKwqAKTGVz
-IGVuY2jDqHJlcyBhdSBjZW50aW1lIGV4cGxpcXXDqWVzIDoKRXN0LWNlIHZyYWltZW50IHBvc3Np
-YmxlIGQnw6ljb25vbWlzZXIgOTUgJSAKc3VyIGxlIHByaXggZGUgdmVudGUgPyAoaHR0cDovL2Zt
-MDMuZXUvNXdjMGFqazUwYzVwdW8wMm55L2luZGV4Mi5odG1sKSAKCgoKIChodHRwOi8vZm0wMy5l
-dS9ycGNmYmpmeDByYTV6amIyNGwvaW5kZXgzLmh0bWwpClZvdXMgbCdhdXJleiBzdXJlbWVudCBy
-ZW1hcnF1w6ksIHVuIG5vdXZlYXUgcGjDqW5vbcOobmUgZXN0IGVuIHRyYWluIGRlIHNlIGTDqXZl
-bG9wcGVyIGVuIEV1cm9wZSBldCBlbiBBbcOpcmlxdWUgZHUgTm9yZCA6IGxlcyBzaXRlcyBpbnRl
-cm5ldCBkZSB2ZW50ZXMgYXV4IGVuY2jDqHJlcyBkZSBkw6lzdG9ja2FnZS4gUGFydG91dCBzdXIg
-bGUgbmV0LCBkYW5zIGxlcyBibG9ncywgb24gcGV1dCBsaXJlIGxlcyBoaXN0b2lyZXMgZCdoZXVy
-ZXV4IHF1aSBvbnQgcmVtcG9ydMOpIGRlIGZhYnVsZXV4IGFydGljbGVzLi4uIAogKGh0dHA6Ly9m
-bTAzLmV1L3F3MGphNWNwZHdtcHN5MHl0ZC9pbmRleDQuaHRtbCkKSGFiaXR1ZWxsZW1lbnQgdHLD
-qHMgb27DqXJldXggcG91ciDDoCBwZWluZSB1bmUgYm91Y2jDqWUgZGUgcGFpbi4gTWFpcyBub3Vz
-IG4nw6l0aW9ucyBwYXMgY29udmFpbmN1cyDDoCAxMDAgJSBldCBjJ2VzdCBwb3VyIGNlbGEgcXVl
-IG5vdXMgYXZvbnMgZMOpY2lkw6kgZGUgbGVzIHRlc3Rlci4gKGh0dHA6Ly9mbTAzLmV1L2pwMGxi
-NWVmZDBoNXRzYnkycy9pbmRleDUuaHRtbCkKCgoKCiBMSVJFIExBIFNVSVRFID4+IChodHRwOi8v
-Zm0wMy5ldS9nejBxdjV0c2RxMXBrYjJiYmwvaW5kZXg2Lmh0bWwpCgogKGh0dHA6Ly9mbTAzLmV1
-L29tMHMxNTNrZGlnNTR0dGIweS9pbmRleDcuaHRtbCkKCgrCoApMYSBSZXZ1ZSBDb25zbyDDoCB0
-ZXN0w6kgU3dvZ2dpIHLDqWNlbW1lbnQKZXQgbGVzIHLDqXN1bHRhdHMgb250IMOpdMOpIHRyw6hz
-IHN1cnByZW5hbnRzLiAoaHR0cDovL2ZtMDMuZXUvZnpyeWV4aGQwdTJwZ2sybWRzL2luZGV4OC5o
-dG1sKSAKCgoKIChodHRwOi8vZm0wMy5ldS8xbXJnY3gyZTB5bDUxdXRteWQvaW5kZXg5Lmh0bWwp
-CiJTd29nZ2kgYSBkw6lwYXNzw6kgdG91dGVzIG5vcyBhdHRlbnRlcyBlbiBjZSBxdWkgY29uY2Vy
-bmFpdCBsZXMgw6ljb25vbWllcyByw6lhbGlzYWJsZXMgZ3LDomNlIMOgIGxldXJzIG9mZnJlcy4g
-VG91cyBsZXMgam91cnMsIGRlcyBnZW5zIMOpY29ub21pc2VudCBqdXNxdSfDoCA5NSAlIHN1ciBs
-ZXMgcHJpeCBoYWJpdHVlbHMgZGUgdmVudGUuIEMnZXN0IGluY3JveWFibGUgISIKIChodHRwOi8v
-Zm0wMy5ldS9wcGZiYnlpeGVlYWF5b2JkZWcvaW5kZXgxMC5odG1sKQoKCgoKCkxJUkUgTEEgU1VJ
-VEUgPj4gKGh0dHA6Ly9mbTAzLmV1L200bjF1aDJqcXlhb2NqbDV1Zy9pbmRleDExLmh0bWwpCgrC
-oAoKIChodHRwOi8vZm0wMy5ldS9iZHV3cHY0cm0xd2Nld3FmaGQvaW5kZXgxMi5odG1sKQogKGh0
-dHA6Ly9mbTAzLmV1LzBxcXBvamppMnB3bTVuZnYzZC9pbmRleDEzLmh0bWwpCgogKGh0dHA6Ly9m
-bTAzLmV1L3hmcmxzZnZjYmJ2bjE0YW12cS9pbmRleDE0Lmh0bWwpCk1hcmllIChodHRwOi8vZm0w
-My5ldS9jdGJqNHdjcTV3djBzem1za3EvaW5kZXgxNS5odG1sKQpTYW1lZGkgMjMganVpbiAzaDI1
-IChodHRwOi8vZm0wMy5ldS9idnJuaWZud3RiZDQxZWVtaGQvaW5kZXgxNi5odG1sKQoKCgoKCgrC
-oAoiSidhaSBkZSBxdW9pIHZvaXIgdmVuaXIgbGVzIGFubml2ZXJzYWlyZXMgZXQgYXV0cmVzIGbD
-qnRlcyBwb3VyIHVuIGJvbiBtb21lbnQgZXQgaidhaSBmYWl0IGRlIHNhY3LDqXMgw6ljb25vbWll
-cyIgKGh0dHA6Ly9mbTAzLmV1LzBoYjVjd3FlcHdkYnN2NHMzZC9pbmRleDE3Lmh0bWwpCgoKCgoK
-CgogKGh0dHA6Ly9mbTAzLmV1LzFteGdjbDBlaWRseGJ1c2R1by9pbmRleDE4Lmh0bWwpClBhdG91
-IChodHRwOi8vZm0wMy5ldS9mbnd5aWFod2R1bHBxazA1ZW8vaW5kZXgxOS5odG1sKQogU2FtZWRp
-IDIzIGp1aW4gNGgzNyAoaHR0cDovL2ZtMDMuZXUvb3Jpc3h4MzMwaG01bnN0MWVxL2luZGV4MjAu
-aHRtbCkKCgoKCgrCoAoiSidhaSB2dSB1biByZXBvcnRhZ2Ugc3VyIGxlcyBlbmNow6hyZXMgYXUg
-Y2VudGltZSDDoCBsYSB0w6lsw6ksIHB1aXMgaidhaSBsdSBjZXQgYXJ0aWNsZS4gSWwgbWUgdGFy
-ZGUgZCdlc3NheWVyIiAoaHR0cDovL2ZtMDMuZXUvZ3d5cWFuYnByb21mM3lka3VxL2luZGV4MjEu
-aHRtbCkKCgoKwqAKCgoKCgoKCgoKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCk9jdG9iZXIgV2ViaW5h
-cnM6IENvZGUgZm9yIFBlcmZvcm1hbmNlCkZyZWUgSW50ZWwgd2ViaW5hcnMgY2FuIGhlbHAgeW91
-IGFjY2VsZXJhdGUgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UuCkV4cGxvcmUgdGlwcyBmb3IgTVBJ
-LCBPcGVuTVAsIGFkdmFuY2VkIHByb2ZpbGluZywgYW5kIG1vcmUuIEdldCB0aGUgbW9zdCBmcm9t
-IAp0aGUgbGF0ZXN0IEludGVsIHByb2Nlc3NvcnMgYW5kIGNvcHJvY2Vzc29ycy4gU2VlIGFic3Ry
-YWN0cyBhbmQgcmVnaXN0ZXIgPgpodHRwOi8vcHViYWRzLmcuZG91YmxlY2xpY2submV0L2dhbXBh
-ZC9jbGs/aWQ9NjAxMzQ3OTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsKX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVsLWdlbmVyYWwgbWFpbGluZyBs
-aXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApodHRwczovL2xpc3Rz
-LnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2ZWwtZ2VuZXJhbAo=
+
+
+
+
+
+ (http://fm01.eu/al00r5sqx0yrqmxbvd/index0.html)
+ (http://fm01.eu/ij0fd5pixwbmcrcbks/index1.html)
+ (http://fm01.eu/3s0b45qwxiurihfyel/index2.html)
+ (http://fm01.eu/hq01o5w0xqzmri1yuy/index3.html)
+
+
+ (http://fm01.eu/1scq4j4njdvrgef2ys/index4.html)
+ (http://fm01.eu/fqcsojo2jenm1v12dd/index5.html)
+ (http://fm01.eu/clcjrjrgjrlrhwxlsy/index6.html)
+ (http://fm01.eu/xjcldjdhjc2mmnclll/index7.html)
+
+
+ (http://fm01.eu/jlwdmayjxbgrslxa2d/index8.html)
+ (http://fm01.eu/qjwola5axz1mtdcats/index9.html)
+ (http://fm01.eu/zssvzz24af3iwxf4hl/index10.html)
+ (http://fm01.eu/wohay1ikym3gafqg3l/index11.html)
+
+
+ (http://fm01.eu/fr5sf2j24unxbvlieq/index12.html)
+ (http://fm01.eu/1w0q354lfdnpqebbuq/index13.html)
+ (http://fm01.eu/tkezk3cnche43ukjid/index14.html)
+ (http://fm01.eu/23jmtdvvwoebnkwwad/index15.html)
+
+
+
+
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60134791&iu=/4140/ostg.clktrk

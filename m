@@ -1,10 +1,11 @@
-From: jdorrelnn-bX1eMCzL3ehWk0Htik3J/w@public.gmane.org
-Subject: [SPAM] Monster action next week!
-Date: Thu, 3 Oct 2013 10:19:08 +0400
-Message-ID: <E1VRcIG-0000lc-U1@sfs-ml-2.v29.ch3.sourceforge.com>
+From: Nl promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Votre vol pas cher en 1 clic
+Date: Thu, 3 Oct 2013 10:30:45 +0200 (CEST)
+Message-ID: <ilj8cj.hmbq5ag93qxb93l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -17,21 +18,71 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This Stock is our new stock pick! This stock could be a 
-possible Buyout Candidate!
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgriwfI7gfk57dIhmbq582iI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380789042733%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DILGKHOOBOBKEAEEA%26mid%3D1600278639&s=3DD=
+OBPBAPIFPDDPCGI
+ =
 
-Short Term Target Price: 0.10
-Company: Siga Resources, Inc.
-Today Price: .0225
-Trade Date: Thursday, October 3rd, 2013
-Ticker Symbol: SG-AE
+Votre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher =
+en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol =
+pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicV=
+otre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher e=
+n 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol p=
+as cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVo=
+tre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en=
+ 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pa=
+s cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVot=
+re vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en =
+1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas=
+ cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotr=
+e vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1=
+ clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas =
+cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre=
+ vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 =
+clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas c=
+her en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre =
+vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 c=
+licVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas ch=
+er en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre v=
+ol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 cl=
+icVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas che=
+r en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vo=
+l pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 cli=
+cVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher=
+ en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol=
+ pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clic=
+Votre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher =
+en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol =
+pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicV=
+otre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher e=
+n 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol p=
+as cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVo=
+tre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en=
+ 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pa=
+s cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVot=
+re vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en =
+1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas=
+ cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotr=
+e vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1=
+ clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas =
+cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre=
+ vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 =
+clicVotre vol pas cher en 1 clicVotre vol pas cher en 1 clicVotre vol pas c=
+her en 1 clicVotre vol pas cher en 1 clic
+ =
 
-This Stock is Break Out! Rips the Charts!
-
-
-------------------------------------------------------------------------------
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600278639&sig=3DIAMHLAEOKPLJGKPA
+---------------------------------------------------------------------------=
+---
 October Webinars: Code for Performance
 Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
+om =
+
 the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60134791&iu=/4140/ostg.clktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=3D60134791&iu=3D/4140/ostg.cl=
+ktrk

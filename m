@@ -1,12 +1,12 @@
-From: DR Ricaud - FWU <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Recevez votre cadeau de bienvenue et profitez de -50% sur tout le site
-Date: Thu, 3 Oct 2013 14:11:25 +0200 (CEST)
-Message-ID: <of92g1.hmby12byo72wxdl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: IKKS <ikks-+qpfDzG3sNZWk0Htik3J/w@public.gmane.org>
+Subject: 10 ans d'IKKS MEN : Capsule Collector et Tablier Offert sur E-Shop
+Date: Thu, 03 Oct 2013 14:58:00 +0000
+Message-ID: <20131003142724.35.9615@www.ikksnews.com>
+Reply-To: IKKS <no-reply-+qpfDzG3sNZWk0Htik3J/w@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,90 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgriw7I7gfk57dIhmby0yycI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380802281353%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DCDGPCABDNOCAEFNL%26mid%3D1600278631&s=3DO=
-EPGKLNMDAKOKCLJ
- =
-
-Recevez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecev=
-ez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez vo=
-tre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez votre c=
-adeau de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau=
- de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de b=
-ienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de bienve=
-nue et profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue e=
-t profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue et pro=
-fitez de -50% sur tout le siteRecevez votre cadeau de bienvenue et profitez=
- de -50% sur tout le siteRecevez votre cadeau de bienvenue et profitez de -=
-50% sur tout le siteRecevez votre cadeau de bienvenue et profitez de -50% s=
-ur tout le siteRecevez votre cadeau de bienvenue et profitez de -50% sur to=
-ut le siteRecevez votre cadeau de bienvenue et profitez de -50% sur tout le=
- siteRecevez votre cadeau de bienvenue et profitez de -50% sur tout le site=
-Recevez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecev=
-ez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez vo=
-tre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez votre c=
-adeau de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau=
- de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de b=
-ienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de bienve=
-nue et profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue e=
-t profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue et pro=
-fitez de -50% sur tout le siteRecevez votre cadeau de bienvenue et profitez=
- de -50% sur tout le siteRecevez votre cadeau de bienvenue et profitez de -=
-50% sur tout le siteRecevez votre cadeau de bienvenue et profitez de -50% s=
-ur tout le siteRecevez votre cadeau de bienvenue et profitez de -50% sur to=
-ut le siteRecevez votre cadeau de bienvenue et profitez de -50% sur tout le=
- siteRecevez votre cadeau de bienvenue et profitez de -50% sur tout le site=
-Recevez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecev=
-ez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez vo=
-tre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez votre c=
-adeau de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau=
- de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de b=
-ienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de bienve=
-nue et profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue e=
-t profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue et pro=
-fitez de -50% sur tout le siteRecevez votre cadeau de bienvenue et profitez=
- de -50% sur tout le siteRecevez votre cadeau de bienvenue et profitez de -=
-50% sur tout le siteRecevez votre cadeau de bienvenue et profitez de -50% s=
-ur tout le siteRecevez votre cadeau de bienvenue et profitez de -50% sur to=
-ut le siteRecevez votre cadeau de bienvenue et profitez de -50% sur tout le=
- siteRecevez votre cadeau de bienvenue et profitez de -50% sur tout le site=
-Recevez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecev=
-ez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez vo=
-tre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez votre c=
-adeau de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau=
- de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de b=
-ienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de bienve=
-nue et profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue e=
-t profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue et pro=
-fitez de -50% sur tout le siteRecevez votre cadeau de bienvenue et profitez=
- de -50% sur tout le siteRecevez votre cadeau de bienvenue et profitez de -=
-50% sur tout le siteRecevez votre cadeau de bienvenue et profitez de -50% s=
-ur tout le siteRecevez votre cadeau de bienvenue et profitez de -50% sur to=
-ut le siteRecevez votre cadeau de bienvenue et profitez de -50% sur tout le=
- siteRecevez votre cadeau de bienvenue et profitez de -50% sur tout le site=
-Recevez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecev=
-ez votre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez vo=
-tre cadeau de bienvenue et profitez de -50% sur tout le siteRecevez votre c=
-adeau de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau=
- de bienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de b=
-ienvenue et profitez de -50% sur tout le siteRecevez votre cadeau de bienve=
-nue et profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue e=
-t profitez de -50% sur tout le siteRecevez votre cadeau de bienvenue et pro=
-fitez de -50% sur tout le site
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600278631&sig=3DBHHGAHFHCONFBNIG
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60134791&iu=3D/4140/ostg.cl=
-ktrk
+CklLS1MgTUVOIDogQ0VMRUJSQVRFIDEwVEggQU5OSVZFUlNBUllEZXMgcHJvYmzDqG1lcyBwb3Vy
+IGxpcmUgY2V0IGVtYWlsPyBDbGlxdWV6IGljaUZSIHwgRU4gfCBFUyB8IE5MQ0hSSVNUT1BIRSBN
+SUNIQUxBS1BPUlRFIExFUyBQUk9EVUlUUyBDT0xMRUNUT1JTUE9VUiBMRVMgMTAgQU5TIElLS1Mg
+TUVOLiMxMCBQUk9EVUlUUyBDT0xMRUNUT1JTUE9VUiBMRVMgMTAgQU5TIElLS1MgTUVOLk1FTjEw
+QU5TU2kgdm91cyBuZSBzb3VoYWl0ZXogcGx1cyByCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPY3Rv
+YmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmluYXJzIGNh
+biBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3JlIHRp
+cHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBHZXQgdGhl
+IG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3NvcnMu
+IFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNr
+Lm5ldC9nYW1wYWQvY2xrP2lkPTYwMTM0NzkxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
+IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
+cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
+YWwK

@@ -1,12 +1,12 @@
-From: "Dossier Mutuelle" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
-Subject: [SPAM] 3 mois offerts en 2013
-Date: Thu, 03 Oct 2013 09:31:45 +0000 (CET)
-Message-ID: <131003093145.-175050023200007760@fm01.eu>
+From: "Album Photo" <lisa@a.optincake.com>
+Subject: Offert : livre photo ou toile ?
+Date: Thu, 03 Oct 2013 11:15:21 +0100
+Message-ID: <0.0.135.57E.1CEC02177709076.0@mta40.pur3.net>
+Reply-To: Album Photo <lisa@a.optincake.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,40 +18,73 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-
-
-
- (http://fm01.eu/al00r5sqx0yrqmxbvd/index0.html)
- (http://fm01.eu/ij0fd5pixwbmcrcbks/index1.html)
- (http://fm01.eu/3s0b45qwxiurihfyel/index2.html)
- (http://fm01.eu/hq01o5w0xqzmri1yuy/index3.html)
-
-
- (http://fm01.eu/1scq4j4njdvrgef2ys/index4.html)
- (http://fm01.eu/fqcsojo2jenm1v12dd/index5.html)
- (http://fm01.eu/clcjrjrgjrlrhwxlsy/index6.html)
- (http://fm01.eu/xjcldjdhjc2mmnclll/index7.html)
-
-
- (http://fm01.eu/jlwdmayjxbgrslxa2d/index8.html)
- (http://fm01.eu/qjwola5axz1mtdcats/index9.html)
- (http://fm01.eu/zssvzz24af3iwxf4hl/index10.html)
- (http://fm01.eu/wohay1ikym3gafqg3l/index11.html)
-
-
- (http://fm01.eu/fr5sf2j24unxbvlieq/index12.html)
- (http://fm01.eu/1w0q354lfdnpqebbuq/index13.html)
- (http://fm01.eu/tkezk3cnche43ukjid/index14.html)
- (http://fm01.eu/23jmtdvvwoebnkwwad/index15.html)
-
-
-
-
-------------------------------------------------------------------------------
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60134791&iu=/4140/ostg.clktrk
+Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
+Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
+aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
+MjAwMjgzMjIwNTM3MTI0CgoKClNpIGxlIG1lc3NhZ2UgbmUgcydhZmZpY2hlIHBhcyBjb3JyZWN0
+ZW1lbnQgbWVyY2kgZGUgc3VpdnJlIGNlIGxpZW46Cmh0dHA6Ly9uZXdzLnRlcmFkb28uY29tL3B1
+YmxpYy9yZWFkX21lc3NhZ2UuanNwP3RzcD0xMzgwNzQ3Mzc1OTIzJmN1c3RpZD0xNjQ0NCZ1Cmlk
+PTE2MjA5OTAxMTg0JnNpZz1IQkxDRkZNQURCQkhBT05DJm1pZD0xNjAwMjc2MDE0CgoKU2kgdm91
+cyBuZSBzb3VoYWl0ZXogcGx1cyByZWNldm9pciBub3MgZW1haWxzLCB2ZXVpbGxleiBzdWl2cmUg
+Y2UgbGllbgp2ZXVpbGxleiBzdWl2cmUgY2UgbGllbjoKaHR0cDovL25ld3MudGVyYWRvby5jb20v
+cHVibGljL3Vuc3Vic2NyaWJlLmpzcD9naWQ9MTYwMDAyMzYzOSZ1aWQ9MTYyMDk5MDExODQmbWkK
+ZD0xNjAwMjc2MDE0JnNpZz1GRk1OS0pHTEpMRkRDSURQCgoKwqAKCihsZWZ0MDAwMC5naWYpOgpo
+dHRwOi8vbmV3cy50ZXJhZG9vLmNvbS9yZT9sPURJcWdyZ3ZpSTdnMnlmc3dJMCZyZXE9ZW1haWwl
+M0RuYWRlZXIlNDBuZWV6ei5jb20KCih0b3AwMDAwMC5naWYpOgpodHRwOi8vbmV3cy50ZXJhZG9v
+LmNvbS9yZT9sPURJcWdyZ3ZpSTdnMnlmc3dJMSZyZXE9ZW1haWwlM0RuYWRlZXIlNDBuZWV6ei5j
+b20KCihyaWdodDAwMC5naWYpOgpodHRwOi8vbmV3cy50ZXJhZG9vLmNvbS9yZT9sPURJcWdyZ3Zp
+STdnMnlmc3dJMiZyZXE9ZW1haWwlM0RuYWRlZXIlNDBuZWV6ei5jb20KCgrCoCAgMjAwIDAwMCBw
+ZXJzb25uZXM6Cmh0dHA6Ly9uZXdzLnRlcmFkb28uY29tL3JlP2w9RElxZ3JndmlJN2cyeWZzd0kz
+JnJlcT1lbWFpbCUzRG5hZGVlciU0MG5lZXp6LmNvbQoKCm9udCBkw4PCqWrDg8KgIHByb2ZpdMOD
+wqkgZGUgbm9zIG9mZnJlcyBncmF0dWl0ZXMgIToKaHR0cDovL25ld3MudGVyYWRvby5jb20vcmU/
+bD1ESXFncmd2aUk3ZzJ5ZnN3STQmcmVxPWVtYWlsJTNEbmFkZWVyJTQwbmVlenouY29tCgoKwqAK
+wqAgIFVuIGxpdnJlIHBob3RvcyBHUkFUVUlUOgpodHRwOi8vbmV3cy50ZXJhZG9vLmNvbS9yZT9s
+PURJcWdyZ3ZpSTdnMnlmc3dJNSZyZXE9ZW1haWwlM0RuYWRlZXIlNDBuZWV6ei5jb20KCgpVbmUg
+dG9pbGUgcGhvdG8gR1JBVFVJVEU6Cmh0dHA6Ly9uZXdzLnRlcmFkb28uY29tL3JlP2w9RElxZ3Jn
+dmlJN2cyeWZzd0k2JnJlcT1lbWFpbCUzRG5hZGVlciU0MG5lZXp6LmNvbQoKKE9mZnJlIGxpbWl0
+P2UgZGFucyBsZSB0ZW1wcyk6Cmh0dHA6Ly9uZXdzLnRlcmFkb28uY29tL3JlP2w9RElxZ3JndmlJ
+N2cyeWZzd0k3JnJlcT1lbWFpbCUzRG5hZGVlciU0MG5lZXp6LmNvbQoKKHNwYWNlcjAwLmdpZik6
+Cmh0dHA6Ly9uZXdzLnRlcmFkb28uY29tL3JlP2w9RElxZ3JndmlJN2cyeWZzd0k4JnJlcT1lbWFp
+bCUzRG5hZGVlciU0MG5lZXp6LmNvbQoKKExpdnJlIHBob3RvKToKaHR0cDovL25ld3MudGVyYWRv
+by5jb20vcmU/bD1ESXFncmd2aUk3ZzJ5ZnN3STkmcmVxPWVtYWlsJTNEbmFkZWVyJTQwbmVlenou
+Y29tCgooUG9zdGVyKToKaHR0cDovL25ld3MudGVyYWRvby5jb20vcmU/bD1ESXFncmd2aUk3ZzJ5
+ZnN3SWEmcmVxPWVtYWlsJTNEbmFkZWVyJTQwbmVlenouY29tCgoKPiBTb3lleiBjcsODwqlhdGlm
+ICEKPiBQZXJzb25uYWxpc2F0aW9uIGVuIDUgbWluCj4gUGx1cyBkZSAyMDAwIG1pc2VzIGVuIHBh
+Z2VzCj4gU2F0aXNmYWN0aW9uIGdhcmFudGllOgpodHRwOi8vbmV3cy50ZXJhZG9vLmNvbS9yZT9s
+PURJcWdyZ3ZpSTdnMnlmc3dJYiZyZXE9ZW1haWwlM0RuYWRlZXIlNDBuZWV6ei5jb20KCihKJ2Vu
+IHByb2ZpdGUpOgpodHRwOi8vbmV3cy50ZXJhZG9vLmNvbS9yZT9sPURJcWdyZ3ZpSTdnMnlmc3dJ
+YyZyZXE9ZW1haWwlM0RuYWRlZXIlNDBuZWV6ei5jb20KCihNb25BbGJ1bVBob3RvLmZyKToKaHR0
+cDovL25ld3MudGVyYWRvby5jb20vcmU/bD1ESXFncmd2aUk3ZzJ5ZnN3SWQmcmVxPWVtYWlsJTNE
+bmFkZWVyJTQwbmVlenouY29tCgoKRMODwql0YWlscyBkZSBsJ29mZnJlClZvdHJlIGxpdnJlIHBo
+b3RvcyBvdSB0b2lsZSB2cmFpbWVudCBHUkFUVUlUIDogQsOpbsOpZmljaWV6IGRlIDksOTUg4oKs
+IChwb3VyCnVuIGxpdnJlIHBob3Rvcykgb3UgZGUgMTgsNTDigqwgKHBvdXIgdW5lIHRvaWxlKSBk
+ZSByZW1pc2UgIHN1ciB2b3RyZQpwcmVtacOocmUgY29tbWFuZGUuIE9mZnJlIHNhbnMgbWluaW11
+bSBkJ2FjaGF0LCB2YWxhYmxlIGp1c3F1J8OgIDcgam91cnMgw6AKY29tcHRlciBkZSBsJ2luc2Ny
+aXB0aW9uIHN1ciB0b3V0ZSBsYSBnYW1tZSBkZSBsaXZyZXMgcGhvdG9zIGV0IGRlIHRvaWxlcwpN
+b25BbGJ1bVBob3RvLgoKQ29tbWVudCBlbiBwcm9maXRlciA/CkNsaXF1ZXogc3VyIGxlIGJvdXRv
+biAiSidlbiBwcm9maXRlICIuIFZvdXMgcmVjZXZyZXogdW4gY29kZSBkZSByw6lkdWN0aW9uCnBh
+ciBlLW1haWwgYXUgbW9tZW50IGRlIHZvdHJlIGluc2NyaXB0aW9uLiBJbnPDqXJlciBjZSBjb2Rl
+IGRlIHLDqWR1Y3Rpb24Kc3VyIGxhIHBhZ2UgZGUgcsOpY2FwaXR1bGF0aWYgZGUgY29tbWFuZGUs
+IGF2YW50IGRlIHBheWVyLCAgZXQgYsOpbsOpZmljaWV6CmRlIDksOTUg4oKsIG91IGRlIDE4LDUw
+IOKCrCBkZSByZW1pc2UsIHNvaXQgcmVzcGVjdGl2ZW1lbnQgZCd1biBsaXZyZSBwaG90b3MKcGVy
+c29ubmFsaXPDqSBvdSBkJ3VuZSB0b2lsZSBHUkFUVUlURSouCiogT2ZmcmUgdmFsYWJsZSBzdXIg
+dG91dGUgMcOocmUgY29tbWFuZGUgZCd1biBsaXZyZSBwaG90b3Mgb3UgZCd1bmUgdG9pbGUKcGhv
+dG8sIGhvcnMgb3B0aW9ucyBldCBmcmFpcyBkJ2V4cMOpZGl0aW9uLjoKaHR0cDovL25ld3MudGVy
+YWRvby5jb20vcmU/bD1ESXFncmd2aUk3ZzJ5ZnN3SWUmcmVxPWVtYWlsJTNEbmFkZWVyJTQwbmVl
+enouY29tCgoKUG91ciBuZSBwbHVzIHJlY2V2b2lyIG5vcyBvZmZyZXMsIDogIGNsaXF1ZXogaWNp
+OgpodHRwOi8vbmV3cy50ZXJhZG9vLmNvbS9wdWJsaWMvdW5zdWJzY3JpYmUuanNwP2dpZD0xNjAw
+MDIzNjM5JnVpZD0xNjIwOTkwMTE4NCZtaQpkPTE2MDAyNzYwMTQmc2lnPUZGTU5LSkdMSkxGRENJ
+RFAKCgoKCgoKCi0tCgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIHZpc2l0ZXogOgpodHRwOi8vYS5v
+cHRpbmNha2UuY29tL19hY3QvZ2V0X3Jjci5waHA/QUo4NDY0MTg2NjI1MjAwMjgzMjIwNTM3MTI0
+CgoKCgoKCnt+QUo4NDY0MTg2NjI1MjAwMjgzMjIwNTM3MTI0fn0KLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tCk9jdG9iZXIgV2ViaW5hcnM6IENvZGUgZm9yIFBlcmZvcm1hbmNlCkZyZWUgSW50ZWwgd2Vi
+aW5hcnMgY2FuIGhlbHAgeW91IGFjY2VsZXJhdGUgYXBwbGljYXRpb24gcGVyZm9ybWFuY2UuCkV4
+cGxvcmUgdGlwcyBmb3IgTVBJLCBPcGVuTVAsIGFkdmFuY2VkIHByb2ZpbGluZywgYW5kIG1vcmUu
+IEdldCB0aGUgbW9zdCBmcm9tIAp0aGUgbGF0ZXN0IEludGVsIHByb2Nlc3NvcnMgYW5kIGNvcHJv
+Y2Vzc29ycy4gU2VlIGFic3RyYWN0cyBhbmQgcmVnaXN0ZXIgPgpodHRwOi8vcHViYWRzLmcuZG91
+YmxlY2xpY2submV0L2dhbXBhZC9jbGs/aWQ9NjAxMzQ3OTEmaXU9LzQxNDAvb3N0Zy5jbGt0cmsK
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18Kc3BpLWRldmVs
+LWdlbmVyYWwgbWFpbGluZyBsaXN0CnNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
+Lm5ldApodHRwczovL2xpc3RzLnNvdXJjZWZvcmdlLm5ldC9saXN0cy9saXN0aW5mby9zcGktZGV2
+ZWwtZ2VuZXJhbAo=

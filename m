@@ -1,13 +1,17 @@
-From: IKKS <ikks-+qpfDzG3sNZWk0Htik3J/w@public.gmane.org>
-Subject: 10 ans d'IKKS MEN : Capsule Collector et Tablier Offert sur E-Shop
-Date: Thu, 03 Oct 2013 14:58:00 +0000
-Message-ID: <20131003142724.35.9615@www.ikksnews.com>
-Reply-To: IKKS <no-reply-+qpfDzG3sNZWk0Htik3J/w@public.gmane.org>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 01/13] spi: spi-mxs: Always set LOCK_CS
+Date: Thu, 3 Oct 2013 18:02:16 +0200
+Message-ID: <201310031802.17012.marex@denx.de>
+References: <20131001201425.13660.72740.stgit@Graphine>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: <spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20131001201425.13660.72740.stgit@Graphine>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,19 +22,47 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CklLS1MgTUVOIDogQ0VMRUJSQVRFIDEwVEggQU5OSVZFUlNBUllEZXMgcHJvYmzDqG1lcyBwb3Vy
-IGxpcmUgY2V0IGVtYWlsPyBDbGlxdWV6IGljaUZSIHwgRU4gfCBFUyB8IE5MQ0hSSVNUT1BIRSBN
-SUNIQUxBS1BPUlRFIExFUyBQUk9EVUlUUyBDT0xMRUNUT1JTUE9VUiBMRVMgMTAgQU5TIElLS1Mg
-TUVOLiMxMCBQUk9EVUlUUyBDT0xMRUNUT1JTUE9VUiBMRVMgMTAgQU5TIElLS1MgTUVOLk1FTjEw
-QU5TU2kgdm91cyBuZSBzb3VoYWl0ZXogcGx1cyByCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPY3Rv
-YmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmluYXJzIGNh
-biBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3JlIHRp
-cHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBHZXQgdGhl
-IG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3NvcnMu
-IFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNr
-Lm5ldC9nYW1wYWQvY2xrP2lkPTYwMTM0NzkxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
-IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
-cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
-YWwK
+Dear Trent Piepho,
+
+> There are two bits which control the CS line in the CTRL0 register:
+> LOCK_CS and IGNORE_CRC.  The latter would be better named DEASSERT_CS
+> in SPI mode.
+> 
+> LOCK_CS keeps CS asserted though the entire transfer.  This should
+> always be set.  The DMA code will always set it, explicitly on the
+> first segment of the first transfer, and then implicitly on all the
+> rest by never clearing the bit from the value read from the ctrl0
+> register.
+> 
+> The PIO code will explicitly set it for the first transfer, leave it
+> set for intermediate transfers, and then clear it for the final
+> transfer.  It should not clear it.
+> 
+> The only reason to not set LOCK_CS would be to attempt an altered
+> protocol where CS pulses between each word.  Though don't get your
+> hopes up if you want to do this, as the hardware doesn't appear to do
+> this in any sane manner.  It appears to be related to the hardware
+> FIFO fill level.
+> 
+> The code can be simplified by just setting LOCK_CS once and then not
+> needing to deal with it at all in the PIO and DMA transfer functions.
+> 
+> Signed-off-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+> Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+[...]
+
+This is not V1 of patches, but changelog is missing.
+
+Otherwise, I'm out of the office, so I'll review and test on monday earliest.
+
+Best regards,
+Marek Vasut
+
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60134791&iu=/4140/ostg.clktrk

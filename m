@@ -1,11 +1,12 @@
-From: Trivago Bons Plans <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?H=F4tels_4*_=E0_partir_de_38_euros?=
-Date: Fri, 4 Oct 2013 10:39:38 +0200 (CEST)
-Message-ID: <k00trp.hmd5wju83u1xipl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "=?utf-8?Q?La_Mutuelle_G=C3=A9n=C3=A9rale_-_Consodeal?="
+	<info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+Subject: =?utf-8?Q?La_solution_sant=C3=A9_adapt=C3=A9e_=C3=A0_vos_besoins?=
+Date: Fri, 04 Oct 2013 15:26:04 +0000
+Message-ID: <1043=0c4c8a21-abf2-4253-96bc-e12e89471637=4=3266566@clicks.trackdom.fr>
+Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,74 +19,94 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgrjmjI7gfk57dIhmd5wa5kI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380875965584%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DEGGPLIMPDIIIFGPJ%26mid%3D1600279579&s=3DJ=
-NKLEHEHHNPEOMLF
- =
-
-H=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tel=
-s 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de =
-38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 euro=
-sH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4te=
-ls 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de =
-38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 euro=
-sH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4te=
-ls 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de =
-38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 euro=
-sH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4te=
-ls 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de =
-38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 euro=
-sH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4te=
-ls 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de =
-38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 euro=
-sH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4te=
-ls 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de =
-38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 euro=
-sH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4te=
-ls 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de =
-38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 euro=
-sH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4te=
-ls 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de =
-38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 euro=
-sH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4te=
-ls 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de =
-38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 euro=
-sH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4te=
-ls 4* =E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =
-=E0 partir de 38 eurosH=F4tels 4* =E0 partir de 38 eurosH=F4tels 4* =E0 par=
-tir de 38 euros
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600279579&sig=3DMILNFIFBDDBOHPIH
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60134791&iu=3D/4140/ostg.cl=
-ktrk
+VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
+Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
+ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
+ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICEKICAgCgoKCgoKCgoK
+CiAgIOKAoiBbMV1EZXMgcmVtYm91cnNlbWVudHMgb3B0aXF1ZSBldCBkZW50YWlyZSBxdWkgZm9u
+dCBsYSBkaWZmw6lyZW5jZQoKCiAgICAgWzJdVm91cyDDqnRlcyByZW1ib3Vyc8OpIGp1c3F1J8Og
+IDQ5MOKCrCBwb3VyIHZvcyBsdW5ldHRlcwogICBldCBqdXNxdSfDoCA0NzDigqwgcGFyIGRlbnQg
+cG91ciB2b3MgcHJvdGjDqHNlcyBkZW50YWlyZXMqLgoKCiAgIOKAoiBbM11DaGFxdWUgYW5uw6ll
+LCB1biBtb2lzIG9mZmVydCoKCgogICAgIFs0XVRvdXMgbGVzIGFucywgTGEgTXV0dWVsbGUgR8Op
+bsOpcmFsZSB2b3VzIGZhaXQgcHJvZml0ZXIgZCd1biBtb2lzCiAgIG9mZmVydAogICBzdXIgdm90
+cmUgY290aXNhdGlvbiBzYW50w6kuCgoKICAg4oCiIFs1XUV0IHBhcyBkJ2F2YW5jZSBkZSBmcmFp
+cyBjaGV6IHBsdXMgZGUgMTUwIDAwMCBwcm9mZXNzaW9ubmVscyBkZQogICBzYW50w6kKCiAgIAoK
+CgoKCgoKCgogICAKCgoKCgoKCgogICBbNl1TYW50w6kgJiBQcsOpdm95YW5jZQogICBbN11RdWVs
+bGUgbXV0dWVsbGUgdm91cyBzdWl2cmEgYXVzc2kgbG9pbiA/CgoKCgoKCgoKCgoKICAgKiBWb2ly
+IGNvbmRpdGlvbnMgc3VyIFs4XWxhbXV0dWVsbGVnZW5lcmFsZS5mcgogICBMYSBNdXR1ZWxsZSBH
+w6luw6lyYWxlIGVzdCB1bmUgbXV0dWVsbGUgc291bWlzZSBhdXggZGlzcG9zaXRpb25zIGR1CiAg
+IGxpdnJlIElJIGR1IENvZGUgZGUgbGEgbXV0dWFsaXTDqS4gTsKwIFNJUkVOIDc3NSA2ODUgMzQw
+LgoKUmVmZXJlbmNlcwoKICAgVmlzaWJsZSBsaW5rcwogICAxLiBodHRwOi8vY2xpY2tzLnRyYWNr
+ZG9tLmZyL2MvYXMvckdPLzd2LWttclgxSURYZ1NFYndQSXhnSDMvYi9rbFFMLzVlOGMwNDhjCiAg
+IDIuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yR0QvN3Yta21yWDFJRFhnU0Vid1BJ
+eGdIMy9iL2tsUUwvYTY2ODkxOTYKICAgMy4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2Fz
+L3JHQi83di1rbXJYMUlEWGdTRWJ3UEl4Z0gzL2Iva2xRTC9jOTZjNzk5NQogICA0LiBodHRwOi8v
+Y2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvckdfLzd2LWttclgxSURYZ1NFYndQSXhnSDMvYi9rbFFM
+LzFiMzBjMGZhCiAgIDUuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yRzkvN3Yta21y
+WDFJRFhnU0Vid1BJeGdIMy9iL2tsUUwvMzJjZmI3OGMKICAgNi4gaHR0cDovL2NsaWNrcy50cmFj
+a2RvbS5mci9jL2FzL3JHVi83di1rbXJYMUlEWGdTRWJ3UEl4Z0gzL2Iva2xRTC83MDA3MGZkZQog
+ICA3LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvckdaLzd2LWttclgxSURYZ1NFYndQ
+SXhnSDMvYi9rbFFML2FlMGVkZmQ4CiAgIDguIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9h
+cy9yRzgvN3Yta21yWDFJRFhnU0Vid1BJeGdIMy9iL2tsUUwvN2IyNjFhOTMKCiAgIEhpZGRlbiBs
+aW5rczoKICAgOS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JHWS83di1rbXJYMUlE
+WGdTRWJ3UEl4Z0gzL2Iva2xRTC83NDM0MjhmOQogIDEwLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9t
+LmZyL2MvYXMvckdlLzd2LWttclgxSURYZ1NFYndQSXhnSDMvYi9rbFFMLzY0ZjhiNDY1CiAgMTEu
+IGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yR2YvN3Yta21yWDFJRFhnU0Vid1BJeGdI
+My9iL2tsUUwvYmVjMjQzNDQKICAxMi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JH
+dS83di1rbXJYMUlEWGdTRWJ3UEl4Z0gzL2Iva2xRTC8yMTQ0NzAxMwogIDEzLiBodHRwOi8vY2xp
+Y2tzLnRyYWNrZG9tLmZyL2MvYXMvckcwLzd2LWttclgxSURYZ1NFYndQSXhnSDMvYi9rbFFMLzU5
+Zjg3OGE4CiAgMTQuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yT3kvN3Yta21yWDFJ
+RFhnU0Vid1BJeGdIMy9iL2tsUUwvNGU2NDk3NTMKICAxNS4gaHR0cDovL2NsaWNrcy50cmFja2Rv
+bS5mci9jL2FzL3JPRi83di1rbXJYMUlEWGdTRWJ3UEl4Z0gzL2Iva2xRTC84NDkyZmNlZQogIDE2
+LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvck9jLzd2LWttclgxSURYZ1NFYndQSXhn
+SDMvYi9rbFFML2JhZDU2YjIwCiAgMTcuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9y
+T20vN3Yta21yWDFJRFhnU0Vid1BJeGdIMy9iL2tsUUwvZjcwZmUxMTgKICAxOC4gaHR0cDovL2Ns
+aWNrcy50cmFja2RvbS5mci9jL2FzL3JPYi83di1rbXJYMUlEWGdTRWJ3UEl4Z0gzL2Iva2xRTC9m
+MzNjYzYzZgogIDE5LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvck9vLzd2LWttclgx
+SURYZ1NFYndQSXhnSDMvYi9rbFFMLzY0ZGNiYjI2CiAgMjAuIGh0dHA6Ly9jbGlja3MudHJhY2tk
+b20uZnIvYy9hcy9yT0wvN3Yta21yWDFJRFhnU0Vid1BJeGdIMy9iL2tsUUwvMzU5ZmM0ZWIKICAy
+MS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JPaS83di1rbXJYMUlEWGdTRWJ3UEl4
+Z0gzL2Iva2xRTC8wYmQ4NTMyNQogIDIyLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMv
+ck83Lzd2LWttclgxSURYZ1NFYndQSXhnSDMvYi9rbFFML2NlM2MwYWYyCiAgMjMuIGh0dHA6Ly9j
+bGlja3MudHJhY2tkb20uZnIvYy9hcy9yTzIvN3Yta21yWDFJRFhnU0Vid1BJeGdIMy9iL2tsUUwv
+N2IwMjE1ZDAKICAyNC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JPWC83di1rbXJY
+MUlEWGdTRWJ3UEl4Z0gzL2Iva2xRTC84Y2Y0YjJhMAogIDI1LiBodHRwOi8vY2xpY2tzLnRyYWNr
+ZG9tLmZyL2MvYXMvck82Lzd2LWttclgxSURYZ1NFYndQSXhnSDMvYi9rbFFMLzg3ZDVhN2VkCiAg
+MjYuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yT2svN3Yta21yWDFJRFhnU0Vid1BJ
+eGdIMy9iL2tsUUwvOTgwYjA5MWIKICAyNy4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2Fz
+L3JPSC83di1rbXJYMUlEWGdTRWJ3UEl4Z0gzL2Iva2xRTC9jOTQ4NzZkNgogIDI4LiBodHRwOi8v
+Y2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvck9FLzd2LWttclgxSURYZ1NFYndQSXhnSDMvYi9rbFFM
+LzVlYTgwYmNmCiAgMjkuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yT3IvN3Yta21y
+WDFJRFhnU0Vid1BJeGdIMy9iL2tsUUwvYjY4MDAyNDkKICAzMC4gaHR0cDovL2NsaWNrcy50cmFj
+a2RvbS5mci9jL2FzL3JPYS83di1rbXJYMUlEWGdTRWJ3UEl4Z0gzL2Iva2xRTC8yOTA2MzExZQog
+IDMxLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvck9uLzd2LWttclgxSURYZ1NFYndQ
+SXhnSDMvYi9rbFFMLzJkMzUxNjM5CiAgMzIuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9h
+cy9yT2ovN3Yta21yWDFJRFhnU0Vid1BJeGdIMy9iL2tsUUwvZDFlMmE0MDQKICAzMy4gaHR0cDov
+L2NsaWNrcy50cmFja2RvbS5mci9jL2FzL3JPcy83di1rbXJYMUlEWGdTRWJ3UEl4Z0gzL2Iva2xR
+TC9mZjY5YWY1NgoKVm91cyByZWNldmV6IGNlIG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91
+cyB2b3VzIMOqdGVzIGluc2NyaXQoZSkgYXZlYyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxA
+bGlzdHMuc291cmNlZm9yZ2UubmV0IHN1ciBsZSBzaXRlIENvbnNvZGVhbC5jb20uIENlIHNpdGUg
+YSBmYWl0IGwnb2JqZXQgZCd1bmUgZMOpY2xhcmF0aW9uIGF1cHLDqHMgZGUgbGEgQ05JTCBzb3Vz
+IGxlIG51bcOpcm8gMTU0NTE0OC4gQ29uZm9ybcOpbWVudCDDoCBsJ2FydGljbGUgMzQgZGUgbGEg
+bG9pIMKrSW5mb3JtYXRpcXVlIGV0IExpYmVydMOpc8K7IGR1IDYgamFudmllciAxOTc4LCB2b3Vz
+IHBvdXZleiBleGVyY2VyIHZvdHJlIGRyb2l0IGQnYWNjw6hzLCBkZSBtb2RpZmljYXRpb24sIGRl
+IHJlY3RpZmljYXRpb24gb3UgZW5jb3JlIGRlIHN1cHByZXNzaW9uIGRlIHZvcyBpbmZvcm1hdGlv
+bnMgcGVyc29ubmVsbGVzIHZpYSBsZSBsaWVuIHN1aXZhbnQgOiBNZXMgQWJvbm5lbWVudHMuClBv
+dXIgdm91cyBkw6lzYWJvbm5lciwgbWVyY2kgZGUgY2xpcXVlciBpY2kgaWNpLgoJUXVpIHNvbW1l
+cy1ub3VzID8KQ29uc29kZWFsIGVzdCB1bmUgbmV3c2xldHRlciBxdW90aWRpZW5uZSAsIMOpZGl0
+w6llIHBhciBsYSBzb2Npw6l0w6kgTmF0ZXhvLCBxdWkgdm91cyBwcm9wb3NlIHVuZSBzw6lsZWN0
+aW9uIGRlIGJvbnMgcGxhbnMuIEVuIMOpdGFudCBhYm9ubsOpIMOgIG5vdHJlIGxpc3RlIGQnaW5m
+b3JtYXRpb24sIHZvdXMgcmVjZXZyZXogbGUgdG9wIGRlcyBqZXV4IGNvbmNvdXJzLCBsZXMgb2Zm
+cmVzIGR1IG1vbWVudCBwb3VyIHRvdXMgdm9zIHRyYXZhdXgsIGRlcyBpbnZpdGF0aW9ucyBleGNs
+dXNpdmVzIMOgIGRlcyBlc3NhaXMgZXQgdmVudGVzIHByaXbDqWVzIGRlIGdyYW5kZXMgbWFycXVl
+cy4gCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPY3RvYmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJm
+b3JtYW5jZQpGcmVlIEludGVsIHdlYmluYXJzIGNhbiBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxp
+Y2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3JlIHRpcHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNl
+ZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBHZXQgdGhlIG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRl
+bCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3NvcnMuIFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVy
+ID4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTYwMTM0Nzkx
+Jml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2Vu
+ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQv
+bGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,11 +1,11 @@
-From: Capsules compatibles Nespresso par Zetrend <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: 100 capsules compatibles Nespresso a 21 euros
-Date: Sat, 5 Oct 2013 11:06:57 +0200 (CEST)
-Message-ID: <7z7tff.hmembjqn4wiw66l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Matthieu - Selection Premium" <newsletter-5DDAqSTHTz5LQGOaHaWmzF8DPIj7SoFj@public.gmane.org>
+Subject: Rentabilisez vos investissements
+Date: Sun, 06 Oct 2013 06:07:05 +0200
+Message-ID: <OTTO02A00023U002000S2FKV1066336054@foru.selectionpremium.fr>
+Reply-To: abuse-bxJNC2EmtRdQFI55V6+gNQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,76 +18,85 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0IqgrkmuI7gfk57dIhmembfn6I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1380964012553%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DHLNNJIEGOAGMHDFJ%26mid%3D1600280886&s=3DB=
-AJLLCNFLGGJCDOP
- =
-
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros100 capsules compatibles Nespresso a 21 euros=
-100 capsules compatibles Nespresso a 21 euros100 capsules compatibles Nespr=
-esso a 21 euros100 capsules compatibles Nespresso a 21 euros100 capsules co=
-mpatibles Nespresso a 21 euros
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600280886&sig=3DFKGANMCAFNJBPHJJ
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60134791&iu=3D/4140/ostg.cl=
-ktrk
+aHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9kbz9DRUMwMEVFRkZBQjE5Q0VFNEFE
+QjNDRjYyQTcwODQyRkE1MzhEODREMjkxQTYwOUQ3NEFDODFCQzUyQzFCM0I2REUyQjc3MUY2RDJB
+N0I1RkE3ODU2RjYyMDlCRkQ5QzVERjhGRkIyOEQ1OTNBQ0U0REE0QzZFNjk0OUQxODgzMyAKVmlz
+dWFsaXNleiBsYSB2ZXJzaW9uIGVuIGxpZ25lICAgfCAgCmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlv
+bnByZW1pdW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAwMjNVMDAwMkpDUjAwMFMyRktW
+Jm1wdnJzPTAwMDAyM0NBMDlGNkZBRDNEIApTZSBkw6lzYWJvbm5lciAgfCAgCmh0dHA6Ly90ci5m
+b3J1LnNlbGVjdGlvbnByZW1pdW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAwMjNVMDAw
+MkpDTDAwMFMyRktWJm1wdnJzPTAwMDAyM0NBMDlGNkZBRDNEIApNZXR0cmUgY2V0IGVtYWlsIGRh
+bnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCkJvbmpvdXIgIAoKCgoKCgoKCsKgIMKgVHJh
+ZGV6IGF2ZWMgVHJhZGVyUGxhY2UKCgoKCgoKCmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1p
+dW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAwMjNVMDAwMkpDSzAwMFMyRktWJm1wdnJz
+PTAwMDAyM0NBMDlGNkZBRDNEIAoKCgoKCgoKRkFJVEVTIEZSVUNUSUZJRVIgVk9UUkUgQVJHRU5U
+wqAKCgpWb3VzIGF2ZXogZGVzIGFwcHLDqWhlbnNpb25zIHBvdXIgdm91cyBsYW5jZXIgZGFucyBs
+ZSB0cmFkaW5nIGJvdXJzaWVywqA/CgpPdSBwb3VyIG91dnJpciB1biBub3V2ZWF1IGNvbXB0ZSBz
+dXIgdW4gc2l0ZSBkZSB0cmFkaW5nIGVuIGxpZ25lwqA/ClJlam9pZ25lei1ub3VzIHN1ciBub3Ry
+ZSBzaXRlwqAKaHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1P
+VFRPMDJBMDAwMDAwMDAyM1UwMDAySkNHMDAwUzJGS1YmbXB2cnM9MDAwMDIzQ0EwOUY2RkFEM0Qg
+Cnd3dy50cmFkZXJwbGFjZS5jb23CoFNpbXBsZSAmIFNlY3VyZS4KClRyYWRlclBsYWNlIHZvdXPC
+oHNpbXBsaWZpZSB2b3Mgb3DDqXJhdGlvbnPCoGFmaW4gZGUgdm91cyBsYWlzc2VyIGzigJllc3By
+aXQgbGlicmUgcG91ciBlZmZlY3R1ZXIgdm9zIHRyYWRlcyBhdmVjIHPDqWN1cml0w6nCoGV0IGNv
+bmNlbnRyYXRpb24uCgpOb3MgYnJva2VycyBwcm9mZXNzaW9ubmVscyBzZXJvbnQgw6Agdm9zIGPD
+tHTDqXPCoHBvdXIgdm91cyBndWlkZXLCoHRvdXQgYXUgbG9uZyBkZSB2b3RyZSBwYXJjb3VycyBk
+ZSB0cmFkZXIuCgrCoArCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoArCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoArCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoArCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoArCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoArCoMKgCmh0
+dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAw
+MDAwMjNVMDAwMkpDSDAwMFMyRktWJm1wdnJzPTAwMDAyM0NBMDlGNkZBRDNEIAoKCkV0IHJlY2V2
+ZXogZMOocyBtYWludGVuYW50IHVuIGJvbnVzIEFjY29yZMOpIMKgZGXCoDEwJcKgc3VyIHZvdHJl
+IHByZW1pZXIgZMOpcMO0dAoKZXTCoHVuZSBmb3JtYXRpb24gb2ZmZXJ0ZS4KCgoKCgoKCgoKRMOp
+cMO0dHPCoGV0IHJldHJhaXQgdWx0cmEgcmFwaWRlCgpFZmZlY3R1ZXIgdG91cyB2b3MgcmV0cmFp
+dHMgZmFjaWxlbWVudCBldCByYXBpZGVtZW50IGRpcmVjdGVtZW50IGRlcHVpcyB2b3RyZSBjb21w
+dGUKCgoKRW50acOocmVtZW50wqBTw6ljdXJpc8OpwqAKClBsYXRlZm9ybWUgTWV0YVRyYWRlcjQg
+dG90YWxlbWVudMKgc8OpY3VyaXPDqQoKClPDqWN1cml0w6nCoGRlIHZvcyBmb25kcyBhIDEwMCUK
+CgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEw
+MDAwMDAwMDIzVTAwMDJKQ1MwMDBTMkZLViZtcHZycz0wMDAwMjNDQTA5RjZGQUQzRCAKRHJhZwpo
+dHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAw
+MDAwMDIzVTAwMDJKQ00wMDBTMkZLViZtcHZycz0wMDAwMjNDQTA5RjZGQUQzRCAKRWRpdApodHRw
+Oi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAw
+MDIzVTAwMDJKQ04wMDBTMkZLViZtcHZycz0wMDAwMjNDQTA5RjZGQUQzRCAKQ2xvbmUKaHR0cDov
+L3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAwMDAwMDAy
+M1UwMDAySkNPMDAwUzJGS1YmbXB2cnM9MDAwMDIzQ0EwOUY2RkFEM0QgCkRlbGV0ZQoKCgoKCmh0
+dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAw
+MDAwMjNVMDAwMkpDRTAwMFMyRktWJm1wdnJzPTAwMDAyM0NBMDlGNkZBRDNEIApPdXZyaXIgdW4g
+Q29tcHRlIExpdmXCoCDCoCB8IMKgIMKgCmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0u
+ZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAwMjNVMDAwMkpDUTAwMFMyRktWJm1wdnJzPTAw
+MDAyM0NBMDlGNkZBRDNEIApPdXZyaXIgdW4gQ29tcHRlIGQnZW50cmFpbmVtZW50wqDCoCDCoHwg
+wqAgwqAKaHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRP
+MDJBMDAwMDAwMDAyM1UwMDAySkNJMDAwUzJGS1YmbXB2cnM9MDAwMDIzQ0EwOUY2RkFEM0QgClBv
+bGl0aXF1ZSBkZSBjb25maWRlbnRpYWxpdMOpwqDCoCDCoHwgwqAgwqAKaHR0cDovL3RyLmZvcnUu
+c2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAwMDAwMDAyM1UwMDAySkNK
+MDAwUzJGS1YmbXB2cnM9MDAwMDIzQ0EwOUY2RkFEM0QgCk5vdXMgQ29udGFjdGVyCgpDb21tZW50
+IMOnYSBtYXJjaGUgPwoKVm91cyByZWNldmV6IGNlIG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIg
+dm91cyB2b3VzIMOqdGVzIGluc2NyaXQoZSkgYXZlYyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVy
+YWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IHN1ciBsZSBzaXRlIHNlbGVjdGlvbnByZW1pdW0uY29t
+LiBDZSBzaXRlIGEgZmFpdCBsJ29iamV0IGQndW5lIGTDqWNsYXJhdGlvbiBhdXByw6hzIGRlIGxh
+IENOSUwgc291cyBsZSBudW3DqXJvIDE1NDUxNDguIENvbmZvcm3DqW1lbnQgw6AgbCdhcnRpY2xl
+IDM0IGRlIGxhIGxvaSDCq0luZm9ybWF0aXF1ZSBldCBMaWJlcnTDqXPCuyBkdSA2IGphbnZpZXIg
+MTk3OCwgdm91cyBwb3V2ZXogZXhlcmNlciB2b3RyZSBkcm9pdCBkJ2FjY8OocywgZGUgbW9kaWZp
+Y2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIG91IGVuY29yZSBkZSBzdXBwcmVzc2lvbiBkZSB2b3Mg
+aW5mb3JtYXRpb25zIHBlcnNvbm5lbGxlcyB2aWEgbGUgbGllbiBzdWl2YW50IDogCmh0dHA6Ly90
+ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAwMjNV
+MDAwMkpDUDAwMFMyRktWJm1wdnJzPTAwMDAyM0NBMDlGNkZBRDNEIApNZXMgQWJvbm5lbWVudHMu
+IAoKU2lub24gdm91cyBwb3V2ZXogdm91cyBkw6lzYWJvbm5lciAKaHR0cDovL3RyLmZvcnUuc2Vs
+ZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAwMDAwMDAyM1UwMDAySkNGMDAw
+UzJGS1YmbXB2cnM9MDAwMDIzQ0EwOUY2RkFEM0QgCmljaS4KClF1aSBzb21tZXMtbm91cyA/CgpT
+ZWxlY3Rpb24gUHJlbWl1bSBlc3QgdW5lIG5ld3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDDqWRpdMOp
+ZSBwYXIgbGEgc29jacOpdMOpIE5hdGV4bywgcXVpIHZvdXMgcHJvcG9zZSB1bmUgc8OpbGVjdGlv
+biBkZSBib25zIHBsYW5zLiBFbiDDqXRhbnQgYWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBkJ2luZm9y
+bWF0aW9uLCB2b3VzIHJlY2V2cmV6IGxlIHRvcCBkZXMgamV1eCBjb25jb3VycywgbGVzIG9mZnJl
+cyBkdSBtb21lbnQgcG91ciB0b3VzIHZvcyB0cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMgZXhjbHVz
+aXZlcyDDoCBkZXMgZXNzYWlzIGV0IHZlbnRlcyBwcml2w6llcyBkZSBncmFuZGVzIG1hcnF1ZXMu
+Ci0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPY3RvYmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJmb3Jt
+YW5jZQpGcmVlIEludGVsIHdlYmluYXJzIGNhbiBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0
+aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3JlIHRpcHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBw
+cm9maWxpbmcsIGFuZCBtb3JlLiBHZXQgdGhlIG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBw
+cm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3NvcnMuIFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4K
+aHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTYwMTM0NzkxJml1
+PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJh
+bEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlz
+dHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

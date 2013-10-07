@@ -1,11 +1,12 @@
-From: "=?utf-8?Q?Soutien_financier_pour_tous?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?Aide_financi=C3=A8re_sans_condition_de_salaire?=
-Date: Mon, 07 Oct 2013 08:07:37 +0000
-Message-ID: <1043=a9e4007a-01dd-45bd-91d5-f784aef7d4e1=4=3266566@clicks.trackdom.fr>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: IdealDouche <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Nouveau,_enfin_une_douche_pratiq?=
+	=?ISO-8859-1?Q?ue_et_s=E9curis=E9e._Devis_gratuit_!?=
+Date: Mon, 7 Oct 2013 10:40:10 +0200 (CEST)
+Message-ID: <mzhzvf.hmhg8shgb49dyxl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,37 +19,101 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-VmlzdWFsaXNlciBsYSB2ZXJzaW9uIGVuIGxpZ25lIHwgU2UgZMOpc2Fib25uZXIgfCBNZXR0cmUg
-Y2V0IGVtYWlsIGRhbnMgbWVzIGNvdXJyaWVycyBpbmTDqXNpcmFibGVzCglCb25qb3VyIHNwaS1k
-ZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldApHw6lyZXIgbWVzIHByw6lmw6lyZW5j
-ZXMKIApTZXVsIGxlcyBwdWJsaWNpdMOpcyBmYWl0ZXMgcG91ciB2b3VzICFGaW5hbmNlbWVudCBz
-YW5zIGJ1bGxldGluIGRlIHBheWUsIHNhbnMgZnJhaXMgZXQgcG9zc2liaWxpdMOpIGRlIHNhdXRl
-ciB1bmUgbWVuc3VhbGl0w6kKCmh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9yZk4vQVFt
-aEtsREZTSWduQlJBYjFTUklWYS9iL2tsUUwvOTY0YjYxOTcrcGVyc29ubmVsClZvdXMgcmVjZXZl
-eiBjZSBtZXNzYWdlIGRlIG5vdHJlIHBhcnQgY2FyIHZvdXMgdm91cyDDqnRlcyBpbnNjcml0KGUp
-IGF2ZWMgbCdhZHJlc3NlIHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldCBz
-dXIgbGUgc2l0ZSBDb25zb2RlYWwuY29tLiBDZSBzaXRlIGEgZmFpdCBsJ29iamV0IGQndW5lIGTD
-qWNsYXJhdGlvbiBhdXByw6hzIGRlIGxhIENOSUwgc291cyBsZSBudW3DqXJvIDE1NDUxNDguIENv
-bmZvcm3DqW1lbnQgw6AgbCdhcnRpY2xlIDM0IGRlIGxhIGxvaSDCq0luZm9ybWF0aXF1ZSBldCBM
-aWJlcnTDqXPCuyBkdSA2IGphbnZpZXIgMTk3OCwgdm91cyBwb3V2ZXogZXhlcmNlciB2b3RyZSBk
-cm9pdCBkJ2FjY8OocywgZGUgbW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIG91IGVuY29y
-ZSBkZSBzdXBwcmVzc2lvbiBkZSB2b3MgaW5mb3JtYXRpb25zIHBlcnNvbm5lbGxlcyB2aWEgbGUg
-bGllbiBzdWl2YW50IDogTWVzIEFib25uZW1lbnRzLgpQb3VyIHZvdXMgZMOpc2Fib25uZXIsIG1l
-cmNpIGRlIGNsaXF1ZXIgaWNpIGljaS4KCVF1aSBzb21tZXMtbm91cyA/CkNvbnNvZGVhbCBlc3Qg
-dW5lIG5ld3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDDqWRpdMOpZSBwYXIgbGEgc29jacOpdMOpIE5h
-dGV4bywgcXVpIHZvdXMgcHJvcG9zZSB1bmUgc8OpbGVjdGlvbiBkZSBib25zIHBsYW5zLiBFbiDD
-qXRhbnQgYWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBkJ2luZm9ybWF0aW9uLCB2b3VzIHJlY2V2cmV6
-IGxlIHRvcCBkZXMgamV1eCBjb25jb3VycywgbGVzIG9mZnJlcyBkdSBtb21lbnQgcG91ciB0b3Vz
-IHZvcyB0cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMgZXhjbHVzaXZlcyDDoCBkZXMgZXNzYWlzIGV0
-IHZlbnRlcyBwcml2w6llcyBkZSBncmFuZGVzIG1hcnF1ZXMuIAotLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0KT2N0b2JlciBXZWJpbmFyczogQ29kZSBmb3IgUGVyZm9ybWFuY2UKRnJlZSBJbnRlbCB3ZWJp
-bmFycyBjYW4gaGVscCB5b3UgYWNjZWxlcmF0ZSBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZS4KRXhw
-bG9yZSB0aXBzIGZvciBNUEksIE9wZW5NUCwgYWR2YW5jZWQgcHJvZmlsaW5nLCBhbmQgbW9yZS4g
-R2V0IHRoZSBtb3N0IGZyb20gCnRoZSBsYXRlc3QgSW50ZWwgcHJvY2Vzc29ycyBhbmQgY29wcm9j
-ZXNzb3JzLiBTZWUgYWJzdHJhY3RzIGFuZCByZWdpc3RlciA+Cmh0dHA6Ly9wdWJhZHMuZy5kb3Vi
-bGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD02MDEzNDc5MSZpdT0vNDE0MC9vc3RnLmNsa3Ryawpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwt
-Z2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
-bmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZl
-bC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgrld6I7gfk57dIhmhg8p1iI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1381135205599%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DKFCNGKCKFAPEGBPM%26mid%3D1600281834&s=3DC=
+KKJAHCBNPKIFOIF
+ =
+
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9=
+curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=
+=E9e. Devis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. D=
+evis gratuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gr=
+atuit !Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !=
+Nouveau, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau=
+, enfin une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin=
+ une douche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une do=
+uche pratique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pr=
+atique et s=E9curis=E9e. Devis gratuit !Nouveau, enfin une douche pratique =
+et s=E9curis=E9e. Devis gratuit !
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600281834&sig=3DDFHFGCINFOGKCGOM
+---------------------------------------------------------------------------=
+---
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
+om =
+
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=3D60134791&iu=3D/4140/ostg.cl=
+ktrk

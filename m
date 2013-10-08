@@ -1,13 +1,12 @@
-From: Cdiscount via Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?Il_n'y_en_aura_pas_pour_tous_le_monde,
-	_d=E9p=EAchez_vous?=
-Date: Tue, 8 Oct 2013 11:14:20 +0200 (CEST)
-Message-ID: <veqy0b.hmiwwl5y0czsf1l@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "ChoisirSaBanqueEnLigne" <contact-Sw6VDW5Ax45GWvitb5QawA@public.gmane.org>
+Subject: Les tarifs de vos banques
+Date: Tue, 08 Oct 2013 11:53:38 +0000 (CET)
+Message-ID: <131008115338.30594569700001128@fm03.eu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,64 +18,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgrlz0I7gfk57dIhmiwwj3bI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1381223657696%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DOBDHGEKJHGICKFLK%26mid%3D1600282620&s=3DK=
-NPHCAFJDDNJPECK
- =
-
-Il n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas =
-pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde,=
- d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousI=
-l n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas p=
-our tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, =
-d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl=
- n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas po=
-ur tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
-n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
-r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
-=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vous
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600282620&sig=3DMILDALCHNFCEPLEE
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60134071&iu=3D/4140/ostg.cl=
-ktrk
+CihodHRwOi8vZm0wMy5ldS8zeXR0d3pvcHN1YmlrNGZ0ZXMvaW5kZXgwLmh0bWwpCihodHRwOi8v
+Zm0wMy5ldS9oZ3RjcXo0ZnN5eWg0ejF0dWQvaW5kZXgxLmh0bWwpCmNvbXBhcmV6IGxlcyBtZWls
+bGV1cmVzIG9mZnJlcwphdmFudCBkZSB2b3VzIGTDqWNpZGVyCgooaHR0cDovL2ZtMDMuZXUvYWR0
+MnB6ZHNzeHppc2t4c3Z5L2luZGV4Mi5odG1sKQoKc2VydmljZSBncmF0dWl0IGV0IHNhbnMgZW5n
+YWdlbWVudAoKcHJvcG9zw6kgcGFyIGxlIGNvbXBhcmF0ZXVyIGRlIGJhbnF1ZXMKCkNob2lzaXJT
+YUJhbnF1ZUVuTGlnbmUuY29tCipzZSByw6lmZXJlciBhdXggY29uZGl0aW9ucyBnw6luw6lyYWxl
+cyBkZSBjaGFxdWUgYmFucXVlLiAKCkNyw6lkaXQgcGhvdG8gOiBDb21wYXNzaW9uYXRlIEV5ZSBG
+b3VuZGF0aW9uL0RhdmlkIE94YmVycnkvT0pPIEltYWdlcyBMdGQgCi0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLQpPY3RvYmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdl
+YmluYXJzIGNhbiBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpF
+eHBsb3JlIHRpcHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3Jl
+LiBHZXQgdGhlIG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3By
+b2Nlc3NvcnMuIFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRv
+dWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xrP2lkPTYwMTM0MDcxJml1PS80MTQwL29zdGcuY2xrdHJr
+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZl
+bC1nZW5lcmFsIG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRl
+dmVsLWdlbmVyYWwK

@@ -1,7 +1,7 @@
 From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: [PATCH 1/3] spi/qspi: Add memory mapped read support.
-Date: Wed, 9 Oct 2013 20:54:42 +0530
-Message-ID: <1381332284-21822-2-git-send-email-sourav.poddar@ti.com>
+Subject: [PATCHv3 2/3] drivers: mtd: devices: Add quad read support.
+Date: Wed, 9 Oct 2013 20:54:43 +0530
+Message-ID: <1381332284-21822-3-git-send-email-sourav.poddar@ti.com>
 References: <1381332284-21822-1-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
@@ -23,263 +23,277 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Qspi controller also supports memory mapped read. Patch
-adds support for the same.
-In memory mapped read, controller need to be switched to a
-memory mapped port using a control module register and a qspi
-specific register or just a qspi register.
-Then the read need to be happened from the memory mapped
-address space.
+Some flash also support quad read mode.
+Adding support for adding quad mode in m25p80
+for spansion and macronix flash.
 
 Signed-off-by: Sourav Poddar <sourav.poddar@ti.com>
 ---
- drivers/spi/spi-ti-qspi.c |  140 ++++++++++++++++++++++++++++++++++++++++-----
- 1 files changed, 125 insertions(+), 15 deletions(-)
+v2->v3:
+Add macronix flash support
+ drivers/mtd/devices/m25p80.c |  184 ++++++++++++++++++++++++++++++++++++++++--
+ 1 files changed, 176 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-index 0b71270..2722840 100644
---- a/drivers/spi/spi-ti-qspi.c
-+++ b/drivers/spi/spi-ti-qspi.c
-@@ -46,6 +46,8 @@ struct ti_qspi {
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 26b14f9..dc9bcbf 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -41,6 +41,7 @@
+ #define	OPCODE_WRSR		0x01	/* Write status register 1 byte */
+ #define	OPCODE_NORM_READ	0x03	/* Read data bytes (low frequency) */
+ #define	OPCODE_FAST_READ	0x0b	/* Read data bytes (high frequency) */
++#define	OPCODE_QUAD_READ        0x6b    /* QUAD READ */
+ #define	OPCODE_PP		0x02	/* Page program (up to 256 bytes) */
+ #define	OPCODE_BE_4K		0x20	/* Erase 4KiB block */
+ #define	OPCODE_BE_4K_PMC	0xd7	/* Erase 4KiB block on PMC chips */
+@@ -48,6 +49,7 @@
+ #define	OPCODE_CHIP_ERASE	0xc7	/* Erase whole flash chip */
+ #define	OPCODE_SE		0xd8	/* Sector erase (usually 64KiB) */
+ #define	OPCODE_RDID		0x9f	/* Read JEDEC ID */
++#define	OPCODE_RDCR		0x35    /* Read configuration register */
  
- 	struct spi_master	*master;
- 	void __iomem            *base;
-+	void __iomem            *ctrl_base;
-+	void __iomem            *mmap_base;
- 	struct clk		*fclk;
- 	struct device           *dev;
+ /* 4-byte address opcodes - used on Spansion and some Macronix flashes. */
+ #define	OPCODE_NORM_READ_4B	0x13	/* Read data bytes (low frequency) */
+@@ -76,6 +78,10 @@
+ #define	SR_BP2			0x10	/* Block protect 2 */
+ #define	SR_SRWD			0x80	/* SR write protect */
  
-@@ -54,6 +56,9 @@ struct ti_qspi {
- 	u32 spi_max_frequency;
- 	u32 cmd;
- 	u32 dc;
++/* Configuration Register bits. */
++#define SPAN_QUAD_CR_EN		0x2	/* Spansion Quad I/O */
++#define MACR_QUAD_SR_EN		0x40	/* Macronix Quad I/O */
 +
-+	bool memory_mapped;
-+	bool ctrl_mod;
+ /* Define max times to check status register before we give up. */
+ #define	MAX_READY_WAIT_JIFFIES	(40 * HZ)	/* M25P16 specs 40s max chip erase */
+ #define	MAX_CMD_SIZE		5
+@@ -95,6 +101,7 @@ struct m25p {
+ 	u8			program_opcode;
+ 	u8			*command;
+ 	bool			fast_read;
++	bool			quad_read;
  };
  
- #define QSPI_PID			(0x0)
-@@ -109,6 +114,23 @@ struct ti_qspi {
- #define QSPI_CSPOL(n)			(1 << (1 + n * 8))
- #define QSPI_CKPOL(n)			(1 << (n * 8))
- 
-+#define	MM_SWITCH	0x01
-+#define	MEM_CS		0x100
-+#define	MEM_CS_DIS	0xfffff0ff
-+
-+#define	QSPI_CMD_RD		(0x3 << 0)
-+#define	QSPI_CMD_DUAL_RD	(0x3b << 0)
-+#define	QSPI_CMD_QUAD_RD	(0x6b << 0)
-+#define	QSPI_CMD_READ_FAST	(0x0b << 0)
-+#define	QSPI_SETUP0_A_BYTES	(0x3 << 8)
-+#define	QSPI_SETUP0_NO_BITS	(0x0 << 10)
-+#define	QSPI_SETUP0_8_BITS	(0x1 << 10)
-+#define	QSPI_SETUP0_RD_NORMAL	(0x0 << 12)
-+#define	QSPI_SETUP0_RD_DUAL	(0x1 << 12)
-+#define	QSPI_SETUP0_RD_QUAD	(0x3 << 12)
-+#define	QSPI_CMD_WRITE		(0x2 << 16)
-+#define	QSPI_NUM_DUMMY_BITS	(0x0 << 24)
-+
- #define	QSPI_FRAME			4096
- 
- #define QSPI_AUTOSUSPEND_TIMEOUT         2000
-@@ -125,12 +147,37 @@ static inline void ti_qspi_write(struct ti_qspi *qspi,
- 	writel(val, qspi->base + reg);
+ static inline struct m25p *mtd_to_m25p(struct mtd_info *mtd)
+@@ -163,6 +170,25 @@ static inline int write_disable(struct m25p *flash)
+ 	return spi_write_then_read(flash->spi, &code, 1, NULL, 0);
  }
  
-+void enable_qspi_memory_mapped(struct ti_qspi *qspi)
++/* Read the configuration register, returning its value in the location
++ * Return the configuration register value.
++ * Returns negative if error occurred.
++*/
++static int read_cr(struct m25p *flash)
 +{
-+	u32 val;
++	u8 code = OPCODE_RDCR;
++	int ret;
++	u8 val;
 +
-+	ti_qspi_write(qspi, MM_SWITCH, QSPI_SPI_SWITCH_REG);
-+	if (qspi->ctrl_mod) {
-+		val = readl(qspi->ctrl_base);
-+		val |= MEM_CS;
-+		writel(val, qspi->ctrl_base);
++	ret = spi_write_then_read(flash->spi, &code, 1, &val, 1);
++	if (ret < 0) {
++		dev_err(&flash->spi->dev, "error %d reading CR\n", ret);
++		return ret;
 +	}
++
++	return val;
 +}
 +
-+void disable_qspi_memory_mapped(struct ti_qspi *qspi)
+ /*
+  * Enable/disable 4-byte addressing mode.
+  */
+@@ -336,6 +362,122 @@ static int m25p80_erase(struct mtd_info *mtd, struct erase_info *instr)
+ 	return 0;
+ }
+ 
++/* Write status register and configuration register with 2 bytes
++* The first byte will be written to the status register, while the second byte
++* will be written to the configuration register.
++* Returns negative if error occurred.
++*/
++static int write_sr_cr(struct m25p *flash, u16 val)
 +{
-+	u32 val;
++	flash->command[0] = OPCODE_WRSR;
++	flash->command[1] = val & 0xff;
++	flash->command[2] = (val >> 8);
 +
-+	ti_qspi_write(qspi, ~MM_SWITCH, QSPI_SPI_SWITCH_REG);
-+	if (qspi->ctrl_mod) {
-+		val = readl(qspi->ctrl_base);
-+		val |= MEM_CS_DIS;
-+		writel(val, qspi->ctrl_base);
-+	}
++	return spi_write(flash->spi, flash->command, 3);
 +}
 +
- static int ti_qspi_setup(struct spi_device *spi)
- {
- 	struct ti_qspi	*qspi = spi_master_get_devdata(spi->master);
- 	struct ti_qspi_regs *ctx_reg = &qspi->ctx_reg;
- 	int clk_div = 0, ret;
--	u32 clk_ctrl_reg, clk_rate, clk_mask;
-+	u32 clk_ctrl_reg, clk_rate, clk_mask, memval = 0;
-+	qspi->dc = 0;
- 
- 	if (spi->master->busy) {
- 		dev_dbg(qspi->dev, "master busy doing other trasnfers\n");
-@@ -178,6 +225,37 @@ static int ti_qspi_setup(struct spi_device *spi)
- 	ti_qspi_write(qspi, clk_mask, QSPI_SPI_CLOCK_CNTRL_REG);
- 	ctx_reg->clkctrl = clk_mask;
- 
-+	if (spi->mode & SPI_CPHA)
-+		qspi->dc |= QSPI_CKPHA(spi->chip_select);
-+	if (spi->mode & SPI_CPOL)
-+		qspi->dc |= QSPI_CKPOL(spi->chip_select);
-+	if (spi->mode & SPI_CS_HIGH)
-+		qspi->dc |= QSPI_CSPOL(spi->chip_select);
++static int macronix_quad_enable(struct m25p *flash)
++{
++	int ret, val;
++	u8 cmd[2];
++	cmd[0] = OPCODE_WRSR;
 +
-+	ti_qspi_write(qspi, qspi->dc, QSPI_SPI_DC_REG);
++	val = read_sr(flash);
++	cmd[1] = val | MACR_QUAD_SR_EN;
++	write_enable(flash);
 +
-+	if (qspi->memory_mapped) {
-+		switch (spi->mode) {
-+		case SPI_TX_DUAL:
-+			memval |= (QSPI_CMD_DUAL_RD | QSPI_SETUP0_A_BYTES |
-+				QSPI_SETUP0_8_BITS | QSPI_SETUP0_RD_DUAL |
-+				QSPI_CMD_WRITE | QSPI_NUM_DUMMY_BITS);
-+			break;
-+		case SPI_TX_QUAD:
-+			memval |= (QSPI_CMD_QUAD_RD | QSPI_SETUP0_A_BYTES |
-+				QSPI_SETUP0_8_BITS | QSPI_SETUP0_RD_QUAD |
-+				QSPI_CMD_WRITE | QSPI_NUM_DUMMY_BITS);
-+			break;
-+		default:
-+			memval |= (QSPI_CMD_RD | QSPI_SETUP0_A_BYTES |
-+				QSPI_SETUP0_NO_BITS | QSPI_SETUP0_RD_NORMAL |
-+				QSPI_CMD_WRITE | QSPI_NUM_DUMMY_BITS);
-+			break;
-+		}
-+		ti_qspi_write(qspi, memval, QSPI_SPI_SETUP0_REG);
-+		spi->mode |= SPI_RX_MMAP;
++	spi_write(flash->spi, &cmd, 2);
++
++	if (wait_till_ready(flash))
++		return 1;
++
++	ret = read_sr(flash);
++	if (!(ret > 0 && (ret & MACR_QUAD_SR_EN))) {
++		dev_err(&flash->spi->dev,
++			"Macronix Quad bit not set");
++		return -EINVAL;
 +	}
 +
- 	pm_runtime_mark_last_busy(qspi->dev);
- 	ret = pm_runtime_put_autosuspend(qspi->dev);
- 	if (ret < 0) {
-@@ -340,16 +418,7 @@ static int ti_qspi_start_transfer_one(struct spi_master *master,
- 	struct spi_transfer *t;
- 	int status = 0, ret;
- 	int frame_length;
--
--	/* setup device control reg */
--	qspi->dc = 0;
--
--	if (spi->mode & SPI_CPHA)
--		qspi->dc |= QSPI_CKPHA(spi->chip_select);
--	if (spi->mode & SPI_CPOL)
--		qspi->dc |= QSPI_CKPOL(spi->chip_select);
--	if (spi->mode & SPI_CS_HIGH)
--		qspi->dc |= QSPI_CSPOL(spi->chip_select);
-+	size_t from = 0;
- 
- 	frame_length = (m->frame_length << 3) / spi->bits_per_word;
- 
-@@ -362,11 +431,21 @@ static int ti_qspi_start_transfer_one(struct spi_master *master,
- 	qspi->cmd |= QSPI_WC_CMD_INT_EN;
- 
- 	ti_qspi_write(qspi, QSPI_WC_INT_EN, QSPI_INTR_ENABLE_SET_REG);
--	ti_qspi_write(qspi, qspi->dc, QSPI_SPI_DC_REG);
- 
- 	mutex_lock(&qspi->list_lock);
- 
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
-+		if (t->memory_map) {
-+			if (t->tx_buf) {
-+				from = t->len;
-+				continue;
-+			}
-+			enable_qspi_memory_mapped(qspi);
-+			memcpy(t->rx_buf, qspi->mmap_base + from, t->len);
-+			disable_qspi_memory_mapped(qspi);
-+			goto out;
-+		}
++	return 0;
++}
 +
- 		qspi->cmd |= QSPI_WLEN(t->bits_per_word);
++static int spansion_quad_enable(struct m25p *flash)
++{
++	int ret;
++	int quad_en = SPAN_QUAD_CR_EN << 8;
++
++	write_enable(flash);
++
++	ret = write_sr_cr(flash, quad_en);
++	if (ret < 0) {
++		dev_err(&flash->spi->dev,
++			"error while writing configuration register");
++		return -EINVAL;
++	}
++
++	/* read back and check it */
++	ret = read_cr(flash);
++	if (!(ret > 0 && (ret & SPAN_QUAD_CR_EN))) {
++		dev_err(&flash->spi->dev,
++			"Spansion Quad bit not set");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int m25p80_quad_read(struct mtd_info *mtd, loff_t from, size_t len,
++	size_t *retlen, u_char *buf)
++{
++	struct m25p *flash = mtd_to_m25p(mtd);
++	struct spi_transfer t[2];
++	struct spi_message m;
++	uint8_t opcode;
++
++	pr_debug("%s: %s from 0x%08x, len %zd\n", dev_name(&flash->spi->dev),
++			__func__, (u32)from, len);
++
++	spi_message_init(&m);
++	memset(t, 0, (sizeof(t)));
++
++	t[0].tx_buf = flash->command;
++	t[0].len = m25p_cmdsz(flash) + (flash->quad_read ? 1 : 0);
++	spi_message_add_tail(&t[0], &m);
++
++	t[1].rx_buf = buf;
++	t[1].len = len;
++	t[1].rx_nbits = SPI_NBITS_QUAD;
++	spi_message_add_tail(&t[1], &m);
++
++	mutex_lock(&flash->lock);
++
++	/* Wait till previous write/erase is done. */
++	if (wait_till_ready(flash)) {
++		/* REVISIT status return?? */
++		mutex_unlock(&flash->lock);
++		return 1;
++	}
++
++	/* FIXME switch to OPCODE_QUAD_READ.  It's required for higher
++	 * clocks; and at this writing, every chip this driver handles
++	 * supports that opcode.
++	*/
++
++	/* Set up the write data buffer. */
++	opcode = flash->read_opcode;
++	flash->command[0] = opcode;
++	m25p_addr2cmd(flash, from, flash->command);
++
++	spi_sync(flash->spi, &m);
++
++	*retlen = m.actual_length - m25p_cmdsz(flash) -
++			(flash->quad_read ? 1 : 0);
++
++	mutex_unlock(&flash->lock);
++
++	return 0;
++}
++
+ /*
+  * Read an address range from the flash chip.  The address range
+  * may be any size provided it is within the physical boundaries.
+@@ -928,6 +1070,7 @@ static int m25p_probe(struct spi_device *spi)
+ 	unsigned			i;
+ 	struct mtd_part_parser_data	ppdata;
+ 	struct device_node __maybe_unused *np = spi->dev.of_node;
++	int ret;
  
- 		ret = qspi_transfer_msg(qspi, t);
-@@ -379,6 +458,7 @@ static int ti_qspi_start_transfer_one(struct spi_master *master,
- 		m->actual_length += t->len;
+ #ifdef CONFIG_MTD_OF_PARTS
+ 	if (!of_device_is_available(np))
+@@ -979,15 +1122,9 @@ static int m25p_probe(struct spi_device *spi)
+ 		}
  	}
  
-+out:
- 	mutex_unlock(&qspi->list_lock);
- 
- 	m->status = status;
-@@ -437,7 +517,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
- {
- 	struct  ti_qspi *qspi;
- 	struct spi_master *master;
--	struct resource         *r;
-+	struct resource         *r, *res_ctrl, *res_mmap;
- 	struct device_node *np = pdev->dev.of_node;
- 	u32 max_freq;
- 	int ret = 0, num_cs, irq;
-@@ -446,7 +526,8 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 	if (!master)
+-	flash = kzalloc(sizeof *flash, GFP_KERNEL);
++	flash = devm_kzalloc(&spi->dev, sizeof(*flash), GFP_KERNEL);
+ 	if (!flash)
  		return -ENOMEM;
+-	flash->command = kmalloc(MAX_CMD_SIZE + (flash->fast_read ? 1 : 0),
+-					GFP_KERNEL);
+-	if (!flash->command) {
+-		kfree(flash);
+-		return -ENOMEM;
+-	}
  
--	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
-+					SPI_RX_MMAP;
+ 	flash->spi = spi;
+ 	mutex_init(&flash->lock);
+@@ -1015,7 +1152,6 @@ static int m25p_probe(struct spi_device *spi)
+ 	flash->mtd.flags = MTD_CAP_NORFLASH;
+ 	flash->mtd.size = info->sector_size * info->n_sectors;
+ 	flash->mtd._erase = m25p80_erase;
+-	flash->mtd._read = m25p80_read;
  
- 	master->bus_num = -1;
- 	master->flags = SPI_MASTER_HALF_DUPLEX;
-@@ -465,7 +546,16 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 	qspi->master = master;
- 	qspi->dev = &pdev->dev;
+ 	/* flash protection support for STmicro chips */
+ 	if (JEDEC_MFR(info->jedec_id) == CFI_MFR_ST) {
+@@ -1067,6 +1203,38 @@ static int m25p_probe(struct spi_device *spi)
  
--	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	r = platform_get_resource_byname(pdev, IORESOURCE_MEM, "qspi_base");
-+	if (r == NULL) {
-+		dev_err(&pdev->dev, "missing platform resources data\n");
-+		return -ENODEV;
+ 	flash->program_opcode = OPCODE_PP;
+ 
++	flash->quad_read = false;
++	if (spi->mode && SPI_RX_QUAD)
++		flash->quad_read = true;
++
++	flash->command = kmalloc(MAX_CMD_SIZE + (flash->fast_read ? 1 :
++				(flash->quad_read ? 1 : 0)), GFP_KERNEL);
++	if (!flash->command) {
++		kfree(flash);
++		return -ENOMEM;
 +	}
 +
-+	res_mmap = platform_get_resource_byname(pdev,
-+				IORESOURCE_MEM, "qspi_mmap");
-+	res_ctrl = platform_get_resource_byname(pdev,
-+				IORESOURCE_MEM, "qspi_ctrlmod");
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
-@@ -481,6 +571,23 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 		goto free_master;
- 	}
- 
-+	if (res_ctrl) {
-+		qspi->ctrl_mod = true;
-+		qspi->ctrl_base = devm_ioremap_resource(&pdev->dev, res_ctrl);
-+		if (IS_ERR(qspi->ctrl_base)) {
-+			ret = PTR_ERR(qspi->ctrl_base);
-+			goto free_master;
-+		}
-+	}
++	if (flash->quad_read) {
++		if (of_property_read_bool(np, "macronix,quad_enable")) {
++			ret = macronix_quad_enable(flash);
++			if (ret) {
++				dev_err(&spi->dev,
++					"error enabling quad");
++				return -EINVAL;
++			}
++		} else if (of_property_read_bool(np, "spansion,quad_enable")) {
++			ret = spansion_quad_enable(flash);
++			if (ret) {
++				dev_err(&spi->dev,
++					"error enabling quad");
++				return -EINVAL;
++			}
++		} else
++			dev_dbg(&spi->dev, "quad enable not supported");
++		flash->mtd._read = m25p80_quad_read;
++	} else
++		flash->mtd._read = m25p80_read;
 +
-+	if (res_mmap) {
-+		qspi->mmap_base = devm_ioremap_resource(&pdev->dev, res_mmap);
-+		if (IS_ERR(qspi->mmap_base)) {
-+			ret = PTR_ERR(qspi->mmap_base);
-+			goto free_master;
-+		}
-+	}
-+
- 	ret = devm_request_irq(&pdev->dev, irq, ti_qspi_isr, 0,
- 			dev_name(&pdev->dev), qspi);
- 	if (ret < 0) {
-@@ -504,6 +611,9 @@ static int ti_qspi_probe(struct platform_device *pdev)
- 	if (!of_property_read_u32(np, "spi-max-frequency", &max_freq))
- 		qspi->spi_max_frequency = max_freq;
- 
-+	if (of_property_read_bool(np, "mmap_read"))
-+		qspi->memory_mapped = true;
-+
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret)
- 		goto free_master;
+ 	if (info->addr_width)
+ 		flash->addr_width = info->addr_width;
+ 	else if (flash->mtd.size > 0x1000000) {
 -- 
 1.7.1
 

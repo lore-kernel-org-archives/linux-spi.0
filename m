@@ -1,109 +1,61 @@
-From: Mark Brown <broonie@kernel.org>
+From: Peter Korsgaard <peter-+2lRwdCCLRT2eFz/2MeuCQ@public.gmane.org>
 Subject: Re: [PATCH 1/3] spi/qspi: Add memory mapped read support.
-Date: Wed, 9 Oct 2013 19:41:39 +0100
-Message-ID: <20131009184139.GZ21581@sirena.org.uk>
+Date: Wed, 09 Oct 2013 21:01:59 +0200
+Message-ID: <87hacq1d5k.fsf@dell.be.48ers.dk>
 References: <1381332284-21822-1-git-send-email-sourav.poddar@ti.com>
- <1381332284-21822-2-git-send-email-sourav.poddar@ti.com>
- <20131009160759.GQ21581@sirena.org.uk> <52558A49.5090904@ti.com>
- <20131009174027.GS21581@sirena.org.uk> <52559D52.4010400@ti.com>
+	<1381332284-21822-2-git-send-email-sourav.poddar@ti.com>
+	<20131009160759.GQ21581@sirena.org.uk> <52558A49.5090904@ti.com>
+	<20131009174027.GS21581@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1159928803749060466=="
-Cc: spi-devel-general@lists.sourceforge.net, computersforpeace@gmail.com,
- dwmw2@infradead.org, balbi@ti.com, linux-mtd@lists.infradead.org
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <52559D52.4010400@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: balbi-l0cyMroinI0@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20131009174027.GS21581-GFdadSzt00ze9xe1eoZjHA@public.gmane.org> (Mark Brown's message of
+	"Wed, 9 Oct 2013 18:40:27 +0100")
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+>>>>> "Mark" == Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> writes:
 
---===============1159928803749060466==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="iAb4HJL2YUi6ElHq"
-Content-Disposition: inline
+Hi,
 
+ Mark> I'm not convinced that this is the most useful API, it sounds like the
+ Mark> hardware can "memory map" the entire flash chip so the whole SPI
+ Mark> framework seems like overhead.
 
---iAb4HJL2YUi6ElHq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+ Mark> It also seems seems like it's going to involve the CPU being
+ Mark> stalled waiting for reads to complete instead of asking the SPI
+ Mark> controller to DMA the data to RAM and allowing the CPU to get on
+ Mark> with other things - replacing the explicit transmission of
+ Mark> commands with memory to memory DMAs might be advantageous but
+ Mark> replacing DMA with memcpy() would need numbers to show that it
+ Mark> was a win.
 
-On Wed, Oct 09, 2013 at 11:45:46PM +0530, Sourav Poddar wrote:
-> On Wednesday 09 October 2013 11:10 PM, Mark Brown wrote:
+Indeed. I can see how such a feature could be useful in E.G. a lowlevel
+bootloader (because of simplicity), but am less convinced about it in
+Linux where we could conceivable do something else useful while waiting
+on the spi controller.
 
-> >I'm not convinced that this is the most useful API, it sounds like the
-> >hardware can "memory map" the entire flash chip so the whole SPI
-> >framework seems like overhead.
+But if there's number to prove otherwise..
 
-> But this memory map read will work only with read opcodes.(mtd_read
-> path). For all other operations, normal SPI operations will be used.
+-- 
+Bye, Peter Korsgaard
 
-> As for this, I also though of bypassing the SPI frameowrk, and doing
-> a memcopy
-> at the beginning of the mtd_read api. But, then before doing a memory mapped
-> read -
-> 1. Controller need to be switched to memory mapped port using control module
->      register and ti qspi switch register.
-> 2. There is SOC specific memory mapped address space from where read
-> should happen,
->     this is SOC specific and should be known to mtd layer the
-> adreess to read for.
-> So, I thought of going this way using t.memory map flag.
-
-Sure, but these things sound like we should be able to support them
-without having to bounce over to the SPI thread all the time and...
-
-> >It also seems seems like it's going to involve the CPU being stalled
-> >waiting for reads to complete instead of asking the SPI controller to
-> >DMA the data to RAM and allowing the CPU to get on with other things -
-> >replacing the explicit transmission of commands with memory to memory
-> >DMAs might be advantageous but replacing DMA with memcpy() would need
-> >numbers to show that it was a win.
-
-...like I say it's not clear to me that this is actually a change that's
-going to be beneficial.  I'd really like to see some analysis of the
-performance showing that this helps and why it helps.
-
---iAb4HJL2YUi6ElHq
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSVaNgAAoJELSic+t+oim9TUIP/2pqeA/nUCU+KL3qQGwmxHot
-Gezf1eDoQJJkyuHtEAgDa/SqhVhfBoXI6D5yTlgp5GnqFYDmet63RuAzjaU+ck0R
-EpN/ptHNejSD2/92K305xArA5/I73di3rGHybxBT2w7D57kZK5N/X8cFsSJ7v9ZJ
-a69me89rK2n/Vg4jQUOTnc1Wr+eo3KIorcOckkIx5RYVZ3AUtjxLzAIrT/gxkI4N
-glUc+Ye1CNFLTbRFJnXqhXn2pyaDDbqbde5oCR2LFL0IJYaZ/9yma2WI+Ket0uS7
-M15vcbU61DPN07fh4wVqxuZOyvbTSukg69EVmrmurkRT4gwKY+IKh8Wo7FgJ8z32
-w6kzYqi40VB+ccZj5og7NOCyW8xUR5DYSyg2mMUZ77heyqJ3ywouzGFwpywZurRX
-QMxVmhZa6ABJkrW+yDbz6wQaDjnVXXauyy66UiKSATmRDSW7gW6EX3RAmVst502N
-a5kqmBx+IWcXvhXlpqWbxWirr0ilQ9Fx2xZyIlpX6i0dY8Tjurah/WhCemkQyXbW
-uagaBUk2N/wPMdELcIOY4poZ+AVdaBXvkIj9DuAk0CGcv/fRnvWm2oeA9f2s7TPX
-Y+BM4S5dmCDzsADa9JXnaRsy7zFZo2DRGlpdCA/NkxRJoq+Io9LhS9cuEtO8WP/t
-sgtYEABPj3fk3FrBughj
-=/N7d
------END PGP SIGNATURE-----
-
---iAb4HJL2YUi6ElHq--
-
-
---===============1159928803749060466==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
-
---===============1159928803749060466==--
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60134071&iu=/4140/ostg.clktrk

@@ -1,17 +1,17 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: [RFC/PATCH 3/3] drivers: mtd: devices: Add memory mapped read support.
-Date: Wed, 9 Oct 2013 20:54:44 +0530
-Message-ID: <1381332284-21822-4-git-send-email-sourav.poddar@ti.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC/PATCH 3/3] drivers: mtd: devices: Add memory mapped read
+ support.
+Date: Wed, 9 Oct 2013 16:45:33 +0100
+Message-ID: <20131009154533.GP21581@sirena.org.uk>
 References: <1381332284-21822-1-git-send-email-sourav.poddar@ti.com>
+ <1381332284-21822-4-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: spi-devel-general@lists.sourceforge.net,
- Sourav Poddar <sourav.poddar@ti.com>, linux-mtd@lists.infradead.org,
- balbi@ti.com
-To: <broonie@kernel.org>, <dwmw2@infradead.org>, <computersforpeace@gmail.com>
+Content-Type: multipart/mixed; boundary="===============3161917266052284849=="
+Cc: spi-devel-general@lists.sourceforge.net, computersforpeace@gmail.com,
+ dwmw2@infradead.org, balbi@ti.com, linux-mtd@lists.infradead.org
+To: Sourav Poddar <sourav.poddar@ti.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <1381332284-21822-1-git-send-email-sourav.poddar@ti.com>
+In-Reply-To: <1381332284-21822-4-git-send-email-sourav.poddar@ti.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -23,90 +23,58 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Add memory mapped flash read support. In memory mapped, only the len, from
-and t->rx_buf is required from the flash side, while other configuration
-will be taken care of from the respective controller side with the help
-of the transfer flag(memory_map).
 
-Signed-off-by: Sourav Poddar <sourav.poddar@ti.com>
----
+--===============3161917266052284849==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ia+af9HxgiRv1+7n"
+Content-Disposition: inline
 
- drivers/mtd/devices/m25p80.c |   13 +++++++++++--
- include/linux/spi/spi.h      |    2 ++
- 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index dc9bcbf..9d09bad 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -102,6 +102,7 @@ struct m25p {
- 	u8			*command;
- 	bool			fast_read;
- 	bool			quad_read;
-+	bool			mmap_read;
- };
- 
- static inline struct m25p *mtd_to_m25p(struct mtd_info *mtd)
-@@ -440,10 +441,15 @@ static int m25p80_quad_read(struct mtd_info *mtd, loff_t from, size_t len,
- 	spi_message_init(&m);
- 	memset(t, 0, (sizeof(t)));
- 
-+	if (flash->mmap_read)
-+		t[0].memory_map = 1;
- 	t[0].tx_buf = flash->command;
--	t[0].len = m25p_cmdsz(flash) + (flash->quad_read ? 1 : 0);
-+	t[0].len = flash->mmap_read ? from : m25p_cmdsz(flash) +
-+				(flash->quad_read ? 1 : 0);
- 	spi_message_add_tail(&t[0], &m);
- 
-+	if (flash->mmap_read)
-+		t[1].memory_map = 1;
- 	t[1].rx_buf = buf;
- 	t[1].len = len;
- 	t[1].rx_nbits = SPI_NBITS_QUAD;
-@@ -470,7 +476,7 @@ static int m25p80_quad_read(struct mtd_info *mtd, loff_t from, size_t len,
- 
- 	spi_sync(flash->spi, &m);
- 
--	*retlen = m.actual_length - m25p_cmdsz(flash) -
-+	*retlen = flash->mmap_read ? len : m.actual_length - m25p_cmdsz(flash) -
- 			(flash->quad_read ? 1 : 0);
- 
- 	mutex_unlock(&flash->lock);
-@@ -1207,6 +1213,9 @@ static int m25p_probe(struct spi_device *spi)
- 	if (spi->mode && SPI_RX_QUAD)
- 		flash->quad_read = true;
- 
-+	if (spi->mode && SPI_RX_MMAP)
-+		flash->mmap_read = true;
-+
- 	flash->command = kmalloc(MAX_CMD_SIZE + (flash->fast_read ? 1 :
- 				(flash->quad_read ? 1 : 0)), GFP_KERNEL);
- 	if (!flash->command) {
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 4d634d6..a6ffb52 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -91,6 +91,7 @@ struct spi_device {
- #define	SPI_TX_QUAD	0x200			/* transmit with 4 wires */
- #define	SPI_RX_DUAL	0x400			/* receive with 2 wires */
- #define	SPI_RX_QUAD	0x800			/* receive with 4 wires */
-+#define SPI_RX_MMAP	0x1000			/* Memory mapped read */
- 	u8			bits_per_word;
- 	int			irq;
- 	void			*controller_state;
-@@ -557,6 +558,7 @@ struct spi_transfer {
- 	u16		delay_usecs;
- 	u32		speed_hz;
- 
-+	bool	memory_map;
- 	struct list_head transfer_list;
- };
- 
--- 
-1.7.1
+--ia+af9HxgiRv1+7n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Wed, Oct 09, 2013 at 08:54:44PM +0530, Sourav Poddar wrote:
+
+>  drivers/mtd/devices/m25p80.c |   13 +++++++++++--
+>  include/linux/spi/spi.h      |    2 ++
+
+You shouldn't be adding the SPI feature in the same change as you add
+the user.
+
+--ia+af9HxgiRv1+7n
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSVXoaAAoJELSic+t+oim9v4MQAIhsF7OtC0h4PrK0TinTAkQf
+F7yrgSCJwLQJJqf3J7fPBhZ7Gj/gcWx9YMaefPlF9cenHxsVivntbi+w7DEMFHyR
+JogSIpNPdW3CGseGMAuKybCGYwR48bz1PeJ06sx9pS3XmzSIH6DM3bhJJNNzcQou
+zeF818qW0TBh0d+aIacghM9lJ0Lto3inDX/o3pzUXIe/b4xnwsVXft8ubxejU2Bt
+PWouLOrlQAsaOT17UIT95kWwTN97ceEw/8ty62cVm8fADdQFcM7et0cMBH/6mWdn
+F3aAcYYdO0cp3PgdzRLy0VOddS3+b6gYcm4pDh7Gwiy1PqX80sAKSqbZMIos/79n
+oN4//BEYsclP21O3D2IyjiBcpwRZ7E2TmC6pYUZmdG5TzoSysf92+DrL6yuv/uOF
+tcZp/9QKqxyMmo+2RctVNUXxGXvkG4ex8oNf8VzwoK+hUldVjOEEtKHyaZCu5Nom
+SEaRnwfsntwJxVnvhoiiB5tKfRodrIDwIrw41apg8QsSDhX4gUCeJS1DAgHNkpVm
+9q4ZPFnH+4nsGiPLKCuu9l5buVyV5thwvyoS22yQm5/RHHpA+cvj9eYxWidkFjGC
+tYmA2x1ESPAD2Z0gA9HX0QL5exmLVNCKGQrCM7Q/0keS7pcmiF3Hxws97aezmIFc
+9jV8GhsJ9eDyqTWsfGwz
+=lY7d
+-----END PGP SIGNATURE-----
+
+--ia+af9HxgiRv1+7n--
+
+
+--===============3161917266052284849==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 ______________________________________________________
 Linux MTD discussion mailing list
 http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============3161917266052284849==--

@@ -1,50 +1,92 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: Re: [PATCH 1/3] spi/qspi: Add memory mapped read support.
-Date: Thu, 10 Oct 2013 16:38:19 +0530
-Message-ID: <52568AA3.9080203@ti.com>
-References: <52566ACC.1080100@ti.com> <20131010101410.GG21581@sirena.org.uk>
+From: "Leroy Merlin" <selectionpremium-5DDAqSTHTz5LQGOaHaWmzF8DPIj7SoFj@public.gmane.org>
+Subject: Je valide ma participation
+Date: Thu, 10 Oct 2013 14:21:30 +0200
+Message-ID: <OTTO02A00026G001000S2FKV0369936330@foru.selectionpremium.fr>
+Reply-To: abuse-bxJNC2EmtRdQFI55V6+gNQ@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: Peter Korsgaard <peter@korsgaard.com>, Trent Piepho <tpiepho@gmail.com>,
- balbi@ti.com, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>, computersforpeace@gmail.com,
- dwmw2@infradead.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20131010101410.GG21581@sirena.org.uk>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
-On Thursday 10 October 2013 03:44 PM, Mark Brown wrote:
-> On Thu, Oct 10, 2013 at 02:22:28PM +0530, Sourav Poddar wrote:
->
->> [Trent]: With mapping driver, I believe you are hinting at
->> drivers/mtd/maps? I had
->> a look at it and what I got is that it is used/suitable for parallel
->> flashes and not the
->> serial flashes.
-> Essentially what it looks like this hardware is trying to do is adapt a
-> serial flash so it looks more like a parallel flash.  It's not clear
-> that this is a good idea if we are already able to understand serial
-> flash though.
-Do you have any idea of how to go about implementing it in a more
-cleaner way?(taking care of all what the spi controller hardware needs to
-do for the memory mapped mode.). I understand doing a memcpy in the caller
-itself, but how to tackle the spi controller configuration at that point 
-of time.
-Memory mapped is  a spi controller feature rather than a flash.
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+aHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAw
+MDAwMDAyNkcwMDAyT0ZCMDAwUzJGS1YmbXB2cnM9MDAwMDI1NzcwM0RGOTk0MzEgCgpodHRwOi8v
+dHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVtLmZyL2RvP0NFQTU1NzU0MDRFRTI5MDVCQUQ0OUMyM0M5
+Rjc5QjAwRUQxRTdEQ0Y3REU0ODQ1RjI4QUU2MEVBMjA0Q0ZFQ0U1NkFBMzU2MTE4QTFBMjM4Q0I3
+NUE4MUI3RTVGRjA2NkIxMjExREQ0RDc5QjJGMzYwRTE2ODc4MkQxQ0FFQUNEIApWaXN1YWxpc2V6
+IGxhIHZlcnNpb24gZW4gbGlnbmUgIHwgIApodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVt
+LmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDI2RzAwMDJPRk0wMDBTMkZLViZtcHZycz0w
+MDAwMjU3NzAzREY5OTQzMSAKU2UgZMOpc2Fib25uZXIgIHwgIApodHRwOi8vdHIuZm9ydS5zZWxl
+Y3Rpb25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDI2RzAwMDJPRjkwMDBT
+MkZLViZtcHZycz0wMDAwMjU3NzAzREY5OTQzMSAKTWV0dHJlIGNldCBlbWFpbCBkYW5zIG1lcyBj
+b3VycmllciBpbmTDqXNpcmFibGUKQm9uam91ciAgCgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25w
+cmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDI2RzAwMDJPRkEwMDBTMkZLViZt
+cHZycz0wMDAwMjU3NzAzREY5OTQzMSAKR8OpcmVyIG1lcyBwcsOpZsOpcmVuY2VzCsKgClNldWxl
+cyBsZXMgcHVibGljaXTDqXNmYWl0ZXMgcG91ciB2b3VzICEKCmh0dHA6Ly90ci5mb3J1LnNlbGVj
+dGlvbnByZW1pdW0uZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAwMjZHMDAwMk9GTDAwMFMy
+RktWJm1wdnJzPTAwMDAyNTc3MDNERjk5NDMxJmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3Rz
+LnNvdXJjZWZvcmdlLm5ldCZmaXJzdG5hbWU9Jm5hbWU9IAoKaHR0cDovL3RyLmZvcnUuc2VsZWN0
+aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAwMDAwMDAyNkcwMDAyT0ZHMDAwUzJG
+S1YmbXB2cnM9MDAwMDI1NzcwM0RGOTk0MzEmZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
+c291cmNlZm9yZ2UubmV0JmZpcnN0bmFtZT0mbmFtZT0gCgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rp
+b25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDI2RzAwMDJPRkkwMDBTMkZL
+ViZtcHZycz0wMDAwMjU3NzAzREY5OTQzMSZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQmZmlyc3RuYW1lPSZuYW1lPSAKCgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rp
+b25wcmVtaXVtLmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDI2RzAwMDJPRkswMDBTMkZL
+ViZtcHZycz0wMDAwMjU3NzAzREY5OTQzMSZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5z
+b3VyY2Vmb3JnZS5uZXQmZmlyc3RuYW1lPSZuYW1lPSAKQm9uam91ciwgIAoKUEFSVElDSVBFWiBB
+IE5PVFJFIEdSQU5EIFRJUkFHRSBBVSBTT1JUIGV0IHRlbnRleiBkZSByZW1wb3J0ZXIgNTAwMOKC
+rCBlbiBib25zIHNob3BwaW5nIGNoZXogRGVsYW1haXNvbiBldCBMZXJveSBNZXJsaW4gcG91ciBy
+ZWxvb2tlciB2b3RyZSBpbnTDqXJpZXVyLgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVt
+LmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDI2RzAwMDJPRkYwMDBTMkZLViZtcHZycz0w
+MDAwMjU3NzAzREY5OTQzMSZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQmZmlyc3RuYW1lPSZuYW1lPSAKCgpodHRwOi8vdHIuZm9ydS5zZWxlY3Rpb25wcmVtaXVt
+LmZyL3I1LmFzcHg/R1YxPU9UVE8wMkEwMDAwMDAwMDI2RzAwMDJPRkQwMDBTMkZLViZtcHZycz0w
+MDAwMjU3NzAzREY5OTQzMSZlbWFpbD1zcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
+ZS5uZXQmZmlyc3RuYW1lPSZuYW1lPSAKCmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0u
+ZnIvcjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAwMjZHMDAwMk9GRTAwMFMyRktWJm1wdnJzPTAw
+MDAyNTc3MDNERjk5NDMxJmVtYWlsPXNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdl
+Lm5ldCZmaXJzdG5hbWU9Jm5hbWU9IAoKaHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5m
+ci9yNS5hc3B4P0dWMT1PVFRPMDJBMDAwMDAwMDAyNkcwMDAyT0ZIMDAwUzJGS1YmbXB2cnM9MDAw
+MDI1NzcwM0RGOTk0MzEmZW1haWw9c3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2Uu
+bmV0JmZpcnN0bmFtZT0mbmFtZT0gCgpDb21tZW50IMOnYSBtYXJjaGUgPwoKVm91cyByZWNldmV6
+IGNlIG1lc3NhZ2UgZGUgbm90cmUgcGFydCBjYXIgdm91cyB2b3VzIMOqdGVzIGluc2NyaXQoZSkg
+YXZlYyBsJ2FkcmVzc2Ugc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0IHN1
+ciBsZSBzaXRlIHNlbGVjdGlvbnByZW1pdW0uY29tLiBDZSBzaXRlIGEgZmFpdCBsJ29iamV0IGQn
+dW5lIGTDqWNsYXJhdGlvbiBhdXByw6hzIGRlIGxhIENOSUwgc291cyBsZSBudW3DqXJvIDE1NDUx
+NDguIENvbmZvcm3DqW1lbnQgw6AgbCdhcnRpY2xlIDM0IGRlIGxhIGxvaSDCq0luZm9ybWF0aXF1
+ZSBldCBMaWJlcnTDqXPCuyBkdSA2IGphbnZpZXIgMTk3OCwgdm91cyBwb3V2ZXogZXhlcmNlciB2
+b3RyZSBkcm9pdCBkJ2FjY8OocywgZGUgbW9kaWZpY2F0aW9uLCBkZSByZWN0aWZpY2F0aW9uIG91
+IGVuY29yZSBkZSBzdXBwcmVzc2lvbiBkZSB2b3MgaW5mb3JtYXRpb25zIHBlcnNvbm5lbGxlcyB2
+aWEgbGUgbGllbiBzdWl2YW50IDogCmh0dHA6Ly90ci5mb3J1LnNlbGVjdGlvbnByZW1pdW0uZnIv
+cjUuYXNweD9HVjE9T1RUTzAyQTAwMDAwMDAwMjZHMDAwMk9GQzAwMFMyRktWJm1wdnJzPTAwMDAy
+NTc3MDNERjk5NDMxIApNZXMgQWJvbm5lbWVudHMuIAoKU2lub24gdm91cyBwb3V2ZXogdm91cyBk
+w6lzYWJvbm5lciAKaHR0cDovL3RyLmZvcnUuc2VsZWN0aW9ucHJlbWl1bS5mci9yNS5hc3B4P0dW
+MT1PVFRPMDJBMDAwMDAwMDAyNkcwMDAyT0Y4MDAwUzJGS1YmbXB2cnM9MDAwMDI1NzcwM0RGOTk0
+MzEgCmljaS4KClF1aSBzb21tZXMtbm91cyA/CgpTZWxlY3Rpb24gUHJlbWl1bSBlc3QgdW5lIG5l
+d3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDDqWRpdMOpZSBwYXIgbGEgc29jacOpdMOpIE5hdGV4bywg
+cXVpIHZvdXMgcHJvcG9zZSB1bmUgc8OpbGVjdGlvbiBkZSBib25zIHBsYW5zLiBFbiDDqXRhbnQg
+YWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBkJ2luZm9ybWF0aW9uLCB2b3VzIHJlY2V2cmV6IGxlIHRv
+cCBkZXMgamV1eCBjb25jb3VycywgbGVzIG9mZnJlcyBkdSBtb21lbnQgcG91ciB0b3VzIHZvcyB0
+cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMgZXhjbHVzaXZlcyDDoCBkZXMgZXNzYWlzIGV0IHZlbnRl
+cyBwcml2w6llcyBkZSBncmFuZGVzIG1hcnF1ZXMuCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPY3Rv
+YmVyIFdlYmluYXJzOiBDb2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmluYXJzIGNh
+biBoZWxwIHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3JlIHRp
+cHMgZm9yIE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBHZXQgdGhl
+IG1vc3QgZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3NvcnMu
+IFNlZSBhYnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNr
+Lm5ldC9nYW1wYWQvY2xrP2lkPTYwMTM0MDcxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFs
+IG1haWxpbmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0
+cHM6Ly9saXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVy
+YWwK

@@ -1,16 +1,18 @@
 From: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
-Subject: [PATCH][RESEND] spi/xilinx: Use DT information for bits_per_word
-	value, fix bus_num value
-Date: Thu, 10 Oct 2013 15:45:40 +0200
-Message-ID: <5256AF84.90500@efe-gmbh.de>
+Subject: Re: [PATCH] spi/xilinx: Use DT information for bits_per_word value,
+	fix bus_num value
+Date: Thu, 10 Oct 2013 16:50:37 +0200
+Message-ID: <5256BEBD.1090907@efe-gmbh.de>
 References: <5256A186.5030708@efe-gmbh.de>
+	<20131010141221.GN21581@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org, Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, Renaud Muller <muller-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
+To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <5256A186.5030708-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
+In-Reply-To: <20131010141221.GN21581-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -21,40 +23,34 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch overrides the default value of bits_per_word with the actual value
-of "xlnx,num-transfer-bits" from the DTS file to allow for 16 and 32 bit word
-lengths.
-Also, bus_num always was (and probably should still be) derived from pdev->id.
-Otherwise this could lead to problems when using more than one SPI master.
+Am 10.10.2013 16:12, schrieb Mark Brown:
+> On Thu, Oct 10, 2013 at 02:45:58PM +0200, Jens Renner wrote:
+> 
+>> +		of_property_read_u32(pdev->dev.of_node, "xlnx,num-transfer-bits",
+>> +					&bits_per_word);
+> 
+> This new property needs to be documented in the binding document (and
+> sent to the DT maintainers for review though in this case it's probably
+> OK).
 
-Tested on our own Spartan-6 / Microblaze platform with two SPI controllers.
+So far there is no binding documentation for spi/xilinx at all, but I prepared
+a file spi-xilinx.txt which documents everything. I will send it to the DT
+maintainers.
 
-Signed-off-by: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
----
- drivers/spi/spi-xilinx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index 0bf1b2c..5a6d9c5 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -356,6 +356,8 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 	} else {
- 		of_property_read_u32(pdev->dev.of_node, "xlnx,num-ss-bits",
- 					  &num_cs);
-+		of_property_read_u32(pdev->dev.of_node, "xlnx,num-transfer-bits",
-+					&bits_per_word);
- 	}
- 
- 	if (!num_cs) {
-@@ -385,7 +387,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 		goto put_master;
- 	}
- 
--	master->bus_num = pdev->dev.id;
-+	master->bus_num = pdev->id;
- 	master->num_chipselect = num_cs;
- 	master->dev.of_node = pdev->dev.of_node;
- 
+>> @@ -385,7 +387,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+>>  		goto put_master;
+>>  	}
+>>  
+>> -	master->bus_num = pdev->dev.id;
+>> +	master->bus_num = pdev->id;
+>>  	master->num_chipselect = num_cs;
+>>  	master->dev.of_node = pdev->dev.of_node;
+> 
+> This looks like an unrelated change (and buggy?).
+> 
+
+Related insofar as I mentioned the modification in the patch title and
+description. Buggy, yes, I resent the patch ...
 
 
 ------------------------------------------------------------------------------

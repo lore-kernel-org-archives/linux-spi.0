@@ -1,13 +1,16 @@
-From: "=?utf-8?Q?Citroen?=" <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
-Subject: =?utf-8?Q?spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org_vous_avez_recu_une_invitation?=
-Date: Thu, 10 Oct 2013 13:01:34 +0000
-Message-ID: <1043=8e8fce90-195a-4365-a033-338c3530ec57=4=3266566@clicks.trackdom.fr>
-Reply-To: Consodeal <info-fCLqDSmhR8IUrb4e85K3Fw@public.gmane.org>
+From: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
+Subject: [PATCH][RESEND] spi/xilinx: Use DT information for bits_per_word
+	value, fix bus_num value
+Date: Thu, 10 Oct 2013 15:45:40 +0200
+Message-ID: <5256AF84.90500@efe-gmbh.de>
+References: <5256A186.5030708@efe-gmbh.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org, Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <5256A186.5030708-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,80 +21,45 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CiAgIFsxXVZpc3VhbGlzZXIgbGEgdmVyc2lvbiBlbiBsaWduZQogICBbMl1zcGktZGV2ZWwtZ2Vu
-ZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQgdm91cyBhdmV6IHJlY3UgdW5lIGludml0YXRpb24K
-ICAgWzNdU2UgZMOpc2Fib25uZXIKICAgWzRdQ291cnJpZXIgaW5kw6lzaXJhYmxlCgogICBCb25q
-b3VyICAKICAgLAogICBWb3RyZSBhdmV6IMOpdMOpIHPDqWxlY3Rpb25uw6kgcG91ciBwYXJ0aWNp
-cGVyIMOgIG5vdHJlIEdyYW5kIEpldSBDb25jb3Vycy4KICAgUmVtcG9ydGV6IGxhIE5vdXZlbGxl
-IERTMyEKICAgCgpSZWZlcmVuY2VzCgogICBWaXNpYmxlIGxpbmtzCiAgIDEuIGZpbGU6Ly9sb2Nh
-bGhvc3QvRTovL0V4cGVydFNlbmRlcjJEYXRhLy9MeW54Ly9odHRwOi8vY2xpY2tzLnRyYWNrZG9t
-LmZyL3YvYXMvaGs4ckNUTXR0SUVRa09Fa0hzbTROMy8xNTBjOGViZQogICAyLiBodHRwOi8vY2xp
-Y2tzLnRyYWNrZG9tLmZyL2MvYXMvYWdYL2hrOHJDVE10dElFUWtPRWtIc200TjMvYi9rbFFML2Fi
-NTRiODQ5CiAgIDMuIGZpbGU6Ly9sb2NhbGhvc3QvRTovL0V4cGVydFNlbmRlcjJEYXRhLy9MeW54
-Ly9odHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL3UvYXMvaGs4ckNUTXR0SUVRa09Fa0hzbTROMy9i
-L2tsUUwvZTZiY2I5OWMKICAgNC4gZmlsZTovL2xvY2FsaG9zdC9FOi8vRXhwZXJ0U2VuZGVyMkRh
-dGEvL0x5bngvL2h0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvdS9hcy9oazhyQ1RNdHRJRVFrT0Vr
-SHNtNE4zL2Iva2xRTC9lNmJjYjk5YwoKICAgSGlkZGVuIGxpbmtzOgogICA1LiBodHRwOi8vY2xp
-Y2tzLnRyYWNrZG9tLmZyL2MvYXMvYWc2L2hrOHJDVE10dElFUWtPRWtIc200TjMvYi9rbFFML2Ew
-NzVhZDA0CiAgIDYuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9hZ2svaGs4ckNUTXR0
-SUVRa09Fa0hzbTROMy9iL2tsUUwvYmZhYjAzZjIKICAgNy4gaHR0cDovL2NsaWNrcy50cmFja2Rv
-bS5mci9jL2FzL2FnSC9oazhyQ1RNdHRJRVFrT0VrSHNtNE4zL2Iva2xRTC9lZWU4N2MzZgogICA4
-LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvYWdFL2hrOHJDVE10dElFUWtPRWtIc200
-TjMvYi9rbFFMLzc5MDgwMTI2CiAgIDkuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9h
-Z3IvaGs4ckNUTXR0SUVRa09Fa0hzbTROMy9iL2tsUUwvOTEyMDA4YTAKICAxMC4gaHR0cDovL2Ns
-aWNrcy50cmFja2RvbS5mci9jL2FzL2FnYS9oazhyQ1RNdHRJRVFrT0VrSHNtNE4zL2Iva2xRTC8w
-ZWE2M2JmNwogIDExLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvYWduL2hrOHJDVE10
-dElFUWtPRWtIc200TjMvYi9rbFFMLzBhOTUxY2QwCiAgMTIuIGh0dHA6Ly9jbGlja3MudHJhY2tk
-b20uZnIvYy9hcy9hZ2ovaGs4ckNUTXR0SUVRa09Fa0hzbTROMy9iL2tsUUwvZjY0MmFlZWQKICAx
-My4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL2Fncy9oazhyQ1RNdHRJRVFrT0VrSHNt
-NE4zL2Iva2xRTC9kOGM5YTViZgogIDE0LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMv
-YWdJL2hrOHJDVE10dElFUWtPRWtIc200TjMvYi9rbFFML2E3MDFkMTIwCiAgMTUuIGh0dHA6Ly9j
-bGlja3MudHJhY2tkb20uZnIvYy9hcy9hZ04vaGs4ckNUTXR0SUVRa09Fa0hzbTROMy9iL2tsUUwv
-ODFlYzk0M2MKICAxNi4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL2FnZy9oazhyQ1RN
-dHRJRVFrT0VrSHNtNE4zL2Iva2xRTC82MWEyZDNmNAogIDE3LiBodHRwOi8vY2xpY2tzLnRyYWNr
-ZG9tLmZyL2MvYXMvYWc1L2hrOHJDVE10dElFUWtPRWtIc200TjMvYi9rbFFMLzdhNGY1YTI1CiAg
-MTguIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9hZ3YvaGs4ckNUTXR0SUVRa09Fa0hz
-bTROMy9iL2tsUUwvNmRmN2JhOWQKICAxOS4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2Fz
-L2FndC9oazhyQ1RNdHRJRVFrT0VrSHNtNE4zL2Iva2xRTC9mZTI0ZTBhMwogIDIwLiBodHRwOi8v
-Y2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvYWdxL2hrOHJDVE10dElFUWtPRWtIc200TjMvYi9rbFFM
-LzRiMWFmZjgxCiAgMjEuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9hZ2QvaGs4ckNU
-TXR0SUVRa09Fa0hzbTROMy9iL2tsUUwvYmI5ODI0ZDUKICAyMi4gaHR0cDovL2NsaWNrcy50cmFj
-a2RvbS5mci9jL2FzL2FneC9oazhyQ1RNdHRJRVFrT0VrSHNtNE4zL2Iva2xRTC8yMDJkMzBhNQog
-IDIzLiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvYWdsL2hrOHJDVE10dElFUWtPRWtI
-c200TjMvYi9rbFFMLzk5NDY0NmVlCiAgMjQuIGh0dHA6Ly9jbGlja3MudHJhY2tkb20uZnIvYy9h
-cy9hZ0EvaGs4ckNUTXR0SUVRa09Fa0hzbTROMy9iL2tsUUwvODVkZmIzMWIKICAyNS4gaHR0cDov
-L2NsaWNrcy50cmFja2RvbS5mci9jL2FzL2FnUi9oazhyQ1RNdHRJRVFrT0VrSHNtNE4zL2Iva2xR
-TC8xYTU5ODA0YwogIDI2LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2MvYXMvYWdRL2hrOHJD
-VE10dElFUWtPRWtIc200TjMvYi9rbFFML2MwNjM3NzZkCiAgMjcuIGh0dHA6Ly9jbGlja3MudHJh
-Y2tkb20uZnIvYy9hcy9hZ3AvaGs4ckNUTXR0SUVRa09Fa0hzbTROMy9iL2tsUUwvMDJmMzUyOWUK
-ICAyOC4gaHR0cDovL2NsaWNrcy50cmFja2RvbS5mci9jL2FzL2FnUC9oazhyQ1RNdHRJRVFrT0Vr
-SHNtNE4zL2Iva2xRTC84OThhZGE3MgogIDI5LiBodHRwOi8vY2xpY2tzLnRyYWNrZG9tLmZyL2Mv
-YXMvYWdDL2hrOHJDVE10dElFUWtPRWtIc200TjMvYi9rbFFMLzE2MGNlOTI1CiAgMzAuIGh0dHA6
-Ly9jbGlja3MudHJhY2tkb20uZnIvYy9hcy9hZ2gvaGs4ckNUTXR0SUVRa09Fa0hzbTROMy9iL2ts
-UUwvNjU5MWY0ZDMKClZvdXMgcmVjZXZleiBjZSBtZXNzYWdlIGRlIG5vdHJlIHBhcnQgY2FyIHZv
-dXMgdm91cyDDqnRlcyBpbnNjcml0KGUpIGF2ZWMgbCdhZHJlc3NlIHNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldCBzdXIgbGUgc2l0ZSBDb25zb2RlYWwuY29tLiBDZSBzaXRl
-IGEgZmFpdCBsJ29iamV0IGQndW5lIGTDqWNsYXJhdGlvbiBhdXByw6hzIGRlIGxhIENOSUwgc291
-cyBsZSBudW3DqXJvIDE1NDUxNDguIENvbmZvcm3DqW1lbnQgw6AgbCdhcnRpY2xlIDM0IGRlIGxh
-IGxvaSDCq0luZm9ybWF0aXF1ZSBldCBMaWJlcnTDqXPCuyBkdSA2IGphbnZpZXIgMTk3OCwgdm91
-cyBwb3V2ZXogZXhlcmNlciB2b3RyZSBkcm9pdCBkJ2FjY8OocywgZGUgbW9kaWZpY2F0aW9uLCBk
-ZSByZWN0aWZpY2F0aW9uIG91IGVuY29yZSBkZSBzdXBwcmVzc2lvbiBkZSB2b3MgaW5mb3JtYXRp
-b25zIHBlcnNvbm5lbGxlcyB2aWEgbGUgbGllbiBzdWl2YW50IDogTWVzIEFib25uZW1lbnRzLgpQ
-b3VyIHZvdXMgZMOpc2Fib25uZXIsIG1lcmNpIGRlIGNsaXF1ZXIgaWNpIGljaS4KCVF1aSBzb21t
-ZXMtbm91cyA/CkNvbnNvZGVhbCBlc3QgdW5lIG5ld3NsZXR0ZXIgcXVvdGlkaWVubmUgLCDDqWRp
-dMOpZSBwYXIgbGEgc29jacOpdMOpIE5hdGV4bywgcXVpIHZvdXMgcHJvcG9zZSB1bmUgc8OpbGVj
-dGlvbiBkZSBib25zIHBsYW5zLiBFbiDDqXRhbnQgYWJvbm7DqSDDoCBub3RyZSBsaXN0ZSBkJ2lu
-Zm9ybWF0aW9uLCB2b3VzIHJlY2V2cmV6IGxlIHRvcCBkZXMgamV1eCBjb25jb3VycywgbGVzIG9m
-ZnJlcyBkdSBtb21lbnQgcG91ciB0b3VzIHZvcyB0cmF2YXV4LCBkZXMgaW52aXRhdGlvbnMgZXhj
-bHVzaXZlcyDDoCBkZXMgZXNzYWlzIGV0IHZlbnRlcyBwcml2w6llcyBkZSBncmFuZGVzIG1hcnF1
-ZXMuIAotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KT2N0b2JlciBXZWJpbmFyczogQ29kZSBmb3IgUGVy
-Zm9ybWFuY2UKRnJlZSBJbnRlbCB3ZWJpbmFycyBjYW4gaGVscCB5b3UgYWNjZWxlcmF0ZSBhcHBs
-aWNhdGlvbiBwZXJmb3JtYW5jZS4KRXhwbG9yZSB0aXBzIGZvciBNUEksIE9wZW5NUCwgYWR2YW5j
-ZWQgcHJvZmlsaW5nLCBhbmQgbW9yZS4gR2V0IHRoZSBtb3N0IGZyb20gCnRoZSBsYXRlc3QgSW50
-ZWwgcHJvY2Vzc29ycyBhbmQgY29wcm9jZXNzb3JzLiBTZWUgYWJzdHJhY3RzIGFuZCByZWdpc3Rl
-ciA+Cmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD02MDEzNDA3
-MSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
-bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
-L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+This patch overrides the default value of bits_per_word with the actual value
+of "xlnx,num-transfer-bits" from the DTS file to allow for 16 and 32 bit word
+lengths.
+Also, bus_num always was (and probably should still be) derived from pdev->id.
+Otherwise this could lead to problems when using more than one SPI master.
+
+Tested on our own Spartan-6 / Microblaze platform with two SPI controllers.
+
+Signed-off-by: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
+---
+ drivers/spi/spi-xilinx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 0bf1b2c..5a6d9c5 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -356,6 +356,8 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 	} else {
+ 		of_property_read_u32(pdev->dev.of_node, "xlnx,num-ss-bits",
+ 					  &num_cs);
++		of_property_read_u32(pdev->dev.of_node, "xlnx,num-transfer-bits",
++					&bits_per_word);
+ 	}
+ 
+ 	if (!num_cs) {
+@@ -385,7 +387,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 		goto put_master;
+ 	}
+ 
+-	master->bus_num = pdev->dev.id;
++	master->bus_num = pdev->id;
+ 	master->num_chipselect = num_cs;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 
+
+
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60134071&iu=/4140/ostg.clktrk

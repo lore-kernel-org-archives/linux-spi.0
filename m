@@ -1,21 +1,23 @@
 From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] spi/xilinx: Use DT information for bits_per_word value,
 	fix bus_num value
-Date: Thu, 10 Oct 2013 14:44:28 -0700
-Message-ID: <CA+7tXijruOwkDrbiva34m_HFFBkXNkYtwTRdZoaeytsLtDuYhg@mail.gmail.com>
+Date: Thu, 10 Oct 2013 16:15:25 -0700
+Message-ID: <CA+7tXiiHFPj1-UZFKXrcxRMpHL8JCqbOUPWbsE-JF3ASHBQ_Gg@mail.gmail.com>
 References: <5256A186.5030708@efe-gmbh.de>
 	<20131010141221.GN21581@sirena.org.uk>
 	<5256BEBD.1090907@efe-gmbh.de>
+	<CA+7tXijruOwkDrbiva34m_HFFBkXNkYtwTRdZoaeytsLtDuYhg@mail.gmail.com>
+	<20131010225147.GX21581@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Renaud Muller <muller-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>, Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
+Cc: Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>, Renaud Muller <muller-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+To: Mark Brown <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <5256BEBD.1090907-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org>
+In-Reply-To: <20131010225147.GX21581-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -26,45 +28,39 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Oct 10, 2013 at 7:50 AM, Jens Renner <renner-Xf229rFC5gsb1SvskN2V4Q@public.gmane.org> wrote:
-> Am 10.10.2013 16:12, schrieb Mark Brown:
->> On Thu, Oct 10, 2013 at 02:45:58PM +0200, Jens Renner wrote:
->>
->>> +            of_property_read_u32(pdev->dev.of_node, "xlnx,num-transfer-bits",
->>> +                                    &bits_per_word);
->>
->> This new property needs to be documented in the binding document (and
->> sent to the DT maintainers for review though in this case it's probably
->> OK).
+On Oct 10, 2013 3:51 PM, "Mark Brown" <broonie-GFdadSzt00ze9xe1eoZjHA@public.gmane.org> wrote:
 >
-> So far there is no binding documentation for spi/xilinx at all, but I prepared
-> a file spi-xilinx.txt which documents everything. I will send it to the DT
-> maintainers.
+> On Thu, Oct 10, 2013 at 02:44:28PM -0700, Trent Piepho wrote:
+>
+> > It looks like maybe this master can only support one bits_per_word
+> > value?  But unlike many devices that just support 8-bits, it can
+> > support one of 8, 16, or 32 depending on "something", and that
+> > something is specified in the device tree here?  No way to query the
+> > device?
+>
+> I have to say that (not having looked at the driver or the patch really)
+> I'd have hoped that this was giving a maximum not a fixed number, if the
+> hardware is wired to only support a single value that's anything other
+> than 8 bits per word most devices won't work.
 
-In the normal Linux SPI layer, bits_per_word is a field for a
-spi_device (slave).  Different slaves on the same master could use
-different bits per word values, which can be changed by the slave for
-different transfers.
+>From my look at the driver, it's definitely a single fixed value.  I don't
+know this hardware, but my guess is it's chosen when a FPGA image is
+designed.  So the hardware itself is not strictly fixed, but Linux is stuck
+with whatever the IP core was configured as when the image was made.  Maybe
+someone from Xilinx can clarify.
 
-It looks like maybe this master can only support one bits_per_word
-value?  But unlike many devices that just support 8-bits, it can
-support one of 8, 16, or 32 depending on "something", and that
-something is specified in the device tree here?  No way to query the
-device?
+>
+> > Because if you're just trying to set the default bits per word value
+> > it shouldn't be a property of the master, but rather a generic slave
+> > property like spi-max-frequency or spi-cs-high.
+>
+> It shouldn't be a property at all I'd expect, I'd expect it to be
+> something that's hard coded into the client driver mostly - unless the
+> controller really is brain dead.
 
-Because if you're just trying to set the default bits per word value
-it shouldn't be a property of the master, but rather a generic slave
-property like spi-max-frequency or spi-cs-high.
-
-Anyway, the driver should use this device tree/platform data property
-to set the master's bits_per_word_mask field.  Then you can remove the
-bits_per_word checking code from the driver (in
-xilinx_spi_setup_transfer()) since the spi core will do it for you.
-
-BTW, you might consider what happens if a new version of the IP
-supports multiple bits_per_words when deciding on how the DT property
-should be design.  Maybe a list of values or a mask?
-
+Probably why no one's needed the property.  There is spidev, which wouldn't
+know what value to use, but that can be set via ioctl, which makes more
+sense.
 ------------------------------------------------------------------------------
 October Webinars: Code for Performance
 Free Intel webinars can help you accelerate application performance.

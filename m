@@ -1,111 +1,108 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/3] spi/qspi: Add memory mapped read support.
-Date: Fri, 11 Oct 2013 10:59:48 +0100
-Message-ID: <20131011095948.GZ21581@sirena.org.uk>
-References: <1381332284-21822-1-git-send-email-sourav.poddar@ti.com>
- <1381332284-21822-2-git-send-email-sourav.poddar@ti.com>
- <20131009160759.GQ21581@sirena.org.uk> <52558A49.5090904@ti.com>
- <20131009174027.GS21581@sirena.org.uk>
- <87hacq1d5k.fsf@dell.be.48ers.dk>
- <CA+7tXii4J_Hie2v-DaSevFHn-YqriiVowhpXCP9H+U51_tbhvQ@mail.gmail.com>
- <20131010101052.GF21581@sirena.org.uk>
- <CA+7tXigijA6ASOiHkRDz45PTruv2vwYJu0UUWz0hvKr0=zwu5w@mail.gmail.com>
+From: Gold Dust Seller <golddustseller-CSfwKbHYll0@public.gmane.org>
+Subject: [SPAM] we need a buyer
+Date: Fri, 11 Oct 2013 11:59:28 +0100 (BST)
+Message-ID: <20131011105928.0414F14057BD@server.tungstencircle.com>
+Reply-To: messagebox-PkbjNfxxIAQvJsYlp49lxw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============1809433356435919944=="
-Cc: Peter Korsgaard <peter@korsgaard.com>, balbi@ti.com,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>,
- Sourav Poddar <sourav.poddar@ti.com>,
- Brian Norris <computersforpeace@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-To: Trent Piepho <tpiepho@gmail.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <CA+7tXigijA6ASOiHkRDz45PTruv2vwYJu0UUWz0hvKr0=zwu5w@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: multipart/mixed; boundary="===============8168160087736483724=="
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
---===============1809433356435919944==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="s7M5BJIhvg7FvZ9p"
-Content-Disposition: inline
-
-
---s7M5BJIhvg7FvZ9p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--===============8168160087736483724==
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 10, 2013 at 04:53:46PM -0700, Trent Piepho wrote:
-> On Thu, Oct 10, 2013 at 3:10 AM, Mark Brown <broonie@kernel.org> wrote:
+=0D
+Good day, =0D
+=0D
+We are here to advertise our main product all vial gold dust as we are ca=
+pable to produce up to 50kweekly and 200kg monthly for our potential buye=
+rs. =0D
+Our company are here in Ghana and we are ready to supply to any potential=
+ gold buyers from around the world at a very reasonable price. As we repr=
+esent a large number =0D
+=0D
+of local artisan miners, and we are also capable to provide the best serv=
+ice and security to our customers.=0D
+=0D
+Following is the information=92s of our product and we strictly transact =
+on FOB basis.=0D
+=0D
+Commodity..............Alluvial Gold Dust=0D
+Price..................$30.000 per kg=0D
+Quality................22 + carat plus=0D
+Purity.................96.6% Better=0D
+Packing................Export Package Boxes.=0D
+Quantity Available.....350kg=0D
+Origin.................Ghana =0D
+QUANTITY:    between 100kg to 200kg or more quantity depending on buyers =
+quantity demands, for trail shipment.=0D
+=0D
+Delivering: Within 72Hours after all the Necessary Export Documents issue=
+d to the buyer or buyers representative and the product will be accompani=
+ed by two of our =0D
+=0D
+workers to the buyers country of destination.=0D
+Assay reports provided by Laboratories, Ghana, Our firm is in position of=
+ the Gold Export Certificate issued by the Government of Ghana necessary =
+to export gold from =0D
+=0D
+Ghana and we can provide service to any part of  the world.=0D
+=0D
+We are prepared to offer the quantity of gold required to the Buyer {or t=
+heir representative} upon their arrival here in Ghana. Therefore kindly c=
+onfirm your interest =0D
+=0D
+and quantity required?=0D
+=0D
+Further, we currently seek outside-based serious investors on a partnersh=
+ip basis in order to increase our production capacity. Please, if you are=
+ interested in this =0D
+=0D
+proposal, or have any further questions, kindly contact me for better und=
+erstanding.=0D
+=0D
+Best regards,=0D
+=0D
+Mr.David Colibary=0D
+Senior Agent=0D
+Accra  Ghana VILLAGE GOLD MINERS=0D
+Email golddustsaccraghan-27MbaEWyEdNeoWH0uzbU5w@public.gmane.org=0D
 
-> > Yeah, though of course at the minute the implementation of that thread
-> > is pretty much up to the individual drivers which isn't triumph - and
-> > the quality of implementation does vary rather a lot. I'm currently
-> > working on trying to factor more of this out, hopefully then it'll be
-> > easier to push out improvements. It may be nice to be able to kick off
-> > the first DMA transfer from within the caller for example.
-
-> I did testing with the mxs driver, which uses transfer_one
-> _message and the spi core queue pumping code.  For small messages the
-> overhead of queuing work to the pump_messages queue and waiting for
-> completion is rather more than the time the actual transfer takes.  Which
-> makes using a kthread rather pointless.  Part of the problem could be the
-> high context switch cost for ARMv5.
-
-Indeed - that's what I'd expect to happen.  Sufficiently small PIO
-transfers and DMA initiation should both be faster if done from the
-calling context.  The thread starts to get more useful once you start
-building up work (at which point it should reduce context switches,
-especially if multiple threads are using the bus) and if the system is
-very heavily loaded when you can raise the thread priority so it can
-drive data in more quickly. =20
-
-That said it's also helpful in terms of making the code simpler to just
-have the one data path.
-
---s7M5BJIhvg7FvZ9p
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSV8wRAAoJELSic+t+oim9QWUP/jDqXgdZThj7rvqmG3lOJrRA
-MZCBfEhTGB8lXJcivy/R0C0wjxFLERSMrGTQzdFbmf3Y5iTaQzmUYQvdx/yXA3B9
-uoMui9Hj+vkPak19HOASksgF/deTDARQSDA0hQ55Xiu2CMQMy7ftCofUGUPFsRIC
-dLmtVmyCSBVrKoaDPUR4+EvMeHnTelPosgB8783bElAyed/PrUX78gXpTUmUAvkk
-rHhzl4aIzsVPBB7DfCq0ApyHwRwoqBTZd8B10XsNvRdQ3t9lJdj89zAeQUn3FB63
-h7EbngNjjQWegQ7Pe6oGnAiTcOJILakeP4r4hoFAP4P90ZwIh4s1S6l077uMTJIG
-aDVgBsLXM4iM5MgR+Bp7Tep1ViivhB6k9vQj1JdO6G3Ai59R+2vqkrectRXktHvU
-nTeyrvRwpbUpXgweC8iYmrjAwqzONiKylb1hX2h4c5HM4YydxjGv3wWR68mr5g+P
-KXM3BWjG6ZErDt4s5CqPBjAoqh88Zm5swwFOSssOOuPPBdIN7wSwiCzPfgQpP4ei
-fZSbw0TbuNkPj1BIiOqwe27p8OttmgKPz9aSADDCzt1lEE5dljAtMYbvgg/vxgTA
-z81b61ux9EoXFaZ10cgWzR7w1Mb07R2nF7hZhVGkv9X2zj8Fx8FKJIEre6jE6o+0
-5AyF+GN9e0hnYAsiQcrH
-=KX4G
------END PGP SIGNATURE-----
-
---s7M5BJIhvg7FvZ9p--
 
 
---===============1809433356435919944==
+
+
+--===============8168160087736483724==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60134071&iu=/4140/ostg.clktrk
+--===============8168160087736483724==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
---===============1809433356435919944==--
+_______________________________________________
+spi-devel-general mailing list
+spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+https://lists.sourceforge.net/lists/listinfo/spi-devel-general
+
+--===============8168160087736483724==--

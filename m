@@ -1,24 +1,14 @@
-From: "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
-Subject: RE: [PATCHv3 2/3] drivers: mtd: devices: Add quad read support.
-Date: Fri, 11 Oct 2013 07:10:41 +0000
-Message-ID: <20980858CB6D3A4BAE95CA194937D5E73EA21134@DBDE04.ent.ti.com>
-References: <1381332284-21822-1-git-send-email-sourav.poddar@ti.com>
-	<1381332284-21822-3-git-send-email-sourav.poddar@ti.com>
-	<CAD6G_RShZMkSpVzvXWEE0+sDX=pcnf7ndChndgDG5_T4EVL2vQ@mail.gmail.com>
+From: France Loisirs <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Choisissez vos 3 livres pour 1 euro chacun et une station d'accueil
+	en cadeau
+Date: Fri, 11 Oct 2013 11:14:51 +0200 (CEST)
+Message-ID: <8jbk9m.hmn78t9efhrbcjl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "Balbi, Felipe" <balbi-l0cyMroinI0@public.gmane.org>, "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Poddar,
-	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-To: Jagan Teki <jagannadh.teki-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <CAD6G_RShZMkSpVzvXWEE0+sDX=pcnf7ndChndgDG5_T4EVL2vQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-Language: en-US
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -29,39 +19,131 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgrouoI7gfk57dIhmn78pf7I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1381482886603%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DPLNKGGBBPGCHDDKI%26mid%3D1600286352&s=3DF=
+PMBGJJMNIMMLHAJ
+ =
 
-> From: Jagan Teki
-> > Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-> > Some flash also support quad read mode.
-> > Adding support for adding quad mode in m25p80
-> > for spansion and macronix flash.
-> 
-> I am some how not happy with this approach, adding a flags on flash
-> param table for supporting
-> quad operation in specific flash is may be a better idea.
-> 
-> But reading SFDP, is a good idea to get the details of flash - quad
-> support is one of them.
-> and we can assign quad read or fast read based on that.
-> 
-> Any comments.
-> 
-Currently SFDP is mostly supported only on Micron devices, that
-too the newer ones. So we don't know whether SFDP would be
-accepted by other major SPI NOR manufactures like:
-Spansion, Nymonix, Micronix, Toshiba, Samsung..
+Choisissez vos 3 livres pour 1 euro chacun et une station d'accueil en cade=
+auChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil en ca=
+deauChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil en =
+cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil e=
+n cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil=
+ en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accue=
+il en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'acc=
+ueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'a=
+ccueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d=
+'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station=
+ d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une stati=
+on d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une sta=
+tion d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une s=
+tation d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une=
+ station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et u=
+ne station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et=
+ une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun =
+et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacu=
+n et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro cha=
+cun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro c=
+hacun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro=
+ chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 eu=
+ro chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 =
+euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour =
+1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres pou=
+r 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres p=
+our 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres=
+ pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livr=
+es pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 li=
+vres pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 =
+livres pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos =
+3 livres pour 1 euro chacun et une station d'accueil en cadeauChoisissez vo=
+s 3 livres pour 1 euro chacun et une station d'accueil en cadeauChoisissez =
+vos 3 livres pour 1 euro chacun et une station d'accueil en cadeauChoisisse=
+z vos 3 livres pour 1 euro chacun et une station d'accueil en cadeauChoisis=
+sez vos 3 livres pour 1 euro chacun et une station d'accueil en cadeauChois=
+issez vos 3 livres pour 1 euro chacun et une station d'accueil en cadeauCho=
+isissez vos 3 livres pour 1 euro chacun et une station d'accueil en cadeauC=
+hoisissez vos 3 livres pour 1 euro chacun et une station d'accueil en cadea=
+uChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil en cad=
+eauChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil en c=
+adeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil en=
+ cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil =
+en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accuei=
+l en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accu=
+eil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'ac=
+cueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'=
+accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station =
+d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une statio=
+n d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une stat=
+ion d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une st=
+ation d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une =
+station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et un=
+e station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et =
+une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun e=
+t une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun=
+ et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chac=
+un et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro ch=
+acun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro =
+chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 eur=
+o chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 e=
+uro chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1=
+ euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour=
+ 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres po=
+ur 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres =
+pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livre=
+s pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 liv=
+res pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 l=
+ivres pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3=
+ livres pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos=
+ 3 livres pour 1 euro chacun et une station d'accueil en cadeauChoisissez v=
+os 3 livres pour 1 euro chacun et une station d'accueil en cadeauChoisissez=
+ vos 3 livres pour 1 euro chacun et une station d'accueil en cadeauChoisiss=
+ez vos 3 livres pour 1 euro chacun et une station d'accueil en cadeauChoisi=
+ssez vos 3 livres pour 1 euro chacun et une station d'accueil en cadeauChoi=
+sissez vos 3 livres pour 1 euro chacun et une station d'accueil en cadeauCh=
+oisissez vos 3 livres pour 1 euro chacun et une station d'accueil en cadeau=
+Choisissez vos 3 livres pour 1 euro chacun et une station d'accueil en cade=
+auChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil en ca=
+deauChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil en =
+cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil e=
+n cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accueil=
+ en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'accue=
+il en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'acc=
+ueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d'a=
+ccueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station d=
+'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une station=
+ d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une stati=
+on d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une sta=
+tion d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une s=
+tation d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et une=
+ station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et u=
+ne station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun et=
+ une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacun =
+et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro chacu=
+n et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro cha=
+cun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro c=
+hacun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 euro=
+ chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 eu=
+ro chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour 1 =
+euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres pour =
+1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres pou=
+r 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres p=
+our 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livres=
+ pour 1 euro chacun et une station d'accueil en cadeauChoisissez vos 3 livr=
+es pour 1 euro chacun et une station d'accueil en cadeau
+ =
 
-Thus, it might end-up like CFI (common flash interface) where some
-vendors support it while others did not. So unless there are more
-devices on SFDP from different vendors, I would prefer defer its
-implementation in generic driver.
-
-with regards, pekon
-
-------------------------------------------------------------------------------
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600286352&sig=3DOGCHOCMHBCFNOCND
+---------------------------------------------------------------------------=
+---
 October Webinars: Code for Performance
 Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
+om =
+
 the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60134071&iu=/4140/ostg.clktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=3D60134071&iu=3D/4140/ostg.cl=
+ktrk

@@ -1,14 +1,13 @@
-From: MacWay par Nl-Promos <update-5qD8tuy7jD4@public.gmane.org>
-Subject: Gagnez un sejour en couple a Marrakech
-Date: Fri, 11 Oct 2013 10:58:10 -0100
-Message-ID: <xUGxm5J8FYdlAsqJL1f8QtR6eQfK1Tr3eFjD-nWeXUs@mail10.out5.senderboard.net>
-Reply-To: MacWay par Nl-Promos <update-5qD8tuy7jD4@public.gmane.org>
+From: "Chemises en coton" <contact-VdIVQNFw3cdQFI55V6+gNQ@public.gmane.org>
+Subject: [SPAM] Faites le plein de nouveautes: 1 chemise achetee 1 offerte
+Date: Fri, 11 Oct 2013 13:39:13 +0000 (CET)
+Message-ID: <131011133913.-104445720100003292@fm01.eu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-OVAqtIliDNaw1w2v3rPpMg@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,22 +18,60 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Grand jeu MacWay /* /*]]>*/ Pour visualiser correctement ce message, acc=
-=C3=A9dez =C3=A0 la version en ligne, ou signaler comme ind=C3=A9sirable D=
-=C3=A9couvrez imm=C3=A9diatement si vous avez remport=C3=A9 un cadeau High-=
-Tech et participez au tirage au sort pour tenter de gagner un s=C3=A9jour p=
-our 2 =C3=A0 Marrakech* ou un iPhone 5C d'Apple* Bonne chance ! * R=C3=
-=A9glement du Grand Jeu Concours MacWay disponible ici. Offres r=C3=A9serv=
-=C3=A9es aux particuliers et limit=C3=A9es =C3=A0 la commande de 5 pi=C3=
-=A8ces maximum de chaque r=C3=A9f=C3=A9rence par foyer (m=C3=AAme nom, m=
-=C3=AAme adresse de facturation). Le service clients se r=C3=A9serve le dro=
-it de supprimer ou refuser toute commande ne r=C3=A9pondant pas aux conditi=
-ons de l'offre. Si vous ne souhaitez plus recevoir nos emails, veuillez sui=
-vre ce lien. Si vous n'arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d'=
-=C3=A9crire =C3=A0 stop-OVAqtIliDNb3XKjYc++fXQ@public.gmane.org
-------------------------------------------------------------------------------
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60134071&iu=/4140/ostg.clktrk
+CsKgCihodHRwOi8vY2xpY2sucGRsMXRyYWNraW5nLmNvbS8/c2M9NTE1JnQ9MCZsPTk3MzYmdXJs
+PWh0dHA6Ly93d3cub3pvYS1jaGVtaXNlcy5jb20vP3V0bV9zb3VyY2U9bmV3c2xldHRlciZ1dG1f
+bWVkaXVtPWVtYWlscHJvbW8xRVVST1BMQUNFREVTTEVBRFMmdXRtX2NhbXBhaWduPTA5LTA0LTIw
+MTMpCihodHRwOi8vY2xpY2sucGRsMXRyYWNraW5nLmNvbS8/c2M9NTE1JnQ9MCZsPTk3MzYmdXJs
+PWh0dHA6Ly93d3cub3pvYS1jaGVtaXNlcy5jb20vaW5zLWxpdnJhaXNvbi1ncmF0dWl0ZS1kZXMt
+Mi1jaGVtaXNlcy1hY2hldGVlcy00OC5odG0/dXRtX3NvdXJjZT1uZXdzbGV0dGVyJnV0bV9tZWRp
+dW09ZW1haWxwcm9tbzFFVVJPUExBQ0VERVNMRUFEUyZ1dG1fY2FtcGFpZ249MDktMDQtMjAxMykK
+KGh0dHA6Ly9jbGljay5wZGwxdHJhY2tpbmcuY29tLz9zYz01MTUmdD0wJmw9OTczNiZ1cmw9aHR0
+cDovL3d3dy5vem9hLWNoZW1pc2VzLmNvbS9pbnMtZXhwZWRpdGlvbi0yNC1oLTQ1Lmh0bT91dG1f
+c291cmNlPW5ld3NsZXR0ZXImdXRtX21lZGl1bT1lbWFpbHByb21vMUVVUk9QTEFDRURFU0xFQURT
+JnV0bV9jYW1wYWlnbj0wOS0wNC0yMDEzKQpDSEVNSVNFIEhPTU1FIChodHRwOi8vY2xpY2sucGRs
+MXRyYWNraW5nLmNvbS8/c2M9NTE1JnQ9MCZsPTk3MzYmdXJsPWh0dHA6Ly93d3cub3pvYS1jaGVt
+aXNlcy5jb20vY2F0LWNoZW1pc2UtaG9tbWUtMV8wXzBfMF8wLmh0bT91dG1fc291cmNlPW5ld3Ns
+ZXR0ZXImdXRtX21lZGl1bT1lbWFpbHByb21vMUVVUk9QTEFDRURFU0xFQURTJnV0bV9jYW1wYWln
+bj0wOS0wNC0yMDEzKSDCoMKgwqAgfCDCoMKgwqAgQ0hFTUlTSUVSIEZFTU1FIChodHRwOi8vY2xp
+Y2sucGRsMXRyYWNraW5nLmNvbS8/c2M9NTE1JnQ9MCZsPTk3MzYmdXJsPWh0dHA6Ly93d3cub3pv
+YS1jaGVtaXNlcy5jb20vY2F0LWNoZW1pc2llci1mZW1tZS0yXzBfMF8wXzAuaHRtP3V0bV9zb3Vy
+Y2U9bmV3c2xldHRlciZ1dG1fbWVkaXVtPWVtYWlscHJvbW8xRVVST1BMQUNFREVTTEVBRFMmdXRt
+X2NhbXBhaWduPTA5LTA0LTIwMTMpIMKgwqDCoCB8IMKgwqDCoCBOT1VWRUFVVEVTIChodHRwOi8v
+Y2xpY2sucGRsMXRyYWNraW5nLmNvbS8/c2M9NTE1JnQ9MCZsPTk3MzYmdXJsPWh0dHA6Ly93d3cu
+b3pvYS1jaGVtaXNlcy5jb20vdG9wLW5vdXZlYXV0ZXMtMi5odG0/dXRtX3NvdXJjZT1uZXdzbGV0
+dGVyJnV0bV9tZWRpdW09ZW1haWxwcm9tbzFFVVJPUExBQ0VERVNMRUFEUyZ1dG1fY2FtcGFpZ249
+MDktMDQtMjAxMykgwqDCoMKgIHwgwqDCoMKgIEJPTk5FUyBBRkZBSVJFUyAoaHR0cDovL2NsaWNr
+LnBkbDF0cmFja2luZy5jb20vP3NjPTUxNSZ0PTAmbD05NzM2JnVybD1odHRwOi8vd3d3Lm96b2Et
+Y2hlbWlzZXMuY29tL3RvcC1ib25uZXMtYWZmYWlyZXMtNC5odG0/dXRtX3NvdXJjZT1uZXdzbGV0
+dGVyJnV0bV9tZWRpdW09ZW1haWxwcm9tbzFFVVJPUExBQ0VERVNMRUFEUyZ1dG1fY2FtcGFpZ249
+MDktMDQtMjAxMykKKGh0dHA6Ly9jbGljay5wZGwxdHJhY2tpbmcuY29tLz9zYz01MTUmdD0wJmw9
+OTczNiZ1cmw9aHR0cDovL3d3dy5vem9hLWNoZW1pc2VzLmNvbS8/dXRtX3NvdXJjZT1uZXdzbGV0
+dGVyJnV0bV9tZWRpdW09ZW1haWxwcm9tbzFFVVJPUExBQ0VERVNMRUFEUyZ1dG1fY2FtcGFpZ249
+MDktMDQtMjAxMykKQ0hFTUlTRVMgSE9NTUUKKGh0dHA6Ly9jbGljay5wZGwxdHJhY2tpbmcuY29t
+Lz9zYz01MTUmdD0wJmw9OTczNiZ1cmw9aHR0cDovL3d3dy5vem9hLWNoZW1pc2VzLmNvbS9jYXQt
+Y2hlbWlzZS1ob21tZS0xXzBfMF8wXzAuaHRtP3V0bV9zb3VyY2U9bmV3c2xldHRlciZ1dG1fbWVk
+aXVtPWVtYWlscHJvbW8xRVVST1BMQUNFREVTTEVBRFMmdXRtX2NhbXBhaWduPTA5LTA0LTIwMTMp
+CkNIRU1JU0lFUlMgRkVNTUUKKGh0dHA6Ly9jbGljay5wZGwxdHJhY2tpbmcuY29tLz9zYz01MTUm
+dD0wJmw9OTczNiZ1cmw9aHR0cDovL3d3dy5vem9hLWNoZW1pc2VzLmNvbS9jYXQtY2hlbWlzaWVy
+LWZlbW1lLTJfMF8wXzBfMC5odG0/dXRtX3NvdXJjZT1uZXdzbGV0dGVyJnV0bV9tZWRpdW09ZW1h
+aWxwcm9tbzFFVVJPUExBQ0VERVNMRUFEUyZ1dG1fY2FtcGFpZ249MDktMDQtMjAxMykKT3pvYS1j
+aGVtaXNlcy5jb20gZXN0IGxlIG7CsDEgZGUgbGEgdmVudGUgZGUgY2hlbWlzZXMgZXQgY2hlbWlz
+aWVycyBlbiBsaWduZS4gTm90cmUgb2JqZWN0aWYgZXN0IGRlIHZvdXMgcHJvcG9zZXIgZW4gcGVy
+bWFuZW5jZSBkZXMgbW9kZWxlcyBlbiBlZGl0aW9uIGxpbWl0ZWUgcXVpIGZvbnQgbGEgbW9kZS4g
+UGx1cyBkZSAzMDAgY2hlbWlzZXMgZXQgY2hlbWlzaWVycyBzb250IGRpc3BvbmlibGVzIGVuIGNv
+dXBlIGNpbnRyZWUgZXQgY291cGUgZHJvaXRlLiBUb3VzIGxlcyBzdHlsZXMgc29udCByZXByZXNl
+bnRlcyA6IGNhc3VhbCwgY2hpYywgc3BvcnRzd2VhciwgZXRjLi4uIFRyb3V2ZXogdm90cmUgbW9k
+ZWxlIGV0IGNvbW1hbmRleiBlbiB1biBtaW5pbXVtIGRlIGNsaWNzLCBlbiB0b3V0ZSBjb25maWFu
+Y2UgOiB2b3VzIGJlbmVmaWNpZXogZGUgbGEgZ2FyYW50aWUgc2F0aXNmYWl0IG91IHJlbWJvdXJz
+ZSBldCBkdSBwYWllbWVudCAxMDAlIHNlY3VyaXNlLgrCqSAyMDEyIHd3dy5vem9hLWNoZW1pc2Vz
+LmNvbQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KT2N0b2JlciBXZWJpbmFyczogQ29kZSBmb3IgUGVy
+Zm9ybWFuY2UKRnJlZSBJbnRlbCB3ZWJpbmFycyBjYW4gaGVscCB5b3UgYWNjZWxlcmF0ZSBhcHBs
+aWNhdGlvbiBwZXJmb3JtYW5jZS4KRXhwbG9yZSB0aXBzIGZvciBNUEksIE9wZW5NUCwgYWR2YW5j
+ZWQgcHJvZmlsaW5nLCBhbmQgbW9yZS4gR2V0IHRoZSBtb3N0IGZyb20gCnRoZSBsYXRlc3QgSW50
+ZWwgcHJvY2Vzc29ycyBhbmQgY29wcm9jZXNzb3JzLiBTZWUgYWJzdHJhY3RzIGFuZCByZWdpc3Rl
+ciA+Cmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD02MDEzNDA3
+MSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdl
+bmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0
+L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==

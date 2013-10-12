@@ -1,12 +1,11 @@
-From: "Ma Mutuelle Par Internet" <contact-EWsqmiUisApGWvitb5QawA@public.gmane.org>
-Subject: =?UTF-8?Q?Votre_assurance_sant=C3=A9_au_meilleur_prix?=
-Date: Sat, 12 Oct 2013 10:48:52 +0000 (CET)
-Message-ID: <131012104852.64765882000000612@fm03.eu>
+From: carolyn.dautel-vQWMQLdRt5Ovqbdsxoaorw@public.gmane.org
+Subject: [SPAM] Once in a lifetime bounce opportunity!
+Date: Sun, 13 Oct 2013 03:56:57 +0800
+Message-ID: <E1VV5UW-00058q-21@sfs-ml-3.v29.ch3.sourceforge.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,19 +17,22 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vZm0wMy5ldS9oY21jb2N6b2xkemxtaW1odWcvaW5kZXgwLmh0bWwpCihodHRwOi8v
-Zm0wMy5ldS8zdG10NGNqM2xldWRoaHBoZWovaW5kZXgxLmh0bWwpIAoKQ29tcGFyZXogbGVzIG11
-dHVlbGxlcyBzYW50w6kgCmV0IMOpY29ub21pc2V6IGp1c3F1J8OgIDMwMOKCrCBwYXIgYW4gKGh0
-dHA6Ly9mbTAzLmV1L2l4bXhkY200bHJibDFycm1rcS9pbmRleDIuaHRtbCkKKGh0dHA6Ly9mbTAz
-LmV1L2EybTJyY2x0bGN5ZGdtNW12by9pbmRleDMuaHRtbCkKU2FucyBlbmdhZ2VtZW50LCBzaW1w
-bGUgZXQgcmFwaWRlICEKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPY3RvYmVyIFdlYmluYXJzOiBD
-b2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmluYXJzIGNhbiBoZWxwIHlvdSBhY2Nl
-bGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3JlIHRpcHMgZm9yIE1QSSwgT3Bl
-bk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBHZXQgdGhlIG1vc3QgZnJvbSAKdGhl
-IGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3NvcnMuIFNlZSBhYnN0cmFjdHMg
-YW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xr
-P2lkPTYwMTM0MDcxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
-cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
-Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK
+New HUGE Breakout Pick with Major Revenue Growth! This Stock Is 
+Our New Sub Penny Play!
+
+Now: $.07
+Target Price: 0.65
+Company: Monarchy Resources, Inc
+Trade Date: Mon, October 14, 2013
+Traded as: M_O N-K
+
+This Company is ready to roll out... Response Required: Want Next 
+Potential Gainer?
+
+
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60134071&iu=/4140/ostg.clktrk

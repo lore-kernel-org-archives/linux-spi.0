@@ -1,12 +1,12 @@
-From: Tele-protect <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: Premier mois d'abonnement offert
-Date: Sat, 12 Oct 2013 10:38:57 +0200 (CEST)
-Message-ID: <8n3q3n.hmolehrxfui1erl@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Ma Mutuelle Par Internet" <contact-EWsqmiUisApGWvitb5QawA@public.gmane.org>
+Subject: =?UTF-8?Q?Votre_assurance_sant=C3=A9_au_meilleur_prix?=
+Date: Sat, 12 Oct 2013 10:48:52 +0000 (CET)
+Message-ID: <131012104852.64765882000000612@fm03.eu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -18,56 +18,19 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgrpu9I7gfk57dIhmolee0iI&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1381567132548%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DPPIBOALCKDGGCIBE%26mid%3D1600287633&s=3DG=
-OIKGGPNGIBDBNDB
- =
-
-Premier mois d'abonnement offertPremier mois d'abonnement offertPremier moi=
-s d'abonnement offertPremier mois d'abonnement offertPremier mois d'abonnem=
-ent offertPremier mois d'abonnement offertPremier mois d'abonnement offertP=
-remier mois d'abonnement offertPremier mois d'abonnement offertPremier mois=
- d'abonnement offertPremier mois d'abonnement offertPremier mois d'abonneme=
-nt offertPremier mois d'abonnement offertPremier mois d'abonnement offertPr=
-emier mois d'abonnement offertPremier mois d'abonnement offertPremier mois =
-d'abonnement offertPremier mois d'abonnement offertPremier mois d'abonnemen=
-t offertPremier mois d'abonnement offertPremier mois d'abonnement offertPre=
-mier mois d'abonnement offertPremier mois d'abonnement offertPremier mois d=
-'abonnement offertPremier mois d'abonnement offertPremier mois d'abonnement=
- offertPremier mois d'abonnement offertPremier mois d'abonnement offertPrem=
-ier mois d'abonnement offertPremier mois d'abonnement offertPremier mois d'=
-abonnement offertPremier mois d'abonnement offertPremier mois d'abonnement =
-offertPremier mois d'abonnement offertPremier mois d'abonnement offertPremi=
-er mois d'abonnement offertPremier mois d'abonnement offertPremier mois d'a=
-bonnement offertPremier mois d'abonnement offertPremier mois d'abonnement o=
-ffertPremier mois d'abonnement offertPremier mois d'abonnement offertPremie=
-r mois d'abonnement offertPremier mois d'abonnement offertPremier mois d'ab=
-onnement offertPremier mois d'abonnement offertPremier mois d'abonnement of=
-fertPremier mois d'abonnement offertPremier mois d'abonnement offertPremier=
- mois d'abonnement offertPremier mois d'abonnement offertPremier mois d'abo=
-nnement offertPremier mois d'abonnement offertPremier mois d'abonnement off=
-ertPremier mois d'abonnement offertPremier mois d'abonnement offertPremier =
-mois d'abonnement offertPremier mois d'abonnement offertPremier mois d'abon=
-nement offertPremier mois d'abonnement offertPremier mois d'abonnement offe=
-rtPremier mois d'abonnement offertPremier mois d'abonnement offertPremier m=
-ois d'abonnement offertPremier mois d'abonnement offertPremier mois d'abonn=
-ement offertPremier mois d'abonnement offertPremier mois d'abonnement offer=
-tPremier mois d'abonnement offertPremier mois d'abonnement offertPremier mo=
-is d'abonnement offertPremier mois d'abonnement offert
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600287633&sig=3DKALLKNIEKBOIGDID
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60134071&iu=3D/4140/ostg.cl=
-ktrk
+CihodHRwOi8vZm0wMy5ldS9oY21jb2N6b2xkemxtaW1odWcvaW5kZXgwLmh0bWwpCihodHRwOi8v
+Zm0wMy5ldS8zdG10NGNqM2xldWRoaHBoZWovaW5kZXgxLmh0bWwpIAoKQ29tcGFyZXogbGVzIG11
+dHVlbGxlcyBzYW50w6kgCmV0IMOpY29ub21pc2V6IGp1c3F1J8OgIDMwMOKCrCBwYXIgYW4gKGh0
+dHA6Ly9mbTAzLmV1L2l4bXhkY200bHJibDFycm1rcS9pbmRleDIuaHRtbCkKKGh0dHA6Ly9mbTAz
+LmV1L2EybTJyY2x0bGN5ZGdtNW12by9pbmRleDMuaHRtbCkKU2FucyBlbmdhZ2VtZW50LCBzaW1w
+bGUgZXQgcmFwaWRlICEKCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPY3RvYmVyIFdlYmluYXJzOiBD
+b2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmluYXJzIGNhbiBoZWxwIHlvdSBhY2Nl
+bGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3JlIHRpcHMgZm9yIE1QSSwgT3Bl
+bk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBHZXQgdGhlIG1vc3QgZnJvbSAKdGhl
+IGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3NvcnMuIFNlZSBhYnN0cmFjdHMg
+YW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9nYW1wYWQvY2xr
+P2lkPTYwMTM0MDcxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxpbmcgbGlzdApz
+cGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9saXN0cy5zb3Vy
+Y2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

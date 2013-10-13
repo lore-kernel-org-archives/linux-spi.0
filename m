@@ -1,11 +1,12 @@
-From: "Yoopala par Nl-Promos" <lisa@a.optincake.com>
-Subject: [SPAM] Trouvez votre baby-sitter maintenant !
-Date: Sun, 13 Oct 2013 06:50:02 +0100
-Message-ID: <0.0.48.38F.1CEC7D80F21B3EC.0@mta140.pur3.net>
-Reply-To: Yoopala par Nl-Promos <lisa@a.optincake.com>
+From: Etat pur via Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?5_euros_offerts_ou_10%_ou_livraison_gra?=
+	=?ISO-8859-1?Q?tuite,_choisissez_votre_offre_d=E9couverte?=
+Date: Sun, 13 Oct 2013 10:59:48 +0200 (CEST)
+Message-ID: <b8ljoy.hmq1l60v03f5sil@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -18,156 +19,153 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MjAzNTMzMjIwNTM3MTM0CgoKCgoKKExvZ28gWU9PUEFMQSk6Cmh0dHA6Ly9tdHJjMS5kaWdpdGFs
-LW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPTNjZTU3N2Y1YjhlZTExMmZlYzM1YjVjZjQwMzhj
-OTFhCiZ1cmw9aHR0cCUzQSUyRiUyRnd3dy55b29wYWxhLmNvbSUyRnBhZ2VzJTJGcGFydGVuYWly
-ZV9hZG1lLTA2X3BhcmVudHNfYmFieS1zaXR0CmVyLmFzcHglM0Zzb3VyY2UlM0RhZHZlcnRpc2Vt
-ZSUyNnV0bV9zb3VyY2UlM0RhZHZlcnRpc2UtbWUuZnIlMjZ1dG1fbWVkaXVtJTNEZW1hCmlsJTI2
-dXRtX2NvbnRlbnQlM0QwNiUyNnV0bV9jYW1wYWlnbiUzRHBhcmVudHMtcmVudHJlZSUyNmVtYWls
-JTNEc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0CgoKR2FyZGUgZCdlbmZh
-bnRzIMOgIGRvbWljaWxlOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhw
-P3BhcmFtcz00YTUzYmU3YWJkZThiY2UyYWFkYTI2YmE5NDQxYjZkNAomdXJsPWh0dHAlM0ElMkYl
-MkZ3d3cueW9vcGFsYS5jb20lMkZwYWdlcyUyRnBhcnRlbmFpcmVfYWRtZS0wNl9wYXJlbnRzX2Jh
-Ynktc2l0dAplci5hc3B4JTNGc291cmNlJTNEYWR2ZXJ0aXNlbWUlMjZ1dG1fc291cmNlJTNEYWR2
-ZXJ0aXNlLW1lLmZyJTI2dXRtX21lZGl1bSUzRGVtYQppbCUyNnV0bV9jb250ZW50JTNEMDYlMjZ1
-dG1fY2FtcGFpZ24lM0RwYXJlbnRzLXJlbnRyZWUlMjZlbWFpbCUzRHNwaS1kZXZlbC1nZW5lcmFs
-QGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKCjAtMTIgYW5zLiA0aCDDoCAxMmggcGFyIHNlbWFpbmU6
-Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1zPWRiMTc4MTFi
-OTRiYTYxNWZhODZlOTMzNGUwYmEyYjMwCiZ1cmw9aHR0cCUzQSUyRiUyRnd3dy55b29wYWxhLmNv
-bSUyRnBhZ2VzJTJGcGFydGVuYWlyZV9hZG1lLTA2X3BhcmVudHNfYmFieS1zaXR0CmVyLmFzcHgl
-M0Zzb3VyY2UlM0RhZHZlcnRpc2VtZSUyNnV0bV9zb3VyY2UlM0RhZHZlcnRpc2UtbWUuZnIlMjZ1
-dG1fbWVkaXVtJTNEZW1hCmlsJTI2dXRtX2NvbnRlbnQlM0QwNiUyNnV0bV9jYW1wYWlnbiUzRHBh
-cmVudHMtcmVudHJlZSUyNmVtYWlsJTNEc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9y
-Z2UubmV0CgoKwqAKCihhZHZlcnRpc2VtZS0wNC5qcGcpOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1t
-ZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1lZTI5NGU5YWQwMzE4NzgxZmU3OGEwOThkN2M3MTQ5
-ZgomdXJsPWh0dHAlM0ElMkYlMkZ3d3cueW9vcGFsYS5jb20lMkZwYWdlcyUyRnBhcnRlbmFpcmVf
-YWRtZS0wNl9wYXJlbnRzX2JhYnktc2l0dAplci5hc3B4JTNGc291cmNlJTNEYWR2ZXJ0aXNlbWUl
-MjZ1dG1fc291cmNlJTNEYWR2ZXJ0aXNlLW1lLmZyJTI2dXRtX21lZGl1bSUzRGVtYQppbCUyNnV0
-bV9jb250ZW50JTNEMDYlMjZ1dG1fY2FtcGFpZ24lM0RwYXJlbnRzLXJlbnRyZWUlMjZlbWFpbCUz
-RHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKCkFwcsOpcyBsJ8OpY29s
-ZSBvdSBsYSBjcsOoY2hlID8gUG91ciBsZXMgbG9pc2lycyA/OgpodHRwOi8vbXRyYzEuZGlnaXRh
-bC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1mOGI5YjI1MWI5NGJlMjBmMzZiNzZlMmI4NzYw
-MzNlNwomdXJsPWh0dHAlM0ElMkYlMkZ3d3cueW9vcGFsYS5jb20lMkZwYWdlcyUyRnBhcnRlbmFp
-cmVfYWRtZS0wNl9wYXJlbnRzX2JhYnktc2l0dAplci5hc3B4JTNGc291cmNlJTNEYWR2ZXJ0aXNl
-bWUlMjZ1dG1fc291cmNlJTNEYWR2ZXJ0aXNlLW1lLmZyJTI2dXRtX21lZGl1bSUzRGVtYQppbCUy
-NnV0bV9jb250ZW50JTNEMDYlMjZ1dG1fY2FtcGFpZ24lM0RwYXJlbnRzLXJlbnRyZWUlMjZlbWFp
-bCUzRHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZvcmdlLm5ldAoKCkRlcyBjZW50YWlu
-ZXMgZGUgYmFieS1zaXR0ZXJzIHF1YWxpZmnDqWVzIHNvbnQgc3VyIHlvb3BhbGEuY29tLgpJbnNj
-cml2ZXotdm91cyBncmF0dWl0ZW1lbnQgZXQgZMOpY291dnJleiBsZXMgcHJvZmlscyBwcm9jaGVz
-IGRlIGNoZXogdm91cy46Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/
-cGFyYW1zPWI0ZTc1NmMzNmNiYTRhYWFmZWFmOWM5ZmUzYzFjNGJhCiZ1cmw9aHR0cCUzQSUyRiUy
-Rnd3dy55b29wYWxhLmNvbSUyRnBhZ2VzJTJGcGFydGVuYWlyZV9hZG1lLTA2X3BhcmVudHNfYmFi
-eS1zaXR0CmVyLmFzcHglM0Zzb3VyY2UlM0RhZHZlcnRpc2VtZSUyNnV0bV9zb3VyY2UlM0RhZHZl
-cnRpc2UtbWUuZnIlMjZ1dG1fbWVkaXVtJTNEZW1hCmlsJTI2dXRtX2NvbnRlbnQlM0QwNiUyNnV0
-bV9jYW1wYWlnbiUzRHBhcmVudHMtcmVudHJlZSUyNmVtYWlsJTNEc3BpLWRldmVsLWdlbmVyYWxA
-bGlzdHMuc291cmNlZm9yZ2UubmV0CgooTG9nbyBZT09QQUxBKSAyNzAuMDAwIEJhYnlzaXR0ZXJz
-OgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz1lMjcxZmUy
-NTAxMTIzOGQyODMzYjI5YTJjNDBkMmQ4NAomdXJsPWh0dHAlM0ElMkYlMkZ3d3cueW9vcGFsYS5j
-b20lMkZwYWdlcyUyRnBhcnRlbmFpcmVfYWRtZS0wNl9wYXJlbnRzX2JhYnktc2l0dAplci5hc3B4
-JTNGc291cmNlJTNEYWR2ZXJ0aXNlbWUlMjZ1dG1fc291cmNlJTNEYWR2ZXJ0aXNlLW1lLmZyJTI2
-dXRtX21lZGl1bSUzRGVtYQppbCUyNnV0bV9jb250ZW50JTNEMDYlMjZ1dG1fY2FtcGFpZ24lM0Rw
-YXJlbnRzLXJlbnRyZWUlMjZlbWFpbCUzRHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNvdXJjZWZv
-cmdlLm5ldAoKClRyb3V2ZXogZmFjaWxlbWVudCB1bmUgYmFieS1zaXR0ZXIgcHJvY2hlIGRlIGNo
-ZXogdm91cy46Cmh0dHA6Ly9tdHJjMS5kaWdpdGFsLW1ldHJpYy5jb20vY2xpYy5waHA/cGFyYW1z
-PWRhMGRiZTIzNTZiMGU2YTMzMDhkOGRlNjFhMjUyN2U2CiZ1cmw9aHR0cCUzQSUyRiUyRnd3dy55
-b29wYWxhLmNvbSUyRnBhZ2VzJTJGcGFydGVuYWlyZV9hZG1lLTA2X3BhcmVudHNfYmFieS1zaXR0
-CmVyLmFzcHglM0Zzb3VyY2UlM0RhZHZlcnRpc2VtZSUyNnV0bV9zb3VyY2UlM0RhZHZlcnRpc2Ut
-bWUuZnIlMjZ1dG1fbWVkaXVtJTNEZW1hCmlsJTI2dXRtX2NvbnRlbnQlM0QwNiUyNnV0bV9jYW1w
-YWlnbiUzRHBhcmVudHMtcmVudHJlZSUyNmVtYWlsJTNEc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMu
-c291cmNlZm9yZ2UubmV0CgoKwqAKKExvZ28gWU9PUEFMQSkgQWdyw6nDqSBwYXIgbCfDqXRhdDoK
-aHR0cDovL210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MGY1ODVmMjI3
-N2MzNzE4NWMwMjU1NTRjNDcyZWE0ODEKJnVybD1odHRwJTNBJTJGJTJGd3d3Lnlvb3BhbGEuY29t
-JTJGcGFnZXMlMkZwYXJ0ZW5haXJlX2FkbWUtMDZfcGFyZW50c19iYWJ5LXNpdHQKZXIuYXNweCUz
-RnNvdXJjZSUzRGFkdmVydGlzZW1lJTI2dXRtX3NvdXJjZSUzRGFkdmVydGlzZS1tZS5mciUyNnV0
-bV9tZWRpdW0lM0RlbWEKaWwlMjZ1dG1fY29udGVudCUzRDA2JTI2dXRtX2NhbXBhaWduJTNEcGFy
-ZW50cy1yZW50cmVlJTI2ZW1haWwlM0RzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3Jn
-ZS5uZXQKCgpEZXB1aXMgMjAwNiwgcG91ciBsYSBnYXJkZSBkJ2VuZmFudHMgZMOocyBsYSBuYWlz
-c2FuY2UuOgpodHRwOi8vbXRyYzEuZGlnaXRhbC1tZXRyaWMuY29tL2NsaWMucGhwP3BhcmFtcz04
-NDNhNDVkZmYyMTI5YmI5MGVjYzY2ODNlMzE5M2U2YQomdXJsPWh0dHAlM0ElMkYlMkZ3d3cueW9v
-cGFsYS5jb20lMkZwYWdlcyUyRnBhcnRlbmFpcmVfYWRtZS0wNl9wYXJlbnRzX2JhYnktc2l0dApl
-ci5hc3B4JTNGc291cmNlJTNEYWR2ZXJ0aXNlbWUlMjZ1dG1fc291cmNlJTNEYWR2ZXJ0aXNlLW1l
-LmZyJTI2dXRtX21lZGl1bSUzRGVtYQppbCUyNnV0bV9jb250ZW50JTNEMDYlMjZ1dG1fY2FtcGFp
-Z24lM0RwYXJlbnRzLXJlbnRyZWUlMjZlbWFpbCUzRHNwaS1kZXZlbC1nZW5lcmFsQGxpc3RzLnNv
-dXJjZWZvcmdlLm5ldAoKKExvZ28gWU9PUEFMQSkgVm9zIGF2YW50YWdlczoKaHR0cDovL210cmMx
-LmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9NmE1NjAxNGNlNTMzOTkwZDc1N2Q3
-OGY5OTNlMTRhM2IKJnVybD1odHRwJTNBJTJGJTJGd3d3Lnlvb3BhbGEuY29tJTJGcGFnZXMlMkZw
-YXJ0ZW5haXJlX2FkbWUtMDZfcGFyZW50c19iYWJ5LXNpdHQKZXIuYXNweCUzRnNvdXJjZSUzRGFk
-dmVydGlzZW1lJTI2dXRtX3NvdXJjZSUzRGFkdmVydGlzZS1tZS5mciUyNnV0bV9tZWRpdW0lM0Rl
-bWEKaWwlMjZ1dG1fY29udGVudCUzRDA2JTI2dXRtX2NhbXBhaWduJTNEcGFyZW50cy1yZW50cmVl
-JTI2ZW1haWwlM0RzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKCgpSw6lk
-dWN0aW9uIGQnaW1ww7R0cyBkZSA1MCUgZXQgYWlkZSBDQUYgcmV2YWxvcmlzw6llLjoKaHR0cDov
-L210cmMxLmRpZ2l0YWwtbWV0cmljLmNvbS9jbGljLnBocD9wYXJhbXM9MGJlMDUwMDk5MWE3YjRm
-MDlkMjEwZDNiNDUzOThhYzkKJnVybD1odHRwJTNBJTJGJTJGd3d3Lnlvb3BhbGEuY29tJTJGcGFn
-ZXMlMkZwYXJ0ZW5haXJlX2FkbWUtMDZfcGFyZW50c19iYWJ5LXNpdHQKZXIuYXNweCUzRnNvdXJj
-ZSUzRGFkdmVydGlzZW1lJTI2dXRtX3NvdXJjZSUzRGFkdmVydGlzZS1tZS5mciUyNnV0bV9tZWRp
-dW0lM0RlbWEKaWwlMjZ1dG1fY29udGVudCUzRDA2JTI2dXRtX2NhbXBhaWduJTNEcGFyZW50cy1y
-ZW50cmVlJTI2ZW1haWwlM0RzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQK
-CgouLiBCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1c3Nl
-ciwgZGUgbWFuZ2VyIG91CnNvcnRpciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXgg
-dG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycwpwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4g
-cGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cwphZHJlc3Nv
-bnMsIGV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91ciByw6lndWxpw6hyZW1lbnQgZXQgdG91dGUg
-bCdhbm7DqWUuLgpOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRlciB1biBub3V2ZWF1IHJlZ2Fy
-ZCBhZmluIGRlIHZvdXMgYWlkZXIgw6AKZMOpcGVuc2VyIG1vaW5zIHRvdXQgZW4gY29uc29tbWFu
-dCBtaWV1eCB0b3V0ZSBsJ2FubsOpZS5BaW5zaSwgZ3LDomNlIMOgCm5vdXMsIHZvdXMgYWxsZXog
-cGFyIGV4ZW1wbGUsIHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQg
-YQpiYXMgY291dCwgb3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuQSBsYSByZWNoZXJjaGUgZHUgY2Fk
-ZWF1IG9yaWdpbmFsID8gTm91cwpzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSBy
-ZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlcgptb2lucyB0b3V0IGVuIGNvbnNv
-bW1hbnQgbWlldXggdG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncmFjZSDDoCBub3VzLCB2b3VzCmFs
-bGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9k
-dWl0IGEgYmFzIGNvdXQsCm9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gQmVzb2luIGRlIHZveWFnZXIs
-IGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMKY2hhdXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIg
-YXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBwcml4IHRvdXQgYXUgbG9uZwpkZSBsJ2FubsOp
-ZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVyIHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMK
-cHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRyZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25z
-IMOgIGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRvdXRlIGwnYW5uw6llLkVudmllIGRlIHZvdXMg
-ZmFpcmUgdW5lIGJlYXV0w6kgw6AgbW9pbmRyZQpjb8O7dCB0b3V0IGF1IGxvbmcgZGUgbCdhbm7D
-qWUsIGRlIHByw6l2b2lyIHZvcyBwcm9jaGFpbmVzIHZhY2FuY2VzIGQnw6l0w6kKw6AgbW9pbmRy
-ZSBmcmFpcyBldCBvdSBlbmNvcmUgZCdoYWJpbGxlciB2b3MgZW5mYW50cyDDoCBkZXMgYnVkZ2V0
-cwpyYWlzb25uYWJsZXMsIGFsb3JzIGNvbnN1bHRlciBkZSB0ZW1wcyDDoCBhdXRyZSBub3MgcHJv
-cG9zaXRpb25zIHBvdXIgdm91cwpwZXJtZXR0cmUgYWluc2kgZGUgZmFpcmUgZGUgbm9tYnJldXNl
-cyDDqWNvbm9taWVzIHRvdXQgZW4gdm91cyBmYWlzYW50CnBsYWlzaXIgw6AgdG91dGUgbGEgZmFt
-aWxsZS4uLi4gQmVzb2luIGRlIHZveWFnZXIsIGRlIHZvdXMgaGFiaWxsZXIsIGRlIHZvdXMKY2hh
-dXNzZXIsIGRlIG1hbmdlciBvdSBzb3J0aXIgYXUgbWVpbGxldXIgcmFwcG9ydCBxdWFsaXTDqSBw
-cml4IHRvdXQgYXUgbG9uZwpkZSBsJ2FubsOpZSwgYWxvcnMgcG91cnF1b2kgbmUgcGFzIGpldGVy
-IHVuIHBldGl0IG9laWwgcGFyIHN1ciBsZXMKcHJvcG9zaXRpb25zIHF1ZSBub3VzIHZvdXMgYWRy
-ZXNzb25zLCBldCBxdWUgbm91cyBtZXR0b25zIMOgIGpvdXIKcsOpZ3VsacOocmVtZW50IGV0IHRv
-dXRlIGwnYW5uw6llLi4gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdQpy
-ZWdhcmQgYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0IGVuIGNvbnNv
-bW1hbnQgbWlldXggdG91dGUKbCdhbm7DqWUuQWluc2ksIGdyw6JjZSDDoCBub3VzLCB2b3VzIGFs
-bGV6IHBhciBleGVtcGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlCnRvdXQgY2UgcXVpIGVzdCBwcm9k
-dWl0IGEgYmFzIGNvdXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLkEgbGEgcmVjaGVyY2hlCmR1
-IGNhZGVhdSBvcmlnaW5hbCA/IE5vdXMgc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZl
-YXUgcmVnYXJkIGFmaW4gZGUKdm91cyBhaWRlciDDoCBkw6lwZW5zZXIgbW9pbnMgdG91dCBlbiBj
-b25zb21tYW50IG1pZXV4IHRvdXRlIGwnYW5uw6llLgpBaW5zaSwgZ3JhY2Ugw6Agbm91cywgdm91
-cyBhbGxleiBwYXIgZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlCnF1aSBlc3Qg
-cHJvZHVpdCBhIGJhcyBjb3V0LCBvcHBvcnR1bml0w6ksIGluZm9zLi4uIEJlc29pbiBkZSB2b3lh
-Z2VyLCBkZQp2b3VzIGhhYmlsbGVyLCBkZSB2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29y
-dGlyIGF1IG1laWxsZXVyIHJhcHBvcnQKcXVhbGl0w6kgcHJpeCB0b3V0IGF1IGxvbmcgZGUgbCdh
-bm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdApvZWlsIHBhciBzdXIg
-bGVzIHByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0
-dG9ucwrDoCBqb3VyIHLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS5FbnZpZSBkZSB2
-b3VzIGZhaXJlIHVuZSBiZWF1dMOpIMOgCm1vaW5kcmUgY2/Du3QgdG91dCBhdSBsb25nIGRlIGwn
-YW5uw6llLCBkZSBwcsOpdm9pciB2b3MgcHJvY2hhaW5lcyB2YWNhbmNlcwpkJ8OpdMOpIMOgIG1v
-aW5kcmUgZnJhaXMgZXQgb3UgZW5jb3JlIGQnaGFiaWxsZXIgdm9zIGVuZmFudHMgw6AgZGVzIGJ1
-ZGdldHMKcmFpc29ubmFibGVzLCBhbG9ycyBjb25zdWx0ZXIgZGUgdGVtcHMgw6AgYXV0cmUgbm9z
-IHByb3Bvc2l0aW9ucyBwb3VyIHZvdXMKcGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRlIG5vbWJy
-ZXVzZXMgw6ljb25vbWllcyB0b3V0IGVuIHZvdXMgZmFpc2FudApwbGFpc2lyIMOgIHRvdXRlIGxh
-IGZhbWlsbGUuCgoKCgoKLS0KClBvdXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6
-Ly9hLm9wdGluY2FrZS5jb20vX2FjdC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUyMDM1MzMyMjA1
-MzcxMzQKCgoKCgoKe35BSjg0NjQxODY2MjUyMDM1MzMyMjA1MzcxMzR+fQotLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KT2N0b2JlciBXZWJpbmFyczogQ29kZSBmb3IgUGVyZm9ybWFuY2UKRnJlZSBJbnRl
-bCB3ZWJpbmFycyBjYW4gaGVscCB5b3UgYWNjZWxlcmF0ZSBhcHBsaWNhdGlvbiBwZXJmb3JtYW5j
-ZS4KRXhwbG9yZSB0aXBzIGZvciBNUEksIE9wZW5NUCwgYWR2YW5jZWQgcHJvZmlsaW5nLCBhbmQg
-bW9yZS4gR2V0IHRoZSBtb3N0IGZyb20gCnRoZSBsYXRlc3QgSW50ZWwgcHJvY2Vzc29ycyBhbmQg
-Y29wcm9jZXNzb3JzLiBTZWUgYWJzdHJhY3RzIGFuZCByZWdpc3RlciA+Cmh0dHA6Ly9wdWJhZHMu
-Zy5kb3VibGVjbGljay5uZXQvZ2FtcGFkL2Nsaz9pZD02MDEzNDA3MSZpdT0vNDE0MC9vc3RnLmNs
-a3RyawpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGkt
-ZGV2ZWwtZ2VuZXJhbCBtYWlsaW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNl
-Zm9yZ2UubmV0Cmh0dHBzOi8vbGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3Nw
-aS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgrq7wI7gfk57dIhmq1l3i9I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1381654785568%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DCAJCLPMPBDGBNKNH%26mid%3D1600288124&s=3DG=
+NFLAMMOMCKKPGIH
+ =
+
+5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9co=
+uverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre =
+d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre =
+offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez =
+votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, chois=
+issez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite,=
+ choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gra=
+tuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livrais=
+on gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou l=
+ivraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10=
+% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts=
+ ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros o=
+fferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 e=
+uros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couve=
+rte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
+=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
+ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
+otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
+ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
+choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison grat=
+uite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraiso=
+n gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou li=
+vraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10%=
+ ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts =
+ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros of=
+ferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 eu=
+ros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couver=
+te5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9=
+couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offr=
+e d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votr=
+e offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisisse=
+z votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, cho=
+isissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuit=
+e, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison g=
+ratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livra=
+ison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou=
+ livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou =
+10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offer=
+ts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros=
+ offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5=
+ euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9cou=
+verte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
+=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
+ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
+otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
+ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
+choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison grat=
+uite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraiso=
+n gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou li=
+vraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10%=
+ ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts =
+ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros of=
+ferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 eu=
+ros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couver=
+te5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9=
+couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offr=
+e d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votr=
+e offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisisse=
+z votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, cho=
+isissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuit=
+e, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison g=
+ratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livra=
+ison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou=
+ livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou =
+10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offer=
+ts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros=
+ offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5=
+ euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9cou=
+verte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
+=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
+ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
+otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
+ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
+choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison grat=
+uite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraiso=
+n gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou li=
+vraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10%=
+ ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts =
+ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros of=
+ferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 eu=
+ros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couver=
+te5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9=
+couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offr=
+e d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votr=
+e offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisisse=
+z votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, cho=
+isissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuit=
+e, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison g=
+ratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livra=
+ison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou=
+ livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou =
+10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offer=
+ts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros=
+ offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5=
+ euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9cou=
+verte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
+=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
+ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
+otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
+ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
+choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison grat=
+uite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraiso=
+n gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou li=
+vraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10%=
+ ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts =
+ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros of=
+ferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 eu=
+ros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couver=
+te5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9=
+couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offr=
+e d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votr=
+e offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisisse=
+z votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, cho=
+isissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuit=
+e, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison g=
+ratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livra=
+ison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou=
+ livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou =
+10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offer=
+ts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros=
+ offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5=
+ euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9cou=
+verte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
+=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
+ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
+otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
+ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
+choisissez votre offre d=E9couverte
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600288124&sig=3DIFMCOHEJDBBJGEJK
+---------------------------------------------------------------------------=
+---
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
+om =
+
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=3D60134071&iu=3D/4140/ostg.cl=
+ktrk

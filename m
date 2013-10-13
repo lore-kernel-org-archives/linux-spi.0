@@ -1,13 +1,12 @@
-From: Etat pur via Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
-Subject: =?ISO-8859-1?Q?5_euros_offerts_ou_10%_ou_livraison_gra?=
-	=?ISO-8859-1?Q?tuite,_choisissez_votre_offre_d=E9couverte?=
-Date: Sun, 13 Oct 2013 10:59:48 +0200 (CEST)
-Message-ID: <b8ljoy.hmq1l60v03f5sil@news.teradoo.com>
-Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
+From: "Voyages E.Leclerc" <contact-6iRbmuqo1C7QT0dZR+AlfA@public.gmane.org>
+Subject: [SPAM] 1 Séjour au Mexique pour 2 à 5000 euros
+Date: Sun, 13 Oct 2013 09:49:01 +0000 (CET)
+Message-ID: <131013094901.189028848700002932@fm02.eu>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
@@ -19,153 +18,53 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
-//news.teradoo.com/re?l=3DBD0Iqgrq7wI7gfk57dIhmq1l3i9I&u=3Dhttp%3A%2F%2Fnew=
-s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1381654785568%26custid%3D=
-16444%26uid%3D16231069273%26sig%3DCAJCLPMPBDGBNKNH%26mid%3D1600288124&s=3DG=
-NFLAMMOMCKKPGIH
- =
-
-5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9co=
-uverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre =
-d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre =
-offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez =
-votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, chois=
-issez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite,=
- choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gra=
-tuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livrais=
-on gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou l=
-ivraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10=
-% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts=
- ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros o=
-fferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 e=
-uros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couve=
-rte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
-=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
-ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
-otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
-ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
-choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison grat=
-uite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraiso=
-n gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou li=
-vraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10%=
- ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts =
-ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros of=
-ferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 eu=
-ros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couver=
-te5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9=
-couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offr=
-e d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votr=
-e offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisisse=
-z votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, cho=
-isissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuit=
-e, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison g=
-ratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livra=
-ison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou=
- livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou =
-10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offer=
-ts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros=
- offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5=
- euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9cou=
-verte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
-=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
-ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
-otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
-ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
-choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison grat=
-uite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraiso=
-n gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou li=
-vraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10%=
- ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts =
-ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros of=
-ferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 eu=
-ros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couver=
-te5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9=
-couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offr=
-e d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votr=
-e offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisisse=
-z votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, cho=
-isissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuit=
-e, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison g=
-ratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livra=
-ison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou=
- livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou =
-10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offer=
-ts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros=
- offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5=
- euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9cou=
-verte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
-=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
-ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
-otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
-ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
-choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison grat=
-uite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraiso=
-n gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou li=
-vraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10%=
- ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts =
-ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros of=
-ferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 eu=
-ros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couver=
-te5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9=
-couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offr=
-e d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votr=
-e offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisisse=
-z votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, cho=
-isissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuit=
-e, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison g=
-ratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livra=
-ison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou=
- livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou =
-10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offer=
-ts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros=
- offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5=
- euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9cou=
-verte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
-=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
-ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
-otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
-ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
-choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison grat=
-uite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraiso=
-n gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou li=
-vraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10%=
- ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts =
-ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros of=
-ferts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 eu=
-ros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couver=
-te5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9=
-couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offr=
-e d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votr=
-e offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisisse=
-z votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, cho=
-isissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuit=
-e, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livraison g=
-ratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou livra=
-ison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou 10% ou=
- livraison gratuite, choisissez votre offre d=E9couverte5 euros offerts ou =
-10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros offer=
-ts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5 euros=
- offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9couverte5=
- euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=E9cou=
-verte5 euros offerts ou 10% ou livraison gratuite, choisissez votre offre d=
-=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez votre o=
-ffre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisissez v=
-otre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, choisi=
-ssez votre offre d=E9couverte5 euros offerts ou 10% ou livraison gratuite, =
-choisissez votre offre d=E9couverte
- =
-
-Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
-c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
-600034637&uid=3D16231069273&mid=3D1600288124&sig=3DIFMCOHEJDBBJGEJK
----------------------------------------------------------------------------=
----
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
-om =
-
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=3D60134071&iu=3D/4140/ostg.cl=
-ktrk
+CihodHRwOi8vbGVjbGVyY3ZveWFnZXMucmVuZGV6LXZvdXMtbG9pc2lycy5jb20vci8xMDMtMTE2
+Ni0xLz9lbWFpbD1jb3VycmllbCZvPVZMMTAxMyZzPWZvcmNlJmxhc3RuYW1lPSZmaXJzdG5hbWU9
+JnppcGNvZGU9JnRpdGxlPSkKKGh0dHA6Ly9sZWNsZXJjdm95YWdlcy5yZW5kZXotdm91cy1sb2lz
+aXJzLmNvbS9yLzEwMy0xMTY2LTEvP2VtYWlsPWNvdXJyaWVsJm89VkwxMDEzJnM9Zm9yY2UmbGFz
+dG5hbWU9JmZpcnN0bmFtZT0memlwY29kZT0mdGl0bGU9KQooaHR0cDovL2xlY2xlcmN2b3lhZ2Vz
+LnJlbmRlei12b3VzLWxvaXNpcnMuY29tL3IvMTAzLTExNjYtMS8/ZW1haWw9Y291cnJpZWwmbz1W
+TDEwMTMmcz1mb3JjZSZsYXN0bmFtZT0mZmlyc3RuYW1lPSZ6aXBjb2RlPSZ0aXRsZT0pCihodHRw
+Oi8vbGVjbGVyY3ZveWFnZXMucmVuZGV6LXZvdXMtbG9pc2lycy5jb20vci8xMDMtMTE2Ni0xLz9l
+bWFpbD1jb3VycmllbCZvPVZMMTAxMyZzPWZvcmNlJmxhc3RuYW1lPSZmaXJzdG5hbWU9JnppcGNv
+ZGU9JnRpdGxlPSkKKGh0dHA6Ly9sZWNsZXJjdm95YWdlcy5yZW5kZXotdm91cy1sb2lzaXJzLmNv
+bS9yLzEwMy0xMTY2LTEvP2VtYWlsPWNvdXJyaWVsJm89VkwxMDEzJnM9Zm9yY2UmbGFzdG5hbWU9
+JmZpcnN0bmFtZT0memlwY29kZT0mdGl0bGU9KQpDT1VSUklFTCAoaHR0cDovL2xlY2xlcmN2b3lh
+Z2VzLnJlbmRlei12b3VzLWxvaXNpcnMuY29tL3IvMTAzLTExNjYtMS8/ZW1haWw9Y291cnJpZWwm
+bz1WTDEwMTMmcz1mb3JjZSZsYXN0bmFtZT0mZmlyc3RuYW1lPSZ6aXBjb2RlPSZ0aXRsZT0pCmEg
+w6l0w6kgc8OpbGVjdGlvbm7DqShlKSBwb3VyIHBhcnRpY2lwZXIgYXUgdGlyYWdlIGF1IHNvcnQg
+ZXQgcGV1dC3DqnRyZSBnYWduZXIKCjEgU8Opam91ciBhdSBNZXhpcXVlIHBvdXIgMiBvdSAxIHdl
+ZWstZW5kIMOgIFByYWd1ZSBwb3VyIDIgISAoaHR0cDovL2xlY2xlcmN2b3lhZ2VzLnJlbmRlei12
+b3VzLWxvaXNpcnMuY29tL3IvMTAzLTExNjYtMS8/ZW1haWw9Y291cnJpZWwmbz1WTDEwMTMmcz1m
+b3JjZSZsYXN0bmFtZT0mZmlyc3RuYW1lPSZ6aXBjb2RlPSZ0aXRsZT0pCihodHRwOi8vbGVjbGVy
+Y3ZveWFnZXMucmVuZGV6LXZvdXMtbG9pc2lycy5jb20vci8xMDMtMTE2Ni0xLz9lbWFpbD1jb3Vy
+cmllbCZvPVZMMTAxMyZzPWZvcmNlJmxhc3RuYW1lPSZmaXJzdG5hbWU9JnppcGNvZGU9JnRpdGxl
+PSkKKGh0dHA6Ly9sZWNsZXJjdm95YWdlcy5yZW5kZXotdm91cy1sb2lzaXJzLmNvbS9yLzEwMy0x
+MTY2LTEvP2VtYWlsPWNvdXJyaWVsJm89VkwxMDEzJnM9Zm9yY2UmbGFzdG5hbWU9JmZpcnN0bmFt
+ZT0memlwY29kZT0mdGl0bGU9KQooaHR0cDovL2xlY2xlcmN2b3lhZ2VzLnJlbmRlei12b3VzLWxv
+aXNpcnMuY29tL3IvMTAzLTExNjYtMS8/ZW1haWw9Y291cnJpZWwmbz1WTDEwMTMmcz1mb3JjZSZs
+YXN0bmFtZT0mZmlyc3RuYW1lPSZ6aXBjb2RlPSZ0aXRsZT0pCihodHRwOi8vbGVjbGVyY3ZveWFn
+ZXMucmVuZGV6LXZvdXMtbG9pc2lycy5jb20vci8xMDMtMTE2Ni0xLz9lbWFpbD1jb3VycmllbCZv
+PVZMMTAxMyZzPWZvcmNlJmxhc3RuYW1lPSZmaXJzdG5hbWU9JnppcGNvZGU9JnRpdGxlPSkKKGh0
+dHA6Ly9sZWNsZXJjdm95YWdlcy5yZW5kZXotdm91cy1sb2lzaXJzLmNvbS9yLzEwMy0xMTY2LTEv
+P2VtYWlsPWNvdXJyaWVsJm89VkwxMDEzJnM9Zm9yY2UmbGFzdG5hbWU9JmZpcnN0bmFtZT0memlw
+Y29kZT0mdGl0bGU9KQooaHR0cDovL2xlY2xlcmN2b3lhZ2VzLnJlbmRlei12b3VzLWxvaXNpcnMu
+Y29tL3IvMTAzLTExNjYtMS8/ZW1haWw9Y291cnJpZWwmbz1WTDEwMTMmcz1mb3JjZSZsYXN0bmFt
+ZT0mZmlyc3RuYW1lPSZ6aXBjb2RlPSZ0aXRsZT0pCihodHRwOi8vbGVjbGVyY3ZveWFnZXMucmVu
+ZGV6LXZvdXMtbG9pc2lycy5jb20vci8xMDMtMTE2Ni0xLz9lbWFpbD1jb3VycmllbCZvPVZMMTAx
+MyZzPWZvcmNlJmxhc3RuYW1lPSZmaXJzdG5hbWU9JnppcGNvZGU9JnRpdGxlPSkKKGh0dHA6Ly9s
+ZWNsZXJjdm95YWdlcy5yZW5kZXotdm91cy1sb2lzaXJzLmNvbS9yLzEwMy0xMTY2LTEvP2VtYWls
+PWNvdXJyaWVsJm89VkwxMDEzJnM9Zm9yY2UmbGFzdG5hbWU9JmZpcnN0bmFtZT0memlwY29kZT0m
+dGl0bGU9KQooaHR0cDovL2xlY2xlcmN2b3lhZ2VzLnJlbmRlei12b3VzLWxvaXNpcnMuY29tL3Iv
+MTAzLTExNjYtMS8/ZW1haWw9Y291cnJpZWwmbz1WTDEwMTMmcz1mb3JjZSZsYXN0bmFtZT0mZmly
+c3RuYW1lPSZ6aXBjb2RlPSZ0aXRsZT0pCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpPY3RvYmVyIFdl
+YmluYXJzOiBDb2RlIGZvciBQZXJmb3JtYW5jZQpGcmVlIEludGVsIHdlYmluYXJzIGNhbiBoZWxw
+IHlvdSBhY2NlbGVyYXRlIGFwcGxpY2F0aW9uIHBlcmZvcm1hbmNlLgpFeHBsb3JlIHRpcHMgZm9y
+IE1QSSwgT3Blbk1QLCBhZHZhbmNlZCBwcm9maWxpbmcsIGFuZCBtb3JlLiBHZXQgdGhlIG1vc3Qg
+ZnJvbSAKdGhlIGxhdGVzdCBJbnRlbCBwcm9jZXNzb3JzIGFuZCBjb3Byb2Nlc3NvcnMuIFNlZSBh
+YnN0cmFjdHMgYW5kIHJlZ2lzdGVyID4KaHR0cDovL3B1YmFkcy5nLmRvdWJsZWNsaWNrLm5ldC9n
+YW1wYWQvY2xrP2lkPTYwMTM0MDcxJml1PS80MTQwL29zdGcuY2xrdHJrCl9fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCnNwaS1kZXZlbC1nZW5lcmFsIG1haWxp
+bmcgbGlzdApzcGktZGV2ZWwtZ2VuZXJhbEBsaXN0cy5zb3VyY2Vmb3JnZS5uZXQKaHR0cHM6Ly9s
+aXN0cy5zb3VyY2Vmb3JnZS5uZXQvbGlzdHMvbGlzdGluZm8vc3BpLWRldmVsLWdlbmVyYWwK

@@ -1,67 +1,91 @@
-From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH 1/3] spi/qspi: Add memory mapped read support.
-Date: Tue, 15 Oct 2013 14:03:01 -0700
-Message-ID: <CA+7tXijF8VTsA3Mk3j8Qe7r0nqr+Xri6=GDfEZGH74Doup5=eA@mail.gmail.com>
-References: <52568AA3.9080203@ti.com> <20131011100839.GA21581@sirena.org.uk>
-	<525CDB77.4040201@ti.com> <20131015111647.GX2443@sirena.org.uk>
-	<525D2BB3.4020705@ti.com> <20131015124656.GM2443@sirena.org.uk>
-	<525D41E2.30206@ti.com>
-	<20131015180142.GS23337@ld-irv-0074.broadcom.com>
-	<CA+7tXigv1Q3BPE3uhzdJpx3DsqUpxzrBUaPfWR-i15PsVtMWsQ@mail.gmail.com>
-	<20980858CB6D3A4BAE95CA194937D5E73EA23640@DBDE04.ent.ti.com>
-	<20131015205254.GX2443@sirena.org.uk>
+Date: Tue, 15 Oct 2013 23:10:52 +0100
+Message-ID: <20131015221052.GB2443@sirena.org.uk>
+References: <525CDB77.4040201@ti.com> <20131015111647.GX2443@sirena.org.uk>
+ <525D2BB3.4020705@ti.com> <20131015124656.GM2443@sirena.org.uk>
+ <525D41E2.30206@ti.com>
+ <20131015180142.GS23337@ld-irv-0074.broadcom.com>
+ <CA+7tXigv1Q3BPE3uhzdJpx3DsqUpxzrBUaPfWR-i15PsVtMWsQ@mail.gmail.com>
+ <20980858CB6D3A4BAE95CA194937D5E73EA23640@DBDE04.ent.ti.com>
+ <20131015205254.GX2443@sirena.org.uk>
+ <CA+7tXijF8VTsA3Mk3j8Qe7r0nqr+Xri6=GDfEZGH74Doup5=eA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Peter Korsgaard <peter-+2lRwdCCLRT2eFz/2MeuCQ@public.gmane.org>, "Balbi, Felipe" <balbi-l0cyMroinI0@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>, "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>, "Poddar,
-	Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>, Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20131015205254.GX2443-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Content-Type: multipart/mixed; boundary="===============1520970655708247575=="
+Cc: Peter Korsgaard <peter@korsgaard.com>, "Balbi, Felipe" <balbi@ti.com>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "Gupta,
+ Pekon" <pekon@ti.com>, "spi-devel-general@lists.sourceforge.net"
+ <spi-devel-general@lists.sourceforge.net>, "Poddar,
+ Sourav" <sourav.poddar@ti.com>, Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Trent Piepho <tpiepho@gmail.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <CA+7tXijF8VTsA3Mk3j8Qe7r0nqr+Xri6=GDfEZGH74Doup5=eA@mail.gmail.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Oct 15, 2013 at 1:52 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Oct 15, 2013 at 06:33:23PM +0000, Gupta, Pekon wrote:
->
->> Therefore early suggestions were to make 'MM_MODE' as default
->> (if device enables it via DT). This means:
->> (1) switch to 'SPI_MODE' _only_ when required for commands like
->>  mtd_erase, etc. and switch back to 'MM_MODE' when done.
->> (2) And keep your controller clocks on.
->
-> This sounds like a policy decision, I don't see any reason for it to be
-> in DT.  What works well with one application stack may not be the best
-> choice for another and future developments may change what's most
-> sensible for a given system, it shouldn't be fixed in the DT.
 
-I could see the driver using the transfer size to decide, memory
-mapped or SPI with DMA.  Small transfers via memory mapped access and
-larger would use DMA.  The spi-mxs driver does this to decide PIO or
-DMA.  The threshold size is hard coded in the driver.  If you wanted
-to be able to change it, I would think a sysfs attribute would be the
-way to do that.
+--===============1520970655708247575==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="DBn2EsnvkVzqM8Y9"
+Content-Disposition: inline
 
-It does get tricky when you're dealing with flash roms, as people
-often want to boot from those really fast, so you want the kernel to
-know how to use them in the fastest way before it boots as opposed to
-after booting when it's obviously too late to configure the kernel to
-boot faster.
 
-------------------------------------------------------------------------------
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60135031&iu=/4140/ostg.clktrk
+--DBn2EsnvkVzqM8Y9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Oct 15, 2013 at 02:03:01PM -0700, Trent Piepho wrote:
+
+> It does get tricky when you're dealing with flash roms, as people
+> often want to boot from those really fast, so you want the kernel to
+> know how to use them in the fastest way before it boots as opposed to
+> after booting when it's obviously too late to configure the kernel to
+> boot faster.
+
+I'd guess that having fast as the default would be sane enough, though.
+
+--DBn2EsnvkVzqM8Y9
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSXb1pAAoJELSic+t+oim9Kc0P/ia6nYernMVCnEqdb0A2/3DV
+KIfs3KxaHrXQS3uFsWkWxjWv6LGrNLelJWuSMuCXpg4HFMCI0U58S6Wquv1iHKME
+7IEYZ/D1CV2f5jyH114CPCV4HKvLq9HpdUILSxG7YlKZFgn+8vBKxQsnEgyrAhdG
+44FvX4WYC2yINKiwkWEwACzcgviSYsA8aBsQ3WShCx6VI253q0QAWxNu8bJb6Ugd
+telKx6F6G4UGi/78Twe8adT2L4YeZiIESHFW7usuqQVol5RHdWNQZMRZSaKf+fdK
+KEODvfuNp8of+tJETLfpgfTu5xcy0Q5Jcxqc35nh7+fKv3MA94HWNZworSfPH4Yv
+pW0WmhgNLf1UYBvmMn3CioI7rAXr+H9JtxspQBYWKiJ/4oMsTaMCWhfMGbHWAg1r
+CcP/83wOkqSPhVK2rOzksl34foaNuji81XqgMp0/Rvp0zHP+TxP4NB7x8o6FSui+
+QyBK9wtwjDKU6cMW33ScpLYQPTs+ebGghvBOnO0iklF4BrzYjeeCKEbswUJ+u6wf
+5W+J6TN42BIGF37npbrdwMsLw7+YlGz/wBs1dyw25+RbrDVfHYv2nulW2a6qKiJM
+khYlgqQBvwPbthpVWT5sDcG4GZ0Re+WTaerSADDbKdjfwGSR1T7tAwJTLDrKrSSh
+W5et8CwoCZfUfOdKi/7g
+=Viu2
+-----END PGP SIGNATURE-----
+
+--DBn2EsnvkVzqM8Y9--
+
+
+--===============1520970655708247575==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============1520970655708247575==--

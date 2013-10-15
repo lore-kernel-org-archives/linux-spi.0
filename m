@@ -1,84 +1,64 @@
-From: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi/qspi: Add memory mapped read support.
-Date: Tue, 15 Oct 2013 11:13:38 -0700
-Message-ID: <CA+7tXigv1Q3BPE3uhzdJpx3DsqUpxzrBUaPfWR-i15PsVtMWsQ@mail.gmail.com>
+From: "Gupta, Pekon" <pekon@ti.com>
+Subject: RE: [PATCH 1/3] spi/qspi: Add memory mapped read support.
+Date: Tue, 15 Oct 2013 18:33:23 +0000
+Message-ID: <20980858CB6D3A4BAE95CA194937D5E73EA23640@DBDE04.ent.ti.com>
 References: <52566ACC.1080100@ti.com> <20131010101410.GG21581@sirena.org.uk>
-	<52568AA3.9080203@ti.com> <20131011100839.GA21581@sirena.org.uk>
-	<525CDB77.4040201@ti.com> <20131015111647.GX2443@sirena.org.uk>
-	<525D2BB3.4020705@ti.com> <20131015124656.GM2443@sirena.org.uk>
-	<525D41E2.30206@ti.com>
-	<20131015180142.GS23337@ld-irv-0074.broadcom.com>
+ <52568AA3.9080203@ti.com> <20131011100839.GA21581@sirena.org.uk>
+ <525CDB77.4040201@ti.com> <20131015111647.GX2443@sirena.org.uk>
+ <525D2BB3.4020705@ti.com> <20131015124656.GM2443@sirena.org.uk>
+ <525D41E2.30206@ti.com> <20131015180142.GS23337@ld-irv-0074.broadcom.com>
+ <CA+7tXigv1Q3BPE3uhzdJpx3DsqUpxzrBUaPfWR-i15PsVtMWsQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Peter Korsgaard <peter-+2lRwdCCLRT2eFz/2MeuCQ@public.gmane.org>, balbi-l0cyMroinI0@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
-	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-In-Reply-To: <20131015180142.GS23337-bU/DPfM3abD4WzifrMjOTkcViWtcw2C0@public.gmane.org>
-List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
-List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
-	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
-Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
+Cc: Peter Korsgaard <peter@korsgaard.com>, "Balbi, Felipe" <balbi@ti.com>,
+ Mark Brown <broonie@kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "spi-devel-general@lists.sourceforge.net"
+ <spi-devel-general@lists.sourceforge.net>, "Poddar,
+ Sourav" <sourav.poddar@ti.com>, Brian Norris <computersforpeace@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>
+To: Trent Piepho <tpiepho@gmail.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <CA+7tXigv1Q3BPE3uhzdJpx3DsqUpxzrBUaPfWR-i15PsVtMWsQ@mail.gmail.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Oct 15, 2013 at 11:01 AM, Brian Norris
-<computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->> So, the flow can be something like this:
->>
->> drivers/mtd/devices/m25p80.c
->> get_flash_buf()
->> {
->>     lock();
->>
->>      t[0] = GET_BUFFER;
->>      t[1] = buf;
->>      ......
->>
->>      spi_sync();
->>
->>     unlock();
->> }
->>
->> mtd_read
->> {
->>     get_flash_buf();
->>
->>     if (flash->buf) {
->>         memcpy();
->>        return 0;
->>   }
->> }
->>
->> Not sure, if free buf is needed as devm_* variant is used to allocate that
->> memory.
->
-> I believe you are misplacing the discussion of devm_* variants. devm_*
-> is only useful for resources allocated/mapped released/unmapped at probe
-> and release time. They do not magically remove the burden of resource
-> management for I/O and other dynamic operations.
+> From: Trent Piepho
+> Are there any numbers to show if memory mapped read support is a
+> benefit in Linux?  There is some question as to whether it's useful at
+> all or not.
+> 
+> If it is, I think low latency for small reads is probably one of the
+> only advantages.  To do that, you aren't going to want to deal with
+> device PM for every single read.  It would make more sense to turn the
+> hardware on when the MTD device is opened and leave it on until
+> closed.
+> 
++1
 
-Are there any numbers to show if memory mapped read support is a
-benefit in Linux?  There is some question as to whether it's useful at
-all or not.
+Therefore early suggestions were to make 'MM_MODE' as default
+(if device enables it via DT). This means:
+(1) switch to 'SPI_MODE' _only_ when required for commands like
+ mtd_erase, etc. and switch back to 'MM_MODE' when done.
+(2) And keep your controller clocks on.
 
-If it is, I think low latency for small reads is probably one of the
-only advantages.  To do that, you aren't going to want to deal with
-device PM for every single read.  It would make more sense to turn the
-hardware on when the MTD device is opened and leave it on until
-closed.
+This would ensure that you do minimum config-switching when using
+MM_MODE. And would thus achieve low latency, and no driver intervention.
 
-------------------------------------------------------------------------------
-October Webinars: Code for Performance
-Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
-the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60135031&iu=/4140/ostg.clktrk
+Yes, real thruput numbers would help clear the picture here ..
+
+with regards, pekon
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/

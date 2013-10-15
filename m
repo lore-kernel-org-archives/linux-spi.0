@@ -1,13 +1,25 @@
-From: "Hediard /" <contact-6iRbmuqo1C7QT0dZR+AlfA@public.gmane.org>
-Subject: Tentez de gagnez des coffrets gastronomiques
-Date: Tue, 15 Oct 2013 16:34:14 +0000 (CET)
-Message-ID: <131015163414.153946841300005700@fm04.eu>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi/qspi: Add memory mapped read support.
+Date: Tue, 15 Oct 2013 11:01:42 -0700
+Message-ID: <20131015180142.GS23337@ld-irv-0074.broadcom.com>
+References: <52566ACC.1080100@ti.com> <20131010101410.GG21581@sirena.org.uk>
+	<52568AA3.9080203@ti.com> <20131011100839.GA21581@sirena.org.uk>
+	<525CDB77.4040201@ti.com> <20131015111647.GX2443@sirena.org.uk>
+	<525D2BB3.4020705@ti.com> <20131015124656.GM2443@sirena.org.uk>
+	<525D41E2.30206@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: "spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
-	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Peter Korsgaard <peter-+2lRwdCCLRT2eFz/2MeuCQ@public.gmane.org>, balbi-l0cyMroinI0@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org
+To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <525D41E2.30206-l0cyMroinI0@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -18,42 +30,71 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-CihodHRwOi8vZm0wNC5ldS91MGZlcHM0bnJiNGVncmgwaGwvaW5kZXgwLmh0bWwpCihodHRwOi8v
-Zm0wNC5ldS9lZmYzc3NvMnJ6a3YxbTMwM3kvaW5kZXgxLmh0bWwpCihodHRwOi8vZm0wNC5ldS9r
-YmZ1d3NyZ3JhdGVoaWlkaWQvaW5kZXgyLmh0bWwpCihodHRwOi8vZm0wNC5ldS92MWZocXNkaHJq
-c3ZtaGFkYXMvaW5kZXgzLmh0bWwpCihodHRwOi8vZm0wNC5ldS8yYnRydzRzcWl5MGVxdml0ankv
-aW5kZXg0Lmh0bWwpCihodHRwOi8vZm0wNC5ldS90MXQ0cTRwaWl1ZHZjZWF0cWwvaW5kZXg1Lmh0
-bWwpCihodHRwOi8vZm0wNC5ldS8wMHQ1cDRxd2k1d2Vpbmhzb3MvaW5kZXg2Lmh0bWwpCihodHRw
-Oi8vZm0wNC5ldS9iZnRuczR3MGl4ZXZydzNzZ2QvaW5kZXg3Lmh0bWwpCihodHRwOi8vZm0wNC5l
-dS95MHB3NXR6NHIwcmV5ZGhpMWwvaW5kZXg4Lmh0bWwpCihodHRwOi8vZm0wNC5ldS9kZnBweXRq
-dHJ3aXZibDNpZnkvaW5kZXg5Lmh0bWwpCkdSQU5EIEpFVSBDT05DT1VSUwoKVEVOVEVaIERFIEdB
-R05FUiBERVMKCkNPRkZSRVRTIEdBU1RST05PTUlRVUVTCgpwb3VyIGRlcyBpbnN0YW50cyBkZSBk
-w6lndXN0YXRpb24gdW5pcXVlcyAhCgooaHR0cDovL2ZtMDQuZXUvY2FobzBjZmNsNDJ5eHU0MXNx
-L2luZGV4MTAuaHRtbCkKKGh0dHA6Ly9mbTA0LmV1L3h1c2RlNHVxaDIya2RrZWtscS9pbmRleDEx
-Lmh0bWwpCihodHRwOi8vZm0wNC5ldS9uMjBobXBkNWNqb3dyMWh5amwvaW5kZXgxMi5odG1sKQoo
-aHR0cDovL2ZtMDQuZXUvNDE1dWcwbWF3aW8ydWM1cnFsL2luZGV4MTMuaHRtbCkKKGh0dHA6Ly9m
-bTA0LmV1L21qamNsbGJ4NGx4MWx4b2V5Zy9pbmRleDE0Lmh0bWwpCihodHRwOi8vZm0wNC5ldS9w
-eWV0bmEzamZreHJmZmN4ZGcvaW5kZXgxNS5odG1sKQooaHR0cDovL2ZtMDQuZXUvbndqaWFseXp6
-bHBmbGdsZWpsL2luZGV4MTYuaHRtbCkKKGh0dHA6Ly9mbTA0LmV1LzRyZWt4YXB1eGtwNWZxYnhx
-bC9pbmRleDE3Lmh0bWwpCihodHRwOi8vZm0wNC5ldS81aWkweGZrdWd0NXpqb3UxbGovaW5kZXgx
-OC5odG1sKQooaHR0cDovL2ZtMDQuZXUvcmV5ZmF3eHp2bjV0MGpua3NqL2luZGV4MTkuaHRtbCkK
-KGh0dHA6Ly9mbTA0LmV1L2loeHhjZGNobjV5YmhhemRzZy9pbmRleDIwLmh0bWwpCihodHRwOi8v
-Zm0wNC5ldS9hdncyaTN2bTFjeTQ0M3Y1bGcvaW5kZXgyMS5odG1sKQooaHR0cDovL2ZtMDQuZXUv
-aDVlYzBhdDF4c2I1b2F0eHlnL2luZGV4MjIuaHRtbCkKKGh0dHA6Ly9mbTA0LmV1LzN6anRlbGFn
-enZiZjIzZGVkZy9pbmRleDIzLmh0bWwpCihodHRwOi8vZm0wNC5ldS9pcWRmbzV4dmZuem0wNXh1
-c2cvaW5kZXgyNC5odG1sKQooaHR0cDovL2ZtMDQuZXUvYWRhMHAya240dHpjanBnY2xnL2luZGV4
-MjUuaHRtbCkKKGh0dHA6Ly9mbTA0LmV1L2hmNTFzMDIyd3F1Mno1cHJ5Zy9pbmRleDI2Lmh0bWwp
-CihodHRwOi8vZm0wNC5ldS8zdDBiNHBpbGNhdXdpcGl5ZGcvaW5kZXgyNy5odG1sKQooaHR0cDov
-L2ZtMDQuZXUveGd4ZHFsa2k0YmwxZ2tqMGZnL2luZGV4MjguaHRtbCkKKGh0dHA6Ly9mbTA0LmV1
-L2Nsd29yYXhyZndscnR1MWExZy9pbmRleDI5Lmh0bWwpCihodHRwOi8vZm0wNC5ldS8wMmo1cmRn
-cndtZDB2dm13MnkvaW5kZXgzMC5odG1sKQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KT2N0b2JlciBX
-ZWJpbmFyczogQ29kZSBmb3IgUGVyZm9ybWFuY2UKRnJlZSBJbnRlbCB3ZWJpbmFycyBjYW4gaGVs
-cCB5b3UgYWNjZWxlcmF0ZSBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZS4KRXhwbG9yZSB0aXBzIGZv
-ciBNUEksIE9wZW5NUCwgYWR2YW5jZWQgcHJvZmlsaW5nLCBhbmQgbW9yZS4gR2V0IHRoZSBtb3N0
-IGZyb20gCnRoZSBsYXRlc3QgSW50ZWwgcHJvY2Vzc29ycyBhbmQgY29wcm9jZXNzb3JzLiBTZWUg
-YWJzdHJhY3RzIGFuZCByZWdpc3RlciA+Cmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQv
-Z2FtcGFkL2Nsaz9pZD02MDEzNTAzMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWls
-aW5nIGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8v
-bGlzdHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Hi Sourav,
+
+On Tue, Oct 15, 2013 at 06:53:46PM +0530, Sourav Poddar wrote:
+> On Tuesday 15 October 2013 06:16 PM, Mark Brown wrote:
+> >On Tue, Oct 15, 2013 at 05:19:07PM +0530, Sourav Poddar wrote:
+> >>On Tuesday 15 October 2013 04:46 PM, Mark Brown wrote:
+> >>>Can you fix this by enabling the clock is enabled when you return the
+> >>>buffer to the MTD layer and then disabling the clock when the buffer is
+> >>>released?
+> >>Sorry, I did not get you here. With memory mapped read, there is no
+> >>buffer exchanged, everything takes place at the mtd layer only, what gets
+> >>exchanged is just the memory mapped address.
+> >The buffer is the memory mapped address - part of getting the address
+> >should be preparing the hardware for it.
+> >
+> >>      if (spi->mode&&  SPI_RX_MMAP) {
+> >>          printk("memory mapped mode set\n");
+> >>-        flash->mmap_read = true;
+> >>+        flash->mmap_read = spi->memory_map;
+> >So this probably needs to be a function call to get the buffer (and a
+> >corresponding one to free it).
+> So, the flow can be something like this:
+> 
+> drivers/mtd/devices/m25p80.c
+> get_flash_buf()
+> {
+>     lock();
+> 
+>      t[0] = GET_BUFFER;
+>      t[1] = buf;
+>      ......
+> 
+>      spi_sync();
+> 
+>     unlock();
+> }
+> 
+> mtd_read
+> {
+>     get_flash_buf();
+> 
+>     if (flash->buf) {
+>         memcpy();
+>        return 0;
+>   }
+> }
+> 
+> Not sure, if free buf is needed as devm_* variant is used to allocate that
+> memory.
+
+I believe you are misplacing the discussion of devm_* variants. devm_*
+is only useful for resources allocated/mapped released/unmapped at probe
+and release time. They do not magically remove the burden of resource
+management for I/O and other dynamic operations.
+
+In this case, you are not working at probe time, and you are not
+actually allocating any memory--your 'get_flash_buf()' and corresponding
+'release_flash_buf()' would not be allocating memory but would be
+ensuring that the HW and driver is in the correct state.
+
+Brian
+
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60135031&iu=/4140/ostg.clktrk

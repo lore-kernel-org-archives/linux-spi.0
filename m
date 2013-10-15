@@ -1,98 +1,87 @@
-From: Mark Brown <broonie@kernel.org>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
 Subject: Re: [PATCH 1/3] spi/qspi: Add memory mapped read support.
-Date: Tue, 15 Oct 2013 13:46:56 +0100
-Message-ID: <20131015124656.GM2443@sirena.org.uk>
+Date: Tue, 15 Oct 2013 18:53:46 +0530
+Message-ID: <525D41E2.30206@ti.com>
 References: <52566ACC.1080100@ti.com> <20131010101410.GG21581@sirena.org.uk>
- <52568AA3.9080203@ti.com> <20131011100839.GA21581@sirena.org.uk>
- <525CDB77.4040201@ti.com> <20131015111647.GX2443@sirena.org.uk>
- <525D2BB3.4020705@ti.com>
+	<52568AA3.9080203@ti.com> <20131011100839.GA21581@sirena.org.uk>
+	<525CDB77.4040201@ti.com> <20131015111647.GX2443@sirena.org.uk>
+	<525D2BB3.4020705@ti.com> <20131015124656.GM2443@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============0031295974385907960=="
-Cc: Peter Korsgaard <peter@korsgaard.com>, Trent Piepho <tpiepho@gmail.com>,
- balbi@ti.com, "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "spi-devel-general@lists.sourceforge.net"
- <spi-devel-general@lists.sourceforge.net>, computersforpeace@gmail.com,
- dwmw2@infradead.org
-To: Sourav Poddar <sourav.poddar@ti.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <525D2BB3.4020705@ti.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Peter Korsgaard <peter-+2lRwdCCLRT2eFz/2MeuCQ@public.gmane.org>, Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	balbi-l0cyMroinI0@public.gmane.org,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org"
+	<spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>,
+	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+In-Reply-To: <20131015124656.GM2443-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
+List-Post: <mailto:spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
+List-Help: <mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
+	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=subscribe>
+Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tuesday 15 October 2013 06:16 PM, Mark Brown wrote:
+> On Tue, Oct 15, 2013 at 05:19:07PM +0530, Sourav Poddar wrote:
+>> On Tuesday 15 October 2013 04:46 PM, Mark Brown wrote:
+>>> Can you fix this by enabling the clock is enabled when you return the
+>>> buffer to the MTD layer and then disabling the clock when the buffer is
+>>> released?
+>> Sorry, I did not get you here. With memory mapped read, there is no
+>> buffer exchanged, everything takes place at the mtd layer only, what gets
+>> exchanged is just the memory mapped address.
+> The buffer is the memory mapped address - part of getting the address
+> should be preparing the hardware for it.
+>
+>>       if (spi->mode&&  SPI_RX_MMAP) {
+>>           printk("memory mapped mode set\n");
+>> -        flash->mmap_read = true;
+>> +        flash->mmap_read = spi->memory_map;
+> So this probably needs to be a function call to get the buffer (and a
+> corresponding one to free it).
+So, the flow can be something like this:
 
---===============0031295974385907960==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Ig8UoZYzcROCqCtm"
-Content-Disposition: inline
+drivers/mtd/devices/m25p80.c
+get_flash_buf()
+{
+     lock();
 
+      t[0] = GET_BUFFER;
+      t[1] = buf;
+      ......
 
---Ig8UoZYzcROCqCtm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+      spi_sync();
 
-On Tue, Oct 15, 2013 at 05:19:07PM +0530, Sourav Poddar wrote:
-> On Tuesday 15 October 2013 04:46 PM, Mark Brown wrote:
+     unlock();
+}
 
-> >Can you fix this by enabling the clock is enabled when you return the
-> >buffer to the MTD layer and then disabling the clock when the buffer is
-> >released?
+mtd_read
+{
+     get_flash_buf();
 
-> Sorry, I did not get you here. With memory mapped read, there is no
-> buffer exchanged, everything takes place at the mtd layer only, what gets
-> exchanged is just the memory mapped address.
+     if (flash->buf) {
+         memcpy();
+        return 0;
+   }
+}
 
-The buffer is the memory mapped address - part of getting the address
-should be preparing the hardware for it.
-
->      if (spi->mode && SPI_RX_MMAP) {
->          printk("memory mapped mode set\n");
-> -        flash->mmap_read = true;
-> +        flash->mmap_read = spi->memory_map;
-
-So this probably needs to be a function call to get the buffer (and a
-corresponding one to free it).
-
---Ig8UoZYzcROCqCtm
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSXTk9AAoJELSic+t+oim9AnIP/3Zeh9U0w12jhEppg+gdkDan
-XRh2gv3ZOjuRvmBb6vk+jS73jNdqoyyWRyLOhqtUvmQEaKMIPeM0cuMHpFPNBRhi
-GsBOicZTZF4QuCobkqdG/l/MtaphKF9yWcHMfLyYcu4wnNnhFcJvhGFfMqguKhz5
-JaBCk7+vHmjMspAz1lJSg+y7ylAWMqxeIw+ygq518zTSu31E6NBAce7RsAHkzxgL
-LS05Zx8eqxFx38mLn9QDXqhytGgAkWnFREzC+VU7mKQvxbCur3LeSsAubpQO8EIT
-zglocztrT6EksTnDsORoOD6bpshThhdoUUgfrKUnkCU4XgkCsk1pMvJy2mt5aC8j
-gG+rpnjv07TBzxPAozT2hye+cZUThYLUz4DAOS5urGUk5jwoFp16eecI3CKrSW8h
-9P1ZJLuZ6hfRIdGnSF4Y9IPiuBPsMxLkfpepiE4BCK+6N1t8RKfZ7Q8Vtlo+fgZv
-dUGflLipcVmFGvgipnDIDN3oMJemb0I6FpugNJ46hmHiNS51khx6t3Na7nPyr5R/
-VtyguB3xqNxMvZuOf7ULBlxWgKNkL490as994Lm9InwD7VGQ3uzpp+NiGMRmUVN1
-7tzEmI1CcG9mn3VJUtEVCprLCuG/gwdkIjwe4d/Ql3h2UT/iZ2B+FZB9BPNo0pug
-W+dDFparKQWE9pGsKCeu
-=buyV
------END PGP SIGNATURE-----
-
---Ig8UoZYzcROCqCtm--
+Not sure, if free buf is needed as devm_* variant is used to allocate that
+memory.
 
 
---===============0031295974385907960==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+}
 
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
 
---===============0031295974385907960==--
+------------------------------------------------------------------------------
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=60135031&iu=/4140/ostg.clktrk

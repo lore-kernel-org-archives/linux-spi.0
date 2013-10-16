@@ -1,14 +1,14 @@
-From: Trivago Bons Plans <update-gJ5kbNluzlhCeShempO46eTW4wlIGRCZ@public.gmane.org>
-Subject: Hotels 4* a partir de 38 euros
-Date: Wed, 16 Oct 2013 03:53:06 -0100
-Message-ID: <q2v92NTjxIqD8Vj8lv0InVvoIQPfiFm7lRcMQDa1YFY@mail1.out1.senderboard.net>
-Reply-To: Trivago Bons Plans <update-gJ5kbNluzlhCeShempO46eTW4wlIGRCZ@public.gmane.org>
+From: Cdiscount via Nl-Promos <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: =?ISO-8859-1?Q?Il_n'y_en_aura_pas_pour_tous_le_monde,
+	_d=E9p=EAchez_vous?=
+Date: Wed, 16 Oct 2013 11:02:08 +0200 (CEST)
+Message-ID: <pjrtn2.hmubzq4i1e9p8dl@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
-List-Abuse: <mailto:abuse-gJ5kbNluzlhCeShempO46eTW4wlIGRCZ@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
 	<mailto:spi-devel-general-request-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org?subject=unsubscribe>
 List-Archive: <http://sourceforge.net/mailarchive/forum.php?forum_name=spi-devel-general>
@@ -19,32 +19,78 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
- Newsletter 2.0 Pour visualiser correctement ce message, acc=C3=A9dez =
-=C3=A0 la version en ligne, ou signaler comme ind=C3=A9sirable Newsletter =
-=C2=A0 =C2=A0 Bons plans h=C3=B4tels =C2=A0ex.: Paris =C2=A0 Sa, 16.11.2013=
- Di, 17.11.2013 =C2=A0 =C2=A0 EUROPE: VOS DESTINATIONS PR=C3=89F=C3=89R=
-=C3=89ES Paris =C3=A0 partir de 76=E2=82=AC Bruxelles =C3=A0 partir de 58=
-=E2=82=AC Barcelone =C3=A0 partir de 69=E2=82=AC Jusqu'=C3=A0 -78 % sur vot=
-re s=C3=A9jour Les meilleures offres pour plus de 600.000 h=C3=B4tels. Lond=
-res =C3=A0 partir de 58=E2=82=AC Amsterdam =C3=A0 partir de 59=E2=82=AC Ven=
-ise =C3=A0 partir de 70=E2=82=AC Plus d'offres Lisbonne 4* =C3=A0 partir de=
- 51=E2=82=AC =C2=BB Budapest 4* =C3=A0 partir de 56=E2=82=AC =C2=BB Berlin =
-4* =C3=A0 partir de 41=E2=82=AC =C2=BB Lyon 3* =C3=A0 partir de 49=E2=82=
-=AC =C2=BB Marseille 3* =C3=A0 partir de 49=E2=82=AC =C2=BB Madrid 4* =
-=C3=A0 partir de 40=E2=82=AC =C2=BB Rome 4* =C3=A0 partir de 55=E2=82=AC =
-=C2=BB Prague 4* =C3=A0 partir de 38=E2=82=AC =C2=BB Ath=C3=A8nes 4* =C3=
-=A0 partir de 49=E2=82=AC =C2=BB S=C3=A9ville 4* =C3=A0 partir de 57=
-=E2=82=AC =C2=BB trivago.fr permet aux voyageurs de trouver l=C2=B4h=C3=
-=B4tel id=C3=A9al au meilleur tarif, parmi plus de 160 portails de r=C3=
-=A9servation recensant 600 000 h=C3=B4tels dans le monde. Tous les prix ci-=
-dessus ne sont fournis qu'=C3=A0 titre indicatif et sous r=C3=A9serve de di=
-sponibilit=C3=A9 chez les partenaires. =C2=A9 2004 - 2013 Tous droits r=
-=C3=A9serv=C3=A9s Si vous ne souhaitez plus recevoir nos emails, veuillez s=
-uivre ce lien. Si vous n'arrivez pas =C3=A0 vous d=C3=A9sabonner, merci d'=
-=C3=A9crire =C3=A0 stop-OVAqtIliDNb3XKjYc++fXQ@public.gmane.org
-------------------------------------------------------------------------------
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0Iqgrsj5I7gfk57dIhmubzkhhI&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1381914121605%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DDDFDOINPFKDAENDF%26mid%3D1600291121&s=3DC=
+MPEPGCBKHIBAEBK
+ =
+
+Il n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas =
+pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde,=
+ d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousI=
+l n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas p=
+our tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, =
+d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl=
+ n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas po=
+ur tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=
+=E9p=EAchez vousIl n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl =
+n'y en aura pas pour tous le monde, d=E9p=EAchez vousIl n'y en aura pas pou=
+r tous le monde, d=E9p=EAchez vous
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600291121&sig=3DBBCJIKEINAHCBPHF
+---------------------------------------------------------------------------=
+---
 October Webinars: Code for Performance
 Free Intel webinars can help you accelerate application performance.
-Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most from 
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
+om =
+
 the latest Intel processors and coprocessors. See abstracts and register >
-http://pubads.g.doubleclick.net/gampad/clk?id=60135031&iu=/4140/ostg.clktrk
+http://pubads.g.doubleclick.net/gampad/clk?id=3D60135031&iu=3D/4140/ostg.cl=
+ktrk

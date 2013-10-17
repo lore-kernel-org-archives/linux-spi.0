@@ -1,12 +1,11 @@
-From: "Les contes de la petite boutique" <lisa@a.optincake.com>
-Subject: [SPAM]
-	=?UTF-8?B?RXQgc2kgdm90cmUgZW5mYW50IMOpdGFpdCBsZSBwZXJzb25uYWdlIHByaW5jaXBhbCBkZSBjb250ZXMgZmFudGFzdGlxdWVzID8=?=
-Date: Thu, 17 Oct 2013 00:51:15 +0100
-Message-ID: <0.0.F8.EBB.1CECACA9A24E08C.0@mta140.pur3.net>
-Reply-To: Les contes de la petite boutique <lisa@a.optincake.com>
+From: Articles de cuisine <nadia-cpB6pg6w0Se7MnAsHQCPAg@public.gmane.org>
+Subject: Moins 70 pourcent toute cette semaine !
+Date: Thu, 17 Oct 2013 10:48:24 +0200 (CEST)
+Message-ID: <fq25bz.hmvqxx2745ly92l@news.teradoo.com>
+Reply-To: Nadia <contact-BUHy0V1TRbxBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 Return-path: <spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org>
 List-Unsubscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>,
@@ -19,108 +18,83 @@ List-Subscribe: <https://lists.sourceforge.net/lists/listinfo/spi-devel-general>
 Errors-To: spi-devel-general-bounces-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Vm90cmUgbG9naWNpZWwgZGUgbWVzc2FnZXJpZSBuZSBwZXV0IHBhcyBsaXJlIGNlIG1lc3NhZ2Ug
-Y29ycmVjdGVtZW50LgpDb25zdWx0ZXogbGEgdmVyc2lvbiBlbiBsaWduZSAKaHR0cDovL2Eub3B0
-aW5jYWtlLmNvbS9pbnRlcmZhY2UvZXh0ZXJuYWxfdmlld19lbWFpbC5waHA/QUo4NDY0MTg2NjI1
-MjA0OTEzMjIwNTM3MTY0CgoKCgoKKG5fY29sb25uZV9nLmpwZyk6Cmh0dHA6Ly9jcHRyYWNrODQu
-ZXUvYy8yNzYvMTE1Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlML05BTUUvRklSU1ROQU1FCgoo
-Q29udGVzIGZhbnRhc3RpcXVlcyBwZXJzb25uYWxpc8Opcyk6Cmh0dHA6Ly9jcHRyYWNrODQuZXUv
-Yy8yNzYvMTE1Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlML05BTUUvRklSU1ROQU1FCgoobl9j
-b2xvbm5lX2QuanBnKToKaHR0cDovL2NwdHJhY2s4NC5ldS9jLzI3Ni8xMTUyLzQwNTYvbmVlei85
-MzUvMTA3ODYvRU1BSUwvTkFNRS9GSVJTVE5BTUUKCkxBIFBSRU1JRVJFIENPTExFQ1RJT04gREUg
-MTAgQ09OVEVTIEZBTlRBU1RJUVVFUwpQRVJTT05OQUxJU0VFIEFVIFBSRU5PTSBERSBWT1RSRSBF
-TkZBTlQKCkVQSVNPREUgMyAtIExFIFBFVElUIFZBTVBJUkUgRFUgQkFDIMOAIFNBQkxFCgoobGEg
-c29yY2llcmUgZGUgbGEgcmVudHJlZSBkZXMgY2xhc3Nlcyk6Cmh0dHA6Ly9jcHRyYWNrODQuZXUv
-Yy8yNzYvMTE1Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlML05BTUUvRklSU1ROQU1FCgooZXNz
-YXlleiBtYWludGVuYW50KToKaHR0cDovL2NwdHJhY2s4NC5ldS9jLzI3Ni8xMTUyLzQwNTYvbmVl
-ei85MzUvMTA3ODYvRU1BSUwvTkFNRS9GSVJTVE5BTUUKCgpFbiByZW50cmFudCBkZSBsJ8OpY29s
-ZSwgbm90cmUgaMOpcm9zL2jDqXJvw69uZSBkw6ljb3V2cmUgdW4gY3VyaWV1eApwZXJzb25uYWdl
-IHF1aSBoYWJpdGUgc291cyBsZSB0b2JvZ2dhbiBkdSBwZXRpdCBzcXVhcmUgZCfDoCBjw7R0w6ku
-CkMnZXN0IHVuIHBldGl0IHZhbXBpcmUgc3DDqWNpYWwgcXVpIG4nYWltZSBwYXMgbGUgc2FuZyBl
-dCBhIHBldXIgZGVzCmNoYXV2ZXMtc291cmlzISBWb250LWlscyBkZXZlbmlyIGFtaXM/CgoKRMOJ
-SsOAIFBBUlUgREFOUyBMQSBDT0xMRUNUSU9OCgooY29udGUxLmpwZyk6Cmh0dHA6Ly9jcHRyYWNr
-ODQuZXUvYy8yNzYvMTE1Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlML05BTUUvRklSU1ROQU1F
-CgooY29udGUyLmpwZyk6Cmh0dHA6Ly9jcHRyYWNrODQuZXUvYy8yNzYvMTE1Mi80MDU2L25lZXov
-OTM1LzEwNzg2L0VNQUlML05BTUUvRklSU1ROQU1FCgooY29udGUzLmpwZyk6Cmh0dHA6Ly9jcHRy
-YWNrODQuZXUvYy8yNzYvMTE1Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlML05BTUUvRklSU1RO
-QU1FCgooY29udGU0LmpwZyk6Cmh0dHA6Ly9jcHRyYWNrODQuZXUvYy8yNzYvMTE1Mi80MDU2L25l
-ZXovOTM1LzEwNzg2L0VNQUlML05BTUUvRklSU1ROQU1FCgooY29udGU1LmpwZyk6Cmh0dHA6Ly9j
-cHRyYWNrODQuZXUvYy8yNzYvMTE1Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlML05BTUUvRklS
-U1ROQU1FCgpMYSBzb3JjacOocmUgZGUgbGEgcmVudHLDqWUgZGVzIGNsYXNzZXMgTGUgY3JvcXVl
-bWl0YWluZSBkdSBncmVuaWVyIExlIHBldGl0CnZhbXBpcmUgZHUgYmFjIMOgIHNhYmxlIExlIGNv
-bnRlIGRlIE5vw6tsIExhIFBldGl0ZSBTb3VyaXMgZGVzIGRlbnRzCgooY29udGU2LmpwZyk6Cmh0
-dHA6Ly9jcHRyYWNrODQuZXUvYy8yNzYvMTE1Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlML05B
-TUUvRklSU1ROQU1FCgooY29udGU3LmpwZyk6Cmh0dHA6Ly9jcHRyYWNrODQuZXUvYy8yNzYvMTE1
-Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlML05BTUUvRklSU1ROQU1FCgooY29udGU4LmpwZyk6
-Cmh0dHA6Ly9jcHRyYWNrODQuZXUvYy8yNzYvMTE1Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlM
-L05BTUUvRklSU1ROQU1FCgooY29udGU5LmpwZyk6Cmh0dHA6Ly9jcHRyYWNrODQuZXUvYy8yNzYv
-MTE1Mi80MDU2L25lZXovOTM1LzEwNzg2L0VNQUlML05BTUUvRklSU1ROQU1FCgooY29udGUxMC5q
-cGcpOgpodHRwOi8vY3B0cmFjazg0LmV1L2MvMjc2LzExNTIvNDA1Ni9uZWV6LzkzNS8xMDc4Ni9F
-TUFJTC9OQU1FL0ZJUlNUTkFNRQoKTGEgbWFyaW9ubmV0dGlzdGUgZGUgTWFyZGkgZ3JhcyBMZSBt
-YXJjaGFuZCBkZSBzYWJsZSBMJ2FubmVhdSBkZSBQw6JxdWVzIExlCnBldGl0IGNpcnF1ZSBkZQps
-YSBmw6p0ZSBmb3JhaW5lIExlcyBncmFuZGVzIHZhY2FuY2VzIEJlc29pbiBkZSB2b3lhZ2VyLCBk
-ZSB2b3VzIGhhYmlsbGVyLCBkZQp2b3VzIGNoYXVzc2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1
-IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJpeCB0b3V0IGF1CmxvbmcgZGUgbCdhbm7DqWUs
-IGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzCnBy
-b3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVzc29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDD
-oCBqb3VyCnLDqWd1bGnDqHJlbWVudCBldCB0b3V0ZSBsJ2FubsOpZS5FbnZpZSBkZSB2b3VzIGZh
-aXJlIHVuZSBiZWF1dMOpIMOgIG1vaW5kcmUKY2/Du3QgdG91dCBhdSBsb25nIGRlIGwnYW5uw6ll
-LCBkZSBwcsOpdm9pciB2b3MgcHJvY2hhaW5lcyB2YWNhbmNlcyBkJ8OpdMOpCsOgIG1vaW5kcmUg
-ZnJhaXMgZXQgb3UgZW5jb3JlIGQnaGFiaWxsZXIgdm9zIGVuZmFudHMgw6AgZGVzIGJ1ZGdldHMK
-cmFpc29ubmFibGVzLCBhbG9ycyBjb25zdWx0ZXIgZGUgdGVtcHMgw6AgYXV0cmUgbm9zIHByb3Bv
-c2l0aW9ucyBwb3VyIHZvdXMKcGVybWV0dHJlIGFpbnNpIGRlIGZhaXJlIGRlIG5vbWJyZXVzZXMg
-w6ljb25vbWllcyB0b3V0IGVuIHZvdXMgZmFpc2FudApwbGFpc2lyIMOgIHRvdXRlIGxhIGZhbWls
-bGUuLi4uIEJlc29pbiBkZSB2b3lhZ2VyLCBkZSB2b3VzIGhhYmlsbGVyLCBkZSB2b3VzCmNoYXVz
-c2VyLCBkZSBtYW5nZXIgb3Ugc29ydGlyIGF1IG1laWxsZXVyIHJhcHBvcnQgcXVhbGl0w6kgcHJp
-eCB0b3V0IGF1IGxvbmcKZGUgbCdhbm7DqWUsIGFsb3JzIHBvdXJxdW9pIG5lIHBhcyBqZXRlciB1
-biBwZXRpdCBvZWlsIHBhciBzdXIgbGVzCnByb3Bvc2l0aW9ucyBxdWUgbm91cyB2b3VzIGFkcmVz
-c29ucywgZXQgcXVlIG5vdXMgbWV0dG9ucyDDoCBqb3VyCnLDqWd1bGnDqHJlbWVudCBldCB0b3V0
-ZSBsJ2FubsOpZS5BaW5zaSwgZ3LDomNlIMOgIG5vdXMsIHZvdXMgYWxsZXogcGFyCmV4ZW1wbGUs
-IHBvdXZvaXIgcHJvZml0ZXIgZGUgdG91dCBjZSBxdWkgZXN0IHByb2R1aXQgYSBiYXMgY291dCwK
-b3Bwb3J0dW5pdMOpLCBpbmZvcy4uLiAuQSBsYSByZWNoZXJjaGUgZHUgY2FkZWF1IG9yaWdpbmFs
-ID8gTm91cyBzb3VoYWl0b25zCnZvdXMgYXBwb3J0ZXIgdW4gbm91dmVhdSByZWdhcmQgYWZpbiBk
-ZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBtb2lucyB0b3V0CmVuIGNvbnNvbW1hbnQgbWlldXgg
-dG91dGUgbCdhbm7DqWUuIEFpbnNpLCBncmFjZSDDoCBub3VzLCB2b3VzIGFsbGV6IHBhcgpleGVt
-cGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0IGEgYmFzIGNv
-dXQsCm9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLiBOb3VzIHNvdWhhaXRvbnMgdm91cyBhcHBvcnRl
-ciB1biBub3V2ZWF1IHJlZ2FyZAphZmluIGRlIHZvdXMgYWlkZXIgw6AgZMOpcGVuc2VyIG1vaW5z
-IHRvdXQgZW4gY29uc29tbWFudCBtaWV1eCB0b3V0ZQpsJ2FubsOpZS5CZXNvaW4gZGUgdm95YWdl
-ciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBjaGF1c3NlciwgZGUgbWFuZ2VyIG91CnNvcnRp
-ciBhdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOpIHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5u
-w6llLCBhbG9ycwpwb3VycXVvaSBuZSBwYXMgamV0ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxl
-cyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cwphZHJlc3NvbnMsIGV0IHF1ZSBub3VzIG1ldHRv
-bnMgw6Agam91ciByw6lndWxpw6hyZW1lbnQgZXQgdG91dGUKbCdhbm7DqWUuRW52aWUgZGUgdm91
-cyBmYWlyZSB1bmUgYmVhdXTDqSDDoCBtb2luZHJlIGNvw7t0IHRvdXQgYXUgbG9uZyBkZQpsJ2Fu
-bsOpZSwgZGUgcHLDqXZvaXIgdm9zIHByb2NoYWluZXMgdmFjYW5jZXMgZCfDqXTDqSDDoCBtb2lu
-ZHJlIGZyYWlzIGV0IG91CmVuY29yZSBkJ2hhYmlsbGVyIHZvcyBlbmZhbnRzIMOgIGRlcyBidWRn
-ZXRzIHJhaXNvbm5hYmxlcywgYWxvcnMgY29uc3VsdGVyCmRlIHRlbXBzIMOgIGF1dHJlIG5vcyBw
-cm9wb3NpdGlvbnMgcG91ciB2b3VzIHBlcm1ldHRyZSBhaW5zaSBkZSBmYWlyZSBkZQpub21icmV1
-c2VzIMOpY29ub21pZXMgdG91dCBlbiB2b3VzIGZhaXNhbnQgcGxhaXNpciDDoCB0b3V0ZSBsYSBm
-YW1pbGxlLi4uLgpCZXNvaW4gZGUgdm95YWdlciwgZGUgdm91cyBoYWJpbGxlciwgZGUgdm91cyBj
-aGF1c3NlciwgZGUgbWFuZ2VyIG91IHNvcnRpcgphdSBtZWlsbGV1ciByYXBwb3J0IHF1YWxpdMOp
-IHByaXggdG91dCBhdSBsb25nIGRlIGwnYW5uw6llLCBhbG9ycyBwb3VycXVvaQpuZSBwYXMgamV0
-ZXIgdW4gcGV0aXQgb2VpbCBwYXIgc3VyIGxlcyBwcm9wb3NpdGlvbnMgcXVlIG5vdXMgdm91cyBh
-ZHJlc3NvbnMsCmV0IHF1ZSBub3VzIG1ldHRvbnMgw6Agam91ciByw6lndWxpw6hyZW1lbnQgZXQg
-dG91dGUgbCdhbm7DqWUuQWluc2ksIGdyw6JjZQrDoCBub3VzLCB2b3VzIGFsbGV6IHBhciBleGVt
-cGxlLCBwb3V2b2lyIHByb2ZpdGVyIGRlIHRvdXQgY2UgcXVpIGVzdCBwcm9kdWl0CmEgYmFzIGNv
-dXQsIG9wcG9ydHVuaXTDqSwgaW5mb3MuLi4gLkEgbGEgcmVjaGVyY2hlIGR1IGNhZGVhdSBvcmln
-aW5hbCA/IE5vdXMKc291aGFpdG9ucyB2b3VzIGFwcG9ydGVyIHVuIG5vdXZlYXUgcmVnYXJkIGFm
-aW4gZGUgdm91cyBhaWRlciDDoCBkw6lwZW5zZXIKbW9pbnMgdG91dCBlbiBjb25zb21tYW50IG1p
-ZXV4IHRvdXRlIGwnYW5uw6llLiBBaW5zaSwgZ3JhY2Ugw6Agbm91cywgdm91cwphbGxleiBwYXIg
-ZXhlbXBsZSwgcG91dm9pciBwcm9maXRlciBkZSB0b3V0IGNlIHF1aSBlc3QgcHJvZHVpdCBhIGJh
-cyBjb3V0LApvcHBvcnR1bml0w6ksIGluZm9zLi4uIC4gTm91cyBzb3VoYWl0b25zIHZvdXMgYXBw
-b3J0ZXIgdW4gbm91dmVhdSByZWdhcmQKYWZpbiBkZSB2b3VzIGFpZGVyIMOgIGTDqXBlbnNlciBt
-b2lucyB0b3V0IGVuIGNvbnNvbW1hbnQgbWlldXggdG91dGUKbCdhbm7DqWUuCgoKCgoKLS0KClBv
-dXIgdm91cyBkw6lzYWJvbm5lciwgdmlzaXRleiA6Cmh0dHA6Ly9hLm9wdGluY2FrZS5jb20vX2Fj
-dC9nZXRfcmNyLnBocD9BSjg0NjQxODY2MjUyMDQ5MTMyMjA1MzcxNjQKCgoKCgoKe35BSjg0NjQx
-ODY2MjUyMDQ5MTMyMjA1MzcxNjR+fQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KT2N0b2JlciBXZWJp
-bmFyczogQ29kZSBmb3IgUGVyZm9ybWFuY2UKRnJlZSBJbnRlbCB3ZWJpbmFycyBjYW4gaGVscCB5
-b3UgYWNjZWxlcmF0ZSBhcHBsaWNhdGlvbiBwZXJmb3JtYW5jZS4KRXhwbG9yZSB0aXBzIGZvciBN
-UEksIE9wZW5NUCwgYWR2YW5jZWQgcHJvZmlsaW5nLCBhbmQgbW9yZS4gR2V0IHRoZSBtb3N0IGZy
-b20gCnRoZSBsYXRlc3QgSW50ZWwgcHJvY2Vzc29ycyBhbmQgY29wcm9jZXNzb3JzLiBTZWUgYWJz
-dHJhY3RzIGFuZCByZWdpc3RlciA+Cmh0dHA6Ly9wdWJhZHMuZy5kb3VibGVjbGljay5uZXQvZ2Ft
-cGFkL2Nsaz9pZD02MDEzNTAzMSZpdT0vNDE0MC9vc3RnLmNsa3RyawpfX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpzcGktZGV2ZWwtZ2VuZXJhbCBtYWlsaW5n
-IGxpc3QKc3BpLWRldmVsLWdlbmVyYWxAbGlzdHMuc291cmNlZm9yZ2UubmV0Cmh0dHBzOi8vbGlz
-dHMuc291cmNlZm9yZ2UubmV0L2xpc3RzL2xpc3RpbmZvL3NwaS1kZXZlbC1nZW5lcmFsCg==
+Si le message ne s'affiche pas correctement merci de suivre ce lien:  http:=
+//news.teradoo.com/re?l=3DBD0IqgrtbuI7gfk57dIhmvqxqq8I&u=3Dhttp%3A%2F%2Fnew=
+s.teradoo.com%2Fpublic%2Fread_message.jsp%3Ftsp%3D1381999696805%26custid%3D=
+16444%26uid%3D16231069273%26sig%3DBKCLFLOILDGODLDM%26mid%3D1600292154&s=3DA=
+BLNHKCEIMLAHFOD
+ =
+
+Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette semain=
+e !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette sem=
+aine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette =
+semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cet=
+te semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute =
+cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent tou=
+te cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent =
+toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pource=
+nt toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pou=
+rcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 =
+pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moins =
+70 pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moi=
+ns 70 pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !=
+Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette semain=
+e !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette sem=
+aine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette =
+semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cet=
+te semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute =
+cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent tou=
+te cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent =
+toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pource=
+nt toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pou=
+rcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 =
+pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moins =
+70 pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moi=
+ns 70 pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !=
+Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette semain=
+e !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette sem=
+aine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette =
+semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cet=
+te semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute =
+cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent tou=
+te cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent =
+toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pource=
+nt toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pou=
+rcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 =
+pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moins =
+70 pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moi=
+ns 70 pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !=
+Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette semain=
+e !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette sem=
+aine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette =
+semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cet=
+te semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute =
+cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent tou=
+te cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent =
+toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pource=
+nt toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 pou=
+rcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moins 70 =
+pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moins =
+70 pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !Moi=
+ns 70 pourcent toute cette semaine !Moins 70 pourcent toute cette semaine !=
+Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette semain=
+e !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette sem=
+aine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cette =
+semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute cet=
+te semaine !Moins 70 pourcent toute cette semaine !Moins 70 pourcent toute =
+cette semaine !
+ =
+
+Si vous ne souhaitez plus recevoir de newsletter de notre part, veuillez ac=
+c=E9der =E0 la page: http://news.teradoo.com/public/unsubscribe.jsp?gid=3D1=
+600034637&uid=3D16231069273&mid=3D1600292154&sig=3DBMDEKEPPBEBPHLEN
+---------------------------------------------------------------------------=
+---
+October Webinars: Code for Performance
+Free Intel webinars can help you accelerate application performance.
+Explore tips for MPI, OpenMP, advanced profiling, and more. Get the most fr=
+om =
+
+the latest Intel processors and coprocessors. See abstracts and register >
+http://pubads.g.doubleclick.net/gampad/clk?id=3D60135031&iu=3D/4140/ostg.cl=
+ktrk

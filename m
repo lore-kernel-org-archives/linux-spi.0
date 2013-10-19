@@ -1,63 +1,61 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH V4] spi: s3c64xx: Enable Word transfer
-Date: Sat, 19 Oct 2013 17:25:04 +0100
-Message-ID: <20131019162504.GA1863@sirena.org.uk>
+Date: Sat, 19 Oct 2013 21:04:47 +0100
+Message-ID: <20131019200447.GF2443@sirena.org.uk>
 References: <1382074356-28430-1-git-send-email-rajeshwari.s@samsung.com>
+ <20131019162504.GA1863@sirena.org.uk>
+ <CAPnjgZ1A335KstnpTRwpxEbBArtqh1sYSPQJBw6LX5zUeptpfA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="k+w/mQv8wyuph6w0"
-Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, alim.akhtar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, dianders-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
-	t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
-To: Rajeshwari S Shinde <rajeshwari.s-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="FxX07ZGw9of/ANg3"
+Cc: Rajeshwari S Shinde <rajeshwari.s@samsung.com>,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	ALIM AKHTAR <alim.akhtar@samsung.com>,
+	Doug Anderson <dianders@google.com>, t.figa@samsung.com
+To: Simon Glass <sjg@chromium.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1382074356-28430-1-git-send-email-rajeshwari.s-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAPnjgZ1A335KstnpTRwpxEbBArtqh1sYSPQJBw6LX5zUeptpfA@mail.gmail.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---k+w/mQv8wyuph6w0
+--FxX07ZGw9of/ANg3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 18, 2013 at 11:02:36AM +0530, Rajeshwari S Shinde wrote:
-> This patch enables word transfer for s3c64xx spi driver.
-> User can set bits_per_word to 32 or 16 or 8, before calling
-> spi_setup, which would enable the corresponding transfer mode.
+On Sat, Oct 19, 2013 at 10:58:47AM -0600, Simon Glass wrote:
 
-> Change-Id: Ib04f9851a3ea891d2bfa527f2100acd314fe1c98
+> If it helps, patman (tools/patman in U-Boot tree) will strip this
+> automatically (along with other Gerrit and Chrome OS stuff), run checkpatch
+> and Doug has added features to automatically cc the relevant maintainers
+> for Linux. I got sick of trying to remember to do all these steps.
 
-Please don't include stuff like this in upstrem submissions, it's of no
-use to anyone outside your organisation. =20
+Watch out for the automatic identification of MAINTAINERS though - you
+do need to pay attention to what gets set and check it, get_maintainers
+isn't 100% reliable.  You should check what it does and make sure you
+understand why each person there is getting CCed.
 
-This patch is still not setting bits_per_word_mask as far as I can see?
-
---k+w/mQv8wyuph6w0
+--FxX07ZGw9of/ANg3
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSYrJdAAoJELSic+t+oim9QTAP/RrAQ63m7g23Z+lSkUXZCCX6
-1Hi/6gubepev92ECT97jcsD11/WTKAc/mpiUHVowHha+qunaM55ciqawOam/04vL
-64TtVtP0H0crfFSn8yl9XAisBWjcPMR1eaor6DYn41XmPUGUySc0HNcGtmqxS9J5
-pT582dAyvjpXTfUmmnz1ghjhuSc1iWdYJ/jWX5k97/s+ax19LUBLTOB0evY5+cFQ
-NEsl3QGngHtJ7VBjvvSzxwt2o+RcCYf6m3Uiq2qhfO/uzrfWmAt150+IMahIKOgA
-w/ZdfdsHqLqv0mThv7d+0dygWwQ5+UJEeYDXTJfdLlaozPhIUfH9VmQA39nlGdXv
-H4voF6R9SSBG1JBSgZTOG3CWswwFE8ud6pCERKl/Ehw81u2OgKUOZNLEoZ+bgW6j
-coiCXhz6Kit0ci+9seqf2IOf5B160XEtaXpJ6Pe8Mi42K2FFQWmVgMGpR2EWwez1
-e8UHKc2HNNhH6oPzPnwJdyiVKbVL6QQq2VDvGNAziE2ysY9TqrEPfiNINq5Ob08d
-yFBoTW5VxWjewLrwE30o+5kbQWrknCsQif85YxKo86b3By+kns4d9HGC0H8mBf6H
-nCGqCetUzE1Fm/7d72zxjoN0tQJZSjCpW/6HB8AXT09vGPY3c8CGsvFrDrQ99/AE
-5AXzftnkBFzzEKdIVEmA
-=YEF3
+iQIcBAEBAgAGBQJSYuXcAAoJELSic+t+oim9qnYP/3G9u/iv38TCTyvJ2rKeGftG
+dd9NRvZwVOK9Q06rcPVOSH2ct37VU/yiNJ0ULiMo7H43k9OinJSQsBQaNU7u+7Tf
+4fkg9l9fb+m+o7Uq8wUcsRflGt8hIZEACg/gBWIFgDnsR8lvYAIYsyGgpipapUmT
+Y2uIr6HVhy1NrHZSgjTdtQCkQKKXpSc0QCaUjcu+e7xWwlB/cGQVQ0DBgGRKo5bp
+X/JdLW2vz8gDI8k+ywcErl6Fk+Rfmcwbs+M/djDay2NjGKALYH029Fnt/wIbXz0d
+XJGfTxv26o5f40i5UKgcSt8tX6yz/60Z9dC/QRNuqNZbtD9jGxh+uB5TIxNdqYVY
+hHmt6JRDhyQdfWIROj2Q14jFN5RZqEAHxam5s68AVbtQ0pDa2wzb2W03zq2zH0cL
+3fRGV1s324S/Wd+TP1fuLKlYKN5RZgtcW7JDggrksu2Y+v8hrDLywfOSQFD3ujjC
+/5xRrbhLVg/7iBUEpGK6hRQnR8+3szW9xxgShKpBtgLlLZ1dLm/+AXjHkZqSKeqm
+pB4p+NKAYdmJjD2YK66efMneBMa3Np66j+prjJhLFMqgNGlnylkwrNonA/k5daDE
+WmbJRlAEzrW6Ju/r41Hdj8TEcihxx5KzubXhxQ6RyeVKo3LKTzsyb9Xxa3P9c8DZ
+CY5XaSh9YTEJqrOk/Kjx
+=zrgN
 -----END PGP SIGNATURE-----
 
---k+w/mQv8wyuph6w0--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--FxX07ZGw9of/ANg3--

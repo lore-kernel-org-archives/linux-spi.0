@@ -1,86 +1,63 @@
-From: Rajeshwari S Shinde <rajeshwari.s@samsung.com>
-Subject: [PATCH V4] spi: s3c64xx: Enable Word transfer
-Date: Fri, 18 Oct 2013 11:02:36 +0530
-Message-ID: <1382074356-28430-1-git-send-email-rajeshwari.s@samsung.com>
-Cc: linux-spi@vger.kernel.org, sjg@chromium.org,
-	alim.akhtar@samsung.com, dianders@google.com, t.figa@samsung.com,
-	broonie@linaro.org, broonie@kernel.org
-To: linux-samsung-soc@vger.kernel.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH V4] spi: s3c64xx: Enable Word transfer
+Date: Sat, 19 Oct 2013 17:25:04 +0100
+Message-ID: <20131019162504.GA1863@sirena.org.uk>
+References: <1382074356-28430-1-git-send-email-rajeshwari.s@samsung.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="k+w/mQv8wyuph6w0"
+Cc: linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, alim.akhtar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, dianders-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
+	t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
+To: Rajeshwari S Shinde <rajeshwari.s-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1382074356-28430-1-git-send-email-rajeshwari.s-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch enables word transfer for s3c64xx spi driver.
-User can set bits_per_word to 32 or 16 or 8, before calling
-spi_setup, which would enable the corresponding transfer mode.
 
-Change-Id: Ib04f9851a3ea891d2bfa527f2100acd314fe1c98
-Signed-off-by: Rajeshwari S Shinde <rajeshwari.s@samsung.com>
----
-Changes in V2
-        - Reduced the call for s3c64xx_spi_config.
-Changes in V3:
-	- Corrected the coding style nits.
-Chnages in V4:
-	- Add switch case to support both 16 and 32 bit transfer.
-	- Corrected checkpatch error.
- drivers/spi/spi-s3c64xx.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+--k+w/mQv8wyuph6w0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 512b889..1620b74 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -491,6 +491,7 @@ static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
- {
- 	void __iomem *regs = sdd->regs;
- 	u32 modecfg, chcfg;
-+	u32 swapcfg = 0;
- 
- 	modecfg = readl(regs + S3C64XX_SPI_MODE_CFG);
- 	modecfg &= ~(S3C64XX_SPI_MODE_TXDMA_ON | S3C64XX_SPI_MODE_RXDMA_ON);
-@@ -498,6 +499,22 @@ static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
- 	chcfg = readl(regs + S3C64XX_SPI_CH_CFG);
- 	chcfg &= ~S3C64XX_SPI_CH_TXCH_ON;
- 
-+	switch (sdd->cur_bpw) {
-+	case 32:
-+		swapcfg = S3C64XX_SPI_SWAP_TX_HALF_WORD |
-+			S3C64XX_SPI_SWAP_RX_HALF_WORD;
-+	case 16:
-+		swapcfg |= S3C64XX_SPI_SWAP_TX_EN |
-+			S3C64XX_SPI_SWAP_RX_EN |
-+			S3C64XX_SPI_SWAP_RX_BYTE |
-+			S3C64XX_SPI_SWAP_TX_BYTE;
-+		writel(swapcfg, regs + S3C64XX_SPI_SWAP_CFG);
-+		break;
-+	default:
-+		writel(0, regs + S3C64XX_SPI_SWAP_CFG);
-+		break;
-+	}
-+
- 	if (dma_mode) {
- 		chcfg &= ~S3C64XX_SPI_CH_RXCH_ON;
- 	} else {
-@@ -905,13 +922,12 @@ static int s3c64xx_spi_transfer_one_message(struct spi_master *master,
- 		bpw = xfer->bits_per_word;
- 		speed = xfer->speed_hz ? : spi->max_speed_hz;
- 
--		if (xfer->len % (bpw / 8)) {
--			dev_err(&spi->dev,
--				"Xfer length(%u) not a multiple of word size(%u)\n",
--				xfer->len, bpw / 8);
--			status = -EIO;
--			goto out;
--		}
-+		/*
-+		 * Enable byte transfer if transfer length not a multiple of
-+		 * word size
-+		 */
-+		if (xfer->len % (bpw / 8))
-+			bpw = 8;
- 
- 		if (bpw != sdd->cur_bpw || speed != sdd->cur_speed) {
- 			sdd->cur_bpw = bpw;
--- 
-1.7.12.4
+On Fri, Oct 18, 2013 at 11:02:36AM +0530, Rajeshwari S Shinde wrote:
+> This patch enables word transfer for s3c64xx spi driver.
+> User can set bits_per_word to 32 or 16 or 8, before calling
+> spi_setup, which would enable the corresponding transfer mode.
+
+> Change-Id: Ib04f9851a3ea891d2bfa527f2100acd314fe1c98
+
+Please don't include stuff like this in upstrem submissions, it's of no
+use to anyone outside your organisation. =20
+
+This patch is still not setting bits_per_word_mask as far as I can see?
+
+--k+w/mQv8wyuph6w0
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSYrJdAAoJELSic+t+oim9QTAP/RrAQ63m7g23Z+lSkUXZCCX6
+1Hi/6gubepev92ECT97jcsD11/WTKAc/mpiUHVowHha+qunaM55ciqawOam/04vL
+64TtVtP0H0crfFSn8yl9XAisBWjcPMR1eaor6DYn41XmPUGUySc0HNcGtmqxS9J5
+pT582dAyvjpXTfUmmnz1ghjhuSc1iWdYJ/jWX5k97/s+ax19LUBLTOB0evY5+cFQ
+NEsl3QGngHtJ7VBjvvSzxwt2o+RcCYf6m3Uiq2qhfO/uzrfWmAt150+IMahIKOgA
+w/ZdfdsHqLqv0mThv7d+0dygWwQ5+UJEeYDXTJfdLlaozPhIUfH9VmQA39nlGdXv
+H4voF6R9SSBG1JBSgZTOG3CWswwFE8ud6pCERKl/Ehw81u2OgKUOZNLEoZ+bgW6j
+coiCXhz6Kit0ci+9seqf2IOf5B160XEtaXpJ6Pe8Mi42K2FFQWmVgMGpR2EWwez1
+e8UHKc2HNNhH6oPzPnwJdyiVKbVL6QQq2VDvGNAziE2ysY9TqrEPfiNINq5Ob08d
+yFBoTW5VxWjewLrwE30o+5kbQWrknCsQif85YxKo86b3By+kns4d9HGC0H8mBf6H
+nCGqCetUzE1Fm/7d72zxjoN0tQJZSjCpW/6HB8AXT09vGPY3c8CGsvFrDrQ99/AE
+5AXzftnkBFzzEKdIVEmA
+=YEF3
+-----END PGP SIGNATURE-----
+
+--k+w/mQv8wyuph6w0--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

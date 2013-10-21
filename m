@@ -1,69 +1,31 @@
-From: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+From: Krzysztof Kozlowski <k.kozlowski@samsung.com>
 Subject: Re: [PATCH] spi/s3c64xx: Fix doubled clock disable on suspend
-Date: Mon, 21 Oct 2013 11:42:33 +0200
-Message-ID: <5264F709.2000409@samsung.com>
+Date: Mon, 21 Oct 2013 13:41:59 +0200
+Message-ID: <1382355719.8172.0.camel@AMDC1943>
 References: <1382348117-6666-1-git-send-email-k.kozlowski@samsung.com>
+ <5264F709.2000409@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Kyungmin Park <kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
-	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <1382348117-6666-1-git-send-email-k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kyungmin Park <kyungmin.park@samsung.com>
+To: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-reply-to: <5264F709.2000409@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 21/10/13 11:35, Krzysztof Kozlowski wrote:
-> Fix doubled clock disable and unprepare during PM suspend which triggered
-> the warnings:
-[...]
-> The clocks are already disabled before suspending.
-> 
-> Additionally add PM runtime get() and put() during resume so device
-> won't sleep for the time of s3c64xx_spi_hwinit().
-> 
-> Signed-off-by: Krzysztof Kozlowski <k.kozlowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> Signed-off-by: Kyungmin Park <kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> ---
->  drivers/spi/spi-s3c64xx.c |   15 +++++++--------
->  1 file changed, 7 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-> index a80376d..374be7d 100644
-> --- a/drivers/spi/spi-s3c64xx.c
-> +++ b/drivers/spi/spi-s3c64xx.c
-> @@ -1482,10 +1482,6 @@ static int s3c64xx_spi_suspend(struct device *dev)
->  
->  	spi_master_suspend(master);
->  
-> -	/* Disable the clock */
-> -	clk_disable_unprepare(sdd->src_clk);
-> -	clk_disable_unprepare(sdd->clk);
-> -
->  	sdd->cur_speed = 0; /* Output Clock is stopped */
->  
->  	return 0;
-> @@ -1496,16 +1492,19 @@ static int s3c64xx_spi_resume(struct device *dev)
->  	struct spi_master *master = dev_get_drvdata(dev);
->  	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
->  	struct s3c64xx_spi_info *sci = sdd->cntrlr_info;
-> +	int ret;
->  
-> +	ret = pm_runtime_get_sync(dev);
+On Mon, 2013-10-21 at 11:42 +0200, Sylwester Nawrocki wrote:
+> pm_runtime_{get,put}* must not be called from drivers's system suspend/resume
+> callbacks. Please use pm_runtime_suspended() to check device runtime PM status
+> in s3c64xx_spi_{suspend,resume} callbacks and handle the clocks appropriately.
 
-pm_runtime_{get,put}* must not be called from drivers's system suspend/resume
-callbacks. Please use pm_runtime_suspended() to check device runtime PM status
-in s3c64xx_spi_{suspend,resume} callbacks and handle the clocks appropriately.
+Thanks for review, I will send fixed patch.
 
-Thanks,
-Sylwester
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Best regards,
+Krzysztof

@@ -1,56 +1,62 @@
-From: Mike Turquette <mturquette@linaro.org>
-Subject: Re: [PATCH v2 4/8] clk: samsung: s3c64xx: Add aliases for DMA clocks
-Date: Mon, 21 Oct 2013 05:11:42 -0700
-Message-ID: <20131021121142.11944.48412@quantum>
+From: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 6/8] clk: samsung: s3c64xx: Remove clock aliases of old DMA
+ driver
+Date: Mon, 21 Oct 2013 05:12:00 -0700
+Message-ID: <20131021121200.11944.16288@quantum>
 References: <1381950659-12703-1-git-send-email-tomasz.figa@gmail.com>
- <1381950659-12703-5-git-send-email-tomasz.figa@gmail.com>
+ <1381950659-12703-7-git-send-email-tomasz.figa@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8BIT
-Cc: linux-arm-kernel@lists.infradead.org, alsa-devel@alsa-project.org,
-	linux-spi@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	Ben Dooks <ben-linux@fluff.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Padmavathi Venna <padma.v@samsung.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Sachin Kamat <sachin.kamat@linaro.org>,
-	Sangbeom Kim <sbkim73@samsung.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Tomasz Figa <tomasz.figa@gmail.com>
-To: Tomasz Figa <tomasz.figa@gmail.com>,
-	linux-samsung-soc@vger.kernel.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1381950659-12703-5-git-send-email-tomasz.figa@gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
+	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Liam Girdwood <lgirdwood-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Padmavathi Venna <padma.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Sangbeom Kim <sbkim73-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Takashi Iwai <tiwai-l3A5Bk7waGM@public.gmane.org>,
+	Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1381950659-12703-7-git-send-email-tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Quoting Tomasz Figa (2013-10-16 12:10:55)
-> This patch adds clkdev aliases for clocks used by PL08x DMA driver.
+Quoting Tomasz Figa (2013-10-16 12:10:57)
+> Since the old DMA driver got removed, these aliases are no longer
+> necessary.
 > 
-> Signed-off-by: Tomasz Figa <tomasz.figa@gmail.com>
+> Signed-off-by: Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Acked-by: Mike Turquette <mturquette@linaro.org>
+Acked-by: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
 > ---
->  drivers/clk/samsung/clk-s3c64xx.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/clk/samsung/clk-s3c64xx.c | 2 --
+>  1 file changed, 2 deletions(-)
 > 
 > diff --git a/drivers/clk/samsung/clk-s3c64xx.c b/drivers/clk/samsung/clk-s3c64xx.c
-> index 7d2c842..06cf105 100644
+> index 06cf105..8e27aee 100644
 > --- a/drivers/clk/samsung/clk-s3c64xx.c
 > +++ b/drivers/clk/samsung/clk-s3c64xx.c
-> @@ -332,7 +332,9 @@ static struct samsung_clock_alias s3c64xx_clock_aliases[] = {
+> @@ -331,9 +331,7 @@ static struct samsung_clock_alias s3c64xx_clock_aliases[] = {
+>         ALIAS(HCLK_HSMMC1, "s3c-sdhci.1", "mmc_busclk.0"),
 >         ALIAS(HCLK_HSMMC0, "s3c-sdhci.0", "hsmmc"),
 >         ALIAS(HCLK_HSMMC0, "s3c-sdhci.0", "mmc_busclk.0"),
->         ALIAS(HCLK_DMA1, NULL, "dma1"),
-> +       ALIAS(HCLK_DMA1, "dma-pl080s.1", "apb_pclk"),
->         ALIAS(HCLK_DMA0, NULL, "dma0"),
-> +       ALIAS(HCLK_DMA0, "dma-pl080s.0", "apb_pclk"),
+> -       ALIAS(HCLK_DMA1, NULL, "dma1"),
+>         ALIAS(HCLK_DMA1, "dma-pl080s.1", "apb_pclk"),
+> -       ALIAS(HCLK_DMA0, NULL, "dma0"),
+>         ALIAS(HCLK_DMA0, "dma-pl080s.0", "apb_pclk"),
 >         ALIAS(HCLK_CAMIF, "s3c-camif", "camif"),
 >         ALIAS(HCLK_LCD, "s3c-fb", "lcd"),
->         ALIAS(PCLK_SPI1, "s3c6410-spi.1", "spi"),
 > -- 
 > 1.8.3.2
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

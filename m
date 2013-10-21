@@ -1,44 +1,66 @@
-From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH -next] spi: atmel: fix return value check in atmel_spi_probe()
-Date: Mon, 21 Oct 2013 11:12:02 +0800
-Message-ID: <CAPgLHd86H42hU1On2J3hCV1resNQ-PVCGB3Q=icaLoDQLSOg_w@mail.gmail.com>
+From: "Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: RE: [BUG] spi/spi-atmel: DMA rx buffer corruption with
+ SPI_IOC_MESSAGE
+Date: Mon, 21 Oct 2013 08:02:05 +0000
+Message-ID: <B256D81BAE5131468A838E5D7A24364172E9CFB1@penmbx01>
+References: <CACQ1gAhNFTdG_2OCTnsOCaBozHnGb9EwAGHT5+f=cARRpC_WBg@mail.gmail.com>
+ <CACQ1gAjT30VLg5u5s6skRw0svMLavM2rZkG879VzmphtoKb=Vg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Ferre, Nicolas" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CACQ1gAjT30VLg5u5s6skRw0svMLavM2rZkG879VzmphtoKb=Vg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
-
-In case of error, the function devm_ioremap_resource() returns ERR_PTR()
-and never returns NULL. The NULL test in the return value check should be
-replaced with IS_ERR().
-
-Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
----
- drivers/spi/spi-atmel.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 118a938..273db0b 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1547,8 +1547,10 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 
- 	as->pdev = pdev;
- 	as->regs = devm_ioremap_resource(&pdev->dev, regs);
--	if (!as->regs)
-+	if (IS_ERR(as->regs)) {
-+		ret = PTR_ERR(as->regs);
- 		goto out_free_buffer;
-+	}
- 	as->phybase = regs->start;
- 	as->irq = irq;
- 	as->clk = clk;
-
+SGkgUmljaGFyZCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBSaWNo
+YXJkIEdlbm91ZCBbbWFpbHRvOnJpY2hhcmQuZ2Vub3VkQGdtYWlsLmNvbV0NCj4gU2VudDogMjAx
+M+W5tDEw5pyIMTfml6UgMTk6MDENCj4gVG86IFlhbmcsIFdlbnlvdQ0KPiBDYzogbGludXgtc3Bp
+QHZnZXIua2VybmVsLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgRmVycmUsIE5p
+Y29sYXM7DQo+IE1hcmsgQnJvd24NCj4gU3ViamVjdDogUmU6IFtCVUddIHNwaS9zcGktYXRtZWw6
+IERNQSByeCBidWZmZXIgY29ycnVwdGlvbiB3aXRoDQo+IFNQSV9JT0NfTUVTU0FHRQ0KPiANCj4g
+MjAxMy8xMC84IFJpY2hhcmQgR2Vub3VkIDxyaWNoYXJkLmdlbm91ZEBnbWFpbC5jb20+Og0KPiA+
+IEhpIGFsbCwNCj4gPg0KPiA+IEkgZmluYWxseSBmb3VuZCB0aGUgYnVnIEkgc2F3IG1vbnRocyBh
+Z28sIGJlZm9yZSAiW1BBVENIIHY4IDMvOF0NCj4gPiBzcGkvc3BpLWF0bWVsOiBhZGQgZG1hZW5n
+aW5lIHN1cHBvcnQiIHdhcyBtZXJnZWQuDQo+ID4NCj4gPiBIZXJlIGl0IGlzOg0KPiA+DQo+ID4g
+V2hlbiB0aGUgaW9jdGwgU1BJX0lPQ19NRVNTQUdFIGlzIHVzZWQgd2l0aCBzbWFsbCBhbmQgYmln
+IGJ1ZmZlcnMsDQo+ID4gdGhlIGJpZyBSWCBidWZmZXIgaXMgY29ycnVwdGVkIHdpdGggYnl0ZXMg
+ZnJvbSB0aGUgYmlnIFRYIGJ1ZmZlci4NCj4gPiAoU21hbGwgbWVhbnMgc2l6ZSA8IERNQV9NSU5f
+QllURVMsIEJpZyBtZWFucyBzaXplID4NCj4gRE1BX01JTl9CWVRFUykNCj4gPg0KPiA+IEknbSBh
+dHRhY2hpbmcgdGhlIHRlc3Qgc29mdHdhcmUgdGhhdCBJIHVzZWQgKCAuL3NwaV90ZXN0IC9kZXYv
+c3BpZGV2eC54ICkNCj4gPg0KPiA+IEl0IGZpbGxzIDMgVFggYnVmZmVycyB3aXRoIDB4QUEgcGF0
+dGVybjogYSBzbWFsbCwgYSBiaWcgYW5kIGEgc21hbGwgYWdhaW4uDQo+ID4gSXQgcmVhZHMgaW4g
+cmV0dXJuIDMgUlggYnVmZmVycy4NCj4gPiBUaGUgTUlTTyBwaW4gaGFzIHRvIGJlIG9uIDMuM3Yu
+DQo+ID4NCj4gPiBJdCBjaGVja3MgaWYgdGhlIHJlY2VpdmVkIGJ1ZmZlcnMgYXJlIGZpbGxlZCB3
+aXRoIDB4RkYgKHRoZXkgc2hvdWxkDQo+ID4gYmUsIGFzIE1JU08gaXMgaGlnaCkuDQo+ID4gQW5k
+IEkndmUgZ290IGEgbG90IG9mIGJ1ZmZlcnMgZmlsbGVkIHBhcnRpYWxseSB3aXRoIDB4QUEgYnl0
+ZXMuDQo+ID4NCj4gPiBCVVQsIGlmIHlvdSBhcHBseSB0aGlzIHBhdGNoOg0KPiA+IC0tLTg8LS0t
+LQ0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktYXRtZWwuYyBiL2RyaXZlcnMvc3Bp
+L3NwaS1hdG1lbC5jDQo+ID4gaW5kZXggODNjZjYwOS4uY2RlNDJhNCAxMDA2NDQNCj4gPiAtLS0g
+YS9kcml2ZXJzL3NwaS9zcGktYXRtZWwuYw0KPiA+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1hdG1l
+bC5jDQo+ID4gQEAgLTE4Nyw3ICsxODcsNyBAQA0KPiA+ICAvKiB1c2UgUElPIGZvciBzbWFsbCB0
+cmFuc2ZlcnMsIGF2b2lkaW5nIERNQSBzZXR1cC90ZWFyZG93biBvdmVyaGVhZA0KPiBhbmQNCj4g
+PiAgICogY2FjaGUgb3BlcmF0aW9uczsgYmV0dGVyIGhldXJpc3RpY3MgY29uc2lkZXIgd29yZHNp
+emUgYW5kIGJpdHJhdGUuDQo+ID4gICAqLw0KPiA+IC0jZGVmaW5lIERNQV9NSU5fQllURVMgIDE2
+DQo+ID4gKyNkZWZpbmUgRE1BX01JTl9CWVRFUyAgMA0KPiA+DQo+ID4gIHN0cnVjdCBhdG1lbF9z
+cGlfZG1hIHsNCj4gPiAgICAgICAgIHN0cnVjdCBkbWFfY2hhbiAgICAgICAgICAgICAgICAgKmNo
+YW5fcng7DQo+ID4gLS0tODwtLS0tDQo+ID4gVGhlcmUncyBubyBlcnJvciBhbnkgbW9yZS4NCj4g
+PiBTbyB0aGVyZSdzIHNvbWV0aGluZyB3cm9uZyBoYXBwZW5pbmcgd2hlbiBzd2l0Y2hpbmcgZnJv
+bS90byBwaW8NCj4gPiB0cmFuc2ZlciB0by9mcm9tIERNQS4NCj4gPg0KPiA+IFdlIGRpZG4ndCBz
+YXcgdGhhdCBhdCB0aGUgdGltZSBvZiB0aGUgbWVyZ2UgYmVjYXVzZSB3ZSBkaWQgdGhlIHRlc3QN
+Cj4gPiB3aXRoIGEgbG9vcCBvbiBNSVNPL01PU0ksDQo+ID4gc28gdGhlIFJYIGJ1ZmZlciB3YXMg
+Y29ycnVwdGVkIHdpdGggaWRlbnRpY2FsIGJ5dGVzLg0KPiA+DQo+ID4gQmVzdCByZWdhcmRzLA0K
+PiA+IFJpY2hhcmQuDQo+IA0KPiBIaSBXZW55b3UsDQo+IA0KPiBEaWQgeW91IGhhdmUgdGhlIG9w
+cG9ydHVuaXR5IHRvIGdpdmUgaXQgYSB0ZXN0ID8NCj4gDQo+IFRocmVhZDogaHR0cHM6Ly9sa21s
+Lm9yZy9sa21sLzIwMTMvMTAvOC8zMjkNCkkgdHJpZWQgdG8gcmVwcm9kdWNlIGl0IHdpdGggdGhp
+cyB0aHJlYWQsIGJ1dCBJIGRpZG4ndA0KV2hpY2ggc2xhdmUgZGV2aWNlIGRpZCB5b3UgdXNlPyAN
+Cg0KPiANCj4gUmljaGFyZC4NCg0KQmVzdCBSZWdhcmRzLA0KV2VueW91IFlhbmcNCg==
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,81 +1,63 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi/s3c64xx: Do not ignore return value of
- spi_master_resume/suspend
-Date: Tue, 22 Oct 2013 09:34:01 +0100
-Message-ID: <20131022083401.GB20821@sirena.org.uk>
-References: <1382362971-16763-1-git-send-email-k.kozlowski@samsung.com>
+From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH -next] spi: atmel: fix return value check in atmel_spi_probe()
+Date: Tue, 22 Oct 2013 16:03:39 +0100
+Message-ID: <526693CB.2060408@atmel.com>
+References: <CAPgLHd86H42hU1On2J3hCV1resNQ-PVCGB3Q=icaLoDQLSOg_w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============6793641679639027371=="
-Cc: linux-samsung-soc@vger.kernel.org,
- Sylwester Nawrocki <s.nawrocki@samsung.com>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Kyungmin Park <kyungmin.park@samsung.com>,
- Kukjin Kim <kgene.kim@samsung.com>, Ben Dooks <ben-linux@fluff.org>,
- linux-arm-kernel@lists.infradead.org
-To: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1382362971-16763-1-git-send-email-k.kozlowski@samsung.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
-
-
---===============6793641679639027371==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IrhDeMKUP4DT/M7F"
-Content-Disposition: inline
-
-
---IrhDeMKUP4DT/M7F
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Oct 21, 2013 at 03:42:49PM +0200, Krzysztof Kozlowski wrote:
-> During PM resume and suspend do not ignore the return value of
-> spi_master_suspend() or spi_master_resume(). Instead pass it further.
-
-Applied both, thanks.
-
---IrhDeMKUP4DT/M7F
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSZjh2AAoJELSic+t+oim9sRoP/Ay1CyZUecRw/nViX/66ZvNS
-QJhvI+1zo9wLvokdZtQUzGubzDlntCN+PEblO7kqRlmEqXAou80t9qjOmhMADsMr
-7QqGGrl5UK0eNs7VFpQMEkh/iYpRARwCtee5D2bP7uwobkeGJxnwovYllEw0Fw/7
-AVcGzk22Pjp2lr+KxrVCe3/tfXxZC8L2+mq3xL3S6A1GQNBDkO2Vff/9KWQaZ3Va
-O2TFu150L0A9SO+Q06wXN+ggF9ETNsRSfAvJcWz2JRIyKNlUsSC3bBtBq5t22k3X
-Lse7As428HnF4xcxzM640k+aKJMwrwD8ewkZuzJwJ9dE3NbWDw6KyMcKjzMreQNb
-bhkHFGiGw2OvFWnTNX7vED/CFR1MQxt3R/rjyokfax6HPD5HlTe/VwLaKJ3An/Xf
-JSf97qxCuFlcyuO3XrawpUbwT9jruN0aB8Fs6PPX0RrrpijrrqySMj/U0LhnAFPZ
-m3UOqB8Aix8FQ8nign1SH9nhKcIQlOuAKgJLVPO3ToxQepv+6Rk0ubX2KOOq28pt
-9ikaLBK3T7uv5w3+QMcvIVxJmR59wOulKputvxq4iawQuyHLUPBFs1rPU3IKMUlx
-iS4NtYljoEQs1RDFmMLHM7IBfGR7h1qHrqshNYSkcVltn3fRt7UlO86sLwZFwDpp
-LiTK6c7CgKxwiO6+Vkzv
-=D5GZ
------END PGP SIGNATURE-----
-
---IrhDeMKUP4DT/M7F--
-
-
---===============6793641679639027371==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Cc: <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAPgLHd86H42hU1On2J3hCV1resNQ-PVCGB3Q=icaLoDQLSOg_w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+On 21/10/2013 04:12, Wei Yongjun :
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+>
+> In case of error, the function devm_ioremap_resource() returns ERR_PTR()
+> and never returns NULL.
 
---===============6793641679639027371==--
+Absolutely.
+
+> The NULL test in the return value check should be
+> replaced with IS_ERR().
+>
+> Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+
+Thanks for having spotted this:
+
+Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+
+> ---
+>   drivers/spi/spi-atmel.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 118a938..273db0b 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -1547,8 +1547,10 @@ static int atmel_spi_probe(struct platform_device *pdev)
+>
+>   	as->pdev = pdev;
+>   	as->regs = devm_ioremap_resource(&pdev->dev, regs);
+> -	if (!as->regs)
+> +	if (IS_ERR(as->regs)) {
+> +		ret = PTR_ERR(as->regs);
+>   		goto out_free_buffer;
+> +	}
+>   	as->phybase = regs->start;
+>   	as->irq = irq;
+>   	as->clk = clk;
+>
+>
+
+
+-- 
+Nicolas Ferre
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

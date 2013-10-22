@@ -1,29 +1,99 @@
-From: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Subject: Re: [PATCH 1/2] spi/s3c64xx: Do not ignore return value of
- spi_master_resume/suspend
-Date: Mon, 21 Oct 2013 15:50:42 +0200
-Message-ID: <52653132.4090803@samsung.com>
-References: <1382362971-16763-1-git-send-email-k.kozlowski@samsung.com>
+From: "Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: RE: [BUG] spi/spi-atmel: DMA rx buffer corruption with
+ SPI_IOC_MESSAGE
+Date: Tue, 22 Oct 2013 02:51:52 +0000
+Message-ID: <B256D81BAE5131468A838E5D7A24364172E9D2EB@penmbx01>
+References: <CACQ1gAhNFTdG_2OCTnsOCaBozHnGb9EwAGHT5+f=cARRpC_WBg@mail.gmail.com>
+ <CACQ1gAjT30VLg5u5s6skRw0svMLavM2rZkG879VzmphtoKb=Vg@mail.gmail.com>
+ <B256D81BAE5131468A838E5D7A24364172E9CFB1@penmbx01>
+ <CACQ1gAh-ZmL27q2w-0Aj4Lw6p6Y87cEJL7k_Ai9taDmsH_-qjg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kyungmin Park <kyungmin.park@samsung.com>
-To: Krzysztof Kozlowski <k.kozlowski@samsung.com>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <1382362971-16763-1-git-send-email-k.kozlowski@samsung.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Ferre, Nicolas" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, "Lin, JM" <JM.Lin-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CACQ1gAh-ZmL27q2w-0Aj4Lw6p6Y87cEJL7k_Ai9taDmsH_-qjg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Language: en-US
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 21/10/13 15:42, Krzysztof Kozlowski wrote:
-> During PM resume and suspend do not ignore the return value of
-> spi_master_suspend() or spi_master_resume(). Instead pass it further.
-> 
-> Signed-off-by: Krzysztof Kozlowski <k.kozlowski@samsung.com>
-> Signed-off-by: Kyungmin Park <kyungmin.park@samsung.com>
-
-Reviewed-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogUmljaGFyZCBHZW5vdWQg
+W21haWx0bzpyaWNoYXJkLmdlbm91ZEBnbWFpbC5jb21dDQo+IFNlbnQ6IDIwMTPlubQxMOaciDIx
+5pelIDE2OjI2DQo+IFRvOiBZYW5nLCBXZW55b3UNCj4gQ2M6IGxpbnV4LXNwaUB2Z2VyLmtlcm5l
+bC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IEZlcnJlLCBOaWNvbGFzOw0KPiBN
+YXJrIEJyb3duDQo+IFN1YmplY3Q6IFJlOiBbQlVHXSBzcGkvc3BpLWF0bWVsOiBETUEgcnggYnVm
+ZmVyIGNvcnJ1cHRpb24gd2l0aA0KPiBTUElfSU9DX01FU1NBR0UNCj4gDQo+IDIwMTMvMTAvMjEg
+WWFuZywgV2VueW91IDxXZW55b3UuWWFuZ0BhdG1lbC5jb20+Og0KPiA+IEhpIFJpY2hhcmQsDQo+
+ID4NCj4gPj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPj4gRnJvbTogUmljaGFyZCBH
+ZW5vdWQgW21haWx0bzpyaWNoYXJkLmdlbm91ZEBnbWFpbC5jb21dDQo+ID4+IFNlbnQ6IDIwMTPl
+ubQxMOaciDE35pelIDE5OjAxDQo+ID4+IFRvOiBZYW5nLCBXZW55b3UNCj4gPj4gQ2M6IGxpbnV4
+LXNwaUB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IEZlcnJl
+LA0KPiBOaWNvbGFzOw0KPiA+PiBNYXJrIEJyb3duDQo+ID4+IFN1YmplY3Q6IFJlOiBbQlVHXSBz
+cGkvc3BpLWF0bWVsOiBETUEgcnggYnVmZmVyIGNvcnJ1cHRpb24gd2l0aA0KPiA+PiBTUElfSU9D
+X01FU1NBR0UNCj4gPj4NCj4gPj4gMjAxMy8xMC84IFJpY2hhcmQgR2Vub3VkIDxyaWNoYXJkLmdl
+bm91ZEBnbWFpbC5jb20+Og0KPiA+PiA+IEhpIGFsbCwNCj4gPj4gPg0KPiA+PiA+IEkgZmluYWxs
+eSBmb3VuZCB0aGUgYnVnIEkgc2F3IG1vbnRocyBhZ28sIGJlZm9yZSAiW1BBVENIIHY4IDMvOF0N
+Cj4gPj4gPiBzcGkvc3BpLWF0bWVsOiBhZGQgZG1hZW5naW5lIHN1cHBvcnQiIHdhcyBtZXJnZWQu
+DQo+ID4+ID4NCj4gPj4gPiBIZXJlIGl0IGlzOg0KPiA+PiA+DQo+ID4+ID4gV2hlbiB0aGUgaW9j
+dGwgU1BJX0lPQ19NRVNTQUdFIGlzIHVzZWQgd2l0aCBzbWFsbCBhbmQgYmlnIGJ1ZmZlcnMsDQo+
+ID4+ID4gdGhlIGJpZyBSWCBidWZmZXIgaXMgY29ycnVwdGVkIHdpdGggYnl0ZXMgZnJvbSB0aGUg
+YmlnIFRYIGJ1ZmZlci4NCj4gPj4gPiAoU21hbGwgbWVhbnMgc2l6ZSA8IERNQV9NSU5fQllURVMs
+IEJpZyBtZWFucyBzaXplID4NCj4gPj4gRE1BX01JTl9CWVRFUykNCj4gPj4gPg0KPiA+PiA+IEkn
+bSBhdHRhY2hpbmcgdGhlIHRlc3Qgc29mdHdhcmUgdGhhdCBJIHVzZWQgKCAuL3NwaV90ZXN0IC9k
+ZXYvc3BpZGV2eC54ICkNCj4gPj4gPg0KPiA+PiA+IEl0IGZpbGxzIDMgVFggYnVmZmVycyB3aXRo
+IDB4QUEgcGF0dGVybjogYSBzbWFsbCwgYSBiaWcgYW5kIGEgc21hbGwgYWdhaW4uDQo+ID4+ID4g
+SXQgcmVhZHMgaW4gcmV0dXJuIDMgUlggYnVmZmVycy4NCj4gPj4gPiBUaGUgTUlTTyBwaW4gaGFz
+IHRvIGJlIG9uIDMuM3YuDQo+ID4+ID4NCj4gPj4gPiBJdCBjaGVja3MgaWYgdGhlIHJlY2VpdmVk
+IGJ1ZmZlcnMgYXJlIGZpbGxlZCB3aXRoIDB4RkYgKHRoZXkgc2hvdWxkDQo+ID4+ID4gYmUsIGFz
+IE1JU08gaXMgaGlnaCkuDQo+ID4+ID4gQW5kIEkndmUgZ290IGEgbG90IG9mIGJ1ZmZlcnMgZmls
+bGVkIHBhcnRpYWxseSB3aXRoIDB4QUEgYnl0ZXMuDQo+ID4+ID4NCj4gPj4gPiBCVVQsIGlmIHlv
+dSBhcHBseSB0aGlzIHBhdGNoOg0KPiA+PiA+IC0tLTg8LS0tLQ0KPiA+PiA+IGRpZmYgLS1naXQg
+YS9kcml2ZXJzL3NwaS9zcGktYXRtZWwuYyBiL2RyaXZlcnMvc3BpL3NwaS1hdG1lbC5jDQo+ID4+
+ID4gaW5kZXggODNjZjYwOS4uY2RlNDJhNCAxMDA2NDQNCj4gPj4gPiAtLS0gYS9kcml2ZXJzL3Nw
+aS9zcGktYXRtZWwuYw0KPiA+PiA+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1hdG1lbC5jDQo+ID4+
+ID4gQEAgLTE4Nyw3ICsxODcsNyBAQA0KPiA+PiA+ICAvKiB1c2UgUElPIGZvciBzbWFsbCB0cmFu
+c2ZlcnMsIGF2b2lkaW5nIERNQSBzZXR1cC90ZWFyZG93bg0KPiBvdmVyaGVhZA0KPiA+PiBhbmQN
+Cj4gPj4gPiAgICogY2FjaGUgb3BlcmF0aW9uczsgYmV0dGVyIGhldXJpc3RpY3MgY29uc2lkZXIg
+d29yZHNpemUgYW5kDQo+IGJpdHJhdGUuDQo+ID4+ID4gICAqLw0KPiA+PiA+IC0jZGVmaW5lIERN
+QV9NSU5fQllURVMgIDE2DQo+ID4+ID4gKyNkZWZpbmUgRE1BX01JTl9CWVRFUyAgMA0KPiA+PiA+
+DQo+ID4+ID4gIHN0cnVjdCBhdG1lbF9zcGlfZG1hIHsNCj4gPj4gPiAgICAgICAgIHN0cnVjdCBk
+bWFfY2hhbiAgICAgICAgICAgICAgICAgKmNoYW5fcng7DQo+ID4+ID4gLS0tODwtLS0tDQo+ID4+
+ID4gVGhlcmUncyBubyBlcnJvciBhbnkgbW9yZS4NCj4gPj4gPiBTbyB0aGVyZSdzIHNvbWV0aGlu
+ZyB3cm9uZyBoYXBwZW5pbmcgd2hlbiBzd2l0Y2hpbmcgZnJvbS90byBwaW8NCj4gPj4gPiB0cmFu
+c2ZlciB0by9mcm9tIERNQS4NCj4gPj4gPg0KPiA+PiA+IFdlIGRpZG4ndCBzYXcgdGhhdCBhdCB0
+aGUgdGltZSBvZiB0aGUgbWVyZ2UgYmVjYXVzZSB3ZSBkaWQgdGhlIHRlc3QNCj4gPj4gPiB3aXRo
+IGEgbG9vcCBvbiBNSVNPL01PU0ksDQo+ID4+ID4gc28gdGhlIFJYIGJ1ZmZlciB3YXMgY29ycnVw
+dGVkIHdpdGggaWRlbnRpY2FsIGJ5dGVzLg0KPiA+PiA+DQo+ID4+ID4gQmVzdCByZWdhcmRzLA0K
+PiA+PiA+IFJpY2hhcmQuDQo+ID4+DQo+ID4+IEhpIFdlbnlvdSwNCj4gPj4NCj4gPj4gRGlkIHlv
+dSBoYXZlIHRoZSBvcHBvcnR1bml0eSB0byBnaXZlIGl0IGEgdGVzdCA/DQo+ID4+DQo+ID4+IFRo
+cmVhZDogaHR0cHM6Ly9sa21sLm9yZy9sa21sLzIwMTMvMTAvOC8zMjkNCj4gPiBJIHRyaWVkIHRv
+IHJlcHJvZHVjZSBpdCB3aXRoIHRoaXMgdGhyZWFkLCBidXQgSSBkaWRuJ3QNCj4gPiBXaGljaCBz
+bGF2ZSBkZXZpY2UgZGlkIHlvdSB1c2U/DQo+IA0KPiBIaSBXZW55b3UsDQo+IA0KPiBJJ20gbm90
+IHVzaW5nIGFueSBzbGF2ZSBkZXZpY2UsIEknbSBqdXN0IHNldHRpbmcgdGhlIE1JU08gcGluIHRv
+IDMuM1YsDQo+IHRoZW4gSSBleGVjdXRlIHRoZSBDIGNvZGUgKCBodHRwczovL2xrbWwub3JnL2xr
+bWwvMjAxMy8xMC84LzMyOSApDQo+IFNvLCB3ZSBzaG91bGQgb25seSByZWNlaXZlIDB4RkYgaW4g
+dGhlIGJ1ZmZlci4NCj4gQnV0IGknbSBnZXR0aW5nIDoNCj4gYWEgYWEgYWEgYWEgYWEgYWEgYWEg
+YWEgYWEgYWEgYWEgYWEgYWEgYWEgZmYgZmYNCj4gZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYg
+ZmYgZmYgZmYgZmYgZmYgZmYgZmYNCj4gZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYg
+ZmYgZmYgZmYgZmYgZmYNCj4gZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYg
+ZmYgZmYgZmYNCj4gZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYg
+ZmYNCj4gZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYNCj4g
+ZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYNCj4gZmYgZmYg
+ZmYgZmYgZmYgZmYgZmYgZmYNCj4gYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEg
+YWEgYWEgYWEgYWENCj4gYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEgYWEg
+ZmYgZmYNCj4gZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYN
+Cj4gZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYNCj4gZmYg
+ZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYNCj4gZmYgZmYgZmYg
+ZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYNCj4gZmYgZmYgZmYgZmYgZmYg
+ZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYgZmYNCj4gZmYgZmYgZmYgZmYgZmYgZmYgZmYg
+ZmYNCj4gDQpIaSwgUmljaGFyZCwNCg0KVGhlIGJ1ZyBpcyByZXByb2R1Y2VkLg0KVGVzdGVkIG9u
+IGF0OTFzYW05ZzI1ZWssIExpbnV4LTMuNi45Lg0KDQo+IFJpY2hhcmQuDQoNCkJlc3QgUmVnYXJk
+cywNCldlbnlvdSBZYW5nDQo=
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

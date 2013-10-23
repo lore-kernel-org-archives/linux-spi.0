@@ -1,93 +1,54 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH] spi: spi-imx: only enable the clocks when we start to transfer a message
-Date: Wed, 23 Oct 2013 16:31:50 +0800
-Message-ID: <1382517110-29913-1-git-send-email-b32955@freescale.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: spi-imx: only enable the clocks when we start to
+ transfer a message
+Date: Wed, 23 Oct 2013 10:05:30 +0100
+Message-ID: <20131023090530.GH9388@sirena.org.uk>
+References: <1382517110-29913-1-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ZPDwMsyfds7q4mrK"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1382517110-29913-1-git-send-email-b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Current code keeps the clocks enabled all the time, it wastes the power
-when there is no operaiton on the spi controller.
 
-In order to save the power, this patch adds the two hooks:
-   spi_imx_prepare_message: enable the clocks for this message
-   spi_imx_unprepare_message: disable the clocks.
+--ZPDwMsyfds7q4mrK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This patch also disables the clocks in the end of the probe.
+On Wed, Oct 23, 2013 at 04:31:50PM +0800, Huang Shijie wrote:
+> Current code keeps the clocks enabled all the time, it wastes the power
+> when there is no operaiton on the spi controller.
 
-Signed-off-by: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
- drivers/spi/spi-imx.c |   33 +++++++++++++++++++++++++++++++++
- 1 files changed, 33 insertions(+), 0 deletions(-)
+Applied, thanks.
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 02d9f46..b80f2f7 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -749,6 +749,35 @@ static void spi_imx_cleanup(struct spi_device *spi)
- {
- }
- 
-+static int
-+spi_imx_prepare_message(struct spi_master *master, struct spi_message *msg)
-+{
-+	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
-+	int ret;
-+
-+	ret = clk_enable(spi_imx->clk_per);
-+	if (ret)
-+		return ret;
-+
-+	ret = clk_enable(spi_imx->clk_ipg);
-+	if (ret) {
-+		clk_disable(spi_imx->clk_per);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int
-+spi_imx_unprepare_message(struct spi_master *master, struct spi_message *msg)
-+{
-+	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
-+
-+	clk_disable(spi_imx->clk_ipg);
-+	clk_disable(spi_imx->clk_per);
-+	return 0;
-+}
-+
- static int spi_imx_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -810,6 +839,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 	spi_imx->bitbang.txrx_bufs = spi_imx_transfer;
- 	spi_imx->bitbang.master->setup = spi_imx_setup;
- 	spi_imx->bitbang.master->cleanup = spi_imx_cleanup;
-+	spi_imx->bitbang.master->prepare_message = spi_imx_prepare_message;
-+	spi_imx->bitbang.master->unprepare_message = spi_imx_unprepare_message;
- 	spi_imx->bitbang.master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 
- 	init_completion(&spi_imx->xfer_done);
-@@ -872,6 +903,8 @@ static int spi_imx_probe(struct platform_device *pdev)
- 
- 	dev_info(&pdev->dev, "probed\n");
- 
-+	clk_disable(spi_imx->clk_ipg);
-+	clk_disable(spi_imx->clk_per);
- 	return ret;
- 
- out_clk_put:
--- 
-1.7.2.rc3
+--ZPDwMsyfds7q4mrK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
+iQIcBAEBAgAGBQJSZ5FXAAoJELSic+t+oim9JqQQAJCCQ3XD8W7aD9/muaqVwl8o
+tU73LXOtb4sf3k5yJrSHyjE15etxox90nzTbPPcTZgB9p5MK6jK/PYptwKBbK3H5
+aSyn09VO0ha1IVCkMw3iHugonfAA6kbdLdPx0YWHrEGbaaBmVXIpxpRk+uixsLLZ
+Y5lxerHpE6vBD76FlJdn7LL1O/8CeO9g8TK4RsFHVb7UQkJX9qbVpBnBiutWV9/0
+QJAB6AQtUMqRJUVHtHPKO5GIUOQP/CJO7r7dhwUluQ3Urv9dU10sfxlvhLAUo2Qf
++l1Z85T6iPJw4+O2U1yzjbTzOu1xKB5uBjX+He6pTWc6TdDuwfl3Zhd3OWFQ53Aa
+B8DLHEWywMWIflIgwxMmXZVwiKnHw6yA92pBsx+sBa/RuxieYcIQ8NjP7vs/tFkm
+GNtozVkPfythHSjnpWmRsBBhcWkxvKFfwoeyw/Su6mOZ2ruRUzwk0habTafqEj4D
+4oHTKVkbwPx5H8WkFAV9q41Adp9HCOln+nlyPZ9uYADy1RITkXdlFPaSrEwznHBc
+/hqPVq85jMJ4iYeJUrhn2d9zyNvegfxQpYD40fz0bY4uIL/qd2Sdn3lj/zG4YSoS
+qaXvtulkUEh/mGafLkykjVMwKdGpDky9+4y2tL7wEG6WIppN7jVkcP9FRKQ++ufd
+j4f20mQXRrMqB+ozAQEK
+=oqTk
+-----END PGP SIGNATURE-----
+
+--ZPDwMsyfds7q4mrK--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

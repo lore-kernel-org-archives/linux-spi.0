@@ -1,54 +1,60 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-imx: only enable the clocks when we start to
- transfer a message
-Date: Wed, 23 Oct 2013 10:05:30 +0100
-Message-ID: <20131023090530.GH9388@sirena.org.uk>
-References: <1382517110-29913-1-git-send-email-b32955@freescale.com>
+Subject: Re: [PATCH -next] spi: atmel: fix return value check in
+ atmel_spi_probe()
+Date: Wed, 23 Oct 2013 10:38:19 +0100
+Message-ID: <20131023093819.GJ9388@sirena.org.uk>
+References: <CAPgLHd86H42hU1On2J3hCV1resNQ-PVCGB3Q=icaLoDQLSOg_w@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ZPDwMsyfds7q4mrK"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="ed/6oDxOLijJh8b0"
+Cc: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1382517110-29913-1-git-send-email-b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <CAPgLHd86H42hU1On2J3hCV1resNQ-PVCGB3Q=icaLoDQLSOg_w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---ZPDwMsyfds7q4mrK
+--ed/6oDxOLijJh8b0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 23, 2013 at 04:31:50PM +0800, Huang Shijie wrote:
-> Current code keeps the clocks enabled all the time, it wastes the power
-> when there is no operaiton on the spi controller.
+On Mon, Oct 21, 2013 at 11:12:02AM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+>=20
+> In case of error, the function devm_ioremap_resource() returns ERR_PTR()
+> and never returns NULL. The NULL test in the return value check should be
+> replaced with IS_ERR().
 
 Applied, thanks.
 
---ZPDwMsyfds7q4mrK
+--ed/6oDxOLijJh8b0
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSZ5FXAAoJELSic+t+oim9JqQQAJCCQ3XD8W7aD9/muaqVwl8o
-tU73LXOtb4sf3k5yJrSHyjE15etxox90nzTbPPcTZgB9p5MK6jK/PYptwKBbK3H5
-aSyn09VO0ha1IVCkMw3iHugonfAA6kbdLdPx0YWHrEGbaaBmVXIpxpRk+uixsLLZ
-Y5lxerHpE6vBD76FlJdn7LL1O/8CeO9g8TK4RsFHVb7UQkJX9qbVpBnBiutWV9/0
-QJAB6AQtUMqRJUVHtHPKO5GIUOQP/CJO7r7dhwUluQ3Urv9dU10sfxlvhLAUo2Qf
-+l1Z85T6iPJw4+O2U1yzjbTzOu1xKB5uBjX+He6pTWc6TdDuwfl3Zhd3OWFQ53Aa
-B8DLHEWywMWIflIgwxMmXZVwiKnHw6yA92pBsx+sBa/RuxieYcIQ8NjP7vs/tFkm
-GNtozVkPfythHSjnpWmRsBBhcWkxvKFfwoeyw/Su6mOZ2ruRUzwk0habTafqEj4D
-4oHTKVkbwPx5H8WkFAV9q41Adp9HCOln+nlyPZ9uYADy1RITkXdlFPaSrEwznHBc
-/hqPVq85jMJ4iYeJUrhn2d9zyNvegfxQpYD40fz0bY4uIL/qd2Sdn3lj/zG4YSoS
-qaXvtulkUEh/mGafLkykjVMwKdGpDky9+4y2tL7wEG6WIppN7jVkcP9FRKQ++ufd
-j4f20mQXRrMqB+ozAQEK
-=oqTk
+iQIcBAEBAgAGBQJSZ5kHAAoJELSic+t+oim9lDMP/A8jxDWgInl/Dz6k3o2S1IyY
+vWD8/DQecIri2R8T8lD7aGMoFmDlw05lgaYbgcSBMgEmz0BtU9dHgam3HfDn75Uz
+LmLRIVtR1dWjPwBCmth2OVMPHTDG8+OfMb8APZyQoIyQ1seB3g4C6tUx5J9EjrnF
+8VlDl0OhPzHjoqgT/6NAtL1ItQ6rqpQi/xu0c9U8aNuRcT9xeAkhOroEn7+9gr9v
+alApKTFiX1PadIn2EssAJe2UOS4GGKEjGoGIlzCkGPpK9mxHXLbaWS1RM019D200
+yZ0e+yDgBHZY+/mugQdMvTjNkfnP/0sFa2DzsZ2Yuo0yYTfzx56ZcorPwhJoHPn/
+RCEa1GAm7a0BJeZ2RdNOFVQ1OweF5Vvg6ScrlWWSnwXwTcvNmRWyS1LDkF86MOJm
+BRVNSukpb4ygvE1OwvSsnqQvfSv8kEOFiQIm0E0BXjsCgI4KrQeLXlChxod/vwRG
+0myTPtCNyTKPNPV0hoZGd75y5fWIIEmQV+jCV6ykJf0OEXByfhHc+RKoXBETn0+U
+Z20NVTAv/ABFzq2uzcWg5Wyw7vZFsj5aZ9TkdFc78/wTQBApfCHqFEWNkj3mgb+9
+jozGMpn9Q00Oatt/dhjmiogKvNTOsweGcTOU1jVLTEWkhVlLjH5ly9hwgM5XQWEZ
+beTVsZxqI7Ke2TB+TEzV
+=TZ3Y
 -----END PGP SIGNATURE-----
 
---ZPDwMsyfds7q4mrK--
+--ed/6oDxOLijJh8b0--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

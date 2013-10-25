@@ -1,48 +1,62 @@
-From: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
-Subject: Re: [RFC 1/2] i2c: Use stable dev_name for ACPI enumerated I2C slaves
-Date: Fri, 25 Oct 2013 16:08:08 +0200
-Message-ID: <2889412.bEKBLJtgSW@vostro.rjw.lan>
-References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <98785510.yWYAtabkbj@vostro.rjw.lan> <526A726F.1030407@linux.intel.com>
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [RFC 2/2] spi: Use stable dev_name for ACPI enumerated SPI slaves
+Date: Fri, 25 Oct 2013 16:09:47 +0200
+Message-ID: <1530227.7u44IdW1Bp@vostro.rjw.lan>
+References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <1382703540-3769-3-git-send-email-jarkko.nikula@linux.intel.com> <20131025125909.GA12932@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7Bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <526A726F.1030407-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; boundary="nextPart3678682.1027DfbcGu"; micalg="pgp-sha256"; protocol="application/pgp-signature"
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
+	linux-i2c@vger.kernel.org, alsa-devel@alsa-project.org,
+	linux-acpi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <20131025125909.GA12932@sirena.org.uk>
+Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday, October 25, 2013 04:30:23 PM Jarkko Nikula wrote:
-> On 10/25/2013 04:18 PM, Rafael J. Wysocki wrote:
-> > On Friday, October 25, 2013 03:55:29 PM Jarkko Nikula wrote:
-> >>
-> >> Well, acpi_bus_get_device() is not available for non-ACPI builds and at
-> >> least the gcc I used for test build didn't optimize that block away.
-> > Well, it should.  ACPI_HANDLE() translates to (NULL) if CONFIG_ACPI
-> > is not defined and that causes the check to become "if (NULL)" which
-> > should always be dropped by the compiler.
-> >
-> My very vague memory says the same. I don't know is this gcc version or 
-> flag dependent behavior. I got the build error from both i386 build 
-> using gcc 4.8.1 and arm build by using make ARCH=arm omap2plus_defconfig 
-> and gcc-4.7-arm-linux-gnueabi 4.7.2-4.
-> > Does providing a stub acpi_bus_get_device() for !CONFIG_ACPI actually help?
-> >
-> >
-> Hmm, not only. Referencing to dev field in struct acpi_device by 
-> dev_name(&adev->dev) here will fail too.
 
-Well, something is not quite right here.
+--nextPart3678682.1027DfbcGu
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-One of the *reasons* for having ACPI_HANDLE() defined this way is to avoid
-using explicit CONFIG_ACPI checks, so if that doesn't work, then all of that
-becomes a bit pointless.
+On Friday, October 25, 2013 01:59:09 PM Mark Brown wrote:
+> On Fri, Oct 25, 2013 at 03:19:00PM +0300, Jarkko Nikula wrote:
+> > Current spi bus_num.chip_select "spix.y" based device naming scheme may not
+> > be stable enough to be used in name based matching, for instance within
+> > ALSA SoC subsystem.
+> 
+> I'm happy with this from the SPI side modulo Raphael's comments - are
+> folks happy from the ACPI side?
 
-Thanks!
+I think yes in general, but I'd like to understand why the ACPI_HANDLE()
+thing doesn't work as expected.
 
 -- 
 I speak only for myself.
 Rafael J. Wysocki, Intel Open Source Technology Center.
+--nextPart3678682.1027DfbcGu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+
+iQIcBAABCAAGBQJSanuxAAoJEILEb/54YlRx13sQAIma44w/ksmY8FRR94k0iG78
+VzAHCpXZhxd43ZjSRviAAyQINT+h6N4fFWT32ZjZqwEYNRkfDUjuy5RdR5MwD+iT
+becubgM7R8qS2dZsxu0N/1kKF5KjjFXpz3uynSz3yna5BYECRZo+NHgXlMynpOI1
+f0yz760d0RTu/KMvMzkdpPT6g5Cjg8E01adpW1xlCvqKi2Fp2M57uXJnlLZHv1d7
+82PgQasM2XD0lqOGhx7HqzQc6WF6SKnycJ/RoFjc7Z/97iWzKhgzDLrLsd8qL98D
+lPEkjnpmcwW2YckvALqrm8lVS9UCmIe2pL75ylJw4HyJjpJeYhbjo0fRshaQ9nTj
+qGwAydIyEFIze+5rqRizrNd2K1ckXTt2dQTxRPNOY7219n6I4x4kNvM/CdxcJ5Bx
+dBH0HhKp54tUzoeiTrRvyW71jV0vuqcPQr3r0ckGxDMEi5EumlycLWtg1CUHbGjl
+8Uq2bf8c2ZsyPicpQ9esJuY3HtjlD4iqDGuCImZwCGm5iyFeSo2GMMquSmuFlu0k
+v25VRYRvwD13lLF5+KggPgTtU5iRNxd/6i9chkeeubrT9g5euBNOuO3XQqcJlbYs
+oDDfRvqlln3Avan93hkRRuhE25g8BKQyo3NxIdVeOgxl65BIKdAc8mce/sMY3e/u
+rXuKs7sNSyQ82Z2sNGCf
+=0M2M
+-----END PGP SIGNATURE-----
+
+--nextPart3678682.1027DfbcGu--
+

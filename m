@@ -1,60 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH -next] spi: atmel: fix return value check in
- atmel_spi_probe()
-Date: Wed, 23 Oct 2013 10:38:19 +0100
-Message-ID: <20131023093819.GJ9388@sirena.org.uk>
-References: <CAPgLHd86H42hU1On2J3hCV1resNQ-PVCGB3Q=icaLoDQLSOg_w@mail.gmail.com>
+Subject: Re: [PATCH] spi/hspi: add device tree support
+Date: Fri, 25 Oct 2013 09:49:02 +0100
+Message-ID: <20131025084902.GM18506@sirena.org.uk>
+References: <87hac69cje.wl%kuninori.morimoto.gx@renesas.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ed/6oDxOLijJh8b0"
-Cc: nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="dzI2QqkSBOAresgT"
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
+	Kuninori Morimoto <kuninori.morimoto.gx-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Simon <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAPgLHd86H42hU1On2J3hCV1resNQ-PVCGB3Q=icaLoDQLSOg_w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <87hac69cje.wl%kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---ed/6oDxOLijJh8b0
+--dzI2QqkSBOAresgT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Oct 21, 2013 at 11:12:02AM +0800, Wei Yongjun wrote:
-> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
->=20
-> In case of error, the function devm_ioremap_resource() returns ERR_PTR()
-> and never returns NULL. The NULL test in the return value check should be
-> replaced with IS_ERR().
+On Thu, Oct 24, 2013 at 09:53:29PM -0700, Kuninori Morimoto wrote:
+> Support for loading the Renesas HSPI driver via devicetree.
 
-Applied, thanks.
+Applied, thanks.  Please note the new SPI mailing list on vger (CCed).
 
---ed/6oDxOLijJh8b0
+--dzI2QqkSBOAresgT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSZ5kHAAoJELSic+t+oim9lDMP/A8jxDWgInl/Dz6k3o2S1IyY
-vWD8/DQecIri2R8T8lD7aGMoFmDlw05lgaYbgcSBMgEmz0BtU9dHgam3HfDn75Uz
-LmLRIVtR1dWjPwBCmth2OVMPHTDG8+OfMb8APZyQoIyQ1seB3g4C6tUx5J9EjrnF
-8VlDl0OhPzHjoqgT/6NAtL1ItQ6rqpQi/xu0c9U8aNuRcT9xeAkhOroEn7+9gr9v
-alApKTFiX1PadIn2EssAJe2UOS4GGKEjGoGIlzCkGPpK9mxHXLbaWS1RM019D200
-yZ0e+yDgBHZY+/mugQdMvTjNkfnP/0sFa2DzsZ2Yuo0yYTfzx56ZcorPwhJoHPn/
-RCEa1GAm7a0BJeZ2RdNOFVQ1OweF5Vvg6ScrlWWSnwXwTcvNmRWyS1LDkF86MOJm
-BRVNSukpb4ygvE1OwvSsnqQvfSv8kEOFiQIm0E0BXjsCgI4KrQeLXlChxod/vwRG
-0myTPtCNyTKPNPV0hoZGd75y5fWIIEmQV+jCV6ykJf0OEXByfhHc+RKoXBETn0+U
-Z20NVTAv/ABFzq2uzcWg5Wyw7vZFsj5aZ9TkdFc78/wTQBApfCHqFEWNkj3mgb+9
-jozGMpn9Q00Oatt/dhjmiogKvNTOsweGcTOU1jVLTEWkhVlLjH5ly9hwgM5XQWEZ
-beTVsZxqI7Ke2TB+TEzV
-=TZ3Y
+iQIcBAEBAgAGBQJSajB6AAoJELSic+t+oim9sroP/RqOsq94R7ZPvRbxSuMiV+7a
+3kk7plzP4E7njnf5Xtu6PEWkZ3Ku2DPLtAym6iBW3g4Il/MDtNEsVBPIngc8bzdH
+ZQifqb/GtGKglC4eAjpFWXFuOLQR8gMMAA+HaJejMqXW3YUCSFCXAtHmZC36PPd0
+J30u7oyoECiDLuyN40gJ9wzMz9InUskVCd2RuFmSVxsTIETKQD4uq/Ud/1/7l78r
+vdQNu6giDuw9ZlG+rmIH/n95xBUzVMMiCYp0VVUOdleNygSmRk5y+G/ozHnBz7bj
+xzWClwAolTVqclGljtsT7VsUTTM2ymBeKITesZuQUbmXuLj2Je+Kphay/jfcsBAZ
+7O44+vrzgF9TR/E7N0hA3eCxfVRtA03KFCIY3gD0AlATbf5yNphyX0WM37vKsRdn
+aVU34BfjIWJaCb8UkXemjdwbIWKz5hzXy85fo+SCmaI4ycSHv3Kc0jWA4JzOneCJ
+TXilCmzJuaW4eAlMSgZdlfhyscE/tXmJMuF8Iv1Ci8Q774pgOqYu0/5CCOhFVKNi
+gxcCvvhTPSfkSjY3oGjFZsy+U04EcPu+2EvMt4dHg8DgckOUquw2srOEqusGjeB8
+tlGGzW3y3wr82/485LMGDnT3z3ZQD2h4IktiBwCwBMKD1Fhuigf9Bxd7r94WQheJ
+7QhyViBNMnKQ8/2zPLlb
+=5xMk
 -----END PGP SIGNATURE-----
 
---ed/6oDxOLijJh8b0--
+--dzI2QqkSBOAresgT--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,80 +1,60 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [RFC 1/2] i2c: Use stable dev_name for ACPI enumerated I2C slaves
-Date: Mon, 28 Oct 2013 15:15:25 +0200
-Message-ID: <526E636D.3070005@linux.intel.com>
-References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <98785510.yWYAtabkbj@vostro.rjw.lan> <526A726F.1030407@linux.intel.com> <2889412.bEKBLJtgSW@vostro.rjw.lan>
+Date: Mon, 28 Oct 2013 09:10:01 -0700
+Message-ID: <20131028161001.GB13643@sirena.org.uk>
+References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com>
+ <98785510.yWYAtabkbj@vostro.rjw.lan>
+ <526A726F.1030407@linux.intel.com>
+ <2889412.bEKBLJtgSW@vostro.rjw.lan>
+ <526E636D.3070005@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <2889412.bEKBLJtgSW-sKB8Sp2ER+y1GS7QM15AGw@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="JYK4vJDZwFMowpUq"
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
+	linux-i2c@vger.kernel.org, alsa-devel@alsa-project.org,
+	linux-acpi@vger.kernel.org
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <526E636D.3070005@linux.intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Rafael
 
-On 10/25/2013 05:08 PM, Rafael J. Wysocki wrote:
-> On Friday, October 25, 2013  04:30:23 PM Jarkko Nikula wrote:
- >>>
- >> Hmm, not only. Referencing to dev field in struct acpi_device by
- >> dev_name(&adev->dev) here will fail too.
- >
- > Well, something is not quite right here.
- >
- > One of the *reasons* for having ACPI_HANDLE() defined this way is to
- > avoid using explicit CONFIG_ACPI checks, so if that doesn't work,
- > then all of that becomes a bit pointless.
- >
-One possible thing to do is to let structure definitions to be available 
-for non-ACPI builds. Then compiler won't fail on structure access which 
-will be anyway optimized away by later compiler stages.
+--JYK4vJDZwFMowpUq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-With a quick test below vmlinux section sizes don't change for couple 
-non-ACPI build tests and allow to get rid off IS_ENABLED(CONFIG_ACPI) 
-test in this patch. It's very minimal as it only moves the CONFIG_ACPI 
-test just after the struct acpi_device definition and defines 
-acpi_bus_get_device for non-ACPI case.
+On Mon, Oct 28, 2013 at 03:15:25PM +0200, Jarkko Nikula wrote:
 
-What I don't know how consistent it is as there are still couple 
-structure definitions under CONFIG_ACPI, doesn't touch other acpi 
-headers and requires to include acpi_bus.h in driver (or move acpi_bus.h 
-include in linux/acpi.h currently under CONFIG_ACPI).
+> One possible thing to do is to let structure definitions to be
+> available for non-ACPI builds. Then compiler won't fail on structure
+> access which will be anyway optimized away by later compiler stages.
 
--- 
-Jarkko
+You could also have inline accessor functions which can be stubbed out
+when not needed.
 
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index d901982..7ab7870 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -66,8 +66,6 @@ bool acpi_ata_match(acpi_handle handle);
-  bool acpi_bay_match(acpi_handle handle);
-  bool acpi_dock_match(acpi_handle handle);
+--JYK4vJDZwFMowpUq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
--#ifdef CONFIG_ACPI
--
-  #include <linux/proc_fs.h>
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-  #define ACPI_BUS_FILE_ROOT    "acpi"
-@@ -314,6 +312,8 @@ struct acpi_device {
-      void (*remove)(struct acpi_device *);
-  };
+iQIcBAEBAgAGBQJSboxWAAoJELSic+t+oim9pXUQAI5P5ya2dgyxtn0txqAnDsQb
+CkW5YVgj59iCWUseYSgZsceO+EpJGuVmNLc+aL1ksCghMMjiOljLmkRzVdFw9Aya
+JZw3H3i4irieReNUr00rWfLBIoz8MawzBFmAhwY1ukGqWwvMhO1naIgGgCoTmHGC
+QVHkEJblnjtmD2T480pAkEZSY17t9n0ZuVOIOaXYCcu7AXfET8NNDtL8NVY/ovJj
+fbw8eIVr/u1dBqzk8vEEC05Wwi3L27c6ss2qjoFyQeJB5s4tBh7BIJsC5oYJ3KWr
+YYwAf4Sqcbz08z/ryUfOZNwIGSiO4kT1ipx6+2tigclDgvDDAnp9jpEYoPYfyQt1
+Zhuu2am6oo3DJQ/qt4ZjLCkbEbBPbImT74h8cAybZs+z4kUyfKTekvAp4ok8QWjv
+SkM2XUHF5C1fJPY/SqEcQrl6FybbRsV+8hNmfogeC7Y5KP8Ah+u5J/DzEUYy+gjP
+uO2pHhgPY0g/rcKoxyEfO6uxvWZBmpYPVtk3IBLESa9jz6W0uQjnOhJPZeCxCuoK
+ddZoZFP3s2Ld9BV7hLJue47BAIm5dyBfI7w5DR8ED9AhcUhpjz/wa63v82ayb6p3
+Y30ad5FZaE5ZyvMmXDy+kdIbA7aDDFpqxe170bnjx7SdU+48nN++LwxM/c6iCMy+
+FJFP82sE3Bwxk9QD3Cwr
+=H4BM
+-----END PGP SIGNATURE-----
 
-+#if IS_ENABLED(CONFIG_ACPI)
-+
-  static inline void *acpi_driver_data(struct acpi_device *d)
-  {
-      return d->driver_data;
-@@ -531,6 +531,8 @@ static inline bool acpi_device_can_poweroff(struct 
-acpi_device *adev)
-
-  static inline int register_acpi_bus_type(void *bus) { return 0; }
-  static inline int unregister_acpi_bus_type(void *bus) { return 0; }
-+static inline int acpi_bus_get_device(acpi_handle handle,
-+                      struct acpi_device **device) { return 0; }
-
-  #endif                /* CONFIG_ACPI */
+--JYK4vJDZwFMowpUq--

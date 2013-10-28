@@ -1,62 +1,80 @@
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [RFC 2/2] spi: Use stable dev_name for ACPI enumerated SPI slaves
-Date: Fri, 25 Oct 2013 16:09:47 +0200
-Message-ID: <1530227.7u44IdW1Bp@vostro.rjw.lan>
-References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <1382703540-3769-3-git-send-email-jarkko.nikula@linux.intel.com> <20131025125909.GA12932@sirena.org.uk>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [RFC 1/2] i2c: Use stable dev_name for ACPI enumerated I2C slaves
+Date: Mon, 28 Oct 2013 15:15:25 +0200
+Message-ID: <526E636D.3070005@linux.intel.com>
+References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <98785510.yWYAtabkbj@vostro.rjw.lan> <526A726F.1030407@linux.intel.com> <2889412.bEKBLJtgSW@vostro.rjw.lan>
 Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3678682.1027DfbcGu"; micalg="pgp-sha256"; protocol="application/pgp-signature"
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Wolfram Sang <wsa@the-dreams.de>, linux-spi@vger.kernel.org,
-	linux-i2c@vger.kernel.org, alsa-devel@alsa-project.org,
-	linux-acpi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <20131025125909.GA12932@sirena.org.uk>
-Sender: linux-acpi-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <2889412.bEKBLJtgSW-sKB8Sp2ER+y1GS7QM15AGw@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Rafael
 
---nextPart3678682.1027DfbcGu
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+On 10/25/2013 05:08 PM, Rafael J. Wysocki wrote:
+> On Friday, October 25, 2013  04:30:23 PM Jarkko Nikula wrote:
+ >>>
+ >> Hmm, not only. Referencing to dev field in struct acpi_device by
+ >> dev_name(&adev->dev) here will fail too.
+ >
+ > Well, something is not quite right here.
+ >
+ > One of the *reasons* for having ACPI_HANDLE() defined this way is to
+ > avoid using explicit CONFIG_ACPI checks, so if that doesn't work,
+ > then all of that becomes a bit pointless.
+ >
+One possible thing to do is to let structure definitions to be available 
+for non-ACPI builds. Then compiler won't fail on structure access which 
+will be anyway optimized away by later compiler stages.
 
-On Friday, October 25, 2013 01:59:09 PM Mark Brown wrote:
-> On Fri, Oct 25, 2013 at 03:19:00PM +0300, Jarkko Nikula wrote:
-> > Current spi bus_num.chip_select "spix.y" based device naming scheme may not
-> > be stable enough to be used in name based matching, for instance within
-> > ALSA SoC subsystem.
-> 
-> I'm happy with this from the SPI side modulo Raphael's comments - are
-> folks happy from the ACPI side?
+With a quick test below vmlinux section sizes don't change for couple 
+non-ACPI build tests and allow to get rid off IS_ENABLED(CONFIG_ACPI) 
+test in this patch. It's very minimal as it only moves the CONFIG_ACPI 
+test just after the struct acpi_device definition and defines 
+acpi_bus_get_device for non-ACPI case.
 
-I think yes in general, but I'd like to understand why the ACPI_HANDLE()
-thing doesn't work as expected.
+What I don't know how consistent it is as there are still couple 
+structure definitions under CONFIG_ACPI, doesn't touch other acpi 
+headers and requires to include acpi_bus.h in driver (or move acpi_bus.h 
+include in linux/acpi.h currently under CONFIG_ACPI).
 
 -- 
-I speak only for myself.
-Rafael J. Wysocki, Intel Open Source Technology Center.
---nextPart3678682.1027DfbcGu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Jarkko
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.19 (GNU/Linux)
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index d901982..7ab7870 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -66,8 +66,6 @@ bool acpi_ata_match(acpi_handle handle);
+  bool acpi_bay_match(acpi_handle handle);
+  bool acpi_dock_match(acpi_handle handle);
 
-iQIcBAABCAAGBQJSanuxAAoJEILEb/54YlRx13sQAIma44w/ksmY8FRR94k0iG78
-VzAHCpXZhxd43ZjSRviAAyQINT+h6N4fFWT32ZjZqwEYNRkfDUjuy5RdR5MwD+iT
-becubgM7R8qS2dZsxu0N/1kKF5KjjFXpz3uynSz3yna5BYECRZo+NHgXlMynpOI1
-f0yz760d0RTu/KMvMzkdpPT6g5Cjg8E01adpW1xlCvqKi2Fp2M57uXJnlLZHv1d7
-82PgQasM2XD0lqOGhx7HqzQc6WF6SKnycJ/RoFjc7Z/97iWzKhgzDLrLsd8qL98D
-lPEkjnpmcwW2YckvALqrm8lVS9UCmIe2pL75ylJw4HyJjpJeYhbjo0fRshaQ9nTj
-qGwAydIyEFIze+5rqRizrNd2K1ckXTt2dQTxRPNOY7219n6I4x4kNvM/CdxcJ5Bx
-dBH0HhKp54tUzoeiTrRvyW71jV0vuqcPQr3r0ckGxDMEi5EumlycLWtg1CUHbGjl
-8Uq2bf8c2ZsyPicpQ9esJuY3HtjlD4iqDGuCImZwCGm5iyFeSo2GMMquSmuFlu0k
-v25VRYRvwD13lLF5+KggPgTtU5iRNxd/6i9chkeeubrT9g5euBNOuO3XQqcJlbYs
-oDDfRvqlln3Avan93hkRRuhE25g8BKQyo3NxIdVeOgxl65BIKdAc8mce/sMY3e/u
-rXuKs7sNSyQ82Z2sNGCf
-=0M2M
------END PGP SIGNATURE-----
+-#ifdef CONFIG_ACPI
+-
+  #include <linux/proc_fs.h>
 
---nextPart3678682.1027DfbcGu--
+  #define ACPI_BUS_FILE_ROOT    "acpi"
+@@ -314,6 +312,8 @@ struct acpi_device {
+      void (*remove)(struct acpi_device *);
+  };
 
++#if IS_ENABLED(CONFIG_ACPI)
++
+  static inline void *acpi_driver_data(struct acpi_device *d)
+  {
+      return d->driver_data;
+@@ -531,6 +531,8 @@ static inline bool acpi_device_can_poweroff(struct 
+acpi_device *adev)
+
+  static inline int register_acpi_bus_type(void *bus) { return 0; }
+  static inline int unregister_acpi_bus_type(void *bus) { return 0; }
++static inline int acpi_bus_get_device(acpi_handle handle,
++                      struct acpi_device **device) { return 0; }
+
+  #endif                /* CONFIG_ACPI */

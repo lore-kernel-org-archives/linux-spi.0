@@ -1,102 +1,51 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Fwd: Depreciated spi_master.transfer and "prepared spi messages" for
- an optimized pipelined-SPI-DMA-driver
-Date: Tue, 29 Oct 2013 12:09:23 -0700
-Message-ID: <CACRpkdb4mn_Hxg=3tuBu89n6eyJ082EETkwtNbzZDFZYTHbVVg@mail.gmail.com>
-References: <F70C4469-6325-48D5-A7CA-52CC1FC404BD@sperl.org>
+From: David Cohen <david.a.cohen-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: add Intel Mid SSP driver
+Date: Tue, 29 Oct 2013 12:32:28 -0700
+Message-ID: <52700D4C.10008@linux.intel.com>
+References: <1383069950-27754-1-git-send-email-david.a.cohen@linux.intel.com>  <1383070766.12439.13.camel@joe-AO722> <526FFED4.4070902@linux.intel.com> <1383071755.12439.17.camel@joe-AO722>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, ning.li-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Fei Yang <fei.yang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Joe Perches <joe-6d6DIl74uiNBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <F70C4469-6325-48D5-A7CA-52CC1FC404BD-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+In-Reply-To: <1383071755.12439.17.camel@joe-AO722>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Here is Martins original message.
+On 10/29/2013 11:35 AM, Joe Perches wrote:
+> On Tue, 2013-10-29 at 11:30 -0700, David Cohen wrote:
+>> Hi Joe,
+>>
+>> On 10/29/2013 11:19 AM, Joe Perches wrote:
+>>> On Tue, 2013-10-29 at 11:05 -0700, David Cohen wrote:
+>>>> This patch adds driver for ssp spi interface on Intel Mid platform.
+>>>
+>>> A few simple notes:
+>>>
+>>> Please consider using checkpatch.
+>>
+>> I did and got no warnings. But haven't used --strict option.
+>
+> Interesting.  I thought there was a return (foo);
+> statement that should have been marked, but I didn't
+> actually run checkpatch.
 
-Yours,
-Linus Walleij
+It seems odd checkpatch didn't catch it. I'll investigate.
 
+>
+> static inline u32 is_rx_fifo_empty(struct ssp_drv_context *sspc)
+> +{
+> +       return ((read_SSSR(sspc->ioaddr) & SSSR_RNE) == 0);
+> +}
+>
+> This could be bool too
 
----------- Forwarded message ----------
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Date: Mon, Oct 28, 2013 at 11:42 AM
-Subject: Depreciated spi_master.transfer and "prepared spi messages"
-for an optimized pipelined-SPI-DMA-driver
-To: spi-devel-general-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org
-Cc: grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org,
-linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+u32 seems unusual, but I'd prefer 'int' if it's fine for you.
 
-
-Hi!
-
-I am currently writing an SPI driver for the raspberry pi that only
-relies on DMA for the whole transfer.
-It can already handle a FULL SPI_message with multiple transfers,
-CS_CHANGE, and speed_hz changes only by using DMA, so it is using the
-dma to the max...
-
-Right now (for the ease of "development") the driver is still using
-the transfer_one_message interface.
-But unfortunately this interface introduces latencies/gaps between
-individual messages because of the latencies: interrupt ->
-wakeup_spinlock->schedule message_pump_thread.
-
-So as the DMA driver is already handling a single SPI transfer very
-efficiently, there is also an option to chain multiple SPI transfers
-in the DMA engine and just get interrupts for completion.
-
-This I why I thought of moving away from spi_transfer_one_message and
-back to the simpler transfer interface, where the preprocessing would
-get done (DMA control block-chain generation) and then appending it to
-the existing (possibly running) DMA chain.
-
-But just yesterday I was looking thru the code and came to the
-message: "master is unqueued, this is depreciated" (drivers/spi/spi.c
-Line 1167).
-This came in with commit ffbbdd21329f3e15eeca6df2d4bc11c04d9d91c0 and
-got included in 3.4.
-
-So I am wondering why you would depreciate this interface - I agree
-that for most drivers moving to the transfer_one_message interface is
-the way forward and reduces code size and bugs.
-And this depreciation message will hopefully motivate driver authors
-to rewrite their code to make use of the new interface.
-
-But there may be some drivers that would really benefit of using the
-more complex interface without it getting depreciated and at some
-point possibly removed.
-And I believe that the pipelined DMA driver is a good candidate to
-show that under some circumstances the transfer interface may still be
-the better solution...
-Obviously I could work around the inner working of the message-pump by
-manssaging the data before some of the calls, which I would say is
-even more depreciated!
-
-Now this brings me to different question:
-Could we implement some additional "functions" for preparing an SPI
-message to reduce the overhead of computation of a spi message
-repeatedly by keeping a "prepared" Transaction, which we just need to
-schedule it. Changing data would not be a problem, but changing the
-data block-addresses would be a change. that would require
-recalculating the data.
-
-The interface could looks something like this:
-int spi_prepare_message(struct_spi_dev*, struct spi_message *);
-int spi_unprepare_message(struct_spi_dev*, struct spi_message *);
-
-together with an additional object (void* prepared) in the spi_message
-structure for keeping such prepared data...
-OK - abusing the existing queue and state  could be used, but -if i
-read the comments correctly - this data is only guaranteed to be
-available to the driver between spi_async and the corresponding
-callback (outside of it it is used used by the message pump and gets
-cleared in spi_finalize_current_message function.
-
-
-Thanks,
-              Martin
+Br, David
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

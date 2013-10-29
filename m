@@ -1,118 +1,97 @@
-From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Subject: Re: [PATCH 00/19] Enable various Renesas drivers on all ARM platforms
-Date: Tue, 29 Oct 2013 18:29:59 +0100
-Message-ID: <1422562.0L87CDt5Gd@avalon>
-References: <1383004027-25036-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
-	<1577821.Q7gttkPE2J@avalon> <20131029172331.GA20251@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Fwd: Depreciated spi_master.transfer and "prepared spi messages"
+ for an optimized pipelined-SPI-DMA-driver
+Date: Tue, 29 Oct 2013 10:56:27 -0700
+Message-ID: <20131029175627.GC20251@sirena.org.uk>
+References: <F70C4469-6325-48D5-A7CA-52CC1FC404BD@sperl.org>
+ <CACRpkdb6y=o4__snBs2DR1f=xW_u7KdkHg3fb7XN5e2gicBJeg@mail.gmail.com>
+ <CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============4715544745593348638=="
-Cc: , linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Guennadi Liakhovetski <g.liakhovetski+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	ed.com-i9wRM+HIrmnmtl4Z8vJ8Kg761KYD1DLY@public.gmane.org, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Eduardo Valentin <eduardo.valentin-l0cyMroinI0@public.gmane.org>,
-	Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>, linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
-	Jean-Christophe Plagniol-Villard <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
-	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-pwm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Samuel Ortiz <samuel-jcdQHdrhKHMdnm+yROfE0A@public.gmane.org>, linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Ian Molton <ian-zdned+2MO1+9FHfhHBbuYA@public.gmane.org>, Simon Horm
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
-In-Reply-To: <20131029172331.GA20251-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Unsubscribe: <https://lists.linuxfoundation.org/mailman/options/iommu>,
-	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://lists.linuxfoundation.org/pipermail/iommu/>
-List-Post: <mailto:iommu-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
-List-Help: <mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=help>
-List-Subscribe: <https://lists.linuxfoundation.org/mailman/listinfo/iommu>,
-	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=subscribe>
-Sender: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
-Errors-To: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="96YOpH+ONegL0A3E"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---===============4715544745593348638==
-Content-Type: multipart/signed; boundary="nextPart4942102.gaO6gKkPZo"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+--96YOpH+ONegL0A3E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Oct 29, 2013 at 09:59:23AM -0700, Linus Walleij wrote:
+> Let us discuss this on the new mailing list, BTW.
 
---nextPart4942102.gaO6gKkPZo
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+And with the maintainer...  I have zero context for this so I'm not 100%
+sure what the original proposal was.
 
-Hi Mark,
+> On Mon, Oct 28, 2013 at 11:42 AM, Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org> wrote:
+>=20
+> > (... ) I thought of moving away from spi_transfer_one_message and back =
+to
+> > the simpler transfer interface, where the preprocessing would get done
+> > (DMA control block-chain generation) and then appending it to the
+> > existing (possibly running) DMA chain.
 
-On Tuesday 29 October 2013 10:23:31 Mark Brown wrote:
-> On Tue, Oct 29, 2013 at 06:05:53PM +0100, Laurent Pinchart wrote:
-> > The first one is that I can't compile-test all those drivers on all
-> > architectures. The spi-sh-msiof driver, for instance, uses
-> > io(read|write)(16|
->
-> Which architectures are these and is there not a symbol we can depend on
-> for them?
+> OK quite a cool idea.
 
-arch/cris for instance. We can use readl/writel instead (maybe it would be 
-time to rationalize and document the I/O accessors across all architectures, 
-but that's another topic).
+How is this going to interact with /CS manipulation?  We need /CS to
+rise and fall as requested by the client, if we coalesce adjacent
+messages that's going to be an issue...
 
-My point is that there might be other issues that I won't be able to easily 
-catch. This would break compilation for everybody for no reason, as the 
-drivers are useless on non-SuperH, non-ARM platforms. That's why I believe 
-COMPILE_TEST would be a better option as a first step.
+> As you will be using dmaengine (I guess?) maybe a lot of this can
+> actually be handled directly in the core since that code should be
+> pretty generic, or in a separate file like spi-dmaengine-chain.c?
 
-> > 32) which are not available on all architectures. There might be other
-> > similar problems that I can't catch, and I don't want to introduce build
-> > breakages in the kernel.
-> 
-> This is easy enough to handle if we do run into issues, it seems better to
-> get things available than try to step through architecture by architecture.
-> 
-> > The second reason is that, as the IP cores have never been used on
-> > anything but SuperH and ARM, I don't like the idea of clobbering the
-> > config process with drivers that are useless on the target architecture.
-> > Now that we have a COMPILE_TEST Kconfig option, my preference would thus
-> > go to SUPERH || ARM || COMPILE_TEST over no dependency at all.
-> 
-> That's not what you did, though - you're not adding COMPILE_TEST.
+FWIW this is one of the things I've been aiming to tackle in my ongoing
+refactoring, the initial two things were making the core able to do the
+DMA mapping (probably adding a transfer API which passses in sg_list, it
+can then handle things like blocks that aren't physically contiguous and
+coalescing scatter/gather for the controller) and trying to overlap the
+cache flushing of the next transfer with the I/O for the current
+transfer.
 
-No, but I can add it :-) If this gets agreed upon, I'll respin the series with 
-|| COMPILE_TEST.
+> > Now this brings me to different question:
+> > Could we implement some additional "functions" for preparing
+> > an SPI message (...)
+> > The interface could looks something like this:
+> > int spi_prepare_message(struct_spi_dev*, struct spi_message *);
+> > int spi_unprepare_message(struct_spi_dev*, struct spi_message *);
 
--- 
-Regards,
+> Maybe? I cannot tell from the above how this would look so
+> I think it is better if you send a patch showing how this improves
+> efficiency.
 
-Laurent Pinchart
+The current SPI API has exactly those functions...
 
---nextPart4942102.gaO6gKkPZo
+--96YOpH+ONegL0A3E
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQEcBAABAgAGBQJSb/CXAAoJEIkPb2GL7hl1dSgH/3RYsAUPWMftP+1QweJRm6hs
-bIhJ6rTB4F54mGzaaAb1Annf8nvl8dlDFCbOg2xMyPxaA3GUzvQWveHt82uZ8fnM
-fM2uJfvhVSublzE7ApEvMxBEcVyCtdne+0tg6aiqGQkxtAK2gmDt/92qnRbGP+c4
-m3EDrAzSnbhwSA1468pjmuLAxyPIjLFHS0aE/0Z8Z72wrlj2LWkRE3QbMKJNsmic
-f04dPUTnDIYpUQVSz9F9t73ytHDUEwee5kVY9OOhZ8RAZjKdNsMToKsI4pTvYsMU
-NcihFBJXmFjYqo0Nod9uqsmpF/fGDdq50FWWCZWZfltuGDcLCTbFA9dvd25xCYU=
-=NDtx
+iQIcBAEBAgAGBQJSb/bIAAoJELSic+t+oim9M9oP/2wWEl4NFJ1xr7dRU7iSjxAr
+lLFWuny0w2WZEThq75DJxooKL8FpR3JUZ1Wu8CDxMC52Xf5VoXvL36YhU7OOvtMi
+Ki7cj2wZFqyxnkB7Q3X4BKqurKwstktaJVRXy28X54VgLgV5YfURF3v3l8/X1AQD
+YJ2thws0M5rnATZxOMLeYV7yCUT6hr5mbLX5yp2dZSAfaNhsFv07j9W6c5Hn8y1R
+F60EHo5BiCbcZ2YpfIvVWSF52R84w8mpg39w0Ln/eAMDp0PdF0KBOKH7/XYbRp1Y
+wjVjQGxxb9X+VHA4W8JbCjzvFVvpCJl27eaBY+dwhZwjZ5br41AJqShnSE1czPLD
+3ThqIQPsAjrYR1Z7NjtQxBn9+3ZLbZDM90arZ2s4sNhQKm+AriTcWIKAUBL5RhgE
+4m27t6YypMHCKlNJqdM3vB+Fq8vyceVQnrhyqSIk62DBKXeYmLYKgrqKHjdBjeLj
+mXmYo1cUKsQXQ7KlSfV+7DSvS7N2Zxvn0/6XnL+LFlmK3u7WIwO9+XVGI29SqL1j
+PlDWicAKninX/ZdZ0cfRNZKqXMo7aJXHhI1aZCNqN+MNl9MhzIdzf7wokC7xEj8D
+Oi6ZEvMjSQtY2IxPMAmTmbiKe3B9tMSww4X15X+RdHQc0zvh8ccKNo2eis/iWBeV
+/iqtaKfKWD970OR+ey7B
+=sR4s
 -----END PGP SIGNATURE-----
 
---nextPart4942102.gaO6gKkPZo--
-
-
---===============4715544745593348638==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-
---===============4715544745593348638==--
+--96YOpH+ONegL0A3E--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

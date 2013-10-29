@@ -1,56 +1,62 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 16/19] spi: sh_msiof: Enable the driver on all ARM
- platforms
-Date: Tue, 29 Oct 2013 09:40:57 -0700
-Message-ID: <20131029164057.GB6776@sirena.org.uk>
-References: <1383004027-25036-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
- <1383004027-25036-17-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Fwd: Depreciated spi_master.transfer and "prepared spi messages" for
+ an optimized pipelined-SPI-DMA-driver
+Date: Tue, 29 Oct 2013 09:59:23 -0700
+Message-ID: <CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig@mail.gmail.com>
+References: <F70C4469-6325-48D5-A7CA-52CC1FC404BD@sperl.org>
+	<CACRpkdb6y=o4__snBs2DR1f=xW_u7KdkHg3fb7XN5e2gicBJeg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="VrqPEDrXMn8OVzN4"
-Cc: linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org
-To: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1383004027-25036-17-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CACRpkdb6y=o4__snBs2DR1f=xW_u7KdkHg3fb7XN5e2gicBJeg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Let us discuss this on the new mailing list, BTW.
 
---VrqPEDrXMn8OVzN4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Mon, Oct 28, 2013 at 11:42 AM, Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org> wrote:
 
-On Tue, Oct 29, 2013 at 12:47:04AM +0100, Laurent Pinchart wrote:
+> (... ) I thought of moving away from spi_transfer_one_message and back to
+> the simpler transfer interface, where the preprocessing would get done
+> (DMA control block-chain generation) and then appending it to the
+> existing (possibly running) DMA chain.
 
-> Renesas ARM platforms are transitioning from single-platform to
-> multi-platform kernels using the new ARCH_SHMOBILE_MULTI. Make the
-> driver available on all ARM platforms to enable it on both ARCH_SHMOBILE
-> and ARCH_SHMOBILE_MULTI and increase build testing coverage.
+OK quite a cool idea.
 
-Why is this driver specific to ARM?
+But I hope that you have the necessary infrastructure using the dmaengine
+subsystem for this, or that changes requires will be proposed to that
+first or together with these changes.
 
---VrqPEDrXMn8OVzN4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+As you will be using dmaengine (I guess?) maybe a lot of this can
+actually be handled directly in the core since that code should be
+pretty generic, or in a separate file like spi-dmaengine-chain.c?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+> But just yesterday I was looking thru the code and came to the message:
+> "master is unqueued, this is depreciated" (drivers/spi/spi.c Line 1167).
+> This came in with commit ffbbdd21329f3e15eeca6df2d4bc11c04d9d91c0 and got included in 3.4.
+>
+> So I am wondering why you would depreciate this interface
 
-iQIcBAEBAgAGBQJSb+UWAAoJELSic+t+oim96xwP/AhhoqqKW6Z7OgE6BKlah+Hf
-9zfcpuACtbFuMrZZulhaiOVkXktTO7giI5te7WiEr+B7bDSL9k/IxJFh70iSHMu/
-UYwvWYeE78QsbPjae0PLkSSxwytYstjV9GrQo2NoEKsLqiGXhjPiM8Sw1JFeFVwo
-C0t4rbGamk2xZREcu1QnSOtq7mx1bfFFOqp3ZlN6WC3p0NGNvUrbsNojnOpN6DvP
-ctAWNNn+hi65q2egOcY3piKWlKPjMN08lwLYQsnLGQXeBOLiZLXcLwEponN/UbKL
-JfHY17Z1wiQWPZtV5iHir/XEJKc0qfPellWJTCCvTyAdsKQXBui9zMOKnTHcAs8l
-yPExFcozkOdqpA/fc6ZN7yLYnk6SrpfpaLlRrRG1P6N8IFVXnFHjD6GSby2Y0YqA
-TJn9Gm+AAFfByQnUiKKyDZdagzcFMShkwRkJTE0Dzpk5rSPq7q2hu8VRH6xZdJOK
-GO4SnTdWnrjOMGj7HV3WvEMG8aJc8tmarTbHPNppL6BVlygFkQ9HbFM6cBHcXhwQ
-RhvNKtz/aurQw8R7XlIFdRLh9gHQmBoIlp18yvMYZmY1gzivzNow0XlVNVTMm2FC
-jSodBOMP0cbrhA90cGK/8o7HjraXRUwFWZtteYXhQPW7XjmgFRg/tskJlKnVdsYO
-kI1iwWHsRqjtsjxCxigs
-=NBc8
------END PGP SIGNATURE-----
+Simply because none of the in-kernel users was doing what you are
+trying to do now. And noone said anything about such future usecases,
+so how could we know?
 
---VrqPEDrXMn8OVzN4--
+> Now this brings me to different question:
+> Could we implement some additional "functions" for preparing
+> an SPI message (...)
+> The interface could looks something like this:
+> int spi_prepare_message(struct_spi_dev*, struct spi_message *);
+> int spi_unprepare_message(struct_spi_dev*, struct spi_message *);
+
+Maybe? I cannot tell from the above how this would look so
+I think it is better if you send a patch showing how this improves
+efficiency.
+
+Yours,
+Linus Walleij
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

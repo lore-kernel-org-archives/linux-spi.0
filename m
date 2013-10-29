@@ -1,72 +1,146 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for an optimized pipelined-SPI-DMA-driver
-Date: Tue, 29 Oct 2013 22:18:55 +0100
-Message-ID: <06C7F4D3-EC91-46CF-90BE-FC24D54F2389@sperl.org>
-References: <F70C4469-6325-48D5-A7CA-52CC1FC404BD@sperl.org> <CACRpkdb6y=o4__snBs2DR1f=xW_u7KdkHg3fb7XN5e2gicBJeg@mail.gmail.com> <CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig@mail.gmail.com>
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Subject: [PATCH v2 00/19] Enable various Renesas drivers on all ARM platforms
+Date: Tue, 29 Oct 2013 23:37:35 +0100
+Message-ID: <1383086274-11049-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Guennadi Liakhovetski <g.liakhovetski+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Eduardo Valentin <eduardo.valentin-l0cyMroinI0@public.gmane.org>,
+	Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>,
+	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
+	Jean-Christophe Plagniol-Villard <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-pwm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Samuel Ortiz <samuel-jcdQHdrhKHMdnm+yROfE0A@public.gmane.org>, linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Ian Molton <ian-zdned+2MO1+9FHfhHBbuYA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>,
+	Greg Kr
+To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
+List-Unsubscribe: <https://lists.linuxfoundation.org/mailman/options/iommu>,
+	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.linuxfoundation.org/pipermail/iommu/>
+List-Post: <mailto:iommu-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
+List-Help: <mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.linuxfoundation.org/mailman/listinfo/iommu>,
+	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=subscribe>
+Sender: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+Errors-To: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi!
+Hello,
 
-> But I hope that you have the necessary infrastructure using the dmaengine
-> subsystem for this, or that changes requires will be proposed to that
-> first or together with these changes.
-> 
-> As you will be using dmaengine (I guess?) maybe a lot of this can
-> actually be handled directly in the core since that code should be
-> pretty generic, or in a separate file like spi-dmaengine-chain.c?
+This patch series, based on v3.12-rc7, prepares various Renesas drivers
+for migration to multiplatform kernels by enabling their compilation or
+otherwise fixing them on all ARM platforms. The patches are pretty
+straightforward and are described in their commit message.
 
-I have to admit - I have not been using that infrastructure so far - a bit uncertain how to make it work yet - I first wanted the prototype working.
+Changes since v1:
 
-Also the kernel on the raspberry Pi (on which I do the development) is not fully upstream (I know) and also some parts are not really implemented.
-I know of people who are only using the upstream kernel on a RPI, but there are other limitations there with regards to some drivers. Also there would be a bit of experimentation required to get it in working order - time I do not want to spend momentarily...
+- The drivers can also be selected when COMPILE_TEST is enabled, regardless of
+  the architecture. This should provide a good compromise between wide build
+  test coverage and not clobbering configuration with drivers useless on
+  non-SuperH, non-ARM platforms.
 
-Finally I am also not sure how dmaengine can work when 2 DMAs are required working in parallel (one for RX the other for TX).
-All this means that I have to schedule the RX DMA from the TX-DMA and vice versa - in addition to configuring the SPI registers via DMA and working arround those HW-bugs.
+- DMA configuration is now unconditional in patch 08/19
 
-If the DMA engine would be able to support all of this I have no Idea yet.
+I'd like to get all these patches merged in v3.14. As they will need to go
+through their respective subsystems' trees, I would appreciate if all
+maintainers involved could notify me when they merge patches from this series
+in their tree to help me tracking the merge status. I don't plan to send pull
+requests individually for these patches, and I will repost patches
+individually if changes are requested during review.
 
-But with all that said, I can do a single SPI_MESSAGE with 5 transfers ,  2 of which have CS_CHANGE only with DMA without any interrupts - besides the final interrupt to trigger the wakeup of the spi_message_pump thread.
+If you believe the issue should be solved in a different way please reply to
+the cover letter to let other maintainers chime in.
 
-So obviously from there it is not that much more complicated coalescing multiple spi_messages into a single running DMA thread  - it would be just adding the additional transfers to the DMA chain and making sure the DMA is still running after the fact that we have added it.
+Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Cc: "David S. Miller" <davem-fT/PcQaiUtIeIZ0/mPfg9Q@public.gmane.org>
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Cc: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Eduardo Valentin <eduardo.valentin-l0cyMroinI0@public.gmane.org>
+Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Cc: Guennadi Liakhovetski <g.liakhovetski+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Ian Molton <ian-zdned+2MO1+9FHfhHBbuYA@public.gmane.org>
+Cc: iommu-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+Cc: Jean-Christophe Plagniol-Villard <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+Cc: Joerg Roedel <joro-zLv9SwRftAIdnm+yROfE0A@public.gmane.org>
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Mauro Carvalho Chehab <m.chehab-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Cc: Samuel Ortiz <samuel-jcdQHdrhKHMdnm+yROfE0A@public.gmane.org>
+Cc: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
+Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Cc: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-pwm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-The complication then comes mostly in the form of memory management (especially releasing DMA Control blocks), locking,... - which one does not have to take too much care of with the _transfer_one_message interface.
+Laurent Pinchart (19):
+  serial: sh-sci: Enable the driver on all ARM platforms
+  DMA: shdma: Enable the driver on all ARM platforms
+  i2c: sh_mobile: Enable the driver on all ARM platforms
+  input: sh_keysc: Enable the driver on all ARM platforms
+  iommu: shmobile: Enable the driver on all ARM platforms
+  i2c: rcar: Enable the driver on all ARM platforms
+  v4l: sh_vou: Enable the driver on all ARM platforms
+  mmc: sdhi: Enable the driver on all ARM platforms
+  mmc: sh_mmcif: Enable the driver on all ARM platforms
+  mtd: sh_flctl: Enable the driver on all ARM platforms
+  net: sh_eth: Set receive alignment correctly on all ARM platforms
+  irda: sh_irda: Enable the driver on all ARM platforms
+  pinctrl: sh-pfc: Enable the driver on all ARM platforms
+  pwm: pwm-renesas-tpu: Enable the driver on all ARM platforms
+  sh: intc: Enable the driver on all ARM platforms
+  spi: sh_msiof: Enable the driver on all ARM platforms
+  spi: sh_hspi: Enable the driver on all ARM platforms
+  thermal: rcar-thermal: Enable the driver on all ARM platforms
+  fbdev: sh-mobile-lcdcfb: Enable the driver on all ARM platforms
 
-So to put it into perspective:
+ drivers/dma/sh/Kconfig                | 2 +-
+ drivers/dma/sh/shdmac.c               | 6 +++---
+ drivers/i2c/busses/Kconfig            | 4 ++--
+ drivers/input/keyboard/Kconfig        | 2 +-
+ drivers/iommu/Kconfig                 | 2 +-
+ drivers/media/platform/Kconfig        | 2 +-
+ drivers/mmc/host/Kconfig              | 4 ++--
+ drivers/mmc/host/tmio_mmc_dma.c       | 4 +---
+ drivers/mtd/nand/Kconfig              | 2 +-
+ drivers/net/ethernet/renesas/sh_eth.c | 2 +-
+ drivers/net/ethernet/renesas/sh_eth.h | 2 +-
+ drivers/net/irda/Kconfig              | 2 +-
+ drivers/pinctrl/Makefile              | 2 +-
+ drivers/pinctrl/sh-pfc/Kconfig        | 2 +-
+ drivers/pwm/Kconfig                   | 2 +-
+ drivers/sh/intc/Kconfig               | 2 +-
+ drivers/spi/Kconfig                   | 4 ++--
+ drivers/thermal/Kconfig               | 2 +-
+ drivers/tty/serial/Kconfig            | 2 +-
+ drivers/video/Kconfig                 | 6 +++---
+ 20 files changed, 27 insertions(+), 29 deletions(-)
 
-My main goal is to get an efficient CAN driver for the mcp2515 chip which sits on the SPI bus of the RPI.
-I can right now receive about 3200 messages from the CAN Bus per second (close to the absolute maximum for messages with 8 bytes in length - I could more than double the packet count by reducing the packet size to 0 -   with this driver (plus an version of the mcp2515 that uses the async interface and advanced scheduling of messages to "leverage" concurrency - also self written)
+-- 
+Regards,
 
-With the "stock" spi-bcm2835 driver that is upstream it uses around 50k interrupts and a similar amount of context switches  and still looses packets.
-With the current incarnation of the spi-bcm2835dma driver (using the transfer_one_message interface) I run at around 16500 interrupts/s and 22000 context switches.
-Still what is biting me the most from the transfer perspective is the fact that there are still too many interrupts and context-switches, which introduces too much latency-unnecessarily.
-
-So with the spi-bcm2835dma with transfer interface I would estimate that I would get the interrupts down to 6400 interrupts and 0 context switches. All this should also have a positive impact on CPU utilization - no longer 80% System load due to scheduling/dma overhead...
-
-As for the prepare_spi_message - I was asking for something different than prepare_transfer_hardware (unless there is new code there in 3.12 that already includes that - or it is in a separate tree).
-One would prepare the HW in some way - say waking up a separate thread,...
-While what i would like to see would be similar to prepared statements in SQL - prepare the DMA control blocks once for a message (you may not change the structure/addresses, but you may change the data you are transferring) and then when the message gets submitted via spi_async and then via transfer to the driver, it would then make use of the prepared DMA chain to get attached to the DMA queue. This would shorten the need to calculate those DMA control blocks every time - in my case above I run the same computations 3200 times/s - including dmapool_alloc/dmapool_free/... Obviously it ONLY makes sense for SPI-transfers that have is_dma_mapped=1 - otherwise I would have to go thru the loops of dma_map_single_attrs  every time....
-
-So this is to fill in the context for my questions regarding why the "transfer" interface is depreciated and to provide a rational for why I would want to use it.
-
-Ciao,
-		Martin
-
-P.s: and for completeness: yes, I can do speed_hz and delay_usecs on a per spi_transfer basis as well in the DMA loop - probably coming closer to the "real" requested delay than the steps interrupt->interrupt-handler->wakeup pump_thread (inside the transfer_one_message handler) -> process the other arguments of xfer that are applied after the transfer-> udelay(xfer->delay_usec) 
-On the RPI something like this takes about 0.1ms from one message to the next to get deliverd - ok, it includes some overhead (like calculating the DMA control-blocks), but still it shows the order of magnitude which you can expect when you have to do wait for the message pump to get scheduled (with realtime priority).
-So a delay_usec=100 would already be in the range of what we would see naturally from the design for a low-power device with a single core - and that would result in waiting way too long. While with DMA I can get the timing correct to +-5% of the requested value (jitter due to other memory transfers that block the memory bus - but this can possibly get )
-
-I will not mention that I believe that with this SPI-DMA driver it opens up the possibility to read 2 24-ADCs at a rate of 200k with minimal jitter with this simple hardware at 20MHz SPI-bus speed. (some calibration may be required...)
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Laurent Pinchart

@@ -1,70 +1,56 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V4] spi: s3c64xx: Enable Word transfer
-Date: Tue, 29 Oct 2013 09:39:26 -0700
-Message-ID: <20131029163926.GA6776@sirena.org.uk>
-References: <1382074356-28430-1-git-send-email-rajeshwari.s@samsung.com>
- <20131019162504.GA1863@sirena.org.uk>
- <CAPs=JDeOqkJT32quBH1tF9FtFUOt=CHP7m6ZqzhfASM2uPj-dw@mail.gmail.com>
- <CAPs=JDdzvnM5BzgRLhLsJrdwcVSwxd6x8_kFz0EvB=OjFfVszw@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 16/19] spi: sh_msiof: Enable the driver on all ARM
+ platforms
+Date: Tue, 29 Oct 2013 09:40:57 -0700
+Message-ID: <20131029164057.GB6776@sirena.org.uk>
+References: <1383004027-25036-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+ <1383004027-25036-17-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="AqsLC8rIMeq19msA"
-Cc: Rajeshwari S Shinde <rajeshwari.s-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-samsung-soc <linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Alim Akhtar <alim.akhtar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Doug Anderson <dianders-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: Rajeshwari Birje <rajeshwari.birje-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="VrqPEDrXMn8OVzN4"
+Cc: linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org
+To: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAPs=JDdzvnM5BzgRLhLsJrdwcVSwxd6x8_kFz0EvB=OjFfVszw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1383004027-25036-17-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---AqsLC8rIMeq19msA
+--VrqPEDrXMn8OVzN4
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Oct 29, 2013 at 04:59:11PM +0530, Rajeshwari Birje wrote:
-> On Tue, Oct 29, 2013 at 4:29 PM, Rajeshwari Birje
+On Tue, Oct 29, 2013 at 12:47:04AM +0100, Laurent Pinchart wrote:
 
-> >> This patch is still not setting bits_per_word_mask as far as I can see?
+> Renesas ARM platforms are transitioning from single-platform to
+> multi-platform kernels using the new ARCH_SHMOBILE_MULTI. Make the
+> driver available on all ARM platforms to enable it on both ARCH_SHMOBILE
+> and ARCH_SHMOBILE_MULTI and increase build testing coverage.
 
-> > Will send new version of patch including this.
+Why is this driver specific to ARM?
 
-> I had some confusion regarding this bits_per_word_mask, where do you
-> want me to mask the bpw.
-> bits_per_word is something which comes from the user, do we need to mask it?
-
-Have you looked at the code and documentation for this feature - if it's
-not clear can you please explain in more detail what needs clarifying?
-
---AqsLC8rIMeq19msA
+--VrqPEDrXMn8OVzN4
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSb+S7AAoJELSic+t+oim96MQP/2ZJLGnByWlPui08B3QNbDk4
-Em68UlqKa3wWUCrCFdeUwn0FTqavuDUt6fZSx/ZXvXlCPkOhbu/BXO9XGkFgWVCf
-xJYD9TfakOR/woGZj/fmDtn8OJQw9dWDF3WMzwMadd8A8EFgdMOdgHnDavTuxHT/
-Tn0Yfgw0f+DuAnTRU3kdBb3w4R8KNvnXaF1Bjx5d/WGgIGCHavFSCwibvw4tVuf9
-d4WKyU+FV1R6TQ+E0XF2WRwI+MF2S7Lb5VcVg3fCWA7l1FgLYc0dgp3/lMm10B/z
-5NMrjViAECEbyQIgnFuvo7SyuEQLxf+dSblVuume5FpBSu5G3OJeFCHv18YjzqCw
-oE7Hj7uUfPR7buXTbBfL5WXM+xzXLcGupcx9kaZgNOkZRsVqsuYQMFC9NMnWWDql
-YhocZTkgeVmYiSllnKPRIORzovdAhOMdvrlrdaXJtxNr20ayBdFPEHj8vaInBIUt
-oGSzjXN7p072hKQxNszvDWmw9CNFDv5u4klndp7u4CYeJAQB6OZhOG9qpoUqxZgT
-xjT+WtpGOUGj26AdTd5of2L/L1ZiRTsQm2dHi5GzzaEztm8qhnvm6Md5YXRK3DKg
-rTwkWFZcNUPa/HdFpHrF3RpWRhDAQ6K+le7qZINtyOdcXAZqZB4gfbYP7wG6oFyR
-dgQVRVl1MI4rVIdevOsz
-=Ko0/
+iQIcBAEBAgAGBQJSb+UWAAoJELSic+t+oim96xwP/AhhoqqKW6Z7OgE6BKlah+Hf
+9zfcpuACtbFuMrZZulhaiOVkXktTO7giI5te7WiEr+B7bDSL9k/IxJFh70iSHMu/
+UYwvWYeE78QsbPjae0PLkSSxwytYstjV9GrQo2NoEKsLqiGXhjPiM8Sw1JFeFVwo
+C0t4rbGamk2xZREcu1QnSOtq7mx1bfFFOqp3ZlN6WC3p0NGNvUrbsNojnOpN6DvP
+ctAWNNn+hi65q2egOcY3piKWlKPjMN08lwLYQsnLGQXeBOLiZLXcLwEponN/UbKL
+JfHY17Z1wiQWPZtV5iHir/XEJKc0qfPellWJTCCvTyAdsKQXBui9zMOKnTHcAs8l
+yPExFcozkOdqpA/fc6ZN7yLYnk6SrpfpaLlRrRG1P6N8IFVXnFHjD6GSby2Y0YqA
+TJn9Gm+AAFfByQnUiKKyDZdagzcFMShkwRkJTE0Dzpk5rSPq7q2hu8VRH6xZdJOK
+GO4SnTdWnrjOMGj7HV3WvEMG8aJc8tmarTbHPNppL6BVlygFkQ9HbFM6cBHcXhwQ
+RhvNKtz/aurQw8R7XlIFdRLh9gHQmBoIlp18yvMYZmY1gzivzNow0XlVNVTMm2FC
+jSodBOMP0cbrhA90cGK/8o7HjraXRUwFWZtteYXhQPW7XjmgFRg/tskJlKnVdsYO
+kI1iwWHsRqjtsjxCxigs
+=NBc8
 -----END PGP SIGNATURE-----
 
---AqsLC8rIMeq19msA--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--VrqPEDrXMn8OVzN4--

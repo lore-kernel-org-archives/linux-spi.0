@@ -1,114 +1,134 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for an optimized pipelined-SPI-DMA-driver
-Date: Wed, 30 Oct 2013 09:40:21 +0100
-Message-ID: <02BFF0F6-3836-4DEC-AA53-FF100E037DE9@sperl.org>
-References: <F70C4469-6325-48D5-A7CA-52CC1FC404BD@sperl.org> <CACRpkdb6y=o4__snBs2DR1f=xW_u7KdkHg3fb7XN5e2gicBJeg@mail.gmail.com> <CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig@mail.gmail.com> <06C7F4D3-EC91-46CF-90BE-FC24D54F2389@sperl.org>
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <06C7F4D3-EC91-46CF-90BE-FC24D54F2389-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Tomi Valkeinen <tomi.valkeinen@ti.com>
+Subject: Re: [PATCH 00/19] Enable various Renesas drivers on all ARM platforms
+Date: Wed, 30 Oct 2013 12:59:08 +0200
+Message-ID: <5270E67C.1030307@ti.com>
+References: <1383004027-25036-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+ <1577821.Q7gttkPE2J@avalon> <20131029172331.GA20251@sirena.org.uk>
+ <1422562.0L87CDt5Gd@avalon> <20131029175834.GD20251@sirena.org.uk>
+ <20131030000501.GE21262@verge.net.au>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0826496835802853326=="
+Cc: linux-fbdev@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Guennadi Liakhovetski <g.liakhovetski+renesas@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>, linux-mtd@lists.infradead.org,
+ linux-i2c@vger.kernel.org,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ Vinod Koul <vinod.koul@intel.com>, Joerg Roedel <joro@8bytes.org>,
+ linux-sh@vger.kernel.org, Magnus Damm <magnus.damm@gmail.com>,
+ Eduardo Valentin <eduardo.valentin@ti.com>, linux-serial@vger.kernel.org,
+ linux-input@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+ Chris Ball <cjb@laptop.org>,
+ Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+ linux-media@vger.kernel.org, linux-pwm@vger.kernel.org,
+ Samuel Ortiz <samuel@sortiz.org>, linux-pm@vger.kernel.org,
+ Ian Molton <ian@mnementh.co.uk>, linux-arm-kernel@lists.infradead.org,
+ Sergei Shtylyov
+To: Simon Horman <horms@verge.net.au>, Mark Brown <broonie@kernel.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <20131030000501.GE21262@verge.net.au>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Maybe one more argument for the spi_prepare_message interface:
+--===============0826496835802853326==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature";
+	boundary="TkUw5P34TmOLV1SJPPLSgLmi19DGfXjmp"
 
-For my use-case it takes about: 0.053ms to get from CS disabled+interrupt+interrupthandler+wakeup to the point where I am starting to do the "real work" - in my case preparing dma chains.
-And this then takes - depending on the number of transfers and features requested for this message - another 0.026ms to compute the DMA chain.
-and then finally another 0.001ms to the point where CS really gets "driven low" by the DMA.
+--TkUw5P34TmOLV1SJPPLSgLmi19DGfXjmp
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-So if we can "optimize" away this "CPU-task" with preparing the messages, then we are faster and there is a definite save on CPU cycles...
+On 2013-10-30 02:05, Simon Horman wrote:
+> On Tue, Oct 29, 2013 at 10:58:34AM -0700, Mark Brown wrote:
+>> On Tue, Oct 29, 2013 at 06:29:59PM +0100, Laurent Pinchart wrote:
+>>> On Tuesday 29 October 2013 10:23:31 Mark Brown wrote:
+>>>> On Tue, Oct 29, 2013 at 06:05:53PM +0100, Laurent Pinchart wrote:
+>>>>> The first one is that I can't compile-test all those drivers on all=
 
-Some quick analysis shows that the dma_pool_alloc takes quite a bit of time out of those (now 0.029ms - due to additional CS up/down):
-Total time spent  to create the chain of 48 dma-control-blocks is 29us
-Time spent in alloc_dma_pool is 9.1us
-The same, but also including the "initialization" of the control-block increases to 18.6us
+>>>>> architectures. The spi-sh-msiof driver, for instance, uses
+>>>>> io(read|write)(16|
+>>
+>>>> Which architectures are these and is there not a symbol we can depen=
+d on
+>>>> for them?
+>>
+>>> arch/cris for instance. We can use readl/writel instead (maybe it wou=
+ld be=20
+>>> time to rationalize and document the I/O accessors across all archite=
+ctures,=20
+>>> but that's another topic).
+>>
+>> It'd certainly be sensible, or adding a config option to depend on if
+>> you rely on these functions.
+>>
+>>> My point is that there might be other issues that I won't be able to =
+easily=20
+>>> catch. This would break compilation for everybody for no reason, as t=
+he=20
+>>> drivers are useless on non-SuperH, non-ARM platforms. That's why I be=
+lieve=20
+>>> COMPILE_TEST would be a better option as a first step.
+>>
+>> Yes, it would - please do that.  Note that it won't stop anyone runnin=
+g
+>> into build issues on other architectures though, it's just about
+>> stopping Kconfig noise.
+>=20
+> FWIW, I am happy with using COMPILE_TEST for this series.
 
-So the setup of DMA is definitely expensive in itself.
+I'd also go for COMPILE_TEST. I once enabled omapdss and omapfb to be
+compilable without any extra dependencies, and Linus wasn't fond of
+getting asked if he wants to compile omapfb or not...
 
-But if I compare with SPI-BCM2835 "apples to apples", I get:
-for the spi-bcm2835dma.c (from start of DMA calc till final CS) a total time of: 58us.
-for the spi-bcm2835.c (from CS down to CS UP) a total time of: 71us.
-
-So there is an advantage to the DMA driver from the bus-efficiency perspective.
-And it would be much bigger when we would have the chains "prepared" already - in my example above it should go down to 27us, which is _almost_ optimal from the CPU perspective...
-
-I can share some images from the logic analyzer if required for future reference.
-
-Ciao,
-		Martin
-
-P.s: the spi_message presented in the above is of the following format:
-* 4 spi_transfers
-** 2 bytes write
-** 2 bytes read+CS_CHANGE
-** 2 bytes write
-** 13 bytes read (implicit CS_change because of end of message)
-
-also my test-workload produces the following statistics on vmstat:
-on spi-bcm2835: 79000 interrupts/s and 22000 context-switches and 70% System load
-on spi-bcm2835dma: 15700 interrupts/s and 20000 context-switches and 75% System load
+ Tomi
 
 
-On 29.10.2013, at 22:18, Martin Sperl wrote:
 
-> Hi!
-> 
->> But I hope that you have the necessary infrastructure using the dmaengine
->> subsystem for this, or that changes requires will be proposed to that
->> first or together with these changes.
->> 
->> As you will be using dmaengine (I guess?) maybe a lot of this can
->> actually be handled directly in the core since that code should be
->> pretty generic, or in a separate file like spi-dmaengine-chain.c?
-> 
-> I have to admit - I have not been using that infrastructure so far - a bit uncertain how to make it work yet - I first wanted the prototype working.
-> 
-> Also the kernel on the raspberry Pi (on which I do the development) is not fully upstream (I know) and also some parts are not really implemented.
-> I know of people who are only using the upstream kernel on a RPI, but there are other limitations there with regards to some drivers. Also there would be a bit of experimentation required to get it in working order - time I do not want to spend momentarily...
-> 
-> Finally I am also not sure how dmaengine can work when 2 DMAs are required working in parallel (one for RX the other for TX).
-> All this means that I have to schedule the RX DMA from the TX-DMA and vice versa - in addition to configuring the SPI registers via DMA and working arround those HW-bugs.
-> 
-> If the DMA engine would be able to support all of this I have no Idea yet.
-> 
-> But with all that said, I can do a single SPI_MESSAGE with 5 transfers ,  2 of which have CS_CHANGE only with DMA without any interrupts - besides the final interrupt to trigger the wakeup of the spi_message_pump thread.
-> 
-> So obviously from there it is not that much more complicated coalescing multiple spi_messages into a single running DMA thread  - it would be just adding the additional transfers to the DMA chain and making sure the DMA is still running after the fact that we have added it.
-> 
-> The complication then comes mostly in the form of memory management (especially releasing DMA Control blocks), locking,... - which one does not have to take too much care of with the _transfer_one_message interface.
-> 
-> So to put it into perspective:
-> 
-> My main goal is to get an efficient CAN driver for the mcp2515 chip which sits on the SPI bus of the RPI.
-> I can right now receive about 3200 messages from the CAN Bus per second (close to the absolute maximum for messages with 8 bytes in length - I could more than double the packet count by reducing the packet size to 0 -   with this driver (plus an version of the mcp2515 that uses the async interface and advanced scheduling of messages to "leverage" concurrency - also self written)
-> 
-> With the "stock" spi-bcm2835 driver that is upstream it uses around 50k interrupts and a similar amount of context switches  and still looses packets.
-> With the current incarnation of the spi-bcm2835dma driver (using the transfer_one_message interface) I run at around 16500 interrupts/s and 22000 context switches.
-> Still what is biting me the most from the transfer perspective is the fact that there are still too many interrupts and context-switches, which introduces too much latency-unnecessarily.
-> 
-> So with the spi-bcm2835dma with transfer interface I would estimate that I would get the interrupts down to 6400 interrupts and 0 context switches. All this should also have a positive impact on CPU utilization - no longer 80% System load due to scheduling/dma overhead...
-> 
-> As for the prepare_spi_message - I was asking for something different than prepare_transfer_hardware (unless there is new code there in 3.12 that already includes that - or it is in a separate tree).
-> One would prepare the HW in some way - say waking up a separate thread,...
-> While what i would like to see would be similar to prepared statements in SQL - prepare the DMA control blocks once for a message (you may not change the structure/addresses, but you may change the data you are transferring) and then when the message gets submitted via spi_async and then via transfer to the driver, it would then make use of the prepared DMA chain to get attached to the DMA queue. This would shorten the need to calculate those DMA control blocks every time - in my case above I run the same computations 3200 times/s - including dmapool_alloc/dmapool_free/... Obviously it ONLY makes sense for SPI-transfers that have is_dma_mapped=1 - otherwise I would have to go thru the loops of dma_map_single_attrs  every time....
-> 
-> So this is to fill in the context for my questions regarding why the "transfer" interface is depreciated and to provide a rational for why I would want to use it.
-> 
-> Ciao,
-> 		Martin
-> 
-> P.s: and for completeness: yes, I can do speed_hz and delay_usecs on a per spi_transfer basis as well in the DMA loop - probably coming closer to the "real" requested delay than the steps interrupt->interrupt-handler->wakeup pump_thread (inside the transfer_one_message handler) -> process the other arguments of xfer that are applied after the transfer-> udelay(xfer->delay_usec) 
-> On the RPI something like this takes about 0.1ms from one message to the next to get deliverd - ok, it includes some overhead (like calculating the DMA control-blocks), but still it shows the order of magnitude which you can expect when you have to do wait for the message pump to get scheduled (with realtime priority).
-> So a delay_usec=100 would already be in the range of what we would see naturally from the design for a low-power device with a single core - and that would result in waiting way too long. While with DMA I can get the timing correct to +-5% of the requested value (jitter due to other memory transfers that block the memory bus - but this can possibly get )
-> 
-> I will not mention that I believe that with this SPI-DMA driver it opens up the possibility to read 2 24-ADCs at a rate of 200k with minimal jitter with this simple hardware at 20MHz SPI-bus speed. (some calibration may be required...)
-> 
-> 
+--TkUw5P34TmOLV1SJPPLSgLmi19DGfXjmp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.14 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iQIcBAEBAgAGBQJScOZ8AAoJEPo9qoy8lh71P30P/jICwvvfCuFcXG7wV9Xlx+Yn
+MQDykQ+nRBIKOprbo38dSIC/rHYc0w80r2cb9I3xnGprkYNa9gG4Ln0RgH+nD6Hp
+AMmvAluNpOh5Xw9HWru7o7WnSVbMYeFM1D88/MCpJ0+HbunlpMOLbt+TZh7OHBlG
+BigvgPZMeDdNtVe2/loS9pSZmmRVdXqUJEa3eIWjV4DJRQFJeLcvdAXICCSFabjJ
+z7COW355T8sfHuF68cze7aUjQc+sRXF8DZlU0D/FuUqe2HuCqs2qZif/UD8OEGv6
+MGgX56QseEfhUe/czV2OJCF5lkdDmK/d2kdQEwa8TH9Ha78q56i/wY4/9xrKZIBC
+8I9LuGEJMyHfnKlDCiksVu4INjSuJxuEQ9XXBO7DwUFh3nIwXvCxIFKSKVcw0WFr
+/wiLjEOr+ks3MopLx1Q3rObI5NuK8XA01nzbmPoLVftNQYHCujdpM4GbjO5TseyA
+5PLPEaYINVZy38f4wA96haT9xzytbl2+0slcIx0HT7mGLeSXrK6SCDCQcXjFWb2G
+u8g1LOskc75YG5SNef2pfgWlNYEwcNC+SzH8XFUpS/Ik/nIsuPH4jSNfUlw806i/
+lOLwrnsy1CPLqe8W3O9pzxWoFVrqSpIWmfnDo5Kuhfi/khtNcGKEFnMWmI0ZCjQU
+Ua3jflxpaMjf4QJygi9Y
+=mBU0
+-----END PGP SIGNATURE-----
+
+--TkUw5P34TmOLV1SJPPLSgLmi19DGfXjmp--
+
+
+--===============0826496835802853326==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============0826496835802853326==--

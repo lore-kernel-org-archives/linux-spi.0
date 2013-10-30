@@ -1,59 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for
- an optimized pipelined-SPI-DMA-driver
-Date: Wed, 30 Oct 2013 10:19:02 -0700
-Message-ID: <20131030171902.GL2493@sirena.org.uk>
-References: <F70C4469-6325-48D5-A7CA-52CC1FC404BD@sperl.org>
- <CACRpkdb6y=o4__snBs2DR1f=xW_u7KdkHg3fb7XN5e2gicBJeg@mail.gmail.com>
- <CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig@mail.gmail.com>
- <06C7F4D3-EC91-46CF-90BE-FC24D54F2389@sperl.org>
- <02BFF0F6-3836-4DEC-AA53-FF100E037DE9@sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="oOpJzULQ70+PGW7h"
+From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for an optimized pipelined-SPI-DMA-driver
+Date: Wed, 30 Oct 2013 19:33:30 +0100
+Message-ID: <8D8B0BAD-0E00-4147-B4C8-FBB18F060C96@sperl.org>
+References: <F70C4469-6325-48D5-A7CA-52CC1FC404BD@sperl.org> <CACRpkdb6y=o4__snBs2DR1f=xW_u7KdkHg3fb7XN5e2gicBJeg@mail.gmail.com> <CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig@mail.gmail.com> <06C7F4D3-EC91-46CF-90BE-FC24D54F2389@sperl.org> <02BFF0F6-3836-4DEC-AA53-FF100E037DE9@sperl.org> <20131030171902.GL2493@sirena.org.uk>
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8BIT
 Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <02BFF0F6-3836-4DEC-AA53-FF100E037DE9-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+In-Reply-To: <20131030171902.GL2493-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark!
 
---oOpJzULQ70+PGW7h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I have seen your email and I have checked 3.12-rc7:
+https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/include/linux/spi/spi.h?id=refs/tags/v3.12-rc7
+(Assuming this is the latest, but I would say that the version of Linus would 
+be authoritative)
 
-On Wed, Oct 30, 2013 at 09:40:21AM +0100, Martin Sperl wrote:
+What I have found is:
+int (*prepare_transfer_hardware)(struct spi_master *master);
 
-> Maybe one more argument for the spi_prepare_message interface:
+This one I have mentioned before, but this does prepare the hardware 
+(spi_master) prior to every time we  start after an empty queue, 
+which does NOT do what I was asking for.
+It is useful for starting up clocks and other power-management tasks...
 
-Did you see my replies yesterday - I mentioned that we already have this
-interface in mainline?
+It does not prepare a spi_message once allowing it to get processed faster
+on calls to spi_async(...)!
 
---oOpJzULQ70+PGW7h
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+So can you tell me which interface you are talking about that is supposed 
+to be in the mainline, which would solve my needs?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+I would need an interface addition similar in intent to this:
 
-iQIcBAEBAgAGBQJScT99AAoJELSic+t+oim9jxcP/2H4SawVBkTxDaUA57+wkbkL
-JXu5CXxgb3ob016rj91eAdKTNE2OSrfYH87qb02hclupHslvYs/1AULw6N4SBJYE
-hLJ9PBU+PCjSlI2KUNv50mxv5soyqXAXLzErbkNPyAqlv4uCJi2gDjW/dcB9ezfa
-+/fl0fra3ZllOjPAziiqTvNGuUYZXT1A+RhkedmZnueV81295yAug6h5VAeUy6tj
-MOQGnEJ3se4vRXRrNY+mqrtN4C1LE0TjXGPtjNq+YdOu3y+m8j9QrBb+IT4RDVYL
-7sYNJMP22EM84w9Qs1X3e4FUhVKvzIXIwh9nghYYq9hEfqqpM91dJiWwET2r7jZs
-tGbgyLIxCBupJLWnGdqcdn/4tNGCEdEMIG4/HZJVV6/x/rz5Pn0BFS6iXBWhhkRh
-Ex3LdTCSnxguPrd8whONeej9orgX0E/QDuKSRcVuavKl9SLktcfG0b1mWWrl8nQr
-CccDv4xvVt2y9mLFbxMsvnXusUtRjwMMPCwR4gP/dJRRbdQ06+Qa+TsAGf9Xlv0/
-G+1pFgI5uAp8XZ2iE4Z7ND4HRQDBsk6utSSFT0jlNmkmUDSqS/JvIkOSDEIPw/Ep
-sDl8xdzOL1Tf9JulYjjAZUnnj6D5ILb1aIxrHajvpB1CoVfnYe8SZAdiMFs6fUlk
-u9TV0fYPzvxso5T6b3Rh
-=XiOW
------END PGP SIGNATURE-----
+The following would go into struct spi_master:
+  int (*prepare_message)(struct spi_device *dev,struct spi_message *mesg);
+  int (*unprepare_message)(struct spi_device *dev,struct spi_message *mesg);
 
---oOpJzULQ70+PGW7h--
+static int spi_message_prepare(struct spi_device *spi, struct spi_message* msg) {
+  return (dev->master->prepare_message)? 
+    dev->master->prepare_message(spi,msg):0;
+}
+
+static int spi_message_unprepare(struct spi_device *spi, struct spi_message*msg) {
+  return (dev->master->unprepare_message)? 
+    dev->master->unprepare_message(spi,msg):0;
+}
+
+Plus some additional information in spi_message similar to this:
+  void *prepared;
+  struct spi_driver *prepared_for_device; 
+
+The second more to avoid "problems" when drivers prepare for one spi-device 
+and then use it on a different SPI device - mostly to croak about misuse of the 
+prepared message... If this field is in there, then the "unprepare" call  could even 
+do without the argument for SPI_device, as it would be already stored in 
+the message itself...
+
+Thanks,
+		Martin
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

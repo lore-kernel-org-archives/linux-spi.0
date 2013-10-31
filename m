@@ -1,138 +1,162 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for
- an optimized pipelined-SPI-DMA-driver
-Date: Wed, 30 Oct 2013 17:10:04 -0700
-Message-ID: <20131031001004.GW2493@sirena.org.uk>
-References: <F70C4469-6325-48D5-A7CA-52CC1FC404BD@sperl.org>
- <CACRpkdb6y=o4__snBs2DR1f=xW_u7KdkHg3fb7XN5e2gicBJeg@mail.gmail.com>
- <CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig@mail.gmail.com>
- <06C7F4D3-EC91-46CF-90BE-FC24D54F2389@sperl.org>
- <02BFF0F6-3836-4DEC-AA53-FF100E037DE9@sperl.org>
- <20131030171902.GL2493@sirena.org.uk>
- <8D8B0BAD-0E00-4147-B4C8-FBB18F060C96@sperl.org>
- <20131030215716.GV2493@sirena.org.uk>
- <3342FD19-4438-463B-89B2-A83D3475AC22@sperl.org>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH v2 00/19] Enable various Renesas drivers on all ARM
+ platforms
+Date: Thu, 31 Oct 2013 14:52:28 +0900
+Message-ID: <20131031055228.GS1603@verge.net.au>
+References: <1383086274-11049-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="cxfMsoqvp1jUizWj"
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-fbdev@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Guennadi Liakhovetski <g.liakhovetski+renesas@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>, linux-mtd@lists.infradead.org,
+ linux-i2c@vger.kernel.org, Vinod Koul <vinod.koul@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, linux-sh@vger.kernel.org,
+ Magnus Damm <magnus.damm@gmail.com>,
+ Eduardo Valentin <eduardo.valentin@ti.com>,
+ Tomi Valkeinen <tomi.valkeinen@ti.com>, linux-serial@vger.kernel.org,
+ linux-input@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+ Chris Ball <cjb@laptop.org>,
+ Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>,
+ linux-media@vger.kernel.org, linux-pwm@vger.kernel.org,
+ Samuel Ortiz <samuel@sortiz.org>, linux-pm@vger.kernel.org,
+ Ian Molton <ian@mnementh.co.uk>, Mark Brown <broonie@kernel.org>,
+ linux-arm-kernel@lists.infradead.org,
+ Ser
+To: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <3342FD19-4438-463B-89B2-A83D3475AC22-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1383086274-11049-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
+On Tue, Oct 29, 2013 at 11:37:35PM +0100, Laurent Pinchart wrote:
+> Hello,
+> 
+> This patch series, based on v3.12-rc7, prepares various Renesas drivers
+> for migration to multiplatform kernels by enabling their compilation or
+> otherwise fixing them on all ARM platforms. The patches are pretty
+> straightforward and are described in their commit message.
+> 
+> Changes since v1:
+> 
+> - The drivers can also be selected when COMPILE_TEST is enabled, regardless of
+>   the architecture. This should provide a good compromise between wide build
+>   test coverage and not clobbering configuration with drivers useless on
+>   non-SuperH, non-ARM platforms.
+> 
+> - DMA configuration is now unconditional in patch 08/19
+> 
+> I'd like to get all these patches merged in v3.14. As they will need to go
+> through their respective subsystems' trees, I would appreciate if all
+> maintainers involved could notify me when they merge patches from this series
+> in their tree to help me tracking the merge status. I don't plan to send pull
+> requests individually for these patches, and I will repost patches
+> individually if changes are requested during review.
+> 
+> If you believe the issue should be solved in a different way please reply to
+> the cover letter to let other maintainers chime in.
 
---cxfMsoqvp1jUizWj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+All patches, including the v3 ones present in the thread at this time:
 
-On Wed, Oct 30, 2013 at 11:52:33PM +0100, Martin Sperl wrote:
+Acked-by: Simon Horman <horms@verge.net.au>
 
-Please fix your mailer to word wrap within paragraphs, it makes things
-much more legible.
-
-> After a lot of digging I found the API you are referring to in:
-> http://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git/tree/incl=
-ude/linux/spi/spi.h
-
-> So when will this go in?
-
-During the v3.13 merge window.
-
-> How would you recommend to connect your prepared structure to a specific =
- message?
-> There is no flag/field in spi_message to link that.
-
-I'm working on the basis that we should add what we need to the
-structure as we add code using it, right now there's no real usage so
-nothing to do.
-
-> Would this mean that I would keep an internal list with the address of
-> the SPI message any my "prepared data" and I need to iterate over that
-> list every time I need it?  This search might - worsted case - become
-> a scaling issue if too many prepared=20
-> statements are created...=20
-
-Like I say just add stuff to the core as needed.  If we're getting
-scaling problems due to too many transfers in flight we can probably
-arrange to limit how many we do.  Hopefully that won't be too much of an
-issue, though - we're mostly concerned with the last few entries and
-with the ones currently in flight with the hardware.
-
-I'd like to see all this stuff done in the framework as much as
-possible, like I say a lot of this is very common and even where we
-can't offload everything to hardware we can push a lot down into hard
-IRQ context which will help avoid scheduling time.  We should build
-things up piece by piece though rather than trying to do everything in
-one fell swoop.
-
-My general plan had been to start off by factoring out the prepare and
-unprepare of DMA transfers for dmaengine based devices, including things
-like the cache flushing, then add support for coalscing scatter/gather
-operations - right now I think only one driver can do any form of gather
-though a large proportion of the hardware with DMA has that support.
-
-> It could lead to all drivers starting "simple" and then at some point it =
-becomes
-> an issue as one driver makes heavy use of this showing it becomes a bottl=
-e-neck
-> and then all spi-bus-drivers would need to get touched to optimize things=
-=2E..
-
-That's why I want to get as much into the core as possible, like was
-done with Linus' work on the queue.  dmaengine helps a lot here since
-it means all the DMA controllers look the same and hopefully we can also
-model the operations we want to do at the hardware interaction level so
-all the fancy queue/transfer management stuff is shared in the core.
-
-> Why not provide a lookup function for the prepared data immediately and m=
-ake=20
-> sure the drivers use this one. Then we only have to change it later in on=
-e place
-> and reduce code-replication across drivers.
-> (obviously you would also need put/delete methods to make that interface =
-complete.)
-
-That's the sort of stuff I'm talking about, yes (though I'm not 100%
-sure what the "prepared data" is here). =20
-
-> Also those function pointers do not have wrappers functions for ease of u=
-se,=20
-> so that they can get used in the individual drivers that know that they c=
-an=20
-> prepare the spi_message, as they do not change the transfer structure....
-
-This is part of pushing things into the core - the idea is that we
-should have little if any code using these things in the driver and
-instead the core could have the code for working out when to do things.
-
---cxfMsoqvp1jUizWj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJScZ/UAAoJELSic+t+oim9hH8P/3Lv/woaKZumzwEGxEOGmug1
-oz9QmhL3xboWKUaE4CVNFIuv4O/li0d87k+SZSzMDKm/QOyil+BwKzh6A3RT3qcJ
-jDo5EtqWXmt/gw78Nb3ED3WAHT7z2klnzumYenQT5IYvHeamgibmFAqesPUkZ68X
-oLAhmKZydPDTgCv0G157Fx6Hwhx3cimuXluEt7cXgRxELShj9QumQR9rTSl6FhWo
-DqsYLnqAUSol4DkWNRdkewS99oqBmFfEIm122O+TXNROH2AlT1V7aqGkP1YF0X/P
-N/VC8tjLW8z7u2pm/mxRBDxM49dh7GJNHOP299HiHuXOIaqdF5vx6UP2lAbJ1b+k
-1nombeN5XjyR/RQt5zmAuPsSkkMdwUZiDsAEHpRh1wdApDCgkG7NqMW1y2WqWevT
-UFcRsqLHPAxfq0WhaYM3hC1dLprVAoKKklR6pXRmJORvsvJpnb9mb7l3ncFe1+9U
-vmWLiJQ0Stl+B0b+SWIVA0QnNMvkBVHQo44a0fYQ6Bp7irdCZltJYanIeOxT1Bqw
-QSmEAuIvJMI5njDYefyyB3mI9Uyn0I6O2qQiuNROkJ1RtvSVVFRwEa0dEi+G20lI
-2qqhxoeunhmmRGWtGySBUv9AEv5TJCnC/kY9O4zZ8pzMkqAN3O89fzYtls7iSX2G
-sh41xbJD2FSzyWHvvRpE
-=z1XN
------END PGP SIGNATURE-----
-
---cxfMsoqvp1jUizWj--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Cc: Chris Ball <cjb@laptop.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: David Woodhouse <dwmw2@infradead.org>
+> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> Cc: Eduardo Valentin <eduardo.valentin@ti.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Guennadi Liakhovetski <g.liakhovetski+renesas@gmail.com>
+> Cc: Ian Molton <ian@mnementh.co.uk>
+> Cc: iommu@lists.linux-foundation.org
+> Cc: Jean-Christophe Plagniol-Villard <plagnioj@jcrosoft.com>
+> Cc: Joerg Roedel <joro@8bytes.org>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Magnus Damm <magnus.damm@gmail.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Mauro Carvalho Chehab <m.chehab@samsung.com>
+> Cc: Samuel Ortiz <samuel@sortiz.org>
+> Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+> Cc: Thierry Reding <thierry.reding@gmail.com>
+> Cc: Tomi Valkeinen <tomi.valkeinen@ti.com>
+> Cc: Vinod Koul <vinod.koul@intel.com>
+> Cc: Wolfram Sang <wsa@the-dreams.de>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: dmaengine@vger.kernel.org
+> Cc: linux-fbdev@vger.kernel.org
+> Cc: linux-i2c@vger.kernel.org
+> Cc: linux-input@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-media@vger.kernel.org
+> Cc: linux-mmc@vger.kernel.org
+> Cc: linux-mtd@lists.infradead.org
+> Cc: linux-pm@vger.kernel.org
+> Cc: linux-pwm@vger.kernel.org
+> Cc: linux-serial@vger.kernel.org
+> Cc: linux-spi@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> 
+> Laurent Pinchart (19):
+>   serial: sh-sci: Enable the driver on all ARM platforms
+>   DMA: shdma: Enable the driver on all ARM platforms
+>   i2c: sh_mobile: Enable the driver on all ARM platforms
+>   input: sh_keysc: Enable the driver on all ARM platforms
+>   iommu: shmobile: Enable the driver on all ARM platforms
+>   i2c: rcar: Enable the driver on all ARM platforms
+>   v4l: sh_vou: Enable the driver on all ARM platforms
+>   mmc: sdhi: Enable the driver on all ARM platforms
+>   mmc: sh_mmcif: Enable the driver on all ARM platforms
+>   mtd: sh_flctl: Enable the driver on all ARM platforms
+>   net: sh_eth: Set receive alignment correctly on all ARM platforms
+>   irda: sh_irda: Enable the driver on all ARM platforms
+>   pinctrl: sh-pfc: Enable the driver on all ARM platforms
+>   pwm: pwm-renesas-tpu: Enable the driver on all ARM platforms
+>   sh: intc: Enable the driver on all ARM platforms
+>   spi: sh_msiof: Enable the driver on all ARM platforms
+>   spi: sh_hspi: Enable the driver on all ARM platforms
+>   thermal: rcar-thermal: Enable the driver on all ARM platforms
+>   fbdev: sh-mobile-lcdcfb: Enable the driver on all ARM platforms
+> 
+>  drivers/dma/sh/Kconfig                | 2 +-
+>  drivers/dma/sh/shdmac.c               | 6 +++---
+>  drivers/i2c/busses/Kconfig            | 4 ++--
+>  drivers/input/keyboard/Kconfig        | 2 +-
+>  drivers/iommu/Kconfig                 | 2 +-
+>  drivers/media/platform/Kconfig        | 2 +-
+>  drivers/mmc/host/Kconfig              | 4 ++--
+>  drivers/mmc/host/tmio_mmc_dma.c       | 4 +---
+>  drivers/mtd/nand/Kconfig              | 2 +-
+>  drivers/net/ethernet/renesas/sh_eth.c | 2 +-
+>  drivers/net/ethernet/renesas/sh_eth.h | 2 +-
+>  drivers/net/irda/Kconfig              | 2 +-
+>  drivers/pinctrl/Makefile              | 2 +-
+>  drivers/pinctrl/sh-pfc/Kconfig        | 2 +-
+>  drivers/pwm/Kconfig                   | 2 +-
+>  drivers/sh/intc/Kconfig               | 2 +-
+>  drivers/spi/Kconfig                   | 4 ++--
+>  drivers/thermal/Kconfig               | 2 +-
+>  drivers/tty/serial/Kconfig            | 2 +-
+>  drivers/video/Kconfig                 | 6 +++---
+>  20 files changed, 27 insertions(+), 29 deletions(-)
+> 
+> -- 
+> Regards,
+> 
+> Laurent Pinchart
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 

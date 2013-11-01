@@ -1,68 +1,50 @@
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Subject: re: spi: omap2-mcspi: Cleanup the omap2_mcspi_txrx_dma function
-Date: Fri, 1 Nov 2013 13:32:02 +0300
-Message-ID: <20131101103202.GM29795@longonot.mountain>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: shubhrajyoti-l0cyMroinI0@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: [PATCHv2 0/3] I2C and SPI dev_name change for ACPI enumerated slaves
+Date: Fri,  1 Nov 2013 14:35:53 +0200
+Message-ID: <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com>
+References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello Shubhrajyoti D,
+Hi
 
-This is a semi-automatic email about new static checker warnings.
+Second version of the set that changes I2C and SPI slave device names
+to be generated from stable ACPI device names on ACPI 5 based systems
+instead of using bus numbers which could change.
 
-The patch d7b4394e780b: "spi: omap2-mcspi: Cleanup the 
-omap2_mcspi_txrx_dma function" from Sep 11, 2012, leads to the 
-following Smatch complaint:
+Slave device name change goes as
 
-drivers/spi/spi-omap2-mcspi.c:417 omap2_mcspi_tx_dma()
-	 error: we previously assumed 'mcspi_dma->dma_tx' could be null (see line 397)
+	"x-00yz" -> "i2c-INTABCD:ij"
+	"spix.y" -> "spi-INTABCD:ij"
 
-drivers/spi/spi-omap2-mcspi.c
-   396	
-   397		if (mcspi_dma->dma_tx) {
-                    ^^^^^^^^^^^^^^^^^
-Existing check.
+This version adds patch to include/acpi/acpi_bus.h that allow us to
+remove #if IS_ENABLED(CONFIG_ACPI) checks that were added in the
+first version.
 
-   398			struct dma_async_tx_descriptor *tx;
-   399			struct scatterlist sg;
-   400	
-   401			dmaengine_slave_config(mcspi_dma->dma_tx, &cfg);
-   402	
-   403			sg_init_table(&sg, 1);
-   404			sg_dma_address(&sg) = xfer->tx_dma;
-   405			sg_dma_len(&sg) = xfer->len;
-   406	
-   407			tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, &sg, 1,
-   408			DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-   409			if (tx) {
-   410				tx->callback = omap2_mcspi_tx_callback;
-   411				tx->callback_param = spi;
-   412				dmaengine_submit(tx);
-   413			} else {
-   414				/* FIXME: fall back to PIO? */
-   415			}
-   416		}
-   417		dma_async_issue_pending(mcspi_dma->dma_tx);
-                                        ^^^^^^^^^^^^^^^^^
-Patch introduces a new unchecked dereference.
+Set goes on top linux-pm/linux-next commit e56b4d2.
 
-   418		omap2_mcspi_set_dma_req(spi, 0, 1);
-   419	
+First version here:
+http://mailman.alsa-project.org/pipermail/alsa-devel/2013-October/067737.html
 
-See also:
+Jarkko Nikula (3):
+  ACPI: Expose struct acpi_device and acpi_bus_get_device() to non-ACPI
+    builds
+  i2c: Use stable dev_name for ACPI enumerated I2C slaves
+  spi: Use stable dev_name for ACPI enumerated SPI slaves
 
-	drivers/spi/spi-omap2-mcspi.c:477 omap2_mcspi_rx_dma() error:
-	    we previously assumed 'mcspi_dma->dma_rx' could be null
-	    (see line 452)
+ drivers/i2c/i2c-core.c  | 24 ++++++++++++++++++++----
+ drivers/spi/spi.c       | 20 +++++++++++++++++---
+ include/acpi/acpi_bus.h |  9 +++++++--
+ 3 files changed, 44 insertions(+), 9 deletions(-)
 
-regards,
-dan carpenter
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+1.8.4.rc3
+

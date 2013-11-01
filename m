@@ -1,55 +1,109 @@
-From: Tomasz Figa <t.figa@samsung.com>
-Subject: Re: [PATCH V4] spi: s3c64xx: Enable Word transfer
-Date: Thu, 31 Oct 2013 13:37:52 +0100
-Message-ID: <1586287.qm633XfQbK@amdc1227>
-References: <1382074356-28430-1-git-send-email-rajeshwari.s@samsung.com>
- <6043727.WVyVGYjJys@amdc1227>
- <CAPs=JDcVXpJJnWxRFpq7aoW98LKmHq0jo-oTVqSUasnO_1My3g@mail.gmail.com>
+From: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
+Subject: Re: [RFC 1/2] i2c: Use stable dev_name for ACPI enumerated I2C slaves
+Date: Fri, 01 Nov 2013 01:08:47 +0100
+Message-ID: <1433914.mn8USodCgb@vostro.rjw.lan>
+References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <2889412.bEKBLJtgSW@vostro.rjw.lan> <526E636D.3070005@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7Bit
-Cc: Mark Brown <broonie@kernel.org>,
-	Rajeshwari S Shinde <rajeshwari.s@samsung.com>,
-	linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-	linux-spi@vger.kernel.org, Simon Glass <sjg@chromium.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Doug Anderson <dianders@google.com>
-To: Rajeshwari Birje <rajeshwari.birje@gmail.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-reply-to: <CAPs=JDcVXpJJnWxRFpq7aoW98LKmHq0jo-oTVqSUasnO_1My3g@mail.gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <526E636D.3070005-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Rajeshwari,
-
-On Thursday 31 of October 2013 16:17:15 Rajeshwari Birje wrote:
-> Hi Mark Brown ,
+On Monday, October 28, 2013 03:15:25 PM Jarkko Nikula wrote:
+> Hi Rafael
 > 
-> On Wed, Oct 30, 2013 at 10:36 PM, Tomasz Figa <t.figa@samsung.com> wrote:
-> > On Wednesday 30 of October 2013 10:00:29 Mark Brown wrote:
-> >> On Wed, Oct 30, 2013 at 11:52:54AM +0530, Rajeshwari Birje wrote:
-> >>
-> >> > The following patch already sets bits_per_word_mask for
-> >> > drivers/spi/spi-s3c64xx.c in s3c64xx_spi_probe, hence I had a doubt do
-> >> > I need to set the same again.
-> >>
-> >> OK, so how did this work before then?  You're just adding new code but
-> >> the driver was previously claiming to support different bits per word
-> >> (and now I look at the code there is some handling for that in code).
-> >> Is this a bug fix?
-> No idea if it worked before, but now if I try to do 16 bit transfer
-> without my patch, I get following error.
-> "Xfer length(1) not a multiple of word size(2)"
-> I guess we can consider this as a bug fix then for word transfer.
-> >
-> > That's a good question. Rajeshwari, what SPI device did you test this
-> > patch with? Does it have a driver in mainline kernel?
-> @Tomasz: I tested it for W25Q32DW Winbond device which is already has
-> a driver in mainline Kernel
+> On 10/25/2013 05:08 PM, Rafael J. Wysocki wrote:
+> > On Friday, October 25, 2013  04:30:23 PM Jarkko Nikula wrote:
+>  >>>
+>  >> Hmm, not only. Referencing to dev field in struct acpi_device by
+>  >> dev_name(&adev->dev) here will fail too.
+>  >
+>  > Well, something is not quite right here.
+>  >
+>  > One of the *reasons* for having ACPI_HANDLE() defined this way is to
+>  > avoid using explicit CONFIG_ACPI checks, so if that doesn't work,
+>  > then all of that becomes a bit pointless.
+>  >
 
-The driver as of today's linux-next does not seem to support word
-transfers. Do you have some additional, out of tree patches that add
-such support?
+Can you please send patches inline instead of using inline attachments,
+so that people don't have to paste your patches back to comment them?
 
-Best regards,
-Tomasz
+> One possible thing to do is to let structure definitions to be available 
+> for non-ACPI builds. Then compiler won't fail on structure access which 
+> will be anyway optimized away by later compiler stages.
+
+Yes, we can do that, but as I said that means we're giving up on the "why
+ACPI_HANDLE() doesn't work as expected" front.  For now, I'd like to
+understand what's up before making that change.  Moreover ->
+
+> With a quick test below vmlinux section sizes don't change for couple 
+> non-ACPI build tests and allow to get rid off IS_ENABLED(CONFIG_ACPI) 
+> test in this patch. It's very minimal as it only moves the CONFIG_ACPI 
+> test just after the struct acpi_device definition and defines 
+> acpi_bus_get_device for non-ACPI case.
+> 
+> What I don't know how consistent it is as there are still couple 
+> structure definitions under CONFIG_ACPI, doesn't touch other acpi 
+> headers and requires to include acpi_bus.h in driver (or move acpi_bus.h 
+> include in linux/acpi.h currently under CONFIG_ACPI).
+>
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index d901982..7ab7870 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -66,8 +66,6 @@ bool acpi_ata_match(acpi_handle handle);
+> 
+>   bool acpi_bay_match(acpi_handle handle);
+>   bool acpi_dock_match(acpi_handle handle);
+> 
+> -#ifdef CONFIG_ACPI
+> -
+> 
+>   #include <linux/proc_fs.h>
+>   
+>   #define ACPI_BUS_FILE_ROOT    "acpi"
+> 
+> @@ -314,6 +312,8 @@ struct acpi_device {
+> 
+>       void (*remove)(struct acpi_device *);
+>   
+>   };
+> 
+> +#if IS_ENABLED(CONFIG_ACPI)
+> +
+> 
+>   static inline void *acpi_driver_data(struct acpi_device *d)
+>   {
+>   
+>       return d->driver_data;
+> 
+> @@ -531,6 +531,8 @@ static inline bool acpi_device_can_poweroff(struct
+> acpi_device *adev)
+> 
+>   static inline int register_acpi_bus_type(void *bus) { return 0; }
+>   static inline int unregister_acpi_bus_type(void *bus) { return 0; }
+> 
+> +static inline int acpi_bus_get_device(acpi_handle handle,
+> +                      struct acpi_device **device) { return 0; }
+
+This has to return an error code, because otherwise the caller can assume
+*device to be a valid pointer after it returns which may not be the case.
+
+> 
+>   #endif                /* CONFIG_ACPI */
+
+Thanks!
+
+-- 
+I speak only for myself.
+Rafael J. Wysocki, Intel Open Source Technology Center.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

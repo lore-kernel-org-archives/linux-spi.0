@@ -1,36 +1,44 @@
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [PATCHv2 0/3] I2C and SPI dev_name change for ACPI enumerated
- slaves
-Date: Fri, 01 Nov 2013 15:44:38 +0200
-Message-ID: <5273B046.1030204@linux.intel.com>
-References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com> <1601125.4tFOPicoTX@vostro.rjw.lan> <20131101132048.GD6734@katana>
+From: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: M25P80 Regulator Question
+Date: Fri, 1 Nov 2013 13:44:33 -0400
+Message-ID: <5273E881.8080401@nvidia.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-i2c@vger.kernel.org, alsa-devel@alsa-project.org,
-	linux-acpi@vger.kernel.org
-To: Wolfram Sang <wsa@the-dreams.de>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <20131101132048.GD6734@katana>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 11/01/2013 03:20 PM, Wolfram Sang wrote:
-> On Fri, Nov 01, 2013 at 02:18:06PM +0100, Rafael J. Wysocki wrote:
->>
->> Looks good to me.  If there are no objections, I can merge these through my tree.
-> Which is basically fine with me. Do you want to have it in 3.13 already?
-> I mean renaming the devices could lead to regressions, so I'd rather be
-> conservative and aim for 3.14.
->
-Valid concern. Quick grep below doesn't reveal any obvious device name 
-matching outside of sound/soc/ but of course it doesn't prove it to be 
-impossible.
+I am looking at enabling support for W25Q32DW  SPI chip on a Tegra
+platform. I found that the m25p80 driver already supports the chip, so
+enabling it through devicetree is simple:
 
-git grep '[0-9]\-00' |grep name
-git grep 'spi[0-9].[0-9]' |grep name
+
++       spi@7000da00 {
++               status = "okay";
++               spi-flash@0 {
++                       compatible = "winbond,w25q32dw";
++                       reg = <0>;
++                       spi-max-frequency = <20000000>;
++               };
++       };
+
+However, it seems on our platform, we need to ensure a regulator is on
+to be able to access the SPI chip. I was wondering if there is already
+some binding defined for such a supply. I looked at the binding doc for
+m25p80 and didn't see anything obvious, nor did I find anything else
+obvious while looking.
+
+Is there some mechanism for defining this dependency?
+
+Thanks,
+Rhyland
 
 -- 
-Jarkko
+nvpublic
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

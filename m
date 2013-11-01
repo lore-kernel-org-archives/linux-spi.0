@@ -1,39 +1,42 @@
-From: Rhyland Klein <rklein-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-Subject: Re: M25P80 Regulator Question
-Date: Fri, 1 Nov 2013 14:17:17 -0400
-Message-ID: <5273F02D.5000707@nvidia.com>
-References: <5273E881.8080401@nvidia.com> <20131101180243.GY2493@sirena.org.uk> <5273ED54.5030101@nvidia.com> <20131101181628.GD2493@sirena.org.uk>
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCHv2 0/3] I2C and SPI dev_name change for ACPI enumerated slaves
+Date: Fri, 01 Nov 2013 23:58:45 +0100
+Message-ID: <3989164.GAoLSa6qzM@vostro.rjw.lan>
+References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <20131101132048.GD6734@katana> <5273B046.1030204@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131101181628.GD2493-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7Bit
+Cc: Wolfram Sang <wsa@the-dreams.de>, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <5273B046.1030204@linux.intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 11/1/2013 2:16 PM, Mark Brown wrote:
-> * PGP Signed by an unknown key
+On Friday, November 01, 2013 03:44:38 PM Jarkko Nikula wrote:
+> On 11/01/2013 03:20 PM, Wolfram Sang wrote:
+> > On Fri, Nov 01, 2013 at 02:18:06PM +0100, Rafael J. Wysocki wrote:
+> >>
+> >> Looks good to me.  If there are no objections, I can merge these through my tree.
+> > Which is basically fine with me. Do you want to have it in 3.13 already?
+> > I mean renaming the devices could lead to regressions, so I'd rather be
+> > conservative and aim for 3.14.
+> >
+> Valid concern. Quick grep below doesn't reveal any obvious device name 
+> matching outside of sound/soc/ but of course it doesn't prove it to be 
+> impossible.
 > 
-> On Fri, Nov 01, 2013 at 02:05:08PM -0400, Rhyland Klein wrote:
-> 
->> I just wanted to make sure I wasn't missing anything. I'll come up with
->> some patches. I believe there are patches in for optional regulator
->> support right, so I assume that would be the most logical path to take?
-> 
-> No, you should not be using regulator_get_optional() - it is unlikely
-> that the flash device will work without power.
-> 
-> * Unknown Key
-> * 0x7EA229BD
-> 
-Alright, thanks!!
+> git grep '[0-9]\-00' |grep name
+> git grep 'spi[0-9].[0-9]' |grep name
 
+Well, if any breakage is caught in 3.13-rc, it should be easy enough to revert
+these changes and try again during the next cycle.  I honestly don't see any
+benefit from waiting for the next cycle "just in case".
+
+Thanks!
 
 -- 
-nvpublic
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I speak only for myself.
+Rafael J. Wysocki, Intel Open Source Technology Center.

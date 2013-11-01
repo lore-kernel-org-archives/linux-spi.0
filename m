@@ -1,50 +1,74 @@
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: [PATCHv2 0/3] I2C and SPI dev_name change for ACPI enumerated slaves
-Date: Fri,  1 Nov 2013 14:35:53 +0200
-Message-ID: <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCHv2 1/3] ACPI: Expose struct acpi_device and acpi_bus_get_device() to non-ACPI builds
+Date: Fri,  1 Nov 2013 14:35:54 +0200
+Message-ID: <1383309356-25430-2-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
-	alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+ <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1383309356-25430-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi
+We may find use for struct acpi_device and acpi_bus_get_device() in generic
+code without wanting to add #if IS_ENABLED(CONFIG_ACPI) churn there.
 
-Second version of the set that changes I2C and SPI slave device names
-to be generated from stable ACPI device names on ACPI 5 based systems
-instead of using bus numbers which could change.
+Code can use ACPI_HANDLE() test to let compiler optimize out code blocks
+that are not used in !CONFIG_ACPI builds but structure definitions and
+function stubs must be available.
 
-Slave device name change goes as
+This patch moves CONFIG_ACPI test so that struct acpi_device definition
+is available for all builds that include acpi_bus.h and provides a stub for
+acpi_bus_get_device().
 
-	"x-00yz" -> "i2c-INTABCD:ij"
-	"spix.y" -> "spi-INTABCD:ij"
+Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ include/acpi/acpi_bus.h | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-This version adds patch to include/acpi/acpi_bus.h that allow us to
-remove #if IS_ENABLED(CONFIG_ACPI) checks that were added in the
-first version.
-
-Set goes on top linux-pm/linux-next commit e56b4d2.
-
-First version here:
-http://mailman.alsa-project.org/pipermail/alsa-devel/2013-October/067737.html
-
-Jarkko Nikula (3):
-  ACPI: Expose struct acpi_device and acpi_bus_get_device() to non-ACPI
-    builds
-  i2c: Use stable dev_name for ACPI enumerated I2C slaves
-  spi: Use stable dev_name for ACPI enumerated SPI slaves
-
- drivers/i2c/i2c-core.c  | 24 ++++++++++++++++++++----
- drivers/spi/spi.c       | 20 +++++++++++++++++---
- include/acpi/acpi_bus.h |  9 +++++++--
- 3 files changed, 44 insertions(+), 9 deletions(-)
-
+diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+index 15100f6..232b37d3 100644
+--- a/include/acpi/acpi_bus.h
++++ b/include/acpi/acpi_bus.h
+@@ -66,8 +66,6 @@ bool acpi_ata_match(acpi_handle handle);
+ bool acpi_bay_match(acpi_handle handle);
+ bool acpi_dock_match(acpi_handle handle);
+ 
+-#ifdef CONFIG_ACPI
+-
+ #include <linux/proc_fs.h>
+ 
+ #define ACPI_BUS_FILE_ROOT	"acpi"
+@@ -315,6 +313,8 @@ struct acpi_device {
+ 	void (*remove)(struct acpi_device *);
+ };
+ 
++#if IS_ENABLED(CONFIG_ACPI)
++
+ static inline void *acpi_driver_data(struct acpi_device *d)
+ {
+ 	return d->driver_data;
+@@ -532,6 +532,11 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
+ 
+ static inline int register_acpi_bus_type(void *bus) { return 0; }
+ static inline int unregister_acpi_bus_type(void *bus) { return 0; }
++static inline int acpi_bus_get_device(acpi_handle handle,
++				      struct acpi_device **device)
++{
++	return -ENODEV;
++}
+ 
+ #endif				/* CONFIG_ACPI */
+ 
 -- 
 1.8.4.rc3
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

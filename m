@@ -1,74 +1,86 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCHv2 1/3] ACPI: Expose struct acpi_device and acpi_bus_get_device() to non-ACPI builds
-Date: Fri,  1 Nov 2013 14:35:54 +0200
-Message-ID: <1383309356-25430-2-git-send-email-jarkko.nikula@linux.intel.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: [PATCHv2 2/3] i2c: Use stable dev_name for ACPI enumerated I2C slaves
+Date: Fri,  1 Nov 2013 14:35:55 +0200
+Message-ID: <1383309356-25430-3-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com>
  <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1383309356-25430-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-We may find use for struct acpi_device and acpi_bus_get_device() in generic
-code without wanting to add #if IS_ENABLED(CONFIG_ACPI) churn there.
+Current I2C adapter id - client address "x-00yy" based device naming scheme
+is not always stable enough to be used in name based matching, for instance
+within ALSA SoC subsystem.
 
-Code can use ACPI_HANDLE() test to let compiler optimize out code blocks
-that are not used in !CONFIG_ACPI builds but structure definitions and
-function stubs must be available.
+This is problematic in PC kind of platforms where I2C adapter numbers can
+change due variable amount of bus controllers, probe order, add-on cards or
+just because of BIOS settings.
 
-This patch moves CONFIG_ACPI test so that struct acpi_device definition
-is available for all builds that include acpi_bus.h and provides a stub for
-acpi_bus_get_device().
+This patch addresses the problem by using the ACPI device name with
+"i2c-" prefix for ACPI enumerated I2C slaves. For them device name
+"x-00yz" becomes "i2c-INTABCD:ij" after this patch.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 ---
- include/acpi/acpi_bus.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/i2c/i2c-core.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
-index 15100f6..232b37d3 100644
---- a/include/acpi/acpi_bus.h
-+++ b/include/acpi/acpi_bus.h
-@@ -66,8 +66,6 @@ bool acpi_ata_match(acpi_handle handle);
- bool acpi_bay_match(acpi_handle handle);
- bool acpi_dock_match(acpi_handle handle);
+diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+index 75ba860..9126c2e 100644
+--- a/drivers/i2c/i2c-core.c
++++ b/drivers/i2c/i2c-core.c
+@@ -48,6 +48,7 @@
+ #include <linux/rwsem.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/acpi.h>
++#include <acpi/acpi_bus.h>
+ #include <asm/uaccess.h>
  
--#ifdef CONFIG_ACPI
--
- #include <linux/proc_fs.h>
+ #include "i2c-core.h"
+@@ -618,6 +619,24 @@ void i2c_unlock_adapter(struct i2c_adapter *adapter)
+ }
+ EXPORT_SYMBOL_GPL(i2c_unlock_adapter);
  
- #define ACPI_BUS_FILE_ROOT	"acpi"
-@@ -315,6 +313,8 @@ struct acpi_device {
- 	void (*remove)(struct acpi_device *);
- };
- 
-+#if IS_ENABLED(CONFIG_ACPI)
-+
- static inline void *acpi_driver_data(struct acpi_device *d)
- {
- 	return d->driver_data;
-@@ -532,6 +532,11 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
- 
- static inline int register_acpi_bus_type(void *bus) { return 0; }
- static inline int unregister_acpi_bus_type(void *bus) { return 0; }
-+static inline int acpi_bus_get_device(acpi_handle handle,
-+				      struct acpi_device **device)
++static void i2c_dev_set_name(struct i2c_adapter *adap,
++			     struct i2c_client *client)
 +{
-+	return -ENODEV;
++	if (ACPI_HANDLE(&client->dev)) {
++		struct acpi_device *adev;
++		if (!acpi_bus_get_device(ACPI_HANDLE(&client->dev), &adev)) {
++			dev_set_name(&client->dev, "i2c-%s",
++				     dev_name(&adev->dev));
++			return;
++		}
++	}
++
++	/* For 10-bit clients, add an arbitrary offset to avoid collisions */
++	dev_set_name(&client->dev, "%d-%04x", i2c_adapter_id(adap),
++		     client->addr | ((client->flags & I2C_CLIENT_TEN)
++				     ? 0xa000 : 0));
 +}
++
+ /**
+  * i2c_new_device - instantiate an i2c device
+  * @adap: the adapter managing the device
+@@ -676,10 +695,7 @@ i2c_new_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
+ 	client->dev.of_node = info->of_node;
+ 	ACPI_HANDLE_SET(&client->dev, info->acpi_node.handle);
  
- #endif				/* CONFIG_ACPI */
- 
+-	/* For 10-bit clients, add an arbitrary offset to avoid collisions */
+-	dev_set_name(&client->dev, "%d-%04x", i2c_adapter_id(adap),
+-		     client->addr | ((client->flags & I2C_CLIENT_TEN)
+-				     ? 0xa000 : 0));
++	i2c_dev_set_name(adap, client);
+ 	status = device_register(&client->dev);
+ 	if (status)
+ 		goto out_err;
 -- 
 1.8.4.rc3
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

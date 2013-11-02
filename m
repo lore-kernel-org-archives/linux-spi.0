@@ -1,42 +1,59 @@
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCHv2 0/3] I2C and SPI dev_name change for ACPI enumerated slaves
-Date: Fri, 01 Nov 2013 23:58:45 +0100
-Message-ID: <3989164.GAoLSa6qzM@vostro.rjw.lan>
-References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <20131101132048.GD6734@katana> <5273B046.1030204@linux.intel.com>
+From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Subject: Re: [PATCHv2 0/3] I2C and SPI dev_name change for ACPI enumerated
+ slaves
+Date: Sat, 2 Nov 2013 01:13:55 +0100
+Message-ID: <20131102001355.GA2633@katana>
+References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com>
+ <20131101132048.GD6734@katana>
+ <5273B046.1030204@linux.intel.com>
+ <3989164.GAoLSa6qzM@vostro.rjw.lan>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7Bit
-Cc: Wolfram Sang <wsa@the-dreams.de>, Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
-	alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org
-To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <5273B046.1030204@linux.intel.com>
-Sender: linux-acpi-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="fdj2RfSjLxBAspz7"
+Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <3989164.GAoLSa6qzM-sKB8Sp2ER+y1GS7QM15AGw@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Friday, November 01, 2013 03:44:38 PM Jarkko Nikula wrote:
-> On 11/01/2013 03:20 PM, Wolfram Sang wrote:
-> > On Fri, Nov 01, 2013 at 02:18:06PM +0100, Rafael J. Wysocki wrote:
-> >>
-> >> Looks good to me.  If there are no objections, I can merge these through my tree.
-> > Which is basically fine with me. Do you want to have it in 3.13 already?
-> > I mean renaming the devices could lead to regressions, so I'd rather be
-> > conservative and aim for 3.14.
-> >
-> Valid concern. Quick grep below doesn't reveal any obvious device name 
-> matching outside of sound/soc/ but of course it doesn't prove it to be 
-> impossible.
-> 
-> git grep '[0-9]\-00' |grep name
-> git grep 'spi[0-9].[0-9]' |grep name
 
-Well, if any breakage is caught in 3.13-rc, it should be easy enough to revert
-these changes and try again during the next cycle.  I honestly don't see any
-benefit from waiting for the next cycle "just in case".
+--fdj2RfSjLxBAspz7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks!
 
--- 
-I speak only for myself.
-Rafael J. Wysocki, Intel Open Source Technology Center.
+> Well, if any breakage is caught in 3.13-rc, it should be easy enough to revert
+> these changes and try again during the next cycle.  I honestly don't see any
+> benefit from waiting for the next cycle "just in case".
+
+OK.
+
+
+--fdj2RfSjLxBAspz7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.14 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSdEPDAAoJEBQN5MwUoCm25UIQAJapJh0vNRNLCzzDi942NgVe
+9owvngTxVS+nIHms2AQta2BsRXQrRQCqT1rFY7aSzdDwEe4ymclYBV06IK1Um9U1
+AJtjPZlWhEJZVNppsoxoIqp1jLfAw0x2WTBTqtSpX3Im9lneW9Ta2Py879dNA+eZ
+theD+SfgdGT6F24QP3cFvI++mMhk/EzSYSKb0c9C2BGf+aA1chVjMZaWR54JvxLc
+eo0WNjr0o6ZwmFUFlq8gzjnX/y+ZET+CjUHU3F136ClQOkK9tDZIyyBfgl3G0Edv
+QK73gSMnwdsoVmvDnunJ+f7mHKQzuAE/pDGRjYCn0HXjFuib9k3vGHsuSrc35qSG
+lfu361b7fMrbAppEJtckbQvODaIH4cewKNKmAjFswVOoj/6m6hozjbOaBm9RWLvY
+PnA+mveOVVuYFz9w+fmsMpR2JZIthKWw73+WzK24p8zMiul98j3mNA4hyKtnM2cw
+jtFaV/pxQWEapeOjwPTO1+KQBjBPhBc/kCFfE9Dy+nrVc6G8nEc0eQf1PC1rMLTd
+PoYZ0pDvXRw1LvSryicvh/QBVZ4QKnjOwqD+a9krdgqkSy8dSxha9egxQlD4dFks
+LQDbiGgK7e6O4/4Cf+TeYMnsq5gTrOHc2hRuVI2OCaCIMRQJwKF4p6/Xj1+I9b6n
+DUaYF00cnVNa78kJ2qR+
+=Tx0n
+-----END PGP SIGNATURE-----
+
+--fdj2RfSjLxBAspz7--

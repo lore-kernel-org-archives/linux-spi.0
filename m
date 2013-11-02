@@ -1,76 +1,83 @@
-From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-Subject: Re: [PATCHv2 2/3] i2c: Use stable dev_name for ACPI enumerated I2C
- slaves
-Date: Sat, 2 Nov 2013 01:15:33 +0100
-Message-ID: <20131102001533.GB2633@katana>
-References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com>
- <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com>
- <1383309356-25430-3-git-send-email-jarkko.nikula@linux.intel.com>
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCHv2 1/3] ACPI: Expose struct acpi_device and acpi_bus_get_device() to non-ACPI builds
+Date: Sat, 02 Nov 2013 23:18:31 +0100
+Message-ID: <3858838.4tAO673dDi@vostro.rjw.lan>
+References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com> <1383309356-25430-2-git-send-email-jarkko.nikula@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0eh6TmSyL6TZE2Uz"
-Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
-	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1383309356-25430-3-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie@kernel.org>, Wolfram Sang <wsa@the-dreams.de>,
+	linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <1383309356-25430-2-git-send-email-jarkko.nikula@linux.intel.com>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Friday, November 01, 2013 02:35:54 PM Jarkko Nikula wrote:
+> We may find use for struct acpi_device and acpi_bus_get_device() in generic
+> code without wanting to add #if IS_ENABLED(CONFIG_ACPI) churn there.
+> 
+> Code can use ACPI_HANDLE() test to let compiler optimize out code blocks
+> that are not used in !CONFIG_ACPI builds but structure definitions and
+> function stubs must be available.
+> 
+> This patch moves CONFIG_ACPI test so that struct acpi_device definition
+> is available for all builds that include acpi_bus.h and provides a stub for
+> acpi_bus_get_device().
+> 
+> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
---0eh6TmSyL6TZE2Uz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This turns out the cause build problems to happen on some architectures.
 
-On Fri, Nov 01, 2013 at 02:35:55PM +0200, Jarkko Nikula wrote:
-> Current I2C adapter id - client address "x-00yy" based device naming sche=
-me
-> is not always stable enough to be used in name based matching, for instan=
-ce
-> within ALSA SoC subsystem.
->=20
-> This is problematic in PC kind of platforms where I2C adapter numbers can
-> change due variable amount of bus controllers, probe order, add-on cards =
-or
-> just because of BIOS settings.
->=20
-> This patch addresses the problem by using the ACPI device name with
-> "i2c-" prefix for ACPI enumerated I2C slaves. For them device name
-> "x-00yz" becomes "i2c-INTABCD:ij" after this patch.
->=20
-> Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+I guess it's sufficient to simply define a stub struct acpi_device as
 
-Acked-by: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+struct acpi_device {
+	struct device dev;
+};
 
+for !CONFIG_ACPI instead.
 
---0eh6TmSyL6TZE2Uz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.14 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSdEQlAAoJEBQN5MwUoCm29boP/iSQ7kOx/lPxOUtB6owqtJB9
-5Rb4lNSRvZpY1fCMGmhOgPqja6+zL7W/AKWdn0oERXZwbiG88cVoE6Gwu1FKQjWm
-XJqczleIOE4j4HGE88VdDViZn2M5zdlliMR2csSyR7S84TsO8K3XrfJHsesigKAs
-NkzrznipksfjpaEp0htggJMqqD5Z2Lb/eAPUglFtZBRVCkMHgUAmTwfb9XIUfFzE
-vH3pNWx5ghJL//gDlW9qsglyiX3d7cDhUSaNe0mPh71N3BJ7HIOt40qZFjoSg7X2
-Btc9C1lZicR1YyRp42xCPp1YGAsqrOFW6qipqhup05nfkvqVK5aQYpSd8OHoo3e7
-gx1M8gyRy8DlfDhRWXa6MYDtP0I/T3HjA9Rm38vR7rKcPlcmmDXzZ8ofIOl6ODVM
-RrZPwfVHJYQMy2hRkfiNuDo2BY5WvoCFl0eEE19wDQocjcAk2VnvMiXZGzt92kzs
-pXrJruzBf5W5LQzF3aPvnnbEzNZRiAxD+K3zSvZLmKde4TZKw71slIjLOrjB0G91
-fAhYtdCZrLZ60fFcqVRqSqzOEK74EWqTJX+u4oj+Ifbgf4FBSjL+nEXhYscP8uRo
-qHwCyS6uVO0TBZWvbeBbTeEE/TFWRdtU4aPFIzCtu9ofy8jM7Hgg1FgszDgqA2Nf
-4E4uZjBYwL8n5MhB7ixT
-=7Vkr
------END PGP SIGNATURE-----
-
---0eh6TmSyL6TZE2Uz--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> ---
+>  include/acpi/acpi_bus.h | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/acpi/acpi_bus.h b/include/acpi/acpi_bus.h
+> index 15100f6..232b37d3 100644
+> --- a/include/acpi/acpi_bus.h
+> +++ b/include/acpi/acpi_bus.h
+> @@ -66,8 +66,6 @@ bool acpi_ata_match(acpi_handle handle);
+>  bool acpi_bay_match(acpi_handle handle);
+>  bool acpi_dock_match(acpi_handle handle);
+>  
+> -#ifdef CONFIG_ACPI
+> -
+>  #include <linux/proc_fs.h>
+>  
+>  #define ACPI_BUS_FILE_ROOT	"acpi"
+> @@ -315,6 +313,8 @@ struct acpi_device {
+>  	void (*remove)(struct acpi_device *);
+>  };
+>  
+> +#if IS_ENABLED(CONFIG_ACPI)
+> +
+>  static inline void *acpi_driver_data(struct acpi_device *d)
+>  {
+>  	return d->driver_data;
+> @@ -532,6 +532,11 @@ static inline bool acpi_device_can_poweroff(struct acpi_device *adev)
+>  
+>  static inline int register_acpi_bus_type(void *bus) { return 0; }
+>  static inline int unregister_acpi_bus_type(void *bus) { return 0; }
+> +static inline int acpi_bus_get_device(acpi_handle handle,
+> +				      struct acpi_device **device)
+> +{
+> +	return -ENODEV;
+> +}
+>  
+>  #endif				/* CONFIG_ACPI */
+>  
+> 
+-- 
+I speak only for myself.
+Rafael J. Wysocki, Intel Open Source Technology Center.

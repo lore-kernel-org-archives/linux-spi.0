@@ -1,53 +1,73 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for
- an optimized pipelined-SPI-DMA-driver
-Date: Tue, 5 Nov 2013 02:03:23 +0100
-Message-ID: <CACRpkdb0Y+Appwf=Px3fV+aN36fSdgFMpLymAh_7p8jrbfJcgg@mail.gmail.com>
-References: <CACRpkdb6y=o4__snBs2DR1f=xW_u7KdkHg3fb7XN5e2gicBJeg@mail.gmail.com>
-	<CACRpkdb7y88oq7XyVFc_0Nx4pXtaebPe7KB2yizBRJGwWLqJig@mail.gmail.com>
-	<06C7F4D3-EC91-46CF-90BE-FC24D54F2389@sperl.org>
-	<02BFF0F6-3836-4DEC-AA53-FF100E037DE9@sperl.org>
-	<20131030171902.GL2493@sirena.org.uk>
-	<8D8B0BAD-0E00-4147-B4C8-FBB18F060C96@sperl.org>
-	<20131030215716.GV2493@sirena.org.uk>
-	<3342FD19-4438-463B-89B2-A83D3475AC22@sperl.org>
-	<20131031001004.GW2493@sirena.org.uk>
-	<18639D9A-630E-44F3-AA7A-ADFF5D5E8B56@sperl.org>
-	<20131104184511.GR2493@sirena.org.uk>
-	<5A55A832-5313-499C-A483-BF5A6649D69D@sperl.org>
+From: Richard Genoud <richard.genoud@gmail.com>
+Subject: SPI zero-length transfer: What should it do ?
+Date: Tue, 05 Nov 2013 10:34:14 +0100
+Message-ID: <5278BB96.20207@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5A55A832-5313-499C-A483-BF5A6649D69D-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Transfer-Encoding: 7bit
+Cc: Wenyou Yang <wenyou.yang@atmel.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Nicolas Ferre <nicolas.ferre@atmel.com>,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Mon, Nov 4, 2013 at 10:43 PM, Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org> wrote:
+Hi,
 
-> I just found out that I am in a chicken or egg situation:
-> There is no DMA support whatsoever in the upstream RPI support.
-> So sending any patches for spi with DMA becomes impossible right now.
+As I was coding something like this:
+	static struct spi_ioc_transfer *xfer;
+	struct spi_frame *rx_frame;
+	xfer = calloc(nb, sizeof(*xfer));
 
-I wrote in my first reply:
+	for (i = 0; i < nb; i++) {
+		xfer[i].tx_buf = (unsigned long)tx_buf;
+		xfer[i].rx_buf = (unsigned long)rx_buf;
+		xfer[i].len = 0;
+	}
 
- "But I hope that you have the necessary infrastructure using the dmaengine
-  subsystem for this, or that changes requires will be proposed to that
-  first or together with these changes."
+	err = ioctl(spi_data->fd, SPI_IOC_MESSAGE(nb), xfer);
+I ran into a bug in spi-atmel.c
 
-So now you are back at this point :-)
+NB: The zero-length SPI message was not intentional, it was just a bug in my software.
 
-Anyway, doing dmaengine support is a venture on its own and as usual
-it falls upward to anyone who first needs it to do that. I suggest you
-look at some of the newer dmaengines in drivers/dma for inspiration,
-and get memcpy in place first so you can test the driver stand-alone
-with drivers/dma/dmatest.c
+[   13.593750] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
+[   13.601562] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
+[   13.601562] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
+[   13.609375] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
+[   13.617187] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
+[   13.625000] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
+[   13.632812] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
+[   13.632812] atmel_spi f0004000.spi: new message c7b49ec4 submitted for spi1.1
+[   13.632812] atmel_spi f0004000.spi: start message c7b49ec4 for spi1.1
+[   13.632812] spidev spi1.1: activate 16, mr 000d0031
+[   13.632812] atmel_spi f0004000.spi: atmel_spi_next_xfer_pio
+[   13.632812] atmel_spi f0004000.spi:   start pio xfer c79d80c0: len 0 tx c6e00000 rx c6e00000 bitpw 8
+[   13.632812] irq 29: nobody cared (try booting with the "irqpoll" option)
+[   13.632812] CPU: 0 PID: 494 Comm: multichannel Not tainted 3.11.2 #1
+[   13.632812] [<c0012e20>] (unwind_backtrace+0x0/0xe0) from [<c0010bb8>] (show_stack+0x10/0x14)
+[   13.632812] [<c0010bb8>] (show_stack+0x10/0x14) from [<c004d5b4>] (__report_bad_irq+0x1c/0xb4)
+[   13.632812] [<c004d5b4>] (__report_bad_irq+0x1c/0xb4) from [<c004d9ac>] (note_interrupt+0x178/0x234)
+[   13.632812] [<c004d9ac>] (note_interrupt+0x178/0x234) from [<c004c078>] (handle_irq_event_percpu+0x170/0x1a0)
+[   13.632812] [<c004c078>] (handle_irq_event_percpu+0x170/0x1a0) from [<c004c0d0>] (handle_irq_event+0x28/0x38)
+[   13.632812] [<c004c0d0>] (handle_irq_event+0x28/0x38) from [<c004e57c>] (handle_fasteoi_irq+0xa4/0xe4)
+[   13.632812] [<c004e57c>] (handle_fasteoi_irq+0xa4/0xe4) from [<c004b910>] (generic_handle_irq+0x20/0x30)
+[   13.632812] [<c004b910>] (generic_handle_irq+0x20/0x30) from [<c000f3e8>] (handle_IRQ+0x60/0x84)
+[   13.632812] [<c000f3e8>] (handle_IRQ+0x60/0x84) from [<c00115e0>] (__irq_svc+0x40/0x4c)
+[   13.632812] [<c00115e0>] (__irq_svc+0x40/0x4c) from [<bf1293dc>] (spidev_sync+0x6c/0x94 [spidev])
+[   13.632812] [<bf1293dc>] (spidev_sync+0x6c/0x94 [spidev]) from [<bf129b24>] (spidev_ioctl+0x53c/0x66c [spidev])
+[   13.632812] [<bf129b24>] (spidev_ioctl+0x53c/0x66c [spidev]) from [<c0087730>] (vfs_ioctl+0x28/0x3c)
+[   13.632812] [<c0087730>] (vfs_ioctl+0x28/0x3c) from [<c0088158>] (do_vfs_ioctl+0x4e8/0x54c)
+[   13.632812] [<c0088158>] (do_vfs_ioctl+0x4e8/0x54c) from [<c00881f0>] (SyS_ioctl+0x34/0x58)
+[   13.632812] [<c00881f0>] (SyS_ioctl+0x34/0x58) from [<c000e500>] (ret_fast_syscall+0x0/0x2c)
+[   13.632812] handlers:
+[   13.632812] [<bf01142c>] atmel_spi_pio_interrupt [spi_atmel]
+[   13.632812] Disabling IRQ #29
 
-Yours,
-Linus Walleij
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+And that make me wonder what was the behavior to adopt in case of a zero-length transfer ?
+Should spidev.c just return ok without doing anything ? Should it return -EINVAL ?
+Or maybe we should activate/deactivate the chip select ?
+
+
+Best regards,
+Richard.

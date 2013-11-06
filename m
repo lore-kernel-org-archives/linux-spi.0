@@ -1,88 +1,63 @@
-From: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: SPI zero-length transfer: What should it do ?
-Date: Tue, 5 Nov 2013 10:41:54 +0100
-Message-ID: <CACQ1gAjvDOR8O3re4ghHe4X3tbdCMxz0GeBgYS-ptvJDqdkUow@mail.gmail.com>
-References: <5278BB96.20207@gmail.com>
+From: Rajeshwari Birje <rajeshwari.birje@gmail.com>
+Subject: Re: [PATCH V4] spi: s3c64xx: Enable Word transfer
+Date: Wed, 6 Nov 2013 10:23:07 +0530
+Message-ID: <CAPs=JDcHVe4q7R-3f3SBu8g=Ebkz57AbPN8e2jspVTGYnZ1vqA@mail.gmail.com>
+References: <1382074356-28430-1-git-send-email-rajeshwari.s@samsung.com>
+	<6043727.WVyVGYjJys@amdc1227>
+	<CAPs=JDcVXpJJnWxRFpq7aoW98LKmHq0jo-oTVqSUasnO_1My3g@mail.gmail.com>
+	<1586287.qm633XfQbK@amdc1227>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5278BB96.20207-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Mark Brown <broonie@kernel.org>,
+	Rajeshwari S Shinde <rajeshwari.s@samsung.com>,
+	linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+	linux-spi@vger.kernel.org, Simon Glass <sjg@chromium.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Doug Anderson <dianders@google.com>
+To: Tomasz Figa <t.figa@samsung.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+In-Reply-To: <1586287.qm633XfQbK@amdc1227>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-[Sorry, for the resend, I didn't pay attention and used Mark's old
-email address]
+Hi Tomasz,
 
-2013/11/5 Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>:
-> Hi,
+On Thu, Oct 31, 2013 at 6:07 PM, Tomasz Figa <t.figa@samsung.com> wrote:
+> Hi Rajeshwari,
 >
-> As I was coding something like this:
->         static struct spi_ioc_transfer *xfer;
->         struct spi_frame *rx_frame;
->         xfer = calloc(nb, sizeof(*xfer));
+> On Thursday 31 of October 2013 16:17:15 Rajeshwari Birje wrote:
+>> Hi Mark Brown ,
+>>
+>> On Wed, Oct 30, 2013 at 10:36 PM, Tomasz Figa <t.figa@samsung.com> wrote:
+>> > On Wednesday 30 of October 2013 10:00:29 Mark Brown wrote:
+>> >> On Wed, Oct 30, 2013 at 11:52:54AM +0530, Rajeshwari Birje wrote:
+>> >>
+>> >> > The following patch already sets bits_per_word_mask for
+>> >> > drivers/spi/spi-s3c64xx.c in s3c64xx_spi_probe, hence I had a doubt do
+>> >> > I need to set the same again.
+>> >>
+>> >> OK, so how did this work before then?  You're just adding new code but
+>> >> the driver was previously claiming to support different bits per word
+>> >> (and now I look at the code there is some handling for that in code).
+>> >> Is this a bug fix?
+>> No idea if it worked before, but now if I try to do 16 bit transfer
+>> without my patch, I get following error.
+>> "Xfer length(1) not a multiple of word size(2)"
+>> I guess we can consider this as a bug fix then for word transfer.
+>> >
+>> > That's a good question. Rajeshwari, what SPI device did you test this
+>> > patch with? Does it have a driver in mainline kernel?
+>> @Tomasz: I tested it for W25Q32DW Winbond device which is already has
+>> a driver in mainline Kernel
 >
->         for (i = 0; i < nb; i++) {
->                 xfer[i].tx_buf = (unsigned long)tx_buf;
->                 xfer[i].rx_buf = (unsigned long)rx_buf;
->                 xfer[i].len = 0;
->         }
->
->         err = ioctl(spi_data->fd, SPI_IOC_MESSAGE(nb), xfer);
-> I ran into a bug in spi-atmel.c
->
-> NB: The zero-length SPI message was not intentional, it was just a bug in my software.
->
-> [   13.593750] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
-> [   13.601562] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
-> [   13.601562] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
-> [   13.609375] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
-> [   13.617187] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
-> [   13.625000] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
-> [   13.632812] spidev spi1.1:   xfer len 0 rx tx cs 8bits 150 usec 18000000Hz
-> [   13.632812] atmel_spi f0004000.spi: new message c7b49ec4 submitted for spi1.1
-> [   13.632812] atmel_spi f0004000.spi: start message c7b49ec4 for spi1.1
-> [   13.632812] spidev spi1.1: activate 16, mr 000d0031
-> [   13.632812] atmel_spi f0004000.spi: atmel_spi_next_xfer_pio
-> [   13.632812] atmel_spi f0004000.spi:   start pio xfer c79d80c0: len 0 tx c6e00000 rx c6e00000 bitpw 8
-> [   13.632812] irq 29: nobody cared (try booting with the "irqpoll" option)
-> [   13.632812] CPU: 0 PID: 494 Comm: multichannel Not tainted 3.11.2 #1
-> [   13.632812] [<c0012e20>] (unwind_backtrace+0x0/0xe0) from [<c0010bb8>] (show_stack+0x10/0x14)
-> [   13.632812] [<c0010bb8>] (show_stack+0x10/0x14) from [<c004d5b4>] (__report_bad_irq+0x1c/0xb4)
-> [   13.632812] [<c004d5b4>] (__report_bad_irq+0x1c/0xb4) from [<c004d9ac>] (note_interrupt+0x178/0x234)
-> [   13.632812] [<c004d9ac>] (note_interrupt+0x178/0x234) from [<c004c078>] (handle_irq_event_percpu+0x170/0x1a0)
-> [   13.632812] [<c004c078>] (handle_irq_event_percpu+0x170/0x1a0) from [<c004c0d0>] (handle_irq_event+0x28/0x38)
-> [   13.632812] [<c004c0d0>] (handle_irq_event+0x28/0x38) from [<c004e57c>] (handle_fasteoi_irq+0xa4/0xe4)
-> [   13.632812] [<c004e57c>] (handle_fasteoi_irq+0xa4/0xe4) from [<c004b910>] (generic_handle_irq+0x20/0x30)
-> [   13.632812] [<c004b910>] (generic_handle_irq+0x20/0x30) from [<c000f3e8>] (handle_IRQ+0x60/0x84)
-> [   13.632812] [<c000f3e8>] (handle_IRQ+0x60/0x84) from [<c00115e0>] (__irq_svc+0x40/0x4c)
-> [   13.632812] [<c00115e0>] (__irq_svc+0x40/0x4c) from [<bf1293dc>] (spidev_sync+0x6c/0x94 [spidev])
-> [   13.632812] [<bf1293dc>] (spidev_sync+0x6c/0x94 [spidev]) from [<bf129b24>] (spidev_ioctl+0x53c/0x66c [spidev])
-> [   13.632812] [<bf129b24>] (spidev_ioctl+0x53c/0x66c [spidev]) from [<c0087730>] (vfs_ioctl+0x28/0x3c)
-> [   13.632812] [<c0087730>] (vfs_ioctl+0x28/0x3c) from [<c0088158>] (do_vfs_ioctl+0x4e8/0x54c)
-> [   13.632812] [<c0088158>] (do_vfs_ioctl+0x4e8/0x54c) from [<c00881f0>] (SyS_ioctl+0x34/0x58)
-> [   13.632812] [<c00881f0>] (SyS_ioctl+0x34/0x58) from [<c000e500>] (ret_fast_syscall+0x0/0x2c)
-> [   13.632812] handlers:
-> [   13.632812] [<bf01142c>] atmel_spi_pio_interrupt [spi_atmel]
-> [   13.632812] Disabling IRQ #29
->
-> And that make me wonder what was the behavior to adopt in case of a zero-length transfer ?
-> Should spidev.c just return ok without doing anything ? Should it return -EINVAL ?
-> Or maybe we should activate/deactivate the chip select ?
->
->
+> The driver as of today's linux-next does not seem to support word
+> transfers. Do you have some additional, out of tree patches that add
+> such support?
+Yes I set the bits_per_word to 32/16 in drivers/mtd/devices/m25p80.c
+m25p_probe function and the call spi_setup(spi).
 > Best regards,
-> Richard.
-
-
-
+> Tomasz
+>
 -- 
-for me, ck means con kolivas and not calvin klein... does it mean I'm a geek ?
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Regards,
+Rajeshwari Shinde

@@ -1,174 +1,60 @@
-From: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: atmel: add support for changing message transfer speed
-Date: Thu,  7 Nov 2013 10:34:06 +0100
-Message-ID: <1383816846-10561-1-git-send-email-richard.genoud@gmail.com>
-Cc: Wenyou Yang <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V4] spi: s3c64xx: Enable Word transfer
+Date: Thu, 07 Nov 2013 10:39:37 +0100
+Message-ID: <1546740.qqSm3Pi1hO@flatron>
+References: <1382074356-28430-1-git-send-email-rajeshwari.s@samsung.com> <20131106082141.GA11602@sirena.org.uk> <CAPs=JDctq1yRbuwnFH40dnQJJHF0C_D1p3iVokSPusPXA27Qeg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Rajeshwari S Shinde <rajeshwari.s-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-samsung-soc <linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Alim Akhtar <alim.akhtar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Doug Anderson <dianders-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+	Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Lukasz Czerwinski <l.czerwinski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: Rajeshwari Birje <rajeshwari.birje-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAPs=JDctq1yRbuwnFH40dnQJJHF0C_D1p3iVokSPusPXA27Qeg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The only speed available was max_speed (the maximum speed declared for a
-device).
-This patch adds the support for spi_tranfer->speed_hz parameter.
-We can now set a different speed for each spi message.
+[CCing Sylwester, Andrzej and Lukasz]
 
-Signed-off-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-atmel.c |   92 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 55 insertions(+), 37 deletions(-)
+On Thursday 07 of November 2013 14:52:36 Rajeshwari Birje wrote:
+> Hi Mark Brown,
+> 
+> On Wed, Nov 6, 2013 at 1:51 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> > On Wed, Nov 06, 2013 at 10:23:07AM +0530, Rajeshwari Birje wrote:
+> >> On Thu, Oct 31, 2013 at 6:07 PM, Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> 
+wrote:
+> >> > The driver as of today's linux-next does not seem to support word
+> >> > transfers. Do you have some additional, out of tree patches that
+> >> > add
+> >> > such support?
+> >> 
+> >> Yes I set the bits_per_word to 32/16 in drivers/mtd/devices/m25p80.c
+> >> m25p_probe function and the call spi_setup(spi).
+> > 
+> > This sound wrong.  If you just set bits per word then this should
+> > result in data corruption on the bus since it should cause the words
+> > written to the bus to be reordered.  Are you sure that the existing
+> > driver isn't working correctly?
+> 
+> The reordering of the words is taken care by the Swap configuration
+> (swap_cfg) register, which I have set for both 16 and 32 bits_per_word
+> case. I have tested this patch and works fine for me and also has
+> improved the timing performance.
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 656ed36e729e..d0dd564cd7b3 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -694,6 +694,54 @@ static void atmel_spi_next_xfer_data(struct spi_master *master,
- 	*plen = len;
- }
- 
-+static int atmel_spi_set_xfer_speed(struct atmel_spi *as,
-+				    struct spi_device *spi,
-+				    struct spi_transfer *xfer)
-+{
-+	u32			scbr, csr;
-+	unsigned long		bus_hz;
-+
-+	/* v1 chips start out at half the peripheral bus speed. */
-+	bus_hz = clk_get_rate(as->clk);
-+	if (!atmel_spi_is_v2(as))
-+		bus_hz /= 2;
-+
-+	/*
-+	 * Calculate the lowest divider that satisfies the
-+	 * constraint, assuming div32/fdiv/mbz == 0.
-+	 */
-+	if (xfer->speed_hz)
-+		scbr = DIV_ROUND_UP(bus_hz, xfer->speed_hz);
-+	else
-+		/*
-+		 * This can happend if max_speed is null.
-+		 * In this case, we set the lowest possible speed
-+		 */
-+		scbr = 0xff;
-+
-+	/*
-+	 * If the resulting divider doesn't fit into the
-+	 * register bitfield, we can't satisfy the constraint.
-+	 */
-+	if (scbr >= (1 << SPI_SCBR_SIZE)) {
-+		dev_err(&spi->dev,
-+			"setup: %d Hz too slow, scbr %u; min %ld Hz\n",
-+			xfer->speed_hz, scbr, bus_hz/255);
-+		return -EINVAL;
-+	}
-+	if (scbr == 0) {
-+		dev_err(&spi->dev,
-+			"setup: %d Hz too high, scbr %u; max %ld Hz\n",
-+			xfer->speed_hz, scbr, bus_hz);
-+		return -EINVAL;
-+	}
-+	csr = spi_readl(as, CSR0 + 4 * spi->chip_select);
-+	csr = SPI_BFINS(SCBR, scbr, csr);
-+	spi_writel(as, CSR0 + 4 * spi->chip_select, csr);
-+
-+	return 0;
-+}
-+
- /*
-  * Submit next transfer for PDC.
-  * lock is held, spi irq is blocked
-@@ -731,6 +779,8 @@ static void atmel_spi_pdc_next_xfer(struct spi_master *master,
- 		spi_writel(as, RCR, len);
- 		spi_writel(as, TCR, len);
- 
-+		atmel_spi_set_xfer_speed(as, msg->spi, xfer);
-+
- 		dev_dbg(&msg->spi->dev,
- 			"  start xfer %p: len %u tx %p/%08llx rx %p/%08llx\n",
- 			xfer, xfer->len, xfer->tx_buf,
-@@ -823,6 +873,7 @@ static void atmel_spi_dma_next_xfer(struct spi_master *master,
- 
- 		as->current_transfer = xfer;
- 		len = xfer->len;
-+		atmel_spi_set_xfer_speed(as, msg->spi, xfer);
- 	}
- 
- 	if (atmel_spi_use_dma(as, xfer)) {
-@@ -1264,9 +1315,8 @@ static int atmel_spi_setup(struct spi_device *spi)
- {
- 	struct atmel_spi	*as;
- 	struct atmel_spi_device	*asd;
--	u32			scbr, csr;
-+	u32			csr;
- 	unsigned int		bits = spi->bits_per_word;
--	unsigned long		bus_hz;
- 	unsigned int		npcs_pin;
- 	int			ret;
- 
-@@ -1290,33 +1340,7 @@ static int atmel_spi_setup(struct spi_device *spi)
- 		return -EINVAL;
- 	}
- 
--	/* v1 chips start out at half the peripheral bus speed. */
--	bus_hz = clk_get_rate(as->clk);
--	if (!atmel_spi_is_v2(as))
--		bus_hz /= 2;
--
--	if (spi->max_speed_hz) {
--		/*
--		 * Calculate the lowest divider that satisfies the
--		 * constraint, assuming div32/fdiv/mbz == 0.
--		 */
--		scbr = DIV_ROUND_UP(bus_hz, spi->max_speed_hz);
--
--		/*
--		 * If the resulting divider doesn't fit into the
--		 * register bitfield, we can't satisfy the constraint.
--		 */
--		if (scbr >= (1 << SPI_SCBR_SIZE)) {
--			dev_dbg(&spi->dev,
--				"setup: %d Hz too slow, scbr %u; min %ld Hz\n",
--				spi->max_speed_hz, scbr, bus_hz/255);
--			return -EINVAL;
--		}
--	} else
--		/* speed zero means "as slow as possible" */
--		scbr = 0xff;
--
--	csr = SPI_BF(SCBR, scbr) | SPI_BF(BITS, bits - 8);
-+	csr = SPI_BF(BITS, bits - 8);
- 	if (spi->mode & SPI_CPOL)
- 		csr |= SPI_BIT(CPOL);
- 	if (!(spi->mode & SPI_CPHA))
-@@ -1363,8 +1387,8 @@ static int atmel_spi_setup(struct spi_device *spi)
- 	asd->csr = csr;
- 
- 	dev_dbg(&spi->dev,
--		"setup: %lu Hz bpw %u mode 0x%x -> csr%d %08x\n",
--		bus_hz / scbr, bits, spi->mode, spi->chip_select, csr);
-+		"setup: bpw %u mode 0x%x -> csr%d %08x\n",
-+		bits, spi->mode, spi->chip_select, csr);
- 
- 	if (!atmel_spi_is_v2(as))
- 		spi_writel(as, CSR0 + 4 * spi->chip_select, csr);
-@@ -1414,12 +1438,6 @@ static int atmel_spi_transfer(struct spi_device *spi, struct spi_message *msg)
- 			}
- 		}
- 
--		/* FIXME implement these protocol options!! */
--		if (xfer->speed_hz < spi->max_speed_hz) {
--			dev_dbg(&spi->dev, "can't change speed in transfer\n");
--			return -ENOPROTOOPT;
--		}
--
- 		/*
- 		 * DMA map early, for performance (empties dcache ASAP) and
- 		 * better fault reporting.
--- 
-1.7.10.4
+This driver seems to have already worked fine with 32 bits per word,
+using the s5c73m3 camera sensor, which uses SPI for firmware upload.
+
+Sylwester, Andrzej or Lukasz: Can you confirm this?
+
+Best regards,
+Tomasz
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,98 +1,120 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for
- an optimized pipelined-SPI-DMA-driver
-Date: Wed, 6 Nov 2013 23:26:05 +0000
-Message-ID: <20131106232605.GC2674@sirena.org.uk>
-References: <20131031001004.GW2493@sirena.org.uk>
- <18639D9A-630E-44F3-AA7A-ADFF5D5E8B56@sperl.org>
- <20131104184511.GR2493@sirena.org.uk>
- <5A55A832-5313-499C-A483-BF5A6649D69D@sperl.org>
- <20131106094854.GF11602@sirena.org.uk>
- <844EDAEA-3FDC-48D0-B59E-CECC0A83761E@sperl.org>
- <20131106113219.GJ11602@sirena.org.uk>
- <C6C68042-63A0-40FD-8363-B4553ECB4774@sperl.org>
- <20131106162410.GB2674@sirena.org.uk>
- <3B0EDE3F-3386-4879-8D89-2E4577860073@sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jy6Sn24JjFx/iggw"
-Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for an optimized pipelined-SPI-DMA-driver
+Date: Thu, 7 Nov 2013 01:43:39 +0100
+Message-ID: <72D635F5-4229-4D78-8AA3-1392D5D80127@sperl.org>
+References: <20131031001004.GW2493@sirena.org.uk> <18639D9A-630E-44F3-AA7A-ADFF5D5E8B56@sperl.org> <20131104184511.GR2493@sirena.org.uk> <5A55A832-5313-499C-A483-BF5A6649D69D@sperl.org> <20131106094854.GF11602@sirena.org.uk> <844EDAEA-3FDC-48D0-B59E-CECC0A83761E@sperl.org> <20131106113219.GJ11602@sirena.org.uk> <C6C68042-63A0-40FD-8363-B4553ECB4774@sperl.org> <20131106162410.GB2674@sirena.org.uk> <3B0EDE3F-3386-4879-8D89-2E4577860073@sperl.org> <20131106232605.GC2674@sirena.org.uk>
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <3B0EDE3F-3386-4879-8D89-2E4577860073-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+In-Reply-To: <20131106232605.GC2674-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark!
 
---jy6Sn24JjFx/iggw
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The problem is that you intend to do prepare/unprepare transparently.
 
-On Wed, Nov 06, 2013 at 08:54:10PM +0100, Martin Sperl wrote:
-> >> The above is an allowed sequence, that must work - otherwise we would=
-=20
-> >> break an existing API.
+OK - but I see problems with heuristics on when it is safe to assume
+that a message has not been changed since the last call (either xfers
+or tx/rx_buff pointer). If it has not changed then we can use the cached 
+computations from the previous step ( equivalent to prepared).
 
-> > This would be broken anyway with existing drivers; if we want to support
-> > that we need to take copies of both the messages and the transfers but
-> > really that just looks crazy.
+Figuring out if the message has changed or not is consuming too much CPU
+and that is - as far as I am understanding - the main reason why we want to 
+have the option to prepare/unprepare a message: save CPU cycles.
 
-> The sequence shown is not broken - see that I have been using spi_sync=20
-> not spi_async! (think also of people using this via SPIDEV, where you do
-> not have such control as you would in kernel space)
+See my "quick&dirty" modification to _spi_async how prepare could help 
+improve avoid spending CPU cycles even for "normal" cases that do not 
+run on HW where preparing would not help except for avoiding running the 
+sanity checks on the message every time.
 
-Oh, if you're using spi_sync() it's fine but then what's the issue?  The
-stack isn't going to remember anything about old messages when they're
-resubmitted so why would there ever be any problem?  Even if there were
-a problem I can't see how having the core manage things is going to be
-an issue.
+As said: running a single transfer 10000 times/s will run the following code:
+        /* Half-duplex links include original MicroWire, and ones with
+         * only one data pin like SPI_3WIRE (switches direction) or where
+         * either MOSI or MISO is missing.  They can also be caused by
+         * software limitations.
+         */
+        if ((master->flags & SPI_MASTER_HALF_DUPLEX)
+                        || (spi->mode & SPI_3WIRE)) {
+                unsigned flags = master->flags;
 
-> Also see the scenario like this:
-> * kalloc memory for message
-> * add xfers to message
-> * call spi_sync
-> * kfree xfers
-> * kfree message
-> * kalloc memory for message
-> ** here we may have a high likelihood of getting the same pointer again
-> * add xfers to message
-> * call spi_sync
-> * kfree xfers
-> * kfree message
+                list_for_each_entry(xfer, &message->transfers, transfer_list) {
+                        if (xfer->rx_buf && xfer->tx_buf)
+                                return -EINVAL;
+                        if ((flags & SPI_MASTER_NO_TX) && xfer->tx_buf)
+                                return -EINVAL;
+                        if ((flags & SPI_MASTER_NO_RX) && xfer->rx_buf)
+                                return -EINVAL;
+                }
+        }
 
-> so we would need again a means to detect such changes.
-> The pointers are the same, but the data may be different.
+        /**
+         * Set transfer bits_per_word and max speed as spi device default if
+         * it is not set for this transfer.
+         */
+        list_for_each_entry(xfer, &message->transfers, transfer_list) {
+                if (!xfer->bits_per_word)
+                        xfer->bits_per_word = spi->bits_per_word;
+                if (!xfer->speed_hz)
+                        xfer->speed_hz = spi->max_speed_hz;
+                if (master->bits_per_word_mask) {
+                        /* Only 32 bits fit in the mask */
+                        if (xfer->bits_per_word > 32)
+                                return -EINVAL;
+                        if (!(master->bits_per_word_mask &
+                                        BIT(xfer->bits_per_word - 1)))
+                                return -EINVAL;
+                }
+        }
 
-Why would anything even notice a problem?  Like I say by the time the
-transfer is returned to the user the stack isn't going to remember
-anything about it.
+10000 times/s.
 
---jy6Sn24JjFx/iggw
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+With a "prepared" message by the driver instead, this message would get prepared 
+(maybe in this case better call it sanity-checked) once and from then on this
+piece of code does not get run at all, which would reduce CPU load immediately.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+But if you have to loop over the message to see if it has changed (by calculating 
+a checksum or comparing to something else), then you have lost this opportunity 
+to optimize out the above code...
 
-iQIcBAEBAgAGBQJSetAKAAoJELSic+t+oim9WaQP/3taiA/SecUHBii1ozGBINTD
-4TYjY6fE6DKjU4LyT5G9eb60cbnIQ9Eo0oK4miTKnNXW6mMwSw4ctikz6bif0+Ax
-sOiZIRyvVOIoOnhJlQ0cgzPP0mg9d90FLlGJCCe/vNJIlk3SghBRLV9EG7vF45z1
-OQaxrT7hFMBRHpZb+gvWyd0cb+FUgbvKxPjc/iAeS1nyyWSpmML1QtN0j10DaTSJ
-uueL/qynk1zbcVi2myhDuNz0/PBOxEvHvz78FtCZFgrpVMBRsyKpjM51wFHkHpaE
-5pvY5ntFNVT3eCz3rRE6nwBFPgXUxvwjNMeIL2idjC8BMR/5Lj2M3egbRCNdfPfC
-qmYC4+oGW2BawXIbVIgKu7vW5lqxQb4aIbNowKFh2j2ug2XC7IgqzIeuWulyIiGP
-F0nJV/i3rE/FRbAPo4r1YqgUeO4qtOztmUeoqfJu7aV++l09YydQgdKeW4obocB3
-ZPQdpBqxiXe8LJS5BPg0wrpYNuC3hNXnbK/hiQJ1UcT+U/0M1QsvFdl/thrNj9dc
-cCxu0tk7uVtdcIbA1WCcmsImFYhKlM3sCQ5gGKdna/bBd3JiJpikV9WfRxww6vrB
-rn9LsjQ0PUnOc8xiTNsrMr4jh56mzh8qGEALcDPeRKh6ENQpFy5aWL0Ze0ZfyCxI
-fNl+OViw6i6T98USBkEz
-=gOvR
------END PGP SIGNATURE-----
+Is the above described scenario of 10k spi messages/s realistic?
 
---jy6Sn24JjFx/iggw--
+Yes - definitely.
+
+The can Driver for which I have started my investigation is processing about 3200 
+can-messages/second. Each generates an interrupt - so 3200 interrupts and each
+is sending 3 spi_messages with multiple transfers in sequence (all of which can
+get and are already prepared...)
+
+So we are essentially at the example above with 9600 SPI messages/s and the
+code getting run 9600 times unnecessarily.
+
+Obviously this is not so important for drivers that run maybe 10 SPI messages/s, but 
+it becomes an important factor at higher volumes.
+
+That is the reason why I am so persistent about this subject and trying to get
+a solution that does not require a lot of CPU cycles.
+
+Ciao,
+	Martin
+
+P.s: And my guess is that avoiding this "sanity-check" alone would reduce the 
+system load for my test-case by 2-3% alone that would be down from 77% to 74% CPU.
+(and I am sure I can bring it down further if I am moving away from the scheduling
+overhead that is immanent to the "transfer_one_message" worker interface.
+The preparing of the DMA Structure reduced the System load by about 7-8%.
+
+I can try to quantify this number if you really want by NOT using spi_async but calling 
+  message->spi=spi;
+  message->status=-EINPROGRESS;
+  status=spi->master->transmit(spi,message);
+directly.
+
+But not tonight...
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

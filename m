@@ -1,70 +1,53 @@
-From: Lukasz Czerwinski <l.czerwinski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH V4] spi: s3c64xx: Enable Word transfer
-Date: Thu, 07 Nov 2013 10:59:43 +0100
-Message-ID: <527B648F.1000401@samsung.com>
-References: <1382074356-28430-1-git-send-email-rajeshwari.s@samsung.com>
- <20131106082141.GA11602@sirena.org.uk>
- <CAPs=JDctq1yRbuwnFH40dnQJJHF0C_D1p3iVokSPusPXA27Qeg@mail.gmail.com>
- <1546740.qqSm3Pi1hO@flatron>
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Subject: Re: [PATCHv2 1/3] ACPI: Expose struct acpi_device and acpi_bus_get_device() to non-ACPI builds
+Date: Thu, 07 Nov 2013 14:34:35 +0100
+Message-ID: <2770367.Lf1YV0Qxh5@vostro.rjw.lan>
+References: <1382703540-3769-1-git-send-email-jarkko.nikula@linux.intel.com> <5990097.jCz86Yqdpc@vostro.rjw.lan> <20131104211559.GA12144@mylly>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Rajeshwari Birje <rajeshwari.birje-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Rajeshwari S Shinde <rajeshwari.s-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-samsung-soc <linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Glass <sjg-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Alim Akhtar <alim.akhtar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Doug Anderson <dianders-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
-	Andrzej Hajda <a.hajda-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <1546740.qqSm3Pi1hO@flatron>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie@kernel.org>, Wolfram Sang <wsa@the-dreams.de>,
+	linux-spi@vger.kernel.org, linux-i2c@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-acpi@vger.kernel.org
+To: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <20131104211559.GA12144@mylly>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 11/07/2013 10:39 AM, Tomasz Figa wrote:
-> [CCing Sylwester, Andrzej and Lukasz]
->
-> On Thursday 07 of November 2013 14:52:36 Rajeshwari Birje wrote:
->> Hi Mark Brown,
->>
->> On Wed, Nov 6, 2013 at 1:51 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->>> On Wed, Nov 06, 2013 at 10:23:07AM +0530, Rajeshwari Birje wrote:
->>>> On Thu, Oct 31, 2013 at 6:07 PM, Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> wrote:
->>>>> The driver as of today's linux-next does not seem to support word
->>>>> transfers. Do you have some additional, out of tree patches that
->>>>> add
->>>>> such support?
->>>>
->>>> Yes I set the bits_per_word to 32/16 in drivers/mtd/devices/m25p80.c
->>>> m25p_probe function and the call spi_setup(spi).
->>>
->>> This sound wrong.  If you just set bits per word then this should
->>> result in data corruption on the bus since it should cause the words
->>> written to the bus to be reordered.  Are you sure that the existing
->>> driver isn't working correctly?
->>
->> The reordering of the words is taken care by the Swap configuration
->> (swap_cfg) register, which I have set for both 16 and 32 bits_per_word
->> case. I have tested this patch and works fine for me and also has
->> improved the timing performance.
->
-> This driver seems to have already worked fine with 32 bits per word,
-> using the s5c73m3 camera sensor, which uses SPI for firmware upload.
->
-Yes, You are right.
-> Sylwester, Andrzej or Lukasz: Can you confirm this?
->
-> Best regards,
-> Tomasz
->
->
+On Monday, November 04, 2013 11:15:59 PM Jarkko Nikula wrote:
+> On Mon, Nov 04, 2013 at 02:00:45AM +0100, Rafael J. Wysocki wrote:
+> > On Saturday, November 02, 2013 11:18:31 PM Rafael J. Wysocki wrote:
+> > > This turns out the cause build problems to happen on some architectures.
+> > > 
+> > > I guess it's sufficient to simply define a stub struct acpi_device as
+> > > 
+> > > struct acpi_device {
+> > > 	struct device dev;
+> > > };
+> > > 
+> > > for !CONFIG_ACPI instead.
+> > 
+> > Generally, it is a bad idea to #include acpi_bus.h for !CONFIG_ACPI.
+> > 
+> Ouch, indeed.
+> 
+> > The appended patch works for me, sorry for stealing part of your changelog.
+> > 
+> No problem. Thanks for fixing this up.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Well, unfortunately, this breaks builds for allnoconfig, because <acpi/acpi.h>
+is included directly from some header files (not under a CONFIG_ACPI ifdef) and
+duplicates the acpi_handle typedef.
+
+So, we'll need to go through the headers, see which ones do that and
+replace <acpi/acpi.h> with <linux/acpi.h> (along with adding the stub
+definitions for !CONFIG_ACPI).
+
+I'm deferring the patchset for after 3.13-rc1 for this reason.
+
+Thanks!
+
+-- 
+I speak only for myself.
+Rafael J. Wysocki, Intel Open Source Technology Center.

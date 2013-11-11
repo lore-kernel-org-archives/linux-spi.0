@@ -1,59 +1,32 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for
- an optimized pipelined-SPI-DMA-driver
-Date: Mon, 11 Nov 2013 12:44:24 +0100
-Message-ID: <5280C318.9030406@sperl.org>
-References: <72D635F5-4229-4D78-8AA3-1392D5D80127@sperl.org> <20131107203127.GB2493@sirena.org.uk> <86AE15B6-05AF-4EFF-8B8F-10806A7C148B@sperl.org> <20131108161957.GP2493@sirena.org.uk> <5F70E708-89B9-4DCF-A31A-E688BAA0E062@sperl.org> <20131108180934.GQ2493@sirena.org.uk> <C375DEE6-1AEC-4AFB-A9D6-583DCB4476A3@sperl.org> <20131109183056.GU2493@sirena.org.uk> <20131110110524.GA878@sirena.org.uk> <3361A01A-C7D0-4689-AFBD-085D3E62A67C@sperl.org> <20131111111842.GE2674@sirena.org.uk>
+From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+Subject: devm_spi_register_master
+Date: Mon, 11 Nov 2013 09:44:56 -0800 (PST)
+Message-ID: <alpine.DEB.2.02.1311110935230.2300@hadrien>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131111111842.GE2674-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark!
+Hello,
 
-On 11.11.2013 12:18, Mark Brown wrote:
-> No, you're going off and talking about something else here. You are
-> very focused on the idea of skipping some of the setup but that's not
-> the only thing being discussed. Please try to separate the various
-> ideas. 
+I was looking into the use of devm_spi_register_master.  This function
+seems to take care of registering and unregistering, but not allocation
+and freeing.  I have the impression that that is done with
+spi_alloc_master and and spi_master_put, which are not managed functions.
+But then I wonder how this can work?  It seems that the spi_master_put
+function should remain in the probe or remove function, and then the
+object could be freed before it is unregistered?
 
-Well - from my perspective (for which I also started this thread) it is
-_all_ about skipping setup work (besides the question about
-why spi_master.transfer is depreciated, which is unanswered).
+The patch 2fe7e4add3e53df7c1b97e32076f8390dd81c6b3 introduces a call to
+devm_spi_register_master and also removes a call to spi_master_put.  By my
+reasoning, this would cause a memory leak.
 
-If you want to discuss something in the same context, then please
-start to state explicitly what you want to get addressed here as well.
+Am I missing something?
 
-Because I have also seen a disconnect in this discussion before
-(including running in circles) and I had tried to summarize my
-understanding of this disconnect  earlier, but no response to that portion.
-
-So to summarize my understanding of the disconnect again:
-* your concern is "refactoring" message pump to reduce bus-driver code
-* my concern is speed and latencies of SPI messages
-
-And as far as I can see they primarily touch on the subject of functionality
-both containing "prepare" but for different purpose - one for the
-bus-driver interface and the other for the device driver interface.
-
-So again, please state what you want to achieve in this context and how
-you see the two subject are interconnected and why/how theyneed to
-get handled together.
-
-Thanks, Martin
-
-
-
-
-
-
-
-
+thanks,
+julia
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

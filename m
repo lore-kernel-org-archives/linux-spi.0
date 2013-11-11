@@ -1,70 +1,59 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
 Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for
  an optimized pipelined-SPI-DMA-driver
-Date: Mon, 11 Nov 2013 11:18:42 +0000
-Message-ID: <20131111111842.GE2674@sirena.org.uk>
-References: <72D635F5-4229-4D78-8AA3-1392D5D80127@sperl.org>
- <20131107203127.GB2493@sirena.org.uk>
- <86AE15B6-05AF-4EFF-8B8F-10806A7C148B@sperl.org>
- <20131108161957.GP2493@sirena.org.uk>
- <5F70E708-89B9-4DCF-A31A-E688BAA0E062@sperl.org>
- <20131108180934.GQ2493@sirena.org.uk>
- <C375DEE6-1AEC-4AFB-A9D6-583DCB4476A3@sperl.org>
- <20131109183056.GU2493@sirena.org.uk>
- <20131110110524.GA878@sirena.org.uk>
- <3361A01A-C7D0-4689-AFBD-085D3E62A67C@sperl.org>
+Date: Mon, 11 Nov 2013 12:44:24 +0100
+Message-ID: <5280C318.9030406@sperl.org>
+References: <72D635F5-4229-4D78-8AA3-1392D5D80127@sperl.org> <20131107203127.GB2493@sirena.org.uk> <86AE15B6-05AF-4EFF-8B8F-10806A7C148B@sperl.org> <20131108161957.GP2493@sirena.org.uk> <5F70E708-89B9-4DCF-A31A-E688BAA0E062@sperl.org> <20131108180934.GQ2493@sirena.org.uk> <C375DEE6-1AEC-4AFB-A9D6-583DCB4476A3@sperl.org> <20131109183056.GU2493@sirena.org.uk> <20131110110524.GA878@sirena.org.uk> <3361A01A-C7D0-4689-AFBD-085D3E62A67C@sperl.org> <20131111111842.GE2674@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="xA/XKXTdy9G3iaIz"
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <3361A01A-C7D0-4689-AFBD-085D3E62A67C-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+In-Reply-To: <20131111111842.GE2674-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark!
 
---xA/XKXTdy9G3iaIz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 11.11.2013 12:18, Mark Brown wrote:
+> No, you're going off and talking about something else here. You are
+> very focused on the idea of skipping some of the setup but that's not
+> the only thing being discussed. Please try to separate the various
+> ideas. 
 
-On Sun, Nov 10, 2013 at 05:41:30PM +0100, Martin Sperl wrote:
+Well - from my perspective (for which I also started this thread) it is
+_all_ about skipping setup work (besides the question about
+why spi_master.transfer is depreciated, which is unanswered).
 
-> As explained - you would need to make an educated guess if a spi_transfer=
-=20
-> chain has changed or not (and I talk about the need to check the chain=20
-> itself, speed, transferlength, rx_buff,tx_buff,... have not changed).
+If you want to discuss something in the same context, then please
+start to state explicitly what you want to get addressed here as well.
 
-No, you're going off and talking about something else here.  You are
-very focused on the idea of skipping some of the setup but that's not
-the only thing being discussed.  Please try to separate the various
-ideas.
+Because I have also seen a disconnect in this discussion before
+(including running in circles) and I had tried to summarize my
+understanding of this disconnect  earlier, but no response to that portion.
 
---xA/XKXTdy9G3iaIz
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+So to summarize my understanding of the disconnect again:
+* your concern is "refactoring" message pump to reduce bus-driver code
+* my concern is speed and latencies of SPI messages
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+And as far as I can see they primarily touch on the subject of functionality
+both containing "prepare" but for different purpose - one for the
+bus-driver interface and the other for the device driver interface.
 
-iQIcBAEBAgAGBQJSgL0JAAoJELSic+t+oim9sjgP+wbYVeoVsDxIgkBBUX3sXCkq
-8AfSiK6u3K1ee9Gc0Vi7/gCq81VLCXAkJgsM+IUyVfr2k+312NhELwabdUtfIqP3
-YZ0syWyp5rChX26hz+Soe+goUGumNCDHKgtXPoFuYZb5CqKohSKXaujzMXDVZLd1
-9BjjOLaRHyqqnE8knLKJZ84xV0YXf0fzzoK0U61PrQrUHCg3Ua/a43fHhsVEGRw/
-+5QSi+UlDWNTgychVGDFWLOatyTSGAT53ShUx/fTLUEjaQB11MFmrjo34ClONmzm
-tGdzDr0UDYUbg4we6HMgCr64df7WvhKN41ILU2LRBLB0j33e7XRBYkQk+85bhBD1
-kVZIaTu3tSL8c4tCg7tRJ3Tn8oVEcUQ5RhV35s6bQJStPK0/W9C2lL2Di3JGJjoh
-lAArVgNSDY5OT/GzmioGr8MlpxVWPC2osdkKcwA+Ah0Oby/P1zxIsOSxcHxmWEdu
-2QxLhU7aZqyoAO+V3QSjUquIYWw45R6GvpbdLO79tbJgwEuJHPZf3syrM17h8XCW
-wHQBfR1iDtG5rrfFCyvwuKxzjoqhMpUyemyc19wU5lvh1z74MlOT1mcK+7ubUR1h
-QNjtwIlKPllPl1pVpbLZa7QSm7ADZJbBf3Y6QNOMiD7dVBI2ap2cSHOK0jAuOdcx
-50XnRn8QhmHAI9Y/fdKc
-=PrJs
------END PGP SIGNATURE-----
+So again, please state what you want to achieve in this context and how
+you see the two subject are interconnected and why/how theyneed to
+get handled together.
 
---xA/XKXTdy9G3iaIz--
+Thanks, Martin
+
+
+
+
+
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

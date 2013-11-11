@@ -1,93 +1,70 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: sirf: move to use generic dma dt-binding
-Date: Mon, 11 Nov 2013 17:47:58 +0800
-Message-ID: <1384163278-28108-1-git-send-email-Baohua.Song@csr.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	workgroup.linux-kQvG35nSl+M@public.gmane.org, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for
+ an optimized pipelined-SPI-DMA-driver
+Date: Mon, 11 Nov 2013 11:18:42 +0000
+Message-ID: <20131111111842.GE2674@sirena.org.uk>
+References: <72D635F5-4229-4D78-8AA3-1392D5D80127@sperl.org>
+ <20131107203127.GB2493@sirena.org.uk>
+ <86AE15B6-05AF-4EFF-8B8F-10806A7C148B@sperl.org>
+ <20131108161957.GP2493@sirena.org.uk>
+ <5F70E708-89B9-4DCF-A31A-E688BAA0E062@sperl.org>
+ <20131108180934.GQ2493@sirena.org.uk>
+ <C375DEE6-1AEC-4AFB-A9D6-583DCB4476A3@sperl.org>
+ <20131109183056.GU2493@sirena.org.uk>
+ <20131110110524.GA878@sirena.org.uk>
+ <3361A01A-C7D0-4689-AFBD-085D3E62A67C@sperl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="xA/XKXTdy9G3iaIz"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <3361A01A-C7D0-4689-AFBD-085D3E62A67C-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-sirf-dma driver enabled generic dt binding for dma channels.
-see here we remove self-defined dma channel prop and move to
-use generic dma_request_slave_channel.
-related changes in dts is something like:
-    dmas = <&dmac1 9>,
-    <&dmac1 4>;
-    dma-names = "rx", "tx";
 
-Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
----
- drivers/spi/spi-sirf.c | 26 ++------------------------
- 1 file changed, 2 insertions(+), 24 deletions(-)
+--xA/XKXTdy9G3iaIz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index a1f21b7..7c6a797 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -22,7 +22,6 @@
- #include <linux/dmaengine.h>
- #include <linux/dma-direction.h>
- #include <linux/dma-mapping.h>
--#include <linux/sirfsoc_dma.h>
- 
- #define DRIVER_NAME "sirfsoc_spi"
- 
-@@ -555,8 +554,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct resource *mem_res;
- 	int num_cs, cs_gpio, irq;
--	u32 rx_dma_ch, tx_dma_ch;
--	dma_cap_mask_t dma_cap_mask;
- 	int i;
- 	int ret;
- 
-@@ -567,20 +564,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 		goto err_cs;
- 	}
- 
--	ret = of_property_read_u32(pdev->dev.of_node,
--			"sirf,spi-dma-rx-channel", &rx_dma_ch);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "Unable to get rx dma channel\n");
--		goto err_cs;
--	}
--
--	ret = of_property_read_u32(pdev->dev.of_node,
--			"sirf,spi-dma-tx-channel", &tx_dma_ch);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "Unable to get tx dma channel\n");
--		goto err_cs;
--	}
--
- 	master = spi_alloc_master(&pdev->dev, sizeof(*sspi) + sizeof(int) * num_cs);
- 	if (!master) {
- 		dev_err(&pdev->dev, "Unable to allocate SPI master\n");
-@@ -644,18 +627,13 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	sspi->bitbang.master->dev.of_node = pdev->dev.of_node;
- 
- 	/* request DMA channels */
--	dma_cap_zero(dma_cap_mask);
--	dma_cap_set(DMA_INTERLEAVE, dma_cap_mask);
--
--	sspi->rx_chan = dma_request_channel(dma_cap_mask, (dma_filter_fn)sirfsoc_dma_filter_id,
--		(void *)rx_dma_ch);
-+	sspi->rx_chan = dma_request_slave_channel(&pdev->dev, "rx");
- 	if (!sspi->rx_chan) {
- 		dev_err(&pdev->dev, "can not allocate rx dma channel\n");
- 		ret = -ENODEV;
- 		goto free_master;
- 	}
--	sspi->tx_chan = dma_request_channel(dma_cap_mask, (dma_filter_fn)sirfsoc_dma_filter_id,
--		(void *)tx_dma_ch);
-+	sspi->tx_chan = dma_request_slave_channel(&pdev->dev, "tx");
- 	if (!sspi->tx_chan) {
- 		dev_err(&pdev->dev, "can not allocate tx dma channel\n");
- 		ret = -ENODEV;
--- 
-1.8.2.3
+On Sun, Nov 10, 2013 at 05:41:30PM +0100, Martin Sperl wrote:
 
+> As explained - you would need to make an educated guess if a spi_transfer=
+=20
+> chain has changed or not (and I talk about the need to check the chain=20
+> itself, speed, transferlength, rx_buff,tx_buff,... have not changed).
+
+No, you're going off and talking about something else here.  You are
+very focused on the idea of skipping some of the setup but that's not
+the only thing being discussed.  Please try to separate the various
+ideas.
+
+--xA/XKXTdy9G3iaIz
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSgL0JAAoJELSic+t+oim9sjgP+wbYVeoVsDxIgkBBUX3sXCkq
+8AfSiK6u3K1ee9Gc0Vi7/gCq81VLCXAkJgsM+IUyVfr2k+312NhELwabdUtfIqP3
+YZ0syWyp5rChX26hz+Soe+goUGumNCDHKgtXPoFuYZb5CqKohSKXaujzMXDVZLd1
+9BjjOLaRHyqqnE8knLKJZ84xV0YXf0fzzoK0U61PrQrUHCg3Ua/a43fHhsVEGRw/
++5QSi+UlDWNTgychVGDFWLOatyTSGAT53ShUx/fTLUEjaQB11MFmrjo34ClONmzm
+tGdzDr0UDYUbg4we6HMgCr64df7WvhKN41ILU2LRBLB0j33e7XRBYkQk+85bhBD1
+kVZIaTu3tSL8c4tCg7tRJ3Tn8oVEcUQ5RhV35s6bQJStPK0/W9C2lL2Di3JGJjoh
+lAArVgNSDY5OT/GzmioGr8MlpxVWPC2osdkKcwA+Ah0Oby/P1zxIsOSxcHxmWEdu
+2QxLhU7aZqyoAO+V3QSjUquIYWw45R6GvpbdLO79tbJgwEuJHPZf3syrM17h8XCW
+wHQBfR1iDtG5rrfFCyvwuKxzjoqhMpUyemyc19wU5lvh1z74MlOT1mcK+7ubUR1h
+QNjtwIlKPllPl1pVpbLZa7QSm7ADZJbBf3Y6QNOMiD7dVBI2ap2cSHOK0jAuOdcx
+50XnRn8QhmHAI9Y/fdKc
+=PrJs
+-----END PGP SIGNATURE-----
+
+--xA/XKXTdy9G3iaIz--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,72 +1,40 @@
-From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: devm_spi_register_master
-Date: Tue, 12 Nov 2013 15:48:17 +0900
-Message-ID: <000301cedf73$2ae7a3e0$80b6eba0$%han@samsung.com>
-References: <alpine.DEB.2.02.1311110935230.2300@hadrien>
- <002701cedf3b$19f5b280$4de11780$%han@samsung.com>
- <alpine.DEB.2.02.1311111915570.2321@hadrien>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: 'Mark Brown' <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	'Julia Lawall' <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi/pxa2xx: add new ACPI IDs
+Date: Tue, 12 Nov 2013 12:06:21 +0200
+Message-ID: <1384250781-11789-1-git-send-email-mika.westerberg@linux.intel.com>
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <alpine.DEB.2.02.1311111915570.2321@hadrien>
-Content-language: ko
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday, November 12, 2013 12:19 PM, Julia Lawall wrote:
-> On Tue, 12 Nov 2013, Jingoo Han wrote:
-> > On Tuesday, November 12, 2013 2:45 AM, Julia Lawall wrote:
-> > >
-> > > I was looking into the use of devm_spi_register_master.  This function
-> > > seems to take care of registering and unregistering, but not allocation
-> > > and freeing.  I have the impression that that is done with
-> > > spi_alloc_master and and spi_master_put, which are not managed functions.
-> > > But then I wonder how this can work?  It seems that the spi_master_put
-> > > function should remain in the probe or remove function, and then the
-> > > object could be freed before it is unregistered?
-> > >
-> > > The patch 2fe7e4add3e53df7c1b97e32076f8390dd81c6b3 introduces a call to
-> > > devm_spi_register_master and also removes a call to spi_master_put.  By my
-> > > reasoning, this would cause a memory leak.
-> >
-> > Hi Julia Lawall,
-> >
-> > I already checked that the patch 2fe7e4a "spi: txx9: use
-> > devm_spi_register_master()" is right. The call to spi_master_put()
-> > was duplicated. So, it should be removed.
-> >
-> > When removing the driver, the following functions are called.
-> > : devm_spi_unregister()
-> >        -> spi_unregister_master()
-> >            -> device_unregister()
-> >                -> put_device()
-> >
-> > Also, spi_master_put() calls the following functions.
-> > : spi_master_put()
-> >        -> put_device()
-> >
-> > So, put_device() is duplicated, when devm_spi_register_master()
-> > is used. In this case, spi_master_put() can be removed.
-> 
-> spi_register_master calls device_add, which seems to increment the
-> reference count.  So it may be that both calls to put_device are needed.
-> On the other hand, in that case it would be safe to invert their order.
-> 
+Newer Intel PCHs with LPSS have the same SPI controllers than Haswell but
+ACPI IDs are different. Add these IDs to the driver list.
 
-Hi Mark,
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-By the way, now I am testing s3c64xx by repeating modprobe & rmmod.
-However, after s3c64xx_spi_remove() by rmmod, devm_spi_unregister()
-is not called. So, at the next calling modprobe, it makes kernel panic.
-On the other hand, When spi_unregister_master()& spi_master_put()
-are added, the kernel panic does not happen.
-
-Best regards,
-Jingoo Han
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index c1a50674c1e3..28361f7783cd 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1077,6 +1077,8 @@ pxa2xx_spi_acpi_get_pdata(struct platform_device *pdev)
+ static struct acpi_device_id pxa2xx_spi_acpi_match[] = {
+ 	{ "INT33C0", 0 },
+ 	{ "INT33C1", 0 },
++	{ "INT3430", 0 },
++	{ "INT3431", 0 },
+ 	{ "80860F0E", 0 },
+ 	{ },
+ };
+-- 
+1.8.4.2
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

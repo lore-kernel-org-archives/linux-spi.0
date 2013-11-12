@@ -1,67 +1,73 @@
-From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Subject: Re: devm_spi_register_master
-Date: Mon, 11 Nov 2013 19:18:55 -0800 (PST)
-Message-ID: <alpine.DEB.2.02.1311111915570.2321@hadrien>
-References: <alpine.DEB.2.02.1311110935230.2300@hadrien> <002701cedf3b$19f5b280$4de11780$%han@samsung.com>
+Date: Tue, 12 Nov 2013 15:48:17 +0900
+Message-ID: <000301cedf73$2ae7a3e0$80b6eba0$%han@samsung.com>
+References: <alpine.DEB.2.02.1311110935230.2300@hadrien>
+ <002701cedf3b$19f5b280$4de11780$%han@samsung.com>
+ <alpine.DEB.2.02.1311111915570.2321@hadrien>
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Cc: 'Mark Brown' <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: 'Mark Brown' <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	'Julia Lawall' <julia.lawall-L2FTfq7BK8M@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <002701cedf3b$19f5b280$4de11780$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-reply-to: <alpine.DEB.2.02.1311111915570.2321@hadrien>
+Content-language: ko
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 12 Nov 2013, Jingoo Han wrote:
-
-> On Tuesday, November 12, 2013 2:45 AM, Julia Lawall wrote:
+On Tuesday, November 12, 2013 12:19 PM, Julia Lawall wrote:
+> On Tue, 12 Nov 2013, Jingoo Han wrote:
+> > On Tuesday, November 12, 2013 2:45 AM, Julia Lawall wrote:
+> > >
+> > > I was looking into the use of devm_spi_register_master.  This function
+> > > seems to take care of registering and unregistering, but not allocation
+> > > and freeing.  I have the impression that that is done with
+> > > spi_alloc_master and and spi_master_put, which are not managed functions.
+> > > But then I wonder how this can work?  It seems that the spi_master_put
+> > > function should remain in the probe or remove function, and then the
+> > > object could be freed before it is unregistered?
+> > >
+> > > The patch 2fe7e4add3e53df7c1b97e32076f8390dd81c6b3 introduces a call to
+> > > devm_spi_register_master and also removes a call to spi_master_put.  By my
+> > > reasoning, this would cause a memory leak.
 > >
-> > Hello,
+> > Hi Julia Lawall,
 > >
-> > I was looking into the use of devm_spi_register_master.  This function
-> > seems to take care of registering and unregistering, but not allocation
-> > and freeing.  I have the impression that that is done with
-> > spi_alloc_master and and spi_master_put, which are not managed functions.
-> > But then I wonder how this can work?  It seems that the spi_master_put
-> > function should remain in the probe or remove function, and then the
-> > object could be freed before it is unregistered?
+> > I already checked that the patch 2fe7e4a "spi: txx9: use
+> > devm_spi_register_master()" is right. The call to spi_master_put()
+> > was duplicated. So, it should be removed.
 > >
-> > The patch 2fe7e4add3e53df7c1b97e32076f8390dd81c6b3 introduces a call to
-> > devm_spi_register_master and also removes a call to spi_master_put.  By my
-> > reasoning, this would cause a memory leak.
->
-> Hi Julia Lawall,
->
-> I already checked that the patch 2fe7e4a "spi: txx9: use
-> devm_spi_register_master()" is right. The call to spi_master_put()
-> was duplicated. So, it should be removed.
->
-> When removing the driver, the following functions are called.
-> : devm_spi_unregister()
->        -> spi_unregister_master()
->            -> device_unregister()
->                -> put_device()
->
-> Also, spi_master_put() calls the following functions.
-> : spi_master_put()
->        -> put_device()
->
-> So, put_device() is duplicated, when devm_spi_register_master()
-> is used. In this case, spi_master_put() can be removed.
+> > When removing the driver, the following functions are called.
+> > : devm_spi_unregister()
+> >        -> spi_unregister_master()
+> >            -> device_unregister()
+> >                -> put_device()
+> >
+> > Also, spi_master_put() calls the following functions.
+> > : spi_master_put()
+> >        -> put_device()
+> >
+> > So, put_device() is duplicated, when devm_spi_register_master()
+> > is used. In this case, spi_master_put() can be removed.
+> 
+> spi_register_master calls device_add, which seems to increment the
+> reference count.  So it may be that both calls to put_device are needed.
+> On the other hand, in that case it would be safe to invert their order.
+> 
 
-spi_register_master calls device_add, which seems to increment the
-reference count.  So it may be that both calls to put_device are needed.
-On the other hand, in that case it would be safe to invert their order.
+Hi Mark,
 
-julia
+By the way, now I am testing s3c64xx by repeating modprobe & rmmod.
+However, after s3c64xx_spi_remove() by rmmod, devm_spi_unregister()
+is not called. So, at the next calling modprobe, it makes kernel panic.
+On the other hand, When spi_unregister_master()& spi_master_put()
+are added, the kernel panic does not happen.
 
-> Mark,
-> If I am wrong, please let me know kindly. :-)
->
-> Best regards,
-> Jingoo Han
->
->
+Best regards,
+Jingoo Han
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,92 +1,139 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for
- an optimized pipelined-SPI-DMA-driver
-Date: Wed, 13 Nov 2013 16:59:47 +0000
-Message-ID: <20131113165947.GY878@sirena.org.uk>
-References: <20131108161957.GP2493@sirena.org.uk>
- <5F70E708-89B9-4DCF-A31A-E688BAA0E062@sperl.org>
- <20131108180934.GQ2493@sirena.org.uk>
- <C375DEE6-1AEC-4AFB-A9D6-583DCB4476A3@sperl.org>
- <20131109183056.GU2493@sirena.org.uk>
- <6C7903B3-8563-490E-AD7D-BA5D65FFB9BC@sperl.org>
- <20131112011954.GH2674@sirena.org.uk>
- <52823E73.503@sperl.org>
- <20131113151102.GS878@sirena.org.uk>
- <77070979-0CE4-4C76-B12E-DA94B2577172@sperl.org>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Ubca5Sl/zyRO+Ah+"
+From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for an optimized pipelined-SPI-DMA-driver
+Date: Wed, 13 Nov 2013 19:35:27 +0100
+Message-ID: <ED58E869-A9F6-4BB2-8EC6-D71F946509DC@sperl.org>
+References: <86AE15B6-05AF-4EFF-8B8F-10806A7C148B@sperl.org> <20131108161957.GP2493@sirena.org.uk> <5F70E708-89B9-4DCF-A31A-E688BAA0E062@sperl.org> <20131108180934.GQ2493@sirena.org.uk> <C375DEE6-1AEC-4AFB-A9D6-583DCB4476A3@sperl.org> <20131109183056.GU2493@sirena.org.uk> <6C7903B3-8563-490E-AD7D-BA5D65FFB9BC@sperl.org> <20131112011954.GH2674@sirena.org.uk> <52823E73.503@sperl.org> <2252E63E-176C-43F7-B259-D1C3A142DAFE@sperl.org> <20131113154346.GT878@sirena.org.uk>
+Mime-Version: 1.0 (Apple Message framework v1283)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <77070979-0CE4-4C76-B12E-DA94B2577172-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+In-Reply-To: <20131113154346.GT878-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark
+>> As for other interesting measurements a single example with 5 transfers:
+>> Interrupt to __spi_async:     19us
+>> __spi_async sanity start/end:  2us
+>> __SPI_ASYNC to DMA_PREPARE:   99us
+>> dma_prepare start/end:        40us
+>> dma_prepare_end to CS DOWN:    4us
+>> CS DOWN to CS UP:             16us (real transfer)
+> 
+> This is making me question the use of DMA at all here, this looks like
+> the situation of a lot of drivers where they switch to PIO mode for
+> small transfers since the cost of managing DMA is too great.  I'm also
+> curious which parts of the DMA preparation are expensive - is it the
+> building of the datastructure for DMA or is it dealing with the
+> coherency issues for the DMA controller?  The dmaengine API currently
+> needs transfers rebuilding each time I believe...
+> 
+> Also how does this scale for larger messages?
+> 
+> I appreciate that you want to push the entire queue down into hardware,
+> I'm partly thinking of the costs for drivers that don't go and do any of
+> the precooking here.
 
---Ubca5Sl/zyRO+Ah+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Well - if you look at the above example:
+it takes 99us to get from SPI_ASYNC (post-message check) to dma_prepare
+inside transfer_one_message. And this is the time spent in the framework
+AND scheduler!
 
-On Wed, Nov 13, 2013 at 04:48:47PM +0100, Martin Sperl wrote:
+The DMA prepare takes 40us you still can run the DMA Prepare in the same 
+time and be faster... 8OK, I did not account for the "teardown" time, but
+that should be faster, as it just walks the list and returns it to the
+dmapool.
 
-> > Drivers can supply pre-mapped DMA buffers if they set is_dma_mapped
-> > which is about as good as you get with dmaengine at the minute.  The
-> > main opportunities for enhancement here are in the master interface
-> > rather than the client, at least as things stand.
+Also keep in mind that this message is (as said) actually comprised of 5
+spi_transfers in a chain with two of those having set CHANGE_CS, so it is
+already a "bigger" spi_message than you would typically see.
 
-> This is part of my pre-requisite for making it prepareable in my case...
+A write_then_read (2 transfers) has a "setup time of about 23us. 
+But as this transfer happens during "setup" the dmapool may not have any 
+pages allocated yet, which increases the overhead for allocation and thus
+adds a bias to this measurement.
 
-> Because otherwise you have (again) to walk the tree to set the rx_dma
-> via dma_map_single and here the API explicitly states that between the ma=
-p=20
-> and unmap call the caller may NOT access the pages.
+You also see that this driver is already trying to keep the latencies as
+short as possible by using the chaining instead of issuing each of those
+CS-enable sequence separately.
 
-So you expect the caller to also keep the buffers mapped separately?
-The restrictions on mapping are one of the concerns I have with nailing
-down exactly what you're envisaging a prepared and unprepared
-transaction doing (plus masters that don't actually want DMA in the
-first place).
+So in the end we can give a rough estimate that it takes 10us/transfer to
+process - so that means we are getting the same thru-put delay for DMA 
+(prepared) versus interrupt-driven (Polling being the worsted) for 
+spi_messages which are <=10 transfers. Which is already a pretty big spi
+message...
 
-> The reason is (probably) for old-ISA devices that may only DMA map 24 bit=
-=20
-> addresses. So the map/unmap actually is supposed to copy data to a bounce=
-=20
-> buffer and back (depending on the direction given).
+But then you should not forget that whith the Interrupt driven approach, 
+you have delays between each transfer due to interrupts, when you 
+reconfigure the data registers. And I am 100% certain that you will not
+be able to achieve a 1us delay between 2 transfers (of arbitrary size)
+in interrupt driven mode. This is again CPU cycles (which I am not even
+sure are correctly accounted for in sys_cpu). And then on top of that -
+at least the spi-bcm2835 interrupt makes a wakeup call to the workqueue
+whenever it finishes a single transfer (and again the scheduler gets 
+involved...). That is also why I have reported a high Interrupts and 
+context-switch rate for this driver.
 
-> Typically not an issue on ARM though, I would say...
+So you think this is really cheaper from the CPU perspective to take the
+Interrupt-driven approach?
 
-No, it's not just for ISA - other systems can have DMA access
-restrictions for example due to LPAE or other things that cause limited
-addressing on some internal buses and obviously many modern systems have
-IOMMUs which require things to be mapped in and out before devices can
-access them without needing bounce buffers.
+(note also that I have set the spi_queue to run with RT-priority, so the
+spi_pump has a huge advantage getting CPU...
 
---Ubca5Sl/zyRO+Ah+
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> 
+> Exactly, but this is largely orthogonal to having the client drivers
+> precook the messages.  You can't just discard the thread since some
+> things like clock reprogramming can be sleeping but we should be using
+> it less (and some of the use that is needed can be run in parallel with
+> the transfers of other messages if we build up a queue).
+Ok - the clock setting is possibly valid for some SPI devices, but not for
+all. And we all know that a "one-size fits all" does not scale in 
+performance.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Also it may be a possibility that different devices have different 
+feature-sets, where in part we need to drop back to something else (thread).
 
-iQIcBAEBAgAGBQJSg7AAAAoJELSic+t+oim9h9kP/394Byh/R1BCo25JTCLZ3+O7
-8c6++U+MNQUiYrChQPNV/NUMhmjOzPPXKGr3Dn7h3lEdSanfnXTYujBOYgOJwG3T
-y/y8R/7vIIAeAFNu3ljZR19vDoONPjaYMYkN6UcasS0+RKT08saluaNVAYsgi6Sv
-rqhi69Elzt1iCcTHrWklnnOcRHBj/Mq74ZA5eq90z6BwhwUkqIGdbb5zv+Y7p+TA
-oiK3VG0eHGBMfo4jJJ95uRUe/v+yGYgEfLrgnX+6WKC85kqAwtr+XwnM4o5lyxEW
-9Ce8liAQlcGksLwGM7iH4EH6Wu7glpMq+5gM43KfShfkTabZi3c67qNsJgkukBjK
-Yes/hjbx0QESVi84RT0B00NTlTcQ6MqDW/rM3h8mKPKh4omlVhxztBfEj6Avwk1j
-mgzRkgBVE0Vl8ENPctOmZznAlnE9bY1BuN14xs4Pdo3tSdxR7VqcyxtxRyNzVXKC
-YZLe75/gdCBcxoQmVKqWt7UL8BP5f73GNq0FYe+6wCHMLSKryn6Q3sgUStuVnw3Z
-oYxoGelG1lMgAn90PgMj9/SO6+V+UFN803Vrf4826SdJzZ3kwtYelRapjzq13WGr
-iFgziIAqn6P6xoIkL+QJq0HudpDW1mO6fvuHMJvTmq6YdKpe9Fj5egnUYnvnL+6x
-kpDAjwJaZ6ld6tfnmjCp
-=WWxL
------END PGP SIGNATURE-----
+At some point I had been playing with the idea of doing just that - having
+a spi_pump to handle things like delay and to work around stupid "bugs"...
+but still trying to do as much as possible within the DMA I found something
+that solves everything that we have as abilities in the API right now.
 
---Ubca5Sl/zyRO+Ah+--
+But I have to admit, that it required a lot of effort coming up with 
+something that works (and it also produces a lot more code) and also
+it uncovers a lot more HW issues than expected (I found 4 so far)...
+
+> The 40us is definitely somewhat interesting though I'd be interested to
+> know how that compares with PIO too.
+
+
+Some basic facts ONLY about the SPI transfers themselves:
+CS down to last CS up for a message of 5 
+71us transfer of the 5 transfer message with PIPO 
+16us for DMA.
+So that is ONLY measured on the SPI Bus!
+The time lost here is between spi_transfers, which is typically between
+8-12us.
+But also a lot of time is lot of time is lost between the last clock and 
+CS up for PIPO: 19us
+
+So the way that the driver is written, its interrupt gets called when it 
+is finished with the transfer (or if the FIFO buffer needs to get filled)
+and in case of no more data, it will wake up the message pump.
+Which is in this case surprisingly fast which schedules the message.
+
+You see where PIPO looses its time?
+
+That is also the reason why i want to move back to the "transmit" interface
+and see how much this improves the driver.
+
+Ciao,
+	Martin
+
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,79 +1,75 @@
-From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCHv4 3/3] spi: Use stable dev_name for ACPI enumerated SPI slaves
-Date: Thu, 14 Nov 2013 14:03:53 +0200
-Message-ID: <1384430633-23426-4-git-send-email-jarkko.nikula@linux.intel.com>
+From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Subject: Re: [PATCHv4 2/3] i2c: Use stable dev_name for ACPI enumerated I2C
+ slaves
+Date: Thu, 14 Nov 2013 18:22:48 +0100
+Message-ID: <20131114172248.GD11022@katana>
 References: <1384419661-28293-1-git-send-email-jarkko.nikula@linux.intel.com>
  <1384430633-23426-1-git-send-email-jarkko.nikula@linux.intel.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+ <1384430633-23426-3-git-send-email-jarkko.nikula@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="C+ts3FVlLX8+P6JN"
+Cc: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org,
+	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1384430633-23426-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1384430633-23426-3-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Current spi bus_num.chip_select "spix.y" based device naming scheme may not
-be stable enough to be used in name based matching, for instance within
-ALSA SoC subsystem.
 
-This can be problem in PC kind of platforms if there are changes in SPI bus
-configuration, amount of busses or probe order.
+--C+ts3FVlLX8+P6JN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch addresses the problem by using the ACPI device name with
-"spi-" prefix for ACPI enumerated SPI slave. For them device name
-"spix.y" becomes "spi-INTABCD:ij".
+On Thu, Nov 14, 2013 at 02:03:52PM +0200, Jarkko Nikula wrote:
+> Current I2C adapter id - client address "x-00yy" based device naming sche=
+me
+> is not always stable enough to be used in name based matching, for instan=
+ce
+> within ALSA SoC subsystem.
+>=20
+> This is problematic in PC kind of platforms where I2C adapter numbers can
+> change due variable amount of bus controllers, probe order, add-on cards =
+or
+> just because of BIOS settings.
+>=20
+> This patch addresses the problem by using the ACPI device name with
+> "i2c-" prefix for ACPI enumerated I2C slaves. For them device name
+> "x-00yz" becomes "i2c-INTABCD:ij" after this patch.
+>=20
+> Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Acked-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
-Mark's ack added as diff between v3 and v4 is just:
--		dev_set_name(&spi->dev, "spi-%s", dev_name(&adev->dev));
-+		dev_set_name(&spi->dev, "spi-%s", acpi_dev_name(adev));
----
- drivers/spi/spi.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+Acked-by: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index af4f971..be619e0 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -352,6 +352,19 @@ struct spi_device *spi_alloc_device(struct spi_master *master)
- }
- EXPORT_SYMBOL_GPL(spi_alloc_device);
- 
-+static void spi_dev_set_name(struct spi_device *spi)
-+{
-+	struct acpi_device *adev = ACPI_COMPANION(&spi->dev);
-+
-+	if (adev) {
-+		dev_set_name(&spi->dev, "spi-%s", acpi_dev_name(adev));
-+		return;
-+	}
-+
-+	dev_set_name(&spi->dev, "%s.%u", dev_name(&spi->master->dev),
-+		     spi->chip_select);
-+}
-+
- /**
-  * spi_add_device - Add spi_device allocated with spi_alloc_device
-  * @spi: spi_device to register
-@@ -378,9 +391,7 @@ int spi_add_device(struct spi_device *spi)
- 	}
- 
- 	/* Set the bus ID string */
--	dev_set_name(&spi->dev, "%s.%u", dev_name(&spi->master->dev),
--			spi->chip_select);
--
-+	spi_dev_set_name(spi);
- 
- 	/* We need to make sure there's no other device with this
- 	 * chipselect **BEFORE** we call setup(), else we'll trash
--- 
-1.8.4.2
 
+--C+ts3FVlLX8+P6JN
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.14 (GNU/Linux)
+
+iQIcBAEBAgAGBQJShQboAAoJEBQN5MwUoCm29Q8P/AjYhiVSPIaUVG5QnJjFqj22
+IgFGUHSzXnqs9AiPrPkub1IxsuNL0EzXBOidS2C21GsX4PRXbuheaGYuEfPAbBBJ
+/jTogVmd7wwn7UtQ1IaJLr/hUCl0S5Db0kdVStPt7AuOqljfrK+9qEAYQ1oV2VDp
+rmPg9OKsKXGDethhnW1TKSRjCECXNm6ll+zof9pNAQnwPVpXtIzZofwmWq/x0s/c
+3amFA2Kb6PQ+KToXjOTNmSncCjaP8A4c/GtufiF5BfZU2RmaK5n+l40fmsWNGmuL
+9Kn0Y0givkxn6dURndq5y8WsyYgf6URkT1/mpfv4ccdY5aYMJboGMEM3OdI8JVNu
+1nOfjT8KzPzWCpA4c5+DXMj5xqxKSvBBlgFj2gJvrG4KxbqXdPmp6FC5FgZUUBeo
+yYZt+aPEamuwnZNixxFFc0EqkNKIWJ3idbZM1bmrvGPLVfD9T/V5JO/hccORZuVM
+gsvr6swKUALEu28xDPsfKn3gj1qSsGXt+01FQcPoAMF69NVxS8BC1WNr78JXhjZ9
+8StP4S4MJYnrzFhk3/bQBcHto36Lp+sJNzeb7CGa4hXR73NXdw5/lfOjSK+kf+OU
+OavPIeLYVOBtrd+GggkE8TrbO9TJiEJ9nFP0/NWocFrejvbAmP86Cj/rEZNRCL9S
+tH9JDHxOg2WviCE8zbRE
+=uH9z
+-----END PGP SIGNATURE-----
+
+--C+ts3FVlLX8+P6JN--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

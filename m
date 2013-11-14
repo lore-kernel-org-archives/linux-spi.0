@@ -1,94 +1,48 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH] spi: Factor validation and initialisation of messages outside lock
-Date: Wed, 13 Nov 2013 23:49:02 +0000
-Message-ID: <1384386542-18256-1-git-send-email-broonie@kernel.org>
-Cc: linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org, Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>,
-	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCHv3 0/3] I2C and SPI dev_name change for ACPI enumerated slaves
+Date: Thu, 14 Nov 2013 11:00:58 +0200
+Message-ID: <1384419661-28293-1-git-send-email-jarkko.nikula@linux.intel.com>
+References: <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1383309356-25430-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Hi
 
-Currently we do a bunch of per-message validation and initialisation in
-__spi_async() which is called with the bus lock held. Since none of this
-validation depends on the current bus status there's no need to hold the
-lock to do it so split it out into a separate __spi_validate() function
-which is called prior to taking the bus lock.
+Third version of the set that changes I2C and SPI slave device names
+to be generated from stable ACPI device names on ACPI 5 based systems
+instead of using bus numbers which could change.
 
-This could be slightly neater but keep things simple for now to show the
-code motion clearly.
+Slave device name change goes as
 
-Based on observations from Martin Sperl.
+	"x-00yz" -> "i2c-INTABCD:ij"
+	"spix.y" -> "spi-INTABCD:ij"
 
-Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+This version is actually a bit cleaner thanks to Rafael's
+"ACPI / driver core: Store an ACPI device pointer in struct acpi_dev_node"
+in git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e29d73d..38492e8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1585,15 +1585,11 @@ int spi_setup(struct spi_device *spi)
- }
- EXPORT_SYMBOL_GPL(spi_setup);
- 
--static int __spi_async(struct spi_device *spi, struct spi_message *message)
-+static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- {
- 	struct spi_master *master = spi->master;
- 	struct spi_transfer *xfer;
- 
--	message->spi = spi;
--
--	trace_spi_message_submit(message);
--
- 	if (list_empty(&message->transfers))
- 		return -EINVAL;
- 	if (!message->complete)
-@@ -1694,6 +1690,18 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
- 	}
- 
- 	message->status = -EINPROGRESS;
-+
-+	return 0;
-+}
-+
-+static int __spi_async(struct spi_device *spi, struct spi_message *message)
-+{
-+	struct spi_master *master = spi->master;
-+
-+	message->spi = spi;
-+
-+	trace_spi_message_submit(message);
-+
- 	return master->transfer(spi, message);
- }
- 
-@@ -1732,6 +1740,10 @@ int spi_async(struct spi_device *spi, struct spi_message *message)
- 	int ret;
- 	unsigned long flags;
- 
-+	ret = __spi_validate(spi, message);
-+	if (ret != 0)
-+		return ret;
-+
- 	spin_lock_irqsave(&master->bus_lock_spinlock, flags);
- 
- 	if (master->bus_lock_flag)
-@@ -1780,6 +1792,10 @@ int spi_async_locked(struct spi_device *spi, struct spi_message *message)
- 	int ret;
- 	unsigned long flags;
- 
-+	ret = __spi_validate(spi, message);
-+	if (ret != 0)
-+		return ret;
-+
- 	spin_lock_irqsave(&master->bus_lock_spinlock, flags);
- 
- 	ret = __spi_async(spi, message);
+Set goes on top of linux-pm/linux-next due dependency to 1/3. As we are now
+in merge-window I'm fine if 1/3 goes in first and I queue 2-3/3 later
+to i2c and spi trees.
+
+Jarkko Nikula (3):
+  ACPI: Provide struct acpi_device stub for !CONFIG_ACPI builds
+  i2c: Use stable dev_name for ACPI enumerated I2C slaves
+  spi: Use stable dev_name for ACPI enumerated SPI slaves
+
+ drivers/i2c/i2c-core.c | 21 +++++++++++++++++----
+ drivers/spi/spi.c      | 17 ++++++++++++++---
+ include/linux/acpi.h   |  4 ++++
+ 3 files changed, 35 insertions(+), 7 deletions(-)
+
 -- 
 1.8.4.2
 

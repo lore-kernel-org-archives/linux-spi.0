@@ -1,54 +1,51 @@
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [alsa-devel] [PATCHv3 1/3] ACPI: Provide struct acpi_device stub
- for !CONFIG_ACPI builds
-Date: Thu, 14 Nov 2013 13:14:17 +0200
-Message-ID: <5284B089.1020209@linux.intel.com>
-References: <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com> <1384419661-28293-1-git-send-email-jarkko.nikula@linux.intel.com> <1384419661-28293-2-git-send-email-jarkko.nikula@linux.intel.com> <s5hvbzv9u6g.wl%tiwai@suse.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>, linux-acpi@vger.kernel.org,
-	alsa-devel@alsa-project.org, linux-i2c@vger.kernel.org,
-	linux-spi@vger.kernel.org
-To: Takashi Iwai <tiwai@suse.de>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <s5hvbzv9u6g.wl%tiwai@suse.de>
-Sender: linux-acpi-owner@vger.kernel.org
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCHv4 0/3] I2C and SPI dev_name change for ACPI enumerated slaves
+Date: Thu, 14 Nov 2013 14:03:50 +0200
+Message-ID: <1384430633-23426-1-git-send-email-jarkko.nikula@linux.intel.com>
+References: <1384419661-28293-1-git-send-email-jarkko.nikula@linux.intel.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1384419661-28293-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On 11/14/2013 12:03 PM, Takashi Iwai wrote:
-> At Thu, 14 Nov 2013 11:00:59 +0200,
-> Jarkko Nikula wrote:
->> We have a few cases where we want to access struct device dev field in
->> struct acpi_device from generic code that is build also without CONFIG_ACPI.
->>
->> Provide here a minimal struct acpi_device stub that allows to build such a
->> code without adding new #ifdef CONFIG_ACPI churn. This should not increase
->> section sizes if code is protected by ACPI_COMPANION() runtime checks as
->> those will be optimized out by later compiler stages in case CONFIG_ACPI is
->> not set.
->>
->> Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
->> ---
->> Rafael, instead of this we could also have an accessor but adev->dev looked
->> better in actual code and size vmlinux didn't change for x86_64_defconfig
->> with CONFIG_ACPI is not set nor for omap2plus_defconfig.
-> This looks too hackish, IMO.  Defining a different dummy struct often
-> gives more headaches.  Thinking of the potential risk by misuses, it'd
-> be simpler and safer to define a macro like acpi_dev_name() instead.
->
-> BTW, is linux/device.h already included in !CONFIG_ACPI case?
->
-It is included unconditionally in include/linux/acpi.h.
+v4:
+This version adds and uses acpi_dev_name() accessor instead defining
+struct acpi_device stub for !CONFIG_ACPI 
 
-Your acpi_dev_name() proposal may be good enough for now as adev->dev 
-access in generic code (now under CONFIG_ACPI) seems to be anyway around 
-dev_name, using only pointer to struct acpi_device or has more things 
-that prevents immediate #ifdef CONFIG_ACPI removal there.
+v3:
+Third version of the set that changes I2C and SPI slave device names
+to be generated from stable ACPI device names on ACPI 5 based systems
+instead of using bus numbers which could change.
 
-But one problem at time. I'll cook a version with acpi_dev_name.
+Slave device name change goes as
+
+	"x-00yz" -> "i2c-INTABCD:ij"
+	"spix.y" -> "spi-INTABCD:ij"
+
+This version is actually a bit cleaner thanks to Rafael's
+"ACPI / driver core: Store an ACPI device pointer in struct acpi_dev_node"
+in git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm
+
+Set goes on top of linux-pm/linux-next due dependency to 1/3. As we are now
+in merge-window I'm fine if 1/3 goes in first and I queue 2-3/3 later
+to i2c and spi trees.
+
+Jarkko Nikula (3):
+  ACPI: Provide acpi_dev_name accessor for struct acpi_device device
+    name
+  i2c: Use stable dev_name for ACPI enumerated I2C slaves
+  spi: Use stable dev_name for ACPI enumerated SPI slaves
+
+ drivers/i2c/i2c-core.c | 21 +++++++++++++++++----
+ drivers/spi/spi.c      | 17 ++++++++++++++---
+ include/linux/acpi.h   | 10 ++++++++++
+ 3 files changed, 41 insertions(+), 7 deletions(-)
 
 -- 
-Jarkko
+1.8.4.2

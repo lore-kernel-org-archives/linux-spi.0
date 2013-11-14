@@ -1,7 +1,7 @@
 From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCHv3 1/3] ACPI: Provide struct acpi_device stub for !CONFIG_ACPI builds
-Date: Thu, 14 Nov 2013 11:00:59 +0200
-Message-ID: <1384419661-28293-2-git-send-email-jarkko.nikula@linux.intel.com>
+Subject: [PATCHv3 2/3] i2c: Use stable dev_name for ACPI enumerated I2C slaves
+Date: Thu, 14 Nov 2013 11:01:00 +0200
+Message-ID: <1384419661-28293-3-git-send-email-jarkko.nikula@linux.intel.com>
 References: <1383309356-25430-1-git-send-email-jarkko.nikula@linux.intel.com>
  <1384419661-28293-1-git-send-email-jarkko.nikula@linux.intel.com>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -15,38 +15,61 @@ In-Reply-To: <1384419661-28293-1-git-send-email-jarkko.nikula-VuQAYsv1563Yd54FQh
 Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-We have a few cases where we want to access struct device dev field in
-struct acpi_device from generic code that is build also without CONFIG_ACPI.
+Current I2C adapter id - client address "x-00yy" based device naming scheme
+is not always stable enough to be used in name based matching, for instance
+within ALSA SoC subsystem.
 
-Provide here a minimal struct acpi_device stub that allows to build such a
-code without adding new #ifdef CONFIG_ACPI churn. This should not increase
-section sizes if code is protected by ACPI_COMPANION() runtime checks as
-those will be optimized out by later compiler stages in case CONFIG_ACPI is
-not set.
+This is problematic in PC kind of platforms where I2C adapter numbers can
+change due variable amount of bus controllers, probe order, add-on cards or
+just because of BIOS settings.
+
+This patch addresses the problem by using the ACPI device name with
+"i2c-" prefix for ACPI enumerated I2C slaves. For them device name
+"x-00yz" becomes "i2c-INTABCD:ij" after this patch.
 
 Signed-off-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
-Rafael, instead of this we could also have an accessor but adev->dev looked
-better in actual code and size vmlinux didn't change for x86_64_defconfig
-with CONFIG_ACPI is not set nor for omap2plus_defconfig.
----
- include/linux/acpi.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/i2c-core.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 0da49ed..df444e1 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -414,6 +414,10 @@ static inline bool acpi_driver_match_device(struct device *dev,
+diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+index f74af33..b8f2c32 100644
+--- a/drivers/i2c/i2c-core.c
++++ b/drivers/i2c/i2c-core.c
+@@ -618,6 +618,22 @@ void i2c_unlock_adapter(struct i2c_adapter *adapter)
+ }
+ EXPORT_SYMBOL_GPL(i2c_unlock_adapter);
  
- #else	/* !CONFIG_ACPI */
- 
-+struct acpi_device {
-+	struct device dev;
-+};
++static void i2c_dev_set_name(struct i2c_adapter *adap,
++			     struct i2c_client *client)
++{
++	struct acpi_device *adev = ACPI_COMPANION(&client->dev);
 +
- #define acpi_disabled 1
++	if (adev) {
++		dev_set_name(&client->dev, "i2c-%s", dev_name(&adev->dev));
++		return;
++	}
++
++	/* For 10-bit clients, add an arbitrary offset to avoid collisions */
++	dev_set_name(&client->dev, "%d-%04x", i2c_adapter_id(adap),
++		     client->addr | ((client->flags & I2C_CLIENT_TEN)
++				     ? 0xa000 : 0));
++}
++
+ /**
+  * i2c_new_device - instantiate an i2c device
+  * @adap: the adapter managing the device
+@@ -676,10 +692,7 @@ i2c_new_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
+ 	client->dev.of_node = info->of_node;
+ 	ACPI_COMPANION_SET(&client->dev, info->acpi_node.companion);
  
- #define ACPI_COMPANION(dev)		(NULL)
+-	/* For 10-bit clients, add an arbitrary offset to avoid collisions */
+-	dev_set_name(&client->dev, "%d-%04x", i2c_adapter_id(adap),
+-		     client->addr | ((client->flags & I2C_CLIENT_TEN)
+-				     ? 0xa000 : 0));
++	i2c_dev_set_name(adap, client);
+ 	status = device_register(&client->dev);
+ 	if (status)
+ 		goto out_err;
 -- 
 1.8.4.2

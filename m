@@ -1,11 +1,12 @@
 From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: txx9: fix reference leak to master in txx9spi_remove()
-Date: Fri, 15 Nov 2013 15:49:29 +0800
-Message-ID: <CAPgLHd8PwrTi+Mq-mjKxY8CkpYCxzRBfnLoeum9YygoEyx=fyA@mail.gmail.com>
+Subject: [PATCH] spi: spi-mxs: fix reference leak to master in mxs_spi_remove()
+Date: Fri, 15 Nov 2013 15:50:31 +0800
+Message-ID: <CAPgLHd9tKB5CFE-2hDUMH-XkEK7mn6oC4MOi_LP+qfDh3_XqPg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Cc: yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
@@ -17,25 +18,25 @@ spi_master_put() call to free the memory, otherwise we will
 leak a reference to master. Fix by removing the unnecessary
 spi_master_get() call.
 
-Fixes: 2fe7e4add3e5 ('spi: txx9: use devm_spi_register_master()')
+Fixes: 33e195acf268 ('spi: mxs: use devm_spi_register_master()')
 Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 ---
- drivers/spi/spi-txx9.c | 2 +-
+ drivers/spi/spi-mxs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
-index 637cce2..18c9bb2 100644
---- a/drivers/spi/spi-txx9.c
-+++ b/drivers/spi/spi-txx9.c
-@@ -425,7 +425,7 @@ exit:
+diff --git a/drivers/spi/spi-mxs.c b/drivers/spi/spi-mxs.c
+index de33305..37b3e41 100644
+--- a/drivers/spi/spi-mxs.c
++++ b/drivers/spi/spi-mxs.c
+@@ -565,7 +565,7 @@ static int mxs_spi_remove(struct platform_device *pdev)
+ 	struct mxs_spi *spi;
+ 	struct mxs_ssp *ssp;
  
- static int txx9spi_remove(struct platform_device *dev)
- {
--	struct spi_master *master = spi_master_get(platform_get_drvdata(dev));
-+	struct spi_master *master = platform_get_drvdata(dev);
- 	struct txx9spi *c = spi_master_get_devdata(master);
+-	master = spi_master_get(platform_get_drvdata(pdev));
++	master = platform_get_drvdata(pdev);
+ 	spi = spi_master_get_devdata(master);
+ 	ssp = &spi->ssp;
  
- 	destroy_workqueue(c->workqueue);
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

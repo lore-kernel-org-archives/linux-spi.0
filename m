@@ -1,143 +1,208 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
-Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for an optimized pipelined-SPI-DMA-driver
-Date: Fri, 15 Nov 2013 15:52:42 +0100
-Message-ID: <0BA2243C-2F22-492A-B517-76E243535549@sperl.org>
-References: <20131108161957.GP2493@sirena.org.uk> <5F70E708-89B9-4DCF-A31A-E688BAA0E062@sperl.org> <20131108180934.GQ2493@sirena.org.uk> <C375DEE6-1AEC-4AFB-A9D6-583DCB4476A3@sperl.org> <20131109183056.GU2493@sirena.org.uk> <6C7903B3-8563-490E-AD7D-BA5D65FFB9BC@sperl.org> <20131112011954.GH2674@sirena.org.uk> <52823E73.503@sperl.org> <20131114015009.GB26614@sirena.org.uk> <9640F4C7-7F82-453E-9D83-5875A1559A20@sperl.org> <20131115133312.GE26614@sirena.org.uk>
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131115133312.GE26614-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Stephen Warren <swarren@wwwdotorg.org>
+Subject: [PATCH 00/31] ARM: tegra: use common reset and DMA bindings
+Date: Fri, 15 Nov 2013 13:53:55 -0700
+Message-ID: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Mark Rutland <mark.rutland@arm.com>, alsa-devel@alsa-project.org,
+ linux-usb@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
+ David Airlie <airlied@linux.ie>, linux-pci@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Marc Dietrich <marvin24@gmx.de>,
+ linux-tegra@vger.kernel.org, linux-i2c@vger.kernel.org,
+ ac100@lists.launchpad.net, devel@driverdev.osuosl.org,
+ Stephen Warren <swarren@nvidia.com>, Alan Stern <stern@rowland.harvard.edu>,
+ linux-serial@vger.kernel.org, linux-input@vger.kernel.org,
+ =?UTF-8?q?Terje=20Bergstr=C3=B6m?= <tbergstrom@nvidia.com>,
+ devicetree@vger.kernel.org, Pawel Moll <pawel.moll@arm.com>,
+ Ian Campbell <ijc+devicetree@hellion.org.uk>,
+ Julian Andres Klode <jak@jak-linux.org>, Rob Herring <rob.herring@calxeda.com>,
+ Mark Brown <broonie@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Mike Turquette <mturquette@linaro.org>,
+ Dan Williams <dan.j.willi
+To: swarren@wwwdotorg.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-
-On 15.11.2013, at 14:33, Mark Brown wrote:
-> No, this isn't something which should be being open coded in individual
-> drivers - it's far too much redundant work especially once you get into
-> doing the tradeoffs for no queue vs queue cases.  Using regmap MMIO may
-> be helpful but we need to do that in a way that allows us to integrate
-> it into the DMA pipeline...
-> 
-> This is part of what I keep saying about doing things in a way that
-> makes them generally applicable.
-
-Well - we first need to see what is the real "common denominator" of
-boards, that can do DMA to configure SPI itself. So we would need at
-least 2 or 3 to figure that out (and also all the bugs we may expect to 
-see and find work-arrounds for those)
-
-but in principle it should be possible to factor processing out like
-this:
-* main transfer loop
-* while (!transfer_last) {
-*   prepareSPIRegisters()
-*   prepareAdditionalTXDMA
-*   do {
-*     append RX/TX transfers
-*   } while(do_inner) 
-*   append wait_for_clock
-*   append delay_us
-*   if cs_change
-*     append CS_UP
-*     append wait_for_clock
-* }
-* if message->callback
-*   append DMAInterrupt_and_position
-
-I believe that might be a generic enough approach that it should work
-if one would factor out the "appends" plus the do_inner loop exit 
-condition into the master structure.
-
-But my guess is that you would not even allow to get something generic as
-this merged unless there are multiple drivers that would be using that
-interface.
-
-So we would be in a chicken/egg from this direction as well...
-
-> 
->> Note that if you do that and want to leverage the "prepare_message",
->> then I would recommend you add an additional flag field to these calls.
->> Because then you may pass some hints to the engine (like if it can
->> use GFP_KERNEL or GFP_ATOMIC during allocations). And prepare 
->> could get done with GFP_KERNEL, while a "prepare" during spi_async
->> would need to be done via GFP_ATOMIC.
-> 
-> Or in the async case we just punt the prepare to the thread.
-again: that means an uneccessary delay
-especially when you think about running the message_pump without
-real-time priority introduces 10us additional delay...
-
-> Yes, this is exactly the sort of thing I'm talking about - it's cutting
-> out dead time on the bus.
-
-> Right, and the big concern with the way you're currently proposing to
-> implement the optimisation is that it's leaving essentially the whole
-> thing up to the individual driver.  This is going to result in limited
-> adoption and is going to mean there's no sharing of learning and fixes
-> between drivers.
-
-Well, any driver that is using spi_sync can not get improved without a 
-rewrite anyway - the context switching becomes prohibitive.
-
-So what some drivers seem to do is create a separate thread, which 
-they wake up from their interrupt handler, which then runs the interrupt
-handling and uses SPI_sync communication in this thread.
-Which means at least 2 context switches one from SPI interrupt (finished)
-to wake the message pump, which then will call complete and wake up the 
-real thread.
-
-Whatever you do on the framework side you cannot improve the performance
-of such drivers without touching the driver itself and converting them
-to something else.
-
-It is a whole other story if the driver is already doing async
-scheduling of its messages. Then the spi_async thing streamlines the
-"next" message to some extent and does not allow the message_pump to
-sleep which gives it better response-times.
-But you still waste time between the interrupt handler runs and wakes
-up the message_pump - especially as the callback is allowed to run from
-interrupt context.
-
-As for learning & fixing:
-Any driver will go unfixed until someone finds a bug or a performance 
-issue and spends time on improving it.
-
-What about writing some "documentation" to show how a driver can get
-improved to get higher tru-put? 
-
-And then you can also make the framework do more work for the driver
-and thus avoiding replication of code. But then you would again get into 
-a need to create a new API for just that covering all those cases.
-Maybe by using a code-generator like the samba team did for the smb 
-messages.
-
-That is a huge separate project with lots or R&D required, which is 
-way outside of the scope of writing a DMA pipelined bus-driver and
-proposing things that may improve the performance of optimized drivers.
-
-> To repeat yet again, something that is just a tunnel through to this one
-> heavily optimised master driver isn't good.  The problem with the
-> proposed implementation is that it is essentially just tunnelling
-> through to a heavily optimised master, it's not generic enough.  If
-> other devices can make use of it it's more interesting but then those
-> uses ought to be being factored out.
-Well - as I understand this, it means that:
-If there were more bus-drivers that could drive the whole SPI transfer of
-a message via DMA, then it would become acceptable to get that API in 
-place until then if there is only a single bus and device driver, then it
-is not acceptable.
-
-So please define what would be your "critical" mass at which you would 
-accept that a API-extension is worth the effort to get integrated?
-(Besides metric that shows how much it improves the situation, which also
-would need to get defined - we do not want to have performance-regressions
-either)
-
-Martin
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+RnJvbTogU3RlcGhlbiBXYXJyZW4gPHN3YXJyZW5AbnZpZGlhLmNvbT4KClRoaXMgc2VyaWVzIGlt
+cGxlbWVudHMgYSBjb21tb24gcmVzZXQgZnJhbWV3b3JrIGRyaXZlciBmb3IgVGVncmEsIGFuZAp1
+cGRhdGVzIGFsbCByZWxldmFudCBUZWdyYSBkcml2ZXJzIHRvIHVzZSBpdC4gSXQgYWxzbyByZW1v
+dmVzIHRoZSBjdXN0b20KRE1BIGJpbmRpbmdzIGFuZCByZXBsYWNlZCB0aGVtIHdpdGggdGhlIHN0
+YW5kYXJkIERNQSBEVCBiaW5kaW5ncy4KCkhpc3RvcmljYWxseSwgdGhlIFRlZ3JhIGNsb2NrIGRy
+aXZlciBoYXMgZXhwb3J0ZWQgYSBjdXN0b20gQVBJIGZvciBtb2R1bGUKcmVzZXQuIFRoaXMgc2Vy
+aWVzIHJlbW92ZXMgdGhhdCBBUEksIGFuZCB0cmFuc2l0aW9ucyBEVCBhbmQgZHJpdmVycyB0bwp0
+aGUgbmV3IHJlc2V0IGZyYW1ld29yay4KClRoZSBjdXN0b20gQVBJIHVzZWQgYSAic3RydWN0IGNs
+ayIgdG8gaWRlbnRpZnkgd2hpY2ggbW9kdWxlIHRvIHJlc2V0LCBhbmQKY29uc2VxdWVudGx5IHNv
+bWUgRFQgYmluZGluZ3MgYW5kIGRyaXZlcnMgcmVxdWlyZWQgY2xvY2tzIHRvIGJlIHByb3ZpZGVk
+CndoZXJlIHRoZXkgcmVhbGx5IG5lZWRlZCBqdXN0IGEgcmVzZXQgaWRlbnRpZmllciBpbnN0ZWFk
+LiBEdWUgdG8gdGhpcwprbm93biBkZWZpY2llbmN5LCBJIGhhdmUgYWx3YXlzIGNvbnNpZGVyZWQg
+bW9zdCBUZWdyYSBiaW5kaW5ncyB0byBiZQp1bnN0YWJsZS4gVGhpcyBzZXJpZXMgcmVtb3ZlcyB0
+aGlzIGV4Y3VzZSBmb3IgaW5zdGFiaWxpdHksIGFsdGhvdWdoIEkKc3RpbGwgY29uc2lkZXIgc29t
+ZSBUZWdyYSBiaW5kaW5ncyB1bnN0YWJsZSBkdWUgdG8gdGhlIG5lZWQgdG8gY29udmVydCB0bwp0
+aGUgY29tbW9uIERNQSBiaW5kaW5ncy4KCkhpc3RvcmljYWxseSwgVGVncmEgRE1BIGNoYW5uZWxz
+IGhhdmUgYmVlbiByZXByZXNlbnRlZCBpbiBEVCB1c2luZyBhCmN1c3RvbSBudmlkaWEsZG1hLXJl
+cXVlc3Qtc2VsZWN0b3IgcHJvcGVydHkuIE5vdyB0aGF0IHN0YW5kYXJkIERNQSBEVApiaW5kaW5n
+cyBleGlzdCwgY29udmVydCBhbGwgVGVncmEgYmluZGluZ3MsIERUcywgYW5kIGRyaXZlcnMgdG8g
+dXNlIHRoZQpzdGFuZGFyZCBpbnN0ZWFkLgoKVGhpcyBzZXJpZXMgbWFrZXMgYSBEVC1BQkktaW5j
+b21wYXRpYmxlIGNoYW5nZSB0bzoKLSBSZXF1aXJlIHJlc2V0IHNwZWNpZmllcnMgaW4gRFQgd2hl
+cmUgcmVsZXZhbnQuCi0gUmVxdWlyZSBzdGFuZGFyZCBETUEgc3BlY2lmaWVycy4KLSBSZW1vdmUg
+Y2xvY2sgc3BlY2lmaWVycyBmcm9tIERUIHdoZXJlIHRoZXkgd2VyZSBvbmx5IG5lZWRlZCBmb3Ig
+cmVzZXQuCi0gUmVtb3ZlIGxlZ2FjeSBETUEgc3BlY2lmaWVyIHByb3BlcnRpZXMuCgpJIGFudGlj
+aXBhdGUgbWVyZ2luZyB0aGlzIHdob2xlIHNlcmllcyBpbnRvIHRoZSBUZWdyYSBhbmQgYXJtLXNv
+YyB0cmVlcwphcyBpdHMgb3duIGJyYW5jaCwgZHVlIHRvIGludGVybmFsIGRlcGVuZGVuY2llcy4g
+VGhpcyBicmFuY2ggd2lsbCBiZQpzdGFibGUgYW5kIGNhbiB0aGVuIGJlIG1lcmdlZCBpbnRvIGFu
+eSBvdGhlciBzdWJzeXN0ZW0gdHJlZXMgc2hvdWxkIGFueQpjb25mbGljdHMgYXJpc2UuCgpUaGlz
+IHNlcmllcyBkZXBlbmRzIG9uIFBldGVyJ3MgVGVncmEgY2xvY2sgZHJpdmVyIHJld29yaywgYXZh
+aWxhYmxlIGF0CmdpdDovL252LXRlZ3JhLm52aWRpYS5jb20vdXNlci9wZGVzY2hyaWp2ZXIvbGlu
+dXggdGVncmEtY2xrLXRlZ3JhMTI0LTAKKG9yIHdoYXRldmVyIHZlcnNpb24gb2YgdGhhdCBnZXRz
+IGluY2x1ZGVkIGluIDMuMTQpCgpDYzogYWMxMDBAbGlzdHMubGF1bmNocGFkLm5ldApDYzogQWxh
+biBTdGVybiA8c3Rlcm5Acm93bGFuZC5oYXJ2YXJkLmVkdT4KQ2M6IGFsc2EtZGV2ZWxAYWxzYS1w
+cm9qZWN0Lm9yZwpDYzogQmpvcm4gSGVsZ2FhcyA8YmhlbGdhYXNAZ29vZ2xlLmNvbT4KQ2M6IERh
+biBXaWxsaWFtcyA8ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tPgpDYzogRGF2aWQgQWlybGllIDxh
+aXJsaWVkQGxpbnV4LmllPgpDYzogZGV2ZWxAZHJpdmVyZGV2Lm9zdW9zbC5vcmcKQ2M6IGRldmlj
+ZXRyZWVAdmdlci5rZXJuZWwub3JnCkNjOiBEbWl0cnkgVG9yb2tob3YgPGRtaXRyeS50b3Jva2hv
+dkBnbWFpbC5jb20+CkNjOiBEbWl0cnkgVG9yb2tob3YgPGR0b3JAbWFpbC5ydT4KQ2M6IGRyaS1k
+ZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcKQ2M6IEdyZWcgS3JvYWgtSGFydG1hbiA8Z3JlZ2to
+QGxpbnV4Zm91bmRhdGlvbi5vcmc+CkNjOiBJYW4gQ2FtcGJlbGwgPGlqYytkZXZpY2V0cmVlQGhl
+bGxpb24ub3JnLnVrPgpDYzogSnVsaWFuIEFuZHJlcyBLbG9kZSA8amFrQGphay1saW51eC5vcmc+
+CkNjOiBMaWFtIEdpcmR3b29kIDxsZ2lyZHdvb2RAZ21haWwuY29tPgpDYzogbGludXgtYXJtLWtl
+cm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCkNjOiBsaW51eC1pMmNAdmdlci5rZXJuZWwub3JnCkNj
+OiBsaW51eC1pbnB1dEB2Z2VyLmtlcm5lbC5vcmcKQ2M6IGxpbnV4LXBjaUB2Z2VyLmtlcm5lbC5v
+cmcKQ2M6IGxpbnV4LXNlcmlhbEB2Z2VyLmtlcm5lbC5vcmcKQ2M6IGxpbnV4LXNwaUB2Z2VyLmtl
+cm5lbC5vcmcKQ2M6IGxpbnV4LXRlZ3JhQHZnZXIua2VybmVsLm9yZwpDYzogbGludXgtdXNiQHZn
+ZXIua2VybmVsLm9yZwpDYzogTWFyYyBEaWV0cmljaCA8bWFydmluMjRAZ214LmRlPgpDYzogTWFy
+ayBCcm93biA8YnJvb25pZUBrZXJuZWwub3JnPgpDYzogTWFyayBSdXRsYW5kIDxtYXJrLnJ1dGxh
+bmRAYXJtLmNvbT4KQ2M6IE1pa2UgVHVycXVldHRlIDxtdHVycXVldHRlQGxpbmFyby5vcmc+CkNj
+OiBQYXdlbCBNb2xsIDxwYXdlbC5tb2xsQGFybS5jb20+CkNjOiBwZGVzY2hyaWp2ZXJAbnZpZGlh
+LmNvbQpDYzogUm9iIEhlcnJpbmcgPHJvYi5oZXJyaW5nQGNhbHhlZGEuY29tPgpDYzogVGVyamUg
+QmVyZ3N0csO2bSA8dGJlcmdzdHJvbUBudmlkaWEuY29tPgpDYzogdHJlZGluZ0BudmlkaWEuY29t
+CkNjOiBXb2xmcmFtIFNhbmcgPHdzYUB0aGUtZHJlYW1zLmRlPgoKU3RlcGhlbiBXYXJyZW4gKDMx
+KToKICBBUk06IHRlZ3JhOiBhZGQgbWlzc2luZyBjbG9jayBkb2N1bWVudGF0aW9uIHRvIERUIGJp
+bmRpbmdzCiAgQVJNOiB0ZWdyYTogZG9jdW1lbnQgcmVzZXQgcHJvcGVydGllcyBpbiBEVCBiaW5k
+aW5ncwogIEFSTTogdGVncmE6IGRvY3VtZW50IHVzZSBvZiBzdGFuZGFyZCBETUEgRFQgYmluZGlu
+Z3MKICBBUk06IHRlZ3JhOiB1cGRhdGUgRFQgZmlsZXMgdG8gYWRkIHJlc2V0IHByb3BlcnRpZXMK
+ICBBUk06IHRlZ3JhOiB1cGRhdGUgRFQgZmlsZXMgdG8gYWRkIERNQSBwcm9wZXJ0aWVzCiAgQVJN
+OiB0ZWdyYTogc2VsZWN0IHRoZSByZXNldCBmcmFtZXdvcmsKICBjbGs6IHRlZ3JhOiBpbXBsZW1l
+bnQgYSByZXNldCBkcml2ZXIKICBwY2k6IHRlZ3JhOiB1c2UgcmVzZXQgZnJhbWV3b3JrCiAgZHJt
+L3RlZ3JhOiB1c2UgcmVzZXQgZnJhbWV3b3JrCiAgQVJNOiB0ZWdyYTogcGFzcyByZXNldCB0byB0
+ZWdyYV9wb3dlcmdhdGVfc2VxdWVuY2VfcG93ZXJfdXAoKQogIGRtYTogYWRkIGNoYW5uZWwgcmVx
+dWVzdCBBUEkgdGhhdCBzdXBwb3J0cyBkZWZlcnJlZCBwcm9iZQogIGRtYTogdGVncmE6IHVzZSBy
+ZXNldCBmcmFtZXdvcmsKICBkbWE6IHRlZ3JhOiByZWdpc3RlciBhcyBhbiBPRiBETUEgY29udHJv
+bGxlcgogIEFTb0M6IGRtYWVuZ2luZTogc3VwcG9ydCBkZWZlcnJlZCBwcm9iZSBmb3IgRE1BIGNo
+YW5uZWxzCiAgQVNvQzogZG1hZW5naW5lOiBhZGQgY3VzdG9tIERNQSBjb25maWcgdG8gc25kX2Rt
+YWVuZ2luZV9wY21fY29uZmlnCiAgQVNvQzogdGVncmE6IHVzZSByZXNldCBmcmFtZXdvcmsKICBB
+U29DOiB0ZWdyYTogY2FsbCBwbV9ydW50aW1lIEFQSXMgYXJvdW5kIHJlZ2lzdGVyIGFjY2Vzc2Vz
+CiAgQVNvQzogdGVncmE6IGFsbG9jYXRlIEFIVUIgRklGTyBkdXJpbmcgcHJvYmUoKSBub3Qgc3Rh
+cnR1cCgpCiAgQVNvQzogdGVncmE6IGNvbnZlcnQgdG8gc3RhbmRhcmQgRE1BIERUIGJpbmRpbmdz
+CiAgaTJjOiB0ZWdyYTogdXNlIHJlc2V0IGZyYW1ld29yawogIHN0YWdpbmc6IG52ZWM6IHVzZSBy
+ZXNldCBmcmFtZXdvcmsKICBzcGk6IHRlZ3JhOiB1c2UgcmVzZXQgZnJhbWV3b3JrCiAgc3BpOiB0
+ZWdyYTogY29udmVydCB0byBzdGFuZGFyZCBETUEgRFQgYmluZGluZ3MKICBzZXJpYWw6IHRlZ3Jh
+OiB1c2UgcmVzZXQgZnJhbWV3b3JrCiAgc2VyaWFsOiB0ZWdyYTogY29udmVydCB0byBzdGFuZGFy
+ZCBETUEgRFQgYmluZGluZ3MKICBJbnB1dDogdGVncmEta2JjIC0gdXNlIHJlc2V0IGZyYW1ld29y
+awogIFVTQjogRUhDSTogdGVncmE6IHVzZSByZXNldCBmcmFtZXdvcmsKICBBUk06IHRlZ3JhOiBy
+ZW1vdmUgbGVnYWN5IGNsb2NrIGVudHJpZXMgZnJvbSBEVAogIEFSTTogdGVncmE6IHJlbW92ZSBs
+ZWdhY3kgRE1BIGVudHJpZXMgZnJvbSBEVAogIGNsazogdGVncmE6IHJlbW92ZSBsZWdhY3kgcmVz
+ZXQgQVBJcwogIGNsazogdGVncmE6IHJlbW92ZSBib2d1cyBQQ0lFX1hDTEsKCiAuLi4vYmluZGlu
+Z3MvYXJtL3RlZ3JhL252aWRpYSx0ZWdyYTIwLXBtYy50eHQgICAgICB8ICAgMSArCiAuLi4vYmlu
+ZGluZ3MvY2xvY2svbnZpZGlhLHRlZ3JhMTE0LWNhci50eHQgICAgICAgICB8ICAgNCArCiAuLi4v
+YmluZGluZ3MvY2xvY2svbnZpZGlhLHRlZ3JhMTI0LWNhci50eHQgICAgICAgICB8ICAgNCArCiAu
+Li4vYmluZGluZ3MvY2xvY2svbnZpZGlhLHRlZ3JhMjAtY2FyLnR4dCAgICAgICAgICB8ICAgNCAr
+CiAuLi4vYmluZGluZ3MvY2xvY2svbnZpZGlhLHRlZ3JhMzAtY2FyLnR4dCAgICAgICAgICB8ICAg
+NCArCiAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9kbWEvdGVncmEyMC1hcGJkbWEudHh0ICAgICB8
+ICAgOSArKwogLi4uL2JpbmRpbmdzL2dwdS9udmlkaWEsdGVncmEyMC1ob3N0MXgudHh0ICAgICAg
+ICAgfCAxMjQgKysrKysrKysrKysrKysrCiAuLi4vZGV2aWNldHJlZS9iaW5kaW5ncy9pMmMvbnZp
+ZGlhLHRlZ3JhMjAtaTJjLnR4dCB8ICAyNyArKystCiAuLi4vYmluZGluZ3MvaW5wdXQvbnZpZGlh
+LHRlZ3JhMjAta2JjLnR4dCAgICAgICAgICB8ICAgOSArKwogLi4uL2JpbmRpbmdzL21tYy9udmlk
+aWEsdGVncmEyMC1zZGhjaS50eHQgICAgICAgICAgfCAgIDkgKysKIC4uLi9kZXZpY2V0cmVlL2Jp
+bmRpbmdzL252ZWMvbnZpZGlhLG52ZWMudHh0ICAgICAgIHwgIDEyICsrCiAuLi4vYmluZGluZ3Mv
+cGNpL252aWRpYSx0ZWdyYTIwLXBjaWUudHh0ICAgICAgICAgICB8ICAyOCArKy0tCiAuLi4vZGV2
+aWNldHJlZS9iaW5kaW5ncy9wd20vbnZpZGlhLHRlZ3JhMjAtcHdtLnR4dCB8ICAgOSArKwogLi4u
+L2RldmljZXRyZWUvYmluZGluZ3MvcnRjL252aWRpYSx0ZWdyYTIwLXJ0Yy50eHQgfCAgIDMgKwog
+Li4uL2JpbmRpbmdzL3NlcmlhbC9udmlkaWEsdGVncmEyMC1oc3VhcnQudHh0ICAgICAgfCAgMTkg
+KystCiAuLi4vYmluZGluZ3Mvc291bmQvbnZpZGlhLHRlZ3JhLWF1ZGlvLWFsYzU2MzIudHh0ICB8
+ICAgNyArLQogLi4uL2JpbmRpbmdzL3NvdW5kL252aWRpYSx0ZWdyYS1hdWRpby1ydDU2NDAudHh0
+ICAgfCAgIDcgKy0KIC4uLi9iaW5kaW5ncy9zb3VuZC9udmlkaWEsdGVncmEtYXVkaW8td204NzUz
+LnR4dCAgIHwgICA3ICstCiAuLi4vYmluZGluZ3Mvc291bmQvbnZpZGlhLHRlZ3JhLWF1ZGlvLXdt
+ODkwMy50eHQgICB8ICAgNyArLQogLi4uL2JpbmRpbmdzL3NvdW5kL252aWRpYSx0ZWdyYS1hdWRp
+by13bTk3MTIudHh0ICAgfCAgIDcgKy0KIC4uLi9iaW5kaW5ncy9zb3VuZC9udmlkaWEsdGVncmEy
+MC1hYzk3LnR4dCAgICAgICAgIHwgIDIwICsrLQogLi4uL2JpbmRpbmdzL3NvdW5kL252aWRpYSx0
+ZWdyYTIwLWkycy50eHQgICAgICAgICAgfCAgMTkgKystCiAuLi4vYmluZGluZ3Mvc291bmQvbnZp
+ZGlhLHRlZ3JhMzAtYWh1Yi50eHQgICAgICAgICB8ICA1NCArKysrKy0tCiAuLi4vYmluZGluZ3Mv
+c291bmQvbnZpZGlhLHRlZ3JhMzAtaTJzLnR4dCAgICAgICAgICB8ICAxMSArLQogLi4uL2JpbmRp
+bmdzL3NwaS9udmlkaWEsdGVncmExMTQtc3BpLnR4dCAgICAgICAgICAgfCAgMjQgKystCiAuLi4v
+YmluZGluZ3Mvc3BpL252aWRpYSx0ZWdyYTIwLXNmbGFzaC50eHQgICAgICAgICB8ICAyMCArKy0K
+IC4uLi9iaW5kaW5ncy9zcGkvbnZpZGlhLHRlZ3JhMjAtc2xpbmsudHh0ICAgICAgICAgIHwgIDIw
+ICsrLQogLi4uL2JpbmRpbmdzL3RpbWVyL252aWRpYSx0ZWdyYTIwLXRpbWVyLnR4dCAgICAgICAg
+fCAgIDMgKwogLi4uL2JpbmRpbmdzL3RpbWVyL252aWRpYSx0ZWdyYTMwLXRpbWVyLnR4dCAgICAg
+ICAgfCAgIDMgKwogLi4uL2JpbmRpbmdzL3VzYi9udmlkaWEsdGVncmEyMC1laGNpLnR4dCAgICAg
+ICAgICAgfCAgIDcgKy0KIGFyY2gvYXJtL2Jvb3QvZHRzL3RlZ3JhMTE0LmR0c2kgICAgICAgICAg
+ICAgICAgICAgIHwgMTQyICsrKysrKysrKysrKysrLS0tCiBhcmNoL2FybS9ib290L2R0cy90ZWdy
+YTIwLXBhejAwLmR0cyAgICAgICAgICAgICAgICB8ICAgMiArCiBhcmNoL2FybS9ib290L2R0cy90
+ZWdyYTIwLmR0c2kgICAgICAgICAgICAgICAgICAgICB8IDEzMiArKysrKysrKysrKysrKy0tCiBh
+cmNoL2FybS9ib290L2R0cy90ZWdyYTMwLmR0c2kgICAgICAgICAgICAgICAgICAgICB8IDE3MSAr
+KysrKysrKysrKysrKysrKy0tLS0KIGFyY2gvYXJtL21hY2gtdGVncmEvS2NvbmZpZyAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgICAyICsKIGFyY2gvYXJtL21hY2gtdGVncmEvcG93ZXJnYXRlLmMg
+ICAgICAgICAgICAgICAgICAgIHwgICA4ICstCiBkcml2ZXJzL2Nsay90ZWdyYS9jbGstcGVyaXBo
+LWdhdGUuYyAgICAgICAgICAgICAgICB8ICAyMiAtLS0KIGRyaXZlcnMvY2xrL3RlZ3JhL2Nsay1w
+ZXJpcGguYyAgICAgICAgICAgICAgICAgICAgIHwgIDQwIC0tLS0tCiBkcml2ZXJzL2Nsay90ZWdy
+YS9jbGstdGVncmExMTQuYyAgICAgICAgICAgICAgICAgICB8ICAgMyArLQogZHJpdmVycy9jbGsv
+dGVncmEvY2xrLXRlZ3JhMTI0LmMgICAgICAgICAgICAgICAgICAgfCAgIDIgKy0KIGRyaXZlcnMv
+Y2xrL3RlZ3JhL2Nsay10ZWdyYTIwLmMgICAgICAgICAgICAgICAgICAgIHwgICA5ICstCiBkcml2
+ZXJzL2Nsay90ZWdyYS9jbGstdGVncmEzMC5jICAgICAgICAgICAgICAgICAgICB8ICAxMCArLQog
+ZHJpdmVycy9jbGsvdGVncmEvY2xrLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgNTUg
+KysrKysrLQogZHJpdmVycy9jbGsvdGVncmEvY2xrLmggICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgIDMgKy0KIGRyaXZlcnMvZG1hL2FjcGktZG1hLmMgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHwgIDEyICstCiBkcml2ZXJzL2RtYS9kbWFlbmdpbmUuYyAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB8ICA0NCArKysrKy0KIGRyaXZlcnMvZG1hL29mLWRtYS5jICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIHwgIDEyICstCiBkcml2ZXJzL2RtYS90ZWdyYTIwLWFwYi1kbWEu
+YyAgICAgICAgICAgICAgICAgICAgICB8ICA0OSArKysrKy0KIGRyaXZlcnMvZ3B1L2RybS90ZWdy
+YS9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGRyaXZlcnMvZ3B1L2RybS90
+ZWdyYS9kYy5jICAgICAgICAgICAgICAgICAgICAgICAgIHwgICA5ICstCiBkcml2ZXJzL2dwdS9k
+cm0vdGVncmEvZHJtLmggICAgICAgICAgICAgICAgICAgICAgICB8ICAgMyArCiBkcml2ZXJzL2dw
+dS9kcm0vdGVncmEvZ3IzZC5jICAgICAgICAgICAgICAgICAgICAgICB8ICAyMiArKy0KIGRyaXZl
+cnMvZ3B1L2RybS90ZWdyYS9oZG1pLmMgICAgICAgICAgICAgICAgICAgICAgIHwgIDE0ICstCiBk
+cml2ZXJzL2kyYy9idXNzZXMvaTJjLXRlZ3JhLmMgICAgICAgICAgICAgICAgICAgICB8ICAxMyAr
+LQogZHJpdmVycy9pbnB1dC9rZXlib2FyZC90ZWdyYS1rYmMuYyAgICAgICAgICAgICAgICAgfCAg
+MTMgKy0KIGRyaXZlcnMvcGNpL2hvc3QvcGNpLXRlZ3JhLmMgICAgICAgICAgICAgICAgICAgICAg
+IHwgIDUyICsrKysrLS0KIGRyaXZlcnMvc3BpL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgICAzICsKIGRyaXZlcnMvc3BpL3NwaS10ZWdyYTExNC5jICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgIDY2ICsrKystLS0tCiBkcml2ZXJzL3NwaS9zcGktdGVncmEyMC1zZmxh
+c2guYyAgICAgICAgICAgICAgICAgICB8ICAxOCArKy0KIGRyaXZlcnMvc3BpL3NwaS10ZWdyYTIw
+LXNsaW5rLmMgICAgICAgICAgICAgICAgICAgIHwgIDY2ICsrKystLS0tCiBkcml2ZXJzL3N0YWdp
+bmcvbnZlYy9udmVjLmMgICAgICAgICAgICAgICAgICAgICAgICB8ICAxMSArLQogZHJpdmVycy9z
+dGFnaW5nL252ZWMvbnZlYy5oICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDUgKy0KIGRyaXZl
+cnMvdHR5L3NlcmlhbC9zZXJpYWwtdGVncmEuYyAgICAgICAgICAgICAgICAgIHwgIDg2ICsrKysr
+LS0tLS0tCiBkcml2ZXJzL3VzYi9ob3N0L2VoY2ktdGVncmEuYyAgICAgICAgICAgICAgICAgICAg
+ICB8ICAxNCArLQogaW5jbHVkZS9kdC1iaW5kaW5ncy9jbG9jay90ZWdyYTIwLWNhci5oICAgICAg
+ICAgICAgfCAgIDIgKy0KIGluY2x1ZGUvZHQtYmluZGluZ3MvY2xvY2svdGVncmEzMC1jYXIuaCAg
+ICAgICAgICAgIHwgICAyICstCiBpbmNsdWRlL2xpbnV4L2Nsay90ZWdyYS5oICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAgNyAtCiBpbmNsdWRlL2xpbnV4L2RtYWVuZ2luZS5oICAgICAgICAg
+ICAgICAgICAgICAgICAgICB8ICAgNyArCiBpbmNsdWRlL2xpbnV4L29mX2RtYS5oICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICB8ICAgOSArLQogaW5jbHVkZS9saW51eC90ZWdyYS1wb3dlcmdh
+dGUuaCAgICAgICAgICAgICAgICAgICAgfCAgIDQgKy0KIGluY2x1ZGUvc291bmQvZG1hZW5naW5l
+X3BjbS5oICAgICAgICAgICAgICAgICAgICAgIHwgICA2ICsKIHNvdW5kL3NvYy9zb2MtZ2VuZXJp
+Yy1kbWFlbmdpbmUtcGNtLmMgICAgICAgICAgICAgIHwgIDgyICsrKysrKystLS0KIHNvdW5kL3Nv
+Yy90ZWdyYS9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyICsKIHNvdW5k
+L3NvYy90ZWdyYS90ZWdyYTIwX2FjOTcuYyAgICAgICAgICAgICAgICAgICAgIHwgIDExIC0tCiBz
+b3VuZC9zb2MvdGVncmEvdGVncmEyMF9pMnMuYyAgICAgICAgICAgICAgICAgICAgICB8ICAyMCAr
+LS0KIHNvdW5kL3NvYy90ZWdyYS90ZWdyYTMwX2FodWIuYyAgICAgICAgICAgICAgICAgICAgIHwg
+MTI1ICsrKysrKysrKy0tLS0tLQogc291bmQvc29jL3RlZ3JhL3RlZ3JhMzBfYWh1Yi5oICAgICAg
+ICAgICAgICAgICAgICAgfCAgMTEgKy0KIHNvdW5kL3NvYy90ZWdyYS90ZWdyYTMwX2kycy5jICAg
+ICAgICAgICAgICAgICAgICAgIHwgIDk3ICsrKysrKy0tLS0tLQogc291bmQvc29jL3RlZ3JhL3Rl
+Z3JhMzBfaTJzLmggICAgICAgICAgICAgICAgICAgICAgfCAgIDMgKwogc291bmQvc29jL3RlZ3Jh
+L3RlZ3JhX3BjbS5jICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTcgKy0KIHNvdW5kL3NvYy90
+ZWdyYS90ZWdyYV9wY20uaCAgICAgICAgICAgICAgICAgICAgICAgIHwgICA1ICsKIDgxIGZpbGVz
+IGNoYW5nZWQsIDE0NDggaW5zZXJ0aW9ucygrKSwgNTU4IGRlbGV0aW9ucygtKQoKLS0gCjEuOC4x
+LjUKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpsaW51
+eC1hcm0ta2VybmVsIG1haWxpbmcgbGlzdApsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVh
+ZC5vcmcKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1h
+cm0ta2VybmVsCg==

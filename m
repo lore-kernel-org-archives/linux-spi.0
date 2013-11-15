@@ -1,11 +1,15 @@
 From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: bcm63xx: fix reference leak to master in bcm63xx_spi_remove()
-Date: Fri, 15 Nov 2013 15:50:59 +0800
-Message-ID: <CAPgLHd_ha6AbaSkTFHH1cRdqk_z7PNpDwr=ibJ-vUoTprg6WzA@mail.gmail.com>
+Subject: [PATCH] spi: s3c64xx: fix reference leak to master in s3c64xx_spi_remove()
+Date: Fri, 15 Nov 2013 15:54:16 +0800
+Message-ID: <CAPgLHd_-cpipSk5+SVPwZ0_Jzx2P5tJVFaj8Rxkbb_+yFVqvEg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
-Cc: yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
+Cc: yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
@@ -17,25 +21,24 @@ spi_master_put() call to free the memory, otherwise we will
 leak a reference to master. Fix by removing the unnecessary
 spi_master_get() call.
 
-Fixes: 247263dba208 ('spi: bcm63xx: use devm_spi_register_master()')
 Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c | 2 +-
+ drivers/spi/spi-s3c64xx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 80d56b2..469ecd8 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -435,7 +435,7 @@ out:
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 9e2020d..9c82d7b 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -1439,7 +1439,7 @@ err0:
  
- static int bcm63xx_spi_remove(struct platform_device *pdev)
+ static int s3c64xx_spi_remove(struct platform_device *pdev)
  {
 -	struct spi_master *master = spi_master_get(platform_get_drvdata(pdev));
 +	struct spi_master *master = platform_get_drvdata(pdev);
- 	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
+ 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
  
- 	/* reset spi block */
+ 	pm_runtime_disable(&pdev->dev);
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

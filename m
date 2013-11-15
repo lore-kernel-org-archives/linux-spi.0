@@ -1,170 +1,146 @@
-From: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: Depreciated spi_master.transfer and "prepared spi messages" for
  an optimized pipelined-SPI-DMA-driver
-Date: Fri, 15 Nov 2013 12:15:55 +0100
-Message-ID: <5286026B.2090903@sperl.org>
-References: <20131107203127.GB2493@sirena.org.uk> <86AE15B6-05AF-4EFF-8B8F-10806A7C148B@sperl.org> <20131108161957.GP2493@sirena.org.uk> <5F70E708-89B9-4DCF-A31A-E688BAA0E062@sperl.org> <20131108180934.GQ2493@sirena.org.uk> <C375DEE6-1AEC-4AFB-A9D6-583DCB4476A3@sperl.org> <20131109183056.GU2493@sirena.org.uk> <6C7903B3-8563-490E-AD7D-BA5D65FFB9BC@sperl.org> <20131112011954.GH2674@sirena.org.uk> <52823E73.503@sperl.org> <20131114015009.GB26614@sirena.org.uk> <9640F4C7-7F82-453E-9D83-5875A1559A20@sperl.org>
+Date: Fri, 15 Nov 2013 13:33:12 +0000
+Message-ID: <20131115133312.GE26614@sirena.org.uk>
+References: <20131108161957.GP2493@sirena.org.uk>
+ <5F70E708-89B9-4DCF-A31A-E688BAA0E062@sperl.org>
+ <20131108180934.GQ2493@sirena.org.uk>
+ <C375DEE6-1AEC-4AFB-A9D6-583DCB4476A3@sperl.org>
+ <20131109183056.GU2493@sirena.org.uk>
+ <6C7903B3-8563-490E-AD7D-BA5D65FFB9BC@sperl.org>
+ <20131112011954.GH2674@sirena.org.uk>
+ <52823E73.503@sperl.org>
+ <20131114015009.GB26614@sirena.org.uk>
+ <9640F4C7-7F82-453E-9D83-5875A1559A20@sperl.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="dKeYJkA19bNVVKdr"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Martin Sperl <martin-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <9640F4C7-7F82-453E-9D83-5875A1559A20-d5rIkyn9cnPYtjvyW6yDsg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark!
 
-I thought a bit about what you had said about DMA and building-blocks,
-and I have come up with a possible vision of the "future".
+--dKeYJkA19bNVVKdr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-You essentially gave me the idea that we could reduce restrictions
-on the proposed spi_prepare_message by adding some flags of in what way
-the structure may change. So if you got a "fully" fixed structure,
-then we could add "flags" here to indicate if the structure also is
-fixed with regards to:
-* Length of Transfers
-* Change in Pointer to Transfers
-* providing DMA data or not (this could get indicated via is_dma_mapped)
+On Thu, Nov 14, 2013 at 08:47:35PM +0100, Martin Sperl wrote:
+> > Meh, it doesn't seem that urgently different to be honest.  The basic
+> > flow of interactions with the device is very much typical of SPI
+> > controllers.
 
-Then the bus-driver (or framework) could start to use different
-construction schemes to build the DMA chain based on different flag
-variations and thus optimizing the time it takes to build the DMA (which
-is currently the worsted case in my driver).
+> Well - if it was not for the requirement to call=20
+> spi_finalize_current_message prior to leaving transfer_one message to get
+> the next one - I might have continued this route with pipelining.
+> But hacking my way around those limitations (by taking the next item of t=
+he=20
+> list, etc.) seemed a bit absurd to be honest.
 
-This would definitely "improve" the performance of those sync calls
-(if we make a prepare in the sync call somehow for the hot-path)
+The thing to do there is extend the interface, you're treating things
+like you're working on a proprietary OS where the APIs are fixed.
 
-Also the driver can start to use (pre-built/cached) "building-blocks"
-that make up a lot of the DMA control blocks that are needed.
-(configuring the SPI controller and such)
+> Well - if you think this "approach" is also applicable to other devices,
+> then this is one more argument to allow device drivers to prepare its=20
+> messages (with the is_dma_mapped requirement to keep cost low).=20
 
-For more complex drivers we may also defer the DMA-preparation (and
-scheduling thereof) of messages to a worker thread which would produce
-DMA chains to schedule.
+No, this isn't something which should be being open coded in individual
+drivers - it's far too much redundant work especially once you get into
+doing the tradeoffs for no queue vs queue cases.  Using regmap MMIO may
+be helpful but we need to do that in a way that allows us to integrate
+it into the DMA pipeline...
 
-But if the message is prepared it would get scheduled from spi_async
-context immediately, unless there is something in the prepare queue,
-which then would have to wait so that no reordering occurs.
+This is part of what I keep saying about doing things in a way that
+makes them generally applicable.
 
-This comes with a potential "trap": We would need to define if a
-"reorder" of SPI messages between two different SPI Bus devices with
-different CS is a valid operation or not.
-(the question is mostly: would this "queuing" happen on a per bus-driver
-basis or on a per CS basis)
+> Note that if you do that and want to leverage the "prepare_message",
+> then I would recommend you add an additional flag field to these calls.
+> Because then you may pass some hints to the engine (like if it can
+> use GFP_KERNEL or GFP_ATOMIC during allocations). And prepare=20
+> could get done with GFP_KERNEL, while a "prepare" during spi_async
+> would need to be done via GFP_ATOMIC.
 
-The timing sequence would be like this (for scheduling spi_async
-messages at the same time):
-driver A:
-  spi_async(spi0,msg0_unprepared); /* getting put into the "queue" */
-driver B:
-  spi_async(spi1,msg1_prepared); /* getting scheduled immediately */
+Or in the async case we just punt the prepare to the thread.
 
-On the SPI Bus you would see the following:
-  msg1_prepared;
-  msg0_unprepared;
+> > That's fine for experimentation but for an actual merged API I think it
+> > does need to be generally applicable so that it's worth the effort for
+> > client drivers to support it.
 
-Here we have the requirements of a "definition" of scheduling policies.
+> First of all it is a bus-driver that should be working.
+> (also to avoid the expected "short transfer issue" for some use-cases I=
+=20
+> would propose to run it in parallel to the existing version)
 
-As far as I can tell (and I may be wrong) the issue described would only
-impact if a single device-driver would require two or more different CS
-to make a device work properly.
+> Then I believe we can start discussing any approach to refactor things
+> after we get that far and we see the performance improvements and=20
+> drawbacks for each of those steps.
 
-So I would say that "reordering" is essentially allowed if we talk about
-two different drivers talking to different devices (or multiple
-instances of a single driver talking to distinct devices of the same type).
+It'll definitely need some experimentation and tuning.
 
-Note that this could show some strange "concurrency behavior" in some
-drivers due to implicit assumptions which are not defined until now and
-which would never show up on the current setup.
+> Well, actually if you do it right - like I did in my version of the
+> mcp2515 driver, I am actually scheduling 2 spi_messages back to back.
+> and only the first has a callback.=20
 
-That is unless you find a board with 2 SPI buses and you connect an
-identical device on each SPI Bus. But if one looks at this from this
-direction, then such an assumption in the driver would be a bug in the
-device-driver that would need to get fixed in the driver itself.
+> The first reads the status registers on which to base decisions what
+> to do and also pulls the interrupt high.
 
-But if a driver exists for a device that requires two (or more) Chip
-selects with the additional "requirement" of "proper" ordering, then:
+> While the second message does a speculative transfer of the=20
+> first inbound message buffer and reads some error counters.
 
-Either the driver needs to make both messages "prepared".
-We may need to provide an extra flag to the "prepare" to force "global
-ordering" on the SPI-bus.
-or we make it a requirement that - in such cases - the spi_lock_bus
-interface is used to block the whole bus.
+> So ideally while the callback of the 1st message is running the 2nd
+> message is running in HW.
 
-But the first question is: are there any drivers currently that require
-multiple CS to do its work?
+Yes, this is exactly the sort of thing I'm talking about - it's cutting
+out dead time on the bus.
 
-All of these ideas will also help us in the future and may then may get
-used for other bus-drivers as well - we then could even start using a
-"DMA-sequencing" engine inside the framework to reduce the code on the
-driver (how to define those would be tricky though - we would need to
-see how "flexible" other devices are compared to bcm2835).
+> For any driver that is _not_ optimized for latencies and where one=20
+> needs low latency then a rewrite is required.
 
-But first we need to get one working driver with "optimal" performance
-that we may confirm it is working in principle and then continue to see
-where optimizations can get made and finally refactor this into a
-"generic" solution sharing code in the SPI framework and it may
-eventually move into dmaengine...
+Right, and the big concern with the way you're currently proposing to
+implement the optimisation is that it's leaving essentially the whole
+thing up to the individual driver.  This is going to result in limited
+adoption and is going to mean there's no sharing of learning and fixes
+between drivers.
 
-Another thing that came to my mind is a means to give spi_async a hint
-if it runs in an interrupt context or not.
+> I believe I should finish my POC to get fully up to my expectations
+> and then I can show you the advantage of having this "minimal" change,
+> which has also an overall positive impact (even though slight).
 
-This would give the opportunity to allow memory allocations in spi_async
-and transfer using GFP_KERNEL instead of GFP_ATOMIC for cases that run
-in non_interrupt cases.
+To repeat yet again, something that is just a tunnel through to this one
+heavily optimised master driver isn't good.  The problem with the
+proposed implementation is that it is essentially just tunnelling
+through to a heavily optimised master, it's not generic enough.  If
+other devices can make use of it it's more interesting but then those
+uses ought to be being factored out.
 
-We could make this a flag in the spi_message structure or use different
-functions: spi_async_threaded and spi_async_interrupt while having the
-spi_async map to spi_async_interrupt for compatibility reasons with
-older drivers.
+--dKeYJkA19bNVVKdr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Both are valid approaches - I believe it is a matter of taste which one
-gets used...
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-Another thing that you may have mentioned could be a message that would
-be like "read(8|16)bitReadXbyte". You first read (1/2) bytes and then
-read X bytes that come from the first one or two bytes. The problem here
-may be that such a "scheme" would not (not necessarily) work with a
-fully DMA pipelined approach - especially endian-nes might be different
-(possibly could work around this with 1 byte DMA transfers, if the DMA
-engine supports it). But for some HW-devices length might be mixed with
-other control-bits, which would require some "and+shift" logic, which
-would become impossible to implement in DMA for most DMA-engines (the
-mcp2515 would be such a case). The question here is really: how many
-such devices do exists that provide such, that would make it worth doing
-that in a generic way?
+iQIcBAEBAgAGBQJShiKVAAoJELSic+t+oim9H6gP/1hWfAlFtT7xZPOCOpYjsQ24
+Ghwd1vKdBPCIz+XWr4BWdCrsTyqb693ncNCxhv70fTvQJY/pNfBIzvqmo2FjXVf+
+QoslnbGOCUjAvJNTuoc0kG5u3MXIR5gefU24pyczWXYONtAYQmfhjcv7WGjNWdu+
+MvgRMW1AzL9VDK3PznoHdE7mWx4IRFyJgSWI22xWdXIW/lnT5a0PV+53XAFN/J2p
+T8U0hf8q02HhF2PpwqzhqK9KJYUCjrk+pt8bLMOYU5I16myZNv2UyrIJQ1J0fuw4
+DJRmIEWm8378JpABa6RJbwGnzkSNkIwz7IxGGgJNmzqZNzCrF41dgbH+LBpA2HC8
+I7p+6Oi3HiszfrAo5Jpc0+zbzjXEjs75aOKntFWWYEvlxov+tbeFImTn0VDqk0Ob
+NztN1tTnsseWq3F9G1EUNaLYrOty11vSrC/UgMn7DjPY97ht2PEfRYLgQTVMsr6n
+NNIKNoCxUb6KxY15/WWq0JsOg9pey2j/77+DNu4WzFnJ3gpvGOGhOXHOyT0aZNFl
+Wra5hPcNq4sw/xupk+pMojWWxCmoQCTlLNWBwZowW2jgZgY8wZ7gPfr7pwPYkWun
+MoeS5AghynW/DLRDOyz/NgzI+mg7z11YXRJqXlPMNGuL5WJAciL+d0vKUHCThbwH
+jzjM0O+DgYLEOgdZj8z+
+=rU1V
+-----END PGP SIGNATURE-----
 
-Finally I have a proposal to avoid the "naming" conflict as we have seen
-in our discussions so far:
-
-why not call the new interface:
-int spi_(pre)build_message(struct spi_device*,struct spi_message,
-	unsigned long flags);
-int spi_unbuild_message(struct spi_device*,struct spi_message);
-
-with the corresponding equivalent methods in spi_master?
-
-Other naming ideas are welcome (I just would not say DMA, as it might
-get used for other things as well)
-
-So I think all the above ideas give us a lot to ponder how/where we may
-want to move in the future...
-
-In the meantime I will try to move to the SPI bus-driver to the transfer
-interface and I will probably add a module parameter to allow the
-selection of which interface is used.
-
-This way we have then many more scenarios to compare to see how they
-fare with different situations/use-cases/...
-
-But in the end I would guess that going with the "direct" DMA chaining
-approach would give the best results...
-
-Martin
-
-P.s: maybe we should start renaming the subject of this thread?
+--dKeYJkA19bNVVKdr--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

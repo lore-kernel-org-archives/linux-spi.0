@@ -1,220 +1,197 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: [PATCH 23/31] spi: tegra: convert to standard DMA DT bindings
-Date: Fri, 15 Nov 2013 13:54:18 -0700
-Message-ID: <1384548866-13141-24-git-send-email-swarren@wwwdotorg.org>
-References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
-Cc: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1384548866-13141-1-git-send-email-swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Taras Kondratiuk <taras.kondratiuk@linaro.org>
+Subject: [RFC 13/23] spi: omap2-mcspi: raw read and write endian fix
+Date: Sat, 16 Nov 2013 02:01:16 +0200
+Message-ID: <1384560086-11994-14-git-send-email-taras.kondratiuk@linaro.org>
+References: <1384560086-11994-1-git-send-email-taras.kondratiuk@linaro.org>
+Cc: linaro-networking@linaro.org,
+	Victor Kamensky <victor.kamensky@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: linux-omap@vger.kernel.org
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <1384560086-11994-1-git-send-email-taras.kondratiuk@linaro.org>
+Sender: linux-omap-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+From: Victor Kamensky <victor.kamensky@linaro.org>
 
-By using dma_request_slave_channel_or_err(), the DMA slave ID can be
-looked up from standard DT properties, and squirrelled away during
-channel allocation. Hence, there's no need to use a custom DT property
-to store the slave ID.
+All OMAP IP blocks expect LE data, but CPU may operate in BE mode.
+Need to use endian neutral functions to read/write h/w registers.
+I.e instead of __raw_read[lw] and __raw_write[lw] functions code
+need to use read[lw]_relaxed and write[lw]_relaxed functions.
+If the first simply reads/writes register, the second will byteswap
+it if host operates in BE mode.
 
-Cc: treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
-Cc: linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Changes are trivial sed like replacement of __raw_xxx functions
+with xxx_relaxed variant.
+
+Signed-off-by: Victor Kamensky <victor.kamensky@linaro.org>
+Signed-off-by: Taras Kondratiuk <taras.kondratiuk@linaro.org>
 ---
-This patch is part of a series with strong internal depdendencies. I'm
-looking for an ack so that I can take the entire series through the Tegra
-and arm-soc trees. The series will be part of a stable branch that can be
-merged into other subsystems if needed to avoid/resolve dependencies.
----
- drivers/spi/spi-tegra114.c      | 48 +++++++++++++++--------------------------
- drivers/spi/spi-tegra20-slink.c | 48 +++++++++++++++--------------------------
- 2 files changed, 34 insertions(+), 62 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c |   38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index f62e6e5e90e3..42b553b72f04 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -178,7 +178,6 @@ struct tegra_spi_data {
- 	void __iomem				*base;
- 	phys_addr_t				phys;
- 	unsigned				irq;
--	int					dma_req_sel;
- 	u32					spi_max_frequency;
- 	u32					cur_speed;
- 
-@@ -601,15 +600,15 @@ static int tegra_spi_init_dma_param(struct tegra_spi_data *tspi,
- 	dma_addr_t dma_phys;
- 	int ret;
- 	struct dma_slave_config dma_sconfig;
--	dma_cap_mask_t mask;
- 
--	dma_cap_zero(mask);
--	dma_cap_set(DMA_SLAVE, mask);
--	dma_chan = dma_request_channel(mask, NULL, NULL);
--	if (!dma_chan) {
--		dev_err(tspi->dev,
--			"Dma channel is not available, will try later\n");
--		return -EPROBE_DEFER;
-+	dma_chan = dma_request_slave_channel_or_err(tspi->dev,
-+					dma_to_memory ? "rx" : "tx");
-+	if (IS_ERR(dma_chan)) {
-+		ret = PTR_ERR(dma_chan);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(tspi->dev,
-+				"Dma channel is not available: %d\n", ret);
-+		return ret;
- 	}
- 
- 	dma_buf = dma_alloc_coherent(tspi->dev, tspi->dma_buf_size,
-@@ -620,7 +619,6 @@ static int tegra_spi_init_dma_param(struct tegra_spi_data *tspi,
- 		return -ENOMEM;
- 	}
- 
--	dma_sconfig.slave_id = tspi->dma_req_sel;
- 	if (dma_to_memory) {
- 		dma_sconfig.src_addr = tspi->phys + SPI_RX_FIFO;
- 		dma_sconfig.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-@@ -1055,11 +1053,6 @@ static void tegra_spi_parse_dt(struct platform_device *pdev,
- 	struct tegra_spi_data *tspi)
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index ed4af47..c9471b7 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -157,14 +157,14 @@ static inline void mcspi_write_reg(struct spi_master *master,
  {
- 	struct device_node *np = pdev->dev.of_node;
--	u32 of_dma[2];
--
--	if (of_property_read_u32_array(np, "nvidia,dma-request-selector",
--				of_dma, 2) >= 0)
--		tspi->dma_req_sel = of_dma[1];
+ 	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
  
- 	if (of_property_read_u32(np, "spi-max-frequency",
- 				&tspi->spi_max_frequency))
-@@ -1138,22 +1131,15 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 	tspi->max_buf_size = SPI_FIFO_DEPTH << 2;
- 	tspi->dma_buf_size = DEFAULT_SPI_DMA_BUF_LEN;
+-	__raw_writel(val, mcspi->base + idx);
++	writel_relaxed(val, mcspi->base + idx);
+ }
  
--	if (tspi->dma_req_sel) {
--		ret = tegra_spi_init_dma_param(tspi, true);
--		if (ret < 0) {
--			dev_err(&pdev->dev, "RxDma Init failed, err %d\n", ret);
--			goto exit_free_irq;
--		}
--
--		ret = tegra_spi_init_dma_param(tspi, false);
--		if (ret < 0) {
--			dev_err(&pdev->dev, "TxDma Init failed, err %d\n", ret);
--			goto exit_rx_dma_free;
--		}
--		tspi->max_buf_size = tspi->dma_buf_size;
--		init_completion(&tspi->tx_dma_complete);
--		init_completion(&tspi->rx_dma_complete);
--	}
-+	ret = tegra_spi_init_dma_param(tspi, true);
-+	if (ret < 0)
-+		goto exit_free_irq;
-+	ret = tegra_spi_init_dma_param(tspi, false);
-+	if (ret < 0)
-+		goto exit_rx_dma_free;
-+	tspi->max_buf_size = tspi->dma_buf_size;
-+	init_completion(&tspi->tx_dma_complete);
-+	init_completion(&tspi->rx_dma_complete);
- 
- 	init_completion(&tspi->xfer_completion);
- 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 1305b8f933ba..dd6f26c05947 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -171,7 +171,6 @@ struct tegra_slink_data {
- 	void __iomem				*base;
- 	phys_addr_t				phys;
- 	unsigned				irq;
--	int					dma_req_sel;
- 	u32					spi_max_frequency;
- 	u32					cur_speed;
- 
-@@ -630,15 +629,15 @@ static int tegra_slink_init_dma_param(struct tegra_slink_data *tspi,
- 	dma_addr_t dma_phys;
- 	int ret;
- 	struct dma_slave_config dma_sconfig;
--	dma_cap_mask_t mask;
- 
--	dma_cap_zero(mask);
--	dma_cap_set(DMA_SLAVE, mask);
--	dma_chan = dma_request_channel(mask, NULL, NULL);
--	if (!dma_chan) {
--		dev_err(tspi->dev,
--			"Dma channel is not available, will try later\n");
--		return -EPROBE_DEFER;
-+	dma_chan = dma_request_slave_channel(tspi->dev,
-+					     dma_to_memory ? "rx" : "tx");
-+	if (IS_ERR(dma_chan)) {
-+		ret = PTR_ERR(dma_chan);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(tspi->dev,
-+				"Dma channel is not available: %d\n", ret);
-+		return ret;
- 	}
- 
- 	dma_buf = dma_alloc_coherent(tspi->dev, tspi->dma_buf_size,
-@@ -649,7 +648,6 @@ static int tegra_slink_init_dma_param(struct tegra_slink_data *tspi,
- 		return -ENOMEM;
- 	}
- 
--	dma_sconfig.slave_id = tspi->dma_req_sel;
- 	if (dma_to_memory) {
- 		dma_sconfig.src_addr = tspi->phys + SLINK_RX_FIFO;
- 		dma_sconfig.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
-@@ -1021,11 +1019,6 @@ static irqreturn_t tegra_slink_isr(int irq, void *context_data)
- static void tegra_slink_parse_dt(struct tegra_slink_data *tspi)
+ static inline u32 mcspi_read_reg(struct spi_master *master, int idx)
  {
- 	struct device_node *np = tspi->dev->of_node;
--	u32 of_dma[2];
--
--	if (of_property_read_u32_array(np, "nvidia,dma-request-selector",
--				of_dma, 2) >= 0)
--		tspi->dma_req_sel = of_dma[1];
+ 	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
  
- 	if (of_property_read_u32(np, "spi-max-frequency",
- 					&tspi->spi_max_frequency))
-@@ -1129,22 +1122,15 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	tspi->max_buf_size = SLINK_FIFO_DEPTH << 2;
- 	tspi->dma_buf_size = DEFAULT_SPI_DMA_BUF_LEN;
+-	return __raw_readl(mcspi->base + idx);
++	return readl_relaxed(mcspi->base + idx);
+ }
  
--	if (tspi->dma_req_sel) {
--		ret = tegra_slink_init_dma_param(tspi, true);
--		if (ret < 0) {
--			dev_err(&pdev->dev, "RxDma Init failed, err %d\n", ret);
--			goto exit_free_irq;
--		}
--
--		ret = tegra_slink_init_dma_param(tspi, false);
--		if (ret < 0) {
--			dev_err(&pdev->dev, "TxDma Init failed, err %d\n", ret);
--			goto exit_rx_dma_free;
--		}
--		tspi->max_buf_size = tspi->dma_buf_size;
--		init_completion(&tspi->tx_dma_complete);
--		init_completion(&tspi->rx_dma_complete);
--	}
-+	ret = tegra_slink_init_dma_param(tspi, true);
-+	if (ret < 0)
-+		goto exit_free_irq;
-+	ret = tegra_slink_init_dma_param(tspi, false);
-+	if (ret < 0)
-+		goto exit_rx_dma_free;
-+	tspi->max_buf_size = tspi->dma_buf_size;
-+	init_completion(&tspi->tx_dma_complete);
-+	init_completion(&tspi->rx_dma_complete);
+ static inline void mcspi_write_cs_reg(const struct spi_device *spi,
+@@ -172,14 +172,14 @@ static inline void mcspi_write_cs_reg(const struct spi_device *spi,
+ {
+ 	struct omap2_mcspi_cs	*cs = spi->controller_state;
  
- 	init_completion(&tspi->xfer_completion);
+-	__raw_writel(val, cs->base +  idx);
++	writel_relaxed(val, cs->base +  idx);
+ }
  
+ static inline u32 mcspi_read_cs_reg(const struct spi_device *spi, int idx)
+ {
+ 	struct omap2_mcspi_cs	*cs = spi->controller_state;
+ 
+-	return __raw_readl(cs->base + idx);
++	return readl_relaxed(cs->base + idx);
+ }
+ 
+ static inline u32 mcspi_cached_chconf0(const struct spi_device *spi)
+@@ -332,7 +332,7 @@ static void omap2_mcspi_restore_ctx(struct omap2_mcspi *mcspi)
+ 	mcspi_write_reg(spi_cntrl, OMAP2_MCSPI_WAKEUPENABLE, ctx->wakeupenable);
+ 
+ 	list_for_each_entry(cs, &ctx->cs, node)
+-		__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
++		writel_relaxed(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+ }
+ 
+ static int mcspi_wait_for_reg_bit(void __iomem *reg, unsigned long bit)
+@@ -340,9 +340,9 @@ static int mcspi_wait_for_reg_bit(void __iomem *reg, unsigned long bit)
+ 	unsigned long timeout;
+ 
+ 	timeout = jiffies + msecs_to_jiffies(1000);
+-	while (!(__raw_readl(reg) & bit)) {
++	while (!(readl_relaxed(reg) & bit)) {
+ 		if (time_after(jiffies, timeout)) {
+-			if (!(__raw_readl(reg) & bit))
++			if (!(readl_relaxed(reg) & bit))
+ 				return -ETIMEDOUT;
+ 			else
+ 				return 0;
+@@ -669,7 +669,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 				}
+ 				dev_vdbg(&spi->dev, "write-%d %02x\n",
+ 						word_len, *tx);
+-				__raw_writel(*tx++, tx_reg);
++				writel_relaxed(*tx++, tx_reg);
+ 			}
+ 			if (rx != NULL) {
+ 				if (mcspi_wait_for_reg_bit(chstat_reg,
+@@ -681,7 +681,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 				if (c == 1 && tx == NULL &&
+ 				    (l & OMAP2_MCSPI_CHCONF_TURBO)) {
+ 					omap2_mcspi_set_enable(spi, 0);
+-					*rx++ = __raw_readl(rx_reg);
++					*rx++ = readl_relaxed(rx_reg);
+ 					dev_vdbg(&spi->dev, "read-%d %02x\n",
+ 						    word_len, *(rx - 1));
+ 					if (mcspi_wait_for_reg_bit(chstat_reg,
+@@ -695,7 +695,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 					omap2_mcspi_set_enable(spi, 0);
+ 				}
+ 
+-				*rx++ = __raw_readl(rx_reg);
++				*rx++ = readl_relaxed(rx_reg);
+ 				dev_vdbg(&spi->dev, "read-%d %02x\n",
+ 						word_len, *(rx - 1));
+ 			}
+@@ -716,7 +716,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 				}
+ 				dev_vdbg(&spi->dev, "write-%d %04x\n",
+ 						word_len, *tx);
+-				__raw_writel(*tx++, tx_reg);
++				writel_relaxed(*tx++, tx_reg);
+ 			}
+ 			if (rx != NULL) {
+ 				if (mcspi_wait_for_reg_bit(chstat_reg,
+@@ -728,7 +728,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 				if (c == 2 && tx == NULL &&
+ 				    (l & OMAP2_MCSPI_CHCONF_TURBO)) {
+ 					omap2_mcspi_set_enable(spi, 0);
+-					*rx++ = __raw_readl(rx_reg);
++					*rx++ = readl_relaxed(rx_reg);
+ 					dev_vdbg(&spi->dev, "read-%d %04x\n",
+ 						    word_len, *(rx - 1));
+ 					if (mcspi_wait_for_reg_bit(chstat_reg,
+@@ -742,7 +742,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 					omap2_mcspi_set_enable(spi, 0);
+ 				}
+ 
+-				*rx++ = __raw_readl(rx_reg);
++				*rx++ = readl_relaxed(rx_reg);
+ 				dev_vdbg(&spi->dev, "read-%d %04x\n",
+ 						word_len, *(rx - 1));
+ 			}
+@@ -763,7 +763,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 				}
+ 				dev_vdbg(&spi->dev, "write-%d %08x\n",
+ 						word_len, *tx);
+-				__raw_writel(*tx++, tx_reg);
++				writel_relaxed(*tx++, tx_reg);
+ 			}
+ 			if (rx != NULL) {
+ 				if (mcspi_wait_for_reg_bit(chstat_reg,
+@@ -775,7 +775,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 				if (c == 4 && tx == NULL &&
+ 				    (l & OMAP2_MCSPI_CHCONF_TURBO)) {
+ 					omap2_mcspi_set_enable(spi, 0);
+-					*rx++ = __raw_readl(rx_reg);
++					*rx++ = readl_relaxed(rx_reg);
+ 					dev_vdbg(&spi->dev, "read-%d %08x\n",
+ 						    word_len, *(rx - 1));
+ 					if (mcspi_wait_for_reg_bit(chstat_reg,
+@@ -789,7 +789,7 @@ omap2_mcspi_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
+ 					omap2_mcspi_set_enable(spi, 0);
+ 				}
+ 
+-				*rx++ = __raw_readl(rx_reg);
++				*rx++ = readl_relaxed(rx_reg);
+ 				dev_vdbg(&spi->dev, "read-%d %08x\n",
+ 						word_len, *(rx - 1));
+ 			}
+@@ -1101,7 +1101,7 @@ static void omap2_mcspi_work(struct omap2_mcspi *mcspi, struct spi_message *m)
+ 
+ 			/* RX_ONLY mode needs dummy data in TX reg */
+ 			if (t->tx_buf == NULL)
+-				__raw_writel(0, cs->base
++				writel_relaxed(0, cs->base
+ 						+ OMAP2_MCSPI_TX0);
+ 
+ 			if ((mcspi_dma->dma_rx && mcspi_dma->dma_tx) &&
+@@ -1465,9 +1465,9 @@ static int omap2_mcspi_resume(struct device *dev)
+ 			 * change in account.
+ 			 */
+ 			cs->chconf0 |= OMAP2_MCSPI_CHCONF_FORCE;
+-			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
++			writel_relaxed(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+ 			cs->chconf0 &= ~OMAP2_MCSPI_CHCONF_FORCE;
+-			__raw_writel(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
++			writel_relaxed(cs->chconf0, cs->base + OMAP2_MCSPI_CHCONF0);
+ 		}
+ 	}
+ 	pm_runtime_mark_last_busy(mcspi->dev);
 -- 
-1.8.1.5
+1.7.9.5
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

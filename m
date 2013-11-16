@@ -1,66 +1,46 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
 Subject: Re: devm_spi_register_master
-Date: Sat, 16 Nov 2013 15:45:54 +0000
-Message-ID: <20131116154554.GA15393@sirena.org.uk>
-References: <alpine.DEB.2.02.1311110935230.2300@hadrien>
- <20131116105029.GN15393@sirena.org.uk>
- <alpine.DEB.2.02.1311160718010.2762@hadrien>
+Date: Sat, 16 Nov 2013 08:05:55 -0800 (PST)
+Message-ID: <alpine.DEB.2.02.1311160802560.2762@hadrien>
+References: <alpine.DEB.2.02.1311110935230.2300@hadrien> <002701cedf3b$19f5b280$4de11780$%han@samsung.com> <alpine.DEB.2.02.1311111915570.2321@hadrien> <000e01cee1dc$12a4fba0$37eef2e0$%han@samsung.com>
+ <CAPgLHd9hFNuke_cfs9QrQ0E0E_QmRfN3=fESUtBH6PPGgx=Wbw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="kjzasy1UhXmRStS5"
-Cc: jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1311160718010.2762@hadrien>
+In-Reply-To: <CAPgLHd9hFNuke_cfs9QrQ0E0E_QmRfN3=fESUtBH6PPGgx=Wbw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+> > Then, how about the following patch submitted by Wei Yongjun?
+> > http://www.spinics.net/lists/arm-kernel/msg286576.html
+>
+> spi_master_get() should be moved.
 
---kjzasy1UhXmRStS5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+OK, I see now that that is the issue.
 
-On Sat, Nov 16, 2013 at 07:24:20AM -0800, Julia Lawall wrote:
+> probe:
+> 	spi_alloc_master        	-> Init reference count to 1	=> 1
+> 	devm_spi_register_master	-> Not increment reference count => 1
+>         (It seems device_add() does not hold a reference)
 
-> Sorry about that.  I think I took the address from a patch, which was
-> obviously not the right thing to do.
+Indeed.  It acquires a reference, but it releases it at the end.
 
-No, that's fine and reasonable - just add in the maintainer addresses for
-the subsystem as well so maintainers see it and that'll deal with the
-issue.
+> remove:
+> 	spi_master_get			-> increment reference count => 2
+> 	devm_spi_unregister		-> decrement reference count => 1
+>
+> So after remove, the reference count still 1.
+>
+> If devm_spi_register_master() hold a reference, we will need
+> a extra spi_master_put() in remove to let master be freed.
 
-> > I think this has been addressed by the patches that Wei sent or are
-> > there still outstanding problems?
+OK, I think that everything is OK with just getting rid of the get and the
+put in the remove function.  Thanks for the explanations.
 
-> I didn't have a chance to check yet.  I will take a look now.
-
-There's one of the patches Wei sent that I didn't apply yet since I'm
-waiting for review from the maintainer.
-
---kjzasy1UhXmRStS5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSh5MvAAoJELSic+t+oim9McMP/iKj4OZvJWU4Ip08jUEixtGL
-/QKz4t9Ckovs0KTge4SImWWWj1rx8RV44749nmIsLAAoY3Z750XumlKFBL7rYFDY
-JlfDdTlFbKXsBpgfKAwSJE078dB2hRR+AKu0DhA3frFL3Ox1+tcC5iKSnjnjQKti
-aeUO0Dyyj9FTWiQMBxSwN7lk1ZnlScLrNA2Z/jm7STzdMO6aCYojHu40qrqVXtx7
-osDWrOvEeyzsAICq82HDx+42fdBYTXwCU0+/lBX5QFxi+GkZacQF3l6F7z7TUuub
-xkggJzberntxxPXuTWynWwQtJp36SnPIZRbcamYlgEOs8f4ZMqNvgA9j3YlCy4iZ
-px/lfQMEucgoKZR2sl9CvfDaDxhCx8qpwDis5opLaMKfiuoiu3hGTmgPlKFx1Kte
-jnDMRT89GL8VGVjPp5+3qoHtkUaZ51QYUUOR4t+L/77kx+ScSTu9n1UjyKZaqNBM
-+nJ3OTDzXIR1HV3ID7xsrOrEjS1so+mquDXhAbyQa/zPvt+DwdoLGAW45XBjFfFM
-Ptw81rUSeaoWHgaSsok9t4ps/VRwle4pmKRwR1Z5v/MTzz2WVU18U5vbiFiNezSF
-doF+di9G+s1vKUj76wUnnNQBLb3Xz6igTKkO/Sdcl9FydzOfxFyokBJ+I0SvK0sS
-8KmKjaPoXgPyfvdqncbT
-=qQjL
------END PGP SIGNATURE-----
-
---kjzasy1UhXmRStS5--
+julia
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,110 +1,87 @@
-From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH v5 08/17] spi: mpc512x: adjust to OF based clock lookup
-Date: Mon, 18 Nov 2013 00:06:08 +0100
-Message-ID: <1384729577-7336-9-git-send-email-gsi@denx.de>
-References: <1384729577-7336-1-git-send-email-gsi@denx.de>
-Cc: Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>,
-	Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>,
-	Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1384729577-7336-1-git-send-email-gsi-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: =?UTF-8?B?VGVyamUgQmVyZ3N0csO2bQ==?= <tbergstrom@nvidia.com>
+Subject: Re: [PATCH 00/31] ARM: tegra: use common reset and DMA bindings
+Date: Mon, 18 Nov 2013 10:24:26 +0200
+Message-ID: <5289CEBA.3070502@nvidia.com>
+References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ Wolfram Sang <wsa@the-dreams.de>, David Airlie <airlied@linux.ie>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ Marc Dietrich <marvin24@gmx.de>,
+ "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+ "ac100@lists.launchpad.net" <ac100@lists.launchpad.net>,
+ "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+ Stephen Warren <swarren@nvidia.com>, Alan Stern <stern@rowland.harvard.edu>,
+ "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+ "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>, Thierry
+ Reding <treding@nvidia.com>,
+ "devicetree@vger.kernel.org"
+To: Stephen Warren <swarren@wwwdotorg.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-after device tree based clock lookup became available, the peripheral
-driver need no longer construct clock names which include the PSC index,
-remove the "psc%d_mclk" template and unconditionally use 'mclk'
+On 15.11.2013 22:53, Stephen Warren wrote:
+> From: Stephen Warren <swarren@nvidia.com>
+> 
+> This series implements a common reset framework driver for Tegra, and
+> updates all relevant Tegra drivers to use it. It also removes the custom
+> DMA bindings and replaced them with the standard DMA DT bindings.
+> 
+> Historically, the Tegra clock driver has exported a custom API for module
+> reset. This series removes that API, and transitions DT and drivers to
+> the new reset framework.
+> 
+> The custom API used a "struct clk" to identify which module to reset, and
+> consequently some DT bindings and drivers required clocks to be provided
+> where they really needed just a reset identifier instead. Due to this
+> known deficiency, I have always considered most Tegra bindings to be
+> unstable. This series removes this excuse for instability, although I
+> still consider some Tegra bindings unstable due to the need to convert to
+> the common DMA bindings.
+> 
+> Historically, Tegra DMA channels have been represented in DT using a
+> custom nvidia,dma-request-selector property. Now that standard DMA DT
+> bindings exist, convert all Tegra bindings, DTs, and drivers to use the
+> standard instead.
+> 
+> This series makes a DT-ABI-incompatible change to:
+> - Require reset specifiers in DT where relevant.
+> - Require standard DMA specifiers.
+> - Remove clock specifiers from DT where they were only needed for reset.
+> - Remove legacy DMA specifier properties.
+> 
+> I anticipate merging this whole series into the Tegra and arm-soc trees
+> as its own branch, due to internal dependencies. This branch will be
+> stable and can then be merged into any other subsystem trees should any
+> conflicts arise.
+> 
+> This series depends on Peter's Tegra clock driver rework, available at
+> git://nv-tegra.nvidia.com/user/pdeschrijver/linux tegra-clk-tegra124-0
+> (or whatever version of that gets included in 3.14)
 
-acquire and release the 'ipg' clock item for register access as well
+Overall, a good change. For host1x part:
 
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Signed-off-by: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
----
- drivers/spi/spi-mpc512x-psc.c |   26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+Acked-By: Terje Bergstrom <tbergstrom@nvidia.com>
 
-diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index 6adf4e35816d..5beb30c61a39 100644
---- a/drivers/spi/spi-mpc512x-psc.c
-+++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -39,6 +39,7 @@ struct mpc512x_psc_spi {
- 	unsigned int irq;
- 	u8 bits_per_word;
- 	struct clk *clk_mclk;
-+	struct clk *clk_ipg;
- 	u32 mclk_rate;
- 
- 	struct completion txisrdone;
-@@ -474,8 +475,6 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	struct spi_master *master;
- 	int ret;
- 	void *tempp;
--	int psc_num;
--	char clk_name[16];
- 	struct clk *clk;
- 
- 	master = spi_alloc_master(dev, sizeof *mps);
-@@ -519,9 +518,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 		goto free_master;
- 	init_completion(&mps->txisrdone);
- 
--	psc_num = master->bus_num;
--	snprintf(clk_name, sizeof(clk_name), "psc%d_mclk", psc_num);
--	clk = devm_clk_get(dev, clk_name);
-+	clk = devm_clk_get(dev, "mclk");
- 	if (IS_ERR(clk)) {
- 		ret = PTR_ERR(clk);
- 		goto free_irq;
-@@ -532,17 +529,29 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	mps->clk_mclk = clk;
- 	mps->mclk_rate = clk_get_rate(clk);
- 
-+	clk = devm_clk_get(dev, "ipg");
-+	if (IS_ERR(clk)) {
-+		ret = PTR_ERR(clk);
-+		goto free_mclk_clock;
-+	}
-+	ret = clk_prepare_enable(clk);
-+	if (ret)
-+		goto free_mclk_clock;
-+	mps->clk_ipg = clk;
-+
- 	ret = mpc512x_psc_spi_port_config(master, mps);
- 	if (ret < 0)
--		goto free_clock;
-+		goto free_ipg_clock;
- 
- 	ret = spi_register_master(master);
- 	if (ret < 0)
--		goto free_clock;
-+		goto free_ipg_clock;
- 
- 	return ret;
- 
--free_clock:
-+free_ipg_clock:
-+	clk_disable_unprepare(mps->clk_ipg);
-+free_mclk_clock:
- 	clk_disable_unprepare(mps->clk_mclk);
- free_irq:
- 	free_irq(mps->irq, mps);
-@@ -561,6 +570,7 @@ static int mpc512x_psc_spi_do_remove(struct device *dev)
- 
- 	spi_unregister_master(master);
- 	clk_disable_unprepare(mps->clk_mclk);
-+	clk_disable_unprepare(mps->clk_ipg);
- 	free_irq(mps->irq, mps);
- 	if (mps->psc)
- 		iounmap(mps->psc);
--- 
-1.7.10.4
+This patch does not change the behavior, but we have in original code
+the problem that we don't flush the MC queue when resetting an engine.
+This can cause some memory writes to not hit memory. There was an
+earlier discussion on that, but we seem to have lost track of the issue.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Terje

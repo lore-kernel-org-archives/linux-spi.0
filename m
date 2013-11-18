@@ -1,57 +1,89 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH 23/31] spi: tegra: convert to standard DMA DT bindings
-Date: Mon, 18 Nov 2013 10:30:35 -0700
-Message-ID: <528A4EBB.2090800@wwwdotorg.org>
-References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org> <1384548866-13141-24-git-send-email-swarren@wwwdotorg.org> <20131116101422.GK15393@sirena.org.uk>
+Date: Mon, 18 Nov 2013 18:41:17 +0000
+Message-ID: <20131118184117.GT2674@sirena.org.uk>
+References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
+ <1384548866-13141-24-git-send-email-swarren@wwwdotorg.org>
+ <20131116101422.GK15393@sirena.org.uk>
+ <528A4EBB.2090800@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: multipart/mixed; boundary="===============3533776855153633544=="
+Cc: linux-tegra@vger.kernel.org, treding@nvidia.com,
+ Stephen Warren <swarren@nvidia.com>, linux-arm-kernel@lists.infradead.org,
+ linux-spi@vger.kernel.org
+To: Stephen Warren <swarren@wwwdotorg.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <528A4EBB.2090800@wwwdotorg.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
+
+
+--===============3533776855153633544==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="/7+LvQqw8N5lf/3J"
+Content-Disposition: inline
+
+
+--/7+LvQqw8N5lf/3J
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Nov 18, 2013 at 10:30:35AM -0700, Stephen Warren wrote:
+
+> However, I suspect that the Tegra driver changes may need to be merged
+> into any subsystem that's doing much other work on the Tegra drivers,
+> especially any significant refactoring, so the subsystem would probably
+> have to pick up the whole series anyway. Still, I'll make sure I
+> re-order the branch to put the core changes first so we have as much
+> flexibility as possible.
+
+At least in the ASoC case my main consideration is other drivers wanting
+to use the core changes rather than changes being made to the Tegra
+drivers.  Let's try to just share the core code and merge the rest over
+later if needed?
+
+--/7+LvQqw8N5lf/3J
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSil9KAAoJELSic+t+oim9WTgQAIJ6Eqdldg5yro5qlNh4x4Q2
+XPXxhdpPMHNhXsCLLID8wjsiJ99p1Egg+V5yH1irDnXoTheLpzFKO05085BJhHeu
+tMAkJgRH7rcqkuWbBmclkC4sUYsGPNhTu8+YSaseVn+1qTh1BA1LDHa3BNJiYVv/
+wuYu3nrvevVKmp+yHANDsDtkMmANilBIBS9kjMehevNWIJ/Y4bmGFbaTgm2gI76C
+O4bKXSl7Aoxf0y4aTtR1VhzeRXzdqyzA0M0DyIdDXfPbLBPVe3zpRtG+eHypSejB
+D6+t0rY0XKgtzpw1u2qplYEXCNA0dUt6zrZiydtMJje2rgam6To70hWEhE+tFIX5
+48whygErekuGGVrBdDpZqOQR90PBye7kl35lkQIdjdKAOduNNNUv5JnlnX+Qr89A
+xR7HTTJLEsoVKveP3uwsak7kfWZhDuVKqM10Ia4FqDPCSAD/vm1KlQ3m9PK9Pp8G
+9rV21oT/G2tohqKaqpt+N8wJV86iOfz0nAqe+hZG2LBprYbRlf9rzlg0No1ga6Gf
+QUpsz0zjZENWo9jDxpsH0EQ7GbaZo6uL0piGAVw9S0HZ+Ek/Z+Xm9ImDFA2p9Ok1
+a6mQzYMXThWZHgKCzO1HRaGvVEGcF1l3OMiYWfYXR33wvxLTwZf7dLMpBWjeCWte
+t9vZIlDS+KVwDjRSiDA8
+=K1yl
+-----END PGP SIGNATURE-----
+
+--/7+LvQqw8N5lf/3J--
+
+
+--===============3533776855153633544==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Cc: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
-	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131116101422.GK15393-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Disposition: inline
 
-On 11/16/2013 03:14 AM, Mark Brown wrote:
-> On Fri, Nov 15, 2013 at 01:54:18PM -0700, Stephen Warren wrote:
->> From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
->>
->> By using dma_request_slave_channel_or_err(), the DMA slave ID can be
-> 
-> Acked-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> 
-> Is this function introduced earlier in the series?
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
-Yes, patch 11/31 introduced this.
-
-> One of the things
-> I'm looking at is trying to factor out some DMA code in the SPI
-> framework so perhaps using this straight off would be good.  But perhaps
-> the channel request stuff will all be in the drivers and it'll just pass
-> a handle to the framework code so there'll be no issue.
-
-I think I can make a "core changes" branch that contains:
-
-[PATCH 11/31] dma: add channel request API that supports deferred probe
-
-[PATCH 14/31] ASoC: dmaengine: support deferred probe for DMA channels
-
-[PATCH 15/31] ASoC: dmaengine: add custom DMA config to
-snd_dmaengine_pcm_config
-
-That could be merged into relevant subsystems alone, if they only depend
-on the core changes and not any of the Tegra driver changes.
-
-However, I suspect that the Tegra driver changes may need to be merged
-into any subsystem that's doing much other work on the Tegra drivers,
-especially any significant refactoring, so the subsystem would probably
-have to pick up the whole series anyway. Still, I'll make sure I
-re-order the branch to put the core changes first so we have as much
-flexibility as possible.
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--===============3533776855153633544==--

@@ -1,59 +1,56 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-mxs: fix reference leak to master in
- mxs_spi_remove()
-Date: Mon, 18 Nov 2013 11:30:02 +0000
-Message-ID: <20131118113002.GA13117@sirena.org.uk>
-References: <CAPgLHd9tKB5CFE-2hDUMH-XkEK7mn6oC4MOi_LP+qfDh3_XqPg@mail.gmail.com>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH 23/31] spi: tegra: convert to standard DMA DT bindings
+Date: Mon, 18 Nov 2013 10:30:35 -0700
+Message-ID: <528A4EBB.2090800@wwwdotorg.org>
+References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org> <1384548866-13141-24-git-send-email-swarren@wwwdotorg.org> <20131116101422.GK15393@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FCuugMFkClbJLl1L"
-Cc: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
-	jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAPgLHd9tKB5CFE-2hDUMH-XkEK7mn6oC4MOi_LP+qfDh3_XqPg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20131116101422.GK15393-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 11/16/2013 03:14 AM, Mark Brown wrote:
+> On Fri, Nov 15, 2013 at 01:54:18PM -0700, Stephen Warren wrote:
+>> From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+>>
+>> By using dma_request_slave_channel_or_err(), the DMA slave ID can be
+> 
+> Acked-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> 
+> Is this function introduced earlier in the series?
 
---FCuugMFkClbJLl1L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, patch 11/31 introduced this.
 
-On Fri, Nov 15, 2013 at 03:50:31PM +0800, Wei Yongjun wrote:
-> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
->=20
-> Once a spi_master_get() call succeeds, we need an additional
-> spi_master_put() call to free the memory, otherwise we will
+> One of the things
+> I'm looking at is trying to factor out some DMA code in the SPI
+> framework so perhaps using this straight off would be good.  But perhaps
+> the channel request stuff will all be in the drivers and it'll just pass
+> a handle to the framework code so there'll be no issue.
 
-Applied, thanks.
+I think I can make a "core changes" branch that contains:
 
---FCuugMFkClbJLl1L
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+[PATCH 11/31] dma: add channel request API that supports deferred probe
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+[PATCH 14/31] ASoC: dmaengine: support deferred probe for DMA channels
 
-iQIcBAEBAgAGBQJSifoxAAoJELSic+t+oim9ciwP/RoIOojTXYuYDhnU3KT0wlCV
-Ft1Me37DFKGJJVLOyjSZqYlUBroKjTKrtDIdl+Y4ZkItBHupC0xvNBqYr3znaNP3
-4URbZmlbQigeZX+YaFdIqqO3dPQFR9HVEQcu2V5nYNSN0jr+xqaL9Wv8kLPxYKOg
-/jkiVeh3U5Ymd+fnGtDekAB/rpQrCeJfMkCdRou62an8S6jeFOGhhfyC2wTt/OHu
-Pt7oMl9dogPwmoSb1X4qVm667k6ym8igVR13SiYOrmeJrP/ZQzh6OTu8uw8YaHUI
-fTBITl4ppsl6b1VeV6FQU6KYnWeGWLdha+6vjAIG+e5+0A3cuXCG7x5NPgIdEzDM
-g7SiBYSaeOxLWi2guSA5Gf3/Cc9lgAdppjzp1Ji7fmU1DN6XrkZsQEObrAxMU2Fb
-Ba7xol4iTTR/wFHBfFhwCeSztILO/Vf7mBF/I46db+Exk9to3i0fv03q0VOjveun
-08HrWzNd4RIj4kdalIYq6UX1YPulaceLV35xyrQDZYB9Q3HsZoX9D5xq/NJ4U6UA
-uk4Wx4z/Fp26baqcJ0wuLveN6XysGYlTBwgCfLfvCUdZq81BacwrpMSq0U7Dpd1n
-5muLvG2Nl4mWu+HSEwG/S+BUIHxE2VfAKPUl4x8nrJ/ku28AMI4sfxSXu42Lseq6
-DNRv0WWxyYqKhcmJe+Nd
-=0PfF
------END PGP SIGNATURE-----
+[PATCH 15/31] ASoC: dmaengine: add custom DMA config to
+snd_dmaengine_pcm_config
 
---FCuugMFkClbJLl1L--
+That could be merged into relevant subsystems alone, if they only depend
+on the core changes and not any of the Tegra driver changes.
+
+However, I suspect that the Tegra driver changes may need to be merged
+into any subsystem that's doing much other work on the Tegra drivers,
+especially any significant refactoring, so the subsystem would probably
+have to pick up the whole series anyway. Still, I'll make sure I
+re-order the branch to put the core changes first so we have as much
+flexibility as possible.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,87 +1,60 @@
-From: =?UTF-8?B?VGVyamUgQmVyZ3N0csO2bQ==?= <tbergstrom@nvidia.com>
-Subject: Re: [PATCH 00/31] ARM: tegra: use common reset and DMA bindings
-Date: Mon, 18 Nov 2013 10:24:26 +0200
-Message-ID: <5289CEBA.3070502@nvidia.com>
-References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: spi-mxs: fix reference leak to master in
+ mxs_spi_remove()
+Date: Mon, 18 Nov 2013 11:30:02 +0000
+Message-ID: <20131118113002.GA13117@sirena.org.uk>
+References: <CAPgLHd9tKB5CFE-2hDUMH-XkEK7mn6oC4MOi_LP+qfDh3_XqPg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>,
- "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- Wolfram Sang <wsa@the-dreams.de>, David Airlie <airlied@linux.ie>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- Marc Dietrich <marvin24@gmx.de>,
- "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
- "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
- "ac100@lists.launchpad.net" <ac100@lists.launchpad.net>,
- "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
- Stephen Warren <swarren@nvidia.com>, Alan Stern <stern@rowland.harvard.edu>,
- "linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
- "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>, Thierry
- Reding <treding@nvidia.com>,
- "devicetree@vger.kernel.org"
-To: Stephen Warren <swarren@wwwdotorg.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="FCuugMFkClbJLl1L"
+Cc: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org,
+	jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAPgLHd9tKB5CFE-2hDUMH-XkEK7mn6oC4MOi_LP+qfDh3_XqPg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 15.11.2013 22:53, Stephen Warren wrote:
-> From: Stephen Warren <swarren@nvidia.com>
-> 
-> This series implements a common reset framework driver for Tegra, and
-> updates all relevant Tegra drivers to use it. It also removes the custom
-> DMA bindings and replaced them with the standard DMA DT bindings.
-> 
-> Historically, the Tegra clock driver has exported a custom API for module
-> reset. This series removes that API, and transitions DT and drivers to
-> the new reset framework.
-> 
-> The custom API used a "struct clk" to identify which module to reset, and
-> consequently some DT bindings and drivers required clocks to be provided
-> where they really needed just a reset identifier instead. Due to this
-> known deficiency, I have always considered most Tegra bindings to be
-> unstable. This series removes this excuse for instability, although I
-> still consider some Tegra bindings unstable due to the need to convert to
-> the common DMA bindings.
-> 
-> Historically, Tegra DMA channels have been represented in DT using a
-> custom nvidia,dma-request-selector property. Now that standard DMA DT
-> bindings exist, convert all Tegra bindings, DTs, and drivers to use the
-> standard instead.
-> 
-> This series makes a DT-ABI-incompatible change to:
-> - Require reset specifiers in DT where relevant.
-> - Require standard DMA specifiers.
-> - Remove clock specifiers from DT where they were only needed for reset.
-> - Remove legacy DMA specifier properties.
-> 
-> I anticipate merging this whole series into the Tegra and arm-soc trees
-> as its own branch, due to internal dependencies. This branch will be
-> stable and can then be merged into any other subsystem trees should any
-> conflicts arise.
-> 
-> This series depends on Peter's Tegra clock driver rework, available at
-> git://nv-tegra.nvidia.com/user/pdeschrijver/linux tegra-clk-tegra124-0
-> (or whatever version of that gets included in 3.14)
 
-Overall, a good change. For host1x part:
+--FCuugMFkClbJLl1L
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Acked-By: Terje Bergstrom <tbergstrom@nvidia.com>
+On Fri, Nov 15, 2013 at 03:50:31PM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+>=20
+> Once a spi_master_get() call succeeds, we need an additional
+> spi_master_put() call to free the memory, otherwise we will
 
-This patch does not change the behavior, but we have in original code
-the problem that we don't flush the MC queue when resetting an engine.
-This can cause some memory writes to not hit memory. There was an
-earlier discussion on that, but we seem to have lost track of the issue.
+Applied, thanks.
 
-Terje
+--FCuugMFkClbJLl1L
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSifoxAAoJELSic+t+oim9ciwP/RoIOojTXYuYDhnU3KT0wlCV
+Ft1Me37DFKGJJVLOyjSZqYlUBroKjTKrtDIdl+Y4ZkItBHupC0xvNBqYr3znaNP3
+4URbZmlbQigeZX+YaFdIqqO3dPQFR9HVEQcu2V5nYNSN0jr+xqaL9Wv8kLPxYKOg
+/jkiVeh3U5Ymd+fnGtDekAB/rpQrCeJfMkCdRou62an8S6jeFOGhhfyC2wTt/OHu
+Pt7oMl9dogPwmoSb1X4qVm667k6ym8igVR13SiYOrmeJrP/ZQzh6OTu8uw8YaHUI
+fTBITl4ppsl6b1VeV6FQU6KYnWeGWLdha+6vjAIG+e5+0A3cuXCG7x5NPgIdEzDM
+g7SiBYSaeOxLWi2guSA5Gf3/Cc9lgAdppjzp1Ji7fmU1DN6XrkZsQEObrAxMU2Fb
+Ba7xol4iTTR/wFHBfFhwCeSztILO/Vf7mBF/I46db+Exk9to3i0fv03q0VOjveun
+08HrWzNd4RIj4kdalIYq6UX1YPulaceLV35xyrQDZYB9Q3HsZoX9D5xq/NJ4U6UA
+uk4Wx4z/Fp26baqcJ0wuLveN6XysGYlTBwgCfLfvCUdZq81BacwrpMSq0U7Dpd1n
+5muLvG2Nl4mWu+HSEwG/S+BUIHxE2VfAKPUl4x8nrJ/ku28AMI4sfxSXu42Lseq6
+DNRv0WWxyYqKhcmJe+Nd
+=0PfF
+-----END PGP SIGNATURE-----
+
+--FCuugMFkClbJLl1L--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

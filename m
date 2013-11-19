@@ -1,89 +1,72 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 23/31] spi: tegra: convert to standard DMA DT bindings
-Date: Mon, 18 Nov 2013 18:41:17 +0000
-Message-ID: <20131118184117.GT2674@sirena.org.uk>
-References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
- <1384548866-13141-24-git-send-email-swarren@wwwdotorg.org>
- <20131116101422.GK15393@sirena.org.uk>
- <528A4EBB.2090800@wwwdotorg.org>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi/qspi: cleanup qspi remova path and error check.
+Date: Tue, 19 Nov 2013 16:28:23 +0530
+Message-ID: <1384858703-30938-1-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============3533776855153633544=="
-Cc: linux-tegra@vger.kernel.org, treding@nvidia.com,
- Stephen Warren <swarren@nvidia.com>, linux-arm-kernel@lists.infradead.org,
- linux-spi@vger.kernel.org
-To: Stephen Warren <swarren@wwwdotorg.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <528A4EBB.2090800@wwwdotorg.org>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+There is a bug in qspi removal path, as a result of which
+qspi cannot be removed when used as a module. The patch
+solves the bug and qspi can be removed cleanly.
+Also align the runtime error path check through out the code.
 
---===============3533776855153633544==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="/7+LvQqw8N5lf/3J"
-Content-Disposition: inline
+Tested on DRA7 board.
 
+Signed-off-by: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/spi-ti-qspi.c |   20 ++++++++++++++++++--
+ 1 files changed, 18 insertions(+), 2 deletions(-)
 
---/7+LvQqw8N5lf/3J
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 0b71270..033ef8d 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -161,7 +161,7 @@ static int ti_qspi_setup(struct spi_device *spi)
+ 			qspi->spi_max_frequency, clk_div);
+ 
+ 	ret = pm_runtime_get_sync(qspi->dev);
+-	if (ret) {
++	if (ret < 0) {
+ 		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
+ 		return ret;
+ 	}
+@@ -517,10 +517,26 @@ free_master:
+ 
+ static int ti_qspi_remove(struct platform_device *pdev)
+ {
+-	struct	ti_qspi *qspi = platform_get_drvdata(pdev);
++	struct spi_master *master;
++	struct ti_qspi *qspi;
++	int ret;
++
++	master = platform_get_drvdata(pdev);
++	qspi = spi_master_get_devdata(master);
++
++	ret = pm_runtime_get_sync(qspi->dev);
++	if (ret < 0) {
++		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
++		return ret;
++	}
+ 
+ 	ti_qspi_write(qspi, QSPI_WC_INT_DISABLE, QSPI_INTR_ENABLE_CLEAR_REG);
+ 
++	pm_runtime_put(qspi->dev);
++	pm_runtime_disable(&pdev->dev);
++
++	spi_unregister_master(master);
++
+ 	return 0;
+ }
+ 
+-- 
+1.7.1
 
-On Mon, Nov 18, 2013 at 10:30:35AM -0700, Stephen Warren wrote:
-
-> However, I suspect that the Tegra driver changes may need to be merged
-> into any subsystem that's doing much other work on the Tegra drivers,
-> especially any significant refactoring, so the subsystem would probably
-> have to pick up the whole series anyway. Still, I'll make sure I
-> re-order the branch to put the core changes first so we have as much
-> flexibility as possible.
-
-At least in the ASoC case my main consideration is other drivers wanting
-to use the core changes rather than changes being made to the Tegra
-drivers.  Let's try to just share the core code and merge the rest over
-later if needed?
-
---/7+LvQqw8N5lf/3J
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSil9KAAoJELSic+t+oim9WTgQAIJ6Eqdldg5yro5qlNh4x4Q2
-XPXxhdpPMHNhXsCLLID8wjsiJ99p1Egg+V5yH1irDnXoTheLpzFKO05085BJhHeu
-tMAkJgRH7rcqkuWbBmclkC4sUYsGPNhTu8+YSaseVn+1qTh1BA1LDHa3BNJiYVv/
-wuYu3nrvevVKmp+yHANDsDtkMmANilBIBS9kjMehevNWIJ/Y4bmGFbaTgm2gI76C
-O4bKXSl7Aoxf0y4aTtR1VhzeRXzdqyzA0M0DyIdDXfPbLBPVe3zpRtG+eHypSejB
-D6+t0rY0XKgtzpw1u2qplYEXCNA0dUt6zrZiydtMJje2rgam6To70hWEhE+tFIX5
-48whygErekuGGVrBdDpZqOQR90PBye7kl35lkQIdjdKAOduNNNUv5JnlnX+Qr89A
-xR7HTTJLEsoVKveP3uwsak7kfWZhDuVKqM10Ia4FqDPCSAD/vm1KlQ3m9PK9Pp8G
-9rV21oT/G2tohqKaqpt+N8wJV86iOfz0nAqe+hZG2LBprYbRlf9rzlg0No1ga6Gf
-QUpsz0zjZENWo9jDxpsH0EQ7GbaZo6uL0piGAVw9S0HZ+Ek/Z+Xm9ImDFA2p9Ok1
-a6mQzYMXThWZHgKCzO1HRaGvVEGcF1l3OMiYWfYXR33wvxLTwZf7dLMpBWjeCWte
-t9vZIlDS+KVwDjRSiDA8
-=K1yl
------END PGP SIGNATURE-----
-
---/7+LvQqw8N5lf/3J--
-
-
---===============3533776855153633544==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============3533776855153633544==--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

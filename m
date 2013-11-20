@@ -1,100 +1,194 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] added API: spi_message_compile/optimize/hint/...
-Date: Wed, 20 Nov 2013 19:42:44 +0100
-Message-ID: <9DE09AF6-AD13-45DE-A36F-BD65E619C342@martin.sperl.org>
-References: <0C7D5B1E-E561-4F52-BEA8-572EB0CA26A6@martin.sperl.org> <20131120112920.GX2674@sirena.org.uk> <05C64EF6-0F3B-4CBC-A462-45ED8F1564A7@martin.sperl.org> <20131120162449.GJ2674@sirena.org.uk>
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=us-ascii
+From: Martino Brandolini <martinobrandolini@gmail.com>
+Subject: Re: [Ac100] [PATCH 00/31] ARM: tegra: use common reset and DMA
+	bindings
+Date: Wed, 20 Nov 2013 20:17:33 +0100
+Message-ID: <CAOvQ+ewaVfBA5jjpoUVxqypwfYFaCc_WK=h9JAOq+Mkj9VF0SQ@mail.gmail.com>
+References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
+	<201311201637.36733.arnd@arndb.de> <528CE71D.5090300@wwwdotorg.org>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============0904339317=="
+Cc: Mark Rutland <mark.rutland@arm.com>, alsa-devel@alsa-project.org,
+	linux-usb@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
+	linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-tegra@vger.kernel.org, linux-i2c@vger.kernel.org,
+	ac100@lists.launchpad.net, devel@driverdev.osuosl.org,
+	Stephen Warren <swarren@nvidia.com>, Arnd Bergmann <arnd@arndb.de>,
+	=?ISO-8859-1?Q?Terje_Bergstr=F6m?= <tbergstrom@nvidia.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	linux-serial@vger.kernel.org, linux-input@vger.kernel.org,
+	treding@nvidia.com, devicetree@vger.kernel.org,
+	Pawel Moll <pawel.moll@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Julian Andres Klode <jak@jak-linux.org>,
+	Rob Herring <rob.herring@calxeda.com>, Mark Brown <broonie@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mike Turquette <mturquette@linaro.org>,
+	Dan Williams <dan.j.williams@intel.com
+To: Stephen Warren <swarren@wwwdotorg.org>
+Return-path: <dri-devel-bounces@lists.freedesktop.org>
+In-Reply-To: <528CE71D.5090300@wwwdotorg.org>
+List-Unsubscribe: <http://lists.freedesktop.org/mailman/options/dri-devel>,
+	<mailto:dri-devel-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <http://lists.freedesktop.org/archives/dri-devel>
+List-Post: <mailto:dri-devel@lists.freedesktop.org>
+List-Help: <mailto:dri-devel-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <http://lists.freedesktop.org/mailman/listinfo/dri-devel>,
+	<mailto:dri-devel-request@lists.freedesktop.org?subject=subscribe>
+Sender: dri-devel-bounces@lists.freedesktop.org
+Errors-To: dri-devel-bounces@lists.freedesktop.org
+List-Id: linux-spi.vger.kernel.org
+
+--===============0904339317==
+Content-Type: multipart/alternative; boundary=047d7bdc0e3e114c7c04eba0a2b1
+
+--047d7bdc0e3e114c7c04eba0a2b1
+Content-Type: text/plain; charset=ISO-8859-1
+
+Dear all,
+My ac100 screen is flickering so much. I realized I'm not using it anymore.
+So if anyone wants to have it for free would be for me a huge pleasure to
+give it away. I'm based in milan and I'll be in London for the next week.
+Maybe someone needs it.
+
+Martino
+
+
+2013/11/20 Stephen Warren <swarren@wwwdotorg.org>
+
+> On 11/20/2013 08:37 AM, Arnd Bergmann wrote:
+> > On Friday 15 November 2013, Stephen Warren wrote:
+> >> This series implements a common reset framework driver for Tegra, and
+> >> updates all relevant Tegra drivers to use it. It also removes the custom
+> >> DMA bindings and replaced them with the standard DMA DT bindings.
+> >
+> > The series is rather long, so I may have missed it, but I think you need
+> one
+> > more patch to the apbdma binding to document the use of #dma-cells, what
+> > value it has, and what the format of the dma specifiers in slave drivers
+> > needs to be.
+>
+> Yes, you're right. I will fold the following into "ARM: tegra: document
+> use of standard DMA DT bindings":
+>
+> > diff --git a/Documentation/devicetree/bindings/dma/tegra20-apbdma.txt
+> b/Documentation/devicetree/bindings/dma/tegra20-apbdma.txt
+> > index 0b1e577ab9d3..0b0f9498e265 100644
+> > --- a/Documentation/devicetree/bindings/dma/tegra20-apbdma.txt
+> > +++ b/Documentation/devicetree/bindings/dma/tegra20-apbdma.txt
+> > @@ -11,6 +11,10 @@ Required properties:
+> >    See ../reset/reset.txt for details.
+> >  - reset-names : Must include the following entries:
+> >    - dma
+> > +- #iommu-cells : Must be <1>. This dictates the length of DMA
+> specifiers in
+> > +  client nodes' dmas properties. The specifier represents the DMA
+> request
+> > +  select value for the peripheral. For more details, consult the Tegra
+> TRM's
+> > +  documentation of the APB DMA channel control register REQ_SEL field.
+> >
+> >  Examples:
+> >
+> > @@ -36,4 +40,5 @@ apbdma: dma@6000a000 {
+> >       clocks = <&tegra_car 34>;
+> >       resets = <&tegra_car 34>;
+> >       reset-names = "dma";
+> > +     #iommu-cells = <1>;
+> >  };
+>
+>
+> _______________________________________________
+> Mailing list: https://launchpad.net/~ac100
+> Post to     : ac100@lists.launchpad.net
+> Unsubscribe : https://launchpad.net/~ac100
+> More help   : https://help.launchpad.net/ListHelp
+>
+
+--047d7bdc0e3e114c7c04eba0a2b1
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Dear all,<div>My ac100 screen is flickering so much. I rea=
+lized I&#39;m not using it anymore. So if anyone wants to have it for free =
+would be for me a huge pleasure to give it away. I&#39;m based in milan and=
+ I&#39;ll be in London for the next week. Maybe someone needs it.</div>
+<div><br></div><div>Martino</div></div><div class=3D"gmail_extra"><br><br><=
+div class=3D"gmail_quote">2013/11/20 Stephen Warren <span dir=3D"ltr">&lt;<=
+a href=3D"mailto:swarren@wwwdotorg.org" target=3D"_blank">swarren@wwwdotorg=
+.org</a>&gt;</span><br>
+<blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1p=
+x #ccc solid;padding-left:1ex">On 11/20/2013 08:37 AM, Arnd Bergmann wrote:=
+<br>
+&gt; On Friday 15 November 2013, Stephen Warren wrote:<br>
+&gt;&gt; This series implements a common reset framework driver for Tegra, =
+and<br>
+&gt;&gt; updates all relevant Tegra drivers to use it. It also removes the =
+custom<br>
+&gt;&gt; DMA bindings and replaced them with the standard DMA DT bindings.<=
+br>
+&gt;<br>
+&gt; The series is rather long, so I may have missed it, but I think you ne=
+ed one<br>
+&gt; more patch to the apbdma binding to document the use of #dma-cells, wh=
+at<br>
+&gt; value it has, and what the format of the dma specifiers in slave drive=
+rs<br>
+&gt; needs to be.<br>
+<br>
+Yes, you&#39;re right. I will fold the following into &quot;ARM: tegra: doc=
+ument<br>
+use of standard DMA DT bindings&quot;:<br>
+<br>
+&gt; diff --git a/Documentation/devicetree/bindings/dma/tegra20-apbdma.txt =
+b/Documentation/devicetree/bindings/dma/tegra20-apbdma.txt<br>
+&gt; index 0b1e577ab9d3..0b0f9498e265 100644<br>
+&gt; --- a/Documentation/devicetree/bindings/dma/tegra20-apbdma.txt<br>
+&gt; +++ b/Documentation/devicetree/bindings/dma/tegra20-apbdma.txt<br>
+&gt; @@ -11,6 +11,10 @@ Required properties:<br>
+&gt; =A0 =A0See ../reset/reset.txt for details.<br>
+&gt; =A0- reset-names : Must include the following entries:<br>
+&gt; =A0 =A0- dma<br>
+&gt; +- #iommu-cells : Must be &lt;1&gt;. This dictates the length of DMA s=
+pecifiers in<br>
+&gt; + =A0client nodes&#39; dmas properties. The specifier represents the D=
+MA request<br>
+&gt; + =A0select value for the peripheral. For more details, consult the Te=
+gra TRM&#39;s<br>
+&gt; + =A0documentation of the APB DMA channel control register REQ_SEL fie=
+ld.<br>
+&gt;<br>
+&gt; =A0Examples:<br>
+&gt;<br>
+&gt; @@ -36,4 +40,5 @@ apbdma: dma@6000a000 {<br>
+&gt; =A0 =A0 =A0 clocks =3D &lt;&amp;tegra_car 34&gt;;<br>
+&gt; =A0 =A0 =A0 resets =3D &lt;&amp;tegra_car 34&gt;;<br>
+&gt; =A0 =A0 =A0 reset-names =3D &quot;dma&quot;;<br>
+&gt; + =A0 =A0 #iommu-cells =3D &lt;1&gt;;<br>
+&gt; =A0};<br>
+<br>
+<br>
+_______________________________________________<br>
+Mailing list: <a href=3D"https://launchpad.net/~ac100" target=3D"_blank">ht=
+tps://launchpad.net/~ac100</a><br>
+Post to =A0 =A0 : <a href=3D"mailto:ac100@lists.launchpad.net">ac100@lists.=
+launchpad.net</a><br>
+Unsubscribe : <a href=3D"https://launchpad.net/~ac100" target=3D"_blank">ht=
+tps://launchpad.net/~ac100</a><br>
+More help =A0 : <a href=3D"https://help.launchpad.net/ListHelp" target=3D"_=
+blank">https://help.launchpad.net/ListHelp</a><br>
+</blockquote></div><br></div>
+
+--047d7bdc0e3e114c7c04eba0a2b1--
+
+--===============0904339317==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131120162449.GJ2674-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Disposition: inline
 
+_______________________________________________
+dri-devel mailing list
+dri-devel@lists.freedesktop.org
+http://lists.freedesktop.org/mailman/listinfo/dri-devel
 
->> As mentioned before I will take the opportunity to move the flags into
->> spi_transfer for optimization hints, because there is where the change 
->> really happens...
-> 
-> These are set by the caller?
-
-yes - well similar to change_cs, delay_us,...
-
-Patch looks like this:
-@@ -585,6 +587,17 @@ struct spi_transfer {
-        u16             delay_usecs;
-        u32             speed_hz;
- 
-+#define SPI_OPTIMIZE_FIXED_TX_BUF              (1<<0)
-+#define SPI_OPTIMIZE_FIXED_TX_DMA              ((1<<1)|(1<<0))
-+#define SPI_OPTIMIZE_FIXED_RX_BUF              (1<<2)
-+#define SPI_OPTIMIZE_FIXED_RX_DMA              ((1<<3)|(1<<2))
-+#define SPI_OPTIMIZE_FIXED_LEN                 (1<<4)
-+#define SPI_OPTIMIZE_FIXED_DELAY               (1<<5)
-+#define SPI_OPTIMIZE_FIXED_SPEED               (1<<6)
-+#define SPI_OPTIMIZE_FIXED_BITS                        (1<<7)
-+#define SPI_OPTIMIZE_FIXED_ALL                 (-1)
-+       u32             optimize_hints;
-+
-        struct list_head transfer_list;
- };
-
-
-> 
-> I'd be tempted to start with assuming everything is fixed and then add
-> flags to mark things as variable rather than the other way around since
-> that's the most conservative option and should permit the greatest level
-> of optimisation.
-> 
-
-I thought the same at some point - it is just a matter of naming them.
-
-One argument for explicitly naming what IS fixed, is the fact that
-this way the default 0 maps to the current behavior, where you may not 
-make any "assumptions".
-
-This way you could also optimize transparently (without an explicit call),
-but doing the optimization transparently means opening up a can of worms:
-* when to release the memory that was "optimized"? Do we really want to 
-  add garbage collection to the kernel?
-* such transparent "optimization" would also occur during an interrupt
-  and then it would need to allocate with GFP_ATOMIC
-* also time spent in interrupt would be minimal - adding a thread for 
-  that ads complexity
-
-that is why the spi_message_optimize contains also a gfp_t flag to 
-allocate from the correct pool...
-
-It is in the end a matter of taste, so tell me which way you prefer the
-solution:
-*  0 = everything variable (so the zkalloced memory is set like this)
-* -1 = everything variable 
-
->> I will provide the patches as soon as I have pulled your tree - only
->> problem is that I can not really compile it on this tree on my RPI...
-> 
-> You should at least be able to do build tests, it's OK if you can't do
-> runtime tests - I can do validation myself, as can other people working
-> with -next.
-
-I right now started to build a kernel from your sources, but it compiles 
-slowly on a raspberry-pi... (also the default .config is not complete and
-a lot of things are left outside, like can support as module,... - I wish
-someone would maintain a better .config I could use instead of starting 
-with make bcm2835_defconfig)
-
-> Yes, there's some tricky issues here...  let's have a think about it and
-> try to do this incrementally.
-we are on the same page on this!
-
-First get the driver really working with the Foundation kernel and maybe
-by that time we have the RPI-dmaengine also in the kernel...
-
-Martin
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--===============0904339317==--

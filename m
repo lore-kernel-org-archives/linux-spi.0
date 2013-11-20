@@ -1,9 +1,10 @@
-From: Arnd Bergmann <arnd@arndb.de>
+From: Stephen Warren <swarren@wwwdotorg.org>
 Subject: Re: [PATCH 00/31] ARM: tegra: use common reset and DMA bindings
-Date: Wed, 20 Nov 2013 18:03:58 +0100
-Message-ID: <201311201803.58393.arnd@arndb.de>
+Date: Wed, 20 Nov 2013 10:23:50 -0700
+Message-ID: <528CF026.5020309@wwwdotorg.org>
 References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
  <201311201637.36733.arnd@arndb.de> <528CE71D.5090300@wwwdotorg.org>
+ <201311201803.58393.arnd@arndb.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
@@ -19,11 +20,11 @@ Cc: Mark Rutland <mark.rutland@arm.com>, alsa-devel@alsa-project.org,
  Ian Campbell <ijc+devicetree@hellion.org.uk>,
  Rob Herring <rob.herring@calxeda.com>, Mark Brown <broonie@kernel.org>,
  linux-tegra@vger.kernel.org,
- Terje =?utf-8?q?Bergstr=C3=B6m?= <tbergstrom@nvidia.com>,
- Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.
-To: Stephen Warren <swarren@wwwdotorg.org>
+ =?UTF-8?B?VGVyamUgQmVyZ3N0csO2bQ==?= <tbergstrom@nvidia.com>,
+ Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@li
+To: Arnd Bergmann <arnd@arndb.de>
 Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <528CE71D.5090300@wwwdotorg.org>
+In-Reply-To: <201311201803.58393.arnd@arndb.de>
 List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
  <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
 List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel>
@@ -35,24 +36,25 @@ Errors-To: driverdev-devel-bounces@linuxdriverproject.org
 Sender: driverdev-devel-bounces@linuxdriverproject.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday 20 November 2013, Stephen Warren wrote:
-> > +- #iommu-cells : Must be <1>. This dictates the length of DMA specifiers in
-> > +  client nodes' dmas properties. The specifier represents the DMA request
-> > +  select value for the peripheral. For more details, consult the Tegra TRM's
-> > +  documentation of the APB DMA channel control register REQ_SEL field.
-> >  
-> >  Examples:
-> >  
-> > @@ -36,4 +40,5 @@ apbdma: dma@6000a000 {
-> >       clocks = <&tegra_car 34>;
-> >       resets = <&tegra_car 34>;
-> >       reset-names = "dma";
-> > +     #iommu-cells = <1>;
+On 11/20/2013 10:03 AM, Arnd Bergmann wrote:
+> On Wednesday 20 November 2013, Stephen Warren wrote:
+>>> +- #iommu-cells : Must be <1>. This dictates the length of DMA specifiers in
+>>> +  client nodes' dmas properties. The specifier represents the DMA request
+>>> +  select value for the peripheral. For more details, consult the Tegra TRM's
+>>> +  documentation of the APB DMA channel control register REQ_SEL field.
+>>>  
+>>>  Examples:
+>>>  
+>>> @@ -36,4 +40,5 @@ apbdma: dma@6000a000 {
+>>>       clocks = <&tegra_car 34>;
+>>>       resets = <&tegra_car 34>;
+>>>       reset-names = "dma";
+>>> +     #iommu-cells = <1>;
+> 
+> 
+> s/iommu/dma/
+> 
+> Otherwise looks good. The dts files are correct, so I guess it's just
+> a typo here.
 
-
-s/iommu/dma/
-
-Otherwise looks good. The dts files are correct, so I guess it's just
-a typo here.
-
-	Arnd
+Thanks, fixed locally.

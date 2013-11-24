@@ -1,138 +1,67 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Subject: [PATCH] Fix long standing chip select issue for non-default CS-polarity setups
-Date: Sun, 24 Nov 2013 19:08:32 +0100
-Message-ID: <A4EEA261-22E6-41A7-82C4-68E8606E0863@martin.sperl.org>
-Mime-Version: 1.0 (Apple Message framework v1283)
+From: Gerhard Sittig <gsi@denx.de>
+Subject: Re: [PATCH v5 00/17] add COMMON_CLK support for PowerPC MPC512x
+Date: Sun, 24 Nov 2013 19:39:08 +0100
+Message-ID: <20131124183908.GG2760@book.gsilab.sittig.org>
+References: <1384729577-7336-1-git-send-email-gsi@denx.de>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org,
-	swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Scott Wood <scottwood@freescale.com>, Detlev Zundel <dzu@denx.de>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	devicetree@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ian Campbell <ian.campbell@citrix.com>,
+	Jiri Slaby <jslaby@suse.cz>,
+	Kumar Gala <galak@kernel.crashing.org>,
+	linux-can@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mtd@lists.infradead.org, linux-serial@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mauro Carvalho Chehab <m.chehab@samsung.com>,
+	Paul Mackerras <paulus@samba.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Stephen Warren <swarren@wwwdotorg.org>,
+	Wolfga
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	Anatolij Gustschin <agust@denx.de>,
+	Mike Turquette <mturquette@linaro.org>
+Return-path: <linux-serial-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1384729577-7336-1-git-send-email-gsi@denx.de>
+Sender: linux-serial-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Fixes long standing chip select issue for non-default CS-polarity setups.
+On Mon, Nov 18, 2013 at 00:06 +0100, Gerhard Sittig wrote:
+> 
+> the series is based on v3.12, but I'll rebase against v3.13-rc1
+> (when available) or any other subtree upon request
 
-The issue only shows up if 2 devices are on the bus and at least one of them
-is configured for inverse chip_select polarity.
+Now that v3.13-rc1 is out, I noticed that the series no longer
+applies cleanly (minor context changes and conflicts) and needs
+minor adjustment.
 
-Essentially the polarity bits in the SPI controller registers are getting
-reset to 0 (=default polarity) whenever a different SPI device is activated.
+Compilation of 4/17 requires <linux/of_address.h> which no longer
+is included implicitly.
 
-This only negatively impacts SPI devices on the bus with non-default polarity.
+PPC_CLOCK removal in 7/17 should remove <asm/clk_interface.h> as
+well after all references to this header file have gone.  (And
+the context of the patch has changed.)
 
-This patch makes use of spi_master->setup to set up the flags for all possible
-variants of the chip-select polarity flags during device setup.
+The context of 16/17 for DIU initialization has changed.
 
-It also moves repeated calculations from bcm2835_spi_start_transfer into setup.
+I'll wait for a few more days whether there is more feedback for
+v5 (especially on the device tree backwards compat approach),
+then will rebase and send out v6 of the series.
 
-Signed-off-by: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
----
- drivers/spi/spi-bcm2835.c |   52 ++++++++++++++++++++++++++++++++-------------
- 1 file changed, 37 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm2835.c b/drivers/spi/spi-bcm2835.c
-index 4c33214..95ee83f 100644
---- a/drivers/spi/spi-bcm2835.c
-+++ b/drivers/spi/spi-bcm2835.c
-@@ -73,6 +73,8 @@
- #define BCM2835_SPI_TIMEOUT_MS	30000
- #define BCM2835_SPI_MODE_BITS	(SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_NO_CS)
- 
-+#define BCM2835_SPI_NUM_CS	3
-+
- #define DRV_NAME	"spi-bcm2835"
- 
- struct bcm2835_spi {
-@@ -83,6 +85,8 @@ struct bcm2835_spi {
- 	const u8 *tx_buf;
- 	u8 *rx_buf;
- 	int len;
-+	u32 cs_device_flags_idle;
-+	u32 cs_device_flags[BCM2835_SPI_NUM_CS];
- };
- 
- static inline u32 bcm2835_rd(struct bcm2835_spi *bs, unsigned reg)
-@@ -203,19 +207,8 @@ static int bcm2835_spi_start_transfer(struct spi_device *spi,
- 	} else
- 		cdiv = 0; /* 0 is the slowest we can go */
- 
--	if (spi->mode & SPI_CPOL)
--		cs |= BCM2835_SPI_CS_CPOL;
--	if (spi->mode & SPI_CPHA)
--		cs |= BCM2835_SPI_CS_CPHA;
--
--	if (!(spi->mode & SPI_NO_CS)) {
--		if (spi->mode & SPI_CS_HIGH) {
--			cs |= BCM2835_SPI_CS_CSPOL;
--			cs |= BCM2835_SPI_CS_CSPOL0 << spi->chip_select;
--		}
--
--		cs |= spi->chip_select;
--	}
-+	/* take cs from the precalculated version */
-+	cs |= bs->cs_device_flags[spi->chip_select];
- 
- 	INIT_COMPLETION(bs->done);
- 	bs->tx_buf = tfr->tx_buf;
-@@ -291,13 +284,41 @@ static int bcm2835_spi_transfer_one(struct spi_master *master,
- out:
- 	/* Clear FIFOs, and disable the HW block */
- 	bcm2835_wr(bs, BCM2835_SPI_CS,
--		   BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
-+		bs->cs_device_flags_idle
-+		| BCM2835_SPI_CS_CLEAR_RX | BCM2835_SPI_CS_CLEAR_TX);
- 	mesg->status = err;
- 	spi_finalize_current_message(master);
- 
- 	return 0;
- }
- 
-+static int bcm2835_spi_setup(struct spi_device *spi) {
-+	struct bcm2835_spi *bs = spi_master_get_devdata(spi->master);
-+	u8 cs = spi->chip_select;
-+	u32 mode = spi->mode;
-+	int i;
-+
-+	if (!(mode & SPI_NO_CS)) {
-+		if (mode & SPI_CS_HIGH) {
-+			for (i=0 ; i<=BCM2835_SPI_NUM_CS ; i++) {
-+				bs->cs_device_flags[i] |=
-+					(BCM2835_SPI_CS_CSPOL0 << cs);
-+			}
-+			bs->cs_device_flags_idle |=
-+				(BCM2835_SPI_CS_CSPOL0 << cs);
-+			bs->cs_device_flags[cs] |= BCM2835_SPI_CS_CSPOL;
-+		}
-+		bs->cs_device_flags[cs] |= spi->chip_select;
-+	}
-+
-+	if (mode & SPI_CPOL)
-+		bs->cs_device_flags[cs] |= BCM2835_SPI_CS_CPOL;
-+	if (mode & SPI_CPHA)
-+		bs->cs_device_flags[cs] |= BCM2835_SPI_CS_CPHA;
-+
-+	return 0;
-+}
-+
- static int bcm2835_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
-@@ -316,7 +337,8 @@ static int bcm2835_spi_probe(struct platform_device *pdev)
- 	master->mode_bits = BCM2835_SPI_MODE_BITS;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
- 	master->bus_num = -1;
--	master->num_chipselect = 3;
-+	master->num_chipselect = BCM2835_SPI_NUM_CS;
-+	master->setup = bcm2835_spi_setup;
- 	master->transfer_one_message = bcm2835_spi_transfer_one;
- 	master->dev.of_node = pdev->dev.of_node;
- 
+virtually yours
+Gerhard Sittig
 -- 
-1.7.10.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office@denx.de

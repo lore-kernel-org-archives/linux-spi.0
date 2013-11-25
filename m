@@ -1,80 +1,61 @@
-From: Mark Brown <broonie@kernel.org>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
 Subject: Re: [PATCH v5 08/17] spi: mpc512x: adjust to OF based clock lookup
-Date: Mon, 25 Nov 2013 17:30:08 +0000
-Message-ID: <20131125173008.GQ14725@sirena.org.uk>
+Date: Mon, 25 Nov 2013 20:06:41 +0100
+Message-ID: <20131125190641.GL2760@book.gsilab.sittig.org>
 References: <1384729577-7336-1-git-send-email-gsi@denx.de>
  <1384729577-7336-9-git-send-email-gsi@denx.de>
+ <20131125173008.GQ14725@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2574076024996262672=="
-Cc: Mike Turquette <mturquette@linaro.org>, Detlev Zundel <dzu@denx.de>,
- linux-spi@vger.kernel.org, Scott Wood <scottwood@freescale.com>,
- Anatolij Gustschin <agust@denx.de>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
-To: Gerhard Sittig <gsi@denx.de>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <1384729577-7336-9-git-send-email-gsi@denx.de>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
- <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev/>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
- <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
-Sender: "Linuxppc-dev"
- <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-List-Id: linux-spi.vger.kernel.org
-
-
---===============2574076024996262672==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CxSUI8jTRJ26tNoZ"
-Content-Disposition: inline
-
-
---CxSUI8jTRJ26tNoZ
 Content-Type: text/plain; charset=us-ascii
+Cc: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>,
+	linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <20131125173008.GQ14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Nov 18, 2013 at 12:06:08AM +0100, Gerhard Sittig wrote:
-> after device tree based clock lookup became available, the peripheral
-> driver need no longer construct clock names which include the PSC index,
-> remove the "psc%d_mclk" template and unconditionally use 'mclk'
+On Mon, Nov 25, 2013 at 17:30 +0000, Mark Brown wrote:
+> 
+> On Mon, Nov 18, 2013 at 12:06:08AM +0100, Gerhard Sittig wrote:
+> > after device tree based clock lookup became available, the peripheral
+> > driver need no longer construct clock names which include the PSC index,
+> > remove the "psc%d_mclk" template and unconditionally use 'mclk'
+> 
+> Have there been other changes which make this happen?
 
-Have there been other changes which make this happen?
+Not yet in mainline.  The patch you respond to is 08/17 within
+the series, and depends on earlier patches in the series (namely
+the introduction of CCF support for the MPC512x platform, making
+the 'mclk' lookup against the PSC's OF node work while keeping
+the global 'pscN_mclk' in place during migration).
 
---CxSUI8jTRJ26tNoZ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+This information was listed in the cover letter, but was not
+duplicated within the individual patches.  Patches were sent to
+individual Cc: lists to not spam too many people, but the cover
+letter was CC'ed to every recipient of any part of the series.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Please note that I will have to re-submit the series, since it no
+longer cleanly applies against v3.13-rc1 (which was not available
+when I sent v5).  This patch won't change in its content, but may
+experience changes in its context (catchup with changes between
+v3.12 and v3.13-rc1).
 
-iQIcBAEBAgAGBQJSk4kcAAoJELSic+t+oim9/z8P/R/RzwHyE523m5unO25Z4V8e
-L2azjAc9GtXjwCmcUEFBcufRioYtsf1KiL8AdxWFZ28+cCnkaW1NJQJ5vhlO8FK1
-cSwwzTTcSK0TDWbEpQ9o/2+UPkfqIytbGWHv2v3nyxmVriWsjQaXnPnvX2E1T39z
-/WjX6AIT6wJenwARDTg0GJwpKUr+UWgrJjIHL7NBlLU0dLKHB2Ou4wPFxC5KwbYw
-Hu0BplP0AmO6ZMSV3dpZ33JOMOjhQ1EA0ATiq31e7s8j1A/mTcyzIbB5i59S3rWF
-Ruvc1WvuVEqQ/j9c/fZEZqyWicM37zZ5MbmqM0dP23ZBF2+YqiW7MmdGlQ571cOK
-V/kgFj8ygCgMMnW3c3QI/O+89Wumi7r+/nw65J0oLRnd6g8dTZRbJz/K7R9k4vR7
-peCuz9CMMHwA0Rre7udBg/DDQDcTYBkvdwGh+drRGQ57z8h/qyn8ur7H4znslxJn
-9YRPYzVf68oEeCT/dfwbOhUz6CakinUOGd5D/M2Uul3gDNyC79IKsr/qQ5boz071
-oV8Pc8ERJXLmXkdrnEoL1vl6wATAGK2sbiBYsvglCeGMmfYzHvs/+atMaOmNvF0P
-ZZBjK8vZ/nlZX8kFllHc1qX+nBAyrZZpwTSOnz7Fy7u9T2aFdhnM5HDOXWxiD/B8
-i3dbR82ha2JRIicrqHlt
-=gBcW
------END PGP SIGNATURE-----
+Thank you for considering the patch, and for your feedback on
+past versions!
 
---CxSUI8jTRJ26tNoZ--
 
---===============2574076024996262672==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linuxppc-dev mailing list
-Linuxppc-dev@lists.ozlabs.org
-https://lists.ozlabs.org/listinfo/linuxppc-dev
---===============2574076024996262672==--
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

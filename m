@@ -1,60 +1,99 @@
-From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v5 08/17] spi: mpc512x: adjust to OF based clock lookup
-Date: Mon, 25 Nov 2013 20:06:41 +0100
-Message-ID: <20131125190641.GL2760@book.gsilab.sittig.org>
-References: <1384729577-7336-1-git-send-email-gsi@denx.de>
- <1384729577-7336-9-git-send-email-gsi@denx.de>
- <20131125173008.GQ14725@sirena.org.uk>
-Mime-Version: 1.0
+From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Subject: Re: [PATCH] Fix long standing chip select issue for non-default CS-polarity setups
+Date: Mon, 25 Nov 2013 20:13:57 +0100
+Message-ID: <EE805C3B-7650-45CF-ACA7-5A83758B7F77@martin.sperl.org>
+References: <A4EEA261-22E6-41A7-82C4-68E8606E0863@martin.sperl.org> <20131125111603.GC14725@sirena.org.uk> <52934420.1040603@martin.sperl.org> <20131125163840.GG14725@sirena.org.uk>
+Mime-Version: 1.0 (Apple Message framework v1283)
 Content-Type: text/plain; charset=us-ascii
-Cc: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>,
-	linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Content-Transfer-Encoding: 7bit
+Cc: bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org, swarren-3lzwWm7+WeqjrCrn2yxA+g@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20131125173008.GQ14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20131125163840.GG14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Nov 25, 2013 at 17:30 +0000, Mark Brown wrote:
+Hi Mark!
+
+> It doesn't look like that, it looks like the update first resets things
+> to a default and then writes in the new value.  It also appears to
+> affect the entire array rather than just one value.
+
+The problem is that there is only _ONE_ register in the SOC that affects
+all Polarity flags.
+#define BCM2835_SPI_CS_CSPOL2           0x00800000
+#define BCM2835_SPI_CS_CSPOL1           0x00400000
+#define BCM2835_SPI_CS_CSPOL0           0x00200000
+
+and unfortunately this is the _same_ register that we use to start/stop/...
+the SPI component and set up other things.
+
+So the current code in bcm2835_spi_start_transfer runs this:
+u32 cs = BCM2835_SPI_CS_INTR | BCM2835_SPI_CS_INTD | BCM2835_SPI_CS_TA;
+...
+if (spi->mode & SPI_CPOL)
+	cs |= BCM2835_SPI_CS_CPOL;
+if (spi->mode & SPI_CPHA)
+ 	cs |= BCM2835_SPI_CS_CPHA;
+if (spi->mode & SPI_CS_HIGH) {
+	cs |= BCM2835_SPI_CS_CSPOL;
+	cs |= BCM2835_SPI_CS_CSPOL0 << spi->chip_select;
+	cs |= spi->chip_select
+}
+...
+bcm2835_wr(bs, BCM2835_SPI_CS, cs);
+
+So this only EVER sets a single one of the following bits
+#define BCM2835_SPI_CS_CSPOL2           0x00800000
+#define BCM2835_SPI_CS_CSPOL1           0x00400000
+#define BCM2835_SPI_CS_CSPOL0           0x00200000
+(and only if the current device i running with inverse polarity)
+
+Say this runs for CS=0 and it has CS_HIGH set with mode,
+then the SPI Control register is set to BCM2835_SPI_CS_CSPOL0 afterwards.
+
+Now take a transfer for CS=1 with normal polarity,
+then the BCM2835_SPI_CS_CSPOL0 will no longer be set as soon as this 
+transfer configures the SPI control register.
+
+And that is why we need to make the Polarity change become effective
+immediately or it is sufficient to do it the next time that the SPI
+register is modified by any transfer
+
+> The other thing is that as with all your other code this is full of
+> coding style issues, these will need to be fixed.  Please, as previously
+> requested, read and follow CodingStyle.
+I had been reading the coding styles document and tried to implement
+everything recommended there in the patch.
+
 > 
-> On Mon, Nov 18, 2013 at 12:06:08AM +0100, Gerhard Sittig wrote:
-> > after device tree based clock lookup became available, the peripheral
-> > driver need no longer construct clock names which include the PSC index,
-> > remove the "psc%d_mclk" template and unconditionally use 'mclk'
+> Yes, this is the point - the two aren't protected against each other,
+> setup() is supposed to only take effect on the next transfer.
 > 
-> Have there been other changes which make this happen?
 
-Not yet in mainline.  The patch you respond to is 08/17 within
-the series, and depends on earlier patches in the series (namely
-the introduction of CCF support for the MPC512x platform, making
-the 'mclk' lookup against the PSC's OF node work while keeping
-the global 'pscN_mclk' in place during migration).
+The master->setup call in spi_setup requires that the settings take "action"
+immediately - or at least when the NEXT spi message gets transmitted.
+(not necessarily the next transfer to the specific device)
 
-This information was listed in the cover letter, but was not
-duplicated within the individual patches.  Patches were sent to
-individual Cc: lists to not spam too many people, but the cover
-letter was CC'ed to every recipient of any part of the series.
+And that is what the code does: it prepares the flags when calling
+the setup function. The computed values are only taken active the next
+time the SPI Control registers are set, which happens only in 
+bcm2835_spi_start_transfer and bcm2835_spi_transfer_one.
 
-Please note that I will have to re-submit the series, since it no
-longer cleanly applies against v3.13-rc1 (which was not available
-when I sent v5).  This patch won't change in its content, but may
-experience changes in its context (catchup with changes between
-v3.12 and v3.13-rc1).
-
-Thank you for considering the patch, and for your feedback on
-past versions!
+> This doesn't require a bus lock, it only affects the individual device.
 
 
-virtually yours
-Gerhard Sittig
--- 
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+It would require a bus_lock for ANY change to SPI_CS_HIGH.
+
+Otherwise there _is_ a window of opportunity for a spi_message by a different
+device-driver to get scheduled between the spi_async configuring the SPI 
+device on the bus itself for a change in polarity and the spi_setup call,
+which possibly happens in the complete callback or even more delayed in a 
+totally separate kernel-thread if the sync interfaces is used.
+
+Martin
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

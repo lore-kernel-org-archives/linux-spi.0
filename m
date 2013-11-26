@@ -1,8 +1,8 @@
 From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 04/17] spi/qspi: parse control module register.
-Date: Tue, 26 Nov 2013 16:48:58 +0530
-Message-ID: <529483A2.3080000@ti.com>
-References: <1385451313-1875-1-git-send-email-sourav.poddar@ti.com> <1385451313-1875-5-git-send-email-sourav.poddar@ti.com> <20131126103104.GZ14725@sirena.org.uk>
+Subject: Re: [PATCH 02/17] spi/spi.h: Add configure from slave support.
+Date: Tue, 26 Nov 2013 16:51:53 +0530
+Message-ID: <52948451.3060706@ti.com>
+References: <1385451313-1875-1-git-send-email-sourav.poddar@ti.com> <1385451313-1875-3-git-send-email-sourav.poddar@ti.com> <20131126102951.GX14725@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
@@ -12,20 +12,22 @@ Cc: <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <linux-mtd-IAPF
 	<bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131126103104.GZ14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20131126102951.GX14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday 26 November 2013 04:01 PM, Mark Brown wrote:
-> On Tue, Nov 26, 2013 at 01:05:00PM +0530, Sourav Poddar wrote:
->> In qspi controller, we need to switch to memory mapped operations.
->> These switching depends on
-> This will need to be added to the DT binding.
-
-
-I have added a "reg-name" property. Does we need to add individual 
-reg-names also?
-
+On Tuesday 26 November 2013 03:59 PM, Mark Brown wrote:
+> On Tue, Nov 26, 2013 at 01:04:58PM +0530, Sourav Poddar wrote:
+>
+>>   	void	(*get_buf)(struct spi_master *master);
+>>   	void	(*put_buf)(struct spi_master *master);
+>> +	void	(*configure_from_slave)(struct spi_device *spi, u8 *val);
+> Clearly this is far too unstructured to be useful, this is only ever
+> going to work with one specific combination of slave and master since
+> there's absolutely no semantics defined.
+I thought "val" might be good enuf, and this can be filled with whatever
+data that need to be used from slave into master(irrespective of slave 
+and master?).
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,100 +1,88 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] Fix long standing chip select issue for non-default CS-polarity setups
-Date: Mon, 25 Nov 2013 20:13:57 +0100
-Message-ID: <EE805C3B-7650-45CF-ACA7-5A83758B7F77@martin.sperl.org>
-References: <A4EEA261-22E6-41A7-82C4-68E8606E0863@martin.sperl.org> <20131125111603.GC14725@sirena.org.uk> <52934420.1040603@martin.sperl.org> <20131125163840.GG14725@sirena.org.uk>
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org, swarren-3lzwWm7+WeqjrCrn2yxA+g@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131125163840.GG14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-Hi Mark!
-
-> It doesn't look like that, it looks like the update first resets things
-> to a default and then writes in the new value.  It also appears to
-> affect the entire array rather than just one value.
-
-The problem is that there is only _ONE_ register in the SOC that affects
-all Polarity flags.
-#define BCM2835_SPI_CS_CSPOL2           0x00800000
-#define BCM2835_SPI_CS_CSPOL1           0x00400000
-#define BCM2835_SPI_CS_CSPOL0           0x00200000
-
-and unfortunately this is the _same_ register that we use to start/stop/...
-the SPI component and set up other things.
-
-So the current code in bcm2835_spi_start_transfer runs this:
-u32 cs = BCM2835_SPI_CS_INTR | BCM2835_SPI_CS_INTD | BCM2835_SPI_CS_TA;
-...
-if (spi->mode & SPI_CPOL)
-	cs |= BCM2835_SPI_CS_CPOL;
-if (spi->mode & SPI_CPHA)
- 	cs |= BCM2835_SPI_CS_CPHA;
-if (spi->mode & SPI_CS_HIGH) {
-	cs |= BCM2835_SPI_CS_CSPOL;
-	cs |= BCM2835_SPI_CS_CSPOL0 << spi->chip_select;
-	cs |= spi->chip_select
-}
-...
-bcm2835_wr(bs, BCM2835_SPI_CS, cs);
-
-So this only EVER sets a single one of the following bits
-#define BCM2835_SPI_CS_CSPOL2           0x00800000
-#define BCM2835_SPI_CS_CSPOL1           0x00400000
-#define BCM2835_SPI_CS_CSPOL0           0x00200000
-(and only if the current device i running with inverse polarity)
-
-Say this runs for CS=0 and it has CS_HIGH set with mode,
-then the SPI Control register is set to BCM2835_SPI_CS_CSPOL0 afterwards.
-
-Now take a transfer for CS=1 with normal polarity,
-then the BCM2835_SPI_CS_CSPOL0 will no longer be set as soon as this 
-transfer configures the SPI control register.
-
-And that is why we need to make the Polarity change become effective
-immediately or it is sufficient to do it the next time that the SPI
-register is modified by any transfer
-
-> The other thing is that as with all your other code this is full of
-> coding style issues, these will need to be fixed.  Please, as previously
-> requested, read and follow CodingStyle.
-I had been reading the coding styles document and tried to implement
-everything recommended there in the patch.
-
-> 
-> Yes, this is the point - the two aren't protected against each other,
-> setup() is supposed to only take effect on the next transfer.
-> 
-
-The master->setup call in spi_setup requires that the settings take "action"
-immediately - or at least when the NEXT spi message gets transmitted.
-(not necessarily the next transfer to the specific device)
-
-And that is what the code does: it prepares the flags when calling
-the setup function. The computed values are only taken active the next
-time the SPI Control registers are set, which happens only in 
-bcm2835_spi_start_transfer and bcm2835_spi_transfer_one.
-
-> This doesn't require a bus lock, it only affects the individual device.
+From: Sourav Poddar <sourav.poddar@ti.com>
+Subject: [PATCH 00/17] Add memory mapped support for ti qspi, m25p80 serial flash.
+Date: Tue, 26 Nov 2013 13:04:56 +0530
+Message-ID: <1385451313-1875-1-git-send-email-sourav.poddar@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <balbi@ti.com>, <linux-omap@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <bcousson@baylibre.com>,
+	Sourav Poddar <sourav.poddar@ti.com>
+To: <computersforpeace@gmail.com>, <broonie@kernel.org>,
+	<linux-mtd@lists.infradead.org>, <linux-spi@vger.kernel.org>
+Return-path: <linux-omap-owner@vger.kernel.org>
+Sender: linux-omap-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
-It would require a bus_lock for ANY change to SPI_CS_HIGH.
+The patch series aims to add memory mapped support for TI qspi
+contoller and also add support for the same in serial flash driver(m25p80).
 
-Otherwise there _is_ a window of opportunity for a spi_message by a different
-device-driver to get scheduled between the spi_async configuring the SPI 
-device on the bus itself for a change in polarity and the spi_setup call,
-which possibly happens in the complete callback or even more delayed in a 
-totally separate kernel-thread if the sync interfaces is used.
+These feature was added as a part of the series[1]:
+The series[1] add support for quad and memory mapped feature in spi and
+flash driver. Based on Brian Norris suggestion on splitting the quad and 
+memory mapped feature, I had sent a seperate series for quad support which 
+has beed accepted by Brian.
 
-Martin
+The $subject patch series takes care of the memory mapped part.  
+
+Overview of memory mapped support in qspi:
+ TI qspi controller supports memory mapped read support, switching to which
+ requires  register modifications(qspi registers, control module register for
+ DRA, qspi register for am43x). Once switched, the flash data can be available
+ at a soc specific memory mapped address. For operations in normal mode, we need 
+ to keep memory mapped disable.
+
+ Flow of the patch is to keep the memory mapped enable by default in the driver.
+ Whenever Normal spi mode operations are desired, we switch to configuration mode
+ and at the end of it memory mapped is again enabled. There are few function pointers
+ added to fecilitate easy communication between the flash and spi controllers.
+
+Major changes in the $subject patch based on discussion in [1]:
+
+- Feature has been broken down into small meaningfl patches.
+- memcpy is done in flash driver and spi framework is bypassed.
+- configuration of memory mapped spi controller regsiters is done
+  through function calls from flash side.
+
+[1]: http://lists.infradead.org/pipermail/linux-mtd/2013-October/049058.html
 
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Tested on DRA7 board with spansion S25FL256S flash along with some
+internal irq crossbar patches.
+Tested on AM437x epos evm with macronix MX66l51235l flash.
+
+Testing done:
+-Erase the whole flash.
+-write to the flash
+-read back the flash
+- compare the data
+
+Sourav Poddar (17):
+  spi/spi.h: Add get_buf/put_buf support in spi master..
+  spi/spi.h: Add configure from slave support.
+  spi/qspi: parse register by name.
+  spi/qspi: parse control module register.
+  spi/qspi: parse memory map register.
+  spi/qspi: Add support to switc to memory mapped operation.
+  spi/qspi: configure set up register for memory map..
+  spi/qspi: Add api for get_buf/put_buf.
+  spi/spi.h: Add "mem" variable in spi master.
+  spi/spi.h: Add mmap flag in spi master.
+  spi/qspi: set "mmap" flag to true.
+  spi/qspi: convert driver to enable/disable memory mapped..
+  drivers: mtd: m25p80: Add api to configure master register .
+  drivers: mtd: m25p80: Adapt driver to support memory mapped read.
+  arm: dts: dra7: Add qspi device.
+  arm: dts: am43x-epos: Add qspi device.
+  Documentation: bindings: ti-qspi: update binding information.
+
+ Documentation/devicetree/bindings/spi/ti_qspi.txt |    2 +
+ arch/arm/boot/dts/am4372.dtsi                     |   12 ++
+ arch/arm/boot/dts/am43x-epos-evm.dts              |   28 +++++
+ arch/arm/boot/dts/dra7-evm.dts                    |   32 ++++++
+ arch/arm/boot/dts/dra7.dtsi                       |   13 +++
+ drivers/mtd/devices/m25p80.c                      |   30 ++++++
+ drivers/spi/spi-ti-qspi.c                         |  115 ++++++++++++++++++++-
+ include/linux/spi/spi.h                           |   16 +++
+ 8 files changed, 246 insertions(+), 2 deletions(-)
+

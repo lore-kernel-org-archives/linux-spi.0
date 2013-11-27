@@ -1,100 +1,50 @@
-From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 00/23] mtd: st_spi_fsm: Add new device
-Date: Wed, 27 Nov 2013 11:52:26 +0000
-Message-ID: <20131127115226.GC3296@lee--X1>
-References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org>
- <20131127040723.GZ9468@ld-irv-0074.broadcom.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2] spi: sh-msiof: Fix warnings due to improper casts
+Date: Wed, 27 Nov 2013 15:49:25 +0000
+Message-ID: <20131127154925.GA14725@sirena.org.uk>
+References: <1385547486-13802-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	angus.clark-qxv4g6HH51o@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="NRg0qHkDgHfQnopc"
+Cc: linux-sh@vger.kernel.org, linux-spi@vger.kernel.org
+To: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20131127040723.GZ9468-bU/DPfM3abD4WzifrMjOTkcViWtcw2C0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1385547486-13802-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-> There seem to be multiple efforts going on that are vaguely related. =
-I'd
-> like to see more of the same people appearing on the CC list, to keep
-> better coordinated.
->=20
-> On that topic, is the SPI dev list relevant, or would anybody working=
- on
-> the intersection of SPI and MTD be on the MTD list?
 
-I think Mark is the prominent figure that this would interest.
+--NRg0qHkDgHfQnopc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> On Fri, Nov 22, 2013 at 04:22:37PM +0000, Lee Jones wrote:
-> > The first bunch of these patches have been on the MLs before, but=20
-> > didn't receive a great deal of attention for the most part. We are
-> > a little more featureful this time however. We can now successfully
-> > setup and configure the N25Q256. We still can't read/write/erase
-> > it though. I'll start work on that next week and will provide it in
-> > the next instalment.
->=20
-> What happened to integrating a SPI NOR framework? I see you copied so=
-me
-> of the m25p80 commands, but you don't share them with m25p80. I also
-> understand your argument (from the first version of this patch series=
-)
-> that much of the actual controller operation is not shared with m25p8=
-0,
-> but you'd be surprised how this might evolve. There are several other=
-s
-> with QSPI hardware that are trying to get patches merged, some of who=
-m
-> (Huang, at least) are actively submitting patches to help with this
-> abstraction.
->=20
-> Now, I haven't had a lot of time yet to look at both yours and Huang'=
-s
-> work and see what, if anything, can be shared (will do soon). But I
-> think you need to be aware.
+On Wed, Nov 27, 2013 at 11:18:06AM +0100, Laurent Pinchart wrote:
+> Cast pointers to uintptr_t instead of unsigned int. This fixes warnings
+> on platforms where pointers have a different size than int.
 
-I've taken a look at Huang's framework and it doesn't provide us with
-anything extra to what the m25p80 would provide. We did have the idea
-of splitting our driver into two distinct areas; the MTD part, which
-we planned on using the m25p80 for and an SPI Controller portion.
+Applied, thanks.
 
-However, as we send entire 'message sequences' to the FSM Controller
-as opposed to merely OPCODEs we would have to extract the OPCODE from
-flash->command[0] and call our own functions to craft the correct
-'message sequence' for the task. For this reason we rejected the idea
-and went with a stand-alone driver.
+--NRg0qHkDgHfQnopc
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-The framework which Huang is proposing suffers from the same issues.
-Only providing read(), write(), read_reg() and write_reg() doesn't
-work for our use-case, as we'd have to decode the flash->command[0] and
-invoke our own internal routines as before.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-The only framework with would work for us would consist almost all
-of the important functions such as; read(), write(), erase(),
-wait_busy(), read_jedec(), read_status_reg(), write_status_reg(),
-read_control_reg(), write_control_reg(), etc. However, this approach
-is mostly pointless. We'd be better of just using the MTD Framework's
-_read, _write and _erase call-backs as we do now.
+iQIcBAEBAgAGBQJSlhSCAAoJELSic+t+oim9PzQP/jglt41bJnnNUUgfZe+WWAMf
+rDluLN2nH4IluqwDDS17aT20yxUmwCkVFAlC4ZyICh2FOXo571HEpiUiWa2SChTm
+a1d/FCAi66JPkN5cZHTSOLI2Mu1rBr3BXZEBuEpmMNMwDsfxKf0W9wO67NrJwDgX
+pC8IGF0FT3W0+wQElGtXCAO+cGHCevgAHHkDr7SD+5fUzEv5OhY0GhbUrUhR6ui0
+K8uWK2DbMtpnG1CTiJaGhPv8c4WMWVKu4voPSrrptXavwIMCGVR3axvuXG4DFKOR
+vIpNpr0RCGjN9G44oy/zVB4I7w0Lm+Xz/zcZ5iEkYeVBACxhWlTvkrBtC32156R3
+nq90MLeWFhlmKuHN0/5I0pv5vY1wS3v/PDP5I8gxnQrFdbcVA5r64BKNRnxVUU2c
+pmRAcg174VzXrzGSz+ofvhqUcktSscZ1DGNzkJ+5+41LPad09jKB9CYsbNjfiS5G
+xNEJqZlOsrGtQSn97KnLW9O86JvOe2Q1cT8uZoqNp7js6MAzgZRxiQun4BrbyI+G
+bS5rP4opzTh6XNncpIdoQOntqLru9mhPWTlMi1ufGtNXLiVmOB1Nji2QZEqaTvNB
+iFqB4bRB1R3RIHQwKhSsKzu769/wiP91kaniKwfpU3jPtl+HzIBBj7dQxSQ5JGb4
+V1xlqvW3dsVBM8iirwuv
+=t5Gu
+-----END PGP SIGNATURE-----
 
-=46or these reasons and a bunch of others I think the best solution for
-our particular use-case would be to stick with our stand-alone driver
-implementation.
-
-> BTW, can you include version markers (i.e., [PATCH v2 X/Y]) in the
-> subject from now on?
-
-Yes of course, no problem.
-
---=20
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org =E2=94=82 Open source software for ARM SoCs
-=46ollow Linaro: Facebook | Twitter | Blog
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--NRg0qHkDgHfQnopc--

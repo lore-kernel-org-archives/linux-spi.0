@@ -1,43 +1,99 @@
-From: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Subject: [PATCH v2] spi: sh-msiof: Fix warnings due to improper casts
-Date: Wed, 27 Nov 2013 11:18:06 +0100
-Message-ID: <1385547486-13802-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 00/23] mtd: st_spi_fsm: Add new device
+Date: Wed, 27 Nov 2013 11:52:26 +0000
+Message-ID: <20131127115226.GC3296@lee--X1>
+References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org>
+ <20131127040723.GZ9468@ld-irv-0074.broadcom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	angus.clark-qxv4g6HH51o@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20131127040723.GZ9468-bU/DPfM3abD4WzifrMjOTkcViWtcw2C0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Cast pointers to uintptr_t instead of unsigned int. This fixes warnings
-on platforms where pointers have a different size than int.
+> There seem to be multiple efforts going on that are vaguely related. =
+I'd
+> like to see more of the same people appearing on the CC list, to keep
+> better coordinated.
+>=20
+> On that topic, is the SPI dev list relevant, or would anybody working=
+ on
+> the intersection of SPI and MTD be on the MTD list?
 
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
----
- drivers/spi/spi-sh-msiof.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I think Mark is the prominent figure that this would interest.
 
-Changes compared to v1:
+> On Fri, Nov 22, 2013 at 04:22:37PM +0000, Lee Jones wrote:
+> > The first bunch of these patches have been on the MLs before, but=20
+> > didn't receive a great deal of attention for the most part. We are
+> > a little more featureful this time however. We can now successfully
+> > setup and configure the N25Q256. We still can't read/write/erase
+> > it though. I'll start work on that next week and will provide it in
+> > the next instalment.
+>=20
+> What happened to integrating a SPI NOR framework? I see you copied so=
+me
+> of the m25p80 commands, but you don't share them with m25p80. I also
+> understand your argument (from the first version of this patch series=
+)
+> that much of the actual controller operation is not shared with m25p8=
+0,
+> but you'd be surprised how this might evolve. There are several other=
+s
+> with QSPI hardware that are trying to get patches merged, some of who=
+m
+> (Huang, at least) are actively submitting patches to help with this
+> abstraction.
+>=20
+> Now, I haven't had a lot of time yet to look at both yours and Huang'=
+s
+> work and see what, if anything, can be shared (will do soon). But I
+> think you need to be aware.
 
-- Cast to uintptr_t instead of unsigned long
+I've taken a look at Huang's framework and it doesn't provide us with
+anything extra to what the m25p80 would provide. We did have the idea
+of splitting our driver into two distinct areas; the MTD part, which
+we planned on using the m25p80 for and an SPI Controller portion.
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index c74298c..86f822a 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -421,7 +421,7 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
- 	}
- 
- 	/* use spi->controller data for CS (same strategy as spi_gpio) */
--	gpio_set_value((unsigned)spi->controller_data, value);
-+	gpio_set_value((uintptr_t)spi->controller_data, value);
- 
- 	if (is_on == BITBANG_CS_INACTIVE) {
- 		if (test_and_clear_bit(0, &p->flags)) {
--- 
-1.8.3.2
+However, as we send entire 'message sequences' to the FSM Controller
+as opposed to merely OPCODEs we would have to extract the OPCODE from
+flash->command[0] and call our own functions to craft the correct
+'message sequence' for the task. For this reason we rejected the idea
+and went with a stand-alone driver.
 
+The framework which Huang is proposing suffers from the same issues.
+Only providing read(), write(), read_reg() and write_reg() doesn't
+work for our use-case, as we'd have to decode the flash->command[0] and
+invoke our own internal routines as before.
+
+The only framework with would work for us would consist almost all
+of the important functions such as; read(), write(), erase(),
+wait_busy(), read_jedec(), read_status_reg(), write_status_reg(),
+read_control_reg(), write_control_reg(), etc. However, this approach
+is mostly pointless. We'd be better of just using the MTD Framework's
+_read, _write and _erase call-backs as we do now.
+
+=46or these reasons and a bunch of others I think the best solution for
+our particular use-case would be to stick with our stand-alone driver
+implementation.
+
+> BTW, can you include version markers (i.e., [PATCH v2 X/Y]) in the
+> subject from now on?
+
+Yes of course, no problem.
+
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

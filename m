@@ -1,56 +1,95 @@
 From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 00/23] mtd: st_spi_fsm: Add new device
-Date: Tue, 26 Nov 2013 20:07:23 -0800
-Message-ID: <20131127040723.GZ9468@ld-irv-0074.broadcom.com>
-References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org>
+Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
+Date: Tue, 26 Nov 2013 20:32:53 -0800
+Message-ID: <20131127043253.GA9468@ld-irv-0074.broadcom.com>
+References: <1385447575-23773-1-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	angus.clark-qxv4g6HH51o@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, marex-ynQEQJNshbs@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
+	pekon-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1385137380-28968-1-git-send-email-lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1385447575-23773-1-git-send-email-b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-+ Huang, Mark, SPI list
++ Lee Jones, others
 
-There seem to be multiple efforts going on that are vaguely related. I'd
-like to see more of the same people appearing on the CC list, to keep
-better coordinated.
+I'd like to keep a similar CC list for the various conversations going
+on about SPI NOR frameworks.
 
-On that topic, is the SPI dev list relevant, or would anybody working on
-the intersection of SPI and MTD be on the MTD list?
-
-On Fri, Nov 22, 2013 at 04:22:37PM +0000, Lee Jones wrote:
-> The first bunch of these patches have been on the MLs before, but 
-> didn't receive a great deal of attention for the most part. We are
-> a little more featureful this time however. We can now successfully
-> setup and configure the N25Q256. We still can't read/write/erase
-> it though. I'll start work on that next week and will provide it in
-> the next instalment.
-
-What happened to integrating a SPI NOR framework? I see you copied some
-of the m25p80 commands, but you don't share them with m25p80. I also
-understand your argument (from the first version of this patch series)
-that much of the actual controller operation is not shared with m25p80,
-but you'd be surprised how this might evolve. There are several others
-with QSPI hardware that are trying to get patches merged, some of whom
-(Huang, at least) are actively submitting patches to help with this
-abstraction.
-
-Now, I haven't had a lot of time yet to look at both yours and Huang's
-work and see what, if anything, can be shared (will do soon). But I
-think you need to be aware.
-
-BTW, can you include version markers (i.e., [PATCH v2 X/Y]) in the
-subject from now on?
-
-Brian
+On Tue, Nov 26, 2013 at 02:32:51PM +0800, Huang Shijie wrote:
+> 1.) Why add a new framework for SPI NOR?
+>   The SPI-NOR controller such as Freescale's Quadspi controller is working
+>   in a different way from the SPI bus. It should knows the NOR commands to
+>   find the right LUT sequence. Unfortunately, the current code can not meet
+>   this requirement.
+> 
+> 2.) How does this patch set do?
+>    This patch set adds a new spi-nor layer.
+>    Before this patch, the layer is like:
+> 
+>                    MTD
+>          ------------------------
+>                   m25p80
+>          ------------------------
+> 	       spi bus driver
+>          ------------------------
+> 	        SPI NOR chip
+> 
+>    After this patch, the layer is like:
+>                    MTD
+>          ------------------------
+>                   spi-nor
+>          ------------------------
+>                   m25p80
+>          ------------------------
+> 	       spi bus driver
+>          ------------------------
+> 	       SPI NOR chip
+> 
+>   With the spi-nor controller driver(Freescale Quadspi), it looks like:
+>                    MTD
+>          ------------------------
+>                   spi-nor
+>          ------------------------
+>                 fsl-quadspi
+>          ------------------------
+> 	       SPI NOR chip
+> 
+> 3.) more details
+>    This patch set adds a new data structrue spi_nor{}, clones most the common
+>   code to spi-nor.c. Make the m25p80.c use the new APIs.
+> 
+> 4.) TODO list:
+>    3.1) add the new spi_nor_device{} for the spi-nor controller's device.
+>    3.2) add the Freescale Quadspi driver.
+> 
+> 	       
+> Huang Shijie (4):
+>   mtd: spi-nor: move the SPI NOR commands to a new header file
+>   mtd: spi-nor: add a new data structrue spi_nor{}
+>   mtd: spi-nor: add the framework for SPI NOR
+>   mtd: m25p80: use the new spi-nor APIs
+> 
+>  drivers/mtd/Kconfig           |    2 +
+>  drivers/mtd/Makefile          |    1 +
+>  drivers/mtd/devices/Kconfig   |    2 +-
+>  drivers/mtd/devices/m25p80.c  | 1249 +++--------------------------------------
+>  drivers/mtd/spi-nor/Kconfig   |    6 +
+>  drivers/mtd/spi-nor/Makefile  |    1 +
+>  drivers/mtd/spi-nor/spi-nor.c | 1057 ++++++++++++++++++++++++++++++++++
+>  include/linux/mtd/spi-nor.h   |  101 ++++
+>  8 files changed, 1239 insertions(+), 1180 deletions(-)
+>  create mode 100644 drivers/mtd/spi-nor/Kconfig
+>  create mode 100644 drivers/mtd/spi-nor/Makefile
+>  create mode 100644 drivers/mtd/spi-nor/spi-nor.c
+>  create mode 100644 include/linux/mtd/spi-nor.h
+> 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

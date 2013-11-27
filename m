@@ -1,125 +1,146 @@
 From: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Subject: [PATCH 3/3] spi: rcar: Use devm_* managed allocators
-Date: Wed, 27 Nov 2013 01:41:46 +0100
-Message-ID: <1385512906-13108-3-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
-References: <1385512906-13108-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: [PATCH 00/15] Enable compilation of various Renesas drivers with
+	COMPILE_TEST
+Date: Wed, 27 Nov 2013 02:18:22 +0100
+Message-ID: <1385515117-23664-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Eduardo Valentin <eduardo.valentin-l0cyMroinI0@public.gmane.org>,
+	Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>,
+	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>,
+	Jean-Christophe Plagniol-Villard <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
+	linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-pwm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Samuel Ortiz <samuel-jcdQHdrhKHMdnm+yROfE0A@public.gmane.org>, linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Ian Molton <ian-zdned+2MO1+9FHfhHBbuYA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1385512906-13108-1-git-send-email-laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Return-path: <iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
+List-Unsubscribe: <https://lists.linuxfoundation.org/mailman/options/iommu>,
+	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://lists.linuxfoundation.org/pipermail/iommu/>
+List-Post: <mailto:iommu-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org>
+List-Help: <mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=help>
+List-Subscribe: <https://lists.linuxfoundation.org/mailman/listinfo/iommu>,
+	<mailto:iommu-request-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org?subject=subscribe>
+Sender: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+Errors-To: iommu-bounces-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-This simplies error and cleanup code paths.
+Hello,
 
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+This patch series enables driver compilation with COMPILE_TEST for various
+Renesas drivers. The approach taken here is to split the Kconfig depends line
+in two, with compile dependencies (if any) on one line and runtime
+dependencies (as a list of the platforms on which the hardware can be found)
+on another line. The runtime dependencies line is extended with
+|| COMPILE_TEST to enable test compilation. This clearly identifies compile
+dependencies, and allow test compilation while not clobbering the
+configuration menu with useless options in the normal case.
+
+The patches are based on top of v3.13-rc1. To avoid build warnings or errors
+during bisection the following patches sent to linux-sh and appropriate
+mailing lists should be applied first:
+
+serial: sh-sci: Fix warnings due to improper casts and printk formats
+DMA: shdma: Fix warnings due to improper casts and printk formats
+DMA: shdma: Fix warnings due to declared but unused symbols
+DMA: shdma: Make sh_dmae_pm static
+v4l: sh_vou: Fix warnings due to improper casts and printk formats
+mmc: sh_mmcif: Factorize DMA channel request and configuration code
+mmc: sh_mmcif: Fix compilation warning on 64-bit platforms
+mtd: sh_flctl: Fix warnings due to improper casts
+fbdev: sh_mobile_lcdcfb: Don't use plain 0 as NULL pointer
+spi: sh-msiof: Fix warnings due to improper casts
+spi: rcar: Fix uninitialized variable warning
+spi: rcar: Fix pointer cast in the remove function
+
+For convenience I've pushed the whole series and its prerequisites to my git
+tree at
+
+	git://linuxtv.org/pinchartl/fbdev.git clocks/ccf/multiarch-drivers
+
+The patches will need to go through their respective subsystem's trees. To
+help me tracking the mainlining state I'd appreciate if the respective
+maintainers could notify me when applying the patches to their trees. Before
+doing so I'd like to get an ack from Mark Brown and/or Russell King on the
+approach.
+
+Cc: dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: iommu-cunTk1MwBs9QetFLy7KEm3xJsTq8ys+cHZ5vskTnxNA@public.gmane.org
+Cc: linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-media-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+Cc: linux-pm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-pwm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
----
- drivers/spi/spi-rspi.c | 38 +++++++++++++-------------------------
- 1 file changed, 13 insertions(+), 25 deletions(-)
+Cc: netdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Chris Ball <cjb-2X9k7bc8m7Mdnm+yROfE0A@public.gmane.org>
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Cc: Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Eduardo Valentin <eduardo.valentin-l0cyMroinI0@public.gmane.org>
+Cc: Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>
+Cc: Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>
+Cc: Ian Molton <ian-zdned+2MO1+9FHfhHBbuYA@public.gmane.org>
+Cc: Jean-Christophe Plagniol-Villard <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+Cc: Joerg Roedel <joro-zLv9SwRftAIdnm+yROfE0A@public.gmane.org>
+Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Mauro Carvalho Chehab <m.chehab-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Cc: Samuel Ortiz <samuel-jcdQHdrhKHMdnm+yROfE0A@public.gmane.org>
+Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Tomi Valkeinen <tomi.valkeinen-l0cyMroinI0@public.gmane.org>
+Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Cc: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 621be5d..19c65c4 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -889,9 +889,6 @@ static int rspi_remove(struct platform_device *pdev)
- 
- 	spi_unregister_master(rspi->master);
- 	rspi_release_dma(rspi);
--	free_irq(platform_get_irq(pdev, 0), rspi);
--	clk_put(rspi->clk);
--	iounmap(rspi->addr);
- 
- 	return 0;
- }
-@@ -913,12 +910,6 @@ static int rspi_probe(struct platform_device *pdev)
- 		dev_err(&pdev->dev, "there is no set_config_register\n");
- 		return -ENODEV;
- 	}
--	/* get base addr */
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (unlikely(res == NULL)) {
--		dev_err(&pdev->dev, "invalid resource\n");
--		return -EINVAL;
--	}
- 
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
-@@ -936,19 +927,20 @@ static int rspi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, rspi);
- 	rspi->ops = ops;
- 	rspi->master = master;
--	rspi->addr = ioremap(res->start, resource_size(res));
--	if (rspi->addr == NULL) {
--		dev_err(&pdev->dev, "ioremap error.\n");
--		ret = -ENOMEM;
-+
-+	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	rspi->addr = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(rspi->addr)) {
-+		ret = PTR_ERR(rspi->addr);
- 		goto error1;
- 	}
- 
- 	snprintf(clk_name, sizeof(clk_name), "%s%d", id_entry->name, pdev->id);
--	rspi->clk = clk_get(&pdev->dev, clk_name);
-+	rspi->clk = devm_clk_get(&pdev->dev, clk_name);
- 	if (IS_ERR(rspi->clk)) {
- 		dev_err(&pdev->dev, "cannot get clock\n");
- 		ret = PTR_ERR(rspi->clk);
--		goto error2;
-+		goto error1;
- 	}
- 	clk_enable(rspi->clk);
- 
-@@ -966,36 +958,32 @@ static int rspi_probe(struct platform_device *pdev)
- 	master->transfer = rspi_transfer;
- 	master->cleanup = rspi_cleanup;
- 
--	ret = request_irq(irq, rspi_irq, 0, dev_name(&pdev->dev), rspi);
-+	ret = devm_request_irq(&pdev->dev, irq, rspi_irq, 0,
-+			       dev_name(&pdev->dev), rspi);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "request_irq error\n");
--		goto error3;
-+		goto error1;
- 	}
- 
- 	rspi->irq = irq;
- 	ret = rspi_request_dma(rspi, pdev);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "rspi_request_dma failed.\n");
--		goto error4;
-+		goto error2;
- 	}
- 
- 	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_master error.\n");
--		goto error4;
-+		goto error2;
- 	}
- 
- 	dev_info(&pdev->dev, "probed\n");
- 
- 	return 0;
- 
--error4:
--	rspi_release_dma(rspi);
--	free_irq(irq, rspi);
--error3:
--	clk_put(rspi->clk);
- error2:
--	iounmap(rspi->addr);
-+	rspi_release_dma(rspi);
- error1:
- 	spi_master_put(master);
- 
+Laurent Pinchart (15):
+  i2c: shmobile/rcar: Restrict non-COMPILE_TEST compilation
+  input: sh_keysc: Restrict non-COMPILE_TEST compilation
+  serial: sh-sci: Restrict non-COMPILE_TEST compilation
+  iommu: shmobile: Enable driver compilation with COMPILE_TEST
+  DMA: shdma: Enable driver compilation with COMPILE_TEST
+  v4l: sh_vou: Enable driver compilation with COMPILE_TEST
+  mmc: sdhi: Enable driver compilation with COMPILE_TEST
+  mmc: sh_mmcif: Enable driver compilation with COMPILE_TEST
+  mtd: sh_flctl: Enable driver compilation with COMPILE_TEST
+  irda: sh_irda: Enable driver compilation with COMPILE_TEST
+  pwm: pwm-renesas-tpu: Enable driver compilation with COMPILE_TEST
+  thermal: rcar-thermal: Enable driver compilation with COMPILE_TEST
+  fbdev: sh-mobile-lcdcfb: Enable driver compilation with COMPILE_TEST
+  spi: sh-msiof: Enable driver compilation with COMPILE_TEST
+  sh: intc: Enable driver compilation with COMPILE_TEST
+
+ drivers/dma/sh/Kconfig         | 2 +-
+ drivers/i2c/busses/Kconfig     | 4 ++--
+ drivers/input/keyboard/Kconfig | 2 +-
+ drivers/iommu/Kconfig          | 1 +
+ drivers/media/platform/Kconfig | 3 ++-
+ drivers/mmc/host/Kconfig       | 6 ++++--
+ drivers/mtd/nand/Kconfig       | 2 +-
+ drivers/net/irda/Kconfig       | 3 ++-
+ drivers/pwm/Kconfig            | 2 +-
+ drivers/sh/intc/Kconfig        | 2 +-
+ drivers/spi/Kconfig            | 3 ++-
+ drivers/thermal/Kconfig        | 2 +-
+ drivers/tty/serial/Kconfig     | 3 ++-
+ drivers/video/Kconfig          | 8 +++++---
+ 14 files changed, 26 insertions(+), 17 deletions(-)
+
 -- 
-1.8.3.2
+Regards,
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Laurent Pinchart

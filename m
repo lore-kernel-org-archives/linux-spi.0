@@ -1,33 +1,42 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
-Date: Wed, 27 Nov 2013 12:39:24 +0800
-Message-ID: <5295777C.4090702@freescale.com>
-References: <1385447575-23773-1-git-send-email-b32955@freescale.com> <20131127043253.GA9468@ld-irv-0074.broadcom.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>, <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	<pekon-l0cyMroinI0@public.gmane.org>, <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Subject: [PATCH v2] spi: sh-msiof: Fix warnings due to improper casts
+Date: Wed, 27 Nov 2013 11:18:06 +0100
+Message-ID: <1385547486-13802-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131127043253.GA9468-bU/DPfM3abD4WzifrMjOTkcViWtcw2C0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-=E4=BA=8E 2013=E5=B9=B411=E6=9C=8827=E6=97=A5 12:32, Brian Norris =E5=86=
-=99=E9=81=93:
-> 'd like to keep a similar CC list for the various conversations going
-> on about SPI NOR frameworks.
-it seems i missed to CC linux-SPI maillist.
+Cast pointers to uintptr_t instead of unsigned int. This fixes warnings
+on platforms where pointers have a different size than int.
 
-thanks
-Huang Shijie
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+---
+ drivers/spi/spi-sh-msiof.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Changes compared to v1:
+
+- Cast to uintptr_t instead of unsigned long
+
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index c74298c..86f822a 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -421,7 +421,7 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
+ 	}
+ 
+ 	/* use spi->controller data for CS (same strategy as spi_gpio) */
+-	gpio_set_value((unsigned)spi->controller_data, value);
++	gpio_set_value((uintptr_t)spi->controller_data, value);
+ 
+ 	if (is_on == BITBANG_CS_INACTIVE) {
+ 		if (test_and_clear_bit(0, &p->flags)) {
+-- 
+1.8.3.2
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

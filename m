@@ -1,206 +1,46 @@
-From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 00/23] mtd: st_spi_fsm: Add new device
-Date: Thu, 28 Nov 2013 09:29:04 +0000
-Message-ID: <20131128092904.GZ3296@lee--X1>
-References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org>
- <20131127040723.GZ9468@ld-irv-0074.broadcom.com>
- <20131127115226.GC3296@lee--X1>
- <5296B9C5.3060704@freescale.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	angus.clark-qxv4g6HH51o@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+From: Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi/pxa2xx: Restore private register bits.
+Date: Fri, 29 Nov 2013 02:13:11 +0800
+Message-ID: <1385662391-27573-1-git-send-email-chiau.ee.chew@intel.com>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <5296B9C5.3060704-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-> >However, as we send entire 'message sequences' to the FSM Controller
-> >as opposed to merely OPCODEs we would have to extract the OPCODE fro=
-m
-> >flash->command[0] and call our own functions to craft the correct
-> >'message sequence' for the task. For this reason we rejected the ide=
-a
-> >and went with a stand-alone driver.
-> >
-> could you send me the datasheet of your spi nor controller?
-> I can change my code if it really not good enough.
+From: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
-Unfortunately not, it's ST company confidential.
+The Intel LPSS SPI private register bits have to be restored
+when system resume from S3 suspend.
 
-> we can store the opcode to a field, such as spi_nor_write_op.
+Signed-off-by: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Acked-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
-The OPCODE isn't the issue here.
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index 7028180..7765b19 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1293,6 +1293,9 @@ static int pxa2xx_spi_resume(struct device *dev)
+ 	/* Enable the SSP clock */
+ 	clk_prepare_enable(ssp->clk);
+ 
++	/* Restore LPSS private register bits */
++	lpss_ssp_setup(drv_data);
++
+ 	/* Start the queue running */
+ 	status = spi_master_resume(drv_data->master);
+ 	if (status != 0) {
+-- 
+1.7.4.4
 
-> >The framework which Huang is proposing suffers from the same issues.
-> >Only providing read(), write(), read_reg() and write_reg() doesn't
-> >work for our use-case, as we'd have to decode the flash->command[0] =
-and
-> >invoke our own internal routines as before.
-> >
-> >The only framework with would work for us would consist almost all
-> >of the important functions such as; read(), write(), erase(),
-> >wait_busy(), read_jedec(), read_status_reg(), write_status_reg(),
-> >read_control_reg(), write_control_reg(), etc. However, this approach
-> read_jedec() can be replaced by read_reg(0x9f);
->=20
-> read_status() can be replaced by read_reg(0x5);
->=20
-> ....
->=20
-> write_control_reg() can be replaced by write_reg(xx).
->=20
-> Please correct me if i am wrong.
->
-> IMHO, the current four hooks for spi-nor{} can do all the things.
->=20
->      read/write/read_reg/write_reg.
-
-I _fully_ understand your implementation, but it just won't work for
-our controller. Or it would, but it would mean writing _more_ code to
-bend it into your framework, not less. Let me try to explain in
-another way by implementing what you're suggesting. For your JEDEC
-example above, we would have to implement [1] which to my mind
-completely defeats the purpose.
-
-Most controllers just take an OPCODE and pass it on to the controller
-and have done with it. The issue that you're attempting to rectify is
-that the m25p80 expects every controller to be an SPI controller
-registered to the SPI framework, but as we both know that's not always
-practical as the SPI framework doesn't allow all configuration
-information to be passed back to the controller driver. Our issue is
-not the same. We are required to send entire 'message sequences', to
-the controller rather than just opcodes. The JEDEC message sequence
-can be seen below. Bear in mind that this is also one of the more
-simple message sequences. Some of them even vary depending on which
-chip is present.
-
-[1]:
-
-static struct stfsm_seq stfsm_seq_read_jedec =3D {
-	.data_size =3D TRANSFER_SIZE(8),
-	.seq_opc[0] =3D (SEQ_OPC_PADS_1 |
-		       SEQ_OPC_CYCLES(8) |
-		       SEQ_OPC_OPCODE(FLASH_CMD_RDID)),
-	.seq =3D {
-		STFSM_INST_CMD1,
-		STFSM_INST_DATA_READ,
-		STFSM_INST_STOP,
-	},
-	.seq_cfg =3D (SEQ_CFG_PADS_1 |
-		    SEQ_CFG_READNOTWRITE |
-		    SEQ_CFG_CSDEASSERT |
-		    SEQ_CFG_STARTSEQ),
-};
-
-static inline int stfsm_is_idle(struct stfsm *fsm)
-{
-	return readl(fsm->base + SPI_FAST_SEQ_STA) & 0x10;
-}
-
-static inline uint32_t stfsm_fifo_available(struct stfsm *fsm)
-{
-	return (readl(fsm->base + SPI_FAST_SEQ_STA) >> 5) & 0x7f;
-}
-
-static inline void stfsm_load_seq(struct stfsm *fsm,
-				  const struct stfsm_seq *seq)
-{
-	void __iomem *dst =3D fsm->base + SPI_FAST_SEQ_TRANSFER_SIZE;
-	const uint32_t *src =3D (const uint32_t *)seq;
-	int words =3D STFSM_SEQ_SIZE / sizeof(uint32_t);
-
-	while (words--) {
-		writel(*src, dst);
-		src++;
-		dst +=3D 4;
-	}
-}
-
-static void stfsm_wait_seq(struct stfsm *fsm)
-{
-	unsigned long timeo =3D jiffies + HZ;
-
-	while (time_before(jiffies, timeo)) {
-		if (stfsm_is_idle(fsm))
-			return;
-
-		cond_resched();
-	}
-}
-
-static void stfsm_read_fifo(struct stfsm *fsm, uint32_t *buf,
-			    const uint32_t size)
-{
-	uint32_t remaining =3D size >> 2;
-	uint32_t avail;
-	uint32_t words;
-
-	while (remaining) {
-		for (;;) {
-			avail =3D stfsm_fifo_available(fsm);
-			if (avail)
-				break;
-			udelay(1);
-		}
-		words =3D min(avail, remaining);
-		remaining -=3D words;
-
-		readsl(fsm->base + SPI_FAST_SEQ_DATA_REG, buf, words);
-		buf +=3D words;
-	}
-}
-
-static void stfsm_read_jedec(struct stfsm *fsm, u8 *jedec)
-{
-	const struct stfsm_seq *seq =3D &stfsm_seq_read_jedec;
-	uint32_t tmp[2];
-
-	stfsm_load_seq(fsm, seq);
-
-	stfsm_read_fifo(fsm, tmp, 8);
-
-	memcpy(jedec, tmp, 5);
-
-	stfsm_wait_seq(fsm);
-}
-
-static int stfsm_read_reg(struct spi_nor *flash, u8 opcode, u8 *buf, in=
-t len)
-{
-	struct stfsm *fsm =3D dev_get_drvdata(flash->mtd->dev.parent);
-=09
-	switch (opcode) {
-	case OPCODE_RDID :
-		stfsm_read_jedec(fsm, buf);
-		break;
-
-	case OPCODE_A :
-		stfsm_do_a();
-		break;
-
-	/******** SNIP ********/
-
-	case OPCODE_Z :
-		stfsm_do_z();
-		break;
-
-	case default :
-		return -EINVAL;
-	}
-}
-
---=20
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org =E2=94=82 Open source software for ARM SoCs
-=46ollow Linaro: Facebook | Twitter | Blog
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

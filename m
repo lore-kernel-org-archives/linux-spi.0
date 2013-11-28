@@ -1,77 +1,36 @@
-From: Thomas Behan <thomas.behan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 1/4] spi: omap-100k: Fixed spacing on while loops
-Date: Wed, 27 Nov 2013 23:27:21 -0500
-Message-ID: <1385612844-22482-2-git-send-email-thomas.behan@gmail.com>
-References: <1385612844-22482-1-git-send-email-thomas.behan@gmail.com>
-Cc: broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Thomas Behan <thomas.behan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 09/17] spi/spi.h: Add "mem" variable in spi master.
+Date: Thu, 28 Nov 2013 10:08:44 +0530
+Message-ID: <5296C8D4.80004@ti.com>
+References: <1385451313-1875-1-git-send-email-sourav.poddar@ti.com> <1385451313-1875-10-git-send-email-sourav.poddar@ti.com> <20131126130119.GH14725@sirena.org.uk> <52949C9F.10008@ti.com> <20131126132051.GO14725@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <balbi-l0cyMroinI0@public.gmane.org>,
+	<linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1385612844-22482-1-git-send-email-thomas.behan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20131126132051.GO14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-checkpatch.pl generated several errors from "while(" statements which should
-have read "while (" to comply with the style guide. These errors have been
-fixed.
-
-Signed-off-by: Thomas Behan <thomas.behan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-omap-100k.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
-index b6ed82b..bdf6696 100644
---- a/drivers/spi/spi-omap-100k.c
-+++ b/drivers/spi/spi-omap-100k.c
-@@ -147,7 +147,7 @@ static void spi100k_write_data(struct spi_master *master, int len, int data)
- 	       spi100k->base + SPI_CTRL);
- 
- 	/* Wait for bit ack send change */
--	while((readw(spi100k->base + SPI_STATUS) & SPI_STATUS_WE) != SPI_STATUS_WE);
-+	while ((readw(spi100k->base + SPI_STATUS) & SPI_STATUS_WE) != SPI_STATUS_WE);
- 	udelay(1000);
- 
- 	spi100k_disable_clock(master);
-@@ -168,7 +168,7 @@ static int spi100k_read_data(struct spi_master *master, int len)
- 	       SPI_CTRL_RD,
- 	       spi100k->base + SPI_CTRL);
- 
--	while((readw(spi100k->base + SPI_STATUS) & SPI_STATUS_RD) != SPI_STATUS_RD);
-+	while ((readw(spi100k->base + SPI_STATUS) & SPI_STATUS_RD) != SPI_STATUS_RD);
- 	udelay(1000);
- 
- 	dataL = readw(spi100k->base + SPI_RX_LSB);
-@@ -226,7 +226,7 @@ omap1_spi100k_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
- 				spi100k_write_data(spi->master, word_len, *tx++);
- 			if (xfer->rx_buf != NULL)
- 				*rx++ = spi100k_read_data(spi->master, word_len);
--		} while(c);
-+		} while (c);
- 	} else if (word_len <= 16) {
- 		u16             *rx;
- 		const u16       *tx;
-@@ -239,7 +239,7 @@ omap1_spi100k_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
- 				spi100k_write_data(spi->master,word_len, *tx++);
- 			if (xfer->rx_buf != NULL)
- 				*rx++ = spi100k_read_data(spi->master,word_len);
--		} while(c);
-+		} while (c);
- 	} else if (word_len <= 32) {
- 		u32             *rx;
- 		const u32       *tx;
-@@ -252,7 +252,7 @@ omap1_spi100k_txrx_pio(struct spi_device *spi, struct spi_transfer *xfer)
- 				spi100k_write_data(spi->master,word_len, *tx);
- 			if (xfer->rx_buf != NULL)
- 				*rx = spi100k_read_data(spi->master,word_len);
--		} while(c);
-+		} while (c);
- 	}
- 	return count - c;
- }
--- 
-1.8.1.2
-
+On Tuesday 26 November 2013 06:50 PM, Mark Brown wrote:
+> On Tue, Nov 26, 2013 at 06:35:35PM +0530, Sourav Poddar wrote:
+>> On Tuesday 26 November 2013 06:31 PM, Mark Brown wrote:
+>>> Is this really generic enough to put here rather than in the driver
+>>> data?
+>> The thought behind this was that if a master controller supports
+>> memory mapped operation and slave wants to use memcpy in his
+>> driver(bypassing spi ), then we should have a mean to communicate
+>> between the
+>> master and the slave. So, 'spi_master' seems to be the place for me
+>> for this data,
+>> which could be parsed in the slave side also.
+> I would have expected that the address would be returned by the function
+> that maps the buffer in rather than stored permanently in the master.
+Yes, it could be be done the above way. I will change.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

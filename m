@@ -1,36 +1,61 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 03/17] spi/qspi: parse register by name.
-Date: Thu, 28 Nov 2013 16:49:35 +0530
-Message-ID: <529726C7.8060005@ti.com>
-References: <1385451313-1875-1-git-send-email-sourav.poddar@ti.com> <1385451313-1875-4-git-send-email-sourav.poddar@ti.com> <20131126103029.GY14725@sirena.org.uk> <5294835D.5090902@ti.com> <20131126122442.GC14725@sirena.org.uk> <5296CA5A.90304@ti.com> <20131128105423.GL14725@sirena.org.uk> <529721BF.4010902@ti.com> <20131128111152.GN14725@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/pxa2xx: Restore private register bits.
+Date: Thu, 28 Nov 2013 11:22:35 +0000
+Message-ID: <20131128112235.GA27568@sirena.org.uk>
+References: <1385662391-27573-1-git-send-email-chiau.ee.chew@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <balbi-l0cyMroinI0@public.gmane.org>,
-	<linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="1yeeQ81UyVL57Vl7"
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131128111152.GN14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1385662391-27573-1-git-send-email-chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thursday 28 November 2013 04:41 PM, Mark Brown wrote:
-> On Thu, Nov 28, 2013 at 04:28:07PM +0530, Sourav Poddar wrote:
->> On Thursday 28 November 2013 04:24 PM, Mark Brown wrote:
->>> That means that if you switch all resources to _byname then the driver
->>> won't find any resources at all and will fail.  This will in turn mean
->>> that any device trees that work with the current code wil start failing,
->>> breaking compatibility.
->> I am changing my code to use *byname for all resources. There is no
->> dts available now in mainline using this code. I have added the dts file
->> as patch 15, 16 of this series to take care of this.
-> We're now aiming for DT to be a stable interface and the existing
-> binding has been included in a release so you really ought to be keeping
-> compatiblity.
-Ok. So I will check for *byname, if not found I will switch to 
-"platform_get_resource".
+
+--1yeeQ81UyVL57Vl7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Nov 29, 2013 at 02:13:11AM +0800, Chew Chiau Ee wrote:
+> From: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+>=20
+> The Intel LPSS SPI private register bits have to be restored
+> when system resume from S3 suspend.
+
+Applied, thanks.
+
+--1yeeQ81UyVL57Vl7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSlyd4AAoJELSic+t+oim9slMQAIw7FQ288zfP6Md+WEf8tUl8
+JpLjW5rpwQ1OgHgTPAuVCDNCjRjpTHo6e1FpQLMevpJqf4ASK8dxm8TmTA4WnVq9
+0sQNrIMcnJmkIrdfvyhGiil55YOeA6BcH3t55Y/tCyRvtjgPHpyRpDM2nCAmsyLV
+8GpxaODp5XzimNE5NuuCqClvwpdKDPTFaQL4RTkx1wvMfKc2EL87IYYIE2CEyjR4
+7Ubp/uDBDlwQ3mZj0ouNPGcB5EL+SmrWVf3ygvDGTm6UrGzND4moGn4iyNTXLfih
+u532UM0Qt/KMhIq7w0AGPWkd3kexKtX7JwStsWTkv524rvr32D6nemrsKK3uDZ/W
+dv7dmUSRAsE5/KRuMM+hwiR6zJI19cKxd43liurY+HMHmcASL+OfAN+Vw4veJYKF
+kLbKGDpPJ9dYkTEBX1r0IQfMvtPOJXV3bFs4Pm34HIsbVcLC6Y2Dg8iVdGLX130O
+oK3oYkTcsaHcnbc9VXDlH3qsQAPcFgZKRLMeZjJkhiJ9dQsMhGX7cwhHfU/8ZWFR
+P2mEBp1GRjMWDn5eMlBO1fd9Qvbq/rSYbH3uif2CQHUft+3KyKKV7CjOkNPq2Bqp
+3W+BXC+TcYt60oMZudIToKjcPZxD5xT9UE0R/RpMDeInYR9Laa8vxkm97vU1ltV4
+idBdWV4NcAnwzx5e652m
+=101M
+-----END PGP SIGNATURE-----
+
+--1yeeQ81UyVL57Vl7--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

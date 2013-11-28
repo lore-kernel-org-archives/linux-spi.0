@@ -1,78 +1,207 @@
-From: Angus Clark <angus.clark@st.com>
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 00/23] mtd: st_spi_fsm: Add new device
-Date: Thu, 28 Nov 2013 09:07:15 +0000
-Message-ID: <529707C3.40208@st.com>
+Date: Thu, 28 Nov 2013 09:29:04 +0000
+Message-ID: <20131128092904.GZ3296@lee--X1>
 References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org>
  <20131127040723.GZ9468@ld-irv-0074.broadcom.com>
- <20131127115226.GC3296@lee--X1> <5296B9C5.3060704@freescale.com>
+ <20131127115226.GC3296@lee--X1>
+ <5296B9C5.3060704@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Lee Jones <lee.jones@linaro.org>, linus.walleij@linaro.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
- Brian Norris <computersforpeace@gmail.com>, dwmw2@infradead.org,
- linux-arm-kernel@lists.infradead.org
-To: Huang Shijie <b32955@freescale.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <5296B9C5.3060704@freescale.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	angus.clark-qxv4g6HH51o@public.gmane.org, linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <5296B9C5.3060704-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-SGkgSHVhbmcgU2hpamllLAoKT24gMTEvMjgvMjAxMyAwMzozNCBBTSwgSHVhbmcgU2hpamllIHdy
-b3RlOgo+IOS6jiAyMDEz5bm0MTHmnIgyN+aXpSAxOTo1MiwgTGVlIEpvbmVzIOWGmemBkzoKPj4g
-SG93ZXZlciwgYXMgd2Ugc2VuZCBlbnRpcmUgJ21lc3NhZ2Ugc2VxdWVuY2VzJyB0byB0aGUgRlNN
-IENvbnRyb2xsZXIKPj4gYXMgb3Bwb3NlZCB0byBtZXJlbHkgT1BDT0RFcyB3ZSB3b3VsZCBoYXZl
-IHRvIGV4dHJhY3QgdGhlIE9QQ09ERSBmcm9tCj4+IGZsYXNoLT5jb21tYW5kWzBdIGFuZCBjYWxs
-IG91ciBvd24gZnVuY3Rpb25zIHRvIGNyYWZ0IHRoZSBjb3JyZWN0Cj4+ICdtZXNzYWdlIHNlcXVl
-bmNlJyBmb3IgdGhlIHRhc2suIEZvciB0aGlzIHJlYXNvbiB3ZSByZWplY3RlZCB0aGUgaWRlYQo+
-PiBhbmQgd2VudCB3aXRoIGEgc3RhbmQtYWxvbmUgZHJpdmVyLgo+Pgo+IGNvdWxkIHlvdSBzZW5k
-IG1lIHRoZSBkYXRhc2hlZXQgb2YgeW91ciBzcGkgbm9yIGNvbnRyb2xsZXI/Cj4gSSBjYW4gY2hh
-bmdlIG15IGNvZGUgaWYgaXQgcmVhbGx5IG5vdCBnb29kIGVub3VnaC4KCkkgd2lsbCByZXBseSB0
-byB0aGUgIm10ZDogc3BpLW5vciIgdGhyZWFkIHJlZ2FyZGluZyB0aGUgcHJvcG9zZWQgZnJhbWV3
-b3JrLCBidXQKYSBjb3VwbGUgb2YgYW5zd2VycyB0byB5b3VyIHNwZWNpZmljIHF1ZXN0aW9ucyBi
-ZWxvdy4KCj4gCj4gd2UgY2FuIHN0b3JlIHRoZSBvcGNvZGUgdG8gYSBmaWVsZCwgc3VjaCBhcyBz
-cGlfbm9yX3dyaXRlX29wLgo+PiBUaGUgZnJhbWV3b3JrIHdoaWNoIEh1YW5nIGlzIHByb3Bvc2lu
-ZyBzdWZmZXJzIGZyb20gdGhlIHNhbWUgaXNzdWVzLgo+PiBPbmx5IHByb3ZpZGluZyByZWFkKCks
-IHdyaXRlKCksIHJlYWRfcmVnKCkgYW5kIHdyaXRlX3JlZygpIGRvZXNuJ3QKPj4gd29yayBmb3Ig
-b3VyIHVzZS1jYXNlLCBhcyB3ZSdkIGhhdmUgdG8gZGVjb2RlIHRoZSBmbGFzaC0+Y29tbWFuZFsw
-XSBhbmQKPj4gaW52b2tlIG91ciBvd24gaW50ZXJuYWwgcm91dGluZXMgYXMgYmVmb3JlLgo+Pgo+
-PiBUaGUgb25seSBmcmFtZXdvcmsgd2l0aCB3b3VsZCB3b3JrIGZvciB1cyB3b3VsZCBjb25zaXN0
-IGFsbW9zdCBhbGwKPj4gb2YgdGhlIGltcG9ydGFudCBmdW5jdGlvbnMgc3VjaCBhczsgcmVhZCgp
-LCB3cml0ZSgpLCBlcmFzZSgpLAo+PiB3YWl0X2J1c3koKSwgcmVhZF9qZWRlYygpLCByZWFkX3N0
-YXR1c19yZWcoKSwgd3JpdGVfc3RhdHVzX3JlZygpLAo+PiByZWFkX2NvbnRyb2xfcmVnKCksIHdy
-aXRlX2NvbnRyb2xfcmVnKCksIGV0Yy4gSG93ZXZlciwgdGhpcyBhcHByb2FjaAo+PiAgIAo+IHJl
-YWRfamVkZWMoKSBjYW4gYmUgcmVwbGFjZWQgYnkgcmVhZF9yZWcoMHg5Zik7Cj4gCj4gcmVhZF9z
-dGF0dXMoKSBjYW4gYmUgcmVwbGFjZWQgYnkgcmVhZF9yZWcoMHg1KTsKPiAKPiAuLi4uCj4gCj4g
-d3JpdGVfY29udHJvbF9yZWcoKSBjYW4gYmUgcmVwbGFjZWQgYnkgd3JpdGVfcmVnKHh4KS4KClVu
-Zm9ydHVuYXRlbHkgdGhlIEgvVyBDb250cm9sbGVyIGluIHF1ZXN0aW9uIGNvbWVzIHdpdGggYSBm
-ZXcgcmVzdHJpY3Rpb25zLiAgT25lCnJlc3RyaWN0aW9uIGlzIHRoYXQgZGF0YSBtdXN0IGJlIHJl
-YWQgaW4gbXVsdGlwbGVzIG9mIDQgYnl0ZXMuICBBcyBzdWNoLCBpdAp3b3VsZCBub3QgYmUgYWJs
-ZSB0byBob25vdXIgYSBjYWxsIG9mICJmbGFzaC0+cmVhZF9yZWcoZmxhc2gsIE9QQ09ERV9SRElE
-LCBpZCwgNSk7IgoKT2YgY291cnNlLCBpZiB0aGUgSC9XIGRyaXZlciBrbm93cyB0aGF0IHdlIGFy
-ZSBpc3N1aW5nIGEgcmVhZF9qZWRlYygpIG9wZXJhdGlvbiwKdGhlbiBpdCBjYW4gbWFrZSB0aGUg
-YXNzdW1wdGlvbiB0aGF0IG92ZXItcmVhZGluZyBpcyBiZW5pZ24sIGFuZCB3ZSBjYW4gaW5zdGVh
-ZApyZWFkIDggYnl0ZXMgb2YgZGF0YSBmcm9tIHRoZSBGbGFzaCBkZXZpY2UsIGFuZCByZXR1cm4g
-NSB0byB0aGUgY2FsbGVyLgpIb3dldmVyLCB3aXRob3V0IGtub3dpbmcgd2hhdCBvcGVyYXRpb24g
-aXMgYmVpbmcgcmVxdWVzdGVkLCBubyBzdWNoIGFzc3VtcHRpb24KY2FuIGJlIG1hZGUuCgo+IFBs
-ZWFzZSBjb3JyZWN0IG1lIGlmIGkgYW0gd3JvbmcuCj4gCj4gSU1ITywgdGhlIGN1cnJlbnQgZm91
-ciBob29rcyBmb3Igc3BpLW5vcnt9IGNhbiBkbyBhbGwgdGhlIHRoaW5ncy4KPiAKPiAgICAgIHJl
-YWQvd3JpdGUvcmVhZF9yZWcvd3JpdGVfcmVnLgoKQXMgaXQgc3RhbmRzLCB0aGUgc3BpLW5vciBm
-cmFtZXdvcmsgY2Fubm90IHN1cHBvcnQgdGhlIHJlcXVpcmVtZW50cyBvZiB0aGUKc3Rfc3BpX2Zz
-bSBjb250cm9sbGVyLiAgSSB3aWxsIGdvIGludG8gZnVydGhlciBkZXRhaWxzIG9uIHRoZSAibXRk
-OiBzcGktbm9yIiB0aHJlYWQuCgpDaGVlcnMsCgpBbmd1cwoKCi0tIAotLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFuZ3VzIENsYXJrClNUIE1pY3JvZWxlY3Ryb25pY3MgKFIm
-RCkgTHRkLgoxMDAwIEF6dGVjIFdlc3QsIEJyaXN0b2wsIEJTMzIgNFNRCmVtYWlsOiBhbmd1cy5j
-bGFya0BzdC5jb20KdGVsOiArNDQgKDApIDE0NTQgNDYyMzg5CnN0LXRpbmE6IDA2NSAyMzg5Ci0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eCBNVEQgZGlzY3Vzc2lvbiBt
-YWlsaW5nIGxpc3QKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9s
-aW51eC1tdGQvCg==
+> >However, as we send entire 'message sequences' to the FSM Controller
+> >as opposed to merely OPCODEs we would have to extract the OPCODE fro=
+m
+> >flash->command[0] and call our own functions to craft the correct
+> >'message sequence' for the task. For this reason we rejected the ide=
+a
+> >and went with a stand-alone driver.
+> >
+> could you send me the datasheet of your spi nor controller?
+> I can change my code if it really not good enough.
+
+Unfortunately not, it's ST company confidential.
+
+> we can store the opcode to a field, such as spi_nor_write_op.
+
+The OPCODE isn't the issue here.
+
+> >The framework which Huang is proposing suffers from the same issues.
+> >Only providing read(), write(), read_reg() and write_reg() doesn't
+> >work for our use-case, as we'd have to decode the flash->command[0] =
+and
+> >invoke our own internal routines as before.
+> >
+> >The only framework with would work for us would consist almost all
+> >of the important functions such as; read(), write(), erase(),
+> >wait_busy(), read_jedec(), read_status_reg(), write_status_reg(),
+> >read_control_reg(), write_control_reg(), etc. However, this approach
+> read_jedec() can be replaced by read_reg(0x9f);
+>=20
+> read_status() can be replaced by read_reg(0x5);
+>=20
+> ....
+>=20
+> write_control_reg() can be replaced by write_reg(xx).
+>=20
+> Please correct me if i am wrong.
+>
+> IMHO, the current four hooks for spi-nor{} can do all the things.
+>=20
+>      read/write/read_reg/write_reg.
+
+I _fully_ understand your implementation, but it just won't work for
+our controller. Or it would, but it would mean writing _more_ code to
+bend it into your framework, not less. Let me try to explain in
+another way by implementing what you're suggesting. For your JEDEC
+example above, we would have to implement [1] which to my mind
+completely defeats the purpose.
+
+Most controllers just take an OPCODE and pass it on to the controller
+and have done with it. The issue that you're attempting to rectify is
+that the m25p80 expects every controller to be an SPI controller
+registered to the SPI framework, but as we both know that's not always
+practical as the SPI framework doesn't allow all configuration
+information to be passed back to the controller driver. Our issue is
+not the same. We are required to send entire 'message sequences', to
+the controller rather than just opcodes. The JEDEC message sequence
+can be seen below. Bear in mind that this is also one of the more
+simple message sequences. Some of them even vary depending on which
+chip is present.
+
+[1]:
+
+static struct stfsm_seq stfsm_seq_read_jedec =3D {
+	.data_size =3D TRANSFER_SIZE(8),
+	.seq_opc[0] =3D (SEQ_OPC_PADS_1 |
+		       SEQ_OPC_CYCLES(8) |
+		       SEQ_OPC_OPCODE(FLASH_CMD_RDID)),
+	.seq =3D {
+		STFSM_INST_CMD1,
+		STFSM_INST_DATA_READ,
+		STFSM_INST_STOP,
+	},
+	.seq_cfg =3D (SEQ_CFG_PADS_1 |
+		    SEQ_CFG_READNOTWRITE |
+		    SEQ_CFG_CSDEASSERT |
+		    SEQ_CFG_STARTSEQ),
+};
+
+static inline int stfsm_is_idle(struct stfsm *fsm)
+{
+	return readl(fsm->base + SPI_FAST_SEQ_STA) & 0x10;
+}
+
+static inline uint32_t stfsm_fifo_available(struct stfsm *fsm)
+{
+	return (readl(fsm->base + SPI_FAST_SEQ_STA) >> 5) & 0x7f;
+}
+
+static inline void stfsm_load_seq(struct stfsm *fsm,
+				  const struct stfsm_seq *seq)
+{
+	void __iomem *dst =3D fsm->base + SPI_FAST_SEQ_TRANSFER_SIZE;
+	const uint32_t *src =3D (const uint32_t *)seq;
+	int words =3D STFSM_SEQ_SIZE / sizeof(uint32_t);
+
+	while (words--) {
+		writel(*src, dst);
+		src++;
+		dst +=3D 4;
+	}
+}
+
+static void stfsm_wait_seq(struct stfsm *fsm)
+{
+	unsigned long timeo =3D jiffies + HZ;
+
+	while (time_before(jiffies, timeo)) {
+		if (stfsm_is_idle(fsm))
+			return;
+
+		cond_resched();
+	}
+}
+
+static void stfsm_read_fifo(struct stfsm *fsm, uint32_t *buf,
+			    const uint32_t size)
+{
+	uint32_t remaining =3D size >> 2;
+	uint32_t avail;
+	uint32_t words;
+
+	while (remaining) {
+		for (;;) {
+			avail =3D stfsm_fifo_available(fsm);
+			if (avail)
+				break;
+			udelay(1);
+		}
+		words =3D min(avail, remaining);
+		remaining -=3D words;
+
+		readsl(fsm->base + SPI_FAST_SEQ_DATA_REG, buf, words);
+		buf +=3D words;
+	}
+}
+
+static void stfsm_read_jedec(struct stfsm *fsm, u8 *jedec)
+{
+	const struct stfsm_seq *seq =3D &stfsm_seq_read_jedec;
+	uint32_t tmp[2];
+
+	stfsm_load_seq(fsm, seq);
+
+	stfsm_read_fifo(fsm, tmp, 8);
+
+	memcpy(jedec, tmp, 5);
+
+	stfsm_wait_seq(fsm);
+}
+
+static int stfsm_read_reg(struct spi_nor *flash, u8 opcode, u8 *buf, in=
+t len)
+{
+	struct stfsm *fsm =3D dev_get_drvdata(flash->mtd->dev.parent);
+=09
+	switch (opcode) {
+	case OPCODE_RDID :
+		stfsm_read_jedec(fsm, buf);
+		break;
+
+	case OPCODE_A :
+		stfsm_do_a();
+		break;
+
+	/******** SNIP ********/
+
+	case OPCODE_Z :
+		stfsm_do_z();
+		break;
+
+	case default :
+		return -EINVAL;
+	}
+}
+
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

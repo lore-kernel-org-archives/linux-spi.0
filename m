@@ -1,76 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] Fix long standing chip select issue for non-default
- CS-polarity setups
-Date: Thu, 28 Nov 2013 12:31:01 +0000
-Message-ID: <20131128123101.GA11292@sirena.org.uk>
-References: <EE805C3B-7650-45CF-ACA7-5A83758B7F77@martin.sperl.org>
- <20131127184001.GG14725@sirena.org.uk>
- <36A84195-DC42-499A-8663-5AE0CCDD720F@martin.sperl.org>
+From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: sh-msiof: Convert to clk_prepare/unprepare
+Date: Thu, 28 Nov 2013 15:16:19 +0100
+Message-ID: <2098733.0eJJDEzLLR@avalon>
+References: <1385602783-3439-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com> <1385602783-3439-2-git-send-email-laurent.pinchart+renesas@ideasonboard.com> <20131128103407.GI14725@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="pWyiEgJYm5f9v55/"
-Cc: bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org, swarren-3lzwWm7+WeqjrCrn2yxA+g@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+Content-Type: multipart/signed; boundary="nextPart2201884.GbWSsosm3Y"; micalg="pgp-sha1"; protocol="application/pgp-signature"
+Cc: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <36A84195-DC42-499A-8663-5AE0CCDD720F-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <20131128103407.GI14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---pWyiEgJYm5f9v55/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+--nextPart2201884.GbWSsosm3Y
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Nov 27, 2013 at 08:00:00PM +0100, Martin Sperl wrote:
+Hi Mark,
 
-> Still I believe "compiling" the flags once in the setup code and then=20
-> just using them should avoid wasting some cpu cycles in this driver.
+On Thursday 28 November 2013 10:34:07 Mark Brown wrote:
+> On Thu, Nov 28, 2013 at 02:39:43AM +0100, Laurent Pinchart wrote:
+> > Get the driver ready for the migration to the common clock framework by
+> > calling clk_prepare() and clk_unprepare(). The calls are added in the
+> > probe and remove handlers as the clk_enable() and clk_disable() calls
+> > are located in atomic context and there's no callback function in
+> > non-atomic context that can be used to prepare/unprepare the clock.
+> 
+> Applied, thanks.  However it does seem like you should be able to move
+> the prepare and disable to runtime PM rather than leaving it prepared
+> for the entire time the driver is loaded.  In most systems this won't
+> make any difference since prepare won't do anything but it's a bit
+> neater.
 
-Yeah, that's fine - part of what I'm doing when I review patches is
-reviewing the changelog against the code to help make sure that the
-change is doing what it's supposed to (this is one way to spot
-unintended side effects) so the problem was that the two didn't tie
-together more than anything else.
+It would be, but I believe the driver is currently broken in that regard. It 
+calls the runtime PM sync API with a spinlock held, which if I'm not mistaken 
+isn't right. That should be fixed, but is a bit out of scope of this work, 
+hence the simple solution.
 
-> > That's just never going to be a sane thing to change on the fly though.
-> > Changes to things that don't affect /CS are more interesting here.
+-- 
+Regards,
 
-> I believe we need to state the above fact explicitly that this has
-> the potential for a race condition (maybe other flags as well) in case=20
-> no bus-lock is held and thought should be given to that during the
-> design.
+Laurent Pinchart
 
-For the API it's basically just saying that it should take effect at the
-start of the next operation (ie, any in flight operations will be fine).
-There may be some setups in which changing /CS makes sense, for example
-with higher level coordination going on or a design requirement that the
-bus isn't shared I guess.  But documentation updates are welcome!
-
---pWyiEgJYm5f9v55/
+--nextPart2201884.GbWSsosm3Y
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSlzeCAAoJELSic+t+oim91DkP/1EdvPtojPdEFs7jcE0XVPyl
-Q1atZPkVbAcNOwwY0jAnorWCtWiwbKt4p6UDj/gz1rreWYgagc+HZxZn+TrDny8r
-/Gi9pXXM4e6poB+hfTgDTgOrPK4+3Qqjv021p0k/xO2VAWQq1HXUuhwh6bZFXvCr
-4nOTUog/5a52/i6DiXUR3P7PHjwjMIjWFeAdUeGm1BLWEiMbD0wbyzWb5HLpgN68
-V3ELOmvx+bybCrKsIX76E0FVWa6/99fp6OQbgRf68t3iCs0j23R1amQ1gxj0jqo6
-rDglxS2ghSc9UhmattdDsOHbwNUsKdM+QCuy1x7w/Aim4f0FRrAc6FpdSH6SXxtC
-Co9f/diZVDhwbPgj6Oycno+A2LOqz0JvnC8czdF4X0QfV4fBg/S+Q8munUos0Sfn
-Ft9NhbPB6R5q6JPC23h/9Lc3lBxl/pNAsXRmIgDavNVjo6/EbT9it05DzwGNxS0X
-3fYTcGlsfxfaMDHK3e3QLWCNY68cy3pdQ0/Ike852mmwXJMdNaVyjYTThJ4sTT+L
-8T8NCt0xDLeCtSIaIoF7PJI7tT4pPGTb2bYKlYUcLgzzH2oRW18LiqzVv8zZEKGq
-byvFqc3EXKUdR+5c1gap0gXXBPzl3QhUqhtVzhoGXI8RDonncP9XnMPxtmoQXviq
-ahBpF0uyUT+M/N0Qowtm
-=R7sa
+iQEcBAABAgAGBQJSl1A4AAoJEIkPb2GL7hl1WF0H/3BMZiUlTUMjZfLXfYTeL8wd
+YuBSSSYQOJjPK3EO+8NLbfGw3xD6xKzz4mYZyCVo4wEKtC5YkwK6IA5YkKFY7iPQ
+uMQQup9eZbfnl4TGvuXMxU+41IBjuQizEJK68jMJd/4mrKNzDJoizWQl8MuvFIG8
+zMyj27ystPAINQ0fYPIxwk89koN3k/2NTwohLq4C63BkD2AhI/XbuLGzPptWzOCK
+Htxgh9c9GOEoZuL6ORTc2zlzgQ7b6EhD1ORwhXRCY3woVHkjEq8bFj2FOIQ7PvpJ
+z37BIoEmdG/9ZVFAZJtJTe3Z/MGdw+9LxwovmVPo6YupM0DpXzKN3N0w++lZq2A=
+=u4CW
 -----END PGP SIGNATURE-----
 
---pWyiEgJYm5f9v55/--
+--nextPart2201884.GbWSsosm3Y--
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

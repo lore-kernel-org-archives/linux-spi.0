@@ -1,20 +1,21 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: Re: [PATCH 12/17] spi/qspi: convert driver to enable/disable memory
- mapped.
-Date: Thu, 28 Nov 2013 10:54:12 +0530
-Message-ID: <5296D37C.2020003@ti.com>
-References: <1385451313-1875-1-git-send-email-sourav.poddar@ti.com>
- <1385451313-1875-13-git-send-email-sourav.poddar@ti.com>
- <20131126131138.GJ14725@sirena.org.uk>
+From: Angus Clark <angus.clark@st.com>
+Subject: Re: [PATCH 00/23] mtd: st_spi_fsm: Add new device
+Date: Thu, 28 Nov 2013 09:07:15 +0000
+Message-ID: <529707C3.40208@st.com>
+References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org>
+ <20131127040723.GZ9468@ld-irv-0074.broadcom.com>
+ <20131127115226.GC3296@lee--X1> <5296B9C5.3060704@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
-Content-Transfer-Encoding: 7bit
-Cc: devicetree@vger.kernel.org, computersforpeace@gmail.com, balbi@ti.com,
- linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
- bcousson@baylibre.com, linux-omap@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Lee Jones <lee.jones@linaro.org>, linus.walleij@linaro.org,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Mark Brown <broonie@kernel.org>, linux-mtd@lists.infradead.org,
+ Brian Norris <computersforpeace@gmail.com>, dwmw2@infradead.org,
+ linux-arm-kernel@lists.infradead.org
+To: Huang Shijie <b32955@freescale.com>
 Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20131126131138.GJ14725@sirena.org.uk>
+In-Reply-To: <5296B9C5.3060704@freescale.com>
 List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
  <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
 List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
@@ -26,32 +27,52 @@ Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
 Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
-On Tuesday 26 November 2013 06:41 PM, Mark Brown wrote:
-> On Tue, Nov 26, 2013 at 01:05:08PM +0530, Sourav Poddar wrote:
->> Idea is to enable memory mapped by default at the end of the probe,
->> if the control reaches the "transfer" api, then the operation is
->> not a memory mapped one. Hence, we switch to Normal mode and at the
->> end of the "transfer" function. switch back to memory mapped mode.
-> This doesn't see safe, what happens if something tries to use the map
-> while a transfer is in progress?
-Transfer gets initiated with the following api "ti_qspi_start_transfer_one".
-
-At the beginning of this api, I am doing a "disable memory mapped", as 
-becuase of
-the code implemntation, if the control has reaches this api, memory 
-mapped is not
-the desired operation. Then, at the end of this api after
-"spi_finalize_current_message(master)", which indicated the current 
-transfer complete, I
-issue a end of transfer command. Only after which, I enable memory 
-mapped mode again.
-
-So, will the condition you mention above will hit.? Please help me 
-understand if i am
-missing something?
-
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+SGkgSHVhbmcgU2hpamllLAoKT24gMTEvMjgvMjAxMyAwMzozNCBBTSwgSHVhbmcgU2hpamllIHdy
+b3RlOgo+IOS6jiAyMDEz5bm0MTHmnIgyN+aXpSAxOTo1MiwgTGVlIEpvbmVzIOWGmemBkzoKPj4g
+SG93ZXZlciwgYXMgd2Ugc2VuZCBlbnRpcmUgJ21lc3NhZ2Ugc2VxdWVuY2VzJyB0byB0aGUgRlNN
+IENvbnRyb2xsZXIKPj4gYXMgb3Bwb3NlZCB0byBtZXJlbHkgT1BDT0RFcyB3ZSB3b3VsZCBoYXZl
+IHRvIGV4dHJhY3QgdGhlIE9QQ09ERSBmcm9tCj4+IGZsYXNoLT5jb21tYW5kWzBdIGFuZCBjYWxs
+IG91ciBvd24gZnVuY3Rpb25zIHRvIGNyYWZ0IHRoZSBjb3JyZWN0Cj4+ICdtZXNzYWdlIHNlcXVl
+bmNlJyBmb3IgdGhlIHRhc2suIEZvciB0aGlzIHJlYXNvbiB3ZSByZWplY3RlZCB0aGUgaWRlYQo+
+PiBhbmQgd2VudCB3aXRoIGEgc3RhbmQtYWxvbmUgZHJpdmVyLgo+Pgo+IGNvdWxkIHlvdSBzZW5k
+IG1lIHRoZSBkYXRhc2hlZXQgb2YgeW91ciBzcGkgbm9yIGNvbnRyb2xsZXI/Cj4gSSBjYW4gY2hh
+bmdlIG15IGNvZGUgaWYgaXQgcmVhbGx5IG5vdCBnb29kIGVub3VnaC4KCkkgd2lsbCByZXBseSB0
+byB0aGUgIm10ZDogc3BpLW5vciIgdGhyZWFkIHJlZ2FyZGluZyB0aGUgcHJvcG9zZWQgZnJhbWV3
+b3JrLCBidXQKYSBjb3VwbGUgb2YgYW5zd2VycyB0byB5b3VyIHNwZWNpZmljIHF1ZXN0aW9ucyBi
+ZWxvdy4KCj4gCj4gd2UgY2FuIHN0b3JlIHRoZSBvcGNvZGUgdG8gYSBmaWVsZCwgc3VjaCBhcyBz
+cGlfbm9yX3dyaXRlX29wLgo+PiBUaGUgZnJhbWV3b3JrIHdoaWNoIEh1YW5nIGlzIHByb3Bvc2lu
+ZyBzdWZmZXJzIGZyb20gdGhlIHNhbWUgaXNzdWVzLgo+PiBPbmx5IHByb3ZpZGluZyByZWFkKCks
+IHdyaXRlKCksIHJlYWRfcmVnKCkgYW5kIHdyaXRlX3JlZygpIGRvZXNuJ3QKPj4gd29yayBmb3Ig
+b3VyIHVzZS1jYXNlLCBhcyB3ZSdkIGhhdmUgdG8gZGVjb2RlIHRoZSBmbGFzaC0+Y29tbWFuZFsw
+XSBhbmQKPj4gaW52b2tlIG91ciBvd24gaW50ZXJuYWwgcm91dGluZXMgYXMgYmVmb3JlLgo+Pgo+
+PiBUaGUgb25seSBmcmFtZXdvcmsgd2l0aCB3b3VsZCB3b3JrIGZvciB1cyB3b3VsZCBjb25zaXN0
+IGFsbW9zdCBhbGwKPj4gb2YgdGhlIGltcG9ydGFudCBmdW5jdGlvbnMgc3VjaCBhczsgcmVhZCgp
+LCB3cml0ZSgpLCBlcmFzZSgpLAo+PiB3YWl0X2J1c3koKSwgcmVhZF9qZWRlYygpLCByZWFkX3N0
+YXR1c19yZWcoKSwgd3JpdGVfc3RhdHVzX3JlZygpLAo+PiByZWFkX2NvbnRyb2xfcmVnKCksIHdy
+aXRlX2NvbnRyb2xfcmVnKCksIGV0Yy4gSG93ZXZlciwgdGhpcyBhcHByb2FjaAo+PiAgIAo+IHJl
+YWRfamVkZWMoKSBjYW4gYmUgcmVwbGFjZWQgYnkgcmVhZF9yZWcoMHg5Zik7Cj4gCj4gcmVhZF9z
+dGF0dXMoKSBjYW4gYmUgcmVwbGFjZWQgYnkgcmVhZF9yZWcoMHg1KTsKPiAKPiAuLi4uCj4gCj4g
+d3JpdGVfY29udHJvbF9yZWcoKSBjYW4gYmUgcmVwbGFjZWQgYnkgd3JpdGVfcmVnKHh4KS4KClVu
+Zm9ydHVuYXRlbHkgdGhlIEgvVyBDb250cm9sbGVyIGluIHF1ZXN0aW9uIGNvbWVzIHdpdGggYSBm
+ZXcgcmVzdHJpY3Rpb25zLiAgT25lCnJlc3RyaWN0aW9uIGlzIHRoYXQgZGF0YSBtdXN0IGJlIHJl
+YWQgaW4gbXVsdGlwbGVzIG9mIDQgYnl0ZXMuICBBcyBzdWNoLCBpdAp3b3VsZCBub3QgYmUgYWJs
+ZSB0byBob25vdXIgYSBjYWxsIG9mICJmbGFzaC0+cmVhZF9yZWcoZmxhc2gsIE9QQ09ERV9SRElE
+LCBpZCwgNSk7IgoKT2YgY291cnNlLCBpZiB0aGUgSC9XIGRyaXZlciBrbm93cyB0aGF0IHdlIGFy
+ZSBpc3N1aW5nIGEgcmVhZF9qZWRlYygpIG9wZXJhdGlvbiwKdGhlbiBpdCBjYW4gbWFrZSB0aGUg
+YXNzdW1wdGlvbiB0aGF0IG92ZXItcmVhZGluZyBpcyBiZW5pZ24sIGFuZCB3ZSBjYW4gaW5zdGVh
+ZApyZWFkIDggYnl0ZXMgb2YgZGF0YSBmcm9tIHRoZSBGbGFzaCBkZXZpY2UsIGFuZCByZXR1cm4g
+NSB0byB0aGUgY2FsbGVyLgpIb3dldmVyLCB3aXRob3V0IGtub3dpbmcgd2hhdCBvcGVyYXRpb24g
+aXMgYmVpbmcgcmVxdWVzdGVkLCBubyBzdWNoIGFzc3VtcHRpb24KY2FuIGJlIG1hZGUuCgo+IFBs
+ZWFzZSBjb3JyZWN0IG1lIGlmIGkgYW0gd3JvbmcuCj4gCj4gSU1ITywgdGhlIGN1cnJlbnQgZm91
+ciBob29rcyBmb3Igc3BpLW5vcnt9IGNhbiBkbyBhbGwgdGhlIHRoaW5ncy4KPiAKPiAgICAgIHJl
+YWQvd3JpdGUvcmVhZF9yZWcvd3JpdGVfcmVnLgoKQXMgaXQgc3RhbmRzLCB0aGUgc3BpLW5vciBm
+cmFtZXdvcmsgY2Fubm90IHN1cHBvcnQgdGhlIHJlcXVpcmVtZW50cyBvZiB0aGUKc3Rfc3BpX2Zz
+bSBjb250cm9sbGVyLiAgSSB3aWxsIGdvIGludG8gZnVydGhlciBkZXRhaWxzIG9uIHRoZSAibXRk
+OiBzcGktbm9yIiB0aHJlYWQuCgpDaGVlcnMsCgpBbmd1cwoKCi0tIAotLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tCkFuZ3VzIENsYXJrClNUIE1pY3JvZWxlY3Ryb25pY3MgKFIm
+RCkgTHRkLgoxMDAwIEF6dGVjIFdlc3QsIEJyaXN0b2wsIEJTMzIgNFNRCmVtYWlsOiBhbmd1cy5j
+bGFya0BzdC5jb20KdGVsOiArNDQgKDApIDE0NTQgNDYyMzg5CnN0LXRpbmE6IDA2NSAyMzg5Ci0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eCBNVEQgZGlzY3Vzc2lvbiBt
+YWlsaW5nIGxpc3QKaHR0cDovL2xpc3RzLmluZnJhZGVhZC5vcmcvbWFpbG1hbi9saXN0aW5mby9s
+aW51eC1tdGQvCg==

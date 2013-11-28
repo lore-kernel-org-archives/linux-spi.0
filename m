@@ -1,34 +1,61 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] Fix long standing chip select issue for non-default CS-polarity setups
-Date: Wed, 27 Nov 2013 20:00:00 +0100
-Message-ID: <36A84195-DC42-499A-8663-5AE0CCDD720F@martin.sperl.org>
-References: <EE805C3B-7650-45CF-ACA7-5A83758B7F77@martin.sperl.org> <20131127184001.GG14725@sirena.org.uk>
-Mime-Version: 1.0 (Apple Message framework v1283)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org, swarren-3lzwWm7+WeqjrCrn2yxA+g@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Subject: [PATCH 2/2] spi: sh-msiof: Convert to clk_prepare/unprepare
+Date: Thu, 28 Nov 2013 02:39:43 +0100
+Message-ID: <1385602783-3439-2-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+References: <1385602783-3439-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131127184001.GG14725-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1385602783-3439-1-git-send-email-laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-I will try to come up with something that will fit better.
+Get the driver ready for the migration to the common clock framework by
+calling clk_prepare() and clk_unprepare(). The calls are added in the
+probe and remove handlers as the clk_enable() and clk_disable() calls
+are located in atomic context and there's no callback function in
+non-atomic context that can be used to prepare/unprepare the clock.
 
-Anyway: the case of changing polarity from invers to normal is
-not handled correctly with the current patch.
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+---
+ drivers/spi/spi-sh-msiof.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Still I believe "compiling" the flags once in the setup code and then 
-just using them should avoid wasting some cpu cycles in this driver.
-
-> That's just never going to be a sane thing to change on the fly though.
-> Changes to things that don't affect /CS are more interesting here.
-I believe we need to state the above fact explicitly that this has
-the potential for a race condition (maybe other flags as well) in case 
-no bus-lock is held and thought should be given to that during the
-design.
-
-Martin
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 541e1ec..fbbe949 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -682,6 +682,12 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 		goto err1;
+ 	}
+ 
++	ret = clk_prepare(p->clk);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "unable to prepare clock\n");
++		goto err1;
++	}
++
+ 	p->pdev = pdev;
+ 	pm_runtime_enable(&pdev->dev);
+ 
+@@ -718,6 +724,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 		return 0;
+ 
+ 	pm_runtime_disable(&pdev->dev);
++	clk_unprepare(p->clk);
+  err1:
+ 	spi_master_put(master);
+ 	return ret;
+@@ -731,6 +738,7 @@ static int sh_msiof_spi_remove(struct platform_device *pdev)
+ 	ret = spi_bitbang_stop(&p->bitbang);
+ 	if (!ret) {
+ 		pm_runtime_disable(&pdev->dev);
++		clk_unprepare(p->clk);
+ 		spi_master_put(p->bitbang.master);
+ 	}
+ 	return ret;
+-- 
+1.8.3.2
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

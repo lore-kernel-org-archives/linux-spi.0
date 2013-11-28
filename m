@@ -1,61 +1,69 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/pxa2xx: Restore private register bits.
-Date: Thu, 28 Nov 2013 11:22:35 +0000
-Message-ID: <20131128112235.GA27568@sirena.org.uk>
-References: <1385662391-27573-1-git-send-email-chiau.ee.chew@intel.com>
+Subject: Re: [PATCH 12/17] spi/qspi: convert driver to enable/disable memory
+ mapped.
+Date: Thu, 28 Nov 2013 11:59:34 +0000
+Message-ID: <20131128115934.GE27568@sirena.org.uk>
+References: <1385451313-1875-1-git-send-email-sourav.poddar@ti.com>
+ <1385451313-1875-13-git-send-email-sourav.poddar@ti.com>
+ <20131126131138.GJ14725@sirena.org.uk>
+ <5296D37C.2020003@ti.com>
+ <20131128104922.GK14725@sirena.org.uk>
+ <5297242B.3040807@ti.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="1yeeQ81UyVL57Vl7"
-Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Rgf3q3z9SdmXC6oT"
+Cc: computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org,
+	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org
+To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1385662391-27573-1-git-send-email-chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <5297242B.3040807-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---1yeeQ81UyVL57Vl7
+--Rgf3q3z9SdmXC6oT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 29, 2013 at 02:13:11AM +0800, Chew Chiau Ee wrote:
-> From: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
->=20
-> The Intel LPSS SPI private register bits have to be restored
-> when system resume from S3 suspend.
+On Thu, Nov 28, 2013 at 04:38:27PM +0530, Sourav Poddar wrote:
+> On Thursday 28 November 2013 04:19 PM, Mark Brown wrote:
 
-Applied, thanks.
+> >Removing the mapping isn't going to stop another context which has
+> >obtained a handle on the map trying to look at the mapping.
 
---1yeeQ81UyVL57Vl7
+> hmm..so the  'memcpy' part should be made atomic.(if possible?).
+
+Or holding the memory region should prevent normal SPI use (so any users
+ought to drop the memory region when they don't need it).
+
+I'm still a bit surprised there's no DMA controllers for this...
+
+--Rgf3q3z9SdmXC6oT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSlyd4AAoJELSic+t+oim9slMQAIw7FQ288zfP6Md+WEf8tUl8
-JpLjW5rpwQ1OgHgTPAuVCDNCjRjpTHo6e1FpQLMevpJqf4ASK8dxm8TmTA4WnVq9
-0sQNrIMcnJmkIrdfvyhGiil55YOeA6BcH3t55Y/tCyRvtjgPHpyRpDM2nCAmsyLV
-8GpxaODp5XzimNE5NuuCqClvwpdKDPTFaQL4RTkx1wvMfKc2EL87IYYIE2CEyjR4
-7Ubp/uDBDlwQ3mZj0ouNPGcB5EL+SmrWVf3ygvDGTm6UrGzND4moGn4iyNTXLfih
-u532UM0Qt/KMhIq7w0AGPWkd3kexKtX7JwStsWTkv524rvr32D6nemrsKK3uDZ/W
-dv7dmUSRAsE5/KRuMM+hwiR6zJI19cKxd43liurY+HMHmcASL+OfAN+Vw4veJYKF
-kLbKGDpPJ9dYkTEBX1r0IQfMvtPOJXV3bFs4Pm34HIsbVcLC6Y2Dg8iVdGLX130O
-oK3oYkTcsaHcnbc9VXDlH3qsQAPcFgZKRLMeZjJkhiJ9dQsMhGX7cwhHfU/8ZWFR
-P2mEBp1GRjMWDn5eMlBO1fd9Qvbq/rSYbH3uif2CQHUft+3KyKKV7CjOkNPq2Bqp
-3W+BXC+TcYt60oMZudIToKjcPZxD5xT9UE0R/RpMDeInYR9Laa8vxkm97vU1ltV4
-idBdWV4NcAnwzx5e652m
-=101M
+iQIcBAEBAgAGBQJSlzAjAAoJELSic+t+oim9mWgP/1oKd71Ma/FCU/BgwqSdb15o
+jNR1cYzey+ee20vaJ57iWrH7Pdb/+wQPOYacGp/wt3TL/1ijP4/2YxyJS5fAGaD6
+nt1ExAB6G1wKI2sf1D9u5CdwSwbZqfb7BlS1S6TIT1YQ73GaT0tTLZz4iausJy0E
+yzYp6ygnxT/JFOitDYzlGo2pDb2QIzfIuHxwMQur5cGj7TrX+wyuLJF91QGqpL5O
+v3E0HPm9h6c0YYQ64j9ckC2Jsj6qmEJ6rhDUa2YfWW1sj3ooAykpG86VRI65NXvJ
+mtELJH9lKWOJQIWhQLhacCKG2wZQZq8zHgKg06YOnlLtghaZseJDnRorKJj1Jbgy
+P5LIQfUbMNgU0TAjP2UaElFi58sQmqrr/GskESE4PD8Ui2HIOfxeTRAkbZ9q+vAo
+Y5Dowi6+cTAVpK3cfiUC+MPVg+Avmoms7DhQCLaxq6k08yzp9lYK58/HHCvsuq0u
+96ZxJy7uzoTZwiDU2oKDIfHdEKptRoC9lvmQ3QOLXSmK65FGU323S4j4Jh/2xdUL
+3W/0g8O8qvaD1PwxrBHiQLGM4EhVbemEms32BUa3QUrbfFO7DKh4SBp2Wx2v1Nal
+L/AzkFiPOwMNAvBLQIHfASt8lUcj7+MCAiuRgV1rPifzv/mGWrgJx3KgRRzjeiw9
+XTea0S2RC6sT0gLpT5Xn
+=RrTP
 -----END PGP SIGNATURE-----
 
---1yeeQ81UyVL57Vl7--
+--Rgf3q3z9SdmXC6oT--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

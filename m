@@ -1,73 +1,67 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: sh-msiof: Convert to clk_prepare/unprepare
-Date: Thu, 28 Nov 2013 16:44:34 +0000
-Message-ID: <20131128164434.GL27568@sirena.org.uk>
-References: <1385602783-3439-1-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
- <1385602783-3439-2-git-send-email-laurent.pinchart+renesas@ideasonboard.com>
- <20131128103407.GI14725@sirena.org.uk>
- <2098733.0eJJDEzLLR@avalon>
+From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH 00/23] mtd: st_spi_fsm: Add new device
+Date: Fri, 29 Nov 2013 19:05:18 +0800
+Message-ID: <529874EE.402@freescale.com>
+References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org> <20131127040723.GZ9468@ld-irv-0074.broadcom.com> <20131127115226.GC3296@lee--X1> <5296B9C5.3060704@freescale.com> <20131128092904.GZ3296@lee--X1>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4oF+6Ged69J0+4/e"
-Cc: Laurent Pinchart <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <angus.clark-qxv4g6HH51o@public.gmane.org>,
+	<linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <2098733.0eJJDEzLLR@avalon>
+In-Reply-To: <20131128092904.GZ3296@lee--X1>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Jones & Augus:
 
---4oF+6Ged69J0+4/e
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+thanks for your explanations.
+> Most controllers just take an OPCODE and pass it on to the controller
+> and have done with it. The issue that you're attempting to rectify is
+> that the m25p80 expects every controller to be an SPI controller
+> registered to the SPI framework, but as we both know that's not always
+> practical as the SPI framework doesn't allow all configuration
+> information to be passed back to the controller driver. Our issue is
+> not the same. We are required to send entire 'message sequences', to
+> the controller rather than just opcodes. The JEDEC message sequence
+> can be seen below. Bear in mind that this is also one of the more
+> simple message sequences. Some of them even vary depending on which
+> chip is present.
+Frankly speaking, my quadspi driver's code is just like Jones's code.
+Yes, a big "switch".
 
-On Thu, Nov 28, 2013 at 03:16:19PM +0100, Laurent Pinchart wrote:
-> On Thursday 28 November 2013 10:34:07 Mark Brown wrote:
+The opcode is just like an index to trigger the proper operation.
+That's why i add this hook @->read_reg(). (the hook acts as the ioctl)
 
-> > Applied, thanks.  However it does seem like you should be able to move
-> > the prepare and disable to runtime PM rather than leaving it prepared
-> > for the entire time the driver is loaded.  In most systems this won't
-> > make any difference since prepare won't do anything but it's a bit
-> > neater.
+If we do not use this hooks, we should add more hooks such as
+@->read_id, @->read_sr, @->read_cr...
 
-> It would be, but I believe the driver is currently broken in that regard.=
- It=20
-> calls the runtime PM sync API with a spinlock held, which if I'm not mist=
-aken=20
-> isn't right. That should be fixed, but is a bit out of scope of this work=
-,=20
-> hence the simple solution.
+That's make the interface not graceful enough.
 
-Yeah, that's broken and should be fixed - like I say I doubt it'll
-matter either way in practical systems if the clock is prepared all the
-time anyway.
 
---4oF+6Ged69J0+4/e
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+I read the your patch implementing the read_id:
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+http://lists.infradead.org/pipermail/linux-mtd/2013-November/050221.html
 
-iQIcBAEBAgAGBQJSl3LvAAoJELSic+t+oim9LlIP/RJvQpuOQ6b7KhgYgPBIwYUG
-rBfBnKJuwj9sZ8mN3s4nIFgVp0mkx3OTiW8encjo9PSPdnZZPmR3E5gsY3XOR4e4
-6f5T8B0/ahyI+DcKrwS/TjPiF8bX7YDFBcj5k/KMXWuafHKZxXcyD8/pf1F8WKxS
-jYr5dCZOdqScq87hy3Dsx7pTRQNdoSdBoRbHUPYd5PQNLb69qtwoDXutcQG7DPrZ
-KW5DrSQX1ZRriBI7969zBIjc0T3nvfhW3MnggWK8cOZL8w3j+WVNEYEmRWu+z8Vt
-dkQradiafkaF404tFERwB82Q6MiYybeyJ8y3sa/DQP6fMJFOeEk1yO5s6XcBphyq
-FWuMn7hUFLUeZHCRXINctTXDljaL/qYe4ov0Ltr0r4TbY/N/zqSx8mGoufGMvJUM
-7q8lld7GY9ZCesY7jxIxeJuGVHwM8hXqGtbQ821OZG8OA/JVyY8lrc+WXmLoA+aP
-yuZYHREhpJDephxp7qfMvIdrHd32YHwDZjGvU6dayt4JtCi4DY2WfTrdmk/jKJKH
-djsTWQ816Fr4AlR/tINCkoKj1zmDoNej/R03KnGgNJi8uWPuamhMgM7xinNliX7J
-LIHaYLqmlBoZYw9sjwec23bZBIyW6d1Nml4080zh52SQLnDZPRk2zEhSv1sf2u7n
-aTDblIuhndsCMem43k6G
-=Wifs
------END PGP SIGNATURE-----
 
---4oF+6Ged69J0+4/e--
+it's more readable. But i think Jones's stfsm_read_reg() is workable too.
+
+
+If you do not like the read_reg() hook, do you have any better idea?
+
+
+
+thanks
+Huang Shijie
+
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

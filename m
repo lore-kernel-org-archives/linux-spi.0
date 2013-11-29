@@ -1,75 +1,76 @@
-From: Michal Nazarewicz <mpn@google.com>
-Subject: [PATCH] spi: omap-100k: remove pointless _remove function
-Date: Fri, 29 Nov 2013 18:09:07 +0100
-Message-ID: <1385744947-10283-1-git-send-email-mpn@google.com>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Jingoo Han <jg1.han@samsung.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Michal Nazarewicz <mpn-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: tegra: avoid unsigned->signed->unsigned promotion
+Date: Fri, 29 Nov 2013 18:12:44 +0100
+Message-ID: <1385745164-10534-1-git-send-email-mpn@google.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Michal Nazarewicz <mina86@mina86.com>
+From: Michal Nazarewicz <mina86-deATy8a+UHjQT0dZR+AlfA@public.gmane.org>
 
-Commit [8074cf06: use devm_spi_register_master()] removed the last
-bit of omap1_spi100k_remove function that had side effects.  After
-call to spi_unregister_master was removed, the function consisted
-of:
+u8 type, which is unsigned, is promoted to int, which is singned, when
+doing a binary shift.  Then, on 64-bit machines, it is further promoted
+to unsigned long which may lead to more significant half of the value
+to be all ones.  To avoid this, explicitly promote to an unsigned type.
 
-2. call to platform_get_drvdata whose return value was only used in:
-2. call to spi_master_get_devdata whose return value was not used,
-3. an if statement checking if zero was not zero, and
-4. call to platform_get_resource whose return value was not used.
-
-Ah, yes, and of course, final return 0. ;)
-
-Since omap1_spi100k_remove no longer does anything, it can be
-safely removed.
-
-Signed-off-by: Michal Nazarewicz <mina86@mina86.com>
+Signed-off-by: Michal Nazarewicz <mina86-deATy8a+UHjQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-omap-100k.c | 20 --------------------
- 1 file changed, 20 deletions(-)
+ drivers/spi/spi-tegra114.c      | 4 ++--
+ drivers/spi/spi-tegra20-slink.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
-index b6ed82b..0d32054 100644
---- a/drivers/spi/spi-omap-100k.c
-+++ b/drivers/spi/spi-omap-100k.c
-@@ -470,31 +470,12 @@ err:
- 	return status;
- }
- 
--static int omap1_spi100k_remove(struct platform_device *pdev)
--{
--	struct spi_master       *master;
--	struct omap1_spi100k    *spi100k;
--	struct resource         *r;
--	int			status = 0;
--
--	master = platform_get_drvdata(pdev);
--	spi100k = spi_master_get_devdata(master);
--
--	if (status != 0)
--		return status;
--
--	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--
--	return 0;
--}
--
- static struct platform_driver omap1_spi100k_driver = {
- 	.driver = {
- 		.name		= "omap1_spi100k",
- 		.owner		= THIS_MODULE,
- 	},
- 	.probe		= omap1_spi100k_probe,
--	.remove		= omap1_spi100k_remove,
- };
- 
- module_platform_driver(omap1_spi100k_driver);
-@@ -502,4 +483,3 @@ module_platform_driver(omap1_spi100k_driver);
- MODULE_DESCRIPTION("OMAP7xx SPI 100k controller driver");
- MODULE_AUTHOR("Fabrice Crohas <fcrohas@gmail.com>");
- MODULE_LICENSE("GPL");
--
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index aaecfb3..2dadc3f 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -315,7 +315,7 @@ static unsigned tegra_spi_fill_tx_fifo_from_client_txbuf(
+ 		for (count = 0; count < max_n_32bit; count++) {
+ 			x = 0;
+ 			for (i = 0; (i < 4) && nbytes; i++, nbytes--)
+-				x |= (*tx_buf++) << (i*8);
++				x |= (unsigned)(*tx_buf++) << (i*8);
+ 			tegra_spi_writel(tspi, x, SPI_TX_FIFO);
+ 		}
+ 	} else {
+@@ -326,7 +326,7 @@ static unsigned tegra_spi_fill_tx_fifo_from_client_txbuf(
+ 			x = 0;
+ 			for (i = 0; nbytes && (i < tspi->bytes_per_word);
+ 							i++, nbytes--)
+-				x |= ((*tx_buf++) << i*8);
++				x |= (unsigned)(*tx_buf++) << (i*8);
+ 			tegra_spi_writel(tspi, x, SPI_TX_FIFO);
+ 		}
+ 	}
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index e66715b..0fc4f7d 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -331,7 +331,7 @@ static unsigned tegra_slink_fill_tx_fifo_from_client_txbuf(
+ 		for (count = 0; count < max_n_32bit; count++) {
+ 			x = 0;
+ 			for (i = 0; (i < 4) && nbytes; i++, nbytes--)
+-				x |= (*tx_buf++) << (i*8);
++				x |= (unsigned)(*tx_buf++) << (i*8);
+ 			tegra_slink_writel(tspi, x, SLINK_TX_FIFO);
+ 		}
+ 	} else {
+@@ -342,7 +342,7 @@ static unsigned tegra_slink_fill_tx_fifo_from_client_txbuf(
+ 			x = 0;
+ 			for (i = 0; nbytes && (i < tspi->bytes_per_word);
+ 							i++, nbytes--)
+-				x |= ((*tx_buf++) << i*8);
++				x |= (unsigned)(*tx_buf++) << (i*8);
+ 			tegra_slink_writel(tspi, x, SLINK_TX_FIFO);
+ 		}
+ 	}
 -- 
 1.8.4.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

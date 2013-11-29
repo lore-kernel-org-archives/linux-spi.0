@@ -1,106 +1,80 @@
-From: Lee Jones <lee.jones@linaro.org>
-Subject: Re: [PATCH 00/23] mtd: st_spi_fsm: Add new device
-Date: Fri, 29 Nov 2013 11:53:49 +0000
-Message-ID: <20131129115349.GB26982@lee--X1>
-References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org>
- <20131127040723.GZ9468@ld-irv-0074.broadcom.com>
- <20131127115226.GC3296@lee--X1>
- <5296B9C5.3060704@freescale.com>
- <20131128092904.GZ3296@lee--X1>
- <529874EE.402@freescale.com>
+From: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 22/31] spi: tegra: use reset framework
+Date: Fri, 29 Nov 2013 15:48:31 +0100
+Message-ID: <20131129144830.GD9712@ulmo.nvidia.com>
+References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
+ <1384548866-13141-23-git-send-email-swarren@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Brian Norris <computersforpeace@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	dwmw2@infradead.org, linux-mtd@lists.infradead.org,
-	angus.clark@st.com, linus.walleij@linaro.org,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-To: Huang Shijie <b32955@freescale.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="M38YqGLZlgb6RLPS"
+Cc: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
+	pdeschrijver-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <529874EE.402@freescale.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1384548866-13141-23-git-send-email-swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-> thanks for your explanations.
-> >Most controllers just take an OPCODE and pass it on to the controlle=
-r
-> >and have done with it. The issue that you're attempting to rectify i=
-s
-> >that the m25p80 expects every controller to be an SPI controller
-> >registered to the SPI framework, but as we both know that's not alwa=
-ys
-> >practical as the SPI framework doesn't allow all configuration
-> >information to be passed back to the controller driver. Our issue is
-> >not the same. We are required to send entire 'message sequences', to
-> >the controller rather than just opcodes. The JEDEC message sequence
-> >can be seen below. Bear in mind that this is also one of the more
-> >simple message sequences. Some of them even vary depending on which
-> >chip is present.
-> Frankly speaking, my quadspi driver's code is just like Jones's code.
-> Yes, a big "switch".
 
-That sounds awful.
+--M38YqGLZlgb6RLPS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It begs the question, what are you saving/improving by using this
-framework then?
-
-> The opcode is just like an index to trigger the proper operation.
-> That's why i add this hook @->read_reg(). (the hook acts as the ioctl=
-)
-
-As I've said before, the framework you're suggesting is likely to aid
-a Controller which shares a great deal of functionality with the
-m25p80 where the back-end controller driver doesn't use the SPI
-Subsystem. That won't apply to some Serial Flash Controller drivers,
-ours included.
-
-The idea of providing a framework like this is to reduce unnecessary
-duplication of code by consolidating shared routines into a central
-point. mp25p80 is a good place for that, as a great many Controllers
-share the majority of its code. As the only commonality we have with
-the m25p80 is a small piece of the JEDEC extraction and a sub-section
-of the supported device table (which A. our Controller doesn't support
-all of the devices and C. we've extended the table to make it more
-useful for our use-case); what you're suggesting would not only
-create a larger code-base, but execution would also take more cycles,
-which to me sounds completely counter-intuitive. It's lose-lose!
-
-Using the m25p80 as a pass-through, then creating an OPCODE based
-switch statement to then go and do the _real_ work sound absurd.
-
-> If we do not use this hooks, we should add more hooks such as
-> @->read_id, @->read_sr, @->read_cr...
+On Fri, Nov 15, 2013 at 01:54:17PM -0700, Stephen Warren wrote:
+> From: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 >=20
-> That's make the interface not graceful enough.
-
-I agree.
-
-> I read the your patch implementing the read_id:
+> Tegra's clock driver now provides an implementation of the common
+> reset API (include/linux/reset.h). Use this instead of the old Tegra-
+> specific API; that will soon be removed.
 >=20
-> http://lists.infradead.org/pipermail/linux-mtd/2013-November/050221.h=
-tml
->=20
-> it's more readable. But i think Jones's stfsm_read_reg() is workable =
-too.
+> Cc: treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
+> Cc: pdeschrijver-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org
+> Cc: linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+> Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> Signed-off-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+> ---
+> This patch is part of a series with strong internal depdendencies. I'm
+> looking for an ack so that I can take the entire series through the Tegra
+> and arm-soc trees. The series will be part of a stable branch that can be
+> merged into other subsystems if needed to avoid/resolve dependencies.
+> ---
+>  drivers/spi/Kconfig              |  3 +++
+>  drivers/spi/spi-tegra114.c       | 18 +++++++++++++-----
+>  drivers/spi/spi-tegra20-sflash.c | 18 +++++++++++++-----
+>  drivers/spi/spi-tegra20-slink.c  | 18 +++++++++++++-----
+>  4 files changed, 42 insertions(+), 15 deletions(-)
 
-It's 'workable', but not efficient. I wrote that example to show you
-how bad it would look and to show that is was not a good idea, not
-as a good example to be followed.
+Reviewed-by: Thierry Reding <treding-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-> If you do not like the read_reg() hook, do you have any better idea?
+--M38YqGLZlgb6RLPS
+Content-Type: application/pgp-signature
 
-I don't have a better idea. I think your framework will work just fine
-for some controllers. I just don't think bending ours to use it (by
-basically adding _extra_ code, and subsequently extra cycles) is the
-best way to go.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-Kind regards,
-Lee
+iQIcBAEBAgAGBQJSmKk+AAoJEN0jrNd/PrOh8a8QALiJ+HSjouDfF2N6/YlQrSUY
+eH+DgTHz/IG2BvsUagXIjh18exyKMiQwI+o2BanP1tWqE1vEiiDKbNNA6bqH2bJl
+dAspPUfmAHynmOxJ9t9JO/5+3rc2g604CTfnOnfOq2N7GgmNIwVm5zJFn3eq6UfU
+6sFIZJcM2QJnbffgLZThP6ReAJ0f0oK/GeOfofeClT3g9fJtWxgngaZliyVGnG9I
+qt+LOPF8sjg8fagJKxC2UTlRsNpU8NAnZPlBcHLLxZRRGc/sIWFeyX8nVpY9589w
+rHoEp4ciJYDafsTizJLpppBgtGMs6hMjC7+6ykB+XDTIMUKaOOl5f70wHgl8gtab
+gn0QUCFrDQ+w5dqDq2rdP6ymkn7zinOaR4eyqIKyRp4bQXmc1c5VkUxczAkQPW5T
+w/cqF4xiDknk3Tmjg1nVOxl8KCfBfvlW/pXfkK5MXupG8jCovq1H1g8IhvMzb3HR
+YaYuecMLU3tOd0PbYxhOIGZelSoknHKPcCClgloIZbg4utPgRTqilIHEdxTZa9ip
+hoMu9BUPh/4y5Jpp4iKW+OqH/d5eHOteotd+kFpXR4lN7PGJOkqg+tkbtlfi7Ur8
+jeJC0OB0DDbTiSUsU12922TYFM1/TkQTi/J/kSeIgom6WxZ8t7rrYi1yt3FIy/I8
+i0zZHnG6BkpKJpUjy2Ht
+=vmT0
+-----END PGP SIGNATURE-----
 
---=20
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org =E2=94=82 Open source software for ARM SoCs
-=46ollow Linaro: Facebook | Twitter | Blog
+--M38YqGLZlgb6RLPS--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

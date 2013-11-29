@@ -1,149 +1,75 @@
-From: Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>
-Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
-Date: Fri, 29 Nov 2013 14:52:19 +0000
-Message-ID: <5298AA23.7080404@st.com>
-References: <1385447575-23773-1-git-send-email-b32955@freescale.com> <20131127043253.GA9468@ld-irv-0074.broadcom.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
-	<broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<pekon-l0cyMroinI0@public.gmane.org>, <sourav.poddar-l0cyMroinI0@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131127043253.GA9468-bU/DPfM3abD4WzifrMjOTkcViWtcw2C0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Michal Nazarewicz <mpn@google.com>
+Subject: [PATCH] spi: omap-100k: remove pointless _remove function
+Date: Fri, 29 Nov 2013 18:09:07 +0100
+Message-ID: <1385744947-10283-1-git-send-email-mpn@google.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>, Jingoo Han <jg1.han@samsung.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Huang Shijie,
+From: Michal Nazarewicz <mina86@mina86.com>
 
-On 11/27/2013 04:32 AM, Brian Norris wrote:
-> + Lee Jones, others
-> 
-> I'd like to keep a similar CC list for the various conversations going
-> on about SPI NOR frameworks.
-> 
-> On Tue, Nov 26, 2013 at 02:32:51PM +0800, Huang Shijie wrote:
->> 1.) Why add a new framework for SPI NOR?
->>   The SPI-NOR controller such as Freescale's Quadspi controller is working
->>   in a different way from the SPI bus. It should knows the NOR commands to
->>   find the right LUT sequence. Unfortunately, the current code can not meet
->>   this requirement.
+Commit [8074cf06: use devm_spi_register_master()] removed the last
+bit of omap1_spi100k_remove function that had side effects.  After
+call to spi_unregister_master was removed, the function consisted
+of:
 
-I fully support your argument for introducing a new framework to support Serial
-Flash controllers.  Reiterating my previous comment:
+2. call to platform_get_drvdata whose return value was only used in:
+2. call to spi_master_get_devdata whose return value was not used,
+3. an if statement checking if zero was not zero, and
+4. call to platform_get_resource whose return value was not used.
 
-"The kernel offers many examples of others who have struggled with the same
-problem.  Some have chosen to write self-contained drivers (e.g.
-drivers/mtd/devices/spear_smi.c and drivers/mtd/devices/sst251.c) duplicating
-much of m25p80.c, while others have attempted to squeeze into the SPI framework
-(e.g. drivers/spi/spi-tegra20-sflash.c and drivers/spi/spi-falcon.c), relying on
-fragile heuristics to recreate the semantics of m25p80 that is lost over the ,
-current circumstances SPI framework ."
+Ah, yes, and of course, final return 0. ;)
 
-However, having now been through your proposed framework, it would not seem to
-provide a generally applicable solution.  Indeed, other than making the Serial
-Flash commands and the device table available, it is not obvious how it improves
-the situation for your own specific controller either; the
-read/write/read_reg/write_reg callbacks do not offer a great deal more than
-spi_read_then_write().  (Perhaps all will become clear when you submit the
-fsl-quadspi driver.)
+Since omap1_spi100k_remove no longer does anything, it can be
+safely removed.
 
-As I see it, the main problem with the current support is that dedicated Serial
-Flash Controllers require a level of semantics that cannot be conveyed over the
-generic SPI framework.  With this in mind, I would start by defining something
-along the lines of a "Serial Flash transfer".  Some initial ramblings of my mind:
+Signed-off-by: Michal Nazarewicz <mina86@mina86.com>
+---
+ drivers/spi/spi-omap-100k.c | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-/**
- * struct spi_nor_xfer_cfg - Structure for defining a Serial Flash transfer
- * @wren:		command for "Write Enable", or 0x00 for not required
- * @cmd:		command for operation
- * @cmd_pins:		number of pins to send @cmd (1, 2, 4)
- * @addr:		address for operation
- * @addr_pins:		number of pins to send @addr (1, 2, 4)
- * @addr_width: 	number of address bytes (3,4, or 0 for address not required)
- * @mode:		mode data
- * @mode_pins:		number of pins to send @mode (1, 2, 4)
- * @mode_cycles:	number of mode cycles (0 for mode not required)
- * @dummy_cycles:	number of dummy cycles (0 for dummy not required)
- */
-struct spi_nor_xfer_cfg {
-	uint8_t		wren;
-	uint8_t		cmd;
-	int		cmd_pins;
-	uint32_t	addr;
-	int		addr_pins;
-	int		addr_width;
-	uint32_t	mode;
-	int		mode_pins;
-	int		mode_cycles;
-	int		dummy_cycles;
-};
-
-We could then build up layers of functionality, based on two fundamental primitives:
-
-	int (*read_xfer)(struct spi_nor_info *info,
-			 struct spi_nor_xfer_cfg *cfg,
-			 uint8_t *buf, size_t len);
-	
-	int (*write_xfer)(struct spi_nor_info *info,
-			  struct spi_nor_xfer_cfg *cfg,
-			  uint8_t *buf, size_t len);
-	
-Default implementations for standard operations could follow:
-
-	int (*read_reg)(struct spi_nor_info *info,
-			uint8_t cmd, uint8_t *reg, int len);
-	int (*write_reg)(struct spi_nor_info *info,
-			 uint8_t cmd, uint8_t *reg, int len,
-			 int wren, int wtr);
-
-	int (*readid)(struct spi_nor_info *info, uint8_t *readid);
-	int (*wait_till_ready)(struct spi_nor_info *info);
-	
-	int (*read)(struct spi_nor_info *info, uint8_t buf, off_t offs, size_t len);
-	int (*write)(struct spi_nor_info *info, off_t offs, size_t len);
-	int (*erase_sector)(struct spi_nor_info *info, off_t offs);
-
-Each driver would be required to implement read_xfer() and write_xfer(), and
-then free to either use the default implementations, or override with
-driver-optimised implementations.
-
-In the case of a pure SPI Controller, read_xfer() and write_xfer() would simply
-flatten to spi_messages.  The key benefit is that dedicated Serial Flash
-Controllers would be able to take advantage of the richer semantics offered by
-the 'spi_nor_xfer_cfg' data.
-
-I would also expect the spi-nor framework to provide the following services,
-applicable to all Serial Flash drivers:
-
-	- determine devices properties at runtime, based on the READID data (and
-perhaps SFDP, if and when it matures!).  This should include supported opcodes
-(e.g. READ_1_1_4, READ_1_4_4, READ4B_1_1_4...), operating frequencies, mode and
-dummy requirements, means of setting Quad Enable, entering/exiting 4-byte
-addressing etc.
-
-	- provide optimal read, write and erase configurations, based on the combined
-capabilities of the Serial Flash device and the H/W Controller.
-
-	- device specific configuration (e.g. setting QE, unlock BPx bits, DYB unlocking).
-
-Getting back to reality, I realise undertaking such a task would be a huge
-commitment.  I would be keen to put forward my own proposal, but current
-circumstances mean that that is unlikely to happen any time soon.
-
-I guess in summary, while I am pleased that this area is being looked at, my own
-feeling is that proposed framework needs to be reworked for it to be generally
-applicable to other Serial Flash controllers.  Of course, another option would
-be to stick with what is currently offered, and make do.
-
-Cheers,
-
-Angus
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+index b6ed82b..0d32054 100644
+--- a/drivers/spi/spi-omap-100k.c
++++ b/drivers/spi/spi-omap-100k.c
+@@ -470,31 +470,12 @@ err:
+ 	return status;
+ }
+ 
+-static int omap1_spi100k_remove(struct platform_device *pdev)
+-{
+-	struct spi_master       *master;
+-	struct omap1_spi100k    *spi100k;
+-	struct resource         *r;
+-	int			status = 0;
+-
+-	master = platform_get_drvdata(pdev);
+-	spi100k = spi_master_get_devdata(master);
+-
+-	if (status != 0)
+-		return status;
+-
+-	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-
+-	return 0;
+-}
+-
+ static struct platform_driver omap1_spi100k_driver = {
+ 	.driver = {
+ 		.name		= "omap1_spi100k",
+ 		.owner		= THIS_MODULE,
+ 	},
+ 	.probe		= omap1_spi100k_probe,
+-	.remove		= omap1_spi100k_remove,
+ };
+ 
+ module_platform_driver(omap1_spi100k_driver);
+@@ -502,4 +483,3 @@ module_platform_driver(omap1_spi100k_driver);
+ MODULE_DESCRIPTION("OMAP7xx SPI 100k controller driver");
+ MODULE_AUTHOR("Fabrice Crohas <fcrohas@gmail.com>");
+ MODULE_LICENSE("GPL");
+-
+-- 
+1.8.4.1

@@ -1,68 +1,106 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+From: Lee Jones <lee.jones@linaro.org>
 Subject: Re: [PATCH 00/23] mtd: st_spi_fsm: Add new device
-Date: Fri, 29 Nov 2013 19:05:18 +0800
-Message-ID: <529874EE.402@freescale.com>
-References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org> <20131127040723.GZ9468@ld-irv-0074.broadcom.com> <20131127115226.GC3296@lee--X1> <5296B9C5.3060704@freescale.com> <20131128092904.GZ3296@lee--X1>
+Date: Fri, 29 Nov 2013 11:53:49 +0000
+Message-ID: <20131129115349.GB26982@lee--X1>
+References: <1385137380-28968-1-git-send-email-lee.jones@linaro.org>
+ <20131127040723.GZ9468@ld-irv-0074.broadcom.com>
+ <20131127115226.GC3296@lee--X1>
+ <5296B9C5.3060704@freescale.com>
+ <20131128092904.GZ3296@lee--X1>
+ <529874EE.402@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <angus.clark-qxv4g6HH51o@public.gmane.org>,
-	<linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131128092904.GZ3296@lee--X1>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Brian Norris <computersforpeace@gmail.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	dwmw2@infradead.org, linux-mtd@lists.infradead.org,
+	angus.clark@st.com, linus.walleij@linaro.org,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: Huang Shijie <b32955@freescale.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <529874EE.402@freescale.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Jones & Augus:
+> thanks for your explanations.
+> >Most controllers just take an OPCODE and pass it on to the controlle=
+r
+> >and have done with it. The issue that you're attempting to rectify i=
+s
+> >that the m25p80 expects every controller to be an SPI controller
+> >registered to the SPI framework, but as we both know that's not alwa=
+ys
+> >practical as the SPI framework doesn't allow all configuration
+> >information to be passed back to the controller driver. Our issue is
+> >not the same. We are required to send entire 'message sequences', to
+> >the controller rather than just opcodes. The JEDEC message sequence
+> >can be seen below. Bear in mind that this is also one of the more
+> >simple message sequences. Some of them even vary depending on which
+> >chip is present.
+> Frankly speaking, my quadspi driver's code is just like Jones's code.
+> Yes, a big "switch".
 
-thanks for your explanations.
-> Most controllers just take an OPCODE and pass it on to the controller
-> and have done with it. The issue that you're attempting to rectify is
-> that the m25p80 expects every controller to be an SPI controller
-> registered to the SPI framework, but as we both know that's not always
-> practical as the SPI framework doesn't allow all configuration
-> information to be passed back to the controller driver. Our issue is
-> not the same. We are required to send entire 'message sequences', to
-> the controller rather than just opcodes. The JEDEC message sequence
-> can be seen below. Bear in mind that this is also one of the more
-> simple message sequences. Some of them even vary depending on which
-> chip is present.
-Frankly speaking, my quadspi driver's code is just like Jones's code.
-Yes, a big "switch".
+That sounds awful.
 
-The opcode is just like an index to trigger the proper operation.
-That's why i add this hook @->read_reg(). (the hook acts as the ioctl)
+It begs the question, what are you saving/improving by using this
+framework then?
 
-If we do not use this hooks, we should add more hooks such as
-@->read_id, @->read_sr, @->read_cr...
+> The opcode is just like an index to trigger the proper operation.
+> That's why i add this hook @->read_reg(). (the hook acts as the ioctl=
+)
 
-That's make the interface not graceful enough.
+As I've said before, the framework you're suggesting is likely to aid
+a Controller which shares a great deal of functionality with the
+m25p80 where the back-end controller driver doesn't use the SPI
+Subsystem. That won't apply to some Serial Flash Controller drivers,
+ours included.
 
+The idea of providing a framework like this is to reduce unnecessary
+duplication of code by consolidating shared routines into a central
+point. mp25p80 is a good place for that, as a great many Controllers
+share the majority of its code. As the only commonality we have with
+the m25p80 is a small piece of the JEDEC extraction and a sub-section
+of the supported device table (which A. our Controller doesn't support
+all of the devices and C. we've extended the table to make it more
+useful for our use-case); what you're suggesting would not only
+create a larger code-base, but execution would also take more cycles,
+which to me sounds completely counter-intuitive. It's lose-lose!
 
-I read the your patch implementing the read_id:
+Using the m25p80 as a pass-through, then creating an OPCODE based
+switch statement to then go and do the _real_ work sound absurd.
 
-http://lists.infradead.org/pipermail/linux-mtd/2013-November/050221.html
+> If we do not use this hooks, we should add more hooks such as
+> @->read_id, @->read_sr, @->read_cr...
+>=20
+> That's make the interface not graceful enough.
 
+I agree.
 
-it's more readable. But i think Jones's stfsm_read_reg() is workable too.
+> I read the your patch implementing the read_id:
+>=20
+> http://lists.infradead.org/pipermail/linux-mtd/2013-November/050221.h=
+tml
+>=20
+> it's more readable. But i think Jones's stfsm_read_reg() is workable =
+too.
 
+It's 'workable', but not efficient. I wrote that example to show you
+how bad it would look and to show that is was not a good idea, not
+as a good example to be followed.
 
-If you do not like the read_reg() hook, do you have any better idea?
+> If you do not like the read_reg() hook, do you have any better idea?
 
+I don't have a better idea. I think your framework will work just fine
+for some controllers. I just don't think bending ours to use it (by
+basically adding _extra_ code, and subsequently extra cycles) is the
+best way to go.
 
+Kind regards,
+Lee
 
-thanks
-Huang Shijie
-
-
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog

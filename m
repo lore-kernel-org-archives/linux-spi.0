@@ -1,7 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 1/5] MIPS: BCM63XX: expose the HSSPI clock
-Date: Sat, 30 Nov 2013 12:42:02 +0100
-Message-ID: <1385811726-6746-2-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 2/5] MIPS: BCM63XX: setup the HSSPI clock rate
+Date: Sat, 30 Nov 2013 12:42:03 +0100
+Message-ID: <1385811726-6746-3-git-send-email-jogo@openwrt.org>
 References: <1385811726-6746-1-git-send-email-jogo@openwrt.org>
 Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -15,53 +15,39 @@ In-Reply-To: <1385811726-6746-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@publi
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Properly set up the HSSPI clock rate depending on the SoC's PLL rate.
+
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- arch/mips/bcm63xx/clk.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ arch/mips/bcm63xx/clk.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/arch/mips/bcm63xx/clk.c b/arch/mips/bcm63xx/clk.c
-index 43da4ae..37a621a 100644
+index 37a621a..6375652 100644
 --- a/arch/mips/bcm63xx/clk.c
 +++ b/arch/mips/bcm63xx/clk.c
-@@ -226,6 +226,28 @@ static struct clk clk_spi = {
- };
+@@ -390,3 +390,21 @@ void clk_put(struct clk *clk)
+ }
  
- /*
-+ * HSSPI clock
-+ */
-+static void hsspi_set(struct clk *clk, int enable)
+ EXPORT_SYMBOL(clk_put);
++
++#define HSSPI_PLL_HZ_6328	133333333
++#define HSSPI_PLL_HZ_6362	400000000
++
++static int __init bcm63xx_clk_init(void)
 +{
-+	u32 mask;
++	switch (bcm63xx_get_cpu_id()) {
++	case BCM6328_CPU_ID:
++		clk_hsspi.rate = HSSPI_PLL_HZ_6328;
++		break;
++	case BCM6362_CPU_ID:
++		clk_hsspi.rate = HSSPI_PLL_HZ_6362;
++		break;
++	}
 +
-+	if (BCMCPU_IS_6328())
-+		mask = CKCTL_6328_HSSPI_EN;
-+	else if (BCMCPU_IS_6362())
-+		mask = CKCTL_6362_HSSPI_EN;
-+	else
-+		return;
-+
-+	bcm_hwclock_set(mask, enable);
++	return 0;
 +}
-+
-+static struct clk clk_hsspi = {
-+	.set	= hsspi_set,
-+};
-+
-+
-+/*
-  * XTM clock
-  */
- static void xtm_set(struct clk *clk, int enable)
-@@ -346,6 +368,8 @@ struct clk *clk_get(struct device *dev, const char *id)
- 		return &clk_usbd;
- 	if (!strcmp(id, "spi"))
- 		return &clk_spi;
-+	if (!strcmp(id, "hsspi"))
-+		return &clk_hsspi;
- 	if (!strcmp(id, "xtm"))
- 		return &clk_xtm;
- 	if (!strcmp(id, "periph"))
++arch_initcall(bcm63xx_clk_init);
 -- 
 1.8.4.rc3
 --

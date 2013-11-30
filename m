@@ -1,556 +1,228 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 5/5] spi: add bcm63xx HSSPI driver
-Date: Sat, 30 Nov 2013 12:42:06 +0100
-Message-ID: <1385811726-6746-6-git-send-email-jogo@openwrt.org>
-References: <1385811726-6746-1-git-send-email-jogo@openwrt.org>
-Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
-To: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1385811726-6746-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Gerhard Sittig <gsi@denx.de>
+Subject: [PATCH v6 00/17] add COMMON_CLK support for PowerPC MPC512x
+Date: Sat, 30 Nov 2013 23:51:20 +0100
+Message-ID: <1385851897-23475-1-git-send-email-gsi@denx.de>
+Cc: Scott Wood <scottwood@freescale.com>, Detlev Zundel <dzu@denx.de>,
+	Gerhard Sittig <gsi@denx.de>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	devicetree@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ian Campbell <ian.campbell@citrix.com>,
+	Jiri Slaby <jslaby@suse.cz>,
+	Kumar Gala <galak@kernel.crashing.org>,
+	linux-can@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-mtd@lists.infradead.org, linux-serial@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-usb@vger.kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mauro Carvalho Chehab <m.chehab@samsung.com>,
+	Paul Mackerras <paulus@samba.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Rob Herring <rob.herring@calxeda.com>,
+	Stephen Warren <
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	Anatolij Gustschin <agust@denx.de>,
+	Mike Turquette <mturquette@linaro.org>
+Return-path: <linux-can-owner@vger.kernel.org>
+Sender: linux-can-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Add a driver for the High Speed SPI controller found on newer BCM63XX SoCs.
+this series introduces support for the common clock framework (CCF,
+COMMON_CLK Kconfig option) in the PowerPC based MPC512x platform,
+which brings device tree based clock lookup as well
 
-It does feature some new modes like 3-wire or dual spi, but neither of it
-is currently implemented.
+at subsystem maintainers:
 
-Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
----
- drivers/spi/Kconfig             |   7 +
- drivers/spi/Makefile            |   1 +
- drivers/spi/spi-bcm63xx-hsspi.c | 484 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 492 insertions(+)
- create mode 100644 drivers/spi/spi-bcm63xx-hsspi.c
+this series was streamlined for conflict free application through the
+subsystems' individual trees, and consists of the following phases
+- PCI peripheral driver cleanup (1/17) (may get dropped if the
+  Layerscape series gets preferred)
+- introduction of CCF support including migration workarounds and
+  backwards compatibility, device tree updates (2/17 - 7/17) --
+  nevertheless I suggest to take the .dts/.dtsi updates through the
+  PowerPC tree, the extensions are straight forward and strictly are
+  clock related, and complement the CCF platform support
+- peripheral driver adjustment to the CCF approach (8/17 - 16/17)
+- removal of migration workarounds (17/17)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 893ec5d..505878f 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -118,6 +118,13 @@ config SPI_BCM63XX
- 	help
-           Enable support for the SPI controller on the Broadcom BCM63xx SoCs.
- 
-+config SPI_BCM63XX_HSSPI
-+	tristate "Broadcom BCM63XX HS SPI controller driver"
-+	depends on BCM63XX || COMPILE_TEST
-+	help
-+	  This enables support for the High Speed SPI controller present on
-+	  newer Broadcom BCM63XX SoCs.
-+
- config SPI_BITBANG
- 	tristate "Utilities for Bitbanging SPI masters"
- 	help
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index ab8d864..95af48d 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -16,6 +16,7 @@ obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
- obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
- obj-$(CONFIG_SPI_BCM2835)		+= spi-bcm2835.o
- obj-$(CONFIG_SPI_BCM63XX)		+= spi-bcm63xx.o
-+obj-$(CONFIG_SPI_BCM63XX_HSSPI)		+= spi-bcm63xx-hsspi.o
- obj-$(CONFIG_SPI_BFIN5XX)		+= spi-bfin5xx.o
- obj-$(CONFIG_SPI_BFIN_V3)               += spi-bfin-v3.o
- obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfin-sport.o
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-new file mode 100644
-index 0000000..bc8d848
---- /dev/null
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -0,0 +1,484 @@
-+/*
-+ * Broadcom BCM63XX High Speed SPI Controller driver
-+ *
-+ * Copyright 2000-2010 Broadcom Corporation
-+ * Copyright 2012-2013 Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-+ *
-+ * Licensed under the GNU/GPL. See COPYING for details.
-+ */
-+
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/clk.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/delay.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/err.h>
-+#include <linux/interrupt.h>
-+#include <linux/spi/spi.h>
-+#include <linux/workqueue.h>
-+#include <linux/mutex.h>
-+
-+#define HSSPI_GLOBAL_CTRL_REG			0x0
-+#define GLOBAL_CTRL_CS_POLARITY_SHIFT		0
-+#define GLOBAL_CTRL_CS_POLARITY_MASK		0x000000ff
-+#define GLOBAL_CTRL_PLL_CLK_CTRL_SHIFT		8
-+#define GLOBAL_CTRL_PLL_CLK_CTRL_MASK		0x0000ff00
-+#define GLOBAL_CTRL_CLK_GATE_SSOFF		BIT(16)
-+#define GLOBAL_CTRL_CLK_POLARITY		BIT(17)
-+#define GLOBAL_CTRL_MOSI_IDLE			BIT(18)
-+
-+#define HSSPI_GLOBAL_EXT_TRIGGER_REG		0x4
-+
-+#define HSSPI_INT_STATUS_REG			0x8
-+#define HSSPI_INT_STATUS_MASKED_REG		0xc
-+#define HSSPI_INT_MASK_REG			0x10
-+
-+#define HSSPI_PINGx_CMD_DONE(i)			BIT((i * 8) + 0)
-+#define HSSPI_PINGx_RX_OVER(i)			BIT((i * 8) + 1)
-+#define HSSPI_PINGx_TX_UNDER(i)			BIT((i * 8) + 2)
-+#define HSSPI_PINGx_POLL_TIMEOUT(i)		BIT((i * 8) + 3)
-+#define HSSPI_PINGx_CTRL_INVAL(i)		BIT((i * 8) + 4)
-+
-+#define HSSPI_INT_CLEAR_ALL			0xff001f1f
-+
-+#define HSSPI_PINGPONG_COMMAND_REG(x)		(0x80 + (x) * 0x40)
-+#define PINGPONG_CMD_COMMAND_MASK		0xf
-+#define PINGPONG_COMMAND_NOOP			0
-+#define PINGPONG_COMMAND_START_NOW		1
-+#define PINGPONG_COMMAND_START_TRIGGER		2
-+#define PINGPONG_COMMAND_HALT			3
-+#define PINGPONG_COMMAND_FLUSH			4
-+#define PINGPONG_CMD_PROFILE_SHIFT		8
-+#define PINGPONG_CMD_SS_SHIFT			12
-+
-+#define HSSPI_PINGPONG_STATUS_REG(x)		(0x84 + (x) * 0x40)
-+
-+#define HSSPI_PROFILE_CLK_CTRL_REG(x)		(0x100 + (x) * 0x20)
-+#define CLK_CTRL_FREQ_CTRL_MASK			0x0000ffff
-+#define CLK_CTRL_SPI_CLK_2X_SEL			BIT(14)
-+#define CLK_CTRL_ACCUM_RST_ON_LOOP		BIT(15)
-+
-+#define HSSPI_PROFILE_SIGNAL_CTRL_REG(x)	(0x104 + (x) * 0x20)
-+#define SIGNAL_CTRL_LATCH_RISING		BIT(12)
-+#define SIGNAL_CTRL_LAUNCH_RISING		BIT(13)
-+#define SIGNAL_CTRL_ASYNC_INPUT_PATH		BIT(16)
-+
-+#define HSSPI_PROFILE_MODE_CTRL_REG(x)		(0x108 + (x) * 0x20)
-+#define MODE_CTRL_MULTIDATA_RD_STRT_SHIFT	8
-+#define MODE_CTRL_MULTIDATA_WR_STRT_SHIFT	12
-+#define MODE_CTRL_MULTIDATA_RD_SIZE_SHIFT	16
-+#define MODE_CTRL_MULTIDATA_WR_SIZE_SHIFT	18
-+#define MODE_CTRL_MODE_3WIRE			BIT(20)
-+#define MODE_CTRL_PREPENDBYTE_CNT_SHIFT		24
-+
-+#define HSSPI_FIFO_REG(x)			(0x200 + (x) * 0x200)
-+
-+
-+#define HSSPI_OP_CODE_SHIFT			13
-+#define HSSPI_OP_SLEEP				(0 << HSSPI_OP_CODE_SHIFT)
-+#define HSSPI_OP_READ_WRITE			(1 << HSSPI_OP_CODE_SHIFT)
-+#define HSSPI_OP_WRITE				(2 << HSSPI_OP_CODE_SHIFT)
-+#define HSSPI_OP_READ				(3 << HSSPI_OP_CODE_SHIFT)
-+#define HSSPI_OP_SETIRQ				(4 << HSSPI_OP_CODE_SHIFT)
-+
-+#define HSSPI_BUFFER_LEN			512
-+#define HSSPI_OPCODE_LEN			2
-+
-+#define HSSPI_MAX_PREPEND_LEN			15
-+
-+#define HSSPI_MAX_SYNC_CLOCK			30000000
-+
-+#define HSSPI_BUS_NUM				1 /* 0 is legacy SPI */
-+
-+struct bcm63xx_hsspi {
-+	struct completion done;
-+	struct mutex bus_mutex;
-+
-+	struct platform_device *pdev;
-+	struct clk *clk;
-+	void __iomem *regs;
-+	u8 __iomem *fifo;
-+
-+	u32 speed_hz;
-+	u8 cs_polarity;
-+};
-+
-+static void bcm63xx_hsspi_set_cs(struct bcm63xx_hsspi *bs, unsigned cs,
-+				 bool active)
-+{
-+	u32 reg;
-+
-+	mutex_lock(&bs->bus_mutex);
-+	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+
-+	reg &= ~BIT(cs);
-+	if (active == !(bs->cs_polarity & BIT(cs)))
-+		reg |= BIT(cs);
-+
-+	__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+	mutex_unlock(&bs->bus_mutex);
-+}
-+
-+static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
-+				  struct spi_device *spi, int hz)
-+{
-+	unsigned profile = spi->chip_select;
-+	u32 reg;
-+
-+	reg = DIV_ROUND_UP(2048, DIV_ROUND_UP(bs->speed_hz, hz));
-+	__raw_writel(CLK_CTRL_ACCUM_RST_ON_LOOP | reg,
-+		     bs->regs + HSSPI_PROFILE_CLK_CTRL_REG(profile));
-+
-+	reg = __raw_readl(bs->regs + HSSPI_PROFILE_SIGNAL_CTRL_REG(profile));
-+	if (hz > HSSPI_MAX_SYNC_CLOCK)
-+		reg |= SIGNAL_CTRL_ASYNC_INPUT_PATH;
-+	else
-+		reg &= ~SIGNAL_CTRL_ASYNC_INPUT_PATH;
-+	__raw_writel(reg, bs->regs + HSSPI_PROFILE_SIGNAL_CTRL_REG(profile));
-+
-+	mutex_lock(&bs->bus_mutex);
-+	/* setup clock polarity */
-+	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+	reg &= ~GLOBAL_CTRL_CLK_POLARITY;
-+	if (spi->mode & SPI_CPOL)
-+		reg |= GLOBAL_CTRL_CLK_POLARITY;
-+	__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+	mutex_unlock(&bs->bus_mutex);
-+}
-+
-+static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
-+{
-+	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
-+	unsigned chip_select = spi->chip_select;
-+	u16 opcode = 0;
-+	int pending = t->len;
-+	int step_size = HSSPI_BUFFER_LEN;
-+	const u8 *tx = t->tx_buf;
-+	u8 *rx = t->rx_buf;
-+
-+	bcm63xx_hsspi_set_clk(bs, spi, t->speed_hz);
-+	bcm63xx_hsspi_set_cs(bs, spi->chip_select, true);
-+
-+	if (tx && rx)
-+		opcode = HSSPI_OP_READ_WRITE;
-+	else if (tx)
-+		opcode = HSSPI_OP_WRITE;
-+	else if (rx)
-+		opcode = HSSPI_OP_READ;
-+
-+	if (opcode != HSSPI_OP_READ)
-+		step_size -= HSSPI_OPCODE_LEN;
-+
-+	__raw_writel(0 << MODE_CTRL_PREPENDBYTE_CNT_SHIFT |
-+		     2 << MODE_CTRL_MULTIDATA_WR_STRT_SHIFT |
-+		     2 << MODE_CTRL_MULTIDATA_RD_STRT_SHIFT | 0xff,
-+		     bs->regs + HSSPI_PROFILE_MODE_CTRL_REG(chip_select));
-+
-+	while (pending > 0) {
-+		int curr_step = min_t(int, step_size, pending);
-+
-+		init_completion(&bs->done);
-+		if (tx) {
-+			memcpy_toio(bs->fifo + HSSPI_OPCODE_LEN, tx, curr_step);
-+			tx += curr_step;
-+		}
-+
-+		__raw_writew(opcode | curr_step, bs->fifo);
-+
-+		/* enable interrupt */
-+		__raw_writel(HSSPI_PINGx_CMD_DONE(0),
-+			     bs->regs + HSSPI_INT_MASK_REG);
-+
-+		/* start the transfer */
-+		__raw_writel(!chip_select << PINGPONG_CMD_SS_SHIFT |
-+			     chip_select << PINGPONG_CMD_PROFILE_SHIFT |
-+			     PINGPONG_COMMAND_START_NOW,
-+			     bs->regs + HSSPI_PINGPONG_COMMAND_REG(0));
-+
-+		if (wait_for_completion_timeout(&bs->done, HZ) == 0) {
-+			dev_err(&bs->pdev->dev, "transfer timed out!\n");
-+			return -ETIMEDOUT;
-+		}
-+
-+		if (rx) {
-+			memcpy_fromio(rx, bs->fifo, curr_step);
-+			rx += curr_step;
-+		}
-+
-+		pending -= curr_step;
-+	}
-+
-+	return 0;
-+}
-+
-+static int bcm63xx_hsspi_setup(struct spi_device *spi)
-+{
-+	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
-+	u32 reg;
-+
-+	reg = __raw_readl(bs->regs +
-+			  HSSPI_PROFILE_SIGNAL_CTRL_REG(spi->chip_select));
-+	reg &= ~(SIGNAL_CTRL_LAUNCH_RISING | SIGNAL_CTRL_LATCH_RISING);
-+	if (spi->mode & SPI_CPHA)
-+		reg |= SIGNAL_CTRL_LAUNCH_RISING;
-+	else
-+		reg |= SIGNAL_CTRL_LATCH_RISING;
-+	__raw_writel(reg, bs->regs +
-+		     HSSPI_PROFILE_SIGNAL_CTRL_REG(spi->chip_select));
-+
-+	mutex_lock(&bs->bus_mutex);
-+	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+
-+	/* only change actual polarities if there is no transfer */
-+	if ((reg & GLOBAL_CTRL_CS_POLARITY_MASK) == bs->cs_polarity) {
-+		if (spi->mode & SPI_CS_HIGH)
-+			reg |= BIT(spi->chip_select);
-+		else
-+			reg &= ~BIT(spi->chip_select);
-+		__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+	}
-+
-+	if (spi->mode & SPI_CS_HIGH)
-+		bs->cs_polarity |= BIT(spi->chip_select);
-+	else
-+		bs->cs_polarity &= ~BIT(spi->chip_select);
-+
-+	mutex_unlock(&bs->bus_mutex);
-+
-+	return 0;
-+}
-+
-+static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
-+				      struct spi_message *msg)
-+{
-+	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
-+	struct spi_transfer *t;
-+	struct spi_device *spi = msg->spi;
-+	int status = -EINVAL;
-+	int dummy_cs;
-+	u32 reg;
-+
-+	/* This controller does not support keeping CS active during idle.
-+	 * To work around this, we use the following ugly hack:
-+	 *
-+	 * a. Invert the target chip select's polarity so it will be active.
-+	 * b. Select a "dummy" chip select to use as the hardware target.
-+	 * c. Invert the dummy chip select's polarity so it will be inactive
-+	 *    during the actual transfers.
-+	 * d. Tell the hardware to send to the dummy chip select. Thanks to
-+	 *    the multiplexed nature of SPI the actual target will receive
-+	 *    the transfer and we see its response.
-+	 *
-+	 * e. At the end restore the polarities again to their default values.
-+	 */
-+
-+	dummy_cs = !spi->chip_select;
-+	bcm63xx_hsspi_set_cs(bs, dummy_cs, true);
-+
-+	list_for_each_entry(t, &msg->transfers, transfer_list) {
-+		status = bcm63xx_hsspi_do_txrx(spi, t);
-+		if (status)
-+			break;
-+
-+		msg->actual_length += t->len;
-+
-+		if (t->delay_usecs)
-+			udelay(t->delay_usecs);
-+
-+		if (t->cs_change)
-+			bcm63xx_hsspi_set_cs(bs, spi->chip_select, false);
-+	}
-+
-+	mutex_lock(&bs->bus_mutex);
-+	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+	reg &= ~GLOBAL_CTRL_CS_POLARITY_MASK;
-+	reg |= bs->cs_polarity;
-+	__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+	mutex_unlock(&bs->bus_mutex);
-+
-+	msg->status = status;
-+	spi_finalize_current_message(master);
-+
-+	return 0;
-+}
-+
-+static irqreturn_t bcm63xx_hsspi_interrupt(int irq, void *dev_id)
-+{
-+	struct bcm63xx_hsspi *bs = (struct bcm63xx_hsspi *)dev_id;
-+
-+	if (__raw_readl(bs->regs + HSSPI_INT_STATUS_MASKED_REG) == 0)
-+		return IRQ_NONE;
-+
-+	__raw_writel(HSSPI_INT_CLEAR_ALL, bs->regs + HSSPI_INT_STATUS_REG);
-+	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
-+
-+	complete(&bs->done);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int bcm63xx_hsspi_probe(struct platform_device *pdev)
-+{
-+	struct spi_master *master;
-+	struct bcm63xx_hsspi *bs;
-+	struct resource *res_mem;
-+	void __iomem *regs;
-+	struct device *dev = &pdev->dev;
-+	struct clk *clk;
-+	int irq, ret;
-+	u32 reg, rate;
-+
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0) {
-+		dev_err(dev, "no irq\n");
-+		return -ENXIO;
-+	}
-+
-+	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	regs = devm_request_and_ioremap(dev, res_mem);
-+	if (IS_ERR(regs))
-+		return PTR_ERR(regs);
-+
-+	clk = clk_get(dev, "hsspi");
-+
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
-+	rate = clk_get_rate(clk);
-+	if (!rate) {
-+		ret = -EINVAL;
-+		goto out_put_clk;
-+	}
-+
-+	clk_prepare_enable(clk);
-+
-+	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
-+	if (!master) {
-+		ret = -ENOMEM;
-+		goto out_disable_clk;
-+	}
-+
-+	bs = spi_master_get_devdata(master);
-+	bs->pdev = pdev;
-+	bs->clk = clk;
-+	bs->regs = regs;
-+	bs->speed_hz = rate;
-+	bs->fifo = (u8 __iomem *)(bs->regs + HSSPI_FIFO_REG(0));
-+
-+	mutex_init(&bs->bus_mutex);
-+
-+	master->bus_num = HSSPI_BUS_NUM;
-+	master->num_chipselect = 8;
-+	master->setup = bcm63xx_hsspi_setup;
-+	master->transfer_one_message = bcm63xx_hsspi_transfer_one;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	master->bits_per_word_mask = SPI_BPW_MASK(8);
-+	master->auto_runtime_pm = true;
-+
-+	platform_set_drvdata(pdev, master);
-+
-+	/* Initialize the hardware */
-+	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
-+
-+	/* clean up any pending interrupts */
-+	__raw_writel(HSSPI_INT_CLEAR_ALL, bs->regs + HSSPI_INT_STATUS_REG);
-+
-+	/* read out default CS polarities */
-+	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+	bs->cs_polarity = reg & GLOBAL_CTRL_CS_POLARITY_MASK;
-+	__raw_writel(reg | GLOBAL_CTRL_CLK_GATE_SSOFF,
-+		     bs->regs + HSSPI_GLOBAL_CTRL_REG);
-+
-+	ret = devm_request_irq(dev, irq, bcm63xx_hsspi_interrupt, IRQF_SHARED,
-+			       pdev->name, bs);
-+
-+	if (ret)
-+		goto out_put_master;
-+
-+	/* register and we are done */
-+	ret = spi_register_master(master);
-+	if (ret)
-+		goto out_put_master;
-+
-+	return 0;
-+
-+out_put_master:
-+	spi_master_put(master);
-+out_disable_clk:
-+	clk_disable_unprepare(clk);
-+out_put_clk:
-+	clk_put(clk);
-+
-+	return ret;
-+}
-+
-+
-+static int bcm63xx_hsspi_remove(struct platform_device *pdev)
-+{
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
-+
-+	spi_unregister_master(master);
-+
-+	/* reset the hardware and block queue progress */
-+	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
-+	clk_disable_unprepare(bs->clk);
-+	clk_put(bs->clk);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_PM
-+static int bcm63xx_hsspi_suspend(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
-+
-+	spi_master_suspend(master);
-+	clk_disable(bs->clk);
-+
-+	return 0;
-+}
-+
-+static int bcm63xx_hsspi_resume(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
-+
-+	clk_enable(bs->clk);
-+	spi_master_resume(master);
-+
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops bcm63xx_hsspi_pm_ops = {
-+	.suspend	= bcm63xx_hsspi_suspend,
-+	.resume		= bcm63xx_hsspi_resume,
-+};
-+
-+#define BCM63XX_HSSPI_PM_OPS	(&bcm63xx_hsspi_pm_ops)
-+#else
-+#define BCM63XX_HSSPI_PM_OPS	NULL
-+#endif
-+
-+
-+
-+static struct platform_driver bcm63xx_hsspi_driver = {
-+	.driver = {
-+		.name	= "bcm63xx-hsspi",
-+		.owner	= THIS_MODULE,
-+		.pm	= BCM63XX_HSSPI_PM_OPS,
-+	},
-+	.probe		= bcm63xx_hsspi_probe,
-+	.remove		= bcm63xx_hsspi_remove,
-+};
-+
-+module_platform_driver(bcm63xx_hsspi_driver);
-+
-+MODULE_ALIAS("platform:bcm63xx_hsspi");
-+MODULE_DESCRIPTION("Broadcom BCM63xx High Speed SPI Controller driver");
-+MODULE_AUTHOR("Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>");
-+MODULE_LICENSE("GPL");
+at device tree maintainers:
+
+- the series does not introduce new bindings, it implements the existing
+  clock binding (OF clock provider, DT based clock lookup) and so
+  adjusts and extends DTS files
+- the code is backwards compatible, and keeps working with device trees
+  which don't contain clock related information
+
+
+the series is based on v3.13-rc1
+
+the series passes 'checkpatch.pl --strict' except for one warning which
+cannot get resolved, since the <linux/clk-provider.h> API dictates the
+data type, "fixing" the checkpatch warning would break compilation
+
+  WARNING: static const char * array should probably be static const char * const
+  #421: FILE: arch/powerpc/platforms/512x/clock-commonclk.c:343:
+  +static const char *parent_names_mux0[] = {
+
+  total: 0 errors, 1 warnings, 0 checks, 835 lines checked
+
+the series has been build tested (each step on PowerPC 512x, 52xx, 5xxx
+multi platform, 83xx, 85xx, 86xx, and on ARM v6/v7), run tested (each
+step on 512x, the switch to CCF on 52xx), and tested for backwards
+compatibility (each step on 512x with a v3.11 dtb file)
+
+
+changes in v6 (2013-11-30)
+- catch up with changes between v3.12 and v3.13-rc1 (conflict
+  resolution, explicit include for <linux/of_address.h> in 4/17)
+- remove the no longer referenced <asm/clk_interface.h> file from
+  arch/powerpc/include/ in the s/PPC_CLOCK/COMMON_CLK/ switch (7/17)
+
+changes in v5 (2013-11-18)
+- extend comments in the PCI driver cleanup (probe() vs setup_arch()
+  discussion, no code change); all other peripheral driver cleanup from
+  v4 was taken into mainline
+- concentrate migration support in a separate routine for improved
+  maintainability
+- fix the oscillator frequency lookup ('osc' reference) in the CCF
+  platform support code which creates the clock tree
+- add backwards compatibility with device trees that lack clock specs,
+  concentrate compat support in a separate routine for improved
+  maintainability, add it in a separate patch for easier review
+- consistent use of the 'ipg' name in DTS files for the register access
+  clock item of peripherals
+- switch from PPC_CLOCK to COMMON_CLK at the same time for 512x and 52xx
+  (keep multi-platform setups operational), in a separate patch
+- move removal of migration support to the very end of the series, it's
+  no longer intertwined with peripheral driver adjustment
+- SPI and UART: get 'mclk' and 'ipg' clock items in a more consistent
+  order (less obfuscation in the diff)
+- add/adjust Cc: and Acked-By: entries, rework commit messages and
+  comments where appropriate
+
+changes in v4 (2013-08-06)
+- remove explicit devm_clk_put() calls as these will occur implicitly
+  upon device release (01/31, 02/31, 03/31, 04/31, 05/31, 06/31, 08/31,
+  09/31, 27/31)
+- split the PSC (SPI, UART) and MSCAN (CAN) related MCLK subtrees into
+  separate 'ipg'/'bdlc' gated clock items for register access as well as
+  the 'mclk' clock subtrees that apply to bitrates -- this eliminates
+  the need for "shared gates" and further reduces clock pre-enable
+  workarounds (11/31, 15/31, 17/31, 18/31, 20/31, 21/31, 22/31, 27/31)
+- further adjust the CAN clock driver, fix an incomplete error code path
+  in the network device open callback (11/31), only enable the bitrate
+  clock when the network device is open (27/31)
+- remove debug output in the clock tree setup when introducing the
+  platform's clock driver, there already is CONFIG_COMMON_CLK_DEBUG to
+  retrieve more complete information (17/31)
+- remove an "enums don't work here" comment in the dt-bindings header
+  file (15/31)
+- reword and update commit messages (body and/or subject) where
+  appropriate (03/31, 04/31, 05/31, 06/31, 08/31, 09/31, 11/31, 12/31,
+  17/31, 20/31, 21/31, 22/31, 27/31, 28/31, 30/31, 31/31)
+- add 'Reviewed-By' attributes which were received for v3
+
+changes in v3 (2013-07-22)
+- rebase the series against v3.11-rc2
+- re-ordered the series to first address all general clock handling
+  concerns in existing drivers, before introducing common clock support
+  in the platform's clock driver
+- slightly rework the SPI (01/31), UART (02/31), and PSC FIFO (23/31)
+  clock handling in comparison to v2 which introduced those fixes
+  (devm_{get,put}_clk() calls, fewer goto labels in error paths)
+- fix and improve clock handling (balance allocation and release of
+  clocks, check for errors during setup) in all of the other drivers
+  which this series has touched before in naive ways: USB (03/31), NAND
+  flash (04/31), video capture (05/31), I2C (06/31), ethernet (08/31),
+  PCI (09/31), CAN (11/31)
+- silence a build warning in the ethernet driver (07/31)
+- eliminate all PPC_CLOCK references, use 'per' clock names for NAND
+  flash (25/31) and VIU (26/31) as well
+- unbreak CAN operation for the period between introducing common clock
+  support in the platform's clock driver and introducing common clock
+  support in the CAN peripheral driver as well as providing clock specs
+  in the device tree (provide clkdev aliases for SYS and REF)
+- improve common clock support for CAN (devm_{get,put}_clk() calls,
+  check enable() errors, keep a reference to used clocks, disable and
+  put clocks after use)
+- reworded several commit messages to better reflect the kind of change
+  and because fixes were applied before adding common infrastructure
+  support
+- point to individual numbered patches of the series in the list of
+  changes for v2 as well
+
+changes in v2 (2013-07-18)
+- cleanup of the UART (02/24) and SPI (01/24) clock handling before the
+  introduction of common clock support for the platform, as incomplete
+  clock handling becomes fatal or more dangerous later (which in turn
+  changes the context of the "device tree lookup only" followup patch
+  later)
+- reordered the sequence of patches to keep the serial communication
+  related parts together (UART, SPI, and PSC FIFO changes after common
+  clock support was introduced, which have become 11-14/24 now)
+- updated commit messages for the clock API use cleanup in the serial
+  communication drivers, updated comments and reworded commit messages
+  in the core clock driver to expand on the pre-enable workaround and
+  clkdev registration (09/24)
+- keep a reference to the PSC FIFO clock during use instead of looking
+  up the clock again in the uninit() routine (14/24)
+- remove the clkdev.h header file inclusion directive with the removal
+  of the clkdev registration call (13/24)
+
+initial v1 (2013-07-15)
+
+
+Gerhard Sittig (17):
+  powerpc/fsl-pci: improve clock API use
+  dts: mpc512x: introduce dt-bindings/clock/ header
+  dts: mpc512x: add clock related device tree specs
+  clk: mpc512x: introduce COMMON_CLK for MPC512x (disabled)
+  clk: mpc512x: add backwards compat to the CCF code
+  dts: mpc512x: add clock specs for client lookups
+  clk: mpc5xxx: switch to COMMON_CLK, retire PPC_CLOCK
+  spi: mpc512x: adjust to OF based clock lookup
+  serial: mpc512x: adjust for OF based clock lookup
+  serial: mpc512x: setup the PSC FIFO clock as well
+  USB: fsl-mph-dr-of: adjust for OF based clock lookup
+  mtd: mpc5121_nfc: adjust for OF based clock lookup
+  [media] fsl-viu: adjust for OF based clock lookup
+  net: can: mscan: adjust to common clock support for mpc512x
+  net: can: mscan: remove non-CCF code for MPC512x
+  powerpc/mpc512x: improve DIU related clock setup
+  clk: mpc512x: remove migration support workarounds
+
+ arch/powerpc/Kconfig                          |    5 -
+ arch/powerpc/boot/dts/ac14xx.dts              |    7 +
+ arch/powerpc/boot/dts/mpc5121.dtsi            |  113 ++-
+ arch/powerpc/include/asm/clk_interface.h      |   20 -
+ arch/powerpc/kernel/Makefile                  |    1 -
+ arch/powerpc/kernel/clock.c                   |   82 ---
+ arch/powerpc/platforms/512x/Kconfig           |    2 +-
+ arch/powerpc/platforms/512x/Makefile          |    3 +-
+ arch/powerpc/platforms/512x/clock-commonclk.c |  951 +++++++++++++++++++++++++
+ arch/powerpc/platforms/512x/clock.c           |  754 --------------------
+ arch/powerpc/platforms/512x/mpc512x_shared.c  |  169 +++--
+ arch/powerpc/platforms/52xx/Kconfig           |    2 +-
+ arch/powerpc/sysdev/fsl_pci.c                 |   52 ++
+ drivers/media/platform/fsl-viu.c              |    2 +-
+ drivers/mtd/nand/mpc5121_nfc.c                |    2 +-
+ drivers/net/can/mscan/mpc5xxx_can.c           |  270 ++++---
+ drivers/spi/spi-mpc512x-psc.c                 |   26 +-
+ drivers/tty/serial/mpc52xx_uart.c             |   90 ++-
+ drivers/usb/host/fsl-mph-dr-of.c              |   13 +-
+ include/dt-bindings/clock/mpc512x-clock.h     |   69 ++
+ include/linux/clk-provider.h                  |   16 +
+ 21 files changed, 1557 insertions(+), 1092 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/clk_interface.h
+ delete mode 100644 arch/powerpc/kernel/clock.c
+ create mode 100644 arch/powerpc/platforms/512x/clock-commonclk.c
+ delete mode 100644 arch/powerpc/platforms/512x/clock.c
+ create mode 100644 include/dt-bindings/clock/mpc512x-clock.h
+
 -- 
-1.8.4.rc3
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.7.10.4
+

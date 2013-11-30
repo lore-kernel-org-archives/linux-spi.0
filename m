@@ -1,7 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 4/5] MIPS: BCM63XX: add HSSPI platform device and register it
-Date: Sat, 30 Nov 2013 12:42:05 +0100
-Message-ID: <1385811726-6746-5-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 5/5] spi: add bcm63xx HSSPI driver
+Date: Sat, 30 Nov 2013 12:42:06 +0100
+Message-ID: <1385811726-6746-6-git-send-email-jogo@openwrt.org>
 References: <1385811726-6746-1-git-send-email-jogo@openwrt.org>
 Cc: Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -15,118 +15,539 @@ In-Reply-To: <1385811726-6746-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@publi
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Add a driver for the High Speed SPI controller found on newer BCM63XX SoCs.
+
+It does feature some new modes like 3-wire or dual spi, but neither of it
+is currently implemented.
+
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- arch/mips/bcm63xx/Makefile                         |  4 +-
- arch/mips/bcm63xx/boards/board_bcm963xx.c          |  3 ++
- arch/mips/bcm63xx/dev-hsspi.c                      | 47 ++++++++++++++++++++++
- .../include/asm/mach-bcm63xx/bcm63xx_dev_hsspi.h   |  8 ++++
- 4 files changed, 60 insertions(+), 2 deletions(-)
- create mode 100644 arch/mips/bcm63xx/dev-hsspi.c
- create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_hsspi.h
+ drivers/spi/Kconfig             |   7 +
+ drivers/spi/Makefile            |   1 +
+ drivers/spi/spi-bcm63xx-hsspi.c | 484 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 492 insertions(+)
+ create mode 100644 drivers/spi/spi-bcm63xx-hsspi.c
 
-diff --git a/arch/mips/bcm63xx/Makefile b/arch/mips/bcm63xx/Makefile
-index ac28073..9019f54 100644
---- a/arch/mips/bcm63xx/Makefile
-+++ b/arch/mips/bcm63xx/Makefile
-@@ -1,7 +1,7 @@
- obj-y		+= clk.o cpu.o cs.o gpio.o irq.o nvram.o prom.o reset.o \
- 		   setup.o timer.o dev-dsp.o dev-enet.o dev-flash.o \
--		   dev-pcmcia.o dev-rng.o dev-spi.o dev-uart.o dev-wdt.o \
--		   dev-usb-usbd.o
-+		   dev-pcmcia.o dev-rng.o dev-spi.o dev-hsspi.o dev-uart.o \
-+		   dev-wdt.o dev-usb-usbd.o
- obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 893ec5d..505878f 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -118,6 +118,13 @@ config SPI_BCM63XX
+ 	help
+           Enable support for the SPI controller on the Broadcom BCM63xx SoCs.
  
- obj-y		+= boards/
-diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-index 5b974eb..33727e7 100644
---- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
-+++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-@@ -23,6 +23,7 @@
- #include <bcm63xx_dev_enet.h>
- #include <bcm63xx_dev_dsp.h>
- #include <bcm63xx_dev_flash.h>
-+#include <bcm63xx_dev_hsspi.h>
- #include <bcm63xx_dev_pcmcia.h>
- #include <bcm63xx_dev_spi.h>
- #include <bcm63xx_dev_usb_usbd.h>
-@@ -915,6 +916,8 @@ int __init board_register_devices(void)
- 
- 	bcm63xx_spi_register();
- 
-+	bcm63xx_hsspi_register();
++config SPI_BCM63XX_HSSPI
++	tristate "Broadcom BCM63XX HS SPI controller driver"
++	depends on BCM63XX || COMPILE_TEST
++	help
++	  This enables support for the High Speed SPI controller present on
++	  newer Broadcom BCM63XX SoCs.
 +
- 	bcm63xx_flash_register();
- 
- 	bcm63xx_led_data.num_leds = ARRAY_SIZE(board.leds);
-diff --git a/arch/mips/bcm63xx/dev-hsspi.c b/arch/mips/bcm63xx/dev-hsspi.c
+ config SPI_BITBANG
+ 	tristate "Utilities for Bitbanging SPI masters"
+ 	help
+diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
+index ab8d864..95af48d 100644
+--- a/drivers/spi/Makefile
++++ b/drivers/spi/Makefile
+@@ -16,6 +16,7 @@ obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
+ obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
+ obj-$(CONFIG_SPI_BCM2835)		+= spi-bcm2835.o
+ obj-$(CONFIG_SPI_BCM63XX)		+= spi-bcm63xx.o
++obj-$(CONFIG_SPI_BCM63XX_HSSPI)		+= spi-bcm63xx-hsspi.o
+ obj-$(CONFIG_SPI_BFIN5XX)		+= spi-bfin5xx.o
+ obj-$(CONFIG_SPI_BFIN_V3)               += spi-bfin-v3.o
+ obj-$(CONFIG_SPI_BFIN_SPORT)		+= spi-bfin-sport.o
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
 new file mode 100644
-index 0000000..696abc4
+index 0000000..bc8d848
 --- /dev/null
-+++ b/arch/mips/bcm63xx/dev-hsspi.c
-@@ -0,0 +1,47 @@
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -0,0 +1,484 @@
 +/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
++ * Broadcom BCM63XX High Speed SPI Controller driver
 + *
-+ * Copyright (C) 2012 Jonas Gorski <jonas.gorski-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
++ * Copyright 2000-2010 Broadcom Corporation
++ * Copyright 2012-2013 Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
++ *
++ * Licensed under the GNU/GPL. See COPYING for details.
 + */
 +
-+#include <linux/init.h>
 +#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/clk.h>
++#include <linux/module.h>
 +#include <linux/platform_device.h>
++#include <linux/delay.h>
++#include <linux/dma-mapping.h>
++#include <linux/err.h>
++#include <linux/interrupt.h>
++#include <linux/spi/spi.h>
++#include <linux/workqueue.h>
++#include <linux/mutex.h>
 +
-+#include <bcm63xx_cpu.h>
-+#include <bcm63xx_dev_hsspi.h>
-+#include <bcm63xx_regs.h>
++#define HSSPI_GLOBAL_CTRL_REG			0x0
++#define GLOBAL_CTRL_CS_POLARITY_SHIFT		0
++#define GLOBAL_CTRL_CS_POLARITY_MASK		0x000000ff
++#define GLOBAL_CTRL_PLL_CLK_CTRL_SHIFT		8
++#define GLOBAL_CTRL_PLL_CLK_CTRL_MASK		0x0000ff00
++#define GLOBAL_CTRL_CLK_GATE_SSOFF		BIT(16)
++#define GLOBAL_CTRL_CLK_POLARITY		BIT(17)
++#define GLOBAL_CTRL_MOSI_IDLE			BIT(18)
 +
-+static struct resource spi_resources[] = {
-+	{
-+		.start		= -1, /* filled at runtime */
-+		.end		= -1, /* filled at runtime */
-+		.flags		= IORESOURCE_MEM,
-+	},
-+	{
-+		.start		= -1, /* filled at runtime */
-+		.flags		= IORESOURCE_IRQ,
-+	},
++#define HSSPI_GLOBAL_EXT_TRIGGER_REG		0x4
++
++#define HSSPI_INT_STATUS_REG			0x8
++#define HSSPI_INT_STATUS_MASKED_REG		0xc
++#define HSSPI_INT_MASK_REG			0x10
++
++#define HSSPI_PINGx_CMD_DONE(i)			BIT((i * 8) + 0)
++#define HSSPI_PINGx_RX_OVER(i)			BIT((i * 8) + 1)
++#define HSSPI_PINGx_TX_UNDER(i)			BIT((i * 8) + 2)
++#define HSSPI_PINGx_POLL_TIMEOUT(i)		BIT((i * 8) + 3)
++#define HSSPI_PINGx_CTRL_INVAL(i)		BIT((i * 8) + 4)
++
++#define HSSPI_INT_CLEAR_ALL			0xff001f1f
++
++#define HSSPI_PINGPONG_COMMAND_REG(x)		(0x80 + (x) * 0x40)
++#define PINGPONG_CMD_COMMAND_MASK		0xf
++#define PINGPONG_COMMAND_NOOP			0
++#define PINGPONG_COMMAND_START_NOW		1
++#define PINGPONG_COMMAND_START_TRIGGER		2
++#define PINGPONG_COMMAND_HALT			3
++#define PINGPONG_COMMAND_FLUSH			4
++#define PINGPONG_CMD_PROFILE_SHIFT		8
++#define PINGPONG_CMD_SS_SHIFT			12
++
++#define HSSPI_PINGPONG_STATUS_REG(x)		(0x84 + (x) * 0x40)
++
++#define HSSPI_PROFILE_CLK_CTRL_REG(x)		(0x100 + (x) * 0x20)
++#define CLK_CTRL_FREQ_CTRL_MASK			0x0000ffff
++#define CLK_CTRL_SPI_CLK_2X_SEL			BIT(14)
++#define CLK_CTRL_ACCUM_RST_ON_LOOP		BIT(15)
++
++#define HSSPI_PROFILE_SIGNAL_CTRL_REG(x)	(0x104 + (x) * 0x20)
++#define SIGNAL_CTRL_LATCH_RISING		BIT(12)
++#define SIGNAL_CTRL_LAUNCH_RISING		BIT(13)
++#define SIGNAL_CTRL_ASYNC_INPUT_PATH		BIT(16)
++
++#define HSSPI_PROFILE_MODE_CTRL_REG(x)		(0x108 + (x) * 0x20)
++#define MODE_CTRL_MULTIDATA_RD_STRT_SHIFT	8
++#define MODE_CTRL_MULTIDATA_WR_STRT_SHIFT	12
++#define MODE_CTRL_MULTIDATA_RD_SIZE_SHIFT	16
++#define MODE_CTRL_MULTIDATA_WR_SIZE_SHIFT	18
++#define MODE_CTRL_MODE_3WIRE			BIT(20)
++#define MODE_CTRL_PREPENDBYTE_CNT_SHIFT		24
++
++#define HSSPI_FIFO_REG(x)			(0x200 + (x) * 0x200)
++
++
++#define HSSPI_OP_CODE_SHIFT			13
++#define HSSPI_OP_SLEEP				(0 << HSSPI_OP_CODE_SHIFT)
++#define HSSPI_OP_READ_WRITE			(1 << HSSPI_OP_CODE_SHIFT)
++#define HSSPI_OP_WRITE				(2 << HSSPI_OP_CODE_SHIFT)
++#define HSSPI_OP_READ				(3 << HSSPI_OP_CODE_SHIFT)
++#define HSSPI_OP_SETIRQ				(4 << HSSPI_OP_CODE_SHIFT)
++
++#define HSSPI_BUFFER_LEN			512
++#define HSSPI_OPCODE_LEN			2
++
++#define HSSPI_MAX_PREPEND_LEN			15
++
++#define HSSPI_MAX_SYNC_CLOCK			30000000
++
++#define HSSPI_BUS_NUM				1 /* 0 is legacy SPI */
++
++struct bcm63xx_hsspi {
++	struct completion done;
++	struct mutex bus_mutex;
++
++	struct platform_device *pdev;
++	struct clk *clk;
++	void __iomem *regs;
++	u8 __iomem *fifo;
++
++	u32 speed_hz;
++	u8 cs_polarity;
 +};
 +
-+static struct platform_device bcm63xx_hsspi_device = {
-+	.name		= "bcm63xx-hsspi",
-+	.id		= 0,
-+	.num_resources	= ARRAY_SIZE(spi_resources),
-+	.resource	= spi_resources,
-+};
-+
-+int __init bcm63xx_hsspi_register(void)
++static void bcm63xx_hsspi_set_cs(struct bcm63xx_hsspi *bs, unsigned cs,
++				 bool active)
 +{
-+	if (!BCMCPU_IS_6328() && !BCMCPU_IS_6362())
-+		return -ENODEV;
++	u32 reg;
 +
-+	spi_resources[0].start = bcm63xx_regset_address(RSET_HSSPI);
-+	spi_resources[0].end = spi_resources[0].start;
-+	spi_resources[0].end += RSET_HSSPI_SIZE - 1;
-+	spi_resources[1].start = bcm63xx_get_irq_number(IRQ_HSSPI);
++	mutex_lock(&bs->bus_mutex);
++	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
 +
-+	return platform_device_register(&bcm63xx_hsspi_device);
++	reg &= ~BIT(cs);
++	if (active == !(bs->cs_polarity & BIT(cs)))
++		reg |= BIT(cs);
++
++	__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
++	mutex_unlock(&bs->bus_mutex);
 +}
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_hsspi.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_hsspi.h
-new file mode 100644
-index 0000000..1b1acaf
---- /dev/null
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_hsspi.h
-@@ -0,0 +1,8 @@
-+#ifndef BCM63XX_DEV_HSSPI_H
-+#define BCM63XX_DEV_HSSPI_H
 +
-+#include <linux/types.h>
++static void bcm63xx_hsspi_set_clk(struct bcm63xx_hsspi *bs,
++				  struct spi_device *spi, int hz)
++{
++	unsigned profile = spi->chip_select;
++	u32 reg;
 +
-+int bcm63xx_hsspi_register(void);
++	reg = DIV_ROUND_UP(2048, DIV_ROUND_UP(bs->speed_hz, hz));
++	__raw_writel(CLK_CTRL_ACCUM_RST_ON_LOOP | reg,
++		     bs->regs + HSSPI_PROFILE_CLK_CTRL_REG(profile));
 +
-+#endif /* BCM63XX_DEV_HSSPI_H */
++	reg = __raw_readl(bs->regs + HSSPI_PROFILE_SIGNAL_CTRL_REG(profile));
++	if (hz > HSSPI_MAX_SYNC_CLOCK)
++		reg |= SIGNAL_CTRL_ASYNC_INPUT_PATH;
++	else
++		reg &= ~SIGNAL_CTRL_ASYNC_INPUT_PATH;
++	__raw_writel(reg, bs->regs + HSSPI_PROFILE_SIGNAL_CTRL_REG(profile));
++
++	mutex_lock(&bs->bus_mutex);
++	/* setup clock polarity */
++	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
++	reg &= ~GLOBAL_CTRL_CLK_POLARITY;
++	if (spi->mode & SPI_CPOL)
++		reg |= GLOBAL_CTRL_CLK_POLARITY;
++	__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
++	mutex_unlock(&bs->bus_mutex);
++}
++
++static int bcm63xx_hsspi_do_txrx(struct spi_device *spi, struct spi_transfer *t)
++{
++	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
++	unsigned chip_select = spi->chip_select;
++	u16 opcode = 0;
++	int pending = t->len;
++	int step_size = HSSPI_BUFFER_LEN;
++	const u8 *tx = t->tx_buf;
++	u8 *rx = t->rx_buf;
++
++	bcm63xx_hsspi_set_clk(bs, spi, t->speed_hz);
++	bcm63xx_hsspi_set_cs(bs, spi->chip_select, true);
++
++	if (tx && rx)
++		opcode = HSSPI_OP_READ_WRITE;
++	else if (tx)
++		opcode = HSSPI_OP_WRITE;
++	else if (rx)
++		opcode = HSSPI_OP_READ;
++
++	if (opcode != HSSPI_OP_READ)
++		step_size -= HSSPI_OPCODE_LEN;
++
++	__raw_writel(0 << MODE_CTRL_PREPENDBYTE_CNT_SHIFT |
++		     2 << MODE_CTRL_MULTIDATA_WR_STRT_SHIFT |
++		     2 << MODE_CTRL_MULTIDATA_RD_STRT_SHIFT | 0xff,
++		     bs->regs + HSSPI_PROFILE_MODE_CTRL_REG(chip_select));
++
++	while (pending > 0) {
++		int curr_step = min_t(int, step_size, pending);
++
++		init_completion(&bs->done);
++		if (tx) {
++			memcpy_toio(bs->fifo + HSSPI_OPCODE_LEN, tx, curr_step);
++			tx += curr_step;
++		}
++
++		__raw_writew(opcode | curr_step, bs->fifo);
++
++		/* enable interrupt */
++		__raw_writel(HSSPI_PINGx_CMD_DONE(0),
++			     bs->regs + HSSPI_INT_MASK_REG);
++
++		/* start the transfer */
++		__raw_writel(!chip_select << PINGPONG_CMD_SS_SHIFT |
++			     chip_select << PINGPONG_CMD_PROFILE_SHIFT |
++			     PINGPONG_COMMAND_START_NOW,
++			     bs->regs + HSSPI_PINGPONG_COMMAND_REG(0));
++
++		if (wait_for_completion_timeout(&bs->done, HZ) == 0) {
++			dev_err(&bs->pdev->dev, "transfer timed out!\n");
++			return -ETIMEDOUT;
++		}
++
++		if (rx) {
++			memcpy_fromio(rx, bs->fifo, curr_step);
++			rx += curr_step;
++		}
++
++		pending -= curr_step;
++	}
++
++	return 0;
++}
++
++static int bcm63xx_hsspi_setup(struct spi_device *spi)
++{
++	struct bcm63xx_hsspi *bs = spi_master_get_devdata(spi->master);
++	u32 reg;
++
++	reg = __raw_readl(bs->regs +
++			  HSSPI_PROFILE_SIGNAL_CTRL_REG(spi->chip_select));
++	reg &= ~(SIGNAL_CTRL_LAUNCH_RISING | SIGNAL_CTRL_LATCH_RISING);
++	if (spi->mode & SPI_CPHA)
++		reg |= SIGNAL_CTRL_LAUNCH_RISING;
++	else
++		reg |= SIGNAL_CTRL_LATCH_RISING;
++	__raw_writel(reg, bs->regs +
++		     HSSPI_PROFILE_SIGNAL_CTRL_REG(spi->chip_select));
++
++	mutex_lock(&bs->bus_mutex);
++	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
++
++	/* only change actual polarities if there is no transfer */
++	if ((reg & GLOBAL_CTRL_CS_POLARITY_MASK) == bs->cs_polarity) {
++		if (spi->mode & SPI_CS_HIGH)
++			reg |= BIT(spi->chip_select);
++		else
++			reg &= ~BIT(spi->chip_select);
++		__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
++	}
++
++	if (spi->mode & SPI_CS_HIGH)
++		bs->cs_polarity |= BIT(spi->chip_select);
++	else
++		bs->cs_polarity &= ~BIT(spi->chip_select);
++
++	mutex_unlock(&bs->bus_mutex);
++
++	return 0;
++}
++
++static int bcm63xx_hsspi_transfer_one(struct spi_master *master,
++				      struct spi_message *msg)
++{
++	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
++	struct spi_transfer *t;
++	struct spi_device *spi = msg->spi;
++	int status = -EINVAL;
++	int dummy_cs;
++	u32 reg;
++
++	/* This controller does not support keeping CS active during idle.
++	 * To work around this, we use the following ugly hack:
++	 *
++	 * a. Invert the target chip select's polarity so it will be active.
++	 * b. Select a "dummy" chip select to use as the hardware target.
++	 * c. Invert the dummy chip select's polarity so it will be inactive
++	 *    during the actual transfers.
++	 * d. Tell the hardware to send to the dummy chip select. Thanks to
++	 *    the multiplexed nature of SPI the actual target will receive
++	 *    the transfer and we see its response.
++	 *
++	 * e. At the end restore the polarities again to their default values.
++	 */
++
++	dummy_cs = !spi->chip_select;
++	bcm63xx_hsspi_set_cs(bs, dummy_cs, true);
++
++	list_for_each_entry(t, &msg->transfers, transfer_list) {
++		status = bcm63xx_hsspi_do_txrx(spi, t);
++		if (status)
++			break;
++
++		msg->actual_length += t->len;
++
++		if (t->delay_usecs)
++			udelay(t->delay_usecs);
++
++		if (t->cs_change)
++			bcm63xx_hsspi_set_cs(bs, spi->chip_select, false);
++	}
++
++	mutex_lock(&bs->bus_mutex);
++	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
++	reg &= ~GLOBAL_CTRL_CS_POLARITY_MASK;
++	reg |= bs->cs_polarity;
++	__raw_writel(reg, bs->regs + HSSPI_GLOBAL_CTRL_REG);
++	mutex_unlock(&bs->bus_mutex);
++
++	msg->status = status;
++	spi_finalize_current_message(master);
++
++	return 0;
++}
++
++static irqreturn_t bcm63xx_hsspi_interrupt(int irq, void *dev_id)
++{
++	struct bcm63xx_hsspi *bs = (struct bcm63xx_hsspi *)dev_id;
++
++	if (__raw_readl(bs->regs + HSSPI_INT_STATUS_MASKED_REG) == 0)
++		return IRQ_NONE;
++
++	__raw_writel(HSSPI_INT_CLEAR_ALL, bs->regs + HSSPI_INT_STATUS_REG);
++	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
++
++	complete(&bs->done);
++
++	return IRQ_HANDLED;
++}
++
++static int bcm63xx_hsspi_probe(struct platform_device *pdev)
++{
++	struct spi_master *master;
++	struct bcm63xx_hsspi *bs;
++	struct resource *res_mem;
++	void __iomem *regs;
++	struct device *dev = &pdev->dev;
++	struct clk *clk;
++	int irq, ret;
++	u32 reg, rate;
++
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0) {
++		dev_err(dev, "no irq\n");
++		return -ENXIO;
++	}
++
++	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	regs = devm_request_and_ioremap(dev, res_mem);
++	if (IS_ERR(regs))
++		return PTR_ERR(regs);
++
++	clk = clk_get(dev, "hsspi");
++
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
++	rate = clk_get_rate(clk);
++	if (!rate) {
++		ret = -EINVAL;
++		goto out_put_clk;
++	}
++
++	clk_prepare_enable(clk);
++
++	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
++	if (!master) {
++		ret = -ENOMEM;
++		goto out_disable_clk;
++	}
++
++	bs = spi_master_get_devdata(master);
++	bs->pdev = pdev;
++	bs->clk = clk;
++	bs->regs = regs;
++	bs->speed_hz = rate;
++	bs->fifo = (u8 __iomem *)(bs->regs + HSSPI_FIFO_REG(0));
++
++	mutex_init(&bs->bus_mutex);
++
++	master->bus_num = HSSPI_BUS_NUM;
++	master->num_chipselect = 8;
++	master->setup = bcm63xx_hsspi_setup;
++	master->transfer_one_message = bcm63xx_hsspi_transfer_one;
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	master->bits_per_word_mask = SPI_BPW_MASK(8);
++	master->auto_runtime_pm = true;
++
++	platform_set_drvdata(pdev, master);
++
++	/* Initialize the hardware */
++	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
++
++	/* clean up any pending interrupts */
++	__raw_writel(HSSPI_INT_CLEAR_ALL, bs->regs + HSSPI_INT_STATUS_REG);
++
++	/* read out default CS polarities */
++	reg = __raw_readl(bs->regs + HSSPI_GLOBAL_CTRL_REG);
++	bs->cs_polarity = reg & GLOBAL_CTRL_CS_POLARITY_MASK;
++	__raw_writel(reg | GLOBAL_CTRL_CLK_GATE_SSOFF,
++		     bs->regs + HSSPI_GLOBAL_CTRL_REG);
++
++	ret = devm_request_irq(dev, irq, bcm63xx_hsspi_interrupt, IRQF_SHARED,
++			       pdev->name, bs);
++
++	if (ret)
++		goto out_put_master;
++
++	/* register and we are done */
++	ret = spi_register_master(master);
++	if (ret)
++		goto out_put_master;
++
++	return 0;
++
++out_put_master:
++	spi_master_put(master);
++out_disable_clk:
++	clk_disable_unprepare(clk);
++out_put_clk:
++	clk_put(clk);
++
++	return ret;
++}
++
++
++static int bcm63xx_hsspi_remove(struct platform_device *pdev)
++{
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
++
++	spi_unregister_master(master);
++
++	/* reset the hardware and block queue progress */
++	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
++	clk_disable_unprepare(bs->clk);
++	clk_put(bs->clk);
++
++	return 0;
++}
++
++#ifdef CONFIG_PM
++static int bcm63xx_hsspi_suspend(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
++
++	spi_master_suspend(master);
++	clk_disable(bs->clk);
++
++	return 0;
++}
++
++static int bcm63xx_hsspi_resume(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct bcm63xx_hsspi *bs = spi_master_get_devdata(master);
++
++	clk_enable(bs->clk);
++	spi_master_resume(master);
++
++	return 0;
++}
++
++static const struct dev_pm_ops bcm63xx_hsspi_pm_ops = {
++	.suspend	= bcm63xx_hsspi_suspend,
++	.resume		= bcm63xx_hsspi_resume,
++};
++
++#define BCM63XX_HSSPI_PM_OPS	(&bcm63xx_hsspi_pm_ops)
++#else
++#define BCM63XX_HSSPI_PM_OPS	NULL
++#endif
++
++
++
++static struct platform_driver bcm63xx_hsspi_driver = {
++	.driver = {
++		.name	= "bcm63xx-hsspi",
++		.owner	= THIS_MODULE,
++		.pm	= BCM63XX_HSSPI_PM_OPS,
++	},
++	.probe		= bcm63xx_hsspi_probe,
++	.remove		= bcm63xx_hsspi_remove,
++};
++
++module_platform_driver(bcm63xx_hsspi_driver);
++
++MODULE_ALIAS("platform:bcm63xx_hsspi");
++MODULE_DESCRIPTION("Broadcom BCM63xx High Speed SPI Controller driver");
++MODULE_AUTHOR("Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>");
++MODULE_LICENSE("GPL");
 -- 
 1.8.4.rc3
 --

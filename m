@@ -1,74 +1,75 @@
-From: takasi-y@ops.dti.ne.jp
-Subject: [PATCH 05/11] spi: spi-sh-msiof: rx_need_dummy_tx variant
-Date: Mon,  2 Dec 2013 03:19:16 +0900
-Message-ID: <1385921962-19843-5-git-send-email-takasi-y@ops.dti.ne.jp>
-References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
- <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
-Cc: Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-To: linux-sh@vger.kernel.org
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Takashi YOSHII <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
+Subject: [PATCH 00/11] ARM: shmobile: koelsch: MSIOF support
+Date: Mon, 2 Dec 2013 03:15:57 +0900
+Message-ID: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: SH-Linux <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
+Koelsch board has SPI connected on-board PMIC(r2a11302).
+These patches enable spidev interface for it using MSIOF
+(Clock-Synchronized Serial Interface with FIFO) module on SoC(r8a7791).
+This adds platform device support to Koelsh single-platform.
+(dt, -reference, multi-platform support are not included)
 
-There is a variant of MSIOF, that need dummy data transfer even when
-you want only to receive.
+Summary of patches:
 
-This patch adds the option
- .rx_need_dummy_tx
-to sh_msiof_spi_info.
+These are bug fix.
+ [PATCH 01/11] pinctrl: sh-pfc: r8a7791: fix msiof groups to follow GROUP
+ [PATCH 02/11] spi: spi-sh-msiof: round up div to fix freq calculation
 
-Consult "Transmit and Receive Procedures" on HWM, if it says
- - Set SICTR.TSCKE to 1
- - Write dummy transmission data to SITFDR
-to *receive*, enable this.
-Ape6, Rcar-H2, and Rcar-M2 are found having this type of module.
+To use CS output function which the HW module has.
+ [PATCH 03/11] spi: spi-sh-msiof: let it run even without GPIO
+ [PATCH 04/11] spi: spi-sh-msiof: set hi/low Active for HW CS
 
-Signed-off-by: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
+To support MSIOF variant that TX and RX are not separately controllable.
+ [PATCH 05/11] spi: spi-sh-msiof: rx_need_dummy_tx variant
+ [PATCH 06/11] spi: spi-sh-msiof: RMDIR1[15:0] may should be zero
+ [PATCH 07/11] spi: spi-sh-msiof: RSCR register may absent
+
+r8a7791 part
+ [PATCH 08/11] ARM: shmobile: r8a7791: Add MSIOF clocks
+ [PATCH 09/11] ARM: shmobile: r8a7791: MSIOF platform device
+
+Koelsh part
+ [PATCH 10/11] ARM: shmobile: koelsch: pinctrl map for MSIOF0
+ [PATCH 11/11] ARM: shmobile: koelsch: spidev for r2a11302
+
 ---
- drivers/spi/spi-sh-msiof.c   |    4 +++-
- include/linux/spi/sh_msiof.h |    1 +
- 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 8683732..936d8ab 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -207,7 +207,7 @@ static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
- {
- 	u32 dr2 = ((bits - 1) << 24) | ((words - 1) << 16);
- 
--	if (tx_buf)
-+	if (tx_buf || (rx_buf && p->info->rx_need_dummy_tx))
- 		sh_msiof_write(p, TMDR2, dr2);
- 	else
- 		sh_msiof_write(p, TMDR2, dr2 | 1);
-@@ -464,6 +464,8 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 	/* write tx fifo */
- 	if (tx_buf)
- 		tx_fifo(p, tx_buf, words, fifo_shift);
-+	else if (rx_buf && p->info->rx_need_dummy_tx)
-+		tx_fifo(p, rx_buf, words, fifo_shift);
- 
- 	/* setup clock and rx/tx signals */
- 	ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TSCKE);
-diff --git a/include/linux/spi/sh_msiof.h b/include/linux/spi/sh_msiof.h
-index 2e8db3d..cf36781 100644
---- a/include/linux/spi/sh_msiof.h
-+++ b/include/linux/spi/sh_msiof.h
-@@ -5,6 +5,7 @@ struct sh_msiof_spi_info {
- 	int tx_fifo_override;
- 	int rx_fifo_override;
- 	u16 num_chipselect;
-+	u16 rx_need_dummy_tx:1;
- };
- 
- #endif /* __SPI_SH_MSIOF_H__ */
+Takashi Yoshii (11):
+  pinctrl: sh-pfc: r8a7791: fix msiof groups to follow GROUP
+  spi: spi-sh-msiof: round up div to fix freq calculation
+  spi: spi-sh-msiof: let it run even without GPIO
+  spi: spi-sh-msiof: set hi/low Active for HW CS
+  spi: spi-sh-msiof: rx_need_dummy_tx variant
+  spi: spi-sh-msiof: RMDIR1[15:0] may should be zero
+  spi: spi-sh-msiof: RSCR register may absent
+  ARM: shmobile: r8a7791: Add MSIOF clocks
+  ARM: shmobile: r8a7791: MSIOF platform device
+  ARM: shmobile: koelsch: pinctrl map for MSIOF0
+  ARM: shmobile: koelsch: spidev for r2a11302
+
+ arch/arm/mach-shmobile/board-koelsch.c |   20 ++++++++++++++++++++
+ arch/arm/mach-shmobile/clock-r8a7791.c |    9 ++++++++-
+ arch/arm/mach-shmobile/setup-r8a7791.c |   30 ++++++++++++++++++++++++++++++
+ drivers/pinctrl/sh-pfc/pfc-r8a7791.c   |   21 +++++++++++++++------
+ drivers/spi/spi-sh-msiof.c             |   30 +++++++++++++++++++++---------
+ include/linux/spi/sh_msiof.h           |    1 +
+ 6 files changed, 95 insertions(+), 16 deletions(-)
+
 -- 
 1.7.9.5
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,72 +1,67 @@
 From: takasi-y@ops.dti.ne.jp
-Subject: [PATCH 01/11] pinctrl: sh-pfc: r8a7791: fix msiof groups to follow GROUP
-Date: Mon,  2 Dec 2013 03:19:12 +0900
-Message-ID: <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
+Subject: [PATCH 04/11] spi: spi-sh-msiof: set hi/low Active for HW CS
+Date: Mon,  2 Dec 2013 03:19:15 +0900
+Message-ID: <1385921962-19843-4-git-send-email-takasi-y@ops.dti.ne.jp>
 References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
+ <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
 Cc: Simon Horman <horms@verge.net.au>,
 	Magnus Damm <magnus.damm@gmail.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
 To: linux-sh@vger.kernel.org
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
+In-Reply-To: <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 
-SH_PFC_PIN_GROUP(), pins[], mux[], defines
- clk, sync, ss1, ss2, rx, tx
-But, msiof?_groups[] defines
- clk, ctrl, data
-
-Fix msiof[012]_groups members to be consistent to PIN_GROUP.
+Set hardware CS(CS control function on MSIOF <-> GPIO CS) polarity
+according to SPI_CS_HIGH flag on spi->mode.
 
 Signed-off-by: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 ---
- drivers/pinctrl/sh-pfc/pfc-r8a7791.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/spi/spi-sh-msiof.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/sh-pfc/pfc-r8a7791.c b/drivers/pinctrl/sh-pfc/pfc-r8a7791.c
-index bf76a65..e0be506 100644
---- a/drivers/pinctrl/sh-pfc/pfc-r8a7791.c
-+++ b/drivers/pinctrl/sh-pfc/pfc-r8a7791.c
-@@ -2840,20 +2840,29 @@ static const char * const mmc_groups[] = {
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 2a2b0dd..8683732 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -169,7 +169,7 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
  
- static const char * const msiof0_groups[] = {
- 	"msiof0_clk",
--	"msiof0_ctrl",
--	"msiof0_data",
-+	"msiof0_sync",
-+	"msiof0_ss1",
-+	"msiof0_ss2",
-+	"msiof0_rx",
-+	"msiof0_tx",
- };
+ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+ 				      u32 cpol, u32 cpha,
+-				      u32 tx_hi_z, u32 lsb_first)
++				      u32 tx_hi_z, u32 lsb_first, u32 cs_high)
+ {
+ 	u32 tmp;
+ 	int edge;
+@@ -182,8 +182,12 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+ 	 *    1    1         11     11    1    1
+ 	 */
+ 	sh_msiof_write(p, FCTR, 0);
+-	sh_msiof_write(p, TMDR1, 0xe2000005 | (lsb_first << 24));
+-	sh_msiof_write(p, RMDR1, 0x22000005 | (lsb_first << 24));
++
++	tmp = 0;
++	tmp |= !cs_high << 25;
++	tmp |= lsb_first << 24;
++	sh_msiof_write(p, TMDR1, 0xe0000005 | tmp);
++	sh_msiof_write(p, RMDR1, 0x20000005 | tmp);
  
- static const char * const msiof1_groups[] = {
- 	"msiof1_clk",
--	"msiof1_ctrl",
--	"msiof1_data",
-+	"msiof1_sync",
-+	"msiof1_ss1",
-+	"msiof1_ss2",
-+	"msiof1_rx",
-+	"msiof1_tx",
- };
+ 	tmp = 0xa0000000;
+ 	tmp |= cpol << 30; /* TSCKIZ */
+@@ -417,7 +421,8 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
+ 		sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
+ 					  !!(spi->mode & SPI_CPHA),
+ 					  !!(spi->mode & SPI_3WIRE),
+-					  !!(spi->mode & SPI_LSB_FIRST));
++					  !!(spi->mode & SPI_LSB_FIRST),
++					  !!(spi->mode & SPI_CS_HIGH));
+ 	}
  
- static const char * const msiof2_groups[] = {
- 	"msiof2_clk",
--	"msiof2_ctrl",
--	"msiof2_data",
-+	"msiof2_sync",
-+	"msiof2_ss1",
-+	"msiof2_ss2",
-+	"msiof2_rx",
-+	"msiof2_tx",
- };
- 
- static const char * const scif0_groups[] = {
+ 	/* use spi->controller data for CS (same strategy as spi_gpio),
 -- 
 1.7.9.5
 

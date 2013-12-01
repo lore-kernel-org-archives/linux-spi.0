@@ -1,7 +1,7 @@
 From: takasi-y@ops.dti.ne.jp
-Subject: [PATCH 03/11] spi: spi-sh-msiof: let it run even without GPIO
-Date: Mon,  2 Dec 2013 03:19:14 +0900
-Message-ID: <1385921962-19843-3-git-send-email-takasi-y@ops.dti.ne.jp>
+Subject: [PATCH 11/11] ARM: shmobile: koelsch: spidev for r2a11302
+Date: Mon,  2 Dec 2013 03:19:22 +0900
+Message-ID: <1385921962-19843-11-git-send-email-takasi-y@ops.dti.ne.jp>
 References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
  <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
 Cc: Simon Horman <horms@verge.net.au>,
@@ -16,33 +16,49 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 
-In current implementation, CS is controlled by GPIO, which is passed
-through spi->controller_data. But because sh-msiof HW module has a
-function to output CS by itself, which is already enabled and actual
-switch will be done by pinmux, we can silently ignore if GPIO is null.
+Add board info for r2a11302 on-board PMIC to access with spidev.
 
 Signed-off-by: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 ---
- drivers/spi/spi-sh-msiof.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm/mach-shmobile/board-koelsch.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index ac8795f..2a2b0dd 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -420,8 +420,10 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
- 					  !!(spi->mode & SPI_LSB_FIRST));
- 	}
+diff --git a/arch/arm/mach-shmobile/board-koelsch.c b/arch/arm/mach-shmobile/board-koelsch.c
+index b4add4c..5ff65ff 100644
+--- a/arch/arm/mach-shmobile/board-koelsch.c
++++ b/arch/arm/mach-shmobile/board-koelsch.c
+@@ -27,6 +27,7 @@
+ #include <linux/pinctrl/machine.h>
+ #include <linux/platform_data/gpio-rcar.h>
+ #include <linux/platform_device.h>
++#include <linux/spi/spi.h>
+ #include <mach/common.h>
+ #include <mach/r8a7791.h>
+ #include <mach/rcar-gen2.h>
+@@ -79,6 +80,15 @@ static const struct gpio_keys_platform_data koelsch_keys_pdata __initconst = {
+ 	.nbuttons	= ARRAY_SIZE(gpio_buttons),
+ };
  
--	/* use spi->controller data for CS (same strategy as spi_gpio) */
--	gpio_set_value((unsigned)spi->controller_data, value);
-+	/* use spi->controller data for CS (same strategy as spi_gpio),
-+	 * if any. otherwise let HW controll CS */
-+	if (spi->controller_data)
-+		gpio_set_value((unsigned)spi->controller_data, value);
++static const struct spi_board_info spi_bus[] __initconst = {
++	{
++		.modalias	= "spidev",
++		.max_speed_hz	= 6000000,
++		.mode		= SPI_MODE_3,
++		.bus_num	= 1,
++	},
++};
++
+ static const struct pinctrl_map koelsch_pinctrl_map[] = {
+ 	/* SCIF0 (CN19: DEBUG SERIAL0) */
+ 	PIN_MAP_MUX_GROUP_DEFAULT("sh-sci.6", "pfc-r8a7791",
+@@ -110,6 +120,7 @@ static void __init koelsch_add_standard_devices(void)
+ 	platform_device_register_data(&platform_bus, "gpio-keys", -1,
+ 				      &koelsch_keys_pdata,
+ 				      sizeof(koelsch_keys_pdata));
++	spi_register_board_info(spi_bus, ARRAY_SIZE(spi_bus));
+ }
  
- 	if (is_on == BITBANG_CS_INACTIVE) {
- 		if (test_and_clear_bit(0, &p->flags)) {
+ static const char * const koelsch_boards_compat_dt[] __initconst = {
 -- 
 1.7.9.5
 

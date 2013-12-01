@@ -1,108 +1,109 @@
-From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: [PATCH v6 08/17] spi: mpc512x: adjust to OF based clock lookup
-Date: Sat, 30 Nov 2013 23:51:28 +0100
-Message-ID: <1385851897-23475-9-git-send-email-gsi@denx.de>
-References: <1385851897-23475-1-git-send-email-gsi@denx.de>
-Cc: Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>,
-	Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>,
-	Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: [PATCH RFC] Remove "spi-cs-high" property for GPIO-based chipselects
+Date: Sun,  1 Dec 2013 11:59:16 +0400
+Message-ID: <1385884756-31373-1-git-send-email-shc_work@mail.ru>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1385851897-23475-1-git-send-email-gsi-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-after device tree based clock lookup became available, the peripheral
-driver need no longer construct clock names which include the PSC index,
-remove the "psc%d_mclk" template and unconditionally use 'mclk'
+This patch takes the CS active level from the GPIO bindings,
+so we remove the special property "spi-cs-high" for chipselects
+that use GPIO.
 
-acquire and release the 'ipg' clock item for register access as well
-
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Signed-off-by: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 ---
- drivers/spi/spi-mpc512x-psc.c |   26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/spi/spi.c       | 28 ++++++++++++++++++----------
+ include/linux/spi/spi.h |  2 ++
+ 2 files changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index 9602bbd8d7ea..de66c676c248 100644
---- a/drivers/spi/spi-mpc512x-psc.c
-+++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -40,6 +40,7 @@ struct mpc512x_psc_spi {
- 	unsigned int irq;
- 	u8 bits_per_word;
- 	struct clk *clk_mclk;
-+	struct clk *clk_ipg;
- 	u32 mclk_rate;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 98f4b77..d2ba1ec 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -413,8 +413,12 @@ int spi_add_device(struct spi_device *spi)
+ 		goto done;
+ 	}
  
- 	struct completion txisrdone;
-@@ -475,8 +476,6 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	struct spi_master *master;
- 	int ret;
- 	void *tempp;
--	int psc_num;
--	char clk_name[16];
- 	struct clk *clk;
- 
- 	master = spi_alloc_master(dev, sizeof *mps);
-@@ -520,9 +519,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 		goto free_master;
- 	init_completion(&mps->txisrdone);
- 
--	psc_num = master->bus_num;
--	snprintf(clk_name, sizeof(clk_name), "psc%d_mclk", psc_num);
--	clk = devm_clk_get(dev, clk_name);
-+	clk = devm_clk_get(dev, "mclk");
- 	if (IS_ERR(clk)) {
- 		ret = PTR_ERR(clk);
- 		goto free_irq;
-@@ -533,17 +530,29 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 	mps->clk_mclk = clk;
- 	mps->mclk_rate = clk_get_rate(clk);
- 
-+	clk = devm_clk_get(dev, "ipg");
-+	if (IS_ERR(clk)) {
-+		ret = PTR_ERR(clk);
-+		goto free_mclk_clock;
+-	if (master->cs_gpios)
++	if (master->cs_gpios) {
+ 		spi->cs_gpio = master->cs_gpios[spi->chip_select];
++		if (!(master->cs_gpios_flags[spi->chip_select] &
++		      OF_GPIO_ACTIVE_LOW))
++			spi->mode |= SPI_CS_HIGH;
 +	}
-+	ret = clk_prepare_enable(clk);
-+	if (ret)
-+		goto free_mclk_clock;
-+	mps->clk_ipg = clk;
-+
- 	ret = mpc512x_psc_spi_port_config(master, mps);
- 	if (ret < 0)
--		goto free_clock;
-+		goto free_ipg_clock;
  
- 	ret = devm_spi_register_master(dev, master);
- 	if (ret < 0)
--		goto free_clock;
-+		goto free_ipg_clock;
+ 	/* Drivers may modify this initial i/o setup, but will
+ 	 * normally rely on the device being setup.  Devices
+@@ -1027,10 +1031,14 @@ static void of_register_spi_devices(struct spi_master *master)
+ 			spi->mode |= SPI_CPHA;
+ 		if (of_find_property(nc, "spi-cpol", NULL))
+ 			spi->mode |= SPI_CPOL;
+-		if (of_find_property(nc, "spi-cs-high", NULL))
+-			spi->mode |= SPI_CS_HIGH;
+ 		if (of_find_property(nc, "spi-3wire", NULL))
+ 			spi->mode |= SPI_3WIRE;
++		if (of_find_property(nc, "spi-cs-high", NULL)) {
++			if (master->cs_gpios)
++				dev_notice(&master->dev,
++					"\"spi-cs-high\" property is obsolete.\n");
++			spi->mode |= SPI_CS_HIGH;
++		}
  
- 	return ret;
+ 		/* Device DUAL/QUAD mode */
+ 		if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
+@@ -1260,7 +1268,7 @@ EXPORT_SYMBOL_GPL(spi_alloc_master);
+ #ifdef CONFIG_OF
+ static int of_spi_register_master(struct spi_master *master)
+ {
+-	int nb, i, *cs;
++	int nb, i;
+ 	struct device_node *np = master->dev.of_node;
  
--free_clock:
-+free_ipg_clock:
-+	clk_disable_unprepare(mps->clk_ipg);
-+free_mclk_clock:
- 	clk_disable_unprepare(mps->clk_mclk);
- free_irq:
- 	free_irq(mps->irq, mps);
-@@ -561,6 +570,7 @@ static int mpc512x_psc_spi_do_remove(struct device *dev)
- 	struct mpc512x_psc_spi *mps = spi_master_get_devdata(master);
+ 	if (!np)
+@@ -1275,19 +1283,19 @@ static int of_spi_register_master(struct spi_master *master)
+ 	else if (nb < 0)
+ 		return nb;
  
- 	clk_disable_unprepare(mps->clk_mclk);
-+	clk_disable_unprepare(mps->clk_ipg);
- 	free_irq(mps->irq, mps);
- 	if (mps->psc)
- 		iounmap(mps->psc);
+-	cs = devm_kzalloc(&master->dev,
+-			  sizeof(int) * master->num_chipselect,
+-			  GFP_KERNEL);
+-	master->cs_gpios = cs;
++	master->cs_gpios = devm_kzalloc(&master->dev, master->num_chipselect *
++		(sizeof(int) + sizeof(enum of_gpio_flags)), GFP_KERNEL);
+ 
+ 	if (!master->cs_gpios)
+ 		return -ENOMEM;
+ 
+ 	for (i = 0; i < master->num_chipselect; i++)
+-		cs[i] = -ENOENT;
++		master->cs_gpios[i] = -ENOENT;
+ 
+ 	for (i = 0; i < nb; i++)
+-		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
++		master->cs_gpios[i] =
++			of_get_named_gpio_flags(np, "cs-gpios", i,
++						&master->cs_gpios_flags[i]);
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 8c62ba7..c0cade2 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -423,6 +423,8 @@ struct spi_master {
+ 
+ 	/* gpio chip select */
+ 	int			*cs_gpios;
++	/* GPIO flags */
++	enum of_gpio_flags	*cs_gpios_flags;
+ };
+ 
+ static inline void *spi_master_get_devdata(struct spi_master *master)
 -- 
-1.7.10.4
+1.8.3.2
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

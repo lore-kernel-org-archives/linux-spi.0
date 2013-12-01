@@ -1,7 +1,7 @@
 From: takasi-y@ops.dti.ne.jp
-Subject: [PATCH 04/11] spi: spi-sh-msiof: set hi/low Active for HW CS
-Date: Mon,  2 Dec 2013 03:19:15 +0900
-Message-ID: <1385921962-19843-4-git-send-email-takasi-y@ops.dti.ne.jp>
+Subject: [PATCH 05/11] spi: spi-sh-msiof: rx_need_dummy_tx variant
+Date: Mon,  2 Dec 2013 03:19:16 +0900
+Message-ID: <1385921962-19843-5-git-send-email-takasi-y@ops.dti.ne.jp>
 References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
  <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
 Cc: Simon Horman <horms@verge.net.au>,
@@ -16,52 +16,59 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 
-Set hardware CS(CS control function on MSIOF <-> GPIO CS) polarity
-according to SPI_CS_HIGH flag on spi->mode.
+There is a variant of MSIOF, that need dummy data transfer even when
+you want only to receive.
+
+This patch adds the option
+ .rx_need_dummy_tx
+to sh_msiof_spi_info.
+
+Consult "Transmit and Receive Procedures" on HWM, if it says
+ - Set SICTR.TSCKE to 1
+ - Write dummy transmission data to SITFDR
+to *receive*, enable this.
+Ape6, Rcar-H2, and Rcar-M2 are found having this type of module.
 
 Signed-off-by: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 ---
- drivers/spi/spi-sh-msiof.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/spi/spi-sh-msiof.c   |    4 +++-
+ include/linux/spi/sh_msiof.h |    1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 2a2b0dd..8683732 100644
+index 8683732..936d8ab 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -169,7 +169,7 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
- 
- static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
- 				      u32 cpol, u32 cpha,
--				      u32 tx_hi_z, u32 lsb_first)
-+				      u32 tx_hi_z, u32 lsb_first, u32 cs_high)
+@@ -207,7 +207,7 @@ static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
  {
- 	u32 tmp;
- 	int edge;
-@@ -182,8 +182,12 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
- 	 *    1    1         11     11    1    1
- 	 */
- 	sh_msiof_write(p, FCTR, 0);
--	sh_msiof_write(p, TMDR1, 0xe2000005 | (lsb_first << 24));
--	sh_msiof_write(p, RMDR1, 0x22000005 | (lsb_first << 24));
-+
-+	tmp = 0;
-+	tmp |= !cs_high << 25;
-+	tmp |= lsb_first << 24;
-+	sh_msiof_write(p, TMDR1, 0xe0000005 | tmp);
-+	sh_msiof_write(p, RMDR1, 0x20000005 | tmp);
+ 	u32 dr2 = ((bits - 1) << 24) | ((words - 1) << 16);
  
- 	tmp = 0xa0000000;
- 	tmp |= cpol << 30; /* TSCKIZ */
-@@ -417,7 +421,8 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
- 		sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
- 					  !!(spi->mode & SPI_CPHA),
- 					  !!(spi->mode & SPI_3WIRE),
--					  !!(spi->mode & SPI_LSB_FIRST));
-+					  !!(spi->mode & SPI_LSB_FIRST),
-+					  !!(spi->mode & SPI_CS_HIGH));
- 	}
+-	if (tx_buf)
++	if (tx_buf || (rx_buf && p->info->rx_need_dummy_tx))
+ 		sh_msiof_write(p, TMDR2, dr2);
+ 	else
+ 		sh_msiof_write(p, TMDR2, dr2 | 1);
+@@ -464,6 +464,8 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 	/* write tx fifo */
+ 	if (tx_buf)
+ 		tx_fifo(p, tx_buf, words, fifo_shift);
++	else if (rx_buf && p->info->rx_need_dummy_tx)
++		tx_fifo(p, rx_buf, words, fifo_shift);
  
- 	/* use spi->controller data for CS (same strategy as spi_gpio),
+ 	/* setup clock and rx/tx signals */
+ 	ret = sh_msiof_modify_ctr_wait(p, 0, CTR_TSCKE);
+diff --git a/include/linux/spi/sh_msiof.h b/include/linux/spi/sh_msiof.h
+index 2e8db3d..cf36781 100644
+--- a/include/linux/spi/sh_msiof.h
++++ b/include/linux/spi/sh_msiof.h
+@@ -5,6 +5,7 @@ struct sh_msiof_spi_info {
+ 	int tx_fifo_override;
+ 	int rx_fifo_override;
+ 	u16 num_chipselect;
++	u16 rx_need_dummy_tx:1;
+ };
+ 
+ #endif /* __SPI_SH_MSIOF_H__ */
 -- 
 1.7.9.5
 

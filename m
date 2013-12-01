@@ -1,40 +1,47 @@
-From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 1/2] spi/bcm63xx: don't substract prepend length from total length
-Date: Sun,  1 Dec 2013 16:44:21 +0100
-Message-ID: <1385912662-8261-1-git-send-email-jogo@openwrt.org>
-Cc: Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org
+Subject: [PATCH 07/11] spi: spi-sh-msiof: RSCR register may absent
+Date: Mon,  2 Dec 2013 03:19:18 +0900
+Message-ID: <1385921962-19843-7-git-send-email-takasi-y@ops.dti.ne.jp>
+References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
+ <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
+Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1385921962-19843-1-git-send-email-takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The spi command must include the full message length including any
-prepended writes, else transfers larger than 256 bytes will be
-incomplete.
+From: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
 
-Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+On Ape6, Rcar-H2, and Rcar-M2,
+MSIOF lacks RSCR(Receive Clock Select Register).
+I guess this is a part of .rx_need_dummy_tx case, and use same flag.
+
+Signed-off-by: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-sh-msiof.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 469ecd8..dceb7b2 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -169,8 +169,6 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
- 			       transfer_list);
- 	}
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index b0334b6..bbd989f 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -164,7 +164,8 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+ 	k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_clk_table) - 1);
  
--	len -= prepend_len;
--
- 	init_completion(&bs->done);
+ 	sh_msiof_write(p, TSCR, sh_msiof_spi_clk_table[k].scr);
+-	sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
++	if (!p->info->rx_need_dummy_tx)
++		sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
+ }
  
- 	/* Fill in the Message control register */
+ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
 -- 
-1.8.4.rc3
+1.7.9.5
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,7 +1,7 @@
 From: takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org
-Subject: [PATCH 07/11] spi: spi-sh-msiof: RSCR register may absent
-Date: Mon,  2 Dec 2013 03:19:18 +0900
-Message-ID: <1385921962-19843-7-git-send-email-takasi-y@ops.dti.ne.jp>
+Subject: [PATCH 02/11] spi: spi-sh-msiof: round up div to fix freq calculation
+Date: Mon,  2 Dec 2013 03:19:13 +0900
+Message-ID: <1385921962-19843-2-git-send-email-takasi-y@ops.dti.ne.jp>
 References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
  <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
 Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
@@ -16,29 +16,35 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
 
-On Ape6, Rcar-H2, and Rcar-M2,
-MSIOF lacks RSCR(Receive Clock Select Register).
-I guess this is a part of .rx_need_dummy_tx case, and use same flag.
+Truncation on integer division in sh_msiof_spi_set_clk_regs()
+results in insufficient transfer frequency (> max_speed_freq).
+
+For example, source 52MHz, required max 6MHz
+ 52/6 = 8.6 --> 8, then 1/8 table selected,
+and result in 52/8 = 6.5 MHz (>6MHz)
+
+Rounding it up is a simple solution.
+ 52/6 = 8.6 --> 9, then 1/16 table selected,
+and result in 52/16 = 3.25 MHz
 
 Signed-off-by: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
 ---
- drivers/spi/spi-sh-msiof.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sh-msiof.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index b0334b6..bbd989f 100644
+index c74298c..ac8795f 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -164,7 +164,8 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
- 	k = min_t(int, k, ARRAY_SIZE(sh_msiof_spi_clk_table) - 1);
+@@ -152,7 +152,7 @@ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+ 	size_t k;
  
- 	sh_msiof_write(p, TSCR, sh_msiof_spi_clk_table[k].scr);
--	sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
-+	if (!p->info->rx_need_dummy_tx)
-+		sh_msiof_write(p, RSCR, sh_msiof_spi_clk_table[k].scr);
- }
+ 	if (!WARN_ON(!spi_hz || !parent_rate))
+-		div = parent_rate / spi_hz;
++		div = DIV_ROUND_UP(parent_rate, spi_hz);
  
- static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+ 	/* TODO: make more fine grained */
+ 
 -- 
 1.7.9.5
 

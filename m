@@ -1,52 +1,48 @@
-From: takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org
-Subject: [PATCH 10/11] ARM: shmobile: koelsch: pinctrl map for MSIOF0
-Date: Mon,  2 Dec 2013 03:19:21 +0900
-Message-ID: <1385921962-19843-10-git-send-email-takasi-y@ops.dti.ne.jp>
+From: takasi-y@ops.dti.ne.jp
+Subject: [PATCH 03/11] spi: spi-sh-msiof: let it run even without GPIO
+Date: Mon,  2 Dec 2013 03:19:14 +0900
+Message-ID: <1385921962-19843-3-git-send-email-takasi-y@ops.dti.ne.jp>
 References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
  <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
-Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1385921962-19843-1-git-send-email-takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: linux-sh@vger.kernel.org
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
+From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 
-Enable msifo0_{clk,sync,rx,tx} pins for MSIOF driver.
+In current implementation, CS is controlled by GPIO, which is passed
+through spi->controller_data. But because sh-msiof HW module has a
+function to output CS by itself, which is already enabled and actual
+switch will be done by pinmux, we can silently ignore if GPIO is null.
 
-Signed-off-by: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
+Signed-off-by: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 ---
- arch/arm/mach-shmobile/board-koelsch.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/spi/spi-sh-msiof.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-shmobile/board-koelsch.c b/arch/arm/mach-shmobile/board-koelsch.c
-index 6e12914..b4add4c 100644
---- a/arch/arm/mach-shmobile/board-koelsch.c
-+++ b/arch/arm/mach-shmobile/board-koelsch.c
-@@ -86,6 +86,15 @@ static const struct pinctrl_map koelsch_pinctrl_map[] = {
- 	/* SCIF1 (CN20: DEBUG SERIAL1) */
- 	PIN_MAP_MUX_GROUP_DEFAULT("sh-sci.7", "pfc-r8a7791",
- 				  "scif1_data_d", "scif1"),
-+	/* MSIOF0 */
-+	PIN_MAP_MUX_GROUP_DEFAULT("spi_sh_msiof.1", "pfc-r8a7791",
-+				  "msiof0_clk", "msiof0"),
-+	PIN_MAP_MUX_GROUP_DEFAULT("spi_sh_msiof.1", "pfc-r8a7791",
-+				  "msiof0_sync", "msiof0"),
-+	PIN_MAP_MUX_GROUP_DEFAULT("spi_sh_msiof.1", "pfc-r8a7791",
-+				  "msiof0_rx", "msiof0"),
-+	PIN_MAP_MUX_GROUP_DEFAULT("spi_sh_msiof.1", "pfc-r8a7791",
-+				  "msiof0_tx", "msiof0"),
- };
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index ac8795f..2a2b0dd 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -420,8 +420,10 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
+ 					  !!(spi->mode & SPI_LSB_FIRST));
+ 	}
  
- static void __init koelsch_add_standard_devices(void)
+-	/* use spi->controller data for CS (same strategy as spi_gpio) */
+-	gpio_set_value((unsigned)spi->controller_data, value);
++	/* use spi->controller data for CS (same strategy as spi_gpio),
++	 * if any. otherwise let HW controll CS */
++	if (spi->controller_data)
++		gpio_set_value((unsigned)spi->controller_data, value);
+ 
+ 	if (is_on == BITBANG_CS_INACTIVE) {
+ 		if (test_and_clear_bit(0, &p->flags)) {
 -- 
 1.7.9.5
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

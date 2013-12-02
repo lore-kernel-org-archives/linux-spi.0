@@ -1,59 +1,70 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 02/11] spi: spi-sh-msiof: round up div to fix freq
- calculation
-Date: Mon, 2 Dec 2013 12:48:43 +0000
-Message-ID: <20131202124843.GC27568@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 03/11] spi: spi-sh-msiof: let it run even without GPIO
+Date: Mon, 2 Dec 2013 12:53:20 +0000
+Message-ID: <20131202125320.GD27568@sirena.org.uk>
 References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
  <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
- <1385921962-19843-2-git-send-email-takasi-y@ops.dti.ne.jp>
+ <1385921962-19843-3-git-send-email-takasi-y@ops.dti.ne.jp>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="XGa5gNSGTk93P04E"
-Cc: linux-sh@vger.kernel.org, Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-spi@vger.kernel.org
-To: takasi-y@ops.dti.ne.jp
-Return-path: <linux-sh-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="DYCP9ZX4RRtQiwKl"
+Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1385921962-19843-2-git-send-email-takasi-y@ops.dti.ne.jp>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1385921962-19843-3-git-send-email-takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---XGa5gNSGTk93P04E
+--DYCP9ZX4RRtQiwKl
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 02, 2013 at 03:19:13AM +0900, takasi-y@ops.dti.ne.jp wrote:
-> From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
->=20
-> Truncation on integer division in sh_msiof_spi_set_clk_regs()
-> results in insufficient transfer frequency (> max_speed_freq).
+On Mon, Dec 02, 2013 at 03:19:14AM +0900, takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org wrote:
 
-Applied, thanks.
+> -	/* use spi->controller data for CS (same strategy as spi_gpio) */
+> -	gpio_set_value((unsigned)spi->controller_data, value);
+> +	/* use spi->controller data for CS (same strategy as spi_gpio),
+> +	 * if any. otherwise let HW controll CS */
+> +	if (spi->controller_data)
+> +		gpio_set_value((unsigned)spi->controller_data, value);
 
---XGa5gNSGTk93P04E
+This makes sense in terms of what it tries to do however the standard
+thing is to set the GPIO value to an error value if it isn't there
+(especially since 0 is in theory a valid GPIO) so the test should be
+different.
+
+I'd also suggest changing to use the core cs_gpio field but that's a
+separate thing.
+
+--DYCP9ZX4RRtQiwKl
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSnIGnAAoJELSic+t+oim9JKUP/RR+dgGkloQEDCl01/bP8Sch
-FtJEvjGhNuVxVWHHri2zJqPqrobe959PQOqKhG8OPVE/JvmprFW35CK1+CgnZcX9
-ZoGsJClOraQjVA3LFnwHwNciMJxP4YOscvDzGzrN0Sl3GEsdN3tOpbFtIzRzIJTE
-RyjAwSX7hUE8sDSt+eJTlAX5e4LX1AAgWbvg/mrHXTM5Rq+rvweWKdUtxp4x+HY0
-gAYv0/ZG9pc/Ba7u8NdfkpYYP/nei9rayQLoeJ/3336126j0tZS00tMcOF8hoPzq
-l2zs/hYhFEoJMz/il2Y7zq+gKtV0l/y6TI4FUCHQaIsEtB5GsHWBnxccHou18/Yt
-jmBM+HMRTNz4ckLQ0FAzzk+zXAH5bYLZYVZkmrpviGOTmu73ihoxUjXtqLv841EN
-gFknV6XTnhvCEUfiuAkEFdjmiudqwAJBucCRIZ0VHCqX8xiLB6+f/sbN+8XOKhzz
-ZBI/7yp3fT5AsPMa65dqfb4ndYxm25Qb9aOGtP2zyX/rBjERWMeqJFyzb+MFfmBG
-/y7acphW3CvimzwtquE9GWtynfscSvY6zNHVPBHh1xHLhn0EeiehtnD0tnLRqD1n
-XHPB0W2MX3Ml1YCCY9ILSCVcRcGyOwYVq+HGFBbNy5FoPTRI2ZradEo3cq3e6kRn
-MYIAWQWd3/uwUiQFXTZ0
-=Yr0F
+iQIcBAEBAgAGBQJSnIK9AAoJELSic+t+oim97LUP/2wxHJrMeaCTZ5a3Rp9qSr+g
+59rH+xuCJDNIjfoaAnZSfStwhdn0u+J9CqFwByCb/H9fbGIgrzrSuAXyGcMPXvGQ
+Z9m+f9dOgKM/FLDeI8HXDuYg1q9s5AXBLqJBj5BC9u8junNmjQMyDocdCEcu0KKX
+b6KEfhREdfn6FH0++L/DbCN839MNKUBFFwvmPJhRffXxGz/tpxhPV34bg5aWspko
+UQU+8tryqoX3ptYARrVeIsGx9ceuKqW+de/70FrqaI0hOXULc6kU6eOxoOLE0K+M
+0aFaqsbcwdomlYWSgK2Ls4Vubf/hz/PLt/GlouZW6iOVl0Znf75KGrHH1KRo7Uqu
+xSBwuEjfg0fZ7UUlPiTaiAFMBKOKpMvOoMUmvr/MHzgzGvJrGVZ+1X0aGPkMBsE1
+TaMqqL5UYfMEETjAsJw/0LyggzAcgPdp42Fdpeg+hgy4iDMdqlBGF8Et8SjjoYsP
+3GfOjw2iNMBUOkq5WJUTUvJAKgxhrUEizDJmi7Mt6higDl31REypfxYrqywSmST0
+34YJjp++H2FhKJaL2WlKA4oFXBp8a5Y6Saa4eV13QmyiXSzuNhZlUWd0rl5QMKQW
+p1hcQzTH+/iOoCFBcBOVtSu86Dy5TxD7axba5LXyFxqY6fWLJ0jzEOhGm+BTBFAN
+4Fx2ALTtEKkWsenA6Kcg
+=fhW5
 -----END PGP SIGNATURE-----
 
---XGa5gNSGTk93P04E--
+--DYCP9ZX4RRtQiwKl--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

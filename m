@@ -1,83 +1,64 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v6 08/17] spi: mpc512x: adjust to OF based clock lookup
-Date: Mon, 2 Dec 2013 11:32:29 +0000
-Message-ID: <20131202113229.GO27568@sirena.org.uk>
-References: <1385851897-23475-1-git-send-email-gsi@denx.de>
- <1385851897-23475-9-git-send-email-gsi@denx.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH RFC] Remove "spi-cs-high" property for GPIO-based
+ chipselects
+Date: Mon, 2 Dec 2013 11:43:10 +0000
+Message-ID: <20131202114310.GP27568@sirena.org.uk>
+References: <1385884756-31373-1-git-send-email-shc_work@mail.ru>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============2104844521778172903=="
-Cc: Mike Turquette <mturquette@linaro.org>, Detlev Zundel <dzu@denx.de>,
- linux-spi@vger.kernel.org, Scott Wood <scottwood@freescale.com>,
- Anatolij Gustschin <agust@denx.de>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
-To: Gerhard Sittig <gsi@denx.de>
-Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-In-Reply-To: <1385851897-23475-9-git-send-email-gsi@denx.de>
-List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
- <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
-List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev/>
-List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
-List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
-List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
- <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
-Sender: "Linuxppc-dev"
- <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
-List-Id: linux-spi.vger.kernel.org
-
-
---===============2104844521778172903==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="suYNV1AwziNMnBoj"
+	protocol="application/pgp-signature"; boundary="3duvV/J7KUqO/slB"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <1385884756-31373-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---suYNV1AwziNMnBoj
+--3duvV/J7KUqO/slB
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Nov 30, 2013 at 11:51:28PM +0100, Gerhard Sittig wrote:
-> after device tree based clock lookup became available, the peripheral
-> driver need no longer construct clock names which include the PSC index,
-> remove the "psc%d_mclk" template and unconditionally use 'mclk'
->=20
-> acquire and release the 'ipg' clock item for register access as well
+On Sun, Dec 01, 2013 at 11:59:16AM +0400, Alexander Shiyan wrote:
+> This patch takes the CS active level from the GPIO bindings,
+> so we remove the special property "spi-cs-high" for chipselects
+> that use GPIO.
 
-Acked-by: Mark Brown <broonie@linaro.org.
+Unfortuantely this would introduce an incompatible change in the DT
+bindings so we can't do this.  Updating the documentation to deprecate
+the old binding would be OK, though I'm not sure it's a great advantage
+since it means you wouldn't be able to use the same binding with GPIOs
+as you could with controller integrated chip selects.
 
---suYNV1AwziNMnBoj
+Adding support for using the GPIO binding information is fine but
+removing the old method (especially without a binding update) doesn't
+seem great.
+
+--3duvV/J7KUqO/slB
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSnG/KAAoJELSic+t+oim90nUP/3RMo9UlKayd7EWIvI5yIs2G
-Vrfvt3BEEJRukxtaP8W87yUKZ7bXc5dDCHMhDx1AFhvsQKmEYBM4M6pK863u3BOh
-nN9QVTZSuQ1TO4G4J6tKu1lVnxtENp/0mxhdL48332NYZ5pgvn/UTr12m987mnH3
-kYLPohvsmJu3xwwAQGoZ7cRrasb71tidv8Uo2I6xWuEJTCty89czv8M733XIlgib
-DrMZaQ2cO3C0V5vLVrRGrUVzGJoBlOt+oMtUqqdUubb97VQ7W5B8kmp8LeJXBfE8
-txNVqZADxK7df2BqsVg6SMAIzYCs08v7k8tdp+w5bIVYpZ6+ZgMIZzGmdHTqUuKS
-hAFQmfGyoUVIy+Lse4yVxSTN8OVH5B0T7iI5CP8uG7/sHrQTz9tOUKo2CBLbhCey
-MD8s7dW7YKpo6qjIsHZvMm1JUEUz8+4+QZ5BRvSxb57g1mzM7e5Yy4/HgcLS8yDx
-2d+I629dfCv15pviYqXpBbZt7qBERqLmz9cwAbZVGoCVrXpP7jLtz7JiTu/oqmZV
-deeoVSnBobomZ6wQOLW6sfm1/uuQvjByqwNQsOXEuAsay6tiEK8NdklumgIzoRqM
-xdtEuTBUGlti/yfXUi7234Tq8+Xm0iwKzQQyEDqw5F9NmuX+Qk/9NoBs9w+SjR9Y
-uoE/E+zZEcjP5y6WmETr
-=fNEB
+iQIcBAEBAgAGBQJSnHJLAAoJELSic+t+oim9nZoP/jSy3oRZA8xBLhBA9mznmqxu
+QfpB051LvoIM4u9AbOVt7nFniA8yhn/skGSa2FLspQsP4cxQSwYTEeSD4Q3Lh3DQ
+Rotk4FrPzDW4JI1D5bN0HFEnrxLSrSK7opwoTIpg3ESfQ61aHlRSdI5J+05/DsGg
+GTfz5NZXhF6csFGA1ISWo5c2mWot2n+US8DcA0TvdhY/bLfdOV9N0bCNJgI35hU7
+ZPiQ0pO2UgvAYIhmZpIBZtJx92A4V9QT2WXN9W7XaVqy1i3u/WX93Zl4NvIu9lgw
+nSy8eDdRv/vfbZwJX3XvyPjSyf9+8HnA6FiAZlSFPjSZndkHG376ucF5RN2VAfFL
+fjqd/Aw+oKk6tQDtHDYRGxUtImlEvUs+S567ZFDwZM4kXCtj3XuswI/fMmkAukM9
+73XTZk97utiK5yVr56nbNl+kqOHyl6eCpUQRcC1DlRDobaD0GAKPGfLv1VtMQY/s
+X2oXoas5JmGIXaZW04JodccvENWnMOOcQw/1bLO5FuUmdNr/ZK+fYLblCy3d859+
+Elw8+qkin1hTw+nwwzxkpWjqlFrRXiPIIAEitdcsBi0qJPQWImtsQVyopER8J/xg
+o0ccRdx4w3JFxtT6hIgZblBTfT8nAsPgf+huqn4FphfTHK6R69I/ELB69oHFjnr5
+zjL70J9TRc0ETP1FZwbZ
+=sGf5
 -----END PGP SIGNATURE-----
 
---suYNV1AwziNMnBoj--
-
---===============2104844521778172903==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linuxppc-dev mailing list
-Linuxppc-dev@lists.ozlabs.org
-https://lists.ozlabs.org/listinfo/linuxppc-dev
---===============2104844521778172903==--
+--3duvV/J7KUqO/slB--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

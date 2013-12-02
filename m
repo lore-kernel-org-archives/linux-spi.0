@@ -1,45 +1,131 @@
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBSRkNdIFJlbW92ZSAic3BpLWNzLWhpZ2giIHByb3BlcnR5?=
- =?UTF-8?B?IGZvciBHUElPLWJhc2VkIGNoaXBzZWxlY3Rz?=
-Date: Mon, 02 Dec 2013 18:54:59 +0400
-Message-ID: <1385996099.869286515@f24.i.mail.ru>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH RFC] Remove "spi-cs-high" property for GPIO-based
+ chipselects
+Date: Mon, 2 Dec 2013 15:59:11 +0100
+Message-ID: <20131202145911.GT2982@book.gsilab.sittig.org>
 References: <1385884756-31373-1-git-send-email-shc_work@mail.ru>
- <CAOiHx=nAcGdk7QgKPrbmkbQYzWL6qNb2cnJj3c_A+9++RrLoeA@mail.gmail.com>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	=?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: =?UTF-8?B?Sm9uYXMgR29yc2tp?= <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAOiHx=nAcGdk7QgKPrbmkbQYzWL6qNb2cnJj3c_A+9++RrLoeA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1385884756-31373-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-PiBPbiBTdW4sIERlYyAxLCAyMDEzIGF0IDg6NTkgQU0sIEFsZXhhbmRlciBTaGl5YW4gPHNoY193
-b3JrQG1haWwucnU+IHdyb3RlOgo+ID4gVGhpcyBwYXRjaCB0YWtlcyB0aGUgQ1MgYWN0aXZlIGxl
-dmVsIGZyb20gdGhlIEdQSU8gYmluZGluZ3MsCj4gPiBzbyB3ZSByZW1vdmUgdGhlIHNwZWNpYWwg
-cHJvcGVydHkgInNwaS1jcy1oaWdoIiBmb3IgY2hpcHNlbGVjdHMKPiA+IHRoYXQgdXNlIEdQSU8u
-Ci4uLgoKPiA+IC0gICAgICAgY3MgPSBkZXZtX2t6YWxsb2MoJm1hc3Rlci0+ZGV2LAo+ID4gLSAg
-ICAgICAgICAgICAgICAgICAgICAgICBzaXplb2YoaW50KSAqIG1hc3Rlci0+bnVtX2NoaXBzZWxl
-Y3QsCj4gPiAtICAgICAgICAgICAgICAgICAgICAgICAgIEdGUF9LRVJORUwpOwo+ID4gLSAgICAg
-ICBtYXN0ZXItPmNzX2dwaW9zID0gY3M7Cj4gPiArICAgICAgIG1hc3Rlci0+Y3NfZ3Bpb3MgPSBk
-ZXZtX2t6YWxsb2MoJm1hc3Rlci0+ZGV2LCBtYXN0ZXItPm51bV9jaGlwc2VsZWN0ICoKPiA+ICsg
-ICAgICAgICAgICAgICAoc2l6ZW9mKGludCkgKyBzaXplb2YoZW51bSBvZl9ncGlvX2ZsYWdzKSks
-IEdGUF9LRVJORUwpOwo+ID4KPiA+ICAgICAgICAgaWYgKCFtYXN0ZXItPmNzX2dwaW9zKQo+ID4g
-ICAgICAgICAgICAgICAgIHJldHVybiAtRU5PTUVNOwo+ID4KPiA+ICAgICAgICAgZm9yIChpID0g
-MDsgaSA8IG1hc3Rlci0+bnVtX2NoaXBzZWxlY3Q7IGkrKykKPiA+IC0gICAgICAgICAgICAgICBj
-c1tpXSA9IC1FTk9FTlQ7Cj4gPiArICAgICAgICAgICAgICAgbWFzdGVyLT5jc19ncGlvc1tpXSA9
-IC1FTk9FTlQ7Cj4gPgo+ID4gICAgICAgICBmb3IgKGkgPSAwOyBpIDwgbmI7IGkrKykKPiA+IC0g
-ICAgICAgICAgICAgICBjc1tpXSA9IG9mX2dldF9uYW1lZF9ncGlvKG5wLCAiY3MtZ3Bpb3MiLCBp
-KTsKPiA+ICsgICAgICAgICAgICAgICBtYXN0ZXItPmNzX2dwaW9zW2ldID0KPiA+ICsgICAgICAg
-ICAgICAgICAgICAgICAgIG9mX2dldF9uYW1lZF9ncGlvX2ZsYWdzKG5wLCAiY3MtZ3Bpb3MiLCBp
-LAo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgJm1h
-c3Rlci0+Y3NfZ3Bpb3NfZmxhZ3NbaV0pOwo+IAo+IEkgZG9uJ3Qgc2VlIHlvdSBpbml0aWFsaXpp
-bmcgbWFzdGVyLT5jc19ncGlvX2ZsYWdzIGFueXdoZXJlLCBzbyB3b24ndAo+IHRoaXMgY2F1c2Ug
-YSBudWxsL3VuaXRpYWxpemVkIHBvaW50ZXIgYWNjZXNzPwoKQSBmZXcgbGluZXMgYWJvdmUuIE1l
-bW9yeSBpcyBiZWluZyBhbGxvY2F0ZWQgdG9nZXRoZXIgd2l0aCBjc19ncGlvcy4KCi0tLQo=
+On Sun, Dec 01, 2013 at 11:59 +0400, Alexander Shiyan wrote:
+> 
+> This patch takes the CS active level from the GPIO bindings,
+> so we remove the special property "spi-cs-high" for chipselects
+> that use GPIO.
+
+I'm afraid this description does not reflect what the patch does.
+This is not saying that the patch is wrong, but suggests that the
+description may be in need of an update.
+
+Whether there is some gain in the change is a different matter,
+see below.
+
+
+> Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+> ---
+>  drivers/spi/spi.c       | 28 ++++++++++++++++++----------
+>  include/linux/spi/spi.h |  2 ++
+>  2 files changed, 20 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 98f4b77..d2ba1ec 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -413,8 +413,12 @@ int spi_add_device(struct spi_device *spi)
+>  		goto done;
+>  	}
+>  
+> -	if (master->cs_gpios)
+> +	if (master->cs_gpios) {
+>  		spi->cs_gpio = master->cs_gpios[spi->chip_select];
+> +		if (!(master->cs_gpios_flags[spi->chip_select] &
+> +		      OF_GPIO_ACTIVE_LOW))
+> +			spi->mode |= SPI_CS_HIGH;
+> +	}
+>  
+>  	/* Drivers may modify this initial i/o setup, but will
+>  	 * normally rely on the device being setup.  Devices
+
+OK, so you accept GPIO flags as an _additional_ source of
+information, to derive "CS high" attributes in the SPI subsystem
+in the (potential) absence of explicit specs in the device tree.
+
+I'm not quite certain whether the GPIO pin's "not being inverted"
+(not being low-active, the de-facto default for a GPIO pin) and
+the SPI chip select's being high-active really are the same
+thing.  Unless I'm missing something, this is quite a change in
+semantics.  (Should this automatic deriving attributes emit a
+message as well, to raise awareness?  Are we spamming users then,
+or do these go unnoticed und ignored?)
+
+Does this patch _force_ those who use GPIOs for SPI CS to adjust
+their GPIO configuration in device trees?  Or make SPI
+communication fail if the device tree won't get adjusted?  Should
+you adjust users as well, and put a big fat remark into the
+documentation?
+
+A quick 'git grep spi-cs-high' reveals just one in-tree user, but
+I'd expect quite a lot out-of-tree users which assume "regular,
+straight semantics".
+
+
+> @@ -1027,10 +1031,14 @@ static void of_register_spi_devices(struct spi_master *master)
+>  			spi->mode |= SPI_CPHA;
+>  		if (of_find_property(nc, "spi-cpol", NULL))
+>  			spi->mode |= SPI_CPOL;
+> -		if (of_find_property(nc, "spi-cs-high", NULL))
+> -			spi->mode |= SPI_CS_HIGH;
+>  		if (of_find_property(nc, "spi-3wire", NULL))
+>  			spi->mode |= SPI_3WIRE;
+> +		if (of_find_property(nc, "spi-cs-high", NULL)) {
+> +			if (master->cs_gpios)
+> +				dev_notice(&master->dev,
+> +					"\"spi-cs-high\" property is obsolete.\n");
+> +			spi->mode |= SPI_CS_HIGH;
+> +		}
+>  
+>  		/* Device DUAL/QUAD mode */
+>  		if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
+
+Here you keep the evaluation of the 'spi-cs-high' property.
+Which is a good thing, and should not go away as Mark has
+suggested, at least not without proper period of migration.
+
+You introduce a diagnostic message if SPI CS is high-active (and
+this spec comes from the SPI node) and the CS is backed by a GPIO
+pin.
+
+Considering that you cannot remove the "CS high-active" attribute
+in general, and need to keep the 'spi-cs-high' property for those
+cases where the signal is not driven by means of GPIO, and keep
+backwards compatibility for GPIO backed signals -- is there
+really any gain in the change?
+
+I'm afraid that forcing users to specify the same "this SPI
+slave's CS is high-active" information in different ways
+depending on whether the signal is generated by GPIO or by other
+means is not a good thing.  I'm even questioning the benefit of
+introducing the optional second source of this information by
+deriving it from the GPIO flags.  Am I missing something?
+
+[ it's just a nit that hou move the 'spi-cs-high' evaluation in
+the patch while I fail to see the motivation of the move, it's
+neither logical grouping nor alphabetical sorting ]
+
+
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

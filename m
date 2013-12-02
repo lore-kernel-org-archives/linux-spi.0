@@ -1,155 +1,56 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
-Date: Mon, 2 Dec 2013 18:06:55 +0800
-Message-ID: <529C5BBF.6000604@freescale.com>
-References: <1385447575-23773-1-git-send-email-b32955@freescale.com> <20131127043253.GA9468@ld-irv-0074.broadcom.com> <5298AA23.7080404@st.com>
+From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Subject: Re: [PATCH 03/11] spi: spi-sh-msiof: let it run even without GPIO
+Date: Mon, 02 Dec 2013 14:59:25 +0400
+Message-ID: <529C680D.4050604@cogentembedded.com>
+References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp> <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp> <1385921962-19843-3-git-send-email-takasi-y@ops.dti.ne.jp>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
-	<broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<pekon-l0cyMroinI0@public.gmane.org>, <sourav.poddar-l0cyMroinI0@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5298AA23.7080404-qxv4g6HH51o@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: takasi-y@ops.dti.ne.jp, linux-sh@vger.kernel.org
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1385921962-19843-3-git-send-email-takasi-y@ops.dti.ne.jp>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Angus:
-   thanks for the long suggestion. it's very useful.
+Hello.
 
-Let's push the spi nor framework.:)
-> Hi Huang Shijie,
->
-> On 11/27/2013 04:32 AM, Brian Norris wrote:
->> + Lee Jones, others
->>
->> I'd like to keep a similar CC list for the various conversations going
->> on about SPI NOR frameworks.
->>
->> On Tue, Nov 26, 2013 at 02:32:51PM +0800, Huang Shijie wrote:
->>> 1.) Why add a new framework for SPI NOR?
->>>    The SPI-NOR controller such as Freescale's Quadspi controller is working
->>>    in a different way from the SPI bus. It should knows the NOR commands to
->>>    find the right LUT sequence. Unfortunately, the current code can not meet
->>>    this requirement.
-> I fully support your argument for introducing a new framework to support Serial
-> Flash controllers.  Reiterating my previous comment:
->
-> "The kernel offers many examples of others who have struggled with the same
-> problem.  Some have chosen to write self-contained drivers (e.g.
-> drivers/mtd/devices/spear_smi.c and drivers/mtd/devices/sst251.c) duplicating
-> much of m25p80.c, while others have attempted to squeeze into the SPI framework
-> (e.g. drivers/spi/spi-tegra20-sflash.c and drivers/spi/spi-falcon.c), relying on
-> fragile heuristics to recreate the semantics of m25p80 that is lost over the ,
-> current circumstances SPI framework ."
->
-> However, having now been through your proposed framework, it would not seem to
-> provide a generally applicable solution.  Indeed, other than making the Serial
-> Flash commands and the device table available, it is not obvious how it improves
-> the situation for your own specific controller either; the
-> read/write/read_reg/write_reg callbacks do not offer a great deal more than
-> spi_read_then_write().  (Perhaps all will become clear when you submit the
-> fsl-quadspi driver.)
+On 01-12-2013 22:19, takasi-y@ops.dti.ne.jp wrote:
 
-> As I see it, the main problem with the current support is that dedicated Serial
-> Flash Controllers require a level of semantics that cannot be conveyed over the
-> generic SPI framework.  With this in mind, I would start by defining something
-> along the lines of a "Serial Flash transfer".  Some initial ramblings of my mind:
->
-> /**
->   * struct spi_nor_xfer_cfg - Structure for defining a Serial Flash transfer
->   * @wren:		command for "Write Enable", or 0x00 for not required
-why this wren is needed?
->   * @cmd:		command for operation
->   * @cmd_pins:		number of pins to send @cmd (1, 2, 4)
->   * @addr:		address for operation
->   * @addr_pins:		number of pins to send @addr (1, 2, 4)
->   * @addr_width: 	number of address bytes (3,4, or 0 for address not required)
-this field has been in the spi_nor{} , it should be a fixed value.
-so i think we do not need this argument.
->   * @mode:		mode data
->   * @mode_pins:		number of pins to send @mode (1, 2, 4)
->   * @mode_cycles:	number of mode cycles (0 for mode not required)
->   * @dummy_cycles:	number of dummy cycles (0 for dummy not required)
->   */
-> struct spi_nor_xfer_cfg {
-> 	uint8_t		wren;
-> 	uint8_t		cmd;
-> 	int		cmd_pins;
-> 	uint32_t	addr;
-> 	int		addr_pins;
-> 	int		addr_width;
-> 	uint32_t	mode;
-> 	int		mode_pins;
-> 	int		mode_cycles;
-> 	int		dummy_cycles;
-> };
->
-> We could then build up layers of functionality, based on two fundamental primitives:
->
-> 	int (*read_xfer)(struct spi_nor_info *info,
-> 			 struct spi_nor_xfer_cfg *cfg,
-> 			 uint8_t *buf, size_t len);
-> 	
-> 	int (*write_xfer)(struct spi_nor_info *info,
-> 			  struct spi_nor_xfer_cfg *cfg,
-> 			  uint8_t *buf, size_t len);
-> 	
-> Default implementations for standard operations could follow:
->
-> 	int (*read_reg)(struct spi_nor_info *info,
-> 			uint8_t cmd, uint8_t *reg, int len);
-> 	int (*write_reg)(struct spi_nor_info *info,
-> 			 uint8_t cmd, uint8_t *reg, int len,
-> 			 int wren, int wtr);
->
-> 	int (*readid)(struct spi_nor_info *info, uint8_t *readid);
-> 	int (*wait_till_ready)(struct spi_nor_info *info);
+> From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 
-currently, we poll the status register.
-why this hook is needed?
+> In current implementation, CS is controlled by GPIO, which is passed
+> through spi->controller_data. But because sh-msiof HW module has a
+> function to output CS by itself, which is already enabled and actual
+> switch will be done by pinmux, we can silently ignore if GPIO is null.
 
-> 	
-> 	int (*read)(struct spi_nor_info *info, uint8_t buf, off_t offs, size_t len);
-> 	int (*write)(struct spi_nor_info *info, off_t offs, size_t len);
-> 	int (*erase_sector)(struct spi_nor_info *info, off_t offs);
-I also confused at this hook.
+> Signed-off-by: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
+> ---
+>   drivers/spi/spi-sh-msiof.c |    6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
 
-if we need erase_sector, do we still need the erase_chip()?
+> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+> index ac8795f..2a2b0dd 100644
+> --- a/drivers/spi/spi-sh-msiof.c
+> +++ b/drivers/spi/spi-sh-msiof.c
+> @@ -420,8 +420,10 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
+>   					  !!(spi->mode & SPI_LSB_FIRST));
+>   	}
+>
+> -	/* use spi->controller data for CS (same strategy as spi_gpio) */
+> -	gpio_set_value((unsigned)spi->controller_data, value);
+> +	/* use spi->controller data for CS (same strategy as spi_gpio),
+> +	 * if any. otherwise let HW controll CS */
 
-> Each driver would be required to implement read_xfer() and write_xfer(), and
-> then free to either use the default implementations, or override with
-> driver-optimised implementations.
->
-> In the case of a pure SPI Controller, read_xfer() and write_xfer() would simply
-> flatten to spi_messages.  The key benefit is that dedicated Serial Flash
-> Controllers would be able to take advantage of the richer semantics offered by
-> the 'spi_nor_xfer_cfg' data.
->
-> I would also expect the spi-nor framework to provide the following services,
-> applicable to all Serial Flash drivers:
->
-> 	- determine devices properties at runtime, based on the READID data (and
-> perhaps SFDP, if and when it matures!).  This should include supported opcodes
-> (e.g. READ_1_1_4, READ_1_4_4, READ4B_1_1_4...), operating frequencies, mode and
-> dummy requirements, means of setting Quad Enable, entering/exiting 4-byte
-> addressing etc.
->
-> 	- provide optimal read, write and erase configurations, based on the combined
-> capabilities of the Serial Flash device and the H/W Controller.
->
-> 	- device specific configuration (e.g. setting QE, unlock BPx bits, DYB unlocking).
->
-Does Jones have any opinion about this?
+    The preferred style of multi-line comments is this:
 
-thanks
-Huang Shijie
+/*
+  * bla
+  * bla
+  */
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+WBR, Sergei
+

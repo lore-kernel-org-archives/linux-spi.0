@@ -1,62 +1,36 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RFC] Remove "spi-cs-high" property for GPIO-based
- chipselects
-Date: Mon, 2 Dec 2013 12:33:39 +0000
-Message-ID: <20131202123339.GZ27568@sirena.org.uk>
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCBSRkNdIFJlbW92ZSAic3BpLWNzLWhpZ2giIHByb3BlcnR5?=
+ =?UTF-8?B?IGZvciBHUElPLWJhc2VkIGNoaXBzZWxlY3Rz?=
+Date: Mon, 02 Dec 2013 16:42:32 +0400
+Message-ID: <1385988152.848953040@f420.i.mail.ru>
 References: <1385884756-31373-1-git-send-email-shc_work@mail.ru>
- <20131202114310.GP27568@sirena.org.uk>
  <1385985513.987194654@f113.i.mail.ru>
+ <20131202123339.GZ27568@sirena.org.uk>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4tkssvp36SW1tyIS"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+To: =?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1385985513.987194654-zxFGIbyeZotsdVUOrk1QfQ@public.gmane.org>
+In-Reply-To: <20131202123339.GZ27568-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
---4tkssvp36SW1tyIS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, Dec 02, 2013 at 03:58:33PM +0400, Alexander Shiyan wrote:
-
-> Old method still remains (especially for integrated CS), we just warn the
-> GPIO-CS users that it is better to use GPIO-bindings.
-> Code is constructed so that there is no incompatibility between the
-> use of old and new methods.
-
-My point is that I don't think it's especially useful to deprecate the
-existing method - telling people that they are using a deprecated
-method is a kind of incompatibility and it suggests an intention to
-remove in the future.
-
---4tkssvp36SW1tyIS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSnH4gAAoJELSic+t+oim9nQIP+gP8CHH+TCivM2jG6JDVynTb
-VUGG6BOAGAaAx2c48fvkKiDqSYgzk3LkxwY4AWDC6cR/rYgGLTC2ZPMgCkYF8CaZ
-59GN0gKRejPtvwTbS0FNoBbyl9184MqmFYFcWQjaW4f9LaC7/OGTZ9qf5cM8qOxL
-s4NoXVCJMANF/mhjeNiWD8XZZ3b+TEsdDQnczPspwzCrrb7wOA7uOlbPtwAD9zoH
-evy0Ty/6k45/AZ+7qgALC4jdjKu2SjShaEs+yQ+vxvnRKaDgkVk/V0uBymNrUpE5
-c0Fxs9xiNSOy9i0o/JDJ0S/Io3nkXMkWFzW7O5/I1F846gbAOVkM/q0C9IoLRV+w
-k8KL90pVnYg++0sq+R3+AAJi97jcs1HewIhYGN2ulNj+LM/SQM+KcxNMALEONnEh
-C9q6GGc2sxA8p/CRiOk4vIvNVphAJvcEGm8F/TYSRFMPw5FcUFoLb4JkmnznSRhr
-mlf2Jt0PPF2+lRJuJoPf/5Vll/MJHHYNj61LNVITe3BPBXAbB5j8d23Af5UPe/q0
-oTwawF7mohKtWAbxrpaaZlIO05uf+v0tYGT09A7jzY0c/rQgcqg/v3O5y14NGJuR
-cIRMvv1K8pYXfRlvng1EDUqHuSOpIrgh811Wbi9eBgHOJu4ve5rxjvdFmv6D7x/W
-NAatMjWxs67yGv1LMQ0o
-=J4Th
------END PGP SIGNATURE-----
-
---4tkssvp36SW1tyIS--
+PiBPbiBNb24sIERlYyAwMiwgMjAxMyBhdCAwMzo1ODozM1BNICswNDAwLCBBbGV4YW5kZXIgU2hp
+eWFuIHdyb3RlOgo+IAo+ID4gT2xkIG1ldGhvZCBzdGlsbCByZW1haW5zIChlc3BlY2lhbGx5IGZv
+ciBpbnRlZ3JhdGVkIENTKSwgd2UganVzdCB3YXJuIHRoZQo+ID4gR1BJTy1DUyB1c2VycyB0aGF0
+IGl0IGlzIGJldHRlciB0byB1c2UgR1BJTy1iaW5kaW5ncy4KPiA+IENvZGUgaXMgY29uc3RydWN0
+ZWQgc28gdGhhdCB0aGVyZSBpcyBubyBpbmNvbXBhdGliaWxpdHkgYmV0d2VlbiB0aGUKPiA+IHVz
+ZSBvZiBvbGQgYW5kIG5ldyBtZXRob2RzLgo+IAo+IE15IHBvaW50IGlzIHRoYXQgSSBkb24ndCB0
+aGluayBpdCdzIGVzcGVjaWFsbHkgdXNlZnVsIHRvIGRlcHJlY2F0ZSB0aGUKPiBleGlzdGluZyBt
+ZXRob2QgLSB0ZWxsaW5nIHBlb3BsZSB0aGF0IHRoZXkgYXJlIHVzaW5nIGEgZGVwcmVjYXRlZAo+
+IG1ldGhvZCBpcyBhIGtpbmQgb2YgaW5jb21wYXRpYmlsaXR5IGFuZCBpdCBzdWdnZXN0cyBhbiBp
+bnRlbnRpb24gdG8KPiByZW1vdmUgaW4gdGhlIGZ1dHVyZS4KCk9LLiBXaGF0IGFib3V0ICJBZGQg
+cG9zc2liaWxpdHkgdG8gdXNlIEdQSU8tYmluZGluZ3MgZm9yIGRlZmluZSBjaGlwc2VsZWN0CmFj
+dGl2ZSBsZXZlbCIgaW4gdGhlIHBhdGNoIG5hbWUgYW5kIHJlbW92ZSB3YXJuaW5nIGluIHRoZSBw
+YXRjaD8KT2YgY291cnNlIHdlIG5lZWQgdG8gbWFrZSBzb21lIGNoYW5nZXMgaW4gdGhlIGRvY3Vt
+ZW50YXRpb24gYWxzby4KCi0tLQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

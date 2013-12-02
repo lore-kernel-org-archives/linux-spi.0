@@ -1,58 +1,100 @@
-From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v6 08/17] spi: mpc512x: adjust to OF based clock lookup
-Date: Mon, 2 Dec 2013 16:10:50 +0100
-Message-ID: <20131202151050.GU2982@book.gsilab.sittig.org>
-References: <1385851897-23475-1-git-send-email-gsi@denx.de>
- <1385851897-23475-9-git-send-email-gsi@denx.de>
- <20131202095034.GB12952@e106331-lin.cambridge.arm.com>
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCBSRkNdIFJlbW92ZSAic3BpLWNzLWhpZ2giIHByb3BlcnR5?=
+ =?UTF-8?B?IGZvciBHUElPLWJhc2VkIGNoaXBzZWxlY3Rz?=
+Date: Mon, 02 Dec 2013 19:24:22 +0400
+Message-ID: <1385997862.727371043@f24.i.mail.ru>
+References: <1385884756-31373-1-git-send-email-shc_work@mail.ru>
+ <20131202145911.GT2982@book.gsilab.sittig.org>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org" <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>,
-	Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Detlev Zundel <dzu-ynQEQJNshbs@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	=?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: =?UTF-8?B?R2VyaGFyZCBTaXR0aWc=?= <gsi-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20131202095034.GB12952-NuALmloUBlrZROr8t4l/smS4ubULX0JqMm0uRHvK7Nw@public.gmane.org>
+In-Reply-To: <20131202145911.GT2982-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Dec 02, 2013 at 09:50 +0000, Mark Rutland wrote:
-> 
-> On Sat, Nov 30, 2013 at 10:51:28PM +0000, Gerhard Sittig wrote:
-> > after device tree based clock lookup became available, the peripheral
-> > driver need no longer construct clock names which include the PSC index,
-> > remove the "psc%d_mclk" template and unconditionally use 'mclk'
-> > 
-> > acquire and release the 'ipg' clock item for register access as well
-> 
-> For this and the other peripheral updates, it would be nice to have the
-> expected clock-names entries added to the respective binding documents.
-> Otherwise this looks fine to me.
-
-I will look into adding these 'clock-names' to binding documents
-for the peripherals, too (not just SPI but the others as well).
-Thank you for the feedback!
-
-It appears that not all of those peripherals have existing
-binding docs, so introducing these docs in the first place may
-exceed the scope of the CCF support introduction series, and I
-may have to create another series for the doc updates.  I assume
-that it's OK to address the issue of missing documentation in a
-separate action.
-
-
-virtually yours
-Gerhard Sittig
--- 
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+CgoK0J/QvtC90LXQtNC10LvRjNC90LjQuiwgIDIg0LTQtdC60LDQsdGA0Y8gMjAxMywgMTU6NTkg
+KzAxOjAwINC+0YIgR2VyaGFyZCBTaXR0aWcgPGdzaUBkZW54LmRlPjoKPiBPbiBTdW4sIERlYyAw
+MSwgMjAxMyBhdCAxMTo1OSArMDQwMCwgQWxleGFuZGVyIFNoaXlhbiB3cm90ZToKPiA+IAo+ID4g
+VGhpcyBwYXRjaCB0YWtlcyB0aGUgQ1MgYWN0aXZlIGxldmVsIGZyb20gdGhlIEdQSU8gYmluZGlu
+Z3MsCj4gPiBzbyB3ZSByZW1vdmUgdGhlIHNwZWNpYWwgcHJvcGVydHkgInNwaS1jcy1oaWdoIiBm
+b3IgY2hpcHNlbGVjdHMKPiA+IHRoYXQgdXNlIEdQSU8uCj4gCj4gSSdtIGFmcmFpZCB0aGlzIGRl
+c2NyaXB0aW9uIGRvZXMgbm90IHJlZmxlY3Qgd2hhdCB0aGUgcGF0Y2ggZG9lcy4KPiBUaGlzIGlz
+IG5vdCBzYXlpbmcgdGhhdCB0aGUgcGF0Y2ggaXMgd3JvbmcsIGJ1dCBzdWdnZXN0cyB0aGF0IHRo
+ZQo+IGRlc2NyaXB0aW9uIG1heSBiZSBpbiBuZWVkIG9mIGFuIHVwZGF0ZS4KPiAKPiBXaGV0aGVy
+IHRoZXJlIGlzIHNvbWUgZ2FpbiBpbiB0aGUgY2hhbmdlIGlzIGEgZGlmZmVyZW50IG1hdHRlciwK
+PiBzZWUgYmVsb3cuCj4gCj4gCj4gPiBTaWduZWQtb2ZmLWJ5OiBBbGV4YW5kZXIgU2hpeWFuIDxz
+aGNfd29ya0BtYWlsLnJ1Pgo+ID4gLS0tCj4gPiAgZHJpdmVycy9zcGkvc3BpLmMgICAgICAgfCAy
+OCArKysrKysrKysrKysrKysrKystLS0tLS0tLS0tCj4gPiAgaW5jbHVkZS9saW51eC9zcGkvc3Bp
+LmggfCAgMiArKwo+ID4gIDIgZmlsZXMgY2hhbmdlZCwgMjAgaW5zZXJ0aW9ucygrKSwgMTAgZGVs
+ZXRpb25zKC0pCj4gPiAKPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGkuYyBiL2RyaXZl
+cnMvc3BpL3NwaS5jCj4gPiBpbmRleCA5OGY0Yjc3Li5kMmJhMWVjIDEwMDY0NAo+ID4gLS0tIGEv
+ZHJpdmVycy9zcGkvc3BpLmMKPiA+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS5jCj4gPiBAQCAtNDEz
+LDggKzQxMywxMiBAQCBpbnQgc3BpX2FkZF9kZXZpY2Uoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSkK
+PiA+ICAJCWdvdG8gZG9uZTsKPiA+ICAJfQo+ID4gIAo+ID4gLQlpZiAobWFzdGVyLT5jc19ncGlv
+cykKPiA+ICsJaWYgKG1hc3Rlci0+Y3NfZ3Bpb3MpIHsKPiA+ICAJCXNwaS0+Y3NfZ3BpbyA9IG1h
+c3Rlci0+Y3NfZ3Bpb3Nbc3BpLT5jaGlwX3NlbGVjdF07Cj4gPiArCQlpZiAoIShtYXN0ZXItPmNz
+X2dwaW9zX2ZsYWdzW3NwaS0+Y2hpcF9zZWxlY3RdICYKPiA+ICsJCSAgICAgIE9GX0dQSU9fQUNU
+SVZFX0xPVykpCj4gPiArCQkJc3BpLT5tb2RlIHw9IFNQSV9DU19ISUdIOwo+ID4gKwl9Cj4gPiAg
+Cj4gPiAgCS8qIERyaXZlcnMgbWF5IG1vZGlmeSB0aGlzIGluaXRpYWwgaS9vIHNldHVwLCBidXQg
+d2lsbAo+ID4gIAkgKiBub3JtYWxseSByZWx5IG9uIHRoZSBkZXZpY2UgYmVpbmcgc2V0dXAuICBE
+ZXZpY2VzCj4gCj4gT0ssIHNvIHlvdSBhY2NlcHQgR1BJTyBmbGFncyBhcyBhbiBfYWRkaXRpb25h
+bF8gc291cmNlIG9mCj4gaW5mb3JtYXRpb24sIHRvIGRlcml2ZSAiQ1MgaGlnaCIgYXR0cmlidXRl
+cyBpbiB0aGUgU1BJIHN1YnN5c3RlbQo+IGluIHRoZSAocG90ZW50aWFsKSBhYnNlbmNlIG9mIGV4
+cGxpY2l0IHNwZWNzIGluIHRoZSBkZXZpY2UgdHJlZS4KPiAKPiBJJ20gbm90IHF1aXRlIGNlcnRh
+aW4gd2hldGhlciB0aGUgR1BJTyBwaW4ncyAibm90IGJlaW5nIGludmVydGVkIgo+IChub3QgYmVp
+bmcgbG93LWFjdGl2ZSwgdGhlIGRlLWZhY3RvIGRlZmF1bHQgZm9yIGEgR1BJTyBwaW4pIGFuZAo+
+IHRoZSBTUEkgY2hpcCBzZWxlY3QncyBiZWluZyBoaWdoLWFjdGl2ZSByZWFsbHkgYXJlIHRoZSBz
+YW1lCj4gdGhpbmcuICBVbmxlc3MgSSdtIG1pc3Npbmcgc29tZXRoaW5nLCB0aGlzIGlzIHF1aXRl
+IGEgY2hhbmdlIGluCj4gc2VtYW50aWNzLiAgKFNob3VsZCB0aGlzIGF1dG9tYXRpYyBkZXJpdmlu
+ZyBhdHRyaWJ1dGVzIGVtaXQgYQo+IG1lc3NhZ2UgYXMgd2VsbCwgdG8gcmFpc2UgYXdhcmVuZXNz
+PyAgQXJlIHdlIHNwYW1taW5nIHVzZXJzIHRoZW4sCj4gb3IgZG8gdGhlc2UgZ28gdW5ub3RpY2Vk
+IHVuZCBpZ25vcmVkPykKPiAKPiBEb2VzIHRoaXMgcGF0Y2ggX2ZvcmNlXyB0aG9zZSB3aG8gdXNl
+IEdQSU9zIGZvciBTUEkgQ1MgdG8gYWRqdXN0Cj4gdGhlaXIgR1BJTyBjb25maWd1cmF0aW9uIGlu
+IGRldmljZSB0cmVlcz8gIE9yIG1ha2UgU1BJCj4gY29tbXVuaWNhdGlvbiBmYWlsIGlmIHRoZSBk
+ZXZpY2UgdHJlZSB3b24ndCBnZXQgYWRqdXN0ZWQ/ICBTaG91bGQKPiB5b3UgYWRqdXN0IHVzZXJz
+IGFzIHdlbGwsIGFuZCBwdXQgYSBiaWcgZmF0IHJlbWFyayBpbnRvIHRoZQo+IGRvY3VtZW50YXRp
+b24/Cj4gCj4gQSBxdWljayAnZ2l0IGdyZXAgc3BpLWNzLWhpZ2gnIHJldmVhbHMganVzdCBvbmUg
+aW4tdHJlZSB1c2VyLCBidXQKPiBJJ2QgZXhwZWN0IHF1aXRlIGEgbG90IG91dC1vZi10cmVlIHVz
+ZXJzIHdoaWNoIGFzc3VtZSAicmVndWxhciwKPiBzdHJhaWdodCBzZW1hbnRpY3MiLgo+IAo+IAo+
+ID4gQEAgLTEwMjcsMTAgKzEwMzEsMTQgQEAgc3RhdGljIHZvaWQgb2ZfcmVnaXN0ZXJfc3BpX2Rl
+dmljZXMoc3RydWN0IHNwaV9tYXN0ZXIgKm1hc3RlcikKPiA+ICAJCQlzcGktPm1vZGUgfD0gU1BJ
+X0NQSEE7Cj4gPiAgCQlpZiAob2ZfZmluZF9wcm9wZXJ0eShuYywgInNwaS1jcG9sIiwgTlVMTCkp
+Cj4gPiAgCQkJc3BpLT5tb2RlIHw9IFNQSV9DUE9MOwo+ID4gLQkJaWYgKG9mX2ZpbmRfcHJvcGVy
+dHkobmMsICJzcGktY3MtaGlnaCIsIE5VTEwpKQo+ID4gLQkJCXNwaS0+bW9kZSB8PSBTUElfQ1Nf
+SElHSDsKPiA+ICAJCWlmIChvZl9maW5kX3Byb3BlcnR5KG5jLCAic3BpLTN3aXJlIiwgTlVMTCkp
+Cj4gPiAgCQkJc3BpLT5tb2RlIHw9IFNQSV8zV0lSRTsKPiA+ICsJCWlmIChvZl9maW5kX3Byb3Bl
+cnR5KG5jLCAic3BpLWNzLWhpZ2giLCBOVUxMKSkgewo+ID4gKwkJCWlmIChtYXN0ZXItPmNzX2dw
+aW9zKQo+ID4gKwkJCQlkZXZfbm90aWNlKCZtYXN0ZXItPmRldiwKPiA+ICsJCQkJCSJcInNwaS1j
+cy1oaWdoXCIgcHJvcGVydHkgaXMgb2Jzb2xldGUuXG4iKTsKPiA+ICsJCQlzcGktPm1vZGUgfD0g
+U1BJX0NTX0hJR0g7Cj4gPiArCQl9Cj4gPiAgCj4gPiAgCQkvKiBEZXZpY2UgRFVBTC9RVUFEIG1v
+ZGUgKi8KPiA+ICAJCWlmICghb2ZfcHJvcGVydHlfcmVhZF91MzIobmMsICJzcGktdHgtYnVzLXdp
+ZHRoIiwgJnZhbHVlKSkgewo+IAo+IEhlcmUgeW91IGtlZXAgdGhlIGV2YWx1YXRpb24gb2YgdGhl
+ICdzcGktY3MtaGlnaCcgcHJvcGVydHkuCj4gV2hpY2ggaXMgYSBnb29kIHRoaW5nLCBhbmQgc2hv
+dWxkIG5vdCBnbyBhd2F5IGFzIE1hcmsgaGFzCj4gc3VnZ2VzdGVkLCBhdCBsZWFzdCBub3Qgd2l0
+aG91dCBwcm9wZXIgcGVyaW9kIG9mIG1pZ3JhdGlvbi4KPiAKPiBZb3UgaW50cm9kdWNlIGEgZGlh
+Z25vc3RpYyBtZXNzYWdlIGlmIFNQSSBDUyBpcyBoaWdoLWFjdGl2ZSAoYW5kCj4gdGhpcyBzcGVj
+IGNvbWVzIGZyb20gdGhlIFNQSSBub2RlKSBhbmQgdGhlIENTIGlzIGJhY2tlZCBieSBhIEdQSU8K
+PiBwaW4uCj4gCj4gQ29uc2lkZXJpbmcgdGhhdCB5b3UgY2Fubm90IHJlbW92ZSB0aGUgIkNTIGhp
+Z2gtYWN0aXZlIiBhdHRyaWJ1dGUKPiBpbiBnZW5lcmFsLCBhbmQgbmVlZCB0byBrZWVwIHRoZSAn
+c3BpLWNzLWhpZ2gnIHByb3BlcnR5IGZvciB0aG9zZQo+IGNhc2VzIHdoZXJlIHRoZSBzaWduYWwg
+aXMgbm90IGRyaXZlbiBieSBtZWFucyBvZiBHUElPLCBhbmQga2VlcAo+IGJhY2t3YXJkcyBjb21w
+YXRpYmlsaXR5IGZvciBHUElPIGJhY2tlZCBzaWduYWxzIC0tIGlzIHRoZXJlCj4gcmVhbGx5IGFu
+eSBnYWluIGluIHRoZSBjaGFuZ2U/Cj4gCj4gSSdtIGFmcmFpZCB0aGF0IGZvcmNpbmcgdXNlcnMg
+dG8gc3BlY2lmeSB0aGUgc2FtZSAidGhpcyBTUEkKPiBzbGF2ZSdzIENTIGlzIGhpZ2gtYWN0aXZl
+IiBpbmZvcm1hdGlvbiBpbiBkaWZmZXJlbnQgd2F5cwo+IGRlcGVuZGluZyBvbiB3aGV0aGVyIHRo
+ZSBzaWduYWwgaXMgZ2VuZXJhdGVkIGJ5IEdQSU8gb3IgYnkgb3RoZXIKPiBtZWFucyBpcyBub3Qg
+YSBnb29kIHRoaW5nLiAgSSdtIGV2ZW4gcXVlc3Rpb25pbmcgdGhlIGJlbmVmaXQgb2YKPiBpbnRy
+b2R1Y2luZyB0aGUgb3B0aW9uYWwgc2Vjb25kIHNvdXJjZSBvZiB0aGlzIGluZm9ybWF0aW9uIGJ5
+Cj4gZGVyaXZpbmcgaXQgZnJvbSB0aGUgR1BJTyBmbGFncy4gIEFtIEkgbWlzc2luZyBzb21ldGhp
+bmc/CgpVc2luZyBHUElPIGZsYWdzIGlzIGJhc2ljYWxseSBiZXR0ZXIuIApJbWFnaW5lIHRoYXQg
+dG9tb3Jyb3cgd2UgbWF5IHdhbnQgdGhlIG9wdGlvbiB0byBkZWZpbmUgb3Blbi1kcmFpbgpvdXRw
+dXQgb24gdGhlIENTIHBpbi4gU3BlY2lmaWMgcHVsbHVwIG9yIHB1bGxkb3duLgpBbm90aGVyIHNl
+cGFyYXRlIHByb3BlcnRpZXM/CgotLS0K
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,64 +1,103 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 11/11] ARM: shmobile: koelsch: spidev for r2a11302
-Date: Mon, 2 Dec 2013 13:24:26 +0000
-Message-ID: <20131202132426.GF27568@sirena.org.uk>
-References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
- <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
- <1385921962-19843-11-git-send-email-takasi-y@ops.dti.ne.jp>
+Subject: [GIT PULL] SPI updates for v3.13
+Date: Mon, 2 Dec 2013 13:36:23 +0000
+Message-ID: <20131202133623.GG27568@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EYAXRszTzQPG7bQS"
-Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org
+	protocol="application/pgp-signature"; boundary="GuLbEtPckrXUekoe"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1385921962-19843-11-git-send-email-takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---EYAXRszTzQPG7bQS
+--GuLbEtPckrXUekoe
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 02, 2013 at 03:19:22AM +0900, takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org wrote:
-> From: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
->=20
-> Add board info for r2a11302 on-board PMIC to access with spidev.
+The following changes since commit 6ce4eac1f600b34f2f7f58f9cd8f0503d79e42ae:
 
-This doesn't sound clever - why is the PMIC being accessed with spidev
-and not with an MFD integrated into the relevant kernel frameworks?
-Apart from the issue of integrating in the normal way for Linus the PMIC
-typically has the ability to cause lasting physical damage to the
-system.
+  Linux 3.13-rc1 (2013-11-22 11:30:55 -0800)
 
---EYAXRszTzQPG7bQS
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3.13-rc2
+
+for you to fetch changes up to c18158f1fdad0de6be5386291189580484e459cf:
+
+  Merge remote-tracking branches 'spi/fix/bcm2835', 'spi/fix/bcm63xx', 'spi/fix/mpc512x-psc', 'spi/fix/mxs', 'spi/fix/pxa2xx', 'spi/fix/qspi', 'spi/fix/rspi' and 'spi/fix/txx9' into spi-linus (2013-11-28 11:31:35 +0000)
+
+----------------------------------------------------------------
+
+spi: Fixes for v3.13
+
+A smattering of driver specific fixes here, including a bunch for a
+long standing common pattern in the error handling paths, and a fix for
+an embarrassing thinko in the new devm master registration code.
+
+----------------------------------------------------------------
+Chew, Chiau Ee (1):
+      spi/pxa2xx: Restore private register bits.
+
+Mark Brown (2):
+      Merge remote-tracking branch 'spi/fix/core' into spi-linus
+      Merge remote-tracking branches 'spi/fix/bcm2835', 'spi/fix/bcm63xx', 'spi/fix/mpc512x-psc', 'spi/fix/mxs', 'spi/fix/pxa2xx', 'spi/fix/qspi', 'spi/fix/rspi' and 'spi/fix/txx9' into spi-linus
+
+Mika Westerberg (1):
+      spi/pxa2xx: add new ACPI IDs
+
+Sourav Poddar (2):
+      spi/qspi: cleanup pm_runtime error check.
+      spi/qspi: Fix qspi remove path.
+
+Stephen Warren (1):
+      spi: core: invert success test in devm_spi_register_master
+
+Wei Yongjun (7):
+      spi: bcm2835: fix reference leak to master in bcm2835_spi_remove()
+      spi: rspi: use platform drvdata correctly in rspi_remove()
+      spi: mpc512x: fix reference leak to master in mpc512x_psc_spi_do_remove()
+      spi: txx9: fix reference leak to master in txx9spi_remove()
+      spi: bcm63xx: fix reference leak to master in bcm63xx_spi_remove()
+      spi: spi-mxs: fix reference leak to master in mxs_spi_remove()
+      spi/qspi: set correct platform drvdata in ti_qspi_probe()
+
+ drivers/spi/spi-bcm2835.c     |  2 +-
+ drivers/spi/spi-bcm63xx.c     |  2 +-
+ drivers/spi/spi-mpc512x-psc.c |  2 +-
+ drivers/spi/spi-mxs.c         |  2 +-
+ drivers/spi/spi-pxa2xx.c      |  5 +++++
+ drivers/spi/spi-rspi.c        |  3 +--
+ drivers/spi/spi-ti-qspi.c     | 23 +++++++++++++++++++----
+ drivers/spi/spi-txx9.c        |  2 +-
+ drivers/spi/spi.c             |  2 +-
+ 9 files changed, 31 insertions(+), 12 deletions(-)
+
+--GuLbEtPckrXUekoe
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSnIoHAAoJELSic+t+oim9Aq8P/jT/fAQIV1FyaLAvmriW+J+/
-vHNfLp7v1QTjUcR/huauRBqgUatneNy4uZ5Lv/5LmTyUXG17lTSuQmO1XQgY7hON
-lIhMnyZEO1kYbTFIEdHDYR1mC+VIlFDPWMAL3ekUKNJ+KE4teg6sfWQmE2kvtn9P
-M3vzXQtIF2W6dCO9R6R5MnUtbCpIMS5VdjRYCTOYIJ5VG6C99SsdlnHl+Y9ej8Nc
-j1X8r0MZXZBxIANHzUxBIWQ0UiZJ/fiJNQTxEH8/fA2MG43sK75o3Y2JAcx4/nK7
-+DrMTjXnLEaG6i8WCefH3z6NqkVw/pJBvXr2QIYjUG+rPKn1pnmAnzJId79Dvx0X
-ZlUE+YL330GZzkbSoClRPjnWvUMZZPC5FkLsgY2vhzf9tcsBUGv3uX6pO+ntis8L
-PWlPzNscvcPf0+dUkwOyfa+2/vAlPEi0twKXGjoOo8cDAsTR6jRZuchVIrKAA9n/
-/kNbeYSOu6fYzNH9ls/ole60wTycq/GGOMnT1wahtgUPRsXuTnIhQzfSNCcCNr0C
-mlbQsyoNg9L308Y1FmHp25F7ReeVKUAmnXFz9eAYjXHDOxSWQFRxpk0FX/9VkhBZ
-DUm0qRaJugdRs7VrwuUl66NbB7rZ3A7PVhokCmovWjbRtS6SA0jCa+cASzthEfgk
-s0qPm5CJsA3rvOnThSUp
-=bog+
+iQIcBAEBAgAGBQJSnIzUAAoJELSic+t+oim9PTkP/j8NUO2+LYh5AIb5mPTDFBOe
+ZMedJ1XYSvX47KI/ut8U5wox5A2XALdzA1/cfUnYgxZb3Ua1PCeXJNNf3Ry5bFsU
+KdfptYa0kZ5/eKRvpiaeBH3GEWsUlhpD8oLySo2YmbNe9dDQpYm3utmxFtiJgzP4
+AC5xEO30yK5LEwrEy5pAkLB3DGQMo7IdHaQsBTj89wzkEpy5Fpds8Z3XIRoJIMju
+W6rhzN+49rUzk+3RxW3VQuvYrJR3w83DSQc038J3rMlHRU82tCHBCsuFSx+d4ynH
+B789y7bOBpxlbHD/VlIW4o8YuTLHipGgsTnBZTdCzNOnu4WaVquoG789R6dN39KW
+qrMWQW/czJkim6AjeHaB9bghYNhxAAlUGAkqeN3ZsdhafltXfCz8+iq5cFRWw7zH
+vvfxnaDOM7rNfmxRJpfBeWNTds1fCF1qyGjz2ABCSHXAAWS6ZcH7UtDJB83iCdqm
+JeNx8fBz7yggbnnzcFJlW/Afugu2qa7s5MDiI7HxTPHGTsd6QVVElTuKgT9fDCZ/
+/sLaDZPVxBN9evRGETClpr46MpcVdq5V07EQ0iic+YO5d/dumm9cI5QzkmnmVG3u
+0oNNClRRUuFznh0RV9jN/VFmKsvO4zPb0prXBu7gUQJPB0rmVEKDHw8BvlT9p7FQ
+eslBi5wPwJiU8Ox+OR0c
+=Id4e
 -----END PGP SIGNATURE-----
 
---EYAXRszTzQPG7bQS--
+--GuLbEtPckrXUekoe--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

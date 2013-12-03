@@ -1,47 +1,39 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 01/11] pinctrl: sh-pfc: r8a7791: fix msiof groups to
- follow GROUP
-Date: Tue, 3 Dec 2013 11:08:14 +0100
-Message-ID: <CACRpkdYyLS3gy53GOJhEwYXh4uW_Uxa5PLF1E45OhWvUiMfYpA@mail.gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 09/11] ARM: shmobile: r8a7791: MSIOF platform device
+Date: Tue, 3 Dec 2013 11:12:32 +0100
+Message-ID: <CACRpkdbvrYgRh7cK0N1HrcxkYzzu9Qw4yAoQwj4f9pEf0r1qQw@mail.gmail.com>
 References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
 	<1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
+	<1385921962-19843-9-git-send-email-takasi-y@ops.dti.ne.jp>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
-Cc: "linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org,
-	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1385921962-19843-1-git-send-email-takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+	Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: takasi-y@ops.dti.ne.jp
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1385921962-19843-9-git-send-email-takasi-y@ops.dti.ne.jp>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sun, Dec 1, 2013 at 7:19 PM,  <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org> wrote:
+On Sun, Dec 1, 2013 at 7:19 PM,  <takasi-y@ops.dti.ne.jp> wrote:
 
-> From: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
+> From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 >
-> SH_PFC_PIN_GROUP(), pins[], mux[], defines
->  clk, sync, ss1, ss2, rx, tx
-> But, msiof?_groups[] defines
->  clk, ctrl, data
+> Define resources for msiof0,1,2. HWM says there is msiof3, but omit
+> it because its clock, reset and irqs are not seen on HWM. Anyway, only
+> msiof0 is registerd, so far, because others lack of chance for testing.
+> msiof0 has id=1 (spi_sh_msiof.1), for a compatibility with BSP.
 >
-> Fix msiof[012]_groups members to be consistent to PIN_GROUP.
->
-> Signed-off-by: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
+> Signed-off-by: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
 
-This looks all right to me. Laurent is merging PFC patches for this
-kernel cycle, please make sure you include him on subsequent
-postings. Once Laurent has a finished series I'll pull it into
-the pinctrl tree.
+So why is this new shiny device not registered from the device
+tree instead of adding more hard-coded platform devices to the
+ARM tree? The add_standard_devices() seem to add everything
+from the DT just fine.
 
-I think the device tree changes part of this series can go directly
-to Simon though?
+NAK.
 
 Yours,
 Linus Walleij
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

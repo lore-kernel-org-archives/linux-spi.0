@@ -1,66 +1,51 @@
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCBSRkNdIFJlbW92ZSAic3BpLWNzLWhpZ2giIHByb3BlcnR5?=
- =?UTF-8?B?IGZvciBHUElPLWJhc2VkIGNoaXBzZWxlY3Rz?=
-Date: Tue, 03 Dec 2013 08:23:22 +0400
-Message-ID: <1386044602.684345102@f318.i.mail.ru>
-References: <1385884756-31373-1-git-send-email-shc_work@mail.ru>
- <CAOiHx=krrM+NZ7detAv9_UsB+bUXtKL0m4=pDHO30uduJsDdFg@mail.gmail.com>
- <20131202223632.GA2982@book.gsilab.sittig.org>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
+Date: Tue, 3 Dec 2013 14:20:40 +0800
+Message-ID: <529D7838.6030606@freescale.com>
+References: <1385447575-23773-1-git-send-email-b32955@freescale.com> <20131127043253.GA9468@ld-irv-0074.broadcom.com> <5298AA23.7080404@st.com> <529C5BBF.6000604@freescale.com> <529C6CBB.4000008@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-Cc: =?UTF-8?B?Sm9uYXMgR29yc2tp?= <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	=?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: =?UTF-8?B?R2VyaGFyZCBTaXR0aWc=?= <gsi-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
+	<broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<pekon-l0cyMroinI0@public.gmane.org>, <sourav.poddar-l0cyMroinI0@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131202223632.GA2982-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
+In-Reply-To: <529C6CBB.4000008-qxv4g6HH51o@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-PiA+IE9uIE1vbiwgRGVjIDIsIDIwMTMgYXQgOToxNyBQTSwgR2VyaGFyZCBTaXR0aWcgPGdzaUBk
-ZW54LmRlPiB3cm90ZToKPiA+ID4gT24gTW9uLCBEZWMgMDIsIDIwMTMgYXQgMTk6MDMgKzAxMDAs
-IEpvbmFzIEdvcnNraSB3cm90ZToKPiA+ID4+Cj4gPiA+PiBJIHNlZSB0aGUgYWxsb2NhdGlvbiwg
-YnV0IEkgZG9uJ3Qgc2VlIHRoZSBhc3NpZ25tZW50IG9mCj4gPiA+PiBtYXN0ZXItPmNzX2dwaW9z
-X2ZsYWdzLiBPbmx5IG1hc3Rlci0+Y3NfZ3Bpb3MgZ2V0cyBhc3NpZ25lZC4KPiA+ID4KPiA+ID4g
-SXQncyBhIHNpZGUgZWZmZWN0IG9mIHRoZSBvZl9nZXRfbmFtZWRfZ3Bpb19mbGFncygpIGNhbGwg
-KHBhc3NpbmcKPiA+ID4gdGhlIHZhcmlhYmxlIGJ5IHJlZmVyZW5jZSkuCj4gPiA+Cj4gPiA+IERv
-bid0IHdvcnJ5LCBJIGZlbHQgdGhlIHNhbWUgd2hlbiBJIHJlYWQgdGhlIHBhdGNoLiAgVG9vayBt
-ZSBhCj4gPiA+IHdoaWxlIHRvIHNwb3QgdGhhdCBldmVyeXRoaW5nIHdhcyBzdGlsbCBpbiBwbGFj
-ZS4gOikKPiA+IAo+ID4gSSBzdGlsbCBkb24ndCBzZWUgaXQuIFRoZSBwYXRjaCBhZGRzIGFuIGFk
-ZGl0aW9uYWwgcG9pbnRlciBtZW1iZXI6Cj4gPiAKPiA+ID4gc3RydWN0IHNwaV9tYXN0ZXIgewo+
-ID4gPiAgICAgICAgKC4uLikKPiA+ID4gICAgICAgIC8qIGdwaW8gY2hpcCBzZWxlY3QgKi8KPiA+
-ID4gICAgICAgIGludCAgICAgICAgICAgICAgICAgICAgICpjc19ncGlvczsKPiA+ID4gKyAgICAg
-ICAvKiBHUElPIGZsYWdzICovCj4gPiA+ICsgICAgICAgZW51bSBvZl9ncGlvX2ZsYWdzICAgICAg
-KmNzX2dwaW9zX2ZsYWdzOwo+ID4gIH07Cj4gPiAKPiA+IFRoZW4gaXQgY2hhbmdlcyB0aGUgbWVt
-b3J5IGFsbG9jYXRpb24gdG8gYWxsb2NhdGUgYWRkaXRpb25hbCBtZW1vcnkgZm9yIGl0Ogo+ID4g
-Cj4gPiA+IC0gICAgICAgY3MgPSBkZXZtX2t6YWxsb2MoJm1hc3Rlci0+ZGV2LAo+ID4gPiAtICAg
-ICAgICAgICAgICAgICAgICAgICAgIHNpemVvZihpbnQpICogbWFzdGVyLT5udW1fY2hpcHNlbGVj
-dCwKPiA+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICBHRlBfS0VSTkVMKTsKPiA+ID4gLSAg
-ICAgICBtYXN0ZXItPmNzX2dwaW9zID0gY3M7Cj4gPiA+ICsgICAgICAgbWFzdGVyLT5jc19ncGlv
-cyA9IGRldm1fa3phbGxvYygmbWFzdGVyLT5kZXYsIG1hc3Rlci0+bnVtX2NoaXBzZWxlY3QgKgo+
-ID4gPiArICAgICAgICAgICAgICAgKHNpemVvZihpbnQpICsgc2l6ZW9mKGVudW0gb2ZfZ3Bpb19m
-bGFncykpLCBHRlBfS0VSTkVMKTsKPiA+IAo+ID4gQnV0IGl0IG9ubHkgYXNzaWducyB0aGUgbWVt
-b3J5IHBvaW50ZXIgdG8gbWFzdGVyLT5jc19ncGlvcywgYnV0Cj4gPiBtYXN0ZXItPmNzX2dwaW9z
-X2ZsYWdzIHdpbGwgc3RpbGwgcG9pbnQgdG8gd2hhdGV2ZXIgaXQgd2FzIGluaXRpYWxpemVkCj4g
-PiB0byAobGlrZWx5IDApLCBhbmQgaXMgbmV2ZXIgYWN0dWFsbHkgc2V0Lgo+IAo+IFlvdSBhcmUg
-cmlnaHQsIEkgbWlzcmVhZCB0aGUgY29kZS4KPiAKPiBUaGUgYXNzaWdubWVudCBvZiAiJmNzX2dw
-aW9zW21hc3Rlci0+bnVtX2NoaXBzZWxlY3RdIiB0byB0aGUKPiBjc19ncGlvX2ZsYWdzICJzdGFy
-dCBhZGRyZXNzIiBpcyBtaXNzaW5nLiAgV2hpY2ggaW52b2x2ZXMgZGlydHkKPiBjYXN0cyB0aGF0
-IG1heSBiZSBjb25zaWRlcmVkIHVnbHkuCj4gCj4gQWx0ZXJuYXRpdmVseSB0aGUgdHdvIGFycmF5
-cyBjb3VsZCBnZXQgYWxsb2NhdGVkIHNlcGFyYXRlbHkKPiAoZG9uJ3Qga25vdyB3aGF0IHRoZSBv
-dmVyaGVhZCB3b3VsZCBiZSwgYW5kIGlmIHRoYXQgaXMgY29uc2lkZXJlZAo+IGJhZCBwcmFjdGlz
-ZSBvciB3YXN0ZWZ1bCBhbHRob3VnaCBpdCdzIGNsZWFuZXIpLgo+IAo+IAo+ID4gVW5sZXNzIHRo
-ZXJlIGlzIHNvbWUgc2VyaW91cyBibGFjayBtYWdpYyBpbiBvZl9nZXRfbmFtZWRfZ3Bpb19mbGFn
-cygpLAo+ID4gYnV0IEkgZG91YnQgdGhhdCB3b3VsZCBiZSBhbGxvd2VkIGluIHRoZSBrZXJuZWwg
-OykKPiA+IAo+ID4gU28gYXMgZmFyIGFzIEkgY2FuIHRlbGwgdGhlcmUncyBtaXNzaW5nIHNvbWV0
-aGluZyBhbG9uZwo+ID4gCj4gPiBtYXN0ZXItPmNzX2dwaW9zX2ZsYWdzID0gKGVudW0gb2ZfZ3Bp
-b19mbGFncyAqKSZtYXN0ZXItPmNzX2dwaW9zW21hc3Rlci0+bnVtX2NoaXBzZWxlY3RdOwo+IAo+
-IFJpZ2h0ISAgVGhpcyBraW5kIG9mIGFzc2lnbm1lbnQgaXMgInRoZSBzdGFuZGluIiBmb3IgdGhl
-IGJsYWNrCj4gbWFnaWMgdGhhdCBpcyBub3QgZXhwZWN0ZWQgaGVyZS4gOikKCkFoaCwgSSBzZWUu
-IFRoZSAiY3NfZ3Bpb19mbGFncyIgbWVtYmVyIGRvIG5vdCBrbm93IGFueXRoaW5nIGFib3V0ICJj
-c19ncGlvcyIgc2l6ZS4KVGhhbmtzLgoKLS0tCg==
+=E4=BA=8E 2013=E5=B9=B412=E6=9C=8802=E6=97=A5 19:19, Angus Clark =E5=86=
+=99=E9=81=93:
+> To be honest, I am just glad that someone is taking a look at this ar=
+ea.
+> However, whether or not is it possible to come up with something that=
+ solves all
+> our problems remains to be seen.  It might turn out that the various =
+H/W
+> Controllers are just too different to fit into a single unified frame=
+work.
+>
+Hi Angus & Pekon:
+thanks for the explanations.
+
+I am not sure that after we add more hooks, if it will meet Jones's new=
+=20
+driver.
+
+i will wait for Jones' comment for several days, and send out the next=20
+version if he does not reply this thread.
+
+
+thanks
+Huang Shijie
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

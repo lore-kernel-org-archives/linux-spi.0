@@ -1,68 +1,67 @@
-From: Jingoo Han <jg1.han@samsung.com>
-Subject: [PATCH 27/39] spi: remove DEFINE_PCI_DEVICE_TABLE macro
-Date: Tue, 03 Dec 2013 08:25:19 +0900
-Message-ID: <003001ceefb5$c418c600$4c4a5200$%han@samsung.com>
-References: <001501ceefb1$69c96820$3d5c3860$%han@samsung.com>
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCBSRkNdIFJlbW92ZSAic3BpLWNzLWhpZ2giIHByb3BlcnR5?=
+ =?UTF-8?B?IGZvciBHUElPLWJhc2VkIGNoaXBzZWxlY3Rz?=
+Date: Tue, 03 Dec 2013 08:23:22 +0400
+Message-ID: <1386044602.684345102@f318.i.mail.ru>
+References: <1385884756-31373-1-git-send-email-shc_work@mail.ru>
+ <CAOiHx=krrM+NZ7detAv9_UsB+bUXtKL0m4=pDHO30uduJsDdFg@mail.gmail.com>
+ <20131202223632.GA2982@book.gsilab.sittig.org>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, 'Jingoo Han' <jg1.han@samsung.com>,
-	'Mark Brown' <broonie@kernel.org>, linux-spi@vger.kernel.org
-To: 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-reply-to: <001501ceefb1$69c96820$3d5c3860$%han@samsung.com>
-Content-language: ko
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+Cc: =?UTF-8?B?Sm9uYXMgR29yc2tp?= <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	=?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: =?UTF-8?B?R2VyaGFyZCBTaXR0aWc=?= <gsi-ynQEQJNshbs@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20131202223632.GA2982-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Don't use DEFINE_PCI_DEVICE_TABLE macro, because this macro
-is not preferred.
-
-Signed-off-by: Jingoo Han <jg1.han@samsung.com>
----
- drivers/spi/spi-dw-pci.c       |    2 +-
- drivers/spi/spi-pxa2xx-pci.c   |    2 +-
- drivers/spi/spi-topcliff-pch.c |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 66fa995..f7be4be 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -148,7 +148,7 @@ static int spi_resume(struct pci_dev *pdev)
- #define spi_resume	NULL
- #endif
- 
--static DEFINE_PCI_DEVICE_TABLE(pci_ids) = {
-+static const struct pci_device_id pci_ids[] = {
- 	/* Intel MID platform SPI controller 0 */
- 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0800) },
- 	{},
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 74bc187..3f006d3 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -62,7 +62,7 @@ static void ce4100_spi_remove(struct pci_dev *dev)
- 	platform_device_unregister(pdev);
- }
- 
--static DEFINE_PCI_DEVICE_TABLE(ce4100_spi_devices) = {
-+static const struct pci_device_id ce4100_spi_devices[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x2e6a) },
- 	{ },
- };
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 4461313..338fc11 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -217,7 +217,7 @@ struct pch_pd_dev_save {
- 	struct pch_spi_board_data *board_dat;
- };
- 
--static DEFINE_PCI_DEVICE_TABLE(pch_spi_pcidev_id) = {
-+static const struct pci_device_id pch_spi_pcidev_id[] = {
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_GE_SPI),    1, },
- 	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7213_SPI), 2, },
- 	{ PCI_VDEVICE(ROHM, PCI_DEVICE_ID_ML7223_SPI), 1, },
--- 
-1.7.10.4
+PiA+IE9uIE1vbiwgRGVjIDIsIDIwMTMgYXQgOToxNyBQTSwgR2VyaGFyZCBTaXR0aWcgPGdzaUBk
+ZW54LmRlPiB3cm90ZToKPiA+ID4gT24gTW9uLCBEZWMgMDIsIDIwMTMgYXQgMTk6MDMgKzAxMDAs
+IEpvbmFzIEdvcnNraSB3cm90ZToKPiA+ID4+Cj4gPiA+PiBJIHNlZSB0aGUgYWxsb2NhdGlvbiwg
+YnV0IEkgZG9uJ3Qgc2VlIHRoZSBhc3NpZ25tZW50IG9mCj4gPiA+PiBtYXN0ZXItPmNzX2dwaW9z
+X2ZsYWdzLiBPbmx5IG1hc3Rlci0+Y3NfZ3Bpb3MgZ2V0cyBhc3NpZ25lZC4KPiA+ID4KPiA+ID4g
+SXQncyBhIHNpZGUgZWZmZWN0IG9mIHRoZSBvZl9nZXRfbmFtZWRfZ3Bpb19mbGFncygpIGNhbGwg
+KHBhc3NpbmcKPiA+ID4gdGhlIHZhcmlhYmxlIGJ5IHJlZmVyZW5jZSkuCj4gPiA+Cj4gPiA+IERv
+bid0IHdvcnJ5LCBJIGZlbHQgdGhlIHNhbWUgd2hlbiBJIHJlYWQgdGhlIHBhdGNoLiAgVG9vayBt
+ZSBhCj4gPiA+IHdoaWxlIHRvIHNwb3QgdGhhdCBldmVyeXRoaW5nIHdhcyBzdGlsbCBpbiBwbGFj
+ZS4gOikKPiA+IAo+ID4gSSBzdGlsbCBkb24ndCBzZWUgaXQuIFRoZSBwYXRjaCBhZGRzIGFuIGFk
+ZGl0aW9uYWwgcG9pbnRlciBtZW1iZXI6Cj4gPiAKPiA+ID4gc3RydWN0IHNwaV9tYXN0ZXIgewo+
+ID4gPiAgICAgICAgKC4uLikKPiA+ID4gICAgICAgIC8qIGdwaW8gY2hpcCBzZWxlY3QgKi8KPiA+
+ID4gICAgICAgIGludCAgICAgICAgICAgICAgICAgICAgICpjc19ncGlvczsKPiA+ID4gKyAgICAg
+ICAvKiBHUElPIGZsYWdzICovCj4gPiA+ICsgICAgICAgZW51bSBvZl9ncGlvX2ZsYWdzICAgICAg
+KmNzX2dwaW9zX2ZsYWdzOwo+ID4gIH07Cj4gPiAKPiA+IFRoZW4gaXQgY2hhbmdlcyB0aGUgbWVt
+b3J5IGFsbG9jYXRpb24gdG8gYWxsb2NhdGUgYWRkaXRpb25hbCBtZW1vcnkgZm9yIGl0Ogo+ID4g
+Cj4gPiA+IC0gICAgICAgY3MgPSBkZXZtX2t6YWxsb2MoJm1hc3Rlci0+ZGV2LAo+ID4gPiAtICAg
+ICAgICAgICAgICAgICAgICAgICAgIHNpemVvZihpbnQpICogbWFzdGVyLT5udW1fY2hpcHNlbGVj
+dCwKPiA+ID4gLSAgICAgICAgICAgICAgICAgICAgICAgICBHRlBfS0VSTkVMKTsKPiA+ID4gLSAg
+ICAgICBtYXN0ZXItPmNzX2dwaW9zID0gY3M7Cj4gPiA+ICsgICAgICAgbWFzdGVyLT5jc19ncGlv
+cyA9IGRldm1fa3phbGxvYygmbWFzdGVyLT5kZXYsIG1hc3Rlci0+bnVtX2NoaXBzZWxlY3QgKgo+
+ID4gPiArICAgICAgICAgICAgICAgKHNpemVvZihpbnQpICsgc2l6ZW9mKGVudW0gb2ZfZ3Bpb19m
+bGFncykpLCBHRlBfS0VSTkVMKTsKPiA+IAo+ID4gQnV0IGl0IG9ubHkgYXNzaWducyB0aGUgbWVt
+b3J5IHBvaW50ZXIgdG8gbWFzdGVyLT5jc19ncGlvcywgYnV0Cj4gPiBtYXN0ZXItPmNzX2dwaW9z
+X2ZsYWdzIHdpbGwgc3RpbGwgcG9pbnQgdG8gd2hhdGV2ZXIgaXQgd2FzIGluaXRpYWxpemVkCj4g
+PiB0byAobGlrZWx5IDApLCBhbmQgaXMgbmV2ZXIgYWN0dWFsbHkgc2V0Lgo+IAo+IFlvdSBhcmUg
+cmlnaHQsIEkgbWlzcmVhZCB0aGUgY29kZS4KPiAKPiBUaGUgYXNzaWdubWVudCBvZiAiJmNzX2dw
+aW9zW21hc3Rlci0+bnVtX2NoaXBzZWxlY3RdIiB0byB0aGUKPiBjc19ncGlvX2ZsYWdzICJzdGFy
+dCBhZGRyZXNzIiBpcyBtaXNzaW5nLiAgV2hpY2ggaW52b2x2ZXMgZGlydHkKPiBjYXN0cyB0aGF0
+IG1heSBiZSBjb25zaWRlcmVkIHVnbHkuCj4gCj4gQWx0ZXJuYXRpdmVseSB0aGUgdHdvIGFycmF5
+cyBjb3VsZCBnZXQgYWxsb2NhdGVkIHNlcGFyYXRlbHkKPiAoZG9uJ3Qga25vdyB3aGF0IHRoZSBv
+dmVyaGVhZCB3b3VsZCBiZSwgYW5kIGlmIHRoYXQgaXMgY29uc2lkZXJlZAo+IGJhZCBwcmFjdGlz
+ZSBvciB3YXN0ZWZ1bCBhbHRob3VnaCBpdCdzIGNsZWFuZXIpLgo+IAo+IAo+ID4gVW5sZXNzIHRo
+ZXJlIGlzIHNvbWUgc2VyaW91cyBibGFjayBtYWdpYyBpbiBvZl9nZXRfbmFtZWRfZ3Bpb19mbGFn
+cygpLAo+ID4gYnV0IEkgZG91YnQgdGhhdCB3b3VsZCBiZSBhbGxvd2VkIGluIHRoZSBrZXJuZWwg
+OykKPiA+IAo+ID4gU28gYXMgZmFyIGFzIEkgY2FuIHRlbGwgdGhlcmUncyBtaXNzaW5nIHNvbWV0
+aGluZyBhbG9uZwo+ID4gCj4gPiBtYXN0ZXItPmNzX2dwaW9zX2ZsYWdzID0gKGVudW0gb2ZfZ3Bp
+b19mbGFncyAqKSZtYXN0ZXItPmNzX2dwaW9zW21hc3Rlci0+bnVtX2NoaXBzZWxlY3RdOwo+IAo+
+IFJpZ2h0ISAgVGhpcyBraW5kIG9mIGFzc2lnbm1lbnQgaXMgInRoZSBzdGFuZGluIiBmb3IgdGhl
+IGJsYWNrCj4gbWFnaWMgdGhhdCBpcyBub3QgZXhwZWN0ZWQgaGVyZS4gOikKCkFoaCwgSSBzZWUu
+IFRoZSAiY3NfZ3Bpb19mbGFncyIgbWVtYmVyIGRvIG5vdCBrbm93IGFueXRoaW5nIGFib3V0ICJj
+c19ncGlvcyIgc2l6ZS4KVGhhbmtzLgoKLS0tCg==
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

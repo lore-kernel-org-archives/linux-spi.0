@@ -1,52 +1,38 @@
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH 01/11] pinctrl: sh-pfc: r8a7791: fix msiof groups to follow GROUP
-Date: Wed, 04 Dec 2013 02:23:45 +0100
-Message-ID: <5040605.U30kg1BDtJ@avalon>
-References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp> <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp> <CACRpkdYyLS3gy53GOJhEwYXh4uW_Uxa5PLF1E45OhWvUiMfYpA@mail.gmail.com>
+From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
+Date: Wed, 4 Dec 2013 10:46:06 +0800
+Message-ID: <529E976E.4050104@freescale.com>
+References: <1385447575-23773-1-git-send-email-b32955@freescale.com> <20131127043253.GA9468@ld-irv-0074.broadcom.com> <5298AA23.7080404@st.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: takasi-y@ops.dti.ne.jp,
-	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-	Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <CACRpkdYyLS3gy53GOJhEwYXh4uW_Uxa5PLF1E45OhWvUiMfYpA@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
+	<broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<pekon-l0cyMroinI0@public.gmane.org>, <sourav.poddar-l0cyMroinI0@public.gmane.org>, <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <5298AA23.7080404-qxv4g6HH51o@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Linus,
+=E4=BA=8E 2013=E5=B9=B411=E6=9C=8829=E6=97=A5 22:52, Angus Clark =E5=86=
+=99=E9=81=93:
+> 	int (*write_reg)(struct spi_nor_info *info,
+> 			 uint8_t cmd, uint8_t *reg, int len,
+> 			 int wren, int wtr);
+I guess you add the 'wren' for the issuing write-enable before issuing=20
+the 'cmd'.
 
-On Tuesday 03 December 2013 11:08:14 Linus Walleij wrote:
-> On Sun, Dec 1, 2013 at 7:19 PM,  <takasi-y@ops.dti.ne.jp> wrote:
-> > From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
-> > 
-> > SH_PFC_PIN_GROUP(), pins[], mux[], defines
-> > 
-> >  clk, sync, ss1, ss2, rx, tx
-> > 
-> > But, msiof?_groups[] defines
-> > 
-> >  clk, ctrl, data
-> > 
-> > Fix msiof[012]_groups members to be consistent to PIN_GROUP.
-> > 
-> > Signed-off-by: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
-> 
-> This looks all right to me. Laurent is merging PFC patches for this
-> kernel cycle, please make sure you include him on subsequent
-> postings. Once Laurent has a finished series I'll pull it into
-> the pinctrl tree.
+but what's 'wtr' for? i do not know what's the meaning of the 'wtr'.
 
-I've applied this patch to my tree.
+thanks
+Huang Shijie
 
-> I think the device tree changes part of this series can go directly
-> to Simon though?
-
--- 
-Regards,
-
-Laurent Pinchart
-
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,41 +1,70 @@
-From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-atmel: Use devm_*() functions
-Date: Wed, 4 Dec 2013 13:07:48 +0100
-Message-ID: <529F1B14.3000606@atmel.com>
-References: <002b01cef0ae$c8261dc0$58725940$%han@samsung.com> <529EFA38.7050404@atmel.com> <20131204115921.GL29268@sirena.org.uk>
+From: <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
+Subject: RE: [PATCH 1/4] spi: mips-lantiq: Use devm_spi_register_master()
+Date: Wed, 4 Dec 2013 12:23:11 +0000
+Message-ID: <593AEF6C47F46446852B067021A273D6D9AB22CD@MUCSE039.lantiq.com>
+References: <002d01cef0af$5a21f140$0e65d3c0$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131204115921.GL29268-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <002d01cef0af$5a21f140$0e65d3c0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 04/12/2013 12:59, Mark Brown :
-> On Wed, Dec 04, 2013 at 10:47:36AM +0100, Nicolas Ferre wrote:
->> On 04/12/2013 06:07, Jingoo Han :
->
->>>   out_free_irq:
->>> -	free_irq(irq, master);
->>>   out_unmap_regs:
->>>   out_free_buffer:
->
->> What about taking advantage of this cleanup patch to remove the 3
->> above unneeded tags?
->
->> Otherwise, you can add my:
->> Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
->
-> That's a good idea but it means going and changing all the gotos as well
-> so it probably warrants a separate patch.  I applied this one as-is.
+Jingoo Han wrote on=A02013-12-04:
+> Use devm_spi_register_master() to make cleanup paths simpler,
+> and remove unnecessary remove().
+>=20
+> Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-True! Thanks Mark.
+Looks good, thanks.
 
-Bye,
--- 
-Nicolas Ferre
+Acked-by:  Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>
+
+> ---
+>  drivers/spi/spi-falcon.c |   12 +-----------
+>  1 file changed, 1 insertion(+), 11 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
+> index c7a74f0..dd5bd46 100644
+> --- a/drivers/spi/spi-falcon.c
+> +++ b/drivers/spi/spi-falcon.c
+> @@ -433,21 +433,12 @@ static int falcon_sflash_probe(struct
+> platform_device *pdev)
+>=20
+>  	platform_set_drvdata(pdev, priv);
+>=20
+> -	ret =3D spi_register_master(master);
+> +	ret =3D devm_spi_register_master(&pdev->dev, master);
+>  	if (ret)
+>  		spi_master_put(master);
+>  	return ret;
+>  }
+>=20
+> -static int falcon_sflash_remove(struct platform_device *pdev)
+> -{
+> -	struct falcon_sflash *priv =3D platform_get_drvdata(pdev);
+> -
+> -	spi_unregister_master(priv->master);
+> -
+> -	return 0;
+> -}
+> -
+>  static const struct of_device_id falcon_sflash_match[] =3D {
+>  	{ .compatible =3D "lantiq,sflash-falcon" },
+>  	{},
+> @@ -456,7 +447,6 @@ MODULE_DEVICE_TABLE(of, falcon_sflash_match);
+>=20
+>  static struct platform_driver falcon_sflash_driver =3D {
+>  	.probe	=3D falcon_sflash_probe,
+> -	.remove	=3D falcon_sflash_remove,
+>  	.driver =3D {
+>  		.name	=3D DRV_NAME,
+>  		.owner	=3D THIS_MODULE,
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

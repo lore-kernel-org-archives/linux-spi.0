@@ -1,107 +1,70 @@
-From: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-atmel: Use devm_*() functions
-Date: Wed, 4 Dec 2013 10:47:36 +0100
-Message-ID: <529EFA38.7050404@atmel.com>
-References: <002b01cef0ae$c8261dc0$58725940$%han@samsung.com>
+From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Subject: Re: [PATCH 4/4] spi: spi-xcomm: Use devm_spi_register_master()
+Date: Wed, 04 Dec 2013 12:42:50 +0100
+Message-ID: <529F153A.6060402@metafoo.de>
+References: <002d01cef0af$5a21f140$0e65d3c0$%han@samsung.com> <003001cef0af$d5c84ce0$8158e6a0$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <002b01cef0ae$c8261dc0$58725940$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <003001cef0af$d5c84ce0$8158e6a0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 04/12/2013 06:07, Jingoo Han :
-> Use devm_*() functions to make cleanup paths simpler.
->
+On 12/04/2013 06:15 AM, Jingoo Han wrote:
+> Use devm_spi_register_master() to make cleanup paths simpler,
+> and remove unnecessary remove().
+> 
 > Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+
+Looks good, thanks.
+
+Acked-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+
 > ---
->   drivers/spi/spi-atmel.c |   18 ++++++------------
->   1 file changed, 6 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 273db0b..57fa738 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -1510,7 +1510,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
->   	if (irq < 0)
->   		return irq;
->
-> -	clk = clk_get(&pdev->dev, "spi_clk");
-> +	clk = devm_clk_get(&pdev->dev, "spi_clk");
->   	if (IS_ERR(clk))
->   		return PTR_ERR(clk);
->
-> @@ -1570,14 +1570,14 @@ static int atmel_spi_probe(struct platform_device *pdev)
->   		dev_info(&pdev->dev, "Atmel SPI Controller using PIO only\n");
->
->   	if (as->use_pdc) {
-> -		ret = request_irq(irq, atmel_spi_pdc_interrupt, 0,
-> -					dev_name(&pdev->dev), master);
-> +		ret = devm_request_irq(&pdev->dev, irq, atmel_spi_pdc_interrupt,
-> +					0, dev_name(&pdev->dev), master);
->   	} else {
->   		tasklet_init(&as->tasklet, atmel_spi_tasklet_func,
->   					(unsigned long)master);
->
-> -		ret = request_irq(irq, atmel_spi_pio_interrupt, 0,
-> -					dev_name(&pdev->dev), master);
-> +		ret = devm_request_irq(&pdev->dev, irq, atmel_spi_pio_interrupt,
-> +					0, dev_name(&pdev->dev), master);
->   	}
->   	if (ret)
->   		goto out_unmap_regs;
-> @@ -1603,7 +1603,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
->   	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
->   			(unsigned long)regs->start, irq);
->
+>  drivers/spi/spi-xcomm.c |   12 +-----------
+>  1 file changed, 1 insertion(+), 11 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
+> index 4258c71..24c40b1 100644
+> --- a/drivers/spi/spi-xcomm.c
+> +++ b/drivers/spi/spi-xcomm.c
+> @@ -231,22 +231,13 @@ static int spi_xcomm_probe(struct i2c_client *i2c,
+>  	master->dev.of_node = i2c->dev.of_node;
+>  	i2c_set_clientdata(i2c, master);
+>  
 > -	ret = spi_register_master(master);
-> +	ret = devm_spi_register_master(&pdev->dev, master);
->   	if (ret)
->   		goto out_free_dma;
->
-> @@ -1617,7 +1617,6 @@ out_free_dma:
->   	spi_writel(as, CR, SPI_BIT(SWRST)); /* AT91SAM9263 Rev B workaround */
->   	clk_disable_unprepare(clk);
->   out_free_irq:
-> -	free_irq(irq, master);
->   out_unmap_regs:
->   out_free_buffer:
-
-What about taking advantage of this cleanup patch to remove the 3 above 
-unneeded tags?
-
-Otherwise, you can add my:
-Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-
-
->   	if (!as->use_pdc)
-> @@ -1625,7 +1624,6 @@ out_free_buffer:
->   	dma_free_coherent(&pdev->dev, BUFFER_SIZE, as->buffer,
->   			as->buffer_dma);
->   out_free:
-> -	clk_put(clk);
->   	spi_master_put(master);
->   	return ret;
->   }
-> @@ -1668,10 +1666,6 @@ static int atmel_spi_remove(struct platform_device *pdev)
->   			as->buffer_dma);
->
->   	clk_disable_unprepare(as->clk);
-> -	clk_put(as->clk);
-> -	free_irq(as->irq, master);
+> +	ret = devm_spi_register_master(&i2c->dev, master);
+>  	if (ret < 0)
+>  		spi_master_put(master);
+>  
+>  	return ret;
+>  }
+>  
+> -static int spi_xcomm_remove(struct i2c_client *i2c)
+> -{
+> -	struct spi_master *master = i2c_get_clientdata(i2c);
 > -
 > -	spi_unregister_master(master);
->
->   	return 0;
->   }
->
+> -
+> -	return 0;
+> -}
+> -
+>  static const struct i2c_device_id spi_xcomm_ids[] = {
+>  	{ "spi-xcomm" },
+>  	{ },
+> @@ -259,7 +250,6 @@ static struct i2c_driver spi_xcomm_driver = {
+>  	},
+>  	.id_table	= spi_xcomm_ids,
+>  	.probe		= spi_xcomm_probe,
+> -	.remove		= spi_xcomm_remove,
+>  };
+>  module_i2c_driver(spi_xcomm_driver);
+>  
+> 
 
-
--- 
-Nicolas Ferre
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

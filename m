@@ -1,13 +1,13 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 3/4] spi: sc18is602: Use devm_spi_register_master()
-Date: Wed, 04 Dec 2013 14:14:30 +0900
-Message-ID: <002f01cef0af$b618e170$224aa450$%han@samsung.com>
+Subject: [PATCH 4/4] spi: spi-xcomm: Use devm_spi_register_master()
+Date: Wed, 04 Dec 2013 14:15:23 +0900
+Message-ID: <003001cef0af$d5c84ce0$8158e6a0$%han@samsung.com>
 References: <002d01cef0af$5a21f140$0e65d3c0$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Guenter Roeck' <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+	'Lars-Peter Clausen' <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-reply-to: <002d01cef0af$5a21f140$0e65d3c0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
@@ -20,46 +20,44 @@ and remove unnecessary remove().
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-sc18is602.c |   13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+ drivers/spi/spi-xcomm.c |   12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 9eda21d..c1a01d1 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -319,7 +319,7 @@ static int sc18is602_probe(struct i2c_client *client,
- 	master->transfer_one_message = sc18is602_transfer_one;
- 	master->dev.of_node = np;
+diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
+index 4258c71..24c40b1 100644
+--- a/drivers/spi/spi-xcomm.c
++++ b/drivers/spi/spi-xcomm.c
+@@ -231,22 +231,13 @@ static int spi_xcomm_probe(struct i2c_client *i2c,
+ 	master->dev.of_node = i2c->dev.of_node;
+ 	i2c_set_clientdata(i2c, master);
  
--	error = spi_register_master(master);
-+	error = devm_spi_register_master(dev, master);
- 	if (error)
- 		goto error_reg;
+-	ret = spi_register_master(master);
++	ret = devm_spi_register_master(&i2c->dev, master);
+ 	if (ret < 0)
+ 		spi_master_put(master);
  
-@@ -330,16 +330,6 @@ error_reg:
- 	return error;
+ 	return ret;
  }
  
--static int sc18is602_remove(struct i2c_client *client)
+-static int spi_xcomm_remove(struct i2c_client *i2c)
 -{
--	struct sc18is602 *hw = i2c_get_clientdata(client);
--	struct spi_master *master = hw->master;
+-	struct spi_master *master = i2c_get_clientdata(i2c);
 -
 -	spi_unregister_master(master);
 -
 -	return 0;
 -}
 -
- static const struct i2c_device_id sc18is602_id[] = {
- 	{ "sc18is602", sc18is602 },
- 	{ "sc18is602b", sc18is602b },
-@@ -353,7 +343,6 @@ static struct i2c_driver sc18is602_driver = {
- 		.name = "sc18is602",
+ static const struct i2c_device_id spi_xcomm_ids[] = {
+ 	{ "spi-xcomm" },
+ 	{ },
+@@ -259,7 +250,6 @@ static struct i2c_driver spi_xcomm_driver = {
  	},
- 	.probe = sc18is602_probe,
--	.remove = sc18is602_remove,
- 	.id_table = sc18is602_id,
+ 	.id_table	= spi_xcomm_ids,
+ 	.probe		= spi_xcomm_probe,
+-	.remove		= spi_xcomm_remove,
  };
+ module_i2c_driver(spi_xcomm_driver);
  
 -- 
 1.7.10.4

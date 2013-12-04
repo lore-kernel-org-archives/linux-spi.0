@@ -1,84 +1,52 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
-Date: Wed, 4 Dec 2013 10:44:05 -0800
-Message-ID: <20131204184405.GE9468@ld-irv-0074.broadcom.com>
-References: <1385447575-23773-1-git-send-email-b32955@freescale.com>
- <20131127043253.GA9468@ld-irv-0074.broadcom.com>
- <5298AA23.7080404@st.com>
- <1386082273.18201.61.camel@shinybook.infradead.org>
+From: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+Subject: Re: [PATCH v2 0/8] ARM: s3c64xx: Let amba-pl08x driver handle DMA
+Date: Wed, 4 Dec 2013 13:39:33 -0800
+Message-ID: <CAOesGMhkEhr0XvTNoObWO4XckUzU1vRiC-ZX2ArcgvSa8-WoQA@mail.gmail.com>
+References: <1381950659-12703-1-git-send-email-tomasz.figa@gmail.com>
+	<20131017102201.GK2443@sirena.org.uk>
+	<52644563.1000203@samsung.com>
+	<20131120123152.GZ2674@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, marex-ynQEQJNshbs@public.gmane.org,
-	broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	"alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org" <alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>,
+	"linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
+	<linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>,
+	Padmavathi Venna <padma.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Sangbeom Kim <sbkim73-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Tomasz Figa <tomasz.figa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Liam Girdwood <lgirdwood-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Takashi Iwai <tiwai-l3A5Bk7waGM@public.gmane.org>, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Jaroslav Kysela <perex-/Fr2/VpizcU@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1386082273.18201.61.camel-Fexsq3y4057IgHVZqg5X0TlWvGAXklZc@public.gmane.org>
+In-Reply-To: <20131120123152.GZ2674-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 03, 2013 at 02:51:13PM +0000, David Woodhouse wrote:
-> On Fri, 2013-11-29 at 14:52 +0000, Angus Clark wrote:
-> > 
-> > As I see it, the main problem with the current support is that dedicated Serial
-> > Flash Controllers require a level of semantics that cannot be conveyed over the
-> > generic SPI framework.  With this in mind, I would start by defining something
-> > along the lines of a "Serial Flash transfer".  
-> 
-> I think this is the best way to describe the issue, and approach the
-> solution.
-> 
-> We should be looking to extend the generic SPI framework to support what
-> we need, rather than hacking around it purely on the MTD side.
-> 
-> As such, I'd be very interested in Mark's thoughts on it...
+On Wed, Nov 20, 2013 at 4:31 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Mon, Oct 21, 2013 at 06:04:35AM +0900, Kukjin Kim wrote:
+>
+>> Applied this whole series.
+>
+> This didn't seem to make it into -next or your tree, it'd be really
+> helpful to be able to merge into both ASoC and SPI so they can be used
+> for some framework work (I already have some patches for ASoC).  Would
+> it be possible to get the changes published on a separate branch or
+> signed tag so I can pull it into those subsystems for the next merge
+> window?
 
-Hmm, I thought we already had (some form of) this explanation
-weeks/months ago, yet the conclusion was that Mark doesn't want this in
-the SPI framework at all, since a dedicated Serial Flash Controller is
-not truly SPI. But perhaps I'm wrong.
+Following up here too: I've merged this branch into arm-soc directly now.
 
-On this topic, I have one more stick to throw on this fire; I have some
-Broadcom hardware that consists of two pieces:
 
-  (1) a true SPI controller, with single-line-I/O and
-  (2) a Serial Flash controller that can accelerate flash read, using
-      dual/quad I/O.
-
-The latter hardware cannot handle flash writes, only uses quad I/O for
-data (not addresses), has some other peculiarities specific to SPI
-flash, and is highly dependent on the former for providing complete SPI
-flash support. My current driver is not really upstream-ready, since
-(like Huang's original driver), it pretends to be a SPI driver yet
-requires "incestuous knowledge" of m25p80 / MTD. But I hope that any new
-framework can support hardware like mine.
-
-I don't have public documentation for this hardware, but I can provide
-more detail if desired.
-
-I mostly bring this up, though, because it is an example of hardware
-that
-
-   (a) can operate as a true SPI device (hardware (1) can handle generic
-       SPI transfers), but
-   (b) requires knowledge of the details of SPI flash in order to get
-       optimal usage out of the acceleration from (2).
-
-In my book, point (a) and (b) hold some bearing over the question of
-"where should this SPI NOR framework live", because it is reasonable
-that a single driver for this hardware should be able to handle either
-true SPI devices or accelerated SPI-NOR flash.
-
-Sorry for my late-ish addition to this discussion. There's been a lot of
-noise on this topic, and SPI flash is not the highest priority on my
-list for now (although it's certainly on the list).
-
-Brian
+-Olof
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

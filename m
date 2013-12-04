@@ -1,57 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 27/39] spi: remove DEFINE_PCI_DEVICE_TABLE macro
-Date: Tue, 3 Dec 2013 18:04:30 +0000
-Message-ID: <20131203180430.GI27568@sirena.org.uk>
-References: <001501ceefb1$69c96820$3d5c3860$%han@samsung.com>
- <003001ceefb5$c418c600$4c4a5200$%han@samsung.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: [PATCH 01/11] pinctrl: sh-pfc: r8a7791: fix msiof groups to follow GROUP
+Date: Wed, 04 Dec 2013 02:23:45 +0100
+Message-ID: <5040605.U30kg1BDtJ@avalon>
+References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp> <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp> <CACRpkdYyLS3gy53GOJhEwYXh4uW_Uxa5PLF1E45OhWvUiMfYpA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="48DfXVLS5QXSkCLu"
-Cc: 'Greg Kroah-Hartman' <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <003001ceefb5$c418c600$4c4a5200$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: takasi-y@ops.dti.ne.jp,
+	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+	Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <CACRpkdYyLS3gy53GOJhEwYXh4uW_Uxa5PLF1E45OhWvUiMfYpA@mail.gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi Linus,
 
---48DfXVLS5QXSkCLu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Tuesday 03 December 2013 11:08:14 Linus Walleij wrote:
+> On Sun, Dec 1, 2013 at 7:19 PM,  <takasi-y@ops.dti.ne.jp> wrote:
+> > From: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
+> > 
+> > SH_PFC_PIN_GROUP(), pins[], mux[], defines
+> > 
+> >  clk, sync, ss1, ss2, rx, tx
+> > 
+> > But, msiof?_groups[] defines
+> > 
+> >  clk, ctrl, data
+> > 
+> > Fix msiof[012]_groups members to be consistent to PIN_GROUP.
+> > 
+> > Signed-off-by: Takashi Yoshii <takasi-y@ops.dti.ne.jp>
+> 
+> This looks all right to me. Laurent is merging PFC patches for this
+> kernel cycle, please make sure you include him on subsequent
+> postings. Once Laurent has a finished series I'll pull it into
+> the pinctrl tree.
 
-On Tue, Dec 03, 2013 at 08:25:19AM +0900, Jingoo Han wrote:
-> Don't use DEFINE_PCI_DEVICE_TABLE macro, because this macro
-> is not preferred.
+I've applied this patch to my tree.
 
-Applied, thanks.  It's on a topic branch by itself so I can easily drop
-it if we decide to do something else.
+> I think the device tree changes part of this series can go directly
+> to Simon though?
 
---48DfXVLS5QXSkCLu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+-- 
+Regards,
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Laurent Pinchart
 
-iQIcBAEBAgAGBQJSnh0rAAoJELSic+t+oim9GC4P/Rw8raDhr206VlAvoJdTOCXR
-auyX6BQMhxgC4rBRUTH8SVXl8orVFzPFBnkeDvZHBFV5j+YbiG1CV7eJvJ5Eu2xu
-qcQAmvt0FNWvy3Gr39MfvMLI4rGoz1a0P8BI6A24/gDHNlntCcDJTgCSeNUUD1/U
-WXQqttCYJvS1HtEbIZhC/H4Ep065rNWrhscNC8J/dqCTrBmpU4Ufyivryly6FNgG
-M6OgPOB5O0Zab79R3YlkfLWQGudw8bdPzCaa4uaZjMmITnSax7xVivNEbo1rMyip
-chigavIra1pTLXlG3m4DV1EOwlSj3heF4Leg+N2bUquKsDsNp1lx8foCY7aQDPnS
-9zKYGJKd0QMr3uPiO/82BYn9s1ApfmdyG+VKaO6pq8BVJ9Tt2rRK8YvxUuYxBtBs
-cIShJs8in76GWq47EFq27exPko8rTbd1gkye38PKAv4+WZQOodU6zh7cCTF55Je1
-ps3UtwEUh7jplycHSaF3RyL/XW9e7k1NnbA9STblW1MOS/k6K1Uuub7CdmS+n7RK
-Okztb8KcgqIhmmrQmPu3sLW8VGH5DMEfakl7+tgL2q1UoCvGLfmjSUyTbmYxcxmW
-tR92v4ONCJqEUzJYrBP9akdcNe5JgtIr1cj3GhX2IjwfxZfk5NWVxowrjOm+erfb
-GENRPH1hYqYfxGO0jDV0
-=wXhR
------END PGP SIGNATURE-----
-
---48DfXVLS5QXSkCLu--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

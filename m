@@ -1,80 +1,92 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 5/5] spi: add bcm63xx HSSPI driver
-Date: Wed, 4 Dec 2013 14:35:40 +0000
-Message-ID: <20131204143540.GX29268@sirena.org.uk>
-References: <1385811726-6746-1-git-send-email-jogo@openwrt.org>
- <1385811726-6746-6-git-send-email-jogo@openwrt.org>
- <20131204133823.GS29268@sirena.org.uk>
- <CAOiHx==utbmYUS4BLoSaaGi91Kw5voQ2vFiA97GLmwn8yU19Dw@mail.gmail.com>
- <20131204140853.GU29268@sirena.org.uk>
- <CAOiHx==Lp7FFCCWaSiohvdAyzErBuz5n7sUVs1+A4S1axD9qCA@mail.gmail.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
+Date: Wed, 4 Dec 2013 16:36:20 +0100
+Message-ID: <201312041636.20875.marex@denx.de>
+References: <1385447575-23773-1-git-send-email-b32955@freescale.com> <20980858CB6D3A4BAE95CA194937D5E73EA51905@DBDE04.ent.ti.com> <529EE5F1.9080806@st.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6B5oiwbC31sfIr4n"
-Cc: MIPS Mailing List <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Ralf Baechle <ralf-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>,
-	John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>, Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Poddar, Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+	"dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAOiHx==Lp7FFCCWaSiohvdAyzErBuz5n7sUVs1+A4S1axD9qCA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <529EE5F1.9080806-qxv4g6HH51o@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wednesday, December 04, 2013 at 09:21:05 AM, Angus Clark wrote:
+> Hi Pekon,
+> 
+> On 12/04/2013 07:19 AM, Gupta, Pekon wrote:
+> > Unless a register is controlling a status of internal state-machine, or
+> > something It should be instantaneously writable.
+> 
+> Yes, that is my point.  Some register writes are instant, other are not,
+> particularly those that involve non-volatile status or configuration bits.
+> 
+> > Also polling should not be part of this particular *(write_reg), if a
+> > register needs to be polled then it should be part of *(write) or
+> > *(read) .. Like WIP: Write-in-progress bit of flash
+> > generic_flash_write(...) {
+> > 
+> > 	while ((read_reg(STATUS_REG) & WIP) || ~timeout) {
+> > 	
+> > 		timeout--;
+> > 	
+> > 	};
+> 
+> I am in two minds about where the WTR loop should live.  On the one hand,
+> moving it to the "generic_flash_write()" call offers H/W controllers the
+> opportunity to optimise the polling, if they support such a feature (I
+> know of some that will in the future).
 
---6B5oiwbC31sfIr4n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I disagree we should bloat the API with features, that will be used by "possible 
+future controllers" or "possible single controller", right from the start. The 
+real question here is, can the API be designed in such a way, that the SR 
+polling will happen in software NOW and only when a controller appears that can 
+do polling in HW will the API be extended to support it ?
 
-On Wed, Dec 04, 2013 at 03:28:25PM +0100, Jonas Gorski wrote:
-> On Wed, Dec 4, 2013 at 3:08 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> However, requiring the H/W driver to perform the polling, including
+> knowledge of the STATUS CMD, and the WIP bit-field, just seems like moving
+> too much "intelligence" away from the spi-nor layer.  What concerns me is
+> when we get on to reading/clearing error flags (as now mandated on some
+> Serial Flash devices, e.g. n25p512 and n25q00a), this will also need to be
+> part of the generic write.
+> 
+> > With this it just came to my mind, that you also need a 'timeout' field
+> > in 'struct spinor-cfg'.
+> 
+> Yes, that is a good point.
+> 
+> I would propose that the spi-nor layer retains responsibility for
+> determining whether or not 'WTR' is required for a particular operation,
+> and a suitable timeout.  At some point, during initialisation, the H/W
+> driver will need to inform the spi-nor layer about its capabilities (e.g.
+> support for DUAL or QUAD mode, any warm-reset requirements, etc), and
+> native support of WIP polling could be part of this set.  The spi-nor
+> layer could then decide whether to add the WTR flag and timeout to the
+> spinor-cfg transfer, or to take responsibility itself, and execute its own
+> polling loop.  This gives greatest flexibility, which seems to be an
+> important factor, while retaining the knowledge in the spi-nor layer.
 
-> > You'll need to call pm_runtime_enable() and so on to turn on runtime PM
-> > in probe() and reverse that in remove() but otherwise no, just adding
-> > the runtime callbacks should be fine.
+Sounds good!
 
-> I see. Looks like I just copied your oversight from
-> 5355d96d6fb56507761f261a23c0831f67fa0e0f ("spi/bcm63xx: Convert to
-> core runtime PM") :P I'll add that to my list of things to fix.
+> Cheers,
+> 
+> Angus
 
-The driver was already broken there - the requirement to enable runtime
-PM is a part of the core runtime PM API.  All that change did was factor
-out the enable and disable calls.
-
-> Grepping through drivers/spi, I see a few drivers not calling
-> pm_runtime_enable(), but setting auto_runtime_pm to true, and a few
-> doing the opposite. These should probably aligned, too.
-
-Not using the core runtime PM is fine, there may be reasons the driver
-wants to do this by hand.  Things not enabling runtime PM are definitely
-buggy though.
-
---6B5oiwbC31sfIr4n
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSnz25AAoJELSic+t+oim9e+EQAIRuEYdZlzhj3sQ0P6ZkN4DA
-8F6QyGXOPXsLv17eD3tw5GEEtSLL3nDqZW6mIHrNLLk8Au5mrk0DoNzlH3nU+HPG
-OT7VjFTwkibN70XANLxheXjF0bgFWf4j9lX2Mm5Yuil6EYqfy8ergfndO7dU+/4Q
-GXolvEQBoBrwarzwrVSf5VC10WJ5HfhvqmaWh4aHFA2oWZm0WqtUy03SNpghSH6d
-ee3jswIMD+0Yvyj7mtx/lqAo9fynmw2b0hlhEj2gwOOYTqL0N6bR/p7lSRyZYvWX
-IztrHZ1bxcfq3RRbEW5G/MhTmWFwOtQTCpaLwtuIWHOcPClQIvZlORiBbi7FwfHP
-eWOSYBrSmlvctJbU41EXYdgUOPye81Unxw7cdzHjroUHHx+apGjYeGPtasVIMcw1
-JyUeAWe9yNl8P54XmFYcIDWvoviEwE7CpFy5NgzrNx827eLA2oBI/vcVz7OhAE1S
-jQVtlGDhUjlC2pxYDRoeuJ/j9fJl8Uc+OTsdkpvqOyPw9uL9M9+u+11nEYUsrLTe
-2OIQYySwUoFwT+CwiPjBROdhjjvh6GkQKJNpairKBkxBP5DcvzbvDVM2fwABvhRY
-/yfRTKbUsfVAsjMo3EtH7IHhg2IwO7CykR63G0QUosmzI9IbYkxUa1GX38uXsURS
-OIS18va8vmTpya9Vd4DT
-=ZQMj
------END PGP SIGNATURE-----
-
---6B5oiwbC31sfIr4n--
+Best regards,
+Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

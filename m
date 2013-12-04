@@ -1,65 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-atmel: Use devm_*() functions
-Date: Wed, 4 Dec 2013 11:59:21 +0000
-Message-ID: <20131204115921.GL29268@sirena.org.uk>
+Subject: Re: [PATCH 2/2] spi: coldfire-qspi: Use devm_*() functions
+Date: Wed, 4 Dec 2013 12:00:16 +0000
+Message-ID: <20131204120016.GM29268@sirena.org.uk>
 References: <002b01cef0ae$c8261dc0$58725940$%han@samsung.com>
- <529EFA38.7050404@atmel.com>
+ <002c01cef0af$1b3a4630$51aed290$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="m+jEI8cDoTn6Mu9E"
-Cc: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="VLAOICcq5m4DWEYr"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Steven King' <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <529EFA38.7050404-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <002c01cef0af$1b3a4630$51aed290$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---m+jEI8cDoTn6Mu9E
+--VLAOICcq5m4DWEYr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Dec 04, 2013 at 10:47:36AM +0100, Nicolas Ferre wrote:
-> On 04/12/2013 06:07, Jingoo Han :
+On Wed, Dec 04, 2013 at 02:10:10PM +0900, Jingoo Han wrote:
+> Use devm_*() functions to make cleanup paths simpler.
 
-> >  out_free_irq:
-> >-	free_irq(irq, master);
-> >  out_unmap_regs:
-> >  out_free_buffer:
+Applied, thanks.
 
-> What about taking advantage of this cleanup patch to remove the 3
-> above unneeded tags?
-
-> Otherwise, you can add my:
-> Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-
-That's a good idea but it means going and changing all the gotos as well
-so it probably warrants a separate patch.  I applied this one as-is.
-
---m+jEI8cDoTn6Mu9E
+--VLAOICcq5m4DWEYr
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSnxkWAAoJELSic+t+oim9U4IP/iUtqLsUEOaPxVxokyxH1Ho9
-4MsQFnS3JbOvDC3asumI6Ga5igHrMXOW8eyijBAxzQU0NYqvU172NuiYmGLlnggn
-VH843tUR4yUx4hjSufrozlMD3eMumHmkLF2YUjtG4B/POmN3C3qzQ1YXNhoFcUhI
-7BNUrHeiaXJRGkC9lJG2F6dn9pIbfAqBOBXpzQGRWLsComIl39sb4gq6pZ6I+sUN
-peo+UowITKDm8+aEXAlMe1XpABZQ708nZjNVu5vhw2e1+AjhwMRuq9tb4apJwNSA
-hBsVUoc8xWK6Fpr7VlVtVZp9pgxpKMsbcJr7sl58lU9g1S4cmDfJG7INq4s3uEdd
-xFbjJgnAdCpKOWc0jhVC8Yo7mVq8KhzgH6m28Lfd39+jz+8LHt+U1wBi4cS/ApIV
-ogPh+Lk4XQw7tF2yRV7gVrfdAEcTuy/csFjYOTppj0pIEf+H/bnvNx/UfuplUuyT
-HMoLI9h5PpoPCPx71WARtfWPt4hsXz/kM9YwolKcRbJpfzDc8B/ZfvTV4G0xeBzR
-OoJ+Ax+DtiryJqMvv80jgJK0xaFgYVZOBSVRDeZxMXJUcKwM4UvCtitS0WYNAl8u
-KOsb09FKWA2rnqL77gp+4kksM3Po27Cz0OxsVV0G9U5Uap5ZJgBNYN3w/bqqjaUG
-0Q6oswDpfQqpxoAfaEUo
-=c6iK
+iQIcBAEBAgAGBQJSnxlNAAoJELSic+t+oim9ZRoP/iHVw+yoNUpdu1YQnWUhYNwe
+89NiufRiD0fbFbHhU+kHmfRIWVojbK8dXjy3RI/3f2Eo71HyhyeAklc+GbvT4wjL
+tzGDLIIuD3g6DTKu1gr9e/THG9CYfDyviaR8lyU9/GOn9M51vMVs2ch0NDK8LMNk
+MNUn4HT9XZ4CcsP6UwojWkdrEPPwOF95+HCsDa8BbnIdkhsoRbHcER+2ZHS9Vgaa
+MFxjo7TdNyRTeB5u5ER2TjrRbM3wmeN2+EQMJH++cAMMOqWFu4zjO+4Epkxi3dJP
+tsZi77xN2P+0lOykpPENgLflNvy3hqQru/oMob16ZhTUpV5HCRwpak54Q8J+DodY
+IVHIknhSYueg3qw0zpNBRaB1L6cpzVgLarDXsSaYWf03Vd6DVv+uToWZCZYxw3Ra
+lTsh+3QOTxXKMeKFjZOWf0MLxL4T2d3FvQK0hxaQFaffAEmaqpBj6Uhrgn5sxnVj
+QlS3iJ0d+HamQsy2nK5ZzAlY9UBZybfWomCW7tuiwr7vz8rSRVvL1L7Q7l8rijHv
+CoQMS7OsOXPJnWgfoZhxszhkbLoqzYQcOkZ3rkhxWIAjsCPeIyoM8+axQ6ywwvEg
+moSVkxpVdQRMdQFcRJ2/hcr3bpFj4fBFgWFMsWrGntqHgVuhm/5PFDJD2b1MFtsD
+bcCoySaoaWYF2navtXdy
+=+Ze/
 -----END PGP SIGNATURE-----
 
---m+jEI8cDoTn6Mu9E--
+--VLAOICcq5m4DWEYr--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,45 +1,99 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH] spi: dt-binding: clarify gpio chipselect language
-Date: Thu,  5 Dec 2013 13:39:05 +0200
-Message-ID: <542dfeee809e73f7f071f4ae0b4f95af7736f70b.1386243545.git.baruch@tkos.co.il>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>
+Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
+Date: Thu, 5 Dec 2013 14:35:47 +0000
+Message-ID: <52A08F43.6060307@st.com>
+References: <1385447575-23773-1-git-send-email-b32955@freescale.com> <20131127043253.GA9468@ld-irv-0074.broadcom.com> <5298AA23.7080404@st.com> <1386082273.18201.61.camel@shinybook.infradead.org> <20131204184405.GE9468@ld-irv-0074.broadcom.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
+	<broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<pekon-l0cyMroinI0@public.gmane.org>, <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20131204184405.GE9468-bU/DPfM3abD4WzifrMjOTkcViWtcw2C0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Commit 743179849015 (of_spi: add generic binding support to specify cs gpio)
-introduced generic binding for gpio chip-select. The cs_gpio struct field,
-however, is an internal implementation detail of the Linux SPI subsystem, and
-should not be mentioned in the device tree binding documentation. Mention the
-previously defined cs-gpios master node property instead.
+Hi Brian,
 
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
----
- Documentation/devicetree/bindings/spi/spi-bus.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 12/04/2013 06:44 PM, Brian Norris wrote:
+> On this topic, I have one more stick to throw on this fire; I have some
+> Broadcom hardware that consists of two pieces:
+> 
+>   (1) a true SPI controller, with single-line-I/O and
+>   (2) a Serial Flash controller that can accelerate flash read, using
+>       dual/quad I/O.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-index 800dafe..e5a4d1b 100644
---- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-@@ -67,7 +67,7 @@ only 1(SINGLE), 2(DUAL) and 4(QUAD).
- Dual/Quad mode is not allowed when 3-wire mode is used.
- 
- If a gpio chipselect is used for the SPI slave the gpio number will be passed
--via the cs_gpio
-+via the SPI master node cs-gpios property.
- 
- SPI example for an MPC5200 SPI bus:
- 	spi@f00 {
--- 
-1.8.4.3
+We support one platform with properties similar to the hardware you describe,
+and such a hybrid configuration was in mind when I was thinking about the
+spi-nor framework.  I am not sure how well this will come across over email, but
+I envisage something like this:
 
+                             spi-nor
+                                |
+                                v
+                          [spi-nor-xfer]
+                                |
+         ------------------------------------------------
+        |                       |                        |
+        v                       v                        v
+   spi-wrapper (<------)  hybrid-driver          serial-flash-driver
+        |                       |                        |
+      [SPI]                     |                        |
+        |                       |                        |
+        v                       |                        |
+generic-spi-driver              |                        |
+        |                       |                        |
+        v                       v                        v
+[generic-SPI-Cntrl]   [SPI-Flash-Read Cntrl]   [SPI-Flash-Controller]
+
+The 'spi-nor' layer is responsible for Serial Flash domain knowledge, and how to
+generate 'spi-nor-xfer' messages.  The 'spi-wrapper' would provide an interface
+to the generic SPI framework, flattening the 'spi-nor-xfer' message to standard
+SPI calls.  The combination of 'spi-nor' and 'spi-wrapper' should achieve what
+we have today for the m25p80 driver.  The 'serial-flash-driver' in the example
+provides an implementation for a dedicated Serial Flash Controller, making use
+of the spi-nor-xfer semantics where required.  The 'hybrid-driver' could use the
+'spi-wrapper' implementation for write and erase hooks, and optimised
+implementations for read hooks.
+
+[...]
+> I mostly bring this up, though, because it is an example of hardware
+> that
+> 
+>    (a) can operate as a true SPI device (hardware (1) can handle generic
+>        SPI transfers), but
+>    (b) requires knowledge of the details of SPI flash in order to get
+>        optimal usage out of the acceleration from (2).
+> 
+> In my book, point (a) and (b) hold some bearing over the question of
+> "where should this SPI NOR framework live", because it is reasonable
+> that a single driver for this hardware should be able to handle either
+> true SPI devices or accelerated SPI-NOR flash.
+> 
+
+Yes, I agree.  At present, within the m25p80 driver, the knowledge of how to
+drive Serial Flash devices is entwined with an implementation that assumes a
+pure SPI Controller.  Creating an additional layer of abstraction allows us to
+separate the two issues, and write drivers that can make us of generic SPI
+controllers, or take advantage of accelerated Serial Flash Controllers, or a
+combination of both.
+
+I realise it is going to take a significant effort to get this off the ground
+and the framework will require some tuning to make sure it can accommodate the
+eccentric range of hardware out there.  Unfortunately I am not in a position to
+commit much time myself, although I will help advise where I can.  Ironically,
+once the ST Bristol site closes next year, I will have lots of time available,
+but no access to equipment!
+
+Cheers,
+
+Angus
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

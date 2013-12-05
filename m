@@ -1,98 +1,68 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
-Date: Thu, 5 Dec 2013 15:33:49 +0800
-Message-ID: <20131205073348.GB8936@shlinux2.ap.freescale.net>
+Date: Thu, 5 Dec 2013 00:11:01 -0800
+Message-ID: <20131205081101.GA4636@norris.computersforpeace.net>
 References: <1385447575-23773-1-git-send-email-b32955@freescale.com>
- <20980858CB6D3A4BAE95CA194937D5E73EA51905@DBDE04.ent.ti.com>
- <529EE5F1.9080806@st.com>
- <201312041636.20875.marex@denx.de>
- <529FE81C.4000608@freescale.com>
- <20980858CB6D3A4BAE95CA194937D5E73EA51E1A@DBDE04.ent.ti.com>
+ <20131127043253.GA9468@ld-irv-0074.broadcom.com>
+ <5298AA23.7080404@st.com>
+ <1386082273.18201.61.camel@shinybook.infradead.org>
+ <20131204184405.GE9468@ld-irv-0074.broadcom.com>
+ <20131205071224.GA8936@shlinux2.ap.freescale.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>, marex-ynQEQJNshbs@public.gmane.org,
+	broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"Poddar, Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	"dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20980858CB6D3A4BAE95CA194937D5E73EA51E1A-yXqyApvAXouIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
+In-Reply-To: <20131205071224.GA8936-Fb7DQEYuewWctlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Dec 05, 2013 at 05:43:05AM +0000, Gupta, Pekon wrote:
-> >From: Huang Shijie [mailto:b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org]
-> >
-> >>=E4=BA=8E 2013=E5=B9=B412=E6=9C=8804=E6=97=A5 23:36, Marek Vasut =E5=
-=86=99=E9=81=93:
-> >> I disagree we should bloat the API with features, that will be use=
-d by "possible
-> >> future controllers" or "possible single controller", right from th=
-e start. The
-> >> real question here is, can the API be designed in such a way, that=
- the SR
-> >> polling will happen in software NOW and only when a controller app=
-ears that can
-> >> do polling in HW will the API be extended to support it ?
-> >ok. Let's add this feature in the future when a real case occurs.
-> >
-> Sorry got lost.. Can you please summarize following plans for your ne=
-xt patch:
->=20
-> (1) Polling of status registers should be=20
->   (a) done in S/W (generic driver)
->   (b) done controller driver, which can be optimized for specific har=
-dware
->=20
-=46or (b), we can implement the @wait_till_ready hook for the controlle=
-r driver.
+On Thu, Dec 05, 2013 at 03:12:25PM +0800, Huang Shijie wrote:
+> On Wed, Dec 04, 2013 at 10:44:05AM -0800, Brian Norris wrote:
+> > 
+> > I mostly bring this up, though, because it is an example of hardware
+> > that
+> > 
+> >    (a) can operate as a true SPI device (hardware (1) can handle generic
+> >        SPI transfers), but
+> >    (b) requires knowledge of the details of SPI flash in order to get
+> >        optimal usage out of the acceleration from (2).
+> > 
+> > In my book, point (a) and (b) hold some bearing over the question of
+> > "where should this SPI NOR framework live", because it is reasonable
+> > that a single driver for this hardware should be able to handle either
+> > true SPI devices or accelerated SPI-NOR flash.
+> 
+> We have add a @read_id hook for the spi-nor layer, you can use it to read out
+> more info (such as the Device Geometry Definition) for your spi-nor controller driver.
+> 
+> Is it okay?
 
-=46or (a), we use the default hook for @wait_till_ready.
+I'm not sure which @read_id hook you're talking about, as I've only
+skimmed the most recent thread, and it's not in the last patch series I
+have from you, I don't think. But that is not a response at all to the
+points I brought up. My statements have nothing to do with device
+geometry detection.
 
+What I was actually addressing:
 
+Your framework aligns with Mark's original suggestion: that the "SPI
+NOR" framework should be a separate layer held entirely within the MTD
+subsystem, and that any given driver is *either* a "SPI NOR" driver *or*
+a "true SPI" driver, not both.
 
-> (2) How do you plan to have timeout value, (as serial flash can be pr=
-etty slow
->    to access) ?
->   (a) independent for each access
->        - read timeouts per sector, which can be multiplied with read_=
-len/sector_size
->        - write timeout per sector, which can be multiplied with write=
-_len/sector_size
->        - erase timeout per block, which can be multiplied with erase_=
-len/block_size
->   (b) Any other method, or leave it to controller driver ?
->=20
+I'm simply describing how my hardware is both, and perhaps (as David
+seems to be doing) we should reconsider the premise that this framework
+will exist solely and entirely within MTD.
 
-Since i have no idea about this kind of spi-nor controller, so I prefer=
- the (b).=20
-
-> In my view, before proceeding to writing down a patch, I think
-> we should come-up with a doc/Readme, which defines all API and interf=
-ace
-> structs (taking Angus' proposal as baseline). And then refine that sp=
-ec first.
-> Otherwise there may be too many revisions spent on patch RFC's ..=20
->=20
-> Any thoughts ?
-> And is there a space in kernel_docs for such specs ?
-
-maybe the best solution is I send out the new version as soon as possib=
-le.
-
-thanks
-Huang Shijie
-
-
+Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,56 +1,44 @@
-From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-atmel: Use devm_*() functions
-Date: Thu, 05 Dec 2013 11:27:33 +0900
-Message-ID: <000801cef161$8e175aa0$aa460fe0$%han@samsung.com>
-References: <002b01cef0ae$c8261dc0$58725940$%han@samsung.com>
- <529EFA38.7050404@atmel.com> <20131204115921.GL29268@sirena.org.uk>
+From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
+Date: Thu, 5 Dec 2013 10:42:36 +0800
+Message-ID: <529FE81C.4000608@freescale.com>
+References: <1385447575-23773-1-git-send-email-b32955@freescale.com> <20980858CB6D3A4BAE95CA194937D5E73EA51905@DBDE04.ent.ti.com> <529EE5F1.9080806@st.com> <201312041636.20875.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Nicolas Ferre' <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>, "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Poddar, Sourav" <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+	"dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <20131204115921.GL29268-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-language: ko
+In-Reply-To: <201312041636.20875.marex-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday, December 04, 2013 8:59 PM, Mark Brown wrote:
-> On Wed, Dec 04, 2013 at 10:47:36AM +0100, Nicolas Ferre wrote:
-> > On 04/12/2013 06:07, Jingoo Han :
-> 
-> > >  out_free_irq:
-> > >-	free_irq(irq, master);
-> > >  out_unmap_regs:
-> > >  out_free_buffer:
-> 
-> > What about taking advantage of this cleanup patch to remove the 3
-> > above unneeded tags?
-> 
-> > Otherwise, you can add my:
-> > Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> 
-> That's a good idea but it means going and changing all the gotos as well
-> so it probably warrants a separate patch.  I applied this one as-is.
+=E4=BA=8E 2013=E5=B9=B412=E6=9C=8804=E6=97=A5 23:36, Marek Vasut =E5=86=
+=99=E9=81=93:
+> I disagree we should bloat the API with features, that will be used b=
+y "possible
+> future controllers" or "possible single controller", right from the s=
+tart. The
+> real question here is, can the API be designed in such a way, that th=
+e SR
+> polling will happen in software NOW and only when a controller appear=
+s that can
+> do polling in HW will the API be extended to support it ?
+ok. Let's add this feature in the future when a real case occurs.
 
-Hi Mark Brown, 
-
-I checked your for-next branch of spi.git.
-However, in this commit, 'Acked-by:' was omitted as below:
-
-Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
----> Acked-by: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-
-When you merge your topics next time, would you add 'Acked-by:'
-to this commit? :-)
-Thank you.
-
-Best regards,
-Jingoo Han
+thanks
+Huang Shijie
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

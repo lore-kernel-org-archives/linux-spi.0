@@ -1,95 +1,55 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: [PATCHv2 10/10] arm: dts: am43x-epos: Add qspi device.
-Date: Fri, 6 Dec 2013 19:54:51 +0530
-Message-ID: <1386339891-32717-11-git-send-email-sourav.poddar@ti.com>
-References: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com>
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [patch v2] spi: bcm63xx-hsspi: checking for ERR_PTR instead of NULL
+Date: Fri, 6 Dec 2013 15:48:08 +0100
+Message-ID: <CAOiHx=k5NFrCy9yJNdn-wYeYXJixrNXVCcdyy-TOHTMtb5WvxQ@mail.gmail.com>
+References: <CAOiHx=k87c_bFqFtJ7zJc9HxnjOEr2oMofNUsLkQbfQPrC04hQ@mail.gmail.com>
+ <20131206141212.GA956@elgon.mountain>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <dwmw2@infradead.org>, <linux-mtd@lists.infradead.org>,
-	<linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<bcousson@baylibre.com>, <balbi@ti.com>,
-	Sourav Poddar <sourav.poddar@ti.com>
-To: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-	<computersforpeace@gmail.com>, <marex@denx.de>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com>
-Sender: linux-omap-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20131206141212.GA956-mgFCXtclrQlZLf2FXnZxJA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-These add device tree entry for qspi controller driver on am43x-epos-evm.
+On Fri, Dec 6, 2013 at 3:12 PM, Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org> wrote:
+> devm_request_and_ioremap() returns NULL on error, it doesn't return an
+> ERR_PTR().  This patch fixes it by switching to devm_ioremap_resource()
+> which is the prefered function anyway.
+>
+> Fixes: 142168eba9dc ('spi: bcm63xx-hsspi: add bcm63xx HSSPI driver')
+> Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
 
-Signed-off-by: Sourav Poddar <sourav.poddar@ti.com>
----
- arch/arm/boot/dts/am4372.dtsi        |   12 ++++++++++++
- arch/arm/boot/dts/am43x-epos-evm.dts |   28 ++++++++++++++++++++++++++++
- 2 files changed, 40 insertions(+), 0 deletions(-)
+Thanks.
 
-diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
-index f1dd131..5d029de 100644
---- a/arch/arm/boot/dts/am4372.dtsi
-+++ b/arch/arm/boot/dts/am4372.dtsi
-@@ -663,6 +663,18 @@
- 			       <&edma 11>;
- 			dma-names = "tx", "rx";
- 		};
-+
-+		qspi: qspi@47900000 {
-+			compatible = "ti,am4372-qspi";
-+			reg = <0x47900000 0x100>, <0x30000000 0x3ffffff>;
-+			reg-names = "qspi_base", "qspi_mmap";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			ti,hwmods = "qspi";
-+			interrupts = <0 138 0x4>;
-+			num-cs = <4>;
-+			status = "disabled";
-+		};
- 	};
- 
- 	clocks {
-diff --git a/arch/arm/boot/dts/am43x-epos-evm.dts b/arch/arm/boot/dts/am43x-epos-evm.dts
-index fbf9c4c..a037a92 100644
---- a/arch/arm/boot/dts/am43x-epos-evm.dts
-+++ b/arch/arm/boot/dts/am43x-epos-evm.dts
-@@ -79,6 +79,17 @@
- 				0x18c (PIN_INPUT_PULLUP | SLEWCTRL_FAST | MUX_MODE0)	/* i2c0_scl.i2c0_scl */
- 			>;
- 		};
-+
-+		qspi1_default: qspi1_default {
-+			pinctrl-single,pins = <
-+				0x7c (PIN_INPUT_PULLUP | MUX_MODE3)
-+				0x88 (PIN_INPUT_PULLUP | MUX_MODE2)
-+				0x90 (PIN_INPUT_PULLUP | MUX_MODE3)
-+				0x94 (PIN_INPUT_PULLUP | MUX_MODE3)
-+				0x98 (PIN_INPUT_PULLUP | MUX_MODE3)
-+				0x9c (PIN_INPUT_PULLUP | MUX_MODE3)
-+			>;
-+		};
- 	};
- 
- 	matrix_keypad: matrix_keypad@0 {
-@@ -184,3 +195,20 @@
- &gpio3 {
- 	status = "okay";
- };
-+
-+&qspi {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&qspi1_default>;
-+
-+	spi-max-frequency = <48000000>;
-+	m25p80@0 {
-+		compatible = "mx66l51235l";
-+		spi-max-frequency = <48000000>;
-+		reg = <0>;
-+		spi-cpol;
-+		spi-cpha;
-+		spi-tx-bus-width = <1>;
-+		spi-rx-bus-width = <4>;
-+	};
-+};
--- 
-1.7.1
+Acked-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 
+
+Jonas
+
+> ---
+> v2: switch to devm_ioremap_resource()
+>
+> diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+> index bc8d848d33b7..2cfe8eb619fd 100644
+> --- a/drivers/spi/spi-bcm63xx-hsspi.c
+> +++ b/drivers/spi/spi-bcm63xx-hsspi.c
+> @@ -338,7 +338,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+>         }
+>
+>         res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -       regs = devm_request_and_ioremap(dev, res_mem);
+> +       regs = devm_ioremap_resource(dev, res_mem);
+>         if (IS_ERR(regs))
+>                 return PTR_ERR(regs);
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

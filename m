@@ -1,48 +1,41 @@
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [patch] spi: bcm63xx-hsspi: checking for ERR_PTR instead of NULL
-Date: Fri, 6 Dec 2013 16:34:30 +0300
-Message-ID: <20131206133430.GF28413@mwanda>
-References: <20131206125823.GA32369@elgon.mountain>
- <CAOiHx=k87c_bFqFtJ7zJc9HxnjOEr2oMofNUsLkQbfQPrC04hQ@mail.gmail.com>
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: [patch v2] spi: bcm63xx-hsspi: checking for ERR_PTR instead of NULL
+Date: Fri, 6 Dec 2013 17:12:13 +0300
+Message-ID: <20131206141212.GA956@elgon.mountain>
+References: <CAOiHx=k87c_bFqFtJ7zJc9HxnjOEr2oMofNUsLkQbfQPrC04hQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-To: Jonas Gorski <jogo@openwrt.org>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-janitors-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAOiHx=k87c_bFqFtJ7zJc9HxnjOEr2oMofNUsLkQbfQPrC04hQ@mail.gmail.com>
-Sender: kernel-janitors-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <CAOiHx=k87c_bFqFtJ7zJc9HxnjOEr2oMofNUsLkQbfQPrC04hQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Dec 06, 2013 at 02:08:08PM +0100, Jonas Gorski wrote:
-> On Fri, Dec 6, 2013 at 1:58 PM, Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > devm_request_and_ioremap() returns NULL on error, it doesn't return an
-> > ERR_PTR().
-> >
-> > Fixes: 142168eba9dc ('spi: bcm63xx-hsspi: add bcm63xx HSSPI driver')
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> >
-> > diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-> > index bc8d848d33b7..da9f85d55c81 100644
-> > --- a/drivers/spi/spi-bcm63xx-hsspi.c
-> > +++ b/drivers/spi/spi-bcm63xx-hsspi.c
-> > @@ -339,8 +339,8 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
-> >
-> >         res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> >         regs = devm_request_and_ioremap(dev, res_mem);
-> > -       if (IS_ERR(regs))
-> > -               return PTR_ERR(regs);
-> > +       if (!regs)
-> > +               return -EADDRNOTAVAIL;
-> 
-> Instead of fixing the wrong handling of the return value, let's change
-> it to use devm_ioremap_resource() which actually returns the expected
-> ERR_PTR() and is preferred over request_and_ioremap().
-> 
+devm_request_and_ioremap() returns NULL on error, it doesn't return an
+ERR_PTR().  This patch fixes it by switching to devm_ioremap_resource()
+which is the prefered function anyway.
 
-Sure.  I'll resend a v2.
+Fixes: 142168eba9dc ('spi: bcm63xx-hsspi: add bcm63xx HSSPI driver')
+Signed-off-by: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+---
+v2: switch to devm_ioremap_resource()
 
-regards,
-dan carpenter
-
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index bc8d848d33b7..2cfe8eb619fd 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -338,7 +338,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	regs = devm_request_and_ioremap(dev, res_mem);
++	regs = devm_ioremap_resource(dev, res_mem);
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
+ 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

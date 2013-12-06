@@ -1,61 +1,78 @@
-From: Florian Fainelli <f.fainelli-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi/bcm63xx: don't reject reads >= 256 bytes
-Date: Thu, 5 Dec 2013 18:30:23 -0800
-Message-ID: <CAGVrzca9Ls2SHrej=j7bKh5pr0=ADfEmFi4ZbniekGw7M5SDOg@mail.gmail.com>
-References: <1385912662-8261-1-git-send-email-jogo@openwrt.org> <1385912662-8261-2-git-send-email-jogo@openwrt.org>
+From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
+Date: Fri, 6 Dec 2013 11:07:14 +0800
+Message-ID: <20131206030713.GA3710@shlinux2.ap.freescale.net>
+References: <1385447575-23773-1-git-send-email-b32955@freescale.com>
+ <20131127043253.GA9468@ld-irv-0074.broadcom.com>
+ <5298AA23.7080404@st.com>
+ <1386082273.18201.61.camel@shinybook.infradead.org>
+ <20131204184405.GE9468@ld-irv-0074.broadcom.com>
+ <20131205071224.GA8936@shlinux2.ap.freescale.net>
+ <20131205081101.GA4636@norris.computersforpeace.net>
+ <20131205075901.GA20407@shlinux2.ap.freescale.net>
+ <20131205092048.GE4636@norris.computersforpeace.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>,
-	Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
+	<broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<pekon-l0cyMroinI0@public.gmane.org>, <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1385912662-8261-2-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20131205092048.GE4636-7ciq9WCbhwJWVhifINYOO1poFGfAdsVx5NbjCUgZEJk@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-2013/12/1 Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>:
-> The rx_tail register is only 8 bit wide, so it will wrap around
-> after 256 read bytes. This makes it rather meaningless, so drop any
-> usage of it to not treat reads over 256 as failed.
->
-> Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+On Thu, Dec 05, 2013 at 01:20:48AM -0800, Brian Norris wrote:
+> SPI is not used only for SPI NOR; it is useful for other things, like
+> communicating with off-chip peripherals or microcontrollers, supporting
+> touchscreens, LEDs, media controllers, etc. So with a SPI NOR framework
+> living only in the MTD subsystem, I have to write two drivers: one
+> (under drivers/spi/) to use only-(a) for controlling non-flash SPI
+> devices, and one (under drivers/mtd/) to manage (a)+(b) on SPI NOR
+> flash.
 
-Looks good:
+If the NOR is connected to a SPI bus controller which can attaches other SPI
+devices too, I think you use a pure SPI driver to access it;
 
-Acked-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-
-> ---
->  drivers/spi/spi-bcm63xx.c | 8 +-------
->  1 file changed, 1 insertion(+), 7 deletions(-)
->
-> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-> index dceb7b2..79750f0 100644
-> --- a/drivers/spi/spi-bcm63xx.c
-> +++ b/drivers/spi/spi-bcm63xx.c
-> @@ -203,13 +203,7 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
->         if (!timeout)
->                 return -ETIMEDOUT;
->
-> -       /* read out all data */
-> -       rx_tail = bcm_spi_readb(bs, SPI_RX_TAIL);
-> -
-> -       if (do_rx && rx_tail != len)
-> -               return -EIO;
-> -
-> -       if (!rx_tail)
-> +       if (!do_rx)
->                 return 0;
->
->         len = 0;
-> --
-> 1.8.4.rc3
+If the NOR is connected to a SPI-NOR controller such as your spi-nor controller
+, you can use a SPI-NOR driver to access it.
 
 
+Does your NOR flash connect to both the SPI bus controller and SPI-NOR
+controller at the same time? :) If it does connect to both of the controllers,
+I do not know how to handle it too.	   
 
--- 
-Florian
+
+> 
+> If, however, we can define a spi_nor_transfer like Angus suggested, and
+> if we take that a step further and make it a first-class (but optional)
+> citizen of the SPI framework, then we could have drivers that support
+> SPI-only, SPI-NOR-only, or both.
+> 
+I guess Mark will not agree with this. :)
+
+
+thanks
+Huang Shijie
+
+
+> Now, I'm not sure how exactly that sort of proposal would work yet, but
+> I wanted to test the waters to see
+>   - if this is a complete distortion of what Angus or David may have
+>     suggested;
+>   - if Mark thinks this is reasonable, or if he thinks I'm spouting
+>     nonsense; and
+>   - if there is some obvious alternate way to support what I describe
+>     without moving the SPI-NOR layer into the SPI subsystem.
+> 
+> Brian
+> 
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

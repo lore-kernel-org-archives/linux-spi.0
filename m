@@ -1,61 +1,35 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH] spi: dt-binding: clarify gpio chipselect language
-Date: Sun, 8 Dec 2013 07:37:12 +0200
-Message-ID: <20131208053712.GA3869@tarshish>
-References: <542dfeee809e73f7f071f4ae0b4f95af7736f70b.1386243545.git.baruch@tkos.co.il>
- <20131205164400.GI12805@ns203013.ovh.net>
+From: Michal Nazarewicz <mina86-deATy8a+UHjQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 0/3] spi: tegra: use u32 for 32-bit register values
+Date: Sun,  8 Dec 2013 16:35:08 +0100
+Message-ID: <1386516911-26388-1-git-send-email-mina86@mina86.com>
+References: <1385745164-10534-1-git-send-email-mpn@google.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-To: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20131205164400.GI12805-HVbc7XotTAhnXn40ka+A6Q@public.gmane.org>
+In-Reply-To: <1385745164-10534-1-git-send-email-mpn-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Jean-Christophe,
+This series has only been compile-tested, but it does not introduce any
+behaviour changes.
 
-On Thu, Dec 05, 2013 at 05:44:00PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
-> On 13:39 Thu 05 Dec     , Baruch Siach wrote:
-> > Commit 743179849015 (of_spi: add generic binding support to specify cs gpio)
-> > introduced generic binding for gpio chip-select. The cs_gpio struct field,
-> > however, is an internal implementation detail of the Linux SPI subsystem, and
-> > should not be mentioned in the device tree binding documentation. Mention the
-> > previously defined cs-gpios master node property instead.
-> > 
-> > Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
-> > Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-> > Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-> > ---
-> >  Documentation/devicetree/bindings/spi/spi-bus.txt | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> > index 800dafe..e5a4d1b 100644
-> > --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
-> > +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
-> > @@ -67,7 +67,7 @@ only 1(SINGLE), 2(DUAL) and 4(QUAD).
-> >  Dual/Quad mode is not allowed when 3-wire mode is used.
-> >  
-> >  If a gpio chipselect is used for the SPI slave the gpio number will be passed
-> > -via the cs_gpio
-> > +via the SPI master node cs-gpios property.
-> 
-> here it's an information about the c structure
+Michal Nazarewicz (3):
+  spi: tegra114: use u32 for 32-bit register values
+  spi: tegra20-slink: use u32 for 32-bit register values
+  spi: tegra20-sflash: use u32 for 32-bit register values
 
-Is binding documentation the place for implementation notes? Especially since 
-cs_gpio struct member is never mentioned in this document, and its name is 
-confusingly similar to the cs-gpios property name.
-
-baruch
+ drivers/spi/spi-tegra114.c       | 98 ++++++++++++++--------------------------
+ drivers/spi/spi-tegra20-sflash.c | 22 ++++-----
+ drivers/spi/spi-tegra20-slink.c  | 97 ++++++++++++++++-----------------------
+ 3 files changed, 84 insertions(+), 133 deletions(-)
 
 -- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
+1.8.4
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

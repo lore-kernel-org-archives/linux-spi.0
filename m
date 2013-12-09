@@ -1,14 +1,12 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 05/11] spi: nuc900: Use devm_*() functions
-Date: Mon, 09 Dec 2013 19:18:18 +0900
-Message-ID: <001101cef4c7$fb071e20$f1155a60$%han@samsung.com>
+Subject: [PATCH 06/11] spi: s3c24xx: Use devm_*() functions
+Date: Mon, 09 Dec 2013 19:19:13 +0900
+Message-ID: <001201cef4c8$1b78a110$5269e330$%han@samsung.com>
 References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Wan ZongShun' <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	'Axel Lin' <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-reply-to: <000801cef4c7$1b84a470$528ded50$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
@@ -20,23 +18,23 @@ Use devm_*() functions to make cleanup paths simpler.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-nuc900.c |   50 ++++++++++------------------------------------
- 1 file changed, 10 insertions(+), 40 deletions(-)
+ drivers/spi/spi-s3c24xx.c |   67 ++++++++++-----------------------------------
+ 1 file changed, 14 insertions(+), 53 deletions(-)
 
-diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
-index e0c32bc..43d340c 100644
---- a/drivers/spi/spi-nuc900.c
-+++ b/drivers/spi/spi-nuc900.c
-@@ -57,7 +57,6 @@ struct nuc900_spi {
- 	const unsigned char	*tx;
+diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+index 0dc32a1..ebf80bb 100644
+--- a/drivers/spi/spi-s3c24xx.c
++++ b/drivers/spi/spi-s3c24xx.c
+@@ -78,7 +78,6 @@ struct s3c24xx_spi {
  	unsigned char		*rx;
+ 
  	struct clk		*clk;
 -	struct resource		*ioarea;
  	struct spi_master	*master;
  	struct spi_device	*curdev;
  	struct device		*dev;
-@@ -344,8 +343,7 @@ static int nuc900_spi_probe(struct platform_device *pdev)
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct nuc900_spi));
+@@ -517,8 +516,7 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
+ 	master = spi_alloc_master(&pdev->dev, sizeof(struct s3c24xx_spi));
  	if (master == NULL) {
  		dev_err(&pdev->dev, "No memory for spi_master\n");
 -		err = -ENOMEM;
@@ -45,44 +43,49 @@ index e0c32bc..43d340c 100644
  	}
  
  	hw = spi_master_get_devdata(master);
-@@ -376,40 +374,31 @@ static int nuc900_spi_probe(struct platform_device *pdev)
- 		goto err_pdata;
- 	}
- 
--	hw->ioarea = request_mem_region(hw->res->start,
--					resource_size(hw->res), pdev->name);
+@@ -567,43 +565,34 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
+ 	if (res == NULL) {
+ 		dev_err(&pdev->dev, "Cannot get IORESOURCE_MEM\n");
+ 		err = -ENOENT;
+-		goto err_no_iores;
+-	}
+-
+-	hw->ioarea = request_mem_region(res->start, resource_size(res),
+-					pdev->name);
 -
 -	if (hw->ioarea == NULL) {
 -		dev_err(&pdev->dev, "Cannot reserve region\n");
 -		err = -ENXIO;
-+	hw->regs = devm_ioremap_resource(&pdev->dev, hw->res);
-+	if (IS_ERR(hw->regs)) {
-+		err = PTR_ERR(hw->regs);
- 		goto err_pdata;
+-		goto err_no_iores;
++		goto err_no_pdata;
  	}
  
--	hw->regs = ioremap(hw->res->start, resource_size(hw->res));
+-	hw->regs = ioremap(res->start, resource_size(res));
 -	if (hw->regs == NULL) {
 -		dev_err(&pdev->dev, "Cannot map IO\n");
 -		err = -ENXIO;
--		goto err_iomap;
--	}
--
+-		goto err_no_iomap;
++	hw->regs = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(hw->regs)) {
++		err = PTR_ERR(hw->regs);
++		goto err_no_pdata;
+ 	}
+ 
  	hw->irq = platform_get_irq(pdev, 0);
  	if (hw->irq < 0) {
  		dev_err(&pdev->dev, "No IRQ specified\n");
  		err = -ENOENT;
--		goto err_irq;
-+		goto err_pdata;
+-		goto err_no_irq;
++		goto err_no_pdata;
  	}
  
--	err = request_irq(hw->irq, nuc900_spi_irq, 0, pdev->name, hw);
-+	err = devm_request_irq(&pdev->dev, hw->irq, nuc900_spi_irq, 0,
+-	err = request_irq(hw->irq, s3c24xx_spi_irq, 0, pdev->name, hw);
++	err = devm_request_irq(&pdev->dev, hw->irq, s3c24xx_spi_irq, 0,
 +				pdev->name, hw);
  	if (err) {
  		dev_err(&pdev->dev, "Cannot claim IRQ\n");
--		goto err_irq;
-+		goto err_pdata;
+-		goto err_no_irq;
++		goto err_no_pdata;
  	}
  
 -	hw->clk = clk_get(&pdev->dev, "spi");
@@ -90,43 +93,64 @@ index e0c32bc..43d340c 100644
  	if (IS_ERR(hw->clk)) {
  		dev_err(&pdev->dev, "No clock for device\n");
  		err = PTR_ERR(hw->clk);
--		goto err_clk;
-+		goto err_pdata;
+-		goto err_no_clk;
++		goto err_no_pdata;
  	}
  
- 	mfp_set_groupg(&pdev->dev, NULL);
-@@ -425,17 +414,8 @@ static int nuc900_spi_probe(struct platform_device *pdev)
+ 	/* setup any gpio we can */
+@@ -615,7 +604,8 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
+ 			goto err_register;
+ 		}
  
- err_register:
+-		err = gpio_request(pdata->pin_cs, dev_name(&pdev->dev));
++		err = devm_gpio_request(&pdev->dev, pdata->pin_cs,
++					dev_name(&pdev->dev));
+ 		if (err) {
+ 			dev_err(&pdev->dev, "Failed to get gpio for cs\n");
+ 			goto err_register;
+@@ -639,27 +629,10 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+  err_register:
+-	if (hw->set_cs == s3c24xx_spi_gpiocs)
+-		gpio_free(pdata->pin_cs);
+-
  	clk_disable(hw->clk);
 -	clk_put(hw->clk);
--err_clk:
+ 
+- err_no_clk:
 -	free_irq(hw->irq, hw);
--err_irq:
+-
+- err_no_irq:
 -	iounmap(hw->regs);
--err_iomap:
--	release_mem_region(hw->res->start, resource_size(hw->res));
+-
+- err_no_iomap:
+-	release_resource(hw->ioarea);
 -	kfree(hw->ioarea);
- err_pdata:
+-
+- err_no_iores:
+  err_no_pdata:
  	spi_master_put(hw->master);
--err_nomem:
+-
+- err_nomem:
  	return err;
  }
  
-@@ -443,18 +423,8 @@ static int nuc900_spi_remove(struct platform_device *dev)
- {
- 	struct nuc900_spi *hw = platform_get_drvdata(dev);
+@@ -668,19 +641,7 @@ static int s3c24xx_spi_remove(struct platform_device *dev)
+ 	struct s3c24xx_spi *hw = platform_get_drvdata(dev);
  
--	free_irq(hw->irq, hw);
--
  	spi_bitbang_stop(&hw->bitbang);
 -
  	clk_disable(hw->clk);
 -	clk_put(hw->clk);
 -
+-	free_irq(hw->irq, hw);
 -	iounmap(hw->regs);
 -
--	release_mem_region(hw->res->start, resource_size(hw->res));
+-	if (hw->set_cs == s3c24xx_spi_gpiocs)
+-		gpio_free(hw->pdata->pin_cs);
+-
+-	release_resource(hw->ioarea);
 -	kfree(hw->ioarea);
 -
  	spi_master_put(hw->master);

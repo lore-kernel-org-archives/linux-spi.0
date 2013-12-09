@@ -1,55 +1,33 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/3] spi: tegra: use u32 for 32-bit register values
-Date: Mon, 9 Dec 2013 18:14:37 +0000
-Message-ID: <20131209181437.GS29268@sirena.org.uk>
-References: <1385745164-10534-1-git-send-email-mpn@google.com>
- <1386516911-26388-1-git-send-email-mina86@mina86.com>
+From: Coca-Cola Company <1021103030-r+RBotw7gRMs7y1uqUnz8A@public.gmane.org>
+Subject: Send your correct answer
+Date: Mon, 09 Dec 2013 23:08:31 +0100 (WAT)
+Message-ID: <d5f11ce6-9dbf-4c9c-b372-1f12ab17af83@mail.udusok.edu.ng>
+Reply-To: Coca-Cola Company <claimsdept11-1ViLX0X+lBJBDgjK7y7TUQ@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="lJC5CbBzX055ExrY"
-Cc: Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Michal Nazarewicz <mina86-deATy8a+UHjQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1386516911-26388-1-git-send-email-mina86-deATy8a+UHjQT0dZR+AlfA@public.gmane.org>
-Sender: linux-tegra-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+To: undisclosed-recipients:;
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---lJC5CbBzX055ExrY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Sun, Dec 08, 2013 at 04:35:08PM +0100, Michal Nazarewicz wrote:
-> This series has only been compile-tested, but it does not introduce any
-> behaviour changes.
+You are here by selected to partake in the Coca-Cola 2013 xmass lottery promo to
+stand a chance of winning the total sum of $2000000 (Two million dollars). Kindly answer
+the correct question below to stand a chance of winning the prize.
+Which country won the highest Gold melds in the London 2012 Olympic
+A China
+B USA
+C Spain
+D Brazil
+Send your correct answer to the email below and winning.
+Contact Coca-Cola Company via email below.
+Email claimsdept11-1ViLX0X+lBJBDgjK7y7TUQ@public.gmane.org
 
-Applied, thanks.  Like Stephen says please do make sure your commits do
-as they're described...
 
---lJC5CbBzX055ExrY
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSpgiKAAoJELSic+t+oim907sP/3g9BRQZFFxuiz2/RxzEwqzU
-0vXk+T+pmTYUf4pyI9vkKkG05zGbQcBWNpx2ZYa/yDL0B7vpJwN2JQG+H4ORwDHs
-/a/OUMfc1X0nbjysVAu6Iu5bR2PSFDEimp+o0PQAoj+2VWaLJOj3tPodh/vR2F1m
-44LjeXnXR7UMy8UhIADwPJQ2nytB1/ld/chHi98/bZS1ubJKK4+pcQ8cgmwYP9tl
-70CQeEG7DdVNjTMpkmJ2r4+LEBt1WGWz593xsxhzuxMPxDad3XP7dC8WXloONTZB
-gApozafF3jNKfb7SeL/K+Gkve+QebP4wqo5xq+vSDM1uvFPLWr8tDPVH0XXFF8OT
-w5FWBfPFgjTjPbvOa95QZrQbIW3kaE0LI0GFQRsrrY9OXOQIaSTPD49plgrCLcDf
-JiwbnqNQLwZkTt/Hw2tqJBo2nNubquLDydMSBXMI+fOYvUXAMfvt+jOI62Kx2x8J
-On0EuBH+HC1k3/8GhD/9DT9/EFZ1FYfuH+M4+yHcq3Sp/Vcl5eoS6BQxzzyhqvTa
-N9BdmwKHUc6lYmBTlsnWdOJwULfeNnPtqo5x3g3O8EveNo4JRs/KbKmLM1QAtvV7
-yqXztJjVaqS74SS9b2FWguOxI9oQBQ7TI/8xpjrtF7tIwNx1SAZ+yYK2zXsi//ly
-lHIDyERCLkCW5TAvFYYL
-=aidW
------END PGP SIGNATURE-----
-
---lJC5CbBzX055ExrY--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

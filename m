@@ -1,118 +1,54 @@
-From: Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCHv2 09/10] arm: dts: dra7: Add qspi device.
-Date: Mon, 9 Dec 2013 09:42:04 -0800
-Message-ID: <20131209174203.GB12527@atomide.com>
-References: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com>
- <1386339891-32717-10-git-send-email-sourav.poddar@ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/4] spi: rcar: Use devm_spi_register_master()
+Date: Mon, 9 Dec 2013 18:00:11 +0000
+Message-ID: <20131209180011.GN29268@sirena.org.uk>
+References: <002d01cef0af$5a21f140$0e65d3c0$%han@samsung.com>
+ <002e01cef0af$9e0a6ef0$da1f4cd0$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, marex-ynQEQJNshbs@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org
-To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="qqPjTi0+PkGx+WSu"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	'Laurent Pinchart' <laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1386339891-32717-10-git-send-email-sourav.poddar-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <002e01cef0af$9e0a6ef0$da1f4cd0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-* Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org> [131206 06:29]:
-> These add device tree entry for qspi controller driver on dra7.
 
-FYI these .dts changes need to be queued separately by Benoit and
-should be posted as a seprate series in general to avoid confusion.
+--qqPjTi0+PkGx+WSu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Regards,
+On Wed, Dec 04, 2013 at 02:13:50PM +0900, Jingoo Han wrote:
+> Use devm_spi_register_master() to make cleanup paths simpler.
 
-Tony
- 
-> Signed-off-by: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-> ---
-> v1->v2:
-> use "MUX_MODE1" instead of numeric value
->  arch/arm/boot/dts/dra7-evm.dts |   32 ++++++++++++++++++++++++++++++++
->  arch/arm/boot/dts/dra7.dtsi    |   13 +++++++++++++
->  2 files changed, 45 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/arm/boot/dts/dra7-evm.dts b/arch/arm/boot/dts/dra7-evm.dts
-> index 5babba0..4a57fdf 100644
-> --- a/arch/arm/boot/dts/dra7-evm.dts
-> +++ b/arch/arm/boot/dts/dra7-evm.dts
-> @@ -93,6 +93,21 @@
->  			0x24c (PIN_INPUT_SLEW | MUX_MODE0) /* uart3_txd */
->  		>;
->  	};
-> +
-> +	qspi1_pins: pinmux_qspi1_pins {
-> +		pinctrl-single,pins = <
-> +			0x4c (PIN_INPUT | MUX_MODE1)  /* gpmc_a3.qspi1_cs2 */
-> +			0x50 (PIN_INPUT | MUX_MODE1)  /* gpmc_a4.qspi1_cs3 */
-> +			0x74 (PIN_INPUT | MUX_MODE1)  /* gpmc_a13.qspi1_rtclk */
-> +			0x78 (PIN_INPUT | MUX_MODE1)  /* gpmc_a14.qspi1_d3 */
-> +			0x7c (PIN_INPUT | MUX_MODE1)  /* gpmc_a15.qspi1_d2 */
-> +			0x80 (PIN_INPUT | MUX_MODE1) /* gpmc_a16.qspi1_d1 */
-> +			0x84 (PIN_INPUT | MUX_MODE1)  /* gpmc_a17.qspi1_d0 */
-> +			0x88 (PIN_INPUT | MUX_MODE1)  /* qpmc_a18.qspi1_sclk */
-> +			0xb8 (PIN_INPUT_PULLUP | MUX_MODE1)  /* gpmc_cs2.qspi1_cs0 */
-> +			0xbc (PIN_INPUT_PULLUP | MUX_MODE1)  /* gpmc_cs3.qspi1_cs1 */
-> +		>;
-> +	};
->  };
->  
->  &i2c1 {
-> @@ -273,3 +288,20 @@
->  &cpu0 {
->  	cpu0-supply = <&smps123_reg>;
->  };
-> +
-> +&qspi {
-> +	status = "okay";
-> +	pinctrl-names = "default";
-> +	pinctrl-0 = <&qspi1_pins>;
-> +
-> +	spi-max-frequency = <48000000>;
-> +	m25p80@0 {
-> +		compatible = "s25fl256s1";
-> +		spi-max-frequency = <48000000>;
-> +		reg = <0>;
-> +		spi-tx-bus-width = <1>;
-> +		spi-rx-bus-width = <4>;
-> +		spi-cpol;
-> +		spi-cpha;
-> +	};
-> +};
-> diff --git a/arch/arm/boot/dts/dra7.dtsi b/arch/arm/boot/dts/dra7.dtsi
-> index 67275c8..b06d899 100644
-> --- a/arch/arm/boot/dts/dra7.dtsi
-> +++ b/arch/arm/boot/dts/dra7.dtsi
-> @@ -582,6 +582,19 @@
->  			dma-names = "tx0", "rx0";
->  			status = "disabled";
->  		};
-> +
-> +		qspi: qspi@4b300000 {
-> +			compatible = "ti,dra7xxx-qspi";
-> +			reg = <0x4b300000 0x100>, <0x4a002558 0x4>,
-> +					<0x5c000000 0x3ffffff>;
-> +			reg-names = "qspi_base", "qspi_ctrlmod", "qspi_mmap";
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			ti,hwmods = "qspi";
-> +			num-cs = <4>;
-> +			interrupts = <0 124 0x4>;
-> +			status = "disabled";
-> +		};
->  	};
->  
->  	clocks {
-> -- 
-> 1.7.1
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-omap" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Applied, thanks.
+
+--qqPjTi0+PkGx+WSu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSpgUoAAoJELSic+t+oim9SkwP/RvyKVCMgB8yICsUe2vDvC4t
+K65nQGyjEzvbebI66/4PAsNOrvodLmUJ6A5ml3qP2VbJTao1PPHczmrZZv+JZnrf
+C/hpZjW5aeF3EKNXN418CkqUpYOHUB/T6S+tKLiN+UgrX6SQzL3Q6rfT6fNOKOMN
+yAIs029AE2O8aFAWESySdHdVlQ/knUgOhvirVzpmfw31KD0bwjARU7+gh2ZibHOS
+wHF4wjLKVf1Jic8AwbZ788b6hGPhEGnvPv9yfouQrf/N6Ml2Cu1+yp3aI0s440uG
+3lPpN85RDHRczLfznpU1zfomY32DEysKQtJUkmWUAMXKhFf+JOFbEm53+NuDIs5g
++MuZmMKl0Y5Pr221nlsRhiv8HYzW2DsWJ3VYGpFU3jUe8i8LIQoaNOLhCxv7uTDB
+OvRceQMxmvqpgO0JltMr53F1kkD3gbRM6ah6W+ClL5zcvcLhnY8nvdjtrSHWSHA/
+wm4wFBZZ4U/o5zzLBZuAfj2/pUxSDBxxIzXy/06CwQUh69l4yy3dt6gozrwOGYrA
+jXlEAsDJsGCcYN+ISQOGEMViH7fs17722zY6xpZxOYW5KBAAXdhA0Pu0gWPDeKIt
+7zHHnGtOE12OlQATxdn1UZE+EUsxkxACykQ5loZMGxAC3OSXKnoMQidkywHCU9T+
+SidFmWue9BLTuYqaf3mQ
+=nrL6
+-----END PGP SIGNATURE-----
+
+--qqPjTi0+PkGx+WSu--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,14 +1,13 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 07/11] spi: bcm63xx: Use devm_clk_get()
-Date: Mon, 09 Dec 2013 19:20:15 +0900
-Message-ID: <001301cef4c8$40d2b3b0$c2781b10$%han@samsung.com>
+Subject: [PATCH 08/11] spi: bcm63xx-hsspi: Use devm_clk_get()
+Date: Mon, 09 Dec 2013 19:20:45 +0900
+Message-ID: <001401cef4c8$52cf31b0$f86d9510$%han@samsung.com>
 References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Jonas Gorski' <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	'Florian Fainelli' <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+	'Jonas Gorski' <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-reply-to: <000801cef4c7$1b84a470$528ded50$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
@@ -20,53 +19,46 @@ Use devm_clk_get() to make cleanup paths simpler.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c |   15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/spi/spi-bcm63xx-hsspi.c |   12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 469ecd8..f44a9eb 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -345,22 +345,19 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		dev_err(dev, "no irq\n");
--		ret = -ENXIO;
--		goto out;
-+		return -ENXIO;
- 	}
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index bc8d848..9742e11 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -342,16 +342,14 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(regs))
+ 		return PTR_ERR(regs);
  
--	clk = clk_get(dev, "spi");
-+	clk = devm_clk_get(dev, "spi");
- 	if (IS_ERR(clk)) {
- 		dev_err(dev, "no clock for device\n");
--		ret = PTR_ERR(clk);
--		goto out;
-+		return PTR_ERR(clk);
- 	}
+-	clk = clk_get(dev, "hsspi");
++	clk = devm_clk_get(dev, "hsspi");
  
- 	master = spi_alloc_master(dev, sizeof(*bs));
- 	if (!master) {
- 		dev_err(dev, "out of memory\n");
--		ret = -ENOMEM;
--		goto out_clk;
-+		return -ENOMEM;
- 	}
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
  
- 	bs = spi_master_get_devdata(master);
-@@ -427,9 +424,6 @@ out_clk_disable:
- 	clk_disable_unprepare(clk);
- out_err:
+ 	rate = clk_get_rate(clk);
+-	if (!rate) {
+-		ret = -EINVAL;
+-		goto out_put_clk;
+-	}
++	if (!rate)
++		return -EINVAL;
+ 
+ 	clk_prepare_enable(clk);
+ 
+@@ -409,9 +407,6 @@ out_put_master:
  	spi_master_put(master);
--out_clk:
+ out_disable_clk:
+ 	clk_disable_unprepare(clk);
+-out_put_clk:
 -	clk_put(clk);
--out:
+-
  	return ret;
  }
  
-@@ -443,7 +437,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
- 
- 	/* HW shutdown */
+@@ -426,7 +421,6 @@ static int bcm63xx_hsspi_remove(struct platform_device *pdev)
+ 	/* reset the hardware and block queue progress */
+ 	__raw_writel(0, bs->regs + HSSPI_INT_MASK_REG);
  	clk_disable_unprepare(bs->clk);
 -	clk_put(bs->clk);
  

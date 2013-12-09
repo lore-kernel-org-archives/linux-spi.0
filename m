@@ -1,104 +1,59 @@
-From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 02/11] spi: mpc512x: Use devm_*() functions
-Date: Mon, 9 Dec 2013 14:12:13 +0100
-Message-ID: <20131209131213.GL2982@book.gsilab.sittig.org>
-References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
- <000e01cef4c7$53d9e060$fb8da120$%han@samsung.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH -next] spi: coldfire-qspi: remove redundant return value
+ check of platform_get_resource()
+Date: Mon, 9 Dec 2013 17:05:45 +0000
+Message-ID: <20131209170545.GU29268@sirena.org.uk>
+References: <CAPgLHd-tJtLc3o8a=8qbQNB5HzaqeDgOX57HGMiUUE10ehN+tA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Anatolij Gustschin' <agust-ynQEQJNshbs@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="aMfmUgCNW/aonds3"
+Cc: jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <000e01cef4c7$53d9e060$fb8da120$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <CAPgLHd-tJtLc3o8a=8qbQNB5HzaqeDgOX57HGMiUUE10ehN+tA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Dec 09, 2013 at 19:13 +0900, Jingoo Han wrote:
-> 
-> Use devm_*() functions to make cleanup paths simpler.
-> 
-> Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> ---
->  drivers/spi/spi-mpc512x-psc.c |   17 +++++------------
->  1 file changed, 5 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-> index 2babea2..77c03e2 100644
-> --- a/drivers/spi/spi-mpc512x-psc.c
-> +++ b/drivers/spi/spi-mpc512x-psc.c
-> @@ -503,7 +503,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
->  	master->cleanup = mpc512x_psc_spi_cleanup;
->  	master->dev.of_node = dev->of_node;
->  
-> -	tempp = ioremap(regaddr, size);
-> +	tempp = devm_ioremap(dev, regaddr, size);
->  	if (!tempp) {
->  		dev_err(dev, "could not ioremap I/O port range\n");
->  		ret = -EFAULT;
-> @@ -513,8 +513,8 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
->  	mps->fifo =
->  		(struct mpc512x_psc_fifo *)(tempp + sizeof(struct mpc52xx_psc));
->  
-> -	ret = request_irq(mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
-> -			  "mpc512x-psc-spi", mps);
-> +	ret = devm_request_irq(dev, mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
-> +				"mpc512x-psc-spi", mps);
->  	if (ret)
->  		goto free_master;
->  	init_completion(&mps->txisrdone);
 
-nit: whitespace, indentation of the continued parameter list
+--aMfmUgCNW/aonds3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-everything else looks good (from looking at it, did not build/run-test)
+On Sat, Dec 07, 2013 at 02:00:40PM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+>=20
+> Remove unneeded error handling on the result of a call
+> to platform_get_resource() when the value is passed to
+> devm_ioremap_resource().
 
-> @@ -522,11 +522,11 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
->  	clk = devm_clk_get(dev, "mclk");
->  	if (IS_ERR(clk)) {
->  		ret = PTR_ERR(clk);
-> -		goto free_irq;
-> +		goto free_master;
->  	}
->  	ret = clk_prepare_enable(clk);
->  	if (ret)
-> -		goto free_irq;
-> +		goto free_master;
->  	mps->clk_mclk = clk;
->  	mps->mclk_rate = clk_get_rate(clk);
->  
-> @@ -554,11 +554,7 @@ free_ipg_clock:
->  	clk_disable_unprepare(mps->clk_ipg);
->  free_mclk_clock:
->  	clk_disable_unprepare(mps->clk_mclk);
-> -free_irq:
-> -	free_irq(mps->irq, mps);
->  free_master:
-> -	if (mps->psc)
-> -		iounmap(mps->psc);
->  	spi_master_put(master);
->  
->  	return ret;
-> @@ -571,9 +567,6 @@ static int mpc512x_psc_spi_do_remove(struct device *dev)
->  
->  	clk_disable_unprepare(mps->clk_mclk);
->  	clk_disable_unprepare(mps->clk_ipg);
-> -	free_irq(mps->irq, mps);
-> -	if (mps->psc)
-> -		iounmap(mps->psc);
->  
->  	return 0;
->  }
-> -- 
-> 1.7.10.4
+Applied, thanks.
 
+--aMfmUgCNW/aonds3
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-virtually yours
-Gerhard Sittig
--- 
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSpfhmAAoJELSic+t+oim9vR4QAIRvNShnMP/YGaGq02fn1tsV
+ckr6xOZghYxTmjdgzOwWFtnQT9kClUXOAS0PKEW5/wCEkGWNm/c0hzOIDIGQEf5M
+movk7rwLE0B9s6v1mrJmorNhQ5LsBZcAgdKa9zi25K9qkkC0jxRXszPufNl375MK
+4Fa0keoqygVz4NR5+AnYAm0uBRV6akGZhNgGHl/57BAojhP50C9Gm/sKH9aokBHi
+WmPzCSDix6TJhVvdZWMhL0U0zR7KWw+3profDh0k3gy9ARHNy3JC7Iqi6bAfbGFJ
+nA5tNTvpI4P5BUik2/kFc2MV5+lJI/fHfGOTX1p4iRZLOAwCL10HIp4jWSXOpUvB
+MFgatlf0YIcQJdW+5QQfpP2piyKLklCO/C2vo5uKDzdz0UwTlJvKeeiyemp4Y8zH
+JdvpR+aosL3YoOo8f6vQyhEj1Q1l3LqE9RjhffVugRZbvD/M7vsrYKZ5I0HjFlsf
+EpXY5W2htEywLZToRhvs+mLQbutN0Y5LmdAoxcluxgL/qyyz6/jvYxcWOqmAVxOO
+NB9DjGBKxLc1l+Hhazz+LogHfw66LgTki6R8HFWX/2GkcttKtMJa7hVI4zlFlOos
+KSCy+sYWC+wiqGoIfTxbo1yMvA199tk4gmwHQ6iGlgxsmLjY+a10boSEomF/Az2u
+k93kFkmg4c0rO6nrOfEv
+=hBQc
+-----END PGP SIGNATURE-----
+
+--aMfmUgCNW/aonds3--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

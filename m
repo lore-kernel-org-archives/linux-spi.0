@@ -1,13 +1,13 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 03/11] spi: ath79: Use devm_*() functions
-Date: Mon, 09 Dec 2013 19:14:58 +0900
-Message-ID: <000f01cef4c7$837d0180$8a770480$%han@samsung.com>
+Subject: [PATCH 04/11] spi: designware: Use devm_*() functions
+Date: Mon, 09 Dec 2013 19:16:44 +0900
+Message-ID: <001001cef4c7$c32368b0$496a3a10$%han@samsung.com>
 References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Gabor Juhos' <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+	'Jean-Hugues Deschenes' <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-reply-to: <000801cef4c7$1b84a470$528ded50$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
@@ -19,59 +19,114 @@ Use devm_*() functions to make cleanup paths simpler.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-ath79.c |   14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/spi/spi-dw-mmio.c |   57 +++++++++++----------------------------------
+ 1 file changed, 14 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index 821bf7a..31534b5 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -243,21 +243,21 @@ static int ath79_spi_probe(struct platform_device *pdev)
- 		goto err_put_master;
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 168c620..1107ca9 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -30,14 +30,13 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ {
+ 	struct dw_spi_mmio *dwsmmio;
+ 	struct dw_spi *dws;
+-	struct resource *mem, *ioarea;
++	struct resource *mem;
+ 	int ret;
+ 
+-	dwsmmio = kzalloc(sizeof(struct dw_spi_mmio), GFP_KERNEL);
+-	if (!dwsmmio) {
+-		ret = -ENOMEM;
+-		goto err_end;
+-	}
++	dwsmmio = devm_kzalloc(&pdev->dev, sizeof(struct dw_spi_mmio),
++				GFP_KERNEL);
++	if (!dwsmmio)
++		return -ENOMEM;
+ 
+ 	dws = &dwsmmio->dws;
+ 
+@@ -45,37 +44,23 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!mem) {
+ 		dev_err(&pdev->dev, "no mem resource?\n");
+-		ret = -EINVAL;
+-		goto err_kfree;
+-	}
+-
+-	ioarea = request_mem_region(mem->start, resource_size(mem),
+-			pdev->name);
+-	if (!ioarea) {
+-		dev_err(&pdev->dev, "SPI region already claimed\n");
+-		ret = -EBUSY;
+-		goto err_kfree;
++		return -EINVAL;
  	}
  
--	sp->base = ioremap(r->start, resource_size(r));
-+	sp->base = devm_ioremap(&pdev->dev, r->start, resource_size(r));
- 	if (!sp->base) {
- 		ret = -ENXIO;
- 		goto err_put_master;
- 	}
+-	dws->regs = ioremap_nocache(mem->start, resource_size(mem));
+-	if (!dws->regs) {
+-		dev_err(&pdev->dev, "SPI region already mapped\n");
+-		ret = -ENOMEM;
+-		goto err_release_reg;
+-	}
++	mem->flags &= ~IORESOURCE_CACHEABLE;
++	dws->regs = devm_ioremap_resource(&pdev->dev, mem);
++	if (IS_ERR(dws->regs))
++		return PTR_ERR(dws->regs);
  
--	sp->clk = clk_get(&pdev->dev, "ahb");
-+	sp->clk = devm_clk_get(&pdev->dev, "ahb");
- 	if (IS_ERR(sp->clk)) {
- 		ret = PTR_ERR(sp->clk);
+ 	dws->irq = platform_get_irq(pdev, 0);
+ 	if (dws->irq < 0) {
+ 		dev_err(&pdev->dev, "no irq resource?\n");
+-		ret = dws->irq; /* -ENXIO */
 -		goto err_unmap;
-+		goto err_put_master;
++		return dws->irq; /* -ENXIO */
  	}
  
- 	ret = clk_enable(sp->clk);
- 	if (ret)
--		goto err_clk_put;
-+		goto err_put_master;
+-	dwsmmio->clk = clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(dwsmmio->clk)) {
+-		ret = PTR_ERR(dwsmmio->clk);
+-		goto err_unmap;
+-	}
++	dwsmmio->clk = devm_clk_get(&pdev->dev, NULL);
++	if (IS_ERR(dwsmmio->clk))
++		return PTR_ERR(dwsmmio->clk);
+ 	clk_enable(dwsmmio->clk);
  
- 	rate = DIV_ROUND_UP(clk_get_rate(sp->clk), MHZ);
- 	if (!rate) {
-@@ -280,10 +280,6 @@ err_disable:
- 	ath79_spi_disable(sp);
- err_clk_disable:
- 	clk_disable(sp->clk);
--err_clk_put:
--	clk_put(sp->clk);
+ 	dws->parent_dev = &pdev->dev;
+@@ -92,33 +77,19 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 
+ err_clk:
+ 	clk_disable(dwsmmio->clk);
+-	clk_put(dwsmmio->clk);
+ 	dwsmmio->clk = NULL;
 -err_unmap:
--	iounmap(sp->base);
- err_put_master:
- 	spi_master_put(sp->bitbang.master);
+-	iounmap(dws->regs);
+-err_release_reg:
+-	release_mem_region(mem->start, resource_size(mem));
+-err_kfree:
+-	kfree(dwsmmio);
+-err_end:
+ 	return ret;
+ }
  
-@@ -297,8 +293,6 @@ static int ath79_spi_remove(struct platform_device *pdev)
- 	spi_bitbang_stop(&sp->bitbang);
- 	ath79_spi_disable(sp);
- 	clk_disable(sp->clk);
--	clk_put(sp->clk);
--	iounmap(sp->base);
- 	spi_master_put(sp->bitbang.master);
+ static int dw_spi_mmio_remove(struct platform_device *pdev)
+ {
+ 	struct dw_spi_mmio *dwsmmio = platform_get_drvdata(pdev);
+-	struct resource *mem;
  
+ 	clk_disable(dwsmmio->clk);
+-	clk_put(dwsmmio->clk);
+ 	dwsmmio->clk = NULL;
+ 
+ 	dw_spi_remove_host(&dwsmmio->dws);
+-	iounmap(dwsmmio->dws.regs);
+-	kfree(dwsmmio);
+ 
+-	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	release_mem_region(mem->start, resource_size(mem));
  	return 0;
+ }
+ 
 -- 
 1.7.10.4
 

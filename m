@@ -1,14 +1,12 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 09/11] spi: orion: Use devm_clk_get()
-Date: Mon, 09 Dec 2013 19:21:22 +0900
-Message-ID: <001501cef4c8$68a7b160$39f71420$%han@samsung.com>
+Subject: [PATCH 10/11] spi: txx9: Use devm_clk_get()
+Date: Mon, 09 Dec 2013 19:23:12 +0900
+Message-ID: <001601cef4c8$aa1f7d30$fe5e7790$%han@samsung.com>
 References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Jason Cooper' <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	'Andrew Lunn' <andrew-g2DYL2Zd6BY@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-reply-to: <000801cef4c7$1b84a470$528ded50$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
@@ -20,38 +18,42 @@ Use devm_clk_get() to make cleanup paths simpler.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-orion.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/spi/spi-txx9.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 744841e..7f2121f 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -434,7 +434,7 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	spi = spi_master_get_devdata(master);
- 	spi->master = master;
+diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
+index 18c9bb2..ffbe03d 100644
+--- a/drivers/spi/spi-txx9.c
++++ b/drivers/spi/spi-txx9.c
+@@ -348,7 +348,7 @@ static int txx9spi_probe(struct platform_device *dev)
+ 	INIT_LIST_HEAD(&c->queue);
+ 	init_waitqueue_head(&c->waitq);
  
--	spi->clk = clk_get(&pdev->dev, NULL);
-+	spi->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(spi->clk)) {
- 		status = PTR_ERR(spi->clk);
- 		goto out;
-@@ -465,7 +465,6 @@ static int orion_spi_probe(struct platform_device *pdev)
- 
- out_rel_clk:
- 	clk_disable_unprepare(spi->clk);
--	clk_put(spi->clk);
- out:
+-	c->clk = clk_get(&dev->dev, "spi-baseclk");
++	c->clk = devm_clk_get(&dev->dev, "spi-baseclk");
+ 	if (IS_ERR(c->clk)) {
+ 		ret = PTR_ERR(c->clk);
+ 		c->clk = NULL;
+@@ -415,10 +415,8 @@ exit_busy:
+ exit:
+ 	if (c->workqueue)
+ 		destroy_workqueue(c->workqueue);
+-	if (c->clk) {
++	if (c->clk)
+ 		clk_disable(c->clk);
+-		clk_put(c->clk);
+-	}
  	spi_master_put(master);
- 	return status;
-@@ -481,7 +480,6 @@ static int orion_spi_remove(struct platform_device *pdev)
- 	spi = spi_master_get_devdata(master);
+ 	return ret;
+ }
+@@ -430,7 +428,6 @@ static int txx9spi_remove(struct platform_device *dev)
  
- 	clk_disable_unprepare(spi->clk);
--	clk_put(spi->clk);
- 
+ 	destroy_workqueue(c->workqueue);
+ 	clk_disable(c->clk);
+-	clk_put(c->clk);
  	return 0;
  }
+ 
 -- 
 1.7.10.4
 

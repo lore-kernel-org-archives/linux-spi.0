@@ -1,26 +1,67 @@
-From: Sourav Poddar <sourav.poddar@ti.com>
-Subject: Re: [PATCHv2 09/10] arm: dts: dra7: Add qspi device.
-Date: Tue, 10 Dec 2013 16:15:35 +0530
-Message-ID: <52A6F0CF.8020306@ti.com>
-References: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com> <1386339891-32717-10-git-send-email-sourav.poddar@ti.com> <20131209174203.GB12527@atomide.com> <52A697AB.1060404@ti.com> <20131210103108.GA29268@sirena.org.uk>
+From: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Subject: Re: [PATCH] spi: dt-binding: clarify gpio chipselect language
+Date: Tue, 10 Dec 2013 11:26:44 +0000
+Message-ID: <20131210112313.GF1809@e106331-lin.cambridge.arm.com>
+References: <542dfeee809e73f7f071f4ae0b4f95af7736f70b.1386243545.git.baruch@tkos.co.il>
+ <20131205164400.GI12805@ns203013.ovh.net>
+ <20131208053712.GA3869@tarshish>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Tony Lindgren <tony@atomide.com>, <linux-spi@vger.kernel.org>,
-	<computersforpeace@gmail.com>, <marex@denx.de>,
-	<dwmw2@infradead.org>, <linux-mtd@lists.infradead.org>,
-	<linux-omap@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<bcousson@baylibre.com>, <balbi@ti.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-omap-owner@vger.kernel.org>
-In-Reply-To: <20131210103108.GA29268@sirena.org.uk>
-Sender: linux-omap-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20131208053712.GA3869@tarshish>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday 10 December 2013 04:01 PM, Mark Brown wrote:
-> On Tue, Dec 10, 2013 at 09:55:15AM +0530, Sourav Poddar wrote:
->
->> I posted this for review along with other code changes.
->> I will post them seperately to Benoit.
-> Please wait until the driver updates have been reviewed.
-Ok.
+On Sun, Dec 08, 2013 at 05:37:12AM +0000, Baruch Siach wrote:
+> Hi Jean-Christophe,
+> 
+> On Thu, Dec 05, 2013 at 05:44:00PM +0100, Jean-Christophe PLAGNIOL-VILLARD wrote:
+> > On 13:39 Thu 05 Dec     , Baruch Siach wrote:
+> > > Commit 743179849015 (of_spi: add generic binding support to specify cs gpio)
+> > > introduced generic binding for gpio chip-select. The cs_gpio struct field,
+> > > however, is an internal implementation detail of the Linux SPI subsystem, and
+> > > should not be mentioned in the device tree binding documentation. Mention the
+> > > previously defined cs-gpios master node property instead.
+> > > 
+> > > Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>
+> > > Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> > > Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+> > > ---
+> > >  Documentation/devicetree/bindings/spi/spi-bus.txt | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/spi/spi-bus.txt b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> > > index 800dafe..e5a4d1b 100644
+> > > --- a/Documentation/devicetree/bindings/spi/spi-bus.txt
+> > > +++ b/Documentation/devicetree/bindings/spi/spi-bus.txt
+> > > @@ -67,7 +67,7 @@ only 1(SINGLE), 2(DUAL) and 4(QUAD).
+> > >  Dual/Quad mode is not allowed when 3-wire mode is used.
+> > >  
+> > >  If a gpio chipselect is used for the SPI slave the gpio number will be passed
+> > > -via the cs_gpio
+> > > +via the SPI master node cs-gpios property.
+> > 
+> > here it's an information about the c structure
+> 
+> Is binding documentation the place for implementation notes? Especially since 
+> cs_gpio struct member is never mentioned in this document, and its name is 
+> confusingly similar to the cs-gpios property name.
+
+Preferably, a binding document should not refer to any implementation
+details of drivers or subsystems using the binding. The implementation
+can change separately from the binding, and separating the two keeps us
+honest.
+
+Thanks,
+Mark.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,70 +1,78 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv2 00/10] Add memory mapped support for ti qspi, m25p80
- serial flash.
-Date: Tue, 10 Dec 2013 16:11:43 +0000
-Message-ID: <20131210161143.GK29268@sirena.org.uk>
-References: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com>
- <201312101349.13564.marex@denx.de>
+From: Sourav Poddar <sourav.poddar@ti.com>
+Subject: Re: [PATCHv2 05/10] spi/qspi: Add api for get_buf/put_buf.
+Date: Tue, 10 Dec 2013 22:40:59 +0530
+Message-ID: <52A74B23.6030402@ti.com>
+References: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com> <1386339891-32717-6-git-send-email-sourav.poddar@ti.com> <201312101358.46922.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jWPLtjN/TlbXOuX3"
-Cc: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <201312101349.13564.marex-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+	<computersforpeace@gmail.com>, <dwmw2@infradead.org>,
+	<linux-mtd@lists.infradead.org>, <linux-omap@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <bcousson@baylibre.com>,
+	<balbi@ti.com>
+To: Marek Vasut <marex@denx.de>
+Return-path: <linux-omap-owner@vger.kernel.org>
+In-Reply-To: <201312101358.46922.marex@denx.de>
+Sender: linux-omap-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Tuesday 10 December 2013 06:28 PM, Marek Vasut wrote:
+> On Friday, December 06, 2013 at 03:24:46 PM, Sourav Poddar wrote:
+>> Adapt qspi driver to use (get_buf/put_buf) pointers added
+>> earlier.
+>> These can be called just before the memcpy operations to get hold
+>> of the memory mapped address and to turn on the controller clocks.
+>>
+>> Signed-off-by: Sourav Poddar<sourav.poddar@ti.com>
+>> ---
+>> v1->v2:
+>>   enable/disable memory mapped only when get_buf/put_buf is
+>>   called (basicaaly only when memory mapped read operation is
+>>   desired).
+>>   drivers/spi/spi-ti-qspi.c |   19 +++++++++++++++++++
+>>   1 files changed, 19 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+>> index e4a8afc..b83583c 100644
+>> --- a/drivers/spi/spi-ti-qspi.c
+>> +++ b/drivers/spi/spi-ti-qspi.c
+>> @@ -248,6 +248,23 @@ static void ti_qspi_configure_from_slave(struct
+>> spi_device *spi) ti_qspi_write(qspi, memval, QSPI_SPI_SETUP0_REG);
+>>   }
+>>
+>> +static inline int  __iomem *ti_qspi_get_mem_buf(struct spi_master *master)
+> Should this not be a 'void __iomem *' instead of 'int __iomem *' in any case ?
+>
+Yes, it should be. Will fix in v3.
+>> +{
+>> +	struct ti_qspi *qspi = spi_master_get_devdata(master);
+>> +
+>> +	pm_runtime_get_sync(qspi->dev);
+>> +	enable_qspi_memory_mapped(qspi);
+>> +	return qspi->mmap_base;
+>> +}
+>> +
+>> +static void ti_qspi_put_mem_buf(struct spi_master *master)
+>> +{
+>> +	struct ti_qspi *qspi = spi_master_get_devdata(master);
+>> +
+>> +	disable_qspi_memory_mapped(qspi);
+>> +	pm_runtime_put(qspi->dev);
+>> +}
+>> +
+>>   static void ti_qspi_restore_ctx(struct ti_qspi *qspi)
+>>   {
+>>   	struct ti_qspi_regs *ctx_reg =&qspi->ctx_reg;
+>> @@ -517,6 +534,8 @@ static int ti_qspi_probe(struct platform_device *pdev)
+>>   	master->bits_per_word_mask = BIT(32 - 1) | BIT(16 - 1) | BIT(8 - 1);
+>>   	master->mmap = true;
+>>   	master->configure_from_slave = ti_qspi_configure_from_slave;
+>> +	master->get_buf = ti_qspi_get_mem_buf;
+>> +	master->put_buf = ti_qspi_put_mem_buf;
+>>
+>>   	if (!of_property_read_u32(np, "num-cs",&num_cs))
+>>   		master->num_chipselect = num_cs;
+> Best regards,
+> Marek Vasut
 
---jWPLtjN/TlbXOuX3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Dec 10, 2013 at 01:49:13PM +0100, Marek Vasut wrote:
-
-> My question is, shall we not wait for the new SPI NOR framework to be wel=
-l=20
-> fleshed out and only then implement this controller driver on top of it ?
-
-> I have a feeling this patchset adds quite a lot of ad-hoc hacks into the =
-m25p80=20
-> driver, which would become dead code once converted to the SPI NOR framew=
-ork.
-
-There is some stuff that pushes up into the controller in that while the
-device is in memory mapped mode as far as I can tell it's not safe to do
-other accesses so if someone's put more than one device on the SPI bus
-we need to handle interactions there.
-
---jWPLtjN/TlbXOuX3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSpz08AAoJELSic+t+oim9CsgP/RKihfzVyXn4iAdbIi35lGk+
-UIp4ZMCB8ZhcKnuYZ/h3IskvxE2uscwSjyrZCSSB1ftuz5gSZftK1++duadAP6nU
-BztSGxPK1W74Nd2q+ogY1sfJsj5ICzH21PFw/M7gWS6JT0hczjbFhHFN7OLLYXye
-uoSVGlsKKhXvx/csPaPjjn2n/LkGMGhVOHyKNzDPcyPPfA2vKwzNckDJW1JHWx0K
-eXCDKkG6jczb1qKPvW1wfXzIy1arYlsxMwSMd/QrPhVziBSPPS7/7mCZGCl6QahI
-bUnYMY8gdNxFZi8d1JPk/ZDCScdHEAJihe+IpZ5YXGlwSVHztGe2ebydz5Z5IcTq
-pYjTIZWPeJYtrIkpOBpFTUX/O5EmO6EyE2bloqn75AoJov+DyhhZE+9wZszeZD+7
-oOy/AV89eQn3xlzmgm79KeKzxA/OrstreA/K1djS7vx5EtR5YlUL9N1Y/uhAiV5G
-//BufIYsX3zGQmKHA8e2C/ZB99d6AJIIyH2FoBBh+zhUadR/1HSpqoLa8AfuVNEz
-ByDlG4UJH5maHldkcYu09WQyEVg2qGVmFbBT5p1V39+ECFGvzCAmed0R1XfVRaZD
-frjPzzzmeRo+Vd1XmLkkwxPH98rsSLtr+lS9tCJnnw38IzcOV1r8dlkJrDaNwXrp
-lt1fWSzEK3EIBwlBkIu4
-=xR23
------END PGP SIGNATURE-----
-
---jWPLtjN/TlbXOuX3--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,146 +1,97 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH V2 2/4] mtd: spi-nor: add the basic data structures
-Date: Tue, 10 Dec 2013 14:07:59 +0100
-Message-ID: <201312101407.59958.marex@denx.de>
-References: <1386318764-15882-1-git-send-email-b32955@freescale.com> <1386318764-15882-3-git-send-email-b32955@freescale.com>
+Subject: Re: [PATCHv2 04/10] spi/qspi: configure set up register for memory map.
+Date: Tue, 10 Dec 2013 13:57:54 +0100
+Message-ID: <201312101357.54874.marex@denx.de>
+References: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com> <1386339891-32717-5-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	angus.clark-qxv4g6HH51o@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org,
-	sourav.poddar-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1386318764-15882-3-git-send-email-b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org
+To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1386339891-32717-5-git-send-email-sourav.poddar-l0cyMroinI0@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Friday, December 06, 2013 at 09:32:42 AM, Huang Shijie wrote:
-> The spi_nor{} is cloned from the m25p{}.
-> The spi_nor{} can be used by both the m25p80 and spi-nor controller.
+On Friday, December 06, 2013 at 03:24:45 PM, Sourav Poddar wrote:
+> These add api to configure set up registers which will be used
+> for memory mapped operations.
 > 
-> We also add the spi_nor_xfer_cfg{} which can be used by the two
-> fundamental primitives: read_xfer/write_xfer.
+> These was provided as a pointer in the earlier patch and can be
+> used by the slave devices to configure the master controller as an
+> when required according to the usecases.
 > 
->  1) the hooks for spi_nor{}:
->     @read_xfer/write_xfer: We can use these two hooks to code all
->              the following hooks if the driver tries to implement them
->              by itself.
-> 
->     @read_reg: used to read the registers, such as read status register,
->              read configure register.
->     @write_reg: used to write the registers, such as write enable,
->              erase sector.
->     @read_id: read out the ID info.
->     @wait_till_ready: wait till the NOR becomes ready.
->     @read: read out the data from the NOR.
->     @write: write data to the NOR.
->     @erase: erase a sector of the NOR.
-> 
->  2) Add a new field sst_write_second for the SST NOR write.
-> 
-> Signed-off-by: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> Signed-off-by: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
 > ---
->  include/linux/mtd/spi-nor.h |   74
-> +++++++++++++++++++++++++++++++++++++++++++ 1 files changed, 74
-> insertions(+), 0 deletions(-)
+>  drivers/spi/spi-ti-qspi.c |   29 +++++++++++++++++++++++++++++
+>  1 files changed, 29 insertions(+), 0 deletions(-)
 > 
-> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-> index ab2ea1e..b3e08c2 100644
-> --- a/include/linux/mtd/spi-nor.h
-> +++ b/include/linux/mtd/spi-nor.h
-> @@ -50,4 +50,78 @@
->  /* Configuration Register bits. */
->  #define CR_QUAD_EN_SPAN		0x2     /* Spansion Quad I/O */
+> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+> index 48294d1..e4a8afc 100644
+> --- a/drivers/spi/spi-ti-qspi.c
+> +++ b/drivers/spi/spi-ti-qspi.c
+> @@ -117,6 +117,10 @@ struct ti_qspi {
+>  #define MEM_CS		(1 << 8)
+>  #define MEM_CS_DIS	(0 << 8)
 > 
+> +#define QSPI_SETUP0_RD_NORMAL   (0x0 << 12)
+> +#define QSPI_SETUP0_RD_DUAL     (0x1 << 12)
+> +#define QSPI_SETUP0_RD_QUAD     (0x3 << 12)
 > +
-> +enum read_mode {
-> +	SPI_NOR_NORMAL = 0,
-> +	SPI_NOR_FAST,
-> +	SPI_NOR_QUAD,
-> +};
+>  #define	QSPI_FRAME			4096
+> 
+>  #define QSPI_AUTOSUSPEND_TIMEOUT         2000
+> @@ -220,6 +224,30 @@ static int ti_qspi_setup(struct spi_device *spi)
+>  	return 0;
+>  }
+> 
+> +static void ti_qspi_configure_from_slave(struct spi_device *spi)
+> +{
+> +	struct ti_qspi  *qspi = spi_master_get_devdata(spi->master);
+> +	struct slave_info info = spi->info;
+> +	u32 memval, mode;
 > +
-> +/*
-> + * struct spi_nor_xfer_cfg - Structure for defining a Serial Flash
-> transfer + * @wren:		command for "Write Enable", or 0x00 for not 
-required
-> + * @cmd:		command for operation
-> + * @cmd_pins:		number of pins to send @cmd (1, 2, 4)
-> + * @addr:		address for operation
-> + * @addr_pins:		number of pins to send @addr (1, 2, 4)
-> + * @addr_width: 	number of address bytes (3,4, or 0 for address not
-> required) + * @mode:		mode data
-> + * @mode_pins:		number of pins to send @mode (1, 2, 4)
-> + * @mode_cycles:	number of mode cycles (0 for mode not required)
-> + * @dummy_cycles:	number of dummy cycles (0 for dummy not required)
-> + */
-> +struct spi_nor_xfer_cfg {
-> +	u8		wren;
-> +	u8		cmd;
-> +	u8		cmd_pins;
-> +	u32		addr;
-> +	u8		addr_pins;
-> +	u8		addr_width;
-> +	u8		mode;
-> +	u8		mode_pins;
-> +	u8		mode_cycles;
-> +	u8		dummy_cycles;
-> +};
+> +	mode = spi->mode & (SPI_RX_DUAL | SPI_RX_QUAD);
+> +	memval =  (info.read_opcode << 0) | (info.program_opcode << 16) |
+> +		((info.addr_width - 1) << 8) | (info.dummy_cycles << 10);
 > +
-> +#define	SPI_NOR_MAX_CMD_SIZE	8
-> +struct spi_nor {
-> +	struct mtd_info		*mtd;
-> +	struct mutex		lock;
-> +
-> +	/* pointer to a spi device */
-> +	struct device		*dev;
-> +	u32			page_size;
-> +	u8			addr_width;
-> +	u8			erase_opcode;
-> +	u8			read_opcode;
-> +	u8			read_dummy;
-> +	u8			program_opcode;
-> +	enum read_mode		flash_read;
-> +	bool			sst_write_second;
-> +	struct spi_nor_xfer_cfg	cfg;
-> +
-> +	/* for write_reg */
-> +	u8			cmd_buf[SPI_NOR_MAX_CMD_SIZE];
-> +
-> +	/* the two fundamental primitives */
-> +	int (*read_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
-> +			 u8 *buf, size_t len);
-> +	int (*write_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
-> +			  u8 *buf, size_t len);
-> +
-> +	int (*read_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len);
-> +	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
-> +			int write_enable);
+> +	switch (mode) {
+> +	case SPI_RX_DUAL:
+> +		memval |= QSPI_SETUP0_RD_DUAL;
+> +		break;
+> +	case SPI_RX_QUAD:
+> +		memval |= QSPI_SETUP0_RD_QUAD;
+> +		break;
+> +	default:
 
-Does the vybrid really support accelerated SPI NOR register IO or does it 
-emulate it with read/write or read_xfer/write_xfer accessors ? If the later, 
-just drop this stuff for now.
+You want to catch invalid/unsupported mode here instead, so please add 'case 0:' 
+for 1-bit transfer and treat default: as an error .
 
-> +	const struct spi_device_id *(*read_id)(struct spi_nor *nor);
-> +	int (*wait_till_ready)(struct spi_nor *nor);
+> +		memval |= QSPI_SETUP0_RD_NORMAL;
+> +		break;
+> +	}
+> +	ti_qspi_write(qspi, memval, QSPI_SPI_SETUP0_REG);
+> +}
 > +
-> +	/* write */
-> +	void (*write)(struct spi_nor *nor, loff_t to,
-> +			size_t len, size_t *retlen, const u_char *buf);
-> +	/* read */
-> +	int (*read)(struct spi_nor *nor, loff_t from,
-> +			size_t len, size_t *retlen, u_char *buf);
-> +	/* erase */
-> +	int (*erase)(struct spi_nor *nor, loff_t offs);
+>  static void ti_qspi_restore_ctx(struct ti_qspi *qspi)
+>  {
+>  	struct ti_qspi_regs *ctx_reg = &qspi->ctx_reg;
+> @@ -488,6 +516,7 @@ static int ti_qspi_probe(struct platform_device *pdev)
+>  	master->dev.of_node = pdev->dev.of_node;
+>  	master->bits_per_word_mask = BIT(32 - 1) | BIT(16 - 1) | BIT(8 - 1);
+>  	master->mmap = true;
+> +	master->configure_from_slave = ti_qspi_configure_from_slave;
+> 
+>  	if (!of_property_read_u32(np, "num-cs", &num_cs))
+>  		master->num_chipselect = num_cs;
 
-How do you specify what to erase (sub-sector, sector, whole chip) here ?
-
-> +};
->  #endif
+Best regards,
+Marek Vasut
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

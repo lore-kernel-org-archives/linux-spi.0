@@ -1,48 +1,53 @@
-From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 05/11] spi: nuc900: Use devm_*() functions
-Date: Tue, 10 Dec 2013 14:57:55 +0900
-Message-ID: <000401cef56c$c5758710$50609530$%han@samsung.com>
-References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
- <001101cef4c7$fb071e20$f1155a60$%han@samsung.com>
- <CAKT61h9D=mSqTshn4RxHJpBWkaoEtSCom_N1MvYdF5FxR8hy=w@mail.gmail.com>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
+Date: Tue, 10 Dec 2013 00:25:47 -0800
+Message-ID: <20131210082547.GC11489@norris.computersforpeace.net>
+References: <1385447575-23773-1-git-send-email-b32955@freescale.com>
+ <20131127043253.GA9468@ld-irv-0074.broadcom.com>
+ <5298AA23.7080404@st.com>
+ <529C5BBF.6000604@freescale.com>
+ <529C6CBB.4000008@st.com>
+ <529D7838.6030606@freescale.com>
+ <20131203082343.GK31626@lee--X1>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Axel Lin' <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>,
-	'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: 'Wan ZongShun' <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>, marex-ynQEQJNshbs@public.gmane.org,
+	broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <CAKT61h9D=mSqTshn4RxHJpBWkaoEtSCom_N1MvYdF5FxR8hy=w@mail.gmail.com>
-Content-language: ko
+Content-Disposition: inline
+In-Reply-To: <20131203082343.GK31626@lee--X1>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday, December 10, 2013 2:52 PM, Wan ZongShun wrote:
-> 2013/12/9 Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>:
-> > Use devm_*() functions to make cleanup paths simpler.
-> >
-> > Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> > ---
-> >  drivers/spi/spi-nuc900.c |   50 ++++++++++------------------------------------
-> >  1 file changed, 10 insertions(+), 40 deletions(-)
+On Tue, Dec 03, 2013 at 08:23:43AM +0000, Lee Jones wrote:
+> I would like to make a suggestion to Brian though. Even if the new
+> framework is written within the next couple of months and the
+> semantics do suit the FSM Controller driver, I'd still like the
+> implementation that's currently on the list to be applied. That way
+> we'd have a known good version of the driver which is almost identical
+> to how ST's internal driver does now. The one that is present out in
+> the wild (i.e. _real_ products).
 
-[.....]
+I think this suggestion is feasible: that we might merge this driver
+even if it doesn't try to fit to some (still vague) idea of what a "SPI
+NOR framework" should be. However, I don't know if the latter argument
+is valid; just because it's in real products doesn't mean we really want
+it as-is. But I think that in this case, the perfect may be the enemy of
+the good -- the "good" driver now is better than the "perfect" driver
+that never comes.
 
-> Great, thanks for your help.
-> 
-> Acked-by: <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> I will subsequently volunteer to provide my utmost best efforts to
+> port the driver over to the new framework as a new task once it has
+> landed.
 
-Hi Wan ZongShun,
+I'll hold you to that! Do we have any collateral for that guarantee? ;)
 
-I really appreciate your feedback.
-For clarity, it can be the following. :-)
-
-Acked-by: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-
-Best regards,
-Jingoo Han
-
+Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

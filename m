@@ -1,51 +1,76 @@
 From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 0/4] mtd: spi-nor: add a new framework for SPI NOR
-Date: Tue, 10 Dec 2013 00:25:47 -0800
-Message-ID: <20131210082547.GC11489@norris.computersforpeace.net>
+Date: Tue, 10 Dec 2013 01:08:54 -0800
+Message-ID: <20131210090854.GD11489@norris.computersforpeace.net>
 References: <1385447575-23773-1-git-send-email-b32955@freescale.com>
  <20131127043253.GA9468@ld-irv-0074.broadcom.com>
  <5298AA23.7080404@st.com>
- <529C5BBF.6000604@freescale.com>
- <529C6CBB.4000008@st.com>
- <529D7838.6030606@freescale.com>
- <20131203082343.GK31626@lee--X1>
+ <1386082273.18201.61.camel@shinybook.infradead.org>
+ <20131204184405.GE9468@ld-irv-0074.broadcom.com>
+ <52A08F43.6060307@st.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>, marex-ynQEQJNshbs@public.gmane.org,
-	broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, marex-ynQEQJNshbs@public.gmane.org,
+	broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
+	pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Angus Clark <angus.clark-qxv4g6HH51o@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20131203082343.GK31626@lee--X1>
+In-Reply-To: <52A08F43.6060307-qxv4g6HH51o@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 03, 2013 at 08:23:43AM +0000, Lee Jones wrote:
-> I would like to make a suggestion to Brian though. Even if the new
-> framework is written within the next couple of months and the
-> semantics do suit the FSM Controller driver, I'd still like the
-> implementation that's currently on the list to be applied. That way
-> we'd have a known good version of the driver which is almost identical
-> to how ST's internal driver does now. The one that is present out in
-> the wild (i.e. _real_ products).
+On Thu, Dec 05, 2013 at 02:35:47PM +0000, Angus Clark wrote:
+> On 12/04/2013 06:44 PM, Brian Norris wrote:
+> > On this topic, I have one more stick to throw on this fire; I have some
+> > Broadcom hardware that consists of two pieces:
+> > 
+> >   (1) a true SPI controller, with single-line-I/O and
+> >   (2) a Serial Flash controller that can accelerate flash read, using
+> >       dual/quad I/O.
+> 
+> We support one platform with properties similar to the hardware you describe,
+> and such a hybrid configuration was in mind when I was thinking about the
+> spi-nor framework.  I am not sure how well this will come across over email, but
+> I envisage something like this:
+> 
+>                              spi-nor
+>                                 |
+>                                 v
+>                           [spi-nor-xfer]
+>                                 |
+>          ------------------------------------------------
+>         |                       |                        |
+>         v                       v                        v
+>    spi-wrapper (<------)  hybrid-driver          serial-flash-driver
+>         |                       |                        |
+>       [SPI]                     |                        |
+>         |                       |                        |
+>         v                       |                        |
+> generic-spi-driver              |                        |
+>         |                       |                        |
+>         v                       v                        v
+> [generic-SPI-Cntrl]   [SPI-Flash-Read Cntrl]   [SPI-Flash-Controller]
+> 
+> The 'spi-nor' layer is responsible for Serial Flash domain knowledge, and how to
+> generate 'spi-nor-xfer' messages.  The 'spi-wrapper' would provide an interface
+> to the generic SPI framework, flattening the 'spi-nor-xfer' message to standard
+> SPI calls.  The combination of 'spi-nor' and 'spi-wrapper' should achieve what
+> we have today for the m25p80 driver.  The 'serial-flash-driver' in the example
+> provides an implementation for a dedicated Serial Flash Controller, making use
+> of the spi-nor-xfer semantics where required.  The 'hybrid-driver' could use the
+> 'spi-wrapper' implementation for write and erase hooks, and optimised
+> implementations for read hooks.
 
-I think this suggestion is feasible: that we might merge this driver
-even if it doesn't try to fit to some (still vague) idea of what a "SPI
-NOR framework" should be. However, I don't know if the latter argument
-is valid; just because it's in real products doesn't mean we really want
-it as-is. But I think that in this case, the perfect may be the enemy of
-the good -- the "good" driver now is better than the "perfect" driver
-that never comes.
-
-> I will subsequently volunteer to provide my utmost best efforts to
-> port the driver over to the new framework as a new task once it has
-> landed.
-
-I'll hold you to that! Do we have any collateral for that guarantee? ;)
+OK, that sounds reasonable. But how do I bind my "generic SPI driver"
+with my "SPI NOR accelerated read driver" to represent this? Does the
+hybrid driver (my accelerated-read driver) have to register itself as a
+SPI protocol driver (struct spi_driver)? The "controller" boundaries
+seem to get a little fuzzy under this design.
 
 Brian
 --

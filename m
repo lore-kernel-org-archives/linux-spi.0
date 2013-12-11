@@ -1,64 +1,90 @@
-From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2 2/4] mtd: spi-nor: add the basic data structures
-Date: Wed, 11 Dec 2013 11:53:45 +0000
-Message-ID: <20131211115345.GL16780@lee--X1>
-References: <1386318764-15882-1-git-send-email-b32955@freescale.com>
- <201312101407.59958.marex@denx.de>
- <20131211062428.GA25147@shlinux2.ap.freescale.net>
- <201312111102.18554.marex@denx.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCHv2 00/10] Add memory mapped support for ti qspi, m25p80
+ serial flash.
+Date: Wed, 11 Dec 2013 12:01:57 +0000
+Message-ID: <20131211120157.GS11468@sirena.org.uk>
+References: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com>
+ <201312101349.13564.marex@denx.de> <52A7E7A5.5000909@ti.com>
+ <201312111144.23012.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
-	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, angus.clark-qxv4g6HH51o@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org,
-	sourav.poddar-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/mixed; boundary="===============0473629712568931535=="
+Cc: devicetree@vger.kernel.org, linux-omap@vger.kernel.org, balbi@ti.com,
+ linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org,
+ bcousson@baylibre.com, Sourav Poddar <sourav.poddar@ti.com>,
+ computersforpeace@gmail.com, dwmw2@infradead.org
+To: Marek Vasut <marex@denx.de>
+Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
+In-Reply-To: <201312111144.23012.marex@denx.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
+List-Post: <mailto:linux-mtd@lists.infradead.org>
+List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
+ <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
+Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
+
+
+--===============0473629712568931535==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="4ZVTVymsHR1TEBjP"
 Content-Disposition: inline
-In-Reply-To: <201312111102.18554.marex-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
 
-> > > > The spi_nor{} is cloned from the m25p{}.
-> > > > +	struct spi_nor_xfer_cfg	cfg;
-> > > > +
-> > > > +	/* for write_reg */
-> > > > +	u8			cmd_buf[SPI_NOR_MAX_CMD_SIZE];
-> > > > +
-> > > > +	/* the two fundamental primitives */
-> > > > +	int (*read_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg=
- *cfg,
-> > > > +			 u8 *buf, size_t len);
-> > > > +	int (*write_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cf=
-g *cfg,
-> > > > +			  u8 *buf, size_t len);
-> > > > +
-> > > > +	int (*read_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int =
-len);
-> > > > +	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int=
- len,
-> > > > +			int write_enable);
-> > >=20
-> > > Does the vybrid really support accelerated SPI NOR register IO or=
- does it
-> >=20
-> > The vybrid does not support the accelerated SPI NOR register IO.
-> > these hooks are for Lee's driver.
->=20
-> Which one please?
 
-It's not in Mainline yet, but the patches are on the list.
+--4ZVTVymsHR1TEBjP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-If you search for st_spi_fsm, you'll find them.
+On Wed, Dec 11, 2013 at 11:44:22AM +0100, Marek Vasut wrote:
+> On Wednesday, December 11, 2013 at 05:18:45 AM, Sourav Poddar wrote:
 
---=20
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org =E2=94=82 Open source software for ARM SoCs
-=46ollow Linaro: Facebook | Twitter | Blog
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > I did a quad mode support for m25p80 which easily got cloned into the
+> > new spi framework.
+> > Same can be done for the memory mapped support too
+
+> The quad mode didn't need any new hooks in the m25p80, did it ? That's th=
+e=20
+> difference here.
+
+It did, there's explicit code in the flash driver for it.  However it's
+rather more generic than this.
+
+--4ZVTVymsHR1TEBjP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSqFQyAAoJELSic+t+oim9HKEQAJ0wkfL4oYPQ+BpyWVEIsX9V
+tN9obu/c2zl+UGQlVMsaX3bfBt9r6wiNNr8g63qE7Osouoq0QD012BMfB6bMXo6H
+KprLjBBgooiYfNZwPqESa7m20f5oPJ3Zf8gTQVkT1tmD2o/nuWDl5B1tNvxmYv06
+5EDrVSRXbRgwA7WnUwziVJoYgy68EAZOIzUBIqVrXrpWbsWU40QGBUROhNr/9lqI
+7cWxuZtXu5KAFrhPizQ9edP9m/ZT6eHQVHe1hQcJA1fSbbvSVlzQz9154qg25pUj
+0cSVHscm/QqQNZF037RNO5pIhdKYIpVzMQ5JkjsVPNaM0ALbhzv3kDi4d99peXBP
+YdvEAbcmjRKwxO0hTM95kUvHI0NibeGQMmjH9hvhcufPzIM8Dap06sNvxM91IfS2
+sC47Oq3MXuEM1Uocxv0Ys0Bj9shOVDesIwpma/IW80rq15AzC0yas53duBfK5GG/
+fZFe8ioTUzguFFRvZceZLuRt7fgRmU84sFjE99Q00+e1cohBv/hVSRLgt7mxMs33
+le5LGwHEQQYPNO3njN86DfYwJo4wn8G+oC8F99SuPphFzU6VQ2hQHyMjUNRaqzXM
+/iSYIN21TkZD//EMiDzvc6IwI5u1GKQATCRdghQu9zvOa5MyU6ZLOJw9Y12vPdVt
+Fnkp22832HBo+uK1OIak
+=SqgG
+-----END PGP SIGNATURE-----
+
+--4ZVTVymsHR1TEBjP--
+
+
+--===============0473629712568931535==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+______________________________________________________
+Linux MTD discussion mailing list
+http://lists.infradead.org/mailman/listinfo/linux-mtd/
+
+--===============0473629712568931535==--

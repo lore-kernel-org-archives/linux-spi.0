@@ -1,104 +1,54 @@
-From: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH] spi/fsl-espi: Add Power Management support for eSPI controller
-Date: Wed, 11 Dec 2013 16:11:51 +0800
-Message-ID: <1386749511-21904-1-git-send-email-b48286@freescale.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/fsl-espi: fix the return value judgment of
+ irq_of_parse_and_map.
+Date: Wed, 11 Dec 2013 11:07:04 +0000
+Message-ID: <20131211110704.GN11468@sirena.org.uk>
+References: <1386738580-9930-1-git-send-email-b48286@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	<scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="wwtQuX191/I956S7"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
+	scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org, Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org
+To: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1386738580-9930-1-git-send-email-b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add PM support for eSPI controller using callback function suspend
-and resume in .driver of platform_driver.
 
-Signed-off-by: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
- drivers/spi/spi-fsl-espi.c | 57 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 57 insertions(+)
+--wwtQuX191/I956S7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 8106006..9c3fe70 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -727,6 +727,59 @@ static int of_fsl_espi_remove(struct platform_device *dev)
- 	return mpc8xxx_spi_remove(&dev->dev);
- }
- 
-+#ifdef CONFIG_PM
-+static int of_fsl_espi_suspend(struct device *dev, pm_message_t state)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct mpc8xxx_spi *mpc8xxx_spi;
-+	struct fsl_espi_reg *reg_base;
-+	u32 regval;
-+
-+	mpc8xxx_spi = spi_master_get_devdata(master);
-+	reg_base = mpc8xxx_spi->reg_base;
-+
-+	regval = mpc8xxx_spi_read_reg(&reg_base->mode);
-+	regval &= ~(SPMODE_ENABLE);
-+	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
-+
-+	regval = mpc8xxx_spi_read_reg(&reg_base->mode);
-+
-+	return 0;
-+}
-+
-+static int of_fsl_espi_resume(struct device *dev)
-+{
-+	struct platform_device *pdev = to_platform_device(dev);
-+	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct mpc8xxx_spi *mpc8xxx_spi;
-+	struct fsl_espi_reg *reg_base;
-+	u32 regval;
-+	int i;
-+
-+	mpc8xxx_spi = spi_master_get_devdata(master);
-+	reg_base = mpc8xxx_spi->reg_base;
-+
-+	/* SPI controller initializations */
-+	mpc8xxx_spi_write_reg(&reg_base->mode, 0);
-+	mpc8xxx_spi_write_reg(&reg_base->mask, 0);
-+	mpc8xxx_spi_write_reg(&reg_base->command, 0);
-+	mpc8xxx_spi_write_reg(&reg_base->event, 0xffffffff);
-+
-+	/* Init eSPI CS mode register */
-+	for (i = 0; i < pdata->max_chipselect; i++)
-+		mpc8xxx_spi_write_reg(&reg_base->csmode[i], CSMODE_INIT_VAL);
-+
-+	/* Enable SPI interface */
-+	regval = pdata->initial_spmode | SPMODE_INIT_VAL | SPMODE_ENABLE;
-+
-+	mpc8xxx_spi_write_reg(&reg_base->mode, regval);
-+
-+	return 0;
-+}
-+#endif /* CONFIG_PM */
-+
- static const struct of_device_id of_fsl_espi_match[] = {
- 	{ .compatible = "fsl,mpc8536-espi" },
- 	{}
-@@ -738,6 +791,10 @@ static struct platform_driver fsl_espi_driver = {
- 		.name = "fsl_espi",
- 		.owner = THIS_MODULE,
- 		.of_match_table = of_fsl_espi_match,
-+#ifdef CONFIG_PM
-+		.suspend	= of_fsl_espi_suspend,
-+		.resume		= of_fsl_espi_resume,
-+#endif
- 	},
- 	.probe		= of_fsl_espi_probe,
- 	.remove		= of_fsl_espi_remove,
--- 
-1.8.4.1
+On Wed, Dec 11, 2013 at 01:09:40PM +0800, Hou Zhiqiang wrote:
+> Signed-off-by: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 
+Applied, thanks.
 
+--wwtQuX191/I956S7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSqEdUAAoJELSic+t+oim9JA8P/3BpkLXJ80IUn9ck6pEAVPZ3
+K3H5NYPUp+gHMOGpw/kIuiiq0kzYGFJN1yM+nVem4cEBGdT8GTxlFuT+VfQngTcD
+n42bu/Irgy1veTNEgn7hspuN1lDAmoND6zdLSOfhKEpxar3tDHFaV5yQe4nIDkxb
+JnNaBBWcn1MRO8If3bSEpeNG1b/PIGV1QjP2H93PwZuWYGaHxjh0jKjWDC1Jcm3v
+OS1CKwbZiYoeh9xlvm1AXzzDJQMvb8gUWDqyXMVcdt3lsATai56rH+2xSuEtdog9
+hvcgKl2y2VxFD1UMxFHOB2/sJEv9e4NesobBCD5nk99PmjDyn9a9akNcazCjRYNX
+UcrhFRQ6KLTIo6gjZHTo0V+Qxlbc0g6SA3IEApxIM8Se4Swl2aDhRaT29TQ0jfIb
+0toHxTKVMgpx/zgMp5eohteUtuCjFBwLivvXBhQke7VW1r/KeJM+qAbZO1zQKJIA
+w9ROhbOR+IMKVqHpAammdxyIYsl8rM06V7SrBBN2ZUHtiCbY400vfz0PWFN7KRZl
+nXA32P++/f9CpyBNrgNcTSQSkLBNmNGy03wRJ8dTujR8FKxI/qLt8IodaGhfm7yF
+RiA7kgS32Lz4yY6v5rOKNAjsmPBJjlyezdAV8FYgLkujhkJNToPvmnGY7LN02maS
+TJ3nkJUpZWOpkTqeQYsb
+=U/Tx
+-----END PGP SIGNATURE-----
+
+--wwtQuX191/I956S7--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

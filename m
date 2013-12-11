@@ -1,68 +1,90 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/fsl-espi: Add Power Management support for eSPI
- controller
-Date: Wed, 11 Dec 2013 13:39:48 +0000
-Message-ID: <20131211133948.GU11468@sirena.org.uk>
-References: <1386749511-21904-1-git-send-email-b48286@freescale.com>
+From: Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH V2 2/4] mtd: spi-nor: add the basic data structures
+Date: Wed, 11 Dec 2013 22:33:58 +0800
+Message-ID: <20131211143356.GA1719@gmail.com>
+References: <1386318764-15882-1-git-send-email-b32955@freescale.com>
+ <201312101407.59958.marex@denx.de>
+ <20131211062428.GA25147@shlinux2.ap.freescale.net>
+ <201312111102.18554.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="gn1ylXQ+YRNuZICZ"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org
-To: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, angus.clark-qxv4g6HH51o@public.gmane.org,
+	broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
+	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1386749511-21904-1-git-send-email-b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <201312111102.18554.marex-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, Dec 11, 2013 at 11:02:18AM +0100, Marek Vasut wrote:
+> > > > +
+> > > > +	/* the two fundamental primitives */
+> > > > +	int (*read_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
+> > > > +			 u8 *buf, size_t len);
+> > > > +	int (*write_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
+> > > > +			  u8 *buf, size_t len);
+> > > > +
+> > > > +	int (*read_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len);
+> > > > +	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
+> > > > +			int write_enable);
+> This stuff -- I mean 'read SPI NOR register' and 'write SPI NOR register'. I 
+> would love to see an API which grows as needed, not an API which is bloated by 
+> unused function right from the start.
+I should send out my fsl-quadspi driver in the next version.
 
---gn1ylXQ+YRNuZICZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The read_reg/write_reg are implemented by the m25p80 and fsl-quadspi
+now.
 
-On Wed, Dec 11, 2013 at 04:11:51PM +0800, Hou Zhiqiang wrote:
+I think Lee's driver can implemente the read_xfer/write_xfer.
 
-> +#ifdef CONFIG_PM
-> +static int of_fsl_espi_suspend(struct device *dev, pm_message_t state)
 
-This should be CONFIG_PM_SLEEP.  I'd also expect to see a call to
-spi_master_suspend() here (and similarly for resume) - it won't do
-anything yet but it'd better for completeness in case we add extra
-behaviour and looking at the driver it ought to be converted to
-transfer_one_message anyway.
 
-> +#ifdef CONFIG_PM
-> +		.suspend	= of_fsl_espi_suspend,
-> +		.resume		= of_fsl_espi_resume,
-> +#endif
+> 
+> > > > +	const struct spi_device_id *(*read_id)(struct spi_nor *nor);
+> > > > +	int (*wait_till_ready)(struct spi_nor *nor);
+> > > > +
+> > > > +	/* write */
+> > > > +	void (*write)(struct spi_nor *nor, loff_t to,
+> > > > +			size_t len, size_t *retlen, const u_char *buf);
+> > > > +	/* read */
+> > > > +	int (*read)(struct spi_nor *nor, loff_t from,
+> > > > +			size_t len, size_t *retlen, u_char *buf);
+> > > > +	/* erase */
+> > > > +	int (*erase)(struct spi_nor *nor, loff_t offs);
+> > > 
+> > > How do you specify what to erase (sub-sector, sector, whole chip) here ?
+> > 
+> > I use a write_reg(OPCODE_ERASE_CHIP) to erase the whole chip.
+> > Please read the patch 3.
+> > 
+> > This hook is used to erase a sector.
+> 
+> I suspect we might need a much better documentation for this structure, it is 
+> hardly clear which function does what ;-)
 
-SET_SYSTEM_SLEEP_PM_OPS().
+sorry, i will add more comment in the next version.
 
---gn1ylXQ+YRNuZICZ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> 
+> > Btw, what is the sub-sector mean? which opcodes for the sub-sector?
+> 
+> On large chips with for example 64K big sectors, you can erase a sub-sector 
+> area, usually a 4K one. This reduces the wear of the chip. See these defines in 
+> m25p80.c :
+> 
+>   46 #define OPCODE_BE_4K            0x20    /* Erase 4KiB block */
+>   48 #define OPCODE_BE_32K           0x52    /* Erase 32KiB block */
+>   49 #define OPCODE_CHIP_ERASE       0xc7    /* Erase whole flash chip */
+ok.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+the @erase hook can be used for sub-sector too.
 
-iQIcBAEBAgAGBQJSqGsgAAoJELSic+t+oim9IUsP/3/H59rIAUo5xFeBDwjxRp/v
-v5k0xb/N54E/ctORFJgUFECNe/fhb0qrGo6FGWEUzlHQ03yWlZLlRNncMK9nUhP4
-pHTath8pwM8Bt25CnoEVKda/OpfsWdziocgjBRzh6Ij493uu1X6qWF+evxloMOnh
-uw1pvtN6Wzvc3l7noYqoylVdP/7cH9kDHSlWoOWLyhTodhf0PrFB8ziPoeLt6g4P
-l501BWnWUjdABslDM6/i5wiLY/GaX0LSz1O+5WdlK1MjYY/jjfKlm0ReM4OiJ6ke
-JrZrCAYrlEz+1YBUYmnGzBORxke3YsI9WJRMt9+3y8dX1hzvqFwzSPUMaGCG4hWq
-Tu3aMgXe4r4/zogQymYOuUCphFM1hF5bsxQqFO7+r+4GPtFo4nrKdN+3nz+o37oN
-GRbg4amTyu7FeLDiTodROQNKsjfA6PAeDGiMO/Izyq8Hg0M64Y6K6UJ9K2tdFwdC
-qQrNldwCQrDuerlYC/DNGLpFPxbJdrD0/ILVzIXEbZyMSNtKzaI2jr8R2Cv9aU2W
-TJuLE1+iZE3yGfGKZPARW4JXLt586ofl42XXXQpEr0DSUo98zZGLKpPHPNysTrS/
-lcLi5Z6PrqNOHRZh3dhCiEfTRVHKv0oGOyGUHQzYQkKV9AG3xzCBelFBrZCcI+WC
-h/0obP4SS+FCCizzCLPw
-=vRsf
------END PGP SIGNATURE-----
+thanks
+Huang Shijie
 
---gn1ylXQ+YRNuZICZ--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

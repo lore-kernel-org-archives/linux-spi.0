@@ -1,62 +1,89 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCHv2 00/10] Add memory mapped support for ti qspi, m25p80 serial flash.
-Date: Wed, 11 Dec 2013 11:44:22 +0100
-Message-ID: <201312111144.23012.marex@denx.de>
-References: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com> <201312101349.13564.marex@denx.de> <52A7E7A5.5000909@ti.com>
+Subject: Re: [PATCH V2 2/4] mtd: spi-nor: add the basic data structures
+Date: Wed, 11 Dec 2013 11:02:18 +0100
+Message-ID: <201312111102.18554.marex@denx.de>
+References: <1386318764-15882-1-git-send-email-b32955@freescale.com> <201312101407.59958.marex@denx.de> <20131211062428.GA25147@shlinux2.ap.freescale.net>
 Mime-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org
-To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	angus.clark-qxv4g6HH51o@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org,
+	sourav.poddar-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <52A7E7A5.5000909-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <20131211062428.GA25147-Fb7DQEYuewWctlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday, December 11, 2013 at 05:18:45 AM, Sourav Poddar wrote:
-> Hi Marek,
-> 
-> On Tuesday 10 December 2013 06:19 PM, Marek Vasut wrote:
-> > On Friday, December 06, 2013 at 03:24:41 PM, Sourav Poddar wrote:
-> >> The patch series aims to add memory mapped support for TI qspi
-> >> contoller and also add support for the same in serial flash
-> >> driver(m25p80).
+On Wednesday, December 11, 2013 at 07:24:31 AM, Huang Shijie wrote:
+> On Tue, Dec 10, 2013 at 02:07:59PM +0100, Marek Vasut wrote:
+> > On Friday, December 06, 2013 at 09:32:42 AM, Huang Shijie wrote:
+> > > The spi_nor{} is cloned from the m25p{}.
+> > > +	struct spi_nor_xfer_cfg	cfg;
+> > > +
+> > > +	/* for write_reg */
+> > > +	u8			cmd_buf[SPI_NOR_MAX_CMD_SIZE];
+> > > +
+> > > +	/* the two fundamental primitives */
+> > > +	int (*read_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
+> > > +			 u8 *buf, size_t len);
+> > > +	int (*write_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
+> > > +			  u8 *buf, size_t len);
+> > > +
+> > > +	int (*read_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len);
+> > > +	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
+> > > +			int write_enable);
 > > 
-> > My question is, shall we not wait for the new SPI NOR framework to be
-> > well fleshed out and only then implement this controller driver on top
-> > of it ?
+> > Does the vybrid really support accelerated SPI NOR register IO or does it
 > 
-> I think it will still take lot of time for spi framework to come to
-> alignment
-> and get merged in the mainline. Till then, m25p80 development should
-> go on independently. Once, the spi framework is ready, I can myself port
-> this into the new framework.
+> The vybrid does not support the accelerated SPI NOR register IO.
+> these hooks are for Lee's driver.
 
-Sure, but I also think Huang is coming close to the new framework. Have you seen 
-his latest patchset ( Message-ID: <1386318764-15882-1-git-send-email-
-b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org> ) ? I think you two should really start working on the new 
-framework instead of bending drivers all around.
+Which one please?
 
-> > I have a feeling this patchset adds quite a lot of ad-hoc hacks into the
-> > m25p80 driver, which would become dead code once converted to the SPI
-> > NOR framework.
+> > emulate it with read/write or read_xfer/write_xfer accessors ? If the
+> > later, just drop this stuff for now.
 > 
-> I dont think that spi framework till now provides capabilities which can
-> be used
-> to handle memory mapped cases.
+> What is the "stuff" mean? the "write_enable" ?
 
-Not yet, so please bring it up in the discussion there :)
+This stuff -- I mean 'read SPI NOR register' and 'write SPI NOR register'. I 
+would love to see an API which grows as needed, not an API which is bloated by 
+unused function right from the start.
 
-> I did a quad mode support for m25p80 which easily got cloned into the
-> new spi framework.
-> Same can be done for the memory mapped support too
+> > > +	const struct spi_device_id *(*read_id)(struct spi_nor *nor);
+> > > +	int (*wait_till_ready)(struct spi_nor *nor);
+> > > +
+> > > +	/* write */
+> > > +	void (*write)(struct spi_nor *nor, loff_t to,
+> > > +			size_t len, size_t *retlen, const u_char *buf);
+> > > +	/* read */
+> > > +	int (*read)(struct spi_nor *nor, loff_t from,
+> > > +			size_t len, size_t *retlen, u_char *buf);
+> > > +	/* erase */
+> > > +	int (*erase)(struct spi_nor *nor, loff_t offs);
+> > 
+> > How do you specify what to erase (sub-sector, sector, whole chip) here ?
+> 
+> I use a write_reg(OPCODE_ERASE_CHIP) to erase the whole chip.
+> Please read the patch 3.
+> 
+> This hook is used to erase a sector.
 
-The quad mode didn't need any new hooks in the m25p80, did it ? That's the 
-difference here.
+I suspect we might need a much better documentation for this structure, it is 
+hardly clear which function does what ;-)
+
+> Btw, what is the sub-sector mean? which opcodes for the sub-sector?
+
+On large chips with for example 64K big sectors, you can erase a sub-sector 
+area, usually a 4K one. This reduces the wear of the chip. See these defines in 
+m25p80.c :
+
+  46 #define OPCODE_BE_4K            0x20    /* Erase 4KiB block */
+  48 #define OPCODE_BE_32K           0x52    /* Erase 32KiB block */
+  49 #define OPCODE_CHIP_ERASE       0xc7    /* Erase whole flash chip */
 
 Best regards,
 Marek Vasut

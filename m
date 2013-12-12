@@ -1,156 +1,78 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH V2 0/4] mtd: spi-nor: add a new framework for SPI NOR
-Date: Wed, 11 Dec 2013 20:46:31 +0530
-Message-ID: <52A881CF.4020001@ti.com>
-References: <1386318764-15882-1-git-send-email-b32955@freescale.com>
+From: Stephen Warren <swarren@wwwdotorg.org>
+Subject: Re: [PATCH 00/31] ARM: tegra: use common reset and DMA bindings
+Date: Wed, 11 Dec 2013 17:11:44 -0700
+Message-ID: <52A8FF40.6000809@wwwdotorg.org>
+References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<angus.clark-qxv4g6HH51o@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>, <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	<pekon-l0cyMroinI0@public.gmane.org>, <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1386318764-15882-1-git-send-email-b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, alsa-devel@alsa-project.org,
+ linux-usb@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
+ David Airlie <airlied@linux.ie>, linux-pci@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+ linux-i2c@vger.kernel.org, ac100@lists.launchpad.net,
+ devel@driverdev.osuosl.org, Stephen Warren <swarren@nvidia.com>,
+ Alan Stern <stern@rowland.harvard.edu>, linux-serial@vger.kernel.org,
+ linux-input@vger.kernel.org,
+ =?UTF-8?B?VGVyamUgQmVyZ3N0csO2bQ==?= <tbergstrom@nvidia.com>,
+ devicetree@vger.kernel.org, Pawel Moll <pawel.moll@arm.com>,
+ Ian Campbell <ijc+devicetree@hellion.org.uk>,
+ Rob Herring <rob.herring@calxeda.com>, Mark Brown <broonie@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Mike Turquette <mturquette@linaro.org>,
+ Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
+ treding@nvidia.com
+To: swarren@wwwdotorg.org
+Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
+In-Reply-To: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
+List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
+List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel>
+List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
+List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
+List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
+ <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
+Errors-To: driverdev-devel-bounces@linuxdriverproject.org
+Sender: driverdev-devel-bounces@linuxdriverproject.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Huang,
-On Friday 06 December 2013 02:02 PM, Huang Shijie wrote:
-> 1.) Why add a new framework for SPI NOR?
->    The SPI-NOR controller such as Freescale's Quadspi controller is working
->    in a different way from the SPI bus. It should knows the NOR commands to
->    find the right LUT sequence. Unfortunately, the current code can not meet
->    this requirement.
->
-> 2.) How does this patch set do?
->     This patch set adds a new spi-nor layer.
->     Before this patch, the layer is like:
->
->                     MTD
->           ------------------------
->                    m25p80
->           ------------------------
-> 	       spi bus driver
->           ------------------------
-> 	        SPI NOR chip
->
->     After this patch, the layer is like:
->                     MTD
->           ------------------------
->                    spi-nor
->           ------------------------
->                    m25p80
->           ------------------------
-> 	       spi bus driver
->           ------------------------
-> 	       SPI NOR chip
->
->    With the spi-nor controller driver(Freescale Quadspi), it looks like:
->                     MTD
->           ------------------------
->                    spi-nor
->           ------------------------
->                  fsl-quadspi
->           ------------------------
-> 	       SPI NOR chip
->
-> 3.) more details
->      This patch set adds a new data structrue spi_nor{}, clones most the common
->    code to spi-nor.c. Add spi_nor_xfer_cfg {} for the fundamental primitives:
->    read_xfer/write_xfer.
->
->      Make the m25p80.c use the new APIs.
->
->      Let's discuss the SPI nor framework in the new thread. :)
->
->
-> 4.) TODO list:
->     3.1) add the new spi_nor_device{} for the spi-nor controller's device.
->     3.2) add the Freescale Quadspi driver.
->
-> v1 -->  v2:
-> 	[1] follow Angus's advice, add more hooks and data structrures.
-> 	[2] others.
->
-> Huang Shijie (4):
->    mtd: spi-nor: copy the SPI NOR commands to a new header file
->    mtd: spi-nor: add the basic data structures
->    mtd: spi-nor: add the framework for SPI NOR
->    mtd: m25p80: use the SPI nor framework
->
->   drivers/mtd/Kconfig           |    2 +
->   drivers/mtd/Makefile          |    1 +
->   drivers/mtd/devices/Kconfig   |    2 +-
->   drivers/mtd/devices/m25p80.c  | 1261 +++--------------------------------------
->   drivers/mtd/spi-nor/Kconfig   |    6 +
->   drivers/mtd/spi-nor/Makefile  |    1 +
->   drivers/mtd/spi-nor/spi-nor.c | 1042 ++++++++++++++++++++++++++++++++++
->   include/linux/mtd/spi-nor.h   |  132 +++++
->   8 files changed, 1277 insertions(+), 1170 deletions(-)
->   create mode 100644 drivers/mtd/spi-nor/Kconfig
->   create mode 100644 drivers/mtd/spi-nor/Makefile
->   create mode 100644 drivers/mtd/spi-nor/spi-nor.c
->   create mode 100644 include/linux/mtd/spi-nor.h
->
-I have a requirement for a memory mapped operation for my spi flash driver.
+On 11/15/2013 01:53 PM, Stephen Warren wrote:
+> From: Stephen Warren <swarren@nvidia.com>
+> 
+> This series implements a common reset framework driver for Tegra, and
+> updates all relevant Tegra drivers to use it. It also removes the custom
+> DMA bindings and replaced them with the standard DMA DT bindings.
+> 
+> Historically, the Tegra clock driver has exported a custom API for module
+> reset. This series removes that API, and transitions DT and drivers to
+> the new reset framework.
+> 
+> The custom API used a "struct clk" to identify which module to reset, and
+> consequently some DT bindings and drivers required clocks to be provided
+> where they really needed just a reset identifier instead. Due to this
+> known deficiency, I have always considered most Tegra bindings to be
+> unstable. This series removes this excuse for instability, although I
+> still consider some Tegra bindings unstable due to the need to convert to
+> the common DMA bindings.
+> 
+> Historically, Tegra DMA channels have been represented in DT using a
+> custom nvidia,dma-request-selector property. Now that standard DMA DT
+> bindings exist, convert all Tegra bindings, DTs, and drivers to use the
+> standard instead.
+> 
+> This series makes a DT-ABI-incompatible change to:
+> - Require reset specifiers in DT where relevant.
+> - Require standard DMA specifiers.
+> - Remove clock specifiers from DT where they were only needed for reset.
+> - Remove legacy DMA specifier properties.
+> 
+> I anticipate merging this whole series into the Tegra and arm-soc trees
+> as its own branch, due to internal dependencies. This branch will be
+> stable and can then be merged into any other subsystem trees should any
+> conflicts arise.
+> 
+> This series depends on Peter's Tegra clock driver rework, available at
+> git://nv-tegra.nvidia.com/user/pdeschrijver/linux tegra-clk-tegra124-0
+> (or whatever version of that gets included in 3.14)
 
-A brief explanation about the requirement is here..
-
-ti qspi supports two modes of operation, one is SPI mode(normal), other is
-the memory mapped read mode.
-
-For SPI mode, the state machine remains the same as it is with other spi 
-controller
-available.
-
-For memory mapped, there is something more which we need to do around ..
-
-1. There is a qspi "set up" register available, which needs to be filled 
-with
-      information like flash opcode, dummy bytes etc. In short, flash 
-specific
-      details.
-2   if the above register is configured with the required opcodes, then 
-whenever
-      we need to use memory mapped operations, we need to do is to 
-switch our
-      qspi controller to memory mapped mode.
-     Switching of this mode to memory mapped needs
-      a )  write to a particular qspi register
-      b)   write to control module(optional based on SOC).
-
-3. Once the above steps are configured, then the flash data will be 
-mapped to a
-     particular memory address(SOC specific) from where the flash data  
-can be read.
-
-The series 
-https://www.mail-archive.com/linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org/msg98691.html
-tries to work on the above features, and tries to add a support for the 
-same in the
-spi framework and m25p80 code.
-
-As you see in my patches, once we take care of the above points and add 
-support
-for memory mapped in m25p80 and qspi, then while doing a read in m25p80 
-we can
-do memcpy at the beginning of m25p80_read and can bypass the entire SPI
-framework for memory mapped read operation. Throughput almost gets 
-doubles with this,
-as compared to normal SPI operations.
-
-So, my intention of reviving this here is to add one more feature set, 
-which I suppose
-spi nor framework should handle and to see what needs to be added more 
-for this feature.
-
-
-Please get back, if you need more info on this concept.
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I've applied this series (and pulled in the DMA/ASoC/clk dependencies
+required) to Tegra's for-3.14/dmas-resets-rework branch.

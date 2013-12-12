@@ -1,56 +1,67 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi/fsl-espi: Add Power Management support for eSPI
- controller
-Date: Thu, 12 Dec 2013 11:56:37 +0000
-Message-ID: <20131212115637.GA5367@sirena.org.uk>
-References: <1386824032-19198-1-git-send-email-b48286@freescale.com>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 02/11] spi: mpc512x: Use devm_*() functions
+Date: Thu, 12 Dec 2013 17:38:48 +0100
+Message-ID: <20131212163848.GD26910@book.gsilab.sittig.org>
+References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
+ <000e01cef4c7$53d9e060$fb8da120$%han@samsung.com>
+ <20131209131213.GL2982@book.gsilab.sittig.org>
+ <005601cef54d$7c9b1bf0$75d153d0$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="LZvS9be/3tNcYl/X"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	Mingkai.Hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org
-To: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	'Anatolij Gustschin' <agust-ynQEQJNshbs@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1386824032-19198-1-git-send-email-b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <005601cef54d$7c9b1bf0$75d153d0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Dec 10, 2013 at 11:13 +0900, Jingoo Han wrote:
+> 
+> On Monday, December 09, 2013 10:12 PM, Gerhard Sittig wrote:
+> > 
+> > On Mon, Dec 09, 2013 at 19:13 +0900, Jingoo Han wrote:
+> > >
+> > [ ... ]
+> > > @@ -513,8 +513,8 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+> > >  	mps->fifo =
+> > >  		(struct mpc512x_psc_fifo *)(tempp + sizeof(struct mpc52xx_psc));
+> > >
+> > > -	ret = request_irq(mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
+> > > -			  "mpc512x-psc-spi", mps);
+> > > +	ret = devm_request_irq(dev, mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
+> > > +				"mpc512x-psc-spi", mps);
+> > >  	if (ret)
+> > >  		goto free_master;
+> > >  	init_completion(&mps->txisrdone);
+> > 
+> > nit: whitespace, indentation of the continued parameter list
+> 
+> Hi Gerhard Sittig,
+> 
+> Sorry, I cannot find the whitespace.
+> Also, there is no checkpatch warning.
+> Would you check it again? :-)
+> Thank you for your feedback.
 
---LZvS9be/3tNcYl/X
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+If you look very close at the added lines, you see that the
+continued line (the opening quote of the string) does not align
+with the start of the parameter list of the previous line (the
+'dev' word).  And it appears to not be a false positive due to
+the use of TABs, as in the above quote the "ret = " starts at
+position 8 as well.
 
-On Thu, Dec 12, 2013 at 12:53:52PM +0800, Hou Zhiqiang wrote:
-> Add PM support for eSPI controller using callback function suspend
-> and resume in .driver.pm of platform_driver.
+But as mentioned, it's a nit.  And if nobody else objects neither
+will I.  It's just too minor, and does not affect operation.
 
-Applied, thanks.
 
---LZvS9be/3tNcYl/X
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSqaRyAAoJELSic+t+oim9P+gP/1stgYXOpSesza6URhgW++k4
-qJlqYRIHr5xi20likZ6rbFX+Yib3PG3/E5gvHW0iWbzfIyezBFG4UP4iV+VkJ/0v
-vymNVMowXa0NbS6XbQZZuFdRMeXCUpJVCqrTzfDgF7gpv3ZS+j3jHgmjUjPBr8Ce
-3VeQ4pO0SsNuButdiW67rt0vJ6dbYU10TfcnIkpK00xcmWcDgs65SJz7MjsOWxY8
-ZOYd/l9PPuCIVDFnCrI2qt0t04+EqW9lDfSOvbx+Sc8W/8GtU00kkQEdXMbGHQFT
-xjNPrjIg9TGwIZO1WAn8A7m/TYVb4+AhgrD1X9vOgVT+PDax7uhZ8ZoNDWv6LuGW
-i8Hx2LIzhLFOHWRFG8aOuE89suADBPXlWCOpiSXSGtk0mmQCl7BCYjZ17SDPJD3j
-gfqwSoOQqt2qspYXJZH3TwvL+cKNbhGLXK18P3t5kQql8cQR16d/EV109meMfz8g
-g6nDbTXuSXVu31hE9lPiAreKuryaTD4Hzpip+R4UzXFxgLdDXil+el2fhKOpWnJr
-evzOra9SAoSurUYBi3NlHRyjQH1kARNOorkthPj9htCdklt5FJKaGyFS3NpC0XHd
-bH1keV8qXb+lKb2NFahRZxt4t1tBQKKsIPSvh6RzvHT873auWiQ5cLOEgTwsSC71
-rxLdIvg3qgsLvpFqCXJT
-=l6kK
------END PGP SIGNATURE-----
-
---LZvS9be/3tNcYl/X--
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

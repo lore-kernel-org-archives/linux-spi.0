@@ -1,78 +1,68 @@
-From: Stephen Warren <swarren@wwwdotorg.org>
-Subject: Re: [PATCH 00/31] ARM: tegra: use common reset and DMA bindings
-Date: Wed, 11 Dec 2013 17:11:44 -0700
-Message-ID: <52A8FF40.6000809@wwwdotorg.org>
-References: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
+From: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
+Subject: Re: [PATCH 09/11] ARM: shmobile: r8a7791: MSIOF platform device
+Date: Wed, 11 Dec 2013 16:53:34 -0800
+Message-ID: <20131212005334.GG21531@quad.lixom.net>
+References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
+ <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
+ <1385921962-19843-9-git-send-email-takasi-y@ops.dti.ne.jp>
+ <CACRpkdbvrYgRh7cK0N1HrcxkYzzu9Qw4yAoQwj4f9pEf0r1qQw@mail.gmail.com>
+ <20131205030235.GG21443@verge.net.au>
+ <CACRpkda=m_3Y+FcKUvAj4e1gDUuvqB4VS4bv6u-VnX4LVQQP8Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Rutland <mark.rutland@arm.com>, alsa-devel@alsa-project.org,
- linux-usb@vger.kernel.org, Wolfram Sang <wsa@the-dreams.de>,
- David Airlie <airlied@linux.ie>, linux-pci@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org,
- linux-i2c@vger.kernel.org, ac100@lists.launchpad.net,
- devel@driverdev.osuosl.org, Stephen Warren <swarren@nvidia.com>,
- Alan Stern <stern@rowland.harvard.edu>, linux-serial@vger.kernel.org,
- linux-input@vger.kernel.org,
- =?UTF-8?B?VGVyamUgQmVyZ3N0csO2bQ==?= <tbergstrom@nvidia.com>,
- devicetree@vger.kernel.org, Pawel Moll <pawel.moll@arm.com>,
- Ian Campbell <ijc+devicetree@hellion.org.uk>,
- Rob Herring <rob.herring@calxeda.com>, Mark Brown <broonie@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Mike Turquette <mturquette@linaro.org>,
- Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
- treding@nvidia.com
-To: swarren@wwwdotorg.org
-Return-path: <driverdev-devel-bounces@linuxdriverproject.org>
-In-Reply-To: <1384548866-13141-1-git-send-email-swarren@wwwdotorg.org>
-List-Unsubscribe: <http://driverdev.linuxdriverproject.org/mailman/options/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=unsubscribe>
-List-Archive: <http://driverdev.linuxdriverproject.org/pipermail/driverdev-devel>
-List-Post: <mailto:driverdev-devel@linuxdriverproject.org>
-List-Help: <mailto:driverdev-devel-request@linuxdriverproject.org?subject=help>
-List-Subscribe: <http://driverdev.linuxdriverproject.org/mailman/listinfo/driverdev-devel>,
- <mailto:driverdev-devel-request@linuxdriverproject.org?subject=subscribe>
-Errors-To: driverdev-devel-bounces@linuxdriverproject.org
-Sender: driverdev-devel-bounces@linuxdriverproject.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	"arm-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <arm-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org,
+	"linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CACRpkda=m_3Y+FcKUvAj4e1gDUuvqB4VS4bv6u-VnX4LVQQP8Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 11/15/2013 01:53 PM, Stephen Warren wrote:
-> From: Stephen Warren <swarren@nvidia.com>
+On Wed, Dec 11, 2013 at 01:27:34PM +0100, Linus Walleij wrote:
+> On Thu, Dec 5, 2013 at 4:02 AM, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org> wrote:
+> > On Tue, Dec 03, 2013 at 11:12:32AM +0100, Linus Walleij wrote:
 > 
-> This series implements a common reset framework driver for Tegra, and
-> updates all relevant Tegra drivers to use it. It also removes the custom
-> DMA bindings and replaced them with the standard DMA DT bindings.
+> >> NAK.
+> >
+> > Hi Linus,
+> >
+> > the way that shmobile is handling moving to DT is multi-faceted.
+> > One such facet is that we currently maintain two ways of booting each board.
+> > One uses legacy-C code and initialises devices using platform devices.
+> > The other, which we call -reference uses DT.
+> >
+> > This patch is for the legacy-C board code to use.
+> >
+> > This has been the approach that we have been taking for about a year now.
+> > We have recently been giving some consideration to moving to the next stage
+> > which we believe is to enable devices whose drivers don't have DT bindings
+> > (yet) using DT in -reference. With this in place it should be possible
+> > to plan removal of the legacy-C board code.
+> >
+> > In the mean time I would prefer if we kept with the pattern that
+> > we have been using up until now.
 > 
-> Historically, the Tegra clock driver has exported a custom API for module
-> reset. This series removes that API, and transitions DT and drivers to
-> the new reset framework.
-> 
-> The custom API used a "struct clk" to identify which module to reset, and
-> consequently some DT bindings and drivers required clocks to be provided
-> where they really needed just a reset identifier instead. Due to this
-> known deficiency, I have always considered most Tegra bindings to be
-> unstable. This series removes this excuse for instability, although I
-> still consider some Tegra bindings unstable due to the need to convert to
-> the common DMA bindings.
-> 
-> Historically, Tegra DMA channels have been represented in DT using a
-> custom nvidia,dma-request-selector property. Now that standard DMA DT
-> bindings exist, convert all Tegra bindings, DTs, and drivers to use the
-> standard instead.
-> 
-> This series makes a DT-ABI-incompatible change to:
-> - Require reset specifiers in DT where relevant.
-> - Require standard DMA specifiers.
-> - Remove clock specifiers from DT where they were only needed for reset.
-> - Remove legacy DMA specifier properties.
-> 
-> I anticipate merging this whole series into the Tegra and arm-soc trees
-> as its own branch, due to internal dependencies. This branch will be
-> stable and can then be merged into any other subsystem trees should any
-> conflicts arise.
-> 
-> This series depends on Peter's Tegra clock driver rework, available at
-> git://nv-tegra.nvidia.com/user/pdeschrijver/linux tegra-clk-tegra124-0
-> (or whatever version of that gets included in 3.14)
+> If you get an OK from the ARM SoC maintainers on this approach I
+> will rest my case. I have to provide some kind of pushback you know,
+> lest I fear nothing ever happens...
 
-I've applied this series (and pulled in the DMA/ASoC/clk dependencies
-required) to Tegra's for-3.14/dmas-resets-rework branch.
+So the deal we've had with the Renesas guys is that we've been allowing
+some legacy code to go in, but that we got a handshake earlier this year
+that they were done adding legacy code as of 3.13 / end of the year, and
+they will now start focusing on enabling multiplatform and modernizing
+the shmobile platform.
+
+So, is this one of the few straggling drivers still looking to go in? Or
+are you anticipating more of this over time? I don't want to see much
+more of this added right before it's time to cleanup.
+
+
+-Olof
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

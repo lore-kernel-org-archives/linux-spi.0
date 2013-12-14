@@ -1,67 +1,50 @@
-From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 02/11] spi: mpc512x: Use devm_*() functions
-Date: Thu, 12 Dec 2013 17:38:48 +0100
-Message-ID: <20131212163848.GD26910@book.gsilab.sittig.org>
-References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
- <000e01cef4c7$53d9e060$fb8da120$%han@samsung.com>
- <20131209131213.GL2982@book.gsilab.sittig.org>
- <005601cef54d$7c9b1bf0$75d153d0$%han@samsung.com>
+From: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH -next] spi: tegra20-slink: fix return value check in tegra_slink_init_dma_param()
+Date: Sat, 14 Dec 2013 12:42:51 +0800
+Message-ID: <CAPgLHd-CMEbwqXXvEK7ybSYrDeJPQfkbi+LgRepke_U=WoKmkA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Anatolij Gustschin' <agust-ynQEQJNshbs@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org,
+	thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <005601cef54d$7c9b1bf0$75d153d0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 10, 2013 at 11:13 +0900, Jingoo Han wrote:
-> 
-> On Monday, December 09, 2013 10:12 PM, Gerhard Sittig wrote:
-> > 
-> > On Mon, Dec 09, 2013 at 19:13 +0900, Jingoo Han wrote:
-> > >
-> > [ ... ]
-> > > @@ -513,8 +513,8 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
-> > >  	mps->fifo =
-> > >  		(struct mpc512x_psc_fifo *)(tempp + sizeof(struct mpc52xx_psc));
-> > >
-> > > -	ret = request_irq(mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
-> > > -			  "mpc512x-psc-spi", mps);
-> > > +	ret = devm_request_irq(dev, mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
-> > > +				"mpc512x-psc-spi", mps);
-> > >  	if (ret)
-> > >  		goto free_master;
-> > >  	init_completion(&mps->txisrdone);
-> > 
-> > nit: whitespace, indentation of the continued parameter list
-> 
-> Hi Gerhard Sittig,
-> 
-> Sorry, I cannot find the whitespace.
-> Also, there is no checkpatch warning.
-> Would you check it again? :-)
-> Thank you for your feedback.
+From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 
-If you look very close at the added lines, you see that the
-continued line (the opening quote of the string) does not align
-with the start of the parameter list of the previous line (the
-'dev' word).  And it appears to not be a false positive due to
-the use of TABs, as in the above quote the "ret = " starts at
-position 8 as well.
+In case of error, the function dma_request_slave_channel() returns
+NULL pointer not ERR_PTR(). The IS_ERR() test in the return value
+check should be replaced with NULL test.
 
-But as mentioned, it's a nit.  And if nobody else objects neither
-will I.  It's just too minor, and does not affect operation.
+Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+---
+ drivers/spi/spi-tegra20-slink.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index 1e61e98..3643178 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -614,12 +614,9 @@ static int tegra_slink_init_dma_param(struct tegra_slink_data *tspi,
+ 
+ 	dma_chan = dma_request_slave_channel(tspi->dev,
+ 					     dma_to_memory ? "rx" : "tx");
+-	if (IS_ERR(dma_chan)) {
+-		ret = PTR_ERR(dma_chan);
+-		if (ret != -EPROBE_DEFER)
+-			dev_err(tspi->dev,
+-				"Dma channel is not available: %d\n", ret);
+-		return ret;
++	if (!dma_chan) {
++		dev_err(tspi->dev, "Dma channel is not available: %d\n", ret);
++		return -ENODEV;
+ 	}
+ 
+ 	dma_buf = dma_alloc_coherent(tspi->dev, tspi->dma_buf_size,
 
-virtually yours
-Gerhard Sittig
--- 
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

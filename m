@@ -1,32 +1,39 @@
-From: Stephen Warren <swarren@wwwdotorg.org>
-Subject: Re: [patch] spi: tegra: checking for ERR_PTR instead of NULL
-Date: Mon, 16 Dec 2013 09:55:47 -0700
-Message-ID: <52AF3093.30308@wwwdotorg.org>
-References: <20131216140210.GA32033@elgon.mountain>
+From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Subject: Re: [PATCH -next] spi: tegra20-slink: fix return value check in tegra_slink_init_dma_param()
+Date: Mon, 16 Dec 2013 09:59:39 -0700
+Message-ID: <52AF317B.2050303@wwwdotorg.org>
+References: <CAPgLHd-CMEbwqXXvEK7ybSYrDeJPQfkbi+LgRepke_U=WoKmkA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-To: Dan Carpenter <dan.carpenter@oracle.com>,
-	Laxman Dewangan <ldewangan@nvidia.com>
-Return-path: <kernel-janitors-owner@vger.kernel.org>
-In-Reply-To: <20131216140210.GA32033@elgon.mountain>
-Sender: kernel-janitors-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-tegra-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org,
+	broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAPgLHd-CMEbwqXXvEK7ybSYrDeJPQfkbi+LgRepke_U=WoKmkA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 12/16/2013 07:02 AM, Dan Carpenter wrote:
-> dma_request_slave_channel() returns NULL on error and not ERR_PTRs.
-> I've fixed this by using dma_request_slave_channel_reason() which does
-> return ERR_PTRs.
+On 12/13/2013 09:42 PM, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 > 
-> Fixes: a915d150f68d ('spi: tegra: convert to standard DMA DT bindings')
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> In case of error, the function dma_request_slave_channel() returns
+> NULL pointer not ERR_PTR(). The IS_ERR() test in the return value
 
-Oops. I validate there aren't any more issues like this, at least in the
-commits in the series this fixes.
+> diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
 
-I've applied this to Tegra's for-3.14/dmas-resets-rework branch, since
-that's the only place where the commit this fixes exists.
+>  	dma_chan = dma_request_slave_channel(tspi->dev,
+>  					     dma_to_memory ? "rx" : "tx");
+> -	if (IS_ERR(dma_chan)) {
+...
+> +	if (!dma_chan) {
+
+The code should be calling dma_request_slave_channel_or_reason() rather
+than dma_request_slave_channel(). Dan Williams provided a patch to fix
+this, which I've now applied.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

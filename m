@@ -1,54 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 02/11] spi: mpc512x: Use devm_*() functions
-Date: Tue, 17 Dec 2013 22:53:13 +0000
-Message-ID: <20131217225313.GT28455@sirena.org.uk>
+Subject: Re: [PATCH 03/11] spi: ath79: Use devm_*() functions
+Date: Tue, 17 Dec 2013 22:53:54 +0000
+Message-ID: <20131217225354.GU28455@sirena.org.uk>
 References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
- <000e01cef4c7$53d9e060$fb8da120$%han@samsung.com>
+ <000f01cef4c7$837d0180$8a770480$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="SSJ6yXlPvEk0CmSI"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Gerhard Sittig' <gsi-ynQEQJNshbs@public.gmane.org>,
-	'Anatolij Gustschin' <agust-ynQEQJNshbs@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Chn8nxio6L/4biUD"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Gabor Juhos' <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <000e01cef4c7$53d9e060$fb8da120$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <000f01cef4c7$837d0180$8a770480$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---SSJ6yXlPvEk0CmSI
+--Chn8nxio6L/4biUD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Dec 09, 2013 at 07:13:38PM +0900, Jingoo Han wrote:
+On Mon, Dec 09, 2013 at 07:14:58PM +0900, Jingoo Han wrote:
 > Use devm_*() functions to make cleanup paths simpler.
 
-This doesn't seem to apply against current code, can you check please?
+Applied, thanks.
 
---SSJ6yXlPvEk0CmSI
+--Chn8nxio6L/4biUD
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSsNXWAAoJELSic+t+oim9CE8P/0rTBTZXiXf2KxD8D/6KjXWs
-gcGEp+CE6YsCzpg7LfzhbGih35xE52vDc8ZAJPHVzvDqZbjXKMHpqYtvTY/i1Y1B
-Fj03Jm6uLwbLp9oEWj7E9W68MaXBOSbrXK26cMuWajlh5b4Eoxz6PChWnfGsJQBZ
-//kgEpvM5IGTVLqRnp07swWGwOrhJBpARJ1+OO4+l9AoL4IFTXTGJRRbPU0JWOam
-EiPX4PVJIlv3gxN8am2KPiTkRCqPV1RTyX5ZNiM3S+7q5YF1SwV1U4B8Z0TDsmvt
-RNeekS93IYWdJUUwsiofp76wGyuDVB14+Mis8TPXpvYLSxh7TYaE9DulKDME9SJu
-XSe56/VHkH2o8w77+KsRKvousbIwahFrfxDaGj3KweMSvQHqJlXeJOWRWMUqcHEk
-C75rj1K4oSFtuPtGFBmC3cS1hq5FIRcykV/pHLW2e1s7vr3Fz02XKJzUfWLP72Op
-5oy2j5D83B1E3GJDHv5BlpQWAsiSFwJ9byFYtdXsRkqU+I+7PpmBNC6M611Zf5og
-yAFNQKkp/MGq1oCsAf/Wl0oFIZdLV21L2l0wii3fkOg9q5ABMLzcvRwT+PNxrwYa
-N5AfRj3JdrZbiwaslfKE2rR5DRtYAPbvA5+Vww/KArnJ+i7SN8K968rt8lfVClkq
-rARPY+dH5b3YHdRrYyBN
-=/egt
+iQIcBAEBAgAGBQJSsNX/AAoJELSic+t+oim9fd0QAIayT13mcR/ivxAzl427C1B8
+w9RgvA6TtuedVVwRK/nHVgEb1+GYKvSWLkyWZ3zs0d2QU0FRVFCHbag1oHJhlesD
+DEpVn9Oe6sRET65IINjRRhAnulbKdVsPbEOH2JVFXV4mNls5mAmZWrEp4AZd0sio
+6JBIRR1RLuv+3iOniBhTzLI7r7j25eQUUqBwcQ3KY471F/yy7swUkUnL26xIgid8
+Tx/Ky7BEI+J76yFrXztsh0Xpb/aipQvrsghArP3qhLH3Pd1l8eYxrP2He8C3IEdA
+CYv0f2D/UHORa2MSrgy5hD/bBjnsoWU2DwZ/TsJyC3hzI6YG8+RdLqeOCDWfSFYu
+i/50n3TNnDLg+TqL9B9+9N9HTqHRimAqKEIFA1kGXAfZzhJ/em0KvKEiSp8v38O8
+QTQ1Y9GvzM3HHbSHQAGiX8Iqg6rndemXhvBe1v0sSNDQjx1OHn70hm/AjvnWIDrY
+9I5QZDvFRC5rEi4ZBFcdEtevyE3kzY5UKe0P9oFt3Io70Iu5HZg1t0vdz+ODd0F6
+TKNzgc2fdRJzlmwbat1zqZRAf7o8xXjPRLVrYehD4qjo3Z5sU96g/n04T7UnrA7n
+2QCatXA6vX1EzCIPiookLoHnV2Et4Ty+NG1heRcyttJG3WrwJk943tZbkYIvXttk
+ATvL+1QCdxPJe4dGi7jb
+=w3Hg
 -----END PGP SIGNATURE-----
 
---SSJ6yXlPvEk0CmSI--
+--Chn8nxio6L/4biUD--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

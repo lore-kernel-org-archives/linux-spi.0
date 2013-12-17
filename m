@@ -1,13 +1,15 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH v3 0/7] mtd: spi-nor: add a new framework for SPI NOR
-Date: Tue, 17 Dec 2013 12:57:54 +0800
-Message-ID: <20131217045752.GA15761@shlinux2.ap.freescale.net>
+From: "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
+Subject: RE: [PATCH v3 0/7] mtd: spi-nor: add a new framework for SPI NOR
+Date: Tue, 17 Dec 2013 05:45:38 +0000
+Message-ID: <20980858CB6D3A4BAE95CA194937D5E73EA56B8A@DBDE04.ent.ti.com>
 References: <1387184330-14448-1-git-send-email-b32955@freescale.com>
  <20980858CB6D3A4BAE95CA194937D5E73EA56ADC@DBDE04.ent.ti.com>
  <20131217040209.GA27091@shlinux2.ap.freescale.net>
  <20980858CB6D3A4BAE95CA194937D5E73EA56B3A@DBDE04.ent.ti.com>
+ <20131217045752.GA15761@shlinux2.ap.freescale.net>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 Cc: "mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org" <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>,
 	"dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org" <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
 	"computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
@@ -24,53 +26,53 @@ Cc: "mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org" <mike-UTnDXsALFwNjM
 	"b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	"b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
 	"shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20980858CB6D3A4BAE95CA194937D5E73EA56B3A-yXqyApvAXouIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
+In-Reply-To: <20131217045752.GA15761-Fb7DQEYuewWctlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 17, 2013 at 05:00:53AM +0000, Gupta, Pekon wrote:
-> >From: Huang Shijie [mailto:b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org]
-> >On Tue, Dec 17, 2013 at 04:08:33AM +0000, Gupta, Pekon wrote:
-> >>
-> >> As much base code is copied from m25p90.c,
-> >> Do you mind keeping the sign-offs of the original contributors of m25p80.c
-> >> at-least in patches where much code is ported ?
-> >I have added the lines in the spi-nor.c:
-> >
-> > " Cloned most of the code from the m25p80.c"
-> >
-> >> This would at-least give some credit to original authors and contributors.
-> >I do not change any authors information of m25p80.c.
-> >
-> >If it is not enough?  Could you remind me what to do ?
-> >
-> (1) Add sign-offs of main authors of m25p80, so that original contributors
->  still remains in path of submission [1].
-Do you mean add the sign-offs in end of the patch 3's commit message?:
-	Signed-off-by: Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>
+>From: Huang Shijie [mailto:b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org]
+>>From: Pekon Gupta [mailto:pekon-l0cyMroinI0@public.gmane.org]
+[...]
+>> (1) Add sign-offs of main authors of m25p80, so that original contributors
+>>  still remains in path of submission [1].
+>Do you mean add the sign-offs in end of the patch 3's commit message?:
+>	Signed-off-by: Mike Lavender <mike-UTnDXsALFwNjMdQLN6DIHgC/G2K4zDHf@public.gmane.org>
+>
+I think Mike's  email ID is no-more valid. So you can either find out his
+current email-Id from other sources. OR
+add David's or someone else's ID which has equivalent number of
+contributions in m25p80.c (that you can figure out from either commit
+logs or git blame).
 
 
-> 
-> (2) Also, please remove following from spi-nor.c
->   However, you can keep this in fsl-quadspi.c.
->   +MODULE_AUTHOR("Freescale Semiconductor Inc.");
->   I'm sure this was _not_ present in original m25p80.c
->  (m25p80.c was started as ST's driver as per MODULE_DESCRIPTION)
-okay.
+>>
+>> (2) Also, please remove following from spi-nor.c
+>>   However, you can keep this in fsl-quadspi.c.
+>>   +MODULE_AUTHOR("Freescale Semiconductor Inc.");
+>>   I'm sure this was _not_ present in original m25p80.c
+>>  (m25p80.c was started as ST's driver as per MODULE_DESCRIPTION)
+>okay.
+>
+Thanks much.
+You can put your name instead, I don't mind that bcoz you have worked
+to get this framework assembled by joining different pieces.
 
-> 
-> (3)     +MODULE_LICENSE("GPL");
-> Also, I assume the license version should be "GPLv2" ?
+However, please use a email-id which is valid for long-term (preferably
+your personal ID), so that even if your association with your company ends,
+still there is some way to track you and keep you in loop of future patches
+for this framework.
 
-yes. it should be v2.
+>>
+>> (3)     +MODULE_LICENSE("GPL");
+>> Also, I assume the license version should be "GPLv2" ?
+>
+>yes. it should be v2.
+>
 
-thanks
-Huang Shijie
-
-
+with regards, pekon
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

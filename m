@@ -1,7 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 4/4] spi/bcm63xx: fix pm sleep support
-Date: Tue, 17 Dec 2013 21:42:10 +0100
-Message-ID: <1387312930-22436-5-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 3/4] spi/bcm63xx: check return value of clk_prepare_enable
+Date: Tue, 17 Dec 2013 21:42:09 +0100
+Message-ID: <1387312930-22436-4-git-send-email-jogo@openwrt.org>
 References: <1387312930-22436-1-git-send-email-jogo@openwrt.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
@@ -12,53 +12,43 @@ In-Reply-To: <1387312930-22436-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@publ
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Use the correct symbol to guard the callbacks and use appropriate defines
-for setting up the ops struct.
+Ensure we notice if the clock cannot be enabled for any reason and pass
+the error down.
 
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 0c8c68a..77286ae 100644
+index ae60731..0c8c68a 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -436,7 +436,7 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
- 	return 0;
- }
+@@ -397,7 +397,10 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 	}
  
--#ifdef CONFIG_PM
-+#ifdef CONFIG_PM_SLEEP
- static int bcm63xx_spi_suspend(struct device *dev)
+ 	/* Initialize hardware */
+-	clk_prepare_enable(bs->clk);
++	ret = clk_prepare_enable(bs->clk);
++	if (ret)
++		goto out_err;
++
+ 	bcm_spi_writeb(bs, SPI_INTR_CLEAR_ALL, SPI_INT_STATUS);
+ 
+ 	/* register and we are done */
+@@ -450,8 +453,11 @@ static int bcm63xx_spi_resume(struct device *dev)
  {
  	struct spi_master *master = dev_get_drvdata(dev);
-@@ -463,22 +463,17 @@ static int bcm63xx_spi_resume(struct device *dev)
+ 	struct bcm63xx_spi *bs = spi_master_get_devdata(master);
++	int ret;
  
- 	return 0;
- }
-+#endif
+-	clk_prepare_enable(bs->clk);
++	ret = clk_prepare_enable(bs->clk);
++	if (ret)
++		return ret;
  
- static const struct dev_pm_ops bcm63xx_spi_pm_ops = {
--	.suspend	= bcm63xx_spi_suspend,
--	.resume		= bcm63xx_spi_resume,
-+	SET_SYSTEM_SLEEP_PM_OPS(bcm63xx_spi_suspend, bcm63xx_spi_resume)
- };
+ 	spi_master_resume(master);
  
--#define BCM63XX_SPI_PM_OPS	(&bcm63xx_spi_pm_ops)
--#else
--#define BCM63XX_SPI_PM_OPS	NULL
--#endif
--
- static struct platform_driver bcm63xx_spi_driver = {
- 	.driver = {
- 		.name	= "bcm63xx-spi",
- 		.owner	= THIS_MODULE,
--		.pm	= BCM63XX_SPI_PM_OPS,
-+		.pm	= &bcm63xx_spi_pm_ops,
- 	},
- 	.probe		= bcm63xx_spi_probe,
- 	.remove		= bcm63xx_spi_remove,
 -- 
 1.8.5.1
 --

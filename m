@@ -1,41 +1,61 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH v3 6/7] Documentation: add the binding file for Quadspi driver
-Date: Tue, 17 Dec 2013 16:10:10 +0100
-Message-ID: <201312171610.10923.marex@denx.de>
-References: <1387184330-14448-1-git-send-email-b32955@freescale.com> <201312171410.05423.marex@denx.de> <593AEF6C47F46446852B067021A273D6D9AFB83B@MUCSE039.lantiq.com>
+From: Huang Shijie <shijie8@gmail.com>
+Subject: Re: [PATCH v3 2/7] mtd: spi-nor: add the basic data structures
+Date: Wed, 18 Dec 2013 00:00:52 +0800
+Message-ID: <20131217160050.GA1279@gmail.com>
+References: <1387184330-14448-1-git-send-email-b32955@freescale.com>
+ <201312171405.55964.marex@denx.de>
+ <20131217134923.GA1220@gmail.com>
+ <201312171616.57029.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: b32955@freescale.com, dwmw2@infradead.org,
-	computersforpeace@gmail.com, angus.clark@st.com,
-	lee.jones@linaro.org, pekon@ti.com, sourav.poddar@ti.com,
-	broonie@linaro.org, linux-mtd@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, b44548@freescale.com,
-	b18965@freescale.com, shawn.guo@linaro.org
-To: thomas.langer@lantiq.com
+Content-Type: text/plain; charset=us-ascii
+Cc: Huang Shijie <b32955@freescale.com>, angus.clark@st.com,
+	shawn.guo@linaro.org, b44548@freescale.com, broonie@linaro.org,
+	dwmw2@infradead.org, linux-doc@vger.kernel.org,
+	b18965@freescale.com, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org, pekon@ti.com, sourav.poddar@ti.com,
+	computersforpeace@gmail.com, lee.jones@linaro.org,
+	linux-arm-kernel@lists.infradead.org
+To: Marek Vasut <marex@denx.de>
 Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <593AEF6C47F46446852B067021A273D6D9AFB83B@MUCSE039.lantiq.com>
+Content-Disposition: inline
+In-Reply-To: <201312171616.57029.marex@denx.de>
 Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tuesday, December 17, 2013 at 02:36:33 PM, thomas.langer@lantiq.com wrote:
-> Hello Marek,
-> 
-> Marek Vasut wrote on 2013-12-17:
-> > On Monday, December 16, 2013 at 09:58:49 AM, Huang Shijie wrote:
-> >> This patch adds the binding file for Freescale Quadspi driver.
-> >> 
-> >> Signed-off-by: Huang Shijie <b32955@freescale.com>
+On Tue, Dec 17, 2013 at 04:16:56PM +0100, Marek Vasut wrote:
+> On Tuesday, December 17, 2013 at 02:49:25 PM, Huang Shijie wrote:
+> > On Tue, Dec 17, 2013 at 02:05:55PM +0100, Marek Vasut wrote:
+> > > On Monday, December 16, 2013 at 09:58:45 AM, Huang Shijie wrote:
+> > > > +struct spi_nor { > > +	struct mtd_info		*mtd;
+> > > > +	struct mutex		lock;
+> > > > +
+> > > > +	/* pointer to a spi device */
+> > > > +	struct device		*dev;
+> > > > +	u32			page_size;
+> > > > +	u8			addr_width;
+> > > > +	u8			erase_opcode;
+> > > > +	u8			read_opcode;
+> > > > +	u8			read_dummy;
+> > > > +	u8			program_opcode;
+> > > > +	enum read_mode		flash_read;
+> > > > +	bool			sst_write_second;
+> > > > +	struct spi_nor_xfer_cfg	cfg;
+> > > 
+> > > You do want to split the function pointers below and the device
+> > > configuration above into separate structures.
 > > 
-> > I might be blind and/or tired, but I don't see devicetree-discuss in the
-> > CC. Next time please CC this ML ( devicetree-discuss AT lists.ozlabs.org
-> > ) so the bindings are reviewed by experts .
+> > sorry, i prefer to keep them in one data structrue, just like the
+> > nand_chip{} does.
 > 
-> I am sure you talking about the new list at devicetree@vger.kernel.org?
 
-Yes, thanks for correcting it.
+Take @read_reg for example, currently, we call it with nor->read_reg();
+If we add a new data structrue for these hooks, we wil call it with
+nor->ops->read_reg().
 
-Best regards,
-Marek Vasut
+So just like the nand_chip{}, make the code more simple.
+
+
+thanks
+Huang Shijie
+
+

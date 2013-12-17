@@ -1,46 +1,45 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 2/4] spi/bcm63xx: don't reject reads >= 256 bytes
-Date: Tue, 17 Dec 2013 21:42:08 +0100
-Message-ID: <1387312930-22436-3-git-send-email-jogo@openwrt.org>
-References: <1387312930-22436-1-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 0/4] spi/bcm63xx: fixes and cleanups
+Date: Tue, 17 Dec 2013 21:42:06 +0100
+Message-ID: <1387312930-22436-1-git-send-email-jogo@openwrt.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
 	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1387312930-22436-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The rx_tail register is only 8 bit wide, so it will wrap around
-after 256 read bytes. This makes it rather meaningless, so drop any
-usage of it to not treat reads over 256 as failed.
+Hi Mark,
 
-Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Acked-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
----
- drivers/spi/spi-bcm63xx.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+These four patches aim to improve the bcm63xx spi driver and fix
+various small issues.
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 5693b4f..ae60731 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -203,13 +203,7 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
- 	if (!timeout)
- 		return -ETIMEDOUT;
- 
--	/* read out all data */
--	rx_tail = bcm_spi_readb(bs, SPI_RX_TAIL);
--
--	if (do_rx && rx_tail != len)
--		return -EIO;
--
--	if (!rx_tail)
-+	if (!do_rx)
- 		return 0;
- 
- 	len = 0;
+The first two are actually a resend. I accidentially took an old
+(not working anymore) email address from you, I suspect they went under
+the radar. They are the same except that I added Florian's Acks.
+
+These might be stable/3.13 material.
+
+The latter two just do some smallish cleanups, and don't necessarily
+need backporting I think.
+
+Patch 3 depends on Jingoo Han's devm_clk_get() patch, because that one
+makes sense and I wanted to do the same anyway (actually did, but he was
+faster ;-).
+
+Regards
+Jonas
+
+Jonas Gorski (4):
+  spi/bcm63xx: don't substract prepend length from total length
+  spi/bcm63xx: don't reject reads >= 256 bytes
+  spi/bcm63xx: check return value of clk_prepare_enable
+  spi/bcm63xx: fix pm sleep support
+
+ drivers/spi/spi-bcm63xx.c | 33 +++++++++++++--------------------
+ 1 file changed, 13 insertions(+), 20 deletions(-)
+
 -- 
 1.8.5.1
 --

@@ -1,58 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/4] spi/bcm63xx: fixes and cleanups
-Date: Tue, 17 Dec 2013 22:40:35 +0000
-Message-ID: <20131217224035.GP28455@sirena.org.uk>
-References: <1387312930-22436-1-git-send-email-jogo@openwrt.org>
+Subject: Re: [PATCH 05/11] spi: nuc900: Use devm_*() functions
+Date: Tue, 17 Dec 2013 22:44:21 +0000
+Message-ID: <20131217224421.GQ28455@sirena.org.uk>
+References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
+ <001101cef4c7$fb071e20$f1155a60$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="YolNsh7G+K7zsfIR"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="TSQPSNmi3T91JED+"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Wan ZongShun' <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	'Axel Lin' <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1387312930-22436-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+In-Reply-To: <001101cef4c7$fb071e20$f1155a60$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---YolNsh7G+K7zsfIR
+--TSQPSNmi3T91JED+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 17, 2013 at 09:42:06PM +0100, Jonas Gorski wrote:
-> Hi Mark,
->=20
-> These four patches aim to improve the bcm63xx spi driver and fix
-> various small issues.
+On Mon, Dec 09, 2013 at 07:18:18PM +0900, Jingoo Han wrote:
+> Use devm_*() functions to make cleanup paths simpler.
 
-Applied all, thanks.
+Applied, thnaks.
 
---YolNsh7G+K7zsfIR
+--TSQPSNmi3T91JED+
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSsNLgAAoJELSic+t+oim9UQQQAIxcqeLcY5rxcz9C8jQszAsz
-c2fO2XDhRs41/jSQT/n9y+QN3mqwH/VJOm/19yxUe8ieobqFeJGohH+KiHRVy+qu
-mGrEXrbbU4H6tpddYSWsX4AXbpRdbI1OVjLMwabuJel+rAnANPNp6t0c8PNTPJ6E
-J5z0z/eSlNOoYUQgwGOMK8xmnYD/ZI86yMLlDE2QZ2QWNF+rswsbDASDaEwa2OpX
-6vcocK5iXSHVMc2f0LYzz+TLtTDJ3O0e7XgbYJ8yjxm5JjKwOhkKF9/TGyLj1tqp
-MklV28hfpM4FFYz46bCUErTNybipPy5ZH/539QA4b1LskzkllOwATy+p7HhAHEpi
-J7xdAW67KJbWUG9+btsR4gPfxi1v0Tju7jGdKOgE9Ns4RjMh8WM0FeregOJk1xBv
-tJIS/QDoJYbRZPb2XutGBJ+XdMSLcXydUjZbFuw7ZvNPp+Ar4YUC5hsTOS+6M3mU
-Am9sjVfrAkHgwB9av3FcXY/daZNar3Q+NOBTy8r/bIpl8M43CR4SXjYVd1GLITMl
-1S2L44a/kXU2pm7/BNpRGjvH58QjsVSSC3RaXi9GoTh7S+a7oF71lC++Ej6nGS5B
-JtTRH0mmInZ66az0nFG/IwzWYnzUl1pt+uqzeVUcTo7VWi1JiPsL1ZjXn3d3e3O2
-rCvOu1Hun495VyMs5rb0
-=UKMP
+iQIcBAEBAgAGBQJSsNPCAAoJELSic+t+oim9e14P/2qk9GmI8nina8O0GbOflagl
+C6CGceH4PPKupf6k+gfvZWFbQBH4KjI2i7jgPb+4HHVQ1vxYoXogagWtNXALZEU7
+I1SykjiNayKzKXhIidQH1vDBtTdKgBWs6h7ATDwowBuw7tnnZqAbQn38Z3OmpOF6
+A/3VUTBCL3fCIx+lFzZJ6raOJGa9O57Y2V/VfPEj0lv/71mpCJ3oTHjwMezogAwc
+wBNgmbrzYWHAK8M2PvXeoARXOJxs4DIzj8dSIAb1SWgqkebSiRfWfTvZupdlaBkQ
+KYYRBMLhzi4BVYqztn07g+2IYxxt6sJGgqe9YgDxgjT+L7nOq9PmbXtvrpOKGR9i
+xmvykKHiB1czArEf9pzdQrxi2z7RZTQiA0w4DMPy0nZm+yduJDtxhjxSnhN9w16p
+Ir86tDv4cmEXzHZMIZHwivKK1TdtDfTOUyUAEKWKFiBm9/sBatHfcyIM7RrLognj
+0r1+pm49Do3yPJQ8nDBZ0LX7zxJGzAjf/XHRhvoo8L7rl9Aee5NHpQtlslqhi+RH
+OQ+ce0itdp+kHO3QY11KD2xrn2DZqvGk2qqGIVziz+yvjT4YkEtuinTiE+FDf3yO
+GlVu3nnn/i+fVBZdG7KUd9s0GuPK2sr8jIZVetIRtJVAP7we2MzDdLCZd40EvFiD
+rHySf414/K9FdH2MIIRa
+=07Ee
 -----END PGP SIGNATURE-----
 
---YolNsh7G+K7zsfIR--
+--TSQPSNmi3T91JED+--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

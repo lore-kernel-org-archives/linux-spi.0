@@ -1,7 +1,7 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 1/4] spi/bcm63xx: don't substract prepend length from total length
-Date: Tue, 17 Dec 2013 21:42:07 +0100
-Message-ID: <1387312930-22436-2-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 2/4] spi/bcm63xx: don't reject reads >= 256 bytes
+Date: Tue, 17 Dec 2013 21:42:08 +0100
+Message-ID: <1387312930-22436-3-git-send-email-jogo@openwrt.org>
 References: <1387312930-22436-1-git-send-email-jogo@openwrt.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
@@ -12,29 +12,35 @@ In-Reply-To: <1387312930-22436-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@publ
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The spi command must include the full message length including any
-prepended writes, else transfers larger than 256 bytes will be
-incomplete.
+The rx_tail register is only 8 bit wide, so it will wrap around
+after 256 read bytes. This makes it rather meaningless, so drop any
+usage of it to not treat reads over 256 as failed.
 
 Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Acked-by: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-bcm63xx.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index f44a9eb..5693b4f 100644
+index 5693b4f..ae60731 100644
 --- a/drivers/spi/spi-bcm63xx.c
 +++ b/drivers/spi/spi-bcm63xx.c
-@@ -169,8 +169,6 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
- 			       transfer_list);
- 	}
+@@ -203,13 +203,7 @@ static int bcm63xx_txrx_bufs(struct spi_device *spi, struct spi_transfer *first,
+ 	if (!timeout)
+ 		return -ETIMEDOUT;
  
--	len -= prepend_len;
+-	/* read out all data */
+-	rx_tail = bcm_spi_readb(bs, SPI_RX_TAIL);
 -
- 	init_completion(&bs->done);
+-	if (do_rx && rx_tail != len)
+-		return -EIO;
+-
+-	if (!rx_tail)
++	if (!do_rx)
+ 		return 0;
  
- 	/* Fill in the Message control register */
+ 	len = 0;
 -- 
 1.8.5.1
 --

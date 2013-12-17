@@ -1,82 +1,70 @@
-From: "Gupta, Pekon" <pekon@ti.com>
-Subject: RE: [PATCH v3 0/7] mtd: spi-nor: add a new framework for SPI NOR
-Date: Tue, 17 Dec 2013 05:00:53 +0000
-Message-ID: <20980858CB6D3A4BAE95CA194937D5E73EA56B3A@DBDE04.ent.ti.com>
-References: <1387184330-14448-1-git-send-email-b32955@freescale.com>
- <20980858CB6D3A4BAE95CA194937D5E73EA56ADC@DBDE04.ent.ti.com>
- <20131217040209.GA27091@shlinux2.ap.freescale.net>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH v3 3/7] mtd: spi-nor: add the framework for SPI NOR
+Date: Tue, 17 Dec 2013 10:49:51 +0530
+Message-ID: <52AFDEF7.2080604@ti.com>
+References: <1387184330-14448-1-git-send-email-b32955@freescale.com> <1387184330-14448-4-git-send-email-b32955@freescale.com> <52AF4976.7090305@ti.com> <20131217025646.GD12575@shlinux2.ap.freescale.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: "marex@denx.de" <marex@denx.de>, "angus.clark@st.com" <angus.clark@st.com>,
- "b44548@freescale.com" <b44548@freescale.com>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "b18965@freescale.com" <b18965@freescale.com>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "Poddar,
- Sourav" <sourav.poddar@ti.com>, "shawn.guo@linaro.org" <shawn.guo@linaro.org>,
- "lee.jones@linaro.org" <lee.jones@linaro.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Huang Shijie <b32955@freescale.com>, "mike@steroidmicros.com"
- <mike@steroidmicros.com>, "dwmw2@infradead.org" <dwmw2@infradead.org>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
- "broonie@linaro.org" <broonie@linaro.org>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20131217040209.GA27091@shlinux2.ap.freescale.net>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Cc: <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<angus.clark-qxv4g6HH51o@public.gmane.org>, <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
+	<pekon-l0cyMroinI0@public.gmane.org>, <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	<b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20131217025646.GD12575-Fb7DQEYuewWctlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
->From: Huang Shijie [mailto:b32955@freescale.com]
->On Tue, Dec 17, 2013 at 04:08:33AM +0000, Gupta, Pekon wrote:
+On Tuesday 17 December 2013 08:26 AM, Huang Shijie wrote:
+> On Tue, Dec 17, 2013 at 12:11:58AM +0530, Sourav Poddar wrote:
+>>> +static int spi_nor_read(struct mtd_info *mtd, loff_t from, size_t len,
+>>> +			size_t *retlen, u_char *buf)
+>>> +{
+>>> +	struct spi_nor *nor = mtd_to_spi_nor(mtd);
+>>> +	int ret;
+>>> +
+>>> +	dev_dbg(nor->dev, "from 0x%08x, len %zd\n", (u32)from, len);
+>>> +
+>>> +	ret = spi_nor_lock_and_prep(nor, SPI_NOR_OPS_READ);
+>>> +	if (ret)
+>>> +		return ret;
+>>> +
+>>> +	/* Wait till previous write/erase is done. */
+>>> +	ret = wait_till_ready(nor);
+>>> +	if (ret)
+>>> +		goto read_err;
+>>> +
+>> Can you shift "wait_till_ready" above spi_nor_lock_and_prep?
+>> One usecase for asking for above change is that I am planning to
+>> use this _prep api for switching to memory mapped mode for read and once
+>> I am switched to mmap mode, read_sr calls in wait_till_ready will not
+>> work for me.
 >>
->> As much base code is copied from m25p90.c,
->> Do you mind keeping the sign-offs of the original contributors of m25p80.c
->> at-least in patches where much code is ported ?
->I have added the lines in the spi-nor.c:
+> you can implement your own wait_till_ready here.
+I think no point doing this, since it does the same function for me.
+> Only we have grabbed the lock, then we can do the transactions with the NOR.
 >
-> " Cloned most of the code from the m25p80.c"
+> We can not call the wait_till_ready before we grab the lock, it is wrong.
 >
->> This would at-least give some credit to original authors and contributors.
->I do not change any authors information of m25p80.c.
 >
->If it is not enough?  Could you remind me what to do ?
+> If you really can not implement your own wait_till_ready, the final solution
+> is removing the wait_till_ready in this function, and add the wait_till_ready
+> in the nor->read() hook.
 >
-(1) Add sign-offs of main authors of m25p80, so that original contributors
- still remains in path of submission [1].
 
-(2) Also, please remove following from spi-nor.c
-  However, you can keep this in fsl-quadspi.c.
-  +MODULE_AUTHOR("Freescale Semiconductor Inc.");
-  I'm sure this was _not_ present in original m25p80.c
- (m25p80.c was started as ST's driver as per MODULE_DESCRIPTION)
+Yes, this can be done. So, that if you want to do memcpy do it before this
+condition is hit.
 
-(3)     +MODULE_LICENSE("GPL");
-Also, I assume the license version should be "GPLv2" ?
+> thanks
+> Huang Shijie
+>
+>
 
-Request you please _not_ to tag generic driver frameworks with any
-specific company names, and let open-source be independent of any
-commercial company tags. Otherwise eventually everything generic driver
-will have some or other company name associated with it.
-And this should be followed by everyone (include myself).
-
-I'm not sure why maintainers are not objecting to this. David, Brian ??
-
-
-[1] https://www.kernel.org/doc/Documentation/SubmittingPatches
-"12) Sign your work"
-
-
-with regards, pekon
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

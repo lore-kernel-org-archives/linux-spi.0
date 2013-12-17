@@ -1,40 +1,36 @@
 From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Subject: [PATCH 1/3] spi/bcm63xx-hsspi: check result of clk_prepare_enable
-Date: Tue, 17 Dec 2013 21:44:46 +0100
-Message-ID: <1387313088-22493-2-git-send-email-jogo@openwrt.org>
-References: <1387313088-22493-1-git-send-email-jogo@openwrt.org>
+Subject: [PATCH 0/3] spi/bcm63xx-hsspi: various fixes
+Date: Tue, 17 Dec 2013 21:44:45 +0100
+Message-ID: <1387313088-22493-1-git-send-email-jogo@openwrt.org>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Maxime Bizon <mbizon-MmRyKUhfbQ9GWvitb5QawA@public.gmane.org>,
 	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
 	Kevin Cernekee <cernekee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1387313088-22493-1-git-send-email-jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Ensure we notice if the clock cannot be enabled for any reason and pass
-the error down.
+Hi Mark,
 
-Signed-off-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
----
- drivers/spi/spi-bcm63xx-hsspi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+these are some of the fixes you requested for the driver.
+The devm_clk_get() was already taken care of by Jingoo Han, so I based
+this patchset on his patch(es).
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 6a763a8..949dfb5 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -351,7 +351,9 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 	if (!rate)
- 		return -EINVAL;
- 
--	clk_prepare_enable(clk);
-+	ret = clk_prepare_enable(clk);
-+	if (ret)
-+		return ret;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(*bs));
- 	if (!master) {
+I intentionally did not fix/implement RUNTIME_PM support since I did not
+get around to proper testing it (to ensure I don't try to disable disabled
+clocks etc).
+
+Regards
+Jonas
+
+Jonas Gorski (3):
+  spi/bcm63xx-hsspi: check result of clk_prepare_enable
+  spi/bcm63xx-hsspi: use devm_register_master()
+  spi/bcm63xx-hsspi: fix pm sleep support
+
+ drivers/spi/spi-bcm63xx-hsspi.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
+
 -- 
 1.8.5.1
 --

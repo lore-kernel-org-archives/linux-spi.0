@@ -1,61 +1,89 @@
-From: Huang Shijie <shijie8@gmail.com>
-Subject: Re: [PATCH v3 2/7] mtd: spi-nor: add the basic data structures
-Date: Wed, 18 Dec 2013 00:00:52 +0800
-Message-ID: <20131217160050.GA1279@gmail.com>
-References: <1387184330-14448-1-git-send-email-b32955@freescale.com>
- <201312171405.55964.marex@denx.de>
- <20131217134923.GA1220@gmail.com>
- <201312171616.57029.marex@denx.de>
+From: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH 07/11] spi: bcm63xx: Use devm_clk_get()
+Date: Tue, 17 Dec 2013 21:28:32 +0100
+Message-ID: <CAOiHx=nXj9702yWj0NRW3WfSu5kdB-DpUGurJAj=EB0BwWtVdQ@mail.gmail.com>
+References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com> <001301cef4c8$40d2b3b0$c2781b10$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Huang Shijie <b32955@freescale.com>, angus.clark@st.com,
-	shawn.guo@linaro.org, b44548@freescale.com, broonie@linaro.org,
-	dwmw2@infradead.org, linux-doc@vger.kernel.org,
-	b18965@freescale.com, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org, pekon@ti.com, sourav.poddar@ti.com,
-	computersforpeace@gmail.com, lee.jones@linaro.org,
-	linux-arm-kernel@lists.infradead.org
-To: Marek Vasut <marex@denx.de>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <201312171616.57029.marex@denx.de>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <001301cef4c8$40d2b3b0$c2781b10$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 17, 2013 at 04:16:56PM +0100, Marek Vasut wrote:
-> On Tuesday, December 17, 2013 at 02:49:25 PM, Huang Shijie wrote:
-> > On Tue, Dec 17, 2013 at 02:05:55PM +0100, Marek Vasut wrote:
-> > > On Monday, December 16, 2013 at 09:58:45 AM, Huang Shijie wrote:
-> > > > +struct spi_nor { > > +	struct mtd_info		*mtd;
-> > > > +	struct mutex		lock;
-> > > > +
-> > > > +	/* pointer to a spi device */
-> > > > +	struct device		*dev;
-> > > > +	u32			page_size;
-> > > > +	u8			addr_width;
-> > > > +	u8			erase_opcode;
-> > > > +	u8			read_opcode;
-> > > > +	u8			read_dummy;
-> > > > +	u8			program_opcode;
-> > > > +	enum read_mode		flash_read;
-> > > > +	bool			sst_write_second;
-> > > > +	struct spi_nor_xfer_cfg	cfg;
-> > > 
-> > > You do want to split the function pointers below and the device
-> > > configuration above into separate structures.
-> > 
-> > sorry, i prefer to keep them in one data structrue, just like the
-> > nand_chip{} does.
-> 
+On Mon, Dec 9, 2013 at 11:20 AM, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
+> Use devm_clk_get() to make cleanup paths simpler.
+>
+> Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-Take @read_reg for example, currently, we call it with nor->read_reg();
-If we add a new data structrue for these hooks, we wil call it with
-nor->ops->read_reg().
+Looks good, thanks.
 
-So just like the nand_chip{}, make the code more simple.
+Acked-by: Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 
-
-thanks
-Huang Shijie
-
-
+> ---
+>  drivers/spi/spi-bcm63xx.c |   15 ++++-----------
+>  1 file changed, 4 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+> index 469ecd8..f44a9eb 100644
+> --- a/drivers/spi/spi-bcm63xx.c
+> +++ b/drivers/spi/spi-bcm63xx.c
+> @@ -345,22 +345,19 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+>         irq = platform_get_irq(pdev, 0);
+>         if (irq < 0) {
+>                 dev_err(dev, "no irq\n");
+> -               ret = -ENXIO;
+> -               goto out;
+> +               return -ENXIO;
+>         }
+>
+> -       clk = clk_get(dev, "spi");
+> +       clk = devm_clk_get(dev, "spi");
+>         if (IS_ERR(clk)) {
+>                 dev_err(dev, "no clock for device\n");
+> -               ret = PTR_ERR(clk);
+> -               goto out;
+> +               return PTR_ERR(clk);
+>         }
+>
+>         master = spi_alloc_master(dev, sizeof(*bs));
+>         if (!master) {
+>                 dev_err(dev, "out of memory\n");
+> -               ret = -ENOMEM;
+> -               goto out_clk;
+> +               return -ENOMEM;
+>         }
+>
+>         bs = spi_master_get_devdata(master);
+> @@ -427,9 +424,6 @@ out_clk_disable:
+>         clk_disable_unprepare(clk);
+>  out_err:
+>         spi_master_put(master);
+> -out_clk:
+> -       clk_put(clk);
+> -out:
+>         return ret;
+>  }
+>
+> @@ -443,7 +437,6 @@ static int bcm63xx_spi_remove(struct platform_device *pdev)
+>
+>         /* HW shutdown */
+>         clk_disable_unprepare(bs->clk);
+> -       clk_put(bs->clk);
+>
+>         return 0;
+>  }
+> --
+> 1.7.10.4
+>
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

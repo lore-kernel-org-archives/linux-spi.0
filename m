@@ -1,60 +1,192 @@
-From: Shawn Guo <shawn.guo@linaro.org>
-Subject: Re: [PATCH v3 0/7] mtd: spi-nor: add a new framework for SPI NOR
-Date: Tue, 17 Dec 2013 15:56:51 +0800
-Message-ID: <20131217075649.GL6691@S2101-09.ap.freescale.net>
-References: <1387184330-14448-1-git-send-email-b32955@freescale.com>
- <20980858CB6D3A4BAE95CA194937D5E73EA56ADC@DBDE04.ent.ti.com>
- <20131217040209.GA27091@shlinux2.ap.freescale.net>
- <20980858CB6D3A4BAE95CA194937D5E73EA56B3A@DBDE04.ent.ti.com>
- <20131217060731.GJ6691@S2101-09.ap.freescale.net>
- <20980858CB6D3A4BAE95CA194937D5E73EA56C5B@DBDE04.ent.ti.com>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v3 2/7] mtd: spi-nor: add the basic data structures
+Date: Tue, 17 Dec 2013 14:05:55 +0100
+Message-ID: <201312171405.55964.marex@denx.de>
+References: <1387184330-14448-1-git-send-email-b32955@freescale.com> <1387184330-14448-3-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: Huang Shijie <b32955@freescale.com>,
-	"mike@steroidmicros.com" <mike@steroidmicros.com>,
-	"dwmw2@infradead.org" <dwmw2@infradead.org>,
-	"computersforpeace@gmail.com" <computersforpeace@gmail.com>,
-	"broonie@linaro.org" <broonie@linaro.org>,
-	"angus.clark@st.com" <angus.clark@st.com>,
-	"lee.jones@linaro.org" <lee.jones@linaro.org>,
-	"marex@denx.de" <marex@denx.de>,
-	"Poddar, Sourav" <sourav.poddar@ti.com>,
-	"linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"b44548@freescale.com" <b44548@freescale.com>,
-	"b18965@freescale.com" <b18965@freescale.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: "Gupta, Pekon" <pekon@ti.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20980858CB6D3A4BAE95CA194937D5E73EA56C5B@DBDE04.ent.ti.com>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	angus.clark-qxv4g6HH51o@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org,
+	sourav.poddar-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org, b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org, shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1387184330-14448-3-git-send-email-b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Dec 17, 2013 at 07:17:01AM +0000, Gupta, Pekon wrote:
-> All I said was using company names in Headers or MODULE_AUTHOR of
-> *generic frameworks*. A generic framework is maintained and updated
-> by community at large. And over course of time other people contribute
-> more than the author. So tagging a company name there would sound like
-> _repeatedly_ giving credit to company or yourself, even if most of the
-> original  code is changed now. Does that make sense ?
+On Monday, December 16, 2013 at 09:58:45 AM, Huang Shijie wrote:
+> The spi_nor{} is cloned from the m25p{}.
+> The spi_nor{} can be used by both the m25p80 and spi-nor controller.
+> 
+> We also add the spi_nor_xfer_cfg{} which can be used by the two
+> fundamental primitives: read_xfer/write_xfer.
+> 
+>  1) the hooks for spi_nor{}:
+>     @prepare/unpreare: used to do some work before or after the
+>              read/write/erase/lock/unlock.
+>     @read_xfer/write_xfer: We can use these two hooks to code all
+>              the following hooks if the driver tries to implement them
+>              by itself.
+>     @read_reg: used to read the registers, such as read status register,
+>              read configure register.
+>     @write_reg: used to write the registers, such as write enable,
+>              erase sector.
+>     @read_id: read out the ID info.
+>     @wait_till_ready: wait till the NOR becomes ready.
+>     @read: read out the data from the NOR.
+>     @write: write data to the NOR.
+>     @erase: erase a sector of the NOR.
+> 
+>  2) Add a new field sst_write_second for the SST NOR write.
+> 
+> Signed-off-by: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> ---
+>  include/linux/mtd/spi-nor.h |  108
+> +++++++++++++++++++++++++++++++++++++++++++ 1 files changed, 108
+> insertions(+), 0 deletions(-)
+> 
+> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+> index ab2ea1e..83ca63d 100644
+> --- a/include/linux/mtd/spi-nor.h
+> +++ b/include/linux/mtd/spi-nor.h
+> @@ -50,4 +50,112 @@
+>  /* Configuration Register bits. */
+>  #define CR_QUAD_EN_SPAN		0x2     /* Spansion Quad I/O */
+> 
+> +enum read_mode {
+> +	SPI_NOR_NORMAL = 0,
+> +	SPI_NOR_FAST,
+> +	SPI_NOR_QUAD,
+> +};
+> +
+> +/*
+> + * struct spi_nor_xfer_cfg - Structure for defining a Serial Flash
+> transfer + * @wren:		command for "Write Enable", or 0x00 for not 
+required
+> + * @cmd:		command for operation
+> + * @cmd_pins:		number of pins to send @cmd (1, 2, 4)
+> + * @addr:		address for operation
+> + * @addr_pins:		number of pins to send @addr (1, 2, 4)
+> + * @addr_width: 	number of address bytes (3,4, or 0 for address not
+> required) + * @mode:		mode data
+> + * @mode_pins:		number of pins to send @mode (1, 2, 4)
+> + * @mode_cycles:	number of mode cycles (0 for mode not required)
+> + * @dummy_cycles:	number of dummy cycles (0 for dummy not required)
+> + */
+> +struct spi_nor_xfer_cfg {
+> +	u8		wren;
+> +	u8		cmd;
+> +	u8		cmd_pins;
+> +	u32		addr;
+> +	u8		addr_pins;
+> +	u8		addr_width;
+> +	u8		mode;
+> +	u8		mode_pins;
+> +	u8		mode_cycles;
+> +	u8		dummy_cycles;
+> +};
+> +
+> +#define	SPI_NOR_MAX_CMD_SIZE	8
+> +enum spi_nor_ops {
+> +	SPI_NOR_OPS_READ = 0,
+> +	SPI_NOR_OPS_WRITE,
+> +	SPI_NOR_OPS_ERASE,
+> +	SPI_NOR_OPS_LOCK,
+> +	SPI_NOR_OPS_UNLOCK,
+> +};
+> +
+> +struct spi_nor {
+> +	struct mtd_info		*mtd;
+> +	struct mutex		lock;
+> +
+> +	/* pointer to a spi device */
+> +	struct device		*dev;
+> +	u32			page_size;
+> +	u8			addr_width;
+> +	u8			erase_opcode;
+> +	u8			read_opcode;
+> +	u8			read_dummy;
+> +	u8			program_opcode;
+> +	enum read_mode		flash_read;
+> +	bool			sst_write_second;
+> +	struct spi_nor_xfer_cfg	cfg;
 
-I could somehow buy in the argument of using person email over company
-one in MODULE_AUTHOR(), but still not the one that do not use company
-name in Headers.
+You do want to split the function pointers below and the device configuration 
+above into separate structures.
 
-In this case, Huang works for Freescale and Freescale pays him to do the
-work, so Huang shares the authorship and Freescale shares the copyright.
-There is nothing wrong adding Freescale copyright into the file header,
-based on my understanding.  When other people make significant changes
-and contributions to the file, they are welcomed to add more copyright
-info on top of the existing ones.
+> +	/* for write_reg */
+> +	u8			cmd_buf[SPI_NOR_MAX_CMD_SIZE];
+> +
+> +	/*
+> +	 * Do some work before or after we run these operations:
+> +	 *   read/write/erese/lock/unlock
 
-I'm not a lawyer, and more than happy to be corrected if I'm wrong.
+Proper kernel-doc style comments for this structure would be nice.
 
-Shawn
+> +	 */
+> +	int (*prepare)(struct spi_nor *nor, enum spi_nor_ops ops);
+> +	void (*unprepare)(struct spi_nor *nor, enum spi_nor_ops ops);
+> +
+> +	/*
+> +	 * The two fundamental primitives, you can use them to implement
+> +	 * all the other hooks, except the prepare/unprepare.
+> +	 */
+> +	int (*read_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
+> +			 u8 *buf, size_t len);
+> +	int (*write_xfer)(struct spi_nor *nor, struct spi_nor_xfer_cfg *cfg,
+> +			  u8 *buf, size_t len);
+> +
+> +	/*
+> +	 * The two hooks are used to read/write SPI NOR register, such as
+> +	 * read status register, write status register.
+> +         */
 
+The format of the comment is messed up, please fix globally.
+
+> +	int (*read_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len);
+> +	int (*write_reg)(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
+> +			int write_enable);
+> +
+> +	/*
+> +	 * The hook for reading out the ID, the spi-nor controller drivers
+> +         * can fill it with its own implementation if the default
+> +	 * could not meet its requirement.
+> +	 */
+> +	const struct spi_device_id *(*read_id)(struct spi_nor *nor);
+> +
+> +	/*
+> +	 * The hook for "Wait till ready", some spi-nor controller drivers
+> +	 * may fill it with its own implementation.
+> +	 */
+> +	int (*wait_till_ready)(struct spi_nor *nor);
+> +
+> +	/* write */
+
+write ... what ? I get it, but a proper documentation for new API would be 
+_nice_ . Besides, I do not understand the parameters at all. Neither do I 
+understand how to implement driver based on this API.
+
+> +	void (*write)(struct spi_nor *nor, loff_t to,
+> +			size_t len, size_t *retlen, const u_char *buf);
+> +	/* read */
+> +	int (*read)(struct spi_nor *nor, loff_t from,
+> +			size_t len, size_t *retlen, u_char *buf);
+> +	/* erase a sector(4K/64K, etc..) */
+
+How do you select the erase size here (this is not documented, I dont understand 
+it at all)?
+
+> +	int (*erase)(struct spi_nor *nor, loff_t offs);
+> +
+> +	void *priv;
+> +};
+>  #endif
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

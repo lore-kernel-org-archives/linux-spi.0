@@ -1,60 +1,135 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2] spi: mpc512x: Use devm_*() functions
-Date: Wed, 18 Dec 2013 11:29:22 +0000
-Message-ID: <20131218112922.GI28455@sirena.org.uk>
-References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
- <000e01cef4c7$53d9e060$fb8da120$%han@samsung.com>
- <20131217225313.GT28455@sirena.org.uk>
- <007001cefb90$d7b07050$871150f0$%han@samsung.com>
+From: Gerhard Sittig <gsi@denx.de>
+Subject: Re: [PATCH v3 6/7] Documentation: add the binding file for Quadspi
+ driver
+Date: Wed, 18 Dec 2013 16:30:29 +0100
+Message-ID: <20131218153029.GF8064@book.gsilab.sittig.org>
+References: <1387184330-14448-1-git-send-email-b32955@freescale.com>
+ <1387184330-14448-7-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IfjLu832HdL/xSp1"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Gerhard Sittig' <gsi-ynQEQJNshbs@public.gmane.org>,
-	'Anatolij Gustschin' <agust-ynQEQJNshbs@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <007001cefb90$d7b07050$871150f0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-
---IfjLu832HdL/xSp1
 Content-Type: text/plain; charset=us-ascii
+Cc: dwmw2@infradead.org, computersforpeace@gmail.com,
+	angus.clark@st.com, lee.jones@linaro.org, marex@denx.de,
+	pekon@ti.com, sourav.poddar@ti.com, broonie@linaro.org,
+	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+	b44548@freescale.com, b18965@freescale.com, shawn.guo@linaro.org,
+	devicetree@vger.kernel.org
+To: Huang Shijie <b32955@freescale.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1387184330-14448-7-git-send-email-b32955@freescale.com>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Dec 18, 2013 at 10:31:15AM +0900, Jingoo Han wrote:
-> Use devm_*() functions to make cleanup paths simpler.
->=20
-> Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+[ adding Cc: to devicetree; make sure to keep 'binding' in the
+  subject line upon re-submission, such that reviewers can tell
+  whether you introduce a new binding, or just use an existing
+  binding and implement it in a dts/dtsi file ]
 
-Applied, thanks.
+On Mon, Dec 16, 2013 at 16:58 +0800, Huang Shijie wrote:
+> 
+> This patch adds the binding file for Freescale Quadspi driver.
+> 
+> Signed-off-by: Huang Shijie <b32955@freescale.com>
+> ---
+>  .../devicetree/bindings/mtd/fsl-quadspi.txt        |   31 ++++++++++++++++++++
+>  1 files changed, 31 insertions(+), 0 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+> new file mode 100644
+> index 0000000..3475cfa
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+> @@ -0,0 +1,31 @@
+> +* Freescale Quad Serial Peripheral Interface(QuadSPI)
+> +
+> +Required properties:
+> +- compatible : Should be "fsl,vf610-qspi"
+> +- reg : Offset and length of the register set for the device
+> +- interrupts : Should contain the interrupt for the device
+> +- clocks : The clocks needed by the QuadSPI controller
+> +- clock-names : the name of the clocks
+> +- fsl,nor-num : Contains the number of SPI NOR chips connected to
+> +                the controller.
+> +- fsl,nor-size : the size of each SPI NOR.
+> +- fsl,max-frequency : the frequency at which the SPI NOR works.
 
---IfjLu832HdL/xSp1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Those "fsl,*" properties somehow feel strange.  I comment on
+details below the example since this should even better show why
+I feel so.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+> +
+> +Example:
+> +
+> +qspi0: quadspi@40044000 {
+> +	compatible = "fsl,vf610-qspi";
+> +	reg = <0x40044000 0x1000>;
+> +	interrupts = <0 24 0x04>;
+> +	clocks = <&clks VF610_CLK_QSPI0_EN>,
+> +		<&clks VF610_CLK_QSPI0>;
+> +	clock-names = "qspi_en", "qspi";
+> +	fsl,nor-num = <1>;
+> +	fsl,nor-size = <0x1000000>;
+> +	fsl,max-frequency = <66000000>;
+> +	status = "okay";
+> +
+> +	flash0: s25fl128s@0 {
+> +		....
+> +	};
+> +};
 
-iQIcBAEBAgAGBQJSsYcPAAoJELSic+t+oim9EVMP/AipbXJZ4FsrM9M/BjjAAVfE
-m5Zoc1/uejh8pjrPCDr5Lx3xnuQFGpRUAvrivoG1lxFE2XJH7F2QOunjYm+JSESZ
-XviClE+C8Ol3PwyV+ICllAScI/n0veuCxbNy30ZCoKgJk6MK9keiJKlVzkgUxLlK
-NJ0nOSuIiUes+zK+D0w//mI4HXYEkBgZ6HEQXJ/byJhs6flph2pritlLEmyvkVGa
-wwu6d68GT4L8XzBR6Hml3u7cwsEYyOMOO6wLeWH9cTjp+NSi3rkIN90SAqpig0JX
-D5Lq2NsPFaEzunqTNI0zaOX+FyvpWmM6MO99jB5AdcbKLxtMd3HeRlSsBjDx63Zl
-GdAIiG95wAORuqG3Q84bHNwOUMHP5/Z9pccj9wNdjX2wVTt6ocF21bvq3GOFb3tc
-KIhujGLu1ssqc5qoHaQRySd62+DT3Ffw+ud6D5bWavYm8PXPW65e2SrTxvaPBTLY
-tMSiyqavWIcKDK6EAIPghNKbc8cDgQ3hyl2XIQeenq92dHEy6eJOHyK7OdKLN3ri
-a89uM9dU0keOpJaotn0b5+ZBng+LsK3y/4/Lbl5IBAogUfPDKc2SthS0DHVLDFha
-/OefwkK+X1J7v1BDm7vrmEgnwgIRc+y1mkRkQCG6mTNn16+U589WAWBJUt0wZmjQ
-xcxw5B3aasVsZhcYRlNI
-=4c+p
------END PGP SIGNATURE-----
 
---IfjLu832HdL/xSp1--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+The number of chips connected to the controller should reflect in
+the child nodes of the SPI NOR controller, and need not get
+specified in redundant ways and with potential for errors when
+they can get determined at runtime.
+
+The capacity of the flash chip as well as the maximum frequency
+which the flash chip operates at should be features of the flash
+chip (in combination with the board), i.e. of the child node and
+not the controller.  SPI slaves already have a documented
+property for the purpose of limiting transfer rates when they are
+lower than the controller's i.e. busses capabilities.  Can't tell
+from the top of my head whether there is a property for the
+maximum frequency which a controller should use across the whole
+bus.  In any case, either the property needs to get moved, or the
+description should get updated to say "the max frequency at which
+the controller will send data" or something.
+
+The capacity of the flash chip should be a consequence of either
+having gathered CFI information (if available) or having
+identified the chip by its JEDEC ID and looked up its features in
+an internal database.  Users should not need to specify the
+capacity of the flash chip in the device tree.
+
+
+If the 'fsl,nor-size' property remains (which I doubt at the
+moment), you cannot describe "the size of each" chip in one
+single-cell spec.  So the documentation should get extended to
+reflect multi-chip setups.  But I'd rather assume that the
+property is not needed at all.
+
+You can omit the 'status = "okay"' line since that is the default
+already in the absence of the keyword.  This property is most
+useful to declare yet not enable by default components in .dtsi
+files and to do enable them in individual board files if
+applicable.  This aspect need not be shown in the binding example
+of a QSPI controller.
+
+I'd suggest to use symbolic names for the flags in the last
+interrupt specifier cell, as you do for clock items.
+
+And while I'm in nitpick mode :) let me say that I dislike the
+blanking around the colons in the properties discussion, but I'm
+as well aware that these are "inspired by" the early OF/DT
+documents.  There may be as many expectations about formatting of
+a document as there are readers/consumers.
+
+
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office@denx.de

@@ -1,55 +1,97 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 11/11] spi: bcm2835: Use devm_request_irq()
-Date: Tue, 17 Dec 2013 22:59:00 +0000
-Message-ID: <20131217225900.GX28455@sirena.org.uk>
+From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH V2] spi: mpc512x: Use devm_*() functions
+Date: Wed, 18 Dec 2013 10:31:15 +0900
+Message-ID: <007001cefb90$d7b07050$871150f0$%han@samsung.com>
 References: <000801cef4c7$1b84a470$528ded50$%han@samsung.com>
- <001701cef4c8$eaa87c30$bff97490$%han@samsung.com>
+ <000e01cef4c7$53d9e060$fb8da120$%han@samsung.com>
+ <20131217225313.GT28455@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5860PwWXAiuGjz3C"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Chris Boot' <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>,
-	'Stephen Warren' <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	'Laurent Navet' <laurent.navet-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Gerhard Sittig' <gsi-ynQEQJNshbs@public.gmane.org>,
+	'Anatolij Gustschin' <agust-ynQEQJNshbs@public.gmane.org>,
+	'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <001701cef4c8$eaa87c30$bff97490$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-reply-to: <20131217225313.GT28455-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-language: ko
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Use devm_*() functions to make cleanup paths simpler.
 
---5860PwWXAiuGjz3C
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+Re-based on the latest for-next branch of spi tree. 
 
-On Mon, Dec 09, 2013 at 07:25:00PM +0900, Jingoo Han wrote:
-> Use devm_request_irq() to make cleanup paths simpler.
+ drivers/spi/spi-mpc512x-psc.c |   18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-Applied, thanks.
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index 8767658..46d2313 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -504,7 +504,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 	master->cleanup = mpc512x_psc_spi_cleanup;
+ 	master->dev.of_node = dev->of_node;
+ 
+-	tempp = ioremap(regaddr, size);
++	tempp = devm_ioremap(dev, regaddr, size);
+ 	if (!tempp) {
+ 		dev_err(dev, "could not ioremap I/O port range\n");
+ 		ret = -EFAULT;
+@@ -513,9 +513,8 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 	mps->psc = tempp;
+ 	mps->fifo =
+ 		(struct mpc512x_psc_fifo *)(tempp + sizeof(struct mpc52xx_psc));
+-
+-	ret = request_irq(mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
+-			  "mpc512x-psc-spi", mps);
++	ret = devm_request_irq(dev, mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
++				"mpc512x-psc-spi", mps);
+ 	if (ret)
+ 		goto free_master;
+ 	init_completion(&mps->txisrdone);
+@@ -525,11 +524,11 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 	clk = devm_clk_get(dev, clk_name);
+ 	if (IS_ERR(clk)) {
+ 		ret = PTR_ERR(clk);
+-		goto free_irq;
++		goto free_master;
+ 	}
+ 	ret = clk_prepare_enable(clk);
+ 	if (ret)
+-		goto free_irq;
++		goto free_master;
+ 	mps->clk_mclk = clk;
+ 	mps->mclk_rate = clk_get_rate(clk);
+ 
+@@ -545,11 +544,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 
+ free_clock:
+ 	clk_disable_unprepare(mps->clk_mclk);
+-free_irq:
+-	free_irq(mps->irq, mps);
+ free_master:
+-	if (mps->psc)
+-		iounmap(mps->psc);
+ 	spi_master_put(master);
+ 
+ 	return ret;
+@@ -561,9 +556,6 @@ static int mpc512x_psc_spi_do_remove(struct device *dev)
+ 	struct mpc512x_psc_spi *mps = spi_master_get_devdata(master);
+ 
+ 	clk_disable_unprepare(mps->clk_mclk);
+-	free_irq(mps->irq, mps);
+-	if (mps->psc)
+-		iounmap(mps->psc);
+ 
+ 	return 0;
+ }
+-- 
+1.7.10.4
 
---5860PwWXAiuGjz3C
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSsNcxAAoJELSic+t+oim9WUwP/3CREfqSdiZrZn9pbqARvEVH
-IuRlHHwZtmIBwomDka+JMaV2RMUrKGc8O2UWyCHyP3voXwjMR2jDpoMBmCoHb8sy
-54TfhMMYfT9qm/Si1wI7O1qByCMJJ2fkymI07Ydlgnt78xgj3wXTiok68i1OD/xg
-c5imyhUA/KpcTjWGQWIm7JbnbvpZcQsBBGrHQxNPBBAO+hKUi4Kuy2vXaotOznbs
-qGt8ZxweRKC76ZzNFZWpFs3jgDWxHshJooM/4rk1sn651ShnIEGLBBk3sozjADIm
-yqoXogG8NywyBCht8gq0vabQtHLtlHqw6e8ADME7h7FvlVUti1wisNuIY67mEfbM
-Ov68N6PlKNXL2xnhYWzYU1Vp8rcLB6Xs+xSH2Wro78YrFU3vw2e1CYMJTLM1zWhq
-3AMf/vAwcv1O4MhyvM9199iDmAemT7SmW0gACEtW7NwNE0Yb97VC5D6qlKfwYZBR
-5nO5VfPhiQmYMxoD0iEZsBX8pAbNYciov4D6phEyoW5OqgKUsFLvBRPARajEmZwT
-5yVRHIZwUTIExyUX8tef84GDMbUjFShWKAy0POB9AJeNl+zIUaPvG88q0ZxYt+x0
-QOD+ljTBTgXd/7+ZGDma0ltStjW/O/InQNxrRQEWYWmalClR8uSWCbXZZFvocaAz
-opznAYfOfoFfwVmQIvAf
-=Hnnn
------END PGP SIGNATURE-----
-
---5860PwWXAiuGjz3C--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

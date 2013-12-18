@@ -1,135 +1,122 @@
-From: Gerhard Sittig <gsi@denx.de>
+From: Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH v3 6/7] Documentation: add the binding file for Quadspi
  driver
-Date: Wed, 18 Dec 2013 16:30:29 +0100
-Message-ID: <20131218153029.GF8064@book.gsilab.sittig.org>
+Date: Thu, 19 Dec 2013 00:03:59 +0800
+Message-ID: <20131218160355.GA1145@gmail.com>
 References: <1387184330-14448-1-git-send-email-b32955@freescale.com>
  <1387184330-14448-7-git-send-email-b32955@freescale.com>
+ <20131218153029.GF8064@book.gsilab.sittig.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: dwmw2@infradead.org, computersforpeace@gmail.com,
-	angus.clark@st.com, lee.jones@linaro.org, marex@denx.de,
-	pekon@ti.com, sourav.poddar@ti.com, broonie@linaro.org,
-	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-	b44548@freescale.com, b18965@freescale.com, shawn.guo@linaro.org,
-	devicetree@vger.kernel.org
-To: Huang Shijie <b32955@freescale.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
+	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, angus.clark-qxv4g6HH51o@public.gmane.org,
+	lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, marex-ynQEQJNshbs@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org,
+	sourav.poddar-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org, b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org, shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1387184330-14448-7-git-send-email-b32955@freescale.com>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20131218153029.GF8064-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-[ adding Cc: to devicetree; make sure to keep 'binding' in the
-  subject line upon re-submission, such that reviewers can tell
-  whether you introduce a new binding, or just use an existing
-  binding and implement it in a dts/dtsi file ]
-
-On Mon, Dec 16, 2013 at 16:58 +0800, Huang Shijie wrote:
+On Wed, Dec 18, 2013 at 04:30:29PM +0100, Gerhard Sittig wrote:
+> > +++ b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+> > @@ -0,0 +1,31 @@
+> > +* Freescale Quad Serial Peripheral Interface(QuadSPI)
+> > +
+> > +Required properties:
+> > +- compatible : Should be "fsl,vf610-qspi"
+> > +- reg : Offset and length of the register set for the device
+> > +- interrupts : Should contain the interrupt for the device
+> > +- clocks : The clocks needed by the QuadSPI controller
+> > +- clock-names : the name of the clocks
+> > +- fsl,nor-num : Contains the number of SPI NOR chips connected to
+> > +                the controller.
+> > +- fsl,nor-size : the size of each SPI NOR.
+> > +- fsl,max-frequency : the frequency at which the SPI NOR works.
 > 
-> This patch adds the binding file for Freescale Quadspi driver.
+> Those "fsl,*" properties somehow feel strange.  I comment on
+> details below the example since this should even better show why
+> I feel so.
 > 
-> Signed-off-by: Huang Shijie <b32955@freescale.com>
-> ---
->  .../devicetree/bindings/mtd/fsl-quadspi.txt        |   31 ++++++++++++++++++++
->  1 files changed, 31 insertions(+), 0 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+> > +
+> > +Example:
+> > +
+> > +qspi0: quadspi@40044000 {
+> > +	compatible = "fsl,vf610-qspi";
+> > +	reg = <0x40044000 0x1000>;
+> > +	interrupts = <0 24 0x04>;
+> > +	clocks = <&clks VF610_CLK_QSPI0_EN>,
+> > +		<&clks VF610_CLK_QSPI0>;
+> > +	clock-names = "qspi_en", "qspi";
+> > +	fsl,nor-num = <1>;
+> > +	fsl,nor-size = <0x1000000>;
+> > +	fsl,max-frequency = <66000000>;
+> > +	status = "okay";
+> > +
+> > +	flash0: s25fl128s@0 {
+> > +		....
+> > +	};
+> > +};
 > 
-> diff --git a/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
-> new file mode 100644
-> index 0000000..3475cfa
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
-> @@ -0,0 +1,31 @@
-> +* Freescale Quad Serial Peripheral Interface(QuadSPI)
-> +
-> +Required properties:
-> +- compatible : Should be "fsl,vf610-qspi"
-> +- reg : Offset and length of the register set for the device
-> +- interrupts : Should contain the interrupt for the device
-> +- clocks : The clocks needed by the QuadSPI controller
-> +- clock-names : the name of the clocks
-> +- fsl,nor-num : Contains the number of SPI NOR chips connected to
-> +                the controller.
-> +- fsl,nor-size : the size of each SPI NOR.
-> +- fsl,max-frequency : the frequency at which the SPI NOR works.
-
-Those "fsl,*" properties somehow feel strange.  I comment on
-details below the example since this should even better show why
-I feel so.
-
-> +
-> +Example:
-> +
-> +qspi0: quadspi@40044000 {
-> +	compatible = "fsl,vf610-qspi";
-> +	reg = <0x40044000 0x1000>;
-> +	interrupts = <0 24 0x04>;
-> +	clocks = <&clks VF610_CLK_QSPI0_EN>,
-> +		<&clks VF610_CLK_QSPI0>;
-> +	clock-names = "qspi_en", "qspi";
-> +	fsl,nor-num = <1>;
-> +	fsl,nor-size = <0x1000000>;
-> +	fsl,max-frequency = <66000000>;
-> +	status = "okay";
-> +
-> +	flash0: s25fl128s@0 {
-> +		....
-> +	};
-> +};
+> 
+> The number of chips connected to the controller should reflect in
+> the child nodes of the SPI NOR controller, and need not get
+> specified in redundant ways and with potential for errors when
+> they can get determined at runtime.
+thanks. I have already removed this property in the next version.
 
 
-The number of chips connected to the controller should reflect in
-the child nodes of the SPI NOR controller, and need not get
-specified in redundant ways and with potential for errors when
-they can get determined at runtime.
+> 
+> The capacity of the flash chip as well as the maximum frequency
+> which the flash chip operates at should be features of the flash
+> chip (in combination with the board), i.e. of the child node and
+agree.
+thanks.
 
-The capacity of the flash chip as well as the maximum frequency
-which the flash chip operates at should be features of the flash
-chip (in combination with the board), i.e. of the child node and
-not the controller.  SPI slaves already have a documented
-property for the purpose of limiting transfer rates when they are
-lower than the controller's i.e. busses capabilities.  Can't tell
-from the top of my head whether there is a property for the
-maximum frequency which a controller should use across the whole
-bus.  In any case, either the property needs to get moved, or the
-description should get updated to say "the max frequency at which
-the controller will send data" or something.
+> not the controller.  SPI slaves already have a documented
+> property for the purpose of limiting transfer rates when they are
+> lower than the controller's i.e. busses capabilities.  Can't tell
+> from the top of my head whether there is a property for the
+> maximum frequency which a controller should use across the whole
+> bus.  In any case, either the property needs to get moved, or the
+> description should get updated to say "the max frequency at which
+> the controller will send data" or something.
+> 
+> The capacity of the flash chip should be a consequence of either
+> having gathered CFI information (if available) or having
+> identified the chip by its JEDEC ID and looked up its features in
+> an internal database.  Users should not need to specify the
+> capacity of the flash chip in the device tree.
 
-The capacity of the flash chip should be a consequence of either
-having gathered CFI information (if available) or having
-identified the chip by its JEDEC ID and looked up its features in
-an internal database.  Users should not need to specify the
-capacity of the flash chip in the device tree.
+I will remove it in the next version.
 
+> 
+> 
+> If the 'fsl,nor-size' property remains (which I doubt at the
+> moment), you cannot describe "the size of each" chip in one
+> single-cell spec.  So the documentation should get extended to
+> reflect multi-chip setups.  But I'd rather assume that the
+> property is not needed at all.
+> 
+> You can omit the 'status = "okay"' line since that is the default
+> already in the absence of the keyword.  This property is most
+> useful to declare yet not enable by default components in .dtsi
+> files and to do enable them in individual board files if
+> applicable.  This aspect need not be shown in the binding example
+> of a QSPI controller.
+> 
+> I'd suggest to use symbolic names for the flags in the last
+> interrupt specifier cell, as you do for clock items.
+I will use the symbolic name if it has.
+But if it not have a symbolic name, i have to keep it as it is now.
 
-If the 'fsl,nor-size' property remains (which I doubt at the
-moment), you cannot describe "the size of each" chip in one
-single-cell spec.  So the documentation should get extended to
-reflect multi-chip setups.  But I'd rather assume that the
-property is not needed at all.
-
-You can omit the 'status = "okay"' line since that is the default
-already in the absence of the keyword.  This property is most
-useful to declare yet not enable by default components in .dtsi
-files and to do enable them in individual board files if
-applicable.  This aspect need not be shown in the binding example
-of a QSPI controller.
-
-I'd suggest to use symbolic names for the flags in the last
-interrupt specifier cell, as you do for clock items.
-
-And while I'm in nitpick mode :) let me say that I dislike the
-blanking around the colons in the properties discussion, but I'm
-as well aware that these are "inspired by" the early OF/DT
-documents.  There may be as many expectations about formatting of
-a document as there are readers/consumers.
-
-
-virtually yours
-Gerhard Sittig
--- 
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office@denx.de
+Thanks
+Huang Shijie
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

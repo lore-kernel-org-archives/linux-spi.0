@@ -1,121 +1,138 @@
-From: Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v3 6/7] Documentation: add the binding file for Quadspi
- driver
-Date: Thu, 19 Dec 2013 00:03:59 +0800
-Message-ID: <20131218160355.GA1145@gmail.com>
-References: <1387184330-14448-1-git-send-email-b32955@freescale.com>
- <1387184330-14448-7-git-send-email-b32955@freescale.com>
- <20131218153029.GF8064@book.gsilab.sittig.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org,
-	computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, angus.clark-qxv4g6HH51o@public.gmane.org,
-	lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, marex-ynQEQJNshbs@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org,
-	sourav.poddar-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org, b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org, shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH] spi: spi-imx: Fix out-of-order CS/SCLK operation at low speeds
+Date: Wed, 18 Dec 2013 18:31:47 +0100
+Message-ID: <1387387907-19756-1-git-send-email-marex@denx.de>
+Cc: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20131218153029.GF8064-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Dec 18, 2013 at 04:30:29PM +0100, Gerhard Sittig wrote:
-> > +++ b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
-> > @@ -0,0 +1,31 @@
-> > +* Freescale Quad Serial Peripheral Interface(QuadSPI)
-> > +
-> > +Required properties:
-> > +- compatible : Should be "fsl,vf610-qspi"
-> > +- reg : Offset and length of the register set for the device
-> > +- interrupts : Should contain the interrupt for the device
-> > +- clocks : The clocks needed by the QuadSPI controller
-> > +- clock-names : the name of the clocks
-> > +- fsl,nor-num : Contains the number of SPI NOR chips connected to
-> > +                the controller.
-> > +- fsl,nor-size : the size of each SPI NOR.
-> > +- fsl,max-frequency : the frequency at which the SPI NOR works.
-> 
-> Those "fsl,*" properties somehow feel strange.  I comment on
-> details below the example since this should even better show why
-> I feel so.
-> 
-> > +
-> > +Example:
-> > +
-> > +qspi0: quadspi@40044000 {
-> > +	compatible = "fsl,vf610-qspi";
-> > +	reg = <0x40044000 0x1000>;
-> > +	interrupts = <0 24 0x04>;
-> > +	clocks = <&clks VF610_CLK_QSPI0_EN>,
-> > +		<&clks VF610_CLK_QSPI0>;
-> > +	clock-names = "qspi_en", "qspi";
-> > +	fsl,nor-num = <1>;
-> > +	fsl,nor-size = <0x1000000>;
-> > +	fsl,max-frequency = <66000000>;
-> > +	status = "okay";
-> > +
-> > +	flash0: s25fl128s@0 {
-> > +		....
-> > +	};
-> > +};
-> 
-> 
-> The number of chips connected to the controller should reflect in
-> the child nodes of the SPI NOR controller, and need not get
-> specified in redundant ways and with potential for errors when
-> they can get determined at runtime.
-thanks. I have already removed this property in the next version.
+Problem:
+--------
+ The problem this patch addresses has the following assumptions about the
+ SPI bus setup:
+ - The hardware used to find this is Freescale i.MX537 @ 1200MHz
+ - The SPI SCLK operate at very low speed, less than 200 kHz
+ - There are two SPI devices attached to the bus
+   - Each device uses different GPIO for chipselect
+   - Each device requires different SCLK signal polarity
 
+ The observation of the SCLK and GPIO chipselect lines with a logic analyzer
+ shows, that the SCLK polarity change does sometimes happen after the GPIO
+ chipselect is asserted. The SPI slave device reacts on that by counting the
+ SCLK polarity change as a clock pulse, which disrupts the communication with
+ the SPI slave device.
 
-> 
-> The capacity of the flash chip as well as the maximum frequency
-> which the flash chip operates at should be features of the flash
-> chip (in combination with the board), i.e. of the child node and
-agree.
-thanks.
+Explanation:
+------------
+ We found an interesting correlation, that the maximum delay between the write
+ into the ECSPIx_CONFIGREG register and the change of SCLK polarity at each
+ SCLK frequency of 10 kHz, 20 kHz, 50 kHz and 100 kHz is 100 uS, 50 uS, 20 uS
+ and 10 uS respectively. This lead us to a theory, that at SCLK frequency of
+ 1 Hz, the delay would be 1 S. Therefore, the time it takes for the write to
+ ECSPIx_CONFIGREG to take effect in the hardware is up to the duration of 1
+ tick of the SCLK clock.
 
-> not the controller.  SPI slaves already have a documented
-> property for the purpose of limiting transfer rates when they are
-> lower than the controller's i.e. busses capabilities.  Can't tell
-> from the top of my head whether there is a property for the
-> maximum frequency which a controller should use across the whole
-> bus.  In any case, either the property needs to get moved, or the
-> description should get updated to say "the max frequency at which
-> the controller will send data" or something.
-> 
-> The capacity of the flash chip should be a consequence of either
-> having gathered CFI information (if available) or having
-> identified the chip by its JEDEC ID and looked up its features in
-> an internal database.  Users should not need to specify the
-> capacity of the flash chip in the device tree.
+ During this delay period, if the SCLK frequency is too low, the execution of
+ the spi-imx.c driver can advance so much, that the GPIO chipselect will be
+ asserted. The GPIO chipselect is asserted almost immediatelly.
 
-I will remove it in the next version.
+Solution:
+---------
+ The solution this patch presents is simple. We calculate the resulting SCLK
+ clock first by dividing the ECSPI block clock by both dividers that are to be
+ programmed into the configuration register. Based on the resulting SCLK clock,
+ we derive the delay it will take for the changes to get really applied. We are
+ extra careful here so we delay twice as long as we should. Note that the patch
+ does not create additional overhead at high speeds as the delay will likely be
+ close to zero there.
 
-> 
-> 
-> If the 'fsl,nor-size' property remains (which I doubt at the
-> moment), you cannot describe "the size of each" chip in one
-> single-cell spec.  So the documentation should get extended to
-> reflect multi-chip setups.  But I'd rather assume that the
-> property is not needed at all.
-> 
-> You can omit the 'status = "okay"' line since that is the default
-> already in the absence of the keyword.  This property is most
-> useful to declare yet not enable by default components in .dtsi
-> files and to do enable them in individual board files if
-> applicable.  This aspect need not be shown in the binding example
-> of a QSPI controller.
-> 
-> I'd suggest to use symbolic names for the flags in the last
-> interrupt specifier cell, as you do for clock items.
-I will use the symbolic name if it has.
-But if it not have a symbolic name, i have to keep it as it is now.
+Signed-off-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-imx.c | 27 +++++++++++++++++++++++++--
+ 1 file changed, 25 insertions(+), 2 deletions(-)
 
-Thanks
-Huang Shijie
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index b80f2f7..a5474ef 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -206,7 +206,8 @@ static unsigned int spi_imx_clkdiv_2(unsigned int fin,
+ #define MX51_ECSPI_STAT_RR		(1 <<  3)
+ 
+ /* MX51 eCSPI */
+-static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi)
++static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi,
++				      unsigned int *fres)
+ {
+ 	/*
+ 	 * there are two 4-bit dividers, the pre-divider divides by
+@@ -234,6 +235,10 @@ static unsigned int mx51_ecspi_clkdiv(unsigned int fin, unsigned int fspi)
+ 
+ 	pr_debug("%s: fin: %u, fspi: %u, post: %u, pre: %u\n",
+ 			__func__, fin, fspi, post, pre);
++
++	/* Resulting frequency for the SCLK line. */
++	*fres = (fin / (pre + 1)) >> post;
++
+ 	return (pre << MX51_ECSPI_CTRL_PREDIV_OFFSET) |
+ 		(post << MX51_ECSPI_CTRL_POSTDIV_OFFSET);
+ }
+@@ -264,6 +269,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 		struct spi_imx_config *config)
+ {
+ 	u32 ctrl = MX51_ECSPI_CTRL_ENABLE, cfg = 0;
++	u32 clk = config->speed_hz, delay;
+ 
+ 	/*
+ 	 * The hardware seems to have a race condition when changing modes. The
+@@ -275,7 +281,7 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	ctrl |= MX51_ECSPI_CTRL_MODE_MASK;
+ 
+ 	/* set clock speed */
+-	ctrl |= mx51_ecspi_clkdiv(spi_imx->spi_clk, config->speed_hz);
++	ctrl |= mx51_ecspi_clkdiv(spi_imx->spi_clk, config->speed_hz, &clk);
+ 
+ 	/* set chip select to use */
+ 	ctrl |= MX51_ECSPI_CTRL_CS(config->cs);
+@@ -297,6 +303,23 @@ static int __maybe_unused mx51_ecspi_config(struct spi_imx_data *spi_imx,
+ 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+ 	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
+ 
++	/*
++	 * Wait until the changes in the configuration register CONFIGREG
++	 * propagate into the hardware. It takes exactly one tick of the
++	 * SCLK clock, but we will wait two SCLK clock just to be sure. The
++	 * effect of the delay it takes for the hardware to apply changes
++	 * is noticable if the SCLK clock run very slow. In such a case, if
++	 * the polarity of SCLK should be inverted, the GPIO ChipSelect might
++	 * be asserted before the SCLK polarity changes, which would disrupt
++	 * the SPI communication as the device on the other end would consider
++	 * the change of SCLK polarity as a clock tick already.
++	 */
++	delay = (2 * 1000000) / clk;
++	if (likely(delay < 10))	/* SCLK is faster than 100 kHz */
++		udelay(delay);
++	else			/* SCLK is _very_ slow */
++		usleep_range(delay, delay + 10);
++
+ 	return 0;
+ }
+ 
+-- 
+1.8.4.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

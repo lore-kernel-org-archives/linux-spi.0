@@ -1,58 +1,64 @@
-From: Gerhard Sittig <gsi@denx.de>
-Subject: Re: [PATCH v3 6/7] Documentation: add the binding file for Quadspi
- driver
-Date: Wed, 18 Dec 2013 19:21:12 +0100
-Message-ID: <20131218182112.GK8064@book.gsilab.sittig.org>
-References: <1387184330-14448-1-git-send-email-b32955@freescale.com>
- <1387184330-14448-7-git-send-email-b32955@freescale.com>
- <20131218153029.GF8064@book.gsilab.sittig.org>
- <20131218160355.GA1145@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCHv2 01/10] spi/spi.h: Add get_buf/put_buf support in spi
+ master.
+Date: Thu, 19 Dec 2013 13:31:05 +0000
+Message-ID: <20131219133105.GC31886@sirena.org.uk>
+References: <1386339891-32717-1-git-send-email-sourav.poddar@ti.com>
+ <1386339891-32717-2-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Huang Shijie <b32955@freescale.com>, dwmw2@infradead.org,
-	computersforpeace@gmail.com, angus.clark@st.com,
-	lee.jones@linaro.org, marex@denx.de, pekon@ti.com,
-	sourav.poddar@ti.com, broonie@linaro.org,
-	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-	b44548@freescale.com, b18965@freescale.com, shawn.guo@linaro.org,
-	devicetree@vger.kernel.org
-To: Huang Shijie <shijie8@gmail.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="aHyShe78FfJzbeER"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	marex-ynQEQJNshbs@public.gmane.org, dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	bcousson-rdvid1DuHRBWk0Htik3J/w@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org
+To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20131218160355.GA1145@gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-On Thu, Dec 19, 2013 at 00:03 +0800, Huang Shijie wrote:
-> 
-> On Wed, Dec 18, 2013 at 04:30:29PM +0100, Gerhard Sittig wrote:
-> > > +++ b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
-> > > [ ... ]
-> > > +Example:
-> > > +
-> > > +qspi0: quadspi@40044000 {
-> > > +	compatible = "fsl,vf610-qspi";
-> > > +	reg = <0x40044000 0x1000>;
-> > > +	interrupts = <0 24 0x04>;
-> > > [ ... ]
-> > > +};
-> > 
-> > [ ... ]
-> > I'd suggest to use symbolic names for the flags in the last
-> > interrupt specifier cell, as you do for clock items.
-> I will use the symbolic name if it has.
-> But if it not have a symbolic name, i have to keep it as it is now.
-
-To avoid potential confusion:  I meant symbolic names for the
-_flags_ of the interrupt specifier (i.e. trigger type and
-polarity).  The <dt-bindings/interrupt-controller/irq.h> file has
-IRQ_TYPE_LEVEL_HIGH with value 4 for you.
+In-Reply-To: <1386339891-32717-2-git-send-email-sourav.poddar-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
-virtually yours
-Gerhard Sittig
--- 
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office@denx.de
+--aHyShe78FfJzbeER
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Dec 06, 2013 at 07:54:42PM +0530, Sourav Poddar wrote:
+> Add get_buf, put_buf api support in spi master.
+
+Please add this stuff along with the code implementing it.
+
+> +	void	(*configure_from_slave)(struct spi_device *spi);
+> +
+
+I don't understand this API at all - it takes no parameters and doesn't
+have a possibility of returning any error codes?
+
+--aHyShe78FfJzbeER
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSsvUVAAoJELSic+t+oim9CuwP/1XVVgzLmTUrm8IIC25COg2Y
+/9TZrDHMotVIOK33eL0Xx7hp2C5Ks1qmJKIoUj6qPzjfzKryS0niM/SGAmTf/zNO
+FhgCvwMY/GVUxKwI8sxBgpDTkQSn+gxtHPIvoKcjJMJTpJiodE1QXO5rJtSPX0QF
+BHZS24nQaJmxTzcgh8d3dZnvVAAYi5dEqRR8BgilOd0sjHALyRFdngVePY4cWKqG
+XxeNMNlr5U8s9WyACa1Dd4SvMpX4Ytb70lSaO6g2+0FqML7zvmEbyoE6ZyVLm8f0
+6TiQFCqGDxfRNxoSkJUFmTmh9rd04w5jXZii2aR9aAbUC0sZiaw8UuBolnxg3769
+FWD9wb0vxnExrBvGjGqwOR8F21aODIjYCjW3RFi5wmJAFuYD77TTQkx5NgkZseG+
+GO0DcO78Jh3nxuMiz2Qqzw8e2hOwCFgtXz3uQLAnyDPDEeJPO0ylvrQWTD47BMrW
+7XquP0R2JBlgwXhsSQsP6MUy00KPtaNp66UW9SiI8iNl4fE4No1ZmP9PStmRqUTU
+7XPFn7rTWsbfs21AwacGjb/e0k3MDcGKCja/lsnMNLnUSTNmaObMPCrEXThbQyL3
+T40sRJqyAjohgJNmpncVLT3nAx8Rt7w0Tff2GK56636J0CVnT/8fHIbwPwZx9gbl
+xS+mGxAk4H0y5zkcztEy
+=3NTq
+-----END PGP SIGNATURE-----
+
+--aHyShe78FfJzbeER--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

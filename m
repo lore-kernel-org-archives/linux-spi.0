@@ -1,60 +1,58 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-imx: Fix out-of-order CS/SCLK operation at low
- speeds
-Date: Fri, 20 Dec 2013 11:54:43 +0000
-Message-ID: <20131220115443.GQ31886@sirena.org.uk>
-References: <1387387907-19756-1-git-send-email-marex@denx.de>
+Subject: Re: [PATCH -next] spi: txx9: drop clk_put for devm_clk_get in
+ txx9spi_probe()
+Date: Fri, 20 Dec 2013 11:56:56 +0000
+Message-ID: <20131220115656.GS31886@sirena.org.uk>
+References: <CAPgLHd_94fMwOm1Z-=4ojrhH35WHve4piJkEC5Fh8k8OZcTfsQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2fV3mxwFPWhsKHyX"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="wKbYzd8t8rt1PVqr"
+Cc: jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1387387907-19756-1-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
+In-Reply-To: <CAPgLHd_94fMwOm1Z-=4ojrhH35WHve4piJkEC5Fh8k8OZcTfsQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---2fV3mxwFPWhsKHyX
+--wKbYzd8t8rt1PVqr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 18, 2013 at 06:31:47PM +0100, Marek Vasut wrote:
-> Problem:
-> --------
->  The problem this patch addresses has the following assumptions about the
->  SPI bus setup:
+On Fri, Dec 20, 2013 at 10:15:45AM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+>=20
+> devm_clk_get() is used so there is no reason to explicitly
+> call clk_put() in txx9spi_probe() functions.
 
-Applied, thanks.  Really nice analysis.
+Applied, thanks.
 
---2fV3mxwFPWhsKHyX
+--wKbYzd8t8rt1PVqr
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJStDAAAAoJELSic+t+oim9/mAP/RvSl4mqWqCOYpMzurrXIOsg
-tJXx/TaJculGx+UAcOoLba5rayXWxgj45/wiOmmOUnbf7S7VawDqo82dasfI8k6R
-r5bpqjfyisKm3+4eLGNMk1c1d7l7jtuKYn3CbQzzm7Iv87lPHpnA+twv2nRVt7Ci
-Pd+sKMU7XxR8nk1IkMsC+rm2r1lT08Qh9WRahZ6kYwmqsbN4uB4Z1+dGWEBSFCZR
-Kh9IvcujP6+Qnv/Eye6A6yyKyzr8hUxbwtKfQ5LMqZ96arHOn7/MRuHtJ9wVWTAF
-hyXmQP07DLhzgH517hE54pfujfYOfM7pnOaFe6jLM6t9jgCV54jlvAh59UP8rIk5
-tNvsn+NPaMJ+xkfQHGplXr+dwNjO580/PbZCQZd6Y68aj94tj08e+gCzcEzGo/Cw
-NfmaQOJsiPCfNh81zcSkCZgvHYdSA+bq2jZN696dZ6OB6rEZ2SoQ+Vdg0oEYuH3f
-Dmus7NXQFHCqJiJUNcXgiEbmzGp0GJ7acoUb/ynfjnwM5SZAMUV7u3xbPhCibKa+
-FdX5xUpD91y3EWDyNi4Ggvi2hR5QpYNBfty+Z/H5VxqPr7jQM9nFiFL0NCaSgJWh
-+ESY461Eb1hnHCnmI7ag0qqgpUnx+LRx8UPaHI0ki1DJMt7o5Yol2sfgGt2WbsQ7
-CbmVhzoFPlAkQPnlnPFx
-=XIS9
+iQIcBAEBAgAGBQJStDCFAAoJELSic+t+oim9k0oP/jFmOHrqAaP5Aq9QrGpBh4zp
+oDKH0/rVW/RA1hidPHlHV1uM3Ys7PPjnGa1mKrtHILxwECvclQ5xSvp3PpRI51AV
+CD0aAjnXHLI7JIqdscjQ2IILKRIyxdVjm5qPG+Xh48vEJg25tyJI+6ylnvxtK5I/
+VJ/qA4rh+F9iv4w8F5ORp/GkfbwCNEG8M74vURqbQPuwTnGcBXM/K3ycvsN1EBaM
+CdUFvXGKrEIz+uBUNbSEdBHZdkWnBcXBQ7qbHrI1ELC/9Abmk3+LpEEdr7Ne4onM
+/eZcQUes4AzFlyY23VuSWhj9XX8/fSAzoEXlVX52+Rl1jMsuZaRj0U7uHotV4Tqf
+ZkR+LQiIQh+dkbsHX8ihI+V1tKQNipnxwf3vj0iN9DAfayRY/xoQNL6etv8paIyQ
+aycMmPLTmsEsyUVKphcHM5m/1c6YavnAwsXbtL6MDdGT2LHHIQsOApk+5+TivNDw
+gigtEwnBBmRFqC5wMcmT3YOu9l54ByNlxXW/FTh4pJTvTmZ4Q9p/7470JgBPYkiB
+1+qKxxWdpq9HM8oPoNKALmaa/FMtrH5Ci/uusC7xQdd3qbJbsxD3uWTfyRZoUuMX
+bAYDm76+fxVPXXKX5q/mpX8ZoS7M+EFO73Unwd28cxZ4AbVnLVB0RIW4dmfOYhjB
+s20lYHx7Dh2xF9zh6q3b
+=Tmzn
 -----END PGP SIGNATURE-----
 
---2fV3mxwFPWhsKHyX--
+--wKbYzd8t8rt1PVqr--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

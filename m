@@ -1,41 +1,60 @@
-From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH -next] spi: nuc900: remove redundant return value check of
- platform_get_resource()
-Date: Fri, 20 Dec 2013 11:36:48 +0900
-Message-ID: <003101cefd2c$54f7d700$fee78500$%han@samsung.com>
-References: <CAPgLHd9rWo=vAa5xiPhi_FFheGNMOTEvt_0_AFaxMyYEJ8TBrQ@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: spi-imx: Fix out-of-order CS/SCLK operation at low
+ speeds
+Date: Fri, 20 Dec 2013 11:54:43 +0000
+Message-ID: <20131220115443.GQ31886@sirena.org.uk>
+References: <1387387907-19756-1-git-send-email-marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-To: 'Wei Yongjun' <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="2fV3mxwFPWhsKHyX"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <CAPgLHd9rWo=vAa5xiPhi_FFheGNMOTEvt_0_AFaxMyYEJ8TBrQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Content-language: ko
+Content-Disposition: inline
+In-Reply-To: <1387387907-19756-1-git-send-email-marex-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Friday, December 20, 2013 11:22 AM, Wei Yongjun wrote:
-> 
-> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
-> 
-> Remove unneeded error handling on the result of a call
-> to platform_get_resource() when the value is passed to
-> devm_ioremap_resource().
-> 
-> Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 
-Reviewed-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+--2fV3mxwFPWhsKHyX
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Best regards,
-Jingoo Han
+On Wed, Dec 18, 2013 at 06:31:47PM +0100, Marek Vasut wrote:
+> Problem:
+> --------
+>  The problem this patch addresses has the following assumptions about the
+>  SPI bus setup:
 
-> ---
->  drivers/spi/spi-nuc900.c | 6 ------
->  1 file changed, 6 deletions(-)
+Applied, thanks.  Really nice analysis.
 
+--2fV3mxwFPWhsKHyX
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJStDAAAAoJELSic+t+oim9/mAP/RvSl4mqWqCOYpMzurrXIOsg
+tJXx/TaJculGx+UAcOoLba5rayXWxgj45/wiOmmOUnbf7S7VawDqo82dasfI8k6R
+r5bpqjfyisKm3+4eLGNMk1c1d7l7jtuKYn3CbQzzm7Iv87lPHpnA+twv2nRVt7Ci
+Pd+sKMU7XxR8nk1IkMsC+rm2r1lT08Qh9WRahZ6kYwmqsbN4uB4Z1+dGWEBSFCZR
+Kh9IvcujP6+Qnv/Eye6A6yyKyzr8hUxbwtKfQ5LMqZ96arHOn7/MRuHtJ9wVWTAF
+hyXmQP07DLhzgH517hE54pfujfYOfM7pnOaFe6jLM6t9jgCV54jlvAh59UP8rIk5
+tNvsn+NPaMJ+xkfQHGplXr+dwNjO580/PbZCQZd6Y68aj94tj08e+gCzcEzGo/Cw
+NfmaQOJsiPCfNh81zcSkCZgvHYdSA+bq2jZN696dZ6OB6rEZ2SoQ+Vdg0oEYuH3f
+Dmus7NXQFHCqJiJUNcXgiEbmzGp0GJ7acoUb/ynfjnwM5SZAMUV7u3xbPhCibKa+
+FdX5xUpD91y3EWDyNi4Ggvi2hR5QpYNBfty+Z/H5VxqPr7jQM9nFiFL0NCaSgJWh
++ESY461Eb1hnHCnmI7ag0qqgpUnx+LRx8UPaHI0ki1DJMt7o5Yol2sfgGt2WbsQ7
+CbmVhzoFPlAkQPnlnPFx
+=XIS9
+-----END PGP SIGNATURE-----
+
+--2fV3mxwFPWhsKHyX--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

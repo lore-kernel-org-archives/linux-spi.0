@@ -1,46 +1,44 @@
-From: Wei Yongjun <weiyj.lk@gmail.com>
-Subject: [PATCH -next] spi: spi-s3c24xx: remove redundant return value check
- of platform_get_resource()
-Date: Fri, 20 Dec 2013 10:22:20 +0800
-Message-ID: <CAPgLHd_Dii+mu4GmSUWjxTwy55Xxe6Qoq=TN73jQR1_NQUnAbA@mail.gmail.com>
+From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH -next] spi: spi-s3c24xx: remove redundant return value
+ check of platform_get_resource()
+Date: Fri, 20 Dec 2013 11:33:07 +0900
+Message-ID: <002f01cefd2b$d1512460$73f36d20$%han@samsung.com>
+References: <CAPgLHd_Dii+mu4GmSUWjxTwy55Xxe6Qoq=TN73jQR1_NQUnAbA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: yongjun_wei@trendmicro.com.cn,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org
-To: ben-linux@fluff.org, kgene.kim@samsung.com, broonie@kernel.org,
-	jg1.han@samsung.com
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org, kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+	yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: 'Wei Yongjun' <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-reply-to: <CAPgLHd_Dii+mu4GmSUWjxTwy55Xxe6Qoq=TN73jQR1_NQUnAbA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Content-language: ko
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
+On Friday, December 20, 2013 11:22 AM, Wei Yongjun wrote:
+> 
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+> 
+> Remove unneeded error handling on the result of a call
+> to platform_get_resource() when the value is passed to
+> devm_ioremap_resource().
+> 
+> Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 
-Remove unneeded error handling on the result of a call
-to platform_get_resource() when the value is passed to
-devm_ioremap_resource().
+Reviewed-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-Signed-off-by: Wei Yongjun <yongjun_wei@trendmicro.com.cn>
----
- drivers/spi/spi-s3c24xx.c | 7 -------
- 1 file changed, 7 deletions(-)
+Best regards,
+Jingoo Han
 
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index ebf80bb..2ccb28d 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -560,14 +560,7 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
- 	dev_dbg(hw->dev, "bitbang at %p\n", &hw->bitbang);
- 
- 	/* find and map our resources */
--
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (res == NULL) {
--		dev_err(&pdev->dev, "Cannot get IORESOURCE_MEM\n");
--		err = -ENOENT;
--		goto err_no_pdata;
--	}
--
- 	hw->regs = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(hw->regs)) {
- 		err = PTR_ERR(hw->regs);
+> ---
+>  drivers/spi/spi-s3c24xx.c | 7 -------
+>  1 file changed, 7 deletions(-)
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

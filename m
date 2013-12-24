@@ -1,43 +1,46 @@
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Subject: [PATCH 5/6] [RFC] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
-Date: Tue, 24 Dec 2013 12:56:49 +0100
-Message-ID: <1387886210-3634-6-git-send-email-geert+renesas@linux-m68k.org>
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH 4/6] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
+Date: Tue, 24 Dec 2013 12:56:48 +0100
+Message-ID: <1387886210-3634-5-git-send-email-geert+renesas@linux-m68k.org>
 References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	devicetree@vger.kernel.org
-To: linux-sh@vger.kernel.org
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
-Sender: linux-sh-owner@vger.kernel.org
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1387886210-3634-1-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Cc: devicetree@vger.kernel.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 ---
- arch/arm/boot/dts/r7s72100.dtsi |   65 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+ Documentation/devicetree/bindings/spi/spi-rspi.txt |   27 ++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-rspi.txt
 
-diff --git a/arch/arm/boot/dts/r7s72100.dtsi b/arch/arm/boot/dts/r7s72100.dtsi
-index ff0bd6be454f..42e9b423476c 100644
---- a/arch/arm/boot/dts/r7s72100.dtsi
-+++ b/arch/arm/boot/dts/r7s72100.dtsi
-@@ -34,6 +34,11 @@
- 		gpio10 = &port10;
- 		gpio11 = &port11;
- 		gpio12 = &jtagport0;
-+		spi0 = &spi0;
-+		spi1 = &spi1;
-+		spi2 = &spi2;
-+		spi3 = &spi3;
-+		spi4 = &spi4;
- 	};
- 
- 	cpus {
-@@ -289,4 +294,64 @@
- 		clock-frequency = <100000>;
- 		status = "disabled";
- 	};
+diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+new file mode 100644
+index 000000000000..06ec17fce4c6
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+@@ -0,0 +1,27 @@
++Device tree configuration for Renesas RSPI/QSPI driver
++
++Required properties:
++- compatible      : "renesas,rspi-<soctype>". "renesas,rspi-rz" as fallback,
++                    or
++                    "renesas,qspi-<soctype>", "renesas,qspi-rcar" as fallback.
++- reg             : address start and address range size of device
++- interrupts      : 3 interrupts for RSPI (SPEI, SPRI, SPTI),
++                    1 interrupt for QSPI
++- num-cs	  : Number of chip selects
++- #address-cells  : should be <1>
++- #size-cells     : should be <0>
++
++Pinctrl properties might be needed, too. See there.
++
++Example:
 +
 +	spi0: spi@e800c800 {
 +		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
@@ -48,57 +51,11 @@ index ff0bd6be454f..42e9b423476c 100644
 +		num-cs = <1>;
 +		#address-cells = <1>;
 +		#size-cells = <0>;
-+		status = "disabled";
 +	};
-+
-+	spi1: spi@e800d000 {
-+		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
-+		reg = <0xe800d000 0x24>;
-+		interrupts = <0 241 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 242 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 243 IRQ_TYPE_LEVEL_HIGH>;
-+		num-cs = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
-+
-+	spi2: spi@e800d800 {
-+		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
-+		reg = <0xe800d800 0x24>;
-+		interrupts = <0 244 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 245 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 246 IRQ_TYPE_LEVEL_HIGH>;
-+		num-cs = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
-+
-+	spi3: spi@e800e000 {
-+		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
-+		reg = <0xe800e000 0x24>;
-+		interrupts = <0 247 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 248 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 249 IRQ_TYPE_LEVEL_HIGH>;
-+		num-cs = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
-+
-+	spi4: spi@e800e800 {
-+		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
-+		reg = <0xe800e800 0x24>;
-+		interrupts = <0 250 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 251 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 252 IRQ_TYPE_LEVEL_HIGH>;
-+		num-cs = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
- };
 -- 
 1.7.9.5
 
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

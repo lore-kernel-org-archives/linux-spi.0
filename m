@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH 1/8] spi: rspi: Add more RSPI register documentation
-Date: Tue, 24 Dec 2013 12:40:41 +0100
-Message-ID: <1387885248-28425-2-git-send-email-geert+renesas@linux-m68k.org>
+Subject: [PATCH 4/8] spi: rspi: Add support for 8-bit Data Register access
+Date: Tue, 24 Dec 2013 12:40:44 +0100
+Message-ID: <1387885248-28425-5-git-send-email-geert+renesas@linux-m68k.org>
 References: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org>
 Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
@@ -11,206 +11,248 @@ In-Reply-To: <1387885248-28425-1-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvx
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Add support for accessing the RSPI Data Register using 8-bit operations,
+based on the SDK reference code.  This is needed for RZ/A1H.
+
+The data width is passed using platform data, defaulting to 16-bit for
+legacy RSPI. QSPI always uses 8-bit accesses.
+
 Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
- drivers/spi/spi-rspi.c |  143 ++++++++++++++++++++++++++----------------------
- 1 file changed, 77 insertions(+), 66 deletions(-)
+ drivers/spi/spi-rspi.c   |   90 +++++++++++++++++++++++++++++++++++++++-------
+ include/linux/spi/rspi.h |    2 ++
+ 2 files changed, 79 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 239354618eac..afd7466c65cd 100644
+index c7bbc54ef785..00788091fc16 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -37,27 +37,29 @@
- #include <linux/spi/spi.h>
- #include <linux/spi/rspi.h>
+@@ -179,6 +179,8 @@ struct rspi_data {
+ 	spinlock_t lock;
+ 	struct clk *clk;
+ 	u8 spsr;
++	u8 spdcr;
++	u8 data_width;
+ 	int irq[MAX_NUM_IRQ];
+ 	unsigned int numirq;
+ 	const struct spi_ops *ops;
+@@ -216,8 +218,27 @@ static u16 rspi_read16(const struct rspi_data *rspi, u16 offset)
+ 	return ioread16(rspi->addr + offset);
+ }
  
--#define RSPI_SPCR		0x00
--#define RSPI_SSLP		0x01
--#define RSPI_SPPCR		0x02
--#define RSPI_SPSR		0x03
--#define RSPI_SPDR		0x04
--#define RSPI_SPSCR		0x08
--#define RSPI_SPSSR		0x09
--#define RSPI_SPBR		0x0a
--#define RSPI_SPDCR		0x0b
--#define RSPI_SPCKD		0x0c
--#define RSPI_SSLND		0x0d
--#define RSPI_SPND		0x0e
--#define RSPI_SPCR2		0x0f
--#define RSPI_SPCMD0		0x10
--#define RSPI_SPCMD1		0x12
--#define RSPI_SPCMD2		0x14
--#define RSPI_SPCMD3		0x16
--#define RSPI_SPCMD4		0x18
--#define RSPI_SPCMD5		0x1a
--#define RSPI_SPCMD6		0x1c
--#define RSPI_SPCMD7		0x1e
-+#define RSPI_SPCR		0x00	/* Control Register */
-+#define RSPI_SSLP		0x01	/* Slave Select Polarity Register */
-+#define RSPI_SPPCR		0x02	/* Pin Control Register */
-+#define RSPI_SPSR		0x03	/* Status Register */
-+#define RSPI_SPDR		0x04	/* Data Register */
-+#define RSPI_SPSCR		0x08	/* Sequence Control Register */
-+#define RSPI_SPSSR		0x09	/* Sequence Status Register */
-+#define RSPI_SPBR		0x0a	/* Bit Rate Register */
-+#define RSPI_SPDCR		0x0b	/* Data Control Register */
-+#define RSPI_SPCKD		0x0c	/* Clock Delay Register */
-+#define RSPI_SSLND		0x0d	/* Slave Select Negation Delay Register */
-+#define RSPI_SPND		0x0e	/* Next-Access Delay Register */
-+#define RSPI_SPCR2		0x0f	/* Control Register 2 */
-+#define RSPI_SPCMD0		0x10	/* Command Register 0 */
-+#define RSPI_SPCMD1		0x12	/* Command Register 1 */
-+#define RSPI_SPCMD2		0x14	/* Command Register 2 */
-+#define RSPI_SPCMD3		0x16	/* Command Register 3 */
-+#define RSPI_SPCMD4		0x18	/* Command Register 4 */
-+#define RSPI_SPCMD5		0x1a	/* Command Register 5 */
-+#define RSPI_SPCMD6		0x1c	/* Command Register 6 */
-+#define RSPI_SPCMD7		0x1e	/* Command Register 7 */
-+#define RSPI_SPBFCR		0x20	/* Buffer Control Register */
-+#define RSPI_SPBFDR		0x22	/* Buffer Data Count Setting Register */
- 
- /*qspi only */
- #define QSPI_SPBFCR		0x18
-@@ -67,44 +69,51 @@
- #define QSPI_SPBMUL2		0x24
- #define QSPI_SPBMUL3		0x28
- 
--/* SPCR */
--#define SPCR_SPRIE		0x80
--#define SPCR_SPE		0x40
--#define SPCR_SPTIE		0x20
--#define SPCR_SPEIE		0x10
--#define SPCR_MSTR		0x08
--#define SPCR_MODFEN		0x04
-+/* SPCR - Control Register */
-+#define SPCR_SPRIE		0x80	/* Receive Interrupt Enable */
-+#define SPCR_SPE		0x40	/* Function Enable */
-+#define SPCR_SPTIE		0x20	/* Transmit Interrupt Enable */
-+#define SPCR_SPEIE		0x10	/* Error Interrupt Enable */
-+#define SPCR_MSTR		0x08	/* Master/Slave Mode Select */
-+#define SPCR_MODFEN		0x04	/* Mode Fault Error Detection Enable */
- #define SPCR_TXMD		0x02
- #define SPCR_SPMS		0x01
- 
--/* SSLP */
-+/* SSLP - Slave Select Polarity Register */
- #define SSLP_SSL1P		0x02
--#define SSLP_SSL0P		0x01
-+#define SSLP_SSL0P		0x01	/* SSL Signal Polarity Setting */
- 
--/* SPPCR */
--#define SPPCR_MOIFE		0x20
--#define SPPCR_MOIFV		0x10
-+/* SPPCR - Pin Control Register */
-+#define SPPCR_MOIFE		0x20	/* MOSI Idle Value Fixing Enable */
-+#define SPPCR_MOIFV		0x10	/* MOSI Idle Fixed Value */
- #define SPPCR_SPOM		0x04
- #define SPPCR_SPLP2		0x02
--#define SPPCR_SPLP		0x01
-+#define SPPCR_SPLP		0x01	/* Loopback */
- 
--/* SPSR */
--#define SPSR_SPRF		0x80
--#define SPSR_SPTEF		0x20
-+/* SPSR - Status Register */
-+#define SPSR_SPRF		0x80	/* Receive Buffer Full Flag */
-+#define SPSR_TEND		0x40	/* Transmit End */
-+#define SPSR_SPTEF		0x20	/* Transmit Buffer Empty Flag */
- #define SPSR_PERF		0x08
--#define SPSR_MODF		0x04
-+#define SPSR_MODF		0x04	/* Mode Fault Error Flag */
- #define SPSR_IDLNF		0x02
--#define SPSR_OVRF		0x01
-+#define SPSR_OVRF		0x01	/* Overrun Error Flag */
- 
--/* SPSCR */
--#define SPSCR_SPSLN_MASK	0x07
-+/* SPSCR - Sequence Control Register */
-+#define SPSCR_SPSLN_MASK	0x07	/* Sequence Length Specification */
- 
--/* SPSSR */
-+/* SPSSR - Sequence Status Register */
- #define SPSSR_SPECM_MASK	0x70
--#define SPSSR_SPCP_MASK		0x07
--
--/* SPDCR */
--#define SPDCR_SPLW		0x20
-+#define SPSSR_SPCP_MASK		0x07	/* Command Pointer */
++static void rspi_write_data(const struct rspi_data *rspi, u16 data)
++{
++	if (rspi->data_width == 8)
++		rspi_write8(rspi, data, RSPI_SPDR);
++	else if (rspi->data_width == 16)
++		rspi_write16(rspi, data, RSPI_SPDR);
++}
 +
-+/* SPDCR - Data Control Register */
-+#define SPDCR_TXDMY		0x80	/* Dummy Data Transmission Enable */
-+#define SPDCR_SPLW1		0x40	/* Access Width Specification */
-+#define SPDCR_SPLW0		0x20
-+#define SPDCR_SPLLWORD		(SPDCR_SPLW1 | SPDCR_SPLW0)
-+#define SPDCR_SPLWORD		SPDCR_SPLW1
-+#define SPDCR_SPLBYTE		SPDCR_SPLW0
-+#define SPDCR_SPLW		0x20	/* Access Width Specification */
- #define SPDCR_SPRDTD		0x10
- #define SPDCR_SLSEL1		0x08
- #define SPDCR_SLSEL0		0x04
-@@ -112,27 +121,27 @@
- #define SPDCR_SPFC1		0x02
- #define SPDCR_SPFC0		0x01
- 
--/* SPCKD */
--#define SPCKD_SCKDL_MASK	0x07
-+/* SPCKD - Clock Delay Register */
-+#define SPCKD_SCKDL_MASK	0x07	/* Clock Delay Setting (1-8) */
- 
--/* SSLND */
--#define SSLND_SLNDL_MASK	0x07
-+/* SSLND - Slave Select Negation Delay Register */
-+#define SSLND_SLNDL_MASK	0x07	/* SSL Negation Delay Setting (1-8) */
- 
--/* SPND */
--#define SPND_SPNDL_MASK		0x07
-+/* SPND - Next-Access Delay Register */
-+#define SPND_SPNDL_MASK		0x07	/* Next-Access Delay Setting (1-8) */
- 
--/* SPCR2 */
-+/* SPCR2 - Control Register 2 */
- #define SPCR2_PTE		0x08
- #define SPCR2_SPIE		0x04
- #define SPCR2_SPOE		0x02
- #define SPCR2_SPPE		0x01
- 
--/* SPCMDn */
--#define SPCMD_SCKDEN		0x8000
--#define SPCMD_SLNDEN		0x4000
--#define SPCMD_SPNDEN		0x2000
--#define SPCMD_LSBF		0x1000
--#define SPCMD_SPB_MASK		0x0f00
-+/* SPCMDn - Command Registers */
-+#define SPCMD_SCKDEN		0x8000	/* Clock Delay Setting Enable */
-+#define SPCMD_SLNDEN		0x4000	/* SSL Negation Delay Setting Enable */
-+#define SPCMD_SPNDEN		0x2000	/* Next-Access Delay Enable */
-+#define SPCMD_LSBF		0x1000	/* LSB First */
-+#define SPCMD_SPB_MASK		0x0f00	/* Data Length Setting */
- #define SPCMD_SPB_8_TO_16(bit)	(((bit - 1) << 8) & SPCMD_SPB_MASK)
- #define SPCMD_SPB_8BIT		0x0000	/* qspi only */
- #define SPCMD_SPB_16BIT		0x0100
-@@ -141,13 +150,15 @@
- #define SPCMD_SPB_32BIT		0x0200
- #define SPCMD_SSLKP		0x0080
- #define SPCMD_SSLA_MASK		0x0030
--#define SPCMD_BRDV_MASK		0x000c
--#define SPCMD_CPOL		0x0002
--#define SPCMD_CPHA		0x0001
--
--/* SPBFCR */
--#define SPBFCR_TXRST		0x80	/* qspi only */
--#define SPBFCR_RXRST		0x40	/* qspi only */
-+#define SPCMD_BRDV_MASK		0x000c	/* Bit Rate Division Setting */
-+#define SPCMD_CPOL		0x0002	/* Clock Polarity Setting */
-+#define SPCMD_CPHA		0x0001	/* Clock Phase Setting */
++static u16 rspi_read_data(const struct rspi_data *rspi)
++{
++	if (rspi->data_width == 8)
++		return rspi_read8(rspi, RSPI_SPDR);
++	else if (rspi->data_width == 16)
++		return rspi_read16(rspi, RSPI_SPDR);
++	return 0;
++}
 +
-+/* SPBFCR - Buffer Control Register */
-+#define SPBFCR_TXRST		0x80	/* Transmit Buffer Data Reset (qspi only) */
-+#define SPBFCR_RXRST		0x40	/* Receive Buffer Data Reset (qspi only) */
-+#define SPBFCR_TXTRG_MASK	0x30	/* Transmit Buffer Data Triggering Number */
-+#define SPBFCR_RXTRG_MASK	0x07	/* Receive Buffer Data Triggering Number */
+ /* optional functions */
+ struct spi_ops {
++	int (*parse_platform_data)(struct rspi_data *rspi,
++				   const struct rspi_plat_data *rspi_pd);
+ 	int (*set_config_register)(const struct rspi_data *rspi,
+ 				   int access_size);
+ 	int (*send_pio)(struct rspi_data *rspi, struct spi_message *mesg,
+@@ -230,6 +251,33 @@ struct spi_ops {
+ /*
+  * functions for RSPI
+  */
++static int rspi_parse_platform_data(struct rspi_data *rspi,
++				    const struct rspi_plat_data *rspi_pd)
++{
++	if (rspi_pd && rspi_pd->data_width) {
++		rspi->data_width = rspi_pd->data_width;
++		switch (rspi_pd->data_width) {
++		case 8:
++			rspi->spdcr = SPDCR_SPLBYTE;
++			break;
++		case 16:
++			rspi->spdcr = SPDCR_SPLWORD;
++			break;
++		default:
++			return -1;
++		}
++	} else {
++		/*
++		 * Use legacy 16-bit width data access if a data_width value
++		 * isn't defined in the platform data.
++		 */
++		rspi->data_width = 16;
++		rspi->spdcr = 0;
++	}
++
++	return 0;
++}
++
+ static int rspi_set_config_register(const struct rspi_data *rspi,
+ 				    int access_size)
+ {
+@@ -243,7 +291,7 @@ static int rspi_set_config_register(const struct rspi_data *rspi,
+ 	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
  
- #define DUMMY_DATA		0x00
+ 	/* Sets number of frames to be used: 1 frame */
+-	rspi_write8(rspi, 0x00, RSPI_SPDCR);
++	rspi_write8(rspi, rspi->spdcr, RSPI_SPDCR);
+ 
+ 	/* Sets RSPCK, SSL, next-access delay value */
+ 	rspi_write8(rspi, 0x00, RSPI_SPCKD);
+@@ -266,6 +314,16 @@ static int rspi_set_config_register(const struct rspi_data *rspi,
+ /*
+  * functions for QSPI
+  */
++static int qspi_parse_platform_data(struct rspi_data *rspi,
++				    const struct rspi_plat_data *rspi_pd)
++{
++	/* Fixed 8-bit for now */
++	rspi->data_width = 8;
++	rspi->spdcr = 0;
++
++	return 0;
++}
++
+ static int qspi_set_config_register(const struct rspi_data *rspi,
+ 				    int access_size)
+ {
+@@ -280,7 +338,7 @@ static int qspi_set_config_register(const struct rspi_data *rspi,
+ 	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
+ 
+ 	/* Sets number of frames to be used: 1 frame */
+-	rspi_write8(rspi, 0x00, RSPI_SPDCR);
++	rspi_write8(rspi, rspi->spdcr, RSPI_SPDCR);
+ 
+ 	/* Sets RSPCK, SSL, next-access delay value */
+ 	rspi_write8(rspi, 0x00, RSPI_SPCKD);
+@@ -365,7 +423,7 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 			return -ETIMEDOUT;
+ 		}
+ 
+-		rspi_write16(rspi, *data, RSPI_SPDR);
++		rspi_write_data(rspi, *data);
+ 		data++;
+ 		remain--;
+ 	}
+@@ -392,14 +450,14 @@ static int qspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 				"%s: tx empty timeout\n", __func__);
+ 			return -ETIMEDOUT;
+ 		}
+-		rspi_write8(rspi, *data++, RSPI_SPDR);
++		rspi_write_data(rspi, *data++);
+ 
+ 		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
+ 			dev_err(&rspi->master->dev,
+ 				"%s: receive timeout\n", __func__);
+ 			return -ETIMEDOUT;
+ 		}
+-		rspi_read8(rspi, RSPI_SPDR);
++		rspi_read_data(rspi);
+ 
+ 		remain--;
+ 	}
+@@ -539,7 +597,7 @@ static void rspi_receive_init(const struct rspi_data *rspi)
+ 
+ 	spsr = rspi_read8(rspi, RSPI_SPSR);
+ 	if (spsr & SPSR_SPRF)
+-		rspi_read16(rspi, RSPI_SPDR);	/* dummy read */
++		rspi_read_data(rspi);	/* dummy read */
+ 	if (spsr & SPSR_OVRF)
+ 		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPSR) & ~SPSR_OVRF,
+ 			    RSPI_SPSR);
+@@ -564,15 +622,14 @@ static int rspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 			return -ETIMEDOUT;
+ 		}
+ 		/* dummy write for generate clock */
+-		rspi_write16(rspi, DUMMY_DATA, RSPI_SPDR);
++		rspi_write_data(rspi, DUMMY_DATA);
+ 
+ 		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
+ 			dev_err(&rspi->master->dev,
+ 				"%s: receive timeout\n", __func__);
+ 			return -ETIMEDOUT;
+ 		}
+-		/* SPDR allows 16 or 32-bit access only */
+-		*data = (u8)rspi_read16(rspi, RSPI_SPDR);
++		*data = rspi_read_data(rspi);
+ 
+ 		data++;
+ 		remain--;
+@@ -587,7 +644,7 @@ static void qspi_receive_init(const struct rspi_data *rspi)
+ 
+ 	spsr = rspi_read8(rspi, RSPI_SPSR);
+ 	if (spsr & SPSR_SPRF)
+-		rspi_read8(rspi, RSPI_SPDR);   /* dummy read */
++		rspi_read_data(rspi);   /* dummy read */
+ 	rspi_write8(rspi, SPBFCR_TXRST | SPBFCR_RXRST, QSPI_SPBFCR);
+ 	rspi_write8(rspi, 0x00, QSPI_SPBFCR);
+ }
+@@ -609,15 +666,14 @@ static int qspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 			return -ETIMEDOUT;
+ 		}
+ 		/* dummy write for generate clock */
+-		rspi_write8(rspi, DUMMY_DATA, RSPI_SPDR);
++		rspi_write_data(rspi, DUMMY_DATA);
+ 
+ 		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
+ 			dev_err(&rspi->master->dev,
+ 				"%s: receive timeout\n", __func__);
+ 			return -ETIMEDOUT;
+ 		}
+-		/* SPDR allows 8, 16 or 32-bit access */
+-		*data++ = rspi_read8(rspi, RSPI_SPDR);
++		*data++ = rspi_read_data(rspi);
+ 		remain--;
+ 	}
+ 
+@@ -1002,6 +1058,12 @@ static int rspi_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	ret = ops->parse_platform_data(rspi, rspi_pd);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "rspi invalid platform data.\n");
++		goto error1;
++	}
++
+ 	ret = rspi_request_dma(rspi, pdev);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "rspi_request_dma failed.\n");
+@@ -1027,12 +1089,14 @@ error1:
+ }
+ 
+ static struct spi_ops rspi_ops = {
++	.parse_platform_data =		rspi_parse_platform_data,
+ 	.set_config_register =		rspi_set_config_register,
+ 	.send_pio =			rspi_send_pio,
+ 	.receive_pio =			rspi_receive_pio,
+ };
+ 
+ static struct spi_ops qspi_ops = {
++	.parse_platform_data =		qspi_parse_platform_data,
+ 	.set_config_register =		qspi_set_config_register,
+ 	.send_pio =			qspi_send_pio,
+ 	.receive_pio =			qspi_receive_pio,
+diff --git a/include/linux/spi/rspi.h b/include/linux/spi/rspi.h
+index 3f55232f74ff..7316dd9c7ba9 100644
+--- a/include/linux/spi/rspi.h
++++ b/include/linux/spi/rspi.h
+@@ -22,6 +22,8 @@
+ #define __LINUX_SPI_RENESAS_SPI_H__
+ 
+ struct rspi_plat_data {
++	u8 data_width;			/* Data register access width */
++
+ 	unsigned int dma_tx_id;
+ 	unsigned int dma_rx_id;
  
 -- 
 1.7.9.5

@@ -1,40 +1,72 @@
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Subject: [PATCH 0/6] Preliminary SoC and board integration for RSPI on RZ/A1H
-Date: Tue, 24 Dec 2013 12:56:44 +0100
-Message-ID: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: linux-sh@vger.kernel.org
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH 6/6] [RFC] arm: shmobile: genmai reference: Add RSPI nodes
+Date: Tue, 24 Dec 2013 12:56:50 +0100
+Message-ID: <1387886210-3634-7-git-send-email-geert+renesas@linux-m68k.org>
+References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1387886210-3634-1-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch series contains preliminary support to integrate Renesas RSPI on
-the RZ/A1H aka R7S72100 SoC, and the Genmai development board.
+Add pinctrl and SPI devices for RSPI on Genmai.
 
-Note that the prosed DT bindings also talk about QSPI on the R8A779x, as
-those SoC use the same driver. The actual driver doesn't use DT yet, but
-conversion to DT is planned.
+On this board, only rspi4 is in use. It's bus contains a single device
+(a wm8978 audio codec), for which no bindings are defined yet.
 
-The series is based on renesas-devel-v3.13-rc5-20131223, with Magnus'
-pinctrl, Wolfram's riic, and Simon's gether work applied on top.
-It hasn't received much testing, so please don't apply yet.
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+---
+ arch/arm/boot/dts/r7s72100-genmai-reference.dts |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-    [1/6] pinctrl: sh-pfc: r7s72100: Add RSPI support
-    [2/6] ARM: shmobile: r7s72100: Add RSPI clocks
-    [3/6] ARM: shmobile: r7s72100: Add RSPI resources
-    [4/6] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
-    [5/6] [RFC] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
-    [6/6] [RFC] arm: shmobile: genmai reference: Add RSPI nodes
-
-Thanks for your comments, and Merry Christmas!
-
-Gr{oetje,eeting}s,
-
-						Geert
+diff --git a/arch/arm/boot/dts/r7s72100-genmai-reference.dts b/arch/arm/boot/dts/r7s72100-genmai-reference.dts
+index 114510f8bf09..6d99630627e4 100644
+--- a/arch/arm/boot/dts/r7s72100-genmai-reference.dts
++++ b/arch/arm/boot/dts/r7s72100-genmai-reference.dts
+@@ -43,7 +43,7 @@
+ };
+ 
+ &pfc {
+-	pinctrl-0 = <&scif2_pins &ethernet_pins>;
++	pinctrl-0 = <&scif2_pins &ethernet_pins &rspi4_pins>;
+ 	pinctrl-names = "default";
+ 
+ 	scif2_pins: serial2 {
+@@ -73,6 +73,12 @@
+ 				 "ethernet_int_p1_15";
+ 		renesas,function = "ethernet";
+ 	};
++
++	rspi4_pins: spi4 {
++		renesas,groups = "rspi4_rspck_p4_0", "rspi4_ssl0_p4_1",
++				 "rspi4_mosi_p4_2", "rspi4_miso_p4_3";
++		renesas,function = "rspi4";
++	};
+ };
+ 
+ &i2c2 {
+@@ -85,3 +91,13 @@
+ 		pagesize = <64>;
+ 	};
+ };
++
++&spi4 {
++	status = "okay";
++
++	codec: wm8978@0 {
++		compatible = "wlf,wm8978";
++		reg = <0>;
++		spi-max-frequency = <5000000>;
++	};
++};
+-- 
+1.7.9.5
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

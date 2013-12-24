@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH 2/6] ARM: shmobile: r7s72100: Add RSPI clocks
-Date: Tue, 24 Dec 2013 12:56:46 +0100
-Message-ID: <1387886210-3634-3-git-send-email-geert+renesas@linux-m68k.org>
+Subject: [PATCH 3/6] ARM: shmobile: r7s72100: Add RSPI resources
+Date: Tue, 24 Dec 2013 12:56:47 +0100
+Message-ID: <1387886210-3634-4-git-send-email-geert+renesas@linux-m68k.org>
 References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
@@ -13,65 +13,52 @@ List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
- arch/arm/mach-shmobile/clock-r7s72100.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ arch/arm/mach-shmobile/setup-r7s72100.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/arch/arm/mach-shmobile/clock-r7s72100.c b/arch/arm/mach-shmobile/clock-r7s72100.c
-index 1ba578337b27..0f67a1b20118 100644
---- a/arch/arm/mach-shmobile/clock-r7s72100.c
-+++ b/arch/arm/mach-shmobile/clock-r7s72100.c
-@@ -22,13 +22,15 @@
- #include <mach/common.h>
- #include <mach/r7s72100.h>
+diff --git a/arch/arm/mach-shmobile/setup-r7s72100.c b/arch/arm/mach-shmobile/setup-r7s72100.c
+index 55f0b9c7c482..fbcb0c798994 100644
+--- a/arch/arm/mach-shmobile/setup-r7s72100.c
++++ b/arch/arm/mach-shmobile/setup-r7s72100.c
+@@ -79,6 +79,26 @@ static struct resource mtu2_0_resources[] __initdata = {
+ 					  &mtu2_##idx##_platform_data,	\
+ 					  sizeof(struct sh_timer_config))
  
--/* registers */
-+/* Frequency Control Registers */
- #define FRQCR		0xfcfe0010
- #define FRQCR2		0xfcfe0014
-+/* Standby Control Registers */
- #define STBCR3		0xfcfe0420
- #define STBCR4		0xfcfe0424
- #define STBCR7		0xfcfe0430
- #define STBCR9		0xfcfe0438
-+#define STBCR10		0xfcfe043c
++/* RSPI */
++#define RSPI_RESOURCE(idx, baseaddr, irq)				\
++static const struct resource rspi##idx##_resources[] __initconst = {	\
++	DEFINE_RES_MEM(baseaddr, 0x24),					\
++	DEFINE_RES_IRQ(irq),		/* SPEI */			\
++	DEFINE_RES_IRQ(irq + 1),	/* SPRI */			\
++	DEFINE_RES_IRQ(irq + 2),	/* SPTI */			\
++}
++
++RSPI_RESOURCE(0, 0xe800c800, gic_iid(270));
++RSPI_RESOURCE(1, 0xe800d000, gic_iid(273));
++RSPI_RESOURCE(2, 0xe800d800, gic_iid(276));
++RSPI_RESOURCE(3, 0xe800e000, gic_iid(279));
++RSPI_RESOURCE(4, 0xe800e800, gic_iid(282));
++
++#define r7s72100_register_rspi(idx)					\
++	platform_device_register_simple("rspi" #idx, idx,		\
++					rspi##idx##_resources,		\
++					ARRAY_SIZE(rspi##idx##_resources))
++
+ void __init r7s72100_add_dt_devices(void)
+ {
+ 	r7s72100_register_scif(SCIF0);
+@@ -90,6 +110,11 @@ void __init r7s72100_add_dt_devices(void)
+ 	r7s72100_register_scif(SCIF6);
+ 	r7s72100_register_scif(SCIF7);
+ 	r7s72100_register_mtu2(0);
++	r7s72100_register_rspi(0);
++	r7s72100_register_rspi(1);
++	r7s72100_register_rspi(2);
++	r7s72100_register_rspi(3);
++	r7s72100_register_rspi(4);
+ }
  
- #define PLL_RATE 30
- 
-@@ -146,12 +148,20 @@ struct clk div4_clks[DIV4_NR] = {
- 					| CLK_ENABLE_ON_INIT),
- };
- 
--enum {	MSTP97, MSTP96, MSTP95, MSTP94,
-+enum {
-+	MSTP107, MSTP106, MSTP105, MSTP104, MSTP103,
-+	MSTP97, MSTP96, MSTP95, MSTP94,
- 	MSTP74,
- 	MSTP47, MSTP46, MSTP45, MSTP44, MSTP43, MSTP42, MSTP41, MSTP40,
--	MSTP33,	MSTP_NR };
-+	MSTP33,	MSTP_NR
-+};
- 
- static struct clk mstp_clks[MSTP_NR] = {
-+	[MSTP107] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 7, 0), /* RSPI0 */
-+	[MSTP106] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 6, 0), /* RSPI1 */
-+	[MSTP105] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 5, 0), /* RSPI2 */
-+	[MSTP104] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 4, 0), /* RSPI3 */
-+	[MSTP103] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 3, 0), /* RSPI4 */
- 	[MSTP97] = SH_CLK_MSTP8(&peripheral0_clk, STBCR9, 7, 0), /* RIIC0 */
- 	[MSTP96] = SH_CLK_MSTP8(&peripheral0_clk, STBCR9, 6, 0), /* RIIC1 */
- 	[MSTP95] = SH_CLK_MSTP8(&peripheral0_clk, STBCR9, 5, 0), /* RIIC2 */
-@@ -179,6 +189,11 @@ static struct clk_lookup lookups[] = {
- 	CLKDEV_CON_ID("cpu_clk", &div4_clks[DIV4_I]),
- 
- 	/* MSTP clocks */
-+	CLKDEV_DEV_ID("rspi0", &mstp_clks[MSTP107]),
-+	CLKDEV_DEV_ID("rspi1", &mstp_clks[MSTP106]),
-+	CLKDEV_DEV_ID("rspi2", &mstp_clks[MSTP105]),
-+	CLKDEV_DEV_ID("rspi3", &mstp_clks[MSTP104]),
-+	CLKDEV_DEV_ID("rspi4", &mstp_clks[MSTP103]),
- 	CLKDEV_DEV_ID("fcfee000.i2c", &mstp_clks[MSTP97]),
- 	CLKDEV_DEV_ID("fcfee400.i2c", &mstp_clks[MSTP96]),
- 	CLKDEV_DEV_ID("fcfee800.i2c", &mstp_clks[MSTP95]),
+ void __init r7s72100_init_early(void)
 -- 
 1.7.9.5
 

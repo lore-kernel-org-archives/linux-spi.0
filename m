@@ -1,68 +1,149 @@
-From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH 3/6] ARM: shmobile: r7s72100: Add RSPI resources
-Date: Tue, 24 Dec 2013 12:56:47 +0100
-Message-ID: <1387886210-3634-4-git-send-email-geert+renesas@linux-m68k.org>
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Subject: [PATCH 1/6] pinctrl: sh-pfc: r7s72100: Add RSPI support
+Date: Tue, 24 Dec 2013 12:56:45 +0100
+Message-ID: <1387886210-3634-2-git-send-email-geert+renesas@linux-m68k.org>
 References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1387886210-3634-1-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+To: linux-sh@vger.kernel.org
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
 ---
- arch/arm/mach-shmobile/setup-r7s72100.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/pinctrl/sh-pfc/pfc-r7s72100.c |   94 +++++++++++++++++++++++++++++++++
+ 1 file changed, 94 insertions(+)
 
-diff --git a/arch/arm/mach-shmobile/setup-r7s72100.c b/arch/arm/mach-shmobile/setup-r7s72100.c
-index 55f0b9c7c482..fbcb0c798994 100644
---- a/arch/arm/mach-shmobile/setup-r7s72100.c
-+++ b/arch/arm/mach-shmobile/setup-r7s72100.c
-@@ -79,6 +79,26 @@ static struct resource mtu2_0_resources[] __initdata = {
- 					  &mtu2_##idx##_platform_data,	\
- 					  sizeof(struct sh_timer_config))
+diff --git a/drivers/pinctrl/sh-pfc/pfc-r7s72100.c b/drivers/pinctrl/sh-pfc/pfc-r7s72100.c
+index 267677c683c5..5e0f03c14fcc 100644
+--- a/drivers/pinctrl/sh-pfc/pfc-r7s72100.c
++++ b/drivers/pinctrl/sh-pfc/pfc-r7s72100.c
+@@ -138,6 +138,70 @@ RIIC1(RZ_PIN_AND_MUX)
+ RIIC2(RZ_PIN_AND_MUX)
+ RIIC3(RZ_PIN_AND_MUX)
  
-+/* RSPI */
-+#define RSPI_RESOURCE(idx, baseaddr, irq)				\
-+static const struct resource rspi##idx##_resources[] __initconst = {	\
-+	DEFINE_RES_MEM(baseaddr, 0x24),					\
-+	DEFINE_RES_IRQ(irq),		/* SPEI */			\
-+	DEFINE_RES_IRQ(irq + 1),	/* SPRI */			\
-+	DEFINE_RES_IRQ(irq + 2),	/* SPTI */			\
-+}
++#define RSPI0(fn)			\
++	fn(rspi0, rspck,  2, 12, 2)	\
++	fn(rspi0, ssl0,   2, 13, 2)	\
++	fn(rspi0, mosi,   2, 14, 2)	\
++	fn(rspi0, miso,   2, 15, 2)	\
++	fn(rspi0, rspck,  7, 15, 2)	\
++	fn(rspi0, ssl0,   8,  0, 2)	\
++	fn(rspi0, mosi,   8,  1, 2)	\
++	fn(rspi0, miso,   8,  2, 2)	\
++	fn(rspi0, rspck, 10, 12, 4)	\
++	fn(rspi0, ssl0,  10, 13, 4)	\
++	fn(rspi0, mosi,  10, 14, 4)	\
++	fn(rspi0, miso,  10, 15, 4)	\
 +
-+RSPI_RESOURCE(0, 0xe800c800, gic_iid(270));
-+RSPI_RESOURCE(1, 0xe800d000, gic_iid(273));
-+RSPI_RESOURCE(2, 0xe800d800, gic_iid(276));
-+RSPI_RESOURCE(3, 0xe800e000, gic_iid(279));
-+RSPI_RESOURCE(4, 0xe800e800, gic_iid(282));
++#define RSPI1(fn)			\
++	fn(rspi1, rspck,  4,  4, 2)	\
++	fn(rspi1, ssl0,   4,  5, 2)	\
++	fn(rspi1, mosi,   4,  6, 2)	\
++	fn(rspi1, miso,   4,  7, 2)	\
++	fn(rspi1, rspck,  6,  4, 7)	\
++	fn(rspi1, ssl0,   6,  5, 7)	\
++	fn(rspi1, mosi,   6,  6, 7)	\
++	fn(rspi1, miso,   6,  7, 7)	\
++	fn(rspi1, rspck, 11, 12, 2)	\
++	fn(rspi1, ssl0,  11, 13, 2)	\
++	fn(rspi1, mosi,  11, 14, 2)	\
++	fn(rspi1, miso,  11, 15, 2)	\
 +
-+#define r7s72100_register_rspi(idx)					\
-+	platform_device_register_simple("rspi" #idx, idx,		\
-+					rspi##idx##_resources,		\
-+					ARRAY_SIZE(rspi##idx##_resources))
++#define RSPI2(fn)			\
++	fn(rspi2, rspck,  8,  3, 3)	\
++	fn(rspi2, ssl0,   8,  4, 3)	\
++	fn(rspi2, mosi,   8,  5, 3)	\
++	fn(rspi2, miso,   8,  6, 3)	\
++	fn(rspi2, rspck,  8, 14, 5)	\
++	fn(rspi2, ssl0,   8, 15, 5)	\
++	fn(rspi2, mosi,   9,  0, 5)	\
++	fn(rspi2, miso,   9,  1, 5)	\
 +
- void __init r7s72100_add_dt_devices(void)
- {
- 	r7s72100_register_scif(SCIF0);
-@@ -90,6 +110,11 @@ void __init r7s72100_add_dt_devices(void)
- 	r7s72100_register_scif(SCIF6);
- 	r7s72100_register_scif(SCIF7);
- 	r7s72100_register_mtu2(0);
-+	r7s72100_register_rspi(0);
-+	r7s72100_register_rspi(1);
-+	r7s72100_register_rspi(2);
-+	r7s72100_register_rspi(3);
-+	r7s72100_register_rspi(4);
- }
++#define RSPI3(fn)			\
++	fn(rspi3, rspck,  3,  0, 8)	\
++	fn(rspi3, ssl0,   3,  1, 8)	\
++	fn(rspi3, mosi,   3,  2, 8)	\
++	fn(rspi3, miso,   3,  3, 8)	\
++	fn(rspi3, rspck,  5,  0, 8)	\
++	fn(rspi3, ssl0,   5,  1, 8)	\
++	fn(rspi3, mosi,   5,  2, 8)	\
++	fn(rspi3, miso,   5,  3, 8)	\
++
++#define RSPI4(fn)			\
++	fn(rspi4, rspck,  2,  8, 8)	\
++	fn(rspi4, ssl0,   2,  9, 8)	\
++	fn(rspi4, mosi,   2, 10, 8)	\
++	fn(rspi4, miso,   2, 11, 8)	\
++	fn(rspi4, rspck,  4,  0, 7)	\
++	fn(rspi4, ssl0,   4,  1, 7)	\
++	fn(rspi4, mosi,   4,  2, 7)	\
++	fn(rspi4, miso,   4,  3, 7)	\
++
++RSPI0(RZ_PIN_AND_MUX)
++RSPI1(RZ_PIN_AND_MUX)
++RSPI2(RZ_PIN_AND_MUX)
++RSPI3(RZ_PIN_AND_MUX)
++RSPI4(RZ_PIN_AND_MUX)
++
+ #define SCIF0(fn)			\
+ 	fn(scif0, clk, 2, 13, 6)	\
+ 	fn(scif0, txd, 2, 14, 6)	\
+@@ -312,6 +376,11 @@ static const struct sh_pfc_pin_group pinmux_groups[] = {
+ 	RIIC1(RZ_PMX_GROUP)
+ 	RIIC2(RZ_PMX_GROUP)
+ 	RIIC3(RZ_PMX_GROUP)
++	RSPI0(RZ_PMX_GROUP)
++	RSPI1(RZ_PMX_GROUP)
++	RSPI2(RZ_PMX_GROUP)
++	RSPI3(RZ_PMX_GROUP)
++	RSPI4(RZ_PMX_GROUP)
+ 	SCIF0(RZ_PMX_GROUP)
+ 	SCIF1(RZ_PMX_GROUP)
+ 	SCIF2(RZ_PMX_GROUP)
+@@ -339,6 +408,26 @@ static const char * const riic3_groups[] = {
+ 	RIIC3(RZ_GROUPS)
+ };
  
- void __init r7s72100_init_early(void)
++static const char * const rspi0_groups[] = {
++	RSPI0(RZ_GROUPS)
++};
++
++static const char * const rspi1_groups[] = {
++	RSPI1(RZ_GROUPS)
++};
++
++static const char * const rspi2_groups[] = {
++	RSPI2(RZ_GROUPS)
++};
++
++static const char * const rspi3_groups[] = {
++	RSPI3(RZ_GROUPS)
++};
++
++static const char * const rspi4_groups[] = {
++	RSPI4(RZ_GROUPS)
++};
++
+ static const char * const scif0_groups[] = {
+ 	SCIF0(RZ_GROUPS)
+ };
+@@ -380,6 +469,11 @@ static const struct sh_pfc_function pinmux_functions[] = {
+ 	SH_PFC_FUNCTION(riic1),
+ 	SH_PFC_FUNCTION(riic2),
+ 	SH_PFC_FUNCTION(riic3),
++	SH_PFC_FUNCTION(rspi0),
++	SH_PFC_FUNCTION(rspi1),
++	SH_PFC_FUNCTION(rspi2),
++	SH_PFC_FUNCTION(rspi3),
++	SH_PFC_FUNCTION(rspi4),
+ 	SH_PFC_FUNCTION(scif0),
+ 	SH_PFC_FUNCTION(scif1),
+ 	SH_PFC_FUNCTION(scif2),
 -- 
 1.7.9.5
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,26 +1,25 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi: rspi: Fix NULL pointer dereference on SH7757
-Date: Tue, 24 Dec 2013 13:12:30 +0000
-Message-ID: <20131224131230.GE30815@sirena.org.uk>
-References: <1387823664-32318-1-git-send-email-geert+renesas@linux-m68k.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 0/5] spi: rspi: cleanups
+Date: Tue, 24 Dec 2013 13:20:39 +0000
+Message-ID: <20131224132039.GH30815@sirena.org.uk>
+References: <1387878574-21445-1-git-send-email-geert+renesas@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	Hiep Cao Minh <cm-hiep@jinso.co.jp>
-To: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1387823664-32318-1-git-send-email-geert+renesas@linux-m68k.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1387878574-21445-1-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Dec 23, 2013 at 07:34:23PM +0100, Geert Uytterhoeven wrote:
-> SH7757 doesn't pass platform data, in which case spi-rspi uses default
-> parameters.
+On Tue, Dec 24, 2013 at 10:49:29AM +0100, Geert Uytterhoeven wrote:
+> 	Hi Mark,
 > 
-> However, commit 5ce0ba88650f2606244a761d92e2b725f4ab3583 ("spi: rcar: add
-> Renesas QSPI support on RSPI") added a new user of the platform data, but
-> forgot to check for its validity first, causing a NULL pointer dereference
-> on SH7757.
+> This is a series of small cleanups for the Renesas RSPI driver:
 
-Applied both, thanks.
+Applied all, thanks.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,37 +1,62 @@
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Subject: [PATCH 2/2] spi: rspi: Fix typo when clearing SPSR_OVRF
-Date: Mon, 23 Dec 2013 19:34:24 +0100
-Message-ID: <1387823664-32318-2-git-send-email-geert+renesas@linux-m68k.org>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH 1/2] spi: rspi: Fix NULL pointer dereference on SH7757
+Date: Tue, 24 Dec 2013 11:58:52 +0900
+Message-ID: <20131224025852.GE22401@verge.net.au>
 References: <1387823664-32318-1-git-send-email-geert+renesas@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org, Hiep Cao Minh <cm-hiep@jinso.co.jp>
+To: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
 In-Reply-To: <1387823664-32318-1-git-send-email-geert+renesas@linux-m68k.org>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The overrun flag should be cleared in the SPI Status Register, not in the
-SPI Control Register, based on the SDK sample code.
+On Mon, Dec 23, 2013 at 07:34:23PM +0100, Geert Uytterhoeven wrote:
+> SH7757 doesn't pass platform data, in which case spi-rspi uses default
+> parameters.
+> 
+> However, commit 5ce0ba88650f2606244a761d92e2b725f4ab3583 ("spi: rcar: add
+> Renesas QSPI support on RSPI") added a new user of the platform data, but
+> forgot to check for its validity first, causing a NULL pointer dereference
+> on SH7757.
+> 
+> Add the missing check to fix this.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+> Cc: Hiep Cao Minh <cm-hiep@jinso.co.jp>
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
----
- drivers/spi/spi-rspi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Acked-by: Simon Horman <horms+renesas@verge.net.au>
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 9e0301014f48..b04835d809f5 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -517,7 +517,7 @@ static void rspi_receive_init(struct rspi_data *rspi)
- 		rspi_read16(rspi, RSPI_SPDR);	/* dummy read */
- 	if (spsr & SPSR_OVRF)
- 		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPSR) & ~SPSR_OVRF,
--			    RSPI_SPCR);
-+			    RSPI_SPSR);
- }
- 
- static int rspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
--- 
-1.7.9.5
-
+> ---
+> This fixes a regression introduced in v3.13-rc1
+> 
+>  drivers/spi/spi-rspi.c |    5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+> index cfdbb422a40a..9e0301014f48 100644
+> --- a/drivers/spi/spi-rspi.c
+> +++ b/drivers/spi/spi-rspi.c
+> @@ -948,8 +948,9 @@ static int rspi_probe(struct platform_device *pdev)
+>  	INIT_WORK(&rspi->ws, rspi_work);
+>  	init_waitqueue_head(&rspi->wait);
+>  
+> -	master->num_chipselect = rspi_pd->num_chipselect;
+> -	if (!master->num_chipselect)
+> +	if (rspi_pd && rspi_pd->num_chipselect)
+> +		master->num_chipselect = rspi_pd->num_chipselect;
+> +	else
+>  		master->num_chipselect = 2; /* default */
+>  
+>  	master->bus_num = pdev->id;
+> -- 
+> 1.7.9.5
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-sh" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 

@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Subject: [PATCH 3/8] spi: rspi: Add support for more than one interrupt
-Date: Tue, 24 Dec 2013 12:40:43 +0100
-Message-ID: <1387885248-28425-4-git-send-email-geert+renesas@linux-m68k.org>
+Subject: [PATCH 2/8] spi: rspi: Add more QSPI register documentation
+Date: Tue, 24 Dec 2013 12:40:42 +0100
+Message-ID: <1387885248-28425-3-git-send-email-geert+renesas@linux-m68k.org>
 References: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org>
 Cc: linux-sh@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
@@ -11,190 +11,70 @@ In-Reply-To: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add support for up to 3 interrupts, based on the SDK reference code.
-This is needed for RZ/A1H.
-
-Minimum 1 and maximum 3 interrupts can be passed via platform device
-resources.
-
 Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 ---
- drivers/spi/spi-rspi.c   |   57 +++++++++++++++++++++++++++++-----------------
- include/linux/spi/rspi.h |    2 +-
- 2 files changed, 37 insertions(+), 22 deletions(-)
+ drivers/spi/spi-rspi.c |   22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 46232e3b6e8c..c7bbc54ef785 100644
+index afd7466c65cd..46232e3b6e8c 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -1,7 +1,7 @@
- /*
-  * SH RSPI driver
-  *
-- * Copyright (C) 2012  Renesas Solutions Corp.
-+ * Copyright (C) 2012, 2013  Renesas Solutions Corp.
-  *
-  * Based on spi-sh.c:
-  * Copyright (C) 2011 Renesas Solutions Corp.
-@@ -167,6 +167,7 @@
- #define SPBFCR_RXTRG_MASK	0x07	/* Receive Buffer Data Triggering Number */
+@@ -62,12 +62,12 @@
+ #define RSPI_SPBFDR		0x22	/* Buffer Data Count Setting Register */
  
- #define DUMMY_DATA		0x00
-+#define MAX_NUM_IRQ		3
+ /*qspi only */
+-#define QSPI_SPBFCR		0x18
+-#define QSPI_SPBDCR		0x1a
+-#define QSPI_SPBMUL0		0x1c
+-#define QSPI_SPBMUL1		0x20
+-#define QSPI_SPBMUL2		0x24
+-#define QSPI_SPBMUL3		0x28
++#define QSPI_SPBFCR		0x18	/* Buffer Control Register */
++#define QSPI_SPBDCR		0x1a	/* Buffer Data Count Register */
++#define QSPI_SPBMUL0		0x1c	/* Transfer Data Length Multiplier Setting Register 0 */
++#define QSPI_SPBMUL1		0x20	/* Transfer Data Length Multiplier Setting Register 1 */
++#define QSPI_SPBMUL2		0x24	/* Transfer Data Length Multiplier Setting Register 2 */
++#define QSPI_SPBMUL3		0x28	/* Transfer Data Length Multiplier Setting Register 3 */
  
- struct rspi_data {
- 	void __iomem *addr;
-@@ -178,12 +179,13 @@ struct rspi_data {
- 	spinlock_t lock;
- 	struct clk *clk;
- 	u8 spsr;
-+	int irq[MAX_NUM_IRQ];
-+	unsigned int numirq;
- 	const struct spi_ops *ops;
+ /* SPCR - Control Register */
+ #define SPCR_SPRIE		0x80	/* Receive Interrupt Enable */
+@@ -90,6 +90,9 @@
+ #define SPPCR_SPLP2		0x02
+ #define SPPCR_SPLP		0x01	/* Loopback */
  
- 	/* for dmaengine */
- 	struct dma_chan *chan_tx;
- 	struct dma_chan *chan_rx;
--	int irq;
- 
- 	unsigned dma_width_16bit:1;
- 	unsigned dma_callbacked:1;
-@@ -462,7 +464,7 @@ static int rspi_send_dma(struct rspi_data *rspi, struct spi_transfer *t)
- 	const void *buf = NULL;
- 	struct dma_async_tx_descriptor *desc;
- 	unsigned len;
--	int ret = 0;
-+	int i, ret = 0;
- 
- 	if (rspi->dma_width_16bit) {
- 		void *tmp;
-@@ -499,7 +501,8 @@ static int rspi_send_dma(struct rspi_data *rspi, struct spi_transfer *t)
- 	 * DMAC needs SPTIE, but if SPTIE is set, this IRQ routine will be
- 	 * called. So, this driver disables the IRQ while DMA transfer.
- 	 */
--	disable_irq(rspi->irq);
-+	for (i = 0; i < rspi->numirq; i++)
-+		disable_irq(rspi->irq[i]);
- 
- 	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | SPCR_TXMD, RSPI_SPCR);
- 	rspi_enable_irq(rspi, SPCR_SPTIE);
-@@ -518,7 +521,8 @@ static int rspi_send_dma(struct rspi_data *rspi, struct spi_transfer *t)
- 		ret = -ETIMEDOUT;
- 	rspi_disable_irq(rspi, SPCR_SPTIE);
- 
--	enable_irq(rspi->irq);
-+	for (i = 0; i < rspi->numirq; i++)
-+		enable_irq(rspi->irq[i]);
- 
- end:
- 	rspi_dma_unmap_sg(&sg, rspi->chan_tx, DMA_TO_DEVICE);
-@@ -628,7 +632,7 @@ static int rspi_receive_dma(struct rspi_data *rspi, struct spi_transfer *t)
- 	void *dummy = NULL, *rx_buf = NULL;
- 	struct dma_async_tx_descriptor *desc, *desc_dummy;
- 	unsigned len;
--	int ret = 0;
-+	int i, ret = 0;
- 
- 	if (rspi->dma_width_16bit) {
- 		/*
-@@ -685,7 +689,8 @@ static int rspi_receive_dma(struct rspi_data *rspi, struct spi_transfer *t)
- 	 * DMAC needs SPTIE, but if SPTIE is set, this IRQ routine will be
- 	 * called. So, this driver disables the IRQ while DMA transfer.
- 	 */
--	disable_irq(rspi->irq);
-+	for (i = 0; i < rspi->numirq; i++)
-+		disable_irq(rspi->irq[i]);
- 
- 	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_TXMD, RSPI_SPCR);
- 	rspi_enable_irq(rspi, SPCR_SPTIE | SPCR_SPRIE);
-@@ -708,7 +713,8 @@ static int rspi_receive_dma(struct rspi_data *rspi, struct spi_transfer *t)
- 		ret = -ETIMEDOUT;
- 	rspi_disable_irq(rspi, SPCR_SPTIE | SPCR_SPRIE);
- 
--	enable_irq(rspi->irq);
-+	for (i = 0; i < rspi->numirq; i++)
-+		enable_irq(rspi->irq[i]);
- 
- end:
- 	rspi_dma_unmap_sg(&sg, rspi->chan_rx, DMA_FROM_DEVICE);
-@@ -918,7 +924,7 @@ static int rspi_probe(struct platform_device *pdev)
- 	struct resource *res;
- 	struct spi_master *master;
- 	struct rspi_data *rspi;
--	int ret, irq;
-+	int i, ret, irq;
- 	char clk_name[16];
- 	const struct rspi_plat_data *rspi_pd = dev_get_platdata(&pdev->dev);
- 	const struct spi_ops *ops;
-@@ -931,12 +937,6 @@ static int rspi_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
--	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		dev_err(&pdev->dev, "platform_get_irq error\n");
--		return -ENODEV;
--	}
--
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct rspi_data));
- 	if (master == NULL) {
- 		dev_err(&pdev->dev, "spi_alloc_master error.\n");
-@@ -948,6 +948,19 @@ static int rspi_probe(struct platform_device *pdev)
- 	rspi->ops = ops;
- 	rspi->master = master;
- 
-+	for (i = 0; i < MAX_NUM_IRQ; i++) {
-+		irq = platform_get_irq(pdev, i);
-+		if (irq < 0) {
-+			if (rspi->numirq)
-+				break;
-+			dev_err(&pdev->dev, "platform_get_irq error\n");
-+			ret = -ENODEV;
-+			goto error1;
-+		}
-+		rspi->irq[i] = irq;
-+		rspi->numirq++;
-+	}
++#define SPPCR_IO3FV		0x04	/* Single-/Dual-SPI Mode IO3 Output Fixed Value */
++#define SPPCR_IO2FV		0x04	/* Single-/Dual-SPI Mode IO2 Output Fixed Value */
 +
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	rspi->addr = devm_ioremap_resource(&pdev->dev, res);
- 	if (IS_ERR(rspi->addr)) {
-@@ -979,14 +992,16 @@ static int rspi_probe(struct platform_device *pdev)
- 	master->transfer = rspi_transfer;
- 	master->cleanup = rspi_cleanup;
+ /* SPSR - Status Register */
+ #define SPSR_SPRF		0x80	/* Receive Buffer Full Flag */
+ #define SPSR_TEND		0x40	/* Transmit End */
+@@ -109,7 +112,7 @@
+ /* SPDCR - Data Control Register */
+ #define SPDCR_TXDMY		0x80	/* Dummy Data Transmission Enable */
+ #define SPDCR_SPLW1		0x40	/* Access Width Specification */
+-#define SPDCR_SPLW0		0x20
++#define SPDCR_SPLW0		0x20	/* Access Width Specification */
+ #define SPDCR_SPLLWORD		(SPDCR_SPLW1 | SPDCR_SPLW0)
+ #define SPDCR_SPLWORD		SPDCR_SPLW1
+ #define SPDCR_SPLBYTE		SPDCR_SPLW0
+@@ -148,12 +151,15 @@
+ #define SPCMD_SPB_20BIT		0x0000
+ #define SPCMD_SPB_24BIT		0x0100
+ #define SPCMD_SPB_32BIT		0x0200
+-#define SPCMD_SSLKP		0x0080
++#define SPCMD_SSLKP		0x0080	/* SSL Signal Level Keeping */
+ #define SPCMD_SSLA_MASK		0x0030
+ #define SPCMD_BRDV_MASK		0x000c	/* Bit Rate Division Setting */
+ #define SPCMD_CPOL		0x0002	/* Clock Polarity Setting */
+ #define SPCMD_CPHA		0x0001	/* Clock Phase Setting */
  
--	ret = devm_request_irq(&pdev->dev, irq, rspi_irq, 0,
--			       dev_name(&pdev->dev), rspi);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "request_irq error\n");
--		goto error1;
-+	for (i = 0; i < rspi->numirq; i++) {
-+		ret = devm_request_irq(&pdev->dev, rspi->irq[i], rspi_irq, 0,
-+				       dev_name(&pdev->dev), rspi);
-+		if (ret < 0) {
-+			dev_err(&pdev->dev, "request_irq %d error\n",
-+				rspi->irq[i]);
-+			goto error1;
-+		}
- 	}
- 
--	rspi->irq = irq;
- 	ret = rspi_request_dma(rspi, pdev);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "rspi_request_dma failed.\n");
-diff --git a/include/linux/spi/rspi.h b/include/linux/spi/rspi.h
-index a25bd6f65e7f..3f55232f74ff 100644
---- a/include/linux/spi/rspi.h
-+++ b/include/linux/spi/rspi.h
-@@ -1,7 +1,7 @@
- /*
-  * Renesas SPI driver
-  *
-- * Copyright (C) 2012  Renesas Solutions Corp.
-+ * Copyright (C) 2012, 2013  Renesas Solutions Corp.
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
++#define SPCMD_SPIMOD_MASK	0x0060	/* SPI Operating Mode */
++#define SPCMD_SPRW		0x0060	/* SPI Read/Write Access */
++
+ /* SPBFCR - Buffer Control Register */
+ #define SPBFCR_TXRST		0x80	/* Transmit Buffer Data Reset (qspi only) */
+ #define SPBFCR_RXRST		0x40	/* Receive Buffer Data Reset (qspi only) */
 -- 
 1.7.9.5
 

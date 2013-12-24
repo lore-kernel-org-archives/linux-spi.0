@@ -1,59 +1,48 @@
-From: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH 6/6] [RFC] arm: shmobile: genmai reference: Add RSPI nodes
-Date: Tue, 24 Dec 2013 19:45:03 +0400
-Message-ID: <52B9ABFF.90902@cogentembedded.com>
-References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org> <1387886210-3634-7-git-send-email-geert+renesas@linux-m68k.org>
+Date: Tue, 24 Dec 2013 20:46:47 +0100
+Message-ID: <CAMuHMdWMXAnLgkap-sQEr1z0M-nS8spwiBd_X4cGsrJq1UO6rA@mail.gmail.com>
+References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
+	<1387886210-3634-7-git-send-email-geert+renesas@linux-m68k.org>
+	<52B9ABFF.90902@cogentembedded.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	linux-sh@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1387886210-3634-7-git-send-email-geert+renesas@linux-m68k.org>
+In-Reply-To: <52B9ABFF.90902@cogentembedded.com>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello.
+Hi Sergei,
 
-On 24-12-2013 15:56, Geert Uytterhoeven wrote:
+On Tue, Dec 24, 2013 at 4:45 PM, Sergei Shtylyov
+<sergei.shtylyov@cogentembedded.com> wrote:
+>> +       codec: wm8978@0 {
+>
+>    Do not give chip names to device nodes, please use somewhat generic names
+> instead, like "sound-codec@0". That's to comply with ePAPR spec.
 
-> Add pinctrl and SPI devices for RSPI on Genmai.
+Oh, so the generic codec alias is not sufficient? Last time you gave this
+comment, the code didn't contain a generic name at all, so I thought
+this would be OK...
 
-> On this board, only rspi4 is in use. It's bus contains a single device
-> (a wm8978 audio codec), for which no bindings are defined yet.
+Seems like Documentation/devicetree/bindings can use some cleanups,
+as it's full of examples like "codec: wm8510@1a"...
 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-> Cc: devicetree@vger.kernel.org
-> ---
->   arch/arm/boot/dts/r7s72100-genmai-reference.dts |   18 +++++++++++++++++-
->   1 file changed, 17 insertions(+), 1 deletion(-)
+Thanks for your comments!
 
-> diff --git a/arch/arm/boot/dts/r7s72100-genmai-reference.dts b/arch/arm/boot/dts/r7s72100-genmai-reference.dts
-> index 114510f8bf09..6d99630627e4 100644
-> --- a/arch/arm/boot/dts/r7s72100-genmai-reference.dts
-> +++ b/arch/arm/boot/dts/r7s72100-genmai-reference.dts
-[...]
-> @@ -85,3 +91,13 @@
->   		pagesize = <64>;
->   	};
->   };
-> +
-> +&spi4 {
-> +	status = "okay";
-> +
-> +	codec: wm8978@0 {
+Gr{oetje,eeting}s,
 
-    Do not give chip names to device nodes, please use somewhat generic names 
-instead, like "sound-codec@0". That's to comply with ePAPR spec.
+                        Geert
 
-> +		compatible = "wlf,wm8978";
-> +		reg = <0>;
-> +		spi-max-frequency = <5000000>;
-> +	};
-> +};
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-WBR, Sergei
-
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

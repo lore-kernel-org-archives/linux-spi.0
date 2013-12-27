@@ -1,58 +1,68 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH 0/4] spi: dw: fixes, and manages resources migration
-Date: Thu, 26 Dec 2013 22:34:23 +0200
-Message-ID: <20131226203423.GC3873@tarshish>
-References: <cover.1388040447.git.baruch@tkos.co.il>
- <20131226115507.GI8064@book.gsilab.sittig.org>
- <20131226121224.GA11794@sapphire.tkos.co.il>
- <20131226154250.GO8064@book.gsilab.sittig.org>
+From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: rspi: Fix typo when clearing SPSR_OVRF
+Date: Fri, 27 Dec 2013 11:16:39 +0900
+Message-ID: <20131227021639.GD9184@verge.net.au>
+References: <1387823664-32318-1-git-send-email-geert+renesas@linux-m68k.org>
+ <1387823664-32318-2-git-send-email-geert+renesas@linux-m68k.org>
+ <20131224025936.GF22401@verge.net.au>
+ <CAMuHMdWiJPF2NU+ME=CLMygvABZ_fcTyr7ggdQtFKbOGhCA0+w@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
-To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Cc: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20131226154250.GO8064-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
+In-Reply-To: <CAMuHMdWiJPF2NU+ME=CLMygvABZ_fcTyr7ggdQtFKbOGhCA0+w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Gerhard,
-
-On Thu, Dec 26, 2013 at 04:42:50PM +0100, Gerhard Sittig wrote:
-> On Thu, Dec 26, 2013 at 14:12 +0200, Baruch Siach wrote:
-> > 
-> > [ ... GPIO controlled CS lines for SPI ... ]
-> > 
-> > Thanks for the head up. I was considering adding a spi-dw specific "dummy-cs" 
-> > property, to be used for cs-gpio numbers that are higher than num-cs.
+On Tue, Dec 24, 2013 at 10:26:17AM +0100, Geert Uytterhoeven wrote:
+> On Tue, Dec 24, 2013 at 3:59 AM, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org> wrote:
+> > On Mon, Dec 23, 2013 at 07:34:24PM +0100, Geert Uytterhoeven wrote:
+> >> The overrun flag should be cleared in the SPI Status Register, not in the
+> >> SPI Control Register, based on the SDK sample code.
+> >>
+> >> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> >
+> > I don't believe that I have access to the sample code,
+> > but I do trust your judgement.
 > 
-> Look at it the other way for a moment.  These GPIO backed CS
-> lines aren't "dummies", having control over them and having more
-> than four of them is not at all exceptional or strange, it's the
-> actual motivation for cs-gpios in the first place.  And all of
-> these GPIO lines are "real" and useful.
+> It's in the public RZLSP-V1.0.1 for RZ/A1H, available from
+> https://oss.renesas.com/. Oh, today a new version got released.
+
+Thanks, I was not aware of that.
+
 > 
-> Try to see the internal CS lines in the hardware of the SPI
-> controller as the exception instead. :) These are the ones that
-> are rather limited, both in their number and in their behaviour,
-> and are of questionable use.  These internal lines of
-> uncontrollable behaviour only get used in the absence of a GPIO
-> spec for the CS line.
+> The issue is quite obvious: after clearing the bit, the new value should
+> be written back to the same register.
+> 
+> However, the fix is not in a v3.10-rc6 version I saw, so this may matter
+> for LTSI.
 
-That's what I meant. The "dummy-cs" should be an internal chip-select that 
-does not control any slave signal. It is meant to be used only to trigger the 
-start of transfer. This is necessary in particular when the number of GPIO 
-chip-select lines is higher than the number of internal chip-selects. 
-Otherwise, the high bits in the Slave Enable Register are ignored.
+I believe that the LTSI-3.10 work from Renesas (so far mainly me) is
+independent of the sample code at the link above. So unless this fix ends
+up in v3.10 -stable, which should feed into LTSI-3.10, then it will need to
+be submitted to LTSI (probably be me or you) if we want it to be in LTSI.
 
-baruch
-
--- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
+> 
+> > Acked-by: Simon Horman <horms+renesas-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+> 
+> Thanks!
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
+> 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

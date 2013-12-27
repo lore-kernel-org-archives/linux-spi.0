@@ -1,47 +1,49 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 0/8] spi: rspi: Add prelimary support for RZ/A1H
-Date: Fri, 27 Dec 2013 20:22:09 +0100
-Message-ID: <CAMuHMdX=CX-vAmiJvo5M2ZNCb+Uga9x4KTTYVC920d5bMxqszQ@mail.gmail.com>
-References: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>
-To: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Subject: [PATCH v2 0/8] SoC and board integration for RSPI on RZ/A1H
+Date: Fri, 27 Dec 2013 21:15:54 +0100
+Message-ID: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: linux-sh@vger.kernel.org
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Dec 24, 2013 at 12:40 PM, Geert Uytterhoeven
-<geert+renesas@linux-m68k.org> wrote:
-> This patch series adds preliminary support for RSPI in the RZ/A1H aka
-> R7S72100 SoC, which is found on the Genmai development board.
->
-> It hasn't received much testing, so please don't apply yet.
+This patch series integrates Renesas RSPI on the RZ/A1H aka R7S72100 SoC,
+and the Genmai development board.
 
-In the mean time this has received some more testing on the Genmai
-development board, using loopback mode, with the same outcome as
-the SDK reference code.
+The series is based on renesas-devel-v3.13-rc5-20131226, with Magnus'
+pinctrl, Wolfram's riic, and Simon's sh_eth work applied on top.
 
->     [1/8] spi: rspi: Add more RSPI register documentation
->     [2/8] spi: rspi: Add more QSPI register documentation
->     [3/8] spi: rspi: Add support for more than one interrupt
->     [4/8] spi: rspi: Add support for 8-bit Data Register access
->     [5/8] spi: rspi: Add support for no TX only mode
->     [6/8] spi: rspi: Add support for missing SPCR2 register
->     [7/8] spi: rspi: Add support for specifying CPHA/CPOL
->     [8/8] spi: rspi: Add support for loopback mode
+It was tested on the Genmai development board (genmai-reference), using
+an in-kernel version of Documentation/spi/spidev_test.c, exercising
+loopback mode on rspi1, with the same outcome as the SDK reference code.
 
-No changes needed to the code, one silly spelling typo in the summary
-of [5/8] (s/nevers/never/). Anyway, will resend the series later.
+Notes:
+  1. The proposed DT bindings also talk about QSPI on the R8A779x, as those
+     SoCs use the same driver.
+  2. As the actual spi-rspi driver doesn't use DT yet, platform devices and
+     spi board info are still used from C to instantiate SPI buses and their
+     children, while pinctrl is performed by DT.
+  3. It will not work with the non-reference version of genmai, due to
+     missing pinmux configuration in setup-r7s72100.c.
+  4. Patches [4/8] and [5/8] are new.
+
+    [1/8] pinctrl: sh-pfc: r7s72100: Add RSPI support
+    [2/8] ARM: shmobile: r7s72100: Add RSPI clocks
+    [3/8] ARM: shmobile: r7s72100: Add RSPI platform devices
+    [4/8] ARM: shmobile: genmai: Add RSPI children (NEW)
+    [5/8] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux (NEW)
+    [6/8] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
+    [7/8] [RFC] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
+    [8/8] [RFC] ARM: shmobile: genmai reference: Add RSPI nodes
 
 Gr{oetje,eeting}s,
 
-                        Geert
+						Geert
 
 --
 Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+							    -- Linus Torvalds

@@ -1,49 +1,85 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH v2 0/8] SoC and board integration for RSPI on RZ/A1H
-Date: Fri, 27 Dec 2013 21:15:54 +0100
-Message-ID: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
-To: linux-sh@vger.kernel.org
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH v2 2/8] ARM: shmobile: r7s72100: Add RSPI clocks
+Date: Fri, 27 Dec 2013 21:15:56 +0100
+Message-ID: <1388175362-17132-3-git-send-email-geert@linux-m68k.org>
+References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1388175362-17132-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch series integrates Renesas RSPI on the RZ/A1H aka R7S72100 SoC,
-and the Genmai development board.
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-The series is based on renesas-devel-v3.13-rc5-20131226, with Magnus'
-pinctrl, Wolfram's riic, and Simon's sh_eth work applied on top.
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+---
+v2: Correct platform device names ("rspi%u" -> "rspi.%u")
 
-It was tested on the Genmai development board (genmai-reference), using
-an in-kernel version of Documentation/spi/spidev_test.c, exercising
-loopback mode on rspi1, with the same outcome as the SDK reference code.
+ arch/arm/mach-shmobile/clock-r7s72100.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-Notes:
-  1. The proposed DT bindings also talk about QSPI on the R8A779x, as those
-     SoCs use the same driver.
-  2. As the actual spi-rspi driver doesn't use DT yet, platform devices and
-     spi board info are still used from C to instantiate SPI buses and their
-     children, while pinctrl is performed by DT.
-  3. It will not work with the non-reference version of genmai, due to
-     missing pinmux configuration in setup-r7s72100.c.
-  4. Patches [4/8] and [5/8] are new.
-
-    [1/8] pinctrl: sh-pfc: r7s72100: Add RSPI support
-    [2/8] ARM: shmobile: r7s72100: Add RSPI clocks
-    [3/8] ARM: shmobile: r7s72100: Add RSPI platform devices
-    [4/8] ARM: shmobile: genmai: Add RSPI children (NEW)
-    [5/8] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux (NEW)
-    [6/8] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
-    [7/8] [RFC] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
-    [8/8] [RFC] ARM: shmobile: genmai reference: Add RSPI nodes
-
-Gr{oetje,eeting}s,
-
-						Geert
+diff --git a/arch/arm/mach-shmobile/clock-r7s72100.c b/arch/arm/mach-shmobile/clock-r7s72100.c
+index 0242ca5f499a..6ae341ca713c 100644
+--- a/arch/arm/mach-shmobile/clock-r7s72100.c
++++ b/arch/arm/mach-shmobile/clock-r7s72100.c
+@@ -22,13 +22,15 @@
+ #include <mach/common.h>
+ #include <mach/r7s72100.h>
+ 
+-/* registers */
++/* Frequency Control Registers */
+ #define FRQCR		0xfcfe0010
+ #define FRQCR2		0xfcfe0014
++/* Standby Control Registers */
+ #define STBCR3		0xfcfe0420
+ #define STBCR4		0xfcfe0424
+ #define STBCR7		0xfcfe0430
+ #define STBCR9		0xfcfe0438
++#define STBCR10		0xfcfe043c
+ 
+ #define PLL_RATE 30
+ 
+@@ -146,12 +148,20 @@ struct clk div4_clks[DIV4_NR] = {
+ 					| CLK_ENABLE_ON_INIT),
+ };
+ 
+-enum {	MSTP97, MSTP96, MSTP95, MSTP94,
++enum {
++	MSTP107, MSTP106, MSTP105, MSTP104, MSTP103,
++	MSTP97, MSTP96, MSTP95, MSTP94,
+ 	MSTP74,
+ 	MSTP47, MSTP46, MSTP45, MSTP44, MSTP43, MSTP42, MSTP41, MSTP40,
+-	MSTP33,	MSTP_NR };
++	MSTP33,	MSTP_NR
++};
+ 
+ static struct clk mstp_clks[MSTP_NR] = {
++	[MSTP107] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 7, 0), /* RSPI0 */
++	[MSTP106] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 6, 0), /* RSPI1 */
++	[MSTP105] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 5, 0), /* RSPI2 */
++	[MSTP104] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 4, 0), /* RSPI3 */
++	[MSTP103] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 3, 0), /* RSPI4 */
+ 	[MSTP97] = SH_CLK_MSTP8(&peripheral0_clk, STBCR9, 7, 0), /* RIIC0 */
+ 	[MSTP96] = SH_CLK_MSTP8(&peripheral0_clk, STBCR9, 6, 0), /* RIIC1 */
+ 	[MSTP95] = SH_CLK_MSTP8(&peripheral0_clk, STBCR9, 5, 0), /* RIIC2 */
+@@ -179,6 +189,11 @@ static struct clk_lookup lookups[] = {
+ 	CLKDEV_CON_ID("cpu_clk", &div4_clks[DIV4_I]),
+ 
+ 	/* MSTP clocks */
++	CLKDEV_DEV_ID("rspi.0", &mstp_clks[MSTP107]),
++	CLKDEV_DEV_ID("rspi.1", &mstp_clks[MSTP106]),
++	CLKDEV_DEV_ID("rspi.2", &mstp_clks[MSTP105]),
++	CLKDEV_DEV_ID("rspi.3", &mstp_clks[MSTP104]),
++	CLKDEV_DEV_ID("rspi.4", &mstp_clks[MSTP103]),
+ 	CLKDEV_DEV_ID("fcfee000.i2c", &mstp_clks[MSTP97]),
+ 	CLKDEV_DEV_ID("fcfee400.i2c", &mstp_clks[MSTP96]),
+ 	CLKDEV_DEV_ID("fcfee800.i2c", &mstp_clks[MSTP95]),
+-- 
+1.7.9.5
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,55 +1,39 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 6/6] [RFC] arm: shmobile: genmai reference: Add RSPI nodes
-Date: Fri, 27 Dec 2013 20:08:18 +0100
-Message-ID: <CAMuHMdVH4PyhxR3JLLPX9a3fKaEgdpQpd2aa4YKL6DUD8+Pw2Q@mail.gmail.com>
-References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
-	<1387886210-3634-7-git-send-email-geert+renesas@linux-m68k.org>
-	<2198668.ESbmzZvna4@avalon>
+Subject: Re: [PATCH 0/8] spi: rspi: Add prelimary support for RZ/A1H
+Date: Fri, 27 Dec 2013 20:22:09 +0100
+Message-ID: <CAMuHMdX=CX-vAmiJvo5M2ZNCb+Uga9x4KTTYVC920d5bMxqszQ@mail.gmail.com>
+References: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-spi@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>
+To: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <2198668.ESbmzZvna4@avalon>
+In-Reply-To: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 27, 2013 at 5:20 PM, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
-> On Tuesday 24 December 2013 12:56:50 Geert Uytterhoeven wrote:
->> Add pinctrl and SPI devices for RSPI on Genmai.
->>
->> On this board, only rspi4 is in use. It's bus contains a single device
->> (a wm8978 audio codec), for which no bindings are defined yet.
->>
->> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
->> Cc: devicetree@vger.kernel.org
->> ---
->>  arch/arm/boot/dts/r7s72100-genmai-reference.dts |   18 +++++++++++++++++-
->>  1 file changed, 17 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/arm/boot/dts/r7s72100-genmai-reference.dts
->> b/arch/arm/boot/dts/r7s72100-genmai-reference.dts index
->> 114510f8bf09..6d99630627e4 100644
->> --- a/arch/arm/boot/dts/r7s72100-genmai-reference.dts
->> +++ b/arch/arm/boot/dts/r7s72100-genmai-reference.dts
->> @@ -43,7 +43,7 @@
->>  };
->>
->>  &pfc {
->> -     pinctrl-0 = <&scif2_pins &ethernet_pins>;
->> +     pinctrl-0 = <&scif2_pins &ethernet_pins &rspi4_pins>;
+On Tue, Dec 24, 2013 at 12:40 PM, Geert Uytterhoeven
+<geert+renesas@linux-m68k.org> wrote:
+> This patch series adds preliminary support for RSPI in the RZ/A1H aka
+> R7S72100 SoC, which is found on the Genmai development board.
 >
-> You should add pinctrl-0 and pinctrl-names properties to the spi4 node
-> instead. Device nodes should reference their pinctrl configuration directly,
-> scif2 and ethernet are exceptions as DT bindings for those devices are not in
-> mainline yet.
+> It hasn't received much testing, so please don't apply yet.
 
-I put it there because the actual driver doesn't use DT yet. Is that OK?
+In the mean time this has received some more testing on the Genmai
+development board, using loopback mode, with the same outcome as
+the SDK reference code.
+
+>     [1/8] spi: rspi: Add more RSPI register documentation
+>     [2/8] spi: rspi: Add more QSPI register documentation
+>     [3/8] spi: rspi: Add support for more than one interrupt
+>     [4/8] spi: rspi: Add support for 8-bit Data Register access
+>     [5/8] spi: rspi: Add support for no TX only mode
+>     [6/8] spi: rspi: Add support for missing SPCR2 register
+>     [7/8] spi: rspi: Add support for specifying CPHA/CPOL
+>     [8/8] spi: rspi: Add support for loopback mode
+
+No changes needed to the code, one silly spelling typo in the summary
+of [5/8] (s/nevers/never/). Anyway, will resend the series later.
 
 Gr{oetje,eeting}s,
 

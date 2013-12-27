@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH v2 4/8] ARM: shmobile: genmai: Add RSPI children
-Date: Fri, 27 Dec 2013 21:15:58 +0100
-Message-ID: <1388175362-17132-5-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH v2 3/8] ARM: shmobile: r7s72100: Add RSPI platform devices
+Date: Fri, 27 Dec 2013 21:15:57 +0100
+Message-ID: <1388175362-17132-4-git-send-email-geert@linux-m68k.org>
 References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
@@ -13,88 +13,75 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-On this board, only rspi4 is in use. Its bus contains a single device
-(a wm8978 audio codec).
-
-As the RSPI driver itself doesn't use DT yet, we have to instantiate the
-SPI child device in C code, too, for both genmai and genmai-reference.
-
 Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
-New in v2
+v2:
+  - Correct platform device names ("rspi%u.0" -> "rspi.%u")
+  - Add missing platform data
+  - Correct summary (resources -> platform devices)
 
- arch/arm/mach-shmobile/board-genmai-reference.c |   11 +++++++++++
- arch/arm/mach-shmobile/board-genmai.c           |   11 +++++++++++
- 2 files changed, 22 insertions(+)
+ arch/arm/mach-shmobile/setup-r7s72100.c |   34 +++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/arch/arm/mach-shmobile/board-genmai-reference.c b/arch/arm/mach-shmobile/board-genmai-reference.c
-index 7630c1053e32..2f8094b3add2 100644
---- a/arch/arm/mach-shmobile/board-genmai-reference.c
-+++ b/arch/arm/mach-shmobile/board-genmai-reference.c
-@@ -21,11 +21,21 @@
- #include <linux/clk-provider.h>
- #include <linux/kernel.h>
+diff --git a/arch/arm/mach-shmobile/setup-r7s72100.c b/arch/arm/mach-shmobile/setup-r7s72100.c
+index 9c0b3a9d5f7a..c353549cad03 100644
+--- a/arch/arm/mach-shmobile/setup-r7s72100.c
++++ b/arch/arm/mach-shmobile/setup-r7s72100.c
+@@ -23,6 +23,7 @@
  #include <linux/of_platform.h>
-+#include <linux/spi/spi.h>
- #include <mach/common.h>
- #include <mach/r7s72100.h>
- #include <asm/mach-types.h>
- #include <asm/mach/arch.h>
- 
-+static const struct spi_board_info spi_info[] __initconst = {
-+	{
-+		.modalias               = "wm8978",
-+		.max_speed_hz           = 5000000,
-+		.bus_num                = 4,
-+		.chip_select            = 0,
-+	},
-+};
-+
- static void __init genmai_add_standard_devices(void)
- {
- #ifdef CONFIG_COMMON_CLK
-@@ -34,6 +44,7 @@ static void __init genmai_add_standard_devices(void)
- 	r7s72100_clock_init();
- #endif
- 	r7s72100_add_dt_devices();
-+	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
- 	of_platform_populate(NULL, of_default_bus_match_table, NULL, NULL);
- }
- 
-diff --git a/arch/arm/mach-shmobile/board-genmai.c b/arch/arm/mach-shmobile/board-genmai.c
-index a1f6fe1fb06f..7c912d337828 100644
---- a/arch/arm/mach-shmobile/board-genmai.c
-+++ b/arch/arm/mach-shmobile/board-genmai.c
-@@ -21,6 +21,7 @@
- #include <linux/kernel.h>
- #include <linux/platform_device.h>
- #include <linux/sh_eth.h>
-+#include <linux/spi/spi.h>
+ #include <linux/serial_sci.h>
+ #include <linux/sh_timer.h>
++#include <linux/spi/rspi.h>
  #include <mach/common.h>
  #include <mach/irqs.h>
  #include <mach/r7s72100.h>
-@@ -41,11 +42,21 @@ static const struct resource ether_resources[] __initconst = {
- 	DEFINE_RES_IRQ(gic_iid(359)),
- };
+@@ -81,6 +82,34 @@ static struct resource mtu2_0_resources[] __initdata = {
+ 					  &mtu2_##idx##_platform_data,	\
+ 					  sizeof(struct sh_timer_config))
  
-+static const struct spi_board_info spi_info[] __initconst = {
-+	{
-+		.modalias               = "wm8978",
-+		.max_speed_hz           = 5000000,
-+		.bus_num                = 4,
-+		.chip_select            = 0,
-+	},
++/* RSPI */
++#define RSPI_RESOURCE(idx, baseaddr, irq)				\
++static const struct resource rspi##idx##_resources[] __initconst = {	\
++	DEFINE_RES_MEM(baseaddr, 0x24),					\
++	DEFINE_RES_IRQ(irq),		/* SPEI */			\
++	DEFINE_RES_IRQ(irq + 1),	/* SPRI */			\
++	DEFINE_RES_IRQ(irq + 2),	/* SPTI */			\
++}
++
++RSPI_RESOURCE(0, 0xe800c800, gic_iid(270));
++RSPI_RESOURCE(1, 0xe800d000, gic_iid(273));
++RSPI_RESOURCE(2, 0xe800d800, gic_iid(276));
++RSPI_RESOURCE(3, 0xe800e000, gic_iid(279));
++RSPI_RESOURCE(4, 0xe800e800, gic_iid(282));
++
++static const struct rspi_plat_data rspi_pdata __initconst = {
++	.data_width	= 8,
++	.txmode		= false,
++	.spcr2		= false,
++	.num_chipselect	= 1,
 +};
 +
- static void __init genmai_add_standard_devices(void)
++#define r7s72100_register_rspi(idx)					\
++	platform_device_register_resndata(&platform_bus, "rspi", idx,	\
++					rspi##idx##_resources,		\
++					ARRAY_SIZE(rspi##idx##_resources), \
++					&rspi_pdata, sizeof(rspi_pdata))
++
+ void __init r7s72100_add_dt_devices(void)
  {
- 	r7s72100_clock_init();
- 	r7s72100_add_dt_devices();
+ 	r7s72100_register_scif(0);
+@@ -92,6 +121,11 @@ void __init r7s72100_add_dt_devices(void)
+ 	r7s72100_register_scif(6);
+ 	r7s72100_register_scif(7);
+ 	r7s72100_register_mtu2(0);
++	r7s72100_register_rspi(0);
++	r7s72100_register_rspi(1);
++	r7s72100_register_rspi(2);
++	r7s72100_register_rspi(3);
++	r7s72100_register_rspi(4);
+ }
  
-+	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
- 	platform_device_register_resndata(&platform_bus, "r7s72100-ether", -1,
- 					  ether_resources,
- 					  ARRAY_SIZE(ether_resources),
+ void __init r7s72100_init_early(void)
 -- 
 1.7.9.5
 

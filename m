@@ -1,70 +1,68 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH v2 5/8] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux setup
-Date: Fri, 27 Dec 2013 21:15:59 +0100
-Message-ID: <1388175362-17132-6-git-send-email-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH v2 6/8] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
+Date: Fri, 27 Dec 2013 21:16:00 +0100
+Message-ID: <1388175362-17132-7-git-send-email-geert@linux-m68k.org>
 References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1388175362-17132-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	devicetree@vger.kernel.org
+To: linux-sh@vger.kernel.org
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-This does not work as there's no pinmux configuration in setup-r7s72100.c
-yet.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Cc: devicetree@vger.kernel.org
 ---
-New in v2
+v2:
+  - Clarify RSPI/QSPI
+  - Add interrupt-parent
+  - s/should/must/ for #address-cells and #size-cells
 
- arch/arm/mach-shmobile/board-genmai.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ Documentation/devicetree/bindings/spi/spi-rspi.txt |   31 ++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-rspi.txt
 
-diff --git a/arch/arm/mach-shmobile/board-genmai.c b/arch/arm/mach-shmobile/board-genmai.c
-index 7c912d337828..d89d87ac1c6f 100644
---- a/arch/arm/mach-shmobile/board-genmai.c
-+++ b/arch/arm/mach-shmobile/board-genmai.c
-@@ -19,6 +19,7 @@
-  */
- 
- #include <linux/kernel.h>
-+#include <linux/pinctrl/machine.h>
- #include <linux/platform_device.h>
- #include <linux/sh_eth.h>
- #include <linux/spi/spi.h>
-@@ -51,9 +52,25 @@ static const struct spi_board_info spi_info[] __initconst = {
- 	},
- };
- 
-+static const struct pinctrl_map genmai_pinctrl_map[] = {
-+	/* RSPI4 */
-+	PIN_MAP_MUX_GROUP_DEFAULT("rspi.4", "pfc-r7s72100",
-+				  "rspi4_rspck_p4_0", "rspi4"),
-+	PIN_MAP_MUX_GROUP_DEFAULT("rspi.4", "pfc-r7s72100",
-+				  "rspi4_ssl0_p4_1", "rspi4"),
-+	PIN_MAP_MUX_GROUP_DEFAULT("rspi.4", "pfc-r7s72100",
-+				  "rspi4_mosi_p4_2", "rspi4"),
-+	PIN_MAP_MUX_GROUP_DEFAULT("rspi.4", "pfc-r7s72100",
-+				  "rspi4_miso_p4_3", "rspi4"),
-+};
+diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+new file mode 100644
+index 000000000000..504db8917927
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+@@ -0,0 +1,31 @@
++Device tree configuration for Renesas RSPI/QSPI driver
 +
- static void __init genmai_add_standard_devices(void)
- {
- 	r7s72100_clock_init();
-+	pinctrl_register_mappings(genmai_pinctrl_map,
-+				  ARRAY_SIZE(genmai_pinctrl_map));
-+	/* FIXME there's no pinmux configuration in setup-r7s72100.c yet */
-+	/* r7s72100_pinmux_init(); */
- 	r7s72100_add_dt_devices();
- 
- 	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
++Required properties:
++- compatible       : For Renesas Serial Peripheral Interface:
++                     "renesas,rspi-<soctype>", "renesas,rspi-rz" as fallback.
++		     For Quad Serial Peripheral Interface:
++		     "renesas,qspi-<soctype>", "renesas,qspi-rcar" as fallback.
++- reg              : address start and address range size of device
++- interrupts       : 3 interrupts for RSPI (SPEI, SPRI, SPTI),
++		     1 interrupt for QSPI
++- interrupt-parent : the phandle for the interrupt controller that
++		     services interrupts for this device.
++- num-cs	   : Number of chip selects
++- #address-cells   : must be <1>
++- #size-cells      : must be <0>
++
++Pinctrl properties might be needed, too. See there.
++
++Example:
++
++	spi0: spi@e800c800 {
++		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
++		reg = <0xe800c800 0x24>;
++		interrupts = <0 238 IRQ_TYPE_LEVEL_HIGH>,
++			     <0 239 IRQ_TYPE_LEVEL_HIGH>,
++			     <0 240 IRQ_TYPE_LEVEL_HIGH>;
++		interrupt-parent = <&gic>;
++		num-cs = <1>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++	};
 -- 
 1.7.9.5
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

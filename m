@@ -1,87 +1,50 @@
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH 6/6] [RFC] arm: shmobile: genmai reference: Add RSPI nodes
-Date: Fri, 27 Dec 2013 17:20:20 +0100
-Message-ID: <2198668.ESbmzZvna4@avalon>
-References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org> <1387886210-3634-7-git-send-email-geert+renesas@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 2/5] spi: rspi: Remove casts
+Date: Fri, 27 Dec 2013 19:38:43 +0100
+Message-ID: <CAMuHMdXyeRdgFJF0MzJkJ5jf1pSWfO98mdn-JSF0ze2iuTbLug@mail.gmail.com>
+References: <1387878574-21445-1-git-send-email-geert+renesas@linux-m68k.org>
+	<1387878574-21445-3-git-send-email-geert+renesas@linux-m68k.org>
+	<2810034.n2a8aHlIUW@avalon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org, devicetree@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	Linux-sh list <linux-sh@vger.kernel.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1387886210-3634-7-git-send-email-geert+renesas@linux-m68k.org>
+In-Reply-To: <2810034.n2a8aHlIUW@avalon>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Geert,
+On Fri, Dec 27, 2013 at 3:33 PM, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>> @@ -440,12 +437,13 @@ static void rspi_memory_from_8bit(void *buf, const
+>> void *data, unsigned len) static int rspi_send_dma(struct rspi_data *rspi,
+>> struct spi_transfer *t) {
+>>       struct scatterlist sg;
+>> -     void *buf = NULL;
+>> +     const void *buf = NULL;
+>>       struct dma_async_tx_descriptor *desc;
+>>       unsigned len;
+>>       int ret = 0;
+>>
+>>       if (rspi->dma_width_16bit) {
+>> +             void *tmp;
+>
+> I really dislike tmp as a variable name, as it can mean pretty much anything.
+> What about calling it tx_buf instead ?
 
-Thank you for the patch.
+Thanks, that would indeed be a better name.
+However, Mark has already applied it to spi/for-next, so I'm not sure we
+can still change it, without sending a complete new patch.
 
-On Tuesday 24 December 2013 12:56:50 Geert Uytterhoeven wrote:
-> Add pinctrl and SPI devices for RSPI on Genmai.
-> 
-> On this board, only rspi4 is in use. It's bus contains a single device
-> (a wm8978 audio codec), for which no bindings are defined yet.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-> Cc: devicetree@vger.kernel.org
-> ---
->  arch/arm/boot/dts/r7s72100-genmai-reference.dts |   18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/r7s72100-genmai-reference.dts
-> b/arch/arm/boot/dts/r7s72100-genmai-reference.dts index
-> 114510f8bf09..6d99630627e4 100644
-> --- a/arch/arm/boot/dts/r7s72100-genmai-reference.dts
-> +++ b/arch/arm/boot/dts/r7s72100-genmai-reference.dts
-> @@ -43,7 +43,7 @@
->  };
-> 
->  &pfc {
-> -	pinctrl-0 = <&scif2_pins &ethernet_pins>;
-> +	pinctrl-0 = <&scif2_pins &ethernet_pins &rspi4_pins>;
+Gr{oetje,eeting}s,
 
-You should add pinctrl-0 and pinctrl-names properties to the spi4 node 
-instead. Device nodes should reference their pinctrl configuration directly, 
-scif2 and ethernet are exceptions as DT bindings for those devices are not in 
-mainline yet.
+                        Geert
 
->  	pinctrl-names = "default";
-> 
->  	scif2_pins: serial2 {
-> @@ -73,6 +73,12 @@
->  				 "ethernet_int_p1_15";
->  		renesas,function = "ethernet";
->  	};
-> +
-> +	rspi4_pins: spi4 {
-> +		renesas,groups = "rspi4_rspck_p4_0", "rspi4_ssl0_p4_1",
-> +				 "rspi4_mosi_p4_2", "rspi4_miso_p4_3";
-> +		renesas,function = "rspi4";
-> +	};
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-This node is at the right place and doesn't need to be moved.
-
->  };
-> 
->  &i2c2 {
-> @@ -85,3 +91,13 @@
->  		pagesize = <64>;
->  	};
->  };
-> +
-> +&spi4 {
-> +	status = "okay";
-> +
-> +	codec: wm8978@0 {
-> +		compatible = "wlf,wm8978";
-> +		reg = <0>;
-> +		spi-max-frequency = <5000000>;
-> +	};
-> +};
--- 
-Regards,
-
-Laurent Pinchart
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

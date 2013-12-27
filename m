@@ -1,50 +1,96 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/5] spi: rspi: Remove casts
-Date: Fri, 27 Dec 2013 19:38:43 +0100
-Message-ID: <CAMuHMdXyeRdgFJF0MzJkJ5jf1pSWfO98mdn-JSF0ze2iuTbLug@mail.gmail.com>
-References: <1387878574-21445-1-git-send-email-geert+renesas@linux-m68k.org>
-	<1387878574-21445-3-git-send-email-geert+renesas@linux-m68k.org>
-	<2810034.n2a8aHlIUW@avalon>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 4/6] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
+Date: Fri, 27 Dec 2013 20:01:53 +0100
+Message-ID: <CAMuHMdXrPamASqFz8eCVxE0WKT=cdkrzxjDDT84m_AHT+1nmEA@mail.gmail.com>
+References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
+	<1387886210-3634-5-git-send-email-geert+renesas@linux-m68k.org>
+	<2590710.91Xybr4TsD@avalon>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	Linux-sh list <linux-sh@vger.kernel.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <2810034.n2a8aHlIUW@avalon>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <2590710.91Xybr4TsD@avalon>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Dec 27, 2013 at 3:33 PM, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->> @@ -440,12 +437,13 @@ static void rspi_memory_from_8bit(void *buf, const
->> void *data, unsigned len) static int rspi_send_dma(struct rspi_data *rspi,
->> struct spi_transfer *t) {
->>       struct scatterlist sg;
->> -     void *buf = NULL;
->> +     const void *buf = NULL;
->>       struct dma_async_tx_descriptor *desc;
->>       unsigned len;
->>       int ret = 0;
->>
->>       if (rspi->dma_width_16bit) {
->> +             void *tmp;
+Hi Laurent,
+
+On Fri, Dec 27, 2013 at 5:18 PM, Laurent Pinchart
+<laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org> wrote:
+> On Tuesday 24 December 2013 12:56:48 Geert Uytterhoeven wrote:
+>> +++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+>> @@ -0,0 +1,27 @@
+>> +Device tree configuration for Renesas RSPI/QSPI driver
+>> +
+>> +Required properties:
+>> +- compatible      : "renesas,rspi-<soctype>". "renesas,rspi-rz" as
+>> fallback,
+>> +                    or
+>> +                    "renesas,qspi-<soctype>", "renesas,qspi-rcar" as
+>> fallback.
 >
-> I really dislike tmp as a variable name, as it can mean pretty much anything.
-> What about calling it tx_buf instead ?
+> I think you need to be a bit more verbose here and explain when to use rspi
+> and when to use qspi. I'm also wondering where we need the -rz and -rcar
 
-Thanks, that would indeed be a better name.
-However, Mark has already applied it to spi/for-next, so I'm not sure we
-can still change it, without sending a complete new patch.
+OK.
+
+> suffixes for the generic compatible strings.
+
+The rationale behind this is that RSPI DT would apply to RSPI on RZ/A1H.
+The spi-rspi driver also supports legacy SH7757, which may not move to
+DT anytime soon.
+For symmetry, I did the same thing for QSPI, which applies to QSPI
+on R-Car H2 and M2 (upon second look, it should be "renesas,qspi-rcar-gen2",
+as E1/M1/H1 have HSPI).
+
+Does this makes sense? Or do you still prefer plain "renesas,rspi" and
+"renesas,qspi", and perhaps "renesas,rspi-sh" if we ever get DT there?
+
+>> +- reg             : address start and address range size of device
+>> +- interrupts      : 3 interrupts for RSPI (SPEI, SPRI, SPTI),
+>> +                    1 interrupt for QSPI
+>> +- num-cs       : Number of chip selects
+>> +- #address-cells  : should be <1>
+>> +- #size-cells     : should be <0>
+>
+> I would say "must" instead of "should".
+
+OK.
+
+>> +Example:
+>> +
+>> +     spi0: spi@e800c800 {
+>> +             compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
+>> +             reg = <0xe800c800 0x24>;
+>> +             interrupts = <0 238 IRQ_TYPE_LEVEL_HIGH>,
+>> +                          <0 239 IRQ_TYPE_LEVEL_HIGH>,
+>> +                          <0 240 IRQ_TYPE_LEVEL_HIGH>;
+>
+> You're missing the interrupt-parent property.
+
+OK.
+
+But we don't need it in the spi node in the actual .dts, as we already have
+"interrupt-parent = <&gic>;" in the enclosing node, right?
+
+Thanks!
 
 Gr{oetje,eeting}s,
 
                         Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
                                 -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

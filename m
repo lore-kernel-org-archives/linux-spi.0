@@ -1,64 +1,83 @@
 From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Subject: Re: [PATCH 4/5] spi: rspi: Use DUMMY_DATA macro instead of hardcoded value
-Date: Fri, 27 Dec 2013 15:36:12 +0100
-Message-ID: <51418828.lCh7RnWjxA@avalon>
-References: <1387878574-21445-1-git-send-email-geert+renesas@linux-m68k.org> <1387878574-21445-5-git-send-email-geert+renesas@linux-m68k.org>
+Subject: Re: [PATCH 4/6] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
+Date: Fri, 27 Dec 2013 17:18:07 +0100
+Message-ID: <2590710.91Xybr4TsD@avalon>
+References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org> <1387886210-3634-5-git-send-email-geert+renesas@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7Bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1387878574-21445-5-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1387886210-3634-5-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Hi Geert,
 
-Thank you for the patch.
+Thank you for the patch. It's nice to see DT support for the RSPI driver.
 
-On Tuesday 24 December 2013 10:49:33 Geert Uytterhoeven wrote:
-> Make it more obvious that this value is dummy data.
-> 
+On Tuesday 24 December 2013 12:56:48 Geert Uytterhoeven wrote:
 > Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 > ---
->  drivers/spi/spi-rspi.c |    6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+>  Documentation/devicetree/bindings/spi/spi-rspi.txt |   27 +++++++++++++++++
+>  1 file changed, 27 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-rspi.txt
 > 
-> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-> index 4e376db1ca4f..51fe3bdacb18 100644
-> --- a/drivers/spi/spi-rspi.c
-> +++ b/drivers/spi/spi-rspi.c
-> @@ -149,6 +149,8 @@
->  #define SPBFCR_TXRST		0x80	/* qspi only */
->  #define SPBFCR_RXRST		0x40	/* qspi only */
-> 
-> +#define DUMMY_DATA		0x00
+> diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt
+> b/Documentation/devicetree/bindings/spi/spi-rspi.txt new file mode 100644
+> index 000000000000..06ec17fce4c6
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+> @@ -0,0 +1,27 @@
+> +Device tree configuration for Renesas RSPI/QSPI driver
 > +
->  struct rspi_data {
->  	void __iomem *addr;
->  	u32 max_speed_hz;
-> @@ -541,7 +543,7 @@ static int rspi_receive_pio(struct rspi_data *rspi,
-> struct spi_message *mesg, return -ETIMEDOUT;
->  		}
->  		/* dummy write for generate clock */
-> -		rspi_write16(rspi, 0x00, RSPI_SPDR);
-> +		rspi_write16(rspi, DUMMY_DATA, RSPI_SPDR);
+> +Required properties:
+> +- compatible      : "renesas,rspi-<soctype>". "renesas,rspi-rz" as
+> fallback,
+> +                    or
+> +                    "renesas,qspi-<soctype>", "renesas,qspi-rcar" as
+> fallback.
 
-Doesn't the comment make it obvious already ?
+I think you need to be a bit more verbose here and explain when to use rspi 
+and when to use qspi. I'm also wondering where we need the -rz and -rcar 
+suffixes for the generic compatible strings.
 
->  		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
->  			dev_err(&rspi->master->dev,
-> @@ -586,7 +588,7 @@ static int qspi_receive_pio(struct rspi_data *rspi,
-> struct spi_message *mesg, return -ETIMEDOUT;
->  		}
->  		/* dummy write for generate clock */
-> -		rspi_write8(rspi, 0x00, RSPI_SPDR);
-> +		rspi_write8(rspi, DUMMY_DATA, RSPI_SPDR);
-> 
->  		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
->  			dev_err(&rspi->master->dev,
+> +- reg             : address start and address range size of device
+> +- interrupts      : 3 interrupts for RSPI (SPEI, SPRI, SPTI),
+> +                    1 interrupt for QSPI
+> +- num-cs	  : Number of chip selects
+> +- #address-cells  : should be <1>
+> +- #size-cells     : should be <0>
+
+I would say "must" instead of "should".
+
+> +
+> +Pinctrl properties might be needed, too. See there.
+> +
+> +Example:
+> +
+> +	spi0: spi@e800c800 {
+> +		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
+> +		reg = <0xe800c800 0x24>;
+> +		interrupts = <0 238 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <0 239 IRQ_TYPE_LEVEL_HIGH>,
+> +			     <0 240 IRQ_TYPE_LEVEL_HIGH>;
+
+You're missing the interrupt-parent property.
+
+Now that we have two ways to specify interrupts (interrupt-parent + interrupts 
+or interrupts-extended) we should probably decide on a common wording for 
+interrupt properties in individual DT bindings, but that's out of scope of 
+this patch.
+
+> +		num-cs = <1>;
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +	};
+
 -- 
 Regards,
 

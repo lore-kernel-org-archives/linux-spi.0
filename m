@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH v2 2/8] ARM: shmobile: r7s72100: Add RSPI clocks
-Date: Fri, 27 Dec 2013 21:15:56 +0100
-Message-ID: <1388175362-17132-3-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH v2 5/8] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux setup
+Date: Fri, 27 Dec 2013 21:15:59 +0100
+Message-ID: <1388175362-17132-6-git-send-email-geert@linux-m68k.org>
 References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
@@ -13,69 +13,54 @@ List-ID: <linux-spi.vger.kernel.org>
 
 From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
+This does not work as there's no pinmux configuration in setup-r7s72100.c
+yet.
+
 Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
-v2: Correct platform device names ("rspi%u" -> "rspi.%u")
+New in v2
 
- arch/arm/mach-shmobile/clock-r7s72100.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ arch/arm/mach-shmobile/board-genmai.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/arm/mach-shmobile/clock-r7s72100.c b/arch/arm/mach-shmobile/clock-r7s72100.c
-index 0242ca5f499a..6ae341ca713c 100644
---- a/arch/arm/mach-shmobile/clock-r7s72100.c
-+++ b/arch/arm/mach-shmobile/clock-r7s72100.c
-@@ -22,13 +22,15 @@
- #include <mach/common.h>
- #include <mach/r7s72100.h>
+diff --git a/arch/arm/mach-shmobile/board-genmai.c b/arch/arm/mach-shmobile/board-genmai.c
+index 7c912d337828..d89d87ac1c6f 100644
+--- a/arch/arm/mach-shmobile/board-genmai.c
++++ b/arch/arm/mach-shmobile/board-genmai.c
+@@ -19,6 +19,7 @@
+  */
  
--/* registers */
-+/* Frequency Control Registers */
- #define FRQCR		0xfcfe0010
- #define FRQCR2		0xfcfe0014
-+/* Standby Control Registers */
- #define STBCR3		0xfcfe0420
- #define STBCR4		0xfcfe0424
- #define STBCR7		0xfcfe0430
- #define STBCR9		0xfcfe0438
-+#define STBCR10		0xfcfe043c
- 
- #define PLL_RATE 30
- 
-@@ -146,12 +148,20 @@ struct clk div4_clks[DIV4_NR] = {
- 					| CLK_ENABLE_ON_INIT),
+ #include <linux/kernel.h>
++#include <linux/pinctrl/machine.h>
+ #include <linux/platform_device.h>
+ #include <linux/sh_eth.h>
+ #include <linux/spi/spi.h>
+@@ -51,9 +52,25 @@ static const struct spi_board_info spi_info[] __initconst = {
+ 	},
  };
  
--enum {	MSTP97, MSTP96, MSTP95, MSTP94,
-+enum {
-+	MSTP107, MSTP106, MSTP105, MSTP104, MSTP103,
-+	MSTP97, MSTP96, MSTP95, MSTP94,
- 	MSTP74,
- 	MSTP47, MSTP46, MSTP45, MSTP44, MSTP43, MSTP42, MSTP41, MSTP40,
--	MSTP33,	MSTP_NR };
-+	MSTP33,	MSTP_NR
++static const struct pinctrl_map genmai_pinctrl_map[] = {
++	/* RSPI4 */
++	PIN_MAP_MUX_GROUP_DEFAULT("rspi.4", "pfc-r7s72100",
++				  "rspi4_rspck_p4_0", "rspi4"),
++	PIN_MAP_MUX_GROUP_DEFAULT("rspi.4", "pfc-r7s72100",
++				  "rspi4_ssl0_p4_1", "rspi4"),
++	PIN_MAP_MUX_GROUP_DEFAULT("rspi.4", "pfc-r7s72100",
++				  "rspi4_mosi_p4_2", "rspi4"),
++	PIN_MAP_MUX_GROUP_DEFAULT("rspi.4", "pfc-r7s72100",
++				  "rspi4_miso_p4_3", "rspi4"),
 +};
++
+ static void __init genmai_add_standard_devices(void)
+ {
+ 	r7s72100_clock_init();
++	pinctrl_register_mappings(genmai_pinctrl_map,
++				  ARRAY_SIZE(genmai_pinctrl_map));
++	/* FIXME there's no pinmux configuration in setup-r7s72100.c yet */
++	/* r7s72100_pinmux_init(); */
+ 	r7s72100_add_dt_devices();
  
- static struct clk mstp_clks[MSTP_NR] = {
-+	[MSTP107] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 7, 0), /* RSPI0 */
-+	[MSTP106] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 6, 0), /* RSPI1 */
-+	[MSTP105] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 5, 0), /* RSPI2 */
-+	[MSTP104] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 4, 0), /* RSPI3 */
-+	[MSTP103] = SH_CLK_MSTP8(&peripheral1_clk, STBCR10, 3, 0), /* RSPI4 */
- 	[MSTP97] = SH_CLK_MSTP8(&peripheral0_clk, STBCR9, 7, 0), /* RIIC0 */
- 	[MSTP96] = SH_CLK_MSTP8(&peripheral0_clk, STBCR9, 6, 0), /* RIIC1 */
- 	[MSTP95] = SH_CLK_MSTP8(&peripheral0_clk, STBCR9, 5, 0), /* RIIC2 */
-@@ -179,6 +189,11 @@ static struct clk_lookup lookups[] = {
- 	CLKDEV_CON_ID("cpu_clk", &div4_clks[DIV4_I]),
- 
- 	/* MSTP clocks */
-+	CLKDEV_DEV_ID("rspi.0", &mstp_clks[MSTP107]),
-+	CLKDEV_DEV_ID("rspi.1", &mstp_clks[MSTP106]),
-+	CLKDEV_DEV_ID("rspi.2", &mstp_clks[MSTP105]),
-+	CLKDEV_DEV_ID("rspi.3", &mstp_clks[MSTP104]),
-+	CLKDEV_DEV_ID("rspi.4", &mstp_clks[MSTP103]),
- 	CLKDEV_DEV_ID("fcfee000.i2c", &mstp_clks[MSTP97]),
- 	CLKDEV_DEV_ID("fcfee400.i2c", &mstp_clks[MSTP96]),
- 	CLKDEV_DEV_ID("fcfee800.i2c", &mstp_clks[MSTP95]),
+ 	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
 -- 
 1.7.9.5
 

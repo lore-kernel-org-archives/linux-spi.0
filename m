@@ -1,106 +1,60 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 4/6] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
-Date: Mon, 30 Dec 2013 10:37:24 +0100
-Message-ID: <CAMuHMdUnf77Z1u=d8zFZk0vQtGJ9QhhCk6KVJsVKS-iMFSMUKw@mail.gmail.com>
-References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
-	<2590710.91Xybr4TsD@avalon>
-	<CAMuHMdXrPamASqFz8eCVxE0WKT=cdkrzxjDDT84m_AHT+1nmEA@mail.gmail.com>
-	<2582506.8vb3LhHISh@avalon>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 4/5] spi: rspi: Use DUMMY_DATA macro instead of hardcoded
+ value
+Date: Mon, 30 Dec 2013 11:54:20 +0000
+Message-ID: <20131230115420.GI31886@sirena.org.uk>
+References: <1387878574-21445-1-git-send-email-geert+renesas@linux-m68k.org>
+ <1387878574-21445-5-git-send-email-geert+renesas@linux-m68k.org>
+ <51418828.lCh7RnWjxA@avalon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="vFj1JTFBn4Zx1dEI"
 Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <2582506.8vb3LhHISh@avalon>
+Content-Disposition: inline
+In-Reply-To: <51418828.lCh7RnWjxA@avalon>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Laurent,
 
-Thanks for your comments!
+--vFj1JTFBn4Zx1dEI
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Mon, Dec 30, 2013 at 12:22 AM, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
-> On Friday 27 December 2013 20:01:53 Geert Uytterhoeven wrote:
->> On Fri, Dec 27, 2013 at 5:18 PM, Laurent Pinchart wrote:
->> > On Tuesday 24 December 2013 12:56:48 Geert Uytterhoeven wrote:
->> >> +++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
->> >> @@ -0,0 +1,27 @@
->> >> +Device tree configuration for Renesas RSPI/QSPI driver
->> >> +
->> >> +Required properties:
->> >> +- compatible      : "renesas,rspi-<soctype>". "renesas,rspi-rz" as
->> >> fallback,
->> >> +                    or
->> >> +                    "renesas,qspi-<soctype>", "renesas,qspi-rcar" as
->> >> fallback.
->> >
->> > I think you need to be a bit more verbose here and explain when to use
->> > rspi and when to use qspi. I'm also wondering where we need the -rz and -
->> > rcar
->>
->> OK.
->>
->> > suffixes for the generic compatible strings.
->>
->> The rationale behind this is that RSPI DT would apply to RSPI on RZ/A1H.
->> The spi-rspi driver also supports legacy SH7757, which may not move to
->> DT anytime soon.
->> For symmetry, I did the same thing for QSPI, which applies to QSPI
->> on R-Car H2 and M2 (upon second look, it should be "renesas,qspi-rcar-gen2",
->> as E1/M1/H1 have HSPI).
->>
->> Does this makes sense? Or do you still prefer plain "renesas,rspi" and
->> "renesas,qspi", and perhaps "renesas,rspi-sh" if we ever get DT there?
->
-> The compatible strings should define what the device is compatible with. They
-> should start with the most specific compability and end with the less specific
-> one. In this case we definitely want to list the SoC-specific compatible
-> string first, even if we don't need it, as experience with Renesas SoC shows
-> that subtle differences between different versions of the same IP core can be
-> discovered later. If all RSPI cores are similar enough to be supported by a
-> single driver configuration, then I believe "renesas,rspi" would be a proper
-> second compatible string. If the RSPI cores in the SH and RZ chips are
-> incompatible then we need two different strings. The same is true for QSPI.
->
-> A quick look at the driver shows that RSPI is supported without caring whether
-> the SoC is an SH or ARM, so I believe "renesas,rspi" should do. The question
+On Fri, Dec 27, 2013 at 03:36:12PM +0100, Laurent Pinchart wrote:
+> On Tuesday 24 December 2013 10:49:33 Geert Uytterhoeven wrote:
 
-There are subtle register differences between RSPI on SH7757 and RZ/A1H,
-cfr. what rspi_parse_platform_data() does when no platform_data is passed[*].
-RSPI on RZ/A1H seems to be an evolutionary step from RSPI on SH towards
-QSPI on RCar Gen2 (but without Dual/Quad).
+> >  		/* dummy write for generate clock */
+> > -		rspi_write16(rspi, 0x00, RSPI_SPDR);
+> > +		rspi_write16(rspi, DUMMY_DATA, RSPI_SPDR);
 
-[*] setup-sh7757.c doesn't pass platform data, although the rspi driver and its
-    platform data has     support for DMA on SH7757, which is not used by
-    setup-sh7757.c nor any other in-tree platform.
+> Doesn't the comment make it obvious already ?
 
-> in my opinion is whether we want to use
->
-> compatible = "renesas,rspi-r7s72100", "renesas,rspi";
->
-> or
->
-> compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz", "renesas,rspi";
+To be honest that had been my thought as well but if it makes the people
+working on the driver happy...
 
-So we end up with:
+--vFj1JTFBn4Zx1dEI
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-compatible = "renesas,sh7757", "renesas,rspi-sh" (SH legacy)
-compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz" (Genmai)
-compatible = "renesas,rspi-r8a7790", "renesas,qspi" (Lager)
-compatible = "renesas,rspi-r8a7791", "renesas,qspi" (Koelsch)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-Gr{oetje,eeting}s,
+iQIcBAEBAgAGBQJSwV7pAAoJELSic+t+oim9PoIQAJim3XPTYKDnDY7Nhp2IAN09
+v5VFsY462ouZFes7GNSzBoVgMGLPSIolUemDkqm3ir78vYWsfzWU8qPCFLNVBoyy
+LudQghkkQbgqMX/YPH2xuSGNhn0GPYvkyj2Bx15m9mlqwtm8OGKH7VuYgEFRn1iP
+cco4ZFv4rV6S1AJOHvJNFG+P1QRsDadCFot1sKTJQZpwCz0KLeSehBqHGQ62I+P8
+gyjLis5ZPNn5qZxgJV6Lyt0EcpV3iRchvKJotXQkLMo8wkbSG/Z/8ZTlqA9dmhER
+u6d8Sn9uklL1TkMawer8dk60U3mmCO7TMrvmim7hbsBRMsNNX499BBxapdBXUNk5
+WkCG2+GDFyTp+1nGgQ1uB1AiCF6nj7OEuDU55ane2oUBaME0BMR/z9WO/rwagz0A
+kfaITG1HQ5WeqR4Es+SzNz7q8Tr+AUtYZ6/pVCGfk3Aw7JK7+VNDD+G1ZTXGc6Y0
+o82cBiu/9X5wVIuCjq8N8EbDaQxDnmxZz1dLkZF4gRC1aQPALYAOW5H8XeZ8O8wB
+N0OaMT5td3JjcTyPZw/ZAth8bzbzHqmjefxvRUpZ4xAfp6aqmaHCnD/5+//qFf/O
+XeXZTDkRVVwFKzmR+Mx3yBSi/FBgtyrH0pkW7XtfM0H2VXMlqcpojZkhQv5sRbVj
+3beqctbVG4R2AAIravvO
+=o13H
+-----END PGP SIGNATURE-----
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--vFj1JTFBn4Zx1dEI--

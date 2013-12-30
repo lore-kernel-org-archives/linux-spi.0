@@ -1,225 +1,106 @@
-From: Chao Fu <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH] spi:fsl-dspi:add support of DSPI IP in big endian
-Date: Mon, 30 Dec 2013 15:27:54 +0800
-Message-ID: <1388388474-8662-1-git-send-email-b44548@freescale.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 4/6] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
+Date: Mon, 30 Dec 2013 10:37:24 +0100
+Message-ID: <CAMuHMdUnf77Z1u=d8zFZk0vQtGJ9QhhCk6KVJsVKS-iMFSMUKw@mail.gmail.com>
+References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
+	<2590710.91Xybr4TsD@avalon>
+	<CAMuHMdXrPamASqFz8eCVxE0WKT=cdkrzxjDDT84m_AHT+1nmEA@mail.gmail.com>
+	<2582506.8vb3LhHISh@avalon>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Jingchang Lu <b35083-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Chao Fu <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <2582506.8vb3LhHISh@avalon>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Hi Laurent,
 
-Freescale DSPI module will have two endianess in diffrente platform,
-but ARM is little endian. So when DSPI in big endian, core in little endian,
-readl and writel can not adjust R/W register in this condition.
-This patch will provide a new io R/W method for the device in two endianess.
+Thanks for your comments!
 
-R/W registers in DSPI way in stead of ARM R/W as following:
-"#define DSPI_BITWISE16(d, v)   (d->big_endian ? cpu_to_be16(v) : cpu_to_le16(v))
-"#define DSPI_BITWISE32(d, v)   (d->big_endian ? cpu_to_be32(v) : cpu_to_le32(v))
+On Mon, Dec 30, 2013 at 12:22 AM, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+> On Friday 27 December 2013 20:01:53 Geert Uytterhoeven wrote:
+>> On Fri, Dec 27, 2013 at 5:18 PM, Laurent Pinchart wrote:
+>> > On Tuesday 24 December 2013 12:56:48 Geert Uytterhoeven wrote:
+>> >> +++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+>> >> @@ -0,0 +1,27 @@
+>> >> +Device tree configuration for Renesas RSPI/QSPI driver
+>> >> +
+>> >> +Required properties:
+>> >> +- compatible      : "renesas,rspi-<soctype>". "renesas,rspi-rz" as
+>> >> fallback,
+>> >> +                    or
+>> >> +                    "renesas,qspi-<soctype>", "renesas,qspi-rcar" as
+>> >> fallback.
+>> >
+>> > I think you need to be a bit more verbose here and explain when to use
+>> > rspi and when to use qspi. I'm also wondering where we need the -rz and -
+>> > rcar
+>>
+>> OK.
+>>
+>> > suffixes for the generic compatible strings.
+>>
+>> The rationale behind this is that RSPI DT would apply to RSPI on RZ/A1H.
+>> The spi-rspi driver also supports legacy SH7757, which may not move to
+>> DT anytime soon.
+>> For symmetry, I did the same thing for QSPI, which applies to QSPI
+>> on R-Car H2 and M2 (upon second look, it should be "renesas,qspi-rcar-gen2",
+>> as E1/M1/H1 have HSPI).
+>>
+>> Does this makes sense? Or do you still prefer plain "renesas,rspi" and
+>> "renesas,qspi", and perhaps "renesas,rspi-sh" if we ever get DT there?
+>
+> The compatible strings should define what the device is compatible with. They
+> should start with the most specific compability and end with the less specific
+> one. In this case we definitely want to list the SoC-specific compatible
+> string first, even if we don't need it, as experience with Renesas SoC shows
+> that subtle differences between different versions of the same IP core can be
+> discovered later. If all RSPI cores are similar enough to be supported by a
+> single driver configuration, then I believe "renesas,rspi" would be a proper
+> second compatible string. If the RSPI cores in the SH and RZ chips are
+> incompatible then we need two different strings. The same is true for QSPI.
+>
+> A quick look at the driver shows that RSPI is supported without caring whether
+> the SoC is an SH or ARM, so I believe "renesas,rspi" should do. The question
 
-"#define dspi_readb(c)          readb(c)
-"#define dspi_readw(c)          ({ u16 __v = (__force u16) __raw_readw(c); __iormb(); __v; })
-"#define dspi_readl(c)          ({ u32 __v = (__force u32) __raw_readl(c); __iormb(); __v; })
-"#define dspi_writeb(v, c)      writeb(v, c)
-"#define dspi_writew(v, c)      ({ __iowmb(); __raw_writew((__force u16) v, c); })
-"#define dspi_writel(v, c)      ({ __iowmb(); __raw_writel((__force u32) v, c); })
+There are subtle register differences between RSPI on SH7757 and RZ/A1H,
+cfr. what rspi_parse_platform_data() does when no platform_data is passed[*].
+RSPI on RZ/A1H seems to be an evolutionary step from RSPI on SH towards
+QSPI on RCar Gen2 (but without Dual/Quad).
 
-Signed-off-by: Jingchang Lu <b35083-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Signed-off-by: Chao Fu      <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
- drivers/spi/spi-fsl-dspi.c | 66 ++++++++++++++++++++++++++++++----------------
- 1 file changed, 43 insertions(+), 23 deletions(-)
+[*] setup-sh7757.c doesn't pass platform data, although the rspi driver and its
+    platform data has     support for DMA on SH7757, which is not used by
+    setup-sh7757.c nor any other in-tree platform.
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 8641b03..14df323 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -31,6 +31,16 @@
- 
- #define DRIVER_NAME "fsl-dspi"
- 
-+#define DSPI_BITWISE16(d, v)	(d->big_endian ? cpu_to_be16(v) : cpu_to_le16(v))
-+#define DSPI_BITWISE32(d, v)	(d->big_endian ? cpu_to_be32(v) : cpu_to_le32(v))
-+
-+#define dspi_readb(c)		readb(c)
-+#define dspi_readw(c)		({ u16 __v = (__force u16) __raw_readw(c); __iormb(); __v; })
-+#define dspi_readl(c)		({ u32 __v = (__force u32) __raw_readl(c); __iormb(); __v; })
-+#define dspi_writeb(v, c)	writeb(v, c)
-+#define dspi_writew(v, c)	({ __iowmb(); __raw_writew((__force u16) v, c); })
-+#define dspi_writel(v, c)	({ __iowmb(); __raw_writel((__force u32) v, c); })
-+
- #define TRAN_STATE_RX_VOID		0x01
- #define TRAN_STATE_TX_VOID		0x02
- #define TRAN_STATE_WORD_ODD_NUM	0x04
-@@ -110,9 +120,10 @@ struct fsl_dspi {
- 
- 	void __iomem		*base;
- 	int			irq;
--	struct clk 		*clk;
-+	struct clk		*clk;
- 
--	struct spi_transfer 	*cur_transfer;
-+	bool			big_endian;
-+	struct spi_transfer	*cur_transfer;
- 	struct chip_data	*cur_chip;
- 	size_t			len;
- 	void			*tx;
-@@ -123,24 +134,26 @@ struct fsl_dspi {
- 	u8			cs;
- 	u16			void_write_data;
- 
--	wait_queue_head_t 	waitq;
--	u32 			waitflags;
-+	wait_queue_head_t	waitq;
-+	u32			waitflags;
- };
- 
- static inline int is_double_byte_mode(struct fsl_dspi *dspi)
- {
--	return ((readl(dspi->base + SPI_CTAR(dspi->cs)) & SPI_FRAME_BITS_MASK)
--			== SPI_FRAME_BITS(8)) ? 0 : 1;
-+	return
-+	((DSPI_BITWISE32(dspi, dspi_readl(dspi->base + SPI_CTAR(dspi->cs)))
-+	& SPI_FRAME_BITS_MASK)
-+		== SPI_FRAME_BITS(8)) ? 0 : 1;
- }
- 
- static void set_bit_mode(struct fsl_dspi *dspi, unsigned char bits)
- {
--	u32 temp;
-+	u32 tmp;
- 
--	temp = readl(dspi->base + SPI_CTAR(dspi->cs));
--	temp &= ~SPI_FRAME_BITS_MASK;
--	temp |= SPI_FRAME_BITS(bits);
--	writel(temp, dspi->base + SPI_CTAR(dspi->cs));
-+	tmp = DSPI_BITWISE32(dspi, dspi_readl(dspi->base + SPI_CTAR(dspi->cs)));
-+	tmp &= ~SPI_FRAME_BITS_MASK;
-+	tmp |= SPI_FRAME_BITS(bits);
-+	dspi_writel(DSPI_BITWISE32(dspi, tmp), dspi->base + SPI_CTAR(dspi->cs));
- }
- 
- static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
-@@ -165,7 +178,7 @@ static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
- 			}
- 		}
- 
--	pr_warn("Can not find valid baud rate,speed_hz is %d,clkrate is %ld\
-+	pr_warn("Can not find valid baud rate,speed_hz is %d,clkrate is %ld
- 		,we use the max prescaler value.\n", speed_hz, clkrate);
- 	*pbr = ARRAY_SIZE(pbr_tbl) - 1;
- 	*br =  ARRAY_SIZE(brs) - 1;
-@@ -212,7 +225,6 @@ static int dspi_transfer_write(struct fsl_dspi *dspi)
- 			dspi->len -= 2;
- 		} else {
- 			if (!(dspi->dataflags & TRAN_STATE_TX_VOID)) {
--
- 				d8 = *(u8 *)dspi->tx;
- 				dspi->tx++;
- 			} else {
-@@ -238,7 +250,8 @@ static int dspi_transfer_write(struct fsl_dspi *dspi)
- 			dspi_pushr |= SPI_PUSHR_CTCNT; /* clear counter */
- 		}
- 
--		writel(dspi_pushr, dspi->base + SPI_PUSHR);
-+		dspi_writel(DSPI_BITWISE32(dspi, dspi_pushr),
-+				dspi->base + SPI_PUSHR);
- 		tx_count++;
- 	}
- 
-@@ -256,14 +269,15 @@ static int dspi_transfer_read(struct fsl_dspi *dspi)
- 			if ((dspi->rx_end - dspi->rx) == 1)
- 				break;
- 
--			d = SPI_POPR_RXDATA(readl(dspi->base + SPI_POPR));
-+			d = DSPI_BITWISE16(dspi,
-+					dspi_readl(dspi->base + SPI_POPR));
- 
- 			if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
- 				*(u16 *)dspi->rx = d;
- 			dspi->rx += 2;
- 
- 		} else {
--			d = SPI_POPR_RXDATA(readl(dspi->base + SPI_POPR));
-+			d = dspi_readb(dspi->base + SPI_POPR);
- 			if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
- 				*(u8 *)dspi->rx = d;
- 			dspi->rx++;
-@@ -295,12 +309,15 @@ static int dspi_txrx_transfer(struct spi_device *spi, struct spi_transfer *t)
- 	if (!dspi->tx)
- 		dspi->dataflags |= TRAN_STATE_TX_VOID;
- 
--	writel(dspi->cur_chip->mcr_val, dspi->base + SPI_MCR);
--	writel(dspi->cur_chip->ctar_val, dspi->base + SPI_CTAR(dspi->cs));
--	writel(SPI_RSER_EOQFE, dspi->base + SPI_RSER);
-+	dspi_writel(DSPI_BITWISE32(dspi, dspi->cur_chip->mcr_val),
-+			dspi->base + SPI_MCR);
-+	dspi_writel(DSPI_BITWISE32(dspi, dspi->cur_chip->ctar_val),
-+			dspi->base + SPI_CTAR(dspi->cs));
-+	dspi_writel(DSPI_BITWISE32(dspi, SPI_RSER_EOQFE),
-+			dspi->base + SPI_RSER);
- 
- 	if (t->speed_hz)
--		writel(dspi->cur_chip->ctar_val,
-+		dspi_writel(DSPI_BITWISE32(dspi, dspi->cur_chip->ctar_val),
- 				dspi->base + SPI_CTAR(dspi->cs));
- 
- 	dspi_transfer_write(dspi);
-@@ -315,7 +332,7 @@ static int dspi_txrx_transfer(struct spi_device *spi, struct spi_transfer *t)
- static void dspi_chipselect(struct spi_device *spi, int value)
- {
- 	struct fsl_dspi *dspi = spi_master_get_devdata(spi->master);
--	u32 pushr = readl(dspi->base + SPI_PUSHR);
-+	u32 pushr = DSPI_BITWISE32(dspi, dspi_readl(dspi->base + SPI_PUSHR));
- 
- 	switch (value) {
- 	case BITBANG_CS_ACTIVE:
-@@ -324,7 +341,7 @@ static void dspi_chipselect(struct spi_device *spi, int value)
- 		pushr &= ~SPI_PUSHR_CONT;
- 	}
- 
--	writel(pushr, dspi->base + SPI_PUSHR);
-+	dspi_writel(DSPI_BITWISE32(dspi, pushr), dspi->base + SPI_PUSHR);
- }
- 
- static int dspi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
-@@ -383,13 +400,14 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- {
- 	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
- 
--	writel(SPI_SR_EOQF, dspi->base + SPI_SR);
-+	dspi_writel(DSPI_BITWISE32(dspi, SPI_SR_EOQF), dspi->base + SPI_SR);
- 
- 	dspi_transfer_read(dspi);
- 
- 	if (!dspi->len) {
- 		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM)
- 			set_bit_mode(dspi, 16);
-+
- 		dspi->waitflags = 1;
- 		wake_up_interruptible(&dspi->waitq);
- 	} else {
-@@ -507,6 +525,8 @@ static int dspi_probe(struct platform_device *pdev)
- 	init_waitqueue_head(&dspi->waitq);
- 	platform_set_drvdata(pdev, dspi);
- 
-+	dspi->big_endian = of_property_read_bool(np, "big-endian");
-+
- 	ret = spi_bitbang_start(&dspi->bitbang);
- 	if (ret != 0) {
- 		dev_err(&pdev->dev, "Problem registering DSPI master\n");
--- 
-1.8.4
+> in my opinion is whether we want to use
+>
+> compatible = "renesas,rspi-r7s72100", "renesas,rspi";
+>
+> or
+>
+> compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz", "renesas,rspi";
 
+So we end up with:
+
+compatible = "renesas,sh7757", "renesas,rspi-sh" (SH legacy)
+compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz" (Genmai)
+compatible = "renesas,rspi-r8a7790", "renesas,qspi" (Lager)
+compatible = "renesas,rspi-r8a7791", "renesas,qspi" (Koelsch)
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

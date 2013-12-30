@@ -1,15 +1,15 @@
 From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Subject: Re: [PATCH 3/8] spi: rspi: Add support for more than one interrupt
-Date: Tue, 31 Dec 2013 00:38:49 +0100
-Message-ID: <2037815.gDYqhVmlrl@avalon>
-References: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org> <1387885248-28425-4-git-send-email-geert+renesas@linux-m68k.org>
+Subject: Re: [PATCH 4/8] spi: rspi: Add support for 8-bit Data Register access
+Date: Tue, 31 Dec 2013 00:47:33 +0100
+Message-ID: <13614197.Z9gKDhB8kb@avalon>
+References: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org> <1387885248-28425-5-git-send-email-geert+renesas@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7Bit
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1387885248-28425-4-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1387885248-28425-5-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -17,212 +17,261 @@ Hi Geert,
 
 Thank you for the patch.
 
-On Tuesday 24 December 2013 12:40:43 Geert Uytterhoeven wrote:
-> Add support for up to 3 interrupts, based on the SDK reference code.
-> This is needed for RZ/A1H.
+On Tuesday 24 December 2013 12:40:44 Geert Uytterhoeven wrote:
+> Add support for accessing the RSPI Data Register using 8-bit operations,
+> based on the SDK reference code.  This is needed for RZ/A1H.
 > 
-> Minimum 1 and maximum 3 interrupts can be passed via platform device
-> resources.
+> The data width is passed using platform data, defaulting to 16-bit for
+> legacy RSPI. QSPI always uses 8-bit accesses.
 > 
 > Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 > ---
->  drivers/spi/spi-rspi.c   |   57 +++++++++++++++++++++++++++----------------
->  include/linux/spi/rspi.h |    2 +-
->  2 files changed, 37 insertions(+), 22 deletions(-)
+>  drivers/spi/spi-rspi.c   |   90 ++++++++++++++++++++++++++++++++++++-------
+>  include/linux/spi/rspi.h |    2 ++
+>  2 files changed, 79 insertions(+), 13 deletions(-)
 > 
 > diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-> index 46232e3b6e8c..c7bbc54ef785 100644
+> index c7bbc54ef785..00788091fc16 100644
 > --- a/drivers/spi/spi-rspi.c
 > +++ b/drivers/spi/spi-rspi.c
-> @@ -1,7 +1,7 @@
->  /*
->   * SH RSPI driver
->   *
-> - * Copyright (C) 2012  Renesas Solutions Corp.
-> + * Copyright (C) 2012, 2013  Renesas Solutions Corp.
->   *
->   * Based on spi-sh.c:
->   * Copyright (C) 2011 Renesas Solutions Corp.
-> @@ -167,6 +167,7 @@
->  #define SPBFCR_RXTRG_MASK	0x07	/* Receive Buffer Data Triggering Number 
-*/
-> 
->  #define DUMMY_DATA		0x00
-> +#define MAX_NUM_IRQ		3
-> 
->  struct rspi_data {
->  	void __iomem *addr;
-> @@ -178,12 +179,13 @@ struct rspi_data {
+> @@ -179,6 +179,8 @@ struct rspi_data {
 >  	spinlock_t lock;
 >  	struct clk *clk;
 >  	u8 spsr;
-> +	int irq[MAX_NUM_IRQ];
-
-Should this field be called irqs ?
-
-> +	unsigned int numirq;
-
-This driver seems to use underscores to separate words in variable names, 
-maybe you could use num_irq (or num_irqs) instead.
-
+> +	u8 spdcr;
+> +	u8 data_width;
+>  	int irq[MAX_NUM_IRQ];
+>  	unsigned int numirq;
 >  	const struct spi_ops *ops;
+> @@ -216,8 +218,27 @@ static u16 rspi_read16(const struct rspi_data *rspi,
+> u16 offset) return ioread16(rspi->addr + offset);
+>  }
 > 
->  	/* for dmaengine */
->  	struct dma_chan *chan_tx;
->  	struct dma_chan *chan_rx;
-> -	int irq;
-> 
->  	unsigned dma_width_16bit:1;
->  	unsigned dma_callbacked:1;
-> @@ -462,7 +464,7 @@ static int rspi_send_dma(struct rspi_data *rspi, struct
-> spi_transfer *t) const void *buf = NULL;
->  	struct dma_async_tx_descriptor *desc;
->  	unsigned len;
-> -	int ret = 0;
-> +	int i, ret = 0;
+> +static void rspi_write_data(const struct rspi_data *rspi, u16 data)
+> +{
+> +	if (rspi->data_width == 8)
+> +		rspi_write8(rspi, data, RSPI_SPDR);
+> +	else if (rspi->data_width == 16)
+> +		rspi_write16(rspi, data, RSPI_SPDR);
 
-i is an unsigned loop index, could you please make it an unsigned int ?
+As the driver only handles 8-bits and 16-bits data, replacing the else if with 
+an else should be more efficient.
 
->  	if (rspi->dma_width_16bit) {
->  		void *tmp;
-> @@ -499,7 +501,8 @@ static int rspi_send_dma(struct rspi_data *rspi, struct
-> spi_transfer *t) * DMAC needs SPTIE, but if SPTIE is set, this IRQ routine
-> will be * called. So, this driver disables the IRQ while DMA transfer.
->  	 */
-> -	disable_irq(rspi->irq);
-> +	for (i = 0; i < rspi->numirq; i++)
-> +		disable_irq(rspi->irq[i]);
-> 
->  	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | SPCR_TXMD, RSPI_SPCR);
->  	rspi_enable_irq(rspi, SPCR_SPTIE);
-> @@ -518,7 +521,8 @@ static int rspi_send_dma(struct rspi_data *rspi, struct
-> spi_transfer *t) ret = -ETIMEDOUT;
->  	rspi_disable_irq(rspi, SPCR_SPTIE);
-> 
-> -	enable_irq(rspi->irq);
-> +	for (i = 0; i < rspi->numirq; i++)
-> +		enable_irq(rspi->irq[i]);
-> 
->  end:
->  	rspi_dma_unmap_sg(&sg, rspi->chan_tx, DMA_TO_DEVICE);
-> @@ -628,7 +632,7 @@ static int rspi_receive_dma(struct rspi_data *rspi,
-> struct spi_transfer *t) void *dummy = NULL, *rx_buf = NULL;
->  	struct dma_async_tx_descriptor *desc, *desc_dummy;
->  	unsigned len;
-> -	int ret = 0;
-> +	int i, ret = 0;
+> +}
+> +
+> +static u16 rspi_read_data(const struct rspi_data *rspi)
+> +{
+> +	if (rspi->data_width == 8)
+> +		return rspi_read8(rspi, RSPI_SPDR);
+> +	else if (rspi->data_width == 16)
+> +		return rspi_read16(rspi, RSPI_SPDR);
 
 Same here.
 
->  	if (rspi->dma_width_16bit) {
->  		/*
-> @@ -685,7 +689,8 @@ static int rspi_receive_dma(struct rspi_data *rspi,
-> struct spi_transfer *t) * DMAC needs SPTIE, but if SPTIE is set, this IRQ
-> routine will be * called. So, this driver disables the IRQ while DMA
-> transfer.
->  	 */
-> -	disable_irq(rspi->irq);
-> +	for (i = 0; i < rspi->numirq; i++)
-> +		disable_irq(rspi->irq[i]);
-> 
->  	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_TXMD, RSPI_SPCR);
->  	rspi_enable_irq(rspi, SPCR_SPTIE | SPCR_SPRIE);
-> @@ -708,7 +713,8 @@ static int rspi_receive_dma(struct rspi_data *rspi,
-> struct spi_transfer *t) ret = -ETIMEDOUT;
->  	rspi_disable_irq(rspi, SPCR_SPTIE | SPCR_SPRIE);
-> 
-> -	enable_irq(rspi->irq);
-> +	for (i = 0; i < rspi->numirq; i++)
-> +		enable_irq(rspi->irq[i]);
-> 
->  end:
->  	rspi_dma_unmap_sg(&sg, rspi->chan_rx, DMA_FROM_DEVICE);
-> @@ -918,7 +924,7 @@ static int rspi_probe(struct platform_device *pdev)
->  	struct resource *res;
->  	struct spi_master *master;
->  	struct rspi_data *rspi;
-> -	int ret, irq;
-> +	int i, ret, irq;
+> +	return 0;
+> +}
+> +
+>  /* optional functions */
+>  struct spi_ops {
+> +	int (*parse_platform_data)(struct rspi_data *rspi,
+> +				   const struct rspi_plat_data *rspi_pd);
+>  	int (*set_config_register)(const struct rspi_data *rspi,
+>  				   int access_size);
+>  	int (*send_pio)(struct rspi_data *rspi, struct spi_message *mesg,
+> @@ -230,6 +251,33 @@ struct spi_ops {
+>  /*
+>   * functions for RSPI
+>   */
+> +static int rspi_parse_platform_data(struct rspi_data *rspi,
+> +				    const struct rspi_plat_data *rspi_pd)
+> +{
+> +	if (rspi_pd && rspi_pd->data_width) {
+> +		rspi->data_width = rspi_pd->data_width;
+> +		switch (rspi_pd->data_width) {
+> +		case 8:
+> +			rspi->spdcr = SPDCR_SPLBYTE;
+> +			break;
+> +		case 16:
+> +			rspi->spdcr = SPDCR_SPLWORD;
+> +			break;
+> +		default:
+> +			return -1;
 
-Same here.
+Shouldn't you return a defined error code (-EINVAL maybe) ?
 
->  	char clk_name[16];
->  	const struct rspi_plat_data *rspi_pd = dev_get_platdata(&pdev->dev);
->  	const struct spi_ops *ops;
-> @@ -931,12 +937,6 @@ static int rspi_probe(struct platform_device *pdev)
->  		return -ENODEV;
->  	}
-> 
-> -	irq = platform_get_irq(pdev, 0);
-> -	if (irq < 0) {
-> -		dev_err(&pdev->dev, "platform_get_irq error\n");
-> -		return -ENODEV;
-> -	}
-> -
->  	master = spi_alloc_master(&pdev->dev, sizeof(struct rspi_data));
->  	if (master == NULL) {
->  		dev_err(&pdev->dev, "spi_alloc_master error.\n");
-> @@ -948,6 +948,19 @@ static int rspi_probe(struct platform_device *pdev)
->  	rspi->ops = ops;
->  	rspi->master = master;
-> 
-> +	for (i = 0; i < MAX_NUM_IRQ; i++) {
-> +		irq = platform_get_irq(pdev, i);
-> +		if (irq < 0) {
-> +			if (rspi->numirq)
-> +				break;
-> +			dev_err(&pdev->dev, "platform_get_irq error\n");
-> +			ret = -ENODEV;
-> +			goto error1;
 > +		}
-> +		rspi->irq[i] = irq;
-> +		rspi->numirq++;
+> +	} else {
+> +		/*
+> +		 * Use legacy 16-bit width data access if a data_width value
+> +		 * isn't defined in the platform data.
+> +		 */
+> +		rspi->data_width = 16;
+> +		rspi->spdcr = 0;
 > +	}
 > +
->  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->  	rspi->addr = devm_ioremap_resource(&pdev->dev, res);
->  	if (IS_ERR(rspi->addr)) {
-> @@ -979,14 +992,16 @@ static int rspi_probe(struct platform_device *pdev)
->  	master->transfer = rspi_transfer;
->  	master->cleanup = rspi_cleanup;
+> +	return 0;
+> +}
+> +
+>  static int rspi_set_config_register(const struct rspi_data *rspi,
+>  				    int access_size)
+>  {
+> @@ -243,7 +291,7 @@ static int rspi_set_config_register(const struct
+> rspi_data *rspi, rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
 > 
-> -	ret = devm_request_irq(&pdev->dev, irq, rspi_irq, 0,
-> -			       dev_name(&pdev->dev), rspi);
-> -	if (ret < 0) {
-> -		dev_err(&pdev->dev, "request_irq error\n");
-> -		goto error1;
-> +	for (i = 0; i < rspi->numirq; i++) {
-> +		ret = devm_request_irq(&pdev->dev, rspi->irq[i], rspi_irq, 0,
-> +				       dev_name(&pdev->dev), rspi);
-> +		if (ret < 0) {
-> +			dev_err(&pdev->dev, "request_irq %d error\n",
-> +				rspi->irq[i]);
-> +			goto error1;
-> +		}
+>  	/* Sets number of frames to be used: 1 frame */
+> -	rspi_write8(rspi, 0x00, RSPI_SPDCR);
+> +	rspi_write8(rspi, rspi->spdcr, RSPI_SPDCR);
+> 
+>  	/* Sets RSPCK, SSL, next-access delay value */
+>  	rspi_write8(rspi, 0x00, RSPI_SPCKD);
+> @@ -266,6 +314,16 @@ static int rspi_set_config_register(const struct
+> rspi_data *rspi, /*
+>   * functions for QSPI
+>   */
+> +static int qspi_parse_platform_data(struct rspi_data *rspi,
+> +				    const struct rspi_plat_data *rspi_pd)
+> +{
+> +	/* Fixed 8-bit for now */
+> +	rspi->data_width = 8;
+> +	rspi->spdcr = 0;
+> +
+> +	return 0;
+> +}
+> +
+>  static int qspi_set_config_register(const struct rspi_data *rspi,
+>  				    int access_size)
+>  {
+> @@ -280,7 +338,7 @@ static int qspi_set_config_register(const struct
+> rspi_data *rspi, rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
+> 
+>  	/* Sets number of frames to be used: 1 frame */
+> -	rspi_write8(rspi, 0x00, RSPI_SPDCR);
+> +	rspi_write8(rspi, rspi->spdcr, RSPI_SPDCR);
+> 
+>  	/* Sets RSPCK, SSL, next-access delay value */
+>  	rspi_write8(rspi, 0x00, RSPI_SPCKD);
+> @@ -365,7 +423,7 @@ static int rspi_send_pio(struct rspi_data *rspi, struct
+> spi_message *mesg, return -ETIMEDOUT;
+>  		}
+> 
+> -		rspi_write16(rspi, *data, RSPI_SPDR);
+> +		rspi_write_data(rspi, *data);
+>  		data++;
+>  		remain--;
 >  	}
-
-Just an idea, what about combining the two loops ?
-
-> -	rspi->irq = irq;
+> @@ -392,14 +450,14 @@ static int qspi_send_pio(struct rspi_data *rspi,
+> struct spi_message *mesg, "%s: tx empty timeout\n", __func__);
+>  			return -ETIMEDOUT;
+>  		}
+> -		rspi_write8(rspi, *data++, RSPI_SPDR);
+> +		rspi_write_data(rspi, *data++);
+> 
+>  		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
+>  			dev_err(&rspi->master->dev,
+>  				"%s: receive timeout\n", __func__);
+>  			return -ETIMEDOUT;
+>  		}
+> -		rspi_read8(rspi, RSPI_SPDR);
+> +		rspi_read_data(rspi);
+> 
+>  		remain--;
+>  	}
+> @@ -539,7 +597,7 @@ static void rspi_receive_init(const struct rspi_data
+> *rspi)
+> 
+>  	spsr = rspi_read8(rspi, RSPI_SPSR);
+>  	if (spsr & SPSR_SPRF)
+> -		rspi_read16(rspi, RSPI_SPDR);	/* dummy read */
+> +		rspi_read_data(rspi);	/* dummy read */
+>  	if (spsr & SPSR_OVRF)
+>  		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPSR) & ~SPSR_OVRF,
+>  			    RSPI_SPSR);
+> @@ -564,15 +622,14 @@ static int rspi_receive_pio(struct rspi_data *rspi,
+> struct spi_message *mesg, return -ETIMEDOUT;
+>  		}
+>  		/* dummy write for generate clock */
+> -		rspi_write16(rspi, DUMMY_DATA, RSPI_SPDR);
+> +		rspi_write_data(rspi, DUMMY_DATA);
+> 
+>  		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
+>  			dev_err(&rspi->master->dev,
+>  				"%s: receive timeout\n", __func__);
+>  			return -ETIMEDOUT;
+>  		}
+> -		/* SPDR allows 16 or 32-bit access only */
+> -		*data = (u8)rspi_read16(rspi, RSPI_SPDR);
+> +		*data = rspi_read_data(rspi);
+> 
+>  		data++;
+>  		remain--;
+> @@ -587,7 +644,7 @@ static void qspi_receive_init(const struct rspi_data
+> *rspi)
+> 
+>  	spsr = rspi_read8(rspi, RSPI_SPSR);
+>  	if (spsr & SPSR_SPRF)
+> -		rspi_read8(rspi, RSPI_SPDR);   /* dummy read */
+> +		rspi_read_data(rspi);   /* dummy read */
+>  	rspi_write8(rspi, SPBFCR_TXRST | SPBFCR_RXRST, QSPI_SPBFCR);
+>  	rspi_write8(rspi, 0x00, QSPI_SPBFCR);
+>  }
+> @@ -609,15 +666,14 @@ static int qspi_receive_pio(struct rspi_data *rspi,
+> struct spi_message *mesg, return -ETIMEDOUT;
+>  		}
+>  		/* dummy write for generate clock */
+> -		rspi_write8(rspi, DUMMY_DATA, RSPI_SPDR);
+> +		rspi_write_data(rspi, DUMMY_DATA);
+> 
+>  		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
+>  			dev_err(&rspi->master->dev,
+>  				"%s: receive timeout\n", __func__);
+>  			return -ETIMEDOUT;
+>  		}
+> -		/* SPDR allows 8, 16 or 32-bit access */
+> -		*data++ = rspi_read8(rspi, RSPI_SPDR);
+> +		*data++ = rspi_read_data(rspi);
+>  		remain--;
+>  	}
+> 
+> @@ -1002,6 +1058,12 @@ static int rspi_probe(struct platform_device *pdev)
+>  		}
+>  	}
+> 
+> +	ret = ops->parse_platform_data(rspi, rspi_pd);
+> +	if (ret < 0) {
+> +		dev_err(&pdev->dev, "rspi invalid platform data.\n");
+> +		goto error1;
+> +	}
+> +
 >  	ret = rspi_request_dma(rspi, pdev);
 >  	if (ret < 0) {
 >  		dev_err(&pdev->dev, "rspi_request_dma failed.\n");
+> @@ -1027,12 +1089,14 @@ error1:
+>  }
+> 
+>  static struct spi_ops rspi_ops = {
+> +	.parse_platform_data =		rspi_parse_platform_data,
+>  	.set_config_register =		rspi_set_config_register,
+>  	.send_pio =			rspi_send_pio,
+>  	.receive_pio =			rspi_receive_pio,
+>  };
+> 
+>  static struct spi_ops qspi_ops = {
+> +	.parse_platform_data =		qspi_parse_platform_data,
+>  	.set_config_register =		qspi_set_config_register,
+>  	.send_pio =			qspi_send_pio,
+>  	.receive_pio =			qspi_receive_pio,
 > diff --git a/include/linux/spi/rspi.h b/include/linux/spi/rspi.h
-> index a25bd6f65e7f..3f55232f74ff 100644
+> index 3f55232f74ff..7316dd9c7ba9 100644
 > --- a/include/linux/spi/rspi.h
 > +++ b/include/linux/spi/rspi.h
-> @@ -1,7 +1,7 @@
->  /*
->   * Renesas SPI driver
->   *
-> - * Copyright (C) 2012  Renesas Solutions Corp.
-> + * Copyright (C) 2012, 2013  Renesas Solutions Corp.
->   *
->   * This program is free software; you can redistribute it and/or modify
->   * it under the terms of the GNU General Public License as published by
-
-This change seems to be unrelated. You might want to squash it into patch 1/8.
-
+> @@ -22,6 +22,8 @@
+>  #define __LINUX_SPI_RENESAS_SPI_H__
+> 
+>  struct rspi_plat_data {
+> +	u8 data_width;			/* Data register access width */
+> +
+>  	unsigned int dma_tx_id;
+>  	unsigned int dma_rx_id;
 -- 
 Regards,
 

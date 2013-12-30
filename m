@@ -1,68 +1,63 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 6/8] [RFC] Documentation: dt: Add Renesas RSPI/QSPI
- bindings
-Date: Mon, 30 Dec 2013 13:50:58 +0000
-Message-ID: <20131230135058.GD31886@sirena.org.uk>
-References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
- <1388175362-17132-7-git-send-email-geert@linux-m68k.org>
- <20131230125845.GX31886@sirena.org.uk>
- <CAMuHMdXYH6KmH3ZstAvhqUpqXWEbg6sjdUTDRZUrUthdPg-6aQ@mail.gmail.com>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: Re: [PATCH 1/4] spi: dw: use managed resources
+Date: Mon, 30 Dec 2013 16:48:38 +0200
+Message-ID: <20131230144838.GD4361@tarshish>
+References: <cover.1388040447.git.baruch@tkos.co.il>
+ <406b0c452cfa4e58b8d4c565beb861da30ebead7.1388040447.git.baruch@tkos.co.il>
+ <20131230132420.GZ31886@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tfudkhBUqbdcU4Ca"
-Cc: Linux-sh list <linux-sh@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXYH6KmH3ZstAvhqUpqXWEbg6sjdUTDRZUrUthdPg-6aQ@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---tfudkhBUqbdcU4Ca
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <20131230132420.GZ31886-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Dec 30, 2013 at 02:43:53PM +0100, Geert Uytterhoeven wrote:
-> On Mon, Dec 30, 2013 at 1:58 PM, Mark Brown <broonie@kernel.org> wrote:
-> > On Fri, Dec 27, 2013 at 09:16:00PM +0100, Geert Uytterhoeven wrote:
+Hi Mark,
 
-> >> +- num-cs        : Number of chip selects
+On Mon, Dec 30, 2013 at 01:24:20PM +0000, Mark Brown wrote:
+> On Thu, Dec 26, 2013 at 09:00:12AM +0200, Baruch Siach wrote:
+> > This commit doesn't migrate the PCI specific code to managed resources, 
+> > because I can't test that code.
+> 
+> Given that this is a simple mechanical transition I don't see that as a
+> big concern...  I'd be more worried about bugs being introduced due to
+> the order in which things get unwound than I would about errors from a
+> conversion to devm unless the unwinding code is already complex.
 
-> > Why is this variable and how does this map onto hardware?
+OK. Will do.
 
-> It's my understanding that legacy RSPi on SH7757 has 2 chip selects,
-> while other RSPI implementations have 1 chip select.
+> > -	dws->regs = ioremap_nocache(mem->start, resource_size(mem));
+> > +	dws->regs = devm_ioremap_nocache(&pdev->dev, mem->start,
+> > +			resource_size(mem));
+> 
+> You can just use devm_ioremap_resource() - it will check if the resource
+> is cacheable and map it nocache otherwise.
 
-So this should be documented in the binding document in a way that
-allows someone reading the document and looking at the datasheet to
-figure out how to pick the value (for example, refer to how the chip
-selects are controlled in the hardware).
+Will do.
 
---tfudkhBUqbdcU4Ca
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> > -int dw_spi_add_host(struct dw_spi *dws)
+> > +int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
+> 
+> >  	master = spi_alloc_master(dws->parent_dev, 0);
+> > -	if (!master) {
+> 
+> Why is the device we're passing in ever going to be different to
+> dws->parent_dev, or alternatively can we just remove dws->parent_dev
+> instead and keep the signature change?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+I'm not sure I follow. What's exactly the alternative to dws->parent_dev?
 
-iQIcBAEBAgAGBQJSwXo/AAoJELSic+t+oim9U74QAJ4yFd/D46wdueLLu8rZBOB3
-JKajbFJwM7NOUwUTI9XJzNZe0ec6Z8YICx1gUqZ8PicW22Rqz89c5VaVx0jwoQrj
-e10zzjLsuLdmxppabFZU+7vFvp6M2CP1ETGY8t+Q4ZJa6KQg/aThC84BwoEo2rmA
-9iKbtw1EbANxTDcwGw25IGYpy+8YwBTGxpS2bGXP8+ziK+xP5oN/YDj6lvPJPoR6
-+jB2j+BUj1QHkQq4VBZHoPIiohBAOz0zNDP2VJCsTjCFzWobQ9O4tQfKBUFpE+xW
-vZjQqva8LcnU/eJ2zJGZxFmeihRDK2RiJ0S2G5v+OF1cJR2ErinbNBPkVGos98Sb
-H9zQ+gvPU0A9bnabvoMSm4l6OLZHO8hAPzjlNVcbBwJOrtjvcIzqeZ8CuVtroZRn
-D25XZmG7yEKfJGdH6TcAN7D16tMvvwghjd7wCrsiTG9m+qUW1E50Sff9d09kEY37
-zADeD47Nucjr6xszRXW74Uac8MoGrYznJkwllOE28oWJxBHVP/kQhXhQJ0F48LN5
-8VT7JENjIzvzN6EwBa75LVaiQ1nyOa7mIi+sSm3EumMiOHtw3jc2rtlWhgJrIFZX
-eKWVJTPcE+MUWzki8xnCTAl8X+Z0O7j4VQolN4UM184mf7oyNArRw4Od00N8FI2S
-/HZO+d+Hh0gy4eXahDXd
-=Kcqt
------END PGP SIGNATURE-----
+baruch
 
---tfudkhBUqbdcU4Ca--
+-- 
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

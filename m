@@ -1,68 +1,73 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 6/8] [RFC] Documentation: dt: Add Renesas RSPI/QSPI
- bindings
-Date: Mon, 30 Dec 2013 12:58:45 +0000
-Message-ID: <20131230125845.GX31886@sirena.org.uk>
-References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
- <1388175362-17132-7-git-send-email-geert@linux-m68k.org>
+Subject: Re: [PATCH 3/4] spi: dw: fix memory leak on error path
+Date: Mon, 30 Dec 2013 13:08:14 +0000
+Message-ID: <20131230130814.GY31886@sirena.org.uk>
+References: <cover.1388040447.git.baruch@tkos.co.il>
+ <4ed40da8c93766ac05ee8d3507ae1d9fdc0a68a7.1388040447.git.baruch@tkos.co.il>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+1tcKVLXPU0QafK6"
-Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="5DFjIrIHbGf/FHYW"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1388175362-17132-7-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <4ed40da8c93766ac05ee8d3507ae1d9fdc0a68a7.1388040447.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---+1tcKVLXPU0QafK6
+--5DFjIrIHbGf/FHYW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 27, 2013 at 09:16:00PM +0100, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
->=20
-> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-> Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+On Thu, Dec 26, 2013 at 09:00:14AM +0200, Baruch Siach wrote:
 
-You've not CCed any maintainers on any of this stuff so I'm assuming you
-don't want any review or the patches applying.  You should in general
-always CC maintainers, things that only go to the list can easily be
-missed.  However I did take a brief look...
+> @@ -669,6 +671,11 @@ static int dw_spi_setup(struct spi_device *spi)
+> =20
+>  	spi_set_ctldata(spi, chip);
+>  	return 0;
+> +
+> +err_kfree:
+> +	kfree(chip);
+> +
+> +	return ret;
+>  }
 
-> +- num-cs	   : Number of chip selects
+A better fix would be to convert to devm_kzalloc() so there is no
+possibility of paths that don't free (and move the ctldata set earlier
+so we don't forget about it on creation).
 
-Why is this variable and how does this map onto hardware?
+Indeed this patch will introduce a bug - on the second call to this
+function if we hit an error then the struct will be freed but ctldata
+won't be cleared.  This will mean that if there is a further call then
+ctldata will still point at the old struct and the function will try to
+use it rather than allocating a new one.
 
---+1tcKVLXPU0QafK6
+--5DFjIrIHbGf/FHYW
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSwW4CAAoJELSic+t+oim9ZPQP/2nd3HMmCR2psp65DPPYxhdy
-dEKLTndZvFcSAN5OxpykTfNUW4s+cEplfYE9qSvD6mJx7XlKhFDvtbbS7/kTyxWn
-n09MH+URO0Tphydi0kXznvQhAj2WYndoYOeWIo3F+xNcrmqy3ejAra5/qQzHxSS+
-2Un6Sn0hNejpR5coQgtiy155VZhYMjGWmUpaKxK8OWRR7uhwrJ5uEBi5VkymWNoy
-iETHs5SWfIIrw525J0zI6HBbiYS3dlrcnc4AmIqgGSnZumEq9vfLI+XjlobNt6lN
-f9FhxJFqt+R3fo+uFno0+Rh4IiZOVxLOOEZCexJ35sjGfcPHLXXotD/1ujqGEUZi
-CBFjWUmDOet0xq1MFH3n84Gbg3T5eUSVaFPusCkMK6o3Kr6MPx7Hyis89nfqSO1J
-GriHQoxzs5c0VdeIkN5yuTuUq29KSfyeZAfV748/lOW7L1Z0Y/w3o/ZaQ3uOjZrC
-vi7d5AQViWoxdpxeHW25Gik0QdfEhUF2VW+ERdXSooIgKHbO2ggGA4rvmJMujXZz
-tOCTA19CffOvyYuSxH2mu+ifkokJFTy4ve0JmwijbJPcNjurCr6SlqU89jX4GZ83
-SEp4pMJ+QO6QPR3ruHTcyFfAKXfI/kUgp8xFIqwGOuYAaX8aZmryefrctlDXrOGE
-pYb/UsveOosAG9Io7Kg8
-=W25w
+iQIcBAEBAgAGBQJSwXA7AAoJELSic+t+oim9Yj0P/0260GbSAIwPUevynu/DEnN0
+LXRDEtMKNUxWRrOo2WRlRjSt8ij8IKZBqaZtfkVn3btTExM3/hAjtPFYO/7S3hRB
+YhLVz5PjtyRQWlHEobiJN6LTTTYy5OgBB12x6FEzw0IClUVettnojg0wQL/7zvm5
+OJsm7LMFOsJ9IlftsJ4NjGaipNNhQlKRVdgYhXTWenLNe7HN3FVxwn7aBtJny1Br
+b2RyyLAe+WlIiFBstn+oNX2hqKHDvXkUpa9PcfBukuhbRpdYlmNNF5zg5JwaHyzm
+YrawQsyCKid6tzK5Tx+Uri6D/45A4IXM8B91KyrQ84Rfz6NUWsO2NAxmJgLkAPAM
+du4IXItQQIHzbsFURS5mX9qNNUtnufsRXsaXdHzEDXnwcBJTIGiUveADakirZ4k9
+WSMjm3UPYRZFWJ8YhQfJhSYacxfCuqa0J4alD/LPisAetzsNVAIQ+/YQYd/27n82
+xu/JjEBPMlxTBYwicdurMovKsrEpCgmTjDGUr4MHxP6uAg0TcMu/b2v/crz6igKw
+x2J9BS6LhDfQwp905N1I125onk2/5Qax7cY09Sf9pJWpf1owPL792Ch8QsLZHdRP
+IiW7I9eOb0+TdtlMcsZ/UxTP+t2ImaQWrH/kyvqOaJTK/QvjfLl6TPikxnPmx5pB
+QKJblswtZ6/XkE35YIz9
+=eWgf
 -----END PGP SIGNATURE-----
 
---+1tcKVLXPU0QafK6--
+--5DFjIrIHbGf/FHYW--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

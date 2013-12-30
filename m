@@ -1,55 +1,68 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi: nuc900: Cleanup spi-nuc900.h header
-Date: Mon, 30 Dec 2013 12:46:37 +0000
-Message-ID: <20131230124637.GW31886@sirena.org.uk>
-References: <1388384802-32660-1-git-send-email-sachin.kamat@linaro.org>
+Subject: Re: [PATCH v2 6/8] [RFC] Documentation: dt: Add Renesas RSPI/QSPI
+ bindings
+Date: Mon, 30 Dec 2013 12:58:45 +0000
+Message-ID: <20131230125845.GX31886@sirena.org.uk>
+References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
+ <1388175362-17132-7-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="s3puAW9DMBtS2ARW"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-To: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="+1tcKVLXPU0QafK6"
+Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1388384802-32660-1-git-send-email-sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1388175362-17132-7-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---s3puAW9DMBtS2ARW
+--+1tcKVLXPU0QafK6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 30, 2013 at 11:56:42AM +0530, Sachin Kamat wrote:
-> Commit 54ecf4f05637 ("ARM: w90x900: move platform_data definitions")
-> moved the file to the current location but forgot to remove the pointer
-> to its previous location. Clean it up. While at it also change the header
-> file protection macros appropriately.
+On Fri, Dec 27, 2013 at 09:16:00PM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+>=20
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 
-Applied, thanks.
+You've not CCed any maintainers on any of this stuff so I'm assuming you
+don't want any review or the patches applying.  You should in general
+always CC maintainers, things that only go to the list can easily be
+missed.  However I did take a brief look...
 
---s3puAW9DMBtS2ARW
+> +- num-cs	   : Number of chip selects
+
+Why is this variable and how does this map onto hardware?
+
+--+1tcKVLXPU0QafK6
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJSwWspAAoJELSic+t+oim9vn0P/iXZ+mvLh5FtruX9Cg7zVLSd
-0L3muGQ3B9sel3pX2PQXAQyKVUiKazAw7HEo/BvLlfSUhg6kGWZVM/hujJZC+GW6
-3Aw4x1M82//jy7Yf+56V54Ms5qts7pRQSMESB5rMKOuisGqxbYLRsGND7sLxPcDH
-+W9IbCoszt97KXh7gaHl2+6wf6oaugj2XtjHfSmlVee5FBqMYMJN0Bdjmwc2g7Pg
-UbHr1b2BC8IBx3bnOlNif66HDlCm6zkuXAqVXVzBwhe+CDunxiOVicwkUE/hit5z
-6rV17oDGso7Dl7yg87IfDnDUg5QGHocCa8R53NxZdzrYKVbuFC6/l7jrIzQSDeMn
-5W2Med+uI3oMMBXULrlUFT2F6PmBlSJ7QCXBW/P1F95HB9LD2M5RWoqn7eN9TEi6
-j1JPnTUVWSfIX5wkxGAH55ZwrXFiR2M2YePLroAtqqLBDk9KZCz7r9LKw0leFEX3
-qRVmQtO8UsV5X5ZMBGDHbGe1Gpoe6/Nie0Kesrtpkf9K+3kMZyof+1mj8HIAiSpP
-uXRHW4ZfQf9x+G6BVDmh47X6cj3srxcDOyZLvpkq66pbTF5Uchkfwo/EKnVEMLwJ
-IeDu9kQB8QVQcJx1pVp+igDdAt6QSCo182cqVuo7Uu9BDzD7V30VQUAl1td28Woq
-8Guh4HJvWHZBjiPA5xhj
-=i6jt
+iQIcBAEBAgAGBQJSwW4CAAoJELSic+t+oim9ZPQP/2nd3HMmCR2psp65DPPYxhdy
+dEKLTndZvFcSAN5OxpykTfNUW4s+cEplfYE9qSvD6mJx7XlKhFDvtbbS7/kTyxWn
+n09MH+URO0Tphydi0kXznvQhAj2WYndoYOeWIo3F+xNcrmqy3ejAra5/qQzHxSS+
+2Un6Sn0hNejpR5coQgtiy155VZhYMjGWmUpaKxK8OWRR7uhwrJ5uEBi5VkymWNoy
+iETHs5SWfIIrw525J0zI6HBbiYS3dlrcnc4AmIqgGSnZumEq9vfLI+XjlobNt6lN
+f9FhxJFqt+R3fo+uFno0+Rh4IiZOVxLOOEZCexJ35sjGfcPHLXXotD/1ujqGEUZi
+CBFjWUmDOet0xq1MFH3n84Gbg3T5eUSVaFPusCkMK6o3Kr6MPx7Hyis89nfqSO1J
+GriHQoxzs5c0VdeIkN5yuTuUq29KSfyeZAfV748/lOW7L1Z0Y/w3o/ZaQ3uOjZrC
+vi7d5AQViWoxdpxeHW25Gik0QdfEhUF2VW+ERdXSooIgKHbO2ggGA4rvmJMujXZz
+tOCTA19CffOvyYuSxH2mu+ifkokJFTy4ve0JmwijbJPcNjurCr6SlqU89jX4GZ83
+SEp4pMJ+QO6QPR3ruHTcyFfAKXfI/kUgp8xFIqwGOuYAaX8aZmryefrctlDXrOGE
+pYb/UsveOosAG9Io7Kg8
+=W25w
 -----END PGP SIGNATURE-----
 
---s3puAW9DMBtS2ARW--
+--+1tcKVLXPU0QafK6--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

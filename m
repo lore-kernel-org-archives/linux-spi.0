@@ -1,91 +1,75 @@
-From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Subject: Re: [PATCH 7/8] spi: rspi: Add support for specifying CPHA/CPOL
-Date: Tue, 31 Dec 2013 00:53:03 +0100
-Message-ID: <15602504.DsQsiMiuEH@avalon>
-References: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org> <1387885248-28425-8-git-send-email-geert+renesas@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1387885248-28425-8-git-send-email-geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Sachin Kamat <sachin.kamat@linaro.org>
+Subject: [PATCH 1/1] spi: s3c24xx: Remove reference to plat/fiq.h
+Date: Tue, 31 Dec 2013 14:00:39 +0530
+Message-ID: <1388478639-25279-1-git-send-email-sachin.kamat@linaro.org>
+Cc: linux-samsung-soc@vger.kernel.org, broonie@kernel.org,
+	kgene.kim@samsung.com, sachin.kamat@linaro.org, patches@linaro.org
+To: linux-spi@vger.kernel.org
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Geert,
+fiq.h contains only a function declaration and is not used by anyone
+else. Move the declaration to the driver header file and remove the
+unnecessary platform dependency from the driver.
 
-Thank you for the patch.
+Signed-off-by: Sachin Kamat <sachin.kamat@linaro.org>
+---
+ arch/arm/plat-samsung/include/plat/fiq.h |   13 -------------
+ drivers/spi/spi-s3c24xx.c                |    2 --
+ include/linux/spi/s3c24xx.h              |    2 ++
+ 3 files changed, 2 insertions(+), 15 deletions(-)
+ delete mode 100644 arch/arm/plat-samsung/include/plat/fiq.h
 
-On Tuesday 24 December 2013 12:40:47 Geert Uytterhoeven wrote:
-> Add support for specifying the SPI clock phase and polarity, based on the
-> SDK reference code.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-
-Acked-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-
-> ---
->  drivers/spi/spi-rspi.c |   12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-> index 34674fe6df5d..850025278519 100644
-> --- a/drivers/spi/spi-rspi.c
-> +++ b/drivers/spi/spi-rspi.c
-> @@ -181,6 +181,7 @@ struct rspi_data {
->  	u8 spsr;
->  	u8 spdcr;
->  	u8 data_width;
-> +	u16 spcmd;
->  	int irq[MAX_NUM_IRQ];
->  	unsigned int numirq;
->  	const struct spi_ops *ops;
-> @@ -328,7 +329,7 @@ static int rspi_set_config_register(const struct
-> rspi_data *rspi, rspi_write8(rspi, 0x00, RSPI_SPCR2);
-> 
->  	/* Sets SPCMD */
-> -	rspi_write16(rspi, SPCMD_SPB_8_TO_16(access_size) | SPCMD_SSLKP,
-> +	rspi_write16(rspi, SPCMD_SPB_8_TO_16(access_size) | rspi->spcmd,
->  		     RSPI_SPCMD0);
-> 
->  	/* Sets RSPI mode */
-> @@ -383,7 +384,7 @@ static int qspi_set_config_register(const struct
-> rspi_data *rspi, else
->  		spcmd = SPCMD_SPB_32BIT;
-> 
-> -	spcmd |= SPCMD_SCKDEN | SPCMD_SLNDEN | SPCMD_SSLKP | SPCMD_SPNDEN;
-> +	spcmd |= SPCMD_SCKDEN | SPCMD_SLNDEN | rspi->spcmd | SPCMD_SPNDEN;
-> 
->  	/* Resets transfer data length */
->  	rspi_write32(rspi, 0, QSPI_SPBMUL0);
-> @@ -903,6 +904,12 @@ static int rspi_setup(struct spi_device *spi)
->  		spi->bits_per_word = 8;
->  	rspi->max_speed_hz = spi->max_speed_hz;
-> 
-> +	rspi->spcmd = SPCMD_SSLKP;
-> +	if (spi->mode & SPI_CPOL)
-> +		rspi->spcmd |= SPCMD_CPOL;
-> +	if (spi->mode & SPI_CPHA)
-> +		rspi->spcmd |= SPCMD_CPHA;
-> +
->  	set_config_register(rspi, 8);
-> 
->  	return 0;
-> @@ -1092,6 +1099,7 @@ static int rspi_probe(struct platform_device *pdev)
->  	master->setup = rspi_setup;
->  	master->transfer = rspi_transfer;
->  	master->cleanup = rspi_cleanup;
-> +	master->mode_bits = SPI_CPHA | SPI_CPOL;
-> 
->  	for (i = 0; i < rspi->numirq; i++) {
->  		ret = devm_request_irq(&pdev->dev, rspi->irq[i], rspi_irq, 0,
+diff --git a/arch/arm/plat-samsung/include/plat/fiq.h b/arch/arm/plat-samsung/include/plat/fiq.h
+deleted file mode 100644
+index 535d06a35628..000000000000
+--- a/arch/arm/plat-samsung/include/plat/fiq.h
++++ /dev/null
+@@ -1,13 +0,0 @@
+-/* linux/arch/arm/plat-samsung/include/plat/fiq.h
+- *
+- * Copyright (c) 2009 Simtec Electronics
+- *	Ben Dooks <ben@simtec.co.uk>
+- *
+- * Header file for S3C24XX CPU FIQ support
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+-*/
+-
+-extern int s3c24xx_set_fiq(unsigned int irq, bool on);
+diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+index 2ccb28d57ba9..746424aa5353 100644
+--- a/drivers/spi/spi-s3c24xx.c
++++ b/drivers/spi/spi-s3c24xx.c
+@@ -29,7 +29,6 @@
+ 
+ #include <plat/regs-spi.h>
+ 
+-#include <plat/fiq.h>
+ #include <asm/fiq.h>
+ 
+ #include "spi-s3c24xx-fiq.h"
+@@ -84,7 +83,6 @@ struct s3c24xx_spi {
+ 	struct s3c2410_spi_info *pdata;
+ };
+ 
+-
+ #define SPCON_DEFAULT (S3C2410_SPCON_MSTR | S3C2410_SPCON_SMOD_INT)
+ #define SPPIN_DEFAULT (S3C2410_SPPIN_KEEP)
+ 
+diff --git a/include/linux/spi/s3c24xx.h b/include/linux/spi/s3c24xx.h
+index c23b923e493b..ca271c06c591 100644
+--- a/include/linux/spi/s3c24xx.h
++++ b/include/linux/spi/s3c24xx.h
+@@ -23,4 +23,6 @@ struct s3c2410_spi_info {
+ 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
+ };
+ 
++extern int s3c24xx_set_fiq(unsigned int irq, bool on);
++
+ #endif /* __LINUX_SPI_S3C24XX_H */
 -- 
-Regards,
-
-Laurent Pinchart
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.7.9.5

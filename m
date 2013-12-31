@@ -1,75 +1,64 @@
-From: Sachin Kamat <sachin.kamat@linaro.org>
-Subject: [PATCH 1/1] spi: s3c24xx: Remove reference to plat/fiq.h
-Date: Tue, 31 Dec 2013 14:00:39 +0530
-Message-ID: <1388478639-25279-1-git-send-email-sachin.kamat@linaro.org>
-Cc: linux-samsung-soc@vger.kernel.org, broonie@kernel.org,
-	kgene.kim@samsung.com, sachin.kamat@linaro.org, patches@linaro.org
-To: linux-spi@vger.kernel.org
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 0/4] spi: dw: fixes, and manages resources migration
+Date: Tue, 31 Dec 2013 13:34:25 +0100
+Message-ID: <20131231123425.GP8064@book.gsilab.sittig.org>
+References: <cover.1388040447.git.baruch@tkos.co.il>
+ <20131226115507.GI8064@book.gsilab.sittig.org>
+ <20131226121224.GA11794@sapphire.tkos.co.il>
+ <20131226154250.GO8064@book.gsilab.sittig.org>
+ <20131226203423.GC3873@tarshish>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20131226203423.GC3873@tarshish>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-fiq.h contains only a function declaration and is not used by anyone
-else. Move the declaration to the driver header file and remove the
-unnecessary platform dependency from the driver.
+On Thu, Dec 26, 2013 at 22:34 +0200, Baruch Siach wrote:
+> 
+> That's what I meant. The "dummy-cs" should be an internal
+> chip-select that does not control any slave signal. [ ... ]
 
-Signed-off-by: Sachin Kamat <sachin.kamat@linaro.org>
----
- arch/arm/plat-samsung/include/plat/fiq.h |   13 -------------
- drivers/spi/spi-s3c24xx.c                |    2 --
- include/linux/spi/s3c24xx.h              |    2 ++
- 3 files changed, 2 insertions(+), 15 deletions(-)
- delete mode 100644 arch/arm/plat-samsung/include/plat/fiq.h
+Ah, nevermind then, I simply misunderstood. :)  It's good to see
+how much thought you already put into this topic.  Thank you
+again for working on GPIO backed CS support for the DW-SPI
+controller!
 
-diff --git a/arch/arm/plat-samsung/include/plat/fiq.h b/arch/arm/plat-samsung/include/plat/fiq.h
-deleted file mode 100644
-index 535d06a35628..000000000000
---- a/arch/arm/plat-samsung/include/plat/fiq.h
-+++ /dev/null
-@@ -1,13 +0,0 @@
--/* linux/arch/arm/plat-samsung/include/plat/fiq.h
-- *
-- * Copyright (c) 2009 Simtec Electronics
-- *	Ben Dooks <ben@simtec.co.uk>
-- *
-- * Header file for S3C24XX CPU FIQ support
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
--*/
--
--extern int s3c24xx_set_fiq(unsigned int irq, bool on);
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index 2ccb28d57ba9..746424aa5353 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -29,7 +29,6 @@
- 
- #include <plat/regs-spi.h>
- 
--#include <plat/fiq.h>
- #include <asm/fiq.h>
- 
- #include "spi-s3c24xx-fiq.h"
-@@ -84,7 +83,6 @@ struct s3c24xx_spi {
- 	struct s3c2410_spi_info *pdata;
- };
- 
--
- #define SPCON_DEFAULT (S3C2410_SPCON_MSTR | S3C2410_SPCON_SMOD_INT)
- #define SPPIN_DEFAULT (S3C2410_SPPIN_KEEP)
- 
-diff --git a/include/linux/spi/s3c24xx.h b/include/linux/spi/s3c24xx.h
-index c23b923e493b..ca271c06c591 100644
---- a/include/linux/spi/s3c24xx.h
-+++ b/include/linux/spi/s3c24xx.h
-@@ -23,4 +23,6 @@ struct s3c2410_spi_info {
- 	void (*set_cs)(struct s3c2410_spi_info *spi, int cs, int pol);
- };
- 
-+extern int s3c24xx_set_fiq(unsigned int irq, bool on);
-+
- #endif /* __LINUX_SPI_S3C24XX_H */
+Regarding device tree bindings:  Make sure to keep "arbitrary
+implementation details" out of the bindings, i.e. only put into
+bindings what's related to the hardware, or what _each_ potential
+user of this binding needs to do because of hardware features or
+hardware limitations, regardless whether this piece of software
+is an OS or not or which OS it may be.
+
+So the introduction of another dummy-cs property might be
+appropriate given the observed behaviour of the hardware.
+Alternatively one might just pick an arbitrary internal CS number
+at runtime (probably the highest internal number, i.e. the last
+one), which should not be a problem as long as this behaviour is
+documented -- GPIOs then can get used for this CS number and all
+numbers above, so no functionality is missing.  Mind that this
+workaround then is a feature of the Linux driver, and not the DT
+binding.
+
+I'm just saying all of this because any DT properties you
+introduce not only need to get documented and reviewed, but even
+more so because compatibility needs to be kept in the future and
+changes are neither easy nor quick.
+
+
+virtually yours
+Gerhard Sittig
 -- 
-1.7.9.5
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

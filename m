@@ -1,59 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/qspi: Fix runtime resume path
-Date: Tue, 31 Dec 2013 12:58:58 +0000
-Message-ID: <20131231125858.GV31886@sirena.org.uk>
-References: <1387543978-32309-1-git-send-email-sourav.poddar@ti.com>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: Re: [PATCH 0/4] spi: dw: fixes, and manages resources migration
+Date: Wed, 1 Jan 2014 07:01:30 +0200
+Message-ID: <20140101050130.GG4263@tarshish>
+References: <cover.1388040447.git.baruch@tkos.co.il>
+ <20131226115507.GI8064@book.gsilab.sittig.org>
+ <20131226121224.GA11794@sapphire.tkos.co.il>
+ <20131226154250.GO8064@book.gsilab.sittig.org>
+ <20131226203423.GC3873@tarshish>
+ <20131231123425.GP8064@book.gsilab.sittig.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="qCb2VTfFGdRLn6RH"
-Cc: yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org, balbi-l0cyMroinI0@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1387543978-32309-1-git-send-email-sourav.poddar-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <20131231123425.GP8064-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Gerhard,
 
---qCb2VTfFGdRLn6RH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Tue, Dec 31, 2013 at 01:34:25PM +0100, Gerhard Sittig wrote:
+> On Thu, Dec 26, 2013 at 22:34 +0200, Baruch Siach wrote:
+> > That's what I meant. The "dummy-cs" should be an internal
+> > chip-select that does not control any slave signal. [ ... ]
+> 
+> Ah, nevermind then, I simply misunderstood. :)
 
-On Fri, Dec 20, 2013 at 06:22:57PM +0530, Sourav Poddar wrote:
-> Due to the following commit
-> commit 160a061301c7adf54c40696e7ceedc73f6b747dd
-> Author: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
-> Date:   Mon Nov 11 14:13:41 2013 +0800
+Thinking about it again I think that "dummy-cs" is not a good name. Maybe 
+"disconnected-cs" would be better. This is the actual hardware level 
+description of the chip-select, rather than software level use as dummy value.
 
-Applied.  You should *always* CC maintainers on patches, this would have
-been applied a lot quicker if I'd actually seen it - this includes using
-the e-mail address that gets advertised for stuff.  You sent this to my
-Linaro address, not the one listed in MAINTAINERS.
+[...]
 
---qCb2VTfFGdRLn6RH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> So the introduction of another dummy-cs property might be
+> appropriate given the observed behaviour of the hardware.
+> Alternatively one might just pick an arbitrary internal CS number
+> at runtime (probably the highest internal number, i.e. the last
+> one), which should not be a problem as long as this behaviour is
+> documented -- GPIOs then can get used for this CS number and all
+> numbers above, so no functionality is missing.  Mind that this
+> workaround then is a feature of the Linux driver, and not the DT
+> binding.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Choosing an arbitrary chip-select number is dangerous. You might damage the 
+hardware by choosing wrong. I don't think that relying on documentation 
+(where?) is reasonable in this case.
 
-iQIcBAEBAgAGBQJSwr+PAAoJELSic+t+oim9evQQAJRjTRNd9faKZOsLbVdRF5ll
-mGe3DkU40wcviTodsB5U5qvDqDdkHJgnrSTPn56Sc5K28DSc2LscKwHoh2ojqv2x
-KaiuPAQ0+/0ZV3cbanMMp2ugIZ4EfA6SQONZNsX/JxQePTZVdDBMJzS13oUCPEnV
-yZGXEMAlHLM4ktpoei4sUZlmGWHvbRy5ahNisj1MRNJ+vRhFlvVTARYfUf3uu5yB
-y1xDqlngd+pRK5RmTWOfnJ94bbquuNEzVcb/dyWooY6jYAGxaiTYJKW9ZYu21C7m
-Pn8+rW2MJEvTk606I4RWu+/EmqG1H/D/gAck0R1gCIQQuFi3sMS0jyh86KgP78Yb
-+OBzj/7wItLFJZswigkrwBwdUNtU1aud6MrZb88URtCZOmSAxngNOsdbRXtxPMj6
-AiacP/BXw8IZZ7KOOTRohq+ys/OCSaMfhvI59W/8xHNqJBPizel3czTFXvrvlSMF
-kjYjpaXAFuycaIKCKW+oHDhDRSspZxswWjTdWena2o6194ytVWTUe4mmC1POliB2
-OA+raidUTORC4S6deGTvtW0aJx0PCJg+iHMKj4RuN1r6q1A4/Uld3cy3zQ/Z4VwC
-J1tWe3Th3ZkcH0XyCdRtGrLSpjw3qfIeMcX6y12WSF5RFz39CzIGAv6QstK+y+Vv
-flzboOkj3ORZb1JZnMDD
-=wwWF
------END PGP SIGNATURE-----
+baruch
 
---qCb2VTfFGdRLn6RH--
+-- 
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

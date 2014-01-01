@@ -1,76 +1,89 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: clps711x: Driver refactor
-Date: Wed, 1 Jan 2014 15:07:37 +0000
-Message-ID: <20140101150737.GR31886@sirena.org.uk>
-References: <1388556568-10973-1-git-send-email-shc_work@mail.ru>
- <20140101132334.GP31886@sirena.org.uk>
- <1388583851.810843204@f301.i.mail.ru>
+From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 4/4] spi: dw: drop unused struct dw_spi field
+Date: Thu, 2 Jan 2014 00:21:33 +0800
+Message-ID: <20140102002133.46eef5d3@feng-snb>
+References: <cover.1388040447.git.baruch@tkos.co.il>
+	<134cfa84519ca84268fc0ef502fba12773224133.1388040447.git.baruch@tkos.co.il>
+	<20131226114258.GH8064@book.gsilab.sittig.org>
+	<20131226115826.GY11794@sapphire.tkos.co.il>
+	<20131226153346.GN8064@book.gsilab.sittig.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="wEheX93Nbmc2Tc0S"
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1388583851.810843204-7YUp6uTCZANsdVUOrk1QfQ@public.gmane.org>
+In-Reply-To: <20131226153346.GN8064-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Gerhard,
 
---wEheX93Nbmc2Tc0S
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Thu, 26 Dec 2013 16:33:46 +0100
+Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org> wrote:
 
-On Wed, Jan 01, 2014 at 05:44:11PM +0400, Alexander Shiyan wrote:
+> On Thu, Dec 26, 2013 at 13:58 +0200, Baruch Siach wrote:
+> 
+> Please re-check, or tell me if your code base is different from
+> mainline and I'm missing something.
+> 
+> Inspection of local code (v3.13-rc5-4-gf399199c01c7) suggests
+> that the local cs_change gets preset to 0 and enforced to 1 if
+> the "chip" (the SPI slave?) changes.  I can't see any other
+> condition that gets evaluated.  So the current driver does ignore
+> the caller's request.
 
-> I wrote that this is a complex patch. This is not a fix, but new driver,
-> many things are done differently.
-> I do not see a way to separate these changes.
+For gpio-CS spi slave devices, I don't have much experience.
 
-I already mentioned one thing that could be done incrementally (the
-conversion to devm), from the glance I took through the code there's
-several other things that jump out and like I said at least splitting
-the hardware.h removal from the device tree changes would be a start.=20
+This dw-spi driver has worked with both low-speed uart and high-speed
+ modem device with the internal CS register setting (no extern cs line)
+on our platforms (Medfield/Cloverview platforms)
 
-Nothing in what you said the change did nor in the change itself
-suggested that it would be impossible to break things up, I'm not
-convinced that any attempt has been made to split anything out.
+IIRC (I haven't touch this code for long time), some other developer 
+contributed the "cs_control" callback to dw spi driver, and I guess it
+was for the external CS line.
 
-> As an alternative, I can create patch to remove current driver,
-> then re-adding new one.  Will be more convenient to watch. Is it better?=
-=20
+As myself have no HW to debug the external CS-line, any improvement in
+this area for the driver will be highly appreciated.
 
-No, that's really not good.  It's very rare that we just completely
-rewrite a driver especially not one that's been around for a while -
-there needs to be a really good reason for it.  This is a key part of
-how the development process works, incremental improvements and code
-review.  Doing this both helps improve quality control on changes and
-allows collaboration.
+> 
+> > > While you are checking whether the SPI master obeys the caller's
+> > > CS change spec, can you check the optional delay between partial
+> > > transfers as well (I assume that both get handled in the same
+> > > spots of the code path)?  ISTR that these two aspects (and the
+> > > lack of GPIO backed chip selects given how the hardware CS line
+> > > acts) were real obstacles when trying to use this DW SPI master.
+> > 
+> > The code in pump_transfers() seems to honor delay_usecs. What was the problem 
+> > you encountered?
+> 
+> Since you made me look at the code:  The delay_usecs spec appears
+> to only get obeyed _between_ transfers.  It gets ignored for the
+> last or only transfer of a message.  Which may be unexpected, and
+> differs from what other SPI controllers implement.  Can't tell
+> whether this breaks existing SPI slaves, but the delay probably
+> was introduced for some reason.  I guess deasserting CS while the
+> slave still wants it does have implications...
 
---wEheX93Nbmc2Tc0S
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Actually quiet several spi controller drivers handle the delay_usecs
+this way, like the Blackfin, pl022, you can simply grep delay_usecs
+ in drivers/spi/
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+I wrote this driver several years ago, and IIRC, the intention of
+skipping the udelay for last xfer is trying to save some udelay time,
+as switching to another spi_msg will surely take a while. I didn't
+see problem with it used by low-speed uart spi device or
+high speed modem on our platforms.
 
-iQIcBAEBAgAGBQJSxC82AAoJELSic+t+oim9Td4P/3jCy6TnO2f3naQ040kFqrjS
-uMzSj7afwPPc/1xQXb/L3qUCeS8a77OnC+IOa7GEaBLg+NkS2X6UPhMSierDSLHp
-gosPwMftQ5CwDL9Xg6+2K8tib44J3lWe5cOAde6zld0RAAnb18dNkNPa07JvSA7r
-Ram1udUHmDR501ZkTJUnqJdZs39FQgT2pzeLFGEm3qu33059POnici9KPDJDpd1y
-jCqkXA13AJUMSPYQemHPLnLRpqwRGX94V0/yxglWvTvl9PRVanclzuNLwT/OpeW8
-ELpEKgssz9f4NlJMvICj5LZephWGMPfmDc0H30Qpei5XULr38XVdOUsPFphiw9wq
-3SLBEwUCxiVGKD0UN98fuAVl3WCcvw1gwyGgHqbdw830egfbAehpIZKRQnSiK3lA
-hQTxDUolzFhjXBo6MYQ1E3ZT9/5H0ur0y0Hx/2Da1judq0J+uSxUgwgZtlurB3yH
-k1QlZs569sHrAA9as9qwtmZlYOs4EP3RqGRoxVBxK8L755tRkc9gwAJrDckG2Nb9
-OlbaCPPo0+h05KOrx89YNwz9ppiS0AXnbAdzy04cCSaTru6CtmpO0UGE7pkRBmyK
-ZJPRHoraEibSVugGbdrg1dDZfczN9iN5w/eVT5Cy+LC3y0z6Pu61HxA7MgYXud3L
-6GDQj5xlbQnk2cOJSjia
-=pICh
------END PGP SIGNATURE-----
+But if you do see problem with this behavior, we can change it and
+also notify the other spi controllers who use the same method. 
 
---wEheX93Nbmc2Tc0S--
+Thanks,
+Feng
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

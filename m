@@ -1,103 +1,55 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 3/8] spi: rspi: Add support for more than one interrupt
-Date: Thu, 2 Jan 2014 11:25:36 +0100
-Message-ID: <CAMuHMdU8HjLgix0dvrECm3tan909s8kF_OznP1060KUN2dDTaw@mail.gmail.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 4/8] spi: rspi: Add support for 8-bit Data Register access
+Date: Thu, 2 Jan 2014 11:47:00 +0100
+Message-ID: <CAMuHMdW+nohaxWbWW=Sxd5DPQ1U=3v7w9NQd88MKTdk5Sjg_sw@mail.gmail.com>
 References: <1387885248-28425-1-git-send-email-geert+renesas@linux-m68k.org>
-	<1387885248-28425-4-git-send-email-geert+renesas@linux-m68k.org>
-	<2037815.gDYqhVmlrl@avalon>
+	<1387885248-28425-5-git-send-email-geert+renesas@linux-m68k.org>
+	<13614197.Z9gKDhB8kb@avalon>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	linux-spi@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <2037815.gDYqhVmlrl@avalon>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <13614197.Z9gKDhB8kb@avalon>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 Hi Laurent,
 
-On Tue, Dec 31, 2013 at 12:38 AM, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
-> On Tuesday 24 December 2013 12:40:43 Geert Uytterhoeven wrote:
->> +     int irq[MAX_NUM_IRQ];
+On Tue, Dec 31, 2013 at 12:47 AM, Laurent Pinchart
+<laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org> wrote:
+> On Tuesday 24 December 2013 12:40:44 Geert Uytterhoeven wrote:
+>> +static void rspi_write_data(const struct rspi_data *rspi, u16 data)
+>> +{
+>> +     if (rspi->data_width == 8)
+>> +             rspi_write8(rspi, data, RSPI_SPDR);
+>> +     else if (rspi->data_width == 16)
+>> +             rspi_write16(rspi, data, RSPI_SPDR);
 >
-> Should this field be called irqs ?
+> As the driver only handles 8-bits and 16-bits data, replacing the else if with
+> an else should be more efficient.
 
-OK.
+Sure, will add a comment "/* 16 bit only */", though.
 
->> +     unsigned int numirq;
+>> +static int rspi_parse_platform_data(struct rspi_data *rspi,
+>> +                                 const struct rspi_plat_data *rspi_pd)
+>> +{
+>> +     if (rspi_pd && rspi_pd->data_width) {
+>> +             rspi->data_width = rspi_pd->data_width;
+>> +             switch (rspi_pd->data_width) {
+>> +             case 8:
+>> +                     rspi->spdcr = SPDCR_SPLBYTE;
+>> +                     break;
+>> +             case 16:
+>> +                     rspi->spdcr = SPDCR_SPLWORD;
+>> +                     break;
+>> +             default:
+>> +                     return -1;
 >
-> This driver seems to use underscores to separate words in variable names,
-> maybe you could use num_irq (or num_irqs) instead.
+> Shouldn't you return a defined error code (-EINVAL maybe) ?
 
-OK.
-
->> +     int i, ret = 0;
->
-> i is an unsigned loop index, could you please make it an unsigned int ?
-
-OK.
-
->> @@ -948,6 +948,19 @@ static int rspi_probe(struct platform_device *pdev)
->>       rspi->ops = ops;
->>       rspi->master = master;
->>
->> +     for (i = 0; i < MAX_NUM_IRQ; i++) {
->> +             irq = platform_get_irq(pdev, i);
->> +             if (irq < 0) {
->> +                     if (rspi->numirq)
->> +                             break;
->> +                     dev_err(&pdev->dev, "platform_get_irq error\n");
->> +                     ret = -ENODEV;
->> +                     goto error1;
->> +             }
->> +             rspi->irq[i] = irq;
->> +             rspi->numirq++;
->> +     }
->> +
->>       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->>       rspi->addr = devm_ioremap_resource(&pdev->dev, res);
->>       if (IS_ERR(rspi->addr)) {
->> @@ -979,14 +992,16 @@ static int rspi_probe(struct platform_device *pdev)
->>       master->transfer = rspi_transfer;
->>       master->cleanup = rspi_cleanup;
->>
->> -     ret = devm_request_irq(&pdev->dev, irq, rspi_irq, 0,
->> -                            dev_name(&pdev->dev), rspi);
->> -     if (ret < 0) {
->> -             dev_err(&pdev->dev, "request_irq error\n");
->> -             goto error1;
->> +     for (i = 0; i < rspi->numirq; i++) {
->> +             ret = devm_request_irq(&pdev->dev, rspi->irq[i], rspi_irq, 0,
->> +                                    dev_name(&pdev->dev), rspi);
->> +             if (ret < 0) {
->> +                     dev_err(&pdev->dev, "request_irq %d error\n",
->> +                             rspi->irq[i]);
->> +                     goto error1;
->> +             }
->>       }
->
-> Just an idea, what about combining the two loops ?
-
-I was a bit concerned about dependencies and cleanup, but indeed, it seems
-to be possible.
-
->> --- a/include/linux/spi/rspi.h
->> +++ b/include/linux/spi/rspi.h
->> @@ -1,7 +1,7 @@
->>  /*
->>   * Renesas SPI driver
->>   *
->> - * Copyright (C) 2012  Renesas Solutions Corp.
->> + * Copyright (C) 2012, 2013  Renesas Solutions Corp.
->>   *
->>   * This program is free software; you can redistribute it and/or modify
->>   * it under the terms of the GNU General Public License as published by
->
-> This change seems to be unrelated. You might want to squash it into patch 1/8.
-
-I'll move it to the first patch that actually adds code to rspi.h.
+Sure.
 
 Thanks for your comments!
 
@@ -106,8 +58,12 @@ Gr{oetje,eeting}s,
                         Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
                                 -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

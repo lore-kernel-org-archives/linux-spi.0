@@ -1,53 +1,39 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: s3c64xx: Remove duplicate code to clear
- S3C64XX_SPI_SLAVE_SEL register
-Date: Thu, 2 Jan 2014 12:23:55 +0000
-Message-ID: <20140102122355.GY31886@sirena.org.uk>
-References: <1388665142.538.0.camel@phoenix>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: clps711x: Driver refactor
+Date: Thu, 2 Jan 2014 18:46:23 +0100
+Message-ID: <201401021846.23488.arnd@arndb.de>
+References: <1388556568-10973-1-git-send-email-shc_work@mail.ru> <1388583851.810843204@f301.i.mail.ru> <20140101150737.GR31886@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Sg+dTrkCjluZnrMn"
-Cc: Jaswinder Singh <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: Text/Plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1388665142.538.0.camel@phoenix>
+In-Reply-To: <20140101150737.GR31886-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wednesday 01 January 2014, Mark Brown wrote:
+> > As an alternative, I can create patch to remove current driver,
+> > then re-adding new one.  Will be more convenient to watch. Is it better? 
+> 
+> No, that's really not good.  It's very rare that we just completely
+> rewrite a driver especially not one that's been around for a while -
+> there needs to be a really good reason for it.  This is a key part of
+> how the development process works, incremental improvements and code
+> review.  Doing this both helps improve quality control on changes and
+> allows collaboration.
 
---Sg+dTrkCjluZnrMn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I definitely agree with what you say, but please note that Alexander is
+the only person who ever sends clps711x patches, so there is not much
+hope of collaboration. I also suspect he's the only one who would
+suffer from accidental breakage, especially since the existing driver
+is not used anywhere upstream (no instance of platform data, and no
+DT support).
 
-On Thu, Jan 02, 2014 at 08:19:02PM +0800, Axel Lin wrote:
-> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-
-Applied, thanks.
-
---Sg+dTrkCjluZnrMn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSxVpYAAoJELSic+t+oim9GDwQAJNihkSffSFl9ac8JaXppdmt
-ORVwgIFOQFSQk3qqutXVO0Bkwf0R5ppBDEu7bN/WdrmBCr9CUR+wg2H/5W20+BZx
-PUQFtlbZebiNbkgfOCExSaghPmZNHFAhmDfpaFfCNbHDaEGb26TQX954zEhH1cNX
-QyWWENMBGWjynwzlguIl37KePoGJk37Zfbyqbu5maAop1zceDUSR5TX9uXG77w4E
-4sivDXvCcY1D52zWTkHfesQt7zpPETAAXkM4PCdR8KLw/QntEwz1VqB5lzAOaNr9
-grDlp3IvDex3bYZvsRhLOfv5G91bGhI9kjxxkdUyl16CMS6XO5V4TRa8csx7dUt9
-ukk01UhlDI6BlGvKqcZbTj9s2wmnJ7VyidRquPWhqnhKGbBhj0OWw0hHRvFtcl/C
-rgesodxzPqY1Zv1Q4MVhouxOtIvTEMxdf0TJSTjo2gQDcetV8F4SKI3/cHcJVMGN
-RQ2hCiltMCvUVxXe81cuTPQuK+JQGXYWvJeJG+cKavEBWsnBrxrxWPmQiSJw43Dq
-GIIoF27NR4D60RWFttF6zrLq7+2ESXhxd9SzeJxJ/Gwayuk8zTJjRql7gr4rJcWa
-nQhEZgbjK70jz16MDk3+abZzv1ZX9zJIGGnbDKElgnk7upP5XsxJkeIDIfeQDWFR
-0rcLiJTREYhe36AZpwUU
-=yW1l
------END PGP SIGNATURE-----
-
---Sg+dTrkCjluZnrMn--
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

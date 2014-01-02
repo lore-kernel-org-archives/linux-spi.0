@@ -1,51 +1,45 @@
-From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 0/3] spi: dw: fixes, and manages resources migration
-Date: Thu, 2 Jan 2014 10:09:12 +0800
-Message-ID: <20140102100912.4e72558b@feng-snb>
-References: <cover.1388427564.git.baruch@tkos.co.il>
-	<20140102002513.10e775b6@feng-snb>
-	<20140101164707.GK4470@tarshish>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: core: Use list_first_entry_or_null() instead of
+ open-coded
+Date: Thu, 02 Jan 2014 15:16:40 +0800
+Message-ID: <1388647000.28565.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140101164707.GK4470@tarshish>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Baruch,
+Use list_first_entry_or_null() to save a few lines.
 
-On Wed, 1 Jan 2014 18:47:07 +0200
-Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-> Hi Feng,
-> 
-> On Thu, Jan 02, 2014 at 12:25:13AM +0800, Feng Tang wrote:
-> > On Mon, 30 Dec 2013 20:30:43 +0200
-> > Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
-> > > This series migration the spi-dw driver and its mmio wrapper to manges
-> > > resources, and adds a few small fixes. I have a few more patches in the queue
-> > > for adding device tree support, gpio chip selects, and generic spi queue, but
-> > > I'm waiting with time until I get a chance to test them properly.
-> > 
-> > Looks good to me, thanks!
-> 
-> Have you tested this or real hardware? I don't have access to a Moorestone 
-> with PCI, so it would be nice to verify that this series doesn't break 
-> anything.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 98f4b77..a1a7f78 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -791,11 +791,8 @@ struct spi_message *spi_get_next_queued_message(struct spi_master *master)
+ 
+ 	/* get a pointer to the next message, if any */
+ 	spin_lock_irqsave(&master->queue_lock, flags);
+-	if (list_empty(&master->queue))
+-		next = NULL;
+-	else
+-		next = list_entry(master->queue.next,
+-				  struct spi_message, queue);
++	next = list_first_entry_or_null(&master->queue, struct spi_message,
++					queue);
+ 	spin_unlock_irqrestore(&master->queue_lock, flags);
+ 
+ 	return next;
+-- 
+1.8.1.2
 
-Aha, it's interesting that you don't have the HW. I thought you have
-tested them.
-
-Since these patches are mostly straight-forward patch, I simply did a
- pure "code review" :) (Also the spi-dw-mmio was developed by Jean-Hugues
- Deschenes, and I have no "mmio" device at hand)
-
-Thanks,
-Feng
 
 
 --

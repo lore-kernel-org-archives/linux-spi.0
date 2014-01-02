@@ -1,42 +1,53 @@
 From: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 4/4] spi: dw: drop unused struct dw_spi field
-Date: Thu, 2 Jan 2014 10:04:39 +0800
-Message-ID: <20140102100439.289ebab3@feng-snb>
-References: <cover.1388040447.git.baruch@tkos.co.il>
-	<134cfa84519ca84268fc0ef502fba12773224133.1388040447.git.baruch@tkos.co.il>
-	<20131226114258.GH8064@book.gsilab.sittig.org>
-	<20131226115826.GY11794@sapphire.tkos.co.il>
-	<20131226153346.GN8064@book.gsilab.sittig.org>
-	<20140102002133.46eef5d3@feng-snb>
-	<20140101173249.GS31886@sirena.org.uk>
+Subject: Re: [PATCH v2 0/3] spi: dw: fixes, and manages resources migration
+Date: Thu, 2 Jan 2014 10:09:12 +0800
+Message-ID: <20140102100912.4e72558b@feng-snb>
+References: <cover.1388427564.git.baruch@tkos.co.il>
+	<20140102002513.10e775b6@feng-snb>
+	<20140101164707.GK4470@tarshish>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140101173249.GS31886-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20140101164707.GK4470@tarshish>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 1 Jan 2014 17:32:49 +0000
-Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+Hi Baruch,
 
-> On Thu, Jan 02, 2014 at 12:21:33AM +0800, Feng Tang wrote:
-> 
-> > But if you do see problem with this behavior, we can change it and
-> > also notify the other spi controllers who use the same method. 
-> 
-> All the drivers should be being converted to use transfer_one() (and the
-> forthcoming stuff extending that) which will handle delay_usecs for them
-> anyway.
+On Wed, 1 Jan 2014 18:47:07 +0200
+Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
 
-That's nice! These general thing should be taken care of by the spi core.
+> Hi Feng,
+> 
+> On Thu, Jan 02, 2014 at 12:25:13AM +0800, Feng Tang wrote:
+> > On Mon, 30 Dec 2013 20:30:43 +0200
+> > Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
+> > > This series migration the spi-dw driver and its mmio wrapper to manges
+> > > resources, and adds a few small fixes. I have a few more patches in the queue
+> > > for adding device tree support, gpio chip selects, and generic spi queue, but
+> > > I'm waiting with time until I get a chance to test them properly.
+> > 
+> > Looks good to me, thanks!
+> 
+> Have you tested this or real hardware? I don't have access to a Moorestone 
+> with PCI, so it would be nice to verify that this series doesn't break 
+> anything.
+
+Aha, it's interesting that you don't have the HW. I thought you have
+tested them.
+
+Since these patches are mostly straight-forward patch, I simply did a
+ pure "code review" :) (Also the spi-dw-mmio was developed by Jean-Hugues
+ Deschenes, and I have no "mmio" device at hand)
 
 Thanks,
 Feng
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

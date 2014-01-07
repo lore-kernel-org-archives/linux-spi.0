@@ -1,84 +1,58 @@
-From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Subject: Re: [PATCH v2 0/8] SoC and board integration for RSPI on RZ/A1H
-Date: Tue, 07 Jan 2014 16:01:30 +0100
-Message-ID: <5395895.snn5ED4YEr@avalon>
-References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org> <20140107012628.GD2196@verge.net.au>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH -next] spi: dw-pci: remove free for resources allocated
+ with devm_*
+Date: Tue, 7 Jan 2014 15:47:34 +0000
+Message-ID: <20140107154734.GV31886@sirena.org.uk>
+References: <CAPgLHd9tVkshm+T-emPowGZT6_tNZHnBSMvhLeeQw3Ti-SytvA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="oi/2mUCIIJC5Dd6Z"
+Cc: baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org, yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+To: Wei Yongjun <weiyj.lk-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140107012628.GD2196-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAPgLHd9tVkshm+T-emPowGZT6_tNZHnBSMvhLeeQw3Ti-SytvA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Simon,
 
-On Tuesday 07 January 2014 10:26:28 Simon Horman wrote:
-> On Fri, Dec 27, 2013 at 09:15:54PM +0100, Geert Uytterhoeven wrote:
-> > This patch series integrates Renesas RSPI on the RZ/A1H aka R7S72100 SoC,
-> > and the Genmai development board.
-> > 
-> > The series is based on renesas-devel-v3.13-rc5-20131226, with Magnus'
-> > pinctrl, Wolfram's riic, and Simon's sh_eth work applied on top.
-> > 
-> > It was tested on the Genmai development board (genmai-reference), using
-> > an in-kernel version of Documentation/spi/spidev_test.c, exercising
-> > loopback mode on rspi1, with the same outcome as the SDK reference code.
-> > 
-> > Notes:
-> >   1. The proposed DT bindings also talk about QSPI on the R8A779x, as
-> >      those SoCs use the same driver.
-> >   
-> >   2. As the actual spi-rspi driver doesn't use DT yet, platform devices
-> >      and spi board info are still used from C to instantiate SPI buses and
-> >      their children, while pinctrl is performed by DT.
-> >   
-> >   3. It will not work with the non-reference version of genmai, due to
-> >      missing pinmux configuration in setup-r7s72100.c.
-> >   
-> >   4. Patches [4/8] and [5/8] are new.
-> >   
-> >     [1/8] pinctrl: sh-pfc: r7s72100: Add RSPI support
-> 
-> I believe that Laurent should handle this.
+--oi/2mUCIIJC5Dd6Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I will, but I'm waiting for Magnus to resubmit the base r7s72100 pinctrl patch 
-series.
+On Tue, Jan 07, 2014 at 09:36:24PM +0800, Wei Yongjun wrote:
+> From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+>=20
+> It's not necessary to free resources allocated with devm_*
+> and free them may lead to double free.
 
-> >     [2/8] ARM: shmobile: r7s72100: Add RSPI clocks
-> 
-> This seems fine and independent of the other patches.
-> But unfortunately it no longer applies.
-> 
-> Feel free to rebase it if you would like me to queue it up sooner
-> than later.
-> 
-> >     [3/8] ARM: shmobile: r7s72100: Add RSPI platform devices
-> 
-> I assume this depends on 1/3.
-> 
-> Please add a patch to update the koelsch defconfig.
-> 
-> >     [4/8] ARM: shmobile: genmai: Add RSPI children (NEW)
-> 
-> This seems reasonable but I assume it depends on earlier patches.
-> 
-> Please add a patch to update the koelsch defconfig or Kconfig.
-> 
-> >     [5/8] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux (NEW)
-> >     [6/8] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
-> >     [7/8] [RFC] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
-> >     [8/8] [RFC] ARM: shmobile: genmai reference: Add RSPI nodes
+Applied, thanks.
 
--- 
-Regards,
+--oi/2mUCIIJC5Dd6Z
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Laurent Pinchart
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
+iQIcBAEBAgAGBQJSzCGTAAoJELSic+t+oim9wisQAIwHBJp94ROKIGVLUb6J0PLN
+njXWPlpifztZkAkBNqSY6kVT3hB4D7+NiDYMpANvOTmmnnnV66aFNyyqzKDlWLbL
+6ctDVlqzNTHnAXcp+gx/0Qhe1rOKtq+OAmQpm+zeyOp5dyAr21Kv7G2vzvhvxLaH
+EpSay1IrvVvGgvNs+biidjIZcg15GMJ5mMhCgs105MxCqg0LZZ3I+5wh/x5fhhXR
+Sn1bzhgA7cdXOriKWwlgm0HtVWd+XSjMHCfJFPYw8N/18wLwQGnJtCFNVueOJi0v
+lkLcShWGpWwxniEot17c4CQjOK4i/KaTayivHCbYQEQqwlbCSAVlWz0JeDg/426t
+Wayy+Y1v717Z3SAWFD+FPqQ7SuIab8xIzcq+mNW6XULz1qDlnXo5sykPdFh2oera
++90N6lvx8xIeTd5Dzy8uzfM+igYU8YSHc/Z5fZsfftGNk0G8lL2EGYvD3Zhg0qO1
+N+cYHJd9Wzmsue9qf3gdFRxa6MLobHwwR71ULaZLX5/HyTygHa9RRekk2vo/xs6k
+y1/nX9E22DhC98sDz5V9lQpbUbXNwV8nM2tdVhv5zmdbcQ7/GwHNigpuIRS4ofq1
+6yL9BDc5G3c7BCFeJfGhzuD8q74VC50wLhz/S7Ph27b5DiNwI8c/DRXegXPA7miP
+y1HsUpmQ5v/Xzdei/52f
+=0Gih
+-----END PGP SIGNATURE-----
+
+--oi/2mUCIIJC5Dd6Z--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

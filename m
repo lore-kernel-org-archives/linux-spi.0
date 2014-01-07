@@ -1,74 +1,65 @@
-From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Subject: Re: [PATCH v2 0/8] SoC and board integration for RSPI on RZ/A1H
-Date: Tue, 7 Jan 2014 17:52:34 +0900
-Message-ID: <20140107085231.GA26477@verge.net.au>
-References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
- <20140107012628.GD2196@verge.net.au>
- <CAMuHMdW5e74keNhRkSG6q6crGWZ0Gqtb5-hntbCUNm7Md78Bcw@mail.gmail.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH v2] spi: ti-qspi: Fix getting correct address for qspi
+Date: Tue, 07 Jan 2014 19:04:03 +0800
+Message-ID: <1389092643.3991.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdW5e74keNhRkSG6q6crGWZ0Gqtb5-hntbCUNm7Md78Bcw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Jan 07, 2014 at 09:31:17AM +0100, Geert Uytterhoeven wrote:
-> On Tue, Jan 7, 2014 at 2:26 AM, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org> wrote:
-> >>     [1/8] pinctrl: sh-pfc: r7s72100: Add RSPI support
-> >
-> > I believe that Laurent should handle this.
-> 
-> Don't you mean Magnus? This is RZ/A1H, not R-Car.
-> 
-> >>     [2/8] ARM: shmobile: r7s72100: Add RSPI clocks
-> >
-> > This seems fine and independent of the other patches.
-> > But unfortunately it no longer applies.
-> >
-> > Feel free to rebase it if you would like me to queue it up sooner
-> > than later.
-> 
-> Will do.
-> 
-> >>     [3/8] ARM: shmobile: r7s72100: Add RSPI platform devices
-> >
-> > I assume this depends on 1/3.
-> 
-> 1/8? Or are you mixing up with 1/3 for Koelsch?
+Now platform_get_drvdata() returns the address of qspi rather than master.
+Also drop unneeded spi_unregister_master() call in ti_qspi_remove() because
+we use devm_spi_register_master() in probe.
 
-1/8
+commit cbcabb7a300b "spi/qspi: Fix qspi remove path" assumes 
+platform_get_drvdata() returns address of master. However,
+commit 160a061301c7 "spi/qspi: set correct platform drvdata in ti_qspi_probe()"
+pass qspi to platform_set_drvdata().
 
-> Nevertheless, this just adds platform devices, so it should be fairly
-> independent.
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+v2: Update commit log, and drop fixes tag ( the fixes commit id is wrong).
 
-Ok, thanks. It sounds like I will be able to queue it up
-once you repost the series.
+ drivers/spi/spi-ti-qspi.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-> 
-> > Please add a patch to update the koelsch defconfig.
-> 
-> Genmai defconfig, not koelsch.
-> 
-> >>     [4/8] ARM: shmobile: genmai: Add RSPI children (NEW)
-> >
-> > This seems reasonable but I assume it depends on earlier patches.
-> 
-> Yes, it's useless without 3/8. But I guess it will just fail to find the
-> SPI bus.
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 9190e03..4b413e9 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -563,13 +563,9 @@ free_master:
+ 
+ static int ti_qspi_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master;
+-	struct ti_qspi *qspi;
++	struct ti_qspi *qspi = platform_get_drvdata(pdev);
+ 	int ret;
+ 
+-	master = platform_get_drvdata(pdev);
+-	qspi = spi_master_get_devdata(master);
+-
+ 	ret = pm_runtime_get_sync(qspi->dev);
+ 	if (ret < 0) {
+ 		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
+@@ -581,8 +577,6 @@ static int ti_qspi_remove(struct platform_device *pdev)
+ 	pm_runtime_put(qspi->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+-	spi_unregister_master(master);
+-
+ 	return 0;
+ }
+ 
+-- 
+1.8.1.2
 
-Useless is ok. Its just breakage that I'm concerned about these days :^)
 
-> > Please add a patch to update the koelsch defconfig or Kconfig.
-> 
-> Genmai ;-) Will do.
 
-Yes, Genmai :)
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

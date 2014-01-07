@@ -1,65 +1,68 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH v2] spi: ti-qspi: Fix getting correct address for qspi
-Date: Tue, 7 Jan 2014 16:35:52 +0530
-Message-ID: <52CBDF90.3060107@ti.com>
-References: <1389092643.3991.1.camel@phoenix>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi:fsl-dspi:add support of DSPI IP in big endian
+Date: Tue, 7 Jan 2014 11:13:43 +0000
+Message-ID: <20140107111343.GW31886@sirena.org.uk>
+References: <1388388474-8662-1-git-send-email-b44548@freescale.com>
+ <20131230134217.GC31886@sirena.org.uk>
+ <79669bf1a15247cb95a2609bad5e9c5d@BL2PR03MB163.namprd03.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="HyGbKHmOkFhlsb0n"
+Cc: "grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Jingchang Lu <jingchang.lu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1389092643.3991.1.camel@phoenix>
+Content-Disposition: inline
+In-Reply-To: <79669bf1a15247cb95a2609bad5e9c5d-AZ66ij2kwaYw6E1ICcNxleO6mTEJWrR4XA4E9RH9d+qIuWR1G4zioA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday 07 January 2014 04:34 PM, Axel Lin wrote:
-> Now platform_get_drvdata() returns the address of qspi rather than master.
-> Also drop unneeded spi_unregister_master() call in ti_qspi_remove() because
-> we use devm_spi_register_master() in probe.
->
-> commit cbcabb7a300b "spi/qspi: Fix qspi remove path" assumes
-> platform_get_drvdata() returns address of master. However,
-> commit 160a061301c7 "spi/qspi: set correct platform drvdata in ti_qspi_probe()"
-> pass qspi to platform_set_drvdata().
->
-> Signed-off-by: Axel Lin<axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-> ---
-> v2: Update commit log, and drop fixes tag ( the fixes commit id is wrong).
->
->   drivers/spi/spi-ti-qspi.c | 8 +-------
->   1 file changed, 1 insertion(+), 7 deletions(-)
->
-> diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-> index 9190e03..4b413e9 100644
-> --- a/drivers/spi/spi-ti-qspi.c
-> +++ b/drivers/spi/spi-ti-qspi.c
-> @@ -563,13 +563,9 @@ free_master:
->
->   static int ti_qspi_remove(struct platform_device *pdev)
->   {
-> -	struct spi_master *master;
-> -	struct ti_qspi *qspi;
-> +	struct ti_qspi *qspi = platform_get_drvdata(pdev);
->   	int ret;
->
-> -	master = platform_get_drvdata(pdev);
-> -	qspi = spi_master_get_devdata(master);
-> -
->   	ret = pm_runtime_get_sync(qspi->dev);
->   	if (ret<  0) {
->   		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
-> @@ -581,8 +577,6 @@ static int ti_qspi_remove(struct platform_device *pdev)
->   	pm_runtime_put(qspi->dev);
->   	pm_runtime_disable(&pdev->dev);
->
-> -	spi_unregister_master(master);
-> -
-why this is removed?
->   	return 0;
->   }
->
 
+--HyGbKHmOkFhlsb0n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Jan 07, 2014 at 03:54:25AM +0000, Chao Fu wrote:
+
+> > Seems like there's some whitespace changes crept in here and elsewhere
+> > which makes things harder to review.
+
+> [Chao Fu] Here is some coding style not in standard in former code,=20
+> should I take this opportunity to modify here?=20
+
+It's fine to fix things like this but please do it as a separate patch -
+it is much easier to review patches that do one thing, if there's extra
+changes (especially changes that aren't mentioned in the changelog) then
+people reviewing need to check harder to work out what the change is and
+that it's doing what's expected.
+
+--HyGbKHmOkFhlsb0n
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSy+FkAAoJELSic+t+oim9TiMP/iCWx9lpJyTpukNINgxOrQV6
+nYEekj4zDLnl9S09SpxHHt8Txpt8LDdO3Fhs2BSxEhCQD3tUkLPY0YEyf9c0eQS2
+DKmpf6YGwdQpcXN9V4cka5DZyjCsynpRgD144A4o6Hd1KVHLrgCGF5k4SAeVMxRH
+3AWdyruTva4ru15znU5n4bPsmhPLZnwlLm56Bc4THL5uFg4X2b6yBPqSp81odoWF
+gqrN32UqJVtwUone2KxA+B+9M03/3GtsoYc9wqDSVqYCFlhjBTo6j6tMKaHx/Hqa
+fwMnAjmQ5xn/WRcweemzo686eeZNIf/uhIf0QdLJRCmVd5DAHZUQt01dwG0hf0Fk
+QVhsWaRtqaMT9qoWbwSjrqHvSkNtmEUIpoh+RbPAqxi42Wk1qZlKM5TmdNUwsi26
+MrJwPExUY7Ge++lEYQcvDv4LOMEwxLM+RDFJaAfryNw/EhbSRwCsTCh0O6dc+cN0
+CzHsDg74fBgudRiohiFVjgx0JAQi1m8TKlepaRdxG3gCBqz1YQfGI5q7oT1p4Qcm
++Vt2i5flwDA06H2wSfBn/rILxBRdbidWHdD4Frc4azTDyOFEERj8Rm0jniwyIA6Y
+TkHtrnMu+D8SMSqyDigkEFoFdCKrZBszmbCScJDTmOH8+FxsOdQFpwfYSqGKukWQ
+T6gtGJQsL6vvmTdeq4ID
+=CHOl
+-----END PGP SIGNATURE-----
+
+--HyGbKHmOkFhlsb0n--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

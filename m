@@ -1,85 +1,65 @@
-From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Subject: Re: [PATCH v2 0/8] SoC and board integration for RSPI on RZ/A1H
-Date: Tue, 7 Jan 2014 10:26:28 +0900
-Message-ID: <20140107012628.GD2196@verge.net.au>
-References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
+From: Chao Fu <B44548@freescale.com>
+Subject: RE: [PATCH] spi:fsl-dspi:add support of DSPI IP in big endian
+Date: Tue, 7 Jan 2014 03:54:25 +0000
+Message-ID: <79669bf1a15247cb95a2609bad5e9c5d@BL2PR03MB163.namprd03.prod.outlook.com>
+References: <1388388474-8662-1-git-send-email-b44548@freescale.com>
+ <20131230134217.GC31886@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1388175362-17132-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "grant.likely@linaro.org" <grant.likely@linaro.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Jingchang Lu <jingchang.lu@freescale.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20131230134217.GC31886@sirena.org.uk>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Dec 27, 2013 at 09:15:54PM +0100, Geert Uytterhoeven wrote:
-> This patch series integrates Renesas RSPI on the RZ/A1H aka R7S72100 SoC,
-> and the Genmai development board.
+> > +#define dspi_readb(c)		readb(c)
+> > +#define dspi_readw(c)		({ u16 __v = (__force u16)
+> __raw_readw(c); __iormb(); __v; })
+> > +#define dspi_readl(c)		({ u32 __v = (__force u32)
+> __raw_readl(c); __iormb(); __v; })
+> > +#define dspi_writeb(v, c)	writeb(v, c)
+> > +#define dspi_writew(v, c)	({ __iowmb(); __raw_writew((__force u16) v,
+> c); })
+> > +#define dspi_writel(v, c)	({ __iowmb(); __raw_writel((__force u32) v,
+> c); })
+> > +
 > 
-> The series is based on renesas-devel-v3.13-rc5-20131226, with Magnus'
-> pinctrl, Wolfram's riic, and Simon's sh_eth work applied on top.
+> For type safety and general legibility make these inline functions
+> instead of macros, the generated code should be the same.  It's also not
+> clear why you're adding iowmb()s that weren't in the code before, and see
+> below...
 > 
-> It was tested on the Genmai development board (genmai-reference), using
-> an in-kernel version of Documentation/spi/spidev_test.c, exercising
-> loopback mode on rspi1, with the same outcome as the SDK reference code.
+[Chao Fu] Thank you, Mark! I will put them into inline functions.
+Here use iowmb for avoiding instruction reorder.
+
+> > @@ -110,9 +120,10 @@ struct fsl_dspi {
+> >
+> >  	void __iomem		*base;
+> >  	int			irq;
+> > -	struct clk 		*clk;
+> > +	struct clk		*clk;
+> >
+> > -	struct spi_transfer 	*cur_transfer;
+> > +	bool			big_endian;
+> > +	struct spi_transfer	*cur_transfer;
 > 
-> Notes:
->   1. The proposed DT bindings also talk about QSPI on the R8A779x, as those
->      SoCs use the same driver.
->   2. As the actual spi-rspi driver doesn't use DT yet, platform devices and
->      spi board info are still used from C to instantiate SPI buses and their
->      children, while pinctrl is performed by DT.
->   3. It will not work with the non-reference version of genmai, due to
->      missing pinmux configuration in setup-r7s72100.c.
->   4. Patches [4/8] and [5/8] are new.
-> 
->     [1/8] pinctrl: sh-pfc: r7s72100: Add RSPI support
+> Seems like there's some whitespace changes crept in here and elsewhere
+> which makes things harder to review.
 
-I believe that Laurent should handle this.
 
->     [2/8] ARM: shmobile: r7s72100: Add RSPI clocks
-
-This seems fine and independent of the other patches.
-But unfortunately it no longer applies.
-
-Feel free to rebase it if you would like me to queue it up sooner
-than later.
-
->     [3/8] ARM: shmobile: r7s72100: Add RSPI platform devices
-
-I assume this depends on 1/3.
-
-Please add a patch to update the koelsch defconfig.
-
->     [4/8] ARM: shmobile: genmai: Add RSPI children (NEW)
-
-This seems reasonable but I assume it depends on earlier patches.
-
-Please add a patch to update the koelsch defconfig or Kconfig.
-
->     [5/8] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux (NEW)
->     [6/8] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
->     [7/8] [RFC] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
->     [8/8] [RFC] ARM: shmobile: genmai reference: Add RSPI nodes
-> 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
-> 							    -- Linus Torvalds
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-sh" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+[Chao Fu] Here is some coding style not in standard in former code, 
+should I take this opportunity to modify here? 

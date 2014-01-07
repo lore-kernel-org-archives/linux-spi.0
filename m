@@ -1,65 +1,60 @@
-From: Chao Fu <B44548@freescale.com>
-Subject: RE: [PATCH] spi:fsl-dspi:add support of DSPI IP in big endian
-Date: Tue, 7 Jan 2014 03:54:25 +0000
-Message-ID: <79669bf1a15247cb95a2609bad5e9c5d@BL2PR03MB163.namprd03.prod.outlook.com>
-References: <1388388474-8662-1-git-send-email-b44548@freescale.com>
- <20131230134217.GC31886@sirena.org.uk>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: ti-qspi: Fix getting correct address for qspi
+Date: Tue, 07 Jan 2014 16:25:50 +0800
+Message-ID: <1389083150.24471.0.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: "grant.likely@linaro.org" <grant.likely@linaro.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- Jingchang Lu <jingchang.lu@freescale.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <20131230134217.GC31886@sirena.org.uk>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-> > +#define dspi_readb(c)		readb(c)
-> > +#define dspi_readw(c)		({ u16 __v = (__force u16)
-> __raw_readw(c); __iormb(); __v; })
-> > +#define dspi_readl(c)		({ u32 __v = (__force u32)
-> __raw_readl(c); __iormb(); __v; })
-> > +#define dspi_writeb(v, c)	writeb(v, c)
-> > +#define dspi_writew(v, c)	({ __iowmb(); __raw_writew((__force u16) v,
-> c); })
-> > +#define dspi_writel(v, c)	({ __iowmb(); __raw_writel((__force u32) v,
-> c); })
-> > +
-> 
-> For type safety and general legibility make these inline functions
-> instead of macros, the generated code should be the same.  It's also not
-> clear why you're adding iowmb()s that weren't in the code before, and see
-> below...
-> 
-[Chao Fu] Thank you, Mark! I will put them into inline functions.
-Here use iowmb for avoiding instruction reorder.
+platform_get_drvdata() returns the address of qspi rather than master.
+Also drop unneeded spi_unregister_master() call in ti_qspi_remove() because
+we use devm_spi_register_master() in probe.
 
-> > @@ -110,9 +120,10 @@ struct fsl_dspi {
-> >
-> >  	void __iomem		*base;
-> >  	int			irq;
-> > -	struct clk 		*clk;
-> > +	struct clk		*clk;
-> >
-> > -	struct spi_transfer 	*cur_transfer;
-> > +	bool			big_endian;
-> > +	struct spi_transfer	*cur_transfer;
-> 
-> Seems like there's some whitespace changes crept in here and elsewhere
-> which makes things harder to review.
+Fixes: f17414c4fcf1 (spi/qspi: set correct platform drvdata in ti_qspi_probe())
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-ti-qspi.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 9190e03..4b413e9 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -563,13 +563,9 @@ free_master:
+ 
+ static int ti_qspi_remove(struct platform_device *pdev)
+ {
+-	struct spi_master *master;
+-	struct ti_qspi *qspi;
++	struct ti_qspi *qspi = platform_get_drvdata(pdev);
+ 	int ret;
+ 
+-	master = platform_get_drvdata(pdev);
+-	qspi = spi_master_get_devdata(master);
+-
+ 	ret = pm_runtime_get_sync(qspi->dev);
+ 	if (ret < 0) {
+ 		dev_err(qspi->dev, "pm_runtime_get_sync() failed\n");
+@@ -581,8 +577,6 @@ static int ti_qspi_remove(struct platform_device *pdev)
+ 	pm_runtime_put(qspi->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+-	spi_unregister_master(master);
+-
+ 	return 0;
+ }
+ 
+-- 
+1.8.1.2
 
 
-[Chao Fu] Here is some coding style not in standard in former code, 
-should I take this opportunity to modify here? 
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

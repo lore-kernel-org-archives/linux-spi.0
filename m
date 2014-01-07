@@ -1,45 +1,65 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 1/6] pinctrl: sh-pfc: r7s72100: Add RSPI support
-Date: Tue, 7 Jan 2014 20:07:47 +0100
-Message-ID: <CAMuHMdUrg7Jye2fiLv8BiW-0_o1VSJzuH34b30LnTgGWuneCYg@mail.gmail.com>
-References: <1387886210-3634-1-git-send-email-geert+renesas@linux-m68k.org>
-	<1387886210-3634-2-git-send-email-geert+renesas@linux-m68k.org>
-	<CACRpkdaKty+6G6AR8k=o0m-XpmQ6ER-TmA5LYNtEvjM_7wvtZA@mail.gmail.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: spi-rspi I/O errors
+Date: Tue, 7 Jan 2014 21:27:18 +0100 (CET)
+Message-ID: <alpine.DEB.2.02.1401072116370.27579@ayla.of.borg>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <CACRpkdaKty+6G6AR8k=o0m-XpmQ6ER-TmA5LYNtEvjM_7wvtZA@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Linus,
+I was regularly getting I/O errors when using the Renesas RSPI/QSPI
+driver on r8a7791:
 
-On Tue, Jan 7, 2014 at 8:03 PM, Linus Walleij <linus.walleij@linaro.org> wrote:
-> On Tue, Dec 24, 2013 at 12:56 PM, Geert Uytterhoeven
-> <geert+renesas@linux-m68k.org> wrote:
->
->> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
->> Cc: Linus Walleij <linus.walleij@linaro.org>
->
-> Geert can you please repost any PFC patches you have to Laurent
-> Pinchart on the To: line as well, because I have to use him as a
-> front-end for this stuff lest I drown in patches.
+    m25p80 spi0.0: error -110 reading SR
 
-Sure, will do when I resend the (updated) series.
+Until I applied the following patch, which re-reads RSPI_SPSR on a time-out,
+and continues if the condition has become true:
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 4b31d89e8568..e63e30c500da 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -442,8 +442,13 @@ static int rspi_wait_for_interrupt(struct rspi_data *rspi, u8 wait_mask,
+ 	rspi->spsr = rspi_read8(rspi, RSPI_SPSR);
+ 	rspi_enable_irq(rspi, enable_bit);
+ 	ret = wait_event_timeout(rspi->wait, rspi->spsr & wait_mask, HZ);
+-	if (ret == 0 && !(rspi->spsr & wait_mask))
+-		return -ETIMEDOUT;
++	if (ret == 0 && !(rspi->spsr & wait_mask)) {
++		u8 spsr = rspi_read8(rspi, RSPI_SPSR);
++		printk("*** rspi->spsr = 0x%02x, real spsr = 0x%02x, wait_mask = 0x%02x ***\n",
++		       rspi->spsr, spsr, wait_mask);
++		if (!(spsr & wait_mask))
++			return -ETIMEDOUT;
++	}
+ 
+ 	return 0;
+ }
+
+Now it prints from time to time:
+
+    *** rspi->spsr = 0x20, real spsr = 0xa0, wait_mask = 0x80 ***
+
+which shows that rspi->spsr (as set from the interrupt handler) didn't
+have bit 7 set, while RSPI_SPSR does have bit 7 set.
+
+So this looks like a race condition in the interrupt handling.
+
+I didn't notice any data corruption after the patch.
 
 Gr{oetje,eeting}s,
 
-                        Geert
+						Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+							    -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,60 +1,113 @@
-From: Chao Fu <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v2 2/2] spi:dspi:Remove some coding sytle not in standard
-Date: Wed, 8 Jan 2014 14:14:15 +0800
-Message-ID: <1389161655-21856-2-git-send-email-b44548@freescale.com>
-References: <1389161655-21856-1-git-send-email-b44548@freescale.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH RFT] spi: oc-tiny: Simplify tiny_spi_txrx_bufs
+ implementation when irq is not used
+Date: Wed, 08 Jan 2014 16:00:04 +0800
+Message-ID: <1389168004.28019.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Chao Fu <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1389161655-21856-1-git-send-email-b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Currently we have similar code for (txp && rxp), (txp && !rxp), (!rxp & txp),
+and (!txp && !rxp) cases. This patch refactors the code a bit to avoid
+duplicate similar code.
 
-Remove some coding sytle not in standard in former code.
-
-Signed-off-by: Chao Fu      <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
-Change in v2:
-	New.
+Hi Thomas,
+I don't have this hardware, so please test this path if you think it is ok.
+I think there is no functional change with this patch.
 
- drivers/spi/spi-fsl-dspi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks,
+Axel
+ drivers/spi/spi-oc-tiny.c | 62 +++++++++--------------------------------------
+ 1 file changed, 11 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 1cd6d79..76cd521 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -113,10 +113,10 @@ struct fsl_dspi {
+diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
+index 91c6685..f7c896e 100644
+--- a/drivers/spi/spi-oc-tiny.c
++++ b/drivers/spi/spi-oc-tiny.c
+@@ -153,62 +153,22 @@ static int tiny_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 		}
  
- 	void __iomem		*base;
- 	int			irq;
--	struct clk 		*clk;
-+	struct clk		*clk;
+ 		wait_for_completion(&hw->done);
+-	} else if (txp && rxp) {
+-		/* we need to tighten the transfer loop */
+-		writeb(*txp++, hw->base + TINY_SPI_TXDATA);
+-		if (t->len > 1) {
+-			writeb(*txp++, hw->base + TINY_SPI_TXDATA);
+-			for (i = 2; i < t->len; i++) {
+-				u8 rx, tx = *txp++;
+-				tiny_spi_wait_txr(hw);
+-				rx = readb(hw->base + TINY_SPI_TXDATA);
+-				writeb(tx, hw->base + TINY_SPI_TXDATA);
+-				*rxp++ = rx;
+-			}
+-			tiny_spi_wait_txr(hw);
+-			*rxp++ = readb(hw->base + TINY_SPI_TXDATA);
+-		}
+-		tiny_spi_wait_txe(hw);
+-		*rxp++ = readb(hw->base + TINY_SPI_RXDATA);
+-	} else if (rxp) {
+-		writeb(0, hw->base + TINY_SPI_TXDATA);
+-		if (t->len > 1) {
+-			writeb(0,
+-			       hw->base + TINY_SPI_TXDATA);
+-			for (i = 2; i < t->len; i++) {
+-				u8 rx;
+-				tiny_spi_wait_txr(hw);
+-				rx = readb(hw->base + TINY_SPI_TXDATA);
+-				writeb(0, hw->base + TINY_SPI_TXDATA);
+-				*rxp++ = rx;
+-			}
+-			tiny_spi_wait_txr(hw);
+-			*rxp++ = readb(hw->base + TINY_SPI_TXDATA);
+-		}
+-		tiny_spi_wait_txe(hw);
+-		*rxp++ = readb(hw->base + TINY_SPI_RXDATA);
+-	} else if (txp) {
+-		writeb(*txp++, hw->base + TINY_SPI_TXDATA);
+-		if (t->len > 1) {
+-			writeb(*txp++, hw->base + TINY_SPI_TXDATA);
+-			for (i = 2; i < t->len; i++) {
+-				u8 tx = *txp++;
+-				tiny_spi_wait_txr(hw);
+-				writeb(tx, hw->base + TINY_SPI_TXDATA);
+-			}
+-		}
+-		tiny_spi_wait_txe(hw);
+ 	} else {
+-		writeb(0, hw->base + TINY_SPI_TXDATA);
+-		if (t->len > 1) {
+-			writeb(0, hw->base + TINY_SPI_TXDATA);
+-			for (i = 2; i < t->len; i++) {
++		/* we need to tighten the transfer loop */
++		writeb(txp ? *txp++ : 0, hw->base + TINY_SPI_TXDATA);
++		for (i = 1; i < t->len; i++) {
++			writeb(txp ? *txp++ : 0, hw->base + TINY_SPI_TXDATA);
++
++			if (rxp || (i != t->len - 1))
+ 				tiny_spi_wait_txr(hw);
+-				writeb(0, hw->base + TINY_SPI_TXDATA);
+-			}
++			if (rxp)
++				*rxp++ = readb(hw->base + TINY_SPI_TXDATA);
+ 		}
+ 		tiny_spi_wait_txe(hw);
++		if (rxp)
++			*rxp++ = readb(hw->base + TINY_SPI_RXDATA);
+ 	}
++
+ 	return t->len;
+ }
  
- 	bool			big_endian;
--	struct spi_transfer 	*cur_transfer;
-+	struct spi_transfer	*cur_transfer;
- 	struct chip_data	*cur_chip;
- 	size_t			len;
- 	void			*tx;
-@@ -127,8 +127,8 @@ struct fsl_dspi {
- 	u8			cs;
- 	u16			void_write_data;
- 
--	wait_queue_head_t 	waitq;
--	u32 			waitflags;
-+	wait_queue_head_t	waitq;
-+	u32			waitflags;
- };
- 
- static inline u8 dspi_readb(void __iomem *addr)
 -- 
-1.8.4
+1.8.1.2
+
 
 
 --

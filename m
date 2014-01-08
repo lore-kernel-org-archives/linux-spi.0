@@ -1,79 +1,217 @@
-From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Subject: Re: spi-rspi I/O errors
-Date: Wed, 8 Jan 2014 09:28:46 +0900
-Message-ID: <20140108002846.GF5136@verge.net.au>
-References: <alpine.DEB.2.02.1401072116370.27579@ayla.of.borg>
+From: Insop Song <Insop.Song-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>
+Subject: [PATCH] spi: spi-nor: mtd Check flag status register for Micron nor
+ spi n25q512a
+Date: Wed, 8 Jan 2014 02:18:04 +0000
+Message-ID: <f0032932a2e64b3883193a1b993c30d7@BY2PR07MB011.namprd07.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.02.1401072116370.27579-97SZ98TBZzA1xEWliksxXw@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Jan 07, 2014 at 09:27:18PM +0100, Geert Uytterhoeven wrote:
-> I was regularly getting I/O errors when using the Renesas RSPI/QSPI
-> driver on r8a7791:
-> 
->     m25p80 spi0.0: error -110 reading SR
-> 
-> Until I applied the following patch, which re-reads RSPI_SPSR on a time-out,
-> and continues if the condition has become true:
-> 
-> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-> index 4b31d89e8568..e63e30c500da 100644
-> --- a/drivers/spi/spi-rspi.c
-> +++ b/drivers/spi/spi-rspi.c
-> @@ -442,8 +442,13 @@ static int rspi_wait_for_interrupt(struct rspi_data *rspi, u8 wait_mask,
->  	rspi->spsr = rspi_read8(rspi, RSPI_SPSR);
->  	rspi_enable_irq(rspi, enable_bit);
->  	ret = wait_event_timeout(rspi->wait, rspi->spsr & wait_mask, HZ);
-> -	if (ret == 0 && !(rspi->spsr & wait_mask))
-> -		return -ETIMEDOUT;
-> +	if (ret == 0 && !(rspi->spsr & wait_mask)) {
-> +		u8 spsr = rspi_read8(rspi, RSPI_SPSR);
-> +		printk("*** rspi->spsr = 0x%02x, real spsr = 0x%02x, wait_mask = 0x%02x ***\n",
-> +		       rspi->spsr, spsr, wait_mask);
-> +		if (!(spsr & wait_mask))
-> +			return -ETIMEDOUT;
+(re-posting with new subject and add a maintainer in CC, thank you,)
 
-I'm entirely unsure if this is the right approach,
-but if it is should rspi->spsr = spsr go somewhere around here?
+In order to use Micron NOR SPI Flash n25q512a, two changes are required as follows:
+- jedec code should be fixed
+- flag status should be read for writing.
 
-> +	}
->  
->  	return 0;
->  }
-> 
-> Now it prints from time to time:
-> 
->     *** rspi->spsr = 0x20, real spsr = 0xa0, wait_mask = 0x80 ***
-> 
-> which shows that rspi->spsr (as set from the interrupt handler) didn't
-> have bit 7 set, while RSPI_SPSR does have bit 7 set.
-> 
-> So this looks like a race condition in the interrupt handling.
-> 
-> I didn't notice any data corruption after the patch.
-> 
-> Gr{oetje,eeting}s,
-> 
-> 						Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
-> 							    -- Linus Torvalds
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-sh" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
---
+Flag status register should be checked for Micron NOR SPI n25q512a
+    - Programing Micron n25q512a requires to check flag status register
+    - According to datasheet
+         "
+         The flag status register must be read any time a PROGRAM, ERASE,
+         SUSPEND/RESUME command is issued, or after a RESET command while device
+         is busy. The cycle is not complete until bit 7 of the flag status
+         register output 1.
+         "
+    - Ref: https://www.micron.com/~/media/Documents/Products/Data%20Sheet/NOR%20Flash/Serial%20NOR/N25Q/n25q_512mb_1ce_3v_65nm.pdf
+
+
+
+
+Signed-off-by: Insop Song <insop.song-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>
+---
+ drivers/mtd/devices/m25p80.c |   91 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 90 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+index 7eda71d..e53e522 100644
+--- a/drivers/mtd/devices/m25p80.c
++++ b/drivers/mtd/devices/m25p80.c
+@@ -38,6 +38,7 @@
+ /* Flash opcodes. */
+ #define OPCODE_WREN             0x06    /* Write enable */
+ #define OPCODE_RDSR             0x05    /* Read status register */
++#define        OPCODE_RDFSR            0x70    /* Read flag status register */
+ #define OPCODE_WRSR             0x01    /* Write status register 1 byte */
+ #define OPCODE_NORM_READ        0x03    /* Read data bytes (low frequency) */
+ #define OPCODE_FAST_READ        0x0b    /* Read data bytes (high frequency) */
+@@ -70,6 +71,8 @@
+ /* Status Register bits. */
+ #define SR_WIP                  1       /* Write in progress */
+ #define SR_WEL                  2       /* Write enable latch */
++/* Flag Status Register bits. */
++#define        FSR_RDY                 0x80    /* FSR ready */
+ /* meaning of other SR_* bits may differ between vendors */
+ #define SR_BP0                  4       /* Block protect 0 */
+ #define SR_BP1                  8       /* Block protect 1 */
+@@ -95,6 +98,7 @@ struct m25p {
+         u8                      program_opcode;
+         u8                      *command;
+         bool                    fast_read;
++       bool                    flag_status;
+ };
+ 
+ static inline struct m25p *mtd_to_m25p(struct mtd_info *mtd)
+@@ -131,6 +135,28 @@ static int read_sr(struct m25p *flash)
+ }
+ 
+ /*
++ * Read the flag status register, returning its value in the location
++ * Return the status register value.
++ * Returns negative if error occurred.
++ */
++static int read_fsr(struct m25p *flash)
++{
++       ssize_t retval;
++       u8 code = OPCODE_RDFSR;
++       u8 val;
++
++       retval = spi_write_then_read(flash->spi, &code, 1, &val, 1);
++
++       if (retval < 0) {
++               printk(&flash->spi->dev, "error %d reading FSR\n",
++                               (int) retval);
++               return retval;
++       }
++
++       return val;
++}
++
++/*
+  * Write status register 1 byte
+  * Returns negative if error occurred.
+  */
+@@ -220,6 +246,30 @@ static int wait_till_ready(struct m25p *flash)
+ }
+ 
+ /*
++ * Service routine to read flag status register until ready, or timeout occurs.
++ * Returns non-zero if error.
++ */
++static int wait_till_fsr_ready(struct m25p *flash)
++{
++       unsigned long deadline;
++       int sr;
++
++       deadline = jiffies + MAX_READY_WAIT_JIFFIES;
++
++       do {
++               if ((sr = read_fsr(flash)) < 0)
++                       break;
++               else if ((sr & FSR_RDY))
++                       return 0;
++
++               cond_resched();
++
++       } while (!time_after_eq(jiffies, deadline));
++
++       return 1;
++}
++
++/*
+  * Erase the whole flash memory
+  *
+  * Returns 0 if successful, non-zero otherwise.
+@@ -273,6 +323,14 @@ static int erase_sector(struct m25p *flash, u32 offset)
+         if (wait_till_ready(flash))
+                 return 1;
+ 
++       /* Flag status, Wait until finished previous write command. */
++       if (flash->flag_status == true) {
++               if (wait_till_fsr_ready(flash)) {
++                       mutex_unlock(&flash->lock);
++                       return 1;
++               }
++       }
++
+         /* Send write enable, then erase commands. */
+         write_enable(flash);
+ 
+@@ -427,6 +485,14 @@ static int m25p80_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 
+         mutex_lock(&flash->lock);
+ 
++       /* Flag status, Wait until finished previous write command. */
++       if (flash->flag_status == true) {
++               if (wait_till_fsr_ready(flash)) {
++                       mutex_unlock(&flash->lock);
++                       return 1;
++               }
++       }
++
+         /* Wait until finished previous write command. */
+         if (wait_till_ready(flash)) {
+                 mutex_unlock(&flash->lock);
+@@ -457,6 +523,14 @@ static int m25p80_write(struct mtd_info *mtd, loff_t to, size_t len,
+                 t[1].len = page_size;
+                 spi_sync(flash->spi, &m);
+ 
++               /* Flag status, Wait until finished previous write command. */
++               if (flash->flag_status == true) {
++                       if (wait_till_fsr_ready(flash)) {
++                               mutex_unlock(&flash->lock);
++                               return 1;
++                       }
++               }
++
+                 *retlen = m.actual_length - m25p_cmdsz(flash);
+ 
+                 /* write everything in flash->page_size chunks */
+@@ -477,6 +551,14 @@ static int m25p80_write(struct mtd_info *mtd, loff_t to, size_t len,
+ 
+                         spi_sync(flash->spi, &m);
+ 
++                       /* Flag status, Wait until finished previous write command. */
++                       if (flash->flag_status == true) {
++                               if (wait_till_fsr_ready(flash)) {
++                                       mutex_unlock(&flash->lock);
++                                       return 1;
++                               }
++                       }
++
+                         *retlen += m.actual_length - m25p_cmdsz(flash);
+                 }
+         }
+@@ -782,7 +864,7 @@ static const struct spi_device_id m25p_ids[] = {
+         { "n25q128a11",  INFO(0x20bb18, 0, 64 * 1024,  256, 0) },
+         { "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, 0) },
+         { "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SECT_4K) },
+-       { "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K) },
++       { "n25q512a",    INFO(0x20ba20, 0, 64 * 1024, 1024, SECT_4K) },
+ 
+         /* PMC */
+         { "pm25lv512",   INFO(0,        0, 32 * 1024,    2, SECT_4K_PMC) },
+@@ -996,6 +1078,13 @@ static int m25p_probe(struct spi_device *spi)
+         spi_set_drvdata(spi, flash);
+ 
+         /*
++        * Micron n25q512a requires to check flag status register
++        */
++       flash->flag_status = false;
++       if (strcmp(id->name, "n25q512a") == 0)
++               flash->flag_status = true;;
++
++       /*
+          * Atmel, SST and Intel/Numonyx serial flash tend to power
+          * up with the software protection bits set
+          */
+-- 
+1.7.9.5--
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

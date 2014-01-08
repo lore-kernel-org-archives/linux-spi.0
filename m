@@ -1,39 +1,39 @@
-From: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: atmel: Refactor spi-atmel to use SPI framework queue
-Date: Wed, 08 Jan 2014 11:25:31 +0100
-Message-ID: <52CD279B.6020203@gmail.com>
-References: <1389160188-4030-1-git-send-email-wenyou.yang@atmel.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: sh-hspi: Fix modalias for sh-hspi
+Date: Wed, 08 Jan 2014 18:52:40 +0800
+Message-ID: <1389178360.27961.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Cc: Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1389160188-4030-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 08/01/2014 06:49, Wenyou Yang wrote:
-> Replace the deprecated master->transfer with transfer_one_message()
-> and allow the SPI subsystem handle all the queuing of messages.
-> 
-> Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-> ---
-> Hi Mark,
-> 
-> The patch is based on for-next branch of
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
-> 
-> It is tested on sama5d3xek and at91sam9m10g45ek board.
+Make the modalias matches the driver name.
+Seems the MODULE_ALIAS is copied from drivers/spi/spi-sh-spi.c.
+So both spi-sh.ko and spi-sh-hspi.ko have the same alias. Fix it.
 
-And the bug I was seeing with SPI_IOC_MESSAGE (cf https://lkml.org/lkml/2013/10/8/269 )
-is now gone !
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-sh-hspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested on at91sam9g35-ek
+diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+index 292567a..40179d2 100644
+--- a/drivers/spi/spi-sh-hspi.c
++++ b/drivers/spi/spi-sh-hspi.c
+@@ -353,4 +353,4 @@ module_platform_driver(hspi_driver);
+ MODULE_DESCRIPTION("SuperH HSPI bus driver");
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>");
+-MODULE_ALIAS("platform:sh_spi");
++MODULE_ALIAS("platform:sh-hspi");
+-- 
+1.8.1.2
 
-Tested-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
 
 --

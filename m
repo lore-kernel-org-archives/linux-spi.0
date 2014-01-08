@@ -1,34 +1,41 @@
 From: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: atmel: add support for changing message transfer speed
-Date: Wed, 8 Jan 2014 11:15:13 +0100
-Message-ID: <CACQ1gAhsKeQUB_vN9iJDbBsJ+7CiOZH8O=ZPg96pP8qRDHf15g@mail.gmail.com>
-References: <1383816846-10561-1-git-send-email-richard.genoud@gmail.com> <20131108111152.GL2493@sirena.org.uk>
+Subject: Re: [PATCH] spi: atmel: Refactor spi-atmel to use SPI framework queue
+Date: Wed, 08 Jan 2014 11:25:31 +0100
+Message-ID: <52CD279B.6020203@gmail.com>
+References: <1389160188-4030-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Wenyou Yang <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20131108111152.GL2493-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1389160188-4030-1-git-send-email-wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-2013/11/8 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
-> On Thu, Nov 07, 2013 at 10:34:06AM +0100, Richard Genoud wrote:
->> The only speed available was max_speed (the maximum speed declared for a
->> device).
->> This patch adds the support for spi_tranfer->speed_hz parameter.
->> We can now set a different speed for each spi message.
->
-> Applied, thanks.
+On 08/01/2014 06:49, Wenyou Yang wrote:
+> Replace the deprecated master->transfer with transfer_one_message()
+> and allow the SPI subsystem handle all the queuing of messages.
+> 
+> Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+> ---
+> Hi Mark,
+> 
+> The patch is based on for-next branch of
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
+> 
+> It is tested on sama5d3xek and at91sam9m10g45ek board.
 
-It seems that this patch got lost (or I missed something).
-As it will now conflict with Wenyou patch "Refactor spi-atmel to use
-SPI framework queue",
-should I resent it based on wenyou's path ?
-or on broonie/spi.git for-next and wenyou will rebase his patch on mine ?
+And the bug I was seeing with SPI_IOC_MESSAGE (cf https://lkml.org/lkml/2013/10/8/269 )
+is now gone !
+
+Tested on at91sam9g35-ek
+
+Tested-by: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

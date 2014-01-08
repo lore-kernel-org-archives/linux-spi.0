@@ -1,91 +1,68 @@
-From: Simon Horman <horms@verge.net.au>
-Subject: Re: [PATCH v2 0/8] SoC and board integration for RSPI on RZ/A1H
-Date: Wed, 8 Jan 2014 09:00:41 +0900
-Message-ID: <20140108000037.GA5136@verge.net.au>
-References: <1388175362-17132-1-git-send-email-geert@linux-m68k.org>
- <20140107012628.GD2196@verge.net.au>
- <5395895.snn5ED4YEr@avalon>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: spi-rspi I/O errors
+Date: Wed, 08 Jan 2014 01:27:15 +0100
+Message-ID: <6231184.EMt0gDqh7K@avalon>
+References: <alpine.DEB.2.02.1401072116370.27579@ayla.of.borg>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <5395895.snn5ED4YEr@avalon>
+In-Reply-To: <alpine.DEB.2.02.1401072116370.27579@ayla.of.borg>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 07, 2014 at 04:01:30PM +0100, Laurent Pinchart wrote:
-> Hi Simon,
-> 
-> On Tuesday 07 January 2014 10:26:28 Simon Horman wrote:
-> > On Fri, Dec 27, 2013 at 09:15:54PM +0100, Geert Uytterhoeven wrote:
-> > > This patch series integrates Renesas RSPI on the RZ/A1H aka R7S72100 SoC,
-> > > and the Genmai development board.
-> > > 
-> > > The series is based on renesas-devel-v3.13-rc5-20131226, with Magnus'
-> > > pinctrl, Wolfram's riic, and Simon's sh_eth work applied on top.
-> > > 
-> > > It was tested on the Genmai development board (genmai-reference), using
-> > > an in-kernel version of Documentation/spi/spidev_test.c, exercising
-> > > loopback mode on rspi1, with the same outcome as the SDK reference code.
-> > > 
-> > > Notes:
-> > >   1. The proposed DT bindings also talk about QSPI on the R8A779x, as
-> > >      those SoCs use the same driver.
-> > >   
-> > >   2. As the actual spi-rspi driver doesn't use DT yet, platform devices
-> > >      and spi board info are still used from C to instantiate SPI buses and
-> > >      their children, while pinctrl is performed by DT.
-> > >   
-> > >   3. It will not work with the non-reference version of genmai, due to
-> > >      missing pinmux configuration in setup-r7s72100.c.
-> > >   
-> > >   4. Patches [4/8] and [5/8] are new.
-> > >   
-> > >     [1/8] pinctrl: sh-pfc: r7s72100: Add RSPI support
-> > 
-> > I believe that Laurent should handle this.
-> 
-> I will, but I'm waiting for Magnus to resubmit the base r7s72100 pinctrl patch 
-> series.
+Hi Geert,
 
-Got it.
+On Tuesday 07 January 2014 21:27:18 Geert Uytterhoeven wrote:
+> I was regularly getting I/O errors when using the Renesas RSPI/QSPI
+> driver on r8a7791:
+> 
+>     m25p80 spi0.0: error -110 reading SR
+> 
+> Until I applied the following patch, which re-reads RSPI_SPSR on a time-out,
+> and continues if the condition has become true:
+> 
+> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+> index 4b31d89e8568..e63e30c500da 100644
+> --- a/drivers/spi/spi-rspi.c
+> +++ b/drivers/spi/spi-rspi.c
+> @@ -442,8 +442,13 @@ static int rspi_wait_for_interrupt(struct rspi_data
+> *rspi, u8 wait_mask, rspi->spsr = rspi_read8(rspi, RSPI_SPSR);
+>  	rspi_enable_irq(rspi, enable_bit);
+>  	ret = wait_event_timeout(rspi->wait, rspi->spsr & wait_mask, HZ);
+> -	if (ret == 0 && !(rspi->spsr & wait_mask))
+> -		return -ETIMEDOUT;
+> +	if (ret == 0 && !(rspi->spsr & wait_mask)) {
+> +		u8 spsr = rspi_read8(rspi, RSPI_SPSR);
+> +		printk("*** rspi->spsr = 0x%02x, real spsr = 0x%02x, wait_mask = 
+0x%02x
+> ***\n",
+> +		       rspi->spsr, spsr, wait_mask);
+> +		if (!(spsr & wait_mask))
+> +			return -ETIMEDOUT;
+> +	}
+> 
+>  	return 0;
+>  }
+> 
+> Now it prints from time to time:
+> 
+>     *** rspi->spsr = 0x20, real spsr = 0xa0, wait_mask = 0x80 ***
+> 
+> which shows that rspi->spsr (as set from the interrupt handler) didn't
+> have bit 7 set, while RSPI_SPSR does have bit 7 set.
+> 
+> So this looks like a race condition in the interrupt handling.
 
-> > >     [2/8] ARM: shmobile: r7s72100: Add RSPI clocks
-> > 
-> > This seems fine and independent of the other patches.
-> > But unfortunately it no longer applies.
-> > 
-> > Feel free to rebase it if you would like me to queue it up sooner
-> > than later.
-> > 
-> > >     [3/8] ARM: shmobile: r7s72100: Add RSPI platform devices
-> > 
-> > I assume this depends on 1/3.
-> > 
-> > Please add a patch to update the koelsch defconfig.
-> > 
-> > >     [4/8] ARM: shmobile: genmai: Add RSPI children (NEW)
-> > 
-> > This seems reasonable but I assume it depends on earlier patches.
-> > 
-> > Please add a patch to update the koelsch defconfig or Kconfig.
-> > 
-> > >     [5/8] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux (NEW)
-> > >     [6/8] [RFC] Documentation: dt: Add Renesas RSPI/QSPI bindings
-> > >     [7/8] [RFC] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
-> > >     [8/8] [RFC] ARM: shmobile: genmai reference: Add RSPI nodes
-> 
-> -- 
-> Regards,
-> 
-> Laurent Pinchart
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-sh" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+What happens if you print rspi->spsr in the interrupt handler ? Does it have 
+bit 7 set ?
+
+> I didn't notice any data corruption after the patch.
+
+-- 
+Regards,
+
+Laurent Pinchart
+

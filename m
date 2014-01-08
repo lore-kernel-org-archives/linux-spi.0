@@ -1,56 +1,114 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi: s3c24xx: Remove reference to plat/fiq.h
-Date: Wed, 8 Jan 2014 13:06:59 +0000
-Message-ID: <20140108130659.GE31886@sirena.org.uk>
-References: <1388478639-25279-1-git-send-email-sachin.kamat@linaro.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: spi-rspi I/O errors
+Date: Wed, 8 Jan 2014 14:13:27 +0100
+Message-ID: <CAMuHMdVzFeymxW2CZUyKgZ-fxsektE1EpLQksfSzoekj2ex53Q@mail.gmail.com>
+References: <alpine.DEB.2.02.1401072116370.27579@ayla.of.borg>
+	<6231184.EMt0gDqh7K@avalon>
+	<CAMuHMdWDwF+KcNPrKgjvH6w7Uxn-iON+nQz_+Z_RTU_yV7SVog@mail.gmail.com>
+	<30872348.jm2GxWdDk6@avalon>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ueIuAkhIEDaOqOw0"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, patches-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-To: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1388478639-25279-1-git-send-email-sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi@vger.kernel.org, Linux-sh list <linux-sh@vger.kernel.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <30872348.jm2GxWdDk6@avalon>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Wed, Jan 8, 2014 at 9:41 AM, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+> On Wednesday 08 January 2014 09:28:59 Geert Uytterhoeven wrote:
+>> On Wed, Jan 8, 2014 at 1:27 AM, Laurent Pinchart wrote:
+>> > On Tuesday 07 January 2014 21:27:18 Geert Uytterhoeven wrote:
+>> >> I was regularly getting I/O errors when using the Renesas RSPI/QSPI
+>> >>
+>> >> driver on r8a7791:
+>> >>     m25p80 spi0.0: error -110 reading SR
+>> >>
+>> >> Until I applied the following patch, which re-reads RSPI_SPSR on a
+>> >> time-out, and continues if the condition has become true:
+>> >>
+>> >> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+>> >> index 4b31d89e8568..e63e30c500da 100644
+>> >> --- a/drivers/spi/spi-rspi.c
+>> >> +++ b/drivers/spi/spi-rspi.c
+>> >> @@ -442,8 +442,13 @@ static int rspi_wait_for_interrupt(struct rspi_data
+>> >> *rspi, u8 wait_mask, rspi->spsr = rspi_read8(rspi, RSPI_SPSR);
+>> >>
+>> >>       rspi_enable_irq(rspi, enable_bit);
+>> >>       ret = wait_event_timeout(rspi->wait, rspi->spsr & wait_mask, HZ);
+>> >>
+>> >> -     if (ret == 0 && !(rspi->spsr & wait_mask))
+>> >> -             return -ETIMEDOUT;
+>> >> +     if (ret == 0 && !(rspi->spsr & wait_mask)) {
+>> >> +             u8 spsr = rspi_read8(rspi, RSPI_SPSR);
+>> >> +             printk("*** rspi->spsr = 0x%02x, real spsr = 0x%02x,
+>> >> wait_mask =>
+>> > 0x%02x
+>> >
+>> >> ***\n",
+>> >> +                    rspi->spsr, spsr, wait_mask);
+>> >> +             if (!(spsr & wait_mask))
+>> >> +                     return -ETIMEDOUT;
+>> >> +     }
+>> >>
+>> >>       return 0;
+>> >>
+>> >>  }
+>> >>
+>> >> Now it prints from time to time:
+>> >>     *** rspi->spsr = 0x20, real spsr = 0xa0, wait_mask = 0x80 ***
+>> >>
+>> >> which shows that rspi->spsr (as set from the interrupt handler) didn't
+>> >> have bit 7 set, while RSPI_SPSR does have bit 7 set.
+>> >>
+>> >> So this looks like a race condition in the interrupt handling.
+>> >
+>> > What happens if you print rspi->spsr in the interrupt handler ? Does it
+>> > have bit 7 set ?
+>>
+>> I haven't tried that yet. The driver is extremely interrupt-heavy (O(n),
+>> with n the number of bytes transfered), so adding a printk() as-is won't be
+>> a good idea.
+>>
+>> Will think a bit more about a better approach...
+>
+> Just limit it to the first 10 interrupts then :-)
 
---ueIuAkhIEDaOqOw0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+That assumes the issue happens during the first 10 interrupts, which is
+usually not the case ;-)
 
-On Tue, Dec 31, 2013 at 02:00:39PM +0530, Sachin Kamat wrote:
-> fiq.h contains only a function declaration and is not used by anyone
-> else. Move the declaration to the driver header file and remove the
-> unnecessary platform dependency from the driver.
+> What I'd like to know is whether the interrupt is trigerred before bit 7 gets
+> set by the hardware, or if the rspi_wait_for_interrupt() function gets a stale
+> value of rspi->spsr.
 
-Applied, thanks.
+It seems to get a stale value. I ended up doing the printk() anyway, and
+when reading using small buffer sizes, the issues is more likely to happen.
 
---ueIuAkhIEDaOqOw0
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+If I add a second copy of rspi->spsr, and make that copy volatile OR add
+a few calls to smp_mb() around the places where it's written and read,
+the copy has the right value inside rspi_wait_for_interrupt(), BUT only if
+I also print the spsr value inside rspi_irq(). Note that the original rspi->spsr
+still has the stale value.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+I'd expect wake_up() and wait_event_timeout() to have the right memory
+barriers (cfr. Documentation/memory-barriers.txt), so I don't have to add
+my own. And why does it need the extra printk()? What extra
+synchronization does that give?
 
-iQIcBAEBAgAGBQJSzU1wAAoJELSic+t+oim9dxUP+QEswUsgc9w4DWvFAfSkfsxY
-hD48HZZLiZq6Nbs7zMnJrqrr57BCZZ/otK16nAmRpePy+QnN+5O5vVk8m8fxDiop
-ZQEWeXqYD0f/4FOQfPUYqzSQSp+1aS2o/sehFCv4l0RQVWY00vXMs7Yqtu9pASi/
-O3927g+2V3Fm5BRdcg7mVW9y4ECiO+pz/JYM0cLfKwtwYhnYTwIMu0JxECNNGtHs
-cAkaL718/oiE9jLE/cayAnBmuvW9ZjQugkBOL9yMYMWU759dkHQYbSRorm870gkm
-pzdFm8/vOAsPaSJmN4GA9AEh1QhNLEnMu+Z/8KjlJ35RstV6taZ5sbMG3CBjXAe2
-AtoWnDtZB1gxPmWyTZF8TGumRstc8V5ErswHG+8HuwYyKUHA2tkyOVuShkVLVFX3
-GteLTnRyiX9Yjh+5LOkeLxAqXS1auZTXXvaSsTxxqhgHO+kd9n91m5F4jh0N2SiZ
-RIZus0Q5y1ueFSv1Wkx1M/mKc78Dy7K29Xh+U9AhciNioC3iwKaAEsw17LoE8Gxg
-blFNt/shVOnzvWPseaeosV9UyGHSeHY9nxvchQW8Q8iLF0KELb+TPNlBiYLoLhKh
-ZRxcDg2lGBrV+m8HRpTWzmyLxo3TwTrk9PcYh8bzIdlByBTmB4udsJ7pcBAT7Hs3
-XcIP/gmCoMzYWlsguQwH
-=mKP4
------END PGP SIGNATURE-----
+Note that the interrupt handler always runs on CPU core 0,
+while rspi_wait_for_interrupt() can run on core 0 or 1.
+Is there a cache-coherency issue between the two CPU cores?
 
---ueIuAkhIEDaOqOw0--
+Am I missing something?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

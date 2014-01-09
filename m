@@ -1,55 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: core: Use list_first_entry to extract head of queue
-Date: Thu, 9 Jan 2014 13:54:23 +0000
-Message-ID: <20140109135423.GQ31886@sirena.org.uk>
-References: <1389254638.31143.1.camel@phoenix>
+From: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH] spi: Check conflicting CS based on spi->chip_select instead
+ of device name
+Date: Thu, 09 Jan 2014 15:59:38 +0200
+Message-ID: <52CEAB4A.605@linux.intel.com>
+References: <1389273835-8615-1-git-send-email-mika.westerberg@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0PqZRGD89QFo9OdR"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1389254638.31143.1.camel@phoenix>
+In-Reply-To: <1389273835-8615-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 01/09/2014 03:23 PM, Mika Westerberg wrote:
+> Commit e13ac47bec20 (spi: Use stable dev_name for ACPI enumerated SPI
+> slaves) changed the SPI device naming to be based on ACPI device name
+> instead of carrying bus number and chip select for devices enumerated
+> from ACPI namespace.
+>
+> In case of a buggy BIOS that lists multiple SPI devices sharing the same
+> chip select (even though they should use different) the current code fails
+> to detect that and allows the devices to be added to the bus.
+>
+> Fix this by walking through the bus and comparing spi->chip_select instead
+> of device name. This should work regardless what the device name will be in
+> future.
+>
+> Cc: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> ---
+>   drivers/spi/spi.c | 18 +++++++++++++-----
+>   1 file changed, 13 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> index 349ebba4b199..13dcc360bde6 100644
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+>
+I guess this is a valid fix in that sense that before my patch those 
+ill-defined SPI devices were not added. Is this something which should 
+go to 3.13?
 
---0PqZRGD89QFo9OdR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jan 09, 2014 at 04:03:58PM +0800, Axel Lin wrote:
-> For slightly better readability.
->=20
-> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-
-Applied, thanks.
-
---0PqZRGD89QFo9OdR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJSzqoMAAoJELSic+t+oim9gRwQAIM0opbwgNwNx2INWlbbtGxb
-BalrbVw+UV9jZuZJbkEWBPjqL7JVny1VNHCM5PM8gs588p8HPUT/0pT56U/RjAmB
-55fDD+OpYgG8mNu9GEC9edxG17+LwIuzQvyo00FyEvEoq9YO/1JepiNer6mD164L
-0MULpAHbsEi50lX5L7FOJpq2sMXnO5DIhlFp+g1MYtLwwvSjSKdEi5/qYewKX/0T
-d4nbOMYiBzbj0tHFssAzA1vLPt+UZTUAPmTHtBYNPE1F30/eNKsEyi3aAMCKrNDa
-Hc2OJ5JkvDYv8eHvMw4LJoMpcfzcgvjbXhDZJcHM8OOXY66bty9pbz5h5tUgkM6x
-28j+Q5uvdlwH32Xwankh3Pvjm3hOVuCHakFwC8aWzbWxUIbSmUSEGzJRVE5rMnDp
-GiBALzBJggxZJBc5Zo6d16qTY9BCOU82I/Ow1Uszv5/xnqaJH9rJzSe6CooDrxur
-Bc5U060PHp2gT7Sad1ShYViUBL68EZ5Bz5YpEY/v5uYtAOWeNMq93z+eZpHR74BD
-O4aYIUFiA609p6chGpqllxx1Xc7fbIjd2HXFud+gHAjAuc/6LujDsjZ/4culQ7x6
-JDAH2oETaK+AIT1g/V5elATSKPz+n2d6vHCyK85cdh4bJiiFoatUR4WSbLHG5JiQ
-AVNH6QFyQTV7dFSmZ/Sp
-=umIf
------END PGP SIGNATURE-----
-
---0PqZRGD89QFo9OdR--
+Acked-by: Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

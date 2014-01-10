@@ -1,61 +1,84 @@
-From: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] spi:fsl-dspi:add support of DSPI IP in big
-	endian
-Date: Fri, 10 Jan 2014 12:53:59 +0000
-Message-ID: <20140110125359.GB15937@n2100.arm.linux.org.uk>
-References: <1389161655-21856-1-git-send-email-b44548@freescale.com> <20140109175208.GK12858@sirena.org.uk> <e9c8019df2cf4d76ae2b77c5d1420050@BL2PR03MB163.namprd03.prod.outlook.com> <20140110124014.GI29039@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Jingchang Lu <jingchang.lu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: [PATCH] spi: clps711x: Use devm_gpio_request()
+Date: Fri, 10 Jan 2014 17:02:05 +0400
+Message-ID: <1389358925-466-1-git-send-email-shc_work@mail.ru>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140110124014.GI29039-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jan 10, 2014 at 12:40:14PM +0000, Mark Brown wrote:
-> On Fri, Jan 10, 2014 at 08:11:33AM +0000, Chao Fu wrote:
-> 
-> > [Chao Fu] Our CPUs are working on only ARM architecture. But DSPI have two endianness 
-> > In different series CPU, so we use __raw_read that do not take of endianness.
-> > We need observe ARM io methods  make sure avoid instructions executing reorder .
-> > ARM IO methods :
-> > #define readb(c)                ({ u8  __v = readb_relaxed(c); __iormb(); __v; })
-> > #define readw(c)                ({ u16 __v = readw_relaxed(c); __iormb(); __v; })
-> > #define readl(c)                ({ u32 __v = readl_relaxed(c); __iormb(); __v; })
-> > 
-> > #define writeb(v,c)             ({ __iowmb(); writeb_relaxed(v,c); })
-> > #define writew(v,c)             ({ __iowmb(); writew_relaxed(v,c); })
-> > #define writel(v,c)             ({ __iowmb(); writel_relaxed(v,c); })
-> > 
-> > So add barrier here. Could you give some suggestions? Many thanks!
-> 
-> OK that makes sense, please add comments explaining that this is due to
-> the endinaness translation.  Given that people are starting to use big
-> endian more it might be sensible to have these factored out into generic
-> code but that can wait.
+This patch replaces gpio_request() with devm_ API.
+As a result this simplifies error path and eliminates "remove"
+function.
 
-Accesses to device memory are guaranteed by the architecture to be in
-program order when they're within the same 1K block of memory.  Larger
-blocks are permissible, and depends on the SoC.  (The ARM ARM is a little
-unclear on this statement, and I believe the statement is/has been fixed.)
+Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+---
+ drivers/spi/spi-clps711x.c | 22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
-The barriers above are not about ensuring correct program order (we have
-that anyway), they're about ensuring the visibility externally given the
-ARM ARM mess-up, and _primerily_ ensuring proper order between DMA
-coherent memory and a DMA agent being enabled, or the DMA agent status
-being read vs DMA coherent memory.
-
+diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
+index 6f03d7e..dafb243 100644
+--- a/drivers/spi/spi-clps711x.c
++++ b/drivers/spi/spi-clps711x.c
+@@ -1,7 +1,7 @@
+ /*
+  *  CLPS711X SPI bus driver
+  *
+- *  Copyright (C) 2012 Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
++ *  Copyright (C) 2012-2014 Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -198,7 +198,7 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 			ret = -EINVAL;
+ 			goto err_out;
+ 		}
+-		if (gpio_request(hw->chipselect[i], DRIVER_NAME)) {
++		if (devm_gpio_request(&pdev->dev, hw->chipselect[i], NULL)) {
+ 			dev_err(&pdev->dev, "Can't get CS GPIO %i\n", i);
+ 			ret = -EINVAL;
+ 			goto err_out;
+@@ -240,35 +240,17 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 	dev_err(&pdev->dev, "Failed to register master\n");
+ 
+ err_out:
+-	while (--i >= 0)
+-		if (gpio_is_valid(hw->chipselect[i]))
+-			gpio_free(hw->chipselect[i]);
+-
+ 	spi_master_put(master);
+ 
+ 	return ret;
+ }
+ 
+-static int spi_clps711x_remove(struct platform_device *pdev)
+-{
+-	int i;
+-	struct spi_master *master = platform_get_drvdata(pdev);
+-	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
+-
+-	for (i = 0; i < master->num_chipselect; i++)
+-		if (gpio_is_valid(hw->chipselect[i]))
+-			gpio_free(hw->chipselect[i]);
+-
+-	return 0;
+-}
+-
+ static struct platform_driver clps711x_spi_driver = {
+ 	.driver	= {
+ 		.name	= DRIVER_NAME,
+ 		.owner	= THIS_MODULE,
+ 	},
+ 	.probe	= spi_clps711x_probe,
+-	.remove	= spi_clps711x_remove,
+ };
+ module_platform_driver(clps711x_spi_driver);
+ 
 -- 
-FTTC broadband for 0.8mile line: 5.8Mbps down 500kbps up.  Estimation
-in database were 13.1 to 19Mbit for a good line, about 7.5+ for a bad.
-Estimate before purchase was "up to 13.2Mbit".
+1.8.3.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

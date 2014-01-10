@@ -1,67 +1,89 @@
-From: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: RE: [PATCH v2 1/2] spi:fsl-dspi:add support of DSPI IP in big endian
-Date: Fri, 10 Jan 2014 08:11:33 +0000
-Message-ID: <e9c8019df2cf4d76ae2b77c5d1420050@BL2PR03MB163.namprd03.prod.outlook.com>
-References: <1389161655-21856-1-git-send-email-b44548@freescale.com>,<20140109175208.GK12858@sirena.org.uk>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: spi-rspi I/O errors
+Date: Fri, 10 Jan 2014 10:20:49 +0100
+Message-ID: <CAMuHMdX+4Z5nzj1t-v3kG4__yjYohOic1b0dUA9ZwHJrt2MRgw@mail.gmail.com>
+References: <alpine.DEB.2.02.1401072116370.27579@ayla.of.borg>
+	<CAMuHMdVzFeymxW2CZUyKgZ-fxsektE1EpLQksfSzoekj2ex53Q@mail.gmail.com>
+	<2820126.AWUstGfrNm@avalon>
+	<1787813.oK07lvnr6k@avalon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Jingchang Lu <jingchang.lu-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140109175208.GK12858-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi@vger.kernel.org,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1787813.oK07lvnr6k@avalon>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-> This looks a lot nicer - a few things below though.
-> 
-> > +#define DSPI_BITWISE16(d, v)	(d->big_endian ? cpu_to_be16(v) :
-> cpu_to_le16(v))
-> > +#define DSPI_BITWISE32(d, v)	(d->big_endian ? cpu_to_be32(v) :
-> cpu_to_le32(v))
-> 
-> These should probably be inline for the same reason as the I/O functions,
-> perhaps even being done as part of the I/O functions.
-> 
-[Chao Fu] Thank you, Mark! I wiil put them into inline functions.
+Hi Laurent,
 
-> > +static inline u16 dspi_readw(void __iomem *addr) {
-> > +	u16 __v = (__force u16) __raw_readw(addr);
-> > +	__iormb();
-> > +
-> > +	return __v;
-> > +}
-> 
-> Why does this need a barrier and why does it not take care of the
-> endianness translation?  A quick glance through shows most if not all of
-> the callers doing the translation.
+On Thu, Jan 9, 2014 at 7:14 PM, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>> > It seems to get a stale value. I ended up doing the printk() anyway, and
+>> > when reading using small buffer sizes, the issues is more likely to
+>> > happen.
+>> >
+>> > If I add a second copy of rspi->spsr, and make that copy volatile OR add
+>> > a few calls to smp_mb() around the places where it's written and read,
+>> > the copy has the right value inside rspi_wait_for_interrupt(), BUT only if
+>> > I also print the spsr value inside rspi_irq(). Note that the original
+>> > rspi->spsr still has the stale value.
+>>
+>> Do I understand it correctly that the SPSR value read from the register in
+>> rspi_irq() is always correct on the first read, and that only the rspi->spsr
+>> value stored in memory and read in rspi_wait_for_interrupt() is wrong ?
+>> > I'd expect wake_up() and wait_event_timeout() to have the right memory
+>> > barriers (cfr. Documentation/memory-barriers.txt), so I don't have to add
+>> > my own. And why does it need the extra printk()? What extra
+>> > synchronization
+>> > does that give?
+>>
+>> Have you tried adding explicit memory barriers without any extra printk ?
+
+Yes, cfr. "add a few calls to smp_mb()" above.
+
+>> > Note that the interrupt handler always runs on CPU core 0, while
+>> > rspi_wait_for_interrupt() can run on core 0 or 1. Is there a
+>> > cache-coherency issue between the two CPU cores?
+>>
+>> I'd be very surprised if that was the case, as there should be lots of other
+>> breakages, but let's not rule that out too fast. Magnus should be able to
+>> help you more than I can regarding that.
 >
-[Chao Fu] Our CPUs are working on only ARM architecture. But DSPI have two endianness 
-In different series CPU, so we use __raw_read that do not take of endianness.
-We need observe ARM io methods  make sure avoid instructions executing reorder .
-ARM IO methods :
-#define readb(c)                ({ u8  __v = readb_relaxed(c); __iormb(); __v; })
-#define readw(c)                ({ u16 __v = readw_relaxed(c); __iormb(); __v; })
-#define readl(c)                ({ u32 __v = readl_relaxed(c); __iormb(); __v; })
+> Could you verify that the SMP bit is set in ACTLR
+> (http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0388e/CIHHDDHJ.html)
 
-#define writeb(v,c)             ({ __iowmb(); writeb_relaxed(v,c); })
-#define writew(v,c)             ({ __iowmb(); writew_relaxed(v,c); })
-#define writel(v,c)             ({ __iowmb(); writel_relaxed(v,c); })
+ACTLR = 0x000000c0 on CPU 0
+ACTLR = 0x00000040 on CPU 1
 
-So add barrier here. Could you give some suggestions? Many thanks!
- 
-> > +static inline void dspi_writew(u16 val, void __iomem *addr) {
-> > +	__iowmb();
-> > +	__raw_writew((__force u16) val, addr); }
-> 
-> Again the memory barrier seems odd, especially the barrier *before* doing
-> the write.
+0xc0 = EXCL | SMP
+0x40 = SMP
+
+The different EXCL value seems strange to me, especially considering the comment
+about the matching cache controller configuration:
+
+[7] EXCL
+Exclusive cache bit.
+The exclusive cache configuration does not permit data to reside in L1
+and L2 at the same time. The exclusive cache configuration provides
+support for only caching data on an eviction from L1 when the inner
+cache attributes are Write-Back, Cacheable and allocated in L1. Ensure
+that your cache controller is also configured for exclusive caching.
+0 = disabled. This is the reset value.
+1 = enabled.
+
+CCing the list with the more ARM-knowledgeable people...
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

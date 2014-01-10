@@ -1,59 +1,55 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: fsl-dspi: Add missing breaks for switch cases
-Date: Fri, 10 Jan 2014 11:24:20 +0000
-Message-ID: <20140110112420.GD29039@sirena.org.uk>
-References: <1389191274.32246.1.camel@phoenix>
- <CAFRkauCMCZr4MGDMt1GJKd8uTKWH5bX_BXB5-Ouy5vFVg6ZY0Q@mail.gmail.com>
+From: franklinbuthelezi1-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+Subject: =?UTF-8?Q?DiePresse.com_Mein_Freund,_der_Fahrradh=C3=A4ndler?=
+Date: Fri, 10 Jan 2014 13:29:49 +0100 (CET)
+Message-ID: <2091351875.1389356990044.JavaMail.root@dpoportal4.diepresse.apa.net>
+Reply-To: franklinbuthelezi1-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="M38YqGLZlgb6RLPS"
-Cc: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAFRkauCMCZr4MGDMt1GJKd8uTKWH5bX_BXB5-Ouy5vFVg6ZY0Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+=46olgender Artikel auf http://diepresse.com wird Ihnen von Franklin Bu=
+thelezi empfohlen:
 
---M38YqGLZlgb6RLPS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Mein Freund, der Fahrradh=C3=A4ndler
+Manche Dinge ver=C3=A4ndern sich =C3=BCber die langen Wintermonate hinw=
+eg.=20
 
-On Fri, Jan 10, 2014 at 12:19:41PM +0800, Axel Lin wrote:
-> Hi Chao and Alison,
->=20
-> I'm wondering if this driver really work without this patch?
-> Any chance to test this patch?
+http://diepresse.com/home/leben/mode/kolumnezumtag/548717/index.do
 
-I applied the patch already - sorry, seems I must've forgotten
-to mail out.
+Notiz:
+Dear friend,
+=20
+I am the international operations manager of ABSA bank South Africa. My=
+ name is Franklin Buthelezi. I have a sensitive and private offer from =
+the top executive to seek your partnership in re-profiling some offshor=
+e investment funds worth 11.5M U.S.D (Eleven Million five hundred thous=
+and United States Dollars) I am constrained however to withhold most of=
+ the details for now. This is a legitimate transaction.=20
+=20
+If we agree on the terms you will be given 15% of the total funds, if y=
+ou are interested please write back via email providing me your persona=
+l details and phone number for further directives.
+=20
+If you are interested and willing to render your assistance please resp=
+ond via my private email address stated below.
+=20
+I look forward to your response.
+=20
+Best regards
+=46ranklin Buthelezi
+Email: franklinbuthelezi1-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
 
---M38YqGLZlgb6RLPS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+------------------------------------
+DiePresse.com =C3=BCbernimmt keine Haftung f=C3=BCr den Inhalt der pers=
+=C3=B6nlichen Nachricht.
 
-iQIcBAEBAgAGBQJSz9hhAAoJELSic+t+oim9CqQQAIr0Zw85Ns4bEh16WXG1O8e6
-mDyBe0nQqViKH4/BcR19XaQR+Q337wVnVZ+FXLV8y/4v+3NJWulPRQktH5dPRqMB
-yGiVDu2mRk1t8LTsIBY86XEl6W1Oyhkz5XtQPerbrrZLQMkzZ2VDU93ad0TBkrsl
-abCxnPB0+VabiewRo6snKxBGjEJA9c2HGyO7PBqafTxWuusA7vDfgyzwhHvNMwgX
-iDkZ0JGbiWLm327ZWzBr6/C2ezrwElXoihoMDbP3uMpXtZdv0Vg/59reklW4BUB5
-EhePyzyVeyydsViUDlsrMDTdJTQSI6VBi8xVsVVMfm8XivzG73XzZUDgRW/tw7UW
-mpO4e70I2DzhWFNhuYPLs1W5jLlkrZ2nQFktc5F6Tazewsp6CTPzS+4IFBDoDQdb
-FNOpanqAg8UwdlV5vduK4a/sG9dOrSSQbAakTja2kvUCBfkr20GDtAsbOUD1WNEo
-j+PkWMrx+SIQWNzFpyAH8DcaJhli5w9aWr3Ws0cwWJzvJCtFROcNcge95BeL7zr1
-pXCMBgUpioRTWB/pmkUqv7L7NLdtekzhPa6XAjqfLAHhj3RRpcY3nMAwwVo8xthW
-11XvO60U2tvHo4H6PyNQ+e+/JD3Qx3s/Mz15W1pT0rHnlN85Iw2QFSYYxdImFraN
-YjGVG/Zifhr2gyY2p87K
-=y2rT
------END PGP SIGNATURE-----
+=C2=A9 DiePresse.com - http://diepresse.com
 
---M38YqGLZlgb6RLPS--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

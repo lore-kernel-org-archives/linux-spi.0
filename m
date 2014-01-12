@@ -1,47 +1,41 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH] spi: Use bitfields for multiple data lines
-Date: Fri, 10 Jan 2014 17:19:03 +0000
-Message-ID: <1389374343-393-1-git-send-email-broonie@kernel.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org,
-	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: altera: Remove unneeded NULL checking for
+ hw->bitbang.master
+Date: Sun, 12 Jan 2014 14:38:14 +0800
+Message-ID: <1389508694.13361.1.camel@phoenix>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+We already has NULL test for master after calling spi_alloc_master().
 
-Trent Piepho observed that since the current realistic maximum number of
-data lines is four we can pack the spi_transfer struct more efficiently
-if we use a bitfield for the number of bits, allowing the fields to fit
-in a single byte along with cs_change.
-
-If space becomes an issue further optimiation is possible by only using
-the constants and packing the values chosen for them.
-
-Reported-by: Trent Piepho <tpiepho-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- include/linux/spi/spi.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-altera.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 27a882978c15..77b529e418d5 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -576,8 +576,8 @@ struct spi_transfer {
- 	dma_addr_t	rx_dma;
+diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
+index 595b62c..5d7deaf 100644
+--- a/drivers/spi/spi-altera.c
++++ b/drivers/spi/spi-altera.c
+@@ -220,8 +220,6 @@ static int altera_spi_probe(struct platform_device *pdev)
  
- 	unsigned	cs_change:1;
--	u8		tx_nbits;
--	u8		rx_nbits;
-+	unsigned	tx_nbits:3;
-+	unsigned	rx_nbits:3;
- #define	SPI_NBITS_SINGLE	0x01 /* 1bit transfer */
- #define	SPI_NBITS_DUAL		0x02 /* 2bits transfer */
- #define	SPI_NBITS_QUAD		0x04 /* 4bits transfer */
+ 	/* setup the state for the bitbang driver */
+ 	hw->bitbang.master = master;
+-	if (!hw->bitbang.master)
+-		return err;
+ 	hw->bitbang.chipselect = altera_spi_chipsel;
+ 	hw->bitbang.txrx_bufs = altera_spi_txrx;
+ 
 -- 
-1.8.5.2
+1.8.1.2
+
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

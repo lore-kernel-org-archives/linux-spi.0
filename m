@@ -1,37 +1,61 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] spi: rspi: Remove dependency on DMAE for SHMOBILE
-Date: Sun, 12 Jan 2014 11:32:44 +0100
-Message-ID: <1389522765-1829-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>, Simon Horman <horms@verge.net.au>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH V3 0/5] SoC and board integration for RSPI on r7s72100/genmai
+Date: Sun, 12 Jan 2014 11:48:38 +0100
+Message-ID: <1389523723-2288-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+This patch series integrates Renesas RSPI on the RZ/A1H aka R7S72100 SoC,
+and the Genmai development board.
 
-On ARM-based SHMOBILE, the rspi driver builds and works fine without the
-DMA controller driver, hence relax the dependencies.
+The series is based on renesas-devel-v3.13-rc7-20140109v2, with Magnus'
+pinctrl, Wolfram's riic, and Simon's sh_eth work applied on top.
+[Simon: I don't know in which order you will merge these. If you want me
+ to rebase my patches, just ask! Thanks!]
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
----
- drivers/spi/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It was tested on the Genmai development board (genmai-reference), using
+an in-kernel version of Documentation/spi/spidev_test.c, exercising
+loopback mode on rspi1, with the same outcome as the SDK reference code.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index eb1f1ef5fa2e..4f6fbfd71135 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -370,7 +370,7 @@ config SPI_PXA2XX_PCI
- 
- config SPI_RSPI
- 	tristate "Renesas RSPI controller"
--	depends on (SUPERH || ARCH_SHMOBILE) && SH_DMAE_BASE
-+	depends on (SUPERH && SH_DMAE_BASE) || ARCH_SHMOBILE
- 	help
- 	  SPI driver for Renesas RSPI blocks.
- 
--- 
-1.7.9.5
+It will not yet work with the non-reference version of genmai, due to
+missing pinmux configuration in setup-r7s72100.c.
 
+    [1/5] pinctrl: sh-pfc: r7s72100: Add RSPI support
+    [2/5] ARM: shmobile: r7s72100: Add RSPI clocks
+    [3/5] ARM: shmobile: genmai: Add RSPI support
+    [4/5] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux
+    [5/5] ARM: shmobile: genmai: Enable RSPI in defconfig
+
+Changes in V2:
+  - Add "ARM: shmobile: genmai: Add RSPI children"
+  - Add "[RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux"
+
+Changes in V3:
+  - Implement review comments
+  - Add defconfig update
+  - Remove DT support patches, they will be sent in a separate series
+  - Merge "ARM: shmobile: r7s72100: Add RSPI platform devices" and
+    "ARM: shmobile: genmai: Add RSPI children"
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

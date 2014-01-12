@@ -1,48 +1,40 @@
 From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 0/9] Renesas RSPI/QSPI DT support
-Date: Sun, 12 Jan 2014 13:55:19 +0100
-Message-ID: <CAMuHMdWmFa-XsderYDp4jMw6r7fnwpm5XgQGfz8gEbCryXEkHg@mail.gmail.com>
-References: <1389525222-3482-1-git-send-email-geert@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: Kill superfluous cast in spi_w8r16()
+Date: Sun, 12 Jan 2014 13:59:06 +0100
+Message-ID: <1389531546-5867-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1389525222-3482-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, Jan 12, 2014 at 12:13 PM, Geert Uytterhoeven
-<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
->     [5/9] ARM: shmobile: r7s72100: Add RSPI clocks for DT
->     [6/9][V3] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
->     [7/9][V3] ARM: shmobile: genmai reference: Add RSPI nodes
->     [8/9] ARM: shmobile: r8a7791 dtsi: Add QSPI node
->     [9/9] ARM: shmobile: koelsch: Add QSPI nodes
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-Forgot to mention:
+spi_write_then_read() takes a "void *" for rxbuf, so there's no need to
+cast the buffer pointer to "u8 *".
 
-The ARM/shmobile part is based on renesas-devel-v3.13-rc7-20140109v2, with
-Magnus' pinctrl, Wolfram's riic, Simon's sh_eth, Valentine's i2c pinctrl
-and Laurent's SCIF DT work applied on top.
-[Simon: I don't know in which order you will merge these. If you want me
- to rebase my patches, just ask! Thanks!]
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+---
+ include/linux/spi/spi.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Gr{oetje,eeting}s,
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 8c62ba74dd91..02a759ef9bc3 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -847,7 +847,7 @@ static inline ssize_t spi_w8r16(struct spi_device *spi, u8 cmd)
+ 	ssize_t			status;
+ 	u16			result;
+ 
+-	status = spi_write_then_read(spi, &cmd, 1, (u8 *) &result, 2);
++	status = spi_write_then_read(spi, &cmd, 1, &result, 2);
+ 
+ 	/* return negative errno or unsigned value */
+ 	return (status < 0) ? status : result;
+-- 
+1.7.9.5
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

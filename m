@@ -1,201 +1,172 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH V2 8/8] spi: rspi: Add support for loopback mode
-Date: Sun, 12 Jan 2014 11:27:44 +0100
-Message-ID: <1389522464-1569-9-git-send-email-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH V2 5/8] spi: rspi: Add support for no TX only mode
+Date: Sun, 12 Jan 2014 11:27:41 +0100
+Message-ID: <1389522464-1569-6-git-send-email-geert@linux-m68k.org>
 References: <1389522464-1569-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1389522464-1569-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1389522464-1569-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-Add support for specifying loopback mode for RSPI only, based on the SDK
-reference code.
+Add support for RSPI variants lacking TX only mode, based on the SDK
+reference code. This is needed for RZ/A1H.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+The TX only mode flag is passed using platform data, defaulting to true for
+legacy RSPI. QSPI never has TX only mode.
+
+If TX only mode is not available, we have to wait for the receive interrupt
+bit to become set, and perform a dummy read, in the transmit path.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 ---
 V2:
-  - No changes
+  - Spelling s/nevers/never/
 
- drivers/spi/spi-rspi.c |   59 +++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 48 insertions(+), 11 deletions(-)
+ drivers/spi/spi-rspi.c   |   50 ++++++++++++++++++++++++++++++++++++++++------
+ include/linux/spi/rspi.h |    1 +
+ 2 files changed, 45 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 4b25c8617b02..04d512e1e894 100644
+index c3332d2b48e9..e507c2d6c710 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -170,8 +170,8 @@
- #define SPCMD_CPHA		0x0001	/* Clock Phase Setting */
+@@ -200,6 +200,7 @@ struct rspi_data {
  
- /* SPBFCR - Buffer Control Register */
--#define SPBFCR_TXRST		0x80	/* Transmit Buffer Data Reset (qspi only) */
--#define SPBFCR_RXRST		0x40	/* Receive Buffer Data Reset (qspi only) */
-+#define SPBFCR_TXRST		0x80	/* Transmit Buffer Data Reset */
-+#define SPBFCR_RXRST		0x40	/* Receive Buffer Data Reset */
- #define SPBFCR_TXTRG_MASK	0x30	/* Transmit Buffer Data Triggering Number */
- #define SPBFCR_RXTRG_MASK	0x07	/* Receive Buffer Data Triggering Number */
- 
-@@ -188,6 +188,7 @@ struct rspi_data {
- 	spinlock_t lock;
- 	struct clk *clk;
- 	u8 spsr;
-+	u8 sppcr;
- 	u8 spdcr;
- 	u8 data_width;
- 	u16 spcmd;
-@@ -256,7 +257,7 @@ struct spi_ops {
- 			struct spi_transfer *t);
- 	int (*receive_pio)(struct rspi_data *rspi, struct spi_message *mesg,
- 			   struct spi_transfer *t);
--
-+	u16 mode_bits;
+ 	unsigned dma_width_16bit:1;
+ 	unsigned dma_callbacked:1;
++	unsigned txmode:1;
  };
  
+ static void rspi_write8(const struct rspi_data *rspi, u8 data, u16 offset)
+@@ -259,6 +260,20 @@ struct spi_ops {
  /*
-@@ -317,8 +318,8 @@ static int rspi_set_config_register(const struct rspi_data *rspi,
- {
- 	int spbr;
- 
--	/* Sets output mode(CMOS) and MOSI signal(from previous transfer) */
--	rspi_write8(rspi, 0x00, RSPI_SPPCR);
-+	/* Sets output mode */
-+	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
- 
- 	/* Sets transfer bit rate */
- 	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz) - 1;
-@@ -369,8 +370,8 @@ static int qspi_set_config_register(const struct rspi_data *rspi,
- 	u16 spcmd;
- 	int spbr;
- 
--	/* Sets output mode(CMOS) and MOSI signal(from previous transfer) */
--	rspi_write8(rspi, 0x00, RSPI_SPPCR);
-+	/* Sets output mode */
-+	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
- 
- 	/* Sets transfer bit rate */
- 	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz);
-@@ -413,6 +414,21 @@ static int qspi_set_config_register(const struct rspi_data *rspi,
- 
- #define set_config_register(spi, n) spi->ops->set_config_register(spi, n)
- 
-+static void rspi_clear_rxbuf(struct rspi_data *rspi)
+  * functions for RSPI
+  */
++static void rspi_set_txmode(const struct rspi_data *rspi)
 +{
-+	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPBFCR) | SPBFCR_RXRST,
-+		    RSPI_SPBFCR);
-+	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPBFCR) & (~SPBFCR_RXRST),
-+		    RSPI_SPBFCR);
-+}
-+static void rspi_clear_txbuf(struct rspi_data *rspi)
-+{
-+	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPBFCR) | SPBFCR_TXRST,
-+		    RSPI_SPBFCR);
-+	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPBFCR) & (~SPBFCR_TXRST),
-+		    RSPI_SPBFCR);
++	if (rspi->txmode)
++		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | SPCR_TXMD,
++			    RSPI_SPCR);
 +}
 +
- static void rspi_enable_irq(const struct rspi_data *rspi, u8 enable)
- {
- 	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | enable, RSPI_SPCR);
-@@ -452,6 +468,13 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
- {
- 	int remain = t->len;
- 	const u8 *data = t->tx_buf;
++static void rspi_clear_txmode(const struct rspi_data *rspi)
++{
++	if (rspi->txmode)
++		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_TXMD,
++			    RSPI_SPCR);
++}
 +
-+	if (rspi->sppcr & SPPCR_SPLP) {
-+		/* loopback mode */
-+		rspi_clear_txbuf(rspi);
-+		rspi_clear_rxbuf(rspi);
-+	}
-+
- 	while (remain > 0) {
- 		rspi_set_txmode(rspi);
- 
-@@ -461,7 +484,8 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
- 			return -ETIMEDOUT;
- 		}
- 
--		if (!rspi->txmode && remain != t->len) {
-+		if (!rspi->txmode && remain != t->len &&
-+		    !(rspi->sppcr & SPPCR_SPLP)) {
- 			if (rspi_wait_for_interrupt(rspi, SPSR_SPRF,
- 						    SPCR_SPRIE) < 0) {
- 				dev_err(&rspi->master->dev,
-@@ -478,7 +502,7 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
- 	/* Waiting for the last transmition */
- 	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
- 
--	if (!rspi->txmode) {
-+	if (!rspi->txmode && !(rspi->sppcr & SPPCR_SPLP)) {
- 		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
- 			dev_err(&rspi->master->dev,
- 				"%s: receive timeout\n", __func__);
-@@ -651,7 +675,7 @@ static void rspi_receive_init(const struct rspi_data *rspi)
- 	u8 spsr;
- 
- 	spsr = rspi_read8(rspi, RSPI_SPSR);
--	if (spsr & SPSR_SPRF)
-+	if (spsr & SPSR_SPRF && !(rspi->sppcr & SPPCR_SPLP))
- 		rspi_read_data(rspi);	/* dummy read */
- 	if (spsr & SPSR_OVRF)
- 		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPSR) & ~SPSR_OVRF,
-@@ -689,6 +713,12 @@ static int rspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
- 		remain--;
+ static int rspi_parse_platform_data(struct rspi_data *rspi,
+ 				    const struct rspi_plat_data *rspi_pd)
+ {
+@@ -283,6 +298,11 @@ static int rspi_parse_platform_data(struct rspi_data *rspi,
+ 		rspi->spdcr = 0;
  	}
  
-+	if (rspi->sppcr & SPPCR_SPLP) {
-+		/* loopback mode */
-+		rspi_clear_txbuf(rspi);
-+		rspi_clear_rxbuf(rspi);
-+	}
++	if (rspi_pd)
++		rspi->txmode = rspi_pd->txmode;
++	else
++		rspi->txmode = 1;	/* legacy RSPI defaults to true */
 +
  	return 0;
  }
  
-@@ -918,6 +948,11 @@ static int rspi_setup(struct spi_device *spi)
- 	if (spi->mode & SPI_CPHA)
- 		rspi->spcmd |= SPCMD_CPHA;
+@@ -329,6 +349,9 @@ static int qspi_parse_platform_data(struct rspi_data *rspi,
+ 	rspi->data_width = 8;
+ 	rspi->spdcr = 0;
  
-+	/* CMOS output mode and MOSI signal from previous transfer */
-+	rspi->sppcr = 0;
-+	if (spi->mode & SPI_LOOP)
-+		rspi->sppcr |= SPPCR_SPLP;
++	/* No TX only mode */
++	rspi->txmode = 0;
 +
- 	set_config_register(rspi, 8);
- 
  	return 0;
-@@ -1095,7 +1130,7 @@ static int rspi_probe(struct platform_device *pdev)
- 	master->setup = rspi_setup;
- 	master->transfer = rspi_transfer;
- 	master->cleanup = rspi_cleanup;
--	master->mode_bits = SPI_CPHA | SPI_CPOL;
-+	master->mode_bits = ops->mode_bits;
+ }
  
- 	ret = ops->parse_platform_data(rspi, rspi_pd);
- 	if (ret < 0) {
-@@ -1151,6 +1186,7 @@ static struct spi_ops rspi_ops = {
- 	.set_config_register =		rspi_set_config_register,
- 	.send_pio =			rspi_send_pio,
- 	.receive_pio =			rspi_receive_pio,
-+	.mode_bits =			SPI_CPHA | SPI_CPOL | SPI_LOOP,
+@@ -422,8 +445,7 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 	int remain = t->len;
+ 	const u8 *data = t->tx_buf;
+ 	while (remain > 0) {
+-		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | SPCR_TXMD,
+-			    RSPI_SPCR);
++		rspi_set_txmode(rspi);
+ 
+ 		if (rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE) < 0) {
+ 			dev_err(&rspi->master->dev,
+@@ -431,6 +453,15 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 			return -ETIMEDOUT;
+ 		}
+ 
++		if (!rspi->txmode && remain != t->len) {
++			if (rspi_wait_for_interrupt(rspi, SPSR_SPRF,
++						    SPCR_SPRIE) < 0) {
++				dev_err(&rspi->master->dev,
++					"%s: receive timeout\n", __func__);
++				return -ETIMEDOUT;
++			}
++			rspi_read_data(rspi);	/* dummy read */
++		}
+ 		rspi_write_data(rspi, *data);
+ 		data++;
+ 		remain--;
+@@ -439,6 +470,14 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 	/* Waiting for the last transmition */
+ 	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
+ 
++	if (!rspi->txmode) {
++		if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
++			dev_err(&rspi->master->dev,
++				"%s: receive timeout\n", __func__);
++			return -ETIMEDOUT;
++		}
++		rspi_read_data(rspi);	/* dummy read */
++	}
+ 	return 0;
+ }
+ 
+@@ -570,7 +609,7 @@ static int rspi_send_dma(struct rspi_data *rspi, struct spi_transfer *t)
+ 	for (i = 0; i < rspi->num_irqs; i++)
+ 		disable_irq(rspi->irqs[i]);
+ 
+-	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | SPCR_TXMD, RSPI_SPCR);
++	rspi_set_txmode(rspi);
+ 	rspi_enable_irq(rspi, SPCR_SPTIE);
+ 	rspi->dma_callbacked = 0;
+ 
+@@ -621,8 +660,7 @@ static int rspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 
+ 	data = t->rx_buf;
+ 	while (remain > 0) {
+-		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_TXMD,
+-			    RSPI_SPCR);
++		rspi_clear_txmode(rspi);
+ 
+ 		if (rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE) < 0) {
+ 			dev_err(&rspi->master->dev,
+@@ -756,7 +794,7 @@ static int rspi_receive_dma(struct rspi_data *rspi, struct spi_transfer *t)
+ 	for (i = 0; i < rspi->num_irqs; i++)
+ 		disable_irq(rspi->irqs[i]);
+ 
+-	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_TXMD, RSPI_SPCR);
++	rspi_clear_txmode(rspi);
+ 	rspi_enable_irq(rspi, SPCR_SPTIE | SPCR_SPRIE);
+ 	rspi->dma_callbacked = 0;
+ 
+diff --git a/include/linux/spi/rspi.h b/include/linux/spi/rspi.h
+index 7316dd9c7ba9..0f5f612f0092 100644
+--- a/include/linux/spi/rspi.h
++++ b/include/linux/spi/rspi.h
+@@ -28,6 +28,7 @@ struct rspi_plat_data {
+ 	unsigned int dma_rx_id;
+ 
+ 	unsigned dma_width_16bit:1;	/* DMAC read/write width = 16-bit */
++	unsigned txmode:1;		/* TX only mode */
+ 
+ 	u16 num_chipselect;
  };
- 
- static struct spi_ops qspi_ops = {
-@@ -1158,6 +1194,7 @@ static struct spi_ops qspi_ops = {
- 	.set_config_register =		qspi_set_config_register,
- 	.send_pio =			qspi_send_pio,
- 	.receive_pio =			qspi_receive_pio,
-+	.mode_bits =			SPI_CPHA | SPI_CPOL,
- };
- 
- static struct platform_device_id spi_driver_ids[] = {
 -- 
 1.7.9.5
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

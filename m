@@ -1,45 +1,57 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH V2 0/3] SoC and board integration for QSPI on r8a7791/koelsch
-Date: Sun, 12 Jan 2014 12:00:29 +0100
-Message-ID: <1389524433-2823-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org
-To: Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH V2 4/4] ARM: shmobile: koelsch: Enable RSPI and MTD_M25P80 in defconfig
+Date: Sun, 12 Jan 2014 12:00:33 +0100
+Message-ID: <1389524433-2823-5-git-send-email-geert@linux-m68k.org>
+References: <1389524433-2823-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1389524433-2823-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This series adds support for the Spansion s25fl512s SPI FLASH on the
-r8a7791-based Koelsch board. It is based on
-renesas-devel-v3.13-rc7-20140109v2, with Valentine's i2c pinctrl and
-Laurent's SCIF DT work applied on top.
-[Simon: I don't know in which order you will merge these. If you want me
- to rebase my patches, just ask! Thanks!]
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-This applies to non-multiplatform Koelsch only.  Multi-platform Koelsch
-support will be added in a separate series.
+This enables support for the Spansion s25fl512s SPI FLASH on QSPI.
 
-    [1/4] pinctrl: sh-pfc: r8a7791: Add QSPI pin groups
-    [2/4] ARM: shmobile: r8a7791: add QSPI clocks
-    [3/4] ARM: shmobile: koelsch: Add QSPI support
-    [4/4] ARM: shmobile: koelsch: Enable RSPI and MTD_M25P80 in
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+---
+V2:
+  - No changes
 
-Changes in V2:
-  - Split QSPI pins in 2 sets of 3 pin groups
-  - Add "[PATCH V2 4/4] ARM: shmobile: koelsch: Enable RSPI and MTD_M25P80
-    in defconfig"
+ arch/arm/configs/koelsch_defconfig |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-Thanks!
-
-Gr{oetje,eeting}s,
-
-						Geert
+diff --git a/arch/arm/configs/koelsch_defconfig b/arch/arm/configs/koelsch_defconfig
+index f795ea42a8fc..8f283f725a12 100644
+--- a/arch/arm/configs/koelsch_defconfig
++++ b/arch/arm/configs/koelsch_defconfig
+@@ -36,6 +36,8 @@ CONFIG_UNIX=y
+ CONFIG_INET=y
+ CONFIG_IP_PNP=y
+ CONFIG_IP_PNP_DHCP=y
++CONFIG_MTD=y
++CONFIG_MTD_M25P80=y
+ CONFIG_NETDEVICES=y
+ # CONFIG_NET_VENDOR_ARC is not set
+ # CONFIG_NET_CADENCE is not set
+@@ -58,6 +60,8 @@ CONFIG_SH_ETH=y
+ CONFIG_SERIAL_SH_SCI=y
+ CONFIG_SERIAL_SH_SCI_NR_UARTS=20
+ CONFIG_SERIAL_SH_SCI_CONSOLE=y
++CONFIG_SPI=y
++CONFIG_SPI_RSPI=y
+ # CONFIG_HWMON is not set
+ CONFIG_THERMAL=y
+ CONFIG_RCAR_THERMAL=y
+-- 
+1.7.9.5
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

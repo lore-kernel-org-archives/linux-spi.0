@@ -1,10 +1,11 @@
 From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH TRIVIAL] spi: rspi: Spelling s/transmition/transmission/
-Date: Sun, 12 Jan 2014 14:06:58 +0100
-Message-ID: <1389532018-6449-1-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH TRIVIAL] spi/s3c64xx: Correct indentation
+Date: Sun, 12 Jan 2014 14:07:50 +0100
+Message-ID: <1389532070-6501-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
@@ -13,31 +14,22 @@ From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
- drivers/spi/spi-rspi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-s3c64xx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 0d6d6cf07100..8f0bd2694568 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -528,7 +528,7 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
- 		remain--;
- 	}
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 4c4b0a1219a7..362c3137d5c6 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -890,7 +890,7 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
+ 	unsigned long flags;
+ 	int use_dma;
  
--	/* Waiting for the last transmition */
-+	/* Waiting for the last transmission */
- 	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
+-		reinit_completion(&sdd->xfer_completion);
++	reinit_completion(&sdd->xfer_completion);
  
- 	if (!rspi->txmode && !(rspi->sppcr & SPPCR_SPLP)) {
-@@ -574,7 +574,7 @@ static int qspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
- 		remain--;
- 	}
- 
--	/* Waiting for the last transmition */
-+	/* Waiting for the last transmission */
- 	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
- 
- 	return 0;
+ 	/* Only BPW and Speed may change across transfers */
+ 	bpw = xfer->bits_per_word;
 -- 
 1.7.9.5
 

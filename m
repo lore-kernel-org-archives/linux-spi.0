@@ -1,137 +1,46 @@
 From: sourav <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH] spi: ti-qspi: Simplify qspi_write_msg and qspi_read_msg
- implementation
-Date: Sun, 12 Jan 2014 13:56:08 +0530
-Message-ID: <52D251A0.1000000@ti.com>
-References: <1389508822.13361.3.camel@phoenix>
+Subject: Re: [RFC][PATCH] spi: ti-qspi: Fixup driver name
+Date: Sun, 12 Jan 2014 13:56:22 +0530
+Message-ID: <52D251AE.6080007@ti.com>
+References: <1389510152.13361.4.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1389508822.13361.3.camel@phoenix>
+In-Reply-To: <1389510152.13361.4.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sunday 12 January 2014 12:10 PM, Axel Lin wrote:
-> Make the unit of wlen to be byte, and simplify the code to avoid duplicate
-> code for different wlen cases.
+On Sunday 12 January 2014 12:32 PM, Axel Lin wrote:
+> The driver name in current code looks like a compatible string which is not
+> the naming convention for platform drivers.
+> Fix it and also add modalias since this driver can be built as a module.
 >
 > Signed-off-by: Axel Lin<axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 > ---
->   drivers/spi/spi-ti-qspi.c | 61 ++++++++++++++++-------------------------------
->   1 file changed, 20 insertions(+), 41 deletions(-)
+>   drivers/spi/spi-ti-qspi.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 >
 > diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
-> index 4b413e9..2a1ab49 100644
+> index 2a1ab49..3d09265 100644
 > --- a/drivers/spi/spi-ti-qspi.c
 > +++ b/drivers/spi/spi-ti-qspi.c
-> @@ -208,53 +208,36 @@ static int qspi_write_msg(struct ti_qspi *qspi, struct spi_transfer *t)
->   	txbuf = t->tx_buf;
->   	cmd = qspi->cmd | QSPI_WR_SNGL;
->   	count = t->len;
-> -	wlen = t->bits_per_word;
-> +	wlen = t->bits_per_word>>  3;	/* in bytes */
->
->   	while (count) {
->   		switch (wlen) {
-> -		case 8:
-> +		case 1:
->   			dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %02x\n",
->   					cmd, qspi->dc, *txbuf);
->   			writeb(*txbuf, qspi->base + QSPI_SPI_DATA_REG);
-> -			ti_qspi_write(qspi, cmd, QSPI_SPI_CMD_REG);
-> -			ret = wait_for_completion_timeout(&qspi->transfer_complete,
-> -					QSPI_COMPLETION_TIMEOUT);
-> -			if (ret == 0) {
-> -				dev_err(qspi->dev, "write timed out\n");
-> -				return -ETIMEDOUT;
-> -			}
-> -			txbuf += 1;
-> -			count -= 1;
->   			break;
-> -		case 16:
-> +		case 2:
->   			dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %04x\n",
->   					cmd, qspi->dc, *txbuf);
->   			writew(*((u16 *)txbuf), qspi->base + QSPI_SPI_DATA_REG);
-> -			ti_qspi_write(qspi, cmd, QSPI_SPI_CMD_REG);
-> -			ret = wait_for_completion_timeout(&qspi->transfer_complete,
-> -				QSPI_COMPLETION_TIMEOUT);
-> -			if (ret == 0) {
-> -				dev_err(qspi->dev, "write timed out\n");
-> -				return -ETIMEDOUT;
-> -			}
-> -			txbuf += 2;
-> -			count -= 2;
->   			break;
-> -		case 32:
-> +		case 4:
->   			dev_dbg(qspi->dev, "tx cmd %08x dc %08x data %08x\n",
->   					cmd, qspi->dc, *txbuf);
->   			writel(*((u32 *)txbuf), qspi->base + QSPI_SPI_DATA_REG);
-> -			ti_qspi_write(qspi, cmd, QSPI_SPI_CMD_REG);
-> -			ret = wait_for_completion_timeout(&qspi->transfer_complete,
-> -				QSPI_COMPLETION_TIMEOUT);
-> -			if (ret == 0) {
-> -				dev_err(qspi->dev, "write timed out\n");
-> -				return -ETIMEDOUT;
-> -			}
-> -			txbuf += 4;
-> -			count -= 4;
->   			break;
->   		}
-> +
-> +		ti_qspi_write(qspi, cmd, QSPI_SPI_CMD_REG);
-> +		ret = wait_for_completion_timeout(&qspi->transfer_complete,
-> +						  QSPI_COMPLETION_TIMEOUT);
-> +		if (ret == 0) {
-> +			dev_err(qspi->dev, "write timed out\n");
-> +			return -ETIMEDOUT;
-> +		}
-> +		txbuf += wlen;
-> +		count -= wlen;
->   	}
->
->   	return 0;
-> @@ -280,7 +263,7 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t)
->   		break;
->   	}
->   	count = t->len;
-> -	wlen = t->bits_per_word;
-> +	wlen = t->bits_per_word>>  3;	/* in bytes */
->
->   	while (count) {
->   		dev_dbg(qspi->dev, "rx cmd %08x dc %08x\n", cmd, qspi->dc);
-> @@ -292,22 +275,18 @@ static int qspi_read_msg(struct ti_qspi *qspi, struct spi_transfer *t)
->   			return -ETIMEDOUT;
->   		}
->   		switch (wlen) {
-> -		case 8:
-> +		case 1:
->   			*rxbuf = readb(qspi->base + QSPI_SPI_DATA_REG);
-> -			rxbuf += 1;
-> -			count -= 1;
->   			break;
-> -		case 16:
-> +		case 2:
->   			*((u16 *)rxbuf) = readw(qspi->base + QSPI_SPI_DATA_REG);
-> -			rxbuf += 2;
-> -			count -= 2;
->   			break;
-> -		case 32:
-> +		case 4:
->   			*((u32 *)rxbuf) = readl(qspi->base + QSPI_SPI_DATA_REG);
-> -			rxbuf += 4;
-> -			count -= 4;
->   			break;
->   		}
-> +		rxbuf += wlen;
-> +		count -= wlen;
->   	}
->
->   	return 0;
+> @@ -567,7 +567,7 @@ static struct platform_driver ti_qspi_driver = {
+>   	.probe	= ti_qspi_probe,
+>   	.remove = ti_qspi_remove,
+>   	.driver = {
+> -		.name	= "ti,dra7xxx-qspi",
+> +		.name	= "ti-qspi",
+>   		.owner	= THIS_MODULE,
+>   		.pm =&ti_qspi_pm_ops,
+>   		.of_match_table = ti_qspi_match,
+> @@ -579,3 +579,4 @@ module_platform_driver(ti_qspi_driver);
+>   MODULE_AUTHOR("Sourav Poddar<sourav.poddar-l0cyMroinI0@public.gmane.org>");
+>   MODULE_LICENSE("GPL v2");
+>   MODULE_DESCRIPTION("TI QSPI controller driver");
+> +MODULE_ALIAS("platform:ti-qspi");
 
 Acked-by: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
 --

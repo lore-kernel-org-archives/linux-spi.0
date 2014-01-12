@@ -1,39 +1,63 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH TRIVIAL] spi/s3c64xx: Correct indentation
-Date: Sun, 12 Jan 2014 14:07:50 +0100
-Message-ID: <1389532070-6501-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
-	Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: [PATCH V3 0/5] SoC and board integration for RSPI on r7s72100/genmai
+Date: Sun, 12 Jan 2014 22:32:27 +0100
+Message-ID: <2996587.8yFdzmUGOy@avalon>
+References: <1389523723-2288-1-git-send-email-geert@linux-m68k.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-sh@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1389523723-2288-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Hi Geert,
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thank you for the patches.
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 4c4b0a1219a7..362c3137d5c6 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -890,7 +890,7 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 	unsigned long flags;
- 	int use_dma;
- 
--		reinit_completion(&sdd->xfer_completion);
-+	reinit_completion(&sdd->xfer_completion);
- 
- 	/* Only BPW and Speed may change across transfers */
- 	bpw = xfer->bits_per_word;
+On Sunday 12 January 2014 11:48:38 Geert Uytterhoeven wrote:
+> This patch series integrates Renesas RSPI on the RZ/A1H aka R7S72100 SoC,
+> and the Genmai development board.
+> 
+> The series is based on renesas-devel-v3.13-rc7-20140109v2, with Magnus'
+> pinctrl, Wolfram's riic, and Simon's sh_eth work applied on top.
+> [Simon: I don't know in which order you will merge these. If you want me
+>  to rebase my patches, just ask! Thanks!]
+> 
+> It was tested on the Genmai development board (genmai-reference), using
+> an in-kernel version of Documentation/spi/spidev_test.c, exercising
+> loopback mode on rspi1, with the same outcome as the SDK reference code.
+> 
+> It will not yet work with the non-reference version of genmai, due to
+> missing pinmux configuration in setup-r7s72100.c.
+
+The whole series looks good to me. The first patch depends on r7s72100 pinmux 
+support, for which I'm still waiting a new version from Magnus. The rest could 
+already be applied as far as I'm concerned.
+
+>     [1/5] pinctrl: sh-pfc: r7s72100: Add RSPI support
+>     [2/5] ARM: shmobile: r7s72100: Add RSPI clocks
+>     [3/5] ARM: shmobile: genmai: Add RSPI support
+>     [4/5] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux
+>     [5/5] ARM: shmobile: genmai: Enable RSPI in defconfig
+> 
+> Changes in V2:
+>   - Add "ARM: shmobile: genmai: Add RSPI children"
+>   - Add "[RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux"
+> 
+> Changes in V3:
+>   - Implement review comments
+>   - Add defconfig update
+>   - Remove DT support patches, they will be sent in a separate series
+>   - Merge "ARM: shmobile: r7s72100: Add RSPI platform devices" and
+>     "ARM: shmobile: genmai: Add RSPI children"
+
 -- 
-1.7.9.5
+Regards,
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Laurent Pinchart
+

@@ -1,56 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sh: Use spi_sh_clear_bit() instead of open-coded
-Date: Mon, 13 Jan 2014 11:26:40 +0000
-Message-ID: <20140113112640.GH29039@sirena.org.uk>
-References: <1389578444.18562.1.camel@phoenix>
+Subject: Re: [PATCH TRIVIAL] spi: rspi: Spelling s/transmition/transmission/
+Date: Mon, 13 Jan 2014 11:29:47 +0000
+Message-ID: <20140113112947.GI29039@sirena.org.uk>
+References: <1389532018-6449-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="nCRcqX7cEx7rr7Pe"
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="fqSO13Wp+IaiYtoI"
+Cc: Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1389578444.18562.1.camel@phoenix>
+In-Reply-To: <1389532018-6449-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---nCRcqX7cEx7rr7Pe
+--fqSO13Wp+IaiYtoI
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 13, 2014 at 10:00:44AM +0800, Axel Lin wrote:
-> We have a spi_sh_clear_bit() function, there's no reason not to use it.
+On Sun, Jan 12, 2014 at 02:06:58PM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 >=20
-> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-Applied, thanks.
+This doesn't appear to apply against current code (topic/rspi or
+for-next), please check and resend.
 
---nCRcqX7cEx7rr7Pe
+--fqSO13Wp+IaiYtoI
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS081tAAoJELSic+t+oim94VUP/1tuPcfWCzaE8AyJOity+StV
-gq8UyG9vA2sBJ+mRBkSK1uqflXjlGhHxNzk4LoCosxcYPbNzLzLiU2vGr2l045YO
-hkX4MuOOViykBkdHpRGkqrwwBc8qzW3HFFcWytPPpo3xtRZnfDxNPAxpm1+Ek0rx
-4S6c+fGf3q0FYmioTiYwWk61yKxLqM7F6MN5k56BZqt2qhYtP2qbckAPTymh8CSH
-t987JMD7daO3VW8CUE8EXZsf0SdNjyLGA1Nx7pe9lrnjSTCEm+4i7p0740ANUWH6
-vRaf5f4iLhT67dbv1C2dSZ8EzKpo4sk6s5PbbFGFCJkICgEEakpxS3jWwkENaU6J
-QtdIn8POTk7ritnwJ+AwDUN5aE3b78aXSfrAPnKxor1ZrCJJycto533HdPZmKjCi
-zry2B4scsTJC9NrQfxTyZ3g7fSMdeL072qE9utAX2bLw4iAZT0ofLckqINIhTZA5
-Vulqb7VuPy1+FlUw6wL9yDULfqXljbj4xeb1JVwG3DhzSjwgte+JqPF3ULQpDXib
-cajWHYu6kGH88F+/MMyqWXmqxzURV8yb6LIukzpaBCZOWOqOjGVyZg4Bsggs7I8n
-nUETwXKX6b4ob3qKxlZH9E1P/pkZGS8KlGtPSG0Pwb+go/h2qP3Da4lzGPQ1ragh
-sXuGiYHWriMgMGDDB+V0
-=/AA0
+iQIcBAEBAgAGBQJS084nAAoJELSic+t+oim9TH8QAI/+e9xtgS5i5Fa4I+PfPfE+
+hlFP2TzkY9F9I905ldLXhOl1lookXtWVVUK2ZNKrhXJ7y3kCVGjld9LwQuCiio4b
+pAmzi9cUK9pZjv3qeyooj3ZHoxwSrFU13IJ5F2+HF0jMMyp8X1SpwDAhx09DHka+
+yAVYwudtl07jLpfS6OuNbOc+DjbdkkW6NqNiAWuZ3iNZlGFWdpaQ1ftOZAxOEPSi
+FlY/e8C1mTrqFF2rm9RH/NxW34D4z+L8l/juvlApw68hDJtTwu5QVIjeBPhhxhmc
+zSM6nIQMraBwXQ+gL1ucm+0MC1IEQJsP6FXHVUNF8bma4eA9zIbvu+knt98UBV2j
+Z5dFrQgiCJ/fjF803bgz5GzPoiEnMZ5FEoCAhb9sUj+Yl0rdjFZshd1vvsjGe78y
+uw9XPCKhvBMcllv7oOrpQJJG/UjqDjqwsECq+wceR9kj7B00Q6Krabp2yN+v5RUv
+hZTiwK27K2/C2IbwxJtzF4jxBgRRY49lFTU6ahi27U8J0PE8YxxomxazzOLl7Ays
+5+c3VLQMriaFyZ25nXcgVFFKV2DKN20Qytu0bnkUK04/p/p0b6mf5qOnadLX/mnu
+hnZPVu8p1XCddufv3mRFg/ROt6RkHYBGjV4uLW8828bXOkmSCscO7SB264BtsDdP
+J46avDJRl0+NxKGwMkT4
+=OMMb
 -----END PGP SIGNATURE-----
 
---nCRcqX7cEx7rr7Pe--
+--fqSO13Wp+IaiYtoI--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

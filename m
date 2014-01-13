@@ -1,84 +1,72 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
-Date: Mon, 13 Jan 2014 17:35:25 +0000
-Message-ID: <20140113173525.GF29039@sirena.org.uk>
-References: <1389620911-3890-1-git-send-email-rui.zhang@intel.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH V2 4/8] spi: rspi: Add support for 8-bit Data Register access
+Date: Mon, 13 Jan 2014 20:05:34 +0100
+Message-ID: <CAMuHMdU4mkayFPY-5+hHChWQnPiqsKVHhKYKrY1MxLf57pjLUw@mail.gmail.com>
+References: <1389522464-1569-1-git-send-email-geert@linux-m68k.org>
+	<1389522464-1569-5-git-send-email-geert@linux-m68k.org>
+	<20140113122912.GT29039@sirena.org.uk>
+	<CAMuHMdViLJD9O4gnovR6x7RTWor9GYPBZuzP5X7JmVw5g=o4kw@mail.gmail.com>
+	<20140113155507.GZ29039@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Oaap7OtF9SpYl9KE"
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1389620911-3890-1-git-send-email-rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi@vger.kernel.org,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <20140113155507.GZ29039@sirena.org.uk>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Mon, Jan 13, 2014 at 4:55 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Mon, Jan 13, 2014 at 02:29:28PM +0100, Geert Uytterhoeven wrote:
+>> On Mon, Jan 13, 2014 at 1:29 PM, Mark Brown <broonie@kernel.org> wrote:
+>> > This looks very strange - if no platform data is specified the value set
+>> > for spdcr is one that can't be arrived at via platform data.  What's
+>> > going on here?  It'd seem more idiomatic to treat missing platform data
+>> > and a zero data_width identically too.
+>
+>> The else branch is also taken when platform data is specified, but
+>> data_width is zero. So you can indicate legacy 16-bit data width through
+>> platform data.
+>> It's unfortunate that the bits inside spdcr to configure the data width are
+>> different for RSPI on SH and RSPI on ARM.
+>
+> So what you want here is either a separate bit of platform data for the
+> architecture or just some ifdefs.  Deciding what architecture the driver
+> is running on based on platform data isn't at all clear, someone is
+> likely to come along and fix this as a cleanup at some point especially
+> given the lack of comments to indicate that this is intentional.
 
---Oaap7OtF9SpYl9KE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'll add more comments to clarify.
 
-On Mon, Jan 13, 2014 at 09:48:31PM +0800, Zhang Rui wrote:
-> ACPI enumerated devices has ACPI style _HID and _CID strings,
-> all of these strings can be used for both driver loading and matching.
+I don't want to add an architecture ifdef, as I'm not 100% sure there exist
+no ARM SoCs with the old SH RSPI core, or vice versa.
 
-> But currently, in Platform, I2C and SPI bus, only the ACPI style
-> driver matching is supported by invoking acpi_driver_match_device()
-> in bus .match() callback.
+The several RSPI/QSPI IP cores are very similar, but they do have different
+feature sets and options. During the evolution, features are dropped, and
+bits in registers become unused and reserved. At the same time, new features
+are introduced, using up unused and reserved register bits, possibly
+reusing bits for dropped features...
 
-I don't understand what this means, sorry.  As far as I can tell "ACPI
-style _HID and _CID strings" are something different to "ACPI style
-driver matching" but what that actually means is not at all clear to me
-so I don't know what problem this is intended to fix.
+Currently there are no plans to convert SH to device tree, and the single
+user under arch/sh (for SH7757) doesn't even pass platform data.
+Hence the defaults for missing platform data.
+As there do exist other SH775x SoCs with the same RSPI core, there's
+probably out-of-tree code that uses it, too, so I don't want to break
+backwards-compatiblity, if possible.
 
-Please also always remember to CC maintainers on patches.
+So far my rationale for some of the decisions I made when working on
+the driver. I hope more cleanups can be made when platform data is
+deprecated and removed.
 
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 349ebba..ab70eda 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -58,6 +58,11 @@ static ssize_t
->  modalias_show(struct device *dev, struct device_attribute *a, char *buf)
->  {
->  	const struct spi_device	*spi =3D to_spi_device(dev);
-> +	int len;
-> +
-> +	len =3D acpi_device_modalias(dev, buf, PAGE_SIZE);
-> +	if (len !=3D -ENODEV)
-> +		return len;
-> =20
->  	return sprintf(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
->  }
+Gr{oetje,eeting}s,
 
-What does this do and why can't acpi_driver_match_device() handle this
-like it does for other ACPI devices?  We don't need to add such code for
-other firmware interfaces...
+                        Geert
 
---Oaap7OtF9SpYl9KE
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS1CPZAAoJELSic+t+oim9SoYP/RYp4eAn4U/DgMOpKnEJevUI
-4syEAhXA0USolseyLUdyI7WpLsII+xvPkAUzYDrpBDm8takZY8rlGhejT9CGmeAO
-KXq5fQM6MLcYw8i7R5f3LrwHDaqgqudQK5eEsz2p+MKqGHl2DhGgbr+UaxT33UiN
-XYWH/kDfeGgNCkF4crJcthbCiuNCXrjyx4KbrzJJNO9E62WCDetltf185fXt9nhl
-TtiufrH3K4IgBEDcZ47ITdWz+vv0ciEJsX+trVCB35XsCfBws6150vdIwyXEhpgG
-2qHZIru84pNp1g3je7+DSfbuyTSesdIB5T6lh5M6sgc/JEEj2F0hx7jS4L8+SZcP
-8O3E6v+UIFFx8tz5WJIqvJmMWZMrPbxhc83uthOf5ZFNZkqCr9JcPDB8JVGFGVMb
-BdUa89+9AJn7z1qELCrIZkuV/DGmp0E4eDwanx9+fpNTMJpAzPi+KksFW6aZDhme
-dn1qGvXpuk2fCU5995P9DGfd7juv3LiInPxTg0D5YP1a5rFzsZNTzXdulxCq2Hi4
-gy5vhYnTuc+R6PVyZyWRsN/zUy587zoqxLMck54pJbzzd4f5cgd1+HzkpR6tLvkR
-6Rnjx3oeeQcT7/whsDW9dFeL9oXQdaQ+bt/Yf3MWZJw3CxLySFApyGnbp7LaFPxY
-wpMoKiKrA+y6hGzh+bNJ
-=tMHc
------END PGP SIGNATURE-----
-
---Oaap7OtF9SpYl9KE--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

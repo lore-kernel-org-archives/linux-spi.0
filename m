@@ -1,58 +1,81 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2 2/8] spi: rspi: Add more QSPI register documentation
-Date: Mon, 13 Jan 2014 12:10:44 +0000
-Message-ID: <20140113121044.GO29039@sirena.org.uk>
+Subject: Re: [PATCH V2 3/8] spi: rspi: Add support for more than one interrupt
+Date: Mon, 13 Jan 2014 12:16:41 +0000
+Message-ID: <20140113121641.GP29039@sirena.org.uk>
 References: <1389522464-1569-1-git-send-email-geert@linux-m68k.org>
- <1389522464-1569-3-git-send-email-geert@linux-m68k.org>
+ <1389522464-1569-4-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2wyf/X6i9kneRjiV"
+	protocol="application/pgp-signature"; boundary="BfIB/hDtUWEgpOfz"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1389522464-1569-3-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1389522464-1569-4-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---2wyf/X6i9kneRjiV
+--BfIB/hDtUWEgpOfz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jan 12, 2014 at 11:27:38AM +0100, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
->=20
-> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-> Acked-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+On Sun, Jan 12, 2014 at 11:27:39AM +0100, Geert Uytterhoeven wrote:
 
-Applied, thanks.
+> +	for (i = 0; i < MAX_NUM_IRQ; i++) {
+> +		irq = platform_get_irq(pdev, i);
+> +		if (irq < 0) {
+> +			if (rspi->num_irqs)
+> +				break;
+> +			dev_err(&pdev->dev, "platform_get_irq error\n");
+> +			ret = -ENODEV;
+> +			goto error1;
+> +		}
+> +		ret = devm_request_irq(&pdev->dev, irq, rspi_irq, 0,
+> +				       dev_name(&pdev->dev), rspi);
+> +		if (ret < 0) {
+> +			dev_err(&pdev->dev, "request_irq %d error\n", irq);
+> +			goto error1;
+> +		}
+> +		rspi->irqs[i] = irq;
+> +		rspi->num_irqs++;
+>  	}
 
---2wyf/X6i9kneRjiV
+This should really have some way of identifying which interrupt is which
+either through defines in the header or by using _get_irq_byname() (the
+latter is a bit neater) - even if the driver can get away with treating
+all interrupts interchangably now it would seem very surprising if they
+were totally interchangible so the driver might get support for treating
+them separately in the future (or some new IP revision might add another
+interrupt type for that matter).
+
+Some blank lines (for example between get and request) would be good
+too.
+
+--BfIB/hDtUWEgpOfz
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS09fAAAoJELSic+t+oim918EQAImwV9tH0Us0xksaX5cE1JkY
-9idkUo+ITDFGd9zWfdjxLei6XApd624nLnLvjY7xoMo+Q/k0WE9rebnGSFOs4tof
-jjbRpp+ElxjXnu5/Xv/ELMC/bptVYgkOkjatumhf0El6nn2h9g+oWjam86KDP1r1
-rllUOpT5pu0tgmukoHCQADsFX4YR8p4bQvsgpeA66kAPxtv6oGGsWA8rfW7lKyDe
-b6wOQIUAA/tsSfGuQ5730fcTTRH1b1Gi1hqWYh3sLk4bEmlAd7wVL6xhUMVmc4R3
-n9L9PbvfTdK4tUtQphDVVh+WMb0FjIs48K5ML6wPfnK0IqfXvt93LXDxdKuyqGJy
-9h7Y7dq6DpWoQqfiJszVEH2hR4fg4aS+ICG1e6BKXpRkgP9SA3YVXLsIp0ieeM2w
-t8PLiu0ToeV8vp09vFuo/EFJWKFCtUsSe5LK6tGXSi6Zp81uOOn+MbBwHTLImfR5
-it59d8nngoQFXTVFX+E9VAtVHoFXXyTWwy2dpzbk4REYQD5lvaF5WBzPvFgkdoOF
-ozY6S2oU5j+VnXlUk038T5qbN5Or0d9Rkda2oqXHpiz5MXv27jblpAvEnSFuNc4D
-s4NSWh3hjjNo3U/FbwHXFgX07WZt8e9aCgBUPfDIeBMUNv+Z9CdNX/EshONCkh73
-B2u4yDwb1M1j75SbrUg0
-=isk9
+iQIcBAEBAgAGBQJS09kmAAoJELSic+t+oim9oX0P+wSvUdqbyLpv67D7PNMY2iPE
+9g4PdxskijM7QfhgJ6kxYqlqZj/RQHyMvh1b0vW3Pa0zjEWN2bIxg76MUjHaExAY
+Op6XA5Nf7XUwTz0q+PUMb6VWJ4KVvXLYswUMz4ExA9zbYOTaIrp+yZfgsdd4bfvn
+IP0pVOuE1nBCdn/Wx/cEzLvObKd86sm65kQ2QdBnuFaloSSg2ptUf+f2LrSq5cOM
+kM1L+s/OEAqcFVmfiaDGMa5toD7g4/uQAg+07pYjMwYfBj1TlkvDJhXhPA1Aip+B
+8/xrjBiubPMt/29XYUjLkFdeFBCBsYPoB1pbF1y9j+qbM+TMcMUeXmaXi0O+HELJ
+oIqD3JobhmZZ8ss/w2NqG63I1nsLOv2EMuSdvPOw5w+Lid9gNyXIe54TJ7QFRLSq
+6O2tynqpdTiVFOWOmmTzmXR+XF6D3t0U9l8mRdZliXLrd+1GGIa8PvA3rYN/G4Eh
+OjVCDUpq9Yy1NoENtdw14xzBwGKqrApIhRE3huykUl8XO0TGTqzdU+UG8K+d9uUo
+97v0ibeByqYl0qTfLTkKhssrPu+sw2kuOG6fcHfDPGgAkHHMsnqiQ/ESwmjRaJCv
+A+UokgBUsrFqgzi6FEb8GWqS2C+TUZAsKJGSvJcqIuTM14ADeCWixvBWsB0cckCi
+O7iB8RZ6n7BxNRZct5Ub
+=lEGM
 -----END PGP SIGNATURE-----
 
---2wyf/X6i9kneRjiV--
+--BfIB/hDtUWEgpOfz--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

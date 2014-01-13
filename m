@@ -1,57 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH TRIVIAL] spi: rspi: Spelling s/transmition/transmission/
-Date: Mon, 13 Jan 2014 11:29:47 +0000
-Message-ID: <20140113112947.GI29039@sirena.org.uk>
-References: <1389532018-6449-1-git-send-email-geert@linux-m68k.org>
+Subject: Re: [PATCH TRIVIAL] spi/s3c64xx: Correct indentation
+Date: Mon, 13 Jan 2014 11:31:01 +0000
+Message-ID: <20140113113101.GJ29039@sirena.org.uk>
+References: <1389532070-6501-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="fqSO13Wp+IaiYtoI"
-Cc: Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	protocol="application/pgp-signature"; boundary="QFO1zB2dwAkGraMW"
+Cc: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>, Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1389532018-6449-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1389532070-6501-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---fqSO13Wp+IaiYtoI
+--QFO1zB2dwAkGraMW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jan 12, 2014 at 02:06:58PM +0100, Geert Uytterhoeven wrote:
+On Sun, Jan 12, 2014 at 02:07:50PM +0100, Geert Uytterhoeven wrote:
 > From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 >=20
 > Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-This doesn't appear to apply against current code (topic/rspi or
-for-next), please check and resend.
+Applied, thanks.
 
---fqSO13Wp+IaiYtoI
+--QFO1zB2dwAkGraMW
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS084nAAoJELSic+t+oim9TH8QAI/+e9xtgS5i5Fa4I+PfPfE+
-hlFP2TzkY9F9I905ldLXhOl1lookXtWVVUK2ZNKrhXJ7y3kCVGjld9LwQuCiio4b
-pAmzi9cUK9pZjv3qeyooj3ZHoxwSrFU13IJ5F2+HF0jMMyp8X1SpwDAhx09DHka+
-yAVYwudtl07jLpfS6OuNbOc+DjbdkkW6NqNiAWuZ3iNZlGFWdpaQ1ftOZAxOEPSi
-FlY/e8C1mTrqFF2rm9RH/NxW34D4z+L8l/juvlApw68hDJtTwu5QVIjeBPhhxhmc
-zSM6nIQMraBwXQ+gL1ucm+0MC1IEQJsP6FXHVUNF8bma4eA9zIbvu+knt98UBV2j
-Z5dFrQgiCJ/fjF803bgz5GzPoiEnMZ5FEoCAhb9sUj+Yl0rdjFZshd1vvsjGe78y
-uw9XPCKhvBMcllv7oOrpQJJG/UjqDjqwsECq+wceR9kj7B00Q6Krabp2yN+v5RUv
-hZTiwK27K2/C2IbwxJtzF4jxBgRRY49lFTU6ahi27U8J0PE8YxxomxazzOLl7Ays
-5+c3VLQMriaFyZ25nXcgVFFKV2DKN20Qytu0bnkUK04/p/p0b6mf5qOnadLX/mnu
-hnZPVu8p1XCddufv3mRFg/ROt6RkHYBGjV4uLW8828bXOkmSCscO7SB264BtsDdP
-J46avDJRl0+NxKGwMkT4
-=OMMb
+iQIcBAEBAgAGBQJS085xAAoJELSic+t+oim9nLQP/RVASO/yad8PnLYLCokiUPbL
+x0LdIQ98RbIlpRZksI+HWWQ70hV/G7sSJOt+mY0w11jRk+FmF90hxNqN1boqbxop
+BMHvNMcNs5BiJQnxc9idU44lQlxyIzgvAzGZPGEAt3U5x1cWVUsHV71gztqwtyLK
+OLpP8slci5rqg5iDydvgWWrNXfms8gjE9npXlCFxgzMJENHg6b5mNGTem1tSB04a
+cyNuk+SqOuZ5CZaKdEOYxCBKxr7qxS3jWyktD0r6nx6PCgMw3Iua9RQWTu4MKO+M
+suFTiBpA0FXNjtznBEi9EZl46C//+oMkP6K3ChfVJaaKZeTYLl/sVlgDm+4csVBn
+2JIJWHNnIkryy7pDnS1q9M3W4eIAFjNamjLH71QcFcACb8mu0IWp+c0GevjeEnk+
+B1hBDX/ifvyUrhS1Dn43LxE2Q3OMnQJS9TUXWRxkZ/Ey3fPrJ2PPHDkd7oe76Z1P
+hjgNT9EjhMTFD8soCkZRYjmYvPdNHwFxGfLHgtyns4ZHIZSyGubqhlm6pJLVVhZf
+4txDTCgkluVqW5VlWxQL3KESTSrrpHtyxWTXR4rvHyQ0NgnLL1gRmY6+dy96t3in
+qQRI1Zihtpu357XACoPCBKdl7VrZ/6rj/IN1shFKqEBKDxOHLHWKgJEKDxlrEK6A
+ZMzbJ1z/RDMa8jErOUeW
+=eHma
 -----END PGP SIGNATURE-----
 
---fqSO13Wp+IaiYtoI--
+--QFO1zB2dwAkGraMW--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

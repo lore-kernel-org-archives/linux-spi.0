@@ -1,56 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: core: Improve tx/rx_nbits check comments
-Date: Mon, 13 Jan 2014 11:20:58 +0000
-Message-ID: <20140113112058.GD29039@sirena.org.uk>
-References: <1389531629-6026-1-git-send-email-geert@linux-m68k.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH TRIVIAL] spi: sh-hspi: Spelling s/recive/receive/
+Date: Mon, 13 Jan 2014 11:21:56 +0000
+Message-ID: <20140113112156.GE29039@sirena.org.uk>
+References: <1389531818-6208-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UsiV5d7KlsBC0zIw"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="tzjrJU3+iJ6c5SNx"
+Cc: Jiri Kosina <trivial-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1389531629-6026-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1389531818-6208-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---UsiV5d7KlsBC0zIw
+--tzjrJU3+iJ6c5SNx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jan 12, 2014 at 02:00:29PM +0100, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+On Sun, Jan 12, 2014 at 02:03:38PM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 >=20
->   - Rephrase the comments about tx/rx_nbits validity checks,
->   - Remove the stale comment about SPI_3WIRE (the code it refers to was
->     removed in commit 368ca4e0c75612c0a4d6bbcef7efb944604340c2 ("spi:
->     Eliminate 3WIRE spi_transfer check")).
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
 Applied, thanks.
 
---UsiV5d7KlsBC0zIw
+--tzjrJU3+iJ6c5SNx
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS08wXAAoJELSic+t+oim9nfMP/jfSIfqAmwv0v6IYEMyU4MZh
-Zt3i6WzSkf+VYy/Uzm5vKZRlvT6T414tL8sdWOogWqvw31o9JBbu3N4cvQgIztOo
-g7korZjnbDNNiED9IfehK5N78V7RZbxlosgxsGfCKG3n1wQgAsNZj5pCSV2SyfFG
-3jQ5wZxQIgQjaePtmoIuRB+fiwLaFHjheOBnwacP0+Rhg76pCGuBxWUpMFDWN3iL
-lsn15w07qu8Zn5/FneVIaJ4sNS4ttfbvVTyl0BN+vAggTSSzA6LNYgjHZD0bQrfZ
-lgZFXq+j9v4XnLjWfgCE5BXZpq7RcuJa/x3+QFBv4zDtO9ZROHHZ+OoTEtT1vhf4
-EACLxGqcbehbDUhLQ72S7lnwWcxk4wdeYayW6ZWqCAAPZSqUDbI0nGGIMJ6HV9lq
-EV1Hbm832nBJhC3bMm62cgNSSQGVBNh7fnBjMwM94BGqRE09E7evjAae/kSBXvwc
-n4gH1HkMqMvWQId79phBNlcb7oerwWio5OOSaPxZvoEsarkkcnfB0BW7JbW7/+zO
-HD4RpCDCV5Yl8g0MxcRbChGfps1JtTaSnsbBCPs1F7FORN7v/DwWqNuS12ErHcvh
-NujUeCKOEUF4sP+HW5yYQ964GOuoXef6Tkc+pBSyhdu5NJ2/vIX0wxzTmmsgbhHM
-u80AhxtuPlvpyR5LJW0U
-=Ly7h
+iQIcBAEBAgAGBQJS08xRAAoJELSic+t+oim9CjgP/RNMB4GHvvAzvrQStLPUhQbx
++8Wt/FjfKvd53sLFfZn3ZRx+gEwE13Oap9CRpnVN38Mo2AGn/Vm28ut5BHiON+Eh
++nLHKfIdReMYOOoe3dgkNmkxvUeGfPKc3zxszY6/COqVtLwBNH9nJboiP1GzWESn
+33lg9rh1sz4iDHSdtoP0HwEVqx5D/PzLA0fFR+SajnbJk1uUveD6ZNl0uuhgzGEX
+JPvvXDVCHautBZRNytTIb7dfrCyuH32ew1VFhiG4ZHz2f4NLB6/uMn0u+7ggLZH6
+3IXQ7BS7+uoONeB6n8DenYTPFexFnFfIfOq4t1Dn9BwX7jMpt2uJG01C/AIoYdAz
+Up7Rw/sOTi4W3WgRWRvpNeqnovP+su24TmsFrGRM51D0ew+rtxRIkOc7WCeJjyLD
+IbADJKkGwNekeRBIVBdY7AgOUZ0K5LVIExtPeq25Ro1JPBgMY1kNWu4APd2eZtAD
+6+7Mg7UvfR+XeOWFpTr1vgP9Y/aRukPneZbYmTbjvAh3Idbg7SNApX2eD08hGwx2
+TDqIf3Dzey7cJFvkKvJmuy7gzawit2t9e6859Nsc/PvjkUddZQoLkrA+SaWG/uHu
+mwzJ8wDeDDuD17opbOXuuD6/eHH+8yef687/yV2pHbe+TKYYTYS5oxgYpM2xHHpA
+r8ij91USLrVZJiRni/XN
+=Rwm0
 -----END PGP SIGNATURE-----
 
---UsiV5d7KlsBC0zIw--
+--tzjrJU3+iJ6c5SNx--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,73 +1,71 @@
-From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Subject: Re: [PATCH V3 0/5] SoC and board integration for RSPI on
- r7s72100/genmai
-Date: Mon, 13 Jan 2014 09:33:02 +0900
-Message-ID: <20140113003301.GH15296@verge.net.au>
-References: <1389523723-2288-1-git-send-email-geert@linux-m68k.org>
- <2996587.8yFdzmUGOy@avalon>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: sh: Use spi_sh_clear_bit() instead of open-coded
+Date: Mon, 13 Jan 2014 10:00:44 +0800
+Message-ID: <1389578444.18562.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <2996587.8yFdzmUGOy@avalon>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, Jan 12, 2014 at 10:32:27PM +0100, Laurent Pinchart wrote:
-> Hi Geert,
-> 
-> Thank you for the patches.
-> 
-> On Sunday 12 January 2014 11:48:38 Geert Uytterhoeven wrote:
-> > This patch series integrates Renesas RSPI on the RZ/A1H aka R7S72100 SoC,
-> > and the Genmai development board.
-> > 
-> > The series is based on renesas-devel-v3.13-rc7-20140109v2, with Magnus'
-> > pinctrl, Wolfram's riic, and Simon's sh_eth work applied on top.
-> > [Simon: I don't know in which order you will merge these. If you want me
-> >  to rebase my patches, just ask! Thanks!]
-> > 
-> > It was tested on the Genmai development board (genmai-reference), using
-> > an in-kernel version of Documentation/spi/spidev_test.c, exercising
-> > loopback mode on rspi1, with the same outcome as the SDK reference code.
-> > 
-> > It will not yet work with the non-reference version of genmai, due to
-> > missing pinmux configuration in setup-r7s72100.c.
-> 
-> The whole series looks good to me. The first patch depends on r7s72100 pinmux 
-> support, for which I'm still waiting a new version from Magnus. The rest could 
-> already be applied as far as I'm concerned.
+We have a spi_sh_clear_bit() function, there's no reason not to use it.
 
-Thanks, that sounds reasonable to me.
-But I would like to hear from Magnus.
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-sh.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-> 
-> >     [1/5] pinctrl: sh-pfc: r7s72100: Add RSPI support
-> >     [2/5] ARM: shmobile: r7s72100: Add RSPI clocks
-> >     [3/5] ARM: shmobile: genmai: Add RSPI support
-> >     [4/5] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux
-> >     [5/5] ARM: shmobile: genmai: Enable RSPI in defconfig
-> > 
-> > Changes in V2:
-> >   - Add "ARM: shmobile: genmai: Add RSPI children"
-> >   - Add "[RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux"
-> > 
-> > Changes in V3:
-> >   - Implement review comments
-> >   - Add defconfig update
-> >   - Remove DT support patches, they will be sent in a separate series
-> >   - Merge "ARM: shmobile: r7s72100: Add RSPI platform devices" and
-> >     "ARM: shmobile: genmai: Add RSPI children"
-> 
-> -- 
-> Regards,
-> 
-> Laurent Pinchart
-> 
+diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
+index c120a70..9fea8cc 100644
+--- a/drivers/spi/spi-sh.c
++++ b/drivers/spi/spi-sh.c
+@@ -171,7 +171,6 @@ static int spi_sh_send(struct spi_sh_data *ss, struct spi_message *mesg,
+ 	int remain = t->len;
+ 	int cur_len;
+ 	unsigned char *data;
+-	unsigned long tmp;
+ 	long ret;
+ 
+ 	if (t->len)
+@@ -213,9 +212,7 @@ static int spi_sh_send(struct spi_sh_data *ss, struct spi_message *mesg,
+ 	}
+ 
+ 	if (list_is_last(&t->transfer_list, &mesg->transfers)) {
+-		tmp = spi_sh_read(ss, SPI_SH_CR1);
+-		tmp = tmp & ~(SPI_SH_SSD | SPI_SH_SSDB);
+-		spi_sh_write(ss, tmp, SPI_SH_CR1);
++		spi_sh_clear_bit(ss, SPI_SH_SSD | SPI_SH_SSDB, SPI_SH_CR1);
+ 		spi_sh_set_bit(ss, SPI_SH_SSA, SPI_SH_CR1);
+ 
+ 		ss->cr1 &= ~SPI_SH_TBE;
+@@ -239,7 +236,6 @@ static int spi_sh_receive(struct spi_sh_data *ss, struct spi_message *mesg,
+ 	int remain = t->len;
+ 	int cur_len;
+ 	unsigned char *data;
+-	unsigned long tmp;
+ 	long ret;
+ 
+ 	if (t->len > SPI_SH_MAX_BYTE)
+@@ -247,9 +243,7 @@ static int spi_sh_receive(struct spi_sh_data *ss, struct spi_message *mesg,
+ 	else
+ 		spi_sh_write(ss, t->len, SPI_SH_CR3);
+ 
+-	tmp = spi_sh_read(ss, SPI_SH_CR1);
+-	tmp = tmp & ~(SPI_SH_SSD | SPI_SH_SSDB);
+-	spi_sh_write(ss, tmp, SPI_SH_CR1);
++	spi_sh_clear_bit(ss, SPI_SH_SSD | SPI_SH_SSDB, SPI_SH_CR1);
+ 	spi_sh_set_bit(ss, SPI_SH_SSA, SPI_SH_CR1);
+ 
+ 	spi_sh_wait_write_buffer_empty(ss);
+-- 
+1.8.1.2
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

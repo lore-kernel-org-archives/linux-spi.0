@@ -1,168 +1,123 @@
 From: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/4] ACPI: add module autoloading support for ACPI enumerated devices
-Date: Mon, 13 Jan 2014 21:48:26 +0800
-Message-ID: <1389620906-3854-1-git-send-email-rui.zhang@intel.com>
+Subject: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
+Date: Mon, 13 Jan 2014 21:48:31 +0800
+Message-ID: <1389620911-3890-1-git-send-email-rui.zhang@intel.com>
 Cc: rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org, grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org,
 	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
 	Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-An ACPI enumerated device may have its compatible id strings.
+ACPI enumerated devices has ACPI style _HID and _CID strings,
+all of these strings can be used for both driver loading and matching.
 
-To support the compatible ACPI ids (acpi_device->pnp.ids),
-we introduced acpi_driver_match_device() to match
-the driver->acpi_match_table and acpi_device->pnp.ids.
+But currently, in Platform, I2C and SPI bus, only the ACPI style
+driver matching is supported by invoking acpi_driver_match_device()
+in bus .match() callback.
 
-For those drivers, MODULE_DEVICE_TABLE(acpi, xxx) is used to
-exports the driver module alias in the format of
-"acpi:device_compatible_ids".
-But in the mean time, the current code does not export the
-ACPI compatible strings as part of the module_alias for the
-ACPI enumerated devices, which will break the module autoloading.
-
-Take the following piece of code for example,
-static const struct acpi_device_id xxx_acpi_match[] = {
-        { "INTABCD", 0 },
-        { }
-};
-MODULE_DEVICE_TABLE(acpi, xxx_acpi_match);
-
-If this piece of code is used in a platform driver for
-an ACPI enumerated platform device, the platform driver module_alias
-is "acpi:INTABCD", but the uevent attribute of its platform device node
-is "platform:INTABCD:00" (PREFIX:platform_device->name).
-If this piece of code is used in an i2c driver for an ACPI enumerated
-i2c device, the i2c driver module_alias is "acpi:INTABCD", but
-the uevent of its i2c device node is "i2c:INTABCD:00" (PREFIX:i2c_client->name).
-If this piece of code is used in an spi driver for an ACPI enumerated
-spi device, the spi driver module_alias is "acpi:INTABCD", but
-the uevent of its spi device node is "spi:INTABCD" (PREFIX:spi_device->modalias).
-
-The reason why the module autoloading is not broken for now is that
-the uevent file of the ACPI device node is "acpi:INTABCD".
-Thus it is the ACPI device node creation that loads the platform/i2c/spi driver.
-
-So this is a problem that will affect us the day when the ACPI bus
-is removed from device model.
-
-This patch introduces two new APIs,
-one for exporting ACPI ids in uevent MODALIAS field,
-and another for exporting ACPI ids in device' modalias sysfs attribute.
-
-For any bus that supports ACPI enumerated devices, it needs to invoke
-these two functions for their uevent and modalias attribute.
+This patch fixes module autoloading on those buses for ACPI enumerated devices.
 
 Signed-off-by: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Reviewed-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/acpi/scan.c  |   57 ++++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/acpi.h |   15 +++++++++++++
- 2 files changed, 72 insertions(+)
+ drivers/base/platform.c |   12 +++++++++++-
+ drivers/i2c/i2c-core.c  |   11 +++++++++++
+ drivers/spi/spi.c       |   10 ++++++++++
+ 3 files changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
-index c925321..680bb56 100644
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -116,6 +116,63 @@ static int create_modalias(struct acpi_device *acpi_dev, char *modalias,
- 	return len;
- }
- 
-+/*
-+ * Creates uevent modalias field for ACPI enumerated devices.
-+ * Because the other buses does not support ACPI HIDs & CIDs.
-+ * e.g. for a device with hid:IBM0001 and cid:ACPI0001 you get:
-+ * "acpi:IBM0001:ACPI0001"
-+ */
-+int acpi_device_uevent_modalias(struct device *dev, struct kobj_uevent_env *env)
-+{
-+	struct acpi_device *acpi_dev;
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 3a94b79..2f4aea2 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -677,7 +677,13 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *a,
+ 			     char *buf)
+ {
+ 	struct platform_device	*pdev = to_platform_device(dev);
+-	int len = snprintf(buf, PAGE_SIZE, "platform:%s\n", pdev->name);
 +	int len;
 +
-+	acpi_dev = ACPI_COMPANION(dev);
-+	if (!acpi_dev)
-+		return -ENODEV;
-+
-+	/* Fall back to bus specific way of modalias exporting */
-+	if (list_empty(&acpi_dev->pnp.ids))
-+		return -ENODEV;
-+
-+	if (add_uevent_var(env, "MODALIAS="))
-+		return -ENOMEM;
-+	len = create_modalias(acpi_dev, &env->buf[env->buflen - 1],
-+				sizeof(env->buf) - env->buflen);
-+	if (len <= 0)
++	len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
++	if (len != -ENODEV)
 +		return len;
-+	env->buflen += len;
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(acpi_device_uevent_modalias);
 +
-+/*
-+ * Creates modalias sysfs attribute for ACPI enumerated devices.
-+ * Because the other buses does not support ACPI HIDs & CIDs.
-+ * e.g. for a device with hid:IBM0001 and cid:ACPI0001 you get:
-+ * "acpi:IBM0001:ACPI0001"
-+ */
-+int acpi_device_modalias(struct device *dev, char *buf, int size)
-+{
-+	struct acpi_device *acpi_dev;
++	len = snprintf(buf, PAGE_SIZE, "platform:%s\n", pdev->name);
+ 
+ 	return (len >= PAGE_SIZE) ? (PAGE_SIZE - 1) : len;
+ }
+@@ -699,6 +705,10 @@ static int platform_uevent(struct device *dev, struct kobj_uevent_env *env)
+ 	if (rc != -ENODEV)
+ 		return rc;
+ 
++	rc = acpi_device_uevent_modalias(dev, env);
++	if (rc != -ENODEV)
++		return rc;
++
+ 	add_uevent_var(env, "MODALIAS=%s%s", PLATFORM_MODULE_PREFIX,
+ 			pdev->name);
+ 	return 0;
+diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+index d74c0b3..c4c5588 100644
+--- a/drivers/i2c/i2c-core.c
++++ b/drivers/i2c/i2c-core.c
+@@ -104,6 +104,11 @@ static int i2c_device_match(struct device *dev, struct device_driver *drv)
+ static int i2c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
+ {
+ 	struct i2c_client	*client = to_i2c_client(dev);
++	int rc;
++
++	rc = acpi_device_uevent_modalias(dev, env);
++	if (rc != -ENODEV)
++		return rc;
+ 
+ 	if (add_uevent_var(env, "MODALIAS=%s%s",
+ 			   I2C_MODULE_PREFIX, client->name))
+@@ -409,6 +414,12 @@ static ssize_t
+ show_modalias(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+ 	struct i2c_client *client = to_i2c_client(dev);
 +	int len;
 +
-+	acpi_dev = ACPI_COMPANION(dev);
-+	if (!acpi_dev)
-+		return -ENODEV;
-+
-+	/* Fall back to bus specific way of modalias exporting */
-+	if (list_empty(&acpi_dev->pnp.ids))
-+		return -ENODEV;
-+
-+	len = create_modalias(acpi_dev, buf, size -1);
-+	if (len <= 0)
++	len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
++	if (len != -ENODEV)
 +		return len;
-+	buf[len++] = '\n';
-+	return len;
-+}
-+EXPORT_SYMBOL_GPL(acpi_device_modalias);
 +
- static ssize_t
- acpi_device_modalias_show(struct device *dev, struct device_attribute *attr, char *buf) {
- 	struct acpi_device *acpi_dev = to_acpi_device(dev);
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index d9099b1..22325ed 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -409,6 +409,9 @@ static inline bool acpi_driver_match_device(struct device *dev,
- 	return !!acpi_match_device(drv->acpi_match_table, dev);
+ 	return sprintf(buf, "%s%s\n", I2C_MODULE_PREFIX, client->name);
  }
  
-+int acpi_device_uevent_modalias(struct device *, struct kobj_uevent_env *);
-+int acpi_device_modalias(struct device *, char *, int);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 349ebba..ab70eda 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -58,6 +58,11 @@ static ssize_t
+ modalias_show(struct device *dev, struct device_attribute *a, char *buf)
+ {
+ 	const struct spi_device	*spi = to_spi_device(dev);
++	int len;
 +
- #define ACPI_PTR(_ptr)	(_ptr)
++	len = acpi_device_modalias(dev, buf, PAGE_SIZE);
++	if (len != -ENODEV)
++		return len;
  
- #else	/* !CONFIG_ACPI */
-@@ -488,6 +491,18 @@ static inline bool acpi_driver_match_device(struct device *dev,
- 	return false;
+ 	return sprintf(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
  }
- 
-+static inline int acpi_device_uevent_modalias(struct device *dev,
-+				struct kobj_uevent_env *env)
-+{
-+	return -ENODEV;
-+}
+@@ -114,6 +119,11 @@ static int spi_match_device(struct device *dev, struct device_driver *drv)
+ static int spi_uevent(struct device *dev, struct kobj_uevent_env *env)
+ {
+ 	const struct spi_device		*spi = to_spi_device(dev);
++	int rc;
 +
-+static inline int acpi_device_modalias(struct device *dev,
-+				char *buf, int size)
-+{
-+	return -ENODEV;
-+}
-+
- #define ACPI_PTR(_ptr)	(NULL)
++	rc = acpi_device_uevent_modalias(dev, env);
++	if (rc != -ENODEV)
++		return rc;
  
- #endif	/* !CONFIG_ACPI */
+ 	add_uevent_var(env, "MODALIAS=%s%s", SPI_MODULE_PREFIX, spi->modalias);
+ 	return 0;
 -- 
 1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

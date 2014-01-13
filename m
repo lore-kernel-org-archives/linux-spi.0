@@ -1,94 +1,54 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: spi-rspi I/O errors
-Date: Mon, 13 Jan 2014 11:19:13 +0100
-Message-ID: <CAMuHMdUBK8oi2qiUPH6MZrtya06oO1gaKjnpde_tCS7vRZF3JQ@mail.gmail.com>
-References: <alpine.DEB.2.02.1401072116370.27579@ayla.of.borg>
-	<CAMuHMdVzFeymxW2CZUyKgZ-fxsektE1EpLQksfSzoekj2ex53Q@mail.gmail.com>
-	<2820126.AWUstGfrNm@avalon>
-	<1787813.oK07lvnr6k@avalon>
-	<CAMuHMdX+4Z5nzj1t-v3kG4__yjYohOic1b0dUA9ZwHJrt2MRgw@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: Kill superfluous cast in spi_w8r16()
+Date: Mon, 13 Jan 2014 11:20:36 +0000
+Message-ID: <20140113112036.GC29039@sirena.org.uk>
+References: <1389531546-5867-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdX+4Z5nzj1t-v3kG4__yjYohOic1b0dUA9ZwHJrt2MRgw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="TCH5zSpbvKOKdCih"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1389531546-5867-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jan 10, 2014 at 10:20 AM, Geert Uytterhoeven
-<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
-> On Thu, Jan 9, 2014 at 7:14 PM, Laurent Pinchart
-> <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org> wrote:
->>> > It seems to get a stale value. I ended up doing the printk() anyway, and
->>> > when reading using small buffer sizes, the issues is more likely to
->>> > happen.
->>> >
->>> > If I add a second copy of rspi->spsr, and make that copy volatile OR add
->>> > a few calls to smp_mb() around the places where it's written and read,
->>> > the copy has the right value inside rspi_wait_for_interrupt(), BUT only if
->>> > I also print the spsr value inside rspi_irq(). Note that the original
->>> > rspi->spsr still has the stale value.
->>>
->>> Do I understand it correctly that the SPSR value read from the register in
->>> rspi_irq() is always correct on the first read, and that only the rspi->spsr
->>> value stored in memory and read in rspi_wait_for_interrupt() is wrong ?
->>> > I'd expect wake_up() and wait_event_timeout() to have the right memory
->>> > barriers (cfr. Documentation/memory-barriers.txt), so I don't have to add
->>> > my own. And why does it need the extra printk()? What extra
->>> > synchronization
->>> > does that give?
->>>
->>> Have you tried adding explicit memory barriers without any extra printk ?
->
-> Yes, cfr. "add a few calls to smp_mb()" above.
->
->>> > Note that the interrupt handler always runs on CPU core 0, while
->>> > rspi_wait_for_interrupt() can run on core 0 or 1. Is there a
->>> > cache-coherency issue between the two CPU cores?
->>>
->>> I'd be very surprised if that was the case, as there should be lots of other
->>> breakages, but let's not rule that out too fast. Magnus should be able to
->>> help you more than I can regarding that.
->>
->> Could you verify that the SMP bit is set in ACTLR
->> (http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.ddi0388e/CIHHDDHJ.html)
->
-> ACTLR = 0x000000c0 on CPU 0
-> ACTLR = 0x00000040 on CPU 1
->
-> 0xc0 = EXCL | SMP
-> 0x40 = SMP
->
-> The different EXCL value seems strange to me, especially considering the comment
-> about the matching cache controller configuration:
 
-I tried enabling the EXCL bit for ACTLR on CPU 1, but it doesn't make
-a difference.
+--TCH5zSpbvKOKdCih
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-One other thing: As I was playing with m25p80, I had #define DEBUG at the
-top of drivers/mtd/devices/m25p80.c. This doesn't cause much kernel output,
-just one message before every read:
+On Sun, Jan 12, 2014 at 01:59:06PM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+>=20
+> spi_write_then_read() takes a "void *" for rxbuf, so there's no need to
+> cast the buffer pointer to "u8 *".
 
-    spi0.0: m25p80_read from 0x00108600, len 512
+Applied, thanks.
 
-However, without the #define DEBUG, it's _much_ more difficult to trigger
-the issue.
+--TCH5zSpbvKOKdCih
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Gr{oetje,eeting}s,
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-                        Geert
+iQIcBAEBAgAGBQJS08wBAAoJELSic+t+oim9tkMP/igLp8pBBbvMLl7syF3nWCLC
+Rh+6uWMyIiqUMsWm0cVeAmT34hWUv50laoj9YA7T266SGKxEgZ6UNSRF+4vM81HL
+CLchscVhaHXxJjnadbtnOJbMKtSy801BnomcAbfVGKSF6qNVeCt9ci5urb3Jj4p2
+EmPtFt1pYw2TpjLEEZv7tSHtMnFgev9XB6TlFuJ6YFtOAQMYH6huK2h6CXbpyK1r
+YxSW2GoJta4XG8G6hkzMSVVZTJO8pd2OjEwoJNVpt/vtlJngGI/AElWT/zVKbHbX
+Az4xpK4atc76+AgLW6NNeyN7+uEzoj17cvQrtEvLcM6MoXnEFKViCFx4/ksrdcE0
+8/zGbRseWlVQvGkZKDRNtFbNyopuiO6KXlD9DCgJSA24vKuk8SgIG8h8FDw5LFKa
+NdqFB0vebaWy5yrIdy5Ysilwjsk5YpC6xfNUUDpSzo+W8nUz5Rvbd4O3pPr6Moyj
+NTmQIm6D6VOPOnwfsgEgEoPYte72u3+yVqtDR3gwk8AiP809spnuo7OSMV11gffP
+RimcSoLe3kikFfOoobXtPXt5n2zgf6gk/ENleyvWss7aVBTQ7C5ArLHmyKCglwqz
+F2CPBerUBPrzoliXLqFyALgaY6xINaCiafN3T6SfhDoTSq5BzjuZ/1g6jhcjZEwb
+xQXJbkvvNhtJtq3/Lr8p
+=aB3+
+-----END PGP SIGNATURE-----
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--TCH5zSpbvKOKdCih--

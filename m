@@ -1,148 +1,74 @@
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH V2 3/4] ARM: shmobile: koelsch: Add QSPI support
-Date: Sun, 12 Jan 2014 22:46:40 +0100
-Message-ID: <30881023.1VWPBCH6CR@avalon>
-References: <1389524433-2823-1-git-send-email-geert@linux-m68k.org> <1389524433-2823-4-git-send-email-geert@linux-m68k.org>
+From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Subject: Re: [PATCH V3 0/5] SoC and board integration for RSPI on
+ r7s72100/genmai
+Date: Mon, 13 Jan 2014 09:33:02 +0900
+Message-ID: <20140113003301.GH15296@verge.net.au>
+References: <1389523723-2288-1-git-send-email-geert@linux-m68k.org>
+ <2996587.8yFdzmUGOy@avalon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-sh@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1389524433-2823-4-git-send-email-geert@linux-m68k.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <2996587.8yFdzmUGOy@avalon>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Geert,
-
-Thank you for the patch.
-
-On Sunday 12 January 2014 12:00:32 Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+On Sun, Jan 12, 2014 at 10:32:27PM +0100, Laurent Pinchart wrote:
+> Hi Geert,
 > 
-> Enable support for the Spansion s25fl512s SPI FLASH on the Koelsch board:
->   - Add QSPI platform device, resources, platform data, and pinmux,
->   - Add FLASH data and MTD partitions.
+> Thank you for the patches.
 > 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+> On Sunday 12 January 2014 11:48:38 Geert Uytterhoeven wrote:
+> > This patch series integrates Renesas RSPI on the RZ/A1H aka R7S72100 SoC,
+> > and the Genmai development board.
+> > 
+> > The series is based on renesas-devel-v3.13-rc7-20140109v2, with Magnus'
+> > pinctrl, Wolfram's riic, and Simon's sh_eth work applied on top.
+> > [Simon: I don't know in which order you will merge these. If you want me
+> >  to rebase my patches, just ask! Thanks!]
+> > 
+> > It was tested on the Genmai development board (genmai-reference), using
+> > an in-kernel version of Documentation/spi/spidev_test.c, exercising
+> > loopback mode on rspi1, with the same outcome as the SDK reference code.
+> > 
+> > It will not yet work with the non-reference version of genmai, due to
+> > missing pinmux configuration in setup-r7s72100.c.
+> 
+> The whole series looks good to me. The first patch depends on r7s72100 pinmux 
+> support, for which I'm still waiting a new version from Magnus. The rest could 
+> already be applied as far as I'm concerned.
 
-Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Thanks, that sounds reasonable to me.
+But I would like to hear from Magnus.
 
-> ---
-> V2:
->   - Split in 2 groups (qspi_ctrl/qspi_data4)
 > 
->  arch/arm/mach-shmobile/board-koelsch.c |   64
-> ++++++++++++++++++++++++++++++++ 1 file changed, 64 insertions(+)
+> >     [1/5] pinctrl: sh-pfc: r7s72100: Add RSPI support
+> >     [2/5] ARM: shmobile: r7s72100: Add RSPI clocks
+> >     [3/5] ARM: shmobile: genmai: Add RSPI support
+> >     [4/5] [RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux
+> >     [5/5] ARM: shmobile: genmai: Enable RSPI in defconfig
+> > 
+> > Changes in V2:
+> >   - Add "ARM: shmobile: genmai: Add RSPI children"
+> >   - Add "[RFC] ARM: shmobile: genmai: Add preliminary RSPI pinmux"
+> > 
+> > Changes in V3:
+> >   - Implement review comments
+> >   - Add defconfig update
+> >   - Remove DT support patches, they will be sent in a separate series
+> >   - Merge "ARM: shmobile: r7s72100: Add RSPI platform devices" and
+> >     "ARM: shmobile: genmai: Add RSPI children"
 > 
-> diff --git a/arch/arm/mach-shmobile/board-koelsch.c
-> b/arch/arm/mach-shmobile/board-koelsch.c index de7cc64b1f37..37e4a6fd36b3
-> 100644
-> --- a/arch/arm/mach-shmobile/board-koelsch.c
-> +++ b/arch/arm/mach-shmobile/board-koelsch.c
-> @@ -25,12 +25,17 @@
->  #include <linux/input.h>
->  #include <linux/kernel.h>
->  #include <linux/leds.h>
-> +#include <linux/mtd/mtd.h>
-> +#include <linux/mtd/partitions.h>
->  #include <linux/phy.h>
->  #include <linux/pinctrl/machine.h>
->  #include <linux/platform_data/gpio-rcar.h>
->  #include <linux/platform_data/rcar-du.h>
->  #include <linux/platform_device.h>
->  #include <linux/sh_eth.h>
-> +#include <linux/spi/flash.h>
-> +#include <linux/spi/rspi.h>
-> +#include <linux/spi/spi.h>
->  #include <mach/common.h>
->  #include <mach/irqs.h>
->  #include <mach/r8a7791.h>
-> @@ -148,6 +153,55 @@ static const struct gpio_keys_platform_data
-> koelsch_keys_pdata __initconst = { .nbuttons	= ARRAY_SIZE(gpio_buttons),
->  };
+> -- 
+> Regards,
 > 
-> +/* QSPI */
-> +static const struct resource qspi_resources[] __initconst = {
-> +	DEFINE_RES_MEM(0xe6b10000, 0x1000),
-> +	DEFINE_RES_IRQ(gic_spi(184)),
-> +};
-> +
-> +static const struct rspi_plat_data qspi_pdata __initconst = {
-> +	.num_chipselect = 1,
-> +};
-> +
-> +/* SPI Flash memory (Spansion S25FL512SAGMFIG11 64 MiB) */
-> +static struct mtd_partition spi_flash_part[] = {
-> +	{
-> +		.name		= "loader",
-> +		.offset		= 0x00000000,
-> +		.size		= 512 * 1024,
-> +		.mask_flags	= MTD_WRITEABLE,
-> +	},
-> +	{
-> +		.name		= "bootenv",
-> +		.offset		= MTDPART_OFS_APPEND,
-> +		.size		= 512 * 1024,
-> +		.mask_flags	= MTD_WRITEABLE,
-> +	},
-> +	{
-> +		.name		= "data",
-> +		.offset		= MTDPART_OFS_APPEND,
-> +		.size		= MTDPART_SIZ_FULL,
-> +	},
-> +};
-> +
-> +static const struct flash_platform_data spi_flash_data = {
-> +	.name		= "m25p80",
-> +	.parts		= spi_flash_part,
-> +	.nr_parts	= ARRAY_SIZE(spi_flash_part),
-> +	.type		= "s25fl512s",
-> +};
-> +
-> +static const struct spi_board_info spi_info[] __initconst = {
-> +	{
-> +		.modalias	= "m25p80",
-> +		.platform_data	= &spi_flash_data,
-> +		.mode		= SPI_MODE_0,
-> +		.max_speed_hz	= 30000000,
-> +		.bus_num	= 0,
-> +		.chip_select	= 0,
-> +	},
-> +};
-> +
->  static const struct pinctrl_map koelsch_pinctrl_map[] = {
->  	/* DU */
->  	PIN_MAP_MUX_GROUP_DEFAULT("rcar-du-r8a7791", "pfc-r8a7791",
-> @@ -165,6 +219,11 @@ static const struct pinctrl_map koelsch_pinctrl_map[] =
-> { "eth_rmii", "eth"),
->  	PIN_MAP_MUX_GROUP_DEFAULT("r8a7791-ether", "pfc-r8a7791",
->  				  "intc_irq0", "intc"),
-> +	/* QSPI */
-> +	PIN_MAP_MUX_GROUP_DEFAULT("qspi.0", "pfc-r8a7791",
-> +				  "qspi_ctrl", "qspi"),
-> +	PIN_MAP_MUX_GROUP_DEFAULT("qspi.0", "pfc-r8a7791",
-> +				  "qspi_data4", "qspi"),
->  	/* SCIF0 (CN19: DEBUG SERIAL0) */
->  	PIN_MAP_MUX_GROUP_DEFAULT("sh-sci.6", "pfc-r8a7791",
->  				  "scif0_data_d", "scif0"),
-> @@ -190,6 +249,11 @@ static void __init koelsch_add_standard_devices(void)
->  	platform_device_register_data(&platform_bus, "gpio-keys", -1,
->  				      &koelsch_keys_pdata,
->  				      sizeof(koelsch_keys_pdata));
-> +	platform_device_register_resndata(&platform_bus, "qspi", 0,
-> +					  qspi_resources,
-> +					  ARRAY_SIZE(qspi_resources),
-> +					  &qspi_pdata, sizeof(qspi_pdata));
-> +	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
+> Laurent Pinchart
 > 
->  	koelsch_add_du_device();
->  }
--- 
-Regards,
-
-Laurent Pinchart
-
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

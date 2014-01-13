@@ -1,54 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: ti-qspi: Simplify qspi_write_msg and qspi_read_msg
- implementation
-Date: Mon, 13 Jan 2014 10:15:43 +0000
-Message-ID: <20140113101543.GY29039@sirena.org.uk>
-References: <1389508822.13361.3.camel@phoenix>
+Subject: Re: [RFC][PATCH] spi: ti-qspi: Fixup driver name
+Date: Mon, 13 Jan 2014 10:16:32 +0000
+Message-ID: <20140113101632.GZ29039@sirena.org.uk>
+References: <1389510152.13361.4.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="cDkCB6tn7aZ2Gopm"
+	protocol="application/pgp-signature"; boundary="+mQruWSI2c46YBtV"
 Cc: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1389508822.13361.3.camel@phoenix>
+In-Reply-To: <1389510152.13361.4.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---cDkCB6tn7aZ2Gopm
+--+mQruWSI2c46YBtV
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Jan 12, 2014 at 02:40:22PM +0800, Axel Lin wrote:
-> Make the unit of wlen to be byte, and simplify the code to avoid duplicate
-> code for different wlen cases.
+On Sun, Jan 12, 2014 at 03:02:32PM +0800, Axel Lin wrote:
+> The driver name in current code looks like a compatible string which is not
+> the naming convention for platform drivers.
+> Fix it and also add modalias since this driver can be built as a module.
 
 Applied, thanks.
 
---cDkCB6tn7aZ2Gopm
+--+mQruWSI2c46YBtV
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS07zMAAoJELSic+t+oim9tUoP/3QTDEJwPEc/laiohT51LOw0
-J+x/0XL7WVpMuIvEECty3tC8huXr3BeLIQ9wdjl/vciDa/OLdKdShNJSKadiHd7Z
-Q6R4DHkGAQBNNDyJdCq8rpVFF7I+YxLQkVCMhoHNLUTKKVLkd9NsnJGQfO5mgZg/
-UlE7GQnlM14zZXrPdm/4lZebBbLBOtGJHXJfn936sT2PI70GJ0dGwnKMbNhBa1dY
-ZYDK0jG2gA15KyHmo5dgpWpGidtgqONYFoVy8huCSd43d5tKW2zvzKMkUlq75Uxp
-iO4IGlT4OKZ9huWYE2NfyhJ7Mm2mOQIKD6DkvJD0ML/tQPS0j6MtAKN1hQDEn6xv
-6i555WpqP14OhF3OiDZf4yWJf0zETW2F7TAX6lUHonu85h3aLoHROTklkUwDtfxZ
-IDCoqE0gXF1e+HqAOrnCxM2OQ3LiHvNXhnpMzXe1ylhztq6C4NT2KraeqXyT0JrC
-wUtBgtbPtJRh9CgBMxvGzdB22ch/KsJlpX7GH/unO0yUAxxM3uBAv+c9S0TVZZ3h
-qT5hP6ts3obHLg75IAbRwqhlv+RcTFCZEFHamzeOfpPWe+tzNvD0W1pfpyx4hznK
-h5xQ4cgZfaSCmnv3bMK9EWaVz9xd4TZV5Q4yEa2DeQmjycwVWZdPMEFwrl2hlQT4
-ZlsTq9+kETwOg2+RR4x2
-=XSu/
+iQIcBAEBAgAGBQJS07z9AAoJELSic+t+oim9fcwP/jPuAcrAilJRsn2BM8ujHEDI
+kEeTLsepriz9MhrsAi6AAPYqRG0hiI4sVi0nwP1JTdwlVcJXdPqOGwMhYz26LO1n
+yyzEJIWkHGV9Zi8FiIzuBSYSytj7f/oIzIcXhxuoE/GGy05mPKHIeBpvX+dq2YkM
+iFpr8tZF1yXG+dtQOZzUe2QdiXSBXovux5fed49RzJWenDXJLCkzDjOnQg7lqndB
+vk+nbiogVgq1YEX5vx8x3L3/97fdq8hAjxVbSw7R1lr3Zv50D7BwQI4eaG8eo2wr
+jBfd6WeTxNLyOS3MTwwqJmDK3k088e0YOfZBG0pSekerpqpJdeXwnSt0DSZsVxtC
+3PrRYWN4asLjvKgqYg66+J7TEZ5pJ+Y3xHbz8MMIsu3BhqrcYd3bD06pXRSQ0ojs
+dCHw5qGcB68r8CtGzo4awTooUlRhDN72Ea5Y5ZCYXvT3cLfZOZwhtATdGXOP/ujV
+GYXUg/azh0JOoJfFZAgoSq1rHPwK2O06NYGqgriRQuuLKEJPE8qQHxPWZAY5bERZ
+loY/7zpfWik/BOl0okCRG0b4mpbwd4n0WsoFreNw0nyzTKKk5gnqCavX/nzBeleP
+Or9LBhnkYVv9mNJRwPLqN4E3cjwlWcepLbxaID32HBn0LJkWMgyvWQI1r+BXPkwt
+S4CHbxlJYSrQhW4uWyiS
+=dwxM
 -----END PGP SIGNATURE-----
 
---cDkCB6tn7aZ2Gopm--
+--+mQruWSI2c46YBtV--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,65 +1,60 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Clarify (a)synchronous transfer_one()
-Date: Tue, 14 Jan 2014 14:36:27 +0000
-Message-ID: <20140114143627.GO15567@sirena.org.uk>
-References: <1389699296-28994-1-git-send-email-geert@linux-m68k.org>
+Subject: Re: [PATCH] spi: davinci: fix build warning when printing
+ resource_size_t vars
+Date: Tue, 14 Jan 2014 14:39:45 +0000
+Message-ID: <20140114143945.GP15567@sirena.org.uk>
+References: <20140112110916.GR15937@n2100.arm.linux.org.uk>
+ <1389707408-24785-1-git-send-email-grygorii.strashko@ti.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="w6U88vdWm8UqIXvc"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="OmL7C/BU0IhhC9Of"
+Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, santosh.shilimkar-l0cyMroinI0@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	nsekhar-l0cyMroinI0@public.gmane.org
+To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1389699296-28994-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1389707408-24785-1-git-send-email-grygorii.strashko-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---w6U88vdWm8UqIXvc
+--OmL7C/BU0IhhC9Of
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jan 14, 2014 at 12:34:56PM +0100, Geert Uytterhoeven wrote:
+On Tue, Jan 14, 2014 at 03:50:08PM +0200, Grygorii Strashko wrote:
+> Use %pa format specifier when printing variables of resource_size_t type
+> to fix build warnings:
+> drivers/spi/spi-davinci.c:966:3: warning: format '%d' expects argument of type 'int', but argument 3 has type 'resource_size_t'
+> drivers/spi/spi-davinci.c:966:3: warning: format '%d' expects argument of type 'int', but argument 4 has type 'resource_size_t'
 
-> + * @transfer_one: transfer a single spi_transfer.
-> + *                Synchronous transfer methods must return 0 on success.
-> + *                Asynchronous transfer methods must return a strict-positive
-> + *                value on successful submission, and must call
-> + *                spi_finalize_current_transfer() when the driver is finished
-> + *                so the subsystem can issue the next transfer
+This doesn't apply against current code, it seems the same patch has
+already been applied.
 
-This is hard to understand, I'd not expect people not comfortable with
-English to readily follow what it means.  Things like "strict-positive"
-aren't common outside of mathematics and I myself had to think what an
-asynchronous transfer_one() meant.  Something along the lines of "return
-0 if the trasfer is finished or a positive number if the transfer is in
-progress and finalize will be called later" would be more readily
-comprehensible.  If you're concerned about positive just specify 1.
-
---w6U88vdWm8UqIXvc
+--OmL7C/BU0IhhC9Of
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS1UtoAAoJELSic+t+oim9A/YP/0zcshejgXSMiSvA/bB72uL2
-fBiow8H3vXf37JSsrsS82BmgAyg2vfA9qI/okw9C3sK5fYFWDbyw22NldFUhnS5Z
-YUtBW8uI4SIzX2c99vsGVhdnME8eliqxK1ajcwP1wusa1YlkiBB1rxXM4IDlRH8w
-LJdAwlc63aYcJNXcT1ia8b4+Wpkmz/InA99p2u9CJHE7IWoJokyv7GPQjdW/KEzi
-R2lcBWDKsM4rcbABM3eOqB72O8y+HOJAgge31w/qhee1LEBQrtrYTzj0uqurq/Yb
-VGbiqo9K/NVFby/LLPLieSsitBacbGw7tulu2jqqwBdvlWfm6743MSbRtvsb/9nz
-WB9Qrw7YFQF6PKWKtIBz9cZgiZ1zYJfJhLu6xsjF1fYJ5oGsIO4Y8/5Ty6w4fJ17
-u7hJWe4aORccfoZFw00K/nkxR+/Dg/+UuSQ9Ofi6Te3BzDrYfdyUpP4zWE6Fr6aT
-bYySArKNhVeiC2GTt63RdLJW+HCkiUSODKGaOYfZInnlrTktF7gbZ8iIsgaAGpfu
-uAFxsPPvpmNWW2cdGHLP44ogJ+ZXOCs1W1Zr1V3tBIZ2YWPl8MeaEX0cmxoIGBqc
-yLgnIiXY4VZNAnI2Oa4X+RiBtbron+yUKoUdPObfZpIrK7Yf5cc7mDUGgiQi85VW
-YupddW2S7Pt3XZRPyMFL
-=6plw
+iQIcBAEBAgAGBQJS1UwuAAoJELSic+t+oim97VoP/iu7e9VECnaXtoBpi+miFBqD
+dFwNoG2CF9vVitfAOw1911k6KQLsa4Wy+HMs0Q6vZcVQFiQhxn5+chxseX2nHjF3
+4vlyHOO1Ui/nHuV1Tu9S3xPZn8m+TFyzsGILc/6/Rmny/TqJwepgdKdMKMj60TRB
+iFvs+EEqzOyjVbYIq/lXpp3dk+wC5ylv4b9njsOH8/sjXX21rox6M+ieecYgO7+/
+jbHsFIX5TWf97P+/gbybJSTicSfl+vUucC4v+PvVT715GxyZWGzZiS70Xl424rk1
+ZyaN/VDKubcbhphYAHnU2urUcv64/ZSP5Kj/lYidxpP3KLnF1BdOF0OFuVOHL0ea
+g9MHZKBpchwHzp5sfM0K7/u0dAOfDMfqH27GyG94SaEgCwZzKnWjPnmdgAmPblHo
+iWpl627Tlx2EU24gwusk9Z4VlcJZwrbtscU1PmMaGT/WqA/isdCE3HmeoqapP2rT
+5aShOF0ZPouOUEYZ9Hkt3kHmz2J86OOBrEK33aAGYTrTpA1y0s5eHJMBmhPA5YEa
+kMSY0uVWgRPBkFMhz8jK9GBYyWJA3XreBaxxf762kSP0X0yvEhKYy/DEJTMbtCg3
+vGwjGj1FH3gvx/ASioBXByskamWKrUIeaLBsqJidhiuq8EKq9NirPs2JhfhN0Cfw
+XNLkUVCT8hpB4C6ZgRMg
+=Ov9t
 -----END PGP SIGNATURE-----
 
---w6U88vdWm8UqIXvc--
+--OmL7C/BU0IhhC9Of--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

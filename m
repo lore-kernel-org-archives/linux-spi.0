@@ -1,92 +1,83 @@
-From: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
-Date: Tue, 14 Jan 2014 16:00:17 +0800
-Message-ID: <1389686417.3309.8.camel@rzhang1-mobl4>
-References: <1389620911-3890-1-git-send-email-rui.zhang@intel.com>
-	 <20140113173525.GF29039@sirena.org.uk>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 0/9] Renesas RSPI/QSPI DT support
+Date: Tue, 14 Jan 2014 09:40:34 +0100
+Message-ID: <CAMuHMdWMZE23JkEr7Weq6MWgPK5w-Gy_kus5HxvcLBdgPn5Daw@mail.gmail.com>
+References: <1389525222-3482-1-git-send-email-geert@linux-m68k.org>
+	<CAMuHMdWmFa-XsderYDp4jMw6r7fnwpm5XgQGfz8gEbCryXEkHg@mail.gmail.com>
+	<20140114005312.GF18217@verge.net.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org,
-	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
-	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140113173525.GF29039-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140114005312.GF18217-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, 2014-01-13 at 17:35 +0000, Mark Brown wrote:
-> On Mon, Jan 13, 2014 at 09:48:31PM +0800, Zhang Rui wrote:
-> > ACPI enumerated devices has ACPI style _HID and _CID strings,
-> > all of these strings can be used for both driver loading and matching.
-> 
-> > But currently, in Platform, I2C and SPI bus, only the ACPI style
-> > driver matching is supported by invoking acpi_driver_match_device()
-> > in bus .match() callback.
-> 
-> I don't understand what this means, sorry.
+On Tue, Jan 14, 2014 at 1:53 AM, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org> wrote:
+> On Sun, Jan 12, 2014 at 01:55:19PM +0100, Geert Uytterhoeven wrote:
+>> On Sun, Jan 12, 2014 at 12:13 PM, Geert Uytterhoeven
+>> <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
+>
+>         [1/9] spi: rspi: Add missing clk_disable() calls in error and cleanup paths
+>         [2/9] spi: rspi: Convert to clk_prepare_enable/disable_unprepare
+>         [3/9] spi: rspi: Use NULL as the clock ID
+>         [4/9][V3] spi: rspi: Add DT support
+>
+>> >     [5/9] ARM: shmobile: r7s72100: Add RSPI clocks for DT
+>> >     [6/9][V3] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
+>> >     [7/9][V3] ARM: shmobile: genmai reference: Add RSPI nodes
+>> >     [8/9] ARM: shmobile: r8a7791 dtsi: Add QSPI node
+>> >     [9/9] ARM: shmobile: koelsch: Add QSPI nodes
+>>
+>> Forgot to mention:
+>>
+>> The ARM/shmobile part is based on renesas-devel-v3.13-rc7-20140109v2, with
+>> Magnus' pinctrl, Wolfram's riic, Simon's sh_eth, Valentine's i2c pinctrl
+>> and Laurent's SCIF DT work applied on top.
+>> [Simon: I don't know in which order you will merge these. If you want me
+>>  to rebase my patches, just ask! Thanks!]
+>
+> Firstly, I would like an Ack from Magnus on the shmobile patches.
+>
+> With regards to merge order, my preference is to merge patches
+> in parallel once their dependencies will no longer change.
+>
+> So for this series it lools like.
+>
+> 5/9: Can be merged independently of other patches in the series.
+>      But there isn't much point in merging it until the rest of the
+>      series is acked and tested.
 
-sorry, I should be clearer about this.
+OK.
 
->   As far as I can tell "ACPI
-> style _HID and _CID strings" are something different to "ACPI style
-> driver matching" but what that actually means is not at all clear to me
-> so I don't know what problem this is intended to fix.
-> 
-I gave a more detailed description about the problem in the changelog of
-patch 2/4.
+> 6-9/9: Needs to wait until 4/9 has at least been acked by Mark
 
-Take the following piece of code for example,
-static const struct acpi_device_id xxx_acpi_match[] = {
-        { "INTABCD", 0 },
-        { }
-};
-MODULE_DEVICE_TABLE(acpi, xxx_acpi_match);
+OK. Based on Mark's comments, there will be a V4.
 
-this can be seen in a platform/I2C/SPI driver that supports an ACPI
-enumerated device, right?
+>        Also, is 1/9 a run-time dependency of these changes?
 
-If this piece of code is used in a platform driver for
-an ACPI enumerated platform device, the platform DRIVER module_alias
-is "acpi:INTABCD", but the uevent attribute of its platform device node
-is "platform:INTABCD:00" (PREFIX:platform_device->name).
-If this piece of code is used in an I2C driver for an ACPI enumerated
-i2c device, the i2c driver module_alias is "acpi:INTABCD", but
-the uevent of its i2c device node is
-"i2c:INTABCD:00" (PREFIX:i2c_client->name).
-If this piece of code is used in an *SPI* driver for an ACPI enumerated
-spi device, the spi driver module_alias is "acpi:INTABCD", but
-the uevent of its spi device node is
-"spi:INTABCD" (PREFIX:spi_device->modalias).
+1/9 is a bugfix. I'll send a rebased version to Mark, as he wanted to
+get that one in first.
 
-thus when the device node is created, the driver will not be loaded
-automatically because their modalias do not match.
+2-3/9 are run-time dependencies, but 2/9 won't apply without 1/9.
 
-> Please also always remember to CC maintainers on patches.
-> 
-okay, will resend the patches later.
+Gr{oetje,eeting}s,
 
-thanks,
-rui
-> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> > index 349ebba..ab70eda 100644
-> > --- a/drivers/spi/spi.c
-> > +++ b/drivers/spi/spi.c
-> > @@ -58,6 +58,11 @@ static ssize_t
-> >  modalias_show(struct device *dev, struct device_attribute *a, char *buf)
-> >  {
-> >  	const struct spi_device	*spi = to_spi_device(dev);
-> > +	int len;
-> > +
-> > +	len = acpi_device_modalias(dev, buf, PAGE_SIZE);
-> > +	if (len != -ENODEV)
-> > +		return len;
-> >  
-> >  	return sprintf(buf, "%s%s\n", SPI_MODULE_PREFIX, spi->modalias);
-> >  }
-> 
-> What does this do and why can't acpi_driver_match_device() handle this
-> like it does for other ACPI devices?  We don't need to add such code for
-> other firmware interfaces...
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

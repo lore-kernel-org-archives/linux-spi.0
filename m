@@ -1,73 +1,72 @@
 From: Simon Horman <horms@verge.net.au>
-Subject: Re: [PATCH 0/9] Renesas RSPI/QSPI DT support
-Date: Wed, 15 Jan 2014 08:49:54 +0900
-Message-ID: <20140114234951.GA8769@verge.net.au>
-References: <1389525222-3482-1-git-send-email-geert@linux-m68k.org>
- <CAMuHMdWmFa-XsderYDp4jMw6r7fnwpm5XgQGfz8gEbCryXEkHg@mail.gmail.com>
- <20140114005312.GF18217@verge.net.au>
- <CAMuHMdWMZE23JkEr7Weq6MWgPK5w-Gy_kus5HxvcLBdgPn5Daw@mail.gmail.com>
+Subject: Re: [PATCH V2 0/3] SoC and board integration for QSPI on
+ r8a7791/koelsch
+Date: Wed, 15 Jan 2014 08:53:27 +0900
+Message-ID: <20140114235327.GC8769@verge.net.au>
+References: <1389524433-2823-1-git-send-email-geert@linux-m68k.org>
+ <20140114004638.GE18217@verge.net.au>
+ <CAMuHMdWYqv41RwyZROmuSeD9F9RfFFyOuCxn+66NgJ3MbhsJvw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+Cc: Magnus Damm <magnus.damm@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Linux-sh list <linux-sh@vger.kernel.org>,
 	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
+	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org
 To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdWMZE23JkEr7Weq6MWgPK5w-Gy_kus5HxvcLBdgPn5Daw@mail.gmail.com>
+In-Reply-To: <CAMuHMdWYqv41RwyZROmuSeD9F9RfFFyOuCxn+66NgJ3MbhsJvw@mail.gmail.com>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 14, 2014 at 09:40:34AM +0100, Geert Uytterhoeven wrote:
-> On Tue, Jan 14, 2014 at 1:53 AM, Simon Horman <horms@verge.net.au> wrote:
-> > On Sun, Jan 12, 2014 at 01:55:19PM +0100, Geert Uytterhoeven wrote:
-> >> On Sun, Jan 12, 2014 at 12:13 PM, Geert Uytterhoeven
-> >> <geert@linux-m68k.org> wrote:
-> >
-> >         [1/9] spi: rspi: Add missing clk_disable() calls in error and cleanup paths
-> >         [2/9] spi: rspi: Convert to clk_prepare_enable/disable_unprepare
-> >         [3/9] spi: rspi: Use NULL as the clock ID
-> >         [4/9][V3] spi: rspi: Add DT support
-> >
-> >> >     [5/9] ARM: shmobile: r7s72100: Add RSPI clocks for DT
-> >> >     [6/9][V3] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
-> >> >     [7/9][V3] ARM: shmobile: genmai reference: Add RSPI nodes
-> >> >     [8/9] ARM: shmobile: r8a7791 dtsi: Add QSPI node
-> >> >     [9/9] ARM: shmobile: koelsch: Add QSPI nodes
-> >>
-> >> Forgot to mention:
-> >>
-> >> The ARM/shmobile part is based on renesas-devel-v3.13-rc7-20140109v2, with
-> >> Magnus' pinctrl, Wolfram's riic, Simon's sh_eth, Valentine's i2c pinctrl
-> >> and Laurent's SCIF DT work applied on top.
+On Tue, Jan 14, 2014 at 10:05:28AM +0100, Geert Uytterhoeven wrote:
+> Hi Simon,
+> 
+> On Tue, Jan 14, 2014 at 1:46 AM, Simon Horman <horms@verge.net.au> wrote:
+> > On Sun, Jan 12, 2014 at 12:00:29PM +0100, Geert Uytterhoeven wrote:
+> >> This series adds support for the Spansion s25fl512s SPI FLASH on the
+> >> r8a7791-based Koelsch board. It is based on
+> >> renesas-devel-v3.13-rc7-20140109v2, with Valentine's i2c pinctrl and
+> >> Laurent's SCIF DT work applied on top.
 > >> [Simon: I don't know in which order you will merge these. If you want me
 > >>  to rebase my patches, just ask! Thanks!]
 > >
-> > Firstly, I would like an Ack from Magnus on the shmobile patches.
+> > I see that Laruent has taken patch 1/4.
 > >
-> > With regards to merge order, my preference is to merge patches
-> > in parallel once their dependencies will no longer change.
-> >
-> > So for this series it lools like.
-> >
-> > 5/9: Can be merged independently of other patches in the series.
-> >      But there isn't much point in merging it until the rest of the
-> >      series is acked and tested.
+> > Is it possible for me to merge patches 2-4/4 independently of that patch?
+> > That is, can I apply them and still produce a kernel that boots. If so,
+> > that is my preferred option. If not I will talk to Laurent about a branch
+> > to base things on.
 > 
-> OK.
+> Yes you can. Note that RSPI still won't be enabled without "spi: rspi: Remove
+> dependency on DMAE for SHMOBILE" (which has now landed in the spi tree).
+> And with that patch applied, you'll get warnings like:
 > 
-> > 6-9/9: Needs to wait until 4/9 has at least been acked by Mark
+>     pinmux core: sh-pfc does not support function qspi
+>     sh-pfc pfc-r8a7791: invalid function qspi in map table
+>     pinmux core: sh-pfc does not support function qspi
+>     sh-pfc pfc-r8a7791: invalid function qspi in map table
 > 
-> OK. Based on Mark's comments, there will be a V4.
-> 
-> >        Also, is 1/9 a run-time dependency of these changes?
-> 
-> 1/9 is a bugfix. I'll send a rebased version to Mark, as he wanted to
-> get that one in first.
-> 
-> 2-3/9 are run-time dependencies, but 2/9 won't apply without 1/9.
+> which are harmless, and spi will still work, as that's the default pin config
+> anyway.
 
-run-time dependencies of 6-9/9 ?
+Thanks, that is perfectly fine.
+
+> > Also, I would like to get an Ack from Magnus.
+> 
+> Sure.
+> 
+> Thanks!
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
+> 

@@ -1,60 +1,64 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: davinci: fix build warning when printing
- resource_size_t vars
-Date: Tue, 14 Jan 2014 14:39:45 +0000
-Message-ID: <20140114143945.GP15567@sirena.org.uk>
-References: <20140112110916.GR15937@n2100.arm.linux.org.uk>
- <1389707408-24785-1-git-send-email-grygorii.strashko@ti.com>
+Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
+Date: Tue, 14 Jan 2014 14:41:55 +0000
+Message-ID: <20140114144155.GQ15567@sirena.org.uk>
+References: <1389686417.3309.8.camel@rzhang1-mobl4>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="OmL7C/BU0IhhC9Of"
-Cc: linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org, santosh.shilimkar-l0cyMroinI0@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	nsekhar-l0cyMroinI0@public.gmane.org
-To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="JQ29orswtRjjfiJM"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org,
+	grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1389707408-24785-1-git-send-email-grygorii.strashko-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1389686417.3309.8.camel@rzhang1-mobl4>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---OmL7C/BU0IhhC9Of
+--JQ29orswtRjjfiJM
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jan 14, 2014 at 03:50:08PM +0200, Grygorii Strashko wrote:
-> Use %pa format specifier when printing variables of resource_size_t type
-> to fix build warnings:
-> drivers/spi/spi-davinci.c:966:3: warning: format '%d' expects argument of type 'int', but argument 3 has type 'resource_size_t'
-> drivers/spi/spi-davinci.c:966:3: warning: format '%d' expects argument of type 'int', but argument 4 has type 'resource_size_t'
+On Tue, Jan 14, 2014 at 04:00:17PM +0800, Zhang Rui wrote:
+> On Mon, 2014-01-13 at 17:35 +0000, Mark Brown wrote:
+> > On Mon, Jan 13, 2014 at 09:48:31PM +0800, Zhang Rui wrote:
+> > > ACPI enumerated devices has ACPI style _HID and _CID strings,
+> > > all of these strings can be used for both driver loading and matching.
 
-This doesn't apply against current code, it seems the same patch has
-already been applied.
+> If this piece of code is used in an *SPI* driver for an ACPI enumerated
+> spi device, the spi driver module_alias is "acpi:INTABCD", but
+> the uevent of its spi device node is
+> "spi:INTABCD" (PREFIX:spi_device->modalias).
 
---OmL7C/BU0IhhC9Of
+OK that makes sense, but what does this have to do with the _HID and
+_CID methods?  Surely we're just replacing spi: with acpi: in the uevent?
+
+--JQ29orswtRjjfiJM
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS1UwuAAoJELSic+t+oim97VoP/iu7e9VECnaXtoBpi+miFBqD
-dFwNoG2CF9vVitfAOw1911k6KQLsa4Wy+HMs0Q6vZcVQFiQhxn5+chxseX2nHjF3
-4vlyHOO1Ui/nHuV1Tu9S3xPZn8m+TFyzsGILc/6/Rmny/TqJwepgdKdMKMj60TRB
-iFvs+EEqzOyjVbYIq/lXpp3dk+wC5ylv4b9njsOH8/sjXX21rox6M+ieecYgO7+/
-jbHsFIX5TWf97P+/gbybJSTicSfl+vUucC4v+PvVT715GxyZWGzZiS70Xl424rk1
-ZyaN/VDKubcbhphYAHnU2urUcv64/ZSP5Kj/lYidxpP3KLnF1BdOF0OFuVOHL0ea
-g9MHZKBpchwHzp5sfM0K7/u0dAOfDMfqH27GyG94SaEgCwZzKnWjPnmdgAmPblHo
-iWpl627Tlx2EU24gwusk9Z4VlcJZwrbtscU1PmMaGT/WqA/isdCE3HmeoqapP2rT
-5aShOF0ZPouOUEYZ9Hkt3kHmz2J86OOBrEK33aAGYTrTpA1y0s5eHJMBmhPA5YEa
-kMSY0uVWgRPBkFMhz8jK9GBYyWJA3XreBaxxf762kSP0X0yvEhKYy/DEJTMbtCg3
-vGwjGj1FH3gvx/ASioBXByskamWKrUIeaLBsqJidhiuq8EKq9NirPs2JhfhN0Cfw
-XNLkUVCT8hpB4C6ZgRMg
-=Ov9t
+iQIcBAEBAgAGBQJS1UyvAAoJELSic+t+oim9bG0P/0goHARf3A90XHRUhgRTGYUu
+RoxxvXItiqeVwx7IhjlB3cfaRTomiftiPyzthaVv4JiJkZjl87J+AsBiOuKS+t84
+stHjPCAgaAM+VjX5NZZ5KJlslduei0Gi4DMC+t9p5agdMrzpYLTVtmu6oRzrgcFV
+btfpNUin6fwthsw+5pormum0Ic8enZ86mk9NAOY6sfBCeJ+wIOsNrxtbhUEOOWlq
+CqoOFEz+7oEu9ncZJrKFxpM6IOpyFabYsbME+MJjSc8pzJmX8jUCTk4JEEuOnSjn
+m+5Qh0HvbuONoLTp9Ruy3orscCg4vgKYom8E4tbJMm7ugYgTGfN3Gg4vQf1rkuid
+PrBM41OzeMBUBeQ8dho0MiS6xiUpAA9TsCYNxGYX1bbF2i8MYXpb/ZwXO8ClUSu7
+4YDO+w7u0XHrmfapVz222EJQAhqDBSTDBT9JRUQR66PKnETFp0ffJeKD7uvQQcYY
+WB0nQUQ8NEZt9Qz9J8oZCSGtdqine9hHsey/a72L2HQpvywghAHkncY/bNTgLHLT
+UiDXfn92CqME2Kv+aHhg6AEvayOSQ0NS6/a+8WEu3+OInk4U3Xo4noAsOHOG5g7M
+0Jx2TsKDhuZU5XJdXxPnh0GRDbLwoWwkaXKgTkFY3I4RAZOEkzjie+O8wDHmyr7v
+qk7CKdXl9x4+Vz7uTK3o
+=1KHM
 -----END PGP SIGNATURE-----
 
---OmL7C/BU0IhhC9Of--
+--JQ29orswtRjjfiJM--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

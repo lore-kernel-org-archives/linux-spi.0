@@ -1,37 +1,62 @@
-From: Santosh Shilimkar <santosh.shilimkar-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH] spi: davinci: fix build warning when printing resource_size_t
- vars
-Date: Tue, 14 Jan 2014 09:41:48 -0500
-Message-ID: <52D54CAC.1050005@ti.com>
-References: <20140112110916.GR15937@n2100.arm.linux.org.uk> <1389707408-24785-1-git-send-email-grygorii.strashko@ti.com> <20140114143945.GP15567@sirena.org.uk>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH/RFC] spi: core: Fix logic mismatch in spi_master.set_cs()
+Date: Tue, 14 Jan 2014 15:44:43 +0100
+Message-ID: <CAMuHMdXEsNKRxYv8gh5sDzpg_QH2RmrjYhLhCZx0QCcRN+gdOg@mail.gmail.com>
+References: <1389699411-29135-1-git-send-email-geert@linux-m68k.org>
+	<20140114125242.GE15567@sirena.org.uk>
+	<CAMuHMdVmSUh8yphZ4oPR=QYp5uMS9BXgPRVuwa19S9q7jWxxiQ@mail.gmail.com>
+	<20140114134528.GG15567@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-Cc: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>,
-	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <nsekhar-l0cyMroinI0@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140114143945.GP15567-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20140114134528.GG15567@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tuesday 14 January 2014 09:39 AM, Mark Brown wrote:
-> On Tue, Jan 14, 2014 at 03:50:08PM +0200, Grygorii Strashko wrote:
->> Use %pa format specifier when printing variables of resource_size_t type
->> to fix build warnings:
->> drivers/spi/spi-davinci.c:966:3: warning: format '%d' expects argument of type 'int', but argument 3 has type 'resource_size_t'
->> drivers/spi/spi-davinci.c:966:3: warning: format '%d' expects argument of type 'int', but argument 4 has type 'resource_size_t'
-> 
-> This doesn't apply against current code, it seems the same patch has
-> already been applied.
-> 
-Yeah. I did send same patch last merge window time-frame which has been
-applied by you.
+On Tue, Jan 14, 2014 at 2:45 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Jan 14, 2014 at 02:23:37PM +0100, Geert Uytterhoeven wrote:
+>> On Tue, Jan 14, 2014 at 1:52 PM, Mark Brown <broonie@kernel.org> wrote:
+>> >On Tue, Jan 14, 2014 at 12:36:51PM +0100, Geert Uytterhoeven wrote:
+>
+>> > This also pushes the handling of CS_HIGH back out into the driver which
+>> > doesn't seem like it's helping anything.  Flipping the sense of enable
+>
+>> It depends: on hardware with separate register bits for chip select polarity
+>> and chip select assertion it avoids having to invert the enable value a second
+>> time.
+>
+> If we're manually setting /CS it really makes no difference what the
+> chip thinks the polarity is - something that is controlling /CS
+> autonomously can't implement this operation and something that can just
+> set it at any time doesn't need to worry if the chip thinks it's
+> asserted or not.
 
-Regards,
-Santosh
+Doh, so I'm the only one where it does matter, as RSPI has separate
+Slave Select Signal Polarity (high/low) and Slave Select Output Setting
+(enable/disable)...
+
+>> > when calling set_cs() is probably OK though.
+>
+>> Just flipping the sense of enable still needs a documentation update.
+>
+> Huh?  Why were you updating the code then...
+
+"true to assert" in the documentation means that enable is true when
+enabling the chip select.
+Currently the value of enable depends on SPI_CS_HIGH. Just "flipping
+the sense of enable" doesn't change that dependency.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

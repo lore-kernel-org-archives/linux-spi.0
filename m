@@ -1,83 +1,51 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 0/9] Renesas RSPI/QSPI DT support
-Date: Tue, 14 Jan 2014 09:40:34 +0100
-Message-ID: <CAMuHMdWMZE23JkEr7Weq6MWgPK5w-Gy_kus5HxvcLBdgPn5Daw@mail.gmail.com>
-References: <1389525222-3482-1-git-send-email-geert@linux-m68k.org>
-	<CAMuHMdWmFa-XsderYDp4jMw6r7fnwpm5XgQGfz8gEbCryXEkHg@mail.gmail.com>
-	<20140114005312.GF18217@verge.net.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140114005312.GF18217-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/4] module autoloading fixes
+Date: Tue, 14 Jan 2014 16:46:34 +0800
+Message-ID: <1389689198-2641-1-git-send-email-rui.zhang@intel.com>
+Cc: wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org,
+	rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 14, 2014 at 1:53 AM, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org> wrote:
-> On Sun, Jan 12, 2014 at 01:55:19PM +0100, Geert Uytterhoeven wrote:
->> On Sun, Jan 12, 2014 at 12:13 PM, Geert Uytterhoeven
->> <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
->
->         [1/9] spi: rspi: Add missing clk_disable() calls in error and cleanup paths
->         [2/9] spi: rspi: Convert to clk_prepare_enable/disable_unprepare
->         [3/9] spi: rspi: Use NULL as the clock ID
->         [4/9][V3] spi: rspi: Add DT support
->
->> >     [5/9] ARM: shmobile: r7s72100: Add RSPI clocks for DT
->> >     [6/9][V3] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
->> >     [7/9][V3] ARM: shmobile: genmai reference: Add RSPI nodes
->> >     [8/9] ARM: shmobile: r8a7791 dtsi: Add QSPI node
->> >     [9/9] ARM: shmobile: koelsch: Add QSPI nodes
->>
->> Forgot to mention:
->>
->> The ARM/shmobile part is based on renesas-devel-v3.13-rc7-20140109v2, with
->> Magnus' pinctrl, Wolfram's riic, Simon's sh_eth, Valentine's i2c pinctrl
->> and Laurent's SCIF DT work applied on top.
->> [Simon: I don't know in which order you will merge these. If you want me
->>  to rebase my patches, just ask! Thanks!]
->
-> Firstly, I would like an Ack from Magnus on the shmobile patches.
->
-> With regards to merge order, my preference is to merge patches
-> in parallel once their dependencies will no longer change.
->
-> So for this series it lools like.
->
-> 5/9: Can be merged independently of other patches in the series.
->      But there isn't much point in merging it until the rest of the
->      series is acked and tested.
+Hi, all,
 
-OK.
+This patch set fixes a couple of module autoloading problem.
 
-> 6-9/9: Needs to wait until 4/9 has at least been acked by Mark
+Patch 1/4 fixes a bug in ACPI device 'modalias' and 'uevent' attributes,
+          although the bug can rarely be reproduced (only if there is an
+          output error of snprintf, or the ids are longer than 1024 bytes)
+Patch 2/4 introduces two new APIs for exporting ACPI style 'modalias' and
+          'uevent' attributes in other buses.
+Patch 3/4 introduce support for ACPI style 'modalias' and 'uevent'
+          attributes in platform, I2C and SPI bus.
+Patch 4/4 add OF style 'modalias' support for platform bus.
 
-OK. Based on Mark's comments, there will be a V4.
+I did some tests and can confirm that the code for ACPI enumerated platform
+bus device works well.
+I tried with a patch with convert ACPI Fan device/driver to platform bus,
+and can confirm that the code for ACPI enumerated platform device works well,
+both the platform Fan driver and device show their modalias as "acpi:PNP0C0B".
 
->        Also, is 1/9 a run-time dependency of these changes?
+thanks,
+rui
 
-1/9 is a bugfix. I'll send a rebased version to Mark, as he wanted to
-get that one in first.
+----------------------------------------------------------------
+Zhang Rui (4):
+      ACPI: fix create_modalias() return value handling
+      ACPI: add module autoloading support for ACPI enumerated devices
+      fix module autoloading for ACPI enumerated devices
+      OF: introduce OF style 'modalias' support for platform bus.
 
-2-3/9 are run-time dependencies, but 2/9 won't apply without 1/9.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+ drivers/acpi/scan.c       |   73 +++++++++++++++++++++++++++++++++++++++++----
+ drivers/base/platform.c   |   16 +++++++++-
+ drivers/i2c/i2c-core.c    |   11 +++++++
+ drivers/of/device.c       |    3 ++
+ drivers/spi/spi.c         |   10 +++++++
+ include/linux/acpi.h      |   15 ++++++++++
+ include/linux/of_device.h |    6 ++++
+ 7 files changed, 127 insertions(+), 7 deletions(-)

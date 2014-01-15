@@ -1,46 +1,42 @@
-From: Zhang Rui <rui.zhang@intel.com>
-Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
-Date: Wed, 15 Jan 2014 09:16:43 +0800
-Message-ID: <1389748603.2336.9.camel@rzhang1-mobl4>
-References: <1389686417.3309.8.camel@rzhang1-mobl4>
-	 <20140114144155.GQ15567@sirena.org.uk>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: octeon: Use list_is_last() instead of open-coded
+Date: Wed, 15 Jan 2014 13:22:17 +0800
+Message-ID: <1389763337.7410.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-spi@vger.kernel.org, rjw@rjwysocki.net,
-	grant.likely@secretlab.ca, jarkko.nikula@linux.intel.com,
-	mika.westerberg@linux.intel.com
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20140114144155.GQ15567@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
+	John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 2014-01-14 at 14:41 +0000, Mark Brown wrote:
-> On Tue, Jan 14, 2014 at 04:00:17PM +0800, Zhang Rui wrote:
-> > On Mon, 2014-01-13 at 17:35 +0000, Mark Brown wrote:
-> > > On Mon, Jan 13, 2014 at 09:48:31PM +0800, Zhang Rui wrote:
-> > > > ACPI enumerated devices has ACPI style _HID and _CID strings,
-> > > > all of these strings can be used for both driver loading and matching.
-> 
-> > If this piece of code is used in an *SPI* driver for an ACPI enumerated
-> > spi device, the spi driver module_alias is "acpi:INTABCD", but
-> > the uevent of its spi device node is
-> > "spi:INTABCD" (PREFIX:spi_device->modalias).
-> 
-> OK that makes sense, but what does this have to do with the _HID and
-> _CID methods?
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-octeon.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-If an ACPI enumerated SPI device has a _HID and a _CID,
-both of them need to be exposed in 'uevent', so that a driver that
-matches _CID can also have a chance to be probed. This can not be done
-by the current code, thus we need special handling of ACPI enumerated
-SPI devices.
+diff --git a/drivers/spi/spi-octeon.c b/drivers/spi/spi-octeon.c
+index 67249a4..862ef30 100644
+--- a/drivers/spi/spi-octeon.c
++++ b/drivers/spi/spi-octeon.c
+@@ -179,7 +179,8 @@ static int octeon_spi_transfer_one_message(struct spi_master *master,
+ 	}
+ 
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+-		bool last_xfer = &xfer->transfer_list == msg->transfers.prev;
++		bool last_xfer = list_is_last(&xfer->transfer_list,
++					      &msg->transfers);
+ 		int r = octeon_spi_do_transfer(p, msg, xfer, last_xfer);
+ 		if (r < 0) {
+ 			status = r;
+-- 
+1.8.1.2
 
->   Surely we're just replacing spi: with acpi: in the uevent?
 
-yes.
 
-thanks,
-rui
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,101 +1,133 @@
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
-Date: Wed, 15 Jan 2014 17:08:34 +0200
-Message-ID: <20140115150834.GX2494@intel.com>
-References: <1389689198-2641-1-git-send-email-rui.zhang@intel.com>
- <1389689198-2641-4-git-send-email-rui.zhang@intel.com>
+From: Jagan Teki <jagannadh.teki@gmail.com>
+Subject: Re: [PATCH v4 0/7] mtd: spi-nor: add a new framework for SPI NOR
+Date: Thu, 16 Jan 2014 00:45:21 +0530
+Message-ID: <CAD6G_RTnNQgeJM8Tc16Sc1_n29d=V9sJN1ePrOAn5YzM+GujMQ@mail.gmail.com>
+References: <1387950629-27448-1-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-	wsa@the-dreams.de, broonie@linaro.org, gregkh@linuxfoundation.org,
-	rafael.j.wysocki@intel.com, grant.likely@linaro.org,
-	rob.herring@calxeda.com, jarkko.nikula@linux.intel.com
-To: Zhang Rui <rui.zhang@intel.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1389689198-2641-4-git-send-email-rui.zhang@intel.com>
-Sender: linux-acpi-owner@vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: David Woodhouse <dwmw2@infradead.org>, angus.clark@st.com,
+	shawn.guo@linaro.org, b44548@freescale.com, broonie@linaro.org,
+	linux-doc@vger.kernel.org, b18965@freescale.com,
+	linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-mtd@lists.infradead.org, "Gupta, Pekon" <pekon@ti.com>,
+	Sourav Poddar <sourav.poddar@ti.com>,
+	Brian Norris <computersforpeace@gmail.com>,
+	lee.jones@linaro.org,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Huang Shijie <b32955@freescale.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1387950629-27448-1-git-send-email-b32955@freescale.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 14, 2014 at 04:46:37PM +0800, Zhang Rui wrote:
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 3a94b79..2f4aea2 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -677,7 +677,13 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *a,
->  			     char *buf)
->  {
->  	struct platform_device	*pdev = to_platform_device(dev);
-> -	int len = snprintf(buf, PAGE_SIZE, "platform:%s\n", pdev->name);
-> +	int len;
-> +
-> +	len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
+Hi,
 
-Here you have PAGE_SIZE -1...
+On Wed, Dec 25, 2013 at 11:20 AM, Huang Shijie <b32955@freescale.com> wrote:
+> 1.) Why add a new framework for SPI NOR?
+>   The SPI-NOR controller such as Freescale's Quadspi controller is working
+>   in a different way from the SPI bus. It should knows the NOR commands to
+>   find the right LUT sequence. Unfortunately, the current code can not meet
+>   this requirement.
+>
+> 2.) How does this patch set do?
+>    This patch set adds a new spi-nor layer.
+>    Before this patch, the layer is like:
+>
+>                    MTD
+>          ------------------------
+>                   m25p80
+>          ------------------------
+>                spi bus driver
+>          ------------------------
+>                 SPI NOR chip
+>
+>    After this patch, the layer is like:
+>                    MTD
+>          ------------------------
+>                   spi-nor
+>          ------------------------
+>                   m25p80
+>          ------------------------
+>                spi bus driver
+>          ------------------------
+>                SPI NOR chip
+>
+>   With the spi-nor controller driver(Freescale Quadspi), it looks like:
+>                    MTD
+>          ------------------------
+>                   spi-nor
+>          ------------------------
+>                 fsl-quadspi
+>          ------------------------
+>                SPI NOR chip
 
-> +	if (len != -ENODEV)
-> +		return len;
-> +
-> +	len = snprintf(buf, PAGE_SIZE, "platform:%s\n", pdev->name);
->  
->  	return (len >= PAGE_SIZE) ? (PAGE_SIZE - 1) : len;
->  }
-> @@ -699,6 +705,10 @@ static int platform_uevent(struct device *dev, struct kobj_uevent_env *env)
->  	if (rc != -ENODEV)
->  		return rc;
->  
-> +	rc = acpi_device_uevent_modalias(dev, env);
-> +	if (rc != -ENODEV)
-> +		return rc;
-> +
->  	add_uevent_var(env, "MODALIAS=%s%s", PLATFORM_MODULE_PREFIX,
->  			pdev->name);
->  	return 0;
-> diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
-> index d74c0b3..c4c5588 100644
-> --- a/drivers/i2c/i2c-core.c
-> +++ b/drivers/i2c/i2c-core.c
-> @@ -104,6 +104,11 @@ static int i2c_device_match(struct device *dev, struct device_driver *drv)
->  static int i2c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
->  {
->  	struct i2c_client	*client = to_i2c_client(dev);
-> +	int rc;
-> +
-> +	rc = acpi_device_uevent_modalias(dev, env);
-> +	if (rc != -ENODEV)
-> +		return rc;
->  
->  	if (add_uevent_var(env, "MODALIAS=%s%s",
->  			   I2C_MODULE_PREFIX, client->name))
-> @@ -409,6 +414,12 @@ static ssize_t
->  show_modalias(struct device *dev, struct device_attribute *attr, char *buf)
->  {
->  	struct i2c_client *client = to_i2c_client(dev);
-> +	int len;
-> +
-> +	len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
+I'm new to this thread, may be I'll ask basic questions.
+1) what does m25p80 contains with your new framework - will excludes
+quad stuff if they add
+2) I didn't understand why the controller driver fsl-quadspi will be
+in mtd becuase as it's (q)spi driver
+may does flash or non-flash functionalities if ie, the case should be
+part of drivers/spi/*
+3) Can you explain your framework precisely take an example of like
+spi_controller_A with spi_flash_A
+and qspi_controller_B and qspi_flash_B - how will this new framework operates.
 
-and here
+>
+> 3.) more details
+>     This patch set adds a new data structrue spi_nor{}, clones most the common
+>   code to spi-nor.c. Add spi_nor_xfer_cfg {} for the fundamental primitives:
+>   read_xfer/write_xfer.
+>
+>     Make the m25p80.c/fsl_quaspi.c use the new APIs.
+>
+> 4.) Change log:
+> v3 --> v4:
+>         [1] move the wait_till_ready to the @read hook.
+>         [2] convert to linux-doc style comment.
+>         [3] remove the some DT property for QuadSPI driver, such as
+>             "fsl,nor-size".
+>         [4] others
+>
+> v2 --> v3:
+>         [1] add prepare/unprepare hooks for spi_nor{}.
+>         [2] add a new "priv" field for spi_nor{}.
+>         [3] add the Freescale Quadspi driver which supports the Quad read by
+>              default.
+>
+> v1 --> v2:
+>         [1] follow Angus's advice, add more hooks and data structrures.
+>         [2] others.
+>
+>
+> Huang Shijie (7):
+>   mtd: spi-nor: copy the SPI NOR commands to a new header file
+>   mtd: spi-nor: add the basic data structures
+>   mtd: spi-nor: add the framework for SPI NOR
+>   mtd: m25p80: use the SPI nor framework
+>   mtd: spi-nor: add a helper to find the spi_device_id
+>   Documentation: add the binding file for Freescale QuadSPI driver
+>   mtd: spi-nor: Add Freescale QuadSPI driver
+>
+>  .../devicetree/bindings/mtd/fsl-quadspi.txt        |   26 +
+>  drivers/mtd/Kconfig                                |    2 +
+>  drivers/mtd/Makefile                               |    1 +
+>  drivers/mtd/devices/Kconfig                        |    2 +-
+>  drivers/mtd/devices/m25p80.c                       | 1275 ++------------------
+>  drivers/mtd/spi-nor/Kconfig                        |   12 +
+>  drivers/mtd/spi-nor/Makefile                       |    2 +
+>  drivers/mtd/spi-nor/fsl-quadspi.c                  |  957 +++++++++++++++
+>  drivers/mtd/spi-nor/spi-nor.c                      | 1093 +++++++++++++++++
+>  include/linux/mtd/spi-nor.h                        |  194 +++
+>  10 files changed, 2387 insertions(+), 1177 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+>  create mode 100644 drivers/mtd/spi-nor/Kconfig
+>  create mode 100644 drivers/mtd/spi-nor/Makefile
+>  create mode 100644 drivers/mtd/spi-nor/fsl-quadspi.c
+>  create mode 100644 drivers/mtd/spi-nor/spi-nor.c
+>  create mode 100644 include/linux/mtd/spi-nor.h
+>
 
-> +	if (len != -ENODEV)
-> +		return len;
-> +
->  	return sprintf(buf, "%s%s\n", I2C_MODULE_PREFIX, client->name);
->  }
->  
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 349ebba..ab70eda 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -58,6 +58,11 @@ static ssize_t
->  modalias_show(struct device *dev, struct device_attribute *a, char *buf)
->  {
->  	const struct spi_device	*spi = to_spi_device(dev);
-> +	int len;
-> +
-> +	len = acpi_device_modalias(dev, buf, PAGE_SIZE);
-
-but here it is PAGE_SIZE.
-
-Perhaps it should be PAGE_SIZE in all sites?
+-- 
+Thanks,
+Jagan.

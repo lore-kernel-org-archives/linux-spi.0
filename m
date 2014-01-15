@@ -1,72 +1,46 @@
-From: Simon Horman <horms@verge.net.au>
-Subject: Re: [PATCH V2 0/3] SoC and board integration for QSPI on
- r8a7791/koelsch
-Date: Wed, 15 Jan 2014 08:53:27 +0900
-Message-ID: <20140114235327.GC8769@verge.net.au>
-References: <1389524433-2823-1-git-send-email-geert@linux-m68k.org>
- <20140114004638.GE18217@verge.net.au>
- <CAMuHMdWYqv41RwyZROmuSeD9F9RfFFyOuCxn+66NgJ3MbhsJvw@mail.gmail.com>
+From: Zhang Rui <rui.zhang@intel.com>
+Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
+Date: Wed, 15 Jan 2014 09:16:43 +0800
+Message-ID: <1389748603.2336.9.camel@rzhang1-mobl4>
+References: <1389686417.3309.8.camel@rzhang1-mobl4>
+	 <20140114144155.GQ15567@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Magnus Damm <magnus.damm@gmail.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdWYqv41RwyZROmuSeD9F9RfFFyOuCxn+66NgJ3MbhsJvw@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org, rjw@rjwysocki.net,
+	grant.likely@secretlab.ca, jarkko.nikula@linux.intel.com,
+	mika.westerberg@linux.intel.com
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20140114144155.GQ15567@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Jan 14, 2014 at 10:05:28AM +0100, Geert Uytterhoeven wrote:
-> Hi Simon,
+On Tue, 2014-01-14 at 14:41 +0000, Mark Brown wrote:
+> On Tue, Jan 14, 2014 at 04:00:17PM +0800, Zhang Rui wrote:
+> > On Mon, 2014-01-13 at 17:35 +0000, Mark Brown wrote:
+> > > On Mon, Jan 13, 2014 at 09:48:31PM +0800, Zhang Rui wrote:
+> > > > ACPI enumerated devices has ACPI style _HID and _CID strings,
+> > > > all of these strings can be used for both driver loading and matching.
 > 
-> On Tue, Jan 14, 2014 at 1:46 AM, Simon Horman <horms@verge.net.au> wrote:
-> > On Sun, Jan 12, 2014 at 12:00:29PM +0100, Geert Uytterhoeven wrote:
-> >> This series adds support for the Spansion s25fl512s SPI FLASH on the
-> >> r8a7791-based Koelsch board. It is based on
-> >> renesas-devel-v3.13-rc7-20140109v2, with Valentine's i2c pinctrl and
-> >> Laurent's SCIF DT work applied on top.
-> >> [Simon: I don't know in which order you will merge these. If you want me
-> >>  to rebase my patches, just ask! Thanks!]
-> >
-> > I see that Laruent has taken patch 1/4.
-> >
-> > Is it possible for me to merge patches 2-4/4 independently of that patch?
-> > That is, can I apply them and still produce a kernel that boots. If so,
-> > that is my preferred option. If not I will talk to Laurent about a branch
-> > to base things on.
+> > If this piece of code is used in an *SPI* driver for an ACPI enumerated
+> > spi device, the spi driver module_alias is "acpi:INTABCD", but
+> > the uevent of its spi device node is
+> > "spi:INTABCD" (PREFIX:spi_device->modalias).
 > 
-> Yes you can. Note that RSPI still won't be enabled without "spi: rspi: Remove
-> dependency on DMAE for SHMOBILE" (which has now landed in the spi tree).
-> And with that patch applied, you'll get warnings like:
-> 
->     pinmux core: sh-pfc does not support function qspi
->     sh-pfc pfc-r8a7791: invalid function qspi in map table
->     pinmux core: sh-pfc does not support function qspi
->     sh-pfc pfc-r8a7791: invalid function qspi in map table
-> 
-> which are harmless, and spi will still work, as that's the default pin config
-> anyway.
+> OK that makes sense, but what does this have to do with the _HID and
+> _CID methods?
 
-Thanks, that is perfectly fine.
+If an ACPI enumerated SPI device has a _HID and a _CID,
+both of them need to be exposed in 'uevent', so that a driver that
+matches _CID can also have a chance to be probed. This can not be done
+by the current code, thus we need special handling of ACPI enumerated
+SPI devices.
 
-> > Also, I would like to get an Ack from Magnus.
-> 
-> Sure.
-> 
-> Thanks!
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-> 
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
-> 
+>   Surely we're just replacing spi: with acpi: in the uevent?
+
+yes.
+
+thanks,
+rui

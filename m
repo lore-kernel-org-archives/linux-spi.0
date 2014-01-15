@@ -1,46 +1,49 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: Re: FW: [PATCH] spi: sirf: Avoid duplicate code in various
- bits_per_word cases
-Date: Wed, 15 Jan 2014 16:46:11 +0800
-Message-ID: <CAFRkauCK3JJcmSx_1xi_EteY48o7vaatjBTp0L5xF-bRS+JF6A@mail.gmail.com>
-References: <1389772636.13585.1.camel@phoenix>
-	<5EB3BFCD089AD643B9BB63439F5FD5E9012BC102FB@SHAASIEXM01.ASIA.ROOT.PRI>
-	<CAGsJ_4xu2g3K7D-QumwJBCxTvwc06GLE_Mz8uLyAKpHOLgq2Sw@mail.gmail.com>
-	<CAFRkauB7DrFy-v0+14PcKjan4YxFiTzC5OruiaHC7mFdDmOXoA@mail.gmail.com>
-	<CAGsJ_4y-5PuKA0y7JicDsH5AY159MPnA+qHU5BxnBrGC6WsT=g@mail.gmail.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 0/9] Renesas RSPI/QSPI DT support
+Date: Wed, 15 Jan 2014 09:46:14 +0100
+Message-ID: <CAMuHMdXLD3RmU72nj1gGXJu26Ten+hbdSVb7MXkWJRfwYYontA@mail.gmail.com>
+References: <1389525222-3482-1-git-send-email-geert@linux-m68k.org>
+	<CAMuHMdWmFa-XsderYDp4jMw6r7fnwpm5XgQGfz8gEbCryXEkHg@mail.gmail.com>
+	<20140114005312.GF18217@verge.net.au>
+	<CAMuHMdWMZE23JkEr7Weq6MWgPK5w-Gy_kus5HxvcLBdgPn5Daw@mail.gmail.com>
+	<20140114234951.GA8769@verge.net.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Zhiwu Song <zhiwu.song-kQvG35nSl+M@public.gmane.org>,
-	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAGsJ_4y-5PuKA0y7JicDsH5AY159MPnA+qHU5BxnBrGC6WsT=g@mail.gmail.com>
+In-Reply-To: <20140114234951.GA8769-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
->>> Axel, thanks.
->>> it is a good cleanup, but it seems it is not right for txfifo_ctrl and
->>> rxfifo_ctrl?
->>
->> I don't get it.
->> I thought there is no functional change with this patch.
->
-> you might want to change
->
->  txfifo_ctrl = SIRFSOC_SPI_FIFO_THD(SIRFSOC_SPI_FIFO_SIZE / 2) |
->                                         SIRFSOC_SPI_FIFO_WIDTH_WORD;
->  rxfifo_ctrl = SIRFSOC_SPI_FIFO_THD(SIRFSOC_SPI_FIFO_SIZE / 2) |
->                                        SIRFSOC_SPI_FIFO_WIDTH_WORD;
->
-> to "SIRFSOC_SPI_FIFO_THD(SIRFSOC_SPI_FIFO_SIZE / 2)  I sspi->word_width" ?
-So it is a bug in original code, right? (I mean a bug before applying
-this patch.)
-I'll re-generate the patch and separate it to 2 patches.
-( one for bug fix which may need for stable, the other one for the clean up)
+Hi Simon,
 
-Thanks,
-Axel
+On Wed, Jan 15, 2014 at 12:49 AM, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org> wrote:
+>> >> >     [6/9][V3] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
+>> >> >     [7/9][V3] ARM: shmobile: genmai reference: Add RSPI nodes
+>> >> >     [8/9] ARM: shmobile: r8a7791 dtsi: Add QSPI node
+>> >> >     [9/9] ARM: shmobile: koelsch: Add QSPI nodes
+
+> run-time dependencies of 6-9/9 ?
+
+None, these are just DT nodes. It may print warnings due to unknown
+pinctrl groups and functions, but that's it.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

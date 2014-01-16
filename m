@@ -1,126 +1,111 @@
-From: "Zhang, Rui" <rui.zhang@intel.com>
-Subject: RE: [PATCH 4/4] OF: introduce OF style 'modalias' support for
- platform bus.
-Date: Thu, 16 Jan 2014 07:04:19 +0000
-Message-ID: <744357E9AAD1214791ACBA4B0B909263011CE77F@SHSMSX101.ccr.corp.intel.com>
+From: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
+Date: Thu, 16 Jan 2014 16:04:35 +0800
+Message-ID: <1389859475.3010.5.camel@rzhang1-mobl4>
 References: <1389689198-2641-1-git-send-email-rui.zhang@intel.com>
-	<1389689198-2641-5-git-send-email-rui.zhang@intel.com>
- <CAL_JsqJFRQ+27N_9AwZXpx4V=g8HKn84WdVKtQ_Br_8SQTXY7g@mail.gmail.com>
+	 <1389689198-2641-4-git-send-email-rui.zhang@intel.com>
+	 <20140115150834.GX2494@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"wsa@the-dreams.de" <wsa@the-dreams.de>,
-	Mark Brown <broonie@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Wysocki, Rafael J" <rafael.j.wysocki@intel.com>,
-	Grant Likely <grant.likely@linaro.org>,
-	"Rob Herring" <rob.herring@calxeda.com>,
-	"jarkko.nikula@linux.intel.com" <jarkko.nikula@linux.intel.com>,
-	"mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Rob Herring <robherring2@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAL_JsqJFRQ+27N_9AwZXpx4V=g8HKn84WdVKtQ_Br_8SQTXY7g@mail.gmail.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org,
+	rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140115150834.GX2494-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-
-
-> -----Original Message-----
-> From: Rob Herring [mailto:robherring2@gmail.com]
-> Sent: Wednesday, January 15, 2014 9:45 PM
-> To: Zhang, Rui
-> Cc: linux-kernel@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
-> i2c@vger.kernel.org; linux-spi@vger.kernel.org; wsa@the-dreams.de; Mark
-> Brown; Greg Kroah-Hartman; Wysocki, Rafael J; Grant Likely; Rob Herring;
-> jarkko.nikula@linux.intel.com; mika.westerberg@linux.intel.com;
-> devicetree@vger.kernel.org
-> Subject: Re: [PATCH 4/4] OF: introduce OF style 'modalias' support for
-> platform bus.
-> Importance: High
-> 
-> On Tue, Jan 14, 2014 at 2:46 AM, Zhang Rui <rui.zhang@intel.com> wrote:
-> > Fix a problem that, the platform bus supports the OF style modalias
-> in
-> > .uevent() call, but not in its device 'modalias' sysfs attribute.
-> >
-> > cc: devicetree@vger.kernel.org
-> > Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-> 
-> Acked-by: Rob Herring <robh@kernel.org>
-> 
-> As there doesn't appear any dependency with the rest of this series, I
-> can take this.
-> 
-Thanks.
-
--rui
-> One minor nit below.
-> 
-> > ---
-> >  drivers/base/platform.c   |    4 ++++
-> >  drivers/of/device.c       |    3 +++
-> >  include/linux/of_device.h |    6 ++++++
-> >  3 files changed, 13 insertions(+)
-> >
-> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c index
-> > 2f4aea2..bc78848 100644
+On Wed, 2014-01-15 at 17:08 +0200, Mika Westerberg wrote:
+> On Tue, Jan 14, 2014 at 04:46:37PM +0800, Zhang Rui wrote:
+> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> > index 3a94b79..2f4aea2 100644
 > > --- a/drivers/base/platform.c
 > > +++ b/drivers/base/platform.c
-> > @@ -679,6 +679,10 @@ static ssize_t modalias_show(struct device *dev,
-> struct device_attribute *a,
-> >         struct platform_device  *pdev = to_platform_device(dev);
-> >         int len;
-> >
-> > +       len = of_device_get_modalias(dev, buf, PAGE_SIZE -1);
-> > +       if (len != -ENODEV)
-> > +               return len;
+> > @@ -677,7 +677,13 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *a,
+> >  			     char *buf)
+> >  {
+> >  	struct platform_device	*pdev = to_platform_device(dev);
+> > -	int len = snprintf(buf, PAGE_SIZE, "platform:%s\n", pdev->name);
+> > +	int len;
 > > +
-> >         len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
-> >         if (len != -ENODEV)
-> >                 return len;
-> > diff --git a/drivers/of/device.c b/drivers/of/device.c index
-> > f685e55..dafb973 100644
-> > --- a/drivers/of/device.c
-> > +++ b/drivers/of/device.c
-> > @@ -85,6 +85,9 @@ ssize_t of_device_get_modalias(struct device *dev,
-> char *str, ssize_t len)
-> >         int cplen, i;
-> >         ssize_t tsize, csize, repend;
-> >
-> > +       if ((!dev) || (!dev->of_node))\
+> > +	len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
 > 
-> Don't need the parentheses here.
+> Here you have PAGE_SIZE -1...
 > 
-> > +               return -ENODEV;
+> > +	if (len != -ENODEV)
+> > +		return len;
 > > +
-> >         /* Name & Type */
-> >         csize = snprintf(str, len, "of:N%sT%s", dev->of_node->name,
-> >                          dev->of_node->type); diff --git
-> > a/include/linux/of_device.h b/include/linux/of_device.h index
-> > 82ce324..8d7dd67 100644
-> > --- a/include/linux/of_device.h
-> > +++ b/include/linux/of_device.h
-> > @@ -64,6 +64,12 @@ static inline int of_driver_match_device(struct
-> > device *dev,  static inline void of_device_uevent(struct device *dev,
-> >                         struct kobj_uevent_env *env) { }
-> >
-> > +static inline int of_device_get_modalias(struct device *dev,
-> > +                                  char *str, ssize_t len) {
-> > +       return -ENODEV;
-> > +}
+> > +	len = snprintf(buf, PAGE_SIZE, "platform:%s\n", pdev->name);
+> >  
+> >  	return (len >= PAGE_SIZE) ? (PAGE_SIZE - 1) : len;
+> >  }
+> > @@ -699,6 +705,10 @@ static int platform_uevent(struct device *dev, struct kobj_uevent_env *env)
+> >  	if (rc != -ENODEV)
+> >  		return rc;
+> >  
+> > +	rc = acpi_device_uevent_modalias(dev, env);
+> > +	if (rc != -ENODEV)
+> > +		return rc;
 > > +
-> >  static inline int of_device_uevent_modalias(struct device *dev,
-> >                                    struct kobj_uevent_env *env)  {
-> > --
-> > 1.7.9.5
-> >
-> > --
-> > To unsubscribe from this list: send the line "unsubscribe devicetree"
-> > in the body of a message to majordomo@vger.kernel.org More majordomo
-> > info at  http://vger.kernel.org/majordomo-info.html
+> >  	add_uevent_var(env, "MODALIAS=%s%s", PLATFORM_MODULE_PREFIX,
+> >  			pdev->name);
+> >  	return 0;
+> > diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+> > index d74c0b3..c4c5588 100644
+> > --- a/drivers/i2c/i2c-core.c
+> > +++ b/drivers/i2c/i2c-core.c
+> > @@ -104,6 +104,11 @@ static int i2c_device_match(struct device *dev, struct device_driver *drv)
+> >  static int i2c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
+> >  {
+> >  	struct i2c_client	*client = to_i2c_client(dev);
+> > +	int rc;
+> > +
+> > +	rc = acpi_device_uevent_modalias(dev, env);
+> > +	if (rc != -ENODEV)
+> > +		return rc;
+> >  
+> >  	if (add_uevent_var(env, "MODALIAS=%s%s",
+> >  			   I2C_MODULE_PREFIX, client->name))
+> > @@ -409,6 +414,12 @@ static ssize_t
+> >  show_modalias(struct device *dev, struct device_attribute *attr, char *buf)
+> >  {
+> >  	struct i2c_client *client = to_i2c_client(dev);
+> > +	int len;
+> > +
+> > +	len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
+> 
+> and here
+> 
+> > +	if (len != -ENODEV)
+> > +		return len;
+> > +
+> >  	return sprintf(buf, "%s%s\n", I2C_MODULE_PREFIX, client->name);
+> >  }
+> >  
+> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+> > index 349ebba..ab70eda 100644
+> > --- a/drivers/spi/spi.c
+> > +++ b/drivers/spi/spi.c
+> > @@ -58,6 +58,11 @@ static ssize_t
+> >  modalias_show(struct device *dev, struct device_attribute *a, char *buf)
+> >  {
+> >  	const struct spi_device	*spi = to_spi_device(dev);
+> > +	int len;
+> > +
+> > +	len = acpi_device_modalias(dev, buf, PAGE_SIZE);
+> 
+> but here it is PAGE_SIZE.
+> 
+good catch.
+
+> Perhaps it should be PAGE_SIZE in all sites?
+
+dev_attr_show() will give a warning message if modalias_show() returns
+PAGE_SIZE, thus I'd prefer to use PAGE_SIZE - 1 for all sites.
+
+thanks,
+rui

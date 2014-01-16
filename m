@@ -1,197 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/2] spi: Provide core support for DMA mapping transfers
-Date: Thu, 16 Jan 2014 12:28:50 +0000
-Message-ID: <1389875331-13692-1-git-send-email-broonie@kernel.org>
-Cc: linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi/pxa2xx: fix compilation warning when !CONFIG_PM_SLEEP
+Date: Thu, 16 Jan 2014 14:50:55 +0200
+Message-ID: <1389876655-5484-1-git-send-email-mika.westerberg@linux.intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+CONFIG_PM will be set if either or both CONFIG_PM_SLEEP and
+CONFIG_PM_RUNTIME is set. Compiling the driver with !CONFIG_PM_SLEEP ca=
+uses
+following compilation warning:
 
-The process of DMA mapping buffers for SPI transfers does not vary between
-devices so in order to save duplication of code in drivers this can be
-factored out into the core, allowing it to be integrated with the work that
-is being done on factoring out the common elements from the data path
-including more sharing of dmaengine code.
+drivers/spi/spi-pxa2xx.c:1270:12: warning: =E2=80=98pxa2xx_spi_suspend=E2=
+=80=99 defined but not used [-Wunused-function]
 
-In order to use this masters need to provide a can_dma() operation and while
-the hardware is prepared they should ensure that DMA channels are provided
-in tx_dma and rx_dma. The core will then ensure that the buffers are mapped
-for DMA prior to calling transfer_one_message().
+=46ix this by using CONFIG_PM_SLEEP instead.
 
-Currently the cleanup on error is not complete, this needs to be improved.
-
-Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi.c       | 79 +++++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/spi/spi.h | 18 +++++++++++
- 2 files changed, 97 insertions(+)
+ drivers/spi/spi-pxa2xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index a86569e1f178..314d326bce9f 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -24,6 +24,8 @@
- #include <linux/device.h>
- #include <linux/init.h>
- #include <linux/cache.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/dmaengine.h>
- #include <linux/mutex.h>
- #include <linux/of_device.h>
- #include <linux/of_irq.h>
-@@ -570,6 +572,74 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
- 		spi->master->set_cs(spi, !enable);
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index cbc68848789d..c702fc536a77 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1268,7 +1268,7 @@ static void pxa2xx_spi_shutdown(struct platform_d=
+evice *pdev)
+ 		dev_err(&pdev->dev, "shutdown failed with %d\n", status);
  }
- 
-+static int spi_dma_map_msg(struct spi_master *master, struct spi_message *msg)
-+{
-+	struct device *dev = master->dev.parent;
-+	struct device *tx_dev, *rx_dev;
-+	struct spi_transfer *xfer;
-+
-+	if (msg->is_dma_mapped || !master->can_dma)
-+		return 0;
-+
-+	tx_dev = &master->dma_tx->dev->device;
-+	rx_dev = &master->dma_rx->dev->device;
-+
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		if (!master->can_dma(master, msg->spi, xfer))
-+			continue;
-+
-+		if (xfer->tx_buf != NULL) {
-+			xfer->tx_dma = dma_map_single(tx_dev,
-+						      (void *)xfer->tx_buf,
-+						      xfer->len,
-+						      DMA_TO_DEVICE);
-+			if (dma_mapping_error(dev, xfer->tx_dma)) {
-+				dev_err(dev, "dma_map_single Tx failed\n");
-+				return -ENOMEM;
-+			}
-+		}
-+
-+		if (xfer->rx_buf != NULL) {
-+			xfer->rx_dma = dma_map_single(rx_dev,
-+						      xfer->rx_buf, xfer->len,
-+						      DMA_FROM_DEVICE);
-+			if (dma_mapping_error(dev, xfer->rx_dma)) {
-+				dev_err(dev, "dma_map_single Rx failed\n");
-+				dma_unmap_single(tx_dev, xfer->tx_dma,
-+						 xfer->len, DMA_TO_DEVICE);
-+				return -ENOMEM;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int spi_dma_unmap_msg(struct spi_master *master,
-+			     struct spi_message *msg)
-+{
-+	struct spi_transfer *xfer;
-+	struct device *tx_dev, *rx_dev;
-+
-+	if (!master->cur_msg_mapped || msg->is_dma_mapped || !master->can_dma)
-+		return 0;
-+
-+	tx_dev = &master->dma_tx->dev->device;
-+	rx_dev = &master->dma_rx->dev->device;
-+
-+	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		if (!master->can_dma(master, msg->spi, xfer))
-+			continue;
-+
-+		dma_unmap_single(rx_dev, xfer->rx_dma, xfer->len,
-+				 DMA_FROM_DEVICE);
-+		dma_unmap_single(tx_dev, xfer->tx_dma, xfer->len,
-+				 DMA_TO_DEVICE);
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * spi_transfer_one_message - Default implementation of transfer_one_message()
-  *
-@@ -740,6 +810,13 @@ static void spi_pump_messages(struct kthread_work *work)
- 		master->cur_msg_prepared = true;
- 	}
- 
-+	ret = spi_dma_map_msg(master, master->cur_msg);
-+	if (ret) {
-+		master->cur_msg->status = ret;
-+		spi_finalize_current_message(master);
-+		return;
-+	}
-+
- 	ret = master->transfer_one_message(master, master->cur_msg);
- 	if (ret) {
- 		dev_err(&master->dev,
-@@ -829,6 +906,8 @@ void spi_finalize_current_message(struct spi_master *master)
- 	queue_kthread_work(&master->kworker, &master->pump_messages);
- 	spin_unlock_irqrestore(&master->queue_lock, flags);
- 
-+	spi_dma_unmap_msg(master, mesg);
-+
- 	if (master->cur_msg_prepared && master->unprepare_message) {
- 		ret = master->unprepare_message(master, mesg);
- 		if (ret) {
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 21a7251d85ee..14380043491b 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -25,6 +25,8 @@
- #include <linux/kthread.h>
- #include <linux/completion.h>
- 
-+struct dma_chan;
-+
- /*
-  * INTERFACES between SPI master-side drivers and SPI infrastructure.
-  * (There's no SPI slave support for Linux yet...)
-@@ -385,6 +387,17 @@ struct spi_master {
- 	void			(*cleanup)(struct spi_device *spi);
- 
- 	/*
-+	 * Used to enable core support for DMA handling, if can_dma()
-+	 * exists and returns true then the transfer will be mapped
-+	 * prior to transfer_one() being called.  The driver should
-+	 * not modify or store xfer and dma_tx and dma_rx must be set
-+	 * while the device is prepared.
-+	 */
-+	bool			(*can_dma)(struct spi_master *master,
-+					   struct spi_device *spi,
-+					   struct spi_transfer *xfer);
-+
-+	/*
- 	 * These hooks are for drivers that want to use the generic
- 	 * master transfer queueing mechanism. If these are used, the
- 	 * transfer() function above must NOT be specified by the driver.
-@@ -402,6 +415,7 @@ struct spi_master {
- 	bool				rt;
- 	bool				auto_runtime_pm;
- 	bool                            cur_msg_prepared;
-+	bool				cur_msg_mapped;
- 	struct completion               xfer_completion;
- 
- 	int (*prepare_transfer_hardware)(struct spi_master *master);
-@@ -423,6 +437,10 @@ struct spi_master {
- 
- 	/* gpio chip select */
- 	int			*cs_gpios;
-+
-+	/* DMA channels for use with core dmaengine helpers */
-+	struct dma_chan		*dma_tx;
-+	struct dma_chan		*dma_rx;
- };
- 
- static inline void *spi_master_get_devdata(struct spi_master *master)
--- 
+=20
+-#ifdef CONFIG_PM
++#ifdef CONFIG_PM_SLEEP
+ static int pxa2xx_spi_suspend(struct device *dev)
+ {
+ 	struct driver_data *drv_data =3D dev_get_drvdata(dev);
+--=20
 1.8.5.2
 
 --

@@ -1,68 +1,221 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
-Date: Thu, 16 Jan 2014 19:46:51 +0000
-Message-ID: <20140116194651.GO17314@sirena.org.uk>
-References: <1389689198-2641-1-git-send-email-rui.zhang@intel.com>
- <1389689198-2641-4-git-send-email-rui.zhang@intel.com>
- <20140116122704.GD2617@katana>
- <1389877509.3010.15.camel@rzhang1-mobl4>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 3/4] spi: sunxi: Add Allwinner A31 SPI
+ controller driver
+Date: Thu, 16 Jan 2014 22:12:01 +0100
+Message-ID: <20140116211201.GC3351@lukather>
+References: <1389892285-11745-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1389892285-11745-4-git-send-email-maxime.ripard@free-electrons.com>
+ <20140116194003.GN17314@sirena.org.uk>
+Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5PFZVUeDPxlnBcQp"
-Cc: Wolfram Sang <wsa@the-dreams.de>, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-spi@vger.kernel.org, gregkh@linuxfoundation.org,
-	rafael.j.wysocki@intel.com, grant.likely@linaro.org,
-	jarkko.nikula@linux.intel.com, mika.westerberg@linux.intel.com,
-	grant.likely@secretlab.ca
-To: Zhang Rui <rui.zhang@intel.com>
-Return-path: <linux-acpi-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="uXxzq0nDebZQVNAZ"
+Cc: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBV4X4GLAKGQEI5S4H5I-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1389877509.3010.15.camel@rzhang1-mobl4>
-Sender: linux-acpi-owner@vger.kernel.org
+In-Reply-To: <20140116194003.GN17314-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
 
---5PFZVUeDPxlnBcQp
+--uXxzq0nDebZQVNAZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 16, 2014 at 09:05:09PM +0800, Zhang Rui wrote:
-> On Thu, 2014-01-16 at 13:27 +0100, Wolfram Sang wrote:
+Hi Mark,
 
-> > I wonder why we don't have/need that with CONFIG_OF? Because probably
-> > nobody is using modules with i2c devices there?
+On Thu, Jan 16, 2014 at 07:40:03PM +0000, Mark Brown wrote:
+> On Thu, Jan 16, 2014 at 06:11:24PM +0100, Maxime Ripard wrote:
+>=20
+> Looks pretty clean, a few fairly small things below.
+>=20
+> > +- clocks: phandle to the clocks feeding the SPI controller. Two are
+> > +          needed:
+> > +  - "ahb": the gated AHB parent clock
+> > +  - "mod": the parent module clock
+>=20
+> I guess you should specify that this needs to be done with clock-names
+> too then?
 
-> This seems a gap to me but I'm not 100% sure.
-> I saw Grant Likely introduced the OF style MODALIAS to platform bus, and
-> OF style registration/binding to i2c bus, maybe he has an answer for
-> this.
+Yep, right.
 
-This is needed for ACPI because we rewrite the device names to give us
-stable names.  With OF for I2C and SPI nothing bus specific is done that=20
-affects this stuff so the default behaviour works.
+> > --- a/drivers/spi/Makefile
+> > +++ b/drivers/spi/Makefile
+> > @@ -69,6 +69,7 @@ obj-$(CONFIG_SPI_SH_HSPI)		+=3D spi-sh-hspi.o
+> >  obj-$(CONFIG_SPI_SH_MSIOF)		+=3D spi-sh-msiof.o
+> >  obj-$(CONFIG_SPI_SH_SCI)		+=3D spi-sh-sci.o
+> >  obj-$(CONFIG_SPI_SIRF)		+=3D spi-sirf.o
+> > +obj-$(CONFIG_ARCH_SUNXI)		+=3D spi-sun6i.o
+>=20
+> I would expect a new Kconfig symbol for this.
 
---5PFZVUeDPxlnBcQp
+Hmmm, yeah, sorry, some hacky leftover.
+
+> > +static inline void sun6i_spi_drain_fifo(struct sun6i_spi *sspi, int le=
+n)
+> > +{
+> > +	u32 reg, cnt;
+> > +	u8 byte;
+> > +
+> > +	/* See how much data are available */
+>=20
+> data is available.
+>=20
+> > +	while (len--) {
+> > +		byte =3D readb(sspi->base_addr + SUN6I_RXDATA_REG);
+> > +		if (sspi->rx_buf)
+> > +			*sspi->rx_buf++ =3D byte;
+> > +	}
+>=20
+> It seems like this hardware is only able to handle bidirectional
+> operation - this is actually quite common and isn't always as simple as
+> it is here.  Can I persuade you to put something in the core which
+> provides dummy data buffers for this case?  I was thinking flags like
+> must_tx and must_rx or something but didn't get around to this yet.
+
+I'm pretty sure It can support unidirectionnal operations as well. I
+just didn't found out how yet. There's actually three counters to set
+whenever I setup the transfer, two of them seem to be to set the
+number of bytes to send, and the last one the overall number of bursts
+to set on the clock line, so I guess that we can either set it only in
+RX (with the first two to 0, the last one to spi_transfer->len), only
+in TX or both (by programming all three to spi_transfer->len).
+
+> > +static int sun6i_spi_finish_transfer(struct spi_device *spi,
+> > +				     struct spi_transfer *tfr,
+> > +				     bool cs_change)
+> > +{
+> > +	struct sun6i_spi *sspi =3D spi_master_get_devdata(spi->master);
+> > +
+> > +	sun6i_spi_drain_fifo(sspi, SUN6I_FIFO_DEPTH);
+> > +
+> > +	if (tfr->delay_usecs)
+> > +		udelay(tfr->delay_usecs);
+>=20
+> If you implement this using transfer_one() (as you should) the core will
+> do this for you.
+
+Oh, nice. I overlooked it.
+
+> > +	if (status & SUN6I_INT_CTL_RF_OVF) {
+> > +		sun6i_spi_drain_fifo(sspi, SUN6I_FIFO_DEPTH);
+> > +		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_RF_OVF);
+> > +		return IRQ_HANDLED;
+> > +	}
+>=20
+> This looks like an overflow - a log message would be helpful for users
+> and you should possibly be flagging an error on the current transfer.
+
+Hmmm, that was an attempt at receiving more bytes than the FIFO can
+handle, but I guess the FIFO full interrupt would be more appropriate
+for this.
+
+> > +	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > +	sspi->base_addr =3D devm_request_and_ioremap(&pdev->dev, res);
+> > +	if (!sspi->base_addr) {
+> > +		dev_err(&pdev->dev, "Unable to remap IO\n");
+> > +		ret =3D -ENXIO;
+> > +		goto err;
+> > +	}
+>=20
+> devm_ioremap_resource() is nicer in that it returns an error and then
+> you don't need to log either since it's noisy itself.
+
+Ack.
+
+> > +	irq =3D platform_get_irq(pdev, 0);
+> > +	if (irq < 0) {
+> > +		dev_err(&pdev->dev, "No spi IRQ specified\n");
+> > +		ret =3D -ENXIO;
+>=20
+> Don't overwrite the error code.
+
+Ack.
+
+> > +	ret =3D clk_set_rate(sspi->mclk, 100000000);
+> > +	if (ret) {
+> > +		dev_err(&pdev->dev, "Couldn't change module clock rate\n");
+> > +		goto err2;
+> > +	}
+>=20
+> Does this really need to be fatal (or done at all)?  There seems to be
+> another reasonably flexible divider in the IP and it's more common to
+> either set this per transfer to something that rounds nicely or just use
+> the default and rely on the dividers.
+
+The default parent of the module clock runs at 24MHz, that means that
+we won't be able to reach a spi clock higher than 12MHz, which seems
+quite low. We can always change the rate in the transfer setup code
+though, if needs be.
+
+> > +	ret =3D clk_prepare_enable(sspi->mclk);
+> > +	if (ret) {
+> > +		dev_err(&pdev->dev, "Couldn't enable clock 'ahb spi'\n");
+> > +		goto err2;
+> > +	}
+>=20
+> I would recommend moving these to runtime PM so the clocks are only
+> active when the device is actually in use, the core will do the runtime
+> PM management if you set auto_runtime_pm so it's really easy to
+> implement.
+
+Ok, nice.
+
+
+> > +	ret =3D reset_control_deassert(sspi->rstc);
+> > +	if (ret) {
+> > +		dev_err(&pdev->dev, "Couldn't deassert the device from reset\n");
+> > +		goto err3;
+> > +	}
+> > +
+> > +	sun6i_spi_write(sspi, SUN6I_GBL_CTL_REG,
+> > +			SUN6I_GBL_CTL_BUS_ENABLE | SUN6I_GBL_CTL_MASTER | SUN6I_GBL_CTL_TP);
+>=20
+> Similarly here the IP could be kept in reset when not in use.
+
+Ok.
+
+Thanks a lot!
+Maxime
+
+
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+
+--uXxzq0nDebZQVNAZ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Version: GnuPG v1.4.14 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS2DcoAAoJELSic+t+oim9a7MQAIfTIeEbTBAP+JAbDykZ/5Nq
-r6m4YR+9uoNfiHUXoFHhA+dUH0VGQVERrgsHdIJGX0l4QJSRA3900enuXYsh9aFh
-TFPXZiI7UjxvRQ0EQbJX3et9ZqcDAU64ND5uq6N1H8XqhNSFAyt4k04sLB58/RrR
-1b8aKsxX4yP1bY8/BiErC5Tv7g8oiTS/i50NZvIwvbs6uKV7RbHv3RAxSELyW5XF
-ue6RJtGSyLm2iGv8GAMRwsgoqjrvhRELlwIaBPb+UfF30OKizNSFV/OmqTfez3D7
-fgUrysxi/gChplEzr5WtVCvdpSkEvTAJ5ybSSapZgKQYNJErhuCZrKk3o8k+/n46
-WefsH6jsUl3LtgTRzE/0DWUVSz8InJm8dn/o2+XJOD3yx0bBhbf/Q8NcqmVJGh9Q
-iznQfEHqIuGVzyCg88P2mSPEebyKmcB6uV5qYV1/zPEYl90a/f9f08mtsDztKHqh
-/ehutIRIqimWevZCtGHecEx0U76PV5tFo0ffeSO72pe86EkZzJoRfu3P01cZjkLn
-At0tq6jCsLNOAnHnTouHKwjDt03+EfSU2re5/pOpaJDmLTukumLZVPc6T7J0zGVx
-L1j/t6hZgFY8YcDRQfVH4t/zqmzsfBMTFZoQcv1qGLG4+27I8Az6he81S9PbQy/k
-8DmX47Q+eSQA7b+LflGe
-=BRrz
+iQIcBAEBAgAGBQJS2EshAAoJEBx+YmzsjxAgBo4QALrq6ml5yZ3G+SLptaDjkSOj
+jLUPJ2id9ignvvDsBIZJEdIUKS/Kgz6IfgCgWohWufnVEUtiEN0T8sM+BTaOknVo
+K7AbpoI5rdIFYhymi7p4gA1jmoRXfVi9aNp4yCKPca0dzwlTjTJfT2NZVN2I0UJ+
+aCJsnYT3VQtpY4GM+/ILTHJN/Q2XaJfyG+nBgvRuKk7r8TN33Cdiukw1QvWbi6pG
+wMNpAtBN+KcOnSia5JTTVIa4nw+Rqmh+XJDsUZ3IJs9I3V29olkE2sfAxf3gj1N1
+3OnQtSJizrmAgYMfQ24UnZSxYQDZ6gUBYSHYdJoQ9GwpDJgfkdWzyx18dhV8U2DE
+K0WaGSKyb62sqPRFNFLurT6YW5UhtzEIGeBQ/8smJQiLpQ7m5d/U6+2mgSVfnymH
+522ySV8yaydzS26hdu6LbqVJ9rDMvWdT94mpYffnoNxsWbTA5vATM2nyrgTeu62e
+/qAcez4lWFPq3LJkNX/QgCEkSDGIMhb+0qoxikft9Ppid2XQgQALDj8cCuAyNY14
+WCEEwRWYUK6FAsXqq3l7rA1/hfnKRfd+rRgyDcm4GMj1PEe8j8KwQVsa/OUQJsou
+9hpgexomgGU1TQNntspbqB8f2EEHb3idOqcQwSd44O6GMaxysuUjuQH3gAStaH7q
+KmDEXsVLP0uoFlE4pTpd
+=6xI2
 -----END PGP SIGNATURE-----
 
---5PFZVUeDPxlnBcQp--
+--uXxzq0nDebZQVNAZ--

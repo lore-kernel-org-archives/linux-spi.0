@@ -1,111 +1,130 @@
-From: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
-Date: Thu, 16 Jan 2014 16:04:35 +0800
-Message-ID: <1389859475.3010.5.camel@rzhang1-mobl4>
-References: <1389689198-2641-1-git-send-email-rui.zhang@intel.com>
-	 <1389689198-2641-4-git-send-email-rui.zhang@intel.com>
-	 <20140115150834.GX2494@intel.com>
+From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH v4 0/7] mtd: spi-nor: add a new framework for SPI NOR
+Date: Thu, 16 Jan 2014 17:11:19 +0800
+Message-ID: <52D7A237.8@freescale.com>
+References: <1387950629-27448-1-git-send-email-b32955@freescale.com> <CAD6G_RTnNQgeJM8Tc16Sc1_n29d=V9sJN1ePrOAn5YzM+GujMQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org,
-	rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140115150834.GX2494-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, <angus.clark-qxv4g6HH51o@public.gmane.org>,
+	<shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	<broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Jagan Teki <jagannadh.teki-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAD6G_RTnNQgeJM8Tc16Sc1_n29d=V9sJN1ePrOAn5YzM+GujMQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 2014-01-15 at 17:08 +0200, Mika Westerberg wrote:
-> On Tue, Jan 14, 2014 at 04:46:37PM +0800, Zhang Rui wrote:
-> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> > index 3a94b79..2f4aea2 100644
-> > --- a/drivers/base/platform.c
-> > +++ b/drivers/base/platform.c
-> > @@ -677,7 +677,13 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *a,
-> >  			     char *buf)
-> >  {
-> >  	struct platform_device	*pdev = to_platform_device(dev);
-> > -	int len = snprintf(buf, PAGE_SIZE, "platform:%s\n", pdev->name);
-> > +	int len;
-> > +
-> > +	len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
-> 
-> Here you have PAGE_SIZE -1...
-> 
-> > +	if (len != -ENODEV)
-> > +		return len;
-> > +
-> > +	len = snprintf(buf, PAGE_SIZE, "platform:%s\n", pdev->name);
-> >  
-> >  	return (len >= PAGE_SIZE) ? (PAGE_SIZE - 1) : len;
-> >  }
-> > @@ -699,6 +705,10 @@ static int platform_uevent(struct device *dev, struct kobj_uevent_env *env)
-> >  	if (rc != -ENODEV)
-> >  		return rc;
-> >  
-> > +	rc = acpi_device_uevent_modalias(dev, env);
-> > +	if (rc != -ENODEV)
-> > +		return rc;
-> > +
-> >  	add_uevent_var(env, "MODALIAS=%s%s", PLATFORM_MODULE_PREFIX,
-> >  			pdev->name);
-> >  	return 0;
-> > diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
-> > index d74c0b3..c4c5588 100644
-> > --- a/drivers/i2c/i2c-core.c
-> > +++ b/drivers/i2c/i2c-core.c
-> > @@ -104,6 +104,11 @@ static int i2c_device_match(struct device *dev, struct device_driver *drv)
-> >  static int i2c_device_uevent(struct device *dev, struct kobj_uevent_env *env)
-> >  {
-> >  	struct i2c_client	*client = to_i2c_client(dev);
-> > +	int rc;
-> > +
-> > +	rc = acpi_device_uevent_modalias(dev, env);
-> > +	if (rc != -ENODEV)
-> > +		return rc;
-> >  
-> >  	if (add_uevent_var(env, "MODALIAS=%s%s",
-> >  			   I2C_MODULE_PREFIX, client->name))
-> > @@ -409,6 +414,12 @@ static ssize_t
-> >  show_modalias(struct device *dev, struct device_attribute *attr, char *buf)
-> >  {
-> >  	struct i2c_client *client = to_i2c_client(dev);
-> > +	int len;
-> > +
-> > +	len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
-> 
-> and here
-> 
-> > +	if (len != -ENODEV)
-> > +		return len;
-> > +
-> >  	return sprintf(buf, "%s%s\n", I2C_MODULE_PREFIX, client->name);
-> >  }
-> >  
-> > diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> > index 349ebba..ab70eda 100644
-> > --- a/drivers/spi/spi.c
-> > +++ b/drivers/spi/spi.c
-> > @@ -58,6 +58,11 @@ static ssize_t
-> >  modalias_show(struct device *dev, struct device_attribute *a, char *buf)
-> >  {
-> >  	const struct spi_device	*spi = to_spi_device(dev);
-> > +	int len;
-> > +
-> > +	len = acpi_device_modalias(dev, buf, PAGE_SIZE);
-> 
-> but here it is PAGE_SIZE.
-> 
-good catch.
+=E4=BA=8E 2014=E5=B9=B401=E6=9C=8816=E6=97=A5 03:15, Jagan Teki =E5=86=99=
+=E9=81=93:
+> Hi,
+>
+> On Wed, Dec 25, 2013 at 11:20 AM, Huang Shijie<b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org> =
+ wrote:
+>> 1.) Why add a new framework for SPI NOR?
+>>    The SPI-NOR controller such as Freescale's Quadspi controller is =
+working
+>>    in a different way from the SPI bus. It should knows the NOR comm=
+ands to
+>>    find the right LUT sequence. Unfortunately, the current code can =
+not meet
+>>    this requirement.
+>>
+>> 2.) How does this patch set do?
+>>     This patch set adds a new spi-nor layer.
+>>     Before this patch, the layer is like:
+>>
+>>                     MTD
+>>           ------------------------
+>>                    m25p80
+>>           ------------------------
+>>                 spi bus driver
+>>           ------------------------
+>>                  SPI NOR chip
+>>
+>>     After this patch, the layer is like:
+>>                     MTD
+>>           ------------------------
+>>                    spi-nor
+>>           ------------------------
+>>                    m25p80
+>>           ------------------------
+>>                 spi bus driver
+>>           ------------------------
+>>                 SPI NOR chip
+>>
+>>    With the spi-nor controller driver(Freescale Quadspi), it looks l=
+ike:
+>>                     MTD
+>>           ------------------------
+>>                    spi-nor
+>>           ------------------------
+>>                  fsl-quadspi
+>>           ------------------------
+>>                 SPI NOR chip
+> I'm new to this thread, may be I'll ask basic questions.
+> 1) what does m25p80 contains with your new framework - will excludes
+> quad stuff if they add
+sorry, i do not understand your meaning.
 
-> Perhaps it should be PAGE_SIZE in all sites?
+do you think the m25p80 can not support the quad read after this patch =
+set?
 
-dev_attr_show() will give a warning message if modalias_show() returns
-PAGE_SIZE, thus I'd prefer to use PAGE_SIZE - 1 for all sites.
 
-thanks,
-rui
+> 2) I didn't understand why the controller driver fsl-quadspi will be
+> in mtd becuase as it's (q)spi driver
+> may does flash or non-flash functionalities if ie, the case should be
+> part of drivers/spi/*
+Please read this thread, Mark though it should be spi nor driver:
+
+http://marc.info/?l=3Dlinux-arm-kernel&m=3D137782885415953&w=3D2
+> 3) Can you explain your framework precisely take an example of like
+> spi_controller_A with spi_flash_A
+> and qspi_controller_B and qspi_flash_B - how will this new framework =
+operates.
+>
+The framework is just cloned from the m25p80.c, and extract the common=20
+code, and provides more
+hooks such as
+
+@prepare/unpreare: used to do some work before or after the
+              read/write/erase/lock/unlock.
+     @read_xfer/write_xfer: We can use these two hooks to code all
+              the following hooks if the driver tries to implement them
+              by itself.
+     @read_reg: used to read the registers, such as read status registe=
+r,
+              read configure register.
+     @write_reg: used to write the registers, such as write enable,
+              erase sector.
+     @read_id: read out the ID info.
+     @wait_till_ready: wait till the NOR becomes ready.
+     @read: read out the data from the NOR.
+     @write: write data to the NOR.
+     @erase: erase a sector of the NOR.
+
+
+
+The drivers can implement these hooks.
+
+thanks
+Huang Shijie
+
+
+
+
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

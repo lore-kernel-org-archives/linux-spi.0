@@ -1,58 +1,132 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/pxa2xx: fix compilation warning when !CONFIG_PM_SLEEP
-Date: Thu, 16 Jan 2014 14:08:06 +0000
-Message-ID: <20140116140806.GF17314@sirena.org.uk>
-References: <1389876655-5484-1-git-send-email-mika.westerberg@linux.intel.com>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: [PATCH 1/4] clk: sunxi: Add support for PLL6 on the A31
+Date: Thu, 16 Jan 2014 18:11:22 +0100
+Message-ID: <1389892285-11745-2-git-send-email-maxime.ripard@free-electrons.com>
+References: <1389892285-11745-1-git-send-email-maxime.ripard@free-electrons.com>
+Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ni93GHxFvA+th69W"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1389876655-5484-1-git-send-email-mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBF5H4CLAKGQE7J7ZUVI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+In-Reply-To: <1389892285-11745-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Id: linux-spi.vger.kernel.org
 
+The A31 has a slightly different PLL6 clock. Add support for this new clock in
+our driver.
 
---ni93GHxFvA+th69W
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+---
+ Documentation/devicetree/bindings/clock/sunxi.txt |  1 +
+ drivers/clk/sunxi/clk-sunxi.c                     | 45 +++++++++++++++++++++++
+ 2 files changed, 46 insertions(+)
 
-On Thu, Jan 16, 2014 at 02:50:55PM +0200, Mika Westerberg wrote:
-> CONFIG_PM will be set if either or both CONFIG_PM_SLEEP and
-> CONFIG_PM_RUNTIME is set. Compiling the driver with !CONFIG_PM_SLEEP causes
-> following compilation warning:
-
-Applied, thanks.
-
---ni93GHxFvA+th69W
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS1+fCAAoJELSic+t+oim9PFkP/Rg3s8cEtdwsOgx/KpLHk4/W
-qGmEDiOYFllaxKz3ktCX2DMYiNFMw9oNNwPJZzP2mzEvtS01LLHleDW0PbiOcwRE
-wMGzwbde92of31qmX/VirC+ELYEM/llOXG6Kx2Pi3tReHdBFZ3CfaAS/0MWjoR+u
-IGUmYXf40XjaLyiSTjZOzUjT5gg7HPmBN2Fgqv+I1Y+widRgkkdpgdRdKnlWsiw2
-LSxAzJp4TUAFOmUuoGwCqutf4OdmaBWaEQ9Nk0DWik4Fp2M2MIC9z05deyJFBKRA
-LxS9zT7VB0pfTI968SOn5caRn61Bd/IjTluTgPsZbZ5TyT0OGbwjOoK1wVMJu2WP
-Kc5sdoFivhLPrvNyklQpU9DUG1weYpls+njWLGvsIp21fmRKrT9AUUYCe5DKFWuS
-75vluVRAeZ8YuN141w5wB+FXwFzSn/W5arBkO63pruwod73O7MzMbrLxbjd8weOm
-Wn/Zh1393FS3q7rS8Gg5shQ+bJ9lt5jlUfVJQCc8KM2AvLP1mslaSM1hbZJHiNh8
-AFR1HjcqWwPZeEmIaFeYOIN+86FaofctLBR9gj8cbga/Z7t3NCU9LxirW06ud4q3
-B9Rf2wxLfSX4XruU2fP+xudOmgquEtba3xFvBpu7p4K6WeieYvk+YRYuxf2gZY4Q
-XI8/FCg3uKCePz3yTaLr
-=eTSR
------END PGP SIGNATURE-----
-
---ni93GHxFvA+th69W--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/Documentation/devicetree/bindings/clock/sunxi.txt b/Documentation/devicetree/bindings/clock/sunxi.txt
+index c2cb762..954845c 100644
+--- a/Documentation/devicetree/bindings/clock/sunxi.txt
++++ b/Documentation/devicetree/bindings/clock/sunxi.txt
+@@ -11,6 +11,7 @@ Required properties:
+ 	"allwinner,sun6i-a31-pll1-clk" - for the main PLL clock on A31
+ 	"allwinner,sun4i-pll5-clk" - for the PLL5 clock
+ 	"allwinner,sun4i-pll6-clk" - for the PLL6 clock
++	"allwinner,sun6i-a31-pll6-clk" - for the PLL6 clock on A31
+ 	"allwinner,sun4i-cpu-clk" - for the CPU multiplexer clock
+ 	"allwinner,sun4i-axi-clk" - for the AXI clock
+ 	"allwinner,sun4i-axi-gates-clk" - for the AXI gates
+diff --git a/drivers/clk/sunxi/clk-sunxi.c b/drivers/clk/sunxi/clk-sunxi.c
+index 659e4ea..990ad5d 100644
+--- a/drivers/clk/sunxi/clk-sunxi.c
++++ b/drivers/clk/sunxi/clk-sunxi.c
+@@ -249,7 +249,38 @@ static void sun4i_get_pll5_factors(u32 *freq, u32 parent_rate,
+ 	*n = DIV_ROUND_UP(div, (*k+1));
+ }
+ 
++/**
++ * sun6i_a31_get_pll6_factors() - calculates n, k factors for A31 PLL6
++ * PLL6 rate is calculated as follows
++ * rate = parent_rate * n * (k + 1) / 2
++ * parent_rate is always 24Mhz
++ */
++
++static void sun6i_a31_get_pll6_factors(u32 *freq, u32 parent_rate,
++				       u8 *n, u8 *k, u8 *m, u8 *p)
++{
++	u8 div;
++
++	/*
++	 * We always have 24MHz / 2, so we can just say that our
++	 * parent clock is 12MHz.
++	 */
++	parent_rate = parent_rate / 2;
++
++	/* Normalize value to a parent_rate multiple (24M / 2) */
++	div = *freq / parent_rate;
++	*freq = parent_rate * div;
++
++	/* we were called to round the frequency, we can now return */
++	if (n == NULL)
++		return;
++
++	*k = div / 32;
++	if (*k > 3)
++		*k = 3;
+ 
++	*n = DIV_ROUND_UP(div, (*k+1));
++}
+ 
+ /**
+  * sun4i_get_apb1_factors() - calculates m, p factors for APB1
+@@ -416,6 +447,13 @@ static struct clk_factors_config sun4i_pll5_config = {
+ 	.kwidth = 2,
+ };
+ 
++static struct clk_factors_config sun6i_a31_pll6_config = {
++	.nshift	= 8,
++	.nwidth = 5,
++	.kshift = 4,
++	.kwidth = 2,
++};
++
+ static struct clk_factors_config sun4i_apb1_config = {
+ 	.mshift = 0,
+ 	.mwidth = 5,
+@@ -457,6 +495,12 @@ static const struct factors_data sun4i_pll5_data __initconst = {
+ 	.getter = sun4i_get_pll5_factors,
+ };
+ 
++static const struct factors_data sun6i_a31_pll6_data __initconst = {
++	.enable = 31,
++	.table = &sun6i_a31_pll6_config,
++	.getter = sun6i_a31_get_pll6_factors,
++};
++
+ static const struct factors_data sun4i_apb1_data __initconst = {
+ 	.table = &sun4i_apb1_config,
+ 	.getter = sun4i_get_apb1_factors,
+@@ -972,6 +1016,7 @@ free_clkdata:
+ static const struct of_device_id clk_factors_match[] __initconst = {
+ 	{.compatible = "allwinner,sun4i-pll1-clk", .data = &sun4i_pll1_data,},
+ 	{.compatible = "allwinner,sun6i-a31-pll1-clk", .data = &sun6i_a31_pll1_data,},
++	{.compatible = "allwinner,sun6i-a31-pll6-clk", .data = &sun6i_a31_pll6_data,},
+ 	{.compatible = "allwinner,sun4i-apb1-clk", .data = &sun4i_apb1_data,},
+ 	{.compatible = "allwinner,sun4i-mod0-clk", .data = &sun4i_mod0_data,},
+ 	{.compatible = "allwinner,sun7i-a20-out-clk", .data = &sun7i_a20_out_data,},
+-- 
+1.8.4.2

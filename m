@@ -1,53 +1,39 @@
-From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH] spi/pxa2xx: fix compilation warning when !CONFIG_PM_SLEEP
-Date: Thu, 16 Jan 2014 14:50:55 +0200
-Message-ID: <1389876655-5484-1-git-send-email-mika.westerberg@linux.intel.com>
+From: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
+Date: Thu, 16 Jan 2014 20:51:49 +0800
+Message-ID: <1389876709.3010.6.camel@rzhang1-mobl4>
+References: <1389689198-2641-1-git-send-email-rui.zhang@intel.com>
+	 <1389689198-2641-4-git-send-email-rui.zhang@intel.com>
+	 <20140116122819.GO15567@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org,
+	rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org, jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140116122819.GO15567-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-CONFIG_PM will be set if either or both CONFIG_PM_SLEEP and
-CONFIG_PM_RUNTIME is set. Compiling the driver with !CONFIG_PM_SLEEP ca=
-uses
-following compilation warning:
+On Thu, 2014-01-16 at 12:28 +0000, Mark Brown wrote:
+> On Tue, Jan 14, 2014 at 04:46:37PM +0800, Zhang Rui wrote:
+> > ACPI enumerated devices has ACPI style _HID and _CID strings,
+> > all of these strings can be used for both driver loading and matching.
+> > 
+> > Currently, in Platform, I2C and SPI bus, the ACPI style driver matching
+> > is supported by invoking acpi_driver_match_device() in bus .match() callback.
+> > But, the module autoloading is still broken.
+> 
+> Acked-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> 
+> modulo the PAGE_SIZE stuff Mika noted - unless this changes radically
+> please just assume I'm OK with it.
 
-drivers/spi/spi-pxa2xx.c:1270:12: warning: =E2=80=98pxa2xx_spi_suspend=E2=
-=80=99 defined but not used [-Wunused-function]
+thanks.
 
-=46ix this by using CONFIG_PM_SLEEP instead.
-
-Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index cbc68848789d..c702fc536a77 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1268,7 +1268,7 @@ static void pxa2xx_spi_shutdown(struct platform_d=
-evice *pdev)
- 		dev_err(&pdev->dev, "shutdown failed with %d\n", status);
- }
-=20
--#ifdef CONFIG_PM
-+#ifdef CONFIG_PM_SLEEP
- static int pxa2xx_spi_suspend(struct device *dev)
- {
- 	struct driver_data *drv_data =3D dev_get_drvdata(dev);
---=20
-1.8.5.2
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-rui

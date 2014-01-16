@@ -1,50 +1,115 @@
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH V3 1/5] pinctrl: sh-pfc: r7s72100: Add RSPI support
-Date: Wed, 15 Jan 2014 20:25 +0100
-Message-ID: <2085554.0lEim16vcc@avalon>
-References: <1389523723-2288-1-git-send-email-geert@linux-m68k.org> <1389523723-2288-2-git-send-email-geert@linux-m68k.org> <CACRpkdaZyZ1NUhOkXjJQ5_fBx+NiLTaUGX-iAh50UU9SRvt7hQ@mail.gmail.com>
+From: "Rafael J. Wysocki" <rjw-LthD3rsA81gm4RdzfppkhA@public.gmane.org>
+Subject: Re: [PATCH 4/4] OF: introduce OF style 'modalias' support for platform bus.
+Date: Thu, 16 Jan 2014 02:09:55 +0100
+Message-ID: <77231285.q8OGi4Gmjj@vostro.rjw.lan>
+References: <1389689198-2641-1-git-send-email-rui.zhang@intel.com> <1389689198-2641-5-git-send-email-rui.zhang@intel.com> <CAL_JsqJFRQ+27N_9AwZXpx4V=g8HKn84WdVKtQ_Br_8SQTXY7g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7Bit
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, linux-spi@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <CACRpkdaZyZ1NUhOkXjJQ5_fBx+NiLTaUGX-iAh50UU9SRvt7hQ@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-acpi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org,
+	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Rob Herring <rob.herring-bsGFqQB8/DxBDgjK7y7TUQ@public.gmane.org>,
+	jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org, mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAL_JsqJFRQ+27N_9AwZXpx4V=g8HKn84WdVKtQ_Br_8SQTXY7g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Linus,
-
-On Wednesday 15 January 2014 10:14:53 Linus Walleij wrote:
-> On Sun, Jan 12, 2014 at 11:48 AM, Geert Uytterhoeven
+On Wednesday, January 15, 2014 07:45:18 AM Rob Herring wrote:
+> On Tue, Jan 14, 2014 at 2:46 AM, Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org> wrote:
+> > Fix a problem that, the platform bus supports the OF style modalias
+> > in .uevent() call, but not in its device 'modalias' sysfs attribute.
+> >
+> > cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> > Signed-off-by: Zhang Rui <rui.zhang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 > 
-> <geert@linux-m68k.org> wrote:
-> > From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-> > 
-> > Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-> > Cc: Linus Walleij <linus.walleij@linaro.org>
+> Acked-by: Rob Herring <robh-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+> 
+> As there doesn't appear any dependency with the rest of this series, I
+> can take this.
+
+Please do, thanks!
+
+> One minor nit below.
+> 
 > > ---
-> > 
-> > V2:
-> >   - No changes
-> > 
-> > V3:
-> >   - No changes
+> >  drivers/base/platform.c   |    4 ++++
+> >  drivers/of/device.c       |    3 +++
+> >  include/linux/of_device.h |    6 ++++++
+> >  3 files changed, 13 insertions(+)
+> >
+> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> > index 2f4aea2..bc78848 100644
+> > --- a/drivers/base/platform.c
+> > +++ b/drivers/base/platform.c
+> > @@ -679,6 +679,10 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *a,
+> >         struct platform_device  *pdev = to_platform_device(dev);
+> >         int len;
+> >
+> > +       len = of_device_get_modalias(dev, buf, PAGE_SIZE -1);
+> > +       if (len != -ENODEV)
+> > +               return len;
+> > +
+> >         len = acpi_device_modalias(dev, buf, PAGE_SIZE -1);
+> >         if (len != -ENODEV)
+> >                 return len;
+> > diff --git a/drivers/of/device.c b/drivers/of/device.c
+> > index f685e55..dafb973 100644
+> > --- a/drivers/of/device.c
+> > +++ b/drivers/of/device.c
+> > @@ -85,6 +85,9 @@ ssize_t of_device_get_modalias(struct device *dev, char *str, ssize_t len)
+> >         int cplen, i;
+> >         ssize_t tsize, csize, repend;
+> >
+> > +       if ((!dev) || (!dev->of_node))\
 > 
-> I'm expecting Laurent to queue this patch when he's happy with it
-> (maybe he already said so in some other mail).
-
-I'm fine with the patch, but I'm still waiting for Magnus to submit the next 
-version of the r7s72100 pinctrl support.
+> Don't need the parentheses here.
+> 
+> > +               return -ENODEV;
+> > +
+> >         /* Name & Type */
+> >         csize = snprintf(str, len, "of:N%sT%s", dev->of_node->name,
+> >                          dev->of_node->type);
+> > diff --git a/include/linux/of_device.h b/include/linux/of_device.h
+> > index 82ce324..8d7dd67 100644
+> > --- a/include/linux/of_device.h
+> > +++ b/include/linux/of_device.h
+> > @@ -64,6 +64,12 @@ static inline int of_driver_match_device(struct device *dev,
+> >  static inline void of_device_uevent(struct device *dev,
+> >                         struct kobj_uevent_env *env) { }
+> >
+> > +static inline int of_device_get_modalias(struct device *dev,
+> > +                                  char *str, ssize_t len)
+> > +{
+> > +       return -ENODEV;
+> > +}
+> > +
+> >  static inline int of_device_uevent_modalias(struct device *dev,
+> >                                    struct kobj_uevent_env *env)
+> >  {
+> > --
+> > 1.7.9.5
+> >
+> > --
+> > To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> > the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> > More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-acpi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
 -- 
-Regards,
-
-Laurent Pinchart
-
+I speak only for myself.
+Rafael J. Wysocki, Intel Open Source Technology Center.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

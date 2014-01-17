@@ -1,26 +1,22 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/4] spi: sunxi: Add Allwinner A31 SPI
- controller driver
-Date: Fri, 17 Jan 2014 19:05:16 +0000
-Message-ID: <20140117190516.GJ17314@sirena.org.uk>
+From: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/4] clk: sunxi: Add support for PLL6 on the A31
+Date: Fri, 17 Jan 2014 14:14:02 -0800
+Message-ID: <20140117221402.4167.78251@quantum>
 References: <1389892285-11745-1-git-send-email-maxime.ripard@free-electrons.com>
- <1389892285-11745-4-git-send-email-maxime.ripard@free-electrons.com>
- <20140116194003.GN17314@sirena.org.uk>
- <20140116211201.GC3351@lukather>
+ <1389892285-11745-2-git-send-email-maxime.ripard@free-electrons.com>
 Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4N29bJelYIMOTi0e"
-Cc: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBBAP64WLAKGQE5VQZS7Y-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140116211201.GC3351@lukather>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+ sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+ zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+ "Maxime Ripard" <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+ "Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, "Emilio Lopez" <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
+Return-path: <linux-sunxi+bncBDO333VC4INBBNGW42LAKGQEX3K2KCA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+In-Reply-To: <1389892285-11745-2-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Archive: <http://groups.google.com/group/linux-sunxi>
@@ -29,71 +25,113 @@ List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:
 List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
+Quoting Maxime Ripard (2014-01-16 09:11:22)
+> The A31 has a slightly different PLL6 clock. Add support for this new clock in
+> our driver.
+> 
+> Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
---4N29bJelYIMOTi0e
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This looks good to me. I guess it will be going in for 3.15 based on the
+comments in the coverletter.
 
-On Thu, Jan 16, 2014 at 10:12:01PM +0100, Maxime Ripard wrote:
-> On Thu, Jan 16, 2014 at 07:40:03PM +0000, Mark Brown wrote:
+Regards,
+Mike
 
-> > > +	if (status & SUN6I_INT_CTL_RF_OVF) {
-> > > +		sun6i_spi_drain_fifo(sspi, SUN6I_FIFO_DEPTH);
-> > > +		sun6i_spi_write(sspi, SUN6I_INT_STA_REG, SUN6I_INT_CTL_RF_OVF);
-> > > +		return IRQ_HANDLED;
-> > > +	}
-
-> > This looks like an overflow - a log message would be helpful for users
-> > and you should possibly be flagging an error on the current transfer.
-
-> Hmmm, that was an attempt at receiving more bytes than the FIFO can
-> handle, but I guess the FIFO full interrupt would be more appropriate
-> for this.
-
-If you've got an overflow interrupt that suggests that the data is
-already corrupted, assuming the interrupt isn't misnamed.
-
-> > > +	ret = clk_set_rate(sspi->mclk, 100000000);
-> > > +	if (ret) {
-> > > +		dev_err(&pdev->dev, "Couldn't change module clock rate\n");
-> > > +		goto err2;
-> > > +	}
-
-> > Does this really need to be fatal (or done at all)?  There seems to be
-> > another reasonably flexible divider in the IP and it's more common to
-> > either set this per transfer to something that rounds nicely or just use
-> > the default and rely on the dividers.
-
-> The default parent of the module clock runs at 24MHz, that means that
-> we won't be able to reach a spi clock higher than 12MHz, which seems
-> quite low. We can always change the rate in the transfer setup code
-> though, if needs be.
-
-12MHz is actually quite a common limit for SPI interfaces (half of a
-24MHz master clock like the IP itself has) but yeah, you want to go
-higher if you can.  Doing it on transfer setup is going to mean that
-you save a little power when you don't need the extra speed too.
-
---4N29bJelYIMOTi0e
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS2X7pAAoJELSic+t+oim9jRAP/0aRl2O0zF6/x7jwr3likhWJ
-MFxiMJrtox4TRyRqzYYjDVHaLgCsbwbE1TTdRma9ilBzA2U0+iZ2L5AorgpxxOSh
-VrEbWqQdCHp3d9wm49uDBEY7Oni1fvG+1XDj8nPgUdJrF/1o8uptsHsT8hg1nYH+
-wAHwYrfhiiaPSvw/dhzAsjatm9H1mYb69JCYxYy4mJvXDtLgxbUX2Xd3zHavTrCY
-4dgxA1GANwqwCFaV5BXER6H7SS3mTU17VwMROsv8JlpCkaRebf/CC2roSyLI8yYk
-suhUm8Po7jt3P0ubGZJVkGwvBK/jCNmVhTHiA7s1lePcUSZCUgwQgJtzBQaEK3fE
-6ZwSKCW1T6F3DMGF98oVGx5+lzzocSN2OBl1jimzrvx4Bd+wKimSSgmdw4GojFEW
-WZrXydFadlV24AvLaQBTQqO81UdMx9FxmQRRuji11uK+weygO9usPKBt63MrxbIp
-Q3+79RazWmA4e7N/7iFDpGseEBuo5nFhIhQ1XX/q1nGQqvkVlmlqP09YZURi6qIO
-TMMSHIKBjanymk1z6l6XllIzhE6w9bvimUuAF6BHDrwuWx/4IvMfxz0pwaUZUsmy
-B4RUmLwOxZfjLuI1RdFKA1YURDfjX2jZf6NYlW3cjh1YFK/oQA8arRSd+pb9EILU
-1ViQ+KN5ukoJWnQlptAZ
-=Mbhr
------END PGP SIGNATURE-----
-
---4N29bJelYIMOTi0e--
+> ---
+>  Documentation/devicetree/bindings/clock/sunxi.txt |  1 +
+>  drivers/clk/sunxi/clk-sunxi.c                     | 45 +++++++++++++++++++++++
+>  2 files changed, 46 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/sunxi.txt b/Documentation/devicetree/bindings/clock/sunxi.txt
+> index c2cb762..954845c 100644
+> --- a/Documentation/devicetree/bindings/clock/sunxi.txt
+> +++ b/Documentation/devicetree/bindings/clock/sunxi.txt
+> @@ -11,6 +11,7 @@ Required properties:
+>         "allwinner,sun6i-a31-pll1-clk" - for the main PLL clock on A31
+>         "allwinner,sun4i-pll5-clk" - for the PLL5 clock
+>         "allwinner,sun4i-pll6-clk" - for the PLL6 clock
+> +       "allwinner,sun6i-a31-pll6-clk" - for the PLL6 clock on A31
+>         "allwinner,sun4i-cpu-clk" - for the CPU multiplexer clock
+>         "allwinner,sun4i-axi-clk" - for the AXI clock
+>         "allwinner,sun4i-axi-gates-clk" - for the AXI gates
+> diff --git a/drivers/clk/sunxi/clk-sunxi.c b/drivers/clk/sunxi/clk-sunxi.c
+> index 659e4ea..990ad5d 100644
+> --- a/drivers/clk/sunxi/clk-sunxi.c
+> +++ b/drivers/clk/sunxi/clk-sunxi.c
+> @@ -249,7 +249,38 @@ static void sun4i_get_pll5_factors(u32 *freq, u32 parent_rate,
+>         *n = DIV_ROUND_UP(div, (*k+1));
+>  }
+>  
+> +/**
+> + * sun6i_a31_get_pll6_factors() - calculates n, k factors for A31 PLL6
+> + * PLL6 rate is calculated as follows
+> + * rate = parent_rate * n * (k + 1) / 2
+> + * parent_rate is always 24Mhz
+> + */
+> +
+> +static void sun6i_a31_get_pll6_factors(u32 *freq, u32 parent_rate,
+> +                                      u8 *n, u8 *k, u8 *m, u8 *p)
+> +{
+> +       u8 div;
+> +
+> +       /*
+> +        * We always have 24MHz / 2, so we can just say that our
+> +        * parent clock is 12MHz.
+> +        */
+> +       parent_rate = parent_rate / 2;
+> +
+> +       /* Normalize value to a parent_rate multiple (24M / 2) */
+> +       div = *freq / parent_rate;
+> +       *freq = parent_rate * div;
+> +
+> +       /* we were called to round the frequency, we can now return */
+> +       if (n == NULL)
+> +               return;
+> +
+> +       *k = div / 32;
+> +       if (*k > 3)
+> +               *k = 3;
+>  
+> +       *n = DIV_ROUND_UP(div, (*k+1));
+> +}
+>  
+>  /**
+>   * sun4i_get_apb1_factors() - calculates m, p factors for APB1
+> @@ -416,6 +447,13 @@ static struct clk_factors_config sun4i_pll5_config = {
+>         .kwidth = 2,
+>  };
+>  
+> +static struct clk_factors_config sun6i_a31_pll6_config = {
+> +       .nshift = 8,
+> +       .nwidth = 5,
+> +       .kshift = 4,
+> +       .kwidth = 2,
+> +};
+> +
+>  static struct clk_factors_config sun4i_apb1_config = {
+>         .mshift = 0,
+>         .mwidth = 5,
+> @@ -457,6 +495,12 @@ static const struct factors_data sun4i_pll5_data __initconst = {
+>         .getter = sun4i_get_pll5_factors,
+>  };
+>  
+> +static const struct factors_data sun6i_a31_pll6_data __initconst = {
+> +       .enable = 31,
+> +       .table = &sun6i_a31_pll6_config,
+> +       .getter = sun6i_a31_get_pll6_factors,
+> +};
+> +
+>  static const struct factors_data sun4i_apb1_data __initconst = {
+>         .table = &sun4i_apb1_config,
+>         .getter = sun4i_get_apb1_factors,
+> @@ -972,6 +1016,7 @@ free_clkdata:
+>  static const struct of_device_id clk_factors_match[] __initconst = {
+>         {.compatible = "allwinner,sun4i-pll1-clk", .data = &sun4i_pll1_data,},
+>         {.compatible = "allwinner,sun6i-a31-pll1-clk", .data = &sun6i_a31_pll1_data,},
+> +       {.compatible = "allwinner,sun6i-a31-pll6-clk", .data = &sun6i_a31_pll6_data,},
+>         {.compatible = "allwinner,sun4i-apb1-clk", .data = &sun4i_apb1_data,},
+>         {.compatible = "allwinner,sun4i-mod0-clk", .data = &sun4i_mod0_data,},
+>         {.compatible = "allwinner,sun7i-a20-out-clk", .data = &sun7i_a20_out_data,},
+> -- 
+> 1.8.4.2
+> 

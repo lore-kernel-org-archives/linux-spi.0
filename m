@@ -1,66 +1,64 @@
-From: Jagan Teki <jagannadh.teki@gmail.com>
-Subject: Re: [PATCH v4 0/7] mtd: spi-nor: add a new framework for SPI NOR
-Date: Fri, 17 Jan 2014 14:09:58 +0530
-Message-ID: <CAD6G_RSF_TPk8g9CNmSc+xs+9psLmJoakZw3Eqf-a8KD5P4AVg@mail.gmail.com>
-References: <1387950629-27448-1-git-send-email-b32955@freescale.com>
-	<CAD6G_RTnNQgeJM8Tc16Sc1_n29d=V9sJN1ePrOAn5YzM+GujMQ@mail.gmail.com>
-	<52D7A237.8@freescale.com>
-	<CAD6G_RRNg-uRtKnnVgJYpUGPsKecAUm9mwETVJsCsaGSuL2eCw@mail.gmail.com>
-	<20140117020226.GB27652@shlinux2.ap.freescale.net>
-	<CAD6G_RR7vgmHGFj4GqwCYLQQO6tbsZAeCzVBivbcxnCGSwgiWQ@mail.gmail.com>
-	<20140117065401.GA6140@shlinux2.ap.freescale.net>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: sc18is602: Convert to use bits_per_word_mask
+Date: Fri, 17 Jan 2014 18:00:42 +0800
+Message-ID: <1389952842.6412.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: David Woodhouse <dwmw2@infradead.org>, angus.clark@st.com,
-	Shawn Guo <shawn.guo@linaro.org>, b44548@freescale.com,
-	Mark Brown <broonie@linaro.org>, linux-doc@vger.kernel.org,
-	b18965@freescale.com, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
-	"Gupta, Pekon" <pekon@ti.com>,
-	Sourav Poddar <sourav.poddar@ti.com>,
-	Brian Norris <computersforpeace@gmail.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-To: Huang Shijie <b32955@freescale.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <20140117065401.GA6140@shlinux2.ap.freescale.net>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jan 17, 2014 at 12:24 PM, Huang Shijie <b32955@freescale.com> wrote:
-> On Fri, Jan 17, 2014 at 12:36:08PM +0530, Jagan Teki wrote:
->> >> My basic question is like I have a qspi spi controller in my SOC and I
->> >> designed two boards B1 and B2
->> >
->> > okay.
->> >
->> >> B1 with quad spi controller connected with non-flash as a slave and B2
->> >> with quad spi controller connected
->> >> with quad flash as a slave.
->> > You can use the framework for B2. But for B1, you should not use the framework,
->> > since this framework is just for the SPI-NOR. If you do not connected with
->> > a NOR, i think it's better to code another driver for your controller.
->>
->> Means we have two separate controller drivers for same controller one
->> with spi-nor and
->> another with spi is it?
-> Take drivers/spi/spi-imx.c for example, if you connect a NOR to it, you only
-> need to add a NOR device node in the device tree. In the probe, it will call
-> the m25p80.c to probe the NOR device.
->
-> But if we connect other device to it. you should set another device node for it.
->
-> I am not sure if your controller driver can works as the spi-imx.c
+Since commit 543bb25 "spi: add ability to validate xfer->bits_per_word in SPI
+core", the driver can set bits_per_word_mask for the master then the SPI core
+will reject transfers that attempt to use an unsupported bits_per_word value.
+So we can remove the bits_per_word checking in sc18is602_check_transfer() and
+let SPI core handle the checking.
 
-My question here was - this new framework suggest to write a two
-different controller
-drivers one is for non spi-nor and spi-nor models? do you agree that?
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-sc18is602.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-And also one important note from your design was spi-nor mode is
-completely bypassing
-Linux spi core is that the good idea?
-
+diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
+index c1a01d1..c981d21 100644
+--- a/drivers/spi/spi-sc18is602.c
++++ b/drivers/spi/spi-sc18is602.c
+@@ -183,18 +183,11 @@ static int sc18is602_setup_transfer(struct sc18is602 *hw, u32 hz, u8 mode)
+ static int sc18is602_check_transfer(struct spi_device *spi,
+ 				    struct spi_transfer *t, int tlen)
+ {
+-	int bpw;
+ 	uint32_t hz;
+ 
+ 	if (t && t->len + tlen > SC18IS602_BUFSIZ)
+ 		return -EINVAL;
+ 
+-	bpw = spi->bits_per_word;
+-	if (t && t->bits_per_word)
+-		bpw = t->bits_per_word;
+-	if (bpw != 8)
+-		return -EINVAL;
+-
+ 	hz = spi->max_speed_hz;
+ 	if (t && t->speed_hz)
+ 		hz = t->speed_hz;
+@@ -315,6 +308,7 @@ static int sc18is602_probe(struct i2c_client *client,
+ 	}
+ 	master->bus_num = client->adapter->nr;
+ 	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST;
++	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->setup = sc18is602_setup;
+ 	master->transfer_one_message = sc18is602_transfer_one;
+ 	master->dev.of_node = np;
 -- 
-Thanks,
-Jagan.
+1.8.1.2
+
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,65 +1,35 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH v4 0/7] mtd: spi-nor: add a new framework for SPI NOR
-Date: Fri, 17 Jan 2014 14:54:03 +0800
-Message-ID: <20140117065401.GA6140@shlinux2.ap.freescale.net>
-References: <1387950629-27448-1-git-send-email-b32955@freescale.com>
- <CAD6G_RTnNQgeJM8Tc16Sc1_n29d=V9sJN1ePrOAn5YzM+GujMQ@mail.gmail.com>
- <52D7A237.8@freescale.com>
- <CAD6G_RRNg-uRtKnnVgJYpUGPsKecAUm9mwETVJsCsaGSuL2eCw@mail.gmail.com>
- <20140117020226.GB27652@shlinux2.ap.freescale.net>
- <CAD6G_RR7vgmHGFj4GqwCYLQQO6tbsZAeCzVBivbcxnCGSwgiWQ@mail.gmail.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
+Date: Fri, 17 Jan 2014 09:37:56 +0200
+Message-ID: <52D8DDD4.10704@linux.intel.com>
+References: <1389689198-2641-1-git-send-email-rui.zhang@intel.com> <1389689198-2641-4-git-send-email-rui.zhang@intel.com> <20140116122704.GD2617@katana> <1389877509.3010.15.camel@rzhang1-mobl4> <20140116194651.GO17314@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, <angus.clark-qxv4g6HH51o@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>,
-	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Jagan Teki <jagannadh.teki-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAD6G_RR7vgmHGFj4GqwCYLQQO6tbsZAeCzVBivbcxnCGSwgiWQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Zhang Rui <rui.zhang@intel.com>, Wolfram Sang <wsa@the-dreams.de>,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+	gregkh@linuxfoundation.org, rafael.j.wysocki@intel.com,
+	grant.likely@linaro.org, mika.westerberg@linux.intel.com,
+	grant.likely@secretlab.ca
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <20140116194651.GO17314@sirena.org.uk>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jan 17, 2014 at 12:36:08PM +0530, Jagan Teki wrote:
-> >> My basic question is like I have a qspi spi controller in my SOC and I
-> >> designed two boards B1 and B2
-> >
-> > okay.
-> >
-> >> B1 with quad spi controller connected with non-flash as a slave and B2
-> >> with quad spi controller connected
-> >> with quad flash as a slave.
-> > You can use the framework for B2. But for B1, you should not use the framework,
-> > since this framework is just for the SPI-NOR. If you do not connected with
-> > a NOR, i think it's better to code another driver for your controller.
-> 
-> Means we have two separate controller drivers for same controller one
-> with spi-nor and
-> another with spi is it?
-Take drivers/spi/spi-imx.c for example, if you connect a NOR to it, you only
-need to add a NOR device node in the device tree. In the probe, it will call
-the m25p80.c to probe the NOR device.
+On 01/16/2014 09:46 PM, Mark Brown wrote:
+> On Thu, Jan 16, 2014 at 09:05:09PM +0800, Zhang Rui wrote:
+>> On Thu, 2014-01-16 at 13:27 +0100, Wolfram Sang wrote:
+>> This seems a gap to me but I'm not 100% sure.
+>> I saw Grant Likely introduced the OF style MODALIAS to platform bus, and
+>> OF style registration/binding to i2c bus, maybe he has an answer for
+>> this.
+> This is needed for ACPI because we rewrite the device names to give us
+> stable names.  With OF for I2C and SPI nothing bus specific is done that
+> affects this stuff so the default behaviour works.
+Sidenote: actually this modalias/module loading issue is different and 
+not related to stable ACPI i2c/spi slave device names.
 
-But if we connect other device to it. you should set another device node for it.
-
-I am not sure if your controller driver can works as the spi-imx.c
-
-thanks
-Huang Shijie
-
-
-
- 
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+Jarkko

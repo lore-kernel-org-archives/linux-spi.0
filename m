@@ -1,35 +1,58 @@
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
-Date: Mon, 20 Jan 2014 09:10:21 +0200
-Message-ID: <52DCCBDD.8000209@linux.intel.com>
-References: <1389689198-2641-1-git-send-email-rui.zhang@intel.com> <1389689198-2641-4-git-send-email-rui.zhang@intel.com> <20140116122704.GD2617@katana> <1389877509.3010.15.camel@rzhang1-mobl4> <20140116194651.GO17314@sirena.org.uk> <52D8DDD4.10704@linux.intel.com> <20140117155708.GS17314@sirena.org.uk>
+From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: Fix mcspi FIFO usage
+Date: Mon, 20 Jan 2014 15:14:04 +0530
+Message-ID: <1390211044-9791-1-git-send-email-sourav.poddar@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Zhang Rui <rui.zhang@intel.com>, Wolfram Sang <wsa@the-dreams.de>,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
-	gregkh@linuxfoundation.org, rafael.j.wysocki@intel.com,
-	grant.likely@linaro.org, mika.westerberg@linux.intel.com,
-	grant.likely@secretlab.ca
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-acpi-owner@vger.kernel.org>
-In-Reply-To: <20140117155708.GS17314@sirena.org.uk>
-Sender: linux-acpi-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<balbi-l0cyMroinI0@public.gmane.org>, Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+To: <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 01/17/2014 05:57 PM, Mark Brown wrote:
-> On Fri, Jan 17, 2014 at 09:37:56AM +0200, Jarkko Nikula wrote:
->> Sidenote: actually this modalias/module loading issue is different
->> and not related to stable ACPI i2c/spi slave device names.
-> Oh, I'd been under the impression that it was the rewrite that was
-> triggering this?
-IIRC issue has been there since when ACPI slave device support was added.
+The following commit add Fifo support for omap mcspi.
+commit d33f473dcd8e69321f001ba330d648f475b504c9
+Author: Illia Smyrnov <illia.smyrnov-l0cyMroinI0@public.gmane.org>
+Date:   Mon Jun 17 16:31:06 2013 +0300
 
-I have a partial fix for it in cf9eb39c6f7b ("spi: Fix modalias for ACPI 
-enumerated SPI devices") and when doing similar change for i2c Rui 
-pointed me that he has a better fix that takes care of _CID string and 
-platform code too.
+    spi: omap2-mcspi: Add FIFO buffer support
 
+Currently, enabling of FIFO is done based on rx_buf or tx_buf checks
+and only one of the RX or TX fifo is enabled. There can be transfers
+in which both RX/TX fifo is desired. Hence, fixing code for the
+same to allow setting both TX/RX fifo when needed.
+
+Application:
+While doing a loopback testing on beaglebone white(DMA
+with FIFO enabled), where both RX and TX buf buffers are passed,
+./spidev_test hangs.
+The $subject patch fixes that hang and data can be loopbacked.
+
+Signed-off-by: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index ed4af47..86402a7 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -299,7 +299,9 @@ static void omap2_mcspi_set_fifo(const struct spi_device *spi,
+ 		if (t->rx_buf != NULL) {
+ 			chconf |= OMAP2_MCSPI_CHCONF_FFER;
+ 			xferlevel |= (fifo_depth - 1) << 8;
+-		} else {
++		}
++
++		if (t->tx_buf != NULL) {
+ 			chconf |= OMAP2_MCSPI_CHCONF_FFET;
+ 			xferlevel |= fifo_depth - 1;
+ 		}
 -- 
-Jarkko
+1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

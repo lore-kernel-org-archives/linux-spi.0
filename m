@@ -1,56 +1,37 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: sc18is602: Remove sc18is602_setup() because it is done
- by spi core
-Date: Mon, 20 Jan 2014 23:18:45 +0800
-Message-ID: <1390231125.11756.1.camel@phoenix>
+Subject: [PATCH] spi: nuc900: Set SPI_LSB_FIRST for master->mode_bits if
+ hw->pdata->lsb is true
+Date: Mon, 20 Jan 2014 23:22:07 +0800
+Message-ID: <1390231327.11756.3.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The checking for spi->mode is done in the implementation of spi_setup().
-Calling sc18is602_check_transfer(spi, NULL, 0) is pointless because
-the code is equivent to checking if spi->max_speed_hz is 0.
-Note, sc18is602_check_transfer actually allows spi->max_speed_hz is 0
-if t->speed_hz is set. So return error in sc18is602_setup() when
-spi->max_speed_hz is 0 does not make sense.
+Otherwise, spi_setup() fails with unsupported mode bits message.
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-sc18is602.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/spi/spi-nuc900.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 121c2e1..b3ac776 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -245,14 +245,6 @@ error:
- 	return status;
- }
+diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
+index 5040630..bae97ff 100644
+--- a/drivers/spi/spi-nuc900.c
++++ b/drivers/spi/spi-nuc900.c
+@@ -361,6 +361,8 @@ static int nuc900_spi_probe(struct platform_device *pdev)
+ 	init_completion(&hw->done);
  
--static int sc18is602_setup(struct spi_device *spi)
--{
--	if (spi->mode & ~(SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST))
--		return -EINVAL;
--
--	return sc18is602_check_transfer(spi, NULL, 0);
--}
--
- static int sc18is602_probe(struct i2c_client *client,
- 			   const struct i2c_device_id *id)
- {
-@@ -306,7 +298,6 @@ static int sc18is602_probe(struct i2c_client *client,
- 	master->bus_num = client->adapter->nr;
- 	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8);
--	master->setup = sc18is602_setup;
- 	master->transfer_one_message = sc18is602_transfer_one;
- 	master->dev.of_node = np;
- 
+ 	master->mode_bits          = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
++	if (hw->pdata->lsb)
++		master->mode_bits |= SPI_LSB_FIRST;
+ 	master->num_chipselect     = hw->pdata->num_cs;
+ 	master->bus_num            = hw->pdata->bus_num;
+ 	hw->bitbang.master         = hw->master;
 -- 
 1.8.1.2
 

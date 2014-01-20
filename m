@@ -1,56 +1,60 @@
-From: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] spi: omap2-mcspi: Fix mcspi FIFO usage
-Date: Mon, 20 Jan 2014 15:14:04 +0530
-Message-ID: <1390211044-9791-1-git-send-email-sourav.poddar@ti.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: sc18is602: Remove sc18is602_setup() because it is done
+ by spi core
+Date: Mon, 20 Jan 2014 23:18:45 +0800
+Message-ID: <1390231125.11756.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-omap-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<balbi-l0cyMroinI0@public.gmane.org>, Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
-To: <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The following commit add Fifo support for omap mcspi.
-commit d33f473dcd8e69321f001ba330d648f475b504c9
-Author: Illia Smyrnov <illia.smyrnov-l0cyMroinI0@public.gmane.org>
-Date:   Mon Jun 17 16:31:06 2013 +0300
+The checking for spi->mode is done in the implementation of spi_setup().
+Calling sc18is602_check_transfer(spi, NULL, 0) is pointless because
+the code is equivent to checking if spi->max_speed_hz is 0.
+Note, sc18is602_check_transfer actually allows spi->max_speed_hz is 0
+if t->speed_hz is set. So return error in sc18is602_setup() when
+spi->max_speed_hz is 0 does not make sense.
 
-    spi: omap2-mcspi: Add FIFO buffer support
-
-Currently, enabling of FIFO is done based on rx_buf or tx_buf checks
-and only one of the RX or TX fifo is enabled. There can be transfers
-in which both RX/TX fifo is desired. Hence, fixing code for the
-same to allow setting both TX/RX fifo when needed.
-
-Application:
-While doing a loopback testing on beaglebone white(DMA
-with FIFO enabled), where both RX and TX buf buffers are passed,
-./spidev_test hangs.
-The $subject patch fixes that hang and data can be loopbacked.
-
-Signed-off-by: Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-omap2-mcspi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sc18is602.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index ed4af47..86402a7 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -299,7 +299,9 @@ static void omap2_mcspi_set_fifo(const struct spi_device *spi,
- 		if (t->rx_buf != NULL) {
- 			chconf |= OMAP2_MCSPI_CHCONF_FFER;
- 			xferlevel |= (fifo_depth - 1) << 8;
--		} else {
-+		}
-+
-+		if (t->tx_buf != NULL) {
- 			chconf |= OMAP2_MCSPI_CHCONF_FFET;
- 			xferlevel |= fifo_depth - 1;
- 		}
+diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
+index 121c2e1..b3ac776 100644
+--- a/drivers/spi/spi-sc18is602.c
++++ b/drivers/spi/spi-sc18is602.c
+@@ -245,14 +245,6 @@ error:
+ 	return status;
+ }
+ 
+-static int sc18is602_setup(struct spi_device *spi)
+-{
+-	if (spi->mode & ~(SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST))
+-		return -EINVAL;
+-
+-	return sc18is602_check_transfer(spi, NULL, 0);
+-}
+-
+ static int sc18is602_probe(struct i2c_client *client,
+ 			   const struct i2c_device_id *id)
+ {
+@@ -306,7 +298,6 @@ static int sc18is602_probe(struct i2c_client *client,
+ 	master->bus_num = client->adapter->nr;
+ 	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LSB_FIRST;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+-	master->setup = sc18is602_setup;
+ 	master->transfer_one_message = sc18is602_transfer_one;
+ 	master->dev.of_node = np;
+ 
 -- 
-1.7.9.5
+1.8.1.2
+
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

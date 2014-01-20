@@ -1,52 +1,35 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH V2 6/8] spi: rspi: Add support for missing SPCR2 register
-Date: Sun, 19 Jan 2014 12:39:29 +0100
-Message-ID: <CAMuHMdUG3m0H8Rgfne7XDUYXd5Uxq69jbSzAAEuWEyoNTZazdA@mail.gmail.com>
-References: <1389522464-1569-1-git-send-email-geert@linux-m68k.org>
-	<1389522464-1569-7-git-send-email-geert@linux-m68k.org>
-	<52D3DDDB.309@cogentembedded.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Subject: Re: [PATCH 3/4] fix module autoloading for ACPI enumerated devices
+Date: Mon, 20 Jan 2014 09:10:21 +0200
+Message-ID: <52DCCBDD.8000209@linux.intel.com>
+References: <1389689198-2641-1-git-send-email-rui.zhang@intel.com> <1389689198-2641-4-git-send-email-rui.zhang@intel.com> <20140116122704.GD2617@katana> <1389877509.3010.15.camel@rzhang1-mobl4> <20140116194651.GO17314@sirena.org.uk> <52D8DDD4.10704@linux.intel.com> <20140117155708.GS17314@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Sergei Shtylyov <sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <52D3DDDB.309-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Zhang Rui <rui.zhang@intel.com>, Wolfram Sang <wsa@the-dreams.de>,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+	gregkh@linuxfoundation.org, rafael.j.wysocki@intel.com,
+	grant.likely@linaro.org, mika.westerberg@linux.intel.com,
+	grant.likely@secretlab.ca
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-acpi-owner@vger.kernel.org>
+In-Reply-To: <20140117155708.GS17314@sirena.org.uk>
+Sender: linux-acpi-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Mon, Jan 13, 2014 at 1:36 PM, Sergei Shtylyov
-<sergei.shtylyov-M4DtvfQ/ZS1MRgGoP+s0PdBPR1lH4CV8@public.gmane.org> wrote:
-> On 12-01-2014 14:27, Geert Uytterhoeven wrote:
->> Add support for RSPI variants lacking the RSPI Control Register 2, based on
->> the SDK reference code. This is needed for RZ/A1H.
->
->> The availability of this register is passed using platform data, defaulting
->> to true for legacy RSPI. QSPI never has this register.
->
->> If the register is not available, it should not be touched.
->
->> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
->> Acked-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
->
->    I believe such things should be done via different platform device IDs
-> instead, not platform data.
+On 01/17/2014 05:57 PM, Mark Brown wrote:
+> On Fri, Jan 17, 2014 at 09:37:56AM +0200, Jarkko Nikula wrote:
+>> Sidenote: actually this modalias/module loading issue is different
+>> and not related to stable ACPI i2c/spi slave device names.
+> Oh, I'd been under the impression that it was the rewrite that was
+> triggering this?
+IIRC issue has been there since when ACPI slave device support was added.
 
-Thanks! The more I think about it, and the more I'm refactoring the driver,
-the more I agree with you...
+I have a partial fix for it in cf9eb39c6f7b ("spi: Fix modalias for ACPI 
+enumerated SPI devices") and when doing similar change for i2c Rui 
+pointed me that he has a better fix that takes care of _CID string and 
+platform code too.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+Jarkko

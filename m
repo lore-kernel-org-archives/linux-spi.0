@@ -1,68 +1,58 @@
-From: bonita11571-gM/Ye1E23mwN+BqQ9rBEUg@public.gmane.org
-Subject: RE: LOCAL MAP OPTIMIZATION FOR : mail-archive.com (Less Than
- $99/Month)
-Date: Mon, 20 Jan 2014 22:38:54 +0530
-Message-ID: <52dd5824.eaee440a.1b7e.ffffc947@mx.google.com>
-Reply-To: LORI76557-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: sc18is602: Remove sc18is602_setup() because it is
+ done by spi core
+Date: Mon, 20 Jan 2014 18:33:19 +0000
+Message-ID: <20140120183319.GX17314@sirena.org.uk>
+References: <1390231125.11756.1.camel@phoenix>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="2EejY7RDPU7h6CFd"
+Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1390231125.11756.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Good Morning Sir / Mam
 
-Is your business ranking in local maps shown on PAGE 1 of google ? With new
-google policies they have specifically asked local business owners to
-optimize their website for local maps rather than JUST organics. Do you know
-the reason why you are not ranked well on google MAPs or why there is drop
-in your website rankings? Prime reason for bad rankings for a busniess is
-lack of local presence and local citations ie getting your business listed
-on directories like YELP, MANTA & Many more. These websites not just give
-your business a push but also help you Maintain a good Online Reputation.
+--2EejY7RDPU7h6CFd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Why you need to optimize your website for local MAP Listings ?
+On Mon, Jan 20, 2014 at 11:18:45PM +0800, Axel Lin wrote:
+> The checking for spi->mode is done in the implementation of spi_setup().
+> Calling sc18is602_check_transfer(spi, NULL, 0) is pointless because
+> the code is equivent to checking if spi->max_speed_hz is 0.
+> Note, sc18is602_check_transfer actually allows spi->max_speed_hz is 0
+> if t->speed_hz is set. So return error in sc18is602_setup() when
+> spi->max_speed_hz is 0 does not make sense.
 
-- MAP listings get 10 times more clicks than organic listings
-- Increased conversions because of real reviews posted on your Google Plus
-Page
-- Every year there is 30% increase in searches for local keywords
-- Increases legitimacy of a Business
+Applied, thanks.
 
-We will help you get your website ranked well on google for the related
-keywords in your niche. We specialize in LOCAL SEARCH ENGINE OPTIMIZATION
-increasing visibility for small businesses by ranking them for
-geographically-related keywords. Say for eg-: you want to search a plumber
-in your city, You will be typing in keywords like Plumbers + City Or
-Plumbers + IN + City. We make sure your website comes in google MAP listings
-shown on page 1 for each such keyword.
+--2EejY7RDPU7h6CFd
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Now Google believes in - BE ORIGINAL, HAVE ORIGINAL AND GIVE ORIGINAL which
-means that google wants to end up that frustrating experience of users who
-are searching for Service Or Product and seeing the results that are not
-even close to what they are looking for. Google only wants to give their
-user original and relevant results. This makes it even more important that
-we showcase our business in the best possible way and make sure our website
-in valued high by google.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-We at TheLOCALIST will make google feel the importance of your business by
-following their guidelines thus ranking your website higher in serach
-results. We are presently offering LOCAL OPTIMIZATION to more than 400
-websites and they all rank page 1 for all possible keywords !!! Each month
-your website is submitted to more than 50 citations and social presence is
-controlled by posting videos and blogs all over the web.
+iQIcBAEBAgAGBQJS3WvsAAoJELSic+t+oim9VhAP/0EsndrhLWkPHJvdkLVzo7ye
+gCN6Hg0OQAkoLStMcvqurSLRNbsusA/KdyRJCvIe7Xx+OI7gAxADNq/9+o3ewQAN
+zdQlAtaeQI7n05jMSGkk1dbqI/rRuMk4BVTOYYfdpM8trbAkyKUAMWeIVDopIlrS
+kjsaW3wZNLdPGuTBQY+oaJNGnSPYs+x56Vow1jtKwRF3QgsQ3ko6k1+ow9v7gaCh
+MPMHSciMLm7bZtSxcEZm6EfJEyapx2i6PrqNoJOvZ46/mNAF6Je7JA6KlLFtOJv/
+RV/cAoKo5utzI8cSxJNfWDEhpEjIvvl+CfCamtmJsf4m0/SP182fxVoYCvaqiG4q
+FvfdmGo5rpP1FkCpxcOXcdMxREDV0hBIV4DIpmBrAuIe4Ah6sYZPdjrkAHudx2Tm
+LmntWU/8mEI8b7nhvfcLTYJoCUgAJxnaZ9X52y1VqpLTLhvjOtJkQNgva4RY9Y0M
+uNZLOUv1/5zSmMkN/9yJv16q9BrStZACsID/xM31HwL/fY6yaTn+yKWRDbD85AgR
+/76vqgU3OS8xA3A5oMP5HasdQlE5Ut+gJ6Fd8evFi3SIVAXVS9ZFeTNA1ICbXkjW
+maxuAv8/Uxh/u6sm3jPNIjxUvOJY3xGgveTOQxi2ZPhYW2qrm1seU/I9LiibtadT
+RhgC3tSc3j9JZKlJSfc1
+=xso5
+-----END PGP SIGNATURE-----
 
-Email us back with your website & phone number so we can discuss this
-further with you. Our Packages start from as low as 99$/month.
-
-
-Thanks For Taking Time To Read Our Email
-
-Polly Martin
-Local SEO Manager ( THE Localist )
-Address : 24 ST Suite 32 Downtown Provo Utah
-
--------------------
-NOT INTERESTED ? REPLY WITH NOT INTERESTED IN THE SUBJECT LINE 
+--2EejY7RDPU7h6CFd--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,57 +1,58 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 4/5] spi: Check that Quad/Dual is half duplex
-Date: Tue, 21 Jan 2014 16:10:08 +0100
-Message-ID: <1390317009-8292-4-git-send-email-geert@linux-m68k.org>
-References: <1390317009-8292-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1390317009-8292-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 4/4] mtd: m25p80: Enable Dual SPI read transfers for s25fl256s1 and s25fl512s
+Date: Tue, 21 Jan 2014 16:42:55 +0100
+Message-ID: <201401211642.55461.marex@denx.de>
+References: <1390309159-19643-1-git-send-email-geert@linux-m68k.org> <1390309159-19643-5-git-send-email-geert@linux-m68k.org>
+Mime-Version: 1.0
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1390309159-19643-5-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+On Tuesday, January 21, 2014 at 01:59:19 PM, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> 
+> Spansion s25fl256s1 and s25fl512s support Dual SPI transfers, hence set the
+> M25P80_DUAL_READ flag.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> ---
+>  drivers/mtd/devices/m25p80.c |    4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 73bf661100f7..f0871a2e449d 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -960,8 +960,8 @@ static const struct spi_device_id m25p_ids[] = {
+>  	{ "s25sl032p",  INFO(0x010215, 0x4d00,  64 * 1024,  64, 0) },
+>  	{ "s25sl064p",  INFO(0x010216, 0x4d00,  64 * 1024, 128, 0) },
+>  	{ "s25fl256s0", INFO(0x010219, 0x4d00, 256 * 1024, 128, 0) },
+> -	{ "s25fl256s1", INFO(0x010219, 0x4d01,  64 * 1024, 512, 
+M25P80_QUAD_READ)
+> }, -	{ "s25fl512s",  INFO(0x010220, 0x4d00, 256 * 1024, 256,
+> M25P80_QUAD_READ) }, +	{ "s25fl256s1", INFO(0x010219, 0x4d01,  64 * 1024,
+> 512, M25P80_DUAL_READ | M25P80_QUAD_READ) }, +	{ "s25fl512s", 
+> INFO(0x010220, 0x4d00, 256 * 1024, 256, M25P80_DUAL_READ |
+> M25P80_QUAD_READ) }, { "s70fl01gs",  INFO(0x010221, 0x4d00, 256 * 1024,
+> 256, 0) },
+>  	{ "s25sl12800", INFO(0x012018, 0x0300, 256 * 1024,  64, 0) },
+>  	{ "s25sl12801", INFO(0x012018, 0x0301,  64 * 1024, 256, 0) },
 
-Quad and Dual SPI Transfers use all available data lines (incl. MOSI/MISO),
-hence they must be half duplex. Add a check that verify that.
+Why don't you lump this together with 1/4 ? :)
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
----
-I think this check is done nowhere else. Please correct me if I missed it.
-
- drivers/spi/spi.c |    5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 7f77f82bf95e..4afcdb4851fa 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1672,6 +1672,7 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 		/* check transfer tx/rx_nbits:
- 		 * 1. check the value matches one of single, dual and quad
- 		 * 2. check tx/rx_nbits match the mode in spi_device
-+		 * 3. check dual or quad is half duplex
- 		 */
- 		if (xfer->tx_buf) {
- 			if (xfer->tx_nbits != SPI_NBITS_SINGLE &&
-@@ -1684,6 +1685,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 			if ((xfer->tx_nbits == SPI_NBITS_QUAD) &&
- 				!(spi->mode & SPI_TX_QUAD))
- 				return -EINVAL;
-+			if (xfer->tx_nbits > SPI_NBITS_SINGLE && xfer->rx_buf)
-+				return -EINVAL;
- 		}
- 		/* check transfer rx_nbits */
- 		if (xfer->rx_buf) {
-@@ -1697,6 +1700,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 			if ((xfer->rx_nbits == SPI_NBITS_QUAD) &&
- 				!(spi->mode & SPI_RX_QUAD))
- 				return -EINVAL;
-+			if (xfer->rx_nbits > SPI_NBITS_SINGLE && xfer->tx_buf)
-+				return -EINVAL;
- 		}
- 	}
- 
--- 
-1.7.9.5
+Best regards,
+Marek Vasut
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

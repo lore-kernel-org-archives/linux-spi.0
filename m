@@ -1,56 +1,44 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 1/4] mtd: m25p80: Enable Quad SPI read transfers for s25fl512s
-Date: Tue, 21 Jan 2014 16:13:17 +0100
-Message-ID: <201401211613.17188.marex@denx.de>
-References: <1390309159-19643-1-git-send-email-geert@linux-m68k.org> <1390309159-19643-2-git-send-email-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 4/4] mtd: m25p80: Enable Dual SPI read transfers for
+ s25fl256s1 and s25fl512s
+Date: Tue, 21 Jan 2014 16:58:59 +0100
+Message-ID: <CAMuHMdVMDO9nKQPgNwz47H2mK6kKreNYiyn-AFOB2KryRpSgoA@mail.gmail.com>
+References: <1390309159-19643-1-git-send-email-geert@linux-m68k.org>
+	<1390309159-19643-5-git-send-email-geert@linux-m68k.org>
+	<201401211642.55461.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
 Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
 	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1390309159-19643-2-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <201401211642.55461.marex-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday, January 21, 2014 at 01:59:16 PM, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-> 
-> Spansion s25fl512s supports Quad SPI transfers, hence set the
-> M25P80_QUAD_READ flag.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-> ---
->  drivers/mtd/devices/m25p80.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-> index d0f6475504f5..320c6a308630 100644
-> --- a/drivers/mtd/devices/m25p80.c
-> +++ b/drivers/mtd/devices/m25p80.c
-> @@ -943,7 +943,7 @@ static const struct spi_device_id m25p_ids[] = {
->  	{ "s25sl064p",  INFO(0x010216, 0x4d00,  64 * 1024, 128, 0) },
->  	{ "s25fl256s0", INFO(0x010219, 0x4d00, 256 * 1024, 128, 0) },
->  	{ "s25fl256s1", INFO(0x010219, 0x4d01,  64 * 1024, 512, 
-M25P80_QUAD_READ)
-> }, -	{ "s25fl512s",  INFO(0x010220, 0x4d00, 256 * 1024, 256, 0) },
-> +	{ "s25fl512s",  INFO(0x010220, 0x4d00, 256 * 1024, 256, 
-M25P80_QUAD_READ)
-> }, { "s70fl01gs",  INFO(0x010221, 0x4d00, 256 * 1024, 256, 0) },
->  	{ "s25sl12800", INFO(0x012018, 0x0300, 256 * 1024,  64, 0) },
->  	{ "s25sl12801", INFO(0x012018, 0x0301,  64 * 1024, 256, 0) },
+On Tue, Jan 21, 2014 at 4:42 PM, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org> wrote:
+>> Spansion s25fl256s1 and s25fl512s support Dual SPI transfers, hence set the
+>> M25P80_DUAL_READ flag.
 
-Sure, the thing does support it, so why not.
+> Why don't you lump this together with 1/4 ? :)
 
-Acked-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Because I don't want to delay Quad support for s25fl512s by bike-shedding
+about the need for Dual support.
 
-Best regards,
-Marek Vasut
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

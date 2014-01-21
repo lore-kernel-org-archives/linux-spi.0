@@ -1,58 +1,133 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sc18is602: Remove sc18is602_setup() because it is
- done by spi core
-Date: Mon, 20 Jan 2014 18:33:19 +0000
-Message-ID: <20140120183319.GX17314@sirena.org.uk>
-References: <1390231125.11756.1.camel@phoenix>
+From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH v4 0/7] mtd: spi-nor: add a new framework for SPI NOR
+Date: Tue, 21 Jan 2014 10:29:26 +0800
+Message-ID: <20140121022925.GA18529@shlinux2.ap.freescale.net>
+References: <1387950629-27448-1-git-send-email-b32955@freescale.com>
+ <CAD6G_RTnNQgeJM8Tc16Sc1_n29d=V9sJN1ePrOAn5YzM+GujMQ@mail.gmail.com>
+ <52D7A237.8@freescale.com>
+ <CAD6G_RRNg-uRtKnnVgJYpUGPsKecAUm9mwETVJsCsaGSuL2eCw@mail.gmail.com>
+ <20140117020226.GB27652@shlinux2.ap.freescale.net>
+ <CAD6G_RR7vgmHGFj4GqwCYLQQO6tbsZAeCzVBivbcxnCGSwgiWQ@mail.gmail.com>
+ <20140117065401.GA6140@shlinux2.ap.freescale.net>
+ <CAD6G_RSF_TPk8g9CNmSc+xs+9psLmJoakZw3Eqf-a8KD5P4AVg@mail.gmail.com>
+ <52DB3864.2040606@gmail.com>
+ <CAD6G_RTwMJ5DgkCB7wcYw+2p---DqU4KCVJ3CUnHFfCJ0ui_Jw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2EejY7RDPU7h6CFd"
-Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Cc: Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <angus.clark-qxv4g6HH51o@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, "Gupta, Pekon" <pekon-l0cyMroinI0@public.gmane.org>,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Jagan Teki <jagannadh.teki-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1390231125.11756.1.camel@phoenix>
+In-Reply-To: <CAD6G_RTwMJ5DgkCB7wcYw+2p---DqU4KCVJ3CUnHFfCJ0ui_Jw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Sun, Jan 19, 2014 at 03:39:34PM +0530, Jagan Teki wrote:
+> > Just think about that how do you code your driver for SPI NOR _without_ this
+> > framework:
+> > do your driver need to call the m25p80.c? if you do call the m25p80.c, you
+> > actually write your so-called "two drivers" :)
+> 
+> I'm still not convinced here, sorry!
+> Let me explain more with example, Just take your (q)spi controller as an example
+> B_FSL1 designed with - serial flash
+> B_FSL2 designed with - touch screen
+> 
+> With this design If we follow current we just need one controller
+> driver (drivers/spi/spi-fsl.c)
+> to serve touch screen and serial flash from upper layers.
+> 
+> MTD core                Input core
+> -------------           -------------------------------
+> m25p80.c             spi  touchscreen driver  (drivers/input/touchscreen)
+> ----------------------------------------------------
+>                           SPI core
+> ----------------------------------------------------
+>       controller driver (drivers/spi/spi-fsl.)
+> ----------------------------------------------------
+> 
+> But with your new SPI-NOR
+> 
+> MTD core
+> ------------
+> SPI-NOR              Input core
+> -----------           ------------------
+> fsl-quadspi.c     spi  touchscreen driver  (drivers/input/touchscreen)
+> ----------------      ------------------------------
+>                          SPI Core
+>                          -----------------------------
+>                          controller driver (drivers/spi/spi-fsl.c)
+>                          -----------------------------------------
+> 
+There is no relationship with the fsl-quadspi.c. 
 
---2EejY7RDPU7h6CFd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+It should be like this:
+ MTD core
+ ------------
+ SPI-NOR  framework                       Input core
+ -----------                              ------------------
+ m25p80.c                                 spi  touchscreen driver  (drivers/input/touchscreen)
+ ----------------                         ------------------------------
+ SPI Core                                 SPI Core
+ -----------------------                  -----------------------------
+ drivers/spi/spi-fsl.c                    controller driver (drivers/spi/spi-fsl.c)
+ --------------------------               -----------------------------------------
+ 
 
-On Mon, Jan 20, 2014 at 11:18:45PM +0800, Axel Lin wrote:
-> The checking for spi->mode is done in the implementation of spi_setup().
-> Calling sc18is602_check_transfer(spi, NULL, 0) is pointless because
-> the code is equivent to checking if spi->max_speed_hz is 0.
-> Note, sc18is602_check_transfer actually allows spi->max_speed_hz is 0
-> if t->speed_hz is set. So return error in sc18is602_setup() when
-> spi->max_speed_hz is 0 does not make sense.
+> Here see we have two separate drivers for the same controller as it offers two
+> functionalities. and also it never talk to Linux SPI subsystem which is not a
+> good for me as intern hw is SPI-based it must talk to subsystem to make use of
+> Linux SPI API's.
+> 
+> And also you mentioned SPI-NOR controller is not a SPI controller what does that
+> means because it's a NOR flash which is of SPI protocol based.
 
-Applied, thanks.
+The SPI controller (or spi bus controller) only handles the _byte_ streams;
+while the spi-nor controller, such as fsl-quadspi.c, can has to __known__
+the exact SPI NOR command to find the proper LUT.
 
---2EejY7RDPU7h6CFd
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Please read the thread i ever posted in the previous email.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+> 
+> I understand that your framework doing good things in matured manner, but
+> seems like it's confuse to me to follow common standards - Just my
+> opinion, may be I'm incorrect.
+> 
+> One more thing question - I have 1-wire spi controller which I was
+> used for flash in
+> one board and keyboard in another board, so if I follow your framework
+> I need to write
+> a driver in drivers/mtd/spi-nor/foo-spi.c and one more in
+> drivers/spi/spi-foo.c - correct?
 
-iQIcBAEBAgAGBQJS3WvsAAoJELSic+t+oim9VhAP/0EsndrhLWkPHJvdkLVzo7ye
-gCN6Hg0OQAkoLStMcvqurSLRNbsusA/KdyRJCvIe7Xx+OI7gAxADNq/9+o3ewQAN
-zdQlAtaeQI7n05jMSGkk1dbqI/rRuMk4BVTOYYfdpM8trbAkyKUAMWeIVDopIlrS
-kjsaW3wZNLdPGuTBQY+oaJNGnSPYs+x56Vow1jtKwRF3QgsQ3ko6k1+ow9v7gaCh
-MPMHSciMLm7bZtSxcEZm6EfJEyapx2i6PrqNoJOvZ46/mNAF6Je7JA6KlLFtOJv/
-RV/cAoKo5utzI8cSxJNfWDEhpEjIvvl+CfCamtmJsf4m0/SP182fxVoYCvaqiG4q
-FvfdmGo5rpP1FkCpxcOXcdMxREDV0hBIV4DIpmBrAuIe4Ah6sYZPdjrkAHudx2Tm
-LmntWU/8mEI8b7nhvfcLTYJoCUgAJxnaZ9X52y1VqpLTLhvjOtJkQNgva4RY9Y0M
-uNZLOUv1/5zSmMkN/9yJv16q9BrStZACsID/xM31HwL/fY6yaTn+yKWRDbD85AgR
-/76vqgU3OS8xA3A5oMP5HasdQlE5Ut+gJ6Fd8evFi3SIVAXVS9ZFeTNA1ICbXkjW
-maxuAv8/Uxh/u6sm3jPNIjxUvOJY3xGgveTOQxi2ZPhYW2qrm1seU/I9LiibtadT
-RhgC3tSc3j9JZKlJSfc1
-=xso5
------END PGP SIGNATURE-----
+Please read the device tree node of your controller, find the code like
 
---2EejY7RDPU7h6CFd--
+...................................................
+	flash: m25p80@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "st,m25p32";
+		spi-max-frequency = <20000000>;
+		reg = <0>;
+	};
+...................................................
+
+if you call the m25p80,  you do not need to change anything. 
+
+thanks
+Huang Shijie
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

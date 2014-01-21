@@ -1,56 +1,59 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/5] spi: Clarify transfer_one() w.r.t.
- spi_finalize_current_transfer()
-Date: Tue, 21 Jan 2014 18:12:48 +0000
-Message-ID: <20140121181248.GK17314@sirena.org.uk>
+Subject: Re: [PATCH v2 3/5] spi: Correct set_cs() documentation
+Date: Tue, 21 Jan 2014 18:13:30 +0000
+Message-ID: <20140121181330.GL17314@sirena.org.uk>
 References: <1390317009-8292-1-git-send-email-geert@linux-m68k.org>
- <1390317009-8292-2-git-send-email-geert@linux-m68k.org>
+ <1390317009-8292-3-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="rYkcoROieYsUh8uu"
+	protocol="application/pgp-signature"; boundary="T4pX28sySFCT/oEO"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1390317009-8292-2-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1390317009-8292-3-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---rYkcoROieYsUh8uu
+--T4pX28sySFCT/oEO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 21, 2014 at 04:10:06PM +0100, Geert Uytterhoeven wrote:
+On Tue, Jan 21, 2014 at 04:10:07PM +0100, Geert Uytterhoeven wrote:
 > From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+>=20
+> The documentation for spi_master.set_cs() says:
+>=20
+>     assert or deassert chip select, true to assert
 
-Applied, thanks.  I suppose it should say an errno is also OK but I
-guess that should be obvious enough.
+Applied, thanks.
 
---rYkcoROieYsUh8uu
+--T4pX28sySFCT/oEO
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS3ridAAoJELSic+t+oim94OIP/2IBPQT0IC9xeOlQHgGVVIuC
-j/tnUFS8gwSdjn8lnCs/pHwa1CITvJ90kq/3M6eoBIEDGcUg9te5QLEw+WVgNAcG
-XvzSYPLD8UY4cSHbQNadgskK3Bbr+p9VfElX7gcjcj6QyDoanQtzk9refqEiLo2D
-jmsIRfshECZ74vGkd/cscurQMB1RI6O6lNJvPGx+2iymKCYpKCxp3XGatNcF1rp6
-ntoJnfdnwB5ZrjIAOq05/I/344I/2wcKj9s0DKInng+HMpC1LFsagD5RIeRj+6Iq
-Iq01r2/guqmei+zB/buscisUac8IOqhaHoQXtNxxCFZOZBZmpvEqr7GGQL09AXSC
-QmVlE5n2j4RIafl3gn9cEyMg0Osz/fze872RnVuriULYqqOPM3b5jbsQxsOXeLTh
-IQKx7SAGgnR4VNJKSo5gfnG3AKBn1Czo0XClgP1pSyxke2NmRCOA7zB2dGpdx3ow
-J2P9JIImLzqCqSBVRNwSZiD3bFFeMtsFDk0m14s2ZhnFENUaOIJ5s1KoutktoxWh
-WH+gDHOFoSS+uH8VMA9jEV3pKF3UZwdWoLGH6ZFz/0D2esmG5upUZiUY10cuy0w9
-u2D0CqCAebNBSOuGzrBazp0+eu2daxfifDxYf7GLZmFWIXo8Pyci9C6NnbgwtVor
-yvYwVhyVbtk6yDws8S+v
-=h/k1
+iQIcBAEBAgAGBQJS3rjHAAoJELSic+t+oim9gP4QAJ0UYRehilvm3LteGuGep6kF
+v4RNiYE2WguRXOc6WxtisLTOgOvtDbn4zW8MJAHZMizp22QLPQKFZSMcPktTxkhq
+c+B20mN0I8zZDz3g585jPxNbcZ1zjAnGazvRc86+JPPPYdIbLoTiWGW3GDYlSeZi
+9itLTUYI2mWfO/FKx6TBGW8SPksd79Ajh5ziFQyRaf3egA4znkmrAzLNmwuPCAgm
+wvLFc7/AwWWxLdpwHokQFgWebdIbHcuFd1bCbh8pDIBjOH7ZnxQjZCqXMhXat8Cb
+yaSaS+4V887+Sl1Uy0Euk05ugOCwLDrC+qPr3RV25ZRjZCP2Ii5m/rnNW8Cs6/PW
+LiWplPDomdZwpHQ4f0DhjOC4gr+RjFu46yXzBfHLRZQwfzfmfY+KYmYXnX2Y0DOp
+qGB2895NKdAWIz/eEFEOuMx+qopdMhQxj1B1nGGq72j51tATSGTl360b7Mi4CJKr
+zY6MEsLiiC7amoiQbt+enS+uYuPLeF3dteLm2rS3ew7LFP8Q7Gb/vkDixyBs3rFf
+yfSPIUqujMjso1XG9y+kc9N/5VJ4LHG/uxsezMol8uNRZdSre54EK1P2RC+MuAh0
+IA1JP10HoLnQ8iUKh8yS8mm01zNf1BiF4w9eb9o+WskwKbovIYz0X41LKsytFr9q
+D51FbS92nJ8lX/BKzQlY
+=D8s5
 -----END PGP SIGNATURE-----
 
---rYkcoROieYsUh8uu--
+--T4pX28sySFCT/oEO--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,57 +1,55 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: core: Fix transfer failure when
- master->transfer_one returns positive value
-Date: Tue, 21 Jan 2014 18:45:48 +0000
-Message-ID: <20140121184548.GT17314@sirena.org.uk>
-References: <1390053922.16621.4.camel@phoenix>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 4/5] spi: Check that Quad/Dual is half duplex
+Date: Tue, 21 Jan 2014 21:06:57 +0100
+Message-ID: <CAMuHMdWW1EsHe0u0o8XZuG4AzPKRqKL7ET5Ac2NkbeLRfW_foQ@mail.gmail.com>
+References: <1390317009-8292-1-git-send-email-geert@linux-m68k.org>
+	<1390317009-8292-4-git-send-email-geert@linux-m68k.org>
+	<20140121182130.GM17314@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jPE53++ukAbB0PKL"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1390053922.16621.4.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20140121182130.GM17314@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Tue, Jan 21, 2014 at 7:21 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Jan 21, 2014 at 04:10:08PM +0100, Geert Uytterhoeven wrote:
+>> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+>> Quad and Dual SPI Transfers use all available data lines (incl. MOSI/MISO),
+>> hence they must be half duplex. Add a check that verify that.
+>
+> This is surprising to me - I had expected that there would be extra
+> signals that would be used for these modes, not that the opposite
+> direction data line would be one of the ones being reused.  On the other
+> hand if this is what all the flash chips do then it would seem
+> reasonable that controllers do the same.  Can you clarify please?
 
---jPE53++ukAbB0PKL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dual SPI works by aggregating the MOSI and MISO lines for 2-bit
+unidirectional transfers.
+Quad SPI aggregates MOSI, MISO, and 2 additional lines for 4-bit
+unidirectional transfers.
 
-On Sat, Jan 18, 2014 at 10:05:22PM +0800, Axel Lin wrote:
-> master->transfer_one returns positive value is not a error.
-> So set ret to 0 when master->transfer_one returns positive value.
-> Otherwise, I hit "spi_master spi0: failed to transfer one message from queue"
-> error when my transfer_one callback returns 1.
+Hence Dual SPI uses the traditional 4-wire wiring, while Quad SPI uses
+6-wire.
 
-Applied, thanks.
+SPI FLASH chips handle it this way, and the Renesas QSPI controller
+in the r8a7790/7791 SoCs, too.
 
---jPE53++ukAbB0PKL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Typically the first transfer in a message is a Single Transfer (e.g. read data
+command), while subsequent transfers can be Dual or Quad Transfers (e.g.
+the actual data read from the FLASH).
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Gr{oetje,eeting}s,
 
-iQIcBAEBAgAGBQJS3sBZAAoJELSic+t+oim9ua4P/A8YeImNbXKnWyeJ7Wf3tLwZ
-dJItia9PmLgsiCmatVesG9JqDug41TDYMrCt020rcSC3b/WTR+5aFnJzO682xQUy
-6R43rs3dJ3z88BWupuBRzAlhT4qpSqG96aYVVnd76CUlpJDPlqTF+2/iwFJt4pgy
-wvQ2IO2SXNtiRZnC8Mamom0dlo+yapSAekwofJuwGcTPJd7zNc4kb5VP6z4OVfjD
-14y94DZFmrVHLbtJgTQ5VPmZqoK56myopA5UajMI9mGzXMXSv5LxMtn/Wv1Nyqxk
-UDO1MG27jZ1cE13pcsZg+0Y/8dYQIHoEqTJjux7XLoNNwOWhMh8rQbJAuUmMILfQ
-LFcrPN4HEEejNJ9PV4meS37JETQuyRC7W29jgj/EMI1m7ohaeLxLNsydABa0UvRT
-nOJB4DGFsbPNW5EO7oTUZt8F285MxRSNDmEebcjClUhza02r0BSlgsi7jd/sH5TA
-wy8UpLePCnjDix96bNjYGFoNitPJD1PHqtxUFnf+ll24Ww0HoKi7AZJD5591Tixj
-Rv5CULq/JVgm6NT44QA6flaz/2P8RndG7Yh9NcpYBAY9/P7bdRUYjYHvTHXM3WHx
-eslU0BDJWYvcs+Z4mBavXklvbdY9wX/JNNBI8IXCA2cgG+xdP03OW94EdjPyQQ9t
-hxZ2NDpzC9bGIUFFVH3O
-=0TU1
------END PGP SIGNATURE-----
+                        Geert
 
---jPE53++ukAbB0PKL--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

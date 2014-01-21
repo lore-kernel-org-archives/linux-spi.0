@@ -1,50 +1,49 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH v2 2/5] spi: Clarify transfer_one() w.r.t. spi_finalize_current_transfer()
-Date: Tue, 21 Jan 2014 16:10:06 +0100
-Message-ID: <1390317009-8292-2-git-send-email-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH v2 3/5] spi: Correct set_cs() documentation
+Date: Tue, 21 Jan 2014 16:10:07 +0100
+Message-ID: <1390317009-8292-3-git-send-email-geert@linux-m68k.org>
 References: <1390317009-8292-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1390317009-8292-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1390317009-8292-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+The documentation for spi_master.set_cs() says:
+
+    assert or deassert chip select, true to assert
+
+i.e. its "enable" parameter uses assertion-level logic.
+
+This does not match the implementation of spi_set_cs(), which calls
+spi_master.set_cs() with the wanted logic level of the chip select line,
+which depends on the polarity of the chip select signal.
+
+Correct the documentation to match the implementation.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 ---
-v2: Rephrased
+v2: Changed documentation instead of implementation
 
- include/linux/spi/spi.h |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/linux/spi/spi.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 21a7251d85ee..ba69940a6515 100644
+index ba69940a6515..a1d4ca290862 100644
 --- a/include/linux/spi/spi.h
 +++ b/include/linux/spi/spi.h
-@@ -282,10 +282,12 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+@@ -277,7 +277,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @unprepare_transfer_hardware: there are currently no more messages on the
+  *	queue so the subsystem notifies the driver that it may relax the
+  *	hardware by issuing this call
+- * @set_cs: assert or deassert chip select, true to assert.  May be called
++ * @set_cs: set the logic level of the chip select line.  May be called
+  *          from interrupt context.
   * @prepare_message: set up the controller to transfer a single message,
   *                   for example doing DMA mapping.  Called from threaded
-  *                   context.
-- * @transfer_one: transfer a single spi_transfer. When the
-- *	          driver is finished with this transfer it must call
-- *	          spi_finalize_current_transfer() so the subsystem can issue
-- *                the next transfer
-+ * @transfer_one: transfer a single spi_transfer.
-+ *                  - return 0 if the transfer is finished,
-+ *                  - return 1 if the transfer is still in progress. When
-+ *                    the driver is finished with this transfer it must
-+ *                    call spi_finalize_current_transfer() so the subsystem
-+ *                    can issue the next transfer
-  * @unprepare_message: undo any work done by prepare_message().
-  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
-  *	number. Any individual value may be -ENOENT for CS lines that
 -- 
 1.7.9.5
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

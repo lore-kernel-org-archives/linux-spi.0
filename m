@@ -1,56 +1,34 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 44/73] spi: delete non-required instances of include
- <linux/init.h>
-Date: Tue, 21 Jan 2014 21:43:38 +0000
-Message-ID: <20140121214338.GB17314@sirena.org.uk>
-References: <1390339396-3479-1-git-send-email-paul.gortmaker@windriver.com>
- <1390339396-3479-45-git-send-email-paul.gortmaker@windriver.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 4/5] spi: Check that Quad/Dual is half duplex
+Date: Wed, 22 Jan 2014 15:27:19 +0100
+Message-ID: <CAMuHMdUUL9RHRz3P-44PUj1APHAK5-uZ6YUN8TY9CGEm=VvMmg@mail.gmail.com>
+References: <1390317009-8292-1-git-send-email-geert@linux-m68k.org>
+	<1390317009-8292-4-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="lmWPTIvm4M7zUP/T"
-Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-spi@vger.kernel.org
-To: Paul Gortmaker <paul.gortmaker@windriver.com>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1390339396-3479-45-git-send-email-paul.gortmaker@windriver.com>
+In-Reply-To: <1390317009-8292-4-git-send-email-geert@linux-m68k.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Tue, Jan 21, 2014 at 4:10 PM, Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> Quad and Dual SPI Transfers use all available data lines (incl. MOSI/MISO),
+> hence they must be half duplex. Add a check that verify that.
 
---lmWPTIvm4M7zUP/T
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Actually this is valid if SPI_LOOP is also set. Will send an update.
 
-On Tue, Jan 21, 2014 at 04:22:47PM -0500, Paul Gortmaker wrote:
+Gr{oetje,eeting}s,
 
-> None of these files are actually using any __init type directives
-> and hence don't need to include <linux/init.h>.  Most are just a
-> left over from __devinit and __cpuinit removal, or simply due to
-> code getting copied from one driver to the next.
+                        Geert
 
-Applied, thanks.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
---lmWPTIvm4M7zUP/T
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS3uoHAAoJELSic+t+oim9KssP/0UjRPSQRdVnM59X2SWved2m
-KVSMBXCt2ZiibCG+JETYR1VewYXmXO+SEWHzdA7YmgS4UDeljS4TQT/bwUZNRixF
-fYk3p/x0UGhM5n8tTUYiGiVvhkyj0bORnjo6aOVrVT0CWdguCPt8nlw/x2K5mfUE
-v/7E1RKcD2y6ZtnK6YS+K8I16u2CoQOoZHm9Nj74356uGRNClTygo2OokroGFaTi
-Uwgxvr8JXnbEvDPZo7G21WV1croRXtROigW9zP+rexjUKGoK92unyZVjONEST24D
-oK7MhtMccna0Kt2UGvaeaPpwvBNj+onKvRli+1cUq/bK+M/AqwEYobIn/u6hb2Qm
-SEq1Y79uz33abR4gluj/H0PkbYGBmvUDE9bWRsPmEdvlLORCNVAu/D3dMJkElB8W
-rOaPGzuX8ggohOhEc0GCh7kOBbiUH6YGKBWmzohHho0T2sEiZn23YVecqcyQHGzy
-JobbrCK1mnnd1fUv246Bz/nygLQoNA0T8C7+3D07iv6NZ8sSSigmMlRsro7XjOjK
-zIMyi3luO0KGRJFXremAqtzmp510UD3Fvk0YTGbGf7PvcsCkl1bdtErZtFrP2GvZ
-I60JGIgx/eqjn2tIRLQbL3p1oRetHAQJ885jleFCzUl1yph3/eICda6sKPLgH0RV
-fW3J+B6xCI9s1/3xEjZZ
-=GUZl
------END PGP SIGNATURE-----
-
---lmWPTIvm4M7zUP/T--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

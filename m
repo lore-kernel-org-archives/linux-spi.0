@@ -1,70 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RFC 3/4] spi: dw: add support for gpio controlled chip
- select
-Date: Thu, 23 Jan 2014 16:32:04 +0000
-Message-ID: <20140123163204.GO17314@sirena.org.uk>
-References: <cover.1390481412.git.baruch@tkos.co.il>
- <cc63df805aa126eede50aa11b3fb3c5bdef67f65.1390481413.git.baruch@tkos.co.il>
- <20140123132623.GN17314@sirena.org.uk>
- <20140123140546.GG12751@tarshish>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: spidev: fix hang when transfer_one_message fails
+Date: Thu, 23 Jan 2014 17:47:02 +0100
+Message-ID: <CAMuHMdU0FRi4=YejN+3TLJCwcptHVaaGFTLPyuwzO4NH9=-cUw@mail.gmail.com>
+References: <1388965166-27334-1-git-send-email-daniel.santos@pobox.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ZeTaE3WtSQWmE2Pd"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Daniel Santos <daniel.santos-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140123140546.GG12751@tarshish>
+In-Reply-To: <1388965166-27334-1-git-send-email-daniel.santos-e+AXbWqSrlAAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Mon, Jan 6, 2014 at 12:39 AM,  <danielfsantos-fOdFMYwuEsI@public.gmane.org> wrote:
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -735,7 +735,9 @@ static void spi_pump_messages(struct kthread_work *work)
+>         ret = master->transfer_one_message(master, master->cur_msg);
+>         if (ret) {
+>                 dev_err(&master->dev,
+> -                       "failed to transfer one message from queue\n");
+> +                       "failed to transfer one message from queue: %d\n", ret);
+> +               master->cur_msg->status = ret;
 
---ZeTaE3WtSQWmE2Pd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This crashes with drivers using the generic spi_transfer_one_message(),
+which always calls spi_finalize_current_message(), which zeroes
+master->cur_msg:
 
-On Thu, Jan 23, 2014 at 04:05:46PM +0200, Baruch Siach wrote:
-> On Thu, Jan 23, 2014 at 01:26:23PM +0000, Mark Brown wrote:
+spi_master spi0: failed to transfer one message from queue: -110
+spi_pump_messages:748 master = ef3d8c00
+spi_pump_messages:749 master->cur_msg =   (null)
+Unable to handle kernel NULL pointer dereference at virtual address 00000020
+pgd = c0004000
+[00000020] *pgd=00000000
+Internal error: Oops: 817 [#1] SMP ARM
+Modules linked in:
+CPU: 1 PID: 30 Comm: spi0 Not tainted
+3.13.0-koelsch-00403-gecb6e4e65dea-dirty #274
+task: ef250bc0 ti: ef3f0000 task.ti: ef3f0000
+PC is at spi_pump_messages+0x22c/0x288
+LR is at irq_work_queue+0x6c/0xcc
 
-> > If you convert to the generic queue then there's generic support for
-> > managing a GPIO based /CS if you set cs_gpio in the spi_device.  We
-> > should extend that for GPIO descriptors too.
+Probably your transfer_one_message() forgot to call
+spi_finalize_current_message()? Is this allowed in case of failure?
 
-> Thank. This further simplifies things. AFAICS the generic gpio chip selec=
-t=20
-> code does not request the GPIO. Is there a reason for that?
+ * @transfer_one_message: the subsystem calls the driver to transfer a single
+ *      message while queuing transfers that arrive in the meantime. When the
+ *      driver is finished with this message, it must call
+ *      spi_finalize_current_message() so the subsystem can issue the next
+ *      transfer
 
-Mostly because it might not interact so well with deferred probe, lots
-of drivers only request/figure out the GPIOs in setup at the minute but
-for deferred probe we ought to be doing it as part of the main driver
-probe().  We should also be switching away to the GPIO descriptor API is
-part of it, but also I want to do a pass and add standard DT bindings
-for this.
+Alternatively, we need a check for master->cur_msg here.
 
---ZeTaE3WtSQWmE2Pd
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> +               spi_finalize_current_message(master);
+>                 return;
+>         }
+>  }
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Gr{oetje,eeting}s,
 
-iQIcBAEBAgAGBQJS4UQBAAoJELSic+t+oim9CvUP/ihOn+mySVlBbpfG6dd3jnDU
-eNewn7wxkdYhJY5J/RUZs1xc0eId728Cz60XAQ/tz1gEqcogWAdA9DpAOIQ77pSC
-zPkBf/BBlQx/AhjFeGfsLA5RJU2g9d25qdz06kf0Pkk5PT+OhQ4c6kHOYGDVJLqx
-Iuyr6CRqgB6y5gO+ARJlgUZ2ciNA42OkqCN636v2G8QbkXOlqjGgiUOfyG9WrJUE
-S/lJiG8hHAMDvzS4M6Wg87xAloY5TKRQDaNUlUQLGA35p6N9z5OjEUqvlLIM/cWD
-EDWh36g6vorQQG14NK6DjgaDYvVQgudK9KsfIcCZg3V4t4qEJo6fCPnlDNjl+ECm
-ghEleOv/8Rcch3nnvBcy7V93O/i3GLABG1MdvW225N3v5UhKsGcrMO9Kx0zcJFOu
-xHUqI9f6oEiNWKF9rXWiSrZMFMkOLXx7iH980y7p/gDb2zSedEu+WVVbckWKiDxr
-BXF0CXJD3bj5UQAmwIxdgUN3b7qepwsaJr+PKdsecxCE4QxWHD3D256lN8R46Dfo
-Fwcd6Dod8ai4aXdBMaPR0y7zzxZGswuTxCYRXZxwGv1KtZLX78AndvH/Mrjlszl4
-YWgUYjlDVlZWy3w0GBQQIMk3K0hMWx5cZWp4QQX7Q0n0neRENmxbe39co3SJl0VU
-18OWhwPEBEAUWIsDoztd
-=MZRu
------END PGP SIGNATURE-----
+                        Geert
 
---ZeTaE3WtSQWmE2Pd--
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,40 +1,38 @@
 From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH RFC 0/4] spi: dw: device tree and generic queue support
-Date: Thu, 23 Jan 2014 15:05:55 +0200
-Message-ID: <cover.1390481412.git.baruch@tkos.co.il>
+Subject: [PATCH RFC 1/4] spi: dw-mmio: allow multiple instances
+Date: Thu, 23 Jan 2014 15:05:56 +0200
+Message-ID: <74a507ce4370729cbc31c7e8d182821287ffcca1.1390481413.git.baruch@tkos.co.il>
+References: <cover.1390481412.git.baruch@tkos.co.il>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+	Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
+	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <cover.1390481412.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Unfortunately, I probably have no chance access to thest this series on 
-hardware, I's only compile tested. So I'm sending this as RFC for code review. 
-If this series doesn't get merged, it may be used at least as a starting point 
-for someone with hardware access.
+Use the platform_device id to uniquely identify each SPI master instance.
 
-These patches add the following:
+Cc: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+---
+ drivers/spi/spi-dw-mmio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-   * Device tree support for the platform driver (dw-mmio)
-
-   * GPIO controlled chip-select implementing the generic SPI GPIO CS binding
-
-   * Generic queue migration
-
-Comments are welcome.
-
-Baruch Siach (4):
-  spi: dw-mmio: allow multiple instances
-  spi: dw-mmio: add device tree support
-  spi: dw: add support for gpio controlled chip select
-  spi: dw: migrate to generic queue infrastructure
-
- drivers/spi/spi-dw-mmio.c |  19 +++-
- drivers/spi/spi-dw.c      | 214 +++++++++-------------------------------------
- drivers/spi/spi-dw.h      |  14 ++-
- 3 files changed, 63 insertions(+), 184 deletions(-)
-
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 9af56cdf1540..1492f5ee9aaa 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -66,7 +66,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	dws->bus_num = 0;
++	dws->bus_num = pdev->id;
+ 	dws->num_cs = 4;
+ 	dws->max_freq = clk_get_rate(dwsmmio->clk);
+ 
 -- 
 1.8.5.2
 

@@ -1,56 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RFC 1/4] spi: dw-mmio: allow multiple instances
-Date: Thu, 23 Jan 2014 19:50:55 +0000
-Message-ID: <20140123195055.GK11727@sirena.org.uk>
+Subject: Re: [PATCH RFC 4/4] spi: dw: migrate to generic queue infrastructure
+Date: Thu, 23 Jan 2014 19:51:48 +0000
+Message-ID: <20140123195148.GL11727@sirena.org.uk>
 References: <cover.1390481412.git.baruch@tkos.co.il>
- <74a507ce4370729cbc31c7e8d182821287ffcca1.1390481413.git.baruch@tkos.co.il>
+ <cb13f97edb9250d51bc03d27bcc3ddda93821bf9.1390481413.git.baruch@tkos.co.il>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="cEobB2knsyc5ebfU"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Jl+DbTnyraiZ/loT"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <74a507ce4370729cbc31c7e8d182821287ffcca1.1390481413.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+In-Reply-To: <cb13f97edb9250d51bc03d27bcc3ddda93821bf9.1390481413.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---cEobB2knsyc5ebfU
+--Jl+DbTnyraiZ/loT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jan 23, 2014 at 03:05:56PM +0200, Baruch Siach wrote:
-> Use the platform_device id to uniquely identify each SPI master instance.
+On Thu, Jan 23, 2014 at 03:05:59PM +0200, Baruch Siach wrote:
+> Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 
-This is OK but it'll be annoying if anything is using it for a stable
-dev_name() since it'll probably renumber.  Not sure there's much we can
-do without platform data though.
+This looks good from a scan through, can you go futher and use
+transfer_one()?
 
---cEobB2knsyc5ebfU
+--Jl+DbTnyraiZ/loT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS4XKcAAoJELSic+t+oim90GgP/2NA4TeEOw1MTgeg7tIBlTQ/
-KQTFsfjEZwyXtMcPc8xnqh1y2vccxX+DzMQTA8H/JKekmCCTy6sfIvmRtGDcB+uM
-LKM6SrAyAVfxO66cgoPNteDLzAMNroJCgz3Hik9GpT0BYB1dk6CE7evoj0z2lvh/
-A5ENcrJQy70LXpDjxxl8SM8TOlN0ninUu851nyeeQGVJt0Sec9TnfuXmM87D82l/
-41r8DsjvcKfXhn3WU1rdoKAA6oTtH6zBDjByRtCchAAJlg1qSvC5LWE+EmmeQqjj
-of9Qh6vAa2jTejd2l35c1tMKsZQ9HBWqW8FZ3BsGZZPm3z1WF8TIGzzVkMyP1IEh
-mo7gFWifHTGWYnGbi8kqoB2Qppfha/vn1fyHqqaLDK/9e5lBvq8LXsBwLIHkSz7h
-vOGo5dSTBO9Z7LY4c9e+w1yCPSxGee7xHD4+e6gA4oBMqTX4Kub7sPUmDikJ1UM3
-4bwScpKUvuBI+vKTNz4dG3mgN/+VJJ6YJ+QviKC+vfbNyr2DF1Zl682IJVcOsMgd
-STatFN/lpG174eL/jxtBJDYPCLlXMvBf7CyJNb2RuiItrXuHal49G08jtyEeU2OH
-1SnNzkfQTyUlLIxrF6EULKtJhuDMm3Nt9bmeZefwsmhr7pEC3NrTUTdQqPj3CD0K
-SnrUaiptevQA86L83VNl
-=HRIq
+iQIcBAEBAgAGBQJS4XLRAAoJELSic+t+oim9UmUP+gOUzOfBowsH9OSVV2sNeOyS
+Co4o/XyFMfsv1l3NTtFiWsgGFZAVu+vsPUFydgng6CdXxebCyC/bZ5lyxuo262nT
+/d4mspgjyyEdNdvok1yOaF2dBjJkIG0iaghUy7WWARuSJcj565ANMprGHlStZqHb
+FfM+rVboTG4cYYqT6Xo09QXlEw28fs4uJ7LsskgEpv0FailceOS8ae9uUQPAeLWh
+grRjlw73JVmQkpCcVy/D+M9Q1Jht6eQSSPF3kS9djomCOjjnWWaLzWAKCPRQyGMZ
+iS+u7Bp8eCumtHlFRq17FSjAyzA4EYlG+yTE9h3iiloJhX8xQP3zyCa2PeJM2qf9
+SpBPMRcH9aD9Yw6UfclVwbRx9baTzFV3O8PXXqp6dXqLbTGLgVQtMOI6TuAN5FWP
+n5pdFtrCptWDWnkd9Uuc9YW1hVvCV8n6xWHGQD7oYN1HQ/WpH1lRFy4Xxwyibmdo
+yKbus3Ydk12utelSSX7I8Llc38HFa0UhstR3YjgYeFfo5S4UMVR2DLyPrG1g5Bny
+AuqkgPP+FKqa3n9w6C1zZCQbydslR5Kbneu7HOSj52x07VPUsXt/JegA1LrOq9gs
+PrhNidqCJ5q0Ngpnq6L588dkkwguv2JPzVngguH2xofVOe6BKKMmC/97+q7P2lI/
+dhG6bfEKdks29UnZ1yGS
+=YKOr
 -----END PGP SIGNATURE-----
 
---cEobB2knsyc5ebfU--
+--Jl+DbTnyraiZ/loT--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

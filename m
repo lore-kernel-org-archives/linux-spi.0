@@ -1,57 +1,81 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi/pl022: Unprepare clocks while suspended
-Date: Thu, 23 Jan 2014 12:18:28 +0000
-Message-ID: <20140123121828.GF17314@sirena.org.uk>
-References: <1390416154-3292-1-git-send-email-broonie@kernel.org>
- <CACRpkdYPR92BS2Fzkw+m40cu__ct6xcku8yV6mY=_4dQU61tvw@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="rn1GfcxwU9HQsMTB"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linaro-kernel <linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: [PATCH RFC 2/4] spi: dw-mmio: add device tree support
+Date: Thu, 23 Jan 2014 15:05:57 +0200
+Message-ID: <4859e838c549175fbff8d5a6a70f5a02ce51008c.1390481413.git.baruch@tkos.co.il>
+References: <cover.1390481412.git.baruch@tkos.co.il>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
+	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CACRpkdYPR92BS2Fzkw+m40cu__ct6xcku8yV6mY=_4dQU61tvw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <cover.1390481412.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Cc: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+---
+ drivers/spi/spi-dw-mmio.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---rn1GfcxwU9HQsMTB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
+index 1492f5ee9aaa..b694f3f9b901 100644
+--- a/drivers/spi/spi-dw-mmio.c
++++ b/drivers/spi/spi-dw-mmio.c
+@@ -16,6 +16,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/scatterlist.h>
+ #include <linux/module.h>
++#include <linux/of.h>
+ 
+ #include "spi-dw.h"
+ 
+@@ -32,6 +33,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 	struct dw_spi *dws;
+ 	struct resource *mem;
+ 	int ret;
++	u32 tmp;
+ 
+ 	dwsmmio = devm_kzalloc(&pdev->dev, sizeof(struct dw_spi_mmio),
+ 			GFP_KERNEL);
+@@ -67,7 +69,11 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	dws->bus_num = pdev->id;
+-	dws->num_cs = 4;
++	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &tmp);
++	if (ret == 0)
++		dws->num_cs = tmp;
++	else
++		dws->num_cs = 4;
+ 	dws->max_freq = clk_get_rate(dwsmmio->clk);
+ 
+ 	ret = dw_spi_add_host(&pdev->dev, dws);
+@@ -92,12 +98,21 @@ static int dw_spi_mmio_remove(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_OF
++static struct of_device_id dw_spi_dt_ids[] = {
++	{ .compatible = "snps,designware-spi" },
++	{}
++};
++MODULE_DEVICE_TABLE(of, dw_spi_dt_ids);
++#endif
++
+ static struct platform_driver dw_spi_mmio_driver = {
+ 	.probe		= dw_spi_mmio_probe,
+ 	.remove		= dw_spi_mmio_remove,
+ 	.driver		= {
+ 		.name	= DRIVER_NAME,
+ 		.owner	= THIS_MODULE,
++		.of_match_table = of_match_ptr(dw_spi_dt_ids),
+ 	},
+ };
+ module_platform_driver(dw_spi_mmio_driver);
+-- 
+1.8.5.2
 
-On Thu, Jan 23, 2014 at 08:13:09AM +0100, Linus Walleij wrote:
-
-> Maybe you should update the probe() and remove()
-> runpaths to use the combined prepare_enable() &
-> unprepare_disable() calls as well when you're at it?
-
-Yes, someone should probably do that :)
-
---rn1GfcxwU9HQsMTB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS4QiRAAoJELSic+t+oim9pCMP/2lnYQ8q6Nk3TjT/86jkg/hI
-7lY2tnPTxiacYI8JIuivmck426P9AXtvBCkeeHUWc6Wi7qMD1mG1J2KAH4VP8RU4
-jYo0t88PaF0vnGGap3Ty66VP0/Sh84PSA+l6pSnaOMHi9FdWvnGZGHieD0qmH0gT
-ACtTDIHRogUW8IQizkrJX3lbjGXU1UeaFPrG99DjklqUjK/3p8XW35wHnOQMbhoq
-W7tBDpgLsoyorlvfHgcPU44ktqkg+0UrslAq65DGlYlPqF1z1jHJCZDdQkv4m57N
-oGGLwzDY+v7YoXaq+mOp+912yDtOgQG+FDy8WaHhohHwBHC13TTtSA4Se812tj9m
-+VB6RgY9NytKGiqzu5+rJu8JzUeMZRBRfHB2rK7YIgFS+jAElUfV/8YwpzS2bCF6
-SGOx5EZrGUdXNQtCBxuZxxYqlr7TZ/mziNkzGuQ9KixwUSSipxCzR6Ar7AbI5GFd
-896V+CLZcQfbmx2frIPInnSKKEgZUovTokFyesg7WS/K1qzsCAN4EESVpDqU4AFT
-kX+/T5oGrzig+fSCDrF4CpzyvD/GlNEwySgBSwWK0TZrsMCiqJHR3arvh3wMn/2I
-guwJDe0A3rZMnGg0Lc1qy5TKoUKH0jAHupy40Rl9B6gnngmNHCk4H9RGXREdN9GS
-gGk3Eyt2I++4ldGFYs3l
-=yODZ
------END PGP SIGNATURE-----
-
---rn1GfcxwU9HQsMTB--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

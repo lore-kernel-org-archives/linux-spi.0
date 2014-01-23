@@ -1,30 +1,38 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH 0/4] m25p80 Quad/Dual updates
-Date: Thu, 23 Jan 2014 10:01:56 +0800
-Message-ID: <20140123020153.GA6229@shlinux2.ap.freescale.net>
-References: <1390309159-19643-1-git-send-email-geert@linux-m68k.org>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/pl022: Unprepare clocks while suspended
+Date: Thu, 23 Jan 2014 08:13:09 +0100
+Message-ID: <CACRpkdYPR92BS2Fzkw+m40cu__ct6xcku8yV6mY=_4dQU61tvw@mail.gmail.com>
+References: <1390416154-3292-1-git-send-email-broonie@kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linaro-kernel <linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org>,
+	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1390309159-19643-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <1390416154-3292-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Jan 21, 2014 at 01:59:15PM +0100, Geert Uytterhoeven wrote:
-Hi Brian:
-  should I rebase the SPI-NOR framework on this patch set?
+On Wed, Jan 22, 2014 at 7:42 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-  thanks
-  Huang Shijie
+> From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>
+> When the driver was converted to clk_prepare() the suspend path didn't
+> have any changes made so the clock remains prepared throughout the runtime
+> of the driver. Unprepare it when suspended so that any savings that can be
+> made as a result are made.
+>
+> Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
+Acked-by: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
+Maybe you should update the probe() and remove()
+runpaths to use the combined prepare_enable() &
+unprepare_disable() calls as well when you're at it?
+
+Yours,
+Linus Walleij
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

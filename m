@@ -1,137 +1,49 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 07/14] spi: rspi: Merge qspi_send_pio() and qspi_receive_pio()
-Date: Fri, 24 Jan 2014 09:43:57 +0100
-Message-ID: <1390553044-11860-8-git-send-email-geert@linux-m68k.org>
-References: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH v2 2/3] Doc: spi: document the transfer_one spi_master callback
+Date: Fri, 24 Jan 2014 09:47:10 +0100
+Message-ID: <CAMuHMdVrNcs0uWfVNdXGw+HTuGHy2nGXR=tMqdzz236LGFHVoQ@mail.gmail.com>
+References: <cover.1390552232.git.baruch@tkos.co.il>
+	<1abe062855111800754477d1340635b5a69d5635.1390552232.git.baruch@tkos.co.il>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1abe062855111800754477d1340635b5a69d5635.1390552232.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+On Fri, Jan 24, 2014 at 9:36 AM, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
+> +++ b/Documentation/spi/spi-summary
+> @@ -545,6 +545,16 @@ SPI MASTER METHODS
+>         spi_finalize_current_message() so the subsystem can issue the next
+>         transfer. This may sleep.
+>
+> +    master->transfer_one(struct spi_master *master, struct spi_device *spi,
+> +                        struct spi_transfer *transfer)
+> +       The subsystem calls the driver to transfer a single transfer while
+> +       queuing transfers that arrive in the meantime. When the driver is
+> +       finished with this message, it must call
+> +       spi_finalize_current_transfer() so the subsystem can issue the next
+> +       transfer. This may sleep. Note: transfer_one and transfer_one_message
+> +       are mutually exclusive; when both are set, the generic subsystem does
+> +       not call your transfer_one callback.
 
-qspi_send_pio() and qspi_receive_pio() are very similar: they both send
-and receive full duplex data to/from the hardware, but ignore the data
-stream in the unused direction.
-Merge them into qspi_transfer_out_in(), now supporting real full duplex.
+You still forgot the updates I made in
+http://lkml.indiana.edu/hypermail/linux/kernel/1401.2/02465.html
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
----
- drivers/spi/spi-rspi.c |   79 +++++++++++++++++-------------------------------
- 1 file changed, 28 insertions(+), 51 deletions(-)
+Gr{oetje,eeting}s,
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index cc90136d02c8..5d39cd3eba62 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -389,28 +389,6 @@ static int rspi_data_out_in(struct rspi_data *rspi, u8 data)
- 	return rspi_data_in(rspi);
- }
- 
--static int qspi_send_pio(struct rspi_data *rspi, struct spi_transfer *t)
--{
--	int remain = t->len, ret;
--	const u8 *data = t->tx_buf;
--
--	rspi_write8(rspi, SPBFCR_TXRST, QSPI_SPBFCR);
--	rspi_write8(rspi, 0x00, QSPI_SPBFCR);
--
--	while (remain > 0) {
--		/* dummy read */
--		ret = rspi_data_out_in(rspi, *data++);
--		if (ret < 0)
--			return ret;
--		remain--;
--	}
--
--	/* Waiting for the last transmission */
--	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
--
--	return 0;
--}
--
- static void rspi_dma_complete(void *arg)
- {
- 	struct rspi_data *rspi = arg;
-@@ -550,26 +528,7 @@ static void qspi_receive_init(const struct rspi_data *rspi)
- 	if (spsr & SPSR_SPRF)
- 		rspi_read_data(rspi);   /* dummy read */
- 	rspi_write8(rspi, SPBFCR_TXRST | SPBFCR_RXRST, QSPI_SPBFCR);
--	rspi_write8(rspi, 0x00, QSPI_SPBFCR);
--}
--
--static int qspi_receive_pio(struct rspi_data *rspi, struct spi_transfer *t)
--{
--	int remain = t->len, ret;
--	u8 *data = t->rx_buf;
--
--	qspi_receive_init(rspi);
--
--	while (remain > 0) {
--		/* dummy write for generate clock */
--		ret = rspi_data_out_in(rspi, DUMMY_DATA);
--		if (ret < 0)
--			return ret;
--		*data++ = ret;
--		remain--;
--	}
--
--	return 0;
-+	rspi_write8(rspi, 0, QSPI_SPBFCR);
- }
- 
- static int rspi_receive_dma(struct rspi_data *rspi, struct spi_transfer *t)
-@@ -743,20 +702,38 @@ static int rspi_transfer_one(struct spi_master *master, struct spi_device *spi,
- 	return 0;
- }
- 
--static int qspi_transfer_one(struct spi_master *master, struct spi_device *spi,
--			     struct spi_transfer *xfer)
-+static int qspi_transfer_out_in(struct rspi_data *rspi,
-+				struct spi_transfer *xfer)
- {
--	struct rspi_data *rspi = spi_master_get_devdata(master);
--	int ret = 0;
-+	int remain = xfer->len, ret;
-+	const u8 *tx_buf = xfer->tx_buf;
-+	u8 *rx_buf = xfer->rx_buf;
-+	u8 data;
- 
--	if (xfer->tx_buf) {
--		ret = qspi_send_pio(rspi, xfer);
-+	qspi_receive_init(rspi);
-+
-+	while (remain > 0) {
-+		data = tx_buf ? *tx_buf++ : DUMMY_DATA;
-+		ret = rspi_data_out_in(rspi, data);
- 		if (ret < 0)
- 			return ret;
-+		if (rx_buf)
-+			*rx_buf++ = ret;
-+		remain--;
- 	}
--	if (xfer->rx_buf)
--		ret = qspi_receive_pio(rspi, xfer);
--	return ret;
-+
-+	/* Wait for the last transmission */
-+	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
-+
-+	return 0;
-+}
-+
-+static int qspi_transfer_one(struct spi_master *master, struct spi_device *spi,
-+			     struct spi_transfer *xfer)
-+{
-+	struct rspi_data *rspi = spi_master_get_devdata(master);
-+
-+	return qspi_transfer_out_in(rspi, xfer);
- }
- 
- static int rspi_setup(struct spi_device *spi)
--- 
-1.7.9.5
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

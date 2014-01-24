@@ -1,31 +1,41 @@
 From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH 0/3] spi: documentation improvements
-Date: Fri, 24 Jan 2014 08:28:03 +0200
-Message-ID: <cover.1390544495.git.baruch@tkos.co.il>
+Subject: [PATCH 2/3] Doc: spi: document the transfer_one spi_master callback
+Date: Fri, 24 Jan 2014 08:28:05 +0200
+Message-ID: <8b6ee8b5a08cd9fa9a94d16d2621e28b4f087098.1390544495.git.baruch@tkos.co.il>
+References: <cover.1390544495.git.baruch@tkos.co.il>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <cover.1390544495.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This series improves spi documentation as follows:
+Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+---
+ Documentation/spi/spi-summary | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-   * Add explicit note that transfer_one and transfer_one_message are mtually 
-     exclusive
-
-   * Add transfer_one documentation to spi-summary
-
-   * s/transfer/message/ in the transfer_one_message description
-
-Baruch Siach (3):
-  spi: spi.h: clarify the documentation of transfer_one
-  Doc: spi: document the transfer_one spi_master callback
-  spi: correct the transfer_one_message documentation wording
-
- Documentation/spi/spi-summary | 12 +++++++++++-
- include/linux/spi/spi.h       |  6 ++++--
- 2 files changed, 15 insertions(+), 3 deletions(-)
-
+diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
+index f21edb983413..6bd55b9473ca 100644
+--- a/Documentation/spi/spi-summary
++++ b/Documentation/spi/spi-summary
+@@ -545,6 +545,16 @@ SPI MASTER METHODS
+ 	spi_finalize_current_message() so the subsystem can issue the next
+ 	transfer. This may sleep.
+ 
++    master->transfer_one(struct spi_master *master, struct spi_device *spi,
++			 struct spi_transfer *transfer)
++	The subsystem calls the driver to transfer a single transfer while
++	queuing transfers that arrive in the meantime. When the driver is
++	finished with this message, it must call
++	spi_finalize_current_transfer() so the subsystem can issue the next
++	transfer. This may sleep. Note: transfer_one and transfer_one_message
++	are mutually exclusive; when both are set, transfer_one takes
++	precedence.
++
+     DEPRECATED METHODS
+ 
+     master->transfer(struct spi_device *spi, struct spi_message *message)
 -- 
 1.8.5.2
 

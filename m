@@ -1,54 +1,208 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH v2 2/3] Doc: spi: document the transfer_one spi_master
- callback
-Date: Fri, 24 Jan 2014 10:49:34 +0200
-Message-ID: <20140124084934.GO12751@tarshish>
-References: <cover.1390552232.git.baruch@tkos.co.il>
- <1abe062855111800754477d1340635b5a69d5635.1390552232.git.baruch@tkos.co.il>
- <CAMuHMdVrNcs0uWfVNdXGw+HTuGHy2nGXR=tMqdzz236LGFHVoQ@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVrNcs0uWfVNdXGw+HTuGHy2nGXR=tMqdzz236LGFHVoQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 02/14] spi: rspi: Use core message handling
+Date: Fri, 24 Jan 2014 09:43:52 +0100
+Message-ID: <1390553044-11860-3-git-send-email-geert@linux-m68k.org>
+References: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Geert,
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-On Fri, Jan 24, 2014 at 09:47:10AM +0100, Geert Uytterhoeven wrote:
-> On Fri, Jan 24, 2014 at 9:36 AM, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
-> > +++ b/Documentation/spi/spi-summary
-> > @@ -545,6 +545,16 @@ SPI MASTER METHODS
-> >         spi_finalize_current_message() so the subsystem can issue the next
-> >         transfer. This may sleep.
-> >
-> > +    master->transfer_one(struct spi_master *master, struct spi_device *spi,
-> > +                        struct spi_transfer *transfer)
-> > +       The subsystem calls the driver to transfer a single transfer while
-> > +       queuing transfers that arrive in the meantime. When the driver is
-> > +       finished with this message, it must call
-> > +       spi_finalize_current_transfer() so the subsystem can issue the next
-> > +       transfer. This may sleep. Note: transfer_one and transfer_one_message
-> > +       are mutually exclusive; when both are set, the generic subsystem does
-> > +       not call your transfer_one callback.
-> 
-> You still forgot the updates I made in
-> http://lkml.indiana.edu/hypermail/linux/kernel/1401.2/02465.html
+Let the generic SPI core handle SPI messages, calling into our
+rspi_transfer_one() method.
 
-AFAICS, your patch touches spi.h, not spi-summary. Am I missing something 
-here?
+rspi_assert_ssl() and rspi_negate_ssl() are absorbed into
+rspi_prepare_message() and rspi_unprepare_message(), as they actually
+enable/disable the whole SPI function, instead of just (de)asserting the
+chip select line.
 
-baruch
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+---
+ drivers/spi/spi-rspi.c |  111 +++++++++++++++---------------------------------
+ 1 file changed, 34 insertions(+), 77 deletions(-)
 
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index ccd5cf201d04..0e4d169c90d7 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -25,8 +25,6 @@
+ #include <linux/kernel.h>
+ #include <linux/sched.h>
+ #include <linux/errno.h>
+-#include <linux/list.h>
+-#include <linux/workqueue.h>
+ #include <linux/interrupt.h>
+ #include <linux/platform_device.h>
+ #include <linux/io.h>
+@@ -181,10 +179,7 @@ struct rspi_data {
+ 	void __iomem *addr;
+ 	u32 max_speed_hz;
+ 	struct spi_master *master;
+-	struct list_head queue;
+-	struct work_struct ws;
+ 	wait_queue_head_t wait;
+-	spinlock_t lock;
+ 	struct clk *clk;
+ 	u8 spsr;
+ 	u16 spcmd;
+@@ -345,16 +340,6 @@ static int rspi_wait_for_interrupt(struct rspi_data *rspi, u8 wait_mask,
+ 	return 0;
+ }
+ 
+-static void rspi_assert_ssl(const struct rspi_data *rspi)
+-{
+-	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | SPCR_SPE, RSPI_SPCR);
+-}
+-
+-static void rspi_negate_ssl(const struct rspi_data *rspi)
+-{
+-	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_SPE, RSPI_SPCR);
+-}
+-
+ static int rspi_send_pio(struct rspi_data *rspi, struct spi_transfer *t)
+ {
+ 	int remain = t->len;
+@@ -739,56 +724,27 @@ static int rspi_is_dma(const struct rspi_data *rspi, struct spi_transfer *t)
+ 	return 0;
+ }
+ 
+-static void rspi_work(struct work_struct *work)
++static int rspi_transfer_one(struct spi_master *master, struct spi_device *spi,
++			     struct spi_transfer *xfer)
+ {
+-	struct rspi_data *rspi = container_of(work, struct rspi_data, ws);
+-	struct spi_message *mesg;
+-	struct spi_transfer *t;
+-	unsigned long flags;
+-	int ret;
+-
+-	while (1) {
+-		spin_lock_irqsave(&rspi->lock, flags);
+-		if (list_empty(&rspi->queue)) {
+-			spin_unlock_irqrestore(&rspi->lock, flags);
+-			break;
+-		}
+-		mesg = list_entry(rspi->queue.next, struct spi_message, queue);
+-		list_del_init(&mesg->queue);
+-		spin_unlock_irqrestore(&rspi->lock, flags);
+-
+-		rspi_assert_ssl(rspi);
+-
+-		list_for_each_entry(t, &mesg->transfers, transfer_list) {
+-			if (t->tx_buf) {
+-				if (rspi_is_dma(rspi, t))
+-					ret = rspi_send_dma(rspi, t);
+-				else
+-					ret = send_pio(rspi, t);
+-				if (ret < 0)
+-					goto error;
+-			}
+-			if (t->rx_buf) {
+-				if (rspi_is_dma(rspi, t))
+-					ret = rspi_receive_dma(rspi, t);
+-				else
+-					ret = receive_pio(rspi, t);
+-				if (ret < 0)
+-					goto error;
+-			}
+-			mesg->actual_length += t->len;
+-		}
+-		rspi_negate_ssl(rspi);
++	struct rspi_data *rspi = spi_master_get_devdata(master);
++	int ret = 0;
+ 
+-		mesg->status = 0;
+-		mesg->complete(mesg->context);
++	if (xfer->tx_buf) {
++		if (rspi_is_dma(rspi, xfer))
++			ret = rspi_send_dma(rspi, xfer);
++		else
++			ret = send_pio(rspi, xfer);
++		if (ret < 0)
++			return ret;
+ 	}
+-
+-	return;
+-
+-error:
+-	mesg->status = ret;
+-	mesg->complete(mesg->context);
++	if (xfer->rx_buf) {
++		if (rspi_is_dma(rspi, xfer))
++			ret = rspi_receive_dma(rspi, xfer);
++		else
++			ret = receive_pio(rspi, xfer);
++	}
++	return ret;
+ }
+ 
+ static int rspi_setup(struct spi_device *spi)
+@@ -808,24 +764,26 @@ static int rspi_setup(struct spi_device *spi)
+ 	return 0;
+ }
+ 
+-static int rspi_transfer(struct spi_device *spi, struct spi_message *mesg)
++static void rspi_cleanup(struct spi_device *spi)
+ {
+-	struct rspi_data *rspi = spi_master_get_devdata(spi->master);
+-	unsigned long flags;
+-
+-	mesg->actual_length = 0;
+-	mesg->status = -EINPROGRESS;
++}
+ 
+-	spin_lock_irqsave(&rspi->lock, flags);
+-	list_add_tail(&mesg->queue, &rspi->queue);
+-	schedule_work(&rspi->ws);
+-	spin_unlock_irqrestore(&rspi->lock, flags);
++static int rspi_prepare_message(struct spi_master *master,
++				struct spi_message *message)
++{
++	struct rspi_data *rspi = spi_master_get_devdata(master);
+ 
++	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | SPCR_SPE, RSPI_SPCR);
+ 	return 0;
+ }
+ 
+-static void rspi_cleanup(struct spi_device *spi)
++static int rspi_unprepare_message(struct spi_master *master,
++				  struct spi_message *message)
+ {
++	struct rspi_data *rspi = spi_master_get_devdata(master);
++
++	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_SPE, RSPI_SPCR);
++	return 0;
+ }
+ 
+ static irqreturn_t rspi_irq(int irq, void *_sr)
+@@ -972,9 +930,6 @@ static int rspi_probe(struct platform_device *pdev)
+ 	}
+ 	clk_enable(rspi->clk);
+ 
+-	INIT_LIST_HEAD(&rspi->queue);
+-	spin_lock_init(&rspi->lock);
+-	INIT_WORK(&rspi->ws, rspi_work);
+ 	init_waitqueue_head(&rspi->wait);
+ 
+ 	if (rspi_pd && rspi_pd->num_chipselect)
+@@ -984,8 +939,10 @@ static int rspi_probe(struct platform_device *pdev)
+ 
+ 	master->bus_num = pdev->id;
+ 	master->setup = rspi_setup;
+-	master->transfer = rspi_transfer;
++	master->transfer_one = rspi_transfer_one;
+ 	master->cleanup = rspi_cleanup;
++	master->prepare_message = rspi_prepare_message;
++	master->unprepare_message = rspi_unprepare_message;
+ 	master->mode_bits = SPI_CPHA | SPI_CPOL;
+ 
+ 	ret = devm_request_irq(&pdev->dev, irq, rspi_irq, 0,
 -- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.7.9.5
+

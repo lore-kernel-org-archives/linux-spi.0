@@ -1,102 +1,78 @@
-From: Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v4 13/14] spi: rspi: Add DT support
-Date: Fri, 24 Jan 2014 09:33:49 +0000
-Message-ID: <20140124093349.GK15586@e106331-lin.cambridge.arm.com>
-References: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
- <1390553044-11860-14-git-send-email-geert@linux-m68k.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1390553044-11860-14-git-send-email-geert@linux-m68k.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH 00/15] ARM: shmobile: RSPI RZ and QSPI SoC and board integration
+Date: Fri, 24 Jan 2014 13:49:36 +0100
+Message-ID: <1390567791-8988-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jan 24, 2014 at 08:44:03AM +0000, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-> Cc: devicetree@vger.kernel.org
-> ---
-> v2:
->   - Clarify RSPI/QSPI
->   - Add interrupt-parent
->   - s/should/must/ for #address-cells and #size-cells
-> v3:
->   - Add renesas,rspi-sh
->   - Drop -rcar suffix for QSPI
->   - Clarify num-cs
->   - Implement DT support in driver
->   - Changed one-line summary from "Documentation: dt: Add Renesas RSPI/QSPI
->     bindings" to "spi: rspi: Add DT support"
-> v4:
->   - Clarify SoCtype and interrupts
->   - Add clock property
->   - Add QSPI example
->   - Add interrupt-names
->   - Add link to Renesas pinctrl
->   - Rename "renesas,rspi-sh" to "renesas,rspi", to match platform device
->     naming
->   - spi-rspi.c:
->       - Remove Soc-specific matching from spi-rspi.c given the fallback is
-> 	mandatory
->       - Things became a lot simpler due to the replacement of platform_data
->         fields by the "rspi-rz" platform device binding.
-> ---
->  Documentation/devicetree/bindings/spi/spi-rspi.txt |   58 +++++++++++
->  drivers/spi/spi-rspi.c                             |  106 ++++++++++++++------
->  2 files changed, 135 insertions(+), 29 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-rspi.txt
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
-> new file mode 100644
-> index 000000000000..ed84299a9c61
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
-> @@ -0,0 +1,58 @@
-> +Device tree configuration for Renesas RSPI/QSPI driver
-> +
-> +Required properties:
-> +- compatible       : For Renesas Serial Peripheral Interface on legacy SH:
-> +		     "renesas,rspi-<soctype>", "renesas,rspi" as fallback.
-> +		     For Renesas Serial Peripheral Interface on RZ/A1H:
-> +		     "renesas,rspi-<soctype>", "renesas,rspi-rz" as fallback.
-> +		     For Quad Serial Peripheral Interface on R-Car Gen2:
-> +		     "renesas,qspi-<soctype>", "renesas,qspi" as fallback.
-> +		     Examples of valid soctypes are "sh7757" (SH),
-> +		     "r7s72100" (RZ/A1H), "r8a7790" (R-Car H2), and
-> +		     "r8a7791" (R-Car M2).
-> +- reg              : Address start and address range size of the device
-> +- interrupts       : 1 interrupt for RSPI cores using a single multiplexed
-> +		     interrupt,
-> +		     3 interrupts (SPEI, SPRI, SPTI) for RSPI cores using
-> +		     separate interrupts.
-> +- interrupt-names  : Array of strings associated with the interrupt numbers:
-> +		     "error" for SPEI, "rx" for SPRI, and "tx" for SPTI.
-> +		     For RSPI cores using a single multiplexed interrupt, the
-> +		     name "mux" is optional.
+	Hi Simon, Magnus,
 
+This patch series contains SoC and board integration for
+  1. RSPI in the r7s72100 aka RZ/A1H SoC on the Genmai reference board,
+  2. QSPI in the r8a7791 aka R-Car M2 SoC on the Koelsch reference board.
 
-Rather than defining the set of interrupts twice, it would be nice to
-have interrupts defined in terms of interrupt-names:
+It was tested on the r7s72100-based Genmai reference board using loopback
+mode, and on the r8a7791-based Koelsch reference board using the Spansion
+s25fl512s SPI FLASH.
 
-- interrupts: a list of interrupt-specifiers, one for each entry in
-  interrupt-names. If interrupt-names is not present, an interrupt
-  specifier for a single muxed interrupt.
+Actual functioning for some parts may depend on the series "[PATCH 0/14]
+spi: rspi: Add support for RZ/A1H, DT, and Quad/Dual on QSPI" I posted
+earlier today.
 
-- interrupt-names: A list of interrupt names. Should contain (if
-  present):
-  * "error" for SPEI
-  * "rx" for SPRI
-  * "tx" to SPTI
-  * "mux" for a single muxed interrupt
+Overview:
+    [v4 01/15] ARM: shmobile: r7s72100 clock: Add RSPI clocks
+    [v4 02/15] ARM: shmobile: genmai legacy: Add RSPI support
+    [v4 03/15] [WIP] ARM: shmobile: genmai legacy: Add preliminary RSPI
+	       pinmux setup
+    [v2 04/15] ARM: shmobile: genmai defconfig: Enable RSPI
+    [v2 05/15] ARM: shmobile: r7s72100 clock: Add RSPI clocks for DT
+    [v4 06/15] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
+    [v4 07/15] ARM: shmobile: genmai reference dts: Add RSPI nodes
+    [v3 08/15] ARM: shmobile: r8a7791 clock: add QSPI clocks
+    [v3 09/15] ARM: shmobile: koelsch legacy: Add QSPI support
+    [v3 10/15] ARM: shmobile: koelsch defconfig: Enable RSPI and MTD_M25P80
+    [v2 11/15] ARM: shmobile: r8a7791 dtsi: Add QSPI node
+    [v2 12/15] ARM: shmobile: koelsch dts: Add QSPI nodes
+    [   13/15] ARM: shmobile: lager legacy: Switch QSPI to named IRQs
+    [   14/15] ARM: shmobile: koelsch legacy: Enable Quad SPI transfers for
+	       the SPI FLASH
+    [   15/15] ARM: shmobile: koelsch dts: Enable Quad SPI transfers
 
-Thanks,
-Mark.
+Earlier versions of these have been posted before in:
+    "[PATCH V3 0/5] SoC and board integration for RSPI on r7s72100/genmai"
+    "[PATCH V2 0/4] SoC and board integration for QSPI on r8a7791/koelsch"
+    "[PATCH 0/9] Renesas RSPI/QSPI DT support"
+
+The series is based on renesas-devel-v3.13-20140124, with pinctrl work 
+accepted by Linus, Magnus' pinctrl, Wolfram's riic, Simon's sh_eth,
+Valentine's i2c, and Laurent's SCIF DT work applied on top.
+[Simon: I don't know in which order you will merge these. If you want me
+ to rebase my patches, just ask! Thanks!]
+
+All of these should be safe to apply, without runtime dependencies on other
+parts, except for [14/15] and [15/15]: those must not go in before
+"[14/14] spi: rspi: Add support for Quad and Dual SPI Transfers on QSPI",
+as this would disable SPI FLASH access (the SPI core rejects Quad SPI slaves
+without Quad SPI master support).
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

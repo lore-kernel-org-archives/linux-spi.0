@@ -1,56 +1,102 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH v2 2/3] Doc: spi: document the transfer_one spi_master
- callback
-Date: Fri, 24 Jan 2014 11:08:06 +0200
-Message-ID: <20140124090806.GP12751@tarshish>
-References: <cover.1390552232.git.baruch@tkos.co.il>
- <1abe062855111800754477d1340635b5a69d5635.1390552232.git.baruch@tkos.co.il>
- <CAMuHMdVrNcs0uWfVNdXGw+HTuGHy2nGXR=tMqdzz236LGFHVoQ@mail.gmail.com>
- <20140124084934.GO12751@tarshish>
- <CAMuHMdVH9XDcVGXt2CcqkABGbz4Kz9bA5M1NPSAyOnwm6u4j2A@mail.gmail.com>
+From: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH v4 13/14] spi: rspi: Add DT support
+Date: Fri, 24 Jan 2014 09:33:49 +0000
+Message-ID: <20140124093349.GK15586@e106331-lin.cambridge.arm.com>
+References: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
+ <1390553044-11860-14-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: Mark Brown <broonie@kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdVH9XDcVGXt2CcqkABGbz4Kz9bA5M1NPSAyOnwm6u4j2A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1390553044-11860-14-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Geert,
-
-On Fri, Jan 24, 2014 at 09:57:38AM +0100, Geert Uytterhoeven wrote:
-> On Fri, Jan 24, 2014 at 9:49 AM, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
-> >> > +    master->transfer_one(struct spi_master *master, struct spi_device *spi,
-> >> > +                        struct spi_transfer *transfer)
-> >> > +       The subsystem calls the driver to transfer a single transfer while
-> >> > +       queuing transfers that arrive in the meantime. When the driver is
-> >> > +       finished with this message, it must call
-> >> > +       spi_finalize_current_transfer() so the subsystem can issue the next
-> >> > +       transfer. This may sleep. Note: transfer_one and transfer_one_message
-> >> > +       are mutually exclusive; when both are set, the generic subsystem does
-> >> > +       not call your transfer_one callback.
-> >>
-> >> You still forgot the updates I made in
-> >> http://lkml.indiana.edu/hypermail/linux/kernel/1401.2/02465.html
-> >
-> > AFAICS, your patch touches spi.h, not spi-summary. Am I missing something
-> > here?
+On Fri, Jan 24, 2014 at 08:44:03AM +0000, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 > 
-> I think the description in spi-summary should be updated to match the
-> changes to spi.h.
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+> Cc: devicetree@vger.kernel.org
+> ---
+> v2:
+>   - Clarify RSPI/QSPI
+>   - Add interrupt-parent
+>   - s/should/must/ for #address-cells and #size-cells
+> v3:
+>   - Add renesas,rspi-sh
+>   - Drop -rcar suffix for QSPI
+>   - Clarify num-cs
+>   - Implement DT support in driver
+>   - Changed one-line summary from "Documentation: dt: Add Renesas RSPI/QSPI
+>     bindings" to "spi: rspi: Add DT support"
+> v4:
+>   - Clarify SoCtype and interrupts
+>   - Add clock property
+>   - Add QSPI example
+>   - Add interrupt-names
+>   - Add link to Renesas pinctrl
+>   - Rename "renesas,rspi-sh" to "renesas,rspi", to match platform device
+>     naming
+>   - spi-rspi.c:
+>       - Remove Soc-specific matching from spi-rspi.c given the fallback is
+> 	mandatory
+>       - Things became a lot simpler due to the replacement of platform_data
+>         fields by the "rspi-rz" platform device binding.
+> ---
+>  Documentation/devicetree/bindings/spi/spi-rspi.txt |   58 +++++++++++
+>  drivers/spi/spi-rspi.c                             |  106 ++++++++++++++------
+>  2 files changed, 135 insertions(+), 29 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-rspi.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+> new file mode 100644
+> index 000000000000..ed84299a9c61
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+> @@ -0,0 +1,58 @@
+> +Device tree configuration for Renesas RSPI/QSPI driver
+> +
+> +Required properties:
+> +- compatible       : For Renesas Serial Peripheral Interface on legacy SH:
+> +		     "renesas,rspi-<soctype>", "renesas,rspi" as fallback.
+> +		     For Renesas Serial Peripheral Interface on RZ/A1H:
+> +		     "renesas,rspi-<soctype>", "renesas,rspi-rz" as fallback.
+> +		     For Quad Serial Peripheral Interface on R-Car Gen2:
+> +		     "renesas,qspi-<soctype>", "renesas,qspi" as fallback.
+> +		     Examples of valid soctypes are "sh7757" (SH),
+> +		     "r7s72100" (RZ/A1H), "r8a7790" (R-Car H2), and
+> +		     "r8a7791" (R-Car M2).
+> +- reg              : Address start and address range size of the device
+> +- interrupts       : 1 interrupt for RSPI cores using a single multiplexed
+> +		     interrupt,
+> +		     3 interrupts (SPEI, SPRI, SPTI) for RSPI cores using
+> +		     separate interrupts.
+> +- interrupt-names  : Array of strings associated with the interrupt numbers:
+> +		     "error" for SPEI, "rx" for SPRI, and "tx" for SPTI.
+> +		     For RSPI cores using a single multiplexed interrupt, the
+> +		     name "mux" is optional.
 
-OK. Will do.
 
-baruch
+Rather than defining the set of interrupts twice, it would be nice to
+have interrupts defined in terms of interrupt-names:
 
--- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+- interrupts: a list of interrupt-specifiers, one for each entry in
+  interrupt-names. If interrupt-names is not present, an interrupt
+  specifier for a single muxed interrupt.
+
+- interrupt-names: A list of interrupt names. Should contain (if
+  present):
+  * "error" for SPEI
+  * "rx" for SPRI
+  * "tx" to SPTI
+  * "mux" for a single muxed interrupt
+
+Thanks,
+Mark.

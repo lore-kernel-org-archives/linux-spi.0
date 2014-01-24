@@ -1,118 +1,165 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 01/14] spi: rspi: Remove unused mesg parameter from {send,receive}_pio()
-Date: Fri, 24 Jan 2014 09:43:51 +0100
-Message-ID: <1390553044-11860-2-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH 06/14] spi: rspi: Merge rspi_send_pio() and rspi_receive_pio()
+Date: Fri, 24 Jan 2014 09:43:56 +0100
+Message-ID: <1390553044-11860-7-git-send-email-geert@linux-m68k.org>
 References: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 In-Reply-To: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-sh-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
+rspi_send_pio() and rspi_receive_pio() are very similar:
+  - the former only sends data, using TX Only Mode,
+  - the latter sends and receives full duplex data to/from the hardware,
+    but uses dummy transmit data.
+Merge them into rspi_transfer_out_in(), now supporting full duplex if
+needed.
+
 Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 ---
- drivers/spi/spi-rspi.c |   27 ++++++++++-----------------
- 1 file changed, 10 insertions(+), 17 deletions(-)
+ drivers/spi/spi-rspi.c |  101 ++++++++++++++++++++++--------------------------
+ 1 file changed, 46 insertions(+), 55 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 28987d9fcfe5..ccd5cf201d04 100644
+index d837c5029308..cc90136d02c8 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -228,11 +228,8 @@ static u16 rspi_read16(const struct rspi_data *rspi, u16 offset)
- struct spi_ops {
- 	int (*set_config_register)(const struct rspi_data *rspi,
- 				   int access_size);
--	int (*send_pio)(struct rspi_data *rspi, struct spi_message *mesg,
--			struct spi_transfer *t);
--	int (*receive_pio)(struct rspi_data *rspi, struct spi_message *mesg,
--			   struct spi_transfer *t);
+@@ -389,27 +389,6 @@ static int rspi_data_out_in(struct rspi_data *rspi, u8 data)
+ 	return rspi_data_in(rspi);
+ }
+ 
+-static int rspi_send_pio(struct rspi_data *rspi, struct spi_transfer *t)
+-{
+-	int remain = t->len, ret;
+-	const u8 *data = t->tx_buf;
 -
-+	int (*send_pio)(struct rspi_data *rspi, struct spi_transfer *t);
-+	int (*receive_pio)(struct rspi_data *rspi, struct spi_transfer *t);
- };
- 
- /*
-@@ -358,8 +355,7 @@ static void rspi_negate_ssl(const struct rspi_data *rspi)
- 	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_SPE, RSPI_SPCR);
- }
- 
--static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
--			 struct spi_transfer *t)
-+static int rspi_send_pio(struct rspi_data *rspi, struct spi_transfer *t)
+-	while (remain > 0) {
+-		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | SPCR_TXMD,
+-			    RSPI_SPCR);
+-
+-		ret = rspi_data_out(rspi, *data++);
+-		if (ret < 0)
+-			return ret;
+-		remain--;
+-	}
+-
+-	/* Waiting for the last transmission */
+-	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
+-
+-	return 0;
+-}
+-
+ static int qspi_send_pio(struct rspi_data *rspi, struct spi_transfer *t)
  {
- 	int remain = t->len;
- 	const u8 *data = t->tx_buf;
-@@ -384,8 +380,7 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
- 	return 0;
- }
- 
--static int qspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
--			 struct spi_transfer *t)
-+static int qspi_send_pio(struct rspi_data *rspi, struct spi_transfer *t)
- {
- 	int remain = t->len;
- 	const u8 *data = t->tx_buf;
-@@ -418,7 +413,7 @@ static int qspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
- 	return 0;
- }
- 
--#define send_pio(spi, mesg, t) spi->ops->send_pio(spi, mesg, t)
-+#define send_pio(spi, t) spi->ops->send_pio(spi, t)
- 
- static void rspi_dma_complete(void *arg)
- {
-@@ -551,8 +546,7 @@ static void rspi_receive_init(const struct rspi_data *rspi)
+ 	int remain = t->len, ret;
+@@ -563,28 +542,6 @@ static void rspi_receive_init(const struct rspi_data *rspi)
  			    RSPI_SPSR);
  }
  
--static int rspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
--			    struct spi_transfer *t)
-+static int rspi_receive_pio(struct rspi_data *rspi, struct spi_transfer *t)
+-static int rspi_receive_pio(struct rspi_data *rspi, struct spi_transfer *t)
+-{
+-	int remain = t->len, ret;
+-	u8 *data = t->rx_buf;
+-
+-	rspi_receive_init(rspi);
+-
+-	while (remain > 0) {
+-		rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_TXMD,
+-			    RSPI_SPCR);
+-
+-		/* dummy write data for generate clock */
+-		ret = rspi_data_out_in(rspi, DUMMY_DATA);
+-		if (ret < 0)
+-			return ret;
+-		*data++ = ret;
+-		remain--;
+-	}
+-
+-	return 0;
+-}
+-
+ static void qspi_receive_init(const struct rspi_data *rspi)
  {
- 	int remain = t->len;
- 	u8 *data;
-@@ -598,8 +592,7 @@ static void qspi_receive_init(const struct rspi_data *rspi)
- 	rspi_write8(rspi, 0x00, QSPI_SPBFCR);
- }
- 
--static int qspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
--			    struct spi_transfer *t)
-+static int qspi_receive_pio(struct rspi_data *rspi, struct spi_transfer *t)
- {
- 	int remain = t->len;
- 	u8 *data;
-@@ -630,7 +623,7 @@ static int qspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 	u8 spsr;
+@@ -729,27 +686,61 @@ static int rspi_is_dma(const struct rspi_data *rspi, struct spi_transfer *t)
  	return 0;
  }
  
--#define receive_pio(spi, mesg, t) spi->ops->receive_pio(spi, mesg, t)
-+#define receive_pio(spi, t) spi->ops->receive_pio(spi, t)
- 
- static int rspi_receive_dma(struct rspi_data *rspi, struct spi_transfer *t)
++static int rspi_transfer_out_in(struct rspi_data *rspi,
++				struct spi_transfer *xfer)
++{
++	int remain = xfer->len, ret;
++	const u8 *tx_buf = xfer->tx_buf;
++	u8 *rx_buf = xfer->rx_buf;
++	u8 spcr, data;
++
++	rspi_receive_init(rspi);
++
++	spcr = rspi_read8(rspi, RSPI_SPCR);
++	if (rx_buf)
++		spcr &= ~SPCR_TXMD;
++	else
++		spcr |= SPCR_TXMD;
++	rspi_write8(rspi, spcr, RSPI_SPCR);
++
++	while (remain > 0) {
++		data = tx_buf ? *tx_buf++ : DUMMY_DATA;
++		ret = rspi_data_out(rspi, data);
++		if (ret < 0)
++			return ret;
++		if (rx_buf) {
++			ret = rspi_data_in(rspi);
++			if (ret < 0)
++				return ret;
++			*rx_buf++ = ret;
++		}
++		remain--;
++	}
++
++	/* Wait for the last transmission */
++	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
++
++	return 0;
++}
++
+ static int rspi_transfer_one(struct spi_master *master, struct spi_device *spi,
+ 			     struct spi_transfer *xfer)
  {
-@@ -771,7 +764,7 @@ static void rspi_work(struct work_struct *work)
- 				if (rspi_is_dma(rspi, t))
- 					ret = rspi_send_dma(rspi, t);
- 				else
--					ret = send_pio(rspi, mesg, t);
-+					ret = send_pio(rspi, t);
- 				if (ret < 0)
- 					goto error;
- 			}
-@@ -779,7 +772,7 @@ static void rspi_work(struct work_struct *work)
- 				if (rspi_is_dma(rspi, t))
- 					ret = rspi_receive_dma(rspi, t);
- 				else
--					ret = receive_pio(rspi, mesg, t);
-+					ret = receive_pio(rspi, t);
- 				if (ret < 0)
- 					goto error;
- 			}
+ 	struct rspi_data *rspi = spi_master_get_devdata(master);
+-	int ret = 0;
++	int ret;
++
++	if (!rspi_is_dma(rspi, xfer))
++		return rspi_transfer_out_in(rspi, xfer);
+ 
+ 	if (xfer->tx_buf) {
+-		if (rspi_is_dma(rspi, xfer))
+-			ret = rspi_send_dma(rspi, xfer);
+-		else
+-			ret = rspi_send_pio(rspi, xfer);
++		ret = rspi_send_dma(rspi, xfer);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+-	if (xfer->rx_buf) {
+-		if (rspi_is_dma(rspi, xfer))
+-			ret = rspi_receive_dma(rspi, xfer);
+-		else
+-			ret = rspi_receive_pio(rspi, xfer);
+-	}
+-	return ret;
++	if (xfer->rx_buf)
++		return rspi_receive_dma(rspi, xfer);
++
++	return 0;
+ }
+ 
+ static int qspi_transfer_one(struct spi_master *master, struct spi_device *spi,
 -- 
 1.7.9.5
-

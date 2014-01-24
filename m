@@ -1,71 +1,54 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 0/14] spi: rspi: Add support for RZ/A1H, DT, and Quad/Dual on QSPI
-Date: Fri, 24 Jan 2014 09:43:50 +0100
-Message-ID: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: Re: [PATCH v2 2/3] Doc: spi: document the transfer_one spi_master
+ callback
+Date: Fri, 24 Jan 2014 10:49:34 +0200
+Message-ID: <20140124084934.GO12751@tarshish>
+References: <cover.1390552232.git.baruch@tkos.co.il>
+ <1abe062855111800754477d1340635b5a69d5635.1390552232.git.baruch@tkos.co.il>
+ <CAMuHMdVrNcs0uWfVNdXGw+HTuGHy2nGXR=tMqdzz236LGFHVoQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdVrNcs0uWfVNdXGw+HTuGHy2nGXR=tMqdzz236LGFHVoQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-	Hi Mark,
+Hi Geert,
 
-This patch series
-  1. refactors the Renesas RSPI/QSPI driver,
-  2. adds support for RSPI in the r7s72100 aka RZ/A1H SoC,
-  3. adds support for DT binding,
-  4. adds support for Quad/Dual SPI Transfers on QSPI in the r8a7790/r8a7791
-     aka R-Car H2/M2 SoCs.
+On Fri, Jan 24, 2014 at 09:47:10AM +0100, Geert Uytterhoeven wrote:
+> On Fri, Jan 24, 2014 at 9:36 AM, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
+> > +++ b/Documentation/spi/spi-summary
+> > @@ -545,6 +545,16 @@ SPI MASTER METHODS
+> >         spi_finalize_current_message() so the subsystem can issue the next
+> >         transfer. This may sleep.
+> >
+> > +    master->transfer_one(struct spi_master *master, struct spi_device *spi,
+> > +                        struct spi_transfer *transfer)
+> > +       The subsystem calls the driver to transfer a single transfer while
+> > +       queuing transfers that arrive in the meantime. When the driver is
+> > +       finished with this message, it must call
+> > +       spi_finalize_current_transfer() so the subsystem can issue the next
+> > +       transfer. This may sleep. Note: transfer_one and transfer_one_message
+> > +       are mutually exclusive; when both are set, the generic subsystem does
+> > +       not call your transfer_one callback.
+> 
+> You still forgot the updates I made in
+> http://lkml.indiana.edu/hypermail/linux/kernel/1401.2/02465.html
 
-SoC and board integration patches will be posted in a separate series.
+AFAICS, your patch touches spi.h, not spi-summary. Am I missing something 
+here?
 
-It was tested on the r7s72100-based Genmai reference board using loopback
-mode, and on the r8a7791-based Koelsch reference board using the Spansion
-s25fl512s SPI FLASH.
+baruch
 
-Quad Write Transfers were not tested, as this needs support in the m25p80
-driver first. Also, it's of limited use, as FLASH programming is slow.
-
-Overview:
-    [   01/14] spi: rspi: Remove unused mesg parameter from
-    			  {send,receive}_pio()
-    [   02/14] spi: rspi: Use core message handling
-    [   03/14] spi: rspi: Abstract 8/16-bit Data Register access
-    [   04/14] spi: rspi: Add rspi_data_{out,in,out_in}() helpers
-    [   05/14] spi: rspi: Abstract transfer_one() for RSPI and QSPI
-    [   06/14] spi: rspi: Merge rspi_send_pio() and rspi_receive_pio()
-    [   07/14] spi: rspi: Merge qspi_send_pio() and qspi_receive_pio()
-    [v3 08/14] spi: rspi: Add support for more than one interrupt
-    [   09/14] spi: rspi: Add support for RSPI on RZ/A1H
-    [v3 10/14] spi: rspi: Add support for loopback mode
-    [v2 11/14] spi: rspi: Convert to clk_prepare_enable/disable_unprepare
-    [v2 12/14] spi: rspi: Use NULL as the clock ID
-    [v4 13/14] spi: rspi: Add DT support
-    [   14/14] spi: rspi: Add support for Quad and Dual SPI Transfers on QSPI
-
-The series contains new work, and remaining/rebased/updated patches from the
-following series that had been posted before:
-    [PATCH v2 0/8] spi: rspi: Add support for RZ/A1H
-    [PATCH v3 0/9] Renesas RSPI/QSPI DT support
-
-Patches [03/14] and [09/14] completely replace the old handling using
-platform data in
-    [4/8 V2] spi: rspi: Add support for 8-bit Data Register access
-    [5/8 V2] spi: rspi: Add support for no TX only mode
-    [6/8 V2] spi: rspi: Add support for missing SPCR2 register
-by a new "rspi-rz" platform device name binding.
-
-Please review, thanks!
-
-Gr{oetje,eeting}s,
-
-						Geert
-
+-- 
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
-
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

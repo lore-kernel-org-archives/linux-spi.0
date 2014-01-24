@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH v4 03/15] [WIP] ARM: shmobile: genmai legacy: Add preliminary RSPI pinmux setup
-Date: Fri, 24 Jan 2014 13:49:39 +0100
-Message-ID: <1390567791-8988-4-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH v2 05/15] ARM: shmobile: r7s72100 clock: Add RSPI clocks for DT
+Date: Fri, 24 Jan 2014 13:49:41 +0100
+Message-ID: <1390567791-8988-6-git-send-email-geert@linux-m68k.org>
 References: <1390567791-8988-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -15,58 +15,32 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-This does not work yet, as there's no pinmux configuration in
-setup-r7s72100.c
+Add DT-style ("%08x.spi") clocks, as Genmai doesn't use the common
+clock framework yet.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 ---
-v4:
-  - The platform device basename was changed from "rspi" to "rspi-rz"
-v3:
-  - No changes
 v2:
-  - New
+  - No changes
 
- arch/arm/mach-shmobile/board-genmai.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/arm/mach-shmobile/clock-r7s72100.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/mach-shmobile/board-genmai.c b/arch/arm/mach-shmobile/board-genmai.c
-index 0b01b7f7e240..3d02167967ec 100644
---- a/arch/arm/mach-shmobile/board-genmai.c
-+++ b/arch/arm/mach-shmobile/board-genmai.c
-@@ -19,6 +19,7 @@
-  */
- 
- #include <linux/kernel.h>
-+#include <linux/pinctrl/machine.h>
- #include <linux/platform_device.h>
- #include <linux/sh_eth.h>
- #include <linux/spi/rspi.h>
-@@ -77,9 +78,25 @@ static const struct spi_board_info spi_info[] __initconst = {
- 	},
- };
- 
-+static const struct pinctrl_map genmai_pinctrl_map[] = {
-+	/* RSPI4 */
-+	PIN_MAP_MUX_GROUP_DEFAULT("rspi-rz.4", "pfc-r7s72100",
-+				  "rspi4_rspck_p4_0", "rspi4"),
-+	PIN_MAP_MUX_GROUP_DEFAULT("rspi-rz.4", "pfc-r7s72100",
-+				  "rspi4_ssl0_p4_1", "rspi4"),
-+	PIN_MAP_MUX_GROUP_DEFAULT("rspi-rz.4", "pfc-r7s72100",
-+				  "rspi4_mosi_p4_2", "rspi4"),
-+	PIN_MAP_MUX_GROUP_DEFAULT("rspi-rz.4", "pfc-r7s72100",
-+				  "rspi4_miso_p4_3", "rspi4"),
-+};
-+
- static void __init genmai_add_standard_devices(void)
- {
- 	r7s72100_clock_init();
-+	pinctrl_register_mappings(genmai_pinctrl_map,
-+				  ARRAY_SIZE(genmai_pinctrl_map));
-+	/* FIXME there's no pinmux configuration in setup-r7s72100.c yet */
-+	/* r7s72100_pinmux_init(); */
- 	r7s72100_add_dt_devices();
- 
- 	r7s72100_register_rspi(0);
+diff --git a/arch/arm/mach-shmobile/clock-r7s72100.c b/arch/arm/mach-shmobile/clock-r7s72100.c
+index bf15b63c3d5a..f17a5db00221 100644
+--- a/arch/arm/mach-shmobile/clock-r7s72100.c
++++ b/arch/arm/mach-shmobile/clock-r7s72100.c
+@@ -194,6 +194,11 @@ static struct clk_lookup lookups[] = {
+ 	CLKDEV_DEV_ID("rspi-rz.2", &mstp_clks[MSTP105]),
+ 	CLKDEV_DEV_ID("rspi-rz.3", &mstp_clks[MSTP104]),
+ 	CLKDEV_DEV_ID("rspi-rz.4", &mstp_clks[MSTP103]),
++	CLKDEV_DEV_ID("e800c800.spi", &mstp_clks[MSTP107]),
++	CLKDEV_DEV_ID("e800d000.spi", &mstp_clks[MSTP106]),
++	CLKDEV_DEV_ID("e800d800.spi", &mstp_clks[MSTP105]),
++	CLKDEV_DEV_ID("e800e000.spi", &mstp_clks[MSTP104]),
++	CLKDEV_DEV_ID("e800e800.spi", &mstp_clks[MSTP103]),
+ 	CLKDEV_DEV_ID("fcfee000.i2c", &mstp_clks[MSTP97]),
+ 	CLKDEV_DEV_ID("fcfee400.i2c", &mstp_clks[MSTP96]),
+ 	CLKDEV_DEV_ID("fcfee800.i2c", &mstp_clks[MSTP95]),
 -- 
 1.7.9.5

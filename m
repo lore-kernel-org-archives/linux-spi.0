@@ -1,66 +1,75 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RFC 4/4] spi: dw: migrate to generic queue infrastructure
-Date: Thu, 23 Jan 2014 20:13:06 +0000
-Message-ID: <20140123201306.GP11727@sirena.org.uk>
-References: <cover.1390481412.git.baruch@tkos.co.il>
- <cb13f97edb9250d51bc03d27bcc3ddda93821bf9.1390481413.git.baruch@tkos.co.il>
- <20140123195148.GL11727@sirena.org.uk>
- <20140123200710.GK12751@tarshish>
+From: Daniel Santos <danielfsantos@att.net>
+Subject: Re: spidev: fix hang when transfer_one_message fails
+Date: Thu, 23 Jan 2014 20:21:39 -0600
+Message-ID: <52E1CE33.7040309@att.net>
+References: <1388965166-27334-1-git-send-email-daniel.santos@pobox.com> <CAMuHMdU0FRi4=YejN+3TLJCwcptHVaaGFTLPyuwzO4NH9=-cUw@mail.gmail.com> <20140123181737.GA11727@sirena.org.uk>
+Reply-To: Daniel Santos <daniel.santos@pobox.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2uzDqHpccQJpqF2n"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140123200710.GK12751@tarshish>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Daniel Santos <daniel.santos@pobox.com>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20140123181737.GA11727@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On 01/23/2014 12:17 PM, Mark Brown wrote:
+> On Thu, Jan 23, 2014 at 05:47:02PM +0100, Geert Uytterhoeven wrote:
+>
+>> Probably your transfer_one_message() forgot to call
+>> spi_finalize_current_message()? Is this allowed in case of failure?
+> Probably not, or at least we should be consistent about requiring it or
+> not.
 
---2uzDqHpccQJpqF2n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hmm, well it sounds like the core problem is a lack of specificity about 
+the interface.
 
-On Thu, Jan 23, 2014 at 10:07:10PM +0200, Baruch Siach wrote:
+1. When a message is being rejected, who is responsible for finalizing 
+it, the spi subsystem or the master driver?
+2. What does a non-zero return value from transfer() or 
+transfer_one_message() mean? transfer() is supposed to just queue the 
+message and not sleep, so it would seem appropriate that it would mean 
+that the message was rejected due to something being invalid or 
+unsupported (or an OOM), etc. , but transfer_one_message() is also where 
+*most but not all* drivers transmit the message, so should it mean the 
+message was rejected outright for being invalid/unsupported/OOM or 
+should it mean a failure, such as EIO while xmitting or both?
+3. Is there ever a reason to set the message's status to anything other 
+than the return value of transfer()/transfer_one_message()? From a 
+cursory review of mainline spi drivers, this appears to vary. Some 
+drivers are always returning zero while setting the status upon error, 
+some return the status and others still will set the status to one 
+value, but return a different error code.
 
-> I'll look into it. I had to dig in include/linux/spi/spi.h, 'git blame' a=
-nd=20
-> commit b158935f70b9c to see how it all works together. The=20
-> Documentation/spi/spi-summary doesn't mention the transfer_one callback. =
-The=20
-> kerneldoc in spi.h should make it clear that transfer_one and=20
-> transfer_one_message are mutually exclusive.
+So if a non-zero return value from transfer() or transfer_one_message() 
+should also be the status, I'm thinking we can have a small reduction in 
+the code footprint if it's done in the spi core. However, I suppose that 
+I can't properly discuss this without delving into an almost unrelated 
+issue, which may render the point moot.
 
-Feel free to submit documentation patches...  I'd have thought that
-transfer_one_message() and transfer_one() being exclusive was fairly
-obvious given that the former takes an entire message.
+The only reason I'm using transfer_one_message() at all is because 
+transfer() is being deprecated. My driver (currently out-of-tree) 
+supports both but will prefer transfer() as long as it hasn't been 
+removed or become broken ( which I'm managing via a #if 
+LINUX_VERSION_CODE >= KERNEL_VERSION(4,99,99) check: 
+https://github.com/daniel-santos/mcp2210-linux/blob/master/mcp2210-spi.c#L143). 
+The reason is for this is that the mcp2210 driver has an internal 
+command queue that manages (per its requirements) spi messages as well 
+as other types of commands to the remote (via USB) device (which is both 
+an spi master and gpio chip). From a cursory review of other spi drivers 
+in the mainline, I can see that at least two of them do this as well: 
+spi-pxa2xx and spi-bfin-v3. So perhaps we need a non-deprecated 
+mechanism to do our own queuing and avoid the overhead of the spi core 
+providing a thread & queue which we'll just ignore. Then, the core can 
+take care of setting status and finalizing when calls to transfer() fail 
+(since there should be no ambiguity about this here), but leave that up 
+to the driver when calling transfer_one_message()?
 
---2uzDqHpccQJpqF2n
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Either way, I think that we need to decide and spell it out in the 
+kerneldocs.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS4XfPAAoJELSic+t+oim91n4P/iIVkUCnHY2lrhhRcTqCiWTK
-R+zSMHU5ACbPFLdLxgdAE4OpcL8hih41Qtl9vI4gyMm5ZfZ8RV4DkVkUx9rD3WGy
-hK5ociv4opQhTIutb3MQhr1XHEFxwzAbYCy9138j3fwQxbZiyJXTdw0+8z5jU7Uc
-2ilv8MPrGOXtO27gOZHoR0XuNZvA52j5nDDCQWmq4AKtAUDR/EKCd2IGffIVZSOV
-pVi+Uf4rzB+sSQXLtkjEYAOHiGPd7tuDFcol5QnYAgIr3PolsOzeBdPGNEYY8l6S
-j94Rck/tse7sfrTy7dwSZmVV9QuQ3RpHYbsK2MzMPGhknUDoVtEfP6f5QwsNg/u8
-8/TGc/BLijcHQDUB6KwwYE/r5jwcVRUvmzrGYpAK8M+4y5lNKTti1m3NRV6wg25I
-XptMJ+1wUnV3PQA+cxT+T9se2LRQFVCpO+5vGo+nJ8haVaDtxj8DtrijIc9t/Ouv
-zloq2R80PSVbHJPMMp7935T4hW13/YmTn1SE/YQXfkjOpc6A6GA1wlFc6CX8Ppph
-Uv0P1GQToM0dCYGWAlU63atzrv94PfTKPh5CqpdQNxVKzqDHJDp+rterNCRsoJH1
-fCp/jTvGxSL5Q2tcKbzWa13txOHSakedPjkUS47iGeErar7BAVdxQblNw2zW4K+e
-jUMfTSKy97JkIaI24qoA
-=32vF
------END PGP SIGNATURE-----
-
---2uzDqHpccQJpqF2n--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Daniel

@@ -1,123 +1,71 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 05/14] spi: rspi: Abstract transfer_one() for RSPI and QSPI
-Date: Fri, 24 Jan 2014 09:43:55 +0100
-Message-ID: <1390553044-11860-6-git-send-email-geert@linux-m68k.org>
-References: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH 0/14] spi: rspi: Add support for RZ/A1H, DT, and Quad/Dual on QSPI
+Date: Fri, 24 Jan 2014 09:43:50 +0100
+Message-ID: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+	linux-kernel@vger.kernel.org
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+	Hi Mark,
 
-Split off qspi_transfer_one() (which doesn't support DMA yet) from
-rspi_transfer_one().
-Replace the abstraction of send_pio()/receive_pio() by the abstracrion of
-transfer_one().
+This patch series
+  1. refactors the Renesas RSPI/QSPI driver,
+  2. adds support for RSPI in the r7s72100 aka RZ/A1H SoC,
+  3. adds support for DT binding,
+  4. adds support for Quad/Dual SPI Transfers on QSPI in the r8a7790/r8a7791
+     aka R-Car H2/M2 SoCs.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
----
- drivers/spi/spi-rspi.c |   36 +++++++++++++++++++++++-------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+SoC and board integration patches will be posted in a separate series.
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 4b27513e7204..d837c5029308 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -239,8 +239,8 @@ static u16 rspi_read_data(const struct rspi_data *rspi)
- /* optional functions */
- struct spi_ops {
- 	int (*set_config_register)(struct rspi_data *rspi, int access_size);
--	int (*send_pio)(struct rspi_data *rspi, struct spi_transfer *t);
--	int (*receive_pio)(struct rspi_data *rspi, struct spi_transfer *t);
-+	int (*transfer_one)(struct spi_master *master, struct spi_device *spi,
-+			    struct spi_transfer *xfer);
- };
- 
- /*
-@@ -432,8 +432,6 @@ static int qspi_send_pio(struct rspi_data *rspi, struct spi_transfer *t)
- 	return 0;
- }
- 
--#define send_pio(spi, t) spi->ops->send_pio(spi, t)
--
- static void rspi_dma_complete(void *arg)
- {
- 	struct rspi_data *rspi = arg;
-@@ -617,8 +615,6 @@ static int qspi_receive_pio(struct rspi_data *rspi, struct spi_transfer *t)
- 	return 0;
- }
- 
--#define receive_pio(spi, t) spi->ops->receive_pio(spi, t)
--
- static int rspi_receive_dma(struct rspi_data *rspi, struct spi_transfer *t)
- {
- 	struct scatterlist sg, sg_dummy;
-@@ -743,7 +739,7 @@ static int rspi_transfer_one(struct spi_master *master, struct spi_device *spi,
- 		if (rspi_is_dma(rspi, xfer))
- 			ret = rspi_send_dma(rspi, xfer);
- 		else
--			ret = send_pio(rspi, xfer);
-+			ret = rspi_send_pio(rspi, xfer);
- 		if (ret < 0)
- 			return ret;
- 	}
-@@ -751,8 +747,24 @@ static int rspi_transfer_one(struct spi_master *master, struct spi_device *spi,
- 		if (rspi_is_dma(rspi, xfer))
- 			ret = rspi_receive_dma(rspi, xfer);
- 		else
--			ret = receive_pio(rspi, xfer);
-+			ret = rspi_receive_pio(rspi, xfer);
-+	}
-+	return ret;
-+}
-+
-+static int qspi_transfer_one(struct spi_master *master, struct spi_device *spi,
-+			     struct spi_transfer *xfer)
-+{
-+	struct rspi_data *rspi = spi_master_get_devdata(master);
-+	int ret = 0;
-+
-+	if (xfer->tx_buf) {
-+		ret = qspi_send_pio(rspi, xfer);
-+		if (ret < 0)
-+			return ret;
- 	}
-+	if (xfer->rx_buf)
-+		ret = qspi_receive_pio(rspi, xfer);
- 	return ret;
- }
- 
-@@ -948,7 +960,7 @@ static int rspi_probe(struct platform_device *pdev)
- 
- 	master->bus_num = pdev->id;
- 	master->setup = rspi_setup;
--	master->transfer_one = rspi_transfer_one;
-+	master->transfer_one = ops->transfer_one;
- 	master->cleanup = rspi_cleanup;
- 	master->prepare_message = rspi_prepare_message;
- 	master->unprepare_message = rspi_unprepare_message;
-@@ -990,14 +1002,12 @@ error1:
- 
- static struct spi_ops rspi_ops = {
- 	.set_config_register =		rspi_set_config_register,
--	.send_pio =			rspi_send_pio,
--	.receive_pio =			rspi_receive_pio,
-+	.transfer_one =			rspi_transfer_one,
- };
- 
- static struct spi_ops qspi_ops = {
- 	.set_config_register =		qspi_set_config_register,
--	.send_pio =			qspi_send_pio,
--	.receive_pio =			qspi_receive_pio,
-+	.transfer_one =			qspi_transfer_one,
- };
- 
- static struct platform_device_id spi_driver_ids[] = {
--- 
-1.7.9.5
+It was tested on the r7s72100-based Genmai reference board using loopback
+mode, and on the r8a7791-based Koelsch reference board using the Spansion
+s25fl512s SPI FLASH.
+
+Quad Write Transfers were not tested, as this needs support in the m25p80
+driver first. Also, it's of limited use, as FLASH programming is slow.
+
+Overview:
+    [   01/14] spi: rspi: Remove unused mesg parameter from
+    			  {send,receive}_pio()
+    [   02/14] spi: rspi: Use core message handling
+    [   03/14] spi: rspi: Abstract 8/16-bit Data Register access
+    [   04/14] spi: rspi: Add rspi_data_{out,in,out_in}() helpers
+    [   05/14] spi: rspi: Abstract transfer_one() for RSPI and QSPI
+    [   06/14] spi: rspi: Merge rspi_send_pio() and rspi_receive_pio()
+    [   07/14] spi: rspi: Merge qspi_send_pio() and qspi_receive_pio()
+    [v3 08/14] spi: rspi: Add support for more than one interrupt
+    [   09/14] spi: rspi: Add support for RSPI on RZ/A1H
+    [v3 10/14] spi: rspi: Add support for loopback mode
+    [v2 11/14] spi: rspi: Convert to clk_prepare_enable/disable_unprepare
+    [v2 12/14] spi: rspi: Use NULL as the clock ID
+    [v4 13/14] spi: rspi: Add DT support
+    [   14/14] spi: rspi: Add support for Quad and Dual SPI Transfers on QSPI
+
+The series contains new work, and remaining/rebased/updated patches from the
+following series that had been posted before:
+    [PATCH v2 0/8] spi: rspi: Add support for RZ/A1H
+    [PATCH v3 0/9] Renesas RSPI/QSPI DT support
+
+Patches [03/14] and [09/14] completely replace the old handling using
+platform data in
+    [4/8 V2] spi: rspi: Add support for 8-bit Data Register access
+    [5/8 V2] spi: rspi: Add support for no TX only mode
+    [6/8 V2] spi: rspi: Add support for missing SPCR2 register
+by a new "rspi-rz" platform device name binding.
+
+Please review, thanks!
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
 

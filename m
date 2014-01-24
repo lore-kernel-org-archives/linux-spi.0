@@ -1,43 +1,118 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH v2 1/3] spi: spi.h: clarify the documentation of transfer_one
-Date: Fri, 24 Jan 2014 10:36:28 +0200
-Message-ID: <598dd86dc07d794d7cd19a3259ea71618ba150bd.1390552232.git.baruch@tkos.co.il>
-References: <cover.1390552232.git.baruch@tkos.co.il>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1390552232.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 01/14] spi: rspi: Remove unused mesg parameter from {send,receive}_pio()
+Date: Fri, 24 Jan 2014 09:43:51 +0100
+Message-ID: <1390553044-11860-2-git-send-email-geert@linux-m68k.org>
+References: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Explicitly note the transfer_one and transfer_one_message are mutually
-exclusive, to make the text a little more newcomers friendly.
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 ---
- include/linux/spi/spi.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-rspi.c |   27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 9f5242df9311..f5a08c3f3e60 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -287,7 +287,10 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  *                  - return 1 if the transfer is still in progress. When
-  *                    the driver is finished with this transfer it must
-  *                    call spi_finalize_current_transfer() so the subsystem
-- *                    can issue the next transfer
-+ *                    can issue the next transfer. Note: transfer_one and
-+ *                    transfer_one_message are mutually exclusive; when both
-+ *                    are set, the generic subsystem does not call your
-+ *                    transfer_one callback.
-  * @unprepare_message: undo any work done by prepare_message().
-  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
-  *	number. Any individual value may be -ENOENT for CS lines that
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 28987d9fcfe5..ccd5cf201d04 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -228,11 +228,8 @@ static u16 rspi_read16(const struct rspi_data *rspi, u16 offset)
+ struct spi_ops {
+ 	int (*set_config_register)(const struct rspi_data *rspi,
+ 				   int access_size);
+-	int (*send_pio)(struct rspi_data *rspi, struct spi_message *mesg,
+-			struct spi_transfer *t);
+-	int (*receive_pio)(struct rspi_data *rspi, struct spi_message *mesg,
+-			   struct spi_transfer *t);
+-
++	int (*send_pio)(struct rspi_data *rspi, struct spi_transfer *t);
++	int (*receive_pio)(struct rspi_data *rspi, struct spi_transfer *t);
+ };
+ 
+ /*
+@@ -358,8 +355,7 @@ static void rspi_negate_ssl(const struct rspi_data *rspi)
+ 	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_SPE, RSPI_SPCR);
+ }
+ 
+-static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
+-			 struct spi_transfer *t)
++static int rspi_send_pio(struct rspi_data *rspi, struct spi_transfer *t)
+ {
+ 	int remain = t->len;
+ 	const u8 *data = t->tx_buf;
+@@ -384,8 +380,7 @@ static int rspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 	return 0;
+ }
+ 
+-static int qspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
+-			 struct spi_transfer *t)
++static int qspi_send_pio(struct rspi_data *rspi, struct spi_transfer *t)
+ {
+ 	int remain = t->len;
+ 	const u8 *data = t->tx_buf;
+@@ -418,7 +413,7 @@ static int qspi_send_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 	return 0;
+ }
+ 
+-#define send_pio(spi, mesg, t) spi->ops->send_pio(spi, mesg, t)
++#define send_pio(spi, t) spi->ops->send_pio(spi, t)
+ 
+ static void rspi_dma_complete(void *arg)
+ {
+@@ -551,8 +546,7 @@ static void rspi_receive_init(const struct rspi_data *rspi)
+ 			    RSPI_SPSR);
+ }
+ 
+-static int rspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
+-			    struct spi_transfer *t)
++static int rspi_receive_pio(struct rspi_data *rspi, struct spi_transfer *t)
+ {
+ 	int remain = t->len;
+ 	u8 *data;
+@@ -598,8 +592,7 @@ static void qspi_receive_init(const struct rspi_data *rspi)
+ 	rspi_write8(rspi, 0x00, QSPI_SPBFCR);
+ }
+ 
+-static int qspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
+-			    struct spi_transfer *t)
++static int qspi_receive_pio(struct rspi_data *rspi, struct spi_transfer *t)
+ {
+ 	int remain = t->len;
+ 	u8 *data;
+@@ -630,7 +623,7 @@ static int qspi_receive_pio(struct rspi_data *rspi, struct spi_message *mesg,
+ 	return 0;
+ }
+ 
+-#define receive_pio(spi, mesg, t) spi->ops->receive_pio(spi, mesg, t)
++#define receive_pio(spi, t) spi->ops->receive_pio(spi, t)
+ 
+ static int rspi_receive_dma(struct rspi_data *rspi, struct spi_transfer *t)
+ {
+@@ -771,7 +764,7 @@ static void rspi_work(struct work_struct *work)
+ 				if (rspi_is_dma(rspi, t))
+ 					ret = rspi_send_dma(rspi, t);
+ 				else
+-					ret = send_pio(rspi, mesg, t);
++					ret = send_pio(rspi, t);
+ 				if (ret < 0)
+ 					goto error;
+ 			}
+@@ -779,7 +772,7 @@ static void rspi_work(struct work_struct *work)
+ 				if (rspi_is_dma(rspi, t))
+ 					ret = rspi_receive_dma(rspi, t);
+ 				else
+-					ret = receive_pio(rspi, mesg, t);
++					ret = receive_pio(rspi, t);
+ 				if (ret < 0)
+ 					goto error;
+ 			}
 -- 
-1.8.5.2
+1.7.9.5
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

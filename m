@@ -1,55 +1,40 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: spi.h: clarify the documentation of transfer_one
-Date: Fri, 24 Jan 2014 09:31:28 +0100
-Message-ID: <CAMuHMdX1MvSjnmQr4RVvcbfjSuTdS-8y9heGn-0=xXQcpeKrHQ@mail.gmail.com>
-References: <cover.1390544495.git.baruch@tkos.co.il>
-	<39ffc897bd2e5fd48a3141ed4cd122a80c5bbb20.1390544495.git.baruch@tkos.co.il>
-	<CAMuHMdW05ANcRJW8dPwLuvONoXD+Fny=Txd-wuwXVJHCqmva1A@mail.gmail.com>
-	<20140124081246.GN12751@tarshish>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: [PATCH v2 0/3] spi: documentation improvements
+Date: Fri, 24 Jan 2014 10:36:27 +0200
+Message-ID: <cover.1390552232.git.baruch@tkos.co.il>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140124081246.GN12751@tarshish>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jan 24, 2014 at 9:12 AM, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org> wrote:
->> > @@ -285,7 +285,9 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
->> >   * @transfer_one: transfer a single spi_transfer. When the
->> >   *               driver is finished with this transfer it must call
->> >   *               spi_finalize_current_transfer() so the subsystem can issue
->> > - *                the next transfer
->> > + *                the next transfer. Note: transfer_one and
->> > + *                transfer_one_message are mutually exclusive; when both are
->> > + *                set, transfer_one takes precedence.
->>
->> I find this a bit difficult to grasp. What does "take precedence" mean in
->> this context?
->>
->> The default spi_transfer_one_message() uses .transfer_one().
->> But if .transfer_one_message() is set, it depends on your own driver if
->> .transfer_one() is used or not.
->
-> Of course. I misread the code. How about this:
->
-> Note: transfer_one and transfer_one_message are mutually exclusive; when both
-> are set, the transfer_one callback is not called by the generic subsystem.
+This series improves spi documentation as follows:
 
-Sounds fine to me, thanks!
+   * Add explicit note that transfer_one and transfer_one_message are mtually 
+     exclusive
 
-Gr{oetje,eeting}s,
+   * Add transfer_one documentation to spi-summary
 
-                        Geert
+   * s/transfer/message/ in the transfer_one_message description
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+v2:
+   * Rebase over Mark's fix/core branch (Geert Uytterhoe)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+   * Correct the description of code behaviour when transfer_one and 
+	 transfer_one_message are both implemented (Geert Uytterhoe)
+
+Baruch Siach (3):
+  spi: spi.h: clarify the documentation of transfer_one
+  Doc: spi: document the transfer_one spi_master callback
+  spi: correct the transfer_one_message documentation wording
+
+ Documentation/spi/spi-summary | 12 +++++++++++-
+ include/linux/spi/spi.h       |  7 +++++--
+ 2 files changed, 16 insertions(+), 3 deletions(-)
+
+-- 
+1.8.5.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

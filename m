@@ -1,52 +1,50 @@
 From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH 3/3] spi: correct the transfer_one_message documentation wording
-Date: Fri, 24 Jan 2014 08:28:06 +0200
-Message-ID: <c66c13feaa514aa198419b50f88fa110d22bc50a.1390544495.git.baruch@tkos.co.il>
-References: <cover.1390544495.git.baruch@tkos.co.il>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: Re: [PATCH RFC 4/4] spi: dw: migrate to generic queue infrastructure
+Date: Fri, 24 Jan 2014 08:36:11 +0200
+Message-ID: <20140124063611.GL12751@tarshish>
+References: <cover.1390481412.git.baruch@tkos.co.il>
+ <cb13f97edb9250d51bc03d27bcc3ddda93821bf9.1390481413.git.baruch@tkos.co.il>
+ <20140123195148.GL11727@sirena.org.uk>
+ <20140123200710.GK12751@tarshish>
+ <20140123201306.GP11727@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1390544495.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20140123201306.GP11727-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The transfer_one_message callback handles messages, not transfers.
+Hi Mark,
 
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
----
- Documentation/spi/spi-summary | 2 +-
- include/linux/spi/spi.h       | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+On Thu, Jan 23, 2014 at 08:13:06PM +0000, Mark Brown wrote:
+> On Thu, Jan 23, 2014 at 10:07:10PM +0200, Baruch Siach wrote:
+> > I'll look into it. I had to dig in include/linux/spi/spi.h, 'git blame' 
+> > and commit b158935f70b9c to see how it all works together. The 
+> > Documentation/spi/spi-summary doesn't mention the transfer_one callback. 
+> > The kerneldoc in spi.h should make it clear that transfer_one and 
+> > transfer_one_message are mutually exclusive.
+> 
+> Feel free to submit documentation patches...
 
-diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-index 6bd55b9473ca..b8b559bb4709 100644
---- a/Documentation/spi/spi-summary
-+++ b/Documentation/spi/spi-summary
-@@ -543,7 +543,7 @@ SPI MASTER METHODS
- 	queuing transfers that arrive in the meantime. When the driver is
- 	finished with this message, it must call
- 	spi_finalize_current_message() so the subsystem can issue the next
--	transfer. This may sleep.
-+	message. This may sleep.
- 
-     master->transfer_one(struct spi_master *master, struct spi_device *spi,
- 			 struct spi_transfer *transfer)
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 060b21e82e73..286370d6bd23 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -273,7 +273,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  *	message while queuing transfers that arrive in the meantime. When the
-  *	driver is finished with this message, it must call
-  *	spi_finalize_current_message() so the subsystem can issue the next
-- *	transfer
-+ *	message
-  * @unprepare_transfer_hardware: there are currently no more messages on the
-  *	queue so the subsystem notifies the driver that it may relax the
-  *	hardware by issuing this call
+Done.
+
+> I'd have thought that transfer_one_message() and transfer_one() being 
+> exclusive was fairly obvious given that the former takes an entire message.
+
+IMO, adding this small clarification would better serve newcomers. I think 
+there is also a need for some additional explanation on the difference between 
+these two callback, and why a driver should implement one over the other. I 
+hope to look into it when I have more experience with the new API.
+
+baruch
+
 -- 
-1.8.5.2
-
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

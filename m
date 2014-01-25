@@ -1,37 +1,55 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 0/4] m25p80 Quad/Dual updates
-Date: Sat, 25 Jan 2014 01:06:10 -0800
-Message-ID: <20140125090610.GD3162@norris-Latitude-E6410>
-References: <1390309159-19643-1-git-send-email-geert@linux-m68k.org>
- <20140123020153.GA6229@shlinux2.ap.freescale.net>
+From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Subject: Re: [PATCH 2/3] Doc: spi: document the transfer_one spi_master
+ callback
+Date: Sat, 25 Jan 2014 20:52:15 +0200
+Message-ID: <20140125185215.GB5596@tarshish>
+References: <cover.1390544495.git.baruch@tkos.co.il>
+ <8b6ee8b5a08cd9fa9a94d16d2621e28b4f087098.1390544495.git.baruch@tkos.co.il>
+ <20140124134517.GY20094@book.gsilab.sittig.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140123020153.GA6229-Fb7DQEYuewWctlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
+In-Reply-To: <20140124134517.GY20094-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Jan 23, 2014 at 10:01:56AM +0800, Huang Shijie wrote:
-> On Tue, Jan 21, 2014 at 01:59:15PM +0100, Geert Uytterhoeven wrote:
-> Hi Brian:
->   should I rebase the SPI-NOR framework on this patch set?
+Hi Gerhard,
 
-Probably, but I would wait a bit.
+On Fri, Jan 24, 2014 at 02:45:17PM +0100, Gerhard Sittig wrote:
+> On Fri, Jan 24, 2014 at 08:28 +0200, Baruch Siach wrote:
+> > 
+> > --- a/Documentation/spi/spi-summary
+> > +++ b/Documentation/spi/spi-summary
+> > @@ -545,6 +545,16 @@ SPI MASTER METHODS
+> >  	spi_finalize_current_message() so the subsystem can issue the next
+> >  	transfer. This may sleep.
+> >  
+> > +    master->transfer_one(struct spi_master *master, struct spi_device *spi,
+> > +			 struct spi_transfer *transfer)
+> > +	The subsystem calls the driver to transfer a single transfer while
+> > +	queuing transfers that arrive in the meantime. When the driver is
+> > +	finished with this message, it must call
+>                            ^^^^^^^ transfer?
 
-I will probably try to take the first two patches of Geert's patch set
-for 3.14, as they are a trivial improvement and a bugfix to other queued
-material, while the rest will likely wait. And I still don't think we've
-taken a close enough look at your existing series for it to be worth an
-additional patch submission just yet. But it's up to you.
+Right. Will fix.
 
-Brian
+Thanks,
+baruch
+
+> > +	spi_finalize_current_transfer() so the subsystem can issue the next
+> > +	transfer. This may sleep. Note: transfer_one and transfer_one_message
+> > +	are mutually exclusive; when both are set, transfer_one takes
+> > +	precedence.
+> > +
+> >      DEPRECATED METHODS
+
+-- 
+     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
+=}------------------------------------------------ooO--U--Ooo------------{=
+   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,55 +1,42 @@
 From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH 2/3] Doc: spi: document the transfer_one spi_master
- callback
-Date: Sat, 25 Jan 2014 20:52:15 +0200
-Message-ID: <20140125185215.GB5596@tarshish>
-References: <cover.1390544495.git.baruch@tkos.co.il>
- <8b6ee8b5a08cd9fa9a94d16d2621e28b4f087098.1390544495.git.baruch@tkos.co.il>
- <20140124134517.GY20094@book.gsilab.sittig.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH v3 1/3] spi: spi.h: clarify the documentation of transfer_one
+Date: Sat, 25 Jan 2014 22:36:13 +0200
+Message-ID: <598dd86dc07d794d7cd19a3259ea71618ba150bd.1390681463.git.baruch@tkos.co.il>
+References: <cover.1390681463.git.baruch@tkos.co.il>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140124134517.GY20094-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
+In-Reply-To: <cover.1390681463.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Gerhard,
+Explicitly note the transfer_one and transfer_one_message are mutually
+exclusive, to make the text a little more newcomers friendly.
 
-On Fri, Jan 24, 2014 at 02:45:17PM +0100, Gerhard Sittig wrote:
-> On Fri, Jan 24, 2014 at 08:28 +0200, Baruch Siach wrote:
-> > 
-> > --- a/Documentation/spi/spi-summary
-> > +++ b/Documentation/spi/spi-summary
-> > @@ -545,6 +545,16 @@ SPI MASTER METHODS
-> >  	spi_finalize_current_message() so the subsystem can issue the next
-> >  	transfer. This may sleep.
-> >  
-> > +    master->transfer_one(struct spi_master *master, struct spi_device *spi,
-> > +			 struct spi_transfer *transfer)
-> > +	The subsystem calls the driver to transfer a single transfer while
-> > +	queuing transfers that arrive in the meantime. When the driver is
-> > +	finished with this message, it must call
->                            ^^^^^^^ transfer?
+Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+---
+ include/linux/spi/spi.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Right. Will fix.
-
-Thanks,
-baruch
-
-> > +	spi_finalize_current_transfer() so the subsystem can issue the next
-> > +	transfer. This may sleep. Note: transfer_one and transfer_one_message
-> > +	are mutually exclusive; when both are set, transfer_one takes
-> > +	precedence.
-> > +
-> >      DEPRECATED METHODS
-
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 9f5242df9311..f5a08c3f3e60 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -287,7 +287,10 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *                  - return 1 if the transfer is still in progress. When
+  *                    the driver is finished with this transfer it must
+  *                    call spi_finalize_current_transfer() so the subsystem
+- *                    can issue the next transfer
++ *                    can issue the next transfer. Note: transfer_one and
++ *                    transfer_one_message are mutually exclusive; when both
++ *                    are set, the generic subsystem does not call your
++ *                    transfer_one callback.
+  * @unprepare_message: undo any work done by prepare_message().
+  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
+  *	number. Any individual value may be -ENOENT for CS lines that
 -- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
+1.8.5.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

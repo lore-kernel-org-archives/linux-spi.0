@@ -1,39 +1,42 @@
 From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH v3 1/3] spi: spi.h: clarify the documentation of transfer_one
-Date: Sat, 25 Jan 2014 22:36:13 +0200
-Message-ID: <598dd86dc07d794d7cd19a3259ea71618ba150bd.1390681463.git.baruch@tkos.co.il>
-References: <cover.1390681463.git.baruch@tkos.co.il>
+Subject: [PATCH v3 0/3] spi: documentation improvements
+Date: Sat, 25 Jan 2014 22:36:12 +0200
+Message-ID: <cover.1390681463.git.baruch@tkos.co.il>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1390681463.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Explicitly note the transfer_one and transfer_one_message are mutually
-exclusive, to make the text a little more newcomers friendly.
+This series improves spi documentation as follows:
 
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
----
- include/linux/spi/spi.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+   * Add explicit note that transfer_one and transfer_one_message are mtually 
+     exclusive
 
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 9f5242df9311..f5a08c3f3e60 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -287,7 +287,10 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
-  *                  - return 1 if the transfer is still in progress. When
-  *                    the driver is finished with this transfer it must
-  *                    call spi_finalize_current_transfer() so the subsystem
-- *                    can issue the next transfer
-+ *                    can issue the next transfer. Note: transfer_one and
-+ *                    transfer_one_message are mutually exclusive; when both
-+ *                    are set, the generic subsystem does not call your
-+ *                    transfer_one callback.
-  * @unprepare_message: undo any work done by prepare_message().
-  * @cs_gpios: Array of GPIOs to use as chip select lines; one per CS
-  *	number. Any individual value may be -ENOENT for CS lines that
+   * Add transfer_one documentation to spi-summary
+
+   * s/transfer/message/ in the transfer_one_message description
+
+v3:
+   * Add transfer_one return values to spi-summary (Geert Uytterhoe)
+
+   * s/message/transfer/ in transfer_one description (Gerhard Sittig)
+
+v2:
+   * Rebase over Mark's fix/core branch (Geert Uytterhoe)
+
+   * Correct the description of code behaviour when transfer_one and 
+	 transfer_one_message are both implemented (Geert Uytterhoe)
+
+Baruch Siach (3):
+  spi: spi.h: clarify the documentation of transfer_one
+  Doc: spi: document the transfer_one spi_master callback
+  spi: correct the transfer_one_message documentation wording
+
+ Documentation/spi/spi-summary | 17 ++++++++++++++++-
+ include/linux/spi/spi.h       |  7 +++++--
+ 2 files changed, 21 insertions(+), 3 deletions(-)
+
 -- 
 1.8.5.2
 

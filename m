@@ -1,7 +1,7 @@
 From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH v3 2/3] Doc: spi: document the transfer_one spi_master callback
-Date: Sat, 25 Jan 2014 22:36:14 +0200
-Message-ID: <22346e0270dfd9b7892ff313654a6a2001654ea2.1390681463.git.baruch@tkos.co.il>
+Subject: [PATCH v3 3/3] spi: correct the transfer_one_message documentation wording
+Date: Sat, 25 Jan 2014 22:36:15 +0200
+Message-ID: <c3cea38bd5e725eda84a72e5c9af9d0e66b48a5c.1390681463.git.baruch@tkos.co.il>
 References: <cover.1390681463.git.baruch@tkos.co.il>
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
@@ -10,37 +10,40 @@ In-Reply-To: <cover.1390681463.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.or
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The transfer_one_message callback handles messages, not transfers.
+
 Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 ---
- Documentation/spi/spi-summary | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ Documentation/spi/spi-summary | 2 +-
+ include/linux/spi/spi.h       | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Documentation/spi/spi-summary b/Documentation/spi/spi-summary
-index f21edb983413..7192c0b6dd54 100644
+index 7192c0b6dd54..cb00a6cc0cf1 100644
 --- a/Documentation/spi/spi-summary
 +++ b/Documentation/spi/spi-summary
-@@ -545,6 +545,21 @@ SPI MASTER METHODS
+@@ -543,7 +543,7 @@ SPI MASTER METHODS
+ 	queuing transfers that arrive in the meantime. When the driver is
+ 	finished with this message, it must call
  	spi_finalize_current_message() so the subsystem can issue the next
- 	transfer. This may sleep.
+-	transfer. This may sleep.
++	message. This may sleep.
  
-+    master->transfer_one(struct spi_master *master, struct spi_device *spi,
-+			 struct spi_transfer *transfer)
-+	The subsystem calls the driver to transfer a single transfer while
-+	queuing transfers that arrive in the meantime. When the driver is
-+	finished with this transfer, it must call
-+	spi_finalize_current_transfer() so the subsystem can issue the next
-+	transfer. This may sleep. Note: transfer_one and transfer_one_message
-+	are mutually exclusive; when both are set, the generic subsystem does
-+	not call your transfer_one callback.
-+
-+	Return values:
-+	negative errno: error
-+	0: transfer is finished
-+	1: transfer is still in progress
-+
-     DEPRECATED METHODS
- 
-     master->transfer(struct spi_device *spi, struct spi_message *message)
+     master->transfer_one(struct spi_master *master, struct spi_device *spi,
+ 			 struct spi_transfer *transfer)
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index f5a08c3f3e60..60b787ad4ed1 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -273,7 +273,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  *	message while queuing transfers that arrive in the meantime. When the
+  *	driver is finished with this message, it must call
+  *	spi_finalize_current_message() so the subsystem can issue the next
+- *	transfer
++ *	message
+  * @unprepare_transfer_hardware: there are currently no more messages on the
+  *	queue so the subsystem notifies the driver that it may relax the
+  *	hardware by issuing this call
 -- 
 1.8.5.2
 

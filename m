@@ -1,80 +1,56 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH 1/4] clk: sunxi: Add support for PLL6 on the A31
-Date: Mon, 27 Jan 2014 16:02:29 +0100
-Message-ID: <20140127150229.GM3867@lukather>
-References: <1389892285-11745-1-git-send-email-maxime.ripard@free-electrons.com>
- <1389892285-11745-2-git-send-email-maxime.ripard@free-electrons.com>
- <20140117221402.4167.78251@quantum>
-Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 1/3] spi: spi.h: clarify the documentation of
+ transfer_one
+Date: Mon, 27 Jan 2014 18:44:10 +0000
+Message-ID: <20140127184410.GG11841@sirena.org.uk>
+References: <cover.1390681463.git.baruch@tkos.co.il>
+ <598dd86dc07d794d7cd19a3259ea71618ba150bd.1390681463.git.baruch@tkos.co.il>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ai3I8gwHc37+ASRI"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>,
-	linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
-To: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBH7LTGLQKGQEHBZQ2FA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="PyMzGVE0NRonI6bs"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140117221402.4167.78251@quantum>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <598dd86dc07d794d7cd19a3259ea71618ba150bd.1390681463.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---ai3I8gwHc37+ASRI
+--PyMzGVE0NRonI6bs
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi Mike,
+On Sat, Jan 25, 2014 at 10:36:13PM +0200, Baruch Siach wrote:
+> Explicitly note the transfer_one and transfer_one_message are mutually
+> exclusive, to make the text a little more newcomers friendly.
 
-On Fri, Jan 17, 2014 at 02:14:02PM -0800, Mike Turquette wrote:
-> Quoting Maxime Ripard (2014-01-16 09:11:22)
-> > The A31 has a slightly different PLL6 clock. Add support for this new c=
-lock in
-> > our driver.
-> >=20
-> > Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
->=20
-> This looks good to me. I guess it will be going in for 3.15 based on the
-> comments in the coverletter.
+Applied, thanks.  Still surprised this is confusing but hey ho.
 
-Yes, indeed it is 3.15 materials.
-
-Maxime
-
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
-
---ai3I8gwHc37+ASRI
+--PyMzGVE0NRonI6bs
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.14 (GNU/Linux)
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS5nUFAAoJEBx+YmzsjxAg0nwP/jV4RKa9TFCbZu6HqRbmLGrR
-j7xP7AbCvF38wJJJPUAULMy+dILWM50d+h8LHgLHC41tTWMHZnVgB50Zhg/HxnT1
-DO5LW72Y18pwteeagMlfGrlabb07XdplMiJvkK24myPfsXMj/JBq4dWbCce5p/tb
-N0so1XW6jIUPqAin0hfLyL6cVCUYK1yw6EeAALuBfQ6hyYTZnrkQna/6UBkwn/F0
-4+qkVKK6HVtq2zwmh1ygMAZiLN/a3igLjpGwWhel3wYbD7MiXEI4VnqPpK8tTwDv
-rpi2lfV7OxMdVp1neWmofFO0LDu5EdTxYZ52B6CdTSAaZcEuinD/Vx5lFKw+xoXw
-vHnyh9WZD85bCQFLrT900FfGc96k+W039pe84BBHpFg3an8fbVMJE1eVfTMxWHZ/
-IGaM9dk7AJM5mx8VpuEQ0b3eipaRl2lDqPRKtAQ3ifG3+LT3lCAQX2tI/796uooo
-8IjSlSllRIVDqTOLBaP4MRYgDqQckNs/BHWjJ6V5VBvFs0xocp5GQ8qBvXqJsKiH
-qLTJmb17xBdk0hbLojol6/HmQDqls9+h2Ccw3mM9ym7+Nshnf5pCCtOMbnn1aJDO
-3LnQctsIIVVewAUznu92GbGKK6fVu/E67ncDCRvkd164tpe5ZI6HyPYMIX5hGHGp
-x20MNoQyJGMJzbFh0MII
-=p6YM
+iQIcBAEBAgAGBQJS5qj2AAoJELSic+t+oim9iK4QAJ49+2Sros207KACqb5Jshuq
+4BwkvvvFN05FLuWY16skYegr6NYXtHZdbIzyLHfXPmPoMdf29U2vL1h/fMWOvXRT
+CxMGL22ukrQEmnBcqGXEd6yrdZTj+8W3B7biDUCtcUJ3OwxPHwdMA4YiMFf5nA6Z
+w3naaFzAaYEvETj/YLLEoRqZk7YVMwOo503QO0qE1BQodPIAzS9aJ4tIr2GQyliQ
+nfqMVKPzfwLXky02R871vmENycGnaNuBybBjQ85COFD9aePvJrkkTKqrNF25bk3H
+soH29wXzBBmtnuF6c5WEmx+2J8OPTMfCq/jJlD+BwcLNEtm4Rwxti4C8siaB3NpU
+GW/RSptaYGjZMylwHrs8LIAHSEPKkzuZtqhV6LGpOe70Tf8wktoGHAg3nVLb5uC8
+BNUx7e8S3FuBGUla9ncdrGcA2qtvkgnytjU9FT36giwhcwDhM/dPRNba02ycRqB2
+kg0UWzUZyYGwz+oGOeJe2nFXURSGjWC+5A/FpOSNGzJec5qVYagc3bD9AQxydegq
+g2Vd/IkGOgpmjDh6T01BtkQ8CZQ9n+JrKgDRF530ht6f/r9mNLGaSzYPJ/Xk1Dd4
+ay5HHNY1MIZODij658P0T1e8qRtxLXzl1m04B8LjcVuJxsojcEGDHbeMpJ9u2Lwz
+VugOmroVE/mNUijMprcd
+=L+om
 -----END PGP SIGNATURE-----
 
---ai3I8gwHc37+ASRI--
+--PyMzGVE0NRonI6bs--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,57 +1,59 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 13/14] spi: rspi: Add DT support
-Date: Mon, 27 Jan 2014 20:11:21 +0000
-Message-ID: <20140127201121.GO11841@sirena.org.uk>
+Subject: Re: [PATCH 14/14] spi: rspi: Add support for Quad and Dual SPI
+ Transfers on QSPI
+Date: Mon, 27 Jan 2014 20:27:09 +0000
+Message-ID: <20140127202709.GS11841@sirena.org.uk>
 References: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
- <1390553044-11860-14-git-send-email-geert@linux-m68k.org>
+ <1390553044-11860-15-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mgiPvHqStUXOBTSF"
+	protocol="application/pgp-signature"; boundary="w/cbcIkiD1zHilas"
 Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	devicetree@vger.kernel.org
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1390553044-11860-14-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1390553044-11860-15-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---mgiPvHqStUXOBTSF
+--w/cbcIkiD1zHilas
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 24, 2014 at 09:44:03AM +0100, Geert Uytterhoeven wrote:
+On Fri, Jan 24, 2014 at 09:44:04AM +0100, Geert Uytterhoeven wrote:
 > From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 >=20
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-> Cc: devicetree@vger.kernel.org
+> Add support for Quad and Dual SPI Transfers on the Renesas Quad Serial
+> Peripheral Interface, as found in R-Car Gen2 SoCs like R-Car H2 (r8a7790)
+> and R-Car M2 (r8a7791):
 
-This looks good modulo Mark's comment on the binding document.
+This looks fine but depends on the DT bindings patch so it'll need to
+wait for that.
 
---mgiPvHqStUXOBTSF
+--w/cbcIkiD1zHilas
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS5r1mAAoJELSic+t+oim9LUIP/0bIGdCuE/AcP9uw7WR39WuR
-YSwZY2QjijQ19m2tj3WN/oEtSkwZoIxmjUECl3bxBOzvaKUSCqXFZka4hTrHYT7p
-yLhNQsTzLpI/yBud3gkqmbTuq5lwSKNFBv4EMYborzsbbkMFPF8rsZkpeCEixo45
-2zOOE+lfNeK0mccxdKdSp4Jtrue3zzWFHgWUbmEAZFz3XmqKXs0XDCMAvKDnXq8z
-eUk+cyPqOf3mpKh8UBoj+nL74H6ynTNOCEW/p4T9C0kKRM+R3heUdG3OrDLniy8n
-c4vy1EbIixL3IyGE+wWbtoTb2a3QEfwhlOA1AHI1pX9C1uAtDBESISz3E+a5nCwW
-5PUZtHhL59uc1TExNRlll3g6vKSkOuFFqnP4c2lraRlOpGaDdBLfZD+VQoPg1GKQ
-ez2FTAto+H0hbeazRIY+B+IGbn5mS6Kaun/rKORKTjJSPAExjNkinTI1aYta9R5N
-ZROfdJ3zNKGWihXSQJyhaG/vTTOiFBnkDVM7aGh389bTA4J9R8pCIRPTbXu+zwKQ
-5F37V9H9TBRpxQy3Md58YrJT96QOHKuiEbxvUnXaeLo0BW+7PKJE3SskAx4EwqrW
-vOnOg5Po9eLsZe4htOYuWRIJr4TRmKKkszHxZfCgZbwNk0g4rYhaD5igzpHJsXnb
-8KvuykUFpwOcZQoOjJPN
-=QbZm
+iQIcBAEBAgAGBQJS5sEZAAoJELSic+t+oim9hAEP/RXF0qxwGhAlp4SAwP2QQZKH
+6+WKys6IPShkR1QoQO7mpuigR3iY0eSKNtI5eapmKhgjMvU80EY6vjFG1k03Ryrg
+XndUtr09mRxNWu4VPg5F0RPu6vxFrPAPXmX95KgmdOn4JwLbCI4oC7tmdmLfsNLw
+bWjWgnutni0EWeejMinPwGd0nCzqkkfQLC3XrjNYD7N3ynrZSy6GRmTVjt4xlIMQ
+hjE1mLiXGyAUwVH1Xk34AsHapBTz3TNXqMWdgemnZx5Q7ZekvnG/XjWkMyNutikK
+/hl6CFYgOjIHHk0NpldB005t9EOfBjtt7uL+fv0lOIN0OrXSOKW4kuOdXgEXkIHI
+kY84yHJsdhruNiw/GaFbMrldNZ6dvHLvqLaKpdeeu6A/VoTuTjIQT9dau4HTkyAT
+Qf2jPDkILJ9PnV3YVAwAQRRWG3dkcPO2Pt2IvshhE3rJ+LoUbuWCK1+sdmQ19e/L
+GrI1FVuBBq3EjViB0vIoiTEOjP3gzhnR7R1CwHvSKvaKopc2oEq5aLddMG9HZuup
+GdnOZ+mZ8ml9qvC3uBHGe5w/WVLi09bjgIGQ1Uqr1+mg3kvIq0g+oQ4rtIPCPUMO
+3VVQ1K4xXzMedUtVPLbX/viVp2apSwDtjOLGXFRVrtqdOU6gFKZYezwXjatixlT0
+OVgOCM3Oe7WLUXYEgabI
+=o2h4
 -----END PGP SIGNATURE-----
 
---mgiPvHqStUXOBTSF--
+--w/cbcIkiD1zHilas--

@@ -1,75 +1,56 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 4/5] spi: dw: document device tree binding
-Date: Mon, 27 Jan 2014 19:22:51 +0000
-Message-ID: <20140127192251.GP11841@sirena.org.uk>
-References: <cover.1390723880.git.baruch@tkos.co.il>
- <211f8d2101fff1790526f7dff766d0d9efff9280.1390723880.git.baruch@tkos.co.il>
- <20140127190839.GN11841@sirena.org.uk>
- <20140127191810.GV5596@tarshish>
+Subject: Re: [PATCH 01/14] spi: rspi: Remove unused mesg parameter from
+ {send,receive}_pio()
+Date: Mon, 27 Jan 2014 20:02:24 +0000
+Message-ID: <20140127200224.GC11841@sirena.org.uk>
+References: <1390553044-11860-1-git-send-email-geert@linux-m68k.org>
+ <1390553044-11860-2-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="fjEAjMKpll6GDq3U"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Dy3pjCZLf6+6NySR"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140127191810.GV5596@tarshish>
+In-Reply-To: <1390553044-11860-2-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---fjEAjMKpll6GDq3U
+--Dy3pjCZLf6+6NySR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 27, 2014 at 09:18:10PM +0200, Baruch Siach wrote:
-> On Mon, Jan 27, 2014 at 07:08:39PM +0000, Mark Brown wrote:
-> > On Sun, Jan 26, 2014 at 10:14:35AM +0200, Baruch Siach wrote:
+On Fri, Jan 24, 2014 at 09:43:51AM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-> > > +Required properties:
+Applied, thanks.
 
-> > > +- num-cs: see spi-bus.txt
-
-> > Why is this mandatory, in the code it was optional?  One or the other
-> > ought to be updated.
-
-> The code defaults to 4. I guess that's what the hardware this code was te=
-sted=20
-> on had. But this default doesn't make much sense in the general case. Any=
-way,=20
-> for backwards compatibility I'll document this property as optional, note=
- that=20
-> the default is 4, and recommend to add this property anyway. Does this so=
-und=20
-> reasonable?
-
-This is a new binding, why would it have to be backwards compatible with
-anything?
-
---fjEAjMKpll6GDq3U
+--Dy3pjCZLf6+6NySR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS5rIHAAoJELSic+t+oim9O2gP+wfr1+xl1KWDyIz1Uc0ppRbH
-lnp/njldUbx4mBJ1rOmOK7pdlqT3q9owvhLktIYZqMWDMI3lLvoDFi9MtZQJhjPY
-/bFOLNsmwsYAhffHxlPrUHy7vIl2zJ8LRb6IEqmhpHeEQEi+YugqAdu7QYDrRlID
-tSblC72MbqzkPZLi/3jtEQPmbljK9yz8yZYyPGiW6Rxb3s0a/jz4yNYC5I1PtAte
-rBCCv0xKnHygE8jvwwpUjVh5erV6aa62Ez60XpsDqP2nafJTOgiiN4JFHZxZ4tWA
-8+Zhto/4K1UN35ZBbNQ1QDzffIZ8MrJlJ78JXwWdEoIaKpyav4vWupksP3GIU5sJ
-qGes6dU6DKa9npYzJlhxSCCncdce7fmMdCidcQ3W8MrkKx+x8vgZOSt18lAXGODk
-CDdO7hbxSjWUSlKeENRNBeMDEeNl6q9KfS/dLMHw6E17wySk8J/nzzB5qGBIm/pU
-G08SqLAD8jQ1Flrze6wZWxIYH1fiireea1yOlx0faSe2om4IYbatDINZ4EWuaE6H
-64maGFfl5EZzL1eTrBwBdl3kaA5W27Ei9kYfOiavICQ/3GiLXS3DBEBsRiv7RjJV
-tqZ4BcpcQ5scdEa1cB12rHKewz/2t24Dv90QqNeiP0thtF93N4P70VGLBirz+07H
-1GtOHkHuYQ6bg+y6LiC2
-=WN+5
+iQIcBAEBAgAGBQJS5rtNAAoJELSic+t+oim9OzUQAIWghbso0r/bFpuruOLSQVGA
+rzUT5d1qi4Vgfjw6hXCQKUd92gX/dDWwIBPx26/N2HxxCSkw0pGtDnq0UTfK2pCk
+qgH/Uf38enzmJq+qHHiYqxHxqX1A1NbzOwgAFDKyrw+3AoQe4bC66ZNBQgMNq9y+
+UT0r0+xJc0b/TNEXMY15dYAN9ZaT6GGCfI1ZGMLxFdrXZ6Z4Xm/uD7ZrGwX8bw0P
+6OdV2dP78muLdLQXx9AujNLW1NIo0yTPCDxahYGjcPIgnvRx114M3/y/OIuoS1zC
+kuo6Rj0Dzdn2uvNg1bVw1YAZsLSXuNtYRbXqMJ9v0AjncbuUP7JCOihPFJ8WN2Vx
+eC6jJ1DojHX4gPHfoHUOTr9B1GnSOUyTIpefmrCd1K7s6a2//WGvhcw05uax1asG
+1Jqt30t8BKwcMisWnkLEHipmzYi3CyjNdUVZFHfb8juoFwRDnkqS43n5l8ywO44z
+yA5PGWAsguzmw91Sc39buT1NunWpPfoQybBFMwm/sZiGTlc5jAZsLMIi/iJS+UuA
+Ij21qwfCuuuhWkXzTJ2Nu5cfWvHA9p1OGhyP+ipzXCU4NgsRXlh/DiHS5iH+6Gov
+GBX2DNYSVxIuhw9ki1ReRat7hX0m/vzy0Yqhcl+S9jtEgglnb8lJBNeBTMM5qcR9
+zchC78RsboxwaZWavnel
+=mVJR
 -----END PGP SIGNATURE-----
 
---fjEAjMKpll6GDq3U--
+--Dy3pjCZLf6+6NySR--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

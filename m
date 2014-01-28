@@ -1,55 +1,46 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH v2 4/5] spi: dw: document device tree binding
-Date: Tue, 28 Jan 2014 06:53:28 +0200
-Message-ID: <20140128045328.GW5596@tarshish>
-References: <cover.1390723880.git.baruch@tkos.co.il>
- <211f8d2101fff1790526f7dff766d0d9efff9280.1390723880.git.baruch@tkos.co.il>
- <20140127190839.GN11841@sirena.org.uk>
- <20140127191810.GV5596@tarshish>
- <20140127192251.GP11841@sirena.org.uk>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 0/4] m25p80 Quad/Dual updates
+Date: Mon, 27 Jan 2014 21:26:12 -0800
+Message-ID: <20140128052612.GE3162@norris-Latitude-E6410>
+References: <1390309159-19643-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
+	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>, linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140127192251.GP11841-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1390309159-19643-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+On Tue, Jan 21, 2014 at 01:59:15PM +0100, Geert Uytterhoeven wrote:
+> This patch series allows to really use Quad and Dual SPI Read Tranfers
+> with the m25p80 driver:
+>     [1/4] mtd: m25p80: Enable Quad SPI read transfers for s25fl512s
+>     [2/4] mtd: m25p80: Set rx_nbits for Quad SPI transfers
 
-On Mon, Jan 27, 2014 at 07:22:51PM +0000, Mark Brown wrote:
-> On Mon, Jan 27, 2014 at 09:18:10PM +0200, Baruch Siach wrote:
-> > On Mon, Jan 27, 2014 at 07:08:39PM +0000, Mark Brown wrote:
-> > > On Sun, Jan 26, 2014 at 10:14:35AM +0200, Baruch Siach wrote:
-> 
-> > > > +Required properties:
-> 
-> > > > +- num-cs: see spi-bus.txt
-> 
-> > > Why is this mandatory, in the code it was optional?  One or the other
-> > > ought to be updated.
-> 
-> > The code defaults to 4. I guess that's what the hardware this code was tested 
-> > on had. But this default doesn't make much sense in the general case. Anyway, 
-> > for backwards compatibility I'll document this property as optional, note that 
-> > the default is 4, and recommend to add this property anyway. Does this sound 
-> > reasonable?
-> 
-> This is a new binding, why would it have to be backwards compatible with
-> anything?
+Pushed 1 and 2 to l2-mtd.git/master and will submit for 3.14-rc1, as
+they are trivial extensions/bugfixes for stuff we have queued now.
 
-I meant driver compatibility. I used to work that way, and should continue 
-doing so in non-DT environment. I suggest to make num-cs mandatory for DT, but 
-keep the existing behaviour for non-DT. I'll update the code then.
+>     [3/4] mtd: m25p80: Add dual read support
+>     [4/4] mtd: m25p80: Enable Dual SPI read transfers for s25fl256s1 and
+> 	  s25fl512s
 
-baruch
+Patches 3 and 4 are queued in l2-mtd.git/next and should go in next
+merge window.
 
--- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
+> Patch [2/4] is a bug fix.
+> Patches [3/4] and [4/4] may be considered of limited use (why use Dual
+> transfers if you have Quad transfers?), but
+>   1. not all Quad-capable devices may be connected using 6 wires,
+>   2. it allows to test Dual SPI transfers in SPI master drivers.
+
+Reason 1 is especially good. Thanks for the patches.
+
+Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

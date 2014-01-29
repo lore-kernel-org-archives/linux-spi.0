@@ -1,52 +1,47 @@
-From: Mark Brown <broonie@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH v5] spi: rspi: Add DT support
-Date: Wed, 29 Jan 2014 18:00:09 +0000
-Message-ID: <20140129180009.GF22609@sirena.org.uk>
+Date: Wed, 29 Jan 2014 20:10:34 +0100
+Message-ID: <CAMuHMdX+EUUHxOgc8RF=C=qdYiOc8h+su4r-=HAhWXUqEivSvw@mail.gmail.com>
 References: <1390900898-31579-1-git-send-email-geert@linux-m68k.org>
+	<20140129180009.GF22609@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6v9BRtpmy+umdQlo"
-Cc: devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+Content-Type: text/plain; charset=UTF-8
+Cc: "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1390900898-31579-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-sh-owner@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20140129180009.GF22609@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
 
---6v9BRtpmy+umdQlo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Wed, Jan 29, 2014 at 7:00 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Jan 28, 2014 at 10:21:38AM +0100, Geert Uytterhoeven wrote:
+>> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+>
+> Applied, thanks.  I was expecting your last patch to be resubmitted as
 
-On Tue, Jan 28, 2014 at 10:21:38AM +0100, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Thanks!
 
-Applied, thanks.  I was expecting your last patch to be resubmitted as
-well?
+> well?
 
---6v9BRtpmy+umdQlo
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+As there were no code changes in v5 of "spi: rspi: Add DT support",
+Patch "[14/14] spi: rspi: Add support for Quad and Dual SPI Transfers on QSPI"
+should still apply fine.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Do you want me to resubmit?
 
-iQIcBAEBAgAGBQJS6UGmAAoJELSic+t+oim9LGYP/3UG1DnGnKPwXHPFG0Nc3D6r
-FmAFb30VLFltAYY2Ua7qdjKJDbhwRw0qyyNeTuRzJ4H9oaqtJ/VlGi1uh35WBufg
-jl+JlWeurL/ghI/4v8WW/ynoMm0w9nGzzXKDcQA+tXTPX76GL3gaGLlObb6yy0ye
-ewC7Nj6i2RzZa0HPx1j12soB+C6/3QwUWbmjxUL1a3Snj3hbYbP4vGt6f+G3Jd4/
-BPZc7a8Z6/HlIJpHZK5grK1jobv1DCVY6bMZRrbaQ8njg5o3OUNj2T0sHWV80jHb
-38wFTJ2BY4c48LBWUnNg43c30SJu7gElgX/OhA0zy1Ei49oTsI8HYZL65jl66/ja
-a88Mxe9YMcrueS3iR7uX0bOWeCh0PS0NEtQcgdUIZh/5UiH8dFUeZEhLhix4MXTk
-+8y+U8waKE7kn64rCfMf6Fy227QyjFlTxY3lBdooWddQkRnY+aZEA/JQkonlzQex
-13pcVf9WdiemwXEI9YVnY43nXTpoDbfkTUaoTuuqxYwRF/mJxqPDDhKK3qTRXlfL
-//Ah3Po6flZ9kLB5wncnb9fGTVAkSZ1KE9ObBrH+LQTssciINaQAbPIvBM54KbE/
-8GFkM30TcI0XJxZPwNZmOVCCgOuO94ZgpQAuiW2ht0wfUba6N7hNTDxy0tu8WfWu
-nAZ/P/Nz4thA8xCu85Hp
-=u8DS
------END PGP SIGNATURE-----
+Gr{oetje,eeting}s,
 
---6v9BRtpmy+umdQlo--
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus TorvaldsHi M

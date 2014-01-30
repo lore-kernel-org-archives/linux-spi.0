@@ -1,65 +1,323 @@
-From: =?ISO-8859-1?Q?Emilio_L=F3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-Subject: Re: [PATCH v2 3/5] spi: sunxi: Add Allwinner A31 SPI
- controller driver
-Date: Wed, 29 Jan 2014 22:20:48 -0300
-Message-ID: <52E9A8F0.8030901@elopez.com.ar>
-References: <1390993850-9054-1-git-send-email-maxime.ripard@free-electrons.com> <1390993850-9054-4-git-send-email-maxime.ripard@free-electrons.com>
-Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: quoted-printable
-Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
- Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
- linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
- devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
- kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
- shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBD73XIMS3EHBBA6SU2LQKGQEDNE3B3Q-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <1390993850-9054-4-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH resend] spi: rspi: Add support for Quad and Dual SPI Transfers on QSPI
+Date: Thu, 30 Jan 2014 09:43:50 +0100
+Message-ID: <1391071430-22081-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Maxime,
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-El 29/01/14 08:10, Maxime Ripard escribi=F3:
-> The Allwinner A31 has a new SPI controller IP compared to the older Allwi=
-nner
-> SoCs.
->
-> It supports DMA, but the driver only does PIO for now, and DMA will be
-> supported eventually.
->
-> Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-> ---
-(snip)
-> +	struct sun6i_spi *sspi =3D spi_master_get_devdata(master);
-> +	int ret;
-> +
-> +	ret =3D clk_prepare_enable(sspi->hclk);
-> +	if (ret) {
-> +		dev_err(dev, "Couldn't enable clock 'ahb spi'\n");
-> +		goto out;
-> +	}
-> +
-> +	ret =3D clk_prepare_enable(sspi->mclk);
-> +	if (ret) {
-> +		dev_err(dev, "Couldn't enable clock 'ahb spi'\n");
+Add support for Quad and Dual SPI Transfers on the Renesas Quad Serial
+Peripheral Interface, as found in R-Car Gen2 SoCs like R-Car H2 (r8a7790)
+and R-Car M2 (r8a7791):
+  - Add unidirectional transfer methods for Quad/Dual SPI Transfers.
+  - Program the sequencer to handle SPI messages with multiple transfer
+    modes when Quad or Dual transfers are enabled for an SPI slave.
+    Up to 4 transfer modes per SPI message are supported by the hardware.
+  - Advertise the availability of Quad and Dual SPI modes on QSPI.
 
-A different message would be nice :)
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+---
+ drivers/spi/spi-rspi.c |  162 +++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 148 insertions(+), 14 deletions(-)
 
-Cheers,
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index e56fcb5f7f99..34ad4bca8a41 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -2,6 +2,7 @@
+  * SH RSPI driver
+  *
+  * Copyright (C) 2012, 2013  Renesas Solutions Corp.
++ * Copyright (C) 2014 Glider bvba
+  *
+  * Based on spi-sh.c:
+  * Copyright (C) 2011 Renesas Solutions Corp.
+@@ -57,6 +58,10 @@
+ #define RSPI_SPCMD5		0x1a	/* Command Register 5 */
+ #define RSPI_SPCMD6		0x1c	/* Command Register 6 */
+ #define RSPI_SPCMD7		0x1e	/* Command Register 7 */
++#define RSPI_SPCMD(i)		(RSPI_SPCMD0 + (i) * 2)
++#define RSPI_NUM_SPCMD		8
++#define RSPI_RZ_NUM_SPCMD	4
++#define QSPI_NUM_SPCMD		4
+ 
+ /* RSPI on RZ only */
+ #define RSPI_SPBFCR		0x20	/* Buffer Control Register */
+@@ -69,6 +74,7 @@
+ #define QSPI_SPBMUL1		0x20	/* Transfer Data Length Multiplier Setting Register 1 */
+ #define QSPI_SPBMUL2		0x24	/* Transfer Data Length Multiplier Setting Register 2 */
+ #define QSPI_SPBMUL3		0x28	/* Transfer Data Length Multiplier Setting Register 3 */
++#define QSPI_SPBMUL(i)		(QSPI_SPBMUL0 + (i) * 4)
+ 
+ /* SPCR - Control Register */
+ #define SPCR_SPRIE		0x80	/* Receive Interrupt Enable */
+@@ -152,7 +158,7 @@
+ #define SPCMD_LSBF		0x1000	/* LSB First */
+ #define SPCMD_SPB_MASK		0x0f00	/* Data Length Setting */
+ #define SPCMD_SPB_8_TO_16(bit)	(((bit - 1) << 8) & SPCMD_SPB_MASK)
+-#define SPCMD_SPB_8BIT		0x0000	/* qspi only */
++#define SPCMD_SPB_8BIT		0x0000	/* QSPI only */
+ #define SPCMD_SPB_16BIT		0x0100
+ #define SPCMD_SPB_20BIT		0x0000
+ #define SPCMD_SPB_24BIT		0x0100
+@@ -245,6 +251,7 @@ struct spi_ops {
+ 	int (*set_config_register)(struct rspi_data *rspi, int access_size);
+ 	int (*transfer_one)(struct spi_master *master, struct spi_device *spi,
+ 			    struct spi_transfer *xfer);
++	u16 mode_bits;
+ };
+ 
+ /*
+@@ -274,8 +281,8 @@ static int rspi_set_config_register(struct rspi_data *rspi, int access_size)
+ 	rspi_write8(rspi, 0x00, RSPI_SPCR2);
+ 
+ 	/* Sets SPCMD */
+-	rspi_write16(rspi, SPCMD_SPB_8_TO_16(access_size) | rspi->spcmd,
+-		     RSPI_SPCMD0);
++	rspi->spcmd |= SPCMD_SPB_8_TO_16(access_size);
++	rspi_write16(rspi, rspi->spcmd, RSPI_SPCMD0);
+ 
+ 	/* Sets RSPI mode */
+ 	rspi_write8(rspi, SPCR_MSTR, RSPI_SPCR);
+@@ -321,7 +328,6 @@ static int rspi_rz_set_config_register(struct rspi_data *rspi, int access_size)
+  */
+ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
+ {
+-	u16 spcmd;
+ 	int spbr;
+ 
+ 	/* Sets output mode, MOSI signal, and (optionally) loopback */
+@@ -342,13 +348,13 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
+ 
+ 	/* Data Length Setting */
+ 	if (access_size == 8)
+-		spcmd = SPCMD_SPB_8BIT;
++		rspi->spcmd |= SPCMD_SPB_8BIT;
+ 	else if (access_size == 16)
+-		spcmd = SPCMD_SPB_16BIT;
++		rspi->spcmd |= SPCMD_SPB_16BIT;
+ 	else
+-		spcmd = SPCMD_SPB_32BIT;
++		rspi->spcmd |= SPCMD_SPB_32BIT;
+ 
+-	spcmd |= SPCMD_SCKDEN | SPCMD_SLNDEN | rspi->spcmd | SPCMD_SPNDEN;
++	rspi->spcmd |= SPCMD_SCKDEN | SPCMD_SLNDEN | SPCMD_SPNDEN;
+ 
+ 	/* Resets transfer data length */
+ 	rspi_write32(rspi, 0, QSPI_SPBMUL0);
+@@ -359,9 +365,9 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
+ 	rspi_write8(rspi, 0x00, QSPI_SPBFCR);
+ 
+ 	/* Sets SPCMD */
+-	rspi_write16(rspi, spcmd, RSPI_SPCMD0);
++	rspi_write16(rspi, rspi->spcmd, RSPI_SPCMD0);
+ 
+-	/* Enables SPI function in a master mode */
++	/* Enables SPI function in master mode */
+ 	rspi_write8(rspi, SPCR_SPE | SPCR_MSTR, RSPI_SPCR);
+ 
+ 	return 0;
+@@ -811,12 +817,55 @@ static int qspi_transfer_out_in(struct rspi_data *rspi,
+ 	return 0;
+ }
+ 
++static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
++{
++	const u8 *buf = xfer->tx_buf;
++	unsigned int i;
++	int ret;
++
++	for (i = 0; i < xfer->len; i++) {
++		ret = rspi_data_out(rspi, *buf++);
++		if (ret < 0)
++			return ret;
++	}
++
++	/* Wait for the last transmission */
++	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
++
++	return 0;
++}
++
++static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
++{
++	u8 *buf = xfer->rx_buf;
++	unsigned int i;
++	int ret;
++
++	for (i = 0; i < xfer->len; i++) {
++		ret = rspi_data_in(rspi);
++		if (ret < 0)
++			return ret;
++		*buf++ = ret;
++	}
++
++	return 0;
++}
++
+ static int qspi_transfer_one(struct spi_master *master, struct spi_device *spi,
+ 			     struct spi_transfer *xfer)
+ {
+ 	struct rspi_data *rspi = spi_master_get_devdata(master);
+ 
+-	return qspi_transfer_out_in(rspi, xfer);
++	if (xfer->tx_buf && xfer->tx_nbits > SPI_NBITS_SINGLE) {
++		/* Quad or Dual SPI Write */
++		return qspi_transfer_out(rspi, xfer);
++	} else if (xfer->rx_buf && xfer->rx_nbits > SPI_NBITS_SINGLE) {
++		/* Quad or Dual SPI Read */
++		return qspi_transfer_in(rspi, xfer);
++	} else {
++		/* Single SPI Transfer */
++		return qspi_transfer_out_in(rspi, xfer);
++	}
+ }
+ 
+ static int rspi_setup(struct spi_device *spi)
+@@ -845,21 +894,101 @@ static void rspi_cleanup(struct spi_device *spi)
+ {
+ }
+ 
++static u16 qspi_transfer_mode(const struct spi_transfer *xfer)
++{
++	if (xfer->tx_buf)
++		switch (xfer->tx_nbits) {
++		case SPI_NBITS_QUAD:
++			return SPCMD_SPIMOD_QUAD;
++		case SPI_NBITS_DUAL:
++			return SPCMD_SPIMOD_DUAL;
++		default:
++			return 0;
++		}
++	if (xfer->rx_buf)
++		switch (xfer->rx_nbits) {
++		case SPI_NBITS_QUAD:
++			return SPCMD_SPIMOD_QUAD | SPCMD_SPRW;
++		case SPI_NBITS_DUAL:
++			return SPCMD_SPIMOD_DUAL | SPCMD_SPRW;
++		default:
++			return 0;
++		}
++
++	return 0;
++}
++
++static int qspi_setup_sequencer(struct rspi_data *rspi,
++				const struct spi_message *msg)
++{
++	const struct spi_transfer *xfer;
++	unsigned int i = 0, len = 0;
++	u16 current_mode = 0xffff, mode;
++
++	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++		mode = qspi_transfer_mode(xfer);
++		if (mode == current_mode) {
++			len += xfer->len;
++			continue;
++		}
++
++		/* Transfer mode change */
++		if (i) {
++			/* Set transfer data length of previous transfer */
++			rspi_write32(rspi, len, QSPI_SPBMUL(i - 1));
++		}
++
++		if (i >= QSPI_NUM_SPCMD) {
++			dev_err(&msg->spi->dev,
++				"Too many different transfer modes");
++			return -EINVAL;
++		}
++
++		/* Program transfer mode for this transfer */
++		rspi_write16(rspi, rspi->spcmd | mode, RSPI_SPCMD(i));
++		current_mode = mode;
++		len = xfer->len;
++		i++;
++	}
++	if (i) {
++		/* Set final transfer data length and sequence length */
++		rspi_write32(rspi, len, QSPI_SPBMUL(i - 1));
++		rspi_write8(rspi, i - 1, RSPI_SPSCR);
++	}
++
++	return 0;
++}
++
+ static int rspi_prepare_message(struct spi_master *master,
+-				struct spi_message *message)
++				struct spi_message *msg)
+ {
+ 	struct rspi_data *rspi = spi_master_get_devdata(master);
++	int ret;
+ 
++	if (msg->spi->mode &
++	    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD)) {
++		/* Setup sequencer for messages with multiple transfer modes */
++		ret = qspi_setup_sequencer(rspi, msg);
++		if (ret < 0)
++			return ret;
++	}
++
++	/* Enable SPI function in master mode */
+ 	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) | SPCR_SPE, RSPI_SPCR);
+ 	return 0;
+ }
+ 
+ static int rspi_unprepare_message(struct spi_master *master,
+-				  struct spi_message *message)
++				  struct spi_message *msg)
+ {
+ 	struct rspi_data *rspi = spi_master_get_devdata(master);
+ 
++	/* Disable SPI function */
+ 	rspi_write8(rspi, rspi_read8(rspi, RSPI_SPCR) & ~SPCR_SPE, RSPI_SPCR);
++
++	/* Reset sequencer for Single SPI Transfers */
++	rspi_write16(rspi, rspi->spcmd, RSPI_SPCMD0);
++	rspi_write8(rspi, 0, RSPI_SPSCR);
+ 	return 0;
+ }
+ 
+@@ -989,16 +1118,21 @@ static int rspi_remove(struct platform_device *pdev)
+ static const struct spi_ops rspi_ops = {
+ 	.set_config_register =		rspi_set_config_register,
+ 	.transfer_one =			rspi_transfer_one,
++	.mode_bits =			SPI_CPHA | SPI_CPOL | SPI_LOOP,
+ };
+ 
+ static const struct spi_ops rspi_rz_ops = {
+ 	.set_config_register =		rspi_rz_set_config_register,
+ 	.transfer_one =			rspi_rz_transfer_one,
++	.mode_bits =			SPI_CPHA | SPI_CPOL | SPI_LOOP,
+ };
+ 
+ static const struct spi_ops qspi_ops = {
+ 	.set_config_register =		qspi_set_config_register,
+ 	.transfer_one =			qspi_transfer_one,
++	.mode_bits =			SPI_CPHA | SPI_CPOL | SPI_LOOP |
++					SPI_TX_DUAL | SPI_TX_QUAD |
++					SPI_RX_DUAL | SPI_RX_QUAD,
+ };
+ 
+ #ifdef CONFIG_OF
+@@ -1120,7 +1254,7 @@ static int rspi_probe(struct platform_device *pdev)
+ 	master->cleanup = rspi_cleanup;
+ 	master->prepare_message = rspi_prepare_message;
+ 	master->unprepare_message = rspi_unprepare_message;
+-	master->mode_bits = SPI_CPHA | SPI_CPOL | SPI_LOOP;
++	master->mode_bits = ops->mode_bits;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 
+ 	ret = platform_get_irq_byname(pdev, "rx");
+-- 
+1.7.9.5
 
-Emilio
-
---=20
-You received this message because you are subscribed to the Google Groups "=
-linux-sunxi" group.
-To unsubscribe from this group and stop receiving emails from it, send an e=
-mail to linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
-For more options, visit https://groups.google.com/groups/opt_out.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

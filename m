@@ -1,60 +1,70 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v3 5/5] ARM: sunxi: Enable A31 SPI and SID in
- the defconfig
-Date: Fri, 31 Jan 2014 11:55:52 +0100
-Message-ID: <1391165752-1819-6-git-send-email-maxime.ripard@free-electrons.com>
-References: <1391165752-1819-1-git-send-email-maxime.ripard@free-electrons.com>
-Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: Add a timeout when waiting for transfers
+Date: Fri, 31 Jan 2014 11:49:35 +0000
+Message-ID: <20140131114935.GA22609@sirena.org.uk>
+References: <1391121536-10937-1-git-send-email-broonie@kernel.org>
+ <CAMuHMdUVmL5Zq8AYPVmUyWEBTzokSMV-Xg4uFzpxr7c2uSmU7g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBR4EV2LQKGQEGEX7U3Q-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <1391165752-1819-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="QBJnsLb0QyYEYRYK"
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdUVmL5Zq8AYPVmUyWEBTzokSMV-Xg4uFzpxr7c2uSmU7g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
----
- arch/arm/configs/sunxi_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
-index 3e2259b..b5df4a5 100644
---- a/arch/arm/configs/sunxi_defconfig
-+++ b/arch/arm/configs/sunxi_defconfig
-@@ -24,6 +24,7 @@ CONFIG_IP_PNP_BOOTP=y
- # CONFIG_WIRELESS is not set
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_EEPROM_SUNXI_SID=y
- CONFIG_NETDEVICES=y
- CONFIG_SUN4I_EMAC=y
- # CONFIG_NET_CADENCE is not set
-@@ -48,6 +49,8 @@ CONFIG_I2C=y
- # CONFIG_I2C_COMPAT is not set
- CONFIG_I2C_CHARDEV=y
- CONFIG_I2C_MV64XXX=y
-+CONFIG_SPI=y
-+CONFIG_SPI_SUN6I=y
- CONFIG_GPIO_SYSFS=y
- # CONFIG_HWMON is not set
- CONFIG_WATCHDOG=y
--- 
-1.8.4.2
+--QBJnsLb0QyYEYRYK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Jan 31, 2014 at 08:49:45AM +0100, Geert Uytterhoeven wrote:
+
+> --- a/drivers/spi/spi.c
+> +++ b/drivers/spi/spi.c
+> @@ -829,6 +829,9 @@ void spi_finalize_current_message(struct spi_master *=
+master)
+>           queue_kthread_work(&master->kworker, &master->pump_messages);
+>           spin_unlock_irqrestore(&master->queue_lock, flags);
+>=20
+> +         if (!mesg)
+> +                 return NULL;
+> +
+
+Note that this is for transfers, not for messages, and we don't change
+the completion path for the message here so I'm not sure why the message
+would be affected?  That said there is definitely an issue here - we
+should probably be adding some sort of error teardown callback to try to
+stop the hardware if we do hit a timeout.
+
+--QBJnsLb0QyYEYRYK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS643MAAoJELSic+t+oim9Ej8P+wfsoaNb+JGFKVNVX4geQkx3
+Y3zWav5nunjMYuntgl7G5HQMoxoXiQyKfwDMer4iRzRlmiDw0ILYyMluBDdF5lOT
+M1VS/LhRzoWPaV1tMvaBbFKQ2kiTEHb/+bWiqje++yNtiltF/yJVp953GFnsQH4E
+6uBatMJSoy+Z7QvxeP14OlEDmcGaOGKhEj0A1HXvnA3FDAh3WeonXx8E5drgrcL1
+PgQ18KhqK26c+EK9zMwnjy2X9WNcL3rQo1p8+qm52TYI2x04Dv0CIAvo5Mo5brbv
+ptbJM/KdX+VR0uYIWFPrBwFZjVrL0/1JAwvNmj9vg1mwJV1bvSEsHDCS9Ug4SSSD
+y9NeYqnMlmAf+dZGPIhBE4AGl/N9jsMBzBkO8pYlg79vWajCO5HwwuRzImQa5wEQ
+t8JrkEUkNLLVemyx2re6CzihNT5qCRBqKphCeELUonEN/JEZavdl5+qR7RCs5DuC
+9r2dwiTqfWmDgI0Ww0/zhYbVKYRl7GgvBSqD5/I9KSOBJD2ydu9wh/KQzGw2jdCA
+JhWgoDozN866rTpWLI2hgORLiSq5ERZHPhCmJ1FdWsku5XO+Oj6x3O8zoz04Zy+B
+bvB2mGKEbz+G2eDsqSSFyYOCRlBUKUXISXfWglqeF3X0UYe4cgP5VAMirfB6hmbN
+0jVA6UgnBayK7A+KsTj1
+=HRVE
+-----END PGP SIGNATURE-----
+
+--QBJnsLb0QyYEYRYK--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

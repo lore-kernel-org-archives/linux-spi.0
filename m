@@ -1,86 +1,91 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: [PATCH v3 3/5] spi: dw-mmio: add device tree support
-Date: Fri, 31 Jan 2014 12:07:46 +0200
-Message-ID: <d9d868430ae3cecc0be8faecf5d188d160966533.1391162172.git.baruch@tkos.co.il>
-References: <cover.1391162172.git.baruch@tkos.co.il>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <cover.1391162172.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: [PATCH 1/3] spi: core: Add devm_spi_alloc_master
+Date: Fri, 31 Jan 2014 11:23:10 +0100
+Message-ID: <1391163792-21819-2-git-send-email-maxime.ripard@free-electrons.com>
+References: <1391163792-21819-1-git-send-email-maxime.ripard@free-electrons.com>
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Maxime Ripard <maxime.ripard@free-electrons.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1391163792-21819-1-git-send-email-maxime.ripard@free-electrons.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Cc: Jean-Hugues Deschenes <jean-hugues.deschenes-YGVykHU+fedBDgjK7y7TUQ@public.gmane.org>
-Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Using devm_spi_register_master leads to a memory leak on the spi_master
+structure.
+
+spi_alloc_master uses kzalloc to allocate the spi_master but the introduction
+of devm_spi_register_master removed all the matching calls to spi_master_put,
+leaking the spi_master structure.
+
+Add a devm_spi_alloc_master to provide the intended behaviour.
+
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 ---
- drivers/spi/spi-dw-mmio.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c       | 36 ++++++++++++++++++++++++++++++++++++
+ include/linux/spi/spi.h |  2 ++
+ 2 files changed, 38 insertions(+)
 
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 1492f5ee9aaa..86d247ecd2d2 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -16,6 +16,7 @@
- #include <linux/spi/spi.h>
- #include <linux/scatterlist.h>
- #include <linux/module.h>
-+#include <linux/of.h>
- 
- #include "spi-dw.h"
- 
-@@ -32,6 +33,7 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 	struct dw_spi *dws;
- 	struct resource *mem;
- 	int ret;
-+	u32 tmp;
- 
- 	dwsmmio = devm_kzalloc(&pdev->dev, sizeof(struct dw_spi_mmio),
- 			GFP_KERNEL);
-@@ -67,7 +69,15 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 		return ret;
- 
- 	dws->bus_num = pdev->id;
--	dws->num_cs = 4;
-+	if (pdev->dev.of_node == NULL)
-+		dws->num_cs = 4;
-+	ret = of_property_read_u32(pdev->dev.of_node, "num-cs", &tmp);
-+	if (ret == 0)
-+		dws->num_cs = tmp;
-+	if (dws->num_cs == 0) {
-+		dev_err(&pdev->dev, "missing or wrong num-cs property\n");
-+		goto out;
-+	}
- 	dws->max_freq = clk_get_rate(dwsmmio->clk);
- 
- 	ret = dw_spi_add_host(&pdev->dev, dws);
-@@ -92,12 +102,21 @@ static int dw_spi_mmio_remove(struct platform_device *pdev)
- 	return 0;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 63613a9..eb728ec 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1266,6 +1266,42 @@ struct spi_master *spi_alloc_master(struct device *dev, unsigned size)
  }
+ EXPORT_SYMBOL_GPL(spi_alloc_master);
  
-+#ifdef CONFIG_OF
-+static struct of_device_id dw_spi_dt_ids[] = {
-+	{ .compatible = "snps,designware-spi" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, dw_spi_dt_ids);
-+#endif
++static void devm_spi_put(struct device *dev, void *res)
++{
++	spi_master_put(*(struct spi_master **)res);
++}
 +
- static struct platform_driver dw_spi_mmio_driver = {
- 	.probe		= dw_spi_mmio_probe,
- 	.remove		= dw_spi_mmio_remove,
- 	.driver		= {
- 		.name	= DRIVER_NAME,
- 		.owner	= THIS_MODULE,
-+		.of_match_table = of_match_ptr(dw_spi_dt_ids),
- 	},
- };
- module_platform_driver(dw_spi_mmio_driver);
++/**
++ * devm_spi_alloc_master - allocate SPI master controller
++ * @dev: the controller, possibly using the platform_bus
++ * @size: how much zeroed driver-private data to allocate; the pointer to this
++ *	memory is in the driver_data field of the returned device,
++ *	accessible with spi_master_get_devdata().
++ * Context: can sleep
++ *
++ * Allocates a master controller as with spi_alloc_master() which will
++ * automatically be freed
++ */
++struct spi_master *devm_spi_alloc_master(struct device *dev, unsigned size)
++{
++	struct spi_master **ptr, *master;
++
++	ptr = devres_alloc(devm_spi_put, sizeof(*ptr), GFP_KERNEL);
++	if (!ptr)
++		return NULL;
++
++	master = spi_alloc_master(dev, size);
++	if (master) {
++		*ptr = master;
++		devres_add(dev, ptr);
++	} else {
++		devres_free(ptr);
++	}
++
++	return master;
++}
++EXPORT_SYMBOL_GPL(devm_spi_alloc_master);
++
+ #ifdef CONFIG_OF
+ static int of_spi_register_master(struct spi_master *master)
+ {
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index a1d4ca2..6fbdb2b 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -462,6 +462,8 @@ extern void spi_finalize_current_transfer(struct spi_master *master);
+ /* the spi driver core manages memory for the spi_master classdev */
+ extern struct spi_master *
+ spi_alloc_master(struct device *host, unsigned size);
++extern struct spi_master *
++devm_spi_alloc_master(struct device *host, unsigned size);
+ 
+ extern int spi_register_master(struct spi_master *master);
+ extern int devm_spi_register_master(struct device *dev,
 -- 
-1.8.5.3
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.8.4.2

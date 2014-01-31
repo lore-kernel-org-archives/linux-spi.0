@@ -1,81 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 3/5] spi: sunxi: Add Allwinner A31 SPI
- controller driver
-Date: Fri, 31 Jan 2014 12:48:09 +0000
-Message-ID: <20140131124809.GE22609@sirena.org.uk>
-References: <1391165752-1819-1-git-send-email-maxime.ripard@free-electrons.com>
- <1391165752-1819-4-git-send-email-maxime.ripard@free-electrons.com>
-Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="iY5udFbGw2SsPZe4"
-Cc: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-sunxi+bncBDQ2L75W5QGBBH5XV2LQKGQEG5DTFHQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1391165752-1819-4-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Id: linux-spi.vger.kernel.org
+From: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Subject: [PATCH] spi: spi-fsl-spi.c: Fix problem with multi message transfers
+Date: Fri, 31 Jan 2014 13:44:59 +0100
+Message-ID: <1391172299-30640-1-git-send-email-sr@denx.de>
+Cc: Holger Brunck <holger.brunck-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+When used via spidev with more than one messages to tranfer via
+SPI_IOC_MESSAGE the current implementation would return with
+-EINVAL, since bits_per_word and speed_hz are set in all
+transfer structs. And in the 2nd loop status will stay at
+-EINVAL as its not overwritten again via fsl_spi_setup_transfer().
 
---iY5udFbGw2SsPZe4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This patch changes this behavious by first checking if one of
+the messages uses different settings. If this is the case
+the function will return with -EINVAL. If not, the messages
+are transferred correctly.
 
-On Fri, Jan 31, 2014 at 11:55:50AM +0100, Maxime Ripard wrote:
+Signed-off-by: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
+Cc: Holger Brunck <holger.brunck-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-fsl-spi.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-> +	master = devm_spi_alloc_master(&pdev->dev, sizeof(struct sun6i_spi));
-> +	if (!master) {
-> +		dev_err(&pdev->dev, "Unable to allocate SPI Master\n");
-> +		return -ENOMEM;
-> +	}
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index 14e202e..03a3b3c 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -362,18 +362,28 @@ static int fsl_spi_bufs(struct spi_device *spi, struct spi_transfer *t,
+ static void fsl_spi_do_one_msg(struct spi_message *m)
+ {
+ 	struct spi_device *spi = m->spi;
+-	struct spi_transfer *t;
++	struct spi_transfer *t, *first;
+ 	unsigned int cs_change;
+ 	const int nsecs = 50;
+ 	int status;
+ 
+-	cs_change = 1;
+-	status = 0;
++	/* Don't allow changes if CS is active */
++	first = list_first_entry(&m->transfers, struct spi_transfer,
++			transfer_list);
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		if (t->bits_per_word || t->speed_hz) {
+-			/* Don't allow changes if CS is active */
++		if ((first->bits_per_word != t->bits_per_word) ||
++			(first->speed_hz != t->speed_hz)) {
+ 			status = -EINVAL;
++			dev_err(&spi->dev,
++				"bits_per_word/speed_hz should be same for the same SPI transfer\n");
++			return;
++		}
++	}
+ 
++	cs_change = 1;
++	status = -EINVAL;
++	list_for_each_entry(t, &m->transfers, transfer_list) {
++		if (t->bits_per_word || t->speed_hz) {
+ 			if (cs_change)
+ 				status = fsl_spi_setup_transfer(spi, t);
+ 			if (status < 0)
+-- 
+1.8.5.3
 
-This now depends on your other series which as I said doesn't look like
-the best approach.
-
-> +	pm_runtime_enable(&pdev->dev);
-> +	if (!pm_runtime_enabled(&pdev->dev)) {
-> +		ret = sun6i_spi_runtime_resume(&pdev->dev);
-> +		if (ret) {
-> +			dev_err(&pdev->dev, "Couldn't resume the device\n");
-> +			return ret;
-> +		}
-> +	}
-
-No, as discussed don't do this - notice how other drivers aren't written
-this way either.  Like I said leave the device powered on startup and
-then let it be idled by runtime PM.
-
---iY5udFbGw2SsPZe4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS65uGAAoJELSic+t+oim9eagP/1uZeSFrHuaHL6Pc/qQWV49j
-vlm+fMGJFyXTkpTCSw4g/99UG4r6Tei+eoQQZ1f0FGeDCruWU+RPaN1sVtiEyfYm
-srDRaS5DLjrYAki+1XiRHCegaNvcbDyaHsZVriEnw2d2Ck0FI/AEjULz8eDSPMb2
-5ZU0rTW+mFweTXjbGdQJjnBV/Q1K7qzbK/ZdGN/nGCcsOKdTN9Pb77Lf+S57AqZr
-KXwEfbQqlVNR2oMekrQ/nXNIjTU35yLRj+efBS21atRZur6d0RxFeYIvXfdWC0xb
-DY1ramrodT4mUX8fHxq9oW4j/l+pEmd3PgIpLh7xaaEPet52ymQZmK/TvDubg4IT
-TDPvV5aW6bHDykUQRNgMbuByH9Nj8SOkR5+W8tSKZ1QTcUsvo0M9nGftipHWBks4
-m6hPjy1keC7G+/c5H/f+gv10L1lYAZUTcW7lHyeN1gimaCoo8Fu6cKdw+pj+C6Wo
-dYaCwd8pH6cjtUxb8OAvbCBTyW+Tm5T/X+cFJpQqu6J99jcoRk2uzei1iJNqMZGd
-Jgu6cGcO5GaT1liBbBezNIOI9wKZmjwODnXE4FMZeNkA1tQg1TSJLq91cf5EeP1R
-i/+A+FYfkgV0uatpyV9LyhVj4zXSBwrfDb1iFJL8eTNddVuQ/C1Wg7Moz1PQme6c
-NfHWSJ3HNZfZdF/bZ6M6
-=nU+u
------END PGP SIGNATURE-----
-
---iY5udFbGw2SsPZe4--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

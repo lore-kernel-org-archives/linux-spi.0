@@ -1,56 +1,86 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 0/5] spi: dw: device tree and generic queue support
-Date: Fri, 31 Jan 2014 16:49:20 +0000
-Message-ID: <20140131164920.GQ22609@sirena.org.uk>
-References: <cover.1391162172.git.baruch@tkos.co.il>
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH 0/3] spi: core: Introduce devm_spi_alloc_master
+Date: Fri, 31 Jan 2014 14:31:11 +0100
+Message-ID: <20140131133111.GF2950@lukather>
+References: <1391163792-21819-1-git-send-email-maxime.ripard@free-electrons.com>
+ <20140131121215.GB22609@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="F74xYepWx8quU230"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="CqfQkoYPE/jGoa5Q"
+Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <cover.1391162172.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20140131121215.GB22609@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---F74xYepWx8quU230
+--CqfQkoYPE/jGoa5Q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 31, 2014 at 12:07:43PM +0200, Baruch Siach wrote:
-> Unfortunately, I probably have no chance access to thest this series on
-> hardware, I's only compile tested. So I'm sending this as RFC for code review.
-> If this series doesn't get merged, it may be used at least as a starting point
-> for someone with hardware access.
+On Fri, Jan 31, 2014 at 12:12:15PM +0000, Mark Brown wrote:
+> On Fri, Jan 31, 2014 at 11:23:09AM +0100, Maxime Ripard wrote:
+>=20
+> > This patchset introduces a devm_spi_alloc_master to the spi core. While=
+ most of
+> > the drivers have a spi_master_put call in the probe, a lot of them usin=
+g the
+> > devm_spi_register_master function are missing it in the remove function,
+> > leading to leaked resources.
+>=20
+> This seems confusing - the idea here is that if we've handed the device
+> off to the managed function then the managed function deals with
+> destroying it.  Note that spi_alloc_master() says that the put is only
+> required after errors adding the device (which would be the expected
+> behaviour if you look at other APIs).  Looking at the code I think there
+> is an issue here but I'm not at all clear that this is the best fix.
 
-This looks basically fine - hopefully someone can test.
+Ah, right, spi_master_put doesn't free the memory either...
 
---F74xYepWx8quU230
+I guess we have a few choices here, either:
+  - Add a devm_kzalloc to spi_alloc_master, since most of the drivers
+    I've been looking at fail to free the memory, this would be the
+    least intrusive solution. We'd still have to remove all the kfree
+    calls in the driver that rightfully free the memory.
+  - Make devm_unregister_master also call kfree on the master
+  - Add a kfree to my devm_put_master so that the memory is reclaimed,
+    which isn't the case for now.
+
+I don't have a strong preference here, maybe for the third one, since
+it makes obvious that it's managed and you don't have to do anything
+about it, while the other do not.
+
+Maxime
+
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+
+--CqfQkoYPE/jGoa5Q
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Version: GnuPG v1.4.14 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS69QNAAoJELSic+t+oim9lXUP/A+NxtI99NB8mSreI8PflCHi
-8OOoFF6HwkN+fiU1yGrQ2tq3XIun7hUx9vrvKJ1kDZhGulSJ58N3JAOkGWyfMn8u
-/TwcoMqM3mFxdT8yLHKC8p1X0jctkFKguDOwIDmzsAyUNs96702insARCl87QlUM
-zrXS5fBKQcXS69zaeLPnHmQcMILG5OXB0MkXxJoUiwNCcVsVtQzCi+OSeXIT2q3Q
-fW/N7u8hpkJpk2Q+gi4IA4bLXk/nzpwUw/TEWjPkXklZzqBtrLy+1cdxXfaxCtat
-JoTJlJmP4tYau8j9x1gBGdZpS7Gr1x7S62TU5f3m/NyRaVDlW5ZHSDXk+Yuyj4yi
-Cjv6MJ2j4BqQ9X9/P2+A7nv8zQR7xYg7BJbxuQorNoTdqGLshJczDN0ftVXSbgZa
-9AkiwaHEuGhcsZqa82jI0OZh6lwjMCWHB+aSvXEwOd/S8mwMPWJNrEX9S4D5JdRY
-ONMjPjhoFMv3freNibOFlnVfqvr08GIB7a+FfMEjky3jNFSCcYZQe9g3GWJF6mYz
-3j+T3sn8hhjZeMMk0SBAOr8WsI4bMnyYt0P5cCSP7cNPC68Zj235G/D0SUji5HSR
-weKeGXhltQqPF+v/4wtH4yokNCtmxO/m/ogGmGOtQHO0WdxM0GoHqiI9TCVdPNM+
-jBO/os7egNIS5hF3ZG5r
-=uxwV
+iQIcBAEBAgAGBQJS66WeAAoJEBx+YmzsjxAg/rsP/1tOd1n9C3jCj4d24s2I0afs
+zN85L8zZVxtVChM0Oy/ATNitDYeQf/yOQ62oHT7kBRSbl9UUju3yKhgTOB6jR+Bx
+zUxA6M1X4yf3zvCnKjUNWX9adwsQYaZEiBaEoNFE8I0Cix+YBT8KBv6Zynu5+Csp
+Yxt7WttI0DuysodtKsWoypBvEsjMSi9Jksvx/MIRWb2NkiLzrh3bTOsVJyn6uvmW
+D6OvuJ9NMhzXlcZ/TmzOjXH/HzMLvt7nhLg/xWdbsgKaBXdIYGMnyKscPc7rfugu
+Ern7kaut/qtouxQWL+yAOS4HOK5WPQZbS1yr+1kGOAgKvg3tLWN1gPbaSySQsKbZ
+OZ+hv7AZ3XaoL7URb/E5qaKfcMjKH8/3MQVWMrqj1Kv2UihVh5IFBK+BtpXNLOdO
+7IpBTHbu454jEAQvztmghJ7jLoXfDzq8xKdjYmz+Vy8Gau+ApA7A1YTKqYLlOPmj
+QIRvjfPTvYAJDT0psOEcF43iRaYoFidQ3FQJKZdM4djLR6dq2vYLDFDHrZSumDDk
+epWkgEwnoAqCaUiqTsl6Fee3Z7YaGd9wjBuJUL2GtvfPMUGgBPMn4hDCVM9qrEUX
+6htHvs4k2G8a7sgNFYTnExDnsGIU4SkuTVZjsWrRKbmW03o/syXbL3dG7IhjBeKz
+LpbUijz84LaRMfX32Jfu
+=y6XK
 -----END PGP SIGNATURE-----
 
---F74xYepWx8quU230--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--CqfQkoYPE/jGoa5Q--

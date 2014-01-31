@@ -1,93 +1,155 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: Add a timeout when waiting for transfers
-Date: Fri, 31 Jan 2014 08:49:45 +0100
-Message-ID: <CAMuHMdUVmL5Zq8AYPVmUyWEBTzokSMV-Xg4uFzpxr7c2uSmU7g@mail.gmail.com>
-References: <1391121536-10937-1-git-send-email-broonie@kernel.org>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v2 3/5] spi: sunxi: Add Allwinner A31 SPI
+ controller driver
+Date: Fri, 31 Jan 2014 09:11:47 +0100
+Message-ID: <20140131081147.GC2950@lukather>
+References: <1390993850-9054-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1390993850-9054-4-git-send-email-maxime.ripard@free-electrons.com>
+ <20140129122520.GY11841@sirena.org.uk>
+ <20140129133227.GQ3867@lukather>
+ <CAGa+x854huSmiWmEv2EgOPUgZKcp3iitNaBvKXt8DiEj8msSVg@mail.gmail.com>
+Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org, Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1391121536-10937-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="NU0Ex4SbNnrxsi6C"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
+To: Kevin Hilman <khilman-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBCFXVWLQKGQEEFGXHBA-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAGa+x854huSmiWmEv2EgOPUgZKcp3iitNaBvKXt8DiEj8msSVg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
 
-On Thu, Jan 30, 2014 at 11:38 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->
-> Don't wait indefinitely for transfers to complete but time out after 10ms
-> more than we expect the transfer to take on the wire.
->
-> Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->  drivers/spi/spi.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 7f23cf9afa79..1826a50c2aaf 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -710,6 +710,7 @@ static int spi_transfer_one_message(struct spi_master *master,
->         bool cur_cs = true;
->         bool keep_cs = false;
->         int ret = 0;
-> +       int ms = 1;
->
->         spi_set_cs(msg->spi, true);
->
-> @@ -727,7 +728,16 @@ static int spi_transfer_one_message(struct spi_master *master,
->
->                 if (ret > 0) {
->                         ret = 0;
-> -                       wait_for_completion(&master->xfer_completion);
-> +                       ms = xfer->len * 8 * 1000 / xfer->speed_hz;
-> +                       ms += 10; /* some tolerance */
-> +
-> +                       ms = wait_for_completion_timeout(&master->xfer_completion,
-> +                                                        msecs_to_jiffies(ms));
-> +               }
-> +
-> +               if (ms == 0) {
-> +                       dev_err(&msg->spi->dev, "SPI transfer timed out\n");
-> +                       msg->status = -ETIMEDOUT;
->                 }
->
->                 trace_spi_transfer_stop(msg, xfer);
+--NU0Ex4SbNnrxsi6C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-What if it still completes in the driver a little bit later? The
-driver will also call
-spi_finalize_current_message(), and we'll get a NULL pointer dereference
-as master->cur_msg is now NULL.
+Hi Kevin,
 
-So I think we need a check like (whitespace damaged) below:
+On Thu, Jan 30, 2014 at 03:52:16PM -0800, Kevin Hilman wrote:
+> On Wed, Jan 29, 2014 at 5:32 AM, Maxime Ripard
+> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> > On Wed, Jan 29, 2014 at 12:25:20PM +0000, Mark Brown wrote:
+> >> On Wed, Jan 29, 2014 at 12:10:48PM +0100, Maxime Ripard wrote:
+> >>
+> >> > +config SPI_SUN6I
+> >> > +   tristate "Allwinner A31 SPI controller"
+> >> > +   depends on ARCH_SUNXI || COMPILE_TEST
+> >> > +   select PM_RUNTIME
+> >> > +   help
+> >> > +     This enables using the SPI controller on the Allwinner A31 SoC=
+s.
+> >> > +
+> >>
+> >> A select of PM_RUNTIME is both surprising and odd - why is that there?
+> >> The usual idiom is that the device starts out powered up (flagged using
+> >> pm_runtime_set_active()) and then runtime PM then suspends it when it's
+> >> compiled in.  That way if for some reason people want to avoid runtime
+> >> PM they can still use the device.
+> >
+> > Since pm_runtime_set_active and all the pm_runtime* callbacks in
+> > general are defined to pretty much empty functions, how the
+> > suspend/resume callbacks are called then? Obviously, we need them to
+> > be run, hence why I added the select here, but now I'm seeing a
+> > construct like what's following acceptable then?
+>=20
+> Even with your 'select', The runtime PM callbacks will never be called
+> in the current driver.  pm_runtime_enable() doesn't do any runtime PM
+> transitions.  It just allows transitions to happen when they're
+> triggered by _get()/_put()/etc.
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -829,6 +829,9 @@ void spi_finalize_current_message(struct spi_master *master)
-          queue_kthread_work(&master->kworker, &master->pump_messages);
-          spin_unlock_irqrestore(&master->queue_lock, flags);
+Actually, pm_runtime_get_sync is called by the SPI framework whenever
+the device needs to be used. And pm_runtime_put whenever it's not used
+anymore, so the callbacks are actually called.
 
-+         if (!mesg)
-+                 return NULL;
-+
-          if (master->cur_msg_prepared && master->unprepare_message) {
-                  ret = master->unprepare_message(master, mesg);
-          if (ret) {
+>=20
+> > pm_runtime_enable(&pdev->dev);
+> > if (!pm_runtime_enabled(&pdev->dev))
+> >    sun6i_spi_runtime_resume(&pdev->dev);
+>=20
+> Similarily here, it's not the pm_runtime_enable that will fail when
+> runtime PM is disabled (or not built-in), it's a pm_runtime_get_sync()
+> that will fail.
 
-Gr{oetje,eeting}s,
+In the case where pm_runtime is disabled, pm_runtime_enabled will only
+return false, and hence the resume callback will be called. get_sync
+will fail too when the framework will call it, but since the device is
+already initialized, it's fine I guess.
 
-                        Geert
+> What you want is something like this in ->probe()
+>=20
+>    sun6i_spi_runtime_resume();
+>    /* now, device is always activated whether or not runtime PM is enable=
+d */
+>    pm_runtime_enable();
+>    pm_runtime_set_active();  /* tells runtime PM core device is
+> already active */
+>    pm_runtime_get_sync();
+>=20
+> This 'get' will increase the usecount, but not actually call the
+> callbacks because we told the RPM core that the device was already
+> activated with _set_active().
+>=20
+> And then, in ->remove(), you'll want
+>=20
+>    pm_runtime_put();
+>    pm_runtime_disable();
+>=20
+> And if runtime PM is not enabled in the kernel, then the device will
+> be left on (which is kinda what you want if you didn't build runtime
+> PM into the kernel.)
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Yes, but that also mean that the device is actually on after the
+probe, even if it's never going to be used. From what I got reading
+the pm_runtime code, the suspend callback is called only whenever you
+call _put, so the device will be suspended only after it's been used
+the first time, right?
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Wouldn't it be better if it was suspended by default, and just waken
+up whenever the framework needs it?
+
+Thanks!
+Maxime
+
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+
+--NU0Ex4SbNnrxsi6C
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.14 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS61rDAAoJEBx+YmzsjxAgs94P/2nc5NFGnlbEGkSHTiiI/YNb
+4b1WeSAbr7OyIUG/BgxUtPbuSHLhizYRYI1nrMfPRyxoALm8zI3mRXjK/R4UqHLB
+id+qUlOkJn3RQ2GJEzD8PQiIXZYt884mIeT2OveC55B3UUYSqUwemhFUfRVlJu0i
++hAIyuAg/y7Vcsys6uvof8S8zcAXqvxyw/RVPs3VBy6BMHg6y+BaJEV0AI6FvInJ
+y3oc8RYMzFwdqILVdCyXMKA3pqIe3sVI94BxVor9izSe5Rm+U7v+qykGNKZXWWDc
+telhJ5d1owWiYpQRuFGoTx+EHhWkRplUfYaYULAvaXpyA0SW5IrG7i6qNeXm0v/O
+35RhVDYEXirnLvUdHSFL+dcX5aL5E+g+hye/7Oia3k3c5JCedRTq3xcLa4s9jsEy
+rPeJ9ZaxYW6Togrxv5NyEJT9CTqyZ2zw4z9mnQQeb3iDobKyWfXJVrcr3L6sJU9r
+R4LGi2xCb7OtC3FRJB9p4rKtH2Gf+xMOFuI/xWSLBFpudiBzXFcWoBFda8GNQKz8
+P9I9O38wOCpl2eQTwG0ZXiXzGmzekiC8olt+q/MOIKTNBNVtCCkjvDSaNgjwCRmq
+B2f9oGys2WHBoD0KksWUBF63ONMNmMjLQT6+KNT29CddkTq9b3+nGFv5ZrkdPrtj
+EdmMn6thUFVatmZdq6Ww
+=k/rz
+-----END PGP SIGNATURE-----
+
+--NU0Ex4SbNnrxsi6C--

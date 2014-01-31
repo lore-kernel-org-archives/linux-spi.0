@@ -1,55 +1,54 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi: switch to devm_spi_alloc_master
-Date: Fri, 31 Jan 2014 09:18:21 -0700
-Message-ID: <52EBCCCD.301@wwwdotorg.org>
-References: <1391163792-21819-1-git-send-email-maxime.ripard@free-electrons.com> <1391163792-21819-4-git-send-email-maxime.ripard@free-electrons.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 5/5] spi: dw-mmio: remove HAVE_CLK build dependecy
+Date: Fri, 31 Jan 2014 16:46:09 +0000
+Message-ID: <20140131164609.GP22609@sirena.org.uk>
+References: <cover.1391162172.git.baruch@tkos.co.il>
+ <207f4522cbabac73422b54006ead761f25380013.1391162172.git.baruch@tkos.co.il>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="bFzc/l08eq652zZ2"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1391163792-21819-4-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <207f4522cbabac73422b54006ead761f25380013.1391162172.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 01/31/2014 03:23 AM, Maxime Ripard wrote:
-> Make the existing users of devm_spi_register_master use the
-> devm_spi_alloc_master function to avoid leaking memory.
 
-> diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+--bFzc/l08eq652zZ2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> @@ -1087,14 +1085,13 @@ static int tegra_spi_probe(struct platform_device *pdev)
->  	if (ret < 0) {
->  		dev_err(&pdev->dev, "Failed to register ISR for IRQ %d\n",
->  					tspi->irq);
-> -		goto exit_free_master;
-> +		return ret;
->  	}
->  
->  	tspi->clk = devm_clk_get(&pdev->dev, "spi");
->  	if (IS_ERR(tspi->clk)) {
->  		dev_err(&pdev->dev, "can not get clock\n");
-> -		ret = PTR_ERR(tspi->clk);
-> -		goto exit_free_irq;
-> +		return PTR_ERR(tspi->clk);
->  	}
->  
->  	tspi->max_buf_size = SPI_FIFO_DEPTH << 2;
-> @@ -1152,8 +1149,6 @@ exit_rx_dma_free:
->  	tegra_spi_deinit_dma_param(tspi, true);
->  exit_free_irq:
->  	free_irq(spi_irq, tspi);
-> -exit_free_master:
-> -	spi_master_put(master);
->  	return ret;
+On Fri, Jan 31, 2014 at 12:07:48PM +0200, Baruch Siach wrote:
+> Since 93abe8e4 (clk: add non CONFIG_HAVE_CLK routines) code using clk.h
+> like this platform driver needs not depend on HAVE_CLK.
 
-Doesn't that s/goto exit_free_irq/return/ leak spi_irq? It's only OK to
-replace goto free_master with a direct return.
+Applied, thanks.
 
-The other two Tegra drivers don't seem to have this problem.
+--bFzc/l08eq652zZ2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS69NOAAoJELSic+t+oim9ybEP/38hyNe+toc/wG6ft3jB0bNM
+gy0HOAEKoifs+KX5sK+S6jrHj8lNe6LGi9eA7pdXYzI1MbOhURIBR/ljaF3OxrZ6
+P2ipmFMJalF49LgJB4MBge2isdwaMc7TMCALHoq0TLtzYCQ8MZlZIGGyILx6JnVh
+80GmHC71y7XF3I2JE6x6qDThVwHTXQIxiKKur20z+I+FOXTe9tHmOFIxMXKr0ENN
+57Wqdfm1Nyqz/ydKDZ0nT9sjI8mxUgwhj0R9De/lAKxS8Vw/gM9iecETJRggTFd1
+pIS2ZVA6Zwl9ZNlNQtcRbl125oWTmELYA8Dxu6d3aQyyrBl9mRQlnu4zNjqnC55u
+i3BTz5vBz5icdP4DArV4a/yroum1B60qtuPptoM1pINy9Ru+l8X7mbn+N2yFf/bu
+FzEy6UPFh92lD/s0744dn53fanGNeABxVrQIThRx0C3ZicfTpD02Ck5dX+F3vbsE
+t64EThUj4h7zBzm7q3nilH05wVagFN3sQCp1Vo+s2dVwe0vqWgKg+oqn+yi7n72/
+RVdY3dj1Pqdz2WdZPPnmlG+J28NMed3pXxnr3B3GhKqKq/FSwH5KX9ELKX8aUICy
+7D8IOY8OOWs0jNC5IHBEznN7x6qd8M7K29ZjlFq4xnQ0kMmswnkQMo6cQ1PwYOfx
+5ptXDS6orG14LMDYH6X+
+=5JX9
+-----END PGP SIGNATURE-----
+
+--bFzc/l08eq652zZ2--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

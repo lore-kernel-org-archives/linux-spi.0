@@ -1,86 +1,100 @@
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: Re: [PATCH 0/3] spi: core: Introduce devm_spi_alloc_master
-Date: Fri, 31 Jan 2014 14:31:11 +0100
-Message-ID: <20140131133111.GF2950@lukather>
-References: <1391163792-21819-1-git-send-email-maxime.ripard@free-electrons.com>
- <20140131121215.GB22609@sirena.org.uk>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v3 3/5] spi: sunxi: Add Allwinner A31 SPI
+ controller driver
+Date: Fri, 31 Jan 2014 23:47:04 +0100
+Message-ID: <20140131224704.GI2950@lukather>
+References: <1391165752-1819-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1391165752-1819-4-git-send-email-maxime.ripard@free-electrons.com>
+ <20140131124809.GE22609@sirena.org.uk>
+Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CqfQkoYPE/jGoa5Q"
-Cc: linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="RHdRtM27np9fZUoh"
+Cc: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBG6RWCLQKGQEDLBIBWQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140131121215.GB22609@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <20140131124809.GE22609-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Id: linux-spi.vger.kernel.org
 
 
---CqfQkoYPE/jGoa5Q
+--RHdRtM27np9fZUoh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 31, 2014 at 12:12:15PM +0000, Mark Brown wrote:
-> On Fri, Jan 31, 2014 at 11:23:09AM +0100, Maxime Ripard wrote:
+On Fri, Jan 31, 2014 at 12:48:09PM +0000, Mark Brown wrote:
+> On Fri, Jan 31, 2014 at 11:55:50AM +0100, Maxime Ripard wrote:
 >=20
-> > This patchset introduces a devm_spi_alloc_master to the spi core. While=
- most of
-> > the drivers have a spi_master_put call in the probe, a lot of them usin=
-g the
-> > devm_spi_register_master function are missing it in the remove function,
-> > leading to leaked resources.
+> > +	master =3D devm_spi_alloc_master(&pdev->dev, sizeof(struct sun6i_spi)=
+);
+> > +	if (!master) {
+> > +		dev_err(&pdev->dev, "Unable to allocate SPI Master\n");
+> > +		return -ENOMEM;
+> > +	}
 >=20
-> This seems confusing - the idea here is that if we've handed the device
-> off to the managed function then the managed function deals with
-> destroying it.  Note that spi_alloc_master() says that the put is only
-> required after errors adding the device (which would be the expected
-> behaviour if you look at other APIs).  Looking at the code I think there
-> is an issue here but I'm not at all clear that this is the best fix.
+> This now depends on your other series which as I said doesn't look like
+> the best approach.
 
-Ah, right, spi_master_put doesn't free the memory either...
+Indeed, I forgot to mention it in the cover letter. My bad.
 
-I guess we have a few choices here, either:
-  - Add a devm_kzalloc to spi_alloc_master, since most of the drivers
-    I've been looking at fail to free the memory, this would be the
-    least intrusive solution. We'd still have to remove all the kfree
-    calls in the driver that rightfully free the memory.
-  - Make devm_unregister_master also call kfree on the master
-  - Add a kfree to my devm_put_master so that the memory is reclaimed,
-    which isn't the case for now.
+>=20
+> > +	pm_runtime_enable(&pdev->dev);
+> > +	if (!pm_runtime_enabled(&pdev->dev)) {
+> > +		ret =3D sun6i_spi_runtime_resume(&pdev->dev);
+> > +		if (ret) {
+> > +			dev_err(&pdev->dev, "Couldn't resume the device\n");
+> > +			return ret;
+> > +		}
+> > +	}
+>=20
+> No, as discussed don't do this - notice how other drivers aren't written
+> this way either.  Like I said leave the device powered on startup and
+> then let it be idled by runtime PM.
 
-I don't have a strong preference here, maybe for the third one, since
-it makes obvious that it's managed and you don't have to do anything
-about it, while the other do not.
+Well, some SPI drivers are actually written like that (all the tegra
+SPI drivers for example). It's not an excuse, but waking up the device
+only to put it back in suspend right away seems kind of
+inefficient. Plus, the pm_runtime_idle callback you suggested are
+actually calling runtime_idle, while we want to call runtime_suspend.
 
-Maxime
 
 --=20
 Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
 
---CqfQkoYPE/jGoa5Q
+--RHdRtM27np9fZUoh
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.14 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS66WeAAoJEBx+YmzsjxAg/rsP/1tOd1n9C3jCj4d24s2I0afs
-zN85L8zZVxtVChM0Oy/ATNitDYeQf/yOQ62oHT7kBRSbl9UUju3yKhgTOB6jR+Bx
-zUxA6M1X4yf3zvCnKjUNWX9adwsQYaZEiBaEoNFE8I0Cix+YBT8KBv6Zynu5+Csp
-Yxt7WttI0DuysodtKsWoypBvEsjMSi9Jksvx/MIRWb2NkiLzrh3bTOsVJyn6uvmW
-D6OvuJ9NMhzXlcZ/TmzOjXH/HzMLvt7nhLg/xWdbsgKaBXdIYGMnyKscPc7rfugu
-Ern7kaut/qtouxQWL+yAOS4HOK5WPQZbS1yr+1kGOAgKvg3tLWN1gPbaSySQsKbZ
-OZ+hv7AZ3XaoL7URb/E5qaKfcMjKH8/3MQVWMrqj1Kv2UihVh5IFBK+BtpXNLOdO
-7IpBTHbu454jEAQvztmghJ7jLoXfDzq8xKdjYmz+Vy8Gau+ApA7A1YTKqYLlOPmj
-QIRvjfPTvYAJDT0psOEcF43iRaYoFidQ3FQJKZdM4djLR6dq2vYLDFDHrZSumDDk
-epWkgEwnoAqCaUiqTsl6Fee3Z7YaGd9wjBuJUL2GtvfPMUGgBPMn4hDCVM9qrEUX
-6htHvs4k2G8a7sgNFYTnExDnsGIU4SkuTVZjsWrRKbmW03o/syXbL3dG7IhjBeKz
-LpbUijz84LaRMfX32Jfu
-=y6XK
+iQIcBAEBAgAGBQJS7CfoAAoJEBx+YmzsjxAg0tcQAIsQCJpG97ymE6ms+cNXMBnA
+dYPjkpfZ0YbI4PoiFc1PLfaR+wiWbFeJaPn4apMAfoRZ6FFgM1jN5qDLfmui6my3
+fUnIxeU5f4VExsphF/7MRdbfASzIGRJ9o33bZn1UqcWX4+54/pVB40nSXRoX2pQn
+eepkHylLuO4NZhJApXzrB9eOOrzJxtoai7HGSNyiAT/T+HgA3BbPpN+7gGzb81q3
+qi9wHA9lryOhQQMmuGdeVWJTgbLMwtxBkbmYhK9OFk5QXKuPcnzpU+0XaRhYSVdO
+77hyafL3dX+06NRM0sKwIZEB17gIyQpV1q2RdeV7o3JdxCu1VDMw7VjF0G8TBlXI
+JoBbh+XRP9Bx4yxZrnQzI+0vwUOsL0QVYDXX1N7uJ7pkJgUSvn4vaYRGEwyQsz2R
+4vDlZJYSZZyMvQoEbqbJIFstMCuegVgfHSUmDjX9j8oM1EAkMSaf7FUN/bWbae3C
+uryCMzHElW5AG7LXFdAHk6h0V1GuJtmhN0lin3d61aBOaWMI7PqJbOOqzB/tpFdA
+hT/p800S/Jn7Ao1pX8ShM6s2EIM8HgtweeKUiQA/MznUSVg7ol2cE27ojfeDcoJM
+Vp7NTIQaohtiBo/CTpu42C8sHa2JcmrNJGNWRxDONEh19byl4iuZtXniU243wrsI
+KztbtMoaJNLDBPoIaSQI
+=FmH2
 -----END PGP SIGNATURE-----
 
---CqfQkoYPE/jGoa5Q--
+--RHdRtM27np9fZUoh--

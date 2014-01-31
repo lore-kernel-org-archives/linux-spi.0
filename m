@@ -1,62 +1,68 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/3] spi: core: Introduce devm_spi_alloc_master
-Date: Fri, 31 Jan 2014 12:12:15 +0000
-Message-ID: <20140131121215.GB22609@sirena.org.uk>
-References: <1391163792-21819-1-git-send-email-maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH] spi: Add a timeout when waiting for transfers
+Date: Fri, 31 Jan 2014 12:26:17 +0000
+Message-ID: <20140131122617.GC22609@sirena.org.uk>
+References: <1391121536-10937-1-git-send-email-broonie@kernel.org>
+ <CAMuHMdUVmL5Zq8AYPVmUyWEBTzokSMV-Xg4uFzpxr7c2uSmU7g@mail.gmail.com>
+ <20140131114935.GA22609@sirena.org.uk>
+ <CAMuHMdXLe+Ot5ntOtUC2Qynid4mv1h+UoitJuDW=Z-iyRKXCdg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Ioqcch2Htvy99P9q"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="fwblGvOBo7NCOYks"
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1391163792-21819-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <CAMuHMdXLe+Ot5ntOtUC2Qynid4mv1h+UoitJuDW=Z-iyRKXCdg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Ioqcch2Htvy99P9q
+--fwblGvOBo7NCOYks
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Jan 31, 2014 at 11:23:09AM +0100, Maxime Ripard wrote:
+On Fri, Jan 31, 2014 at 01:00:31PM +0100, Geert Uytterhoeven wrote:
 
-> This patchset introduces a devm_spi_alloc_master to the spi core. While most of
-> the drivers have a spi_master_put call in the probe, a lot of them using the
-> devm_spi_register_master function are missing it in the remove function,
-> leading to leaked resources.
+> One other thing: I haven't tried your patch yet, but I'm afraid the 10 ms
+> may be too small.
 
-This seems confusing - the idea here is that if we've handed the device
-off to the managed function then the managed function deals with
-destroying it.  Note that spi_alloc_master() says that the put is only
-required after errors adding the device (which would be the expected
-behaviour if you look at other APIs).  Looking at the code I think there
-is an issue here but I'm not at all clear that this is the best fix.
+> E.g. with PIO-based RSPI I don't get more than 2 Mbps, even though
+> spi-max-frequency = <30000000>, due to the PIO and interrupt overhead.
+> Hence a 1 MiB read would take ca. 4s, while your timeout would be 300 ms.
 
---Ioqcch2Htvy99P9q
+Hrm, I wouldn't have expected something doing PIO in more than one burst
+to be letting the transfer run in the background.  Though I suppose that
+might make sense in some situations...
+
+I was wondering if that was cutting it a bit fine but more for scheduler
+reasons, it's what the s3c64xx driver has been using for a while without
+complaints but may not translate so well with greater exposure.
+
+--fwblGvOBo7NCOYks
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS65McAAoJELSic+t+oim9wJQP/R+2y1pjZriPrmm9Zc4829xJ
-yGSBgVmQc7h2Q79fey4NliPn/HHi0NHH7RIobgSExa0sDwQYeKmQCepqQb0DyMXQ
-kxJ9JzZrTJKtP86ox9JYK4yMe5OLAt+tgEPfJ7jCpF0XUmAQGXPU2hvnfPyPOh5A
-ZVyO1fVeXPOkPMFvl5PfURS33/V8mPbvhpliQLRIn1WS5i1hZ78QvLjjDwDCWx28
-jwJ563vV1LgErH1rhHKF6CbohBVafqGh37dhYCeQ8B24bpiOuTrkpHxpvw9NT6Xo
-HlPTbQsv9Yn+LvvmWr6wvc6bTgcIHy3jT4GwYY8Od8Li2c5cKFhRyxYpRed221II
-swA1FCQed9mXRBv6Ox+WOWlTNPz98nLgZ3wquCNUvnTmujS6W4NOBMaDctlzdsIQ
-m+dUvfgGDS8Uliy5yBEn7q9EwZ/iS9i4MplbYs8UJNR1P7ieTWi1B3u4Vj9Dsmh8
-SI2DzmUCEJLWsQeo4qwkh+V4te/kWnx/FW9iUJ7Pv0TI2pFseCpxR6NpYqUHkE5O
-fc7TdU2esiVKPAF8+z/Pgyf8L8h5vq8MZ5gzPHZFT/+8Z8Dh+fWMdakVfiIU9CgG
-dPVHKmrqahuz9u+acFWAFMTM/CJ8qLj+jpCNf0A9vN2FIA10zF+V+ZXnjC/YE3Qi
-hEo/ZhsP/oECMKSOglbN
-=O2QJ
+iQIcBAEBAgAGBQJS65ZlAAoJELSic+t+oim9opAP/32ABGnJRpGL+sI/pz0VbM6D
+S+QV/+0bBEtvkyFCaqXvDwFad956t6IABM35BvdnSmbs8qhRXcSB6o0zbmUoT3c8
+DLOAfPPz4PQgf/XscZO7A42KlWC4nAAdBc5qFp4xkkb6npXt0IEnZ61RLr4Btjtu
+2AfFC571pkHBYImpCpg2Hpw7QHFAA31ZnXtr0MeYn+znscBNf12FOe0yGyQhib+P
+qlIp8yEcVJmVebtN0o89fW3xufeoO1XQoPf2ovOahrmLKP1D8kQgIFDGoHb87avb
+C7fcq8zQ6t/HIPcuOfsKM1MsLuaY6dRgB7QSwqT1ya2ZIF9G0JPT31zbacx8fZhA
+oaacQ9n0kbIpUca+p30x1c4YGNxvF3uMH0M/pUe1+jw/qNBMO01UDS/DXH7DNcJ8
+zPsd9eDw7KEy3OWkQNvwDr8veTpi4ey4DfCJZ7pe+zFNR7v2XeA9r/pTACJRMXRK
+mmUIc23+5zRlROiT471hKMkcMhiCbeqz7vlZ8j3BRlpcRNEcjLyVv6s3WzyTpauQ
+Eo+3bfZ33zcdJZ0Ro+tfCTAj/VxmnbBGA0rEQTWDSjBK0g1t0IR52q3OrpgTZOB3
+efYiNZhJZWqyrL2dfMbGITT6QPpH9Z7EyTqvMOZtHQF0gTxhiWpY+paNhPZqlrC5
+Q6y8TbVWMxKQKTgGrhfx
+=Bi8t
 -----END PGP SIGNATURE-----
 
---Ioqcch2Htvy99P9q--
+--fwblGvOBo7NCOYks--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

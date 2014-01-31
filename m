@@ -1,57 +1,62 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: Add a timeout when waiting for transfers
-Date: Fri, 31 Jan 2014 13:00:31 +0100
-Message-ID: <CAMuHMdXLe+Ot5ntOtUC2Qynid4mv1h+UoitJuDW=Z-iyRKXCdg@mail.gmail.com>
-References: <1391121536-10937-1-git-send-email-broonie@kernel.org>
-	<CAMuHMdUVmL5Zq8AYPVmUyWEBTzokSMV-Xg4uFzpxr7c2uSmU7g@mail.gmail.com>
-	<20140131114935.GA22609@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 0/3] spi: core: Introduce devm_spi_alloc_master
+Date: Fri, 31 Jan 2014 12:12:15 +0000
+Message-ID: <20140131121215.GB22609@sirena.org.uk>
+References: <1391163792-21819-1-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Ioqcch2Htvy99P9q"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140131114935.GA22609-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1391163792-21819-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jan 31, 2014 at 12:49 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Fri, Jan 31, 2014 at 08:49:45AM +0100, Geert Uytterhoeven wrote:
->> --- a/drivers/spi/spi.c
->> +++ b/drivers/spi/spi.c
->> @@ -829,6 +829,9 @@ void spi_finalize_current_message(struct spi_master *master)
->>           queue_kthread_work(&master->kworker, &master->pump_messages);
->>           spin_unlock_irqrestore(&master->queue_lock, flags);
->>
->> +         if (!mesg)
->> +                 return NULL;
->> +
->
-> Note that this is for transfers, not for messages, and we don't change
-> the completion path for the message here so I'm not sure why the message
-> would be affected?  That said there is definitely an issue here - we
-> should probably be adding some sort of error teardown callback to try to
-> stop the hardware if we do hit a timeout.
 
-RIght. Sorry, I mixed them up.
+--Ioqcch2Htvy99P9q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-One other thing: I haven't tried your patch yet, but I'm afraid the 10 ms
-may be too small.
+On Fri, Jan 31, 2014 at 11:23:09AM +0100, Maxime Ripard wrote:
 
-E.g. with PIO-based RSPI I don't get more than 2 Mbps, even though
-spi-max-frequency = <30000000>, due to the PIO and interrupt overhead.
-Hence a 1 MiB read would take ca. 4s, while your timeout would be 300 ms.
+> This patchset introduces a devm_spi_alloc_master to the spi core. While most of
+> the drivers have a spi_master_put call in the probe, a lot of them using the
+> devm_spi_register_master function are missing it in the remove function,
+> leading to leaked resources.
 
-Gr{oetje,eeting}s,
+This seems confusing - the idea here is that if we've handed the device
+off to the managed function then the managed function deals with
+destroying it.  Note that spi_alloc_master() says that the put is only
+required after errors adding the device (which would be the expected
+behaviour if you look at other APIs).  Looking at the code I think there
+is an issue here but I'm not at all clear that this is the best fix.
 
-                        Geert
+--Ioqcch2Htvy99P9q
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+iQIcBAEBAgAGBQJS65McAAoJELSic+t+oim9wJQP/R+2y1pjZriPrmm9Zc4829xJ
+yGSBgVmQc7h2Q79fey4NliPn/HHi0NHH7RIobgSExa0sDwQYeKmQCepqQb0DyMXQ
+kxJ9JzZrTJKtP86ox9JYK4yMe5OLAt+tgEPfJ7jCpF0XUmAQGXPU2hvnfPyPOh5A
+ZVyO1fVeXPOkPMFvl5PfURS33/V8mPbvhpliQLRIn1WS5i1hZ78QvLjjDwDCWx28
+jwJ563vV1LgErH1rhHKF6CbohBVafqGh37dhYCeQ8B24bpiOuTrkpHxpvw9NT6Xo
+HlPTbQsv9Yn+LvvmWr6wvc6bTgcIHy3jT4GwYY8Od8Li2c5cKFhRyxYpRed221II
+swA1FCQed9mXRBv6Ox+WOWlTNPz98nLgZ3wquCNUvnTmujS6W4NOBMaDctlzdsIQ
+m+dUvfgGDS8Uliy5yBEn7q9EwZ/iS9i4MplbYs8UJNR1P7ieTWi1B3u4Vj9Dsmh8
+SI2DzmUCEJLWsQeo4qwkh+V4te/kWnx/FW9iUJ7Pv0TI2pFseCpxR6NpYqUHkE5O
+fc7TdU2esiVKPAF8+z/Pgyf8L8h5vq8MZ5gzPHZFT/+8Z8Dh+fWMdakVfiIU9CgG
+dPVHKmrqahuz9u+acFWAFMTM/CJ8qLj+jpCNf0A9vN2FIA10zF+V+ZXnjC/YE3Qi
+hEo/ZhsP/oECMKSOglbN
+=O2QJ
+-----END PGP SIGNATURE-----
+
+--Ioqcch2Htvy99P9q--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

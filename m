@@ -1,69 +1,81 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Add a timeout when waiting for transfers
-Date: Fri, 31 Jan 2014 12:26:17 +0000
-Message-ID: <20140131122617.GC22609@sirena.org.uk>
-References: <1391121536-10937-1-git-send-email-broonie@kernel.org>
- <CAMuHMdUVmL5Zq8AYPVmUyWEBTzokSMV-Xg4uFzpxr7c2uSmU7g@mail.gmail.com>
- <20140131114935.GA22609@sirena.org.uk>
- <CAMuHMdXLe+Ot5ntOtUC2Qynid4mv1h+UoitJuDW=Z-iyRKXCdg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/5] spi: sunxi: Add Allwinner A31 SPI
+ controller driver
+Date: Fri, 31 Jan 2014 12:48:09 +0000
+Message-ID: <20140131124809.GE22609@sirena.org.uk>
+References: <1391165752-1819-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1391165752-1819-4-git-send-email-maxime.ripard@free-electrons.com>
+Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="fwblGvOBo7NCOYks"
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="iY5udFbGw2SsPZe4"
+Cc: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-sunxi+bncBDQ2L75W5QGBBH5XV2LQKGQEG5DTFHQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdXLe+Ot5ntOtUC2Qynid4mv1h+UoitJuDW=Z-iyRKXCdg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1391165752-1819-4-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Id: linux-spi.vger.kernel.org
 
 
---fwblGvOBo7NCOYks
+--iY5udFbGw2SsPZe4
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Jan 31, 2014 at 01:00:31PM +0100, Geert Uytterhoeven wrote:
+On Fri, Jan 31, 2014 at 11:55:50AM +0100, Maxime Ripard wrote:
 
-> One other thing: I haven't tried your patch yet, but I'm afraid the 10 ms
-> may be too small.
+> +	master = devm_spi_alloc_master(&pdev->dev, sizeof(struct sun6i_spi));
+> +	if (!master) {
+> +		dev_err(&pdev->dev, "Unable to allocate SPI Master\n");
+> +		return -ENOMEM;
+> +	}
 
-> E.g. with PIO-based RSPI I don't get more than 2 Mbps, even though
-> spi-max-frequency = <30000000>, due to the PIO and interrupt overhead.
-> Hence a 1 MiB read would take ca. 4s, while your timeout would be 300 ms.
+This now depends on your other series which as I said doesn't look like
+the best approach.
 
-Hrm, I wouldn't have expected something doing PIO in more than one burst
-to be letting the transfer run in the background.  Though I suppose that
-might make sense in some situations...
+> +	pm_runtime_enable(&pdev->dev);
+> +	if (!pm_runtime_enabled(&pdev->dev)) {
+> +		ret = sun6i_spi_runtime_resume(&pdev->dev);
+> +		if (ret) {
+> +			dev_err(&pdev->dev, "Couldn't resume the device\n");
+> +			return ret;
+> +		}
+> +	}
 
-I was wondering if that was cutting it a bit fine but more for scheduler
-reasons, it's what the s3c64xx driver has been using for a while without
-complaints but may not translate so well with greater exposure.
+No, as discussed don't do this - notice how other drivers aren't written
+this way either.  Like I said leave the device powered on startup and
+then let it be idled by runtime PM.
 
---fwblGvOBo7NCOYks
+--iY5udFbGw2SsPZe4
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS65ZlAAoJELSic+t+oim9opAP/32ABGnJRpGL+sI/pz0VbM6D
-S+QV/+0bBEtvkyFCaqXvDwFad956t6IABM35BvdnSmbs8qhRXcSB6o0zbmUoT3c8
-DLOAfPPz4PQgf/XscZO7A42KlWC4nAAdBc5qFp4xkkb6npXt0IEnZ61RLr4Btjtu
-2AfFC571pkHBYImpCpg2Hpw7QHFAA31ZnXtr0MeYn+znscBNf12FOe0yGyQhib+P
-qlIp8yEcVJmVebtN0o89fW3xufeoO1XQoPf2ovOahrmLKP1D8kQgIFDGoHb87avb
-C7fcq8zQ6t/HIPcuOfsKM1MsLuaY6dRgB7QSwqT1ya2ZIF9G0JPT31zbacx8fZhA
-oaacQ9n0kbIpUca+p30x1c4YGNxvF3uMH0M/pUe1+jw/qNBMO01UDS/DXH7DNcJ8
-zPsd9eDw7KEy3OWkQNvwDr8veTpi4ey4DfCJZ7pe+zFNR7v2XeA9r/pTACJRMXRK
-mmUIc23+5zRlROiT471hKMkcMhiCbeqz7vlZ8j3BRlpcRNEcjLyVv6s3WzyTpauQ
-Eo+3bfZ33zcdJZ0Ro+tfCTAj/VxmnbBGA0rEQTWDSjBK0g1t0IR52q3OrpgTZOB3
-efYiNZhJZWqyrL2dfMbGITT6QPpH9Z7EyTqvMOZtHQF0gTxhiWpY+paNhPZqlrC5
-Q6y8TbVWMxKQKTgGrhfx
-=Bi8t
+iQIcBAEBAgAGBQJS65uGAAoJELSic+t+oim9eagP/1uZeSFrHuaHL6Pc/qQWV49j
+vlm+fMGJFyXTkpTCSw4g/99UG4r6Tei+eoQQZ1f0FGeDCruWU+RPaN1sVtiEyfYm
+srDRaS5DLjrYAki+1XiRHCegaNvcbDyaHsZVriEnw2d2Ck0FI/AEjULz8eDSPMb2
+5ZU0rTW+mFweTXjbGdQJjnBV/Q1K7qzbK/ZdGN/nGCcsOKdTN9Pb77Lf+S57AqZr
+KXwEfbQqlVNR2oMekrQ/nXNIjTU35yLRj+efBS21atRZur6d0RxFeYIvXfdWC0xb
+DY1ramrodT4mUX8fHxq9oW4j/l+pEmd3PgIpLh7xaaEPet52ymQZmK/TvDubg4IT
+TDPvV5aW6bHDykUQRNgMbuByH9Nj8SOkR5+W8tSKZ1QTcUsvo0M9nGftipHWBks4
+m6hPjy1keC7G+/c5H/f+gv10L1lYAZUTcW7lHyeN1gimaCoo8Fu6cKdw+pj+C6Wo
+dYaCwd8pH6cjtUxb8OAvbCBTyW+Tm5T/X+cFJpQqu6J99jcoRk2uzei1iJNqMZGd
+Jgu6cGcO5GaT1liBbBezNIOI9wKZmjwODnXE4FMZeNkA1tQg1TSJLq91cf5EeP1R
+i/+A+FYfkgV0uatpyV9LyhVj4zXSBwrfDb1iFJL8eTNddVuQ/C1Wg7Moz1PQme6c
+NfHWSJ3HNZfZdF/bZ6M6
+=nU+u
 -----END PGP SIGNATURE-----
 
---fwblGvOBo7NCOYks--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--iY5udFbGw2SsPZe4--

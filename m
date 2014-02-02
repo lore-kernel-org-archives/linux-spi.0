@@ -1,83 +1,108 @@
 From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: [PATCH 1/3] spi: clps711x: Simplify handling of RX & TX buffers
-Date: Sun,  2 Feb 2014 10:59:48 +0400
-Message-ID: <1391324390-17547-1-git-send-email-shc_work@mail.ru>
+Subject: [PATCH 3/3] spi: clps711x: Use SPI-core "cs_gpios" property for storing GPIOs
+Date: Sun,  2 Feb 2014 10:59:50 +0400
+Message-ID: <1391324390-17547-3-git-send-email-shc_work@mail.ru>
+References: <1391324390-17547-1-git-send-email-shc_work@mail.ru>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1391324390-17547-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 ---
- drivers/spi/spi-clps711x.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ drivers/spi/spi-clps711x.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index bee864d..0b80624 100644
+index d9fa933..f973e97 100644
 --- a/drivers/spi/spi-clps711x.c
 +++ b/drivers/spi/spi-clps711x.c
-@@ -31,7 +31,6 @@ struct spi_clps711x_data {
- 
- 	u8			*tx_buf;
+@@ -33,17 +33,12 @@ struct spi_clps711x_data {
  	u8			*rx_buf;
--	int			count;
+ 	unsigned int		bpw;
  	int			len;
+-
+-	int			chipselect[0];
+ };
  
- 	int			chipselect[0];
-@@ -92,11 +91,12 @@ static int spi_clps711x_transfer_one_message(struct spi_master *master,
+ static int spi_clps711x_setup(struct spi_device *spi)
+ {
+-	struct spi_clps711x_data *hw = spi_master_get_devdata(spi->master);
+-
+ 	/* We are expect that SPI-device is not selected */
+-	gpio_direction_output(hw->chipselect[spi->chip_select],
+-			      !(spi->mode & SPI_CS_HIGH));
++	gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+ 
+ 	return 0;
+ }
+@@ -84,7 +79,6 @@ static int spi_clps711x_transfer_one_message(struct spi_master *master,
  	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
+ 	struct spi_device *spi = msg->spi;
  	struct spi_transfer *xfer;
- 	int status = 0, cs = hw->chipselect[msg->spi->chip_select];
--	u32 data;
+-	int cs = hw->chipselect[spi->chip_select];
  
- 	spi_clps711x_setup_mode(msg->spi);
+ 	spi_clps711x_setup_mode(spi);
  
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+		u8 data;
-+
- 		if (spi_clps711x_setup_xfer(msg->spi, xfer)) {
- 			status = -EINVAL;
- 			goto out_xfr;
-@@ -106,13 +106,12 @@ static int spi_clps711x_transfer_one_message(struct spi_master *master,
+@@ -93,7 +87,7 @@ static int spi_clps711x_transfer_one_message(struct spi_master *master,
+ 
+ 		spi_clps711x_setup_xfer(spi, xfer);
+ 
+-		gpio_set_value(cs, !!(spi->mode & SPI_CS_HIGH));
++		gpio_set_value(spi->cs_gpio, !!(spi->mode & SPI_CS_HIGH));
  
  		reinit_completion(&hw->done);
  
--		hw->count = 0;
- 		hw->len = xfer->len;
- 		hw->tx_buf = (u8 *)xfer->tx_buf;
- 		hw->rx_buf = (u8 *)xfer->rx_buf;
+@@ -114,7 +108,7 @@ static int spi_clps711x_transfer_one_message(struct spi_master *master,
  
- 		/* Initiate transfer */
--		data = hw->tx_buf ? hw->tx_buf[hw->count] : 0;
-+		data = hw->tx_buf ? *hw->tx_buf++ : 0;
- 		clps_writel(data | SYNCIO_FRMLEN(8) | SYNCIO_TXFRMEN, SYNCIO);
+ 		if (xfer->cs_change ||
+ 		    list_is_last(&xfer->transfer_list, &msg->transfers))
+-			gpio_set_value(cs, !(spi->mode & SPI_CS_HIGH));
++			gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
  
- 		wait_for_completion(&hw->done);
-@@ -137,18 +136,16 @@ out_xfr:
- static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
- {
- 	struct spi_clps711x_data *hw = (struct spi_clps711x_data *)dev_id;
--	u32 data;
-+	u8 data;
+ 		msg->actual_length += xfer->len;
+ 	}
+@@ -163,12 +157,15 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
  
- 	/* Handle RX */
- 	data = clps_readb(SYNCIO);
- 	if (hw->rx_buf)
--		hw->rx_buf[hw->count] = (u8)data;
--
--	hw->count++;
-+		*hw->rx_buf++ = data;
+-	master = spi_alloc_master(&pdev->dev,
+-				  sizeof(struct spi_clps711x_data) +
+-				  sizeof(int) * pdata->num_chipselect);
+-	if (!master) {
+-		dev_err(&pdev->dev, "SPI allocating memory error\n");
++	master = spi_alloc_master(&pdev->dev, sizeof(*hw));
++	if (!master)
+ 		return -ENOMEM;
++
++	master->cs_gpios = devm_kzalloc(&pdev->dev, sizeof(int) *
++					pdata->num_chipselect, GFP_KERNEL);
++	if (!master->cs_gpios) {
++		ret = -ENOMEM;
++		goto err_out;
+ 	}
  
- 	/* Handle TX */
--	if (hw->count < hw->len) {
--		data = hw->tx_buf ? hw->tx_buf[hw->count] : 0;
-+	if (--hw->len > 0) {
-+		data = hw->tx_buf ? *hw->tx_buf++ : 0;
- 		clps_writel(data | SYNCIO_FRMLEN(8) | SYNCIO_TXFRMEN, SYNCIO);
- 	} else
- 		complete(&hw->done);
+ 	master->bus_num = pdev->id;
+@@ -181,13 +178,13 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 	hw = spi_master_get_devdata(master);
+ 
+ 	for (i = 0; i < master->num_chipselect; i++) {
+-		hw->chipselect[i] = pdata->chipselect[i];
+-		if (!gpio_is_valid(hw->chipselect[i])) {
++		master->cs_gpios[i] = pdata->chipselect[i];
++		if (!gpio_is_valid(master->cs_gpios[i])) {
+ 			dev_err(&pdev->dev, "Invalid CS GPIO %i\n", i);
+ 			ret = -EINVAL;
+ 			goto err_out;
+ 		}
+-		if (devm_gpio_request(&pdev->dev, hw->chipselect[i], NULL)) {
++		if (devm_gpio_request(&pdev->dev, master->cs_gpios[i], NULL)) {
+ 			dev_err(&pdev->dev, "Can't get CS GPIO %i\n", i);
+ 			ret = -EINVAL;
+ 			goto err_out;
 -- 
 1.8.3.2
 

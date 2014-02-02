@@ -1,98 +1,32 @@
 From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi: switch to devm_spi_alloc_master
-Date: Sun, 2 Feb 2014 13:33:27 +0100
-Message-ID: <20140202123327.GR20094@book.gsilab.sittig.org>
-References: <1391163792-21819-1-git-send-email-maxime.ripard@free-electrons.com>
- <1391163792-21819-4-git-send-email-maxime.ripard@free-electrons.com>
+Subject: Re: [PATCH v3 0/5] spi: dw: device tree and generic queue support
+Date: Sun, 2 Feb 2014 13:49:41 +0100
+Message-ID: <20140202124941.GS20094@book.gsilab.sittig.org>
+References: <cover.1391162172.git.baruch@tkos.co.il>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1391163792-21819-4-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <cover.1391162172.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Jan 31, 2014 at 11:23 +0100, Maxime Ripard wrote:
+On Fri, Jan 31, 2014 at 12:07 +0200, Baruch Siach wrote:
 > 
-> Make the existing users of devm_spi_register_master use the
-> devm_spi_alloc_master function to avoid leaking memory.
-> 
-> [ ... ]
->  drivers/spi/spi-mpc512x-psc.c    | 19 ++++++++-----------
+> Unfortunately, I probably have no chance access to thest this series on
+> hardware, I's only compile tested. So I'm sending this as RFC for code review.
+> If this series doesn't get merged, it may be used at least as a starting point
+> for someone with hardware access.
 
-Note that the context for the MPC512x SPI driver will change in
-3.14-rc1, so you will have to rebase after the merge window.
+Which repo and branch is the code based on?  I can't apply it
+here, neither to v3.13 nor torvald's master nor broonie's
+topic/dw nor broonie's for-next.
 
-> diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-> index 46d2313..f376595 100644
-> --- a/drivers/spi/spi-mpc512x-psc.c
-> +++ b/drivers/spi/spi-mpc512x-psc.c
-> @@ -479,7 +479,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
->  	char clk_name[16];
->  	struct clk *clk;
->  
-> -	master = spi_alloc_master(dev, sizeof *mps);
-> +	master = devm_spi_alloc_master(dev, sizeof *mps);
->  	if (master == NULL)
->  		return -ENOMEM;
->  
-> @@ -507,8 +507,7 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
->  	tempp = devm_ioremap(dev, regaddr, size);
->  	if (!tempp) {
->  		dev_err(dev, "could not ioremap I/O port range\n");
-> -		ret = -EFAULT;
-> -		goto free_master;
-> +		return -EFAULT;
->  	}
->  	mps->psc = tempp;
->  	mps->fifo =
-> @@ -516,19 +515,19 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
->  	ret = devm_request_irq(dev, mps->irq, mpc512x_psc_spi_isr, IRQF_SHARED,
->  				"mpc512x-psc-spi", mps);
->  	if (ret)
-> -		goto free_master;
-> +		return ret;
->  	init_completion(&mps->txisrdone);
->  
->  	psc_num = master->bus_num;
->  	snprintf(clk_name, sizeof(clk_name), "psc%d_mclk", psc_num);
->  	clk = devm_clk_get(dev, clk_name);
-> -	if (IS_ERR(clk)) {
-> -		ret = PTR_ERR(clk);
-> -		goto free_master;
-> -	}
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +
->  	ret = clk_prepare_enable(clk);
->  	if (ret)
-> -		goto free_master;
-> +		return ret;
-> +
->  	mps->clk_mclk = clk;
->  	mps->mclk_rate = clk_get_rate(clk);
->  
-> @@ -544,8 +543,6 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
->  
->  free_clock:
->  	clk_disable_unprepare(mps->clk_mclk);
-> -free_master:
-> -	spi_master_put(master);
->  
->  	return ret;
->  }
-
-Reading the diff in the SPI master driver, the change appears to
-be balanced, and replacing 'goto free_master' with immediate
-return looks appropriate.
-
-Can't comment on the correctness of removing the spi_master_put()
-call when switching from spi_alloc_master() to
-devm_spi_alloc_master().  This gets discussed in the other
-subthread, dealing with the generic subsystem approach.
+BTW the "RFC" comment no longer is true after you dropped the RFC
+tag in v3.
 
 
 virtually yours

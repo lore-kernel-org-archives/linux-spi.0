@@ -1,54 +1,159 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH v3 0/5] spi: dw: device tree and generic queue support
-Date: Sun, 2 Feb 2014 17:24:48 +0200
-Message-ID: <20140202152448.GH9184@tarshish>
-References: <cover.1391162172.git.baruch@tkos.co.il>
- <20140202124941.GS20094@book.gsilab.sittig.org>
- <20140202133235.GF9184@tarshish>
- <20140202143148.GT20094@book.gsilab.sittig.org>
+From: =?UTF-8?q?Stefan=20S=C3=B8rensen?=
+	<stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: Support divide-by-n clock dividers
+Date: Sun,  2 Feb 2014 16:24:25 +0100
+Message-ID: <1391354665-32146-1-git-send-email-stefan.sorensen@spectralink.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: =?UTF-8?q?Stefan=20S=C3=B8rensen?=
+	<stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140202143148.GT20094-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Gerhard,
+Currently a divide-by-2^n clock is used, causing a very coarse
+clock selection, i.e. a 10MHz device will need to use a 6MHz
+clock. The McSPI can also use a divide-by-n clock, this patch
+adds support for selecting that when possible.
 
-On Sun, Feb 02, 2014 at 03:31:48PM +0100, Gerhard Sittig wrote:
-> On Sun, Feb 02, 2014 at 15:32 +0200, Baruch Siach wrote:
-> > On Sun, Feb 02, 2014 at 01:49:41PM +0100, Gerhard Sittig wrote:
-> > > On Fri, Jan 31, 2014 at 12:07 +0200, Baruch Siach wrote:
-> > > > Unfortunately, I probably have no chance access to thest this series on
-> > > > hardware, I's only compile tested. So I'm sending this as RFC for code review.
-> > > > If this series doesn't get merged, it may be used at least as a starting point
-> > > > for someone with hardware access.
-> > > 
-> > > Which repo and branch is the code based on?  I can't apply it
-> > > here, neither to v3.13 nor torvald's master nor broonie's
-> > > topic/dw nor broonie's for-next.
-> > 
-> > This sereis is based on the topic/dw branch as of 6d3a38819. Mark has applied 
-> > patch no. 5 from this series to topic/dw. Is this the cause of your problem?
-> 
-> I was looking into how I could test the GPIO based chip select
-> support.  Unfortunately I don't have much hardware around either,
-> it turned out that none of the available boards allow me to run
-> mainline kernels and access the signals or connect more slaves.
-> So I'm sorry but cannot help beyond review either. :(
+Signed-off-by: Stefan S=C3=B8rensen <stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c | 43 +++++++++++++++++++++++++++++++++++=
++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
-Just curious, what hardware do you have with DesignWare SPI master?
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcsp=
+i.c
+index 965539b..8f0afdb 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -45,6 +45,7 @@
+ #include <linux/platform_data/spi-omap2-mcspi.h>
+=20
+ #define OMAP2_MCSPI_MAX_FREQ		48000000
++#define OMAP2_MCSPI_MAX_DIVIDER		4096
+ #define OMAP2_MCSPI_MAX_FIFODEPTH	64
+ #define OMAP2_MCSPI_MAX_FIFOWCNT	0xFFFF
+ #define SPI_AUTOSUSPEND_TIMEOUT		2000
+@@ -89,6 +90,7 @@
+ #define OMAP2_MCSPI_CHCONF_FORCE	BIT(20)
+ #define OMAP2_MCSPI_CHCONF_FFET		BIT(27)
+ #define OMAP2_MCSPI_CHCONF_FFER		BIT(28)
++#define OMAP2_MCSPI_CHCONF_CLKG		BIT(29)
+=20
+ #define OMAP2_MCSPI_CHSTAT_RXS		BIT(0)
+ #define OMAP2_MCSPI_CHSTAT_TXS		BIT(1)
+@@ -96,6 +98,7 @@
+ #define OMAP2_MCSPI_CHSTAT_TXFFE	BIT(3)
+=20
+ #define OMAP2_MCSPI_CHCTRL_EN		BIT(0)
++#define OMAP2_MCSPI_CHCTRL_EXTCLK_MASK	(0xff << 8)
+=20
+ #define OMAP2_MCSPI_WAKEUPENABLE_WKEN	BIT(0)
+=20
+@@ -149,7 +152,7 @@ struct omap2_mcspi_cs {
+ 	int			word_len;
+ 	struct list_head	node;
+ 	/* Context save and restore shadow register */
+-	u32			chconf0;
++	u32			chconf0, chctrl0;
+ };
+=20
+ static inline void mcspi_write_reg(struct spi_master *master,
+@@ -230,10 +233,16 @@ static void omap2_mcspi_set_dma_req(const struct =
+spi_device *spi,
+=20
+ static void omap2_mcspi_set_enable(const struct spi_device *spi, int e=
+nable)
+ {
++	struct omap2_mcspi_cs *cs =3D spi->controller_state;
+ 	u32 l;
+=20
+-	l =3D enable ? OMAP2_MCSPI_CHCTRL_EN : 0;
+-	mcspi_write_cs_reg(spi, OMAP2_MCSPI_CHCTRL0, l);
++	l =3D cs->chctrl0;
++	if (enable)
++		l |=3D OMAP2_MCSPI_CHCTRL_EN;
++	else
++		l &=3D ~OMAP2_MCSPI_CHCTRL_EN;
++	cs->chctrl0 =3D l;
++	mcspi_write_cs_reg(spi, OMAP2_MCSPI_CHCTRL0, cs->chctrl0);
+ 	/* Flash post-writes */
+ 	mcspi_read_cs_reg(spi, OMAP2_MCSPI_CHCTRL0);
+ }
+@@ -840,7 +849,7 @@ static int omap2_mcspi_setup_transfer(struct spi_de=
+vice *spi,
+ 	struct omap2_mcspi_cs *cs =3D spi->controller_state;
+ 	struct omap2_mcspi *mcspi;
+ 	struct spi_master *spi_cntrl;
+-	u32 l =3D 0, div =3D 0;
++	u32 l =3D 0, clkd =3D 0, div, extclk =3D 0, clkg =3D 0;
+ 	u8 word_len =3D spi->bits_per_word;
+ 	u32 speed_hz =3D spi->max_speed_hz;
+=20
+@@ -856,7 +865,17 @@ static int omap2_mcspi_setup_transfer(struct spi_d=
+evice *spi,
+ 		speed_hz =3D t->speed_hz;
+=20
+ 	speed_hz =3D min_t(u32, speed_hz, OMAP2_MCSPI_MAX_FREQ);
+-	div =3D omap2_mcspi_calc_divisor(speed_hz);
++	if (speed_hz < (OMAP2_MCSPI_MAX_FREQ / OMAP2_MCSPI_MAX_DIVIDER)) {
++		clkd =3D omap2_mcspi_calc_divisor(speed_hz);
++		speed_hz =3D OMAP2_MCSPI_MAX_FREQ >> clkd;
++		clkg =3D 0;
++	} else {
++		div =3D (OMAP2_MCSPI_MAX_FREQ + speed_hz - 1) / speed_hz;
++		speed_hz =3D OMAP2_MCSPI_MAX_FREQ / div;
++		clkd =3D (div - 1) & 0xf;
++		extclk =3D (div - 1) >> 4;
++		clkg =3D OMAP2_MCSPI_CHCONF_CLKG;
++	}
+=20
+ 	l =3D mcspi_cached_chconf0(spi);
+=20
+@@ -885,7 +904,16 @@ static int omap2_mcspi_setup_transfer(struct spi_d=
+evice *spi,
+=20
+ 	/* set clock divisor */
+ 	l &=3D ~OMAP2_MCSPI_CHCONF_CLKD_MASK;
+-	l |=3D div << 2;
++	l |=3D clkd << 2;
++
++	/* set clock granularity */
++	l &=3D ~OMAP2_MCSPI_CHCONF_CLKG;
++	l |=3D clkg;
++	if (clkg) {
++		cs->chctrl0 &=3D ~OMAP2_MCSPI_CHCTRL_EXTCLK_MASK;
++		cs->chctrl0 |=3D extclk << 8;
++		mcspi_write_cs_reg(spi, OMAP2_MCSPI_CHCTRL0, cs->chctrl0);
++	}
+=20
+ 	/* set SPI mode 0..3 */
+ 	if (spi->mode & SPI_CPOL)
+@@ -900,7 +928,7 @@ static int omap2_mcspi_setup_transfer(struct spi_de=
+vice *spi,
+ 	mcspi_write_chconf0(spi, l);
+=20
+ 	dev_dbg(&spi->dev, "setup: speed %d, sample %s edge, clk %s\n",
+-			OMAP2_MCSPI_MAX_FREQ >> div,
++			speed_hz,
+ 			(spi->mode & SPI_CPHA) ? "trailing" : "leading",
+ 			(spi->mode & SPI_CPOL) ? "inverted" : "normal");
+=20
+@@ -972,6 +1000,7 @@ static int omap2_mcspi_setup(struct spi_device *sp=
+i)
+ 		cs->base =3D mcspi->base + spi->chip_select * 0x14;
+ 		cs->phys =3D mcspi->phys + spi->chip_select * 0x14;
+ 		cs->chconf0 =3D 0;
++		cs->chctrl0 =3D 0;
+ 		spi->controller_state =3D cs;
+ 		/* Link this to context save list */
+ 		list_add_tail(&cs->node, &ctx->cs);
+--=20
+1.8.5.3
 
-baruch
-
--- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

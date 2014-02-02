@@ -1,111 +1,76 @@
-From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: [PATCH 3/3] spi: clps711x: Use SPI-core "cs_gpios" property for storing GPIOs
-Date: Sun,  2 Feb 2014 10:59:50 +0400
-Message-ID: <1391324390-17547-3-git-send-email-shc_work@mail.ru>
-References: <1391324390-17547-1-git-send-email-shc_work@mail.ru>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v3 2/5] spi: dw: document device tree binding
+Date: Sun, 2 Feb 2014 13:23:20 +0100
+Message-ID: <20140202122320.GQ20094@book.gsilab.sittig.org>
+References: <cover.1391162172.git.baruch@tkos.co.il>
+ <a978b266a9b8827747054a689e014ca9efbec235.1391162172.git.baruch@tkos.co.il>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1391324390-17547-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <a978b266a9b8827747054a689e014ca9efbec235.1391162172.git.baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
----
- drivers/spi/spi-clps711x.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+On Fri, Jan 31, 2014 at 12:07 +0200, Baruch Siach wrote:
+> 
+> Signed-off-by: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-dw.txt | 24 ++++++++++++++++++++++++
+>  1 file changed, 24 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/spi/spi-dw.txt
 
-diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index d9fa933..f973e97 100644
---- a/drivers/spi/spi-clps711x.c
-+++ b/drivers/spi/spi-clps711x.c
-@@ -33,17 +33,12 @@ struct spi_clps711x_data {
- 	u8			*rx_buf;
- 	unsigned int		bpw;
- 	int			len;
--
--	int			chipselect[0];
- };
- 
- static int spi_clps711x_setup(struct spi_device *spi)
- {
--	struct spi_clps711x_data *hw = spi_master_get_devdata(spi->master);
--
- 	/* We are expect that SPI-device is not selected */
--	gpio_direction_output(hw->chipselect[spi->chip_select],
--			      !(spi->mode & SPI_CS_HIGH));
-+	gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
- 
- 	return 0;
- }
-@@ -84,7 +79,6 @@ static int spi_clps711x_transfer_one_message(struct spi_master *master,
- 	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
- 	struct spi_device *spi = msg->spi;
- 	struct spi_transfer *xfer;
--	int cs = hw->chipselect[spi->chip_select];
- 
- 	spi_clps711x_setup_mode(spi);
- 
-@@ -93,7 +87,7 @@ static int spi_clps711x_transfer_one_message(struct spi_master *master,
- 
- 		spi_clps711x_setup_xfer(spi, xfer);
- 
--		gpio_set_value(cs, !!(spi->mode & SPI_CS_HIGH));
-+		gpio_set_value(spi->cs_gpio, !!(spi->mode & SPI_CS_HIGH));
- 
- 		reinit_completion(&hw->done);
- 
-@@ -114,7 +108,7 @@ static int spi_clps711x_transfer_one_message(struct spi_master *master,
- 
- 		if (xfer->cs_change ||
- 		    list_is_last(&xfer->transfer_list, &msg->transfers))
--			gpio_set_value(cs, !(spi->mode & SPI_CS_HIGH));
-+			gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
- 
- 		msg->actual_length += xfer->len;
- 	}
-@@ -163,12 +157,15 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
- 
--	master = spi_alloc_master(&pdev->dev,
--				  sizeof(struct spi_clps711x_data) +
--				  sizeof(int) * pdata->num_chipselect);
--	if (!master) {
--		dev_err(&pdev->dev, "SPI allocating memory error\n");
-+	master = spi_alloc_master(&pdev->dev, sizeof(*hw));
-+	if (!master)
- 		return -ENOMEM;
-+
-+	master->cs_gpios = devm_kzalloc(&pdev->dev, sizeof(int) *
-+					pdata->num_chipselect, GFP_KERNEL);
-+	if (!master->cs_gpios) {
-+		ret = -ENOMEM;
-+		goto err_out;
- 	}
- 
- 	master->bus_num = pdev->id;
-@@ -181,13 +178,13 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	hw = spi_master_get_devdata(master);
- 
- 	for (i = 0; i < master->num_chipselect; i++) {
--		hw->chipselect[i] = pdata->chipselect[i];
--		if (!gpio_is_valid(hw->chipselect[i])) {
-+		master->cs_gpios[i] = pdata->chipselect[i];
-+		if (!gpio_is_valid(master->cs_gpios[i])) {
- 			dev_err(&pdev->dev, "Invalid CS GPIO %i\n", i);
- 			ret = -EINVAL;
- 			goto err_out;
- 		}
--		if (devm_gpio_request(&pdev->dev, hw->chipselect[i], NULL)) {
-+		if (devm_gpio_request(&pdev->dev, master->cs_gpios[i], NULL)) {
- 			dev_err(&pdev->dev, "Can't get CS GPIO %i\n", i);
- 			ret = -EINVAL;
- 			goto err_out;
+You introduce a new binding, but don't Cc: the devicetree list
+for review.
+
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/spi/spi-dw.txt
+> @@ -0,0 +1,24 @@
+> +Synopsys DesignWare SPI master
+> +
+> +Required properties:
+> +- compatible: should be "snps,designware-spi"
+> +- #address-cells: see spi-bus.txt
+> +- #size-cells: see spi-bus.txt
+> +- reg: address and length of the spi master registers
+> +- interrupts: should contain one interrupt
+> +- clocks: spi clock phandle
+> +- num-cs: see spi-bus.txt
+
+You may want to check Mark Rutland's replies in the DT list
+archives with his nits about speaking of phandles only where
+specifiers are involved as well, and how he several times
+suggested improved descriptions that you can adopt or copy.
+
+Is 'num-cs' really required and not optional?  (It may be, I'm
+just asking.  Given that there has not been a binding before,
+there is no compatibility issue either.)
+
+> +
+> +Optional properties:
+> +- cs-gpios: see spi-bus.txt
+> +
+> +Example:
+> +
+> +spi: spi@4020a000 {
+> +	compatible = "snps,designware-spi";
+> +	interrupts = <11 1>;
+> +	reg = <0x4020a000 0x1000>;
+> +	clocks = <&pclk>;
+> +	num-cs = <2>;
+> +	cs-gpios = <&banka 0 0>;
+> +};
+
+
+virtually yours
+Gerhard Sittig
 -- 
-1.8.3.2
-
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

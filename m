@@ -1,47 +1,304 @@
-From: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
-Subject: Re: [PATCH v3 0/5] spi: dw: device tree and generic queue support
-Date: Sun, 2 Feb 2014 15:32:35 +0200
-Message-ID: <20140202133235.GF9184@tarshish>
-References: <cover.1391162172.git.baruch@tkos.co.il>
- <20140202124941.GS20094@book.gsilab.sittig.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] spi: Make core DMA mapping functions generate scatterlists
+Date: Sun,  2 Feb 2014 13:52:52 +0000
+Message-ID: <1391349172-27668-1-git-send-email-broonie@kernel.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	Lukasz Czerwinski <l.czerwinski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140202124941.GS20094-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Gerhard,
+From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-On Sun, Feb 02, 2014 at 01:49:41PM +0100, Gerhard Sittig wrote:
-> On Fri, Jan 31, 2014 at 12:07 +0200, Baruch Siach wrote:
-> > Unfortunately, I probably have no chance access to thest this series on
-> > hardware, I's only compile tested. So I'm sending this as RFC for code review.
-> > If this series doesn't get merged, it may be used at least as a starting point
-> > for someone with hardware access.
-> 
-> Which repo and branch is the code based on?  I can't apply it
-> here, neither to v3.13 nor torvald's master nor broonie's
-> topic/dw nor broonie's for-next.
+We cannot unconditionally use dma_map_single() to map data for use with
+SPI since transfers may exceed a page and virtual addresses may not be
+provided with physically contiguous pages. Further, addresses allocated
+using vmalloc() need to be mapped differently to other addresses.
 
-This sereis is based on the topic/dw branch as of 6d3a38819. Mark has applied 
-patch no. 5 from this series to topic/dw. Is this the cause of your problem?
+Currently only the MXS driver handles all this, a few drivers do handle
+the possibility that buffers may not be physically contiguous which is
+the main potential problem but many don't even do that. Factoring this
+out into the core will make it easier for drivers to do a good job so if
+the driver is using the core DMA code then generate a scatterlist
+instead of mapping to a single address so do that.
 
-> BTW the "RFC" comment no longer is true after you dropped the RFC
-> tag in v3.
+This code is mainly based on a combination of the existing code in the MXS
+and PXA2xx drivers. In future we should be able to extend it to allow the
+core to concatenate adjacent transfers if they are compatible, improving
+performance.
 
-I should have kept the RFC tag.
+Currently for simplicity clients are not allowed to use the scatterlist
+when they do DMA mapping, in the future the existing single address
+mappings will be replaced with use of the scatterlist most likely as
+part of pre-verifying transfers.
 
-baruch
+This change makes it mandatory to use scatterlists when using the core DMA
+mapping so update the s3c64xx driver to do this when used with dmaengine.
+Doing so makes the code more ugly but it is expected that the old s3c-dma
+code can be removed very soon.
 
+Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-s3c64xx.c |  14 +++++--
+ drivers/spi/spi.c         | 101 ++++++++++++++++++++++++++++++++++------------
+ include/linux/spi/spi.h   |   7 ++++
+ 3 files changed, 94 insertions(+), 28 deletions(-)
+
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index b9ba7a3e7741..4490e8c499c0 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -470,7 +470,7 @@ static void s3c64xx_spi_unmap_mssg(struct s3c64xx_spi_driver_data *sdd,
+ }
+ 
+ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
+-					unsigned len, dma_addr_t buf)
++			struct sg_table *sgt)
+ {
+ 	struct s3c64xx_spi_driver_data *sdd;
+ 	struct dma_slave_config config;
+@@ -496,8 +496,8 @@ static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
+ 		dmaengine_slave_config(dma->ch, &config);
+ 	}
+ 
+-	desc = dmaengine_prep_slave_single(dma->ch, buf, len,
+-					dma->direction, DMA_PREP_INTERRUPT);
++	desc = dmaengine_prep_slave_sg(dma->ch, sgt->sgl, sgt->nents,
++				       dma->direction, DMA_PREP_INTERRUPT);
+ 
+ 	desc->callback = s3c64xx_spi_dmacb;
+ 	desc->callback_param = dma;
+@@ -616,7 +616,11 @@ static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
+ 		chcfg |= S3C64XX_SPI_CH_TXCH_ON;
+ 		if (dma_mode) {
+ 			modecfg |= S3C64XX_SPI_MODE_TXDMA_ON;
++#ifndef CONFIG_S3C_DMA
++			prepare_dma(&sdd->tx_dma, &xfer->tx_sg);
++#else
+ 			prepare_dma(&sdd->tx_dma, xfer->len, xfer->tx_dma);
++#endif
+ 		} else {
+ 			switch (sdd->cur_bpw) {
+ 			case 32:
+@@ -648,7 +652,11 @@ static void enable_datapath(struct s3c64xx_spi_driver_data *sdd,
+ 			writel(((xfer->len * 8 / sdd->cur_bpw) & 0xffff)
+ 					| S3C64XX_SPI_PACKET_CNT_EN,
+ 					regs + S3C64XX_SPI_PACKET_CNT);
++#ifndef CONFIG_S3C_DMA
++			prepare_dma(&sdd->rx_dma, &xfer->rx_sg);
++#else
+ 			prepare_dma(&sdd->rx_dma, xfer->len, xfer->rx_dma);
++#endif
+ 		}
+ 	}
+ 
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 1826a50c2aaf..fb93d2d69182 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -582,13 +582,70 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
+ 		spi->master->set_cs(spi, !enable);
+ }
+ 
++static int spi_map_buf(struct spi_master *master, struct device *dev,
++		       struct sg_table *sgt, void *buf, size_t len,
++		       enum dma_data_direction dir)
++{
++	const bool vmalloced_buf = is_vmalloc_addr(buf);
++	const int desc_len = vmalloced_buf ? PAGE_SIZE : master->max_dma_len;
++	const int sgs = DIV_ROUND_UP(len, desc_len);
++	struct page *vm_page;
++	void *sg_buf;
++	size_t min;
++	int i, ret;
++
++	ret = sg_alloc_table(sgt, sgs, GFP_KERNEL);
++	if (ret != 0)
++		return ret;
++
++	for (i = 0; i < sgs; i++) {
++		min = min_t(size_t, len, desc_len);
++
++		if (vmalloced_buf) {
++			vm_page = vmalloc_to_page(buf);
++			if (!vm_page) {
++				sg_free_table(sgt);
++				return -ENOMEM;
++			}
++			sg_buf = page_address(vm_page) +
++				((size_t)buf & ~PAGE_MASK);
++		} else {
++			sg_buf = buf;
++		}
++
++		sg_set_buf(&sgt->sgl[i], sg_buf, min);
++
++		buf += min;
++		len -= min;
++	}
++
++	ret = dma_map_sg(dev, sgt->sgl, sgt->nents, dir);
++	if (ret < 0) {
++		sg_free_table(sgt);
++		return ret;
++	}
++
++	sgt->nents = ret;
++
++	return 0;
++}
++
++static void spi_unmap_buf(struct spi_master *master, struct device *dev,
++			  struct sg_table *sgt, enum dma_data_direction dir)
++{
++	if (sgt->orig_nents) {
++		dma_unmap_sg(dev, sgt->sgl, sgt->orig_nents, dir);
++		sg_free_table(sgt);
++	}
++}
++
+ static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
+ {
+-	struct device *dev = master->dev.parent;
+ 	struct device *tx_dev, *rx_dev;
+ 	struct spi_transfer *xfer;
+ 	void *tmp;
+ 	size_t max_tx, max_rx;
++	int ret;
+ 
+ 	if (master->flags & (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX)) {
+ 		max_tx = 0;
+@@ -631,7 +688,7 @@ static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
+ 		}
+ 	}
+ 
+-	if (msg->is_dma_mapped || !master->can_dma)
++	if (!master->can_dma)
+ 		return 0;
+ 
+ 	tx_dev = &master->dma_tx->dev->device;
+@@ -642,25 +699,21 @@ static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
+ 			continue;
+ 
+ 		if (xfer->tx_buf != NULL) {
+-			xfer->tx_dma = dma_map_single(tx_dev,
+-						      (void *)xfer->tx_buf,
+-						      xfer->len,
+-						      DMA_TO_DEVICE);
+-			if (dma_mapping_error(dev, xfer->tx_dma)) {
+-				dev_err(dev, "dma_map_single Tx failed\n");
+-				return -ENOMEM;
+-			}
++			ret = spi_map_buf(master, tx_dev, &xfer->tx_sg,
++					  (void *)xfer->tx_buf, xfer->len,
++					  DMA_TO_DEVICE);
++			if (ret != 0)
++				return ret;
+ 		}
+ 
+ 		if (xfer->rx_buf != NULL) {
+-			xfer->rx_dma = dma_map_single(rx_dev,
+-						      xfer->rx_buf, xfer->len,
+-						      DMA_FROM_DEVICE);
+-			if (dma_mapping_error(dev, xfer->rx_dma)) {
+-				dev_err(dev, "dma_map_single Rx failed\n");
+-				dma_unmap_single(tx_dev, xfer->tx_dma,
+-						 xfer->len, DMA_TO_DEVICE);
+-				return -ENOMEM;
++			ret = spi_map_buf(master, rx_dev, &xfer->rx_sg,
++					  xfer->rx_buf, xfer->len,
++					  DMA_FROM_DEVICE);
++			if (ret != 0) {
++				spi_unmap_buf(master, tx_dev, &xfer->tx_sg,
++					      DMA_TO_DEVICE);
++				return ret;
+ 			}
+ 		}
+ 	}
+@@ -675,7 +728,7 @@ static int spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
+ 	struct spi_transfer *xfer;
+ 	struct device *tx_dev, *rx_dev;
+ 
+-	if (!master->cur_msg_mapped || msg->is_dma_mapped || !master->can_dma)
++	if (!master->cur_msg_mapped || !master->can_dma)
+ 		return 0;
+ 
+ 	tx_dev = &master->dma_tx->dev->device;
+@@ -685,12 +738,8 @@ static int spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
+ 		if (!master->can_dma(master, msg->spi, xfer))
+ 			continue;
+ 
+-		if (xfer->rx_buf)
+-			dma_unmap_single(rx_dev, xfer->rx_dma, xfer->len,
+-					 DMA_FROM_DEVICE);
+-		if (xfer->tx_buf)
+-			dma_unmap_single(tx_dev, xfer->tx_dma, xfer->len,
+-					 DMA_TO_DEVICE);
++		spi_unmap_buf(master, rx_dev, &xfer->rx_sg, DMA_FROM_DEVICE);
++		spi_unmap_buf(master, tx_dev, &xfer->tx_sg, DMA_TO_DEVICE);
+ 	}
+ 
+ 	return 0;
+@@ -1509,6 +1558,8 @@ int spi_register_master(struct spi_master *master)
+ 	mutex_init(&master->bus_lock_mutex);
+ 	master->bus_lock_flag = 0;
+ 	init_completion(&master->xfer_completion);
++	if (!master->max_dma_len)
++		master->max_dma_len = INT_MAX;
+ 
+ 	/* register the device, then userspace will see it.
+ 	 * registration fails if the bus ID is in use.
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index c4c68093cd7c..36c86ef51ff3 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -24,6 +24,7 @@
+ #include <linux/slab.h>
+ #include <linux/kthread.h>
+ #include <linux/completion.h>
++#include <linux/scatterlist.h>
+ 
+ struct dma_chan;
+ 
+@@ -268,6 +269,7 @@ static inline void spi_unregister_driver(struct spi_driver *sdrv)
+  * @auto_runtime_pm: the core should ensure a runtime PM reference is held
+  *                   while the hardware is prepared, using the parent
+  *                   device for the spidev
++ * @max_dma_len: Maximum length of a DMA transfer for the device.
+  * @prepare_transfer_hardware: a message will soon arrive from the queue
+  *	so the subsystem requests the driver to prepare the transfer hardware
+  *	by issuing this call
+@@ -424,6 +426,7 @@ struct spi_master {
+ 	bool                            cur_msg_prepared;
+ 	bool				cur_msg_mapped;
+ 	struct completion               xfer_completion;
++	size_t				max_dma_len;
+ 
+ 	int (*prepare_transfer_hardware)(struct spi_master *master);
+ 	int (*transfer_one_message)(struct spi_master *master,
+@@ -536,6 +539,8 @@ extern struct spi_master *spi_busnum_to_master(u16 busnum);
+  *	(optionally) changing the chipselect status, then starting
+  *	the next transfer or completing this @spi_message.
+  * @transfer_list: transfers are sequenced through @spi_message.transfers
++ * @tx_sg: Scatterlist for transmit, currently not for client use
++ * @rx_sg: Scatterlist for receive, currently not for client use
+  *
+  * SPI transfers always write the same number of bytes as they read.
+  * Protocol drivers should always provide @rx_buf and/or @tx_buf.
+@@ -603,6 +608,8 @@ struct spi_transfer {
+ 
+ 	dma_addr_t	tx_dma;
+ 	dma_addr_t	rx_dma;
++	struct sg_table tx_sg;
++	struct sg_table rx_sg;
+ 
+ 	unsigned	cs_change:1;
+ 	unsigned	tx_nbits:3;
 -- 
-     http://baruch.siach.name/blog/                  ~. .~   Tk Open Systems
-=}------------------------------------------------ooO--U--Ooo------------{=
-   - baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org - tel: +972.2.679.5364, http://www.tkos.co.il -
+1.9.rc1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

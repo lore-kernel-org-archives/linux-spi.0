@@ -1,154 +1,52 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] spi: rspi: fix build error when CONFIG_OF is not set
-Date: Mon, 3 Feb 2014 09:47:25 +0100 (CET)
-Message-ID: <alpine.DEB.2.02.1402030939520.25794@ayla.of.borg>
-References: <52EEF452.4060205@renesas.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH] spi: Add a timeout when waiting for transfers
+Date: Mon, 3 Feb 2014 09:55:33 +0100
+Message-ID: <CAMuHMdXgDAPy4aezxULQsjiRUfyE3F2_NSjuWhBiy119DSXR5A@mail.gmail.com>
+References: <1391121536-10937-1-git-send-email-broonie@kernel.org>
+	<CAMuHMdUVmL5Zq8AYPVmUyWEBTzokSMV-Xg4uFzpxr7c2uSmU7g@mail.gmail.com>
+	<20140131114935.GA22609@sirena.org.uk>
+	<CAMuHMdXLe+Ot5ntOtUC2Qynid4mv1h+UoitJuDW=Z-iyRKXCdg@mail.gmail.com>
+	<20140131122617.GC22609@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	SH-Linux <linux-sh@vger.kernel.org>, devicetree@vger.kernel.org,
-	Linux Kernel Development <linux-kernel@vger.kernel.org>
-To: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>,
-	Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <52EEF452.4060205@renesas.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140131122617.GC22609-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-	Hi Shimoda-san,
+Hi Mark,
 
-On Mon, 3 Feb 2014, Shimoda, Yoshihiro wrote:
-> This patch fixes an issue that the following build error happens when
-> the CONFIG_OF is not set:
-> 
-> drivers/spi/spi-rspi.c: In function 'rspi_probe':
-> drivers/spi/spi-rspi.c:1203:26: error: 'rspi_of_match' undeclared (first use in this function)
-> 
-> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> ---
->  This patch is based on the latest origin/topic/rspi branch in the spi.git.
-> 
->  drivers/spi/spi-rspi.c |    1 +
->  1 files changed, 1 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-> index 34ad4bc..e5cfc3d 100644
-> --- a/drivers/spi/spi-rspi.c
-> +++ b/drivers/spi/spi-rspi.c
-> @@ -1164,6 +1164,7 @@ static int rspi_parse_dt(struct device *dev, struct spi_master *master)
->  	return 0;
->  }
->  #else
-> +#define rspi_of_match	NULL
->  static inline int rspi_parse_dt(struct device *dev, struct spi_master *master)
->  {
->  	return -EINVAL;
-> -- 
-> 1.7.1
+On Fri, Jan 31, 2014 at 1:26 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Jan 31, 2014 at 01:00:31PM +0100, Geert Uytterhoeven wrote:
+>> One other thing: I haven't tried your patch yet, but I'm afraid the 10 ms
+>> may be too small.
+>
+>> E.g. with PIO-based RSPI I don't get more than 2 Mbps, even though
+>> spi-max-frequency = <30000000>, due to the PIO and interrupt overhead.
+>> Hence a 1 MiB read would take ca. 4s, while your timeout would be 300 ms.
+>
+> Hrm, I wouldn't have expected something doing PIO in more than one burst
+> to be letting the transfer run in the background.  Though I suppose that
+> might make sense in some situations...
 
-Thanks, obviously I missed that of_match_device() still uses the ID table
-parameter if CONFIG_OF=n :-(
-
-Below I have two alternative solutions:
-  1. Uses rspi_of_match() to nullify the ID table pointer, like is done in
-     the platform_driver structure,
-  2. Fixes it at the OF subsystem level, by nullifying the ID table pointer
-     inside of_match_device().
-
-If 2 is accepted, drivers don't have to care about this anymore.
-
-What do you think?
-
->From 060b8577e95441ee3b29e966a9fdd19b2a870bdf Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Date: Mon, 3 Feb 2014 09:22:06 +0100
-Subject: [PATCH 1/2] spi: rspi: fix build error when CONFIG_OF is not set
-
-If CONFIG_OF=n:
-
-drivers/spi/spi-rspi.c: In function 'rspi_probe':
-drivers/spi/spi-rspi.c:1203:26: error: 'rspi_of_match' undeclared (first use in this function)
-drivers/spi/spi-rspi.c:1203:26: note: each undeclared identifier is reported only once for each function it appears in
-
-Use of_match_ptr() to fix this.
-
-Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
----
- drivers/spi/spi-rspi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 1c3aed63a2e0..df637184f6f0 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1200,7 +1200,7 @@ static int rspi_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	}
- 
--	of_id = of_match_device(rspi_of_match, &pdev->dev);
-+	of_id = of_match_device(of_match_ptr(rspi_of_match), &pdev->dev);
- 	if (of_id) {
- 		ops = of_id->data;
- 		ret = rspi_parse_dt(&pdev->dev, master);
--- 
-1.7.9.5
-
-
->From 477ab825d43524959d68c3974e6e9536bd83bcde Mon Sep 17 00:00:00 2001
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Date: Mon, 3 Feb 2014 09:27:40 +0100
-Subject: [PATCH 2/2] [RFC] of/device: Nullify match table in
- of_match_device() for CONFIG_OF=n
-
-If the of_device_id table inside a device driver is protected by #ifdef
-CONFIG_OF, the driver still has to provide a dummy declaration of the
-table, or wrap it inside of_match_ptr(), when calling of_match_device()
-in the CONFIG_OF=n case, else the driver fails to compile with e.g.
-
-drivers/spi/spi-rspi.c: In function 'rspi_probe':
-drivers/spi/spi-rspi.c:1203:26: error: 'rspi_of_match' undeclared (first use in this function)
-drivers/spi/spi-rspi.c:1203:26: note: each undeclared identifier is reported only once for each function it appears in
-
-Make of_match_device() nullify the table pointer if CONFIG_OF=n to fix
-this.
-
-Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
----
- include/linux/of_device.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/of_device.h b/include/linux/of_device.h
-index 82ce324fdce7..dac8bd2890ca 100644
---- a/include/linux/of_device.h
-+++ b/include/linux/of_device.h
-@@ -72,11 +72,13 @@ static inline int of_device_uevent_modalias(struct device *dev,
- 
- static inline void of_device_node_put(struct device *dev) { }
- 
--static inline const struct of_device_id *of_match_device(
-+static inline const struct of_device_id *__of_match_device(
- 		const struct of_device_id *matches, const struct device *dev)
- {
- 	return NULL;
- }
-+#define of_match_device(matches, dev)	\
-+	__of_match_device(of_match_ptr(matches), (dev))
- 
- static inline struct device_node *of_cpu_device_node_get(int cpu)
- {
--- 
-1.7.9.5
+While I've been thinking about moving more code to the interrupt handler,
+the current RSPI transfer_one() is indeed still synchronous, so the timeout
+doesn't apply yet.
 
 Gr{oetje,eeting}s,
 
-						Geert
+                        Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

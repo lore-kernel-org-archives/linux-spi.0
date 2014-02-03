@@ -1,57 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: Do not configure the controller on
- each transfer unless needed
-Date: Mon, 3 Feb 2014 18:26:01 +0000
-Message-ID: <20140203182601.GI22609@sirena.org.uk>
-References: <1391354652-32092-1-git-send-email-stefan.sorensen@spectralink.com>
+Subject: Re: [PATCH] spi: omap2-mcspi: Support divide-by-n clock dividers
+Date: Mon, 3 Feb 2014 18:26:11 +0000
+Message-ID: <20140203182611.GJ22609@sirena.org.uk>
+References: <1391354665-32146-1-git-send-email-stefan.sorensen@spectralink.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="SUygiN5FMnIY1JbD"
+	protocol="application/pgp-signature"; boundary="E2AOuUyqcJWq6+RR"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Stefan =?iso-8859-1?Q?S=F8rensen?=
 	<stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1391354652-32092-1-git-send-email-stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
+In-Reply-To: <1391354665-32146-1-git-send-email-stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---SUygiN5FMnIY1JbD
+--E2AOuUyqcJWq6+RR
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 02, 2014 at 04:24:12PM +0100, Stefan S=F8rensen wrote:
-> spi_transfer->speed_hz and spi_transfer->bits_per_word used to only be se=
-t when
-> not using the default settings but are not set on every transfer, causing
+On Sun, Feb 02, 2014 at 04:24:25PM +0100, Stefan S=F8rensen wrote:
+> Currently a divide-by-2^n clock is used, causing a very coarse
+> clock selection, i.e. a 10MHz device will need to use a 6MHz
+> clock. The McSPI can also use a divide-by-n clock, this patch
+> adds support for selecting that when possible.
 
 Applied, thanks.
 
---SUygiN5FMnIY1JbD
+--E2AOuUyqcJWq6+RR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS7982AAoJELSic+t+oim9YlgP/1YhI7lktatikbrsXU0/79R5
-LdZ1UhnHSDRmXVaqTS0VE9kQe9Hd5B+hw3d57d65Yv7W3uR0OWaB7XC/Vgv2H/C4
-WLeUjqWZWSer5pFUPSlMdpALdNqdFb/K1ErOtN8Mct4FhtKQ68zmLgqdj1u9LWHX
-dahN82tef2umR5Eu0A2f2HRqER+DfCBE6R6WKz7LqLOJM4SZQ45j2wpiqtS0I0ca
-r/pkyvmF808cPI0x4iNX/DN9kQl/RTbhEN9ZzGB5KYKnFhgYaSvk6Kas1H+QmAxJ
-GHDf/0p0PVdnUJVrWLa2wGOpfhCzJDI9iYAgcniogM1vbNqlJRtwoQrmzB1BA3Wb
-rM1w50Yx5D3dSSRPNYQRNelaHesxe+jWzHVG9ZAPt8lrpYFurbDnegsr1r37/D0P
-AMHOPnsT+1usLA9bNruLwh6alASdnJee0oM27ADeZEMaZUN9K7ibK191ZE5ruC8i
-+sclvfB/gFGLM5hplbdrPkM050u7Z98JqaU7CgKf49oTDaDNsZlQpyNHP3tE1a5E
-tGSNb4Ql8yn/onh4pxWF0CHp27Gqrca5KfQl6dZbbq/xkln2Bc+KgpUYsqtdSqob
-LoxNUlRPfPxXjxYmrsAhftDQdglg/rB7kDBYGexrmEkRLrDqvrzr33M0rRLum/Pm
-YtmydXFo0TvtttTf2GKt
-=Sayj
+iQIcBAEBAgAGBQJS798/AAoJELSic+t+oim94OYQAIn9OT9clHZv3Yne2UyaNhOU
+4KCtpFYR8RNp4lmqqQrxiZk88LoRxCuDFzsGkf+zRSgjyNf6U85lHqzsjtDGUn2M
+4EhC+rRP4YPcpGfWwfbOe5ua2NpuyBg1CvhX8pt1sFW++d4xuIhfY39WCzm9nMlp
+5fv58L6OiQYSwFo10XPDFFm8RC0Z1vc8urvztOQGsDjgJGZjHLlld9B/jr65gLvj
+TJRHEehh5HchJ88L06AfBYGgCNyr5DNfpVsYZ3iolS0OpFhjaQ/UuemgHH96OkJr
+9WRs5ZXpt5u6VvVNTPLwnluxnkq0UheyEJdbp+Va4Gs0+u3jYU8trcPc42qnRbpE
+FDKPIQhOu49aCKol+R9wmOc7TjqVRAn8UPQs98pUtTz2Al3g5d+b1Q+GxJztu/rQ
+VkTFsTV+N1B6n46c1wB12ktj7YOWFNmb6ano7QjOBITbaOHuYODzDFEolcaWfcjG
+zgJgpwjOShO5apoRyQ73SChS7n6Tr9LFZoZT16cBa6OGGRMyWtUXnaGki6ewiboA
+DpwQ6LAkk+RaBC9qy4QQUx89QhkLb3SYxvAXPQeurvoZ2b3P1hj261Pt134xskS7
+pqqerqBnPtecGB+iAc+kPXFS3sCWs0raWddy6bGMCFT25kMk+Q73fhpPGkV5VTAa
+Ol4czbSV4UmeXKVwlGQt
+=YYXd
 -----END PGP SIGNATURE-----
 
---SUygiN5FMnIY1JbD--
+--E2AOuUyqcJWq6+RR--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

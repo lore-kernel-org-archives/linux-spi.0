@@ -1,58 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: Support divide-by-n clock dividers
-Date: Mon, 3 Feb 2014 18:26:11 +0000
-Message-ID: <20140203182611.GJ22609@sirena.org.uk>
-References: <1391354665-32146-1-git-send-email-stefan.sorensen@spectralink.com>
+From: Rob Herring <robherring2@gmail.com>
+Subject: Re: [PATCH] spi: rspi: fix build error when CONFIG_OF is not set
+Date: Mon, 3 Feb 2014 15:45:16 -0600
+Message-ID: <CAL_JsqK7F7a5PSoE1aZTna35wP1SXs4BbpWxsSyuT5b2Cd8cQA@mail.gmail.com>
+References: <52EEF452.4060205@renesas.com>
+	<alpine.DEB.2.02.1402030939520.25794@ayla.of.borg>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="E2AOuUyqcJWq6+RR"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Stefan =?iso-8859-1?Q?S=F8rensen?=
-	<stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1391354665-32146-1-git-send-email-stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>,
+	Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	SH-Linux <linux-sh@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	Linux Kernel Development <linux-kernel@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <alpine.DEB.2.02.1402030939520.25794@ayla.of.borg>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Mon, Feb 3, 2014 at 2:47 AM, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+>         Hi Shimoda-san,
+>
+> On Mon, 3 Feb 2014, Shimoda, Yoshihiro wrote:
+>> This patch fixes an issue that the following build error happens when
+>> the CONFIG_OF is not set:
+>>
+>> drivers/spi/spi-rspi.c: In function 'rspi_probe':
+>> drivers/spi/spi-rspi.c:1203:26: error: 'rspi_of_match' undeclared (first use in this function)
+>>
+>> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+>> ---
+>>  This patch is based on the latest origin/topic/rspi branch in the spi.git.
+>>
+>>  drivers/spi/spi-rspi.c |    1 +
+>>  1 files changed, 1 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+>> index 34ad4bc..e5cfc3d 100644
+>> --- a/drivers/spi/spi-rspi.c
+>> +++ b/drivers/spi/spi-rspi.c
+>> @@ -1164,6 +1164,7 @@ static int rspi_parse_dt(struct device *dev, struct spi_master *master)
+>>       return 0;
+>>  }
+>>  #else
+>> +#define rspi_of_match        NULL
+>>  static inline int rspi_parse_dt(struct device *dev, struct spi_master *master)
+>>  {
+>>       return -EINVAL;
+>> --
+>> 1.7.1
+>
+> Thanks, obviously I missed that of_match_device() still uses the ID table
+> parameter if CONFIG_OF=n :-(
+>
+> Below I have two alternative solutions:
+>   1. Uses rspi_of_match() to nullify the ID table pointer, like is done in
+>      the platform_driver structure,
+>   2. Fixes it at the OF subsystem level, by nullifying the ID table pointer
+>      inside of_match_device().
+>
+> If 2 is accepted, drivers don't have to care about this anymore.
+>
+> What do you think?
 
---E2AOuUyqcJWq6+RR
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'll apply the 2nd one.
 
-On Sun, Feb 02, 2014 at 04:24:25PM +0100, Stefan S=F8rensen wrote:
-> Currently a divide-by-2^n clock is used, causing a very coarse
-> clock selection, i.e. a 10MHz device will need to use a 6MHz
-> clock. The McSPI can also use a divide-by-n clock, this patch
-> adds support for selecting that when possible.
-
-Applied, thanks.
-
---E2AOuUyqcJWq6+RR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS798/AAoJELSic+t+oim94OYQAIn9OT9clHZv3Yne2UyaNhOU
-4KCtpFYR8RNp4lmqqQrxiZk88LoRxCuDFzsGkf+zRSgjyNf6U85lHqzsjtDGUn2M
-4EhC+rRP4YPcpGfWwfbOe5ua2NpuyBg1CvhX8pt1sFW++d4xuIhfY39WCzm9nMlp
-5fv58L6OiQYSwFo10XPDFFm8RC0Z1vc8urvztOQGsDjgJGZjHLlld9B/jr65gLvj
-TJRHEehh5HchJ88L06AfBYGgCNyr5DNfpVsYZ3iolS0OpFhjaQ/UuemgHH96OkJr
-9WRs5ZXpt5u6VvVNTPLwnluxnkq0UheyEJdbp+Va4Gs0+u3jYU8trcPc42qnRbpE
-FDKPIQhOu49aCKol+R9wmOc7TjqVRAn8UPQs98pUtTz2Al3g5d+b1Q+GxJztu/rQ
-VkTFsTV+N1B6n46c1wB12ktj7YOWFNmb6ano7QjOBITbaOHuYODzDFEolcaWfcjG
-zgJgpwjOShO5apoRyQ73SChS7n6Tr9LFZoZT16cBa6OGGRMyWtUXnaGki6ewiboA
-DpwQ6LAkk+RaBC9qy4QQUx89QhkLb3SYxvAXPQeurvoZ2b3P1hj261Pt134xskS7
-pqqerqBnPtecGB+iAc+kPXFS3sCWs0raWddy6bGMCFT25kMk+Q73fhpPGkV5VTAa
-Ol4czbSV4UmeXKVwlGQt
-=YYXd
------END PGP SIGNATURE-----
-
---E2AOuUyqcJWq6+RR--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Rob

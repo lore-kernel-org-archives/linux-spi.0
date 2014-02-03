@@ -1,52 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: clps711x: Simplify handling of RX & TX buffers
-Date: Mon, 3 Feb 2014 18:24:59 +0000
-Message-ID: <20140203182459.GH22609@sirena.org.uk>
-References: <1391324390-17547-1-git-send-email-shc_work@mail.ru>
+Subject: Re: [PATCH] spi: omap2-mcspi: Do not configure the controller on
+ each transfer unless needed
+Date: Mon, 3 Feb 2014 18:26:01 +0000
+Message-ID: <20140203182601.GI22609@sirena.org.uk>
+References: <1391354652-32092-1-git-send-email-stefan.sorensen@spectralink.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="h7PDjUG0eb3vQUSn"
+	protocol="application/pgp-signature"; boundary="SUygiN5FMnIY1JbD"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+To: Stefan =?iso-8859-1?Q?S=F8rensen?=
+	<stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1391324390-17547-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
+In-Reply-To: <1391354652-32092-1-git-send-email-stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---h7PDjUG0eb3vQUSn
-Content-Type: text/plain; charset=us-ascii
+--SUygiN5FMnIY1JbD
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Feb 02, 2014 at 10:59:48AM +0400, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+On Sun, Feb 02, 2014 at 04:24:12PM +0100, Stefan S=F8rensen wrote:
+> spi_transfer->speed_hz and spi_transfer->bits_per_word used to only be se=
+t when
+> not using the default settings but are not set on every transfer, causing
 
-Applied all, thanks.
+Applied, thanks.
 
---h7PDjUG0eb3vQUSn
+--SUygiN5FMnIY1JbD
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS7974AAoJELSic+t+oim9SDIQAJvVoCN2l7p3Cm6tHi+6XGOM
-8/vW0jY0MbI5gWi2mTS+vPrhRrVlbQ9XI2FpyP0oE/22fY/mytnqdUDMtCtVmOm6
-5U30S7PYMl69SwhQkXWppWcHwscbf8xxM9KOIgmzjmoYsW6tYDsLqL82F8sJBKOc
-CL0lJOh3f3eSONMWrxBe5ifHlghwygVDH75vrVlSL3CtjnFgFP/RgN+vKlOW8hfc
-4wDRrVDrG6YLBN4CHrfKAug8jEUkgDUctzTFckXXwOYknWeKJCqemgRHMIt91uVB
-gFjG1OBsYNanvGqZXV/6o8RNWIANWh8IPEbTMwGKJBpkHl65rdTULKR1g8C6Zksf
-xIcFTRYQtCGo9iBO5GmaCUsvn0O2fJSD2GFJ1wweNtQSKphC64io7BQygS0Nny11
-fjMKDmm291wn9Ew040+vXKDhkqkF0YUdwLGOytvpcLIauZjZ4BLdCiiqvLJ4b8KK
-YhEfByYeFSu3f/Kkkb3RnWlSzULYO6nuxiGmT7Ez89ZFfYm0H/JtMUwlaeZUUucJ
-8l0qyD86elAvuMPMFV8+66wxxZQok0rXahYCBLAb59BZffDQo0DcnzKY7BRW+vPe
-Gj+Z4IeY2h2Q6PBzRPCHaG9Md6zzjCJ1u03K1O8zOa9nlt8w/dPbBRKyxwwNobXK
-UJw8G22sNKyv/qSxDI4s
-=A/E+
+iQIcBAEBAgAGBQJS7982AAoJELSic+t+oim9YlgP/1YhI7lktatikbrsXU0/79R5
+LdZ1UhnHSDRmXVaqTS0VE9kQe9Hd5B+hw3d57d65Yv7W3uR0OWaB7XC/Vgv2H/C4
+WLeUjqWZWSer5pFUPSlMdpALdNqdFb/K1ErOtN8Mct4FhtKQ68zmLgqdj1u9LWHX
+dahN82tef2umR5Eu0A2f2HRqER+DfCBE6R6WKz7LqLOJM4SZQ45j2wpiqtS0I0ca
+r/pkyvmF808cPI0x4iNX/DN9kQl/RTbhEN9ZzGB5KYKnFhgYaSvk6Kas1H+QmAxJ
+GHDf/0p0PVdnUJVrWLa2wGOpfhCzJDI9iYAgcniogM1vbNqlJRtwoQrmzB1BA3Wb
+rM1w50Yx5D3dSSRPNYQRNelaHesxe+jWzHVG9ZAPt8lrpYFurbDnegsr1r37/D0P
+AMHOPnsT+1usLA9bNruLwh6alASdnJee0oM27ADeZEMaZUN9K7ibK191ZE5ruC8i
++sclvfB/gFGLM5hplbdrPkM050u7Z98JqaU7CgKf49oTDaDNsZlQpyNHP3tE1a5E
+tGSNb4Ql8yn/onh4pxWF0CHp27Gqrca5KfQl6dZbbq/xkln2Bc+KgpUYsqtdSqob
+LoxNUlRPfPxXjxYmrsAhftDQdglg/rB7kDBYGexrmEkRLrDqvrzr33M0rRLum/Pm
+YtmydXFo0TvtttTf2GKt
+=Sayj
 -----END PGP SIGNATURE-----
 
---h7PDjUG0eb3vQUSn--
+--SUygiN5FMnIY1JbD--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

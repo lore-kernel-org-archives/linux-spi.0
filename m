@@ -1,98 +1,154 @@
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
-Subject: Re: [PATCH 0/3] spi: core: Introduce devm_spi_alloc_master
-Date: Sun, 2 Feb 2014 15:54:27 +0100
-Message-ID: <20140202145427.GB3157@lukather>
-References: <1391163792-21819-1-git-send-email-maxime.ripard@free-electrons.com>
- <20140131121215.GB22609@sirena.org.uk>
- <20140131133111.GF2950@lukather>
- <20140201173841.GU22609@sirena.org.uk>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] spi: rspi: fix build error when CONFIG_OF is not set
+Date: Mon, 3 Feb 2014 09:47:25 +0100 (CET)
+Message-ID: <alpine.DEB.2.02.1402030939520.25794@ayla.of.borg>
+References: <52EEF452.4060205@renesas.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="uZ3hkaAS1mZxFaxD"
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20140201173841.GU22609@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	SH-Linux <linux-sh@vger.kernel.org>, devicetree@vger.kernel.org,
+	Linux Kernel Development <linux-kernel@vger.kernel.org>
+To: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh@renesas.com>,
+	Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <52EEF452.4060205@renesas.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+	Hi Shimoda-san,
 
---uZ3hkaAS1mZxFaxD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, 3 Feb 2014, Shimoda, Yoshihiro wrote:
+> This patch fixes an issue that the following build error happens when
+> the CONFIG_OF is not set:
+> 
+> drivers/spi/spi-rspi.c: In function 'rspi_probe':
+> drivers/spi/spi-rspi.c:1203:26: error: 'rspi_of_match' undeclared (first use in this function)
+> 
+> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+> ---
+>  This patch is based on the latest origin/topic/rspi branch in the spi.git.
+> 
+>  drivers/spi/spi-rspi.c |    1 +
+>  1 files changed, 1 insertions(+), 0 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+> index 34ad4bc..e5cfc3d 100644
+> --- a/drivers/spi/spi-rspi.c
+> +++ b/drivers/spi/spi-rspi.c
+> @@ -1164,6 +1164,7 @@ static int rspi_parse_dt(struct device *dev, struct spi_master *master)
+>  	return 0;
+>  }
+>  #else
+> +#define rspi_of_match	NULL
+>  static inline int rspi_parse_dt(struct device *dev, struct spi_master *master)
+>  {
+>  	return -EINVAL;
+> -- 
+> 1.7.1
 
-Hi,
+Thanks, obviously I missed that of_match_device() still uses the ID table
+parameter if CONFIG_OF=n :-(
 
-On Sat, Feb 01, 2014 at 05:38:41PM +0000, Mark Brown wrote:
-> On Fri, Jan 31, 2014 at 02:31:11PM +0100, Maxime Ripard wrote:
-> > On Fri, Jan 31, 2014 at 12:12:15PM +0000, Mark Brown wrote:
->=20
-> > > This seems confusing - the idea here is that if we've handed the
-> > > device off to the managed function then the managed function
-> > > deals with destroying it.  Note that spi_alloc_master() says
-> > > that the put is only required after errors adding the device
-> > > (which would be the expected behaviour if you look at other
-> > > APIs).  Looking at the code I think there is an issue here but
-> > > I'm not at all clear that this is the best fix.
->=20
-> > Ah, right, spi_master_put doesn't free the memory either...
->=20
-> The memory is freed by the driver core calling the
-> spi_master_release() callback when it's safe to do so (after the
-> last reference to the device has gone away).
->=20
-> > I guess we have a few choices here, either:
-> >   - Add a devm_kzalloc to spi_alloc_master, since most of the drivers
-> >     I've been looking at fail to free the memory, this would be the
-> >     least intrusive solution. We'd still have to remove all the kfree
-> >     calls in the driver that rightfully free the memory.
-> >   - Make devm_unregister_master also call kfree on the master
-> >   - Add a kfree to my devm_put_master so that the memory is reclaimed,
-> >     which isn't the case for now.
->=20
-> > I don't have a strong preference here, maybe for the third one, since
-> > it makes obvious that it's managed and you don't have to do anything
-> > about it, while the other do not.
->=20
-> None of the above, definitely nothing to do with calling kfree() once
-> the device is registered.  We already have that free, it's not the
-> issue.  The issue is making sure that we hold references when we need
-> them and drop them when we don't.  I (or someone) needs to sit down and
-> think it through since things are a bit confused in the code.
+Below I have two alternative solutions:
+  1. Uses rspi_of_match() to nullify the ID table pointer, like is done in
+     the platform_driver structure,
+  2. Fixes it at the OF subsystem level, by nullifying the ID table pointer
+     inside of_match_device().
 
-Ok. I'll drop the patches and repost the A31 SPI patches.
+If 2 is accepted, drivers don't have to care about this anymore.
 
-Thanks!
-Maxime
+What do you think?
 
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
+>From 060b8577e95441ee3b29e966a9fdd19b2a870bdf Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Date: Mon, 3 Feb 2014 09:22:06 +0100
+Subject: [PATCH 1/2] spi: rspi: fix build error when CONFIG_OF is not set
 
---uZ3hkaAS1mZxFaxD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+If CONFIG_OF=n:
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.14 (GNU/Linux)
+drivers/spi/spi-rspi.c: In function 'rspi_probe':
+drivers/spi/spi-rspi.c:1203:26: error: 'rspi_of_match' undeclared (first use in this function)
+drivers/spi/spi-rspi.c:1203:26: note: each undeclared identifier is reported only once for each function it appears in
 
-iQIcBAEBAgAGBQJS7lwjAAoJEBx+YmzsjxAgxM8P/R3dhxFRTi63rm7U/VvmvPqZ
-j4yLxll8vuniN64ij2f5nra+eRQpZ+QgYmmJPvmPb1j4GPAHfdXNuCtU88e1ip/x
-bid9SahYP1d50RpZGcFovRcGACThysVSoOBXlazkf9ITXYeqv08sKPq20RIq1593
-MSiKSCltWKuPvaUV2TQ9Ze3JuZJGEGtp7uiDnCF4LoatHtlPXqOZdPeHr24td762
-HYqBwjoNEWKJ6WxPaLjLK3eIrfaS620sEmDZjOif39vD0+MWtfP6rqs0vpc5tAqC
-r84hPmxyN53Q9viPcdDgxcQQPCbWEhPyUFntQv47RUrhM1qslbojJeha0MUNoV2c
-7rh33PlX+zGmSJdhoxZe36ic/EqQhct33MbQOODiATQdTxYPueesyKpHPrninOfT
-3k1JUtTnUGR8VRUxgNgHZayeF5BLQiOb/5d4t6OvFZ8Pj7tU53aiMh49HuYdSd51
-umXOVMFn1flYEhOaCzkn54bUruMVwZZw1nDPb2+6530UxQNVoD5tfCfDBEuoafrG
-flPkOI5Ht4EyIp36aiJ/WDtWJuskmaa1YKWo449SVAcD2vBu1n2Su6UcoqXGv1dd
-a9tONsY1zKASmAGT/XSaMD6GcN0OzZx81FfquP7tZwnDkK6cAOCyqdJCILXHS0Yp
-GiSCRWgHfYvSkqGDlzLs
-=okiQ
------END PGP SIGNATURE-----
+Use of_match_ptr() to fix this.
 
---uZ3hkaAS1mZxFaxD--
+Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+---
+ drivers/spi/spi-rspi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 1c3aed63a2e0..df637184f6f0 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -1200,7 +1200,7 @@ static int rspi_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 	}
+ 
+-	of_id = of_match_device(rspi_of_match, &pdev->dev);
++	of_id = of_match_device(of_match_ptr(rspi_of_match), &pdev->dev);
+ 	if (of_id) {
+ 		ops = of_id->data;
+ 		ret = rspi_parse_dt(&pdev->dev, master);
+-- 
+1.7.9.5
+
+
+>From 477ab825d43524959d68c3974e6e9536bd83bcde Mon Sep 17 00:00:00 2001
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Date: Mon, 3 Feb 2014 09:27:40 +0100
+Subject: [PATCH 2/2] [RFC] of/device: Nullify match table in
+ of_match_device() for CONFIG_OF=n
+
+If the of_device_id table inside a device driver is protected by #ifdef
+CONFIG_OF, the driver still has to provide a dummy declaration of the
+table, or wrap it inside of_match_ptr(), when calling of_match_device()
+in the CONFIG_OF=n case, else the driver fails to compile with e.g.
+
+drivers/spi/spi-rspi.c: In function 'rspi_probe':
+drivers/spi/spi-rspi.c:1203:26: error: 'rspi_of_match' undeclared (first use in this function)
+drivers/spi/spi-rspi.c:1203:26: note: each undeclared identifier is reported only once for each function it appears in
+
+Make of_match_device() nullify the table pointer if CONFIG_OF=n to fix
+this.
+
+Reported-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+---
+ include/linux/of_device.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/of_device.h b/include/linux/of_device.h
+index 82ce324fdce7..dac8bd2890ca 100644
+--- a/include/linux/of_device.h
++++ b/include/linux/of_device.h
+@@ -72,11 +72,13 @@ static inline int of_device_uevent_modalias(struct device *dev,
+ 
+ static inline void of_device_node_put(struct device *dev) { }
+ 
+-static inline const struct of_device_id *of_match_device(
++static inline const struct of_device_id *__of_match_device(
+ 		const struct of_device_id *matches, const struct device *dev)
+ {
+ 	return NULL;
+ }
++#define of_match_device(matches, dev)	\
++	__of_match_device(of_match_ptr(matches), (dev))
+ 
+ static inline struct device_node *of_cpu_device_node_get(int cpu)
+ {
+-- 
+1.7.9.5
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

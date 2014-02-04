@@ -1,61 +1,43 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-fsl-spi.c: Fix problem with multi message
- transfers
-Date: Tue, 4 Feb 2014 11:33:50 +0000
-Message-ID: <20140204113350.GV22609@sirena.org.uk>
-References: <1391172299-30640-1-git-send-email-sr@denx.de>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="gst1TLx4aVAjus+f"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Holger Brunck <holger.brunck-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org>
-To: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1391172299-30640-1-git-send-email-sr-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH v3 03/11] ARM: shmobile: genmai defconfig: Enable RSPI
+Date: Tue,  4 Feb 2014 16:23:57 +0100
+Message-ID: <1391527445-14881-4-git-send-email-geert@linux-m68k.org>
+References: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
---gst1TLx4aVAjus+f
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+---
+v3:
+  - Rebased on top of renesas-devel-v3.14-rc1-20140204
+v2:
+  - No changes
 
-On Fri, Jan 31, 2014 at 01:44:59PM +0100, Stefan Roese wrote:
-> When used via spidev with more than one messages to tranfer via
-> SPI_IOC_MESSAGE the current implementation would return with
-> -EINVAL, since bits_per_word and speed_hz are set in all
-> transfer structs. And in the 2nd loop status will stay at
-> -EINVAL as its not overwritten again via fsl_spi_setup_transfer().
+ arch/arm/configs/genmai_defconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
-Applied, but the driver really ought to be updated to support
-configuration changes here.  This also isn't anything to do with spidev,
-any client can do this.
+diff --git a/arch/arm/configs/genmai_defconfig b/arch/arm/configs/genmai_defconfig
+index c56a7ff1dcd7..5ee6ac0931f7 100644
+--- a/arch/arm/configs/genmai_defconfig
++++ b/arch/arm/configs/genmai_defconfig
+@@ -81,6 +81,8 @@ CONFIG_SERIAL_SH_SCI_NR_UARTS=10
+ CONFIG_SERIAL_SH_SCI_CONSOLE=y
+ # CONFIG_HW_RANDOM is not set
+ CONFIG_I2C_SH_MOBILE=y
++CONFIG_SPI=y
++CONFIG_SPI_RSPI=y
+ # CONFIG_HWMON is not set
+ CONFIG_THERMAL=y
+ CONFIG_RCAR_THERMAL=y
+-- 
+1.7.9.5
 
---gst1TLx4aVAjus+f
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS8NAbAAoJELSic+t+oim9DccP/jxXxNTY1op6yAj2ZjZP/g3q
-4/I5MWACxHNVL1f4utZRLp7x4ENDuKkD08dvdDoalu4auafLXppl+vnM4B/tb54Z
-Xm9nEowhu7iuJZ1+yUfaWvgSbqd/FEDFU10S3bCevAhIqtzzPVutINhk/qtOirGQ
-cXVwoMuOYzbWw5OfFku32Z2G3ohelqe/Ah39xbG1tCpJKJjEwXBA8sKYF1k+N5F0
-0BlKOoqGeSOjiry0Nob+RMDXUPrsh0tE9aXX2hT47mfLEeTObWF9beybeDLAVZfQ
-c0Ipzr+Y5ySRZTACLNdQjezm3i6yXzz4WI3ZFE1R0cTejhjvWXqnnpu6npnx56vi
-0Hu0clzU59SnGU7qVIqVUq+wIXWMRrFKrsCMi8JH1h1wXIiinOWqvEhji9bm8PbV
-7lHFkjCXfRNcJ5yVH+gtpG+hZaCeK98wHLs5a6SnnTpgRq3eHxHOik5HJkO3fA67
-B0D0vO+PD1lzLABTmXWGUgjI9AViMaq71t674K+0v5Bo733GoZrBmr3uRJz61NST
-i7/7Z/4wx6orJrBpR/envbV1V3b2/+K33gahIXRkIzKTpw++0gfKCv5uHyrVxRTN
-mD9ZooSuW8rUfEsZUsR3m856JE8ltNxwmYYOoyQKUMq92c35rT7C7A6BmmeGdinb
-AcNWlNrMjzrul9UZREZ4
-=z+lS
------END PGP SIGNATURE-----
-
---gst1TLx4aVAjus+f--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

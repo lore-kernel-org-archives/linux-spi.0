@@ -1,151 +1,56 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH v5 05/11] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
-Date: Tue,  4 Feb 2014 16:23:59 +0100
-Message-ID: <1391527445-14881-6-git-send-email-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH v4 08/11] ARM: shmobile: koelsch defconfig: Enable RSPI and MTD_M25P80
+Date: Tue,  4 Feb 2014 16:24:02 +0100
+Message-ID: <1391527445-14881-9-git-send-email-geert@linux-m68k.org>
 References: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1391527445-14881-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+This enables support for the Spansion s25fl512s SPI FLASH on QSPI.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 ---
-v5:
-  - Rebased on top of renesas-devel-v3.14-rc1-20140204
 v4:
-  - Switch to named IRQs
+  - Rebased on top of renesas-devel-v3.14-rc1-20140204
 v3:
   - No changes
 v2:
   - No changes
 
- arch/arm/boot/dts/r7s72100-genmai-reference.dts |    2 +-
- arch/arm/boot/dts/r7s72100.dtsi                 |   75 +++++++++++++++++++++++
- 2 files changed, 76 insertions(+), 1 deletion(-)
+ arch/arm/configs/koelsch_defconfig |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/boot/dts/r7s72100-genmai-reference.dts b/arch/arm/boot/dts/r7s72100-genmai-reference.dts
-index da19c70ed82b..0849017e9d2f 100644
---- a/arch/arm/boot/dts/r7s72100-genmai-reference.dts
-+++ b/arch/arm/boot/dts/r7s72100-genmai-reference.dts
-@@ -9,7 +9,7 @@
-  */
- 
- /dts-v1/;
--/include/ "r7s72100.dtsi"
-+#include "r7s72100.dtsi"
- 
- / {
- 	model = "Genmai";
-diff --git a/arch/arm/boot/dts/r7s72100.dtsi b/arch/arm/boot/dts/r7s72100.dtsi
-index 46b82aa7dc4e..9be67a16fc6f 100644
---- a/arch/arm/boot/dts/r7s72100.dtsi
-+++ b/arch/arm/boot/dts/r7s72100.dtsi
-@@ -8,12 +8,22 @@
-  * kind, whether express or implied.
-  */
- 
-+#include <dt-bindings/interrupt-controller/irq.h>
-+
- / {
- 	compatible = "renesas,r7s72100";
- 	interrupt-parent = <&gic>;
- 	#address-cells = <1>;
- 	#size-cells = <1>;
- 
-+	aliases {
-+		spi0 = &spi0;
-+		spi1 = &spi1;
-+		spi2 = &spi2;
-+		spi3 = &spi3;
-+		spi4 = &spi4;
-+	};
-+
- 	cpus {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
-@@ -33,4 +43,69 @@
- 		reg = <0xe8201000 0x1000>,
- 			<0xe8202000 0x1000>;
- 	};
-+
-+	spi0: spi@e800c800 {
-+		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
-+		reg = <0xe800c800 0x24>;
-+		interrupts = <0 238 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 239 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 240 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-names = "error", "rx", "tx";
-+		num-cs = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
-+
-+	spi1: spi@e800d000 {
-+		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
-+		reg = <0xe800d000 0x24>;
-+		interrupts = <0 241 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 242 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 243 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-names = "error", "rx", "tx";
-+		num-cs = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
-+
-+	spi2: spi@e800d800 {
-+		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
-+		reg = <0xe800d800 0x24>;
-+		interrupts = <0 244 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 245 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 246 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-names = "error", "rx", "tx";
-+		num-cs = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
-+
-+	spi3: spi@e800e000 {
-+		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
-+		reg = <0xe800e000 0x24>;
-+		interrupts = <0 247 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 248 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 249 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-names = "error", "rx", "tx";
-+		num-cs = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
-+
-+	spi4: spi@e800e800 {
-+		compatible = "renesas,rspi-r7s72100", "renesas,rspi-rz";
-+		reg = <0xe800e800 0x24>;
-+		interrupts = <0 250 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 251 IRQ_TYPE_LEVEL_HIGH>,
-+			     <0 252 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupt-names = "error", "rx", "tx";
-+		num-cs = <1>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
-+	};
- };
+diff --git a/arch/arm/configs/koelsch_defconfig b/arch/arm/configs/koelsch_defconfig
+index 30157975998a..ca8aa070befe 100644
+--- a/arch/arm/configs/koelsch_defconfig
++++ b/arch/arm/configs/koelsch_defconfig
+@@ -40,6 +40,8 @@ CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+ CONFIG_BLK_DEV_SD=y
+ CONFIG_ATA=y
+ CONFIG_SATA_RCAR=y
++CONFIG_MTD=y
++CONFIG_MTD_M25P80=y
+ CONFIG_NETDEVICES=y
+ # CONFIG_NET_VENDOR_ARC is not set
+ # CONFIG_NET_CADENCE is not set
+@@ -62,6 +64,8 @@ CONFIG_SH_ETH=y
+ CONFIG_SERIAL_SH_SCI=y
+ CONFIG_SERIAL_SH_SCI_NR_UARTS=20
+ CONFIG_SERIAL_SH_SCI_CONSOLE=y
++CONFIG_SPI=y
++CONFIG_SPI_RSPI=y
+ # CONFIG_HWMON is not set
+ CONFIG_THERMAL=y
+ CONFIG_RCAR_THERMAL=y
 -- 
 1.7.9.5
 
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

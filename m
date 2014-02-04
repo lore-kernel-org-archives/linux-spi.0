@@ -1,83 +1,116 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH v3 10/11] ARM: shmobile: koelsch dts: Add QSPI nodes
-Date: Tue,  4 Feb 2014 16:24:04 +0100
-Message-ID: <1391527445-14881-11-git-send-email-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH v5 02/11] ARM: shmobile: genmai legacy: Add RSPI support
+Date: Tue,  4 Feb 2014 16:23:56 +0100
+Message-ID: <1391527445-14881-3-git-send-email-geert@linux-m68k.org>
 References: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	devicetree@vger.kernel.org
-To: Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1391527445-14881-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-Add pinctrl and SPI devices for QSPI on Koelsch.
-Add Spansion s25fl512s SPI FLASH and MTD partitions.
+Add RSPI platform device, resources, platform data, and SPI child.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Cc: devicetree@vger.kernel.org
+On this board, only rspi4 is in use. Its bus contains a single device
+(a wm8978 audio codec).
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
-v3:
+v5:
   - Rebased on top of renesas-devel-v3.14-rc1-20140204
+v4:
+  - The platform device basename was changed from "rspi" to "rspi-rz",
+    dropping the platform data flags in the process
+  - Switch to named IRQs
+v3:
+  - Move platform devices from setup-r7s72100.c to board-genmai.c, as
+    genmai-reference will use devices instantiated from DT
+  - Merge with "ARM: shmobile: genmai: Add RSPI children", as this now
+    touches the same file
+  - Instantiate SPI children in C on genmai only, as genmai-reference will
+    instantiate them from DT
 v2:
-  - No changes
+  - Correct platform device names ("rspi%u.0" -> "rspi.%u")
+  - Add missing platform data
+  - Correct summary (resources -> platform devices)
 
- arch/arm/boot/dts/r8a7791-koelsch.dts |   36 +++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ arch/arm/mach-shmobile/board-genmai.c |   44 +++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/arch/arm/boot/dts/r8a7791-koelsch.dts b/arch/arm/boot/dts/r8a7791-koelsch.dts
-index 74f098596b5c..d4b9bba38685 100644
---- a/arch/arm/boot/dts/r8a7791-koelsch.dts
-+++ b/arch/arm/boot/dts/r8a7791-koelsch.dts
-@@ -121,8 +121,44 @@
- 		renesas,groups = "scif1_data_d";
- 		renesas,function = "scif1";
- 	};
-+
-+	qspi_pins: spi {
-+		renesas,groups = "qspi_ctrl", "qspi_data4";
-+		renesas,function = "qspi";
-+	};
- };
+diff --git a/arch/arm/mach-shmobile/board-genmai.c b/arch/arm/mach-shmobile/board-genmai.c
+index 3e92e3c62d4c..c4064610e223 100644
+--- a/arch/arm/mach-shmobile/board-genmai.c
++++ b/arch/arm/mach-shmobile/board-genmai.c
+@@ -20,15 +20,59 @@
  
- &sata0 {
- 	status = "okay";
- };
+ #include <linux/kernel.h>
+ #include <linux/platform_device.h>
++#include <linux/spi/rspi.h>
++#include <linux/spi/spi.h>
+ #include <mach/common.h>
++#include <mach/irqs.h>
+ #include <mach/r7s72100.h>
+ #include <asm/mach-types.h>
+ #include <asm/mach/arch.h>
+ 
++/* RSPI */
++#define RSPI_RESOURCE(idx, baseaddr, irq)				\
++static const struct resource rspi##idx##_resources[] __initconst = {	\
++	DEFINE_RES_MEM(baseaddr, 0x24),					\
++	DEFINE_RES_IRQ_NAMED(irq, "error"),				\
++	DEFINE_RES_IRQ_NAMED(irq + 1, "rx"),				\
++	DEFINE_RES_IRQ_NAMED(irq + 2, "tx"),				\
++}
 +
-+&spi {
-+	pinctrl-0 = <&qspi_pins>;
-+	pinctrl-names = "default";
++RSPI_RESOURCE(0, 0xe800c800, gic_iid(270));
++RSPI_RESOURCE(1, 0xe800d000, gic_iid(273));
++RSPI_RESOURCE(2, 0xe800d800, gic_iid(276));
++RSPI_RESOURCE(3, 0xe800e000, gic_iid(279));
++RSPI_RESOURCE(4, 0xe800e800, gic_iid(282));
 +
-+	status = "okay";
-+
-+	flash: flash@0 {
-+		#address-cells = <1>;
-+		#size-cells = <1>;
-+		compatible = "spansion,s25fl512s";
-+		reg = <0>;
-+		spi-max-frequency = <30000000>;
-+		m25p,fast-read;
-+
-+		partition@0 {
-+			label = "loader";
-+			reg = <0x00000000 0x00080000>;
-+			read-only;
-+		};
-+		partition@80000 {
-+			label = "bootenv";
-+			reg = <0x00080000 0x00080000>;
-+			read-only;
-+		};
-+		partition@100000 {
-+			label = "data";
-+			reg = <0x00100000 0x03f00000>;
-+		};
-+	};
++static const struct rspi_plat_data rspi_pdata __initconst = {
++	.num_chipselect	= 1,
 +};
++
++#define r7s72100_register_rspi(idx)					   \
++	platform_device_register_resndata(&platform_bus, "rspi-rz", idx,   \
++					rspi##idx##_resources,		   \
++					ARRAY_SIZE(rspi##idx##_resources), \
++					&rspi_pdata, sizeof(rspi_pdata))
++
++static const struct spi_board_info spi_info[] __initconst = {
++	{
++		.modalias               = "wm8978",
++		.max_speed_hz           = 5000000,
++		.bus_num                = 4,
++		.chip_select            = 0,
++	},
++};
++
+ static void __init genmai_add_standard_devices(void)
+ {
+ 	r7s72100_clock_init();
+ 	r7s72100_add_dt_devices();
++
++	r7s72100_register_rspi(0);
++	r7s72100_register_rspi(1);
++	r7s72100_register_rspi(2);
++	r7s72100_register_rspi(3);
++	r7s72100_register_rspi(4);
++	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
+ }
+ 
+ static const char * const genmai_boards_compat_dt[] __initconst = {
 -- 
 1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

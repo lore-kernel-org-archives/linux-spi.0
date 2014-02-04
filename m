@@ -1,60 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 00/17] amba: PM fixups for amba bus and some amba drivers
-Date: Tue, 4 Feb 2014 18:49:09 +0000
-Message-ID: <20140204184909.GT22609@sirena.org.uk>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 00/11] ARM: shmobile: RSPI RZ and QSPI SoC and board integration
+Date: Tue, 4 Feb 2014 19:54:51 +0100
+Message-ID: <CAMuHMdUHP8ptyjXh1n+iucygfAEAZCuwwe1tB1JjrTuGrhD3Pg@mail.gmail.com>
+References: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
+	<20140204173733.GI22609@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="9LnWyBss4uQTlezA"
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1391529538-21685-1-git-send-email-ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140204173733.GI22609-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark,
 
---9LnWyBss4uQTlezA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Tue, Feb 4, 2014 at 6:37 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Tue, Feb 04, 2014 at 04:23:54PM +0100, Geert Uytterhoeven wrote:
+>>       Hi Simon, Magnus,
+>>
+>> This patch series contains SoC and board integration for
+>>   1. RSPI in the r7s72100 aka RZ/A1H SoC on the Genmai reference board,
+>>   2. QSPI in the r8a7791 aka R-Car M2 SoC on the Koelsch reference board.
+>> It was rebased on top of renesas-devel-v3.14-rc1-20140204.
+>
+> Can you please stop CCing arch/arm only patch serieses like this to the
+> SPI list - they just mean I have to go through patchwork and mark them
+> as not applicable.
 
-On Tue, Feb 04, 2014 at 04:58:41PM +0100, Ulf Hansson wrote:
+Sorry, you're right. Only a few of them contained SPI-specific code.
 
-> The fixes for the amba bus needs to be merged prior to the other, thus I think
-> it could make sense to merge this complete patchset through Russell's tree,
-> if he and the other maintainers think this is okay.
+Gr{oetje,eeting}s,
 
-What are the actual dependencies for the SPI bit?  AFAICT it's probably
-the first patch needs the bus updating?
+                        Geert
 
---9LnWyBss4uQTlezA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS8TYiAAoJELSic+t+oim9pVoP/R8rI+1Ffz2UfTaJ72AcKLgz
-gZxsn12hQIOOKoB/RXI2qF6zJj09JIsO5u47CkjJ5IaDAmCY1s5sJxqo1o1shwle
-pTWRflDp7esLDdQeitkPlfyzfELmqteUN4flCZHq19bBjN7+lAkgFoAuctJPqN8N
-QsY3qv1K35SkQ4lV6JRUpX7YS5tB6rTqOkUMct30wuDYgDqRGqt8gASl2FT/CIrG
-9kC5teiCunSstqb5zF2jEury7HdeqovRXJA2bAk5jV3ephlyKYboNsDQ+cpRBhrO
-lVzYRJ15g+8GZO1RXikum18YyRyfKPeD4RfQt5BV8ID5Z7S0JcqgmD+6vbBOJo7a
-CRv2OFO+l1czH50UjVyAA3/RUGjiRvScnd6ARLfEqdyb3sXxwltbnxn2Ja71ZRXx
-iYaGu6CKNmjhXL24JBDCDqs3biMwbGiYek8hLh4JSMapsdDnN1DhRV5JDOrHwGuK
-Ug8rflPflwBitCS1fH476MUTT9FDVg93D/RnyvN8t/HTyFj8m8az/6ojurBUK745
-t3UUUGZNvAsIQ/19yLG1Uf2WdUsVD7sLs3cvv95oYJCEd3cklR5eoBB5jqKX48aR
-Saibmy7zsYn7awBLv6NUZBkTkhSbA/h4aAmhafAdLnP7pH8SKhzgCoDPh63LFCZc
-phCnP+GmtkNuvKjagVW1
-=xvOJ
------END PGP SIGNATURE-----
-
---9LnWyBss4uQTlezA--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

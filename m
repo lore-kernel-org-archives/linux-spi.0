@@ -1,112 +1,57 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH v5 02/11] ARM: shmobile: genmai legacy: Add RSPI support
-Date: Tue,  4 Feb 2014 16:23:56 +0100
-Message-ID: <1391527445-14881-3-git-send-email-geert@linux-m68k.org>
-References: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 00/17] amba: PM fixups for amba bus and some amba drivers
+Date: Tue,  4 Feb 2014 16:58:41 +0100
+Message-ID: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+Cc: Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1391527445-14881-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+This patchset fixes the PM problems you yet when combining CONFIG_PM_SLEEP and
+CONFIG_PM_RUNTIME. In principle these drivers did not manage to put it's devices
+into low power state at system suspend, which then this patchset intend to fix.
 
-Add RSPI platform device, resources, platform data, and SPI child.
+Both the drivers and the amba bus converts to the new SET_PM_RUNTIME_PM_OPS
+macro while setting up the runtime PM callbacks, which is intended to be used
+for solving these kind of issues.
 
-On this board, only rspi4 is in use. Its bus contains a single device
-(a wm8978 audio codec).
+The fixes for the amba bus needs to be merged prior to the other, thus I think
+it could make sense to merge this complete patchset through Russell's tree,
+if he and the other maintainers think this is okay.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
----
-v5:
-  - Rebased on top of renesas-devel-v3.14-rc1-20140204
-v4:
-  - The platform device basename was changed from "rspi" to "rspi-rz",
-    dropping the platform data flags in the process
-  - Switch to named IRQs
-v3:
-  - Move platform devices from setup-r7s72100.c to board-genmai.c, as
-    genmai-reference will use devices instantiated from DT
-  - Merge with "ARM: shmobile: genmai: Add RSPI children", as this now
-    touches the same file
-  - Instantiate SPI children in C on genmai only, as genmai-reference will
-    instantiate them from DT
-v2:
-  - Correct platform device names ("rspi%u.0" -> "rspi.%u")
-  - Add missing platform data
-  - Correct summary (resources -> platform devices)
+Ulf Hansson (17):
+  amba: Let runtime PM callbacks be available for CONFIG_PM
+  amba: Add late and early PM callbacks
+  mmc: mmci: Mask IRQs for all variants during runtime suspend
+  mmc: mmci: Let runtime PM callbacks be available for CONFIG_PM
+  mmc: mmci: Put the device into low power state at system suspend
+  spi: pl022: Let runtime PM callbacks be available for CONFIG_PM
+  spi: pl022: Don't ignore power domain and amba bus at system suspend
+  spi: pl022: Fully gate clocks at request inactivity
+  spi: pl022: Simplify clock handling
+  spi: pl022: Remove redundant pinctrl to default state in probe
+  i2c: nomadik: Convert to devm functions
+  i2c: nomadik: Remove redundant call to pm_runtime_disable
+  i2c: nomadik: Leave probe with the device in active state
+  i2c: nomadik: Fixup deployment of runtime PM
+  i2c: nomadik: Convert to late and early system PM callbacks
+  i2c: nomadik: Remove busy check for transfers at suspend late
+  i2c: nomadik: Fixup system suspend
 
- arch/arm/mach-shmobile/board-genmai.c |   44 +++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ drivers/amba/bus.c               |   10 ++-
+ drivers/i2c/busses/i2c-nomadik.c |  146 ++++++++++++++++++--------------------
+ drivers/mmc/host/mmci.c          |   72 ++++++++++---------
+ drivers/spi/spi-pl022.c          |   95 +++++++++++--------------
+ 4 files changed, 159 insertions(+), 164 deletions(-)
 
-diff --git a/arch/arm/mach-shmobile/board-genmai.c b/arch/arm/mach-shmobile/board-genmai.c
-index 3e92e3c62d4c..c4064610e223 100644
---- a/arch/arm/mach-shmobile/board-genmai.c
-+++ b/arch/arm/mach-shmobile/board-genmai.c
-@@ -20,15 +20,59 @@
- 
- #include <linux/kernel.h>
- #include <linux/platform_device.h>
-+#include <linux/spi/rspi.h>
-+#include <linux/spi/spi.h>
- #include <mach/common.h>
-+#include <mach/irqs.h>
- #include <mach/r7s72100.h>
- #include <asm/mach-types.h>
- #include <asm/mach/arch.h>
- 
-+/* RSPI */
-+#define RSPI_RESOURCE(idx, baseaddr, irq)				\
-+static const struct resource rspi##idx##_resources[] __initconst = {	\
-+	DEFINE_RES_MEM(baseaddr, 0x24),					\
-+	DEFINE_RES_IRQ_NAMED(irq, "error"),				\
-+	DEFINE_RES_IRQ_NAMED(irq + 1, "rx"),				\
-+	DEFINE_RES_IRQ_NAMED(irq + 2, "tx"),				\
-+}
-+
-+RSPI_RESOURCE(0, 0xe800c800, gic_iid(270));
-+RSPI_RESOURCE(1, 0xe800d000, gic_iid(273));
-+RSPI_RESOURCE(2, 0xe800d800, gic_iid(276));
-+RSPI_RESOURCE(3, 0xe800e000, gic_iid(279));
-+RSPI_RESOURCE(4, 0xe800e800, gic_iid(282));
-+
-+static const struct rspi_plat_data rspi_pdata __initconst = {
-+	.num_chipselect	= 1,
-+};
-+
-+#define r7s72100_register_rspi(idx)					   \
-+	platform_device_register_resndata(&platform_bus, "rspi-rz", idx,   \
-+					rspi##idx##_resources,		   \
-+					ARRAY_SIZE(rspi##idx##_resources), \
-+					&rspi_pdata, sizeof(rspi_pdata))
-+
-+static const struct spi_board_info spi_info[] __initconst = {
-+	{
-+		.modalias               = "wm8978",
-+		.max_speed_hz           = 5000000,
-+		.bus_num                = 4,
-+		.chip_select            = 0,
-+	},
-+};
-+
- static void __init genmai_add_standard_devices(void)
- {
- 	r7s72100_clock_init();
- 	r7s72100_add_dt_devices();
-+
-+	r7s72100_register_rspi(0);
-+	r7s72100_register_rspi(1);
-+	r7s72100_register_rspi(2);
-+	r7s72100_register_rspi(3);
-+	r7s72100_register_rspi(4);
-+	spi_register_board_info(spi_info, ARRAY_SIZE(spi_info));
- }
- 
- static const char * const genmai_boards_compat_dt[] __initconst = {
 -- 
 1.7.9.5
 

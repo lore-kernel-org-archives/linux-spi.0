@@ -1,110 +1,76 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH RFT] spi: orion: Let spi core handle checking transfer speed
-Date: Tue, 04 Feb 2014 11:05:50 +0800
-Message-ID: <1391483150.4695.3.camel@phoenix>
+From: "Shimoda, Yoshihiro" <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH] spi: rspi: fix build error when CONFIG_OF is not set
+Date: Tue, 4 Feb 2014 14:56:40 +0900
+Message-ID: <52F08118.2080904@renesas.com>
+References: <52EEF452.4060205@renesas.com> <alpine.DEB.2.02.1402030939520.25794@ayla.of.borg>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: 7bit
-Cc: Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	SH-Linux <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux Kernel Development <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <alpine.DEB.2.02.1402030939520.25794-97SZ98TBZzA1xEWliksxXw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Since commit a2fd4f9fa3b9 'spi: Support transfer speed checking in the core',
-the SPI core validates the desired speed of a given transfer against the
-minimum and maximum speeds supported by the controller.
-So we can remove the same code in this driver and let spi core handle checking
-the desired speed of a given transfer.
+Hi Geert-san,
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-orion.c | 39 ++-------------------------------------
- 1 file changed, 2 insertions(+), 37 deletions(-)
+(2014/02/03 17:47), Geert Uytterhoeven wrote:
+> 	Hi Shimoda-san,
+> 
+> On Mon, 3 Feb 2014, Shimoda, Yoshihiro wrote:
+>> This patch fixes an issue that the following build error happens when
+>> the CONFIG_OF is not set:
+>>
+>> drivers/spi/spi-rspi.c: In function 'rspi_probe':
+>> drivers/spi/spi-rspi.c:1203:26: error: 'rspi_of_match' undeclared (first use in this function)
+>>
+>> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+>> ---
+>>  This patch is based on the latest origin/topic/rspi branch in the spi.git.
+>>
+>>  drivers/spi/spi-rspi.c |    1 +
+>>  1 files changed, 1 insertions(+), 0 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+>> index 34ad4bc..e5cfc3d 100644
+>> --- a/drivers/spi/spi-rspi.c
+>> +++ b/drivers/spi/spi-rspi.c
+>> @@ -1164,6 +1164,7 @@ static int rspi_parse_dt(struct device *dev, struct spi_master *master)
+>>  	return 0;
+>>  }
+>>  #else
+>> +#define rspi_of_match	NULL
+>>  static inline int rspi_parse_dt(struct device *dev, struct spi_master *master)
+>>  {
+>>  	return -EINVAL;
+>> -- 
+>> 1.7.1
+> 
+> Thanks, obviously I missed that of_match_device() still uses the ID table
+> parameter if CONFIG_OF=n :-(
+> 
+> Below I have two alternative solutions:
+>   1. Uses rspi_of_match() to nullify the ID table pointer, like is done in
+>      the platform_driver structure,
+>   2. Fixes it at the OF subsystem level, by nullifying the ID table pointer
+>      inside of_match_device().
+> 
+> If 2 is accepted, drivers don't have to care about this anymore.
+> 
+> What do you think?
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index a362425..d432b1c 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -42,8 +42,6 @@
- struct orion_spi {
- 	struct spi_master	*master;
- 	void __iomem		*base;
--	unsigned int		max_speed;
--	unsigned int		min_speed;
- 	struct clk              *clk;
- };
- 
-@@ -320,16 +318,6 @@ static int orion_spi_transfer_one_message(struct spi_master *master,
- 			goto msg_done;
- 		}
- 
--		if (t->speed_hz && t->speed_hz < orion_spi->min_speed) {
--			dev_err(&spi->dev,
--				"message rejected : "
--				"device min speed (%d Hz) exceeds "
--				"required transfer speed (%d Hz)\n",
--				orion_spi->min_speed, t->speed_hz);
--			status = -EIO;
--			goto msg_done;
--		}
--
- 		if (par_override || t->speed_hz || t->bits_per_word) {
- 			par_override = 1;
- 			status = orion_spi_setup_transfer(spi, t);
-@@ -374,28 +362,6 @@ static int orion_spi_reset(struct orion_spi *orion_spi)
- 	return 0;
- }
- 
--static int orion_spi_setup(struct spi_device *spi)
--{
--	struct orion_spi *orion_spi;
--
--	orion_spi = spi_master_get_devdata(spi->master);
--
--	if ((spi->max_speed_hz == 0)
--			|| (spi->max_speed_hz > orion_spi->max_speed))
--		spi->max_speed_hz = orion_spi->max_speed;
--
--	if (spi->max_speed_hz < orion_spi->min_speed) {
--		dev_err(&spi->dev, "setup: requested speed too low %d Hz\n",
--			spi->max_speed_hz);
--		return -EINVAL;
--	}
--
--	/*
--	 * baudrate & width will be set orion_spi_setup_transfer
--	 */
--	return 0;
--}
--
- static int orion_spi_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
-@@ -424,7 +390,6 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	/* we support only mode 0, and no options */
- 	master->mode_bits = SPI_CPHA | SPI_CPOL;
- 
--	master->setup = orion_spi_setup;
- 	master->transfer_one_message = orion_spi_transfer_one_message;
- 	master->num_chipselect = ORION_NUM_CHIPSELECTS;
- 
-@@ -442,8 +407,8 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	clk_prepare(spi->clk);
- 	clk_enable(spi->clk);
- 	tclk_hz = clk_get_rate(spi->clk);
--	spi->max_speed = DIV_ROUND_UP(tclk_hz, 4);
--	spi->min_speed = DIV_ROUND_UP(tclk_hz, 30);
-+	master->max_speed_hz = DIV_ROUND_UP(tclk_hz, 4);
-+	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, 30);
- 
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	spi->base = devm_ioremap_resource(&pdev->dev, r);
--- 
-1.8.1.2
+Thank you for the reply.
+I think the 2nd one is a nice idea.
+If I applied it without my patch, the build error disappeared.
 
-
-
+Best regards,
+Yoshihiro Shimoda
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

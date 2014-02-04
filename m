@@ -1,52 +1,90 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 00/11] ARM: shmobile: RSPI RZ and QSPI SoC and board integration
-Date: Tue, 4 Feb 2014 19:54:51 +0100
-Message-ID: <CAMuHMdUHP8ptyjXh1n+iucygfAEAZCuwwe1tB1JjrTuGrhD3Pg@mail.gmail.com>
-References: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
-	<20140204173733.GI22609@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 07/17] spi: pl022: Don't ignore power domain and amba bus
+ at system suspend
+Date: Tue, 4 Feb 2014 19:16:09 +0000
+Message-ID: <20140204191609.GU22609@sirena.org.uk>
+References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+ <1391529538-21685-8-git-send-email-ulf.hansson@linaro.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140204173733.GI22609-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ZkPsHaVllGm+sYrn"
+Cc: Russell King <linux@arm.linux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Alessandro Rubini <rubini@unipv.it>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>, linux-kernel@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mmc@vger.kernel.org
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1391529538-21685-8-git-send-email-ulf.hansson@linaro.org>
+Sender: linux-mmc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
 
-On Tue, Feb 4, 2014 at 6:37 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Feb 04, 2014 at 04:23:54PM +0100, Geert Uytterhoeven wrote:
->>       Hi Simon, Magnus,
->>
->> This patch series contains SoC and board integration for
->>   1. RSPI in the r7s72100 aka RZ/A1H SoC on the Genmai reference board,
->>   2. QSPI in the r8a7791 aka R-Car M2 SoC on the Koelsch reference board.
->> It was rebased on top of renesas-devel-v3.14-rc1-20140204.
->
-> Can you please stop CCing arch/arm only patch serieses like this to the
-> SPI list - they just mean I have to go through patchwork and mark them
-> as not applicable.
+--ZkPsHaVllGm+sYrn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sorry, you're right. Only a few of them contained SPI-specific code.
+On Tue, Feb 04, 2014 at 04:58:48PM +0100, Ulf Hansson wrote:
 
-Gr{oetje,eeting}s,
+> @@ -2328,8 +2300,23 @@ static int pl022_suspend(struct device *dev)
+>  		return ret;
+>  	}
+> =20
+> -	pm_runtime_get_sync(dev);
+> -	pl022_suspend_resources(pl022, false);
+> +	pm_runtime_disable(dev);
+> +
+> +	if (!pm_runtime_status_suspended(dev)) {
+> +		if (dev->pm_domain && dev->pm_domain->ops.runtime_suspend)
+> +			ret =3D dev->pm_domain->ops.runtime_suspend(dev);
+> +		else
+> +			ret =3D dev->bus->pm->runtime_suspend(dev);
+> +
+> +		if (ret) {
+> +			pm_runtime_enable(dev);
+> +			return ret;
+> +		}
+> +
+> +		pm_runtime_set_suspended(dev);
+> +	}
 
-                        Geert
+This seems like a fairly hideous thing to be having to open code in an
+individual driver, it all looks generic and like something that most if
+not all devices ought to be doing and it looks very vulnerable to being
+broken by changes in the core.  At the very least I would expect this to
+be done in a helper function, though it would be even nicer if the
+driver core were figuring this stuff out for us based on the device
+level callback so that drivers didn't need to worry about being in power
+domains or manually calling bus level callbacks. =20
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+Putting it in a helper would at least mean that it's easier for the
+mechanics to be transferred to the core proper later on.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--ZkPsHaVllGm+sYrn
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS8Tx1AAoJELSic+t+oim9OKcP/2vZiGXoxlTK/RIMPmzZDsIf
+3W2NciL8THJsv2d7cGHy76k3K+9G5yVo3a3IUMai37P3j7gadPbdOfClbD0A4izk
+wKJ+R8tr6zFpeMclY70KdYlDtQmI5mO/tfM3x//gCWbYyLBhN8f6p5Zyeaq95Sz6
+kmwPVYhNUKqH5V0dCdOURHRdFges54AMh8Pbt2jsOPPr2cMuwuD1gB5dIkN+Pz6J
+8cYf3I4cW5L/am9qBISbBlNWUKrBnHkmitk9S/PcI0Yr97k5cyYx9xyUb2r8wA83
+sJpZWFDDsu9Sxm0rwQTkFPtQMVcbc2ZB5ekbKR7D/gkLGH4JQ+BlysE/NDvTB8E5
+VdhFSYSQJOoHeOkffmttovOM2bmzbbgBzRanbYzBxFiJAAayc1Bww87ewBw3QNnf
+cQSngwjzCTJjNPQqZMUufHTh58SiuiOBTZI9ZRsmyMQLWoZ3NxFcOBXePS51xmMq
+S3RsBJy2WXcKciOHnFIlQwZQtUkCU87FKcfX2wSJTeaCpoj1rlL56cU5lz6+i5Bc
+f4idZuVzPo9NPfDuxQoUwIKWKjRyYx+6uCpt6uLRmA82/pG2BBil5QGAWYWA2XEo
+G9Go3qegjcus4lD/3Rix2hRqc52Aq8HzxvMDQHeB8TPYwxOKmR2iNmZyUkocmOf8
+Ngiu/RRStOQt4XNdVDow
+=4UiI
+-----END PGP SIGNATURE-----
+
+--ZkPsHaVllGm+sYrn--

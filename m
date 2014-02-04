@@ -1,63 +1,89 @@
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 06/17] spi: pl022: Let runtime PM callbacks be available for CONFIG_PM
-Date: Tue,  4 Feb 2014 16:58:47 +0100
-Message-ID: <1391529538-21685-7-git-send-email-ulf.hansson@linaro.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 08/17] spi: pl022: Fully gate clocks at request inactivity
+Date: Tue, 4 Feb 2014 17:07:46 +0000
+Message-ID: <20140204170746.GD22609@sirena.org.uk>
 References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-Cc: Alessandro Rubini <rubini@unipv.it>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>, Mark Brown <broonie@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-mmc@vger.kernel.org,
-	Ulf Hansson <ulf.hansson@linaro.org>
-To: Russell King <linux@arm.linux.org.uk>,
-	linux-arm-kernel@lists.infradead.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-Sender: linux-kernel-owner@vger.kernel.org
+ <1391529538-21685-9-git-send-email-ulf.hansson@linaro.org>
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============7611125035300171598=="
+Cc: Russell King <linux@arm.linux.org.uk>, Wolfram Sang <wsa@the-dreams.de>,
+ Linus Walleij <linus.walleij@linaro.org>, linux-mmc@vger.kernel.org,
+ Chris Ball <chris@printf.net>, linux-kernel@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, Alessandro Rubini <rubini@unipv.it>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1391529538-21685-9-git-send-email-ulf.hansson@linaro.org>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-Convert to the SET_PM_RUNTIME_PM macro while defining the runtime PM
-callbacks. This means the callbacks becomes available for both
-CONFIG_PM_SLEEP and CONFIG_PM_RUNTIME, which is needed to handle the
-combinations of these scenarios.
 
-Cc: Mark Brown <broonie@kernel.org>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
----
- drivers/spi/spi-pl022.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+--===============7611125035300171598==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="3L1hu/R33NquA63z"
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 2789b45..70fa907 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -2288,7 +2288,7 @@ pl022_remove(struct amba_device *adev)
- 	return 0;
- }
- 
--#if defined(CONFIG_SUSPEND) || defined(CONFIG_PM_RUNTIME)
-+#ifdef CONFIG_PM
- /*
-  * These two functions are used from both suspend/resume and
-  * the runtime counterparts to handle external resources like
-@@ -2354,7 +2354,7 @@ static int pl022_resume(struct device *dev)
- }
- #endif	/* CONFIG_PM */
- 
--#ifdef CONFIG_PM_RUNTIME
-+#ifdef CONFIG_PM
- static int pl022_runtime_suspend(struct device *dev)
- {
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
-@@ -2374,7 +2374,7 @@ static int pl022_runtime_resume(struct device *dev)
- 
- static const struct dev_pm_ops pl022_dev_pm_ops = {
- 	SET_SYSTEM_SLEEP_PM_OPS(pl022_suspend, pl022_resume)
--	SET_RUNTIME_PM_OPS(pl022_runtime_suspend, pl022_runtime_resume, NULL)
-+	SET_PM_RUNTIME_PM_OPS(pl022_runtime_suspend, pl022_runtime_resume, NULL)
- };
- 
- static struct vendor_data vendor_arm = {
--- 
-1.7.9.5
+
+--3L1hu/R33NquA63z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Feb 04, 2014 at 04:58:49PM +0100, Ulf Hansson wrote:
+> Use clk_disable_unprepare and clk_prepare_enable from the runtime PM
+> callbacks, to fully gate|ungate clocks. Potentially this will save more
+> power, depending on the clock tree for the current SOC.
+
+The same patch has already been applied (I noticed and fixed it while
+doing unrelated code review).
+
+>  	pinctrl_pm_select_default_state(dev);
+> -	clk_enable(pl022->clk);
+> +	clk_prepare_enable(pl022->clk);
+
+Someone should really make this check errors though!
+
+--3L1hu/R33NquA63z
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS8R5fAAoJELSic+t+oim9+KAP/14mFD5xmmvH/r8MoIs9oN3r
+nZ4cbt/EFSqLZncm8QuG5HRA+ZOzw0z8REs3UzLrjNkEsTmt9KNUxoYyEniHeS1N
+mmsbJY77oyj12oaLv31fqh3YZGJoUVoq1Cp5/crgtADMTqjEqn/RRZmvwFnextdN
+d/DPVMrx8v4kNNGQ64cj4zf/SdKJtbF+KlvkyVal7S/SVZWoZ0eUXC9d/lTBAP0w
+pk6ipMZ7Rc4DYBdkmexq5jZCHS3lm4ndsDmnMKxKPHGLO3oXD0uswZ7NSa/q9uj1
+8V+MlIP5P0Ah2H0g2Iz967esOmIv8MidHgG5Ae0aJdG/SI6YxgGGn2VFfLCzko2Q
+OCXAKSVzJy7qEWUwaeVM1AedAho3GsfCsLqTPaWoOnw7R1Znu+TW/y6TSh0/z+S/
+SYaWl1uIp3wJ6j37L1cSnurEvzuwNFvhPYjkQVQuuWVuwosG90+1egmj/uag2NQe
+ZZVfm3KmZfo0xC6vNKk9aCt9ENsNBN5J11FEZzn7/ygxk84ctxqmtCcJ8+REqeUx
+j8zMq8morWlL+IEOR3AzIJRWICUhr2TT4LZANy8iBlKDvoKRdRECrI9Ln+t1vTPm
+gAMcaGgRKjdjDNEKADmytoxxsH/u71FpYBTddg5z4STn8RbhXSJWnXc5VePul1Ku
+HH/aJCZdeAcAn1r80GxJ
+=k7iL
+-----END PGP SIGNATURE-----
+
+--3L1hu/R33NquA63z--
+
+
+--===============7611125035300171598==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============7611125035300171598==--

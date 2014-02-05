@@ -1,72 +1,61 @@
-From: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
-Subject: [PATCH] spi: orion: Remove unused pointer in orion_spi_write_read()
-Date: Wed, 5 Feb 2014 22:23:01 +0100
-Message-ID: <20140205222301.14fbb441@spike>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: orion: Remove unused pointer in
+ orion_spi_write_read()
+Date: Wed, 5 Feb 2014 21:31:16 +0000
+Message-ID: <20140205213116.GA12659@sirena.org.uk>
+References: <20140205222301.14fbb441@spike>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=PGP-SHA1;
- boundary="Sig_/NAYrErCbyCjRzvHskvNA_oG"; protocol="application/pgp-signature"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="zYM0uCDKw75PZbzx"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20140205222301.14fbb441@spike>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
---Sig_/NAYrErCbyCjRzvHskvNA_oG
-Content-Type: text/plain; charset=US-ASCII
+
+--zYM0uCDKw75PZbzx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Remove unused devdata pointer 'orion_spi' in function orion_spi_write_read(=
-).
+On Wed, Feb 05, 2014 at 10:23:01PM +0100, Christian Engelmayer wrote:
+> Remove unused devdata pointer 'orion_spi' in function orion_spi_write_rea=
+d().
+>=20
+> Detected by Coverity: CID 1077860.
+>=20
+> Signed-off-by: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
 
-Detected by Coverity: CID 1077860.
+I'll apply this but please follow the patch submission process in
+SubmittingPatches, in particular please always CC maintainers on
+patches.
 
-Signed-off-by: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
----
- drivers/spi/spi-orion.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 7f2121f..75871d4 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -260,11 +260,9 @@ orion_spi_write_read_16bit(struct spi_device *spi,
- static unsigned int
- orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- {
--	struct orion_spi *orion_spi;
- 	unsigned int count;
- 	int word_len;
-=20
--	orion_spi =3D spi_master_get_devdata(spi->master);
- 	word_len =3D spi->bits_per_word;
- 	count =3D xfer->len;
-=20
---=20
-1.8.3.2
-
---Sig_/NAYrErCbyCjRzvHskvNA_oG
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Disposition: attachment; filename=signature.asc
+--zYM0uCDKw75PZbzx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.14 (GNU/Linux)
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS8qu1AAoJEKssnEpaPQKE67cP/jrYq6FHo8JZIfT8vvmmKSZJ
-/EZFv/oSt9BK2gZcvJG8Q8J118NnFKK0kpix5JKl/hJFWwFEPPZIafFdRRyIgmty
-YJskVaEnIbQzS0heTFy9a31OdIaaI/AGsBRRj3ZC+eaOAnRjrsaY2YKYKc7cAR0t
-Xnlzowntp4GrWuA8gtReL1GA3rwnT9CGDTC6YTPn0MKWZGVfoy/opXrRZo1tbmdA
-l/qcHnfIKZWiGv/Oxx1wyOLpksQUvkIxUDne57ht8CcMqIPhC6hwmI5exPkVny5H
-KalE2Ati3HERMNOP81a3QxUo2uq35DD8Sn2uIG4cIADWz6HO6cdrs/T0puUexo1u
-+/ETTgl50LRjIP1lp4uMcAKHS7h/KUZTbaDvlKLrwjEuiGUMMmnPOmYnS0M18p4p
-jzCWY6y8Qh/LUOkiRNY4Jqao5lOPx6JKmm5FmES5KmCn5wjzu3rYmmrQZXnj8ylX
-FxZ1vhFC8Eo9ghoiu+60/enaf+5NqWizTeAqVY80jWmojO/x2ratSAry4GwpNmof
-nrZBff22FTTSKxUkV36/4lk7wBPoLisLf6eeLgip9E/aRMcGrhC86M2F8ur4uk6N
-J31DcHFwzoTj6UYc/QcgMU6IgDBSJmzu67FQ1c8RJkqQOUm8lJNMRwOVOGt7mO6W
-w3W6OeHEV+gU77Ozl735
-=ipWq
+iQIcBAEBAgAGBQJS8q2hAAoJELSic+t+oim98+QP/1Oa/Ms+hFoxOEFvbpqJo1JT
+ZraiurYXB24A+1m0lG4pIXuFPUhzw+ew5YTOlfV9/MtYk1xjpKbjUVYbGH1CqxXq
+TW0pyGqaJtQeS/bO7oziF44cVvgpUKjh+JrJ49HRU/zPlfCjkhkhIhVBSfEvpuoU
+Hgcbj4AIctZ0MPPtvPDJ9u9+gWN2dLBaYAwjQln+6atH7vRtjq0zmmkgXhmaZGUz
+/utB0SpWLmLUUXOyOJ/E6JZeUy8WlXKdJskoFv4i2SAEx8G10j32Kzynj4YiaX0E
+jYOmfJkhoLD11ZJBYKDB5XfzncLL6A4ipkFu7eaTaePqwm4VTLl419shon73DDGD
+mSqDyUuNSvFb7LsHlJmFYBD+lHI4C/koxP+Wh/51Ut7uV1Dshv6qWhTeHMntX0XD
+zsrLcfOLIDzfvFQIThZfY/8Z+FU6DBRUS+RRHkl/cF9iA7hO60G+jcNeIzaGgg0k
+sOlJe9C/8Xh+klB4hUpIwhQL/X3hXkssj55iGMYoBrSrhUYzZIzSdOH6rM6gQJMp
+lSCGoQTUqwEZX96LjSTrF6YCjHi8o9iL4YsYghmEDg3q8iYpyN/Ds1Ut4mWSpCYI
+GQTrpme1QN3TmmoDy7yQXOoqTXSaR438WfJKVRJWQyVvWEbEzZqXp13ErUEjN4mZ
+EyVKmdtA6c8a6tQhT23a
+=Strq
 -----END PGP SIGNATURE-----
 
---Sig_/NAYrErCbyCjRzvHskvNA_oG--
+--zYM0uCDKw75PZbzx--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

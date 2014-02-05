@@ -1,60 +1,57 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: [PATCH v4 5/5] ARM: sunxi: Enable A31 SPI and SID in
- the defconfig
-Date: Wed,  5 Feb 2014 14:05:07 +0100
-Message-ID: <1391605507-30981-6-git-send-email-maxime.ripard@free-electrons.com>
-References: <1391605507-30981-1-git-send-email-maxime.ripard@free-electrons.com>
-Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: Use SPI_BPW_MASK macro at appropriate places
+Date: Wed, 05 Feb 2014 21:59:18 +0800
+Message-ID: <1391608758.5368.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBMXQZCLQKGQE4M3ZUMI-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-In-Reply-To: <1391605507-30981-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Archive: <http://groups.google.com/group/linux-sunxi>
-Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
-List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Scott Jiang <Scott.Jiang.Linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- arch/arm/configs/sunxi_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-bfin-v3.c | 3 ++-
+ drivers/spi/spi-ti-qspi.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/configs/sunxi_defconfig b/arch/arm/configs/sunxi_defconfig
-index 3e2259b..b5df4a5 100644
---- a/arch/arm/configs/sunxi_defconfig
-+++ b/arch/arm/configs/sunxi_defconfig
-@@ -24,6 +24,7 @@ CONFIG_IP_PNP_BOOTP=y
- # CONFIG_WIRELESS is not set
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
-+CONFIG_EEPROM_SUNXI_SID=y
- CONFIG_NETDEVICES=y
- CONFIG_SUN4I_EMAC=y
- # CONFIG_NET_CADENCE is not set
-@@ -48,6 +49,8 @@ CONFIG_I2C=y
- # CONFIG_I2C_COMPAT is not set
- CONFIG_I2C_CHARDEV=y
- CONFIG_I2C_MV64XXX=y
-+CONFIG_SPI=y
-+CONFIG_SPI_SUN6I=y
- CONFIG_GPIO_SYSFS=y
- # CONFIG_HWMON is not set
- CONFIG_WATCHDOG=y
+diff --git a/drivers/spi/spi-bfin-v3.c b/drivers/spi/spi-bfin-v3.c
+index 8f85988..4089d0e 100644
+--- a/drivers/spi/spi-bfin-v3.c
++++ b/drivers/spi/spi-bfin-v3.c
+@@ -822,7 +822,8 @@ static int bfin_spi_probe(struct platform_device *pdev)
+ 	master->cleanup = bfin_spi_cleanup;
+ 	master->setup = bfin_spi_setup;
+ 	master->transfer_one_message = bfin_spi_transfer_one_message;
+-	master->bits_per_word_mask = BIT(32 - 1) | BIT(16 - 1) | BIT(8 - 1);
++	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) |
++				     SPI_BPW_MASK(8);
+ 
+ 	drv_data = spi_master_get_devdata(master);
+ 	drv_data->master = master;
+diff --git a/drivers/spi/spi-ti-qspi.c b/drivers/spi/spi-ti-qspi.c
+index 3d09265..7eb2cef 100644
+--- a/drivers/spi/spi-ti-qspi.c
++++ b/drivers/spi/spi-ti-qspi.c
+@@ -435,7 +435,8 @@ static int ti_qspi_probe(struct platform_device *pdev)
+ 	master->auto_runtime_pm = true;
+ 	master->transfer_one_message = ti_qspi_start_transfer_one;
+ 	master->dev.of_node = pdev->dev.of_node;
+-	master->bits_per_word_mask = BIT(32 - 1) | BIT(16 - 1) | BIT(8 - 1);
++	master->bits_per_word_mask = SPI_BPW_MASK(32) | SPI_BPW_MASK(16) |
++				     SPI_BPW_MASK(8);
+ 
+ 	if (!of_property_read_u32(np, "num-cs", &num_cs))
+ 		master->num_chipselect = num_cs;
 -- 
-1.8.4.2
+1.8.1.2
+
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

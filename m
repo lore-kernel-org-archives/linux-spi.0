@@ -1,136 +1,63 @@
-From: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4 1/5] clk: sunxi: Add support for PLL6 on the A31
-Date: Wed, 05 Feb 2014 06:51:49 -0800
-Message-ID: <20140205145149.22158.72564@quantum>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v4 3/5] spi: sunxi: Add Allwinner A31 SPI
+ controller driver
+Date: Wed, 5 Feb 2014 14:59:24 +0000
+Message-ID: <20140205145924.GA32298@sirena.org.uk>
 References: <1391605507-30981-1-git-send-email-maxime.ripard@free-electrons.com>
- <1391605507-30981-2-git-send-email-maxime.ripard@free-electrons.com>
+ <1391605507-30981-4-git-send-email-maxime.ripard@free-electrons.com>
+Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	"Maxime Ripard" <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	"Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Emilio Lopez" <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1391605507-30981-2-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="dDRMvlgZJXvWKvBx"
+Cc: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Emilio Lopez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>, linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Return-path: <linux-sunxi+bncBDQ2L75W5QGBBYNDZGLQKGQEWGKVRFY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1391605507-30981-4-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Id: linux-spi.vger.kernel.org
 
-Quoting Maxime Ripard (2014-02-05 05:05:03)
-> The A31 has a slightly different PLL6 clock. Add support for this new clock in
-> our driver.
-> 
-> Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-Looks good to me.
+--dDRMvlgZJXvWKvBx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Regards,
-Mike
+On Wed, Feb 05, 2014 at 02:05:05PM +0100, Maxime Ripard wrote:
+> The Allwinner A31 has a new SPI controller IP compared to the older Allwinner
+> SoCs.
 
-> ---
->  Documentation/devicetree/bindings/clock/sunxi.txt |  1 +
->  drivers/clk/sunxi/clk-sunxi.c                     | 45 +++++++++++++++++++++++
->  2 files changed, 46 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/clock/sunxi.txt b/Documentation/devicetree/bindings/clock/sunxi.txt
-> index c2cb762..954845c 100644
-> --- a/Documentation/devicetree/bindings/clock/sunxi.txt
-> +++ b/Documentation/devicetree/bindings/clock/sunxi.txt
-> @@ -11,6 +11,7 @@ Required properties:
->         "allwinner,sun6i-a31-pll1-clk" - for the main PLL clock on A31
->         "allwinner,sun4i-pll5-clk" - for the PLL5 clock
->         "allwinner,sun4i-pll6-clk" - for the PLL6 clock
-> +       "allwinner,sun6i-a31-pll6-clk" - for the PLL6 clock on A31
->         "allwinner,sun4i-cpu-clk" - for the CPU multiplexer clock
->         "allwinner,sun4i-axi-clk" - for the AXI clock
->         "allwinner,sun4i-axi-gates-clk" - for the AXI gates
-> diff --git a/drivers/clk/sunxi/clk-sunxi.c b/drivers/clk/sunxi/clk-sunxi.c
-> index abb6c5a..0c05c2d 100644
-> --- a/drivers/clk/sunxi/clk-sunxi.c
-> +++ b/drivers/clk/sunxi/clk-sunxi.c
-> @@ -249,7 +249,38 @@ static void sun4i_get_pll5_factors(u32 *freq, u32 parent_rate,
->         *n = DIV_ROUND_UP(div, (*k+1));
->  }
->  
-> +/**
-> + * sun6i_a31_get_pll6_factors() - calculates n, k factors for A31 PLL6
-> + * PLL6 rate is calculated as follows
-> + * rate = parent_rate * n * (k + 1) / 2
-> + * parent_rate is always 24Mhz
-> + */
-> +
-> +static void sun6i_a31_get_pll6_factors(u32 *freq, u32 parent_rate,
-> +                                      u8 *n, u8 *k, u8 *m, u8 *p)
-> +{
-> +       u8 div;
-> +
-> +       /*
-> +        * We always have 24MHz / 2, so we can just say that our
-> +        * parent clock is 12MHz.
-> +        */
-> +       parent_rate = parent_rate / 2;
-> +
-> +       /* Normalize value to a parent_rate multiple (24M / 2) */
-> +       div = *freq / parent_rate;
-> +       *freq = parent_rate * div;
-> +
-> +       /* we were called to round the frequency, we can now return */
-> +       if (n == NULL)
-> +               return;
-> +
-> +       *k = div / 32;
-> +       if (*k > 3)
-> +               *k = 3;
->  
-> +       *n = DIV_ROUND_UP(div, (*k+1));
-> +}
->  
->  /**
->   * sun4i_get_apb1_factors() - calculates m, p factors for APB1
-> @@ -416,6 +447,13 @@ static struct clk_factors_config sun4i_pll5_config = {
->         .kwidth = 2,
->  };
->  
-> +static struct clk_factors_config sun6i_a31_pll6_config = {
-> +       .nshift = 8,
-> +       .nwidth = 5,
-> +       .kshift = 4,
-> +       .kwidth = 2,
-> +};
-> +
->  static struct clk_factors_config sun4i_apb1_config = {
->         .mshift = 0,
->         .mwidth = 5,
-> @@ -457,6 +495,12 @@ static const struct factors_data sun4i_pll5_data __initconst = {
->         .getter = sun4i_get_pll5_factors,
->  };
->  
-> +static const struct factors_data sun6i_a31_pll6_data __initconst = {
-> +       .enable = 31,
-> +       .table = &sun6i_a31_pll6_config,
-> +       .getter = sun6i_a31_get_pll6_factors,
-> +};
-> +
->  static const struct factors_data sun4i_apb1_data __initconst = {
->         .table = &sun4i_apb1_config,
->         .getter = sun4i_get_apb1_factors,
-> @@ -972,6 +1016,7 @@ free_clkdata:
->  static const struct of_device_id clk_factors_match[] __initconst = {
->         {.compatible = "allwinner,sun4i-pll1-clk", .data = &sun4i_pll1_data,},
->         {.compatible = "allwinner,sun6i-a31-pll1-clk", .data = &sun6i_a31_pll1_data,},
-> +       {.compatible = "allwinner,sun6i-a31-pll6-clk", .data = &sun6i_a31_pll6_data,},
->         {.compatible = "allwinner,sun4i-apb1-clk", .data = &sun4i_apb1_data,},
->         {.compatible = "allwinner,sun4i-mod0-clk", .data = &sun4i_mod0_data,},
->         {.compatible = "allwinner,sun7i-a20-out-clk", .data = &sun7i_a20_out_data,},
-> -- 
-> 1.8.4.2
-> 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Looks good - applied, thanks!
+
+--dDRMvlgZJXvWKvBx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS8lHIAAoJELSic+t+oim9U0YP/3Lp8IvFOsSfD/Aj41cjxW5I
+ruD6tVrOyJkmQnONj4oPatHhvclOZdiLIYYENpXWbSHhMttV6ng65Ct6kFrxa054
+3iWVOsmGNs9sjYd+oCWYwk097+pKqPB9skjJa7+AXXU6IP9hkAImTsHPhQtCNmTW
+1CQ96/tW62miZtBkJ+UE+iunknayYlsAFJ9AsQ9tBrJ8fRaapfOwOJ3NU5jFkbM1
+Tuj5b9b932rVJEZYZn0/ZdoqdDydhwq5Ql4FpXsqPNYRukuDatI3eU5Yx+IKmUPT
+VglqIfNYk8Rk3Y+x370sYfadGp/ojgczAcCbm6oSMsk3m7ABT8oAaaINb1IvY2bZ
+0F8QmvDRpLnePiUnMGsrZLc4KC4oc0M1Xb1DOPQDe4xL1jo89dbQryjc4cYPJuwR
+7NucvvAkqFVBAML9w8Nc2VQAQuhOEyJVlWuA2JzcxOku9+fYT6TekSa86DXXGgst
+aF9zLHdPQfXiO8gDhFf4Q7pwvspUVyBM0KfaV4y2OSiGhfIk4BqwfDJ013/6RW6E
+Vt7D90f1iFlTNRuHrbKUyASyAyOCnEVKsU86mRoP5N+i0gxtlsabIC3NvWneiPGV
+jM1wIx8P95W30LsHXCINo3Wwrvqwr5PO53HfYOXUOlYcMbXVuYnHorjUI0dJsDCF
+FyIoFTZI7qrbSOAAr9QF
+=D/De
+-----END PGP SIGNATURE-----
+
+--dDRMvlgZJXvWKvBx--

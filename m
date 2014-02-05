@@ -1,56 +1,66 @@
-From: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH] spi: orion: Remove unused pointer in
  orion_spi_write_read()
-Date: Wed, 5 Feb 2014 22:54:21 +0100
-Message-ID: <20140205225421.013da54a@spike>
+Date: Wed, 5 Feb 2014 22:12:26 +0000
+Message-ID: <20140205221226.GJ32298@sirena.org.uk>
 References: <20140205222301.14fbb441@spike>
-	<20140205213116.GA12659@sirena.org.uk>
+ <20140205213116.GA12659@sirena.org.uk>
+ <20140205225421.013da54a@spike>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=PGP-SHA1;
- boundary="Sig_/DF0CHI1VzLOLwO3/93KuroI"; protocol="application/pgp-signature"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="DesjdUuHQDwS2t4N"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140205213116.GA12659-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20140205225421.013da54a@spike>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
---Sig_/DF0CHI1VzLOLwO3/93KuroI
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-> I'll apply this but please follow the patch submission process in
-> SubmittingPatches, in particular please always CC maintainers on
-> patches.
+--DesjdUuHQDwS2t4N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks. For trivial patches like this I tend to rely on get_maintainer.pl w=
-hich
-clearly pointed me to You. I'll put more investigation into it again next t=
-ime.
+On Wed, Feb 05, 2014 at 10:54:21PM +0100, Christian Engelmayer wrote:
+> > I'll apply this but please follow the patch submission process in
+> > SubmittingPatches, in particular please always CC maintainers on
+> > patches.
 
---Sig_/DF0CHI1VzLOLwO3/93KuroI
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Disposition: attachment; filename=signature.asc
+> Thanks. For trivial patches like this I tend to rely on
+> get_maintainer.pl which clearly pointed me to You. I'll put more
+> investigation into it again next time.
+
+It should've listed the maintainer as broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org rather at
+linaro.org which was where you sent this - IIRC you posted some other
+stuff recently which missed my comaintainer on that subsystem.  Checking
+right now I can't get it to give my Linaro address at all for that file,
+odd.  It could find that via signoffs but it seems to have squashed
+those into the maintainer section.
+
+--DesjdUuHQDwS2t4N
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.14 (GNU/Linux)
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS8rMNAAoJEKssnEpaPQKEwFYP/1G1vhUo96GrsRsB6t5d01ok
-pWf0fXVcJVZSf1/ZyUJqB4u2Bl262XCeTX8UjMEZBO9An9WHAMLAjZIiNqjKDksb
-ru3bc/BsB1WVi9XAiyWpr6GwS9yD+RWh0fmFs5gpVlfxVHSUoM694Ibds5W2/fYA
-39/7ENqAqLvMk4tIEKZJRRqby4fd1hY39Am4eRB6CLDCm/LXFmcw9fxLukZOXbHx
-HdJM9AcLIEwUZMPXcvT/O7L1zygVphBHZw0ULIYOSOb1LbxlBERjWAcFMIVzVbcZ
-OQDATZy61B62alyk1Xoli8XZBNIf7NQO3qpuQP9RAk2IlN8hZXqt1lutU4+BH3xH
-Zs3JhwbMeERvDsN3R2iDZlfZaqYUncLeW2fEOGga871bflmdDPxKZCMIV9aGBaiU
-n4aiE2pjk06UaW8cbzKERi1An7rsEAA5KXInhAVK5Dn2EcKcPa+nveoGFzB207jw
-iwpQ9TLqg4dp5RFoSJNjMABUZPFh1dqZnKed6rraxd9nNnwVJ70dvbcKkgvNhCJC
-+wbNWYX4WoxYwehBCsWbqXBpKozAuh2hmqt8NKYVMY/apSUWEpkTR2tR8wvu5cys
-IRzXSXxZmJsZJBr+YGe9DYszVaOBtLnUzMeegcQkinu5z5xJa2csob9QwKUlr/yu
-61JXFWaa1HcGZ0KqF9TN
-=dac6
+iQIcBAEBAgAGBQJS8rdHAAoJELSic+t+oim9aKgP/RkPFNePF9Cj6hEqHqFM6X6C
+c8xgMlxzVNQXY5jMdrm65Z8QDKjZlIRRCjziBVfYBWRJtynrP/1usj5GYI0g6+j1
+sESQw4GcmMsy9pmN/JJpG0ilqBfQooYRVYBUKQ3zyq4mc2mkxdUFw6kuxIdhxB2F
+KbY3yBGGz/IdkxP0ciUMEXYZcz5430xVp0w2KSA409I58p55bq8hHkBcGXl4vC+D
+ZE6eCw6ILs/nRQQqjHYSi/6vQDMHA6QzlOoh/hEq7jEWXpBzxhbCNp/0RbqyZ0oK
+5cmUhSTZhT/ZGw865T26O/YCTnLIPIlzapUuW+u3lPU82zhC1Rs0KKefqPMJPga8
+IDRUu43P5qc58xSU5YSuQN3j6PZTxcxzLwZ3SVh7waO0KBeCxPss6Mkndg3tPpzD
+V6UDtva0u2IY6yYzD09nAEB7npbyuWqJyebX2AlFX3UvnpO7gzehWKsSnE13JtOr
+gehAwT0eKbAWQnmmooJ4KqMYhgk8Q+0oXgeFDyBhWI1qXbbUgaeFE9dZOTYVc8GP
+kX6wg0QZNfeMQVqPG8Ve0MQ7e9fK6/iT42MtJzFdpph8rBJcm0i+ae5VohTnbC/R
+xmwEta4Zk3Pr2XwKwTPUnez6nwZf+fyB0I2dZH3wnReE59qyjMgaLaL/2UebsD+Z
+x/oN3OFwgFmSS+NZQxbB
+=Fegj
 -----END PGP SIGNATURE-----
 
---Sig_/DF0CHI1VzLOLwO3/93KuroI--
+--DesjdUuHQDwS2t4N--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

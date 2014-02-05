@@ -1,61 +1,56 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
 Subject: Re: [PATCH] spi: orion: Remove unused pointer in
  orion_spi_write_read()
-Date: Wed, 5 Feb 2014 21:31:16 +0000
-Message-ID: <20140205213116.GA12659@sirena.org.uk>
+Date: Wed, 5 Feb 2014 22:54:21 +0100
+Message-ID: <20140205225421.013da54a@spike>
 References: <20140205222301.14fbb441@spike>
+	<20140205213116.GA12659@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="zYM0uCDKw75PZbzx"
+Content-Type: multipart/signed; micalg=PGP-SHA1;
+ boundary="Sig_/DF0CHI1VzLOLwO3/93KuroI"; protocol="application/pgp-signature"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140205222301.14fbb441@spike>
+In-Reply-To: <20140205213116.GA12659-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
---zYM0uCDKw75PZbzx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--Sig_/DF0CHI1VzLOLwO3/93KuroI
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 05, 2014 at 10:23:01PM +0100, Christian Engelmayer wrote:
-> Remove unused devdata pointer 'orion_spi' in function orion_spi_write_rea=
-d().
->=20
-> Detected by Coverity: CID 1077860.
->=20
-> Signed-off-by: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
+> I'll apply this but please follow the patch submission process in
+> SubmittingPatches, in particular please always CC maintainers on
+> patches.
 
-I'll apply this but please follow the patch submission process in
-SubmittingPatches, in particular please always CC maintainers on
-patches.
+Thanks. For trivial patches like this I tend to rely on get_maintainer.pl w=
+hich
+clearly pointed me to You. I'll put more investigation into it again next t=
+ime.
 
---zYM0uCDKw75PZbzx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+--Sig_/DF0CHI1VzLOLwO3/93KuroI
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Disposition: attachment; filename=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Version: GnuPG v1.4.14 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS8q2hAAoJELSic+t+oim98+QP/1Oa/Ms+hFoxOEFvbpqJo1JT
-ZraiurYXB24A+1m0lG4pIXuFPUhzw+ew5YTOlfV9/MtYk1xjpKbjUVYbGH1CqxXq
-TW0pyGqaJtQeS/bO7oziF44cVvgpUKjh+JrJ49HRU/zPlfCjkhkhIhVBSfEvpuoU
-Hgcbj4AIctZ0MPPtvPDJ9u9+gWN2dLBaYAwjQln+6atH7vRtjq0zmmkgXhmaZGUz
-/utB0SpWLmLUUXOyOJ/E6JZeUy8WlXKdJskoFv4i2SAEx8G10j32Kzynj4YiaX0E
-jYOmfJkhoLD11ZJBYKDB5XfzncLL6A4ipkFu7eaTaePqwm4VTLl419shon73DDGD
-mSqDyUuNSvFb7LsHlJmFYBD+lHI4C/koxP+Wh/51Ut7uV1Dshv6qWhTeHMntX0XD
-zsrLcfOLIDzfvFQIThZfY/8Z+FU6DBRUS+RRHkl/cF9iA7hO60G+jcNeIzaGgg0k
-sOlJe9C/8Xh+klB4hUpIwhQL/X3hXkssj55iGMYoBrSrhUYzZIzSdOH6rM6gQJMp
-lSCGoQTUqwEZX96LjSTrF6YCjHi8o9iL4YsYghmEDg3q8iYpyN/Ds1Ut4mWSpCYI
-GQTrpme1QN3TmmoDy7yQXOoqTXSaR438WfJKVRJWQyVvWEbEzZqXp13ErUEjN4mZ
-EyVKmdtA6c8a6tQhT23a
-=Strq
+iQIcBAEBAgAGBQJS8rMNAAoJEKssnEpaPQKEwFYP/1G1vhUo96GrsRsB6t5d01ok
+pWf0fXVcJVZSf1/ZyUJqB4u2Bl262XCeTX8UjMEZBO9An9WHAMLAjZIiNqjKDksb
+ru3bc/BsB1WVi9XAiyWpr6GwS9yD+RWh0fmFs5gpVlfxVHSUoM694Ibds5W2/fYA
+39/7ENqAqLvMk4tIEKZJRRqby4fd1hY39Am4eRB6CLDCm/LXFmcw9fxLukZOXbHx
+HdJM9AcLIEwUZMPXcvT/O7L1zygVphBHZw0ULIYOSOb1LbxlBERjWAcFMIVzVbcZ
+OQDATZy61B62alyk1Xoli8XZBNIf7NQO3qpuQP9RAk2IlN8hZXqt1lutU4+BH3xH
+Zs3JhwbMeERvDsN3R2iDZlfZaqYUncLeW2fEOGga871bflmdDPxKZCMIV9aGBaiU
+n4aiE2pjk06UaW8cbzKERi1An7rsEAA5KXInhAVK5Dn2EcKcPa+nveoGFzB207jw
+iwpQ9TLqg4dp5RFoSJNjMABUZPFh1dqZnKed6rraxd9nNnwVJ70dvbcKkgvNhCJC
++wbNWYX4WoxYwehBCsWbqXBpKozAuh2hmqt8NKYVMY/apSUWEpkTR2tR8wvu5cys
+IRzXSXxZmJsZJBr+YGe9DYszVaOBtLnUzMeegcQkinu5z5xJa2csob9QwKUlr/yu
+61JXFWaa1HcGZ0KqF9TN
+=dac6
 -----END PGP SIGNATURE-----
 
---zYM0uCDKw75PZbzx--
+--Sig_/DF0CHI1VzLOLwO3/93KuroI--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

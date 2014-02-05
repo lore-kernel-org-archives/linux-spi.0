@@ -1,43 +1,135 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 14/17] i2c: nomadik: Fixup deployment of runtime PM
-Date: Wed, 5 Feb 2014 12:45:54 -0200
-Message-ID: <CAOMZO5CzUuQrmbk6FpFGR56jHBtW-1d_AGcdgB2xyMG0Nkf+Fw@mail.gmail.com>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-	<1391529538-21685-15-git-send-email-ulf.hansson@linaro.org>
+From: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v4 1/5] clk: sunxi: Add support for PLL6 on the A31
+Date: Wed, 05 Feb 2014 06:51:49 -0800
+Message-ID: <20140205145149.22158.72564@quantum>
+References: <1391605507-30981-1-git-send-email-maxime.ripard@free-electrons.com>
+ <1391605507-30981-2-git-send-email-maxime.ripard@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-i2c <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+	"Maxime Ripard" <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	"Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Emilio Lopez" <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1391529538-21685-15-git-send-email-ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+In-Reply-To: <1391605507-30981-2-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Feb 4, 2014 at 1:58 PM, Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+Quoting Maxime Ripard (2014-02-05 05:05:03)
+> The A31 has a slightly different PLL6 clock. Add support for this new clock in
+> our driver.
+> 
+> Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-> +static int nmk_i2c_runtime_resume(struct device *dev)
-> +{
-> +       struct amba_device *adev = to_amba_device(dev);,
-> +       struct nmk_i2c_dev *nmk_i2c = amba_get_drvdata(adev);
-> +
-> +       clk_prepare_enable(nmk_i2c->clk);
-
-Previously the code was checking the return value from
-clk_prepare_enable(). You should keep the check here.
+Looks good to me.
 
 Regards,
+Mike
 
-Fabio Estevam
+> ---
+>  Documentation/devicetree/bindings/clock/sunxi.txt |  1 +
+>  drivers/clk/sunxi/clk-sunxi.c                     | 45 +++++++++++++++++++++++
+>  2 files changed, 46 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/clock/sunxi.txt b/Documentation/devicetree/bindings/clock/sunxi.txt
+> index c2cb762..954845c 100644
+> --- a/Documentation/devicetree/bindings/clock/sunxi.txt
+> +++ b/Documentation/devicetree/bindings/clock/sunxi.txt
+> @@ -11,6 +11,7 @@ Required properties:
+>         "allwinner,sun6i-a31-pll1-clk" - for the main PLL clock on A31
+>         "allwinner,sun4i-pll5-clk" - for the PLL5 clock
+>         "allwinner,sun4i-pll6-clk" - for the PLL6 clock
+> +       "allwinner,sun6i-a31-pll6-clk" - for the PLL6 clock on A31
+>         "allwinner,sun4i-cpu-clk" - for the CPU multiplexer clock
+>         "allwinner,sun4i-axi-clk" - for the AXI clock
+>         "allwinner,sun4i-axi-gates-clk" - for the AXI gates
+> diff --git a/drivers/clk/sunxi/clk-sunxi.c b/drivers/clk/sunxi/clk-sunxi.c
+> index abb6c5a..0c05c2d 100644
+> --- a/drivers/clk/sunxi/clk-sunxi.c
+> +++ b/drivers/clk/sunxi/clk-sunxi.c
+> @@ -249,7 +249,38 @@ static void sun4i_get_pll5_factors(u32 *freq, u32 parent_rate,
+>         *n = DIV_ROUND_UP(div, (*k+1));
+>  }
+>  
+> +/**
+> + * sun6i_a31_get_pll6_factors() - calculates n, k factors for A31 PLL6
+> + * PLL6 rate is calculated as follows
+> + * rate = parent_rate * n * (k + 1) / 2
+> + * parent_rate is always 24Mhz
+> + */
+> +
+> +static void sun6i_a31_get_pll6_factors(u32 *freq, u32 parent_rate,
+> +                                      u8 *n, u8 *k, u8 *m, u8 *p)
+> +{
+> +       u8 div;
+> +
+> +       /*
+> +        * We always have 24MHz / 2, so we can just say that our
+> +        * parent clock is 12MHz.
+> +        */
+> +       parent_rate = parent_rate / 2;
+> +
+> +       /* Normalize value to a parent_rate multiple (24M / 2) */
+> +       div = *freq / parent_rate;
+> +       *freq = parent_rate * div;
+> +
+> +       /* we were called to round the frequency, we can now return */
+> +       if (n == NULL)
+> +               return;
+> +
+> +       *k = div / 32;
+> +       if (*k > 3)
+> +               *k = 3;
+>  
+> +       *n = DIV_ROUND_UP(div, (*k+1));
+> +}
+>  
+>  /**
+>   * sun4i_get_apb1_factors() - calculates m, p factors for APB1
+> @@ -416,6 +447,13 @@ static struct clk_factors_config sun4i_pll5_config = {
+>         .kwidth = 2,
+>  };
+>  
+> +static struct clk_factors_config sun6i_a31_pll6_config = {
+> +       .nshift = 8,
+> +       .nwidth = 5,
+> +       .kshift = 4,
+> +       .kwidth = 2,
+> +};
+> +
+>  static struct clk_factors_config sun4i_apb1_config = {
+>         .mshift = 0,
+>         .mwidth = 5,
+> @@ -457,6 +495,12 @@ static const struct factors_data sun4i_pll5_data __initconst = {
+>         .getter = sun4i_get_pll5_factors,
+>  };
+>  
+> +static const struct factors_data sun6i_a31_pll6_data __initconst = {
+> +       .enable = 31,
+> +       .table = &sun6i_a31_pll6_config,
+> +       .getter = sun6i_a31_get_pll6_factors,
+> +};
+> +
+>  static const struct factors_data sun4i_apb1_data __initconst = {
+>         .table = &sun4i_apb1_config,
+>         .getter = sun4i_get_apb1_factors,
+> @@ -972,6 +1016,7 @@ free_clkdata:
+>  static const struct of_device_id clk_factors_match[] __initconst = {
+>         {.compatible = "allwinner,sun4i-pll1-clk", .data = &sun4i_pll1_data,},
+>         {.compatible = "allwinner,sun6i-a31-pll1-clk", .data = &sun6i_a31_pll1_data,},
+> +       {.compatible = "allwinner,sun6i-a31-pll6-clk", .data = &sun6i_a31_pll6_data,},
+>         {.compatible = "allwinner,sun4i-apb1-clk", .data = &sun4i_apb1_data,},
+>         {.compatible = "allwinner,sun4i-mod0-clk", .data = &sun4i_mod0_data,},
+>         {.compatible = "allwinner,sun7i-a20-out-clk", .data = &sun7i_a20_out_data,},
+> -- 
+> 1.8.4.2
+> 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

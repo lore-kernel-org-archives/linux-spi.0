@@ -1,61 +1,73 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: davinci: Use of_match_ptr at appropriate place
-Date: Thu, 06 Feb 2014 11:45:08 +0800
-Message-ID: <1391658308.12574.3.camel@phoenix>
+From: Magnus Damm <magnus.damm@gmail.com>
+Subject: Re: [PATCH 00/11] ARM: shmobile: RSPI RZ and QSPI SoC and board integration
+Date: Thu, 6 Feb 2014 19:36:17 +0900
+Message-ID: <CANqRtoSrLV3PiUdbUQv9gTsM-p8tiqRvSza-=D9hG5fVn-CR0A@mail.gmail.com>
+References: <1391527445-14881-1-git-send-email-geert@linux-m68k.org>
+	<20140205005631.GA7664@verge.net.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-spi@vger.kernel.org, SH-Linux <linux-sh@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>
+To: Simon Horman <horms@verge.net.au>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <20140205005631.GA7664@verge.net.au>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-It's pointless to use of_match_ptr within CONFIG_OF guard.
-Use of_match_ptr around davinci_spi_of_match when setting .of_match_table.
+On Wed, Feb 5, 2014 at 9:56 AM, Simon Horman <horms@verge.net.au> wrote:
+> Magnus, could you Ack these or otherwise?
+>
+> On Tue, Feb 04, 2014 at 04:23:54PM +0100, Geert Uytterhoeven wrote:
+>>       Hi Simon, Magnus,
+>>
+>> This patch series contains SoC and board integration for
+>>   1. RSPI in the r7s72100 aka RZ/A1H SoC on the Genmai reference board,
+>>   2. QSPI in the r8a7791 aka R-Car M2 SoC on the Koelsch reference board.
+>> It was rebased on top of renesas-devel-v3.14-rc1-20140204.
+>>
+>> It was tested on the r7s72100-based Genmai reference board using loopback
+>> mode, and on the r8a7791-based Koelsch reference board using the Spansion
+>> s25fl512s SPI FLASH.
+>>
+>>   - [v5 01/11] ARM: shmobile: r7s72100 clock: Add RSPI clocks
+>>   - [v5 02/11] ARM: shmobile: genmai legacy: Add RSPI support
+>>   - [v3 03/11] ARM: shmobile: genmai defconfig: Enable RSPI
+>>   - [v3 04/11] ARM: shmobile: r7s72100 clock: Add RSPI clocks for DT
+>>   - [v5 05/11] ARM: shmobile: r7s72100 dtsi: Add RSPI nodes
+>>   - [v4 06/11] ARM: shmobile: r8a7791 clock: add QSPI clocks
+>>   - [v4 07/11] ARM: shmobile: koelsch legacy: Add QSPI support
+>>   - [v4 08/11] ARM: shmobile: koelsch defconfig: Enable RSPI and
+>>   - [v3 09/11] ARM: shmobile: r8a7791 dtsi: Add QSPI node
+>>   - [v3 10/11] ARM: shmobile: koelsch dts: Add QSPI nodes
+>>   - [v2 11/11] ARM: shmobile: lager legacy: Switch QSPI to named IRQs
+>
+> Above I see v2, v3, v4 and v5 patches.
+>
+> While I can make sense of this it makes it cumbersome to refer to the
+> series as a whole.
+>
+> Bob, can you take a look at '"[PATCH 00/11] ARM: shmobile: RSPI RZ and
+> QSPI SoC and board", posted on Tuesday the 2nd, which includes v2, v3,
+> v4 and v5 patches'?
+>
+> What would make my life easier would be if the entire series was v5 and
+> all the patches contained in it were v5. Then I could just ask Bob to look
+> at "[PATCH v5 00/11] ARM: shmobile: RSPI RZ and QSPI SoC and board"
+>
+> There is no Bob but I do ask people these kind of questions :)
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-davinci.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Simon, Geert, Bob,
 
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 04d69b6..50f7509 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -802,8 +802,7 @@ static int spi_davinci_get_pdata(struct platform_device *pdev,
- 	pdata = &dspi->pdata;
- 
- 	pdata->version = SPI_VERSION_1;
--	match = of_match_device(of_match_ptr(davinci_spi_of_match),
--				&pdev->dev);
-+	match = of_match_device(davinci_spi_of_match, &pdev->dev);
- 	if (!match)
- 		return -ENODEV;
- 
-@@ -824,7 +823,6 @@ static int spi_davinci_get_pdata(struct platform_device *pdev,
- 	return 0;
- }
- #else
--#define davinci_spi_of_match NULL
- static struct davinci_spi_platform_data
- 	*spi_davinci_get_pdata(struct platform_device *pdev,
- 		struct davinci_spi *dspi)
-@@ -1032,7 +1030,7 @@ static struct platform_driver davinci_spi_driver = {
- 	.driver = {
- 		.name = "spi_davinci",
- 		.owner = THIS_MODULE,
--		.of_match_table = davinci_spi_of_match,
-+		.of_match_table = of_match_ptr(davinci_spi_of_match),
- 	},
- 	.probe = davinci_spi_probe,
- 	.remove = davinci_spi_remove,
--- 
-1.8.1.2
+I've now gone through these patches and I think they look great. My
+apologies for slow handling.
 
+Acked-by: Magnus Damm <damm@opensource.se>
 
+Thanks for your help.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Cheers,
+
+/ magnus

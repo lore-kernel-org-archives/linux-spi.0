@@ -1,118 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 2/2] spi/s3c64xx: Remove code no longer needed as a result of S3C_DMA removal
-Date: Fri,  7 Feb 2014 13:11:32 +0000
-Message-ID: <1391778692-20129-2-git-send-email-broonie@kernel.org>
-References: <1391778692-20129-1-git-send-email-broonie@kernel.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org, Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1391778692-20129-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH RESEND 1/2] spi: qup: Add device tree bindings information
+Date: Fri, 7 Feb 2014 13:13:59 +0000
+Message-ID: <20140207131359.GM32298@sirena.org.uk>
+References: <20140206175059.GW32298@sirena.org.uk>
+ <1391759007-25305-1-git-send-email-iivanov@mm-sol.com>
+ <20140207122716.GH32298@sirena.org.uk>
+ <1391778043.27491.61.camel@iivanov-dev>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="T43c3KFQhpwAjRij"
+Cc: Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Rob Landley <rob@landley.net>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+To: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1391778043.27491.61.camel@iivanov-dev>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-Remove functions that only had an effect when using S3C_DMA and inline
-dmaengine_terminate_all() since it's pointless to have a function which
-expands to a single function call.
+--T43c3KFQhpwAjRij
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-s3c64xx.c | 39 ++-------------------------------------
- 1 file changed, 2 insertions(+), 37 deletions(-)
+On Fri, Feb 07, 2014 at 03:00:43PM +0200, Ivan T. Ivanov wrote:
+> On Fri, 2014-02-07 at 12:27 +0000, Mark Brown wrote:=20
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 18ec7e65a319..9ad5e3e76b96 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -277,17 +277,6 @@ static void s3c64xx_spi_dmacb(void *data)
- 	spin_unlock_irqrestore(&sdd->lock, flags);
- }
- 
--static int s3c64xx_spi_map_mssg(struct s3c64xx_spi_driver_data *sdd,
--						struct spi_message *msg)
--{
--	return 0;
--}
--
--static void s3c64xx_spi_unmap_mssg(struct s3c64xx_spi_driver_data *sdd,
--						struct spi_message *msg)
--{
--}
--
- static void prepare_dma(struct s3c64xx_spi_dma_data *dma,
- 			struct sg_table *sgt)
- {
-@@ -387,12 +376,6 @@ static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
- 	return 0;
- }
- 
--static void s3c64xx_spi_dma_stop(struct s3c64xx_spi_driver_data *sdd,
--				 struct s3c64xx_spi_dma_data *dma)
--{
--	dmaengine_terminate_all(dma->ch);
--}
--
- static bool s3c64xx_spi_can_dma(struct spi_master *master,
- 				struct spi_device *spi,
- 				struct spi_transfer *xfer)
-@@ -691,13 +674,6 @@ static int s3c64xx_spi_prepare_message(struct spi_master *master,
- 		s3c64xx_spi_config(sdd);
- 	}
- 
--	/* Map all the transfers if needed */
--	if (s3c64xx_spi_map_mssg(sdd, msg)) {
--		dev_err(&spi->dev,
--			"Xfer: Unable to map message buffers!\n");
--		return -ENOMEM;
--	}
--
- 	/* Configure feedback delay */
- 	writel(cs->fb_delay & 0x3, sdd->regs + S3C64XX_SPI_FB_CLK);
- 
-@@ -769,10 +745,10 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 		if (use_dma) {
- 			if (xfer->tx_buf != NULL
- 			    && (sdd->state & TXBUSY))
--				s3c64xx_spi_dma_stop(sdd, &sdd->tx_dma);
-+				dmaengine_terminate_all(sdd->tx_dma.ch);
- 			if (xfer->rx_buf != NULL
- 			    && (sdd->state & RXBUSY))
--				s3c64xx_spi_dma_stop(sdd, &sdd->rx_dma);
-+				dmaengine_terminate_all(sdd->rx_dma.ch);
- 		}
- 	} else {
- 		flush_fifo(sdd);
-@@ -781,16 +757,6 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 	return status;
- }
- 
--static int s3c64xx_spi_unprepare_message(struct spi_master *master,
--					    struct spi_message *msg)
--{
--	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(master);
--
--	s3c64xx_spi_unmap_mssg(sdd, msg);
--
--	return 0;
--}
--
- static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
- 				struct spi_device *spi)
- {
-@@ -1164,7 +1130,6 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
- 	master->prepare_transfer_hardware = s3c64xx_spi_prepare_transfer;
- 	master->prepare_message = s3c64xx_spi_prepare_message;
- 	master->transfer_one = s3c64xx_spi_transfer_one;
--	master->unprepare_message = s3c64xx_spi_unprepare_message;
- 	master->unprepare_transfer_hardware = s3c64xx_spi_unprepare_transfer;
- 	master->num_chipselect = sci->num_cs;
- 	master->dma_alignment = 8;
--- 
-1.9.rc1
+> > Please fix the formatting of this document so the lines are less than 80
+> > columns, it's hard to read as is.  Otherwise this is fine.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> File is looking fine in editor with smart tab support
+
+I don't know what "smart tab support" is intended to be in this context
+but whatever it is it's not working well in the e-mail you sent, bear in
+mind that you're looking for a readable patch.
+
+--T43c3KFQhpwAjRij
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS9NwUAAoJELSic+t+oim9eisP/30DpFKOX4dd4nJJQL5BeS2b
+wSwgErmuLcfh7KQa0x/0iWv8LjgtOVR1FJO7RN3C7VwDkfvdw92ZtLbWE5FGxsIR
+8yJp5hPm58wDOYm8DZCHycJJ30TuQcQin5zzVU+BWlDJtJM6SnDWtBwRE/5cs2BQ
+KFllUNU+heXWZdMpD5naOflKEyV+KoLbrHDTyVFC6nSe+Eya9qpluhVFzv3Hv8e/
+f2mmeE+xyprzELIZjDlc+/GlgyXhznq8fHn48gX2s+yyd9aHMhDQqqsZmX1rA+31
+oYTg+Vkg2rr+m3Cor21PU5UijBxkuN7b+DkXW0Ihu8yDDiPMTR9eevt8+t+0DHFs
+Cys84/HLG0GMIHB7cCFCqD5Z4oHUGHVWGxBHe0rThir81k4Xl0Rxal58we1mRKvy
+gqNKr6HD9RvrKWAFBj0wOW8kgX0x4Va7exWHtRWTsGkBbCjxK62LbdiCtYpGXTO1
+udGL/DaGE013O86fl4FEjpnsThNIyPQ1HtO1+Qsg5gwGSRB6qK0nMLNEdQLgZoT9
+0X88QhhK6v7XZL+kOAsmvaSPTvw1KKc2JrqTuBwEdj3SHRiJnVfY+CFwR47wzBuF
+NDK/SZPYQZ4WEBm5SdaEw7BlCcpwmVMEw5HysbBRvYuFGbbh8h1Vg1tqAFWT2CjJ
+rtjz/GMOS6yB9UFEQ3p6
+=ZetQ
+-----END PGP SIGNATURE-----
+
+--T43c3KFQhpwAjRij--

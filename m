@@ -1,65 +1,54 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH RESEND 1/2] spi: qup: Add device tree bindings information
-Date: Fri, 7 Feb 2014 12:27:16 +0000
-Message-ID: <20140207122716.GH32298@sirena.org.uk>
-References: <20140206175059.GW32298@sirena.org.uk>
- <1391759007-25305-1-git-send-email-iivanov@mm-sol.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: Use SPI_BPW_MASK macro at appropriate places
+Date: Fri, 7 Feb 2014 12:21:40 +0000
+Message-ID: <20140207122140.GG32298@sirena.org.uk>
+References: <1391608758.5368.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="9Z5hYcGq4mWDMhAr"
-Cc: Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Rob Landley <rob@landley.net>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-To: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="hKtPopALqVfswSW2"
+Cc: Scott Jiang <Scott.Jiang.Linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1391759007-25305-1-git-send-email-iivanov@mm-sol.com>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1391608758.5368.1.camel@phoenix>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---9Z5hYcGq4mWDMhAr
+--hKtPopALqVfswSW2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 07, 2014 at 09:43:27AM +0200, Ivan T. Ivanov wrote:
-> From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
->=20
-> The Qualcomm Universal Peripheral (QUP) core is an
-> AHB slave that provides a common data path (an output
-> FIFO and an input FIFO) for serial peripheral interface
-> (SPI) mini-core.
+On Wed, Feb 05, 2014 at 09:59:18PM +0800, Axel Lin wrote:
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 
-Please fix the formatting of this document so the lines are less than 80
-columns, it's hard to read as is.  Otherwise this is fine.
+Applied, thanks.
 
---9Z5hYcGq4mWDMhAr
+--hKtPopALqVfswSW2
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIbBAEBAgAGBQJS9NEhAAoJELSic+t+oim9OQAP9j3gLolKvvxmmPyjxkAEKqU0
-+OsKBHIzMFLjFnkXj+V7KGSQ6scRjcVAVs9yx8bRmP6UDypjcVEnGlrhHkl6jJl9
-1eN4FhdGCr7KisjqZ/dMIdu/1fZY/635MPONyCrNBvsNBpJowVPzrAcLir2USRaK
-9MopL4rdfbHL8oEXqhaWp5FqxP0M3bVIR81W1IBAwqub5NqN+JdPOoRIdufU3i5D
-fmYD7sVL+Sl5rj+xpBHsdp5Vq4dsgDtSVwroE+hUoSXhJddsFy8/lfHbpD4wP3y8
-y8ThnNexS8NKbG8tEpWajDrY4aBSVtYEwYhNHI60mu6V5T+ns2tXryuzLbc+jHhp
-gTYs5JGQ21BZqJLh1aoI0/SFXt5daA6V2ZaXrWr7rpWAgQ24CbjbsVO7cQm4Ki/l
-6ycsoiocXYjIXxLBS31m3OMxP8P0r9K/bkq0n6g0FudlYn6UfWrTXeuoH9ScoonJ
-5PrEbIK3S4nQvzJjtz+xE8fHw7rX7qskhn+gwzxk7HgdYvBfgF8wwtMgxo/pFFzM
-hiCKBrS3ECs9CE2mQQr0rSI64thjChDvnjWfIuUu5P0JVvxbdX8Pfr8ZuJ9sVyD5
-y6dslz9aK/u0q5B7N0KUSVS7F9AJaf0FP7uUVW7gUlLyZAfALhQYRCa+zGH0CKUn
-sftJI5v7DXhu3CzEfG0=
-=Erxw
+iQIcBAEBAgAGBQJS9M/RAAoJELSic+t+oim9F8cQAItK3GfcepcBxJ1B+bD2EWjF
+PdJV/YkfwIewiFVxowuJvlUkk+/pBX79cDm9WOagc2Sz/iCOFjsZpLXvcVH743KC
+Zck3Pbd/XBumR6GObHgBgtYrD0diMmmn+TG31klVtUmuoN6a/ERtVAXMOd4wqwtF
+M1jVzRqgSYSOELy/7uK1YcIQhvb8R7Fx1trYR1fGNzxAmkIydiPFZOItGh+d+ita
+T9YOl52M4UadrUP+Bvg3sbIYBXyB/aGV37iwlm7fj7bvqQpggADeqwIvfsX6gFSv
+yIk/k+dEuwpCXILsmvdn+9DTykIvYfGUT5AA3GpUShf3Kqh3QQCJXVrW93ow6DoO
+p9kohrNPgMkVZggyDg1s6Il/lZzoAKJv6clzpdfptXnsWyIa8YKD45SkG+zB5jtx
+PqWkEdeGeeYRkOg+rwmKrRX93P6eVbKjTMnx83r6jsGXN1NpkZHZZODjIWAOacSw
+iutgXHqJP9WJbiR9eD6mZSgP3IOSifMwlSv0DMsLnlAC53aMGX66Rhd5p0J2thFB
+4qKw928Hq7JhMdA7kYePH/0DiQHdRFYJXcxqkmlJwXMLcieAfu5ZiCpojkVUMq0I
+jbdgZjkxt+nUbqkOmv5HRf7PgkApv3piad7TXC6wkG76RpexgHMTE9XCRDgR+nJa
+lZKGqLrI+cYzT+37Z79P
+=7T6j
 -----END PGP SIGNATURE-----
 
---9Z5hYcGq4mWDMhAr--
+--hKtPopALqVfswSW2--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

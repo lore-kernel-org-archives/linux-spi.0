@@ -1,128 +1,64 @@
-From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Subject: [PATCH RESEND 1/2] spi: qup: Add device tree bindings information
-Date: Fri,  7 Feb 2014 09:43:27 +0200
-Message-ID: <1391759007-25305-1-git-send-email-iivanov@mm-sol.com>
-References: <20140206175059.GW32298@sirena.org.uk>
-Cc: "Ivan T. Ivanov" <iivanov@mm-sol.com>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Rob Landley <rob@landley.net>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <20140206175059.GW32298@sirena.org.uk>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH] spi/sunxi: Add missing dependency on RESET_CONTROLLER
+Date: Fri, 7 Feb 2014 09:41:46 +0100
+Message-ID: <20140207084146.GH3192@lukather>
+References: <1391716564-30175-1-git-send-email-broonie@kernel.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="KscVNZbUup0vZz0f"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1391716564-30175-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
 
-The Qualcomm Universal Peripheral (QUP) core is an
-AHB slave that provides a common data path (an output
-FIFO and an input FIFO) for serial peripheral interface
-(SPI) mini-core.
+--KscVNZbUup0vZz0f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Ivan T. Ivanov <iivanov@mm-sol.com>
----
- .../devicetree/bindings/spi/qcom,spi-qup.txt       |   86 ++++++++++++++++++++
- 1 file changed, 86 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+On Thu, Feb 06, 2014 at 07:56:04PM +0000, Mark Brown wrote:
+> From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>=20
+> Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-new file mode 100644
-index 0000000..74565f1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-@@ -0,0 +1,86 @@
-+Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
-+
-+The QUP core is an AHB slave that provides a common data path (an output FIFO
-+and an input FIFO) for serial peripheral interface (SPI) mini-core.
-+
-+SPI in master mode support up to 50MHz, up to four chip selects, and a
-+programmable data path from 4 bits to 32 bits; supports numerous protocol
-+variants.
-+
-+Required properties:
-+- compatible: 		Should contain "qcom,spi-qup-v2".
-+- reg: 				Should contain base register location and length
-+- interrupts: 		Interrupt number used by this controller
-+
-+- clocks: 			Should contain the core clock and the AHB clock.
-+- clock-names: 		Should be "core" for the core clock and "iface" for the
-+                	AHB clock.
-+
-+- #address-cells: 	Number of cells required to define a chip select
-+					address on the SPI bus. Should be set to 1.
-+- #size-cells: 		Should be zero.
-+
-+Optional properties:
-+- spi-max-frequency: Specifies maximum SPI clock frequency, Units - Hz. Definition
-+                    as per Documentation/devicetree/bindings/spi/spi-bus.txt
-+
-+SPI slave nodes must be children of the SPI master node and can
-+contain properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
-+
-+Example:
-+
-+	spi_8: spi@f9964000 { /* BLSP2 QUP2 */
-+
-+		compatible = "qcom,spi-qup-v2";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+		reg = <0xf9964000 0x1000>;
-+		interrupts = <0 102 0>;
-+		spi-max-frequency = <19200000>;
-+
-+		clocks = <&gcc GCC_BLSP2_QUP2_SPI_APPS_CLK>, <&gcc GCC_BLSP2_AHB_CLK>;
-+		clock-names = "core", "iface";
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&spi8_default>;
-+
-+		device@0 {
-+			compatible = "arm,pl022-dummy";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			reg = <0>; /* Chip select 0 */
-+			spi-max-frequency = <19200000>;
-+			spi-cpol;
-+		};
-+
-+		device@1 {
-+			compatible = "arm,pl022-dummy";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			reg = <1>; /* Chip select 1 */
-+			spi-max-frequency = <9600000>;
-+			spi-cpha;
-+		};
-+
-+		device@2 {
-+			compatible = "arm,pl022-dummy";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			reg = <2>; /* Chip select 2 */
-+			spi-max-frequency = <19200000>;
-+			spi-cpol;
-+			spi-cpha;
-+		};
-+
-+		device@3 {
-+			compatible = "arm,pl022-dummy";
-+			#address-cells = <1>;
-+			#size-cells = <1>;
-+			reg = <3>; /* Chip select 3 */
-+			spi-max-frequency = <19200000>;
-+			spi-cpol;
-+			spi-cpha;
-+			spi-cs-high;
-+		};
-+	};
-+
--- 
-1.7.9.5
+Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+
+Thanks!
+Maxime
+
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+
+--KscVNZbUup0vZz0f
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.14 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS9JxKAAoJEBx+YmzsjxAgJ8cP/A5rQSe4FK1cNZ7pRpRt9jb7
+BLgR1LRfs6h6uWTqHtqDtVxXrQJ26YG+YbApFCVImPmGQGgpkqW3ZEtLvOQ+LXak
+5opdb1nn5idDSlGL2jxtOucOEff7N7ZNeVF4AadaDpEF8ZBhM48q1KOQCo2CTROg
+l3AtKIm2JU7bq5gYP6noqsK4XVdk39/40RCNIzwzXB5lhyY8UIfaqw2cRV7g6LTw
+OdbG8QIPuJiJekDzmgCc4AzVXYzJeErKxiRq+Ep0lEEQQz5gUInaTjWvouB70wYF
+cm1ffumWDa9h6iDO/6Gdqpd+9ELQwOrrwotRevvuSihstG5mH1AlbcKR7KqJJgg9
+202BRXgSOX2OmTjM0tfIqt7jI6GQOEnZvp4fbnMbN186PjsCFbQ+0wQdGKltjHtf
+hsKWObV0cTscn4y1iIE0rCAL2Oo4nQWTiRIqGR2IGo2p0q4PDCf2ZJiK10FOzpuf
+WgBYWjV/bWNtoJZjncv3+FTzTLs9+UwO+YaSW+SxM/Qnt1WLv+79hHaH6jN7JsL8
+jjbQZ6pQq5DFN9UruTcW/mZV95lOkLCRkCVpM6KIqOFLPASSFp0Xh+di6oetyZUl
+5DhH+mlPmjEearsifDLXzop/ni9S1AVk9sekj9NtUwgz65myFKi1g3fpVh81cSL7
+z7vTJxJdugqQL1kGhUFW
+=DA0w
+-----END PGP SIGNATURE-----
+
+--KscVNZbUup0vZz0f--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

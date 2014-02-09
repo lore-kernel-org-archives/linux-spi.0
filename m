@@ -1,75 +1,49 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH RFT] spi: txx9: Convert to let spi core handle checking
- transfer speed
-Date: Sun, 09 Feb 2014 12:15:07 +0800
-Message-ID: <1391919307.26425.2.camel@phoenix>
+Subject: [PATCH] spi: core: Set max_speed_hz of spi_device default to
+ max_speed_hz of controller
+Date: Mon, 10 Feb 2014 00:08:05 +0800
+Message-ID: <1391962085.10294.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-By setting master->max_speed_hz and master->min_speed_hz, spi core will handle
-checking transfer speed. Then we can remove the same checking in this driver.
+In __spi_validate(), xfer->speed_hz is set to be spi->max_speed_hz if it is not
+set for this transfer. However, if spi->max_speed_hz is also not set,
+xfer->speed_hz is 0. Some drivers (e.g. au1550, tegra114, tegra20-sflash,
+tegra20-slink, etc.) then use below code to avoid setting xfer->speed_hz to 0.
+
+        /* Set speed to the spi max fequency if spi device has not set */
+        spi->max_speed_hz = spi->max_speed_hz ? : tspi->spi_max_frequency;
+
+Let's handle it in spi core.
+If spi->max_speed_hz is not set, make it default to spi->master->max_speed_hz.
+So In __spi_validate() if both xfer->speed_hz and spi->max_speed_hz are not set,
+xfer->speed_hz will be set to spi->master->max_speed_hz.
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-txx9.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/spi/spi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
-index 6191ced..523f13d 100644
---- a/drivers/spi/spi-txx9.c
-+++ b/drivers/spi/spi-txx9.c
-@@ -80,7 +80,6 @@ struct txx9spi {
- 	void __iomem *membase;
- 	int baseclk;
- 	struct clk *clk;
--	u32 max_speed_hz, min_speed_hz;
- 	int last_chipselect;
- 	int last_chipselect_val;
- };
-@@ -117,9 +116,7 @@ static int txx9spi_setup(struct spi_device *spi)
- {
- 	struct txx9spi *c = spi_master_get_devdata(spi->master);
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index d51f2a3..1c9ddf1 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1787,6 +1787,9 @@ int spi_setup(struct spi_device *spi)
+ 	if (!spi->bits_per_word)
+ 		spi->bits_per_word = 8;
  
--	if (!spi->max_speed_hz
--			|| spi->max_speed_hz > c->max_speed_hz
--			|| spi->max_speed_hz < c->min_speed_hz)
 +	if (!spi->max_speed_hz)
- 		return -EINVAL;
++		spi->max_speed_hz = spi->master->max_speed_hz;
++
+ 	if (spi->master->setup)
+ 		status = spi->master->setup(spi);
  
- 	if (gpio_direction_output(spi->chip_select,
-@@ -309,15 +306,12 @@ static int txx9spi_transfer(struct spi_device *spi, struct spi_message *m)
- 
- 	/* check each transfer's parameters */
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		u32 speed_hz = t->speed_hz ? : spi->max_speed_hz;
- 		u8 bits_per_word = t->bits_per_word;
- 
- 		if (!t->tx_buf && !t->rx_buf && t->len)
- 			return -EINVAL;
- 		if (t->len & ((bits_per_word >> 3) - 1))
- 			return -EINVAL;
--		if (speed_hz < c->min_speed_hz || speed_hz > c->max_speed_hz)
--			return -EINVAL;
- 	}
- 
- 	spin_lock_irqsave(&c->lock, flags);
-@@ -360,8 +354,8 @@ static int txx9spi_probe(struct platform_device *dev)
- 		goto exit;
- 	}
- 	c->baseclk = clk_get_rate(c->clk);
--	c->min_speed_hz = DIV_ROUND_UP(c->baseclk, SPI_MAX_DIVIDER + 1);
--	c->max_speed_hz = c->baseclk / (SPI_MIN_DIVIDER + 1);
-+	master->min_speed_hz = DIV_ROUND_UP(c->baseclk, SPI_MAX_DIVIDER + 1);
-+	master->max_speed_hz = c->baseclk / (SPI_MIN_DIVIDER + 1);
- 
- 	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
- 	if (!res)
 -- 
 1.8.1.2
 

@@ -1,46 +1,61 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: bfin5xx: Remove unused last_transfer pointer in
- bfin_spi_giveback()
-Date: Sun, 09 Feb 2014 11:25:34 +0800
-Message-ID: <1391916334.20382.2.camel@phoenix>
+Subject: [PATCH] spi: omap-100k: Remove unused fields from struct
+ omap1_spi100k
+Date: Sun, 09 Feb 2014 11:35:59 +0800
+Message-ID: <1391916959.20382.4.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
-	Steven Miao <realmz6-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Jiang, Scott" <Scott.Jiang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+Cc: Fabrice Crohas <fcrohas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Both *master and state are not really used, remove them.
+
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-bfin5xx.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/spi/spi-omap-100k.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
-index f0f195a..d0f36ac 100644
---- a/drivers/spi/spi-bfin5xx.c
-+++ b/drivers/spi/spi-bfin5xx.c
-@@ -350,7 +350,6 @@ static void *bfin_spi_next_transfer(struct bfin_spi_master_data *drv_data)
- static void bfin_spi_giveback(struct bfin_spi_master_data *drv_data)
- {
- 	struct bfin_spi_slave_data *chip = drv_data->cur_chip;
--	struct spi_transfer *last_transfer;
- 	unsigned long flags;
- 	struct spi_message *msg;
+diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+index 657184a..81f2e6e 100644
+--- a/drivers/spi/spi-omap-100k.c
++++ b/drivers/spi/spi-omap-100k.c
+@@ -83,15 +83,11 @@
+ #define SPI_SHUTDOWN	1
  
-@@ -362,9 +361,6 @@ static void bfin_spi_giveback(struct bfin_spi_master_data *drv_data)
- 	queue_work(drv_data->workqueue, &drv_data->pump_messages);
- 	spin_unlock_irqrestore(&drv_data->lock, flags);
+ struct omap1_spi100k {
+-	struct spi_master       *master;
+ 	struct clk              *ick;
+ 	struct clk              *fck;
  
--	last_transfer = list_entry(msg->transfers.prev,
--				   struct spi_transfer, transfer_list);
+ 	/* Virtual base address of the controller */
+ 	void __iomem            *base;
 -
- 	msg->state = NULL;
+-	/* State of the SPI */
+-	unsigned int		state;
+ };
  
- 	if (!drv_data->cs_change)
+ struct omap1_spi100k_cs {
+@@ -427,7 +423,6 @@ static int omap1_spi100k_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 
+ 	spi100k = spi_master_get_devdata(master);
+-	spi100k->master = master;
+ 
+ 	/*
+ 	 * The memory region base address is taken as the platform_data.
+@@ -454,8 +449,6 @@ static int omap1_spi100k_probe(struct platform_device *pdev)
+ 	if (status < 0)
+ 		goto err;
+ 
+-	spi100k->state = SPI_RUNNING;
+-
+ 	return status;
+ 
+ err:
 -- 
 1.8.1.2
 

@@ -1,66 +1,73 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: tegra114: Convert to use master->max_speed_hz
-Date: Mon, 10 Feb 2014 18:27:28 +0000
-Message-ID: <20140210182728.GE13533@sirena.org.uk>
-References: <1392040096.4191.1.camel@phoenix>
- <52F903EF.4030606@wwwdotorg.org>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2] mtd: m25p80: Make the name of mtd_info fixed
+Date: Mon, 10 Feb 2014 11:39:48 -0800
+Message-ID: <20140210193948.GD18440@ld-irv-0074>
+References: <1390717003-28699-1-git-send-email-b48286@freescale.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="HeFlAV5LIbMFYYuh"
-Cc: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linuxppc-dev-mnsaURCQ41sdnm+yROfE0A@public.gmane.org,
+	scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org, mingkai.hu-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+To: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <52F903EF.4030606-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+In-Reply-To: <1390717003-28699-1-git-send-email-b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Sun, Jan 26, 2014 at 02:16:43PM +0800, Hou Zhiqiang wrote:
+> To give spi flash layout using "mtdparts=..." in cmdline, we must
+> give mtd_info a fixed name,because the cmdlinepart's parser will
+> match the name given in cmdline with the mtd_info.
+> 
+> Now, if use OF node, mtd_info's name will be spi->dev->name. It
+> consists of spi_master->bus_num, and the spi_master->bus_num maybe
+> dynamically fetched.
+> So, give the mtd_info a new fiexd name "name.cs", "name" is name of
+> spi_device_id and "cs" is chip-select in spi_dev.
+> 
+> Signed-off-by: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> ---
+> v2:
+>  - add check for return value of function kasprintf.
+>  - whether the spi_master->bus_num is dynamical is determined by spi
+>    controller driver, and it can't be check in this driver. So, we can
+>    not initial the mtd_info's name by distinguishing the spi_master
+>    bus_num dynamically-allocated or not.
 
---HeFlAV5LIbMFYYuh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+How about spi->master->bus_num < 0 ?
 
-On Mon, Feb 10, 2014 at 09:53:03AM -0700, Stephen Warren wrote:
-> On 02/10/2014 06:48 AM, Axel Lin wrote:
+>  drivers/mtd/devices/m25p80.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index eb558e8..1f494d2 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -1011,8 +1011,12 @@ static int m25p_probe(struct spi_device *spi)
+>  
+>  	if (data && data->name)
+>  		flash->mtd.name = data->name;
+> -	else
+> -		flash->mtd.name = dev_name(&spi->dev);
+> +	else {
+> +		flash->mtd.name = kasprintf(GFP_KERNEL, "%s.%d",
+> +				id->name, spi->chip_select);
 
-> I wonder ...
+I don't think this name is specific enough. What if there are more than
+one SPI controller? Then there could be one chip with the same
+chip-select. You probably still need to incorporate the SPI master
+somehow, even if it's not by using the bus number directly (because it's
+dynamic).
 
-> > +	if (of_property_read_u32(pdev->dev.of_node, "spi-max-frequency",
-> > +				 &master->max_speed_hz))
-> > +		master->max_speed_hz = 25000000; /* 25MHz */
+> +		if (!flash->mtd.name)
+> +			return -ENOMEM;
+> +	}
+>  
+>  	flash->mtd.type = MTD_NORFLASH;
+>  	flash->mtd.writesize = 1;
 
-> ... if that DT parsing can be done in common code too?
-
-Yes, there is in general a lot of opportunity in the SPI subsystem to
-factor code out into the core.  The DT stuff (things like this and also
-GPIO chip selects) is part of it.
-
---HeFlAV5LIbMFYYuh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS+RoNAAoJELSic+t+oim9hAwP/Rstk5lYgfjc2MAZDQ3fK9UB
-boWprsebj2YT5T7T0I81Ixhxan7JGzhfDE9TDnDuR1zk1h+nMjmU1ktMkkxsuWsI
-eprnOmBgPJev9Bbopf8y/QXcRXQC/uBBwAaPrnvsTu+fF2sBjBJzGakx7ur0Ixcg
-qaH87X+fxDvlrdL6rE5x1pxNuqn59hbmkQ2POC1QCyCe4m6XCr1470cycIjwfQf3
-fcb5K3pf5273aKMUvh8UU6XrM6UPSCTkus7ciIw+IOl0PsAkl7uyx3gaGB4Ckhes
-MDAHPnFse5tFjhkpK6vMRJ/dqioSPgFC6QH3SWtCzjBoOC9fGpwl96RjWQHAWheY
-QkNK6Hw179YejninAY9gFVMMPhzzoFFKOwVfOY9Xra7oTcfoi4lFrf71wjSu4g71
-utIzvKXKRonmE7grQpspycu7flOMieyX1N8c4TCKfOp8PvhOHAPp+x6KGfdw+C3l
-EKOcZyKDNFsvxUFJEVZ+LeLnRpmLX5qnd6wiwb7lj/JWxp0HVe7UEW6TVSAWAVO9
-l4Xe2n09N7uM/ZvXTImApMqwJuGObZQrQBgb+j3ffNzwV2R82OxYL2D/d5X9MTp4
-KzXwNJ20xyVi4lRDoF1n3JwOd1srUjzEvmRWyf+MqXGm7j0sFm5g8MHz+7QqbbMy
-aCztRZqfnAdTRQeCqsUq
-=1XR4
------END PGP SIGNATURE-----
-
---HeFlAV5LIbMFYYuh--
+Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

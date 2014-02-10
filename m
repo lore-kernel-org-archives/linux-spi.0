@@ -1,46 +1,184 @@
-From: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: tegra114: Convert to use master->max_speed_hz
-Date: Mon, 10 Feb 2014 09:53:03 -0700
-Message-ID: <52F903EF.4030606@wwwdotorg.org>
-References: <1392040096.4191.1.camel@phoenix>
+From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Subject: Re: [PATCH 2/2] spi: Add Qualcomm QUP SPI controller support
+Date: Mon, 10 Feb 2014 18:55:02 +0200
+Message-ID: <1392051302.2853.56.camel@iivanov-dev>
+References: <1391705868-20091-1-git-send-email-iivanov@mm-sol.com>
+	 <1391705868-20091-3-git-send-email-iivanov@mm-sol.com>
+	 <20140207073952.GA2610@qualcomm.com>
+	 <1391766753.27491.60.camel@iivanov-dev>
+	 <20140207173207.GA19974@qualcomm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392040096.4191.1.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, Alok Chauhan <alokc@codeaurora.org>,
+	Gilad Avidov <gavidov@codeaurora.org>,
+	Kiran Gunda <kgunda@codeaurora.org>,
+	Sagar Dharia <sdharia@codeaurora.org>
+To: Andy Gross <agross@codeaurora.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+In-Reply-To: <20140207173207.GA19974@qualcomm.com>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 02/10/2014 06:48 AM, Axel Lin wrote:
-> Use master->max_speed_hz instead of tspi->spi_max_frequency, so spi core will
-> handle checking transfer speed.
+
+Hi Andy,
+
+On Fri, 2014-02-07 at 11:32 -0600, Andy Gross wrote: 
+> On Fri, Feb 07, 2014 at 11:52:33AM +0200, Ivan T. Ivanov wrote:
+> > 
+
+<snip>
+
+> > > > +static int spi_qup_transfer_do(struct spi_qup *controller,
+> > > > +			       struct spi_qup_device *chip,
+> > > > +			       struct spi_transfer *xfer)
+> > > > +{
+> > > > +	unsigned long timeout;
+> > > > +	int ret = -EIO;
+> > > > +
+> > > > +	reinit_completion(&controller->done);
+> > > > +
+> > > > +	timeout = DIV_ROUND_UP(controller->speed_hz, MSEC_PER_SEC);
+> > > > +	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
+> > > > +	timeout = 100 * msecs_to_jiffies(timeout);
+> > > > +
+> > > > +	controller->rx_bytes = 0;
+> > > > +	controller->tx_bytes = 0;
+> > > > +	controller->error = 0;
+> > > > +	controller->xfer = xfer;
+> > > > +
+> > > > +	if (spi_qup_set_state(controller, QUP_STATE_RUN)) {
+> > > > +		dev_warn(controller->dev, "cannot set RUN state\n");
+> > > > +		goto exit;
+> > > > +	}
+> > > > +
+> > > > +	if (spi_qup_set_state(controller, QUP_STATE_PAUSE)) {
+> > > > +		dev_warn(controller->dev, "cannot set PAUSE state\n");
+> > > > +		goto exit;
+> > > > +	}
+> > > > +
+> > > > +	spi_qup_fifo_write(controller, xfer);
+> > > > +
+> > > > +	if (spi_qup_set_state(controller, QUP_STATE_RUN)) {
+> > > > +		dev_warn(controller->dev, "cannot set EXECUTE state\n");
+> > > > +		goto exit;
+> > > > +	}
+> > > > +
+> > > > +	if (!wait_for_completion_timeout(&controller->done, timeout))
+> > > > +		ret = -ETIMEDOUT;
+> > > > +	else
+> > > > +		ret = controller->error;
+> > > > +exit:
+> > > > +	controller->xfer = NULL;
+> > > 
+> > > Should the manipulation of controller->xfer be protected by spinlock?
+> > 
+> > :-). Probably. I am wondering, could I avoid locking if firstly place
+> > QUP into RESET state and then access these field. This should stop
+> > all activities in it, right?
 > 
-> In additional, since commit 052eb2d49006 'spi: core: Set max_speed_hz of
-> spi_device default to max_speed_hz of controller',
-> spi core will also set default spi->max_speed_hz if it is not set.
-> So remove the duplicate code in tegra_spi_setup.
+> It's generally safest to not assume the hardware is going to do sane things.
+> I'm concerned about spurious IRQs.
 
-The series,
-Acked-by: Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Ok, will add protection. 
 
-I wonder ...
+<snip>
 
-> diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+> > > > +
+> > > > +	if (of_property_read_u32(dev->of_node, "spi-max-frequency", &max_freq))
+> > > > +		max_freq = 19200000;
+> > > 
+> > > I'd set the default to 50MHz as that is the max supported by hardware.  I'd just
+> > > set max_freq declaration to 50MHz and then check the value if it is changed via
+> > > DT.
+> > 
+> > 50MHz doesn't seems to be supported on all chip sets. Currently common
+> > denominator on all chip sets, that I can see, is 19.2MHz. I have tried 
+> > to test it with more than 19.2MHz on APQ8074 and it fails.
+> > 
+> 
+> I guess my stance is to set it to the hardware max supported frequency if it is
+> not specified.  If that needs to be lower on a board because of whatever reason,
+> they override it.
 
-> @@ -1049,8 +1035,9 @@ static int tegra_spi_probe(struct platform_device *pdev)
+Ok, I will do in this way.
 
-> -	/* Parse DT */
-> -	tegra_spi_parse_dt(pdev, tspi);
-> +	if (of_property_read_u32(pdev->dev.of_node, "spi-max-frequency",
-> +				 &master->max_speed_hz))
-> +		master->max_speed_hz = 25000000; /* 25MHz */
+<snip>
 
-... if that DT parsing can be done in common code too?
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > > 
+> > > > +
+> > > > +	ret = clk_set_rate(cclk, max_freq);
+> > > > +	if (ret)
+> > > > +		dev_warn(dev, "fail to set SPI frequency %d\n", max_freq);
+> > > 
+> > > Bail here?
+> > 
+> > I don't know. What will be the consequences if controller continue to
+> > operate on its default rate?
+> > 
+> 
+> It is unclear.  But if you can't set the rate that is configured or if there is
+> a misconfiguration, it's probably better to exit the probe and catch it here.
+
+
+My preference is to delay clock speed change till first
+SPI transfer. And use wherever transfer itself mandate.
+
+<snip>
+
+> > > > +
+> > > > +static int spi_qup_remove(struct platform_device *pdev)
+> > > > +{
+> > > > +	struct spi_master *master = dev_get_drvdata(&pdev->dev);
+> > > > +	struct spi_qup *controller = spi_master_get_devdata(master);
+> > > > +
+> > > > +	pm_runtime_get_sync(&pdev->dev);
+> > > > +
+> > > 
+> > > Do we need to wait for any current transactions to complete
+> > > and do a devm_free_irq()?
+> > > 
+> > > > +	clk_disable_unprepare(controller->cclk);
+> > > > +	clk_disable_unprepare(controller->iclk);
+> > 
+> > My understanding is:
+> > 
+> > Disabling clocks will timeout transaction, if any. Core Device driver
+> > will call: devm_spi_unregister(), which will wait pending transactions
+> > to complete and then remove the SPI master.
+> 
+> Disabling clocks will confuse the hardware.  We cannot disable clocks while the
+> spi core is active and transferring data.
+
+I could follow approach taken by other SPI drivers, just reset
+controller and disable clocks.
+
+> 
+> > 
+> > > > +
+> > > > +	pm_runtime_put_noidle(&pdev->dev);
+> > > > +	pm_runtime_disable(&pdev->dev);
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > > +static struct of_device_id spi_qup_dt_match[] = {
+> > > > +	{ .compatible = "qcom,spi-qup-v2", },
+> > > 
+> > > Need compatible tags of qcom,spi-qup-v2.1.1 (msm8974 v1) or qcom,spi-qup-v2.2.1
+> > > (msm8974 v2)
+> > 
+> > I am not aware of the difference. My board report v.20020000. 
+> > Is there difference of handling these controllers?
+> 
+> There were some bug fixes between versions.  None of those affect SPI (that I
+> can tell), but it's better to be more descriptive and use the full versions in
+> the compatible tags.
+
+No strong preference here. Should I add qcom,spi-qup-v2.2.0, then? :-)
+
+Regards,
+Ivan

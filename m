@@ -1,184 +1,113 @@
-From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 2/2] spi: Add Qualcomm QUP SPI controller support
-Date: Mon, 10 Feb 2014 18:55:02 +0200
-Message-ID: <1392051302.2853.56.camel@iivanov-dev>
+Date: Mon, 10 Feb 2014 17:09:00 +0000
+Message-ID: <20140210170900.GC13533@sirena.org.uk>
 References: <1391705868-20091-1-git-send-email-iivanov@mm-sol.com>
-	 <1391705868-20091-3-git-send-email-iivanov@mm-sol.com>
-	 <20140207073952.GA2610@qualcomm.com>
-	 <1391766753.27491.60.camel@iivanov-dev>
-	 <20140207173207.GA19974@qualcomm.com>
+ <1391705868-20091-3-git-send-email-iivanov@mm-sol.com>
+ <20140207171202.GD1757@sirena.org.uk>
+ <1392049766.2853.43.camel@iivanov-dev>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, Alok Chauhan <alokc@codeaurora.org>,
-	Gilad Avidov <gavidov@codeaurora.org>,
-	Kiran Gunda <kgunda@codeaurora.org>,
-	Sagar Dharia <sdharia@codeaurora.org>
-To: Andy Gross <agross@codeaurora.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <20140207173207.GA19974@qualcomm.com>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="5QAgd0e35j3NYeGe"
+Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alok Chauhan <alokc-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Gilad Avidov <gavidov-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Kiran Gunda <kgunda-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1392049766.2853.43.camel@iivanov-dev>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
-Hi Andy,
+--5QAgd0e35j3NYeGe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2014-02-07 at 11:32 -0600, Andy Gross wrote: 
-> On Fri, Feb 07, 2014 at 11:52:33AM +0200, Ivan T. Ivanov wrote:
-> > 
+On Mon, Feb 10, 2014 at 06:29:26PM +0200, Ivan T. Ivanov wrote:
+> On Fri, 2014-02-07 at 17:12 +0000, Mark Brown wrote:=20
 
-<snip>
+> > > +	if (!xfer)
+> > > +		return IRQ_HANDLED;
 
-> > > > +static int spi_qup_transfer_do(struct spi_qup *controller,
-> > > > +			       struct spi_qup_device *chip,
-> > > > +			       struct spi_transfer *xfer)
-> > > > +{
-> > > > +	unsigned long timeout;
-> > > > +	int ret = -EIO;
-> > > > +
-> > > > +	reinit_completion(&controller->done);
-> > > > +
-> > > > +	timeout = DIV_ROUND_UP(controller->speed_hz, MSEC_PER_SEC);
-> > > > +	timeout = DIV_ROUND_UP(xfer->len * 8, timeout);
-> > > > +	timeout = 100 * msecs_to_jiffies(timeout);
-> > > > +
-> > > > +	controller->rx_bytes = 0;
-> > > > +	controller->tx_bytes = 0;
-> > > > +	controller->error = 0;
-> > > > +	controller->xfer = xfer;
-> > > > +
-> > > > +	if (spi_qup_set_state(controller, QUP_STATE_RUN)) {
-> > > > +		dev_warn(controller->dev, "cannot set RUN state\n");
-> > > > +		goto exit;
-> > > > +	}
-> > > > +
-> > > > +	if (spi_qup_set_state(controller, QUP_STATE_PAUSE)) {
-> > > > +		dev_warn(controller->dev, "cannot set PAUSE state\n");
-> > > > +		goto exit;
-> > > > +	}
-> > > > +
-> > > > +	spi_qup_fifo_write(controller, xfer);
-> > > > +
-> > > > +	if (spi_qup_set_state(controller, QUP_STATE_RUN)) {
-> > > > +		dev_warn(controller->dev, "cannot set EXECUTE state\n");
-> > > > +		goto exit;
-> > > > +	}
-> > > > +
-> > > > +	if (!wait_for_completion_timeout(&controller->done, timeout))
-> > > > +		ret = -ETIMEDOUT;
-> > > > +	else
-> > > > +		ret = controller->error;
-> > > > +exit:
-> > > > +	controller->xfer = NULL;
-> > > 
-> > > Should the manipulation of controller->xfer be protected by spinlock?
-> > 
-> > :-). Probably. I am wondering, could I avoid locking if firstly place
-> > QUP into RESET state and then access these field. This should stop
-> > all activities in it, right?
-> 
-> It's generally safest to not assume the hardware is going to do sane things.
-> I'm concerned about spurious IRQs.
+> > Are you sure?  It seems wrong to just ignore interrupts, some comments
+> > would help explain why.
 
-Ok, will add protection. 
+> Of course this should never happen. This was left from initial stage
+> of the implementation.
 
-<snip>
+OK, so reporting them as errors seems better then.
 
-> > > > +
-> > > > +	if (of_property_read_u32(dev->of_node, "spi-max-frequency", &max_freq))
-> > > > +		max_freq = 19200000;
-> > > 
-> > > I'd set the default to 50MHz as that is the max supported by hardware.  I'd just
-> > > set max_freq declaration to 50MHz and then check the value if it is changed via
-> > > DT.
-> > 
-> > 50MHz doesn't seems to be supported on all chip sets. Currently common
-> > denominator on all chip sets, that I can see, is 19.2MHz. I have tried 
-> > to test it with more than 19.2MHz on APQ8074 and it fails.
-> > 
-> 
-> I guess my stance is to set it to the hardware max supported frequency if it is
-> not specified.  If that needs to be lower on a board because of whatever reason,
-> they override it.
+> > > +	if (controller->speed_hz !=3D chip->speed_hz) {
+> > > +		ret =3D clk_set_rate(controller->cclk, chip->speed_hz);
+> > > +		if (ret) {
+> > > +			dev_err(controller->dev, "fail to set frequency %d",
+> > > +				chip->speed_hz);
+> > > +			return -EIO;
+> > > +		}
+> > > +	}
 
-Ok, I will do in this way.
+> > Is calling into the clock framework really so expensive that we need to
+> > avoid doing it? =20
 
-<snip>
+> Probably not. But why to call it if the frequency is the same.
 
-> > > 
-> > > > +
-> > > > +	ret = clk_set_rate(cclk, max_freq);
-> > > > +	if (ret)
-> > > > +		dev_warn(dev, "fail to set SPI frequency %d\n", max_freq);
-> > > 
-> > > Bail here?
-> > 
-> > I don't know. What will be the consequences if controller continue to
-> > operate on its default rate?
-> > 
-> 
-> It is unclear.  But if you can't set the rate that is configured or if there is
-> a misconfiguration, it's probably better to exit the probe and catch it here.
+It's less code that could go wrong and the check is already there in the
+clock framework hopefully.
 
+> > You also shouldn't be interacting with the hardware in
+> > setup().
 
-My preference is to delay clock speed change till first
-SPI transfer. And use wherever transfer itself mandate.
+> This is internal hw-setup, not master::setup() or I am
+> missing something?
 
-<snip>
+The naming could probably be clearer then - config or something.
 
-> > > > +
-> > > > +static int spi_qup_remove(struct platform_device *pdev)
-> > > > +{
-> > > > +	struct spi_master *master = dev_get_drvdata(&pdev->dev);
-> > > > +	struct spi_qup *controller = spi_master_get_devdata(master);
-> > > > +
-> > > > +	pm_runtime_get_sync(&pdev->dev);
-> > > > +
-> > > 
-> > > Do we need to wait for any current transactions to complete
-> > > and do a devm_free_irq()?
-> > > 
-> > > > +	clk_disable_unprepare(controller->cclk);
-> > > > +	clk_disable_unprepare(controller->iclk);
-> > 
-> > My understanding is:
-> > 
-> > Disabling clocks will timeout transaction, if any. Core Device driver
-> > will call: devm_spi_unregister(), which will wait pending transactions
-> > to complete and then remove the SPI master.
-> 
-> Disabling clocks will confuse the hardware.  We cannot disable clocks while the
-> spi core is active and transferring data.
+> > > +	if (chip->bits_per_word <=3D 8)
+> > > +		controller->bytes_per_word =3D 1;
+> > > +	else if (chip->bits_per_word <=3D 16)
+> > > +		controller->bytes_per_word =3D 2;
+> > > +	else
+> > > +		controller->bytes_per_word =3D 4;
 
-I could follow approach taken by other SPI drivers, just reset
-controller and disable clocks.
+> > This looks like a switch statement, and looking at the above it's not
+> > clear that the device actually supports anything other than whole bytes.
+> > I'm not sure what that would mean from an API point of view.
 
-> 
-> > 
-> > > > +
-> > > > +	pm_runtime_put_noidle(&pdev->dev);
-> > > > +	pm_runtime_disable(&pdev->dev);
-> > > > +	return 0;
-> > > > +}
-> > > > +
-> > > > +static struct of_device_id spi_qup_dt_match[] = {
-> > > > +	{ .compatible = "qcom,spi-qup-v2", },
-> > > 
-> > > Need compatible tags of qcom,spi-qup-v2.1.1 (msm8974 v1) or qcom,spi-qup-v2.2.1
-> > > (msm8974 v2)
-> > 
-> > I am not aware of the difference. My board report v.20020000. 
-> > Is there difference of handling these controllers?
-> 
-> There were some bug fixes between versions.  None of those affect SPI (that I
-> can tell), but it's better to be more descriptive and use the full versions in
-> the compatible tags.
+> SPI API didn't validate struct spi_transfer::len field.
 
-No strong preference here. Should I add qcom,spi-qup-v2.2.0, then? :-)
+It's supposed to; if the validation is incomplete then that should be
+fixed.
 
-Regards,
-Ivan
+--5QAgd0e35j3NYeGe
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS+QepAAoJELSic+t+oim98m8P/1CnfiS2JrsBUDbqMteVfjQ6
+s1rS7R3SU7gNCvuq7wOD2uNmS2CFK1EeSQirPzot1tS3rNeZx6AuRieortYPJfJb
+Z894ofWT8thXHOWNDX2QGKDUS6XZAvsp5y5HOl8b/4R4xwRT7dYqXOjv84KAwa3l
+ONdiWw+z+jjvdwQupSlpGOpN+lgp5CTtlo4k/oQ35VaZ6VdQAcma2psdJamdAzCK
+ayovd01VwhL9s1d81Jd6Hp4+erQONHPWA3v6CBElkyXnCLvXnMTGvDCn4A9dud3q
+WAucQ+xgYPqII4ZnexDyfF2rvp0Cad9536OY8Sw5zx94PipXxW1xbbpGIBUtbFr4
+9/+xU2gr8zMBBWGaQzQb5bIeAmb4q9Ly+vPi9eBMcRgsIDVA0fAPbSrQ0U0xIyVx
+vqoDRKRhCO8gnNwGeTSVCrRx0SnZP9WbPzdCw0pk8t3FABL1jFQFeUql4UJCrfkj
+KSKnPBoRsy4FwL8Bbx+gr7fPcQX/bB/sTNi/+u7wcgK5KAHN9f3C4po5Qstedz3Z
+qC5Kc4MMVM0Utlze66a2mUWxlD59UM/xgHX7ZFkvMl/fgq8JGnC5WZmRc7d/Mai0
+DSJgS6E2asUDd+Bkiv7Ac1O+2Ngwch289970P6AOqY38ZEi7+/XtL41juJfyEZxD
+gTftlYdakcZxbAIWQ3Pl
+=7/+x
+-----END PGP SIGNATURE-----
+
+--5QAgd0e35j3NYeGe--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

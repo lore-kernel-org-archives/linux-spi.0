@@ -1,85 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 07/17] spi: pl022: Don't ignore power domain and amba bus
- at system suspend
-Date: Mon, 10 Feb 2014 12:51:13 +0000
-Message-ID: <20140210125113.GZ1757@sirena.org.uk>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
- <1391529538-21685-8-git-send-email-ulf.hansson@linaro.org>
- <20140204191609.GU22609@sirena.org.uk>
- <CAPDyKFqNdw-6R12cUOre8UOTOnB-PpxHD5rPAMCwuS3i--Sesg@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: core: Set max_speed_hz of spi_device default to
+ max_speed_hz of controller
+Date: Mon, 10 Feb 2014 12:52:07 +0000
+Message-ID: <20140210125207.GA1757@sirena.org.uk>
+References: <1391962085.10294.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+mQruWSI2c46YBtV"
-Cc: Russell King <linux@arm.linux.org.uk>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	Alessandro Rubini <rubini@unipv.it>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	linux-mmc <linux-mmc@vger.kernel.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="fU5tsrXreH0/dVH0"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAPDyKFqNdw-6R12cUOre8UOTOnB-PpxHD5rPAMCwuS3i--Sesg@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1391962085.10294.1.camel@phoenix>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---+mQruWSI2c46YBtV
+--fU5tsrXreH0/dVH0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Feb 10, 2014 at 01:33:50PM +0100, Ulf Hansson wrote:
-> On 4 February 2014 20:16, Mark Brown <broonie@kernel.org> wrote:
+On Mon, Feb 10, 2014 at 12:08:05AM +0800, Axel Lin wrote:
+> In __spi_validate(), xfer->speed_hz is set to be spi->max_speed_hz if it is not
+> set for this transfer. However, if spi->max_speed_hz is also not set,
+> xfer->speed_hz is 0. Some drivers (e.g. au1550, tegra114, tegra20-sflash,
+> tegra20-slink, etc.) then use below code to avoid setting xfer->speed_hz to 0.
 
-> > This seems like a fairly hideous thing to be having to open code in an
-> > individual driver, it all looks generic and like something that most if
+Applied, thanks.
 
-...
-
-> > Putting it in a helper would at least mean that it's easier for the
-> > mechanics to be transferred to the core proper later on.
-
-> I agree, a helper function would be nice. I have earlier sent a patch
-> to the PM core, that is similar to the code above, though it was
-> rejected in it's current form. Let me follow up on this again.
-
-> At this point, would a way forward be to still go ahead with this
-> patch and then convert to, when/if, the helper function from the PM
-> core becomes available?
-
-It's definitely *a* way forward, but I'm not convinced it's a good way
-forward.  Since it's something that I'd expect us to be doing in all
-drivers we'd want to replicate it all over the place which is obviously
-not good, or conversely if there are issues that prevented the code
-being added to the PM core then presumably we're just adding problematic
-code to the driver (you've not mentioned what the problems were with
-doing this in the PM core).
-
---+mQruWSI2c46YBtV
+--fU5tsrXreH0/dVH0
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS+Ms9AAoJELSic+t+oim9vVcP/iddVl/HH7sK3ZbvHoVRZLuQ
-o8Z3SPc3B/MkiWNzw9JDDNrXh4UC1n50ywadFLBts3eCd4xu4oh1fww4O6zi3w8Q
-EyEdBMLhi+jt0XyELq5iXVjZJQhyVhT5/jsZSmXKuAVAE1wJWOaGHQ4TcOl0twaI
-KGFhovubhQUSpUYuuui1E6n5/70lUngQyunS4zNEdzzAp/lp336/K258umpPllJG
-tl0FyxZpj+/NNBNuac9xCkcyRlE/nKhfRD3SGFBiXZf4C9tp4WgOrQO+CdRmWdfQ
-d5AGgRJdO6oOiMW7HEsWdvT1a5sVC8yP3tRUbDMYXuJZbjArY7IYFiZfKyJcMG3v
-z1B1tLanG6XrTHKNKnkwUETp/8poipFXx2m/lTFqI3MXt5jr4DXbPcbQ+fdWpgYE
-+l1P0JlVa559TXLytp8Q92st/q7JtvAappjOQdojgeORK8AbhkWsTS9YSjaUn4Ma
-k1xCrH2IUdy4hV5usRo/ecxNEmrNruNou75fyxByhAhr48GKxd13QyeomJcOwBJx
-y62CUIHC8zZWo5Qzm/hip55OqPVBtw8W/nzd/jFqE1Y8jNg/CJsiidWgh2cPP9qk
-3pWwXP0+NqVLaAluYH+C04eeuScrCxmJR5pYYP1I+pTfZ93qF+mtvifyXWfewRaI
-NI5qUJ0lQKC976EI7GbM
-=coWM
+iQIcBAEBAgAGBQJS+MtzAAoJELSic+t+oim9vFcP/ioPnAFyE/8frI8zaWl5DK/d
+HMTuQtXFkcVhyo1LZ045pS7hKmBorFqEUtzM9vpXBeG6EaRYR3bgW8pqwtTUgzEI
+dLeEnijZ64xTvS5qX/jVubwtAnYp3LYO4P5f+yPcLi9IH6jHVogJ/Q49qjTUwhOd
+a3kXdXa15i3+U9cZ2fpqDvPdrEC1XjmDWQCNByhZMgjjWvHBqbHBPoKk7xt3Qaa3
+HWS/61aZn8hTblYcLYAJXLUAGuxcPeoceKO6IjkJDBHeU65LTAYzZLobOgEozyvz
+WJvy6MK05hkubBXSvFTBlJvE2Ze0EtAQp4nIzXBbfJYQW0ZWMqpSV5BG2nMFoecO
+f0b+kEBu7X9cL78BkchwRmg8pJPMg3gNpBHz5IpoeX5f8OmVk+DjCM1me9K64gax
+SrkAzQxUNmLUqKQKpb18Tv7w4w0eKaeRWnotMiiT/ca6VznULGnwBZZXISvUUZMo
+ZiE/GOg92zbGKXy1jxF6scaw/1c7BOnyfkM+CSSIZriP2xvgW4VTMgJcwuD+0HaF
+P7DDKJmjCL5zlIcqb1cszvrMDFJ9htXkmbWalA+nsILwG1Gi8a5Nqy3TUNPQIz6C
+zSJwlV8D0c40FQyw3ie+D2SinMnjwdsv3R0c1aqYqfV8fOTovpa+0CRbSCTlv+Z7
+EXu/+HYRgkV88xLxEvbV
+=4N2N
 -----END PGP SIGNATURE-----
 
---+mQruWSI2c46YBtV--
+--fU5tsrXreH0/dVH0--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

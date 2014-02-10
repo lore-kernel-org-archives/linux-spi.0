@@ -1,54 +1,105 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RFT] spi: txx9: Convert to let spi core handle checking
- transfer speed
-Date: Mon, 10 Feb 2014 14:15:23 +0000
-Message-ID: <20140210141523.GK1757@sirena.org.uk>
-References: <1391919307.26425.2.camel@phoenix>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: topcliff-pch: Convert to use master->max_speed_hz
+Date: Mon, 10 Feb 2014 22:26:40 +0800
+Message-ID: <1392042400.9602.3.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="g5OIygP5QP1fC/+Y"
-Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1391919307.26425.2.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Set "master->max_speed_hz = PCH_MAX_BAUDRATE" then we can remove pch_spi_setup.
+In additional, pspi->max_speed_hz will never be 0 because it's default value
+will be set to master->max_speed_hz.
 
---g5OIygP5QP1fC/+Y
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Also remove list_empty checking in pch_spi_transfer() because the checking is
+done by spi core.
 
-On Sun, Feb 09, 2014 at 12:15:07PM +0800, Axel Lin wrote:
-> By setting master->max_speed_hz and master->min_speed_hz, spi core will handle
-> checking transfer speed. Then we can remove the same checking in this driver.
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-topcliff-pch.c | 37 +------------------------------------
+ 1 file changed, 1 insertion(+), 36 deletions(-)
 
-Applied, thanks.
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index 2e7f38c..6304c91 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -464,20 +464,6 @@ static void pch_spi_reset(struct spi_master *master)
+ 	pch_spi_writereg(master, PCH_SRST, 0x0);
+ }
+ 
+-static int pch_spi_setup(struct spi_device *pspi)
+-{
+-	/* Check baud rate setting */
+-	/* if baud rate of chip is greater than
+-	   max we can support,return error */
+-	if ((pspi->max_speed_hz) > PCH_MAX_BAUDRATE)
+-		pspi->max_speed_hz = PCH_MAX_BAUDRATE;
+-
+-	dev_dbg(&pspi->dev, "%s MODE = %x\n", __func__,
+-		(pspi->mode) & (SPI_CPOL | SPI_CPHA));
+-
+-	return 0;
+-}
+-
+ static int pch_spi_transfer(struct spi_device *pspi, struct spi_message *pmsg)
+ {
+ 
+@@ -486,23 +472,6 @@ static int pch_spi_transfer(struct spi_device *pspi, struct spi_message *pmsg)
+ 	int retval;
+ 	unsigned long flags;
+ 
+-	/* validate spi message and baud rate */
+-	if (unlikely(list_empty(&pmsg->transfers) == 1)) {
+-		dev_err(&pspi->dev, "%s list empty\n", __func__);
+-		retval = -EINVAL;
+-		goto err_out;
+-	}
+-
+-	if (unlikely(pspi->max_speed_hz == 0)) {
+-		dev_err(&pspi->dev, "%s pch_spi_transfer maxspeed=%d\n",
+-			__func__, pspi->max_speed_hz);
+-		retval = -EINVAL;
+-		goto err_out;
+-	}
+-
+-	dev_dbg(&pspi->dev,
+-		"%s Transfer List not empty. Transfer Speed is set.\n", __func__);
+-
+ 	spin_lock_irqsave(&data->lock, flags);
+ 	/* validate Tx/Rx buffers and Transfer length */
+ 	list_for_each_entry(transfer, &pmsg->transfers, transfer_list) {
+@@ -523,10 +492,6 @@ static int pch_spi_transfer(struct spi_device *pspi, struct spi_message *pmsg)
+ 		dev_dbg(&pspi->dev,
+ 			"%s Tx/Rx buffer valid. Transfer length valid\n",
+ 			__func__);
+-
+-		/* if baud rate has been specified validate the same */
+-		if (transfer->speed_hz > PCH_MAX_BAUDRATE)
+-			transfer->speed_hz = PCH_MAX_BAUDRATE;
+ 	}
+ 	spin_unlock_irqrestore(&data->lock, flags);
+ 
+@@ -1418,10 +1383,10 @@ static int pch_spi_pd_probe(struct platform_device *plat_dev)
+ 
+ 	/* initialize members of SPI master */
+ 	master->num_chipselect = PCH_MAX_CS;
+-	master->setup = pch_spi_setup;
+ 	master->transfer = pch_spi_transfer;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
++	master->max_speed_hz = PCH_MAX_BAUDRATE;
+ 
+ 	data->board_dat = board_dat;
+ 	data->plat_dev = plat_dev;
+-- 
+1.8.1.2
 
---g5OIygP5QP1fC/+Y
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS+N74AAoJELSic+t+oim9r6wP/0YEStEQjw19jSpnT4/Isq4E
-MQTE2RUX+QozHDBx2praoil3hHneoAW8X7JPaKcllOl7rBLz90Z+sXXs33heuVVr
-P5taCC387pO8J164J/iFOWYUQ/25HTiC/508Yl50TDn1qf/X6aoS0sLqtVxQJZLe
-rqWMbDhO6zsx+i+D5PpZBeqWf3qbsmm6lGx83T87WTI3T7cEYloXY9X6j9dQO4sQ
-ZodYxq2WXbOMZaiVp6QnJHFnfYgDJ0sdd6c1uWUHBRWIkP0Ul/GRshWuKLrAIhxy
-V52DJO6Lmy8+R1W8+om+BepF04Hf3q6gLQuqiXwbmiWughuqdr7H8wdHC488asnL
-lLxdPTDtanHnOKvWkPCBFWb3frPFhGL8WPcj6qmH4oPFkzDA2pak6HDvO/ThTZlg
-BIta3gCeEBApUEkUgWffnGnbbGsgQLNgSwMNa1kHxNQVwZYAxmBODpd2yHqvNtzu
-8ztjhT28xN6xk6mFhGg46L4aknVZbWkPe1GQ1GQ5jDnIKSzTm3Kueb/ClwdxSrz8
-8lcYOLJycOdtoBt/gQafapzNUAUIE15cMkv8nhUFIuJ/qSWuZJ3AODwQhH0AyB/3
-RnASjsv4doN6H6wnM9yN4Are1M4a9wASfoVzQcG7GdqiClKo7yIEDuAf5GZignii
-ffptntpmlLyM7ee2CEk0
-=dl5r
------END PGP SIGNATURE-----
-
---g5OIygP5QP1fC/+Y--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

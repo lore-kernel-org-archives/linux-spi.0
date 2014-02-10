@@ -1,7 +1,8 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 1/3] spi: tegra114: Convert to use master->max_speed_hz
-Date: Mon, 10 Feb 2014 21:48:16 +0800
-Message-ID: <1392040096.4191.1.camel@phoenix>
+Subject: [PATCH 2/3] spi: tegra20-sflash: Convert to use master->max_speed_hz
+Date: Mon, 10 Feb 2014 21:49:49 +0800
+Message-ID: <1392040189.4191.3.camel@phoenix>
+References: <1392040096.4191.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
@@ -11,6 +12,7 @@ Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1392040096.4191.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -20,64 +22,76 @@ handle checking transfer speed.
 In additional, since commit 052eb2d49006 'spi: core: Set max_speed_hz of
 spi_device default to max_speed_hz of controller',
 spi core will also set default spi->max_speed_hz if it is not set.
-So remove the duplicate code in tegra_spi_setup.
+So remove tegra_sflash_setup().
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-tegra114.c | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ drivers/spi/spi-tegra20-sflash.c | 24 +++---------------------
+ 1 file changed, 3 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 0930d60..2f8aba5 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -171,7 +171,6 @@ struct tegra_spi_data {
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index 18037ab..5db73c0 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -120,7 +120,6 @@ struct tegra_sflash_data {
+ 	struct reset_control			*rst;
  	void __iomem				*base;
- 	phys_addr_t				phys;
  	unsigned				irq;
 -	u32					spi_max_frequency;
  	u32					cur_speed;
  
  	struct spi_device			*cur_spi;
-@@ -762,9 +761,6 @@ static int tegra_spi_setup(struct spi_device *spi)
- 
- 	BUG_ON(spi->chip_select >= MAX_CHIP_SELECT);
- 
--	/* Set speed to the spi max fequency if spi device has not set */
--	spi->max_speed_hz = spi->max_speed_hz ? : tspi->spi_max_frequency;
--
- 	ret = pm_runtime_get_sync(tspi->dev);
- 	if (ret < 0) {
- 		dev_err(tspi->dev, "pm runtime failed, e = %d\n", ret);
-@@ -1018,16 +1014,6 @@ static irqreturn_t tegra_spi_isr(int irq, void *context_data)
- 	return IRQ_WAKE_THREAD;
+@@ -314,15 +313,6 @@ static int tegra_sflash_start_transfer_one(struct spi_device *spi,
+ 	return tegra_sflash_start_cpu_based_transfer(tsd, t);
  }
  
--static void tegra_spi_parse_dt(struct platform_device *pdev,
--	struct tegra_spi_data *tspi)
+-static int tegra_sflash_setup(struct spi_device *spi)
 -{
--	struct device_node *np = pdev->dev.of_node;
+-	struct tegra_sflash_data *tsd = spi_master_get_devdata(spi->master);
 -
--	if (of_property_read_u32(np, "spi-max-frequency",
--				&tspi->spi_max_frequency))
--		tspi->spi_max_frequency = 25000000; /* 25MHz */
+-	/* Set speed to the spi max fequency if spi device has not set */
+-	spi->max_speed_hz = spi->max_speed_hz ? : tsd->spi_max_frequency;
+-	return 0;
 -}
 -
- static struct of_device_id tegra_spi_of_match[] = {
- 	{ .compatible = "nvidia,tegra114-spi", },
- 	{}
-@@ -1049,8 +1035,9 @@ static int tegra_spi_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, master);
- 	tspi = spi_master_get_devdata(master);
+ static int tegra_sflash_transfer_one_message(struct spi_master *master,
+ 			struct spi_message *msg)
+ {
+@@ -429,15 +419,6 @@ static irqreturn_t tegra_sflash_isr(int irq, void *context_data)
+ 	return handle_cpu_based_xfer(tsd);
+ }
  
--	/* Parse DT */
--	tegra_spi_parse_dt(pdev, tspi);
-+	if (of_property_read_u32(pdev->dev.of_node, "spi-max-frequency",
+-static void tegra_sflash_parse_dt(struct tegra_sflash_data *tsd)
+-{
+-	struct device_node *np = tsd->dev->of_node;
+-
+-	if (of_property_read_u32(np, "spi-max-frequency",
+-					&tsd->spi_max_frequency))
+-		tsd->spi_max_frequency = 25000000; /* 25MHz */
+-}
+-
+ static struct of_device_id tegra_sflash_of_match[] = {
+ 	{ .compatible = "nvidia,tegra20-sflash", },
+ 	{}
+@@ -466,7 +447,6 @@ static int tegra_sflash_probe(struct platform_device *pdev)
+ 
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA;
+-	master->setup = tegra_sflash_setup;
+ 	master->transfer_one_message = tegra_sflash_transfer_one_message;
+ 	master->auto_runtime_pm = true;
+ 	master->num_chipselect = MAX_CHIP_SELECT;
+@@ -478,7 +458,9 @@ static int tegra_sflash_probe(struct platform_device *pdev)
+ 	tsd->dev = &pdev->dev;
+ 	spin_lock_init(&tsd->lock);
+ 
+-	tegra_sflash_parse_dt(tsd);
++	if (of_property_read_u32(tsd->dev->of_node, "spi-max-frequency",
 +				 &master->max_speed_hz))
 +		master->max_speed_hz = 25000000; /* 25MHz */
  
- 	/* the spi->mode bits understood by this driver: */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	tsd->base = devm_ioremap_resource(&pdev->dev, r);
 -- 
 1.8.1.2
 

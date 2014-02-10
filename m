@@ -1,120 +1,253 @@
-From: dsneddon@codeaurora.org
-Subject: Re: Fwd: [PATCH 2/2] spi: Add Qualcomm QUP SPI controller support
-Date: Mon, 10 Feb 2014 16:21:32 -0000
-Message-ID: <3388d68dc907e9190d997fad95830d74.squirrel@www.codeaurora.org>
+From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: Add Qualcomm QUP SPI controller support
+Date: Mon, 10 Feb 2014 18:29:26 +0200
+Message-ID: <1392049766.2853.43.camel@iivanov-dev>
 References: <1391705868-20091-1-git-send-email-iivanov@mm-sol.com>
-    <1391705868-20091-3-git-send-email-iivanov@mm-sol.com>
-    <CACceFXdUobQvN2hcv5kh+QL=o8bWM_PVkAtrOx+euZSeVDm8hQ@mail.gmail.com>
-    <214fe9fc7e62ab30bdfbb4ac5d1ee250.squirrel@www.codeaurora.org>
-    <1392047651.2853.19.camel@iivanov-dev>
+	 <1391705868-20091-3-git-send-email-iivanov@mm-sol.com>
+	 <20140207171202.GD1757@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Cc: dsneddon@codeaurora.org, broonie@kernel.org,
-	grant.likely@linaro.org, robh+dt@kernel.org,
-	linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	inux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	alokc@codeaurora.org, gavidov@codeaurora.org,
-	kgunda@codeaurora.org, sdharia@codeaurora.org
-To: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <1392047651.2853.19.camel@iivanov-dev>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alok Chauhan <alokc-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Gilad Avidov <gavidov-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Kiran Gunda <kgunda-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140207171202.GD1757-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Ivan,
->
->> > +
->> > +static int spi_qup_set_state(struct spi_qup *controller, u32 state)
->> > +{
->> > +       unsigned long loop = 0;
->> > +       u32 cur_state;
->> > +
->> > +       cur_state = readl_relaxed(controller->base + QUP_STATE);
->> Make sure the state is valid before you read the current state.
->
-> Why? Controller is always left in valid state (after probe and every
-> transaction)? I know that CAF code contain this check, but now driver
-> is little bit different. I have made some tests and controller is
-> always in valid state in this point.
 
-The hardware programming guide we recommends doing this.  I'd have to talk
-to the hardware designers to know exactly the reason why.  I can follow up
-on this if you'd like.
+Hi,
 
->
->> > +       /*
->> > +        * Per spec: for PAUSE_STATE to RESET_STATE, two writes
->> > +        * of (b10) are required
->> > +        */
->> > +       if (((cur_state & QUP_STATE_MASK) == QUP_STATE_PAUSE) &&
->> > +           (state == QUP_STATE_RESET)) {
->> > +               writel_relaxed(QUP_STATE_CLEAR, controller->base +
->> > QUP_STATE);
->> > +               writel_relaxed(QUP_STATE_CLEAR, controller->base +
->> > QUP_STATE);
->> > +       } else {
->> Make sure you don't transition from RESET to PAUSE.
->
-> I don't see this to be handled in CAF code. Could you give me
-> more details, please?
->
-> Right now possible state transactions are:
->
-> * if everything is fine:
->   RESET -> RUN -> PAUSE -> RUN -> RESET
-> * in case of error:
->   RESET -> RUN -> RESET
->   RESET -> RUN -> PAUSE -> RESET
->
-> Please correct me if I am wrong.
+On Fri, 2014-02-07 at 17:12 +0000, Mark Brown wrote: 
+> On Thu, Feb 06, 2014 at 06:57:48PM +0200, Ivan T. Ivanov wrote:
+> 
+> This looks mostly good, there's a few odd things and missing use of
+> framework features.
+> 
+> > Qualcomm Universal Peripheral (QUP) core is an AHB slave that
+> > provides a common data path (an output FIFO and an input FIFO)
+> > for serial peripheral interface (SPI) mini-core. SPI in master mode
+> > support up to 50MHz, up to four chip selects, and a programmable
+> > data path from 4 bits to 32 bits; MODE0..3 protocols
+> 
+> The grammar in this and the Kconfig text is a bit garbled, might want to
+> give it a once over (support -> supports for example).
 
-According to the hardware documentation if the hardware is in the RESET
-state and we try to transition to the PAUSE state the hardware behavior is
-"undefined", which usually means bad things will happen.  Admittedly, if
-the driver always follows the "valid" rules (the ones you've listed above)
-it _should_ never happen.  However, it is _possible_ the hardware is in
-the RESET state while the driver thinks it's in the RUN state and the
-driver tries to put is in the PAUSE state.  In other words, I'd like to
-err on the side of caution since the check doesn't really cost us
-anything.
+Ok
 
->
->> > +
->> > +static void spi_qup_fifo_read(struct spi_qup *controller,
->> > +                             struct spi_transfer *xfer)
->> > +{
->> > +       u8 *rx_buf = xfer->rx_buf;
->> > +       u32 word, state;
->> > +       int idx, shift;
->> > +
->> > +       while (controller->rx_bytes < xfer->len) {
->> > +
->> > +               state = readl_relaxed(controller->base +
->> QUP_OPERATIONAL);
->> > +               if (0 == (state & QUP_OP_IN_FIFO_NOT_EMPTY))
->> > +                       break;
->> > +
->> > +               word = readl_relaxed(controller->base +
->> QUP_INPUT_FIFO);
->> > +
->> > +               for (idx = 0; idx < controller->bytes_per_word &&
->> > +                    controller->rx_bytes < xfer->len; idx++,
->> > +                    controller->rx_bytes++) {
->> > +
->> > +                       if (!rx_buf)
->> > +                               continue;
->> If there is no rx_buf just set rx_bytes to xfer->len and skip the loop
->> entirely.
->
-> Well, FIFO buffer still should be drained, right?
-> Anyway. I am looking for better way to handle this.
-> Same applies for filling FIFO buffer.
->
+> 
+> > +static void spi_qup_deassert_cs(struct spi_qup *controller,
+> > +				struct spi_qup_device *chip)
+> > +{
+> 
+> 
+> > +	if (chip->mode & SPI_CS_HIGH)
+> > +		iocontol &= ~mask;
+> > +	else
+> > +		iocontol |= mask;
+> 
+> Implement a set_cs() operation and let the core worry about all this
+> for you as well as saving two implementations.
 
-Yes.  Still read from the FIFO but skip the for loop since we're just
-adding bytes_per_word to the total rx_byte count one iteration at a time
-and not doing anything with the data.
+Nice. Will us it.
+
+> 
+> > +		word = 0;
+> > +		for (idx = 0; idx < controller->bytes_per_word &&
+> > +		     controller->tx_bytes < xfer->len; idx++,
+> > +		     controller->tx_bytes++) {
+> > +
+> > +			if (!tx_buf)
+> > +				continue;
+> 
+> Do you need to set the _MUST_TX flag?
+> 
+> > +	qup_err = readl_relaxed(controller->base + QUP_ERROR_FLAGS);
+> > +	spi_err = readl_relaxed(controller->base + SPI_ERROR_FLAGS);
+> > +	opflags = readl_relaxed(controller->base + QUP_OPERATIONAL);
+> > +
+> > +	writel_relaxed(qup_err, controller->base + QUP_ERROR_FLAGS);
+> > +	writel_relaxed(spi_err, controller->base + SPI_ERROR_FLAGS);
+> > +	writel_relaxed(opflags, controller->base + QUP_OPERATIONAL);
+> > +
+> > +	if (!xfer)
+> > +		return IRQ_HANDLED;
+> 
+> Are you sure?  It seems wrong to just ignore interrupts, some comments
+> would help explain why.
+
+Of course this should never happen. This was left from initial stage
+of the implementation.
+
+> 
+> > +static int spi_qup_transfer_do(struct spi_qup *controller,
+> > +			       struct spi_qup_device *chip,
+> > +			       struct spi_transfer *xfer)
+> 
+> This looks like a transfer_one() function, please use the framework
+> features where you can.
+
+Sure, will do. Somehow I have missed this.
+
+> 
+> > +	if (controller->speed_hz != chip->speed_hz) {
+> > +		ret = clk_set_rate(controller->cclk, chip->speed_hz);
+> > +		if (ret) {
+> > +			dev_err(controller->dev, "fail to set frequency %d",
+> > +				chip->speed_hz);
+> > +			return -EIO;
+> > +		}
+> > +	}
+> 
+> Is calling into the clock framework really so expensive that we need to
+> avoid doing it?  
+
+Probably not. But why to call it if the frequency is the same.
+
+
+> You also shouldn't be interacting with the hardware in
+> setup().
+
+This is internal hw-setup, not master::setup() or I am
+missing something?
+
+> 
+> > +	if (chip->bits_per_word <= 8)
+> > +		controller->bytes_per_word = 1;
+> > +	else if (chip->bits_per_word <= 16)
+> > +		controller->bytes_per_word = 2;
+> > +	else
+> > +		controller->bytes_per_word = 4;
+> 
+> This looks like a switch statement, and looking at the above it's not
+> clear that the device actually supports anything other than whole bytes.
+> I'm not sure what that would mean from an API point of view.
+
+SPI API didn't validate struct spi_transfer::len field.
+
+The whole sniped looks like this:
+
+	chip->bits_per_word = spi->bits_per_word;
+	if (xfer->bits_per_word)
+		chip->bits_per_word = xfer->bits_per_word;
+
+	if (chip->bits_per_word <= 8)
+		controller->bytes_per_word = 1;
+	else if (chip->bits_per_word <= 16)
+		controller->bytes_per_word = 2;
+	else
+		controller->bytes_per_word = 4;
+
+	if (controller->bytes_per_word > xfer->len ||
+	    xfer->len % controller->bytes_per_word != 0){
+		/* No partial transfers */
+		dev_err(controller->dev, "invalid len %d for %d bits\n",
+			xfer->len, chip->bits_per_word);
+		return -EIO;
+	}
+
+	n_words = xfer->len / controller->bytes_per_word;
+
+'bytes_per_word' have to be power of 2. This is my understanding of
+struct spi_transfer description. So I am discarding all transfers with
+'len' non multiple of word size.
+
+
+> 
+> > +static int spi_qup_transfer_one(struct spi_master *master,
+> > +				struct spi_message *msg)
+> > +{
+> 
+> This entire function can be removed, the core can do it for you.
+
+Sure, will use it.
+
+> 
+> > +	if (of_property_read_u32(dev->of_node, "spi-max-frequency", &max_freq))
+> > +		max_freq = 19200000;
+> > +
+> > +	if (!max_freq) {
+> > +		dev_err(dev, "invalid clock frequency %d\n", max_freq);
+> > +		return -ENXIO;
+> > +	}
+> > +
+> > +	ret = clk_set_rate(cclk, max_freq);
+> > +	if (ret)
+> > +		dev_warn(dev, "fail to set SPI frequency %d\n", max_freq);
+> 
+> You set the clock rate per transfer so why bother setting it here,
+
+Only if differs from the current one.
+
+> perhaps we support the rate the devices request but not this maximum
+> rate?
+
+Thats why it is just a warning. I will see how to handle this better.
+
+> 
+> > +	master->num_chipselect = SPI_NUM_CHIPSELECTS;
+> > +	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+> 
+> Are you *sure* the device supports anything other than whole bytes?
+
+Yep. I see them on the scope.
+
+> 
+> > +	ret = devm_spi_register_master(dev, master);
+> > +	if (!ret) {
+> > +		pm_runtime_set_autosuspend_delay(dev, MSEC_PER_SEC);
+> > +		pm_runtime_use_autosuspend(dev);
+> > +		pm_runtime_set_active(dev);
+> > +		pm_runtime_enable(dev);
+> > +		return ret;
+> > +	}
+> 
+> This is really unclearly written, the success case looks like error
+> handling.
+
+I suppose that if use a goto, I will have to do it consistently. 
+Will rework it.
+
+> 
+> > +#ifdef CONFIG_PM_RUNTIME
+> > +static int spi_qup_pm_suspend_runtime(struct device *device)
+> > +{
+> > +	struct spi_master *master = dev_get_drvdata(device);
+> > +	struct spi_qup *controller = spi_master_get_devdata(master);
+> > +
+> > +	disable_irq(controller->irq);
+> 
+> Why do you need to disable the interrupt?  Will the hardware generate
+> spurious interrupts, if so some documentation is in order.
+
+I don't know. Just extra protection? I will have t o find how to 
+test this.
+
+> 
+> > +static int spi_qup_pm_resume_runtime(struct device *device)
+> > +{
+> > +	struct spi_master *master = dev_get_drvdata(device);
+> > +	struct spi_qup *controller = spi_master_get_devdata(master);
+> > +
+> > +	clk_prepare_enable(controller->cclk);
+> > +	clk_prepare_enable(controller->iclk);
+> > +	enable_irq(controller->irq);
+> 
+> No error checking here...
+
+Will fix.
 
 Thanks,
-Dan
+Ivan
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

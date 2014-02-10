@@ -1,54 +1,74 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap-100k: Remove unused fields from struct
- omap1_spi100k
-Date: Mon, 10 Feb 2014 12:17:46 +0000
-Message-ID: <20140210121746.GU1757@sirena.org.uk>
-References: <1391916959.20382.4.camel@phoenix>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH 07/17] spi: pl022: Don't ignore power domain and amba bus
+ at system suspend
+Date: Mon, 10 Feb 2014 13:33:50 +0100
+Message-ID: <CAPDyKFqNdw-6R12cUOre8UOTOnB-PpxHD5rPAMCwuS3i--Sesg@mail.gmail.com>
+References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+	<1391529538-21685-8-git-send-email-ulf.hansson@linaro.org>
+	<20140204191609.GU22609@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ZsW/usBbx2ObC9TW"
-Cc: Fabrice Crohas <fcrohas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1391916959.20382.4.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Russell King <linux@arm.linux.org.uk>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	Alessandro Rubini <rubini@unipv.it>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <20140204191609.GU22609@sirena.org.uk>
+Sender: linux-mmc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On 4 February 2014 20:16, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Feb 04, 2014 at 04:58:48PM +0100, Ulf Hansson wrote:
+>
+>> @@ -2328,8 +2300,23 @@ static int pl022_suspend(struct device *dev)
+>>               return ret;
+>>       }
+>>
+>> -     pm_runtime_get_sync(dev);
+>> -     pl022_suspend_resources(pl022, false);
+>> +     pm_runtime_disable(dev);
+>> +
+>> +     if (!pm_runtime_status_suspended(dev)) {
+>> +             if (dev->pm_domain && dev->pm_domain->ops.runtime_suspend)
+>> +                     ret = dev->pm_domain->ops.runtime_suspend(dev);
+>> +             else
+>> +                     ret = dev->bus->pm->runtime_suspend(dev);
+>> +
+>> +             if (ret) {
+>> +                     pm_runtime_enable(dev);
+>> +                     return ret;
+>> +             }
+>> +
+>> +             pm_runtime_set_suspended(dev);
+>> +     }
+>
+> This seems like a fairly hideous thing to be having to open code in an
+> individual driver, it all looks generic and like something that most if
+> not all devices ought to be doing and it looks very vulnerable to being
+> broken by changes in the core.  At the very least I would expect this to
+> be done in a helper function, though it would be even nicer if the
+> driver core were figuring this stuff out for us based on the device
+> level callback so that drivers didn't need to worry about being in power
+> domains or manually calling bus level callbacks.
+>
+> Putting it in a helper would at least mean that it's easier for the
+> mechanics to be transferred to the core proper later on.
 
---ZsW/usBbx2ObC9TW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I agree, a helper function would be nice. I have earlier sent a patch
+to the PM core, that is similar to the code above, though it was
+rejected in it's current form. Let me follow up on this again.
 
-On Sun, Feb 09, 2014 at 11:35:59AM +0800, Axel Lin wrote:
-> Both *master and state are not really used, remove them.
+At this point, would a way forward be to still go ahead with this
+patch and then convert to, when/if, the helper function from the PM
+core becomes available?
 
-Applied, thanks.
-
---ZsW/usBbx2ObC9TW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS+MNnAAoJELSic+t+oim9sr0QAJSPxooacIRiKDS7hdJWh/ey
-f7WOF5mttZbGHD8XE0W9clIHsQ+xiu5A9RsFqKjHV94L+Lh9CNpnU9efwzeuPX2t
-r4T+EpZVOS6oHXMvVqscL+Z+8ILVcn3fLwm3VIr65zFhIRc3Jz5EHkj3J1gu0cqF
-d4pyZhi+YD7/XBFS85FWBdkGkPuD5dqmUmVuWpDYAh1FrhyvgvwJo7lsf3X6OPDK
-ICordujY5M6rYhxYP2tgwkhrYiZzbOppvMSemByQ+16P0uHLhqmDhOp9lYjX/Nue
-WxZJBK7x3TPyFSf4WdqHOnwDo5Q9pmVYBznpOkQV6HeSeQbglcXMrlgDcktpZNTj
-540ZX8PBQrtz1c8UeUEFBw4sU1niM8kA90wOYGE6DHXjj75Gzbwg761qeux4zHmP
-zAxvpk6yoViKDk5avhFjr8ltbr08luM8HyNPugfT1j19e9XF21EiRUNBZQ9+TaSG
-YkI3EIMvfC3lNd89C8cgkSXvoGWUxb0TXG2LHWiZ8mc4RoeGcxlQEfgC2/NEZ/8s
-gIR8TA39Ki5bz4FQHtfEH+WET4VTL/E6OyBNInJy2cngHeLH9Sb1LlD/HFgLJKvx
-WRVtde1xXZAlO7Qm7Ki9RcRVXu8ed/xZICaHlB2lhWabF637HD5eLGO6wy2s8tT2
-9hpqg2JkBsK5teEKigQR
-=K+ib
------END PGP SIGNATURE-----
-
---ZsW/usBbx2ObC9TW--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Kind regards
+Ulf Hansson

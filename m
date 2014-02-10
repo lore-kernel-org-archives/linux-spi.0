@@ -1,47 +1,54 @@
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH 00/17] amba: PM fixups for amba bus and some amba drivers
-Date: Mon, 10 Feb 2014 11:25:41 +0100
-Message-ID: <CAPDyKFq+p5x+XFSRNJN6qVOCNhACU=JSs3rtH+0peVmpdYkZ3g@mail.gmail.com>
+Subject: Re: [PATCH 08/17] spi: pl022: Fully gate clocks at request inactivity
+Date: Mon, 10 Feb 2014 11:36:08 +0100
+Message-ID: <CAPDyKFraQUcZ_LjSAwENQA_RVqXokKKgfOZh7WD1vKmJ+5KstQ@mail.gmail.com>
 References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-	<20140204184909.GT22609@sirena.org.uk>
+ <1391529538-21685-9-git-send-email-ulf.hansson@linaro.org>
+ <20140204170746.GD22609@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Russell King <linux@arm.linux.org.uk>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	Alessandro Rubini <rubini@unipv.it>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	linux-mmc <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Russell King <linux@arm.linux.org.uk>, Wolfram Sang <wsa@the-dreams.de>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ linux-mmc <linux-mmc@vger.kernel.org>, Chris Ball <chris@printf.net>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Alessandro Rubini <rubini@unipv.it>
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <20140204184909.GT22609@sirena.org.uk>
-Sender: linux-mmc-owner@vger.kernel.org
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <20140204170746.GD22609@sirena.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
 List-Id: linux-spi.vger.kernel.org
 
-On 4 February 2014 19:49, Mark Brown <broonie@kernel.org> wrote:
-> On Tue, Feb 04, 2014 at 04:58:41PM +0100, Ulf Hansson wrote:
+On 4 February 2014 18:07, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Feb 04, 2014 at 04:58:49PM +0100, Ulf Hansson wrote:
+>> Use clk_disable_unprepare and clk_prepare_enable from the runtime PM
+>> callbacks, to fully gate|ungate clocks. Potentially this will save more
+>> power, depending on the clock tree for the current SOC.
 >
->> The fixes for the amba bus needs to be merged prior to the other, thus I think
->> it could make sense to merge this complete patchset through Russell's tree,
->> if he and the other maintainers think this is okay.
->
-> What are the actual dependencies for the SPI bit?  AFAICT it's probably
-> the first patch needs the bus updating?
+> The same patch has already been applied (I noticed and fixed it while
+> doing unrelated code review).
 
-Correct!
+Sorry, didn't notice that.
 
-At this point I thought it made sense to collect all this patches,
-since it adopts to use the new SET_PM_RUNTIME_PM_OPS macro from the PM
-core.
-
-In principle I wanted to visualize in one go how driver's system
-suspend|resume callbacks could be implemented for three similar
-scenarios.
+Thanks!
 
 Kind regards
 Ulf Hansson
+
+>
+>>       pinctrl_pm_select_default_state(dev);
+>> -     clk_enable(pl022->clk);
+>> +     clk_prepare_enable(pl022->clk);
+>
+> Someone should really make this check errors though!

@@ -1,148 +1,62 @@
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH 05/17] mmc: mmci: Put the device into low power state at
- system suspend
-Date: Mon, 10 Feb 2014 12:11:24 +0100
-Message-ID: <CAPDyKFo4QG+D0wKnSEXR=2TW93HKUAbb1EUqGk_U56rS339B3Q@mail.gmail.com>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-	<1391529538-21685-6-git-send-email-ulf.hansson@linaro.org>
-	<8738jyu1h9.fsf@paris.lan>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: omap-100k: Remove unused pointer in
+ omap1_spi100k_txrx_pio()
+Date: Mon, 10 Feb 2014 12:17:29 +0000
+Message-ID: <20140210121729.GT1757@sirena.org.uk>
+References: <20140208190223.45d1dcf8@spike>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Russell King <linux@arm.linux.org.uk>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	Alessandro Rubini <rubini@unipv.it>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>, Mark Brown <broonie@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	linux-mmc <linux-mmc@vger.kernel.org>
-To: Kevin Hilman <khilman@linaro.org>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <8738jyu1h9.fsf@paris.lan>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-On 4 February 2014 20:22, Kevin Hilman <khilman@linaro.org> wrote:
-> Ulf Hansson <ulf.hansson@linaro.org> writes:
->
->> Due to the available runtime PM callbacks, we are now able to put our
->> device into low power state at system suspend.
->>
->> Earlier we could not accomplish this without trusting a power domain
->> for the device to take care of it. Now we are able to cope with
->> scenarios both with and without a power domain.
->>
->> Cc: Russell King <linux@arm.linux.org.uk>
->> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
->> ---
->>  drivers/mmc/host/mmci.c |   45 +++++++++++++++++++++++++--------------------
->>  1 file changed, 25 insertions(+), 20 deletions(-)
->>
->> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
->> index c88da1c..074e0cb 100644
->> --- a/drivers/mmc/host/mmci.c
->> +++ b/drivers/mmc/host/mmci.c
->> @@ -1723,33 +1723,38 @@ static int mmci_remove(struct amba_device *dev)
->>       return 0;
->>  }
->>
->> -#ifdef CONFIG_SUSPEND
->> -static int mmci_suspend(struct device *dev)
->> +#ifdef CONFIG_PM_SLEEP
->> +static int mmci_suspend_late(struct device *dev)
->>  {
->> -     struct amba_device *adev = to_amba_device(dev);
->> -     struct mmc_host *mmc = amba_get_drvdata(adev);
->> +     int ret = 0;
->>
->> -     if (mmc) {
->> -             struct mmci_host *host = mmc_priv(mmc);
->> -             pm_runtime_get_sync(dev);
->> -             writel(0, host->base + MMCIMASK0);
->> -     }
->> +     if (pm_runtime_status_suspended(dev))
->> +             return 0;
->>
->> -     return 0;
->> +     if (dev->pm_domain && dev->pm_domain->ops.runtime_suspend)
->> +             ret = dev->pm_domain->ops.runtime_suspend(dev);
->> +     else
->> +             ret = dev->bus->pm->runtime_suspend(dev);
->> +
->> +     if (!ret)
->> +             pm_runtime_set_suspended(dev);
->
-> Isn't this basically open-coding pm_runtime_suspend()...
-
-It is similar, but with once big difference.
-
-Since the PM core prevents pm_runtime_suspend() from invoking our
-->runtime_suspend callback during system suspend (it does so by
-invoking pm_runtime_get_sync() before starting the suspend sequence),
-we then need to make the driver handle that by itself.
-
->
->> +     return ret;
->>  }
->>
->> -static int mmci_resume(struct device *dev)
->> +static int mmci_resume_early(struct device *dev)
->>  {
->> -     struct amba_device *adev = to_amba_device(dev);
->> -     struct mmc_host *mmc = amba_get_drvdata(adev);
->> +     int ret = 0;
->>
->> -     if (mmc) {
->> -             struct mmci_host *host = mmc_priv(mmc);
->> -             writel(MCI_IRQENABLE, host->base + MMCIMASK0);
->> -             pm_runtime_put(dev);
->> -     }
->> +     if (pm_runtime_status_suspended(dev))
->> +             return 0;
->>
->> -     return 0;
->> +     if (dev->pm_domain && dev->pm_domain->ops.runtime_resume)
->> +             ret = dev->pm_domain->ops.runtime_resume(dev);
->> +     else
->> +             ret = dev->bus->pm->runtime_resume(dev);
->> +
->> +     return ret;
->
-> ...and this is pm_runtime_resume()? (though both terribly simplified.)
-
-Correct, but again with a big difference. See comment above.
-
->
-> This is starting to show that building with PM_SLEEP but not PM_RUNTIME
-> is going to force open-coding a lot of stuff that the runtime PM
-> framework already provides.  So either we need some helper functions so
-> we're not sprinkling manual calls to bus/pm_domain callbacks all over
-
-I have send a patch a while ago for the PM core, that tried to
-implement something similar like this, I wasn't accepted. I will
-follow up on that asap.
-
-Still, do you think we could go ahead with this patch? If/when we can
-get an acceptance for a PM runtime helper function in the PM core, we
-can easily convert to use it later on.
-
-> the place, or maybe where we need to go is have a way for platforms that
-> really are "runtime PM centric" to declare that even PM_SLEEP depends on
-> PM_RUNTIME.
->
-> I'm trying to thing of a good reason to not make PM_SLEEP depend on
-> PM_RUNTIME for platforms like this.
-
-This wont help. The PM core will still prevent the runtime_suspend
-callback from being invoked during system suspend.
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="pd495SECmvzXpBRb"
+Cc: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	H Hartley Sweeten <hsweeten-3FF4nKcrg1dE2c76skzGb0EOCMrvLtNR@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Michal Nazarewicz <mina86-deATy8a+UHjQT0dZR+AlfA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Christian Engelmayer <cengelma-RbZlAiThDcE@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20140208190223.45d1dcf8@spike>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
-Kind regards
-Ulf Hansson
+--pd495SECmvzXpBRb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
-> Kevin
->
+On Sat, Feb 08, 2014 at 07:02:23PM +0100, Christian Engelmayer wrote:
+> Remove unused devdata pointer 'spi100k' in function omap1_spi100k_txrx_pi=
+o().
+>=20
+> Detected by Coverity: CID 1077869.
+
+Applied, thanks.
+
+--pd495SECmvzXpBRb
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS+MNVAAoJELSic+t+oim9aZcP/isElpSecsmOL4ElcIk+ihD2
+gpl0GIHKhDK5rvODVcdZXZD0/dTK2iJcIfxM7/6by0cfELJkNCjuf5fa6EShy/V+
+BqiO26QmG268N7FBoDLCR8XnhjWOIx1cH532chbgGeZKIvz1mXS9RdxhV8eHFUa7
+QI7zrrA5791ag3Z6tZ5M7Qg9dNoW0iX+ko4MehVgvrJLyYvWxbmmET0K8qnAjfy1
+djZhGT2Nj8c+UciffaRfrgdj4zcycUiH+kikYPpIJpBn5WVk6lYTRKfIe42SNkWV
+h5Q7RtIfQ1Lbcts44kuHKyv8EDsxImYsmGO9emYc2hirmVLUeLtojbaw1fwSdZnv
+ngfqQ4aIoRdYxE7nC2EOJV5EXsC1R+dl2tTvHO9w4bWV6D3XeNSQyl8NxkWlU0es
+pHAmX3sch7339aEaTaJ6fr4GR7Wo8WSDlN+ZGEI0pw3JgMDmedswVDvGDW1cNfV/
+Vw46k0k+LoagPL7E2304moixYpTC/HiaSxO+xHZlI15yYeP7iEmxr0kS4Rkdg4dW
+2EG1GKam4W+TIcLeC8ru4vNhTkELTG6mrHC5ohyAyBzoTm5YjJYgb7vuOU7AEN4B
+ykvHT2fbV4RHjg+M0J8q1YBPQTaUHhZAj6ZudsGaSbrEbg8vAodV3vg1SXFCFut7
+Vi7wK6NZDPoBJhLhzdPx
+=mAJU
+-----END PGP SIGNATURE-----
+
+--pd495SECmvzXpBRb--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

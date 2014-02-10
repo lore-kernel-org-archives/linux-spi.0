@@ -1,92 +1,94 @@
-From: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: Add Qualcomm QUP SPI controller support
-Date: Mon, 10 Feb 2014 11:47:38 -0600
-Message-ID: <20140210174738.GA31596@qualcomm.com>
-References: <1391705868-20091-1-git-send-email-iivanov@mm-sol.com>
- <1391705868-20091-3-git-send-email-iivanov@mm-sol.com>
- <20140207073952.GA2610@qualcomm.com>
- <1391766753.27491.60.camel@iivanov-dev>
- <20140207173207.GA19974@qualcomm.com>
- <1392051302.2853.56.camel@iivanov-dev>
+From: Kevin Hilman <khilman@linaro.org>
+Subject: Re: [PATCH 05/17] mmc: mmci: Put the device into low power state at system suspend
+Date: Mon, 10 Feb 2014 10:03:57 -0800
+Message-ID: <7hmwhyalpu.fsf@paris.lan>
+References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+	<1391529538-21685-6-git-send-email-ulf.hansson@linaro.org>
+	<8738jyu1h9.fsf@paris.lan>
+	<CAPDyKFo4QG+D0wKnSEXR=2TW93HKUAbb1EUqGk_U56rS339B3Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Alok Chauhan <alokc-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Gilad Avidov <gavidov-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Kiran Gunda <kgunda-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1392051302.2853.56.camel@iivanov-dev>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain
+Cc: Russell King <linux@arm.linux.org.uk>,
+	"linux-arm-kernel\@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	Alessandro Rubini <rubini@unipv.it>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>, Mark Brown <broonie@kernel.org>,
+	"linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-i2c\@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-spi\@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAPDyKFo4QG+D0wKnSEXR=2TW93HKUAbb1EUqGk_U56rS339B3Q@mail.gmail.com>
+	(Ulf Hansson's message of "Mon, 10 Feb 2014 12:11:24 +0100")
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Feb 10, 2014 at 06:55:02PM +0200, Ivan T. Ivanov wrote:
+Ulf Hansson <ulf.hansson@linaro.org> writes:
 
-[....]
+> On 4 February 2014 20:22, Kevin Hilman <khilman@linaro.org> wrote:
+>> Ulf Hansson <ulf.hansson@linaro.org> writes:
+>>
+>>> Due to the available runtime PM callbacks, we are now able to put our
+>>> device into low power state at system suspend.
+>>>
+>>> Earlier we could not accomplish this without trusting a power domain
+>>> for the device to take care of it. Now we are able to cope with
+>>> scenarios both with and without a power domain.
+>>>
+>>> Cc: Russell King <linux@arm.linux.org.uk>
+>>> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+>>> ---
+>>>  drivers/mmc/host/mmci.c |   45 +++++++++++++++++++++++++--------------------
+>>>  1 file changed, 25 insertions(+), 20 deletions(-)
+>>>
+>>> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
+>>> index c88da1c..074e0cb 100644
+>>> --- a/drivers/mmc/host/mmci.c
+>>> +++ b/drivers/mmc/host/mmci.c
+>>> @@ -1723,33 +1723,38 @@ static int mmci_remove(struct amba_device *dev)
+>>>       return 0;
+>>>  }
+>>>
+>>> -#ifdef CONFIG_SUSPEND
+>>> -static int mmci_suspend(struct device *dev)
+>>> +#ifdef CONFIG_PM_SLEEP
+>>> +static int mmci_suspend_late(struct device *dev)
+>>>  {
+>>> -     struct amba_device *adev = to_amba_device(dev);
+>>> -     struct mmc_host *mmc = amba_get_drvdata(adev);
+>>> +     int ret = 0;
+>>>
+>>> -     if (mmc) {
+>>> -             struct mmci_host *host = mmc_priv(mmc);
+>>> -             pm_runtime_get_sync(dev);
+>>> -             writel(0, host->base + MMCIMASK0);
+>>> -     }
+>>> +     if (pm_runtime_status_suspended(dev))
+>>> +             return 0;
+>>>
+>>> -     return 0;
+>>> +     if (dev->pm_domain && dev->pm_domain->ops.runtime_suspend)
+>>> +             ret = dev->pm_domain->ops.runtime_suspend(dev);
+>>> +     else
+>>> +             ret = dev->bus->pm->runtime_suspend(dev);
+>>> +
+>>> +     if (!ret)
+>>> +             pm_runtime_set_suspended(dev);
+>>
+>> Isn't this basically open-coding pm_runtime_suspend()...
+>
+> It is similar, but with once big difference.
+>
+> Since the PM core prevents pm_runtime_suspend() from invoking our
+> ->runtime_suspend callback during system suspend (it does so by
+> invoking pm_runtime_get_sync() before starting the suspend sequence),
+> we then need to make the driver handle that by itself.
 
-> > > > Bail here?
-> > > 
-> > > I don't know. What will be the consequences if controller continue to
-> > > operate on its default rate?
-> > > 
-> > 
-> > It is unclear.  But if you can't set the rate that is configured or if there is
-> > a misconfiguration, it's probably better to exit the probe and catch it here.
-> 
-> 
-> My preference is to delay clock speed change till first
-> SPI transfer. And use wherever transfer itself mandate.
-> 
-
-That works.  My only concern is that it might be nice to catch a configuration
-problem early rather than wait for the SPI transfer to fail continuously.
-
-[....]
-
-> > > My understanding is:
-> > > 
-> > > Disabling clocks will timeout transaction, if any. Core Device driver
-> > > will call: devm_spi_unregister(), which will wait pending transactions
-> > > to complete and then remove the SPI master.
-> > 
-> > Disabling clocks will confuse the hardware.  We cannot disable clocks while the
-> > spi core is active and transferring data.
-> 
-> I could follow approach taken by other SPI drivers, just reset
-> controller and disable clocks.
-
-You have to wait until the hardware is in a sane state.  For the QUP, that means
-in a RUN/PAUSE/RESET state.  It cannot be in transition when you cut the clocks.
-The safest thing to do is to get the QUP into the RESET state and then cut the
-clocks.
-
-[.....]
-
-> > > I am not aware of the difference. My board report v.20020000. 
-> > > Is there difference of handling these controllers?
-> > 
-> > There were some bug fixes between versions.  None of those affect SPI (that I
-> > can tell), but it's better to be more descriptive and use the full versions in
-> > the compatible tags.
-> 
-> No strong preference here. Should I add qcom,spi-qup-v2.2.0, then? :-)
-
-According to the documentation, there is no v2.2.0.  It appears there is some
-disconnect between the specific HW revision and the documentation.  I'll see if
-I can get some clarification from the hardware guys.  For now, I think the 2.1.1
-and 2.2.1 tags are fine.
+Yeah, I still think we need to allow a bus/pm_domain to override that
+behavior.
 
 
--- 
-sent by an employee of the Qualcomm Innovation Center, Inc.
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-hosted by The Linux Foundation
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Kevin

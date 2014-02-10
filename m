@@ -1,41 +1,49 @@
-From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 09/17] spi: pl022: Simplify clock handling
-Date: Mon, 10 Feb 2014 11:42:15 +0100
-Message-ID: <CAPDyKFqV+5T5jFgjWZ9zkbC3Oijq=7fVBhM9BDLQtDa_c8Yftg@mail.gmail.com>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-	<1391529538-21685-10-git-send-email-ulf.hansson@linaro.org>
-	<20140204191947.GV22609@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-mmc <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140204191947.GV22609-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 3/7] ARM: shmobile: r8a7790 dtsi: Add QSPI node
+Date: Mon, 10 Feb 2014 11:47:29 +0100
+Message-ID: <1392029254-15400-4-git-send-email-geert@linux-m68k.org>
+References: <1392029254-15400-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	devicetree@vger.kernel.org, linux-spi@vger.kernel.org
+To: Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1392029254-15400-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 4 February 2014 20:19, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Feb 04, 2014 at 04:58:50PM +0100, Ulf Hansson wrote:
->> Make use of clk_prepare_enable and clk_disable_unprepare to simplify
->> code. No functional change.
->
-> I went ahead and applied this since it looks good and seems like an
-> unrelated cleanup to the runtime PM stuff which seems to be where the
-> interdependencies are - thanks!  It's on a separate branch with the
-> already applied change so if it does need to be cross merged we can do
-> that easily or even drop the branch.
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-Thanks Mark, it seems like a good approach.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Cc: devicetree@vger.kernel.org
+Cc: linux-spi@vger.kernel.org
+---
+ arch/arm/boot/dts/r8a7790.dtsi |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Kind regards
-Ulf Hansson
+diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
+index 54ab318af712..16bc116e0df4 100644
+--- a/arch/arm/boot/dts/r8a7790.dtsi
++++ b/arch/arm/boot/dts/r8a7790.dtsi
+@@ -775,4 +775,16 @@
+ 				"rcan1", "rcan0", "qspi_mod", "i2c3", "i2c2", "i2c1", "i2c0";
+ 		};
+ 	};
++
++	spi: spi@e6b10000 {
++		compatible = "renesas,qspi-r8a7790", "renesas,qspi";
++		reg = <0 0xe6b10000 0 0x2c>;
++		interrupt-parent = <&gic>;
++		interrupts = <0 184 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&mstp9_clks R8A7790_CLK_QSPI_MOD>;
++		num-cs = <1>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "disabled";
++	};
+ };
+-- 
+1.7.9.5
+

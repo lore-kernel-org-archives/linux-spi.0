@@ -1,94 +1,67 @@
-From: Kevin Hilman <khilman@linaro.org>
-Subject: Re: [PATCH 05/17] mmc: mmci: Put the device into low power state at system suspend
-Date: Mon, 10 Feb 2014 10:03:57 -0800
-Message-ID: <7hmwhyalpu.fsf@paris.lan>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-	<1391529538-21685-6-git-send-email-ulf.hansson@linaro.org>
-	<8738jyu1h9.fsf@paris.lan>
-	<CAPDyKFo4QG+D0wKnSEXR=2TW93HKUAbb1EUqGk_U56rS339B3Q@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: tegra114: Convert to use master->max_speed_hz
+Date: Mon, 10 Feb 2014 18:27:28 +0000
+Message-ID: <20140210182728.GE13533@sirena.org.uk>
+References: <1392040096.4191.1.camel@phoenix>
+ <52F903EF.4030606@wwwdotorg.org>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Russell King <linux@arm.linux.org.uk>,
-	"linux-arm-kernel\@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	Alessandro Rubini <rubini@unipv.it>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>, Mark Brown <broonie@kernel.org>,
-	"linux-kernel\@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-i2c\@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-spi\@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	linux-mmc <linux-mmc@vger.kernel.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAPDyKFo4QG+D0wKnSEXR=2TW93HKUAbb1EUqGk_U56rS339B3Q@mail.gmail.com>
-	(Ulf Hansson's message of "Mon, 10 Feb 2014 12:11:24 +0100")
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-Ulf Hansson <ulf.hansson@linaro.org> writes:
-
-> On 4 February 2014 20:22, Kevin Hilman <khilman@linaro.org> wrote:
->> Ulf Hansson <ulf.hansson@linaro.org> writes:
->>
->>> Due to the available runtime PM callbacks, we are now able to put our
->>> device into low power state at system suspend.
->>>
->>> Earlier we could not accomplish this without trusting a power domain
->>> for the device to take care of it. Now we are able to cope with
->>> scenarios both with and without a power domain.
->>>
->>> Cc: Russell King <linux@arm.linux.org.uk>
->>> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
->>> ---
->>>  drivers/mmc/host/mmci.c |   45 +++++++++++++++++++++++++--------------------
->>>  1 file changed, 25 insertions(+), 20 deletions(-)
->>>
->>> diff --git a/drivers/mmc/host/mmci.c b/drivers/mmc/host/mmci.c
->>> index c88da1c..074e0cb 100644
->>> --- a/drivers/mmc/host/mmci.c
->>> +++ b/drivers/mmc/host/mmci.c
->>> @@ -1723,33 +1723,38 @@ static int mmci_remove(struct amba_device *dev)
->>>       return 0;
->>>  }
->>>
->>> -#ifdef CONFIG_SUSPEND
->>> -static int mmci_suspend(struct device *dev)
->>> +#ifdef CONFIG_PM_SLEEP
->>> +static int mmci_suspend_late(struct device *dev)
->>>  {
->>> -     struct amba_device *adev = to_amba_device(dev);
->>> -     struct mmc_host *mmc = amba_get_drvdata(adev);
->>> +     int ret = 0;
->>>
->>> -     if (mmc) {
->>> -             struct mmci_host *host = mmc_priv(mmc);
->>> -             pm_runtime_get_sync(dev);
->>> -             writel(0, host->base + MMCIMASK0);
->>> -     }
->>> +     if (pm_runtime_status_suspended(dev))
->>> +             return 0;
->>>
->>> -     return 0;
->>> +     if (dev->pm_domain && dev->pm_domain->ops.runtime_suspend)
->>> +             ret = dev->pm_domain->ops.runtime_suspend(dev);
->>> +     else
->>> +             ret = dev->bus->pm->runtime_suspend(dev);
->>> +
->>> +     if (!ret)
->>> +             pm_runtime_set_suspended(dev);
->>
->> Isn't this basically open-coding pm_runtime_suspend()...
->
-> It is similar, but with once big difference.
->
-> Since the PM core prevents pm_runtime_suspend() from invoking our
-> ->runtime_suspend callback during system suspend (it does so by
-> invoking pm_runtime_get_sync() before starting the suspend sequence),
-> we then need to make the driver handle that by itself.
-
-Yeah, I still think we need to allow a bus/pm_domain to override that
-behavior.
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="HeFlAV5LIbMFYYuh"
+Cc: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>,
+	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <52F903EF.4030606-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
-Kevin
+--HeFlAV5LIbMFYYuh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Feb 10, 2014 at 09:53:03AM -0700, Stephen Warren wrote:
+> On 02/10/2014 06:48 AM, Axel Lin wrote:
+
+> I wonder ...
+
+> > +	if (of_property_read_u32(pdev->dev.of_node, "spi-max-frequency",
+> > +				 &master->max_speed_hz))
+> > +		master->max_speed_hz = 25000000; /* 25MHz */
+
+> ... if that DT parsing can be done in common code too?
+
+Yes, there is in general a lot of opportunity in the SPI subsystem to
+factor code out into the core.  The DT stuff (things like this and also
+GPIO chip selects) is part of it.
+
+--HeFlAV5LIbMFYYuh
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS+RoNAAoJELSic+t+oim9hAwP/Rstk5lYgfjc2MAZDQ3fK9UB
+boWprsebj2YT5T7T0I81Ixhxan7JGzhfDE9TDnDuR1zk1h+nMjmU1ktMkkxsuWsI
+eprnOmBgPJev9Bbopf8y/QXcRXQC/uBBwAaPrnvsTu+fF2sBjBJzGakx7ur0Ixcg
+qaH87X+fxDvlrdL6rE5x1pxNuqn59hbmkQ2POC1QCyCe4m6XCr1470cycIjwfQf3
+fcb5K3pf5273aKMUvh8UU6XrM6UPSCTkus7ciIw+IOl0PsAkl7uyx3gaGB4Ckhes
+MDAHPnFse5tFjhkpK6vMRJ/dqioSPgFC6QH3SWtCzjBoOC9fGpwl96RjWQHAWheY
+QkNK6Hw179YejninAY9gFVMMPhzzoFFKOwVfOY9Xra7oTcfoi4lFrf71wjSu4g71
+utIzvKXKRonmE7grQpspycu7flOMieyX1N8c4TCKfOp8PvhOHAPp+x6KGfdw+C3l
+EKOcZyKDNFsvxUFJEVZ+LeLnRpmLX5qnd6wiwb7lj/JWxp0HVe7UEW6TVSAWAVO9
+l4Xe2n09N7uM/ZvXTImApMqwJuGObZQrQBgb+j3ffNzwV2R82OxYL2D/d5X9MTp4
+KzXwNJ20xyVi4lRDoF1n3JwOd1srUjzEvmRWyf+MqXGm7j0sFm5g8MHz+7QqbbMy
+aCztRZqfnAdTRQeCqsUq
+=1XR4
+-----END PGP SIGNATURE-----
+
+--HeFlAV5LIbMFYYuh--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

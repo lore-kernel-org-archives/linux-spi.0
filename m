@@ -1,59 +1,85 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Use reinit_completion at appropriate places
-Date: Mon, 10 Feb 2014 12:32:33 +0000
-Message-ID: <20140210123233.GX1757@sirena.org.uk>
-References: <1391915164.17493.5.camel@phoenix>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 07/17] spi: pl022: Don't ignore power domain and amba bus
+ at system suspend
+Date: Mon, 10 Feb 2014 12:51:13 +0000
+Message-ID: <20140210125113.GZ1757@sirena.org.uk>
+References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+ <1391529538-21685-8-git-send-email-ulf.hansson@linaro.org>
+ <20140204191609.GU22609@sirena.org.uk>
+ <CAPDyKFqNdw-6R12cUOre8UOTOnB-PpxHD5rPAMCwuS3i--Sesg@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="QHp3Wr1K3N9pKO2V"
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Tanguy Bouzeloc <tanguy.bouzeloc-HH44TBFINEIAvxtiuMwx3w@public.gmane.org>,
-	Jonas Gorski <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="+mQruWSI2c46YBtV"
+Cc: Russell King <linux@arm.linux.org.uk>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	Alessandro Rubini <rubini@unipv.it>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1391915164.17493.5.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAPDyKFqNdw-6R12cUOre8UOTOnB-PpxHD5rPAMCwuS3i--Sesg@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---QHp3Wr1K3N9pKO2V
+--+mQruWSI2c46YBtV
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Feb 09, 2014 at 11:06:04AM +0800, Axel Lin wrote:
-> Calling init_completion() once is enough.
-> For the rest of the iterations, call reinit_completion() instead.
+On Mon, Feb 10, 2014 at 01:33:50PM +0100, Ulf Hansson wrote:
+> On 4 February 2014 20:16, Mark Brown <broonie@kernel.org> wrote:
 
-Applied, thanks.
+> > This seems like a fairly hideous thing to be having to open code in an
+> > individual driver, it all looks generic and like something that most if
 
---QHp3Wr1K3N9pKO2V
+...
+
+> > Putting it in a helper would at least mean that it's easier for the
+> > mechanics to be transferred to the core proper later on.
+
+> I agree, a helper function would be nice. I have earlier sent a patch
+> to the PM core, that is similar to the code above, though it was
+> rejected in it's current form. Let me follow up on this again.
+
+> At this point, would a way forward be to still go ahead with this
+> patch and then convert to, when/if, the helper function from the PM
+> core becomes available?
+
+It's definitely *a* way forward, but I'm not convinced it's a good way
+forward.  Since it's something that I'd expect us to be doing in all
+drivers we'd want to replicate it all over the place which is obviously
+not good, or conversely if there are issues that prevented the code
+being added to the PM core then presumably we're just adding problematic
+code to the driver (you've not mentioned what the problems were with
+doing this in the PM core).
+
+--+mQruWSI2c46YBtV
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS+MbdAAoJELSic+t+oim9yGAP/2fbr/WxQEm1JrzLZn502NyB
-B0l6xG09EiZY9M68fxtfqLktm2UchNTJzqAyq+FkzybwyzJI4yMQwiswzvTA1D71
-Dq4hyhE6HtdnMCPb56MdznmrBVnTBHuxS3YUy+IdAZ9/Fs4JnYxLJH+eLBLXMXnL
-pVEsb8avV9Z08F95bIiSu4ua3WQZcm8pFBrdPCTm/p7SpquoCfeabVSPocljVmZh
-3rexB7rvVzHGL6+aB7aNvjZsGLNUC4JqVBDFL/aJaHDSSzXJjOcpnbcYidOf6ga0
-L2FFRXuxc1GhqJd47oUwwpPrXZ7tMJGEUUqBU/dkZu5kiT1PdDPmKOUH+k/tEo5q
-4+bKZlUl/utcxEQWJzAposUxDJQpIKKTyw51u9wgjP4hWgAhnf9BQad5IlbAqK6m
-r9tJhqzg+PT9PdkBBp9jy1RCnOoPpDxOz+5nmDM35l5m8kE+SqcteBCrYRPPIYvW
-gler/Wff18qcAxT0mgsu6PnJth9InK9mitxMEMP2a5ZRq9xxxeo68jxd53Lmci8M
-FSexYo9yvcO5HJnMFIpff3oFvEEvqwc0oqa9NWIkdDK/86bNlfeOUP0fm9imOdkP
-lxazyHTTw4dis5XIAEJTPHG6Mr7kV6zTSl+p+eIKh5jntMxfZrcVmBLF5TGzKV/t
-sgiF5mtgv37OsRrSFWDg
-=5/zf
+iQIcBAEBAgAGBQJS+Ms9AAoJELSic+t+oim9vVcP/iddVl/HH7sK3ZbvHoVRZLuQ
+o8Z3SPc3B/MkiWNzw9JDDNrXh4UC1n50ywadFLBts3eCd4xu4oh1fww4O6zi3w8Q
+EyEdBMLhi+jt0XyELq5iXVjZJQhyVhT5/jsZSmXKuAVAE1wJWOaGHQ4TcOl0twaI
+KGFhovubhQUSpUYuuui1E6n5/70lUngQyunS4zNEdzzAp/lp336/K258umpPllJG
+tl0FyxZpj+/NNBNuac9xCkcyRlE/nKhfRD3SGFBiXZf4C9tp4WgOrQO+CdRmWdfQ
+d5AGgRJdO6oOiMW7HEsWdvT1a5sVC8yP3tRUbDMYXuJZbjArY7IYFiZfKyJcMG3v
+z1B1tLanG6XrTHKNKnkwUETp/8poipFXx2m/lTFqI3MXt5jr4DXbPcbQ+fdWpgYE
++l1P0JlVa559TXLytp8Q92st/q7JtvAappjOQdojgeORK8AbhkWsTS9YSjaUn4Ma
+k1xCrH2IUdy4hV5usRo/ecxNEmrNruNou75fyxByhAhr48GKxd13QyeomJcOwBJx
+y62CUIHC8zZWo5Qzm/hip55OqPVBtw8W/nzd/jFqE1Y8jNg/CJsiidWgh2cPP9qk
+3pWwXP0+NqVLaAluYH+C04eeuScrCxmJR5pYYP1I+pTfZ93qF+mtvifyXWfewRaI
+NI5qUJ0lQKC976EI7GbM
+=coWM
 -----END PGP SIGNATURE-----
 
---QHp3Wr1K3N9pKO2V--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--+mQruWSI2c46YBtV--

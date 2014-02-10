@@ -1,74 +1,55 @@
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH 07/17] spi: pl022: Don't ignore power domain and amba bus
- at system suspend
-Date: Mon, 10 Feb 2014 13:33:50 +0100
-Message-ID: <CAPDyKFqNdw-6R12cUOre8UOTOnB-PpxHD5rPAMCwuS3i--Sesg@mail.gmail.com>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-	<1391529538-21685-8-git-send-email-ulf.hansson@linaro.org>
-	<20140204191609.GU22609@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: omap2: use SUPERH, not SH
+Date: Mon, 10 Feb 2014 12:34:54 +0000
+Message-ID: <20140210123454.GY1757@sirena.org.uk>
+References: <1391893281.19595.3.camel@x220>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Russell King <linux@arm.linux.org.uk>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	Alessandro Rubini <rubini@unipv.it>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	linux-mmc <linux-mmc@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <20140204191609.GU22609@sirena.org.uk>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="cDkCB6tn7aZ2Gopm"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Paul Bolle <pebolle-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1391893281.19595.3.camel@x220>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 4 February 2014 20:16, Mark Brown <broonie@kernel.org> wrote:
-> On Tue, Feb 04, 2014 at 04:58:48PM +0100, Ulf Hansson wrote:
->
->> @@ -2328,8 +2300,23 @@ static int pl022_suspend(struct device *dev)
->>               return ret;
->>       }
->>
->> -     pm_runtime_get_sync(dev);
->> -     pl022_suspend_resources(pl022, false);
->> +     pm_runtime_disable(dev);
->> +
->> +     if (!pm_runtime_status_suspended(dev)) {
->> +             if (dev->pm_domain && dev->pm_domain->ops.runtime_suspend)
->> +                     ret = dev->pm_domain->ops.runtime_suspend(dev);
->> +             else
->> +                     ret = dev->bus->pm->runtime_suspend(dev);
->> +
->> +             if (ret) {
->> +                     pm_runtime_enable(dev);
->> +                     return ret;
->> +             }
->> +
->> +             pm_runtime_set_suspended(dev);
->> +     }
->
-> This seems like a fairly hideous thing to be having to open code in an
-> individual driver, it all looks generic and like something that most if
-> not all devices ought to be doing and it looks very vulnerable to being
-> broken by changes in the core.  At the very least I would expect this to
-> be done in a helper function, though it would be even nicer if the
-> driver core were figuring this stuff out for us based on the device
-> level callback so that drivers didn't need to worry about being in power
-> domains or manually calling bus level callbacks.
->
-> Putting it in a helper would at least mean that it's easier for the
-> mechanics to be transferred to the core proper later on.
 
-I agree, a helper function would be nice. I have earlier sent a patch
-to the PM core, that is similar to the code above, though it was
-rejected in it's current form. Let me follow up on this again.
+--cDkCB6tn7aZ2Gopm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-At this point, would a way forward be to still go ahead with this
-patch and then convert to, when/if, the helper function from the PM
-core becomes available?
+On Sat, Feb 08, 2014 at 10:01:21PM +0100, Paul Bolle wrote:
+> Commit 0079aae0f1e6 ("spi: omap2: Add build dependencies for
+> writel_relaxed()") added an optional Kconfig dependency on SH. That
+> Kconfig symbol doesn't exist. Apparently SUPERH was intended. Use that.
 
-Kind regards
-Ulf Hansson
+Applied, thanks.
+
+--cDkCB6tn7aZ2Gopm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS+MdqAAoJELSic+t+oim9f+8P/A7PuVwrsU1oCk9DkpwnDPiI
+AguG7+yMLFG2d9tk6JJr5zImdpGxFNRpMStnj2UxQuqaktwXPQ1SsLUMqdqoHbqt
+szK5Z6D7T7ZUehO8sqIB5H9YeCyIyPLnuASfc3xEtnGSWovBU5V/PxgS6z4RnKKJ
+CW7c44JqmQB2qn6NXyQhZKveb/6qvA5oCHhGm2vWIwnEHP/HRv+l3WdUEyXv1V1J
+X2KCcGSWqg3qn+olABqSHhdGvD1iyZ9tWJSrEMqNa0E8mVAoUNXKWmZvsIojYryo
+GG4dpXGyjvHvr7BVuBRwYQzXF3otZMx7hofyz/ZjnBchVGs3HgPe4dK3HkTJEZQg
+RHn7UMDssNGExVgWgHbJW2emvOZnGkllvE8KTvbt8aOFEgRAh/Mli4uKeh4tiL7Y
+UCE6lXTtHg5cbXpE/qbgczBBz/XRmiRq0ThBKdrNdZPF2nOQeqZmaqW1QM513Iqz
+3k18pBkudEhGEOtA4r0905aBVoOnJuGY0vGBhrKvfs0m4+bN1bSeuXLD3UUmr9xQ
+TR3TWMvat9sFGB1C4cZanfmOIrCt9v724bXSHxexeb+XpqN3hQsOhTuZrN441uPO
+Q4hViLw/HTx4vQL9dpAupm+jajYjuqkam1Yvl601gdXVADg+Ssfc1FLtvUQz/RNA
+voDyRn1br+gPohoA9GX6
+=gACo
+-----END PGP SIGNATURE-----
+
+--cDkCB6tn7aZ2Gopm--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

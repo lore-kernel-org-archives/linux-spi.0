@@ -1,87 +1,54 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 3/3] spi: tegra20-slink: Convert to use master->max_speed_hz
-Date: Mon, 10 Feb 2014 21:51:13 +0800
-Message-ID: <1392040273.4191.5.camel@phoenix>
-References: <1392040096.4191.1.camel@phoenix>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH RFT] spi: txx9: Convert to let spi core handle checking
+ transfer speed
+Date: Mon, 10 Feb 2014 14:15:23 +0000
+Message-ID: <20140210141523.GK1757@sirena.org.uk>
+References: <1391919307.26425.2.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Thierry Reding <thierry.reding-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="g5OIygP5QP1fC/+Y"
+Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392040096.4191.1.camel@phoenix>
+Content-Disposition: inline
+In-Reply-To: <1391919307.26425.2.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Use master->max_speed_hz instead of tspi->spi_max_frequency, so spi core will
-handle checking transfer speed.
 
-In additional, since commit 052eb2d49006 'spi: core: Set max_speed_hz of
-spi_device default to max_speed_hz of controller',
-spi core will also set default spi->max_speed_hz if it is not set.
-So remove the duplicate code in tegra_slink_setup.
+--g5OIygP5QP1fC/+Y
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-tegra20-slink.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+On Sun, Feb 09, 2014 at 12:15:07PM +0800, Axel Lin wrote:
+> By setting master->max_speed_hz and master->min_speed_hz, spi core will handle
+> checking transfer speed. Then we can remove the same checking in this driver.
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index 8d62710..9a060aa 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -170,7 +170,6 @@ struct tegra_slink_data {
- 	void __iomem				*base;
- 	phys_addr_t				phys;
- 	unsigned				irq;
--	u32					spi_max_frequency;
- 	u32					cur_speed;
- 
- 	struct spi_device			*cur_spi;
-@@ -762,8 +761,6 @@ static int tegra_slink_setup(struct spi_device *spi)
- 
- 	BUG_ON(spi->chip_select >= MAX_CHIP_SELECT);
- 
--	/* Set speed to the spi max fequency if spi device has not set */
--	spi->max_speed_hz = spi->max_speed_hz ? : tspi->spi_max_frequency;
- 	ret = pm_runtime_get_sync(tspi->dev);
- 	if (ret < 0) {
- 		dev_err(tspi->dev, "pm runtime failed, e = %d\n", ret);
-@@ -998,15 +995,6 @@ static irqreturn_t tegra_slink_isr(int irq, void *context_data)
- 	return IRQ_WAKE_THREAD;
- }
- 
--static void tegra_slink_parse_dt(struct tegra_slink_data *tspi)
--{
--	struct device_node *np = tspi->dev->of_node;
--
--	if (of_property_read_u32(np, "spi-max-frequency",
--					&tspi->spi_max_frequency))
--		tspi->spi_max_frequency = 25000000; /* 25MHz */
--}
--
- static const struct tegra_slink_chip_data tegra30_spi_cdata = {
- 	.cs_hold_time = true,
- };
-@@ -1061,7 +1049,9 @@ static int tegra_slink_probe(struct platform_device *pdev)
- 	tspi->chip_data = cdata;
- 	spin_lock_init(&tspi->lock);
- 
--	tegra_slink_parse_dt(tspi);
-+	if (of_property_read_u32(tspi->dev->of_node, "spi-max-frequency",
-+				 &master->max_speed_hz))
-+		master->max_speed_hz = 25000000; /* 25MHz */
- 
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!r) {
--- 
-1.8.1.2
+Applied, thanks.
 
+--g5OIygP5QP1fC/+Y
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
+iQIcBAEBAgAGBQJS+N74AAoJELSic+t+oim9r6wP/0YEStEQjw19jSpnT4/Isq4E
+MQTE2RUX+QozHDBx2praoil3hHneoAW8X7JPaKcllOl7rBLz90Z+sXXs33heuVVr
+P5taCC387pO8J164J/iFOWYUQ/25HTiC/508Yl50TDn1qf/X6aoS0sLqtVxQJZLe
+rqWMbDhO6zsx+i+D5PpZBeqWf3qbsmm6lGx83T87WTI3T7cEYloXY9X6j9dQO4sQ
+ZodYxq2WXbOMZaiVp6QnJHFnfYgDJ0sdd6c1uWUHBRWIkP0Ul/GRshWuKLrAIhxy
+V52DJO6Lmy8+R1W8+om+BepF04Hf3q6gLQuqiXwbmiWughuqdr7H8wdHC488asnL
+lLxdPTDtanHnOKvWkPCBFWb3frPFhGL8WPcj6qmH4oPFkzDA2pak6HDvO/ThTZlg
+BIta3gCeEBApUEkUgWffnGnbbGsgQLNgSwMNa1kHxNQVwZYAxmBODpd2yHqvNtzu
+8ztjhT28xN6xk6mFhGg46L4aknVZbWkPe1GQ1GQ5jDnIKSzTm3Kueb/ClwdxSrz8
+8lcYOLJycOdtoBt/gQafapzNUAUIE15cMkv8nhUFIuJ/qSWuZJ3AODwQhH0AyB/3
+RnASjsv4doN6H6wnM9yN4Are1M4a9wASfoVzQcG7GdqiClKo7yIEDuAf5GZignii
+ffptntpmlLyM7ee2CEk0
+=dl5r
+-----END PGP SIGNATURE-----
+
+--g5OIygP5QP1fC/+Y--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

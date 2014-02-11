@@ -1,260 +1,32 @@
-From: Chao Fu <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v3 1/2] spi:fsl-dspi:convert to use regmap and big-endian supports
-Date: Tue, 11 Feb 2014 13:48:16 +0800
-Message-ID: <1392097697-14919-1-git-send-email-b44548@freescale.com>
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MyAxLzJdIHNwaTpmc2wtZHNwaTpjb252ZXJ0IHRvIHVz?=
+ =?UTF-8?B?ZSByZWdtYXAgYW5kIGJpZy1lbmRpYW4gc3VwcG9ydHM=?=
+Date: Tue, 11 Feb 2014 10:58:53 +0400
+Message-ID: <1392101933.572206593@f147.i.mail.ru>
+References: <1392097697-14919-1-git-send-email-b44548@freescale.com>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Chao Fu <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+To: =?UTF-8?B?Q2hhbyBGdQ==?= <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1392097697-14919-1-git-send-email-b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-
-Freescale DSPI module will have two endianess in different platform,
-but ARM is little endian. So when DSPI in big endian, core in little endian,
-readl and writel can not adjust R/W register in this condition.
-This patch will remove general readl/writel, and import regmap mechanism.
-Data endian will be transfered in regmap APIs.
-
-Documents: dspi add bool "big-endian" in dts node if DSPI module
-work in big endian.
-
-Signed-off-by: Chao Fu      <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
----
-Change in v3:
-Remove readl and wrirel, and import regmap mechanism to R/W module registers.
-
-Change in v2:
-Make dspi_readx dspi_writex as inline functions.
-Modify the issue of indentation in function is_double_byte_mode.
-Add description about big endian in bindings document.
-
- .../devicetree/bindings/spi/spi-fsl-dspi.txt       |  2 +
- drivers/spi/spi-fsl-dspi.c                         | 80 ++++++++++++++--------
- 2 files changed, 55 insertions(+), 27 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-index a1fb303..5376de4 100644
---- a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-@@ -10,6 +10,7 @@ Required properties:
- - pinctrl-names: must contain a "default" entry.
- - spi-num-chipselects : the number of the chipselect signals.
- - bus-num : the slave chip chipselect signal number.
-+- big-endian : if DSPI modudle is big endian, the bool will be set in node.
- Example:
- 
- dspi0@4002c000 {
-@@ -24,6 +25,7 @@ dspi0@4002c000 {
- 	bus-num = <0>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_dspi0_1>;
-+	big-endian;
- 	status = "okay";
- 
- 	sflash: at26df081a@0 {
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index ec79f72..fb16575 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -18,6 +18,7 @@
- #include <linux/interrupt.h>
- #include <linux/errno.h>
- #include <linux/platform_device.h>
-+#include <linux/regmap.h>
- #include <linux/sched.h>
- #include <linux/delay.h>
- #include <linux/io.h>
-@@ -108,7 +109,7 @@ struct fsl_dspi {
- 	struct spi_bitbang	bitbang;
- 	struct platform_device	*pdev;
- 
--	void __iomem		*base;
-+	struct regmap		*regmap;
- 	int			irq;
- 	struct clk 		*clk;
- 
-@@ -129,18 +130,11 @@ struct fsl_dspi {
- 
- static inline int is_double_byte_mode(struct fsl_dspi *dspi)
- {
--	return ((readl(dspi->base + SPI_CTAR(dspi->cs)) & SPI_FRAME_BITS_MASK)
--			== SPI_FRAME_BITS(8)) ? 0 : 1;
--}
-+	unsigned int val;
- 
--static void set_bit_mode(struct fsl_dspi *dspi, unsigned char bits)
--{
--	u32 temp;
-+	regmap_read(dspi->regmap, SPI_CTAR(dspi->cs), &val);
- 
--	temp = readl(dspi->base + SPI_CTAR(dspi->cs));
--	temp &= ~SPI_FRAME_BITS_MASK;
--	temp |= SPI_FRAME_BITS(bits);
--	writel(temp, dspi->base + SPI_CTAR(dspi->cs));
-+	return ((val & SPI_FRAME_BITS_MASK) == SPI_FRAME_BITS(8)) ? 0 : 1;
- }
- 
- static void hz_to_spi_baud(char *pbr, char *br, int speed_hz,
-@@ -188,7 +182,8 @@ static int dspi_transfer_write(struct fsl_dspi *dspi)
- 	 */
- 	if (tx_word && (dspi->len == 1)) {
- 		dspi->dataflags |= TRAN_STATE_WORD_ODD_NUM;
--		set_bit_mode(dspi, 8);
-+		regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
-+				SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(8));
- 		tx_word = 0;
- 	}
- 
-@@ -238,7 +233,8 @@ static int dspi_transfer_write(struct fsl_dspi *dspi)
- 			dspi_pushr |= SPI_PUSHR_CTCNT; /* clear counter */
- 		}
- 
--		writel(dspi_pushr, dspi->base + SPI_PUSHR);
-+		regmap_write(dspi->regmap, SPI_PUSHR, dspi_pushr);
-+
- 		tx_count++;
- 	}
- 
-@@ -253,17 +249,23 @@ static int dspi_transfer_read(struct fsl_dspi *dspi)
- 	while ((dspi->rx < dspi->rx_end)
- 			&& (rx_count < DSPI_FIFO_SIZE)) {
- 		if (rx_word) {
-+			unsigned int val;
-+
- 			if ((dspi->rx_end - dspi->rx) == 1)
- 				break;
- 
--			d = SPI_POPR_RXDATA(readl(dspi->base + SPI_POPR));
-+			regmap_read(dspi->regmap, SPI_POPR, &val);
-+			d = SPI_POPR_RXDATA(val);
- 
- 			if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
- 				*(u16 *)dspi->rx = d;
- 			dspi->rx += 2;
- 
- 		} else {
--			d = SPI_POPR_RXDATA(readl(dspi->base + SPI_POPR));
-+			unsigned int val;
-+
-+			regmap_read(dspi->regmap, SPI_POPR, &val);
-+			d = SPI_POPR_RXDATA(val);
- 			if (!(dspi->dataflags & TRAN_STATE_RX_VOID))
- 				*(u8 *)dspi->rx = d;
- 			dspi->rx++;
-@@ -295,13 +297,13 @@ static int dspi_txrx_transfer(struct spi_device *spi, struct spi_transfer *t)
- 	if (!dspi->tx)
- 		dspi->dataflags |= TRAN_STATE_TX_VOID;
- 
--	writel(dspi->cur_chip->mcr_val, dspi->base + SPI_MCR);
--	writel(dspi->cur_chip->ctar_val, dspi->base + SPI_CTAR(dspi->cs));
--	writel(SPI_RSER_EOQFE, dspi->base + SPI_RSER);
-+	regmap_write(dspi->regmap, SPI_MCR, dspi->cur_chip->mcr_val);
-+	regmap_write(dspi->regmap, SPI_CTAR(dspi->cs), dspi->cur_chip->ctar_val);
-+	regmap_write(dspi->regmap, SPI_RSER, SPI_RSER_EOQFE);
- 
- 	if (t->speed_hz)
--		writel(dspi->cur_chip->ctar_val,
--				dspi->base + SPI_CTAR(dspi->cs));
-+		regmap_write(dspi->regmap, SPI_CTAR(dspi->cs),
-+				dspi->cur_chip->ctar_val);
- 
- 	dspi_transfer_write(dspi);
- 
-@@ -315,7 +317,9 @@ static int dspi_txrx_transfer(struct spi_device *spi, struct spi_transfer *t)
- static void dspi_chipselect(struct spi_device *spi, int value)
- {
- 	struct fsl_dspi *dspi = spi_master_get_devdata(spi->master);
--	u32 pushr = readl(dspi->base + SPI_PUSHR);
-+	unsigned int pushr;
-+
-+	regmap_read(dspi->regmap, SPI_PUSHR, &pushr);
- 
- 	switch (value) {
- 	case BITBANG_CS_ACTIVE:
-@@ -326,7 +330,7 @@ static void dspi_chipselect(struct spi_device *spi, int value)
- 		break;
- 	}
- 
--	writel(pushr, dspi->base + SPI_PUSHR);
-+	regmap_write(dspi->regmap, SPI_PUSHR, pushr);
- }
- 
- static int dspi_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
-@@ -382,13 +386,15 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
- {
- 	struct fsl_dspi *dspi = (struct fsl_dspi *)dev_id;
- 
--	writel(SPI_SR_EOQF, dspi->base + SPI_SR);
-+	regmap_write(dspi->regmap, SPI_SR, SPI_SR_EOQF);
- 
- 	dspi_transfer_read(dspi);
- 
- 	if (!dspi->len) {
- 		if (dspi->dataflags & TRAN_STATE_WORD_ODD_NUM)
--			set_bit_mode(dspi, 16);
-+			regmap_update_bits(dspi->regmap, SPI_CTAR(dspi->cs),
-+				SPI_FRAME_BITS_MASK, SPI_FRAME_BITS(16));
-+
- 		dspi->waitflags = 1;
- 		wake_up_interruptible(&dspi->waitq);
- 	} else {
-@@ -435,12 +441,20 @@ static const struct dev_pm_ops dspi_pm = {
- 	SET_SYSTEM_SLEEP_PM_OPS(dspi_suspend, dspi_resume)
- };
- 
-+static struct regmap_config dspi_regmap_config = {
-+	.reg_bits = 32,
-+	.val_bits = 32,
-+	.reg_stride = 4,
-+	.max_register = 0x88,
-+};
-+
- static int dspi_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
- 	struct spi_master *master;
- 	struct fsl_dspi *dspi;
- 	struct resource *res;
-+	void __iomem *base;
- 	int ret = 0, cs_num, bus_num;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(struct fsl_dspi));
-@@ -475,12 +489,24 @@ static int dspi_probe(struct platform_device *pdev)
- 	master->bus_num = bus_num;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	dspi->base = devm_ioremap_resource(&pdev->dev, res);
--	if (IS_ERR(dspi->base)) {
--		ret = PTR_ERR(dspi->base);
-+	base = devm_ioremap_resource(&pdev->dev, res);
-+	if (IS_ERR(base)) {
-+		ret = PTR_ERR(base);
- 		goto out_master_put;
- 	}
- 
-+	dspi_regmap_config.lock_arg = dspi;
-+	dspi_regmap_config.val_format_endian =
-+		of_property_read_bool(np, "big-endian")
-+			? REGMAP_ENDIAN_BIG : REGMAP_ENDIAN_DEFAULT;
-+	dspi->regmap = devm_regmap_init_mmio_clk(&pdev->dev, "dspi", base,
-+						&dspi_regmap_config);
-+	if (IS_ERR(dspi->regmap)) {
-+		dev_err(&pdev->dev, "failed to init regmap: %ld\n",
-+				PTR_ERR(dspi->regmap));
-+		return PTR_ERR(dspi->regmap);
-+	}
-+
- 	dspi->irq = platform_get_irq(pdev, 0);
- 	if (dspi->irq < 0) {
- 		dev_err(&pdev->dev, "can't get platform irq\n");
--- 
-1.8.4
-
-
+0JLRgtC+0YDQvdC40LosIDExINGE0LXQstGA0LDQu9GPIDIwMTQsIDEzOjQ4ICswODowMCDQvtGC
+IENoYW8gRnUgPGI0NDU0OEBmcmVlc2NhbGUuY29tPjoKPiBGcm9tOiBDaGFvIEZ1IDxCNDQ1NDhA
+ZnJlZXNjYWxlLmNvbT4KPiAKPiBGcmVlc2NhbGUgRFNQSSBtb2R1bGUgd2lsbCBoYXZlIHR3byBl
+bmRpYW5lc3MgaW4gZGlmZmVyZW50IHBsYXRmb3JtLAo+IGJ1dCBBUk0gaXMgbGl0dGxlIGVuZGlh
+bi4gU28gd2hlbiBEU1BJIGluIGJpZyBlbmRpYW4sIGNvcmUgaW4gbGl0dGxlIGVuZGlhbiwKPiBy
+ZWFkbCBhbmQgd3JpdGVsIGNhbiBub3QgYWRqdXN0IFIvVyByZWdpc3RlciBpbiB0aGlzIGNvbmRp
+dGlvbi4KPiBUaGlzIHBhdGNoIHdpbGwgcmVtb3ZlIGdlbmVyYWwgcmVhZGwvd3JpdGVsLCBhbmQg
+aW1wb3J0IHJlZ21hcCBtZWNoYW5pc20uCj4gRGF0YSBlbmRpYW4gd2lsbCBiZSB0cmFuc2ZlcmVk
+IGluIHJlZ21hcCBBUElzLgoKSW4gdGhpcyBjYXNlIFlvdSBzaG91bGQgYWRkaXRpb25hbGx5IHNl
+bGVjdCBSRUdNQVBfTU1JTyBvcHRpb24KZm9yIFNQSV9GU0xfRFNQSSBpbiB0aGUgZHJpdmVycy9z
+cGkvS2NvbmZpZy4KCi0tLQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

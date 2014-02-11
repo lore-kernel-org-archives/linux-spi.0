@@ -1,72 +1,167 @@
-From: Cestonaro Thilo <thilo.cestonaro-RJz4owOZxyXQFUHtdCDX3A@public.gmane.org>
-Subject: Re: mtdblock read sector and cache_data == NULL
-Date: Tue, 11 Feb 2014 09:46:56 +0100
-Message-ID: <52F9E380.7050700@ts.fujitsu.com>
-References: <52F9E10F.8060904@ts.fujitsu.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH 1/2] ARM: shmobile: r8a7778/r8a7779 dtsi: Improve and correct HSPI bindings
+Date: Tue, 11 Feb 2014 09:56:47 +0100
+Message-ID: <1392109008-29941-1-git-send-email-geert@linux-m68k.org>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <52F9E10F.8060904-RJz4owOZxyXQFUHtdCDX3A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-hey,
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-forget it :) ... I got confused ....
+Binding documentation:
+  - Add future-proof "renesas,hspi-<soctype>" compatible values,
+  - Add "interrupt-parent", "#address-cells" and "#size-cells" properties,
+  - Add reference to pinctrl documentation,
+  - Add example bindings.
 
-Greetings Thilo
+r8a7778 and r8a7779 dtsi:
+  - Add "renesas,hspi-r8a7778" resp. "renesas,hspi-r8a7779" compatible
+    values,
+  - Correct reference to parent interrupt controller
+    (use "interrupt-parent" instead of "interrupt-controller"),
+  - Add missing "#address-cells" and "#size-cells" properties, which are
+    needed when populating the SPI buses.
 
-On 11.02.2014 09:36, Cestonaro Thilo wrote:
-> Hey,
->
-> I think the cache_data buffer is used uninitialized in case no write
-> prepends the first read.
->
-> Initialization of cache_data buffer:
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/drivers/mtd/mtdblock.c?id=refs/tags/v3.14-rc2#n300
-> --------------------
->
->     if (!(mbd->mtd->flags & MTD_NO_ERASE) && mbd->mtd->erasesize) {
->         mtdblk->cache_size = mbd->mtd->erasesize;
->         mtdblk->cache_data = NULL;
->     }
-> ----------------
->
-> And later in do_cached_read it is just used with mtdblock->cache_data +
-> offset.
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/drivers/mtd/mtdblock.c?id=refs/tags/v3.14-rc2#n243
->
-> The only allocation I can find is in writesector function, so I figured
-> that the mtd_read will get NULL+offset in the first read.
-> https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/drivers/mtd/mtdblock.c?id=refs/tags/v3.14-rc2#n272
->
-> Is it correct to place the same if unlikely stuff in the
-> mtdblock_readsect function like in the mtdblock_writesect one?
->
-> Greetings
-> Thilo
->
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Cc: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+Untested due to lack of hardware
 
+ Documentation/devicetree/bindings/spi/sh-hspi.txt |   27 ++++++++++++++++++---
+ arch/arm/boot/dts/r8a7778.dtsi                    |   18 +++++++++-----
+ arch/arm/boot/dts/r8a7779.dtsi                    |   18 +++++++++-----
+ 3 files changed, 48 insertions(+), 15 deletions(-)
 
+diff --git a/Documentation/devicetree/bindings/spi/sh-hspi.txt b/Documentation/devicetree/bindings/spi/sh-hspi.txt
+index 30b57b1c8a13..d43080eb6b3a 100644
+--- a/Documentation/devicetree/bindings/spi/sh-hspi.txt
++++ b/Documentation/devicetree/bindings/spi/sh-hspi.txt
+@@ -1,7 +1,28 @@
+ Renesas HSPI.
+ 
+ Required properties:
+-- compatible : 	"renesas,hspi"
+-- reg : Offset and length of the register set for the device
+-- interrupts : interrupt line used by HSPI
++- compatible       : "renesas,hspi-<soctype>", "renesas,hspi" as fallback.
++		     Examples of valid soctypes are "r8a7778" (R-Car M1),
++		     and "r8a7779" (R-Car H1)
++- reg              : Offset and length of the register set for the device
++- interrupt-parent : The phandle for the interrupt controller that
++		     services interrupts for this device
++- interrupts       : Interrupt specifier
++- #address-cells   : Must be <1>
++- #size-cells      : Must be <0>
++
++Pinctrl properties might be needed, too.  See
++Documentation/devicetree/bindings/pinctrl/renesas,*.
++
++Example:
++
++	hspi0: spi@fffc7000 {
++		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
++		reg = <0xfffc7000 0x18>;
++		interrupt-parent = <&gic>;
++		interrupts = <0 63 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "disabled";
++	};
+ 
+diff --git a/arch/arm/boot/dts/r8a7778.dtsi b/arch/arm/boot/dts/r8a7778.dtsi
+index 85c5b3b99f5e..3c6fab5c9702 100644
+--- a/arch/arm/boot/dts/r8a7778.dtsi
++++ b/arch/arm/boot/dts/r8a7778.dtsi
+@@ -204,26 +204,32 @@
+ 	};
+ 
+ 	hspi0: spi@fffc7000 {
+-		compatible = "renesas,hspi";
++		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
+ 		reg = <0xfffc7000 0x18>;
+-		interrupt-controller = <&gic>;
++		interrupt-parent = <&gic>;
+ 		interrupts = <0 63 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		status = "disabled";
+ 	};
+ 
+ 	hspi1: spi@fffc8000 {
+-		compatible = "renesas,hspi";
++		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
+ 		reg = <0xfffc8000 0x18>;
+-		interrupt-controller = <&gic>;
++		interrupt-parent = <&gic>;
+ 		interrupts = <0 84 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		status = "disabled";
+ 	};
+ 
+ 	hspi2: spi@fffc6000 {
+-		compatible = "renesas,hspi";
++		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
+ 		reg = <0xfffc6000 0x18>;
+-		interrupt-controller = <&gic>;
++		interrupt-parent = <&gic>;
+ 		interrupts = <0 85 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		status = "disabled";
+ 	};
+ };
+diff --git a/arch/arm/boot/dts/r8a7779.dtsi b/arch/arm/boot/dts/r8a7779.dtsi
+index d0561d4c7c46..8b1a336ee401 100644
+--- a/arch/arm/boot/dts/r8a7779.dtsi
++++ b/arch/arm/boot/dts/r8a7779.dtsi
+@@ -256,26 +256,32 @@
+ 	};
+ 
+ 	hspi0: spi@fffc7000 {
+-		compatible = "renesas,hspi";
++		compatible = "renesas,hspi-r8a7779", "renesas,hspi";
+ 		reg = <0xfffc7000 0x18>;
+-		interrupt-controller = <&gic>;
++		interrupt-parent = <&gic>;
+ 		interrupts = <0 73 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		status = "disabled";
+ 	};
+ 
+ 	hspi1: spi@fffc8000 {
+-		compatible = "renesas,hspi";
++		compatible = "renesas,hspi-r8a7779", "renesas,hspi";
+ 		reg = <0xfffc8000 0x18>;
+-		interrupt-controller = <&gic>;
++		interrupt-parent = <&gic>;
+ 		interrupts = <0 74 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		status = "disabled";
+ 	};
+ 
+ 	hspi2: spi@fffc6000 {
+-		compatible = "renesas,hspi";
++		compatible = "renesas,hspi-r8a7779", "renesas,hspi";
+ 		reg = <0xfffc6000 0x18>;
+-		interrupt-controller = <&gic>;
++		interrupt-parent = <&gic>;
+ 		interrupts = <0 75 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
+ 		status = "disabled";
+ 	};
+ };
 -- 
-With best regards
-Thilo Cestonaro
-
-FTS PBG PDG WPS R&D EPC
-
-Fujitsu Technology Solutions GmbH
-Buergermeister-Ulrich-Str. 100
-86199 Augsburg
-Germany
-
-Tel.: +49 (0)821 804 2328
-Fax: +49 (0)821 804 82328
-E-mail: thilo.cestonaro-RJz4owOZxyXQFUHtdCDX3A@public.gmane.org
-
-Web: http://ts.fujitsu.com
-Company details: http://ts.fujitsu.com/imprint
+1.7.9.5
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

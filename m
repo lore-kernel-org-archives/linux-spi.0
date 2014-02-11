@@ -1,164 +1,52 @@
 From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH 1/2] ARM: shmobile: r8a7778/r8a7779 dtsi: Improve and correct HSPI bindings
-Date: Tue, 11 Feb 2014 09:56:47 +0100
-Message-ID: <1392109008-29941-1-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH 2/2] ARM: shmobile: bockw reference dts: Add SPI FLASH
+Date: Tue, 11 Feb 2014 09:56:48 +0100
+Message-ID: <1392109008-29941-2-git-send-email-geert@linux-m68k.org>
+References: <1392109008-29941-1-git-send-email-geert@linux-m68k.org>
 Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
 	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1392109008-29941-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-Binding documentation:
-  - Add future-proof "renesas,hspi-<soctype>" compatible values,
-  - Add "interrupt-parent", "#address-cells" and "#size-cells" properties,
-  - Add reference to pinctrl documentation,
-  - Add example bindings.
-
-r8a7778 and r8a7779 dtsi:
-  - Add "renesas,hspi-r8a7778" resp. "renesas,hspi-r8a7779" compatible
-    values,
-  - Correct reference to parent interrupt controller
-    (use "interrupt-parent" instead of "interrupt-controller"),
-  - Add missing "#address-cells" and "#size-cells" properties, which are
-    needed when populating the SPI buses.
+Add Spansion s25fl008k SPI FLASH and MTD partition, based on bockw legacy
+board code.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Cc: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
 Untested due to lack of hardware
 
- Documentation/devicetree/bindings/spi/sh-hspi.txt |   27 ++++++++++++++++++---
- arch/arm/boot/dts/r8a7778.dtsi                    |   18 +++++++++-----
- arch/arm/boot/dts/r8a7779.dtsi                    |   18 +++++++++-----
- 3 files changed, 48 insertions(+), 15 deletions(-)
+ arch/arm/boot/dts/r8a7778-bockw-reference.dts |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/sh-hspi.txt b/Documentation/devicetree/bindings/spi/sh-hspi.txt
-index 30b57b1c8a13..d43080eb6b3a 100644
---- a/Documentation/devicetree/bindings/spi/sh-hspi.txt
-+++ b/Documentation/devicetree/bindings/spi/sh-hspi.txt
-@@ -1,7 +1,28 @@
- Renesas HSPI.
- 
- Required properties:
--- compatible : 	"renesas,hspi"
--- reg : Offset and length of the register set for the device
--- interrupts : interrupt line used by HSPI
-+- compatible       : "renesas,hspi-<soctype>", "renesas,hspi" as fallback.
-+		     Examples of valid soctypes are "r8a7778" (R-Car M1),
-+		     and "r8a7779" (R-Car H1)
-+- reg              : Offset and length of the register set for the device
-+- interrupt-parent : The phandle for the interrupt controller that
-+		     services interrupts for this device
-+- interrupts       : Interrupt specifier
-+- #address-cells   : Must be <1>
-+- #size-cells      : Must be <0>
+diff --git a/arch/arm/boot/dts/r8a7778-bockw-reference.dts b/arch/arm/boot/dts/r8a7778-bockw-reference.dts
+index 06cda19dac6a..f76f6ec01e19 100644
+--- a/arch/arm/boot/dts/r8a7778-bockw-reference.dts
++++ b/arch/arm/boot/dts/r8a7778-bockw-reference.dts
+@@ -109,4 +109,18 @@
+ 	pinctrl-0 = <&hspi0_pins>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
 +
-+Pinctrl properties might be needed, too.  See
-+Documentation/devicetree/bindings/pinctrl/renesas,*.
-+
-+Example:
-+
-+	hspi0: spi@fffc7000 {
-+		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
-+		reg = <0xfffc7000 0x18>;
-+		interrupt-parent = <&gic>;
-+		interrupts = <0 63 IRQ_TYPE_LEVEL_HIGH>;
++	flash: flash@0 {
 +		#address-cells = <1>;
-+		#size-cells = <0>;
-+		status = "disabled";
++		#size-cells = <1>;
++		compatible = "spansion,s25fl008k";
++		reg = <0>;
++		spi-max-frequency = <104000000>;
++		m25p,fast-read;
++
++		partition@0 {
++			label = "data(spi)";
++			reg = <0x00000000 0x00100000>;
++		};
 +	};
- 
-diff --git a/arch/arm/boot/dts/r8a7778.dtsi b/arch/arm/boot/dts/r8a7778.dtsi
-index 85c5b3b99f5e..3c6fab5c9702 100644
---- a/arch/arm/boot/dts/r8a7778.dtsi
-+++ b/arch/arm/boot/dts/r8a7778.dtsi
-@@ -204,26 +204,32 @@
- 	};
- 
- 	hspi0: spi@fffc7000 {
--		compatible = "renesas,hspi";
-+		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
- 		reg = <0xfffc7000 0x18>;
--		interrupt-controller = <&gic>;
-+		interrupt-parent = <&gic>;
- 		interrupts = <0 63 IRQ_TYPE_LEVEL_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
- 		status = "disabled";
- 	};
- 
- 	hspi1: spi@fffc8000 {
--		compatible = "renesas,hspi";
-+		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
- 		reg = <0xfffc8000 0x18>;
--		interrupt-controller = <&gic>;
-+		interrupt-parent = <&gic>;
- 		interrupts = <0 84 IRQ_TYPE_LEVEL_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
- 		status = "disabled";
- 	};
- 
- 	hspi2: spi@fffc6000 {
--		compatible = "renesas,hspi";
-+		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
- 		reg = <0xfffc6000 0x18>;
--		interrupt-controller = <&gic>;
-+		interrupt-parent = <&gic>;
- 		interrupts = <0 85 IRQ_TYPE_LEVEL_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
- 		status = "disabled";
- 	};
- };
-diff --git a/arch/arm/boot/dts/r8a7779.dtsi b/arch/arm/boot/dts/r8a7779.dtsi
-index d0561d4c7c46..8b1a336ee401 100644
---- a/arch/arm/boot/dts/r8a7779.dtsi
-+++ b/arch/arm/boot/dts/r8a7779.dtsi
-@@ -256,26 +256,32 @@
- 	};
- 
- 	hspi0: spi@fffc7000 {
--		compatible = "renesas,hspi";
-+		compatible = "renesas,hspi-r8a7779", "renesas,hspi";
- 		reg = <0xfffc7000 0x18>;
--		interrupt-controller = <&gic>;
-+		interrupt-parent = <&gic>;
- 		interrupts = <0 73 IRQ_TYPE_LEVEL_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
- 		status = "disabled";
- 	};
- 
- 	hspi1: spi@fffc8000 {
--		compatible = "renesas,hspi";
-+		compatible = "renesas,hspi-r8a7779", "renesas,hspi";
- 		reg = <0xfffc8000 0x18>;
--		interrupt-controller = <&gic>;
-+		interrupt-parent = <&gic>;
- 		interrupts = <0 74 IRQ_TYPE_LEVEL_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
- 		status = "disabled";
- 	};
- 
- 	hspi2: spi@fffc6000 {
--		compatible = "renesas,hspi";
-+		compatible = "renesas,hspi-r8a7779", "renesas,hspi";
- 		reg = <0xfffc6000 0x18>;
--		interrupt-controller = <&gic>;
-+		interrupt-parent = <&gic>;
- 		interrupts = <0 75 IRQ_TYPE_LEVEL_HIGH>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
- 		status = "disabled";
- 	};
  };
 -- 
 1.7.9.5

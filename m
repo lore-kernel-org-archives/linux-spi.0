@@ -1,75 +1,57 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: Use list_last_entry at appropriate places
-Date: Wed, 12 Feb 2014 22:13:27 +0800
-Message-ID: <1392214407.11101.6.camel@phoenix>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 02/13] spi: sirf: update copyright years to 2014
+Date: Wed, 12 Feb 2014 14:28:22 +0000
+Message-ID: <20140212142822.GO28112@sirena.org.uk>
+References: <1392209477-24661-1-git-send-email-21cnbao@gmail.com>
+ <20140212125916.GM28112@sirena.org.uk>
+ <CAGsJ_4wVkDgq8pgFHLf0X1nGZ2UKe_GKWDZ-3GQXB36ufFPDLQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="AA9g+nFNFPYNJKiL"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAGsJ_4wVkDgq8pgFHLf0X1nGZ2UKe_GKWDZ-3GQXB36ufFPDLQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-dw.c     | 3 +--
- drivers/spi/spi-pl022.c  | 5 ++---
- drivers/spi/spi-pxa2xx.c | 3 +--
- 3 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index bf98d63..390da9b 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -276,8 +276,7 @@ static void giveback(struct dw_spi *dws)
- 	queue_work(dws->workqueue, &dws->pump_messages);
- 	spin_unlock_irqrestore(&dws->lock, flags);
- 
--	last_transfer = list_entry(msg->transfers.prev,
--					struct spi_transfer,
-+	last_transfer = list_last_entry(&msg->transfers, struct spi_transfer,
- 					transfer_list);
- 
- 	if (!last_transfer->cs_change && dws->cs_control)
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 74a0729..3e7c377 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -459,9 +459,8 @@ static void giveback(struct pl022 *pl022)
- 	struct spi_transfer *last_transfer;
- 	pl022->next_msg_cs_active = false;
- 
--	last_transfer = list_entry(pl022->cur_msg->transfers.prev,
--					struct spi_transfer,
--					transfer_list);
-+	last_transfer = list_last_entry(&pl022->cur_msg->transfers,
-+					struct spi_transfer, transfer_list);
- 
- 	/* Delay if requested before any change in chip select */
- 	if (last_transfer->delay_usecs)
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index c702fc5..41185d0 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -362,8 +362,7 @@ static void giveback(struct driver_data *drv_data)
- 	drv_data->cur_msg = NULL;
- 	drv_data->cur_transfer = NULL;
- 
--	last_transfer = list_entry(msg->transfers.prev,
--					struct spi_transfer,
-+	last_transfer = list_last_entry(&msg->transfers, struct spi_transfer,
- 					transfer_list);
- 
- 	/* Delay if requested before any change in chip select */
--- 
-1.8.1.2
+--AA9g+nFNFPYNJKiL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Wed, Feb 12, 2014 at 09:23:32PM +0800, Barry Song wrote:
 
+> so could this copyright change be after one of the coming three?
 
+Yes, it's totally fine to update it when you make changes.
+
+--AA9g+nFNFPYNJKiL
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJS+4UDAAoJELSic+t+oim9XRcQAIEN4+cDY2lCmYmee1ssiJ43
+FULc8WXVfZxvCmMrOVkTL8hGinV6J5P5t3mcxAh4e0Xx+cyi2EJplzGGVKhmAF2u
++nEGPp/OWK0eexy/9bfjAPCQAntgqLM5F8QY2OJ2TfrolddTWxdpL8lZ6G+cXWGD
+OlHqQHF4qRt8JUd0T+soiyCDNseqnRgYcPPnrdIAGKs8jwcXGhuE5ygZZm8jrpxT
+CmXID821ZP5KUdCWux0Hc8wLxfTxmZkQVCoyFkY7bUVXNxqeHKNYZHuxlTfmQIzU
+fbf3iCZpCN6sLhOw/rxgHkgLzh6mjDUX6K4E7N+WoDt5nI+dIo+gaPJGuB0Ixnr2
+6hC1x5Eefoe1Pl2u8gWCYQCCgfHA8ZTuT5ik/FIzlwH57RExMErg7m7lcr8oxcwr
+fpASAiyQVJv6E68VisekMAJVr+JWLK/Ls641ef/cQmwQBmAF6HMNHZD8837Qrc+R
+o4tx/U3dvSTK+LT6GybV+ad6K3iuS8RycQ8qLaZMbyg0ggITIpmEeaBSW30FSrJC
+wih5Am03Wb6tPjWYI28gePlgv9VDIu8mqnImu+0f/C1A4wz2BmVN3EI1y/I9HzIJ
+h6s5Ixb9baP7Yqs8zZqD4H8jTNYsdGrsEiFrZiEO7bvZkVEbQf572F4arGYmlpzE
+VIZWhC8qLgd62xzkYWNC
+=Ic2U
+-----END PGP SIGNATURE-----
+
+--AA9g+nFNFPYNJKiL--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

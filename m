@@ -1,93 +1,65 @@
 From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/3] spi: sirf: move to use generic dma dt-binding
-Date: Thu, 13 Feb 2014 00:30:19 +0800
-Message-ID: <1392222620-17273-2-git-send-email-21cnbao@gmail.com>
+Subject: [PATCH 3/3] spi: sirf: use SET_SYSTEM_SLEEP_PM_OPS to initialize PM entries
+Date: Thu, 13 Feb 2014 00:30:20 +0800
+Message-ID: <1392222620-17273-3-git-send-email-21cnbao@gmail.com>
 References: <1392222620-17273-1-git-send-email-21cnbao@gmail.com>
-Cc: workgroup.linux-kQvG35nSl+M@public.gmane.org, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+Cc: workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
 To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1392222620-17273-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
 
-sirf-dma driver enabled generic dt binding for dma channels.
-see here we remove self-defined dma channel prop and move to
-use generic dma_request_slave_channel.
-related changes in dts is something like:
-    dmas = <&dmac1 9>,
-    <&dmac1 4>;
-    dma-names = "rx", "tx";
+use SET_SYSTEM_SLEEP_PM_OPS to initialize PM entries, this makes the codes
+clean and also enable the ability of hibernation support for sirf SPI.
 
+Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
 Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
 ---
- drivers/spi/spi-sirf.c |   26 ++------------------------
- 1 file changed, 2 insertions(+), 24 deletions(-)
+ drivers/spi/spi-sirf.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index c400ab7..a213e87 100644
+index a213e87..5bffa5f 100644
 --- a/drivers/spi/spi-sirf.c
 +++ b/drivers/spi/spi-sirf.c
-@@ -22,7 +22,6 @@
- #include <linux/dmaengine.h>
- #include <linux/dma-direction.h>
- #include <linux/dma-mapping.h>
--#include <linux/sirfsoc_dma.h>
+@@ -739,7 +739,7 @@ static int  spi_sirfsoc_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
- #define DRIVER_NAME "sirfsoc_spi"
+-#ifdef CONFIG_PM
++#ifdef CONFIG_PM_SLEEP
+ static int spi_sirfsoc_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+@@ -762,12 +762,11 @@ static int spi_sirfsoc_resume(struct device *dev)
  
-@@ -585,8 +584,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	struct spi_master *master;
- 	struct resource *mem_res;
- 	int num_cs, cs_gpio, irq;
--	u32 rx_dma_ch, tx_dma_ch;
--	dma_cap_mask_t dma_cap_mask;
- 	int i;
- 	int ret;
+ 	return 0;
+ }
++#endif
  
-@@ -597,20 +594,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 		goto err_cs;
- 	}
+ static const struct dev_pm_ops spi_sirfsoc_pm_ops = {
+-	.suspend = spi_sirfsoc_suspend,
+-	.resume = spi_sirfsoc_resume,
++	SET_SYSTEM_SLEEP_PM_OPS(spi_sirfsoc_suspend, spi_sirfsoc_resume)
+ };
+-#endif
  
--	ret = of_property_read_u32(pdev->dev.of_node,
--			"sirf,spi-dma-rx-channel", &rx_dma_ch);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "Unable to get rx dma channel\n");
--		goto err_cs;
--	}
--
--	ret = of_property_read_u32(pdev->dev.of_node,
--			"sirf,spi-dma-tx-channel", &tx_dma_ch);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "Unable to get tx dma channel\n");
--		goto err_cs;
--	}
--
- 	master = spi_alloc_master(&pdev->dev, sizeof(*sspi) + sizeof(int) * num_cs);
- 	if (!master) {
- 		dev_err(&pdev->dev, "Unable to allocate SPI master\n");
-@@ -674,18 +657,13 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	sspi->bitbang.master->dev.of_node = pdev->dev.of_node;
- 
- 	/* request DMA channels */
--	dma_cap_zero(dma_cap_mask);
--	dma_cap_set(DMA_INTERLEAVE, dma_cap_mask);
--
--	sspi->rx_chan = dma_request_channel(dma_cap_mask, (dma_filter_fn)sirfsoc_dma_filter_id,
--		(void *)rx_dma_ch);
-+	sspi->rx_chan = dma_request_slave_channel(&pdev->dev, "rx");
- 	if (!sspi->rx_chan) {
- 		dev_err(&pdev->dev, "can not allocate rx dma channel\n");
- 		ret = -ENODEV;
- 		goto free_master;
- 	}
--	sspi->tx_chan = dma_request_channel(dma_cap_mask, (dma_filter_fn)sirfsoc_dma_filter_id,
--		(void *)tx_dma_ch);
-+	sspi->tx_chan = dma_request_slave_channel(&pdev->dev, "tx");
- 	if (!sspi->tx_chan) {
- 		dev_err(&pdev->dev, "can not allocate tx dma channel\n");
- 		ret = -ENODEV;
+ static const struct of_device_id spi_sirfsoc_of_match[] = {
+ 	{ .compatible = "sirf,prima2-spi", },
+@@ -780,9 +779,7 @@ static struct platform_driver spi_sirfsoc_driver = {
+ 	.driver = {
+ 		.name = DRIVER_NAME,
+ 		.owner = THIS_MODULE,
+-#ifdef CONFIG_PM
+ 		.pm     = &spi_sirfsoc_pm_ops,
+-#endif
+ 		.of_match_table = spi_sirfsoc_of_match,
+ 	},
+ 	.probe = spi_sirfsoc_probe,
 -- 
 1.7.9.5
 

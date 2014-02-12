@@ -1,61 +1,69 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Remove duplicate code to check chip_select
-Date: Wed, 12 Feb 2014 16:01:04 +0000
-Message-ID: <20140212160104.GA28112@sirena.org.uk>
-References: <1392127650.9833.1.camel@phoenix>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 07/11] spi: spi-sh-msiof: RSCR register may absent
+Date: Wed, 12 Feb 2014 17:06:41 +0100
+Message-ID: <CAMuHMdVVC1deEQfbLzPzU08LYxf=KOtG3oL2_M4HMBGvJE+8KQ@mail.gmail.com>
+References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
+	<1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
+	<1385921962-19843-7-git-send-email-takasi-y@ops.dti.ne.jp>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Vx/u1Rx7tHHd/cso"
-Cc: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>,
-	Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1392127650.9833.1.camel@phoenix>
+In-Reply-To: <1385921962-19843-7-git-send-email-takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Yoshii-san,
 
---Vx/u1Rx7tHHd/cso
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Sun, Dec 1, 2013 at 7:19 PM,  <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org> wrote:
+> On Ape6, Rcar-H2, and Rcar-M2,
+> MSIOF lacks RSCR(Receive Clock Select Register).
+> I guess this is a part of .rx_need_dummy_tx case, and use same flag.
 
-On Tue, Feb 11, 2014 at 10:07:30PM +0800, Axel Lin wrote:
-> In spi_add_device(), we have the code to validate spi->chip_select.
-> So remove the duplicate code in various drivers.
+Are you sure? I'm under the impression MSIOF on APE6 does have RSCR,
+just like on A1, and SH (e.g. 7724).
 
-Applied, thanks.  With this sort of stuff it is a bit easier for me to
-split things up per driver - it's easier to judge what to do with acks
-and it works better with the forest of branches I keep.
+Given also that:
+  - dummy TX is needed during reception for  APE6, R-Car H2/M2, and
+     (perhaps --- this is not 100% clear to me) A1,
+  - RMDR1[15:0] must be zero on APE6, and R-Car H2/M2.
 
---Vx/u1Rx7tHHd/cso
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+there are (at least) 4 different variants of MSIOF:
+  - SH
+  - A1
+  - APE6
+  - R-Car H2 and M2
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+And I don't know about SH7372 and SH73A0...
 
-iQIcBAEBAgAGBQJS+5q8AAoJELSic+t+oim9D88P/RDoaVjMcvrnoFIHn7XXojS2
-ucqAiPGiepXgbUtTA7XV8gCYtYc85eD1d2DEBSTNN7evd3rV/UGYqZ1qXOPFkpHm
-OEaCDtBWXIS+BM0IYquP66/yG5zIWx9x22t5nya2i+Nx4S5iK/tPvjc0Ifd4+Nlp
-8yXTm6Kf+3PZMsLpNdS88yGLbHpYAuCxpTi/S4cCA3PygYaGw6UtchbBQgQTMelZ
-wRcpFqYtJ4+MMqUO8IV7pLynVab0IrZLmZIQrk9ybu/btQY09p2SKQbIBwvpvO/U
-+ueYOyZQrr8nQRRGqc+UIFtDIUj8JYRJnsnubcl/8L6xZju3hFlDgHGpRDNz4a+c
-y3jpzTAIr0fMtdndsya34oBUDO5LqsErOAqXQCsxbaT89hwjzBXOeLizRAzQ3fFA
-s7Ib+jGGwpcJ0WtpQ1qwBiA1PJ9tYikVEX9r1yGqw391z1ANXhLXRcQyODGDOx2n
-V9pXWDAFgkSwQYdXnRsJS1wrjPbjyhZtUI8gXo+PAZXslShbu+vblCSyF189F1e7
-aptb3mgrnyFhdhl/s8+KD7NSt4eL3QGwt17DI8DPhLISE+/YFNa8hl8Tf8b5mtBx
-K5V4BoYHzsC6kwia49sYgn1GYhx/cAxKPyRK2DVQw2QEhJegnxzRaHTMHVX/uuR1
-qsj30B+awBzeEN/2lSeA
-=Sjji
------END PGP SIGNATURE-----
+But we indeed may not need to distinguish between all variants.
+You just use the value of rx_need_dummy_tx as test condition.
+If this works for APE6 and A1, we can add a new platform device name
+"spi_sh_mobile_msiof" instead of adding the rx_need_dummy_tx flag
+to platform data (struct sh_msiof_spi_info).
+This would be in line with the currently defined (but so far unused) DT
+compatible values "renesas,sh-msiof" and "renesas,sh-mobile-msiof".
 
---Vx/u1Rx7tHHd/cso--
+What do you think?
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

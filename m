@@ -1,68 +1,75 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/3] spi: sirf: use SET_SYSTEM_SLEEP_PM_OPS to initialize PM entries
-Date: Thu, 13 Feb 2014 00:30:20 +0800
-Message-ID: <1392222620-17273-3-git-send-email-21cnbao@gmail.com>
-References: <1392222620-17273-1-git-send-email-21cnbao@gmail.com>
-Cc: workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Subject: Re: [PATCH 07/11] spi: spi-sh-msiof: RSCR register may absent
+Date: Thu, 13 Feb 2014 08:50:45 +0900
+Message-ID: <20140212235042.GB28472@verge.net.au>
+References: <20131202031557.162e78d407d82effdee627ac@ops.dti.ne.jp>
+ <1385921962-19843-1-git-send-email-takasi-y@ops.dti.ne.jp>
+ <1385921962-19843-7-git-send-email-takasi-y@ops.dti.ne.jp>
+ <CAMuHMdVVC1deEQfbLzPzU08LYxf=KOtG3oL2_M4HMBGvJE+8KQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org, Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392222620-17273-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdVVC1deEQfbLzPzU08LYxf=KOtG3oL2_M4HMBGvJE+8KQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+On Wed, Feb 12, 2014 at 05:06:41PM +0100, Geert Uytterhoeven wrote:
+> Hi Yoshii-san,
+> 
+> On Sun, Dec 1, 2013 at 7:19 PM,  <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org> wrote:
+> > On Ape6, Rcar-H2, and Rcar-M2,
+> > MSIOF lacks RSCR(Receive Clock Select Register).
+> > I guess this is a part of .rx_need_dummy_tx case, and use same flag.
+> 
+> Are you sure? I'm under the impression MSIOF on APE6 does have RSCR,
+> just like on A1, and SH (e.g. 7724).
 
-use SET_SYSTEM_SLEEP_PM_OPS to initialize PM entries, this makes the codes
-clean and also enable the ability of hibernation support for sirf SPI.
+FWIW, the version of the APE6 documentation that I have access to
+indicates that it does have RSCR.
 
-Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
-Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
----
- drivers/spi/spi-sirf.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index a213e87..5bffa5f 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -739,7 +739,7 @@ static int  spi_sirfsoc_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
--#ifdef CONFIG_PM
-+#ifdef CONFIG_PM_SLEEP
- static int spi_sirfsoc_suspend(struct device *dev)
- {
- 	struct spi_master *master = dev_get_drvdata(dev);
-@@ -762,12 +762,11 @@ static int spi_sirfsoc_resume(struct device *dev)
- 
- 	return 0;
- }
-+#endif
- 
- static const struct dev_pm_ops spi_sirfsoc_pm_ops = {
--	.suspend = spi_sirfsoc_suspend,
--	.resume = spi_sirfsoc_resume,
-+	SET_SYSTEM_SLEEP_PM_OPS(spi_sirfsoc_suspend, spi_sirfsoc_resume)
- };
--#endif
- 
- static const struct of_device_id spi_sirfsoc_of_match[] = {
- 	{ .compatible = "sirf,prima2-spi", },
-@@ -780,9 +779,7 @@ static struct platform_driver spi_sirfsoc_driver = {
- 	.driver = {
- 		.name = DRIVER_NAME,
- 		.owner = THIS_MODULE,
--#ifdef CONFIG_PM
- 		.pm     = &spi_sirfsoc_pm_ops,
--#endif
- 		.of_match_table = spi_sirfsoc_of_match,
- 	},
- 	.probe = spi_sirfsoc_probe,
--- 
-1.7.9.5
-
+> Given also that:
+>   - dummy TX is needed during reception for  APE6, R-Car H2/M2, and
+>      (perhaps --- this is not 100% clear to me) A1,
+>   - RMDR1[15:0] must be zero on APE6, and R-Car H2/M2.
+> 
+> there are (at least) 4 different variants of MSIOF:
+>   - SH
+>   - A1
+>   - APE6
+>   - R-Car H2 and M2
+> 
+> And I don't know about SH7372 and SH73A0...
+> 
+> But we indeed may not need to distinguish between all variants.
+> You just use the value of rx_need_dummy_tx as test condition.
+> If this works for APE6 and A1, we can add a new platform device name
+> "spi_sh_mobile_msiof" instead of adding the rx_need_dummy_tx flag
+> to platform data (struct sh_msiof_spi_info).
+> This would be in line with the currently defined (but so far unused) DT
+> compatible values "renesas,sh-msiof" and "renesas,sh-mobile-msiof".
+> 
+> What do you think?
+> 
+> Thanks!
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+> --
+> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+> 
+> In personal conversations with technical people, I call myself a hacker. But
+> when I'm talking to journalists I just say "programmer" or something like that.
+>                                 -- Linus Torvalds
+> 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,55 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: octeon: Remove unused bits_per_word from struct
- octeon_spi_setup
-Date: Tue, 11 Feb 2014 18:59:39 +0000
-Message-ID: <20140211185939.GZ13533@sirena.org.uk>
-References: <1391872340.4110.5.camel@phoenix>
+From: Chao Fu <b44548@freescale.com>
+Subject: [PATCH v4 2/2] spi:dspi:Remove some coding sytle not in standard
+Date: Wed, 12 Feb 2014 15:29:06 +0800
+Message-ID: <1392190146-18852-2-git-send-email-b44548@freescale.com>
+References: <1392190146-18852-1-git-send-email-b44548@freescale.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="qicHaSekiYEWE95x"
-Cc: David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1391872340.4110.5.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Chao Fu <b44548@freescale.com>
+To: <linux-spi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <broonie@kernel.org>, <grant.likely@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1392190146-18852-1-git-send-email-b44548@freescale.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
+From: Chao Fu <B44548@freescale.com>
 
---qicHaSekiYEWE95x
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Remove some coding sytle not in standard in former code.
 
-On Sat, Feb 08, 2014 at 11:12:20PM +0800, Axel Lin wrote:
-> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Chao Fu      <b44548@freescale.com>
+---
+Change in v4:
+None.
+Change in v3:
+None.
+Change in v2:
+New.
+ drivers/spi/spi-fsl-dspi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Applied, thanks.
-
---qicHaSekiYEWE95x
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJS+nMYAAoJELSic+t+oim9ik4P/izm2vE4tVTzvPOGIY1bmKZC
-vNJMxGJ4w5bDCoEf1tNKPnlrLRkEH+B9QAYgJamgWsnnQ0Z+uf45L+TkxQrrglj9
-KeaXlk8BLlCKjyZyXouIIGx7rY2uLbqvdd2FkGXH7wE7xwARn45rC+7ToB2YziXk
-lBvIcW+n0Bv3PdyaV0/GUMBKrNO4dKCuYBHXOT22XViOagr2FvJ7ibBsXP/fjRXJ
-QKuse58yLfq0bTLOcqlz+facROFj23208WYNUaZihpt5g5Xv/XW8AFw/hfbUqWQQ
-GOG1JSP02VMAetgMgHabk/yAlZzvn25wl3nwKzBTvX6yN+91NsWnaFqx2F0XyIzk
-Vtm+7tx2W+e0WVMYP3s5x4wFnYwXgbLuIDXAtbR4hQLUVwLpww28xlMzPrw2QwK3
-sKehevKYxzOTkFaXsBTQQfSxhXuFNwHlEslzZb234HP0vJC/SIAKb0ZWpb+Q98ZY
-Z403X9+MzmsAfTcAVLVIKUoC8YxURhdLdvHzAMbV3af0iMSB2LDSBROEHLJqceLC
-XPMdPPoAxhCSHn4ipxKsRXaIwO9kyN2vGRL4QTyu1nAVscUUXKWxe4dOpzbTVJI5
-8afVqByUhQbh6/xncURB9bVBwkvGtOnW0Y8TWiy6wkCu3qBLZ5qlBBTCrOy6HGQF
-ZsNsruBmt0a8gbLcRpBR
-=NIlY
------END PGP SIGNATURE-----
-
---qicHaSekiYEWE95x--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index fb16575..42ede0d 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -111,9 +111,9 @@ struct fsl_dspi {
+ 
+ 	struct regmap		*regmap;
+ 	int			irq;
+-	struct clk 		*clk;
++	struct clk		*clk;
+ 
+-	struct spi_transfer 	*cur_transfer;
++	struct spi_transfer	*cur_transfer;
+ 	struct chip_data	*cur_chip;
+ 	size_t			len;
+ 	void			*tx;
+@@ -124,8 +124,8 @@ struct fsl_dspi {
+ 	u8			cs;
+ 	u16			void_write_data;
+ 
+-	wait_queue_head_t 	waitq;
+-	u32 			waitflags;
++	wait_queue_head_t	waitq;
++	u32			waitflags;
+ };
+ 
+ static inline int is_double_byte_mode(struct fsl_dspi *dspi)
+-- 
+1.8.4

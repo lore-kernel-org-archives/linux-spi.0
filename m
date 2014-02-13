@@ -1,33 +1,44 @@
-From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V1] spi: imx: add dma support for ecspi
-Date: Thu, 13 Feb 2014 09:56:19 +0800
-Message-ID: <20140213015617.GA950@S2101-09.ap.freescale.net>
-References: <1392199379-6742-1-git-send-email-b38343@freescale.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: sun6i: Fix define for SUN6I_TFR_CTL_CS_MASK
+Date: Thu, 13 Feb 2014 10:18:15 +0800
+Message-ID: <1392257895.3964.2.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<shijie.huang-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1392199379-6742-1-git-send-email-b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Feb 12, 2014 at 06:02:59PM +0800, Robin Gong wrote:
-> Add basical dma support for ecspi. Validate on i.MX6qsabresd board.
-> 
-> Signed-off-by: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Current code in sun6i_spi_set_cs() actually clears CPHA and CPOL bits which is
+obvious wrong. The define for SUN6I_TFR_CTL_CS_MASK is wrong. Fix it.
 
-Robin,
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-sun6i.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Are you aware of the submission [1] from Frank Li?  You may want to
-coordinate the effort with him.
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 94d38d0..dacc8d6 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -36,8 +36,8 @@
+ #define SUN6I_TFR_CTL_CPHA			BIT(0)
+ #define SUN6I_TFR_CTL_CPOL			BIT(1)
+ #define SUN6I_TFR_CTL_SPOL			BIT(2)
+-#define SUN6I_TFR_CTL_CS_MASK			0x3
+-#define SUN6I_TFR_CTL_CS(cs)			(((cs) & SUN6I_TFR_CTL_CS_MASK) << 4)
++#define SUN6I_TFR_CTL_CS_MASK			0x30
++#define SUN6I_TFR_CTL_CS(cs)			(((cs) << 4) & SUN6I_TFR_CTL_CS_MASK)
+ #define SUN6I_TFR_CTL_CS_MANUAL			BIT(6)
+ #define SUN6I_TFR_CTL_CS_LEVEL			BIT(7)
+ #define SUN6I_TFR_CTL_DHB			BIT(8)
+-- 
+1.8.1.2
 
-Shawn
 
-[1] http://thread.gmane.org/gmane.linux.ports.arm.kernel/291722
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

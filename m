@@ -1,71 +1,77 @@
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: Re: [PATCH 14/17] i2c: nomadik: Fixup deployment of runtime PM
-Date: Thu, 13 Feb 2014 15:12:49 +0100
-Message-ID: <CAPDyKFq_k7dRjuf+XW=DDkM1K2EJ_4vAAs0tTrd+WbUxqxP-tw@mail.gmail.com>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-	<1391529538-21685-15-git-send-email-ulf.hansson@linaro.org>
-	<CACRpkdZwoXf5ovmQEAN6Ugvz91+_i5uGqStR3MGXQeJGHitj3Q@mail.gmail.com>
-	<CAPDyKFrWgB8z1rtWxU7AYvVsmNj_pfGbsozwgP_FzLODpmGRwQ@mail.gmail.com>
+From: Jean Delvare <jdelvare-l3A5Bk7waGM@public.gmane.org>
+Subject: [PATCH] spi: Clean up probe and remove functions
+Date: Thu, 13 Feb 2014 15:28:41 +0100
+Message-ID: <20140213152841.390de00f@endymion.delvare>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Russell King <linux@arm.linux.org.uk>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	Alessandro Rubini <rubini@unipv.it>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>, Mark Brown <broonie@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <CAPDyKFrWgB8z1rtWxU7AYvVsmNj_pfGbsozwgP_FzLODpmGRwQ@mail.gmail.com>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 10 February 2014 11:14, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> On 5 February 2014 15:34, Linus Walleij <linus.walleij@linaro.org> wrote:
->> On Tue, Feb 4, 2014 at 4:58 PM, Ulf Hansson <ulf.hansson@linaro.org> wrote:
->>
->>> Since the device is active while a successful probe has been completed,
->>> the reference counting for the clock will be screwed up and never reach
->>> zero.
->>>
->>> The issue is resolved by implementing runtime PM callbacks and let them
->>> handle the resources accordingly, including the clock.
->>>
->>> Cc: Alessandro Rubini <rubini@unipv.it>
->>> Cc: Linus Walleij <linus.walleij@linaro.org>
->>> Cc: Wolfram Sang <wsa@the-dreams.de>
->>> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
->>
->> Hm do I read it right as patch 13 breaks runtime PM by leaving
->> the device active after probe() and this patch
->> 14 fixes it again? Maybe these two patches should be squashed
->> then.
+While backporting 33cf00e5 ("spi: attach/detach SPI device to the ACPI
+power domain"), I noticed that the code changes were suboptimal:
 
-In v2 I have now squashed patch 13 into this patch 14.
+* Why use &spi->dev when we have dev at hand?
 
-That means patch13 shall be dropped from this patchset.
+* After fixing the above, spi is used only once, so we don't really
+  need a local variable for it.
 
-Kind regards
-Uffe
+This results in the following clean-up.
 
->
-> You are right; but the driver will still be working, you just don't
-> get the benefit from inactivating the device at request inactivity -
-> as you pointed out.
->
-> The reason for why I wanted to do this as separate steps was to make
-> it easier for reviewing, otherwise the patch(es) would have been quite
-> big and messy. I am for sure open to  adopt to your proposal, but just
-> wanted to give you some more background, before I go ahead and send a
-> v2.
->
-> Kind regards
-> Ulf Hansson
->
->>
->> Yours,
->> Linus Walleij
+Signed-off-by: Jean Delvare <jdelvare-l3A5Bk7waGM@public.gmane.org>
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Rafael J. Wysocki <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+---
+Untested, no hardware.
+
+ drivers/spi/spi.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+--- linux-3.14-rc2.orig/drivers/spi/spi.c	2014-02-13 14:42:09.309512009 +0100
++++ linux-3.14-rc2/drivers/spi/spi.c	2014-02-13 14:53:36.204366691 +0100
+@@ -255,13 +255,12 @@ EXPORT_SYMBOL_GPL(spi_bus_type);
+ static int spi_drv_probe(struct device *dev)
+ {
+ 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
+-	struct spi_device		*spi = to_spi_device(dev);
+ 	int ret;
+ 
+-	acpi_dev_pm_attach(&spi->dev, true);
+-	ret = sdrv->probe(spi);
++	acpi_dev_pm_attach(dev, true);
++	ret = sdrv->probe(to_spi_device(dev));
+ 	if (ret)
+-		acpi_dev_pm_detach(&spi->dev, true);
++		acpi_dev_pm_detach(dev, true);
+ 
+ 	return ret;
+ }
+@@ -269,11 +268,10 @@ static int spi_drv_probe(struct device *
+ static int spi_drv_remove(struct device *dev)
+ {
+ 	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
+-	struct spi_device		*spi = to_spi_device(dev);
+ 	int ret;
+ 
+-	ret = sdrv->remove(spi);
+-	acpi_dev_pm_detach(&spi->dev, true);
++	ret = sdrv->remove(to_spi_device(dev));
++	acpi_dev_pm_detach(dev, true);
+ 
+ 	return ret;
+ }
+
+
+-- 
+Jean Delvare
+Suse L3 Support
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

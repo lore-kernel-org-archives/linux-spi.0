@@ -1,80 +1,59 @@
-From: "Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: Clean up probe and remove functions
-Date: Thu, 13 Feb 2014 16:14:14 +0100
-Message-ID: <52FCE146.8080308@intel.com>
-References: <20140213152841.390de00f@endymion.delvare>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Jean Delvare <jdelvare-l3A5Bk7waGM@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140213152841.390de00f-R0o5gVi9kd7kN2dkZ6Wm7A@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Subject: [PATH v2 0/2] spi: Add Qualcomm QUP SPI controller support
+Date: Thu, 13 Feb 2014 18:21:12 +0200
+Message-ID: <1392308472-30136-1-git-send-email-iivanov@mm-sol.com>
+Cc: "Ivan T. Ivanov" <iivanov@mm-sol.com>, linux-spi@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On 2/13/2014 3:28 PM, Jean Delvare wrote:
-> While backporting 33cf00e5 ("spi: attach/detach SPI device to the ACPI
-> power domain"), I noticed that the code changes were suboptimal:
->
-> * Why use &spi->dev when we have dev at hand?
->
-> * After fixing the above, spi is used only once, so we don't really
->    need a local variable for it.
->
-> This results in the following clean-up.
->
-> Signed-off-by: Jean Delvare <jdelvare-l3A5Bk7waGM@public.gmane.org>
-> Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Hi, 
 
+Following two patches are adding initial support for SPI controller
+available in Qualcomm SoC's.
 
-> ---
-> Untested, no hardware.
->
->   drivers/spi/spi.c |   12 +++++-------
->   1 file changed, 5 insertions(+), 7 deletions(-)
->
-> --- linux-3.14-rc2.orig/drivers/spi/spi.c	2014-02-13 14:42:09.309512009 +0100
-> +++ linux-3.14-rc2/drivers/spi/spi.c	2014-02-13 14:53:36.204366691 +0100
-> @@ -255,13 +255,12 @@ EXPORT_SYMBOL_GPL(spi_bus_type);
->   static int spi_drv_probe(struct device *dev)
->   {
->   	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
-> -	struct spi_device		*spi = to_spi_device(dev);
->   	int ret;
->   
-> -	acpi_dev_pm_attach(&spi->dev, true);
-> -	ret = sdrv->probe(spi);
-> +	acpi_dev_pm_attach(dev, true);
-> +	ret = sdrv->probe(to_spi_device(dev));
->   	if (ret)
-> -		acpi_dev_pm_detach(&spi->dev, true);
-> +		acpi_dev_pm_detach(dev, true);
->   
->   	return ret;
->   }
-> @@ -269,11 +268,10 @@ static int spi_drv_probe(struct device *
->   static int spi_drv_remove(struct device *dev)
->   {
->   	const struct spi_driver		*sdrv = to_spi_driver(dev->driver);
-> -	struct spi_device		*spi = to_spi_device(dev);
->   	int ret;
->   
-> -	ret = sdrv->remove(spi);
-> -	acpi_dev_pm_detach(&spi->dev, true);
-> +	ret = sdrv->remove(to_spi_device(dev));
-> +	acpi_dev_pm_detach(dev, true);
->   
->   	return ret;
->   }
->
->
+Controller initialization is based on spi_qsd driver available in
+CAF repository. 
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Controller supports SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP modes, 
+up to 4 CS's and from 4 to 32 bits per word. SPI_LOOP mode is limited 
+to input FIFO buffer size.
+
+Currently driver support only PIO mode, I am hopping to add also DMA
+mode support with dmaengine patches developed by Andy.
+
+Changes since first version:
+ - Replace master::transfer_one_message with master::transfer_one and
+   master::set_cs.   
+ - Use full controller version for compatible string
+   "qcom,spi-qup-v2.1.1" and "qcom,spi-qup-v2.2.1". 
+ - Ensure that controller internal state is changed only if it is in
+   valid state.  
+ - Ensure that resources shared between interrupt and thread context
+   are properly protected.
+ - Use controller auto clock gating for run time power management, 
+   instead full clock stop. This should have the same net result, right?
+ - Simplify a bit read and write FIFO routines.
+ - Several useless print messages removed.
+ 
+Ivan T. Ivanov (2):
+  spi: qup: Add device tree bindings information
+  spi: Add Qualcomm QUP SPI controller support
+
+ .../devicetree/bindings/spi/qcom,spi-qup.txt       |   85 ++
+ drivers/spi/Kconfig                                |   13 +
+ drivers/spi/Makefile                               |    1 +
+ drivers/spi/spi-qup.c                              |  837 ++++++++++++++++++++
+ 4 files changed, 936 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+ create mode 100644 drivers/spi/spi-qup.c
+
+-- 
+1.7.9.5

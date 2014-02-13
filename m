@@ -1,59 +1,125 @@
 From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Subject: [PATH v2 0/2] spi: Add Qualcomm QUP SPI controller support
-Date: Thu, 13 Feb 2014 18:21:12 +0200
-Message-ID: <1392308472-30136-1-git-send-email-iivanov@mm-sol.com>
+Subject: [PATH v2 1/2] spi: qup: Add device tree bindings information
+Date: Thu, 13 Feb 2014 18:21:23 +0200
+Message-ID: <1392308483-30172-1-git-send-email-iivanov@mm-sol.com>
 Cc: "Ivan T. Ivanov" <iivanov@mm-sol.com>, linux-spi@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
 To: Mark Brown <broonie@kernel.org>,
 	Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Rob Landley <rob@landley.net>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
 
-Hi, 
+The Qualcomm Universal Peripheral (QUP) core is an
+AHB slave that provides a common data path (an output
+FIFO and an input FIFO) for serial peripheral interface
+(SPI) mini-core.
 
-Following two patches are adding initial support for SPI controller
-available in Qualcomm SoC's.
-
-Controller initialization is based on spi_qsd driver available in
-CAF repository. 
-
-Controller supports SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LOOP modes, 
-up to 4 CS's and from 4 to 32 bits per word. SPI_LOOP mode is limited 
-to input FIFO buffer size.
-
-Currently driver support only PIO mode, I am hopping to add also DMA
-mode support with dmaengine patches developed by Andy.
-
-Changes since first version:
- - Replace master::transfer_one_message with master::transfer_one and
-   master::set_cs.   
- - Use full controller version for compatible string
-   "qcom,spi-qup-v2.1.1" and "qcom,spi-qup-v2.2.1". 
- - Ensure that controller internal state is changed only if it is in
-   valid state.  
- - Ensure that resources shared between interrupt and thread context
-   are properly protected.
- - Use controller auto clock gating for run time power management, 
-   instead full clock stop. This should have the same net result, right?
- - Simplify a bit read and write FIFO routines.
- - Several useless print messages removed.
- 
-Ivan T. Ivanov (2):
-  spi: qup: Add device tree bindings information
-  spi: Add Qualcomm QUP SPI controller support
-
- .../devicetree/bindings/spi/qcom,spi-qup.txt       |   85 ++
- drivers/spi/Kconfig                                |   13 +
- drivers/spi/Makefile                               |    1 +
- drivers/spi/spi-qup.c                              |  837 ++++++++++++++++++++
- 4 files changed, 936 insertions(+)
+Signed-off-by: Ivan T. Ivanov <iivanov@mm-sol.com>
+---
+ .../devicetree/bindings/spi/qcom,spi-qup.txt       |   85 ++++++++++++++++++++
+ 1 file changed, 85 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
- create mode 100644 drivers/spi/spi-qup.c
 
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+new file mode 100644
+index 0000000..b82a268
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+@@ -0,0 +1,85 @@
++Qualcomm Universal Peripheral (QUP) Serial Peripheral Interface (SPI)
++
++The QUP core is an AHB slave that provides a common data path (an output FIFO
++and an input FIFO) for serial peripheral interface (SPI) mini-core.
++
++SPI in master mode supports up to 50MHz, up to four chip selects, programmable
++data path from 4 bits to 32 bits and numerous protocol variants.
++
++Required properties:
++- compatible:     Should contain "qcom,spi-qup-v2.1.1" or "qcom,spi-qup-v2.2.1"
++- reg:            Should contain base register location and length
++- interrupts:     Interrupt number used by this controller
++
++- clocks:         Should contain the core clock and the AHB clock.
++- clock-names:    Should be "core" for the core clock and "iface" for the
++                  AHB clock.
++
++- #address-cells: Number of cells required to define a chip select
++                  address on the SPI bus. Should be set to 1.
++- #size-cells:    Should be zero.
++
++Optional properties:
++- spi-max-frequency: Specifies maximum SPI clock frequency,
++                     Units - Hz. Definition as per
++                     Documentation/devicetree/bindings/spi/spi-bus.txt
++
++SPI slave nodes must be children of the SPI master node and can contain
++properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
++
++Example:
++
++	spi_8: spi@f9964000 { /* BLSP2 QUP2 */
++
++		compatible = "qcom,spi-qup-v2";
++		#address-cells = <1>;
++		#size-cells = <0>;
++		reg = <0xf9964000 0x1000>;
++		interrupts = <0 102 0>;
++		spi-max-frequency = <19200000>;
++
++		clocks = <&gcc GCC_BLSP2_QUP2_SPI_APPS_CLK>, <&gcc GCC_BLSP2_AHB_CLK>;
++		clock-names = "core", "iface";
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&spi8_default>;
++
++		device@0 {
++			compatible = "arm,pl022-dummy";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			reg = <0>; /* Chip select 0 */
++			spi-max-frequency = <19200000>;
++			spi-cpol;
++		};
++
++		device@1 {
++			compatible = "arm,pl022-dummy";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			reg = <1>; /* Chip select 1 */
++			spi-max-frequency = <9600000>;
++			spi-cpha;
++		};
++
++		device@2 {
++			compatible = "arm,pl022-dummy";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			reg = <2>; /* Chip select 2 */
++			spi-max-frequency = <19200000>;
++			spi-cpol;
++			spi-cpha;
++		};
++
++		device@3 {
++			compatible = "arm,pl022-dummy";
++			#address-cells = <1>;
++			#size-cells = <1>;
++			reg = <3>; /* Chip select 3 */
++			spi-max-frequency = <19200000>;
++			spi-cpol;
++			spi-cpha;
++			spi-cs-high;
++		};
++	};
 -- 
 1.7.9.5

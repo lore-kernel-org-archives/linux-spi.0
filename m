@@ -1,54 +1,59 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: topcliff-pch: Convert to use master->max_speed_hz
-Date: Fri, 14 Feb 2014 20:26:58 +0000
-Message-ID: <20140214202658.GM4451@sirena.org.uk>
-References: <1392042400.9602.3.camel@phoenix>
+Subject: Re: [PATCH 1/2] spi: spi-mxs: Propagate the real error code on
+ platform_get_irq() failure
+Date: Fri, 14 Feb 2014 20:40:55 +0000
+Message-ID: <20140214204055.GQ4451@sirena.org.uk>
+References: <1392347962-9835-1-git-send-email-festevam@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="g6DVDhPhk1bqxDrC"
-Cc: Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="ZgGN478A9hzzvyZc"
+Cc: marex-ynQEQJNshbs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392042400.9602.3.camel@phoenix>
+In-Reply-To: <1392347962-9835-1-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---g6DVDhPhk1bqxDrC
+--ZgGN478A9hzzvyZc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 10, 2014 at 10:26:40PM +0800, Axel Lin wrote:
-> Set "master->max_speed_hz = PCH_MAX_BAUDRATE" then we can remove pch_spi_setup.
-> In additional, pspi->max_speed_hz will never be 0 because it's default value
-> will be set to master->max_speed_hz.
+On Fri, Feb 14, 2014 at 01:19:21AM -0200, Fabio Estevam wrote:
+> From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+>=20
+> No need to return a 'fake' return value on platform_get_irq() failure.
+>=20
+> Just return the error code itself instead.
 
 Applied, thanks.
 
---g6DVDhPhk1bqxDrC
+--ZgGN478A9hzzvyZc
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS/nwPAAoJELSic+t+oim9ugYP/0AUa+dDUbQBP8SCJE4w6aFL
-09Kz1xMX1yaircgXAC9gB41waOaGu1AruPSIiAlM2MbDhbmKiIKl6+npALewvzPR
-kV+gfloSnh3AFRYRvb0uVGAVgBu8IhRZ2GE17r1efQ0/yNd9G8SoKm/SN270KOTu
-3/j2OlXC0JkGbeORu+YQi6E3zY0v6zJNqGlj/EePcnMmIYRSwSdE++PGKurC0Tyi
-mAey5iGgwRcIYLxJ3Nm0H2VNJ8Tg0JOdWa5pfTE9Y8u2MrMyQVUwA/YkCnnodD22
-IdXyv3C8s8NgJZm2P3mbMKM9K3WSE1L+IDKvh9YLmzlJ1OqLfZFdP+guaQkO7rPN
-+jP//J7uV3CkcwXMzdx1N3is+TIHYZ8XNvbL8vp/ELqvgPQfGQRxO4A3zYbqjCau
-1I6Eil4Ao33T4bZgf9GspVyiJvWhqcJwnRprIcXRah9i26945Q7ixH9fNrlOLO5C
-96es0xznwfZs0Q1piSyBzQxbmUOSGTnshNy5tMDfg97Zi1DKDue36xOxLWQxupWK
-bcIQwP7ufEgnnpuWJZFmgA7849klfg3zCCdg9k77dbJ4EV8wxqWDHDFLJoOjMAGC
-0+9HzcaA2ti83pZ42+TxZd9Ni+KpkdL1MrmaN71WY/n8NikqTfUIaXkyE7GdJQjr
-vC5lgF+4ZXw2CKmGO+j8
-=jkYL
+iQIcBAEBAgAGBQJS/n9UAAoJELSic+t+oim9d1EP/0wfxsORjQ3RucJDw4zDMC9g
+SDF15r7PcGwFHyh7Sk/ODrLl/Ft3jIEz1lACS9j9vDuy1aA3gsSaM+7HEBYU3A22
+q4UYn0m5/cQoHcnLxdssZGu7F9bHnlRwfrYsl2T9Au1GkHRaj9/yJ9TtPIQ/dF7y
+Au5he8Rx03OfDkYV0GC0ip4JYcQpNrBcWlR/5Z6EfJTuV6kLb/JRfioK6DwPcByO
+Fdid2tiyXPNPCqKBa7K0lIA0L3anAKh7disjdzanKzn8uuKFYsHxxSx2pUMTWuB9
+4hQhCDzWG6pYw0muBdTESu6SpHw/96yrYjtZSWXSZmYMxrCrJDwVzenNlfx2A7oN
+TJRjIX4x7dchjhV8U0fQ5Ki3LLSblHzL8wI1jOQVEyO5JaAqP5i2iNhSbWLigfFr
+rhJj2Spqt23Qk0Yo2k0PIl3nsgcXQfF7wA5VBbFfWA1pCUcz+NqsWAzR4m4N08zo
+uGzy5bVQ8KFrmRNkolDGPaAhncRQbxdQHwP8YtlUH3QCrrZnr2JPtGS/UEjABITt
+q5yfsRkasjYYTXeHW9beNxuZ10vQ5BG0drxCaNR7lpBAnDWXVH+zcXgRowXiBiBQ
+o3XUgbIuaYKYbjkF2nFdRvIU5IIfdl5k2434t8GUniYxRtlWM5zNRdolKF5NGGiF
+QQPs+Pordpac0FbYZvpE
+=N+dW
 -----END PGP SIGNATURE-----
 
---g6DVDhPhk1bqxDrC--
+--ZgGN478A9hzzvyZc--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

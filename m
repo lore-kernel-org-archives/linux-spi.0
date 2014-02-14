@@ -1,59 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-mxs: Propagate the real error code on
- platform_get_irq() failure
-Date: Fri, 14 Feb 2014 20:40:55 +0000
-Message-ID: <20140214204055.GQ4451@sirena.org.uk>
-References: <1392347962-9835-1-git-send-email-festevam@gmail.com>
+Subject: Re: [PATCH] spi: bfin5xx: Remove unused last_transfer pointer in
+ bfin_spi_giveback()
+Date: Fri, 14 Feb 2014 20:25:50 +0000
+Message-ID: <20140214202550.GL4451@sirena.org.uk>
+References: <1391916334.20382.2.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ZgGN478A9hzzvyZc"
-Cc: marex-ynQEQJNshbs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="xtmLDbP6TiKhntQb"
+Cc: Sonic Zhang <sonic.zhang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>,
+	Steven Miao <realmz6-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Jiang, Scott" <Scott.Jiang-OyLXuOCK7orQT0dZR+AlfA@public.gmane.org>
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392347962-9835-1-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1391916334.20382.2.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---ZgGN478A9hzzvyZc
+--xtmLDbP6TiKhntQb
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 14, 2014 at 01:19:21AM -0200, Fabio Estevam wrote:
-> From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
->=20
-> No need to return a 'fake' return value on platform_get_irq() failure.
->=20
-> Just return the error code itself instead.
+On Sun, Feb 09, 2014 at 11:25:34AM +0800, Axel Lin wrote:
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 
 Applied, thanks.
 
---ZgGN478A9hzzvyZc
+--xtmLDbP6TiKhntQb
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS/n9UAAoJELSic+t+oim9d1EP/0wfxsORjQ3RucJDw4zDMC9g
-SDF15r7PcGwFHyh7Sk/ODrLl/Ft3jIEz1lACS9j9vDuy1aA3gsSaM+7HEBYU3A22
-q4UYn0m5/cQoHcnLxdssZGu7F9bHnlRwfrYsl2T9Au1GkHRaj9/yJ9TtPIQ/dF7y
-Au5he8Rx03OfDkYV0GC0ip4JYcQpNrBcWlR/5Z6EfJTuV6kLb/JRfioK6DwPcByO
-Fdid2tiyXPNPCqKBa7K0lIA0L3anAKh7disjdzanKzn8uuKFYsHxxSx2pUMTWuB9
-4hQhCDzWG6pYw0muBdTESu6SpHw/96yrYjtZSWXSZmYMxrCrJDwVzenNlfx2A7oN
-TJRjIX4x7dchjhV8U0fQ5Ki3LLSblHzL8wI1jOQVEyO5JaAqP5i2iNhSbWLigfFr
-rhJj2Spqt23Qk0Yo2k0PIl3nsgcXQfF7wA5VBbFfWA1pCUcz+NqsWAzR4m4N08zo
-uGzy5bVQ8KFrmRNkolDGPaAhncRQbxdQHwP8YtlUH3QCrrZnr2JPtGS/UEjABITt
-q5yfsRkasjYYTXeHW9beNxuZ10vQ5BG0drxCaNR7lpBAnDWXVH+zcXgRowXiBiBQ
-o3XUgbIuaYKYbjkF2nFdRvIU5IIfdl5k2434t8GUniYxRtlWM5zNRdolKF5NGGiF
-QQPs+Pordpac0FbYZvpE
-=N+dW
+iQIcBAEBAgAGBQJS/nvLAAoJELSic+t+oim9ohMQAIHPOrkvJ5KeytBpjVyHDFlZ
+i3c3A/EJTuwmXmGWgiyg8vQBLWNdk1apxfIv6FqS7w5EnbHZDnqnJROnWsq1XobT
+SX8IUcmPELwowMo7iSq/6h+r0hhZ92EBuJxEwyzSG96U6DemfgWzuZmF1FL2AUv+
+OBkMxK/SdEbnItrpBOUAAmswlIMWf53mYxlMw0E3pgjdZExIqYGTesfpIlTB+GLN
+i0IZY/vFck/mHU2Po3ODKNSU7BLghDhzsyrgrJWUTi0HQdRv6XVt/xJGvVJSK9yV
+e9DW00JfhVY5ZGR/jpj+ZUIOMGpx0AXiesNUFFMFdigho9dX0ZKZR4Ibrtrtq4O9
+7XAkbR3iMECTciIL74CpUdkdJcikyrZjywPCq4380cv5myV4P2qU4NY9IZmrhnwU
+o8j+sW3Da6Kf3oPs6cpTPb+Xh0k6bBZGdHy/7hKmjWqM+siVEoJ1V2/y70gXDXpz
+h50FQv6XTbFKfejHkarZvdTlLpPPKBFNr3Z0FrUGrL/qH4iQJ/QYWTplGfLaOPTD
+odyu+dHiCHrcI/Z75XjyRi/bOYf8nZrlTkhMWlpud9HuPogbLa8Q9yjr7xlLu6KX
+xyTpAlgITB8Lkf9gdf3Ho2kX/tyGqn0JU8VBHDf+GzqQUT+U0CZoM1RUMZUP1fcq
+MIRB5a2mgdKnXlk0/sZv
+=xYTc
 -----END PGP SIGNATURE-----
 
---ZgGN478A9hzzvyZc--
+--xtmLDbP6TiKhntQb--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,51 +1,58 @@
-From: "Dr.William Davies" <purchase-iWkfCuf1Dv8t08DiuWRmVZ/QNRX+jHPU@public.gmane.org>
-Subject: Re: Instructions to release your payment.
-Date: Fri, 14 Feb 2014 18:06:49 +0530
-Message-ID: <05850bfa675129882bc42edd957194c7__6218.51943801648$1392389460$gmane$org@127.0.0.1>
-Reply-To: williamdavies54-/E1597aS9LT10XsdtD+oqA@public.gmane.org
+From: Jean Delvare <jdelvare-l3A5Bk7waGM@public.gmane.org>
+Subject: Re: [PATCH] spi: Clean up probe and remove functions
+Date: Fri, 14 Feb 2014 19:22:09 +0100
+Message-ID: <1392402129.4365.51.camel@chaos.site>
+References: <20140213152841.390de00f@endymion.delvare>
+	 <20140214150341.GC4451@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: undisclosed-recipients:;
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140214150341.GC4451-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Attention
+Hi Mark,
 
-Sir,
+Le Friday 14 February 2014 =C3=A0 15:03 +0000, Mark Brown a =C3=A9crit =
+:
+> On Thu, Feb 13, 2014 at 03:28:41PM +0100, Jean Delvare wrote:
+> > While backporting 33cf00e5 ("spi: attach/detach SPI device to the A=
+CPI
+> > power domain"), I noticed that the code changes were suboptimal:
+> >=20
+> > * Why use &spi->dev when we have dev at hand?
+> >=20
+> > * After fixing the above, spi is used only once, so we don't really
+> >   need a local variable for it.
+>=20
+> I've applied this but I have to say it's a bit marginal as a cleanup =
+-
+> for example while we do only use the SPI device once it's not entirel=
+y
+> idiomatic to use to_spi_device() in the middle of the code rather tha=
+n
+> at the top of the function so it's a small speed bump to see that.
 
-Following an application brought, seeking the release of your due payment
-through British bank, I am directed to inform you that the application has
-been approved and Natwest bank of London has been mandated to make transfer
-of your payment to the bank account you will nominate. Please kindly reply
-for immediate release of your US$6.2 Million to you nominates account.
+I don't disagree. The rationale for the change is that I simply reverte=
+d
+to how the code was before 33cf00e5, assuming that the introduction of
+spi as a local variable was caused by it being used more than once. If
+you believe this was a good change on its own and would prefer to keep
+it that way, I could send a patch replacing this one and only changing
+&spi->dev to dev. Let me know.
 
-Sir, for the avoidance of doubts, reconfirm the following information to
-me to enable us forward same to Natwest bank to contact you for your
-payment.
+And yes, this is not the most groundbreaking patch either way,
+granted ;-)
 
-Name:
+--=20
+Jean Delvare
+Suse L3 Support
 
-Address:
-
-Tel/Fax No.:
-
-Nationality:
-
-Occupation:
-
-Date of birth: 
-
-As soon as I received the above information, I will forward them to
-Natwest bank to contact you for your approved payment. Please see in the
-attachment, letter I wrote to Natwest bank informing them of the
-transaction
-
-Yours faithfully
-
-Dr.William Davies
-Chairman,British Banking Regulatory Board.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

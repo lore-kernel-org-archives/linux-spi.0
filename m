@@ -1,73 +1,51 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: xilinx: Convert to let spi core validate bits_per_word
-Date: Fri, 14 Feb 2014 21:06:43 +0800
-Message-ID: <1392383203.31961.3.camel@phoenix>
+From: "Dr.William Davies" <purchase-iWkfCuf1Dv8t08DiuWRmVZ/QNRX+jHPU@public.gmane.org>
+Subject: Re: Instructions to release your payment.
+Date: Fri, 14 Feb 2014 18:06:49 +0530
+Message-ID: <05850bfa675129882bc42edd957194c7__6218.51943801648$1392389460$gmane$org@127.0.0.1>
+Reply-To: williamdavies54-/E1597aS9LT10XsdtD+oqA@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: undisclosed-recipients:;
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Set bits_per_word_mask so spi core will reject transfers that attempt to use
-an unsupported bits_per_word value.
+Attention
 
-spi_bitbang requires custom setup_transfer() to be defined if there is a
-custom txrx_bufs(). Thus keep the empty xilinx_spi_setup_transfer() function
-in the code.
+Sir,
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-xilinx.c | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
+Following an application brought, seeking the release of your due payment
+through British bank, I am directed to inform you that the application has
+been approved and Natwest bank of London has been mandated to make transfer
+of your payment to the bank account you will nominate. Please kindly reply
+for immediate release of your US$6.2 Million to you nominates account.
 
-diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
-index e6cd111..66dbefc 100644
---- a/drivers/spi/spi-xilinx.c
-+++ b/drivers/spi/spi-xilinx.c
-@@ -208,26 +208,11 @@ static void xilinx_spi_chipselect(struct spi_device *spi, int is_on)
- }
- 
- /* spi_bitbang requires custom setup_transfer() to be defined if there is a
-- * custom txrx_bufs(). We have nothing to setup here as the SPI IP block
-- * supports 8 or 16 bits per word which cannot be changed in software.
-- * SPI clock can't be changed in software either.
-- * Check for correct bits per word. Chip select delay calculations could be
-- * added here as soon as bitbang_work() can be made aware of the delay value.
-+ * custom txrx_bufs().
-  */
- static int xilinx_spi_setup_transfer(struct spi_device *spi,
- 		struct spi_transfer *t)
- {
--	struct xilinx_spi *xspi = spi_master_get_devdata(spi->master);
--	u8 bits_per_word;
--
--	bits_per_word = (t && t->bits_per_word)
--			 ? t->bits_per_word : spi->bits_per_word;
--	if (bits_per_word != xspi->bits_per_word) {
--		dev_err(&spi->dev, "%s, unsupported bits_per_word=%d\n",
--			__func__, bits_per_word);
--		return -EINVAL;
--	}
--
- 	return 0;
- }
- 
-@@ -406,6 +391,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
- 		xspi->write_fn = xspi_write32_be;
- 	}
- 
-+	master->bits_per_word_mask = SPI_BPW_MASK(bits_per_word);
- 	xspi->bits_per_word = bits_per_word;
- 	if (xspi->bits_per_word == 8) {
- 		xspi->tx_fn = xspi_tx8;
--- 
-1.8.1.2
+Sir, for the avoidance of doubts, reconfirm the following information to
+me to enable us forward same to Natwest bank to contact you for your
+payment.
 
+Name:
 
+Address:
 
+Tel/Fax No.:
+
+Nationality:
+
+Occupation:
+
+Date of birth: 
+
+As soon as I received the above information, I will forward them to
+Natwest bank to contact you for your approved payment. Please see in the
+attachment, letter I wrote to Natwest bank informing them of the
+transaction
+
+Yours faithfully
+
+Dr.William Davies
+Chairman,British Banking Regulatory Board.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,50 +1,47 @@
-From: "Li.Xiubo@freescale.com" <Li.Xiubo@freescale.com>
-Subject: RE: [PATCH v4 1/2] spi:fsl-dspi:convert to use regmap and
- big-endian supports
-Date: Fri, 14 Feb 2014 07:33:17 +0000
-Message-ID: <065acacc2f4f461cbd310eb54737a32e@DM2PR03MB509.namprd03.prod.outlook.com>
-References: <1392190146-18852-1-git-send-email-b44548@freescale.com>
+From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] spi: core: Validate lenght of the transfers in message
+Date: Fri, 14 Feb 2014 10:16:05 +0200
+Message-ID: <1392365765.12787.89.camel@iivanov-dev>
+References: <1392302806-17267-1-git-send-email-iivanov@mm-sol.com>
+	 <20140213212757.GM4524@book.gsilab.sittig.org>
+	 <20140214002627.GG28112@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Chao Fu <B44548@freescale.com>
-To: Chao Fu <B44548@freescale.com>, "linux-spi@vger.kernel.org"
- <linux-spi@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "broonie@kernel.org"
- <broonie@kernel.org>, "grant.likely@linaro.org" <grant.likely@linaro.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1392190146-18852-1-git-send-email-b44548@freescale.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140214002627.GG28112-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-
-
-> @@ -435,12 +441,20 @@ static const struct dev_pm_ops dspi_pm = {
->  	SET_SYSTEM_SLEEP_PM_OPS(dspi_suspend, dspi_resume)
->  };
+On Fri, 2014-02-14 at 00:26 +0000, Mark Brown wrote: 
+> On Thu, Feb 13, 2014 at 10:27:57PM +0100, Gerhard Sittig wrote:
+> > On Thu, Feb 13, 2014 at 16:46 +0200, Ivan T. Ivanov wrote:
 > 
-> +static struct regmap_config dspi_regmap_config = {
-> +	.reg_bits = 32,
-> +	.val_bits = 32,
-> +	.reg_stride = 4,
-> +	.max_register = 0x88,
-> +};
-> +
+> > > SPI transfer lenght should be a power-of-two multiple
+> > > of eight bits.
+> 
+> > Are you suggesting that an SPI transfer cannot consist of e.g.
+> > three bytes?  This would be surprising, and certainly would be
+> > rather wrong an assumption.  Am I missing/misunderstanding
+> > something?
+> 
+> The check is supposed to be verifying that the transfer is a whole
+> number of the current SPI word size as I understand it (not actually
+> looked at the change yet but that's where it came from, factored out of
+> a driver).
 
+Yes. Comment is not correct. Is this better?
 
-If needed, you should add the callbacks like:
-	.readable_reg,
-	.writeable_reg,
-	.volatile_reg,
+"SPI transfer length should be multiple of SPI word size, where SPI
+word size should be power-of-two multiple"
 
-Otherwise, it looks fine to me, for both patches:
-Reviewed-by: Xiubo Li <Li.Xiubo@freescale.com>
+Regards,
+Ivan
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

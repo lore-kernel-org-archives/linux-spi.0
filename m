@@ -1,33 +1,69 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: spi-imx: Propagate the real error code on platform_get_irq() failure
-Date: Fri, 14 Feb 2014 09:22:34 +0100
-Message-ID: <201402140922.34522.marex@denx.de>
-References: <1392347962-9835-1-git-send-email-festevam@gmail.com> <1392347962-9835-2-git-send-email-festevam@gmail.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: s3c24xx: Convert to let spi core validate bits_per_word
+Date: Fri, 14 Feb 2014 20:38:16 +0800
+Message-ID: <1392381496.31961.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392347962-9835-2-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Friday, February 14, 2014 at 04:19:22 AM, Fabio Estevam wrote:
-> From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> 
-> No need to return a 'fake' return value on platform_get_irq() failure.
-> 
-> Just return the error code itself instead.
-> 
-> Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Set bits_per_word_mask so spi core will reject transfers that attempt to use
+an unsupported bits_per_word value.
 
-Acked-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-s3c24xx.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-Best regards,
-Marek Vasut
+diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+index c20df45..a275445 100644
+--- a/drivers/spi/spi-s3c24xx.c
++++ b/drivers/spi/spi-s3c24xx.c
+@@ -122,25 +122,15 @@ static int s3c24xx_spi_update_state(struct spi_device *spi,
+ {
+ 	struct s3c24xx_spi *hw = to_hw(spi);
+ 	struct s3c24xx_spi_devstate *cs = spi->controller_state;
+-	unsigned int bpw;
+ 	unsigned int hz;
+ 	unsigned int div;
+ 	unsigned long clk;
+ 
+-	bpw = t ? t->bits_per_word : spi->bits_per_word;
+ 	hz  = t ? t->speed_hz : spi->max_speed_hz;
+ 
+-	if (!bpw)
+-		bpw = 8;
+-
+ 	if (!hz)
+ 		hz = spi->max_speed_hz;
+ 
+-	if (bpw != 8) {
+-		dev_err(&spi->dev, "invalid bits-per-word (%d)\n", bpw);
+-		return -EINVAL;
+-	}
+-
+ 	if (spi->mode != cs->mode) {
+ 		u8 spcon = SPCON_DEFAULT | S3C2410_SPCON_ENSCK;
+ 
+@@ -543,6 +533,7 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
+ 
+ 	master->num_chipselect = hw->pdata->num_cs;
+ 	master->bus_num = pdata->bus_num;
++	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 
+ 	/* setup the state for the bitbang driver */
+ 
+-- 
+1.8.1.2
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

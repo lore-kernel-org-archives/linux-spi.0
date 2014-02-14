@@ -1,64 +1,56 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Clean up probe and remove functions
-Date: Fri, 14 Feb 2014 15:03:41 +0000
-Message-ID: <20140214150341.GC4451@sirena.org.uk>
-References: <20140213152841.390de00f@endymion.delvare>
+Subject: Re: [PATCH] spi: s3c24xx: Convert to let spi core validate
+ bits_per_word
+Date: Fri, 14 Feb 2014 18:09:21 +0000
+Message-ID: <20140214180921.GF4451@sirena.org.uk>
+References: <1392381496.31961.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="8X7/QrJGcKSMr1RN"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Jean Delvare <jdelvare-l3A5Bk7waGM@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="udcq9yAoWb9A4FsZ"
+Cc: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140213152841.390de00f-R0o5gVi9kd7kN2dkZ6Wm7A@public.gmane.org>
+In-Reply-To: <1392381496.31961.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---8X7/QrJGcKSMr1RN
+--udcq9yAoWb9A4FsZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 13, 2014 at 03:28:41PM +0100, Jean Delvare wrote:
-> While backporting 33cf00e5 ("spi: attach/detach SPI device to the ACPI
-> power domain"), I noticed that the code changes were suboptimal:
->=20
-> * Why use &spi->dev when we have dev at hand?
->=20
-> * After fixing the above, spi is used only once, so we don't really
->   need a local variable for it.
+On Fri, Feb 14, 2014 at 08:38:16PM +0800, Axel Lin wrote:
+> Set bits_per_word_mask so spi core will reject transfers that attempt to use
+> an unsupported bits_per_word value.
 
-I've applied this but I have to say it's a bit marginal as a cleanup -
-for example while we do only use the SPI device once it's not entirely
-idiomatic to use to_spi_device() in the middle of the code rather than
-at the top of the function so it's a small speed bump to see that.
+Applied, thanks.
 
---8X7/QrJGcKSMr1RN
+--udcq9yAoWb9A4FsZ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS/jBKAAoJELSic+t+oim9nboP/0Flxx+z76Pv5CnZm46olauE
-vl5sdoO5xm+r1xzKHiVrU5uRNdt2dUhTAyPhRP6nD8j0pUFiPpW+CaJR2N9BEEV3
-gYxV81snPegicfVAYBo04ysqNgoN7upGKxHfm7Uq8cIJAfZAlZDjL2L9eoFmtVT3
-gUi/amGNwpHqizNROiEsJYAOe6DvQUPkCzSnv4LY/Hcf2bdsRgoJqwPhHKcZ5vIZ
-kESM576ogIzpnLu1N2GxM2WvCgs8ZAcKqheaIbsO5TvbkXPq4ADO2736v2nbjY53
-e4+5WpKT43bO0TZej4c8M2OZ6jHq25m8i/8d4Eo6M/vs1mLEcymQI1anYiYkM+Ls
-P6PY0nA9zOB6MIii3Y8k+SOosaZOZdEeD4P34PYQ88RXnuKlouUREWvqweZWvYPo
-AYEinmJ8Mg1Iwz5FxjdY2wHGYfppoTc8+Zy5VmqtcPhjcdReE3D4mDWYEFI7I0lN
-DuqREG5Fo4xfs6wDGZnW2BJnIj2Sxzaz2WescgaaBSbDG/X0yDI83+dx333UCr1a
-ch6kCcFQYSgedMCrTpVMod39+euVFd63e9ZlccQLZFeKvsCAWb3z+MO/5reYwAhU
-k/0PWEpux0snT0k2vjzHRmHj4wUqzwvINCcQ4M36xMEyAZhYwGE3QZgvlA4P0JF1
-zlpg+KCVA7HjSdnWGNfD
-=cog1
+iQIcBAEBAgAGBQJS/lvIAAoJELSic+t+oim9CpcP/jCZhFEOis8emNTY142k3XAz
+TNcD+QcwMHkcu1b2rBxrCzWfj81Dw0VznOmmKedVB4uTGqoYDRFuTEZ9zoGDJjRx
+tVhepCvZrWMbTOxarEif/p5j1YUNJ9Mv3oe9qI+PdmNL9Xh4Kj8I1tNXzdUytmfj
+Conps7LSW6zI4fkyyHyQH69VU700pQhEjWWDMvz3GYzE4rGYABiOC6rgOABRvquh
+rtkNgt8tC0l3SwpPmiCuI723G9VddDAFUFbH2JimxQa2chCHai7qwoafUPbILrcH
+miqZPU7bosdJa7TRXDvXbUwCY++BnV/Dt4IE2HW03/RPNKam08yqF0O1HkgE2YvY
+iCfsifrx30kRGHT0Pee4vvl3ZqoGzBAXzidCkUfDkA6ZKnQ712+P7ozbRZOzZUSA
+ecdtaY3OSSOurPcGiOvILghhpwUyZoTN3sXLHO2ZE7dZsWdYJDrrkxtok5q+Pcia
+rMyvGzQ7yetCHvNpacm6hyGoDWCfROqXxo6cALGga4YAJxbx9O8DllCvFzTO9CTh
+koaSgmoqzcbb4LfrNcyV4qNjTohLjtgWmI6Id+sQ7L6thDACwQVFmLb1C3UfOwOr
+k8ULBVTa0hrA4Wv/Z+EIi9eg9Hr9J/cONT+bziBCMAaAyo6LetN4Iau0vXi5DJwQ
+GsLNF5Myf9s6TaIkt0Pk
+=ZuEJ
 -----END PGP SIGNATURE-----
 
---8X7/QrJGcKSMr1RN--
+--udcq9yAoWb9A4FsZ--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,61 +1,53 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: fsl-dspi: Fix getting correct address for master
-Date: Fri, 14 Feb 2014 12:49:12 +0800
-Message-ID: <1392353352.19487.1.camel@phoenix>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH 1/1] spi/s3c64xx: Trivial cleanup in header file
+Date: Fri, 14 Feb 2014 12:26:17 +0530
+Message-ID: <1392360977-21183-1-git-send-email-sachin.kamat@linaro.org>
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Current code set platform drvdata to dspi. However, the code in dspi_suspend()
-and dspi_resume() assumes the drvdata is the address of master.
-Fix it by setting platform drvdata to master.
+Commit 436d42c61c3e ("ARM: samsung: move platform_data definitions")
+moved the files to the current location but forgot to remove the pointer
+to its previous location. Clean it up. While at it also change the header
+file protection macros appropriately.
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/platform_data/spi-s3c64xx.h |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index ec79f72..a253920 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -420,7 +420,6 @@ static int dspi_suspend(struct device *dev)
+diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
+index 8447f634c7f5..d3889b98a1a1 100644
+--- a/include/linux/platform_data/spi-s3c64xx.h
++++ b/include/linux/platform_data/spi-s3c64xx.h
+@@ -1,5 +1,4 @@
+-/* linux/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
+- *
++/*
+  * Copyright (C) 2009 Samsung Electronics Ltd.
+  *	Jaswinder Singh <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+  *
+@@ -8,8 +7,8 @@
+  * published by the Free Software Foundation.
+  */
  
- static int dspi_resume(struct device *dev)
- {
--
- 	struct spi_master *master = dev_get_drvdata(dev);
- 	struct fsl_dspi *dspi = spi_master_get_devdata(master);
+-#ifndef __S3C64XX_PLAT_SPI_H
+-#define __S3C64XX_PLAT_SPI_H
++#ifndef __SPI_S3C64XX_H
++#define __SPI_S3C64XX_H
  
-@@ -504,7 +503,7 @@ static int dspi_probe(struct platform_device *pdev)
- 	clk_prepare_enable(dspi->clk);
+ #include <linux/dmaengine.h>
  
- 	init_waitqueue_head(&dspi->waitq);
--	platform_set_drvdata(pdev, dspi);
-+	platform_set_drvdata(pdev, master);
- 
- 	ret = spi_bitbang_start(&dspi->bitbang);
- 	if (ret != 0) {
-@@ -525,7 +524,8 @@ out_master_put:
- 
- static int dspi_remove(struct platform_device *pdev)
- {
--	struct fsl_dspi *dspi = platform_get_drvdata(pdev);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct fsl_dspi *dspi = spi_master_get_devdata(master);
- 
- 	/* Disconnect from the SPI framework */
- 	spi_bitbang_stop(&dspi->bitbang);
+@@ -68,4 +67,4 @@ extern int s3c64xx_spi2_cfg_gpio(void);
+ extern struct s3c64xx_spi_info s3c64xx_spi0_pdata;
+ extern struct s3c64xx_spi_info s3c64xx_spi1_pdata;
+ extern struct s3c64xx_spi_info s3c64xx_spi2_pdata;
+-#endif /* __S3C64XX_PLAT_SPI_H */
++#endif /*__SPI_S3C64XX_H */
 -- 
-1.8.1.2
-
-
+1.7.9.5
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

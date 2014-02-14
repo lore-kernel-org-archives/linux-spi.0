@@ -1,57 +1,54 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: s3c24xx: Convert to let spi core validate
- bits_per_word
-Date: Fri, 14 Feb 2014 18:09:21 +0000
-Message-ID: <20140214180921.GF4451@sirena.org.uk>
-References: <1392381496.31961.1.camel@phoenix>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: core: Validate lenght of the transfers in message
+Date: Fri, 14 Feb 2014 15:06:40 +0000
+Message-ID: <20140214150640.GE4451@sirena.org.uk>
+References: <1392302806-17267-1-git-send-email-iivanov@mm-sol.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="udcq9yAoWb9A4FsZ"
-Cc: Ben Dooks <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
-	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="KlAEzMkarCnErv5Q"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1392381496.31961.1.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1392302806-17267-1-git-send-email-iivanov@mm-sol.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---udcq9yAoWb9A4FsZ
+--KlAEzMkarCnErv5Q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Feb 14, 2014 at 08:38:16PM +0800, Axel Lin wrote:
-> Set bits_per_word_mask so spi core will reject transfers that attempt to use
-> an unsupported bits_per_word value.
+On Thu, Feb 13, 2014 at 04:46:46PM +0200, Ivan T. Ivanov wrote:
 
-Applied, thanks.
+> +		/* No partial transfers accepted */
+> +		if (!n_words || xfer->len & (w_size - 1))
+> +			return -EINVAL;
 
---udcq9yAoWb9A4FsZ
+Please write this using % rather than the & - it's a lot clearer what
+it's checking for, I had to think what the above meant.  Hopefully the
+compiler will make it equally fast either way.
+
+--KlAEzMkarCnErv5Q
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS/lvIAAoJELSic+t+oim9CpcP/jCZhFEOis8emNTY142k3XAz
-TNcD+QcwMHkcu1b2rBxrCzWfj81Dw0VznOmmKedVB4uTGqoYDRFuTEZ9zoGDJjRx
-tVhepCvZrWMbTOxarEif/p5j1YUNJ9Mv3oe9qI+PdmNL9Xh4Kj8I1tNXzdUytmfj
-Conps7LSW6zI4fkyyHyQH69VU700pQhEjWWDMvz3GYzE4rGYABiOC6rgOABRvquh
-rtkNgt8tC0l3SwpPmiCuI723G9VddDAFUFbH2JimxQa2chCHai7qwoafUPbILrcH
-miqZPU7bosdJa7TRXDvXbUwCY++BnV/Dt4IE2HW03/RPNKam08yqF0O1HkgE2YvY
-iCfsifrx30kRGHT0Pee4vvl3ZqoGzBAXzidCkUfDkA6ZKnQ712+P7ozbRZOzZUSA
-ecdtaY3OSSOurPcGiOvILghhpwUyZoTN3sXLHO2ZE7dZsWdYJDrrkxtok5q+Pcia
-rMyvGzQ7yetCHvNpacm6hyGoDWCfROqXxo6cALGga4YAJxbx9O8DllCvFzTO9CTh
-koaSgmoqzcbb4LfrNcyV4qNjTohLjtgWmI6Id+sQ7L6thDACwQVFmLb1C3UfOwOr
-k8ULBVTa0hrA4Wv/Z+EIi9eg9Hr9J/cONT+bziBCMAaAyo6LetN4Iau0vXi5DJwQ
-GsLNF5Myf9s6TaIkt0Pk
-=ZuEJ
+iQIcBAEBAgAGBQJS/jD8AAoJELSic+t+oim9xJoQAISEKUjUtcLd10+GOmF/+rM3
+bGtog4t0fzy37ZBejdK7Kn9f5j2RLDWlJsMfMw00ytFVdsqq00VsE+dto5hLePCT
+iI7HiCcVR0/5uh8/egvewOjODzstMvJrFNdiI50AERsXxMzl+fzNoimD2v0qflcF
+kmaTOdh7nZ8owZfB9kCQQZt+5HzfcBcm35JHLYjjNB8PDahC78xP1548cgyxBTsu
+HJ0rQWAhpEBpwHghcRbspurpbOjAZlgrbRsfpwS4e1NZiH6KzRhawcEjSxmFYhUZ
+ApzyIzc+6sMK+GTaMAP7x1ypxSHfSfPL8jtQfsB7WWxsGcY4Z8wiofMyVp5tFesL
+VZGtj3L6kbgN9AflEDddnX9V0RV9pDIKWEWarRcizZv16o9NIse0tYIwYiA3lDSS
+p65UkwoLvqIwWNFIQEBeidxNYS010n2OYM5tB4CO51P41+wHOa1ZwSyQ90j3DKfG
+pfsjk8sO9Iu3Us41Hv45IvJju3AJj+Lb+DOeLZNrj48MaInw/sMZr4dLtmhuU9jU
+7DfyBHrSL79U1chTzl8XAqWsbzZlcU/mqjdAfyiGFJ7AzWUrTIy8YjESgPvVy+th
+ivlB0b4A6xPeIgweb/g/Qy3ZzSMYLvQrds10+M2Oxey8iSy2hoL/TPKQAhCkv+7M
+ebApivjPbZCuHX5gG015
+=hexG
 -----END PGP SIGNATURE-----
 
---udcq9yAoWb9A4FsZ--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--KlAEzMkarCnErv5Q--

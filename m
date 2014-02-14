@@ -1,8 +1,8 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: spi-mxs: Propagate the real error code on platform_get_irq() failure
-Date: Fri, 14 Feb 2014 09:22:25 +0100
-Message-ID: <201402140922.25616.marex@denx.de>
-References: <1392347962-9835-1-git-send-email-festevam@gmail.com>
+Subject: Re: [PATCH 2/2] spi: spi-imx: Propagate the real error code on platform_get_irq() failure
+Date: Fri, 14 Feb 2014 09:22:34 +0100
+Message-ID: <201402140922.34522.marex@denx.de>
+References: <1392347962-9835-1-git-send-email-festevam@gmail.com> <1392347962-9835-2-git-send-email-festevam@gmail.com>
 Mime-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
@@ -11,11 +11,11 @@ Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM
 	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392347962-9835-1-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1392347962-9835-2-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Friday, February 14, 2014 at 04:19:21 AM, Fabio Estevam wrote:
+On Friday, February 14, 2014 at 04:19:22 AM, Fabio Estevam wrote:
 > From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 > 
 > No need to return a 'fake' return value on platform_get_irq() failure.

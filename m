@@ -1,55 +1,50 @@
-From: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH 1/1] spi/s3c64xx: Trivial cleanup in header file
-Date: Fri, 14 Feb 2014 12:26:17 +0530
-Message-ID: <1392360977-21183-1-git-send-email-sachin.kamat@linaro.org>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: "Li.Xiubo@freescale.com" <Li.Xiubo@freescale.com>
+Subject: RE: [PATCH v4 1/2] spi:fsl-dspi:convert to use regmap and
+ big-endian supports
+Date: Fri, 14 Feb 2014 07:33:17 +0000
+Message-ID: <065acacc2f4f461cbd310eb54737a32e@DM2PR03MB509.namprd03.prod.outlook.com>
+References: <1392190146-18852-1-git-send-email-b44548@freescale.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Chao Fu <B44548@freescale.com>
+To: Chao Fu <B44548@freescale.com>, "linux-spi@vger.kernel.org"
+ <linux-spi@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "broonie@kernel.org"
+ <broonie@kernel.org>, "grant.likely@linaro.org" <grant.likely@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1392190146-18852-1-git-send-email-b44548@freescale.com>
+Content-Language: en-US
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Commit 436d42c61c3e ("ARM: samsung: move platform_data definitions")
-moved the files to the current location but forgot to remove the pointer
-to its previous location. Clean it up. While at it also change the header
-file protection macros appropriately.
 
-Signed-off-by: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- include/linux/platform_data/spi-s3c64xx.h |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/platform_data/spi-s3c64xx.h b/include/linux/platform_data/spi-s3c64xx.h
-index 8447f634c7f5..d3889b98a1a1 100644
---- a/include/linux/platform_data/spi-s3c64xx.h
-+++ b/include/linux/platform_data/spi-s3c64xx.h
-@@ -1,5 +1,4 @@
--/* linux/arch/arm/plat-samsung/include/plat/s3c64xx-spi.h
-- *
-+/*
-  * Copyright (C) 2009 Samsung Electronics Ltd.
-  *	Jaswinder Singh <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-  *
-@@ -8,8 +7,8 @@
-  * published by the Free Software Foundation.
-  */
- 
--#ifndef __S3C64XX_PLAT_SPI_H
--#define __S3C64XX_PLAT_SPI_H
-+#ifndef __SPI_S3C64XX_H
-+#define __SPI_S3C64XX_H
- 
- #include <linux/dmaengine.h>
- 
-@@ -68,4 +67,4 @@ extern int s3c64xx_spi2_cfg_gpio(void);
- extern struct s3c64xx_spi_info s3c64xx_spi0_pdata;
- extern struct s3c64xx_spi_info s3c64xx_spi1_pdata;
- extern struct s3c64xx_spi_info s3c64xx_spi2_pdata;
--#endif /* __S3C64XX_PLAT_SPI_H */
-+#endif /*__SPI_S3C64XX_H */
--- 
-1.7.9.5
+> @@ -435,12 +441,20 @@ static const struct dev_pm_ops dspi_pm = {
+>  	SET_SYSTEM_SLEEP_PM_OPS(dspi_suspend, dspi_resume)
+>  };
+> 
+> +static struct regmap_config dspi_regmap_config = {
+> +	.reg_bits = 32,
+> +	.val_bits = 32,
+> +	.reg_stride = 4,
+> +	.max_register = 0x88,
+> +};
+> +
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+If needed, you should add the callbacks like:
+	.readable_reg,
+	.writeable_reg,
+	.volatile_reg,
+
+Otherwise, it looks fine to me, for both patches:
+Reviewed-by: Xiubo Li <Li.Xiubo@freescale.com>

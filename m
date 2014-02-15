@@ -1,61 +1,87 @@
-From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v2] spi: core: Validate lenght of the transfers in message
-Date: Sat, 15 Feb 2014 08:09:26 +0200
-Message-ID: <1392444566-23605-1-git-send-email-iivanov@mm-sol.com>
-Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: omap-uwire: Convert to use bits_per_word_mask
+Date: Sat, 15 Feb 2014 14:26:21 +0800
+Message-ID: <1392445581.32256.1.camel@phoenix>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Imre Deak <imre.deak-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Set bits_per_word_mask so spi core will reject transfers that attempt to use
+an unsupported bits_per_word value.
 
-SPI transfer lenght should be a power-of-two multiple
-of eight bits.
-
-Signed-off-by: Ivan T. Ivanov <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/spi/spi-omap-uwire.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index d0b28bb..9bed365 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1617,6 +1617,7 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
+index 462ddd4..95cc694 100644
+--- a/drivers/spi/spi-omap-uwire.c
++++ b/drivers/spi/spi-omap-uwire.c
+@@ -99,7 +99,6 @@ struct uwire_spi {
+ };
+ 
+ struct uwire_state {
+-	unsigned	bits_per_word;
+ 	unsigned	div1_idx;
+ };
+ 
+@@ -210,9 +209,8 @@ static void uwire_chipselect(struct spi_device *spi, int value)
+ 
+ static int uwire_txrx(struct spi_device *spi, struct spi_transfer *t)
  {
- 	struct spi_master *master = spi->master;
- 	struct spi_transfer *xfer;
-+	int w_size, n_words;
+-	struct uwire_state *ust = spi->controller_state;
+ 	unsigned	len = t->len;
+-	unsigned	bits = ust->bits_per_word;
++	unsigned	bits = t->bits_per_word ? : spi->bits_per_word;
+ 	unsigned	bytes;
+ 	u16		val, w;
+ 	int		status = 0;
+@@ -322,7 +320,6 @@ static int uwire_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
+ 	struct uwire_state	*ust = spi->controller_state;
+ 	struct uwire_spi	*uwire;
+ 	unsigned		flags = 0;
+-	unsigned		bits;
+ 	unsigned		hz;
+ 	unsigned long		rate;
+ 	int			div1_idx;
+@@ -332,17 +329,6 @@ static int uwire_setup_transfer(struct spi_device *spi, struct spi_transfer *t)
  
- 	if (list_empty(&message->transfers))
- 		return -EINVAL;
-@@ -1668,6 +1669,22 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 				return -EINVAL;
- 		}
+ 	uwire = spi_master_get_devdata(spi->master);
  
-+		/*
-+		 * SPI transfer length should be multiple of SPI word size
-+		 * where SPI word size should be power-of-two multiple
-+		 */
-+		if (xfer->bits_per_word <= 8)
-+			w_size = 1;
-+		else if (xfer->bits_per_word <= 16)
-+			w_size = 2;
-+		else
-+			w_size = 4;
-+
-+		n_words = xfer->len / w_size;
-+		/* No partial transfers accepted */
-+		if (!n_words || xfer->len % xfer->bits_per_word)
-+			return -EINVAL;
-+
- 		if (xfer->speed_hz && master->min_speed_hz &&
- 		    xfer->speed_hz < master->min_speed_hz)
- 			return -EINVAL;
+-	bits = spi->bits_per_word;
+-	if (t != NULL && t->bits_per_word)
+-		bits = t->bits_per_word;
+-
+-	if (bits > 16) {
+-		pr_debug("%s: wordsize %d?\n", dev_name(&spi->dev), bits);
+-		status = -ENODEV;
+-		goto done;
+-	}
+-	ust->bits_per_word = bits;
+-
+ 	/* mode 0..3, clock inverted separately;
+ 	 * standard nCS signaling;
+ 	 * don't treat DI=high as "not ready"
+@@ -509,7 +495,7 @@ static int uwire_probe(struct platform_device *pdev)
+ 
+ 	/* the spi->mode bits understood by this driver: */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+-
++	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
+ 	master->flags = SPI_MASTER_HALF_DUPLEX;
+ 
+ 	master->bus_num = 2;	/* "official" */
 -- 
-1.7.9.5
+1.8.1.2
+
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

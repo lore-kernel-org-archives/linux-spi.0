@@ -1,61 +1,77 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: spi-imx: Propagate the real error code on
- platform_get_irq() failure
-Date: Fri, 14 Feb 2014 20:41:49 +0000
-Message-ID: <20140214204149.GR4451@sirena.org.uk>
-References: <1392347962-9835-1-git-send-email-festevam@gmail.com>
- <1392347962-9835-2-git-send-email-festevam@gmail.com>
+From: Wolfram Sang <wsa@the-dreams.de>
+Subject: Re: [PATCH V2 11/17] i2c: nomadik: Convert to devm functions
+Date: Sat, 15 Feb 2014 16:03:45 +0100
+Message-ID: <20140215150345.GD2579@katana>
+References: <1392300547-23365-1-git-send-email-ulf.hansson@linaro.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4NNqsQ/a67jpuySk"
-Cc: marex-ynQEQJNshbs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="UfEAyuTBtIjiZzX6"
+Cc: Russell King <linux@arm.linux.org.uk>,
+	linux-arm-kernel@lists.infradead.org,
+	Alessandro Rubini <rubini@unipv.it>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Chris Ball <chris@printf.net>, Mark Brown <broonie@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-mmc@vger.kernel.org
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-mmc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1392347962-9835-2-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1392300547-23365-1-git-send-email-ulf.hansson@linaro.org>
+Sender: linux-mmc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---4NNqsQ/a67jpuySk
+--UfEAyuTBtIjiZzX6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 14, 2014 at 01:19:22AM -0200, Fabio Estevam wrote:
-> From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+On Thu, Feb 13, 2014 at 03:09:02PM +0100, Ulf Hansson wrote:
+> Use devm_* functions to simplify code and error handling.
 >=20
-> No need to return a 'fake' return value on platform_get_irq() failure.
+> Cc: Alessandro Rubini <rubini@unipv.it>
+> Cc: Linus Walleij <linus.walleij@linaro.org>
+> Cc: Wolfram Sang <wsa@the-dreams.de>
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> ---
 >=20
-> Just return the error code itself instead.
+> Changes in v2:
+> 	Rebased on top of latest i2c-nomadik branch.
 
-Applied, thanks.
+Since this depends on Linus' patch already, I think it would be cleaner
+if I pick this kinda unrelated (but wanted) devm patch, and ack the
+PM stuff. If this for some reason makes things more complicated, I can
+also simply ack this one.
 
---4NNqsQ/a67jpuySk
+> -	dev->virtbase =3D ioremap(adev->res.start, resource_size(&adev->res));
+> +	dev->virtbase =3D devm_ioremap(&adev->dev, adev->res.start,
+> +				resource_size(&adev->res));
+>  	if (!dev->virtbase) {
+>  		ret =3D -ENOMEM;
+
+IS_ERR()!
+
+
+--UfEAyuTBtIjiZzX6
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Version: GnuPG v1.4.15 (GNU/Linux)
 
-iQIcBAEBAgAGBQJS/n+KAAoJELSic+t+oim9u54P/iYCmcw09MQPAKC8Dw+i07eY
-/hQh5M9M5dXOtqeHbPWD8BD6iS5xSfie6RL6BGm1RVawOryRKixrM22MpoKbD+fl
-XJlyf3Z1hN6o7hJ3Ol2PgiMhnyFAUPaTJjJ2JGdj4QwuDjvqX8NW68iRJmz2yqfE
-dejj255ZqvK/ji8bFjiYDd1VlKdOaUY4LCcTL5Ymh47YDRmrJRG433WN+AhptpoW
-jAPP67b7tCUukKv5V5B346FNvQ273znQ0y9lA5am+2Bxonxslzl3+gnghRezcAQz
-xQVxlSM5uvhv9rLNvcz4Zsvyh3MM3sHHWrGuhMRRZB/CqEsYg/sJUlstkH8Mjn3/
-sAugdQW9WczDf1d2VwRTL1arC6ITYJPA9+fpPupme4HZvR77ia7lpFMNda1nWM2X
-cmXshvqNpnHzJhowj8MD6eFA01mUHsjuTOphZL8K9krYQ49/SYIBm4sXoq6yRsC3
-uasWhJ4QVz1F0Q9Hu6aFBBPIjwtl5oHKgV1fnFEzbXw5vcdzsB67xpnxGLCq3Dfz
-KXCZ8Lupur8fnoQDn+rUODktSAYXVXCjlayEUc83xBX560BizM6p2rh44Ab7IIkI
-SIAUl/fPi/kcCX+UdV7oc+VpcZcYbV28jivFp5wXLrn+Puei0ikNTCw0bKy4ZRUy
-GM9u/1iLHlhbvyJ/1V/Q
-=Kmtc
+iQIcBAEBAgAGBQJS/4HRAAoJEBQN5MwUoCm2hX0P/1ygDFrGGiJ9tcvMf+SOs7L5
+UcIYvKRC3pl4MRXiYiPaMnO7fCltAd4RRcyfwWL1qSptFhQJ261nSWjPyx/md2mI
+0KG8F/zDaDd1DTRkWRf/CrI4Te6mjUklG48sBab/c+lqMu2uQLqHtWsAMtUGg/C4
+O+FqbSv8jakTXOmo3+y6siJCfyf/3GdjzibcDKCRAcZ1X3hnUYjqJEhSLyF60u3M
+ZOrhCjDRyrX5xG2YOYEa8wQ1noiymwRFf2QGvLUPWEbFI0HS7ubNfgaRm9boiBRO
+uf6xGrfuLWW06247l6pkaBiAB0rEpKZCDgtWeiMHmnYXv8h5IdK6ZsFowPOFscK9
+5aKrVxvHZrwxeXD9jd68k55r4GX8RlTooL5NWcGswsAw/bKoG8aEVkxr581OTxVo
+CJA4ewILDlolS+WPUHB+OpWMXLJP2Vkswq7RINLWOeo+k1RvcaXoR7rMWFZH/Zd4
+lkMtx6co/qBfC9wv45iOwRxgk7E/RYW6e8CKhvy7qjwPsHD0+09gL0VMJGuGfaKP
+i7c82YPf0SN3WKy8IrpUb5VyVwcwYkj5vQFB0AJJ8vn553MTONPxB8jauSAAEwWT
+Q50DzHsKvnYZWdJPrmp4ODEEDX7yy4LluUu60l88xzr0eJ4Zziey61LiHh/lH0MT
+MA3CUAAsiL1MXGLZ0lCj
+=6Yuc
 -----END PGP SIGNATURE-----
 
---4NNqsQ/a67jpuySk--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--UfEAyuTBtIjiZzX6--

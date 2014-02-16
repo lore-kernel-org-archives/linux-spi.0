@@ -1,86 +1,64 @@
-From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v2] spi: core: Validate lenght of the transfers in message
-Date: Sun, 16 Feb 2014 15:25:12 +0100
-Message-ID: <20140216142512.GR4524@book.gsilab.sittig.org>
-References: <1392444566-23605-1-git-send-email-iivanov@mm-sol.com>
+From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Subject: Re: [PATCH V2 11/17] i2c: nomadik: Convert to devm functions
+Date: Sun, 16 Feb 2014 18:02:01 +0100
+Message-ID: <20140216170201.GA2831@katana>
+References: <1392300547-23365-1-git-send-email-ulf.hansson@linaro.org>
+ <20140215150345.GD2579@katana>
+ <CAPDyKFrt6QJVSypP5iD_oVxRUvNhzxGcbZ703zR1K8gwJ5uCeQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-mmc <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392444566-23605-1-git-send-email-iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-On Sat, Feb 15, 2014 at 08:09 +0200, Ivan T. Ivanov wrote:
-> 
-> From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-> 
-> SPI transfer lenght should be a power-of-two multiple
-> of eight bits.
-
-Please re-check for "lenght" typos in subjects and commit logs
-(code comments appear to be correct already).
+In-Reply-To: <CAPDyKFrt6QJVSypP5iD_oVxRUvNhzxGcbZ703zR1K8gwJ5uCeQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 
-The commit message still confuses me.  You don't check that the
-length of an SPI transfer has a power-of-two length in bytes.
-
-Instead what the check implements is IIUC
-- pad "odd" bits-per-word settings before the check to full 1/2/4
-  byte length specs (this is the power-of-two thing)
-- the total length of the SPI transfer cannot be empty (which I'd
-  consider an optimization, not a violation, and may need a
-  separate discussion)
-- the total length of the SPI transfer must be such that each
-  "word" must be provided within a full 1/2/4 byte entity, with
-  padding bits if the bits-per-word is "odd"
-
-Is this a misunderstanding on my side?  A terminology thing?  To
-me, the "SPI transfer" is the total payload and may have any
-arbitrary length.  What you check for is a constraint on the
-transfer's length derived from or based on the "word length"
-('word' in SPI context).
-
-So the code may be appropriate, yet the description may need an
-update, to not have the next person ask the same questions again.
-
-> @@ -1668,6 +1669,22 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
->  				return -EINVAL;
->  		}
->  
-> +		/*
-> +		 * SPI transfer length should be multiple of SPI word size
-> +		 * where SPI word size should be power-of-two multiple
-> +		 */
-> +		if (xfer->bits_per_word <= 8)
-> +			w_size = 1;
-> +		else if (xfer->bits_per_word <= 16)
-> +			w_size = 2;
-> +		else
-> +			w_size = 4;
-> +
-> +		n_words = xfer->len / w_size;
-> +		/* No partial transfers accepted */
-> +		if (!n_words || xfer->len % xfer->bits_per_word)
-> +			return -EINVAL;
-> +
->  		if (xfer->speed_hz && master->min_speed_hz &&
->  		    xfer->speed_hz < master->min_speed_hz)
->  			return -EINVAL;
-
-[ just left the code here for comparison with the above description ]
+--HlL+5n6rz5pIUxbD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
 
-virtually yours
-Gerhard Sittig
--- 
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> Would a way forward be to let you carry all the patches through your
+> tree? I believe all but patch 17 can be safely merged. It is only this
+> one that depends on the changes in the amba bus, so we can put this
+> one on hold for a while.
+
+I'd favour this. Will do this next week unless somebody objects.
+
+
+--HlL+5n6rz5pIUxbD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.15 (GNU/Linux)
+
+iQIbBAEBAgAGBQJTAO8JAAoJEBQN5MwUoCm2ncEP9RSXythepEDVP+IEvvdsG2ZV
+1u4skawn7w050umqejqGs/9hEyoE1GO8CSIDoY5TetLAdhTAXAllusLUyh5jb7B+
+hVbcl5QuGahz9RETA3D8uKr71PdMFpUJFnO+KJvnrFGCbjqWC+ixmN7eHtIBDGl9
+dPskR69fqmMu3p/FxXcGfB2frGxS04ZVzdhHKLp92IVyIx9m1pj/fkflatsGligv
+/gLgSV1MphonCqnfdlCo1wvQ69nmd2u8v1C8nbWQIGoRBWrYCZ8DbkHyjM/MBhR4
+3bfg3ttHJKrFklhdOIpxmoM3nih0Ms8h/gLPAuUyOHkfhdtWHne2Z9POAI6bc2w3
+Cs2omPqr0Ay/el717koJNh508wjeo0zMVdLuV1szAp/G7HIGDAnCOAYP2vYhIW3e
+5TbjSn5bHNkjNf7JXXB0pQw2uVUaZ+HPmJg35oRNrsvmYnFD8ZoRLh93aQaj7K22
+O3UwcqfW3WIMKSU2R+GbhHYvmPA6vMZ7PvWdNHbwmoxKNEZ3ZS/w6x4H7ALm8b8D
+OmgGHi2U9Dd0FcevTPLdFguZw4I+66AyvpY7VBuVHdxJwL+nzILY2IYd2xzq1eCA
+eS52sf07KR6yVnxB7C4RBtq08rahc00jOkjidYPLwQKBTlshtnek9o5qqkVViC0z
+oFq2/lpUkYjUtikhDU0=
+=NiiC
+-----END PGP SIGNATURE-----
+
+--HlL+5n6rz5pIUxbD--

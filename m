@@ -1,75 +1,36 @@
-From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH V2 11/17] i2c: nomadik: Convert to devm functions
-Date: Sun, 16 Feb 2014 14:44:07 +0100
-Message-ID: <CAPDyKFrt6QJVSypP5iD_oVxRUvNhzxGcbZ703zR1K8gwJ5uCeQ@mail.gmail.com>
-References: <1392300547-23365-1-git-send-email-ulf.hansson@linaro.org>
-	<20140215150345.GD2579@katana>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH] spi: mpc512x-psc: Remove redundant code to get bus_num
+ from DT
+Date: Sun, 16 Feb 2014 15:04:31 +0100
+Message-ID: <20140216140430.GQ4524@book.gsilab.sittig.org>
+References: <1392518598.18192.3.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-mmc <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140215150345.GD2579@katana>
+Content-Disposition: inline
+In-Reply-To: <1392518598.18192.3.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 15 February 2014 16:03, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org> wrote:
-> On Thu, Feb 13, 2014 at 03:09:02PM +0100, Ulf Hansson wrote:
->> Use devm_* functions to simplify code and error handling.
->>
->> Cc: Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>
->> Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->> Cc: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
->> Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->> ---
->>
->> Changes in v2:
->>       Rebased on top of latest i2c-nomadik branch.
->
-> Since this depends on Linus' patch already, I think it would be cleaner
-> if I pick this kinda unrelated (but wanted) devm patch, and ack the
-> PM stuff. If this for some reason makes things more complicated, I can
-> also simply ack this one.
+On Sun, Feb 16, 2014 at 10:43 +0800, Axel Lin wrote:
+> 
+> For DT case, spi core will call of_alias_get_id() and set master->bus_num if it
+> was not set.
+> 
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 
-I think we will end up having merge conflicts, especially for the
-changes in the probe function if we decide to split it.
+Tested-by: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
 
-Would a way forward be to let you carry all the patches through your
-tree? I believe all but patch 17 can be safely merged. It is only this
-one that depends on the changes in the amba bus, so we can put this
-one on hold for a while.
 
-Another option would be if you drop Linus' patch from you branch and
-let him collect all the patches in a pull request instead?
-
-I happy with whatever we thinks are easiest. :-)
-
->
->> -     dev->virtbase = ioremap(adev->res.start, resource_size(&adev->res));
->> +     dev->virtbase = devm_ioremap(&adev->dev, adev->res.start,
->> +                             resource_size(&adev->res));
->>       if (!dev->virtbase) {
->>               ret = -ENOMEM;
->
-> IS_ERR()!
-
-Will fix in a v2!
-
->
-
-Thanks!
-
-Kind regards
-Ulf Hansson
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

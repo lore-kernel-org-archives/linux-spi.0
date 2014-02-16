@@ -1,54 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sun6i: Fix define for SUN6I_TFR_CTL_CS_MASK
-Date: Sun, 16 Feb 2014 09:11:17 +0800
-Message-ID: <20140216011117.GS4451@sirena.org.uk>
-References: <1392257895.3964.2.camel@phoenix>
+Subject: Re: [PATCH 1/1] spi/s3c64xx: Trivial cleanup in header file
+Date: Sun, 16 Feb 2014 09:59:28 +0800
+Message-ID: <20140216015928.GY4451@sirena.org.uk>
+References: <1392360977-21183-1-git-send-email-sachin.kamat@linaro.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vSzmLLrdioqyxIBH"
-Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="H7QJU8Gl1+/xsYtC"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392257895.3964.2.camel@phoenix>
+In-Reply-To: <1392360977-21183-1-git-send-email-sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---vSzmLLrdioqyxIBH
+--H7QJU8Gl1+/xsYtC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Feb 13, 2014 at 10:18:15AM +0800, Axel Lin wrote:
-> Current code in sun6i_spi_set_cs() actually clears CPHA and CPOL bits which is
-> obvious wrong. The define for SUN6I_TFR_CTL_CS_MASK is wrong. Fix it.
+On Fri, Feb 14, 2014 at 12:26:17PM +0530, Sachin Kamat wrote:
+> Commit 436d42c61c3e ("ARM: samsung: move platform_data definitions")
+> moved the files to the current location but forgot to remove the pointer
+> to its previous location. Clean it up. While at it also change the header
+> file protection macros appropriately.
 
 Applied, thanks.
 
---vSzmLLrdioqyxIBH
+--H7QJU8Gl1+/xsYtC
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTABAyAAoJELSic+t+oim9s0YP/0NqGVEDfDH/jhaMWQK2i75D
-dzQ2+6idtso0CAPzvzneSLPP/SGMlttZotA75GeVMA2G16Rtz+9VLc43fLb+SqwE
-MgPeoZhrqc9YDe2NTbI0G4RDkZa9pahwg87VV+/bEbz8DuuNPnC4sH5eQPwcXY+y
-8K6Oc64+J+0jjG826PPwHJKqugukKBxXNhtkdNnm5bEC783SO7OGoXPqRM2aaAB3
-EJ49PGK4BR43BjyyvGJzjrIo0XpTrUnqmONtRMwaC5Kt/N5umryM637BfOhG2Obo
-MGD8HWKbVCGl123if3kwLwPcSvZDoHMNg8E/cQv9nrRsQExguXGce6jQ2zpBm4B1
-X3bCnjyTQr8EMSHhmZP1GNt0bxP1adcOxG0U+xXyDz4I0MYfp2KI3TnECSXL2P5U
-thDfmxEREyME8Di110h+JHqSz+WrSreaF3DxzeLFiMJl1meznhubz4GZHT5RzD4z
-x6P1Srs7gyNVuG/wAYrE/SLaWq46V12N3kIG6iZBnYa4UFyD+K2TRrtXhDOU06Uo
-GXivsvU7LMbaZfbnSgeGXh//Ym3cz0HkJJESI6FL9IuDw7yl9qGCoED0/c6ZrAz1
-tYMoaMvP5Ylvx3vC+C8jDFy3h9tII9iHgnqdpIN6W8/CLQWzgRqD52EZlQIGhwxJ
-0XJIOPz96BC2DTJF4rRw
-=6ym/
+iQIcBAEBAgAGBQJTABt9AAoJELSic+t+oim9+80P/0I2NXbVX17W3T9OV8tNmeVZ
+4KWrvnMKzBvUnQYDLEGyS8wiS/ornYXJLF3jlNQINGowejbt/x7ANOIqHUoYprEW
+kmwa2tiBA8zXCl/h6NbJhUULgOyFEU+inPTRQgdK2Zaq/zjaCxAClcVmUr4XCADi
+anPBoLpEWJjTbK+eb/+SQMm+Fp/Sng8QztH+ibBRXnYntMf0iNGvYP+fHwsppj/n
+CJAc4Ur7voz7kBLfCY1V7yAiJJEa8aTFgPVA6in/tMnSQ3UJX+mMnaUlB2iLR+QL
+M71U6RauyfkGVXqST774cm+hw5qNdAW6jmdT/8nuw0bw6Ek3Kn9iEmRhxkCCB+Jc
+l1FK72Mtujhkqsi634SU+9lReVdhQ45Xmzsgbk2P7S6R25p2pQLIxXmQTywrnIdt
+cvN8t0pYVuixmCl+xTIA6CLjdcvRt8u+AGOpQ2bSTuYIjgkgmw4mmF7Ffb2ivF96
+/1FkIJqphJ0rIUHnbbInYAyVrXZ7AZiGt165qg2vvWBye/+NyX05Krk0OJEPvnkC
+vjsmtsBueuOdElUyQWicN8+WRio+Liowgc85p603Jcj/iM0Fi0QnN6mCuHI73t16
+0lNXYp+GFRxFEbKzaj1CtFNaZ86O2eyukOUqqbSkXHmgDUEDf9x8LB66ozzppHiR
+7Y5cNJOpaiFUKvoMcnND
+=kx91
 -----END PGP SIGNATURE-----
 
---vSzmLLrdioqyxIBH--
+--H7QJU8Gl1+/xsYtC--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

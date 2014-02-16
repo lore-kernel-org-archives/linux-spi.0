@@ -1,81 +1,75 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: mpc512x-psc: Remove redundant code to get bus_num from
- DT
-Date: Sun, 16 Feb 2014 10:43:18 +0800
-Message-ID: <1392518598.18192.3.camel@phoenix>
+From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH V2 11/17] i2c: nomadik: Convert to devm functions
+Date: Sun, 16 Feb 2014 14:44:07 +0100
+Message-ID: <CAPDyKFrt6QJVSypP5iD_oVxRUvNhzxGcbZ703zR1K8gwJ5uCeQ@mail.gmail.com>
+References: <1392300547-23365-1-git-send-email-ulf.hansson@linaro.org>
+	<20140215150345.GD2579@katana>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>, Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-mmc <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140215150345.GD2579@katana>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-For DT case, spi core will call of_alias_get_id() and set master->bus_num if it
-was not set.
+On 15 February 2014 16:03, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org> wrote:
+> On Thu, Feb 13, 2014 at 03:09:02PM +0100, Ulf Hansson wrote:
+>> Use devm_* functions to simplify code and error handling.
+>>
+>> Cc: Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>
+>> Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>> Cc: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+>> Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+>> ---
+>>
+>> Changes in v2:
+>>       Rebased on top of latest i2c-nomadik branch.
+>
+> Since this depends on Linus' patch already, I think it would be cleaner
+> if I pick this kinda unrelated (but wanted) devm patch, and ack the
+> PM stuff. If this for some reason makes things more complicated, I can
+> also simply ack this one.
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-mpc512x-psc.c | 16 ++--------------
- 1 file changed, 2 insertions(+), 14 deletions(-)
+I think we will end up having merge conflicts, especially for the
+changes in the probe function if we decide to split it.
 
-diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
-index 56cead9..3822eef 100644
---- a/drivers/spi/spi-mpc512x-psc.c
-+++ b/drivers/spi/spi-mpc512x-psc.c
-@@ -465,10 +465,8 @@ static void mpc512x_spi_cs_control(struct spi_device *spi, bool onoff)
- 	gpio_set_value(spi->cs_gpio, onoff);
- }
- 
--/* bus_num is used only for the case dev->platform_data == NULL */
- static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
--					      u32 size, unsigned int irq,
--					      s16 bus_num)
-+					      u32 size, unsigned int irq)
- {
- 	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
- 	struct mpc512x_psc_spi *mps;
-@@ -487,7 +485,6 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
- 
- 	if (pdata == NULL) {
- 		mps->cs_control = mpc512x_spi_cs_control;
--		master->bus_num = bus_num;
- 	} else {
- 		mps->cs_control = pdata->cs_control;
- 		master->bus_num = pdata->bus_num;
-@@ -573,7 +570,6 @@ static int mpc512x_psc_spi_of_probe(struct platform_device *op)
- {
- 	const u32 *regaddr_p;
- 	u64 regaddr64, size64;
--	s16 id = -1;
- 
- 	regaddr_p = of_get_address(op->dev.of_node, 0, &size64, NULL);
- 	if (!regaddr_p) {
-@@ -582,16 +578,8 @@ static int mpc512x_psc_spi_of_probe(struct platform_device *op)
- 	}
- 	regaddr64 = of_translate_address(op->dev.of_node, regaddr_p);
- 
--	/* get PSC id (0..11, used by port_config) */
--	id = of_alias_get_id(op->dev.of_node, "spi");
--	if (id < 0) {
--		dev_err(&op->dev, "no alias id for %s\n",
--			op->dev.of_node->full_name);
--		return id;
--	}
--
- 	return mpc512x_psc_spi_do_probe(&op->dev, (u32) regaddr64, (u32) size64,
--				irq_of_parse_and_map(op->dev.of_node, 0), id);
-+				irq_of_parse_and_map(op->dev.of_node, 0));
- }
- 
- static int mpc512x_psc_spi_of_remove(struct platform_device *op)
--- 
-1.8.1.2
+Would a way forward be to let you carry all the patches through your
+tree? I believe all but patch 17 can be safely merged. It is only this
+one that depends on the changes in the amba bus, so we can put this
+one on hold for a while.
 
+Another option would be if you drop Linus' patch from you branch and
+let him collect all the patches in a pull request instead?
 
+I happy with whatever we thinks are easiest. :-)
 
+>
+>> -     dev->virtbase = ioremap(adev->res.start, resource_size(&adev->res));
+>> +     dev->virtbase = devm_ioremap(&adev->dev, adev->res.start,
+>> +                             resource_size(&adev->res));
+>>       if (!dev->virtbase) {
+>>               ret = -ENOMEM;
+>
+> IS_ERR()!
+
+Will fix in a v2!
+
+>
+
+Thanks!
+
+Kind regards
+Ulf Hansson
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

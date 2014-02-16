@@ -1,55 +1,81 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi/s3c64xx: Trivial cleanup in header file
-Date: Sun, 16 Feb 2014 09:59:28 +0800
-Message-ID: <20140216015928.GY4451@sirena.org.uk>
-References: <1392360977-21183-1-git-send-email-sachin.kamat@linaro.org>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: mpc512x-psc: Remove redundant code to get bus_num from
+ DT
+Date: Sun, 16 Feb 2014 10:43:18 +0800
+Message-ID: <1392518598.18192.3.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="H7QJU8Gl1+/xsYtC"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Sachin Kamat <sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>, Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1392360977-21183-1-git-send-email-sachin.kamat-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+For DT case, spi core will call of_alias_get_id() and set master->bus_num if it
+was not set.
 
---H7QJU8Gl1+/xsYtC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-mpc512x-psc.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-On Fri, Feb 14, 2014 at 12:26:17PM +0530, Sachin Kamat wrote:
-> Commit 436d42c61c3e ("ARM: samsung: move platform_data definitions")
-> moved the files to the current location but forgot to remove the pointer
-> to its previous location. Clean it up. While at it also change the header
-> file protection macros appropriately.
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index 56cead9..3822eef 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -465,10 +465,8 @@ static void mpc512x_spi_cs_control(struct spi_device *spi, bool onoff)
+ 	gpio_set_value(spi->cs_gpio, onoff);
+ }
+ 
+-/* bus_num is used only for the case dev->platform_data == NULL */
+ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+-					      u32 size, unsigned int irq,
+-					      s16 bus_num)
++					      u32 size, unsigned int irq)
+ {
+ 	struct fsl_spi_platform_data *pdata = dev_get_platdata(dev);
+ 	struct mpc512x_psc_spi *mps;
+@@ -487,7 +485,6 @@ static int mpc512x_psc_spi_do_probe(struct device *dev, u32 regaddr,
+ 
+ 	if (pdata == NULL) {
+ 		mps->cs_control = mpc512x_spi_cs_control;
+-		master->bus_num = bus_num;
+ 	} else {
+ 		mps->cs_control = pdata->cs_control;
+ 		master->bus_num = pdata->bus_num;
+@@ -573,7 +570,6 @@ static int mpc512x_psc_spi_of_probe(struct platform_device *op)
+ {
+ 	const u32 *regaddr_p;
+ 	u64 regaddr64, size64;
+-	s16 id = -1;
+ 
+ 	regaddr_p = of_get_address(op->dev.of_node, 0, &size64, NULL);
+ 	if (!regaddr_p) {
+@@ -582,16 +578,8 @@ static int mpc512x_psc_spi_of_probe(struct platform_device *op)
+ 	}
+ 	regaddr64 = of_translate_address(op->dev.of_node, regaddr_p);
+ 
+-	/* get PSC id (0..11, used by port_config) */
+-	id = of_alias_get_id(op->dev.of_node, "spi");
+-	if (id < 0) {
+-		dev_err(&op->dev, "no alias id for %s\n",
+-			op->dev.of_node->full_name);
+-		return id;
+-	}
+-
+ 	return mpc512x_psc_spi_do_probe(&op->dev, (u32) regaddr64, (u32) size64,
+-				irq_of_parse_and_map(op->dev.of_node, 0), id);
++				irq_of_parse_and_map(op->dev.of_node, 0));
+ }
+ 
+ static int mpc512x_psc_spi_of_remove(struct platform_device *op)
+-- 
+1.8.1.2
 
-Applied, thanks.
 
---H7QJU8Gl1+/xsYtC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTABt9AAoJELSic+t+oim9+80P/0I2NXbVX17W3T9OV8tNmeVZ
-4KWrvnMKzBvUnQYDLEGyS8wiS/ornYXJLF3jlNQINGowejbt/x7ANOIqHUoYprEW
-kmwa2tiBA8zXCl/h6NbJhUULgOyFEU+inPTRQgdK2Zaq/zjaCxAClcVmUr4XCADi
-anPBoLpEWJjTbK+eb/+SQMm+Fp/Sng8QztH+ibBRXnYntMf0iNGvYP+fHwsppj/n
-CJAc4Ur7voz7kBLfCY1V7yAiJJEa8aTFgPVA6in/tMnSQ3UJX+mMnaUlB2iLR+QL
-M71U6RauyfkGVXqST774cm+hw5qNdAW6jmdT/8nuw0bw6Ek3Kn9iEmRhxkCCB+Jc
-l1FK72Mtujhkqsi634SU+9lReVdhQ45Xmzsgbk2P7S6R25p2pQLIxXmQTywrnIdt
-cvN8t0pYVuixmCl+xTIA6CLjdcvRt8u+AGOpQ2bSTuYIjgkgmw4mmF7Ffb2ivF96
-/1FkIJqphJ0rIUHnbbInYAyVrXZ7AZiGt165qg2vvWBye/+NyX05Krk0OJEPvnkC
-vjsmtsBueuOdElUyQWicN8+WRio+Liowgc85p603Jcj/iM0Fi0QnN6mCuHI73t16
-0lNXYp+GFRxFEbKzaj1CtFNaZ86O2eyukOUqqbSkXHmgDUEDf9x8LB66ozzppHiR
-7Y5cNJOpaiFUKvoMcnND
-=kx91
------END PGP SIGNATURE-----
-
---H7QJU8Gl1+/xsYtC--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

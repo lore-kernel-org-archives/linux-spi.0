@@ -1,62 +1,64 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v4 1/2] spi:fsl-dspi:convert to use regmap and big-endian
- supports
-Date: Sun, 16 Feb 2014 09:16:11 +0800
-Message-ID: <20140216011611.GU4451@sirena.org.uk>
-References: <1392190146-18852-1-git-send-email-b44548@freescale.com>
+Subject: Re: [PATCH] spi: Remove explictly set bus_num and num_chipselect to
+ default setting
+Date: Sun, 16 Feb 2014 09:51:34 +0800
+Message-ID: <20140216015134.GW4451@sirena.org.uk>
+References: <1392127819.9833.3.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CjJSuxoe2P5GDFE9"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-To: Chao Fu <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="O6iH21V1A1PEFpM6"
+Cc: Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
+	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392190146-18852-1-git-send-email-b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <1392127819.9833.3.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---CjJSuxoe2P5GDFE9
+--O6iH21V1A1PEFpM6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 12, 2014 at 03:29:05PM +0800, Chao Fu wrote:
-> From: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
->=20
-> Freescale DSPI module will have two endianess in different platform,
-> but ARM is little endian. So when DSPI in big endian, core in little endi=
-an,
-> readl and writel can not adjust R/W register in this condition.
-> This patch will remove general readl/writel, and import regmap mechanism.
-> Data endian will be transfered in regmap APIs.
+On Tue, Feb 11, 2014 at 10:10:19PM +0800, Axel Lin wrote:
+> The purpose of commit 1e8a52e18cfb
+> "spi: By default setup spi_masters with 1 chipselect and dynamics bus number"
+> is to avoid setting default value for bus_num and num_chipselect in spi master
+> drivers. So let's remove the duplicate code.
 
-Applied both, thanks.
+Applied, thanks.
 
---CjJSuxoe2P5GDFE9
+--O6iH21V1A1PEFpM6
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTABFYAAoJELSic+t+oim9u5MQAJsFsLlMi1wNNerOkwdlZf1T
-cNsYkl7QQP+ibBIssNRjfX8XRDen8by0sVfkpzNAloUt7KezpqJGcg5a5nbl6UA+
-XXpSayx2E0lwvx/Fod8oVm7qiwxXKE6xj23Q+RX7lBCBpHfX1PMnOefexbKNEpnZ
-xzbHc3UwaKgGXpYcxk1w1A0ytbyf56UccW8e1KRbab1ENjDnjulb36cih4zcwKt5
-NN0wDDDHXN5c0W+Ol1t1Q2EP8no2IBEdEkyDjEgWEGxxevLckykspAt3ben4fm9b
-PflkxntS601Sy4sPI62DUEkKjVZ2Cn4GPO3BPCTI8sHwftKzhPhKCZ6e+EWnUtj8
-YWo+LEps9jc9kVRWikhVbrxDlx1Ttf4TTyEQFLgkpNEK9x6gSKZbfZ1aE7svAMX7
-wfATIH2YTURuS39ssWui9ecQD5FoIIYcJCPuQgR23A/pL+oNoWQoq4tF2/kvrYKq
-bFN56Nz6+LuMVpKIcc3Uz4TyXCydH0Wc8Pyp2OyUedeEjB1fyQvT0P6th8TX8MlQ
-bx9Z7ToHGI3BUx6JcPKpBHvpeEbVSjtxsvtBxwtpVtRO7r6m5kUa3pzMHnqo2kPq
-NHkZIFEIOnRF9aF0bNGTWbWkTK6TXg6T+Tf5X0g+bTvDMYa9Z9OmvoWSPHe4rrOs
-ZDD5KuTLLIzx8b1kxvcO
-=fh4R
+iQIcBAEBAgAGBQJTABmjAAoJELSic+t+oim9DxkP/REp1ZG1Vq8vovV8uqt9gUm/
+46/U5i2ajDJvllwSusZC7wje0RhrJNQCzCbD7+joe9v/RtRgFTF/wDPhsF56cXSR
+WQ2ssejn/gmzdEvWG1PE6H+6m/zTBE4AN7322ti5KQvqyz/d0Kk3HfoX2uf37rtr
+WY/mcTRUX/3bVT4yr1bp168OXN9pH6tMKk8g6Q/WHKfLzeyBiJ8T1UwMbhQStu1V
+u4kPC9zpA1+1TZxFG5nqq1K5g3dK9aLvHl11kUmaZ7WGhSELsRMDYc+WHLJ45/5e
+cagF/S+KgjPbYxA9W4dBKT+nOT7swTndh2MZf0ijJBxsgYvy6h+3Qlh/aEcm307Y
+Rt+NsYwLmBNzbSd0BssXq3jkSC5axQm2qrHHYaE1eCNmiu3O//s9jHMI5P1Uf602
+k6CMSH0HECPqz1Eqr09MfOTYpZjMLYiYbrf6pqUsyvoEJYy4HAJI3MN8gwi24kOj
+GprsuwVjw5PZ1U08EOF2x+/4ucKCB1/7gesT0AoquUi/OIfN1OG43jNKerroJndT
+E3mUu+wNoa3kVvoZnvepOm4FQ8RVeMX31yg7WUUK+ziPvHgcJosVGp8EovPvEo3f
+V1SsoDs4/D2BGvkJ8lqijvgWo7QTxw9Xh1aHEAQieNY2SsSz0RBZKVqpoqvrhdtp
+b/AOAts+MQKi5faWYcqN
+=V2Zb
 -----END PGP SIGNATURE-----
 
---CjJSuxoe2P5GDFE9--
+--O6iH21V1A1PEFpM6--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

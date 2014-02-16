@@ -1,64 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Remove explictly set bus_num and num_chipselect to
- default setting
-Date: Sun, 16 Feb 2014 09:51:34 +0800
-Message-ID: <20140216015134.GW4451@sirena.org.uk>
-References: <1392127819.9833.3.camel@phoenix>
+Subject: Re: [PATCH] spi: sun6i: Fix define for SUN6I_TFR_CTL_CS_MASK
+Date: Sun, 16 Feb 2014 09:11:17 +0800
+Message-ID: <20140216011117.GS4451@sirena.org.uk>
+References: <1392257895.3964.2.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="O6iH21V1A1PEFpM6"
-Cc: Chris Boot <bootc-1Slo4GeK4H1eoWH0uzbU5w@public.gmane.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
-	David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	protocol="application/pgp-signature"; boundary="vSzmLLrdioqyxIBH"
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392127819.9833.3.camel@phoenix>
+In-Reply-To: <1392257895.3964.2.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---O6iH21V1A1PEFpM6
+--vSzmLLrdioqyxIBH
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Feb 11, 2014 at 10:10:19PM +0800, Axel Lin wrote:
-> The purpose of commit 1e8a52e18cfb
-> "spi: By default setup spi_masters with 1 chipselect and dynamics bus number"
-> is to avoid setting default value for bus_num and num_chipselect in spi master
-> drivers. So let's remove the duplicate code.
+On Thu, Feb 13, 2014 at 10:18:15AM +0800, Axel Lin wrote:
+> Current code in sun6i_spi_set_cs() actually clears CPHA and CPOL bits which is
+> obvious wrong. The define for SUN6I_TFR_CTL_CS_MASK is wrong. Fix it.
 
 Applied, thanks.
 
---O6iH21V1A1PEFpM6
+--vSzmLLrdioqyxIBH
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTABmjAAoJELSic+t+oim9DxkP/REp1ZG1Vq8vovV8uqt9gUm/
-46/U5i2ajDJvllwSusZC7wje0RhrJNQCzCbD7+joe9v/RtRgFTF/wDPhsF56cXSR
-WQ2ssejn/gmzdEvWG1PE6H+6m/zTBE4AN7322ti5KQvqyz/d0Kk3HfoX2uf37rtr
-WY/mcTRUX/3bVT4yr1bp168OXN9pH6tMKk8g6Q/WHKfLzeyBiJ8T1UwMbhQStu1V
-u4kPC9zpA1+1TZxFG5nqq1K5g3dK9aLvHl11kUmaZ7WGhSELsRMDYc+WHLJ45/5e
-cagF/S+KgjPbYxA9W4dBKT+nOT7swTndh2MZf0ijJBxsgYvy6h+3Qlh/aEcm307Y
-Rt+NsYwLmBNzbSd0BssXq3jkSC5axQm2qrHHYaE1eCNmiu3O//s9jHMI5P1Uf602
-k6CMSH0HECPqz1Eqr09MfOTYpZjMLYiYbrf6pqUsyvoEJYy4HAJI3MN8gwi24kOj
-GprsuwVjw5PZ1U08EOF2x+/4ucKCB1/7gesT0AoquUi/OIfN1OG43jNKerroJndT
-E3mUu+wNoa3kVvoZnvepOm4FQ8RVeMX31yg7WUUK+ziPvHgcJosVGp8EovPvEo3f
-V1SsoDs4/D2BGvkJ8lqijvgWo7QTxw9Xh1aHEAQieNY2SsSz0RBZKVqpoqvrhdtp
-b/AOAts+MQKi5faWYcqN
-=V2Zb
+iQIcBAEBAgAGBQJTABAyAAoJELSic+t+oim9s0YP/0NqGVEDfDH/jhaMWQK2i75D
+dzQ2+6idtso0CAPzvzneSLPP/SGMlttZotA75GeVMA2G16Rtz+9VLc43fLb+SqwE
+MgPeoZhrqc9YDe2NTbI0G4RDkZa9pahwg87VV+/bEbz8DuuNPnC4sH5eQPwcXY+y
+8K6Oc64+J+0jjG826PPwHJKqugukKBxXNhtkdNnm5bEC783SO7OGoXPqRM2aaAB3
+EJ49PGK4BR43BjyyvGJzjrIo0XpTrUnqmONtRMwaC5Kt/N5umryM637BfOhG2Obo
+MGD8HWKbVCGl123if3kwLwPcSvZDoHMNg8E/cQv9nrRsQExguXGce6jQ2zpBm4B1
+X3bCnjyTQr8EMSHhmZP1GNt0bxP1adcOxG0U+xXyDz4I0MYfp2KI3TnECSXL2P5U
+thDfmxEREyME8Di110h+JHqSz+WrSreaF3DxzeLFiMJl1meznhubz4GZHT5RzD4z
+x6P1Srs7gyNVuG/wAYrE/SLaWq46V12N3kIG6iZBnYa4UFyD+K2TRrtXhDOU06Uo
+GXivsvU7LMbaZfbnSgeGXh//Ym3cz0HkJJESI6FL9IuDw7yl9qGCoED0/c6ZrAz1
+tYMoaMvP5Ylvx3vC+C8jDFy3h9tII9iHgnqdpIN6W8/CLQWzgRqD52EZlQIGhwxJ
+0XJIOPz96BC2DTJF4rRw
+=6ym/
 -----END PGP SIGNATURE-----
 
---O6iH21V1A1PEFpM6--
+--vSzmLLrdioqyxIBH--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

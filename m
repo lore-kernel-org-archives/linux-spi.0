@@ -1,188 +1,62 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [RFT][PATCH] spi: clps711x: Refactor to use core message parsing
-Date: Mon, 17 Feb 2014 21:59:52 +0800
-Message-ID: <1392645592.15727.1.camel@phoenix>
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: =?UTF-8?B?UmU6IFtSRlRdW1BBVENIXSBzcGk6IGNscHM3MTF4OiBSZWZhY3RvciB0byB1?=
+ =?UTF-8?B?c2UgY29yZSBtZXNzYWdlIHBhcnNpbmc=?=
+Date: Mon, 17 Feb 2014 18:59:19 +0400
+Message-ID: <1392649159.786449875@f400.i.mail.ru>
+References: <1392645592.15727.1.camel@phoenix>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+Cc: =?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: =?UTF-8?B?QXhlbCBMaW4=?= <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1392645592.15727.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Convert to use default implementation of transfer_one_message() which provides
-standard handling of delays and chip select management.
-
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
-Hi Alexander,
-I don't have this hardware, can you help testing this patch.
-Thanks,
-Axel
- drivers/spi/spi-clps711x.c | 89 ++++++++++++++++++++--------------------------
- 1 file changed, 38 insertions(+), 51 deletions(-)
-
-diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index f973e97..6ae0cbf 100644
---- a/drivers/spi/spi-clps711x.c
-+++ b/drivers/spi/spi-clps711x.c
-@@ -24,8 +24,6 @@
- #define DRIVER_NAME	"spi-clps711x"
- 
- struct spi_clps711x_data {
--	struct completion	done;
--
- 	struct clk		*spi_clk;
- 	u32			max_speed_hz;
- 
-@@ -43,15 +41,6 @@ static int spi_clps711x_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static void spi_clps711x_setup_mode(struct spi_device *spi)
--{
--	/* Setup edge for transfer */
--	if (spi->mode & SPI_CPHA)
--		clps_writew(clps_readw(SYSCON3) | SYSCON3_ADCCKNSEN, SYSCON3);
--	else
--		clps_writew(clps_readw(SYSCON3) & ~SYSCON3_ADCCKNSEN, SYSCON3);
--}
--
- static void spi_clps711x_setup_xfer(struct spi_device *spi,
- 				    struct spi_transfer *xfer)
- {
-@@ -73,55 +62,52 @@ static void spi_clps711x_setup_xfer(struct spi_device *spi,
- 			    SYSCON1_ADCKSEL(0), SYSCON1);
- }
- 
--static int spi_clps711x_transfer_one_message(struct spi_master *master,
--					     struct spi_message *msg)
-+static void spi_clps711x_set_cs(struct spi_device *spi, bool enable)
- {
--	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
--	struct spi_device *spi = msg->spi;
--	struct spi_transfer *xfer;
--
--	spi_clps711x_setup_mode(spi);
--
--	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--		u8 data;
--
--		spi_clps711x_setup_xfer(spi, xfer);
--
-+	if (enable)
- 		gpio_set_value(spi->cs_gpio, !!(spi->mode & SPI_CS_HIGH));
-+	else
-+		gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
-+}
- 
--		reinit_completion(&hw->done);
--
--		hw->len = xfer->len;
--		hw->bpw = xfer->bits_per_word ? : spi->bits_per_word;
--		hw->tx_buf = (u8 *)xfer->tx_buf;
--		hw->rx_buf = (u8 *)xfer->rx_buf;
--
--		/* Initiate transfer */
--		data = hw->tx_buf ? *hw->tx_buf++ : 0;
--		clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN,
--			    SYNCIO);
-+static int spi_clps711x_prepare_message(struct spi_master *master,
-+					struct spi_message *msg)
-+{
-+	struct spi_device *spi = msg->spi;
- 
--		wait_for_completion(&hw->done);
-+	/* Setup edge for transfer */
-+	if (spi->mode & SPI_CPHA)
-+		clps_writew(clps_readw(SYSCON3) | SYSCON3_ADCCKNSEN, SYSCON3);
-+	else
-+		clps_writew(clps_readw(SYSCON3) & ~SYSCON3_ADCCKNSEN, SYSCON3);
- 
--		if (xfer->delay_usecs)
--			udelay(xfer->delay_usecs);
-+	return 0;
-+}
- 
--		if (xfer->cs_change ||
--		    list_is_last(&xfer->transfer_list, &msg->transfers))
--			gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
-+static int spi_clps711x_transfer_one(struct spi_master *master,
-+				     struct spi_device *spi,
-+				     struct spi_transfer *xfer)
-+{
-+	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
-+	u8 data;
- 
--		msg->actual_length += xfer->len;
--	}
-+	spi_clps711x_setup_xfer(spi, xfer);
- 
--	msg->status = 0;
--	spi_finalize_current_message(master);
-+	hw->len = xfer->len;
-+	hw->bpw = xfer->bits_per_word ? : spi->bits_per_word;
-+	hw->tx_buf = (u8 *)xfer->tx_buf;
-+	hw->rx_buf = (u8 *)xfer->rx_buf;
- 
--	return 0;
-+	/* Initiate transfer */
-+	data = hw->tx_buf ? *hw->tx_buf++ : 0;
-+	clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN, SYNCIO);
-+	return 1;
- }
- 
- static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
- {
--	struct spi_clps711x_data *hw = (struct spi_clps711x_data *)dev_id;
-+	struct spi_master *master = dev_id;
-+	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
- 	u8 data;
- 
- 	/* Handle RX */
-@@ -135,7 +121,7 @@ static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
- 		clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN,
- 			    SYNCIO);
- 	} else
--		complete(&hw->done);
-+		complete(&master->xfer_completion);
- 
- 	return IRQ_HANDLED;
- }
-@@ -173,7 +159,9 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(1, 8);
- 	master->num_chipselect = pdata->num_chipselect;
- 	master->setup = spi_clps711x_setup;
--	master->transfer_one_message = spi_clps711x_transfer_one_message;
-+	master->set_cs = spi_clps711x_set_cs;
-+	master->prepare_message = spi_clps711x_prepare_message;
-+	master->transfer_one = spi_clps711x_transfer_one;
- 
- 	hw = spi_master_get_devdata(master);
- 
-@@ -199,7 +187,6 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	}
- 	hw->max_speed_hz = clk_get_rate(hw->spi_clk);
- 
--	init_completion(&hw->done);
- 	platform_set_drvdata(pdev, master);
- 
- 	/* Disable extended mode due hardware problems */
-@@ -209,7 +196,7 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	clps_readl(SYNCIO);
- 
- 	ret = devm_request_irq(&pdev->dev, IRQ_SSEOTI, spi_clps711x_isr, 0,
--			       dev_name(&pdev->dev), hw);
-+			       dev_name(&pdev->dev), master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Can't request IRQ\n");
- 		goto err_out;
--- 
-1.8.1.2
-
-
-
+0J/QvtC90LXQtNC10LvRjNC90LjQuiwgMTcg0YTQtdCy0YDQsNC70Y8gMjAxNCwgMjE6NTkgKzA4
+OjAwINC+0YIgQXhlbCBMaW4gPGF4ZWwubGluQGluZ2ljcy5jb20+Ogo+IENvbnZlcnQgdG8gdXNl
+IGRlZmF1bHQgaW1wbGVtZW50YXRpb24gb2YgdHJhbnNmZXJfb25lX21lc3NhZ2UoKSB3aGljaCBw
+cm92aWRlcwo+IHN0YW5kYXJkIGhhbmRsaW5nIG9mIGRlbGF5cyBhbmQgY2hpcCBzZWxlY3QgbWFu
+YWdlbWVudC4KPiAKPiBTaWduZWQtb2ZmLWJ5OiBBeGVsIExpbiA8YXhlbC5saW5AaW5naWNzLmNv
+bT4KPiAtLS0KPiBIaSBBbGV4YW5kZXIsCj4gSSBkb24ndCBoYXZlIHRoaXMgaGFyZHdhcmUsIGNh
+biB5b3UgaGVscCB0ZXN0aW5nIHRoaXMgcGF0Y2guCj4gVGhhbmtzLAo+IEF4ZWwKCk9LLCB0aGlz
+IHdpbGwgcmVxdWlyZSBhYm91dCBhIHdlZWsuCgo+ICBkcml2ZXJzL3NwaS9zcGktY2xwczcxMXgu
+YyB8IDg5ICsrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiAg
+MSBmaWxlIGNoYW5nZWQsIDM4IGluc2VydGlvbnMoKyksIDUxIGRlbGV0aW9ucygtKQo+IAo+IGRp
+ZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktY2xwczcxMXguYyBiL2RyaXZlcnMvc3BpL3NwaS1j
+bHBzNzExeC5jCj4gaW5kZXggZjk3M2U5Ny4uNmFlMGNiZiAxMDA2NDQKPiAtLS0gYS9kcml2ZXJz
+L3NwaS9zcGktY2xwczcxMXguYwo+ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1jbHBzNzExeC5jCj4g
+QEAgLTI0LDggKzI0LDYgQEAKPiAgI2RlZmluZSBEUklWRVJfTkFNRQkic3BpLWNscHM3MTF4Igo+
+ICAKPiAgc3RydWN0IHNwaV9jbHBzNzExeF9kYXRhIHsKPiAtCXN0cnVjdCBjb21wbGV0aW9uCWRv
+bmU7Cj4gLQo+ICAJc3RydWN0IGNsawkJKnNwaV9jbGs7Cj4gIAl1MzIJCQltYXhfc3BlZWRfaHo7
+Cj4gIAo+IEBAIC00MywxNSArNDEsNiBAQCBzdGF0aWMgaW50IHNwaV9jbHBzNzExeF9zZXR1cChz
+dHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQo+ICAJcmV0dXJuIDA7Cj4gIH0KPiAgCj4gLXN0YXRpYyB2
+b2lkIHNwaV9jbHBzNzExeF9zZXR1cF9tb2RlKHN0cnVjdCBzcGlfZGV2aWNlICpzcGkpCj4gLXsK
+PiAtCS8qIFNldHVwIGVkZ2UgZm9yIHRyYW5zZmVyICovCj4gLQlpZiAoc3BpLT5tb2RlICYgU1BJ
+X0NQSEEpCj4gLQkJY2xwc193cml0ZXcoY2xwc19yZWFkdyhTWVNDT04zKSB8IFNZU0NPTjNfQURD
+Q0tOU0VOLCBTWVNDT04zKTsKPiAtCWVsc2UKPiAtCQljbHBzX3dyaXRldyhjbHBzX3JlYWR3KFNZ
+U0NPTjMpICYgflNZU0NPTjNfQURDQ0tOU0VOLCBTWVNDT04zKTsKPiAtfQo+IC0KPiAgc3RhdGlj
+IHZvaWQgc3BpX2NscHM3MTF4X3NldHVwX3hmZXIoc3RydWN0IHNwaV9kZXZpY2UgKnNwaSwKPiAg
+CQkJCSAgICBzdHJ1Y3Qgc3BpX3RyYW5zZmVyICp4ZmVyKQo+ICB7Cj4gQEAgLTczLDU1ICs2Miw1
+MiBAQCBzdGF0aWMgdm9pZCBzcGlfY2xwczcxMXhfc2V0dXBfeGZlcihzdHJ1Y3Qgc3BpX2Rldmlj
+ZSAqc3BpLAo+ICAJCQkgICAgU1lTQ09OMV9BRENLU0VMKDApLCBTWVNDT04xKTsKPiAgfQo+ICAK
+PiAtc3RhdGljIGludCBzcGlfY2xwczcxMXhfdHJhbnNmZXJfb25lX21lc3NhZ2Uoc3RydWN0IHNw
+aV9tYXN0ZXIgKm1hc3RlciwKPiAtCQkJCQkgICAgIHN0cnVjdCBzcGlfbWVzc2FnZSAqbXNnKQo+
+ICtzdGF0aWMgdm9pZCBzcGlfY2xwczcxMXhfc2V0X2NzKHN0cnVjdCBzcGlfZGV2aWNlICpzcGks
+IGJvb2wgZW5hYmxlKQo+ICB7Cj4gLQlzdHJ1Y3Qgc3BpX2NscHM3MTF4X2RhdGEgKmh3ID0gc3Bp
+X21hc3Rlcl9nZXRfZGV2ZGF0YShtYXN0ZXIpOwo+IC0Jc3RydWN0IHNwaV9kZXZpY2UgKnNwaSA9
+IG1zZy0+c3BpOwo+IC0Jc3RydWN0IHNwaV90cmFuc2ZlciAqeGZlcjsKPiAtCj4gLQlzcGlfY2xw
+czcxMXhfc2V0dXBfbW9kZShzcGkpOwo+IC0KPiAtCWxpc3RfZm9yX2VhY2hfZW50cnkoeGZlciwg
+Jm1zZy0+dHJhbnNmZXJzLCB0cmFuc2Zlcl9saXN0KSB7Cj4gLQkJdTggZGF0YTsKPiAtCj4gLQkJ
+c3BpX2NscHM3MTF4X3NldHVwX3hmZXIoc3BpLCB4ZmVyKTsKPiAtCj4gKwlpZiAoZW5hYmxlKQo+
+ICAJCWdwaW9fc2V0X3ZhbHVlKHNwaS0+Y3NfZ3BpbywgISEoc3BpLT5tb2RlICYgU1BJX0NTX0hJ
+R0gpKTsKPiArCWVsc2UKPiArCQlncGlvX3NldF92YWx1ZShzcGktPmNzX2dwaW8sICEoc3BpLT5t
+b2RlICYgU1BJX0NTX0hJR0gpKTsKPiArfQoKWW91IGNhbiBlbGltaW5hdGUgc3BpX2NscHM3MTF4
+X3NldF9jcygpIGZ1bmN0aW9uIGVudGlyZWx5LgpHUElPcyBjYW4gYmUgaGFuZGxlZCBieSBTUEkg
+Y29yZSwgc2VlIHNwaV9zZXRfY3MoKSBmdW5jdGlvbi4KCi0tLQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

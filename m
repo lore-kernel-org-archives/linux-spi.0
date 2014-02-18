@@ -1,51 +1,73 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] spi: core: Fix Oops in spi_pump_messages error path
-Date: Mon, 17 Feb 2014 19:02:09 +0100
-Message-ID: <CAMuHMdXc5zyd1aBigrisvx43VVjStCMgtCcHmefdK-n5shTTmA@mail.gmail.com>
-References: <1392657637-5297-1-git-send-email-maxime.ripard@free-electrons.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2] spi: core: Validate lenght of the transfers in message
+Date: Tue, 18 Feb 2014 09:09:38 +0900
+Message-ID: <20140218000938.GE2669@sirena.org.uk>
+References: <1392444566-23605-1-git-send-email-iivanov@mm-sol.com>
+ <20140216142512.GR4524@book.gsilab.sittig.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	kevin.z.m.zh@gmail.com, sunny@allwinnertech.com,
-	shuge@allwinnertech.com, zhuzhenhua@allwinnertech.com,
-	stable <stable@vger.kernel.org>
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <1392657637-5297-1-git-send-email-maxime.ripard@free-electrons.com>
-Sender: stable-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="xJK8B5Wah2CMJs8h"
+Cc: "Ivan T. Ivanov" <iivanov@mm-sol.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Gerhard Sittig <gsi@denx.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20140216142512.GR4524@book.gsilab.sittig.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Feb 17, 2014 at 6:20 PM, Maxime Ripard
-<maxime.ripard@free-electrons.com> wrote:
-> When the generic implementation of the transfer_one_message callback was called
-> by the spi_pump_messages function, if that transfer was to fail, the
-> spi_finalize_current_message was called twice, once in
-> spi_transfer_one_message, and one in spi_pump_messages.
->
-> This was causing a null pointer dereference in the second call, because the
-> first one set the ->cur_msg field to NULL.
->
-> Since the SPI framework expect the transfer_one_message callback to call
-> spi_finalize_current_message, we can remove it from spi_pump_messages, together
-> with any dereference of the ->cur_msg pointer.
->
-> Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
-> Cc: stable@vger.kernel.org
 
-Already fixed in v3.14-rc3 in 1f802f8249a0da536877842c43c7204064c4de8b
-("spi: Fix crash with double message finalisation on error handling").
+--xJK8B5Wah2CMJs8h
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-There's no need to inform stable, as the problem was introduced in v3.14-rc1.
+On Sun, Feb 16, 2014 at 03:25:12PM +0100, Gerhard Sittig wrote:
+> On Sat, Feb 15, 2014 at 08:09 +0200, Ivan T. Ivanov wrote:
 
-Gr{oetje,eeting}s,
+> - the total length of the SPI transfer cannot be empty (which I'd
+>   consider an optimization, not a violation, and may need a
+>   separate discussion)
 
-                        Geert
+We probably want to allow that for people doing fun stuff with cs_change
+though I'm not convinced anything doing that is actually a good idea.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+> - the total length of the SPI transfer must be such that each
+>   "word" must be provided within a full 1/2/4 byte entity, with
+>   padding bits if the bits-per-word is "odd"
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> Is this a misunderstanding on my side?  A terminology thing?  To
+> me, the "SPI transfer" is the total payload and may have any
+> arbitrary length.  What you check for is a constraint on the
+> transfer's length derived from or based on the "word length"
+> ('word' in SPI context).
+
+> So the code may be appropriate, yet the description may need an
+> update, to not have the next person ask the same questions again.
+
+It seems fairly clear to me - if we're transferring 16 bit words we need
+the transfer to me a multiple of 16 bits and so on?  The requirement for
+padding is unclear I have to say.
+
+--xJK8B5Wah2CMJs8h
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTAqS+AAoJELSic+t+oim92RUP/2YvBAHKWr2T3U8Xft3gbVdB
+B+FkgEIansZdOCHzqPIbrnXgEHhS16+0qjWa9/aD4EBxrAFI0hz0GptDZS+tbf93
+X+uX8dGRZaDOp1QvNQmJjWCTualTOZiaDBmpLRKq8p39wJv6Hd5Bt02F3UJQ69Mn
+N9DWImmFWf32BVeuf0fwKom7XJWld5iAf4PpwDrRlzKumCDfqcAiB8wPiCwlAlwm
+w9EbiCYhM4fcJQFStPmZPXTYgH86oj0gi/e5kKw+lUaEIybILSJAAidpngMudSoJ
+6R0lzQu77bTtb/gQ+UsiwrOCos5Q3dUenkvqdIaQEDZtVgzl6XSGh3zNqx7jfyd/
+HCHL0O8DtnGzJxDXY2ZLea6dnYZmsEZTvuSuDoML43wJYk+I3gZoL7KzrLlCHkWK
+adZm2cBoot2NO5pfuxE294/WICSUE22KkYU7e+h1UFkpXd6T9jODkBo75OUX7FRH
+Ypz8kGLZ7XDmz22o2S244hPTfbs1xpGw0kwuuP/S3TatyRJKzzVfNYKGE2GX+Xat
+gwblF5P0m3XJ+UzAh5t4P6B9GCCdR3XocQv+d8JF+/7hVYPj+p8e8uwLwQ4Gdc1K
+1dbdyC4mIqkw5DU1A1EaSdQVO2/kfTxf5pDgkznFr3Tc+fqxrPWMmpSa5xOPJhUB
+TsRjXJWxJ3PEI6zbszje
+=/2FT
+-----END PGP SIGNATURE-----
+
+--xJK8B5Wah2CMJs8h--

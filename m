@@ -1,48 +1,67 @@
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: =?UTF-8?B?UmU6IFtSRlRdW1BBVENIIHYyXSBzcGk6IGNscHM3MTF4OiByZWZhY3RvciB0?=
- =?UTF-8?B?byB1c2UgY29yZSBtZXNzYWdlIHBhcnNpbmc=?=
-Date: Tue, 18 Feb 2014 12:56:32 +0400
-Message-ID: <1392713792.597739775@f337.i.mail.ru>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [RFT][PATCH v2] spi: clps711x: refactor to use core message parsing
+Date: Tue, 18 Feb 2014 16:59:02 +0800
+Message-ID: <CAFRkauDNQmxO7ZVd2VuN-gzDiwAUK4xervXYKQWYcSoogmX3nw@mail.gmail.com>
 References: <1392687089.5047.1.camel@phoenix>
- <1392712030.410354049@f297.i.mail.ru>
- <CAFRkauCQkyDFixt-t1Oe9L8eJBdhCeAFMeEBn7KimfcFRcP_ag@mail.gmail.com>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+	<1392712030.410354049@f297.i.mail.ru>
+	<CAFRkauCQkyDFixt-t1Oe9L8eJBdhCeAFMeEBn7KimfcFRcP_ag@mail.gmail.com>
+	<1392713792.597739775@f337.i.mail.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-Cc: =?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: =?UTF-8?B?QXhlbCBMaW4=?= <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=KOI8-R
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAFRkauCQkyDFixt-t1Oe9L8eJBdhCeAFMeEBn7KimfcFRcP_ag-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1392713792.597739775-e68EWkKP98BsdVUOrk1QfQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-0JLRgtC+0YDQvdC40LosIDE4INGE0LXQstGA0LDQu9GPIDIwMTQsIDE2OjUyICswODowMCDQvtGC
-IEF4ZWwgTGluIDxheGVsLmxpbkBpbmdpY3MuY29tPjoKPiAyMDE0LTAyLTE4IDE2OjI3IEdNVCsw
-ODowMCBBbGV4YW5kZXIgU2hpeWFuIDxzaGNfd29ya0BtYWlsLnJ1PjoKPiA+INCS0YLQvtGA0L3Q
-uNC6LCAxOCDRhNC10LLRgNCw0LvRjyAyMDE0LCA5OjMxICswODowMCDQvtGCIEF4ZWwgTGluIDxh
-eGVsLmxpbkBpbmdpY3MuY29tPjoKPiA+PiBDb252ZXJ0IHRvIHVzZSBkZWZhdWx0IGltcGxlbWVu
-dGF0aW9uIG9mIHRyYW5zZmVyX29uZV9tZXNzYWdlKCkgd2hpY2ggcHJvdmlkZXMKPiA+PiBzdGFu
-ZGFyZCBoYW5kbGluZyBvZiBkZWxheXMgYW5kIGNoaXAgc2VsZWN0IG1hbmFnZW1lbnQuCj4gPj4K
-PiA+PiBTaWduZWQtb2ZmLWJ5OiBBeGVsIExpbiA8YXhlbC5saW5AaW5naWNzLmNvbT4KPiA+PiAt
-LS0KPiA+IC4uLgo+ID4+ICBzdGF0aWMgaXJxcmV0dXJuX3Qgc3BpX2NscHM3MTF4X2lzcihpbnQg
-aXJxLCB2b2lkICpkZXZfaWQpCj4gPj4gIHsKPiA+PiAtICAgICBzdHJ1Y3Qgc3BpX2NscHM3MTF4
-X2RhdGEgKmh3ID0gKHN0cnVjdCBzcGlfY2xwczcxMXhfZGF0YSAqKWRldl9pZDsKPiA+PiArICAg
-ICBzdHJ1Y3Qgc3BpX21hc3RlciAqbWFzdGVyID0gZGV2X2lkOwo+ID4+ICsgICAgIHN0cnVjdCBz
-cGlfY2xwczcxMXhfZGF0YSAqaHcgPSBzcGlfbWFzdGVyX2dldF9kZXZkYXRhKG1hc3Rlcik7Cj4g
-Pj4gICAgICAgdTggZGF0YTsKPiA+Pgo+ID4+ICAgICAgIC8qIEhhbmRsZSBSWCAqLwo+ID4+IEBA
-IC0xMzUsNyArMTEzLDcgQEAgc3RhdGljIGlycXJldHVybl90IHNwaV9jbHBzNzExeF9pc3IoaW50
-IGlycSwgdm9pZCAqZGV2X2lkKQo+ID4+ICAgICAgICAgICAgICAgY2xwc193cml0ZWwoZGF0YSB8
-IFNZTkNJT19GUk1MRU4oaHctPmJwdykgfCBTWU5DSU9fVFhGUk1FTiwKPiA+PiAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIFNZTkNJTyk7Cj4gPj4gICAgICAgfSBlbHNlCj4gPj4gLSAgICAgICAg
-ICAgICBjb21wbGV0ZSgmaHctPmRvbmUpOwo+ID4+ICsgICAgICAgICAgICAgY29tcGxldGUoJm1h
-c3Rlci0+eGZlcl9jb21wbGV0aW9uKTsKPiA+Cj4gPiBzcGlfZmluYWxpemVfY3VycmVudF90cmFu
-c2ZlcihtYXN0ZXIpOwo+IAo+IEl0J3MgZG9uZSBieSBzcGkgY29yZS4gc2VlIHNwaV90cmFuc2Zl
-cl9vbmVfbWVzc2FnZSgpIGluIHNwaS5jCgpzcGlfZmluYWxpemVfY3VycmVudF90cmFuc2Zlcigp
-ICE9IHNwaV9maW5hbGl6ZV9jdXJyZW50X21lc3NhZ2UoKQoKSSBqdXN0IHN1Z2dlc3QgdG8gcmVw
-bGFjZSBjb21wbGV0ZSgmbWFzdGVyLT54ZmVyX2NvbXBsZXRpb24pIHRvCnNwaV9maW5hbGl6ZV9j
-dXJyZW50X3RyYW5zZmVyKG1hc3RlcikuCgotLS0K
+2014-02-18 16:56 GMT+08:00 Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>:
+> =F7=D4=CF=D2=CE=C9=CB, 18 =C6=C5=D7=D2=C1=CC=D1 2014, 16:52 +08:00 =CF=
+=D4 Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>:
+>> 2014-02-18 16:27 GMT+08:00 Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>:
+>> > =F7=D4=CF=D2=CE=C9=CB, 18 =C6=C5=D7=D2=C1=CC=D1 2014, 9:31 +08:00 =
+=CF=D4 Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>:
+>> >> Convert to use default implementation of transfer_one_message() w=
+hich provides
+>> >> standard handling of delays and chip select management.
+>> >>
+>> >> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+>> >> ---
+>> > ...
+>> >>  static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
+>> >>  {
+>> >> -     struct spi_clps711x_data *hw =3D (struct spi_clps711x_data =
+*)dev_id;
+>> >> +     struct spi_master *master =3D dev_id;
+>> >> +     struct spi_clps711x_data *hw =3D spi_master_get_devdata(mas=
+ter);
+>> >>       u8 data;
+>> >>
+>> >>       /* Handle RX */
+>> >> @@ -135,7 +113,7 @@ static irqreturn_t spi_clps711x_isr(int irq, =
+void *dev_id)
+>> >>               clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_=
+TXFRMEN,
+>> >>                           SYNCIO);
+>> >>       } else
+>> >> -             complete(&hw->done);
+>> >> +             complete(&master->xfer_completion);
+>> >
+>> > spi_finalize_current_transfer(master);
+>>
+>> It's done by spi core. see spi_transfer_one_message() in spi.c
+>
+> spi_finalize_current_transfer() !=3D spi_finalize_current_message()
+>
+> I just suggest to replace complete(&master->xfer_completion) to
+> spi_finalize_current_transfer(master).
+
+Ok. Got your point now.
+Will send v3 soon.
+
+Thanks for the review.
+Axel
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

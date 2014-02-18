@@ -1,73 +1,47 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 2/2] spi: omap2-mcspi: Convert to let spi core validate
- transfer speed
-Date: Tue, 18 Feb 2014 22:02:47 +0800
-Message-ID: <1392732167.22192.1.camel@phoenix>
-References: <1392732096.22192.0.camel@phoenix>
+From: =?ISO-8859-1?Q?Emilio_L=F3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
+Subject: Re: [PATCH v4 1/5] clk: sunxi: Add support for PLL6 on
+ the A31
+Date: Tue, 18 Feb 2014 11:47:03 -0300
+Message-ID: <53037267.1000909@elopez.com.ar>
+References: <1391605507-30981-1-git-send-email-maxime.ripard@free-electrons.com> <1391605507-30981-2-git-send-email-maxime.ripard@free-electrons.com>
+Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Stefan =?ISO-8859-1?Q?S=F8rensen?=
-	<stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>,
-	Victor Kamensky <victor.kamensky-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Illia Smyrnov <illia.smyrnov-hExfYMNmJl/Cnp4W7fqMDg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392732096.22192.0.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
+Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+ linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+ sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
+ zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
+To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+ Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+ Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-sunxi+bncBD73XIMS3EHBB67ERWMAKGQEDNJC7CQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+In-Reply-To: <1391605507-30981-2-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Id: linux-spi.vger.kernel.org
 
-Set master->max_speed_hz and master->min_speed_hz then spi core will handle
-checking transfer speed. So we can remove the same checking in this driver.
+El 05/02/14 10:05, Maxime Ripard escribi=F3:
+> The A31 has a slightly different PLL6 clock. Add support for this new clo=
+ck in
+> our driver.
+>
+> Signed-off-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+Taken via sunxi-clk-for-mike.
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 82cbe73..2941c5b 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1212,8 +1212,7 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 		void		*rx_buf = t->rx_buf;
- 		unsigned	len = t->len;
- 
--		if (t->speed_hz > OMAP2_MCSPI_MAX_FREQ
--				|| (len && !(rx_buf || tx_buf))) {
-+		if ((len && !(rx_buf || tx_buf))) {
- 			dev_dbg(mcspi->dev, "transfer: %d Hz, %d %s%s, %d bpw\n",
- 					t->speed_hz,
- 					len,
-@@ -1222,12 +1221,6 @@ static int omap2_mcspi_transfer_one_message(struct spi_master *master,
- 					t->bits_per_word);
- 			return -EINVAL;
- 		}
--		if (t->speed_hz && t->speed_hz < (OMAP2_MCSPI_MAX_FREQ >> 15)) {
--			dev_dbg(mcspi->dev, "speed_hz %d below minimum %d Hz\n",
--					t->speed_hz,
--					OMAP2_MCSPI_MAX_FREQ >> 15);
--			return -EINVAL;
--		}
- 
- 		if (m->is_dma_mapped || len < DMA_MIN_BYTES)
- 			continue;
-@@ -1339,6 +1332,8 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	master->transfer_one_message = omap2_mcspi_transfer_one_message;
- 	master->cleanup = omap2_mcspi_cleanup;
- 	master->dev.of_node = node;
-+	master->max_speed_hz = OMAP2_MCSPI_MAX_FREQ;
-+	master->min_speed_hz = OMAP2_MCSPI_MAX_FREQ >> 15;
- 
- 	platform_set_drvdata(pdev, master);
- 
--- 
-1.8.1.2
+Thanks!
 
+Emilio
 
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--=20
+You received this message because you are subscribed to the Google Groups "=
+linux-sunxi" group.
+To unsubscribe from this group and stop receiving emails from it, send an e=
+mail to linux-sunxi+unsubscribe-/JYPxA39Uh5TLH3MbocFF+G/Ez6ZCGd0@public.gmane.org
+For more options, visit https://groups.google.com/groups/opt_out.

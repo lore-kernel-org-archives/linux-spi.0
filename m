@@ -1,177 +1,55 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [RFT][PATCH v2] spi: clps711x: refactor to use core message parsing
-Date: Tue, 18 Feb 2014 09:31:29 +0800
-Message-ID: <1392687089.5047.1.camel@phoenix>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: mpc512x-psc: Remove redundant code to get bus_num
+ from DT
+Date: Tue, 18 Feb 2014 11:04:23 +0900
+Message-ID: <20140218020423.GH2669@sirena.org.uk>
+References: <1392518598.18192.3.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="cKDw3XFoqocuprIa"
+Cc: Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>, Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1392518598.18192.3.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Convert to use default implementation of transfer_one_message() which provides
-standard handling of delays and chip select management.
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
-v2: Remove spi_clps711x_set_cs() as it is done by spi core
- drivers/spi/spi-clps711x.c | 82 +++++++++++++++++-----------------------------
- 1 file changed, 30 insertions(+), 52 deletions(-)
+--cKDw3XFoqocuprIa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index f973e97..e07d1b0 100644
---- a/drivers/spi/spi-clps711x.c
-+++ b/drivers/spi/spi-clps711x.c
-@@ -24,8 +24,6 @@
- #define DRIVER_NAME	"spi-clps711x"
- 
- struct spi_clps711x_data {
--	struct completion	done;
--
- 	struct clk		*spi_clk;
- 	u32			max_speed_hz;
- 
-@@ -43,15 +41,6 @@ static int spi_clps711x_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static void spi_clps711x_setup_mode(struct spi_device *spi)
--{
--	/* Setup edge for transfer */
--	if (spi->mode & SPI_CPHA)
--		clps_writew(clps_readw(SYSCON3) | SYSCON3_ADCCKNSEN, SYSCON3);
--	else
--		clps_writew(clps_readw(SYSCON3) & ~SYSCON3_ADCCKNSEN, SYSCON3);
--}
--
- static void spi_clps711x_setup_xfer(struct spi_device *spi,
- 				    struct spi_transfer *xfer)
- {
-@@ -73,55 +62,44 @@ static void spi_clps711x_setup_xfer(struct spi_device *spi,
- 			    SYSCON1_ADCKSEL(0), SYSCON1);
- }
- 
--static int spi_clps711x_transfer_one_message(struct spi_master *master,
--					     struct spi_message *msg)
-+static int spi_clps711x_prepare_message(struct spi_master *master,
-+					struct spi_message *msg)
- {
--	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
- 	struct spi_device *spi = msg->spi;
--	struct spi_transfer *xfer;
--
--	spi_clps711x_setup_mode(spi);
--
--	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--		u8 data;
--
--		spi_clps711x_setup_xfer(spi, xfer);
- 
--		gpio_set_value(spi->cs_gpio, !!(spi->mode & SPI_CS_HIGH));
--
--		reinit_completion(&hw->done);
--
--		hw->len = xfer->len;
--		hw->bpw = xfer->bits_per_word ? : spi->bits_per_word;
--		hw->tx_buf = (u8 *)xfer->tx_buf;
--		hw->rx_buf = (u8 *)xfer->rx_buf;
--
--		/* Initiate transfer */
--		data = hw->tx_buf ? *hw->tx_buf++ : 0;
--		clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN,
--			    SYNCIO);
--
--		wait_for_completion(&hw->done);
-+	/* Setup edge for transfer */
-+	if (spi->mode & SPI_CPHA)
-+		clps_writew(clps_readw(SYSCON3) | SYSCON3_ADCCKNSEN, SYSCON3);
-+	else
-+		clps_writew(clps_readw(SYSCON3) & ~SYSCON3_ADCCKNSEN, SYSCON3);
- 
--		if (xfer->delay_usecs)
--			udelay(xfer->delay_usecs);
-+	return 0;
-+}
- 
--		if (xfer->cs_change ||
--		    list_is_last(&xfer->transfer_list, &msg->transfers))
--			gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
-+static int spi_clps711x_transfer_one(struct spi_master *master,
-+				     struct spi_device *spi,
-+				     struct spi_transfer *xfer)
-+{
-+	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
-+	u8 data;
- 
--		msg->actual_length += xfer->len;
--	}
-+	spi_clps711x_setup_xfer(spi, xfer);
- 
--	msg->status = 0;
--	spi_finalize_current_message(master);
-+	hw->len = xfer->len;
-+	hw->bpw = xfer->bits_per_word ? : spi->bits_per_word;
-+	hw->tx_buf = (u8 *)xfer->tx_buf;
-+	hw->rx_buf = (u8 *)xfer->rx_buf;
- 
--	return 0;
-+	/* Initiate transfer */
-+	data = hw->tx_buf ? *hw->tx_buf++ : 0;
-+	clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN, SYNCIO);
-+	return 1;
- }
- 
- static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
- {
--	struct spi_clps711x_data *hw = (struct spi_clps711x_data *)dev_id;
-+	struct spi_master *master = dev_id;
-+	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
- 	u8 data;
- 
- 	/* Handle RX */
-@@ -135,7 +113,7 @@ static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
- 		clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN,
- 			    SYNCIO);
- 	} else
--		complete(&hw->done);
-+		complete(&master->xfer_completion);
- 
- 	return IRQ_HANDLED;
- }
-@@ -173,7 +151,8 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(1, 8);
- 	master->num_chipselect = pdata->num_chipselect;
- 	master->setup = spi_clps711x_setup;
--	master->transfer_one_message = spi_clps711x_transfer_one_message;
-+	master->prepare_message = spi_clps711x_prepare_message;
-+	master->transfer_one = spi_clps711x_transfer_one;
- 
- 	hw = spi_master_get_devdata(master);
- 
-@@ -199,7 +178,6 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	}
- 	hw->max_speed_hz = clk_get_rate(hw->spi_clk);
- 
--	init_completion(&hw->done);
- 	platform_set_drvdata(pdev, master);
- 
- 	/* Disable extended mode due hardware problems */
-@@ -209,7 +187,7 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	clps_readl(SYNCIO);
- 
- 	ret = devm_request_irq(&pdev->dev, IRQ_SSEOTI, spi_clps711x_isr, 0,
--			       dev_name(&pdev->dev), hw);
-+			       dev_name(&pdev->dev), master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Can't request IRQ\n");
- 		goto err_out;
--- 
-1.8.1.2
+On Sun, Feb 16, 2014 at 10:43:18AM +0800, Axel Lin wrote:
+> For DT case, spi core will call of_alias_get_id() and set master->bus_num if it
+> was not set.
 
+Applied, thanks.
 
+--cKDw3XFoqocuprIa
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTAr+kAAoJELSic+t+oim9H/YP/2z87bU8qBZTWPL6g/In+0An
+2Gz+Zd9MneZiRDDgUA8kOn32lRVL+lULE0od/h46a6XJeGOM8vwpDpmwNdgOg+45
+HcpEGhD9Fo4IIgBfvS55EIQ7rAS3q/M5WTMfPUBwcp077VaykLHxGmIa16/GV6HY
+F0HSfMNE8PvYeMwIlycc9kjG75ZPMWkitpE0CI1KwqtPIcWrtFVG51ZdHf1Lced8
+vWHuYObcDI1b+Yj0GvOAzgnwBJYacQnCFJM3hTCcmajsHxQ2UMCYntUoxaIaTWEP
+sg3+QjbzHRJVsmv/imgK3aca+Nz84vQPBFv+MPj/n9Z9NLuz9712q4bXBxZs5sy3
+pT6sc3IqP2OW0UYP/+hf5FVb9mE963IVuLNUrVNjreZwDcD5OnkXj501JRCZVT10
+DI/SAP468k4lg/FFaUcOckjH/iKvC9QqHSdmTapa8GrnDQJvA3cwsMVD/iRN1luX
+Vf5aG9uiei6q7X9uptYS9NT/QSVS3gPUV02DySU/XZYnZNkHRKycPukLMeTQT1Kk
+EfEuv8BxcEi6fN0aUhUvJ1THla1BHDBGNnH2G+VMeyTMZR0SfsBbGc9IL2nN654Y
+0ZPR6uCCM5d/pWChkUa+imgZ28iNOmBxz+iL0NN8xG0hsl8ivYHENM+TgIDr87qu
+hzBOivjkr0LMhhdVwWYa
+=C4N3
+-----END PGP SIGNATURE-----
+
+--cKDw3XFoqocuprIa--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

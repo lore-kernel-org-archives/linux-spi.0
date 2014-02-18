@@ -1,73 +1,178 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2] spi: core: Validate lenght of the transfers in message
-Date: Tue, 18 Feb 2014 09:09:38 +0900
-Message-ID: <20140218000938.GE2669@sirena.org.uk>
-References: <1392444566-23605-1-git-send-email-iivanov@mm-sol.com>
- <20140216142512.GR4524@book.gsilab.sittig.org>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [RFT][PATCH v2] spi: clps711x: refactor to use core message parsing
+Date: Tue, 18 Feb 2014 09:31:29 +0800
+Message-ID: <1392687089.5047.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="xJK8B5Wah2CMJs8h"
-Cc: "Ivan T. Ivanov" <iivanov@mm-sol.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Gerhard Sittig <gsi@denx.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20140216142512.GR4524@book.gsilab.sittig.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Convert to use default implementation of transfer_one_message() which provides
+standard handling of delays and chip select management.
+
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+v2: Remove spi_clps711x_set_cs() as it is done by spi core
+ drivers/spi/spi-clps711x.c | 82 +++++++++++++++++-----------------------------
+ 1 file changed, 30 insertions(+), 52 deletions(-)
+
+diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
+index f973e97..e07d1b0 100644
+--- a/drivers/spi/spi-clps711x.c
++++ b/drivers/spi/spi-clps711x.c
+@@ -24,8 +24,6 @@
+ #define DRIVER_NAME	"spi-clps711x"
+ 
+ struct spi_clps711x_data {
+-	struct completion	done;
+-
+ 	struct clk		*spi_clk;
+ 	u32			max_speed_hz;
+ 
+@@ -43,15 +41,6 @@ static int spi_clps711x_setup(struct spi_device *spi)
+ 	return 0;
+ }
+ 
+-static void spi_clps711x_setup_mode(struct spi_device *spi)
+-{
+-	/* Setup edge for transfer */
+-	if (spi->mode & SPI_CPHA)
+-		clps_writew(clps_readw(SYSCON3) | SYSCON3_ADCCKNSEN, SYSCON3);
+-	else
+-		clps_writew(clps_readw(SYSCON3) & ~SYSCON3_ADCCKNSEN, SYSCON3);
+-}
+-
+ static void spi_clps711x_setup_xfer(struct spi_device *spi,
+ 				    struct spi_transfer *xfer)
+ {
+@@ -73,55 +62,44 @@ static void spi_clps711x_setup_xfer(struct spi_device *spi,
+ 			    SYSCON1_ADCKSEL(0), SYSCON1);
+ }
+ 
+-static int spi_clps711x_transfer_one_message(struct spi_master *master,
+-					     struct spi_message *msg)
++static int spi_clps711x_prepare_message(struct spi_master *master,
++					struct spi_message *msg)
+ {
+-	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
+ 	struct spi_device *spi = msg->spi;
+-	struct spi_transfer *xfer;
+-
+-	spi_clps711x_setup_mode(spi);
+-
+-	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+-		u8 data;
+-
+-		spi_clps711x_setup_xfer(spi, xfer);
+ 
+-		gpio_set_value(spi->cs_gpio, !!(spi->mode & SPI_CS_HIGH));
+-
+-		reinit_completion(&hw->done);
+-
+-		hw->len = xfer->len;
+-		hw->bpw = xfer->bits_per_word ? : spi->bits_per_word;
+-		hw->tx_buf = (u8 *)xfer->tx_buf;
+-		hw->rx_buf = (u8 *)xfer->rx_buf;
+-
+-		/* Initiate transfer */
+-		data = hw->tx_buf ? *hw->tx_buf++ : 0;
+-		clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN,
+-			    SYNCIO);
+-
+-		wait_for_completion(&hw->done);
++	/* Setup edge for transfer */
++	if (spi->mode & SPI_CPHA)
++		clps_writew(clps_readw(SYSCON3) | SYSCON3_ADCCKNSEN, SYSCON3);
++	else
++		clps_writew(clps_readw(SYSCON3) & ~SYSCON3_ADCCKNSEN, SYSCON3);
+ 
+-		if (xfer->delay_usecs)
+-			udelay(xfer->delay_usecs);
++	return 0;
++}
+ 
+-		if (xfer->cs_change ||
+-		    list_is_last(&xfer->transfer_list, &msg->transfers))
+-			gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
++static int spi_clps711x_transfer_one(struct spi_master *master,
++				     struct spi_device *spi,
++				     struct spi_transfer *xfer)
++{
++	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
++	u8 data;
+ 
+-		msg->actual_length += xfer->len;
+-	}
++	spi_clps711x_setup_xfer(spi, xfer);
+ 
+-	msg->status = 0;
+-	spi_finalize_current_message(master);
++	hw->len = xfer->len;
++	hw->bpw = xfer->bits_per_word ? : spi->bits_per_word;
++	hw->tx_buf = (u8 *)xfer->tx_buf;
++	hw->rx_buf = (u8 *)xfer->rx_buf;
+ 
+-	return 0;
++	/* Initiate transfer */
++	data = hw->tx_buf ? *hw->tx_buf++ : 0;
++	clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN, SYNCIO);
++	return 1;
+ }
+ 
+ static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
+ {
+-	struct spi_clps711x_data *hw = (struct spi_clps711x_data *)dev_id;
++	struct spi_master *master = dev_id;
++	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
+ 	u8 data;
+ 
+ 	/* Handle RX */
+@@ -135,7 +113,7 @@ static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
+ 		clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN,
+ 			    SYNCIO);
+ 	} else
+-		complete(&hw->done);
++		complete(&master->xfer_completion);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -173,7 +151,8 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(1, 8);
+ 	master->num_chipselect = pdata->num_chipselect;
+ 	master->setup = spi_clps711x_setup;
+-	master->transfer_one_message = spi_clps711x_transfer_one_message;
++	master->prepare_message = spi_clps711x_prepare_message;
++	master->transfer_one = spi_clps711x_transfer_one;
+ 
+ 	hw = spi_master_get_devdata(master);
+ 
+@@ -199,7 +178,6 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 	}
+ 	hw->max_speed_hz = clk_get_rate(hw->spi_clk);
+ 
+-	init_completion(&hw->done);
+ 	platform_set_drvdata(pdev, master);
+ 
+ 	/* Disable extended mode due hardware problems */
+@@ -209,7 +187,7 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 	clps_readl(SYNCIO);
+ 
+ 	ret = devm_request_irq(&pdev->dev, IRQ_SSEOTI, spi_clps711x_isr, 0,
+-			       dev_name(&pdev->dev), hw);
++			       dev_name(&pdev->dev), master);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Can't request IRQ\n");
+ 		goto err_out;
+-- 
+1.8.1.2
 
 
---xJK8B5Wah2CMJs8h
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Sun, Feb 16, 2014 at 03:25:12PM +0100, Gerhard Sittig wrote:
-> On Sat, Feb 15, 2014 at 08:09 +0200, Ivan T. Ivanov wrote:
-
-> - the total length of the SPI transfer cannot be empty (which I'd
->   consider an optimization, not a violation, and may need a
->   separate discussion)
-
-We probably want to allow that for people doing fun stuff with cs_change
-though I'm not convinced anything doing that is actually a good idea.
-
-> - the total length of the SPI transfer must be such that each
->   "word" must be provided within a full 1/2/4 byte entity, with
->   padding bits if the bits-per-word is "odd"
-
-> Is this a misunderstanding on my side?  A terminology thing?  To
-> me, the "SPI transfer" is the total payload and may have any
-> arbitrary length.  What you check for is a constraint on the
-> transfer's length derived from or based on the "word length"
-> ('word' in SPI context).
-
-> So the code may be appropriate, yet the description may need an
-> update, to not have the next person ask the same questions again.
-
-It seems fairly clear to me - if we're transferring 16 bit words we need
-the transfer to me a multiple of 16 bits and so on?  The requirement for
-padding is unclear I have to say.
-
---xJK8B5Wah2CMJs8h
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTAqS+AAoJELSic+t+oim92RUP/2YvBAHKWr2T3U8Xft3gbVdB
-B+FkgEIansZdOCHzqPIbrnXgEHhS16+0qjWa9/aD4EBxrAFI0hz0GptDZS+tbf93
-X+uX8dGRZaDOp1QvNQmJjWCTualTOZiaDBmpLRKq8p39wJv6Hd5Bt02F3UJQ69Mn
-N9DWImmFWf32BVeuf0fwKom7XJWld5iAf4PpwDrRlzKumCDfqcAiB8wPiCwlAlwm
-w9EbiCYhM4fcJQFStPmZPXTYgH86oj0gi/e5kKw+lUaEIybILSJAAidpngMudSoJ
-6R0lzQu77bTtb/gQ+UsiwrOCos5Q3dUenkvqdIaQEDZtVgzl6XSGh3zNqx7jfyd/
-HCHL0O8DtnGzJxDXY2ZLea6dnYZmsEZTvuSuDoML43wJYk+I3gZoL7KzrLlCHkWK
-adZm2cBoot2NO5pfuxE294/WICSUE22KkYU7e+h1UFkpXd6T9jODkBo75OUX7FRH
-Ypz8kGLZ7XDmz22o2S244hPTfbs1xpGw0kwuuP/S3TatyRJKzzVfNYKGE2GX+Xat
-gwblF5P0m3XJ+UzAh5t4P6B9GCCdR3XocQv+d8JF+/7hVYPj+p8e8uwLwQ4Gdc1K
-1dbdyC4mIqkw5DU1A1EaSdQVO2/kfTxf5pDgkznFr3Tc+fqxrPWMmpSa5xOPJhUB
-TsRjXJWxJ3PEI6zbszje
-=/2FT
------END PGP SIGNATURE-----
-
---xJK8B5Wah2CMJs8h--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

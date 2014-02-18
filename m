@@ -1,178 +1,71 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [RFT][PATCH v3] spi: clps711x: Refactor to use core message parsing
-Date: Tue, 18 Feb 2014 17:15:54 +0800
-Message-ID: <1392714954.25855.1.camel@phoenix>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: spi: Provide core support for full duplex devices
+Date: Tue, 18 Feb 2014 10:59:09 +0100
+Message-ID: <CAMuHMdWkPxp2U=Xz=wWu70RPxj+4GGCyifdPv=xL=47cz_upBw@mail.gmail.com>
+References: <CAMuHMdUY+XEqKYh7mMOYUV18PpR+7SFw+BEUFh-9yL=H6reQkA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAMuHMdUY+XEqKYh7mMOYUV18PpR+7SFw+BEUFh-9yL=H6reQkA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Convert to use default implementation of transfer_one_message() which provides
-standard handling of delays and chip select management.
+Hi Mark,
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
-v3: Use spi_finalize_current_transfer
-v2: Remove spi_clps711x_set_cs() as it is done by spi core
- drivers/spi/spi-clps711x.c | 82 +++++++++++++++++-----------------------------
- 1 file changed, 30 insertions(+), 52 deletions(-)
+On Thu, Feb 6, 2014 at 1:56 PM, Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
+> I found this in your for-next branch:
+>
+> commit 3a2eba9bd0a6447dfbc01635e4cd0689f5f2bdad
+> Author: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> Date:   Tue Jan 28 20:17:03 2014 +0000
+>
+>     spi: Provide core support for full duplex devices
+>
+> If I'm not mistaken, you forgot to email this out to linux-spi?
+>
+> I'll see whether I can make use of this in the RSPI driver.
 
-diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index f973e97..3900c31 100644
---- a/drivers/spi/spi-clps711x.c
-+++ b/drivers/spi/spi-clps711x.c
-@@ -24,8 +24,6 @@
- #define DRIVER_NAME	"spi-clps711x"
- 
- struct spi_clps711x_data {
--	struct completion	done;
--
- 	struct clk		*spi_clk;
- 	u32			max_speed_hz;
- 
-@@ -43,15 +41,6 @@ static int spi_clps711x_setup(struct spi_device *spi)
- 	return 0;
- }
- 
--static void spi_clps711x_setup_mode(struct spi_device *spi)
--{
--	/* Setup edge for transfer */
--	if (spi->mode & SPI_CPHA)
--		clps_writew(clps_readw(SYSCON3) | SYSCON3_ADCCKNSEN, SYSCON3);
--	else
--		clps_writew(clps_readw(SYSCON3) & ~SYSCON3_ADCCKNSEN, SYSCON3);
--}
--
- static void spi_clps711x_setup_xfer(struct spi_device *spi,
- 				    struct spi_transfer *xfer)
- {
-@@ -73,55 +62,44 @@ static void spi_clps711x_setup_xfer(struct spi_device *spi,
- 			    SYSCON1_ADCKSEL(0), SYSCON1);
- }
- 
--static int spi_clps711x_transfer_one_message(struct spi_master *master,
--					     struct spi_message *msg)
-+static int spi_clps711x_prepare_message(struct spi_master *master,
-+					struct spi_message *msg)
- {
--	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
- 	struct spi_device *spi = msg->spi;
--	struct spi_transfer *xfer;
--
--	spi_clps711x_setup_mode(spi);
--
--	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--		u8 data;
--
--		spi_clps711x_setup_xfer(spi, xfer);
- 
--		gpio_set_value(spi->cs_gpio, !!(spi->mode & SPI_CS_HIGH));
--
--		reinit_completion(&hw->done);
--
--		hw->len = xfer->len;
--		hw->bpw = xfer->bits_per_word ? : spi->bits_per_word;
--		hw->tx_buf = (u8 *)xfer->tx_buf;
--		hw->rx_buf = (u8 *)xfer->rx_buf;
--
--		/* Initiate transfer */
--		data = hw->tx_buf ? *hw->tx_buf++ : 0;
--		clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN,
--			    SYNCIO);
--
--		wait_for_completion(&hw->done);
-+	/* Setup edge for transfer */
-+	if (spi->mode & SPI_CPHA)
-+		clps_writew(clps_readw(SYSCON3) | SYSCON3_ADCCKNSEN, SYSCON3);
-+	else
-+		clps_writew(clps_readw(SYSCON3) & ~SYSCON3_ADCCKNSEN, SYSCON3);
- 
--		if (xfer->delay_usecs)
--			udelay(xfer->delay_usecs);
-+	return 0;
-+}
- 
--		if (xfer->cs_change ||
--		    list_is_last(&xfer->transfer_list, &msg->transfers))
--			gpio_set_value(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
-+static int spi_clps711x_transfer_one(struct spi_master *master,
-+				     struct spi_device *spi,
-+				     struct spi_transfer *xfer)
-+{
-+	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
-+	u8 data;
- 
--		msg->actual_length += xfer->len;
--	}
-+	spi_clps711x_setup_xfer(spi, xfer);
- 
--	msg->status = 0;
--	spi_finalize_current_message(master);
-+	hw->len = xfer->len;
-+	hw->bpw = xfer->bits_per_word ? : spi->bits_per_word;
-+	hw->tx_buf = (u8 *)xfer->tx_buf;
-+	hw->rx_buf = (u8 *)xfer->rx_buf;
- 
--	return 0;
-+	/* Initiate transfer */
-+	data = hw->tx_buf ? *hw->tx_buf++ : 0;
-+	clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN, SYNCIO);
-+	return 1;
- }
- 
- static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
- {
--	struct spi_clps711x_data *hw = (struct spi_clps711x_data *)dev_id;
-+	struct spi_master *master = dev_id;
-+	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
- 	u8 data;
- 
- 	/* Handle RX */
-@@ -135,7 +113,7 @@ static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
- 		clps_writel(data | SYNCIO_FRMLEN(hw->bpw) | SYNCIO_TXFRMEN,
- 			    SYNCIO);
- 	} else
--		complete(&hw->done);
-+		spi_finalize_current_transfer(master);
- 
- 	return IRQ_HANDLED;
- }
-@@ -173,7 +151,8 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(1, 8);
- 	master->num_chipselect = pdata->num_chipselect;
- 	master->setup = spi_clps711x_setup;
--	master->transfer_one_message = spi_clps711x_transfer_one_message;
-+	master->prepare_message = spi_clps711x_prepare_message;
-+	master->transfer_one = spi_clps711x_transfer_one;
- 
- 	hw = spi_master_get_devdata(master);
- 
-@@ -199,7 +178,6 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	}
- 	hw->max_speed_hz = clk_get_rate(hw->spi_clk);
- 
--	init_completion(&hw->done);
- 	platform_set_drvdata(pdev, master);
- 
- 	/* Disable extended mode due hardware problems */
-@@ -209,7 +187,7 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	clps_readl(SYNCIO);
- 
- 	ret = devm_request_irq(&pdev->dev, IRQ_SSEOTI, spi_clps711x_isr, 0,
--			       dev_name(&pdev->dev), hw);
-+			       dev_name(&pdev->dev), master);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Can't request IRQ\n");
- 		goto err_out;
--- 
-1.8.1.2
+I gave it a quick try, with RSPI single transfers.
 
+For Dual/Quad transfers, which are half-duplex, the buffer pointer for the
+unused direction must be NULL, so the driver knows in which direction to
+transfer. Hence SPI_MASTER_MUST_TX cannot be set for Dual/Quad
+capable SPI master.
 
+I'm also worried about the buffer allocation. With m25p80 and mtchar, the
+transfer buffer can be quite large (up to 4 MiB in my case), and this can be
+triggered from userspace.
 
+While mtdchar uses mtd_kmalloc_up_to(), and reduces the temporary
+buffer size under memory pressure, the SPI core must always allocate a
+buffer of the matching size. This may fail.
+
+It's also a little bit slower (O(20 ms) for 1 MiB read), due to the overhead of
+calling krealloc(), and zeroing the dummy buffer.
+
+Alternatively, to avoid the memory allocation, you could zero rx_buf,
+and use rx_buf for both tx and rx? That may break some DMA setups,
+though.
+
+Concluding, for PIO mode, I'm still in favor of using
+
+    data = tx_buf ? *tx_buf++ : DUMMY_DATA;
+
+in the SPI master driver itself.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

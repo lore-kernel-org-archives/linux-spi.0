@@ -1,167 +1,68 @@
-From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: [PATCH V2 07/17] spi: pl022: Don't ignore power domain and amba bus at system suspend
-Date: Wed, 19 Feb 2014 15:33:38 +0100
-Message-ID: <1392820418-6972-1-git-send-email-ulf.hansson@linaro.org>
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 06/17] spi: pl022: Let runtime PM callbacks be available
+ for CONFIG_PM
+Date: Thu, 20 Feb 2014 00:10:40 +0900
+Message-ID: <20140219151040.GH2669@sirena.org.uk>
+References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+ <1391529538-21685-7-git-send-email-ulf.hansson@linaro.org>
+ <CAPDyKFombL2-Rt46QpXPNWe5PeGQnOGmQQNfYd5MdYdEePn-4w@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="4FPEP2OQoJToMU+c"
+Cc: Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
 	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
 	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-mmc <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFombL2-Rt46QpXPNWe5PeGQnOGmQQNfYd5MdYdEePn-4w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Due to the available runtime PM callbacks for CONFIG_PM, we are now
-able to put the device into complete low power state at system suspend.
 
-Previously only the resources controlled by the driver were put into
-low power state at system suspend. Both the amba bus and a potential
-power domain were ignored, which now isn't the case any more.
+--4FPEP2OQoJToMU+c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Moreover, putting the device into low power state couldn't be done
-without first bringing it back to full power. This constraint don't
-exists any more.
+On Wed, Feb 19, 2014 at 03:20:07PM +0100, Ulf Hansson wrote:
 
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
+> Also note that, Russell has already applied the corresponding part in
+> the amba bus (patch 1)
 
-Changes in v2:
-	Rebased on top of latest spi-pl022 patches.
+Why would this depend on an AMBA patch and if it does surely the two
+need to be merged together somehow?
 
-	Note, currently this patch shall not be applied since first we want
-	to sort out the result from another patch to the PM core.
-	http://marc.info/?l=linux-pm&m=139228211505423&w=2
+--4FPEP2OQoJToMU+c
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
----
- drivers/spi/spi-pl022.c |   74 +++++++++++++++++++++++------------------------
- 1 file changed, 37 insertions(+), 37 deletions(-)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 6dfcabf..7b016a2 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -2277,35 +2277,7 @@ pl022_remove(struct amba_device *adev)
- 	return 0;
- }
- 
--#ifdef CONFIG_PM
--/*
-- * These two functions are used from both suspend/resume and
-- * the runtime counterparts to handle external resources like
-- * clocks, pins and regulators when going to sleep.
-- */
--static void pl022_suspend_resources(struct pl022 *pl022, bool runtime)
--{
--	clk_disable_unprepare(pl022->clk);
--
--	if (runtime)
--		pinctrl_pm_select_idle_state(&pl022->adev->dev);
--	else
--		pinctrl_pm_select_sleep_state(&pl022->adev->dev);
--}
--
--static void pl022_resume_resources(struct pl022 *pl022, bool runtime)
--{
--	/* First go to the default state */
--	pinctrl_pm_select_default_state(&pl022->adev->dev);
--	if (!runtime)
--		/* Then let's idle the pins until the next transfer happens */
--		pinctrl_pm_select_idle_state(&pl022->adev->dev);
--
--	clk_prepare_enable(pl022->clk);
--}
--#endif
--
--#ifdef CONFIG_SUSPEND
-+#ifdef CONFIG_PM_SLEEP
- static int pl022_suspend(struct device *dev)
- {
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
-@@ -2317,8 +2289,23 @@ static int pl022_suspend(struct device *dev)
- 		return ret;
- 	}
- 
--	pm_runtime_get_sync(dev);
--	pl022_suspend_resources(pl022, false);
-+	pm_runtime_disable(dev);
-+
-+	if (!pm_runtime_status_suspended(dev)) {
-+		if (dev->pm_domain && dev->pm_domain->ops.runtime_suspend)
-+			ret = dev->pm_domain->ops.runtime_suspend(dev);
-+		else
-+			ret = dev->bus->pm->runtime_suspend(dev);
-+
-+		if (ret) {
-+			pm_runtime_enable(dev);
-+			return ret;
-+		}
-+
-+		pm_runtime_set_suspended(dev);
-+	}
-+
-+	pinctrl_pm_select_sleep_state(dev);
- 
- 	dev_dbg(dev, "suspended\n");
- 	return 0;
-@@ -2327,10 +2314,19 @@ static int pl022_suspend(struct device *dev)
- static int pl022_resume(struct device *dev)
- {
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
--	int ret;
-+	int ret = 0;
- 
--	pl022_resume_resources(pl022, false);
--	pm_runtime_put(dev);
-+	if (dev->pm_domain && dev->pm_domain->ops.runtime_resume)
-+		ret = dev->pm_domain->ops.runtime_resume(dev);
-+	else
-+		ret = dev->bus->pm->runtime_resume(dev);
-+
-+	if (ret)
-+		dev_err(dev, "problem resuming\n");
-+	else
-+		pm_runtime_set_active(dev);
-+
-+	pm_runtime_enable(dev);
- 
- 	/* Start the queue running */
- 	ret = spi_master_resume(pl022->master);
-@@ -2341,14 +2337,16 @@ static int pl022_resume(struct device *dev)
- 
- 	return ret;
- }
--#endif	/* CONFIG_PM */
-+#endif
- 
- #ifdef CONFIG_PM
- static int pl022_runtime_suspend(struct device *dev)
- {
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
- 
--	pl022_suspend_resources(pl022, true);
-+	clk_disable(pl022->clk);
-+	pinctrl_pm_select_idle_state(dev);
-+
- 	return 0;
- }
- 
-@@ -2356,7 +2354,9 @@ static int pl022_runtime_resume(struct device *dev)
- {
- 	struct pl022 *pl022 = dev_get_drvdata(dev);
- 
--	pl022_resume_resources(pl022, true);
-+	pinctrl_pm_select_default_state(dev);
-+	clk_enable(pl022->clk);
-+
- 	return 0;
- }
- #endif
--- 
-1.7.9.5
+iQIcBAEBAgAGBQJTBMltAAoJELSic+t+oim99zkP/j/xXWSCyg6KeVYXGT17LNZl
+Ahj9b7lhCX9OQ+Ck3pUTLZPIcna7v/6nTjYRh1cW/nPj6vyjqmidlATEQqy6Lz+n
+TmfxUIPy9pVFYfHF+nJTZa2LJa57COlwShCOwTqiws3H+zaX8+VBNRC72ockUoH/
+6t58ir29hbingGybeKL9K/cM3Gq4juAQ9BsJhGuUrntNRSdQfeNpYJZc6igmz6TD
+rw/uQ0uaHDleSs+LlRf87VqxfRYYXFEIAKunHctLV61PQoKcWxGMgOIKwBcA+gVh
+MBji3dJS2zT5OhokKd51y+e8E2a9mFeohudxHBHFSk4lAXLGTRMf5GcnlsySuHud
+8RkyH2B/fwVdmVjF7x4qlhPfQs5MvDhghPXpTYyB4kOurtJ01qrXW7lj6Nos6Yfn
+4LZqjwoQRmyjdWXVFjXq5bc2CHzM096PYuqsR5m85aYHKwyMCWFbHx/MEgsfeKcr
+jLD3RYaxMVHCUhy7wzSi+FONpawa0YW7WXPsdIWiwW/ei7jzZNJENNVtAX5QBT1g
+WLOShXyX6npWKTgvR4ektWEAWlMFiZeYJIq7s9Kwz+v8bhXVTcTTAQhKZKl5U8gi
+3DUvUZR6ml/l4dB82NU6j3zN0kiKwJJM9cza0tu+5EBP//J8h6y+KlVAdBYOYfSi
+ULKfGg33W/QJxcFMkVpt
+=Cboj
+-----END PGP SIGNATURE-----
 
+--4FPEP2OQoJToMU+c--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

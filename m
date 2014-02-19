@@ -1,43 +1,49 @@
-From: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
-Subject: [PATCH 1/3] spi-topcliff-pch: Transform noisy message to dev_dbg
-Date: Wed, 19 Feb 2014 10:36:07 +0100
-Message-ID: <1392802569-11148-1-git-send-email-alexander.stein@systec-electronic.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: =?UTF-8?B?UmU6IE5ldyBidWc/?=
+Date: Wed, 19 Feb 2014 15:20:49 +0400
+Message-ID: <1392808849.211941090@f415.i.mail.ru>
+References: <1392795133.984411895@f316.i.mail.ru>
+ <CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog@mail.gmail.com>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+Cc: =?UTF-8?B?bGludXgtc3Bp?= <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	=?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: =?UTF-8?B?R2VlcnQgVXl0dGVyaG9ldmVu?= <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If during a SPI transfer with len larger than PCH_MAX_FIFO_DEPTH and the
-IRQ handler happens to be called when the transmit FIFO is already empty,
-and SPSR_FI_BIT is set consequently, the message
-"spi_master spi32766: pch_spi_handler_sub : Transfer is not completed"
-is spammed to the systemlog, because tx_index has already increased
-further due to the next bytes to be written. This case is uncritical as
-new bytes have already been written.
-
-Signed-off-by: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
----
- drivers/spi/spi-topcliff-pch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index 4461313..d038a7b 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -332,7 +332,7 @@ static void pch_spi_handler_sub(struct pch_spi_data *data, u32 reg_spsr_val,
- 				data->transfer_active = false;
- 				wake_up(&data->wait);
- 			} else {
--				dev_err(&data->master->dev,
-+				dev_dbg(&data->master->dev,
- 					"%s : Transfer is not completed",
- 					__func__);
- 			}
--- 
-1.8.3.2
-
+0KHRgNC10LTQsCwgMTkg0YTQtdCy0YDQsNC70Y8gMjAxNCwgODo0NSArMDE6MDAg0L7RgiBHZWVy
+dCBVeXR0ZXJob2V2ZW4gPGdlZXJ0QGxpbnV4LW02OGsub3JnPjoKPiBPbiBXZWQsIEZlYiAxOSwg
+MjAxNCBhdCA4OjMyIEFNLCBBbGV4YW5kZXIgU2hpeWFuIDxzaGNfd29ya0BtYWlsLnJ1PiB3cm90
+ZToKPiA+IER1cmluZyB0ZXN0aW5nIGZ1bmN0aW9ucyB0cmFuc2Zlcl9vbmUoKSwgc3R1bWJsZWQg
+dXBvbiBhbiBlcnJvci4KPiA+IEknbSB1c2luZyBrZXJuZWwgMy4xMywgc28gSSBoYWQgdG8gYXBw
+bHkgYSBwYXRjaCBmcm9tIHVwc3RyZWFtCj4gPiAoc3BpOiBjb3JlOiBGaXggdHJhbnNmZXIgZmFp
+bHVyZSB3aGVuIG1hc3Rlci0+dHJhbnNmZXJfb25lIHJldHVybnMgcG9zaXRpdmUgdmFsdWUpLgo+
+ID4gQWZ0ZXIgYXBwbHlpbmcgYWxsIGJlY29tZXMgbm9ybWFsIHdpdGggcHJvYmluZywgYnV0IHdo
+ZXJlIGRpZCB0aGUgZXJyb3IKPiA+ICJVbmFibGUgdG8gaGFuZGxlIGtlcm5lbCBOVUxMIHBvaW50
+ZXIgZGVyZWZlcmVuY2UiID8KPiA+IERpZCBzb21lb25lIGhhdmUgc2ltaWxhciBidWdzPwo+ID4K
+PiA+IFRoYW5rcy4KPiA+Cj4gPiBzcGlfbWFzdGVyIHNwaTA6IGZhaWxlZCB0byB0cmFuc2ZlciBv
+bmUgbWVzc2FnZSBmcm9tIHF1ZXVlOiAxCj4gPiA3NHgxNjQgc3BpMC4xOiBGYWlsZWQgd3JpdGlu
+ZzogMQo+ID4gNzR4MTY0OiBwcm9iZSBvZiBzcGkwLjEgZmFpbGVkIHdpdGggZXJyb3IgMQo+ID4g
+VW5hYmxlIHRvIGhhbmRsZSBrZXJuZWwgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlIGF0IHZpcnR1
+YWwgYWRkcmVzcyAwMDAwMDAyMAo+ID4gQ0FOIGRldmljZSBkcml2ZXIgaW50ZXJmYWNlCj4gPiBw
+Z2QgPSBjMDAyNDAwMAo+ID4gWzAwMDAwMDIwXSAqcGdkPTAwMDAwMDAwCj4gPiBJbnRlcm5hbCBl
+cnJvcjogT29wczogNjNjMTE4MDUgWyMxXSBQUkVFTVBUIEFSTQo+ID4gQ1BVOiAwIFBJRDogMjIg
+Q29tbTogc3BpMCBOb3QgdGFpbnRlZCAzLjEzLjMgIzEKPiA+IHRhc2s6IGMzOTZiMjYwIHRpOiBj
+Mzk2ZTAwMCB0YXNrLnRpOiBjMzk2ZTAwMAo+ID4gUEMgaXMgYXQgc3BpX3B1bXBfbWVzc2FnZXMr
+MHgxNTAvMHgxOTQKPiAKPiBIYXZlIHlvdSBhcHBsaWVkIG90aGVyIHBhdGNoZXMgZnJvbSB1cHN0
+cmVhbT8KPiAKPiBFLmcuIGUxMjBjYzBkY2YyODgwYTRjNWMwYTZjYjI3YjY1NTYwMGExY2ZhMWQg
+aW50cm9kdWNlZCBhIE5VTEwKPiBwb2ludGVyIGRlcmVmZXJlbmNlLCB3aXRoIGdvdCBmaXhlZCBi
+eQo+IDFmODAyZjgyNDlhMGRhNTM2ODc3ODQyYzQzYzcyMDQwNjRjNGRlOGIuCgpJdCBoZWxwZWQg
+bWUuIFRoYW5rcy4KCk1hcmssIElzIGFueSBjaGFuY2VzIHRvIHB1dCB0aGVzZSB0d28gcGF0Y2hl
+cyB0byAzLjEzLXN0YWJsZT8KKHNwaTogY29yZTogRml4IHRyYW5zZmVyIGZhaWx1cmUgd2hlbiBt
+YXN0ZXItPnRyYW5zZmVyX29uZSByZXR1cm5zIHBvc2l0aXZlIHZhbHVlKSwKKHNwaTogRml4IGNy
+YXNoIHdpdGggZG91YmxlIG1lc3NhZ2UgZmluYWxpc2F0aW9uIG9uIGVycm9yIGhhbmRsaW5nKQoK
+LS0tCg==
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

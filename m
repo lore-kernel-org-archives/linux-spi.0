@@ -1,86 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: spi: Provide core support for full duplex devices
-Date: Wed, 19 Feb 2014 22:04:07 +0900
-Message-ID: <20140219130407.GR2669@sirena.org.uk>
-References: <CAMuHMdUY+XEqKYh7mMOYUV18PpR+7SFw+BEUFh-9yL=H6reQkA@mail.gmail.com>
- <CAMuHMdWkPxp2U=Xz=wWu70RPxj+4GGCyifdPv=xL=47cz_upBw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] spi-topcliff-pch: Fix debug message
+Date: Wed, 19 Feb 2014 21:44:27 +0900
+Message-ID: <20140219124427.GQ2669@sirena.org.uk>
+References: <1392802569-11148-1-git-send-email-alexander.stein@systec-electronic.com>
+ <1392802569-11148-3-git-send-email-alexander.stein@systec-electronic.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="KHAtaOORvaARn5O0"
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="j/dCmPD2xgTAf6cP"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdWkPxp2U=Xz=wWu70RPxj+4GGCyifdPv=xL=47cz_upBw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1392802569-11148-3-git-send-email-alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---KHAtaOORvaARn5O0
+--j/dCmPD2xgTAf6cP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Feb 18, 2014 at 10:59:09AM +0100, Geert Uytterhoeven wrote:
+On Wed, Feb 19, 2014 at 10:36:09AM +0100, Alexander Stein wrote:
+> Signed-off-by: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
 
-> For Dual/Quad transfers, which are half-duplex, the buffer pointer for the
-> unused direction must be NULL, so the driver knows in which direction to
-> transfer. Hence SPI_MASTER_MUST_TX cannot be set for Dual/Quad
-> capable SPI master.
+Applied, thanks.  Please use subject lines consistent with the
+subsystem.
 
-This is a particularly thoughtless hardware design it has to be said.
-
-> I'm also worried about the buffer allocation. With m25p80 and mtchar, the
-> transfer buffer can be quite large (up to 4 MiB in my case), and this can be
-> triggered from userspace.
-
-That's readily fixable for DMA capable drivers, we can just repeatedly
-transfer the same page (or whatever).  PIO drivers have big problems
-with such large transfers anyway but could also easily have the transfer
-segmented for them in a similar way.  Once we do these things we ought
-to be able to avoid having to free the buffer on idle (though a memory
-pressure notifier is probably polite) which helps too.  What's there
-currently is very much a first pass implementation so things work,
-there's plenty of room for optimisation.
-
-> Alternatively, to avoid the memory allocation, you could zero rx_buf,
-> and use rx_buf for both tx and rx? That may break some DMA setups,
-> though.
-
-As you say it's not clever for DMA and means you have to do the memset()
-each time you use the buffer.
-
-> Concluding, for PIO mode, I'm still in favor of using
-
->     data = tx_buf ? *tx_buf++ : DUMMY_DATA;
-
-> in the SPI master driver itself.
-
-With the ternery operator for legibility of course.
-
---KHAtaOORvaARn5O0
+--j/dCmPD2xgTAf6cP
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTBKvEAAoJELSic+t+oim9F+0P/07D+bXTrnB8Oc19At48bPpi
-XZAeEnKE4TA0nFWxotiyS0cZuFBF6AWW296lVRcWdx/Swe+jDjTRQPaXtIKhsEyO
-84Qaj29+LCogGz0VRFYyzcqAaOrmhYlH1aJTgsUDJm4tOlYCeH5ZiKFgjXkkj8OV
-MVI3eNIz1NeOtfpcCOxk/iwczAOxVKlAa2SNVMzlfLzNGmEAQccYxutt7lSDFwXH
-ClIPMUYO8toeg/1RuZN5/Ymwb760vZECI40pbK3J34ZOYTn/TVIBwgXJGw4lCx+I
-tx+53VMXnax6XSSJ6QkafoHmm0BU+bdbuVjT2EtdEgfD1FiRCSZCeuSS2qtrImaJ
-NufrckA+HaYIVyUyRS4XQ0A2l8cuTrmJz+d0XP8iiW1HKG+/Ul28nmsD4RVuV1LC
-dy/AUDvOKNFJzie6eoWqFRPGh17l3hwOKfpde2/gVlCs+nIhcPcMEwWSawkxulCP
-PNwBYNiS4nChmrIcKy9bAgZugQHsO4AgHbH4Tg6QKuIQCSw2WRnBL3ML8NAV5Qhg
-Smf6Xm0MsNkMWpbA3JP6SoLsFsJCOK9vyY89lyJ3XJ4RU9PmG4Pq5XZh5OXMe/di
-JqDfL5xGom9Uf84N8tUwQzsDjYc3ZtddVafBb42hIR2nLzWpt+ZD8Hk7BN9yp/cf
-nq+3rcNrFusUtnrFBXLx
-=OXnF
+iQIcBAEBAgAGBQJTBKcoAAoJELSic+t+oim9GwYP/0rlFgZZZ5iMvvcN4ol8zU7Z
+0SBNZotlk0dCD2CqnjtFkwKvQLCakrR9d5pS8eJGtnWe0wD/Gj9S4NAiRJLxt1xQ
+ASPGC2X9e4P5tZzgqS9JGCiUw+hWELN/CODK0T5Qw3ZfYHmbi+E0QJQw+ayPlr9b
+oG1dcX0NI78NV7Od200OVZhoErgOrp84qXedA12/qUo/v09jI+BqiW2LXSJBjNuC
+f5HqJ92oGroFUdwfbSaxAq5lzT2GdueE5+7cL/nbcJhWoh5W/ZBDhXZI4snzeLGR
+3yfD4/iZ1bZ1eEO0THWTAaFDm6jjRFWSdLkHbVvQRYnpKcuru5vrxJfDdwgDvi3+
+aFQsJO1csRj5I8ZxMQd/akaKZhj+jXGBBtNEB5NO3LF8M9By/AqK1LiH/TBkG/H2
+TJQRX97BsZUQ6h6Kiz35KhDPX9zVvFbpl1eqbAQFXGXhnC1L6UHrCi7+AEnTDDmB
+1NR2SW720TcgNN1tNpawC+g8D2iZ1K6yVBRpo3MvQ403N+aWpTVurwqckoIVHZ12
+w+KjYwduMIhcwU9XaJQ+iw37Jc1RbXZnHcbSgquA/etrUVahBiwNl73lDVqznZ7s
+uPqc/P+5aZVemx77r3xeI6lXsBeIrtaT9UNBnD5+YJd2ned3HXyVW0i3eaah7xKt
+ZUMXnUkgDmrZnu528YA7
+=e4lm
 -----END PGP SIGNATURE-----
 
---KHAtaOORvaARn5O0--
+--j/dCmPD2xgTAf6cP--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

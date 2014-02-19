@@ -1,57 +1,56 @@
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: =?UTF-8?B?TmV3IGJ1Zz8=?=
-Date: Wed, 19 Feb 2014 11:32:13 +0400
-Message-ID: <1392795133.984411895@f316.i.mail.ru>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: New bug?
+Date: Wed, 19 Feb 2014 08:45:29 +0100
+Message-ID: <CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog@mail.gmail.com>
+References: <1392795133.984411895@f316.i.mail.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	=?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1392795133.984411895-P0ORxJMC3jVsdVUOrk1QfQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-SGVsbG8uCgpEdXJpbmcgdGVzdGluZyBmdW5jdGlvbnMgdHJhbnNmZXJfb25lKCksIHN0dW1ibGVk
-IHVwb24gYW4gZXJyb3IuCkknbSB1c2luZyBrZXJuZWwgMy4xMywgc28gSSBoYWQgdG8gYXBwbHkg
-YSBwYXRjaCBmcm9tIHVwc3RyZWFtCihzcGk6IGNvcmU6IEZpeCB0cmFuc2ZlciBmYWlsdXJlIHdo
-ZW4gbWFzdGVyLT50cmFuc2Zlcl9vbmUgcmV0dXJucyBwb3NpdGl2ZSB2YWx1ZSkuCkFmdGVyIGFw
-cGx5aW5nIGFsbCBiZWNvbWVzIG5vcm1hbCB3aXRoIHByb2JpbmcsIGJ1dCB3aGVyZSBkaWQgdGhl
-IGVycm9yCiJVbmFibGUgdG8gaGFuZGxlIGtlcm5lbCBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2Ui
-ID8KRGlkIHNvbWVvbmUgaGF2ZSBzaW1pbGFyIGJ1Z3M/CgpUaGFua3MuCgpzcGlfbWFzdGVyIHNw
-aTA6IGZhaWxlZCB0byB0cmFuc2ZlciBvbmUgbWVzc2FnZSBmcm9tIHF1ZXVlOiAxCjc0eDE2NCBz
-cGkwLjE6IEZhaWxlZCB3cml0aW5nOiAxCjc0eDE2NDogcHJvYmUgb2Ygc3BpMC4xIGZhaWxlZCB3
-aXRoIGVycm9yIDEKVW5hYmxlIHRvIGhhbmRsZSBrZXJuZWwgTlVMTCBwb2ludGVyIGRlcmVmZXJl
-bmNlIGF0IHZpcnR1YWwgYWRkcmVzcyAwMDAwMDAyMApDQU4gZGV2aWNlIGRyaXZlciBpbnRlcmZh
-Y2UKcGdkID0gYzAwMjQwMDAKWzAwMDAwMDIwXSAqcGdkPTAwMDAwMDAwCkludGVybmFsIGVycm9y
-OiBPb3BzOiA2M2MxMTgwNSBbIzFdIFBSRUVNUFQgQVJNCkNQVTogMCBQSUQ6IDIyIENvbW06IHNw
-aTAgTm90IHRhaW50ZWQgMy4xMy4zICMxCnRhc2s6IGMzOTZiMjYwIHRpOiBjMzk2ZTAwMCB0YXNr
-LnRpOiBjMzk2ZTAwMApQQyBpcyBhdCBzcGlfcHVtcF9tZXNzYWdlcysweDE1MC8weDE5NApMUiBp
-cyBhdCBzcGlfcHVtcF9tZXNzYWdlcysweDE0OC8weDE5NApwYyA6IFs8YzAyYjY5MGM+XSAgICBs
-ciA6IFs8YzAyYjY5MDQ+XSAgICBwc3I6IDYwMDAwMDEzCnNwIDogYzM5NmZmMjAgIGlwIDogYzA0
-ODA2YzQgIGZwIDogMDAwMDAwMDAKcjEwOiAwMDAwMDAwMCAgcjkgOiAwMDAwMDAwMCAgcjggOiBj
-Mzk2YjE5YwpyNyA6IDAwMDAwMDAxICByNiA6IGMzOTZiMDIwICByNSA6IDAwMDAwMDAxICByNCA6
-IGMzOTZiMWIwCnIzIDogMDAwMDAwMDAgIHIyIDogMDAwMDAwMDAgIHIxIDogMjAwMDAwOTMgIHIw
-IDogYzM5NmIwMjAKRmxhZ3M6IG5aQ3YgIElSUXMgb24gIEZJUXMgb24gIE1vZGUgU1ZDXzMyICBJ
-U0EgQVJNICBTZWdtZW50IGtlcm5lbApDb250cm9sOiAwMDAwMjE3ZiAgVGFibGU6IGMwMDI0MDE3
-ICBEQUM6IDAwMDAwMDE3ClByb2Nlc3Mgc3BpMCAocGlkOiAyMiwgc3RhY2sgbGltaXQgPSAweGMz
-OTZlMWMwKQpTdGFjazogKDB4YzM5NmZmMjAgdG8gMHhjMzk3MDAwMCkKZmYyMDogYzM5NmIxYjAg
-YzM5NmIxOGMgYzM5NmUwMDAgYzAwNGE5M2MgMDAwMDAwMDAgYzM5NmFkNjAgMDAwMDAwMDAgYzM5
-NmIxOGMKZmY0MDogYzAwNGE4YTAgMDAwMDAwMDAgMDAwMDAwMDAgYzAwNGEzMTggZmZlZmIxY2Mg
-MDAwMDAwMDAgZmZmZjMzNDggYzM5NmIxOGMKZmY2MDogMDAwMDAwMDAgMDAwMDAwMDEgZGVhZDRl
-YWQgZmZmZmZmZmYgZmZmZmZmZmYgYzM5NmZmNzQgYzM5NmZmNzQgMDAwMDAwMDAKZmY4MDogMDAw
-MDAwMDEgZGVhZDRlYWQgZmZmZmZmZmYgZmZmZmZmZmYgYzM5NmZmOTAgYzM5NmZmOTAgYzM5NmZm
-YWMgYzM5NmFkNjAKZmZhMDogYzAwNGEyNjQgMDAwMDAwMDAgMDAwMDAwMDAgYzAwMjkzMzAgMDAw
-MDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKZmZjMDogMDAwMDAwMDAgMDAwMDAwMDAg
-MDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKZmZl
-MDogMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMTMgMDAwMDAwMDAg
-ZWZmZjIzY2MgZmQ1ZjMzY2MKWzxjMDJiNjkwYz5dIChzcGlfcHVtcF9tZXNzYWdlcysweDE1MC8w
-eDE5NCkgZnJvbSBbPGMwMDRhOTNjPl0gKGt0aHJlYWRfd29ya2VyX2ZuKzB4OWMvMHhmMCkKWzxj
-MDA0YTkzYz5dIChrdGhyZWFkX3dvcmtlcl9mbisweDljLzB4ZjApIGZyb20gWzxjMDA0YTMxOD5d
-IChrdGhyZWFkKzB4YjQvMHhkMCkKWzxjMDA0YTMxOD5dIChrdGhyZWFkKzB4YjQvMHhkMCkgZnJv
-bSBbPGMwMDI5MzMwPl0gKHJldF9mcm9tX2ZvcmsrMHgxNC8weDI0KQpDb2RlOiBlMWEwMjAwNSBl
-YmZlZjY1MCBlNTk0MzA0MCBlMWEwMDAwNiAoZTU4MzUwMjApCi0tLVsgZW5kIHRyYWNlIDNlOTMx
-NzU1NjdjMzExZGEgXS0tLQoKLS0tCg==
+On Wed, Feb 19, 2014 at 8:32 AM, Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org> wrote:
+> During testing functions transfer_one(), stumbled upon an error.
+> I'm using kernel 3.13, so I had to apply a patch from upstream
+> (spi: core: Fix transfer failure when master->transfer_one returns positive value).
+> After applying all becomes normal with probing, but where did the error
+> "Unable to handle kernel NULL pointer dereference" ?
+> Did someone have similar bugs?
+>
+> Thanks.
+>
+> spi_master spi0: failed to transfer one message from queue: 1
+> 74x164 spi0.1: Failed writing: 1
+> 74x164: probe of spi0.1 failed with error 1
+> Unable to handle kernel NULL pointer dereference at virtual address 00000020
+> CAN device driver interface
+> pgd = c0024000
+> [00000020] *pgd=00000000
+> Internal error: Oops: 63c11805 [#1] PREEMPT ARM
+> CPU: 0 PID: 22 Comm: spi0 Not tainted 3.13.3 #1
+> task: c396b260 ti: c396e000 task.ti: c396e000
+> PC is at spi_pump_messages+0x150/0x194
+
+Have you applied other patches from upstream?
+
+E.g. e120cc0dcf2880a4c5c0a6cb27b655600a1cfa1d introduced a NULL
+pointer dereference, with got fixed by
+1f802f8249a0da536877842c43c7204064c4de8b.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

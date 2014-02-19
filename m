@@ -1,79 +1,67 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: spi: Provide core support for full duplex devices
-Date: Wed, 19 Feb 2014 14:32:28 +0100
-Message-ID: <CAMuHMdWRd075tEDfvtWfkQ-7dECT0y14qxQpbyKMs5v3GDYRAA@mail.gmail.com>
-References: <CAMuHMdUY+XEqKYh7mMOYUV18PpR+7SFw+BEUFh-9yL=H6reQkA@mail.gmail.com>
-	<CAMuHMdWkPxp2U=Xz=wWu70RPxj+4GGCyifdPv=xL=47cz_upBw@mail.gmail.com>
-	<20140219130407.GR2669@sirena.org.uk>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: Re: [PATCH 07/17] spi: pl022: Don't ignore power domain and amba bus
+ at system suspend
+Date: Wed, 19 Feb 2014 15:15:06 +0100
+Message-ID: <CAPDyKFqDdoya2+_3b+6SD5r1qXu+o4CVQfXFEHPRA5xr+xg8nQ@mail.gmail.com>
+References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+	<1391529538-21685-8-git-send-email-ulf.hansson@linaro.org>
+	<20140204191609.GU22609@sirena.org.uk>
+	<CAPDyKFqNdw-6R12cUOre8UOTOnB-PpxHD5rPAMCwuS3i--Sesg@mail.gmail.com>
+	<20140210125113.GZ1757@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140219130407.GR2669-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Russell King <linux@arm.linux.org.uk>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	Alessandro Rubini <rubini@unipv.it>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20140210125113.GZ1757@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Feb 19, 2014 at 2:04 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Feb 18, 2014 at 10:59:09AM +0100, Geert Uytterhoeven wrote:
+On 10 February 2014 13:51, Mark Brown <broonie@kernel.org> wrote:
+> On Mon, Feb 10, 2014 at 01:33:50PM +0100, Ulf Hansson wrote:
+>> On 4 February 2014 20:16, Mark Brown <broonie@kernel.org> wrote:
 >
->> For Dual/Quad transfers, which are half-duplex, the buffer pointer for the
->> unused direction must be NULL, so the driver knows in which direction to
->> transfer. Hence SPI_MASTER_MUST_TX cannot be set for Dual/Quad
->> capable SPI master.
+>> > This seems like a fairly hideous thing to be having to open code in an
+>> > individual driver, it all looks generic and like something that most if
 >
-> This is a particularly thoughtless hardware design it has to be said.
-
-Do you mean the fact that you need to transmit dummy data on this particular
-hardware, or that you need to know the direction for Dual/Quad transfers,
-and don't need dummy data for the latter?
-
-It actually makes sense from a hardware point of view:
-  - Single SPI transfers are full-duplex. For every bit of output, there's a bit
-    of input. As this is SPI master, not slave, the master controls everything
-    based on the availability of data in the output FIFO.
-  - Dual/Quad SPI transfers are half duplex:
-      Transmission is controlled by the master, based on the availability of
-      data in the output FIFO.
-      Reception is also controlled by the master, but as there's no data to
-      output, this is handled based on the amount of space in the RX FIFO.
-
->> I'm also worried about the buffer allocation. With m25p80 and mtchar, the
->> transfer buffer can be quite large (up to 4 MiB in my case), and this can be
->> triggered from userspace.
+> ...
 >
-> That's readily fixable for DMA capable drivers, we can just repeatedly
-> transfer the same page (or whatever).  PIO drivers have big problems
-
-So let's hope all DMA-capable hardware has scatter/gather support, or an
-IOMMU ;-)
-
->> Concluding, for PIO mode, I'm still in favor of using
+>> > Putting it in a helper would at least mean that it's easier for the
+>> > mechanics to be transferred to the core proper later on.
 >
->>     data = tx_buf ? *tx_buf++ : DUMMY_DATA;
+>> I agree, a helper function would be nice. I have earlier sent a patch
+>> to the PM core, that is similar to the code above, though it was
+>> rejected in it's current form. Let me follow up on this again.
 >
->> in the SPI master driver itself.
+>> At this point, would a way forward be to still go ahead with this
+>> patch and then convert to, when/if, the helper function from the PM
+>> core becomes available?
 >
-> With the ternery operator for legibility of course.
+> It's definitely *a* way forward, but I'm not convinced it's a good way
+> forward.  Since it's something that I'd expect us to be doing in all
+> drivers we'd want to replicate it all over the place which is obviously
+> not good, or conversely if there are issues that prevented the code
+> being added to the PM core then presumably we're just adding problematic
+> code to the driver (you've not mentioned what the problems were with
+> doing this in the PM core).
 
-You forgot the smiley ;-)
+I have posted a patch which adds a runtime PM helper function to the
+PM core, I am hoping to get some comments soon.
+http://marc.info/?l=linux-pm&m=139228211505423&w=2
 
-While in general I care a lot about readability (code is read more than it's
-written), using a ternary operator for chosing between valid data and a
-dummy zero is fine, IMHO.
+So I agree, let's put this patch on hold until we sorted out how to
+proceed. Though I will rebase and send a v2 of it, just to keep it as
+a reference for later use.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Kind regards
+Uffe

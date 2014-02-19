@@ -1,44 +1,38 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: atmel: Remove redundant list_empty checking
-Date: Wed, 19 Feb 2014 19:53:12 +0800
-Message-ID: <1392810792.9749.0.camel@phoenix>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: New bug?
+Date: Wed, 19 Feb 2014 13:06:33 +0100
+Message-ID: <CAMuHMdVBY7M=dkegw_3pQ7yFSLLEe2T6pXidY=eL7oiYAXXoPQ@mail.gmail.com>
+References: <1392795133.984411895@f316.i.mail.ru>
+	<CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog@mail.gmail.com>
+	<1392808849.211941090@f415.i.mail.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1392808849.211941090-PR9Oqn8FVc1sdVUOrk1QfQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This checking is already done in __spi_validate().
+On Wed, Feb 19, 2014 at 12:20 PM, Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org> wrote:
+> Mark, Is any chances to put these two patches to 3.13-stable?
+> (spi: core: Fix transfer failure when master->transfer_one returns positive value),
+> (spi: Fix crash with double message finalisation on error handling)
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-atmel.c | 3 ---
- 1 file changed, 3 deletions(-)
+The second one should not need backporting, as the patch it reverts
+is not in v3.13.
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index c3ed7ed..20cfa2d 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1213,9 +1213,6 @@ static int atmel_spi_transfer_one_message(struct spi_master *master,
- 	dev_dbg(&spi->dev, "new message %p submitted for %s\n",
- 					msg, dev_name(&spi->dev));
- 
--	if (unlikely(list_empty(&msg->transfers)))
--		return -EINVAL;
--
- 	atmel_spi_lock(as);
- 	cs_activate(as, spi);
- 
--- 
-1.8.1.2
+Gr{oetje,eeting}s,
 
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

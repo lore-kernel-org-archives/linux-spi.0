@@ -1,69 +1,108 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 06/17] spi: pl022: Let runtime PM callbacks be available
- for CONFIG_PM
-Date: Thu, 20 Feb 2014 00:10:40 +0900
-Message-ID: <20140219151040.GH2669@sirena.org.uk>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
- <1391529538-21685-7-git-send-email-ulf.hansson@linaro.org>
- <CAPDyKFombL2-Rt46QpXPNWe5PeGQnOGmQQNfYd5MdYdEePn-4w@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATH v2 2/2] spi: Add Qualcomm QUP SPI controller support
+Date: Thu, 20 Feb 2014 00:28:49 +0900
+Message-ID: <20140219152849.GI2669@sirena.org.uk>
+References: <1392308498-30209-1-git-send-email-iivanov@mm-sol.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4FPEP2OQoJToMU+c"
-Cc: Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-mmc <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="rStesqTWVLwTUuyd"
+Cc: Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>, linux-spi@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, Alok Chauhan <alokc@codeaurora.org>,
+	Gilad Avidov <gavidov@codeaurora.org>,
+	Kiran Gunda <kgunda@codeaurora.org>,
+	Sagar Dharia <sdharia@codeaurora.org>, dsneddon@codeaurora.org
+To: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAPDyKFombL2-Rt46QpXPNWe5PeGQnOGmQQNfYd5MdYdEePn-4w-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1392308498-30209-1-git-send-email-iivanov@mm-sol.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---4FPEP2OQoJToMU+c
+--rStesqTWVLwTUuyd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Feb 19, 2014 at 03:20:07PM +0100, Ulf Hansson wrote:
+On Thu, Feb 13, 2014 at 06:21:38PM +0200, Ivan T. Ivanov wrote:
 
-> Also note that, Russell has already applied the corresponding part in
-> the amba bus (patch 1)
+> Qualcomm Universal Peripheral (QUP) core is an AHB slave that
+> provides a common data path (an output FIFO and an input FIFO)
+> for serial peripheral interface (SPI) mini-core. SPI in master
+> mode supports up to 50MHz, up to four chip selects, programmable
+> data path from 4 bits to 32 bits and numerous protocol variants.
 
-Why would this depend on an AMBA patch and if it does surely the two
-need to be merged together somehow?
+I've applied this since it mostly looks good but there's a few small
+outstanding issues, please submit incremental patches fixing them.
 
---4FPEP2OQoJToMU+c
+> +#define SPI_CONFIG			0x0300
+> +#define SPI_IO_CONTROL			0x0304
+> +#define SPI_ERROR_FLAGS			0x0308
+> +#define SPI_ERROR_FLAGS_EN		0x030c
+
+You've got lots of defines that are just plain SPI_ which is looking for
+namespace collisions - please prefix them.
+
+> +	if (spi->chip_select >= spi->master->num_chipselect) {
+> +		dev_err(controller->dev, "invalid chip_select %d\n",
+> +			spi->chip_select);
+> +		return -EINVAL;
+> +	}
+
+The core does this prior to allowing the slave to be registered at all.
+
+> +
+> +	if (spi->max_speed_hz > controller->max_speed_hz) {
+> +		dev_err(controller->dev, "invalid max_speed_hz %d\n",
+> +			spi->max_speed_hz);
+> +		return -EINVAL;
+> +	}
+
+The core will check this for you if you set master->max_speed_hz.
+
+> +#ifdef CONFIG_PM_RUNTIME
+> +static int spi_qup_pm_suspend_runtime(struct device *device)
+> +{
+> +	struct spi_master *master = dev_get_drvdata(device);
+> +	struct spi_qup *controller = spi_master_get_devdata(master);
+> +	u32 config;
+> +
+> +	/* Enable clocks auto gaiting */
+> +	config = readl(controller->base + QUP_CONFIG);
+> +	config |= QUP_CLOCK_AUTO_GATE;
+> +	writel_relaxed(config, controller->base + QUP_CONFIG);
+> +	return 0;
+> +}
+
+Why not just enable this all the time?  I'd have expected some clock API
+calls here similar to those in the main suspend and resume paths.
+
+> +MODULE_VERSION("0.4");
+
+Don't bother doing this, nobody will ever keep updating the version
+number - the kernel version should be enough.
+
+--rStesqTWVLwTUuyd
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTBMltAAoJELSic+t+oim99zkP/j/xXWSCyg6KeVYXGT17LNZl
-Ahj9b7lhCX9OQ+Ck3pUTLZPIcna7v/6nTjYRh1cW/nPj6vyjqmidlATEQqy6Lz+n
-TmfxUIPy9pVFYfHF+nJTZa2LJa57COlwShCOwTqiws3H+zaX8+VBNRC72ockUoH/
-6t58ir29hbingGybeKL9K/cM3Gq4juAQ9BsJhGuUrntNRSdQfeNpYJZc6igmz6TD
-rw/uQ0uaHDleSs+LlRf87VqxfRYYXFEIAKunHctLV61PQoKcWxGMgOIKwBcA+gVh
-MBji3dJS2zT5OhokKd51y+e8E2a9mFeohudxHBHFSk4lAXLGTRMf5GcnlsySuHud
-8RkyH2B/fwVdmVjF7x4qlhPfQs5MvDhghPXpTYyB4kOurtJ01qrXW7lj6Nos6Yfn
-4LZqjwoQRmyjdWXVFjXq5bc2CHzM096PYuqsR5m85aYHKwyMCWFbHx/MEgsfeKcr
-jLD3RYaxMVHCUhy7wzSi+FONpawa0YW7WXPsdIWiwW/ei7jzZNJENNVtAX5QBT1g
-WLOShXyX6npWKTgvR4ektWEAWlMFiZeYJIq7s9Kwz+v8bhXVTcTTAQhKZKl5U8gi
-3DUvUZR6ml/l4dB82NU6j3zN0kiKwJJM9cza0tu+5EBP//J8h6y+KlVAdBYOYfSi
-ULKfGg33W/QJxcFMkVpt
-=Cboj
+iQIcBAEBAgAGBQJTBM2uAAoJELSic+t+oim9qhcP/Rdo0N7EoF57G2cLQydpX6A2
+1xJKoDBKry+n4asw95WNYmdilxHhFLhbEocJeq8w0y/IZW036nUyK/KIGcU6cc6E
+XA8E2vc9df9zV6PK2E+KAgpSssDvchwtVx9f/sRPcT7EbO5si+XIJtESbK46RGnX
+roULrwTRpWklaihOhxs215qEt9NRJ3UwuDn/7IzSF/U1zK8kJjDWAnBEpuGIKcHy
+UCpBa2PA3+g9FhUXpxz7C8NaDJmFRtqPF+A6TjymV9VKvEbrU+vpFR0MohL+K4gO
+Wp+FP1V6UA+4DzeiTMctx3AlODfJJukm0AwAathqz5USJkT8CjWI6WHl+HI89WfU
+P/gUGV32+zj3otoOP9ohlWnhyI8sFH1HIyz+ctLtY2ZxKA3Tq4iKui/4F3WKTzzA
+mDmP5Iixtog+OCbTuzl7KJjAfMzmgGRNlwO0GFl5GE4KOyMmM7NA5uB7avmnbQP0
+vbODqhNO02LRLAoAUpl6KE7mNeMU7bJTiB7YQlXdQR8/4vXogjoQXlgMMQnSjL5n
+uYdUhewbqjkjK86aaGMdVXBnujQ8hKfWJj3ngbNN7QsFeizmdFaQ+ltAUcouqh5/
+q26jW5WzPO3cU8mtYyzBx86n/n/8VpTsKXchO0AS9Lc6IfsQWRm+gZpeB94LkiMA
+UT3shcez0enjE169bqts
+=626M
 -----END PGP SIGNATURE-----
 
---4FPEP2OQoJToMU+c--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--rStesqTWVLwTUuyd--

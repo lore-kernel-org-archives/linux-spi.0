@@ -1,72 +1,167 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: spi: Provide core support for full duplex devices
-Date: Wed, 19 Feb 2014 23:13:10 +0900
-Message-ID: <20140219141310.GB2669@sirena.org.uk>
-References: <CAMuHMdUY+XEqKYh7mMOYUV18PpR+7SFw+BEUFh-9yL=H6reQkA@mail.gmail.com>
- <CAMuHMdWkPxp2U=Xz=wWu70RPxj+4GGCyifdPv=xL=47cz_upBw@mail.gmail.com>
- <20140219130407.GR2669@sirena.org.uk>
- <CAMuHMdWRd075tEDfvtWfkQ-7dECT0y14qxQpbyKMs5v3GDYRAA@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="zmgb5/Qq281vq2QH"
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: [PATCH V2 07/17] spi: pl022: Don't ignore power domain and amba bus at system suspend
+Date: Wed, 19 Feb 2014 15:33:38 +0100
+Message-ID: <1392820418-6972-1-git-send-email-ulf.hansson@linaro.org>
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdWRd075tEDfvtWfkQ-7dECT0y14qxQpbyKMs5v3GDYRAA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Due to the available runtime PM callbacks for CONFIG_PM, we are now
+able to put the device into complete low power state at system suspend.
 
---zmgb5/Qq281vq2QH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Previously only the resources controlled by the driver were put into
+low power state at system suspend. Both the amba bus and a potential
+power domain were ignored, which now isn't the case any more.
 
-On Wed, Feb 19, 2014 at 02:32:28PM +0100, Geert Uytterhoeven wrote:
-> On Wed, Feb 19, 2014 at 2:04 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+Moreover, putting the device into low power state couldn't be done
+without first bringing it back to full power. This constraint don't
+exists any more.
 
-> > This is a particularly thoughtless hardware design it has to be said.
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Signed-off-by: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
 
-> Do you mean the fact that you need to transmit dummy data on this particular
-> hardware, or that you need to know the direction for Dual/Quad transfers,
-> and don't need dummy data for the latter?
+Changes in v2:
+	Rebased on top of latest spi-pl022 patches.
 
-The combination of the two, clearly the hardware can actually cope with
-an empty transmit FIFO.
+	Note, currently this patch shall not be applied since first we want
+	to sort out the result from another patch to the PM core.
+	http://marc.info/?l=linux-pm&m=139228211505423&w=2
 
-> > That's readily fixable for DMA capable drivers, we can just repeatedly
-> > transfer the same page (or whatever).  PIO drivers have big problems
+---
+ drivers/spi/spi-pl022.c |   74 +++++++++++++++++++++++------------------------
+ 1 file changed, 37 insertions(+), 37 deletions(-)
 
-> So let's hope all DMA-capable hardware has scatter/gather support, or an
-> IOMMU ;-)
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 6dfcabf..7b016a2 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2277,35 +2277,7 @@ pl022_remove(struct amba_device *adev)
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_PM
+-/*
+- * These two functions are used from both suspend/resume and
+- * the runtime counterparts to handle external resources like
+- * clocks, pins and regulators when going to sleep.
+- */
+-static void pl022_suspend_resources(struct pl022 *pl022, bool runtime)
+-{
+-	clk_disable_unprepare(pl022->clk);
+-
+-	if (runtime)
+-		pinctrl_pm_select_idle_state(&pl022->adev->dev);
+-	else
+-		pinctrl_pm_select_sleep_state(&pl022->adev->dev);
+-}
+-
+-static void pl022_resume_resources(struct pl022 *pl022, bool runtime)
+-{
+-	/* First go to the default state */
+-	pinctrl_pm_select_default_state(&pl022->adev->dev);
+-	if (!runtime)
+-		/* Then let's idle the pins until the next transfer happens */
+-		pinctrl_pm_select_idle_state(&pl022->adev->dev);
+-
+-	clk_prepare_enable(pl022->clk);
+-}
+-#endif
+-
+-#ifdef CONFIG_SUSPEND
++#ifdef CONFIG_PM_SLEEP
+ static int pl022_suspend(struct device *dev)
+ {
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
+@@ -2317,8 +2289,23 @@ static int pl022_suspend(struct device *dev)
+ 		return ret;
+ 	}
+ 
+-	pm_runtime_get_sync(dev);
+-	pl022_suspend_resources(pl022, false);
++	pm_runtime_disable(dev);
++
++	if (!pm_runtime_status_suspended(dev)) {
++		if (dev->pm_domain && dev->pm_domain->ops.runtime_suspend)
++			ret = dev->pm_domain->ops.runtime_suspend(dev);
++		else
++			ret = dev->bus->pm->runtime_suspend(dev);
++
++		if (ret) {
++			pm_runtime_enable(dev);
++			return ret;
++		}
++
++		pm_runtime_set_suspended(dev);
++	}
++
++	pinctrl_pm_select_sleep_state(dev);
+ 
+ 	dev_dbg(dev, "suspended\n");
+ 	return 0;
+@@ -2327,10 +2314,19 @@ static int pl022_suspend(struct device *dev)
+ static int pl022_resume(struct device *dev)
+ {
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
+-	int ret;
++	int ret = 0;
+ 
+-	pl022_resume_resources(pl022, false);
+-	pm_runtime_put(dev);
++	if (dev->pm_domain && dev->pm_domain->ops.runtime_resume)
++		ret = dev->pm_domain->ops.runtime_resume(dev);
++	else
++		ret = dev->bus->pm->runtime_resume(dev);
++
++	if (ret)
++		dev_err(dev, "problem resuming\n");
++	else
++		pm_runtime_set_active(dev);
++
++	pm_runtime_enable(dev);
+ 
+ 	/* Start the queue running */
+ 	ret = spi_master_resume(pl022->master);
+@@ -2341,14 +2337,16 @@ static int pl022_resume(struct device *dev)
+ 
+ 	return ret;
+ }
+-#endif	/* CONFIG_PM */
++#endif
+ 
+ #ifdef CONFIG_PM
+ static int pl022_runtime_suspend(struct device *dev)
+ {
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
+ 
+-	pl022_suspend_resources(pl022, true);
++	clk_disable(pl022->clk);
++	pinctrl_pm_select_idle_state(dev);
++
+ 	return 0;
+ }
+ 
+@@ -2356,7 +2354,9 @@ static int pl022_runtime_resume(struct device *dev)
+ {
+ 	struct pl022 *pl022 = dev_get_drvdata(dev);
+ 
+-	pl022_resume_resources(pl022, true);
++	pinctrl_pm_select_default_state(dev);
++	clk_enable(pl022->clk);
++
+ 	return 0;
+ }
+ #endif
+-- 
+1.7.9.5
 
-You can emulate scatter/gather well enough for most SPI controllers
-anyway.
-
---zmgb5/Qq281vq2QH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTBLvyAAoJELSic+t+oim9cGQP/jz9L16P7jw9IbQrzfutJh2P
-y55rMKn0sOl+qWg7Q02J1E4havaxOdEgQcfsLj1F5MWM+OfQ7ni2xJnq+fubW6/t
-rwxfSjar55Pw00eRGO67nz+42wsE2/C5ZdtuZlH7t+jxOAYrr2MEGx2SqYclfKD/
-HaNPuVcPYL3r/HdHZM/D3k2dqc/inIUwdDxkHYBfMkFTM2qHAbFRf4VyGiXbuyDw
-bOk3M9PMetNIWOQRcgXmxYIt8ubqBCVnyvrTRH9ahvIjDkyZnpOYbHzYetBITAgS
-/NdZfVF5F8jr5X4lk6PwZB2vmYJn1CBR+FmQlbaUsjZiscq1FDyqdUkKauWpVAXF
-hFHNiXxvLaHJUy5TDOQfhI2gBvuc7nVu/msNUmBNfv/ES5jJS+8eOI2p44++s8yo
-8RVmLzP6SrcgbmUgCJutNy55ORYq7woJ4+HqiHPdcZobJHW9NsVgYeShPZKm6oMS
-HHoMRpUpf3V8Co6rHHrRD5wXwE2CXJwe90OZiM2q9umgqfHLn5ANk6BA8a0Wfl9J
-ed2j+zrONUTsUTk5LEH4q85FXUQBUjkI/ZcrskDUP26CkZbVBaG+yGuyIELZyzYl
-7OURBZoUfZsR2tNvCaTrlwD5y7yuTNS1D/n0a+0UMZQlcXPxpU4ZLIAW8Nf2u2Je
-7GpqYYJyQW2zRQdkzSw3
-=lL0Y
------END PGP SIGNATURE-----
-
---zmgb5/Qq281vq2QH--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

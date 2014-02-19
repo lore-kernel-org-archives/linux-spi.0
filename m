@@ -1,56 +1,57 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: New bug?
-Date: Wed, 19 Feb 2014 08:45:29 +0100
-Message-ID: <CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog@mail.gmail.com>
-References: <1392795133.984411895@f316.i.mail.ru>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi: omap2-mcspi: Remove list_empty checking in
+ omap2_mcspi_transfer_one_message
+Date: Wed, 19 Feb 2014 13:38:45 +0900
+Message-ID: <20140219043845.GY2669@sirena.org.uk>
+References: <1392732096.22192.0.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="tfaCjp4mryZ5LVvS"
+Cc: Stefan =?iso-8859-1?Q?S=F8rensen?=
+	<stefan.sorensen-usnHOLptxrsHrNJx0XZkJA@public.gmane.org>,
+	Victor Kamensky <victor.kamensky-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Illia Smyrnov <illia.smyrnov-hExfYMNmJl/Cnp4W7fqMDg@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392795133.984411895-P0ORxJMC3jVsdVUOrk1QfQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1392732096.22192.0.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Feb 19, 2014 at 8:32 AM, Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org> wrote:
-> During testing functions transfer_one(), stumbled upon an error.
-> I'm using kernel 3.13, so I had to apply a patch from upstream
-> (spi: core: Fix transfer failure when master->transfer_one returns positive value).
-> After applying all becomes normal with probing, but where did the error
-> "Unable to handle kernel NULL pointer dereference" ?
-> Did someone have similar bugs?
->
-> Thanks.
->
-> spi_master spi0: failed to transfer one message from queue: 1
-> 74x164 spi0.1: Failed writing: 1
-> 74x164: probe of spi0.1 failed with error 1
-> Unable to handle kernel NULL pointer dereference at virtual address 00000020
-> CAN device driver interface
-> pgd = c0024000
-> [00000020] *pgd=00000000
-> Internal error: Oops: 63c11805 [#1] PREEMPT ARM
-> CPU: 0 PID: 22 Comm: spi0 Not tainted 3.13.3 #1
-> task: c396b260 ti: c396e000 task.ti: c396e000
-> PC is at spi_pump_messages+0x150/0x194
 
-Have you applied other patches from upstream?
+--tfaCjp4mryZ5LVvS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-E.g. e120cc0dcf2880a4c5c0a6cb27b655600a1cfa1d introduced a NULL
-pointer dereference, with got fixed by
-1f802f8249a0da536877842c43c7204064c4de8b.
+On Tue, Feb 18, 2014 at 10:01:36PM +0800, Axel Lin wrote:
+> This checking is done in __spi_validate().
 
-Gr{oetje,eeting}s,
+Applied both, thanks.
 
-                        Geert
+--tfaCjp4mryZ5LVvS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+iQIcBAEBAgAGBQJTBDVSAAoJELSic+t+oim9Jv8QAILxDEJbRa3ZeV6wmPiCqsAt
+Pf2Roa0M322+fQQEZbn4dMQffLnwNPiRtsNkFSpxdbB0SmiFUtWpV0vUmeVpR1rC
+urSGNQ5c2EwwXprgoS2d70kfAd78s0gDE28ucBsXQNIesBDny6kWi2gzkSHcfFef
+WC9YMS+li3O3KrHSfUR9frRzTwyr5ZadMq5ROmqGPZ1RMeGOEF5GYdwkZBPcMg9M
+IxK5uqXoGhgbb8dpVzf6ZLNHoRRn+POgB1MKv7Pe8TeAbK1CMUafHzlmHeov/IqO
+PjeJx2g1TD05GHBbJ05cbxNR+jCQey1oA/OhTpBvYMKzQFM+ZkEIIgzBdXkw1D7k
+vrEvh8mfHsZbFjYbSp5gx7CSxfZwGg/AIHKzE3Td25GssfK+8zMKPFc+NdJCd9Qq
+hd0E3oha9xZM3sh2sQl2GRnmZltusv+PxAeaALX/ooN6Uuv4EdIKDW+zBJGkzI1i
+WJI8AZ+h1pFzObKYjv3xK+PHNArPk42Wn+sY8sCtW9MglJyw6nSe7nIuxbJgMl9z
+sCHURS2D1yPEqyudd3Aqa7F+vmzPI1fWlrrReI5oVie0HVOYn1xBhYhhflFEnXBO
+uUBHAGpuVFwWQgADVnEzCWiSzr5MQ88ZtZIs97EHHfSMcdKcem3HgEAM+VzJj0Xh
+6OScN8VSIp7GSUrjDZwm
+=juIW
+-----END PGP SIGNATURE-----
+
+--tfaCjp4mryZ5LVvS--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

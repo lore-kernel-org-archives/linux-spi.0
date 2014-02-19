@@ -1,49 +1,69 @@
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: =?UTF-8?B?UmU6IE5ldyBidWc/?=
-Date: Wed, 19 Feb 2014 15:20:49 +0400
-Message-ID: <1392808849.211941090@f415.i.mail.ru>
-References: <1392795133.984411895@f316.i.mail.ru>
- <CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog@mail.gmail.com>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 01/17] amba: Let runtime PM callbacks be available for CONFIG_PM
+Date: Wed, 19 Feb 2014 12:40:39 +0100
+Message-ID: <CAPDyKFqaS1H0vT8KJgmhm35X4dB9dUHsqMXee9Eg3V3t6Dn+uQ@mail.gmail.com>
+References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+	<1391529538-21685-2-git-send-email-ulf.hansson@linaro.org>
+	<20140219094037.GQ21483@n2100.arm.linux.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-Cc: =?UTF-8?B?bGludXgtc3Bp?= <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: =?UTF-8?B?R2VlcnQgVXl0dGVyaG9ldmVu?= <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	linux-mmc <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20140219094037.GQ21483-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-0KHRgNC10LTQsCwgMTkg0YTQtdCy0YDQsNC70Y8gMjAxNCwgODo0NSArMDE6MDAg0L7RgiBHZWVy
-dCBVeXR0ZXJob2V2ZW4gPGdlZXJ0QGxpbnV4LW02OGsub3JnPjoKPiBPbiBXZWQsIEZlYiAxOSwg
-MjAxNCBhdCA4OjMyIEFNLCBBbGV4YW5kZXIgU2hpeWFuIDxzaGNfd29ya0BtYWlsLnJ1PiB3cm90
-ZToKPiA+IER1cmluZyB0ZXN0aW5nIGZ1bmN0aW9ucyB0cmFuc2Zlcl9vbmUoKSwgc3R1bWJsZWQg
-dXBvbiBhbiBlcnJvci4KPiA+IEknbSB1c2luZyBrZXJuZWwgMy4xMywgc28gSSBoYWQgdG8gYXBw
-bHkgYSBwYXRjaCBmcm9tIHVwc3RyZWFtCj4gPiAoc3BpOiBjb3JlOiBGaXggdHJhbnNmZXIgZmFp
-bHVyZSB3aGVuIG1hc3Rlci0+dHJhbnNmZXJfb25lIHJldHVybnMgcG9zaXRpdmUgdmFsdWUpLgo+
-ID4gQWZ0ZXIgYXBwbHlpbmcgYWxsIGJlY29tZXMgbm9ybWFsIHdpdGggcHJvYmluZywgYnV0IHdo
-ZXJlIGRpZCB0aGUgZXJyb3IKPiA+ICJVbmFibGUgdG8gaGFuZGxlIGtlcm5lbCBOVUxMIHBvaW50
-ZXIgZGVyZWZlcmVuY2UiID8KPiA+IERpZCBzb21lb25lIGhhdmUgc2ltaWxhciBidWdzPwo+ID4K
-PiA+IFRoYW5rcy4KPiA+Cj4gPiBzcGlfbWFzdGVyIHNwaTA6IGZhaWxlZCB0byB0cmFuc2ZlciBv
-bmUgbWVzc2FnZSBmcm9tIHF1ZXVlOiAxCj4gPiA3NHgxNjQgc3BpMC4xOiBGYWlsZWQgd3JpdGlu
-ZzogMQo+ID4gNzR4MTY0OiBwcm9iZSBvZiBzcGkwLjEgZmFpbGVkIHdpdGggZXJyb3IgMQo+ID4g
-VW5hYmxlIHRvIGhhbmRsZSBrZXJuZWwgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlIGF0IHZpcnR1
-YWwgYWRkcmVzcyAwMDAwMDAyMAo+ID4gQ0FOIGRldmljZSBkcml2ZXIgaW50ZXJmYWNlCj4gPiBw
-Z2QgPSBjMDAyNDAwMAo+ID4gWzAwMDAwMDIwXSAqcGdkPTAwMDAwMDAwCj4gPiBJbnRlcm5hbCBl
-cnJvcjogT29wczogNjNjMTE4MDUgWyMxXSBQUkVFTVBUIEFSTQo+ID4gQ1BVOiAwIFBJRDogMjIg
-Q29tbTogc3BpMCBOb3QgdGFpbnRlZCAzLjEzLjMgIzEKPiA+IHRhc2s6IGMzOTZiMjYwIHRpOiBj
-Mzk2ZTAwMCB0YXNrLnRpOiBjMzk2ZTAwMAo+ID4gUEMgaXMgYXQgc3BpX3B1bXBfbWVzc2FnZXMr
-MHgxNTAvMHgxOTQKPiAKPiBIYXZlIHlvdSBhcHBsaWVkIG90aGVyIHBhdGNoZXMgZnJvbSB1cHN0
-cmVhbT8KPiAKPiBFLmcuIGUxMjBjYzBkY2YyODgwYTRjNWMwYTZjYjI3YjY1NTYwMGExY2ZhMWQg
-aW50cm9kdWNlZCBhIE5VTEwKPiBwb2ludGVyIGRlcmVmZXJlbmNlLCB3aXRoIGdvdCBmaXhlZCBi
-eQo+IDFmODAyZjgyNDlhMGRhNTM2ODc3ODQyYzQzYzcyMDQwNjRjNGRlOGIuCgpJdCBoZWxwZWQg
-bWUuIFRoYW5rcy4KCk1hcmssIElzIGFueSBjaGFuY2VzIHRvIHB1dCB0aGVzZSB0d28gcGF0Y2hl
-cyB0byAzLjEzLXN0YWJsZT8KKHNwaTogY29yZTogRml4IHRyYW5zZmVyIGZhaWx1cmUgd2hlbiBt
-YXN0ZXItPnRyYW5zZmVyX29uZSByZXR1cm5zIHBvc2l0aXZlIHZhbHVlKSwKKHNwaTogRml4IGNy
-YXNoIHdpdGggZG91YmxlIG1lc3NhZ2UgZmluYWxpc2F0aW9uIG9uIGVycm9yIGhhbmRsaW5nKQoK
-LS0tCg==
+On 19 February 2014 10:40, Russell King - ARM Linux
+<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org> wrote:
+> On Tue, Feb 04, 2014 at 04:58:42PM +0100, Ulf Hansson wrote:
+>> Convert to the SET_PM_RUNTIME_PM macro while defining the runtime PM
+>> callbacks. This means the callbacks becomes available for both
+>> CONFIG_PM_SLEEP and CONFIG_PM_RUNTIME, which is needed by drivers and
+>> power domains.
+>
+> This patch is wrong, because it causes build errors:
+>
+> drivers/amba/bus.c:126:18: error: 'pm_generic_suspend_late' undeclared here (not in a function)
+> drivers/amba/bus.c:127:18: error: 'pm_generic_resume_early' undeclared here (not in a function)
+> drivers/amba/bus.c:128:17: error: 'pm_generic_freeze_late' undeclared here (not in a function)
+> drivers/amba/bus.c:129:16: error: 'pm_generic_thaw_early' undeclared here (not in a function)
+> drivers/amba/bus.c:130:19: error: 'pm_generic_poweroff_late' undeclared here (not in a function)
+> drivers/amba/bus.c:131:19: error: 'pm_generic_restore_early' undeclared here (not in a function)
+>
+> The failing configuration is:
+>
+> # CONFIG_SUSPEND is not set
+> CONFIG_PM_RUNTIME=y
+> CONFIG_PM=y
+>
+
+Thanks for spotting this! I thought I had tested all the various
+combinations, but obvisouly not.
+
+Anyway to add some more clarify; it is not this patch that causes the
+issue. It's patch 2, which introduces the late/early callbacks.
+
+Though the problem need to be fixed in the PM core,
+pm_generic_suspend_late etc is not set to NULL for !CONFIG_PM_SLEEP,
+they should. I guess we should put patch 2 on hold until, right?
+
+Kind regards
+Ulf Hansson
+
+> --
+> FTTC broadband for 0.8mile line: 5.8Mbps down 500kbps up.  Estimation
+> in database were 13.1 to 19Mbit for a good line, about 7.5+ for a bad.
+> Estimate before purchase was "up to 13.2Mbit".
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

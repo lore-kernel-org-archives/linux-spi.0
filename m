@@ -1,61 +1,78 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi-topcliff-pch: Transform noisy message to dev_dbg
-Date: Wed, 19 Feb 2014 21:41:50 +0900
-Message-ID: <20140219124150.GO2669@sirena.org.uk>
-References: <1392802569-11148-1-git-send-email-alexander.stein@systec-electronic.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: spi: Provide core support for full duplex devices
+Date: Wed, 19 Feb 2014 14:32:28 +0100
+Message-ID: <CAMuHMdWRd075tEDfvtWfkQ-7dECT0y14qxQpbyKMs5v3GDYRAA@mail.gmail.com>
+References: <CAMuHMdUY+XEqKYh7mMOYUV18PpR+7SFw+BEUFh-9yL=H6reQkA@mail.gmail.com>
+	<CAMuHMdWkPxp2U=Xz=wWu70RPxj+4GGCyifdPv=xL=47cz_upBw@mail.gmail.com>
+	<20140219130407.GR2669@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="wwqUOdrpdHy/KPXy"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1392802569-11148-1-git-send-email-alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+In-Reply-To: <20140219130407.GR2669-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, Feb 19, 2014 at 2:04 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Tue, Feb 18, 2014 at 10:59:09AM +0100, Geert Uytterhoeven wrote:
+>
+>> For Dual/Quad transfers, which are half-duplex, the buffer pointer for the
+>> unused direction must be NULL, so the driver knows in which direction to
+>> transfer. Hence SPI_MASTER_MUST_TX cannot be set for Dual/Quad
+>> capable SPI master.
+>
+> This is a particularly thoughtless hardware design it has to be said.
 
---wwqUOdrpdHy/KPXy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Do you mean the fact that you need to transmit dummy data on this particular
+hardware, or that you need to know the direction for Dual/Quad transfers,
+and don't need dummy data for the latter?
 
-On Wed, Feb 19, 2014 at 10:36:07AM +0100, Alexander Stein wrote:
-> If during a SPI transfer with len larger than PCH_MAX_FIFO_DEPTH and the
-> IRQ handler happens to be called when the transmit FIFO is already empty,
-> and SPSR_FI_BIT is set consequently, the message
-> "spi_master spi32766: pch_spi_handler_sub : Transfer is not completed"
-> is spammed to the systemlog, because tx_index has already increased
-> further due to the next bytes to be written. This case is uncritical as
-> new bytes have already been written.
+It actually makes sense from a hardware point of view:
+  - Single SPI transfers are full-duplex. For every bit of output, there's a bit
+    of input. As this is SPI master, not slave, the master controls everything
+    based on the availability of data in the output FIFO.
+  - Dual/Quad SPI transfers are half duplex:
+      Transmission is controlled by the master, based on the availability of
+      data in the output FIFO.
+      Reception is also controlled by the master, but as there's no data to
+      output, this is handled based on the amount of space in the RX FIFO.
 
-When you say "spammed" does that mean "printed once" or "is continually
-printed"?  I'd have assumed the latter in which case it might be better
-to go as low as _vdbg() or even remove the message entirely if it's not
-possible to suppress it entirely.
+>> I'm also worried about the buffer allocation. With m25p80 and mtchar, the
+>> transfer buffer can be quite large (up to 4 MiB in my case), and this can be
+>> triggered from userspace.
+>
+> That's readily fixable for DMA capable drivers, we can just repeatedly
+> transfer the same page (or whatever).  PIO drivers have big problems
 
---wwqUOdrpdHy/KPXy
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+So let's hope all DMA-capable hardware has scatter/gather support, or an
+IOMMU ;-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+>> Concluding, for PIO mode, I'm still in favor of using
+>
+>>     data = tx_buf ? *tx_buf++ : DUMMY_DATA;
+>
+>> in the SPI master driver itself.
+>
+> With the ternery operator for legibility of course.
 
-iQIcBAEBAgAGBQJTBKaLAAoJELSic+t+oim9FvMP/ix+qi0z6pXraWOdCJuSrjSr
-1+IrWo1bCbK8SSUTZTRQWJ/9d3qJ+l0j/S+AmP/d9m+upJlpLATctxtsDa7kgYea
-UJr9I5wabQiaNIH3xCURn4grSWf4eD3Y7aLsVPCoLYWsTALYSNIIYqPmYoRxVpzE
-3WnkY4S4+PT6vk0ZA4i9NNFJ3rMeFefK1QDD+5pbKKRmV9p9RlnAXXXZMnMHjMho
-oKh5CxfBfEmElCqvL6Ky9XzrwhLpedTmUfGlwByCUioJvXfMXtd7FGf3LGyOvCGc
-TXMmESH62OJWPt330HdJdJKe1igZD36bXs1LEKwskUGvrp42cbIN2NotQlT/yTtr
-eHxeV+Lptq8pUge8jwTu7+/w42/y3vY3lotGO50RkRrfLzWzEPYrGI1bedrOXdnk
-EeMW7f9KRLM8RnZlJhW443DgTLX0byNM1fuxFnj6l0vCESbsAb9C0KZsTVKhMy22
-aWeTC7uvmTC7soC4vmgsbBhoeapahI5UT5IleNvcECR0LMZOM4El8Y2ighCowm31
-4nbB994aCOAH86agYu3w5neCruj0fCOOh2mg36vfsU3GXRdk8bnziJfXw7Pql6re
-L7PRTlJPHL72sSNFoLXjAeTTQjdLzEOe3YS6tEjKIrPXctDIYO3jcWyoWbyQOr+S
-X7WVHetocUOKizv80oc5
-=XPAy
------END PGP SIGNATURE-----
+You forgot the smiley ;-)
 
---wwqUOdrpdHy/KPXy--
+While in general I care a lot about readability (code is read more than it's
+written), using a ternary operator for chosing between valid data and a
+dummy zero is fine, IMHO.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

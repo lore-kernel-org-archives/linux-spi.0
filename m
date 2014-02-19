@@ -1,69 +1,59 @@
-From: Ulf Hansson <ulf.hansson-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 01/17] amba: Let runtime PM callbacks be available for CONFIG_PM
-Date: Wed, 19 Feb 2014 12:40:39 +0100
-Message-ID: <CAPDyKFqaS1H0vT8KJgmhm35X4dB9dUHsqMXee9Eg3V3t6Dn+uQ@mail.gmail.com>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-	<1391529538-21685-2-git-send-email-ulf.hansson@linaro.org>
-	<20140219094037.GQ21483@n2100.arm.linux.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: New bug?
+Date: Wed, 19 Feb 2014 20:46:40 +0900
+Message-ID: <20140219114640.GK2669@sirena.org.uk>
+References: <1392795133.984411895@f316.i.mail.ru>
+ <CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog@mail.gmail.com>
+ <1392808849.211941090@f415.i.mail.ru>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Alessandro Rubini <rubini-9wsNiZum9E8@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	Chris Ball <chris-OsFVWbfNK3isTnJN9+BGXg@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-mmc <linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Y3OItpPG8oFwWDgC"
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140219094037.GQ21483-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1392808849.211941090-PR9Oqn8FVc1sdVUOrk1QfQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 19 February 2014 10:40, Russell King - ARM Linux
-<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org> wrote:
-> On Tue, Feb 04, 2014 at 04:58:42PM +0100, Ulf Hansson wrote:
->> Convert to the SET_PM_RUNTIME_PM macro while defining the runtime PM
->> callbacks. This means the callbacks becomes available for both
->> CONFIG_PM_SLEEP and CONFIG_PM_RUNTIME, which is needed by drivers and
->> power domains.
->
-> This patch is wrong, because it causes build errors:
->
-> drivers/amba/bus.c:126:18: error: 'pm_generic_suspend_late' undeclared here (not in a function)
-> drivers/amba/bus.c:127:18: error: 'pm_generic_resume_early' undeclared here (not in a function)
-> drivers/amba/bus.c:128:17: error: 'pm_generic_freeze_late' undeclared here (not in a function)
-> drivers/amba/bus.c:129:16: error: 'pm_generic_thaw_early' undeclared here (not in a function)
-> drivers/amba/bus.c:130:19: error: 'pm_generic_poweroff_late' undeclared here (not in a function)
-> drivers/amba/bus.c:131:19: error: 'pm_generic_restore_early' undeclared here (not in a function)
->
-> The failing configuration is:
->
-> # CONFIG_SUSPEND is not set
-> CONFIG_PM_RUNTIME=y
-> CONFIG_PM=y
->
 
-Thanks for spotting this! I thought I had tested all the various
-combinations, but obvisouly not.
+--Y3OItpPG8oFwWDgC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Anyway to add some more clarify; it is not this patch that causes the
-issue. It's patch 2, which introduces the late/early callbacks.
+On Wed, Feb 19, 2014 at 03:20:49PM +0400, Alexander Shiyan wrote:
 
-Though the problem need to be fixed in the PM core,
-pm_generic_suspend_late etc is not set to NULL for !CONFIG_PM_SLEEP,
-they should. I guess we should put patch 2 on hold until, right?
+> Mark, Is any chances to put these two patches to 3.13-stable?
+> (spi: core: Fix transfer failure when master->transfer_one returns positive value),
+> (spi: Fix crash with double message finalisation on error handling)
 
-Kind regards
-Ulf Hansson
+Please ask the stable team if you want things that are already merged
+into Linus' tree included in stable.
 
-> --
-> FTTC broadband for 0.8mile line: 5.8Mbps down 500kbps up.  Estimation
-> in database were 13.1 to 19Mbit for a good line, about 7.5+ for a bad.
-> Estimate before purchase was "up to 13.2Mbit".
+--Y3OItpPG8oFwWDgC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTBJmdAAoJELSic+t+oim9L68P/2S/1VPX2U1fPDuNhaOOMdBf
+/LmVo+gFU9Pf6xSXLzMh11K6+mD8/1SFqUDhrWUg0T4or7X0uwghikP9E6hzlXPU
+mVn7XqwCp+fUdCkNJGz4ufJhtHv/wNANMmYfaxhVqP/UkwJzP3UhafiAy4hkJCMu
+3l8ZdnRCNvcO3yWZVVj/rkZ0ktc3D0+mnONnd23gNV/6TQhL9ZYuAnn1U12YL8tV
+8LbEN6JnZZ/cOSvx8IEC9JPgpK3Un8QwKciz9In0DOSFN7f3D18AMFYTlCYSkPbC
+DX9zun5TMomYrVr2XPt7yQp9v6AooVgxBE2ZGxNT9X3xYme7iJNddBL/ICx6ix9O
+FXWd7wbu5ZplwbQQRyvurY/laoD7+1JOhmFVRvk0hoURF/WXN0rUBd8K83kQnHjf
+IIog3vTnb8bKJpMebkgMEVfabK4WAX62OGDEs4wCBwi/GQ3FrUbu8IJ8RqAlr8o1
+uwIq7kwx+EOvRKxUpGXQqPIpyGpJ0Ysj1OTzbfInR3GuJfJ8epE28YNtQbhNItPC
+uofX5uJuuIudmADC1Swdu1sAF2KTssqvNKizHAsEXqv8BgWudnJ06bOppsn8J7ch
+r8A72NrthYydKdGLv5riVQkQxa5eU40LOdD4MiGz6B9RbDgD5wHjnn00Q/YX9SuE
+x0+o2ED5vHM3hGP1cr+M
+=SA6L
+-----END PGP SIGNATURE-----
+
+--Y3OItpPG8oFwWDgC--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

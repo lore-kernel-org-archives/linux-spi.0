@@ -1,74 +1,57 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: core: Validate lenght of the transfers in message
-Date: Wed, 19 Feb 2014 10:51:48 +0900
-Message-ID: <20140219015148.GL2669@sirena.org.uk>
-References: <1392444566-23605-1-git-send-email-iivanov@mm-sol.com>
- <20140216142512.GR4524@book.gsilab.sittig.org>
- <20140218000938.GE2669@sirena.org.uk>
- <20140218193747.GE4524@book.gsilab.sittig.org>
+From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: =?UTF-8?B?TmV3IGJ1Zz8=?=
+Date: Wed, 19 Feb 2014 11:32:13 +0400
+Message-ID: <1392795133.984411895@f316.i.mail.ru>
+Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="LQv0vi9oZBoYbpa7"
-Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	=?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140218193747.GE4524-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
---LQv0vi9oZBoYbpa7
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Feb 18, 2014 at 08:37:47PM +0100, Gerhard Sittig wrote:
-> On Tue, Feb 18, 2014 at 09:09 +0900, Mark Brown wrote:
-
-> > It seems fairly clear to me - if we're transferring 16 bit words we need
-> > the transfer to me a multiple of 16 bits and so on?  The requirement for
-> > padding is unclear I have to say.
-
-> I meant "padding" in the sense that e.g. 12bit bits-per-word
-> require data to be provided or consumed in 16bit quantities (2
-> full bytes), 20bit bits-per-word require 4 bytes per SPI word.
-> Why not 3 bytes?  I'd guess this is due to FIFO port width.
-
-I do tend to agree that things need to be rounded up just to the nearest
-byte, I'm not sure what the standard thing for hardware to require in
-terms of port sizing is here - it's going to need an audit of the users
-to see if we need to worry and what they do if it is an issue I think.
-
-> At least this is how I read the check which this patch
-> implements.
-
-I don't recall the actual code now, sorry - I was mostly just following
-up on the review comment here.
-
---LQv0vi9oZBoYbpa7
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTBA4xAAoJELSic+t+oim92/IP/i/7MaWvwKDxbzWtCBV4ne/Z
-rK6ckJsia2ALi+AYr8iOyHXZSMZs4PbfA5JJW8j+35lyIneiPOmPJWtNzpWSya/0
-p6eUzwDzo1AmBDTuE8Ee+qQuEWQmCZMXHCEkqtlr9wXKxt7ibMuXVk5Kb8+mOsk2
-aAi55m3NpwSAyPc73zF+letZo7350le/2ZTp1crRRukCy0KX0DkS+kcEioKplfSA
-I6gBkJOkh2+QQCLLvnd4O557R49cJEnOZ63u7qcwYImtRR04zohprMnD61XyhGeD
-QNd5EkWN0b+oIj+llOXaTVlXfdYhwk9PMsLkkSfppSrIhYqDGCRgF+AGOS19DCpr
-eQqxNlHN65VawwvL+/NfzhQcVyNO4DBTq9NterCZDueM+7sB1h70SF2wXdmBAb+U
-FjhnrAVKTMABm0V7Su/mTgjkMM7oxNxUjyBt4qgPyo4sQLM4Hr6vvYzBtYHd86mv
-vOMLTLrpxqsbwEs4q5NkJYSAVNTk5Xpq92U68ZfcFENkxxYbjh+liM1RdaunLD2V
-pxI/UhsHpuNQAtrPRoBgqVKP4f0GRGpXenESVTI0Slj8bwrMttVlXy2kHTY8EmG6
-8pmxdxACbXnX0d5WPZAd8Xx6mJrTwkCyJrs3ni6h29u8uNEftM8xK07FYnY+D6yh
-y+YdaSxwJX8AdWN/HBYY
-=Vfdg
------END PGP SIGNATURE-----
-
---LQv0vi9oZBoYbpa7--
+SGVsbG8uCgpEdXJpbmcgdGVzdGluZyBmdW5jdGlvbnMgdHJhbnNmZXJfb25lKCksIHN0dW1ibGVk
+IHVwb24gYW4gZXJyb3IuCkknbSB1c2luZyBrZXJuZWwgMy4xMywgc28gSSBoYWQgdG8gYXBwbHkg
+YSBwYXRjaCBmcm9tIHVwc3RyZWFtCihzcGk6IGNvcmU6IEZpeCB0cmFuc2ZlciBmYWlsdXJlIHdo
+ZW4gbWFzdGVyLT50cmFuc2Zlcl9vbmUgcmV0dXJucyBwb3NpdGl2ZSB2YWx1ZSkuCkFmdGVyIGFw
+cGx5aW5nIGFsbCBiZWNvbWVzIG5vcm1hbCB3aXRoIHByb2JpbmcsIGJ1dCB3aGVyZSBkaWQgdGhl
+IGVycm9yCiJVbmFibGUgdG8gaGFuZGxlIGtlcm5lbCBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2Ui
+ID8KRGlkIHNvbWVvbmUgaGF2ZSBzaW1pbGFyIGJ1Z3M/CgpUaGFua3MuCgpzcGlfbWFzdGVyIHNw
+aTA6IGZhaWxlZCB0byB0cmFuc2ZlciBvbmUgbWVzc2FnZSBmcm9tIHF1ZXVlOiAxCjc0eDE2NCBz
+cGkwLjE6IEZhaWxlZCB3cml0aW5nOiAxCjc0eDE2NDogcHJvYmUgb2Ygc3BpMC4xIGZhaWxlZCB3
+aXRoIGVycm9yIDEKVW5hYmxlIHRvIGhhbmRsZSBrZXJuZWwgTlVMTCBwb2ludGVyIGRlcmVmZXJl
+bmNlIGF0IHZpcnR1YWwgYWRkcmVzcyAwMDAwMDAyMApDQU4gZGV2aWNlIGRyaXZlciBpbnRlcmZh
+Y2UKcGdkID0gYzAwMjQwMDAKWzAwMDAwMDIwXSAqcGdkPTAwMDAwMDAwCkludGVybmFsIGVycm9y
+OiBPb3BzOiA2M2MxMTgwNSBbIzFdIFBSRUVNUFQgQVJNCkNQVTogMCBQSUQ6IDIyIENvbW06IHNw
+aTAgTm90IHRhaW50ZWQgMy4xMy4zICMxCnRhc2s6IGMzOTZiMjYwIHRpOiBjMzk2ZTAwMCB0YXNr
+LnRpOiBjMzk2ZTAwMApQQyBpcyBhdCBzcGlfcHVtcF9tZXNzYWdlcysweDE1MC8weDE5NApMUiBp
+cyBhdCBzcGlfcHVtcF9tZXNzYWdlcysweDE0OC8weDE5NApwYyA6IFs8YzAyYjY5MGM+XSAgICBs
+ciA6IFs8YzAyYjY5MDQ+XSAgICBwc3I6IDYwMDAwMDEzCnNwIDogYzM5NmZmMjAgIGlwIDogYzA0
+ODA2YzQgIGZwIDogMDAwMDAwMDAKcjEwOiAwMDAwMDAwMCAgcjkgOiAwMDAwMDAwMCAgcjggOiBj
+Mzk2YjE5YwpyNyA6IDAwMDAwMDAxICByNiA6IGMzOTZiMDIwICByNSA6IDAwMDAwMDAxICByNCA6
+IGMzOTZiMWIwCnIzIDogMDAwMDAwMDAgIHIyIDogMDAwMDAwMDAgIHIxIDogMjAwMDAwOTMgIHIw
+IDogYzM5NmIwMjAKRmxhZ3M6IG5aQ3YgIElSUXMgb24gIEZJUXMgb24gIE1vZGUgU1ZDXzMyICBJ
+U0EgQVJNICBTZWdtZW50IGtlcm5lbApDb250cm9sOiAwMDAwMjE3ZiAgVGFibGU6IGMwMDI0MDE3
+ICBEQUM6IDAwMDAwMDE3ClByb2Nlc3Mgc3BpMCAocGlkOiAyMiwgc3RhY2sgbGltaXQgPSAweGMz
+OTZlMWMwKQpTdGFjazogKDB4YzM5NmZmMjAgdG8gMHhjMzk3MDAwMCkKZmYyMDogYzM5NmIxYjAg
+YzM5NmIxOGMgYzM5NmUwMDAgYzAwNGE5M2MgMDAwMDAwMDAgYzM5NmFkNjAgMDAwMDAwMDAgYzM5
+NmIxOGMKZmY0MDogYzAwNGE4YTAgMDAwMDAwMDAgMDAwMDAwMDAgYzAwNGEzMTggZmZlZmIxY2Mg
+MDAwMDAwMDAgZmZmZjMzNDggYzM5NmIxOGMKZmY2MDogMDAwMDAwMDAgMDAwMDAwMDEgZGVhZDRl
+YWQgZmZmZmZmZmYgZmZmZmZmZmYgYzM5NmZmNzQgYzM5NmZmNzQgMDAwMDAwMDAKZmY4MDogMDAw
+MDAwMDEgZGVhZDRlYWQgZmZmZmZmZmYgZmZmZmZmZmYgYzM5NmZmOTAgYzM5NmZmOTAgYzM5NmZm
+YWMgYzM5NmFkNjAKZmZhMDogYzAwNGEyNjQgMDAwMDAwMDAgMDAwMDAwMDAgYzAwMjkzMzAgMDAw
+MDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKZmZjMDogMDAwMDAwMDAgMDAwMDAwMDAg
+MDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAKZmZl
+MDogMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMDAgMDAwMDAwMTMgMDAwMDAwMDAg
+ZWZmZjIzY2MgZmQ1ZjMzY2MKWzxjMDJiNjkwYz5dIChzcGlfcHVtcF9tZXNzYWdlcysweDE1MC8w
+eDE5NCkgZnJvbSBbPGMwMDRhOTNjPl0gKGt0aHJlYWRfd29ya2VyX2ZuKzB4OWMvMHhmMCkKWzxj
+MDA0YTkzYz5dIChrdGhyZWFkX3dvcmtlcl9mbisweDljLzB4ZjApIGZyb20gWzxjMDA0YTMxOD5d
+IChrdGhyZWFkKzB4YjQvMHhkMCkKWzxjMDA0YTMxOD5dIChrdGhyZWFkKzB4YjQvMHhkMCkgZnJv
+bSBbPGMwMDI5MzMwPl0gKHJldF9mcm9tX2ZvcmsrMHgxNC8weDI0KQpDb2RlOiBlMWEwMjAwNSBl
+YmZlZjY1MCBlNTk0MzA0MCBlMWEwMDAwNiAoZTU4MzUwMjApCi0tLVsgZW5kIHRyYWNlIDNlOTMx
+NzU1NjdjMzExZGEgXS0tLQoKLS0tCg==
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,72 +1,66 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: [PATCH 09/10] spi: sh-msiof: Convert to let spi core validate xfer->bits_per_word
-Date: Thu, 20 Feb 2014 15:43:08 +0100
-Message-ID: <1392907389-21798-10-git-send-email-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH 06/10] spi: sh-msiof: Improve binding documentation
+Date: Thu, 20 Feb 2014 15:43:05 +0100
+Message-ID: <1392907389-21798-7-git-send-email-geert@linux-m68k.org>
 References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
-Cc: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392907389-21798-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	devicetree@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-Set bits_per_word_mask so the spi core will reject transfers that attempt
-to use an unsupported bits_per_word value.
+  - Add missing "interrupt-parent", "#address-cells", "#size-cells", and
+    "clocks" properties,
+  - Add missing default values for "renesas,tx-fifo-size" and
+    "renesas,rx-fifo-size",
+  - Add a reference to the pinctrl documentation.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Cc: devicetree@vger.kernel.org
 ---
- drivers/spi/spi-sh-msiof.c |   19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ Documentation/devicetree/bindings/spi/sh-msiof.txt |   24 ++++++++++++++------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 7add4be37987..bd300fcb7116 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -441,22 +441,6 @@ static u32 sh_msiof_spi_hz(struct spi_device *spi, struct spi_transfer *t)
- 	return hz;
- }
+diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+index e6222106ca36..52cf5c78705b 100644
+--- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
++++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+@@ -1,12 +1,22 @@
+ Renesas MSIOF spi controller
  
--static int sh_msiof_spi_setup_transfer(struct spi_device *spi,
--				       struct spi_transfer *t)
--{
--	int bits;
--
--	/* noting to check hz values against since parent clock is disabled */
--
--	bits = sh_msiof_spi_bits(spi, t);
--	if (bits < 8)
--		return -EINVAL;
--	if (bits > 32)
--		return -EINVAL;
--
--	return spi_bitbang_setup_transfer(spi, t);
--}
--
- static int sh_msiof_spi_setup(struct spi_device *spi)
- {
- 	struct device_node	*np = spi->master->dev.of_node;
-@@ -822,10 +806,11 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	master->cleanup = spi_bitbang_cleanup;
- 	master->prepare_message = sh_msiof_prepare_message;
- 	master->unprepare_message = sh_msiof_unprepare_message;
-+	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+ Required properties:
+-- compatible : 	"renesas,sh-msiof" for SuperH or
+-		"renesas,sh-mobile-msiof" for SH Mobile series
+-- reg : Offset and length of the register set for the device
+-- interrupts : interrupt line used by MSIOF
++- compatible           : "renesas,sh-msiof" for SuperH, or
++			 "renesas,sh-mobile-msiof" for SH Mobile series.
++- reg                  : Offset and length of the register set for the device
++- interrupt-parent     : The phandle for the interrupt controller that
++			 services interrupts for this device
++- interrupts           : Interrupt specifier
++- #address-cells       : Must be <1>
++- #size-cells          : Must be <0>
  
- 	p->bitbang.master = master;
- 	p->bitbang.chipselect = sh_msiof_spi_chipselect;
--	p->bitbang.setup_transfer = sh_msiof_spi_setup_transfer;
-+	p->bitbang.setup_transfer = spi_bitbang_setup_transfer;
- 	p->bitbang.txrx_bufs = sh_msiof_spi_txrx;
- 	p->bitbang.txrx_word[SPI_MODE_0] = sh_msiof_spi_txrx_word;
- 	p->bitbang.txrx_word[SPI_MODE_1] = sh_msiof_spi_txrx_word;
+ Optional properties:
+-- num-cs		: total number of chip-selects
+-- renesas,tx-fifo-size	: Overrides the default tx fifo size given in words
+-- renesas,rx-fifo-size	: Overrides the default rx fifo size given in words
++- clocks               : Must contain a reference to the functional clock.
++- num-cs               : Total number of chip-selects
++- renesas,tx-fifo-size : Overrides the default tx fifo size given in words
++			 (default is 64)
++- renesas,rx-fifo-size : Overrides the default rx fifo size given in words
++			 (default is 64)
++
++Pinctrl properties might be needed, too.  See
++Documentation/devicetree/bindings/pinctrl/renesas,*.
 -- 
 1.7.9.5
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

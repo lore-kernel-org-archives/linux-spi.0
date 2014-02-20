@@ -1,48 +1,44 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 07/10] spi: sh-msiof: Add support for R-Car H2 and M2
-Date: Thu, 20 Feb 2014 17:13:16 +0100
-Message-ID: <CAMuHMdUByWPcYM8M_m5NVM4QP5cQE_tOLGQg=2fTNF7gqkUhig@mail.gmail.com>
-References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
-	<1392907389-21798-8-git-send-email-geert@linux-m68k.org>
-	<CANqRtoQVJzEgo_AdVxrPSRUY6ocyPaQ=RKQJyxoExDrfYxiJ3w@mail.gmail.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: New bug?
+Date: Thu, 20 Feb 2014 20:51:05 +0100
+Message-ID: <CAMuHMdU9XWz7-YrEh5u4SPdSkfQX8G7WTCxxWKFMP8=6_1ci+g@mail.gmail.com>
+References: <1392795133.984411895@f316.i.mail.ru>
+	<CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog@mail.gmail.com>
+	<1392808849.211941090@f415.i.mail.ru>
+	<CAMuHMdVBY7M=dkegw_3pQ7yFSLLEe2T6pXidY=eL7oiYAXXoPQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	SH-Linux <linux-sh@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Magnus Damm <magnus.damm@gmail.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <CANqRtoQVJzEgo_AdVxrPSRUY6ocyPaQ=RKQJyxoExDrfYxiJ3w@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAMuHMdVBY7M=dkegw_3pQ7yFSLLEe2T6pXidY=eL7oiYAXXoPQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Feb 20, 2014 at 4:41 PM, Magnus Damm <magnus.damm@gmail.com> wrote:
-> On thing stuck out a bit with the bindings. I can see that you specify
-> both fifo size and use the SoC suffix for the r8a7790 and r8a7791
-> bindings. Isn't that a bit of redundant information there, if we know
-> that the SoC is r8a7790 or r8a7791 then can't we simply put that
-> information in r8a779x_data above and perhaps keep the binding
-> simpler? Perhaps same thing applies to other properties as well?
+On Wed, Feb 19, 2014 at 1:06 PM, Geert Uytterhoeven
+<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
+> On Wed, Feb 19, 2014 at 12:20 PM, Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org> wrote:
+>> Mark, Is any chances to put these two patches to 3.13-stable?
+>> (spi: core: Fix transfer failure when master->transfer_one returns positive value),
+>> (spi: Fix crash with double message finalisation on error handling)
+>
+> The second one should not need backporting, as the patch it reverts
+> is not in v3.13.
 
-"renesas,tx-fifo-size" and "renesas,rx-fifo-size" are part of the existing
-bindings, so I'm a bit reluctant to change these.
-Hmm, since the original bindings didn't specify the default values,
-I could make them chip-specific, though.
-
-The only other property is "num-cs", which can have any value if you
-start using the generic "cs-gpios".
+Apparently it got backported to -stable ;-(
 
 Gr{oetje,eeting}s,
 
                         Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
 In personal conversations with technical people, I call myself a hacker. But
 when I'm talking to journalists I just say "programmer" or something like that.
                                 -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

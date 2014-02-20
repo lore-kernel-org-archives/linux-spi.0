@@ -1,188 +1,228 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 10/10] spi: sh-msiof: Use core message handling instead of spi-bitbang
-Date: Thu, 20 Feb 2014 15:43:09 +0100
-Message-ID: <1392907389-21798-11-git-send-email-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH 04/10] spi: sh-msiof: Add more register documentation
+Date: Thu, 20 Feb 2014 15:43:03 +0100
+Message-ID: <1392907389-21798-5-git-send-email-geert@linux-m68k.org>
 References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
-Cc: Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1392907389-21798-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-The only remaining feature of spi-bitbang used by this driver is the
-chipselect() callback, which just does conditional GPIO.
-This is handled fine by the SPI core's spi_set_cs(), hence switch the
-driver to use the core message handling through our own transfer_one()
-method.
-
-Remove the call to spi_master_put() in sh_msiof_spi_remove(), as our SPI
-master is now registered using devm_spi_register_master()
-(spi_bitbang_start() uses the non-managed version).
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
- drivers/spi/Kconfig        |    1 -
- drivers/spi/spi-sh-msiof.c |   65 ++++++++++++--------------------------------
- 2 files changed, 17 insertions(+), 49 deletions(-)
+ drivers/spi/spi-sh-msiof.c |  152 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 100 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 339da4b15ec2..35d5c029393a 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -416,7 +416,6 @@ config SPI_SH_MSIOF
- 	tristate "SuperH MSIOF SPI controller"
- 	depends on HAVE_CLK
- 	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
--	select SPI_BITBANG
- 	help
- 	  SPI driver for SuperH and SH Mobile MSIOF blocks.
- 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index bd300fcb7116..642b0b637df1 100644
+index af9f2db41b16..79e14586049b 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -26,7 +26,6 @@
- 
- #include <linux/spi/sh_msiof.h>
- #include <linux/spi/spi.h>
--#include <linux/spi/spi_bitbang.h>
- 
- #include <asm/unaligned.h>
- 
-@@ -36,7 +35,6 @@ struct sh_msiof_chipdata {
+@@ -41,32 +41,80 @@ struct sh_msiof_spi_priv {
+ 	int rx_fifo_size;
  };
  
- struct sh_msiof_spi_priv {
--	struct spi_bitbang bitbang; /* must be first for spi_bitbang.c */
- 	void __iomem *mapbase;
- 	struct clk *clk;
- 	struct platform_device *pdev;
-@@ -452,8 +450,7 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
- 		 */
- 		spi->cs_gpio = (uintptr_t)spi->controller_data;
- 	}
+-#define TMDR1	0x00
+-#define TMDR2	0x04
+-#define TMDR3	0x08
+-#define RMDR1	0x10
+-#define RMDR2	0x14
+-#define RMDR3	0x18
+-#define TSCR	0x20
+-#define RSCR	0x22
+-#define CTR	0x28
+-#define FCTR	0x30
+-#define STR	0x40
+-#define IER	0x44
+-#define TDR1	0x48
+-#define TDR2	0x4c
+-#define TFDR	0x50
+-#define RDR1	0x58
+-#define RDR2	0x5c
+-#define RFDR	0x60
 -
--	return spi_bitbang_setup(spi);
-+	return 0;
- }
+-#define CTR_TSCKE (1 << 15)
+-#define CTR_TFSE  (1 << 14)
+-#define CTR_TXE   (1 << 9)
+-#define CTR_RXE   (1 << 8)
+-
+-#define STR_TEOF  (1 << 23)
+-#define STR_REOF  (1 << 7)
++#define TMDR1	0x00	/* Transmit Mode Register 1 */
++#define TMDR2	0x04	/* Transmit Mode Register 2 */
++#define TMDR3	0x08	/* Transmit Mode Register 3 */
++#define RMDR1	0x10	/* Receive Mode Register 1 */
++#define RMDR2	0x14	/* Receive Mode Register 2 */
++#define RMDR3	0x18	/* Receive Mode Register 3 */
++#define TSCR	0x20	/* Transmit Clock Select Register */
++#define RSCR	0x22	/* Receive Clock Select Register (SH, A1, APE6) */
++#define CTR	0x28	/* Control Register */
++#define FCTR	0x30	/* FIFO Control Register */
++#define STR	0x40	/* Status Register */
++#define IER	0x44	/* Interrupt Enable Register */
++#define TDR1	0x48	/* Transmit Control Data Register 1 (SH, A1) */
++#define TDR2	0x4c	/* Transmit Control Data Register 2 (SH, A1) */
++#define TFDR	0x50	/* Transmit FIFO Data Register */
++#define RDR1	0x58	/* Receive Control Data Register 1 (SH, A1) */
++#define RDR2	0x5c	/* Receive Control Data Register 2 (SH, A1) */
++#define RFDR	0x60	/* Receive FIFO Data Register */
++
++/* TMDR1 and RMDR1 */
++#define MDR1_TRMD	 0x80000000 /* Transfer Mode (1 = Master mode) */
++#define MDR1_SYNCMD_MASK 0x30000000 /* SYNC Mode */
++#define MDR1_SYNCMD_SPI	 0x20000000 /*   Level mode/SPI */
++#define MDR1_SYNCMD_LR	 0x30000000 /*   L/R mode */
++#define MDR1_SYNCAC_SHIFT	 25 /* Sync Polarity (1 = Active-low) */
++#define MDR1_BITLSB_SHIFT	 24 /* MSB/LSB First (1 = LSB first) */
++#define MDR1_FLD_MASK	 0x000000c0 /* Frame Sync Signal Interval (0-3) */
++#define MDR1_FLD_SHIFT		  2
++#define MDR1_XXSTP	 0x00000001 /* Transmission/Reception Stop on FIFO */
++/* TMDR1 */
++#define TMDR1_PCON	 0x40000000 /* Transfer Signal Connection */
++
++/* TMDR2 and RMDR2 */
++#define MDR2_BITLEN1(i)	(((i) - 1) << 24) /* Data Size (8-32 bits) */
++#define MDR2_WDLEN1(i)	(((i) - 1) << 16) /* Word Count (1-64/256 (SH, A1))) */
++#define MDR2_GRPMASK1	0x00000001 /* Group Output Mask 1 (SH, A1) */
++
++/* TSCR and RSCR */
++#define SCR_BRPS_MASK	    0x1f00 /* Prescaler Setting (1-32) */
++#define SCR_BRPS(i)	(((i) - 1) << 8)
++#define SCR_BRDV_MASK	    0x0007 /* Baud Rate Generator's Division Ratio */
++#define SCR_BRDV_DIV_2	    0x0000
++#define SCR_BRDV_DIV_4	    0x0001
++#define SCR_BRDV_DIV_8	    0x0002
++#define SCR_BRDV_DIV_16	    0x0003
++#define SCR_BRDV_DIV_32	    0x0004
++#define SCR_BRDV_DIV_1	    0x0007
++
++/* CTR */
++#define CTR_TSCKIZ_MASK	0xc0000000 /* Transmit Clock I/O Polarity Select */
++#define CTR_TSCKIZ_SCK	0x80000000 /*   Disable SCK when TX disabled */
++#define CTR_TSCKIZ_POL_SHIFT	30 /*   Transmit Clock Polarity */
++#define CTR_RSCKIZ_MASK	0x30000000 /* Receive Clock Polarity Select */
++#define CTR_RSCKIZ_SCK	0x20000000 /*   Must match CTR_TSCKIZ_SCK */
++#define CTR_RSCKIZ_POL_SHIFT	28 /*   Receive Clock Polarity */
++#define CTR_TEDG_SHIFT		27 /* Transmit Timing (1 = falling edge) */
++#define CTR_REDG_SHIFT		26 /* Receive Timing (1 = falling edge) */
++#define CTR_TXDIZ_MASK	0x00c00000 /* Pin Output When TX is Disabled */
++#define CTR_TXDIZ_LOW	0x00000000 /*   0 */
++#define CTR_TXDIZ_HIGH	0x00400000 /*   1 */
++#define CTR_TXDIZ_HIZ	0x00800000 /*   High-impedance */
++#define CTR_TSCKE	0x00008000 /* Transmit Serial Clock Output Enable */
++#define CTR_TFSE	0x00004000 /* Transmit Frame Sync Signal Output Enable */
++#define CTR_TXE		0x00000200 /* Transmit Enable */
++#define CTR_RXE		0x00000100 /* Receive Enable */
++
++/* STR and IER */
++#define STR_TEOF	0x00800000 /* Frame Transmission End */
++#define STR_REOF	0x00000080 /* Frame Reception End */
++
++
++#define DEFAULT_TX_FIFO_SIZE	64
++#define DEFAULT_RX_FIFO_SIZE	64
++
  
- static int sh_msiof_prepare_message(struct spi_master *master,
-@@ -488,20 +485,6 @@ static int sh_msiof_unprepare_message(struct spi_master *master,
- 	return 0;
- }
- 
--static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
--{
--	int value;
--
--	/* chip select is active low unless SPI_CS_HIGH is set */
--	if (spi->mode & SPI_CS_HIGH)
--		value = (is_on == BITBANG_CS_ACTIVE) ? 1 : 0;
--	else
--		value = (is_on == BITBANG_CS_ACTIVE) ? 0 : 1;
--
--	if (spi->cs_gpio >= 0)
--		gpio_set_value(spi->cs_gpio, value);
--}
--
- static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
- 						  const void *, int, int),
-@@ -571,9 +554,11 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 	return ret;
- }
- 
--static int sh_msiof_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
-+static int sh_msiof_transfer_one(struct spi_master *master,
-+				 struct spi_device *spi,
-+				 struct spi_transfer *t)
+ static u32 sh_msiof_read(struct sh_msiof_spi_priv *p, int reg_offs)
  {
--	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
-+	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
- 	void (*tx_fifo)(struct sh_msiof_spi_priv *, const void *, int, int);
- 	void (*rx_fifo)(struct sh_msiof_spi_priv *, void *, int, int);
- 	int bits;
-@@ -654,13 +639,6 @@ static int sh_msiof_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
- 		words -= n;
- 	}
+@@ -130,17 +178,17 @@ static struct {
+ 	unsigned short div;
+ 	unsigned short scr;
+ } const sh_msiof_spi_clk_table[] = {
+-	{ 1, 0x0007 },
+-	{ 2, 0x0000 },
+-	{ 4, 0x0001 },
+-	{ 8, 0x0002 },
+-	{ 16, 0x0003 },
+-	{ 32, 0x0004 },
+-	{ 64, 0x1f00 },
+-	{ 128, 0x1f01 },
+-	{ 256, 0x1f02 },
+-	{ 512, 0x1f03 },
+-	{ 1024, 0x1f04 },
++	{ 1,	SCR_BRPS( 1) | SCR_BRDV_DIV_1 },
++	{ 2,	SCR_BRPS( 1) | SCR_BRDV_DIV_2 },
++	{ 4,	SCR_BRPS( 1) | SCR_BRDV_DIV_4 },
++	{ 8,	SCR_BRPS( 1) | SCR_BRDV_DIV_8 },
++	{ 16,	SCR_BRPS( 1) | SCR_BRDV_DIV_16 },
++	{ 32,	SCR_BRPS( 1) | SCR_BRDV_DIV_32 },
++	{ 64,	SCR_BRPS(32) | SCR_BRDV_DIV_2 },
++	{ 128,	SCR_BRPS(32) | SCR_BRDV_DIV_4 },
++	{ 256,	SCR_BRPS(32) | SCR_BRDV_DIV_8 },
++	{ 512,	SCR_BRPS(32) | SCR_BRDV_DIV_16 },
++	{ 1024,	SCR_BRPS(32) | SCR_BRDV_DIV_32 },
+ };
  
--	return bytes_done;
--}
--
--static u32 sh_msiof_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
--				  u32 word, u8 bits)
--{
--	BUG(); /* unused but needed by bitbang code */
- 	return 0;
+ static void sh_msiof_spi_set_clk_regs(struct sh_msiof_spi_priv *p,
+@@ -181,21 +229,21 @@ static void sh_msiof_spi_set_pin_regs(struct sh_msiof_spi_priv *p,
+ 	 */
+ 	sh_msiof_write(p, FCTR, 0);
+ 
+-	tmp = 0;
+-	tmp |= !cs_high << 25;
+-	tmp |= lsb_first << 24;
+-	sh_msiof_write(p, TMDR1, 0xe0000005 | tmp);
+-	sh_msiof_write(p, RMDR1, 0x20000005 | tmp);
++	tmp = MDR1_SYNCMD_SPI | 1 << MDR1_FLD_SHIFT | MDR1_XXSTP;
++	tmp |= !cs_high << MDR1_SYNCAC_SHIFT;
++	tmp |= lsb_first << MDR1_BITLSB_SHIFT;
++	sh_msiof_write(p, TMDR1, tmp | MDR1_TRMD | TMDR1_PCON);
++	sh_msiof_write(p, RMDR1, tmp);
+ 
+-	tmp = 0xa0000000;
+-	tmp |= cpol << 30; /* TSCKIZ */
+-	tmp |= cpol << 28; /* RSCKIZ */
++	tmp = 0;
++	tmp |= CTR_TSCKIZ_SCK | cpol << CTR_TSCKIZ_POL_SHIFT;
++	tmp |= CTR_RSCKIZ_SCK | cpol << CTR_RSCKIZ_POL_SHIFT;
+ 
+ 	edge = cpol ^ !cpha;
+ 
+-	tmp |= edge << 27; /* TEDG */
+-	tmp |= edge << 26; /* REDG */
+-	tmp |= (tx_hi_z ? 2 : 0) << 22; /* TXDIZ */
++	tmp |= edge << CTR_TEDG_SHIFT;
++	tmp |= edge << CTR_REDG_SHIFT;
++	tmp |= tx_hi_z ? CTR_TXDIZ_HIZ : CTR_TXDIZ_LOW;
+ 	sh_msiof_write(p, CTR, tmp);
  }
  
-@@ -795,7 +773,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	if (p->info->rx_fifo_override)
- 		p->rx_fifo_size = p->info->rx_fifo_override;
- 
--	/* init master and bitbang code */
-+	/* init master code */
- 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
- 	master->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
- 	master->flags = p->chipdata->master_flags;
-@@ -803,24 +781,20 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	master->dev.of_node = pdev->dev.of_node;
- 	master->num_chipselect = p->info->num_chipselect;
- 	master->setup = sh_msiof_spi_setup;
--	master->cleanup = spi_bitbang_cleanup;
- 	master->prepare_message = sh_msiof_prepare_message;
- 	master->unprepare_message = sh_msiof_unprepare_message;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
-+	master->transfer_one = sh_msiof_transfer_one;
- 
--	p->bitbang.master = master;
--	p->bitbang.chipselect = sh_msiof_spi_chipselect;
--	p->bitbang.setup_transfer = spi_bitbang_setup_transfer;
--	p->bitbang.txrx_bufs = sh_msiof_spi_txrx;
--	p->bitbang.txrx_word[SPI_MODE_0] = sh_msiof_spi_txrx_word;
--	p->bitbang.txrx_word[SPI_MODE_1] = sh_msiof_spi_txrx_word;
--	p->bitbang.txrx_word[SPI_MODE_2] = sh_msiof_spi_txrx_word;
--	p->bitbang.txrx_word[SPI_MODE_3] = sh_msiof_spi_txrx_word;
-+	ret = devm_spi_register_master(&pdev->dev, master);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "spi_register_master error.\n");
-+		goto err2;
-+	}
- 
--	ret = spi_bitbang_start(&p->bitbang);
--	if (ret == 0)
--		return 0;
-+	return 0;
- 
-+ err2:
- 	pm_runtime_disable(&pdev->dev);
- 	clk_unprepare(p->clk);
-  err1:
-@@ -831,15 +805,10 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- static int sh_msiof_spi_remove(struct platform_device *pdev)
+@@ -203,12 +251,12 @@ static void sh_msiof_spi_set_mode_regs(struct sh_msiof_spi_priv *p,
+ 				       const void *tx_buf, void *rx_buf,
+ 				       u32 bits, u32 words)
  {
- 	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
--	int ret;
+-	u32 dr2 = ((bits - 1) << 24) | ((words - 1) << 16);
++	u32 dr2 = MDR2_BITLEN1(bits) | MDR2_WDLEN1(words);
  
--	ret = spi_bitbang_stop(&p->bitbang);
--	if (!ret) {
--		pm_runtime_disable(&pdev->dev);
--		clk_unprepare(p->clk);
--		spi_master_put(p->bitbang.master);
--	}
--	return ret;
-+	pm_runtime_disable(&pdev->dev);
-+	clk_unprepare(p->clk);
-+	return 0;
- }
+ 	if (tx_buf)
+ 		sh_msiof_write(p, TMDR2, dr2);
+ 	else
+-		sh_msiof_write(p, TMDR2, dr2 | 1);
++		sh_msiof_write(p, TMDR2, dr2 | MDR2_GRPMASK1);
  
- static struct platform_device_id spi_driver_ids[] = {
+ 	if (rx_buf)
+ 		sh_msiof_write(p, RMDR2, dr2);
+@@ -694,8 +742,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(&pdev->dev);
+ 
+ 	/* The standard version of MSIOF use 64 word FIFOs */
+-	p->tx_fifo_size = 64;
+-	p->rx_fifo_size = 64;
++	p->tx_fifo_size = DEFAULT_TX_FIFO_SIZE;
++	p->rx_fifo_size = DEFAULT_RX_FIFO_SIZE;
+ 
+ 	/* Platform data may override FIFO sizes */
+ 	if (p->info->tx_fifo_override)
 -- 
 1.7.9.5
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

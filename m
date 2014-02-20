@@ -1,36 +1,63 @@
-From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: Re: [RFT][PATCH v3] spi: clps711x: Refactor to use core message
- parsing
-Date: Wed, 19 Feb 2014 23:22:39 +0400
-Message-ID: <20140219232239.73c05e8e1b5edceefffffe42@mail.ru>
-References: <1392714954.25855.1.camel@phoenix>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH v3] spi: core: Validate length of the transfers in message
+Date: Thu, 20 Feb 2014 12:02:08 +0200
+Message-ID: <1392890528-7417-1-git-send-email-iivanov@mm-sol.com>
+Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
+	Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392714954.25855.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 18 Feb 2014 17:15:54 +0800
-Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org> wrote:
+From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 
-> Convert to use default implementation of transfer_one_message() which provides
-> standard handling of delays and chip select management.
-> 
-> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-> ---
-...
+SPI transfer length should be multiple of SPI word size,
+where SPI word size should be power-of-two multiple
 
-I tested this patch slightly modified, since I use DT only system now,
-nevertheless, changes work for me, so that
+Signed-off-by: Ivan T. Ivanov <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-Tested-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index d0b28bb..45b1610 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1617,6 +1617,7 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ {
+ 	struct spi_master *master = spi->master;
+ 	struct spi_transfer *xfer;
++	int w_size, n_words;
+ 
+ 	if (list_empty(&message->transfers))
+ 		return -EINVAL;
+@@ -1668,6 +1669,22 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+ 				return -EINVAL;
+ 		}
+ 
++		/*
++		 * SPI transfer length should be multiple of SPI word size
++		 * where SPI word size should be power-of-two multiple
++		 */
++		if (xfer->bits_per_word <= 8)
++			w_size = 1;
++		else if (xfer->bits_per_word <= 16)
++			w_size = 2;
++		else
++			w_size = 4;
++
++		n_words = xfer->len / w_size;
++		/* No partial transfers accepted */
++		if (!n_words || xfer->len % w_size)
++			return -EINVAL;
++
+ 		if (xfer->speed_hz && master->min_speed_hz &&
+ 		    xfer->speed_hz < master->min_speed_hz)
+ 			return -EINVAL;
 -- 
-Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+1.7.9.5
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

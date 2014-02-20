@@ -1,112 +1,188 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 08/10] spi: sh-msiof: Move clock management to (un)prepare_message()
-Date: Thu, 20 Feb 2014 15:43:07 +0100
-Message-ID: <1392907389-21798-9-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH 10/10] spi: sh-msiof: Use core message handling instead of spi-bitbang
+Date: Thu, 20 Feb 2014 15:43:09 +0100
+Message-ID: <1392907389-21798-11-git-send-email-geert@linux-m68k.org>
 References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
 Cc: Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
 	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
 	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
 In-Reply-To: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-Move clock management and pin configuration from the bitbang chipselect()
-method to the SPI core prepare_message() and unprepare_message() methods.
+The only remaining feature of spi-bitbang used by this driver is the
+chipselect() callback, which just does conditional GPIO.
+This is handled fine by the SPI core's spi_set_cs(), hence switch the
+driver to use the core message handling through our own transfer_one()
+method.
+
+Remove the call to spi_master_put() in sh_msiof_spi_remove(), as our SPI
+master is now registered using devm_spi_register_master()
+(spi_bitbang_start() uses the non-managed version).
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 ---
- drivers/spi/spi-sh-msiof.c |   56 +++++++++++++++++++++++++++-----------------
- 1 file changed, 34 insertions(+), 22 deletions(-)
+ drivers/spi/Kconfig        |    1 -
+ drivers/spi/spi-sh-msiof.c |   65 ++++++++++++--------------------------------
+ 2 files changed, 17 insertions(+), 49 deletions(-)
 
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 339da4b15ec2..35d5c029393a 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -416,7 +416,6 @@ config SPI_SH_MSIOF
+ 	tristate "SuperH MSIOF SPI controller"
+ 	depends on HAVE_CLK
+ 	depends on SUPERH || ARCH_SHMOBILE || COMPILE_TEST
+-	select SPI_BITBANG
+ 	help
+ 	  SPI driver for SuperH and SH Mobile MSIOF blocks.
+ 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 31624fb4997d..7add4be37987 100644
+index bd300fcb7116..642b0b637df1 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
-@@ -472,9 +472,40 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
- 	return spi_bitbang_setup(spi);
+@@ -26,7 +26,6 @@
+ 
+ #include <linux/spi/sh_msiof.h>
+ #include <linux/spi/spi.h>
+-#include <linux/spi/spi_bitbang.h>
+ 
+ #include <asm/unaligned.h>
+ 
+@@ -36,7 +35,6 @@ struct sh_msiof_chipdata {
+ };
+ 
+ struct sh_msiof_spi_priv {
+-	struct spi_bitbang bitbang; /* must be first for spi_bitbang.c */
+ 	void __iomem *mapbase;
+ 	struct clk *clk;
+ 	struct platform_device *pdev;
+@@ -452,8 +450,7 @@ static int sh_msiof_spi_setup(struct spi_device *spi)
+ 		 */
+ 		spi->cs_gpio = (uintptr_t)spi->controller_data;
+ 	}
+-
+-	return spi_bitbang_setup(spi);
++	return 0;
  }
  
-+static int sh_msiof_prepare_message(struct spi_master *master,
-+				    struct spi_message *msg)
-+{
-+	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
-+	const struct spi_device *spi = msg->spi;
-+
-+	if (!test_and_set_bit(0, &p->flags)) {
-+		pm_runtime_get_sync(&p->pdev->dev);
-+		clk_enable(p->clk);
-+	}
-+
-+	/* Configure pins before asserting CS */
-+	sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
-+				  !!(spi->mode & SPI_CPHA),
-+				  !!(spi->mode & SPI_3WIRE),
-+				  !!(spi->mode & SPI_LSB_FIRST),
-+				  !!(spi->mode & SPI_CS_HIGH));
-+	return 0;
-+}
-+
-+static int sh_msiof_unprepare_message(struct spi_master *master,
-+				      struct spi_message *msg)
-+{
-+	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
-+
-+	if (test_and_clear_bit(0, &p->flags)) {
-+		clk_disable(p->clk);
-+		pm_runtime_put(&p->pdev->dev);
-+	}
-+	return 0;
-+}
-+
- static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
+ static int sh_msiof_prepare_message(struct spi_master *master,
+@@ -488,20 +485,6 @@ static int sh_msiof_unprepare_message(struct spi_master *master,
+ 	return 0;
+ }
+ 
+-static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
+-{
+-	int value;
+-
+-	/* chip select is active low unless SPI_CS_HIGH is set */
+-	if (spi->mode & SPI_CS_HIGH)
+-		value = (is_on == BITBANG_CS_ACTIVE) ? 1 : 0;
+-	else
+-		value = (is_on == BITBANG_CS_ACTIVE) ? 0 : 1;
+-
+-	if (spi->cs_gpio >= 0)
+-		gpio_set_value(spi->cs_gpio, value);
+-}
+-
+ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
+ 						  const void *, int, int),
+@@ -571,9 +554,11 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 	return ret;
+ }
+ 
+-static int sh_msiof_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
++static int sh_msiof_transfer_one(struct spi_master *master,
++				 struct spi_device *spi,
++				 struct spi_transfer *t)
  {
 -	struct sh_msiof_spi_priv *p = spi_master_get_devdata(spi->master);
- 	int value;
++	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
+ 	void (*tx_fifo)(struct sh_msiof_spi_priv *, const void *, int, int);
+ 	void (*rx_fifo)(struct sh_msiof_spi_priv *, void *, int, int);
+ 	int bits;
+@@ -654,13 +639,6 @@ static int sh_msiof_spi_txrx(struct spi_device *spi, struct spi_transfer *t)
+ 		words -= n;
+ 	}
  
- 	/* chip select is active low unless SPI_CS_HIGH is set */
-@@ -483,29 +514,8 @@ static void sh_msiof_spi_chipselect(struct spi_device *spi, int is_on)
- 	else
- 		value = (is_on == BITBANG_CS_ACTIVE) ? 0 : 1;
- 
--	if (is_on == BITBANG_CS_ACTIVE) {
--		if (!test_and_set_bit(0, &p->flags)) {
--			pm_runtime_get_sync(&p->pdev->dev);
--			clk_enable(p->clk);
--		}
+-	return bytes_done;
+-}
 -
--		/* Configure pins before asserting CS */
--		sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
--					  !!(spi->mode & SPI_CPHA),
--					  !!(spi->mode & SPI_3WIRE),
--					  !!(spi->mode & SPI_LSB_FIRST),
--					  !!(spi->mode & SPI_CS_HIGH));
--	}
--
- 	if (spi->cs_gpio >= 0)
- 		gpio_set_value(spi->cs_gpio, value);
--
--	if (is_on == BITBANG_CS_INACTIVE) {
--		if (test_and_clear_bit(0, &p->flags)) {
--			clk_disable(p->clk);
--			pm_runtime_put(&p->pdev->dev);
--		}
--	}
+-static u32 sh_msiof_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
+-				  u32 word, u8 bits)
+-{
+-	BUG(); /* unused but needed by bitbang code */
+ 	return 0;
  }
  
- static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
-@@ -810,6 +820,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+@@ -795,7 +773,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	if (p->info->rx_fifo_override)
+ 		p->rx_fifo_size = p->info->rx_fifo_override;
+ 
+-	/* init master and bitbang code */
++	/* init master code */
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
+ 	master->mode_bits |= SPI_LSB_FIRST | SPI_3WIRE;
+ 	master->flags = p->chipdata->master_flags;
+@@ -803,24 +781,20 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	master->dev.of_node = pdev->dev.of_node;
  	master->num_chipselect = p->info->num_chipselect;
  	master->setup = sh_msiof_spi_setup;
- 	master->cleanup = spi_bitbang_cleanup;
-+	master->prepare_message = sh_msiof_prepare_message;
-+	master->unprepare_message = sh_msiof_unprepare_message;
+-	master->cleanup = spi_bitbang_cleanup;
+ 	master->prepare_message = sh_msiof_prepare_message;
+ 	master->unprepare_message = sh_msiof_unprepare_message;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
++	master->transfer_one = sh_msiof_transfer_one;
  
- 	p->bitbang.master = master;
- 	p->bitbang.chipselect = sh_msiof_spi_chipselect;
+-	p->bitbang.master = master;
+-	p->bitbang.chipselect = sh_msiof_spi_chipselect;
+-	p->bitbang.setup_transfer = spi_bitbang_setup_transfer;
+-	p->bitbang.txrx_bufs = sh_msiof_spi_txrx;
+-	p->bitbang.txrx_word[SPI_MODE_0] = sh_msiof_spi_txrx_word;
+-	p->bitbang.txrx_word[SPI_MODE_1] = sh_msiof_spi_txrx_word;
+-	p->bitbang.txrx_word[SPI_MODE_2] = sh_msiof_spi_txrx_word;
+-	p->bitbang.txrx_word[SPI_MODE_3] = sh_msiof_spi_txrx_word;
++	ret = devm_spi_register_master(&pdev->dev, master);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "spi_register_master error.\n");
++		goto err2;
++	}
+ 
+-	ret = spi_bitbang_start(&p->bitbang);
+-	if (ret == 0)
+-		return 0;
++	return 0;
+ 
++ err2:
+ 	pm_runtime_disable(&pdev->dev);
+ 	clk_unprepare(p->clk);
+  err1:
+@@ -831,15 +805,10 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ static int sh_msiof_spi_remove(struct platform_device *pdev)
+ {
+ 	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
+-	int ret;
+ 
+-	ret = spi_bitbang_stop(&p->bitbang);
+-	if (!ret) {
+-		pm_runtime_disable(&pdev->dev);
+-		clk_unprepare(p->clk);
+-		spi_master_put(p->bitbang.master);
+-	}
+-	return ret;
++	pm_runtime_disable(&pdev->dev);
++	clk_unprepare(p->clk);
++	return 0;
+ }
+ 
+ static struct platform_device_id spi_driver_ids[] = {
 -- 
 1.7.9.5
+

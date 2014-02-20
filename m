@@ -1,104 +1,48 @@
-From: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 Subject: Re: [PATCH 07/10] spi: sh-msiof: Add support for R-Car H2 and M2
-Date: Fri, 21 Feb 2014 00:41:18 +0900
-Message-ID: <CANqRtoQVJzEgo_AdVxrPSRUY6ocyPaQ=RKQJyxoExDrfYxiJ3w@mail.gmail.com>
+Date: Thu, 20 Feb 2014 17:13:16 +0100
+Message-ID: <CAMuHMdUByWPcYM8M_m5NVM4QP5cQE_tOLGQg=2fTNF7gqkUhig@mail.gmail.com>
 References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
 	<1392907389-21798-8-git-send-email-geert@linux-m68k.org>
+	<CANqRtoQVJzEgo_AdVxrPSRUY6ocyPaQ=RKQJyxoExDrfYxiJ3w@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, SH-Linux <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-kernel <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392907389-21798-8-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie@kernel.org>,
+	Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	SH-Linux <linux-sh@vger.kernel.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Magnus Damm <magnus.damm@gmail.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <CANqRtoQVJzEgo_AdVxrPSRUY6ocyPaQ=RKQJyxoExDrfYxiJ3w@mail.gmail.com>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Feb 20, 2014 at 11:43 PM, Geert Uytterhoeven
-<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
-> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
->
-> Add support for the MSIOF variant in the R-Car H2 (r8a7790) and M2
-> (r8a7791) SoCs.
->
-> Binding documentation:
->   - Add future-proof "renesas,msiof-<soctype>" compatible values,
->   - Add example bindings.
->
-> Implementation:
->   - MSIOF on R-Car H2 and M2 requires the transmission of dummy data if
->     data is being received only (cfr. "Set SICTR.TSCKE to 1" and "Write
->     dummy transmission data to SITFDR" in paragraph "Transmit and Receive
->     Procedures" of the Hardware User's Manual).
->   - As RX depends on TX, MSIOF on R-Car H2 and M2 also lacks the RSCR
->     register (Receive Clock Select Register), and some bits in the RMDR1
->     (Receive Mode Register 1) and TMDR2 (Transmit Mode Register 2)
->     registers.
->   - Use the recently introduced SPI_MASTER_MUST_TX flag to enable support
->     for dummy transmission in the SPI core, and to differentiate from other
->     MSIOF implementations in code paths that need this.
->   - New DT compatible values ("renesas,msiof-r8a7790" and
->     "renesas,msiof-r8a7791") are added, as well as new platform device
->     names ("spi_r8a7790_msiof" and "spi_r8a7791_msiof").
->   - Hardware features are indicated using a new struct sh_msiof_chipdata,
->     which is used for both DT and legacy binding. For now this contains the
->     SPI master flags only.
->
-> This is loosely based on a set of patches from Takashi Yoshii
-> <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>.
->
-> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-> Cc: Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>
-> Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> ---
->  Documentation/devicetree/bindings/spi/sh-msiof.txt |   21 +++++++-
->  drivers/spi/spi-sh-msiof.c                         |   57 ++++++++++++++++----
->  2 files changed, 66 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-> index 92515c1ececa..31624fb4997d 100644
-> --- a/drivers/spi/spi-sh-msiof.c
-> +++ b/drivers/spi/spi-sh-msiof.c
-> @@ -659,6 +671,23 @@ static u32 sh_msiof_spi_txrx_word(struct spi_device *spi, unsigned nsecs,
->  }
->
->  #ifdef CONFIG_OF
-> +static const struct sh_msiof_chipdata sh_data = {
-> +       .master_flags = 0,
-> +};
-> +
-> +static const struct sh_msiof_chipdata r8a779x_data = {
-> +       .master_flags = SPI_MASTER_MUST_TX,
-> +};
-> +
-> +static const struct of_device_id sh_msiof_match[] = {
-> +       { .compatible = "renesas,sh-msiof",        .data = &sh_data },
-> +       { .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
-> +       { .compatible = "renesas,msiof-r8a7790",   .data = &r8a779x_data },
-> +       { .compatible = "renesas,msiof-r8a7791",   .data = &r8a779x_data },
-> +       {},
-> +};
-> +MODULE_DEVICE_TABLE(of, sh_msiof_match);
+On Thu, Feb 20, 2014 at 4:41 PM, Magnus Damm <magnus.damm@gmail.com> wrote:
+> On thing stuck out a bit with the bindings. I can see that you specify
+> both fifo size and use the SoC suffix for the r8a7790 and r8a7791
+> bindings. Isn't that a bit of redundant information there, if we know
+> that the SoC is r8a7790 or r8a7791 then can't we simply put that
+> information in r8a779x_data above and perhaps keep the binding
+> simpler? Perhaps same thing applies to other properties as well?
 
-Hi Geert,
+"renesas,tx-fifo-size" and "renesas,rx-fifo-size" are part of the existing
+bindings, so I'm a bit reluctant to change these.
+Hmm, since the original bindings didn't specify the default values,
+I could make them chip-specific, though.
 
-Thanks for your patches. They all look good in general I think.
+The only other property is "num-cs", which can have any value if you
+start using the generic "cs-gpios".
 
-On thing stuck out a bit with the bindings. I can see that you specify
-both fifo size and use the SoC suffix for the r8a7790 and r8a7791
-bindings. Isn't that a bit of redundant information there, if we know
-that the SoC is r8a7790 or r8a7791 then can't we simply put that
-information in r8a779x_data above and perhaps keep the binding
-simpler? Perhaps same thing applies to other properties as well?
+Gr{oetje,eeting}s,
 
-Cheers,
+                        Geert
 
-/ magnus
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

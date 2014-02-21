@@ -1,43 +1,41 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: New bug?
-Date: Thu, 20 Feb 2014 20:51:05 +0100
-Message-ID: <CAMuHMdU9XWz7-YrEh5u4SPdSkfQX8G7WTCxxWKFMP8=6_1ci+g@mail.gmail.com>
-References: <1392795133.984411895@f316.i.mail.ru>
-	<CAMuHMdUTVAey=9rmU0xRomEomBk1erMoH-jnu8Szg=OcZWbLog@mail.gmail.com>
-	<1392808849.211941090@f415.i.mail.ru>
-	<CAMuHMdVBY7M=dkegw_3pQ7yFSLLEe2T6pXidY=eL7oiYAXXoPQ@mail.gmail.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 1/2] spi: dup: Remove spi_master_put in spi_qup_remove
+Date: Fri, 21 Feb 2014 09:11:06 +0800
+Message-ID: <1392945066.4125.2.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAMuHMdVBY7M=dkegw_3pQ7yFSLLEe2T6pXidY=eL7oiYAXXoPQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Feb 19, 2014 at 1:06 PM, Geert Uytterhoeven
-<geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org> wrote:
-> On Wed, Feb 19, 2014 at 12:20 PM, Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org> wrote:
->> Mark, Is any chances to put these two patches to 3.13-stable?
->> (spi: core: Fix transfer failure when master->transfer_one returns positive value),
->> (spi: Fix crash with double message finalisation on error handling)
->
-> The second one should not need backporting, as the patch it reverts
-> is not in v3.13.
+This driver uses devm_spi_register_master() so don't explicitly call
+spi_master_put() in spi_qup_remove().
 
-Apparently it got backported to -stable ;-(
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-qup.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Gr{oetje,eeting}s,
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index b0bcc09..5edc56f 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -802,7 +802,6 @@ static int spi_qup_remove(struct platform_device *pdev)
+ 
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-	spi_master_put(master);
+ 	return 0;
+ }
+ 
+-- 
+1.8.1.2
 
-                        Geert
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,45 +1,50 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 4/4] spi: rspi: Fix loopback mode for Dual/Quad SPI Transfers
-Date: Fri, 21 Feb 2014 17:29:18 +0100
-Message-ID: <1393000158-6622-4-git-send-email-geert@linux-m68k.org>
-References: <1393000158-6622-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1393000158-6622-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH 1/4] spi: rspi: List full example compatible properties in bindings
+Date: Fri, 21 Feb 2014 17:29:15 +0100
+Message-ID: <1393000158-6622-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-While normal Dual and Quad SPI Transfers are unidirectional, we must do
-a bidirectional transfer if loopback mode is enabled, else rx_buf is not
-filled.
+List full example compatible properties with soctypes instead of just the
+soctypes, so checkpatch can validate DTSes.
 
-With spidev it seemed to work, as spidev uses the same buffer for
-tranmission and reception.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 ---
- drivers/spi/spi-rspi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/spi/spi-rspi.txt |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 4a1f978c3381..92bec7e91046 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -859,7 +859,9 @@ static int qspi_transfer_one(struct spi_master *master, struct spi_device *spi,
- {
- 	struct rspi_data *rspi = spi_master_get_devdata(master);
- 
--	if (xfer->tx_buf && xfer->tx_nbits > SPI_NBITS_SINGLE) {
-+	if (spi->mode & SPI_LOOP) {
-+		return qspi_transfer_out_in(rspi, xfer);
-+	} else if (xfer->tx_buf && xfer->tx_nbits > SPI_NBITS_SINGLE) {
- 		/* Quad or Dual SPI Write */
- 		return qspi_transfer_out(rspi, xfer);
- 	} else if (xfer->rx_buf && xfer->rx_nbits > SPI_NBITS_SINGLE) {
+diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+index 95f9b21d239f..e54924b2aff6 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+@@ -7,9 +7,11 @@ Required properties:
+ 		     "renesas,rspi-<soctype>", "renesas,rspi-rz" as fallback.
+ 		     For Quad Serial Peripheral Interface on R-Car Gen2:
+ 		     "renesas,qspi-<soctype>", "renesas,qspi" as fallback.
+-		     Examples of valid soctypes are "sh7757" (SH),
+-		     "r7s72100" (RZ/A1H), "r8a7790" (R-Car H2), and
+-		     "r8a7791" (R-Car M2).
++		     Examples with soctypes are:
++		        - "renesas,rspi-sh7757" (SH)
++			- "renesas,rspi-r7s72100" (RZ/A1H)
++			- "renesas,qspi-r8a7790" (R-Car H2)
++			- "renesas,qspi-r8a7791" (R-Car M2)
+ - reg              : Address start and address range size of the device
+ - interrupts       : A list of interrupt-specifiers, one for each entry in
+ 		     interrupt-names.
 -- 
 1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

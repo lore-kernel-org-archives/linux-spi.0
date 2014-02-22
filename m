@@ -1,60 +1,53 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] spi: core: Validate length of the transfers in message
-Date: Sat, 22 Feb 2014 12:01:11 +0900
-Message-ID: <20140222030111.GO25940@sirena.org.uk>
-References: <1392890528-7417-1-git-send-email-iivanov@mm-sol.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 04/10] spi: sh-msiof: Add more register documentation
+Date: Sat, 22 Feb 2014 12:11:59 +0900
+Message-ID: <20140222031159.GT25940@sirena.org.uk>
+References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
+ <1392907389-21798-5-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="gh4H09KImyIEQ1se"
-Cc: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="ZXzThk3vFZecBD04"
+Cc: Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1392890528-7417-1-git-send-email-iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1392907389-21798-5-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---gh4H09KImyIEQ1se
+--ZXzThk3vFZecBD04
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 20, 2014 at 12:02:08PM +0200, Ivan T. Ivanov wrote:
-> From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
->=20
-> SPI transfer length should be multiple of SPI word size,
-> where SPI word size should be power-of-two multiple
+On Thu, Feb 20, 2014 at 03:43:03PM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-OK, I checked all the existing users and everything using unusual bits
-per word settings seems to be doing the right thing here so I've applied
-this - thanks!
+Applied, thanks.
 
---gh4H09KImyIEQ1se
+--ZXzThk3vFZecBD04
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTCBL0AAoJELSic+t+oim9dtsP/jA/0IQ+cH2AuFafiWvA2b3c
-oUZjXF86o/1nZ3a3Y7QeV+/0UMB0IVteMq+EJ3nIG8kT6x8s1quo8ZjNc32PbOJr
-fPGlXfVC4K6QntN0W1we5H8LiJ/bD7JWbGidKirMqp/nrGLu2y0dcN/Z/k/9FlzE
-tyFo/xrVLlHzWdMygnEJ0I3jCADEtoYLHUyVCaggaMzXtDT5dK+Iy7KN3ILcJPhd
-P8fDZXSrsuqCjFf9mCloLKYJxDypWFyHcLN88rM9CmAV6AsTij35nRtbHdELgZxy
-cVfdwF/qSN1WR75gGLgx1aQJHq6Z0SUx7y8b/uqtXebt4XP9IyKja8Da3BhSMLcs
-Y0DiBeFCQFhMaTtLqtEnjcUy3oLi0353l+Ji8FuRz3s86BEBtzPwL6SXjgeblxoo
-NVv84qrBa7nA8/W9S2GrzbduPilpkIE80JgLpbdqGq7Y2eL3Xi/E3kIfhgqeWSxs
-nTgSUr+726cksDqq83Il/MTomeAhZjQbb3K6TEbJmNDLmIh0KAwnlYPBIT3NIhKV
-uuPI1Xi+4q1cQDXXDSG5mlq+6BxZhss8h/vhayeCp3DjjYLtBg143wOvh60x+meF
-Ksd9xwpw9t9EGualRniGL7OAyHUj55KZk+nDv11FdZx8jH59iWK5vsLYeUUjEQEJ
-o6VAW2IpQiGcWh316mjS
-=5JMa
+iQIcBAEBAgAGBQJTCBV8AAoJELSic+t+oim9A0kP/RA3eyKR+YGWBEEBIkE5SO64
+Yyb2VQGJCOI2lIHLSzRpsVDbjordf8/Ii8ENgAthQJgJHX34uExBshSK+HJAuFbX
+H/6eZurS7kTnG+fU0HHnNs5bHVbQq7zAXb1LL76I5KajQ5kRh1wLWFNARhB/f2OX
+HCxNSSUeMXwzD9cSbr/aCz4Fb2pbvdRMxT/uvSxQjj4P1AC4qLd11bHcwBiTrl5T
+7N/o62lpcV5Em09f621NmptpYt3xkIkM7lG7LHvTrQtMekPQqv7ayIvmRgx4+13r
+fm+PKPK20gXpRBPNma3CNAHVb1+yk+wieI8jRVODJlgLOalP7lUQLkNLFD11Nbuy
+FLmAIvsz6/4sU3NDPsyChThQdWiTw3+p96Z0z/AKGaviQiDHq1AOYdBFA6/8fxh4
+P8E1dksoIi8psN07nbFC5GZTfSCDSofd82aHSPrRkMwaHeWAMPEv+QG1paxQcmy3
+1BWh7ZXtscqWYxFqFDe2IF6j13MwjYhktdA4wHjjU3MDjwOn9Q+GOhAnTDalHId5
+GWoKhfBMvlykn0fimL4u+dSSCtwcNm9WqhYhMvkI9patXz3fHhMShr8FSb6Dn1n1
+O+0V5G7IeaQkmxcF8SQuXB3GPBe0RKEHk7Bc9X8sG4wTy+Y6H+f6ukiLTxgYAwbe
+5+ulvSq9PAc4EP55CW9R
+=xj//
 -----END PGP SIGNATURE-----
 
---gh4H09KImyIEQ1se--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--ZXzThk3vFZecBD04--

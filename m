@@ -1,59 +1,60 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 01/10] spi: sh-msiof: Fix SPI bus population from DT
-Date: Sat, 22 Feb 2014 12:10:37 +0900
-Message-ID: <20140222031037.GQ25940@sirena.org.uk>
-References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
- <1392907389-21798-2-git-send-email-geert@linux-m68k.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3] spi: core: Validate length of the transfers in message
+Date: Sat, 22 Feb 2014 12:01:11 +0900
+Message-ID: <20140222030111.GO25940@sirena.org.uk>
+References: <1392890528-7417-1-git-send-email-iivanov@mm-sol.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="63aIh6YiuHX+oBFP"
-Cc: Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	devicetree@vger.kernel.org
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="gh4H09KImyIEQ1se"
+Cc: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392907389-21798-2-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1392890528-7417-1-git-send-email-iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---63aIh6YiuHX+oBFP
+--gh4H09KImyIEQ1se
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 20, 2014 at 03:43:00PM +0100, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+On Thu, Feb 20, 2014 at 12:02:08PM +0200, Ivan T. Ivanov wrote:
+> From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 >=20
-> DT doesn't instantiate SPI children if spi_master.dev.of_node is not set =
-up
-> properly.
+> SPI transfer length should be multiple of SPI word size,
+> where SPI word size should be power-of-two multiple
 
-Applied, thanks.
+OK, I checked all the existing users and everything using unusual bits
+per word settings seems to be doing the right thing here so I've applied
+this - thanks!
 
---63aIh6YiuHX+oBFP
+--gh4H09KImyIEQ1se
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTCBUqAAoJELSic+t+oim9q5wP/RpPlJQZGw/BwnnuhaNtBYrw
-bDaf7lyQJ80OV8XY/EtjqKpHSLejkZhMnoxhhgBOFX5or59qEYP4WBXRwM4xt4FX
-XouzMuGNJZrMevciWWaZyk36qHr/2DGFyCrYkhEUl9mHcDdyYzJIKptP4+SfCoDl
-2YzHiHHFL+SxoBnNCEF3kFov9yszXrqc3kRAVaqD+vw9qODWPpdm51iLL04FN3+d
-1GRJxwsKV81+CGriwhS6HyPbwwfJMmabQ7lqyEFmmVJId3q+4EYI5vxOdaE62/vE
-beuictknV3HQsDgZcQCvYLlxABlJvVhjYeIksrXD9aFMiXNqJDPMxvZJE0/gsq+k
-D+I9+kyDB+bkqP1fwWPwCyhFntZz7oORgFQusqKJGIwDFF+aV8xNS5nmcyDRNfYT
-UKWXGZGkSWcY92EZHNaYAwa9mUxsaozEN2dhvtpnyo86LQAjvPx4SWOiqleeTkEt
-xEQUgmqUGBYVGm4V0rpasG+LcHmeTNG3P9BbYgqX1rfVWVra1/rk1d0zg6/5MChU
-WMZQOF94UKrevbFcAXpQZ6A6dfTElJwq6d8VVXUbfqX//ezJTolmlbygwV2qeZCq
-uqDf7THBbGq4i151EdiYPtTADI+uWfknTNHkqM741YU8D33Q2mlCN2tYQVcGyxCb
-VUTW87g5CRRwyxqZ3XQF
-=bqtL
+iQIcBAEBAgAGBQJTCBL0AAoJELSic+t+oim9dtsP/jA/0IQ+cH2AuFafiWvA2b3c
+oUZjXF86o/1nZ3a3Y7QeV+/0UMB0IVteMq+EJ3nIG8kT6x8s1quo8ZjNc32PbOJr
+fPGlXfVC4K6QntN0W1we5H8LiJ/bD7JWbGidKirMqp/nrGLu2y0dcN/Z/k/9FlzE
+tyFo/xrVLlHzWdMygnEJ0I3jCADEtoYLHUyVCaggaMzXtDT5dK+Iy7KN3ILcJPhd
+P8fDZXSrsuqCjFf9mCloLKYJxDypWFyHcLN88rM9CmAV6AsTij35nRtbHdELgZxy
+cVfdwF/qSN1WR75gGLgx1aQJHq6Z0SUx7y8b/uqtXebt4XP9IyKja8Da3BhSMLcs
+Y0DiBeFCQFhMaTtLqtEnjcUy3oLi0353l+Ji8FuRz3s86BEBtzPwL6SXjgeblxoo
+NVv84qrBa7nA8/W9S2GrzbduPilpkIE80JgLpbdqGq7Y2eL3Xi/E3kIfhgqeWSxs
+nTgSUr+726cksDqq83Il/MTomeAhZjQbb3K6TEbJmNDLmIh0KAwnlYPBIT3NIhKV
+uuPI1Xi+4q1cQDXXDSG5mlq+6BxZhss8h/vhayeCp3DjjYLtBg143wOvh60x+meF
+Ksd9xwpw9t9EGualRniGL7OAyHUj55KZk+nDv11FdZx8jH59iWK5vsLYeUUjEQEJ
+o6VAW2IpQiGcWh316mjS
+=5JMa
 -----END PGP SIGNATURE-----
 
---63aIh6YiuHX+oBFP--
+--gh4H09KImyIEQ1se--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

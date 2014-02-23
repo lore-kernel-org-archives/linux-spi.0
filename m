@@ -1,53 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: coldfire-qspi: Fix getting correct address for
- *mcfqspi
-Date: Sun, 23 Feb 2014 13:10:31 +0900
-Message-ID: <20140223041031.GG25940@sirena.org.uk>
-References: <1392342780.22981.0.camel@phoenix>
+Subject: Re: [PATCH v3] spi: fsl-spi: Convert to let spi core validate
+ xfer->bits_per_word
+Date: Sun, 23 Feb 2014 13:14:58 +0900
+Message-ID: <20140223041458.GH25940@sirena.org.uk>
+References: <1392289538.20787.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="DDsCC8pMoxT831fJ"
-Cc: Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	protocol="application/pgp-signature"; boundary="y3ZGpI4yi7dqmmo+"
+Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392342780.22981.0.camel@phoenix>
+In-Reply-To: <1392289538.20787.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---DDsCC8pMoxT831fJ
+--y3ZGpI4yi7dqmmo+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Feb 14, 2014 at 09:53:00AM +0800, Axel Lin wrote:
-> dev_get_drvdata() returns the address of master rather than mcfqspi.
+On Thu, Feb 13, 2014 at 07:05:38PM +0800, Axel Lin wrote:
+> Set bits_per_word_mask so spi core will reject transfers that attempt to use
+> an unsupported bits_per_word value.
 
-Applied all, thanks.
+Applied, thanks.
 
---DDsCC8pMoxT831fJ
+--y3ZGpI4yi7dqmmo+
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTCXSzAAoJELSic+t+oim92EUP/RagUZ3qvgwSKjySapuEuTmu
-iw7B36lgw7Yt0bmoJz/BTfQvWl5fiBrPp2PUDZabpI8spXQrkP7oESYhJ/vUav6Y
-e594AGzS1PKLWJQFdhNQZypt4OK6fURi5ylz40LbyWiLDk+UlpBY4DyqSKItf+iS
-Stz7za54RiFzQlu4s9hn1vuzvaXuxDL7+KIlrzBQ+iHQ0cH8kqH1InXDdzGS6KgV
-2WgMlmPeGFSe/UubS8JUTBunxedfQm4m6LIPOq6xzaboMGMXjXVB0MPAmXmmSIop
-ojq26CyuKe8Le11gvhGQW7nIEzPp3qjo8dJ8PNucX6UZudMiNZ+jimhyZut+PQTV
-oxRwdVU2yrJZGY32h8fmNY+EIVcnSfPwn+ShKzmXXkWmoxiSlfsAP/N2eiYKTu4S
-gtrOTXh1ijlrlJh2MbdML8wOsm1dLIKJEDk+sWCy5oOAd+92QZMd5OIVg22BwRBQ
-yXjkLlfZj2fUz5Riatx5Dpo1hJyB3YN6b4GHWcs73X8TsZ7fy6qCLvd8eHCmezjk
-6QdDGJeIeKI+yXaOmEkheIpIOun/DFNRvPAMsEy4Vif96G1AAKf64rMMl1i/IGBR
-rASrtDjRniGlLXK0+pAo2J3zp3Ey7N25MgtB/7HsJ0hB/tmbIebmoYzxYcntQJjz
-BjqfJFCdZg9F/qjoyKRp
-=Cuvb
+iQIcBAEBAgAGBQJTCXW/AAoJELSic+t+oim9wusP/ilFDJSbFhoE4NvilIw0PGjJ
+XpfQzg+6AeU8ao/3oZ2vx7ZhFtGITqZet2b+Q+SoxCfKSrhJOL2yH4Dqsf4Sq80f
+rZRQns4omXWncsToEEaf2e6IZDbDRizUa4F/M8J9HOn2gLSbZPOg36trSqozlOrE
+4uvXVRifylKH60PljH7y0tLVJ/1FsPkj7dqVg9q0LvNYFL0l+Rlg451FJUd+lCcC
+4AVX3Vl97UPGgTXNyx2Nq+q71MaMgMEdLODnwHDa8oTJUWcqNkWiSDmWLApYt4V6
+MKwUEwktOv5Q2RwyLV7ud+LN/UwLnoO+KNkErNl62/BcMFtF8ov6UkTMtac0Fjta
+JXnDzz6QpgVcUIfCKK01W8nPrir6dXipVZThL24fcdCKhTsmT/MSEn5TaHzbH9NE
+mO3aw5G5TVn1Fq9bzKcfWnLt1jRCyjGb3lcucMX0py2NAnulmYAahVtN/F9CZHRS
+K+v7y1MmUKjAIlu8YSv3mXNcJkUCBIU++wyXbR5iB+Y5fcGLbazgTRkBD0yq9vSC
+7bHbsluw6B3Igy0TpW+thoZVa6jeKx3+iPrUH9GCeo5nU6H9wityUGbG/0PI32II
+EVlnUCsHbiA7bWhwfyhYSWBhVhluEO4Gmq6yoUYkeYDI7szBJxCs2FRl33pgcysp
+Je8zY1DXAnEX7R+QnPKv
+=AbB1
 -----END PGP SIGNATURE-----
 
---DDsCC8pMoxT831fJ--
+--y3ZGpI4yi7dqmmo+--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

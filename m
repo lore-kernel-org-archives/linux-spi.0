@@ -1,55 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3] spi: fsl-spi: Convert to let spi core validate
- xfer->bits_per_word
-Date: Sun, 23 Feb 2014 13:14:58 +0900
-Message-ID: <20140223041458.GH25940@sirena.org.uk>
-References: <1392289538.20787.1.camel@phoenix>
+Subject: Re: [PATCH] spi: core: Replace msleep with usleep_range to get more
+ accurate sleep time
+Date: Sun, 23 Feb 2014 13:40:55 +0900
+Message-ID: <20140223044055.GJ25940@sirena.org.uk>
+References: <1392945318.4125.5.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="y3ZGpI4yi7dqmmo+"
-Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	protocol="application/pgp-signature"; boundary="ivyoJkJAGKloOgd+"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392289538.20787.1.camel@phoenix>
+In-Reply-To: <1392945318.4125.5.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---y3ZGpI4yi7dqmmo+
+--ivyoJkJAGKloOgd+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Feb 13, 2014 at 07:05:38PM +0800, Axel Lin wrote:
-> Set bits_per_word_mask so spi core will reject transfers that attempt to use
-> an unsupported bits_per_word value.
+On Fri, Feb 21, 2014 at 09:15:18AM +0800, Axel Lin wrote:
+> Fixes below checkpatch warning:
+> WARNING: msleep < 20ms can sleep for up to 20ms; see Documentation/timers/timers-howto.txt
+> +               msleep(10);
 
-Applied, thanks.
+Applied, thanks, though really we don't care how long the delay is.
 
---y3ZGpI4yi7dqmmo+
+--ivyoJkJAGKloOgd+
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTCXW/AAoJELSic+t+oim9wusP/ilFDJSbFhoE4NvilIw0PGjJ
-XpfQzg+6AeU8ao/3oZ2vx7ZhFtGITqZet2b+Q+SoxCfKSrhJOL2yH4Dqsf4Sq80f
-rZRQns4omXWncsToEEaf2e6IZDbDRizUa4F/M8J9HOn2gLSbZPOg36trSqozlOrE
-4uvXVRifylKH60PljH7y0tLVJ/1FsPkj7dqVg9q0LvNYFL0l+Rlg451FJUd+lCcC
-4AVX3Vl97UPGgTXNyx2Nq+q71MaMgMEdLODnwHDa8oTJUWcqNkWiSDmWLApYt4V6
-MKwUEwktOv5Q2RwyLV7ud+LN/UwLnoO+KNkErNl62/BcMFtF8ov6UkTMtac0Fjta
-JXnDzz6QpgVcUIfCKK01W8nPrir6dXipVZThL24fcdCKhTsmT/MSEn5TaHzbH9NE
-mO3aw5G5TVn1Fq9bzKcfWnLt1jRCyjGb3lcucMX0py2NAnulmYAahVtN/F9CZHRS
-K+v7y1MmUKjAIlu8YSv3mXNcJkUCBIU++wyXbR5iB+Y5fcGLbazgTRkBD0yq9vSC
-7bHbsluw6B3Igy0TpW+thoZVa6jeKx3+iPrUH9GCeo5nU6H9wityUGbG/0PI32II
-EVlnUCsHbiA7bWhwfyhYSWBhVhluEO4Gmq6yoUYkeYDI7szBJxCs2FRl33pgcysp
-Je8zY1DXAnEX7R+QnPKv
-=AbB1
+iQIcBAEBAgAGBQJTCXvOAAoJELSic+t+oim9ExwP/RjJckBoaRx3XHSu3XZtmY8q
+PXDxf5caHcmrf80iR1MVSNs0Txrc3lBd3X5+sLF88j6rzaO3cdHZLy1Zcifkg/98
+oYWblq9MGv+MHGsQhKuwSeeheVyiZehZQV6CSDNbU4QcXDzzpaKuyqSIqJdKeFYO
+zV4QcgBnYG8zXBbNDs4Zpyk5uJpODdOCf1CaqQ+jhSeEZ65SfjTAhtD8OmDujclY
+9xDTP40zzsTftrCm1Uw+HIhAGqDBUTGr6uAhJqAWAg+okHT4ZfYXR0RfHBDtvgwx
+kIpUTyh7X/jq1jq4ouluYjaCb4Yop3dajAvdR2tvaVhIyB/FzfwMzhKIuWm/K+8i
+TbE5jnQ5qhufcUKtit+DF1ptQuNvUp7r9Rf2Is7bzrsJ1Ml2VHA87tokKuttLkgv
+szg3Jr1VFUrmn2Nhrc72X3WP+5IWmYVHaIyW82eCqVVpShG92GoLzcEsxgw/SMAX
+092493C6brZ2MKzWj7BkfbpWYBMwzPYGm/wIntZu12kGIns5gLegR3KO6gUUS5kq
+JTcfnT9OuNVBI5y9FtGceUkdT6M2zuNCfrSdV6z+PLJscZ2dp3UT3AFeet8rvnBk
+eAF3fqDbmxu6WlfUooc6p2tdsHcNqqhdlMe+TTtSZPSsh0Q0NjHDU6zuRMgA0HOp
+JjgXsUaqFHiEtCMyy0kl
+=RRuU
 -----END PGP SIGNATURE-----
 
---y3ZGpI4yi7dqmmo+--
+--ivyoJkJAGKloOgd+--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

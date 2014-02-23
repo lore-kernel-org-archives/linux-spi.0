@@ -1,59 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Kconfig: Drop default setting for SPI_IMX
-Date: Sun, 23 Feb 2014 10:33:19 +0900
-Message-ID: <20140223013319.GY25940@sirena.org.uk>
-References: <1393101504-23302-1-git-send-email-festevam@gmail.com>
+Subject: Re: [PATCH] spi: imx: Use dev_name() for request_irq() to
+ distinguish SPIs
+Date: Sun, 23 Feb 2014 10:46:37 +0900
+Message-ID: <20140223014637.GZ25940@sirena.org.uk>
+References: <1393075426-20882-1-git-send-email-shc_work@mail.ru>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="rd/3IrB17klb+Ksj"
-Cc: shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="ufMBWnG1WFkAvCRz"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1393101504-23302-1-git-send-email-festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1393075426-20882-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---rd/3IrB17klb+Ksj
+--ufMBWnG1WFkAvCRz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 22, 2014 at 05:38:24PM -0300, Fabio Estevam wrote:
-> From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
->=20
-> SPI_IMX is selected by imx_v6_v7_defconfig/imx_v4_v5_defconfig and we don=
-'t need
-> to have a default setting which depends on the IMX_HAVE_PLATFORM_SPI_IMX =
-symbol.
+On Sat, Feb 22, 2014 at 05:23:46PM +0400, Alexander Shiyan wrote:
+> Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 
 Applied, thanks.
 
---rd/3IrB17klb+Ksj
+--ufMBWnG1WFkAvCRz
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTCU/XAAoJELSic+t+oim9E70P/1xB6+vO8dqQZ6t7BlQn9Zgp
-4xRsaGhtG1wQASNUEi1784icw65iMaAkNOw/5DF5pi15zu4SKh0fzxC+vkKakGiv
-Wr/J1bHrECxspitimb7alP8p2x4uVR8LJSNnu7Tn3IQO5fhjeSJQVeVzSZG1Kfmn
-egfI3AWWqc36F77/Enbxg2iKm5TkV3ukjoNCeb1ZWsDgJfACL+MPrciAopi225zO
-vPh3dzExWgquIpQNcduDnP1eqsm3lQTkDsnSDlzZlDGsohe5IApHc/6U2t1fHXrI
-yDqUiTMtCEpFQ2D91Php2UobSvO49bgmSrHmchHU3jQfFQFyJn8V2u5zIRINYML+
-HF/hi2UIu9Rv7zeSFbofB9voSBc2jZLyfnXe0Hpi2xxvAsDS+LB8q2r5LQNJO2yP
-1/LyGMOBzOphWOXjtwdEXUhjfMQBQkH6Magneoi8Mpn4SHxPs0S8Mr5eVMmK528S
-S160RshtDIlAHz1JxnrYgGpKKP6p+Vkhs3eEMZ+C5azxySNKDbeK7Luz+gfLjEsM
-m73Ka4E1Rz60j/R3XOd/9taGc/xaHRCy+7/tKp1NMHP4yqmeEkvyltg8iMwdk3iR
-4MaoeaLdp1+VQdDYcy4mR7eAz/QxW/N8mhU6cvCDodvZ0dUdt1yf9q5jDWnZnuUn
-3uKjxzAAEeJ4zJ1XUSPZ
-=iupR
+iQIcBAEBAgAGBQJTCVL6AAoJELSic+t+oim9QHkP/2oQ4GaIScOzXnG//cfc1gyA
+sVwviVerN3KktGCAhwVsKeCpBjJofyd8zicYnOkMnZnY/+AFM5+BsXG1zQIWjX9U
+FOln//e02SVvkfKRIAfI9fSaO1w/TBgXT0Zxunu5p4TG/OU3ELgsB8NbBO06EPea
+vNbX6zvtzvo6H2MteLyZwdds3blv456Got8j34IV2ZIFi4eLdH++DCZaU2GYEJ5k
+XQzXNNSbabkq9+hNXFE0VBsdmI2JWtVg/QSHfznJnpu2BF2Wvgzzxn2waF+HhX1g
+fTVsKBTPkAn/IAb80xPcHTV2EI3i4r88K+oFb841B26enJGJ1UAzs3JBefohexs7
+yAxP/tUey2vhiQL3u+B2m0V9MUQiOPxFcqhXJuBViST/CkxMQyT8NkvHkdRekhY7
+ToaiH46HIzJ0UBdcjpsEkbmdGe+tAe+M4z7bWNTms/fbC92scD1QiUjE4l7Lxy+c
+kllBKaNpPHT+u1tx9UWBXyvTtONEpWLpNUb43yJbnEfSXnfAiryrC4BlXimPjhPa
+bGf/pVxC6BxFWSsVK1mnfqadfoATOVPxaZyHKMcDjf7SVbN1xGHtHc5nuykB5d1X
+LGTTzuCxTOsutgky27RWP3dHBzroBBOEOxnY3SPQu3EQs81DVxvOT9JhJ9lmEQ0E
+pe08JP/Z6nVA1z9Y7vkw
+=RLYT
 -----END PGP SIGNATURE-----
 
---rd/3IrB17klb+Ksj--
+--ufMBWnG1WFkAvCRz--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

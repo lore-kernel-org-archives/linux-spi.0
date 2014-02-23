@@ -1,54 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RESEND][PATCH 1/2] spi: qup: Remove spi_master_put in
- spi_qup_remove
-Date: Sun, 23 Feb 2014 12:28:51 +0900
-Message-ID: <20140223032851.GZ25940@sirena.org.uk>
-References: <1392946396.11510.1.camel@phoenix>
+Subject: Re: [PATCH] spi: sh-hspi: Convert to let spi core validate
+ bits_per_word
+Date: Sun, 23 Feb 2014 12:46:28 +0900
+Message-ID: <20140223034628.GA25940@sirena.org.uk>
+References: <1392214192.11101.4.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CY2AhQJ0E7w8+M5j"
-Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	protocol="application/pgp-signature"; boundary="MbsZhpoBPAblP5dJ"
+Cc: Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392946396.11510.1.camel@phoenix>
+In-Reply-To: <1392214192.11101.4.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---CY2AhQJ0E7w8+M5j
+--MbsZhpoBPAblP5dJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Feb 21, 2014 at 09:33:16AM +0800, Axel Lin wrote:
-> This driver uses devm_spi_register_master() so don't explicitly call
-> spi_master_put() in spi_qup_remove().
+On Wed, Feb 12, 2014 at 10:09:52PM +0800, Axel Lin wrote:
+> Set bits_per_word_mask so spi core will reject transfers that attempt to use
+> an unsupported bits_per_word value.
 
-Applied both, thanks.
+Applied, thanks.
 
---CY2AhQJ0E7w8+M5j
+--MbsZhpoBPAblP5dJ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTCWrwAAoJELSic+t+oim9M3EP/Aof41lDJTb2/rNv4OXrB+Jz
-OZ/2MI2Ur9apjqmCcsknQfsqFsfMC4Cdb1vtJeB8Zqt7ZXuFb/geOzSUVwggRMjx
-Cbe8e02hYNZXQYoCttvM6IJPkRq5UR82WFH8/gyfb/t8HSzSOUmVZHIzrYiH1JJ+
-hAHjv4rWPmto2sn3rFtS0xqTl975r1Wg3YCuj6cM2usdvatlpLLFNdRNzFHCeMzw
-qWe2/BcbAlXgqjMrLxU/3c+pDpP7G0Lqc7k8pJAu8d5zcusTL24FLcUDqDQ61eJQ
-INwbRQCAwv7Kx4OAi25lE2pCspiGw4nDH9HZ2YK+G9vRhJuOEwytmL84tIkIWyyS
-CAwWRVtFe88bo647tivbZRHzhIbzHHbztw/79WdT/Jy3NTt+fv9N7y04lUwZbOMr
-pi/FCny6D3b4H+dZhoDDezxBxz+dNwhibzS9+Xd4mmw4KTXTdj45FanevimBHqAj
-H9yacqd+A+fXPxfgq9233SKSiFpiH1lZwaxNB92WozC0GzE+e9eGKiSE12JYAvHD
-LrfF8p99HNBD9+m20olWyzk4aamTnnWzfmS4QiwkKbKnaRMAHbFtiR3MoAE2fcG9
-HCFX3wbHfQckQMuF0O5uatX1t1IU/m/r//Ficy45yJZR/Blt8UUMYakwUltcEcff
-G22Bzy2qV8wCDbV4DKYE
-=7uC2
+iQIcBAEBAgAGBQJTCW7ZAAoJELSic+t+oim91wIP/0iQnmAQR/782mfZwbg5Fnf/
+r3/CZPaAJClZbnhA1Uk2tmKz5yO+/CbJnsh44ZvTkEKvD4N77qYukSRnZzek6wIp
+vWqkKu81S+/I6jUo6cWcDJ5FbBrgXB79eLOSgKDECZNwakT4bF6akJMB3YY/fo2v
+NmXeXiSndWn+OB7NzIFC+KHNOl/6caVk7WqQ7rZQSwEnNVAtzA0J5o0QNKi1Sxk2
+PEHNwFifvsNB+r9T/bIQe48xBn7nkoX5/xC2Cr4OhRf+vXE+bxojOjugnpTcM0Bp
+qXFuov14MmGYwUF1KZcrpSA+XyTjH9yMoq+FPiwhOfgeakVNiuG28rXEkCi12VHt
++zsZJ0rt9rpWhCbZiJ7jDe9BjbL/mUqBFoWdyXJaVI3Cfx6PxrcMN2k78Nsx8zgt
+AEVv+eUHfGqp7NdraWjspSa9vKYHwU/ZIb2qQrRFugd/GzA0Z7+3CnfVsB5aOE4/
+ajTM91u53wnCYHWmS7zkhoaJxwj97FikOcUrcCAxMY253IA+nOa2Fsd8NVWifaMU
+82KEI85ZpjwAYmZFrUfiDzqKvVHk+2F2NqcPrYmKYal9S8X49L0OxYSUKlCTKiZH
+RH07WMd/9h5+7YcrvhPb5kzNYBQg31JqTRFOC8tm8AE/7J0cti0rC+fERKVgp3is
+df62XsCUsn38MBqsV/9x
+=WAoJ
 -----END PGP SIGNATURE-----
 
---CY2AhQJ0E7w8+M5j--
+--MbsZhpoBPAblP5dJ--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

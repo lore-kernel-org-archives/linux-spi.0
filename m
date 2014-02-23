@@ -1,55 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: core: Replace msleep with usleep_range to get more
- accurate sleep time
-Date: Sun, 23 Feb 2014 13:40:55 +0900
-Message-ID: <20140223044055.GJ25940@sirena.org.uk>
-References: <1392945318.4125.5.camel@phoenix>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 1/2] spi: qup: Fix build error due to a typo
+Date: Sun, 23 Feb 2014 13:27:16 +0800
+Message-ID: <1393133236.32087.0.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ivyoJkJAGKloOgd+"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1392945318.4125.5.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Fix below build error when CONFIG_PM_RUNTIME=y:
 
---ivyoJkJAGKloOgd+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+C [M]  drivers/spi/spi-qup.o
+drivers/spi/spi-qup.c: In function 'spi_qup_pm_suspend_runtime':
+drivers/spi/spi-qup.c:712:12: error: 'QUP_CLOCK_AUTO_GATE' undeclared (first use in this function)
+drivers/spi/spi-qup.c:712:12: note: each undeclared identifier is reported only once for each function it appears in
+drivers/spi/spi-qup.c: In function 'spi_qup_pm_resume_runtime':
+drivers/spi/spi-qup.c:725:13: error: 'QUP_CLOCK_AUTO_GATE' undeclared (first use in this function)
+make[2]: *** [drivers/spi/spi-qup.o] Error 1
+make[1]: *** [drivers/spi] Error 2
+make: *** [drivers] Error 2
 
-On Fri, Feb 21, 2014 at 09:15:18AM +0800, Axel Lin wrote:
-> Fixes below checkpatch warning:
-> WARNING: msleep < 20ms can sleep for up to 20ms; see Documentation/timers/timers-howto.txt
-> +               msleep(10);
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-qup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Applied, thanks, though really we don't care how long the delay is.
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index dec339d..886edb4 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -709,7 +709,7 @@ static int spi_qup_pm_suspend_runtime(struct device *device)
+ 
+ 	/* Enable clocks auto gaiting */
+ 	config = readl(controller->base + QUP_CONFIG);
+-	config |= QUP_CLOCK_AUTO_GATE;
++	config |= QUP_CONFIG_CLOCK_AUTO_GATE;
+ 	writel_relaxed(config, controller->base + QUP_CONFIG);
+ 	return 0;
+ }
+@@ -722,7 +722,7 @@ static int spi_qup_pm_resume_runtime(struct device *device)
+ 
+ 	/* Disable clocks auto gaiting */
+ 	config = readl_relaxed(controller->base + QUP_CONFIG);
+-	config &= ~QUP_CLOCK_AUTO_GATE;
++	config &= ~QUP_CONFIG_CLOCK_AUTO_GATE;
+ 	writel_relaxed(config, controller->base + QUP_CONFIG);
+ 	return 0;
+ }
+-- 
+1.8.1.2
 
---ivyoJkJAGKloOgd+
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTCXvOAAoJELSic+t+oim9ExwP/RjJckBoaRx3XHSu3XZtmY8q
-PXDxf5caHcmrf80iR1MVSNs0Txrc3lBd3X5+sLF88j6rzaO3cdHZLy1Zcifkg/98
-oYWblq9MGv+MHGsQhKuwSeeheVyiZehZQV6CSDNbU4QcXDzzpaKuyqSIqJdKeFYO
-zV4QcgBnYG8zXBbNDs4Zpyk5uJpODdOCf1CaqQ+jhSeEZ65SfjTAhtD8OmDujclY
-9xDTP40zzsTftrCm1Uw+HIhAGqDBUTGr6uAhJqAWAg+okHT4ZfYXR0RfHBDtvgwx
-kIpUTyh7X/jq1jq4ouluYjaCb4Yop3dajAvdR2tvaVhIyB/FzfwMzhKIuWm/K+8i
-TbE5jnQ5qhufcUKtit+DF1ptQuNvUp7r9Rf2Is7bzrsJ1Ml2VHA87tokKuttLkgv
-szg3Jr1VFUrmn2Nhrc72X3WP+5IWmYVHaIyW82eCqVVpShG92GoLzcEsxgw/SMAX
-092493C6brZ2MKzWj7BkfbpWYBMwzPYGm/wIntZu12kGIns5gLegR3KO6gUUS5kq
-JTcfnT9OuNVBI5y9FtGceUkdT6M2zuNCfrSdV6z+PLJscZ2dp3UT3AFeet8rvnBk
-eAF3fqDbmxu6WlfUooc6p2tdsHcNqqhdlMe+TTtSZPSsh0Q0NjHDU6zuRMgA0HOp
-JjgXsUaqFHiEtCMyy0kl
-=RRuU
------END PGP SIGNATURE-----
-
---ivyoJkJAGKloOgd+--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

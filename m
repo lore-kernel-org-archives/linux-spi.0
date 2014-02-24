@@ -1,67 +1,44 @@
-From: Magnus Damm <magnus.damm@gmail.com>
-Subject: Re: [PATCH 07/10] spi: sh-msiof: Add support for R-Car H2 and M2
-Date: Mon, 24 Feb 2014 17:09:15 +0900
-Message-ID: <CANqRtoT6G6mxce=cN05mNNtYCcyCvMPzpHQ7RyzPE8XfkFjMyQ@mail.gmail.com>
-References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
-	<1392907389-21798-8-git-send-email-geert@linux-m68k.org>
-	<CANqRtoQVJzEgo_AdVxrPSRUY6ocyPaQ=RKQJyxoExDrfYxiJ3w@mail.gmail.com>
-	<CAMuHMdUByWPcYM8M_m5NVM4QP5cQE_tOLGQg=2fTNF7gqkUhig@mail.gmail.com>
-	<CANqRtoSJTROkkbGxV_p+B2S7b7jZ7jgHQ+q4_WG54m+Pxgfcpw@mail.gmail.com>
-	<CAMuHMdV1iDHz4ewFAG-QTba_wUF76Ei-VQpP+MRoNGV2mfHrpw@mail.gmail.com>
+From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] spi: qup: Remove module version
+Date: Mon, 24 Feb 2014 10:24:44 +0200
+Message-ID: <1393230284.6481.1.camel@iivanov-dev>
+References: <1393220892.2912.0.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Mark Brown <broonie@kernel.org>,
-	Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	SH-Linux <linux-sh@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdV1iDHz4ewFAG-QTba_wUF76Ei-VQpP+MRoNGV2mfHrpw@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1393220892.2912.0.camel@phoenix>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Geert,
+On Mon, 2014-02-24 at 13:48 +0800, Axel Lin wrote: 
+> The module version is unlikely to be updated, use kernel version should be
+> enough.
+> 
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+> ---
+>  drivers/spi/spi-qup.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+> index 886edb4..203f0d4 100644
+> --- a/drivers/spi/spi-qup.c
+> +++ b/drivers/spi/spi-qup.c
+> @@ -819,5 +819,4 @@ static struct platform_driver spi_qup_driver = {
+>  module_platform_driver(spi_qup_driver);
+>  
+>  MODULE_LICENSE("GPL v2");
+> -MODULE_VERSION("0.4");
+>  MODULE_ALIAS("platform:spi_qup");
 
-On Mon, Feb 24, 2014 at 4:39 PM, Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> Hi Magnus,
->
-> On Mon, Feb 24, 2014 at 3:45 AM, Magnus Damm <magnus.damm@gmail.com> wrote:
->> On Fri, Feb 21, 2014 at 1:13 AM, Geert Uytterhoeven
->> <geert@linux-m68k.org> wrote:
->>> On Thu, Feb 20, 2014 at 4:41 PM, Magnus Damm <magnus.damm@gmail.com> wrote:
->>>> On thing stuck out a bit with the bindings. I can see that you specify
->>>> both fifo size and use the SoC suffix for the r8a7790 and r8a7791
->>>> bindings. Isn't that a bit of redundant information there, if we know
->>>> that the SoC is r8a7790 or r8a7791 then can't we simply put that
->>>> information in r8a779x_data above and perhaps keep the binding
->>>> simpler? Perhaps same thing applies to other properties as well?
->>>
->>> "renesas,tx-fifo-size" and "renesas,rx-fifo-size" are part of the existing
->>> bindings, so I'm a bit reluctant to change these.
->>> Hmm, since the original bindings didn't specify the default values,
->>> I could make them chip-specific, though.
->>
->> Thanks, yes I think treating the "renesas,tx-fifo-size" and
->> "renesas,rx-fifo-size" bindings as optional and allow us to rely on
->> chip-specific default values makes sense.
->>
->>> The only other property is "num-cs", which can have any value if you
->>> start using the generic "cs-gpios".
->>
->> I see. It looks to me that such a setting is board-specific, so what
->> is a sane default in the SoC DTSI? You seem to have it set to "1"
->> today, but if the board is supposed to override it anyway then do we
->> need to set it?
->>
->> Anyway, "num-cs" is a minor detail so no need to bother about that too much!
->
-> In v2, I'll drop the "num-cs" from the dtsi, so it will default to the driver's
-> default (which is 1, for the simple case of using hardware controlled CS).
+Thanks. 
 
-Sounds good, thanks for your help!
+Acked-by: Ivan T. Ivanov <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 
-/ magnus
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,183 +1,93 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH RFT] spi: qup: Get rid of using struct spi_qup_device
-Date: Mon, 24 Feb 2014 23:07:36 +0800
-Message-ID: <1393254456.12394.1.camel@phoenix>
+From: Konstantin Tokarev <annulen@yandex.ru>
+Subject: Re: [PATCH v5 4/8] Documentation: add the document for the SPI NOR
+ framework
+Date: Mon, 24 Feb 2014 19:17:16 +0400
+Message-ID: <203101393255036@web29h.yandex.ru>
+References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
+ <1393238262-8622-5-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: base64
+Cc: "angus.clark@st.com" <angus.clark@st.com>,
+ "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
+ "b44548@freescale.com" <b44548@freescale.com>,
+ "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+ "broonie@linaro.org" <broonie@linaro.org>,
+ "b18965@freescale.com" <b18965@freescale.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
+ "pekon@ti.com" <pekon@ti.com>, "sourav.poddar@ti.com" <sourav.poddar@ti.com>,
+ "shawn.guo@linaro.org" <shawn.guo@linaro.org>,
+ "lee.jones@linaro.org" <lee.jones@linaro.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+To: Huang Shijie <b32955@freescale.com>,
+ "dwmw2@infradead.org" <dwmw2@infradead.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1393238262-8622-5-git-send-email-b32955@freescale.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-Current code uses struct spi_qup_device to store spi->mode and spi->chip_select
-settings. We can get these settings in spi_qup_transfer_one and spi_qup_set_cs
-without using struct spi_qup_device. Refactor the code a bit to remove
-spi_qup_setup(), spi_qup_cleanup(), and struct spi_qup_device.
-
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
-Hi Ivan,
-I don't have this h/w, can you help testing if this patch works.
-Thanks,
-Axel
- drivers/spi/spi-qup.c | 61 ++++++++-------------------------------------------
- 1 file changed, 9 insertions(+), 52 deletions(-)
-
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 886edb4..b5a1d5c 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -123,11 +123,6 @@
- #define SPI_DELAY_THRESHOLD		1
- #define SPI_DELAY_RETRY			10
- 
--struct spi_qup_device {
--	int select;
--	u16 mode;
--};
--
- struct spi_qup {
- 	void __iomem		*base;
- 	struct device		*dev;
-@@ -338,14 +333,13 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
- 
- 
- /* set clock freq ... bits per word */
--static int spi_qup_io_config(struct spi_qup *controller,
--			   struct spi_qup_device *chip,
--			   struct spi_transfer *xfer)
-+static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
- {
-+	struct spi_qup *controller = spi_master_get_devdata(spi->master);
- 	u32 config, iomode, mode;
- 	int ret, n_words, w_size;
- 
--	if (chip->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
-+	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
- 		dev_err(controller->dev, "too big size for loopback %d > %d\n",
- 			xfer->len, controller->in_fifo_sz);
- 		return -EIO;
-@@ -399,12 +393,12 @@ static int spi_qup_io_config(struct spi_qup *controller,
- 
- 	config = readl_relaxed(controller->base + SPI_CONFIG);
- 
--	if (chip->mode & SPI_LOOP)
-+	if (spi->mode & SPI_LOOP)
- 		config |= SPI_CONFIG_LOOPBACK;
- 	else
- 		config &= ~SPI_CONFIG_LOOPBACK;
- 
--	if (chip->mode & SPI_CPHA)
-+	if (spi->mode & SPI_CPHA)
- 		config &= ~SPI_CONFIG_INPUT_FIRST;
- 	else
- 		config |= SPI_CONFIG_INPUT_FIRST;
-@@ -413,7 +407,7 @@ static int spi_qup_io_config(struct spi_qup *controller,
- 	 * HS_MODE improves signal stability for spi-clk high rates,
- 	 * but is invalid in loop back mode.
- 	 */
--	if ((xfer->speed_hz >= SPI_HS_MIN_RATE) && !(chip->mode & SPI_LOOP))
-+	if ((xfer->speed_hz >= SPI_HS_MIN_RATE) && !(spi->mode & SPI_LOOP))
- 		config |= SPI_CONFIG_HS_MODE;
- 	else
- 		config &= ~SPI_CONFIG_HS_MODE;
-@@ -433,7 +427,6 @@ static int spi_qup_io_config(struct spi_qup *controller,
- static void spi_qup_set_cs(struct spi_device *spi, bool enable)
- {
- 	struct spi_qup *controller = spi_master_get_devdata(spi->master);
--	struct spi_qup_device *chip = spi_get_ctldata(spi);
- 
- 	u32 iocontol, mask;
- 
-@@ -444,9 +437,9 @@ static void spi_qup_set_cs(struct spi_device *spi, bool enable)
- 	iocontol |= SPI_IO_C_FORCE_CS;
- 
- 	iocontol &= ~SPI_IO_C_CS_SELECT_MASK;
--	iocontol |= SPI_IO_C_CS_SELECT(chip->select);
-+	iocontol |= SPI_IO_C_CS_SELECT(spi->chip_select);
- 
--	mask = SPI_IO_C_CS_N_POLARITY_0 << chip->select;
-+	mask = SPI_IO_C_CS_N_POLARITY_0 << spi->chip_select;
- 
- 	if (enable)
- 		iocontol |= mask;
-@@ -461,11 +454,10 @@ static int spi_qup_transfer_one(struct spi_master *master,
- 			      struct spi_transfer *xfer)
- {
- 	struct spi_qup *controller = spi_master_get_devdata(master);
--	struct spi_qup_device *chip = spi_get_ctldata(spi);
- 	unsigned long timeout, flags;
- 	int ret = -EIO;
- 
--	ret = spi_qup_io_config(controller, chip, xfer);
-+	ret = spi_qup_io_config(spi, xfer);
- 	if (ret)
- 		return ret;
- 
-@@ -511,38 +503,6 @@ exit:
- 	return ret;
- }
- 
--static int spi_qup_setup(struct spi_device *spi)
--{
--	struct spi_qup *controller = spi_master_get_devdata(spi->master);
--	struct spi_qup_device *chip = spi_get_ctldata(spi);
--
--	if (!chip) {
--		/* First setup */
--		chip = kzalloc(sizeof(*chip), GFP_KERNEL);
--		if (!chip) {
--			dev_err(controller->dev, "no memory for chip data\n");
--			return -ENOMEM;
--		}
--
--		chip->mode = spi->mode;
--		chip->select = spi->chip_select;
--		spi_set_ctldata(spi, chip);
--	}
--
--	return 0;
--}
--
--static void spi_qup_cleanup(struct spi_device *spi)
--{
--	struct spi_qup_device *chip = spi_get_ctldata(spi);
--
--	if (!chip)
--		return;
--
--	spi_set_ctldata(spi, NULL);
--	kfree(chip);
--}
--
- static int spi_qup_probe(struct platform_device *pdev)
- {
- 	struct spi_master *master;
-@@ -561,7 +521,6 @@ static int spi_qup_probe(struct platform_device *pdev)
- 		return PTR_ERR(base);
- 
- 	irq = platform_get_irq(pdev, 0);
--
- 	if (irq < 0)
- 		return irq;
- 
-@@ -617,8 +576,6 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	master->num_chipselect = SPI_NUM_CHIPSELECTS;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
- 	master->max_speed_hz = max_freq;
--	master->setup = spi_qup_setup;
--	master->cleanup = spi_qup_cleanup;
- 	master->set_cs = spi_qup_set_cs;
- 	master->transfer_one = spi_qup_transfer_one;
- 	master->dev.of_node = pdev->dev.of_node;
--- 
-1.8.1.2
-
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+CgoyNC4wMi4yMDE0LCAxNToyNiwgIkh1YW5nIFNoaWppZSIgPGIzMjk1NUBmcmVlc2NhbGUuY29t
+PjoKPiBUaGlzIHBhdGNoIGFkZHMgdGhlIGRvY3VtZW50IGZvciB0aGUgU1BJIE5PUiBmcmFtZXdv
+cmsuCj4KPiBTaWduZWQtb2ZmLWJ5OiBIdWFuZyBTaGlqaWUgPGIzMjk1NUBmcmVlc2NhbGUuY29t
+Pgo+IC0tLQo+IJpEb2N1bWVudGF0aW9uL210ZC9zcGktbm9yLnR4dCB8IJqaNTkgKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiCaMSBmaWxlcyBjaGFuZ2VkLCA1OSBp
+bnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQo+IJpjcmVhdGUgbW9kZSAxMDA2NDQgRG9jdW1l
+bnRhdGlvbi9tdGQvc3BpLW5vci50eHQKPgo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL210
+ZC9zcGktbm9yLnR4dCBiL0RvY3VtZW50YXRpb24vbXRkL3NwaS1ub3IudHh0Cj4gbmV3IGZpbGUg
+bW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi5iOTU4NWY4Cj4gLS0tIC9kZXYvbnVsbAo+ICsr
+KyBiL0RvY3VtZW50YXRpb24vbXRkL3NwaS1ub3IudHh0Cj4gQEAgLTAsMCArMSw1OSBAQAo+ICsg
+mpqampqampqampqampqampqampqampqamlNQSSBOT1IgZnJhbWV3b3JrCj4gKyCampqampqampqa
+mpqamj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Cj4gKwo+ICtQ
+YXJ0IEkgLSB3aHkgd2UgbmVlZCB0aGlzIGZyYW1ld29yaz8KPiArLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLQo+ICsKPiArVGhlIFNQSSBidXMgY29udHJvbGxlciBvbmx5IGRl
+YWxzIHdpdGggdGhlIGJ5dGUgc3RyZWFtLgo+ICtTb21lIGNvbnRyb2xsZXIgZG9lcyBub3Qgd29y
+a3MgbGlrZSBhIFNQSSBidXMgY29udHJvbGxlciwgaXQgd29ya3MKPiArbGlrZSBhIFNQSSBOT1Ig
+Y29udHJvbGxlciBpbnN0ZWFkLCBzdWNoIGFzIHRoZSBGcmVlc2NhbGUncyBRdWFkU1BJIGNvbnRy
+b2xsZXIuCj4gKwo+ICtUaGUgRnJlZXNjYWxlJ3MgUXVhZFNQSSBjb250cm9sbGVyIHNob3VsZCBr
+bm93cyB0aGUgTk9SIGNvbW1hbmRzIHRvCj4gK2ZpbmQgdGhlIHJpZ2h0IExVVCBzZXF1ZW5jZS4g
+VW5mb3J0dW5hdGVseSwgdGhlIG9sZCBjb2RlIGNhbiBub3QgbWVldAo+ICt0aGlzIHJlcXVpcmVt
+ZW50LgoKc2hvdWxkIGtub3cKCj4gKwo+ICtQYXJ0IElJIC0gSG93IGRvZXMgdGhlIGZyYW1ld29y
+ayB3b3JrPwo+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gKwo+ICtU
+aGlzIGZyYW1ld29yayBqdXN0IGFkZHMgYSBuZXcgbGF5ZXIgYmV0d2VlbiB0aGUgTVREIGFuZCB0
+aGUgU1BJIGJ1cyBkcml2ZXIuCj4gK1dpdGggdGhpcyBuZXcgbGF5ZXIsIHRoZSBTUEkgTk9SIGNv
+bnRyb2xsZXIgZHJpdmVyIGRvZXMgbm90IGRlcGVuZCBvbiB0aGUKPiArbTI1cDgwIGNvZGUgYW55
+bW9yZS4KPiArCj4gKyCamkJlZm9yZSB0aGlzIGZyYW1ld29yaywgdGhlIGxheWVyIGlzIGxpa2U6
+Cj4gKwo+ICsgmpqampqampqampqampqampqaTVRECj4gKyCampqampqami0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLQo+ICsgmpqampqampqampqampqampptMjVwODAKPiArIJqampqampqaLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCj4gKyCampqamppTUEkgYnVzIGRyaXZlcgo+ICsgmpqampqampot
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArIJqampqamppTUEkgTk9SIGNoaXAKPiArCj4gKyCa
+mkFmdGVyIHRoaXMgZnJhbWV3b3JrLCB0aGUgbGF5ZXIgaXMgbGlrZToKPiArIJqampqampqampqa
+mpqampqamk1URAo+ICsgmpqampqampotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArIJqampqa
+mpqampqamppTUEkgTk9SIGZyYW1ld29yawo+ICsgmpqampqampotLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0KPiArIJqampqampqampqampqampqabTI1cDgwCj4gKyCampqampqami0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQo+ICsgmpqampqaU1BJIGJ1cyBkcml2ZXIKPiArIJqampqampqaLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCj4gKyCampqamppTUEkgTk9SIGNoaXAKPiArCj4gKyCaV2l0aCB0
+aGUgU1BJIE5PUiBjb250cm9sbGVyIGRyaXZlcihGcmVlc2NhbGUgUXVhZFNQSSksIGl0IGxvb2tz
+IGxpa2U6Cj4gKyCampqampqampqampqampqamppNVEQKPiArIJqampqampqaLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tCj4gKyCampqampqampqampqaU1BJIE5PUiBmcmFtZXdvcmsKPiArIJqampqa
+mpqaLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gKyCampqampqampqampqamppmc2wtcXVhZFNQ
+SQo+ICsgmpqampqampotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArIJqampqamlNQSSBOT1Ig
+Y2hpcAo+ICsKPiArUGFydCBJSUkgLSBIb3cgY2FuIHRoZSBkcml2ZXJzIHVzZSB0aGUgZnJhbWV3
+b3JrCj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArCj4gK1RoZSBt
+YWluIEFQSSBpcyB0aGUgc3BpX25vcl9zY2FuKCkuIEJlZm9yZSB5b3UgY2FsbCB0aGUgaG9vaywg
+eW91IHNob3VsZAo+ICtpbml0aWFsaXplIHRoZSBuZWNlc3NhcnkgZmllbGRzIGZvciBzcGlfbm9y
+e30uCj4gK1BsZWFzZSBzZWUgdGhlIGRyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jIGZvciBk
+ZXRhaWwuCj4gK1BsZWFzZSBhbHNvIHJlZmVyZW5jZSB0byB0aGUgZnNsLXF1YWRzcGkuYyB3aGVu
+IHlvdSB3YW50IHRvIHdyaXRlIGEgbmV3IGRyaXZlcgo+ICtmb3IgYSBTUEkgTk9SIGNvbnRyb2xs
+ZXIuCj4gLS0KPiAxLjcuMi5yYzMKPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXwo+IExpbnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcgbGlz
+dAo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbXRk
+LwoKUmVnYXJkcywKS29uc3RhbnRpbgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJtLWtl
+cm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
+YW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=

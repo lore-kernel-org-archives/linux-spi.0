@@ -1,54 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: qup: Remove module version
-Date: Mon, 24 Feb 2014 22:04:57 +0900
-Message-ID: <20140224130457.GG25940@sirena.org.uk>
-References: <1393220892.2912.0.camel@phoenix>
+From: Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 03/17] mmc: mmci: Mask IRQs for all variants during
+ runtime suspend
+Date: Mon, 24 Feb 2014 15:54:10 +0100
+Message-ID: <CACRpkdYF4sR4SJ_jZsVLY2tNV0xDfR2GG63bF5e=bkthpDsDGQ@mail.gmail.com>
+References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
+	<1391529538-21685-4-git-send-email-ulf.hansson@linaro.org>
+	<20140218160542.GH21483@n2100.arm.linux.org.uk>
+	<CAPDyKFq3uAoo7p-7hZgBmMJ4jf9A7dC0aUZJYUE0z1Qq5W=0bw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="eEhvUqzJgUABKnxr"
-Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1393220892.2912.0.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Russell King - ARM Linux <linux@arm.linux.org.uk>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	Alessandro Rubini <rubini@unipv.it>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>, Mark Brown <broonie@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	linux-mmc <linux-mmc@vger.kernel.org>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <CAPDyKFq3uAoo7p-7hZgBmMJ4jf9A7dC0aUZJYUE0z1Qq5W=0bw@mail.gmail.com>
+Sender: linux-mmc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Tue, Feb 18, 2014 at 5:36 PM, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> On 18 February 2014 17:05, Russell King - ARM Linux
+> <linux@arm.linux.org.uk> wrote:
+>> On Tue, Feb 04, 2014 at 04:58:44PM +0100, Ulf Hansson wrote:
+>>> In runtime suspended state, we are not expecting IRQs and thus we can
+>>> safely mask them, not only for pwrreg_nopower variants but for all.
+>>>
+>>> Obviously we then also need to make sure we restore the IRQ mask while
+>>> becoming runtime resumed.
+>>
+>> So, what happens when this patch is applied, and a SDIO card is attached
+>> which expects to receive interrupts at any moment?
+>
+> Currently, no variant implements SDIO irq.
+>
+> The SDIO irq polling mode from the sdio core will still be functional,
+> as of today. So, this patch will not break SDIO.
+>
+>>
+>> Given that I've run into this during the last week with a SDHCI controller,
+>> I'm not that thrilled with other interfaces doing the same broken thing.
+>
+> If we add SDIO irq support to mmci in future; parts of that
+> implementation includes a re-route of DAT1 to a GPIO irq when entering
+> runtime suspend state. The mmci HW will in runtime suspend state, not
+> be responsible for handling irqs, which is the same as of today.
 
---eEhvUqzJgUABKnxr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+[Just smalltalk]
 
-On Mon, Feb 24, 2014 at 01:48:12PM +0800, Axel Lin wrote:
-> The module version is unlikely to be updated, use kernel version should be
-> enough.
+Switching DAT1 to "gpio mode" (which is something of a fallacy, see
+explanation in Documentation/pinctrl.txt) is not at all possible in all
+implementations of the PL18x, as it depends on exploiting properties
+on an assumed pin controller.
 
-Applied, thanks.
+Systems that don't have such wakeup features on their pins are
+unlikely to support deepsleep in any capacity, and if they do they are
+ill-designed from the top level as this needs to be taken into account
+when devising the hardware :-/
 
---eEhvUqzJgUABKnxr
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTC0N2AAoJELSic+t+oim98ukP/19QiCu6g5HsNU3DW9zYLYPo
-u22plhk5G2LKmd4Z3m4PZ7E03Kd6QEmGbzOjCI6QpzuBm33bY6Mlx2F63VdLejHa
-NA+F8qQGxqylA3q3aPKQ1nnlvP5ChGD7bdY/+RmHiASHfn8k4bIv5/1M8uog+ApY
-Q9MwB1Cp2XGqfp3B2v+D0i4kQ4ZbaQBiKMQLecxqIrNAzhCILRMOiYCqEIh05Zsz
-Mp2caqqanM4n/LcyFjkCVm8z7ntBTRcdYDqlXVTv4dYlsJ80PFPdT9mw/HRsfYA6
-ht57Btoo/CUgspG+Ze91VbMqahQNLZ9rBCkFZ5l+gE8Tz+X5jc7BmaiQZXLPWaX5
-I3oNim9+Uq6CfrGF+05WHaDR9Q5vRDXpeRICKGd5WqQk56KWJG30oB2U0j8/xLz5
-ZfYS6vvO2UPY0RBmNNHMO2rdU7a4ciDyBBIYayNom3lFt+UijPjQ8STBo2lRyC4e
-5KKXgWaPGWys+mlI8NpSUb7er7xptZOmhU4SNuVbxnmY4wyoEZAufipgXA3hYzks
-oFxkELqGFiZ6FbpCULJgoA4nEIwOYFIe74NdxIu/JiLl3ZsmYKt2ritFll2+tHsu
-DVbBF29Kl/yXxIKV5LYfwtaR6shr/WAvG3TjxyqdTNaHeiAAgojx0WUCPPZJtY1O
-EK/lFp5t3N1SLQlac/CR
-=CNpd
------END PGP SIGNATURE-----
-
---eEhvUqzJgUABKnxr--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Yours,
+Linus Walleij

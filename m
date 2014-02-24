@@ -1,23 +1,20 @@
 From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH 1/7] spi: sunxi: Add Allwinner A10 SPI
- controller driver
-Date: Mon, 24 Feb 2014 09:59:57 +0100
-Message-ID: <20140224085957.GB3468@lukather>
+Subject: Re: [PATCH 0/7] Add Allwinner A10 SPI Controller Driver
+Date: Mon, 24 Feb 2014 10:04:24 +0100
+Message-ID: <20140224090424.GC3468@lukather>
 References: <1393104959-12831-1-git-send-email-maxime.ripard@free-electrons.com>
- <1393104959-12831-2-git-send-email-maxime.ripard@free-electrons.com>
- <20140223021530.GD25940@sirena.org.uk>
 Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="98e8jtXdkpgskNou"
+	protocol="application/pgp-signature"; boundary="V88s5gaDVPzZ0KCq"
 Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
 	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBE4UVSMAKGQEI7F3IAQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBP4WVSMAKGQEJYWONKY-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140223021530.GD25940-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1393104959-12831-1-git-send-email-maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 List-Archive: <http://groups.google.com/group/linux-sunxi>
@@ -27,51 +24,52 @@ List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailt
 List-Id: linux-spi.vger.kernel.org
 
 
---98e8jtXdkpgskNou
+--V88s5gaDVPzZ0KCq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi,
-
-On Sun, Feb 23, 2014 at 11:15:30AM +0900, Mark Brown wrote:
-> On Sat, Feb 22, 2014 at 10:35:53PM +0100, Maxime Ripard wrote:
-> > The older Allwinner SoCs (A10, A13, A10s and A20) all have the
-> > same SPI controller.
+On Sat, Feb 22, 2014 at 10:35:52PM +0100, Maxime Ripard wrote:
+> Hi,
 >=20
-> Applied, thanks.  Please differentiate between these two devices in
-> the subject line when sending patches for example by using "sun6i"
-> and "sun4i".
+> This patchset brings support for the SPI controller found in the
+> Allwinner A10 and derived SoCs.
+>=20
+> Even though the controller supports DMA, the driver only supports PIO
+> mode for now. This driver will be used to bring up and test DMA on the
+> SoC, so support for the DMA will come eventually.
+>=20
+> It doesn't support transfer larger than the FIFO size (64 bytes) for
+> now, It's one of the things that will be fixed whenever we will have
+> DMA support.
 
-Ok, will do.
-Thanks!
-Maxime
+Applied patches 2-7 to sunxi/dt-for-3.15
 
 --=20
 Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
 
---98e8jtXdkpgskNou
+--V88s5gaDVPzZ0KCq
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.14 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTCwoNAAoJEBx+YmzsjxAgl5oP/A4TlhDTNH4pRyyuFwxC21TA
-4IRTp93oGzkeIYp+Kc3luM44jf/JypdKcV4SU6OfDj4428TGUnCpVBgZ6ZtbkDq+
-rP490C78MTCYahOxpAbbY3JS/051Iv90xLphmH9FbVXyqhGIEplr/gEnp1sNqTTe
-9twA7Q4OFq0nDpoOI05CbMyCSw+r3VVSh5Ym9cEIjoZuCXlbqJJhG3ZITsfs4nJi
-RcTe3yBmdbPbPPOLTuibdbeyMiUzLZIKOIU3/dPGGqoEY1VTzspUq6Nag9qxeQ2i
-FzG03hov6zjxApYqax0R/+G8Z/4L4p+SOSsJpYJ9nQc3gD7oqbeo1fVJafaGhGnS
-cza0bn/bkC1CMw7MOfjWaLZbyDl+XmHYajBGdte9TR+8dQZXJsuGRg9+zNJ6i8Mx
-FrQuS9+24BA54NVWGYpKybkR7bN85BYeQpnVZ/5OhWxPyJATxNreiYcyay1IjPCb
-w7lg1PuSq0NOfiVPZtt8NzUp6KuijcZ6pAMJOWsqoN3hAMOhYAfCWXMwqPU45ntp
-csiVpBQnTwWhr34pPECi30sY/ujhvI0reE5GDP9uPyNvr57UivDm6N/FHmd1kdPQ
-e+/qkqFa2FdvSwz4ddVOntg8hWevCc93nD+/dzlmLR3wSXe89ZLZ9Jh/CuRayk79
-+IgcWTnLqGWLhbGz7t0/
-=QMzT
+iQIcBAEBAgAGBQJTCwsYAAoJEBx+YmzsjxAgG5QP/RFUpXFsoITNvSb5TWzt199j
+hctAi6objewNo0X0YwRDkVQdTpymKNuBal8MA9Q2kusZT8fagzikhdG3bi902UUf
+1A+43VnJJReexMGANMQmSJlM7H7FvvYIXYuLhCml0I+h6eKrfmJa4X8c+LkC6MPs
+wrw3uFYs5KPSCyWjO8aTOPdnJcjoO62FMt+GLVrTEUnA1Y4emquhojVZg3xA6Vw2
+dQyUfRhi4BaejVh3Vqeb6R/oa5M4xIpV+QMrLRky03HRWn4AF1sKJpZekCdXW0mg
+7ovOQ2cAXg9ZTJn64F5esY03dM6CImw2y/h2RZfdy8KWczTBCFh9Dk2UuBQ1OB69
+6jSn+r2nBaxHYcZo1hdtvKdZ0lkYvseVac8JJlF6o01VgPNteAG7gJiIkJUoQkPp
+3psvrJjipLY8mfy6pCSGpOkuwMjuJ7CEA88t3r8lJEtv1tT9XP5C2cIvcZhxVNFe
+psbm1HOqGG4AXmDgRgdyQeP8sol4oPWcuUc3AaJOOjprJf1PB3evX1WU+hKiw+h6
+dsLDkFI/fL0+9lC2MNrv9Tqd+Vcge4OVGgrfw2A56G5LpgMXeWKF6msQ/iB6pPC3
+c4v19S/k/Oc8pQGYQTNdyK0cDd7XvCC/8ALG8mVW1mx1f57SWzm5TGlIxlUnVKa1
+Cm8ooRSmGjSpGDD4lKkb
+=mD1l
 -----END PGP SIGNATURE-----
 
---98e8jtXdkpgskNou--
+--V88s5gaDVPzZ0KCq--

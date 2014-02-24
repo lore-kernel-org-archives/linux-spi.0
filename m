@@ -1,68 +1,183 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH 03/17] mmc: mmci: Mask IRQs for all variants during
- runtime suspend
-Date: Mon, 24 Feb 2014 15:54:10 +0100
-Message-ID: <CACRpkdYF4sR4SJ_jZsVLY2tNV0xDfR2GG63bF5e=bkthpDsDGQ@mail.gmail.com>
-References: <1391529538-21685-1-git-send-email-ulf.hansson@linaro.org>
-	<1391529538-21685-4-git-send-email-ulf.hansson@linaro.org>
-	<20140218160542.GH21483@n2100.arm.linux.org.uk>
-	<CAPDyKFq3uAoo7p-7hZgBmMJ4jf9A7dC0aUZJYUE0z1Qq5W=0bw@mail.gmail.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH RFT] spi: qup: Get rid of using struct spi_qup_device
+Date: Mon, 24 Feb 2014 23:07:36 +0800
+Message-ID: <1393254456.12394.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Russell King - ARM Linux <linux@arm.linux.org.uk>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	Alessandro Rubini <rubini@unipv.it>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>, Mark Brown <broonie@kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	linux-mmc <linux-mmc@vger.kernel.org>
-To: Ulf Hansson <ulf.hansson@linaro.org>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <CAPDyKFq3uAoo7p-7hZgBmMJ4jf9A7dC0aUZJYUE0z1Qq5W=0bw@mail.gmail.com>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Feb 18, 2014 at 5:36 PM, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> On 18 February 2014 17:05, Russell King - ARM Linux
-> <linux@arm.linux.org.uk> wrote:
->> On Tue, Feb 04, 2014 at 04:58:44PM +0100, Ulf Hansson wrote:
->>> In runtime suspended state, we are not expecting IRQs and thus we can
->>> safely mask them, not only for pwrreg_nopower variants but for all.
->>>
->>> Obviously we then also need to make sure we restore the IRQ mask while
->>> becoming runtime resumed.
->>
->> So, what happens when this patch is applied, and a SDIO card is attached
->> which expects to receive interrupts at any moment?
->
-> Currently, no variant implements SDIO irq.
->
-> The SDIO irq polling mode from the sdio core will still be functional,
-> as of today. So, this patch will not break SDIO.
->
->>
->> Given that I've run into this during the last week with a SDHCI controller,
->> I'm not that thrilled with other interfaces doing the same broken thing.
->
-> If we add SDIO irq support to mmci in future; parts of that
-> implementation includes a re-route of DAT1 to a GPIO irq when entering
-> runtime suspend state. The mmci HW will in runtime suspend state, not
-> be responsible for handling irqs, which is the same as of today.
+Current code uses struct spi_qup_device to store spi->mode and spi->chip_select
+settings. We can get these settings in spi_qup_transfer_one and spi_qup_set_cs
+without using struct spi_qup_device. Refactor the code a bit to remove
+spi_qup_setup(), spi_qup_cleanup(), and struct spi_qup_device.
 
-[Just smalltalk]
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+Hi Ivan,
+I don't have this h/w, can you help testing if this patch works.
+Thanks,
+Axel
+ drivers/spi/spi-qup.c | 61 ++++++++-------------------------------------------
+ 1 file changed, 9 insertions(+), 52 deletions(-)
 
-Switching DAT1 to "gpio mode" (which is something of a fallacy, see
-explanation in Documentation/pinctrl.txt) is not at all possible in all
-implementations of the PL18x, as it depends on exploiting properties
-on an assumed pin controller.
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 886edb4..b5a1d5c 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -123,11 +123,6 @@
+ #define SPI_DELAY_THRESHOLD		1
+ #define SPI_DELAY_RETRY			10
+ 
+-struct spi_qup_device {
+-	int select;
+-	u16 mode;
+-};
+-
+ struct spi_qup {
+ 	void __iomem		*base;
+ 	struct device		*dev;
+@@ -338,14 +333,13 @@ static irqreturn_t spi_qup_qup_irq(int irq, void *dev_id)
+ 
+ 
+ /* set clock freq ... bits per word */
+-static int spi_qup_io_config(struct spi_qup *controller,
+-			   struct spi_qup_device *chip,
+-			   struct spi_transfer *xfer)
++static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ {
++	struct spi_qup *controller = spi_master_get_devdata(spi->master);
+ 	u32 config, iomode, mode;
+ 	int ret, n_words, w_size;
+ 
+-	if (chip->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
++	if (spi->mode & SPI_LOOP && xfer->len > controller->in_fifo_sz) {
+ 		dev_err(controller->dev, "too big size for loopback %d > %d\n",
+ 			xfer->len, controller->in_fifo_sz);
+ 		return -EIO;
+@@ -399,12 +393,12 @@ static int spi_qup_io_config(struct spi_qup *controller,
+ 
+ 	config = readl_relaxed(controller->base + SPI_CONFIG);
+ 
+-	if (chip->mode & SPI_LOOP)
++	if (spi->mode & SPI_LOOP)
+ 		config |= SPI_CONFIG_LOOPBACK;
+ 	else
+ 		config &= ~SPI_CONFIG_LOOPBACK;
+ 
+-	if (chip->mode & SPI_CPHA)
++	if (spi->mode & SPI_CPHA)
+ 		config &= ~SPI_CONFIG_INPUT_FIRST;
+ 	else
+ 		config |= SPI_CONFIG_INPUT_FIRST;
+@@ -413,7 +407,7 @@ static int spi_qup_io_config(struct spi_qup *controller,
+ 	 * HS_MODE improves signal stability for spi-clk high rates,
+ 	 * but is invalid in loop back mode.
+ 	 */
+-	if ((xfer->speed_hz >= SPI_HS_MIN_RATE) && !(chip->mode & SPI_LOOP))
++	if ((xfer->speed_hz >= SPI_HS_MIN_RATE) && !(spi->mode & SPI_LOOP))
+ 		config |= SPI_CONFIG_HS_MODE;
+ 	else
+ 		config &= ~SPI_CONFIG_HS_MODE;
+@@ -433,7 +427,6 @@ static int spi_qup_io_config(struct spi_qup *controller,
+ static void spi_qup_set_cs(struct spi_device *spi, bool enable)
+ {
+ 	struct spi_qup *controller = spi_master_get_devdata(spi->master);
+-	struct spi_qup_device *chip = spi_get_ctldata(spi);
+ 
+ 	u32 iocontol, mask;
+ 
+@@ -444,9 +437,9 @@ static void spi_qup_set_cs(struct spi_device *spi, bool enable)
+ 	iocontol |= SPI_IO_C_FORCE_CS;
+ 
+ 	iocontol &= ~SPI_IO_C_CS_SELECT_MASK;
+-	iocontol |= SPI_IO_C_CS_SELECT(chip->select);
++	iocontol |= SPI_IO_C_CS_SELECT(spi->chip_select);
+ 
+-	mask = SPI_IO_C_CS_N_POLARITY_0 << chip->select;
++	mask = SPI_IO_C_CS_N_POLARITY_0 << spi->chip_select;
+ 
+ 	if (enable)
+ 		iocontol |= mask;
+@@ -461,11 +454,10 @@ static int spi_qup_transfer_one(struct spi_master *master,
+ 			      struct spi_transfer *xfer)
+ {
+ 	struct spi_qup *controller = spi_master_get_devdata(master);
+-	struct spi_qup_device *chip = spi_get_ctldata(spi);
+ 	unsigned long timeout, flags;
+ 	int ret = -EIO;
+ 
+-	ret = spi_qup_io_config(controller, chip, xfer);
++	ret = spi_qup_io_config(spi, xfer);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -511,38 +503,6 @@ exit:
+ 	return ret;
+ }
+ 
+-static int spi_qup_setup(struct spi_device *spi)
+-{
+-	struct spi_qup *controller = spi_master_get_devdata(spi->master);
+-	struct spi_qup_device *chip = spi_get_ctldata(spi);
+-
+-	if (!chip) {
+-		/* First setup */
+-		chip = kzalloc(sizeof(*chip), GFP_KERNEL);
+-		if (!chip) {
+-			dev_err(controller->dev, "no memory for chip data\n");
+-			return -ENOMEM;
+-		}
+-
+-		chip->mode = spi->mode;
+-		chip->select = spi->chip_select;
+-		spi_set_ctldata(spi, chip);
+-	}
+-
+-	return 0;
+-}
+-
+-static void spi_qup_cleanup(struct spi_device *spi)
+-{
+-	struct spi_qup_device *chip = spi_get_ctldata(spi);
+-
+-	if (!chip)
+-		return;
+-
+-	spi_set_ctldata(spi, NULL);
+-	kfree(chip);
+-}
+-
+ static int spi_qup_probe(struct platform_device *pdev)
+ {
+ 	struct spi_master *master;
+@@ -561,7 +521,6 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 		return PTR_ERR(base);
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-
+ 	if (irq < 0)
+ 		return irq;
+ 
+@@ -617,8 +576,6 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	master->num_chipselect = SPI_NUM_CHIPSELECTS;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	master->max_speed_hz = max_freq;
+-	master->setup = spi_qup_setup;
+-	master->cleanup = spi_qup_cleanup;
+ 	master->set_cs = spi_qup_set_cs;
+ 	master->transfer_one = spi_qup_transfer_one;
+ 	master->dev.of_node = pdev->dev.of_node;
+-- 
+1.8.1.2
 
-Systems that don't have such wakeup features on their pins are
-unlikely to support deepsleep in any capacity, and if they do they are
-ill-designed from the top level as this needs to be taken into account
-when devising the hardware :-/
 
-Yours,
-Linus Walleij
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

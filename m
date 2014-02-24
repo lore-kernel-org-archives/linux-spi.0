@@ -1,7 +1,7 @@
 From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v5 6/8] mtd: spi-nor: add a helper to find the spi_device_id
-Date: Mon, 24 Feb 2014 18:37:40 +0800
-Message-ID: <1393238262-8622-7-git-send-email-b32955@freescale.com>
+Subject: [PATCH v5 7/8] Documentation: add the binding file for Freescale QuadSPI driver
+Date: Mon, 24 Feb 2014 18:37:41 +0800
+Message-ID: <1393238262-8622-8-git-send-email-b32955@freescale.com>
 References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -19,59 +19,55 @@ In-Reply-To: <1393238262-8622-1-git-send-email-b32955-KZfg59tc24xl57MIdRCFDg@pub
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add the spi_nor_match_id() to find the proper spi_device_id with the
-NOR flash's name in the spi_nor_ids table.
+This patch adds the binding file for Freescale QuadSPI driver.
 
 Signed-off-by: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
- drivers/mtd/spi-nor/spi-nor.c |   12 ++++++++++++
- include/linux/mtd/spi-nor.h   |   12 ++++++++++++
- 2 files changed, 24 insertions(+), 0 deletions(-)
+ .../devicetree/bindings/mtd/fsl-quadspi.txt        |   35 ++++++++++++++++++++
+ 1 files changed, 35 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index a840e88..6c8fd01 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1081,6 +1081,18 @@ int spi_nor_scan(struct spi_nor *nor, const struct spi_device_id *id,
- 	return 0;
- }
- 
-+const struct spi_device_id *spi_nor_match_id(char *name)
-+{
-+	const struct spi_device_id *id = spi_nor_ids;
+diff --git a/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+new file mode 100644
+index 0000000..823d134
+--- /dev/null
++++ b/Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+@@ -0,0 +1,35 @@
++* Freescale Quad Serial Peripheral Interface(QuadSPI)
 +
-+	while (id->name[0]) {
-+		if (!strcmp(name, id->name))
-+			return id;
-+		id++;
-+	}
-+	return NULL;
-+}
++Required properties:
++  - compatible : Should be "fsl,vf610-qspi"
++  - reg : the first contains the register location and length,
++          the second contains the memory mapping address and length
++  - reg-names: Should contain the reg names "QuadSPI" and "QuadSPI-memory"
++  - interrupts : Should contain the interrupt for the device
++  - clocks : The clocks needed by the QuadSPI controller
++  - clock-names : the name of the clocks
 +
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>");
- MODULE_AUTHOR("Mike Lavender");
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index 16d8409..41dae78 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -182,4 +182,16 @@ int spi_nor_scan(struct spi_nor *nor, const struct spi_device_id *id,
- 			enum read_mode mode);
- extern const struct spi_device_id spi_nor_ids[];
- 
-+/**
-+ * spi_nor_match_id() - find the spi_device_id by the name
-+ * @name:	the name of the spi_device_id
-+ *
-+ * The drivers use this function to find the spi_device_id
-+ * specified by the @name.
-+ *
-+ * Return: returns the right spi_device_id pointer on success,
-+ *         and returns NULL on failure.
-+ */
-+const struct spi_device_id *spi_nor_match_id(char *name);
++Optional properties:
++  - fsl,qspi-has-second-chip: The controller has two buses, bus A and bus B.
++                              Each bus can be connected with two NOR flashes.
++			      Most of the time, each bus only has one NOR flash
++			      connected, this is the default case.
++			      But if there are two NOR flashes connected to the
++			      bus, you should enable this property.
++			      (Please check the board's schematic.)
 +
- #endif
++Example:
++
++qspi0: quadspi@40044000 {
++	compatible = "fsl,vf610-qspi";
++	reg = <0x40044000 0x1000>, <0x20000000 0x10000000>;
++	reg-names = "QuadSPI", "QuadSPI-memory";
++	interrupts = <0 24 IRQ_TYPE_LEVEL_HIGH>;
++	clocks = <&clks VF610_CLK_QSPI0_EN>,
++		<&clks VF610_CLK_QSPI0>;
++	clock-names = "qspi_en", "qspi";
++
++	flash0: s25fl128s@0 {
++		....
++	};
++};
 -- 
 1.7.2.rc3
 

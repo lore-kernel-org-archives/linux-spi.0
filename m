@@ -1,57 +1,53 @@
-From: Magnus Damm <magnus.damm@gmail.com>
-Subject: Re: [PATCH 07/10] spi: sh-msiof: Add support for R-Car H2 and M2
-Date: Mon, 24 Feb 2014 11:45:19 +0900
-Message-ID: <CANqRtoSJTROkkbGxV_p+B2S7b7jZ7jgHQ+q4_WG54m+Pxgfcpw@mail.gmail.com>
-References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
-	<1392907389-21798-8-git-send-email-geert@linux-m68k.org>
-	<CANqRtoQVJzEgo_AdVxrPSRUY6ocyPaQ=RKQJyxoExDrfYxiJ3w@mail.gmail.com>
-	<CAMuHMdUByWPcYM8M_m5NVM4QP5cQE_tOLGQg=2fTNF7gqkUhig@mail.gmail.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: qup: Depend on ARM && COMPILE_TEST to avoid build error
+Date: Mon, 24 Feb 2014 12:07:51 +0800
+Message-ID: <1393214871.1099.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Mark Brown <broonie@kernel.org>,
-	Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	SH-Linux <linux-sh@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdUByWPcYM8M_m5NVM4QP5cQE_tOLGQg=2fTNF7gqkUhig@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>,
+	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Geert,
+This driver uses writel_relaxed() which does not exist in x86, ppc, etc.
+Make it depend on ARM && COMPILE_TEST to avoid below build error:
 
-On Fri, Feb 21, 2014 at 1:13 AM, Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> On Thu, Feb 20, 2014 at 4:41 PM, Magnus Damm <magnus.damm@gmail.com> wrote:
->> On thing stuck out a bit with the bindings. I can see that you specify
->> both fifo size and use the SoC suffix for the r8a7790 and r8a7791
->> bindings. Isn't that a bit of redundant information there, if we know
->> that the SoC is r8a7790 or r8a7791 then can't we simply put that
->> information in r8a779x_data above and perhaps keep the binding
->> simpler? Perhaps same thing applies to other properties as well?
->
-> "renesas,tx-fifo-size" and "renesas,rx-fifo-size" are part of the existing
-> bindings, so I'm a bit reluctant to change these.
-> Hmm, since the original bindings didn't specify the default values,
-> I could make them chip-specific, though.
+  CC [M]  drivers/spi/spi-qup.o
+drivers/spi/spi-qup.c: In function 'spi_qup_set_state':
+drivers/spi/spi-qup.c:180:3: error: implicit declaration of function 'writel_relaxed' [-Werror=implicit-function-declaration]
+cc1: some warnings being treated as errors
+make[2]: *** [drivers/spi/spi-qup.o] Error 1
+make[1]: *** [drivers/spi] Error 2
+make: *** [drivers] Error 2
 
-Thanks, yes I think treating the "renesas,tx-fifo-size" and
-"renesas,rx-fifo-size" bindings as optional and allow us to rely on
-chip-specific default values makes sense.
+Reported-by: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> The only other property is "num-cs", which can have any value if you
-> start using the generic "cs-gpios".
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index e4e170f..db22cda 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -384,7 +384,7 @@ config SPI_RSPI
+ 
+ config SPI_QUP
+ 	tristate "Qualcomm SPI controller with QUP interface"
+-	depends on ARCH_MSM_DT || COMPILE_TEST
++	depends on ARCH_MSM_DT || (ARM && COMPILE_TEST)
+ 	help
+ 	  Qualcomm Universal Peripheral (QUP) core is an AHB slave that
+ 	  provides a common data path (an output FIFO and an input FIFO)
+-- 
+1.8.1.2
 
-I see. It looks to me that such a setting is board-specific, so what
-is a sane default in the SoC DTSI? You seem to have it set to "1"
-today, but if the board is supposed to override it anyway then do we
-need to set it?
 
-Anyway, "num-cs" is a minor detail so no need to bother about that too much!
 
-Cheers,
-
-/ magnus
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

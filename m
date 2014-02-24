@@ -1,93 +1,69 @@
-From: Konstantin Tokarev <annulen@yandex.ru>
-Subject: Re: [PATCH v5 4/8] Documentation: add the document for the SPI NOR
- framework
-Date: Mon, 24 Feb 2014 19:17:16 +0400
-Message-ID: <203101393255036@web29h.yandex.ru>
-References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
- <1393238262-8622-5-git-send-email-b32955@freescale.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 08/10] spi: sh-msiof: Move clock management to
+ (un)prepare_message()
+Date: Mon, 24 Feb 2014 22:07:11 +0900
+Message-ID: <20140224130711.GH25940@sirena.org.uk>
+References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
+ <1392907389-21798-9-git-send-email-geert@linux-m68k.org>
+ <20140222032700.GX25940@sirena.org.uk>
+ <CAMuHMdWF5BnPPFoWPqASQjc+9GCYZQEVcWRZaLNFzdz0rAt0_A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: base64
-Cc: "angus.clark@st.com" <angus.clark@st.com>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
- "b44548@freescale.com" <b44548@freescale.com>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "broonie@linaro.org" <broonie@linaro.org>,
- "b18965@freescale.com" <b18965@freescale.com>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "pekon@ti.com" <pekon@ti.com>, "sourav.poddar@ti.com" <sourav.poddar@ti.com>,
- "shawn.guo@linaro.org" <shawn.guo@linaro.org>,
- "lee.jones@linaro.org" <lee.jones@linaro.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Huang Shijie <b32955@freescale.com>,
- "dwmw2@infradead.org" <dwmw2@infradead.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1393238262-8622-5-git-send-email-b32955@freescale.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="w5TELPsKZB/ns6eJ"
+Cc: Magnus Damm <magnus.damm@gmail.com>,
+	Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdWF5BnPPFoWPqASQjc+9GCYZQEVcWRZaLNFzdz0rAt0_A@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-CgoyNC4wMi4yMDE0LCAxNToyNiwgIkh1YW5nIFNoaWppZSIgPGIzMjk1NUBmcmVlc2NhbGUuY29t
-PjoKPiBUaGlzIHBhdGNoIGFkZHMgdGhlIGRvY3VtZW50IGZvciB0aGUgU1BJIE5PUiBmcmFtZXdv
-cmsuCj4KPiBTaWduZWQtb2ZmLWJ5OiBIdWFuZyBTaGlqaWUgPGIzMjk1NUBmcmVlc2NhbGUuY29t
-Pgo+IC0tLQo+IJpEb2N1bWVudGF0aW9uL210ZC9zcGktbm9yLnR4dCB8IJqaNTkgKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysKPiCaMSBmaWxlcyBjaGFuZ2VkLCA1OSBp
-bnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQo+IJpjcmVhdGUgbW9kZSAxMDA2NDQgRG9jdW1l
-bnRhdGlvbi9tdGQvc3BpLW5vci50eHQKPgo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL210
-ZC9zcGktbm9yLnR4dCBiL0RvY3VtZW50YXRpb24vbXRkL3NwaS1ub3IudHh0Cj4gbmV3IGZpbGUg
-bW9kZSAxMDA2NDQKPiBpbmRleCAwMDAwMDAwLi5iOTU4NWY4Cj4gLS0tIC9kZXYvbnVsbAo+ICsr
-KyBiL0RvY3VtZW50YXRpb24vbXRkL3NwaS1ub3IudHh0Cj4gQEAgLTAsMCArMSw1OSBAQAo+ICsg
-mpqampqampqampqampqampqampqampqamlNQSSBOT1IgZnJhbWV3b3JrCj4gKyCampqampqampqa
-mpqamj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09Cj4gKwo+ICtQ
-YXJ0IEkgLSB3aHkgd2UgbmVlZCB0aGlzIGZyYW1ld29yaz8KPiArLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLQo+ICsKPiArVGhlIFNQSSBidXMgY29udHJvbGxlciBvbmx5IGRl
-YWxzIHdpdGggdGhlIGJ5dGUgc3RyZWFtLgo+ICtTb21lIGNvbnRyb2xsZXIgZG9lcyBub3Qgd29y
-a3MgbGlrZSBhIFNQSSBidXMgY29udHJvbGxlciwgaXQgd29ya3MKPiArbGlrZSBhIFNQSSBOT1Ig
-Y29udHJvbGxlciBpbnN0ZWFkLCBzdWNoIGFzIHRoZSBGcmVlc2NhbGUncyBRdWFkU1BJIGNvbnRy
-b2xsZXIuCj4gKwo+ICtUaGUgRnJlZXNjYWxlJ3MgUXVhZFNQSSBjb250cm9sbGVyIHNob3VsZCBr
-bm93cyB0aGUgTk9SIGNvbW1hbmRzIHRvCj4gK2ZpbmQgdGhlIHJpZ2h0IExVVCBzZXF1ZW5jZS4g
-VW5mb3J0dW5hdGVseSwgdGhlIG9sZCBjb2RlIGNhbiBub3QgbWVldAo+ICt0aGlzIHJlcXVpcmVt
-ZW50LgoKc2hvdWxkIGtub3cKCj4gKwo+ICtQYXJ0IElJIC0gSG93IGRvZXMgdGhlIGZyYW1ld29y
-ayB3b3JrPwo+ICstLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gKwo+ICtU
-aGlzIGZyYW1ld29yayBqdXN0IGFkZHMgYSBuZXcgbGF5ZXIgYmV0d2VlbiB0aGUgTVREIGFuZCB0
-aGUgU1BJIGJ1cyBkcml2ZXIuCj4gK1dpdGggdGhpcyBuZXcgbGF5ZXIsIHRoZSBTUEkgTk9SIGNv
-bnRyb2xsZXIgZHJpdmVyIGRvZXMgbm90IGRlcGVuZCBvbiB0aGUKPiArbTI1cDgwIGNvZGUgYW55
-bW9yZS4KPiArCj4gKyCamkJlZm9yZSB0aGlzIGZyYW1ld29yaywgdGhlIGxheWVyIGlzIGxpa2U6
-Cj4gKwo+ICsgmpqampqampqampqampqampqaTVRECj4gKyCampqampqami0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLQo+ICsgmpqampqampqampqampqampptMjVwODAKPiArIJqampqampqaLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCj4gKyCampqamppTUEkgYnVzIGRyaXZlcgo+ICsgmpqampqampot
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArIJqampqamppTUEkgTk9SIGNoaXAKPiArCj4gKyCa
-mkFmdGVyIHRoaXMgZnJhbWV3b3JrLCB0aGUgbGF5ZXIgaXMgbGlrZToKPiArIJqampqampqampqa
-mpqampqamk1URAo+ICsgmpqampqampotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArIJqampqa
-mpqampqamppTUEkgTk9SIGZyYW1ld29yawo+ICsgmpqampqampotLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0KPiArIJqampqampqampqampqampqabTI1cDgwCj4gKyCampqampqami0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLQo+ICsgmpqampqaU1BJIGJ1cyBkcml2ZXIKPiArIJqampqampqaLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tCj4gKyCampqamppTUEkgTk9SIGNoaXAKPiArCj4gKyCaV2l0aCB0
-aGUgU1BJIE5PUiBjb250cm9sbGVyIGRyaXZlcihGcmVlc2NhbGUgUXVhZFNQSSksIGl0IGxvb2tz
-IGxpa2U6Cj4gKyCampqampqampqampqampqamppNVEQKPiArIJqampqampqaLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tCj4gKyCampqampqampqampqaU1BJIE5PUiBmcmFtZXdvcmsKPiArIJqampqa
-mpqaLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gKyCampqampqampqampqamppmc2wtcXVhZFNQ
-SQo+ICsgmpqampqampotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArIJqampqamlNQSSBOT1Ig
-Y2hpcAo+ICsKPiArUGFydCBJSUkgLSBIb3cgY2FuIHRoZSBkcml2ZXJzIHVzZSB0aGUgZnJhbWV3
-b3JrCj4gKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KPiArCj4gK1RoZSBt
-YWluIEFQSSBpcyB0aGUgc3BpX25vcl9zY2FuKCkuIEJlZm9yZSB5b3UgY2FsbCB0aGUgaG9vaywg
-eW91IHNob3VsZAo+ICtpbml0aWFsaXplIHRoZSBuZWNlc3NhcnkgZmllbGRzIGZvciBzcGlfbm9y
-e30uCj4gK1BsZWFzZSBzZWUgdGhlIGRyaXZlcnMvbXRkL3NwaS1ub3Ivc3BpLW5vci5jIGZvciBk
-ZXRhaWwuCj4gK1BsZWFzZSBhbHNvIHJlZmVyZW5jZSB0byB0aGUgZnNsLXF1YWRzcGkuYyB3aGVu
-IHlvdSB3YW50IHRvIHdyaXRlIGEgbmV3IGRyaXZlcgo+ICtmb3IgYSBTUEkgTk9SIGNvbnRyb2xs
-ZXIuCj4gLS0KPiAxLjcuMi5yYzMKPgo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwo+IExpbnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcgbGlz
-dAo+IGh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbXRk
-LwoKUmVnYXJkcywKS29uc3RhbnRpbgoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KbGludXgtYXJtLWtlcm5lbCBtYWlsaW5nIGxpc3QKbGludXgtYXJtLWtl
-cm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnCmh0dHA6Ly9saXN0cy5pbmZyYWRlYWQub3JnL21haWxt
-YW4vbGlzdGluZm8vbGludXgtYXJtLWtlcm5lbAo=
+
+--w5TELPsKZB/ns6eJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Feb 24, 2014 at 10:48:26AM +0100, Geert Uytterhoeven wrote:
+
+> Perhaps it's because the bitbang core may call the .chipselect() callback
+> multiple times with is_on == BITBANG_CS_ACTIVE, and obviously the
+> clock should be enabled/disabled only once?
+> The current code doesn't seem to do that, but perhaps it was different when
+> the sh-msiof driver was written?
+
+Possibly, or perhaps someone was being overly cautious.
+
+> As you mention yourself, all of this code existed before. It just got moved,
+> to make the conversion to the SPI core message handling easier.
+> If you don't mind, I'd like to defer these, and tackle runtime PM later.
+
+Sure.
+
+--w5TELPsKZB/ns6eJ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTC0P8AAoJELSic+t+oim9aF4P/RNiBEhU0/pNGA0kaHy10avr
+L4Bmsn4+975Tuwci+TWwfUq/9Aw9GGaQIBRT+bJDcrl3Kc5gPY6G8h498J9raSyq
+RqPAh1M6/qhm/1bRNVKsTf7ldZuKzlsjeqLmDk8Nsl2eEs8g98LjTgzGE7upxyzG
+KU80l7gmtoh/S1MQvEKePo3U0iuJ57Wb1V9vJ6dm8NZRedeSqCpA3VaBWhuVk+2B
+oEkCdsXGEmhlUZ5fM2xpwGFymIVwgTaZAWghB0tyYRZ4TXk/Q6yuIF+EyR3pGUT9
+W5ZCoaRTcG518R4cJncqlwsMB6Hw+j6Iv7/U1hutAnnVJfzqoOftNyrp/1iIfYTh
+Cf5cvokH6pL8B2ITCUfjUQv5ewKYJ351CHil5QRweoGla0AkOSNZ4t5+bS4XZZ9e
+UR+nQkfAURgbXa9hOfp7oWMO/445e2h31Datd2x4O3PKYvOezAov9SsOVJDTQ3Pj
+zGy5cXGlFUgrXJfS2GLzi4AcgevQKBYZHvWBKuOX2ahubunwGF0uIvXnlrV4a7ei
+dS/LdNeGWwmHh1JDPBYDtS0LSUhn9fhbQ5Sx4mM+eTQwoI4kP/U8SDQo7FUMfQZ0
+PwaIgqGCDvqkdJqtKj4dlHCr6RPqvLNqIn0fkllgfRgQIhEFusugGzLCjFZRRHcZ
+xt/A8bbiH/F8l36wu/2d
+=m2RV
+-----END PGP SIGNATURE-----
+
+--w5TELPsKZB/ns6eJ--

@@ -1,61 +1,59 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] [RFC] spi: spidev: Add support for Dual/Quad SPI
- Transfers
-Date: Mon, 24 Feb 2014 10:35:42 +0900
-Message-ID: <20140224013542.GS25940@sirena.org.uk>
-References: <1392999293-5015-1-git-send-email-geert@linux-m68k.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: qup: Depend on ARM && COMPILE_TEST to avoid build
+ error
+Date: Mon, 24 Feb 2014 14:46:13 +0900
+Message-ID: <20140224054613.GA25940@sirena.org.uk>
+References: <1393214871.1099.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="omE/1KreAogPZIYx"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="SRK8lRENmpuaYFQC"
+Cc: Stephen Rothwell <sfr-3FnU+UHB4dNDw9hX6IcOSA@public.gmane.org>,
+	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392999293-5015-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1393214871.1099.1.camel@phoenix>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---omE/1KreAogPZIYx
+--SRK8lRENmpuaYFQC
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Feb 21, 2014 at 05:14:53PM +0100, Geert Uytterhoeven wrote:
+On Mon, Feb 24, 2014 at 12:07:51PM +0800, Axel Lin wrote:
+> This driver uses writel_relaxed() which does not exist in x86, ppc, etc.
+> Make it depend on ARM && COMPILE_TEST to avoid below build error:
 
-> The Kconfig entry for SPI_SPIDEV states:
+Applied, but two things here - one is that it's very surprising that the
+zero day tester didn't notice this, the other is that we really need to
+get the architectures fixed for this, having to deal with this sort of
+pointless platform dependencies is a waste of time.
 
->     Note that this application programming interface is EXPERIMENTAL
->     and hence SUBJECT TO CHANGE WITHOUT NOTICE while it stabilizes.
-
-> So it's OK to break binary compatibility?
-> Or should we introduce PI_IOC_RD_MODE16 and SPI_IOC_WR_MODE16 instead?
-
-I think it's been experimental for so long that it has become a stable
-interface I'm afraid - the new calls would be better.  Why not go for 32
-bits instead of 16 bits for the new calls, that way it'll take longer to
-fill up again?
-
---omE/1KreAogPZIYx
+--SRK8lRENmpuaYFQC
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTCqHrAAoJELSic+t+oim90wcP/RclwU+j+4jb+6svGjGbRkDW
-i6cO1OU+bGBsrHUPzaqqpqi1nknpA4A4ZY9rduGB1+5kDD1YyBUa7Ia4AdQWG9B2
-rJmBbyDBM8E1g0PinlcDkDQ9UMB9OQMGRrlmJHapH11Tl0TfoHY/oqACLOMD8yb8
-mNnG43w3ZFRdsPvO9GRP+jw1cFEKI87GJsF8XoTPLa4CSUE4uhYbfn+VW+2uaHn3
-pCSBOMW8gSEdinBkMaN2puRJCZMgpnSVSHyR9cNRfBfg/kl/dO6MDiT80ZjYJg8X
-jYIcfHAe+vkSKXV738vzCM5fNq9MDJd/vnPIjLHNc5tXGzO2WAvzQ2hwOtkT67S8
-gRnwu7gzPi5PJEBXHQWPAiicmwtkRc/cOAeG4iqb65/YNruAuGu0/hmR3glQuynV
-v4aZQRPIL0g86zt2inLT87cKPuBwuM1m8PqxtDmPA6HUShdWTyZd6/u2jzgkpUWr
-CGAzG5y5VHZvjLgHiRJn+Ae8X7cKnCESGpFrTFGCinFbElEE1+Ll9MdjSEgUmFFc
-v7sMY+57ViTQXdgeN7nrmtBxLcZ/oag1O+rB6Hdpf7NVzGbtsreD/+/TBtKac0Q7
-kWdq63JswcS5Oc7ZV8PowTIrKkMZfegk+48e2MC4DgTjAZrMsli/qfTvuJy9hVDn
-XPUbsRXiRZGlC0fhlQlT
-=2ceX
+iQIcBAEBAgAGBQJTCtyiAAoJELSic+t+oim9wXAP/jpODcvJwKGPWb+5sx4cqt6f
+JKPqDDc98Bd+QEJk4RYVTiJ+fS9C9sPB5d4whUPnha+S1eyurzRL4BpqjF5yeZ3X
+rZ+kAyQU6fnaV8OIwZIAU5u7GAqQvcnykl7NMf0Qdq9dta+YVlctRTb1BAleoYFi
+53X7O9vojPTYkdhh9wWZUfjoeraL+5hriSgWt2Omd09n0+uHQ+AA1Zoceh1dLSaI
+F680Qa0tVJcUPEjEQ39YRu7wnQZdlW4q6i0TEH42AgKm0KR/EI1foHmkpi8v/H1p
+bY8QwDFAGzfzwBQKeMfNFyxIR6l6LHbN/VzIWIFdH/W3A2cuZPuMp6ft01HBjFR0
+jQZBv5nuwPhYv8CcR8t8SC+jnFgRhy4x1fmiU+t4BEUMgkZYiDJVh/jIv8w/K/FV
+FNwaUR02AIpu3XZCSNVBiqKdnggEvMd9GvIn2ItBDnU3gZFJt8YXDIEwNbAxLdJS
+YHCNuIOzDNOIgXQ2U/DJs8lHTiEpzhAv0PIPVY5hnMuZ+gnzzx6Se0hSEDFkFBnw
+5G1KrcsxUJfFIDPzYHwqD6Fmr8RRBECsQTFkd4PlVjOOOMBQoHTMdQ6Ribba5T0b
+imfTT12j1W7HuSi+ByDWZaMXOalOyn92FGCs2VronsE6tIXIWrAeznloy2SJZRdf
+F1jJ7ykubAhaR74KdmiO
+=uSuU
 -----END PGP SIGNATURE-----
 
---omE/1KreAogPZIYx--
+--SRK8lRENmpuaYFQC--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

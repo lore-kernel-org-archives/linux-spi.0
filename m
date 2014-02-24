@@ -1,75 +1,122 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 08/10] spi: sh-msiof: Move clock management to (un)prepare_message()
-Date: Mon, 24 Feb 2014 10:48:26 +0100
-Message-ID: <CAMuHMdWF5BnPPFoWPqASQjc+9GCYZQEVcWRZaLNFzdz0rAt0_A@mail.gmail.com>
-References: <1392907389-21798-1-git-send-email-geert@linux-m68k.org>
-	<1392907389-21798-9-git-send-email-geert@linux-m68k.org>
-	<20140222032700.GX25940@sirena.org.uk>
+From: Huang Shijie <b32955@freescale.com>
+Subject: [PATCH v5 0/8] mtd: spi-nor: add a new framework for SPI NOR
+Date: Mon, 24 Feb 2014 18:37:34 +0800
+Message-ID: <1393238262-8622-1-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>,
-	Magnus Damm <magnus.damm@gmail.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <20140222032700.GX25940@sirena.org.uk>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: <computersforpeace@gmail.com>, <angus.clark@st.com>,
+	<lee.jones@linaro.org>, <pekon@ti.com>, <sourav.poddar@ti.com>,
+	<broonie@linaro.org>, <linux-mtd@lists.infradead.org>,
+	<linux-spi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<linux-doc@vger.kernel.org>, <b44548@freescale.com>,
+	<b18965@freescale.com>, <devicetree@vger.kernel.org>,
+	<shawn.guo@linaro.org>, Huang Shijie <b32955@freescale.com>
+To: <dwmw2@infradead.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark, Magnus,
+1.) Why add a new framework for SPI NOR?
+  The SPI-NOR controller such as Freescale's Quadspi controller is working
+  in a different way from the SPI bus. It should knows the NOR commands to
+  find the right LUT sequence. Unfortunately, the current code can not meet
+  this requirement.
 
-On Sat, Feb 22, 2014 at 4:27 AM, Mark Brown <broonie@kernel.org> wrote:
-> On Thu, Feb 20, 2014 at 03:43:07PM +0100, Geert Uytterhoeven wrote:
->
->> +     if (!test_and_set_bit(0, &p->flags)) {
->> +             pm_runtime_get_sync(&p->pdev->dev);
->> +             clk_enable(p->clk);
->> +     }
->
-> That test_and_set_bit() is a bit odd - what's going on there, perhaps a
-> comment is in order?  I'd also like to see return value checks, though
+2.) How does this patch set do?
+   This patch set adds a new spi-nor layer.
+   Before this patch, the layer is like:
 
-My first guess was to support multiple CS, but you can't have multiple
-active SPI slaves at the same time.
+                   MTD
+         ------------------------
+                  m25p80
+         ------------------------
+	       spi bus driver
+         ------------------------
+	        SPI NOR chip
 
-Perhaps it's because the bitbang core may call the .chipselect() callback
-multiple times with is_on == BITBANG_CS_ACTIVE, and obviously the
-clock should be enabled/disabled only once?
-The current code doesn't seem to do that, but perhaps it was different when
-the sh-msiof driver was written?
+   After this patch, the layer is like:
+                   MTD
+         ------------------------
+                  spi-nor
+         ------------------------
+                  m25p80
+         ------------------------
+	       spi bus driver
+         ------------------------
+	       SPI NOR chip
 
-Ah, there's also the initial .chipselect(..., BITBANG_CS_INACTIVE) call
-in spi_bitbang_setup(), which should not disable the clock.
-But it should still call sh_msiof_spi_set_pin_regs() and set the optional
-GPIO CS. Which is no longer done after my series. I'll fix that.
+  With the spi-nor controller driver(Freescale Quadspi), it looks like:
+                   MTD
+         ------------------------
+                  spi-nor
+         ------------------------
+                fsl-quadspi
+         ------------------------
+	       SPI NOR chip
 
-Magnus, do you remember the rationale for the test_and_set_bit()?
+3.) more details
+    This patch set adds a new data structrue spi_nor{}, clones most the common
+  code to spi-nor.c. Add spi_nor_xfer_cfg {} for the fundamental primitives:
+  read_xfer/write_xfer.
 
-Anyway, it seems safe to remove it, as .(un)prepare_message() is
-guaranteed to be called in matching pairs.
+    Make the m25p80.c/fsl_quaspi.c use the new APIs. 
 
-> the original didn't have them so it's not a blocker, and ideally that
-> should be clk_prepare_enable().  I guess the clock stuff could even be
-> moved inside the runtime PM callbacks?  Again not a blocker if the
-> existing code doesn't have things but it'd be nice to do.
->
-> There's also auto_runtime_pm in the SPI core which will do the runtime
-> PM for you if you can do it unconditionally.
+4.) Change log:
+v4 --> v5:
+	[1] rebase the patch set on the l2-mtd tree.
+	[2] fixed bugs in the fsl-quadspi driver.
+	[3] tested the fsl-quadspi with imx6sx board.
 
-As you mention yourself, all of this code existed before. It just got moved,
-to make the conversion to the SPI core message handling easier.
-If you don't mind, I'd like to defer these, and tackle runtime PM later.
+v3 --> v4:
+	[1] move the wait_till_ready to the @read hook.
+	[2] convert to linux-doc style comment.
+	[3] remove the some DT property for QuadSPI driver, such as
+	    "fsl,nor-size".
+	[4] others    
 
-Gr{oetje,eeting}s,
+v2 --> v3:
+	[1] add prepare/unprepare hooks for spi_nor{}.
+	[2] add a new "priv" field for spi_nor{}.
+	[3] add the Freescale Quadspi driver which supports the Quad read by
+             default. 
 
-                        Geert
+v1 --> v2:
+	[1] follow Angus's advice, add more hooks and data structrures.
+	[2] others.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+*** BLURB HERE ***
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Huang Shijie (8):
+  mtd: spi-nor: copy the SPI NOR commands to a new header file
+  mtd: spi-nor: add the basic data structures
+  mtd: spi-nor: add the framework for SPI NOR
+  Documentation: add the document for the SPI NOR framework
+  mtd: m25p80: use the SPI nor framework
+  mtd: spi-nor: add a helper to find the spi_device_id
+  Documentation: add the binding file for Freescale QuadSPI driver
+  mtd: spi-nor: Add Freescale QuadSPI driver
+
+ .../devicetree/bindings/mtd/fsl-quadspi.txt        |   35 +
+ Documentation/mtd/spi-nor.txt                      |   59 +
+ drivers/mtd/Kconfig                                |    2 +
+ drivers/mtd/Makefile                               |    1 +
+ drivers/mtd/devices/m25p80.c                       | 1302 ++------------------
+ drivers/mtd/spi-nor/Kconfig                        |   12 +
+ drivers/mtd/spi-nor/Makefile                       |    2 +
+ drivers/mtd/spi-nor/fsl-quadspi.c                  | 1009 +++++++++++++++
+ drivers/mtd/spi-nor/spi-nor.c                      | 1099 +++++++++++++++++
+ include/linux/mtd/spi-nor.h                        |  197 +++
+ 10 files changed, 2521 insertions(+), 1197 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mtd/fsl-quadspi.txt
+ create mode 100644 Documentation/mtd/spi-nor.txt
+ create mode 100644 drivers/mtd/spi-nor/Kconfig
+ create mode 100644 drivers/mtd/spi-nor/Makefile
+ create mode 100644 drivers/mtd/spi-nor/fsl-quadspi.c
+ create mode 100644 drivers/mtd/spi-nor/spi-nor.c
+ create mode 100644 include/linux/mtd/spi-nor.h
+
+-- 
+1.7.2.rc3
+
+

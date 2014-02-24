@@ -1,53 +1,47 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: qup: Fix build error due to a typo
-Date: Sun, 23 Feb 2014 14:39:53 +0900
-Message-ID: <20140223053953.GN25940@sirena.org.uk>
-References: <1393133236.32087.0.camel@phoenix>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH v2 1/2] ARM: shmobile: r8a7778/r8a7779 dtsi: Improve and
+ correct HSPI bindings
+Date: Mon, 24 Feb 2014 09:28:40 +0900
+Message-ID: <20140224002837.GA3898@verge.net.au>
+References: <1392908239-22645-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="f7rhGhcaiuL9D15N"
-Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1393133236.32087.0.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-
---f7rhGhcaiuL9D15N
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	Mark Brown <broonie@linaro.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
+In-Reply-To: <1392908239-22645-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sun, Feb 23, 2014 at 01:27:16PM +0800, Axel Lin wrote:
-> Fix below build error when CONFIG_PM_RUNTIME=y:
+On Thu, Feb 20, 2014 at 03:57:18PM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+> 
+> Binding documentation:
+>   - Add future-proof "renesas,hspi-<soctype>" compatible values,
+>   - Add "interrupt-parent", "#address-cells" and "#size-cells" properties,
+>   - Add reference to pinctrl documentation,
+>   - Add example bindings.
+> 
+> r8a7778 and r8a7779 dtsi:
+>   - Add "renesas,hspi-r8a7778" resp. "renesas,hspi-r8a7779" compatible
+>     values,
+>   - Correct reference to parent interrupt controller
+>     (use "interrupt-parent" instead of "interrupt-controller"),
+>   - Add missing "#address-cells" and "#size-cells" properties, which are
+>     needed when populating the SPI buses.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+> Tested-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com> [HSPI/BockW]
+> Cc: Mark Brown <broonie@linaro.org>
+> ---
+> v2:
+>   - Add Tested-by
+>   - List full example compatible properties with soctypes instead of just
+>     the soctypes, so checkpatch can validate DTSes.
 
-Applied both, thanks.
-
---f7rhGhcaiuL9D15N
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTCYmhAAoJELSic+t+oim9Vr4P/2tJbIIECrBDfftCF69XDIrb
-hSgGlB8RMIZrt1BmziT6snvcvrFN126dcJtl1ab0gbWmRXG2YpylB99i8WK/sFBE
-X1m3XqJFymFW8xxjvYFPr/6C34XsQwkFDe+oMbAFUG45OHIjDXj4c//sLZsCY+NB
-qPHsQB/rG/6g+MeynzWVTkibT//lFNurv8vr4MmmD11tsSuy557F4iN9QVu6sv3x
-nvGE/m4A/UIwWktdd6uszLEro+GuQ0BHSjrqzDnGTitL0/5MpzJNirN34xQb7Rf/
-O72e+kyETcvT43wMML3sXhpwNdMKkslgd6IVJR7WFi2yWWbhm8za8jeJVB0J7Iw5
-c4tJ1o+VbFv+OMeod+2UW9PtkYCwDqmrGmblxAvVROXGCupWo7YJHrU6n9mghRa+
-aglivzOslq8xizZ/4DB3JIcvauwnY4GnHIJt6lnFzp77APa7St/HswAfEKljTaJ2
-Egg471T60st9GEpfsSYVQ4iQPke5Y34jD+C3VdmHAw4dnw9GV8pjaHTYl77pmiA/
-nSn45qChYmbVVDjx+fALuey5VK+hLRdxDUE2RnW+gAIpqDd8pa+wwY/aI9t64d7L
-lbTeAziRnlZ9kqYSHNp3dH9wuxFph9dDVY7K1yFkq1XhjbC4kIas7aAzARi48Cdz
-bbrqW5YhnchTVNhQeEjk
-=qZ+H
------END PGP SIGNATURE-----
-
---f7rhGhcaiuL9D15N--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks, I have queued this up.

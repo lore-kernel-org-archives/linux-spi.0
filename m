@@ -1,42 +1,55 @@
-From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
-Subject: Re: [PATCH v3] spi: core: Validate length of the transfers in
- message
-Date: Tue, 25 Feb 2014 22:55:28 +0900 (JST)
-Message-ID: <20140225.225528.453119424.anemo@mba.ocn.ne.jp>
-References: <1392890528-7417-1-git-send-email-iivanov@mm-sol.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH RFT] spi: qup: Get rid of using struct spi_qup_device
+Date: Wed, 26 Feb 2014 08:55:14 +0900
+Message-ID: <20140225235514.GI2927@sirena.org.uk>
+References: <1393254456.12394.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, gsi-ynQEQJNshbs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="nEsDIrWrg+hrB7l1"
+Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1392890528-7417-1-git-send-email-iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1393254456.12394.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, 20 Feb 2014 12:02:08 +0200, "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org> wrote:
-> SPI transfer length should be multiple of SPI word size,
-> where SPI word size should be power-of-two multiple
-...
-> +		n_words = xfer->len / w_size;
-> +		/* No partial transfers accepted */
-> +		if (!n_words || xfer->len % w_size)
-> +			return -EINVAL;
 
-Is xfer->len == 0 invalid?
-Long time ago I have fixed atmel spi driver to support zero length
-transfer (commit 06719814 atmel_spi: support zero length transfer).
+--nEsDIrWrg+hrB7l1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-According to Documentation/spi/spi-summary, zeto length transfer seems
-valid.
+On Mon, Feb 24, 2014 at 11:07:36PM +0800, Axel Lin wrote:
+> Current code uses struct spi_qup_device to store spi->mode and spi->chip_select
+> settings. We can get these settings in spi_qup_transfer_one and spi_qup_set_cs
+> without using struct spi_qup_device. Refactor the code a bit to remove
+> spi_qup_setup(), spi_qup_cleanup(), and struct spi_qup_device.
 
-      + optionally defining short delays after transfers ... using
-        the spi_transfer.delay_usecs setting (this delay can be the
-        only protocol effect, if the buffer length is zero);
+Applied, thanks.
 
----
-Atsushi Nemoto
+--nEsDIrWrg+hrB7l1
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTDS1fAAoJELSic+t+oim9FPwP/jKks8xTn0NwjSITG42zfelo
+x0QYrJxJ8z06JNPurqa31GNUKtNv2RDNSzpJVmYhomqspci+PxyCpGXOBzADZGrf
+BL6Dvxl3fl3gsuZKLsJJA/vMORz3E3CoS972VUdDAOdIW+mdkbC1eQdjXhw13oEO
+Xjuor8VtNtwd/F2ox4zfeXCJ0nRz50g6PyFUl1EbRWSxUDhFoDQR+ePkWzj8uKH0
+l1pdmPDo4I5Gm4dqbiVlpjcXqyngFPiikLDFQJ/d4/ZK8JBaX1PrEaL/RIpHsXl1
+ZrRbj2Zv1jUr7r2MvxSrWX4ne7ueTqDRkkcY5OFiNR+SUnjcxIWZKMnHe0T4b9vU
+aQaUwlQQlzJ+6Uwk3T3vANPt98V7OG1iX8wTkEpvgRzIcHOHYEwf5AhwM/IicC3M
+LnXuzKC7tSyX7iMkArwaqLP1agpE+XaEiZMoOGiJ37KUJ8qJ1oKU3Lwv8ikwJOvt
+J32cXocC2tvdis9KhkhbFhF0HsQxtLVZr7Ug5EgXuXGcmkjo+h2xTy7FeKbHuHUc
+okDUaw8hcDDhvRdOz3M99cpl3a7bflovO10NUq7pgo1iMIhQLvYkuuKWQ9VtI67d
+jPT0Itf7wwwxtRiRizO9iFzsGDPecXE/ElG5uvFzPQ8wlFjmDqfXW5bqmOun8jO4
+aZMkcVPiNYvJI9rk0olM
+=CMpH
+-----END PGP SIGNATURE-----
+
+--nEsDIrWrg+hrB7l1--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

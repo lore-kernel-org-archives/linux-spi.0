@@ -1,13 +1,13 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 2/3] spi: s3c64xx: Let spi core handle validating transfer
+Subject: [PATCH 3/3] spi: txx9: Let spi core handle validating transfer
  length
-Date: Tue, 25 Feb 2014 19:18:29 +0800
-Message-ID: <1393327109.6723.3.camel@phoenix>
+Date: Tue, 25 Feb 2014 19:19:43 +0800
+Message-ID: <1393327183.6723.5.camel@phoenix>
 References: <1393327017.6723.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Jaswinder Singh <jassi.brar-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1393327017.6723.1.camel@phoenix>
@@ -20,27 +20,26 @@ So remove the same checking in this driver.
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-s3c64xx.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/spi/spi-txx9.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 9ad5e3e..f19cd97 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -697,13 +697,6 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 	bpw = xfer->bits_per_word;
- 	speed = xfer->speed_hz ? : spi->max_speed_hz;
+diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
+index 523f13d..b5f5dc8 100644
+--- a/drivers/spi/spi-txx9.c
++++ b/drivers/spi/spi-txx9.c
+@@ -306,12 +306,8 @@ static int txx9spi_transfer(struct spi_device *spi, struct spi_message *m)
  
--	if (xfer->len % (bpw / 8)) {
--		dev_err(&spi->dev,
--			"Xfer length(%u) not a multiple of word size(%u)\n",
--			xfer->len, bpw / 8);
--		return -EIO;
--	}
+ 	/* check each transfer's parameters */
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		u8 bits_per_word = t->bits_per_word;
 -
- 	if (bpw != sdd->cur_bpw || speed != sdd->cur_speed) {
- 		sdd->cur_bpw = bpw;
- 		sdd->cur_speed = speed;
+ 		if (!t->tx_buf && !t->rx_buf && t->len)
+ 			return -EINVAL;
+-		if (t->len & ((bits_per_word >> 3) - 1))
+-			return -EINVAL;
+ 	}
+ 
+ 	spin_lock_irqsave(&c->lock, flags);
 -- 
 1.8.1.2
 

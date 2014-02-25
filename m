@@ -1,39 +1,52 @@
-From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH RFT] spi: qup: Get rid of using struct spi_qup_device
-Date: Tue, 25 Feb 2014 09:29:26 +0200
-Message-ID: <1393313366.6481.16.camel@iivanov-dev>
-References: <1393254456.12394.1.camel@phoenix>
+From: Chao Fu <b44548@freescale.com>
+Subject: [PATCH 2/3] arm:dts:vf-610:add vybrid DSPI DMA transfer support
+Date: Tue, 25 Feb 2014 14:54:17 +0800
+Message-ID: <1393311258-14380-2-git-send-email-b44548@freescale.com>
+References: <1393311258-14380-1-git-send-email-b44548@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1393254456.12394.1.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Chao Fu <b44548@freescale.com>
+To: <linux-spi@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <broonie@kernel.org>, <shawn.guo@linaro.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1393311258-14380-1-git-send-email-b44548@freescale.com>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-On Mon, 2014-02-24 at 23:07 +0800, Axel Lin wrote: 
-> Current code uses struct spi_qup_device to store spi->mode and spi->chip_select
-> settings. We can get these settings in spi_qup_transfer_one and spi_qup_set_cs
-> without using struct spi_qup_device. Refactor the code a bit to remove
-> spi_qup_setup(), spi_qup_cleanup(), and struct spi_qup_device.
-> 
-> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-> ---
-> Hi Ivan,
-> I don't have this h/w, can you help testing if this patch works.
+From: Chao Fu <B44548@freescale.com>
 
-Thanks Alex. 
+DSPI can transfer data in DMA mode or PIO mode.
+The ajudgement of using DMA method(use-dma) will be read from dtb.
+And add DMA channels info of DSPI.
 
-Tested-by: Ivan T. Ivanov <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Signed-off-by: Chao Fu      <b44548@freescale.com>
+---
+ arch/arm/boot/dts/vf610.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-
-> Thanks,
-> Axel
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/arch/arm/boot/dts/vf610.dtsi b/arch/arm/boot/dts/vf610.dtsi
+index e1e1e51..2fe53c1 100644
+--- a/arch/arm/boot/dts/vf610.dtsi
++++ b/arch/arm/boot/dts/vf610.dtsi
+@@ -148,6 +148,10 @@
+ 				clocks = <&clks VF610_CLK_DSPI0>;
+ 				clock-names = "dspi";
+ 				spi-num-chipselects = <5>;
++				use-dma;
++				dmas = <&edma0 0 12>,
++					<&edma0 0 13>;
++				dma-names = "rx", "tx";
+ 				status = "disabled";
+ 			};
+ 
+-- 
+1.8.4

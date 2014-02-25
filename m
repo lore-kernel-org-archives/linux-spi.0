@@ -1,16 +1,15 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH 3/3] spi: txx9: Let spi core handle validating transfer
- length
-Date: Tue, 25 Feb 2014 19:19:43 +0800
-Message-ID: <1393327183.6723.5.camel@phoenix>
-References: <1393327017.6723.1.camel@phoenix>
+Subject: [PATCH] spi: atmel: Let spi core handle validating transfer length
+Date: Tue, 25 Feb 2014 19:57:19 +0800
+Message-ID: <1393329439.6723.6.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1393327017.6723.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -20,26 +19,28 @@ So remove the same checking in this driver.
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-txx9.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/spi/spi-atmel.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
-index 523f13d..b5f5dc8 100644
---- a/drivers/spi/spi-txx9.c
-+++ b/drivers/spi/spi-txx9.c
-@@ -306,12 +306,8 @@ static int txx9spi_transfer(struct spi_device *spi, struct spi_message *m)
- 
- 	/* check each transfer's parameters */
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		u8 bits_per_word = t->bits_per_word;
--
- 		if (!t->tx_buf && !t->rx_buf && t->len)
- 			return -EINVAL;
--		if (t->len & ((bits_per_word >> 3) - 1))
--			return -EINVAL;
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index c3ed7ed..878fe93 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1079,14 +1079,6 @@ static int atmel_spi_one_transfer(struct spi_master *master,
+ 		}
  	}
  
- 	spin_lock_irqsave(&c->lock, flags);
+-	if (xfer->bits_per_word > 8) {
+-		if (xfer->len % 2) {
+-			dev_dbg(&spi->dev,
+-			"buffer len should be 16 bits aligned\n");
+-			return -EINVAL;
+-		}
+-	}
+-
+ 	/*
+ 	 * DMA map early, for performance (empties dcache ASAP) and
+ 	 * better fault reporting.
 -- 
 1.8.1.2
 

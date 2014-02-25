@@ -1,45 +1,71 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH v2 0/6] spi: sh-msiof: Add support for R-Car H2 and M2
-Date: Tue, 25 Feb 2014 11:21:07 +0100
-Message-ID: <1393323673-2751-1-git-send-email-geert@linux-m68k.org>
-Cc: Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
+Subject: [PATCH v3 1/3] spi: hs-spi: Improve bindings
+Date: Tue, 25 Feb 2014 11:34:52 +0100
+Message-ID: <1393324492-3527-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@linaro.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-        Hi Mark,
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-This patch series refactors the sh-msiof SPI driver and adds support for
-the MSIOF variant in the Renesas R-Car H2 (r8a7790) and M2 (r8a7791) SoCs.
+  - Add future-proof "renesas,hspi-<soctype>" compatible values,
+  - Add missing "interrupt-parent", "#address-cells", and "#size-cells"
+    properties,
+  - Add reference to pinctrl documentation,
+  - Add example bindings.
 
-It was tested on the Lager and Koelsch development boards, using a dummy
-driver for the Renesas r2a11302ft PMIC that reads out the PMIC's version ID.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+---
+v3:
+  - Split in two patches: bindings and dtsi updates
+v2:
+  - Add Tested-by
+  - List full example compatible properties with soctypes instead of just
+    the soctypes, so checkpatch can validate DTSes.
 
-    [1/6] spi: sh-msiof: Improve bindings
-    [2/6] spi: sh-msiof: Move default FIFO sizes to device ID data
-    [3/6] spi: sh-msiof: Add support for R-Car H2 and M2
-    [4/6] spi: sh-msiof: Move clock management to (un)prepare_message()
-    [5/6] spi: sh-msiof: Convert to let spi core validate xfer->bits_per_word
-    [6/6] spi: sh-msiof: Use core message handling instead of spi-bitbang
+ Documentation/devicetree/bindings/spi/sh-hspi.txt |   28 ++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-These are (reworked versions of) the remaining patches not taken from v1.
-Changelogs are available in the individual patches.
-
-Some of this work was based on a patch series by Takashi Yoshii
-<takasi-y@ops.dti.ne.jp>.
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                                                Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                                            -- Linus Torvalds
+diff --git a/Documentation/devicetree/bindings/spi/sh-hspi.txt b/Documentation/devicetree/bindings/spi/sh-hspi.txt
+index 30b57b1c8a13..319bad4af875 100644
+--- a/Documentation/devicetree/bindings/spi/sh-hspi.txt
++++ b/Documentation/devicetree/bindings/spi/sh-hspi.txt
+@@ -1,7 +1,29 @@
+ Renesas HSPI.
+ 
+ Required properties:
+-- compatible : 	"renesas,hspi"
+-- reg : Offset and length of the register set for the device
+-- interrupts : interrupt line used by HSPI
++- compatible       : "renesas,hspi-<soctype>", "renesas,hspi" as fallback.
++		     Examples with soctypes are:
++		       - "renesas,hspi-r8a7778" (R-Car M1)
++		       - "renesas,hspi-r8a7779" (R-Car H1)
++- reg              : Offset and length of the register set for the device
++- interrupt-parent : The phandle for the interrupt controller that
++		     services interrupts for this device
++- interrupts       : Interrupt specifier
++- #address-cells   : Must be <1>
++- #size-cells      : Must be <0>
++
++Pinctrl properties might be needed, too.  See
++Documentation/devicetree/bindings/pinctrl/renesas,*.
++
++Example:
++
++	hspi0: spi@fffc7000 {
++		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
++		reg = <0xfffc7000 0x18>;
++		interrupt-parent = <&gic>;
++		interrupts = <0 63 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "disabled";
++	};
+ 
+-- 
+1.7.9.5

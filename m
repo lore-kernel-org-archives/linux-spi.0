@@ -1,54 +1,54 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH v2 4/4] spi: spidev_fdx: Add support for Dual/Quad SPI Transfers
-Date: Tue, 25 Feb 2014 11:40:19 +0100
-Message-ID: <1393324819-3810-4-git-send-email-geert@linux-m68k.org>
-References: <1393324819-3810-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1393324819-3810-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 1/3] spi: orion: Let spi core handle validating transfer
+ length
+Date: Tue, 25 Feb 2014 19:16:57 +0800
+Message-ID: <1393327017.6723.1.camel@phoenix>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+spi core will handle validating transfer length since commit 4d94bd21b333
+"spi: core: Validate length of the transfers in message".
+So remove the same checking in this driver.
 
-Use SPI_IOC_RD_MODE32 to print the full SPI mode, now in hex.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
-v2:
-  - New
+ drivers/spi/spi-orion.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
- Documentation/spi/spidev_fdx.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/spi/spidev_fdx.c b/Documentation/spi/spidev_fdx.c
-index 36ec0774ca0b..0ea3e51292fc 100644
---- a/Documentation/spi/spidev_fdx.c
-+++ b/Documentation/spi/spidev_fdx.c
-@@ -78,10 +78,10 @@ static void do_msg(int fd, int len)
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 01bd85f..d018a4a 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -295,17 +295,6 @@ static int orion_spi_transfer_one_message(struct spi_master *master,
+ 		goto msg_done;
  
- static void dumpstat(const char *name, int fd)
- {
--	__u8	mode, lsb, bits;
--	__u32	speed;
-+	__u8	lsb, bits;
-+	__u32	mode, speed;
- 
--	if (ioctl(fd, SPI_IOC_RD_MODE, &mode) < 0) {
-+	if (ioctl(fd, SPI_IOC_RD_MODE32, &mode) < 0) {
- 		perror("SPI rd_mode");
- 		return;
- 	}
-@@ -98,7 +98,7 @@ static void dumpstat(const char *name, int fd)
- 		return;
- 	}
- 
--	printf("%s: spi mode %d, %d bits %sper word, %d Hz max\n",
-+	printf("%s: spi mode 0x%x, %d bits %sper word, %d Hz max\n",
- 		name, mode, bits, lsb ? "(lsb first) " : "", speed);
- }
- 
+ 	list_for_each_entry(t, &m->transfers, transfer_list) {
+-		/* make sure buffer length is even when working in 16
+-		 * bit mode*/
+-		if ((t->bits_per_word == 16) && (t->len & 1)) {
+-			dev_err(&spi->dev,
+-				"message rejected : "
+-				"odd data length %d while in 16 bit mode\n",
+-				t->len);
+-			status = -EIO;
+-			goto msg_done;
+-		}
+-
+ 		if (par_override || t->speed_hz || t->bits_per_word) {
+ 			par_override = 1;
+ 			status = orion_spi_setup_transfer(spi, t);
 -- 
-1.7.9.5
+1.8.1.2
+
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

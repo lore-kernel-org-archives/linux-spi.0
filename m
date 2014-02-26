@@ -1,64 +1,63 @@
-From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] Documentation:spi:fsl-dspi:add DSPI dma transfer
- support
-Date: Wed, 26 Feb 2014 22:19:49 +0800
-Message-ID: <20140226141947.GE23892@S2101-09.ap.freescale.net>
-References: <1393311258-14380-1-git-send-email-b44548@freescale.com>
- <20140225090830.GO28555@e106331-lin.cambridge.arm.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: Chao Fu <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+From: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+Subject: [PATCH] spi-topcliff-pch: Fix probing when DMA mode is used
+Date: Wed, 26 Feb 2014 16:31:19 +0100
+Message-ID: <1393428679-18462-1-git-send-email-alexander.stein@systec-electronic.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140225090830.GO28555-NuALmloUBlrZROr8t4l/smS4ubULX0JqMm0uRHvK7Nw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Feb 25, 2014 at 09:08:30AM +0000, Mark Rutland wrote:
-> On Tue, Feb 25, 2014 at 06:54:16AM +0000, Chao Fu wrote:
-> > From: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> > 
-> > Add bool value use-dma.
-> > The bool will determine whether DSPI use dma channel transfer data
-> > in a platform.
-> > 
-> > Add dmas and dma-names for describing dma channels of DSPI.
-> > 
-> > Signed-off-by: Chao Fu      <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> > ---
-> >  Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-> > index 5376de4..76a1039 100644
-> > --- a/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-> > +++ b/Documentation/devicetree/bindings/spi/spi-fsl-dspi.txt
-> > @@ -11,6 +11,11 @@ Required properties:
-> >  - spi-num-chipselects : the number of the chipselect signals.
-> >  - bus-num : the slave chip chipselect signal number.
-> >  - big-endian : if DSPI modudle is big endian, the bool will be set in node.
-> > +- use-dma: the bool decide if use dma method in DSPI transfering.
-> 
-> Why can the OS not decide this based on the presence of dmas which it
-> can use?
+If during registering SPI master due to SPI device probing a SPI transfer
+is issued the DMA buffers are not allocated yet.
 
-Yes, OS/driver should decide to use DMA or not, but it shouldn't be
-based on the presence of 'dmas' property.  The DMA is a hardware
-resource just like IRQ.  It should be just there in client device's node
-as long as the SoC design assigns the channel to the device.  The device
-driver should make the decision when DMA should be used, e.g. big amount
-data transfer, and when PIO should be used, e.g. small data.
+This fixes the following oops:
+pch_spi 0000:02:0c.1: enabling device (0000 -> 0002)
+pch_spi 0000:02:0c.1: master is unqueued, this is deprecated
+BUG: unable to handle kernel NULL pointer dereference at   (null)
+IP: [<c125aa05>] pch_spi_handle_dma+0x15c/0x6f4
+[...]
 
-Shawn
+Signed-off-by: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+---
+ drivers/spi/spi-topcliff-pch.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-> 
-> Is there ever a case that there would be dmas present but it would be in
-> the interests of the OS to not use them?
+diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
+index c2a3435..f73fb77 100644
+--- a/drivers/spi/spi-topcliff-pch.c
++++ b/drivers/spi/spi-topcliff-pch.c
+@@ -1457,6 +1457,11 @@ static int pch_spi_pd_probe(struct platform_device *plat_dev)
+ 
+ 	pch_spi_set_master_mode(master);
+ 
++	if (use_dma) {
++		dev_info(&plat_dev->dev, "Use DMA for data transfers\n");
++		pch_alloc_dma_buf(board_dat, data);
++	}
++
+ 	ret = spi_register_master(master);
+ 	if (ret != 0) {
+ 		dev_err(&plat_dev->dev,
+@@ -1464,14 +1469,10 @@ static int pch_spi_pd_probe(struct platform_device *plat_dev)
+ 		goto err_spi_register_master;
+ 	}
+ 
+-	if (use_dma) {
+-		dev_info(&plat_dev->dev, "Use DMA for data transfers\n");
+-		pch_alloc_dma_buf(board_dat, data);
+-	}
+-
+ 	return 0;
+ 
+ err_spi_register_master:
++	pch_free_dma_buf(board_dat, data);
+ 	free_irq(board_dat->pdev->irq, data);
+ err_request_irq:
+ 	pch_spi_free_resources(board_dat, data);
+-- 
+1.8.3.2
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,45 +1,47 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 3/3] spi: sirf: Use SIMPLE_DEV_PM_OPS macro
-Date: Wed, 26 Feb 2014 10:32:48 +0900
-Message-ID: <003a01cf3292$a85069d0$f8f13d70$%han@samsung.com>
-References: <003801cf3292$0b03b4c0$210b1e40$%han@samsung.com>
+Subject: [PATCH] spi: txx9: Use devm_ioremap_resource()
+Date: Wed, 26 Feb 2014 10:35:09 +0900
+Message-ID: <003b01cf3292$fc72f500$f558df00$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Barry Song' <baohua-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	'Qipan Li' <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	'Zhiwu Song' <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
+	'Atsushi Nemoto' <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <003801cf3292$0b03b4c0$210b1e40$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Content-language: ko
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Use SIMPLE_DEV_PM_OPS macro in order to make the code simpler.
+Use devm_ioremap_resource() in order to make the code simpler,
+and remove redundant return value check of platform_get_resource()
+because the value is checked by devm_ioremap_resource().
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-sirf.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-txx9.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index 5210b94..dc962a1 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -718,9 +718,8 @@ static int spi_sirfsoc_resume(struct device *dev)
- }
- #endif
+diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
+index 523f13d..5cfaafc 100644
+--- a/drivers/spi/spi-txx9.c
++++ b/drivers/spi/spi-txx9.c
+@@ -358,13 +358,8 @@ static int txx9spi_probe(struct platform_device *dev)
+ 	master->max_speed_hz = c->baseclk / (SPI_MIN_DIVIDER + 1);
  
--static const struct dev_pm_ops spi_sirfsoc_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(spi_sirfsoc_suspend, spi_sirfsoc_resume)
--};
-+static SIMPLE_DEV_PM_OPS(spi_sirfsoc_pm_ops, spi_sirfsoc_suspend,
-+			 spi_sirfsoc_resume);
+ 	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
+-	if (!res)
+-		goto exit_busy;
+-	if (!devm_request_mem_region(&dev->dev, res->start, resource_size(res),
+-				     "spi_txx9"))
+-		goto exit_busy;
+-	c->membase = devm_ioremap(&dev->dev, res->start, resource_size(res));
+-	if (!c->membase)
++	c->membase = devm_ioremap_resource(&dev->dev, res);
++	if (IS_ERR(c->membase))
+ 		goto exit_busy;
  
- static const struct of_device_id spi_sirfsoc_of_match[] = {
- 	{ .compatible = "sirf,prima2-spi", },
+ 	/* enter config mode */
 -- 
 1.7.10.4
 

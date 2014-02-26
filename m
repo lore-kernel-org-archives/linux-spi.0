@@ -1,49 +1,59 @@
-From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH] spi: txx9: Use devm_ioremap_resource()
-Date: Wed, 26 Feb 2014 10:35:09 +0900
-Message-ID: <003b01cf3292$fc72f500$f558df00$%han@samsung.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: coldfire-qspi: Enable clock before calling
+ spi_master_resume
+Date: Wed, 26 Feb 2014 09:47:55 +0800
+Message-ID: <1393379275.7490.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Atsushi Nemoto' <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
-To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-language: ko
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Use devm_ioremap_resource() in order to make the code simpler,
-and remove redundant return value check of platform_get_resource()
-because the value is checked by devm_ioremap_resource().
+This ensures clock has been enabled before calling spi_master_resume().
+while at it, also add checking return value of spi_master_suspend and
+spi_master_resume because they may fail.
 
-Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-txx9.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/spi/spi-coldfire-qspi.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
-index 523f13d..5cfaafc 100644
---- a/drivers/spi/spi-txx9.c
-+++ b/drivers/spi/spi-txx9.c
-@@ -358,13 +358,8 @@ static int txx9spi_probe(struct platform_device *dev)
- 	master->max_speed_hz = c->baseclk / (SPI_MIN_DIVIDER + 1);
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index c29bbb0..62daf87 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -467,8 +467,11 @@ static int mcfqspi_suspend(struct device *dev)
+ {
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
++	int ret;
  
- 	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
--	if (!res)
--		goto exit_busy;
--	if (!devm_request_mem_region(&dev->dev, res->start, resource_size(res),
--				     "spi_txx9"))
--		goto exit_busy;
--	c->membase = devm_ioremap(&dev->dev, res->start, resource_size(res));
--	if (!c->membase)
-+	c->membase = devm_ioremap_resource(&dev->dev, res);
-+	if (IS_ERR(c->membase))
- 		goto exit_busy;
+-	spi_master_suspend(master);
++	ret = spi_master_suspend(master);
++	if (ret)
++		return ret;
  
- 	/* enter config mode */
+ 	clk_disable(mcfqspi->clk);
+ 
+@@ -480,11 +483,9 @@ static int mcfqspi_resume(struct device *dev)
+ 	struct spi_master *master = dev_get_drvdata(dev);
+ 	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
+ 
+-	spi_master_resume(master);
+-
+ 	clk_enable(mcfqspi->clk);
+ 
+-	return 0;
++	return spi_master_resume(master);
+ }
+ #endif
+ 
 -- 
-1.7.10.4
+1.8.1.2
+
 
 
 --

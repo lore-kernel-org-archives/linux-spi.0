@@ -1,64 +1,52 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3] spi: core: Validate length of the transfers in message
-Date: Wed, 26 Feb 2014 09:14:07 +0900
-Message-ID: <20140226001407.GM2927@sirena.org.uk>
-References: <1392890528-7417-1-git-send-email-iivanov@mm-sol.com>
- <20140225.225528.453119424.anemo@mba.ocn.ne.jp>
+From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH 1/2] spi: xilinx: remove unnecessary spaces
+Date: Wed, 26 Feb 2014 10:24:47 +0900
+Message-ID: <003101cf3291$8948f3a0$9bdadae0$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Nj4mAaUCx+wbOcQD"
-Cc: iivanov@mm-sol.com, gsi@denx.de, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20140225.225528.453119424.anemo@mba.ocn.ne.jp>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---Nj4mAaUCx+wbOcQD
 Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	'Michal Simek' <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-language: ko
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Feb 25, 2014 at 10:55:28PM +0900, Atsushi Nemoto wrote:
+Remove unnecessary space in order to fix the following
+checkpatch issues.
 
-> Is xfer->len == 0 invalid?
-> Long time ago I have fixed atmel spi driver to support zero length
-> transfer (commit 06719814 atmel_spi: support zero length transfer).
+  WARNING: Unnecessary space after function pointer name
 
-> According to Documentation/spi/spi-summary, zeto length transfer seems
-> valid.
+Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+ drivers/spi/spi-xilinx.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
->       + optionally defining short delays after transfers ... using
->         the spi_transfer.delay_usecs setting (this delay can be the
->         only protocol effect, if the buffer length is zero);
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 66dbefc..a3b0b99 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -87,10 +87,10 @@ struct xilinx_spi {
+ 	const u8 *tx_ptr;	/* pointer in the Rx buffer */
+ 	int remaining_bytes;	/* the number of bytes left to transfer */
+ 	u8 bits_per_word;
+-	unsigned int (*read_fn) (void __iomem *);
+-	void (*write_fn) (u32, void __iomem *);
+-	void (*tx_fn) (struct xilinx_spi *);
+-	void (*rx_fn) (struct xilinx_spi *);
++	unsigned int (*read_fn)(void __iomem *);
++	void (*write_fn)(u32, void __iomem *);
++	void (*tx_fn)(struct xilinx_spi *);
++	void (*rx_fn)(struct xilinx_spi *);
+ };
+ 
+ static void xspi_write32(u32 val, void __iomem *addr)
+-- 
+1.7.10.4
 
-*sigh*  I guess it is valid, though frankly I'm concerned that this
-isn't a good idea - it's certainly not going to work reliably given the
-need for every driver to open code this, most of them get the delay
-stuff wrong.
 
---Nj4mAaUCx+wbOcQD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTDTHMAAoJELSic+t+oim9GHMQAJnwLSOEmW6vFzbSdhY/V8rb
-SXQJ401PW7C+MshPBQwaeKMrOh/t5UJ6+KE682saFAr11BPkC4bR1Qk5T93MN2eC
-sYGq9CNCPo+OvTMxDybA9dZzbp6izMjicSdftwNCDr53OeUyIZed/Tvd+HA+kI2g
-/C1Zkmaa4//CDvpdWvKWD7pwsy6jJIGKGRuRzs5btQTXeoX3jcgPhUR44n4Jvw6M
-NdUgYLVp5vAztKSPohyy+Bjb+yraHHErCiTiQhMzHjvA3ptHWzzjkiKSQ/zXqcn4
-IraZ1HhX4ybL9P8oKoxq1yoNGkdPQBKZxRS5w9XLlZjYEeIiVAnVPo6+ocAcn7pk
-ztWa66R0Qtnp+FX4K/34G46gvsZS2GkvEG5+1K4CG3Bk9S4t25d0sIY2oXSMIH1o
-ZFmcVmwO85+SkkxRGne34Qa/qR9Td7IBBrDXBPI5/R1F18RfWOmmBln9Jyt+bnEW
-dxkOGoQ/MBkisxewm1EfKZe9E2s/toCKwF3JCiNtHErpdZMrGiQKIQS4Qsq+o1et
-vILBL3JWHxoa1ec+nuUUf/qqG9XVl+46q/QhMV0RP3uvoCgVjZHHM/HgNVYCwyFT
-+5KZ6KW7x4Tp52DjUaPhYUliHQGY01HKmKpDzm/Zl4lrtZXTH1CKZYTcq+rg/iwx
-yiNy9WZcdHl0+k546d5i
-=Io8G
------END PGP SIGNATURE-----
-
---Nj4mAaUCx+wbOcQD--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

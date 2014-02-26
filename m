@@ -1,56 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH RFT] spi: qup: Get rid of using struct spi_qup_device
-Date: Wed, 26 Feb 2014 08:55:14 +0900
-Message-ID: <20140225235514.GI2927@sirena.org.uk>
-References: <1393254456.12394.1.camel@phoenix>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3] spi: core: Validate length of the transfers in message
+Date: Wed, 26 Feb 2014 09:14:07 +0900
+Message-ID: <20140226001407.GM2927@sirena.org.uk>
+References: <1392890528-7417-1-git-send-email-iivanov@mm-sol.com>
+ <20140225.225528.453119424.anemo@mba.ocn.ne.jp>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="nEsDIrWrg+hrB7l1"
-Cc: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Nj4mAaUCx+wbOcQD"
+Cc: iivanov@mm-sol.com, gsi@denx.de, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1393254456.12394.1.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20140225.225528.453119424.anemo@mba.ocn.ne.jp>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---nEsDIrWrg+hrB7l1
+--Nj4mAaUCx+wbOcQD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Feb 24, 2014 at 11:07:36PM +0800, Axel Lin wrote:
-> Current code uses struct spi_qup_device to store spi->mode and spi->chip_select
-> settings. We can get these settings in spi_qup_transfer_one and spi_qup_set_cs
-> without using struct spi_qup_device. Refactor the code a bit to remove
-> spi_qup_setup(), spi_qup_cleanup(), and struct spi_qup_device.
+On Tue, Feb 25, 2014 at 10:55:28PM +0900, Atsushi Nemoto wrote:
 
-Applied, thanks.
+> Is xfer->len == 0 invalid?
+> Long time ago I have fixed atmel spi driver to support zero length
+> transfer (commit 06719814 atmel_spi: support zero length transfer).
 
---nEsDIrWrg+hrB7l1
+> According to Documentation/spi/spi-summary, zeto length transfer seems
+> valid.
+
+>       + optionally defining short delays after transfers ... using
+>         the spi_transfer.delay_usecs setting (this delay can be the
+>         only protocol effect, if the buffer length is zero);
+
+*sigh*  I guess it is valid, though frankly I'm concerned that this
+isn't a good idea - it's certainly not going to work reliably given the
+need for every driver to open code this, most of them get the delay
+stuff wrong.
+
+--Nj4mAaUCx+wbOcQD
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTDS1fAAoJELSic+t+oim9FPwP/jKks8xTn0NwjSITG42zfelo
-x0QYrJxJ8z06JNPurqa31GNUKtNv2RDNSzpJVmYhomqspci+PxyCpGXOBzADZGrf
-BL6Dvxl3fl3gsuZKLsJJA/vMORz3E3CoS972VUdDAOdIW+mdkbC1eQdjXhw13oEO
-Xjuor8VtNtwd/F2ox4zfeXCJ0nRz50g6PyFUl1EbRWSxUDhFoDQR+ePkWzj8uKH0
-l1pdmPDo4I5Gm4dqbiVlpjcXqyngFPiikLDFQJ/d4/ZK8JBaX1PrEaL/RIpHsXl1
-ZrRbj2Zv1jUr7r2MvxSrWX4ne7ueTqDRkkcY5OFiNR+SUnjcxIWZKMnHe0T4b9vU
-aQaUwlQQlzJ+6Uwk3T3vANPt98V7OG1iX8wTkEpvgRzIcHOHYEwf5AhwM/IicC3M
-LnXuzKC7tSyX7iMkArwaqLP1agpE+XaEiZMoOGiJ37KUJ8qJ1oKU3Lwv8ikwJOvt
-J32cXocC2tvdis9KhkhbFhF0HsQxtLVZr7Ug5EgXuXGcmkjo+h2xTy7FeKbHuHUc
-okDUaw8hcDDhvRdOz3M99cpl3a7bflovO10NUq7pgo1iMIhQLvYkuuKWQ9VtI67d
-jPT0Itf7wwwxtRiRizO9iFzsGDPecXE/ElG5uvFzPQ8wlFjmDqfXW5bqmOun8jO4
-aZMkcVPiNYvJI9rk0olM
-=CMpH
+iQIcBAEBAgAGBQJTDTHMAAoJELSic+t+oim9GHMQAJnwLSOEmW6vFzbSdhY/V8rb
+SXQJ401PW7C+MshPBQwaeKMrOh/t5UJ6+KE682saFAr11BPkC4bR1Qk5T93MN2eC
+sYGq9CNCPo+OvTMxDybA9dZzbp6izMjicSdftwNCDr53OeUyIZed/Tvd+HA+kI2g
+/C1Zkmaa4//CDvpdWvKWD7pwsy6jJIGKGRuRzs5btQTXeoX3jcgPhUR44n4Jvw6M
+NdUgYLVp5vAztKSPohyy+Bjb+yraHHErCiTiQhMzHjvA3ptHWzzjkiKSQ/zXqcn4
+IraZ1HhX4ybL9P8oKoxq1yoNGkdPQBKZxRS5w9XLlZjYEeIiVAnVPo6+ocAcn7pk
+ztWa66R0Qtnp+FX4K/34G46gvsZS2GkvEG5+1K4CG3Bk9S4t25d0sIY2oXSMIH1o
+ZFmcVmwO85+SkkxRGne34Qa/qR9Td7IBBrDXBPI5/R1F18RfWOmmBln9Jyt+bnEW
+dxkOGoQ/MBkisxewm1EfKZe9E2s/toCKwF3JCiNtHErpdZMrGiQKIQS4Qsq+o1et
+vILBL3JWHxoa1ec+nuUUf/qqG9XVl+46q/QhMV0RP3uvoCgVjZHHM/HgNVYCwyFT
++5KZ6KW7x4Tp52DjUaPhYUliHQGY01HKmKpDzm/Zl4lrtZXTH1CKZYTcq+rg/iwx
+yiNy9WZcdHl0+k546d5i
+=Io8G
 -----END PGP SIGNATURE-----
 
---nEsDIrWrg+hrB7l1--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--Nj4mAaUCx+wbOcQD--

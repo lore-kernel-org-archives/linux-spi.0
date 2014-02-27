@@ -1,79 +1,37 @@
-From: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: spi-imx: spi_imx_remove: do not disable disabled clocks
-Date: Thu, 27 Feb 2014 09:51:00 +0100
-Message-ID: <1393491060-28074-1-git-send-email-phdm@macqel.be>
-Cc: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH] spi: sh-hspi: Remove hspi_cleanup function
+Date: Thu, 27 Feb 2014 10:07:24 +0100
+Message-ID: <CAMuHMdWL=9Et+T6Spq1=e+YWSquZaOXcKeNSjLCjKrqpFQNZcQ@mail.gmail.com>
+References: <1393468050.25819.1.camel@phoenix>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1393468050.25819.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Currently, at module removal, one gets the following warnings:
-------------[ cut here ]------------
-WARNING: at drivers/clk/clk.c:780 clk_disable+0x18/0x24()
-Modules linked in: spi_imx(-) [last unloaded: ev76c560]
-CPU: 1 PID: 16337 Comm: rmmod Tainted: G        W    3.10.17-80548-g90191eb-dirty #33
-[<80013b4c>] (unwind_backtrace+0x0/0xf8) from [<800115dc>] (show_stack+0x10/0x14)
-[<800115dc>] (show_stack+0x10/0x14) from [<800257b8>] (warn_slowpath_common+0x4c/0x68)
-[<800257b8>] (warn_slowpath_common+0x4c/0x68) from [<800257f0>] (warn_slowpath_null+0x1c/0x24)
-[<800257f0>] (warn_slowpath_null+0x1c/0x24) from [<803f60ec>] (clk_disable+0x18/0x24)
-[<803f60ec>] (clk_disable+0x18/0x24) from [<7f02c9cc>] (spi_imx_remove+0x54/0x9c [spi_imx])
-[<7f02c9cc>] (spi_imx_remove+0x54/0x9c [spi_imx]) from [<8025868c>] (platform_drv_remove+0x18/0x1c)
-[<8025868c>] (platform_drv_remove+0x18/0x1c) from [<80256f60>] (__device_release_driver+0x70/0xcc)
-[<80256f60>] (__device_release_driver+0x70/0xcc) from [<80257770>] (driver_detach+0xcc/0xd0)
-[<80257770>] (driver_detach+0xcc/0xd0) from [<80256d90>] (bus_remove_driver+0x7c/0xc0)
-[<80256d90>] (bus_remove_driver+0x7c/0xc0) from [<80068668>] (SyS_delete_module+0x144/0x1f8)
-[<80068668>] (SyS_delete_module+0x144/0x1f8) from [<8000e080>] (ret_fast_syscall+0x0/0x30)
----[ end trace 1f5df9ad54996300 ]---
-------------[ cut here ]------------
-WARNING: at drivers/clk/clk.c:780 clk_disable+0x18/0x24()
-Modules linked in: spi_imx(-) [last unloaded: ev76c560]
-CPU: 1 PID: 16337 Comm: rmmod Tainted: G        W    3.10.17-80548-g90191eb-dirty #33
-[<80013b4c>] (unwind_backtrace+0x0/0xf8) from [<800115dc>] (show_stack+0x10/0x14)
-[<800115dc>] (show_stack+0x10/0x14) from [<800257b8>] (warn_slowpath_common+0x4c/0x68)
-[<800257b8>] (warn_slowpath_common+0x4c/0x68) from [<800257f0>] (warn_slowpath_null+0x1c/0x24)
-[<800257f0>] (warn_slowpath_null+0x1c/0x24) from [<803f60ec>] (clk_disable+0x18/0x24)
-[<803f60ec>] (clk_disable+0x18/0x24) from [<7f02c9e8>] (spi_imx_remove+0x70/0x9c [spi_imx])
-[<7f02c9e8>] (spi_imx_remove+0x70/0x9c [spi_imx]) from [<8025868c>] (platform_drv_remove+0x18/0x1c)
-[<8025868c>] (platform_drv_remove+0x18/0x1c) from [<80256f60>] (__device_release_driver+0x70/0xcc)
-[<80256f60>] (__device_release_driver+0x70/0xcc) from [<80257770>] (driver_detach+0xcc/0xd0)
-[<80257770>] (driver_detach+0xcc/0xd0) from [<80256d90>] (bus_remove_driver+0x7c/0xc0)
-[<80256d90>] (bus_remove_driver+0x7c/0xc0) from [<80068668>] (SyS_delete_module+0x144/0x1f8)
-[<80068668>] (SyS_delete_module+0x144/0x1f8) from [<8000e080>] (ret_fast_syscall+0x0/0x30)
----[ end trace 1f5df9ad54996301 ]---
+On Thu, Feb 27, 2014 at 3:27 AM, Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org> wrote:
+> hspi_cleanup() is doing nothing except print a non-useful debug message,
+> so remove it.  Also remove unused hspi2info macro.
+>
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 
-Since commit 9e556dcc55774c9a1032f32baa0e5cfafede8b70, "spi: spi-imx: only
-enable the clocks when we start to transfer a message", clocks are always
-disabled except when transmitting messages.  There is thus no need to
-disable them at module removal.
+Acked-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-Signed-off-by: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
-Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-imx.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+Gr{oetje,eeting}s,
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index a5474ef..53bd85b 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -948,8 +948,6 @@ static int spi_imx_remove(struct platform_device *pdev)
- 	spi_bitbang_stop(&spi_imx->bitbang);
- 
- 	writel(0, spi_imx->base + MXC_CSPICTRL);
--	clk_disable_unprepare(spi_imx->clk_ipg);
--	clk_disable_unprepare(spi_imx->clk_per);
- 	spi_master_put(master);
- 
- 	return 0;
--- 
-1.7.5.3
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

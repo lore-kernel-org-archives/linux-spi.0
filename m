@@ -1,58 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 4/4] spi: spidev_fdx: Add support for Dual/Quad SPI
- Transfers
-Date: Thu, 27 Feb 2014 13:52:05 +0900
-Message-ID: <20140227045205.GQ9383@sirena.org.uk>
-References: <1393324819-3810-1-git-send-email-geert@linux-m68k.org>
- <1393324819-3810-4-git-send-email-geert@linux-m68k.org>
+Subject: Re: [PATCH 3/3] spi: sirf: Use SIMPLE_DEV_PM_OPS macro
+Date: Thu, 27 Feb 2014 13:41:11 +0900
+Message-ID: <20140227044111.GL9383@sirena.org.uk>
+References: <003801cf3292$0b03b4c0$210b1e40$%han@samsung.com>
+ <003a01cf3292$a85069d0$f8f13d70$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Evp0T6PXIQ26qRMT"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="c8JyeaiReRNoiMDS"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Barry Song' <baohua-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	'Qipan Li' <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
+	'Zhiwu Song' <Zhiwu.Song-kQvG35nSl+M@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1393324819-3810-4-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+In-Reply-To: <003a01cf3292$a85069d0$f8f13d70$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Evp0T6PXIQ26qRMT
+--c8JyeaiReRNoiMDS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 25, 2014 at 11:40:19AM +0100, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
->=20
-> Use SPI_IOC_RD_MODE32 to print the full SPI mode, now in hex.
+On Wed, Feb 26, 2014 at 10:32:48AM +0900, Jingoo Han wrote:
+> Use SIMPLE_DEV_PM_OPS macro in order to make the code simpler.
 
-Applied, thanks.
+applied, thanks.
 
---Evp0T6PXIQ26qRMT
+--c8JyeaiReRNoiMDS
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTDsRyAAoJELSic+t+oim9GjUP/2fQ6E7ALW/ssUUvwdrsPKrK
-FQ39jbg1APCtAS+WWyATbmCx+cG4u54L+XPZRZXVfoYitnlopsZV0eC+eWngdb4C
-v503svP12RcXFe5Lwnof3b7tV58lISEGiJYG6maCjkXpQIyey1C+lHh7uwCufRbR
-a+ho+fa5HkiCIhUtF6vqtIAEx8oiCgjWSzxrS8RaxW9ale+0GZwQcs4JYEEKTWlr
-u6hn2GI0qo2mTm0/uWCdoeLwP8VFrEYD+GAW0RTfXjcoo5+c6OYbrRW7VB373Ajz
-Ld49A1fVY3vh1xxCyz6j7Vhu+PjtZBh0C2KKur3XfMMQlslugQvRi3rejEs2NaZR
-RqNmSp1iNiC1R0PcJMmOm2pTP7grAm2FPEJnQnkxOsceTRf+klq3R3dNx6LrxcE2
-3jjnEZAYieqc3h+Qoj68tvme7Aoht7O/SlLq6eVr+qJGIiWavH6VKsrJ++aehxVF
-/6LXSBqeDEx80lGWj3Xlq7dzEPa31JP4u2wpDCCOIqigW/NKLzhUnjg9A8hV3fB0
-yzmDjsj3X3nNrCy6bVsfoHO9qIff73G/eZhnss3hk58cb1YFU2QjXyxu1nLbBGdu
-pUwpF+5gKM59LUVfMVhtIO7//d5HGIxXutfZM58ldC3MLXOQKvTEghmZYvoxs/+l
-XqI/lBtrRfFROpiqVCrv
-=tqBd
+iQIcBAEBAgAGBQJTDsHkAAoJELSic+t+oim9pdYP/isU3COPsxxzFoq8q1B28f5S
+sSXlYkqyH/7SlldGcuqKvpA2lW5d32//ymWK0JIYix3zdzbWf18vlZGmU422DwDb
+nbGjmNgYLXI74XKJRPZMvZ36RtigmrJbY22BvPo7d0xNGR4zPde4XZjxaJeE1GKI
+MLrV/dTWxyHmHd/dwf8V09Bzbq7uLXtWU2cg3a2jMKEAJsmJfS1entyIRT8q1/QT
+Trujee7xWG/VvlgaaaJn9JikNpVCJC2stu7PyLlTSCfl+ClNZH8Y/N1e9TLgVgoq
+rPwcZEI2UazrxO19p/HXiLgth+pM486+NimM7WjOqT5F9THjDheDDeyyFcARoqqt
+vzt1vkkJM7LCGL7E2rgZtMKN7OOj2w+tGz6kZcd6qp87llXaf2YfyRImZs46w68z
+85IbQ0fhGH5wcIcRMeP4vz7hgRCGGXf7pc6fAkT1ocCWLiCa8W0TIDI2QeocdrGC
+zQleSov/Rzo93stqWZtHXSWyDfqlhKoWHbr1w51Gn7vA2nTOtHtWsaA7s9SRrrAU
+1Zcx71I2pd5JYB4EpgKQXNqzi4kRGRCKQdzvuaFxLlUXg5Y4FApziXEParBwZIgq
+Gh7+X5Qw06TmEWtMYKYa5Oi2b7KEjcLoC2Ex5SHGPYhxFkU9pXK2ptbxrynsfKQT
+Mdnmro6qCYFR9HC4mETu
+=S3Qj
 -----END PGP SIGNATURE-----
 
---Evp0T6PXIQ26qRMT--
+--c8JyeaiReRNoiMDS--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

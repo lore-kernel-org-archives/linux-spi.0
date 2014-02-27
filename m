@@ -1,52 +1,54 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 3/4] spi: spidev_test: Add support for Dual/Quad SPI
- Transfers
-Date: Thu, 27 Feb 2014 13:51:49 +0900
-Message-ID: <20140227045149.GP9383@sirena.org.uk>
-References: <1393324819-3810-1-git-send-email-geert@linux-m68k.org>
- <1393324819-3810-3-git-send-email-geert@linux-m68k.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi-topcliff-pch: Fix probing when DMA mode is used
+Date: Thu, 27 Feb 2014 13:37:19 +0900
+Message-ID: <20140227043719.GH9383@sirena.org.uk>
+References: <1393428679-18462-1-git-send-email-alexander.stein@systec-electronic.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JF+ytOk7PH04NsRm"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="bygAmIonOAIqBxQB"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1393324819-3810-3-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1393428679-18462-1-git-send-email-alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---JF+ytOk7PH04NsRm
+--bygAmIonOAIqBxQB
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Feb 25, 2014 at 11:40:18AM +0100, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+On Wed, Feb 26, 2014 at 04:31:19PM +0100, Alexander Stein wrote:
+> If during registering SPI master due to SPI device probing a SPI transfer
+> is issued the DMA buffers are not allocated yet.
 
 Applied, thanks.
 
---JF+ytOk7PH04NsRm
+--bygAmIonOAIqBxQB
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTDsRiAAoJELSic+t+oim9S84QAJv7KBGEqFV3FaM0bODOPvW4
-GavOzzfcGF6oW0U+S5Q5d8J4DW5mc3Hpv4aErd2NclQsWG7yf9lgbFQ+BoD9xwwn
-WEw+AINVTbBWyfkA5kRYMos9AMAaVzu9yD3FS5ytnrhRNoTC42ACHoRVFz+acdur
-v/uV/QB41bMXltHGJWeGl7/KIq4tC0I4TEqJ46AobQFBPYqDu/ZGIvmi5cjk9STX
-7AGemE+eTZAgnhsV9xcrFc4o3OXQWbTMgJrBLQlnZDKJ8GJzryoWisubnCxWITyM
-koKlWV1Ziee+FQU/sdXsWRpJhYPfL4Pz0WtE6vKgJj+DQJHLhMM6IH/Rz7SQSyo5
-51+e1ObswQ9gkm9b2oBIKf9Y5TXj1Icla1LH+S4z8cGaaFPoYPSd+9aQ/5V9jJrW
-liupdkvDefzrhImpSC0VKM0Hw0mtuuxlxvO3MU8BPfdwIxNG4E7lO4XkSkc6aCOP
-6LWs/levzM6dgjxFeINpeQadLEMLVissPyBiy6cf/xdFILtPUliP7YAR9SqBkgim
-ZyvvE1ipJGFfG1TY+YnBdzXLPqHhrleaOnWNw84w8i8hUqkrK/RLmde4JIFGM566
-vAWc5YTK/hbSvCxPElYhWusoATvURCDlMqLbtPZHA+1ab7pVTFRpMJRZ2IoXmp+N
-S5Uu3KY7bxYhwRZl1kb7
-=7rLA
+iQIcBAEBAgAGBQJTDsD8AAoJELSic+t+oim9UC0P+QEThap1quaLd1VC+hfagsS7
+tnaCURLUJkklnRLjjQdu724uRawM9M2oLxp+cRD+EGLDKAVF+dMKMRzbhP14TFI7
+6p0b/kDhBMCjY4n6qRaHXnKLjPFugWP/+DJ2h4Wc14HARaMPM6x3tCYfan831JQP
+O/EHL7cpDcxuB8IDut+p53R7FVacOt4tBYf/wtShFwKo7zF+QJI8jW0sfEElvOiB
+wGYgzb2kEoCC6RSSd+aTSJLfzAoVpTKCyUjmtpLagfe5UcTCSrUBk7DRBOxFLDKo
+dj/8MT8uqn114I3VleDSLO9bhhDJPRW6f2KLe8fvxGhuxMnSVgUVl5XZAnV7eVlV
+mQBrWzNIBjwnJjIkwKo2o6vHvSoq2r3z9/CxnODHfmB6qpCNiozt59g+IFWsvwmQ
+jzcejnPiHSxL2hKjLBE5V46T+f6VAmLiXdpEJ4LpLAteXZLAmyQc3crWIUhrC3jb
+B2gCnOec193iBnpnocWy0vpQBa70fS9QiATzJyURxW+bHTKSuaYSnu9R8WsW6WLa
+nn+p6nQVX9jSdEPt9D4Q0R3DLWa/xgwaDrjVCoIsb8XClgadwn77e0K9Jo++D7v/
+G7dcSri43/zT/HiOtoxBhRMgaM42eeuiviVUJFe5hEeSoshMSwyGwpqoCxTeyIhF
+e0AU9QcgjcnITP17BtOi
+=Tz5A
 -----END PGP SIGNATURE-----
 
---JF+ytOk7PH04NsRm--
+--bygAmIonOAIqBxQB--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

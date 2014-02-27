@@ -1,116 +1,88 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH v2] spi: spi-imx: spi_imx_remove: do not disable disabled
- clocks
-Date: Thu, 27 Feb 2014 17:23:43 +0800
-Message-ID: <530F041F.80800@freescale.com>
-References: <530EFE8E.5050303@freescale.com> <1393492575-32495-1-git-send-email-phdm@macqel.be>
+From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Subject: Re: [PATCH v2 3/6] spi: sh-msiof: Add support for R-Car H2 and M2
+Date: Thu, 27 Feb 2014 11:41:46 +0100
+Message-ID: <1462634.UcxrmdxVtK@avalon>
+References: <1393323673-2751-1-git-send-email-geert@linux-m68k.org> <38730952.JbtPf2mapG@avalon> <CAMuHMdU_ej9cE=qmRL2WqvEW+fNA_5bj7OC2=7B7ZR33FaFUTA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1393492575-32495-1-git-send-email-phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Takashi Yoshii <takasi-y-nDL5PR/MsHhHfZP73Gtkiw@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAMuHMdU_ej9cE=qmRL2WqvEW+fNA_5bj7OC2=7B7ZR33FaFUTA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-=D3=DA 2014=C4=EA02=D4=C227=C8=D5 17:16, Philippe De Muyter =D0=B4=B5=C0=
-:
-> Currently, at module removal, one gets the following warnings:
-> ------------[ cut here ]------------
-> WARNING: at drivers/clk/clk.c:780 clk_disable+0x18/0x24()
-> Modules linked in: spi_imx(-) [last unloaded: ev76c560]
-> CPU: 1 PID: 16337 Comm: rmmod Tainted: G        W    3.10.17-80548-g9=
-0191eb-dirty #33
-> [<80013b4c>] (unwind_backtrace+0x0/0xf8) from [<800115dc>] (show_stac=
-k+0x10/0x14)
-> [<800115dc>] (show_stack+0x10/0x14) from [<800257b8>] (warn_slowpath_=
-common+0x4c/0x68)
-> [<800257b8>] (warn_slowpath_common+0x4c/0x68) from [<800257f0>] (warn=
-_slowpath_null+0x1c/0x24)
-> [<800257f0>] (warn_slowpath_null+0x1c/0x24) from [<803f60ec>] (clk_di=
-sable+0x18/0x24)
-> [<803f60ec>] (clk_disable+0x18/0x24) from [<7f02c9cc>] (spi_imx_remov=
-e+0x54/0x9c [spi_imx])
-> [<7f02c9cc>] (spi_imx_remove+0x54/0x9c [spi_imx]) from [<8025868c>] (=
-platform_drv_remove+0x18/0x1c)
-> [<8025868c>] (platform_drv_remove+0x18/0x1c) from [<80256f60>] (__dev=
-ice_release_driver+0x70/0xcc)
-> [<80256f60>] (__device_release_driver+0x70/0xcc) from [<80257770>] (d=
-river_detach+0xcc/0xd0)
-> [<80257770>] (driver_detach+0xcc/0xd0) from [<80256d90>] (bus_remove_=
-driver+0x7c/0xc0)
-> [<80256d90>] (bus_remove_driver+0x7c/0xc0) from [<80068668>] (SyS_del=
-ete_module+0x144/0x1f8)
-> [<80068668>] (SyS_delete_module+0x144/0x1f8) from [<8000e080>] (ret_f=
-ast_syscall+0x0/0x30)
-> ---[ end trace 1f5df9ad54996300 ]---
-> ------------[ cut here ]------------
-> WARNING: at drivers/clk/clk.c:780 clk_disable+0x18/0x24()
-> Modules linked in: spi_imx(-) [last unloaded: ev76c560]
-> CPU: 1 PID: 16337 Comm: rmmod Tainted: G        W    3.10.17-80548-g9=
-0191eb-dirty #33
-> [<80013b4c>] (unwind_backtrace+0x0/0xf8) from [<800115dc>] (show_stac=
-k+0x10/0x14)
-> [<800115dc>] (show_stack+0x10/0x14) from [<800257b8>] (warn_slowpath_=
-common+0x4c/0x68)
-> [<800257b8>] (warn_slowpath_common+0x4c/0x68) from [<800257f0>] (warn=
-_slowpath_null+0x1c/0x24)
-> [<800257f0>] (warn_slowpath_null+0x1c/0x24) from [<803f60ec>] (clk_di=
-sable+0x18/0x24)
-> [<803f60ec>] (clk_disable+0x18/0x24) from [<7f02c9e8>] (spi_imx_remov=
-e+0x70/0x9c [spi_imx])
-> [<7f02c9e8>] (spi_imx_remove+0x70/0x9c [spi_imx]) from [<8025868c>] (=
-platform_drv_remove+0x18/0x1c)
-> [<8025868c>] (platform_drv_remove+0x18/0x1c) from [<80256f60>] (__dev=
-ice_release_driver+0x70/0xcc)
-> [<80256f60>] (__device_release_driver+0x70/0xcc) from [<80257770>] (d=
-river_detach+0xcc/0xd0)
-> [<80257770>] (driver_detach+0xcc/0xd0) from [<80256d90>] (bus_remove_=
-driver+0x7c/0xc0)
-> [<80256d90>] (bus_remove_driver+0x7c/0xc0) from [<80068668>] (SyS_del=
-ete_module+0x144/0x1f8)
-> [<80068668>] (SyS_delete_module+0x144/0x1f8) from [<8000e080>] (ret_f=
-ast_syscall+0x0/0x30)
-> ---[ end trace 1f5df9ad54996301 ]---
->
-> Since commit 9e556dcc55774c9a1032f32baa0e5cfafede8b70, "spi: spi-imx:=
- only
-> enable the clocks when we start to transfer a message", clocks are al=
-ways
-> disabled except when transmitting messages.  There is thus no need to
-> disable them at module removal.
->
-> Signed-off-by: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
-> Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
-> Change since v1:
-> keep the 'unprepare' part (Thanks Huang)
->  drivers/spi/spi-imx.c |    4 ++--
->  1 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-> index a5474ef..47f15d9 100644
-> --- a/drivers/spi/spi-imx.c
-> +++ b/drivers/spi/spi-imx.c
-> @@ -948,8 +948,8 @@ static int spi_imx_remove(struct platform_device =
-*pdev)
->  	spi_bitbang_stop(&spi_imx->bitbang);
-> =20
->  	writel(0, spi_imx->base + MXC_CSPICTRL);
-> -	clk_disable_unprepare(spi_imx->clk_ipg);
-> -	clk_disable_unprepare(spi_imx->clk_per);
-> +	clk_unprepare(spi_imx->clk_ipg);
-> +	clk_unprepare(spi_imx->clk_per);
->  	spi_master_put(master);
-> =20
->  	return 0;
-Acked-by: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Hi Geert,
+
+On Thursday 27 February 2014 09:39:54 Geert Uytterhoeven wrote:
+> On Wed, Feb 26, 2014 at 11:16 PM, Laurent Pinchart wrote:
+> >> diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt
+> >> b/Documentation/devicetree/bindings/spi/sh-msiof.txt index
+> >> eae3c8c9300e..1f0cb33763a1 100644
+> >> --- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
+> >> +++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+> >> @@ -1,8 +1,13 @@
+> >> 
+> >>  Renesas MSIOF spi controller
+> >> 
+> >>  Required properties:
+> >> -- compatible           : "renesas,sh-msiof" for SuperH, or
+> >> +- compatible           : "renesas,msiof-<soctype>" for SoCs,
+> >> +                      "renesas,sh-msiof" for SuperH, or
+> >>                        "renesas,sh-mobile-msiof" for SH Mobile series.
+> >> +                      Examples with soctypes are:
+> >> +                      "renesas,msiof-sh7724" (SH)
+> > 
+> > Given that the driver doesn't handle the "renesas,msiof-sh7724" compatible
+> > string this might not be a good example. Furthermore SuperH doesn't have
+> > DT support. I would thus drop the "renesas,sh-msiof" compatible string
+> > from patch 1/6 and wouldn't mention sh7724 here. I very much doubt that
+> > someone would have developed DT support for SuperH on the side and
+> > shipped products that would be broken by this change :-)
+> 
+> Upon reading your comment again: do you suggest to also remove the plain
+> "renesas,sh-msiof"? That one was present before, since DT support was added
+> to the driver in
+> 
+> commit cf9c86efecf9510e62388fd174cf607671c59fa3
+> Author: Bastian Hecht <hechtb-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Date:   Wed Dec 12 12:54:48 2012 +0100
+> 
+>     spi/sh-msiof: Add device tree parsing to driver
+> 
+>     This adds the capability to retrieve setup data from the device tree
+>     node. The usage of platform data is still available.
+> 
+>     Signed-off-by: Bastian Hecht <hechtb+renesas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>     Signed-off-by: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+> 
+> So I prefer not to remove any pre-existing compatible values.
+> Do you agree?
+
+I'd like to remove it (in a separate patch) if we can. The reason is that 
+keeping the DT ABI both forward- and backward-compatible is pretty painful 
+enough without having to care about compatibility strings that have no user. 
+I'd rather work on adding DT support for SuperH MSIOF later when we'll have a 
+platform we can test it on, instead of trying to guess now what the needs will 
+be, get users later and realize even later on that we made a mistake that we 
+can't fix because those users will have DT binaries in the wild. Every 
+unneeded bit of DT bindings that we keep in the kernel is one potential 
+problem for future binary compatibility.
+
+-- 
+Regards,
+
+Laurent Pinchart
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,79 +1,31 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v2 3/6] spi: sh-msiof: Add support for R-Car H2 and M2
-Date: Thu, 27 Feb 2014 09:39:54 +0100
-Message-ID: <CAMuHMdU_ej9cE=qmRL2WqvEW+fNA_5bj7OC2=7B7ZR33FaFUTA@mail.gmail.com>
-References: <1393323673-2751-1-git-send-email-geert@linux-m68k.org>
-	<1393323673-2751-4-git-send-email-geert@linux-m68k.org>
-	<38730952.JbtPf2mapG@avalon>
+From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH] spi: spi-imx: spi_imx_remove: do not disable disabled
+ clocks
+Date: Thu, 27 Feb 2014 16:59:58 +0800
+Message-ID: <530EFE8E.5050303@freescale.com>
+References: <1393491060-28074-1-git-send-email-phdm@macqel.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <38730952.JbtPf2mapG@avalon>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=GB2312
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1393491060-28074-1-git-send-email-phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Feb 26, 2014 at 11:16 PM, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->> diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt
->> b/Documentation/devicetree/bindings/spi/sh-msiof.txt index
->> eae3c8c9300e..1f0cb33763a1 100644
->> --- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
->> +++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
->> @@ -1,8 +1,13 @@
->>  Renesas MSIOF spi controller
->>
->>  Required properties:
->> -- compatible           : "renesas,sh-msiof" for SuperH, or
->> +- compatible           : "renesas,msiof-<soctype>" for SoCs,
->> +                      "renesas,sh-msiof" for SuperH, or
->>                        "renesas,sh-mobile-msiof" for SH Mobile series.
->> +                      Examples with soctypes are:
->> +                      "renesas,msiof-sh7724" (SH)
->
-> Given that the driver doesn't handle the "renesas,msiof-sh7724" compatible
-> string this might not be a good example. Furthermore SuperH doesn't have DT
-> support. I would thus drop the "renesas,sh-msiof" compatible string from patch
-> 1/6 and wouldn't mention sh7724 here. I very much doubt that someone would
-> have developed DT support for SuperH on the side and shipped products that
-> would be broken by this change :-)
+=D3=DA 2014=C4=EA02=D4=C227=C8=D5 16:51, Philippe De Muyter =D0=B4=B5=C0=
+:
+> -	clk_disable_unprepare(spi_imx->clk_ipg);
+> -	clk_disable_unprepare(spi_imx->clk_per);
+yes. we do not need to disable the clocks,
+but we'd better to unprepare these two clocks.
 
-Upon reading your comment again: do you suggest to also remove the plain
-"renesas,sh-msiof"? That one was present before, since DT support was added
-to the driver in
-
-commit cf9c86efecf9510e62388fd174cf607671c59fa3
-Author: Bastian Hecht <hechtb@gmail.com>
-Date:   Wed Dec 12 12:54:48 2012 +0100
-
-    spi/sh-msiof: Add device tree parsing to driver
-
-    This adds the capability to retrieve setup data from the device tree
-    node. The usage of platform data is still available.
-
-    Signed-off-by: Bastian Hecht <hechtb+renesas@gmail.com>
-    Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
-
-So I prefer not to remove any pre-existing compatible values.
-Do you agree?
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
+thanks
+Huang Shijie
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

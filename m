@@ -1,61 +1,79 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH v2 1/4] spi: spidev: Restore all SPI mode flags on ioctl failure
-Date: Thu, 27 Feb 2014 09:59:42 +0100
-Message-ID: <CAMuHMdUx7imXCDWLAF9oOdLi-OtrZovwCpAXkvvq95B8q7m0cw@mail.gmail.com>
-References: <1393324819-3810-1-git-send-email-geert@linux-m68k.org>
-	<20140227045032.GN9383@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] spi: spi-imx: spi_imx_remove: do not disable disabled clocks
+Date: Thu, 27 Feb 2014 09:51:00 +0100
+Message-ID: <1393491060-28074-1-git-send-email-phdm@macqel.be>
+Cc: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>,
+	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140227045032.GN9383-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+Currently, at module removal, one gets the following warnings:
+------------[ cut here ]------------
+WARNING: at drivers/clk/clk.c:780 clk_disable+0x18/0x24()
+Modules linked in: spi_imx(-) [last unloaded: ev76c560]
+CPU: 1 PID: 16337 Comm: rmmod Tainted: G        W    3.10.17-80548-g90191eb-dirty #33
+[<80013b4c>] (unwind_backtrace+0x0/0xf8) from [<800115dc>] (show_stack+0x10/0x14)
+[<800115dc>] (show_stack+0x10/0x14) from [<800257b8>] (warn_slowpath_common+0x4c/0x68)
+[<800257b8>] (warn_slowpath_common+0x4c/0x68) from [<800257f0>] (warn_slowpath_null+0x1c/0x24)
+[<800257f0>] (warn_slowpath_null+0x1c/0x24) from [<803f60ec>] (clk_disable+0x18/0x24)
+[<803f60ec>] (clk_disable+0x18/0x24) from [<7f02c9cc>] (spi_imx_remove+0x54/0x9c [spi_imx])
+[<7f02c9cc>] (spi_imx_remove+0x54/0x9c [spi_imx]) from [<8025868c>] (platform_drv_remove+0x18/0x1c)
+[<8025868c>] (platform_drv_remove+0x18/0x1c) from [<80256f60>] (__device_release_driver+0x70/0xcc)
+[<80256f60>] (__device_release_driver+0x70/0xcc) from [<80257770>] (driver_detach+0xcc/0xd0)
+[<80257770>] (driver_detach+0xcc/0xd0) from [<80256d90>] (bus_remove_driver+0x7c/0xc0)
+[<80256d90>] (bus_remove_driver+0x7c/0xc0) from [<80068668>] (SyS_delete_module+0x144/0x1f8)
+[<80068668>] (SyS_delete_module+0x144/0x1f8) from [<8000e080>] (ret_fast_syscall+0x0/0x30)
+---[ end trace 1f5df9ad54996300 ]---
+------------[ cut here ]------------
+WARNING: at drivers/clk/clk.c:780 clk_disable+0x18/0x24()
+Modules linked in: spi_imx(-) [last unloaded: ev76c560]
+CPU: 1 PID: 16337 Comm: rmmod Tainted: G        W    3.10.17-80548-g90191eb-dirty #33
+[<80013b4c>] (unwind_backtrace+0x0/0xf8) from [<800115dc>] (show_stack+0x10/0x14)
+[<800115dc>] (show_stack+0x10/0x14) from [<800257b8>] (warn_slowpath_common+0x4c/0x68)
+[<800257b8>] (warn_slowpath_common+0x4c/0x68) from [<800257f0>] (warn_slowpath_null+0x1c/0x24)
+[<800257f0>] (warn_slowpath_null+0x1c/0x24) from [<803f60ec>] (clk_disable+0x18/0x24)
+[<803f60ec>] (clk_disable+0x18/0x24) from [<7f02c9e8>] (spi_imx_remove+0x70/0x9c [spi_imx])
+[<7f02c9e8>] (spi_imx_remove+0x70/0x9c [spi_imx]) from [<8025868c>] (platform_drv_remove+0x18/0x1c)
+[<8025868c>] (platform_drv_remove+0x18/0x1c) from [<80256f60>] (__device_release_driver+0x70/0xcc)
+[<80256f60>] (__device_release_driver+0x70/0xcc) from [<80257770>] (driver_detach+0xcc/0xd0)
+[<80257770>] (driver_detach+0xcc/0xd0) from [<80256d90>] (bus_remove_driver+0x7c/0xc0)
+[<80256d90>] (bus_remove_driver+0x7c/0xc0) from [<80068668>] (SyS_delete_module+0x144/0x1f8)
+[<80068668>] (SyS_delete_module+0x144/0x1f8) from [<8000e080>] (ret_fast_syscall+0x0/0x30)
+---[ end trace 1f5df9ad54996301 ]---
 
-On Thu, Feb 27, 2014 at 5:50 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> > In commit f477b7fb13df2b843997559ff34e87d054ba6538 ("spi: DUAL and QUAD
-> > support"), spi_device.mode was enlarged from 8 to 16 bits.
->
-> Applied, thanks.
+Since commit 9e556dcc55774c9a1032f32baa0e5cfafede8b70, "spi: spi-imx: only
+enable the clocks when we start to transfer a message", clocks are always
+disabled except when transmitting messages.  There is thus no need to
+disable them at module removal.
 
-Thanks a lot!
+Signed-off-by: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
+Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-imx.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
 
->> For SPI_IOC_WR_MODE this is probably not so important, as it doesn't allow
->> setting Quad or Dual mode anyway, but SPI_IOC_WR_LSB_FIRST is used to just
->> set or clear a single bit.
->
-> Since there's no API for it at present I'd not expect somethng that is
-> using spidev to be able to have enabled any of the high mode bits.
-> Unless I'm missing some path for this?
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index a5474ef..53bd85b 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -948,8 +948,6 @@ static int spi_imx_remove(struct platform_device *pdev)
+ 	spi_bitbang_stop(&spi_imx->bitbang);
+ 
+ 	writel(0, spi_imx->base + MXC_CSPICTRL);
+-	clk_disable_unprepare(spi_imx->clk_ipg);
+-	clk_disable_unprepare(spi_imx->clk_per);
+ 	spi_master_put(master);
+ 
+ 	return 0;
+-- 
+1.7.5.3
 
-No, you're right.
-
-While Quad mode could have been enabled in board info or DT, you can't use
-it without setting [rt]x_nbits, and you can't share an SPI slave between spidev
-and another driver[*]. I forgot about the latter.
-
-[*] It would be a nice feature for debugging, though. In fact I'm
-doing it, as the
-    RSPI driver currently ignores the chip select number, so I have 3 m25p80
-    drivers (in single, dual, resp. quad mode), and an spidev driver,
-all talking to
-    the same SPI FLASH.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

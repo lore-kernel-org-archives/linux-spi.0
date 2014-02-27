@@ -1,67 +1,57 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/4] spi: spidev: Restore all SPI mode flags on ioctl
- failure
-Date: Thu, 27 Feb 2014 13:50:32 +0900
-Message-ID: <20140227045032.GN9383@sirena.org.uk>
-References: <1393324819-3810-1-git-send-email-geert@linux-m68k.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 0/6] spi: sh-msiof: Add support for R-Car H2 and M2
+Date: Thu, 27 Feb 2014 13:47:02 +0900
+Message-ID: <20140227044702.GM9383@sirena.org.uk>
+References: <1393323673-2751-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="DH4/xewco2zMcht6"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="LJm8egi4vkexsie5"
+Cc: Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1393324819-3810-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1393323673-2751-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---DH4/xewco2zMcht6
+--LJm8egi4vkexsie5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 25, 2014 at 11:40:16AM +0100, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+On Tue, Feb 25, 2014 at 11:21:07AM +0100, Geert Uytterhoeven wrote:
+>         Hi Mark,
 >=20
-> In commit f477b7fb13df2b843997559ff34e87d054ba6538 ("spi: DUAL and QUAD
-> support"), spi_device.mode was enlarged from 8 to 16 bits.
+> This patch series refactors the sh-msiof SPI driver and adds support for
+> the MSIOF variant in the Renesas R-Car H2 (r8a7790) and M2 (r8a7791) SoCs.
 
-Applied, thanks.
+I applied all these, thanks.  Laurent does make a valid point about the
+fallback, though - can you please send a followup patch which addresses
+that?
 
-> For SPI_IOC_WR_MODE this is probably not so important, as it doesn't allow
-> setting Quad or Dual mode anyway, but SPI_IOC_WR_LSB_FIRST is used to just
-> set or clear a single bit.
-
-Since there's no API for it at present I'd not expect somethng that is
-using spidev to be able to have enabled any of the high mode bits.
-Unless I'm missing some path for this?
-
---DH4/xewco2zMcht6
+--LJm8egi4vkexsie5
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTDsQVAAoJELSic+t+oim9iN4P/j8Hw067KEtQTynyv4XZGwZ8
-PdkL4EYwoYbxH+PjzhPfY+AEUL+oebyT2UMWAMHCG2GgxchcCdVjl1TfooJ9yQyR
-xbrx8/gVoTbQ0Uod/zv/uZUijOopDFkvfu9logB9ExGk9MDRgr4XccAwCZRauwqF
-bmkEBeNwWaBvOVfBCbXARuy3zPHN3cmt1i7bHIrqoyEQqe+FBG4O8JGbokSgZeWZ
-EA+w8TTULEd+GcV3SUJ5jrZJI6bIIClulImGvrS2KIPvFCaU0LsYUEIQ59YIKR9/
-aZxm14+LRf1NL2xtTR0uD8/px5a+HY1wLo5aFHzlN3p+/u9UpLvTtLATVaHj6Cz+
-NqIsV4TAkYnLKERpQjH5rmqUGmbxr54a8c7B2wM+Zfg3fxhqz8hol+iW8dr8MRVW
-1WUXWdwCvcZrjYpNJnRIq/d28V3c63YQcmIVh9xrftU83/x2ehtIZ6SoOp8qJJmY
-N7rzFSt0ZPXNLkdUNJ3Og7u4Gqz5UnzNDV6ezczaA1B6T4rUQlfS9cpod/6lxkXN
-s/F1gR9YrO710Ujc74vztmMZD09/Okf37d5vhVnW3UETXtAehlEolYpMj7cSTRd8
-rkwRDhZa5cGkQHaoCp6FEv9oYTyXCucC2YBDeDoEBrpL0GOxDcti/kGcW+IVxcFW
-OnIgdfYfz7SFREMLaXot
-=ZQQD
+iQIcBAEBAgAGBQJTDsNCAAoJELSic+t+oim9hBgP/iHXacMumX0+5zM6aT+wF+x0
+jZEEdqxDa1elCmYkhu5s0bFW52qy70qOJ4I+lO43mc5lRx0DpE6F8pbaL3EaH4P9
+h4Zkckzy7KczFaKZsp8pU3kLwKVc8uIZp4TAZV6ol/tShP5a7zpoiID6uNp5Mz3+
+Zyhll4n9MsXXq9Ja9oM0uOkxiWNq8xtffHj+RXx3I7fcgO+5Z2xQd/ij8LuCjRzT
+OiGjA03pP0Tiv4/d8pwA/h8b+VuqJti3paSX/YtJfJTPr4gsmCp2NoHRH1FiS2zL
+5+xD/4vLtkR6IFqKudc3psoG/MhEpz2l29Kk1lhdj5+QSyNB057INTGtl3igOcT0
+CWdTpdZ6cC4oZ15rlOLe3GJnP2Zfv+17yqWhJw9mPeBZ8L8pLttxLWM/4pdTT5GZ
+x+tMB06x87cz735mRxIwMqMTzqy2nJUfWE/FanWfEV2l4GkiN7uqa4XLHuN0M6wp
+SoAFkIX5sEfYQptgETkjljZdrho22SW34nlKG+4P0Z57D+F2+ljOmgVt//x7Hn2l
+dgSgLqphEDmNOZisW62ooGqNLAHk7Y73Y4QEYsA48kFkLhxDHEXvRUMStdG4m1R9
+eHDYxWOW/id5EkjcC+JUWGq40yfnmp5R6gUgii2qOSmvFxWbEh8dmwkYK0XDbCYp
+HAEIgPJ7YGKBYCJvBBtx
+=mBmY
 -----END PGP SIGNATURE-----
 
---DH4/xewco2zMcht6--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--LJm8egi4vkexsie5--

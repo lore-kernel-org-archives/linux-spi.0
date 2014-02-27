@@ -1,51 +1,58 @@
-From: Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] Documentation:spi:fsl-dspi:add DSPI dma transfer
- support
-Date: Thu, 27 Feb 2014 15:42:50 +0800
-Message-ID: <20140227074247.GA13537@S2101-09.ap.freescale.net>
-References: <1393311258-14380-1-git-send-email-b44548@freescale.com>
- <20140225090830.GO28555@e106331-lin.cambridge.arm.com>
- <20140226141947.GE23892@S2101-09.ap.freescale.net>
- <20140226153822.GC2394@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 4/4] spi: spidev_fdx: Add support for Dual/Quad SPI
+ Transfers
+Date: Thu, 27 Feb 2014 13:52:05 +0900
+Message-ID: <20140227045205.GQ9383@sirena.org.uk>
+References: <1393324819-3810-1-git-send-email-geert@linux-m68k.org>
+ <1393324819-3810-4-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Chao Fu <b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Evp0T6PXIQ26qRMT"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140226153822.GC2394-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1393324819-3810-4-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Feb 27, 2014 at 12:38:22AM +0900, Mark Brown wrote:
-> On Wed, Feb 26, 2014 at 10:19:49PM +0800, Shawn Guo wrote:
-> > On Tue, Feb 25, 2014 at 09:08:30AM +0000, Mark Rutland wrote:
-> 
-> > > > +- use-dma: the bool decide if use dma method in DSPI transfering.
-> 
-> > > Why can the OS not decide this based on the presence of dmas which it
-> > > can use?
-> 
-> > Yes, OS/driver should decide to use DMA or not, but it shouldn't be
-> > based on the presence of 'dmas' property.  The DMA is a hardware
-> > resource just like IRQ.  It should be just there in client device's node
-> > as long as the SoC design assigns the channel to the device.  The device
-> > driver should make the decision when DMA should be used, e.g. big amount
-> > data transfer, and when PIO should be used, e.g. small data.
-> 
-> Right, that's very common - but that decision is usually taken on a per
-> transfer basis so a DT property would seem odd, especially just a simple
-> boolean.
 
-Yea, I guess we're on the same page - the decision should be made by
-the device driver on its own not the device tree.
+--Evp0T6PXIQ26qRMT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Shawn
+On Tue, Feb 25, 2014 at 11:40:19AM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+>=20
+> Use SPI_IOC_RD_MODE32 to print the full SPI mode, now in hex.
 
+Applied, thanks.
+
+--Evp0T6PXIQ26qRMT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTDsRyAAoJELSic+t+oim9GjUP/2fQ6E7ALW/ssUUvwdrsPKrK
+FQ39jbg1APCtAS+WWyATbmCx+cG4u54L+XPZRZXVfoYitnlopsZV0eC+eWngdb4C
+v503svP12RcXFe5Lwnof3b7tV58lISEGiJYG6maCjkXpQIyey1C+lHh7uwCufRbR
+a+ho+fa5HkiCIhUtF6vqtIAEx8oiCgjWSzxrS8RaxW9ale+0GZwQcs4JYEEKTWlr
+u6hn2GI0qo2mTm0/uWCdoeLwP8VFrEYD+GAW0RTfXjcoo5+c6OYbrRW7VB373Ajz
+Ld49A1fVY3vh1xxCyz6j7Vhu+PjtZBh0C2KKur3XfMMQlslugQvRi3rejEs2NaZR
+RqNmSp1iNiC1R0PcJMmOm2pTP7grAm2FPEJnQnkxOsceTRf+klq3R3dNx6LrxcE2
+3jjnEZAYieqc3h+Qoj68tvme7Aoht7O/SlLq6eVr+qJGIiWavH6VKsrJ++aehxVF
+/6LXSBqeDEx80lGWj3Xlq7dzEPa31JP4u2wpDCCOIqigW/NKLzhUnjg9A8hV3fB0
+yzmDjsj3X3nNrCy6bVsfoHO9qIff73G/eZhnss3hk58cb1YFU2QjXyxu1nLbBGdu
+pUwpF+5gKM59LUVfMVhtIO7//d5HGIxXutfZM58ldC3MLXOQKvTEghmZYvoxs/+l
+XqI/lBtrRfFROpiqVCrv
+=tqBd
+-----END PGP SIGNATURE-----
+
+--Evp0T6PXIQ26qRMT--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

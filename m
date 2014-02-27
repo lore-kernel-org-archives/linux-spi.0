@@ -1,37 +1,32 @@
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH v3] spi: core: Validate length of the transfers in
- message
-Date: Thu, 27 Feb 2014 22:38:26 +0900 (JST)
-Message-ID: <20140227.223826.522636360.anemo@mba.ocn.ne.jp>
-References: <1392890528-7417-1-git-send-email-iivanov@mm-sol.com>
-	<20140225.225528.453119424.anemo@mba.ocn.ne.jp>
-	<20140226001407.GM2927@sirena.org.uk>
+From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+Subject: Re: [PATCH] spi: txx9: Use devm_ioremap_resource()
+Date: Thu, 27 Feb 2014 22:44:16 +0900 (JST)
+Message-ID: <20140227.224416.473169553.anemo@mba.ocn.ne.jp>
+References: <003b01cf3292$fc72f500$f558df00$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: iivanov@mm-sol.com, gsi@denx.de, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: broonie@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20140226001407.GM2927@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <003b01cf3292$fc72f500$f558df00$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 26 Feb 2014 09:14:07 +0900, Mark Brown <broonie@kernel.org> wrote:
->>       + optionally defining short delays after transfers ... using
->>         the spi_transfer.delay_usecs setting (this delay can be the
->>         only protocol effect, if the buffer length is zero);
+On Wed, 26 Feb 2014 10:35:09 +0900, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
+> Use devm_ioremap_resource() in order to make the code simpler,
+> and remove redundant return value check of platform_get_resource()
+> because the value is checked by devm_ioremap_resource().
 > 
-> *sigh*  I guess it is valid, though frankly I'm concerned that this
-> isn't a good idea - it's certainly not going to work reliably given the
-> need for every driver to open code this, most of them get the delay
-> stuff wrong.
+> Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+> ---
+>  drivers/spi/spi-txx9.c |    9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
 
-I don't object to the whole patch.  Validating in spi core is good of
-course, and "xfer->len % w_size" part looks no problem.
+Thank you.  It looks good for me.
 
-I just want to keep ways to handle an odd device, for example, which
-requires long delay between chipselect and the first transfer, etc.
-
----
-Atsushi Nemoto
+Reviewed-by: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

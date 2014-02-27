@@ -1,66 +1,64 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v2 3/6] spi: sh-msiof: Add support for R-Car H2 and M2
-Date: Wed, 26 Feb 2014 23:36:48 +0100
-Message-ID: <CAMuHMdUavuHNnwHY4Xd1CGdB71wV=rGn5uzeA3MTEoAn9-g0VA@mail.gmail.com>
-References: <1393323673-2751-1-git-send-email-geert@linux-m68k.org>
-	<1393323673-2751-4-git-send-email-geert@linux-m68k.org>
-	<38730952.JbtPf2mapG@avalon>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: coldfire-qspi: Fix bits per word setting when
+ t->bits_per_word is not set
+Date: Thu, 27 Feb 2014 09:05:02 +0800
+Message-ID: <1393463102.12945.3.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <38730952.JbtPf2mapG@avalon>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Laurent,
+This ensures to use spi_device's bits_per_word setting when t->bits_per_word is
+not set. This looks like a bug introduced by commit 24778be20f8
+"spi: convert drivers to use bits_per_word_mask".
 
-On Wed, Feb 26, 2014 at 11:16 PM, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->> diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt
->> b/Documentation/devicetree/bindings/spi/sh-msiof.txt index
->> eae3c8c9300e..1f0cb33763a1 100644
->> --- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
->> +++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
->> @@ -1,8 +1,13 @@
->>  Renesas MSIOF spi controller
->>
->>  Required properties:
->> -- compatible           : "renesas,sh-msiof" for SuperH, or
->> +- compatible           : "renesas,msiof-<soctype>" for SoCs,
->> +                      "renesas,sh-msiof" for SuperH, or
->>                        "renesas,sh-mobile-msiof" for SH Mobile series.
->> +                      Examples with soctypes are:
->> +                      "renesas,msiof-sh7724" (SH)
->
-> Given that the driver doesn't handle the "renesas,msiof-sh7724" compatible
-> string this might not be a good example. Furthermore SuperH doesn't have DT
-> support. I would thus drop the "renesas,sh-msiof" compatible string from patch
-> 1/6 and wouldn't mention sh7724 here. I very much doubt that someone would
-> have developed DT support for SuperH on the side and shipped products that
-> would be broken by this change :-)
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-coldfire-qspi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Right. Originally I had 'or "renesas,sh-msiof" as fallback', but the fallbacks
-have been dropped, so it indeed won't work with just "renesas,msiof-sh7724".
-I'll fix that.
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index c29bbb0..8c85bea 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -315,12 +315,16 @@ static int mcfqspi_transfer_one(struct spi_master *master,
+ {
+ 	struct mcfqspi *mcfqspi = spi_master_get_devdata(master);
+ 	u16 qmr = MCFQSPI_QMR_MSTR;
++	u8 bpw;
+ 
+-	qmr |= t->bits_per_word << 10;
++	bpw = t->bits_per_word ? : spi->bits_per_word;
++
++	qmr |= bpw << 10;
+ 	if (spi->mode & SPI_CPHA)
+ 		qmr |= MCFQSPI_QMR_CPHA;
+ 	if (spi->mode & SPI_CPOL)
+ 		qmr |= MCFQSPI_QMR_CPOL;
++
+ 	if (t->speed_hz)
+ 		qmr |= mcfqspi_qmr_baud(t->speed_hz);
+ 	else
+@@ -328,7 +332,7 @@ static int mcfqspi_transfer_one(struct spi_master *master,
+ 	mcfqspi_wr_qmr(mcfqspi, qmr);
+ 
+ 	mcfqspi_wr_qir(mcfqspi, MCFQSPI_QIR_SPIFE);
+-	if (t->bits_per_word == 8)
++	if (bpw == 8)
+ 		mcfqspi_transfer_msg8(mcfqspi, t->len, t->tx_buf, t->rx_buf);
+ 	else
+ 		mcfqspi_transfer_msg16(mcfqspi, t->len / 2, t->tx_buf,
+-- 
+1.8.1.2
 
-Thanks for your review!
 
-Gr{oetje,eeting}s,
-
-                        Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

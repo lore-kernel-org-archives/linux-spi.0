@@ -1,54 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: xilinx: remove unnecessary spaces
-Date: Thu, 27 Feb 2014 13:40:16 +0900
-Message-ID: <20140227044016.GK9383@sirena.org.uk>
-References: <003101cf3291$8948f3a0$9bdadae0$%han@samsung.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 3/4] spi: spidev_test: Add support for Dual/Quad SPI
+ Transfers
+Date: Thu, 27 Feb 2014 13:51:49 +0900
+Message-ID: <20140227045149.GP9383@sirena.org.uk>
+References: <1393324819-3810-1-git-send-email-geert@linux-m68k.org>
+ <1393324819-3810-3-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vbzKE9fGfpHIBC6T"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Michal Simek' <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="JF+ytOk7PH04NsRm"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <003101cf3291$8948f3a0$9bdadae0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1393324819-3810-3-git-send-email-geert@linux-m68k.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---vbzKE9fGfpHIBC6T
+--JF+ytOk7PH04NsRm
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Feb 26, 2014 at 10:24:47AM +0900, Jingoo Han wrote:
-> Remove unnecessary space in order to fix the following
-> checkpatch issues.
+On Tue, Feb 25, 2014 at 11:40:18AM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
 Applied, thanks.
 
---vbzKE9fGfpHIBC6T
+--JF+ytOk7PH04NsRm
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTDsGtAAoJELSic+t+oim95lEP/3qv7lwKvMAv8ZXHt4GqzcuC
-pYCpUWVkUOS6ninoyUbTIImtMXOUfyFQEJ74ZEN3Zsy7DF0jhpwEdO9z9Py7n2xT
-iQRv6foyTjA+SKMjkXGJMPcPQLIeSHK+Ag2AHTfF8oR3xU17H1Vtwt9+Hhcm3UyQ
-LFlnIgBc61qYlH7ZHf2dX4xiSR7im/oJdkPX3XvLM0MPcqu5tITt7IpW4RLcC5g7
-V+dPA1cTc+BheKC06iY6FCmlAaUHTBJP6RZyUrkYhmcU6Q6PKGxjFW2NUDEU1CUg
-uTCVTq7JorQmM+7Ips1eYI9ysprpnv/dYxAzGcDxPAivYCItaaH41m+HlXcSzY4u
-W8yYTNlR/AnJZFp96VcXeGzr1kPWPga4CqaXozDh7IPV42Ljn5RAsUPIQBeL+TkW
-LGIzJ3yudDWoHBxA8/EsJ4PFMOZMrUTQk6xYAkEwHJJ6cZ005wq24BMGbOEFzu3Z
-vAn+ZQlkEFX5+3GqkvLQdfu2Co16VQKiNgLwDFg0mwxrgz6pRv4oRogYUmMsEeON
-zoXGcTu3d0JsNwCwu5tVNLfvizQ7NULuG53fI0+z6bBmeNIeLhDZqlwNIL9Acx19
-ri1iId6awF0YwsAlTVKxPb1E4XPDx2RQkFXG6ewDw1agsjDF4UjMuLKhcTH9BuoB
-0qT34OUKcJbG7UsvYZQ/
-=sBjC
+iQIcBAEBAgAGBQJTDsRiAAoJELSic+t+oim9S84QAJv7KBGEqFV3FaM0bODOPvW4
+GavOzzfcGF6oW0U+S5Q5d8J4DW5mc3Hpv4aErd2NclQsWG7yf9lgbFQ+BoD9xwwn
+WEw+AINVTbBWyfkA5kRYMos9AMAaVzu9yD3FS5ytnrhRNoTC42ACHoRVFz+acdur
+v/uV/QB41bMXltHGJWeGl7/KIq4tC0I4TEqJ46AobQFBPYqDu/ZGIvmi5cjk9STX
+7AGemE+eTZAgnhsV9xcrFc4o3OXQWbTMgJrBLQlnZDKJ8GJzryoWisubnCxWITyM
+koKlWV1Ziee+FQU/sdXsWRpJhYPfL4Pz0WtE6vKgJj+DQJHLhMM6IH/Rz7SQSyo5
+51+e1ObswQ9gkm9b2oBIKf9Y5TXj1Icla1LH+S4z8cGaaFPoYPSd+9aQ/5V9jJrW
+liupdkvDefzrhImpSC0VKM0Hw0mtuuxlxvO3MU8BPfdwIxNG4E7lO4XkSkc6aCOP
+6LWs/levzM6dgjxFeINpeQadLEMLVissPyBiy6cf/xdFILtPUliP7YAR9SqBkgim
+ZyvvE1ipJGFfG1TY+YnBdzXLPqHhrleaOnWNw84w8i8hUqkrK/RLmde4JIFGM566
+vAWc5YTK/hbSvCxPElYhWusoATvURCDlMqLbtPZHA+1ab7pVTFRpMJRZ2IoXmp+N
+S5Uu3KY7bxYhwRZl1kb7
+=7rLA
 -----END PGP SIGNATURE-----
 
---vbzKE9fGfpHIBC6T--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--JF+ytOk7PH04NsRm--

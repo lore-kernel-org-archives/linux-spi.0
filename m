@@ -1,31 +1,79 @@
-From: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
-Subject: Re: [PATCH] spi-topcliff-pch: Fix probing when DMA mode is used
-Date: Thu, 27 Feb 2014 09:13:21 +0100
-Message-ID: <1998640.ToDhBRKzdY@ws-stein>
-References: <1393428679-18462-1-git-send-email-alexander.stein@systec-electronic.com> <20140227043719.GH9383@sirena.org.uk>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2 3/6] spi: sh-msiof: Add support for R-Car H2 and M2
+Date: Thu, 27 Feb 2014 09:39:54 +0100
+Message-ID: <CAMuHMdU_ej9cE=qmRL2WqvEW+fNA_5bj7OC2=7B7ZR33FaFUTA@mail.gmail.com>
+References: <1393323673-2751-1-git-send-email-geert@linux-m68k.org>
+	<1393323673-2751-4-git-send-email-geert@linux-m68k.org>
+	<38730952.JbtPf2mapG@avalon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140227043719.GH9383-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie@kernel.org>,
+	Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <38730952.JbtPf2mapG@avalon>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thursday 27 February 2014 13:37:19, Mark Brown wrote:
-> On Wed, Feb 26, 2014 at 04:31:19PM +0100, Alexander Stein wrote:
-> > If during registering SPI master due to SPI device probing a SPI transfer
-> > is issued the DMA buffers are not allocated yet.
-> 
-> Applied, thanks.
+On Wed, Feb 26, 2014 at 11:16 PM, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>> diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt
+>> b/Documentation/devicetree/bindings/spi/sh-msiof.txt index
+>> eae3c8c9300e..1f0cb33763a1 100644
+>> --- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
+>> +++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
+>> @@ -1,8 +1,13 @@
+>>  Renesas MSIOF spi controller
+>>
+>>  Required properties:
+>> -- compatible           : "renesas,sh-msiof" for SuperH, or
+>> +- compatible           : "renesas,msiof-<soctype>" for SoCs,
+>> +                      "renesas,sh-msiof" for SuperH, or
+>>                        "renesas,sh-mobile-msiof" for SH Mobile series.
+>> +                      Examples with soctypes are:
+>> +                      "renesas,msiof-sh7724" (SH)
+>
+> Given that the driver doesn't handle the "renesas,msiof-sh7724" compatible
+> string this might not be a good example. Furthermore SuperH doesn't have DT
+> support. I would thus drop the "renesas,sh-msiof" compatible string from patch
+> 1/6 and wouldn't mention sh7724 here. I very much doubt that someone would
+> have developed DT support for SuperH on the side and shipped products that
+> would be broken by this change :-)
 
-Thinking about this patch over night, this also should go to stable, no?
+Upon reading your comment again: do you suggest to also remove the plain
+"renesas,sh-msiof"? That one was present before, since DT support was added
+to the driver in
 
-Best regards,
-Alexander
+commit cf9c86efecf9510e62388fd174cf607671c59fa3
+Author: Bastian Hecht <hechtb@gmail.com>
+Date:   Wed Dec 12 12:54:48 2012 +0100
+
+    spi/sh-msiof: Add device tree parsing to driver
+
+    This adds the capability to retrieve setup data from the device tree
+    node. The usage of platform data is still available.
+
+    Signed-off-by: Bastian Hecht <hechtb+renesas@gmail.com>
+    Signed-off-by: Grant Likely <grant.likely@secretlab.ca>
+
+So I prefer not to remove any pre-existing compatible values.
+Do you agree?
+
+Thanks!
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -1,62 +1,79 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi-topcliff-pch: Fix probing when DMA mode is used
-Date: Fri, 28 Feb 2014 12:43:31 +0900
-Message-ID: <20140228034331.GG9383@sirena.org.uk>
-References: <1393428679-18462-1-git-send-email-alexander.stein@systec-electronic.com>
- <20140227043719.GH9383@sirena.org.uk>
- <1998640.ToDhBRKzdY@ws-stein>
+Subject: Re: [PATCH v2] spi: spi-imx: spi_imx_remove: do not disable disabled
+ clocks
+Date: Fri, 28 Feb 2014 12:46:20 +0900
+Message-ID: <20140228034620.GH9383@sirena.org.uk>
+References: <530EFE8E.5050303@freescale.com>
+ <1393492575-32495-1-git-send-email-phdm@macqel.be>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6bKodGeYF53agbop"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="BU7+kJFeeDlNltZg"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1998640.ToDhBRKzdY@ws-stein>
+In-Reply-To: <1393492575-32495-1-git-send-email-phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---6bKodGeYF53agbop
+--BU7+kJFeeDlNltZg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Feb 27, 2014 at 09:13:21AM +0100, Alexander Stein wrote:
-> On Thursday 27 February 2014 13:37:19, Mark Brown wrote:
-> > On Wed, Feb 26, 2014 at 04:31:19PM +0100, Alexander Stein wrote:
-> > > If during registering SPI master due to SPI device probing a SPI transfer
-> > > is issued the DMA buffers are not allocated yet.
+On Thu, Feb 27, 2014 at 10:16:15AM +0100, Philippe De Muyter wrote:
 
-> > Applied, thanks.
+> ------------[ cut here ]------------
+> WARNING: at drivers/clk/clk.c:780 clk_disable+0x18/0x24()
+> Modules linked in: spi_imx(-) [last unloaded: ev76c560]
+> CPU: 1 PID: 16337 Comm: rmmod Tainted: G        W    3.10.17-80548-g90191eb-dirty #33
+> [<80013b4c>] (unwind_backtrace+0x0/0xf8) from [<800115dc>] (show_stack+0x10/0x14)
 
-> Thinking about this patch over night, this also should go to stable, no?
+Don't paste entire backtraces into commit logs unless they're adding
+something, it makes the mail harder to read.  Especially don't do this
+before the text explanation of the commit.
 
-Possibly, though I'd have thought that someone would have noticed by now
-if there were any affected systems using stable?
+> Since commit 9e556dcc55774c9a1032f32baa0e5cfafede8b70, "spi: spi-imx: only
+> enable the clocks when we start to transfer a message", clocks are always
+> disabled except when transmitting messages.  There is thus no need to
+> disable them at module removal.
 
---6bKodGeYF53agbop
+>  	writel(0, spi_imx->base + MXC_CSPICTRL);
+> -	clk_disable_unprepare(spi_imx->clk_ipg);
+> -	clk_disable_unprepare(spi_imx->clk_per);
+> +	clk_unprepare(spi_imx->clk_ipg);
+> +	clk_unprepare(spi_imx->clk_per);
+>  	spi_master_put(master);
+
+Why is the fix for this not to convert the enable/disable done when
+tranferring to be preparing as well?  The message transfer doesn't
+get started in atomic context so I can't see any advantage to leaving
+the clock prepared all the time but it's possible I'm missing something.
+
+--BU7+kJFeeDlNltZg
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTEAXfAAoJELSic+t+oim9YdgP/1nD/XZVgLUYzxqERuiRMOpR
-Cz5nKNshFmVzHas8/NLRliG/4zGlGp1RgQkJnBS9VkqMyn+3PuoTvX+co78rV+8b
-974yCDV1QbpbYvQ/sFQGb7CyJCdVP+KUQa4rlLmHrQy9c37HKWZfoGoo3yQye1du
-chJV4caHsvCSS2smz6rXvC7Cyvu5o0FZDzhrD3ePSCpF+l8wDoxJJydw82rDT2xh
-zgtMRlk0RhIAkRVGvoH8MXjGI3D9eLeWPGpzZaLmIMIYSr5zyxZV8gSsuuVlul+4
-C5l0Q6zCu5ysHAk3uI4FVgrY0/B9VjY0aC8lTgOQnX3FceaLHarGtqfkqpV2/5qn
-/vlyK4pyNy1e33Q6MSN5kLTC+9Pi6UjEntDCZTCoEO2WSsB8q9p+VqCEFULhgtiP
-06npwieFBvPWueKPukb9FpcfyTukLt/eQ/+mfSxzyPLIaAIrjZIM5iAOivLnuT8Y
-TqWOCI6JsUbm2BgAQ9ly/A6Cn/m7gwHdEv1aIi0LkZC5Ny8VP8+Tor7hg0AMOK04
-RmqyvZDvyGA4IAsN2RxVVt6JDqI/TN0Rcqojf1Cf0aIVe2m8MzHT2S6dtSgryvd4
-I2TYVTfUcGg0P16zkqkC6KsD+UnZG06/7lBrjJRQle32ZzWoi3TCjtfDzdD5A9vP
-ALnUbVjx2emSB2ddxJ4T
-=ZuOB
+iQIcBAEBAgAGBQJTEAaJAAoJELSic+t+oim9QDAP/R8HPPJmjnmHUXlbr4bg3f8T
+DNPS9ySiERQJGm5jcjJHQOxbTsEv+aOmxC6ME9kX6hZ2r6fPVoSoZze0mDttv4eM
+xP3zlVvdBqWC5wSIyY1agBLIt1YPY7RE2eKGvmWRI2YUSY95DvwNF0tidfzyK4ju
+7kEAwAJ1DZNKBGI4clvGVzlH2L7yQGCiD4GHVkA661mz3MjHK14gSXP2f9gyxQOu
+pF5IwwofEC17dEmYvxczV6PdYCHvxrDEPyUoDQQbiQnm4XWErdLdYehvmYI/PJ8S
+jG8tizSbJOcXiXqs+7gUod7FjU0CoZSy0FxVJA3idxaL4U9f5TxoHNumzXHJAE6M
+V6wmluBk7JP20k3mP4H8cDn1Mc9jZJ4jN0BfUhaFRsavXNmnFpkSlve71rxUrtOX
++ZgOtseRfYfAsxw4ju/12IHzWESy5rPmz9Ax6aMrB9wMA5QIP1K+DmkV3+RzSMxy
+qNpRHeoQysiHLaZnXPVOpjl/07zJlkuveypBhknPYv1UlCBqiQ0/IavHk5r5+xzo
+5049W3G1RQ3TkrFXqjgulyThyGgWcTz/GtWGsygtsdE6SiMgAM5xo2qXKn5HqhCU
+2lY30Z/uUbA8yt5qT+Z4GdBLWsSeunM+Wz74/AlfaSZSfWh6SPDOIhgwc4dFsM+5
+o6QrVcqQ059pGw1xYCRo
+=iDzF
 -----END PGP SIGNATURE-----
 
---6bKodGeYF53agbop--
+--BU7+kJFeeDlNltZg--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

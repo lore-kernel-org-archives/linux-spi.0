@@ -1,51 +1,32 @@
 From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
-Subject: [PATCH] spi: core: make zero length transfer valid again
-Date: Fri, 28 Feb 2014 23:03:16 +0900
-Message-ID: <1393596196-8652-1-git-send-email-anemo@mba.ocn.ne.jp>
-Cc: iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org, gsi-ynQEQJNshbs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 3/3] spi: txx9: Let spi core handle validating transfer
+ length
+Date: Fri, 28 Feb 2014 23:13:48 +0900 (JST)
+Message-ID: <20140228.231348.230742664.anemo@mba.ocn.ne.jp>
+References: <1393327017.6723.1.camel@phoenix>
+	<1393327183.6723.5.camel@phoenix>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1393327183.6723.5.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Zero length transfer becomes invalid since
-"spi: core: Validate length of the transfers in message" commit,
-but it should be valid to support an odd device, for example, which
-requires long delay between chipselect and the first transfer, etc.
+On Tue, 25 Feb 2014 19:19:43 +0800, Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org> wrote:
+> spi core will handle validating transfer length since commit 4d94bd21b333
+> "spi: core: Validate length of the transfers in message".
+> So remove the same checking in this driver.
+> 
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+> ---
+>  drivers/spi/spi-txx9.c | 4 ----
 
-Signed-off-by: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
----
- drivers/spi/spi.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Thank you.  It looks good for me.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index c2605aa..454a523 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1808,7 +1808,7 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- {
- 	struct spi_master *master = spi->master;
- 	struct spi_transfer *xfer;
--	int w_size, n_words;
-+	int w_size;
- 
- 	if (list_empty(&message->transfers))
- 		return -EINVAL;
-@@ -1871,9 +1871,8 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
- 		else
- 			w_size = 4;
- 
--		n_words = xfer->len / w_size;
- 		/* No partial transfers accepted */
--		if (!n_words || xfer->len % w_size)
-+		if (xfer->len % w_size)
- 			return -EINVAL;
- 
- 		if (xfer->speed_hz && master->min_speed_hz &&
--- 
-1.7.9.5
-
+Reviewed-by: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

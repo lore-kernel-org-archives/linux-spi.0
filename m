@@ -1,35 +1,52 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH v2] spi: spi-imx: spi_imx_remove: do not disable disabled
- clocks
-Date: Fri, 28 Feb 2014 14:28:04 +0800
-Message-ID: <53102C74.2070609@freescale.com>
-References: <530EFE8E.5050303@freescale.com> <1393492575-32495-1-git-send-email-phdm@macqel.be> <20140228034620.GH9383@sirena.org.uk> <53100FEF.7060600@freescale.com> <20140228061344.GD29849@sirena.org.uk>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2 3/6] spi: sh-msiof: Add support for R-Car H2 and M2
+Date: Fri, 28 Feb 2014 09:01:45 +0100
+Message-ID: <CAMuHMdVXFnzECcGoywZS=p=ZkkYEYJbaPQoseQSGWYBeT0Y9Tg@mail.gmail.com>
+References: <1393323673-2751-1-git-send-email-geert@linux-m68k.org>
+	<1462634.UcxrmdxVtK@avalon>
+	<CAMuHMdU6R_Wubsx2KCAXVBynzqquJekDNDZ-Sq1sKYEOM1RtTw@mail.gmail.com>
+	<10401513.fZZM0mLxSj@avalon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140228061344.GD29849-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Bastian Hecht <hechtb@gmail.com>, Mark Brown <broonie@kernel.org>,
+	Takashi Yoshii <takasi-y@ops.dti.ne.jp>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <10401513.fZZM0mLxSj@avalon>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-=D3=DA 2014=C4=EA02=D4=C228=C8=D5 14:13, Mark Brown =D0=B4=B5=C0:
-> little while after the last use has finished?  That's a little more
-> involved though and would still need this due to runtime PM being
-yes. we can use the runtime PM too.
+Hi Laurent,
 
-but i am not sure which one is _better_. the runtime PM? or the current=
- way?
+On Fri, Feb 28, 2014 at 12:02 AM, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+>> And if we remove "renesas,sh-msiof", we should probably remove
+>> "renesas,sh-mobile-msiof", too, as there are no current users, and it also
+>> assumes the same MSIOF implementation?
+>
+> I'm not too familiar with the MSIOF hardware, can "renesas,sh-mobile-msiof" be
+> used as a fallback for the currently support ARM SoCs ?
 
+r8a73a4/APE6: No
+r8a7740/A1: Maybe (not 100% clear to me from the datasheet)
+r8a7790/R-Car H2: No
+r8a7791/R-Car M2: No
+sh7372/AP4: No information
+sh73a0/AG5: No information
 
+Gr{oetje,eeting}s,
 
-
-thanks
-Huang Shijie
+                        Geert
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

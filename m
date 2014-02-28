@@ -1,81 +1,35 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH RFT] spi: sc18is602: Convert to let spi core validate
- transfer speed
-Date: Fri, 28 Feb 2014 18:39:33 +0800
-Message-ID: <1393583973.18537.2.camel@phoenix>
+From: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>
+Subject: Re: [PATCH v3] spi: core: Validate length of the transfers in
+ message
+Date: Fri, 28 Feb 2014 22:55:37 +0900 (JST)
+Message-ID: <20140228.225537.367613748.anemo@mba.ocn.ne.jp>
+References: <20140226001407.GM2927@sirena.org.uk>
+	<20140227.223826.522636360.anemo@mba.ocn.ne.jp>
+	<20140228061920.GG29849@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org, gsi-ynQEQJNshbs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140228061920.GG29849-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Set master->max_speed_hz and master->min_speed_hz then spi core will handle
-checking transfer speed. So we can remove the same checking in this driver.
+On Fri, 28 Feb 2014 15:19:20 +0900, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>> I don't object to the whole patch.  Validating in spi core is good of
+>> course, and "xfer->len % w_size" part looks no problem.
+> 
+>> I just want to keep ways to handle an odd device, for example, which
+>> requires long delay between chipselect and the first transfer, etc.
+> 
+> Can you submit a patch adding that support back please?
 
-This patch also remove testing if hz is 0 because spi->max_speed_hz will be
-default set to master->min_speed_hz if it was not set. So the transfer speed
-will never set to 0.
+OK, I will send a patch against spi.git/for-next branch.
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-sc18is602.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
-index 7fba10b..237f2e7 100644
---- a/drivers/spi/spi-sc18is602.c
-+++ b/drivers/spi/spi-sc18is602.c
-@@ -183,17 +183,9 @@ static int sc18is602_setup_transfer(struct sc18is602 *hw, u32 hz, u8 mode)
- static int sc18is602_check_transfer(struct spi_device *spi,
- 				    struct spi_transfer *t, int tlen)
- {
--	uint32_t hz;
--
- 	if (t && t->len + tlen > SC18IS602_BUFSIZ)
- 		return -EINVAL;
- 
--	hz = spi->max_speed_hz;
--	if (t && t->speed_hz)
--		hz = t->speed_hz;
--	if (hz == 0)
--		return -EINVAL;
--
- 	return 0;
- }
- 
-@@ -207,14 +199,13 @@ static int sc18is602_transfer_one(struct spi_master *master,
- 
- 	hw->tlen = 0;
- 	list_for_each_entry(t, &m->transfers, transfer_list) {
--		u32 hz = t->speed_hz ? : spi->max_speed_hz;
- 		bool do_transfer;
- 
- 		status = sc18is602_check_transfer(spi, t, hw->tlen);
- 		if (status < 0)
- 			break;
- 
--		status = sc18is602_setup_transfer(hw, hz, spi->mode);
-+		status = sc18is602_setup_transfer(hw, t->speed_hz, spi->mode);
- 		if (status < 0)
- 			break;
- 
-@@ -305,6 +296,8 @@ static int sc18is602_probe(struct i2c_client *client,
- 	master->setup = sc18is602_setup;
- 	master->transfer_one_message = sc18is602_transfer_one;
- 	master->dev.of_node = np;
-+	master->min_speed_hz = hw->freq / 128;
-+	master->max_speed_hz = hw->freq / 4;
- 
- 	error = devm_spi_register_master(dev, master);
- 	if (error)
--- 
-1.8.1.2
-
-
-
+Atsushi Nemoto
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

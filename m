@@ -1,280 +1,115 @@
-From: Insop Song <Insop.Song@gainspeed.com>
+From: Insop Song <Insop.Song-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>
 Subject: RE: [PATCH] Check flag status register for Micron n25q512a
-Date: Sat, 1 Mar 2014 02:00:04 +0000
-Message-ID: <d695e8d34cac47608353f858d51c3e59@BY2PR07MB011.namprd07.prod.outlook.com>
+Date: Sat, 1 Mar 2014 02:44:46 +0000
+Message-ID: <106fa8b5760a4a88be8cb469fab79186@BY2PR07MB011.namprd07.prod.outlook.com>
 References: <6bf927e513554e628fe15d309aac698e@BLUPR07MB002.namprd07.prod.outlook.com>
  <20140227073314.GD13420@norris-Latitude-E6410>
+ <201402272101.59845.marex@denx.de>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Marek Vasut <marex@denx.de>,
- "Priyanka.Jain@freescale.com" <Priyanka.Jain@freescale.com>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Brian Norris <computersforpeace@gmail.com>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <20140227073314.GD13420@norris-Latitude-E6410>
+Content-Transfer-Encoding: 8BIT
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <201402272101.59845.marex-ynQEQJNshbs@public.gmane.org>
 Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Brian,
+Hi Marek,
 
-Thank you for your feedback.
-
-> From: Brian Norris [mailto:computersforpeace@gmail.com]
-> Sent: Wednesday, February 26, 2014 11:33 PM> 
+> From: Marek Vasut [mailto:marex-ynQEQJNshbs@public.gmane.org]
+> Sent: Thursday, February 27, 2014 12:02 PM
 > 
-> On Mon, Jan 06, 2014 at 05:21:17AM +0000, Insop Song wrote:
-> > In order to use Micron n25q512a, MTD, two changes are required as
-> follows:
-> > - jedec code should be fixed
+> On Thursday, February 27, 2014 at 08:33:14 AM, Brian Norris wrote:
+> > + Marek
 > 
-> I have a feeling there are more than one "n25q512a" device, with different
-> IDs.
+> Thanks, I really need to subscribe to this ML ;-/
 > 
-> > - flag status should be read for writing.
+> > Hi Insop,
 > >
-> > Check flag status register for Micron n25q512a
-> >     - Programing Micron n25q512a requires to check flag status register
-> >     - According to datasheet
-> >     	"
-> >     	The flag status register must be read any time a PROGRAM, ERASE,
-> >     	SUSPEND/RESUME command is issued, or after a RESET command
-> while device
-> >     	is busy. The cycle is not complete until bit 7 of the flag status
-> >     	register output 1.
-> >     	"
-> >     - Ref:
+> > On Mon, Jan 06, 2014 at 05:21:17AM +0000, Insop Song wrote:
+> > > In order to use Micron n25q512a, MTD, two changes are required as
+> > > follows: - jedec code should be fixed
 > >
+> > I have a feeling there are more than one "n25q512a" device, with
+> > different IDs.
+> 
+> ACK, I have similar feeling. Jain, can you tell us the precise marking on your
+> N25Q512A chip (that is, every single letter on the top of the chip package
+> exactly as it is engraved there ) please? Or make a photo ...
+> 
+> Insop, can you please do the same ?
+> 
+> [...]
+
+25Q512A
+13640
+
+> 
+> > > @@ -782,7 +864,7 @@ static const struct spi_device_id m25p_ids[] = {
+> > >
+> > >  	{ "n25q128a11",  INFO(0x20bb18, 0, 64 * 1024,  256, 0) },
+> > >  	{ "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, 0) },
+> > >  	{ "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SECT_4K) },
+> > >
+> > > -	{ "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K) },
+> > > +	{ "n25q512a",    INFO(0x20ba20, 0, 64 * 1024, 1024, SECT_4K) },
+> >
+> > You probably want to figure out the distinction between the old table
+> > entry and the new one, and assign your new entry a new string
+> > accordingly.
+> 
+> ACK. The datasheet actually claims this change is correct, see [1] (page 40,
+> table 21), but as we know, Micron really does shitty job when it comes to
+> using the JEDEC IDs for it's chips.
+> 
+
+"n25q512a1" okay?
+Or any other suggestion?
+
+> > >  	/* PMC */
+> > >  	{ "pm25lv512",   INFO(0,        0, 32 * 1024,    2, SECT_4K_PMC) },
+> > >
+> > > @@ -996,6 +1078,13 @@ static int m25p_probe(struct spi_device *spi)
+> > >
+> > >  	spi_set_drvdata(spi, flash);
+> > >
+> > >  	/*
+> > >
+> > > +	 * Micron n25q512a requires to check flag status register
+> > > +	 */
+> > > +	flash->flag_status = false;
+> > > +	if (strcmp(id->name, "n25q512a") == 0)
+> > > +		flash->flag_status = true;;
+> >
+> > This doesn't look good at all. If any other flash start to need this,
+> > we don't want to code each ID string here. That's fragile and
+> > non-scaleable. If we need this option, you need to add another flag to
+> > the m25p_ids[] table, I guess...
+> 
+> This waiting for some bit in FSR looks like it can be wrapped into
+> wait_till_ready(), no ?
+> 
+> What I cannot find in the datasheet though is any evidence which would
+> clearly mandate the use of FSR bit 0x80 to test if the chip is ready for next
+> operation instead of using the regular STATUS register bit . Insop, can you
+> please elaborate on why using the FSR is needed ?
+> 
+
+If I don't check FSR(Flag Status Register), then I was not able to program this flash.
+I've used C SDK from Aardvark I2C/SPI Host Adapter to program directly, and we had to check FSR.
+Also in linux driver, I had to put the check otherwise, I am not able to write the flash.
+I think it is mandatory though datasheet is not so clear about it.
+
+
+> [1]
 > https://www.micron.com/~/media/Documents/Products/Data%20Sheet/N
-> OR%20F
-> > lash/Serial%20NOR/N25Q/n25q_512mb_1ce_3v_65nm.pdf
-> 
-> Hmm, are you sure that all Micron n25q512a need to check the flag status
-> register? I'll check my datasheets when I'm back in the office, but this seems
-> peculiar.
-> 
-
-"Flag status" term can be found in 84 time in the data sheet and I don't think the flag status is specific to particular type of n25q512a.
-
-> > Signed-off-by: Insop Song <insop.song@gainspeed.com>
-> > ---
-> >  drivers/mtd/devices/m25p80.c |   91
-> +++++++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 90 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/mtd/devices/m25p80.c
-> > b/drivers/mtd/devices/m25p80.c index 7eda71d..e53e522 100644
-> > --- a/drivers/mtd/devices/m25p80.c
-> > +++ b/drivers/mtd/devices/m25p80.c
-> > @@ -38,6 +38,7 @@
-> >  /* Flash opcodes. */
-> >  #define	OPCODE_WREN		0x06	/* Write enable */
-> >  #define	OPCODE_RDSR		0x05	/* Read status register */
-> > +#define	OPCODE_RDFSR		0x70	/* Read flag status
-> register */
-> >  #define	OPCODE_WRSR		0x01	/* Write status
-> register 1 byte */
-> >  #define	OPCODE_NORM_READ	0x03	/* Read data bytes (low
-> frequency) */
-> >  #define	OPCODE_FAST_READ	0x0b	/* Read data bytes (high
-> frequency) */
-> > @@ -70,6 +71,8 @@
-> >  /* Status Register bits. */
-> >  #define	SR_WIP			1	/* Write in progress
-> */
-> >  #define	SR_WEL			2	/* Write enable latch
-> */
-> > +/* Flag Status Register bits. */
-> > +#define	FSR_RDY			0x80	/* FSR ready */
-> >  /* meaning of other SR_* bits may differ between vendors */
-> >  #define	SR_BP0			4	/* Block protect 0 */
-> >  #define	SR_BP1			8	/* Block protect 1 */
-> > @@ -95,6 +98,7 @@ struct m25p {
-> >  	u8			program_opcode;
-> >  	u8			*command;
-> >  	bool			fast_read;
-> > +	bool			flag_status;
-> >  };
-> >
-> >  static inline struct m25p *mtd_to_m25p(struct mtd_info *mtd) @@
-> > -131,6 +135,28 @@ static int read_sr(struct m25p *flash)  }
-> >
-> >  /*
-> > + * Read the flag status register, returning its value in the location
-> > + * Return the status register value.
-> > + * Returns negative if error occurred.
-> > + */
-> > +static int read_fsr(struct m25p *flash) {
-> > +	ssize_t retval;
-> > +	u8 code = OPCODE_RDFSR;
-> > +	u8 val;
-> > +
-> > +	retval = spi_write_then_read(flash->spi, &code, 1, &val, 1);
-> > +
-> > +	if (retval < 0) {
-> > +		printk(&flash->spi->dev, "error %d reading FSR\n",
-> > +				(int) retval);
-> > +		return retval;
-> > +	}
-> > +
-> > +	return val;
-> > +}
-> > +
-> > +/*
-> >   * Write status register 1 byte
-> >   * Returns negative if error occurred.
-> >   */
-> > @@ -220,6 +246,30 @@ static int wait_till_ready(struct m25p *flash)  }
-> >
-> >  /*
-> > + * Service routine to read flag status register until ready, or timeout
-> occurs.
-> > + * Returns non-zero if error.
-> > + */
-> > +static int wait_till_fsr_ready(struct m25p *flash) {
-> > +	unsigned long deadline;
-> > +	int sr;
-> > +
-> > +	deadline = jiffies + MAX_READY_WAIT_JIFFIES;
-> > +
-> > +	do {
-> > +		if ((sr = read_fsr(flash)) < 0)
-> > +			break;
-> > +		else if ((sr & FSR_RDY))
-> > +			return 0;
-> > +
-> > +		cond_resched();
-> > +
-> > +	} while (!time_after_eq(jiffies, deadline));
-> > +
-> > +	return 1;
-> > +}
-> > +
-> > +/*
-> >   * Erase the whole flash memory
-> >   *
-> >   * Returns 0 if successful, non-zero otherwise.
-> > @@ -273,6 +323,14 @@ static int erase_sector(struct m25p *flash, u32
-> offset)
-> >  	if (wait_till_ready(flash))
-> >  		return 1;
-> >
-> > +	/* Flag status, Wait until finished previous write command. */
-> > +	if (flash->flag_status == true) {
-> > +		if (wait_till_fsr_ready(flash)) {
-> > +			mutex_unlock(&flash->lock);
-> > +			return 1;
-> > +		}
-> > +	}
-> > +
-> >  	/* Send write enable, then erase commands. */
-> >  	write_enable(flash);
-> >
-> > @@ -427,6 +485,14 @@ static int m25p80_write(struct mtd_info *mtd,
-> > loff_t to, size_t len,
-> >
-> >  	mutex_lock(&flash->lock);
-> >
-> > +	/* Flag status, Wait until finished previous write command. */
-> > +	if (flash->flag_status == true) {
-> > +		if (wait_till_fsr_ready(flash)) {
-> > +			mutex_unlock(&flash->lock);
-> > +			return 1;
-> > +		}
-> > +	}
-> > +
-> >  	/* Wait until finished previous write command. */
-> >  	if (wait_till_ready(flash)) {
-> >  		mutex_unlock(&flash->lock);
-> > @@ -457,6 +523,14 @@ static int m25p80_write(struct mtd_info *mtd,
-> loff_t to, size_t len,
-> >  		t[1].len = page_size;
-> >  		spi_sync(flash->spi, &m);
-> >
-> > +		/* Flag status, Wait until finished previous write command. */
-> > +		if (flash->flag_status == true) {
-> > +			if (wait_till_fsr_ready(flash)) {
-> > +				mutex_unlock(&flash->lock);
-> > +				return 1;
-> > +			}
-> > +		}
-> > +
-> >  		*retlen = m.actual_length - m25p_cmdsz(flash);
-> >
-> >  		/* write everything in flash->page_size chunks */ @@ -477,6
-> +551,14
-> > @@ static int m25p80_write(struct mtd_info *mtd, loff_t to, size_t
-> > len,
-> >
-> >  			spi_sync(flash->spi, &m);
-> >
-> > +			/* Flag status, Wait until finished previous write
-> command. */
-> > +			if (flash->flag_status == true) {
-> > +				if (wait_till_fsr_ready(flash)) {
-> > +					mutex_unlock(&flash->lock);
-> > +					return 1;
-> > +				}
-> > +			}
-> > +
-> >  			*retlen += m.actual_length - m25p_cmdsz(flash);
-> >  		}
-> >  	}
-> > @@ -782,7 +864,7 @@ static const struct spi_device_id m25p_ids[] = {
-> >  	{ "n25q128a11",  INFO(0x20bb18, 0, 64 * 1024,  256, 0) },
-> >  	{ "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, 0) },
-> >  	{ "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SECT_4K) },
-> > -	{ "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K) },
-> > +	{ "n25q512a",    INFO(0x20ba20, 0, 64 * 1024, 1024, SECT_4K) },
-> 
-> You probably want to figure out the distinction between the old table entry
-> and the new one, and assign your new entry a new string accordingly.
-
-You mean "0x20bb20" (old value) must be still the valid value?
-I will wait to you to add new string.
-
-> 
-> >
-> >  	/* PMC */
-> >  	{ "pm25lv512",   INFO(0,        0, 32 * 1024,    2, SECT_4K_PMC) },
-> > @@ -996,6 +1078,13 @@ static int m25p_probe(struct spi_device *spi)
-> >  	spi_set_drvdata(spi, flash);
-> >
-> >  	/*
-> > +	 * Micron n25q512a requires to check flag status register
-> > +	 */
-> > +	flash->flag_status = false;
-> > +	if (strcmp(id->name, "n25q512a") == 0)
-> > +		flash->flag_status = true;;
-> 
-> This doesn't look good at all. If any other flash start to need this, we don't
-> want to code each ID string here. That's fragile and non-scaleable. If we need
-> this option, you need to add another flag to the m25p_ids[] table, I guess...
-> 
-
-I agree, and will see how I can make it more generic.
-Also wait to see if you/mail list feedback on this flag status.
-
-> > +
-> > +	/*
-> >  	 * Atmel, SST and Intel/Numonyx serial flash tend to power
-> >  	 * up with the software protection bits set
-> >  	 */
-> 
-> Brian
-
-Insop
-
-______________________________________________________
-Linux MTD discussion mailing list
-http://lists.infradead.org/mailman/listinfo/linux-mtd/
+> OR%20Flash/Serial%20NOR/N25Q/n25q_512mb_1ce_3v_65nm.pdf
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

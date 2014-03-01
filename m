@@ -1,114 +1,72 @@
-From: Insop Song <Insop.Song-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>
-Subject: RE: [PATCH] Check flag status register for Micron n25q512a
-Date: Sat, 1 Mar 2014 02:44:46 +0000
-Message-ID: <106fa8b5760a4a88be8cb469fab79186@BY2PR07MB011.namprd07.prod.outlook.com>
-References: <6bf927e513554e628fe15d309aac698e@BLUPR07MB002.namprd07.prod.outlook.com>
- <20140227073314.GD13420@norris-Latitude-E6410>
- <201402272101.59845.marex@denx.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: spi-imx: spi_imx_remove: do not disable disabled
+ clocks
+Date: Sat, 1 Mar 2014 13:09:25 +0900
+Message-ID: <20140301040925.GN29849@sirena.org.uk>
+References: <530EFE8E.5050303@freescale.com>
+ <1393492575-32495-1-git-send-email-phdm@macqel.be>
+ <20140228034620.GH9383@sirena.org.uk>
+ <53100FEF.7060600@freescale.com>
+ <20140228061344.GD29849@sirena.org.uk>
+ <53102C74.2070609@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="xTKfHyrFnSV9DG3y"
+Cc: Philippe De Muyter <phdm-vQo90/bmh3WzQB+pC5nmwQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Shawn Guo <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <201402272101.59845.marex-ynQEQJNshbs@public.gmane.org>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <53102C74.2070609-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Marek,
 
-> From: Marek Vasut [mailto:marex-ynQEQJNshbs@public.gmane.org]
-> Sent: Thursday, February 27, 2014 12:02 PM
-> 
-> On Thursday, February 27, 2014 at 08:33:14 AM, Brian Norris wrote:
-> > + Marek
-> 
-> Thanks, I really need to subscribe to this ML ;-/
-> 
-> > Hi Insop,
-> >
-> > On Mon, Jan 06, 2014 at 05:21:17AM +0000, Insop Song wrote:
-> > > In order to use Micron n25q512a, MTD, two changes are required as
-> > > follows: - jedec code should be fixed
-> >
-> > I have a feeling there are more than one "n25q512a" device, with
-> > different IDs.
-> 
-> ACK, I have similar feeling. Jain, can you tell us the precise marking on your
-> N25Q512A chip (that is, every single letter on the top of the chip package
-> exactly as it is engraved there ) please? Or make a photo ...
-> 
-> Insop, can you please do the same ?
-> 
-> [...]
+--xTKfHyrFnSV9DG3y
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-25Q512A
-13640
+On Fri, Feb 28, 2014 at 02:28:04PM +0800, Huang Shijie wrote:
+> =E4=BA=8E 2014=E5=B9=B402=E6=9C=8828=E6=97=A5 14:13, Mark Brown =E5=86=99=
+=E9=81=93:
+> > little while after the last use has finished?  That's a little more
+> > involved though and would still need this due to runtime PM being
 
-> 
-> > > @@ -782,7 +864,7 @@ static const struct spi_device_id m25p_ids[] = {
-> > >
-> > >  	{ "n25q128a11",  INFO(0x20bb18, 0, 64 * 1024,  256, 0) },
-> > >  	{ "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, 0) },
-> > >  	{ "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SECT_4K) },
-> > >
-> > > -	{ "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K) },
-> > > +	{ "n25q512a",    INFO(0x20ba20, 0, 64 * 1024, 1024, SECT_4K) },
-> >
-> > You probably want to figure out the distinction between the old table
-> > entry and the new one, and assign your new entry a new string
-> > accordingly.
-> 
-> ACK. The datasheet actually claims this change is correct, see [1] (page 40,
-> table 21), but as we know, Micron really does shitty job when it comes to
-> using the JEDEC IDs for it's chips.
-> 
+> yes. we can use the runtime PM too.
 
-"n25q512a1" okay?
-Or any other suggestion?
+> but i am not sure which one is _better_. the runtime PM? or the current w=
+ay?
 
-> > >  	/* PMC */
-> > >  	{ "pm25lv512",   INFO(0,        0, 32 * 1024,    2, SECT_4K_PMC) },
-> > >
-> > > @@ -996,6 +1078,13 @@ static int m25p_probe(struct spi_device *spi)
-> > >
-> > >  	spi_set_drvdata(spi, flash);
-> > >
-> > >  	/*
-> > >
-> > > +	 * Micron n25q512a requires to check flag status register
-> > > +	 */
-> > > +	flash->flag_status = false;
-> > > +	if (strcmp(id->name, "n25q512a") == 0)
-> > > +		flash->flag_status = true;;
-> >
-> > This doesn't look good at all. If any other flash start to need this,
-> > we don't want to code each ID string here. That's fragile and
-> > non-scaleable. If we need this option, you need to add another flag to
-> > the m25p_ids[] table, I guess...
-> 
-> This waiting for some bit in FSR looks like it can be wrapped into
-> wait_till_ready(), no ?
-> 
-> What I cannot find in the datasheet though is any evidence which would
-> clearly mandate the use of FSR bit 0x80 to test if the chip is ready for next
-> operation instead of using the regular STATUS register bit . Insop, can you
-> please elaborate on why using the FSR is needed ?
-> 
+If you are able to unprepare the clocks then depending on the system
+that may allow more power savings so if runtime PM solves a performance
+problem it's going to be better for that.  Similarly if the SoC does
+something with runtime PM (eg, powering down power domains) then that'd
+be helpful but that depends on the SoC.
 
-If I don't check FSR(Flag Status Register), then I was not able to program this flash.
-I've used C SDK from Aardvark I2C/SPI Host Adapter to program directly, and we had to check FSR.
-Also in linux driver, I had to put the check otherwise, I am not able to write the flash.
-I think it is mandatory though datasheet is not so clear about it.
+--xTKfHyrFnSV9DG3y
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-> [1]
-> https://www.micron.com/~/media/Documents/Products/Data%20Sheet/N
-> OR%20Flash/Serial%20NOR/N25Q/n25q_512mb_1ce_3v_65nm.pdf
+iQIcBAEBAgAGBQJTEV1yAAoJELSic+t+oim9ARMQAIwDBCbA0Og41AmaPBkLU08M
+1AFOJvoX4f03fC11gaNUU+o3UEAweBEHW7pOoA0LgRhZMI67S8Ssu+o+ZOAnJcKi
+d+3uiMC9V9brqG6VxhZnS5jDYPaZfum+a7zPOEdmzHX2QLgBGUWU5v3rK3N86673
+dVWERyHrBxiixbXvWj3UomGRUhwg/V+Vn3AaLsvDUMbXwjhBFaNFn9/eQxIgxjVn
+n0kMIM6rx4qeuieURmDArhT/BQi1ZUv8RlKFux6hTK84maRP6uRlckBHQLOH1AXn
+dbMqep0dsZb49zy4f2+OvOy3SIoQxV4qwVgcSlt9QwILdbF7mRklJl9VioGFsoT+
+eKyIM78IZZITK6gWHclJ6ml1B3Gm/PWuLmuAvGuTh3no3aTsKawnKhI6JYguWCZm
+tu6V8KxTKd+EquS5B7qLZN2uP1rtPuh6ZBxlZf8IbiaPI3NjtzuSGkqHX4PwzSQ5
+fmAjE5CLYO4C025IPkyEK4gDMiQEWwptClizCEfcekHmVQCxSFfTuuXAu/faWTqS
+Yr54jUEscpuWZLl1O1enkFyV0VycDucQZxwHAdzhssAQDhnBZsviP9Bni5gr4F4c
+iOh7SLhGQbjPtCYcZ6MpnHipQ3lKEICyyuD9ss7/+TQCmrvaVL+WWDN9fn/B4zmA
+U8PycOWW/l50Vn41JBqX
+=8vh1
+-----END PGP SIGNATURE-----
+
+--xTKfHyrFnSV9DG3y--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

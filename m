@@ -1,74 +1,140 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: Re: [PATCH] spi: core: make zero length transfer valid again
-Date: Sat, 1 Mar 2014 12:40:39 +0100
-Message-ID: <4D0588EB-C20C-4B24-B656-6175C2309352@martin.sperl.org>
-References: <1393596196-8652-1-git-send-email-anemo@mba.ocn.ne.jp> <20140301041330.GO29849@sirena.org.uk>
-Mime-Version: 1.0 (Mac OS X Mail 7.2 \(1874\))
-Content-Type: text/plain; charset=us-ascii
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH] Check flag status register for Micron n25q512a
+Date: Sat, 1 Mar 2014 20:22:10 +0100
+Message-ID: <201403012022.10111.marex@denx.de>
+References: <6bf927e513554e628fe15d309aac698e@BLUPR07MB002.namprd07.prod.outlook.com> <201402272101.59845.marex@denx.de> <106fa8b5760a4a88be8cb469fab79186@BY2PR07MB011.namprd07.prod.outlook.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org,
-	gsi-ynQEQJNshbs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Insop Song <Insop.Song-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140301041330.GO29849-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <106fa8b5760a4a88be8cb469fab79186-Rl8gF8DaO8TbI3BPuG3eVRQPvRvOrrxkXA4E9RH9d+qIuWR1G4zioA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 01.03.2014, at 05:13, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Fri, Feb 28, 2014 at 11:03:16PM +0900, Atsushi Nemoto wrote:
->> Zero length transfer becomes invalid since
->> "spi: core: Validate length of the transfers in message" commit,
->> but it should be valid to support an odd device, for example, which
->> requires long delay between chipselect and the first transfer, etc.
+On Saturday, March 01, 2014 at 03:44:46 AM, Insop Song wrote:
+> Hi Marek,
+> 
+> > From: Marek Vasut [mailto:marex-ynQEQJNshbs@public.gmane.org]
+> > Sent: Thursday, February 27, 2014 12:02 PM
+> > 
+> > On Thursday, February 27, 2014 at 08:33:14 AM, Brian Norris wrote:
+> > > + Marek
+> > 
+> > Thanks, I really need to subscribe to this ML ;-/
+> > 
+> > > Hi Insop,
+> > > 
+> > > On Mon, Jan 06, 2014 at 05:21:17AM +0000, Insop Song wrote:
+> > > > In order to use Micron n25q512a, MTD, two changes are required as
+> > > > follows: - jedec code should be fixed
+> > > 
+> > > I have a feeling there are more than one "n25q512a" device, with
+> > > different IDs.
+> > 
+> > ACK, I have similar feeling. Jain, can you tell us the precise marking on
+> > your N25Q512A chip (that is, every single letter on the top of the chip
+> > package exactly as it is engraved there ) please? Or make a photo ...
+> > 
+> > Insop, can you please do the same ?
+> > 
+> > [...]
+> 
+> 25Q512A
+> 13640
 
-This "odd-device support" described sounds a like a work-arround
-for missing functionality in spi_core.
+OK, I think I figured it out already.
 
-Would it not be better to implement this as a separate member -
-say: spi_transfer.pre_transfer_delay_usecs - and keep the 
-spi_transfer.len > 0 requirement? 
-Initially maybe make it a warning to find those odd-devices...
+Look at [1] and [2] . The former is 1V8 option, the later is 3V3 option of the 
+same N25Q512A SPI NOR. If you look for 'JEDEC-standard 2-byte signature' in the 
+datasheets, you will notice there's one that is 'BB20h' for the 1V8 part and 
+'BA20h' for the 3V3 part. So I suppose that's the mystery here and this is the 
+explanation.
 
-I am not sure if it might make some bus-drivers more complicated
-/inefficient just to support this zero length.
+[1] 
+www.micron.com/~/media/Documents/Products/Data%20Sheet/NOR%20Flash/Serial%20NOR/N25Q/n25q_512mb_1_8v_65nm.pdf
 
-For example: the spi-bcm2835.c driver would do the following with a 
-spi_transfer.len == 0 in the transfer_on method:
-* enables SPI and wait for interrupt completion
-* the above which will trigger an interrupt
-** in the interrupt we find out that there is nothing to transfer,
-    so we signal completion to transfer_one, so it may continue.
-* the main transfer_one will get woken up
-** it will do a delay_usecs
-** it will handle CS_CHANGE
-** it will disable SPI/reset HW again
+[2] 
+www.micron.com/~/media/Documents/Products/Data%20Sheet/NOR%20Flash/Serial%20NOR/N25Q/n25q_512mb_1ce_3v_65nm.pdf
 
-So this implementation shows that there is a lot of inefficient 
-overhead/delay just to trigger a delay...
-This example requires 2 context switches (dwait for completion)
-and its corresponding delays to get back to processing - so the
-effective delay may be longer than 2ms just because of the delays 
-introduced via the scheduler and thus way above the delay requested
-by the transfer...
+> > > > @@ -782,7 +864,7 @@ static const struct spi_device_id m25p_ids[] = {
+> > > > 
+> > > >  	{ "n25q128a11",  INFO(0x20bb18, 0, 64 * 1024,  256, 0) },
+> > > >  	{ "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, 0) },
+> > > >  	{ "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SECT_4K) },
+> > > > 
+> > > > -	{ "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K) },
+> > > > +	{ "n25q512a",    INFO(0x20ba20, 0, 64 * 1024, 1024, SECT_4K) },
+> > > 
+> > > You probably want to figure out the distinction between the old table
+> > > entry and the new one, and assign your new entry a new string
+> > > accordingly.
+> > 
+> > ACK. The datasheet actually claims this change is correct, see [1] (page
+> > 40, table 21), but as we know, Micron really does shitty job when it
+> > comes to using the JEDEC IDs for it's chips.
+> 
+> "n25q512a1" okay?
+> Or any other suggestion?
 
-OK - for the spi-bcm2835.c driver the following in 
-bcm2835_spi_start_transfer:
-    if (xfer->len == 0) 
-	return 0;
-would solve it, but then we might implement this:
-    if (xfer->pre_transfer_delay_usecs)
-        udelay(xfer->pre_transfer_delay_usecs);
-instead and be more explicit about this delay.
+According the chapter 'Part Number Ordering Information', the naming scheme here 
+should be the same as in case of the n25q128a11/n25q128a13 , since the two 
+trailing numbers mean:
 
-I guess other drivers will show similar code-artefacts and
-some may even make the implicit assumption it has to be non-zero,
-which would break functionality those odd devices.
+1: 1 ... Byte addressability; HOLD pin; Micron XIP
+2: 1 ... Vcc = 1.7 to 2.0V
+   3 ... Vcc = 2.7 to 3.6V
 
+> > > >  	/* PMC */
+> > > >  	{ "pm25lv512",   INFO(0,        0, 32 * 1024,    2, SECT_4K_PMC) 
+},
+> > > > 
+> > > > @@ -996,6 +1078,13 @@ static int m25p_probe(struct spi_device *spi)
+> > > > 
+> > > >  	spi_set_drvdata(spi, flash);
+> > > >  	
+> > > >  	/*
+> > > > 
+> > > > +	 * Micron n25q512a requires to check flag status register
+> > > > +	 */
+> > > > +	flash->flag_status = false;
+> > > > +	if (strcmp(id->name, "n25q512a") == 0)
+> > > > +		flash->flag_status = true;;
+> > > 
+> > > This doesn't look good at all. If any other flash start to need this,
+> > > we don't want to code each ID string here. That's fragile and
+> > > non-scaleable. If we need this option, you need to add another flag to
+> > > the m25p_ids[] table, I guess...
+> > 
+> > This waiting for some bit in FSR looks like it can be wrapped into
+> > wait_till_ready(), no ?
+> > 
+> > What I cannot find in the datasheet though is any evidence which would
+> > clearly mandate the use of FSR bit 0x80 to test if the chip is ready for
+> > next operation instead of using the regular STATUS register bit . Insop,
+> > can you please elaborate on why using the FSR is needed ?
+> 
+> If I don't check FSR(Flag Status Register), then I was not able to program
+> this flash. I've used C SDK from Aardvark I2C/SPI Host Adapter to program
+> directly, and we had to check FSR. Also in linux driver, I had to put the
+> check otherwise, I am not able to write the flash. I think it is mandatory
+> though datasheet is not so clear about it.
 
-Martin
+What kind of problems do you get when you try to write the flash ? I am trying 
+to crosscheck this with the N25Q256A I have in here, which also has the FSR, but 
+I have no issues programming the chip either in Linux or in U-Boot.
 
+To me, it looks like FSR bit 7 and SR bit 7 should toggle exactly at the same 
+time and exactly for the same events. Can you try for example reading them both 
+and checking that the bit 7 really toggles at different times please?
 
+Best regards,
+Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

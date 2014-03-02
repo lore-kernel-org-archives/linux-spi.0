@@ -1,13 +1,12 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: sh-msiof: Kill sh_msiof_spi_bits and sh_msiof_spi_hz
- functions
-Date: Sun, 02 Mar 2014 22:30:32 +0800
-Message-ID: <1393770632.4044.5.camel@phoenix>
+Subject: [PATCH] spi: xcomm: Remove duplicate code to set default
+ bits_per_word and max speed
+Date: Sun, 02 Mar 2014 22:48:41 +0800
+Message-ID: <1393771721.4044.7.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Magnus Damm <damm-yzvPICuk2ACczHhG9Qg4qA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
@@ -15,63 +14,55 @@ List-ID: <linux-spi.vger.kernel.org>
 
 In the implementation of __spi_validate(), spi core will set transfer
 bits_per_word and max speed as spi device default if it is not set for
-this transfer. So we can remove the same implementation in this driver.
+this transfer. So we can remove the same logic in spi_xcomm_setup_transfer().
+Also remove a redundant code to initialize is_first variable.
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-sh-msiof.c | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ drivers/spi/spi-xcomm.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 1b59804..739eb2f 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -416,26 +416,6 @@ static void sh_msiof_spi_read_fifo_s32u(struct sh_msiof_spi_priv *p,
- 		put_unaligned(swab32(sh_msiof_read(p, RFDR) >> fs), &buf_32[k]);
- }
- 
--static int sh_msiof_spi_bits(struct spi_device *spi, struct spi_transfer *t)
--{
--	int bits;
--
--	bits = t ? t->bits_per_word : 0;
--	if (!bits)
--		bits = spi->bits_per_word;
--	return bits;
--}
--
--static u32 sh_msiof_spi_hz(struct spi_device *spi, struct spi_transfer *t)
--{
--	u32 hz;
--
--	hz = t ? t->speed_hz : 0;
--	if (!hz)
--		hz = spi->max_speed_hz;
--	return hz;
--}
--
- static int sh_msiof_spi_setup(struct spi_device *spi)
+diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
+index 350a76b..bb478dc 100644
+--- a/drivers/spi/spi-xcomm.c
++++ b/drivers/spi/spi-xcomm.c
+@@ -73,15 +73,13 @@ static void spi_xcomm_chipselect(struct spi_xcomm *spi_xcomm,
+ static int spi_xcomm_setup_transfer(struct spi_xcomm *spi_xcomm,
+ 	struct spi_device *spi, struct spi_transfer *t, unsigned int *settings)
  {
- 	struct device_node	*np = spi->master->dev.of_node;
-@@ -573,7 +553,7 @@ static int sh_msiof_transfer_one(struct spi_master *master,
- 	int n;
- 	bool swab;
+-	unsigned int speed;
+-
+ 	if (t->len > 62)
+ 		return -EINVAL;
  
--	bits = sh_msiof_spi_bits(spi, t);
-+	bits = t->bits_per_word;
+-	speed = t->speed_hz ? t->speed_hz : spi->max_speed_hz;
++	if (t->speed_hz != spi_xcomm->current_speed) {
++		unsigned int divider;
  
- 	if (bits <= 8 && t->len > 15 && !(t->len & 3)) {
- 		bits = 32;
-@@ -623,8 +603,7 @@ static int sh_msiof_transfer_one(struct spi_master *master,
+-	if (speed != spi_xcomm->current_speed) {
+-		unsigned int divider = DIV_ROUND_UP(SPI_XCOMM_CLOCK, speed);
++		divider = DIV_ROUND_UP(SPI_XCOMM_CLOCK, t->speed_hz);
+ 		if (divider >= 64)
+ 			*settings |= SPI_XCOMM_SETTINGS_CLOCK_DIV_64;
+ 		else if (divider >= 16)
+@@ -89,7 +87,7 @@ static int spi_xcomm_setup_transfer(struct spi_xcomm *spi_xcomm,
+ 		else
+ 			*settings |= SPI_XCOMM_SETTINGS_CLOCK_DIV_4;
+ 
+-		spi_xcomm->current_speed = speed;
++		spi_xcomm->current_speed = t->speed_hz;
  	}
  
- 	/* setup clocks (clock already enabled in chipselect()) */
--	sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk),
--				  sh_msiof_spi_hz(spi, t));
-+	sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
+ 	if (spi->mode & SPI_CPOL)
+@@ -147,8 +145,6 @@ static int spi_xcomm_transfer_one(struct spi_master *master,
+ 	int status = 0;
+ 	bool is_last;
  
- 	/* transfer in fifo sized chunks */
- 	words = t->len / bytes_per_word;
+-	is_first = true;
+-
+ 	spi_xcomm_chipselect(spi_xcomm, spi, true);
+ 
+ 	list_for_each_entry(t, &msg->transfers, transfer_list) {
 -- 
 1.8.1.2
 

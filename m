@@ -1,56 +1,90 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sh-hspi: Remove duplicate code to set default
- transfer speed
-Date: Mon, 3 Mar 2014 10:37:56 +0900
-Message-ID: <20140303013756.GK2411@sirena.org.uk>
-References: <1393772510.4044.9.camel@phoenix>
+Subject: Re: [PATCH] spi: core: make zero length transfer valid again
+Date: Mon, 3 Mar 2014 10:05:26 +0900
+Message-ID: <20140303010526.GV29849@sirena.org.uk>
+References: <1393596196-8652-1-git-send-email-anemo@mba.ocn.ne.jp>
+ <20140301041330.GO29849@sirena.org.uk>
+ <4D0588EB-C20C-4B24-B656-6175C2309352@martin.sperl.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tBhgiDt8dP1efIIJ"
-Cc: Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="Ou5B7nmexOOGXbzo"
+Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org,
+	gsi-ynQEQJNshbs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1393772510.4044.9.camel@phoenix>
+In-Reply-To: <4D0588EB-C20C-4B24-B656-6175C2309352-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---tBhgiDt8dP1efIIJ
+--Ou5B7nmexOOGXbzo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Mar 02, 2014 at 11:01:50PM +0800, Axel Lin wrote:
-> In the implementation of __spi_validate(), spi core will use spi device's max
-> speed as default transfer speed if it is not set for this transfer.
-> So we can remove the same logic in hspi_hw_setup().
+On Sat, Mar 01, 2014 at 12:40:39PM +0100, Martin Sperl wrote:
 
-Applied, thanks.
+> I am not sure if it might make some bus-drivers more complicated
+> /inefficient just to support this zero length.
 
---tBhgiDt8dP1efIIJ
+For most of them it should be relatively straightforward, especially as
+we factor things out into the core so that the drivers don't need to
+implement the delays at all and it's all handled in the core.
+
+> For example: the spi-bcm2835.c driver would do the following with a
+> spi_transfer.len == 0 in the transfer_on method:
+> * enables SPI and wait for interrupt completion
+> * the above which will trigger an interrupt
+> ** in the interrupt we find out that there is nothing to transfer,
+>     so we signal completion to transfer_one, so it may continue.
+> * the main transfer_one will get woken up
+> ** it will do a delay_usecs
+> ** it will handle CS_CHANGE
+> ** it will disable SPI/reset HW again
+
+> So this implementation shows that there is a lot of inefficient
+> overhead/delay just to trigger a delay...
+
+You really ought to be deferring to task context to implement the delays
+anyway - delaying in interrupt context is rude (though doable for very
+short delays).  I'd have expected that the enable/disable to be
+bypassable, unless the hardware needs to be reset between transfers this
+should only be happening when the device goes idle.
+
+> I guess other drivers will show similar code-artefacts and
+> some may even make the implicit assumption it has to be non-zero,
+> which would break functionality those odd devices.
+
+There's lots of stuff that's broken with individual drivers - anything
+that relies on cs_change is going to break with half the drivers out
+there.  Some of this is legitimate hardware limitations (where the /CS
+control is out of the control of software) but a lot of it is just bugs
+due to people open coding things.
+
+--Ou5B7nmexOOGXbzo
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTE9zxAAoJELSic+t+oim9hmUP+gLIDIR2mQkCk0+8ITIPcXJ5
-dp8GxcWhphcIylqiNBwZledryeqEDrG0/8J3QFwhYCVPCeW131SgWnB+mas04vyW
-GidBsyP3ahhGnJMpC++jjTjWHxQL1UZyGpFNSR8+i+VUk5GTO/dMFbLyttoeIYst
-Y7TCbULpG2NTW6GDSRfBaYx4n8ZExNroZt9KtHLTbByXPmGHScYu9ni2qMY3xN7q
-4qboqSAf+jWrDkgwry3RJk2yVwIXu5GeoUgmVK5Zyu4LIGNrTZbxJHRncV5ZgbMu
-sAusTseyNi4DRrUlOrrXU35NsnEmCkb44vIXxVaE9OJTy0owMSR6ETEgGRuwdeL+
-PRXwG6L5FxQE3bZC8mxHwa9sbWmB9sL2PzA8qNtcN9ODwzcMHErsLB08NBLgPQGl
-GZyx7yKE+OCn5zqSRLOGFFiJGrsi8zEq36jBItf+DZaT3v0X4k5WhoHB4CH5INah
-sWA8GAhNEu8s92osZUPRF0itTij60j7XzDOa+nVVYEuqDmS19vWCDYVFqcDLHLAD
-oU6yr1a0VyYpvHnvOUaPvOze2+2UpKH6jPlYYkH8QoMn93pA4ReatouZqK7KnFNk
-cS2+xwS6RlMKF7wac1gdWIXgjsviMgWzU3kRNh8DYL4xBLeLNBGnopzLJ+HqzIM4
-5wNAXb/FVztdz9cNY8dV
-=xZag
+iQIcBAEBAgAGBQJTE9VNAAoJELSic+t+oim9WRQP/iQTUHHOtUUo5VsSaVjpneeT
+eQqwV8bWKf9W6gOpsLPP5j+BTkccww5fHSjia1WErAbG/q1qxWjTt7upYoefxB0m
+pyXZMbiopr9YOkpRrP/4+RFcVKnXea6wzr1iPrXMBnEFcC/G4GnwhsNm4cBZdC6W
+JHbYTJWIhub09x4f+fvGLyLoNhqit0B/rEbpVI19f4kTnJeDs37r3JoI0431AMHu
+DucAVjIDt9cF6ggtfn86JeRoURUlv328fPa4fbtX3EFFb5+xPP4OCtlssiDq5C7t
+Z5eGy/lNVCrtg7fKfzF9VDWMdz9OKdQ+l/XHC/lviZbKhVyedRbjEbSqcixDSY0z
+XJTlNkH8fFybTbHkKdf4wuZNYgqkgVcjvlARUD+H/VV4EIj4qMaEw0zl1ibC6ksx
+4gTU1585hHKTAwKFtQRUKt459XyYbJr+KZqbHLHfHUddUiiSGyKj6PXSSB+HEWYc
+SPaeO+U4Hdo/enOj5bQGKHdFIUdOnFv0CubMm4+cOwC2WE5Az+MCIKNcaZCnJ51P
+oEF1jbyx/jwSbI3/TEA/ZA52NL40BMUWyWBZ9SzOlbIv4Q0388lFzdlMPXr6EwNY
+4oBUpRW9hH5Slf8U0tdGxfOynUFXt9lVABzrG7da/H9O14VoHsp6Vr4MnBsE9B10
+X9sZFGQu93Q+dCsNF92t
+=u+wa
 -----END PGP SIGNATURE-----
 
---tBhgiDt8dP1efIIJ--
+--Ou5B7nmexOOGXbzo--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

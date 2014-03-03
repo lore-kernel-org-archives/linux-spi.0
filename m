@@ -1,64 +1,53 @@
-From: Thierry Reding <thierry.reding@gmail.com>
-Subject: Re: [PATCH] spi: core: make zero length transfer valid again
-Date: Mon, 3 Mar 2014 09:26:58 +0100
-Message-ID: <20140303082657.GA3372@ulmo.nvidia.com>
-References: <1393596196-8652-1-git-send-email-anemo@mba.ocn.ne.jp>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH] spi: fsl-dspi: Fix getting correct address for master
+Date: Mon, 3 Mar 2014 16:42:19 +0800
+Message-ID: <CAFRkauC7z4UepyK-oH861OEo62+4b82idWPAkK99vmY0=T3w9A@mail.gmail.com>
+References: <1392353352.19487.1.camel@phoenix>
+	<CAFRkauD3WFBw9VC6h+2bxcnuky7175G47+7tP8=5f4D2PeLpEQ@mail.gmail.com>
+	<20140303014608.GL2411@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="17pEHd4RhPHOinZp"
-Cc: Mark Brown <broonie@kernel.org>, iivanov@mm-sol.com, gsi@denx.de,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1393596196-8652-1-git-send-email-anemo@mba.ocn.ne.jp>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140303014608.GL2411-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+2014-03-03 9:46 GMT+08:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+> On Sun, Mar 02, 2014 at 11:09:41PM +0800, Axel Lin wrote:
+>> 2014-02-14 12:49 GMT+08:00 Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>:
+>> > Current code set platform drvdata to dspi. However, the code in dspi_suspend()
+>> > and dspi_resume() assumes the drvdata is the address of master.
+>> > Fix it by setting platform drvdata to master.
+>
+>> Hi Mark,
+>> I guess this one is for 3.14.
+>
+>> In dspi_probe(),
+>> current code has:
+>>         platform_set_drvdata(pdev, dspi);
+>
+>> However, in dspi_suspend() and dspi_resume(),
+>> current code has:
+>>         struct spi_master *master = dev_get_drvdata(dev);
+>
+> The patch doesn't seem to have been appleid at all?
 
---17pEHd4RhPHOinZp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Ah, right , this one is not yet in your tree.
 
-On Fri, Feb 28, 2014 at 11:03:16PM +0900, Atsushi Nemoto wrote:
-> Zero length transfer becomes invalid since
-> "spi: core: Validate length of the transfers in message" commit,
-> but it should be valid to support an odd device, for example, which
-> requires long delay between chipselect and the first transfer, etc.
->=20
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> ---
->  drivers/spi/spi.c |    5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+And I think a similar patch for coldfire-qspi needs for 3.14 to make
+runtime suspend/resume work.
 
-This fixes a regression on Venice2, where the keyboard controller relied
-on similar behaviour, so even if this is already applied,
+commit  80467f761b01a2df5284661e9bf9876eee6a9573
+spi: coldfire-qspi: Fix getting correct address for *mcfqspi
 
-Tested-by: Thierry Reding <treding@nvidia.com>
+dev_get_drvdata() returns the address of master rather than mcfqspi.
 
-Thanks,
-Thierry
-
---17pEHd4RhPHOinZp
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTFDzRAAoJEN0jrNd/PrOhXRAQALzffvNggGCqfoE1w1AU0HNt
-fA7Jd4GZgGr8jFMBuE9eSWaWG2znyDUDeGasfXWgy/PAzIlCYtElLuwm1qyca9f9
-NMjuiGDzIJdyMY0NIFwKCzsxu1LbrnytYvIBsnTuDrhwx740jZuLYFzbY4iJmZ5U
-Vw6nzZZwLB/lUkQTLkGAW4qJMYSy9tcBlp/DfZ/eShwAL0NwgBJkVwyRkshIBrF7
-t8jXEcs2OFeIYuLZEzxNd0bB5l0TDyxqiC/nKWu0e0UaNe+CctpfDjB4w0p36+yO
-0vyCmhjM6tyWu6yasTgN05IesvU4JgHaIPbv/ZTaPVQhn0TSPRsG4DeFYLDJIINZ
-E73K9JUaGY4flUFt5c/QcL4sxG+t7dl0xG4OMJzL+nnh2RiHW/QipBN+BHf2ZJdn
-xtSUCZvh3gFbv2X4oiDuUOCaTZqWU4MnJum7e35JZKIzoouera7o7PboKKt4f7Ik
-P2ED+ehL8sHK4HxRg8CpG1pRk4utSL9tWuWteQi2Isj/jsQNAOWVMEPfy7F9xAUU
-y4GP51DMlTjPnquGFfIvymr/ShoH7HqCtH7AADSnntPJON26s4x70RGv7HAS0RLt
-JrtukyAO2Gy5UMQtTnBhPhzIaoC4ZcY8dNMhwoo1DYavM9TYqs9tcSwETzVKqx05
-xgrZVYmEb+jpHgsWyCc0
-=WJjo
------END PGP SIGNATURE-----
-
---17pEHd4RhPHOinZp--
+Regards,
+Axel
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

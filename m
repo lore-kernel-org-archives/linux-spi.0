@@ -1,54 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap-uwire: Convert to use bits_per_word_mask
-Date: Mon, 3 Mar 2014 11:58:46 +0800
-Message-ID: <20140303035846.GE2411@sirena.org.uk>
-References: <1392445581.32256.1.camel@phoenix>
+Subject: Re: [RFT][PATCH 1/2] spi: octeon: Remove struct octeon_spi_setup
+ usage
+Date: Mon, 3 Mar 2014 12:00:08 +0800
+Message-ID: <20140303040008.GF2411@sirena.org.uk>
+References: <1392802252.7991.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Fr7jhMP26BSURKlp"
-Cc: Imre Deak <imre.deak-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	protocol="application/pgp-signature"; boundary="8TMLq6GPUuN4DysL"
+Cc: David Daney <david.daney-YGCgFSpz5w/QT0dZR+AlfA@public.gmane.org>,
+	John Crispin <blogic-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1392445581.32256.1.camel@phoenix>
+In-Reply-To: <1392802252.7991.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Fr7jhMP26BSURKlp
+--8TMLq6GPUuN4DysL
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sat, Feb 15, 2014 at 02:26:21PM +0800, Axel Lin wrote:
-> Set bits_per_word_mask so spi core will reject transfers that attempt to use
-> an unsupported bits_per_word value.
+On Wed, Feb 19, 2014 at 05:30:52PM +0800, Axel Lin wrote:
+> Current code uses struct octeon_spi_setup to store max_speed_hz, chip_select and
+> mode settings of current spi device.
 
-Applied, thanks.
+Applied both, thanks.
 
---Fr7jhMP26BSURKlp
+--8TMLq6GPUuN4DysL
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTE/3zAAoJELSic+t+oim91zQP/ju8YoRK1GHUm2PV4rIGDevP
-olksmn+uhAJN2GRHOL/Hq/vl7/jZoFECLP0N53r8vugNhagQbSSy9nBNAX2q3BVs
-3bBdBq6cXOWse/neNK7XK55k+vMN8vwF0ysAWLcbYSMm/+qBUk4LNLa2InNNaRNK
-1sb/6FHe4FCwZlAXa/63M8Wf9Cr0W8lek//59o+mJduMhGPkwYQtp9G1XDFBroAo
-uhZKaMlmU8zWPF4XkxC7/0drlmypOYvLF+oHGDlCKGhTsVg/y7kTi1p7Vh0rBWCa
-zijszfFXuLPCsakZ7E/1siFVmPbKWilatzHsQ25Hwyk70n/nzfdUga8t0jvN/+jO
-cP387X9YrvoIIKoE3pdp+6iR3sn7aUPDE9YTPmfvn7ZpVkttYInloM1j6oroFIJF
-kXYAKhP+WVaWDF6eH87McrAICb9M2wibVekwgMnTXhun47W2MNJj939iVCUyrtZm
-EqGGtyoQZWsfQrTRzg21EDJJzz6FAI0E9heB+vB+52LdAuqceAUaNnAEYMZcU8Ql
-ItY+AeyUY330n7RYI2tndKASGBaRgMrK5Z/z9wc1ce9s0VSFtflX6vENr+pN0hxI
-tTsazI4vbM9SE7e6ep92p5zsDMO270g8fAoBjpSRHIMMiHKPuSIBM/UXUcRo9Ftf
-MXtP4+mJoKV1V5GuHD1e
-=meay
+iQIcBAEBAgAGBQJTE/5FAAoJELSic+t+oim9hCwP/3o2UAVIItilEdDluHGb+YVX
+NHCDX6kl0bFmaE5vb3Jmi61amVhUZKd18gYVcpjSaC5rD4FcFXbSxrhNbACTlvEO
+IBIVhBtA9ggena/VSt2DI8q8TSY+wAJnD5HOk4GMdJYT7DmN6uYpuCwo4o5AY4o+
+wbiK4UMbcbYYijVA66meFESd+XkDNAvJho1O/lXd2d05O/LaHz4afwrSxh60yooT
+MbCRhF3abrXO5+RKXR7AV3Gf88NJ6SgJ+MZVWkH0jaLsRAgSJJygQ23kKRH7vTLe
+PY6IGhI8TtE/oqvidm8ToaxuVOSrbmgBURR1pZtTNBG04ptu1JH1xVfNs3RL1Aiq
++XLB/XPJkl4vRBmZ3EfWtzu0BAebx0x+ZXkF96bM4jCKpx7GN3yhkh75Wz+bMvc1
+r/2oZn7gKtEXaJhPxi8CiCcTsQbCAglpR16MnKJlUe7hixy/9j30xXHxYbKVBuub
+zpI2Mp/AQSYg3md9AY8N/VED1WOL0+q7nQotfYrA893DOS9v0Z5+Xp0LsKm6VUpr
+l6LqDwLkcIKpiuddyTaTfk2MXKuXIbQiStk5PTs4Pf1uTjFTIQh0F7DoL1fbg3lV
+buQm/eLnGXVIUgLt9FJUe9nZJkxkfV56LrJ5MGFr6b+6FqvXYLOPzFAY0KxC8Zg2
+30/ljB53e2Us/5QMPYgW
+=JJjb
 -----END PGP SIGNATURE-----
 
---Fr7jhMP26BSURKlp--
+--8TMLq6GPUuN4DysL--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

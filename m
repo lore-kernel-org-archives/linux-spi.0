@@ -1,60 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: sirf: provide a shortcut for spi command-data
- mode
-Date: Mon, 3 Mar 2014 11:22:41 +0800
-Message-ID: <20140303032241.GB2411@sirena.org.uk>
-References: <1393648697-16865-1-git-send-email-21cnbao@gmail.com>
+Subject: Re: [PATCH] spi: atmel: Remove redundant list_empty checking
+Date: Mon, 3 Mar 2014 11:56:28 +0800
+Message-ID: <20140303035628.GD2411@sirena.org.uk>
+References: <1392810792.9749.0.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="cJfXB9mphngkt5vq"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="sk6NRVTC9kZ6Mrgo"
+Cc: Richard Genoud <richard.genoud-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1393648697-16865-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1392810792.9749.0.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---cJfXB9mphngkt5vq
+--sk6NRVTC9kZ6Mrgo
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 01, 2014 at 12:38:17PM +0800, Barry Song wrote:
-> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
->=20
-> there are many SPI clients which use the following protocal:
-> step 1: send command bytes to clients(rx buffer is empty)
-> step 2: send data bytes to clients or receive data bytes from
-> clients.
+On Wed, Feb 19, 2014 at 07:53:12PM +0800, Axel Lin wrote:
+> This checking is already done in __spi_validate().
 
 Applied, thanks.
 
---cJfXB9mphngkt5vq
+--sk6NRVTC9kZ6Mrgo
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTE/V4AAoJELSic+t+oim9CycP/12xz+lWhRiyOEhmL4CoO0qC
-V59Bii3h6YYf58EQVAjwUlaNbX0AFDTT7sDIBRFXBEUMi14+x9eIu0cisYJqqQD7
-LfFJT427X1JxXOu1xHMTCDDpIdTbV3h9bdsxN+7Vv86LHGoCLbcRS2vrmRoHv8A0
-NcsztgZOC2KoxJJt88v61cO6uI3w/7T2JcpPSP2ddi2hI2KKF+4pxav8RY4Pt2eJ
-0N4yyIQWndNf8DTJBHRjOhL/oxk6F9iYu37qAB7WkQVIlpY6tMEPDCdRB2leydwO
-1CqZ2jjacXUSM0+SHblz0RBMS6xEAuNP9pYLtRttMqKbYA0SeJSLUWqh+1v0PuoZ
-/DNVtO2qUdYQM9eN3y7vK0IWYsY2N58PYHyBIEgXF3TBdXmHrTcgCOSNGRb9P054
-x4Ou8RGvF5N5fd0zlezID26JTYUZp2u6Ynwz3yB54PT7SMKb7ssxnUHJ1BuqbF1W
-ozaoWiuabgWwDSMu9bLu9iMN6G9cC7+Q41/sDswy7P7M2YH9nEpO1Snw1NwMVrnf
-kLqZZIah9mIQfXpnKDBEGB0vAyMbDtZtgZHGZ/fgR65V4JWmJA+2enBBa5n7JeEZ
-Y6zjmzDvW4Xa06HAhKWmGjedCRCV2rzZP/Wo3CgZI2OArOwUmdNFweG+5UxK3CCz
-Ka2Um7NPT/CQ58bBf7i+
-=0RpB
+iQIcBAEBAgAGBQJTE/1pAAoJELSic+t+oim94XoP/1fXCZCloDrqy+sxhgIY9uO4
+wv3GQopP0KUOfBoQIk+S4DO5FPmRc1iUcdUZGSG3FmPdewb9pLEyZIujxOSUhMs0
+JuJRfbYrjsVWs4/dExK3ZGnQryUUQR4GfH3lhYW8RNfmQi76u3w9jj6naH2Twik6
+zOQTcKgO1Kuwui8p7C6KFmKYepjnky+5NtMhtWbQx642Dz7RmCXOtbEl1j2n0AaE
++k2wZBDK5EEcYrkY8Uw6x8vGrZlIaFPDvco0GWIMpNF+ZLMK8oTCGfeKVAkCFUOL
+Va+IUpiAX0W89L+UWJ2urYxlshdME5/CZcZ5DEVkikF679hdDrm6HmcCH+EG7O31
+xNMHpZQ1qVr4iAO2At2Wc2wJmN2STlGtiyC4aqBwwHQE89LUSSFNu0DLhnk7Y9AU
+LDpCvnZW6wCZ/2yYNKsCJuLswW7QoRHXEpST0iwIUJn9rR7peP9VmZfQSV+uORnH
+zU76Q+7dDBZppP0PWLgj44UMcOHXLpuCAcKtTwNjkUsSjbMVKwChtU4TXPrMtRNw
+ItQgxfcHXkV1ve7EdOy0jSNW8cMbm3Wf/42xz0IvL9qwoMtUJKqyjeMR/iLUdnax
+0W3la1Ibs0mNWS/PHV4YvcRFqbff/O1EwKIT98CTX96IImCzi05JbVJ8/+bIvIFr
+EZWZ/drXxZwf9g4c0jo6
+=eR1z
 -----END PGP SIGNATURE-----
 
---cJfXB9mphngkt5vq--
+--sk6NRVTC9kZ6Mrgo--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

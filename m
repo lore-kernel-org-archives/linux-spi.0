@@ -1,76 +1,68 @@
-From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Subject: Re: [PATCH] spi: xcomm: Remove duplicate code to set default bits_per_word
- and max speed
-Date: Mon, 03 Mar 2014 09:54:21 +0100
-Message-ID: <5314433D.10104@metafoo.de>
-References: <1393771721.4044.7.camel@phoenix>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: sun6i: Set bits_per_word_mask to only support 8
+ bits word length
+Date: Mon, 3 Mar 2014 14:56:28 +0100
+Message-ID: <20140303135628.GA607@lukather>
+References: <1393770310.4044.0.camel@phoenix>
+ <1393770358.4044.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="lymARMIdFDV9dylT"
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1393771721.4044.7.camel@phoenix>
+Content-Disposition: inline
+In-Reply-To: <1393770358.4044.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 03/02/2014 03:48 PM, Axel Lin wrote:
-> In the implementation of __spi_validate(), spi core will set transfer
-> bits_per_word and max speed as spi device default if it is not set for
-> this transfer. So we can remove the same logic in spi_xcomm_setup_transfer().
-> Also remove a redundant code to initialize is_first variable.
->
+
+--lymARMIdFDV9dylT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sun, Mar 02, 2014 at 10:25:58PM +0800, Axel Lin wrote:
+> This controller only supports 8 bits word length.
+> Set bits_per_word_mask so spi core will reject transfers that attempt to =
+use
+> an unsupported bits_per_word value.
+>=20
 > Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 
-Acked-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-> ---
->   drivers/spi/spi-xcomm.c | 12 ++++--------
->   1 file changed, 4 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
-> index 350a76b..bb478dc 100644
-> --- a/drivers/spi/spi-xcomm.c
-> +++ b/drivers/spi/spi-xcomm.c
-> @@ -73,15 +73,13 @@ static void spi_xcomm_chipselect(struct spi_xcomm *spi_xcomm,
->   static int spi_xcomm_setup_transfer(struct spi_xcomm *spi_xcomm,
->   	struct spi_device *spi, struct spi_transfer *t, unsigned int *settings)
->   {
-> -	unsigned int speed;
-> -
->   	if (t->len > 62)
->   		return -EINVAL;
->
-> -	speed = t->speed_hz ? t->speed_hz : spi->max_speed_hz;
-> +	if (t->speed_hz != spi_xcomm->current_speed) {
-> +		unsigned int divider;
->
-> -	if (speed != spi_xcomm->current_speed) {
-> -		unsigned int divider = DIV_ROUND_UP(SPI_XCOMM_CLOCK, speed);
-> +		divider = DIV_ROUND_UP(SPI_XCOMM_CLOCK, t->speed_hz);
->   		if (divider >= 64)
->   			*settings |= SPI_XCOMM_SETTINGS_CLOCK_DIV_64;
->   		else if (divider >= 16)
-> @@ -89,7 +87,7 @@ static int spi_xcomm_setup_transfer(struct spi_xcomm *spi_xcomm,
->   		else
->   			*settings |= SPI_XCOMM_SETTINGS_CLOCK_DIV_4;
->
-> -		spi_xcomm->current_speed = speed;
-> +		spi_xcomm->current_speed = t->speed_hz;
->   	}
->
->   	if (spi->mode & SPI_CPOL)
-> @@ -147,8 +145,6 @@ static int spi_xcomm_transfer_one(struct spi_master *master,
->   	int status = 0;
->   	bool is_last;
->
-> -	is_first = true;
-> -
->   	spi_xcomm_chipselect(spi_xcomm, spi, true);
->
->   	list_for_each_entry(t, &msg->transfers, transfer_list) {
->
+Thanks!
+Maxime
 
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+
+--lymARMIdFDV9dylT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.14 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTFIoMAAoJEBx+YmzsjxAgbnsP/0k+q40AafoI78NFpD5oGmeU
+gnoSjFi6OKxvv3LMm1x55Z+KA6cFZx8Y7DFIeawCAKleDjR28nZIwSyxegBs0l5a
+m+w8dXrhZBzdw9ukrSTK8SN3t6hbBwfu1G4h6hodqo1lFvNDOiPVtnDQ876PxwDv
+hhUoucjzC8RGP8nn2Q8v+1uXfXMMgukwZaUGEuZtS+nxVo/vMeYFMZtzX756CNdD
+WPrSNIyuoaA9sPQ1XZ4ZDdHsQ4Vbr6AUd3xRnU5P32fimmnXJ/1gTykeqvgQ49nO
+c6WYnA3dUcGwErr1+oCZqjX+jbvdYCfn8/TFJ97LCFBfGmJ3oD/jJ5pHL/9hRAU3
+Dypp2Xps3r6hFuGzn5K/Vl/gUbi+MPUTEuKU1hmc+ZtrDUvlYWOHxDvWiYjMgS1Y
+oTOribEQnK3yNufjRM4kQRgao/wEn6Pw7Xa0PbhDbTu80QgkKzf73+xNgfpUKnJZ
+K+kuZp6EnHCA86uL8QWIr3OJn51ugDmuC6mSgz6hpsy0DSmS2n1+6Oz0equAWmot
+I0RjMRCa1lZMApyGDu3LxJSmCl0rcAbWwKg6LbvHDZSFTnVFOMr/bfNGAsVr+XAo
+5diMetL05pinKbAoju6wOKhqQ/6rvlftQuBd1FIUSCSW00+z/XnjHghj1/xVGWH2
+jAUQvVskwwGZHbnRgXMt
+=gzCg
+-----END PGP SIGNATURE-----
+
+--lymARMIdFDV9dylT--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

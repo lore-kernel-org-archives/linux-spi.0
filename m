@@ -1,90 +1,60 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: core: make zero length transfer valid again
-Date: Mon, 3 Mar 2014 10:05:26 +0900
-Message-ID: <20140303010526.GV29849@sirena.org.uk>
-References: <1393596196-8652-1-git-send-email-anemo@mba.ocn.ne.jp>
- <20140301041330.GO29849@sirena.org.uk>
- <4D0588EB-C20C-4B24-B656-6175C2309352@martin.sperl.org>
+Subject: Re: [PATCH v2] spi: sirf: provide a shortcut for spi command-data
+ mode
+Date: Mon, 3 Mar 2014 11:22:41 +0800
+Message-ID: <20140303032241.GB2411@sirena.org.uk>
+References: <1393648697-16865-1-git-send-email-21cnbao@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Ou5B7nmexOOGXbzo"
-Cc: Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>, iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org,
-	gsi-ynQEQJNshbs@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="cJfXB9mphngkt5vq"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
+	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <4D0588EB-C20C-4B24-B656-6175C2309352-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <1393648697-16865-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Ou5B7nmexOOGXbzo
+--cJfXB9mphngkt5vq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 01, 2014 at 12:40:39PM +0100, Martin Sperl wrote:
+On Sat, Mar 01, 2014 at 12:38:17PM +0800, Barry Song wrote:
+> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+>=20
+> there are many SPI clients which use the following protocal:
+> step 1: send command bytes to clients(rx buffer is empty)
+> step 2: send data bytes to clients or receive data bytes from
+> clients.
 
-> I am not sure if it might make some bus-drivers more complicated
-> /inefficient just to support this zero length.
+Applied, thanks.
 
-For most of them it should be relatively straightforward, especially as
-we factor things out into the core so that the drivers don't need to
-implement the delays at all and it's all handled in the core.
-
-> For example: the spi-bcm2835.c driver would do the following with a
-> spi_transfer.len == 0 in the transfer_on method:
-> * enables SPI and wait for interrupt completion
-> * the above which will trigger an interrupt
-> ** in the interrupt we find out that there is nothing to transfer,
->     so we signal completion to transfer_one, so it may continue.
-> * the main transfer_one will get woken up
-> ** it will do a delay_usecs
-> ** it will handle CS_CHANGE
-> ** it will disable SPI/reset HW again
-
-> So this implementation shows that there is a lot of inefficient
-> overhead/delay just to trigger a delay...
-
-You really ought to be deferring to task context to implement the delays
-anyway - delaying in interrupt context is rude (though doable for very
-short delays).  I'd have expected that the enable/disable to be
-bypassable, unless the hardware needs to be reset between transfers this
-should only be happening when the device goes idle.
-
-> I guess other drivers will show similar code-artefacts and
-> some may even make the implicit assumption it has to be non-zero,
-> which would break functionality those odd devices.
-
-There's lots of stuff that's broken with individual drivers - anything
-that relies on cs_change is going to break with half the drivers out
-there.  Some of this is legitimate hardware limitations (where the /CS
-control is out of the control of software) but a lot of it is just bugs
-due to people open coding things.
-
---Ou5B7nmexOOGXbzo
+--cJfXB9mphngkt5vq
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTE9VNAAoJELSic+t+oim9WRQP/iQTUHHOtUUo5VsSaVjpneeT
-eQqwV8bWKf9W6gOpsLPP5j+BTkccww5fHSjia1WErAbG/q1qxWjTt7upYoefxB0m
-pyXZMbiopr9YOkpRrP/4+RFcVKnXea6wzr1iPrXMBnEFcC/G4GnwhsNm4cBZdC6W
-JHbYTJWIhub09x4f+fvGLyLoNhqit0B/rEbpVI19f4kTnJeDs37r3JoI0431AMHu
-DucAVjIDt9cF6ggtfn86JeRoURUlv328fPa4fbtX3EFFb5+xPP4OCtlssiDq5C7t
-Z5eGy/lNVCrtg7fKfzF9VDWMdz9OKdQ+l/XHC/lviZbKhVyedRbjEbSqcixDSY0z
-XJTlNkH8fFybTbHkKdf4wuZNYgqkgVcjvlARUD+H/VV4EIj4qMaEw0zl1ibC6ksx
-4gTU1585hHKTAwKFtQRUKt459XyYbJr+KZqbHLHfHUddUiiSGyKj6PXSSB+HEWYc
-SPaeO+U4Hdo/enOj5bQGKHdFIUdOnFv0CubMm4+cOwC2WE5Az+MCIKNcaZCnJ51P
-oEF1jbyx/jwSbI3/TEA/ZA52NL40BMUWyWBZ9SzOlbIv4Q0388lFzdlMPXr6EwNY
-4oBUpRW9hH5Slf8U0tdGxfOynUFXt9lVABzrG7da/H9O14VoHsp6Vr4MnBsE9B10
-X9sZFGQu93Q+dCsNF92t
-=u+wa
+iQIcBAEBAgAGBQJTE/V4AAoJELSic+t+oim9CycP/12xz+lWhRiyOEhmL4CoO0qC
+V59Bii3h6YYf58EQVAjwUlaNbX0AFDTT7sDIBRFXBEUMi14+x9eIu0cisYJqqQD7
+LfFJT427X1JxXOu1xHMTCDDpIdTbV3h9bdsxN+7Vv86LHGoCLbcRS2vrmRoHv8A0
+NcsztgZOC2KoxJJt88v61cO6uI3w/7T2JcpPSP2ddi2hI2KKF+4pxav8RY4Pt2eJ
+0N4yyIQWndNf8DTJBHRjOhL/oxk6F9iYu37qAB7WkQVIlpY6tMEPDCdRB2leydwO
+1CqZ2jjacXUSM0+SHblz0RBMS6xEAuNP9pYLtRttMqKbYA0SeJSLUWqh+1v0PuoZ
+/DNVtO2qUdYQM9eN3y7vK0IWYsY2N58PYHyBIEgXF3TBdXmHrTcgCOSNGRb9P054
+x4Ou8RGvF5N5fd0zlezID26JTYUZp2u6Ynwz3yB54PT7SMKb7ssxnUHJ1BuqbF1W
+ozaoWiuabgWwDSMu9bLu9iMN6G9cC7+Q41/sDswy7P7M2YH9nEpO1Snw1NwMVrnf
+kLqZZIah9mIQfXpnKDBEGB0vAyMbDtZtgZHGZ/fgR65V4JWmJA+2enBBa5n7JeEZ
+Y6zjmzDvW4Xa06HAhKWmGjedCRCV2rzZP/Wo3CgZI2OArOwUmdNFweG+5UxK3CCz
+Ka2Um7NPT/CQ58bBf7i+
+=0RpB
 -----END PGP SIGNATURE-----
 
---Ou5B7nmexOOGXbzo--
+--cJfXB9mphngkt5vq--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

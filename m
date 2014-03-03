@@ -1,52 +1,76 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: fsl-dspi: Fix getting correct address for master
-Date: Mon, 3 Mar 2014 16:42:19 +0800
-Message-ID: <CAFRkauC7z4UepyK-oH861OEo62+4b82idWPAkK99vmY0=T3w9A@mail.gmail.com>
-References: <1392353352.19487.1.camel@phoenix>
-	<CAFRkauD3WFBw9VC6h+2bxcnuky7175G47+7tP8=5f4D2PeLpEQ@mail.gmail.com>
-	<20140303014608.GL2411@sirena.org.uk>
+From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Subject: Re: [PATCH] spi: xcomm: Remove duplicate code to set default bits_per_word
+ and max speed
+Date: Mon, 03 Mar 2014 09:54:21 +0100
+Message-ID: <5314433D.10104@metafoo.de>
+References: <1393771721.4044.7.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, Alison Wang <b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140303014608.GL2411-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1393771721.4044.7.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-2014-03-03 9:46 GMT+08:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
-> On Sun, Mar 02, 2014 at 11:09:41PM +0800, Axel Lin wrote:
->> 2014-02-14 12:49 GMT+08:00 Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>:
->> > Current code set platform drvdata to dspi. However, the code in dspi_suspend()
->> > and dspi_resume() assumes the drvdata is the address of master.
->> > Fix it by setting platform drvdata to master.
+On 03/02/2014 03:48 PM, Axel Lin wrote:
+> In the implementation of __spi_validate(), spi core will set transfer
+> bits_per_word and max speed as spi device default if it is not set for
+> this transfer. So we can remove the same logic in spi_xcomm_setup_transfer().
+> Also remove a redundant code to initialize is_first variable.
 >
->> Hi Mark,
->> I guess this one is for 3.14.
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+
+Acked-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+
+> ---
+>   drivers/spi/spi-xcomm.c | 12 ++++--------
+>   1 file changed, 4 insertions(+), 8 deletions(-)
 >
->> In dspi_probe(),
->> current code has:
->>         platform_set_drvdata(pdev, dspi);
+> diff --git a/drivers/spi/spi-xcomm.c b/drivers/spi/spi-xcomm.c
+> index 350a76b..bb478dc 100644
+> --- a/drivers/spi/spi-xcomm.c
+> +++ b/drivers/spi/spi-xcomm.c
+> @@ -73,15 +73,13 @@ static void spi_xcomm_chipselect(struct spi_xcomm *spi_xcomm,
+>   static int spi_xcomm_setup_transfer(struct spi_xcomm *spi_xcomm,
+>   	struct spi_device *spi, struct spi_transfer *t, unsigned int *settings)
+>   {
+> -	unsigned int speed;
+> -
+>   	if (t->len > 62)
+>   		return -EINVAL;
 >
->> However, in dspi_suspend() and dspi_resume(),
->> current code has:
->>         struct spi_master *master = dev_get_drvdata(dev);
+> -	speed = t->speed_hz ? t->speed_hz : spi->max_speed_hz;
+> +	if (t->speed_hz != spi_xcomm->current_speed) {
+> +		unsigned int divider;
 >
-> The patch doesn't seem to have been appleid at all?
+> -	if (speed != spi_xcomm->current_speed) {
+> -		unsigned int divider = DIV_ROUND_UP(SPI_XCOMM_CLOCK, speed);
+> +		divider = DIV_ROUND_UP(SPI_XCOMM_CLOCK, t->speed_hz);
+>   		if (divider >= 64)
+>   			*settings |= SPI_XCOMM_SETTINGS_CLOCK_DIV_64;
+>   		else if (divider >= 16)
+> @@ -89,7 +87,7 @@ static int spi_xcomm_setup_transfer(struct spi_xcomm *spi_xcomm,
+>   		else
+>   			*settings |= SPI_XCOMM_SETTINGS_CLOCK_DIV_4;
+>
+> -		spi_xcomm->current_speed = speed;
+> +		spi_xcomm->current_speed = t->speed_hz;
+>   	}
+>
+>   	if (spi->mode & SPI_CPOL)
+> @@ -147,8 +145,6 @@ static int spi_xcomm_transfer_one(struct spi_master *master,
+>   	int status = 0;
+>   	bool is_last;
+>
+> -	is_first = true;
+> -
+>   	spi_xcomm_chipselect(spi_xcomm, spi, true);
+>
+>   	list_for_each_entry(t, &msg->transfers, transfer_list) {
+>
 
-Ah, right , this one is not yet in your tree.
-
-And I think a similar patch for coldfire-qspi needs for 3.14 to make
-runtime suspend/resume work.
-
-commit  80467f761b01a2df5284661e9bf9876eee6a9573
-spi: coldfire-qspi: Fix getting correct address for *mcfqspi
-
-dev_get_drvdata() returns the address of master rather than mcfqspi.
-
-Regards,
-Axel
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

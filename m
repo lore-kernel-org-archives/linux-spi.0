@@ -1,55 +1,80 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-ath79: fix initial GPIO CS line setup
-Date: Mon, 3 Mar 2014 12:39:44 +0800
-Message-ID: <20140303043944.GK2411@sirena.org.uk>
-References: <1393790082-23964-1-git-send-email-juhosg@openwrt.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/5] spi: remove obsolete spi-ti-ssp driver
+Date: Mon, 3 Mar 2014 14:38:58 +0800
+Message-ID: <20140303063858.GT2411@sirena.org.uk>
+References: <1393418614-3968549-1-git-send-email-arnd@arndb.de>
+ <1393418614-3968549-4-git-send-email-arnd@arndb.de>
 Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="===============5203402687077385348=="
+Cc: davinci-linux-open-source@linux.davincidsp.com,
+ Kevin Hilman <khilman@deeprootsystems.com>, Sekhar Nori <nsekhar@ti.com>,
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+ Cyril Chemparathy <cyril@ti.com>, linux-arm-kernel@lists.infradead.org
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-Reply-To: <1393418614-3968549-4-git-send-email-arnd@arndb.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
+
+
+--===============5203402687077385348==
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4xmAKYnxoHNXa3WQ"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="hdoY8pikdvrkIRAT"
 Content-Disposition: inline
-In-Reply-To: <1393790082-23964-1-git-send-email-juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
 
 
---4xmAKYnxoHNXa3WQ
+--hdoY8pikdvrkIRAT
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Mar 02, 2014 at 08:54:42PM +0100, Gabor Juhos wrote:
-> The 'ath79_spi_setup_cs' function initializes the chip
-> select line of a given SPI device in order to make sure
-> that the device is inactive.
+On Wed, Feb 26, 2014 at 01:43:32PM +0100, Arnd Bergmann wrote:
+> The tnetv107x platform is getting removed, so this driver
+> will not be needed any more.
 
-Applied, thanks.
+If you get the acks you're looking for can you please resend with them?
 
---4xmAKYnxoHNXa3WQ
+--hdoY8pikdvrkIRAT
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTFAeNAAoJELSic+t+oim9WtEP/RRtix2OuS8R6KmeWZlBAfnf
-IYQ+rLHuc9H48Ph+RhH4JVtwce8dVQJiCmT8Gq5WQvFbRk9dZUmhmjBgnLHJvLcu
-vL5earNKScZTV1+xd0BCAKFIv98ZugW92tY9ee2osnJ0G/4swGQhBXvTJCgQZxh1
-bkIRuZe5OCPSoGrpebjrc+SYeBPjVXiuNEWQ/31J8gxkq055J9o7izkQV++zNzLD
-VHBM6I23cqVL1IgVxEWhWbtfB2aoTk6bPAp4WKFbBF0esG1KF4WZPeaVUKc90oCp
-bUXLP5Xw9cxaND1EzDbGHMQdAVVWOcSPJhex3Gq2ceZNvmLZVlcv0lbroBPCeYj1
-FOrAhmF3uk5yhvW26pYCtNVPAD/NDz3exPBO2YUG9u6YToEODgZzmLXM1G9tDdsm
-pLMK0ZLt4gn50yzk5yUrxNq5wNCy/aw2x1Us7A9qessuVpH+VHCB916YMDF+CUSR
-XXTvDjq5mA7qnR2Zh07hSkFxqNPsUVaTqD4+jjkMp+4Pp+07L0xQABuFBYyAa/XS
-MFknwTJ8ojPfIQ6Y0QPtNDXSjsuxt/M2a+5P/frYG8dQ5GP/XDRj7hVQQNi8yGP3
-EMfW5c4bKsV30In/iQ0r/q0baHJXwDB52hGyIJHX6LzdFqAuE6GrkAt3UW+f0hFZ
-JwtMRuGAmIwyy+NhKbNj
-=TF1b
+iQIcBAEBAgAGBQJTFCN+AAoJELSic+t+oim9cYoP/j+u6ql/XwqS1q+bUJF6n0mb
+jQXPmPeGmF7BZNRqd/P5AQAxoDdLmL9m7q8wle2VtQ6SsesxvWSXZyKDLX3D8+R/
+ExXdo4ysQfeteO51jD4NsgobYOyRx/qE9xnj9FKdILv30FLE9qR73eXNM++nK5y3
+fh6rRQ6SgXxuRETv7Yr78oTPduScyQkCuOgSoW/G6Xm4feEu7LoaxvVzcS3qVWUS
+oUvu2rVU3kQsPfDWdEIoKpNXHll3XZuyf6bkiqwImiFq5rfIeQBzNMyxvZbFMcBa
+SJWDTdNKMvflzA6L0GHJVZ/Emw1VAUsSRxyp8eGSz2qVcULBAp72CxfA0yTXvox7
+lUpq75/tJe31ZFTt2f8qJzxRInJy5+l7otu2CvktziwiZCg6xykb9L19MgIrDiGD
+MNqe7beEbIIz3C66/ILhVgzwBLKwzCwbaab8iaPK9CrEzesi1CgpESyHf31oZiOZ
+TpYOl8rDwwVa6ewKqFkVVb1nM0P10lgwGIXmCx8+ofvLp4W9JsWVeo1A4wPWpD/u
+LZVPqK3s4uvdHh6CoI63kqS4poJDy8yzXQhz0bMOAJnN7qWBs//krvxkY8S1BleX
+2YOeXVeZQBIQbLXWJEOWUggUA1SjHYELt6enQxqUXfRQpd71/CPpXJ2oteG8VT/O
+YHlIKsd4k/WBaW8DrJZX
+=1MR/
 -----END PGP SIGNATURE-----
 
---4xmAKYnxoHNXa3WQ--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--hdoY8pikdvrkIRAT--
+
+
+--===============5203402687077385348==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+linux-arm-kernel mailing list
+linux-arm-kernel@lists.infradead.org
+http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
+--===============5203402687077385348==--

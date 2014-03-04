@@ -1,67 +1,56 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: sun4i: Set bits_per_word_mask to only support 8
- bits word length
-Date: Mon, 3 Mar 2014 14:55:49 +0100
-Message-ID: <20140303135549.GZ607@lukather>
-References: <1393770310.4044.0.camel@phoenix>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: xcomm: Remove duplicate code to set default
+ bits_per_word and max speed
+Date: Tue, 4 Mar 2014 11:19:38 +0800
+Message-ID: <20140304031938.GX2411@sirena.org.uk>
+References: <1393771721.4044.7.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EpsErgVOvBDllgej"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	protocol="application/pgp-signature"; boundary="m0OTIrBz/ErRqy1N"
+Cc: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1393770310.4044.0.camel@phoenix>
+In-Reply-To: <1393771721.4044.7.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---EpsErgVOvBDllgej
+--m0OTIrBz/ErRqy1N
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 02, 2014 at 10:25:10PM +0800, Axel Lin wrote:
-> This controller only supports 8 bits word length.
-> Set bits_per_word_mask so spi core will reject transfers that attempt to =
-use
-> an unsupported bits_per_word value.
->=20
-> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+On Sun, Mar 02, 2014 at 10:48:41PM +0800, Axel Lin wrote:
+> In the implementation of __spi_validate(), spi core will set transfer
+> bits_per_word and max speed as spi device default if it is not set for
+> this transfer. So we can remove the same logic in spi_xcomm_setup_transfer().
+> Also remove a redundant code to initialize is_first variable.
 
-Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Applied, thanks.
 
-Thanks!
-Maxime
-
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
-
---EpsErgVOvBDllgej
+--m0OTIrBz/ErRqy1N
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.14 (GNU/Linux)
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTFInlAAoJEBx+YmzsjxAgz8sQAKm05sm/M6zIZmTLDfk1JlUr
-2i2pBHfI9xFln1xAryo7UW63xe9qkqVD6L1aL4zprSzqnF+SHEZ+ZGD/xQiTbdhE
-00ZqF2h73ScgFFecTbRT5L+06pLdKkq8ax5pU0fmy+hgLaEauvRWTNEK0lCKUqFJ
-gAzu/TZ+FIR/MghoBH05hXTW0YfjVZaVO4W/ocsz2UsOhnwExNAZDom6BkMgsMSv
-rQHBrMAZCen+4zsQIGEpnCBq+b2g7QYawDKuce8IQEEv2ZdX0RXPMRtjNf2cXbst
-8YuK02rDacS9ZMqKfu1edREgk3x5N0jvv1NulF+PBNmlx/sxV6eTjwiNtPfhE1zP
-WNoLKqSGBz3chKD3L91rbuojz9va9IDSjb7HQj9p4yDsJ8JIRfsWO5NmKX3oyxIJ
-P5nKc6YgScfyi0sAav3ZQW4yvHYeocS+Z0w/x1NMK7b3DN3i7qe3/xBHgOFt1mIk
-wcq5BECQdx0fPTa7gt1W5+K5YJ1P0gxgHZVKS67ZwUhEQc0MmvMv0d27lNYnsG9u
-0nQq+ANJAKGIbsjUSL9u3qJ4xLXEXhioiosUiaRNNgO51uFj3K5qNHej5XLWPGPv
-95fHU8hSLw2H8pdC7IcbqjUfzPEf2Ncl5zCsTCb2Egu+321TsL0/Ijc7LPSg77HC
-fZwuK894k6s6J8HKFArj
-=5fDo
+iQIcBAEBAgAGBQJTFUZGAAoJELSic+t+oim9miMP/2MeDlBO0Ff0LfM9YRW4O4gw
+tfzYdaPycKgTQfysR5Ono6Wf3ePtn1nmVi3YejYXagJ0JIhkC6nvS44Lc251HHPq
+ZQEQb/LzZtdZuJnC5hHxw/2x7MsU7GL68B9Ej6jc5+Er9P2GUDidWifeEOV80Xst
+p2r7AtlRth2jVlci9p3cGGGBpEkiFURewWGQLO/Akr0lb1P1OjlC1vAaBxAfsdna
+OZ0yiZBYBQ3DbeZylaGa4xF5M4l9YU38KJsiowE//ADY7DwUj9PQdE+P15wgxdGm
+1XR0y7+FQTrt8RKqAio8Y0CRv62R0P5KPZxXuzRc3Uy94rsvcpL9K4QG2hbCkdxB
+SuQhzyZwjPkFRm7Aowg9sfB5JH6wI5yqKTM5SwTLU6V/QJEuQsPM63Z5cEbBu64f
+IBV5CTc8W8rNnbJVXUxrWgpxElGlqe1cZNEV0kG5xaDMdTWn4/sj2oYNFLUVPgPx
+76wWNt7O8kUDdh9yXoLuL6YsDGck4HdEbndBagjJ2zx06KMVsEmf3OKfTY1wZDeO
+PBmuDl3gfXfE3yKud2XpFkOsIhhcaD2l47iOOD0kSvSKCUkB80ttaLJNBJ4mADV5
+ifw6oeQRyZfHv+djnQbFU99FnTg3YeAH4bOI8gXYowFoseV9IqJL6JsPmZaymAWG
+CwYazQQ8rmVKbHlrVATD
+=eOnF
 -----END PGP SIGNATURE-----
 
---EpsErgVOvBDllgej--
+--m0OTIrBz/ErRqy1N--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

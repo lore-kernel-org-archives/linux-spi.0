@@ -1,69 +1,55 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi-topcliff-pch: Fix probing when DMA mode is used
-Date: Tue, 4 Mar 2014 12:44:22 +0800
-Message-ID: <20140304044422.GJ2411@sirena.org.uk>
-References: <1393428679-18462-1-git-send-email-alexander.stein@systec-electronic.com>
- <1998640.ToDhBRKzdY@ws-stein>
- <20140228034331.GG9383@sirena.org.uk>
- <2382434.oQkeY8Zb6p@ws-stein>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: clps711x: Provide label argument for devm_gpio_request
+Date: Tue, 04 Mar 2014 12:59:53 +0800
+Message-ID: <1393909193.18753.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="hZw0Sfr4I7XguZav"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <2382434.oQkeY8Zb6p@ws-stein>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The label argument was removed by commit 989847967cd762
+spi: clps711x: Use devm_gpio_request(), add it back.
+This makes it easier to know the gpio usage in /sys/kernel/debug/gpio.
 
---hZw0Sfr4I7XguZav
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Also remove unnecessary gpio_is_valid() checking, devm_gpio_request() returns
+error if the requested gpio is invalid.
 
-On Mon, Mar 03, 2014 at 08:21:16AM +0100, Alexander Stein wrote:
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-clps711x.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-Fix your mailer to word wrap within paragraphs so that your mail is
-legible.
+diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
+index 3900c31..2b60935 100644
+--- a/drivers/spi/spi-clps711x.c
++++ b/drivers/spi/spi-clps711x.c
+@@ -158,14 +158,10 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		master->cs_gpios[i] = pdata->chipselect[i];
+-		if (!gpio_is_valid(master->cs_gpios[i])) {
+-			dev_err(&pdev->dev, "Invalid CS GPIO %i\n", i);
+-			ret = -EINVAL;
+-			goto err_out;
+-		}
+-		if (devm_gpio_request(&pdev->dev, master->cs_gpios[i], NULL)) {
++		ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
++					DRIVER_NAME);
++		if (ret) {
+ 			dev_err(&pdev->dev, "Can't get CS GPIO %i\n", i);
+-			ret = -EINVAL;
+ 			goto err_out;
+ 		}
+ 	}
+-- 
+1.8.1.2
 
-> Well, i think this is a rather rarely use case. You need either all
-> drivers compiled in where the SPI device driver is loaded before SPI
-> master or you need SPI master als module while the SPI device driver
-> is already compiled in. Oh, and the SPI device driver must do a SPI
-> transfer during probe. So the conditions are reptty strict when this
-> problem might happen.
 
-> PS: On EG20T (PCH) it seems this will never happen as the DMA channels
-> are allocated wrongly (see other patch from me) andso DMA will never
-> be used.
 
-OK, so this doesn't sound terribly urgent then?  It's hard to see and
-other bugs mean it wouldn't be triggered anyway?
-
---hZw0Sfr4I7XguZav
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTFVoiAAoJELSic+t+oim9sWoP/2Dn9a4QtFG9YQdg0622Xi7S
-gkFaOoPaxP2hOZBmdTGTXNOAM26l1ujbqsuk7O9HrsySDoX6SvCELAGlo8eNTOPd
-epIOIw/3XJ3VK2IM+v456cSUcXVBtcsO0grTIaojpj+SkSkUxReJJSarpUUUMKpO
-MKGcpzGsV0r7kCc9it4/0FMxd7c4vyLMUxsHGV6f7FGqiEaxDkC/ng3+7lsT5TnY
-JTaFmhBJSscsrXzIb7fG0EmKbmyaLwIVY5PvP+f37hNYhXb5H5toc+fOUMzt+PK8
-wdBySz07RRfXs99bn4rWSpMPD5RIJfTJYf1A9bUfABdhQjhCgLtNSvqPAM7Z1L5p
-mQsxwJG2kTipgVrYgSUy4ceponX6tMmeMi24ROQTtXDFi4ikDfkVMXUtXsKkwjxO
-u4tgKyAlH6ruMfd9ZGNrxmeu6EAzVCHsOFrY3S3w1mrxGgucG7mvpx+qgGLRjQvB
-IhSW2/kL7g3AVQhqnw2AUnnnlJalCxvkZZoBbG+uXOrEbAJGOz8BpNUosUyrVOyt
-ag2SeRCSNASo5kxIdCphIuXH1ppRz1E6mT71sEd5Eel6QF9hmv2kNu53vEUKpz08
-YbplMLDO28TXOLE940gTXYnc87sc9utU+gEydYqoMJwgChlpDMbz1NNm/NB52sgb
-vzD01ucfaRJNvnnvyVXs
-=97/S
------END PGP SIGNATURE-----
-
---hZw0Sfr4I7XguZav--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

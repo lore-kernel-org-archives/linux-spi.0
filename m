@@ -1,66 +1,21 @@
-From: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Subject: Re: [PATCH 2/2] ARM: dts: sama5d36ek: add spi pinctrl sleep state
-Date: Wed, 5 Mar 2014 10:22:11 +0100
-Message-ID: <20140305092211.GB4441@piout.net>
-References: <1393984730-14828-1-git-send-email-wenyou.yang@atmel.com>
- <1393984730-14828-3-git-send-email-wenyou.yang@atmel.com>
+From: Loans <shoude.chang-0M75owFSaTA@public.gmane.org>
+Subject: Loan Application
+Date: Wed, 5 Mar 2014 17:06:41 +0530
+Message-ID: <8e43af9b-e1cb-4c98-8a86-294cc0fe0cce__45390.1922250681$1394019791$gmane$org@NRCCENHTS1.nrc.ca>
+Reply-To: standard11-16C6IfV3UN8AvxtiuMwx3w@public.gmane.org
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: broonie@kernel.org, nicolas.ferre@atmel.com, plagnioj@jcrosoft.com,
-	robh+dt@kernel.org, pawel.moll@arm.com, mark.rutland@arm.com,
-	ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
-	linux@arm.linux.org.uk, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org
-To: Wenyou Yang <wenyou.yang@atmel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1393984730-14828-3-git-send-email-wenyou.yang@atmel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+To: Recipients <shoude.chang-0M75owFSaTA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Description: Mail message body
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
+Loan Application at a low rate of 0.5% send your Name,Amount,Phone and country to standard11-16C6IfV3UN8AvxtiuMwx3w@public.gmane.org
 
-On 05/03/2014 at 09:58:50 +0800, Wenyou Yang wrote :
-> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
-> ---
->  arch/arm/boot/dts/sama5d36ek.dts |   14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/sama5d36ek.dts b/arch/arm/boot/dts/sama5d36ek.dts
-> index 59576c6..676d121 100644
-> --- a/arch/arm/boot/dts/sama5d36ek.dts
-> +++ b/arch/arm/boot/dts/sama5d36ek.dts
-> @@ -18,6 +18,8 @@
->  	ahb {
->  		apb {
->  			spi0: spi@f0004000 {
-> +				pinctrl-names = "default", "sleep";
-> +				pinctrl-1 = <&pinctrl_spi0_sleep>;
->  				status = "okay";
->  			};
->  
-> @@ -44,6 +46,18 @@
->  			macb1: ethernet@f802c000 {
->  				status = "okay";
->  			};
-> +
-> +			pinctrl@fffff200 {
-> +				spi0 {
-> +					pinctrl_spi0_sleep: spi0-1 {
-> +						atmel,pins =
-> +							<AT91_PIOD 10 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT_LOW	/* PD10 GPIO Output Low */
-> +							 AT91_PIOD 11 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT_LOW	/* PD11 GPIO Output Low */
-> +							 AT91_PIOD 12 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT_LOW>;	/* PD12 GPIO Output Low */
-
-I think that one would belong to the dtsi as this is generic enough.
-
-Also, it was suggested by Mark that list entries should be bracketed
-separately. But I guess we may not want to mix styles in the same file.
-Nicolas, what do you think ?
-
-
--- 
-Alexandre Belloni, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
+Note: $5,000.00 USD minimum and $100,000,000 Maximum.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

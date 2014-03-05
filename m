@@ -1,41 +1,55 @@
-From: Huang Shijie <b32955@freescale.com>
-Subject: Re: [PATCH v5 1/8] mtd: spi-nor: copy the SPI NOR commands to a new
- header file
-Date: Wed, 5 Mar 2014 13:45:22 +0800
-Message-ID: <5316B9F2.8050301@freescale.com>
-References: <1393238262-8622-1-git-send-email-b32955@freescale.com> <201403042313.14353.marex@denx.de> <5316932C.5040405@freescale.com> <201403050443.19529.marex@denx.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: fsl-dspi: Use SIMPLE_DEV_PM_OPS macro
+Date: Wed, 5 Mar 2014 14:05:28 +0800
+Message-ID: <20140305060528.GP13126@sirena.org.uk>
+References: <003801cf3292$0b03b4c0$210b1e40$%han@samsung.com>
+ <003901cf3292$4cb09a50$e611cef0$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <linux-mtd@lists.infradead.org>, <dwmw2@infradead.org>,
-	<angus.clark@st.com>, <shawn.guo@linaro.org>,
-	<b44548@freescale.com>, <broonie@linaro.org>,
-	<linux-doc@vger.kernel.org>, <b18965@freescale.com>,
-	<linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<pekon@ti.com>, <sourav.poddar@ti.com>,
-	<computersforpeace@gmail.com>, <lee.jones@linaro.org>,
-	<linux-arm-kernel@lists.infradead.org>
-To: Marek Vasut <marex@denx.de>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <201403050443.19529.marex@denx.de>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-=E4=BA=8E 2014=E5=B9=B403=E6=9C=8805=E6=97=A5 11:43, Marek Vasut =E5=86=
-=99=E9=81=93:
-> Why didn't you keep it like that? Was there some reason for that ?
-http://marc.info/?l=3Dlinux-arm-kernel&m=3D138545182232220&w=3D4
-
-Pekon suggestted  do not touch the m25p80.c.
-So i just copy these commands to a new header.
-Anyway, it's really not an important issue for me. :)
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ScBGguMCFzdFq7Io"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Chao Fu' <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	'Xiubo Li' <Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <003901cf3292$4cb09a50$e611cef0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
+--ScBGguMCFzdFq7Io
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-thanks
-Huang Shijie
+On Wed, Feb 26, 2014 at 10:30:14AM +0900, Jingoo Han wrote:
+> Use SIMPLE_DEV_PM_OPS macro in order to make the code simpler.
 
+Applied, thanks.
 
+--ScBGguMCFzdFq7Io
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
+iQIcBAEBAgAGBQJTFr6gAAoJELSic+t+oim9f+MP/3CjAEUlyIatm26sSgeP+GT5
+I3hTnGhpD2bubbpIFPWCUCir6g9wVjAE3CFa/Ykfe35BpHyaJ4YDmOXW5IlhWDP3
+Uo5b4tVjn3KuZ3ZBk0GfXv5Y073fNHEXEolzdbND8fStVuKsmwUT8Uc0Og19pRLc
+uBcPzKzIyHb9vJt4msJfmvZtXKlj3pXOz5A/J6YVIAmlq9LH3CN2t7f7DmoyT8ny
+vmlz8lNmDHo6JiLdDkhbfC4xJm8xPEI1Aj704ODVA6HE13aAwiRGgSzjkxy5GRSU
+FSV2EgQ4IfCQxH5rR+drlDAUpqFIcXoxtltq75yHduwnwB3jUChUyc89ADcrKrAK
+HVaGe6y5y5jH6gIRwG3d/uxkPzxpbziyBrKrvbe28uI8UiD6+ny8gEDH73wQiM+g
+QtLNQ858K1/sxEX8tpMWfAMNjzCRMNtTLMdkxaI1RMJcGmMvVbKP4YeXoS52gyRM
+PfdcsQw6QHfhSD0R3KIV9kTiKPMtBD3Opulb0p6ucFfjJhM4GgIfCYIVdlBWPs6J
+9WJR2H98aLNHavH0Ff3faY4bAK04ibueBpVpF3k0DI/fmCMKsQ3/jOuaIFSvJKDP
+nU7JKoFCpAYMIDvFIaSzOFvCwcrHPINa5vnH7v7N2Qkkm7mnWmH8Oz4ZzKrC2pri
+nRWux99zZkmSQCe5DXQn
+=JhkQ
+-----END PGP SIGNATURE-----
+
+--ScBGguMCFzdFq7Io--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

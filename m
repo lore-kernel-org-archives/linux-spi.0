@@ -1,75 +1,44 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH v5 0/8] mtd: spi-nor: add a new framework for SPI NOR
-Date: Tue, 4 Mar 2014 23:17:29 +0100
-Message-ID: <201403042317.29722.marex@denx.de>
-References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
+From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/2] spi: atmel: adopt pinctrl support
+Date: Wed, 5 Mar 2014 09:58:48 +0800
+Message-ID: <1393984730-14828-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Huang Shijie <b32955@freescale.com>, dwmw2@infradead.org,
-	angus.clark@st.com, shawn.guo@linaro.org, b44548@freescale.com,
-	broonie@linaro.org, linux-doc@vger.kernel.org,
-	b18965@freescale.com, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-mtd@lists.infradead.org,
-	pekon@ti.com, sourav.poddar@ti.com, computersforpeace@gmail.com,
-	lee.jones@linaro.org
-To: linux-arm-kernel@lists.infradead.org
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1393238262-8622-1-git-send-email-b32955@freescale.com>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	<plagnioj-sclMFOaUSTBWk0Htik3J/w@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	<linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Monday, February 24, 2014 at 11:37:34 AM, Huang Shijie wrote:
-> 1.) Why add a new framework for SPI NOR?
->   The SPI-NOR controller such as Freescale's Quadspi controller is working
->   in a different way from the SPI bus. It should knows the NOR commands to
->   find the right LUT sequence. Unfortunately, the current code can not meet
->   this requirement.
-> 
-> 2.) How does this patch set do?
->    This patch set adds a new spi-nor layer.
->    Before this patch, the layer is like:
-> 
->                    MTD
->          ------------------------
->                   m25p80
->          ------------------------
-> 	       spi bus driver
->          ------------------------
-> 	        SPI NOR chip
-> 
->    After this patch, the layer is like:
->                    MTD
->          ------------------------
->                   spi-nor
->          ------------------------
->                   m25p80
->          ------------------------
-> 	       spi bus driver
->          ------------------------
-> 	       SPI NOR chip
-> 
->   With the spi-nor controller driver(Freescale Quadspi), it looks like:
->                    MTD
->          ------------------------
->                   spi-nor
->          ------------------------
->                 fsl-quadspi
->          ------------------------
-> 	       SPI NOR chip
-> 
-> 3.) more details
->     This patch set adds a new data structrue spi_nor{}, clones most the
-> common code to spi-nor.c. Add spi_nor_xfer_cfg {} for the fundamental
-> primitives: read_xfer/write_xfer.
-> 
->     Make the m25p80.c/fsl_quaspi.c use the new APIs.
-> 
-> 4.) Change log:
-> v4 --> v5:
-> 	[1] rebase the patch set on the l2-mtd tree.
-> 	[2] fixed bugs in the fsl-quadspi driver.
-> 	[3] tested the fsl-quadspi with imx6sx board.
+Hi Mark, 
 
-It's starting to take a really nice shape, I really like it :)
+This patch is to adopt pinctrl support to optimize energy usage for the pins
+both for the suspend/resume cycle.
+
+The patch is based on the branch: for-next
+git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git
+
+Best Regards,
+Wenyou Yang
+
+Wenyou Yang (2):
+  spi: atmel: adopt pinctrl support
+  ARM: dts: sama5d36ek: add spi pinctrl sleep state
+
+ arch/arm/boot/dts/sama5d36ek.dts |   14 ++++++++++++++
+ drivers/spi/spi-atmel.c          |    9 +++++++++
+ 2 files changed, 23 insertions(+)
+
+-- 
+1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

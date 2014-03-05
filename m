@@ -1,55 +1,52 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: omap-100k: fix spacing coding style issue
-Date: Wed, 5 Mar 2014 12:35:32 +0800
-Message-ID: <20140305043532.GM13126@sirena.org.uk>
-References: <003101cf3291$8948f3a0$9bdadae0$%han@samsung.com>
- <003701cf3291$def77600$9ce66200$%han@samsung.com>
+Subject: Re: [PATCH 1/3] spi: bcm63xx-hsspi: Use SIMPLE_DEV_PM_OPS macro
+Date: Wed, 5 Mar 2014 12:53:50 +0800
+Message-ID: <20140305045350.GO13126@sirena.org.uk>
+References: <003801cf3292$0b03b4c0$210b1e40$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="oWg8wBefE/MWazfQ"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Cory Maccarrone' <darkstar6262-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	'Michal Nazarewicz' <mina86-deATy8a+UHjQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="HtrkgkD3uBADSQLK"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jonas Gorski' <jogo-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>
 To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <003701cf3291$def77600$9ce66200$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <003801cf3292$0b03b4c0$210b1e40$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---oWg8wBefE/MWazfQ
+--HtrkgkD3uBADSQLK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Feb 26, 2014 at 10:27:10AM +0900, Jingoo Han wrote:
-> Fix the following checkpatch issues.
+On Wed, Feb 26, 2014 at 10:28:24AM +0900, Jingoo Han wrote:
+> Use SIMPLE_DEV_PM_OPS macro in order to make the code simpler.
 
 Applied, thanks.
 
---oWg8wBefE/MWazfQ
+--HtrkgkD3uBADSQLK
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTFqmRAAoJELSic+t+oim9q08P/0TDEcwCNTAj7t7cF56BYCAO
-Jd1qtxI5eGRe5vs2cRb2ORijzi6g5fUoCzD7UnVG3vVoepna/oNnP0OXoM0ic5bp
-5o3ovFuNPC9lPvRHfx7gBsnaLUJa8uAYN6DR1FSCkao5siw/4q2/tu4jH6kplqv7
-+hu7jq3YgHnqT3T56cOesIvvE+akbheAJObCqgIf9jTk6S8Fb5289xq/rTOrvK6v
-8RZtEulRX/rPY58ae60J0olL5aBcMZUtA6Add5qgIodKvjTaoPmHqaQxPqDI5hrA
-mQU1VB6ZyZ82mDu3WE8F4J499Q/uqvSMweUgKNjxSNYhNdhDJk9iHbdKgFlHpr2w
-mg/bzGia7x7F/9gcfk+wJWT7GR/fQJ5M8eJzhGvWoeuyxv4BU94vw4vaYd0oUDRF
-aZjxoNPztticWi1WB0ZViepOzzFuXhr48DI1Gf5pE1ziAXRRpSz2vjYVYsOqWndO
-PCT7SvOZwd4OK3sXjcTA1/230VhY2T/7+ZRBj8mUMtY5+7wWjvcrO3oY5b19nj3N
-kElh5z0Nxh5vs7iiGuIeAdACZxN0wks1EchYGynEwT1P2+ME7BtirNQspjKFPA/p
-03mxOVsiCL7+wzOhZrw75Qvcw9/KcH5ozBkoqnh+D7fUUJR8KeJFg9RAs/ESDcii
-qMWaQRTvhl8gfHerXy7m
-=KzPp
+iQIcBAEBAgAGBQJTFq3bAAoJELSic+t+oim9K6YP/RDzNUyKEh6iKLKJw9V4mgfv
+CPQuhB4razwuwr0vf9d0CUUFZizDOBWrFbELvm54upQR+EdXaXL6JLMRjqVKSJ2o
+T03GyEzRKHVCFG1qiFaPXoF8phxdPxTFq/s84UCd8B75QfRDhP/iTFIJ70ZpIHd2
+vTThaDYEbMBTVfB0XLCOXY7FbD98Gu6tlMNAOe/FkzUN8pohAhBC32GfHEbc6Ros
+IO81EdQHdcnorfM2K2/L5P75qiChm9vqVvfFOHiudj4ShOj3dYRT26B5FLFB3RCH
+m7XhhrfHFX4EJxjf1k6lAGK3iapSlR1TRxyB1Hnlc6TeZS/PMy7+uYOAF4VqeybU
+eEHk5fkhkHn2bJfBIcFKfyk0RvG5rjsLj8gXk9BWCspZL7GBEooNcNRUsebSFSm5
+me3o7foXHUDGAffxSxPuXp1EOkg4rBkJPTViBBAnXvfWV+dA25lQhywaPGhBse4t
+ohZXaMnI8CKaImU2SBYpZZhpgqy1pkI9m2wynnWRM1xU520ijcoKBptMLouEKOP+
+SgFeVegY8rSKbc+UVqhrElzpWzbkcLZGreFlaEPHwLoqAvTwv9akZpZ8Ll9m0Bsv
++7fp0vsU1RYm6luSyj5WDNXep6tsFEHw7by/KIGZQpQrPRaAwltYTXoAtcx7ZGPn
+ZuU+5DUAlHb/g3rh2eZv
+=4yUr
 -----END PGP SIGNATURE-----
 
---oWg8wBefE/MWazfQ--
+--HtrkgkD3uBADSQLK--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

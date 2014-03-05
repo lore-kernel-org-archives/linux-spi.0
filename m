@@ -1,43 +1,41 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: altera: Use bits_per_word_mask
-Date: Wed, 05 Mar 2014 13:37:00 +0800
-Message-ID: <1393997820.19790.2.camel@phoenix>
+From: Huang Shijie <b32955@freescale.com>
+Subject: Re: [PATCH v5 1/8] mtd: spi-nor: copy the SPI NOR commands to a new
+ header file
+Date: Wed, 5 Mar 2014 13:45:22 +0800
+Message-ID: <5316B9F2.8050301@freescale.com>
+References: <1393238262-8622-1-git-send-email-b32955@freescale.com> <201403042313.14353.marex@denx.de> <5316932C.5040405@freescale.com> <201403050443.19529.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <linux-mtd@lists.infradead.org>, <dwmw2@infradead.org>,
+	<angus.clark@st.com>, <shawn.guo@linaro.org>,
+	<b44548@freescale.com>, <broonie@linaro.org>,
+	<linux-doc@vger.kernel.org>, <b18965@freescale.com>,
+	<linux-spi@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<pekon@ti.com>, <sourav.poddar@ti.com>,
+	<computersforpeace@gmail.com>, <lee.jones@linaro.org>,
+	<linux-arm-kernel@lists.infradead.org>
+To: Marek Vasut <marex@denx.de>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <201403050443.19529.marex@denx.de>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This driver does not work for bits_per_word greater than 16.
-Set bits_per_word_mask so spi core will reject transfers that attempt to use
-an unsupported bits_per_word value.
+=E4=BA=8E 2014=E5=B9=B403=E6=9C=8805=E6=97=A5 11:43, Marek Vasut =E5=86=
+=99=E9=81=93:
+> Why didn't you keep it like that? Was there some reason for that ?
+http://marc.info/?l=3Dlinux-arm-kernel&m=3D138545182232220&w=3D4
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-altera.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-index 1928b83..f83f626 100644
---- a/drivers/spi/spi-altera.c
-+++ b/drivers/spi/spi-altera.c
-@@ -213,6 +213,7 @@ static int altera_spi_probe(struct platform_device *pdev)
- 	master->bus_num = pdev->id;
- 	master->num_chipselect = 16;
- 	master->mode_bits = SPI_CS_HIGH;
-+	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
- 
- 	hw = spi_master_get_devdata(master);
- 	platform_set_drvdata(pdev, hw);
--- 
-1.8.1.2
+Pekon suggestted  do not touch the m25p80.c.
+So i just copy these commands to a new header.
+Anyway, it's really not an important issue for me. :)
 
 
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+thanks
+Huang Shijie
+
+
+
+

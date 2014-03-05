@@ -1,8 +1,7 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: oc-tiny: Remove unneeded NULL checking for
- hw->bitbang.master
-Date: Wed, 05 Mar 2014 13:34:21 +0800
-Message-ID: <1393997661.19790.0.camel@phoenix>
+Subject: [PATCH] spi: altera: Use bits_per_word_mask
+Date: Wed, 05 Mar 2014 13:37:00 +0800
+Message-ID: <1393997820.19790.2.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
@@ -12,26 +11,27 @@ Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-We already has NULL test for master after calling spi_alloc_master().
+This driver does not work for bits_per_word greater than 16.
+Set bits_per_word_mask so spi core will reject transfers that attempt to use
+an unsupported bits_per_word value.
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi-oc-tiny.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-altera.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-oc-tiny.c b/drivers/spi/spi-oc-tiny.c
-index 022774e..8998d11 100644
---- a/drivers/spi/spi-oc-tiny.c
-+++ b/drivers/spi/spi-oc-tiny.c
-@@ -266,8 +266,6 @@ static int tiny_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
+index 1928b83..f83f626 100644
+--- a/drivers/spi/spi-altera.c
++++ b/drivers/spi/spi-altera.c
+@@ -213,6 +213,7 @@ static int altera_spi_probe(struct platform_device *pdev)
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = 16;
+ 	master->mode_bits = SPI_CS_HIGH;
++	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
  
- 	/* setup the state for the bitbang driver */
- 	hw->bitbang.master = master;
--	if (!hw->bitbang.master)
--		return err;
- 	hw->bitbang.setup_transfer = tiny_spi_setup_transfer;
- 	hw->bitbang.chipselect = tiny_spi_chipselect;
- 	hw->bitbang.txrx_bufs = tiny_spi_txrx_bufs;
+ 	hw = spi_master_get_devdata(master);
+ 	platform_set_drvdata(pdev, hw);
 -- 
 1.8.1.2
 

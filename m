@@ -1,62 +1,66 @@
-From: "Gupta, Pekon" <pekon@ti.com>
-Subject: RE: [PATCH v5 1/8] mtd: spi-nor: copy the SPI NOR commands to a new
- header file
-Date: Wed, 5 Mar 2014 07:24:21 +0000
-Message-ID: <20980858CB6D3A4BAE95CA194937D5E73EAAFCDB@DBDE04.ent.ti.com>
-References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
- <201403042313.14353.marex@denx.de> <5316932C.5040405@freescale.com>
- <201403050443.19529.marex@denx.de> <5316B9F2.8050301@freescale.com>
+From: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Subject: Re: [PATCH 2/2] ARM: dts: sama5d36ek: add spi pinctrl sleep state
+Date: Wed, 5 Mar 2014 10:22:11 +0100
+Message-ID: <20140305092211.GB4441@piout.net>
+References: <1393984730-14828-1-git-send-email-wenyou.yang@atmel.com>
+ <1393984730-14828-3-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "angus.clark@st.com" <angus.clark@st.com>,
- "computersforpeace@gmail.com" <computersforpeace@gmail.com>,
- "b44548@freescale.com" <b44548@freescale.com>,
- "broonie@linaro.org" <broonie@linaro.org>,
- "lee.jones@linaro.org" <lee.jones@linaro.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "b18965@freescale.com" <b18965@freescale.com>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-mtd@lists.infradead.org" <linux-mtd@lists.infradead.org>, "Poddar,
- Sourav" <sourav.poddar@ti.com>, "shawn.guo@linaro.org" <shawn.guo@linaro.org>,
- "dwmw2@infradead.org" <dwmw2@infradead.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-To: Huang Shijie <b32955@freescale.com>, Marek Vasut <marex@denx.de>
-Return-path: <linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org>
-In-Reply-To: <5316B9F2.8050301@freescale.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-mtd/>
-List-Post: <mailto:linux-mtd@lists.infradead.org>
-List-Help: <mailto:linux-mtd-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-mtd>,
- <mailto:linux-mtd-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-mtd" <linux-mtd-bounces@lists.infradead.org>
-Errors-To: linux-mtd-bounces+gldm-linux-mtd-36=gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie@kernel.org, nicolas.ferre@atmel.com, plagnioj@jcrosoft.com,
+	robh+dt@kernel.org, pawel.moll@arm.com, mark.rutland@arm.com,
+	ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
+	linux@arm.linux.org.uk, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-spi@vger.kernel.org
+To: Wenyou Yang <wenyou.yang@atmel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1393984730-14828-3-git-send-email-wenyou.yang@atmel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-SGkgTWFyZWssIFNoaWppZSwNCg0KPkZyb206IEh1YW5nIFNoaWppZSBbbWFpbHRvOmIzMjk1NUBm
-cmVlc2NhbGUuY29tXQ0KPg0KPuS6jiAyMDE05bm0MDPmnIgwNeaXpSAxMTo0MywgTWFyZWsgVmFz
-dXQg5YaZ6YGTOg0KPj4gV2h5IGRpZG4ndCB5b3Uga2VlcCBpdCBsaWtlIHRoYXQ/IFdhcyB0aGVy
-ZSBzb21lIHJlYXNvbiBmb3IgdGhhdCA/DQo+aHR0cDovL21hcmMuaW5mby8/bD1saW51eC1hcm0t
-a2VybmVsJm09MTM4NTQ1MTgyMjMyMjIwJnc9NA0KPg0KPlBla29uIHN1Z2dlc3R0ZWQgIGRvIG5v
-dCB0b3VjaCB0aGUgbTI1cDgwLmMuDQo+U28gaSBqdXN0IGNvcHkgdGhlc2UgY29tbWFuZHMgdG8g
-YSBuZXcgaGVhZGVyLg0KPkFueXdheSwgaXQncyByZWFsbHkgbm90IGFuIGltcG9ydGFudCBpc3N1
-ZSBmb3IgbWUuIDopDQo+DQpNeSBvcGluaW9uIHdhcyB0aGF0IHdlIHNob3VsZCBub3QgdG91Y2gg
-bTI1cDgwLmMgYmVjYXVzZToNCigxKSAgQXMgbTI1cDgwIGlzIGFscmVhZHkgd29ya2luZyBmb3Ig
-dmFyaW91cyB2ZW5kb3JzLiBTbyB1bmxlc3MgbXVsdGlwbGUNCiAgIHBsYXRmb3JtcyBzdGFydCB1
-c2luZyBTUEkgTk9SIGZyYW1ld29yaywgbTI1cDgwLmMgc2hvdWxkIHJlbWFpbiB1bnRvdWNoZWQu
-DQooMikgd2Ugc2hvdWxkIG5vdCBjbHV0dGVyIGhlYWRlciBmaWxlIHdpdGggdmVuZG9yIHNwZWNp
-ZmljIG9wLWNvZGVzIGFzIHVzZWQgaW4gbTI1cDgwLg0KICAgSSB3YXMgb2YgdGhlIG9waW5pb24g
-dGhhdCBpbnN0ZWFkIG9mIGhhcmQtY29kaW5nIHRoZSB2ZW5kb3Igc3BlY2lmaWMgaW5mbyBhcw0K
-ICAgTUFDUk9zLCBzdWNoIGluZm9ybWF0aW9uIHNob3VsZCBiZSB0YWtlbiBmcm9tIERUIG9yIHBs
-YXRmb3JtLWRhdGEuDQoNCkhvd2V2ZXIsIHRoaXMgd2FzIG15IHRob3VnaHQgZHVyaW5nIGluaXRp
-YWwgdmVyc2lvbnMgb2YgU1BJIE5PUiBwYXRjaGVzLg0KQnV0IG5vdyBpZiB5b3UgdGhpbmsgdGhh
-dCBTUEkgTk9SIGlzIHN0YWJsZSBlbm91Z2ggdGhhdCBzYW1lIGhlYWRlciBpbmZvDQpjYW4gYmUg
-cmV1c2VkIHdpdGhvdXQgY29uZmxpY3RzLCB0aGVuIG5vIHByb2JsZW1zLg0KDQooQXBvbG9naWVz
-IHRvIEh1YW5nIFNoaWppZSBmb3IgcmUtd29yayA6LSkgKS4NCg0Kd2l0aCByZWdhcmRzLCBwZWtv
-bg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CkxpbnV4IE1URCBkaXNjdXNzaW9uIG1haWxpbmcgbGlzdApodHRwOi8vbGlzdHMuaW5mcmFkZWFk
-Lm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW10ZC8K
+Hi,
+
+On 05/03/2014 at 09:58:50 +0800, Wenyou Yang wrote :
+> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
+> ---
+>  arch/arm/boot/dts/sama5d36ek.dts |   14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/sama5d36ek.dts b/arch/arm/boot/dts/sama5d36ek.dts
+> index 59576c6..676d121 100644
+> --- a/arch/arm/boot/dts/sama5d36ek.dts
+> +++ b/arch/arm/boot/dts/sama5d36ek.dts
+> @@ -18,6 +18,8 @@
+>  	ahb {
+>  		apb {
+>  			spi0: spi@f0004000 {
+> +				pinctrl-names = "default", "sleep";
+> +				pinctrl-1 = <&pinctrl_spi0_sleep>;
+>  				status = "okay";
+>  			};
+>  
+> @@ -44,6 +46,18 @@
+>  			macb1: ethernet@f802c000 {
+>  				status = "okay";
+>  			};
+> +
+> +			pinctrl@fffff200 {
+> +				spi0 {
+> +					pinctrl_spi0_sleep: spi0-1 {
+> +						atmel,pins =
+> +							<AT91_PIOD 10 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT_LOW	/* PD10 GPIO Output Low */
+> +							 AT91_PIOD 11 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT_LOW	/* PD11 GPIO Output Low */
+> +							 AT91_PIOD 12 AT91_PERIPH_GPIO AT91_PINCTRL_OUTPUT_LOW>;	/* PD12 GPIO Output Low */
+
+I think that one would belong to the dtsi as this is generic enough.
+
+Also, it was suggested by Mark that list entries should be bracketed
+separately. But I guess we may not want to mix styles in the same file.
+Nicolas, what do you think ?
+
+
+-- 
+Alexandre Belloni, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com

@@ -1,55 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: coldfire-qspi: Enable clock before calling
- spi_master_resume
-Date: Mon, 10 Mar 2014 11:22:11 +0000
-Message-ID: <20140310112211.GZ28112@sirena.org.uk>
-References: <1393379275.7490.1.camel@phoenix>
+Subject: Re: [PATCH] spi: clps711x: Provide label argument for
+ devm_gpio_request
+Date: Mon, 10 Mar 2014 11:24:01 +0000
+Message-ID: <20140310112401.GA28112@sirena.org.uk>
+References: <1393909193.18753.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="SJ2dn9eo9utwE8uN"
-Cc: Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	protocol="application/pgp-signature"; boundary="Vqm4/nuivowh7wCF"
+Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1393379275.7490.1.camel@phoenix>
+In-Reply-To: <1393909193.18753.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---SJ2dn9eo9utwE8uN
+--Vqm4/nuivowh7wCF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Feb 26, 2014 at 09:47:55AM +0800, Axel Lin wrote:
-> This ensures clock has been enabled before calling spi_master_resume().
-> while at it, also add checking return value of spi_master_suspend and
-> spi_master_resume because they may fail.
+On Tue, Mar 04, 2014 at 12:59:53PM +0800, Axel Lin wrote:
+> The label argument was removed by commit 989847967cd762
+> spi: clps711x: Use devm_gpio_request(), add it back.
+> This makes it easier to know the gpio usage in /sys/kernel/debug/gpio.
 
 Applied, thanks.
 
---SJ2dn9eo9utwE8uN
+--Vqm4/nuivowh7wCF
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTHaBgAAoJELSic+t+oim9XM0P/2HZqlthgJA1UWx2BG7jLZLW
-N48bUuNZvFtzY2Ccvx7CmIXgbRsTwW6FeZKJKFBUqi3EjaoNJA1+tkFLCiwnXKvf
-B7lCnbcsbUzZhMoJETonl3UgG8x/PD1tpoajCN1HN7FsSn4yAsg6+mvYNcKDbN/W
-r1IySDOR7Sf/YXs1QV82GecIueMe1YDVgYvsxt84X0snxc4UxjwU25B7uEoGheVb
-QoeuR3HNtVFkUPupQp0YRk0Z36s9WfMNMNv83iofRVuDMD12RftXBkFNGZS5cTKI
-fgOv76dzgIg2UD8V8fw1o0vX8Qg9M5kTxUWr9DxktYTY7AV/06fanhCxH01T+g9C
-dE5XRPO5PMSLmxlfWzCPSAFCJCZPug1wYv3qe592EVGKvCdYouIR0RwTJgZ1W2C4
-OdKg92wZBJtxho1sCAmuEsXyUDHnsaHjAFU4chQu4RNSbIXZT5KEGSrquK3gANQp
-O4yCQpIBypWVUpebbJCGCS6ao3XWIx/WiqUXFO0RvByZTnHiSfSRegRvWzDnYVvO
-2PNikiYSqz538oHVT9lBOq/iBV0gauyoSXB6jOQiqDrmrsqxRpUFhz7GT68ppgPe
-+GEDp9SF2TXbQrogY8/Nkuw9l0bbUSMidM+fJDSKaHQTjsKy8RX/MA/vE53Y/49U
-CGP+xH+e0OiFneefFLG/
-=KRmf
+iQIcBAEBAgAGBQJTHaDOAAoJELSic+t+oim9F9oQAIyNtlgnvji/VVyx1wKeDEcz
+uwfwKR0TZSBHfNLkAqm9+glt/42OONm47iS4TVRWKnEBCHOVqEFIpB/Y77FjtQg1
+/JlmEXtZC0v9FTVT3tldiI1uutYQvZZlv5IcRBJuqpDZu017B2AdJHyX56/Kgp9m
+0C4vBEo0pS3N380AfayR2tw2J37Us7vsGvKE8go3azcu+qxg5mrtuMOtl5w3Wg0G
+XhO6fx2MAlEz0PzWxbDdsC/TEBE8/hvKMzCAnOI/C97CIPdBZK4IqpMJgr3NhJDX
+un4gDbq/HWdvh33RgCaQ+21A88mvp8H/sInIeG63096qydf1qJ4vC4sDfn9q9PBl
+HXwWX3zqqFcdgC8EVGu/Ub+lizlPeRvfFpqgmZynJu24uGsSbgEjM21KL41ahNth
+hR+/wbiPOFMMyxVDt25YiXOygIUJtCsgmgEhfvmKz3HP2BMOVP3vaFah5aoxItNM
+T9AE0NxhdgIbz93XsM1iFY1FDY69rAT/QW/zMDANEG1RZTCqvJ73OujoaXwrqU68
+h/QhEO/Fhc0jJzB/6t4v1ZOLgU66Fs3juTfC6zQzwSVQk24focwWZlIvEukGY27V
+ej7iKQHUtZX20vAbipdCwccUkRTGd6WBG5sxzYcDUKexBpgaWyEbz5/T1slpcot+
+R6bIFkyRciM2C/E3mBqa
+=VpYj
 -----END PGP SIGNATURE-----
 
---SJ2dn9eo9utwE8uN--
+--Vqm4/nuivowh7wCF--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

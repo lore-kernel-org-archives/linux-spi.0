@@ -1,43 +1,98 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 1/3] spi: sh-hspi: Add missing call to pm_runtime_disable() in failure path
-Date: Tue, 11 Mar 2014 10:59:10 +0100
-Message-ID: <1394531952-3905-1-git-send-email-geert@linux-m68k.org>
+Subject: [PATCH 2/3] spi: sh-msiof: Convert to spi core auto_runtime_pm framework
+Date: Tue, 11 Mar 2014 10:59:11 +0100
+Message-ID: <1394531952-3905-2-git-send-email-geert@linux-m68k.org>
+References: <1394531952-3905-1-git-send-email-geert@linux-m68k.org>
 Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+	Magnus Damm <magnus.damm@gmail.com>
 To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1394531952-3905-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Cc: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc: Magnus Damm <magnus.damm@gmail.com>
 ---
- drivers/spi/spi-sh-hspi.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sh-msiof.c |   25 +------------------------
+ 1 file changed, 1 insertion(+), 24 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-index 3b170b9f3471..9009456bdf4d 100644
---- a/drivers/spi/spi-sh-hspi.c
-+++ b/drivers/spi/spi-sh-hspi.c
-@@ -278,11 +278,13 @@ static int hspi_probe(struct platform_device *pdev)
- 	ret = devm_spi_register_master(&pdev->dev, master);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "spi_register_master error.\n");
--		goto error1;
-+		goto error2;
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 739eb2f12ecc..e850d03e7190 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -448,9 +448,6 @@ static int sh_msiof_prepare_message(struct spi_master *master,
+ 	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
+ 	const struct spi_device *spi = msg->spi;
+ 
+-	pm_runtime_get_sync(&p->pdev->dev);
+-	clk_enable(p->clk);
+-
+ 	/* Configure pins before asserting CS */
+ 	sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
+ 				  !!(spi->mode & SPI_CPHA),
+@@ -460,16 +457,6 @@ static int sh_msiof_prepare_message(struct spi_master *master,
+ 	return 0;
+ }
+ 
+-static int sh_msiof_unprepare_message(struct spi_master *master,
+-				      struct spi_message *msg)
+-{
+-	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
+-
+-	clk_disable(p->clk);
+-	pm_runtime_put(&p->pdev->dev);
+-	return 0;
+-}
+-
+ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+ 				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
+ 						  const void *, int, int),
+@@ -742,12 +729,6 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 		goto err1;
  	}
  
- 	return 0;
+-	ret = clk_prepare(p->clk);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "unable to prepare clock\n");
+-		goto err1;
+-	}
+-
+ 	p->pdev = pdev;
+ 	pm_runtime_enable(&pdev->dev);
  
-+ error2:
-+	pm_runtime_disable(&pdev->dev);
-  error1:
- 	clk_put(clk);
-  error0:
+@@ -768,8 +749,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 	master->num_chipselect = p->info->num_chipselect;
+ 	master->setup = sh_msiof_spi_setup;
+ 	master->prepare_message = sh_msiof_prepare_message;
+-	master->unprepare_message = sh_msiof_unprepare_message;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
++	master->auto_runtime_pm = true;
+ 	master->transfer_one = sh_msiof_transfer_one;
+ 
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+@@ -782,7 +763,6 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 
+  err2:
+ 	pm_runtime_disable(&pdev->dev);
+-	clk_unprepare(p->clk);
+  err1:
+ 	spi_master_put(master);
+ 	return ret;
+@@ -790,10 +770,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 
+ static int sh_msiof_spi_remove(struct platform_device *pdev)
+ {
+-	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
+-
+ 	pm_runtime_disable(&pdev->dev);
+-	clk_unprepare(p->clk);
+ 	return 0;
+ }
+ 
 -- 
 1.7.9.5
-

@@ -1,37 +1,49 @@
-From: Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 0/3] xtensa xtfpga SPI controller driver
-Date: Tue, 11 Mar 2014 16:44:48 +0400
-Message-ID: <1394541891-26469-1-git-send-email-jcmvbkbc@gmail.com>
-Cc: Chris Zankel <chris@zankel.net>, Marc Gauthier <marc@cadence.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Max Filippov <jcmvbkbc@gmail.com>
-To: linux-xtensa@linux-xtensa.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 3/3] MAINTAINERS: add xtfpga platform section
+Date: Tue, 11 Mar 2014 16:44:51 +0400
+Message-ID: <1394541891-26469-4-git-send-email-jcmvbkbc@gmail.com>
+References: <1394541891-26469-1-git-send-email-jcmvbkbc@gmail.com>
+Cc: Chris Zankel <chris-YvXeqwSYzG2sTnJN9+BGXg@public.gmane.org>, Marc Gauthier <marc-vna1KIf7WgpBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-xtensa-PjhNF2WwrV/0Sa2dR60CXw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1394541891-26469-1-git-send-email-jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hello,
+This section will list xtfpga platform-specific drivers.
 
-this series adds driver for SPI controller used on xtfpga xtensa platform,
-device tree binding documentation and an entry to MAINTAINERS.
+Signed-off-by: Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Max Filippov (3):
-  spi: add xtfpga SPI controller driver
-  spi/xtensa-xtfpga: add DT binding documentation
-  MAINTAINERS: add xtfpga platform section
-
- .../devicetree/bindings/spi/spi-xtensa-xtfpga.txt  |   9 ++
- MAINTAINERS                                        |   6 +
- drivers/spi/Kconfig                                |  13 ++
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-xtensa-xtfpga.c                    | 165 +++++++++++++++++++++
- 5 files changed, 194 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt
- create mode 100644 drivers/spi/spi-xtensa-xtfpga.c
-
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c6d0e93..9f75849 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9768,6 +9768,12 @@ L:	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+ S:	Maintained
+ F:	drivers/tty/serial/uartlite.c
+ 
++XTENSA XTFPGA PLATFORM SUPPORT
++M:	Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
++L:	linux-xtensa-PjhNF2WwrV/0Sa2dR60CXw@public.gmane.org
++S:	Maintained
++F:	drivers/spi/spi-xtensa-xtfpga.c
++
+ YAM DRIVER FOR AX.25
+ M:	Jean-Paul Roubelat <jpr-3OwtVqItl4LYtjvyW6yDsg@public.gmane.org>
+ L:	linux-hams-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 -- 
 1.8.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

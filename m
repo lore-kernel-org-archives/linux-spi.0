@@ -1,63 +1,105 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: coldfire-qspi: Prevent NULL pointer dereference
-Date: Mon, 10 Mar 2014 16:08:31 +0000
-Message-ID: <20140310160831.GM28112@sirena.org.uk>
-References: <1394345470.15686.1.camel@phoenix>
- <201403100904.05819.sfking@fdwdc.com>
+From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH] spi: efm32: Clean up non-DT paths
+Date: Tue, 11 Mar 2014 10:09:18 +0100
+Message-ID: <20140311090918.GA17973@pengutronix.de>
+References: <1394409705.12514.2.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="1PVGkiWogmj8NWQ2"
-Cc: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Steven King <sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <201403100904.05819.sfking-xS0NTnu2YfYAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1394409705.12514.2.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Axel,
 
---1PVGkiWogmj8NWQ2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Mon, Mar 10, 2014 at 08:01:45AM +0800, Axel Lin wrote:
+> This is a DT-only driver, so remove all non-DT paths.
+ok in general, but I have a few comments, see below.
 
-On Mon, Mar 10, 2014 at 09:04:05AM -0700, Steven King wrote:
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+> ---
+>  drivers/spi/spi-efm32.c | 28 +++++++---------------------
+>  1 file changed, 7 insertions(+), 21 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-efm32.c b/drivers/spi/spi-efm32.c
+> index f53bbea..26e0362 100644
+> --- a/drivers/spi/spi-efm32.c
+> +++ b/drivers/spi/spi-efm32.c
+> @@ -294,9 +294,6 @@ static int efm32_spi_probe_dt(struct platform_dev=
+ice *pdev,
+>  	u32 location;
+>  	int ret;
+> =20
+> -	if (!np)
+> -		return 1;
+> -
+>  	ret =3D of_property_read_u32(np, "location", &location);
+>  	if (!ret) {
+>  		dev_dbg(&pdev->dev, "using location %u\n", location);
+> @@ -318,9 +315,14 @@ static int efm32_spi_probe(struct platform_devic=
+e *pdev)
+>  	int ret;
+>  	struct spi_master *master;
+>  	struct device_node *np =3D pdev->dev.of_node;
+> -	unsigned int num_cs, i;
+> +	int num_cs, i;
+> +
+> +	if (!np)
+> +		return -EINVAL;
+> =20
+>  	num_cs =3D of_gpio_named_count(np, "cs-gpios");
+> +	if (num_cs < 0)
+> +		return num_cs;
+This wasn't checked before and doesn't fit into the "cleanup non-DT
+paths"-category. Maybe note that in the commit log?
+Also did you change the type of i on purpose?
 
-> D'oh!  My bad.  Actually you're right there would be a NULL pointer=20
-> dereference in cs_select and cs_deselect  (I was looking at the cs_setup =
-and=20
-> cs_teardown in the patch) and so cs_control must not be NULL.  Thats want=
- I=20
-> get for replying before I've had my coffee and when I haven't looked at t=
-he=20
-> code in awhile.  So yeah, the patch is GTG.
+>  	master =3D spi_alloc_master(&pdev->dev,
+>  			sizeof(*ddata) + num_cs * sizeof(unsigned));
+> @@ -412,23 +414,7 @@ static int efm32_spi_probe(struct platform_devic=
+e *pdev)
+>  		goto err;
+>  	}
+> =20
+> -	ret =3D efm32_spi_probe_dt(pdev, master, ddata);
+> -	if (ret > 0) {
+> -		/* not created by device tree */
+> -		const struct efm32_spi_pdata *pdata =3D
+> -			dev_get_platdata(&pdev->dev);
+> -
+> -		if (pdata)
+> -			ddata->pdata =3D *pdata;
+> -		else
+> -			ddata->pdata.location =3D
+> -				efm32_spi_get_configured_location(ddata);
+> -
+> -		master->bus_num =3D pdev->id;
+> -
+> -	} else if (ret < 0) {
+> -		goto err_disable_clk;
+> -	}
+> +	efm32_spi_probe_dt(pdev, master, ddata);
+This must still be:
 
-Hrm, I managed to make the same mistake when I redid the verification
-somehow.  Odd.  Anyway, reinstated the patch.
+	ret =3D efm32_spi_probe_dt(pdev, master, ddata);
+	if (ret < 0)
+		goto err_disable_clk;
 
---1PVGkiWogmj8NWQ2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Best regards
+Uwe
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTHeN8AAoJELSic+t+oim97egP/0Ndqe4cY5B+KL/3jTPEfGbs
-Dyn0T41zz++KEkI7IgKFonalUe7Ha/lxg3YGcIYK/Wp8BBcYE1j5HpNNp0Fr1qlQ
-4y6RBVqjWuqc/c44xaxi2dgFDSWkc29mAD7N5GcFNulItYVLBBhm/buzr6mA2/il
-ASa/sQJ0Ke/UBUEmynz8i+YyfySkQXuKsWR8br2ptH1dSbSHrQLKsSLejZLrKM3j
-Rc/5MWkzP1qlrl1qnZPZcHq9b5ipv42MjSTZqAKSGgTC1lqbRimWuLiwSHKhh7fC
-CrZYjLSttkctS2sayGqC+5TUefljnUFHzbOSeu4S9/KMETCH/aj4a+HgUZFqI4MS
-Lhm0FP7ehId4L9A7oHycHkT1hUKBlimxt81LFay7C/Zji4F6Z13BhPEMeH0VwCDP
-Y66IwcHQsp2wtfQW5wVSOOcKC0reOcI37BMhMYjTNw3AyE9rWEGmRwSfmGDaJm0O
-INDAH+PVhA14GvePYu98s0RtgMwVPQ7vLSEGsdJuPAPTSCdkvC3PsPwZSy9s0uTD
-GElwVyCPEPmpC7sILSC8DyKxfAwotIxlfx4SzRnleLT/IIC01SM6KcMjm3mXAo8f
-9v/9PIOXFZ+8nn/ChLUBnChC06LdyglJuHbo3ll0mhp2ZcdNrp37wXjET9C/ZtIl
-QUU/6zP/lbrYfy/i7l8G
-=MLNl
------END PGP SIGNATURE-----
-
---1PVGkiWogmj8NWQ2--
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig        =
+    |
+Industrial Linux Solutions                 | http://www.pengutronix.de/=
+  |
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

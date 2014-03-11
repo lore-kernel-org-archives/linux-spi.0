@@ -1,77 +1,117 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 3/3] spi: rspi: Add runtime PM support, using spi core
- auto_runtime_pm
-Date: Tue, 11 Mar 2014 14:18:24 +0000
-Message-ID: <20140311141824.GT28112@sirena.org.uk>
-References: <1394531952-3905-1-git-send-email-geert@linux-m68k.org>
- <1394531952-3905-3-git-send-email-geert@linux-m68k.org>
- <20140311104713.GN28112@sirena.org.uk>
- <CAMuHMdWoPWebnyUu2uGebbnzu68Lh4qsgzpu-otnwMmvaeY1hQ@mail.gmail.com>
- <20140311132652.GS28112@sirena.org.uk>
- <CAMuHMdVf_4TPf6YKuHLztrgFKWHTeoVi5agesO6tFU5h_56DOA@mail.gmail.com>
+From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: sh-msiof: Convert to spi core auto_runtime_pm framework
+Date: Tue, 11 Mar 2014 16:55:15 +0100
+Message-ID: <1802214.NxZUiJcWLG@avalon>
+References: <1394531952-3905-1-git-send-email-geert@linux-m68k.org> <1394531952-3905-2-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Rhuyk5QDIcoo2YDB"
-Cc: linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVf_4TPf6YKuHLztrgFKWHTeoVi5agesO6tFU5h_56DOA@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1394531952-3905-2-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hi Geert,
 
---Rhuyk5QDIcoo2YDB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thank you for the patch.
 
-On Tue, Mar 11, 2014 at 02:35:15PM +0100, Geert Uytterhoeven wrote:
-> On Tue, Mar 11, 2014 at 2:26 PM, Mark Brown <broonie@kernel.org> wrote:
-> > On Tue, Mar 11, 2014 at 02:10:31PM +0100, Geert Uytterhoeven wrote:
+Does this require drivers/sh/pm_runtime.c to be compiled in ?
 
-> >> Can you please elaborate what should be fixed?
+On Tuesday 11 March 2014 10:59:11 Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+> Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/spi/spi-sh-msiof.c |   25 +------------------------
+>  1 file changed, 1 insertion(+), 24 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+> index 739eb2f12ecc..e850d03e7190 100644
+> --- a/drivers/spi/spi-sh-msiof.c
+> +++ b/drivers/spi/spi-sh-msiof.c
+> @@ -448,9 +448,6 @@ static int sh_msiof_prepare_message(struct spi_master
+> *master, struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
+>  	const struct spi_device *spi = msg->spi;
+> 
+> -	pm_runtime_get_sync(&p->pdev->dev);
+> -	clk_enable(p->clk);
+> -
+>  	/* Configure pins before asserting CS */
+>  	sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
+>  				  !!(spi->mode & SPI_CPHA),
+> @@ -460,16 +457,6 @@ static int sh_msiof_prepare_message(struct spi_master
+> *master, return 0;
+>  }
+> 
+> -static int sh_msiof_unprepare_message(struct spi_master *master,
+> -				      struct spi_message *msg)
+> -{
+> -	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
+> -
+> -	clk_disable(p->clk);
+> -	pm_runtime_put(&p->pdev->dev);
+> -	return 0;
+> -}
+> -
+>  static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
+>  				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
+>  						  const void *, int, int),
+> @@ -742,12 +729,6 @@ static int sh_msiof_spi_probe(struct platform_device
+> *pdev) goto err1;
+>  	}
+> 
+> -	ret = clk_prepare(p->clk);
+> -	if (ret < 0) {
+> -		dev_err(&pdev->dev, "unable to prepare clock\n");
+> -		goto err1;
+> -	}
+> -
+>  	p->pdev = pdev;
+>  	pm_runtime_enable(&pdev->dev);
+> 
+> @@ -768,8 +749,8 @@ static int sh_msiof_spi_probe(struct platform_device
+> *pdev) master->num_chipselect = p->info->num_chipselect;
+>  	master->setup = sh_msiof_spi_setup;
+>  	master->prepare_message = sh_msiof_prepare_message;
+> -	master->unprepare_message = sh_msiof_unprepare_message;
+>  	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+> +	master->auto_runtime_pm = true;
+>  	master->transfer_one = sh_msiof_transfer_one;
+> 
+>  	ret = devm_spi_register_master(&pdev->dev, master);
+> @@ -782,7 +763,6 @@ static int sh_msiof_spi_probe(struct platform_device
+> *pdev)
+> 
+>   err2:
+>  	pm_runtime_disable(&pdev->dev);
+> -	clk_unprepare(p->clk);
+>   err1:
+>  	spi_master_put(master);
+>  	return ret;
+> @@ -790,10 +770,7 @@ static int sh_msiof_spi_probe(struct platform_device
+> *pdev)
+> 
+>  static int sh_msiof_spi_remove(struct platform_device *pdev)
+>  {
+> -	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
+> -
+>  	pm_runtime_disable(&pdev->dev);
+> -	clk_unprepare(p->clk);
+>  	return 0;
+>  }
 
-> >> If I disable CONFIG_PM_RUNTIME, the kernel prints:
+-- 
+Regards,
 
-> >>     Runtime PM disabled, clock forced on.
+Laurent Pinchart
 
-> >> and the clock is enabled all the time (verified by looking at the clock
-> >> registers)?
-
-> > That's very SH specific and doesn't apply in the general case (I would
-> > not be surprised if future SH updates broke it...).
-
-> Note that this is from drivers/base/power/clock_ops.c
-
-> So what should I do instead?
-
-Oh, is this manipulating the clock managed by the power domains?  If
-that's the case don't worry about it, it's fine.  I'd thought it was
-another clock.
-
---Rhuyk5QDIcoo2YDB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTHxssAAoJELSic+t+oim9CmwQAICD+Zs+I7xCa4Rxiywz7BOo
-tYaF299QomFfNAaCtJZIE1GhsApJVaSQ/6CIvpvO/myJHXOu3hIvfXC8mROjkQcw
-xQeLpN2qJhwp5fcqBYV0oHHEhaLCO5UpAmq2QbIx6iQZM3rTiJaSeJbrxoYEOAct
-QdWQX2aKoSbOT+EGRz3vqRJSNROQ1RV7DwvprPTmxgwxB3UhVqRezHDz0ZmTU42q
-glZpAQrzkddjTcagl8oipx+eq/KSgHLdroGyehbloHyb7MGU4Fb5wWIG+T+ZccWJ
-KDAfSyMWTuiA8T8X+9ule5NUbEoVmF39rdiqoDiRZsfbSioQy/KDqT80vNvEJRGp
-1EjBtMFOMe0/jnZ7Gr7Iqqq2XcSsjj+TgYJ2wfmP+5sTXR01/xH6dCIkFJv37R3g
-zQbKuHAY1snzGySMxKDEYEdcrouQk+P6oz1m5jSFXz275b/J0pN9EMRmgwi4hVUV
-ZrL3zgv4Wopm5XeXulTrMPoZfsTjT4KyqnlCZ+NI02qrhbRTZeAaEGgL1XEKxufR
-2KpRAZiG8pWDSMDsiLdOf4OhZ0wI550DD8Lq0PwcqWsoIzJUVvsedyn7KTtleZSR
-vVFxaiwd9s4eBkrpEtQ+mTnF1+mDwQyLM5dOuAaIJuDUQESAfraNLXgr/Md9pPu+
-7uoa0Tu+CToEcvmPXGC+
-=kgao
------END PGP SIGNATURE-----
-
---Rhuyk5QDIcoo2YDB--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,40 +1,57 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH v2] spi: sh-msiof: Remove "renesas,msiof-sh7724" from bindings
-Date: Tue, 11 Mar 2014 10:43:26 +0100
-Message-ID: <1394531006-20341-1-git-send-email-geert@linux-m68k.org>
-Cc: devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 resend] spi: hs-spi: Improve bindings
+Date: Tue, 11 Mar 2014 09:49:25 +0000
+Message-ID: <20140311094925.GH28112@sirena.org.uk>
+References: <1394530851-20244-1-git-send-email-geert@linux-m68k.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="sZRnawO6aO3tZKd5"
+Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1394530851-20244-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-It's not implemented in the driver, so it's a bad example.
+--sZRnawO6aO3tZKd5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
-v2:
-  - Add Acked-by
+On Tue, Mar 11, 2014 at 10:40:51AM +0100, Geert Uytterhoeven wrote:
 
- Documentation/devicetree/bindings/spi/sh-msiof.txt |    1 -
- 1 file changed, 1 deletion(-)
+> Mark: Can you please ack and take this, so Simon can apply the patches that
+>       use these bindings? Thx!
 
-diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-index 1f0cb33763a1..f24baf3b6cc1 100644
---- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
-+++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-@@ -5,7 +5,6 @@ Required properties:
- 			 "renesas,sh-msiof" for SuperH, or
- 			 "renesas,sh-mobile-msiof" for SH Mobile series.
- 			 Examples with soctypes are:
--			 "renesas,msiof-sh7724" (SH)
- 			 "renesas,msiof-r8a7790" (R-Car H2)
- 			 "renesas,msiof-r8a7791" (R-Car M2)
- - reg                  : Offset and length of the register set for the device
--- 
-1.7.9.5
+Why would I ack it and not apply it?
 
+--sZRnawO6aO3tZKd5
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTHtwiAAoJELSic+t+oim9fnAP/02ERjEPU70G2VN2Af15auOL
+pMk87BcPvijEIt/fVdobBCOh3QR36gDGhgcq8/vDMbRrKfH9LQyiu+qBOAmQ34Vm
+56755sEULotxt20JvSA0Rnpmk6VIHcgZrlwqGz28fbWsNTqKiDfNDADDpd4wRruE
+/JHfJcXtYZaY/XCCYO1gAnk+hHYKNXsKk1iRFUFb/28zzlpYtY2EwU3PsP1sHVXX
+St4+qEbopGv8tdi84tVvNGItRAvJBhySxTn1Z1KCqXa7gtGQTtfNAyIeq/NnIFrK
+IHGU17igwAAvC/Y6BiWMh9FczsSrGLcy/usdO3J7CvXq+Eqt8IvGuOHPjFbsg635
+Rol+qYtzeNGT//cxOa2ItMD33JhzgX49yld7q5dHscqWaVqr7/iDZ2aMGJeIG4vb
+JVO/7g345yKJOJGzhz+AtEeYs2awjKTthmMwCFh9HG5M5DsLRH/TLy0tmYdSfjuK
+JavPSO0LgBFeDTtF+YaLARsUX/XdD+OrndfKktUSUHIQlR8sL/Ui9r/j/DeGFla7
+2MlFYu1OGGBkpYQDv+QSqeXWk0pFCpRNymUbOjt+qummznA2kHtZglnuQ49fM/8w
+TFv+4eOPUWGYj+HkvGoFp8Rl4EukJdEfBaKh3QOTFmz0jvtfk4oFkzu0SJFO/JFs
+wiLi/a03jcqknsU8u1A8
+=is/3
+-----END PGP SIGNATURE-----
+
+--sZRnawO6aO3tZKd5--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

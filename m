@@ -1,98 +1,77 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 2/3] spi: sh-msiof: Convert to spi core auto_runtime_pm framework
-Date: Tue, 11 Mar 2014 10:59:11 +0100
-Message-ID: <1394531952-3905-2-git-send-email-geert@linux-m68k.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: [PATCH 3/3] spi: rspi: Add runtime PM support, using spi core auto_runtime_pm
+Date: Tue, 11 Mar 2014 10:59:12 +0100
+Message-ID: <1394531952-3905-3-git-send-email-geert@linux-m68k.org>
 References: <1394531952-3905-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	Magnus Damm <magnus.damm@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1394531952-3905-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1394531952-3905-1-git-send-email-geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+From: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-Cc: Magnus Damm <magnus.damm@gmail.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 ---
- drivers/spi/spi-sh-msiof.c |   25 +------------------------
- 1 file changed, 1 insertion(+), 24 deletions(-)
+ drivers/spi/spi-rspi.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 739eb2f12ecc..e850d03e7190 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -448,9 +448,6 @@ static int sh_msiof_prepare_message(struct spi_master *master,
- 	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
- 	const struct spi_device *spi = msg->spi;
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 92bec7e91046..1fb0ad213324 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -33,6 +33,7 @@
+ #include <linux/dmaengine.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/of_device.h>
++#include <linux/pm_runtime.h>
+ #include <linux/sh_dma.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/rspi.h>
+@@ -1111,7 +1112,7 @@ static int rspi_remove(struct platform_device *pdev)
+ 	struct rspi_data *rspi = platform_get_drvdata(pdev);
  
--	pm_runtime_get_sync(&p->pdev->dev);
--	clk_enable(p->clk);
--
- 	/* Configure pins before asserting CS */
- 	sh_msiof_spi_set_pin_regs(p, !!(spi->mode & SPI_CPOL),
- 				  !!(spi->mode & SPI_CPHA),
-@@ -460,16 +457,6 @@ static int sh_msiof_prepare_message(struct spi_master *master,
+ 	rspi_release_dma(rspi);
+-	clk_disable_unprepare(rspi->clk);
++	pm_runtime_disable(&pdev->dev);
+ 
  	return 0;
  }
- 
--static int sh_msiof_unprepare_message(struct spi_master *master,
--				      struct spi_message *msg)
--{
--	struct sh_msiof_spi_priv *p = spi_master_get_devdata(master);
--
--	clk_disable(p->clk);
--	pm_runtime_put(&p->pdev->dev);
--	return 0;
--}
--
- static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 				  void (*tx_fifo)(struct sh_msiof_spi_priv *,
- 						  const void *, int, int),
-@@ -742,12 +729,6 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 		goto err1;
+@@ -1242,16 +1243,13 @@ static int rspi_probe(struct platform_device *pdev)
+ 		goto error1;
  	}
  
--	ret = clk_prepare(p->clk);
+-	ret = clk_prepare_enable(rspi->clk);
 -	if (ret < 0) {
--		dev_err(&pdev->dev, "unable to prepare clock\n");
--		goto err1;
+-		dev_err(&pdev->dev, "unable to prepare/enable clock\n");
+-		goto error1;
 -	}
--
- 	p->pdev = pdev;
- 	pm_runtime_enable(&pdev->dev);
++	pm_runtime_enable(&pdev->dev);
  
-@@ -768,8 +749,8 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 	master->num_chipselect = p->info->num_chipselect;
- 	master->setup = sh_msiof_spi_setup;
- 	master->prepare_message = sh_msiof_prepare_message;
--	master->unprepare_message = sh_msiof_unprepare_message;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(8, 32);
+ 	init_waitqueue_head(&rspi->wait);
+ 
+ 	master->bus_num = pdev->id;
+ 	master->setup = rspi_setup;
 +	master->auto_runtime_pm = true;
- 	master->transfer_one = sh_msiof_transfer_one;
- 
- 	ret = devm_spi_register_master(&pdev->dev, master);
-@@ -782,7 +763,6 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 
-  err2:
- 	pm_runtime_disable(&pdev->dev);
--	clk_unprepare(p->clk);
-  err1:
+ 	master->transfer_one = ops->transfer_one;
+ 	master->prepare_message = rspi_prepare_message;
+ 	master->unprepare_message = rspi_unprepare_message;
+@@ -1312,7 +1310,7 @@ static int rspi_probe(struct platform_device *pdev)
+ error3:
+ 	rspi_release_dma(rspi);
+ error2:
+-	clk_disable_unprepare(rspi->clk);
++	pm_runtime_disable(&pdev->dev);
+ error1:
  	spi_master_put(master);
- 	return ret;
-@@ -790,10 +770,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 
- static int sh_msiof_spi_remove(struct platform_device *pdev)
- {
--	struct sh_msiof_spi_priv *p = platform_get_drvdata(pdev);
--
- 	pm_runtime_disable(&pdev->dev);
--	clk_unprepare(p->clk);
- 	return 0;
- }
  
 -- 
 1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

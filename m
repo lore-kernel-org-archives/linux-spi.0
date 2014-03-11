@@ -1,106 +1,75 @@
-From: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCH] spi: efm32: Clean up non-DT paths
-Date: Tue, 11 Mar 2014 10:09:18 +0100
-Message-ID: <20140311090918.GA17973@pengutronix.de>
-References: <1394409705.12514.2.camel@phoenix>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1394409705.12514.2.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH v3 resend] spi: hs-spi: Improve bindings
+Date: Tue, 11 Mar 2014 10:40:51 +0100
+Message-ID: <1394530851-20244-1-git-send-email-geert@linux-m68k.org>
+Cc: Simon Horman <horms@verge.net.au>, devicetree@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Axel,
+From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
 
-On Mon, Mar 10, 2014 at 08:01:45AM +0800, Axel Lin wrote:
-> This is a DT-only driver, so remove all non-DT paths.
-ok in general, but I have a few comments, see below.
+  - Add future-proof "renesas,hspi-<soctype>" compatible values,
+  - Add missing "interrupt-parent", "#address-cells", and "#size-cells"
+    properties,
+  - Add reference to pinctrl documentation,
+  - Add example bindings.
 
-> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-> ---
->  drivers/spi/spi-efm32.c | 28 +++++++---------------------
->  1 file changed, 7 insertions(+), 21 deletions(-)
->=20
-> diff --git a/drivers/spi/spi-efm32.c b/drivers/spi/spi-efm32.c
-> index f53bbea..26e0362 100644
-> --- a/drivers/spi/spi-efm32.c
-> +++ b/drivers/spi/spi-efm32.c
-> @@ -294,9 +294,6 @@ static int efm32_spi_probe_dt(struct platform_dev=
-ice *pdev,
->  	u32 location;
->  	int ret;
-> =20
-> -	if (!np)
-> -		return 1;
-> -
->  	ret =3D of_property_read_u32(np, "location", &location);
->  	if (!ret) {
->  		dev_dbg(&pdev->dev, "using location %u\n", location);
-> @@ -318,9 +315,14 @@ static int efm32_spi_probe(struct platform_devic=
-e *pdev)
->  	int ret;
->  	struct spi_master *master;
->  	struct device_node *np =3D pdev->dev.of_node;
-> -	unsigned int num_cs, i;
-> +	int num_cs, i;
-> +
-> +	if (!np)
-> +		return -EINVAL;
-> =20
->  	num_cs =3D of_gpio_named_count(np, "cs-gpios");
-> +	if (num_cs < 0)
-> +		return num_cs;
-This wasn't checked before and doesn't fit into the "cleanup non-DT
-paths"-category. Maybe note that in the commit log?
-Also did you change the type of i on purpose?
+Signed-off-by: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+---
+Mark: Can you please ack and take this, so Simon can apply the patches that
+      use these bindings? Thx!
 
->  	master =3D spi_alloc_master(&pdev->dev,
->  			sizeof(*ddata) + num_cs * sizeof(unsigned));
-> @@ -412,23 +414,7 @@ static int efm32_spi_probe(struct platform_devic=
-e *pdev)
->  		goto err;
->  	}
-> =20
-> -	ret =3D efm32_spi_probe_dt(pdev, master, ddata);
-> -	if (ret > 0) {
-> -		/* not created by device tree */
-> -		const struct efm32_spi_pdata *pdata =3D
-> -			dev_get_platdata(&pdev->dev);
-> -
-> -		if (pdata)
-> -			ddata->pdata =3D *pdata;
-> -		else
-> -			ddata->pdata.location =3D
-> -				efm32_spi_get_configured_location(ddata);
-> -
-> -		master->bus_num =3D pdev->id;
-> -
-> -	} else if (ret < 0) {
-> -		goto err_disable_clk;
-> -	}
-> +	efm32_spi_probe_dt(pdev, master, ddata);
-This must still be:
+v3:
+  - Split in two patches: bindings and dtsi updates
+v2:
+  - Add Tested-by
+  - List full example compatible properties with soctypes instead of just
+    the soctypes, so checkpatch can validate DTSes.
 
-	ret =3D efm32_spi_probe_dt(pdev, master, ddata);
-	if (ret < 0)
-		goto err_disable_clk;
+ Documentation/devicetree/bindings/spi/sh-hspi.txt |   28 ++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-Best regards
-Uwe
+diff --git a/Documentation/devicetree/bindings/spi/sh-hspi.txt b/Documentation/devicetree/bindings/spi/sh-hspi.txt
+index 30b57b1c8a13..319bad4af875 100644
+--- a/Documentation/devicetree/bindings/spi/sh-hspi.txt
++++ b/Documentation/devicetree/bindings/spi/sh-hspi.txt
+@@ -1,7 +1,29 @@
+ Renesas HSPI.
+ 
+ Required properties:
+-- compatible : 	"renesas,hspi"
+-- reg : Offset and length of the register set for the device
+-- interrupts : interrupt line used by HSPI
++- compatible       : "renesas,hspi-<soctype>", "renesas,hspi" as fallback.
++		     Examples with soctypes are:
++		       - "renesas,hspi-r8a7778" (R-Car M1)
++		       - "renesas,hspi-r8a7779" (R-Car H1)
++- reg              : Offset and length of the register set for the device
++- interrupt-parent : The phandle for the interrupt controller that
++		     services interrupts for this device
++- interrupts       : Interrupt specifier
++- #address-cells   : Must be <1>
++- #size-cells      : Must be <0>
++
++Pinctrl properties might be needed, too.  See
++Documentation/devicetree/bindings/pinctrl/renesas,*.
++
++Example:
++
++	hspi0: spi@fffc7000 {
++		compatible = "renesas,hspi-r8a7778", "renesas,hspi";
++		reg = <0xfffc7000 0x18>;
++		interrupt-parent = <&gic>;
++		interrupts = <0 63 IRQ_TYPE_LEVEL_HIGH>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		status = "disabled";
++	};
+ 
+-- 
+1.7.9.5
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig        =
-    |
-Industrial Linux Solutions                 | http://www.pengutronix.de/=
-  |
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,118 +1,58 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: efm32: Clean up non-DT paths
-Date: Tue, 11 Mar 2014 18:33:03 +0800
-Message-ID: <CAFRkauCkkGb6AXcwaE1ZBWp=nmtwBwJFXHTUGpLaLA=KNCy1Cg@mail.gmail.com>
-References: <1394409705.12514.2.camel@phoenix>
-	<20140311090918.GA17973@pengutronix.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3 resend] spi: hs-spi: Improve bindings
+Date: Tue, 11 Mar 2014 10:42:38 +0000
+Message-ID: <20140311104238.GL28112@sirena.org.uk>
+References: <1394530851-20244-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	=?ISO-8859-1?Q?Uwe_Kleine=2DK=F6nig?= <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: =?ISO-8859-1?Q?Uwe_Kleine=2DK=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140311090918.GA17973-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Bmt9nG8I+kxQNpDu"
+Cc: Simon Horman <horms@verge.net.au>, devicetree@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1394530851-20244-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-2014-03-11 17:09 GMT+08:00 Uwe Kleine-K=F6nig <u.kleine-koenig@pengutro=
-nix.de>:
-> Hi Axel,
->
-> On Mon, Mar 10, 2014 at 08:01:45AM +0800, Axel Lin wrote:
->> This is a DT-only driver, so remove all non-DT paths.
-> ok in general, but I have a few comments, see below.
->
->> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
->> ---
->>  drivers/spi/spi-efm32.c | 28 +++++++---------------------
->>  1 file changed, 7 insertions(+), 21 deletions(-)
->>
->> diff --git a/drivers/spi/spi-efm32.c b/drivers/spi/spi-efm32.c
->> index f53bbea..26e0362 100644
->> --- a/drivers/spi/spi-efm32.c
->> +++ b/drivers/spi/spi-efm32.c
->> @@ -294,9 +294,6 @@ static int efm32_spi_probe_dt(struct platform_de=
-vice *pdev,
->>       u32 location;
->>       int ret;
->>
->> -     if (!np)
->> -             return 1;
->> -
->>       ret =3D of_property_read_u32(np, "location", &location);
->>       if (!ret) {
->>               dev_dbg(&pdev->dev, "using location %u\n", location);
->> @@ -318,9 +315,14 @@ static int efm32_spi_probe(struct platform_devi=
-ce *pdev)
->>       int ret;
->>       struct spi_master *master;
->>       struct device_node *np =3D pdev->dev.of_node;
->> -     unsigned int num_cs, i;
->> +     int num_cs, i;
->> +
->> +     if (!np)
->> +             return -EINVAL;
->>
->>       num_cs =3D of_gpio_named_count(np, "cs-gpios");
->> +     if (num_cs < 0)
->> +             return num_cs;
-> This wasn't checked before and doesn't fit into the "cleanup non-DT
-> paths"-category. Maybe note that in the commit log?
-Ok, will update commit log in v2.
 
-> Also did you change the type of i on purpose?
-It's a "doesn't matter" case to me.
-If you really like to keep i as unsigned int, I can leave it as
-unsigned int in v2.
+--Bmt9nG8I+kxQNpDu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->
->>       master =3D spi_alloc_master(&pdev->dev,
->>                       sizeof(*ddata) + num_cs * sizeof(unsigned));
->> @@ -412,23 +414,7 @@ static int efm32_spi_probe(struct platform_devi=
-ce *pdev)
->>               goto err;
->>       }
->>
->> -     ret =3D efm32_spi_probe_dt(pdev, master, ddata);
->> -     if (ret > 0) {
->> -             /* not created by device tree */
->> -             const struct efm32_spi_pdata *pdata =3D
->> -                     dev_get_platdata(&pdev->dev);
->> -
->> -             if (pdata)
->> -                     ddata->pdata =3D *pdata;
->> -             else
->> -                     ddata->pdata.location =3D
->> -                             efm32_spi_get_configured_location(ddat=
-a);
->> -
->> -             master->bus_num =3D pdev->id;
->> -
->> -     } else if (ret < 0) {
->> -             goto err_disable_clk;
->> -     }
->> +     efm32_spi_probe_dt(pdev, master, ddata);
-> This must still be:
-efm32_spi_probe_dt() always return 0, why *must* check the return value=
- here?
+On Tue, Mar 11, 2014 at 10:40:51AM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+>=20
+>   - Add future-proof "renesas,hspi-<soctype>" compatible values,
+>   - Add missing "interrupt-parent", "#address-cells", and "#size-cells"
+>     properties,
+>   - Add reference to pinctrl documentation,
+>   - Add example bindings.
 
->
->         ret =3D efm32_spi_probe_dt(pdev, master, ddata);
->         if (ret < 0)
->                 goto err_disable_clk;
->
-> Best regards
-> Uwe
->
-> --
-> Pengutronix e.K.                           | Uwe Kleine-K=F6nig      =
-      |
-> Industrial Linux Solutions                 | http://www.pengutronix.d=
-e/  |
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Applied, thanks.
+
+--Bmt9nG8I+kxQNpDu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTHuibAAoJELSic+t+oim9ZlQP/3jxyCoTzY2djVSNOUs2LK8N
+zNbaGUb/INdm+qA3Of78Sv0S+s2C6lh5UwDyX5q4h2JJiNJgVEEmndZeyj//WzXj
++PqywinI3W9pg9eGMo2mTKindsugaly2o0RS6J27ar/Q0ae4WWSAt+Dkmybhfa6d
+0bBc6MMWoVU4mEZvw9BSVlZ2ZFvjQ5TCN89AiXLdsVxhLUrh6WWM3Dubj/5U3/81
+KZWKKgTWbMVnQBwJw0RuYEYWqwrT0BvDxdy2fVaBrNoEee14epCRoVgNag7VOIep
+b9vRyu88sEIRsp6UNurze0i5JnxyYdRAwH0ML6y/pEl59OQBoFyuehR8vG8Ai1Ld
+VnvrZ2N18HnA0dCtPCrBJ8v7YQVlR6TLMYwQF8rFlWaRo8VkKlZc/evLVAeNNHAj
+vSJVZ5gszclMqwr2AnaG3ZQ5FOB/7O/4oX3tEsQJ7OjAjasanSl9DvR96kCHjOJ1
+iEVoAPmxnAkPlgtX0EYWM4x+OPuay5LXoNLfHhiNdoJllVqW6876HSzJbRI46b1B
+YDNsXZD554Bt91l55d7JXz86eWgxcx+PtyKjmlWWUrhMHIfxtwOGRbMMR6m1UtuT
+jhpIXq/Tfyvg9Ay+zlwD9Bd8ff35t9E+onXItrrBMBGIDOyf94ihp5WfvmJkFMiP
+y7gHlKDVYmEnyf9aAAbh
+=hF9s
+-----END PGP SIGNATURE-----
+
+--Bmt9nG8I+kxQNpDu--

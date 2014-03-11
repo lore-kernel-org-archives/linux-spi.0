@@ -1,38 +1,55 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v3 resend] spi: hs-spi: Improve bindings
-Date: Tue, 11 Mar 2014 10:56:01 +0100
-Message-ID: <CAMuHMdUMZGzT0w7L+QjR7iD6KwM=FU2zBCH-wjtjnSZzhiOATg@mail.gmail.com>
-References: <1394530851-20244-1-git-send-email-geert@linux-m68k.org>
-	<20140311094925.GH28112@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2] spi: sh-msiof: Remove "renesas,msiof-sh7724" from
+ bindings
+Date: Tue, 11 Mar 2014 09:56:37 +0000
+Message-ID: <20140311095637.GJ28112@sirena.org.uk>
+References: <1394531006-20341-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Simon Horman <horms@verge.net.au>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="7pnCgpGbSH6esDHV"
+Cc: devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <20140311094925.GH28112@sirena.org.uk>
+Content-Disposition: inline
+In-Reply-To: <1394531006-20341-1-git-send-email-geert@linux-m68k.org>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Mar 11, 2014 at 10:49 AM, Mark Brown <broonie@kernel.org> wrote:
-> On Tue, Mar 11, 2014 at 10:40:51AM +0100, Geert Uytterhoeven wrote:
->> Mark: Can you please ack and take this, so Simon can apply the patches that
->>       use these bindings? Thx!
->
-> Why would I ack it and not apply it?
 
-Sorry, bad wording on my side.
+--7pnCgpGbSH6esDHV
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Gr{oetje,eeting}s,
+On Tue, Mar 11, 2014 at 10:43:26AM +0100, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas@linux-m68k.org>
+>=20
+> It's not implemented in the driver, so it's a bad example.
 
-                        Geert
+Applied, thanks.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+--7pnCgpGbSH6esDHV
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTHt3RAAoJELSic+t+oim90SYP/j7t3KZgeswThbAsTFuGXquR
+2t/pb+UngdjVLG15L9a1Dk77qALSfIHdkjuOWhdCTWRBLnNLIaJWvJ8WSU3FwQCb
+uCVBc/XBrM5nkPTLJatThKEQNCu2cRcGUixWgbEB2eWVZWy+KBOQe/I02L8J14y9
+IN8DZkN3XkBlAErrPRWPEJ5lwkQ8Q4NlpQdzG6uGo7zskP3PzSrJq0r5ZGAAa/J6
+Es0CeY2iQCfZG9FWRVqdOzF1zrc8/jDft8JQpRoAPE6tGSytW1SfG/jQcZNbvHis
+FVpbmGFW2qEFORGRNQWG7hbjTwGEBnnMNbynbQD6vsGXfgMMFvtkz5ICwq0uGIS1
+4w/QW8imNJ+Ar/uZuC7gTeKTz0JdhXUGARl0PLEA6wMJEzqfX8LKllzo2fMo8lSw
+A4V8vllUhXKK4RWPGwaAJKAHc7zM94YZMwYOXjq3PPmZ6sZvzozFTBGc2PxtilXA
+vTvXS/rL2ujcky8eIDZliJqWSL7LYLlyngKt0Ydd4FKF6zCkktUwCc7FgzzvZfEc
+mqUQPz2CPv483KNFYm+ZxRxjVLdbUPdQYhXUSjJWnejymZWj+v3Z3BkJnzOeF2w/
+Btidn0msMPjwtm+9OhGrlS9/uIlIGTCyzCeb2LONruLYp/iOUax3yt45tKcXixH2
+pqOXjqR4P1w1q5CVu7Wy
+=R8mc
+-----END PGP SIGNATURE-----
+
+--7pnCgpGbSH6esDHV--

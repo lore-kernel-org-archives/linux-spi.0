@@ -1,62 +1,71 @@
-From: Mark Brown <broonie@kernel.org>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
 Subject: Re: [PATCH 1/3] spi: bitbang: fix shift for getmosi
-Date: Wed, 12 Mar 2014 21:37:05 +0000
-Message-ID: <20140312213705.GY28112@sirena.org.uk>
-References: <1394637636-29042-1-git-send-email-m.grzeschik@pengutronix.de>
- <1394637636-29042-2-git-send-email-m.grzeschik@pengutronix.de>
- <20140312212334.GO3327@book.gsilab.sittig.org>
+Date: Wed, 12 Mar 2014 22:45:53 +0100
+Message-ID: <20140312214553.GQ3327@book.gsilab.sittig.org>
+References: <1394639617-26917-1-git-send-email-m.grzeschik@pengutronix.de>
+ <1394639617-26917-2-git-send-email-m.grzeschik@pengutronix.de>
+ <20140312162418.GU28112@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="a7SarfeDDnAelrrD"
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	linux-spi@vger.kernel.org, linux-arm-kernel@vger.kernel.org,
-	kernel@pengutronix.de, stable@vger.kernel.org
-To: Gerhard Sittig <gsi@denx.de>
-Return-path: <stable-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20140312212334.GO3327@book.gsilab.sittig.org>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---a7SarfeDDnAelrrD
 Content-Type: text/plain; charset=us-ascii
+Cc: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <20140312162418.GU28112-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Mar 12, 2014 at 10:23:34PM +0100, Gerhard Sittig wrote:
-> On Wed, Mar 12, 2014 at 16:20 +0100, Michael Grzeschik wrote:
+On Wed, Mar 12, 2014 at 16:24 +0000, Mark Brown wrote:
+> 
+> On Wed, Mar 12, 2014 at 04:53:35PM +0100, Michael Grzeschik wrote:
+> > The driver needs to shift the word bit after reading the mosi bit.
+> > Otherwise the return word will have an Off-by-one bit value.
+> 
+> This isn't exactly new code...  do we understand why nobody has noticed
+> this before?
 
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+I too suspect that the bug (if there is any) is elsewhere.
 
-> Is the Cc: to stable@ appropriate without Fixes: or a version
-> that's supposed to be affected?  Has a bug been verified and are
-> you certain that the fix is correct?
+> > @@ -61,10 +61,10 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
+> >  		spidelay(nsecs);
+> >  
+> >  		/* sample MSB (from slave) on leading edge */
+> > -		word <<= 1;
+> >  		if ((flags & SPI_MASTER_NO_RX) == 0)
+> >  			word |= getmiso(spi);
+> >  		setsck(spi, cpol);
+> > +		word <<= 1;
+> >  	}
+> 
+> Just looking at the context here it's not obvious to me that this is
+> helping - it means that the last bit we read is going to be shifted
+> which seems wrong, we ought to be reading into LSB.
 
-Like I said in my reply I'm somewhat dubious that this is actually an
-issue but if it is then it's been present since at least 2.6.35 (when
-the header file was split out of the driver).
+It might be more robust to 
 
---a7SarfeDDnAelrrD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+  if (!(flags & SPI_MASTER_NO_RX) && getmiso(spi))
+    word |= 1;
+    
+instead.  This decouples the construction of the received bits
+buffer from whatever the getmiso() implementation might look
+like.  That's just a thought after the recent GPIO discussion
+about whether 1/0 is given or should not be assumed (and I still
+suspect that "!!x" need not result in exactly 1/0 values).
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+And I agree with Mark that the "late shift" is most probably
+wrong.  Just noticed the resend too late and responded in the
+other thread.
 
-iQIcBAEBAgAGBQJTINN+AAoJELSic+t+oim9P7oP/2E4tx+DhQsoMJ3ISU7XAtwk
-c22yBL5i2m7X3lspmeWsqs9+/jDC9m4nEn+DEQOg2H95WXJTn4p2doV2aoLqsv4X
-eGYMeEXGHa45ByAVRmwCUumY4hWFw4PltUCAFCEIOeJCXnYd8nXWBDzw5IAn9eVc
-LyUGpFDXa2uDp34oXxuCG00axVnHJJydeLNexUINXplCl6IRdpGLdY0iKwHkQavd
-kNvvpfl9fZCKIVF3rnU8Mi1pDyCgdQArNKlHa/8NERYoJ2W1NK5RoBuyp2wOSNZE
-KGBnq8p5G2F721uwTFptcAqpvyFTthZQcfeX+UWcCLrgfom661yHcrr64AI1s3K8
-VbtpHHkyjUePpfjL2c5H7y6F5qtCtNMxbxbSr6AZHlj0bNnXobpp8uV/R7/2lxN0
-54OHo04vS2kXHV+c3vTg6vQIa75DFE2zK0qwhtHtwuTrbtKHIJWrk3ZbfJ+f9AGU
-WVEU1kU+6XBWNSvqL5Y25npJTC6aruXrQ+CkXrddLonDzjCes8gNJyM1z8yqPlT+
-YlN1fXNjAUkPpRtkouoy7LA9B1zl6/jnrCPTGoHIon0TWC3Jpjivh/JpYUWZ62wY
-FzZOTnEfDTEs30dRMUBaZHxbfddPtevXjwkrkLiBZpBechG+XW4n7hxKN6k+FfWd
-e02kQ2N6974ARP2nCxgy
-=OYXK
------END PGP SIGNATURE-----
 
---a7SarfeDDnAelrrD--
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

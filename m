@@ -1,65 +1,52 @@
-From: Max Filippov <jcmvbkbc@gmail.com>
-Subject: Re: [PATCH v2 2/3] spi/xtensa-xtfpga: add DT binding documentation
-Date: Wed, 12 Mar 2014 21:21:15 +0400
-Message-ID: <CAMo8BfLDXYaovZ1U1hcXKCv+EX=wuda8uHgmTDP3Ozaq2Z=SKg@mail.gmail.com>
-References: <1394626865-15105-1-git-send-email-jcmvbkbc@gmail.com>
-	<1394626865-15105-3-git-send-email-jcmvbkbc@gmail.com>
-	<20140312151320.GB5035@e106331-lin.cambridge.arm.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	Chris Zankel <chris@zankel.net>,
-	Marc Gauthier <marc@cadence.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	"grant.likely@linaro.org" <grant.likely@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20140312151320.GB5035@e106331-lin.cambridge.arm.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v3 0/3] xtensa xtfpga SPI controller driver
+Date: Wed, 12 Mar 2014 21:55:23 +0400
+Message-ID: <1394646926-30496-1-git-send-email-jcmvbkbc@gmail.com>
+Cc: Chris Zankel <chris-YvXeqwSYzG2sTnJN9+BGXg@public.gmane.org>, Marc Gauthier <marc-vna1KIf7WgpBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-xtensa-PjhNF2WwrV/0Sa2dR60CXw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Mar 12, 2014 at 7:13 PM, Mark Rutland <mark.rutland@arm.com> wrote:
-> On Wed, Mar 12, 2014 at 12:21:04PM +0000, Max Filippov wrote:
->> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
->> ---
->>  Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt | 9 +++++++++
->>  1 file changed, 9 insertions(+)
->>  create mode 100644 Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt
->>
->> diff --git a/Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt b/Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt
->> new file mode 100644
->> index 0000000..b6ebe2b
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt
->> @@ -0,0 +1,9 @@
->> +Cadence Xtensa XTFPGA platform SPI controller.
->> +
->> +This simple SPI master controller is built into xtfpga bitstreams and is used
->> +to control daughterboard audio codec.
->> +
->> +Required properties:
->> +- compatible: should be "cdns,xtfpga-spi".
->
-> Is that the official name of the block? Nothing more specific?
+Hello,
 
-There's no official name, so I composed this from the official name
-of the platform + the block function. AFAIK there's single version of
-this IP block. Marc G., please correct me if I'm wrong.
+this series adds driver for SPI controller used on xtfpga xtensa platform,
+device tree binding documentation and an entry to MAINTAINERS.
 
->> +- reg: physical base address of the controller and length of memory mapped
->> +  region.
->
-> No interrupts?
+Changes v2 -> v3:
+- support all transfer widths in the range 1...16 bit;
+- don't swap bytes of 16 bit transfers.
 
-Correct.
+Changes v1 -> v2:
+- support 8 bit transfers;
+- busy-wait for maximum 100 usec (instead of 100 msec) polling BUSY register;
+- use chipselect callback to check transfer size.
 
-> Otherwise, this looks fine to me.
+Max Filippov (3):
+  spi: add xtfpga SPI controller driver
+  spi/xtensa-xtfpga: add DT binding documentation
+  MAINTAINERS: add xtfpga platform section
+
+ .../devicetree/bindings/spi/spi-xtensa-xtfpga.txt  |   9 ++
+ MAINTAINERS                                        |   6 +
+ drivers/spi/Kconfig                                |  13 ++
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-xtensa-xtfpga.c                    | 170 +++++++++++++++++++++
+ 5 files changed, 199 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt
+ create mode 100644 drivers/spi/spi-xtensa-xtfpga.c
 
 -- 
-Thanks.
--- Max
+1.8.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

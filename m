@@ -1,71 +1,78 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/3] spi: add xtfpga SPI controller driver
-Date: Wed, 12 Mar 2014 12:49:01 +0000
-Message-ID: <20140312124901.GQ28112@sirena.org.uk>
-References: <1394626865-15105-1-git-send-email-jcmvbkbc@gmail.com>
- <1394626865-15105-2-git-send-email-jcmvbkbc@gmail.com>
+Subject: Re: [PATCH 1/3] spi: add xtfpga SPI controller driver
+Date: Wed, 12 Mar 2014 13:24:27 +0000
+Message-ID: <20140312132427.GR28112@sirena.org.uk>
+References: <1394541891-26469-1-git-send-email-jcmvbkbc@gmail.com>
+ <1394541891-26469-2-git-send-email-jcmvbkbc@gmail.com>
+ <20140311194959.GB28112@sirena.org.uk>
+ <CAMo8BfLTn+pneF6_7XkP66+LzpZgcefnAo_FkwxpvtYdt9yduA@mail.gmail.com>
+ <20140312003401.GE28112@sirena.org.uk>
+ <CAMo8Bf+dePYf0jW6zaH-4Qiy5oF-bBzHjkfzL1u6pyTS1OE46w@mail.gmail.com>
+ <20140312011116.GJ28112@sirena.org.uk>
+ <CAMo8BfKFp1kz8S_4JbSh5=f+hMygJL1670fkFfzdArgDqtW72A@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="NckIF66D29mqubFO"
-Cc: linux-xtensa-PjhNF2WwrV/0Sa2dR60CXw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	protocol="application/pgp-signature"; boundary="vW5M6DBezn0Nx6aF"
+Cc: "linux-xtensa-PjhNF2WwrV/0Sa2dR60CXw@public.gmane.org" <linux-xtensa-PjhNF2WwrV/0Sa2dR60CXw@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	Chris Zankel <chris-YvXeqwSYzG2sTnJN9+BGXg@public.gmane.org>,
 	Marc Gauthier <marc-vna1KIf7WgpBDgjK7y7TUQ@public.gmane.org>,
 	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 To: Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1394626865-15105-2-git-send-email-jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAMo8BfKFp1kz8S_4JbSh5=f+hMygJL1670fkFfzdArgDqtW72A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 
---NckIF66D29mqubFO
+--vW5M6DBezn0Nx6aF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Mar 12, 2014 at 04:21:03PM +0400, Max Filippov wrote:
+On Wed, Mar 12, 2014 at 05:48:16AM +0400, Max Filippov wrote:
+> On Wed, Mar 12, 2014 at 5:11 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-> +	case 16:
-> +		/* Bytes that should go out earlier have lower addresses,
-> +		 * but the hardware operates with 16 bit words and transmits
-> +		 * higher bits first. Thus data in memory is in BE order.
-> +		 */
-> +		xspi->data = (xspi->data << 16) | be16_to_cpu(v);
-> +		xspi->data_sz += 2;
-> +		break;
+> > So I just looked again - the SPI code isn't in mainline, there must
+> > be some out of tree patches here that can't have been tested since the
+> > driver was converted to regmap (or the byte swapping you're doing in the
+> > controller is buggy for 16 bits per word).
 
-Are you sure you need to do this byte swap?  SPI words are big endian so
-if you are running on a little endian processor if you are transmitting
-16 bit words you should see the data getting swapped on the bus (this is
-why I say you should never have more than 8 bits per word for regmap).
+> I'm successfully running this driver with the patches in your ASoC tree
+> branch topic/tlv320aic23.
 
---NckIF66D29mqubFO
+Ah, I missed that during review - the driver shouldn't be forcing 16
+bits per word, any swapping that's needed should be being done in the
+regmap API.  Though based on the discussion of the SPI driver it seems
+like this may be compensating for an unwanted byte swap there.
+
+--vW5M6DBezn0Nx6aF
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTIFe5AAoJELSic+t+oim9oVQP/RrJLM2g8TR6xGpJAxppmMIT
-XAy0MDJLEA60MVKEnCZdmvniijoB/hcxBXGoO7prUZNKYXbyHyC9LK4YrdwWW0S3
-xhn2mYMw4GBVxNYK6VQW/AT6gNmqLdcuhBcWzjcrBJKYR2e227ZwhSFzPORYI6rT
-IKUVpBWd4P/tFOZBYtGSJc4/8DMx+aZNbxQqWD62zsu1jNy7375ysvqFfLS5FXxC
-8Hb1S+UjK7pY/zxKxXh6FgIyrtQ6n0CALGC27x1cfMz6LSmbhiyrP7rKSDNZjZ/c
-TNBNJitc2GZmVx8jDGTaCJ4DxPMUhFgSBbgcZ9MZkivz0l+gbTyhOSfQuDYVASLZ
-lRwwi/gscngCR75M0zP4GnXfJdZcwCfUNqx8QXi5sZuEuCCVp5RvU+/qHyT0AmxR
-BiStg9zIaAm2D6IU2zhjigJ0MxTJwm7GwbvihPx76UxiAi1TQ0gY+EnARi7oKRD4
-i+RnWwFi+F3U8uC8WWqb2KfNMn+SV1ZkT/Uzo/bB6ZpAywtU4CE1TYK7RFIYmIIB
-KeZfppHCiIhSjV1naMwENySyhLdvDpm9cwFzGhQrm9B+zsF7k/6D3rwM/1PdqcB5
-LMCfrdYWSxT1RaN0Q6TAR22ZFlyM5hetAbB1hoXzRnLZwHrnNn0YGmc7Rlr57+VJ
-tvEGpdDGbbbwXyP2LIDM
-=QloZ
+iQIcBAEBAgAGBQJTIGAIAAoJELSic+t+oim99GIP/11mpaJ2nb6NDiMPuuMr3imb
+mDmfRFPkQC0gaYL2DZ8icCBdcGJLTdBcTnUH9WxLvMz+x925DzcInZYdsqvOSVBy
+vYkEkT6muBaQElia7FoWv/sEyoK/CRL6y+a6xevV+vCufPfLYJInKBwQE7tslZJM
+2Vcw8dCuhV/39mdLmBub9Vc+6Iv8yTcLkOvvIK+cnI7Mb+VpyBA7pc9i0eeVo0vq
+GX8eBNOceKF+WUDjk8WGu6oyXzGX+FWfuMPEDpbtpLdR3MEo9xgo3C+5zYCLLXJi
+mpuKhAfBJ25vYRh+/Rt92uLquF0eMvgXF5qPZMLqLxUgrhf/Pj8L5iL3G+qUN1or
+ck3YMqtkYf0u47UV27apLpuT8g/1Oni2EzRb2mMfVe1iKJj9cb22u7TnscmkTTjf
+o+TbyzK2KLUvdMjEG0AqDVN7GH7kMBXRYrQXO8VFNJ+vdoEmB6MtnfIAU5P99GVM
+y7HWz3WqE8jipJqZNV9fizf7lO5UKOhKJ/3dGErw9O31jRIyQRlaNZLs6TWShrwx
+FLUML0Epc48Yx/R+IsxbgHavDLLLhD5djWmyvLlh9TudP9J4VsdkijkklZEHogfl
+JUOu7gY2UmrFjfA6nYYOUXVgzYQPXAsEL4cH/wN3vt9T43kopRcfZ2GAyUlcHypg
++RCkxSxuN2h2wa9taptW
+=RQdX
 -----END PGP SIGNATURE-----
 
---NckIF66D29mqubFO--
+--vW5M6DBezn0Nx6aF--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,42 +1,50 @@
-From: Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH v3 2/3] spi/xtensa-xtfpga: add DT binding documentation
-Date: Wed, 12 Mar 2014 21:55:25 +0400
-Message-ID: <1394646926-30496-3-git-send-email-jcmvbkbc@gmail.com>
+From: Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v3 3/3] MAINTAINERS: add xtfpga platform section
+Date: Wed, 12 Mar 2014 21:55:26 +0400
+Message-ID: <1394646926-30496-4-git-send-email-jcmvbkbc@gmail.com>
 References: <1394646926-30496-1-git-send-email-jcmvbkbc@gmail.com>
-Cc: Chris Zankel <chris@zankel.net>, Marc Gauthier <marc@cadence.com>,
-	Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Max Filippov <jcmvbkbc@gmail.com>
-To: linux-xtensa@linux-xtensa.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1394646926-30496-1-git-send-email-jcmvbkbc@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Chris Zankel <chris-YvXeqwSYzG2sTnJN9+BGXg@public.gmane.org>, Marc Gauthier <marc-vna1KIf7WgpBDgjK7y7TUQ@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-xtensa-PjhNF2WwrV/0Sa2dR60CXw@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1394646926-30496-1-git-send-email-jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+This section will list xtfpga platform-specific drivers.
+
+Signed-off-by: Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt | 9 +++++++++
- 1 file changed, 9 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt b/Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt
-new file mode 100644
-index 0000000..b6ebe2b
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-xtensa-xtfpga.txt
-@@ -0,0 +1,9 @@
-+Cadence Xtensa XTFPGA platform SPI controller.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c6d0e93..9f75849 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9768,6 +9768,12 @@ L:	linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+ S:	Maintained
+ F:	drivers/tty/serial/uartlite.c
+ 
++XTENSA XTFPGA PLATFORM SUPPORT
++M:	Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
++L:	linux-xtensa-PjhNF2WwrV/0Sa2dR60CXw@public.gmane.org
++S:	Maintained
++F:	drivers/spi/spi-xtensa-xtfpga.c
 +
-+This simple SPI master controller is built into xtfpga bitstreams and is used
-+to control daughterboard audio codec.
-+
-+Required properties:
-+- compatible: should be "cdns,xtfpga-spi".
-+- reg: physical base address of the controller and length of memory mapped
-+  region.
+ YAM DRIVER FOR AX.25
+ M:	Jean-Paul Roubelat <jpr-3OwtVqItl4LYtjvyW6yDsg@public.gmane.org>
+ L:	linux-hams-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 -- 
 1.8.1.4
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

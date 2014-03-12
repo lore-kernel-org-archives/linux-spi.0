@@ -1,101 +1,73 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v2] spi: efm32: Clean up non-DT paths
-Date: Wed, 12 Mar 2014 18:35:23 +0800
-Message-ID: <1394620523.3290.1.camel@phoenix>
+From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: sh-msiof: Convert to spi core auto_runtime_pm framework
+Date: Wed, 12 Mar 2014 12:26:24 +0100
+Message-ID: <1972290.yxP8Fj4BuZ@avalon>
+References: <1394531952-3905-1-git-send-email-geert@linux-m68k.org> <2274545.CyQ67zvVqo@avalon> <CANqRtoRR9Q8Q=ACqhnLBpTavn0K5cD1=dBkjkfZ8kb+H68GuOw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CANqRtoRR9Q8Q=ACqhnLBpTavn0K5cD1=dBkjkfZ8kb+H68GuOw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This is a DT-only driver, so remove all non-DT paths.
-of_gpio_named_count() may fail, thus also add checking it's return value.
-efm32_spi_probe_dt() never fails, make it return void.
+Hi Magnus,
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-efm32.c | 31 ++++++++-----------------------
- 1 file changed, 8 insertions(+), 23 deletions(-)
+On Wednesday 12 March 2014 10:23:48 Magnus Damm wrote:
+> On Wed, Mar 12, 2014 at 1:32 AM, Laurent Pinchart wrote:
+> > On Tuesday 11 March 2014 17:23:37 Geert Uytterhoeven wrote:
+> >> Hi Laurent,
+> >> 
+> >> On Tue, Mar 11, 2014 at 4:55 PM, Laurent Pinchart wrote:
+> >> > Does this require drivers/sh/pm_runtime.c to be compiled in ?
+> >> 
+> >> Let's check...
+> >> 
+> >> My koelsch-legacy kernel has drivers/sh/pm_runtime.c compiled in.
+> >> My koelsch-reference kernel hasn't.
+> >> 
+> >> However, under the -reference kernel many MSTP clocks (incl. MSIOF)
+> >> seem to be enabled all the time, while under -legacy they are enabled and
+> >> disabled on demand.
+> > 
+> > Is PM_RUNTIME enabled in both cases ?
+> > 
+> > There's something fishy in there that we should try to fix without too
+> > further much delay. Ben Dooks has pointed out the problem a couple of
+> > months ago, but the discussion on the mailing list just died.
+> 
+> Yes, Runtime PM is not working as expected in the multiplatform case,
+> that is true. I propose that we keep Runtime PM disabled in the
+> Kconfig for R-Car Gen2 for now to keep things simple.
 
-diff --git a/drivers/spi/spi-efm32.c b/drivers/spi/spi-efm32.c
-index f53bbea..b9983ef 100644
---- a/drivers/spi/spi-efm32.c
-+++ b/drivers/spi/spi-efm32.c
-@@ -287,16 +287,13 @@ static u32 efm32_spi_get_configured_location(struct efm32_spi_ddata *ddata)
- 	return (reg & REG_ROUTE_LOCATION__MASK) >> __ffs(REG_ROUTE_LOCATION__MASK);
- }
- 
--static int efm32_spi_probe_dt(struct platform_device *pdev,
-+static void efm32_spi_probe_dt(struct platform_device *pdev,
- 		struct spi_master *master, struct efm32_spi_ddata *ddata)
- {
- 	struct device_node *np = pdev->dev.of_node;
- 	u32 location;
- 	int ret;
- 
--	if (!np)
--		return 1;
--
- 	ret = of_property_read_u32(np, "location", &location);
- 	if (!ret) {
- 		dev_dbg(&pdev->dev, "using location %u\n", location);
-@@ -308,7 +305,6 @@ static int efm32_spi_probe_dt(struct platform_device *pdev,
- 	}
- 
- 	ddata->pdata.location = location;
--	return 0;
- }
- 
- static int efm32_spi_probe(struct platform_device *pdev)
-@@ -318,9 +314,14 @@ static int efm32_spi_probe(struct platform_device *pdev)
- 	int ret;
- 	struct spi_master *master;
- 	struct device_node *np = pdev->dev.of_node;
--	unsigned int num_cs, i;
-+	int num_cs, i;
-+
-+	if (!np)
-+		return -EINVAL;
- 
- 	num_cs = of_gpio_named_count(np, "cs-gpios");
-+	if (num_cs < 0)
-+		return num_cs;
- 
- 	master = spi_alloc_master(&pdev->dev,
- 			sizeof(*ddata) + num_cs * sizeof(unsigned));
-@@ -412,23 +413,7 @@ static int efm32_spi_probe(struct platform_device *pdev)
- 		goto err;
- 	}
- 
--	ret = efm32_spi_probe_dt(pdev, master, ddata);
--	if (ret > 0) {
--		/* not created by device tree */
--		const struct efm32_spi_pdata *pdata =
--			dev_get_platdata(&pdev->dev);
--
--		if (pdata)
--			ddata->pdata = *pdata;
--		else
--			ddata->pdata.location =
--				efm32_spi_get_configured_location(ddata);
--
--		master->bus_num = pdev->id;
--
--	} else if (ret < 0) {
--		goto err_disable_clk;
--	}
-+	efm32_spi_probe_dt(pdev, master, ddata);
- 
- 	efm32_spi_write32(ddata, 0, REG_IEN);
- 	efm32_spi_write32(ddata, REG_ROUTE_TXPEN | REG_ROUTE_RXPEN |
+Isn't it ? I thought it was only broken with regard to clocks, but I might be 
+missing something.
+
+> From my side I see it as two separate solutions. The short term fix is
+> to temporarily work around drivers that depend on Runtime PM for clock
+> control, I propose enabling selected clocks statically using the
+> function introduced by this series:
+> 
+> [PATCH 00/03] ARM: shmobile: Break out and extend clock workaround
+> http://www.spinics.net/lists/arm-kernel/msg310278.html
+> 
+> The long term fix I'm not sure sure about, but I trust Geert to figure
+> it out. =)
+> 
+> Regardless, rushing to fix this "correctly" seems as useful to me as
+> dead line driven DT development....
+
 -- 
-1.8.1.2
+Regards,
 
-
+Laurent Pinchart
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

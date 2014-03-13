@@ -1,51 +1,72 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 2/3] spi: bitbang: add lsb first support
-Date: Thu, 13 Mar 2014 20:22:47 +0100
-Message-ID: <CAMuHMdWJRz_ZDpOGO_uBBshajWHDjirvZStYuWxZpkFOsexLRQ@mail.gmail.com>
-References: <1394637636-29042-1-git-send-email-m.grzeschik@pengutronix.de>
-	<1394637636-29042-3-git-send-email-m.grzeschik@pengutronix.de>
-	<20140312212941.GP3327@book.gsilab.sittig.org>
-	<20140312213544.GX28112@sirena.org.uk>
-	<20140313181107.GT3327@book.gsilab.sittig.org>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH] spi: sh-hspi: Do not specifically request shyway_clk
+ clock
+Date: Fri, 14 Mar 2014 08:50:01 +0900
+Message-ID: <20140313234958.GA28137@verge.net.au>
+References: <1394699450-31286-1-git-send-email-horms+renesas@verge.net.au>
+ <2144304.qo37EGpAOW@avalon>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-arm-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140313181107.GT3327-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@linaro.org>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org, Magnus Damm <magnus.damm@gmail.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <2144304.qo37EGpAOW@avalon>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Gerhard,
+On Thu, Mar 13, 2014 at 11:10:25AM +0100, Laurent Pinchart wrote:
+> Hi Simon,
+> 
+> Thank you for the patch.
+> 
+> On Thursday 13 March 2014 17:30:50 Simon Horman wrote:
+> > Rather than requesting the shyway_clk call clk_get with
+> > the device and a NULL con_id.
+> > 
+> > This is in keeping with the way that clk_get() is called
+> > on other drivers used by Renesas Gen 1 SoCs. And I believe
+> > it is compatible with supplying clocks via DT, unlike the current code.
+> > 
+> > It appears to me that the two uses of this driver are
+> > the r8a7778 and r8a7779 SoCs. Both of which have already clocks setup
+> > to allow this driver to continue to work with this change applied.
+> 
+> If I'm not mistaken the hspi clocks on r8a7778 are children of clkp, while the 
+> shyway clock is a alias to clks. The only r8a7778 documentation I have access 
+> to is in Japanese so I'm not 100% sure, but I believe the MSTP007 parent clock 
+> should be clks.
+> 
+> The problem is not present in our r8a7779 code, the MSTP007 parent is clks 
+> there.
 
-On Thu, Mar 13, 2014 at 7:11 PM, Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org> wrote:
-> http://graphics.stanford.edu/~seander/bithacks.html#BitReverseObvious
-> and the following sections suggest that code might get less
-> expensive when you accept to no longer see at first glance what's
-> happening.  Given a good identifier and an appropriate comment,
-> http://graphics.stanford.edu/~seander/bithacks.html#ReverseParallel
-> might be acceptable for mainline.
+Thanks for noticing that. I'll send a patch fix the r8a7778 clock code.
 
-I had faint memories of seeing this algorithm in the Linux kernel sources,
-but I can't seem to find it anymore.
-
-We do have a different implementation in lib/bitrev.c.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> > Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+> > ---
+> >  drivers/spi/spi-sh-hspi.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+> > index 82d2f92..e975892 100644
+> > --- a/drivers/spi/spi-sh-hspi.c
+> > +++ b/drivers/spi/spi-sh-hspi.c
+> > @@ -274,9 +274,9 @@ static int hspi_probe(struct platform_device *pdev)
+> >  		return -ENOMEM;
+> >  	}
+> > 
+> > -	clk = clk_get(NULL, "shyway_clk");
+> > +	clk = clk_get(&pdev->dev, NULL);
+> >  	if (IS_ERR(clk)) {
+> > -		dev_err(&pdev->dev, "shyway_clk is required\n");
+> > +		dev_err(&pdev->dev, "couldn't get clock\n");
+> >  		ret = -EINVAL;
+> >  		goto error0;
+> >  	}
+> 
+> -- 
+> Regards,
+> 
+> Laurent Pinchart
+> 

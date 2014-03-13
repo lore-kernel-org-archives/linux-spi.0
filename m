@@ -1,57 +1,67 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RFT][PATCH 2/2] spi: sirf: Add missing
- spi_master_{resume,suspend} calls to PM callbacks
-Date: Thu, 13 Mar 2014 09:57:42 +0000
-Message-ID: <20140313095742.GM366@sirena.org.uk>
-References: <1394003843.18343.2.camel@phoenix>
- <1394003949.18343.4.camel@phoenix>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: [PATCH] spi: sh-hspi: Do not specifically request shyway_clk clock
+Date: Thu, 13 Mar 2014 11:10:25 +0100
+Message-ID: <2144304.qo37EGpAOW@avalon>
+References: <1394699450-31286-1-git-send-email-horms+renesas@verge.net.au>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jB+02Y6wHc2pEa2x"
-Cc: Barry Song <baohua-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1394003949.18343.4.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie@linaro.org>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org, Magnus Damm <magnus.damm@gmail.com>
+To: Simon Horman <horms+renesas@verge.net.au>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1394699450-31286-1-git-send-email-horms+renesas@verge.net.au>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi Simon,
 
---jB+02Y6wHc2pEa2x
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thank you for the patch.
 
-On Wed, Mar 05, 2014 at 03:19:09PM +0800, Axel Lin wrote:
-> This is required since commit 2025172e3280 "spi/bitbang: Use core message pump".
-> spi-bitbang now uses core message pump, so it needs to call spi_master_suspend/
-> spi_master_resume to stop/start the queue while suspend/resume.
+On Thursday 13 March 2014 17:30:50 Simon Horman wrote:
+> Rather than requesting the shyway_clk call clk_get with
+> the device and a NULL con_id.
+> 
+> This is in keeping with the way that clk_get() is called
+> on other drivers used by Renesas Gen 1 SoCs. And I believe
+> it is compatible with supplying clocks via DT, unlike the current code.
+> 
+> It appears to me that the two uses of this driver are
+> the r8a7778 and r8a7779 SoCs. Both of which have already clocks setup
+> to allow this driver to continue to work with this change applied.
 
-Applied, thanks.
+If I'm not mistaken the hspi clocks on r8a7778 are children of clkp, while the 
+shyway clock is a alias to clks. The only r8a7778 documentation I have access 
+to is in Japanese so I'm not 100% sure, but I believe the MSTP007 parent clock 
+should be clks.
 
---jB+02Y6wHc2pEa2x
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+The problem is not present in our r8a7779 code, the MSTP007 parent is clks 
+there.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+> Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+> ---
+>  drivers/spi/spi-sh-hspi.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+> index 82d2f92..e975892 100644
+> --- a/drivers/spi/spi-sh-hspi.c
+> +++ b/drivers/spi/spi-sh-hspi.c
+> @@ -274,9 +274,9 @@ static int hspi_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
+>  	}
+> 
+> -	clk = clk_get(NULL, "shyway_clk");
+> +	clk = clk_get(&pdev->dev, NULL);
+>  	if (IS_ERR(clk)) {
+> -		dev_err(&pdev->dev, "shyway_clk is required\n");
+> +		dev_err(&pdev->dev, "couldn't get clock\n");
+>  		ret = -EINVAL;
+>  		goto error0;
+>  	}
 
-iQIcBAEBAgAGBQJTIYESAAoJELSic+t+oim9r+AP/3wSCtIXk5fImFDrJN0PcXBZ
-8sBhSyrG2b2c3l/sIPr7ils0wlQh+ELrK8HoQ3wF5yto+UJhHuV6T6cwqu0c65FR
-4d8O9e8j6tqQ7OCDLzYm8m11d5qLSopNbkaMAOfeg+ZHTuyac1buFaGt8cpFR2jQ
-kJYN59yQ88HK0WC9oyKlnJ7dxvAVlvq4Fs4CsCofT7hOTkcwj+42Bex89yi+hms+
-f/fxnhkEOdAV/I4Ljv+mbeuEh5ge+c/eT+Db5tzUfKx1oN6wd3/a4te9DywdrKNd
-1hnTekIIxGOIr1t+vfpJsl7tZ+5EBLehgyZPg5cEwoA0VQOSduLpC9Uqs0oR0ens
-1jNLc2YFfvjBaILcm5NZQGy87e2xmYKzVmdJCtim7FgAEgcD8Y6FWlErKRq4kumD
-aWRmy4GkXgtOVyr8SKHhbgNKuPwQ/+kXu99u3su3acJGcxOiT8mviCjLe3urB+Il
-eA01XtEofKMBdYMEYo7NmCiA1TG/e7aGkbac1akfS3uQg5c3NSrbDgPDK0vLgQmF
-rKykyVwDWHJSyNqD2OqNvAafTOtegK9+bYFmxVP3rgp17i5IihEU8IMFdwwllWXg
-GuGORgFtqJIV25X+qQaowmJWDQYRs1fPNqLPQ8+mTjGZjHZXBjN+YEk7mpdyXVbd
-sHcuJMkKUi/IP48yNAmL
-=ow/c
------END PGP SIGNATURE-----
+-- 
+Regards,
 
---jB+02Y6wHc2pEa2x--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Laurent Pinchart
+

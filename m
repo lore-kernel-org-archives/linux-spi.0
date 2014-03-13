@@ -1,46 +1,47 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v5 0/8] mtd: spi-nor: add a new framework for SPI NOR
-Date: Wed, 12 Mar 2014 23:39:40 -0700
-Message-ID: <20140313063940.GU31517@norris-Latitude-E6410>
-References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
- <20140312081350.GC30808@shlinux2.ap.freescale.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, angus.clark-qxv4g6HH51o@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org, b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
-To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140312081350.GC30808-Fb7DQEYuewWctlrPMvKcciBecyulp+rMXqFh9Ls21Oc@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Simon Horman <horms+renesas@verge.net.au>
+Subject: [PATCH] spi: sh-hspi: Do not specifically request shyway_clk clock
+Date: Thu, 13 Mar 2014 17:30:50 +0900
+Message-ID: <1394699450-31286-1-git-send-email-horms+renesas@verge.net.au>
+Cc: Magnus Damm <magnus.damm@gmail.com>,
+	Simon Horman <horms+renesas@verge.net.au>
+To: Mark Brown <broonie@linaro.org>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Mar 12, 2014 at 04:13:51PM +0800, Huang Shijie wrote:
-> On Mon, Feb 24, 2014 at 06:37:34PM +0800, Huang Shijie wrote:
->    Could you please review this patch set? I really hope it can be merged
->    as soon as possibel.  But now, the patch set has stalled for a long time.
+Rather than requesting the shyway_clk call clk_get with
+the device and a NULL con_id.
 
-I'm sorry for the delay. Others are in the same position of delay (e.g.,
-Lee's SPI-NOR driver), because I simply have not had the time to really
-devote this the attention it deserves, especially considering how it
-rearchitects such an important, commonly-used driver.
+This is in keeping with the way that clk_get() is called
+on other drivers used by Renesas Gen 1 SoCs. And I believe
+it is compatible with supplying clocks via DT, unlike the current code.
 
-Nonetheless, I will try to give your patches some more attention soon.
+It appears to me that the two uses of this driver are
+the r8a7778 and r8a7779 SoCs. Both of which have already clocks setup
+to allow this driver to continue to work with this change applied.
 
->    Since you have pushed the patches for m25p80.c, i have to rebase this
->    patch set again and again...
+Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+---
+ drivers/spi/spi-sh-hspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-You mean locally? I promise you, I can handle rebasing on my reviewing
-end for small one-line conflicts like new chip IDs, so don't rebase and
-resend simply for that. Unless I find substantive things that you should
-change, I'd only expect at most one more rebase to be necessary.
+diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+index 82d2f92..e975892 100644
+--- a/drivers/spi/spi-sh-hspi.c
++++ b/drivers/spi/spi-sh-hspi.c
+@@ -274,9 +274,9 @@ static int hspi_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 	}
+ 
+-	clk = clk_get(NULL, "shyway_clk");
++	clk = clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev, "shyway_clk is required\n");
++		dev_err(&pdev->dev, "couldn't get clock\n");
+ 		ret = -EINVAL;
+ 		goto error0;
+ 	}
+-- 
+1.8.5.2
 
-Brian
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

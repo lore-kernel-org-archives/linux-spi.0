@@ -1,58 +1,80 @@
-From: Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 3/3] spi: psdev: add passive serial driver
-Date: Thu, 13 Mar 2014 17:14:50 +0000
-Message-ID: <20140313171450.GA25870@e106331-lin.cambridge.arm.com>
-References: <1394639617-26917-1-git-send-email-m.grzeschik@pengutronix.de>
- <1394639617-26917-4-git-send-email-m.grzeschik@pengutronix.de>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: bitbang: add lsb first support
+Date: Thu, 13 Mar 2014 19:11:36 +0100
+Message-ID: <20140313181107.GT3327@book.gsilab.sittig.org>
+References: <1394637636-29042-1-git-send-email-m.grzeschik@pengutronix.de>
+ <1394637636-29042-3-git-send-email-m.grzeschik@pengutronix.de>
+ <20140312212941.GP3327@book.gsilab.sittig.org>
+ <20140312213544.GX28112@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: "broonie@kernel.org" <broonie@kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1394639617-26917-4-git-send-email-m.grzeschik@pengutronix.de>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20140312213544.GX28112-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Mar 12, 2014 at 03:53:37PM +0000, Michael Grzeschik wrote:
-> This patch introduces the psdev driver. It is used to communicate to an
-> Altera passive serial connected FPGA by writing into an character
-> device.
+On Wed, Mar 12, 2014 at 21:35 +0000, Mark Brown wrote:
 > 
-> It simply initates the protocol on open and clocks the data into the
-> FPGA by using the underlying SPI bus on write. The used SPI bus can also
-> be an bitbang SPI bus. On close it will check for the response of the
-> FPGA and tells if the write process was successful.
+> On Wed, Mar 12, 2014 at 10:29:41PM +0100, Gerhard Sittig wrote:
 > 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
->  drivers/spi/Kconfig    |   9 +
->  drivers/spi/Makefile   |   1 +
->  drivers/spi/spipsdev.c | 520 +++++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 530 insertions(+)
->  create mode 100644 drivers/spi/spipsdev.c
+> > Would it be useful to not duplicate the transmission logic, but
+> > instead to optionally "bit swap" the TX and RX data before and
+> > after the common transmission logic?  Just a though whether this
+> > might help maintenance.  There might even be existing and proven
+> > code to bit swap integers?
+> 
+> I was wondering myself, but on the other hand that's an extra operation
+> and this is about as CPU intensive as one can get.
 
-[...]
+Actually I thought that bitbanging pins including the timing
+would be the most expensive part, and that swapping bits might
+not be negligable but could be acceptable in comparison.  But
+this was just a guess, no research was done.
 
-> +static const struct of_device_id psdev_dt_ids[] = {
-> +       { .compatible = "altr,passive-serial" },
-> +       {},
-> +};
 
-There should be a binding document for this as part of the series.
+http://graphics.stanford.edu/~seander/bithacks.html#BitReverseObvious
+and the following sections suggest that code might get less
+expensive when you accept to no longer see at first glance what's
+happening.  Given a good identifier and an appropriate comment,
+http://graphics.stanford.edu/~seander/bithacks.html#ReverseParallel
+might be acceptable for mainline.
 
-Thanks,
-Mark.
+Naively reading the code, you would expect some 15 assembly
+instructions and only two registers in use (for ARM).  A quick
+experiment shows that the 32bit constants add some more work, yet
+the complete swapping is done in 88 bytes of code (a sequence of
+19 instructions and three constants).  Other architectures weight
+in at some 120 bytes of code.
+
+How do some 50 additional CPU instructions sound (calling the bit
+swapper two times), in comparison to the whole SPI bitbanging
+loop, for the optional case of LSB first transfers and 32bit
+data?  In contrast to duplicating the core bitbanging routine's
+body (two times for differing SPI modes).
+
+
+BTW are these bitbang routines referenced from several sites, not
+only spi-gpio.c.  They encode "be" in their name which might
+become misleading then they operate in LSB mode as well.
+
+And spidelay() appears to sometimes be a NOP -- could this be the
+reason for unreliable data transmission and bit errors in certain
+environments (optimized code, inlined GPIO access, fast CPU, slow
+SPI slave), instead of the suspected receiver's bit shifting?
+
+
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

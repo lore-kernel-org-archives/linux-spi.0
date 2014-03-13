@@ -1,70 +1,59 @@
-From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: bitbang: fix shift for getmosi
-Date: Wed, 12 Mar 2014 22:45:53 +0100
-Message-ID: <20140312214553.GQ3327@book.gsilab.sittig.org>
-References: <1394639617-26917-1-git-send-email-m.grzeschik@pengutronix.de>
- <1394639617-26917-2-git-send-email-m.grzeschik@pengutronix.de>
- <20140312162418.GU28112@sirena.org.uk>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: sh-sci: Prevent NULL pointer dereference
+Date: Thu, 13 Mar 2014 10:32:37 +0800
+Message-ID: <1394677957.15733.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140312162418.GU28112-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Mar 12, 2014 at 16:24 +0000, Mark Brown wrote:
-> 
-> On Wed, Mar 12, 2014 at 04:53:35PM +0100, Michael Grzeschik wrote:
-> > The driver needs to shift the word bit after reading the mosi bit.
-> > Otherwise the return word will have an Off-by-one bit value.
-> 
-> This isn't exactly new code...  do we understand why nobody has noticed
-> this before?
+If sp->info is NULL, we will hit NULL pointer dereference in probe() while
+setting bus_num and num_chipselect for master:
 
-I too suspect that the bug (if there is any) is elsewhere.
+        sp->bitbang.master->bus_num = sp->info->bus_num;
+        sp->bitbang.master->num_chipselect = sp->info->num_chipselect;
 
-> > @@ -61,10 +61,10 @@ bitbang_txrx_be_cpha0(struct spi_device *spi,
-> >  		spidelay(nsecs);
-> >  
-> >  		/* sample MSB (from slave) on leading edge */
-> > -		word <<= 1;
-> >  		if ((flags & SPI_MASTER_NO_RX) == 0)
-> >  			word |= getmiso(spi);
-> >  		setsck(spi, cpol);
-> > +		word <<= 1;
-> >  	}
-> 
-> Just looking at the context here it's not obvious to me that this is
-> helping - it means that the last bit we read is going to be shifted
-> which seems wrong, we ought to be reading into LSB.
+Thus add NULL test for sp->info in probe() to prevent NULL pointer dereference.
 
-It might be more robust to 
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-sh-sci.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-  if (!(flags & SPI_MASTER_NO_RX) && getmiso(spi))
-    word |= 1;
-    
-instead.  This decouples the construction of the received bits
-buffer from whatever the getmiso() implementation might look
-like.  That's just a thought after the recent GPIO discussion
-about whether 1/0 is given or should not be assumed (and I still
-suspect that "!!x" need not result in exactly 1/0 values).
-
-And I agree with Mark that the "late shift" is most probably
-wrong.  Just noticed the resend too late and responded in the
-other thread.
-
-
-virtually yours
-Gerhard Sittig
+diff --git a/drivers/spi/spi-sh-sci.c b/drivers/spi/spi-sh-sci.c
+index 85c2efd..8b44b71 100644
+--- a/drivers/spi/spi-sh-sci.c
++++ b/drivers/spi/spi-sh-sci.c
+@@ -108,7 +108,7 @@ static void sh_sci_spi_chipselect(struct spi_device *dev, int value)
+ {
+ 	struct sh_sci_spi *sp = spi_master_get_devdata(dev->master);
+ 
+-	if (sp->info && sp->info->chip_select)
++	if (sp->info->chip_select)
+ 		(sp->info->chip_select)(sp->info, dev->chip_select, value);
+ }
+ 
+@@ -130,6 +130,11 @@ static int sh_sci_spi_probe(struct platform_device *dev)
+ 
+ 	platform_set_drvdata(dev, sp);
+ 	sp->info = dev_get_platdata(&dev->dev);
++	if (!sp->info) {
++		dev_err(&dev->dev, "platform data is missing\n");
++		ret = -ENOENT;
++		goto err1;
++	}
+ 
+ 	/* setup spi bitbang adaptor */
+ 	sp->bitbang.master = master;
 -- 
-DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+1.8.1.2
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

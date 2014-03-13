@@ -1,58 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sh-sci: Prevent NULL pointer dereference
-Date: Thu, 13 Mar 2014 13:40:21 +0000
-Message-ID: <20140313134021.GS366@sirena.org.uk>
-References: <1394677957.15733.1.camel@phoenix>
+From: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 3/3] spi: psdev: add passive serial driver
+Date: Thu, 13 Mar 2014 17:14:50 +0000
+Message-ID: <20140313171450.GA25870@e106331-lin.cambridge.arm.com>
+References: <1394639617-26917-1-git-send-email-m.grzeschik@pengutronix.de>
+ <1394639617-26917-4-git-send-email-m.grzeschik@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jo46wx5DSA4a/gWG"
-Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: "broonie@kernel.org" <broonie@kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
 Content-Disposition: inline
-In-Reply-To: <1394677957.15733.1.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1394639617-26917-4-git-send-email-m.grzeschik@pengutronix.de>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
+On Wed, Mar 12, 2014 at 03:53:37PM +0000, Michael Grzeschik wrote:
+> This patch introduces the psdev driver. It is used to communicate to an
+> Altera passive serial connected FPGA by writing into an character
+> device.
+> 
+> It simply initates the protocol on open and clocks the data into the
+> FPGA by using the underlying SPI bus on write. The used SPI bus can also
+> be an bitbang SPI bus. On close it will check for the response of the
+> FPGA and tells if the write process was successful.
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
+>  drivers/spi/Kconfig    |   9 +
+>  drivers/spi/Makefile   |   1 +
+>  drivers/spi/spipsdev.c | 520 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 530 insertions(+)
+>  create mode 100644 drivers/spi/spipsdev.c
 
---jo46wx5DSA4a/gWG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[...]
 
-On Thu, Mar 13, 2014 at 10:32:37AM +0800, Axel Lin wrote:
-> If sp->info is NULL, we will hit NULL pointer dereference in probe() while
-> setting bus_num and num_chipselect for master:
->=20
->         sp->bitbang.master->bus_num =3D sp->info->bus_num;
->         sp->bitbang.master->num_chipselect =3D sp->info->num_chipselect;
+> +static const struct of_device_id psdev_dt_ids[] = {
+> +       { .compatible = "altr,passive-serial" },
+> +       {},
+> +};
 
-Applied, thanks.
+There should be a binding document for this as part of the series.
 
---jo46wx5DSA4a/gWG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTIbVCAAoJELSic+t+oim9MS8P/2wZM2wvmuaXjmMs1KXIm9/w
-JNz1+y3lE5lWFSivD0mJKMLKWOKW2x87FAgdnsCucrgMQsSd2O0Z56z4uANLdufy
-771c/7bb+QmIPilb3x1qfLRCE/D7U6NFEJrNsFE/4vmhRODI+NF5REMQJl21VHov
-YUrnxiYw1kx9sY5Vu8NjyuPC0pEUzsokfbtxx4dFUeDAV7qC1UOmGNT0MF7iKhwm
-Bt+0HTZHCoOEft5CbUsUnTzlRVS2bd1nrp/Q8/p8R4Hjr20C8o3l55ZiuZCJQwnA
-vn05tWpBVpT85iSgA7lnlW5N3dCXAfONC9HdRM9zbkMsg1TKSL9Q0ae+209RotcO
-XjafYr0DlKDJy/5rJe9wcrW3R0egyElvuAfr0D1UqwpNygCO+NPrl9GOhDUwRyri
-ZcSA9FjRxIlZJQEoGavsgVd64bkhI6cWTBqfSlDgL3nG5DY0lIuzLfp/1Lm+3UTy
-GzmOyA+t5O9VcAWt5vgDH1djHJi4KB3z/hRxCSb5uJ6sGbsohqRJ9Wdmo7/IhuN8
-4qtM43JBJRdKa6d1xW+w8bruy0La2bTPzZ1X21go+DhICtbLhVzbNJQqk0izaMH8
-0Vf5Y3dAEoO8F+6NMnNUmn2qhTCs3FJW63pQwz/EMIY+ch+ekBD5b3EwbyFq6+bz
-FS+ozqiDb2k6PDAB4D4w
-=zELT
------END PGP SIGNATURE-----
-
---jo46wx5DSA4a/gWG--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thanks,
+Mark.

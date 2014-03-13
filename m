@@ -1,67 +1,58 @@
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH] spi: sh-hspi: Do not specifically request shyway_clk clock
-Date: Thu, 13 Mar 2014 11:10:25 +0100
-Message-ID: <2144304.qo37EGpAOW@avalon>
-References: <1394699450-31286-1-git-send-email-horms+renesas@verge.net.au>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: sh-sci: Prevent NULL pointer dereference
+Date: Thu, 13 Mar 2014 13:40:21 +0000
+Message-ID: <20140313134021.GS366@sirena.org.uk>
+References: <1394677957.15733.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Mark Brown <broonie@linaro.org>, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org, Magnus Damm <magnus.damm@gmail.com>
-To: Simon Horman <horms+renesas@verge.net.au>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1394699450-31286-1-git-send-email-horms+renesas@verge.net.au>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="jo46wx5DSA4a/gWG"
+Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1394677957.15733.1.camel@phoenix>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Simon,
 
-Thank you for the patch.
+--jo46wx5DSA4a/gWG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thursday 13 March 2014 17:30:50 Simon Horman wrote:
-> Rather than requesting the shyway_clk call clk_get with
-> the device and a NULL con_id.
-> 
-> This is in keeping with the way that clk_get() is called
-> on other drivers used by Renesas Gen 1 SoCs. And I believe
-> it is compatible with supplying clocks via DT, unlike the current code.
-> 
-> It appears to me that the two uses of this driver are
-> the r8a7778 and r8a7779 SoCs. Both of which have already clocks setup
-> to allow this driver to continue to work with this change applied.
+On Thu, Mar 13, 2014 at 10:32:37AM +0800, Axel Lin wrote:
+> If sp->info is NULL, we will hit NULL pointer dereference in probe() while
+> setting bus_num and num_chipselect for master:
+>=20
+>         sp->bitbang.master->bus_num =3D sp->info->bus_num;
+>         sp->bitbang.master->num_chipselect =3D sp->info->num_chipselect;
 
-If I'm not mistaken the hspi clocks on r8a7778 are children of clkp, while the 
-shyway clock is a alias to clks. The only r8a7778 documentation I have access 
-to is in Japanese so I'm not 100% sure, but I believe the MSTP007 parent clock 
-should be clks.
+Applied, thanks.
 
-The problem is not present in our r8a7779 code, the MSTP007 parent is clks 
-there.
+--jo46wx5DSA4a/gWG
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-> Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
-> ---
->  drivers/spi/spi-sh-hspi.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-> index 82d2f92..e975892 100644
-> --- a/drivers/spi/spi-sh-hspi.c
-> +++ b/drivers/spi/spi-sh-hspi.c
-> @@ -274,9 +274,9 @@ static int hspi_probe(struct platform_device *pdev)
->  		return -ENOMEM;
->  	}
-> 
-> -	clk = clk_get(NULL, "shyway_clk");
-> +	clk = clk_get(&pdev->dev, NULL);
->  	if (IS_ERR(clk)) {
-> -		dev_err(&pdev->dev, "shyway_clk is required\n");
-> +		dev_err(&pdev->dev, "couldn't get clock\n");
->  		ret = -EINVAL;
->  		goto error0;
->  	}
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
--- 
-Regards,
+iQIcBAEBAgAGBQJTIbVCAAoJELSic+t+oim9MS8P/2wZM2wvmuaXjmMs1KXIm9/w
+JNz1+y3lE5lWFSivD0mJKMLKWOKW2x87FAgdnsCucrgMQsSd2O0Z56z4uANLdufy
+771c/7bb+QmIPilb3x1qfLRCE/D7U6NFEJrNsFE/4vmhRODI+NF5REMQJl21VHov
+YUrnxiYw1kx9sY5Vu8NjyuPC0pEUzsokfbtxx4dFUeDAV7qC1UOmGNT0MF7iKhwm
+Bt+0HTZHCoOEft5CbUsUnTzlRVS2bd1nrp/Q8/p8R4Hjr20C8o3l55ZiuZCJQwnA
+vn05tWpBVpT85iSgA7lnlW5N3dCXAfONC9HdRM9zbkMsg1TKSL9Q0ae+209RotcO
+XjafYr0DlKDJy/5rJe9wcrW3R0egyElvuAfr0D1UqwpNygCO+NPrl9GOhDUwRyri
+ZcSA9FjRxIlZJQEoGavsgVd64bkhI6cWTBqfSlDgL3nG5DY0lIuzLfp/1Lm+3UTy
+GzmOyA+t5O9VcAWt5vgDH1djHJi4KB3z/hRxCSb5uJ6sGbsohqRJ9Wdmo7/IhuN8
+4qtM43JBJRdKa6d1xW+w8bruy0La2bTPzZ1X21go+DhICtbLhVzbNJQqk0izaMH8
+0Vf5Y3dAEoO8F+6NMnNUmn2qhTCs3FJW63pQwz/EMIY+ch+ekBD5b3EwbyFq6+bz
+FS+ozqiDb2k6PDAB4D4w
+=zELT
+-----END PGP SIGNATURE-----
 
-Laurent Pinchart
-
+--jo46wx5DSA4a/gWG--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

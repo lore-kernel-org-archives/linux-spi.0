@@ -1,44 +1,50 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi: psdev: add passive serial driver
-Date: Fri, 14 Mar 2014 14:59:47 +0100
-Message-ID: <CACRpkdZoO_hXw-p5ZHeUzMHULq_DEJNzpim0mcO5DBOgP=d60A@mail.gmail.com>
-References: <1394639617-26917-1-git-send-email-m.grzeschik@pengutronix.de>
-	<1394639617-26917-4-git-send-email-m.grzeschik@pengutronix.de>
-	<20140312163427.GV28112@sirena.org.uk>
-	<20140314101907.GF4234@pengutronix.de>
-	<20140314102223.GR366@sirena.org.uk>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] spi: efm32: properly namespace location property
+Date: Fri, 14 Mar 2014 17:01:28 +0100
+Message-ID: <1394812888-22697-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Michael Grzeschik <mgr-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Sascha Hauer <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140314102223.GR366-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Mar 14, 2014 at 11:22 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Fri, Mar 14, 2014 at 11:19:07AM +0100, Michael Grzeschik wrote:
->
->> It is actually not more than that. I took the spidev character device
->> driver as reference implementation. Any Idea where to put this driver
->> instead.
->
-> Like I say somewhere where it sits with other FPGA programming stuff (if
-> that's what it does) would be my first thought.
+While reviewing an i2c driver for efm32 that needs a similar property
+Wolfram Sang pointed out that "location" is a too generic name for some=
+thing
+that is efm32 specific. So add an appropriate namespace and fall back t=
+o the
+generic name in case of failure.
 
-I'd suggest you try to use drivers/firmware.
+Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi-efm32.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-That subsystem is a bit x86-centrix at the moment but looking at the
-stuff that is in there (like supporting BIOS updates through sysfs and
-other low-level firmware communication) this stuff is close enough.
+diff --git a/drivers/spi/spi-efm32.c b/drivers/spi/spi-efm32.c
+index d4d3cc534792..daa73358f92d 100644
+--- a/drivers/spi/spi-efm32.c
++++ b/drivers/spi/spi-efm32.c
+@@ -297,7 +297,10 @@ static int efm32_spi_probe_dt(struct platform_devi=
+ce *pdev,
+ 	if (!np)
+ 		return 1;
+=20
+-	ret =3D of_property_read_u32(np, "location", &location);
++	ret =3D of_property_read_u32(np, "efm32,location", &location);
++	if (ret)
++		/* fall back to old and (wrongly) generic property "location" */
++		ret =3D of_property_read_u32(np, "location", &location);
+ 	if (!ret) {
+ 		dev_dbg(&pdev->dev, "using location %u\n", location);
+ 	} else {
+--=20
+1.9.0
 
-Yours,
-Linus Walleij
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

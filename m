@@ -1,81 +1,58 @@
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: [PATCH v2] spi: efm32: properly namespace location property
-Date: Fri, 14 Mar 2014 21:34:22 +0100
-Message-ID: <1394829262-28022-1-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: efm32: properly namespace location property
+Date: Fri, 14 Mar 2014 20:37:03 +0000
+Message-ID: <20140314203703.GK366@sirena.org.uk>
+References: <1394829262-28022-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="1a+uSzIUoaGmLeog"
 Cc: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1394829262-28022-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-While reviewing an i2c driver for efm32 that needs a similar property
-Wolfram Sang pointed out that "location" is a too generic name for
-something that is efm32 specific. So add an appropriate namespace and
-fall back to the generic name in case of failure.
 
-Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
----
-Changes since (implicit) v1, sent with
-Message-Id: 1394812888-22697-1-git-send-email-u.kleine-koenig@pengutron=
-ix.de:
+--1a+uSzIUoaGmLeog
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
- - rebase on top of Mark's topic/efm32 branch
- - adapt dt binding doc accordingly
-=20
- Documentation/devicetree/bindings/spi/efm32-spi.txt | 4 ++--
- drivers/spi/spi-efm32.c                             | 5 ++++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+On Fri, Mar 14, 2014 at 09:34:22PM +0100, Uwe Kleine-K=F6nig wrote:
+> While reviewing an i2c driver for efm32 that needs a similar property
+> Wolfram Sang pointed out that "location" is a too generic name for
+> something that is efm32 specific. So add an appropriate namespace and
+> fall back to the generic name in case of failure.
 
-diff --git a/Documentation/devicetree/bindings/spi/efm32-spi.txt b/Docu=
-mentation/devicetree/bindings/spi/efm32-spi.txt
-index a590ca51be75..25c02ba530da 100644
---- a/Documentation/devicetree/bindings/spi/efm32-spi.txt
-+++ b/Documentation/devicetree/bindings/spi/efm32-spi.txt
-@@ -8,7 +8,7 @@ Required properties:
- - interrupts: pair specifying rx and tx irq
- - clocks: phandle to the spi clock
- - cs-gpios: see spi-bus.txt
--- location: Value to write to the ROUTE register's LOCATION bitfield t=
-o configure the pinmux for the device, see datasheet for values.
-+- efm32,location: Value to write to the ROUTE register's LOCATION bitf=
-ield to configure the pinmux for the device, see datasheet for values.
-=20
- Example:
-=20
-@@ -20,7 +20,7 @@ spi1: spi@0x4000c400 { /* USART1 */
- 	interrupts =3D <15 16>;
- 	clocks =3D <&cmu 20>;
- 	cs-gpios =3D <&gpio 51 1>; // D3
--	location =3D <1>;
-+	efm32,location =3D <1>;
- 	status =3D "ok";
-=20
- 	ks8851@0 {
-diff --git a/drivers/spi/spi-efm32.c b/drivers/spi/spi-efm32.c
-index 0512fedf1f13..fdb6fce0530b 100644
---- a/drivers/spi/spi-efm32.c
-+++ b/drivers/spi/spi-efm32.c
-@@ -294,7 +294,10 @@ static void efm32_spi_probe_dt(struct platform_dev=
-ice *pdev,
- 	u32 location;
- 	int ret;
-=20
--	ret =3D of_property_read_u32(np, "location", &location);
-+	ret =3D of_property_read_u32(np, "efm32,location", &location);
-+	if (ret)
-+		/* fall back to old and (wrongly) generic property "location" */
-+		ret =3D of_property_read_u32(np, "location", &location);
- 	if (!ret) {
- 		dev_dbg(&pdev->dev, "using location %u\n", location);
- 	} else {
---=20
-1.9.0
+Applied, thanks.
 
+--1a+uSzIUoaGmLeog
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTI2hrAAoJELSic+t+oim93n4P/Ru8eeAOh7aYMjkVSu3ASNfR
+jTU8/mY+SIVgTgc//kz+BsjOeiGmsS1ynS05qT4N7EC0SsyDkS0aM2Yyv+4XPNA8
+tJpNnDBRKPSIEP5Afe7qO509PnqIRIApJ5VN5aTr7xKBV1lJr+JtqWm54o1CeDtf
+/8blMlbJ1c2XRT1QWzp17POQzdgdluCIaHvgjANo/K3/FJmZyWLYFFxDiTRHoNZi
+ONfns7sTFaHY/kDEYPMm4qrtNMjQlPxiq/3MeSkw/xFidTGDHtU5EVDNI2VEUVO8
+yezG34M/VOKZvUrnH04hVPAEI20HfnI3DkU1CLafHUZd7jrfxAsK+AYr/3GVKMvy
+6Q+/9VN6RCr4QtielXBy6CiXZ+5ZF42hxOF+M4bEm0mt6PZyWJz0DoBLG4JiacSK
+dFnNV1uIU3BMbVLlb9rc+obdnE87sg/ybxe+XyCCA4hqZqBC2lmxTuBDOVm6VsxO
+pi5RVSIxPV7GYDr8IyXAPol0d9dThMkMiiqZG3ErIrgD0U/3Y07+wNy5ENK+/dkp
+qm06h2iA9I/r0pitVFtBdaOcLBaqpO9SKAZGUwJ5nM+qxn00VmFTJe1IN6w7QVb8
+7sulq6lpzzILLMQkqc9pfeg0g9x8s3lIehkZOHDUYwQzYxKQu1A5mDdN6qOQPeSf
+HTE4F8VOg66ZAkVRJr5x
+=iw20
+-----END PGP SIGNATURE-----
+
+--1a+uSzIUoaGmLeog--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

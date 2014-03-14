@@ -1,68 +1,70 @@
-From: Michael Grzeschik <mgr-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 3/3] spi: psdev: add passive serial driver
-Date: Fri, 14 Mar 2014 11:19:07 +0100
-Message-ID: <20140314101907.GF4234@pengutronix.de>
+Date: Fri, 14 Mar 2014 10:22:23 +0000
+Message-ID: <20140314102223.GR366@sirena.org.uk>
 References: <1394639617-26917-1-git-send-email-m.grzeschik@pengutronix.de>
  <1394639617-26917-4-git-send-email-m.grzeschik@pengutronix.de>
  <20140312163427.GV28112@sirena.org.uk>
+ <20140314101907.GF4234@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="CEMZpvf/LsJ++1SB"
 Cc: Michael Grzeschik <m.grzeschik-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Michael Grzeschik <mgr-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140312163427.GV28112-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20140314101907.GF4234-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Mar 12, 2014 at 04:34:27PM +0000, Mark Brown wrote:
-> On Wed, Mar 12, 2014 at 04:53:37PM +0100, Michael Grzeschik wrote:
-> 
-> > This patch introduces the psdev driver. It is used to communicate to an
-> > Altera passive serial connected FPGA by writing into an character
-> > device.
-> > 
-> > It simply initates the protocol on open and clocks the data into the
-> > FPGA by using the underlying SPI bus on write. The used SPI bus can also
-> > be an bitbang SPI bus. On close it will check for the response of the
-> > FPGA and tells if the write process was successful.
-> 
-> Having read the above I'm still not entirely sure what this is supposed
-> to do.  It sounds like it might be something to do with programming
-> FPGAs but that doesn't seem like something for the SPI subsystem, it
-> sounds like something for a FPGA handling subsystem.  People keep
-> talking about that, there's a bunch of other stuff to integrate with
-> there like loading DTs for the downloeaded bitstream.  I'm not sure what
-> the status is there.
 
-Ok, so first of all it needs better documentation, also for the
-bindings. I will add some.
+--CEMZpvf/LsJ++1SB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Second, the driver has "per se" nothing to do with SPI, beside it needs
-a clock and data line to transfer an image to the FPGA. (One way,
-therefor: passive). It needs to use some SPI controller to do that. Even
-the SPI Bitbang driver. Because of this, it depends on the SPI
-framework.
+On Fri, Mar 14, 2014 at 11:19:07AM +0100, Michael Grzeschik wrote:
 
-Beside the SCLK and MOSI, the protocol needs to toggle and check some
-GPIOs for protocol start and end. For that I chose the posix open and
-close, so that in userland it can be used as simple as $(cat
-firmware.rbf > /dev/psdev0). This protocol also needs no SS line.
+> Second, the driver has "per se" nothing to do with SPI, beside it needs
+> a clock and data line to transfer an image to the FPGA. (One way,
+> therefor: passive). It needs to use some SPI controller to do that. Even
+> the SPI Bitbang driver. Because of this, it depends on the SPI
+> framework.
 
-It is actually not more than that. I took the spidev character device
-driver as reference implementation. Any Idea where to put this driver
-instead.
+Lots of drivers use SPI but they sit in the relevant frameworks rather
+than in the SPI framework.
 
-Regards,
-Michael
+> It is actually not more than that. I took the spidev character device
+> driver as reference implementation. Any Idea where to put this driver
+> instead.
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Like I say somewhere where it sits with other FPGA programming stuff (if
+that's what it does) would be my first thought.
+
+--CEMZpvf/LsJ++1SB
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTIthcAAoJELSic+t+oim9YfQP/06RiqX+Dx9a7FoZmSdoiBZn
+PCDH/8AvTJPnBHqJrycQLKRifMGRyIQNGhSxvAnZhI0u2Z13oqNoLKwG+2rHWhP+
+wuW3kuhKHo869HE8e8ofre5Mo2hMDHSjl7xSp3lMVNz3ymcxwMZQMnIdmcLskjGr
+gNyG793+0jjrH78K7vjasoF3zmXFllM6QFm7kc4m290Bfn28y1vgMotT2/N8OZ1G
+CX75IbA9b5RsgrtyhvKS1YO9pyEVRjqWZaicvmkouYOUhECh271HKJrPulRJXonD
+77F4htaqPkx4KarmsXL+UJOQYMjTBeu6EEJUwFf+GcYu+QdyJPLsZ489M1qYMaS2
+TjY4yTu8mPiFXHoBVbb+fUCLXSSwW3L5Mu0i6BFbQ9+nmtHZsXHHDRMtkkUGztyT
+fgsJI3e//3fHht2wg6WtKznoGxXanyLVb6lOjFMXN5rqU1J0vHi0JhclFUGCj4Wm
+mm0sx16nRW01eg3k7BUegSV/hBXltvvLTR6VNmX0dIL9HwYksGgJr8k9xZadJAsE
+6Q/r4/5H9c81tpUaHY6BIgN/Fd/WfBdDHC8DcV8K5HE/F3MEbQup0/ePw1LtKxd5
+Wz5raHAfreelghibWXI2QYbuh3rttYUA4M0NJvUpOuldtMnN5aoMBVLjVXdHtT1F
+8qRlBzYLlnC3nF6eCQsC
+=+VtF
+-----END PGP SIGNATURE-----
+
+--CEMZpvf/LsJ++1SB--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

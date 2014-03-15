@@ -1,58 +1,88 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: efm32: properly namespace location property
-Date: Fri, 14 Mar 2014 20:37:03 +0000
-Message-ID: <20140314203703.GK366@sirena.org.uk>
-References: <1394829262-28022-1-git-send-email-u.kleine-koenig@pengutronix.de>
+From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Subject: Re: [PATCH RFT] spi: sc18is602: Convert to let spi core validate
+ transfer speed
+Date: Sat, 15 Mar 2014 11:05:21 -0700
+Message-ID: <53249661.9070801@roeck-us.net>
+References: <1393583973.18537.2.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="1a+uSzIUoaGmLeog"
-Cc: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1394829262-28022-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1393583973.18537.2.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On 02/28/2014 02:39 AM, Axel Lin wrote:
+> Set master->max_speed_hz and master->min_speed_hz then spi core will handle
+> checking transfer speed. So we can remove the same checking in this driver.
+>
+> This patch also remove testing if hz is 0 because spi->max_speed_hz will be
+> default set to master->min_speed_hz if it was not set. So the transfer speed
+> will never set to 0.
+>
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+> ---
+>   drivers/spi/spi-sc18is602.c | 13 +++----------
+>   1 file changed, 3 insertions(+), 10 deletions(-)
+>
+> diff --git a/drivers/spi/spi-sc18is602.c b/drivers/spi/spi-sc18is602.c
+> index 7fba10b..237f2e7 100644
+> --- a/drivers/spi/spi-sc18is602.c
+> +++ b/drivers/spi/spi-sc18is602.c
+> @@ -183,17 +183,9 @@ static int sc18is602_setup_transfer(struct sc18is602 *hw, u32 hz, u8 mode)
+>   static int sc18is602_check_transfer(struct spi_device *spi,
+>   				    struct spi_transfer *t, int tlen)
+>   {
+> -	uint32_t hz;
+> -
+>   	if (t && t->len + tlen > SC18IS602_BUFSIZ)
+>   		return -EINVAL;
+>
+> -	hz = spi->max_speed_hz;
+> -	if (t && t->speed_hz)
+> -		hz = t->speed_hz;
+> -	if (hz == 0)
+> -		return -EINVAL;
+> -
+>   	return 0;
+>   }
+>
+> @@ -207,14 +199,13 @@ static int sc18is602_transfer_one(struct spi_master *master,
+>
+>   	hw->tlen = 0;
+>   	list_for_each_entry(t, &m->transfers, transfer_list) {
+> -		u32 hz = t->speed_hz ? : spi->max_speed_hz;
+>   		bool do_transfer;
+>
+>   		status = sc18is602_check_transfer(spi, t, hw->tlen);
+>   		if (status < 0)
+>   			break;
+>
+> -		status = sc18is602_setup_transfer(hw, hz, spi->mode);
+> +		status = sc18is602_setup_transfer(hw, t->speed_hz, spi->mode);
+>   		if (status < 0)
+>   			break;
+>
+> @@ -305,6 +296,8 @@ static int sc18is602_probe(struct i2c_client *client,
+>   	master->setup = sc18is602_setup;
+>   	master->transfer_one_message = sc18is602_transfer_one;
+>   	master->dev.of_node = np;
+> +	master->min_speed_hz = hw->freq / 128;
+> +	master->max_speed_hz = hw->freq / 4;
+>
 
---1a+uSzIUoaGmLeog
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Turns out this results in a failure if the requested speed is higher than
+the supported speed. Previous code would simply update the speed to the
+maximum supported speed.
 
-On Fri, Mar 14, 2014 at 09:34:22PM +0100, Uwe Kleine-K=F6nig wrote:
-> While reviewing an i2c driver for efm32 that needs a similar property
-> Wolfram Sang pointed out that "location" is a too generic name for
-> something that is efm32 specific. So add an appropriate namespace and
-> fall back to the generic name in case of failure.
+Since the patch was already accepted, I'll send a follow-up patch to make
+this less restrictive; I don't see the need to reject a transfer request
+at 2mbps because the chip can only support 1.843 mbps.
 
-Applied, thanks.
+Guenter
 
---1a+uSzIUoaGmLeog
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTI2hrAAoJELSic+t+oim93n4P/Ru8eeAOh7aYMjkVSu3ASNfR
-jTU8/mY+SIVgTgc//kz+BsjOeiGmsS1ynS05qT4N7EC0SsyDkS0aM2Yyv+4XPNA8
-tJpNnDBRKPSIEP5Afe7qO509PnqIRIApJ5VN5aTr7xKBV1lJr+JtqWm54o1CeDtf
-/8blMlbJ1c2XRT1QWzp17POQzdgdluCIaHvgjANo/K3/FJmZyWLYFFxDiTRHoNZi
-ONfns7sTFaHY/kDEYPMm4qrtNMjQlPxiq/3MeSkw/xFidTGDHtU5EVDNI2VEUVO8
-yezG34M/VOKZvUrnH04hVPAEI20HfnI3DkU1CLafHUZd7jrfxAsK+AYr/3GVKMvy
-6Q+/9VN6RCr4QtielXBy6CiXZ+5ZF42hxOF+M4bEm0mt6PZyWJz0DoBLG4JiacSK
-dFnNV1uIU3BMbVLlb9rc+obdnE87sg/ybxe+XyCCA4hqZqBC2lmxTuBDOVm6VsxO
-pi5RVSIxPV7GYDr8IyXAPol0d9dThMkMiiqZG3ErIrgD0U/3Y07+wNy5ENK+/dkp
-qm06h2iA9I/r0pitVFtBdaOcLBaqpO9SKAZGUwJ5nM+qxn00VmFTJe1IN6w7QVb8
-7sulq6lpzzILLMQkqc9pfeg0g9x8s3lIehkZOHDUYwQzYxKQu1A5mDdN6qOQPeSf
-HTE4F8VOg66ZAkVRJr5x
-=iw20
------END PGP SIGNATURE-----
-
---1a+uSzIUoaGmLeog--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

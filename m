@@ -1,59 +1,59 @@
-From: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
-Subject: __spi_async: why the check for a callback as a requirement?
-Date: Mon, 17 Mar 2014 09:21:47 +0100
-Message-ID: <E6C88A40-D009-4434-A4A1-A77D4A76DDE3@martin.sperl.org>
-Mime-Version: 1.0 (Mac OS X Mail 7.2 \(1874\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: __spi_async: why the check for a callback as a requirement?
+Date: Mon, 17 Mar 2014 10:59:23 +0000
+Message-ID: <20140317105923.GA11706@sirena.org.uk>
+References: <E6C88A40-D009-4434-A4A1-A77D4A76DDE3@martin.sperl.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="IS0zKkzwUGydFO0o"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <E6C88A40-D009-4434-A4A1-A77D4A76DDE3-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark!
 
-I found out that with commit 24a0013a04e81e9519 there was a check included 
-that checks for a valid callback.
+--IS0zKkzwUGydFO0o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Why would a callback be an _absolute_ requirement for a SPI message?
+On Mon, Mar 17, 2014 at 09:21:47AM +0100, Martin Sperl wrote:
 
-In the case of my driver for the can/mcp2515 I have to send out 3 messages:
+> I found out that with commit 24a0013a04e81e9519 there was a check include=
+d=20
+> that checks for a valid callback.
 
-* Read the basic status to get an Idea what is the reason for the IRQ
-* Read additional error information as well as speculatively prefetching
-  a message buffer for which there is a high probability that it contains a
-  valid message and thus is the root cause of the interrupt from the device.
-* doing cleanup work depending on flags read with the first
+> Why would a callback be an _absolute_ requirement for a SPI message?
 
-The first and second get scheduled together, so that while the interrupt 
-for the first complete is getting handled (with its latencies) the HW
-(in principle) could continue with the second SPI transfer, which is also
-bigger in size than the first.
+IIRC there were assumptions elsewhere in the code that there was one,
+though I think those may be gone now.
 
-The complete handler of the 1st will schedule the 3rd message according to
-flags read with the first message.
+--IS0zKkzwUGydFO0o
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-The complete handler of the 3rd message will also process the speculative 
-data read by the second transfer, so that there is no real need for an 
-explicit complete handler for the 2nd transfer.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
-The second transfer is effectively hiding interrupt latencies of the system
-and thus is making better use of the available bandwidth.
+iQIcBAEBAgAGBQJTJtWIAAoJELSic+t+oim9W0EP/AuGL8mDmGG8Ud7cfBgagJo/
+OzqOCgjFzHJPkfbkbcftw47AtyupQFZehddOfjYHGWqJf3zTaICwHiYz7cG7K+hF
+KpJhqfNWuCx5u6BRBe7e3sd64YQQCwEGCQNNTkm/ALpoCkJFSY+LiYpl1Wz4eYMr
+Ng9zeJOwtr23uCHRz4rleXnUeY40S/5cFRiLIsM/rViLDEtFyeSvYQ/6hZYdZiGS
+AT+00StQJrqwCgrqdnMB7bcrFJuNU9yFvYc8iTlSPF8mNc3SKkZkfvabPoXSmvHX
+ZMQvtoRSRnLJ2fOAKEckiH9PkUABxri/SkWlQ45GeW6rCV62ykyIUcG86Ei4cNP7
+WJCkXLfUkcv37zrA3qQeOAGdeZDh6U/R6fdY+ZsRdH42muweCEuH0EdQMvAJChO2
+tRCpEeWI51JC0+Z4o1Hx2gI9CfkLV4D97SAywHEVeNaeqKcfehHgmQ7iFyaUoW4o
+FmS4mU7Z22BoQAVyPUYszhk16WbcB8F1DmISACqhNr+7S6Mq5VjgU3SQgtOgntFm
+P7s1CTwcIQT//lqwZlbp/6QQFbnF5srh3zgIkocY7+Sv0eoGnsYVh8lfB+CTbJ3M
+OGfdPiN6BP27QyIHnsPVpmlguYRQ9zIlk13wiGM5sSff0GIE8Kq41ZNcHQIZv7wu
+H73pT+Q14ZPejxDVL0vu
+=20GB
+-----END PGP SIGNATURE-----
 
-So with a spi-bus driver that does all the transfers in DMA (even including
-the pipelining of different spi_messages) that means that instead of an 
-ideal 3 interrupts for the whole sequence (1 for the HW interrupt itself
-plus an IRQ each for the completion of the 1st and 3rd message) we now have 
-4 interrupts just due to the requirement for the complete call of message 2.
-
-So I wonder why we really have this check:
-	if (!message->complete)
-		return -EINVAL;
-
-Thanks,
-	Martin
-
+--IS0zKkzwUGydFO0o--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

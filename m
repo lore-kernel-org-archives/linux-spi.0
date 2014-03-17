@@ -1,278 +1,218 @@
-From: Daniel Sobe <daniel.sobe-3arQi8VN3Tc@public.gmane.org>
-Subject: [PATCH] spi-imx: improve timing of bursts
-Date: Mon, 17 Mar 2014 16:22:04 +0000
-Message-ID: <8c8893eae0014e59ac6942062590d36e@DB4PR04MB393.eurprd04.prod.outlook.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] SPI: Add driver for Cadence SPI controller
+Date: Mon, 17 Mar 2014 17:30:17 +0000
+Message-ID: <20140317173017.GW11706@sirena.org.uk>
+References: <1395057936-8643-1-git-send-email-harinik@xilinx.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-Hi,
-
-The patch below addresses 2 improvements:
-
-1) Burstsize of a transfer adjusted up to the maximum burstsize of the =
-hardware --> no unwanted CS toggling between data words
-2) Variable trigger level allows to increase priority for data transfer=
-, enables continuous transfers up to the burstsize. --> remove gaps eve=
-ry 64 words
-
-The original behaviour of the driver is untouched. The additional featu=
-res can be enabled via sysfs.
-
-With file "bigburst" the driver is instructed to use the maximum possib=
-le burst length, depending on the length of the transfer it received. D=
-ue to the hardware of the iMX6 this only makes sense if a transfer has =
-its bits per word set to 32.
-
-With file "txthres" the transmit FIFO level is set (in the range of 1 t=
-o 64), all other values disable the functionality. An interrupt will be=
- triggered if the specified FIFO level (or lower) is reached, re-fillin=
-g the FIFO up to the max resp. the remaining data of the transfer. If d=
-isabled, the original behaviour (refilling when FIFO is empty) is activ=
-e. The functionality creates a higher interrupt load but allows continu=
-ous transfers up to the selected burstsize.
-
-I'd like to receive feedback on the patch, improving it and making it s=
-uitable for a possible inclusion into the kernel. Unfortunately, I coul=
-d only test the patch on a very old kernel. The patch itself applies ag=
-ainst a recent kernel (3.14-rc6) and I checked that it compiles without=
- warnings.
-
-Signed-off-by: Daniel Sobe <daniel.sobe-3arQi8VN3Tc@public.gmane.org>
-
---- linux-original/drivers/spi/spi-imx.c=A0=A0 =A02014-03-17 17:12:35.6=
-91791218 +0100
-+++ linux-stable/drivers/spi/spi-imx.c=A0=A0 =A02014-03-17 17:09:44.451=
-795597 +0100
-@@ -51,12 +51,14 @@
-=A0/* generic defines to abstract from the different register layouts *=
-/
-=A0#define MXC_INT_RR=A0=A0 =A0(1 << 0) /* Receive data ready interrupt=
- */
-=A0#define MXC_INT_TE=A0=A0 =A0(1 << 1) /* Transmit FIFO empty interrup=
-t */
-+#define MXC_INT_THE=A0=A0=A0=A0 (1 << 2) /* Transmit FIFO threshold in=
-terrupt */
-=A0
-=A0struct spi_imx_config {
-=A0=A0=A0 =A0unsigned int speed_hz;
-=A0=A0=A0 =A0unsigned int bpw;
-=A0=A0=A0 =A0unsigned int mode;
-=A0=A0=A0 =A0u8 cs;
-+=A0=A0 =A0unsigned long burstlen;
-=A0};
-=A0
-=A0enum spi_imx_devtype {
-@@ -154,6 +156,10 @@
-=A0static int mxc_clkdivs[] =3D {0, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64,=
- 96, 128, 192,
-=A0=A0=A0 =A0256, 384, 512, 768, 1024};
-=A0
-+// (sysfs-)tunable attributes
-+static int allow_big_bursts =3D 0; // if set to 1 this enables 32-bit =
-big bursts
-+static int tx_fifo_thres =3D -1;=A0=A0 // if positive, use TX data req=
-uest interrupt when applicable
-+
-=A0/* MX21, MX27 */
-=A0static unsigned int spi_imx_clkdiv_1(unsigned int fin,
-=A0=A0=A0 =A0=A0=A0 =A0unsigned int fspi, unsigned int max)
-@@ -200,8 +206,13 @@
-=A0
-=A0#define MX51_ECSPI_INT=A0=A0 =A0=A0=A0 =A00x10
-=A0#define MX51_ECSPI_INT_TEEN=A0=A0 =A0=A0=A0 =A0(1 <<=A0 0)
-+#define MX51_ECSPI_INT_TDREN=A0=A0 =A0=A0=A0 =A0(1 <<=A0 1)
-=A0#define MX51_ECSPI_INT_RREN=A0=A0 =A0=A0=A0 =A0(1 <<=A0 3)
-=A0
-+#define MX51_ECSPI_DMA =A0=A0=A0 =A00x14
-+#define MX51_ECSPI_DMA_TX_THRES_OFFSET=A0 0
-+#define MX51_ECSPI_DMA_TX_THRES_MASK=A0=A0=A0 (0x3F)
-+
-=A0#define MX51_ECSPI_STAT=A0=A0 =A0=A0=A0 =A00x18
-=A0#define MX51_ECSPI_STAT_RR=A0=A0 =A0=A0=A0 =A0(1 <<=A0 3)
-=A0
-@@ -250,6 +261,12 @@
-=A0=A0=A0 =A0if (enable & MXC_INT_TE)
-=A0=A0=A0 =A0=A0=A0 =A0val |=3D MX51_ECSPI_INT_TEEN;
-=A0
-+=A0=A0 =A0// enable Tx threshold interrupt for faster reaction when tr=
-ansmitting long messages
-+=A0=A0 =A0if (enable & MXC_INT_THE) {
-+=A0=A0 =A0=A0=A0 =A0val |=3D MX51_ECSPI_INT_TDREN;
-+=A0=A0 =A0=A0=A0 =A0writel((unsigned int) tx_fifo_thres, spi_imx->base=
- + MX51_ECSPI_DMA);
-+=A0=A0 =A0}
-+
-=A0=A0=A0 =A0if (enable & MXC_INT_RR)
-=A0=A0=A0 =A0=A0=A0 =A0val |=3D MX51_ECSPI_INT_RREN;
-=A0
-@@ -270,6 +287,7 @@
-=A0{
-=A0=A0=A0 =A0u32 ctrl =3D MX51_ECSPI_CTRL_ENABLE, cfg =3D 0;
-=A0=A0=A0 =A0u32 clk =3D config->speed_hz, delay;
-+=A0=A0 =A0unsigned long burstlen;
-=A0
-=A0=A0=A0 =A0/*
-=A0=A0=A0 =A0 * The hardware seems to have a race condition when changi=
-ng modes. The
-@@ -286,6 +304,27 @@
-=A0=A0=A0 =A0/* set chip select to use */
-=A0=A0=A0 =A0ctrl |=3D MX51_ECSPI_CTRL_CS(config->cs);
-=A0
-+=A0=A0 =A0// if possible and requested, increase burstlength
-+=A0=A0 =A0// over whole message in 32 bit mode
-+=A0=A0 =A0// (which is the only mode where HW supports this)
-+=A0=A0 =A0// all other modes still use burstlength =3D=3D bpw
-+=A0=A0 =A0if ((config->bpw =3D=3D 32) && (allow_big_bursts =3D=3D 1)) =
-{
-+=A0=A0 =A0=A0=A0 =A0if (config->burstlen <=3D 4096) {
-+=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0burstlen =3D config->burstlen;
-+=A0=A0 =A0=A0=A0 =A0} else {
-+=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0// burst longer than burst register widt=
-h -- need to scale appropriately
-+=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0// so that the hardware will always term=
-inate the burst appropriately
-+=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0burstlen =3D 16;
-+=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0do {
-+=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0burstlen =3D burstlen << 1;
-+=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0} while ((config->burstlen % (burstlen <=
-< 1)) =3D=3D 0);
-+=A0=A0 =A0=A0=A0 =A0}
-+=A0=A0 =A0} else {
-+=A0=A0 =A0=A0 burstlen =3D config->bpw;
-+=A0=A0 =A0}
-+
-+=A0=A0 =A0ctrl |=3D (burstlen - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
-+
-=A0=A0=A0 =A0ctrl |=3D (config->bpw - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
-=A0
-=A0=A0=A0 =A0cfg |=3D MX51_ECSPI_CONFIG_SBBCTRL(config->cs);
-@@ -666,6 +705,10 @@
-=A0=A0=A0 =A0=A0=A0 =A0spi_imx->txfifo++;
-=A0=A0=A0 =A0}
-=A0
-+=A0=A0 =A0// always reconfigure IRQ source (for the TX data request IR=
-Q to work properly)
-+=A0=A0 =A0spi_imx->devtype_data->intctrl(spi_imx,
-+=A0=A0 =A0=A0=A0 =A0((spi_imx->txfifo =3D=3D spi_imx_get_fifosize(spi_=
-imx)) && (tx_fifo_thres !=3D -1)) ? MXC_INT_THE : MXC_INT_TE);
-+
-=A0=A0=A0 =A0spi_imx->devtype_data->trigger(spi_imx);
-=A0}
-=A0
-@@ -708,6 +751,7 @@
-=A0=A0=A0 =A0config.speed_hz=A0 =3D t ? t->speed_hz : spi->max_speed_hz=
-;
-=A0=A0=A0 =A0config.mode =3D spi->mode;
-=A0=A0=A0 =A0config.cs =3D spi->chip_select;
-+=A0=A0 =A0config.burstlen =3D t ? (t->len * 8) : config.bpw;
-=A0
-=A0=A0=A0 =A0if (!config.speed_hz)
-=A0=A0=A0 =A0=A0=A0 =A0config.speed_hz =3D spi->max_speed_hz;
-@@ -745,8 +789,6 @@
-=A0
-=A0=A0=A0 =A0spi_imx_push(spi_imx);
-=A0
--=A0=A0 =A0spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TE);
--
-=A0=A0=A0 =A0wait_for_completion(&spi_imx->xfer_done);
-=A0
-=A0=A0=A0 =A0return transfer->len;
-@@ -801,6 +843,63 @@
-=A0=A0=A0 =A0return 0;
-=A0}
-=A0
-+static ssize_t spidrv_setbigburst(struct device *dev,
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0 struct device_attribute *attr,
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0 const char *buf, size_t size)
-+{
-+=A0=A0 =A0unsigned long tmp;
-+=A0=A0 =A0tmp =3D simple_strtoul(buf, NULL, 10);
-+=A0=A0 =A0if (tmp =3D=3D 1) {
-+=A0=A0 =A0=A0=A0 =A0allow_big_bursts =3D 1;
-+=A0=A0 =A0=A0=A0 =A0} else {
-+=A0=A0 =A0=A0=A0 =A0allow_big_bursts =3D 0;
-+=A0=A0 =A0}
-+=A0=A0 =A0return size;
-+}
-+
-+static ssize_t spidrv_getbigburst(struct device *dev,
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0 struct device_attribute *attr,
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0 char *buf)
-+{
-+=A0=A0 =A0sprintf (buf, "%d\n", allow_big_bursts);
-+=A0=A0 =A0return (ssize_t)(strlen (buf) + 1);
-+}
-+
-+static ssize_t spidrv_settxthres(struct device *dev,
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0 struct device_attribute *attr,
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0 const char *buf, size_t size)
-+{
-+=A0=A0 =A0unsigned long tmp;
-+=A0=A0 =A0tmp =3D simple_strtoul(buf, NULL, 10);
-+=A0=A0 =A0if ((tmp > 0) && (tmp < 65)) {
-+=A0=A0 =A0=A0=A0 =A0tx_fifo_thres =3D tmp;
-+=A0=A0 =A0} else {
-+=A0=A0 =A0=A0=A0 =A0tx_fifo_thres =3D -1;
-+=A0=A0 =A0}
-+=A0=A0 =A0return size;
-+}
-+
-+static ssize_t spidrv_gettxthres(struct device *dev,
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0 struct device_attribute *attr,
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0 char *buf)
-+{
-+=A0=A0 =A0sprintf (buf, "%d\n", tx_fifo_thres);
-+=A0=A0 =A0return (ssize_t)(strlen (buf) + 1);
-+}
-+
-+static DEVICE_ATTR(bigburst, 0666, spidrv_getbigburst, spidrv_setbigbu=
-rst);
-+static DEVICE_ATTR(txthres,=A0 0666, spidrv_gettxthres , spidrv_settxt=
-hres);
-+
-+static struct attribute *spidrv_attributes[] =3D {
-+=A0=A0 =A0&dev_attr_bigburst.attr,
-+=A0=A0 =A0&dev_attr_txthres.attr,
-+=A0=A0 =A0NULL
-+};
-+
-+static const struct attribute_group spidrv_group =3D {
-+=A0=A0 =A0.attrs =3D spidrv_attributes,
-+};
-+
-=A0static int spi_imx_probe(struct platform_device *pdev)
-=A0{
-=A0=A0=A0 =A0struct device_node *np =3D pdev->dev.of_node;
-@@ -840,6 +939,10 @@
-=A0=A0=A0 =A0spi_imx =3D spi_master_get_devdata(master);
-=A0=A0=A0 =A0spi_imx->bitbang.master =3D master;
-=A0
-+=A0=A0 =A0if (sysfs_create_group(&pdev->dev.kobj, &spidrv_group)) {
-+=A0=A0 =A0=A0=A0 =A0return -ENOMEM;
-+=A0=A0 =A0}
-+
-=A0=A0=A0 =A0for (i =3D 0; i < master->num_chipselect; i++) {
-=A0=A0=A0 =A0=A0=A0 =A0int cs_gpio =3D of_get_named_gpio(np, "cs-gpios"=
-, i);
-=A0=A0=A0 =A0=A0=A0 =A0if (!gpio_is_valid(cs_gpio) && mxc_platform_info=
-)
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="eLx2Oic5rP1+EtIt"
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
+	rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
+To: Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1395057936-8643-1-git-send-email-harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 
+--eLx2Oic5rP1+EtIt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Mar 17, 2014 at 05:35:36PM +0530, Harini Katakam wrote:
+
+> +	bits_per_word = transfer ?
+> +			transfer->bits_per_word : spi->bits_per_word;
+
+This would be a lot more legible without the ternery operator.
+
+> +	if (bits_per_word != 8) {
+> +		dev_err(&spi->dev, "%s, unsupported bits per word %x\n",
+> +			__func__, spi->bits_per_word);
+> +		return -EINVAL;
+> +	}
+
+The core will check this for you.
+
+> +static int cdns_spi_setup(struct spi_device *spi)
+> +{
+> +	if (!spi->max_speed_hz)
+> +		return -EINVAL;
+> +
+> +	if (!spi->bits_per_word)
+> +		spi->bits_per_word = 8;
+
+The core does this for you.
+
+> +	return cdns_spi_setup_transfer(spi, NULL);
+> +}
+
+It's not clear to me why this has been split into a separate function
+and the function will write to the hardware which you're not allowed to
+do in setup() if it might affect an ongoing transfer.
+
+> +	intr_status = cdns_spi_read(xspi->regs + CDNS_SPI_ISR_OFFSET);
+> +	cdns_spi_write(xspi->regs + CDNS_SPI_ISR_OFFSET, intr_status);
+> +
+> +	if (intr_status & CDNS_SPI_IXR_MODF_MASK) {
+> +		/* Indicate that transfer is completed, the SPI subsystem will
+> +		 * identify the error as the remaining bytes to be
+> +		 * transferred is non-zero
+> +		 */
+> +		cdns_spi_write(xspi->regs + CDNS_SPI_IDR_OFFSET,
+> +			       CDNS_SPI_IXR_DEFAULT_MASK);
+> +		complete(&xspi->done);
+> +	} else if (intr_status & CDNS_SPI_IXR_TXOW_MASK) {
+
+What happens if both interrupts are flagged at the same time?
+
+> +		if (xspi->remaining_bytes) {
+> +			/* There is more data to send */
+> +			cdns_spi_fill_tx_fifo(xspi);
+> +		} else {
+> +			/* Transfer is completed */
+> +			cdns_spi_write(xspi->regs + CDNS_SPI_IDR_OFFSET,
+> +				       CDNS_SPI_IXR_DEFAULT_MASK);
+> +			complete(&xspi->done);
+> +		}
+> +	}
+
+I see from further up the file that there are error interrupt states
+which might be flagged but these are just being ignored.
+
+> +
+> +	return IRQ_HANDLED;
+
+This should only be returned if an interrupt was actually handled - if
+the line is shared in some system this will break.
+
+> +	cdns_spi_write(xspi->regs + CDNS_SPI_IER_OFFSET,
+> +		       CDNS_SPI_IXR_DEFAULT_MASK);
+> +
+> +	ret = wait_for_completion_interruptible_timeout(&xspi->done,
+> +							CDNS_SPI_TIMEOUT);
+> +	if (ret < 1) {
+
+If you return a positive value from transfer_one() the core will wait
+for you.
+
+> +static int cdns_prepare_transfer_hardware(struct spi_master *master)
+> +{
+> +	struct cdns_spi *xspi = spi_master_get_devdata(master);
+> +
+> +	if (xspi->driver_state != CDNS_SPI_DRIVER_STATE_READY)
+> +		return -EINVAL;
+> +
+> +	cdns_spi_write(xspi->regs + CDNS_SPI_ER_OFFSET,
+> +		       CDNS_SPI_ER_ENABLE_MASK);
+> +
+> +	return 0;
+> +}
+
+You probably want to enable the clocks here (and disable them when
+unpreparing too).
+
+> +static int cdns_transfer_one_message(struct spi_master *master,
+> +				     struct spi_message *msg)
+> +{
+
+Just implement transfer_one() and provide a set_cs() operation and most
+of this code will go away.
+
+> +	irq = platform_get_irq(pdev, 0);
+> +	if (irq < 0) {
+> +		ret = -ENXIO;
+> +		dev_err(&pdev->dev, "irq number is negative\n");
+> +		goto remove_master;
+> +	}
+> +
+> +	ret = devm_request_irq(&pdev->dev, irq, cdns_spi_irq,
+> +			       0, pdev->name, xspi);
+> +	if (ret != 0) {
+> +		ret = -ENXIO;
+> +		dev_err(&pdev->dev, "request_irq failed\n");
+> +		goto remove_master;
+> +	}
+
+I'd expect to see something that initialises the hardware prior to
+requesting the interrupt, you don't know what state the hardware is in
+when the driver takes control.
+
+> +	init_completion(&xspi->done);
+
+This needs to be done prior to the interrupt as well.
+
+> +	ret = of_property_read_u16(pdev->dev.of_node, "num-chip-select",
+> +				   &master->num_chipselect);
+> +	if (ret < 0) {
+> +		dev_err(&pdev->dev, "couldn't determine num-chip-select\n");
+> +		goto clk_dis_all;
+> +	}
+
+Is there no reasonable default?
+
+> +	/* Set to default valid value */
+> +	xspi->speed_hz = clk_get_rate(xspi->ref_clk) / 4;
+
+The driver should set max_speed_hz as well.
+
+> +	dev_info(&pdev->dev, "at 0x%08X mapped to 0x%08X, irq=%d\n",
+> +		 res->start, (u32 __force)xspi->regs, irq);
+
+No need for this, it's just noisy.
+
+> +static int __maybe_unused cdns_spi_suspend(struct device *dev)
+> +{
+
+This needs to call spi_master_suspend() as well (and similarly on
+resume).
+
+> +	cdns_spi_write(xspi->regs + CDNS_SPI_IDR_OFFSET,
+> +		       CDNS_SPI_IXR_DEFAULT_MASK);
+> +	complete(&xspi->done);
+> +
+> +	ctrl_reg = cdns_spi_read(xspi->regs + CDNS_SPI_CR_OFFSET);
+> +	ctrl_reg |= CDNS_SPI_CR_SSCTRL_MASK;
+> +	cdns_spi_write(xspi->regs + CDNS_SPI_CR_OFFSET, ctrl_reg);
+
+Don't do this, the spi_master_suspend() call will quiesce transfers (or
+if open coding it should be doing something similar rather than just
+breaking any ongoing transfer).
+
+> +	clk_disable(xspi->ref_clk);
+> +	clk_disable(xspi->pclk);
+
+Why not unprepare?
+
+--eLx2Oic5rP1+EtIt
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTJzEmAAoJELSic+t+oim9wEkP/1P7ScD65qsVH6V2O/QK6doB
+c1Xc/IrO6P82LOKM4HwAIFrXmhVO3nVHX+uCvLhg1zoKUshu7W9ATYbGdUg9CE78
+X09YE1YplvYu5BsMLeCWE6f5O5hPbLYl0qUON5jfPgBscMEpjIz8agUJDaG0JCCz
+GN4Y99To8OCkrGGwaTNaOqyKHk6WiNnj6PetOQuDds8UHAZ/z0ibdLwYsav6Oivb
+lh/46HN8RSf4bM/DxCz1QJ+SiFZcMzodMMTZD0I5i1iwz6OL5UZpYixpJeJW8E0g
+j8sZifiMb++SyrWQtBgfZuyelY/8G50dMk9Ym8Gik+ZErUViyogWOfMvZndgWDkb
+BL68YExorUJFR6VbcOyqkZ1ssMyrkzDaQueI8MQLgyED1mNXdiPVtu7RDmzxiQU2
+APmunciPbJx7GQkequ51uZj2gWajDkN8ETwOtKcpilBz5C1hT4/0idmT4FZPo+oj
+6wo5M125rcB3JI/5jdxuEDCaQzXwHD3wfjaEWpYf/LlnyhdJi2XDMDWUMjgzd2Ic
+AnZkVIp7zi3cPIlKWt7PoojUUnXmU+lxX5h/K3PzAumlDLi+xWvXAfOE7exrvgGD
+EtNmrkUnneIu1Lz2klMMBDqL/lTMZpybXVp5xnbV62chFYMA0RNzOt053YH35Jxs
+RfwrMlpgQDYW5xvT81qG
+=s9A7
+-----END PGP SIGNATURE-----
+
+--eLx2Oic5rP1+EtIt--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

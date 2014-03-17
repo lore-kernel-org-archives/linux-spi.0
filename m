@@ -1,59 +1,63 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: __spi_async: why the check for a callback as a requirement?
-Date: Mon, 17 Mar 2014 10:59:23 +0000
-Message-ID: <20140317105923.GA11706@sirena.org.uk>
-References: <E6C88A40-D009-4434-A4A1-A77D4A76DDE3@martin.sperl.org>
+Subject: Re: [PATCH] spi: sc18is602: Don't be that restrictive with the
+ maximum transfer speed
+Date: Mon, 17 Mar 2014 11:27:57 +0000
+Message-ID: <20140317112757.GB11706@sirena.org.uk>
+References: <1395020870-18107-1-git-send-email-linux@roeck-us.net>
+ <CAFRkauDEBe+XStLJSiMzvNOxpFZ2iBGD36-Brq9oHN2RRa+rog@mail.gmail.com>
+ <532671A5.5070302@roeck-us.net>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IS0zKkzwUGydFO0o"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="dTy3Mrz/UPE2dbVg"
+Cc: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <E6C88A40-D009-4434-A4A1-A77D4A76DDE3-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+In-Reply-To: <532671A5.5070302-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---IS0zKkzwUGydFO0o
+--dTy3Mrz/UPE2dbVg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 17, 2014 at 09:21:47AM +0100, Martin Sperl wrote:
+On Sun, Mar 16, 2014 at 08:53:09PM -0700, Guenter Roeck wrote:
+> On 03/16/2014 07:07 PM, Axel Lin wrote:
 
-> I found out that with commit 24a0013a04e81e9519 there was a check include=
-d=20
-> that checks for a valid callback.
+> >Now I'm thinking if it is ok to use master->max_speed_hz as transfer speed when
+> >xfer->speed_hz > master->max_speed_hz. And it should be handled in spi core.
+> >I'm sending a RFC patch now.
 
-> Why would a callback be an _absolute_ requirement for a SPI message?
+> That is an acceptable alternate solution for me.
 
-IIRC there were assumptions elsewhere in the code that there was one,
-though I think those may be gone now.
+That's what I'd expect, take the maximum possible given the available
+constraints.
 
---IS0zKkzwUGydFO0o
+--dTy3Mrz/UPE2dbVg
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTJtWIAAoJELSic+t+oim9W0EP/AuGL8mDmGG8Ud7cfBgagJo/
-OzqOCgjFzHJPkfbkbcftw47AtyupQFZehddOfjYHGWqJf3zTaICwHiYz7cG7K+hF
-KpJhqfNWuCx5u6BRBe7e3sd64YQQCwEGCQNNTkm/ALpoCkJFSY+LiYpl1Wz4eYMr
-Ng9zeJOwtr23uCHRz4rleXnUeY40S/5cFRiLIsM/rViLDEtFyeSvYQ/6hZYdZiGS
-AT+00StQJrqwCgrqdnMB7bcrFJuNU9yFvYc8iTlSPF8mNc3SKkZkfvabPoXSmvHX
-ZMQvtoRSRnLJ2fOAKEckiH9PkUABxri/SkWlQ45GeW6rCV62ykyIUcG86Ei4cNP7
-WJCkXLfUkcv37zrA3qQeOAGdeZDh6U/R6fdY+ZsRdH42muweCEuH0EdQMvAJChO2
-tRCpEeWI51JC0+Z4o1Hx2gI9CfkLV4D97SAywHEVeNaeqKcfehHgmQ7iFyaUoW4o
-FmS4mU7Z22BoQAVyPUYszhk16WbcB8F1DmISACqhNr+7S6Mq5VjgU3SQgtOgntFm
-P7s1CTwcIQT//lqwZlbp/6QQFbnF5srh3zgIkocY7+Sv0eoGnsYVh8lfB+CTbJ3M
-OGfdPiN6BP27QyIHnsPVpmlguYRQ9zIlk13wiGM5sSff0GIE8Kq41ZNcHQIZv7wu
-H73pT+Q14ZPejxDVL0vu
-=20GB
+iQIcBAEBAgAGBQJTJtw6AAoJELSic+t+oim9XlIP/2rl4+5ctY01zoEasGVQFCf9
+4aLLt9Jq+dQTThwuFhba1ZIwriNtgJ+NNK7gvpSQBjK9kzLJ5pucHNN1dEdRRVg9
+js813yzMJDYCDzcnAkYLFoOmCHJpZJxwr5VHG86dTzNEBXNZRJQW4x0f/RNISY03
+FzbEIK7l0EdvrvYVPOg/aISL/a01e/eHwJ+F4ef7B8sj2hOacg7k6a33WWkks3jv
+efIGsPLxsL/Kxc3evf8hUMCATqfBaS7azVMzr4ErEwgyZgVQ9fxSeYD55Mle0VmZ
+JmmWqBEYZOmQO9j/lO0RYqmiRvBmmvh4l9nNIpnU03FKCTyzmVtkhm/RIj6QDjlH
+nfiQ5bEnzZl94gGD6d9bFcVlOVKJ/pZKy8jsnYPegHfAfrCidoQOIf4eeuYhF0nt
++XzxYg5qnDb86QqXTLzgmwk3tLJN7XCS0H52kFRfQ1asOUcRt7rOXKHd0pjins+T
+NgphI2AuvCe0uqDl00CmPoysPC6Q2sP3UFfx1dLcQqGjHStgUBBhovG6OkLPEjTf
+7hevn6HFiwvTzq5Y2DNoG3uPcJ2/l9H3KRIxuJHbYfwBqfTmfasFClucrC+FPLW3
+WxkduTuNeLRbR+ezotMuYkcHC+Wp025QWD8GmQtElysv357ETVoCKhYqef7hDBa5
+TjnJ3q5DFA7XUmw9uzil
+=OEms
 -----END PGP SIGNATURE-----
 
---IS0zKkzwUGydFO0o--
+--dTy3Mrz/UPE2dbVg--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,90 +1,222 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Michal Simek <monstr@monstr.eu>
 Subject: Re: [PATCH] SPI: Add driver for Cadence SPI controller
-Date: Mon, 17 Mar 2014 13:14:53 +0000
-Message-ID: <20140317131453.GF11706@sirena.org.uk>
-References: <1395057936-8643-1-git-send-email-harinik@xilinx.com>
- <CAL_JsqKacetGytGUJir7ky3qOgCy-3ny1pT_Bx4eCYV2wMgcTg@mail.gmail.com>
+Date: Mon, 17 Mar 2014 14:22:54 +0100
+Message-ID: <5326F72E.7010401@monstr.eu>
+References: <1395057936-8643-1-git-send-email-harinik@xilinx.com> <CAL_JsqKacetGytGUJir7ky3qOgCy-3ny1pT_Bx4eCYV2wMgcTg@mail.gmail.com>
+Reply-To: monstr@monstr.eu
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="nYySOmuH/HDX6pKp"
-Cc: Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Rob Landley <rob-VoJi6FS/r0vR7s880joybQ@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
-To: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAL_JsqKacetGytGUJir7ky3qOgCy-3ny1pT_Bx4eCYV2wMgcTg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+ protocol="application/pgp-signature";
+ boundary="bnFEqD74vhxnPfpNcloCjqowcFUGmafpM"
+Cc: Harini Katakam <harinik@xilinx.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Rob Landley <rob@landley.net>, Mark Brown <broonie@kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
+To: Rob Herring <robherring2@gmail.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <CAL_JsqKacetGytGUJir7ky3qOgCy-3ny1pT_Bx4eCYV2wMgcTg@mail.gmail.com>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--bnFEqD74vhxnPfpNcloCjqowcFUGmafpM
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+Hi Rob,
+
+On 03/17/2014 01:47 PM, Rob Herring wrote:
+> On Mon, Mar 17, 2014 at 7:05 AM, Harini Katakam <harinik@xilinx.com> wr=
+ote:
+>> Add driver for Cadence SPI controller. This is used in Xilinx Zynq.
+>>
+>> Signed-off-by: Harini Katakam <harinik@xilinx.com>
+>> ---
+>>  .../devicetree/bindings/spi/spi-cadence.txt        |   25 +
+>=20
+> We prefer binding docs in separate patch.
+
+I have heard several times that also for binding review you need driver
+to look if this binding make sense that's why Harini sent this together.
+It means 2 emails instead of one.
+But if you wish to have this in two files no problem to split it
+but then I believe both should be copied to DT mailing list.
 
 
---nYySOmuH/HDX6pKp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+>>  drivers/spi/Kconfig                                |    7 +
+>>  drivers/spi/Makefile                               |    1 +
+>>  drivers/spi/spi-cadence.c                          |  804 +++++++++++=
++++++++++
+>>  4 files changed, 837 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/spi/spi-cadence.=
+txt
+>>  create mode 100644 drivers/spi/spi-cadence.c
+>>
+>> diff --git a/Documentation/devicetree/bindings/spi/spi-cadence.txt b/D=
+ocumentation/devicetree/bindings/spi/spi-cadence.txt
+>> new file mode 100644
+>> index 0000000..d25bc2d
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/spi/spi-cadence.txt
+>> @@ -0,0 +1,25 @@
+>> +Cadence SPI controller Device Tree Bindings
+>> +-------------------------------------------
+>> +
+>> +Required properties:
+>> +- compatible           : Should be "cdns,spi-r1p6".
+>=20
+> One problem with using IP vendor info in the compatible string is an
+> IP block typically has a variety of configuration options so the
+> actual implementations may be very different. I would recommend adding
+> a Xilinx compatible string as well even if you don't use it now.
 
-On Mon, Mar 17, 2014 at 07:47:24AM -0500, Rob Herring wrote:
+It means xlnx,zynq-spi-r1p6 should be fine.
 
-Please delete irrelevant context from your replies, it makes it easier
-to find the new content.
+>=20
+>> +- reg                  : Physical base address and size of SPI regist=
+ers map.
+>> +- interrupts           : Property with a value describing the interru=
+pt
+>> +                         number.
+>> +- interrupt-parent     : Must be core interrupt controller
+>> +- clock-names          : List of input clock names - "ref_clk", "pclk=
+"
+>> +                         (See clock bindings for details).
+>> +- clocks               : Clock phandles (see clock bindings for detai=
+ls).
+>> +- num-chip-select      : Number of chip selects used.
+>=20
+> See Documentation/devicetree/bindings/spi/spi-bus.txt. Use "num-cs" her=
+e.
+>=20
+>> +
+>> +Example:
+>> +
+>> +       spi@e0007000 {
+>> +               clock-names =3D "ref_clk", "pclk";
+>> +               clocks =3D <&clkc 26>, <&clkc 35>;
+>> +               compatible =3D "cdns,spi-r1p6";
+>=20
+> Nit. We usually put compatible first in the node.
 
-> On Mon, Mar 17, 2014 at 7:05 AM, Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org> wrote:
+Our device-tree generator sorts them that's why it is just like this
+but not a problem to fix just in documentation.
 
-> > +/* Macros for the SPI controller read/write */
-> > +#define cdns_spi_read(addr)    readl_relaxed(addr)
-> > +#define cdns_spi_write(addr, val)      writel_relaxed((val), (addr))
 
+>> +               interrupt-parent =3D <&intc>;
+>> +               interrupts =3D <0 49 4>;
+>> +               num-chip-select =3D /bits/ 16 <4>;
+
+I was expecting you will comment this a little bit. :-)
+Because all just reading this num-cs as 32bit and then
+assigning this value to master->num_chipselect which is 16bit.
+
+<snip>
+
+>> +/* Macros for the SPI controller read/write */
+>> +#define cdns_spi_read(addr)    readl_relaxed(addr)
+>> +#define cdns_spi_write(addr, val)      writel_relaxed((val), (addr))
+>=20
 > Just use readl/writel directly.
 
-Or make them static inline structures which take the driver data
-structure and an offset within the register map for the device and do
-the maths to resolve the actual address.
+There shouldn't be any problem to use these helper macros
+and even I think this is better than using readl/writel directly
+because you are more flexible if you want to change it to different
+IO.
 
-> > +static SIMPLE_DEV_PM_OPS(cdns_spi_dev_pm_ops, cdns_spi_suspend,
-> > +                        cdns_spi_resume);
+<snip>
 
-> > +/* Work with hotplug and coldplug */
-> > +MODULE_ALIAS("platform:" CDNS_SPI_NAME);
+>> +/**
+>> + * cdns_spi_probe - Probe method for the SPI driver
+>> + * @pdev:      Pointer to the platform_device structure
+>> + *
+>> + * This function initializes the driver data structures and the hardw=
+are.
+>> + *
+>> + * Return:     0 on success and error value on error
+>> + */
+>> +static int cdns_spi_probe(struct platform_device *pdev)
+>> +{
+>> +       int ret =3D 0, irq;
+>> +       struct spi_master *master;
+>> +       struct cdns_spi *xspi;
+>> +       struct resource *res;
+>> +
+>> +       master =3D spi_alloc_master(&pdev->dev, sizeof(*xspi));
+>> +       if (master =3D=3D NULL)
+>> +               return -ENOMEM;
+>> +
+>> +       xspi =3D spi_master_get_devdata(master);
+>> +       master->dev.of_node =3D pdev->dev.of_node;
+>> +       platform_set_drvdata(pdev, master);
+>> +
+>> +       res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>> +       xspi->regs =3D devm_ioremap_resource(&pdev->dev, res);
+>> +       if (IS_ERR(xspi->regs)) {
+>> +               ret =3D PTR_ERR(xspi->regs);
+>> +               goto remove_master;
+>> +       }
+>> +
+>> +       irq =3D platform_get_irq(pdev, 0);
+>> +       if (irq < 0) {
+>=20
+> I believe this returns NO_IRQ which could be 0.
+>=20
+> s/</<=3D/
 
+Are you sure regarding this?
+NO_IRQ on ARM is -1.
+And IRC irq =3D 0 should be just valid number.
+
+But if you are right then others drivers have to fixed too.
+
+
+>> +       return 0;
+>> +}
+>> +
+>> +static SIMPLE_DEV_PM_OPS(cdns_spi_dev_pm_ops, cdns_spi_suspend,
+>> +                        cdns_spi_resume);
+>> +
+>> +/* Work with hotplug and coldplug */
+>> +MODULE_ALIAS("platform:" CDNS_SPI_NAME);
+>=20
 > Not sure, but I don't think this should be needed.
 
-It won't be used by DT systems but it is good practice, especially with
-something like this that clearly is a generic IP which could be used on
-non-DT systems too (it's not like it costs anything meaningful).
+I don't know too.
 
---nYySOmuH/HDX6pKp
+Thanks for review,
+Michal
+
+
+--=20
+Michal Simek, Ing. (M.Eng), OpenPGP -> KeyID: FE3D1F91
+w: www.monstr.eu p: +42-0-721842854
+Maintainer of Linux kernel - Microblaze cpu - http://www.monstr.eu/fdt/
+Maintainer of Linux kernel - Xilinx Zynq ARM architecture
+Microblaze U-BOOT custodian and responsible for u-boot arm zynq platform
+
+
+
+--bnFEqD74vhxnPfpNcloCjqowcFUGmafpM
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
 
-iQIcBAEBAgAGBQJTJvVKAAoJELSic+t+oim9NoMP/3CVL2JtmNVGnAlppFjd9mMJ
-LtioqcpAiBYfuq/ayoHIQ1JaZYmjTPMvMty9TFetCAhGy2g6lFnlNll15vtnKj/g
-Y9El2X3L8HwNw48jkcV180vBxi5yxGtWjoaM4o1wCewsTwhNiZwC5F0M/ytagORb
-BUJgptmgAv9/dF1Nq+nxJONmJ8avR48PKPeY06950oWtrwWFNJ05g0yC04ZQCzoF
-w3yoPdYXQANLT4HMI4St7qVu+CO6+q/0u+sqB9Ugi5aQijF7Q5kA7/mZHxtXAvif
-mrBHru2O/Qh2E76rzu98xyq79IJ8Jb5vYR+hLauvPsO1wB1xmQ+iNu8bZc62fyId
-APABMGlqcB+o/PbbQ1znnAjuaXWOs06nIGv62MEpI1ar+vrwgwVVow/rc8FN9K5o
-OrzSYSdAR71CmLnW4upTnOsnV2TyBrwTEFt4cLQXsXWuo4g7Qg04DbPmILS5UYjM
-NCkww40V+lnETl/IWUeVoIYzm+hU6Nr9J69oKAmt6XKbTkWl7lk4LQGM23rN6/po
-4+ui+gkkHzeJfJS3RQGZNi2QVxjPWV6IEbBOaWVaGmxOPmI/CH5JS331pwSSLY0S
-2oaY0MgLrsmtLACJn3G3iFfJ5PLalenlr1JKERm4LTCwLgvcLtVdQwSMn7kjhCFL
-K5N9uzM0yG3kkWZHuQTJ
-=ISNL
+iEYEARECAAYFAlMm9y8ACgkQykllyylKDCFmlwCeMf+C+ERZGSfSJyxD2MNGJ17n
+vCwAnjX+inZ+weyZbeW593UxcKLc/RMm
+=m+Xi
 -----END PGP SIGNATURE-----
 
---nYySOmuH/HDX6pKp--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--bnFEqD74vhxnPfpNcloCjqowcFUGmafpM--

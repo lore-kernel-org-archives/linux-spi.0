@@ -1,57 +1,37 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: ti-ssp: Remove duplicate code to check full duplex
- transfer
-Date: Tue, 18 Mar 2014 17:35:02 +0000
-Message-ID: <20140318173502.GH11706@sirena.org.uk>
-References: <1395110917.15410.1.camel@phoenix>
+From: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH 0/2] v1: ARM: sun4i: spi: Allow transfers larger
+ than FIFO size
+Date: Tue, 18 Mar 2014 15:04:02 -0700 (PDT)
+Message-ID: <4636665.0CNduaaJi4@nukelap.gtech>
+Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="OkEUgNLVrkMgtt3o"
-Cc: Cyril Chemparathy <cyril-l0cyMroinI0@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1395110917.15410.1.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+Return-path: <linux-sunxi+bncBDGJVA6QWUDRBVEFUOMQKGQEUYDRIHQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Id: linux-spi.vger.kernel.org
 
+These patches are designed to apply on top of sunxi-next. They depend on 
+Maxime Ripard's SPI patches for Allwinner A10 (sun4i).
 
---OkEUgNLVrkMgtt3o
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I've watched the bus with a logic analyzer to make sure thing are sane, but 
+I'm only able to go up to 10MHz on my LA. Unfortunately, the SPI chip I was 
+using as a test device decided to die mid-way, so I was unable to test how 
+well full-duplex communication works on these large transfers
 
-On Tue, Mar 18, 2014 at 10:48:37AM +0800, Axel Lin wrote:
-> This driver has set SPI_MASTER_HALF_DUPLEX flag, so spi core will reject full
-> duplex transfer. We can remove the same checking in ti_ssp_spi_transfer().
+Alexandru Gagniuc (2):
+  ARM: sun4i: spi: Allow Rx transfers larger than FIFO size
+  ARM: sun4i: spi: Allow Tx transfers larger than FIFO size
 
-Arnd has actually been working on removing this driver since it appears
-to be unused - it got a few acks now so I just applied the patch
-deleting it entirely.
+ drivers/spi/spi-sun4i.c | 56 
++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 52 insertions(+), 4 deletions(-)
 
---OkEUgNLVrkMgtt3o
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTKIPCAAoJELSic+t+oim9Ph8P/2fWgCVrePYsYEXxuYp4NIYD
-D/Oadn9yaz4mJdqVoTSzgY/nNNZpJrBQXywbZLK01yjrUq5eviL6yNEXvTkFXu8/
-unuRXiG25JBUGY61vqokuF70kwC41iSrAE/s5S6hBvMe35ROazFSrdXZGyvd2wLX
-+iOVptbW3F13ZdrWWyBTOM2SX+9Xo3ASUAv95Sk9ote65uzwXsZkApLbTp9s4jqA
-HHjQimAzSx/awGeZG8XNKkomOeKLU4VY39pW+afym/UD4x/a9B4GOauoKpRXwiOJ
-83GKD5Aqm5cvIsv0A1+XSfkaBt0cr79VpP1phRd2Kk8K6RyrZFU3pjIOUWRESB6Y
-wA4xfgWPFdn8p/BMuGqAxw+VDDtFQSLV1lYeriqQ9JR4vorkjx4VY4/GT6aF2sOA
-QW34lEvcFIUfJYfs9V/cf23WtEJ5kKHqRsDhcUbNSOGJxdvQpPBay7ARZi0xXowy
-DmK2RVx/ixnjGtlN1cQ5ZRRyd2OWxbN8kiCUGeKZk8poSZBd3mYk+i6lqGXFO/Em
-DFhO8PElHzbY56/JLcpxjB8gacPF+0hYwq9omcx/pIwLAEmxpYPoqE+CxDielksV
-DHRXXtivdokM580kSmp5fxXij0ayrorUP1aJM2ZwixU+z7kIuOrm4MY3rf9u4rBW
-PLr5q5N9B6V72Hwuwipz
-=2NO6
------END PGP SIGNATURE-----
-
---OkEUgNLVrkMgtt3o--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+1.8.5.3

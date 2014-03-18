@@ -1,15 +1,16 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] SPI: Add driver for Cadence SPI controller
-Date: Tue, 18 Mar 2014 12:33:48 +0000
-Message-ID: <20140318123348.GR11706@sirena.org.uk>
+From: Harini Katakam <harini.katakam@xilinx.com>
+Subject: RE: [PATCH] SPI: Add driver for Cadence SPI controller
+Date: Tue, 18 Mar 2014 14:45:09 +0000
+Message-ID: <aa8486d2-8571-4b31-8980-78806a80e600@CH1EHSMHS031.ehs.local>
 References: <1395057936-8643-1-git-send-email-harinik@xilinx.com>
  <20140317173017.GW11706@sirena.org.uk>
  <255edf4f-05a8-4d9a-b32d-1a4a8ddaffb5@CH1EHSMHS004.ehs.local>
  <20140318110401.GH11706@sirena.org.uk>
  <d7cf691a-c9cb-4a8a-bf5c-eae952a5d729@VA3EHSMHS045.ehs.local>
+ <20140318123348.GR11706@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="45nhIriPRwzWsBkh"
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 Cc: "robh+dt@kernel.org" <robh+dt@kernel.org>,
 	"pawel.moll@arm.com" <pawel.moll@arm.com>,
 	"mark.rutland@arm.com" <mark.rutland@arm.com>,
@@ -22,59 +23,55 @@ Cc: "robh+dt@kernel.org" <robh+dt@kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
 	Michal Simek <michals@xilinx.com>
-To: Harini Katakam <harini.katakam@xilinx.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <d7cf691a-c9cb-4a8a-bf5c-eae952a5d729@VA3EHSMHS045.ehs.local>
-Sender: linux-doc-owner@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20140318123348.GR11706@sirena.org.uk>
+Content-Language: en-US
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+HI Mark,
 
---45nhIriPRwzWsBkh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> -----Original Message-----
+> From: Mark Brown [mailto:broonie@kernel.org]
+> Sent: Tuesday, March 18, 2014 6:04 PM
+> To: Harini Katakam
+> Cc: robh+dt@kernel.org; pawel.moll@arm.com; mark.rutland@arm.com;
+> ijc+devicetree@hellion.org.uk; galak@codeaurora.org; rob@landley.net;
+> grant.likely@linaro.org; devicetree@vger.kernel.org; linux-
+> doc@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
+> spi@vger.kernel.org; Michal Simek
+> Subject: Re: [PATCH] SPI: Add driver for Cadence SPI controller
+> 
+> On Tue, Mar 18, 2014 at 12:13:45PM +0000, Harini Katakam wrote:
+> 
+> 
+> > > > In this case both possible interrupt conditions are handled.
+> 
+> > > Are you sure that's the case, and even if you are that's still not
+> > > handling the case where the device isn't flagging an interrupt at all.
+> 
+> > The IXR_ALL mask is only used to disable all the interrupts in the
+> beginning.
+> > These two are the only interrupts enabled.
+> > And RXNEMPTY status is just polled. That interrupt is not enabled either
+> 
+> This is all going to be fragile in the face of bugs or changes in the
+> code though and like I keep saying it doesn't handle interrupt sharing.
 
-On Tue, Mar 18, 2014 at 12:13:45PM +0000, Harini Katakam wrote:
+OK. I dint consider interrupt sharing. 
+Do you think the following implementation would be better?
 
-> I'm going to remove the bits_per_word check anyway.
-> But the clock configuration still needs to be done.
-> Where should it be done spi_setup() or transfer?
+status = IRQ_NONE;
+if (intr_status & CDNS_SPI_IXR_MODF_MASK) {
+	/* Handle this interrupt here */
+	status = IRQ_HANDLED;
+} else if (intr_status & CDNS_SPI_IXR_TXOW_MASK) {
+	/* Handle this interrupt here */
+	status = IRQ_HANDLED;
+}
 
-It needs to be done on the transfer - that is required anyway since the
-clock rate is specified per transfer.
+return status;
 
-> > > In this case both possible interrupt conditions are handled.
-
-> > Are you sure that's the case, and even if you are that's still not
-> > handling the case where the device isn't flagging an interrupt at all.
-
-> The IXR_ALL mask is only used to disable all the interrupts in the beginning.
-> These two are the only interrupts enabled.
-> And RXNEMPTY status is just polled. That interrupt is not enabled either
-
-This is all going to be fragile in the face of bugs or changes in the
-code though and like I keep saying it doesn't handle interrupt sharing.
-
---45nhIriPRwzWsBkh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTKD0oAAoJELSic+t+oim9ztUP/2qzLnUv/CjnBMQIs1UG8qz6
-iTi++PrZKQyr/IxTctAIQjsZNO8EtFVkTvTYMShwIPQogcQR74ltZIl/QWxRbRPi
-ezSiifH+c9VhVNr4aIOSumNJqVSlgPgkBn0ceEw0PG8qG8L8Ur/Hnu1K/0D9KvsX
-A0XcnNJdAfOE613wT3sB4FWDt7hsw9H54dnvsKGRgsUpffZstSCngohXH9sibdxV
-VgquocRL9uQukO175LevtdhsmF6IIPrQ4zPT732FyjWQD60+yJzs3dX+m2Pa/7/q
-n9YV5O3+bKBMZ+Og9H313bvtulGHY/sUjlMtFUq04pg+nKjbJiMhk3I+2iJDnPq3
-7Uq/njbXZS9AXpoG/F2Behw8MwRHziV4dRpHbOUyIhma6muGdIyFOqEg609bgCYx
-LvaBVRp5b6ttnnMyuc8Ha86WQwjCYK/EcsRFM25sHYO0TBxCyJ3vGtmSXDVq2Mvp
-redCyrvMMjVOXx4zUqLVGBwi9YfakwaqpKMwGCaljjUppRbCNi6rb0cfZ5HyDsfB
-u0bJAmdKDUlESPnuPTvPoUKP3XUnuXKmhXEs0xg7UVCa/zH4AhdF2SZYqoXjC01h
-aFrJcPxxSGLfoJ73qgx8/lqHP33YKl2SuR2koQcswUF86WcfEaov+b4EMnqyZVff
-v7w6LvpWfDiceNqx+rkL
-=vdSr
------END PGP SIGNATURE-----
-
---45nhIriPRwzWsBkh--
+Regards,
+Harini

@@ -1,48 +1,49 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: fsl-espi: Remove unused bits_per_word variable in
- fsl_espi_bufs
-Date: Fri, 21 Mar 2014 22:59:58 +0800
-Message-ID: <1395413998.9974.3.camel@phoenix>
+From: Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH] spi: fix spi-atmel.c printk format warnings
+Date: Fri, 21 Mar 2014 08:53:41 -0700
+Message-ID: <532C6085.9070203@infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org, Wenyou Yang <wenyou.yang@atmel.com>,
+	Nicolas Ferre <nicolas.ferre@atmel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+To: Mark Brown <broonie@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+From: Randy Dunlap <rdunlap@infradead.org>
+
+Fix printk format warning by using %p extension 'ad' for dma_addr_t.
+
+drivers/spi/spi-atmel.c:1228:3: warning: format '%x' expects argument of type 'unsigned int', but argument 7 has type 'dma_addr_t' [-Wformat]
+drivers/spi/spi-atmel.c:1228:3: warning: format '%x' expects argument of type 'unsigned int', but argument 9 has type 'dma_addr_t' [-Wformat]
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Wenyou Yang <wenyou.yang@atmel.com>
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
 ---
- drivers/spi/spi-fsl-espi.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/spi/spi-atmel.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c
-index 428dc7a..6fb2b75 100644
---- a/drivers/spi/spi-fsl-espi.c
-+++ b/drivers/spi/spi-fsl-espi.c
-@@ -219,13 +219,8 @@ static int fsl_espi_bufs(struct spi_device *spi, struct spi_transfer *t)
- 	struct mpc8xxx_spi *mpc8xxx_spi = spi_master_get_devdata(spi->master);
- 	struct fsl_espi_reg *reg_base = mpc8xxx_spi->reg_base;
- 	unsigned int len = t->len;
--	u8 bits_per_word;
- 	int ret;
+I thought that a patch for this was already posted but I can't find it...
+Applies to mainline.
+
+--- linux-next-20140321.orig/drivers/spi/spi-atmel.c
++++ linux-next-20140321/drivers/spi/spi-atmel.c
+@@ -1226,10 +1226,10 @@ static int atmel_spi_transfer_one_messag
  
--	bits_per_word = spi->bits_per_word;
--	if (t->bits_per_word)
--		bits_per_word = t->bits_per_word;
--
- 	mpc8xxx_spi->len = t->len;
- 	len = roundup(len, 4) / 4;
+ 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+ 		dev_dbg(&spi->dev,
+-			"  xfer %p: len %u tx %p/%08x rx %p/%08x\n",
++			"  xfer %p: len %u tx %p/%pad rx %p/%pad\n",
+ 			xfer, xfer->len,
+-			xfer->tx_buf, xfer->tx_dma,
+-			xfer->rx_buf, xfer->rx_dma);
++			xfer->tx_buf, &xfer->tx_dma,
++			xfer->rx_buf, &xfer->rx_dma);
+ 	}
  
--- 
-1.8.3.2
-
-
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+ msg_done:

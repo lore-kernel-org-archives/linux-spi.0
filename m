@@ -1,59 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: fix spi-atmel.c printk format warnings
-Date: Fri, 21 Mar 2014 17:45:37 +0000
-Message-ID: <20140321174537.GC552@sirena.org.uk>
-References: <532C6085.9070203@infradead.org>
+Subject: Re: [PATCH] spi: nuc900: Fix setting multiple bits settings in
+ register
+Date: Fri, 21 Mar 2014 17:49:29 +0000
+Message-ID: <20140321174928.GF552@sirena.org.uk>
+References: <1395379454.30136.2.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="lMM8JwqTlfDpEaS6"
-Cc: LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Andrew Morton <akpm-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-To: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="XStn23h1fwudRqtG"
+Cc: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <532C6085.9070203-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+In-Reply-To: <1395379454.30136.2.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---lMM8JwqTlfDpEaS6
+--XStn23h1fwudRqtG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 21, 2014 at 08:53:41AM -0700, Randy Dunlap wrote:
-> From: Randy Dunlap <rdunlap-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
->=20
-> Fix printk format warning by using %p extension 'ad' for dma_addr_t.
+On Fri, Mar 21, 2014 at 01:24:14PM +0800, Axel Lin wrote:
+> The correct way to set multiple bits settings is always clear these
+> bit fields before set new settings.
 
-Applied, thanks.  Please try to use subject lines matching the style for
-the subsystem.
+Applied, thanks.
 
---lMM8JwqTlfDpEaS6
+--XStn23h1fwudRqtG
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTLHq9AAoJELSic+t+oim9b+8QAJMYskCpPnc47sJZOdUho0Kc
-bJDlYHGghzz/1K+5GYxSvYB9fifnf1rVSxeHH3Rt0TovBtaelkeUaUJwk8S8vR4p
-6VvP9bYDCT/CJWsulk7p8NYyqu94gi5CC0rDJUeJG82TkzmaercLFO5/mRuM8+H2
-F/SpEdW51DgbKzEwg+GqcB7HimrXNqPKk4z2PPuz7N25amNO7nhdqK7U0Knzpwx3
-Ygkrkt8MhtRLSg5CW5D85DKhek7hRClpm5MNDjuUoVSxcTpJJXbBQ/SYSCgNx+cG
-Aehu+umXS+TGrIC5nrjL+WAYg2/Y04CnxLMPBvZGHXS+7uQiuDU0PW7U5LE7WfY0
-KzH++EEX3CcQup0Z1t7PgtlMuPFsYV9AZC/hSlmNqLtnlTSUUOuQcCH7rE7yyI9Z
-Ia6R/IDjwcASOk6syijDvtVdnR1jOTcz2XqSql6oVWcyB6Z2g9HFq8NitP66Ewos
-5TxMiW6nJCG+9XDc7wHgmRGqHwUXxOJdt/SnPC7m4HJW1nrY4C5JXjyBEGC8ltFd
-/Hft0gVl/OjjY463VG0P/1iP7TnmZEQC1hq29kgdpaP/P6eOhTg2kqiEDeFvqLni
-urtSO+oKGLufy44yUKVjj7ijqpZs1xx1lr3sGi/KkoNl0HFG3UI7XlFSVERgPFmr
-Qc69/U9h2rf81EUz+pdg
-=VRFP
+iQIcBAEBAgAGBQJTLHulAAoJELSic+t+oim9DKcP+QGlPxIKupMvIhqKNPm7ggMw
+W99WvYrojg2UBRayjssM/nP1LCN91PHwe6WLHxbIe4aOCS/rgC/2kfQtxWDTIlQg
+vtjl/gTaIJ6aaWqssTAZCVzYF5jOIinUlyK1Iuu9g6DtR9wpqXz7NwzXem/1g7Vl
+ywmVbHvJHBpPNI+TA3x7iHR4vmEPBIpTwfQbwWJuzPXVMQXINmXgi2UjJh6Toub0
+hWTWfr5QrmdZ87JYSDM3tWDqZh8odzTbNaUB6vsauSRRrwRldmzBK8R9/5K/e00t
+HS9CbuHdik1L09V/1cAtXONaI9tVdffSsPWPARnaS+WEpz9SRh9LDWZ5Zryy6wbZ
+fkqv6MVdsiBsZZXCP9gUop5IjNdIQK34R3YRzpXO3LL6pNt3D6kD7y3eiG2XkuQV
+flSlbVONEUmAIUwOv6OIxKIanc+KP/icaM3T3CJRZ7Qgnfu0ySkVEiYTNmU7VV04
+6kwsc9oooleYVYwrIhP7fMlg7PQLqtCFBkWK4qftycdziRZBYRhriavvaqkASETy
+vUynMkX1zUXv/72XrssmyxfYgPF/OgVVNLQ1167WqLciMOOOm9moZddylHOOC/UK
+KWVheeHsSYFX7ZVKJyZfgcuCfUctYBMvn7Lt83y58usMiucr5HwYFUb/kF2GMxJk
+8xvFpVdtmnpZ17LU/wci
+=bySm
 -----END PGP SIGNATURE-----
 
---lMM8JwqTlfDpEaS6--
+--XStn23h1fwudRqtG--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

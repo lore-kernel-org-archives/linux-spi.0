@@ -1,54 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: nuc900: Fix setting multiple bits settings in
- register
-Date: Fri, 21 Mar 2014 17:49:29 +0000
-Message-ID: <20140321174928.GF552@sirena.org.uk>
-References: <1395379454.30136.2.camel@phoenix>
+Subject: Re: [PATCH] spi: xtensa-xtfpga: Enable driver compilation with
+ COMPILE_TEST
+Date: Fri, 21 Mar 2014 18:11:22 +0000
+Message-ID: <20140321181122.GM552@sirena.org.uk>
+References: <1395310084.10512.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="XStn23h1fwudRqtG"
-Cc: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+	protocol="application/pgp-signature"; boundary="JvUS8mwutKMHKosv"
+Cc: Max Filippov <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1395379454.30136.2.camel@phoenix>
+In-Reply-To: <1395310084.10512.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---XStn23h1fwudRqtG
+--JvUS8mwutKMHKosv
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Mar 21, 2014 at 01:24:14PM +0800, Axel Lin wrote:
-> The correct way to set multiple bits settings is always clear these
-> bit fields before set new settings.
+On Thu, Mar 20, 2014 at 06:08:04PM +0800, Axel Lin wrote:
+> This helps increasing build testing coverage.
 
 Applied, thanks.
 
---XStn23h1fwudRqtG
+--JvUS8mwutKMHKosv
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTLHulAAoJELSic+t+oim9DKcP+QGlPxIKupMvIhqKNPm7ggMw
-W99WvYrojg2UBRayjssM/nP1LCN91PHwe6WLHxbIe4aOCS/rgC/2kfQtxWDTIlQg
-vtjl/gTaIJ6aaWqssTAZCVzYF5jOIinUlyK1Iuu9g6DtR9wpqXz7NwzXem/1g7Vl
-ywmVbHvJHBpPNI+TA3x7iHR4vmEPBIpTwfQbwWJuzPXVMQXINmXgi2UjJh6Toub0
-hWTWfr5QrmdZ87JYSDM3tWDqZh8odzTbNaUB6vsauSRRrwRldmzBK8R9/5K/e00t
-HS9CbuHdik1L09V/1cAtXONaI9tVdffSsPWPARnaS+WEpz9SRh9LDWZ5Zryy6wbZ
-fkqv6MVdsiBsZZXCP9gUop5IjNdIQK34R3YRzpXO3LL6pNt3D6kD7y3eiG2XkuQV
-flSlbVONEUmAIUwOv6OIxKIanc+KP/icaM3T3CJRZ7Qgnfu0ySkVEiYTNmU7VV04
-6kwsc9oooleYVYwrIhP7fMlg7PQLqtCFBkWK4qftycdziRZBYRhriavvaqkASETy
-vUynMkX1zUXv/72XrssmyxfYgPF/OgVVNLQ1167WqLciMOOOm9moZddylHOOC/UK
-KWVheeHsSYFX7ZVKJyZfgcuCfUctYBMvn7Lt83y58usMiucr5HwYFUb/kF2GMxJk
-8xvFpVdtmnpZ17LU/wci
-=bySm
+iQIcBAEBAgAGBQJTLIDHAAoJELSic+t+oim9egsQAIF31+8PIvgzCGT/Cq1looVq
+ARlkU6gcdVTUHgplx05Tq9Fwr/1N3NagQXenFCgX8Qbx4cFQCNGxzd1EE/ZdwhhW
+T7j1XBFEstLa3kcoBglzJKGVtI7ll/rg5A/Map21vNniOisRTBPvLbO4kGwhsbxJ
+ggTlujaEgZIbO9PiQVGmtpDSVMoMvL00Tkh/imiH5Ab65PeGwuv9LOfjFVzYLjI5
+YDzDvvRkYHyX2RFXZIZTZsK4PKL2RoJqMxLsl6kt7pvb6aQOKJwG256+Nt06EOpE
+kmYVis8MPviCetZCFdf7IdNrFcngHqFO0wRnmil/JDqidrxt51TFIT9rlkc/2VAD
+hMN/9oX32ONcV1w98NVgOtpggrGVs89hX8yDCdIkW7Xa1YLoza1p5bfQXmeN/qN0
+keGkmAcscDlXC3MnceKBtPmaThpKXF4MnynSfdVPZjrQFF48by+62NzhOdsDkv+G
+DTgdw57VHZMLA7+o9xEjCR8yiMJeE8H9VUi1rI1H+PbzDarPmvny4ev/Bi02WYaJ
+WgtW0HI+6Xe4G8xHKyaKddcDtYSzaWxdIe1YCzggfzWiL9YA3wFnkYJ0dix7i0As
+C635hGBh6Ysr7reE30KczdA2MMAs0nb6jdqa5yRTL5TshztkOMuzujfp8YdPD6ye
+79FcdRg2sCbO3YdhquIc
+=Jgdj
 -----END PGP SIGNATURE-----
 
---XStn23h1fwudRqtG--
+--JvUS8mwutKMHKosv--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

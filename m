@@ -1,62 +1,88 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: altera: Remove the code to get unused platform_data
-Date: Fri, 21 Mar 2014 11:21:58 +0800
-Message-ID: <1395372118.18131.1.camel@phoenix>
+Subject: [PATCH] spi: nuc900: Fix setting multiple bits settings in register
+Date: Fri, 21 Mar 2014 13:24:14 +0800
+Message-ID: <1395379454.30136.2.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The definition of struct altera_spi_platform_data does not exist in current
-tree. So remove the code to get platform_data which is never used.
+The correct way to set multiple bits settings is always clear these
+bit fields before set new settings.
+
+Current code does not cause problem because the reset value of these
+bit fields are 0, and these settings only set once during probe.
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
-I just google it and found:
-There is a include/linux/spi/spi_altera.h in [PATCH v2] spi: New driver for Altera SPI.
-https://lkml.org/lkml/2011/1/17/16
+ drivers/spi/spi-nuc900.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-And it got removed in [PATCH v3] spi: New driver for Altera SPI.
-https://lkml.org/lkml/2011/1/17/25
-(It's based on Grant's comment to remove it: https://lkml.org/lkml/2011/1/17/20)
-
- drivers/spi/spi-altera.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/drivers/spi/spi-altera.c b/drivers/spi/spi-altera.c
-index f83f626..5b5709a 100644
---- a/drivers/spi/spi-altera.c
-+++ b/drivers/spi/spi-altera.c
-@@ -199,7 +199,6 @@ static irqreturn_t altera_spi_irq(int irq, void *dev)
- 
- static int altera_spi_probe(struct platform_device *pdev)
- {
--	struct altera_spi_platform_data *platp = dev_get_platdata(&pdev->dev);
- 	struct altera_spi *hw;
- 	struct spi_master *master;
- 	struct resource *res;
-@@ -214,6 +213,7 @@ static int altera_spi_probe(struct platform_device *pdev)
- 	master->num_chipselect = 16;
- 	master->mode_bits = SPI_CS_HIGH;
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 16);
-+	master->dev.of_node = pdev->dev.of_node;
- 
- 	hw = spi_master_get_devdata(master);
- 	platform_set_drvdata(pdev, hw);
-@@ -245,9 +245,6 @@ static int altera_spi_probe(struct platform_device *pdev)
- 		if (err)
- 			goto exit;
+diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
+index 675c210..16e30de 100644
+--- a/drivers/spi/spi-nuc900.c
++++ b/drivers/spi/spi-nuc900.c
+@@ -37,7 +37,9 @@
+ /* usi register bit */
+ #define ENINT		(0x01 << 17)
+ #define ENFLG		(0x01 << 16)
++#define SLEEP		(0x0f << 12)
+ #define TXNUM		(0x03 << 8)
++#define TXBITLEN	(0x1f << 3)
+ #define TXNEG		(0x01 << 2)
+ #define RXNEG		(0x01 << 1)
+ #define LSB		(0x01 << 10)
+@@ -115,19 +117,16 @@ static void nuc900_spi_chipsel(struct spi_device *spi, int value)
  	}
--	/* find platform data */
--	if (!platp)
--		hw->bitbang.master->dev.of_node = pdev->dev.of_node;
+ }
  
- 	/* register our spi controller */
- 	err = spi_bitbang_start(&hw->bitbang);
+-static void nuc900_spi_setup_txnum(struct nuc900_spi *hw,
+-							unsigned int txnum)
++static void nuc900_spi_setup_txnum(struct nuc900_spi *hw, unsigned int txnum)
+ {
+ 	unsigned int val;
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&hw->lock, flags);
+ 
+-	val = __raw_readl(hw->regs + USI_CNT);
++	val = __raw_readl(hw->regs + USI_CNT) & ~TXNUM;
+ 
+-	if (!txnum)
+-		val &= ~TXNUM;
+-	else
++	if (txnum)
+ 		val |= txnum << 0x08;
+ 
+ 	__raw_writel(val, hw->regs + USI_CNT);
+@@ -144,7 +143,7 @@ static void nuc900_spi_setup_txbitlen(struct nuc900_spi *hw,
+ 
+ 	spin_lock_irqsave(&hw->lock, flags);
+ 
+-	val = __raw_readl(hw->regs + USI_CNT);
++	val = __raw_readl(hw->regs + USI_CNT) & ~TXBITLEN;
+ 
+ 	val |= (txbitlen << 0x03);
+ 
+@@ -283,12 +282,11 @@ static void nuc900_set_sleep(struct nuc900_spi *hw, unsigned int sleep)
+ 
+ 	spin_lock_irqsave(&hw->lock, flags);
+ 
+-	val = __raw_readl(hw->regs + USI_CNT);
++	val = __raw_readl(hw->regs + USI_CNT) & ~SLEEP;
+ 
+ 	if (sleep)
+ 		val |= (sleep << 12);
+-	else
+-		val &= ~(0x0f << 12);
++
+ 	__raw_writel(val, hw->regs + USI_CNT);
+ 
+ 	spin_unlock_irqrestore(&hw->lock, flags);
 -- 
 1.8.3.2
 

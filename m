@@ -1,55 +1,61 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: topcliff-pch: Properly unregister platform devices
- on probe() error paths
-Date: Mon, 24 Mar 2014 10:57:19 +0000
-Message-ID: <20140324105719.GF2269@sirena.org.uk>
-References: <1395647215.4333.1.camel@phoenix>
+From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Subject: Re: [PATCH v2] spi: efm32: properly namespace location property
+Date: Mon, 24 Mar 2014 14:42:52 +0100
+Message-ID: <20140324134252.GE2631@katana>
+References: <1394829262-28022-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4f28nU6agdXSinmL"
-Cc: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>,
-	Tomoya MORINAGA <tomoya.rohm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="6Vw0j8UKbyX0bfpA"
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1395647215.4333.1.camel@phoenix>
+In-Reply-To: <1394829262-28022-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---4f28nU6agdXSinmL
-Content-Type: text/plain; charset=us-ascii
+--6Vw0j8UKbyX0bfpA
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 24, 2014 at 03:46:55PM +0800, Axel Lin wrote:
-> Ensure all registered platform devices are unregistered on probe() error paths.
+On Fri, Mar 14, 2014 at 09:34:22PM +0100, Uwe Kleine-K=F6nig wrote:
+> While reviewing an i2c driver for efm32 that needs a similar property
+> Wolfram Sang pointed out that "location" is a too generic name for
+> something that is efm32 specific. So add an appropriate namespace and
+> fall back to the generic name in case of failure.
+>=20
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
 
-Applied, thanks.
+Acked-by: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
 
---4f28nU6agdXSinmL
+
+--6Vw0j8UKbyX0bfpA
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Version: GnuPG v1.4.15 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTMA+MAAoJELSic+t+oim9SDAP/jQh4thcWsTQxOcYQKSf20gE
-KA8p8l6n23DfwEMJhMpmVs8lW4FYHOzSG0bQVz5j1gs1KtlvIuYoFyN/MzE91yeE
-iXu+GLG45bMldrRMXNzc63cbc6/IqlF5srN/WBnjg58VuBPUn05VDONuuHMYL8Ix
-IHbSMNLMzeFGK58LECVezASxZijRkrgKjZqUvxi893MKlR5GgbVcu35MeoDps6O7
-+/WMtYCMjPRwxN72+Ql9OE9to+6ugg4moYmv3UM9D8oqnsYiWS2sO9PTubpb1Gta
-CmTZzy4/uZB0uF8EYIKEboOdx9NCgJDZmQHbU+nlUQU+8EPQzlieWFsk6weuz0Xh
-3hW3s/YZ0wn/tx6gCRqvvHwmcsP4bi9Ezga9Ud6EDND2T1gBnkmiMTuY5jGtRKRA
-NvpThxT9gyyEMX9ZFrxJPODdlgqIeKYlt2b0IPyCupoV9LkQc/phAHg4u3Z7YiDX
-Z4P+9FlI1LPQquN+RsbcVGS+n4D4J9LzmZ+Irq/YVU2S4nRtX0RPyWBkAf06fKBY
-lb93hdgdhuysp9qw5NV7C3NAbtW/ortlRbnCMvU0x4Tp62sYBZgXaBz+hFo7OVcN
-GKb1ApOLZt7L2IXoLh+MNrDGiZRLltdDLEWJH9/KdIhDgqwjB2wh8qQKA8Y7Dlcx
-IVPwCZz61Ci1qZmgrND2
-=lYNa
+iQIcBAEBAgAGBQJTMDZcAAoJEBQN5MwUoCm2ig4P/At8aP6cwTiqdwA4KNRYXG5d
+Qoqqjbx/4ihNDUPv5zQNm9QfoUhDT/X0tILFnCMlFfi+yziC+vsw4IIYSqQALuyj
+eXI8qmyuIrNjJcseQLsZyupSbzDDw+dUEA+XyTiKh/hUfEbZb4YxtqTnlfP8Hcsj
+IdDw4dThTh9XaBXdFo76uCXFVGPCWRgP+jczyJTeJ8yUgorh7NAbLr0d/oQvoxKv
+pXSOhaBPxWn9QOm6c4yH21N+Mb35JU7TKc7YW7zF37adc+DC7DOUj7GtCWHm+Ti7
+/0BNbw/GYpROHU5UAL7TBwE7iOXhG67nvWjca66uAkc4R4G8RBe5UhH9cEqNu4jp
+oO14zXx4qKTVOoeqoQYurVRANAgIfrzjWfg8+pm3GS97gTUG6YZ1a3DUYAztqIA0
+/IATJQx8hjwG7N9FXHKPLqTG5tQAt5LoWdlEYIjJDDasXONs+w0JX4xucT9SQ1xS
+zM9dIZi4kPCIBs919x6aXqwoYAhhPaGokrzHlrXA2MDab7GcYuecrVbteOHBa7XK
+7KGd0HOt07bshJrEHbaA+Y96IkD/flvBq15KjYwOb/u7CwJOblhQAmIsaUmJwJvY
+Cj+fskoFcIB1f3sIxy/rah+021AuK+T/FThyycwb2iT39NUkvwPRJHiCb1ggf+cc
+GlYvrPBVG0NCIA7NaHEX
+=+Wnt
 -----END PGP SIGNATURE-----
 
---4f28nU6agdXSinmL--
+--6Vw0j8UKbyX0bfpA--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

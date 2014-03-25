@@ -1,55 +1,47 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: clps711x: Remove <mach/hardware.h> dependency
-Date: Tue, 25 Mar 2014 13:03:47 +0000
-Message-ID: <20140325130347.GV2269@sirena.org.uk>
-References: <1395471455-10576-1-git-send-email-shc_work@mail.ru>
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?=
+	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: [PATCH] spi: efm32: use $vendor,$device scheme for compatible string
+Date: Tue, 25 Mar 2014 15:00:19 +0100
+Message-ID: <1395756019-23989-1-git-send-email-u.kleine-koenig@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+VeMz1SRxFChf6vr"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1395471455-10576-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Wolfgang Sang pointed out that "efm32,$device" is non-standard. So use =
+the
+common scheme and prefix device with "efm32-". The old compatible strin=
+g
+is left in place until arch/arm/boot/dts/efm32* is fixed.
 
---+VeMz1SRxFChf6vr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+---
+ drivers/spi/spi-efm32.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-On Sat, Mar 22, 2014 at 10:57:35AM +0400, Alexander Shiyan wrote:
-> This patch removes <mach/hardware.h> dependency. This is performed
-> by replace hard coded used memory regions and interrupt to getting
-> these values from resources passed to the driver. For the system-wide
-> registers we now able to use SYSCON driver.
+diff --git a/drivers/spi/spi-efm32.c b/drivers/spi/spi-efm32.c
+index e60934ad4c5f..be44a3eeb5e8 100644
+--- a/drivers/spi/spi-efm32.c
++++ b/drivers/spi/spi-efm32.c
+@@ -472,6 +472,9 @@ static int efm32_spi_remove(struct platform_device =
+*pdev)
+=20
+ static const struct of_device_id efm32_spi_dt_ids[] =3D {
+ 	{
++		.compatible =3D "energymicro,efm32-spi",
++	}, {
++		/* doesn't follow the "vendor,device" scheme, don't use */
+ 		.compatible =3D "efm32,spi",
+ 	}, {
+ 		/* sentinel */
+--=20
+1.9.0
 
-Applied, thanks.
-
---+VeMz1SRxFChf6vr
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTMX6wAAoJELSic+t+oim9QWIP/Rm/YKrN+9k89UBZD2vHmUEQ
-8K7Whzi1aTSPpz97mPmcUTOF8wkiNqF+TDRuJfQfS2ULlbUBEXIMJ4oLg2ok53xV
-hitoMVTpKOVF+okfDJCgxPMwhqaJq4Gyr9NwRQrG83M5EHDD7jQ6CVds7MOf3+c5
-RYaaRLyZAMdKMGOPdaYOvGKfC7Hd9RE1Ai8xuj89Cf6WzIX7cE/ltk1GYqAYzF9e
-5zfmFnbMER87feVmjF/mM1Kx7pSp18JK6xnFH1YehRWuCn8M/cZfebE+fapqnuqZ
-NFmicRDi1DLby9C/6nM70B8UY0m6sJZCuszGmdUABPwL0PUmpdk7J+5p72FT/bN3
-5sQpeMv4HBSkyJJUn6YJOg3PI1c4ZwLN/Ex+xDBlbKEH9buVJrmWIXCrLaml4h5Z
-mC3pEx6AIJT3vMIZyHkvcwReJj0AgS0gtnPzpaH0ars+8w718uFtYvCX/GjNfO2t
-t9PAGwGh/j/Py7WYg+WkjhkcPQQ8riLukpidD/t5D+AJtd38Vg0C939mYHlOF3k5
-2dYWM4cx0lOENWPa2pP6OLppIxmH8L8c6rj9+kxJIQubQonzx41Bc4dZyoAdDPyi
-sCOGbmjDfQ48ojsXguyTwR2eATNUKwdpGtLnllS/FFGStU/4zs5Agx8zqmnG8x56
-uOZJb1VA50cil1axizB6
-=+q2D
------END PGP SIGNATURE-----
-
---+VeMz1SRxFChf6vr--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

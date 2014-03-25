@@ -1,59 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: efm32: use $vendor,$device scheme for compatible
- string
-Date: Tue, 25 Mar 2014 17:49:58 +0000
-Message-ID: <20140325174957.GA2269@sirena.org.uk>
-References: <1395756019-23989-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1395759110-10747-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH] spi: bcm63xx: Remove unused define for PFX
+Date: Tue, 25 Mar 2014 17:53:57 +0000
+Message-ID: <20140325175357.GB2269@sirena.org.uk>
+References: <1395626646.9488.0.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="YZa61AII3s1sGKYx"
-Cc: kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org, Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="9Wosya/OiUJZ+2ov"
+Cc: Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	Tanguy Bouzeloc <tanguy.bouzeloc-HH44TBFINEIAvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1395759110-10747-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1395626646.9488.0.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---YZa61AII3s1sGKYx
-Content-Type: text/plain; charset=iso-8859-1
+--9Wosya/OiUJZ+2ov
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 25, 2014 at 03:51:50PM +0100, Uwe Kleine-K=F6nig wrote:
-> Wolfgang Sang pointed out that "efm32,$device" is non-standard. So use the
-> common scheme and prefix device with "efm32-". The old compatible string
-> is left in place until arch/arm/boot/dts/efm32* is fixed.
+On Mon, Mar 24, 2014 at 10:04:06AM +0800, Axel Lin wrote:
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 
 Applied, thanks.
 
---YZa61AII3s1sGKYx
+--9Wosya/OiUJZ+2ov
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTMcHCAAoJELSic+t+oim9nBEP/RGmSp/VhdzuelCApbAZWkCQ
-Hh+EUHoOZ3VunuiSQAzwjxipgOqPRegXojz3U/x/8XARIWmbm7ymcyC4VMjeIvhU
-VD77XjKSdmWDTLwe0mWNsYJrw+BibfHp4i60J8Cr/XjBZFqPSABBFnfaE6vKZvhp
-R5DW3ghumQgCre865Djx9DLkuR6UY+keYvTBW9/uJBr9ZR18WED4wvhb4vYiHgIp
-d9RzPkL7KY8jbfiBYxl+fHcV+7+rgjTb2s1JVxIXWDecKaeah6SbU0ehB18sorEd
-1ziT5sb7zTk2G05CHu1KD01xQYbD/eP8iT+O4v81fFgCBy1yGvYUb+B+fjeI2J4e
-7PmnPaqUkEbAZF94sLfTRZ9qgLv3wfuHo05YKJqsVpBrwrGqDWNC89VT/G3hrPj2
-990bdbvLUlJ5qu6WRkztODIP3gjX+pcGEubyIfHPbavsW7ji9ofW3iNyriuE5Yxj
-6Cx9Z9MXBkMUFQcFHf2+Jajp62/CAF6UA8SSsA2JkOkKOLdMws+QQVw99vStTx2N
-KSOwXLspx7BpKtDgtzTfT2g9vBl3KxZMaVLzB9xY88WjTdF4bJVvIKeHFjYnq+nk
-sqtBtmdNHDK1fz9e/A4k/ysioLea28Y6gzPHh/gmsRZnTa4THLma+y99flI4JMMt
-Tso4FAuCvMfZebVDcErh
-=+aie
+iQIcBAEBAgAGBQJTMcKyAAoJELSic+t+oim9fccQAI/j8D/5cR8y/s2Eyc+SZAvE
+GlNmqJDPq0OPavdonT+1h1ECm7gu+q0DECnIpQOKYoZw+6oGVso06rlw0nMHWUkv
+aFZrWZL7VplJ+l9v6zPNrfXSR+UbVD1BFuGozeHoWRaMNlW5or9535/+/CNxuv2D
+4dhzj9yIV60pARoLiMxiglyNIto1+Ncd3gUm08vLB0IwTcmKlMV3tW4yS+mOTLhf
+kCPTFULWdVF7LgOMHGwGYhI1/NN9aUow9q+sCTvyR7ipaVe9wGInGWmgwEY/Xhoh
+yv34EIXXu3CowbNCrLdoKMT3UNCrLEWmkaJXAi+h5+mFnUuV5wor0cEuEh35p3ds
+P7+4qw0OFXasLzsbJKt5RWsVbu/9QHaODWAgc0RCaOJh649EYrT9tejeM741F/rS
+jnZgOn4FdtQRjdzaFo8tyw3HM1yg+xlnuJSyrObJ/9GfrFUNyWz9iSPC8qp8u+Gn
+fWqdOg3DKHABk/vBGrJJNL4aedMLukQ1Yu0mDmPdAKqbCWXSLIT3w7ugo+QaDS3R
+kQMv+n0I7Yo5PrHsBEjgnRgPO4kB9N8GMzsuIu4LttMjr83lFBh3EfuboCi5X3tZ
+nos/1Pa5cSwpu5ee+OnOrK17jqhR9urlM5hd30IK1tsl050DJu1DJ4FX/3KDZMXr
+hLu73HtiAe/8M+sBcuyC
+=uZ+I
 -----END PGP SIGNATURE-----
 
---YZa61AII3s1sGKYx--
+--9Wosya/OiUJZ+2ov--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

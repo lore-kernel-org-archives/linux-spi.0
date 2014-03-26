@@ -1,41 +1,42 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH] spi: Do not require a completion
-Date: Tue, 25 Mar 2014 19:29:18 +0000
-Message-ID: <1395775758-9804-1-git-send-email-broonie@kernel.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org,
-	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Martin Sperl <kernel-TqfNSX0MhmxHKSADF0wUEw@public.gmane.org>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: clps711x: Enable driver compilation with COMPILE_TEST
+Date: Wed, 26 Mar 2014 16:22:50 +0800
+Message-ID: <1395822170.7555.0.camel@phoenix>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+This helps increasing build testing coverage.
+This driver uses SYSCON APIs, so it needs to depend on MFD_SYSCON.
 
-There is no real reason why we require transfers to have a completion and
-the only user of the completion now checks to see if one has been provided
-before using it so stop enforcing this. This makes it more convenient for
-drivers to chain multiple asynchronous transfers together.
-
-Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/spi.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 26b331d27c35..121c43b5a8e8 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1812,8 +1812,6 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 1ee6a54..78ca395 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -150,7 +150,8 @@ config SPI_BUTTERFLY
  
- 	if (list_empty(&message->transfers))
- 		return -EINVAL;
--	if (!message->complete)
--		return -EINVAL;
- 
- 	/* Half-duplex links include original MicroWire, and ones with
- 	 * only one data pin like SPI_3WIRE (switches direction) or where
+ config SPI_CLPS711X
+ 	tristate "CLPS711X host SPI controller"
+-	depends on ARCH_CLPS711X
++	depends on MFD_SYSCON
++	depends on ARCH_CLPS711X || COMPILE_TEST
+ 	help
+ 	  This enables dedicated general purpose SPI/Microwire1-compatible
+ 	  master mode interface (SSI1) for CLPS711X-based CPUs.
 -- 
-1.9.1
+1.8.3.2
+
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

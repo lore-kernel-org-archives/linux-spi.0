@@ -1,37 +1,40 @@
 From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v2] spi: clps711x: Enable driver compilation with
- COMPILE_TEST
-Date: Wed, 26 Mar 2014 16:53:18 +0800
-Message-ID: <1395823998.1820.1.camel@phoenix>
+Subject: [PATCH] spi: omap-uwire: Remove full duplex check
+Date: Wed, 26 Mar 2014 19:22:08 +0800
+Message-ID: <1395832928.19941.4.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Imre Deak <imre.deak-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Tony Lindgren <tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This helps increasing build testing coverage.
+This driver sets the SPI_MASTER_HALF_DUPLEX flag, so the spi core will check
+transfers to ensure they are not full duplex.
 
 Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-omap-uwire.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 1ee6a54..efe1960 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -150,7 +150,7 @@ config SPI_BUTTERFLY
+diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
+index 95cc694..f5176bb 100644
+--- a/drivers/spi/spi-omap-uwire.c
++++ b/drivers/spi/spi-omap-uwire.c
+@@ -218,10 +218,6 @@ static int uwire_txrx(struct spi_device *spi, struct spi_transfer *t)
+ 	if (!t->tx_buf && !t->rx_buf)
+ 		return 0;
  
- config SPI_CLPS711X
- 	tristate "CLPS711X host SPI controller"
--	depends on ARCH_CLPS711X
-+	depends on ARCH_CLPS711X || COMPILE_TEST
- 	help
- 	  This enables dedicated general purpose SPI/Microwire1-compatible
- 	  master mode interface (SSI1) for CLPS711X-based CPUs.
+-	/* Microwire doesn't read and write concurrently */
+-	if (t->tx_buf && t->rx_buf)
+-		return -EPERM;
+-
+ 	w = spi->chip_select << 10;
+ 	w |= CS_CMD;
+ 
 -- 
 1.8.3.2
 

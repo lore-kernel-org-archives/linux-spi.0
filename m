@@ -1,50 +1,82 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [-next PATCH] spi: omap-uwire: add missing iounmap
-Date: Thu, 27 Mar 2014 16:54:45 +0000
-Message-ID: <20140327165445.GR30768@sirena.org.uk>
-References: <1395936479-26069-1-git-send-email-nm@ti.com>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH RFT] spi: mpc512x-psc: Refactor to use core message
+ parsing
+Date: Thu, 27 Mar 2014 18:24:16 +0100
+Message-ID: <20140327172416.GW3998@book.gsilab.sittig.org>
+References: <1395932757.17331.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0Qexx6XJGNEACt6j"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Nishanth Menon <nm@ti.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1395936479-26069-1-git-send-email-nm@ti.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---0Qexx6XJGNEACt6j
 Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <1395932757.17331.1.camel@phoenix>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Mar 27, 2014 at 11:07:59AM -0500, Nishanth Menon wrote:
-> This fixes the following coccicheck warning:
-> linux-2.6/drivers/spi/spi-omap-uwire.c:485:2-8: ERROR: missing iounmap; ioremap on line 471 and execution via conditional on line 481
+On Thu, 2014-03-27 at 23:05 +0800, Axel Lin wrote:
+> 
+> Refactor to use default implementation of transfer_one_message() which provides
+> standard handling of delays and chip select management.
+> 
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+> ---
+> Hi Gerhard and Anatolij,
+> I don't have this h/w. I'd appreciate if you can test this patch.
+> 
+> Thanks,
+> Axel
 
-Applied, thanks.
+although the change appears to work (LCD and SPI flash remain
+operational), it dramatically reduces throughput (increase of
+transfer time from 10 to 150 seconds)
 
---0Qexx6XJGNEACt6j
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+before:
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+  root@ac14xx:~# uname -srm
+  Linux 3.14.0-rc8-00011-gf217c44ebd41 ppc
+  root@ac14xx:~# time wc /dev/mtd6
+	 23        68  16777216 /dev/mtd6
+  real    0m 9.87s
+  user    0m 0.68s
+  sys     0m 0.17s
+  root@ac14xx:~# time dd if=/dev/mtd6 of=/dev/null bs=1024
+  16384+0 records in
+  16384+0 records out
+  real    0m 10.11s
+  user    0m 0.04s
+  sys     0m 0.55s
 
-iQIcBAEBAgAGBQJTNFfMAAoJELSic+t+oim9EswQAJn8hxOrJsGbRmB6tqTDHytd
-npYyNyUL9FsrsCtNOEUIoTHFAACD3lZbT/YNB5yUft8UdHPiWHDOlqc0qtW8KopC
-gyFnz7QyqTHKWx0369pQDy5qtgaLmXxG1ByuR9VJ0zMfLYVY7fz0ZC6h6KNIivcb
-v6NjzY4YFHudc+oC+IERkWZ09ZYtSPJVJHHwuva1rBZB3RurwCLmUQfF4FxBWOSX
-SN+fk2mWHItbexvqQzYa/MO/HNvMNlEvHKrC5gvAxMMI3Dtaar3H9Gv4YvGJUho1
-VqJent+7NQn3c7S+n8npJd4fvV1pJZ8YQxmKepwhgK2DvXM8BahgjombcceGX1h1
-7ulNF19cLUrc2Jr9Fc5S2KLBEusFPMaGRLmwhPd8XSu0SSucutQaBNWdLU+PefAF
-jN/hMu8p0HFQTHtxXFOIDfy1TyA902daUQLD2UqygfaIaufY9yO80PM5Cen+E4jW
-KUz6mvKZi+VLYGnRXwI4Pm+xjgTDDr2LkOqKQWMygeUY2rRaDraqlL/tLGARIRzn
-oumK0zjmZmvbkc6Qt05hFY9FRG8q6yfDaIAXLkek96ofjNjqqB6WJofNn9BCvVNj
-IZalabqgH39OdhIfbZwjaOnm+oBVSxhL9+Q1D9vCg4JIsl3hnIlCPBKZ98YP+iwh
-KVeJHNW+73hoRjHOS1s4
-=/VZO
------END PGP SIGNATURE-----
+after:
 
---0Qexx6XJGNEACt6j--
+  root@ac14xx:~# uname -srm 
+  Linux 3.14.0-rc8-00012-gc47c572ff209 ppc
+  root@ac14xx:~# time wc /dev/mtd6
+	 23        68  16777216 /dev/mtd6
+  real    2m 34.97s
+  user    0m 0.00s
+  sys     0m 0.94s
+  root@ac14xx:~# time dd if=/dev/mtd6 of=/dev/null bs=1024
+  16384+0 records in
+  16384+0 records out
+  real    3m 17.11s
+  user    0m 0.00s
+  sys     0m 0.91s
+
+can you reproduce this on other hardware?  the change looks
+innocent, and the core routine looks straight forward -- is some
+expensive diagnostics enabled ATM during transition to common
+logic?
+
+
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

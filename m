@@ -1,56 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: dw: Don't call kfree for memory allocated by
- devm_kzalloc
-Date: Fri, 28 Mar 2014 11:48:38 +0000
-Message-ID: <20140328114838.GD30768@sirena.org.uk>
-References: <1395722653.16744.1.camel@phoenix>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: mpc52xx: Convert to use bits_per_word_mask
+Date: Fri, 28 Mar 2014 23:37:54 +0800
+Message-ID: <1396021074.13764.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Ax5Xc7LkAiI0IBI6"
-Cc: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	Jarkko Nikula <jarkko.nikula-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1395722653.16744.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+This controller only supports 8-bit word length.
+Set bits_per_word_mask so spi core will reject transfers that attempt to use
+an unsupported bits_per_word value.
+Also remove the duplicate code to test spi->mode, it is done by spi core.
 
---Ax5Xc7LkAiI0IBI6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-mpc52xx.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-On Tue, Mar 25, 2014 at 12:44:13PM +0800, Axel Lin wrote:
-> With devm_kzalloc, the memory is automatically freed when spi_device detach from
-> the bus.
+diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
+index bd404c2..aac2a5d 100644
+--- a/drivers/spi/spi-mpc52xx.c
++++ b/drivers/spi/spi-mpc52xx.c
+@@ -356,17 +356,6 @@ static void mpc52xx_spi_wq(struct work_struct *work)
+  * spi_master ops
+  */
+ 
+-static int mpc52xx_spi_setup(struct spi_device *spi)
+-{
+-	if (spi->bits_per_word % 8)
+-		return -EINVAL;
+-
+-	if (spi->mode & ~(SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST))
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+ static int mpc52xx_spi_transfer(struct spi_device *spi, struct spi_message *m)
+ {
+ 	struct mpc52xx_spi *ms = spi_master_get_devdata(spi->master);
+@@ -429,9 +418,9 @@ static int mpc52xx_spi_probe(struct platform_device *op)
+ 		goto err_alloc;
+ 	}
+ 
+-	master->setup = mpc52xx_spi_setup;
+ 	master->transfer = mpc52xx_spi_transfer;
+ 	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LSB_FIRST;
++	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->dev.of_node = op->dev.of_node;
+ 
+ 	platform_set_drvdata(op, master);
+-- 
+1.8.3.2
 
-Applied, thanks.
 
---Ax5Xc7LkAiI0IBI6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTNWGTAAoJELSic+t+oim99fcQAJHUxEq1DdJn/WS0+BCVofpE
-w6UtMX6jUIHoUDL8MahwCQhBxEYbvGGEQ1MLwN5XZFUy7tUPe56vfLcYSdAS6ece
-s0dYyRIMgOYbqJCVk7JlECjVipY9GR0CqSuMU2vNKIyXWR17gL/M/f3QiG0FtSvl
-BtSq9l10GREEa/5RAICEc7fcQQNtHTdkEY6inbE3S1H1vibpHbgMmCFbM8cutWtR
-VXCFDAWqIbB7xZnCTKjKOQ4WxJjuD5p3T2lm06V/zpDWC/dPuqua69xgrfhXhFin
-giK4JDbamOkUc7alCqC8RaARlxxOKdSuriy9nL2Mg92evCSUtqTL6ePmeUEkzvdT
-SEMTN07A7CrYoUppIUR9IewLVjM3g5LrugO+/mE80qj4c/xr3rO/T/Lg3P5ZgfF5
-1SZkFNfpnsLiB7KeiCojmhZAAXmkElo1MRVDZECaShwUb5/vecsyYD44ip5FvyvE
-fbSZFHpnzaIjbqxDGb6194f77E7UZcjrpI8KsfBYiQRRfYwbLZ5wUoUolsETG5Z2
-CDO2BU7k0mG7QZSK2M8j3Fv0N7Lto/4Ia2AMEL2wlUG+Z1smdKEwgbfifwko5ibk
-BkceG8y1WUef9+x0NhWrU7W3gyKHSMdS7d0q3Mt7kcP8V9pdWOWLmL0z6XBpRsMO
-R0V1xu7WyMONm0QiBuZB
-=klmK
------END PGP SIGNATURE-----
-
---Ax5Xc7LkAiI0IBI6--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

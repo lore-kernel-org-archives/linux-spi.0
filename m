@@ -1,189 +1,279 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: Remove unneeded include of linux/workqueue.h
-Date: Fri, 28 Mar 2014 11:05:55 +0800
-Message-ID: <1395975955.445.1.camel@phoenix>
+From: Daniel Sobe <daniel.sobe-3arQi8VN3Tc@public.gmane.org>
+Subject: [PATCH] (re-send) spi-imx: improve timing of bursts
+Date: Fri, 28 Mar 2014 11:05:49 +0000
+Message-ID: <b6c440a488274f0b89a8bb4047d8ee3b@AMSPR04MB517.eurprd04.prod.outlook.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
-	Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
-	Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Imre Deak <imre.deak-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+To: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
-I have compile tested all these drivers with this patch.
-Axel
- drivers/spi/spi-ath79.c         | 1 -
- drivers/spi/spi-bcm63xx-hsspi.c | 1 -
- drivers/spi/spi-bcm63xx.c       | 1 -
- drivers/spi/spi-falcon.c        | 1 -
- drivers/spi/spi-nuc900.c        | 1 -
- drivers/spi/spi-omap-uwire.c    | 1 -
- drivers/spi/spi-pxa2xx.c        | 1 -
- drivers/spi/spi-s3c24xx.c       | 1 -
- drivers/spi/spi-s3c64xx.c       | 1 -
- drivers/spi/spi-sh-sci.c        | 1 -
- drivers/spi/spi-sun4i.c         | 1 -
- drivers/spi/spi-sun6i.c         | 1 -
- 12 files changed, 12 deletions(-)
 
-diff --git a/drivers/spi/spi-ath79.c b/drivers/spi/spi-ath79.c
-index 3898b0b..058db0f 100644
---- a/drivers/spi/spi-ath79.c
-+++ b/drivers/spi/spi-ath79.c
-@@ -16,7 +16,6 @@
- #include <linux/module.h>
- #include <linux/delay.h>
- #include <linux/spinlock.h>
--#include <linux/workqueue.h>
- #include <linux/platform_device.h>
- #include <linux/io.h>
- #include <linux/spi/spi.h>
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 5a211e9..86f5a98 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -18,7 +18,6 @@
- #include <linux/err.h>
- #include <linux/interrupt.h>
- #include <linux/spi/spi.h>
--#include <linux/workqueue.h>
- #include <linux/mutex.h>
- 
- #define HSSPI_GLOBAL_CTRL_REG			0x0
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index 0250fa7..8510400 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -29,7 +29,6 @@
- #include <linux/spi/spi.h>
- #include <linux/completion.h>
- #include <linux/err.h>
--#include <linux/workqueue.h>
- #include <linux/pm_runtime.h>
- 
- #include <bcm63xx_dev_spi.h>
-diff --git a/drivers/spi/spi-falcon.c b/drivers/spi/spi-falcon.c
-index 09965f0..ba441ad 100644
---- a/drivers/spi/spi-falcon.c
-+++ b/drivers/spi/spi-falcon.c
-@@ -11,7 +11,6 @@
- #include <linux/platform_device.h>
- #include <linux/spi/spi.h>
- #include <linux/delay.h>
--#include <linux/workqueue.h>
- #include <linux/of.h>
- #include <linux/of_platform.h>
- 
-diff --git a/drivers/spi/spi-nuc900.c b/drivers/spi/spi-nuc900.c
-index a062a89..7b09dce 100644
---- a/drivers/spi/spi-nuc900.c
-+++ b/drivers/spi/spi-nuc900.c
-@@ -10,7 +10,6 @@
- 
- #include <linux/module.h>
- #include <linux/spinlock.h>
--#include <linux/workqueue.h>
- #include <linux/interrupt.h>
- #include <linux/delay.h>
- #include <linux/errno.h>
-diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
-index 95cc694..7dccee1 100644
---- a/drivers/spi/spi-omap-uwire.c
-+++ b/drivers/spi/spi-omap-uwire.c
-@@ -37,7 +37,6 @@
- #include <linux/init.h>
- #include <linux/delay.h>
- #include <linux/platform_device.h>
--#include <linux/workqueue.h>
- #include <linux/interrupt.h>
- #include <linux/err.h>
- #include <linux/clk.h>
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 41185d0..d0fc8e0 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -27,7 +27,6 @@
- #include <linux/platform_device.h>
- #include <linux/spi/pxa2xx_spi.h>
- #include <linux/spi/spi.h>
--#include <linux/workqueue.h>
- #include <linux/delay.h>
- #include <linux/gpio.h>
- #include <linux/slab.h>
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index bed2338..1f3ef97 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -10,7 +10,6 @@
+Hi,
+
+The patch below addresses 2 improvements:
+
+1) Burstsize of a transfer adjusted up to the maximum burstsize of the =
+ hardware --> no unwanted CS toggling between data words
+2) Variable trigger level allows to increase priority for data transfer=
+,  enables continuous transfers up to the burstsize. --> remove gaps  e=
+very 64 words
+
+The original behaviour of the driver is untouched. The additional featu=
+res can be enabled via sysfs.
+
+With file "bigburst" the driver is instructed to use the maximum  possi=
+ble burst length, depending on the length of the transfer it  received.=
+ Due to the hardware of the iMX6 this only makes sense if a  transfer h=
+as its bits per word set to 32.
+
+With file "txthres" the transmit FIFO level is set (in the range of 1 t=
+o  64), all other values disable the functionality. An interrupt will b=
+e  triggered if the specified FIFO level (or lower) is reached, re-fill=
+ing  the FIFO up to the max resp. the remaining data of the transfer. I=
+f disabled, the original behaviour (refilling  when FIFO is empty) is a=
+ctive. The functionality creates a higher  interrupt load but allows co=
+ntinuous transfers up to the selected  burstsize.
+
+I'd like to receive feedback on the patch, improving it and making it  =
+suitable for a possible inclusion into the kernel. Unfortunately, I  co=
+uld only test the patch on a very old kernel. The patch itself applies =
+ against a recent kernel (3.14-rc6) and I checked that it compiles with=
+out warnings.
+
+Please let me also know if there's something formally wrong with this p=
+atch.
+
+Signed-off-by: Daniel Sobe <daniel.sobe-3arQi8VN3Tc@public.gmane.org>
+
+--- linux-original/drivers/spi/spi-imx.c=A0=A0 =A02014-03-17 17:12:35.6=
+91791218 +0100
++++ linux-stable/drivers/spi/spi-imx.c=A0=A0 =A02014-03-17 17:09:44.451=
+795597 +0100
+@@ -51,12 +51,14 @@
+=A0/* generic defines to abstract from the different register layouts *=
+/
+=A0#define MXC_INT_RR=A0=A0 =A0(1 << 0) /* Receive data ready interrupt=
  */
- 
- #include <linux/spinlock.h>
--#include <linux/workqueue.h>
- #include <linux/interrupt.h>
- #include <linux/delay.h>
- #include <linux/errno.h>
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index f19cd97..153b4be 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -19,7 +19,6 @@
- 
- #include <linux/init.h>
- #include <linux/module.h>
--#include <linux/workqueue.h>
- #include <linux/interrupt.h>
- #include <linux/delay.h>
- #include <linux/clk.h>
-diff --git a/drivers/spi/spi-sh-sci.c b/drivers/spi/spi-sh-sci.c
-index 8b44b71..1f56ef6 100644
---- a/drivers/spi/spi-sh-sci.c
-+++ b/drivers/spi/spi-sh-sci.c
-@@ -16,7 +16,6 @@
- #include <linux/kernel.h>
- #include <linux/delay.h>
- #include <linux/spinlock.h>
--#include <linux/workqueue.h>
- #include <linux/platform_device.h>
- 
- #include <linux/spi/spi.h>
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index d266a87..85204c9 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -19,7 +19,6 @@
- #include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
--#include <linux/workqueue.h>
- 
- #include <linux/spi/spi.h>
- 
-diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
-index b3e3498..bd24093 100644
---- a/drivers/spi/spi-sun6i.c
-+++ b/drivers/spi/spi-sun6i.c
-@@ -20,7 +20,6 @@
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/reset.h>
--#include <linux/workqueue.h>
- 
- #include <linux/spi/spi.h>
- 
--- 
-1.8.3.2
-
+=A0#define MXC_INT_TE=A0=A0 =A0(1 << 1) /* Transmit FIFO empty interrup=
+t */
++#define MXC_INT_THE=A0=A0=A0=A0 (1 << 2) /* Transmit FIFO threshold in=
+terrupt */
+=A0
+=A0struct spi_imx_config {
+=A0=A0=A0 =A0unsigned int speed_hz;
+=A0=A0=A0 =A0unsigned int bpw;
+=A0=A0=A0 =A0unsigned int mode;
+=A0=A0=A0 =A0u8 cs;
++=A0=A0 =A0unsigned long burstlen;
+=A0};
+=A0
+=A0enum spi_imx_devtype {
+@@ -154,6 +156,10 @@
+=A0static int mxc_clkdivs[] =3D {0, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64,=
+ 96, 128, 192,
+=A0=A0=A0 =A0256, 384, 512, 768, 1024};
+=A0
++// (sysfs-)tunable attributes
++static int allow_big_bursts =3D 0; // if set to 1 this enables 32-bit =
+big bursts
++static int tx_fifo_thres =3D -1;=A0=A0 // if positive, use TX data req=
+uest interrupt when applicable
++
+=A0/* MX21, MX27 */
+=A0static unsigned int spi_imx_clkdiv_1(unsigned int fin,
+=A0=A0=A0 =A0=A0=A0 =A0unsigned int fspi, unsigned int max)
+@@ -200,8 +206,13 @@
+=A0
+=A0#define MX51_ECSPI_INT=A0=A0 =A0=A0=A0 =A00x10
+=A0#define MX51_ECSPI_INT_TEEN=A0=A0 =A0=A0=A0 =A0(1 <<=A0 0)
++#define MX51_ECSPI_INT_TDREN=A0=A0 =A0=A0=A0 =A0(1 <<=A0 1)
+=A0#define MX51_ECSPI_INT_RREN=A0=A0 =A0=A0=A0 =A0(1 <<=A0 3)
+=A0
++#define MX51_ECSPI_DMA =A0=A0=A0 =A00x14
++#define MX51_ECSPI_DMA_TX_THRES_OFFSET=A0 0
++#define MX51_ECSPI_DMA_TX_THRES_MASK=A0=A0=A0 (0x3F)
++
+=A0#define MX51_ECSPI_STAT=A0=A0 =A0=A0=A0 =A00x18
+=A0#define MX51_ECSPI_STAT_RR=A0=A0 =A0=A0=A0 =A0(1 <<=A0 3)
+=A0
+@@ -250,6 +261,12 @@
+=A0=A0=A0 =A0if (enable & MXC_INT_TE)
+=A0=A0=A0 =A0=A0=A0 =A0val |=3D MX51_ECSPI_INT_TEEN;
+=A0
++=A0=A0 =A0// enable Tx threshold interrupt for faster reaction when tr=
+ansmitting long messages
++=A0=A0 =A0if (enable & MXC_INT_THE) {
++=A0=A0 =A0=A0=A0 =A0val |=3D MX51_ECSPI_INT_TDREN;
++=A0=A0 =A0=A0=A0 =A0writel((unsigned int) tx_fifo_thres, spi_imx->base=
+ + MX51_ECSPI_DMA);
++=A0=A0 =A0}
++
+=A0=A0=A0 =A0if (enable & MXC_INT_RR)
+=A0=A0=A0 =A0=A0=A0 =A0val |=3D MX51_ECSPI_INT_RREN;
+=A0
+@@ -270,6 +287,7 @@
+=A0{
+=A0=A0=A0 =A0u32 ctrl =3D MX51_ECSPI_CTRL_ENABLE, cfg =3D 0;
+=A0=A0=A0 =A0u32 clk =3D config->speed_hz, delay;
++=A0=A0 =A0unsigned long burstlen;
+=A0
+=A0=A0=A0 =A0/*
+=A0=A0=A0 =A0 * The hardware seems to have a race condition when changi=
+ng modes. The
+@@ -286,6 +304,27 @@
+=A0=A0=A0 =A0/* set chip select to use */
+=A0=A0=A0 =A0ctrl |=3D MX51_ECSPI_CTRL_CS(config->cs);
+=A0
++=A0=A0 =A0// if possible and requested, increase burstlength
++=A0=A0 =A0// over whole message in 32 bit mode
++=A0=A0 =A0// (which is the only mode where HW supports this)
++=A0=A0 =A0// all other modes still use burstlength =3D=3D bpw
++=A0=A0 =A0if ((config->bpw =3D=3D 32) && (allow_big_bursts =3D=3D 1)) =
+{
++=A0=A0 =A0=A0=A0 =A0if (config->burstlen <=3D 4096) {
++=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0burstlen =3D config->burstlen;
++=A0=A0 =A0=A0=A0 =A0} else {
++=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0// burst longer than burst register widt=
+h -- need to scale appropriately
++=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0// so that the hardware will always term=
+inate the burst appropriately
++=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0burstlen =3D 16;
++=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0do {
++=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0burstlen =3D burstlen << 1;
++=A0=A0 =A0=A0=A0 =A0=A0=A0 =A0} while ((config->burstlen % (burstlen <=
+< 1)) =3D=3D 0);
++=A0=A0 =A0=A0=A0 =A0}
++=A0=A0 =A0} else {
++=A0=A0 =A0=A0 burstlen =3D config->bpw;
++=A0=A0 =A0}
++
++=A0=A0 =A0ctrl |=3D (burstlen - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
++
+=A0=A0=A0 =A0ctrl |=3D (config->bpw - 1) << MX51_ECSPI_CTRL_BL_OFFSET;
+=A0
+=A0=A0=A0 =A0cfg |=3D MX51_ECSPI_CONFIG_SBBCTRL(config->cs);
+@@ -666,6 +705,10 @@
+=A0=A0=A0 =A0=A0=A0 =A0spi_imx->txfifo++;
+=A0=A0=A0 =A0}
+=A0
++=A0=A0 =A0// always reconfigure IRQ source (for the TX data request IR=
+Q to work properly)
++=A0=A0 =A0spi_imx->devtype_data->intctrl(spi_imx,
++=A0=A0 =A0=A0=A0 =A0((spi_imx->txfifo =3D=3D spi_imx_get_fifosize(spi_=
+imx)) && (tx_fifo_thres !=3D -1)) ? MXC_INT_THE : MXC_INT_TE);
++
+=A0=A0=A0 =A0spi_imx->devtype_data->trigger(spi_imx);
+=A0}
+=A0
+@@ -708,6 +751,7 @@
+=A0=A0=A0 =A0config.speed_hz=A0 =3D t ? t->speed_hz : spi->max_speed_hz=
+;
+=A0=A0=A0 =A0config.mode =3D spi->mode;
+=A0=A0=A0 =A0config.cs =3D spi->chip_select;
++=A0=A0 =A0config.burstlen =3D t ? (t->len * 8) : config.bpw;
+=A0
+=A0=A0=A0 =A0if (!config.speed_hz)
+=A0=A0=A0 =A0=A0=A0 =A0config.speed_hz =3D spi->max_speed_hz;
+@@ -745,8 +789,6 @@
+=A0
+=A0=A0=A0 =A0spi_imx_push(spi_imx);
+=A0
+-=A0=A0 =A0spi_imx->devtype_data->intctrl(spi_imx, MXC_INT_TE);
+-
+=A0=A0=A0 =A0wait_for_completion(&spi_imx->xfer_done);
+=A0
+=A0=A0=A0 =A0return transfer->len;
+@@ -801,6 +843,63 @@
+=A0=A0=A0 =A0return 0;
+=A0}
+=A0
++static ssize_t spidrv_setbigburst(struct device *dev,
++=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0 struct device_attribute *attr,
++=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0 const char *buf, size_t size)
++{
++=A0=A0 =A0unsigned long tmp;
++=A0=A0 =A0tmp =3D simple_strtoul(buf, NULL, 10);
++=A0=A0 =A0if (tmp =3D=3D 1) {
++=A0=A0 =A0=A0=A0 =A0allow_big_bursts =3D 1;
++=A0=A0 =A0=A0=A0 =A0} else {
++=A0=A0 =A0=A0=A0 =A0allow_big_bursts =3D 0;
++=A0=A0 =A0}
++=A0=A0 =A0return size;
++}
++
++static ssize_t spidrv_getbigburst(struct device *dev,
++=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0 struct device_attribute *attr,
++=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0 char *buf)
++{
++=A0=A0 =A0sprintf (buf, "%d\n", allow_big_bursts);
++=A0=A0 =A0return (ssize_t)(strlen (buf) + 1);
++}
++
++static ssize_t spidrv_settxthres(struct device *dev,
++=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 struct device_attribute *attr,
++=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 const char *buf, size_t size)
++{
++=A0=A0 =A0unsigned long tmp;
++=A0=A0 =A0tmp =3D simple_strtoul(buf, NULL, 10);
++=A0=A0 =A0if ((tmp > 0) && (tmp < 65)) {
++=A0=A0 =A0=A0=A0 =A0tx_fifo_thres =3D tmp;
++=A0=A0 =A0} else {
++=A0=A0 =A0=A0=A0 =A0tx_fifo_thres =3D -1;
++=A0=A0 =A0}
++=A0=A0 =A0return size;
++}
++
++static ssize_t spidrv_gettxthres(struct device *dev,
++=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 struct device_attribute *attr,
++=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 char *buf)
++{
++=A0=A0 =A0sprintf (buf, "%d\n", tx_fifo_thres);
++=A0=A0 =A0return (ssize_t)(strlen (buf) + 1);
++}
++
++static DEVICE_ATTR(bigburst, 0666, spidrv_getbigburst, spidrv_setbigbu=
+rst);
++static DEVICE_ATTR(txthres,=A0 0666, spidrv_gettxthres , spidrv_settxt=
+hres);
++
++static struct attribute *spidrv_attributes[] =3D {
++=A0=A0 =A0&dev_attr_bigburst.attr,
++=A0=A0 =A0&dev_attr_txthres.attr,
++=A0=A0 =A0NULL
++};
++
++static const struct attribute_group spidrv_group =3D {
++=A0=A0 =A0.attrs =3D spidrv_attributes,
++};
++
+=A0static int spi_imx_probe(struct platform_device *pdev)
+=A0{
+=A0=A0=A0 =A0struct device_node *np =3D pdev->dev.of_node;
+@@ -840,6 +939,10 @@
+=A0=A0=A0 =A0spi_imx =3D spi_master_get_devdata(master);
+=A0=A0=A0 =A0spi_imx->bitbang.master =3D master;
+=A0
++=A0=A0 =A0if (sysfs_create_group(&pdev->dev.kobj, &spidrv_group)) {
++=A0=A0 =A0=A0=A0 =A0return -ENOMEM;
++=A0=A0 =A0}
++
+=A0=A0=A0 =A0for (i =3D 0; i < master->num_chipselect; i++) {
+=A0=A0=A0 =A0=A0=A0 =A0int cs_gpio =3D of_get_named_gpio(np, "cs-gpios"=
+, i);
+=A0=A0=A0 =A0=A0=A0 =A0if (!gpio_is_valid(cs_gpio) && mxc_platform_info=
+)
 
 
 --

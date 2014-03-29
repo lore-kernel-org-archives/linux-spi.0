@@ -1,92 +1,42 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: omap2-mcspi: Convert to use devm_kcalloc
-Date: Sat, 29 Mar 2014 21:37:44 +0800
-Message-ID: <1396100264.10175.1.camel@phoenix>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH RFT] spi: mpc512x-psc: Refactor to use core message
+ parsing
+Date: Sat, 29 Mar 2014 15:18:51 +0100
+Message-ID: <20140329141851.GB2775@book.gsilab.sittig.org>
+References: <1395932757.17331.1.camel@phoenix>
+ <20140327172416.GW3998@book.gsilab.sittig.org>
+ <20140327182049.GT30768@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Illia Smyrnov <illia.smyrnov-hExfYMNmJl/Cnp4W7fqMDg@public.gmane.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20140327182049.GT30768-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This saves a few unwind code and return proper error if devm_kcalloc fails.
+On Thu, 2014-03-27 at 18:20 +0000, Mark Brown wrote:
+> 
+> Can you try turning the
+> tracepoints on and see if they show where the delays are?  Both the
+> message pump and transfer loops have a reasonable number of tracepoints
+> in them.
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
- drivers/spi/spi-omap2-mcspi.c | 26 +++++++++-----------------
- 1 file changed, 9 insertions(+), 17 deletions(-)
+I did a 'dd if=/dev/mtd6 bs=1K' on an m25p80 chip.  Gathered
+traces suggest that each 1KB block leads to two transfers.  The
+second (the data part) takes several milliseconds (saw some
+3-10ms for 1024 bytes :-O ).  But I fail to see what might take
+this long.  Will need to dig deeper.
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 2941c5b..4dc77df 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1379,12 +1379,13 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 
- 	INIT_LIST_HEAD(&mcspi->ctx.cs);
- 
--	mcspi->dma_channels = kcalloc(master->num_chipselect,
--			sizeof(struct omap2_mcspi_dma),
--			GFP_KERNEL);
--
--	if (mcspi->dma_channels == NULL)
-+	mcspi->dma_channels = devm_kcalloc(&pdev->dev, master->num_chipselect,
-+					   sizeof(struct omap2_mcspi_dma),
-+					   GFP_KERNEL);
-+	if (mcspi->dma_channels == NULL) {
-+		status = -ENOMEM;
- 		goto free_master;
-+	}
- 
- 	for (i = 0; i < master->num_chipselect; i++) {
- 		char *dma_rx_ch_name = mcspi->dma_channels[i].dma_rx_ch_name;
-@@ -1426,7 +1427,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	}
- 
- 	if (status < 0)
--		goto dma_chnl_free;
-+		goto free_master;
- 
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
-@@ -1444,8 +1445,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 
- disable_pm:
- 	pm_runtime_disable(&pdev->dev);
--dma_chnl_free:
--	kfree(mcspi->dma_channels);
- free_master:
- 	spi_master_put(master);
- 	return status;
-@@ -1453,19 +1452,12 @@ free_master:
- 
- static int omap2_mcspi_remove(struct platform_device *pdev)
- {
--	struct spi_master	*master;
--	struct omap2_mcspi	*mcspi;
--	struct omap2_mcspi_dma	*dma_channels;
--
--	master = platform_get_drvdata(pdev);
--	mcspi = spi_master_get_devdata(master);
--	dma_channels = mcspi->dma_channels;
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
- 
- 	pm_runtime_put_sync(mcspi->dev);
- 	pm_runtime_disable(&pdev->dev);
- 
--	kfree(dma_channels);
--
- 	return 0;
- }
- 
+
+virtually yours
+Gerhard Sittig
 -- 
-1.8.3.2
-
-
-
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

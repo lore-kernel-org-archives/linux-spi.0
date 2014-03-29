@@ -1,52 +1,92 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: bitbang: Make spi_bitbang_stop() return void
-Date: Sat, 29 Mar 2014 11:11:43 +0000
-Message-ID: <20140329111143.GJ21628@sirena.org.uk>
-References: <1396090212.3823.1.camel@phoenix>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: omap2-mcspi: Convert to use devm_kcalloc
+Date: Sat, 29 Mar 2014 21:37:44 +0800
+Message-ID: <1396100264.10175.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jIYo0VRlfdMI9fLa"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Illia Smyrnov <illia.smyrnov-hExfYMNmJl/Cnp4W7fqMDg@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1396090212.3823.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+This saves a few unwind code and return proper error if devm_kcalloc fails.
 
---jIYo0VRlfdMI9fLa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-omap2-mcspi.c | 26 +++++++++-----------------
+ 1 file changed, 9 insertions(+), 17 deletions(-)
 
-On Sat, Mar 29, 2014 at 06:50:12PM +0800, Axel Lin wrote:
-> spi_bitbang_stop() never fails, so make it return void.
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 2941c5b..4dc77df 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1379,12 +1379,13 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 
+ 	INIT_LIST_HEAD(&mcspi->ctx.cs);
+ 
+-	mcspi->dma_channels = kcalloc(master->num_chipselect,
+-			sizeof(struct omap2_mcspi_dma),
+-			GFP_KERNEL);
+-
+-	if (mcspi->dma_channels == NULL)
++	mcspi->dma_channels = devm_kcalloc(&pdev->dev, master->num_chipselect,
++					   sizeof(struct omap2_mcspi_dma),
++					   GFP_KERNEL);
++	if (mcspi->dma_channels == NULL) {
++		status = -ENOMEM;
+ 		goto free_master;
++	}
+ 
+ 	for (i = 0; i < master->num_chipselect; i++) {
+ 		char *dma_rx_ch_name = mcspi->dma_channels[i].dma_rx_ch_name;
+@@ -1426,7 +1427,7 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	if (status < 0)
+-		goto dma_chnl_free;
++		goto free_master;
+ 
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+@@ -1444,8 +1445,6 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 
+ disable_pm:
+ 	pm_runtime_disable(&pdev->dev);
+-dma_chnl_free:
+-	kfree(mcspi->dma_channels);
+ free_master:
+ 	spi_master_put(master);
+ 	return status;
+@@ -1453,19 +1452,12 @@ free_master:
+ 
+ static int omap2_mcspi_remove(struct platform_device *pdev)
+ {
+-	struct spi_master	*master;
+-	struct omap2_mcspi	*mcspi;
+-	struct omap2_mcspi_dma	*dma_channels;
+-
+-	master = platform_get_drvdata(pdev);
+-	mcspi = spi_master_get_devdata(master);
+-	dma_channels = mcspi->dma_channels;
++	struct spi_master *master = platform_get_drvdata(pdev);
++	struct omap2_mcspi *mcspi = spi_master_get_devdata(master);
+ 
+ 	pm_runtime_put_sync(mcspi->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 
+-	kfree(dma_channels);
+-
+ 	return 0;
+ }
+ 
+-- 
+1.8.3.2
 
-Applied, thanks.
 
---jIYo0VRlfdMI9fLa
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTNqpnAAoJELSic+t+oim9O1oP/iW0C/ja8+2QNCqVqD3pJFks
-X+VKmOu4KzoSEXzjdM+7Isq50GF6fNx2pPgdKbvQ85OdAZ+wfBLNxHuwuNbr1BjK
-6EKhn/x17W82a2LDzC0XYXahJbW9WGPn9Zgd73HBf21uskUNyDFc8HH9P263ibNO
-6omAifs0O/W5urR3XAhwRuC7RJVU7B7xfYuoaAXvLGJFTbfs5IieUlvo3g3GGRdV
-jnJzlCrFWaa68Ptczmgh+yEpDLUxzJOrViM4Q2zqjaDz9g4cJanfHGsIwVq8X40W
-f4tWKXkw4LCv56MTlvZvlmohwZtP2mgFWQmfWqKqOGemJpEBAK3zTmFSwbg0trlK
-bWf1Rwa8vIQ5MBKMePykwMNqLcUu+HNjtof2cEM8Vkitk85EgbEHNgXbCUNpj25I
-NhtgBVB8Ge8xx2+XgCZzaveqr31JjPdy+WGNDrJYxV1tw4tP429+cVrmq9lZOmRz
-PGKYnq+3PbQWOWNnsCov1A8tcRsucWaSlJysL8drl4EdoOsyDqi1VbHVYp5tpLVZ
-3SSnKmtVmbGX1M328KzJI+JgeE9EORNWXx1xTds9A/AcblXP0qtz7EJixeZhbJ8R
-G23bMdNVT+1jwWZBx6t8wJO4nLoT2zXZfZMd2acRogU1j+ApdM0dWR29Uo5byd8V
-aEAyrl81InkOAd0LjbZr
-=k9qq
------END PGP SIGNATURE-----
-
---jIYo0VRlfdMI9fLa--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

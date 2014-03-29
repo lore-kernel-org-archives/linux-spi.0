@@ -1,134 +1,52 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH v2] spi: bitbang: Make spi_bitbang_stop() return void
-Date: Sat, 29 Mar 2014 18:50:12 +0800
-Message-ID: <1396090212.3823.1.camel@phoenix>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: bitbang: Make spi_bitbang_stop() return void
+Date: Sat, 29 Mar 2014 11:11:43 +0000
+Message-ID: <20140329111143.GJ21628@sirena.org.uk>
+References: <1396090212.3823.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="jIYo0VRlfdMI9fLa"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1396090212.3823.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-spi_bitbang_stop() never fails, so make it return void.
 
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
-v2: also update the code for drivers/spi/spi-butterfly.c.
-Note, spi-sh-msiof.c does use bitbang now.
+--jIYo0VRlfdMI9fLa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- drivers/spi/spi-bitbang.c       | 4 +---
- drivers/spi/spi-butterfly.c     | 3 +--
- drivers/spi/spi-gpio.c          | 5 ++---
- drivers/spi/spi-omap-uwire.c    | 5 ++---
- include/linux/spi/spi_bitbang.h | 2 +-
- 5 files changed, 7 insertions(+), 12 deletions(-)
+On Sat, Mar 29, 2014 at 06:50:12PM +0800, Axel Lin wrote:
+> spi_bitbang_stop() never fails, so make it return void.
 
-diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
-index 3bfdb85..dc7d2c2 100644
---- a/drivers/spi/spi-bitbang.c
-+++ b/drivers/spi/spi-bitbang.c
-@@ -466,11 +466,9 @@ EXPORT_SYMBOL_GPL(spi_bitbang_start);
- /**
-  * spi_bitbang_stop - stops the task providing spi communication
-  */
--int spi_bitbang_stop(struct spi_bitbang *bitbang)
-+void spi_bitbang_stop(struct spi_bitbang *bitbang)
- {
- 	spi_unregister_master(bitbang->master);
--
--	return 0;
- }
- EXPORT_SYMBOL_GPL(spi_bitbang_stop);
- 
-diff --git a/drivers/spi/spi-butterfly.c b/drivers/spi/spi-butterfly.c
-index 8081f96..ee4f91c 100644
---- a/drivers/spi/spi-butterfly.c
-+++ b/drivers/spi/spi-butterfly.c
-@@ -309,7 +309,6 @@ done:
- static void butterfly_detach(struct parport *p)
- {
- 	struct butterfly	*pp;
--	int			status;
- 
- 	/* FIXME this global is ugly ... but, how to quickly get from
- 	 * the parport to the "struct butterfly" associated with it?
-@@ -321,7 +320,7 @@ static void butterfly_detach(struct parport *p)
- 	butterfly = NULL;
- 
- 	/* stop() unregisters child devices too */
--	status = spi_bitbang_stop(&pp->bitbang);
-+	spi_bitbang_stop(&pp->bitbang);
- 
- 	/* turn off VCC */
- 	parport_write_data(pp->port, 0);
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 406bbd7..0982307 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -502,13 +502,12 @@ static int spi_gpio_remove(struct platform_device *pdev)
- {
- 	struct spi_gpio			*spi_gpio;
- 	struct spi_gpio_platform_data	*pdata;
--	int				status;
- 
- 	spi_gpio = platform_get_drvdata(pdev);
- 	pdata = dev_get_platdata(&pdev->dev);
- 
- 	/* stop() unregisters child devices too */
--	status = spi_bitbang_stop(&spi_gpio->bitbang);
-+	spi_bitbang_stop(&spi_gpio->bitbang);
- 
- 	if (SPI_MISO_GPIO != SPI_GPIO_NO_MISO)
- 		gpio_free(SPI_MISO_GPIO);
-@@ -517,7 +516,7 @@ static int spi_gpio_remove(struct platform_device *pdev)
- 	gpio_free(SPI_SCK_GPIO);
- 	spi_master_put(spi_gpio->bitbang.master);
- 
--	return status;
-+	return 0;
- }
- 
- MODULE_ALIAS("platform:" DRIVER_NAME);
-diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
-index 31ce92f..be2a2e1 100644
---- a/drivers/spi/spi-omap-uwire.c
-+++ b/drivers/spi/spi-omap-uwire.c
-@@ -516,14 +516,13 @@ static int uwire_probe(struct platform_device *pdev)
- static int uwire_remove(struct platform_device *pdev)
- {
- 	struct uwire_spi	*uwire = platform_get_drvdata(pdev);
--	int			status;
- 
- 	// FIXME remove all child devices, somewhere ...
- 
--	status = spi_bitbang_stop(&uwire->bitbang);
-+	spi_bitbang_stop(&uwire->bitbang);
- 	uwire_off(uwire);
- 	iounmap(uwire_base);
--	return status;
-+	return 0;
- }
- 
- /* work with hotplug and coldplug */
-diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
-index daebaba..85578d4 100644
---- a/include/linux/spi/spi_bitbang.h
-+++ b/include/linux/spi/spi_bitbang.h
-@@ -42,6 +42,6 @@ extern int spi_bitbang_setup_transfer(struct spi_device *spi,
- 
- /* start or stop queue processing */
- extern int spi_bitbang_start(struct spi_bitbang *spi);
--extern int spi_bitbang_stop(struct spi_bitbang *spi);
-+extern void spi_bitbang_stop(struct spi_bitbang *spi);
- 
- #endif	/* __SPI_BITBANG_H */
--- 
-1.8.3.2
+Applied, thanks.
 
+--jIYo0VRlfdMI9fLa
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
+iQIcBAEBAgAGBQJTNqpnAAoJELSic+t+oim9O1oP/iW0C/ja8+2QNCqVqD3pJFks
+X+VKmOu4KzoSEXzjdM+7Isq50GF6fNx2pPgdKbvQ85OdAZ+wfBLNxHuwuNbr1BjK
+6EKhn/x17W82a2LDzC0XYXahJbW9WGPn9Zgd73HBf21uskUNyDFc8HH9P263ibNO
+6omAifs0O/W5urR3XAhwRuC7RJVU7B7xfYuoaAXvLGJFTbfs5IieUlvo3g3GGRdV
+jnJzlCrFWaa68Ptczmgh+yEpDLUxzJOrViM4Q2zqjaDz9g4cJanfHGsIwVq8X40W
+f4tWKXkw4LCv56MTlvZvlmohwZtP2mgFWQmfWqKqOGemJpEBAK3zTmFSwbg0trlK
+bWf1Rwa8vIQ5MBKMePykwMNqLcUu+HNjtof2cEM8Vkitk85EgbEHNgXbCUNpj25I
+NhtgBVB8Ge8xx2+XgCZzaveqr31JjPdy+WGNDrJYxV1tw4tP429+cVrmq9lZOmRz
+PGKYnq+3PbQWOWNnsCov1A8tcRsucWaSlJysL8drl4EdoOsyDqi1VbHVYp5tpLVZ
+3SSnKmtVmbGX1M328KzJI+JgeE9EORNWXx1xTds9A/AcblXP0qtz7EJixeZhbJ8R
+G23bMdNVT+1jwWZBx6t8wJO4nLoT2zXZfZMd2acRogU1j+ApdM0dWR29Uo5byd8V
+aEAyrl81InkOAd0LjbZr
+=k9qq
+-----END PGP SIGNATURE-----
+
+--jIYo0VRlfdMI9fLa--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

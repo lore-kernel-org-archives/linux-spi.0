@@ -1,28 +1,47 @@
-From: maxim maxim <look2004il-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: init time between CS to data sending
-Date: Sun, 30 Mar 2014 11:33:23 +0300
-Message-ID: <CAL22ZLLzQcvMpq5v=UNwNn5WQpXBkfUU6rWEf_OYwet_SxwNoA@mail.gmail.com>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: fsl-spi: Fix memory leak
+Date: Sun, 30 Mar 2014 16:42:57 +0800
+Message-ID: <1396168977.21905.6.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi all,
+mpc8xxx_spi_probe() has set master->cleanup = mpc8xxx_spi_cleanup,
+however current code overrides the setting in fsl_spi_probe() and set
+master->cleanup = fsl_spi_cleanup.
+Thus the memory allocated for cs is not freed anywhere.
+Convert to use devm_kzalloc to fix the memory leak.
 
-I need to build spi driver fo NEO 6( ublox 6), my processor is OMAP2
-(ARM architecture), I want to use with existing linux kernel
-workaround for spi, for me OMAP2 is a master and GPS is a slave, I
-want to send configuration message to the slave, in the data sheet of
-the ublox 6 I saw that this device need some init time(= the time that
-passed from activation of chip select to sending of data in MOSI). My
-question is how I can set this time in existing kernel spi workaround
-for spi driver?
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-fsl-spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
+diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
+index f35488e..9effb91 100644
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -430,7 +430,7 @@ static int fsl_spi_setup(struct spi_device *spi)
+ 		return -EINVAL;
+ 
+ 	if (!cs) {
+-		cs = kzalloc(sizeof *cs, GFP_KERNEL);
++		cs = devm_kzalloc(&spi->dev, sizeof(*cs), GFP_KERNEL);
+ 		if (!cs)
+ 			return -ENOMEM;
+ 		spi->controller_state = cs;
+-- 
+1.8.3.2
 
-Maxim
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

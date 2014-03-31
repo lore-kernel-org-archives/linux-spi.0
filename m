@@ -1,41 +1,53 @@
 From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH] spi: Fix handling of cs_change in core implementation
-Date: Mon, 31 Mar 2014 09:45:29 +0200
-Message-ID: <20140331074529.GE2775@book.gsilab.sittig.org>
-References: <1396139265-28900-1-git-send-email-broonie@kernel.org>
+Subject: Re: [PATCH RFT] spi: mpc512x-psc: Refactor to use core message
+ parsing
+Date: Mon, 31 Mar 2014 09:54:03 +0200
+Message-ID: <20140331075403.GF2775@book.gsilab.sittig.org>
+References: <1395932757.17331.1.camel@phoenix>
+ <20140327172416.GW3998@book.gsilab.sittig.org>
+ <20140327182049.GT30768@sirena.org.uk>
+ <20140329141851.GB2775@book.gsilab.sittig.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org,
-	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Cc: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1396139265-28900-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+In-Reply-To: <20140329141851.GB2775-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, 2014-03-30 at 00:27 +0000, Mark Brown wrote:
+On Sat, 2014-03-29 at 15:18 +0100, Gerhard Sittig wrote:
 > 
-> From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> On Thu, 2014-03-27 at 18:20 +0000, Mark Brown wrote:
+> > 
+> > Can you try turning the
+> > tracepoints on and see if they show where the delays are?  Both the
+> > message pump and transfer loops have a reasonable number of tracepoints
+> > in them.
 > 
-> The core implementation of cs_change didn't follow the documentation
-> which says that cs_change in the middle of the transfer means to briefly
-> deassert chip select, instead it followed buggy drivers which change the
-> polarity of chip select.  Use a delay of 10us between deassert and
-> reassert simply from pulling numbers out of a hat.
-> 
-> Reported-by: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-> Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+> I did a 'dd if=/dev/mtd6 bs=1K' on an m25p80 chip.  Gathered
+> traces suggest that each 1KB block leads to two transfers.  The
+> second (the data part) takes several milliseconds (saw some
+> 3-10ms for 1024 bytes :-O ).  But I fail to see what might take
+> this long.  Will need to dig deeper.
 
-The change looks good to me.  The resulting behaviour now is what
-the documentation suggests (brief deassertion of the CS signal).
-The previous inversion was unexpected.
+No progress here.
 
-The delay between deassertion and re-assertion looks good, too.
-It allows for propagation of the change through the hardware.
-Those who need longer pauses still can construct individual
-messages.  There's probably no need to change the boolean
-"cs_change" into a numerical "deassertion pause length" spec.
+Eyeballing the code reveals that there is a 50 times 10-100us
+retry loop at the end of a transfer, waiting for RX to complete
+after TX has drained.  Instrumenting the code shows that the loop
+is run one or two times at most (longer timeouts are required for
+lower SPI wire speeds).  So I still can't see what might take
+several milliseconds.
+
+Fixing a potential completion race, and early detection of the
+desired CS status after transmission (both changes that should
+preceed the switch to the common routine in the MPC512x case)
+won't change the situation either.
+
+I'm running out of ideas.
 
 
 virtually yours

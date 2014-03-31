@@ -1,57 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: fsl: Kill mpc8xxx_spi_cleanup and convert
- fsl_espi_setup to use devm_kzalloc
-Date: Mon, 31 Mar 2014 19:21:42 +0100
-Message-ID: <20140331182142.GC2269@sirena.org.uk>
-References: <1396169003.21905.7.camel@phoenix>
+Subject: Re: [PATCH] spi: omap2-mcspi: Convert to use devm_kcalloc
+Date: Mon, 31 Mar 2014 19:23:10 +0100
+Message-ID: <20140331182310.GD2269@sirena.org.uk>
+References: <1396100264.10175.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="aNVYTE9V2LY2iLDz"
-Cc: Stefan Roese <sr-ynQEQJNshbs@public.gmane.org>, Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>,
+	protocol="application/pgp-signature"; boundary="Gf9uwQCH04IP1HVU"
+Cc: Illia Smyrnov <illia.smyrnov-hExfYMNmJl/Cnp4W7fqMDg@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1396169003.21905.7.camel@phoenix>
+In-Reply-To: <1396100264.10175.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---aNVYTE9V2LY2iLDz
+--Gf9uwQCH04IP1HVU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Mar 30, 2014 at 04:43:23PM +0800, Axel Lin wrote:
-> In current code, master->cleanup and master->setup are not set in the same
-> function. This makes it hard to read and not good for code maintain.
-> One example is in fsl-spi.c, master->cleanup is overrided in mpc8xxx_spi_probe()
-> which leads to a memory leak.
+On Sat, Mar 29, 2014 at 09:37:44PM +0800, Axel Lin wrote:
+> This saves a few unwind code and return proper error if devm_kcalloc fails.
 
 Applied, thanks.
 
---aNVYTE9V2LY2iLDz
+--Gf9uwQCH04IP1HVU
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTObIyAAoJELSic+t+oim9r6IQAJbLHgJBolP8PejtYC2C16sQ
-Zxr8eMHv/Y6rj5gw1liTgUObv2Lzr8HjaoXH9j8pKotvY2GnWcpZuUuhAm/gWAMp
-eUEgURCz7AB7Fr7SHY38GqKoxibcJ7ILT2Y5yvJ86xBK4Prs82NI4f7COGmTgzHr
-R9VUIFI1vlOVSiSHRNZrnXPuKRPI7HyNLfQj1etwGk5wiAsAPU+dqzNRYbo0IkWs
-sb1JPX65x5oMVXIjskF1gK4/mvrzAqiQyU3GAPl+dKylA+oDzqQVoiywiS6tIqRa
-3lmjGb8VGcY9r23QlP14ERa9owpc9WU8KTu7LI9uhPkaCgFZXZdVlPvrZ0VBgMVT
-WXW2ZzPjtaMKQtJAaK2bZiNA437SYFwOA3Hqu7zUkO9/BXoV/ATXGZpr7zKP8CJH
-3deabwZJLK/K94nEu2apDp8YuXy3wD56OPu83oX9xdwmIuAdMQHBnlUGNdkHMnLh
-odg8phvA3ojGNWesgxkPtoyZNWosG8bzkbv8HH5Vy9dGDo6PEMDxFQmb5aywpJs6
-jTwR4eAm0jIAbp43EEZemDFZ+35KfZMoSKWsI6mwWlR9ucV18aseAUKr5GY11+Tv
-bscelxFMDGgvG/073qtgiwQZr6bIzlB1yUWHgte2FL579hmDMlqKNGbWiSyjlhr6
-q8ElNbokhZuabJdYhskk
-=VY+a
+iQIcBAEBAgAGBQJTObKKAAoJELSic+t+oim9K4cP/idRNcLy8FIcBREGak4LIVZH
+AuB+hxoZbDg3jxjNltKBgop34nS8+s7cYrLDwipcmP5Kys7arw6Ug1WtIcN40rZU
+M7xY4ypIaCrrdkrQmRo3lzxcpdL14sBUfs/fxrvCJuL8GVYfEjTT8yIdJCUKKhuh
+AC0/DqYIlXCBbUuNL3cQEBeCq+bgPYBc03F3ruCYXuEdwveEqRAklmMdX+XUTzRx
+EFiLrnTSCE+i1iQ5KpTpBm2bIon3rZd8U7TEbtIeZzg2DnoUsA2djlrD3qEQpbv8
+BuY1ihrkXFMplUwJobPfuqGgTaHbcURiQPJm74UiGtTa31womK11HfsSfIuC0/HX
+tKJBQevOqndO+G3Wup+tc56GTb1N5Xmzfxxm/HuUPkhGBvow2Es/itwMbHApJG/r
+w8Nm5/l4moQMupr/0y6e9K6fcXAa6KY1f0d6+NZJLm7DhNDZxRUBQwJKcaYj9vyx
+QqrlNFfPcUMtDza7SlIE5ytoq9vjramWyFS7l6htLBGWMvtbuQGItg0AnO0xK//s
+GCOLxw12qyD7sea8f8HZoKH+bWNvoujQ7Rrb1zMuY505UOSTTxle4LcOss/KHGzL
+YHLZBjRCcV1boT+bjcijztf+kE5aRREtqSIvdVmPSfaI17vxbmQ987CuDkkj7DQL
+10dpbOqrPrkpAfAVs+WO
+=9pws
 -----END PGP SIGNATURE-----
 
---aNVYTE9V2LY2iLDz--
+--Gf9uwQCH04IP1HVU--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

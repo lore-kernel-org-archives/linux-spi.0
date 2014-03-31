@@ -1,125 +1,60 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: SPI chip select semantics (was: [PATCH RFT] spi: mpc512x-psc:
- Refactor to use core message parsing)
-Date: Mon, 31 Mar 2014 16:48:14 +0100
-Message-ID: <20140331154814.GT2269@sirena.org.uk>
-References: <20140331073423.GD2775@book.gsilab.sittig.org>
+Subject: Re: [PATCH] spi: Remove unneeded include of linux/workqueue.h
+Date: Mon, 31 Mar 2014 17:06:23 +0100
+Message-ID: <20140331160623.GV2269@sirena.org.uk>
+References: <1395975955.445.1.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CqxttG7JecUZZO5Y"
-Cc: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, Anatolij Gustschin <agust-ynQEQJNshbs@public.gmane.org>,
+	protocol="application/pgp-signature"; boundary="bKO1kftFne8qVRsx"
+Cc: Gabor Juhos <juhosg-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	Florian Fainelli <florian-p3rKhJxN3npAfugRpC6u6w@public.gmane.org>,
+	Thomas Langer <thomas.langer-th3ZBGNqt+7QT0dZR+AlfA@public.gmane.org>,
+	Wan ZongShun <mcuos.com-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Imre Deak <imre.deak-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140331073423.GD2775-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
+In-Reply-To: <1395975955.445.1.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---CqxttG7JecUZZO5Y
+--bKO1kftFne8qVRsx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Mar 31, 2014 at 09:34:23AM +0200, Gerhard Sittig wrote:
-> On Sun, 2014-03-30 at 00:30 +0000, Mark Brown wrote:
-> > On Sat, Mar 29, 2014 at 04:09:10PM +0100, Gerhard Sittig wrote:
+On Fri, Mar 28, 2014 at 11:05:55AM +0800, Axel Lin wrote:
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 
-> > That's what it's intended to do, yes (and what a bunch of drivers were
-> > doing).
+Applied, thanks.
 
-> Turns out I was wrong.  CS gets deasserted if the caller
-> requested it (did not request to keep it asserted) _or_ if
-> transmission failed.  CS only remains asserted if the caller
-> wanted it, _and_ transmission succeeded.
-
-> This is what the implementation does, and what the documentation
-> suggests.  So it's good.  I just wanted to correct my wrong
-> interpretation of the code, should somebody look at archives.
-
-Oh, sorry - I'd have said if I'd realised that was the bit you were
-trying to clarify.
-
-> > Well, the thing is that for hardware that can't control /CS from
-> > software so anything using it between transfers can't rely on it
-> > happening at all.  Within a transfer you can always paper this over
-> > since there's full visibility of what's going to happen but that's
-> > not possible over transfers.
-
-> What I meant was that even those setups which do control CS from
-> software might not be able to "late deassert" a previously kept
-> CS signal upon new selection of another slave.  Think of an array
-> of GPIO backed CS signals, asserting one of them won't change the
-> others' current signal.
-
-I don't understand why a GPIO based system would have trouble there?
-That's the simplest case.
-
-> The documentation might assume the specific behaviour of an
-> individual controller or CS decoding approach that just does not
-> apply in general.  It's not a problem in the implementation, but
-> the documentation might need to get extended to become less
-> permissive.  I prepared something along these lines (yet to get
-> sent).
-
-No, it's a problem in the implementation - the idea is that the
-controller is meant to deassert /CS if it was left asserted and another
-device needs to be selected.
-
-> > It could be I guess, though to be honest I've never been convinced that
-> > supporting set_cs on the final transfer is a sane idea in the first
-> > place - my guess is that it's actually going to cost more on average to
-> > implement it (what with remembering to deassert if another device is
-> > selected and so on) than just unconditionally disabling /CS.
-
-> The early decision of what CS should be after the transfer is not
-> specific to the last transfer and to keeping CS asserted after
-> the complete message.  It applies to any transfer within a
-> message that might want to deassert CS.  So it applies to those
-> intermediate transfers which want to pulse CS, as well as to the
-> last transfer in the regular case of deasserting CS after the
-> message.
-
-My point is that hardware limitations may make it impossible to
-implement the ability to leave /CS asserted outside of messages but
-within messages we can always fiddle things.
-
-> > Another thread would've been helpful - I was reading it thinking it was
-> > going to explain the poor performance!
-
-> In the MUA you will see that the performance and the CS semantics
-> are two separate subthreads that both are spawned from the patch
-> which switches MPC512x to the common message transmission
-> routine.  I broke the thread for you, to not have the CS
-> semantics discussion for the SPI core within the MPC512x patch
-> feedback in trackers.  Hope it helps.
-
-Right, but the reason it was confusing was that the topic had changed
-without the thread changing.
-
---CqxttG7JecUZZO5Y
+--bKO1kftFne8qVRsx
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTOY46AAoJELSic+t+oim92q0P/2Ji0H9EbmtT+824ZMw3eu37
-/Po9/e0vlH+72yr9cp8z03Oy+vHbI9PefSQVD2OGV4mRvpJ9ouqYKbsRrG+9IW7a
-dLB+IF3AjSCvyIweT8IAihbi59q8GFVTyNhnyPT4fIW/rtm7bvqoqKRkYqRD/kgV
-1j24EvqXgn8Gx5tPXqQVDTeQQ2H3OByHM5qw8knb5ppMJPpINkoah7UPXl9Oy3k+
-6hiafaKPHwzqsSMzP+vj3p2ChDURh63Vh9y0CZhVt4qHkuYtD+NT+aXq+SrwTuUk
-ep1rPxeyxcj+kescg5YkfRzfi97CrkgnhWDEupwIoAMISJ1XgD614RGKOZ22a83f
-2eOVVXNx0Rf/EiIphF6TQYBNsf1q6hP5JOWTeFzhC+1vIFtR/RDi65O5s4a82zBF
-oUhmGoZ74W7Voqu5fsbVenOKK7KYHsGfv0WIf/9QSx54/8gUHG/bC1+fcltIvoQ5
-TBoEYZwqJzFxBm0zHb/YYXDsbGnu9gSQBg+/C6eauFxrgskKE9rY9yA5RA1WQviI
-BQa2g6ucf3hvDzVUbGmO8XnEFWavj8ae9rScxWiO/JLCJ/7T3ixVPqGw5jJqNV7F
-zeUtAtD5pE/SBGY/0qIUEZ1sGw/JZgxpGrWQofRbUTw9XFI/iktM6VDUO4adJ8pm
-oTjZaYcaXITUV+0B1cC2
-=lt5M
+iQIcBAEBAgAGBQJTOZJ8AAoJELSic+t+oim9blEP/iLhnsi34x+B0F9OHnE2Z/5i
+rglLL0RQq58bdUHsSoHhQO0IBUKk6j46L5PTv0COQ/FjoVxilor6ZH4TCg2Tx1YJ
+ITFWJgDo0fz1zzvGetjxeRy3D6AXe00zV4TCh9wUO/IlnHnHu0KhHUMguBDTMHFL
+xsJwQLRZEPb7rZ7Qjn80O5Ltjzj2ZtBSIwnj3Nyo6rBpx1JJ067Jb+qmgntswm/K
+oO3NEQZFGSbO2dsKjUgRwCFdAlHURaYZZRWTua1hjt3AgjVVknYa+34UmX7BFEk7
+T8KDbqd4rSM7pPWaQcLitpIviQW7EyaJzOra/tc7ESdkIpPMwwn3vjAHXsdeimmD
+7XFyb8DwZHwrzefHbqUJzb7NKE/iaxVelotUvHNz8hIEgvnpf1v/9IYgYbRiUcW+
+Jr2pbVUcbf1KnlOdH926WKYfQvNq1cD851aGCEhq8+z8S+pm/Y3/+uCCrlV49L34
+7M4j8KctP8FUctUOStWtILM0dDK64ilZ1wYc57iHMqBZxFvCuicFb1Iq3h9bXeAL
+CV4eMAP4HEaiSLYsQQcQEHHsjRx/2IzZ7pfKvlvykik43ZY3BlWiJEa69oVbh+Qe
+HnfJeuNmP4NkbJZbWQk/GP9m6qgXCIFpLvQpWrCg30qpF6voFyNpxkiwuQDPB+Mo
+uBIo1xuJEk/1mLW1xhvm
+=DtMv
 -----END PGP SIGNATURE-----
 
---CqxttG7JecUZZO5Y--
+--bKO1kftFne8qVRsx--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,51 +1,55 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: s3c24xx: Convert to use devm_kzalloc
-Date: Tue, 1 Apr 2014 12:10:33 +0100
-Message-ID: <20140401111033.GL2269@sirena.org.uk>
-References: <1396237049.12196.1.camel@phoenix>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: atmel: Make current_remaining_bytes to be int
+Date: Tue, 1 Apr 2014 13:25:39 +0100
+Message-ID: <20140401122539.GT2269@sirena.org.uk>
+References: <1395883598.14364.0.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="k1icXJ1HDib4AVtD"
-Cc: Ben Dooks <ben-linux@fluff.org>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org
-To: Axel Lin <axel.lin@ingics.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="0M9+YLHDVd0m18zA"
+Cc: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1396237049.12196.1.camel@phoenix>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1395883598.14364.0.camel@phoenix>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---k1icXJ1HDib4AVtD
+--0M9+YLHDVd0m18zA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Mar 31, 2014 at 11:37:29AM +0800, Axel Lin wrote:
-> Simplify the cleanup code.
+On Thu, Mar 27, 2014 at 09:26:38AM +0800, Axel Lin wrote:
+> Don't use unsigned for current_remaining_bytes so we can check
+> current_remaining_bytes < 0 case.
+> Use int is enough for current_remaining_bytes.
 
 Applied, thanks.
 
---k1icXJ1HDib4AVtD
+--0M9+YLHDVd0m18zA
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTOp6lAAoJELSic+t+oim9tccP/0/6HxJI3rrodswH/LFNoB/s
-TFJqfbGll84rCeAaicRAsJpkRL/OXvQQkzn+B2FYDYrzpuaT9+Kvxl/jpA6rN69D
-7vMlUDJyJgwfxyhP+L77YbPAE6t2h3/FqDm5GNnXaWRA7DfvS8fdDgMCZhgEZdl8
-LeXDcc0EA8JYnjZHPB5dWaeH5GCQNjlRfrlDxsV4yo2CRw/MxNxgD6sp3fgm5+TU
-7VLbkniKMo7AQaSwoKGdHG8gkFvAT0KaWnM1N1S5oPcNPbpWPBeCxw0KpOjLsYVf
-cfRSSHrXQFFqZw1YvpYO3Bo+kA1JWt5gvbmpTPK1IkuY3TOmgDrb+GL6pWATE5aB
-8hUoLr0yjPpqxCnJTdG0li/6bylTvZercrXAgA9eMqqXyvTnO68GmptFHWGgEj1M
-+sCkY6M2YUuhWenlrItwEQ3ZKldei9QPLw8w6OVXVFaHUXBPfbhka1oOqto7WE8N
-z9mNpEKb/Zj8wgPOPX6jpLj/30ZNx2Jp/Ig5ASkEkF7cIYgJVeGPLnPHBetOoIga
-nk1/BFBNb/2bEn8ILIw/E6dOfS/y8Ref1UWe/TnplXHd6zH+hQ3Fey4sbjKAudd1
-SAmeZWGQd7gZtO8dy/f476WAiA1kLMpn+h5KRiNQBKpFk9KFA72TdqQejqQomHdK
-eICauXFOR8QdTuXaZAKK
-=cQPt
+iQIbBAEBAgAGBQJTOrBAAAoJELSic+t+oim9w5MP9jeW4ejJ5LxWYYaGRMVaNoad
+ynEap9zwkKusciL87exarO6FMVlITR5ULY+MeYB08WILELLAVMtq+VMOyajhKJh3
+ESsjEDUh7BYwZcn2Iium0M1dU5oW/HJrGPoPVWWUnhVUZNXiTWGhiGSFOGhhcBd2
+x/67xUJQ/mwXKZ+5D5Mf8of7d2o+/VAb+3g4HE585brVWtos1oaMU74/F7VZTC1v
+qiWD/FJdxIE9HOGvFEYX5UVcjTSdfU1ySWPf0CCyuM3ffCKrkektTk3/GDP7Rsq+
+MU5iczJkvk9Jg61zZS3MkSi9Wnw3I5XNdHwfGDRmm1e3GFGlwEl9szD+q+sNXT6S
+poeXTUUqJygbSID9WJcVNCZzf/YZBJ927O9R2IbxfuG9jazdSpjrV1nqQgY9/y3I
+b2nGjVR17l1Q6Bv8FKE59GvZpBbIEYO3XmGkqXCchNN0fB9C3Wk8olC69btwvyJY
+Th/uw0pIbsGx5Fh+Amve4QVIoO3c8B5p1i+X+oImgJYdbgbU9yDck320LZhOGDnA
+eiMAnSecQWQCG/VjTsVTki7JY2Q7NsZKpBphb4m5fq76oWEahmDwSZOsjqrQk+22
+PwVBsqPCT+1oKJRY5FDbd2Kzy9aC4Ob0H668mp9wDZuoPQZOba9byJ0Fpg4GyM2p
+JlrdXd5AaAeOeP9SERE=
+=Y+J1
 -----END PGP SIGNATURE-----
 
---k1icXJ1HDib4AVtD--
+--0M9+YLHDVd0m18zA--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

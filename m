@@ -1,59 +1,88 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: fsl-spi: Fix memory leak
-Date: Tue, 1 Apr 2014 13:31:48 +0100
-Message-ID: <20140401123148.GV2269@sirena.org.uk>
-References: <1396168977.21905.6.camel@phoenix>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH v5] ARM: sun4i: spi: Allow transfers larger
+ than FIFO size
+Date: Tue, 1 Apr 2014 18:22:16 +0200
+Message-ID: <20140401162216.GN26751@lukather>
+References: <20140331104522.GD26751@lukather>
+ <1396318611-8997-1-git-send-email-mr.nuke.me@gmail.com>
+Reply-To: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ecnwpyCrI1qOzEAD"
-Cc: Hou Zhiqiang <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Sebastian Andrzej Siewior <bigeasy-hfZtesqFncYOwBW4kG4KsQ@public.gmane.org>,
+	protocol="application/pgp-signature"; boundary="TXIPBuAs4GDcsx9K"
+Cc: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-sunxi+bncBD2ZNBF5VYJRBYGQ5OMQKGQEZ4B6GWQ-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1396168977.21905.6.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1396318611-8997-1-git-send-email-mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+List-Post: <http://groups.google.com/group/linux-sunxi/post>, <mailto:linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Help: <http://groups.google.com/support/>, <mailto:linux-sunxi+help-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Archive: <http://groups.google.com/group/linux-sunxi>
+Sender: linux-sunxi-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org
+List-Subscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:linux-sunxi+subscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Unsubscribe: <http://groups.google.com/group/linux-sunxi/subscribe>, <mailto:googlegroups-manage+1076902468213+unsubscribe-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org>
+List-Id: linux-spi.vger.kernel.org
 
 
---ecnwpyCrI1qOzEAD
+--TXIPBuAs4GDcsx9K
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 30, 2014 at 04:42:57PM +0800, Axel Lin wrote:
-> mpc8xxx_spi_probe() has set master->cleanup = mpc8xxx_spi_cleanup,
-> however current code overrides the setting in fsl_spi_probe() and set
-> master->cleanup = fsl_spi_cleanup.
-> Thus the memory allocated for cs is not freed anywhere.
-> Convert to use devm_kzalloc to fix the memory leak.
+On Mon, Mar 31, 2014 at 09:16:51PM -0500, Alexandru Gagniuc wrote:
+> SPI transfers were limited to one FIFO depth, which is 64 bytes.
+> This was an artificial limitation, however, as the hardware can handle
+> much larger bursts. To accommodate this, we enable the interrupt when
+> the Rx FIFO is 3/4 full, and drain the FIFO within the interrupt
+> handler. The 3/4 ratio was chosen arbitrarily, with the intention to
+> reduce the potential number of interrupts.
+>=20
+> Since the SUN4I_CTL_TP bit is set, the hardware will pause
+> transmission whenever the FIFO is full, so there is no risk of losing
+> data if we can't service the interrupt in time.
+>=20
+> For the Tx side, enable and use the Tx FIFO 3/4 empty interrupt to
+> replenish the FIFO on large SPI bursts. This requires more care in
+> when the interrupt is left enabled, as this interrupt will continually
+> trigger when the FIFO is less than 1/4 full, even though we
+> acknowledge it.
+>=20
+> Signed-off-by: Alexandru Gagniuc <mr.nuke.me-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> Acked-by: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 
-Applied, thanks.
+Hmmm, you forgot to Cc Mark Brown. Please resubmit it Ccing whoever
+shows up using get_maintainer, otherwise, your patch won't be applied.
 
---ecnwpyCrI1qOzEAD
+You also forgot the changes between this version and the previous one.
+
+Thanks!
+Maxime
+
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
+
+--TXIPBuAs4GDcsx9K
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Version: GnuPG v1.4.14 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTOrGxAAoJELSic+t+oim9fdcP/RRiRE4adzaVtz1iWerqDX3/
-f4dGbnlHIpsg0HTa7WBSArPL1u0gEVad4U98HXgJPmVNj4bifYouw+H2YZJSPnVz
-9g9nj1JdFX26LXZyJC7OeGm06tjJ0pkJGmi0HGDqlRPlVV9FoiS3co4B0hWpQWLw
-3aJm+j93w2VC9HWcuLEa6nN4Vv2aP3FnGhh4VZANjeZzG3myGmpQpwefOMHpXE+H
-IeGQMnYwYMyMApC6mVELf/+LLd69gJfg7vww3IqbE1BNE6vUIytCAaSrp6FNb389
-LqLkw5PezZ9cMOOcbp6KsufsXJTkZBu8HnS+i0YZYk4heLlKkZ9ldxd6ML3uyxdd
-u9EhSikEReh8wpB3az7DY96kzmPsFRVDFTdueazXnyaBfdMRv3Gz3iDBg4SwIC0K
-x0L91VmYZJ19n7oFPHjQU1vgsvuK4Y46fBXGU6EAT+BVOKwZbO77Xssw2tiqBb3b
-EQRfsQBFGV2P0zfq7WCEJb18/nC1+FmXofp9+Cmi3yO6fHJe7QNLL59h2pGaiBxB
-o0YXblGylPg4TwT/nBck+G7ZG/9Eqk0Fx3/TpkhpL7s7ufFEpgbs5EjXG0PGZ055
-iosirP5aSqjWndCQaMWNp5YYMi0XvE8V/VFq5xY+na96WRkqpJi4gV5/TBS2xAA/
-Ugr/Tu9QWHsNRl5ATQAj
-=xfTS
+iQIcBAEBAgAGBQJTOue4AAoJEBx+YmzsjxAgMJIP/jR7QQBuY9DmcZEzRc1S6nEZ
+f2eTmxGIh2956Mv7bZeXRdNclOhs1u+m1r/jr6oyGsTSosmLQ2AMzlExwE8vPzNO
+lw8dCxufChimXgNJEMnMTwpCDGEgN8mC9cDLKtNqVGf/exDZyffAGcjw23yLc7Rc
+5o4w/0pZyjHexSAabvP3yEs+talV8r2vXSpTt9ZPA/CUanfoeraDJGkQZlriHzw+
+kRITGFD9rVs89ZRYvdK1Cq2hXh3SDKefhO/CuLWfGSxCcBlr23SMS8Pyv5KA4Mps
+DTEdwyn2tcnE9Tn5oMPQyfPcaNmBXkk4XM08My5knCvdKLKw+Lki03SM1XqmXZKG
+RW6M+W5vV6XnxKBFSqPvHv8TOhdv73PUYONeMxkBNgj1lC+A0ESk1lVWX7j06Zhs
+kP8Ca9iBnyXgAouVCyMFZOkLZ9XfcEEjwJE/E79Ih8+sQe9ibf9WFn0o3WvL62l8
+u/5qnN+P9UbDlIlawZ9XbOovyKoLsze8uQ1h2ZVaFh35WehDIYU91+w49jAKvd4t
+lxws7AQa/Kk60XJS/DJxRxVDgtaO9HjUtc1fzx2iZIM1fwpChSinRfaiydBMVuNl
+wQdq7R++QbuM9jRV1aBXlxGuzySlft61t5dfE5GNjVh/OMg+pwdujMn3rt9pAdju
+K/ejO1iiulUyvEq8B9ul
+=sdNk
 -----END PGP SIGNATURE-----
 
---ecnwpyCrI1qOzEAD--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--TXIPBuAs4GDcsx9K--

@@ -1,53 +1,75 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: Convert to use devm_kcalloc
-Date: Mon, 31 Mar 2014 19:23:10 +0100
-Message-ID: <20140331182310.GD2269@sirena.org.uk>
-References: <1396100264.10175.1.camel@phoenix>
+From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH] spi: s3c24xx: Convert to use devm_kzalloc
+Date: Tue, 01 Apr 2014 11:02:14 +0900
+Message-ID: <000a01cf4d4e$67074030$3515c090$%han@samsung.com>
+References: <1396237049.12196.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Gf9uwQCH04IP1HVU"
-Cc: Illia Smyrnov <illia.smyrnov-hExfYMNmJl/Cnp4W7fqMDg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: 'Ben Dooks' <ben-linux-elnMNo+KYs3YtjvyW6yDsg@public.gmane.org>,
+	'Kukjin Kim' <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: 'Axel Lin' <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1396100264.10175.1.camel@phoenix>
+In-reply-to: <1396237049.12196.1.camel@phoenix>
+Content-language: ko
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Monday, March 31, 2014 12:37 PM, Axel Lin wrote:
+> 
+> Simplify the cleanup code.
+> 
+> Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 
---Gf9uwQCH04IP1HVU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Reviewed-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-On Sat, Mar 29, 2014 at 09:37:44PM +0800, Axel Lin wrote:
-> This saves a few unwind code and return proper error if devm_kcalloc fails.
+Best regards,
+Jingoo Han
 
-Applied, thanks.
+> ---
+>  drivers/spi/spi-s3c24xx.c | 10 +++-------
+>  1 file changed, 3 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
+> index bed2338..6db14e5 100644
+> --- a/drivers/spi/spi-s3c24xx.c
+> +++ b/drivers/spi/spi-s3c24xx.c
+> @@ -183,7 +183,9 @@ static int s3c24xx_spi_setup(struct spi_device *spi)
+> 
+>  	/* allocate settings on the first call */
+>  	if (!cs) {
+> -		cs = kzalloc(sizeof(struct s3c24xx_spi_devstate), GFP_KERNEL);
+> +		cs = devm_kzalloc(&spi->dev,
+> +				  sizeof(struct s3c24xx_spi_devstate),
+> +				  GFP_KERNEL);
+>  		if (!cs) {
+>  			dev_err(&spi->dev, "no memory for controller state\n");
+>  			return -ENOMEM;
+> @@ -209,11 +211,6 @@ static int s3c24xx_spi_setup(struct spi_device *spi)
+>  	return 0;
+>  }
+> 
+> -static void s3c24xx_spi_cleanup(struct spi_device *spi)
+> -{
+> -	kfree(spi->controller_state);
+> -}
+> -
+>  static inline unsigned int hw_txbyte(struct s3c24xx_spi *hw, int count)
+>  {
+>  	return hw->tx ? hw->tx[count] : 0;
+> @@ -543,7 +540,6 @@ static int s3c24xx_spi_probe(struct platform_device *pdev)
+>  	hw->bitbang.txrx_bufs      = s3c24xx_spi_txrx;
+> 
+>  	hw->master->setup  = s3c24xx_spi_setup;
+> -	hw->master->cleanup = s3c24xx_spi_cleanup;
+> 
+>  	dev_dbg(hw->dev, "bitbang at %p\n", &hw->bitbang);
+> 
+> --
+> 1.8.3.2
 
---Gf9uwQCH04IP1HVU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTObKKAAoJELSic+t+oim9K4cP/idRNcLy8FIcBREGak4LIVZH
-AuB+hxoZbDg3jxjNltKBgop34nS8+s7cYrLDwipcmP5Kys7arw6Ug1WtIcN40rZU
-M7xY4ypIaCrrdkrQmRo3lzxcpdL14sBUfs/fxrvCJuL8GVYfEjTT8yIdJCUKKhuh
-AC0/DqYIlXCBbUuNL3cQEBeCq+bgPYBc03F3ruCYXuEdwveEqRAklmMdX+XUTzRx
-EFiLrnTSCE+i1iQ5KpTpBm2bIon3rZd8U7TEbtIeZzg2DnoUsA2djlrD3qEQpbv8
-BuY1ihrkXFMplUwJobPfuqGgTaHbcURiQPJm74UiGtTa31womK11HfsSfIuC0/HX
-tKJBQevOqndO+G3Wup+tc56GTb1N5Xmzfxxm/HuUPkhGBvow2Es/itwMbHApJG/r
-w8Nm5/l4moQMupr/0y6e9K6fcXAa6KY1f0d6+NZJLm7DhNDZxRUBQwJKcaYj9vyx
-QqrlNFfPcUMtDza7SlIE5ytoq9vjramWyFS7l6htLBGWMvtbuQGItg0AnO0xK//s
-GCOLxw12qyD7sea8f8HZoKH+bWNvoujQ7Rrb1zMuY505UOSTTxle4LcOss/KHGzL
-YHLZBjRCcV1boT+bjcijztf+kE5aRREtqSIvdVmPSfaI17vxbmQ987CuDkkj7DQL
-10dpbOqrPrkpAfAVs+WO
-=9pws
------END PGP SIGNATURE-----
-
---Gf9uwQCH04IP1HVU--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

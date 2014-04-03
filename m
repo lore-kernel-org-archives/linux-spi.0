@@ -1,55 +1,62 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: convert spi-bfin-v3.c to a multiplatform driver
-Date: Thu, 3 Apr 2014 22:32:25 +0100
-Message-ID: <20140403213225.GZ14763@sirena.org.uk>
-References: <1396600037-2811-1-git-send-email-scott.jiang.linux@gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 2/2] devicetree: Add devicetree bindings documentation
+ for Cadence SPI
+Date: Thu, 3 Apr 2014 22:34:46 +0100
+Message-ID: <20140403213446.GB14763@sirena.org.uk>
+References: <1396523431-14519-1-git-send-email-harinik@xilinx.com>
+ <1396523431-14519-2-git-send-email-harinik@xilinx.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5OPIRG5sBUHnKBkK"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="+5G7L20VUoXZHCOn"
+Cc: grant.likely@linaro.org, robh+dt@kernel.org, pawel.moll@arm.com,
+	mark.rutland@arm.com, ijc+devicetree@hellion.org.uk,
+	galak@codeaurora.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org
+To: Harini Katakam <harinik@xilinx.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1396600037-2811-1-git-send-email-scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1396523431-14519-2-git-send-email-harinik@xilinx.com>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---5OPIRG5sBUHnKBkK
+--+5G7L20VUoXZHCOn
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Apr 04, 2014 at 04:27:17PM +0800, Scott Jiang wrote:
-> Spi v3 controller is not only used on Blackfin. So rename it
-> and use ioread/iowrite api to make it work on other platform.
+On Thu, Apr 03, 2014 at 04:40:31PM +0530, Harini Katakam wrote:
 
-Applied, thanks.
+> +Optional properties:
+> +- num-cs		: Number of chip selects used.
 
+How does this translate to the hardware?
 
---5OPIRG5sBUHnKBkK
+> +		num-cs = /bits/ 16 <4>;
+
+What's going on with the /bits/ - is this something that's required for
+the property?
+
+--+5G7L20VUoXZHCOn
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTPdNlAAoJELSic+t+oim95a0P/A4Xk+MrCDKQ5FMrCRK9vhHh
-AbMvoCWA2xrSZ8rs16GrEseIxIK+uE9+BRy4TUmZ5unLGVSJ8zv7ectD5gAbeIgT
-LrNHH26d2/nSMvfM3EkYAX3x2tBnvtPIbwkdn7u3OykEknYD/tQrIOgiAUxBjl4c
-UEaEB4q1i1/zI584uE7ciEW23IuIY+l+GhwHjUeVuIJKY/dk7jV0M2AqOuQRqg0n
-oVyKJzJVvLfK5DzcnHXf2DopsnialbwyF50YvXh9VtbLvdNsdIxzcPS2nXVKZ7DQ
-/P3r/J+XYv/dDDYGM3kZO12bqI4QWecpR3jeSk0QkYnqLAtY4cv5QSdXNf1lneHM
-hS2TVkooizIIRLjaynHjVkSSpXcAwfHaqZVa7ebVHaVq6urMDc3W1jiBpPkhSn5e
-6r5muk/3IWhz+FycggO5xtO5BxsejzTXEtJ1VAIhrdKLsTehFvHcmcKe9YyhECFA
-INF0qGcMcY5QADCButyzhv9ZjoTmkGa8zNgD0Mdd6UxvpnVMOR9c7bL6WQxtJBBa
-uelDLnKIMl1AAUFzlS0Z15R9r+2te1S+A5sQgbefwO8y2G40fotIoJI3Kh7qYgwb
-FrK419LqgPQP/t17/6U/z0eb+yo+VIFW4RJpiDURx2trMB7oMwjPbry4CoACT8TM
-Gl1YOsDlQ90644LYnd4K
-=mjv2
+iQIcBAEBAgAGBQJTPdPzAAoJELSic+t+oim9KnYP/Rzk/u+pigxRjG58cnSR48vx
+/2n6KSV0gtpWFHbxc1h2nkqVq20IkiR1TFWInBWBMkpaP8LFul946CxW5mrBwT8u
+XyxS5PQnbhuG5gpctoKb5k1HSdRttPf1IjQI0jaONrXgXR5HurIjAuFaHP7nlpAi
+DWgAL3ockmK5eJ+MkuQHCV+cBQFIJM9jDu6GsXm4zn8uzu7Hw4avN7aNMu6c7X4O
+aYaVmO1Aco2KA9P1Mj0Mbeoynx5/fP8ld/PICnKBxeqW8FKs3KLnOfkq4MJOcQU6
+81iaGlgJ0bC7CGCBrJsC86X3AwxC3le65b1XqM1OB1tpBvxd09VW3Hx1yyX54ldI
+WQSdcD1R6Shk9/hoKO4oPBFxyP67WyPmfrZn6LaI1AalGu0+UL4FZvoHRSlzra4/
+NseS5mB/0I0jv7lCAcjK7MT/E3NpQAhqADOOsYqrkhr5kVV4z270bYWOS34vtSHf
+MJTvG/+Zj/6ldYhmZ+rvVZrKCktoKTRoOwi26bBA6WfW3sTvSJ9cKScLap2l/fwa
+ITAtG1OtbObqUITgxmpT2gbIfTj3/9fpXjgtzECgjQLv2nj7EfcSvh5hnogAlk3x
+xwGEnBbPK29bQhWzC21okRxStAWnZ3s1K1inqB3o11w83DJkV4dwQFvV6NHsyHJ6
+WrGH9NvSkAZ9X1tVv6GL
+=/mqC
 -----END PGP SIGNATURE-----
 
---5OPIRG5sBUHnKBkK--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--+5G7L20VUoXZHCOn--

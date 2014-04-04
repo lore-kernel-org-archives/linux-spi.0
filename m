@@ -1,16 +1,16 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2 2/2] devicetree: Add devicetree bindings documentation
- for Cadence SPI
-Date: Fri, 4 Apr 2014 11:09:19 +0100
-Message-ID: <20140404100919.GO14763@sirena.org.uk>
-References: <1396523431-14519-1-git-send-email-harinik@xilinx.com>
- <1396523431-14519-2-git-send-email-harinik@xilinx.com>
- <20140403213446.GB14763@sirena.org.uk>
- <CAFcVEC+mpHh_d2j6_sdhWS3d2KyXrDYUq6L6jO2Q=SS68Hda2g@mail.gmail.com>
+Subject: Re: [PATCH 2/2] SPI: Add support for Zynq Quad SPI controller
+Date: Fri, 4 Apr 2014 12:08:37 +0100
+Message-ID: <20140404110837.GS14763@sirena.org.uk>
+References: <1396544587-10876-1-git-send-email-punnaia@xilinx.com>
+ <203181a5-626f-437e-8efe-983a9d78ec5d@AM1EHSMHS017.ehs.local>
+ <20140403212940.GY14763@sirena.org.uk>
+ <CAFcVECJiSm8MMJ37c-Qfsu-UE0jgEYRmeGZ8OQG97wyRMaJ1LQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Q4RbCnAmn9VrkE5p"
-Cc: Grant Likely <grant.likely@linaro.org>,
+	protocol="application/pgp-signature"; boundary="aYKnuo739dxkFWAR"
+Cc: Punnaiah Choudary Kalluri <punnaiah.choudary.kalluri@xilinx.com>,
+	Grant Likely <grant.likely@linaro.org>,
 	Rob Herring <robh+dt@kernel.org>,
 	Pawel Moll <pawel.moll@arm.com>,
 	Mark Rutland <mark.rutland@arm.com>,
@@ -18,71 +18,105 @@ Cc: Grant Likely <grant.likely@linaro.org>,
 	Kumar Gala <galak@codeaurora.org>, linux-spi@vger.kernel.org,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	Michal Simek <michal.simek@xilinx.com>,
+	Punnaiah Choudary <kpc528@gmail.com>,
+	punnaiah choudary kalluri <kalluripunnaiahchoudary@gmail.com>,
+	Punnaiah Choudary Kalluri <punnaia@xilinx.com>
 To: Harini Katakam <harinikatakamlinux@gmail.com>
 Return-path: <linux-doc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAFcVEC+mpHh_d2j6_sdhWS3d2KyXrDYUq6L6jO2Q=SS68Hda2g@mail.gmail.com>
+In-Reply-To: <CAFcVECJiSm8MMJ37c-Qfsu-UE0jgEYRmeGZ8OQG97wyRMaJ1LQ@mail.gmail.com>
 Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---Q4RbCnAmn9VrkE5p
+--aYKnuo739dxkFWAR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Apr 04, 2014 at 08:30:38AM +0530, Harini Katakam wrote:
-> On Fri, Apr 4, 2014 at 3:04 AM, Mark Brown <broonie@kernel.org> wrote:
-> > On Thu, Apr 03, 2014 at 04:40:31PM +0530, Harini Katakam wrote:
+On Fri, Apr 04, 2014 at 08:59:47AM +0530, Harini Katakam wrote:
+> On Fri, Apr 4, 2014 at 2:59 AM, Mark Brown <broonie@kernel.org> wrote:
 
-> >> +Optional properties:
-> >> +- num-cs             : Number of chip selects used.
+> > Why would a transfer be being set up without a transfer being provided?
 
-> > How does this translate to the hardware?
+> The setup function calls this function before a transfer is initiated.
+> In this case NULL is passed to setup_transfer (see below) and
+> SPI is initialized with default clock configuration.
+> This initialization is necessary because otherwise this clock config
+> would be done
+> only after SPI is enabled in prepare_hardware, which is wrong.
+> (I'm checking for master->busy in setup to address your previous
+> comment on SPI).
 
-> This IP can drive 4 slaves.
-> The CS line to be driven is selected in spi device structure and
-> that is driven by the software.
+The requirement for setup() to work when other transfers are in progress
+is clear and unambiguous, it really isn't acceptable to reconfigure
+hardware in use by a runing transfer in setup().
 
-So why specify this in the binding at all?  If the device always has the
-same number of chip selects it's redundant.
+> I explained the same in SPI v2 changes and this valid there too.
 
-> >> +             num-cs = /bits/ 16 <4>;
+This is v2?
 
-> > What's going on with the /bits/ - is this something that's required for
-> > the property?
+> >> +static int zynq_qspi_setup(struct spi_device *qspi)
+> >> +{
+> >> +     if (qspi->master->busy)
+> >> +             return -EBUSY;
+> >> +
+> >> +     return zynq_qspi_setup_transfer(qspi, NULL);
+> >> +}
 
-> The master->num-chipselect property is 16 bit but writing <4> here directly
-> leads to 0 being read in of_property_read (because it's big endian).
-> Instead using of property read u32 and then copying, we decided to do this.
-> This was discussed on v2 between Michal and Rob:
+> > No, this is broken - you have to support setup() while the hardware is
+> > active.  Just remove this if there's nothing to do and set up on the
+> > transfer.
 
-No, don't do that.  You're contorting the binding to serve Linux's
-implementation needs and you've not documented this requirement either.
-If there *was* a need to have the number be 16 bits you'd need to
-document that reqirement in the binding, though like I say I don't think
-the number needs to be there at all.
+> But where do you suggest this clock configuration be done?
+> I've looked at the option of doing it in prepare_hardware but
+> spi_device structure is not passed to it.
 
---Q4RbCnAmn9VrkE5p
+You can readily access the device data from the master - look at how
+other drivers do this.
+
+> >> +static int __maybe_unused zynq_qspi_suspend(struct device *_dev)
+> >> +{
+> >> +     struct platform_device *pdev = container_of(_dev,
+> >> +                     struct platform_device, dev);
+> >> +     struct spi_master *master = platform_get_drvdata(pdev);
+> >> +
+> >> +     spi_master_suspend(master);
+> >> +
+> >> +     zynq_unprepare_transfer_hardware(master);
+
+> > Why are you unpreparing the hardware - the framework should be doing
+> > that for you if the device is active, if it's not you've got an extra
+> > clock disable here?
+
+> I called unprepare_hardware  becuase it does the things necessary
+> after master suspend - disable clock and controller.
+> (I thought this was your suggestion for SPI?)
+
+Why are these things required after the core has already idled the
+device (using exactly the same function)?
+
+--aYKnuo739dxkFWAR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTPoTMAAoJELSic+t+oim9Do0QAJGUtJJJuayxz+XvkPu4jGtd
-IIzTtE4tZ1lwz831Vnig2WbODrmodRSKQyatDW6/b/JxdslXZkYwx6HwXbtmEuZU
-yrW2Hfs1fmwnshvxcbrztmbPKpI7o2uTwMDAG26juHJw9SOeR0z7gnCNj+kDctHO
-lsajex3O2pck4eYy/xlWOotABNM69lykjFCN/7DE5RGO1f1Ec96FJVcVZ3vsyuJT
-o0a0ygDa3j3AUyfiqL/AR/pcocsPKl3F9+S662rWU/+F8u6dWTSKqSg5GadDMaXH
-ne4iEPsdPFqOTF2myR0B1oOUOS79t+cnvsEjvPgJbjyqigem/XSD9QCiDxoV5NVA
-iug2Ah4qn+EmvbhA/137dDQYRdiL3CapcKVjJ7WH7J4zqiynJ+Ol3/CreAFIf2No
-AwLdLTO2Bi+tkK8mloaDyl1MOFAxSVcpZzP1YfNvAg0HH3LU3WFT+oqSEpuqt23u
-/29YBs3Z/fT1rsOvJMPsSrwgi3ssp1JizO6WGnhaidTHOCmCLwZIxkwUEuctKFWb
-qL4JJQTjaQTVpGi1sYKSB8sLY80ScRayFW2Ifm54Blu1W51WINkpPfpJLgtoT6Y4
-yAjp1MW2UpClWa7mj2kIQUHMKUERXm7w4rWOJfNCJFKzPHMDrmkgVx2xJNDSZbEK
-wKuBht8zGn+9fU8ZhJrB
-=zi3C
+iQIcBAEBAgAGBQJTPpKyAAoJELSic+t+oim9dHUP/RX97nrWMG30Iq+bl1FndO5P
+xdFcFx7lEEKjdEsb0bOV0qiBjUeZx+APssKublQfn68RRnu3sU4h8qGxTs3csCR6
+yLb2/6EekiPKLmbKJkDXBQS18FGOKPyDhiWSSo0wOOX9c2Wk95Ov1kB1QM8HTtdk
+fcPHIbHht1QRBKqcz586yyPBpjuabcBXfxoF9HO2x9Qwqj4PbMnxDL1GVcgCH8Vu
++MhwZqIWWFXY9V1JwgBlYg6tdXfjPppeeXHp7OW2WMBWn5s73Hl93GlobYfyVV23
+2VNFVx0Phc5/uXEvh5QSDCd8CKOWZe0MxMpXG8Az4MrLA0MzmtO5eiH9N3qM6hft
+FeEfgE8M3NBuHTnRF8modZeKtO4Krbt1srRNkIZ7oFuu3zMfSBThAxPvMGZn3euS
+GGb+RDCH9WL2ustrnGg9MecWrUdqwPpo9sjRztcccT1mvXPXtQa1SQQMWbUZ/9n8
+yBOJWplFOt/sz5IfgeU18NU9FVO6/xujMP2QdZAqEGqzkNp1cFaXgjIaISScOBsa
+BlRcgxnX2fVQVLn31rRKklZXMpK2vgCpSoWrET3CU3vgrlKQLaCeKbu08vp49DaY
+gJ1CveD/5iqhPNWnRqv15M/+LxfFIynAl4bEwFcb7CrR+Ym9AAQ8T7EUuRek8Vbi
+G/Z9Hj29hTkVC36IM919
+=QyjQ
 -----END PGP SIGNATURE-----
 
---Q4RbCnAmn9VrkE5p--
+--aYKnuo739dxkFWAR--

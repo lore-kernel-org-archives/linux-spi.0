@@ -1,14 +1,14 @@
 From: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 2/2] devicetree: Add devicetree bindings documentation
- for Cadence SPI
-Date: Fri, 4 Apr 2014 08:30:38 +0530
-Message-ID: <CAFcVEC+mpHh_d2j6_sdhWS3d2KyXrDYUq6L6jO2Q=SS68Hda2g@mail.gmail.com>
-References: <1396523431-14519-1-git-send-email-harinik@xilinx.com>
-	<1396523431-14519-2-git-send-email-harinik@xilinx.com>
-	<20140403213446.GB14763@sirena.org.uk>
+Subject: Re: [PATCH 1/2] devicetree: Add devicetree bindings documentation for
+ Zynq Quad SPI
+Date: Fri, 4 Apr 2014 08:31:43 +0530
+Message-ID: <CAFcVEC+sqB9VQUEgiFN_MwHcvYFqEifh6EuHPLAkKZOnBiaQ9A@mail.gmail.com>
+References: <ee057d8c-50d9-4d4b-ac86-d7c5fc44b1b0@TX2EHSMHS034.ehs.local>
+	<20140403210135.GX14763@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
-Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+Cc: Punnaiah Choudary Kalluri <punnaiah.choudary.kalluri-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
 	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
@@ -16,52 +16,33 @@ Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	Punnaiah Choudary <kpc528-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	punnaiah choudary kalluri <kalluripunnaiahchoudary-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140403213446.GB14763-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20140403210135.GX14763-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 Hi Mark,
 
-On Fri, Apr 4, 2014 at 3:04 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Thu, Apr 03, 2014 at 04:40:31PM +0530, Harini Katakam wrote:
+On Fri, Apr 4, 2014 at 2:31 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Apr 03, 2014 at 10:33:06PM +0530, Punnaiah Choudary Kalluri wrote:
 >
 >> +Optional properties:
 >> +- num-cs             : Number of chip selects used.
 >
-> How does this translate to the hardware?
-
-This IP can drive 4 slaves.
-The CS line to be driven is selected in spi device structure and
-that is driven by the software.
-
+> What does this translate into?
 >
->> +             num-cs = /bits/ 16 <4>;
+>> +             num-cs = /bits/ 16 <1>;
 >
-> What's going on with the /bits/ - is this something that's required for
-> the property?
+> Why the odd specification in the example - why not just specify it as a
+> number?
 
-The master->num-chipselect property is 16 bit but writing <4> here directly
-leads to 0 being read in of_property_read (because it's big endian).
-Instead using of property read u32 and then copying, we decided to do this.
-This was discussed on v2 between Michal and Rob:
->>>> +               num-chip-select = /bits/ 16 <4>;
->>
->> I was expecting you will comment this a little bit. :-)
->> Because all just reading this num-cs as 32bit and then
->> assigning this value to master->num_chipselect which is 16bit.
->
-> Well, everyone else has that problem then. Obviously it takes a bit
-> more care than just reading into a u32, but that is a kernel problem
-> and not a problem of the binding.
-They are not reading it directly with read_u32 but they are using
-intermediate u32 value which is assigned to u16 which is fine.
-This pattern is in most drivers(maybe all).
-The point is if binding should or can't simplify driver code.
-And from your reaction above I expect that it is up to driver
-owner and binding doc how you want to do it.
+Same as discussed on SPI cadence thread.
 
 Regards,
 Harini

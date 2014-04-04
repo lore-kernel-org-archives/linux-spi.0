@@ -1,102 +1,75 @@
-From: Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>
-Subject: Re: [PATCH 1/2] devicetree: Add devicetree bindings documentation
- for Zynq Quad SPI
-Date: Fri, 04 Apr 2014 07:38:00 +0200
-Message-ID: <533E4538.70107@monstr.eu>
-References: <ee057d8c-50d9-4d4b-ac86-d7c5fc44b1b0@TX2EHSMHS034.ehs.local> <20140403210135.GX14763@sirena.org.uk> <CAFcVEC+sqB9VQUEgiFN_MwHcvYFqEifh6EuHPLAkKZOnBiaQ9A@mail.gmail.com>
-Reply-To: monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2 2/2] devicetree: Add devicetree bindings documentation
+ for Cadence SPI
+Date: Fri, 4 Apr 2014 10:09:47 +0200
+Message-ID: <CAMuHMdWvFT1kLpcYGSuNFs6qVTbn4S-9-rFV8jkJMAaS8xCDnQ@mail.gmail.com>
+References: <1396523431-14519-1-git-send-email-harinik@xilinx.com>
+	<1396523431-14519-2-git-send-email-harinik@xilinx.com>
+	<20140403213446.GB14763@sirena.org.uk>
+	<CAFcVEC+mpHh_d2j6_sdhWS3d2KyXrDYUq6L6jO2Q=SS68Hda2g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="StdWMl9Q0AaEu5jNiAqw8S3odGLnk4Rfx"
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Punnaiah Choudary Kalluri
-	<punnaiah.choudary.kalluri-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Punnaiah Choudary <kpc528-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	punnaiah choudary kalluri <kalluripunnaiahchoudary-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-To: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAFcVEC+sqB9VQUEgiFN_MwHcvYFqEifh6EuHPLAkKZOnBiaQ9A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie@kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+To: Harini Katakam <harinikatakamlinux@gmail.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <CAFcVEC+mpHh_d2j6_sdhWS3d2KyXrDYUq6L6jO2Q=SS68Hda2g@mail.gmail.com>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---StdWMl9Q0AaEu5jNiAqw8S3odGLnk4Rfx
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Hi Harini,
 
-Hi Mark and Harini,
-
-On 04/04/2014 05:01 AM, Harini Katakam wrote:
-> Hi Mark,
->=20
-> On Fri, Apr 4, 2014 at 2:31 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->> On Thu, Apr 03, 2014 at 10:33:06PM +0530, Punnaiah Choudary Kalluri wr=
-ote:
+On Fri, Apr 4, 2014 at 5:00 AM, Harini Katakam
+<harinikatakamlinux@gmail.com> wrote:
+>>> +             num-cs = /bits/ 16 <4>;
 >>
->>> +Optional properties:
->>> +- num-cs             : Number of chip selects used.
+>> What's going on with the /bits/ - is this something that's required for
+>> the property?
+>
+> The master->num-chipselect property is 16 bit but writing <4> here directly
+> leads to 0 being read in of_property_read (because it's big endian).
+> Instead using of property read u32 and then copying, we decided to do this.
+> This was discussed on v2 between Michal and Rob:
+>>>>> +               num-chip-select = /bits/ 16 <4>;
+>>>
+>>> I was expecting you will comment this a little bit. :-)
+>>> Because all just reading this num-cs as 32bit and then
+>>> assigning this value to master->num_chipselect which is 16bit.
 >>
->> What does this translate into?
->>
->>> +             num-cs =3D /bits/ 16 <1>;
->>
->> Why the odd specification in the example - why not just specify it as =
-a
->> number?
->=20
-> Same as discussed on SPI cadence thread.
+>> Well, everyone else has that problem then. Obviously it takes a bit
+>> more care than just reading into a u32, but that is a kernel problem
+>> and not a problem of the binding.
+> They are not reading it directly with read_u32 but they are using
+> intermediate u32 value which is assigned to u16 which is fine.
+> This pattern is in most drivers(maybe all).
+> The point is if binding should or can't simplify driver code.
+> And from your reaction above I expect that it is up to driver
+> owner and binding doc how you want to do it.
 
-I have discussed this briefly with Rob and it is more up to Mark
-if he wants to have this with 16bit width or not. I expect that
-"num-cs" is getting to be shared across spi drivers
-and maybe in near future you will move "num-cs" of probe to spi core
-that's why it should stay 32bit for easier integration.
+IMHO this "/bits/ 16" doesn't simplify the binding.
 
-I have asked Harini some weeks ago to try to do it just with
-of_property_read_u16 because you can directly setup
-master->num_chipselect and you don't need to read it as u32
-and saving to u16.
+As "num-cs" is a generic spi subsystem binding, it should not be
+restricted to 16 bits for the sake of a driver. As your hardware can drive 4
+chip selects, you could represent it in 3 bits (don't!).
 
-Thanks,
-Michal
+Simple integers are 32 bit in DT, so use a temporary.
 
---=20
-Michal Simek, Ing. (M.Eng), OpenPGP -> KeyID: FE3D1F91
-w: www.monstr.eu p: +42-0-721842854
-Maintainer of Linux kernel - Microblaze cpu - http://www.monstr.eu/fdt/
-Maintainer of Linux kernel - Xilinx Zynq ARM architecture
-Microblaze U-BOOT custodian and responsible for u-boot arm zynq platform
+Gr{oetje,eeting}s,
 
+                        Geert
 
-
---StdWMl9Q0AaEu5jNiAqw8S3odGLnk4Rfx
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.10 (GNU/Linux)
-Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
-
-iEYEARECAAYFAlM+RTgACgkQykllyylKDCFYHACfRnVIuDYW4iKWeGhw3YWDRwAu
-jsEAniwyjNmI2fVlwuieSK+osHzM8dR2
-=lwtq
------END PGP SIGNATURE-----
-
---StdWMl9Q0AaEu5jNiAqw8S3odGLnk4Rfx--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

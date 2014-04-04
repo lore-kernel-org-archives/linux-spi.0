@@ -1,122 +1,113 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] SPI: Add support for Zynq Quad SPI controller
-Date: Fri, 4 Apr 2014 12:08:37 +0100
-Message-ID: <20140404110837.GS14763@sirena.org.uk>
-References: <1396544587-10876-1-git-send-email-punnaia@xilinx.com>
- <203181a5-626f-437e-8efe-983a9d78ec5d@AM1EHSMHS017.ehs.local>
- <20140403212940.GY14763@sirena.org.uk>
- <CAFcVECJiSm8MMJ37c-Qfsu-UE0jgEYRmeGZ8OQG97wyRMaJ1LQ@mail.gmail.com>
+From: Michal Simek <monstr@monstr.eu>
+Subject: Re: [PATCH v2 2/2] devicetree: Add devicetree bindings documentation
+ for Cadence SPI
+Date: Fri, 04 Apr 2014 13:16:59 +0200
+Message-ID: <533E94AB.6060400@monstr.eu>
+References: <1396523431-14519-1-git-send-email-harinik@xilinx.com> <1396523431-14519-2-git-send-email-harinik@xilinx.com> <20140403213446.GB14763@sirena.org.uk> <CAFcVEC+mpHh_d2j6_sdhWS3d2KyXrDYUq6L6jO2Q=SS68Hda2g@mail.gmail.com> <CAMuHMdWvFT1kLpcYGSuNFs6qVTbn4S-9-rFV8jkJMAaS8xCDnQ@mail.gmail.com>
+Reply-To: monstr@monstr.eu
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="aYKnuo739dxkFWAR"
-Cc: Punnaiah Choudary Kalluri <punnaiah.choudary.kalluri@xilinx.com>,
+ protocol="application/pgp-signature";
+ boundary="Cdw5EfFCIsanNVDpkgvWw1A791LJUAXmi"
+Cc: Harini Katakam <harinikatakamlinux@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Grant Likely <grant.likely@linaro.org>,
 	Rob Herring <robh+dt@kernel.org>,
 	Pawel Moll <pawel.moll@arm.com>,
 	Mark Rutland <mark.rutland@arm.com>,
 	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>, linux-spi@vger.kernel.org,
+	Kumar Gala <galak@codeaurora.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	Michal Simek <michal.simek@xilinx.com>,
-	Punnaiah Choudary <kpc528@gmail.com>,
-	punnaiah choudary kalluri <kalluripunnaiahchoudary@gmail.com>,
-	Punnaiah Choudary Kalluri <punnaia@xilinx.com>
-To: Harini Katakam <harinikatakamlinux@gmail.com>
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-doc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAFcVECJiSm8MMJ37c-Qfsu-UE0jgEYRmeGZ8OQG97wyRMaJ1LQ@mail.gmail.com>
+In-Reply-To: <CAMuHMdWvFT1kLpcYGSuNFs6qVTbn4S-9-rFV8jkJMAaS8xCDnQ@mail.gmail.com>
 Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--Cdw5EfFCIsanNVDpkgvWw1A791LJUAXmi
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
---aYKnuo739dxkFWAR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 04/04/2014 10:09 AM, Geert Uytterhoeven wrote:
+> Hi Harini,
+>=20
+> On Fri, Apr 4, 2014 at 5:00 AM, Harini Katakam
+> <harinikatakamlinux@gmail.com> wrote:
+>>>> +             num-cs =3D /bits/ 16 <4>;
+>>>
+>>> What's going on with the /bits/ - is this something that's required f=
+or
+>>> the property?
+>>
+>> The master->num-chipselect property is 16 bit but writing <4> here dir=
+ectly
+>> leads to 0 being read in of_property_read (because it's big endian).
+>> Instead using of property read u32 and then copying, we decided to do =
+this.
+>> This was discussed on v2 between Michal and Rob:
+>>>>>> +               num-chip-select =3D /bits/ 16 <4>;
+>>>>
+>>>> I was expecting you will comment this a little bit. :-)
+>>>> Because all just reading this num-cs as 32bit and then
+>>>> assigning this value to master->num_chipselect which is 16bit.
+>>>
+>>> Well, everyone else has that problem then. Obviously it takes a bit
+>>> more care than just reading into a u32, but that is a kernel problem
+>>> and not a problem of the binding.
+>> They are not reading it directly with read_u32 but they are using
+>> intermediate u32 value which is assigned to u16 which is fine.
+>> This pattern is in most drivers(maybe all).
+>> The point is if binding should or can't simplify driver code.
+>> And from your reaction above I expect that it is up to driver
+>> owner and binding doc how you want to do it.
+>=20
+> IMHO this "/bits/ 16" doesn't simplify the binding.
+>=20
+> As "num-cs" is a generic spi subsystem binding, it should not be
+> restricted to 16 bits for the sake of a driver. As your hardware can dr=
+ive 4
+> chip selects, you could represent it in 3 bits (don't!).
+>=20
+> Simple integers are 32 bit in DT, so use a temporary.
 
-On Fri, Apr 04, 2014 at 08:59:47AM +0530, Harini Katakam wrote:
-> On Fri, Apr 4, 2014 at 2:59 AM, Mark Brown <broonie@kernel.org> wrote:
+No problem to keep it there to 32bit range. I really appreciate
+that discussion we have about it.
 
-> > Why would a transfer be being set up without a transfer being provided?
+Just a note: If "num-cs" is the part of generic spi subsystem binding
+maybe it should be moved directly to spi core as is done for
+example for timeout-sec in watchdog.
+Also this should be listed in any Documentation/devicetree/bindings/spi/s=
+pi.txt
+file that this is generic spi binding.
 
-> The setup function calls this function before a transfer is initiated.
-> In this case NULL is passed to setup_transfer (see below) and
-> SPI is initialized with default clock configuration.
-> This initialization is necessary because otherwise this clock config
-> would be done
-> only after SPI is enabled in prepare_hardware, which is wrong.
-> (I'm checking for master->busy in setup to address your previous
-> comment on SPI).
+Thanks,
+Michal
 
-The requirement for setup() to work when other transfers are in progress
-is clear and unambiguous, it really isn't acceptable to reconfigure
-hardware in use by a runing transfer in setup().
+--=20
+Michal Simek, Ing. (M.Eng), OpenPGP -> KeyID: FE3D1F91
+w: www.monstr.eu p: +42-0-721842854
+Maintainer of Linux kernel - Microblaze cpu - http://www.monstr.eu/fdt/
+Maintainer of Linux kernel - Xilinx Zynq ARM architecture
+Microblaze U-BOOT custodian and responsible for u-boot arm zynq platform
 
-> I explained the same in SPI v2 changes and this valid there too.
 
-This is v2?
 
-> >> +static int zynq_qspi_setup(struct spi_device *qspi)
-> >> +{
-> >> +     if (qspi->master->busy)
-> >> +             return -EBUSY;
-> >> +
-> >> +     return zynq_qspi_setup_transfer(qspi, NULL);
-> >> +}
-
-> > No, this is broken - you have to support setup() while the hardware is
-> > active.  Just remove this if there's nothing to do and set up on the
-> > transfer.
-
-> But where do you suggest this clock configuration be done?
-> I've looked at the option of doing it in prepare_hardware but
-> spi_device structure is not passed to it.
-
-You can readily access the device data from the master - look at how
-other drivers do this.
-
-> >> +static int __maybe_unused zynq_qspi_suspend(struct device *_dev)
-> >> +{
-> >> +     struct platform_device *pdev = container_of(_dev,
-> >> +                     struct platform_device, dev);
-> >> +     struct spi_master *master = platform_get_drvdata(pdev);
-> >> +
-> >> +     spi_master_suspend(master);
-> >> +
-> >> +     zynq_unprepare_transfer_hardware(master);
-
-> > Why are you unpreparing the hardware - the framework should be doing
-> > that for you if the device is active, if it's not you've got an extra
-> > clock disable here?
-
-> I called unprepare_hardware  becuase it does the things necessary
-> after master suspend - disable clock and controller.
-> (I thought this was your suggestion for SPI?)
-
-Why are these things required after the core has already idled the
-device (using exactly the same function)?
-
---aYKnuo739dxkFWAR
+--Cdw5EfFCIsanNVDpkgvWw1A791LJUAXmi
 Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Version: GnuPG v1.4.10 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
 
-iQIcBAEBAgAGBQJTPpKyAAoJELSic+t+oim9dHUP/RX97nrWMG30Iq+bl1FndO5P
-xdFcFx7lEEKjdEsb0bOV0qiBjUeZx+APssKublQfn68RRnu3sU4h8qGxTs3csCR6
-yLb2/6EekiPKLmbKJkDXBQS18FGOKPyDhiWSSo0wOOX9c2Wk95Ov1kB1QM8HTtdk
-fcPHIbHht1QRBKqcz586yyPBpjuabcBXfxoF9HO2x9Qwqj4PbMnxDL1GVcgCH8Vu
-+MhwZqIWWFXY9V1JwgBlYg6tdXfjPppeeXHp7OW2WMBWn5s73Hl93GlobYfyVV23
-2VNFVx0Phc5/uXEvh5QSDCd8CKOWZe0MxMpXG8Az4MrLA0MzmtO5eiH9N3qM6hft
-FeEfgE8M3NBuHTnRF8modZeKtO4Krbt1srRNkIZ7oFuu3zMfSBThAxPvMGZn3euS
-GGb+RDCH9WL2ustrnGg9MecWrUdqwPpo9sjRztcccT1mvXPXtQa1SQQMWbUZ/9n8
-yBOJWplFOt/sz5IfgeU18NU9FVO6/xujMP2QdZAqEGqzkNp1cFaXgjIaISScOBsa
-BlRcgxnX2fVQVLn31rRKklZXMpK2vgCpSoWrET3CU3vgrlKQLaCeKbu08vp49DaY
-gJ1CveD/5iqhPNWnRqv15M/+LxfFIynAl4bEwFcb7CrR+Ym9AAQ8T7EUuRek8Vbi
-G/Z9Hj29hTkVC36IM919
-=QyjQ
+iEYEARECAAYFAlM+lKsACgkQykllyylKDCGkcQCfdTs4zmS2/AmvgdR8D1enuOs+
+M8cAnR0cnWrNqc07g8kEGyf6Yx2UIIjx
+=yFCi
 -----END PGP SIGNATURE-----
 
---aYKnuo739dxkFWAR--
+--Cdw5EfFCIsanNVDpkgvWw1A791LJUAXmi--

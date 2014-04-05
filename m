@@ -1,51 +1,99 @@
-From: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] devicetree: Add devicetree bindings documentation for
- Zynq Quad SPI
-Date: Fri, 4 Apr 2014 08:31:43 +0530
-Message-ID: <CAFcVEC+sqB9VQUEgiFN_MwHcvYFqEifh6EuHPLAkKZOnBiaQ9A@mail.gmail.com>
-References: <ee057d8c-50d9-4d4b-ac86-d7c5fc44b1b0@TX2EHSMHS034.ehs.local>
-	<20140403210135.GX14763@sirena.org.uk>
+From: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi-adi-v3: convert to use common clk framework
+Date: Sat, 5 Apr 2014 11:29:09 +0800
+Message-ID: <1396668549-20052-1-git-send-email-scott.jiang.linux@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Punnaiah Choudary Kalluri <punnaiah.choudary.kalluri-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Punnaiah Choudary <kpc528-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	punnaiah choudary kalluri <kalluripunnaiahchoudary-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Punnaiah Choudary Kalluri <punnaia-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org>,
+	Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140403210135.GX14763-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+Use common clk api to get spi clock.
 
-On Fri, Apr 4, 2014 at 2:31 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Thu, Apr 03, 2014 at 10:33:06PM +0530, Punnaiah Choudary Kalluri wrote:
->
->> +Optional properties:
->> +- num-cs             : Number of chip selects used.
->
-> What does this translate into?
->
->> +             num-cs = /bits/ 16 <1>;
->
-> Why the odd specification in the example - why not just specify it as a
-> number?
+Signed-off-by: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ arch/blackfin/mach-bf609/clock.c |    7 +++++++
+ drivers/spi/spi-adi-v3.c         |   13 +++++++------
+ 2 files changed, 14 insertions(+), 6 deletions(-)
 
-Same as discussed on SPI cadence thread.
+diff --git a/arch/blackfin/mach-bf609/clock.c b/arch/blackfin/mach-bf609/clock.c
+index 13644ed..2bd82b1 100644
+--- a/arch/blackfin/mach-bf609/clock.c
++++ b/arch/blackfin/mach-bf609/clock.c
+@@ -381,6 +381,12 @@ static struct clk ethclk = {
+ 	.ops	    = &dummy_clk_ops,
+ };
+ 
++static struct clk spiclk = {
++	.name       = "spi",
++	.parent     = &sclk1,
++	.ops        = &dummy_clk_ops,
++};
++
+ static struct clk_lookup bf609_clks[] = {
+ 	CLK(sys_clkin, NULL, "SYS_CLKIN"),
+ 	CLK(pll_clk, NULL, "PLLCLK"),
+@@ -393,6 +399,7 @@ static struct clk_lookup bf609_clks[] = {
+ 	CLK(dclk, NULL, "DCLK"),
+ 	CLK(oclk, NULL, "OCLK"),
+ 	CLK(ethclk, NULL, "stmmaceth"),
++	CLK(spiclk, NULL, "spi"),
+ };
+ 
+ int __init clk_init(void)
+diff --git a/drivers/spi/spi-adi-v3.c b/drivers/spi/spi-adi-v3.c
+index 0c2914c..dcb2287 100644
+--- a/drivers/spi/spi-adi-v3.c
++++ b/drivers/spi/spi-adi-v3.c
+@@ -13,6 +13,7 @@
+  * GNU General Public License for more details.
+  */
+ 
++#include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/dma-mapping.h>
+@@ -800,7 +801,7 @@ static int adi_spi_probe(struct platform_device *pdev)
+ 	struct adi_spi_master *drv_data;
+ 	struct resource *mem, *res;
+ 	unsigned int tx_dma, rx_dma;
+-	unsigned long sclk;
++	struct clk *sclk;
+ 	int ret;
+ 
+ 	if (!info) {
+@@ -808,10 +809,10 @@ static int adi_spi_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
+ 
+-	sclk = get_sclk1();
+-	if (!sclk) {
+-		dev_err(dev, "can not get sclk1\n");
+-		return -ENXIO;
++	sclk = devm_clk_get(dev, "spi");
++	if (IS_ERR(sclk)) {
++		dev_err(dev, "can not get spi clock\n");
++		return PTR_ERR(sclk);
+ 	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_DMA, 0);
+@@ -852,7 +853,7 @@ static int adi_spi_probe(struct platform_device *pdev)
+ 	drv_data->tx_dma = tx_dma;
+ 	drv_data->rx_dma = rx_dma;
+ 	drv_data->pin_req = info->pin_req;
+-	drv_data->sclk = sclk;
++	drv_data->sclk = clk_get_rate(sclk);
+ 
+ 	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	drv_data->regs = devm_ioremap_resource(dev, mem);
+-- 
+1.7.9.5
 
-Regards,
-Harini
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,49 +1,42 @@
-From: Paul Bolle <pebolle-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
-Subject: [PATCH] spi: qup: Depend on ARCH_QCOM
-Date: Sun, 06 Apr 2014 13:45:33 +0200
-Message-ID: <1396784733.30640.25.camel@x220>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH RFC] spi: efm32: Make "efm32,location" property optional
+Date: Mon, 07 Apr 2014 11:18:52 +0800
+Message-ID: <1396840732.7635.2.camel@phoenix>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Commit 8fc1b0f87d9f ("ARM: qcom: Split Qualcomm support into legacy and
-multiplatform") removed Kconfig symbol ARCH_MSM_DT. But that commit
-left one (optional) dependency on ARCH_MSM_DT untouched.
+The spi driver still works even if "efm32,location" property is not provided.
+Thus make "efm32,location" property optional.
 
-Three Kconfig symbols used to depend on ARCH_MSM_DT: ARCH_MSM8X60,
-ARCH_MSM8960, and ARCH_MSM8974. These three symbols now depend on
-ARCH_QCOM. So it appears this driver needs to depend on ARCH_QCOM too.
-
-Signed-off-by: Paul Bolle <pebolle-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 ---
-Untested!
+ Documentation/devicetree/bindings/spi/efm32-spi.txt | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Note that this is basically guesswork: looking at commit 8fc1b0f87d9f it
-appears to make sense to pick ARCH_QCOM here.
-
- drivers/spi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index efe1960af2b3..60f2b41c7310 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -383,7 +383,7 @@ config SPI_RSPI
+diff --git a/Documentation/devicetree/bindings/spi/efm32-spi.txt b/Documentation/devicetree/bindings/spi/efm32-spi.txt
+index 8f081c9..33e6040 100644
+--- a/Documentation/devicetree/bindings/spi/efm32-spi.txt
++++ b/Documentation/devicetree/bindings/spi/efm32-spi.txt
+@@ -8,6 +8,8 @@ Required properties:
+ - interrupts: pair specifying rx and tx irq
+ - clocks: phandle to the spi clock
+ - cs-gpios: see spi-bus.txt
++
++Recommended properties :
+ - efm32,location: Value to write to the ROUTE register's LOCATION bitfield to configure the pinmux for the device, see datasheet for values.
  
- config SPI_QUP
- 	tristate "Qualcomm SPI controller with QUP interface"
--	depends on ARCH_MSM_DT || (ARM && COMPILE_TEST)
-+	depends on ARCH_QCOM || (ARM && COMPILE_TEST)
- 	help
- 	  Qualcomm Universal Peripheral (QUP) core is an AHB slave that
- 	  provides a common data path (an output FIFO and an input FIFO)
+ Example:
 -- 
-1.9.0
+1.8.3.2
+
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

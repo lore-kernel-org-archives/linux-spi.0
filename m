@@ -1,52 +1,53 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spi-adi-v3: convert to use common clk framework
-Date: Tue, 8 Apr 2014 12:11:46 +0100
-Message-ID: <20140408111145.GE6518@sirena.org.uk>
-References: <1396668549-20052-1-git-send-email-scott.jiang.linux@gmail.com>
+From: maxim maxim <look2004il-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: mcspi
+Date: Tue, 8 Apr 2014 14:51:59 +0300
+Message-ID: <CAL22ZLJ0k985+z_v5EqWkmWEkR=NSSXV04adA_pL_60tp52bpg@mail.gmail.com>
+References: <CAL22ZLJ7qe-=1iH0w1b+G10i9_ERFnFF2oRB7gOatk3k_AhdjQ@mail.gmail.com>
+ <20140407125339.GA11339@book.gsilab.sittig.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7LkOrbQMr4cezO2T"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, uclinux-dist-devel-ZG0+EudsQA8dtHy/vicBwGD2FQJk+8+b@public.gmane.org
-To: Scott Jiang <scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1396668549-20052-1-git-send-email-scott.jiang.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20140407125339.GA11339-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Thanks Gerhard, good idea,  it's working fine for me:)
 
---7LkOrbQMr4cezO2T
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Best Regards,
+Kol
 
-On Sat, Apr 05, 2014 at 11:29:09AM +0800, Scott Jiang wrote:
-> Use common clk api to get spi clock.
-
-Applied, thanks.
-
---7LkOrbQMr4cezO2T
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTQ9luAAoJELSic+t+oim9qZwP/11jPpEapetjYwufhZ1hTlAx
-pH1j/ZDrAIKoHsKVsZT5c1SCnFz4U2O6AZH8mJO0zo0PFxbbozYh1V2exBKwD7TH
-GVclcNtHCFBUffWInTDcWgjKdu21+sm5R1/Di2TLVfkblEUHMwcn7HKVW9AjZZms
-kefo9N7JTi0pZuye9Twkae6RgAjEhQhk/6Z7In51Tu6BKzxrrHk29KUkJ8GP/lD0
-1DtUgXw3ug2JKloNjq3nmLqzuCuYOQ7o++DPCQbHX+u4MG3v4R7XoxSYeNwWl5vk
-H2f3tJnqy539zQwbbW5IBhBwNPq22mGaYQN1e7YR3bTd+4hdN0pJ4QCkRfRk5cQX
-kYSAMXKaebevBCViXrvCasic4Q17nVM8EJ+H6W83ynAHZUXlaAPYQQK+9UcwOos5
-SbPsmTzkuf0FavRPgCt8Ki4JLw+o++dGHp0pVHp8vuaDhXqygNKUji6C0gozl19U
-6yFH27IubYxD2GHEmdynKjK2F7zxu5pZf55OXLRe+KstWTzWlT4FtmByXr3e6+G3
-+dY1FuJ9bRrSFErlmWrDlVx2B0CtLWUpj12F24bIKOd+jTmJDIvDILXcOMdtJ5rC
-16suOXDlozpAFXCUpFz0oMAWGSCvvPTWTzK5Op7khhKj9e0ukymrqLUMz8EAkZva
-Z3+G+Ihm2s403KH5OsjG
-=9sb0
------END PGP SIGNATURE-----
-
---7LkOrbQMr4cezO2T--
+2014-04-07 15:53 GMT+03:00 Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>:
+> On Sat, 2014-04-05 at 16:05 +0300, maxim maxim wrote:
+>>
+>>  I'm working with omap 3 spi driver, in the base I have mcspi driver
+>> for tach device(http://processors.wiki.ti.com/index.php/AM335x_McSPI_Driver's_Guide),
+>> I want to add my insmod driver for ublox 6(gps device). From ublox6
+>> datasheet I saw what I need some initial delay between chip select
+>> activation and data sending, I didn't find a way how to do it from
+>> Linux SPI Framework, because of this I tried to write directly to some
+>> registers what mapped in mcspi driver I can accept their mapped
+>> address from contoller_data , but unfortunately it didn't work, may be
+>> here you could give me some avices how I can do it.
+>
+> You might create an SPI message from multiple transfers, where
+> the first has no data (length zero) but specifies a delay.  If
+> the SPI controller's driver is implemented correctly, or if it
+> uses the SPI subsystem's common logic, this should result in the
+> desired pause between CS assertion and data transfer.
+>
+> If it doesn't work out for you (when the driver cuts corners,
+> violates the API semantics, or tries to outsmart you), you may
+> want to fix that and provide patches. :)
+>
+>
+> virtually yours
+> Gerhard Sittig
+> --
+> DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+> HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+> Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

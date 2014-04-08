@@ -1,45 +1,55 @@
-From: Stephen Boyd <sboyd@codeaurora.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] [RESEND] spi: qup: Depend on ARCH_QCOM
-Date: Mon, 7 Apr 2014 15:22:22 -0700
-Message-ID: <20140407222222.GJ9985@codeaurora.org>
+Date: Tue, 8 Apr 2014 12:09:48 +0100
+Message-ID: <20140408110948.GD6518@sirena.org.uk>
 References: <1396784733.30640.25.camel@x220>
  <20140407130853.GG14763@sirena.org.uk>
  <1396880145.12738.6.camel@x220>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, Kumar Gala <galak@codeaurora.org>,
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="MAH+hnPXVZWQ5cD/"
+Cc: Kumar Gala <galak@codeaurora.org>,
 	David Brown <davidb@codeaurora.org>, linux-spi@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
 To: Paul Bolle <pebolle@tiscali.nl>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
 In-Reply-To: <1396880145.12738.6.camel@x220>
-Sender: linux-arm-msm-owner@vger.kernel.org
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On 04/07, Paul Bolle wrote:
+
+--MAH+hnPXVZWQ5cD/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Mon, Apr 07, 2014 at 04:15:45PM +0200, Paul Bolle wrote:
 > Commit 8fc1b0f87d9f ("ARM: qcom: Split Qualcomm support into legacy and
 > multiplatform") removed Kconfig symbol ARCH_MSM_DT. But that commit
 > left one (optional) dependency on ARCH_MSM_DT untouched.
-> 
-> Three Kconfig symbols used to depend on ARCH_MSM_DT: ARCH_MSM8X60,
-> ARCH_MSM8960, and ARCH_MSM8974. These three symbols now depend on
-> ARCH_QCOM. So it appears this driver needs to depend on ARCH_QCOM too.
-> 
-> Signed-off-by: Paul Bolle <pebolle@tiscali.nl>
 
-Reviewed-by: Stephen Boyd <sboyd@codeaurora.org>
+Applied, thanks.
 
-> Resending, because Mark suggested to include the Qualcomm people (who
-> know what's going on with these symbols).
-> 
-> Still untested!
-> 
-> Note that this is basically guesswork: looking at commit 8fc1b0f87d9f it
-> appears to make sense to pick ARCH_QCOM here.
+--MAH+hnPXVZWQ5cD/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-That's correct.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-hosted by The Linux Foundation
+iQIcBAEBAgAGBQJTQ9j5AAoJELSic+t+oim9iv0P/0UrzcpGobx2dXcoM4Jg/Wpq
+401KqoGp2IUlk+ngaVVFj1Lplm4RVvPhYE4V+95tdeXKAFeHXuJVmBS7uOeGdOA5
+uDxLcV8NfD3qg2mPsIYVg5K/cVL7XD2uttXbzXh6VHEzoSiA9JvCzjoQjy7FS03h
+x5qgeQvPB7BTw7gJ2uaBpCkMGocyIKJjpyFKMoHEOFzFq6e0KNvvfAw0t9sTuiSh
+YSStrnmy1UdMxuFCmlWgekXcCuTbhGuTqcFe87o2VTl3q9UJu3/0zx7arGuzmiDn
+31QHdLmxdqcanesRTO1NhiDxae8OiHPNPkw0skCiArb2+zCqLE4KvZQbc6JQmbr4
+SqAIjOcwAen4P5uoOx8vM6lN7sk0UucQV3Ex+0l4J50X4JeOtPLqaqXGYW/k9otH
+g1R3OOqd7uVs4g0FPxr/Ae2Bj0ZE4G4I/vDeqpvsegWbMLzkJUtmYuulzoMMnffo
+hwmKpZWqWq9H8kTQzkR1lJTNZuGmDJhwFXkeI9Rl+7DT1saXHA4ym5rjfwCM9sD+
+PGLhRdkB+wbKLBIysj2zRL4ATyO7vT2KPqfF/TvVKuK+UTGlNqAJzN27y5P852te
+F9Xsxf8Crc0QIoAR/bmtVsCzN5dSoIxxdGaOc2o5/IknM8+lK6OCWM56m0YfxZLQ
+fuNL+tFYklfFhz7zgs4g
+=pjPv
+-----END PGP SIGNATURE-----
+
+--MAH+hnPXVZWQ5cD/--

@@ -1,126 +1,101 @@
 From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 3/9] mtd: spi-nor: unify read opcode variants with ST SPI FSM
-Date: Wed,  9 Apr 2014 10:32:48 -0700
-Message-ID: <1397064774-31784-3-git-send-email-computersforpeace@gmail.com>
-References: <1397064774-31784-1-git-send-email-computersforpeace@gmail.com>
-Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-To: <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+Subject: Re: [PATCH v5 1/8] mtd: spi-nor: copy the SPI NOR commands to a new
+ header file
+Date: Wed, 9 Apr 2014 10:40:12 -0700
+Message-ID: <20140409174012.GD32070@ld-irv-0074>
+References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
+ <1393238262-8622-2-git-send-email-b32955@freescale.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, angus.clark-qxv4g6HH51o@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org, b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1397064774-31784-1-git-send-email-computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1393238262-8622-2-git-send-email-b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-serial_flash_cmds.h defines our opcodes a little differently. Let's
-borrow its naming, since it's borrowed from the SFDP standard, and it's
-more extensible.
+On Mon, Feb 24, 2014 at 06:37:35PM +0800, Huang Shijie wrote:
+> This patch adds a new header :spi-nor.h,
+> and copies all the SPI NOR commands and relative macros into this new header.
+...
+> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+> new file mode 100644
+> index 0000000..483fc2a
+> --- /dev/null
+> +++ b/include/linux/mtd/spi-nor.h
+> @@ -0,0 +1,55 @@
+> +#ifndef __LINUX_MTD_SPI_NOR_H
+> +#define __LINUX_MTD_SPI_NOR_H
+> +
 
-This prepares us for merging serial_flash_cmds.h and spi-nor.h opcode
-listing.
+You're missing a copyright and license header. Please submit one against
+l2-mtd.git/spinor, preferably after the patch series I just sent out
+that renames a few things here.
 
-Signed-off-by: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/mtd/spi-nor/spi-nor.c | 16 ++++++++--------
- include/linux/mtd/spi-nor.h   | 24 ++++++++++++++++--------
- 2 files changed, 24 insertions(+), 16 deletions(-)
+Regarding copyright assignments (also an issue with spi-nor.c): please
+carry the original copyright from m25p80.c, and add your own or your
+employer's wherever your work was a significant addition.
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 462f1c8c3a7d..de04d6e2cf02 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -1010,16 +1010,16 @@ int spi_nor_scan(struct spi_nor *nor, const struct spi_device_id *id,
- 	/* Default commands */
- 	switch (nor->flash_read) {
- 	case SPI_NOR_QUAD:
--		nor->read_opcode = SPINOR_OP_QUAD_READ;
-+		nor->read_opcode = SPINOR_OP_READ_1_1_4;
- 		break;
- 	case SPI_NOR_DUAL:
--		nor->read_opcode = SPINOR_OP_DUAL_READ;
-+		nor->read_opcode = SPINOR_OP_READ_1_1_2;
- 		break;
- 	case SPI_NOR_FAST:
--		nor->read_opcode = SPINOR_OP_FAST_READ;
-+		nor->read_opcode = SPINOR_OP_READ_FAST;
- 		break;
- 	case SPI_NOR_NORMAL:
--		nor->read_opcode = SPINOR_OP_NORM_READ;
-+		nor->read_opcode = SPINOR_OP_READ;
- 		break;
- 	default:
- 		dev_err(dev, "No Read opcode defined\n");
-@@ -1037,16 +1037,16 @@ int spi_nor_scan(struct spi_nor *nor, const struct spi_device_id *id,
- 			/* Dedicated 4-byte command set */
- 			switch (nor->flash_read) {
- 			case SPI_NOR_QUAD:
--				nor->read_opcode = SPINOR_OP_QUAD_READ_4B;
-+				nor->read_opcode = SPINOR_OP_READ4_1_1_4;
- 				break;
- 			case SPI_NOR_DUAL:
--				nor->read_opcode = SPINOR_OP_DUAL_READ_4B;
-+				nor->read_opcode = SPINOR_OP_READ4_1_1_2;
- 				break;
- 			case SPI_NOR_FAST:
--				nor->read_opcode = SPINOR_OP_FAST_READ_4B;
-+				nor->read_opcode = SPINOR_OP_READ4_FAST;
- 				break;
- 			case SPI_NOR_NORMAL:
--				nor->read_opcode = SPINOR_OP_NORM_READ_4B;
-+				nor->read_opcode = SPINOR_OP_READ4;
- 				break;
- 			}
- 			nor->program_opcode = SPINOR_OP_PP_4B;
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index 2c827b5bf773..2a5c30196749 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -1,14 +1,22 @@
- #ifndef __LINUX_MTD_SPI_NOR_H
- #define __LINUX_MTD_SPI_NOR_H
- 
-+/*
-+ * Note on opcode nomenclature: some opcodes have a format like
-+ * SPINOR_OP_FUNCTION{4,}_x_y_z. The numbers x, y, and z stand for the number
-+ * of I/O lines used for the opcode, address, and data (respectively). The
-+ * FUNCTION has an optional suffix of '4', to represent an opcode which
-+ * requires a 4-byte (32-bit) address.
-+ */
-+
- /* Flash opcodes. */
- #define SPINOR_OP_WREN		0x06	/* Write enable */
- #define SPINOR_OP_RDSR		0x05	/* Read status register */
- #define SPINOR_OP_WRSR		0x01	/* Write status register 1 byte */
--#define SPINOR_OP_NORM_READ	0x03	/* Read data bytes (low frequency) */
--#define SPINOR_OP_FAST_READ	0x0b	/* Read data bytes (high frequency) */
--#define SPINOR_OP_DUAL_READ	0x3b	/* Read data bytes (Dual SPI) */
--#define SPINOR_OP_QUAD_READ	0x6b	/* Read data bytes (Quad SPI) */
-+#define SPINOR_OP_READ		0x03	/* Read data bytes (low frequency) */
-+#define SPINOR_OP_READ_FAST	0x0b	/* Read data bytes (high frequency) */
-+#define SPINOR_OP_READ_1_1_2	0x3b	/* Read data bytes (Dual SPI) */
-+#define SPINOR_OP_READ_1_1_4	0x6b	/* Read data bytes (Quad SPI) */
- #define SPINOR_OP_PP		0x02	/* Page program (up to 256 bytes) */
- #define SPINOR_OP_BE_4K		0x20	/* Erase 4KiB block */
- #define SPINOR_OP_BE_4K_PMC	0xd7	/* Erase 4KiB block on PMC chips */
-@@ -19,10 +27,10 @@
- #define SPINOR_OP_RDCR		0x35	/* Read configuration register */
- 
- /* 4-byte address opcodes - used on Spansion and some Macronix flashes. */
--#define SPINOR_OP_NORM_READ_4B	0x13	/* Read data bytes (low frequency) */
--#define SPINOR_OP_FAST_READ_4B	0x0c	/* Read data bytes (high frequency) */
--#define SPINOR_OP_DUAL_READ_4B	0x3c	/* Read data bytes (Dual SPI) */
--#define SPINOR_OP_QUAD_READ_4B	0x6c	/* Read data bytes (Quad SPI) */
-+#define SPINOR_OP_READ4		0x13	/* Read data bytes (low frequency) */
-+#define SPINOR_OP_READ4_FAST	0x0c	/* Read data bytes (high frequency) */
-+#define SPINOR_OP_READ4_1_1_2	0x3c	/* Read data bytes (Dual SPI) */
-+#define SPINOR_OP_READ4_1_1_4	0x6c	/* Read data bytes (Quad SPI) */
- #define SPINOR_OP_PP_4B		0x12	/* Page program (up to 256 bytes) */
- #define SPINOR_OP_SE_4B		0xdc	/* Sector erase (usually 64KiB) */
- 
--- 
-1.8.3.2
+> +/* Flash opcodes. */
+> +#define	OPCODE_WREN		0x06	/* Write enable */
+> +#define	OPCODE_RDSR		0x05	/* Read status register */
+> +#define	OPCODE_WRSR		0x01	/* Write status register 1 byte */
+> +#define	OPCODE_NORM_READ	0x03	/* Read data bytes (low frequency) */
+> +#define	OPCODE_FAST_READ	0x0b	/* Read data bytes (high frequency) */
+> +#define	OPCODE_DUAL_READ        0x3b    /* Read data bytes (Dual SPI) */
+> +#define	OPCODE_QUAD_READ        0x6b    /* Read data bytes (Quad SPI) */
+> +#define	OPCODE_PP		0x02	/* Page program (up to 256 bytes) */
+> +#define	OPCODE_BE_4K		0x20	/* Erase 4KiB block */
+> +#define	OPCODE_BE_4K_PMC	0xd7	/* Erase 4KiB block on PMC chips */
+> +#define	OPCODE_BE_32K		0x52	/* Erase 32KiB block */
+> +#define	OPCODE_CHIP_ERASE	0xc7	/* Erase whole flash chip */
+> +#define	OPCODE_SE		0xd8	/* Sector erase (usually 64KiB) */
+> +#define	OPCODE_RDID		0x9f	/* Read JEDEC ID */
+> +#define	OPCODE_RDCR             0x35    /* Read configuration register */
+> +
+> +/* 4-byte address opcodes - used on Spansion and some Macronix flashes. */
+> +#define	OPCODE_NORM_READ_4B	0x13	/* Read data bytes (low frequency) */
+> +#define	OPCODE_FAST_READ_4B	0x0c	/* Read data bytes (high frequency) */
+> +#define	OPCODE_DUAL_READ_4B	0x3c    /* Read data bytes (Dual SPI) */
+> +#define	OPCODE_QUAD_READ_4B	0x6c    /* Read data bytes (Quad SPI) */
+> +#define	OPCODE_PP_4B		0x12	/* Page program (up to 256 bytes) */
+> +#define	OPCODE_SE_4B		0xdc	/* Sector erase (usually 64KiB) */
+> +
+> +/* Used for SST flashes only. */
+> +#define	OPCODE_BP		0x02	/* Byte program */
+> +#define	OPCODE_WRDI		0x04	/* Write disable */
+> +#define	OPCODE_AAI_WP		0xad	/* Auto address increment word program */
+> +
+> +/* Used for Macronix and Winbond flashes. */
+> +#define	OPCODE_EN4B		0xb7	/* Enter 4-byte mode */
+> +#define	OPCODE_EX4B		0xe9	/* Exit 4-byte mode */
+> +
+> +/* Used for Spansion flashes only. */
+> +#define	OPCODE_BRWR		0x17	/* Bank register write */
+> +
+> +/* Status Register bits. */
+> +#define	SR_WIP			1	/* Write in progress */
+> +#define	SR_WEL			2	/* Write enable latch */
+> +/* meaning of other SR_* bits may differ between vendors */
+> +#define	SR_BP0			4	/* Block protect 0 */
+> +#define	SR_BP1			8	/* Block protect 1 */
+> +#define	SR_BP2			0x10	/* Block protect 2 */
+> +#define	SR_SRWD			0x80	/* SR write protect */
+> +
+> +#define SR_QUAD_EN_MX           0x40    /* Macronix Quad I/O */
+> +
+> +/* Configuration Register bits. */
+> +#define CR_QUAD_EN_SPAN		0x2     /* Spansion Quad I/O */
+> +
+> +#endif
 
+Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

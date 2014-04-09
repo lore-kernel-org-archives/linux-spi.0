@@ -1,61 +1,37 @@
-From: Brian Norris <computersforpeace@gmail.com>
-Subject: Re: [PATCH v5 3/8] mtd: spi-nor: add the framework for SPI NOR
-Date: Wed, 9 Apr 2014 10:48:37 -0700
-Message-ID: <20140409174837.GE32070@ld-irv-0074>
-References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
- <1393238262-8622-4-git-send-email-b32955@freescale.com>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/9] mtd: spi-nor: drop \t after #define
+Date: Wed, 9 Apr 2014 10:56:56 -0700
+Message-ID: <20140409175656.GF32070@ld-irv-0074>
+References: <1397064774-31784-1-git-send-email-computersforpeace@gmail.com>
+ <201404091940.14392.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: dwmw2@infradead.org, angus.clark@st.com, lee.jones@linaro.org,
-	pekon@ti.com, sourav.poddar@ti.com, broonie@linaro.org,
-	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-	b44548@freescale.com, b18965@freescale.com,
-	devicetree@vger.kernel.org, shawn.guo@linaro.org
-To: Huang Shijie <b32955@freescale.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1393238262-8622-4-git-send-email-b32955@freescale.com>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <201404091940.14392.marex-ynQEQJNshbs@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Feb 24, 2014 at 06:37:37PM +0800, Huang Shijie wrote:
-> This patch cloned most of the m25p80.c. In theory, it adds a new spi-=
-nor layer.
-=2E..
-> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-=
-nor.c
-> new file mode 100644
-> index 0000000..a840e88
-> --- /dev/null
-> +++ b/drivers/mtd/spi-nor/spi-nor.c
-> @@ -0,0 +1,1087 @@
-> +/*
-> + * Cloned most of the code from the m25p80.c
+On Wed, Apr 09, 2014 at 07:40:14PM +0200, Marek Vasut wrote:
+> On Wednesday, April 09, 2014 at 07:32:46 PM, Brian Norris wrote:
+> > +#define OPCODE_DUAL_READ        0x3b    /* Read data bytes (Dual SPI) */
+> > +#define OPCODE_QUAD_READ        0x6b    /* Read data bytes (Quad SPI) */
+> 
+> This is still a little non-standard -- or rather -- inconsistent here. You 
+> should use space after #define and \t after the name I'd say. I'd also say these 
+> two slipped your attention as the others do it just like that.
 
-Please include a copyright notice here. This should carry both the
-original m25p80.c copyright notice, as well as your own additional
-copyright if you choose. For instance:
+Thanks. I think I noticed this at one point, but in my patch juggling, I
+never straightened it out. I'll send v2 eventually. And in the meantime,
+I'm keeping my patches here:
 
- * Based on m25p80.c, by Mike Lavender (mike@steroidmicros.com), with
- * influence from lart.c (Abraham Van Der Merwe) and mtd_dataflash.c
- *
- * Copyright =A9 2005, Intec Automation Inc.
- * Copyright =A9 2014, Freescale Semiconductor, Inc.
-
-> + *
-> + * This code is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License version 2 as
-> + * published by the Free Software Foundation.
-> + */
-> +
-> +#include <linux/err.h>
-> +#include <linux/errno.h>
-> +#include <linux/module.h>
-> +#include <linux/device.h>
-> +#include <linux/mutex.h>
-> +#include <linux/math64.h>
-=2E..
+  http://git.infradead.org/users/norris/linux-mtd.git/shortlog/refs/heads/spinor
 
 Brian
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,75 +1,61 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH v5 0/8] mtd: spi-nor: add a new framework for SPI NOR
-Date: Wed, 9 Apr 2014 19:47:47 +0200
-Message-ID: <201404091947.47428.marex@denx.de>
-References: <1393238262-8622-1-git-send-email-b32955@freescale.com> <20140313063940.GU31517@norris-Latitude-E6410> <20140409033603.GA32070@ld-irv-0074>
+From: Brian Norris <computersforpeace@gmail.com>
+Subject: Re: [PATCH v5 3/8] mtd: spi-nor: add the framework for SPI NOR
+Date: Wed, 9 Apr 2014 10:48:37 -0700
+Message-ID: <20140409174837.GE32070@ld-irv-0074>
+References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
+ <1393238262-8622-4-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Huang Shijie <b32955@freescale.com>, dwmw2@infradead.org,
-	angus.clark@st.com, lee.jones@linaro.org, pekon@ti.com,
-	sourav.poddar@ti.com, broonie@linaro.org,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: dwmw2@infradead.org, angus.clark@st.com, lee.jones@linaro.org,
+	pekon@ti.com, sourav.poddar@ti.com, broonie@linaro.org,
 	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
 	b44548@freescale.com, b18965@freescale.com,
 	devicetree@vger.kernel.org, shawn.guo@linaro.org
-To: Brian Norris <computersforpeace@gmail.com>
+To: Huang Shijie <b32955@freescale.com>
 Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <20140409033603.GA32070@ld-irv-0074>
+Content-Disposition: inline
+In-Reply-To: <1393238262-8622-4-git-send-email-b32955@freescale.com>
 Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday, April 09, 2014 at 05:36:03 AM, Brian Norris wrote:
-> + Lee, Marek
-> 
-> Hi Huang,
-> 
-> On Wed, Mar 12, 2014 at 11:39:40PM -0700, Brian Norris wrote:
-> > On Wed, Mar 12, 2014 at 04:13:51PM +0800, Huang Shijie wrote:
-> > > On Mon, Feb 24, 2014 at 06:37:34PM +0800, Huang Shijie wrote:
-> > >    Could you please review this patch set? I really hope it can be
-> > >    merged as soon as possibel.  But now, the patch set has stalled for
-> > >    a long time.
-> > 
-> > I'm sorry for the delay. Others are in the same position of delay (e.g.,
-> > Lee's SPI-NOR driver), because I simply have not had the time to really
-> > devote this the attention it deserves, especially considering how it
-> > rearchitects such an important, commonly-used driver.
-> > 
-> > Nonetheless, I will try to give your patches some more attention soon.
-> > 
-> > >    Since you have pushed the patches for m25p80.c, i have to rebase
-> > >    this patch set again and again...
-> > 
-> > You mean locally? I promise you, I can handle rebasing on my reviewing
-> > end for small one-line conflicts like new chip IDs, so don't rebase and
-> > resend simply for that. Unless I find substantive things that you should
-> > change, I'd only expect at most one more rebase to be necessary.
-> 
-> Unfortunately, I did not get the time to review and test this
-> sufficiently for the 3.15 merge window, but to avoid further delay, I've
-> queued it up in l2-mtd.git [1] under its own branch for now. I rebased
-> it myself, to accommodate for changes to m25p80.c since your submission.
-> Please take a look at the branch.
-> 
-> If all goes well, I should merge the spinor branch into master some time
-> after the 3.15 merge window closes, so it will get linux-next testing.
-> For any additional comments/corrections (I have a few), please just
-> submit patches on top, rather than resending the whole series.
-> 
-> Marek, what was your opinion on this series? Last response I saw was
-> "looking good"; is that an Ack? Or did you have any more gating
-> requests?
-> 
-> Personally, I think it looks ready enough, and it's better to merge this
-> than not. I was able to test with my platforms, with no regression.
+On Mon, Feb 24, 2014 at 06:37:37PM +0800, Huang Shijie wrote:
+> This patch cloned most of the m25p80.c. In theory, it adds a new spi-=
+nor layer.
+=2E..
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-=
+nor.c
+> new file mode 100644
+> index 0000000..a840e88
+> --- /dev/null
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -0,0 +1,1087 @@
+> +/*
+> + * Cloned most of the code from the m25p80.c
 
-It looked OK to me, so that's an:
+Please include a copyright notice here. This should carry both the
+original m25p80.c copyright notice, as well as your own additional
+copyright if you choose. For instance:
 
-Acked-by: Marek Vasut <marex@denx.de>
+ * Based on m25p80.c, by Mike Lavender (mike@steroidmicros.com), with
+ * influence from lart.c (Abraham Van Der Merwe) and mtd_dataflash.c
+ *
+ * Copyright =A9 2005, Intec Automation Inc.
+ * Copyright =A9 2014, Freescale Semiconductor, Inc.
 
-Thanks for watching over this!
+> + *
+> + * This code is free software; you can redistribute it and/or modify
+> + * it under the terms of the GNU General Public License version 2 as
+> + * published by the Free Software Foundation.
+> + */
+> +
+> +#include <linux/err.h>
+> +#include <linux/errno.h>
+> +#include <linux/module.h>
+> +#include <linux/device.h>
+> +#include <linux/mutex.h>
+> +#include <linux/math64.h>
+=2E..
 
-Best regards,
-Marek Vasut
+Brian

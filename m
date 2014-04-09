@@ -1,74 +1,60 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 4/9] Documentation: spi-nor: rewrite some portions
-Date: Wed, 9 Apr 2014 11:14:18 -0700
-Message-ID: <20140409181418.GG32070@ld-irv-0074>
-References: <1397064774-31784-1-git-send-email-computersforpeace@gmail.com>
- <1397064774-31784-4-git-send-email-computersforpeace@gmail.com>
- <201404091944.15631.marex@denx.de>
+From: Brian Norris <computersforpeace@gmail.com>
+Subject: Re: [PATCH v5 5/8 fix] mtd: m25p80: use the SPI nor framework
+Date: Wed, 9 Apr 2014 14:37:49 -0700
+Message-ID: <20140409213749.GH32070@ld-irv-0074>
+References: <1393238262-8622-6-git-send-email-b32955@freescale.com>
+ <1393574142-17234-1-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: dwmw2@infradead.org, angus.clark@st.com, lee.jones@linaro.org,
+	pekon@ti.com, sourav.poddar@ti.com, broonie@linaro.org,
+	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+	devicetree@vger.kernel.org, shawn.guo@linaro.org,
+	Russel King <linux@arm.linux.org.uk>
+To: Huang Shijie <b32955@freescale.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <201404091944.15631.marex-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1393574142-17234-1-git-send-email-b32955@freescale.com>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Apr 09, 2014 at 07:44:15PM +0200, Marek Vasut wrote:
-> On Wednesday, April 09, 2014 at 07:32:49 PM, Brian Norris wrote:
-> > Signed-off-by: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> > ---
-> > WIP. This could be improved more (e.g., don't spend too much time
-> > documenting history; just document the current framework)
-> > 
-> >  Documentation/mtd/spi-nor.txt | 27 +++++++++++++++------------
-> >  1 file changed, 15 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/Documentation/mtd/spi-nor.txt b/Documentation/mtd/spi-nor.txt
-> > index 294d5b06f892..bfcdeb94e053 100644
-> > --- a/Documentation/mtd/spi-nor.txt
-> > +++ b/Documentation/mtd/spi-nor.txt
-> > @@ -1,16 +1,20 @@
-> >                            SPI NOR framework
-> >                 ============================================
-> > 
-> > -Part I - why we need this framework?
-> > +Part I - Why do we need this framework?
-> >  -------------------------------------
++ Russell
+
+On Fri, Feb 28, 2014 at 03:55:42PM +0800, Huang Shijie wrote:
+> add back the dependency information in the Kconfig. 
 > 
-> The underline is not matching the length of the text now ;-)
-
-It wasn't exactly matching in the first place. But I'll adjust all the
-headings so the line is exactly as long as the text.
-
-> > 
-> > -The SPI bus controller only deals with the byte stream.
-> > -Some controller does not works like a SPI bus controller, it works
-> > -like a SPI NOR controller instead, such as the Freescale's QuadSPI
-> > controller. +SPI bus controllers (drivers/spi/) only deal with streams of
-> > bytes; the bus +controller operates agnostic of the specific device
-> > attached. However, some +controllers (such as Freescale's QuadSPI
-> > controller) cannot easily handle +arbitrary streams of bytes, but rather
-> > are designed specifically for SPI NOR.
+> ---
+>  drivers/mtd/devices/Kconfig  |    2 +-
+>  drivers/mtd/devices/m25p80.c | 1302 ++++--------------------------------------
+>  2 files changed, 106 insertions(+), 1198 deletions(-)
 > 
-> You use the word 'specifically' here and below quick after one another, that 
-> doesn't sound nice when you read the text.
+> diff --git a/drivers/mtd/devices/Kconfig b/drivers/mtd/devices/Kconfig
+> index 0128138..004b17b 100644
+> --- a/drivers/mtd/devices/Kconfig
+> +++ b/drivers/mtd/devices/Kconfig
+> @@ -80,7 +80,7 @@ config MTD_DATAFLASH_OTP
+>  
+>  config MTD_M25P80
+>  	tristate "Support most SPI Flash chips (AT26DF, M25P, W25X, ...)"
+> -	depends on SPI_MASTER
+> +	depends on SPI_MASTER && MTD_SPI_NOR_BASE
+>  	help
+>  	  This enables access to most modern SPI flash chips, used for
+>  	  program and data storage.   Series supported include Atmel AT26DF,
 
-Sure, thanks for pointing it out.
+Now that M25P80 depends on MTD_SPI_NOR_BASE (which I proposed to rename
+to MTD_SPI_NOR a few hours ago), shouldn't we be updating everybody's
+defconfigs? As it stands, the defconfigs that use M25P80 will just drop
+it silently when built.
 
-> > -The Freescale's QuadSPI controller should know the NOR commands to
-> > -find the right LUT sequence. Unfortunately, the old code can not meet
-> > -this requirement.
-> > +Specifically, Freescale's QuadSPI controller must know the NOR commands to
+And if so, I'm not sure how this should be handled. Should defconfig
+patches be sent to their respective arch maintainers?
 
-My changes are pushed here temporarily, and I'll send v2 in the next day or so:
+Also, I think m25p80.c is no longer a "self-contained MTD device driver"
+and should be moved under drivers/mtd/spi-nor/.
 
-  http://git.infradead.org/users/norris/linux-mtd.git/shortlog/refs/heads/spinor
+(Once these questions are settled, did you want to handle cooking the
+patches, Huang, or should I?)
 
 Brian
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,8 +1,8 @@
 From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 1/9] mtd: spi-nor: drop \t after #define
-Date: Wed, 9 Apr 2014 19:40:14 +0200
-Message-ID: <201404091940.14392.marex@denx.de>
-References: <1397064774-31784-1-git-send-email-computersforpeace@gmail.com>
+Subject: Re: [PATCH 4/9] Documentation: spi-nor: rewrite some portions
+Date: Wed, 9 Apr 2014 19:44:15 +0200
+Message-ID: <201404091944.15631.marex@denx.de>
+References: <1397064774-31784-1-git-send-email-computersforpeace@gmail.com> <1397064774-31784-4-git-send-email-computersforpeace@gmail.com>
 Mime-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
@@ -11,95 +11,55 @@ Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Huang Shijie <b
 	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1397064774-31784-1-git-send-email-computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1397064774-31784-4-git-send-email-computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wednesday, April 09, 2014 at 07:32:46 PM, Brian Norris wrote:
-> Spacing is a little non-standard here.
-> 
+On Wednesday, April 09, 2014 at 07:32:49 PM, Brian Norris wrote:
 > Signed-off-by: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 > ---
-> Series based on l2-mtd.git/spinor:
+> WIP. This could be improved more (e.g., don't spend too much time
+> documenting history; just document the current framework)
 > 
->   http://git.infradead.org/l2-mtd.git
+>  Documentation/mtd/spi-nor.txt | 27 +++++++++++++++------------
+>  1 file changed, 15 insertions(+), 12 deletions(-)
 > 
->  include/linux/mtd/spi-nor.h | 68
-> ++++++++++++++++++++++----------------------- 1 file changed, 34
-> insertions(+), 34 deletions(-)
+> diff --git a/Documentation/mtd/spi-nor.txt b/Documentation/mtd/spi-nor.txt
+> index 294d5b06f892..bfcdeb94e053 100644
+> --- a/Documentation/mtd/spi-nor.txt
+> +++ b/Documentation/mtd/spi-nor.txt
+> @@ -1,16 +1,20 @@
+>                            SPI NOR framework
+>                 ============================================
 > 
-> diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-> index 41dae78fbd1d..558097e14932 100644
-> --- a/include/linux/mtd/spi-nor.h
-> +++ b/include/linux/mtd/spi-nor.h
-> @@ -2,50 +2,50 @@
->  #define __LINUX_MTD_SPI_NOR_H
+> -Part I - why we need this framework?
+> +Part I - Why do we need this framework?
+>  -------------------------------------
+
+The underline is not matching the length of the text now ;-)
+
 > 
->  /* Flash opcodes. */
-> -#define	OPCODE_WREN		0x06	/* Write enable */
-> -#define	OPCODE_RDSR		0x05	/* Read status register */
-> -#define	OPCODE_WRSR		0x01	/* Write status register 1 byte 
-*/
-> -#define	OPCODE_NORM_READ	0x03	/* Read data bytes (low 
-frequency) */
-> -#define	OPCODE_FAST_READ	0x0b	/* Read data bytes (high 
-frequency) */
-> -#define	OPCODE_DUAL_READ        0x3b    /* Read data bytes (Dual SPI) */
-> -#define	OPCODE_QUAD_READ        0x6b    /* Read data bytes (Quad SPI) */
-> -#define	OPCODE_PP		0x02	/* Page program (up to 256 
-bytes) */
-> -#define	OPCODE_BE_4K		0x20	/* Erase 4KiB block */
-> -#define	OPCODE_BE_4K_PMC	0xd7	/* Erase 4KiB block on PMC chips 
-*/
-> -#define	OPCODE_BE_32K		0x52	/* Erase 32KiB block */
-> -#define	OPCODE_CHIP_ERASE	0xc7	/* Erase whole flash chip */
-> -#define	OPCODE_SE		0xd8	/* Sector erase (usually 64KiB) 
-*/
-> -#define	OPCODE_RDID		0x9f	/* Read JEDEC ID */
-> -#define	OPCODE_RDCR             0x35    /* Read configuration register 
-*/
-> +#define OPCODE_WREN		0x06	/* Write enable */
-> +#define OPCODE_RDSR		0x05	/* Read status register */
-> +#define OPCODE_WRSR		0x01	/* Write status register 1 byte */
-> +#define OPCODE_NORM_READ	0x03	/* Read data bytes (low frequency) */
-> +#define OPCODE_FAST_READ	0x0b	/* Read data bytes (high frequency) */
-> +#define OPCODE_DUAL_READ        0x3b    /* Read data bytes (Dual SPI) */
-> +#define OPCODE_QUAD_READ        0x6b    /* Read data bytes (Quad SPI) */
+> -The SPI bus controller only deals with the byte stream.
+> -Some controller does not works like a SPI bus controller, it works
+> -like a SPI NOR controller instead, such as the Freescale's QuadSPI
+> controller. +SPI bus controllers (drivers/spi/) only deal with streams of
+> bytes; the bus +controller operates agnostic of the specific device
+> attached. However, some +controllers (such as Freescale's QuadSPI
+> controller) cannot easily handle +arbitrary streams of bytes, but rather
+> are designed specifically for SPI NOR.
 
-This is still a little non-standard -- or rather -- inconsistent here. You 
-should use space after #define and \t after the name I'd say. I'd also say these 
-two slipped your attention as the others do it just like that.
+You use the word 'specifically' here and below quick after one another, that 
+doesn't sound nice when you read the text.
 
-> +#define OPCODE_PP		0x02	/* Page program (up to 256 bytes) */
-> +#define OPCODE_BE_4K		0x20	/* Erase 4KiB block */
-> +#define OPCODE_BE_4K_PMC	0xd7	/* Erase 4KiB block on PMC chips */
-> +#define OPCODE_BE_32K		0x52	/* Erase 32KiB block */
-> +#define OPCODE_CHIP_ERASE	0xc7	/* Erase whole flash chip */
-> +#define OPCODE_SE		0xd8	/* Sector erase (usually 64KiB) */
-> +#define OPCODE_RDID		0x9f	/* Read JEDEC ID */
-> +#define OPCODE_RDCR             0x35    /* Read configuration register */
+> -The Freescale's QuadSPI controller should know the NOR commands to
+> -find the right LUT sequence. Unfortunately, the old code can not meet
+> -this requirement.
+> +Specifically, Freescale's QuadSPI controller must know the NOR commands to
 
-DTTO here.
-
->  /* 4-byte address opcodes - used on Spansion and some Macronix flashes. */
-> -#define	OPCODE_NORM_READ_4B	0x13	/* Read data bytes (low 
-frequency) */
-> -#define	OPCODE_FAST_READ_4B	0x0c	/* Read data bytes (high 
-frequency) */
-> -#define	OPCODE_DUAL_READ_4B	0x3c    /* Read data bytes (Dual SPI) */
-> -#define	OPCODE_QUAD_READ_4B	0x6c    /* Read data bytes (Quad SPI) */
-> -#define	OPCODE_PP_4B		0x12	/* Page program (up to 256 
-bytes) */
-> -#define	OPCODE_SE_4B		0xdc	/* Sector erase (usually 64KiB) 
-*/
-> +#define OPCODE_NORM_READ_4B	0x13	/* Read data bytes (low frequency) */
-> +#define OPCODE_FAST_READ_4B	0x0c	/* Read data bytes (high frequency) */
-> +#define OPCODE_DUAL_READ_4B	0x3c    /* Read data bytes (Dual SPI) */
-> +#define OPCODE_QUAD_READ_4B	0x6c    /* Read data bytes (Quad SPI) */
-
-This comment here is indented with spaces, while the other comments are indented 
-with tabs ;-/
 [...]
+
+Best regards,
+Marek Vasut
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

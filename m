@@ -1,7 +1,7 @@
 From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/9] mtd: spi-nor: re-name OPCODE_* to SPINOR_OP_*
-Date: Wed,  9 Apr 2014 10:32:47 -0700
-Message-ID: <1397064774-31784-2-git-send-email-computersforpeace@gmail.com>
+Subject: [PATCH 8/9] mtd: st_spi_fsm: replace FLACH_CMD_* with SPINOR_OP_*
+Date: Wed,  9 Apr 2014 10:32:53 -0700
+Message-ID: <1397064774-31784-8-git-send-email-computersforpeace@gmail.com>
 References: <1397064774-31784-1-git-send-email-computersforpeace@gmail.com>
 Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
@@ -13,513 +13,397 @@ In-Reply-To: <1397064774-31784-1-git-send-email-computersforpeace-Re5JQEeQqe8Avx
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Qualify these with a better namespace, and prepare them for use in more
-drivers.
+Begin to unify the differences between serial_flash_cmds.h and
+spi-nor.h.
 
 Signed-off-by: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 ---
- drivers/mtd/devices/m25p80.c      |  4 +--
- drivers/mtd/spi-nor/fsl-quadspi.c | 58 +++++++++++++++++------------------
- drivers/mtd/spi-nor/spi-nor.c     | 64 +++++++++++++++++++--------------------
- include/linux/mtd/spi-nor.h       | 54 ++++++++++++++++-----------------
- 4 files changed, 90 insertions(+), 90 deletions(-)
+ drivers/mtd/devices/serial_flash_cmds.h |  62 +++++++++---------
+ drivers/mtd/devices/st_spi_fsm.c        | 112 ++++++++++++++++----------------
+ 2 files changed, 87 insertions(+), 87 deletions(-)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 4af6400ccd95..1557d8f672c1 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -86,7 +86,7 @@ static void m25p80_write(struct spi_nor *nor, loff_t to, size_t len,
+diff --git a/drivers/mtd/devices/serial_flash_cmds.h b/drivers/mtd/devices/serial_flash_cmds.h
+index 4f0c2c7c898e..82fa1687a2d3 100644
+--- a/drivers/mtd/devices/serial_flash_cmds.h
++++ b/drivers/mtd/devices/serial_flash_cmds.h
+@@ -13,43 +13,43 @@
+ #define _MTD_SERIAL_FLASH_CMDS_H
  
- 	spi_message_init(&m);
+ /* Generic Flash Commands/OPCODEs */
+-#define FLASH_CMD_WREN		0x06
+-#define FLASH_CMD_WRDI		0x04
+-#define FLASH_CMD_RDID		0x9f
+-#define FLASH_CMD_RDSR		0x05
+-#define FLASH_CMD_RDSR2		0x35
+-#define FLASH_CMD_WRSR		0x01
+-#define FLASH_CMD_SE_4K		0x20
+-#define FLASH_CMD_SE_32K	0x52
+-#define FLASH_CMD_SE		0xd8
+-#define FLASH_CMD_CHIPERASE	0xc7
+-#define FLASH_CMD_WRVCR		0x81
+-#define FLASH_CMD_RDVCR		0x85
++#define SPINOR_OP_WREN		0x06
++#define SPINOR_OP_WRDI		0x04
++#define SPINOR_OP_RDID		0x9f
++#define SPINOR_OP_RDSR		0x05
++#define SPINOR_OP_RDSR2		0x35
++#define SPINOR_OP_WRSR		0x01
++#define SPINOR_OP_SE_4K		0x20
++#define SPINOR_OP_SE_32K	0x52
++#define SPINOR_OP_SE		0xd8
++#define SPINOR_OP_CHIPERASE	0xc7
++#define SPINOR_OP_WRVCR		0x81
++#define SPINOR_OP_RDVCR		0x85
  
--	if (nor->program_opcode == OPCODE_AAI_WP && nor->sst_write_second)
-+	if (nor->program_opcode == SPINOR_OP_AAI_WP && nor->sst_write_second)
- 		cmd_sz = 1;
+ /* JEDEC Standard - Serial Flash Discoverable Parmeters (SFDP) Commands */
+-#define FLASH_CMD_READ		0x03	/* READ */
+-#define FLASH_CMD_READ_FAST	0x0b	/* FAST READ */
+-#define FLASH_CMD_READ_1_1_2	0x3b	/* DUAL OUTPUT READ */
+-#define FLASH_CMD_READ_1_2_2	0xbb	/* DUAL I/O READ */
+-#define FLASH_CMD_READ_1_1_4	0x6b	/* QUAD OUTPUT READ */
+-#define FLASH_CMD_READ_1_4_4	0xeb	/* QUAD I/O READ */
++#define SPINOR_OP_READ		0x03	/* READ */
++#define SPINOR_OP_READ_FAST	0x0b	/* FAST READ */
++#define SPINOR_OP_READ_1_1_2	0x3b	/* DUAL OUTPUT READ */
++#define SPINOR_OP_READ_1_2_2	0xbb	/* DUAL I/O READ */
++#define SPINOR_OP_READ_1_1_4	0x6b	/* QUAD OUTPUT READ */
++#define SPINOR_OP_READ_1_4_4	0xeb	/* QUAD I/O READ */
  
- 	flash->command[0] = nor->program_opcode;
-@@ -171,7 +171,7 @@ static int m25p80_erase(struct spi_nor *nor, loff_t offset)
- 		return ret;
+-#define FLASH_CMD_WRITE		0x02	/* PAGE PROGRAM */
+-#define FLASH_CMD_WRITE_1_1_2	0xa2	/* DUAL INPUT PROGRAM */
+-#define FLASH_CMD_WRITE_1_2_2	0xd2	/* DUAL INPUT EXT PROGRAM */
+-#define FLASH_CMD_WRITE_1_1_4	0x32	/* QUAD INPUT PROGRAM */
+-#define FLASH_CMD_WRITE_1_4_4	0x12	/* QUAD INPUT EXT PROGRAM */
++#define SPINOR_OP_WRITE		0x02	/* PAGE PROGRAM */
++#define SPINOR_OP_WRITE_1_1_2	0xa2	/* DUAL INPUT PROGRAM */
++#define SPINOR_OP_WRITE_1_2_2	0xd2	/* DUAL INPUT EXT PROGRAM */
++#define SPINOR_OP_WRITE_1_1_4	0x32	/* QUAD INPUT PROGRAM */
++#define SPINOR_OP_WRITE_1_4_4	0x12	/* QUAD INPUT EXT PROGRAM */
  
- 	/* Send write enable, then erase commands. */
--	ret = nor->write_reg(nor, OPCODE_WREN, NULL, 0, 0);
-+	ret = nor->write_reg(nor, SPINOR_OP_WREN, NULL, 0, 0);
- 	if (ret)
- 		return ret;
+-#define FLASH_CMD_EN4B_ADDR	0xb7	/* Enter 4-byte address mode */
+-#define FLASH_CMD_EX4B_ADDR	0xe9	/* Exit 4-byte address mode */
++#define SPINOR_OP_EN4B_ADDR	0xb7	/* Enter 4-byte address mode */
++#define SPINOR_OP_EX4B_ADDR	0xe9	/* Exit 4-byte address mode */
  
-diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
-index 6dc08ed950c8..2977f026f39d 100644
---- a/drivers/mtd/spi-nor/fsl-quadspi.c
-+++ b/drivers/mtd/spi-nor/fsl-quadspi.c
-@@ -294,12 +294,12 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
- 	lut_base = SEQID_QUAD_READ * 4;
+ /* READ commands with 32-bit addressing */
+-#define FLASH_CMD_READ4		0x13
+-#define FLASH_CMD_READ4_FAST	0x0c
+-#define FLASH_CMD_READ4_1_1_2	0x3c
+-#define FLASH_CMD_READ4_1_2_2	0xbc
+-#define FLASH_CMD_READ4_1_1_4	0x6c
+-#define FLASH_CMD_READ4_1_4_4	0xec
++#define SPINOR_OP_READ4		0x13
++#define SPINOR_OP_READ4_FAST	0x0c
++#define SPINOR_OP_READ4_1_1_2	0x3c
++#define SPINOR_OP_READ4_1_2_2	0xbc
++#define SPINOR_OP_READ4_1_1_4	0x6c
++#define SPINOR_OP_READ4_1_4_4	0xec
  
- 	if (q->nor_size <= SZ_16M) {
--		cmd = OPCODE_QUAD_READ;
-+		cmd = SPINOR_OP_QUAD_READ;
- 		addrlen = ADDR24BIT;
- 		dummy = 8;
- 	} else {
- 		/* use the 4-byte address */
--		cmd = OPCODE_QUAD_READ;
-+		cmd = SPINOR_OP_QUAD_READ;
- 		addrlen = ADDR32BIT;
- 		dummy = 8;
- 	}
-@@ -311,17 +311,17 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
+ /* Configuration flags */
+ #define FLASH_FLAG_SINGLE	0x000000ff
+diff --git a/drivers/mtd/devices/st_spi_fsm.c b/drivers/mtd/devices/st_spi_fsm.c
+index 122a8a14ef84..fc193a94307d 100644
+--- a/drivers/mtd/devices/st_spi_fsm.c
++++ b/drivers/mtd/devices/st_spi_fsm.c
+@@ -208,7 +208,7 @@
+ #define S25FL_CMD_DYBWR                0xe1
+ #define S25FL_CMD_DYBRD                0xe0
+ #define S25FL_CMD_WRITE4       0x12    /* Note, opcode clashes with
+-					* 'FLASH_CMD_WRITE_1_4_4'
++					* 'SPINOR_OP_WRITE_1_4_4'
+ 					* as found on N25Qxxx devices! */
  
- 	/* Write enable */
- 	lut_base = SEQID_WREN * 4;
--	writel(LUT0(CMD, PAD1, OPCODE_WREN), base + QUADSPI_LUT(lut_base));
-+	writel(LUT0(CMD, PAD1, SPINOR_OP_WREN), base + QUADSPI_LUT(lut_base));
- 
- 	/* Page Program */
- 	lut_base = SEQID_PP * 4;
- 
- 	if (q->nor_size <= SZ_16M) {
--		cmd = OPCODE_PP;
-+		cmd = SPINOR_OP_PP;
- 		addrlen = ADDR24BIT;
- 	} else {
- 		/* use the 4-byte address */
--		cmd = OPCODE_PP;
-+		cmd = SPINOR_OP_PP;
- 		addrlen = ADDR32BIT;
- 	}
- 
-@@ -331,18 +331,18 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
- 
- 	/* Read Status */
- 	lut_base = SEQID_RDSR * 4;
--	writel(LUT0(CMD, PAD1, OPCODE_RDSR) | LUT1(READ, PAD1, 0x1),
-+	writel(LUT0(CMD, PAD1, SPINOR_OP_RDSR) | LUT1(READ, PAD1, 0x1),
- 			base + QUADSPI_LUT(lut_base));
- 
- 	/* Erase a sector */
- 	lut_base = SEQID_SE * 4;
- 
- 	if (q->nor_size <= SZ_16M) {
--		cmd = OPCODE_SE;
-+		cmd = SPINOR_OP_SE;
- 		addrlen = ADDR24BIT;
- 	} else {
- 		/* use the 4-byte address */
--		cmd = OPCODE_SE;
-+		cmd = SPINOR_OP_SE;
- 		addrlen = ADDR32BIT;
- 	}
- 
-@@ -351,35 +351,35 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
- 
- 	/* Erase the whole chip */
- 	lut_base = SEQID_CHIP_ERASE * 4;
--	writel(LUT0(CMD, PAD1, OPCODE_CHIP_ERASE),
-+	writel(LUT0(CMD, PAD1, SPINOR_OP_CHIP_ERASE),
- 			base + QUADSPI_LUT(lut_base));
- 
- 	/* READ ID */
- 	lut_base = SEQID_RDID * 4;
--	writel(LUT0(CMD, PAD1, OPCODE_RDID) | LUT1(READ, PAD1, 0x8),
-+	writel(LUT0(CMD, PAD1, SPINOR_OP_RDID) | LUT1(READ, PAD1, 0x8),
- 			base + QUADSPI_LUT(lut_base));
- 
- 	/* Write Register */
- 	lut_base = SEQID_WRSR * 4;
--	writel(LUT0(CMD, PAD1, OPCODE_WRSR) | LUT1(WRITE, PAD1, 0x2),
-+	writel(LUT0(CMD, PAD1, SPINOR_OP_WRSR) | LUT1(WRITE, PAD1, 0x2),
- 			base + QUADSPI_LUT(lut_base));
- 
- 	/* Read Configuration Register */
- 	lut_base = SEQID_RDCR * 4;
--	writel(LUT0(CMD, PAD1, OPCODE_RDCR) | LUT1(READ, PAD1, 0x1),
-+	writel(LUT0(CMD, PAD1, SPINOR_OP_RDCR) | LUT1(READ, PAD1, 0x1),
- 			base + QUADSPI_LUT(lut_base));
- 
- 	/* Write disable */
- 	lut_base = SEQID_WRDI * 4;
--	writel(LUT0(CMD, PAD1, OPCODE_WRDI), base + QUADSPI_LUT(lut_base));
-+	writel(LUT0(CMD, PAD1, SPINOR_OP_WRDI), base + QUADSPI_LUT(lut_base));
- 
- 	/* Enter 4 Byte Mode (Micron) */
- 	lut_base = SEQID_EN4B * 4;
--	writel(LUT0(CMD, PAD1, OPCODE_EN4B), base + QUADSPI_LUT(lut_base));
-+	writel(LUT0(CMD, PAD1, SPINOR_OP_EN4B), base + QUADSPI_LUT(lut_base));
- 
- 	/* Enter 4 Byte Mode (Spansion) */
- 	lut_base = SEQID_BRWR * 4;
--	writel(LUT0(CMD, PAD1, OPCODE_BRWR), base + QUADSPI_LUT(lut_base));
-+	writel(LUT0(CMD, PAD1, SPINOR_OP_BRWR), base + QUADSPI_LUT(lut_base));
- 
- 	fsl_qspi_lock_lut(q);
- }
-@@ -388,29 +388,29 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
- static int fsl_qspi_get_seqid(struct fsl_qspi *q, u8 cmd)
- {
- 	switch (cmd) {
--	case OPCODE_QUAD_READ:
-+	case SPINOR_OP_QUAD_READ:
- 		return SEQID_QUAD_READ;
--	case OPCODE_WREN:
-+	case SPINOR_OP_WREN:
- 		return SEQID_WREN;
--	case OPCODE_WRDI:
-+	case SPINOR_OP_WRDI:
- 		return SEQID_WRDI;
--	case OPCODE_RDSR:
-+	case SPINOR_OP_RDSR:
- 		return SEQID_RDSR;
--	case OPCODE_SE:
-+	case SPINOR_OP_SE:
- 		return SEQID_SE;
--	case OPCODE_CHIP_ERASE:
-+	case SPINOR_OP_CHIP_ERASE:
- 		return SEQID_CHIP_ERASE;
--	case OPCODE_PP:
-+	case SPINOR_OP_PP:
- 		return SEQID_PP;
--	case OPCODE_RDID:
-+	case SPINOR_OP_RDID:
- 		return SEQID_RDID;
--	case OPCODE_WRSR:
-+	case SPINOR_OP_WRSR:
- 		return SEQID_WRSR;
--	case OPCODE_RDCR:
-+	case SPINOR_OP_RDCR:
- 		return SEQID_RDCR;
--	case OPCODE_EN4B:
-+	case SPINOR_OP_EN4B:
- 		return SEQID_EN4B;
--	case OPCODE_BRWR:
-+	case SPINOR_OP_BRWR:
- 		return SEQID_BRWR;
- 	default:
- 		dev_err(q->dev, "Unsupported cmd 0x%.2x\n", cmd);
-@@ -688,7 +688,7 @@ static int fsl_qspi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len,
- 		if (ret)
- 			return ret;
- 
--		if (opcode == OPCODE_CHIP_ERASE)
-+		if (opcode == SPINOR_OP_CHIP_ERASE)
- 			fsl_qspi_invalid(q);
- 
- 	} else if (len > 0) {
-@@ -750,7 +750,7 @@ static int fsl_qspi_erase(struct spi_nor *nor, loff_t offs)
- 		return ret;
- 
- 	/* Send write enable, then erase commands. */
--	ret = nor->write_reg(nor, OPCODE_WREN, NULL, 0, 0);
-+	ret = nor->write_reg(nor, SPINOR_OP_WREN, NULL, 0, 0);
- 	if (ret)
- 		return ret;
- 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index 5cd86eb2a5f0..462f1c8c3a7d 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -34,7 +34,7 @@ static int read_sr(struct spi_nor *nor)
- 	int ret;
- 	u8 val;
- 
--	ret = nor->read_reg(nor, OPCODE_RDSR, &val, 1);
-+	ret = nor->read_reg(nor, SPINOR_OP_RDSR, &val, 1);
- 	if (ret < 0) {
- 		pr_err("error %d reading SR\n", (int) ret);
- 		return ret;
-@@ -53,7 +53,7 @@ static int read_cr(struct spi_nor *nor)
- 	int ret;
- 	u8 val;
- 
--	ret = nor->read_reg(nor, OPCODE_RDCR, &val, 1);
-+	ret = nor->read_reg(nor, SPINOR_OP_RDCR, &val, 1);
- 	if (ret < 0) {
- 		dev_err(nor->dev, "error %d reading CR\n", ret);
- 		return ret;
-@@ -87,7 +87,7 @@ static inline int spi_nor_read_dummy_cycles(struct spi_nor *nor)
- static inline int write_sr(struct spi_nor *nor, u8 val)
- {
- 	nor->cmd_buf[0] = val;
--	return nor->write_reg(nor, OPCODE_WRSR, nor->cmd_buf, 1, 0);
-+	return nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 1, 0);
- }
- 
- /*
-@@ -96,7 +96,7 @@ static inline int write_sr(struct spi_nor *nor, u8 val)
-  */
- static inline int write_enable(struct spi_nor *nor)
- {
--	return nor->write_reg(nor, OPCODE_WREN, NULL, 0, 0);
-+	return nor->write_reg(nor, SPINOR_OP_WREN, NULL, 0, 0);
- }
- 
- /*
-@@ -104,7 +104,7 @@ static inline int write_enable(struct spi_nor *nor)
-  */
- static inline int write_disable(struct spi_nor *nor)
- {
--	return nor->write_reg(nor, OPCODE_WRDI, NULL, 0, 0);
-+	return nor->write_reg(nor, SPINOR_OP_WRDI, NULL, 0, 0);
- }
- 
- static inline struct spi_nor *mtd_to_spi_nor(struct mtd_info *mtd)
-@@ -128,7 +128,7 @@ static inline int set_4byte(struct spi_nor *nor, u32 jedec_id, int enable)
- 		if (need_wren)
- 			write_enable(nor);
- 
--		cmd = enable ? OPCODE_EN4B : OPCODE_EX4B;
-+		cmd = enable ? SPINOR_OP_EN4B : SPINOR_OP_EX4B;
- 		status = nor->write_reg(nor, cmd, NULL, 0, 0);
- 		if (need_wren)
- 			write_disable(nor);
-@@ -137,7 +137,7 @@ static inline int set_4byte(struct spi_nor *nor, u32 jedec_id, int enable)
- 	default:
- 		/* Spansion style */
- 		nor->cmd_buf[0] = enable << 7;
--		return nor->write_reg(nor, OPCODE_BRWR, nor->cmd_buf, 1, 0);
-+		return nor->write_reg(nor, SPINOR_OP_BRWR, nor->cmd_buf, 1, 0);
- 	}
- }
- 
-@@ -189,7 +189,7 @@ static int erase_chip(struct spi_nor *nor)
- 	/* Send write enable, then erase commands. */
- 	write_enable(nor);
- 
--	return nor->write_reg(nor, OPCODE_CHIP_ERASE, NULL, 0, 0);
-+	return nor->write_reg(nor, SPINOR_OP_CHIP_ERASE, NULL, 0, 0);
- }
- 
- static int spi_nor_lock_and_prep(struct spi_nor *nor, enum spi_nor_ops ops)
-@@ -249,7 +249,7 @@ static int spi_nor_erase(struct mtd_info *mtd, struct erase_info *instr)
- 		}
- 
- 	/* REVISIT in some cases we could speed up erasing large regions
--	 * by using OPCODE_SE instead of OPCODE_BE_4K.  We may have set up
-+	 * by using SPINOR_OP_SE instead of SPINOR_OP_BE_4K.  We may have set up
- 	 * to use "small sector erase", but that's not always optimal.
- 	 */
- 
-@@ -381,7 +381,7 @@ struct flash_info {
- 	u32		jedec_id;
+ /* Status register */
+@@ -296,7 +296,7 @@ struct flash_info {
+ 	u32             jedec_id;
  	u16             ext_id;
- 
--	/* The size listed here is what works with OPCODE_SE, which isn't
-+	/* The size listed here is what works with SPINOR_OP_SE, which isn't
+ 	/*
+-	 * The size listed here is what works with FLASH_CMD_SE, which isn't
++	 * The size listed here is what works with SPINOR_OP_SE, which isn't
  	 * necessarily called a "sector" by the vendor.
  	 */
- 	unsigned	sector_size;
-@@ -391,11 +391,11 @@ struct flash_info {
- 	u16		addr_width;
+ 	unsigned        sector_size;
+@@ -451,22 +451,22 @@ static struct flash_info flash_types[] = {
  
- 	u16		flags;
--#define	SECT_4K			0x01	/* OPCODE_BE_4K works uniformly */
-+#define	SECT_4K			0x01	/* SPINOR_OP_BE_4K works uniformly */
- #define	SPI_NOR_NO_ERASE	0x02	/* No erase command needed */
- #define	SST_WRITE		0x04	/* use SST byte programming */
- #define	SPI_NOR_NO_FR		0x08	/* Can't do fastread */
--#define	SECT_4K_PMC		0x10	/* OPCODE_BE_4K_PMC works uniformly */
-+#define	SECT_4K_PMC		0x10	/* SPINOR_OP_BE_4K_PMC works uniformly */
- #define	SPI_NOR_DUAL_READ	0x20    /* Flash supports Dual Read */
- #define	SPI_NOR_QUAD_READ	0x40    /* Flash supports Quad Read */
+ /* Default READ configurations, in order of preference */
+ static struct seq_rw_config default_read_configs[] = {
+-	{FLASH_FLAG_READ_1_4_4, FLASH_CMD_READ_1_4_4,	0, 4, 4, 0x00, 2, 4},
+-	{FLASH_FLAG_READ_1_1_4, FLASH_CMD_READ_1_1_4,	0, 1, 4, 0x00, 4, 0},
+-	{FLASH_FLAG_READ_1_2_2, FLASH_CMD_READ_1_2_2,	0, 2, 2, 0x00, 4, 0},
+-	{FLASH_FLAG_READ_1_1_2, FLASH_CMD_READ_1_1_2,	0, 1, 2, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_FAST,	FLASH_CMD_READ_FAST,	0, 1, 1, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_WRITE, FLASH_CMD_READ,		0, 1, 1, 0x00, 0, 0},
++	{FLASH_FLAG_READ_1_4_4, SPINOR_OP_READ_1_4_4,	0, 4, 4, 0x00, 2, 4},
++	{FLASH_FLAG_READ_1_1_4, SPINOR_OP_READ_1_1_4,	0, 1, 4, 0x00, 4, 0},
++	{FLASH_FLAG_READ_1_2_2, SPINOR_OP_READ_1_2_2,	0, 2, 2, 0x00, 4, 0},
++	{FLASH_FLAG_READ_1_1_2, SPINOR_OP_READ_1_1_2,	0, 1, 2, 0x00, 0, 8},
++	{FLASH_FLAG_READ_FAST,	SPINOR_OP_READ_FAST,	0, 1, 1, 0x00, 0, 8},
++	{FLASH_FLAG_READ_WRITE, SPINOR_OP_READ,		0, 1, 1, 0x00, 0, 0},
+ 	{0x00,			0,			0, 0, 0, 0x00, 0, 0},
  };
-@@ -594,7 +594,7 @@ static const struct spi_device_id *spi_nor_read_id(struct spi_nor *nor)
- 	u16                     ext_jedec;
- 	struct flash_info	*info;
  
--	tmp = nor->read_reg(nor, OPCODE_RDID, id, 5);
-+	tmp = nor->read_reg(nor, SPINOR_OP_RDID, id, 5);
- 	if (tmp < 0) {
- 		dev_dbg(nor->dev, " error %d reading JEDEC ID\n", tmp);
- 		return ERR_PTR(tmp);
-@@ -666,7 +666,7 @@ static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
- 	actual = to % 2;
- 	/* Start write from odd address. */
- 	if (actual) {
--		nor->program_opcode = OPCODE_BP;
-+		nor->program_opcode = SPINOR_OP_BP;
+ /* Default WRITE configurations */
+ static struct seq_rw_config default_write_configs[] = {
+-	{FLASH_FLAG_WRITE_1_4_4, FLASH_CMD_WRITE_1_4_4, 1, 4, 4, 0x00, 0, 0},
+-	{FLASH_FLAG_WRITE_1_1_4, FLASH_CMD_WRITE_1_1_4, 1, 1, 4, 0x00, 0, 0},
+-	{FLASH_FLAG_WRITE_1_2_2, FLASH_CMD_WRITE_1_2_2, 1, 2, 2, 0x00, 0, 0},
+-	{FLASH_FLAG_WRITE_1_1_2, FLASH_CMD_WRITE_1_1_2, 1, 1, 2, 0x00, 0, 0},
+-	{FLASH_FLAG_READ_WRITE,  FLASH_CMD_WRITE,       1, 1, 1, 0x00, 0, 0},
++	{FLASH_FLAG_WRITE_1_4_4, SPINOR_OP_WRITE_1_4_4, 1, 4, 4, 0x00, 0, 0},
++	{FLASH_FLAG_WRITE_1_1_4, SPINOR_OP_WRITE_1_1_4, 1, 1, 4, 0x00, 0, 0},
++	{FLASH_FLAG_WRITE_1_2_2, SPINOR_OP_WRITE_1_2_2, 1, 2, 2, 0x00, 0, 0},
++	{FLASH_FLAG_WRITE_1_1_2, SPINOR_OP_WRITE_1_1_2, 1, 1, 2, 0x00, 0, 0},
++	{FLASH_FLAG_READ_WRITE,  SPINOR_OP_WRITE,       1, 1, 1, 0x00, 0, 0},
+ 	{0x00,			 0,			0, 0, 0, 0x00, 0, 0},
+ };
  
- 		/* write one byte. */
- 		nor->write(nor, to, 1, retlen, buf);
-@@ -678,7 +678,7 @@ static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
+@@ -489,12 +489,12 @@ static struct seq_rw_config default_write_configs[] = {
+  * cycles.
+  */
+ static struct seq_rw_config n25q_read3_configs[] = {
+-	{FLASH_FLAG_READ_1_4_4, FLASH_CMD_READ_1_4_4,	0, 4, 4, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_1_4, FLASH_CMD_READ_1_1_4,	0, 1, 4, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_2_2, FLASH_CMD_READ_1_2_2,	0, 2, 2, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_1_2, FLASH_CMD_READ_1_1_2,	0, 1, 2, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_FAST,	FLASH_CMD_READ_FAST,	0, 1, 1, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_WRITE, FLASH_CMD_READ,	        0, 1, 1, 0x00, 0, 0},
++	{FLASH_FLAG_READ_1_4_4, SPINOR_OP_READ_1_4_4,	0, 4, 4, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_1_4, SPINOR_OP_READ_1_1_4,	0, 1, 4, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_2_2, SPINOR_OP_READ_1_2_2,	0, 2, 2, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_1_2, SPINOR_OP_READ_1_1_2,	0, 1, 2, 0x00, 0, 8},
++	{FLASH_FLAG_READ_FAST,	SPINOR_OP_READ_FAST,	0, 1, 1, 0x00, 0, 8},
++	{FLASH_FLAG_READ_WRITE, SPINOR_OP_READ,	        0, 1, 1, 0x00, 0, 0},
+ 	{0x00,			0,			0, 0, 0, 0x00, 0, 0},
+ };
  
- 	/* Write out most of the data here. */
- 	for (; actual < len - 1; actual += 2) {
--		nor->program_opcode = OPCODE_AAI_WP;
-+		nor->program_opcode = SPINOR_OP_AAI_WP;
+@@ -504,12 +504,12 @@ static struct seq_rw_config n25q_read3_configs[] = {
+  *	- 'FAST' variants configured for 8 dummy cycles (see note above.)
+  */
+ static struct seq_rw_config n25q_read4_configs[] = {
+-	{FLASH_FLAG_READ_1_4_4, FLASH_CMD_READ4_1_4_4,	0, 4, 4, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_1_4, FLASH_CMD_READ4_1_1_4,	0, 1, 4, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_2_2, FLASH_CMD_READ4_1_2_2,	0, 2, 2, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_1_2, FLASH_CMD_READ4_1_1_2,	0, 1, 2, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_FAST,	FLASH_CMD_READ4_FAST,	0, 1, 1, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_WRITE, FLASH_CMD_READ4,	0, 1, 1, 0x00, 0, 0},
++	{FLASH_FLAG_READ_1_4_4, SPINOR_OP_READ4_1_4_4,	0, 4, 4, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_1_4, SPINOR_OP_READ4_1_1_4,	0, 1, 4, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_2_2, SPINOR_OP_READ4_1_2_2,	0, 2, 2, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_1_2, SPINOR_OP_READ4_1_1_2,	0, 1, 2, 0x00, 0, 8},
++	{FLASH_FLAG_READ_FAST,	SPINOR_OP_READ4_FAST,	0, 1, 1, 0x00, 0, 8},
++	{FLASH_FLAG_READ_WRITE, SPINOR_OP_READ4,	0, 1, 1, 0x00, 0, 0},
+ 	{0x00,			0,			0, 0, 0, 0x00, 0, 0},
+ };
  
- 		/* write two bytes. */
- 		nor->write(nor, to, 2, retlen, buf + actual);
-@@ -699,7 +699,7 @@ static int sst_write(struct mtd_info *mtd, loff_t to, size_t len,
- 	if (actual != len) {
- 		write_enable(nor);
+@@ -522,7 +522,7 @@ static int stfsm_mx25_en_32bit_addr_seq(struct stfsm_seq *seq)
+ {
+ 	seq->seq_opc[0] = (SEQ_OPC_PADS_1 |
+ 			   SEQ_OPC_CYCLES(8) |
+-			   SEQ_OPC_OPCODE(FLASH_CMD_EN4B_ADDR) |
++			   SEQ_OPC_OPCODE(SPINOR_OP_EN4B_ADDR) |
+ 			   SEQ_OPC_CSDEASSERT);
  
--		nor->program_opcode = OPCODE_BP;
-+		nor->program_opcode = SPINOR_OP_BP;
- 		nor->write(nor, to, 1, retlen, buf + actual);
+ 	seq->seq[0] = STFSM_INST_CMD1;
+@@ -550,12 +550,12 @@ static int stfsm_mx25_en_32bit_addr_seq(struct stfsm_seq *seq)
+  * entering a state that is incompatible with the SPIBoot Controller.
+  */
+ static struct seq_rw_config stfsm_s25fl_read4_configs[] = {
+-	{FLASH_FLAG_READ_1_4_4,  FLASH_CMD_READ4_1_4_4,  0, 4, 4, 0x00, 2, 4},
+-	{FLASH_FLAG_READ_1_1_4,  FLASH_CMD_READ4_1_1_4,  0, 1, 4, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_1_2_2,  FLASH_CMD_READ4_1_2_2,  0, 2, 2, 0x00, 4, 0},
+-	{FLASH_FLAG_READ_1_1_2,  FLASH_CMD_READ4_1_1_2,  0, 1, 2, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_FAST,   FLASH_CMD_READ4_FAST,   0, 1, 1, 0x00, 0, 8},
+-	{FLASH_FLAG_READ_WRITE,  FLASH_CMD_READ4,        0, 1, 1, 0x00, 0, 0},
++	{FLASH_FLAG_READ_1_4_4,  SPINOR_OP_READ4_1_4_4,  0, 4, 4, 0x00, 2, 4},
++	{FLASH_FLAG_READ_1_1_4,  SPINOR_OP_READ4_1_1_4,  0, 1, 4, 0x00, 0, 8},
++	{FLASH_FLAG_READ_1_2_2,  SPINOR_OP_READ4_1_2_2,  0, 2, 2, 0x00, 4, 0},
++	{FLASH_FLAG_READ_1_1_2,  SPINOR_OP_READ4_1_1_2,  0, 1, 2, 0x00, 0, 8},
++	{FLASH_FLAG_READ_FAST,   SPINOR_OP_READ4_FAST,   0, 1, 1, 0x00, 0, 8},
++	{FLASH_FLAG_READ_WRITE,  SPINOR_OP_READ4,        0, 1, 1, 0x00, 0, 0},
+ 	{0x00,                   0,                      0, 0, 0, 0x00, 0, 0},
+ };
  
- 		ret = wait_till_ready(nor);
-@@ -773,7 +773,7 @@ static int macronix_quad_enable(struct spi_nor *nor)
- 	write_enable(nor);
+@@ -574,7 +574,7 @@ static struct stfsm_seq stfsm_seq_read_jedec = {
+ 	.data_size = TRANSFER_SIZE(8),
+ 	.seq_opc[0] = (SEQ_OPC_PADS_1 |
+ 		       SEQ_OPC_CYCLES(8) |
+-		       SEQ_OPC_OPCODE(FLASH_CMD_RDID)),
++		       SEQ_OPC_OPCODE(SPINOR_OP_RDID)),
+ 	.seq = {
+ 		STFSM_INST_CMD1,
+ 		STFSM_INST_DATA_READ,
+@@ -590,7 +590,7 @@ static struct stfsm_seq stfsm_seq_read_status_fifo = {
+ 	.data_size = TRANSFER_SIZE(4),
+ 	.seq_opc[0] = (SEQ_OPC_PADS_1 |
+ 		       SEQ_OPC_CYCLES(8) |
+-		       SEQ_OPC_OPCODE(FLASH_CMD_RDSR)),
++		       SEQ_OPC_OPCODE(SPINOR_OP_RDSR)),
+ 	.seq = {
+ 		STFSM_INST_CMD1,
+ 		STFSM_INST_DATA_READ,
+@@ -606,10 +606,10 @@ static struct stfsm_seq stfsm_seq_erase_sector = {
+ 	/* 'addr_cfg' configured during initialisation */
+ 	.seq_opc = {
+ 		(SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+-		 SEQ_OPC_OPCODE(FLASH_CMD_WREN) | SEQ_OPC_CSDEASSERT),
++		 SEQ_OPC_OPCODE(SPINOR_OP_WREN) | SEQ_OPC_CSDEASSERT),
  
- 	nor->cmd_buf[0] = val | SR_QUAD_EN_MX;
--	nor->write_reg(nor, OPCODE_WRSR, nor->cmd_buf, 1, 0);
-+	nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 1, 0);
+ 		(SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+-		 SEQ_OPC_OPCODE(FLASH_CMD_SE)),
++		 SEQ_OPC_OPCODE(SPINOR_OP_SE)),
+ 	},
+ 	.seq = {
+ 		STFSM_INST_CMD1,
+@@ -627,10 +627,10 @@ static struct stfsm_seq stfsm_seq_erase_sector = {
+ static struct stfsm_seq stfsm_seq_erase_chip = {
+ 	.seq_opc = {
+ 		(SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+-		 SEQ_OPC_OPCODE(FLASH_CMD_WREN) | SEQ_OPC_CSDEASSERT),
++		 SEQ_OPC_OPCODE(SPINOR_OP_WREN) | SEQ_OPC_CSDEASSERT),
  
- 	if (wait_till_ready(nor))
- 		return 1;
-@@ -798,7 +798,7 @@ static int write_sr_cr(struct spi_nor *nor, u16 val)
- 	nor->cmd_buf[0] = val & 0xff;
- 	nor->cmd_buf[1] = (val >> 8);
+ 		(SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+-		 SEQ_OPC_OPCODE(FLASH_CMD_CHIPERASE) | SEQ_OPC_CSDEASSERT),
++		 SEQ_OPC_OPCODE(SPINOR_OP_CHIPERASE) | SEQ_OPC_CSDEASSERT),
+ 	},
+ 	.seq = {
+ 		STFSM_INST_CMD1,
+@@ -647,9 +647,9 @@ static struct stfsm_seq stfsm_seq_erase_chip = {
  
--	return nor->write_reg(nor, OPCODE_WRSR, nor->cmd_buf, 2, 0);
-+	return nor->write_reg(nor, SPINOR_OP_WRSR, nor->cmd_buf, 2, 0);
- }
+ static struct stfsm_seq stfsm_seq_write_status = {
+ 	.seq_opc[0] = (SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+-		       SEQ_OPC_OPCODE(FLASH_CMD_WREN) | SEQ_OPC_CSDEASSERT),
++		       SEQ_OPC_OPCODE(SPINOR_OP_WREN) | SEQ_OPC_CSDEASSERT),
+ 	.seq_opc[1] = (SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+-		       SEQ_OPC_OPCODE(FLASH_CMD_WRSR)),
++		       SEQ_OPC_OPCODE(SPINOR_OP_WRSR)),
+ 	.seq = {
+ 		STFSM_INST_CMD1,
+ 		STFSM_INST_CMD2,
+@@ -665,9 +665,9 @@ static struct stfsm_seq stfsm_seq_write_status = {
+ static int stfsm_n25q_en_32bit_addr_seq(struct stfsm_seq *seq)
+ {
+ 	seq->seq_opc[0] = (SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+-			   SEQ_OPC_OPCODE(FLASH_CMD_EN4B_ADDR));
++			   SEQ_OPC_OPCODE(SPINOR_OP_EN4B_ADDR));
+ 	seq->seq_opc[1] = (SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+-			   SEQ_OPC_OPCODE(FLASH_CMD_WREN) |
++			   SEQ_OPC_OPCODE(SPINOR_OP_WREN) |
+ 			   SEQ_OPC_CSDEASSERT);
  
- static int spansion_quad_enable(struct spi_nor *nor)
-@@ -963,13 +963,13 @@ int spi_nor_scan(struct spi_nor *nor, const struct spi_device_id *id,
+ 	seq->seq[0] = STFSM_INST_CMD2;
+@@ -788,7 +788,7 @@ static int stfsm_write_fifo(struct stfsm *fsm, const uint32_t *buf,
+ static int stfsm_enter_32bit_addr(struct stfsm *fsm, int enter)
+ {
+ 	struct stfsm_seq *seq = &fsm->stfsm_seq_en_32bit_addr;
+-	uint32_t cmd = enter ? FLASH_CMD_EN4B_ADDR : FLASH_CMD_EX4B_ADDR;
++	uint32_t cmd = enter ? SPINOR_OP_EN4B_ADDR : SPINOR_OP_EX4B_ADDR;
  
- 	/* prefer "small sector" erase if possible */
- 	if (info->flags & SECT_4K) {
--		nor->erase_opcode = OPCODE_BE_4K;
-+		nor->erase_opcode = SPINOR_OP_BE_4K;
- 		mtd->erasesize = 4096;
- 	} else if (info->flags & SECT_4K_PMC) {
--		nor->erase_opcode = OPCODE_BE_4K_PMC;
-+		nor->erase_opcode = SPINOR_OP_BE_4K_PMC;
- 		mtd->erasesize = 4096;
+ 	seq->seq_opc[0] = (SEQ_OPC_PADS_1 |
+ 			   SEQ_OPC_CYCLES(8) |
+@@ -812,7 +812,7 @@ static uint8_t stfsm_wait_busy(struct stfsm *fsm)
+ 	/* Use RDRS1 */
+ 	seq->seq_opc[0] = (SEQ_OPC_PADS_1 |
+ 			   SEQ_OPC_CYCLES(8) |
+-			   SEQ_OPC_OPCODE(FLASH_CMD_RDSR));
++			   SEQ_OPC_OPCODE(SPINOR_OP_RDSR));
+ 
+ 	/* Load read_status sequence */
+ 	stfsm_load_seq(fsm, seq);
+@@ -985,7 +985,7 @@ static void stfsm_prepare_rw_seq(struct stfsm *fsm,
+ 	if (cfg->write)
+ 		seq->seq_opc[i++] = (SEQ_OPC_PADS_1 |
+ 				     SEQ_OPC_CYCLES(8) |
+-				     SEQ_OPC_OPCODE(FLASH_CMD_WREN) |
++				     SEQ_OPC_OPCODE(SPINOR_OP_WREN) |
+ 				     SEQ_OPC_CSDEASSERT);
+ 
+ 	/* Address configuration (24 or 32-bit addresses) */
+@@ -1121,21 +1121,21 @@ static int stfsm_mx25_config(struct stfsm *fsm)
+ 	}
+ 
+ 	/* Check status of 'QE' bit, update if required. */
+-	stfsm_read_status(fsm, FLASH_CMD_RDSR, &sta, 1);
++	stfsm_read_status(fsm, SPINOR_OP_RDSR, &sta, 1);
+ 	data_pads = ((fsm->stfsm_seq_read.seq_cfg >> 16) & 0x3) + 1;
+ 	if (data_pads == 4) {
+ 		if (!(sta & MX25_STATUS_QE)) {
+ 			/* Set 'QE' */
+ 			sta |= MX25_STATUS_QE;
+ 
+-			stfsm_write_status(fsm, FLASH_CMD_WRSR, sta, 1, 1);
++			stfsm_write_status(fsm, SPINOR_OP_WRSR, sta, 1, 1);
+ 		}
  	} else {
--		nor->erase_opcode = OPCODE_SE;
-+		nor->erase_opcode = SPINOR_OP_SE;
- 		mtd->erasesize = info->sector_size;
+ 		if (sta & MX25_STATUS_QE) {
+ 			/* Clear 'QE' */
+ 			sta &= ~MX25_STATUS_QE;
+ 
+-			stfsm_write_status(fsm, FLASH_CMD_WRSR, sta, 1, 1);
++			stfsm_write_status(fsm, SPINOR_OP_WRSR, sta, 1, 1);
+ 		}
  	}
  
-@@ -1010,23 +1010,23 @@ int spi_nor_scan(struct spi_nor *nor, const struct spi_device_id *id,
- 	/* Default commands */
- 	switch (nor->flash_read) {
- 	case SPI_NOR_QUAD:
--		nor->read_opcode = OPCODE_QUAD_READ;
-+		nor->read_opcode = SPINOR_OP_QUAD_READ;
- 		break;
- 	case SPI_NOR_DUAL:
--		nor->read_opcode = OPCODE_DUAL_READ;
-+		nor->read_opcode = SPINOR_OP_DUAL_READ;
- 		break;
- 	case SPI_NOR_FAST:
--		nor->read_opcode = OPCODE_FAST_READ;
-+		nor->read_opcode = SPINOR_OP_FAST_READ;
- 		break;
- 	case SPI_NOR_NORMAL:
--		nor->read_opcode = OPCODE_NORM_READ;
-+		nor->read_opcode = SPINOR_OP_NORM_READ;
- 		break;
- 	default:
- 		dev_err(dev, "No Read opcode defined\n");
- 		return -EINVAL;
+@@ -1260,7 +1260,7 @@ static void stfsm_s25fl_write_dyb(struct stfsm *fsm, uint32_t offs, uint8_t dby)
+ {
+ 	struct stfsm_seq seq = {
+ 		.seq_opc[0] = (SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+-			       SEQ_OPC_OPCODE(FLASH_CMD_WREN) |
++			       SEQ_OPC_OPCODE(SPINOR_OP_WREN) |
+ 			       SEQ_OPC_CSDEASSERT),
+ 		.seq_opc[1] = (SEQ_OPC_PADS_1 | SEQ_OPC_CYCLES(8) |
+ 			       SEQ_OPC_OPCODE(S25FL_CMD_DYBWR)),
+@@ -1300,7 +1300,7 @@ static int stfsm_s25fl_clear_status_reg(struct stfsm *fsm)
+ 			       SEQ_OPC_CSDEASSERT),
+ 		.seq_opc[1] = (SEQ_OPC_PADS_1 |
+ 			       SEQ_OPC_CYCLES(8) |
+-			       SEQ_OPC_OPCODE(FLASH_CMD_WRDI) |
++			       SEQ_OPC_OPCODE(SPINOR_OP_WRDI) |
+ 			       SEQ_OPC_CSDEASSERT),
+ 		.seq = {
+ 			STFSM_INST_CMD1,
+@@ -1379,7 +1379,7 @@ static int stfsm_s25fl_config(struct stfsm *fsm)
  	}
  
--	nor->program_opcode = OPCODE_PP;
-+	nor->program_opcode = SPINOR_OP_PP;
+ 	/* Check status of 'QE' bit, update if required. */
+-	stfsm_read_status(fsm, FLASH_CMD_RDSR2, &cr1, 1);
++	stfsm_read_status(fsm, SPINOR_OP_RDSR2, &cr1, 1);
+ 	data_pads = ((fsm->stfsm_seq_read.seq_cfg >> 16) & 0x3) + 1;
+ 	if (data_pads == 4) {
+ 		if (!(cr1 & STFSM_S25FL_CONFIG_QE)) {
+@@ -1397,9 +1397,9 @@ static int stfsm_s25fl_config(struct stfsm *fsm)
+ 		}
+ 	}
+ 	if (update_sr) {
+-		stfsm_read_status(fsm, FLASH_CMD_RDSR, &sr1, 1);
++		stfsm_read_status(fsm, SPINOR_OP_RDSR, &sr1, 1);
+ 		sta_wr = ((uint16_t)cr1  << 8) | sr1;
+-		stfsm_write_status(fsm, FLASH_CMD_WRSR, sta_wr, 2, 1);
++		stfsm_write_status(fsm, SPINOR_OP_WRSR, sta_wr, 2, 1);
+ 	}
  
- 	if (info->addr_width)
- 		nor->addr_width = info->addr_width;
-@@ -1037,21 +1037,21 @@ int spi_nor_scan(struct spi_nor *nor, const struct spi_device_id *id,
- 			/* Dedicated 4-byte command set */
- 			switch (nor->flash_read) {
- 			case SPI_NOR_QUAD:
--				nor->read_opcode = OPCODE_QUAD_READ_4B;
-+				nor->read_opcode = SPINOR_OP_QUAD_READ_4B;
- 				break;
- 			case SPI_NOR_DUAL:
--				nor->read_opcode = OPCODE_DUAL_READ_4B;
-+				nor->read_opcode = SPINOR_OP_DUAL_READ_4B;
- 				break;
- 			case SPI_NOR_FAST:
--				nor->read_opcode = OPCODE_FAST_READ_4B;
-+				nor->read_opcode = SPINOR_OP_FAST_READ_4B;
- 				break;
- 			case SPI_NOR_NORMAL:
--				nor->read_opcode = OPCODE_NORM_READ_4B;
-+				nor->read_opcode = SPINOR_OP_NORM_READ_4B;
- 				break;
- 			}
--			nor->program_opcode = OPCODE_PP_4B;
-+			nor->program_opcode = SPINOR_OP_PP_4B;
- 			/* No small sector erase for 4-byte command set */
--			nor->erase_opcode = OPCODE_SE_4B;
-+			nor->erase_opcode = SPINOR_OP_SE_4B;
- 			mtd->erasesize = info->sector_size;
- 		} else
- 			set_4byte(nor, info->jedec_id, 1);
-diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
-index 558097e14932..2c827b5bf773 100644
---- a/include/linux/mtd/spi-nor.h
-+++ b/include/linux/mtd/spi-nor.h
-@@ -2,41 +2,41 @@
- #define __LINUX_MTD_SPI_NOR_H
+ 	/*
+@@ -1424,7 +1424,7 @@ static int stfsm_w25q_config(struct stfsm *fsm)
+ 		return ret;
  
- /* Flash opcodes. */
--#define OPCODE_WREN		0x06	/* Write enable */
--#define OPCODE_RDSR		0x05	/* Read status register */
--#define OPCODE_WRSR		0x01	/* Write status register 1 byte */
--#define OPCODE_NORM_READ	0x03	/* Read data bytes (low frequency) */
--#define OPCODE_FAST_READ	0x0b	/* Read data bytes (high frequency) */
--#define OPCODE_DUAL_READ        0x3b    /* Read data bytes (Dual SPI) */
--#define OPCODE_QUAD_READ        0x6b    /* Read data bytes (Quad SPI) */
--#define OPCODE_PP		0x02	/* Page program (up to 256 bytes) */
--#define OPCODE_BE_4K		0x20	/* Erase 4KiB block */
--#define OPCODE_BE_4K_PMC	0xd7	/* Erase 4KiB block on PMC chips */
--#define OPCODE_BE_32K		0x52	/* Erase 32KiB block */
--#define OPCODE_CHIP_ERASE	0xc7	/* Erase whole flash chip */
--#define OPCODE_SE		0xd8	/* Sector erase (usually 64KiB) */
--#define OPCODE_RDID		0x9f	/* Read JEDEC ID */
--#define OPCODE_RDCR             0x35    /* Read configuration register */
-+#define SPINOR_OP_WREN		0x06	/* Write enable */
-+#define SPINOR_OP_RDSR		0x05	/* Read status register */
-+#define SPINOR_OP_WRSR		0x01	/* Write status register 1 byte */
-+#define SPINOR_OP_NORM_READ	0x03	/* Read data bytes (low frequency) */
-+#define SPINOR_OP_FAST_READ	0x0b	/* Read data bytes (high frequency) */
-+#define SPINOR_OP_DUAL_READ	0x3b	/* Read data bytes (Dual SPI) */
-+#define SPINOR_OP_QUAD_READ	0x6b	/* Read data bytes (Quad SPI) */
-+#define SPINOR_OP_PP		0x02	/* Page program (up to 256 bytes) */
-+#define SPINOR_OP_BE_4K		0x20	/* Erase 4KiB block */
-+#define SPINOR_OP_BE_4K_PMC	0xd7	/* Erase 4KiB block on PMC chips */
-+#define SPINOR_OP_BE_32K	0x52	/* Erase 32KiB block */
-+#define SPINOR_OP_CHIP_ERASE	0xc7	/* Erase whole flash chip */
-+#define SPINOR_OP_SE		0xd8	/* Sector erase (usually 64KiB) */
-+#define SPINOR_OP_RDID		0x9f	/* Read JEDEC ID */
-+#define SPINOR_OP_RDCR		0x35	/* Read configuration register */
+ 	/* Check status of 'QE' bit, update if required. */
+-	stfsm_read_status(fsm, FLASH_CMD_RDSR2, &sr2, 1);
++	stfsm_read_status(fsm, SPINOR_OP_RDSR2, &sr2, 1);
+ 	data_pads = ((fsm->stfsm_seq_read.seq_cfg >> 16) & 0x3) + 1;
+ 	if (data_pads == 4) {
+ 		if (!(sr2 & W25Q_STATUS_QE)) {
+@@ -1441,9 +1441,9 @@ static int stfsm_w25q_config(struct stfsm *fsm)
+ 	}
+ 	if (update_sr) {
+ 		/* Write status register */
+-		stfsm_read_status(fsm, FLASH_CMD_RDSR, &sr1, 1);
++		stfsm_read_status(fsm, SPINOR_OP_RDSR, &sr1, 1);
+ 		sr_wr = ((uint16_t)sr2 << 8) | sr1;
+-		stfsm_write_status(fsm, FLASH_CMD_WRSR, sr_wr, 2, 1);
++		stfsm_write_status(fsm, SPINOR_OP_WRSR, sr_wr, 2, 1);
+ 	}
  
- /* 4-byte address opcodes - used on Spansion and some Macronix flashes. */
--#define OPCODE_NORM_READ_4B	0x13	/* Read data bytes (low frequency) */
--#define OPCODE_FAST_READ_4B	0x0c	/* Read data bytes (high frequency) */
--#define OPCODE_DUAL_READ_4B	0x3c    /* Read data bytes (Dual SPI) */
--#define OPCODE_QUAD_READ_4B	0x6c    /* Read data bytes (Quad SPI) */
--#define OPCODE_PP_4B		0x12	/* Page program (up to 256 bytes) */
--#define OPCODE_SE_4B		0xdc	/* Sector erase (usually 64KiB) */
-+#define SPINOR_OP_NORM_READ_4B	0x13	/* Read data bytes (low frequency) */
-+#define SPINOR_OP_FAST_READ_4B	0x0c	/* Read data bytes (high frequency) */
-+#define SPINOR_OP_DUAL_READ_4B	0x3c	/* Read data bytes (Dual SPI) */
-+#define SPINOR_OP_QUAD_READ_4B	0x6c	/* Read data bytes (Quad SPI) */
-+#define SPINOR_OP_PP_4B		0x12	/* Page program (up to 256 bytes) */
-+#define SPINOR_OP_SE_4B		0xdc	/* Sector erase (usually 64KiB) */
- 
- /* Used for SST flashes only. */
--#define OPCODE_BP		0x02	/* Byte program */
--#define OPCODE_WRDI		0x04	/* Write disable */
--#define OPCODE_AAI_WP		0xad	/* Auto address increment word program */
-+#define SPINOR_OP_BP		0x02	/* Byte program */
-+#define SPINOR_OP_WRDI		0x04	/* Write disable */
-+#define SPINOR_OP_AAI_WP	0xad	/* Auto address increment word program */
- 
- /* Used for Macronix and Winbond flashes. */
--#define OPCODE_EN4B		0xb7	/* Enter 4-byte mode */
--#define OPCODE_EX4B		0xe9	/* Exit 4-byte mode */
-+#define SPINOR_OP_EN4B		0xb7	/* Enter 4-byte mode */
-+#define SPINOR_OP_EX4B		0xe9	/* Exit 4-byte mode */
- 
- /* Used for Spansion flashes only. */
--#define OPCODE_BRWR		0x17	/* Bank register write */
-+#define SPINOR_OP_BRWR		0x17	/* Bank register write */
- 
- /* Status Register bits. */
- #define SR_WIP			1	/* Write in progress */
+ 	return 0;
 -- 
 1.8.3.2
 

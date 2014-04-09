@@ -1,53 +1,80 @@
-From: maxim maxim <look2004il-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: mcspi
-Date: Tue, 8 Apr 2014 14:51:59 +0300
-Message-ID: <CAL22ZLJ0k985+z_v5EqWkmWEkR=NSSXV04adA_pL_60tp52bpg@mail.gmail.com>
-References: <CAL22ZLJ7qe-=1iH0w1b+G10i9_ERFnFF2oRB7gOatk3k_AhdjQ@mail.gmail.com>
- <20140407125339.GA11339@book.gsilab.sittig.org>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v5 0/8] mtd: spi-nor: add a new framework for SPI NOR
+Date: Tue, 8 Apr 2014 20:36:03 -0700
+Message-ID: <20140409033603.GA32070@ld-irv-0074>
+References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
+ <20140312081350.GC30808@shlinux2.ap.freescale.net>
+ <20140313063940.GU31517@norris-Latitude-E6410>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, angus.clark-qxv4g6HH51o@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	b44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org, b18965-KZfg59tc24xl57MIdRCFDg@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140407125339.GA11339-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20140313063940.GU31517@norris-Latitude-E6410>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Thanks Gerhard, good idea,  it's working fine for me:)
++ Lee, Marek
 
-Best Regards,
-Kol
+Hi Huang,
 
-2014-04-07 15:53 GMT+03:00 Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>:
-> On Sat, 2014-04-05 at 16:05 +0300, maxim maxim wrote:
->>
->>  I'm working with omap 3 spi driver, in the base I have mcspi driver
->> for tach device(http://processors.wiki.ti.com/index.php/AM335x_McSPI_Driver's_Guide),
->> I want to add my insmod driver for ublox 6(gps device). From ublox6
->> datasheet I saw what I need some initial delay between chip select
->> activation and data sending, I didn't find a way how to do it from
->> Linux SPI Framework, because of this I tried to write directly to some
->> registers what mapped in mcspi driver I can accept their mapped
->> address from contoller_data , but unfortunately it didn't work, may be
->> here you could give me some avices how I can do it.
->
-> You might create an SPI message from multiple transfers, where
-> the first has no data (length zero) but specifies a delay.  If
-> the SPI controller's driver is implemented correctly, or if it
-> uses the SPI subsystem's common logic, this should result in the
-> desired pause between CS assertion and data transfer.
->
-> If it doesn't work out for you (when the driver cuts corners,
-> violates the API semantics, or tries to outsmart you), you may
-> want to fix that and provide patches. :)
->
->
-> virtually yours
-> Gerhard Sittig
-> --
-> DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
-> HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
-> Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
+On Wed, Mar 12, 2014 at 11:39:40PM -0700, Brian Norris wrote:
+> On Wed, Mar 12, 2014 at 04:13:51PM +0800, Huang Shijie wrote:
+> > On Mon, Feb 24, 2014 at 06:37:34PM +0800, Huang Shijie wrote:
+> >    Could you please review this patch set? I really hope it can be merged
+> >    as soon as possibel.  But now, the patch set has stalled for a long time.
+> 
+> I'm sorry for the delay. Others are in the same position of delay (e.g.,
+> Lee's SPI-NOR driver), because I simply have not had the time to really
+> devote this the attention it deserves, especially considering how it
+> rearchitects such an important, commonly-used driver.
+> 
+> Nonetheless, I will try to give your patches some more attention soon.
+> 
+> >    Since you have pushed the patches for m25p80.c, i have to rebase this
+> >    patch set again and again...
+> 
+> You mean locally? I promise you, I can handle rebasing on my reviewing
+> end for small one-line conflicts like new chip IDs, so don't rebase and
+> resend simply for that. Unless I find substantive things that you should
+> change, I'd only expect at most one more rebase to be necessary.
+
+Unfortunately, I did not get the time to review and test this
+sufficiently for the 3.15 merge window, but to avoid further delay, I've
+queued it up in l2-mtd.git [1] under its own branch for now. I rebased
+it myself, to accommodate for changes to m25p80.c since your submission.
+Please take a look at the branch.
+
+If all goes well, I should merge the spinor branch into master some time
+after the 3.15 merge window closes, so it will get linux-next testing.
+For any additional comments/corrections (I have a few), please just
+submit patches on top, rather than resending the whole series.
+
+Marek, what was your opinion on this series? Last response I saw was
+"looking good"; is that an Ack? Or did you have any more gating
+requests?
+
+Personally, I think it looks ready enough, and it's better to merge this
+than not. I was able to test with my platforms, with no regression.
+
+Lee, I have a few patches that do some trivial unification of your ST
+SPI FSM driver and the SPI-NOR framework. I plan to send these out
+soon, and I will begin applying any ST-FSM patches to the same spinor
+branch along with Huang's code. I hope that you can spend some effort on
+improving integration within the next few months in preparation for
+3.16, when I expect this to all go upstream.
+
+Thanks,
+Brian
+
+[1] branch spinor, at http://git.infradead.org/l2-mtd.git
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

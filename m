@@ -1,66 +1,75 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH 4/9] Documentation: spi-nor: rewrite some portions
-Date: Wed, 9 Apr 2014 19:44:15 +0200
-Message-ID: <201404091944.15631.marex@denx.de>
-References: <1397064774-31784-1-git-send-email-computersforpeace@gmail.com> <1397064774-31784-4-git-send-email-computersforpeace@gmail.com>
+From: Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH v5 0/8] mtd: spi-nor: add a new framework for SPI NOR
+Date: Wed, 9 Apr 2014 19:47:47 +0200
+Message-ID: <201404091947.47428.marex@denx.de>
+References: <1393238262-8622-1-git-send-email-b32955@freescale.com> <20140313063940.GU31517@norris-Latitude-E6410> <20140409033603.GA32070@ld-irv-0074>
 Mime-Version: 1.0
 Content-Type: Text/Plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1397064774-31784-4-git-send-email-computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Huang Shijie <b32955@freescale.com>, dwmw2@infradead.org,
+	angus.clark@st.com, lee.jones@linaro.org, pekon@ti.com,
+	sourav.poddar@ti.com, broonie@linaro.org,
+	linux-mtd@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+	b44548@freescale.com, b18965@freescale.com,
+	devicetree@vger.kernel.org, shawn.guo@linaro.org
+To: Brian Norris <computersforpeace@gmail.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <20140409033603.GA32070@ld-irv-0074>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wednesday, April 09, 2014 at 07:32:49 PM, Brian Norris wrote:
-> Signed-off-by: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
-> WIP. This could be improved more (e.g., don't spend too much time
-> documenting history; just document the current framework)
+On Wednesday, April 09, 2014 at 05:36:03 AM, Brian Norris wrote:
+> + Lee, Marek
 > 
->  Documentation/mtd/spi-nor.txt | 27 +++++++++++++++------------
->  1 file changed, 15 insertions(+), 12 deletions(-)
+> Hi Huang,
 > 
-> diff --git a/Documentation/mtd/spi-nor.txt b/Documentation/mtd/spi-nor.txt
-> index 294d5b06f892..bfcdeb94e053 100644
-> --- a/Documentation/mtd/spi-nor.txt
-> +++ b/Documentation/mtd/spi-nor.txt
-> @@ -1,16 +1,20 @@
->                            SPI NOR framework
->                 ============================================
+> On Wed, Mar 12, 2014 at 11:39:40PM -0700, Brian Norris wrote:
+> > On Wed, Mar 12, 2014 at 04:13:51PM +0800, Huang Shijie wrote:
+> > > On Mon, Feb 24, 2014 at 06:37:34PM +0800, Huang Shijie wrote:
+> > >    Could you please review this patch set? I really hope it can be
+> > >    merged as soon as possibel.  But now, the patch set has stalled for
+> > >    a long time.
+> > 
+> > I'm sorry for the delay. Others are in the same position of delay (e.g.,
+> > Lee's SPI-NOR driver), because I simply have not had the time to really
+> > devote this the attention it deserves, especially considering how it
+> > rearchitects such an important, commonly-used driver.
+> > 
+> > Nonetheless, I will try to give your patches some more attention soon.
+> > 
+> > >    Since you have pushed the patches for m25p80.c, i have to rebase
+> > >    this patch set again and again...
+> > 
+> > You mean locally? I promise you, I can handle rebasing on my reviewing
+> > end for small one-line conflicts like new chip IDs, so don't rebase and
+> > resend simply for that. Unless I find substantive things that you should
+> > change, I'd only expect at most one more rebase to be necessary.
 > 
-> -Part I - why we need this framework?
-> +Part I - Why do we need this framework?
->  -------------------------------------
-
-The underline is not matching the length of the text now ;-)
-
+> Unfortunately, I did not get the time to review and test this
+> sufficiently for the 3.15 merge window, but to avoid further delay, I've
+> queued it up in l2-mtd.git [1] under its own branch for now. I rebased
+> it myself, to accommodate for changes to m25p80.c since your submission.
+> Please take a look at the branch.
 > 
-> -The SPI bus controller only deals with the byte stream.
-> -Some controller does not works like a SPI bus controller, it works
-> -like a SPI NOR controller instead, such as the Freescale's QuadSPI
-> controller. +SPI bus controllers (drivers/spi/) only deal with streams of
-> bytes; the bus +controller operates agnostic of the specific device
-> attached. However, some +controllers (such as Freescale's QuadSPI
-> controller) cannot easily handle +arbitrary streams of bytes, but rather
-> are designed specifically for SPI NOR.
+> If all goes well, I should merge the spinor branch into master some time
+> after the 3.15 merge window closes, so it will get linux-next testing.
+> For any additional comments/corrections (I have a few), please just
+> submit patches on top, rather than resending the whole series.
+> 
+> Marek, what was your opinion on this series? Last response I saw was
+> "looking good"; is that an Ack? Or did you have any more gating
+> requests?
+> 
+> Personally, I think it looks ready enough, and it's better to merge this
+> than not. I was able to test with my platforms, with no regression.
 
-You use the word 'specifically' here and below quick after one another, that 
-doesn't sound nice when you read the text.
+It looked OK to me, so that's an:
 
-> -The Freescale's QuadSPI controller should know the NOR commands to
-> -find the right LUT sequence. Unfortunately, the old code can not meet
-> -this requirement.
-> +Specifically, Freescale's QuadSPI controller must know the NOR commands to
+Acked-by: Marek Vasut <marex@denx.de>
 
-[...]
+Thanks for watching over this!
 
 Best regards,
 Marek Vasut
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

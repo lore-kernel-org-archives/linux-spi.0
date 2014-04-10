@@ -1,80 +1,54 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 1/2] SPI: Add driver for Cadence SPI controller
-Date: Thu, 10 Apr 2014 23:48:25 +0100
-Message-ID: <20140410224825.GI6518@sirena.org.uk>
-References: <1397132030-2440-1-git-send-email-harinik@xilinx.com>
+From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Subject: Re: [PATCH v2 0/2] spi: sh-hspi: Do not specifically request
+ shyway_clk clock
+Date: Fri, 11 Apr 2014 08:31:20 +0900
+Message-ID: <20140410233120.GE4358@verge.net.au>
+References: <1394783739-29168-1-git-send-email-horms+renesas@verge.net.au>
+ <20140318003254.GB19571@verge.net.au>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mMdCh5/a0q2ATNCM"
-Cc: grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
-	mark.rutland-5wv7dgnIgG8@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
-	galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
-To: Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1397132030-2440-1-git-send-email-harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+In-Reply-To: <20140318003254.GB19571-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Mar 18, 2014 at 09:32:55AM +0900, Simon Horman wrote:
+> On Fri, Mar 14, 2014 at 04:55:37PM +0900, Simon Horman wrote:
+> > Rather than requesting the shyway_clk call clk_get with
+> > the device and a NULL con_id.
+> > 
+> > This is in keeping with the way that clk_get() is called
+> > on other drivers used by Renesas Gen 1 SoCs. And I believe
+> > it is compatible with supplying clocks via DT, unlike the current code.
+> > 
+> > 
+> > This series supplies a fix for the r8a7779, a consumer of the driver,
+> > so that the hspi clocks it supplies have the correct source.
+> > 
+> > And a fix for the sh-hspi driver to address the problem
+> > described above.
+> > 
+> > Simon Horman (2):
+> >   ARM: shmobile: r8a7779: Use clks as MSTP007 parent
+> >   spi: sh-hspi: Do not specifically request shyway_clk clock
+> > 
+> >  arch/arm/mach-shmobile/clock-r8a7778.c | 2 +-
+> >  drivers/spi/spi-sh-hspi.c              | 4 ++--
+> >  2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> Hi Mark,
+> 
+> as the first mach-shmobile patch is a run-time dependency for the
+> second SPI driver patch could you consider taking both of them?
+> 
+> I have checked and I do not expect any conflicts anywhere beetween
+> v3.14-rc1 and what I have queued up in the devel branch of my renesas tree.
 
---mMdCh5/a0q2ATNCM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, Apr 10, 2014 at 05:43:49PM +0530, Harini Katakam wrote:
-> Add driver for Cadence SPI controller. This is used in Xilinx Zynq.
-
-This looks mostly good, the issues below are very small.
-
-> +static int __maybe_unused cdns_spi_suspend(struct device *dev)
-> +{
-> +	struct platform_device *pdev = container_of(dev,
-> +			struct platform_device, dev);
-> +	struct spi_master *master = platform_get_drvdata(pdev);
-> +	struct cdns_spi *xspi = spi_master_get_devdata(master);
-> +
-> +	spi_master_suspend(master);
-> +
-> +	clk_disable(xspi->ref_clk);
-> +
-> +	clk_disable(xspi->pclk);
-
-You're only doing clk_disable() here, I would expect the clocks to also
-be unprepared over suspend - there is no value in leaving them prepared
-that I can see.  Just use clk_unprepare_disable().
-
-It would also be good (though not essential) to implement runtime PM and
-disable the clocks while there are no transfers in progress for a small
-power saving.  The auto_runtime_pm feature in the core will do the
-runtime PM calls for you.
-
-Otherwise this looks good.
-
---mMdCh5/a0q2ATNCM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTRx+1AAoJELSic+t+oim9YVkQAJ2dUex91vcYl6b65nAPLgvJ
-i8TriQvUQ5Sa0x4SJiaNp/42gnDDZY0697g4OL6SNozLmhbK+e4rJGH0pIW6Qnnw
-2c3oOj2zoImBaKC3psdXbwNAwib3AGFpMCXvL+xJr6vQUuFKoSne2R1WI4YbT+NA
-JGR4IVXhxU/pLF/xFXUMMFEMMLnf1g56GukVILzehocAvpBqOm0mXeoZrUDBJRxU
-4NYGQE+EGDZKRse4UryQ/LcgZreHUuaMTAj93B+emrmxwixhJhKVOtE1iLsDwoCV
-olUQ81ZmiKNVNY6cE2+9z+nDOxRdjCoqqPG5SOViFJAPZa9ot6/4PrpmD89DvtiR
-t5TzdkZMoHRvz0PahpE+aR5Crv5GTYX5WulrGmWCN12v42Op6uceh0PBpEtg9lVV
-fcbnRPFC2WqZzdiSCcfP3w8neVpQlsCz7ZyQThmEJvX75FUvj03eL8NWfIWIdckw
-JojHpijnbhWpI1lvOLoHOLJcq336mUmmxe9MbsE0mUI2noxq6XMz0hpPc3THGvwT
-1rR07nG3Ib2t0XdVXNIvh34vQhOc6xISDkUgK2CrsC+GGAnp6wtFmi53kDOGH9Ru
-yPUe66bNNeP5HF9QQHLyszWnwCA37928pbQK/iSFjBw9YlWJzxMYZ9W6blNI0KK+
-vvxIXt5Zr1YivmkvaYGM
-=3GyS
------END PGP SIGNATURE-----
-
---mMdCh5/a0q2ATNCM--
+Ping
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

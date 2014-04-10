@@ -1,36 +1,42 @@
-From: Brian Norris <computersforpeace@gmail.com>
-Subject: Re: [PATCH v5 0/8] mtd: spi-nor: add a new framework for SPI NOR
-Date: Thu, 10 Apr 2014 12:31:39 -0700
-Message-ID: <20140410193139.GN32070@ld-irv-0074>
-References: <1393238262-8622-1-git-send-email-b32955@freescale.com>
- <20140312081350.GC30808@shlinux2.ap.freescale.net>
- <20140313063940.GU31517@norris-Latitude-E6410>
- <20140409033603.GA32070@ld-irv-0074>
- <20140410074253.GD4214@lee--X1>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 3/9] mtd: spi-nor: unify read opcode variants with ST SPI
+ FSM
+Date: Thu, 10 Apr 2014 12:34:12 -0700
+Message-ID: <20140410193412.GO32070@ld-irv-0074>
+References: <1397064774-31784-1-git-send-email-computersforpeace@gmail.com>
+ <1397064774-31784-3-git-send-email-computersforpeace@gmail.com>
+ <20140410074711.GG24100@localhost>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Huang Shijie <b32955@freescale.com>, dwmw2@infradead.org,
-	angus.clark@st.com, pekon@ti.com, sourav.poddar@ti.com,
-	broonie@linaro.org, linux-mtd@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, b44548@freescale.com,
-	b18965@freescale.com, devicetree@vger.kernel.org,
-	shawn.guo@linaro.org, Marek Vasut <marex@denx.de>
-To: Lee Jones <lee.jones@linaro.org>
-Return-path: <linux-doc-owner@vger.kernel.org>
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140410074253.GD4214@lee--X1>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20140410074711.GG24100@localhost>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Apr 10, 2014 at 08:42:53AM +0100, Lee Jones wrote:
-> Quick question, is there a chat medium for MTD? Somewhere for
-> quick-fire questions i.e. an IRC channel or similar?
+On Thu, Apr 10, 2014 at 03:47:13PM +0800, Huang Shijie wrote:
+> On Wed, Apr 09, 2014 at 10:32:48AM -0700, Brian Norris wrote:
+> > serial_flash_cmds.h defines our opcodes a little differently. Let's
+> > borrow its naming, since it's borrowed from the SFDP standard, and it's
+> > more extensible.
+> > 
+> > This prepares us for merging serial_flash_cmds.h and spi-nor.h opcode
+> > listing.
+> > 
+> > Signed-off-by: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > ---
+> >  drivers/mtd/spi-nor/spi-nor.c | 16 ++++++++--------
+> >  include/linux/mtd/spi-nor.h   | 24 ++++++++++++++++--------
+> Please also change the fsl-quadspi.c which also uses the opcodes.
 
-OFTC #mtd channel. It's noted at the bottom here:
+My bad. I missed compiling this driver. Fixed in v2.
 
-  http://www.linux-mtd.infradead.org/mail.html
-
-Many of us lurk there, but quickness varies :)
-
+Thanks,
 Brian
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

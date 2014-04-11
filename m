@@ -1,88 +1,65 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [GIT PULL] spi fixes for v3.15
-Date: Fri, 11 Apr 2014 22:47:04 +0100
-Message-ID: <20140411214704.GH28800@sirena.org.uk>
-References: <20140411105604.GR6518@sirena.org.uk>
- <CA+55aFxCubywWSLdhAva9dvj26=o4WkaVnhYjgEKrEuMuaFo+g@mail.gmail.com>
+Subject: Re: Re: spi-atmel: scheduling while atomic
+Date: Fri, 11 Apr 2014 22:48:15 +0100
+Message-ID: <20140411214815.GI28800@sirena.org.uk>
+References: <1734135.RAAc8zgbc4@kongar>
+ <20140411162223.GG28800@sirena.org.uk>
+ <2776532.qUm2PuCHHs@kongar>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="cfJ13FhsvNR/yOpm"
-Cc: Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="mXDO3udm/xYWQeMQ"
+Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CA+55aFxCubywWSLdhAva9dvj26=o4WkaVnhYjgEKrEuMuaFo+g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <2776532.qUm2PuCHHs@kongar>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---cfJ13FhsvNR/yOpm
+--mXDO3udm/xYWQeMQ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 11, 2014 at 01:41:56PM -0700, Linus Torvalds wrote:
-> On Fri, Apr 11, 2014 at 3:56 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+On Fri, Apr 11, 2014 at 11:11:29PM +0200, Alexander Stein wrote:
+> On Friday 11 April 2014, 17:22:23 wrote Mark Brown:
 
-> > Same issue as on the regulator pull request with the entire diffstat for
-> > the original pull request for this merge window has appeared - like I
-> > say I will try to fix the scripts as it's annoying and unclear.
+> > Converting to use the core transfer_one_message() would also help, we
+> > could then return from the transfer function and have the core implement
+> > the wait for the completion.
 
-> Yeah, looking at this, the problem does seem to be that extraneous
-> merge. I'm not sure why you did that "Merge tag 'spi-v3.15' into
-> spi-linus" at all, but it basically acts as an indirect back-merge
-> giving you two different merge bases.
+> Mh, this driver already uses that.
+> > master->transfer_one_message = atmel_spi_transfer_one_message;
 
-Indeed.
+> Or did you mean transfer_one?
 
-> You seem to start your development by doing a merge of that tag that
-> you sent me. Why? Why not just start *at* the tag you sent me, not at
-> that extraneous merge of that tag and v3.14.
+Yes, I mean the driver should use the core version of
+transfer_one_message() rather than providing its own which in turn means
+that it has to provide a transfer_one() function.
 
-What the script is doing is starting from your latest tag, merging any
-tags I've sent you in the meantime and then merging any additional topic
-branches.  I'm not doing any actual development on the resulting branch,
-only on topic branches.  The tags get merged first to suppress repeated
-merges of the same topic branch if I've sent a prior pull request been
-tagged yet and I use your latest tag to pick up fixes from other trees
-and make sure I'm not tripping over things I sent you before.
-
-Usually this works fine since most of the time either your latest tag
-contains the last thing I sent you or my tag contains your most recent
-tag and either way there's no back merge.  What's gone wrong this time
-around is that I sent you my initial pull requests based off the last
--rc rather than off the release tag, the script didn't cope well with
-that and picked the wrong thing to base the merge off.
-
-If I'd respun the merge before I sent the pull requests it'd all be
-working as expected, I need to either just do that or teach the script
-to be more sensible about picking where it starts building the merge
-=66rom.
-
---cfJ13FhsvNR/yOpm
+--mXDO3udm/xYWQeMQ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTSGLVAAoJELSic+t+oim96BYP/3tRpXis5mdPLsTni6gqyTQ7
-nclabFkENt78yifOOeudBMVHbEN407/5xibOKTUCx1KFqwRJm6v2xzxbYMF2Y9Oy
-/OP3THJrYb5pmORLcbCo696ES8nRLBBkWGehk6WVUCFhbl3h8AQbR3YfWQ6cOKWF
-w0p2hyBTxxdRS6AAX47zonBRTWGLkUr5VGmFlIv7FgWnSL3UkFCtBFz5tQXHrgUM
-uESicvrFk0OxCXItXmrbTv2dPFbBfWVJU5BI/uFwv20NKDPON3kk/dtmgb/ig/tH
-cvHoqf4wuPcZ2QVYuSVkypOHmL67bAw6640fpBTPC6/w7cnxGKZfeL8/O0H9fnqu
-sO/9mauyXmdOUYQldFYCU5k0NUsey8Gvj9DXm3GHcbVqgZYbblALVba0Z3oavlpT
-a06kth0PX4dXVOcvcnTIQmCU0HcpgBjipvPTmRoNf1V0UdSiQgLZXrRVZ9teLdRx
-RhGvlw/DUcPj88vcBWHA38k8anKO+oSsPcqT5IA1+BXprQlARLYVrjTfyLhfWDvZ
-8l5+Hhpe2DhALeaJd46/9wu47+PRM0kDk5SYCbGWY3rawmd0cQV5d4oBga03kdnd
-7edMTv6x5qdt/An8NlpaUGGWZ5MQcHBplSOcN+4TESE9Agojf3NXrL+C7ScF8AgD
-yGa0/m6ie2UAJPj8ODrf
-=m7W3
+iQIcBAEBAgAGBQJTSGMbAAoJELSic+t+oim9uBgQAJaePrP85ERVJIOsC71Q+0zZ
+BbuYMzMD60ekZVxBqyyLQNL1NvD+3JQHSy0uHE22QPyjUss0pyvRVmMm9RTWn4BC
+MAaLiph9I3WaO1vvUCw7XN0ZfsPvRxPuLimQNXSMZ8QTnSGNq521v21UMF5nW02s
+t6sYZb2HKVH7ydv65w36Lyj1blWPrf/EP9GGxX37nhhdbCnKUu/tfMkuzV1vu6vz
+qvFyvY+jgZk1rI2oUvNGumnZuxtGdilTJOuqE12iudx3SfCtK/aBvZwg4sNDGiz6
+wgGg9mQOd4kwTnUoSmIEISrdb5RgvMIKnoN7g7HqWq3jgJdu6jAGLyqsn8ySB9yU
+a0s4P9DM5o8pOa9wvM5/S1LA2btoVSr/9tUhuKeyqex/34cqITqTtFUWt5/YsBcw
+dzB/pObo07cNLLHV4m+xA85yXYosaZxT579l0nfPeb8xRmkw9Ueg3dNIPMRIYHCa
+XgYdF9vuh3ePydVDHuSKP+0mbh3xYR8Oe0+vmRyxvr8wxdnI0tkUDCMjXMgZ7t8w
+GDnB65B5r3mR7Q/7jAz+7scbLtEE4FxuovxDD+n8q7Yh6wPXE330uIxZ5Fg6thnA
+odDLhLWeSvVrvBLZXtNzzZPPPaXGX/0RRBn+AB+vHSiv6sKfpmAXc+foJO6/sW4z
+H7rVJYL8g1AfLBoWa3C5
+=fLER
 -----END PGP SIGNATURE-----
 
---cfJ13FhsvNR/yOpm--
+--mXDO3udm/xYWQeMQ--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

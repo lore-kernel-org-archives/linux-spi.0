@@ -1,70 +1,43 @@
-From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
-Subject: Re: spi: omap2-mcspi: Cleanup the omap2_mcspi_txrx_dma function
-Date: Fri, 11 Apr 2014 14:29:13 +0300
-Message-ID: <20140411112913.GP4963@mwanda>
-References: <20140411112021.GA9166@mwanda>
+From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Subject: Re: [PATCH v2 0/2] spi: sh-hspi: Do not specifically request
+ shyway_clk clock
+Date: Fri, 11 Apr 2014 21:32:54 +0900
+Message-ID: <20140411123254.GB13240@verge.net.au>
+References: <1394783739-29168-1-git-send-email-horms+renesas@verge.net.au>
+ <20140318003254.GB19571@verge.net.au>
+ <20140410233120.GE4358@verge.net.au>
+ <20140411110141.GS6518@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140411112021.GA9166@mwanda>
+In-Reply-To: <20140411110141.GS6518-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Shubhrajyoti's email address is dead.  Also the rx function
-omap2_mcspi_rx_dma() has the same issue.
+On Fri, Apr 11, 2014 at 12:01:41PM +0100, Mark Brown wrote:
+> On Fri, Apr 11, 2014 at 08:31:20AM +0900, Simon Horman wrote:
+> 
+> > Ping
+> 
+> Don't send contentless pings; unfortunately I don't really know what
+> this is about as you've sent it to my work address and as a result I
+> didn't read the earlier parts of the thread - please use the address
+> in MAINTAINERS (broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org).  This helps route mail and when
+> there's more than one maintianer it ensures you reach both of them.
+> 
+> Outside of a few patterns where it's expected I mostly just delete
+> upstream mail for my work account unread since it's typically copied to
+> both work and kernel.org.
+> 
+> Can you resend whatever the original series was please?
 
-regards,
-dan carpenter
+Sure, I will repost it. Sorry for using the wrong address.
 
-On Fri, Apr 11, 2014 at 02:20:21PM +0300, Dan Carpenter wrote:
-> Hello Shubhrajyoti D,
-> 
-> This is a semi-automatic email about new static checker warnings.
-> 
-> The patch d7b4394e780b: "spi: omap2-mcspi: Cleanup the 
-> omap2_mcspi_txrx_dma function" from Sep 11, 2012, leads to the 
-> following Smatch complaint:
-> 
-> drivers/spi/spi-omap2-mcspi.c:425 omap2_mcspi_tx_dma()
-> 	 error: we previously assumed 'mcspi_dma->dma_tx' could be null (see line 405)
-> 
-> drivers/spi/spi-omap2-mcspi.c
->    404	
->    405		if (mcspi_dma->dma_tx) {
->                     ^^^^^^^^^^^^^^^^^
-> Check for NULL.
-> 
->    406			struct dma_async_tx_descriptor *tx;
->    407			struct scatterlist sg;
->    408	
->    409			dmaengine_slave_config(mcspi_dma->dma_tx, &cfg);
->    410	
->    411			sg_init_table(&sg, 1);
->    412			sg_dma_address(&sg) = xfer->tx_dma;
->    413			sg_dma_len(&sg) = xfer->len;
->    414	
->    415			tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, &sg, 1,
->    416			DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
->    417			if (tx) {
->    418				tx->callback = omap2_mcspi_tx_callback;
->    419				tx->callback_param = spi;
->    420				dmaengine_submit(tx);
->    421			} else {
->    422				/* FIXME: fall back to PIO? */
->    423			}
->    424		}
->    425		dma_async_issue_pending(mcspi_dma->dma_tx);
->                                         ^^^^^^^^^^^^^^^^^
-> Dereferenced inside the function call.  Probably it should be moved
-> inside the if condition.
-> 
->    426		omap2_mcspi_set_dma_req(spi, 0, 1);
->    427	
-> 
-> regards,
-> dan carpenter
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

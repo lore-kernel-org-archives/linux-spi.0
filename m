@@ -1,41 +1,61 @@
-From: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
-Subject: spi-atmel: scheduling while atomic
-Date: Fri, 11 Apr 2014 15:25:43 +0200
-Message-ID: <1734135.RAAc8zgbc4@kongar>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: spi-atmel: scheduling while atomic
+Date: Fri, 11 Apr 2014 17:22:23 +0100
+Message-ID: <20140411162223.GG28800@sirena.org.uk>
+References: <1734135.RAAc8zgbc4@kongar>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="6BvahUXLYAruDZOj"
+Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1734135.RAAc8zgbc4@kongar>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi,
 
-I'm trying to use device-tree on my at91sam9263 based board. Works so far, but I'm getting those BUGs
-for each SPI device being probed (2 in my case)
+--6BvahUXLYAruDZOj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-[    2.787000] BUG: scheduling while atomic: spi32766/37/0x00000002                                                                                                                                                                          
-[    2.793000] Modules linked in:                                                                                                                                                                                                            
-[    2.796000] CPU: 0 PID: 37 Comm: spi32766 Not tainted 3.14.0+ #72                                                                                                                                                                         
-[    2.802000] [<c000d8dc>] (unwind_backtrace) from [<c000bcfc>] (show_stack+0x10/0x14)                                                                                                                                                      
-[    2.810000] [<c000bcfc>] (show_stack) from [<c0355a54>] (__schedule_bug+0x48/0x64)                                                                                                                                                        
-[    2.818000] [<c0355a54>] (__schedule_bug) from [<c0359880>] (__schedule+0x64/0x410)                                                                                                                                                       
-[    2.826000] [<c0359880>] (__schedule) from [<c0359554>] (schedule_timeout+0x164/0x190)                                                                                                                                                    
-[    2.834000] [<c0359554>] (schedule_timeout) from [<c035a734>] (wait_for_common+0x180/0x1d0)                                                                                                                                               
-[    2.842000] [<c035a734>] (wait_for_common) from [<c0242aa8>] (atmel_spi_one_transfer+0x8dc/0xb7c)                                                                                                                                         
-[    2.851000] [<c0242aa8>] (atmel_spi_one_transfer) from [<c0242df8>] (atmel_spi_transfer_one_message+0xb0/0x1ac)                                                                                                                           
-[    2.861000] [<c0242df8>] (atmel_spi_transfer_one_message) from [<c023f500>] (spi_pump_messages+0x1dc/0x204)                                                                                                                               
-[    2.871000] [<c023f500>] (spi_pump_messages) from [<c002fc30>] (kthread_worker_fn+0x154/0x170)                                                                                                                                            
-[    2.880000] [<c002fc30>] (kthread_worker_fn) from [<c002fd0c>] (kthread+0xc0/0xd4)                                                                                                                                                        
-[    2.887000] [<c002fd0c>] (kthread) from [<c0009630>] (ret_from_fork+0x14/0x24)                                                                                                                                                            
+On Fri, Apr 11, 2014 at 03:25:43PM +0200, Alexander Stein wrote:
 
-Currently, I can't figure out why this happens. It's a plain v3.14 kernel with some own patches which don't affect SPI.
+> Currently, I can't figure out why this happens. It's a plain v3.14
+> kernel with some own patches which don't affect SPI.
 
-Best regards,
-Alexander
+It's because atmel_spi_lock() is a spinlock and we're waiting for the
+transfer in transfer_one().  Either the scope of the lock needs to be
+dramatically reduced or the lock needs to become something we can hold
+while scheduling like a mutex.
 
+Converting to use the core transfer_one_message() would also help, we
+could then return from the transfer function and have the core implement
+the wait for the completion.
+
+--6BvahUXLYAruDZOj
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTSBa7AAoJELSic+t+oim9ZQwP/iMVCz+BnSKZrHwCsZxPe02G
+Mj4i9+jGsT0vFt4ifpRk4yb0O+9FWDX4h44TI4lpERgzuv6sNB04a98HQ8Oif7lq
+nUyMOxJRH8u76R8zhIon1MqgbtQ4MAcWYgNkd3orpig0vYetzU1LpkCLwGW0BRP7
+boOYwg/JmaBFU7sVSSbxdrQ12gpbsZ/p7fOW397zxX4uHyIs/IXIitfeCIzU5ZE5
+ocoTQi/ZjBR7j8uf3AVJdm5dXcm6DnQ/wyyzj+3WOFvA+Xt+sDVPeo3Eb6U1mTqR
+Odx4zjjGNuaFT7+9IdQBadw0tdbpfGCtvHnifaE7JxlvwAATa44qaVJ+2T8BjQc5
+EMnewU/iv+OxQekuytqWhj1mkboLhhkU2SHd4Q3HXIMpjSYj8u+Y59VZnnz+B8Zn
+spNVY8/5zDGuwkAWRwO4A9DRLyTGlwBd0DdH9wOay1UNWBWqrRx3dUrrNs4YKSOQ
+pLxtC7PzG1itl0vn2hNr5PcQ2EFC6ToQnnGjWupAKXUKPFb251tmCrzfVqHh9S8l
+ssVhnPowpsDj1GUTvL8w/w3JL3VlZIFuhlVWMr1Z9V+r/Djja8Uh+smXAiWJnuox
+Sc6E5MKjoIMy86vmVzeuNLJ3dCUVcR+0XP+sQjA6PWnPHmYw0ZJ32PwFc5AGAkRW
+SV4tV6TkULISMQAH1v/Y
+=I1mL
+-----END PGP SIGNATURE-----
+
+--6BvahUXLYAruDZOj--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

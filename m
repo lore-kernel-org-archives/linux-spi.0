@@ -1,56 +1,62 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi: core: Increase timeout value
-Date: Fri, 11 Apr 2014 12:10:00 +0100
-Message-ID: <20140411111000.GA28800@sirena.org.uk>
-References: <1397198188-8602-1-git-send-email-harinik@xilinx.com>
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: re: spi: omap2-mcspi: Cleanup the omap2_mcspi_txrx_dma function
+Date: Fri, 11 Apr 2014 14:20:21 +0300
+Message-ID: <20140411112021.GA9166@mwanda>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="azLHFNyN32YCQGCU"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
-To: Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: shubhrajyoti-l0cyMroinI0@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1397198188-8602-1-git-send-email-harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hello Shubhrajyoti D,
 
---azLHFNyN32YCQGCU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This is a semi-automatic email about new static checker warnings.
 
-On Fri, Apr 11, 2014 at 12:06:28PM +0530, Harini Katakam wrote:
-> The existing timeout value in wait_for_completion_timeout is
-> calculated from the transfer length and speed with tolerance of 10msec.
-> This is too low because this is used for error conditions such as
-> hardware hang etc.
+The patch d7b4394e780b: "spi: omap2-mcspi: Cleanup the 
+omap2_mcspi_txrx_dma function" from Sep 11, 2012, leads to the 
+following Smatch complaint:
 
-Applied, thanks.
+drivers/spi/spi-omap2-mcspi.c:425 omap2_mcspi_tx_dma()
+	 error: we previously assumed 'mcspi_dma->dma_tx' could be null (see line 405)
 
---azLHFNyN32YCQGCU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+drivers/spi/spi-omap2-mcspi.c
+   404	
+   405		if (mcspi_dma->dma_tx) {
+                    ^^^^^^^^^^^^^^^^^
+Check for NULL.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+   406			struct dma_async_tx_descriptor *tx;
+   407			struct scatterlist sg;
+   408	
+   409			dmaengine_slave_config(mcspi_dma->dma_tx, &cfg);
+   410	
+   411			sg_init_table(&sg, 1);
+   412			sg_dma_address(&sg) = xfer->tx_dma;
+   413			sg_dma_len(&sg) = xfer->len;
+   414	
+   415			tx = dmaengine_prep_slave_sg(mcspi_dma->dma_tx, &sg, 1,
+   416			DMA_MEM_TO_DEV, DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+   417			if (tx) {
+   418				tx->callback = omap2_mcspi_tx_callback;
+   419				tx->callback_param = spi;
+   420				dmaengine_submit(tx);
+   421			} else {
+   422				/* FIXME: fall back to PIO? */
+   423			}
+   424		}
+   425		dma_async_issue_pending(mcspi_dma->dma_tx);
+                                        ^^^^^^^^^^^^^^^^^
+Dereferenced inside the function call.  Probably it should be moved
+inside the if condition.
 
-iQIcBAEBAgAGBQJTR82FAAoJELSic+t+oim9Z/IP/iBaI4waLUagyfvZQr+pvbjR
-0/SPeFko1XQ4zw6zsczxkfDwQHlHyUrsOvwQemGUlK6f97FxVm62FYbSfF+xkJ17
-cfOU+nlj2AvdhOdVLXGn//1+N8EvBX37XtrBJDVSX895QPXsEPyEalPZAh3d5XpY
-tYDWX7h4VVWYttOOiBg3Hb0kJCHHCo3vNSDD73dOFDwDbEuPC2DZflJZ/Lzm7Ja0
-1GqiWdIcvr0Bz1bh4+yYcEypmltW2yNYeJSKjNxx1JRPU+LpFUbQrs9ze5MTTjVB
-rxpSDdP4KtWgyFO7lBvsK/yU91vjvnakG567LfEhjuPkOzcM7/H9FYc5SlhrRk14
-lek8J5xz+x9NcwA0fsmtR52bw2esSpyhMVK4aSjg4L7IPgpdNdla4Mzuy7+Ws3jD
-4ezzYYDyDSNclJeFwFjjcUC3hSR486uoeOYFF4CQIpfYBTopXEMVyU2A0WXkMWkL
-15r3omUvswCDAZ+nWptQ7BdSv25ITonBZVidDMusX4gSoKmidwDaFd3dYh6fxowe
-puJVnaFLBRb863Xgaya4dKYG3erRZ1e6HHSbFnj1Q7//uZJKPpF73d6F2CkkKRJO
-6vON4lIMoKjZn1J/S516jPM0Zkt+tbX2VO8nyVBA5dajN6bJZ24kMWCtsMp4fsqJ
-jt+l+MqdmLxETH65eSfU
-=3rOv
------END PGP SIGNATURE-----
+   426		omap2_mcspi_set_dma_req(spi, 0, 1);
+   427	
 
---azLHFNyN32YCQGCU--
+regards,
+dan carpenter
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

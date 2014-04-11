@@ -1,34 +1,43 @@
-From: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
-Subject: Re: [GIT PULL] spi fixes for v3.15
-Date: Fri, 11 Apr 2014 13:41:56 -0700
-Message-ID: <CA+55aFxCubywWSLdhAva9dvj26=o4WkaVnhYjgEKrEuMuaFo+g@mail.gmail.com>
-References: <20140411105604.GR6518@sirena.org.uk>
+From: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
+Subject: Re: Re: spi-atmel: scheduling while atomic
+Date: Fri, 11 Apr 2014 23:11:29 +0200
+Message-ID: <2776532.qUm2PuCHHs@kongar>
+References: <1734135.RAAc8zgbc4@kongar> <20140411162223.GG28800@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Linux Kernel Mailing List <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140411105604.GR6518-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20140411162223.GG28800-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, Apr 11, 2014 at 3:56 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
->
-> Same issue as on the regulator pull request with the entire diffstat for
-> the original pull request for this merge window has appeared - like I
-> say I will try to fix the scripts as it's annoying and unclear.
+On Friday 11 April 2014, 17:22:23 wrote Mark Brown:
+> On Fri, Apr 11, 2014 at 03:25:43PM +0200, Alexander Stein wrote:
+> 
+> > Currently, I can't figure out why this happens. It's a plain v3.14
+> > kernel with some own patches which don't affect SPI.
+> 
+> It's because atmel_spi_lock() is a spinlock and we're waiting for the
+> transfer in transfer_one().  Either the scope of the lock needs to be
+> dramatically reduced or the lock needs to become something we can hold
+> while scheduling like a mutex.
 
-Yeah, looking at this, the problem does seem to be that extraneous
-merge. I'm not sure why you did that "Merge tag 'spi-v3.15' into
-spi-linus" at all, but it basically acts as an indirect back-merge
-giving you two different merge bases.
+Mh, this seems to related to DMA. I don't have an idea how to work an that.
 
-You seem to start your development by doing a merge of that tag that
-you sent me. Why? Why not just start *at* the tag you sent me, not at
-that extraneous merge of that tag and v3.14.
+> Converting to use the core transfer_one_message() would also help, we
+> could then return from the transfer function and have the core implement
+> the wait for the completion.
 
-               Linus
+Mh, this driver already uses that.
+> master->transfer_one_message = atmel_spi_transfer_one_message;
+
+Or did you mean transfer_one?
+
+Regards,
+Alexander
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,51 +1,49 @@
-From: Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v5 5/8 fix] mtd: m25p80: use the SPI nor framework
-Date: Fri, 11 Apr 2014 08:32:05 +0800
-Message-ID: <20140411003203.GC3837@localhost.localdomain>
-References: <1393238262-8622-6-git-send-email-b32955@freescale.com>
- <1393574142-17234-1-git-send-email-b32955@freescale.com>
- <20140409213749.GH32070@ld-irv-0074>
- <20140410072509.GA24100@localhost>
- <20140410192902.GM32070@ld-irv-0074>
+From: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: core: Increase timeout value
+Date: Fri, 11 Apr 2014 08:39:54 +0530
+Message-ID: <CAFcVECL-G_JPZXmzBLT_cFo3vmjYZd8xGFf-7Vv2uXWa9-O37Q@mail.gmail.com>
+References: <1397134229-2380-1-git-send-email-harinik@xilinx.com>
+	<20140410173616.GC6518@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, angus.clark-qxv4g6HH51o@public.gmane.org,
-	Russel King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
-	shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140410192902.GM32070@ld-irv-0074>
+In-Reply-To: <20140410173616.GC6518-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Apr 10, 2014 at 12:29:02PM -0700, Brian Norris wrote:
-> > IMHO, we should create a patch or several patches to add the MTD_SPI_NOR
-> > to the defconfigs.
-> 
-> Yeah, I think that's best.
-I will create a patch when i back to office.
-Or you can create it yourself.
+Hi Mark,
 
-> 
-> > > Also, I think m25p80.c is no longer a "self-contained MTD device driver"
-> > > and should be moved under drivers/mtd/spi-nor/.
-> > If we move the m25p80.c to the drivers/mtd/spi-nor/, we also need to move
-> > other drivers too.
-> 
-> Which ones? I think it only makes sense to move those that depend on the
-> same core code (i.e., spi-nor.c), or have a close relation to it (so
-> Lee's st_spi_fsm.c is a candidate).
+On Thu, Apr 10, 2014 at 11:06 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Apr 10, 2014 at 06:20:29PM +0530, Harini Katakam wrote:
+>
+>> Considering acceptable latencies, this timeout can be set to a large
+>> value >= 1*HZ typically.
+>
+>> This patch adds a tolerance of 2000 msec in the core accordingly.
+>
+> That's too much, it's 2 seconds which gets to be incredibly painful when
+> trying to debug problems - if you're sitting there waiting for a driver
+> to time out some operations (and it may be more than one of them) so you
+> can look at the diagnostics it can be quite aggrivating.  That's why the
+> delays are related to the expected runtime for the operation.  Something
+> like double the expected runtime plus something in the 100ms or so range
+> perhaps?
+>
 
-yes, i mean the st_spi_fsm.c and other drivers which will use the
-spi-nor core code in the future.
+OK.
 
-thanks
-Huang Shijie
+> Ideally we'd use the actual speed the device set rather than the
+> requested one too, that'd help.
+
+How would you propose to do that - driver should write back actual speed set
+to xfer->speed_hz?
+
+Regards,
+Harini
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

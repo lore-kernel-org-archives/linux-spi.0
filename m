@@ -1,54 +1,51 @@
-From: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Subject: Re: [PATCH v2 0/2] spi: sh-hspi: Do not specifically request
- shyway_clk clock
-Date: Fri, 11 Apr 2014 08:31:20 +0900
-Message-ID: <20140410233120.GE4358@verge.net.au>
-References: <1394783739-29168-1-git-send-email-horms+renesas@verge.net.au>
- <20140318003254.GB19571@verge.net.au>
+From: Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v5 5/8 fix] mtd: m25p80: use the SPI nor framework
+Date: Fri, 11 Apr 2014 08:32:05 +0800
+Message-ID: <20140411003203.GC3837@localhost.localdomain>
+References: <1393238262-8622-6-git-send-email-b32955@freescale.com>
+ <1393574142-17234-1-git-send-email-b32955@freescale.com>
+ <20140409213749.GH32070@ld-irv-0074>
+ <20140410072509.GA24100@localhost>
+ <20140410192902.GM32070@ld-irv-0074>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, angus.clark-qxv4g6HH51o@public.gmane.org,
+	Russel King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, pekon-l0cyMroinI0@public.gmane.org, sourav.poddar-l0cyMroinI0@public.gmane.org,
+	shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140318003254.GB19571-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+In-Reply-To: <20140410192902.GM32070@ld-irv-0074>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Mar 18, 2014 at 09:32:55AM +0900, Simon Horman wrote:
-> On Fri, Mar 14, 2014 at 04:55:37PM +0900, Simon Horman wrote:
-> > Rather than requesting the shyway_clk call clk_get with
-> > the device and a NULL con_id.
-> > 
-> > This is in keeping with the way that clk_get() is called
-> > on other drivers used by Renesas Gen 1 SoCs. And I believe
-> > it is compatible with supplying clocks via DT, unlike the current code.
-> > 
-> > 
-> > This series supplies a fix for the r8a7779, a consumer of the driver,
-> > so that the hspi clocks it supplies have the correct source.
-> > 
-> > And a fix for the sh-hspi driver to address the problem
-> > described above.
-> > 
-> > Simon Horman (2):
-> >   ARM: shmobile: r8a7779: Use clks as MSTP007 parent
-> >   spi: sh-hspi: Do not specifically request shyway_clk clock
-> > 
-> >  arch/arm/mach-shmobile/clock-r8a7778.c | 2 +-
-> >  drivers/spi/spi-sh-hspi.c              | 4 ++--
-> >  2 files changed, 3 insertions(+), 3 deletions(-)
+On Thu, Apr 10, 2014 at 12:29:02PM -0700, Brian Norris wrote:
+> > IMHO, we should create a patch or several patches to add the MTD_SPI_NOR
+> > to the defconfigs.
 > 
-> Hi Mark,
-> 
-> as the first mach-shmobile patch is a run-time dependency for the
-> second SPI driver patch could you consider taking both of them?
-> 
-> I have checked and I do not expect any conflicts anywhere beetween
-> v3.14-rc1 and what I have queued up in the devel branch of my renesas tree.
+> Yeah, I think that's best.
+I will create a patch when i back to office.
+Or you can create it yourself.
 
-Ping
+> 
+> > > Also, I think m25p80.c is no longer a "self-contained MTD device driver"
+> > > and should be moved under drivers/mtd/spi-nor/.
+> > If we move the m25p80.c to the drivers/mtd/spi-nor/, we also need to move
+> > other drivers too.
+> 
+> Which ones? I think it only makes sense to move those that depend on the
+> same core code (i.e., spi-nor.c), or have a close relation to it (so
+> Lee's st_spi_fsm.c is a candidate).
+
+yes, i mean the st_spi_fsm.c and other drivers which will use the
+spi-nor core code in the future.
+
+thanks
+Huang Shijie
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

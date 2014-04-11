@@ -1,50 +1,60 @@
-From: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: core: Increase timeout value
-Date: Fri, 11 Apr 2014 08:39:54 +0530
-Message-ID: <CAFcVECL-G_JPZXmzBLT_cFo3vmjYZd8xGFf-7Vv2uXWa9-O37Q@mail.gmail.com>
-References: <1397134229-2380-1-git-send-email-harinik@xilinx.com>
-	<20140410173616.GC6518@sirena.org.uk>
+From: Harini Katakam <harinikatakamlinux@gmail.com>
+Subject: Re: [PATCH v3 1/2] SPI: Add driver for Cadence SPI controller
+Date: Fri, 11 Apr 2014 09:06:52 +0530
+Message-ID: <CAFcVECL7fSn6S53712ZfaezVxfCbeT15Wbk432k61KuQOL4PdQ@mail.gmail.com>
+References: <1397132030-2440-1-git-send-email-harinik@xilinx.com>
+	<20140410224825.GI6518@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140410173616.GC6518-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>, linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	michals@xilinx.com
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <20140410224825.GI6518@sirena.org.uk>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 Hi Mark,
 
-On Thu, Apr 10, 2014 at 11:06 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Thu, Apr 10, 2014 at 06:20:29PM +0530, Harini Katakam wrote:
+On Fri, Apr 11, 2014 at 4:18 AM, Mark Brown <broonie@kernel.org> wrote:
+> On Thu, Apr 10, 2014 at 05:43:49PM +0530, Harini Katakam wrote:
+>> Add driver for Cadence SPI controller. This is used in Xilinx Zynq.
 >
->> Considering acceptable latencies, this timeout can be set to a large
->> value >= 1*HZ typically.
+> This looks mostly good, the issues below are very small.
 >
->> This patch adds a tolerance of 2000 msec in the core accordingly.
+>> +static int __maybe_unused cdns_spi_suspend(struct device *dev)
+>> +{
+>> +     struct platform_device *pdev = container_of(dev,
+>> +                     struct platform_device, dev);
+>> +     struct spi_master *master = platform_get_drvdata(pdev);
+>> +     struct cdns_spi *xspi = spi_master_get_devdata(master);
+>> +
+>> +     spi_master_suspend(master);
+>> +
+>> +     clk_disable(xspi->ref_clk);
+>> +
+>> +     clk_disable(xspi->pclk);
 >
-> That's too much, it's 2 seconds which gets to be incredibly painful when
-> trying to debug problems - if you're sitting there waiting for a driver
-> to time out some operations (and it may be more than one of them) so you
-> can look at the diagnostics it can be quite aggrivating.  That's why the
-> delays are related to the expected runtime for the operation.  Something
-> like double the expected runtime plus something in the 100ms or so range
-> perhaps?
+> You're only doing clk_disable() here, I would expect the clocks to also
+> be unprepared over suspend - there is no value in leaving them prepared
+> that I can see.  Just use clk_unprepare_disable().
 >
+> It would also be good (though not essential) to implement runtime PM and
+> disable the clocks while there are no transfers in progress for a small
+> power saving.  The auto_runtime_pm feature in the core will do the
+> runtime PM calls for you.
+>
+> Otherwise this looks good.
 
-OK.
-
-> Ideally we'd use the actual speed the device set rather than the
-> requested one too, that'd help.
-
-How would you propose to do that - driver should write back actual speed set
-to xfer->speed_hz?
+Thanks. I'll make these changes and send a v4 next week.
 
 Regards,
 Harini
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

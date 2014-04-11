@@ -1,67 +1,56 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 0/2] spi: sh-hspi: Do not specifically request
- shyway_clk clock
-Date: Fri, 11 Apr 2014 12:01:41 +0100
-Message-ID: <20140411110141.GS6518@sirena.org.uk>
-References: <1394783739-29168-1-git-send-email-horms+renesas@verge.net.au>
- <20140318003254.GB19571@verge.net.au>
- <20140410233120.GE4358@verge.net.au>
+Subject: Re: [PATCH v2] spi: core: Increase timeout value
+Date: Fri, 11 Apr 2014 12:10:00 +0100
+Message-ID: <20140411111000.GA28800@sirena.org.uk>
+References: <1397198188-8602-1-git-send-email-harinik@xilinx.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PEWkPmBCIbC5Tcj0"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="azLHFNyN32YCQGCU"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
+To: Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20140410233120.GE4358-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+In-Reply-To: <1397198188-8602-1-git-send-email-harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---PEWkPmBCIbC5Tcj0
+--azLHFNyN32YCQGCU
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Apr 11, 2014 at 08:31:20AM +0900, Simon Horman wrote:
+On Fri, Apr 11, 2014 at 12:06:28PM +0530, Harini Katakam wrote:
+> The existing timeout value in wait_for_completion_timeout is
+> calculated from the transfer length and speed with tolerance of 10msec.
+> This is too low because this is used for error conditions such as
+> hardware hang etc.
 
-> Ping
+Applied, thanks.
 
-Don't send contentless pings; unfortunately I don't really know what
-this is about as you've sent it to my work address and as a result I
-didn't read the earlier parts of the thread - please use the address
-in MAINTAINERS (broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org).  This helps route mail and when
-there's more than one maintianer it ensures you reach both of them.
-
-Outside of a few patterns where it's expected I mostly just delete
-upstream mail for my work account unread since it's typically copied to
-both work and kernel.org.
-
-Can you resend whatever the original series was please?
-
---PEWkPmBCIbC5Tcj0
+--azLHFNyN32YCQGCU
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTR8uSAAoJELSic+t+oim9jgQP/0hPtDCgzcuokhrPiihAHQCH
-sfnbhxcKnSgQHLlxee+7feS0WBClxE1JUXp/DORWrhkK00gYDAim3q5JNnkzJldg
-Mg7TY2zpPXNrPdcL5ojsbBrI80DKXFEXCbmuOdOYhGOYN5BBUpVfIi6nMVkhBaLI
-FHE8+4dLufX0xffwOXczWEvd6RS1sbG3/iOzR7W/kSd9AHjGYIswRgRbMOxCuklv
-vfSPyFCMVpk/GniX5zmHTXm4ujvgxh7JDp547FSR+2kVqyyUw73iFB29eIwTry0N
-gzk5pIU510bVrjj0YgvqNvfmO8EwszLcmk0ruv0jwCNZ8QcKQqfr2/Gm13seKcU1
-v7+dyKLQxKIMvsbyV8hChD84qKgoVYp3kbaPtI4qJsko0SAR74+NVI0o0YPwHg6A
-2Nkbzve91PxKh637upHEAU3Qjz25R0uH6zTUbAOqFe5/pvpnBZl9SQFUpcQpB9hu
-IW8qGePqPJ8LO7HJm0OJQ1ho/y9FVnSMDrN02QfSTXhSsl5yOfBYkpodW0MotcN7
-eQBu1eQj0hQDbf6ud0xkRqwYyDWitqz0cu0MxwzTlYRY3kEY0aZDZfY3nhX9hunF
-uZAKeYPRwhKVxAeH4ZgFNiGTF4tYOnMwLfznmdSn5Gk7D6Pe+Ee5g/6yWKSxnqnB
-UcGlbgUCwRwHnNufq+Lo
-=UtVH
+iQIcBAEBAgAGBQJTR82FAAoJELSic+t+oim9Z/IP/iBaI4waLUagyfvZQr+pvbjR
+0/SPeFko1XQ4zw6zsczxkfDwQHlHyUrsOvwQemGUlK6f97FxVm62FYbSfF+xkJ17
+cfOU+nlj2AvdhOdVLXGn//1+N8EvBX37XtrBJDVSX895QPXsEPyEalPZAh3d5XpY
+tYDWX7h4VVWYttOOiBg3Hb0kJCHHCo3vNSDD73dOFDwDbEuPC2DZflJZ/Lzm7Ja0
+1GqiWdIcvr0Bz1bh4+yYcEypmltW2yNYeJSKjNxx1JRPU+LpFUbQrs9ze5MTTjVB
+rxpSDdP4KtWgyFO7lBvsK/yU91vjvnakG567LfEhjuPkOzcM7/H9FYc5SlhrRk14
+lek8J5xz+x9NcwA0fsmtR52bw2esSpyhMVK4aSjg4L7IPgpdNdla4Mzuy7+Ws3jD
+4ezzYYDyDSNclJeFwFjjcUC3hSR486uoeOYFF4CQIpfYBTopXEMVyU2A0WXkMWkL
+15r3omUvswCDAZ+nWptQ7BdSv25ITonBZVidDMusX4gSoKmidwDaFd3dYh6fxowe
+puJVnaFLBRb863Xgaya4dKYG3erRZ1e6HHSbFnj1Q7//uZJKPpF73d6F2CkkKRJO
+6vON4lIMoKjZn1J/S516jPM0Zkt+tbX2VO8nyVBA5dajN6bJZ24kMWCtsMp4fsqJ
+jt+l+MqdmLxETH65eSfU
+=3rOv
 -----END PGP SIGNATURE-----
 
---PEWkPmBCIbC5Tcj0--
+--azLHFNyN32YCQGCU--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

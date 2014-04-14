@@ -1,58 +1,65 @@
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH v3 1/2] ARM: shmobile: r8a7778: Use clks as MSTP007 parent
-Date: Mon, 14 Apr 2014 11:27:26 +0200
-Message-ID: <5028748.H4m9LDvjIB@avalon>
-References: <1397439698-30123-1-git-send-email-horms+renesas@verge.net.au> <1397439698-30123-2-git-send-email-horms+renesas@verge.net.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org, Magnus Damm <magnus.damm@gmail.com>
-To: Simon Horman <horms+renesas@verge.net.au>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1397439698-30123-2-git-send-email-horms+renesas@verge.net.au>
-Sender: linux-sh-owner@vger.kernel.org
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: [PATCH] spi: core: Ignore unsupported Dual/Quad Transfer Mode bits
+Date: Mon, 14 Apr 2014 19:39:53 +0200
+Message-ID: <1397497193-28067-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Simon,
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Thank you for the patch.
+The availability of SPI Dual or Quad Transfer Mode as indicated by the
+"spi-tx-bus-width" and "spi-rx-bus-width" properties in the device tree is
+a hardware property of the SPI master, SPI slave, and board wiring.  Hence
+the SPI core should not reject an SPI slave because an SPI master driver
+doesn't (yet) support Dual or Quad Transfer Mode.
 
-On Monday 14 April 2014 10:41:36 Simon Horman wrote:
-> According to the documentation the parent clock of
-> MSTP007 should be clks not clkp.
-> 
-> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+Change the lack of Dual or Quad Transfer Mode support in the SPI master
+driver from an error condition to a warning condition, and ignore the
+unsupported mode bits, falling back to Single Transfer Mode, to avoid
+breakages when running old kernels with new device trees.
 
-Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+I think this should be applied to -stable, for all versions containing
+commit f477b7fb13df2b843997559ff34e87d054ba6538 ("spi: DUAL and QUAD
+support"), i.e. v3.12, v3.13, v3.14.
+---
+ drivers/spi/spi.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-> ---
-> v3
-> * Correct changelog to refer to r8a7778 instead of r8a7779
-> 
-> v2
-> * First post, as suggested by Laurent Pinchart
-> ---
->  arch/arm/mach-shmobile/clock-r8a7778.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-shmobile/clock-r8a7778.c
-> b/arch/arm/mach-shmobile/clock-r8a7778.c index 2009a9b..9989b1b 100644
-> --- a/arch/arm/mach-shmobile/clock-r8a7778.c
-> +++ b/arch/arm/mach-shmobile/clock-r8a7778.c
-> @@ -170,7 +170,7 @@ static struct clk mstp_clks[MSTP_NR] = {
->  	[MSTP010] = SH_CLK_MSTP32(&p_clk, MSTPCR0, 10, 0), /* SSI2 */
->  	[MSTP009] = SH_CLK_MSTP32(&p_clk, MSTPCR0,  9, 0), /* SSI3 */
->  	[MSTP008] = SH_CLK_MSTP32(&p_clk, MSTPCR0,  8, 0), /* SRU */
-> -	[MSTP007] = SH_CLK_MSTP32(&p_clk, MSTPCR0,  7, 0), /* HSPI */
-> +	[MSTP007] = SH_CLK_MSTP32(&s_clk, MSTPCR0,  7, 0), /* HSPI */
->  };
-> 
->  static struct clk_lookup lookups[] = {
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 4eb9bf02996c..1534fa1dac34 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1756,7 +1756,7 @@ EXPORT_SYMBOL_GPL(spi_busnum_to_master);
+  */
+ int spi_setup(struct spi_device *spi)
+ {
+-	unsigned	bad_bits;
++	unsigned	bad_bits, ugly_bits;
+ 	int		status = 0;
+ 
+ 	/* check mode to prevent that DUAL and QUAD set at the same time
+@@ -1776,6 +1776,15 @@ int spi_setup(struct spi_device *spi)
+ 	 * that aren't supported with their current master
+ 	 */
+ 	bad_bits = spi->mode & ~spi->master->mode_bits;
++	ugly_bits = bad_bits &
++		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_RX_DUAL | SPI_RX_QUAD);
++	if (ugly_bits) {
++		dev_warn(&spi->dev,
++			 "setup: ignoring unsupported mode bits %x\n",
++			 ugly_bits);
++		spi->mode &= ~ugly_bits;
++		bad_bits &= ~ugly_bits;
++	}
+ 	if (bad_bits) {
+ 		dev_err(&spi->dev, "setup: unsupported mode bits %x\n",
+ 			bad_bits);
 -- 
-Regards,
-
-Laurent Pinchart
-
+1.7.9.5

@@ -1,72 +1,58 @@
-From: Harini Katakam <harinikatakamlinux@gmail.com>
-Subject: Re: [PATCH v3 1/2] SPI: Add driver for Cadence SPI controller
-Date: Mon, 14 Apr 2014 14:41:59 +0530
-Message-ID: <CAFcVECLEzheDMPZ=3wjDCyD00qBtbYps6OgYzeLMcEzAPijZvQ@mail.gmail.com>
-References: <1397132030-2440-1-git-send-email-harinik@xilinx.com>
-	<20140410224825.GI6518@sirena.org.uk>
-	<CAFcVECL7fSn6S53712ZfaezVxfCbeT15Wbk432k61KuQOL4PdQ@mail.gmail.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Subject: Re: [PATCH v3 1/2] ARM: shmobile: r8a7778: Use clks as MSTP007 parent
+Date: Mon, 14 Apr 2014 11:27:26 +0200
+Message-ID: <5028748.H4m9LDvjIB@avalon>
+References: <1397439698-30123-1-git-send-email-horms+renesas@verge.net.au> <1397439698-30123-2-git-send-email-horms+renesas@verge.net.au>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Cc: Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>, linux-spi@vger.kernel.org,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	michals@xilinx.com
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <CAFcVECL7fSn6S53712ZfaezVxfCbeT15Wbk432k61KuQOL4PdQ@mail.gmail.com>
-Sender: linux-doc-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org, Magnus Damm <magnus.damm@gmail.com>
+To: Simon Horman <horms+renesas@verge.net.au>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1397439698-30123-2-git-send-email-horms+renesas@verge.net.au>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+Hi Simon,
 
-On Fri, Apr 11, 2014 at 9:06 AM, Harini Katakam
-<harinikatakamlinux@gmail.com> wrote:
-> Hi Mark,
->
-> On Fri, Apr 11, 2014 at 4:18 AM, Mark Brown <broonie@kernel.org> wrote:
->> On Thu, Apr 10, 2014 at 05:43:49PM +0530, Harini Katakam wrote:
->>> Add driver for Cadence SPI controller. This is used in Xilinx Zynq.
->>
->> This looks mostly good, the issues below are very small.
->>
->>> +static int __maybe_unused cdns_spi_suspend(struct device *dev)
->>> +{
->>> +     struct platform_device *pdev = container_of(dev,
->>> +                     struct platform_device, dev);
->>> +     struct spi_master *master = platform_get_drvdata(pdev);
->>> +     struct cdns_spi *xspi = spi_master_get_devdata(master);
->>> +
->>> +     spi_master_suspend(master);
->>> +
->>> +     clk_disable(xspi->ref_clk);
->>> +
->>> +     clk_disable(xspi->pclk);
->>
->> You're only doing clk_disable() here, I would expect the clocks to also
->> be unprepared over suspend - there is no value in leaving them prepared
->> that I can see.  Just use clk_unprepare_disable().
->>
->> It would also be good (though not essential) to implement runtime PM and
->> disable the clocks while there are no transfers in progress for a small
->> power saving.  The auto_runtime_pm feature in the core will do the
->> runtime PM calls for you.
->>
->> Otherwise this looks good.
->
-> Thanks. I'll make these changes and send a v4 next week.
->
+Thank you for the patch.
 
-This driver without runtime PM will suffice our current requirements.
-Disabling the clocks will offer some small power savings as you pointed out and
-I will revisit this at a later time as an enhancement.
+On Monday 14 April 2014 10:41:36 Simon Horman wrote:
+> According to the documentation the parent clock of
+> MSTP007 should be clks not clkp.
+> 
+> Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
 
-I have addressed the other review comment and sent out a v4.
+Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
+> ---
+> v3
+> * Correct changelog to refer to r8a7778 instead of r8a7779
+> 
+> v2
+> * First post, as suggested by Laurent Pinchart
+> ---
+>  arch/arm/mach-shmobile/clock-r8a7778.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm/mach-shmobile/clock-r8a7778.c
+> b/arch/arm/mach-shmobile/clock-r8a7778.c index 2009a9b..9989b1b 100644
+> --- a/arch/arm/mach-shmobile/clock-r8a7778.c
+> +++ b/arch/arm/mach-shmobile/clock-r8a7778.c
+> @@ -170,7 +170,7 @@ static struct clk mstp_clks[MSTP_NR] = {
+>  	[MSTP010] = SH_CLK_MSTP32(&p_clk, MSTPCR0, 10, 0), /* SSI2 */
+>  	[MSTP009] = SH_CLK_MSTP32(&p_clk, MSTPCR0,  9, 0), /* SSI3 */
+>  	[MSTP008] = SH_CLK_MSTP32(&p_clk, MSTPCR0,  8, 0), /* SRU */
+> -	[MSTP007] = SH_CLK_MSTP32(&p_clk, MSTPCR0,  7, 0), /* HSPI */
+> +	[MSTP007] = SH_CLK_MSTP32(&s_clk, MSTPCR0,  7, 0), /* HSPI */
+>  };
+> 
+>  static struct clk_lookup lookups[] = {
+
+-- 
 Regards,
-Harini
+
+Laurent Pinchart
+

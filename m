@@ -1,59 +1,61 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 4/5] spi: sirf: fix line over 80 characters style issue
-Date: Mon, 14 Apr 2014 21:04:34 +0100
-Message-ID: <20140414200434.GW25182@sirena.org.uk>
+Subject: Re: [PATCH 5/5] spi: sirf: fix spi full-duplex DMA transferring issue
+Date: Mon, 14 Apr 2014 21:06:28 +0100
+Message-ID: <20140414200628.GX25182@sirena.org.uk>
 References: <1397457001-5266-1-git-send-email-21cnbao@gmail.com>
- <1397457001-5266-5-git-send-email-21cnbao@gmail.com>
+ <1397457001-5266-6-git-send-email-21cnbao@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="8R/sMIKPJVD0CT2D"
+	protocol="application/pgp-signature"; boundary="XLTQE3HqOi3RIrZG"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
 	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
 To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1397457001-5266-5-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1397457001-5266-6-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---8R/sMIKPJVD0CT2D
+--XLTQE3HqOi3RIrZG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 14, 2014 at 02:30:00PM +0800, Barry Song wrote:
+On Mon, Apr 14, 2014 at 02:30:01PM +0800, Barry Song wrote:
 > From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
 >=20
-> fix a lot of "line over 80 characters" checkpatch issues, on which
-> the users of the driver, key customers care about this very much.
+> sometimes t->tx can be equal with t->rx. for example, spidev will make
+> tx and rx point to spidev->buffer at the same time. currently, for this
+> case, we map the buffer BIDIRECTION to fix the cache consistency.
 
-Applied, thanks.
+I've applied this but such usage is out of spec - do we have any drivers
+doing this in mainline?
 
---8R/sMIKPJVD0CT2D
+--XLTQE3HqOi3RIrZG
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTTD9PAAoJELSic+t+oim9+JcQAIrjCzE4t/P8Eh2IOlZ7TvqP
-84wdnw0Qpe4Ky5Hu8eyy5bRQ8cAMrHG33uwFOtlf/YC+jgLayGr/B0UHYP79Y8oh
-HaNunO3qf7h+oEQOpcrYoXsFzTng4wliKhYxV4+0KNPz+7+e8Jb383/km85nkuih
-S2ni7r/pJ8Sy17dDTWzTWkIOrDd0hID6skab4GOEx9iepj7nY19cFzHlETLreu+j
-wOXa2efRwSEdKoC1wrGW/tVujEla3ejadDgst7V1Kv8qrTmgM4/VVFPlUGSjOWww
-huezpPCY4pKH9nottM71yxTUqvja7HHEdn2y3RS0bk03s2T6gNz4Z348vsv8b5qV
-HnWmp3o+eplRDqDARs+xTIZ8dNmefvVdgbdchZp6RKVFuWr5bfs9W1ksY++Ja8S2
-w8UHt78vx0po/0GnCrE88lXyJlMfj5uW3ZWwDq0v6XYH4hy/l5u3B9OHGYTqzkS+
-SCibxCvC1dKBDpQtE5Wp7iRvYC/baSukHpfppbBLpSIZyLxxAuGfUHqUtWRlaybp
-1KYNjcsz8VP63RDpL8Dkd58WXyVRe/1Nu5NZkJE9kDJbq1xssW/62NPSZh4nLLcZ
-ESoWx5WXKul1O3c5SF8JwUmMIM1tGksVelimdGipTNiUzmPUHnd9vXTWlCAizImb
-vDHSdOYQqoENCPCHBg1l
-=SSA0
+iQIcBAEBAgAGBQJTTD/BAAoJELSic+t+oim9NK4QAJT9L+Wk0rrXl8y2e57wXhnA
+3MBZTSYeqKQcri7b+z+tYcu1dZ9BkPe632f2t3tlMb5X1HeL47T+xZUKiQOu+RDR
+HMEGa6Qrl3EB/IcAIrjE4v58ubm4DlQK6QIwetA4xCd1okxWp9pxNm+XW4YquF4y
+g0IDln2dIfgLL5Vrxr08FdkOCzc1cZFrvF/MBgVJJy++X9VALgdcZDv0TijDNvvA
+2F1EkowA1WD4lWBa0EV4rR615SCESUNiTRnka/vu7krwnJUO0zqREuGx0XgDVE+Z
+HOScKxr7EUGRGMtS2KBWRFnZVoWZUctP2j0SiMLtPEmzdgt0TBJ+oDIucjGOppCJ
+oERiux1K/YfRo+Nic/B9lqjZDKxq4OcO3uZLJpm/nrO0aYnjebZxDRUUTmrm4Gy2
+cByDz35iEEn7vXIrUKy1V5dhkPdewSuhhWbWLCUuDNmW1gx66CW6QDD2YWmXc4CZ
+TAJN9MGQppwTm3c4v4vuFR7Us2Lar/6HR2L6UmrIHktgvUqzA8kicljb2L1jJmUg
+l55mzeEV6UZoqgbKEWNzh3RtsYLkmezTXtdgGfCKchVY/8CAfH9x6OQVKw01jCfK
+bVM+EhdDUAyhkyzz8DEiSoSTCQyiDxqduUIo8aiGNQ1Tfnd4VIj9LC8v4jrkBT8a
+BXOdZApuxh4iQPkVahPz
+=WFDg
 -----END PGP SIGNATURE-----
 
---8R/sMIKPJVD0CT2D--
+--XLTQE3HqOi3RIrZG--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

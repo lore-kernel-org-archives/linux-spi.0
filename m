@@ -1,77 +1,72 @@
-From: Harini Katakam <harinik@xilinx.com>
-Subject: [PATCH v4 2/2] devicetree: Add devicetree bindings documentation for Cadence SPI
-Date: Mon, 14 Apr 2014 14:36:54 +0530
-Message-ID: <1397466414-18368-2-git-send-email-harinik@xilinx.com>
-References: <1397466414-18368-1-git-send-email-harinik@xilinx.com>
-Cc: michals@xilinx.com, Harini Katakam <harinik@xilinx.com>
-To: broonie@kernel.org, grant.likely@linaro.org, robh+dt@kernel.org,
-	pawel.moll@arm.com, mark.rutland@arm.com,
-	ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1397466414-18368-1-git-send-email-harinik@xilinx.com>
-Sender: linux-kernel-owner@vger.kernel.org
+From: Harini Katakam <harinikatakamlinux@gmail.com>
+Subject: Re: [PATCH v3 1/2] SPI: Add driver for Cadence SPI controller
+Date: Mon, 14 Apr 2014 14:41:59 +0530
+Message-ID: <CAFcVECLEzheDMPZ=3wjDCyD00qBtbYps6OgYzeLMcEzAPijZvQ@mail.gmail.com>
+References: <1397132030-2440-1-git-send-email-harinik@xilinx.com>
+	<20140410224825.GI6518@sirena.org.uk>
+	<CAFcVECL7fSn6S53712ZfaezVxfCbeT15Wbk432k61KuQOL4PdQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Cc: Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>, linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	michals@xilinx.com
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <CAFcVECL7fSn6S53712ZfaezVxfCbeT15Wbk432k61KuQOL4PdQ@mail.gmail.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add spi-cadence bindings documentation.
+Hi Mark,
 
-Signed-off-by: Harini Katakam <harinik@xilinx.com>
----
+On Fri, Apr 11, 2014 at 9:06 AM, Harini Katakam
+<harinikatakamlinux@gmail.com> wrote:
+> Hi Mark,
+>
+> On Fri, Apr 11, 2014 at 4:18 AM, Mark Brown <broonie@kernel.org> wrote:
+>> On Thu, Apr 10, 2014 at 05:43:49PM +0530, Harini Katakam wrote:
+>>> Add driver for Cadence SPI controller. This is used in Xilinx Zynq.
+>>
+>> This looks mostly good, the issues below are very small.
+>>
+>>> +static int __maybe_unused cdns_spi_suspend(struct device *dev)
+>>> +{
+>>> +     struct platform_device *pdev = container_of(dev,
+>>> +                     struct platform_device, dev);
+>>> +     struct spi_master *master = platform_get_drvdata(pdev);
+>>> +     struct cdns_spi *xspi = spi_master_get_devdata(master);
+>>> +
+>>> +     spi_master_suspend(master);
+>>> +
+>>> +     clk_disable(xspi->ref_clk);
+>>> +
+>>> +     clk_disable(xspi->pclk);
+>>
+>> You're only doing clk_disable() here, I would expect the clocks to also
+>> be unprepared over suspend - there is no value in leaving them prepared
+>> that I can see.  Just use clk_unprepare_disable().
+>>
+>> It would also be good (though not essential) to implement runtime PM and
+>> disable the clocks while there are no transfers in progress for a small
+>> power saving.  The auto_runtime_pm feature in the core will do the
+>> runtime PM calls for you.
+>>
+>> Otherwise this looks good.
+>
+> Thanks. I'll make these changes and send a v4 next week.
+>
 
-v4 changes:
-No changes.
+This driver without runtime PM will suffice our current requirements.
+Disabling the clocks will offer some small power savings as you pointed out and
+I will revisit this at a later time as an enhancement.
 
-v3 changes:
-- Remove /bits/ 16 from num-cs property in example.
-- Add is-decoded-cs optional property and add to description of num-cs.
+I have addressed the other review comment and sent out a v4.
 
-v2 changes:
-- Separate patch for bindings.
-- Add xilinx compatible string; Make compatible string first in the node.
-- Use property name num-cs. Make this property optional.
-
----
- .../devicetree/bindings/spi/spi-cadence.txt        |   31 ++++++++++++++++++++
- 1 file changed, 31 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-cadence.txt
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-cadence.txt b/Documentation/devicetree/bindings/spi/spi-cadence.txt
-new file mode 100644
-index 0000000..94f0914
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-cadence.txt
-@@ -0,0 +1,31 @@
-+Cadence SPI controller Device Tree Bindings
-+-------------------------------------------
-+
-+Required properties:
-+- compatible		: Should be "cdns,spi-r1p6" or "xlnx,zynq-spi-r1p6".
-+- reg			: Physical base address and size of SPI registers map.
-+- interrupts		: Property with a value describing the interrupt
-+			  number.
-+- interrupt-parent	: Must be core interrupt controller
-+- clock-names		: List of input clock names - "ref_clk", "pclk"
-+			  (See clock bindings for details).
-+- clocks		: Clock phandles (see clock bindings for details).
-+
-+Optional properties:
-+- num-cs		: Number of chip selects used.
-+			  If a decoder is used, this will be the number of
-+			  chip selects after the decoder.
-+- is-decoded-cs		: Flag to indicate whether decoder is used or not.
-+
-+Example:
-+
-+	spi@e0007000 {
-+		compatible = "xlnx,zynq-spi-r1p6";
-+		clock-names = "ref_clk", "pclk";
-+		clocks = <&clkc 26>, <&clkc 35>;
-+		interrupt-parent = <&intc>;
-+		interrupts = <0 49 4>;
-+		num-cs = <4>;
-+		is-decoded-cs = <0>;
-+		reg = <0xe0007000 0x1000>;
-+	} ;
--- 
-1.7.9.5
+Regards,
+Harini

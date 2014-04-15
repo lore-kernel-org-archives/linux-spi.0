@@ -1,52 +1,37 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: cadence: Add dependency on ARCH_ZYNQ
-Date: Tue, 15 Apr 2014 10:49:38 +0100
-Message-ID: <20140415094938.GM12304@sirena.org.uk>
-References: <1397537392-3709-1-git-send-email-harinik@xilinx.com>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 5/5] spi: sirf: fix spi full-duplex DMA transferring issue
+Date: Tue, 15 Apr 2014 17:57:39 +0800
+Message-ID: <CAGsJ_4yWkBr2x=hLNaCsVwytDTua48kR+DEO86A6vH5x+jLEDg@mail.gmail.com>
+References: <1397457001-5266-1-git-send-email-21cnbao@gmail.com>
+ <1397457001-5266-6-git-send-email-21cnbao@gmail.com> <20140414200628.GX25182@sirena.org.uk>
+ <CAGsJ_4yO-LGJEkpNy=dizQWjSE3pHEBOrrPndho3jt1_YMRvHg@mail.gmail.com> <20140415092609.GJ12304@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vdqwC0msT4ilQ2it"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	michals@xilinx.com
-To: Harini Katakam <harinik@xilinx.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1397537392-3709-1-git-send-email-harinik@xilinx.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
+	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140415092609.GJ12304-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+2014-04-15 17:26 GMT+08:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+> On Tue, Apr 15, 2014 at 09:43:24AM +0800, Barry Song wrote:
+>
+>> i felt strange too at the first look from internal gerrit. qipan told
+>> me there is one:
+>> drivers/spi/spidev.c
+>
+> OK, that needs fixing.  That code predates anyone doing DMA.
 
---vdqwC0msT4ilQ2it
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+if it is out of specification, it seems fixing spidev.c is not enough
+as spi transfer actually needs an precondition of tx!=rx now.
 
-On Tue, Apr 15, 2014 at 10:19:52AM +0530, Harini Katakam wrote:
-> Add dependency on ARCH_ZYNQ in Kconfig.
-> This is to fix the build error.
-
-This is too strict - ARCH_ARM would be fine (PowerPC also defines the
-_relaxed() operaton if you want to include that too).
-
---vdqwC0msT4ilQ2it
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTTQCuAAoJELSic+t+oim9xMUQAIAgImDb/5NYjFQA3ARXw8h/
-GFhsamaB7LYHt7KcjOArIKzLlfaOsBntxQDYojW7+NRTeoVTyJ3vWwfuUJgQxi1i
-yiUzv7Dl1/4lpHpQi56hNuMZv7TyURTzaY12IW1AYPBmft4udApCI4k9jJhrIx+e
-J9sr+7HGtbY4WcY3zfWp1Eaz5sewVSD9aRK7EEN5VFzfU/w/EOSodwK8EK1W5bQn
-z7ySbytBhbLOOtqY5JIDGeOgFIV8ULrgvD3pMMSkv6mE7HJnAYWHZi9zGQh0dNoO
-HkB95j38gqtkfBBMtjetZL5AiR//zzicSKbhBAbdaw0H86EY3yCMtvr2fc/eRUa9
-MwvAaox8C3f8mHGfnVBh+YBey3Q4sVR6ndTYhN8l7hfOhidOUZd0DtoztwWi4Hm+
-xnldiOF4p1/sKBbxDiKgTLBnGTXINCdcLAk4Qz9xek9WNHY3IOgqqKe4kO0IK7v8
-KUh2ygrf9f5MeZFfe8Ms1HrlXuILMkB2lHRNLpXGrQsNuO9s+7r3IXbE7tsv5xoL
-w2sm7NC9F/g18HzvoeLCcyX0d9epFnv+FiKrrfzjoLfX2K60pbLaoIz02p2SpjCu
-ND+wiVU8DxZElA8UJtpL8W6rAvoZzirKp4lUpawWjLMK1Jn07S3F82nwCuLQ50Zs
-zXSim0ymrIld1YhijeVJ
-=V7IL
------END PGP SIGNATURE-----
-
---vdqwC0msT4ilQ2it--
+-barry
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

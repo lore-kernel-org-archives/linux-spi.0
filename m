@@ -1,59 +1,45 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: sirf: refactor spi transfer functions
-Date: Tue, 15 Apr 2014 12:40:27 +0100
-Message-ID: <20140415114027.GT12304@sirena.org.uk>
-References: <1397546700-21605-1-git-send-email-21cnbao@gmail.com>
+From: Will Deacon <will.deacon-5wv7dgnIgG8@public.gmane.org>
+Subject: Re: [PATCH] spi: cadence: Add dependency on ARCH_ZYNQ
+Date: Tue, 15 Apr 2014 17:26:21 +0100
+Message-ID: <20140415162621.GO17408@arm.com>
+References: <1397537392-3709-1-git-send-email-harinik@xilinx.com>
+ <CAHTX3dJrMxWJ-8i-wLRkQYtR_zbA+nJyGW+r-DFMYHHU4Erzbw@mail.gmail.com>
+ <20140415094541.GL12304@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="nDmTXYS4kVhtHHfR"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>,
+	Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1397546700-21605-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20140415094541.GL12304-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Apr 15, 2014 at 10:45:41AM +0100, Mark Brown wrote:
+> On Tue, Apr 15, 2014 at 08:11:37AM +0200, Michal Simek wrote:
+> 
+> > I sent the patch for it which solve this problem in generic way.
+> > http://lkml.org/lkml/2014/4/8/42
+> 
+> > Feel free to give me ACK for it.
+> 
+> Will has been working on this too off and on, he was also trying to
+> define some semantics for the relaxed versions.  It'd be really good to
+> address this properly, this is a constant source of make work.
 
---nDmTXYS4kVhtHHfR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, I have a series adding relaxed accessors to all architectures (and
+asm-generic) along with an attempt at defining some semantics. This came
+about from discussion with BenH at the last kernel summit, I just didn't get
+around to posting what we came up with.
 
-On Tue, Apr 15, 2014 at 03:24:59PM +0800, Barry Song wrote:
-> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
->=20
-> split sirfsoc_spi_transfer function into 3 sub-functions:
-> spi_sirfsoc_cmd_transfer, spi_sirfsoc_pio_transfer and
-> spi_sirfsoc_dma_transfer.
+I should be able to post something this week, but there's still an open
+question relating to mmiowb() that I'd like the PPC guys to chime in on.
 
-Applied, thanks.
-
---nDmTXYS4kVhtHHfR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTTRqoAAoJELSic+t+oim9FrEQAI4rrc2uO45s3I9bsNgCqL2W
-QXYtVChClSaPPuw1mieCx97hlGOPyAN0lvujSQky1xjlvv7QC8KTeG8xPGJjNq5M
-PEX+tQqjt6mqBA3A9RBwIiQyDJbRodTGQvOJ9iZAtRhGkFA5AHHMlEfNoyKZZCeR
-qLZ874BdRm5k5f5e24apss3s0WUyi+yqldLKluPnAtFvj3o8MeGbN1V4lT4eJ3Sw
-bCGoQfDBBGLsaeTrVMji73DR0SYZw4guxeSTOqoeKr22pRTyN4uAExPzaT6r1KLD
-4jPOWCKv15GrQfxbYt9u0Z5oYOFAPpG/pZ4ryvqncofNHOgkj3gb20+Z3tYCJt7D
-K62wxb2bh6pChHaulMl3XwNbmnPP0uD87MSqzfZ8OdNBGlEbsMSAkkN+mLVsJ6i1
-Voar6aqe2a1dVsElcKsEc4OOFJvZIfexC4jjv3CHdvXQrDH486Vq0sZUdcieHfX3
-+OqP2msibGB4LOlFB8ekcRI6YLkzgMHEzGE5ptBNQ+3WM5bO8Qtffv8Up1RHSrBg
-AdSqzhZrS8nbqIofL7U7dMQzVUDmev44qcL2Mc9bzVeFbGYWj0HT4jKpJznRcqjB
-sU64B6TDQ62v3bWS4qmB4Gs22y18y3f2iPITQ63SIo3/1bE6o8QSSEvJFsBSFqK8
-I8VtVXAEXfHDF5DyX33e
-=9Pd4
------END PGP SIGNATURE-----
-
---nDmTXYS4kVhtHHfR--
+Will
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

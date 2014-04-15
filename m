@@ -1,187 +1,62 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH 2/2] spi: sirf: decrease the interrupt count and latency of PIO mode
-Date: Tue, 15 Apr 2014 15:25:00 +0800
-Message-ID: <1397546700-21605-2-git-send-email-21cnbao@gmail.com>
-References: <1397546700-21605-1-git-send-email-21cnbao@gmail.com>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 5/5] spi: sirf: fix spi full-duplex DMA transferring issue
+Date: Tue, 15 Apr 2014 10:26:09 +0100
+Message-ID: <20140415092609.GJ12304@sirena.org.uk>
+References: <1397457001-5266-1-git-send-email-21cnbao@gmail.com>
+ <1397457001-5266-6-git-send-email-21cnbao@gmail.com>
+ <20140414200628.GX25182@sirena.org.uk>
+ <CAGsJ_4yO-LGJEkpNy=dizQWjSE3pHEBOrrPndho3jt1_YMRvHg@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="EVh9lyqKgK19OcEf"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
 	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1397546700-21605-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAGsJ_4yO-LGJEkpNy=dizQWjSE3pHEBOrrPndho3jt1_YMRvHg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
 
-orignal PIO tranfer method can described as follows:
-1. fill one byte into txfifo
-2. enable oflow/uflow/txfifo_empty/txfifo_thd/rxfifo_thd/rxfifo_full/
-   frm_end interrupt
-3. isr process more than 7 interrupt signal, do data fill/fetch in isr
-4. all bytes transfer done, end.
+--EVh9lyqKgK19OcEf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-current PIO tranfer method be described as follows:
-1. fill as much as bytes but no more than 256 bytes(fifo size)
-2. enable oflow/uflow/txfifo_empty interrupt
-3. isr process 3 interrupt signal, do complete works.
-4. after isr done, if there are left bytes go into 1 else go into 5
-5. transfer end
+On Tue, Apr 15, 2014 at 09:43:24AM +0800, Barry Song wrote:
 
-by current PIO transfer method:
-1. reduce interrupt counts in spi interrupt line.
-2. reduce interrupt latency because no do data fill/fetch in isr.
+> i felt strange too at the first look from internal gerrit. qipan told
+> me there is one:
+> drivers/spi/spidev.c
 
-Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
-Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
----
- drivers/spi/spi-sirf.c |  103 ++++++++++++++++++++++++++----------------------
- 1 files changed, 56 insertions(+), 47 deletions(-)
+OK, that needs fixing.  That code predates anyone doing DMA.
 
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index 2d23899..4fcb015 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -86,6 +86,7 @@
- #define SIRFSOC_SPI_TX_DONE		BIT(1)
- #define SIRFSOC_SPI_RX_OFLOW		BIT(2)
- #define SIRFSOC_SPI_TX_UFLOW		BIT(3)
-+#define SIRFSOC_SPI_RX_IO_DMA		BIT(4)
- #define SIRFSOC_SPI_RX_FIFO_FULL	BIT(6)
- #define SIRFSOC_SPI_TXFIFO_EMPTY	BIT(7)
- #define SIRFSOC_SPI_RXFIFO_THD_REACH	BIT(8)
-@@ -265,41 +266,34 @@ static irqreturn_t spi_sirfsoc_irq(int irq, void *dev_id)
- {
- 	struct sirfsoc_spi *sspi = dev_id;
- 	u32 spi_stat = readl(sspi->base + SIRFSOC_SPI_INT_STATUS);
--
--	writel(spi_stat, sspi->base + SIRFSOC_SPI_INT_STATUS);
--
- 	if (sspi->tx_by_cmd && (spi_stat & SIRFSOC_SPI_FRM_END)) {
- 		complete(&sspi->tx_done);
- 		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-+		writel(SIRFSOC_SPI_INT_MASK_ALL,
-+				sspi->base + SIRFSOC_SPI_INT_STATUS);
- 		return IRQ_HANDLED;
- 	}
- 
- 	/* Error Conditions */
- 	if (spi_stat & SIRFSOC_SPI_RX_OFLOW ||
- 			spi_stat & SIRFSOC_SPI_TX_UFLOW) {
-+		complete(&sspi->tx_done);
- 		complete(&sspi->rx_done);
- 		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-+		writel(SIRFSOC_SPI_INT_MASK_ALL,
-+				sspi->base + SIRFSOC_SPI_INT_STATUS);
-+		return IRQ_HANDLED;
- 	}
-+	if (spi_stat & SIRFSOC_SPI_TXFIFO_EMPTY)
-+		complete(&sspi->tx_done);
-+	while (!(readl(sspi->base + SIRFSOC_SPI_INT_STATUS) &
-+		SIRFSOC_SPI_RX_IO_DMA))
-+		cpu_relax();
-+	complete(&sspi->rx_done);
-+	writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-+	writel(SIRFSOC_SPI_INT_MASK_ALL,
-+			sspi->base + SIRFSOC_SPI_INT_STATUS);
- 
--	if (spi_stat & (SIRFSOC_SPI_FRM_END
--			| SIRFSOC_SPI_RXFIFO_THD_REACH))
--		while (!((readl(sspi->base + SIRFSOC_SPI_RXFIFO_STATUS)
--				& SIRFSOC_SPI_FIFO_EMPTY)) &&
--				sspi->left_rx_word)
--			sspi->rx_word(sspi);
--
--	if (spi_stat & (SIRFSOC_SPI_TXFIFO_EMPTY |
--			SIRFSOC_SPI_TXFIFO_THD_REACH))
--		while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS)
--				& SIRFSOC_SPI_FIFO_FULL)) &&
--				sspi->left_tx_word)
--			sspi->tx_word(sspi);
--
--	/* Received all words */
--	if ((sspi->left_rx_word == 0) && (sspi->left_tx_word == 0)) {
--		complete(&sspi->rx_done);
--		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
--	}
- 	return IRQ_HANDLED;
- }
- 
-@@ -420,32 +414,47 @@ static void spi_sirfsoc_pio_transfer(struct spi_device *spi,
- 	int timeout = t->len * 10;
- 
- 	sspi = spi_master_get_devdata(spi->master);
--	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
--	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
--	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
--	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
--	writel(0, sspi->base + SIRFSOC_SPI_INT_EN);
--	writel(SIRFSOC_SPI_INT_MASK_ALL, sspi->base + SIRFSOC_SPI_INT_STATUS);
--	writel(readl(sspi->base + SIRFSOC_SPI_CTRL) | SIRFSOC_SPI_MUL_DAT_MODE |
--		SIRFSOC_SPI_ENA_AUTO_CLR, sspi->base + SIRFSOC_SPI_CTRL);
--	writel(sspi->left_tx_word - 1,
--			sspi->base + SIRFSOC_SPI_TX_DMA_IO_LEN);
--	writel(sspi->left_rx_word - 1,
--			sspi->base + SIRFSOC_SPI_RX_DMA_IO_LEN);
--	sspi->tx_word(sspi);
--	writel(SIRFSOC_SPI_TXFIFO_EMPTY_INT_EN | SIRFSOC_SPI_TX_UFLOW_INT_EN |
--		SIRFSOC_SPI_RX_OFLOW_INT_EN | SIRFSOC_SPI_RXFIFO_THD_INT_EN |
--		SIRFSOC_SPI_TXFIFO_THD_INT_EN | SIRFSOC_SPI_FRM_END_INT_EN|
--		SIRFSOC_SPI_RXFIFO_FULL_INT_EN,
--		sspi->base + SIRFSOC_SPI_INT_EN);
--	writel(SIRFSOC_SPI_RX_EN | SIRFSOC_SPI_TX_EN,
-+	for (;;) {
-+		writel(SIRFSOC_SPI_FIFO_RESET,
-+			sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-+		writel(SIRFSOC_SPI_FIFO_RESET,
-+			sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-+		writel(SIRFSOC_SPI_FIFO_START,
-+			sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-+		writel(SIRFSOC_SPI_FIFO_START,
-+			sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-+		writel(0, sspi->base + SIRFSOC_SPI_INT_EN);
-+		writel(SIRFSOC_SPI_INT_MASK_ALL,
-+			sspi->base + SIRFSOC_SPI_INT_STATUS);
-+		writel(readl(sspi->base + SIRFSOC_SPI_CTRL) |
-+			SIRFSOC_SPI_MUL_DAT_MODE | SIRFSOC_SPI_ENA_AUTO_CLR,
-+			sspi->base + SIRFSOC_SPI_CTRL);
-+		writel(min(sspi->left_tx_word, (u32)(256 / sspi->word_width))
-+				- 1, sspi->base + SIRFSOC_SPI_TX_DMA_IO_LEN);
-+		writel(min(sspi->left_rx_word, (u32)(256 / sspi->word_width))
-+				- 1, sspi->base + SIRFSOC_SPI_RX_DMA_IO_LEN);
-+		while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS)
-+			& SIRFSOC_SPI_FIFO_FULL)) && sspi->left_tx_word)
-+			sspi->tx_word(sspi);
-+		writel(SIRFSOC_SPI_TXFIFO_EMPTY_INT_EN |
-+			SIRFSOC_SPI_TX_UFLOW_INT_EN |
-+			SIRFSOC_SPI_RX_OFLOW_INT_EN,
-+			sspi->base + SIRFSOC_SPI_INT_EN);
-+		writel(SIRFSOC_SPI_RX_EN | SIRFSOC_SPI_TX_EN,
- 			sspi->base + SIRFSOC_SPI_TX_RX_EN);
--	if (wait_for_completion_timeout(&sspi->rx_done, timeout) == 0)
--		dev_err(&spi->dev, "transfer timeout\n");
--	writel(0, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
--	writel(0, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
--	writel(0, sspi->base + SIRFSOC_SPI_TX_RX_EN);
--	writel(0, sspi->base + SIRFSOC_SPI_INT_EN);
-+		if (!wait_for_completion_timeout(&sspi->tx_done, timeout) ||
-+			!wait_for_completion_timeout(&sspi->rx_done, timeout)) {
-+			dev_err(&spi->dev, "transfer timeout\n");
-+			break;
-+		}
-+		while (!((readl(sspi->base + SIRFSOC_SPI_RXFIFO_STATUS)
-+			& SIRFSOC_SPI_FIFO_EMPTY)) && sspi->left_rx_word)
-+			sspi->rx_word(sspi);
-+		writel(0, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-+		writel(0, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-+		if (sspi->left_tx_word == 0 && sspi->left_rx_word == 0)
-+			break;
-+	}
- }
- 
- static int spi_sirfsoc_transfer(struct spi_device *spi, struct spi_transfer *t)
--- 
-1.7.5.4
+--EVh9lyqKgK19OcEf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTTPsuAAoJELSic+t+oim9fSMP/1yrJ5jC9L9KdoLZn0GFNQ/M
+p4cEQ4LV4wj2XSIeivRY0palnT1SjGAfTyrPXRKhGLAgwbbItRwbTuXLU7yjNPwc
+QkipcTPVRWTd9k68u9fF+nsNl7KfAFDRdcNU1q/nKCU5IpZpeA1jmUGA8pYcDU6o
+34d/++6MNduBYDt71b+5KdlCwTWEvW9XF5AQwemiFUzyQGmVsAcHjQYLyh4Z4/c3
+/liQkjZxrq3DzKz3KTMudxz0JprEw74NdzV62AkgFfij6OSdh/gksG4BWVR/Zqxd
+vg1J0fAZaJYYKkJO0l2ij8r5/6k8GQPl+vgq0qBygVDWkMF45phfU+T0H6ZSG4iq
+OKnWOWfDV6NtAnGSLzTiGwVbBfofR5cvOuJxbHspRXHMmJsjNVOy9Zvfz1J+Rddu
+d8/2h0CA+2dwU32s0kes7/7ifdkvbmK/KwB9YOcz3o5aM2gHTO3KZlDqFr8CmEb3
+WHN84Nh9CtCyExqxHTMYJo+9DE+YYoX33aZCjLT8S7YGq/gz4VbkLJbCQxuzogBV
+iTztRwH6R1qX+wdw60hQ6t2UUGbs99aWYyyZaxGWr3S/zQeGMnmKa/l77gKsVl1N
+Y+Uva5RegE2lix5IVqYhmwgpNuwA3iyK0O0WyR+R7ffNdm3ofkzzqsHKDCeDvBqH
+sf/0+X7uGgXrg6EIv0lx
+=eaCK
+-----END PGP SIGNATURE-----
+
+--EVh9lyqKgK19OcEf--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

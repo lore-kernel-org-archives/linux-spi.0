@@ -1,54 +1,42 @@
-From: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2] spi: cadence: Add dependency on ARCH_ARM
-Date: Tue, 15 Apr 2014 16:10:55 +0530
-Message-ID: <CAFcVECJ+DADKdUdqSz8VHWTOYyphEjCJd9s-fVeC3uR7XfyjgQ@mail.gmail.com>
-References: <1397556735-2536-1-git-send-email-harinik@xilinx.com>
-	<1397557331.1985.36.camel@x220>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org
-To: Paul Bolle <pebolle-IWqWACnzNjzz+pZb47iToQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1397557331.1985.36.camel@x220>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Harini Katakam <harinik@xilinx.com>
+Subject: [PATCH v2] spi: cadence: Add dependency on ARM
+Date: Tue, 15 Apr 2014 16:42:09 +0530
+Message-ID: <1397560329-3603-1-git-send-email-harinik@xilinx.com>
+Cc: michals@xilinx.com, Harini Katakam <harinik@xilinx.com>
+To: broonie@kernel.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi,
+Add dependency on ARM in Kconfig.
+This is to fix the build error related to _relaxed IO.
+Remove dependency on SPI_MASTER because this is already defined
+under if SPI_MASTER in Kconfig.
 
-On Tue, Apr 15, 2014 at 3:52 PM, Paul Bolle <pebolle-IWqWACnzNjzz+pZb47iToQ@public.gmane.org> wrote:
-> On Tue, 2014-04-15 at 15:42 +0530, Harini Katakam wrote:
->> Add dependency on ARCH_ARM in Kconfig.
->> This is to fix the build error related to _relaxed IO.
->>
->> Signed-off-by: Harini Katakam <harinik-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
->> ---
->>
->> v2 changes:
->> Dependency on ARCH_ARM instead of restricting to ARCH_ZYNQ.
->>
->> ---
->>  drivers/spi/Kconfig |    1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
->> index b0f091b..32c27dd 100644
->> --- a/drivers/spi/Kconfig
->> +++ b/drivers/spi/Kconfig
->> @@ -150,6 +150,7 @@ config SPI_BUTTERFLY
->>
->>  config SPI_CADENCE
->>       tristate "Cadence SPI controller"
->> +     depends on ARCH_ARM
->
-> Did you mean just ARM?
+Signed-off-by: Harini Katakam <harinik@xilinx.com>
+---
 
-Please ignore patch, I will resend it.
+v2 changes:
+Add dependency on ARM instead of ZYNQ.
+Remove SPI_MASTER dependency as it is already under if SPI_MASTER.
 
-Regards,
-Harini
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+---
+ drivers/spi/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index b0f091b..0616f97 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -150,7 +150,7 @@ config SPI_BUTTERFLY
+ 
+ config SPI_CADENCE
+ 	tristate "Cadence SPI controller"
+-	depends on SPI_MASTER
++	depends on ARM
+ 	help
+ 	  This selects the Cadence SPI controller master driver
+ 	  used by Xilinx Zynq.
+-- 
+1.7.9.5

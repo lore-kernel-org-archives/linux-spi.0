@@ -1,63 +1,59 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 5/5] spi: sirf: fix spi full-duplex DMA transferring issue
-Date: Tue, 15 Apr 2014 10:26:09 +0100
-Message-ID: <20140415092609.GJ12304@sirena.org.uk>
-References: <1397457001-5266-1-git-send-email-21cnbao@gmail.com>
- <1397457001-5266-6-git-send-email-21cnbao@gmail.com>
- <20140414200628.GX25182@sirena.org.uk>
- <CAGsJ_4yO-LGJEkpNy=dizQWjSE3pHEBOrrPndho3jt1_YMRvHg@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: cadence: Add dependency on ARCH_ZYNQ
+Date: Tue, 15 Apr 2014 10:45:41 +0100
+Message-ID: <20140415094541.GL12304@sirena.org.uk>
+References: <1397537392-3709-1-git-send-email-harinik@xilinx.com>
+ <CAHTX3dJrMxWJ-8i-wLRkQYtR_zbA+nJyGW+r-DFMYHHU4Erzbw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="EVh9lyqKgK19OcEf"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
-	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="AQNmCumFClRcGgHG"
+Cc: Harini Katakam <harinik@xilinx.com>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Michal Simek <michals@xilinx.com>, will.deacon@arm.com
+To: Michal Simek <monstr@monstr.eu>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAGsJ_4yO-LGJEkpNy=dizQWjSE3pHEBOrrPndho3jt1_YMRvHg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <CAHTX3dJrMxWJ-8i-wLRkQYtR_zbA+nJyGW+r-DFMYHHU4Erzbw@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---EVh9lyqKgK19OcEf
+--AQNmCumFClRcGgHG
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Apr 15, 2014 at 09:43:24AM +0800, Barry Song wrote:
+On Tue, Apr 15, 2014 at 08:11:37AM +0200, Michal Simek wrote:
 
-> i felt strange too at the first look from internal gerrit. qipan told
-> me there is one:
-> drivers/spi/spidev.c
+> I sent the patch for it which solve this problem in generic way.
+> http://lkml.org/lkml/2014/4/8/42
 
-OK, that needs fixing.  That code predates anyone doing DMA.
+> Feel free to give me ACK for it.
 
---EVh9lyqKgK19OcEf
+Will has been working on this too off and on, he was also trying to
+define some semantics for the relaxed versions.  It'd be really good to
+address this properly, this is a constant source of make work.
+
+--AQNmCumFClRcGgHG
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTTPsuAAoJELSic+t+oim9fSMP/1yrJ5jC9L9KdoLZn0GFNQ/M
-p4cEQ4LV4wj2XSIeivRY0palnT1SjGAfTyrPXRKhGLAgwbbItRwbTuXLU7yjNPwc
-QkipcTPVRWTd9k68u9fF+nsNl7KfAFDRdcNU1q/nKCU5IpZpeA1jmUGA8pYcDU6o
-34d/++6MNduBYDt71b+5KdlCwTWEvW9XF5AQwemiFUzyQGmVsAcHjQYLyh4Z4/c3
-/liQkjZxrq3DzKz3KTMudxz0JprEw74NdzV62AkgFfij6OSdh/gksG4BWVR/Zqxd
-vg1J0fAZaJYYKkJO0l2ij8r5/6k8GQPl+vgq0qBygVDWkMF45phfU+T0H6ZSG4iq
-OKnWOWfDV6NtAnGSLzTiGwVbBfofR5cvOuJxbHspRXHMmJsjNVOy9Zvfz1J+Rddu
-d8/2h0CA+2dwU32s0kes7/7ifdkvbmK/KwB9YOcz3o5aM2gHTO3KZlDqFr8CmEb3
-WHN84Nh9CtCyExqxHTMYJo+9DE+YYoX33aZCjLT8S7YGq/gz4VbkLJbCQxuzogBV
-iTztRwH6R1qX+wdw60hQ6t2UUGbs99aWYyyZaxGWr3S/zQeGMnmKa/l77gKsVl1N
-Y+Uva5RegE2lix5IVqYhmwgpNuwA3iyK0O0WyR+R7ffNdm3ofkzzqsHKDCeDvBqH
-sf/0+X7uGgXrg6EIv0lx
-=eaCK
+iQIcBAEBAgAGBQJTTP/CAAoJELSic+t+oim9DCQP/2TbrKG2aTjmdghxd7o8aZkb
+LbUrD9sHA53SauypbktqItb4fEBlp6idkvhVrMJpqAhY9Goilu5zV1JkRk2Hjb2V
+4vImkhJ3FxMJ3tk41mErhDRCb9TkgkK4GzPN4V0ksyo15FW2HLtQDfobMmD5Y+uc
+4Ejgg4sAxWjlF+ACr9H7zIlhfX/ZGajVe94Y7pWRQDBLVuHdurg6fttE7xuLGyps
+HxsQ3YYslgVi3whnNJ9lQ2BlaZdVpvqrOWQ0+/FNuBQDEFRoLCyIHO97zlSdhCq5
+ILiXmkxo9Ykp9BoNkJ2KV0j96YBMIstvEVkNsBg0/EB88d71kHl13MHaRz49zWMu
+0MpzeOxccKXK40L+pYfxfa5b/N4s+Ag47INVHMJU2JlEgadANYEnwBY8ADzEn+dq
+JKL2KTY4nHr+aJKeVS36BkKLnB8JrV0BAhzKy3keu0pxp9wMqk9FUGfQnMT851W7
+IWrCnaQywfIfJ6hkqtsWxuZmJXgMWU0qy+fTZk7ZFy7kc1VIqfIL1Tmop95ooF1N
+JZW84jlJLoCpNg4D/q4Ds+5MaQFNyE5jrCeyaEDDBon9TGno2V+3AaM0bXmpLzGr
+xTkiAfwehoW/toCQHp0/6nrI6CPs/rGWqP7471yylDRM4EWGKtZm80HeEs4N6ZEq
+AscsVURuXwT9fIzFp+oj
+=oCL1
 -----END PGP SIGNATURE-----
 
---EVh9lyqKgK19OcEf--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--AQNmCumFClRcGgHG--

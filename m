@@ -1,59 +1,52 @@
 From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] spi: cadence: Add dependency on ARCH_ZYNQ
-Date: Tue, 15 Apr 2014 10:45:41 +0100
-Message-ID: <20140415094541.GL12304@sirena.org.uk>
+Date: Tue, 15 Apr 2014 10:49:38 +0100
+Message-ID: <20140415094938.GM12304@sirena.org.uk>
 References: <1397537392-3709-1-git-send-email-harinik@xilinx.com>
- <CAHTX3dJrMxWJ-8i-wLRkQYtR_zbA+nJyGW+r-DFMYHHU4Erzbw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="AQNmCumFClRcGgHG"
-Cc: Harini Katakam <harinik@xilinx.com>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Michal Simek <michals@xilinx.com>, will.deacon@arm.com
-To: Michal Simek <monstr@monstr.eu>
+	protocol="application/pgp-signature"; boundary="vdqwC0msT4ilQ2it"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	michals@xilinx.com
+To: Harini Katakam <harinik@xilinx.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAHTX3dJrMxWJ-8i-wLRkQYtR_zbA+nJyGW+r-DFMYHHU4Erzbw@mail.gmail.com>
+In-Reply-To: <1397537392-3709-1-git-send-email-harinik@xilinx.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---AQNmCumFClRcGgHG
+--vdqwC0msT4ilQ2it
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Apr 15, 2014 at 08:11:37AM +0200, Michal Simek wrote:
+On Tue, Apr 15, 2014 at 10:19:52AM +0530, Harini Katakam wrote:
+> Add dependency on ARCH_ZYNQ in Kconfig.
+> This is to fix the build error.
 
-> I sent the patch for it which solve this problem in generic way.
-> http://lkml.org/lkml/2014/4/8/42
+This is too strict - ARCH_ARM would be fine (PowerPC also defines the
+_relaxed() operaton if you want to include that too).
 
-> Feel free to give me ACK for it.
-
-Will has been working on this too off and on, he was also trying to
-define some semantics for the relaxed versions.  It'd be really good to
-address this properly, this is a constant source of make work.
-
---AQNmCumFClRcGgHG
+--vdqwC0msT4ilQ2it
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTTP/CAAoJELSic+t+oim9DCQP/2TbrKG2aTjmdghxd7o8aZkb
-LbUrD9sHA53SauypbktqItb4fEBlp6idkvhVrMJpqAhY9Goilu5zV1JkRk2Hjb2V
-4vImkhJ3FxMJ3tk41mErhDRCb9TkgkK4GzPN4V0ksyo15FW2HLtQDfobMmD5Y+uc
-4Ejgg4sAxWjlF+ACr9H7zIlhfX/ZGajVe94Y7pWRQDBLVuHdurg6fttE7xuLGyps
-HxsQ3YYslgVi3whnNJ9lQ2BlaZdVpvqrOWQ0+/FNuBQDEFRoLCyIHO97zlSdhCq5
-ILiXmkxo9Ykp9BoNkJ2KV0j96YBMIstvEVkNsBg0/EB88d71kHl13MHaRz49zWMu
-0MpzeOxccKXK40L+pYfxfa5b/N4s+Ag47INVHMJU2JlEgadANYEnwBY8ADzEn+dq
-JKL2KTY4nHr+aJKeVS36BkKLnB8JrV0BAhzKy3keu0pxp9wMqk9FUGfQnMT851W7
-IWrCnaQywfIfJ6hkqtsWxuZmJXgMWU0qy+fTZk7ZFy7kc1VIqfIL1Tmop95ooF1N
-JZW84jlJLoCpNg4D/q4Ds+5MaQFNyE5jrCeyaEDDBon9TGno2V+3AaM0bXmpLzGr
-xTkiAfwehoW/toCQHp0/6nrI6CPs/rGWqP7471yylDRM4EWGKtZm80HeEs4N6ZEq
-AscsVURuXwT9fIzFp+oj
-=oCL1
+iQIcBAEBAgAGBQJTTQCuAAoJELSic+t+oim9xMUQAIAgImDb/5NYjFQA3ARXw8h/
+GFhsamaB7LYHt7KcjOArIKzLlfaOsBntxQDYojW7+NRTeoVTyJ3vWwfuUJgQxi1i
+yiUzv7Dl1/4lpHpQi56hNuMZv7TyURTzaY12IW1AYPBmft4udApCI4k9jJhrIx+e
+J9sr+7HGtbY4WcY3zfWp1Eaz5sewVSD9aRK7EEN5VFzfU/w/EOSodwK8EK1W5bQn
+z7ySbytBhbLOOtqY5JIDGeOgFIV8ULrgvD3pMMSkv6mE7HJnAYWHZi9zGQh0dNoO
+HkB95j38gqtkfBBMtjetZL5AiR//zzicSKbhBAbdaw0H86EY3yCMtvr2fc/eRUa9
+MwvAaox8C3f8mHGfnVBh+YBey3Q4sVR6ndTYhN8l7hfOhidOUZd0DtoztwWi4Hm+
+xnldiOF4p1/sKBbxDiKgTLBnGTXINCdcLAk4Qz9xek9WNHY3IOgqqKe4kO0IK7v8
+KUh2ygrf9f5MeZFfe8Ms1HrlXuILMkB2lHRNLpXGrQsNuO9s+7r3IXbE7tsv5xoL
+w2sm7NC9F/g18HzvoeLCcyX0d9epFnv+FiKrrfzjoLfX2K60pbLaoIz02p2SpjCu
+ND+wiVU8DxZElA8UJtpL8W6rAvoZzirKp4lUpawWjLMK1Jn07S3F82nwCuLQ50Zs
+zXSim0ymrIld1YhijeVJ
+=V7IL
 -----END PGP SIGNATURE-----
 
---AQNmCumFClRcGgHG--
+--vdqwC0msT4ilQ2it--

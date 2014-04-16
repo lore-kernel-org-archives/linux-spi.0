@@ -1,99 +1,48 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] Configure FSL eSPI CSBEF, CSAFT, and whether to send all
- received data to user
-Date: Wed, 16 Apr 2014 18:28:30 +0100
-Message-ID: <20140416172830.GV12304@sirena.org.uk>
-References: <1397328516-13260-1-git-send-email-Jane.Wan@gainspeed.com>
- <1397328516-13260-2-git-send-email-Jane.Wan@gainspeed.com>
- <20140414205547.GI25182@sirena.org.uk>
- <6f2c800fbba74470a6a49903b34e7796@SN2PR07MB064.namprd07.prod.outlook.com>
+From: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v3 0/5] spi: dw: device tree and generic queue support
+Date: Wed, 16 Apr 2014 20:41:59 +0200
+Message-ID: <20140416184159.GH3528@book.gsilab.sittig.org>
+References: <cover.1391162172.git.baruch@tkos.co.il>
+ <20140202124941.GS20094@book.gsilab.sittig.org>
+ <20140202133235.GF9184@tarshish>
+ <20140202143148.GT20094@book.gsilab.sittig.org>
+ <20140202152448.GH9184@tarshish>
+ <20140205164908.GF20094@book.gsilab.sittig.org>
+ <20140414210547.GK25182@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="grb+5QKeMfpTKipq"
-Cc: "grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"Emilian.Medve-eDlz3WWmN0ll57MIdRCFDg@public.gmane.org" <Emilian.Medve-eDlz3WWmN0ll57MIdRCFDg@public.gmane.org>,
-	"kenth.eriksson-SNLAxHN9vbdl57MIdRCFDg@public.gmane.org" <kenth.eriksson-SNLAxHN9vbdl57MIdRCFDg@public.gmane.org>,
-	"thomas.de.schampheleire-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org"
-	<thomas.de.schampheleire-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org" <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	"sr-ynQEQJNshbs@public.gmane.org" <sr-ynQEQJNshbs@public.gmane.org>, Insop Song <Insop.Song-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Jane Wan <Jane.Wan-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <6f2c800fbba74470a6a49903b34e7796-w1qlG7ycJuujtJEAekZsixQPvRvOrrxkXA4E9RH9d+qIuWR1G4zioA@public.gmane.org>
+In-Reply-To: <20140414210547.GK25182-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Mon, 2014-04-14 at 22:05 +0100, Mark Brown wrote:
+> 
+> On Wed, Feb 05, 2014 at 05:49:08PM +0100, Gerhard Sittig wrote:
+> > On Sun, Feb 02, 2014 at 17:24 +0200, Baruch Siach wrote:
+> 
+> > > Just curious, what hardware do you have with DesignWare SPI master?
+> 
+> > Altera "socfpga" chips include two of these.  I have asked
+> > posters who report SPI related problems on the rocketboards.org
+> > "rfi" mailing list to see if they can help you test your changes.
+> 
+> Did you ever hear anything back?  I'm inclined to just apply these and
+> see if anyone reports any issues.
 
---grb+5QKeMfpTKipq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+no, haven't heard anything since then
 
-On Wed, Apr 16, 2014 at 04:39:47PM +0000, Jane Wan wrote:
-> On Mon, Apr 14, 2014 at 09:51:56PM +0100, Mark Brown wrote:
 
-> > > +		if (spi_raw_rxdata_to_user[m->spi->chip_select])
-> > > +			espi_trans->len =3D n_tx;
-> > > +		else
-> > > +			espi_trans->len =3D trans_len + n_tx;
-
-> > Why is there even an option for the buggy behaviour?
-
-> We have three devices attached to the FSL eSPI interface, with chip selec=
-t (CS)=20
-> 0-2. The device driver for the device at CS #2 requires to know all the d=
-ata that=20
-> the slave device put on MISO.  But the device drivers for the other two d=
-evices=20
-> (at CS #0 and #1) work with the existing FSL eSPI driver.  The device at =
-CS #0 is=20
-> Micron n25q512a compatible.
-
-> We make the FSL eSPI driver configurable through device tree.  If we make=
- a fix=20
-> without the DT option, the fix will break other device drivers working wi=
-th the=20
-> existing FSL eSPI driver.
-
-> Could this still be considered as a solution?  If this is ok, I can send =
-it as a separate=20
-> patch.  Otherwise, we will look if this driver can be modified without DT=
- option.
-
-No, this is completely unaceptable.  The drivers relying on the buggy
-behaviour are broken and must be fixed.  The whole point of DT is to
-describe the hardware, not to allow the OS to implement workarounds for
-itself.
-
---grb+5QKeMfpTKipq
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTTr27AAoJELSic+t+oim94mcP/3nnTHvDU/iRSANZlP3KN5El
-d4Eof9WtT8Pe/3qv2JSGT8yU9rO9NtVT8SsGJcRanP/Rh3tOoDZQdR6rR6Zo26v/
-bt1TXsdG/C75iEtkF417f3ZaxvGQXDNGkSV6osUjpXXbD6VTuXOSaPIz+oi3BlH3
-TD7EfjW4y7IEENEsRisLrA/mHak3oapQCnyvMUE13//G/U1R1wjJrBcqDh7r8nhG
-/cS1MmrKmr9p55u/CBHtgNsibpTD7OD/ujg8l3u2dZmfPKkA/pohi9pxOLfMYkQ7
-2+RKUHZARV/AHrBRlMuK15wQ0gYmo12AVVdQkErdh6S0cBXKSDF2wFa6wNaInljj
-rtuqVHKlHu37JWdpyXCz+QRrmEl4ZjOTJxelxK/m71mAf4lhSqtyJRmNR7QWZOaR
-+RgXtj7KTN91WgOlFcL911L7CbaVGcEPNgP8IfC+nJ5kZ96piSsYIYQET3uSgI7Z
-i2uv4/7gs7GCJwnOWDrCRq4UenTpio2desY03YTiR27IHeE0rr7BEFE5xUeqetE2
-YEVjalnZ7kxKOuEsnk5Ftwai1Yy0D4QIPxUQDFjuBqkxqk3LgDrpi6ZOVIp8ma+v
-n7Yo3irZd4KqTakHwjStd5rocp6AEthu1WWfkjDsltU6tYn0NeqW+TFMoqMxdK/X
-oqjZXZpDiGLSaQww3IiK
-=FQSI
------END PGP SIGNATURE-----
-
---grb+5QKeMfpTKipq--
+virtually yours
+Gerhard Sittig
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr. 5, D-82194 Groebenzell, Germany
+Phone: +49-8142-66989-0 Fax: +49-8142-66989-80  Email: office-ynQEQJNshbs@public.gmane.org
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

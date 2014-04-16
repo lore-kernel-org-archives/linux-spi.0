@@ -1,146 +1,181 @@
-From: Dinh Nguyen <dinh.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: spi: spi-dw: Add support DT support
-Date: Wed, 16 Apr 2014 09:26:26 -0500
-Message-ID: <534E9312.5030107@gmail.com>
-References: <534DE55D.10002@gmail.com> <20140416034312.GA4849@sapphire.tkos.co.il>
+From: Jane Wan <Jane.Wan-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>
+Subject: RE: [PATCH] Configure FSL eSPI CSBEF, CSAFT, and whether to send
+ all received data to user
+Date: Wed, 16 Apr 2014 16:39:47 +0000
+Message-ID: <6f2c800fbba74470a6a49903b34e7796@SN2PR07MB064.namprd07.prod.outlook.com>
+References: <1397328516-13260-1-git-send-email-Jane.Wan@gainspeed.com>
+ <1397328516-13260-2-git-send-email-Jane.Wan@gainspeed.com>
+ <20140414205547.GI25182@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org,
-	"dinguyen-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org" <dinguyen-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>
-To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	"robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Emilian.Medve-eDlz3WWmN0ll57MIdRCFDg@public.gmane.org" <Emilian.Medve-eDlz3WWmN0ll57MIdRCFDg@public.gmane.org>,
+	"kenth.eriksson-SNLAxHN9vbdl57MIdRCFDg@public.gmane.org" <kenth.eriksson-SNLAxHN9vbdl57MIdRCFDg@public.gmane.org>,
+	"thomas.de.schampheleire-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org"
+	<thomas.de.schampheleire-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <b48286-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org" <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	"sr-ynQEQJNshbs@public.gmane.org" <sr-ynQEQJNshbs@public.gmane.org>, Insop Song <Insop.Song-X7+3OicCfH32eFz/2MeuCQ@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140416034312.GA4849-MwjkAAnuF3khR1HGirfZ1z4kX+cae0hd@public.gmane.org>
+In-Reply-To: <20140414205547.GI25182-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Baruch Siach,
+On Mon, Apr 14, 2014 at 09:51:56PM +0100, Mark Brown wrote:
+> On Sat, Apr 12, 2014 at 11:48:36AM -0700, Jane Wan wrote:
+> > Make FSL eSPI CSnBEF and CSnAFT in ESPI_SPMODEn registers (n=0,1,2,3)
+> > configurable through device tree.  FSL eSPI driver hardcodes them to 0.
+> > Some device requires different value.
+> 
+> What do these do?
 
-On 04/15/2014 10:43 PM, Baruch Siach wrote:
-> Hi Dinh Nguyen,
->
-> On Tue, Apr 15, 2014 at 09:05:17PM -0500, Dinh Nguyen wrote:
->> I saw from this spi-dw thread that you have a patch to enable DT on the
->> spi-dw driver?
->>
->> http://marc.info/?l=linux-spi&m=138862906031338&w=2
->>
->> Would you care to post the DT patch? I can test the MMIO driver on the
->> SOCFPGA platform.
->
-> I posted the latest version of this series to the list, archived at
-> http://thread.gmane.org/gmane.linux.kernel.spi.devel/16141 . I can send them
-> to you again directly if this is more convenient to you.
->
-> Thanks for testing.
+CSnBEF is the chip select setup time.  It's the delay in bits from the activation 
+of chip select pin to the first clock for data frame.
 
-Thanks for sharing. I think we have a similar patch downstream and has 
-been working fine up to 3.14. For 3.14, we had to add apply this in 
-order for the driver to probe properly:
+CSnAFT is the chip select hold time.  It's the delay in bits from the last clock 
+for data frame to the deactivation of chip select pin.
 
+> > Allow FSL eSPI driver configurable whether to send all received data
+> > form slave devices to user.  When user wants to send n_tx bytes and
+> > receives n_rx bytes, FSL eSPI driver sends (n_tx + n_rx) bytes on MOSI.
+> > For the received (n_tx + n_rx) bytes from MISO, current FSL eSPI
+> > driver drops the first n_tx bytes, only passes the last n_rx bytes to user.
+> > Some device driver has problem with this.  It requires to know all
+> > bytes that the slave device puts on MISO.
+> 
+> This sounds like a separate patch to the first one, the described behaviour is
+> definitely buggy and any correctly implemented Linux driver that does
+> bidirectional I/O will have trouble with it.  It should be split out from the new DT
+> bindings which are a new feature.
+> 
+> > ---
+> >  drivers/spi/spi-fsl-espi.c       |   68 ++++++++++++++++++++++++++++++++++---
+> -
+> >  1 files changed, 61 insertions(+), 7 deletions(-)
+> 
+> All DT binding changes need to be documented in the binding document.
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index bf98d63..29a1f4c 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -809,6 +809,7 @@ int dw_spi_add_host(struct device *dev, struct 
-dw_spi *dws)
-         master->cleanup = dw_spi_cleanup;
-         master->setup = dw_spi_setup;
-         master->transfer = dw_spi_transfer;
-+       master->dev.of_node = dev->of_node;
+The binding document is updated.  The new changes (for CSnBEF and CSnAFT only)  will 
+look like the following.  If this is ok, I'll send it as a separate patch for further discussion.
 
-But even this, we're triggering a WARN_ON() in drivers/base/dd.c, 
-really_probe().
+---
+ Documentation/devicetree/bindings/spi/fsl-spi.txt |    6 ++++
+ drivers/spi/spi-fsl-espi.c                        |   34 ++++++++++++++++++---
+ 2 files changed, 36 insertions(+), 4 deletions(-)
 
-WARNING: CPU: 0 PID: 1 at drivers/base/dd.c:272 
-driver_probe_device+0x194/0x218)
-Modules linked in:
-CPU: 0 PID: 1 Comm: swapper/0 Not tainted 3.14.0-00586-gee68b9b-dirty #2
-[<80016328>] (unwind_backtrace) from [<80012a54>] (show_stack+0x20/0x24)
-[<80012a54>] (show_stack) from [<804ed934>] (dump_stack+0x78/0x94)
-[<804ed934>] (dump_stack) from [<8002302c>] 
-(warn_slowpath_common+0x78/0x9c)
-[<8002302c>] (warn_slowpath_common) from [<8002307c>] 
-(warn_slowpath_null+0x2c/)
-[<8002307c>] (warn_slowpath_null) from [<80301b48>] 
-(driver_probe_device+0x194/)
-[<80301b48>] (driver_probe_device) from [<80301cbc>] 
-(__device_attach+0x50/0x54)
-[<80301cbc>] (__device_attach) from [<802ffec4>] 
-(bus_for_each_drv+0x54/0x9c)
-[<802ffec4>] (bus_for_each_drv) from [<80301974>] (device_attach+0x84/0x90)
-[<80301974>] (device_attach) from [<80300f64>] (bus_probe_device+0x94/0xb8)
-[<80300f64>] (bus_probe_device) from [<802ff14c>] (device_add+0x3f8/0x4fc)
-[<802ff14c>] (device_add) from [<80342088>] (spi_add_device+0x94/0x13c)
-[<80342088>] (spi_add_device) from [<80342b6c>] 
-(spi_register_master+0x56c/0x6d)
-[<80342b6c>] (spi_register_master) from [<80342d10>] 
-(devm_spi_register_master+)
-[<80342d10>] (devm_spi_register_master) from [<80346c58>] 
-(dw_spi_add_host+0x21)
-[<80346c58>] (dw_spi_add_host) from [<803473d8>] 
-(dw_spi_mmio_probe+0x180/0x214)
-[<803473d8>] (dw_spi_mmio_probe) from [<80303224>] 
-(platform_drv_probe+0x28/0x5)
-[<80303224>] (platform_drv_probe) from [<80301a38>] 
-(driver_probe_device+0x84/0)
-[<80301a38>] (driver_probe_device) from [<80301c68>] 
-(__driver_attach+0x9c/0xa0)
-[<80301c68>] (__driver_attach) from [<802fff70>] 
-(bus_for_each_dev+0x64/0x98)
-[<802fff70>] (bus_for_each_dev) from [<80301594>] (driver_attach+0x2c/0x30)
-[<80301594>] (driver_attach) from [<80301174>] (bus_add_driver+0xe8/0x1e4)
-[<80301174>] (bus_add_driver) from [<8030239c>] 
-(driver_register+0x88/0x104)
-[<8030239c>] (driver_register) from [<80303134>] 
-(__platform_driver_register+0x)
-[<80303134>] (__platform_driver_register) from [<806fd110>] 
-(dw_spi_mmio_driver)
-[<806fd110>] (dw_spi_mmio_driver_init) from [<80008900>] 
-(do_one_initcall+0xfc/)
-[<80008900>] (do_one_initcall) from [<806d4cac>] 
-(kernel_init_freeable+0x178/0x)
-[<806d4cac>] (kernel_init_freeable) from [<804e99cc>] 
-(kernel_init+0x18/0xfc)
-[<804e99cc>] (kernel_init) from [<8000eb58>] (ret_from_fork+0x14/0x20)
----[ end trace 5f30c55d17fdf7a0 ]---
+diff --git a/Documentation/devicetree/bindings/spi/fsl-spi.txt b/Documentation/devicetree/bindings/spi/fsl-spi.txt
+index b032dd7..2c7fd41 100644
+--- a/Documentation/devicetree/bindings/spi/fsl-spi.txt
++++ b/Documentation/devicetree/bindings/spi/fsl-spi.txt
+@@ -42,6 +42,10 @@ Required properties:
+ - interrupts : should contain eSPI interrupt, the device has one interrupt.
+ - fsl,espi-num-chipselects : the number of the chipselect signals.
+ 
++Optional properties:
++- fsl,csbef: chip select assertion time in bits before frame starts
++- fsl,csaft: chip select negation time in bits after frame ends
++
+ Example:
+ 	spi@110000 {
+ 		#address-cells = <1>;
+@@ -51,4 +55,6 @@ Example:
+ 		interrupts = <53 0x2>;
+ 		interrupt-parent = <&mpic>;
+ 		fsl,espi-num-chipselects = <4>;
++		fsl,csbef = <1>;
++		fsl,csaft = <1>;
+ 	};
+diff --git a/drivers/spi/spi-fsl-espi.c b/drivers/spi/spi-fsl-espi.c index 428dc7a..7ff9463 100644
+--- a/drivers/spi/spi-fsl-espi.c
++++ b/drivers/spi/spi-fsl-espi.c
+@@ -590,8 +590,10 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	struct spi_master *master;
+ 	struct mpc8xxx_spi *mpc8xxx_spi;
+ 	struct fsl_espi_reg *reg_base;
+-	u32 regval;
+-	int i, ret = 0;
++	struct device_node *nc;
++	const __be32 *prop;
++	u32 regval, csmode;
++	int i, len, ret = 0;
+ 
+ 	master = spi_alloc_master(dev, sizeof(struct mpc8xxx_spi));
+ 	if (!master) {
+@@ -638,8 +640,32 @@ static struct spi_master * fsl_espi_probe(struct device *dev,
+ 	mpc8xxx_spi_write_reg(&reg_base->event, 0xffffffff);
+ 
+ 	/* Init eSPI CS mode register */
+-	for (i = 0; i < pdata->max_chipselect; i++)
+-		mpc8xxx_spi_write_reg(&reg_base->csmode[i], CSMODE_INIT_VAL);
++	for_each_available_child_of_node(master->dev.of_node, nc) {
++		/* get chip select */
++		prop = of_get_property(nc, "reg", &len);
++		if (!prop || len < sizeof(*prop))
++			continue;
++		i = be32_to_cpup(prop);
++		if (i < 0 || i >= pdata->max_chipselect)
++			continue;
++
++		csmode = CSMODE_INIT_VAL;
++		/* check if CSBEF is set in device tree */
++		prop = of_get_property(nc, "fsl,csbef", &len);
++		if (prop && len >= sizeof(*prop)) {
++			csmode &= ~(CSMODE_BEF(0xf));
++			csmode |= CSMODE_BEF(be32_to_cpup(prop));
++		}
++		/* check if CSAFT is set in device tree */
++		prop = of_get_property(nc, "fsl,csaft", &len);
++		if (prop && len >= sizeof(*prop)) {
++			csmode &= ~(CSMODE_AFT(0xf));
++			csmode |= CSMODE_AFT(be32_to_cpup(prop));
++		}
++		mpc8xxx_spi_write_reg(&reg_base->csmode[i], csmode);
++
++		dev_info(dev, "cs=%d, init_csmode=0x%x\n", i, csmode);
++	}
+ 
+ 	/* Enable SPI interface */
+ 	regval = pdata->initial_spmode | SPMODE_INIT_VAL | SPMODE_ENABLE;
+--
+1.7.9.5
 
+> > +/* whether to send all rx data to user per chip select */ static u8
+> > +*spi_raw_rxdata_to_user;
+> > +
+> 
+> No, any data needs to be part of the driver data structure not a global variable.
 
-Our DTS entry for SPI looks like this:
+I will look into this.
 
-spi0: spi@fff00000 {
-	compatible = "snps,dw-spi-mmio";
-	#address-cells = <1>;
-	#size-cells = <0>;
-	reg = <0xfff00000 0x1000>;
-	interrupts = <0 154 4>;
-	num-chipselect = <4>;
-  	bus-num = <0>;
-	tx-dma-channel = <&pdma 16>;
-	rx-dma-channel = <&pdma 17>;
-	clocks = <&per_base_clk>;
+> > +		if (spi_raw_rxdata_to_user[m->spi->chip_select])
+> > +			espi_trans->len = n_tx;
+> > +		else
+> > +			espi_trans->len = trans_len + n_tx;
+> 
+> Why is there even an option for the buggy behaviour?
 
-	spidev@0 {
-		compatible = "spidev";
-		reg = <0>;      /* chip select */
-   		spi-max-frequency = <100000000>;
-		enable-dma = <1>;
-  	};
-};
+We have three devices attached to the FSL eSPI interface, with chip select (CS) 
+0-2. The device driver for the device at CS #2 requires to know all the data that 
+the slave device put on MISO.  But the device drivers for the other two devices 
+(at CS #0 and #1) work with the existing FSL eSPI driver.  The device at CS #0 is 
+Micron n25q512a compatible.
 
-I think the driver is not happy with our spidev child node here, because 
-if I take out the spidev node, then everything is fine. Except I don't 
-have a user-space method to test the SPI.
+We make the FSL eSPI driver configurable through device tree.  If we make a fix 
+without the DT option, the fix will break other device drivers working with the 
+existing FSL eSPI driver.
 
-I'm not as familiar with this subsystem, so will take more time to 
-debug. Do you any anything obviously wrong?
+Could this still be considered as a solution?  If this is ok, I can send it as a separate 
+patch.  Otherwise, we will look if this driver can be modified without DT option.
 
-Thanks,
-Dinh
->
-> baruch
->
+Regards,
+Jane
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

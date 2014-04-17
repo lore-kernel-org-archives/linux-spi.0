@@ -1,7 +1,8 @@
 From: Chew Chiau Ee <chiau.ee.chew@intel.com>
-Subject: [PATCH 0/2] Add PCI mode support for BayTrail LPSS SPI
-Date: Fri, 18 Apr 2014 00:26:05 +0800
-Message-ID: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
+Subject: [PATCH 2/2] spi/pxa2xx-pci: Pass host clock rate info from PCI glue layer
+Date: Fri, 18 Apr 2014 00:26:07 +0800
+Message-ID: <1397751967-20250-3-git-send-email-chiau.ee.chew@intel.com>
+References: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
 Cc: Chew Chiau Ee <chiau.ee.chew@intel.com>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -10,33 +11,91 @@ To: Eric Miao <eric.y.miao@gmail.com>,
 	Haojian Zhuang <haojian.zhuang@gmail.com>,
 	Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 From: Chew, Chiau Ee <chiau.ee.chew@intel.com>
 
-Hi,
+Intel BayTrail PCI mode LPSS devices inclusive of SPI do not rely
+on common clock framework. Thus, this patch allows the PCI mode
+SPI host to pass the supported clock rate info to the core layer
+which eventually used for speed calculation.
 
-BayTrail LPSS subsystem consists of one SPI host which can be PCI
-enumerated. PXA2XX PCI layer used to support only CE4100's SPI. Thus,
-we convert it into a generic PCI layer to add support for LPSS
-SPI as well.
-
-Since PCI mode LPSS SPI does not rely on common clock framework, we
-need a mechanism to pass in the host supported clock rate to core layer.
-Thus, we introduced a new member known as "max_clk_rate" under struct
-pxa2xx_spi_master which can be used in PCI glue layer to pass in
-host supported clock rate info.
-
-Chew, Chiau Ee (2):
-  spi/pxa2xx-pci: Add PCI mode support for BayTrail LPSS SPI
-  spi/pxa2xx-pci: Pass host clock rate info from PCI glue layer
-
- Documentation/spi/pxa2xx       |    3 ++
- drivers/spi/spi-pxa2xx-pci.c   |   79 ++++++++++++++++++++++++++++++++--------
- drivers/spi/spi-pxa2xx.c       |    2 +
+Signed-off-by: Chew, Chiau Ee <chiau.ee.chew@intel.com>
+---
+ Documentation/spi/pxa2xx       |    3 +++
+ drivers/spi/spi-pxa2xx-pci.c   |    3 +++
+ drivers/spi/spi-pxa2xx.c       |    2 ++
  include/linux/spi/pxa2xx_spi.h |    1 +
- 4 files changed, 70 insertions(+), 15 deletions(-)
+ 4 files changed, 9 insertions(+), 0 deletions(-)
 
+diff --git a/Documentation/spi/pxa2xx b/Documentation/spi/pxa2xx
+index 3352f97..3cde429 100644
+--- a/Documentation/spi/pxa2xx
++++ b/Documentation/spi/pxa2xx
+@@ -31,6 +31,9 @@ The "pxa2xx_spi_master.clock_enable" field is used to enable/disable the
+ corresponding SSP peripheral block in the "Clock Enable Register (CKEN"). See
+ the "PXA2xx Developer Manual" section "Clocks and Power Management".
+ 
++The "pxa2xx_spi_master.max_clk_rate" field is used to determine the maximum
++clock rate supported by the SPI master.
++
+ The "pxa2xx_spi_master.num_chipselect" field is used to determine the number of
+ slave device (chips) attached to this SPI master.
+ 
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index c1865c9..24cd938 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -17,6 +17,7 @@ struct pxa_spi_info {
+ 	enum pxa_ssp_type type;
+ 	int port_id;
+ 	int num_chipselect;
++	unsigned long max_clk_rate;
+ 	int tx_slave_id;
+ 	int tx_chan_id;
+ 	int rx_slave_id;
+@@ -37,6 +38,7 @@ static struct pxa_spi_info spi_info_configs[] = {
+ 		.type = LPSS_SSP,
+ 		.port_id = 0,
+ 		.num_chipselect = 1,
++		.max_clk_rate = 50000000,
+ 		.tx_slave_id = 0,
+ 		.tx_chan_id = 0,
+ 		.rx_slave_id = 1,
+@@ -72,6 +74,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	spi_pdata.rx_slave_id = c->rx_slave_id;
+ 	spi_pdata.rx_chan_id = c->rx_chan_id;
+ 	spi_pdata.enable_dma = c->rx_slave_id >= 0 && c->tx_slave_id >= 0;
++	spi_pdata.max_clk_rate = c->max_clk_rate;
+ 
+ 	ssp = &spi_pdata.ssp;
+ 	ssp->phys_base = pci_resource_start(dev, 0);
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index d0fc8e0..b670371 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1182,6 +1182,8 @@ static int pxa2xx_spi_probe(struct platform_device *pdev)
+ 	clk_prepare_enable(ssp->clk);
+ 
+ 	drv_data->max_clk_rate = clk_get_rate(ssp->clk);
++	if (!drv_data->max_clk_rate)
++		drv_data->max_clk_rate = platform_info->max_clk_rate;
+ 
+ 	/* Load default SSP configuration */
+ 	write_SSCR0(0, drv_data->ioaddr);
+diff --git a/include/linux/spi/pxa2xx_spi.h b/include/linux/spi/pxa2xx_spi.h
+index 82d5111..967903f 100644
+--- a/include/linux/spi/pxa2xx_spi.h
++++ b/include/linux/spi/pxa2xx_spi.h
+@@ -28,6 +28,7 @@ struct pxa2xx_spi_master {
+ 	u32 clock_enable;
+ 	u16 num_chipselect;
+ 	u8 enable_dma;
++	unsigned long max_clk_rate;
+ 
+ 	/* DMA engine specific config */
+ 	int rx_chan_id;
 -- 
 1.7.4.4

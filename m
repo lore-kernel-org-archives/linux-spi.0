@@ -1,61 +1,68 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: atmel: Fix scheduling while atomic bug
-Date: Fri, 18 Apr 2014 15:42:48 +0100
-Message-ID: <20140418144248.GR12304@sirena.org.uk>
-References: <20140411214815.GI28800@sirena.org.uk>
- <1397385910-28368-1-git-send-email-alexanders83@web.de>
+Subject: Re: [PATCH 2/2] spi/pxa2xx-pci: Pass host clock rate info from PCI
+ glue layer
+Date: Fri, 18 Apr 2014 17:30:54 +0100
+Message-ID: <20140418163054.GH12304@sirena.org.uk>
+References: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
+ <1397751967-20250-3-git-send-email-chiau.ee.chew@intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Sl8vrUT7HIMjHPiu"
-Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="AkLHf9T6B4f6sqTW"
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1397385910-28368-1-git-send-email-alexanders83-S0/GAf8tV78@public.gmane.org>
+In-Reply-To: <1397751967-20250-3-git-send-email-chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Sl8vrUT7HIMjHPiu
+--AkLHf9T6B4f6sqTW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Apr 13, 2014 at 12:45:10PM +0200, Alexander Stein wrote:
-> atmel_spi_lock does a spin_lock_irqsave, so we need to renable the
-> interrupts when we want to schedule.
+On Fri, Apr 18, 2014 at 12:26:07AM +0800, Chew Chiau Ee wrote:
+> From: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 >=20
-> Signed-off-by: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
-> ---
-> I'm not sure what the lock is actually good for, so I kept it and release
-> it when we are about to schedule, thus reenabling interrupts.
+> Intel BayTrail PCI mode LPSS devices inclusive of SPI do not rely
+> on common clock framework. Thus, this patch allows the PCI mode
+> SPI host to pass the supported clock rate info to the core layer
+> which eventually used for speed calculation.
 
-Applied, thanks - I don't fully understand the locking either and this
-is definitely a conservative fix.
+As you mention we already have a clock API for passing around
+information about clocks, it would be much better to fix the fact that
+this isn't enabled on x86 than to add custom code to deal with clocks
+(even simple things like this) - this is far from the only place where
+it causes issues.
 
---Sl8vrUT7HIMjHPiu
+--AkLHf9T6B4f6sqTW
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTUTnkAAoJELSic+t+oim9kHYP/imA0I4j8fbyKT/Qf/JPv0r8
-iFvEG/+OxmB/2Dzo14q1T2nRT3z4/w9P1O0FlqryhKXHTV8ofBxNf2kgDZE/3dvg
-onybqN2+PjtawXQACAdfrFh7YhDq14CJvobVtckHv0cVOVXdOZoEuJLSdqnJHmso
-LhqOGOATZzQoJRjDfN9YJrEcNML2nMK/r4GJUY7r+IG7JpNt3FrmFP9QSdDl7XkI
-wp+AFTvHKdfsMbtFZLFjMSJO++tXMlfdJ2vLozv6LJa6WR1zr9AcGLrAv9unNXpt
-7BkCqLBPDE+MWgzXMusAMCgC5NIjdyUQJ9cMgBsIh0BXgSsueDrqQmHL9/AG0F5j
-lt7a33AQ6PqeUlqgDsR4qWwDjn7iSC+SbUZatwrZgO+L64lQyfhak2Q9uCfAs223
-NA0HsnsloC5E7mJ040mx17iG0EjVl7Ptm2/pwcTh3QSEd2Jo6gMi+3hwkWi63p2z
-+0Je3qmJcoW+F1oMIH6g7r0IrUug7NhEbfnhFMx2Lz6DXEuHEbSUSh6LDAVZrJbQ
-8RygseU8kH1iN44tb1C2A1i/5wiDZokgd7LeRQSfl3c4XJaH62QYZ26Pn8vAzYRw
-1vh9wkvCA983eSSprez73h5MTmAocNOW84PiOcrSCnR267iGLFqhJdmL4g109Gmz
-AuBXFqbIfPGfYdG5E2Nb
-=e68o
+iQIcBAEBAgAGBQJTUVM7AAoJELSic+t+oim9CycP/jpMtgXq2s4lumhZ2ZX4IwoP
+jkar8PXPZMR3PPpBCSrCB5aC2MjBoowAwYqv554aKjrrXASzTQHm7Q/HxjYTt6Ph
+3ES3cyCCFB+RWYk5kNzV68torNG0xI4CGf5aYSh6nM57pfhAjjK58fYcjPGYrSAX
+NqTvrn/itDPCBfWvASamRuTceSnvG7djegVUjDHicIW2zPifIPA2sJURsjxRTbjy
+ix8pbnCEWut/Tim2fZNgctkPhlXBlgcHXJrtc9xV0zE9zqcR6MQ3nRQMs6FPgDV2
+S+Qh0TCKB1sIoBhLsPLQK+Ur1j6rvkZOEjbUJPZbEjmXuHh6jcRFKO6XGjmTdF6S
+xDOoGADKE61THUEXMVMxg6jxVrzLEjpwworp5nxQUWLjLi9+e1rSOn0bc9wxcFBX
+Z3HU8mmyGBlvlgrxWJOEHomvvQMn4KSE3M4T4LyeAuxpR7YPhfoecVuP3sO9QvRq
+klw5U91Yr9inqge4K8dWlPErfYejl38X0cqsNMYJUHvs5E8MHhdFJGGTy/bU0sWq
+5fBeT7xn6cnRbjZ7iKISoa//8anjIZOqk9s4zLzhWFdoOXpmBlUe2Ql1OEcY0tUm
+/0h8xYFXqmFl1YbHn1XvmtgHvsma2V2+VElB64VGH0TbmI0QEF0MJOHqqXR+D6CB
+vi2nxygsCJ2FT0XMxUYp
+=x9cO
 -----END PGP SIGNATURE-----
 
---Sl8vrUT7HIMjHPiu--
+--AkLHf9T6B4f6sqTW--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

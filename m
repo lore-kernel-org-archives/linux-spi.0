@@ -1,59 +1,59 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi/pxa2xx-pci: Add PCI mode support for BayTrail
- LPSS SPI
-Date: Fri, 18 Apr 2014 18:06:22 +0100
-Message-ID: <20140418170622.GM12304@sirena.org.uk>
-References: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
- <1397751967-20250-2-git-send-email-chiau.ee.chew@intel.com>
+Subject: Re: [PATCH] spi: core: Ignore unsupported Dual/Quad Transfer Mode
+ bits
+Date: Fri, 18 Apr 2014 18:26:07 +0100
+Message-ID: <20140418172607.GP12304@sirena.org.uk>
+References: <1397497193-28067-1-git-send-email-geert@linux-m68k.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="n6oL1CxvjBDs4F0r"
-Cc: Eric Miao <eric.y.miao@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Chew Chiau Ee <chiau.ee.chew@intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="jElBB+g0hITs+cx9"
+Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1397751967-20250-2-git-send-email-chiau.ee.chew@intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1397497193-28067-1-git-send-email-geert@linux-m68k.org>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---n6oL1CxvjBDs4F0r
+--jElBB+g0hITs+cx9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 18, 2014 at 12:26:06AM +0800, Chew Chiau Ee wrote:
-> From: Chew, Chiau Ee <chiau.ee.chew@intel.com>
+On Mon, Apr 14, 2014 at 07:39:53PM +0200, Geert Uytterhoeven wrote:
+> From: Geert Uytterhoeven <geert+renesas@glider.be>
 >=20
-> Similar to CE4100, BayTrail LPSS SPI can be PCI enumerated
-> as well. Thus, the functions are renamed from ce4100_xxx
+> The availability of SPI Dual or Quad Transfer Mode as indicated by the
+> "spi-tx-bus-width" and "spi-rx-bus-width" properties in the device tree is
+> a hardware property of the SPI master, SPI slave, and board wiring.  Hence
+> the SPI core should not reject an SPI slave because an SPI master driver
+> doesn't (yet) support Dual or Quad Transfer Mode.
 
 Applied, thanks.
 
---n6oL1CxvjBDs4F0r
+--jElBB+g0hITs+cx9
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTUVuKAAoJELSic+t+oim9l4EP/j042IXNTvY1lKh1UAed6t+Q
-NucI8DI6QkkM760VdE16leQOg/VuwQZepAHWwLNvwU0SdVPuu6mHzD3EJQPBjrdh
-w6UZOYWfgTfHx2qrzERRydFPF74D8USNp/wMCrmn4N9miV/zcQHcEtTFvQLi6ETr
-KZCDQ2ovxRoRqxkU7GPK44jlYdb8VShHLX0/SYpP8DzUrMVaEVZSPY6GYxyq4WTS
-c4noqVkCfR9SSUxHYVet2PYa00VaGR5kaWFpwdUhQtMXffrB95DNOHoEAfDsOutD
-X7rNHrlpHfVy5T2XO4ocDIE5KIHRJ03GySK8HCPxmAGWBWBnrcaJA8Ya1l8oYAyF
-8ikDpkjtrLvNJYqEIgCmnzv9ele9NP2+UBDr9qJjjfPB/YT07RVmob/6oJufrQyl
-ItUuSZG2s4A5K7nKU1OVBVf/mzayV3uqspoageVkaj6HC/TU/BDxx20u+Ju41Ow0
-7KY5Mes1q4E4NN3OSVW49DBMjNguiF2ipVUY4MKlOdwM366ERgt22QHmIZPJB2wE
-7Pb9OVDui7+yqI73CkcjOuQlwRL7Mrv0YUwG0EonO0W5oiPcGzy/ackDJ/zVHrbm
-q7qUTtDCvtR1PQfN3UAZ0EYOf2NqyZCmkVhetBG71usmsfxxdfqi+wnpO8c1T1qP
-F21F8HmdvMl2pU8KZ5cf
-=MkO4
+iQIcBAEBAgAGBQJTUWAsAAoJELSic+t+oim9XqUP/i0hl9S5zGaLJTerphXINOYV
+JpEUhjUSsAggcv0Ur5xmtTL3XimUaWES++qZV4BFZ3Gzh6mErKBCSEYcKZQSEwWm
+IiGpl2ltk4gm8vm/ABquyY1ucG2I0j4EIocVAF20GKhG1t51+sjmN+CperW0Cyu8
+3LBFwBaiX2kQ54ydHun1SyRHaFtK+f/o8nLrBOq7G13i/nxclRBlpNOE8st8PxGF
+rMbF+QhjfD4jDiJXKhN7lOQulROL51dDUOawoHvIE0GbP2Q/Z2O2kNHK+XG6rIuA
+doLvJ9EiyYeWc2HFX2y8VC1xDysMnXfP0ENsG/H1yRCyk0G0fne+mb9nD+znsI9u
+MvyjbI2ZLxyru07VQojO+oIMT4Bj2qtI99scN2Hf6bMgoFrikWaxRGYzNj9B5eIw
+Gebbcb85TuyzRDUVU1X0MLhJg7N1IeNxuVzkiqpoRGcW6NZqzYDZ2ybEzhJSbfrW
+HMasr4mm9pk38GlAYy978eYpMw22aGlXnLZhMbrvSSh0goZlzDRDgoLg1IayLTDB
+YtYoRXMdn8gR6BkEyPf4iCjEP2VkAR/1PqYHRRgvK/8znwRI6YXmji+ILXSEXNLR
+wxLG4E6iUMciRSVzVFuguywe8e4oQzv4+bsvgkyEl6GuwWyPs50iGowJfJLlUha+
+N1zOdHvgqCpex2YBh7Xh
+=xlPO
 -----END PGP SIGNATURE-----
 
---n6oL1CxvjBDs4F0r--
+--jElBB+g0hITs+cx9--

@@ -1,161 +1,62 @@
-From: Chew Chiau Ee <chiau.ee.chew@intel.com>
-Subject: [PATCH 1/2] spi/pxa2xx-pci: Add PCI mode support for BayTrail LPSS SPI
-Date: Fri, 18 Apr 2014 00:26:06 +0800
-Message-ID: <1397751967-20250-2-git-send-email-chiau.ee.chew@intel.com>
-References: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
-Cc: Chew Chiau Ee <chiau.ee.chew@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Eric Miao <eric.y.miao@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: atmel: Fix scheduling while atomic bug
+Date: Fri, 18 Apr 2014 15:42:48 +0100
+Message-ID: <20140418144248.GR12304@sirena.org.uk>
+References: <20140411214815.GI28800@sirena.org.uk>
+ <1397385910-28368-1-git-send-email-alexanders83@web.de>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Sl8vrUT7HIMjHPiu"
+Cc: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1397385910-28368-1-git-send-email-alexanders83-S0/GAf8tV78@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Chew, Chiau Ee <chiau.ee.chew@intel.com>
 
-Similar to CE4100, BayTrail LPSS SPI can be PCI enumerated
-as well. Thus, the functions are renamed from ce4100_xxx
-to pxa2xx_spi_pci_xxx to clarify that this is a generic
-PCI glue layer. Also, added required infrastructure to
-support SPI hosts with different configurations.
+--Sl8vrUT7HIMjHPiu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch is based on Mika Westerberg's previous work.
+On Sun, Apr 13, 2014 at 12:45:10PM +0200, Alexander Stein wrote:
+> atmel_spi_lock does a spin_lock_irqsave, so we need to renable the
+> interrupts when we want to schedule.
+>=20
+> Signed-off-by: Alexander Stein <alexanders83-S0/GAf8tV78@public.gmane.org>
+> ---
+> I'm not sure what the lock is actually good for, so I kept it and release
+> it when we are about to schedule, thus reenabling interrupts.
 
-Signed-off-by: Chew, Chiau Ee <chiau.ee.chew@intel.com>
----
- drivers/spi/spi-pxa2xx-pci.c |   76 +++++++++++++++++++++++++++++++++--------
- 1 files changed, 61 insertions(+), 15 deletions(-)
+Applied, thanks - I don't fully understand the locking either and this
+is definitely a conservative fix.
 
-diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index 3f006d3..c1865c9 100644
---- a/drivers/spi/spi-pxa2xx-pci.c
-+++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -8,7 +8,43 @@
- #include <linux/module.h>
- #include <linux/spi/pxa2xx_spi.h>
- 
--static int ce4100_spi_probe(struct pci_dev *dev,
-+enum {
-+	PORT_CE4100,
-+	PORT_BYT,
-+};
-+
-+struct pxa_spi_info {
-+	enum pxa_ssp_type type;
-+	int port_id;
-+	int num_chipselect;
-+	int tx_slave_id;
-+	int tx_chan_id;
-+	int rx_slave_id;
-+	int rx_chan_id;
-+};
-+
-+static struct pxa_spi_info spi_info_configs[] = {
-+	[PORT_CE4100] = {
-+		.type = PXA25x_SSP,
-+		.port_id =  -1,
-+		.num_chipselect = -1,
-+		.tx_slave_id = -1,
-+		.tx_chan_id = -1,
-+		.rx_slave_id = -1,
-+		.rx_chan_id = -1,
-+	},
-+	[PORT_BYT] = {
-+		.type = LPSS_SSP,
-+		.port_id = 0,
-+		.num_chipselect = 1,
-+		.tx_slave_id = 0,
-+		.tx_chan_id = 0,
-+		.rx_slave_id = 1,
-+		.rx_chan_id = 1,
-+	},
-+};
-+
-+static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 		const struct pci_device_id *ent)
- {
- 	struct platform_device_info pi;
-@@ -16,6 +52,7 @@ static int ce4100_spi_probe(struct pci_dev *dev,
- 	struct platform_device *pdev;
- 	struct pxa2xx_spi_master spi_pdata;
- 	struct ssp_device *ssp;
-+	struct pxa_spi_info *c;
- 
- 	ret = pcim_enable_device(dev);
- 	if (ret)
-@@ -25,8 +62,16 @@ static int ce4100_spi_probe(struct pci_dev *dev,
- 	if (ret)
- 		return ret;
- 
-+	c = &spi_info_configs[ent->driver_data];
-+
- 	memset(&spi_pdata, 0, sizeof(spi_pdata));
--	spi_pdata.num_chipselect = dev->devfn;
-+	spi_pdata.num_chipselect = (c->num_chipselect > 0) ?
-+					c->num_chipselect : dev->devfn;
-+	spi_pdata.tx_slave_id = c->tx_slave_id;
-+	spi_pdata.tx_chan_id = c->tx_chan_id;
-+	spi_pdata.rx_slave_id = c->rx_slave_id;
-+	spi_pdata.rx_chan_id = c->rx_chan_id;
-+	spi_pdata.enable_dma = c->rx_slave_id >= 0 && c->tx_slave_id >= 0;
- 
- 	ssp = &spi_pdata.ssp;
- 	ssp->phys_base = pci_resource_start(dev, 0);
-@@ -36,8 +81,8 @@ static int ce4100_spi_probe(struct pci_dev *dev,
- 		return -EIO;
- 	}
- 	ssp->irq = dev->irq;
--	ssp->port_id = dev->devfn;
--	ssp->type = PXA25x_SSP;
-+	ssp->port_id = (c->port_id >= 0) ? c->port_id : dev->devfn;
-+	ssp->type = c->type;
- 
- 	memset(&pi, 0, sizeof(pi));
- 	pi.parent = &dev->dev;
-@@ -55,28 +100,29 @@ static int ce4100_spi_probe(struct pci_dev *dev,
- 	return 0;
- }
- 
--static void ce4100_spi_remove(struct pci_dev *dev)
-+static void pxa2xx_spi_pci_remove(struct pci_dev *dev)
- {
- 	struct platform_device *pdev = pci_get_drvdata(dev);
- 
- 	platform_device_unregister(pdev);
- }
- 
--static const struct pci_device_id ce4100_spi_devices[] = {
--	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x2e6a) },
-+static const struct pci_device_id pxa2xx_spi_pci_devices[] = {
-+	{ PCI_VDEVICE(INTEL, 0x2e6a), PORT_CE4100 },
-+	{ PCI_VDEVICE(INTEL, 0x0f0e), PORT_BYT },
- 	{ },
- };
--MODULE_DEVICE_TABLE(pci, ce4100_spi_devices);
-+MODULE_DEVICE_TABLE(pci, pxa2xx_spi_pci_devices);
- 
--static struct pci_driver ce4100_spi_driver = {
--	.name           = "ce4100_spi",
--	.id_table       = ce4100_spi_devices,
--	.probe          = ce4100_spi_probe,
--	.remove         = ce4100_spi_remove,
-+static struct pci_driver pxa2xx_spi_pci_driver = {
-+	.name           = "pxa2xx_spi_pci",
-+	.id_table       = pxa2xx_spi_pci_devices,
-+	.probe          = pxa2xx_spi_pci_probe,
-+	.remove         = pxa2xx_spi_pci_remove,
- };
- 
--module_pci_driver(ce4100_spi_driver);
-+module_pci_driver(pxa2xx_spi_pci_driver);
- 
--MODULE_DESCRIPTION("CE4100 PCI-SPI glue code for PXA's driver");
-+MODULE_DESCRIPTION("CE4100/LPSS PCI-SPI glue code for PXA's driver");
- MODULE_LICENSE("GPL v2");
- MODULE_AUTHOR("Sebastian Andrzej Siewior <bigeasy@linutronix.de>");
--- 
-1.7.4.4
+--Sl8vrUT7HIMjHPiu
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTUTnkAAoJELSic+t+oim9kHYP/imA0I4j8fbyKT/Qf/JPv0r8
+iFvEG/+OxmB/2Dzo14q1T2nRT3z4/w9P1O0FlqryhKXHTV8ofBxNf2kgDZE/3dvg
+onybqN2+PjtawXQACAdfrFh7YhDq14CJvobVtckHv0cVOVXdOZoEuJLSdqnJHmso
+LhqOGOATZzQoJRjDfN9YJrEcNML2nMK/r4GJUY7r+IG7JpNt3FrmFP9QSdDl7XkI
+wp+AFTvHKdfsMbtFZLFjMSJO++tXMlfdJ2vLozv6LJa6WR1zr9AcGLrAv9unNXpt
+7BkCqLBPDE+MWgzXMusAMCgC5NIjdyUQJ9cMgBsIh0BXgSsueDrqQmHL9/AG0F5j
+lt7a33AQ6PqeUlqgDsR4qWwDjn7iSC+SbUZatwrZgO+L64lQyfhak2Q9uCfAs223
+NA0HsnsloC5E7mJ040mx17iG0EjVl7Ptm2/pwcTh3QSEd2Jo6gMi+3hwkWi63p2z
++0Je3qmJcoW+F1oMIH6g7r0IrUug7NhEbfnhFMx2Lz6DXEuHEbSUSh6LDAVZrJbQ
+8RygseU8kH1iN44tb1C2A1i/5wiDZokgd7LeRQSfl3c4XJaH62QYZ26Pn8vAzYRw
+1vh9wkvCA983eSSprez73h5MTmAocNOW84PiOcrSCnR267iGLFqhJdmL4g109Gmz
+AuBXFqbIfPGfYdG5E2Nb
+=e68o
+-----END PGP SIGNATURE-----
+
+--Sl8vrUT7HIMjHPiu--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

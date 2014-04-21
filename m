@@ -1,59 +1,91 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: core: Ignore unsupported Dual/Quad Transfer Mode
- bits
-Date: Fri, 18 Apr 2014 18:26:07 +0100
-Message-ID: <20140418172607.GP12304@sirena.org.uk>
-References: <1397497193-28067-1-git-send-email-geert@linux-m68k.org>
+From: Jorge Ventura <jorge.araujo.ventura-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: spi-omap2-mcspi hangs when DMA and PIO are used simultaneously
+Date: Mon, 21 Apr 2014 08:20:44 -0500
+Message-ID: <20140421132043.GA6640@gmail.com>
+References: <20140412031902.GA28289@myventura.us>
+ <FEB1293C1A07484EA4E9721B32981131EAEF80@DBDE04.ent.ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jElBB+g0hITs+cx9"
-Cc: linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1397497193-28067-1-git-send-email-geert@linux-m68k.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---jElBB+g0hITs+cx9
 Content-Type: text/plain; charset=us-ascii
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <FEB1293C1A07484EA4E9721B32981131EAEF80-yXqyApvAXouIQmiDNMet8wC/G2K4zDHf@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Apr 14, 2014 at 07:39:53PM +0200, Geert Uytterhoeven wrote:
-> From: Geert Uytterhoeven <geert+renesas@glider.be>
->=20
-> The availability of SPI Dual or Quad Transfer Mode as indicated by the
-> "spi-tx-bus-width" and "spi-rx-bus-width" properties in the device tree is
-> a hardware property of the SPI master, SPI slave, and board wiring.  Hence
-> the SPI core should not reject an SPI slave because an SPI master driver
-> doesn't (yet) support Dual or Quad Transfer Mode.
+This message is just to give a conclusion on my original post. This is a
+description of some tests that I did to verify the drive
+spi_omap2_mcspi related with the problem I reported. The conclusion is
+that there is no problem with the driver.
 
-Applied, thanks.
+I connected one beaglebone as the spi master to an Arduino uno as slave;
+doing that I can have serial terminals at both sides so that I can see
+everything. In the middle I have a logic analyzer to confirm that what I
+am reading at the terminals is exactly what I can see in the display of
+logic analyzer for both directions. I didn't find anything wrong!
 
---jElBB+g0hITs+cx9
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Another check that I did was a stress test making transitions from PIO
+to DMA and from DMA to PIO sending blocks of two different sizes and
+again, everything works perfectly. This eliminates completely the drive
+spi_opmp2_mcspi as the originator of the problem I am having with the
+network card enc28j60. The problem has to be in the enc28j60 driver
+itself.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Ventura
 
-iQIcBAEBAgAGBQJTUWAsAAoJELSic+t+oim9XqUP/i0hl9S5zGaLJTerphXINOYV
-JpEUhjUSsAggcv0Ur5xmtTL3XimUaWES++qZV4BFZ3Gzh6mErKBCSEYcKZQSEwWm
-IiGpl2ltk4gm8vm/ABquyY1ucG2I0j4EIocVAF20GKhG1t51+sjmN+CperW0Cyu8
-3LBFwBaiX2kQ54ydHun1SyRHaFtK+f/o8nLrBOq7G13i/nxclRBlpNOE8st8PxGF
-rMbF+QhjfD4jDiJXKhN7lOQulROL51dDUOawoHvIE0GbP2Q/Z2O2kNHK+XG6rIuA
-doLvJ9EiyYeWc2HFX2y8VC1xDysMnXfP0ENsG/H1yRCyk0G0fne+mb9nD+znsI9u
-MvyjbI2ZLxyru07VQojO+oIMT4Bj2qtI99scN2Hf6bMgoFrikWaxRGYzNj9B5eIw
-Gebbcb85TuyzRDUVU1X0MLhJg7N1IeNxuVzkiqpoRGcW6NZqzYDZ2ybEzhJSbfrW
-HMasr4mm9pk38GlAYy978eYpMw22aGlXnLZhMbrvSSh0goZlzDRDgoLg1IayLTDB
-YtYoRXMdn8gR6BkEyPf4iCjEP2VkAR/1PqYHRRgvK/8znwRI6YXmji+ILXSEXNLR
-wxLG4E6iUMciRSVzVFuguywe8e4oQzv4+bsvgkyEl6GuwWyPs50iGowJfJLlUha+
-N1zOdHvgqCpex2YBh7Xh
-=xlPO
------END PGP SIGNATURE-----
-
---jElBB+g0hITs+cx9--
+On Sat, Apr 12, 2014 at 04:33:38AM +0000, Poddar, Sourav wrote:
+> Hi,
+> [Sorry fot top posting]
+> 
+> Can you try this patch?
+> https://patchwork.kernel.org/patch/3511311/
+> 
+> ________________________________________
+> From: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org [linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org] on behalf of Jorge Ventura [jorge.araujo.ventura-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org]
+> Sent: Saturday, April 12, 2014 8:49 AM
+> To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> Cc: jorge.araujo.ventura-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+> Subject: spi-omap2-mcspi hangs when DMA and PIO are used simultaneously
+> 
+> I am struggling with this problem for several weeks with no success.
+> 
+> I am using spi-omap2-mcspi to drive a network card based on enc28j60 and everything works perfect if I define
+> DMA_MIN_BYTES = 0 (force to use DMA only) or DMA_MIN_BYTES = 99999 (force to use PIO only).
+> But if I use the original value of 160, the board can send out 10 to 20 pings approximately
+> and if for any reason the drive switch from PIO to DMA what will be decided by the size of data,
+> some workqueue tasks hung and the card stops.
+> 
+> I am running with "lockdep" and "detect hung tasks" and I can see that four tasks are stopped,
+> three from enc28j60 and one from spi-omap2-mcspi.
+> 
+> The mcspi is stopped in spi-omap2.mcspi.c:480 to wait the completion of omap2_mcspi_rx_callback
+> that it never happens.
+> 
+>    468                 if (tx) {
+>    469                         tx->callback = omap2_mcspi_rx_callback;
+>    470                         tx->callback_param = spi;
+>    471                         dmaengine_submit(tx);
+>    472                 } else {
+>    473                                 /* FIXME: fall back to PIO? */
+>    474                 }
+>    475         }
+>    476
+>    477         dma_async_issue_pending(mcspi_dma->dma_rx);
+>    478         omap2_mcspi_set_dma_req(spi, 1, 1);
+>    479
+>    480         wait_for_completion(&mcspi_dma->dma_rx_completion);
+>    481         dma_unmap_single(mcspi->dev, xfer->rx_dma, count,
+>    482                          DMA_FROM_DEVICE);
+> 
+> Any help/suggestion is welcome. Need more information, please let me know, I have much
+> more details.
+> 
+> Thank you.
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

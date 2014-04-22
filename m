@@ -1,41 +1,47 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 2/2] mtd: spi-nor: Enable Dual and Quad SPI read transfers for s25sl032p
-Date: Tue, 22 Apr 2014 14:45:32 +0200
-Message-ID: <1398170732-19773-2-git-send-email-geert+renesas@glider.be>
-References: <1398170732-19773-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: One Thousand Gnomes <gnomes-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi/pxa2xx-pci: Pass host clock rate info from PCI
+ glue layer
+Date: Tue, 22 Apr 2014 15:27:23 +0100
+Message-ID: <20140422152723.7542a3bc@alan.etchedpixels.co.uk>
+References: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
+	<1397751967-20250-3-git-send-email-chiau.ee.chew@intel.com>
+	<20140418163054.GH12304@sirena.org.uk>
+	<20140422115716.GP30677@intel.com>
+	<20140422120948.GT12304@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1398170732-19773-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+In-Reply-To: <20140422120948.GT12304-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Spansion s25sl032p supports Dual and Quad SPI transfers, hence set the
-SPI_NOR_DUAL_READ and SPI_NOR_QUAD_READ flags.
+> Why is this conditional?  It's really unhelpful for writing generic code
+> handling clocks that the API isn't available as standard.  Allowing the
+> user to disable it if it's not required makes sense but not making it
+> available at all is just unhelpful.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
----
-Updated for m25p80 -> spi-nor
+KConfig allows drivers to select features they need - this seems to be a
+non issue ?
 
- drivers/mtd/spi-nor/spi-nor.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> As far as I can tell the clock here is part of the same glue that allows
+> the generic pxa2xx support to be instantiated from PCI.  I would
+> therefore expect the glue to also instantiate the clock.  Or if it's a
+> standard PCI clock then perhaps the PCI subsystem ought to be providing
+> it.
 
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index d6f44d527701..c713c8656710 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -497,7 +497,7 @@ const struct spi_device_id spi_nor_ids[] = {
- 	/* Spansion -- single (large) sector size only, at least
- 	 * for the chips listed here (without boot sectors).
- 	 */
--	{ "s25sl032p",  INFO(0x010215, 0x4d00,  64 * 1024,  64, 0) },
-+	{ "s25sl032p",  INFO(0x010215, 0x4d00,  64 * 1024,  64, SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
- 	{ "s25sl064p",  INFO(0x010216, 0x4d00,  64 * 1024, 128, 0) },
- 	{ "s25fl256s0", INFO(0x010219, 0x4d00, 256 * 1024, 128, 0) },
- 	{ "s25fl256s1", INFO(0x010219, 0x4d01,  64 * 1024, 512, SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
--- 
-1.7.9.5
+For most cases it probably makes sense to do something of that form,
+although as clk_enable/clk_disable allow NULL it's much less of an issue
+than it might otherwise be for some of the other drivers.
+
+Alan
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

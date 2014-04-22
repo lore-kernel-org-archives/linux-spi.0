@@ -1,48 +1,45 @@
-From: One Thousand Gnomes <gnomes-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi/pxa2xx-pci: Pass host clock rate info from PCI
- glue layer
-Date: Tue, 22 Apr 2014 15:27:23 +0100
-Message-ID: <20140422152723.7542a3bc@alan.etchedpixels.co.uk>
-References: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
-	<1397751967-20250-3-git-send-email-chiau.ee.chew@intel.com>
-	<20140418163054.GH12304@sirena.org.uk>
-	<20140422115716.GP30677@intel.com>
-	<20140422120948.GT12304@sirena.org.uk>
+From: Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] mtd: m25p80: Revive dual read support
+Date: Tue, 22 Apr 2014 23:48:08 +0800
+Message-ID: <20140422154806.GA4230@localhost.localdomain>
+References: <1398170732-19773-1-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140422120948.GT12304-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1398170732-19773-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-> Why is this conditional?  It's really unhelpful for writing generic code
-> handling clocks that the API isn't available as standard.  Allowing the
-> user to disable it if it's not required makes sense but not making it
-> available at all is just unhelpful.
+On Tue, Apr 22, 2014 at 02:45:31PM +0200, Geert Uytterhoeven wrote:
+> Commit 03e296f613affcc2671c1e86d8c25ecad867204e ("mtd: m25p80: use the SPI
+> nor framework") accidentally removed support for Dual SPI read transfers.
+> Add it back.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+> ---
+>  drivers/mtd/devices/m25p80.c |    2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 1557d8f672c1..ed7e0a1bed3c 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -221,6 +221,8 @@ static int m25p_probe(struct spi_device *spi)
+>  
+>  	if (spi->mode & SPI_RX_QUAD)
+>  		mode = SPI_NOR_QUAD;
+> +	else if (spi->mode & SPI_RX_DUAL)
+> +		mode = SPI_NOR_DUAL;
+>  	ret = spi_nor_scan(nor, spi_get_device_id(spi), mode);
+>  	if (ret)
+>  		return ret;
+sorry for the mistake.
 
-KConfig allows drivers to select features they need - this seems to be a
-non issue ?
-
-> As far as I can tell the clock here is part of the same glue that allows
-> the generic pxa2xx support to be instantiated from PCI.  I would
-> therefore expect the glue to also instantiate the clock.  Or if it's a
-> standard PCI clock then perhaps the PCI subsystem ought to be providing
-> it.
-
-For most cases it probably makes sense to do something of that form,
-although as clk_enable/clk_disable allow NULL it's much less of an issue
-than it might otherwise be for some of the other drivers.
-
-Alan
-
+Acked-by: Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

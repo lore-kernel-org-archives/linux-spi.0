@@ -1,74 +1,95 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi/pxa2xx-pci: Pass host clock rate info from PCI
- glue layer
-Date: Tue, 22 Apr 2014 19:21:49 +0100
-Message-ID: <20140422182149.GB12304@sirena.org.uk>
-References: <1397751967-20250-1-git-send-email-chiau.ee.chew@intel.com>
- <1397751967-20250-3-git-send-email-chiau.ee.chew@intel.com>
- <20140418163054.GH12304@sirena.org.uk>
- <20140422115716.GP30677@intel.com>
- <20140422120948.GT12304@sirena.org.uk>
- <20140422152723.7542a3bc@alan.etchedpixels.co.uk>
+From: Huang Shijie <b32955@freescale.com>
+Subject: [PATCH v1 0/7] mtd: spi-nor: Add the DDR quad read support
+Date: Wed, 23 Apr 2014 18:16:48 +0800
+Message-ID: <1398248215-26768-1-git-send-email-b32955@freescale.com>
+References: <a>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="LGhQbn2N+4fvG9BK"
-Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: One Thousand Gnomes <gnomes-qBU/x9rampVanCEyBjwyrvXRex20P6io@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140422152723.7542a3bc-mUKnrFFms3BCCTY1wZZT65JpZx93mCW/@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <computersforpeace@gmail.com>, <marex@denx.de>,
+	<linux-mtd@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, Huang Shijie <b32955@freescale.com>
+To: <dwmw2@infradead.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <a>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+ (0) This patch set depends on the patch:
+	http://lists.infradead.org/pipermail/linux-mtd/2014-April/053308.html
 
---LGhQbn2N+4fvG9BK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+  
+ (1) This patch set tries to add the DDR quad read support for the SPI
+     NOR framework, and it also adds the DDR quad read support for FREESCALE
+     quadspi controller driver.
 
-On Tue, Apr 22, 2014 at 03:27:23PM +0100, One Thousand Gnomes wrote:
-> > Why is this conditional?  It's really unhelpful for writing generic code
-> > handling clocks that the API isn't available as standard.  Allowing the
-> > user to disable it if it's not required makes sense but not making it
-> > available at all is just unhelpful.
+ (2) Test this patch set with Spansion s25fl128s, the performance with mtd_speedtest.ko:
+     =================================================
+     mtd_speedtest: MTD device: 0
+     mtd_speedtest: not NAND flash, assume page size is 512 bytes.
+     mtd_speedtest: MTD device size 16777216, eraseblock size 65536, page size 512,
+                    count of eraseblocks 256, pages per eraseblock 128, OOB size 0
+     mtd_speedtest: testing eraseblock write speed
+     mtd_speedtest: eraseblock write speed is 665 KiB/s
+     mtd_speedtest: testing eraseblock read speed
+     mtd_speedtest: eraseblock read speed is 49799 KiB/s
+     mtd_speedtest: testing page write speed
+     mtd_speedtest: page write speed is 662 KiB/s
+     mtd_speedtest: testing page read speed
+     mtd_speedtest: page read speed is 24236 KiB/s
+     mtd_speedtest: testing 2 page write speed
+     mtd_speedtest: 2 page write speed is 657 KiB/s
+     mtd_speedtest: testing 2 page read speed
+     mtd_speedtest: 2 page read speed is 32637 KiB/s
+     mtd_speedtest: Testing erase speed
+     mtd_speedtest: erase speed is 518 KiB/s
+     mtd_speedtest: Testing 2x multi-block erase speed
+     mtd_speedtest: 2x multi-block erase speed is 506 KiB/s
+     mtd_speedtest: Testing 4x multi-block erase speed
+     mtd_speedtest: 4x multi-block erase speed is 503 KiB/s
+     mtd_speedtest: Testing 8x multi-block erase speed
+     mtd_speedtest: 8x multi-block erase speed is 501 KiB/s
+     mtd_speedtest: Testing 16x multi-block erase speed
+     mtd_speedtest: 16x multi-block erase speed is 498 KiB/s
+     mtd_speedtest: Testing 32x multi-block erase speed
+     mtd_speedtest: 32x multi-block erase speed is 496 KiB/s
+     mtd_speedtest: Testing 64x multi-block erase speed
+     mtd_speedtest: 64x multi-block erase speed is 495 KiB/s
+     mtd_speedtest: finished
+     =================================================
 
-> KConfig allows drivers to select features they need - this seems to be a
-> non issue ?
+  (3) Conclusion:
+     The DDR quad read could be 49799 KiB/s.
+     
+Changlog:
+  About this patch set:
+     For patch 1, please see the old discusstion:
+     http://lists.infradead.org/pipermail/linux-mtd/2014-April/053370.html
 
-No, not for the clock API - the platform has to provide a clock API
-since currently platforms still have the option of providing their own
-implementation.  We should fix that (just making the common clock API
-available on all platforms which don't have a custom one would help a
-lot) but getting anyone to take any interest has been hard.
+     For patch 2, please see the old discusstion:
+     http://lists.infradead.org/pipermail/linux-mtd/2014-April/053374.html
 
---LGhQbn2N+4fvG9BK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+     
+Huang Shijie (7):
+  mtd: spi-nor: fix the wrong dummy value
+  mtd: spi-nor: add DDR quad read support
+  Documentation: mtd: add a new document for SPI NOR flash
+  Documentation: fsl-quadspi: update the document
+  mtd: fsl-quadspi: get the dummy cycles for DDR Quad read from the DT
+    property
+  mtd: fsl-quadspi: use the information stored in spi-nor{}
+  mtd: fsl-quadspi: add the DDR quad read support
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+ .../devicetree/bindings/mtd/fsl-quadspi.txt        |   16 +++
+ .../devicetree/bindings/mtd/spi-nor-flash.txt      |    7 +
+ drivers/mtd/devices/m25p80.c                       |    5 +-
+ drivers/mtd/spi-nor/fsl-quadspi.c                  |  121 +++++++++++++-------
+ drivers/mtd/spi-nor/spi-nor.c                      |   52 ++++++++-
+ include/linux/mtd/spi-nor.h                        |    8 +-
+ 6 files changed, 162 insertions(+), 47 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mtd/spi-nor-flash.txt
 
-iQIcBAEBAgAGBQJTVrM6AAoJELSic+t+oim9tlIP+wTQiBb23vhbQ1z/wik1Ie9v
-V90ZWVPF6B21b5nITnaofbt+YhKlJbDGebDQXFpfn4Ch70pqSoYXSFQNG749yWQE
-t0EoUnuaNsAoSLeUmdR6e3EiXU3U44gxXMz4dyRWo8QbAlfic1ka0Z62nbwXPRei
-/+Ay9gU1QyymsgswLoIw8UAQ1gKv/5jwXqhTTFyXEez5XOaQmtVFdnVAVgSKUdEP
-yc/SAUsGiNtkeReKLQECL60WN4cF1Zpqw3MSlH5Ix1ZLutZu9NGSjw33YB+04ARl
-RhxovI6jWCllve+YYdGyCjHt4tNC8zYk9D5Cnf6A14MrnRMtwnoKoMEUGJAUgH8D
-rgNT9gee+j/gq1mbb1Pmd/2IQyYabEU4cjg9eX6KwjqssuajjFY2eukPzmaQDUYv
-f/nJ8BmkAQkP+d52eea0djJRpje+59Gt16WUNkPhHfgsc9yU4RUR/SUtlnRoUhnY
-g92coY2m9a0NdXgIvk4MJHjsyN5WqC7pAtLGHd86vXoGoV5xufrPshXgsABHL/7c
-wQ0cDVeAAfOwEBPIlVtlzAeYMaaezKHkjhP0XxXFQAaw6qgjYfjxc8Y+0buFXg1O
-r0wfjb4i22atqaUDLCrR0gqgoTd6Kyyiuu+ubJRigjAlXgqv4/u69YW7dZOJCael
-NTZ7yORBJ6A0FLwzp4Hv
-=6JU5
------END PGP SIGNATURE-----
+-- 
+1.7.2.rc3
 
---LGhQbn2N+4fvG9BK--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,55 +1,53 @@
-From: Huang Shijie <b32955@freescale.com>
-Subject: [PATCH v1 3/7] Documentation: mtd: add a new document for SPI NOR
- flash
-Date: Wed, 23 Apr 2014 18:16:51 +0800
-Message-ID: <1398248215-26768-4-git-send-email-b32955@freescale.com>
-References: <a>
+From: Marek Vasut <marex@denx.de>
+Subject: Re: [PATCH v1 1/7] mtd: spi-nor: fix the wrong dummy value
+Date: Wed, 23 Apr 2014 21:41:26 +0200
+Message-ID: <201404232141.27005.marex@denx.de>
+References: <a> <1398248215-26768-2-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: Text/Plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Cc: marex@denx.de, devicetree@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-spi@vger.kernel.org, Huang Shijie <b32955@freescale.com>,
- linux-mtd@lists.infradead.org, computersforpeace@gmail.com,
- linux-arm-kernel@lists.infradead.org
-To: <dwmw2@infradead.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <a>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Cc: dwmw2@infradead.org, computersforpeace@gmail.com,
+	linux-mtd@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org
+To: Huang Shijie <b32955@freescale.com>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <1398248215-26768-2-git-send-email-b32955@freescale.com>
+Sender: linux-doc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-We need a DT property to store the dummy cycles for DDR Quad read.
-This is a common feature for the SPI NOR flash, such as Spansion and Micron
-chips.
+On Wednesday, April 23, 2014 at 12:16:49 PM, Huang Shijie wrote:
+> For the DDR Quad read, the dummy cycles maybe 3 or 6 which is less then 8.
+> The dummy cycles is actually 8 for SPI fast/dual/quad read.
+> 
+> This patch makes preparations for the DDR quad read, it fixes the wrong
+> dummy value for both the spi-nor.c and m25p80.c.
+> 
+> Signed-off-by: Huang Shijie <b32955@freescale.com>
 
-Add this file to describe this specific SPI NOR flash features which will
-be referred by the SPI NOR flash drivers.
+This patch is actually V2, right ?
 
-Signed-off-by: Huang Shijie <b32955@freescale.com>
----
- .../devicetree/bindings/mtd/spi-nor-flash.txt      |    7 +++++++
- 1 files changed, 7 insertions(+), 0 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/mtd/spi-nor-flash.txt
+> ---
+>  drivers/mtd/devices/m25p80.c  |    5 ++++-
+>  drivers/mtd/spi-nor/spi-nor.c |    2 +-
+>  2 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
+> index 1557d8f..693e25f 100644
+> --- a/drivers/mtd/devices/m25p80.c
+> +++ b/drivers/mtd/devices/m25p80.c
+> @@ -128,9 +128,12 @@ static int m25p80_read(struct spi_nor *nor, loff_t
+> from, size_t len, struct spi_device *spi = flash->spi;
+>  	struct spi_transfer t[2];
+>  	struct spi_message m;
+> -	int dummy = nor->read_dummy;
+> +	unsigned int dummy = nor->read_dummy;
+>  	int ret;
+> 
+> +	/* convert the dummy cycles to the number of byte */
 
-diff --git a/Documentation/devicetree/bindings/mtd/spi-nor-flash.txt b/Documentation/devicetree/bindings/mtd/spi-nor-flash.txt
-new file mode 100644
-index 0000000..aba4d54
---- /dev/null
-+++ b/Documentation/devicetree/bindings/mtd/spi-nor-flash.txt
-@@ -0,0 +1,7 @@
-+This file defines some DT properties for specific SPI NOR flash features.
-+The SPI NOR controller drivers may refer to this file, such as fsl-quadspi.txt
-+
-+Optional properties:
-+  - spi-nor,ddr-quad-read-dummy: The dummy cycles used by the DDR Quad read.
-+                                 Please refer to the chip's datasheet. This
-+                                 property can be 4 or 6 which is less then 8.
--- 
-1.7.2.rc3
+'bytes', plural ...
+[...]
+Best regards,
+Marek Vasut

@@ -1,7 +1,7 @@
 From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v1 1/7] mtd: spi-nor: fix the wrong dummy value
-Date: Wed, 23 Apr 2014 18:16:49 +0800
-Message-ID: <1398248215-26768-2-git-send-email-b32955@freescale.com>
+Subject: [PATCH v1 6/7] mtd: fsl-quadspi: use the information stored in spi-nor{}
+Date: Wed, 23 Apr 2014 18:16:54 +0800
+Message-ID: <1398248215-26768-7-git-send-email-b32955@freescale.com>
 References: <a>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -16,49 +16,108 @@ In-Reply-To: <a>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-For the DDR Quad read, the dummy cycles maybe 3 or 6 which is less then 8.
-The dummy cycles is actually 8 for SPI fast/dual/quad read.
+We can get the read/write/erase opcode from the spi nor framework now.
+What's more is that we can get the correct dummy cycles.
 
-This patch makes preparations for the DDR quad read, it fixes the wrong dummy
-value for both the spi-nor.c and m25p80.c.
+This patch uses the information stored in the spi_nor{} to remove the
+hardcode in the fsl_qspi_init_lut().
 
 Signed-off-by: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
- drivers/mtd/devices/m25p80.c  |    5 ++++-
- drivers/mtd/spi-nor/spi-nor.c |    2 +-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/fsl-quadspi.c |   57 ++++++++++++------------------------
+ 1 files changed, 19 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/mtd/devices/m25p80.c b/drivers/mtd/devices/m25p80.c
-index 1557d8f..693e25f 100644
---- a/drivers/mtd/devices/m25p80.c
-+++ b/drivers/mtd/devices/m25p80.c
-@@ -128,9 +128,12 @@ static int m25p80_read(struct spi_nor *nor, loff_t from, size_t len,
- 	struct spi_device *spi = flash->spi;
- 	struct spi_transfer t[2];
- 	struct spi_message m;
--	int dummy = nor->read_dummy;
-+	unsigned int dummy = nor->read_dummy;
- 	int ret;
+diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
+index 15bdeb9..0a2901e 100644
+--- a/drivers/mtd/spi-nor/fsl-quadspi.c
++++ b/drivers/mtd/spi-nor/fsl-quadspi.c
+@@ -280,8 +280,10 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
+ {
+ 	void __iomem *base = q->iobase;
+ 	int rxfifo = q->devtype_data->rxfifo;
++	struct spi_nor *nor = &q->nor[0];
++	u8 addrlen = (nor->addr_width == 3) ? ADDR24BIT : ADDR32BIT;
+ 	u32 lut_base;
+-	u8 cmd, addrlen, dummy;
++	u8 op, dm;
+ 	int i;
  
-+	/* convert the dummy cycles to the number of byte */
-+	dummy /= 8;
+ 	fsl_qspi_unlock_lut(q);
+@@ -292,40 +294,29 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
+ 
+ 	/* Quad Read */
+ 	lut_base = SEQID_QUAD_READ * 4;
+-
+-	if (q->nor_size <= SZ_16M) {
+-		cmd = SPINOR_OP_READ_1_1_4;
+-		addrlen = ADDR24BIT;
+-		dummy = 8;
+-	} else {
+-		/* use the 4-byte address */
+-		cmd = SPINOR_OP_READ_1_1_4;
+-		addrlen = ADDR32BIT;
+-		dummy = 8;
++	op = nor->read_opcode;
++	dm = nor->read_dummy;
++	if (nor->flash_read == SPI_NOR_QUAD) {
++		if (op == SPINOR_OP_READ_1_1_4 || op == SPINOR_OP_READ4_1_1_4) {
++			/* read mode : 1-1-4 */
++			writel(LUT0(CMD, PAD1, op) | LUT1(ADDR, PAD1, addrlen),
++				base + QUADSPI_LUT(lut_base));
 +
- 	/* Wait till previous write/erase is done. */
- 	ret = nor->wait_till_ready(nor);
- 	if (ret)
-diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
-index f76f3fc..1a12f81 100644
---- a/drivers/mtd/spi-nor/spi-nor.c
-+++ b/drivers/mtd/spi-nor/spi-nor.c
-@@ -77,7 +77,7 @@ static inline int spi_nor_read_dummy_cycles(struct spi_nor *nor)
- 	case SPI_NOR_FAST:
- 	case SPI_NOR_DUAL:
- 	case SPI_NOR_QUAD:
--		return 1;
-+		return 8;
- 	case SPI_NOR_NORMAL:
- 		return 0;
++			writel(LUT0(DUMMY, PAD1, dm) | LUT1(READ, PAD4, rxfifo),
++				base + QUADSPI_LUT(lut_base + 1));
++		} else {
++			dev_err(nor->dev,
++				"Unsupported cmd:%.2x\n", nor->read_opcode);
++		}
  	}
+ 
+-	writel(LUT0(CMD, PAD1, cmd) | LUT1(ADDR, PAD1, addrlen),
+-			base + QUADSPI_LUT(lut_base));
+-	writel(LUT0(DUMMY, PAD1, dummy) | LUT1(READ, PAD4, rxfifo),
+-			base + QUADSPI_LUT(lut_base + 1));
+-
+ 	/* Write enable */
+ 	lut_base = SEQID_WREN * 4;
+ 	writel(LUT0(CMD, PAD1, SPINOR_OP_WREN), base + QUADSPI_LUT(lut_base));
+ 
+ 	/* Page Program */
+ 	lut_base = SEQID_PP * 4;
+-
+-	if (q->nor_size <= SZ_16M) {
+-		cmd = SPINOR_OP_PP;
+-		addrlen = ADDR24BIT;
+-	} else {
+-		/* use the 4-byte address */
+-		cmd = SPINOR_OP_PP;
+-		addrlen = ADDR32BIT;
+-	}
+-
+-	writel(LUT0(CMD, PAD1, cmd) | LUT1(ADDR, PAD1, addrlen),
++	writel(LUT0(CMD, PAD1, nor->program_opcode) | LUT1(ADDR, PAD1, addrlen),
+ 			base + QUADSPI_LUT(lut_base));
+ 	writel(LUT0(WRITE, PAD1, 0), base + QUADSPI_LUT(lut_base + 1));
+ 
+@@ -336,17 +327,7 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
+ 
+ 	/* Erase a sector */
+ 	lut_base = SEQID_SE * 4;
+-
+-	if (q->nor_size <= SZ_16M) {
+-		cmd = SPINOR_OP_SE;
+-		addrlen = ADDR24BIT;
+-	} else {
+-		/* use the 4-byte address */
+-		cmd = SPINOR_OP_SE;
+-		addrlen = ADDR32BIT;
+-	}
+-
+-	writel(LUT0(CMD, PAD1, cmd) | LUT1(ADDR, PAD1, addrlen),
++	writel(LUT0(CMD, PAD1, nor->erase_opcode) | LUT1(ADDR, PAD1, addrlen),
+ 			base + QUADSPI_LUT(lut_base));
+ 
+ 	/* Erase the whole chip */
 -- 
 1.7.2.rc3
 

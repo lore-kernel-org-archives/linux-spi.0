@@ -1,58 +1,86 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi-bfin: Add missing gpio.h include
-Date: Thu, 24 Apr 2014 13:36:50 +0100
-Message-ID: <20140424123650.GV12304@sirena.org.uk>
-References: <20140423224035.1de64093@gandalf.local.home>
- <20140424103329.GL12304@sirena.org.uk>
- <20140424113346.GM12304@sirena.org.uk>
- <20140424083432.70c80f64@gandalf.local.home>
+From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Subject: Re: [PATCH v1 2/7] mtd: spi-nor: add DDR quad read support
+Date: Thu, 24 Apr 2014 15:43:51 +0200
+Message-ID: <201404241543.51752.marex@denx.de>
+References: <a> <201404232145.57404.marex@denx.de> <20140424045332.GB29664@localhost>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="z5xxnjJtmRtsM6EM"
-Cc: Steven Miao <realmz6@gmail.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	adi-buildroot-devel@lists.sourceforge.net,
-	linux-spi@vger.kernel.org
-To: Steven Rostedt <rostedt@goodmis.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20140424083432.70c80f64@gandalf.local.home>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: Text/Plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org, computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140424045332.GB29664@localhost>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+On Thursday, April 24, 2014 at 06:53:34 AM, Huang Shijie wrote:
+> On Wed, Apr 23, 2014 at 09:45:57PM +0200, Marek Vasut wrote:
+> > On Wednesday, April 23, 2014 at 12:16:50 PM, Huang Shijie wrote:
+> > > This patch adds the DDR quad read support by the following:
+> > >   [1] add SPI_NOR_DDR_QUAD read mode.
+> > >   
+> > >   [2] add DDR Quad read opcodes:
+> > >        SPINOR_OP_READ_1_4_4_D / SPINOR_OP_READ4_1_4_4_D
+> > >   
+> > >   [3] add set_ddr_quad_mode() to initialize for the DDR quad read.
+> > >   
+> > >       Currently it only works for Spansion NOR.
+> > >   
+> > >   [3] set the dummy with 8 for DDR quad read.
+> > >   
+> > >       The m25p80.c can not support the DDR quad read, the SPI NOR
+> > > 
+> > > controller can set the dummy value in its driver, such as
+> > > fsl-quadspi.c.
+> > > 
+> > > Test this patch for Spansion s25fl128s NOR flash.
+> > > 
+> > > Signed-off-by: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> > > ---
+> > > 
+> > >  drivers/mtd/spi-nor/spi-nor.c |   50
+> > > 
+> > > +++++++++++++++++++++++++++++++++++++++- include/linux/mtd/spi-nor.h  
+> > > |
+> > > 
+> > >  8 +++++-
+> > >  2 files changed, 54 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/drivers/mtd/spi-nor/spi-nor.c
+> > > b/drivers/mtd/spi-nor/spi-nor.c index 1a12f81..e2f69db 100644
+> > > --- a/drivers/mtd/spi-nor/spi-nor.c
+> > > +++ b/drivers/mtd/spi-nor/spi-nor.c
+> > > @@ -74,6 +74,15 @@ static int read_cr(struct spi_nor *nor)
+> > > 
+> > >  static inline int spi_nor_read_dummy_cycles(struct spi_nor *nor)
+> > >  {
+> > >  
+> > >  	switch (nor->flash_read) {
+> > > 
+> > > +	case SPI_NOR_DDR_QUAD:
+> > > +		/*
+> > > +		 * The m25p80.c can not support the DDR quad read.
+> > > +		 * We set the dummy cycles to 8 by default. If the SPI NOR
+> > > +		 * controller driver has already set it before call the
+> > > +		 * spi_nor_scan(), we just keep it as it is.
+> > > +		 */
+> > > +		if (nor->read_dummy)
+> > > +			return nor->read_dummy;
+> > 
+> > Can the controller set this variable to zero ?
+> 
+> The default value of this variable is zero.  It it meaningless to set zero.
+> The DDR Quad read definitely will use a non-zero dummy.
 
---z5xxnjJtmRtsM6EM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Can you back this by some documentation please ?
 
-On Thu, Apr 24, 2014 at 08:34:32AM -0400, Steven Rostedt wrote:
-
-> It's just annoying when my tests break on something that I'm not
-> testing ;-)
-
-With something like this clearly you are testing it, even if you didn't
-mean to!
-
---z5xxnjJtmRtsM6EM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIbBAEBAgAGBQJTWQVeAAoJELSic+t+oim9jgQP+JmKG2RwMl13u1IThaWgXoNB
-OGQCPOGosVSLzU6svyzmQMKs8gnybVyfuH9tFnnX4rvJb7rOI8fgLTT+5TnwIxHE
-ePJeOVWynGgoejoq6OU2qNe7TA9wDi4SxpJF4IMPW10XAlRXMT8ZZLpzYYVA1pAs
-MkENlcK34tzXlFaXer1aaxEzXMKqEY0wsiJ5iqm/BzlWWbOXA4bMukVwG3X+YMUm
-CdHonA/zDIDrndYXBf8s1iVZrdcBh/yAqaL1M6vQj+PvbJm6LUxGfHcGpvuchkHW
-YFwEdUl13Py0xcOE2m2+jY7VoYUzR9zHgX2JDAJHyMM4+QSIycXu/z77lk2fSxV0
-tHk7aTNJmLigOYH/s+E+h2MWToMm3mxVR2y7vvympabJ2KJFE+xw2qJCoAFNIsz1
-LKou5gI9UmgOuqUw0ysfA6zMrA5woFcT6AAvwqt9rPK/JN7zUuSKlFS8blhVPwRB
-g5rxaoM6doHXO+mjs7nDA9SqQpcZQAwYRsz2u/PVgqXLkw7LVW8v/JcX1+5vaEYR
-30dGqn3z+r8WBHLAPgKSC8Vjz/oe90a2KG9aZTxS+mvhg5WflnK+SW9NP6BpCT3S
-hEsMMiW/rR2q18xHhFKzRDZ7Zx0jacTijTQIEGLmPDVUIIMHrwPpMd0iRbI8OClm
-q/lSGjqvdsUVAqYOroA=
-=tcdd
------END PGP SIGNATURE-----
-
---z5xxnjJtmRtsM6EM--
+I mean, I know I am a hardass here, but please understand I'd like to understand 
+the decisions that are being made.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

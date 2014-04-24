@@ -1,66 +1,53 @@
-From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH v1 5/7] mtd: fsl-quadspi: get the dummy cycles for DDR
- Quad read from the DT property
-Date: Thu, 24 Apr 2014 12:58:40 +0800
-Message-ID: <20140424045838.GC29664@localhost>
-References: <a> <1398248215-26768-6-git-send-email-b32955@freescale.com>
- <201404232148.51034.marex@denx.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi-bfin: Add missing gpio.h include
+Date: Thu, 24 Apr 2014 11:33:29 +0100
+Message-ID: <20140424103329.GL12304@sirena.org.uk>
+References: <20140423224035.1de64093@gandalf.local.home>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>, <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="cjvfPnFZRrNVeVma"
+Cc: Steven Miao <realmz6@gmail.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	adi-buildroot-devel@lists.sourceforge.net,
+	linux-spi@vger.kernel.org
+To: Steven Rostedt <rostedt@goodmis.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <201404232148.51034.marex-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20140423224035.1de64093@gandalf.local.home>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, Apr 23, 2014 at 09:48:50PM +0200, Marek Vasut wrote:
-> On Wednesday, April 23, 2014 at 12:16:53 PM, Huang Shijie wrote:
-> > Check the "spi-nor,ddr-quad-read-dummy" DT property to get the
-> > dummy cycles for DDR quad read.
-> > 
-> > Signed-off-by: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> > ---
-> >  drivers/mtd/spi-nor/fsl-quadspi.c |    7 +++++++
-> >  1 files changed, 7 insertions(+), 0 deletions(-)
-> > 
-> > diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c
-> > b/drivers/mtd/spi-nor/fsl-quadspi.c index 8d659a2..15bdeb9 100644
-> > --- a/drivers/mtd/spi-nor/fsl-quadspi.c
-> > +++ b/drivers/mtd/spi-nor/fsl-quadspi.c
-> > @@ -883,6 +883,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
-> >  	for_each_available_child_of_node(dev->of_node, np) {
-> >  		const struct spi_device_id *id;
-> >  		char modalias[40];
-> > +		u32 dummy = 0;
-> > 
-> >  		/* skip the holes */
-> >  		if (!has_second_chip)
-> > @@ -918,6 +919,12 @@ static int fsl_qspi_probe(struct platform_device
-> > *pdev) if (ret < 0)
-> >  			goto map_failed;
-> > 
-> > +		/* Set the dummy cycles for the DDR Quad Read */
-> > +		ret = of_property_read_u32(np, "spi-nor,ddr-quad-read-dummy",
-> > +				&dummy);
-> > +		if (!ret && dummy > 0 && dummy < 8)
-> > +			nor->read_dummy = dummy;
-> 
-> Is there any reason for the upper limit on number of dummy cycles ?
-I actually tested two kinds of NOR flash, the Spansion s25fl128s and Micron N25q256a.
-The dummy cycles are all less then 8.
 
-but i admit the upper limit here is not proper.
-I can remove it in the next version.
+--cjvfPnFZRrNVeVma
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-thanks
-Huang Shijie
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Wed, Apr 23, 2014 at 10:40:35PM -0400, Steven Rostedt wrote:
+> Running my ktest.pl tests on all the archs, I stumbled over this for
+> 3.15-rc2:
+
+Applied, thanks.
+
+--cjvfPnFZRrNVeVma
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTWOh2AAoJELSic+t+oim96wIP/10wKxXpZnvcov0aFSd6tz8t
+hjoCVt8YdK2DQqTqzY8e3EXSveFC7zJfGIXekE+Hu3ndGzhJol/pPYA9aMwQRUf8
+CHZbLYiHc3kspbd2yC97PcOBSNoLNYHgfWCyxVN1dMM6rWffB3MYynMwEfFQLtJc
+c1N8AhRJCcdxC0f+aL+C+0K0ml/jpUGer359fCofJAPrNGlF2136ZWeJ2GE+1u+w
+5vGlGH0Rh7v/gM/PfYPti4noBb1VQlh9hd9PJLi7rmqGGF7Gh4Rk2esB4Hnosbe5
+AppIXV6hecYVd7tkh8+++3bwAxK4LvBxK7MSsYq8Xq/LtU3Ng3TFoRjblB7fXDPY
+CAFW44nLEDiCqI3eRowezppeARCn+r0AseLOU/SvejhyN9rcgPANS7mIcBzP/1nO
+hrlb2zagSKl+2Wn+vrfiCoHddQfuzjGFEV/5GgFFVBe34qEvaBY+DiC8MpQdkl9W
+dZZBYcGhRqRaAhOsrPK/ITyQhKlAyeP8otsgKPmNwSrVMTG9TnAB2uWpz9eywPqw
+6A1vGe7JD7Ngk1mhz2mOkSTvVNX2q1gRKnX3cEvTTeJ9p3y8s6O/jQJ3d60C43ET
+DGFyZhoU9JJ/VyU+alveA3YqtyMaD1i7z9fzpju6ZLiClSGHjFy4rtb0xseuGmNz
+v8G1l8Xo3F08eYAPcuu6
+=JXkB
+-----END PGP SIGNATURE-----
+
+--cjvfPnFZRrNVeVma--

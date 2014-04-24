@@ -1,74 +1,68 @@
-From: Huang Shijie <shijie8@gmail.com>
-Subject: Re: [PATCH v1 5/7] mtd: fsl-quadspi: get the dummy cycles for DDR
- Quad read from the DT property
-Date: Thu, 24 Apr 2014 22:27:46 +0800
-Message-ID: <20140424142743.GB2426@localhost.localdomain>
-References: <a>
- <201404232148.51034.marex@denx.de>
- <20140424045838.GC29664@localhost>
- <201404241541.54913.marex@denx.de>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 0/5] spi: dw: device tree and generic queue support
+Date: Thu, 24 Apr 2014 17:40:02 +0100
+Message-ID: <20140424164002.GC12304@sirena.org.uk>
+References: <cover.1391162172.git.baruch@tkos.co.il>
+ <20140202124941.GS20094@book.gsilab.sittig.org>
+ <20140202133235.GF9184@tarshish>
+ <20140202143148.GT20094@book.gsilab.sittig.org>
+ <20140202152448.GH9184@tarshish>
+ <20140205164908.GF20094@book.gsilab.sittig.org>
+ <20140414210547.GK25182@sirena.org.uk>
+ <20140416184159.GH3528@book.gsilab.sittig.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Huang Shijie <b32955@freescale.com>, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org, computersforpeace@gmail.com,
-	dwmw2@infradead.org, linux-arm-kernel@lists.infradead.org
-To: Marek Vasut <marex@denx.de>
-Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="hDxjzdswK9kKz4o8"
+Cc: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <201404241541.54913.marex@denx.de>
-Sender: linux-doc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20140416184159.GH3528-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Apr 24, 2014 at 03:41:54PM +0200, Marek Vasut wrote:
-> On Thursday, April 24, 2014 at 06:58:40 AM, Huang Shijie wrote:
-> > On Wed, Apr 23, 2014 at 09:48:50PM +0200, Marek Vasut wrote:
-> > > On Wednesday, April 23, 2014 at 12:16:53 PM, Huang Shijie wrote:
-> > > > Check the "spi-nor,ddr-quad-read-dummy" DT property to get the
-> > > > dummy cycles for DDR quad read.
-> > > > 
-> > > > Signed-off-by: Huang Shijie <b32955@freescale.com>
-> > > > ---
-> > > > 
-> > > >  drivers/mtd/spi-nor/fsl-quadspi.c |    7 +++++++
-> > > >  1 files changed, 7 insertions(+), 0 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c
-> > > > b/drivers/mtd/spi-nor/fsl-quadspi.c index 8d659a2..15bdeb9 100644
-> > > > --- a/drivers/mtd/spi-nor/fsl-quadspi.c
-> > > > +++ b/drivers/mtd/spi-nor/fsl-quadspi.c
-> > > > @@ -883,6 +883,7 @@ static int fsl_qspi_probe(struct platform_device
-> > > > *pdev)
-> > > > 
-> > > >  	for_each_available_child_of_node(dev->of_node, np) {
-> > > >  	
-> > > >  		const struct spi_device_id *id;
-> > > >  		char modalias[40];
-> > > > 
-> > > > +		u32 dummy = 0;
-> > > > 
-> > > >  		/* skip the holes */
-> > > >  		if (!has_second_chip)
-> > > > 
-> > > > @@ -918,6 +919,12 @@ static int fsl_qspi_probe(struct platform_device
-> > > > *pdev) if (ret < 0)
-> > > > 
-> > > >  			goto map_failed;
-> > > > 
-> > > > +		/* Set the dummy cycles for the DDR Quad Read */
-> > > > +		ret = of_property_read_u32(np, "spi-nor,ddr-quad-read-dummy",
-> > > > +				&dummy);
-> > > > +		if (!ret && dummy > 0 && dummy < 8)
-> > > > +			nor->read_dummy = dummy;
-> > > 
-> > > Is there any reason for the upper limit on number of dummy cycles ?
-> > 
-> > I actually tested two kinds of NOR flash, the Spansion s25fl128s and Micron
-> > N25q256a. The dummy cycles are all less then 8.
-> 
-> I'm all for having a limit if you can justify why number 8 is the upper limit. 
-> If there's no justification for it, let's remove it.
-ok.
 
-thanks
-Huang Shijie
+--hDxjzdswK9kKz4o8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Apr 16, 2014 at 08:41:59PM +0200, Gerhard Sittig wrote:
+> On Mon, 2014-04-14 at 22:05 +0100, Mark Brown wrote:
+
+> > Did you ever hear anything back?  I'm inclined to just apply these and
+> > see if anyone reports any issues.
+
+> no, haven't heard anything since then
+
+OK.  That's a shame, I think I'm just going to drop them into -next and
+hope someone notices if there are any problems.  Not ideal but they're
+nice changes to have.
+
+--hDxjzdswK9kKz4o8
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTWT5fAAoJELSic+t+oim9wowP/1Ahd7S+fSJ6VT7ylIU6UmqV
+utH2faeVfRJdTpNLs0sATx2yCjbCfPEIimBMZFbL3Y8yI5iDO2+LuISbM9AVJCRZ
+q+0MtK71HNhQfY4QOu7qTG6Icq1B3/kXXc9URAxqhOuv8W3uANhauTUXp3uvLmlG
+0FUHXkV+OjcNi8hXESiO0tiJwcpFAMd5/bmG/42XYzPIeiC2w36WCZWYH6VpvvHx
+GsYeE1JA4Wvhvh4Vk8t55mACRdCkelrG9UVgp7e0tNiRKwXuSA7wBshM4oXDISjZ
+ojG8K2t26ne2mzjEXB9RQz4yduLelQqY5VWB6/IiyDMmL+fT0ICHr8By7nZ6DK8K
+nvNogZYgykuaJqAp11BO4ogC/lHpX+wQ7kLMExToxDflkSYBYXzXONyvSenrVkKV
+aFR9Vrvo7ih3UsJib/+n0kBEcpUtUjMYTlB+0E8v+0kUyeeXr9glhYYEkKskBUfd
+Int+Zys8hJCTXBygwWJILvJDjsK/Nms0Dy8ojrvMyXkEW845BTyxTq5w2n93Ldzf
+zSr0MF4VU2IdieQ7yK+lUDQ+Fv2NMX9mn2fY/z7EFPhyLw8l9z+M7+TSCU5NK+G8
+agxAuLaY70FITGuw6PVOoB5BLxCqGR7t6Cd7Wp6+N7DZPtort/xUxQRpwXZvFE56
+zkNuTpTZMui8cI/TnJKc
+=XfIp
+-----END PGP SIGNATURE-----
+
+--hDxjzdswK9kKz4o8--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

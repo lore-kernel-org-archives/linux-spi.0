@@ -1,54 +1,42 @@
-From: Marek Vasut <marex@denx.de>
-Subject: Re: [PATCH v1 5/7] mtd: fsl-quadspi: get the dummy cycles for DDR Quad read from the DT property
-Date: Wed, 23 Apr 2014 21:48:50 +0200
-Message-ID: <201404232148.51034.marex@denx.de>
-References: <a> <1398248215-26768-6-git-send-email-b32955@freescale.com>
+From: Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH] spi-bfin: Add missing gpio.h include
+Date: Wed, 23 Apr 2014 22:40:35 -0400
+Message-ID: <20140423224035.1de64093@gandalf.local.home>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Cc: dwmw2@infradead.org, computersforpeace@gmail.com,
-	linux-mtd@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org
-To: Huang Shijie <b32955@freescale.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1398248215-26768-6-git-send-email-b32955@freescale.com>
-Sender: linux-doc-owner@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org
+To: Steven Miao <realmz6@gmail.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	adi-buildroot-devel@lists.sourceforge.net
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wednesday, April 23, 2014 at 12:16:53 PM, Huang Shijie wrote:
-> Check the "spi-nor,ddr-quad-read-dummy" DT property to get the
-> dummy cycles for DDR quad read.
-> 
-> Signed-off-by: Huang Shijie <b32955@freescale.com>
-> ---
->  drivers/mtd/spi-nor/fsl-quadspi.c |    7 +++++++
->  1 files changed, 7 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c
-> b/drivers/mtd/spi-nor/fsl-quadspi.c index 8d659a2..15bdeb9 100644
-> --- a/drivers/mtd/spi-nor/fsl-quadspi.c
-> +++ b/drivers/mtd/spi-nor/fsl-quadspi.c
-> @@ -883,6 +883,7 @@ static int fsl_qspi_probe(struct platform_device *pdev)
->  	for_each_available_child_of_node(dev->of_node, np) {
->  		const struct spi_device_id *id;
->  		char modalias[40];
-> +		u32 dummy = 0;
-> 
->  		/* skip the holes */
->  		if (!has_second_chip)
-> @@ -918,6 +919,12 @@ static int fsl_qspi_probe(struct platform_device
-> *pdev) if (ret < 0)
->  			goto map_failed;
-> 
-> +		/* Set the dummy cycles for the DDR Quad Read */
-> +		ret = of_property_read_u32(np, "spi-nor,ddr-quad-read-dummy",
-> +				&dummy);
-> +		if (!ret && dummy > 0 && dummy < 8)
-> +			nor->read_dummy = dummy;
+Running my ktest.pl tests on all the archs, I stumbled over this for
+3.15-rc2:
 
-Is there any reason for the upper limit on number of dummy cycles ?
+drivers/spi/spi-bfin5xx.c: In function 'bfin_spi_cs_active':
+drivers/spi/spi-bfin5xx.c:169:3: error: implicit declaration of function 'gpio_set_value' [-Werror=implicit-function-declaration]
+drivers/spi/spi-bfin5xx.c: In function 'bfin_spi_setup':
+drivers/spi/spi-bfin5xx.c:1097:4: error: implicit declaration of function 'gpio_request' [-Werror=implicit-function-declaration]
+drivers/spi/spi-bfin5xx.c:1102:4: error: implicit declaration of function 'gpio_direction_output' [-Werror=implicit-function-declaration]
+drivers/spi/spi-bfin5xx.c:1130:3: error: implicit declaration of function 'gpio_free' [-Werror=implicit-function-declaration]
 
-Best regards,
-Marek Vasut
+The problem is that the spi-bfin5xx driver is missing an include for
+the gpio.h file.
+
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+---
+diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
+index 55e57c3..da8baa5 100644
+--- a/drivers/spi/spi-bfin5xx.c
++++ b/drivers/spi/spi-bfin5xx.c
+@@ -15,6 +15,7 @@
+ #include <linux/slab.h>
+ #include <linux/io.h>
+ #include <linux/ioport.h>
++#include <linux/gpio.h>
+ #include <linux/irq.h>
+ #include <linux/errno.h>
+ #include <linux/interrupt.h>

@@ -1,59 +1,95 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi-bfin: Add missing gpio.h include
-Date: Thu, 24 Apr 2014 12:33:46 +0100
-Message-ID: <20140424113346.GM12304@sirena.org.uk>
-References: <20140423224035.1de64093@gandalf.local.home>
- <20140424103329.GL12304@sirena.org.uk>
+Subject: [GIT PULL] spi updates for v3.15
+Date: Thu, 24 Apr 2014 12:46:04 +0100
+Message-ID: <20140424114604.GO12304@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tE5k6OWzvhsAuKlL"
-Cc: Steven Miao <realmz6@gmail.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	adi-buildroot-devel@lists.sourceforge.net,
-	linux-spi@vger.kernel.org
-To: Steven Rostedt <rostedt@goodmis.org>
+	protocol="application/pgp-signature"; boundary="03jbcFpG94FdlGUx"
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20140424103329.GL12304@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---tE5k6OWzvhsAuKlL
+--03jbcFpG94FdlGUx
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 24, 2014 at 11:33:29AM +0100, Mark Brown wrote:
-> On Wed, Apr 23, 2014 at 10:40:35PM -0400, Steven Rostedt wrote:
-> > Running my ktest.pl tests on all the archs, I stumbled over this for
-> > 3.15-rc2:
->=20
-> Applied, thanks.
+The following changes since commit a798c10faf62a505d24e5f6213fbaf904a39623f:
 
-Actually not - I already have a fix for this in -next (on a slightly
-different branch to the one I looked for it on).  Anyway, it's fixed.
+  Linux 3.15-rc2 (2014-04-20 11:08:50 -0700)
 
---tE5k6OWzvhsAuKlL
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3.15-rc2
+
+for you to fetch changes up to 201f9e4dd5ecdefa70d4cf94750a667e2382d13f:
+
+  Merge remote-tracking branches 'spi/fix/atmel', 'spi/fix/bfin5xx', 'spi/fix/hspi' and 'spi/fix/sirf' into spi-linus (2014-04-23 13:50:18 +0100)
+
+----------------------------------------------------------------
+
+spi: Fixes for v3.15
+
+A few driver specific fixes here:
+
+ - SH HSPI was dealing with its clocks incorrectly which meant it didn't
+   work on some SoCs, fixing this also requires a small fix to one of
+   the SoC clock trees to avoid breaking existing users.
+ - The SiRF driver appears to have had several quality problems, it's
+   fairly new and not widely used so this isn't too worrying.
+ - A brute force fix for excessive locking in the Atmel driver, it needs
+   further investigation but this deals with the immediate issue.
+ - A build fix for the Blackfin driver.
+
+----------------------------------------------------------------
+Alexander Stein (1):
+      spi: atmel: Fix scheduling while atomic bug
+
+Mark Brown (1):
+      Merge remote-tracking branches 'spi/fix/atmel', 'spi/fix/bfin5xx', 'spi/fix/hspi' and 'spi/fix/sirf' into spi-linus
+
+Qipan Li (3):
+      spi: sirf: correct TXFIFO empty interrupt status bit
+      spi: sirf: set SPI controller in RISC IO chipselect mode
+      spi: sirf: make GPIO chipselect function work well
+
+Simon Horman (2):
+      ARM: shmobile: r8a7778: Use clks as MSTP007 parent
+      spi: sh-hspi: Do not specifically request shyway_clk clock
+
+Steven Miao (1):
+      spi: bfin5xx: fix build error
+
+ arch/arm/mach-shmobile/clock-r8a7778.c |  2 +-
+ drivers/spi/spi-atmel.c                |  3 +++
+ drivers/spi/spi-bfin5xx.c              |  1 +
+ drivers/spi/spi-sh-hspi.c              |  4 ++--
+ drivers/spi/spi-sirf.c                 | 20 +++++++++++++++++---
+ 5 files changed, 24 insertions(+), 6 deletions(-)
+
+--03jbcFpG94FdlGUx
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTWPaWAAoJELSic+t+oim9dC4P/iEq3qamrp69mFvR1QOJKLrx
-lJrXD3lH35LXV932MXQoAVAZP7tQ2iCSIBi5EuaFzzsnuLtWejb5wHqLMo+mcC7q
-jo82VM4nrCYX5BGk9lVCwSsPW/4HmFiHCBja8SB2up469KehFmm/uqYqacixeg+i
-eSBfJq5e4jFrMsYTuXQVPmTxFHa8uulCU6vYPavB2c6ivMBQujnhSfWDa6520F+5
-SAtfnxzqpwuIV6mR4Po6oZBL/KlnnDdUnumwyViooTGMKFhLC4XnLB429/I1T0V7
-lPdGbarvQje/Gh132FoJUqnqO3d4BkY6Z/fFkKslMdUYTHT/60+d+JaxN4KHD2ok
-X/cnLKbcJykot6c/mAmZXR2TSYm0tFTRWa66lQZZo3QmfAphKh718oxttli14Mvl
-uaNCSEQ955bdT3XrAY7zAAvl2x9eCebYBiLIsSJn+bx/KDK8WU9HfwzwXKDOYTdk
-MKOYP55CHup6xa0JsafmkmgVibcps0UmVHx20tWo6UTS8CcR/tbHVy5hv0AiClSg
-XwBUOpSd1bKNqky1Y+tJb3BOrLJpU+cgp0fnGL0MxaW5Ha18rp9OmgJKJyRHS3V4
-O077uhTgSaWfvhulgcSWoCHddsvT8ucUIa/E5UveOuYIoiHtq1x4QXsyFwVxjOZA
-86bbmL7xM9IcwpRBb2Og
-=4Zc/
+iQIcBAEBAgAGBQJTWPl5AAoJELSic+t+oim9EK0QAJuUEZNI1Rt9YMQHBvyPTQLx
+C3Ik1eRNVBP7tIMeP1mO3K43Q5KOM7qzDV9Sp+ss1faHpFRm2WgzFVGTuDCQhNEN
+4j3IcSDauICJfWfdBEvMA3byNCto1VRvUy/EjSCgLXV3xSvCaXIuwUrO91XdWZag
+vK6nqgAOWWh37bW2ThaBD2G8xB+uRNu9yrZL/CZfCsM/ZNF18DbhNaBBDy5NixOu
+TxId2fjAux35I7oV6Zq9lWAvFe8ubU3pNEvU0kFsReYoDnQjFLLwCDq4NQJAc2lO
+NXdUKivMF0lJzb3iLTtaQzrUgGo+Ib78N+PUzZhA0qi4CzgtXUITrTd8SX4vgVmQ
+cd4lBVTgWK1kNQpeXOwPDYVwY1usPBX+xFMlv0VHIsNMwfqhV5MheBUVYotHFqBL
+wzO4SQMJ71Ux+Udm9WPYHr1U6IKuk2OdAZpzCAuo+ujGRNUZXbAvHG2oNpxB5MCC
+ynB45Ht01V84mo7/u2qSIjOLh3gzZgnny1JmQcf5lsKdvaLdQJjvIC9lj1XDa6L1
+5JKHa/R+u1+AsVlk3OSUHVisgW9RF7UPJMXKf1+AghMMw/KJINFEyZ4w32kzxiH4
+D0nzSprKIJyBRNlYKcB4XnvcgkF7bQ8la/JDbkPsDSCCv2ZSotBk8uZZdny2w7pg
+bMwUiK7RHY9a74j0Z14X
+=HW/s
 -----END PGP SIGNATURE-----
 
---tE5k6OWzvhsAuKlL--
+--03jbcFpG94FdlGUx--

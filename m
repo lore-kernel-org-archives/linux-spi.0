@@ -1,45 +1,58 @@
-From: Steven Rostedt <rostedt-nx8X9YLhiw1AfugRpC6u6w@public.gmane.org>
+From: Mark Brown <broonie@kernel.org>
 Subject: Re: [PATCH] spi-bfin: Add missing gpio.h include
-Date: Thu, 24 Apr 2014 08:34:32 -0400
-Message-ID: <20140424083432.70c80f64@gandalf.local.home>
+Date: Thu, 24 Apr 2014 13:36:50 +0100
+Message-ID: <20140424123650.GV12304@sirena.org.uk>
 References: <20140423224035.1de64093@gandalf.local.home>
-	<20140424103329.GL12304@sirena.org.uk>
-	<20140424113346.GM12304@sirena.org.uk>
+ <20140424103329.GL12304@sirena.org.uk>
+ <20140424113346.GM12304@sirena.org.uk>
+ <20140424083432.70c80f64@gandalf.local.home>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Steven Miao <realmz6-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	adi-buildroot-devel-5NWGOfrQmneRv+LV9MX5uipxlwaOVQ5f@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140424113346.GM12304-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="z5xxnjJtmRtsM6EM"
+Cc: Steven Miao <realmz6@gmail.com>,
+	LKML <linux-kernel@vger.kernel.org>,
+	adi-buildroot-devel@lists.sourceforge.net,
+	linux-spi@vger.kernel.org
+To: Steven Rostedt <rostedt@goodmis.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20140424083432.70c80f64@gandalf.local.home>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Thu, 24 Apr 2014 12:33:46 +0100
-Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-> On Thu, Apr 24, 2014 at 11:33:29AM +0100, Mark Brown wrote:
-> > On Wed, Apr 23, 2014 at 10:40:35PM -0400, Steven Rostedt wrote:
-> > > Running my ktest.pl tests on all the archs, I stumbled over this for
-> > > 3.15-rc2:
-> > 
-> > Applied, thanks.
-> 
-> Actually not - I already have a fix for this in -next (on a slightly
-> different branch to the one I looked for it on).  Anyway, it's fixed.
+--z5xxnjJtmRtsM6EM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Heh, OK, I figured someone may have already fixed it, but still wanted
-to let people know it was broken. It's amazing how long something like
-this can take.
+On Thu, Apr 24, 2014 at 08:34:32AM -0400, Steven Rostedt wrote:
 
-It's just annoying when my tests break on something that I'm not
-testing ;-)
+> It's just annoying when my tests break on something that I'm not
+> testing ;-)
 
--- Steve
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+With something like this clearly you are testing it, even if you didn't
+mean to!
+
+--z5xxnjJtmRtsM6EM
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIbBAEBAgAGBQJTWQVeAAoJELSic+t+oim9jgQP+JmKG2RwMl13u1IThaWgXoNB
+OGQCPOGosVSLzU6svyzmQMKs8gnybVyfuH9tFnnX4rvJb7rOI8fgLTT+5TnwIxHE
+ePJeOVWynGgoejoq6OU2qNe7TA9wDi4SxpJF4IMPW10XAlRXMT8ZZLpzYYVA1pAs
+MkENlcK34tzXlFaXer1aaxEzXMKqEY0wsiJ5iqm/BzlWWbOXA4bMukVwG3X+YMUm
+CdHonA/zDIDrndYXBf8s1iVZrdcBh/yAqaL1M6vQj+PvbJm6LUxGfHcGpvuchkHW
+YFwEdUl13Py0xcOE2m2+jY7VoYUzR9zHgX2JDAJHyMM4+QSIycXu/z77lk2fSxV0
+tHk7aTNJmLigOYH/s+E+h2MWToMm3mxVR2y7vvympabJ2KJFE+xw2qJCoAFNIsz1
+LKou5gI9UmgOuqUw0ysfA6zMrA5woFcT6AAvwqt9rPK/JN7zUuSKlFS8blhVPwRB
+g5rxaoM6doHXO+mjs7nDA9SqQpcZQAwYRsz2u/PVgqXLkw7LVW8v/JcX1+5vaEYR
+30dGqn3z+r8WBHLAPgKSC8Vjz/oe90a2KG9aZTxS+mvhg5WflnK+SW9NP6BpCT3S
+hEsMMiW/rR2q18xHhFKzRDZ7Zx0jacTijTQIEGLmPDVUIIMHrwPpMd0iRbI8OClm
+q/lSGjqvdsUVAqYOroA=
+=tcdd
+-----END PGP SIGNATURE-----
+
+--z5xxnjJtmRtsM6EM--

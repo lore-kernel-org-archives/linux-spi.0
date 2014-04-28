@@ -1,7 +1,7 @@
 From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH v2 10/10] mtd: fsl-quadspi: add DDR quad read support for Micron
-Date: Mon, 28 Apr 2014 11:53:47 +0800
-Message-ID: <1398657227-20721-11-git-send-email-b32955@freescale.com>
+Subject: [PATCH v2 08/10] mtd: spi-nor: add more read transfer flags for n25q256a
+Date: Mon, 28 Apr 2014 11:53:45 +0800
+Message-ID: <1398657227-20721-9-git-send-email-b32955@freescale.com>
 References: <1398657227-20721-1-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -16,79 +16,30 @@ In-Reply-To: <1398657227-20721-1-git-send-email-b32955-KZfg59tc24xl57MIdRCFDg@pu
 Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add DDR quad read opcode and LUT sequence for Micron N25Q256A.
+The NOR flash can supports dual/quad/ddr-quad read.
+Add more flags for these read transfers.
 
-The performace :
-    =================================================
-    mtd_speedtest: MTD device: 1
-    mtd_speedtest: not NAND flash, assume page size is 512 bytes.
-    mtd_speedtest: MTD device size 33554432, eraseblock size 65536,
-                   page size 512, count of eraseblocks 512, pages per eraseblock 128, OOB size 0
-    mtd_speedtest: testing eraseblock write speed
-    mtd_speedtest: eraseblock write speed is 2426 KiB/s
-    mtd_speedtest: testing eraseblock read speed
-    mtd_speedtest: eraseblock read speed is 32157 KiB/s
-    mtd_speedtest: testing page write speed
-    mtd_speedtest: page write speed is 2362 KiB/s
-    mtd_speedtest: testing page read speed
-    mtd_speedtest: page read speed is 17741 KiB/s
-    mtd_speedtest: testing 2 page write speed
-    mtd_speedtest: 2 page write speed is 2384 KiB/s
-    mtd_speedtest: testing 2 page read speed
-    mtd_speedtest: 2 page read speed is 24058 KiB/s
-    mtd_speedtest: Testing erase speed
-    mtd_speedtest: erase speed is 1927529 KiB/s
-    mtd_speedtest: Testing 2x multi-block erase speed
-    mtd_speedtest: 2x multi-block erase speed is 2184533 KiB/s
-    mtd_speedtest: Testing 4x multi-block erase speed
-    mtd_speedtest: 4x multi-block erase speed is 2184533 KiB/s
-    mtd_speedtest: Testing 8x multi-block erase speed
-    mtd_speedtest: 8x multi-block erase speed is 2340571 KiB/s
-    mtd_speedtest: Testing 16x multi-block erase speed
-    mtd_speedtest: 16x multi-block erase speed is 2340571 KiB/s
-    mtd_speedtest: Testing 32x multi-block erase speed
-    mtd_speedtest: 32x multi-block erase speed is 2340571 KiB/s
-    mtd_speedtest: Testing 64x multi-block erase speed
-    mtd_speedtest: 64x multi-block erase speed is 2340571 KiB/s
-    mtd_speedtest: finished
-    =================================================
+>From the datasheet, the chip support the 64K sector erase operation.
+So remove the SECT_4K for the chip which makes the flash_erase faster.
 
 Signed-off-by: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 ---
- drivers/mtd/spi-nor/fsl-quadspi.c |   13 +++++++++++++
- 1 files changed, 13 insertions(+), 0 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/fsl-quadspi.c b/drivers/mtd/spi-nor/fsl-quadspi.c
-index a5dbc62..08944cb 100644
---- a/drivers/mtd/spi-nor/fsl-quadspi.c
-+++ b/drivers/mtd/spi-nor/fsl-quadspi.c
-@@ -325,6 +325,18 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
- 			writel(LUT0(READ_DDR, PAD4, rxfifo)
- 				| LUT1(JMP_ON_CS, PAD1, 0),
- 				base + QUADSPI_LUT(lut_base + 2));
-+		} else if (op == SPINOR_OP_READ_1_1_4_D) {
-+			/* read mode : 1-1-4, such as Micron N25Q256A. */
-+			writel(LUT0(CMD, PAD1, op)
-+				| LUT1(ADDR_DDR, PAD1, addrlen),
-+				base + QUADSPI_LUT(lut_base));
-+
-+			writel(LUT0(DUMMY, PAD1, dm)
-+				| LUT1(READ_DDR, PAD4, rxfifo),
-+				base + QUADSPI_LUT(lut_base + 1));
-+
-+			writel(LUT0(JMP_ON_CS, PAD1, 0),
-+				base + QUADSPI_LUT(lut_base + 2));
- 		} else {
- 			dev_err(nor->dev, "Unsupported opcode : 0x%.2x\n", op);
- 		}
-@@ -389,6 +401,7 @@ static void fsl_qspi_init_lut(struct fsl_qspi *q)
- static int fsl_qspi_get_seqid(struct fsl_qspi *q, u8 cmd)
- {
- 	switch (cmd) {
-+	case SPINOR_OP_READ_1_1_4_D:
- 	case SPINOR_OP_READ_1_4_4_D:
- 	case SPINOR_OP_READ4_1_4_4_D:
- 	case SPINOR_OP_READ4_1_1_4:
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index e0bc11a..07d249c 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -500,7 +500,7 @@ const struct spi_device_id spi_nor_ids[] = {
+ 	{ "n25q064",     INFO(0x20ba17, 0, 64 * 1024,  128, 0) },
+ 	{ "n25q128a11",  INFO(0x20bb18, 0, 64 * 1024,  256, 0) },
+ 	{ "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, 0) },
+-	{ "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SECT_4K) },
++	{ "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ | SPI_NOR_DDR_QUAD_READ) },
+ 	{ "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K) },
+ 
+ 	/* PMC */
 -- 
 1.7.2.rc3
 

@@ -1,68 +1,145 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 0/5] spi: dw: device tree and generic queue support
-Date: Thu, 24 Apr 2014 17:40:02 +0100
-Message-ID: <20140424164002.GC12304@sirena.org.uk>
-References: <cover.1391162172.git.baruch@tkos.co.il>
- <20140202124941.GS20094@book.gsilab.sittig.org>
- <20140202133235.GF9184@tarshish>
- <20140202143148.GT20094@book.gsilab.sittig.org>
- <20140202152448.GH9184@tarshish>
- <20140205164908.GF20094@book.gsilab.sittig.org>
- <20140414210547.GK25182@sirena.org.uk>
- <20140416184159.GH3528@book.gsilab.sittig.org>
+From: Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH v2 00/10] mtd: spi-nor: Add the DDR quad read support
+Date: Mon, 28 Apr 2014 11:53:37 +0800
+Message-ID: <1398657227-20721-1-git-send-email-b32955@freescale.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="hDxjzdswK9kKz4o8"
-Cc: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-To: Gerhard Sittig <gsi-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140416184159.GH3528-kDjWylLy9wD0K7fsECOQyeGNnDKD8DIp@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <marex-ynQEQJNshbs@public.gmane.org>,
+	<linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
+
+ (0) This patch set depends on the patch:
+	http://lists.infradead.org/pipermail/linux-mtd/2014-April/053308.html
+  
+ (1) This patch set tries to add the DDR quad read support for the SPI
+     NOR framework, and it also adds the DDR quad read support for FREESCALE
+     quadspi controller driver.
+
+ (2) Test this patch set with Spansion s25fl128s, the performance with mtd_speedtest.ko:
+     =================================================
+     mtd_speedtest: MTD device: 0
+     mtd_speedtest: not NAND flash, assume page size is 512 bytes.
+     mtd_speedtest: MTD device size 16777216, eraseblock size 65536, page size 512,
+                    count of eraseblocks 256, pages per eraseblock 128, OOB size 0
+     mtd_speedtest: testing eraseblock write speed
+     mtd_speedtest: eraseblock write speed is 665 KiB/s
+     mtd_speedtest: testing eraseblock read speed
+     mtd_speedtest: eraseblock read speed is 49799 KiB/s
+     mtd_speedtest: testing page write speed
+     mtd_speedtest: page write speed is 662 KiB/s
+     mtd_speedtest: testing page read speed
+     mtd_speedtest: page read speed is 24236 KiB/s
+     mtd_speedtest: testing 2 page write speed
+     mtd_speedtest: 2 page write speed is 657 KiB/s
+     mtd_speedtest: testing 2 page read speed
+     mtd_speedtest: 2 page read speed is 32637 KiB/s
+     mtd_speedtest: Testing erase speed
+     mtd_speedtest: erase speed is 518 KiB/s
+     mtd_speedtest: Testing 2x multi-block erase speed
+     mtd_speedtest: 2x multi-block erase speed is 506 KiB/s
+     mtd_speedtest: Testing 4x multi-block erase speed
+     mtd_speedtest: 4x multi-block erase speed is 503 KiB/s
+     mtd_speedtest: Testing 8x multi-block erase speed
+     mtd_speedtest: 8x multi-block erase speed is 501 KiB/s
+     mtd_speedtest: Testing 16x multi-block erase speed
+     mtd_speedtest: 16x multi-block erase speed is 498 KiB/s
+     mtd_speedtest: Testing 32x multi-block erase speed
+     mtd_speedtest: 32x multi-block erase speed is 496 KiB/s
+     mtd_speedtest: Testing 64x multi-block erase speed
+     mtd_speedtest: 64x multi-block erase speed is 495 KiB/s
+     mtd_speedtest: finished
+     =================================================
+
+  (3) Add the DDR quad read support for Micron N25Q256A:
+    =================================================
+    mtd_speedtest: MTD device: 1
+    mtd_speedtest: not NAND flash, assume page size is 512 bytes.
+    mtd_speedtest: MTD device size 33554432, eraseblock size 65536,
+                   page size 512, count of eraseblocks 512, pages per eraseblock 128, OOB size 0
+    mtd_speedtest: testing eraseblock write speed
+    mtd_speedtest: eraseblock write speed is 2426 KiB/s
+    mtd_speedtest: testing eraseblock read speed
+    mtd_speedtest: eraseblock read speed is 32157 KiB/s
+    mtd_speedtest: testing page write speed
+    mtd_speedtest: page write speed is 2362 KiB/s
+    mtd_speedtest: testing page read speed
+    mtd_speedtest: page read speed is 17741 KiB/s
+    mtd_speedtest: testing 2 page write speed
+    mtd_speedtest: 2 page write speed is 2384 KiB/s
+    mtd_speedtest: testing 2 page read speed
+    mtd_speedtest: 2 page read speed is 24058 KiB/s
+    mtd_speedtest: Testing erase speed
+    mtd_speedtest: erase speed is 1927529 KiB/s
+    mtd_speedtest: Testing 2x multi-block erase speed
+    mtd_speedtest: 2x multi-block erase speed is 2184533 KiB/s
+    mtd_speedtest: Testing 4x multi-block erase speed
+    mtd_speedtest: 4x multi-block erase speed is 2184533 KiB/s
+    mtd_speedtest: Testing 8x multi-block erase speed
+    mtd_speedtest: 8x multi-block erase speed is 2340571 KiB/s
+    mtd_speedtest: Testing 16x multi-block erase speed
+    mtd_speedtest: 16x multi-block erase speed is 2340571 KiB/s
+    mtd_speedtest: Testing 32x multi-block erase speed
+    mtd_speedtest: 32x multi-block erase speed is 2340571 KiB/s
+    mtd_speedtest: Testing 64x multi-block erase speed
+    mtd_speedtest: 64x multi-block erase speed is 2340571 KiB/s
+    mtd_speedtest: finished
+
+  (3) Conclusion:
+     The DDR quad read could be 49799 KiB/s for Spansion s25fl128s,
+     The DDR quad read could be 32157/s for Micron N25Q256A;
+     
+Changlog:
+
+v1 --> v2:
+  [1] add the new patch: " mtd: spi-nor: add a new field for spi_nor{}"
+  [2] remove the patch :
+        "mtd: fsl-quadspi: get the dummy cycles for DDR Quad read from the DT
+	    property"
+  [3] add the DDR quad read for Micron N25Q256A.	    
+  [4] fix types.
+  [5] others.
+
+before v1:  
+
+  About this patch set:
+     For patch 1, please see the old discusstion:
+     http://lists.infradead.org/pipermail/linux-mtd/2014-April/053370.html
+
+     For patch 2, please see the old discusstion:
+     http://lists.infradead.org/pipermail/linux-mtd/2014-April/053374.html
 
 
---hDxjzdswK9kKz4o8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Huang Shijie (10):
+  mtd: spi-nor: fix the wrong dummy value
+  mtd: spi-nor: add a new field for spi_nor{}
+  mtd: spi-nor: add DDR quad read support
+  Documentation: mtd: add a new document for SPI NOR flash
+  Documentation: fsl-quadspi: update the document
+  mtd: fsl-quadspi: use the information stored in spi-nor{}
+  mtd: fsl-quadspi: add the DDR quad read support for Spansion NOR
+  mtd: spi-nor: add more read transfer flags for n25q256a
+  mtd: spi-nor: add DDR quad read support for Micron
+  mtd: fsl-quadspi: add DDR quad read support for Micron
 
-On Wed, Apr 16, 2014 at 08:41:59PM +0200, Gerhard Sittig wrote:
-> On Mon, 2014-04-14 at 22:05 +0100, Mark Brown wrote:
+ .../devicetree/bindings/mtd/fsl-quadspi.txt        |   16 +++
+ .../devicetree/bindings/mtd/spi-nor-flash.txt      |    7 +
+ drivers/mtd/devices/m25p80.c                       |    6 +-
+ drivers/mtd/spi-nor/fsl-quadspi.c                  |  132 ++++++++++++++------
+ drivers/mtd/spi-nor/spi-nor.c                      |   65 +++++++++-
+ include/linux/mtd/spi-nor.h                        |   12 ++-
+ 6 files changed, 189 insertions(+), 49 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/mtd/spi-nor-flash.txt
 
-> > Did you ever hear anything back?  I'm inclined to just apply these and
-> > see if anyone reports any issues.
+-- 
+1.7.2.rc3
 
-> no, haven't heard anything since then
-
-OK.  That's a shame, I think I'm just going to drop them into -next and
-hope someone notices if there are any problems.  Not ideal but they're
-nice changes to have.
-
---hDxjzdswK9kKz4o8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTWT5fAAoJELSic+t+oim9wowP/1Ahd7S+fSJ6VT7ylIU6UmqV
-utH2faeVfRJdTpNLs0sATx2yCjbCfPEIimBMZFbL3Y8yI5iDO2+LuISbM9AVJCRZ
-q+0MtK71HNhQfY4QOu7qTG6Icq1B3/kXXc9URAxqhOuv8W3uANhauTUXp3uvLmlG
-0FUHXkV+OjcNi8hXESiO0tiJwcpFAMd5/bmG/42XYzPIeiC2w36WCZWYH6VpvvHx
-GsYeE1JA4Wvhvh4Vk8t55mACRdCkelrG9UVgp7e0tNiRKwXuSA7wBshM4oXDISjZ
-ojG8K2t26ne2mzjEXB9RQz4yduLelQqY5VWB6/IiyDMmL+fT0ICHr8By7nZ6DK8K
-nvNogZYgykuaJqAp11BO4ogC/lHpX+wQ7kLMExToxDflkSYBYXzXONyvSenrVkKV
-aFR9Vrvo7ih3UsJib/+n0kBEcpUtUjMYTlB+0E8v+0kUyeeXr9glhYYEkKskBUfd
-Int+Zys8hJCTXBygwWJILvJDjsK/Nms0Dy8ojrvMyXkEW845BTyxTq5w2n93Ldzf
-zSr0MF4VU2IdieQ7yK+lUDQ+Fv2NMX9mn2fY/z7EFPhyLw8l9z+M7+TSCU5NK+G8
-agxAuLaY70FITGuw6PVOoB5BLxCqGR7t6Cd7Wp6+N7DZPtort/xUxQRpwXZvFE56
-zkNuTpTZMui8cI/TnJKc
-=XfIp
------END PGP SIGNATURE-----
-
---hDxjzdswK9kKz4o8--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

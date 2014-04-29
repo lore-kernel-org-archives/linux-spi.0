@@ -1,13 +1,12 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 7/7] spi: topcliff-pch: remove unnecessary OOM messages
-Date: Tue, 29 Apr 2014 17:23:10 +0900
-Message-ID: <002b01cf6384$4191f0b0$c4b5d210$%han@samsung.com>
+Subject: [PATCH 4/7] spi: s3c64xx: remove unnecessary OOM messages
+Date: Tue, 29 Apr 2014 17:20:20 +0900
+Message-ID: <002801cf6383$dca4b0c0$95ee1240$%han@samsung.com>
 References: <002401cf6383$7e9ce1f0$7bd6a5d0$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Alexander Stein' <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-reply-to: <002401cf6383$7e9ce1f0$7bd6a5d0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
@@ -20,29 +19,33 @@ duplicate the MM subsystem generic OOM message.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-topcliff-pch.c |    5 +----
+ drivers/spi/spi-s3c64xx.c |    5 +----
  1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-topcliff-pch.c b/drivers/spi/spi-topcliff-pch.c
-index f406b30..f05abf8 100644
---- a/drivers/spi/spi-topcliff-pch.c
-+++ b/drivers/spi/spi-topcliff-pch.c
-@@ -1578,14 +1578,11 @@ static int pch_spi_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	struct pch_pd_dev_save *pd_dev_save;
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index 153b4be..75a5696 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -772,7 +772,6 @@ static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
  
- 	pd_dev_save = kzalloc(sizeof(struct pch_pd_dev_save), GFP_KERNEL);
--	if (!pd_dev_save) {
--		dev_err(&pdev->dev, "%s Can't allocate pd_dev_sav\n", __func__);
-+	if (!pd_dev_save)
- 		return -ENOMEM;
+ 	cs = kzalloc(sizeof(*cs), GFP_KERNEL);
+ 	if (!cs) {
+-		dev_err(&spi->dev, "could not allocate memory for controller data\n");
+ 		of_node_put(data_np);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+@@ -986,10 +985,8 @@ static struct s3c64xx_spi_info *s3c64xx_spi_parse_dt(struct device *dev)
+ 	u32 temp;
+ 
+ 	sci = devm_kzalloc(dev, sizeof(*sci), GFP_KERNEL);
+-	if (!sci) {
+-		dev_err(dev, "memory allocation for spi_info failed\n");
++	if (!sci)
+ 		return ERR_PTR(-ENOMEM);
 -	}
  
- 	board_dat = kzalloc(sizeof(struct pch_spi_board_data), GFP_KERNEL);
- 	if (!board_dat) {
--		dev_err(&pdev->dev, "%s Can't allocate board_dat\n", __func__);
- 		retval = -ENOMEM;
- 		goto err_no_mem;
- 	}
+ 	if (of_property_read_u32(dev->of_node, "samsung,spi-src-clk", &temp)) {
+ 		dev_warn(dev, "spi bus clock parent not specified, using clock at index 0 as parent\n");
 -- 
 1.7.10.4
 

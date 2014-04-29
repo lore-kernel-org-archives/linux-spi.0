@@ -1,12 +1,14 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 3/7] spi: s3c24xx: remove unnecessary OOM messages
-Date: Tue, 29 Apr 2014 17:20:02 +0900
-Message-ID: <002701cf6383$d15b4940$7411dbc0$%han@samsung.com>
+Subject: [PATCH 5/7] spi: sh-msiof: remove unnecessary OOM messages
+Date: Tue, 29 Apr 2014 17:21:25 +0900
+Message-ID: <002901cf6384$02d9ba10$088d2e30$%han@samsung.com>
 References: <002401cf6383$7e9ce1f0$7bd6a5d0$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	'Geert Uytterhoeven' <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	'Magnus Damm' <damm-yzvPICuk2ACczHhG9Qg4qA@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-reply-to: <002401cf6383$7e9ce1f0$7bd6a5d0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
@@ -19,25 +21,25 @@ duplicate the MM subsystem generic OOM message.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-s3c24xx.c |    4 +---
+ drivers/spi/spi-sh-msiof.c |    4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c24xx.c b/drivers/spi/spi-s3c24xx.c
-index bd85181..e713737 100644
---- a/drivers/spi/spi-s3c24xx.c
-+++ b/drivers/spi/spi-s3c24xx.c
-@@ -185,10 +185,8 @@ static int s3c24xx_spi_setup(struct spi_device *spi)
- 		cs = devm_kzalloc(&spi->dev,
- 				  sizeof(struct s3c24xx_spi_devstate),
- 				  GFP_KERNEL);
--		if (!cs) {
--			dev_err(&spi->dev, "no memory for controller state\n");
-+		if (!cs)
- 			return -ENOMEM;
--		}
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index e850d03..45b0914 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -642,10 +642,8 @@ static struct sh_msiof_spi_info *sh_msiof_spi_parse_dt(struct device *dev)
+ 	u32 num_cs = 1;
  
- 		cs->spcon = SPCON_DEFAULT;
- 		cs->hz = -1;
+ 	info = devm_kzalloc(dev, sizeof(struct sh_msiof_spi_info), GFP_KERNEL);
+-	if (!info) {
+-		dev_err(dev, "failed to allocate setup data\n");
++	if (!info)
+ 		return NULL;
+-	}
+ 
+ 	/* Parse the MSIOF properties */
+ 	of_property_read_u32(np, "num-cs", &num_cs);
 -- 
 1.7.10.4
 

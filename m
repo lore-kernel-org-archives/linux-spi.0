@@ -1,67 +1,65 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH] spi: Fix hung task timeout when initialization fails
-Date: Wed, 30 Apr 2014 18:34:02 -0700
-Message-ID: <20140501013402.GL3245@sirena.org.uk>
-References: <1398854171-5187-1-git-send-email-ricardo.ribalda@gmail.com>
+Date: Thu, 1 May 2014 07:53:58 +0200
+Message-ID: <CAPybu_3g=VBW+gGhveBJoc7=tCiPurP_r_+hqOU78bvsg8QJWw@mail.gmail.com>
+References: <1398854171-5187-1-git-send-email-ricardo.ribalda@gmail.com> <20140501013402.GL3245@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="VBq/nvTu32OVLBUP"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1398854171-5187-1-git-send-email-ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20140501013402.GL3245-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hello Mark
 
---VBq/nvTu32OVLBUP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for your comments. This fix does not avoid the task being
+killed (which is not an error). What it does is that IF the task is
+killed or we are out of memory we will exit with all the resources
+properly released and no locks helds, giving the user a chance to
+reload/rebind the module instead of getting and unstable system that
+cannot even reboot without a powercycle.
 
-On Wed, Apr 30, 2014 at 12:36:11PM +0200, Ricardo Ribalda Delgado wrote:
+The mention of 786235eeba0e1e85e5cbbb9f97d1087ad03dfa2 is because the condition
 
-> Since "786235eeba0e1e85e5cbbb9f97d1087ad03dfa21 kthread:
-> make kthread_create() killable" kthread_run can be killed by the user,
-> ie, by killing modprobe.
+if (IS_ERR(master->kworker_task)) {
+dev_err(&master->dev, "failed to create message pump task\n");
+return -ENOMEM;
+}
 
-> -	flush_kthread_worker(&master->kworker);
-> -	kthread_stop(master->kworker_task);
-> +	if (!IS_ERR(master->kworker_task)) {
-> +		flush_kthread_worker(&master->kworker);
-> +		kthread_stop(master->kworker_task);
-> +	}
+was very unlikely to happen/difficult to force .
 
-How does this fix avoid racing with the task being killed?  It will
-improve things but it doesn't look like a full fix.
+I will reword the message and clean out he backtrace and upload a v2.
 
-Please don't include entire backtraces in commit messages, they're
-typically extremely long and don't really add anything - edited
-highlights are fine but try to keep it to the point.
+Thanks!
 
---VBq/nvTu32OVLBUP
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+On Thu, May 1, 2014 at 3:34 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Wed, Apr 30, 2014 at 12:36:11PM +0200, Ricardo Ribalda Delgado wrote:
+>
+>> Since "786235eeba0e1e85e5cbbb9f97d1087ad03dfa21 kthread:
+>> make kthread_create() killable" kthread_run can be killed by the user,
+>> ie, by killing modprobe.
+>
+>> -     flush_kthread_worker(&master->kworker);
+>> -     kthread_stop(master->kworker_task);
+>> +     if (!IS_ERR(master->kworker_task)) {
+>> +             flush_kthread_worker(&master->kworker);
+>> +             kthread_stop(master->kworker_task);
+>> +     }
+>
+> How does this fix avoid racing with the task being killed?  It will
+> improve things but it doesn't look like a full fix.
+>
+> Please don't include entire backtraces in commit messages, they're
+> typically extremely long and don't really add anything - edited
+> highlights are fine but try to keep it to the point.
 
-iQIcBAEBAgAGBQJTYaSHAAoJELSic+t+oim9cWkP/RvEEcO5MkmGT1xMDytNZYw5
-1eL1ge0U0ITDEVXI0cOaWy/NN8B/sjWtnmQO3Hunl8HQ51XNddYZh3hFKSb/CJEG
-V1ZNjgi7mGGOSmRBAY68bHGFedqWg1pdrjD42njrvFcIhvqqJP4E0M4B3mdKmPbC
-SfabJnUqwNVr4dE7+mv2PDxRMlantvHUZPYazeXvBicy/TiXmGnadV/C5prpivDw
-vR2HButVHKfpUuK6dFGLFyAJX78AeEkciU9pD/jP5qTF/OMlJklinkrHl2I8cyQK
-X9qV7VnKf2vIBea1pWAwgrJ5OTM6BSnr0+gAg2HGRYHKeayOnmBJmWKpwwxHNU7T
-aH7m9kZlox/jzazltn3uMbOCFBTCVAeVi7jHrVReqlkowJra7kRJjSri8IKFXdrI
-6C/U+rKGpOwmR8I9oDhuAhyYUbGl2nyLQ8cYJ47ytOHKAn7e4SwQbK4rbMsr4v7l
-80u8loF+TfGfL83hCoojteFo/OtZVEGRthg2QHUwDysNS0m6KKSMJZQzGQIUgGrX
-swR0N7uE5V0Y+Sg+gljPTOqzQIzDI78v3khO9GafSjma829eJxkxOU6yvr/De9Zg
-ycKxNrRNZnvIxTbv52+K7CZaMjvM6ngulyPyYPJcPaGWNt8SG2Z5Eui2nAgl2I/j
-t9sdLq65V0NwhtakjR8q
-=uwyI
------END PGP SIGNATURE-----
 
---VBq/nvTu32OVLBUP--
+
+-- 
+Ricardo Ribalda
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

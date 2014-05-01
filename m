@@ -1,65 +1,67 @@
 From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH] spi: Fix hung task timeout when initialization fails
-Date: Thu, 1 May 2014 07:53:58 +0200
-Message-ID: <CAPybu_3g=VBW+gGhveBJoc7=tCiPurP_r_+hqOU78bvsg8QJWw@mail.gmail.com>
-References: <1398854171-5187-1-git-send-email-ricardo.ribalda@gmail.com> <20140501013402.GL3245@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] spi: Fix hung task timeout when initialization fails
+Date: Thu,  1 May 2014 10:15:15 +0200
+Message-ID: <1398932115-11646-1-git-send-email-ricardo.ribalda@gmail.com>
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140501013402.GL3245-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hello Mark
+If kthread_run on spi_init_queue() fails, spi_destroy_queue can lead to
+hang timeout.
 
-Thanks for your comments. This fix does not avoid the task being
-killed (which is not an error). What it does is that IF the task is
-killed or we are out of memory we will exit with all the resources
-properly released and no locks helds, giving the user a chance to
-reload/rebind the module instead of getting and unstable system that
-cannot even reboot without a powercycle.
+Before 786235eeba0e1e85e5cbbb9f97d1087ad03dfa21 kthread:
+make kthread_create() killable" it was very unlikely that kthread_run
+would fail, but after that patch a kill to modprobe can lead to this
+kind of error. Udev kills modprobe after 30 seconds.
 
-The mention of 786235eeba0e1e85e5cbbb9f97d1087ad03dfa2 is because the condition
+When this happens, spi_destroy_queue() leads to a hung process that
+outputs a error message and avoids the computer to be halted/rebooted.
 
-if (IS_ERR(master->kworker_task)) {
-dev_err(&master->dev, "failed to create message pump task\n");
-return -ENOMEM;
-}
+This bug is particulary critical on machines that relay on the spi
+subsystem to hold a file system (MTD over SPI).
 
-was very unlikely to happen/difficult to force .
+[   95.900328] spi_master spi32765: failed to create message pump task
+[   95.900358] spi_master spi32765: problem initializing queue
+[   95.912333] qtec_pcie b0030000.pcie_bridge: Axi-pcie bridge supervisor
+[  240.463698] INFO: task udevd:129 blocked for more than 120 seconds.
+[  240.463733] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  240.463807] Call Trace:
+[  240.463968]  [<ffffffff8178c22d>] wait_for_completion+0x1d/0x20
+[  240.464036]  [<ffffffff8146c637>] spi_destroy_queue+0x27/0x60
+[  240.464050]  [<ffffffff8146cc46>] spi_register_master+0x5d6/0x900
 
-I will reword the message and clean out he backtrace and upload a v2.
+Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
 
-Thanks!
+v2: Comment by Mark Brown:
+-Improve commit message
 
+ drivers/spi/spi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-On Thu, May 1, 2014 at 3:34 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Wed, Apr 30, 2014 at 12:36:11PM +0200, Ricardo Ribalda Delgado wrote:
->
->> Since "786235eeba0e1e85e5cbbb9f97d1087ad03dfa21 kthread:
->> make kthread_create() killable" kthread_run can be killed by the user,
->> ie, by killing modprobe.
->
->> -     flush_kthread_worker(&master->kworker);
->> -     kthread_stop(master->kworker_task);
->> +     if (!IS_ERR(master->kworker_task)) {
->> +             flush_kthread_worker(&master->kworker);
->> +             kthread_stop(master->kworker_task);
->> +     }
->
-> How does this fix avoid racing with the task being killed?  It will
-> improve things but it doesn't look like a full fix.
->
-> Please don't include entire backtraces in commit messages, they're
-> typically extremely long and don't really add anything - edited
-> highlights are fine but try to keep it to the point.
-
-
-
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 4eb9bf0..8331556 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1114,8 +1114,10 @@ static int spi_destroy_queue(struct spi_master *master)
+ 		return ret;
+ 	}
+ 
+-	flush_kthread_worker(&master->kworker);
+-	kthread_stop(master->kworker_task);
++	if (!IS_ERR(master->kworker_task)) {
++		flush_kthread_worker(&master->kworker);
++		kthread_stop(master->kworker_task);
++	}
+ 
+ 	return 0;
+ }
 -- 
-Ricardo Ribalda
+1.9.2
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,67 +1,61 @@
-From: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: Fix hung task timeout when initialization fails
-Date: Thu,  1 May 2014 10:15:15 +0200
-Message-ID: <1398932115-11646-1-git-send-email-ricardo.ribalda@gmail.com>
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: Fix hung task timeout when initialization fails
+Date: Thu, 1 May 2014 07:11:56 -0700
+Message-ID: <20140501141156.GV3245@sirena.org.uk>
+References: <1398854171-5187-1-git-send-email-ricardo.ribalda@gmail.com>
+ <20140501013402.GL3245@sirena.org.uk>
+ <CAPybu_3g=VBW+gGhveBJoc7=tCiPurP_r_+hqOU78bvsg8QJWw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="YnIutncTLXsDZs5t"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAPybu_3g=VBW+gGhveBJoc7=tCiPurP_r_+hqOU78bvsg8QJWw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If kthread_run on spi_init_queue() fails, spi_destroy_queue can lead to
-hang timeout.
 
-Before 786235eeba0e1e85e5cbbb9f97d1087ad03dfa21 kthread:
-make kthread_create() killable" it was very unlikely that kthread_run
-would fail, but after that patch a kill to modprobe can lead to this
-kind of error. Udev kills modprobe after 30 seconds.
+--YnIutncTLXsDZs5t
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-When this happens, spi_destroy_queue() leads to a hung process that
-outputs a error message and avoids the computer to be halted/rebooted.
+On Thu, May 01, 2014 at 07:53:58AM +0200, Ricardo Ribalda Delgado wrote:
 
-This bug is particulary critical on machines that relay on the spi
-subsystem to hold a file system (MTD over SPI).
+> Thanks for your comments. This fix does not avoid the task being
+> killed (which is not an error). What it does is that IF the task is
+> killed or we are out of memory we will exit with all the resources
+> properly released and no locks helds, giving the user a chance to
+> reload/rebind the module instead of getting and unstable system that
+> cannot even reboot without a powercycle.
 
-[   95.900328] spi_master spi32765: failed to create message pump task
-[   95.900358] spi_master spi32765: problem initializing queue
-[   95.912333] qtec_pcie b0030000.pcie_bridge: Axi-pcie bridge supervisor
-[  240.463698] INFO: task udevd:129 blocked for more than 120 seconds.
-[  240.463733] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[  240.463807] Call Trace:
-[  240.463968]  [<ffffffff8178c22d>] wait_for_completion+0x1d/0x20
-[  240.464036]  [<ffffffff8146c637>] spi_destroy_queue+0x27/0x60
-[  240.464050]  [<ffffffff8146cc46>] spi_register_master+0x5d6/0x900
+How does it ensure that?  What's to stop the task being killed after we
+check to see if the task was killed.
 
-Signed-off-by: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
+--YnIutncTLXsDZs5t
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-v2: Comment by Mark Brown:
--Improve commit message
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
 
- drivers/spi/spi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+iQIcBAEBAgAGBQJTYlYpAAoJELSic+t+oim9CiQP/2Ie7FrfCtO+X5us/U8GDgba
+ps+h4ZNWwGzBVIVnidT1/1LogzICAVVd1Co+epQ36rHP3SLUXL7WX2jbitjEk0HY
+vWqfxt+n1uRtAsGCYLNKQ23jydaGz7RZ8I47d/dw/hsX6HiE0Q0CvUNwboz8EJ4W
+d+25woaVMzXu22rGt/jdHU+fGXomcYr9D7aDZAuyHiVy65derXEBHCSvyZitDEMl
+VpMcVnzER85VD4MRqjS+BWTejCXkq5zI8p/6iwID999ZoamOHN775NJm9ByFwAD5
+loU6OH70Yi/HZXgJGDfloNEl7DE2lIkE2jdICGlDR2l+ZP1q0wq4mc+gec8xbLa3
+015JPym5soDh/Jf8WgiRFT3SNK2XC3MicOOpWS+v5yen+BP85aSIdE4iLCNgjm0L
+RG9KZTK+BxqQgL9I3yBU09Sbt9v/piOMi22Bh2PWSup3MPuHAb1FnjuYhSvzCLPQ
+choixUNvOLTgd4og2S2Hxb5+3YJHSJiPcssimXOpvYeO7iPhybzI3y5JOAd6UkUL
+aW+bSoOeFfntHkW5U9xGLOSVJ+C2mMTEeW9P/Yd8DHznB+jvDuNwZpJKqAqt2UOn
+7FNmpD3T26iGiHv2NKfQdtjMfbUygp9RP4zwtWGlfRE8sTfoS2HZRhWYlP7kzUB7
+5LeUr7Jh+Yh/XNSjFsyo
+=zmMX
+-----END PGP SIGNATURE-----
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 4eb9bf0..8331556 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1114,8 +1114,10 @@ static int spi_destroy_queue(struct spi_master *master)
- 		return ret;
- 	}
- 
--	flush_kthread_worker(&master->kworker);
--	kthread_stop(master->kworker_task);
-+	if (!IS_ERR(master->kworker_task)) {
-+		flush_kthread_worker(&master->kworker);
-+		kthread_stop(master->kworker_task);
-+	}
- 
- 	return 0;
- }
--- 
-1.9.2
-
+--YnIutncTLXsDZs5t--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

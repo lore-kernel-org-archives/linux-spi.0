@@ -1,61 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Subject: Re: [PATCH] spi: Fix hung task timeout when initialization fails
-Date: Thu, 1 May 2014 07:11:56 -0700
-Message-ID: <20140501141156.GV3245@sirena.org.uk>
+Date: Thu, 1 May 2014 16:33:58 +0200
+Message-ID: <CAMuHMdUeFJDq8TMQn=D+y_nWVy-puZDYekV3cPhHTnDF+ebKJA@mail.gmail.com>
 References: <1398854171-5187-1-git-send-email-ricardo.ribalda@gmail.com>
- <20140501013402.GL3245@sirena.org.uk>
- <CAPybu_3g=VBW+gGhveBJoc7=tCiPurP_r_+hqOU78bvsg8QJWw@mail.gmail.com>
+	<20140501013402.GL3245@sirena.org.uk>
+	<CAPybu_3g=VBW+gGhveBJoc7=tCiPurP_r_+hqOU78bvsg8QJWw@mail.gmail.com>
+	<20140501141156.GV3245@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="YnIutncTLXsDZs5t"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAPybu_3g=VBW+gGhveBJoc7=tCiPurP_r_+hqOU78bvsg8QJWw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20140501141156.GV3245-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Thu, May 1, 2014 at 4:11 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, May 01, 2014 at 07:53:58AM +0200, Ricardo Ribalda Delgado wrote:
+>
+>> Thanks for your comments. This fix does not avoid the task being
+>> killed (which is not an error). What it does is that IF the task is
+>> killed or we are out of memory we will exit with all the resources
+>> properly released and no locks helds, giving the user a chance to
+>> reload/rebind the module instead of getting and unstable system that
+>> cannot even reboot without a powercycle.
+>
+> How does it ensure that?  What's to stop the task being killed after we
+> check to see if the task was killed.
 
---YnIutncTLXsDZs5t
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+master->kworker_task is set like this:
 
-On Thu, May 01, 2014 at 07:53:58AM +0200, Ricardo Ribalda Delgado wrote:
+    master->kworker_task = kthread_run(...)
 
-> Thanks for your comments. This fix does not avoid the task being
-> killed (which is not an error). What it does is that IF the task is
-> killed or we are out of memory we will exit with all the resources
-> properly released and no locks helds, giving the user a chance to
-> reload/rebind the module instead of getting and unstable system that
-> cannot even reboot without a powercycle.
+so it just contains the status of the creation of the kthread, not if it was
+killed, right? Hence we don't check if it was killed.
 
-How does it ensure that?  What's to stop the task being killed after we
-check to see if the task was killed.
+So Ricardo's patch prevents the stopping and destruction of the thread
+if it failed to be _created_.
 
---YnIutncTLXsDZs5t
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+What if it is killed? I suppose the kthread API handles that internally, as it
+could happen to any thread (e.g. OOM)?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Gr{oetje,eeting}s,
 
-iQIcBAEBAgAGBQJTYlYpAAoJELSic+t+oim9CiQP/2Ie7FrfCtO+X5us/U8GDgba
-ps+h4ZNWwGzBVIVnidT1/1LogzICAVVd1Co+epQ36rHP3SLUXL7WX2jbitjEk0HY
-vWqfxt+n1uRtAsGCYLNKQ23jydaGz7RZ8I47d/dw/hsX6HiE0Q0CvUNwboz8EJ4W
-d+25woaVMzXu22rGt/jdHU+fGXomcYr9D7aDZAuyHiVy65derXEBHCSvyZitDEMl
-VpMcVnzER85VD4MRqjS+BWTejCXkq5zI8p/6iwID999ZoamOHN775NJm9ByFwAD5
-loU6OH70Yi/HZXgJGDfloNEl7DE2lIkE2jdICGlDR2l+ZP1q0wq4mc+gec8xbLa3
-015JPym5soDh/Jf8WgiRFT3SNK2XC3MicOOpWS+v5yen+BP85aSIdE4iLCNgjm0L
-RG9KZTK+BxqQgL9I3yBU09Sbt9v/piOMi22Bh2PWSup3MPuHAb1FnjuYhSvzCLPQ
-choixUNvOLTgd4og2S2Hxb5+3YJHSJiPcssimXOpvYeO7iPhybzI3y5JOAd6UkUL
-aW+bSoOeFfntHkW5U9xGLOSVJ+C2mMTEeW9P/Yd8DHznB+jvDuNwZpJKqAqt2UOn
-7FNmpD3T26iGiHv2NKfQdtjMfbUygp9RP4zwtWGlfRE8sTfoS2HZRhWYlP7kzUB7
-5LeUr7Jh+Yh/XNSjFsyo
-=zmMX
------END PGP SIGNATURE-----
+                        Geert
 
---YnIutncTLXsDZs5t--
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

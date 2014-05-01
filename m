@@ -1,78 +1,106 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: core: Don't destroy master queue if we fail to
- create it
-Date: Thu, 1 May 2014 12:03:42 -0700
-Message-ID: <20140501190342.GX3245@sirena.org.uk>
-References: <1398966567-5182-1-git-send-email-broonie@kernel.org>
- <CAMuHMdXwX5He07h-peVPwgGYHUrPF5V7r9uH7s8BaaaFHMnQxw@mail.gmail.com>
+From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH] spi: Force the registration of the spidev devices
+Date: Thu, 1 May 2014 15:36:29 -0700
+Message-ID: <20140501223629.GJ3000@lukather>
+References: <1398705774-12361-1-git-send-email-maxime.ripard@free-electrons.com>
+ <20140429183758.GH15125@sirena.org.uk>
+ <20140430180609.GC3000@lukather>
+ <20140501011811.GF3245@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="hTBKz6kaaD+o1h4U"
-Cc: Ricardo Ribalda Delgado <ricardo.ribalda-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linaro-kerne-cunTk1MwBs8s++Sfvej+rw@public.gmane.org
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="BFVE2HhgxTpCzM8t"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdXwX5He07h-peVPwgGYHUrPF5V7r9uH7s8BaaaFHMnQxw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20140501011811.GF3245-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---hTBKz6kaaD+o1h4U
+--BFVE2HhgxTpCzM8t
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 01, 2014 at 08:55:42PM +0200, Geert Uytterhoeven wrote:
-> On Thu, May 1, 2014 at 7:49 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> > From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+On Wed, Apr 30, 2014 at 06:18:11PM -0700, Mark Brown wrote:
+> On Wed, Apr 30, 2014 at 11:06:09AM -0700, Maxime Ripard wrote:
+> > On Tue, Apr 29, 2014 at 11:37:58AM -0700, Mark Brown wrote:
+>=20
+> > > Why can we not handle this by using sysfs to bind spidev to the
+> > > device?
+>=20
+> > I just tried it, and apparently, you can't really use this, since spi
+> > devices are created from the device tree (or ACPI) whenever the master
+> > registers.
+>=20
+> Can you be more specific as to what the issue is here?  If we actually
+> have a specific kernel driver for a device I would strongly expect that
+> we would want to use it and not spidev, if we don't have one I don't see
+> the issue.
+>
+> > It doesn't really work either for a device that would be bound to a
+> > driver, that you unbind, and then try to bind to spidev instead. It
+> > looks like the device is released whenever you unbind it, so you can't
+> > really use it afterwards.
+>=20
+> I guess this is the issue...  what exactly is the use case here?  I
+> would only expect spidev to be used if there is no in kernel driver for
+> a device.
 
-> > @@ -1162,6 +1161,7 @@ static int spi_master_initialize_queue(struct spi_master *master)
-> >                 dev_err(&master->dev, "problem initializing queue\n");
-> >                 goto err_init_queue;
+The issue and use case is this: we don't have an upstreamable way to
+use spidev.
 
-> You can just "return ret;" here...
+You suggested a while back to add the compatibles of devices we would
+want to drive with spidev in the spidev compatible list. It's fine for
+devices where we should have a driver, but don't, or devices that will
+never ever be handled by the kernel.
 
-> >  err_start_queue:
-> > -err_init_queue:
-> >         spi_destroy_queue(master);
-> > +err_init_queue:
+But it actually doesn't work in a case where you can't really predict
+what is on the other side of the bus. Either because, on the board
+you're using the pins are exposed and it's pretty much up to the user
+to know what to put on it. That could be handled by DT overlays
+though.
 
-> ... and kill the err_init_queue label.
+What never works is where the device on the other side is so generic
+that you really can't tell what it does. Think of a microcontroller
+that would behave as a SPI slave. It's behaviour and what it does is
+pretty much dependant of what we flashed on it, and suddenly the
+compatible string is not the proper reprensentation anymore.
 
-Yeah, I know.  It's a stylistic thing - I tend to prefer to always use
-labels if they're used at all in a function even if we could return
-directly since it's more consistent.  Not that I'm 100% consistent about
-that.
+i2c-dev works great in these cases, because you always have access to
+all the bus, and all the devices, except if the device is already used
+by someone. The patch I suggested is an attempt to mimic this.
 
-> Apart from that:
-> Acked-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+--=20
+Maxime Ripard, Free Electrons
+Embedded Linux, Kernel and Android engineering
+http://free-electrons.com
 
-Thanks.
-
---hTBKz6kaaD+o1h4U
+--BFVE2HhgxTpCzM8t
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Version: GnuPG v1.4.14 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTYpqLAAoJELSic+t+oim9KOEP/0RBZ8Qf3r55rzueOPwyLYCf
-Sq31iJTHr2XGluiD5lkRZQHmXnPOypM4hJJ1h0aAwN13v382y5t5BT8eIQilA+o2
-PeQeG0g/VxZoINH0U1PVPGlU2fb7uF1JHfh6/XDuwXuVz8KnU7p1lQzx/ehG2/UN
-tugZv8V1QGBUMPgG8kf498GddoChekvQ88G25/8YwnoSPdL2RqJFxqGC50EGja3l
-2toYVzCnulR0x4uTk/CRXJb9mEDHk4fjo9DkcXDhClmWksB74qL7dWne4QAgtOqn
-qjEzHbD9CH6wHJ63ZPukpFPGZ14/aXxR6JvYbSv06POMx5IdtXZmFSamq177pIN9
-ZXanpl8WPSq3Yc3BIVh67qXlF9Gx/TMaqW+uIiJ0Xn3mYH6k6aSrfzMS9sUMCo3W
-D39UmGBnVMWBykGNWzXtsX0ZXBkrfGm7MKCz4oUrCabF3ImjiQ0cDSl/JPPJzLG3
-hfeeZIWFqVDO1/iQ4K8DOYJZgg6qGU9jBkrryFRucu6qp28BqOzLCJx2xgOKnmVW
-woBLlUISPwIaSq64EoUIrLkIistjTvHg/g9vrNE2lRaNMyLXbBHgrxVasw2pHEPZ
-2upIufjJUyT9EHoosFPgITNkdJofr6bQfjyW7xQ+vRULiK1NpzzMniSM45jpqqDw
-Ovw+Tub6uYHjH0D1Mna7
-=AcIB
+iQIcBAEBAgAGBQJTYsxtAAoJEBx+YmzsjxAgPaoP/1yT1gi1QB0SMFK+pVWqhW2Y
+fNPA4556SH973n6hsDY1H4MQLmb7vPdTn2htOPAq0Ew3ngEDenZNeWDv4RYwGR/m
+SWU3Mdkddc7kvawfhNFkAQdGH3zaAxnkaT2Rk5slUftqFOJiVhm5RjcoyvQal5Ay
+9BD15JtxxO9vGGI78nsTRuMbaRhX7uqEAy1Jp8Ku2U6YZd7zvxqI4BUsxZ/ionTt
+Ph96jrCGpCdcqJSIc9i6EH5iERPKs85rn+fCLwSCQTxK5aIt8OasWiUHZ++sxOgQ
+D4XHNcsEj3dPhSFeNUYLgrh9Gd7slcfhtNUdt10hkDrroCCD5fSqPEU+wSe5YoXQ
+9rrLUo+7K4lTxDgAqFfvz3NJskR6spKdPsvvsE2yadXhkCE7jMi05/RMrqcN82t8
+osDUAV3LrSg1xnY3UeNnRSCvYqvv3iFZPbt1HwvSSvLoM8ZM8bab6RIi76hstn5C
+jlVWQ9kOsSw39Qtte4CUWWw98djnY9ikl3nwanqEawLIFexRHc1ol+xTbRx70P2/
+l5LL2QG06lyvNUXBj0Iv0nxzHxDkXTE1ZCb1XKkqefmzJ8C/FiDW/T4QGXO3AMW1
+YskVhDB1nxJkCFynG5AAnygPbTQRFBoW96zu01obbN0Jj+N8TeKNxfQKC8bNRnkk
+CAzLvJIEl+/Pc8knv+8d
+=k3eJ
 -----END PGP SIGNATURE-----
 
---hTBKz6kaaD+o1h4U--
+--BFVE2HhgxTpCzM8t--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

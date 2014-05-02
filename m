@@ -1,54 +1,170 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] spi: Force the registration of the spidev devices
-Date: Fri, 2 May 2014 01:28:26 +0200
-Message-ID: <CAMuHMdUWa1_n94sDvv=L_goc+SOnD9CAKi5DzifrY7GWYRdQmw@mail.gmail.com>
-References: <1398705774-12361-1-git-send-email-maxime.ripard@free-electrons.com>
-	<20140429183758.GH15125@sirena.org.uk>
-	<20140430180609.GC3000@lukather>
-	<20140501011811.GF3245@sirena.org.uk>
-	<20140501223629.GJ3000@lukather>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To: Maxime Ripard <maxime.ripard@free-electrons.com>
+Subject: [PATCH] spi: core: Protect DMA code by #ifdef CONFIG_HAS_DMA
+Date: Fri,  2 May 2014 06:29:34 +0200
+Message-ID: <1399004974-19566-1-git-send-email-geert@linux-m68k.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20140501223629.GJ3000@lukather>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Maxime,
+If NO_DMA=y:
 
-On Fri, May 2, 2014 at 12:36 AM, Maxime Ripard
-<maxime.ripard@free-electrons.com> wrote:
-> But it actually doesn't work in a case where you can't really predict
-> what is on the other side of the bus. Either because, on the board
-> you're using the pins are exposed and it's pretty much up to the user
-> to know what to put on it. That could be handled by DT overlays
-> though.
->
-> What never works is where the device on the other side is so generic
-> that you really can't tell what it does. Think of a microcontroller
-> that would behave as a SPI slave. It's behaviour and what it does is
-> pretty much dependant of what we flashed on it, and suddenly the
-> compatible string is not the proper reprensentation anymore.
+drivers/built-in.o: In function `spi_map_buf':
+spi.c:(.text+0x21bc60): undefined reference to `dma_map_sg'
+drivers/built-in.o: In function `spi_unmap_buf.isra.33':
+spi.c:(.text+0x21c32e): undefined reference to `dma_unmap_sg'
+make[3]: *** [vmlinux] Error 1
 
-So you will (hopefully soon) use overlay DT to change the DTS to match what's
-connected?
+Protect the DMA code by #ifdef CONFIG_HAS_DMA to fix this:
+  - Extract __spi_map_msg() from spi_map_msg(),
+  - Provide dummy definitions of __spi_map_msg() and spi_unmap_msg() if
+    !CONFIG_HAS_DMA.
 
-And then you want spidev to bind to it. Would it help if DT offered a feature
-to add a compatible entry to a driver at runtime, cfr.
-/sys/bus/pci/drivers/.../new_id on PCI?
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+ drivers/spi/spi.c |  109 ++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 65 insertions(+), 44 deletions(-)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 4eb9bf02996c..341942b640e1 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -580,6 +580,7 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
+ 		spi->master->set_cs(spi, !enable);
+ }
+ 
++#ifdef CONFIG_HAS_DMA
+ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 		       struct sg_table *sgt, void *buf, size_t len,
+ 		       enum dma_data_direction dir)
+@@ -637,55 +638,12 @@ static void spi_unmap_buf(struct spi_master *master, struct device *dev,
+ 	}
+ }
+ 
+-static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
++static int __spi_map_msg(struct spi_master *master, struct spi_message *msg)
+ {
+ 	struct device *tx_dev, *rx_dev;
+ 	struct spi_transfer *xfer;
+-	void *tmp;
+-	unsigned int max_tx, max_rx;
+ 	int ret;
+ 
+-	if (master->flags & (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX)) {
+-		max_tx = 0;
+-		max_rx = 0;
+-
+-		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
+-			if ((master->flags & SPI_MASTER_MUST_TX) &&
+-			    !xfer->tx_buf)
+-				max_tx = max(xfer->len, max_tx);
+-			if ((master->flags & SPI_MASTER_MUST_RX) &&
+-			    !xfer->rx_buf)
+-				max_rx = max(xfer->len, max_rx);
+-		}
+-
+-		if (max_tx) {
+-			tmp = krealloc(master->dummy_tx, max_tx,
+-				       GFP_KERNEL | GFP_DMA);
+-			if (!tmp)
+-				return -ENOMEM;
+-			master->dummy_tx = tmp;
+-			memset(tmp, 0, max_tx);
+-		}
+-
+-		if (max_rx) {
+-			tmp = krealloc(master->dummy_rx, max_rx,
+-				       GFP_KERNEL | GFP_DMA);
+-			if (!tmp)
+-				return -ENOMEM;
+-			master->dummy_rx = tmp;
+-		}
+-
+-		if (max_tx || max_rx) {
+-			list_for_each_entry(xfer, &msg->transfers,
+-					    transfer_list) {
+-				if (!xfer->tx_buf)
+-					xfer->tx_buf = master->dummy_tx;
+-				if (!xfer->rx_buf)
+-					xfer->rx_buf = master->dummy_rx;
+-			}
+-		}
+-	}
+-
+ 	if (!master->can_dma)
+ 		return 0;
+ 
+@@ -742,6 +700,69 @@ static int spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
+ 
+ 	return 0;
+ }
++#else /* !CONFIG_HAS_DMA */
++static inline int __spi_map_msg(struct spi_master *master,
++				struct spi_message *msg)
++{
++	return 0;
++}
++
++static inline int spi_unmap_msg(struct spi_master *master,
++				struct spi_message *msg)
++{
++	return 0;
++}
++#endif /* !CONFIG_HAS_DMA */
++
++static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
++{
++	struct spi_transfer *xfer;
++	void *tmp;
++	unsigned int max_tx, max_rx;
++
++	if (master->flags & (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX)) {
++		max_tx = 0;
++		max_rx = 0;
++
++		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
++			if ((master->flags & SPI_MASTER_MUST_TX) &&
++			    !xfer->tx_buf)
++				max_tx = max(xfer->len, max_tx);
++			if ((master->flags & SPI_MASTER_MUST_RX) &&
++			    !xfer->rx_buf)
++				max_rx = max(xfer->len, max_rx);
++		}
++
++		if (max_tx) {
++			tmp = krealloc(master->dummy_tx, max_tx,
++				       GFP_KERNEL | GFP_DMA);
++			if (!tmp)
++				return -ENOMEM;
++			master->dummy_tx = tmp;
++			memset(tmp, 0, max_tx);
++		}
++
++		if (max_rx) {
++			tmp = krealloc(master->dummy_rx, max_rx,
++				       GFP_KERNEL | GFP_DMA);
++			if (!tmp)
++				return -ENOMEM;
++			master->dummy_rx = tmp;
++		}
++
++		if (max_tx || max_rx) {
++			list_for_each_entry(xfer, &msg->transfers,
++					    transfer_list) {
++				if (!xfer->tx_buf)
++					xfer->tx_buf = master->dummy_tx;
++				if (!xfer->rx_buf)
++					xfer->rx_buf = master->dummy_rx;
++			}
++		}
++	}
++
++	return __spi_map_msg(master, msg);
++}
+ 
+ /*
+  * spi_transfer_one_message - Default implementation of transfer_one_message()
+-- 
+1.7.9.5

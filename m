@@ -1,170 +1,119 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH] spi: core: Protect DMA code by #ifdef CONFIG_HAS_DMA
-Date: Fri,  2 May 2014 06:29:34 +0200
-Message-ID: <1399004974-19566-1-git-send-email-geert@linux-m68k.org>
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Valentin Longchamp <valentin.longchamp-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org>
+Subject: Re: Possible race condition when accessing SPI NOR Flash ?
+Date: Fri, 02 May 2014 16:52:28 +0200
+Message-ID: <5363B12C.2040807@keymile.com>
+References: <53623597.8040909@keymile.com> <CAD4b4WJCqeg5=Yi6=gd8k5N_OoqGtcZiPOhWn_tK7Jevnxhjfw@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Cc: "linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"Brunck, Holger" <Holger.Brunck-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org>,
+	"Bigler, Stefan" <Stefan.Bigler-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org>
+To: Mark Marshall <markmarshall14-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <CAD4b4WJCqeg5=Yi6=gd8k5N_OoqGtcZiPOhWn_tK7Jevnxhjfw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-If NO_DMA=y:
+Hi Mark,
 
-drivers/built-in.o: In function `spi_map_buf':
-spi.c:(.text+0x21bc60): undefined reference to `dma_map_sg'
-drivers/built-in.o: In function `spi_unmap_buf.isra.33':
-spi.c:(.text+0x21c32e): undefined reference to `dma_unmap_sg'
-make[3]: *** [vmlinux] Error 1
+On 05/02/2014 01:40 PM, Mark Marshall wrote:
+> Hi.
+> 
+> I now fell a bit guilty.  I had this same problem a while ago, and I
+> haven't ever really pushed the fix.  In fact, I ended up rewriting
+> most of drivers/spi/spi-fsl-espi.c, and that's really the problem - I
+> can only test about two boards from over 20, so I know that nobody
+> will take my complete re-write seriously, and I sort of lost interest.
 
-Protect the DMA code by #ifdef CONFIG_HAS_DMA to fix this:
-  - Extract __spi_map_msg() from spi_map_msg(),
-  - Provide dummy definitions of __spi_map_msg() and spi_unmap_msg() if
-    !CONFIG_HAS_DMA.
+Don't feel guilty at all. Even though I have suffered a bit to isolate the
+problem, your answer has already helped a lot: with your proposed fix, I have
+not been able to reproduce the error anymore.
 
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
- drivers/spi/spi.c |  109 ++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 65 insertions(+), 44 deletions(-)
+> 
+> But, the bug you are hitting is actually much simpler to fix than
+> that.  If you look in drivers/spi/spi-fsl-espi.c, there is a function
+> called fsl_espi_cmd_trans.  There are two important things to note
+> about this function; 1) It does a 64K kmalloc for every transfer
+> (thanks).  2) It overwrites the buffer if the transfer size is large.
+> 
+> It packs the TX command into the start of the 64K block and sets up a
+> TX pointer to the start of that block.  It then points the RX pointer
+> to be after the TX command.  This is completely wrong.  The RX pointer
+> should also be set to point to the start of the block.
+> 
+> In the failing case, you are probably doing a 64K read from the Flash.
+>  We will have a 5 or 6 byte command followed by 65531 bytes of TX data
+> (the value of the TX data does not matter).  The driver will then TX
+> the command followed by the data and simultaneously it will RX the
+> "command" and the data that we want (the value of stuff RX'd when we
+> are TX'ing the command is ignored / irrelevant).  The point is that
+> the last few bytes of data the we receive go after the end of the 64K
+> block that we have allocated.
+> 
+> I found that I got similar kernel panics to you.  Basically we are
+> overwriting 5 random bytes of kernel memory at the start of a page.
+> 
+>         espi_trans->tx_buf = local_buf;
+> -       espi_trans->rx_buf = local_buf + espi_trans->n_tx;
+> +       espi_trans->rx_buf = local_buf;
+>         fsl_espi_do_trans(m, espi_trans);
+> 
+> So, something like this would be a fix.  This is untested.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 4eb9bf02996c..341942b640e1 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -580,6 +580,7 @@ static void spi_set_cs(struct spi_device *spi, bool enable)
- 		spi->master->set_cs(spi, !enable);
- }
- 
-+#ifdef CONFIG_HAS_DMA
- static int spi_map_buf(struct spi_master *master, struct device *dev,
- 		       struct sg_table *sgt, void *buf, size_t len,
- 		       enum dma_data_direction dir)
-@@ -637,55 +638,12 @@ static void spi_unmap_buf(struct spi_master *master, struct device *dev,
- 	}
- }
- 
--static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
-+static int __spi_map_msg(struct spi_master *master, struct spi_message *msg)
- {
- 	struct device *tx_dev, *rx_dev;
- 	struct spi_transfer *xfer;
--	void *tmp;
--	unsigned int max_tx, max_rx;
- 	int ret;
- 
--	if (master->flags & (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX)) {
--		max_tx = 0;
--		max_rx = 0;
--
--		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--			if ((master->flags & SPI_MASTER_MUST_TX) &&
--			    !xfer->tx_buf)
--				max_tx = max(xfer->len, max_tx);
--			if ((master->flags & SPI_MASTER_MUST_RX) &&
--			    !xfer->rx_buf)
--				max_rx = max(xfer->len, max_rx);
--		}
--
--		if (max_tx) {
--			tmp = krealloc(master->dummy_tx, max_tx,
--				       GFP_KERNEL | GFP_DMA);
--			if (!tmp)
--				return -ENOMEM;
--			master->dummy_tx = tmp;
--			memset(tmp, 0, max_tx);
--		}
--
--		if (max_rx) {
--			tmp = krealloc(master->dummy_rx, max_rx,
--				       GFP_KERNEL | GFP_DMA);
--			if (!tmp)
--				return -ENOMEM;
--			master->dummy_rx = tmp;
--		}
--
--		if (max_tx || max_rx) {
--			list_for_each_entry(xfer, &msg->transfers,
--					    transfer_list) {
--				if (!xfer->tx_buf)
--					xfer->tx_buf = master->dummy_tx;
--				if (!xfer->rx_buf)
--					xfer->rx_buf = master->dummy_rx;
--			}
--		}
--	}
--
- 	if (!master->can_dma)
- 		return 0;
- 
-@@ -742,6 +700,69 @@ static int spi_unmap_msg(struct spi_master *master, struct spi_message *msg)
- 
- 	return 0;
- }
-+#else /* !CONFIG_HAS_DMA */
-+static inline int __spi_map_msg(struct spi_master *master,
-+				struct spi_message *msg)
-+{
-+	return 0;
-+}
-+
-+static inline int spi_unmap_msg(struct spi_master *master,
-+				struct spi_message *msg)
-+{
-+	return 0;
-+}
-+#endif /* !CONFIG_HAS_DMA */
-+
-+static int spi_map_msg(struct spi_master *master, struct spi_message *msg)
-+{
-+	struct spi_transfer *xfer;
-+	void *tmp;
-+	unsigned int max_tx, max_rx;
-+
-+	if (master->flags & (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX)) {
-+		max_tx = 0;
-+		max_rx = 0;
-+
-+		list_for_each_entry(xfer, &msg->transfers, transfer_list) {
-+			if ((master->flags & SPI_MASTER_MUST_TX) &&
-+			    !xfer->tx_buf)
-+				max_tx = max(xfer->len, max_tx);
-+			if ((master->flags & SPI_MASTER_MUST_RX) &&
-+			    !xfer->rx_buf)
-+				max_rx = max(xfer->len, max_rx);
-+		}
-+
-+		if (max_tx) {
-+			tmp = krealloc(master->dummy_tx, max_tx,
-+				       GFP_KERNEL | GFP_DMA);
-+			if (!tmp)
-+				return -ENOMEM;
-+			master->dummy_tx = tmp;
-+			memset(tmp, 0, max_tx);
-+		}
-+
-+		if (max_rx) {
-+			tmp = krealloc(master->dummy_rx, max_rx,
-+				       GFP_KERNEL | GFP_DMA);
-+			if (!tmp)
-+				return -ENOMEM;
-+			master->dummy_rx = tmp;
-+		}
-+
-+		if (max_tx || max_rx) {
-+			list_for_each_entry(xfer, &msg->transfers,
-+					    transfer_list) {
-+				if (!xfer->tx_buf)
-+					xfer->tx_buf = master->dummy_tx;
-+				if (!xfer->rx_buf)
-+					xfer->rx_buf = master->dummy_rx;
-+			}
-+		}
-+	}
-+
-+	return __spi_map_msg(master, msg);
-+}
- 
- /*
-  * spi_transfer_one_message - Default implementation of transfer_one_message()
--- 
-1.7.9.5
+As I have said above, this fixes the problem for me (as far as I have had time
+to test it until now, I will go on in the next days).
+
+> 
+> I hope this helps, and I'm sorry that I've not pushed this before.  If
+> people want I'll try to produce a proper fix, but I currently using an
+> oldish kernel (3.2.10), and don't really want to try to build a newer
+> one.  I've only got limited freescale test hardware (P1010RDB &
+> P2020RDB).
+
+If you don't feel like sending a patch because of the above reasons, I will
+happily submit one (just to avoid a third person to be struck by it ;-) ). If
+you want to submit one, just put me on CC and I will happily test it on P2041RDB
+and and our P2041 based system on a newer kernel.
+
+Thank you very much & best Regards
+
+Valentin
+
+> 
+> Regards,
+> 
+> Mark.
+> 
+
+[snip]
+
+>>
+>> Notice that this does not necessarily happen in fw_setenv itself, but rather in
+>> the next "task" that tries to allocate/free some virtual memory.
+>>
+>> I see the same behavior with both the 2013.10 and the 2014.04 releases of
+>> u-boot/fw_env. The kernel we are using is 3.10.36.
+>>
+>> I suspect that the problem is related to SPI NOR/m25p80 driver: on the system we
+>> have a NAND Flash device with UBI volumes. If I create 2 ubi volumes on the NAND
+>> Flash and configure fw_setenv (/etc/fw_env.config) to use them instead of the
+>> the mtd devices targetting the s25fl256s1, I am not able to reproduce the
+>> problem, even over more than 10'000 runs.
+>>
+>> I suspect that it is a race condition because it happens ~1 out of 100 times
+>> and if I disable SMP in the kernel I am never able to reproduce the problem.
+>>
+>> Finally, after having analyzed the fw_env behavior, I have tried to write a very
+>> silly program that mimics the fw_env mtd accesses in my use case (attached with
+>> this email) and I am able to reproduce the problem with it.
+>>
+>> One other possible culprit that I see is the fsl_espi.c driver for the
+>> underlying hardware connection from the CPU to the NOR Flash, but I wanted to
+>> ask here if someone had an idea about what's going wrong.
+>>
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

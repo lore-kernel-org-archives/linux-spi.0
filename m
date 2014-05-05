@@ -1,68 +1,45 @@
 From: Maxime Ripard <maxime.ripard@free-electrons.com>
 Subject: Re: [PATCH] spi: Force the registration of the spidev devices
-Date: Sun, 4 May 2014 23:17:21 -0500
-Message-ID: <20140505041721.GD11606@lukather>
+Date: Sun, 4 May 2014 23:21:47 -0500
+Message-ID: <20140505042147.GE11606@lukather>
 References: <1398705774-12361-1-git-send-email-maxime.ripard@free-electrons.com>
  <20140429183758.GH15125@sirena.org.uk>
  <20140430180609.GC3000@lukather>
  <20140501011811.GF3245@sirena.org.uk>
  <20140501223629.GJ3000@lukather>
- <CAMuHMdUWa1_n94sDvv=L_goc+SOnD9CAKi5DzifrY7GWYRdQmw@mail.gmail.com>
+ <20140502174048.GV3245@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ylS2wUBXLOxYXZFQ"
-Cc: Mark Brown <broonie@kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	protocol="application/pgp-signature"; boundary="BQPnanjtCNWHyqYD"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdUWa1_n94sDvv=L_goc+SOnD9CAKi5DzifrY7GWYRdQmw@mail.gmail.com>
+In-Reply-To: <20140502174048.GV3245@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---ylS2wUBXLOxYXZFQ
+--BQPnanjtCNWHyqYD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Geert
-
-On Fri, May 02, 2014 at 01:28:26AM +0200, Geert Uytterhoeven wrote:
-> Hi Maxime,
+On Fri, May 02, 2014 at 10:40:48AM -0700, Mark Brown wrote:
+> > i2c-dev works great in these cases, because you always have access to
+> > all the bus, and all the devices, except if the device is already used
+> > by someone. The patch I suggested is an attempt to mimic this.
 >=20
-> On Fri, May 2, 2014 at 12:36 AM, Maxime Ripard
-> <maxime.ripard@free-electrons.com> wrote:
-> > But it actually doesn't work in a case where you can't really predict
-> > what is on the other side of the bus. Either because, on the board
-> > you're using the pins are exposed and it's pretty much up to the user
-> > to know what to put on it. That could be handled by DT overlays
-> > though.
-> >
-> > What never works is where the device on the other side is so generic
-> > that you really can't tell what it does. Think of a microcontroller
-> > that would behave as a SPI slave. It's behaviour and what it does is
-> > pretty much dependant of what we flashed on it, and suddenly the
-> > compatible string is not the proper reprensentation anymore.
->=20
-> So you will (hopefully soon) use overlay DT to change the DTS to match wh=
-at's
-> connected?
+> It seems better to implement something like this at the device model
+> level, provide a way to have a default UIO driver for anything on a
+> given bus.  I don't see anything bus specific apart from saying what the
+> default driver to use is and it avoids the icky code fiddling about with
+> what devices are bound and the races that might be involved duplicated
+> in individual buses.
 
-Not really, because you can't declare a spidev device in the DT.
-
-> And then you want spidev to bind to it. Would it help if DT offered a fea=
-ture
-> to add a compatible entry to a driver at runtime, cfr.
-> /sys/bus/pci/drivers/.../new_id on PCI?
-
-The thing is, in the core SPI bus, devices are only instiated (in the
-DT case), by parsing the DT. So, to bind a device to a new driver, it
-has to exist in the first place, and it won't exist, because there
-won't be any node in the DT for this device. But since DT is
-unsuitable for such a device, you go back to where we were initially.
+Hmmm, yes, that's probably a great long-term way of dealing with this,
+but I don't see it happening soon.
 
 Maxime
 
@@ -71,26 +48,26 @@ Maxime Ripard, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
 
---ylS2wUBXLOxYXZFQ
+--BQPnanjtCNWHyqYD
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.14 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTZxDRAAoJEBx+YmzsjxAgsgcQAJmYNBp6yVydJWtoXy3haoEs
-GXBtHDoUsFy742n+/+7p2mL/Cop6lWoNbSLxNQYRSUysJFWBPenI6nIAjUvJKzT1
-iyhCBqTUGVrdDswllZ/GDfdj9vYqGLEaWDmBxcsfVXf6vk6vaXYPCk4L8+u623Rb
-X5SopLZ8Hgsq+ViKykc/f4EYyRZZPtjsgv/vOyRpr0Ys9JfMwmSUptPg3YUo5C2k
-7U0SmNE/tAXTWtLRmfy88ZwsW6ASjhlywSjTS3i+eXxSUnzYEO0f2Y8vCoQx6VOw
-t2A224eoBoNPkkSMs0GGCOL6eucX6ViwN4+TTDuxyFbdbYTJOvrlOHRZmIwvN+Dp
-t57gJuLPNXF8FYjLidt+wqSeLm0t20kK2Tfw6kjNnzQmZoEkRRrCbOpgifI02fzf
-OUENW1oLJnS0VNDY1EvxJ7wf1tbb428hMuZrKw5CqfEoigBGRN1CcXbF0TjIOtRi
-cTbiM8pUBLbvZS4w+UjNR2JbGfwTOfpRoSukrOAuv4m0AS0ujtrUBQgktkEOotMD
-2dnpgH+kBpYajDrAF2zcLq81lSzEB4NrPJY9JsO7Ng+JVG9LA1nFzFNQu3R/we6B
-+p8n8D4qg45kw9Lr4JwKL99Li5G262SyB6PbTFjoPE6u/qdtDx38JxrwoL1PImKN
-hz96hVQ3jRzeRFhV7ZNS
-=+HCa
+iQIcBAEBAgAGBQJTZxHbAAoJEBx+YmzsjxAguHcP/1LgErzSVAuc2Fbo+te3I4ff
+Hmcd2Q0lekO/abNgGJwiFLvB4BZ2RXufh/cQdABkVjV3dNwC0W+XnQuckX6yHWME
+TIJ2gpPGVh2iaQRoU9BHPxRfCNuQuoSaedLAZMGQzhrxXyGGIktbmb+jMqYJ4/58
+ryUF5cMX+3rzI12eZv0zUJUNsNvPZlgC46dc6qAWqy6RMuNFKVZtnuQKUgDsXQHA
+6zKgJaxuNXBiS5YDAJsGdbTffql+HHjW1JvXK4W4cCmqKDEjXbTXs++yiA4ZlzU8
+6FCiKJAGU4uYsrgqWRWSwbLH2u8LBYRA0rX+FEozfeine0DsmZwD+qhMwKzJjAAI
+u+R+VmMSAp/dRTzKOR0gOsxSLCJqiqxiZpzkSsh+L2HXy907Irr8cBpoRzp9S9Lq
+ZuUV5tFtlNllKmvrUe+anmJ891+4y10aOxrK3cta7xaEdtWS1SSBRec28LADVrmL
+sSllZpq7x4ZpC9QMUBlKNWkjsjzVsiWskLsDYMB2hoyX/tX6GaeWrvlA9NJiKWjZ
+UX2l552ZdvFPSKWZTH+Jxz6vmyBPlrOy4u4VvP1sc74hlXsLAuHdA+cBr6kXG7jR
+2zyoUMqDssPbkyocofy6807S8sgkWudAzN5s2fK/Q+i3ca4x1TC/tbsDmycPi6RD
+rrWeC7bcLQQG7qY0E3Ci
+=ovOX
 -----END PGP SIGNATURE-----
 
---ylS2wUBXLOxYXZFQ--
+--BQPnanjtCNWHyqYD--

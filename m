@@ -1,73 +1,68 @@
-From: Maxime Ripard <maxime.ripard@free-electrons.com>
+From: Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Subject: Re: [PATCH] spi: Force the registration of the spidev devices
-Date: Sun, 4 May 2014 23:21:47 -0500
-Message-ID: <20140505042147.GE11606@lukather>
+Date: Mon, 5 May 2014 15:57:02 +0200
+Message-ID: <20140505135701.GA21940@piout.net>
 References: <1398705774-12361-1-git-send-email-maxime.ripard@free-electrons.com>
  <20140429183758.GH15125@sirena.org.uk>
  <20140430180609.GC3000@lukather>
  <20140501011811.GF3245@sirena.org.uk>
  <20140501223629.GJ3000@lukather>
- <20140502174048.GV3245@sirena.org.uk>
+ <CAMuHMdUWa1_n94sDvv=L_goc+SOnD9CAKi5DzifrY7GWYRdQmw@mail.gmail.com>
+ <20140505041721.GD11606@lukather>
+ <CAMuHMdWZ1rvC+tkT=CbfMwZtppyJ_KpzT7JrLd5k5P2oxzA+8g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="BQPnanjtCNWHyqYD"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20140502174048.GV3245@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---BQPnanjtCNWHyqYD
 Content-Type: text/plain; charset=us-ascii
+Cc: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAMuHMdWZ1rvC+tkT=CbfMwZtppyJ_KpzT7JrLd5k5P2oxzA+8g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, May 02, 2014 at 10:40:48AM -0700, Mark Brown wrote:
-> > i2c-dev works great in these cases, because you always have access to
-> > all the bus, and all the devices, except if the device is already used
-> > by someone. The patch I suggested is an attempt to mimic this.
->=20
-> It seems better to implement something like this at the device model
-> level, provide a way to have a default UIO driver for anything on a
-> given bus.  I don't see anything bus specific apart from saying what the
-> default driver to use is and it avoids the icky code fiddling about with
-> what devices are bound and the races that might be involved duplicated
-> in individual buses.
+On 05/05/2014 at 09:10:43 +0200, Geert Uytterhoeven wrote :
+> Hi Maxime,
+> 
+> On Mon, May 5, 2014 at 6:17 AM, Maxime Ripard
+> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> > On Fri, May 02, 2014 at 01:28:26AM +0200, Geert Uytterhoeven wrote:
+> >> On Fri, May 2, 2014 at 12:36 AM, Maxime Ripard
+> >> <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org> wrote:
+> >> > But it actually doesn't work in a case where you can't really predict
+> >> > what is on the other side of the bus. Either because, on the board
+> >> > you're using the pins are exposed and it's pretty much up to the user
+> >> > to know what to put on it. That could be handled by DT overlays
+> >> > though.
+> >> >
+> >> > What never works is where the device on the other side is so generic
+> >> > that you really can't tell what it does. Think of a microcontroller
+> >> > that would behave as a SPI slave. It's behaviour and what it does is
+> >> > pretty much dependant of what we flashed on it, and suddenly the
+> >> > compatible string is not the proper reprensentation anymore.
+> >>
+> >> So you will (hopefully soon) use overlay DT to change the DTS to match what's
+> >> connected?
+> >
+> > Not really, because you can't declare a spidev device in the DT.
+> 
+> Yes you can. I've done it before.
+> 
+> See also "git grep -w spidev -- arch/arm/*/dts/".
+> 
 
-Hmmm, yes, that's probably a great long-term way of dealing with this,
-but I don't see it happening soon.
+I'm pretty sure that doesn't work as there is no compatible matching
+"spidev"
 
-Maxime
+My guess would be that you added it in spidev.c
 
---=20
-Maxime Ripard, Free Electrons
+-- 
+Alexandre Belloni, Free Electrons
 Embedded Linux, Kernel and Android engineering
 http://free-electrons.com
-
---BQPnanjtCNWHyqYD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.14 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTZxHbAAoJEBx+YmzsjxAguHcP/1LgErzSVAuc2Fbo+te3I4ff
-Hmcd2Q0lekO/abNgGJwiFLvB4BZ2RXufh/cQdABkVjV3dNwC0W+XnQuckX6yHWME
-TIJ2gpPGVh2iaQRoU9BHPxRfCNuQuoSaedLAZMGQzhrxXyGGIktbmb+jMqYJ4/58
-ryUF5cMX+3rzI12eZv0zUJUNsNvPZlgC46dc6qAWqy6RMuNFKVZtnuQKUgDsXQHA
-6zKgJaxuNXBiS5YDAJsGdbTffql+HHjW1JvXK4W4cCmqKDEjXbTXs++yiA4ZlzU8
-6FCiKJAGU4uYsrgqWRWSwbLH2u8LBYRA0rX+FEozfeine0DsmZwD+qhMwKzJjAAI
-u+R+VmMSAp/dRTzKOR0gOsxSLCJqiqxiZpzkSsh+L2HXy907Irr8cBpoRzp9S9Lq
-ZuUV5tFtlNllKmvrUe+anmJ891+4y10aOxrK3cta7xaEdtWS1SSBRec28LADVrmL
-sSllZpq7x4ZpC9QMUBlKNWkjsjzVsiWskLsDYMB2hoyX/tX6GaeWrvlA9NJiKWjZ
-UX2l552ZdvFPSKWZTH+Jxz6vmyBPlrOy4u4VvP1sc74hlXsLAuHdA+cBr6kXG7jR
-2zyoUMqDssPbkyocofy6807S8sgkWudAzN5s2fK/Q+i3ca4x1TC/tbsDmycPi6RD
-rrWeC7bcLQQG7qY0E3Ci
-=ovOX
------END PGP SIGNATURE-----
-
---BQPnanjtCNWHyqYD--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

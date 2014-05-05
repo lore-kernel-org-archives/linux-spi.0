@@ -1,180 +1,73 @@
-From: Qipan Li <swingboard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH v2 2/2] spi: sirf: decrease the interrupt count and latency of PIO mode
-Date: Sun,  4 May 2014 14:32:36 +0800
-Message-ID: <1399185156-521-1-git-send-email-swingboard@gmail.com>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, baohua-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH] spi: Force the registration of the spidev devices
+Date: Mon, 5 May 2014 09:10:43 +0200
+Message-ID: <CAMuHMdWZ1rvC+tkT=CbfMwZtppyJ_KpzT7JrLd5k5P2oxzA+8g@mail.gmail.com>
+References: <1398705774-12361-1-git-send-email-maxime.ripard@free-electrons.com>
+	<20140429183758.GH15125@sirena.org.uk>
+	<20140430180609.GC3000@lukather>
+	<20140501011811.GF3245@sirena.org.uk>
+	<20140501223629.GJ3000@lukather>
+	<CAMuHMdUWa1_n94sDvv=L_goc+SOnD9CAKi5DzifrY7GWYRdQmw@mail.gmail.com>
+	<20140505041721.GD11606@lukather>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie@kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Alexandre Belloni <alexandre.belloni@free-electrons.com>
+To: Maxime Ripard <maxime.ripard@free-electrons.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20140505041721.GD11606@lukather>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+Hi Maxime,
 
-current PIO tranfer method be described as follows:
-1. fill as much as bytes but no more than 256 bytes(fifo size)
-2. enable oflow/uflow/txfifo_empty interrupt
-3. isr process 3 interrupt signal, do complete works.
-4. after isr done, if there are left bytes go into 1 else go into 5
-5. transfer end
+On Mon, May 5, 2014 at 6:17 AM, Maxime Ripard
+<maxime.ripard@free-electrons.com> wrote:
+> On Fri, May 02, 2014 at 01:28:26AM +0200, Geert Uytterhoeven wrote:
+>> On Fri, May 2, 2014 at 12:36 AM, Maxime Ripard
+>> <maxime.ripard@free-electrons.com> wrote:
+>> > But it actually doesn't work in a case where you can't really predict
+>> > what is on the other side of the bus. Either because, on the board
+>> > you're using the pins are exposed and it's pretty much up to the user
+>> > to know what to put on it. That could be handled by DT overlays
+>> > though.
+>> >
+>> > What never works is where the device on the other side is so generic
+>> > that you really can't tell what it does. Think of a microcontroller
+>> > that would behave as a SPI slave. It's behaviour and what it does is
+>> > pretty much dependant of what we flashed on it, and suddenly the
+>> > compatible string is not the proper reprensentation anymore.
+>>
+>> So you will (hopefully soon) use overlay DT to change the DTS to match what's
+>> connected?
+>
+> Not really, because you can't declare a spidev device in the DT.
 
-by current PIO transfer method:
-1. reduce interrupt counts in spi interrupt line.
-2. reduce interrupt latency because no do data fill/fetch in isr.
+Yes you can. I've done it before.
 
-Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
-Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
----
--v2
-use do {} while statement to replace for(;;) statement pointed by Mark Brown
- drivers/spi/spi-sirf.c | 101 ++++++++++++++++++++++++++-----------------------
- 1 file changed, 54 insertions(+), 47 deletions(-)
+See also "git grep -w spidev -- arch/arm/*/dts/".
 
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index 2d23899..95ac276 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -86,6 +86,7 @@
- #define SIRFSOC_SPI_TX_DONE		BIT(1)
- #define SIRFSOC_SPI_RX_OFLOW		BIT(2)
- #define SIRFSOC_SPI_TX_UFLOW		BIT(3)
-+#define SIRFSOC_SPI_RX_IO_DMA		BIT(4)
- #define SIRFSOC_SPI_RX_FIFO_FULL	BIT(6)
- #define SIRFSOC_SPI_TXFIFO_EMPTY	BIT(7)
- #define SIRFSOC_SPI_RXFIFO_THD_REACH	BIT(8)
-@@ -265,41 +266,34 @@ static irqreturn_t spi_sirfsoc_irq(int irq, void *dev_id)
- {
- 	struct sirfsoc_spi *sspi = dev_id;
- 	u32 spi_stat = readl(sspi->base + SIRFSOC_SPI_INT_STATUS);
--
--	writel(spi_stat, sspi->base + SIRFSOC_SPI_INT_STATUS);
--
- 	if (sspi->tx_by_cmd && (spi_stat & SIRFSOC_SPI_FRM_END)) {
- 		complete(&sspi->tx_done);
- 		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-+		writel(SIRFSOC_SPI_INT_MASK_ALL,
-+				sspi->base + SIRFSOC_SPI_INT_STATUS);
- 		return IRQ_HANDLED;
- 	}
- 
- 	/* Error Conditions */
- 	if (spi_stat & SIRFSOC_SPI_RX_OFLOW ||
- 			spi_stat & SIRFSOC_SPI_TX_UFLOW) {
-+		complete(&sspi->tx_done);
- 		complete(&sspi->rx_done);
- 		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-+		writel(SIRFSOC_SPI_INT_MASK_ALL,
-+				sspi->base + SIRFSOC_SPI_INT_STATUS);
-+		return IRQ_HANDLED;
- 	}
-+	if (spi_stat & SIRFSOC_SPI_TXFIFO_EMPTY)
-+		complete(&sspi->tx_done);
-+	while (!(readl(sspi->base + SIRFSOC_SPI_INT_STATUS) &
-+		SIRFSOC_SPI_RX_IO_DMA))
-+		cpu_relax();
-+	complete(&sspi->rx_done);
-+	writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
-+	writel(SIRFSOC_SPI_INT_MASK_ALL,
-+			sspi->base + SIRFSOC_SPI_INT_STATUS);
- 
--	if (spi_stat & (SIRFSOC_SPI_FRM_END
--			| SIRFSOC_SPI_RXFIFO_THD_REACH))
--		while (!((readl(sspi->base + SIRFSOC_SPI_RXFIFO_STATUS)
--				& SIRFSOC_SPI_FIFO_EMPTY)) &&
--				sspi->left_rx_word)
--			sspi->rx_word(sspi);
--
--	if (spi_stat & (SIRFSOC_SPI_TXFIFO_EMPTY |
--			SIRFSOC_SPI_TXFIFO_THD_REACH))
--		while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS)
--				& SIRFSOC_SPI_FIFO_FULL)) &&
--				sspi->left_tx_word)
--			sspi->tx_word(sspi);
--
--	/* Received all words */
--	if ((sspi->left_rx_word == 0) && (sspi->left_tx_word == 0)) {
--		complete(&sspi->rx_done);
--		writel(0x0, sspi->base + SIRFSOC_SPI_INT_EN);
--	}
- 	return IRQ_HANDLED;
- }
- 
-@@ -420,32 +414,45 @@ static void spi_sirfsoc_pio_transfer(struct spi_device *spi,
- 	int timeout = t->len * 10;
- 
- 	sspi = spi_master_get_devdata(spi->master);
--	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
--	writel(SIRFSOC_SPI_FIFO_RESET, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
--	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
--	writel(SIRFSOC_SPI_FIFO_START, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
--	writel(0, sspi->base + SIRFSOC_SPI_INT_EN);
--	writel(SIRFSOC_SPI_INT_MASK_ALL, sspi->base + SIRFSOC_SPI_INT_STATUS);
--	writel(readl(sspi->base + SIRFSOC_SPI_CTRL) | SIRFSOC_SPI_MUL_DAT_MODE |
--		SIRFSOC_SPI_ENA_AUTO_CLR, sspi->base + SIRFSOC_SPI_CTRL);
--	writel(sspi->left_tx_word - 1,
--			sspi->base + SIRFSOC_SPI_TX_DMA_IO_LEN);
--	writel(sspi->left_rx_word - 1,
--			sspi->base + SIRFSOC_SPI_RX_DMA_IO_LEN);
--	sspi->tx_word(sspi);
--	writel(SIRFSOC_SPI_TXFIFO_EMPTY_INT_EN | SIRFSOC_SPI_TX_UFLOW_INT_EN |
--		SIRFSOC_SPI_RX_OFLOW_INT_EN | SIRFSOC_SPI_RXFIFO_THD_INT_EN |
--		SIRFSOC_SPI_TXFIFO_THD_INT_EN | SIRFSOC_SPI_FRM_END_INT_EN|
--		SIRFSOC_SPI_RXFIFO_FULL_INT_EN,
--		sspi->base + SIRFSOC_SPI_INT_EN);
--	writel(SIRFSOC_SPI_RX_EN | SIRFSOC_SPI_TX_EN,
-+	do {
-+		writel(SIRFSOC_SPI_FIFO_RESET,
-+			sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-+		writel(SIRFSOC_SPI_FIFO_RESET,
-+			sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-+		writel(SIRFSOC_SPI_FIFO_START,
-+			sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-+		writel(SIRFSOC_SPI_FIFO_START,
-+			sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-+		writel(0, sspi->base + SIRFSOC_SPI_INT_EN);
-+		writel(SIRFSOC_SPI_INT_MASK_ALL,
-+			sspi->base + SIRFSOC_SPI_INT_STATUS);
-+		writel(readl(sspi->base + SIRFSOC_SPI_CTRL) |
-+			SIRFSOC_SPI_MUL_DAT_MODE | SIRFSOC_SPI_ENA_AUTO_CLR,
-+			sspi->base + SIRFSOC_SPI_CTRL);
-+		writel(min(sspi->left_tx_word, (u32)(256 / sspi->word_width))
-+				- 1, sspi->base + SIRFSOC_SPI_TX_DMA_IO_LEN);
-+		writel(min(sspi->left_rx_word, (u32)(256 / sspi->word_width))
-+				- 1, sspi->base + SIRFSOC_SPI_RX_DMA_IO_LEN);
-+		while (!((readl(sspi->base + SIRFSOC_SPI_TXFIFO_STATUS)
-+			& SIRFSOC_SPI_FIFO_FULL)) && sspi->left_tx_word)
-+			sspi->tx_word(sspi);
-+		writel(SIRFSOC_SPI_TXFIFO_EMPTY_INT_EN |
-+			SIRFSOC_SPI_TX_UFLOW_INT_EN |
-+			SIRFSOC_SPI_RX_OFLOW_INT_EN,
-+			sspi->base + SIRFSOC_SPI_INT_EN);
-+		writel(SIRFSOC_SPI_RX_EN | SIRFSOC_SPI_TX_EN,
- 			sspi->base + SIRFSOC_SPI_TX_RX_EN);
--	if (wait_for_completion_timeout(&sspi->rx_done, timeout) == 0)
--		dev_err(&spi->dev, "transfer timeout\n");
--	writel(0, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
--	writel(0, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
--	writel(0, sspi->base + SIRFSOC_SPI_TX_RX_EN);
--	writel(0, sspi->base + SIRFSOC_SPI_INT_EN);
-+		if (!wait_for_completion_timeout(&sspi->tx_done, timeout) ||
-+			!wait_for_completion_timeout(&sspi->rx_done, timeout)) {
-+			dev_err(&spi->dev, "transfer timeout\n");
-+			break;
-+		}
-+		while (!((readl(sspi->base + SIRFSOC_SPI_RXFIFO_STATUS)
-+			& SIRFSOC_SPI_FIFO_EMPTY)) && sspi->left_rx_word)
-+			sspi->rx_word(sspi);
-+		writel(0, sspi->base + SIRFSOC_SPI_RXFIFO_OP);
-+		writel(0, sspi->base + SIRFSOC_SPI_TXFIFO_OP);
-+	} while (sspi->left_tx_word != 0 || sspi->left_rx_word != 0);
- }
- 
- static int spi_sirfsoc_transfer(struct spi_device *spi, struct spi_transfer *t)
--- 
-1.9.1
+>> And then you want spidev to bind to it. Would it help if DT offered a feature
+>> to add a compatible entry to a driver at runtime, cfr.
+>> /sys/bus/pci/drivers/.../new_id on PCI?
+>
+> The thing is, in the core SPI bus, devices are only instiated (in the
+> DT case), by parsing the DT. So, to bind a device to a new driver, it
+> has to exist in the first place, and it won't exist, because there
+> won't be any node in the DT for this device. But since DT is
+> unsuitable for such a device, you go back to where we were initially.
+
+So you add a node in the overlay DT? Or what am I missing?
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

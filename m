@@ -1,68 +1,40 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: Force the registration of the spidev devices
-Date: Mon, 5 May 2014 12:16:02 -0700
-Message-ID: <20140505191602.GJ22111@sirena.org.uk>
-References: <1398705774-12361-1-git-send-email-maxime.ripard@free-electrons.com>
- <20140429183758.GH15125@sirena.org.uk>
- <20140430180609.GC3000@lukather>
- <20140501011811.GF3245@sirena.org.uk>
- <20140501223629.GJ3000@lukather>
- <CAMuHMdUWa1_n94sDvv=L_goc+SOnD9CAKi5DzifrY7GWYRdQmw@mail.gmail.com>
- <20140505041721.GD11606@lukather>
- <CAMuHMdWZ1rvC+tkT=CbfMwZtppyJ_KpzT7JrLd5k5P2oxzA+8g@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mPTHnM80CEnHQ2WJ"
-Cc: Maxime Ripard <maxime.ripard@free-electrons.com>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+From: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Subject: [PATCH] spi: atmel: fix incorrect comparison
+Date: Tue,  6 May 2014 17:44:41 +0200
+Message-ID: <1399391081-16095-1-git-send-email-alexandre.belloni@free-electrons.com>
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
 	Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdWZ1rvC+tkT=CbfMwZtppyJ_KpzT7JrLd5k5P2oxzA+8g@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Found using smatch:
+drivers/spi/spi-atmel.c:878 atmel_spi_pump_pio_data() warn: unsigned
+'as->current_remaining_bytes' is never less than zero.
 
---mPTHnM80CEnHQ2WJ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+---
+ drivers/spi/spi-atmel.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-On Mon, May 05, 2014 at 09:10:43AM +0200, Geert Uytterhoeven wrote:
-> On Mon, May 5, 2014 at 6:17 AM, Maxime Ripard
-
-> > Not really, because you can't declare a spidev device in the DT.
-
-> Yes you can. I've done it before.
-
-> See also "git grep -w spidev -- arch/arm/*/dts/".
-
-It is technically possible but it is a bad idea that should not get past
-review - it's putting a specific bit of Linux implementation detail
-about how we want to to control the relevant device at this specific
-time into the DT.
-
---mPTHnM80CEnHQ2WJ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTZ+NvAAoJELSic+t+oim9tuUP/1jdg2G0cYhlmZhdbcJYV5Aq
-O470U76PXUzxP7qUh9VTogVOzYzJ+MvqYQfy5esPyScb+npZH9QgX7iAJtLg7xou
-LPYohLA8ll5jvBf8ZSY56ZfJ7pssxVyl4YjfuTeKrYUL/u+jDOWMDwg3JzZS15Uq
-C0BgxBZKuCPKufnKXMC1dl1r/0mWLNYRfH0QScgwO5FmzeSVARh9G3yXIP/WpRHt
-M8QcaJoZXn7LEA2Bs/TyYhOldqcDYmhnDyK0PECN9C4HvlKcKlMLXXyopcp12D4k
-nOw87G6zlaZZlJFFudEIdDSi8sCGTYwbNHzNRZvVQmfP4omFRB0+ZN/uNEMdK87Z
-L4DFlFdcT6mNI1sQgaVelRT/5mvYKV9VD0/2niy8Zo6kvcHXpwP9dkyF7c/LO5TX
-fZREUyexMXFdEIbgBK832Y4lZLUolR/QWm+WAVBIb4Gox61WeyOpYJGlKWIUm9Gn
-qh9NRSzYa8I9mnxfG+yZhVS+qdaKfqO4vFMn4XavjKeFR55lefcb8TzlYiNJeBnh
-RMHdqY4tqMdG/12ezkaTpFVIqbNtW1iZm69mAT6EsXIXhyPK+fOjxGBFYWwA1RYV
-Q5iDs6Cmso18qAecbN6TuS55i3cvw6vOtuE6E5tQqB5213Ggx6fvnikXUMupufEi
-sShe28xWprbOP6dpK+Jx
-=RFcP
------END PGP SIGNATURE-----
-
---mPTHnM80CEnHQ2WJ--
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 079e6b1b0cdb..39417fd8462f 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -874,8 +874,9 @@ atmel_spi_pump_pio_data(struct atmel_spi *as, struct spi_transfer *xfer)
+ 		spi_readl(as, RDR);
+ 	}
+ 	if (xfer->bits_per_word > 8) {
+-		as->current_remaining_bytes -= 2;
+-		if (as->current_remaining_bytes < 0)
++		if (as->current_remaining_bytes > 2)
++			as->current_remaining_bytes -= 2;
++		else
+ 			as->current_remaining_bytes = 0;
+ 	} else {
+ 		as->current_remaining_bytes--;
+-- 
+1.9.1

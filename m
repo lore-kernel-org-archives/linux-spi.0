@@ -1,7 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 4/6] spi: tegra114: Make of_device_id array const
-Date: Wed, 07 May 2014 16:51:02 +0900
-Message-ID: <01de01cf69c9$179aaef0$46d00cd0$%han@samsung.com>
+Subject: [PATCH 5/6] spi: tegra20-sflash: Make of_device_id array const
+Date: Wed, 07 May 2014 16:51:52 +0900
+Message-ID: <01df01cf69c9$35c91fb0$a15b5f10$%han@samsung.com>
 References: <01db01cf69c8$584cd640$08e682c0$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -21,20 +21,20 @@ handle it as const.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-tegra114.c |    2 +-
+ drivers/spi/spi-tegra20-sflash.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 4006495..e4a85ad 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -1012,7 +1012,7 @@ static irqreturn_t tegra_spi_isr(int irq, void *context_data)
- 	return IRQ_WAKE_THREAD;
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index 47869ea..3548ce2 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -419,7 +419,7 @@ static irqreturn_t tegra_sflash_isr(int irq, void *context_data)
+ 	return handle_cpu_based_xfer(tsd);
  }
  
--static struct of_device_id tegra_spi_of_match[] = {
-+static const struct of_device_id tegra_spi_of_match[] = {
- 	{ .compatible = "nvidia,tegra114-spi", },
+-static struct of_device_id tegra_sflash_of_match[] = {
++static const struct of_device_id tegra_sflash_of_match[] = {
+ 	{ .compatible = "nvidia,tegra20-sflash", },
  	{}
  };
 -- 

@@ -1,40 +1,44 @@
-From: Alexandre Belloni <alexandre.belloni@free-electrons.com>
-Subject: [PATCH] spi: atmel: fix incorrect comparison
-Date: Tue,  6 May 2014 17:44:41 +0200
-Message-ID: <1399391081-16095-1-git-send-email-alexandre.belloni@free-electrons.com>
-Cc: Nicolas Ferre <nicolas.ferre@atmel.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	Alexandre Belloni <alexandre.belloni@free-electrons.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH 1/6] spi: fsl-dspi: Make of_device_id array const
+Date: Wed, 07 May 2014 16:45:41 +0900
+Message-ID: <01db01cf69c8$584cd640$08e682c0$%han@samsung.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	'Chao Fu' <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-language: ko
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Found using smatch:
-drivers/spi/spi-atmel.c:878 atmel_spi_pump_pio_data() warn: unsigned
-'as->current_remaining_bytes' is never less than zero.
+Make of_device_id array const, because all OF functions
+handle it as const.
 
-Signed-off-by: Alexandre Belloni <alexandre.belloni@free-electrons.com>
+Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-atmel.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-dspi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 079e6b1b0cdb..39417fd8462f 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -874,8 +874,9 @@ atmel_spi_pump_pio_data(struct atmel_spi *as, struct spi_transfer *xfer)
- 		spi_readl(as, RDR);
- 	}
- 	if (xfer->bits_per_word > 8) {
--		as->current_remaining_bytes -= 2;
--		if (as->current_remaining_bytes < 0)
-+		if (as->current_remaining_bytes > 2)
-+			as->current_remaining_bytes -= 2;
-+		else
- 			as->current_remaining_bytes = 0;
- 	} else {
- 		as->current_remaining_bytes--;
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index d565eee..5021ddf 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -406,7 +406,7 @@ static irqreturn_t dspi_interrupt(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
+ }
+ 
+-static struct of_device_id fsl_dspi_dt_ids[] = {
++static const struct of_device_id fsl_dspi_dt_ids[] = {
+ 	{ .compatible = "fsl,vf610-dspi", .data = NULL, },
+ 	{ /* sentinel */ }
+ };
 -- 
-1.9.1
+1.7.10.4
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

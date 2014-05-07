@@ -1,46 +1,34 @@
-From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 6/6] spi: tegra20-slink: Make of_device_id array const
-Date: Wed, 07 May 2014 16:52:36 +0900
-Message-ID: <01e001cf69c9$4ff7b310$efe71930$%han@samsung.com>
-References: <01db01cf69c8$584cd640$08e682c0$%han@samsung.com>
+From: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH 4/6] spi: tegra114: Make of_device_id array const
+Date: Wed, 7 May 2014 13:49:26 +0530
+Message-ID: <5369EC8E.8090607@nvidia.com>
+References: <01db01cf69c8$584cd640$08e682c0$%han@samsung.com> <01de01cf69c9$179aaef0$46d00cd0$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Stephen Warren' <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
-	'Laxman Dewangan' <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
-To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Stephen Warren <swarren-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>, 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <01db01cf69c8$584cd640$08e682c0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Content-language: ko
+In-Reply-To: <01de01cf69c9$179aaef0$46d00cd0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Make of_device_id array const, because all OF functions
-handle it as const.
+On Wednesday 07 May 2014 01:21 PM, Jingoo Han wrote:
+> Make of_device_id array const, because all OF functions
+> handle it as const.
+>
+>
+For 4, 5 and 6 of this series,
 
-Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi-tegra20-slink.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Acked-by: Laxman Dewangan <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>
 
-diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
-index e3c1b93..0b9e32e 100644
---- a/drivers/spi/spi-tegra20-slink.c
-+++ b/drivers/spi/spi-tegra20-slink.c
-@@ -1001,7 +1001,7 @@ static const struct tegra_slink_chip_data tegra20_spi_cdata = {
- 	.cs_hold_time = false,
- };
- 
--static struct of_device_id tegra_slink_of_match[] = {
-+static const struct of_device_id tegra_slink_of_match[] = {
- 	{ .compatible = "nvidia,tegra30-slink", .data = &tegra30_spi_cdata, },
- 	{ .compatible = "nvidia,tegra20-slink", .data = &tegra20_spi_cdata, },
- 	{}
--- 
-1.7.10.4
-
-
+-----------------------------------------------------------------------------------
+This email message is for the sole use of the intended recipient(s) and may contain
+confidential information.  Any unauthorized review, use, disclosure or distribution
+is prohibited.  If you are not the intended recipient, please contact the sender by
+reply email and destroy all copies of the original message.
+-----------------------------------------------------------------------------------
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

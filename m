@@ -1,7 +1,7 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 5/6] spi: tegra20-sflash: Make of_device_id array const
-Date: Wed, 07 May 2014 16:51:52 +0900
-Message-ID: <01df01cf69c9$35c91fb0$a15b5f10$%han@samsung.com>
+Subject: [PATCH 6/6] spi: tegra20-slink: Make of_device_id array const
+Date: Wed, 07 May 2014 16:52:36 +0900
+Message-ID: <01e001cf69c9$4ff7b310$efe71930$%han@samsung.com>
 References: <01db01cf69c8$584cd640$08e682c0$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -21,22 +21,22 @@ handle it as const.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-tegra20-sflash.c |    2 +-
+ drivers/spi/spi-tegra20-slink.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 47869ea..3548ce2 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -419,7 +419,7 @@ static irqreturn_t tegra_sflash_isr(int irq, void *context_data)
- 	return handle_cpu_based_xfer(tsd);
- }
- 
--static struct of_device_id tegra_sflash_of_match[] = {
-+static const struct of_device_id tegra_sflash_of_match[] = {
- 	{ .compatible = "nvidia,tegra20-sflash", },
- 	{}
+diff --git a/drivers/spi/spi-tegra20-slink.c b/drivers/spi/spi-tegra20-slink.c
+index e3c1b93..0b9e32e 100644
+--- a/drivers/spi/spi-tegra20-slink.c
++++ b/drivers/spi/spi-tegra20-slink.c
+@@ -1001,7 +1001,7 @@ static const struct tegra_slink_chip_data tegra20_spi_cdata = {
+ 	.cs_hold_time = false,
  };
+ 
+-static struct of_device_id tegra_slink_of_match[] = {
++static const struct of_device_id tegra_slink_of_match[] = {
+ 	{ .compatible = "nvidia,tegra30-slink", .data = &tegra30_spi_cdata, },
+ 	{ .compatible = "nvidia,tegra20-slink", .data = &tegra20_spi_cdata, },
+ 	{}
 -- 
 1.7.10.4
 

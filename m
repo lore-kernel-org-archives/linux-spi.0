@@ -1,91 +1,52 @@
-From: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH] spi: Force the registration of the spidev devices
-Date: Wed, 7 May 2014 21:22:33 -0500
-Message-ID: <20140508022233.GF7047@lukather>
-References: <1398705774-12361-1-git-send-email-maxime.ripard@free-electrons.com>
- <20140429183758.GH15125@sirena.org.uk>
- <20140430180609.GC3000@lukather>
- <20140501011811.GF3245@sirena.org.uk>
- <20140501223629.GJ3000@lukather>
- <20140502174048.GV3245@sirena.org.uk>
- <20140505042147.GE11606@lukather>
- <20140505191723.GK22111@sirena.org.uk>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH] spi: dw: Remove unused dw_spi_cleanup function
+Date: Thu, 08 May 2014 19:17:07 +0800
+Message-ID: <1399547827.1783.1.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="NGIwU0kFl1Z1A3An"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Alexandre Belloni <alexandre.belloni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140505191723.GK22111-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+The dw_spi_cleanup() function was removed by commit c63f5da00845
+"spi: dw: Don't call kfree for memory allocated by devm_kzalloc".
 
---NGIwU0kFl1Z1A3An
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+commit ec37e8e1f0e3 "spi: dw: migrate to generic queue infrastructure" added
+dw_spi_cleanup() but never use it. So now I got below build warning:
 
-On Mon, May 05, 2014 at 12:17:23PM -0700, Mark Brown wrote:
-> On Sun, May 04, 2014 at 11:21:47PM -0500, Maxime Ripard wrote:
-> > On Fri, May 02, 2014 at 10:40:48AM -0700, Mark Brown wrote:
-> > > > i2c-dev works great in these cases, because you always have access =
-to
-> > > > all the bus, and all the devices, except if the device is already u=
-sed
-> > > > by someone. The patch I suggested is an attempt to mimic this.
->=20
-> > > It seems better to implement something like this at the device model
-> > > level, provide a way to have a default UIO driver for anything on a
-> > > given bus.  I don't see anything bus specific apart from saying what =
-the
-> > > default driver to use is and it avoids the icky code fiddling about w=
-ith
-> > > what devices are bound and the races that might be involved duplicated
-> > > in individual buses.
->=20
-> > Hmmm, yes, that's probably a great long-term way of dealing with this,
-> > but I don't see it happening soon.
->=20
-> Isn't the code in the patch that started this thread roughly what's
-> needed, just done in a SPI specific way instead of a generic way?
+  CC [M]  drivers/spi/spi-dw.o
+drivers/spi/spi-dw.c:609:13: warning: 'dw_spi_cleanup' defined but not used [-Wunused-function]
 
-Hmmm, I think I get your point now. Yes, we could do it. Let me find
-some time to actually write something :)
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/spi-dw.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-Thanks,
-Maxime
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 9965e1b..29f3314 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -606,12 +606,6 @@ static int dw_spi_setup(struct spi_device *spi)
+ 	return 0;
+ }
+ 
+-static void dw_spi_cleanup(struct spi_device *spi)
+-{
+-	struct chip_data *chip = spi_get_ctldata(spi);
+-	kfree(chip);
+-}
+-
+ /* Restart the controller, disable all interrupts, clean rx fifo */
+ static void spi_hw_init(struct dw_spi *dws)
+ {
+-- 
+1.8.3.2
 
---=20
-Maxime Ripard, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
 
---NGIwU0kFl1Z1A3An
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.14 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTauppAAoJEBx+YmzsjxAgzaYP+QE/CC1jWhYSRIVAD10/qZhk
-evBZL/A+xv4/GwpzGsSkGbBYyn1m0V1R4cj3+kYuBxzrdylnppqWaypauQbxKlnr
-WRy+wLs4vOrLD92hF0kDN8f8ipvtRXtlBdHd1BVgOxQuGV3YagsXbTs+8z+D2szu
-Zdw6hC7WqUMTJdxFjhl/BWIN4Ky9HgQRL5w1itoWUZZorHgQfdd3nbmRPnC6uLRy
-G6P5lg01ylLJF8uUgle5g6TUyAFByUyZZUE+RgIVjiOQyhjN0NuTbtf9ovvNmNt4
-MJq2Z1wMLWqjAczaAsJV8y/1nsqfB2zk+I4yYjGI1hKy6wRTSfxrUKtX6XB+EMT0
-a0ROU7iNelmAXgSSrsRKwbMHQKKBLPS5jOuCM/l8R2qqzF05JlsUJsYd3cWalIC+
-Yr5jyhmI4U2axChZZ6admbBWVNedWvuNpHZip7KrLqJCzshuvmPU4se122eHLqiW
-VMdoAWN7ouqHgHghTECJY36d334ndi9KnPZnpOydA56zj3cgj5L79NnKzOvj1Dnp
-+I/j2ZoNGNLm8PB6NaEs/5wRPBItpR6NmdQzFgaQIB3YIMZkB5xhRFvnhmbDXEUb
-yl51XGPb2ceyUlhYmZrh1XXYi85aE+ynCaIxDetMEl/M1EmGbnzNgIZr6Ddyo+DO
-XfSun1o6r0UZjWuNC1uc
-=UOre
------END PGP SIGNATURE-----
-
---NGIwU0kFl1Z1A3An--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

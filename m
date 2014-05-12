@@ -1,40 +1,29 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 2/3] drivers/mmc/host/mmc_spi.c: Use get/put_unaligned_be32
-Date: Mon, 12 May 2014 10:05:45 +0200
-Message-ID: <CAMuHMdWxwwfPMYmAnrbF-PLaZiDNr4=F5izgNkxVXz7EQZqMtA@mail.gmail.com>
-References: <20140511100211.1334.qmail@ns.horizon.com>
-	<20140511100502.1491.qmail@ns.horizon.com>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/2] mtd: m25p80: Revive dual read support
+Date: Mon, 12 May 2014 13:21:31 -0700
+Message-ID: <20140512202131.GQ28907@ld-irv-0074>
+References: <1398170732-19773-1-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Pavel Machek <pavel@ucw.cz>, arik@wizery.com,
-	david.gnedt@davizone.at, eliad@wizery.com, jan.nikitenko@gmail.com,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Linux MMC List <linux-mmc@vger.kernel.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	linux-wireless <linux-wireless@vger.kernel.org>,
-	John Linville <linville@tuxdriver.com>, luca@coelho.fi,
-	ext Tony Lindgren <tony@atomide.com>
-To: George Spelvin <linux@horizon.com>
-Return-path: <linux-mmc-owner@vger.kernel.org>
-In-Reply-To: <20140511100502.1491.qmail@ns.horizon.com>
-Sender: linux-mmc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1398170732-19773-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, May 11, 2014 at 12:05 PM, George Spelvin <linux@horizon.com> wrote:
-> Very minor source and binary size reduction.
->
-> Signed-off-by: George Spelvin <linux@horizon.com>
+On Tue, Apr 22, 2014 at 02:45:31PM +0200, Geert Uytterhoeven wrote:
+> Commit 03e296f613affcc2671c1e86d8c25ecad867204e ("mtd: m25p80: use the SPI
+> nor framework") accidentally removed support for Dual SPI read transfers.
+> Add it back.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Pushed to l2-mtd.git. Thanks!
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
+Brian
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

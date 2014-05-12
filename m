@@ -1,44 +1,40 @@
-From: Pavel Machek <pavel-+ZI9xUNit7I@public.gmane.org>
-Subject: Re: [PATCH 3/3] drivers/net/wireless/ti/wl*/spi.c: Simplify CRC
- computation
-Date: Sun, 11 May 2014 12:36:02 +0200
-Message-ID: <20140511103602.GC32609@xo-6d-61-c0.localdomain>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 2/3] drivers/mmc/host/mmc_spi.c: Use get/put_unaligned_be32
+Date: Mon, 12 May 2014 10:05:45 +0200
+Message-ID: <CAMuHMdWxwwfPMYmAnrbF-PLaZiDNr4=F5izgNkxVXz7EQZqMtA@mail.gmail.com>
 References: <20140511100211.1334.qmail@ns.horizon.com>
- <20140511100743.1712.qmail@ns.horizon.com>
+	<20140511100502.1491.qmail@ns.horizon.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: arik-Ix1uc/W3ht7QT0dZR+AlfA@public.gmane.org, david.gnedt-rFfgOQFw6VLk7+2FdBfRIA@public.gmane.org, eliad-Ix1uc/W3ht7QT0dZR+AlfA@public.gmane.org,
-	jan.nikitenko-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, laurent.pinchart+renesas-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-mmc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-wireless-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linville-2XuSBdqkA4R54TAoqtyWWQ@public.gmane.org, luca-XPOmlcxoEMv1KXRcyAk9cg@public.gmane.org, tony-4v6yS6AI5VpBDgjK7y7TUQ@public.gmane.org
-To: George Spelvin <linux-gpGsJRJZ3PBBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140511100743.1712.qmail-HzZAx2gCgqrSUeElwK9/Pw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Pavel Machek <pavel@ucw.cz>, arik@wizery.com,
+	david.gnedt@davizone.at, eliad@wizery.com, jan.nikitenko@gmail.com,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Linux MMC List <linux-mmc@vger.kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	linux-wireless <linux-wireless@vger.kernel.org>,
+	John Linville <linville@tuxdriver.com>, luca@coelho.fi,
+	ext Tony Lindgren <tony@atomide.com>
+To: George Spelvin <linux@horizon.com>
+Return-path: <linux-mmc-owner@vger.kernel.org>
+In-Reply-To: <20140511100502.1491.qmail@ns.horizon.com>
+Sender: linux-mmc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sun 2014-05-11 06:07:43, George Spelvin wrote:
-> These devices require commands stored in buffers in an odd order,
-> different from that in which the CRC is computed.
-> 
-> Rather than make two copies of the commands in two different orders,
-> form the commands in logical (CRC) order, append the CRC, then byte-swap
-> in place to the desired order.
-> 
-> The old code worked fine, I'm just scratching an "ugh, that's ugly"
-> itch.
-> 
-> Signed-off-by: George Spelvin <linux-gpGsJRJZ3PBBDgjK7y7TUQ@public.gmane.org>
+On Sun, May 11, 2014 at 12:05 PM, George Spelvin <linux@horizon.com> wrote:
+> Very minor source and binary size reduction.
+>
+> Signed-off-by: George Spelvin <linux@horizon.com>
 
-Reviewed-by: Pavel Machek <pavel-+ZI9xUNit7I@public.gmane.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
+Gr{oetje,eeting}s,
 
--- 
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
+                        Geert
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

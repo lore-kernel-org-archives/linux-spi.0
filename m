@@ -1,54 +1,45 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: dw: Remove unused dw_spi_cleanup function
-Date: Mon, 12 May 2014 22:04:38 +0100
-Message-ID: <20140512210438.GS12304@sirena.org.uk>
-References: <1399547827.1783.1.camel@phoenix>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4tde/aUCtLj2gjZL"
-Cc: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1399547827.1783.1.camel@phoenix>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Andy Gross <agross@codeaurora.org>
+Subject: [PATCH 0/4] spi: qup: Fixes and new version support
+Date: Tue, 13 May 2014 16:34:40 -0500
+Message-ID: <1400016884-9568-1-git-send-email-agross@codeaurora.org>
+Cc: linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	"Ivan T. Ivanov" <iivanov@mm-sol.com>,
+	Bjorn Andersson <bjorn.andersson@sonymobile.com>,
+	Andy Gross <agross@codeaurora.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+This set of patches provides a few fixes for the SPI QUP driver and support for
+an earlier version of the QUP.
 
---4tde/aUCtLj2gjZL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The first patch removes the use of the controller's own chip select
+functionality.  The user should instead use GPIOs and make use of the SPI core's
+GPIO chip select feature.
 
-On Thu, May 08, 2014 at 07:17:07PM +0800, Axel Lin wrote:
-> The dw_spi_cleanup() function was removed by commit c63f5da00845
-> "spi: dw: Don't call kfree for memory allocated by devm_kzalloc".
+The second patch fixes the calculation that determines whether the FIFO or BLOCK
+mode is used.  SPI transactions greater than 16 bytes but less than FIFO size
+were failing.
 
-Applied, thanks.
+The third patch addresses failures during probing of slave devices that required
+SPI transactions.  The spi_register_master needs to be called after the runtime
+pm is initialized.
 
---4tde/aUCtLj2gjZL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+The last patch adds support for V1.1.1 of the QUP.  This version of the
+controller is present in earlier devices (APQ8064, IPQ8064, and MSM8960).
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Andy Gross (4):
+  spi: qup: Remove chip select function
+  spi: qup: Correct selection of FIFO/Block mode
+  spi: qup: Fix order of spi_register_master
+  spi: qup: Add support for v1.1.1
 
-iQIcBAEBAgAGBQJTcTdjAAoJELSic+t+oim9a44P/jHpsyeXmmQSphm1CG/r68sT
-s531jNXoXqVo+D2B49ogL++bMFU3Su0PTuekq8UcABeEOqj0AxzMmwv4ZyrUDeQY
-uxin9NI3NQoXjbJWgrqcSxeEykiBfPUdKwEOw3+SKqBZLZHR+0fOLXxD0VvCz73S
-zw/OVyXywbt/YbGD+RWUWWIiszeOdUVKosMaClV6tbyoiPmPtw31ysu44fLsJPvi
-zjO1SRupCCkXEvEqPSN5sK3Lkv7bZ6ssPNKOZmzNqSTWtncRBsiOR8rX7RITF8/u
-Y0xXy0vFjpaahLrPRJ5xn9C6s/EmDaZrHoWJsgUy1ua75bnnVD0gvN4dPQjwxmoH
-G08QXL4qBzORQ0652I4wKfM4PRCTMF1MA+Lym3CYUG3uAYgr/UOrSj2AYbyMPqsU
-Z7QkjcGs5oowQbLoQtQoFl7NFBnjIKOwnMvA5YfqXx2ZZpNYiQxKhEmguoS1dBih
-CRewfkCv47PFkLM1JmIT0xNDB4htdzxObsJH1jFNt5O42KrbHKv3QzKL4E3siP2F
-bh2F6LlgSj3VaST4hUWe5biNzi5kjbT1S2XeES7D3ZQGq2zwlP5FnV3BM0CPKUns
-AJf9JZfPPQp8iYCMR0WRhTfv21myrGVCTQreVcmym8KkK4Va4ymk6CQlJsyZEO9G
-L5ue3GvKDTZGkAepHKxp
-=hYHs
------END PGP SIGNATURE-----
+ .../devicetree/bindings/spi/qcom,spi-qup.txt       |    6 ++
+ drivers/spi/spi-qup.c                              |   75 ++++++++------------
+ 2 files changed, 37 insertions(+), 44 deletions(-)
 
---4tde/aUCtLj2gjZL--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-- 
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+hosted by The Linux Foundation

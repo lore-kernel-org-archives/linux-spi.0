@@ -1,56 +1,39 @@
-From: Andy Gross <agross@codeaurora.org>
-Subject: [PATCH 3/4] spi: qup: Fix order of spi_register_master
-Date: Tue, 13 May 2014 16:34:43 -0500
-Message-ID: <1400016884-9568-4-git-send-email-agross@codeaurora.org>
+From: Stephen Boyd <sboyd-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: Re: [PATCH 4/4] spi: qup: Add support for v1.1.1
+Date: Tue, 13 May 2014 15:08:45 -0700
+Message-ID: <20140513220845.GH20486@codeaurora.org>
 References: <1400016884-9568-1-git-send-email-agross@codeaurora.org>
-Cc: linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	"Ivan T. Ivanov" <iivanov@mm-sol.com>,
-	Bjorn Andersson <bjorn.andersson@sonymobile.com>,
-	Andy Gross <agross@codeaurora.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <1400016884-9568-1-git-send-email-agross@codeaurora.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+ <1400016884-9568-5-git-send-email-agross@codeaurora.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
+	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+To: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1400016884-9568-5-git-send-email-agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This patch moves the devm_spi_register_master below the initialization of the
-runtime_pm.  If done in the wrong order, the spi_register_master fails if any
-probed slave devices issue SPI transactions.
+On 05/13, Andy Gross wrote:
+> @@ -488,7 +491,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+>  	struct resource *res;
+>  	struct device *dev;
+>  	void __iomem *base;
+> -	u32 data, max_freq, iomode;
+> +	u32 data = 0, max_freq, iomode;
 
-Signed-off-by: Andy Gross <agross@codeaurora.org>
----
- drivers/spi/spi-qup.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+It looks like data is unused? But actually it's used to print a
+version out and now it will always print version 0. Perhaps that
+printk needs an update?
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 57b65e9..b518b51 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -616,16 +616,19 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto error;
- 
--	ret = devm_spi_register_master(dev, master);
--	if (ret)
--		goto error;
--
- 	pm_runtime_set_autosuspend_delay(dev, MSEC_PER_SEC);
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
-+
-+	ret = devm_spi_register_master(dev, master);
-+	if (ret)
-+		goto disable_pm;
-+
- 	return 0;
- 
-+disable_pm:
-+	pm_runtime_disable(&pdev->dev);
- error:
- 	clk_disable_unprepare(cclk);
- 	clk_disable_unprepare(iclk);
 -- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
 hosted by The Linux Foundation
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

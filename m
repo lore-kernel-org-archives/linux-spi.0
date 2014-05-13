@@ -1,45 +1,105 @@
-From: Andy Gross <agross@codeaurora.org>
-Subject: [PATCH 0/4] spi: qup: Fixes and new version support
-Date: Tue, 13 May 2014 16:34:40 -0500
-Message-ID: <1400016884-9568-1-git-send-email-agross@codeaurora.org>
-Cc: linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	"Ivan T. Ivanov" <iivanov@mm-sol.com>,
-	Bjorn Andersson <bjorn.andersson@sonymobile.com>,
-	Andy Gross <agross@codeaurora.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: [PATCH 1/4] spi: qup: Remove chip select function
+Date: Tue, 13 May 2014 16:34:41 -0500
+Message-ID: <1400016884-9568-2-git-send-email-agross@codeaurora.org>
+References: <1400016884-9568-1-git-send-email-agross@codeaurora.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
+	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>,
+	Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1400016884-9568-1-git-send-email-agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This set of patches provides a few fixes for the SPI QUP driver and support for
-an earlier version of the QUP.
+This patch removes the chip select function.  Chip select should instead be
+supported using GPIOs, defining the DT entry "cs-gpios", and letting the SPI
+core assert/deassert the chip select as it sees fit.
 
-The first patch removes the use of the controller's own chip select
-functionality.  The user should instead use GPIOs and make use of the SPI core's
-GPIO chip select feature.
+Signed-off-by: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+---
+ .../devicetree/bindings/spi/qcom,spi-qup.txt       |    6 +++++
+ drivers/spi/spi-qup.c                              |   28 ++------------------
+ 2 files changed, 8 insertions(+), 26 deletions(-)
 
-The second patch fixes the calculation that determines whether the FIFO or BLOCK
-mode is used.  SPI transactions greater than 16 bytes but less than FIFO size
-were failing.
-
-The third patch addresses failures during probing of slave devices that required
-SPI transactions.  The spi_register_master needs to be called after the runtime
-pm is initialized.
-
-The last patch adds support for V1.1.1 of the QUP.  This version of the
-controller is present in earlier devices (APQ8064, IPQ8064, and MSM8960).
-
-Andy Gross (4):
-  spi: qup: Remove chip select function
-  spi: qup: Correct selection of FIFO/Block mode
-  spi: qup: Fix order of spi_register_master
-  spi: qup: Add support for v1.1.1
-
- .../devicetree/bindings/spi/qcom,spi-qup.txt       |    6 ++
- drivers/spi/spi-qup.c                              |   75 ++++++++------------
- 2 files changed, 37 insertions(+), 44 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+index b82a268..bee6ff2 100644
+--- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
++++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
+@@ -23,6 +23,12 @@ Optional properties:
+ - spi-max-frequency: Specifies maximum SPI clock frequency,
+                      Units - Hz. Definition as per
+                      Documentation/devicetree/bindings/spi/spi-bus.txt
++- num-cs:	total number of chipselects
++- cs-gpios:	should specify GPIOs used for chipselects.
++		The gpios will be referred to as reg = <index> in the SPI child
++		nodes.  If unspecified, a single SPI device without a chip
++		select can be used.
++
+ 
+ SPI slave nodes must be children of the SPI master node and can contain
+ properties described in Documentation/devicetree/bindings/spi/spi-bus.txt
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index b032e88..ea7017b 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -18,7 +18,9 @@
+ #include <linux/io.h>
+ #include <linux/list.h>
+ #include <linux/module.h>
++#include <linux/gpio.h>
+ #include <linux/of.h>
++#include <linux/of_gpio.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/spi/spi.h>
+@@ -424,31 +426,6 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+ 	return 0;
+ }
+ 
+-static void spi_qup_set_cs(struct spi_device *spi, bool enable)
+-{
+-	struct spi_qup *controller = spi_master_get_devdata(spi->master);
+-
+-	u32 iocontol, mask;
+-
+-	iocontol = readl_relaxed(controller->base + SPI_IO_CONTROL);
+-
+-	/* Disable auto CS toggle and use manual */
+-	iocontol &= ~SPI_IO_C_MX_CS_MODE;
+-	iocontol |= SPI_IO_C_FORCE_CS;
+-
+-	iocontol &= ~SPI_IO_C_CS_SELECT_MASK;
+-	iocontol |= SPI_IO_C_CS_SELECT(spi->chip_select);
+-
+-	mask = SPI_IO_C_CS_N_POLARITY_0 << spi->chip_select;
+-
+-	if (enable)
+-		iocontol |= mask;
+-	else
+-		iocontol &= ~mask;
+-
+-	writel_relaxed(iocontol, controller->base + SPI_IO_CONTROL);
+-}
+-
+ static int spi_qup_transfer_one(struct spi_master *master,
+ 			      struct spi_device *spi,
+ 			      struct spi_transfer *xfer)
+@@ -576,7 +553,6 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	master->num_chipselect = SPI_NUM_CHIPSELECTS;
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(4, 32);
+ 	master->max_speed_hz = max_freq;
+-	master->set_cs = spi_qup_set_cs;
+ 	master->transfer_one = spi_qup_transfer_one;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->auto_runtime_pm = true;
 -- 
 The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
 hosted by The Linux Foundation
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

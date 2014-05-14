@@ -1,54 +1,97 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/4] spi: qup: Correct selection of FIFO/Block mode
-Date: Wed, 14 May 2014 16:17:09 +0100
-Message-ID: <20140514151709.GF12304@sirena.org.uk>
-References: <1400016884-9568-1-git-send-email-agross@codeaurora.org>
- <1400016884-9568-3-git-send-email-agross@codeaurora.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [GIT PULL] SPI fixes for v3.15
+Date: Wed, 14 May 2014 17:08:38 +0100
+Message-ID: <20140514160838.GJ12304@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UhVWQSjpoPaj4pDS"
-Cc: linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	"Ivan T. Ivanov" <iivanov@mm-sol.com>,
-	Bjorn Andersson <bjorn.andersson@sonymobile.com>
-To: Andy Gross <agross@codeaurora.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="zYSHSYKTlyb6iK5t"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1400016884-9568-3-git-send-email-agross@codeaurora.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---UhVWQSjpoPaj4pDS
+--zYSHSYKTlyb6iK5t
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, May 13, 2014 at 04:34:42PM -0500, Andy Gross wrote:
-> This patch fixes the calculation for determining whether to use FIFO or BLOCK
-> mode.
+The following changes since commit d6d211db37e75de2ddc3a4f979038c40df7cc79c:
 
-Applied, thanks.
+  Linux 3.15-rc5 (2014-05-09 13:10:52 -0700)
 
---UhVWQSjpoPaj4pDS
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git spi-v3.15-rc5
+
+for you to fetch changes up to fd30c37331ad8ed7c7e0e4c21f5ee309fec21d7d:
+
+  Merge remote-tracking branches 'spi/fix/pxa2xx' and 'spi/fix/qup' into spi-linus (2014-05-13 19:08:34 +0100)
+
+----------------------------------------------------------------
+
+spi: Fixes for v3.15
+
+A few core fixes around outlying cases here, nothing that should affect
+most users but useful fixes.  The diffstat is rather larger than one
+might hope due some simple code motion in the fix for !CONFIG_DMA, the
+actual meaningful change is much smaller.
+
+ - Fix handling of unsupported dual and quad mode support on slave
+   registration so that drivers that can degrade gracefully do so,
+   preventing regressions for drivers this is added.
+ - Fix build in !CONFIG_DMA cases following addition of generic DMA
+   mapping support.
+ - Fix error handling for queue creation which due to wider kernel
+   changes can be triggered more easily.
+ - A couple of driver specific fixes.
+
+----------------------------------------------------------------
+Axel Lin (1):
+      spi: qup: Fix return value checking for pm_runtime_get_sync()
+
+Geert Uytterhoeven (2):
+      spi: core: Ignore unsupported Dual/Quad Transfer Mode bits
+      spi: core: Protect DMA code by #ifdef CONFIG_HAS_DMA
+
+Mark Brown (3):
+      spi: core: Don't destroy master queue if we fail to create it
+      Merge remote-tracking branch 'spi/fix/core' into spi-linus
+      Merge remote-tracking branches 'spi/fix/pxa2xx' and 'spi/fix/qup' into spi-linus
+
+Mika Westerberg (1):
+      spi/pxa2xx: Prevent DMA from transferring too many bytes
+
+ drivers/spi/spi-pxa2xx-dma.c |  16 ------
+ drivers/spi/spi-qup.c        |   2 +-
+ drivers/spi/spi.c            | 124 +++++++++++++++++++++++++++----------------
+ 3 files changed, 78 insertions(+), 64 deletions(-)
+
+--zYSHSYKTlyb6iK5t
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTc4jyAAoJELSic+t+oim9Tx4P/0ZQCKiZfZiNceHJ2fEB4gDE
-Nh9VP8TRa1uTvJDE/ea/WcYYk3zX3/PpYpbsqUC2/FWc3WCUkyQRB6C9tEdSYOrR
-tKU63GJ0aQleSSAMknYmBh133L3GTsMAF04+j2bA2N/8VmXrIjpAJOkmFqF3xYqJ
-fNQxSktY83gSQ362GgmjbxziAUpC9bScm1nBUqOMMTdcIiPtjL14RO3B81r1BwQ6
-e57xKP6Fa3NzBz0Z15iFRaE/1erlX6LsAFBXxOrM0UmeagakUMOBlb/xfxNxKkYP
-WQ5994anGRi8ym+ITC7SQJBg32dKl9I107oVOCPeZK2TlcGkH1AcDa65e+V73vGQ
-iE2rpwhgVjT0u2kc9IN1k7phGxUKgJGmnoptBtHI/ckfN64yLFNIbE6/Tg9LFLMr
-Be3AptzUwGV1AyIE1qQ6NkJxPhH+tEcGLjGvkIDiP/j8bOf6HlLr/oF3GiqEfm2M
-aR3pKje3SApPoarkLRyYi2kircIT1KXN++tRIbsQihFiGNmvQ0Gdeev+U4Qg1hSD
-4zXrFc9RBRffrvKe68MvI8nwJjk/LWylqBKAV5zcHdY108Rk6n/GIrmsJ6hUoev3
-+G2RFgdPPaQ/cepDTIqsu0i3iPEzhN1XUHVUrCh7sztarRlhSejHTIVOyL+dbZzi
-W7OIrledQ17b3Q6uxABR
-=RDjN
+iQIcBAEBAgAGBQJTc5UDAAoJELSic+t+oim9sS8QAIrS1XDwmv1B5VsFNnXjqWpg
++Q7XH14PZ6h9KZZy5UMrBsKwr5NmPYwz/8d6q8i3tZbmwHy8jqUxI00Lyf+k8L3L
+y73mq9jHDrsPt0kbPDmryDHvt9bTzonZS6rr1zRV8MxDYte/PJWZkMQN+DZ9WLQ9
+JuPcvQKdKAkLj/iPDahr+YlJbwkEwO26nA4Kbp3fTLROBBjTWyqr9i+tXMUrk2pA
+pW0HB8/tH8arJnW+EkCMLlI/TIBbd/uSib5a6qb8b9okYECu+hbX8sbhahjyNjAG
+ZgD+EpoxDf8AIBK24DkLyrNcaN9ADs9n1YMZhpuNlAtaJVjrpKM1uj1eKXONa8GB
+yJ5C0Wl5XzQ1ha4qE/fN40Ue7sVrIne8/0dc2Me8TDez96EZS8wnSY05JZ//1/Ja
+d1XSRKBvTMjGpjeOiRFizQycLJk0XH+EXZHro0hR1YR4rebcnW97L3hMwE/j/YqG
+PYHZic5XKUxvDN7UHMy4UFYMvJwk9uNzrzF0AzNC0vgaP6hXilXYah05DngsPvJN
+aFECv90bjDWLFKRNHWweXLPRP6k1SzhasZFb/5+4pCg+3MPc2EHoh2wU4ZT685Lq
+oAP9+Ja5OC6VQ6J3l6bONZJocPoEr7v+4radV2V3JVFsiUs8uOGJBnUPorD0Re2y
+hUwj6me5WFhkqq9oyfG9
+=r1wU
 -----END PGP SIGNATURE-----
 
---UhVWQSjpoPaj4pDS--
+--zYSHSYKTlyb6iK5t--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

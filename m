@@ -1,52 +1,54 @@
-From: "John W. Linville" <linville@tuxdriver.com>
-Subject: Re: [PATCH 2/3] drivers/mmc/host/mmc_spi.c: Use
- get/put_unaligned_be32
-Date: Wed, 14 May 2014 10:50:00 -0400
-Message-ID: <20140514144959.GA14183@tuxdriver.com>
-References: <CAPDyKFo9xZ-z6eM0zG2A+=Bwj0EVyGxm=m28Lh9cHPSB+8qq1w@mail.gmail.com>
- <20140514122357.11052.qmail@ns.horizon.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 2/4] spi: qup: Correct selection of FIFO/Block mode
+Date: Wed, 14 May 2014 16:17:09 +0100
+Message-ID: <20140514151709.GF12304@sirena.org.uk>
+References: <1400016884-9568-1-git-send-email-agross@codeaurora.org>
+ <1400016884-9568-3-git-send-email-agross@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: ulf.hansson@linaro.org, arik@wizery.com, david.gnedt@davizone.at,
-	eliad@wizery.com, jan.nikitenko@gmail.com,
-	laurent.pinchart+renesas@ideasonboard.com,
-	linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-wireless@vger.kernel.org,
-	luca@coelho.fi, pavel@ucw.cz, tony@atomide.com
-To: George Spelvin <linux@horizon.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="UhVWQSjpoPaj4pDS"
+Cc: linux-spi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	"Ivan T. Ivanov" <iivanov@mm-sol.com>,
+	Bjorn Andersson <bjorn.andersson@sonymobile.com>
+To: Andy Gross <agross@codeaurora.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20140514122357.11052.qmail@ns.horizon.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1400016884-9568-3-git-send-email-agross@codeaurora.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, May 14, 2014 at 08:23:57AM -0400, George Spelvin wrote:
-> Ulf Hansson wrote:
-> > Feel free to take this through the wireless tree as well. I assumes
-> > it's that same patchset as the other spi related fixes?
-> 
-> I'd like to answer, but I'm not sure which "other spi related fixes"
-> you're referring to.  If you mean patches 1 and 3 of this series, then
-> obviously.  If you mean something else then probably not.
-> 
-> [PATCH 1/3] lib/crc7: Shift crc7() output left 1 bit
-> [PATCH 3/3] drivers/net/wireless/ti/wl*/spi.c: Simplify CRC computation
-> 
-> 
-> As there seems to be no objection to sending the mmc change via the
-> wireless tree, are they ready to be queued there?
-> 
-> The additional reviews are:
-> All 3: Reviewed-by: Pavel Machek <pavel@ucw.cz>
-> 2/3: Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> 2/3: Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-> 
-> I can resend everything with the additional signoff lines
-> if that's easier for you.
 
-I can take them, sure.
+--UhVWQSjpoPaj4pDS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-John
--- 
-John W. Linville		Someday the world will need a hero, and you
-linville@tuxdriver.com			might be all we have.  Be ready.
+On Tue, May 13, 2014 at 04:34:42PM -0500, Andy Gross wrote:
+> This patch fixes the calculation for determining whether to use FIFO or BLOCK
+> mode.
+
+Applied, thanks.
+
+--UhVWQSjpoPaj4pDS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTc4jyAAoJELSic+t+oim9Tx4P/0ZQCKiZfZiNceHJ2fEB4gDE
+Nh9VP8TRa1uTvJDE/ea/WcYYk3zX3/PpYpbsqUC2/FWc3WCUkyQRB6C9tEdSYOrR
+tKU63GJ0aQleSSAMknYmBh133L3GTsMAF04+j2bA2N/8VmXrIjpAJOkmFqF3xYqJ
+fNQxSktY83gSQ362GgmjbxziAUpC9bScm1nBUqOMMTdcIiPtjL14RO3B81r1BwQ6
+e57xKP6Fa3NzBz0Z15iFRaE/1erlX6LsAFBXxOrM0UmeagakUMOBlb/xfxNxKkYP
+WQ5994anGRi8ym+ITC7SQJBg32dKl9I107oVOCPeZK2TlcGkH1AcDa65e+V73vGQ
+iE2rpwhgVjT0u2kc9IN1k7phGxUKgJGmnoptBtHI/ckfN64yLFNIbE6/Tg9LFLMr
+Be3AptzUwGV1AyIE1qQ6NkJxPhH+tEcGLjGvkIDiP/j8bOf6HlLr/oF3GiqEfm2M
+aR3pKje3SApPoarkLRyYi2kircIT1KXN++tRIbsQihFiGNmvQ0Gdeev+U4Qg1hSD
+4zXrFc9RBRffrvKe68MvI8nwJjk/LWylqBKAV5zcHdY108Rk6n/GIrmsJ6hUoev3
++G2RFgdPPaQ/cepDTIqsu0i3iPEzhN1XUHVUrCh7sztarRlhSejHTIVOyL+dbZzi
+W7OIrledQ17b3Q6uxABR
+=RDjN
+-----END PGP SIGNATURE-----
+
+--UhVWQSjpoPaj4pDS--

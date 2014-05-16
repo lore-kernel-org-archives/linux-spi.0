@@ -1,43 +1,68 @@
-From: Jean Delvare <jdelvare-l3A5Bk7waGM@public.gmane.org>
-Subject: [PATCH] spi-topcliff-pch: Fix Kconfig dependencies
-Date: Fri, 16 May 2014 16:47:18 +0200
-Message-ID: <20140516164718.5ea30de0@endymion.delvare>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/fsl-espi: fix rx_buf in
+ fsl_espi_cmd_trans()/fsl_espi_rw_trans()
+Date: Fri, 16 May 2014 20:07:23 +0100
+Message-ID: <20140516190723.GT22111@sirena.org.uk>
+References: <1400251581-26617-1-git-send-email-valentin.longchamp@keymile.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="pFwAERqMlXzMQ5I7"
+Cc: Linux SPI <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Marshall <markmarshall14-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Valentin Longchamp <valentin.longchamp-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1400251581-26617-1-git-send-email-valentin.longchamp-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The spi-topcliff-pch driver is for a companion chip to the Intel Atom
-E600 series processors. These are 32-bit x86 processors so the driver
-is only needed on X86_32. Add COMPILE_TEST as an alternative, so that
-the driver can still be build-tested elsewhere.
 
-Signed-off-by: Jean Delvare <jdelvare-l3A5Bk7waGM@public.gmane.org>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
----
- drivers/spi/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+--pFwAERqMlXzMQ5I7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
---- linux-3.15-rc5.orig/drivers/spi/Kconfig	2014-04-14 09:42:30.897098903 +0200
-+++ linux-3.15-rc5/drivers/spi/Kconfig	2014-05-16 16:38:44.332233218 +0200
-@@ -505,7 +505,7 @@ config SPI_TEGRA20_SLINK
- 
- config SPI_TOPCLIFF_PCH
- 	tristate "Intel EG20T PCH/LAPIS Semicon IOH(ML7213/ML7223/ML7831) SPI"
--	depends on PCI
-+	depends on PCI && (X86_32 || COMPILE_TEST)
- 	help
- 	  SPI driver for the Topcliff PCH (Platform Controller Hub) SPI bus
- 	  used in some x86 embedded processors.
+On Fri, May 16, 2014 at 04:46:21PM +0200, Valentin Longchamp wrote:
 
+> By default for every espi transfer, the rx_buf is placed right after the
+> tx_buf. This can lead to a buffer overflow when the size of both the TX
+> and RX data cumulated is higher than the allocated 64K buffer for the
+> transfer (this is the case when sending for instance a read command and
+> reading 64K back, please see:
+> http://article.gmane.org/gmane.linux.drivers.mtd/53411 )
+>=20
+> This gets fixed by always setting the RX buffer pointer at the begining
+> of the transfer buffer.
 
--- 
-Jean Delvare
-SUSE L3 Support
+This still doesn't seem safe - we're now going to be DMAing to and from
+the same buffer at the same time (and doubtless mapping it twice...).
+Would it not be safer to allocate separate rx and tx buffers?  Indeed
+can we not use the core DMA mapping support to avoid the need to copy at
+all (it will construct scatterlists in PAGE_SIZE chunks)?
+
+--pFwAERqMlXzMQ5I7
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTdmHoAAoJELSic+t+oim9cMEQAJ2NQch7vblSA4K6d1pr4/Bu
+HltEAdxBu4RNOoakAqIGNZE6Xf+qXzu3oWFw2zAIe1bV7BQgPXcuksR55JH3U4vs
+B7mkEkEiz1EL7d4YX4op6CMGAnGk1FbjalUk+3DGqDN0oJRcrJoOr9fGPgMaYpH4
+TDSqFFtOgw9zvueN9yZa3MFda/MwdTQdnLgXJFvo1YURSGvdAqD90wvt3euc9pLr
+bu1XK8QbLFBk9QHy+KI5JMhrtfcSAlc4x9tUMjruSbCqLRvzCJ0yPROy927P2039
+BLRgfUisWAsK3MnDnohhM6lHUBthUsCPPp3gkU8uq1DJQAWrs0e60P1PQGlsyKbR
+jK23H4ioyYJtBMhAJR2FEZDV03dUB1aMS8Oc8MN3UpHY9tETt24sGZqUDCVvPuhS
+LhNEMm0xWOz+5rXeX2LuRA478OX0O+sQM5dJnrjXlymCfcjEymcm8stBB+sbUEbc
+Qy4QIz8oB9B5Of2KX6w6eDN+I41VSc3QmYlP4YAsSdTHBLWKU8zBLTCFN8Vi0wKd
+Ql83bmGqpIsD1RP579K5bXZIPeWsZJKS1u8Nj/CJwWD/5IpwRpTf97vaJ7i0hiOD
+3ZwGJ+3gMEwNzj5qWymjJYO8cEjpZvmp5h98TZ/qsP7xb2aMAqLKV+3HqBW4K4b4
+WymlWTw89FBKX73iteNO
+=OVL3
+-----END PGP SIGNATURE-----
+
+--pFwAERqMlXzMQ5I7--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

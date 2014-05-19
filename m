@@ -1,55 +1,43 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi-topcliff-pch: Fix Kconfig dependencies
-Date: Fri, 16 May 2014 20:08:13 +0100
-Message-ID: <20140516190813.GU22111@sirena.org.uk>
-References: <20140516164718.5ea30de0@endymion.delvare>
+From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
+Subject: Re: [PATCH 2/4] spi: qup: Correct selection of FIFO/Block mode
+Date: Mon, 19 May 2014 10:31:44 +0300
+Message-ID: <1400484704.1464.4.camel@iivanov-dev>
+References: <1400016884-9568-1-git-send-email-agross@codeaurora.org>
+	 <1400016884-9568-3-git-send-email-agross@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="zAi3veRTHMyLkSNS"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jean Delvare <jdelvare-l3A5Bk7waGM@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+To: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140516164718.5ea30de0-R0o5gVi9kd7kN2dkZ6Wm7A@public.gmane.org>
+In-Reply-To: <1400016884-9568-3-git-send-email-agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, 2014-05-13 at 16:34 -0500, Andy Gross wrote:
+> This patch fixes the calculation for determining whether to use FIFO or BLOCK
+> mode.
 
---zAi3veRTHMyLkSNS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+<snip>
 
-On Fri, May 16, 2014 at 04:47:18PM +0200, Jean Delvare wrote:
-> The spi-topcliff-pch driver is for a companion chip to the Intel Atom
-> E600 series processors. These are 32-bit x86 processors so the driver
-> is only needed on X86_32. Add COMPILE_TEST as an alternative, so that
-> the driver can still be build-tested elsewhere.
+> @@ -368,7 +368,7 @@ static int spi_qup_io_config(struct spi_device *spi, struct spi_transfer *xfer)
+>  	n_words = xfer->len / w_size;
+>  	controller->w_size = w_size;
+>  
+> -	if (n_words <= controller->in_fifo_sz) {
+> +	if (n_words <= (controller->in_fifo_sz / sizeof(u32))) {
 
-Applied, thanks.
+Wouldn't be better to divide by w_size? Probably will not make
+too much difference, but..
 
---zAi3veRTHMyLkSNS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+>  		mode = QUP_IO_M_MODE_FIFO;
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+Regards,
+Ivan
 
-iQIcBAEBAgAGBQJTdmIaAAoJELSic+t+oim9WIEQAIyB/bv1uyulVsZC7Ehnk46e
-37BHCnMQggqNysdSGWuivV29jXCCmHDU+f1zyiHNdAOUf4zGKJm+lIy7P9YJhZRR
-FFmZL87y89bPxBqqDlJ68JAkrQxczEw32gZWeYXbAjq39KHN65cKTETx0tGPVq2z
-ktpb28cfCJxd1yB6Ih8f0i9cojmsf9QqCRbkkNHCskP83ufw4d/Mpm2t3bVL7gaS
-deQ+kr7/3nVCLjiNxDxWejGVCfb74Ty+JkamhNwnC3/MAPM7NqfxJCNF7SlxKF7C
-wUnE8vc2x8kpBC2aE4OiWZrMcyTNNhgmOfBsIX5TbWpCXR4w6zA8DM+FkNXpFOJV
-PyhoK3WKMiaN6ub0TxFksEnwJmr6mS6VfNiFApDSjK0vKvL7Souey7X0XJ9BqY5y
-O8sj7Dim2bqtHWHjmIMltFEdCy+S0b50DlvRjr09ncvoz+gawRJa/cfHfl8km+0N
-Oud3VH50af1q0lbSUTEENk0+lwPj0GnferWwCFZhXR/+3+WBx/F03QLzbFGOJT3p
-c4hJggox5zn7svvLNWqphIVY9NSeWG9YEpGlnWdDn+Z1wrsNMafpKNPbKvMluO3B
-GheutADb5ANTyX+gDkPLAgCYDE6gEMV4QiyGzQEnYI4BFRFsE+JU0CHC65RuL2hC
-ubQw8OXdGuZxq0KzVuCl
-=Tne2
------END PGP SIGNATURE-----
-
---zAi3veRTHMyLkSNS--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,59 +1,61 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/2] spi: sirf: decrease the interrupt count and
- latency of PIO mode
-Date: Tue, 20 May 2014 23:24:31 +0100
-Message-ID: <20140520222431.GL12304@sirena.org.uk>
-References: <1399185156-521-1-git-send-email-swingboard@gmail.com>
+Subject: Re: [PATCH] spi: sirf: send more words at the TX initial phase
+Date: Tue, 20 May 2014 23:26:15 +0100
+Message-ID: <20140520222615.GM12304@sirena.org.uk>
+References: <1400566068-2781-1-git-send-email-21cnbao@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7ucHyEj4p8g/TNcY"
-Cc: baohua-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Qipan Li <swingboard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="oK4Ztp+Fbgj9vocW"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
+	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1399185156-521-1-git-send-email-swingboard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1400566068-2781-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---7ucHyEj4p8g/TNcY
+--oK4Ztp+Fbgj9vocW
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 04, 2014 at 02:32:36PM +0800, Qipan Li wrote:
+On Tue, May 20, 2014 at 02:07:48PM +0800, Barry Song wrote:
 > From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
 >=20
-> current PIO tranfer method be described as follows:
+> The old codes use the below flow to do TX: send one word at first, after
+> this word is finished and TX empty interrupt is generated, send more
+> words. This causes redundant interrupt overhead at least for the 1st
+> word.
 
-Applied, thanks.
+This looks very like the patch I just applied before I looked at this
+one...  is there any difference between the two other than the
+changelog?
 
---7ucHyEj4p8g/TNcY
+--oK4Ztp+Fbgj9vocW
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTe9YcAAoJELSic+t+oim9rHQP+wZWXbyCeEpwjhZUq98LGlOK
-FzccE5IAeJUfyhGI6PnqfrKict6iEHw6jkhTQb98DKJvrkKnu+veF1QwThvtgE+k
-/+dY0jXexarqWbUaKi4pNrBxFKi58Am7skpkY9YoqmkFQNi4IVOxevLIM3mwTrQZ
-AiBT0kBOOXax/SVC5w1k5DGEBqvsp5KBV+aKLUxjEAHbEzKyBLo+1LyTS5yJAFZz
-TG10AVLkRVjD1eXo4QS/3HvwCCGHR1fsFI5RqfZMsszNXRtF8xyc98uiMnfL1tsC
-/Mc5d3wodO2Q0l/tTzpJLz2q9Qzen38w3pFcGPgL7nb7rNnj2+fPtMZ6OD855vlx
-IaJ57WT4Zqh3vV1WKsCMErOmNkEV64gU0aU1iEVOQd+wgDIkyIDuMUt0DXaZImmw
-Y52YqYi5bMwRkYLu2yR/3YtQS1evgEJZkNso1yPpp8jwTSQNNiW5fbGFEXTfhMNP
-0KgPtQ34yK82L69y4jxUAWrMTUOk00wFv8NAGvB98Pad+YD4rlxwOI99+aiX9UEL
-HXTHA/23FHx6mEQYyR7gUcw8L9koogKlwPiB+4maItfq1MKwXFofhekyXGk5OOBt
-wwcKr8W8LUp0zS0HWNOBOsKUicClagQAv3/j7fmh9ahvJ1PhPHSPL42elIE4ShNA
-s6+aCQQEyGbQeWQhLK40
-=EWWs
+iQIcBAEBAgAGBQJTe9aEAAoJELSic+t+oim9TJAQAJFiyIbEGM7ErebrfqNQSHgf
+g07wtnVjES26Sp8D315hqxTA+GzP+jfs4f51qBc3gb6IV85ln+ln+h3G0vVJu6JN
+Rf/S4G89QRct/AGbZjM7yKsBc4iNehyj3y8zK8DcoDLTQiy5SL3un19b6oDU0rsw
+pv2NFzRaG+lWut7uWq8LIBu8H9cyFsYxXltgZNJdN5rH6ukM4FlMLQmPbIZm05PY
+LS3KcNkSrvdhMIJOSxaqUVAIRW/EgAUSwv2iaVDfhwYJK7vqGAlgiBT+eqjgApDQ
+YIcNoYTKmq7p0jtWvpjv4MvjVo98i3jcTJ/73BphOcw+Y75gyix9UXWPNNfvr0J0
+5sm387T3LuofETSLNyTYx6UYNnWZ/WUl/2EoHqb10hpeC5bMH/lfKIbjBKTIJAng
+K6wqJ5WRqCjuAM2HDxhnGhNVg4xb+0LmdEtKWPUytKj9+LGnZLpUSGH5Dq1fEU+t
+TOlfcz0w+knc3xh3ZUwwpKxemRxwL5Z7j+BcXdUFKpu5CAw9gUWXoDsK1AQ88Orz
+VQ/o24qeKXtVgZ4R6oqxC5Ez7pJjzfaHH/juUiXR7qH2gT+TtZBFWP4Pap9Oj1qt
+2YPiJn1rc8C+phcA1JDoaMbm3z6K1uiBXfPIT5oBITCJxoYgFx4Ej0mwKEmFGlxv
+ps1anxrkVjG0piCHdKNX
+=yzuo
 -----END PGP SIGNATURE-----
 
---7ucHyEj4p8g/TNcY--
+--oK4Ztp+Fbgj9vocW--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

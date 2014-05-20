@@ -1,46 +1,42 @@
-From: Nicolas Ferre <nicolas.ferre@atmel.com>
-Subject: Re: [PATCH] spi: atmel: fix typo in dev_err
-Date: Tue, 20 May 2014 10:23:57 +0200
-Message-ID: <537B111D.20808@atmel.com>
-References: <1400571711-13137-1-git-send-email-poggi.raph@gmail.com>
+From: Valentin Longchamp <valentin.longchamp-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH] spi/fsl-espi: fix rx_buf in fsl_espi_cmd_trans()/fsl_espi_rw_trans()
+Date: Tue, 20 May 2014 17:07:13 +0200
+Message-ID: <537B6FA1.5080200@keymile.com>
+References: <1400251581-26617-1-git-send-email-valentin.longchamp@keymile.com> <20140516190723.GT22111@sirena.org.uk> <537A2390.4070203@keymile.com> <20140519162200.GD12304@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <linux-kernel@vger.kernel.org>
-To: =?UTF-8?B?UmFwaGHDq2wgUG9nZ2k=?= <poggi.raph@gmail.com>,
-	<linux-spi@vger.kernel.org>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1400571711-13137-1-git-send-email-poggi.raph@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Linux SPI <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Marshall <markmarshall14-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140519162200.GD12304-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 20/05/2014 09:41, Rapha=C3=ABl Poggi :
-> Fix typo in dev_err.
->=20
-> Signed-off-by: Rapha=C3=ABl Poggi <poggi.raph@gmail.com>
+On 05/19/2014 06:22 PM, Mark Brown wrote:
+> On Mon, May 19, 2014 at 05:30:24PM +0200, Valentin Longchamp wrote:
+>> Or are you talking about the initial memcpy call that fills up the local buffer
+>> in both rw_trans() and cmd_trans() ? And maybe your second point with the
+>> scatterlists is about replacing these memcpy calls ?
+> 
+> We shouldn't need this copy at all and therefore there should be no need
+> to make sure it is copying into an adequately sized buffer.  The only
+> thing I can think that the memcpy() is for is ensuring that the data is
+> sent from a physically contiguous buffer but scatter/gather should
+> handle that.
+> 
 
-Acked-by: Nicolas Ferre <nicolas.ferre@atmel.com>
+OK I see your point. The problem is that I currently have no time to write/test
+a patch that replaces this unnecessary memcpy() to the buffer with
+scatter/gather, it will have to wait a bit.
 
-> ---
->  drivers/spi/spi-atmel.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 079e6b1..7a1788b 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -1122,7 +1122,7 @@ static int atmel_spi_one_transfer(struct spi_ma=
-ster *master,
->  		atmel_spi_lock(as);
->  		if (WARN_ON(ret =3D=3D 0)) {
->  			dev_err(&spi->dev,
-> -				"spi trasfer timeout, err %d\n", ret);
-> +				"spi transfer timeout, err %d\n", ret);
->  			as->done_status =3D -EIO;
->  		} else {
->  			ret =3D 0;
->=20
+On the other hand, the patch I have sent fixes a buffer overflow with the
+current implementation so it could be good to take it if I don't send another
+patch with the above improvement.
 
-
---=20
-Nicolas Ferre
+Valentin
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

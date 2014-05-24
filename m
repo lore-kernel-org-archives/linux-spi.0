@@ -1,71 +1,90 @@
-From: Stephen Boyd <sboyd@codeaurora.org>
-Subject: [PATCH] spi: Set cs-gpios to output direction
-Date: Fri, 23 May 2014 17:57:34 -0700
-Message-ID: <1400893054-16126-1-git-send-email-sboyd@codeaurora.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: Set cs-gpios to output direction
+Date: Sat, 24 May 2014 12:54:57 +0100
+Message-ID: <20140524115457.GP22111@sirena.org.uk>
+References: <1400893054-16126-1-git-send-email-sboyd@codeaurora.org>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="d8o5DkpIDJ25MRRD"
 Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Alexandre Courbot <gnurou@gmail.com>,
 	Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
 	Richard Genoud <richard.genoud@gmail.com>
-To: Mark Brown <broonie@kernel.org>
+To: Stephen Boyd <sboyd@codeaurora.org>
 Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1400893054-16126-1-git-send-email-sboyd@codeaurora.org>
 Sender: linux-arm-msm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Some gpios used for cs-gpios may not be configured for output by
-default. In these cases gpio_set_value() won't have any effect
-and so the chip select line won't toggle. Request the cs-gpios
-and set them to output direction once we know if the chip select
-is default high or default low.
 
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Alexandre Courbot <gnurou@gmail.com>
-Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Cc: Richard Genoud <richard.genoud@gmail.com>
-Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
----
+--d8o5DkpIDJ25MRRD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I wonder if we should request the gpios when the master controller
-probes or when a spi device is added? We only know what the default
-value should be when the spi device is added. On the other hand,
-we should probably fail probe if the gpio controller isn't ready when
-the spi master controller probes.
+On Fri, May 23, 2014 at 05:57:34PM -0700, Stephen Boyd wrote:
+> Some gpios used for cs-gpios may not be configured for output by
+> default. In these cases gpio_set_value() won't have any effect
+> and so the chip select line won't toggle. Request the cs-gpios
+> and set them to output direction once we know if the chip select
+> is default high or default low.
 
-Also, is it better to convert this over to the gpiod interfaces?
+Currently the SPI framework is expecting that the controller driver will
+own the GPIOs so it's not requesting them at all - starting to request
+them in the core without warning is likely to lead to double requests
+which doesn't seem like the best idea ever.  The driver has to
+understand that there are GPIO chip selects since it needs to figure out
+what to do with any underlying hardware chip selects that it can't stop
+toggling (there may be none or it may be directable into space with
+pinmux but we can't rely on that). =20
 
- drivers/spi/spi.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Note also that you've done this in a DT specific bit of code and this
+needs to work with non-DT systems too.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 074f55f5d5ec..00f6365b3f87 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -431,8 +431,10 @@ int spi_add_device(struct spi_device *spi)
- 		goto done;
- 	}
- 
--	if (master->cs_gpios)
-+	if (master->cs_gpios) {
- 		spi->cs_gpio = master->cs_gpios[spi->chip_select];
-+		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
-+	}
- 
- 	/* Drivers may modify this initial i/o setup, but will
- 	 * normally rely on the device being setup.  Devices
-@@ -1512,8 +1514,11 @@ static int of_spi_register_master(struct spi_master *master)
- 	for (i = 0; i < master->num_chipselect; i++)
- 		cs[i] = -ENOENT;
- 
--	for (i = 0; i < nb; i++)
-+	for (i = 0; i < nb; i++) {
- 		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
-+		devm_gpio_request(&master->dev, cs[i], "spi-cs");
-+	}
-+
- 
- 	return 0;
- }
--- 
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-hosted by The Linux Foundation
+> I wonder if we should request the gpios when the master controller
+> probes or when a spi device is added? We only know what the default
+> value should be when the spi device is added. On the other hand,
+> we should probably fail probe if the gpio controller isn't ready when
+> the spi master controller probes.
+
+Right, plus the fact that each driver has to open code the requesting,
+probe deferral handling and so on.  It's not super awesome, the whole
+area around GPIO chip select handling needs a bit of a sorched earth
+refactoring.
+
+Ideally we'd be able to error out only the device using an individual
+GPIO rather than the whole controller if a GPIO isn't there for some
+reason so doing it at device time would be nicer but my recollection is
+that this won't play nicely with deferred probe, it's a while since I
+looked so I may be misremembering.
+
+> Also, is it better to convert this over to the gpiod interfaces?
+
+Yes, that too.
+
+--d8o5DkpIDJ25MRRD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTgIiKAAoJELSic+t+oim9DawP/3nsqAE1zahDADxJ7+qCTcQZ
+sAwB2VjUcon0f714pQfRaM0gH86tvEVoO2Z2wSDTnRPPw9DUptkLXiiLX64vOjlq
+YA5vmfW3MizlfnMB1FOVlwJRxR/plqkkKZObKsP9ikqAIKP5WH88OkdEKfQ7RbmV
+rfFEvAMMpMJ/7LxOPy5UIGttnKUZ+i4zHLMykHNbGDZ15xWGcpFyEizVc9Y/8Q0H
+NNhn/b/t0iJu9k5FH5WfGo+NTZ9qW0TM8rx3t1wCccZ5G+gviS7ehmBMRq+0GBvb
+Su5vrQREYQSAJ6EHrKY/h/gI8P5VZeLm1MNG0lGotoAb95pSRJy1kun1lDSTuOJg
+iz1mm7zj5KSjMrH7w3oke1CfthsGVzygnqu0Xt9mKpTGNZ8aR3wH8S4eSLpETmD3
+SmyE8yIHUdLrpVWTO80qBnyUb35gyBlngN35e9qjlKokDaaVtaZ+2JmwJOhv5OH2
+R0/11Dzd1BX2kfM29yOqReqUCcFVMqp6toA+Otm/sNQMAkDH5Xto3BBt+DJg+IqN
+PVYU2RE4aiNLaI29PFubvE/UiZFrB+HSjdbrQcPRXJa1UNAJmGPMpLushm5WmIzc
+RF7M7vhfOOyNwmTP24h/kCG3UL2BYNjL81A0+2PkxFrVpAZyM4CoFEiMQ9z9fqby
+QGk2GOjVPyAIATY630pj
+=s26C
+-----END PGP SIGNATURE-----
+
+--d8o5DkpIDJ25MRRD--

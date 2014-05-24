@@ -1,66 +1,71 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: rspi: Round up division to avoid slave overclocking
-Date: Thu, 22 May 2014 20:07:35 +0200
-Message-ID: <1400782055-19609-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Stephen Boyd <sboyd@codeaurora.org>
+Subject: [PATCH] spi: Set cs-gpios to output direction
+Date: Fri, 23 May 2014 17:57:34 -0700
+Message-ID: <1400893054-16126-1-git-send-email-sboyd@codeaurora.org>
+Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
+	Richard Genoud <richard.genoud@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-The calculation of the bit rate divider used a standard C division, which
-rounds down the quotient. This may lead to a higher bitrate than requested.
-Round up to avoid this.
+Some gpios used for cs-gpios may not be configured for output by
+default. In these cases gpio_set_value() won't have any effect
+and so the chip select line won't toggle. Request the cs-gpios
+and set them to output direction once we know if the chip select
+is default high or default low.
 
-E.g. on Koelsch, the SPI flash (configured for 30 MHz) was driven at 48.75
-MHz. After this patch it's driven at a safe 24.375 MHz.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Alexandre Courbot <gnurou@gmail.com>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: Richard Genoud <richard.genoud@gmail.com>
+Signed-off-by: Stephen Boyd <sboyd@codeaurora.org>
 ---
-Simon: I think you want this in renesas-backports.
 
- drivers/spi/spi-rspi.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+I wonder if we should request the gpios when the master controller
+probes or when a spi device is added? We only know what the default
+value should be when the spi device is added. On the other hand,
+we should probably fail probe if the gpio controller isn't ready when
+the spi master controller probes.
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 1fb0ad213324..5639f9529e0b 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -266,7 +266,8 @@ static int rspi_set_config_register(struct rspi_data *rspi, int access_size)
- 	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
+Also, is it better to convert this over to the gpiod interfaces?
+
+ drivers/spi/spi.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 074f55f5d5ec..00f6365b3f87 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -431,8 +431,10 @@ int spi_add_device(struct spi_device *spi)
+ 		goto done;
+ 	}
  
- 	/* Sets transfer bit rate */
--	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz) - 1;
-+	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk),
-+			    2 * rspi->max_speed_hz) - 1;
- 	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
+-	if (master->cs_gpios)
++	if (master->cs_gpios) {
+ 		spi->cs_gpio = master->cs_gpios[spi->chip_select];
++		gpio_direction_output(spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
++	}
  
- 	/* Disable dummy transmission, set 16-bit word access, 1 frame */
-@@ -302,7 +303,8 @@ static int rspi_rz_set_config_register(struct rspi_data *rspi, int access_size)
- 	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
+ 	/* Drivers may modify this initial i/o setup, but will
+ 	 * normally rely on the device being setup.  Devices
+@@ -1512,8 +1514,11 @@ static int of_spi_register_master(struct spi_master *master)
+ 	for (i = 0; i < master->num_chipselect; i++)
+ 		cs[i] = -ENOENT;
  
- 	/* Sets transfer bit rate */
--	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz) - 1;
-+	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk),
-+			    2 * rspi->max_speed_hz) - 1;
- 	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
+-	for (i = 0; i < nb; i++)
++	for (i = 0; i < nb; i++) {
+ 		cs[i] = of_get_named_gpio(np, "cs-gpios", i);
++		devm_gpio_request(&master->dev, cs[i], "spi-cs");
++	}
++
  
- 	/* Disable dummy transmission, set byte access */
-@@ -335,7 +337,7 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
- 	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
- 
- 	/* Sets transfer bit rate */
--	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz);
-+	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk), 2 * rspi->max_speed_hz);
- 	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
- 
- 	/* Disable dummy transmission, set byte access */
+ 	return 0;
+ }
 -- 
-1.9.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+hosted by The Linux Foundation

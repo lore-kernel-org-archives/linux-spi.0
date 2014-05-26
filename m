@@ -1,64 +1,55 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: core: Ignore unsupported spi-[tr]x-bus-width property values
-Date: Mon, 26 May 2014 14:05:25 +0200
-Message-ID: <1401105925-16528-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: rspi: Round up division to avoid slave overclocking
+Date: Mon, 26 May 2014 14:30:49 +0100
+Message-ID: <20140526133049.GZ22111@sirena.org.uk>
+References: <1400782055-19609-1-git-send-email-geert+renesas@glider.be>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="y+bLae2mFylWGq1m"
+Cc: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1400782055-19609-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Rejecting unsupported values of spi-tx-bus-width and spi-rx-bus-width
-may break compatibility with future DTs. Just ignore them, falling back
-to Single SPI Transfers.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
----
-I thought I sent this before, but I can't find any evidence
+--y+bLae2mFylWGq1m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
- drivers/spi/spi.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+On Thu, May 22, 2014 at 08:07:35PM +0200, Geert Uytterhoeven wrote:
+> The calculation of the bit rate divider used a standard C division, which
+> rounds down the quotient. This may lead to a higher bitrate than requested.
+> Round up to avoid this.
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 074f55f5d5ec..d4f9670b51bc 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1270,11 +1270,10 @@ static void of_register_spi_devices(struct spi_master *master)
- 				spi->mode |= SPI_TX_QUAD;
- 				break;
- 			default:
--				dev_err(&master->dev,
--					"spi-tx-bus-width %d not supported\n",
--					value);
--				spi_dev_put(spi);
--				continue;
-+				dev_warn(&master->dev,
-+					 "spi-tx-bus-width %d not supported\n",
-+					 value);
-+				break;
- 			}
- 		}
- 
-@@ -1289,11 +1288,10 @@ static void of_register_spi_devices(struct spi_master *master)
- 				spi->mode |= SPI_RX_QUAD;
- 				break;
- 			default:
--				dev_err(&master->dev,
--					"spi-rx-bus-width %d not supported\n",
--					value);
--				spi_dev_put(spi);
--				continue;
-+				dev_warn(&master->dev,
-+					 "spi-rx-bus-width %d not supported\n",
-+					 value);
-+				break;
- 			}
- 		}
- 
--- 
-1.9.1
+Applied, thanks.
 
+--y+bLae2mFylWGq1m
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTg0IGAAoJELSic+t+oim9GiIP/RKxYEXXCk49kjMxe+WDHZ9i
+TXHPCkwdfPJJUWkcXNxlOt/+HTYLUfG/DjVCGSfzarZV3FXVvlsHAzBtpkEwsg8T
+dgcI1Z9FOY0N19+iHSwrgMBqzdSxKan3AfadEDKmIXDmlwvZaa6hmnyheYAvRkmn
+EEl7XoqmKoC+xq6gw+3H4TFYZcBN/eWoAfZg55k/yy8jKeSQZDARuTeOBTJAMZ7t
+euOioG3NKjDBBVAyUOqxnycBe2hhILfYW8llaPoRBHX33XEs+FbUW4GhI6/8X7kC
+lSgCVq75PW7xRO40epkUyLK65BUNFgpVVksfI7NSzfjtQpmMJD9SR70YuKjCkz73
+30wHJv1hhcu/D6j5m94kp+cuwt3fVRvSh+aHmbyiRn2AKXMcoOkoah0nDA2IC0GL
+YonJiO5Rgbo0a94+7ikTTAFdVwr8iWDkPkXXUYJz5k/QHAWpf+08Lj3hmIe3nyRL
+n8CBK54VNeTrUe90dWdYDcX8w1lcUuEOD9BQgaoHXpH46PeImLBtaxqBydANHavT
+2GJ7tFLwyA/k1c/fcOUhzrpFJXrMNcI66me51GDe7xHjv9ewuBJu18fkcwrqlgoq
+N264IFfYhPyGHUfCmDdYQ1WJkTdT1GH8yMrpqGNYniUoBL66r1HoJeZvhf7zm50Z
+sfJRVAo29AovaqrTIS0t
+=iysl
+-----END PGP SIGNATURE-----
+
+--y+bLae2mFylWGq1m--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

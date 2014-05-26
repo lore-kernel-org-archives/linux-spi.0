@@ -1,69 +1,65 @@
-From: Simon Horman <horms@verge.net.au>
-Subject: Re: [PATCH] spi: rspi: Round up division to avoid slave overclocking
-Date: Mon, 26 May 2014 10:41:41 +0900
-Message-ID: <20140526014140.GH31096@verge.net.au>
-References: <1400782055-19609-1-git-send-email-geert+renesas@glider.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1400782055-19609-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH] spi: core: Ignore unsupported spi-[tr]x-bus-width property values
+Date: Mon, 26 May 2014 14:05:25 +0200
+Message-ID: <1401105925-16528-1-git-send-email-geert+renesas@glider.be>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, May 22, 2014 at 08:07:35PM +0200, Geert Uytterhoeven wrote:
-> The calculation of the bit rate divider used a standard C division, which
-> rounds down the quotient. This may lead to a higher bitrate than requested.
-> Round up to avoid this.
-> 
-> E.g. on Koelsch, the SPI flash (configured for 30 MHz) was driven at 48.75
-> MHz. After this patch it's driven at a safe 24.375 MHz.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> ---
-> Simon: I think you want this in renesas-backports.
+Rejecting unsupported values of spi-tx-bus-width and spi-rx-bus-width
+may break compatibility with future DTs. Just ignore them, falling back
+to Single SPI Transfers.
 
-Thanks, I'll backport it once its been accepted by Mark.
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+---
+I thought I sent this before, but I can't find any evidence
 
->  drivers/spi/spi-rspi.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-> index 1fb0ad213324..5639f9529e0b 100644
-> --- a/drivers/spi/spi-rspi.c
-> +++ b/drivers/spi/spi-rspi.c
-> @@ -266,7 +266,8 @@ static int rspi_set_config_register(struct rspi_data *rspi, int access_size)
->  	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
->  
->  	/* Sets transfer bit rate */
-> -	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz) - 1;
-> +	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk),
-> +			    2 * rspi->max_speed_hz) - 1;
->  	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
->  
->  	/* Disable dummy transmission, set 16-bit word access, 1 frame */
-> @@ -302,7 +303,8 @@ static int rspi_rz_set_config_register(struct rspi_data *rspi, int access_size)
->  	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
->  
->  	/* Sets transfer bit rate */
-> -	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz) - 1;
-> +	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk),
-> +			    2 * rspi->max_speed_hz) - 1;
->  	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
->  
->  	/* Disable dummy transmission, set byte access */
-> @@ -335,7 +337,7 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
->  	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
->  
->  	/* Sets transfer bit rate */
-> -	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz);
-> +	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk), 2 * rspi->max_speed_hz);
->  	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
->  
->  	/* Disable dummy transmission, set byte access */
-> -- 
-> 1.9.1
-> 
+ drivers/spi/spi.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 074f55f5d5ec..d4f9670b51bc 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1270,11 +1270,10 @@ static void of_register_spi_devices(struct spi_master *master)
+ 				spi->mode |= SPI_TX_QUAD;
+ 				break;
+ 			default:
+-				dev_err(&master->dev,
+-					"spi-tx-bus-width %d not supported\n",
+-					value);
+-				spi_dev_put(spi);
+-				continue;
++				dev_warn(&master->dev,
++					 "spi-tx-bus-width %d not supported\n",
++					 value);
++				break;
+ 			}
+ 		}
+ 
+@@ -1289,11 +1288,10 @@ static void of_register_spi_devices(struct spi_master *master)
+ 				spi->mode |= SPI_RX_QUAD;
+ 				break;
+ 			default:
+-				dev_err(&master->dev,
+-					"spi-rx-bus-width %d not supported\n",
+-					value);
+-				spi_dev_put(spi);
+-				continue;
++				dev_warn(&master->dev,
++					 "spi-rx-bus-width %d not supported\n",
++					 value);
++				break;
+ 			}
+ 		}
+ 
+-- 
+1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

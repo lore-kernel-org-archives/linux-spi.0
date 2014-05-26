@@ -1,90 +1,69 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: Set cs-gpios to output direction
-Date: Sat, 24 May 2014 12:54:57 +0100
-Message-ID: <20140524115457.GP22111@sirena.org.uk>
-References: <1400893054-16126-1-git-send-email-sboyd@codeaurora.org>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH] spi: rspi: Round up division to avoid slave overclocking
+Date: Mon, 26 May 2014 10:41:41 +0900
+Message-ID: <20140526014140.GH31096@verge.net.au>
+References: <1400782055-19609-1-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="d8o5DkpIDJ25MRRD"
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
-	Richard Genoud <richard.genoud@gmail.com>
-To: Stephen Boyd <sboyd@codeaurora.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1400893054-16126-1-git-send-email-sboyd@codeaurora.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
+In-Reply-To: <1400782055-19609-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Thu, May 22, 2014 at 08:07:35PM +0200, Geert Uytterhoeven wrote:
+> The calculation of the bit rate divider used a standard C division, which
+> rounds down the quotient. This may lead to a higher bitrate than requested.
+> Round up to avoid this.
+> 
+> E.g. on Koelsch, the SPI flash (configured for 30 MHz) was driven at 48.75
+> MHz. After this patch it's driven at a safe 24.375 MHz.
+> 
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+> Simon: I think you want this in renesas-backports.
 
---d8o5DkpIDJ25MRRD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks, I'll backport it once its been accepted by Mark.
 
-On Fri, May 23, 2014 at 05:57:34PM -0700, Stephen Boyd wrote:
-> Some gpios used for cs-gpios may not be configured for output by
-> default. In these cases gpio_set_value() won't have any effect
-> and so the chip select line won't toggle. Request the cs-gpios
-> and set them to output direction once we know if the chip select
-> is default high or default low.
-
-Currently the SPI framework is expecting that the controller driver will
-own the GPIOs so it's not requesting them at all - starting to request
-them in the core without warning is likely to lead to double requests
-which doesn't seem like the best idea ever.  The driver has to
-understand that there are GPIO chip selects since it needs to figure out
-what to do with any underlying hardware chip selects that it can't stop
-toggling (there may be none or it may be directable into space with
-pinmux but we can't rely on that). =20
-
-Note also that you've done this in a DT specific bit of code and this
-needs to work with non-DT systems too.
-
-> I wonder if we should request the gpios when the master controller
-> probes or when a spi device is added? We only know what the default
-> value should be when the spi device is added. On the other hand,
-> we should probably fail probe if the gpio controller isn't ready when
-> the spi master controller probes.
-
-Right, plus the fact that each driver has to open code the requesting,
-probe deferral handling and so on.  It's not super awesome, the whole
-area around GPIO chip select handling needs a bit of a sorched earth
-refactoring.
-
-Ideally we'd be able to error out only the device using an individual
-GPIO rather than the whole controller if a GPIO isn't there for some
-reason so doing it at device time would be nicer but my recollection is
-that this won't play nicely with deferred probe, it's a while since I
-looked so I may be misremembering.
-
-> Also, is it better to convert this over to the gpiod interfaces?
-
-Yes, that too.
-
---d8o5DkpIDJ25MRRD
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTgIiKAAoJELSic+t+oim9DawP/3nsqAE1zahDADxJ7+qCTcQZ
-sAwB2VjUcon0f714pQfRaM0gH86tvEVoO2Z2wSDTnRPPw9DUptkLXiiLX64vOjlq
-YA5vmfW3MizlfnMB1FOVlwJRxR/plqkkKZObKsP9ikqAIKP5WH88OkdEKfQ7RbmV
-rfFEvAMMpMJ/7LxOPy5UIGttnKUZ+i4zHLMykHNbGDZ15xWGcpFyEizVc9Y/8Q0H
-NNhn/b/t0iJu9k5FH5WfGo+NTZ9qW0TM8rx3t1wCccZ5G+gviS7ehmBMRq+0GBvb
-Su5vrQREYQSAJ6EHrKY/h/gI8P5VZeLm1MNG0lGotoAb95pSRJy1kun1lDSTuOJg
-iz1mm7zj5KSjMrH7w3oke1CfthsGVzygnqu0Xt9mKpTGNZ8aR3wH8S4eSLpETmD3
-SmyE8yIHUdLrpVWTO80qBnyUb35gyBlngN35e9qjlKokDaaVtaZ+2JmwJOhv5OH2
-R0/11Dzd1BX2kfM29yOqReqUCcFVMqp6toA+Otm/sNQMAkDH5Xto3BBt+DJg+IqN
-PVYU2RE4aiNLaI29PFubvE/UiZFrB+HSjdbrQcPRXJa1UNAJmGPMpLushm5WmIzc
-RF7M7vhfOOyNwmTP24h/kCG3UL2BYNjL81A0+2PkxFrVpAZyM4CoFEiMQ9z9fqby
-QGk2GOjVPyAIATY630pj
-=s26C
------END PGP SIGNATURE-----
-
---d8o5DkpIDJ25MRRD--
+>  drivers/spi/spi-rspi.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+> index 1fb0ad213324..5639f9529e0b 100644
+> --- a/drivers/spi/spi-rspi.c
+> +++ b/drivers/spi/spi-rspi.c
+> @@ -266,7 +266,8 @@ static int rspi_set_config_register(struct rspi_data *rspi, int access_size)
+>  	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
+>  
+>  	/* Sets transfer bit rate */
+> -	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz) - 1;
+> +	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk),
+> +			    2 * rspi->max_speed_hz) - 1;
+>  	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
+>  
+>  	/* Disable dummy transmission, set 16-bit word access, 1 frame */
+> @@ -302,7 +303,8 @@ static int rspi_rz_set_config_register(struct rspi_data *rspi, int access_size)
+>  	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
+>  
+>  	/* Sets transfer bit rate */
+> -	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz) - 1;
+> +	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk),
+> +			    2 * rspi->max_speed_hz) - 1;
+>  	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
+>  
+>  	/* Disable dummy transmission, set byte access */
+> @@ -335,7 +337,7 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
+>  	rspi_write8(rspi, rspi->sppcr, RSPI_SPPCR);
+>  
+>  	/* Sets transfer bit rate */
+> -	spbr = clk_get_rate(rspi->clk) / (2 * rspi->max_speed_hz);
+> +	spbr = DIV_ROUND_UP(clk_get_rate(rspi->clk), 2 * rspi->max_speed_hz);
+>  	rspi_write8(rspi, clamp(spbr, 0, 255), RSPI_SPBR);
+>  
+>  	/* Disable dummy transmission, set byte access */
+> -- 
+> 1.9.1
+> 

@@ -1,64 +1,50 @@
-From: Stephen Boyd <sboyd@codeaurora.org>
-Subject: Re: [PATCH] spi: Set cs-gpios to output direction
-Date: Tue, 27 May 2014 18:09:39 -0700
-Message-ID: <53853753.1030506@codeaurora.org>
-References: <1400893054-16126-1-git-send-email-sboyd@codeaurora.org> <20140524115457.GP22111@sirena.org.uk>
+From: Dan Carpenter <dan.carpenter-QHcLZuEGTsvQT0dZR+AlfA@public.gmane.org>
+Subject: re: spi/fsl-espi: fix rx_buf in
+ fsl_espi_cmd_trans()/fsl_espi_rw_trans()
+Date: Wed, 28 May 2014 12:01:36 +0300
+Message-ID: <20140528090136.GA23254@mwanda>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
-	Richard Genoud <richard.genoud@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20140524115457.GP22111@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: valentin.longchamp-SkAbAL50j+5BDgjK7y7TUQ@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 05/24/14 04:54, Mark Brown wrote:
-> On Fri, May 23, 2014 at 05:57:34PM -0700, Stephen Boyd wrote:
->> Some gpios used for cs-gpios may not be configured for output by
->> default. In these cases gpio_set_value() won't have any effect
->> and so the chip select line won't toggle. Request the cs-gpios
->> and set them to output direction once we know if the chip select
->> is default high or default low.
-> Currently the SPI framework is expecting that the controller driver will
-> own the GPIOs so it's not requesting them at all - starting to request
-> them in the core without warning is likely to lead to double requests
-> which doesn't seem like the best idea ever.  The driver has to
-> understand that there are GPIO chip selects since it needs to figure out
-> what to do with any underlying hardware chip selects that it can't stop
-> toggling (there may be none or it may be directable into space with
-> pinmux but we can't rely on that).  
+Hello Valentin Longchamp,
 
-Ok. My SPI controller is relying on the pinctrl framework to request
-these gpios and I didn't have that configured in DT.
+I had a question about patch a2cb1be18254: "spi/fsl-espi: fix rx_buf in
+fsl_espi_cmd_trans()/fsl_espi_rw_trans()" from May 16, 2014.
 
->
->> I wonder if we should request the gpios when the master controller
->> probes or when a spi device is added? We only know what the default
->> value should be when the spi device is added. On the other hand,
->> we should probably fail probe if the gpio controller isn't ready when
->> the spi master controller probes.
-> Right, plus the fact that each driver has to open code the requesting,
-> probe deferral handling and so on.  It's not super awesome, the whole
-> area around GPIO chip select handling needs a bit of a sorched earth
-> refactoring.
->
-> Ideally we'd be able to error out only the device using an individual
-> GPIO rather than the whole controller if a GPIO isn't there for some
-> reason so doing it at device time would be nicer but my recollection is
-> that this won't play nicely with deferred probe, it's a while since I
-> looked so I may be misremembering.
+drivers/spi/spi-fsl-espi.c
+   396                  espi_trans->n_tx = n_tx;
+   397                  espi_trans->n_rx = trans_len;
+   398                  espi_trans->len = trans_len + n_tx;
+   399                  espi_trans->tx_buf = local_buf;
+   400                  espi_trans->rx_buf = local_buf;
 
-Yes. There would need to be some hook into the SPI core from the driver
-core that notified of any new driver probes. Then we could try and get
-any pending cs-gpios again and then add the device that uses that chip
-select.
+1) This is really weird that we share the same buffer for both sending
+and receiving.  My concern is that we've fixed the buffer overflow bug
+by changing it to a memory corruption bug.
 
--- 
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum,
-hosted by The Linux Foundation
+   401                  fsl_espi_do_trans(m, espi_trans);
+   402  
+   403                  memcpy(rx_buf + pos, espi_trans->rx_buf + n_tx, trans_len);
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+2) Why do we have the "+ n_tx" here?  "n_tx + trans_len" was a buffer
+before so that means this code is still reading beyond the end of the
+array.
+
+   404  
+   405                  if (loop > 0)
+   406                          espi_trans->actual_length += espi_trans->len - n_tx;
+   407                  else
+   408                          espi_trans->actual_length += espi_trans->len;
+
+regards,
+dan carpenter
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

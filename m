@@ -1,54 +1,55 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 18/18] [RFC] spi: rspi: Add DT support to DMA setup
-Date: Mon, 2 Jun 2014 16:57:00 +0200
-Message-ID: <CAMuHMdXhduVy_xxTnUzhkQDd5pah8svpTyB1jahSCb1szR75kg@mail.gmail.com>
-References: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
-	<1401716301-29612-19-git-send-email-geert+renesas@glider.be>
-	<20140602145447.GJ31751@sirena.org.uk>
+From: Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH 2/2] clkdev: Export clk_register_clkdev
+Date: Mon, 02 Jun 2014 08:16:08 -0700
+Message-ID: <CFB1E2EA.94DEE%dvhart@linux.intel.com>
+References: <1401738379-4107-1-git-send-email-chiau.ee.chew@intel.com>
+ <1401738379-4107-3-git-send-email-chiau.ee.chew@intel.com>
+ <20140602123522.GB31751@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140602145447.GJ31751-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140602123522.GB31751-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
+On 6/2/14, 5:35, "Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
 
-On Mon, Jun 2, 2014 at 4:54 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Mon, Jun 02, 2014 at 03:38:20PM +0200, Geert Uytterhoeven wrote:
->> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
->> Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
->> ---
->> The format of the DMA specifiers depends on the DT bindings for SHDMA,
->> which are still under development.
+>On Tue, Jun 03, 2014 at 03:46:19AM +0800, Chew Chiau Ee wrote:
+>> From: Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+>> 
+>> Allow spi-pxa2xx-pci with common clock framework support to build as a
+>> module by exporting clk_register_clkdev.
 >
-> This looks fine to me, can you resend when the DMA specifiers for the
-> controller are resolved?  I've applied everything up to here, it all
+>This needs to be patch 1 in the series not patch 2 since the change to
+>the driver to use the exported symbol depends on this rather than the
+>other way around.
+>
 
-Sure.
+That was going to be my only comment as well. It's important to ensure
+things build consistently through the git history. Git bisect is a key use
+case here, breaking that makes for very cranky kernel engineers :-)
+Dependencies first, new mechanisms second.
 
-> looks good especially the performance improvement.
+-- 
+Darren Hart					Open Source Technology Center
+darren.hart-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org				            Intel Corporation
 
-That was quick, thanks a lot!
 
-Gr{oetje,eeting}s,
-
-                        Geert
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

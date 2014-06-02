@@ -1,213 +1,66 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 13/18] spi: rspi: Merge rspi_*_dma() into rspi_dma_transfer()
-Date: Mon,  2 Jun 2014 15:38:15 +0200
-Message-ID: <1401716301-29612-14-git-send-email-geert+renesas@glider.be>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 09/18] spi: rspi: SPI DMA core needs both RX and TX DMA
+ to function
+Date: Mon, 2 Jun 2014 15:42:21 +0100
+Message-ID: <20140602144221.GI31751@sirena.org.uk>
 References: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+ <1401716301-29612-10-git-send-email-geert+renesas@glider.be>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gTY1JhLGodeuSBqf"
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1401716301-29612-10-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-rspi_send_dma() and rspi_send_receive_dma() are very similar. Consolidate
-into a single function rspi_dma_transfer(), and add missing checks for
-dmaengine_submit() failures.
 
-Both sg_table pointer parameters can be NULL, as RSPI supports TX-only
-mode, and unidirectional DMA transfers will also be needed later for
-Dual/Quad DMA support.
+--gTY1JhLGodeuSBqf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/spi/spi-rspi.c | 139 ++++++++++++++++++++++---------------------------
- 1 file changed, 61 insertions(+), 78 deletions(-)
+On Mon, Jun 02, 2014 at 03:38:11PM +0200, Geert Uytterhoeven wrote:
+> The SPI DMA core framework needs both RX and TX DMA to function.  As a
+> preparation for converting the driver to use this framework, fall back to
+> PIO if no DMA channel or only one DMA channel is available.
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index bfa5e7e5df5a..c77cfe654b0e 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -463,30 +463,67 @@ static void rspi_dma_complete(void *arg)
- 	wake_up_interruptible(&rspi->wait);
- }
- 
--static int rspi_send_dma(struct rspi_data *rspi, struct sg_table *tx)
-+static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
-+			     struct sg_table *rx)
- {
--	struct dma_async_tx_descriptor *desc;
-+	struct dma_async_tx_descriptor *desc_tx = NULL, *desc_rx = NULL;
-+	u8 irq_mask = 0;
-+	unsigned int other_irq = 0;
-+	dma_cookie_t cookie;
- 	int ret;
- 
--	desc = dmaengine_prep_slave_sg(rspi->master->dma_tx, tx->sgl,
--				       tx->nents, DMA_TO_DEVICE,
--				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
--	if (!desc)
--		return -EIO;
-+	if (tx) {
-+		desc_tx = dmaengine_prep_slave_sg(rspi->master->dma_tx,
-+					tx->sgl, tx->nents, DMA_TO_DEVICE,
-+					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+		if (!desc_tx)
-+			return -EIO;
-+
-+		irq_mask |= SPCR_SPTIE;
-+	}
-+	if (rx) {
-+		desc_rx = dmaengine_prep_slave_sg(rspi->master->dma_rx,
-+					rx->sgl, rx->nents, DMA_FROM_DEVICE,
-+					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+		if (!desc_rx)
-+			return -EIO;
-+
-+		irq_mask |= SPCR_SPRIE;
-+	}
- 
- 	/*
--	 * DMAC needs SPTIE, but if SPTIE is set, this IRQ routine will be
-+	 * DMAC needs SPxIE, but if SPxIE is set, the IRQ routine will be
- 	 * called. So, this driver disables the IRQ while DMA transfer.
- 	 */
--	disable_irq(rspi->tx_irq);
-+	if (tx)
-+		disable_irq(other_irq = rspi->tx_irq);
-+	if (rx && rspi->rx_irq != other_irq)
-+		disable_irq(rspi->rx_irq);
- 
--	rspi_enable_irq(rspi, SPCR_SPTIE);
-+	rspi_enable_irq(rspi, irq_mask);
- 	rspi->dma_callbacked = 0;
- 
--	desc->callback = rspi_dma_complete;
--	desc->callback_param = rspi;
--	dmaengine_submit(desc);
--	dma_async_issue_pending(rspi->master->dma_tx);
-+	if (rx) {
-+		desc_rx->callback = rspi_dma_complete;
-+		desc_rx->callback_param = rspi;
-+		cookie = dmaengine_submit(desc_rx);
-+		if (dma_submit_error(cookie))
-+			return cookie;
-+		dma_async_issue_pending(rspi->master->dma_rx);
-+	}
-+	if (tx) {
-+		if (rx) {
-+			/* No callback */
-+			desc_tx->callback = NULL;
-+		} else {
-+			desc_tx->callback = rspi_dma_complete;
-+			desc_tx->callback_param = rspi;
-+		}
-+		cookie = dmaengine_submit(desc_tx);
-+		if (dma_submit_error(cookie))
-+			return cookie;
-+		dma_async_issue_pending(rspi->master->dma_tx);
-+	}
- 
- 	ret = wait_event_interruptible_timeout(rspi->wait,
- 					       rspi->dma_callbacked, HZ);
-@@ -494,9 +531,14 @@ static int rspi_send_dma(struct rspi_data *rspi, struct sg_table *tx)
- 		ret = 0;
- 	else if (!ret)
- 		ret = -ETIMEDOUT;
--	rspi_disable_irq(rspi, SPCR_SPTIE);
- 
--	enable_irq(rspi->tx_irq);
-+	rspi_disable_irq(rspi, irq_mask);
-+
-+	if (tx)
-+		enable_irq(rspi->tx_irq);
-+	if (rx && rspi->rx_irq != other_irq)
-+		enable_irq(rspi->rx_irq);
-+
- 	return ret;
- }
- 
-@@ -530,61 +572,6 @@ static void qspi_receive_init(const struct rspi_data *rspi)
- 	rspi_write8(rspi, 0, QSPI_SPBFCR);
- }
- 
--static int rspi_send_receive_dma(struct rspi_data *rspi, struct sg_table *tx,
--				 struct sg_table *rx)
--{
--	struct dma_async_tx_descriptor *desc_tx, *desc_rx;
--	int ret;
--
--	/* prepare transmit transfer */
--	desc_tx = dmaengine_prep_slave_sg(rspi->master->dma_tx, tx->sgl,
--					  tx->nents, DMA_TO_DEVICE,
--					  DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
--	if (!desc_tx)
--		return -EIO;
--
--	/* prepare receive transfer */
--	desc_rx = dmaengine_prep_slave_sg(rspi->master->dma_rx, rx->sgl,
--					  rx->nents, DMA_FROM_DEVICE,
--					  DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
--	if (!desc_rx)
--		return -EIO;
--
--	/*
--	 * DMAC needs SPTIE, but if SPTIE is set, this IRQ routine will be
--	 * called. So, this driver disables the IRQ while DMA transfer.
--	 */
--	disable_irq(rspi->tx_irq);
--	if (rspi->rx_irq != rspi->tx_irq)
--		disable_irq(rspi->rx_irq);
--
--	rspi_enable_irq(rspi, SPCR_SPTIE | SPCR_SPRIE);
--	rspi->dma_callbacked = 0;
--
--	desc_rx->callback = rspi_dma_complete;
--	desc_rx->callback_param = rspi;
--	dmaengine_submit(desc_rx);
--	dma_async_issue_pending(rspi->master->dma_rx);
--
--	desc_tx->callback = NULL;	/* No callback */
--	dmaengine_submit(desc_tx);
--	dma_async_issue_pending(rspi->master->dma_tx);
--
--	ret = wait_event_interruptible_timeout(rspi->wait,
--					       rspi->dma_callbacked, HZ);
--	if (ret > 0 && rspi->dma_callbacked)
--		ret = 0;
--	else if (!ret)
--		ret = -ETIMEDOUT;
--	rspi_disable_irq(rspi, SPCR_SPTIE | SPCR_SPRIE);
--
--	enable_irq(rspi->tx_irq);
--	if (rspi->rx_irq != rspi->tx_irq)
--		enable_irq(rspi->rx_irq);
--
--	return ret;
--}
--
- static bool __rspi_can_dma(const struct rspi_data *rspi,
- 			   const struct spi_transfer *xfer)
- {
-@@ -615,13 +602,9 @@ static int rspi_transfer_one(struct spi_master *master, struct spi_device *spi,
- 	}
- 	rspi_write8(rspi, spcr, RSPI_SPCR);
- 
--	if (master->can_dma && __rspi_can_dma(rspi, xfer)) {
--		if (xfer->rx_buf)
--			return rspi_send_receive_dma(rspi, &xfer->tx_sg,
--						     &xfer->rx_sg);
--		else
--			return rspi_send_dma(rspi, &xfer->tx_sg);
--	}
-+	if (master->can_dma && __rspi_can_dma(rspi, xfer))
-+		return rspi_dma_transfer(rspi, &xfer->tx_sg,
-+					 xfer->rx_buf ? &xfer->rx_sg : NULL);
- 
- 	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
- 	if (ret < 0)
--- 
-1.9.1
+> This affects only RSPI, which could do DMA transfers for TX-only before.
+> RSPI-RZ and QSPI (at least for Single SPI Transfers) will need both RX and
+> TX DMA anyway.
 
+Hrm, was this error handling or is it a hardware limitation that it can
+only do DMA in one direction?  Perhaps the core ought to be changed to
+support that if it's a hardware limit, I honestly hadn't considered that
+possibility when I wrote the code.
+
+--gTY1JhLGodeuSBqf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTjI1JAAoJELSic+t+oim9ApEQAIREHhmkb6Kvaamc+S02Wn8m
+0WBlpcY6hb78iyhL0PEOgCY7sa0bBOQQKpHCFFbKILy7d2hp3vywpR5CqXRbiZb/
+KlihOphwt0faEzQvbdPhhEGROJcMOb8aHwcWEIrPnzRSuAXlDVRKzdmgjWYCtoVN
+wJSBY3tg7h5cBNTv+taNGUp3u55j8zm8FWPW6YZKvMTlcw1yLtZIyd4RQFzoV/cg
+mnIdsB+/tKxzRgbRGCySDH2F2a9WsU4gq8MvjT/1zD3GDfVxLOnwkgOtuA4q94vK
+MGveTYWnd4N0KNVtD/wfYHMeUonMTpQV+qablLmzdmOsOEYyKsO1I5xEp9iWC6qv
+yQGYiO53UW9DEXveLlIVGf650UkNTaOSSraRxmoOEZb07yL2Ea8oY811QmUmf6B+
+p44sOfeH+yxbRkLRyIsknZCFlo1VUC5e8F0H1GO+bJPs/TJJbC7b5J+kIWvgVKRX
+MB306Qhi+2E1sI1R9lMIXGbaXhRVZzS6i4IXCM7FCOOrC9QedtZeVBzzP/8IdHZv
+7mm1q7/iwIdIpWyr/8Oy9hY3YdXYQX8ueq3hu5UW2/tZf+CO8Dh1PRxpOMDGb++n
+LxgXK4H9x7EViWcK2bFUuy7AVA4+n/P72I+dEjLRVGi7vAlx24SvJSmrxPNnLuwb
+UCyCwKLS1xNmJgOWMSSC
+=4ciu
+-----END PGP SIGNATURE-----
+
+--gTY1JhLGodeuSBqf--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

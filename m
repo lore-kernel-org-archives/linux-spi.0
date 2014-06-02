@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 09/18] spi: rspi: SPI DMA core needs both RX and TX DMA to function
-Date: Mon,  2 Jun 2014 15:38:11 +0200
-Message-ID: <1401716301-29612-10-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH 05/18] spi: rspi: Extract rspi_pio_transfer()
+Date: Mon,  2 Jun 2014 15:38:07 +0200
+Message-ID: <1401716301-29612-6-git-send-email-geert+renesas@glider.be>
 References: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
 Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
 	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
@@ -13,78 +13,178 @@ In-Reply-To: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-The SPI DMA core framework needs both RX and TX DMA to function.  As a
-preparation for converting the driver to use this framework, fall back to
-PIO if no DMA channel or only one DMA channel is available.
+The various PIO loops are very similar. Consolidate into a single
+function rspi_pio_transfer().
 
-This affects only RSPI, which could do DMA transfers for TX-only before.
-RSPI-RZ and QSPI (at least for Single SPI Transfers) will need both RX and
-TX DMA anyway.
+Both buffer pointers can be NULL, as RSPI supports TX-only mode, and
+Dual/Quad SPI Transfers are unidirectional.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-rspi.c | 36 ++++++++++++++----------------------
- 1 file changed, 14 insertions(+), 22 deletions(-)
+ drivers/spi/spi-rspi.c | 95 ++++++++++++++++++--------------------------------
+ 1 file changed, 33 insertions(+), 62 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index 1ec51cb00203..7b993f75a3cf 100644
+index ece8f6037943..fdbd46d0c570 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -640,10 +640,6 @@ end_tx_mapped:
- 
- static int rspi_is_dma(const struct rspi_data *rspi, struct spi_transfer *t)
- {
--	/* If the module receives data by DMAC, it also needs TX DMAC */
--	if (t->rx_buf)
--		return rspi->chan_tx && rspi->chan_rx;
--
- 	if (rspi->chan_tx)
- 		return 1;
- 
-@@ -985,29 +981,25 @@ static int rspi_request_dma(struct device *dev, struct rspi_data *rspi,
- {
- 	const struct rspi_plat_data *rspi_pd = dev_get_platdata(dev);
- 
--	if (!rspi_pd)
-+	if (!rspi_pd || !rspi_pd->dma_rx_id || !rspi_pd->dma_tx_id)
- 		return 0;	/* The driver assumes no error. */
- 
--	/* If the module receives data by DMAC, it also needs TX DMAC */
--	if (rspi_pd->dma_rx_id && rspi_pd->dma_tx_id) {
--		rspi->chan_rx = rspi_request_dma_chan(dev, DMA_DEV_TO_MEM,
--						      rspi_pd->dma_rx_id,
--						      res->start + RSPI_SPDR);
--		if (!rspi->chan_rx)
--			return -ENODEV;
-+	rspi->chan_rx = rspi_request_dma_chan(dev, DMA_DEV_TO_MEM,
-+					      rspi_pd->dma_rx_id,
-+					      res->start + RSPI_SPDR);
-+	if (!rspi->chan_rx)
-+		return -ENODEV;
- 
--		dev_info(dev, "Use DMA when rx.\n");
--	}
--	if (rspi_pd->dma_tx_id) {
--		rspi->chan_tx = rspi_request_dma_chan(dev, DMA_MEM_TO_DEV,
--						      rspi_pd->dma_tx_id,
--						      res->start + RSPI_SPDR);
--		if (!rspi->chan_tx)
--			return -ENODEV;
--
--		dev_info(dev, "Use DMA when tx\n");
-+	rspi->chan_tx = rspi_request_dma_chan(dev, DMA_MEM_TO_DEV,
-+					      rspi_pd->dma_tx_id,
-+					      res->start + RSPI_SPDR);
-+	if (!rspi->chan_tx) {
-+		dma_release_channel(rspi->chan_rx);
-+		rspi->chan_rx = NULL;
-+		return -ENODEV;
- 	}
- 
-+	dev_info(dev, "DMA available");
- 	return 0;
+@@ -438,15 +438,24 @@ static int rspi_data_in(struct rspi_data *rspi)
+ 	return data;
  }
  
+-static int rspi_data_out_in(struct rspi_data *rspi, u8 data)
++static int rspi_pio_transfer(struct rspi_data *rspi, const u8 *tx, u8 *rx,
++			     unsigned int n)
+ {
+-	int ret;
+-
+-	ret = rspi_data_out(rspi, data);
+-	if (ret < 0)
+-		return ret;
++	while (n-- > 0) {
++		if (tx) {
++			int ret = rspi_data_out(rspi, *tx++);
++			if (ret < 0)
++				return ret;
++		}
++		if (rx) {
++			int ret = rspi_data_in(rspi);
++			if (ret < 0)
++				return ret;
++			*rx++ = ret;
++		}
++	}
+ 
+-	return rspi_data_in(rspi);
++	return 0;
+ }
+ 
+ static void rspi_dma_complete(void *arg)
+@@ -644,13 +653,11 @@ static int rspi_is_dma(const struct rspi_data *rspi, struct spi_transfer *t)
+ static int rspi_transfer_out_in(struct rspi_data *rspi,
+ 				struct spi_transfer *xfer)
+ {
+-	int remain = xfer->len, ret;
+-	const u8 *tx_buf = xfer->tx_buf;
+-	u8 *rx_buf = xfer->rx_buf;
+ 	u8 spcr;
++	int ret;
+ 
+ 	spcr = rspi_read8(rspi, RSPI_SPCR);
+-	if (rx_buf) {
++	if (xfer->rx_buf) {
+ 		rspi_receive_init(rspi);
+ 		spcr &= ~SPCR_TXMD;
+ 	} else {
+@@ -658,18 +665,9 @@ static int rspi_transfer_out_in(struct rspi_data *rspi,
+ 	}
+ 	rspi_write8(rspi, spcr, RSPI_SPCR);
+ 
+-	while (remain > 0) {
+-		ret = rspi_data_out(rspi, *tx_buf++);
+-		if (ret < 0)
+-			return ret;
+-		if (rx_buf) {
+-			ret = rspi_data_in(rspi);
+-			if (ret < 0)
+-				return ret;
+-			*rx_buf++ = ret;
+-		}
+-		remain--;
+-	}
++	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
++	if (ret < 0)
++		return ret;
+ 
+ 	/* Wait for the last transmission */
+ 	rspi_wait_for_tx_empty(rspi);
+@@ -694,19 +692,13 @@ static int rspi_transfer_one(struct spi_master *master, struct spi_device *spi,
+ static int rspi_rz_transfer_out_in(struct rspi_data *rspi,
+ 				   struct spi_transfer *xfer)
+ {
+-	int remain = xfer->len, ret;
+-	const u8 *tx_buf = xfer->tx_buf;
+-	u8 *rx_buf = xfer->rx_buf;
++	int ret;
+ 
+ 	rspi_rz_receive_init(rspi);
+ 
+-	while (remain > 0) {
+-		ret = rspi_data_out_in(rspi, *tx_buf++);
+-		if (ret < 0)
+-			return ret;
+-		*rx_buf++ = ret;
+-		remain--;
+-	}
++	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
++	if (ret < 0)
++		return ret;
+ 
+ 	/* Wait for the last transmission */
+ 	rspi_wait_for_tx_empty(rspi);
+@@ -726,19 +718,13 @@ static int rspi_rz_transfer_one(struct spi_master *master,
+ static int qspi_transfer_out_in(struct rspi_data *rspi,
+ 				struct spi_transfer *xfer)
+ {
+-	int remain = xfer->len, ret;
+-	const u8 *tx_buf = xfer->tx_buf;
+-	u8 *rx_buf = xfer->rx_buf;
++	int ret;
+ 
+ 	qspi_receive_init(rspi);
+ 
+-	while (remain > 0) {
+-		ret = rspi_data_out_in(rspi, *tx_buf++);
+-		if (ret < 0)
+-			return ret;
+-		*rx_buf++ = ret;
+-		remain--;
+-	}
++	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
++	if (ret < 0)
++		return ret;
+ 
+ 	/* Wait for the last transmission */
+ 	rspi_wait_for_tx_empty(rspi);
+@@ -748,15 +734,11 @@ static int qspi_transfer_out_in(struct rspi_data *rspi,
+ 
+ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
+ {
+-	const u8 *buf = xfer->tx_buf;
+-	unsigned int i;
+ 	int ret;
+ 
+-	for (i = 0; i < xfer->len; i++) {
+-		ret = rspi_data_out(rspi, *buf++);
+-		if (ret < 0)
+-			return ret;
+-	}
++	ret = rspi_pio_transfer(rspi, xfer->tx_buf, NULL, xfer->len);
++	if (ret < 0)
++		return ret;
+ 
+ 	/* Wait for the last transmission */
+ 	rspi_wait_for_tx_empty(rspi);
+@@ -766,18 +748,7 @@ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
+ 
+ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
+ {
+-	u8 *buf = xfer->rx_buf;
+-	unsigned int i;
+-	int ret;
+-
+-	for (i = 0; i < xfer->len; i++) {
+-		ret = rspi_data_in(rspi);
+-		if (ret < 0)
+-			return ret;
+-		*buf++ = ret;
+-	}
+-
+-	return 0;
++	return rspi_pio_transfer(rspi, NULL, xfer->rx_buf, xfer->len);
+ }
+ 
+ static int qspi_transfer_one(struct spi_master *master, struct spi_device *spi,
 -- 
 1.9.1
 

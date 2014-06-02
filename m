@@ -1,76 +1,104 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi/pxa2xx-pci: Add common clock framework support
- in PCI glue layer
-Date: Mon, 2 Jun 2014 13:46:38 +0100
-Message-ID: <20140602124638.GD31751@sirena.org.uk>
-References: <1401738379-4107-1-git-send-email-chiau.ee.chew@intel.com>
- <1401738379-4107-2-git-send-email-chiau.ee.chew@intel.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="BRE3mIcgqKzpedwo"
-Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	LKML <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1401738379-4107-2-git-send-email-chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 01/18] spi: rspi: Extract rspi_wait_for_{tx_empty,rx_full}()
+Date: Mon,  2 Jun 2014 15:38:03 +0200
+Message-ID: <1401716301-29612-2-git-send-email-geert+renesas@glider.be>
+References: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/spi/spi-rspi.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
---BRE3mIcgqKzpedwo
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 5639f9529e0b..d04a4acce231 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -405,11 +405,22 @@ static int rspi_wait_for_interrupt(struct rspi_data *rspi, u8 wait_mask,
+ 	return 0;
+ }
+ 
++static inline int rspi_wait_for_tx_empty(struct rspi_data *rspi)
++{
++	return rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
++}
++
++static inline int rspi_wait_for_rx_full(struct rspi_data *rspi)
++{
++	return rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE);
++}
++
+ static int rspi_data_out(struct rspi_data *rspi, u8 data)
+ {
+-	if (rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE) < 0) {
++	int error = rspi_wait_for_tx_empty(rspi);
++	if (error < 0) {
+ 		dev_err(&rspi->master->dev, "transmit timeout\n");
+-		return -ETIMEDOUT;
++		return error;
+ 	}
+ 	rspi_write_data(rspi, data);
+ 	return 0;
+@@ -417,11 +428,13 @@ static int rspi_data_out(struct rspi_data *rspi, u8 data)
+ 
+ static int rspi_data_in(struct rspi_data *rspi)
+ {
++	int error;
+ 	u8 data;
+ 
+-	if (rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE) < 0) {
++	error = rspi_wait_for_rx_full(rspi);
++	if (error < 0) {
+ 		dev_err(&rspi->master->dev, "receive timeout\n");
+-		return -ETIMEDOUT;
++		return error;
+ 	}
+ 	data = rspi_read_data(rspi);
+ 	return data;
+@@ -737,7 +750,7 @@ static int rspi_transfer_out_in(struct rspi_data *rspi,
+ 	}
+ 
+ 	/* Wait for the last transmission */
+-	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
++	rspi_wait_for_tx_empty(rspi);
+ 
+ 	return 0;
+ }
+@@ -783,7 +796,7 @@ static int rspi_rz_transfer_out_in(struct rspi_data *rspi,
+ 	}
+ 
+ 	/* Wait for the last transmission */
+-	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
++	rspi_wait_for_tx_empty(rspi);
+ 
+ 	return 0;
+ }
+@@ -818,7 +831,7 @@ static int qspi_transfer_out_in(struct rspi_data *rspi,
+ 	}
+ 
+ 	/* Wait for the last transmission */
+-	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
++	rspi_wait_for_tx_empty(rspi);
+ 
+ 	return 0;
+ }
+@@ -836,7 +849,7 @@ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
+ 	}
+ 
+ 	/* Wait for the last transmission */
+-	rspi_wait_for_interrupt(rspi, SPSR_SPTEF, SPCR_SPTIE);
++	rspi_wait_for_tx_empty(rspi);
+ 
+ 	return 0;
+ }
+-- 
+1.9.1
 
-On Tue, Jun 03, 2014 at 03:46:18AM +0800, Chew Chiau Ee wrote:
-
-> ---
->  drivers/spi/spi-pxa2xx-pci.c |   20 ++++++++++++++++++++
->  1 files changed, 20 insertions(+), 0 deletions(-)
-
-> +	clk = clk_register_fixed_rate(&dev->dev, "spi_pxa2xx_clk", NULL,
-> +					CLK_IS_ROOT, c->max_clk_rate);
-> +	 if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-
-This is pretty much fine code wise but I'd expect to see some Kconfig
-updates adding dependencies on the clock API - clk_register_fixed_rate()
-is only provided if the fixed rate driver is present.  I'm also not
-seeing any changes to unregister the fixed rate clock as the device is
-removed.
-
---BRE3mIcgqKzpedwo
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
-
-iQIcBAEBAgAGBQJTjHIrAAoJELSic+t+oim9/7EP/1Pbt4XAJ5TpW6TYrXPk+sMS
-NZftP4t9eQPYSH46P8RRpqilmZ2dFOQZwKoDgmAFVt/tKJx34Vdmr5ZUE0FVn+TV
-ud/YKjTN6fvDd38ESKstpKpYE8Qg/oAWosoLsAWGRj+2smU1k6ezQVLM69Q1D3y5
-2gP0QR3XQw7MGYZ9k1BXVCjvTZbSdyHCqVJ8/hvjpJ2MZAfSqmvIeiHFF2weCnea
-ty9jis54P5HqCjnL76UpnruiJKZNB7+ZmfajuHCBJxfgiOGqYlsfIihH1I6aunYo
-t6l66UUdQjamjEsBlyWkFRBS6HgjIuOiCAb7QUGzFyK/yhAsWe5zgM59eCNSjBiH
-NgChnAml7Phl2gPisMg0Rl5CfzB4fA1zd3aq9FsZ+7FL3GsReJAlQCOWYNGe5LBK
-nmd47AcgIndDTgeNPGQImraspBSxnYs4dC1UgBY2s3OLvvhZV+E3sNWmtIkPvYvE
-huKeIh9Ey8RqJjFR+TVn2K+EEfJm20QSQeD5et2SLKxMQ/suSUKdFvgoB+sB2JKX
-reGSMxsQc97iWA4r2VlOljWsYe0nze+umBvgpT0dTug+yzHdpsMHUhWEEwoGQ6sL
-YVYvmpuK7jvYuZfzX12w4Oct3zk2dMziECg0Tz5/gBWSagUBL3MWYm7PZR8JLo+X
-ZWhJtknrJDlTIYDdMEX0
-=/dfd
------END PGP SIGNATURE-----
-
---BRE3mIcgqKzpedwo--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

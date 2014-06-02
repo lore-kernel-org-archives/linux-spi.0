@@ -1,190 +1,89 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 05/18] spi: rspi: Extract rspi_pio_transfer()
-Date: Mon,  2 Jun 2014 15:38:07 +0200
-Message-ID: <1401716301-29612-6-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH 08/18] spi: rspi: Remove unneeded resource test in DMA setup
+Date: Mon,  2 Jun 2014 15:38:10 +0200
+Message-ID: <1401716301-29612-9-git-send-email-geert+renesas@glider.be>
 References: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1401716301-29612-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The various PIO loops are very similar. Consolidate into a single
-function rspi_pio_transfer().
+The resource is know to exist, as rspi_probe() already mapped it.
+Remove the test, and just pass the resource.
+Pass the device pointer instead of the platform device pointer, as the
+latter is no longer needed.
 
-Both buffer pointers can be NULL, as RSPI supports TX-only mode, and
-Dual/Quad SPI Transfers are unidirectional.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 ---
- drivers/spi/spi-rspi.c | 95 ++++++++++++++++++--------------------------------
- 1 file changed, 33 insertions(+), 62 deletions(-)
+ drivers/spi/spi-rspi.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index ece8f6037943..fdbd46d0c570 100644
+index 0a7a2d618f0f..1ec51cb00203 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -438,15 +438,24 @@ static int rspi_data_in(struct rspi_data *rspi)
- 	return data;
+@@ -980,35 +980,32 @@ static struct dma_chan *rspi_request_dma_chan(struct device *dev,
+ 	return chan;
  }
  
--static int rspi_data_out_in(struct rspi_data *rspi, u8 data)
-+static int rspi_pio_transfer(struct rspi_data *rspi, const u8 *tx, u8 *rx,
-+			     unsigned int n)
+-static int rspi_request_dma(struct rspi_data *rspi,
+-			    struct platform_device *pdev)
++static int rspi_request_dma(struct device *dev, struct rspi_data *rspi,
++			    const struct resource *res)
  {
--	int ret;
--
--	ret = rspi_data_out(rspi, data);
--	if (ret < 0)
--		return ret;
-+	while (n-- > 0) {
-+		if (tx) {
-+			int ret = rspi_data_out(rspi, *tx++);
-+			if (ret < 0)
-+				return ret;
-+		}
-+		if (rx) {
-+			int ret = rspi_data_in(rspi);
-+			if (ret < 0)
-+				return ret;
-+			*rx++ = ret;
-+		}
-+	}
+-	const struct rspi_plat_data *rspi_pd = dev_get_platdata(&pdev->dev);
+-	struct resource *res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	const struct rspi_plat_data *rspi_pd = dev_get_platdata(dev);
  
--	return rspi_data_in(rspi);
-+	return 0;
- }
+-	if (!res || !rspi_pd)
++	if (!rspi_pd)
+ 		return 0;	/* The driver assumes no error. */
  
- static void rspi_dma_complete(void *arg)
-@@ -644,13 +653,11 @@ static int rspi_is_dma(const struct rspi_data *rspi, struct spi_transfer *t)
- static int rspi_transfer_out_in(struct rspi_data *rspi,
- 				struct spi_transfer *xfer)
- {
--	int remain = xfer->len, ret;
--	const u8 *tx_buf = xfer->tx_buf;
--	u8 *rx_buf = xfer->rx_buf;
- 	u8 spcr;
-+	int ret;
+ 	/* If the module receives data by DMAC, it also needs TX DMAC */
+ 	if (rspi_pd->dma_rx_id && rspi_pd->dma_tx_id) {
+-		rspi->chan_rx = rspi_request_dma_chan(&pdev->dev,
+-						      DMA_DEV_TO_MEM,
++		rspi->chan_rx = rspi_request_dma_chan(dev, DMA_DEV_TO_MEM,
+ 						      rspi_pd->dma_rx_id,
+ 						      res->start + RSPI_SPDR);
+ 		if (!rspi->chan_rx)
+ 			return -ENODEV;
  
- 	spcr = rspi_read8(rspi, RSPI_SPCR);
--	if (rx_buf) {
-+	if (xfer->rx_buf) {
- 		rspi_receive_init(rspi);
- 		spcr &= ~SPCR_TXMD;
- 	} else {
-@@ -658,18 +665,9 @@ static int rspi_transfer_out_in(struct rspi_data *rspi,
+-		dev_info(&pdev->dev, "Use DMA when rx.\n");
++		dev_info(dev, "Use DMA when rx.\n");
  	}
- 	rspi_write8(rspi, spcr, RSPI_SPCR);
+ 	if (rspi_pd->dma_tx_id) {
+-		rspi->chan_tx = rspi_request_dma_chan(&pdev->dev,
+-						      DMA_MEM_TO_DEV,
++		rspi->chan_tx = rspi_request_dma_chan(dev, DMA_MEM_TO_DEV,
+ 						      rspi_pd->dma_tx_id,
+ 						      res->start + RSPI_SPDR);
+ 		if (!rspi->chan_tx)
+ 			return -ENODEV;
  
--	while (remain > 0) {
--		ret = rspi_data_out(rspi, *tx_buf++);
--		if (ret < 0)
--			return ret;
--		if (rx_buf) {
--			ret = rspi_data_in(rspi);
--			if (ret < 0)
--				return ret;
--			*rx_buf++ = ret;
--		}
--		remain--;
--	}
-+	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
-+	if (ret < 0)
-+		return ret;
+-		dev_info(&pdev->dev, "Use DMA when tx\n");
++		dev_info(dev, "Use DMA when tx\n");
+ 	}
  
- 	/* Wait for the last transmission */
- 	rspi_wait_for_tx_empty(rspi);
-@@ -694,19 +692,13 @@ static int rspi_transfer_one(struct spi_master *master, struct spi_device *spi,
- static int rspi_rz_transfer_out_in(struct rspi_data *rspi,
- 				   struct spi_transfer *xfer)
- {
--	int remain = xfer->len, ret;
--	const u8 *tx_buf = xfer->tx_buf;
--	u8 *rx_buf = xfer->rx_buf;
-+	int ret;
+ 	return 0;
+@@ -1210,7 +1207,7 @@ static int rspi_probe(struct platform_device *pdev)
+ 		goto error2;
+ 	}
  
- 	rspi_rz_receive_init(rspi);
+-	ret = rspi_request_dma(rspi, pdev);
++	ret = rspi_request_dma(&pdev->dev, rspi, res);
+ 	if (ret < 0)
+ 		dev_warn(&pdev->dev, "DMA not available, using PIO\n");
  
--	while (remain > 0) {
--		ret = rspi_data_out_in(rspi, *tx_buf++);
--		if (ret < 0)
--			return ret;
--		*rx_buf++ = ret;
--		remain--;
--	}
-+	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
-+	if (ret < 0)
-+		return ret;
- 
- 	/* Wait for the last transmission */
- 	rspi_wait_for_tx_empty(rspi);
-@@ -726,19 +718,13 @@ static int rspi_rz_transfer_one(struct spi_master *master,
- static int qspi_transfer_out_in(struct rspi_data *rspi,
- 				struct spi_transfer *xfer)
- {
--	int remain = xfer->len, ret;
--	const u8 *tx_buf = xfer->tx_buf;
--	u8 *rx_buf = xfer->rx_buf;
-+	int ret;
- 
- 	qspi_receive_init(rspi);
- 
--	while (remain > 0) {
--		ret = rspi_data_out_in(rspi, *tx_buf++);
--		if (ret < 0)
--			return ret;
--		*rx_buf++ = ret;
--		remain--;
--	}
-+	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
-+	if (ret < 0)
-+		return ret;
- 
- 	/* Wait for the last transmission */
- 	rspi_wait_for_tx_empty(rspi);
-@@ -748,15 +734,11 @@ static int qspi_transfer_out_in(struct rspi_data *rspi,
- 
- static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
- {
--	const u8 *buf = xfer->tx_buf;
--	unsigned int i;
- 	int ret;
- 
--	for (i = 0; i < xfer->len; i++) {
--		ret = rspi_data_out(rspi, *buf++);
--		if (ret < 0)
--			return ret;
--	}
-+	ret = rspi_pio_transfer(rspi, xfer->tx_buf, NULL, xfer->len);
-+	if (ret < 0)
-+		return ret;
- 
- 	/* Wait for the last transmission */
- 	rspi_wait_for_tx_empty(rspi);
-@@ -766,18 +748,7 @@ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
- 
- static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
- {
--	u8 *buf = xfer->rx_buf;
--	unsigned int i;
--	int ret;
--
--	for (i = 0; i < xfer->len; i++) {
--		ret = rspi_data_in(rspi);
--		if (ret < 0)
--			return ret;
--		*buf++ = ret;
--	}
--
--	return 0;
-+	return rspi_pio_transfer(rspi, NULL, xfer->rx_buf, xfer->len);
- }
- 
- static int qspi_transfer_one(struct spi_master *master, struct spi_device *spi,
 -- 
 1.9.1
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

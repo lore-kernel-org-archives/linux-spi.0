@@ -1,45 +1,183 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 16/18] spi: rspi: Add DMA support for RSPI on RZ/A1H
-Date: Mon,  2 Jun 2014 15:38:18 +0200
-Message-ID: <1401716301-29612-17-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 03/18] [RFC] spi: rspi: Remove unused 16-bit DMA support
+Date: Mon,  2 Jun 2014 15:38:05 +0200
+Message-ID: <1401716301-29612-4-git-send-email-geert+renesas@glider.be>
 References: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
-Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1401716301-29612-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Magnus Damm <magnus.damm@gmail.com>, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Enable DMA support for RSPI on r7s72100 (RZ/A1H).
+The 16-bit DMA support doesn't fit well within the SPI core DMA framework,
+as it needs to manage its own double-sized temporary buffers, for handling
+the interleaved data.
+Remove it, as there is no in-tree board code that sets
+rspi_plat_data.dma_width_16bit.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
-This is untested, due to lack of DMA integration code on r7s72100/genmai.
----
- drivers/spi/spi-rspi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-rspi.c   | 84 ++++--------------------------------------------
+ include/linux/spi/rspi.h |  2 --
+ 2 files changed, 6 insertions(+), 80 deletions(-)
 
 diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index bec81470dd9c..4bc4138e002b 100644
+index 57beda209599..3bd06fd9af47 100644
 --- a/drivers/spi/spi-rspi.c
 +++ b/drivers/spi/spi-rspi.c
-@@ -625,6 +625,9 @@ static int rspi_rz_transfer_one(struct spi_master *master,
+@@ -201,7 +201,6 @@ struct rspi_data {
+ 	struct dma_chan *chan_tx;
+ 	struct dma_chan *chan_rx;
  
- 	rspi_rz_receive_init(rspi);
+-	unsigned dma_width_16bit:1;
+ 	unsigned dma_callbacked:1;
+ 	unsigned byte_access:1;
+ };
+@@ -475,60 +474,17 @@ static void rspi_dma_unmap_sg(struct scatterlist *sg, struct dma_chan *chan,
+ 	dma_unmap_sg(chan->device->dev, sg, 1, dir);
+ }
  
-+	if (master->can_dma && __rspi_can_dma(rspi, xfer))
-+		return rspi_dma_transfer(rspi, &xfer->tx_sg, &xfer->rx_sg);
-+
- 	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
- 	if (ret < 0)
- 		return ret;
+-static void rspi_memory_to_8bit(void *buf, const void *data, unsigned len)
+-{
+-	u16 *dst = buf;
+-	const u8 *src = data;
+-
+-	while (len) {
+-		*dst++ = (u16)(*src++);
+-		len--;
+-	}
+-}
+-
+-static void rspi_memory_from_8bit(void *buf, const void *data, unsigned len)
+-{
+-	u8 *dst = buf;
+-	const u16 *src = data;
+-
+-	while (len) {
+-		*dst++ = (u8)*src++;
+-		len--;
+-	}
+-}
+-
+ static int rspi_send_dma(struct rspi_data *rspi, struct spi_transfer *t)
+ {
+ 	struct scatterlist sg;
+-	const void *buf = NULL;
++	const void *buf = t->tx_buf;
+ 	struct dma_async_tx_descriptor *desc;
+-	unsigned int len;
++	unsigned int len = t->len;
+ 	int ret = 0;
+ 
+-	if (rspi->dma_width_16bit) {
+-		void *tmp;
+-		/*
+-		 * If DMAC bus width is 16-bit, the driver allocates a dummy
+-		 * buffer. And, the driver converts original data into the
+-		 * DMAC data as the following format:
+-		 *  original data: 1st byte, 2nd byte ...
+-		 *  DMAC data:     1st byte, dummy, 2nd byte, dummy ...
+-		 */
+-		len = t->len * 2;
+-		tmp = kmalloc(len, GFP_KERNEL);
+-		if (!tmp)
+-			return -ENOMEM;
+-		rspi_memory_to_8bit(tmp, t->tx_buf, t->len);
+-		buf = tmp;
+-	} else {
+-		len = t->len;
+-		buf = t->tx_buf;
+-	}
++	if (!rspi_dma_map_sg(&sg, buf, len, rspi->chan_tx, DMA_TO_DEVICE))
++		return -EFAULT;
+ 
+-	if (!rspi_dma_map_sg(&sg, buf, len, rspi->chan_tx, DMA_TO_DEVICE)) {
+-		ret = -EFAULT;
+-		goto end_nomap;
+-	}
+ 	desc = dmaengine_prep_slave_sg(rspi->chan_tx, &sg, 1, DMA_TO_DEVICE,
+ 				       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 	if (!desc) {
+@@ -563,10 +519,6 @@ static int rspi_send_dma(struct rspi_data *rspi, struct spi_transfer *t)
+ 
+ end:
+ 	rspi_dma_unmap_sg(&sg, rspi->chan_tx, DMA_TO_DEVICE);
+-end_nomap:
+-	if (rspi->dma_width_16bit)
+-		kfree(buf);
+-
+ 	return ret;
+ }
+ 
+@@ -603,28 +555,11 @@ static void qspi_receive_init(const struct rspi_data *rspi)
+ static int rspi_receive_dma(struct rspi_data *rspi, struct spi_transfer *t)
+ {
+ 	struct scatterlist sg, sg_dummy;
+-	void *dummy = NULL, *rx_buf = NULL;
++	void *dummy = NULL, *rx_buf = t->rx_buf;
+ 	struct dma_async_tx_descriptor *desc, *desc_dummy;
+-	unsigned int len;
++	unsigned int len = t->len;
+ 	int ret = 0;
+ 
+-	if (rspi->dma_width_16bit) {
+-		/*
+-		 * If DMAC bus width is 16-bit, the driver allocates a dummy
+-		 * buffer. And, finally the driver converts the DMAC data into
+-		 * actual data as the following format:
+-		 *  DMAC data:   1st byte, dummy, 2nd byte, dummy ...
+-		 *  actual data: 1st byte, 2nd byte ...
+-		 */
+-		len = t->len * 2;
+-		rx_buf = kmalloc(len, GFP_KERNEL);
+-		if (!rx_buf)
+-			return -ENOMEM;
+-	 } else {
+-		len = t->len;
+-		rx_buf = t->rx_buf;
+-	}
+-
+ 	/* prepare dummy transfer to generate SPI clocks */
+ 	dummy = kzalloc(len, GFP_KERNEL);
+ 	if (!dummy) {
+@@ -697,11 +632,6 @@ end:
+ end_dummy_mapped:
+ 	rspi_dma_unmap_sg(&sg_dummy, rspi->chan_tx, DMA_TO_DEVICE);
+ end_nomap:
+-	if (rspi->dma_width_16bit) {
+-		if (!ret)
+-			rspi_memory_from_8bit(t->rx_buf, rx_buf, t->len);
+-		kfree(rx_buf);
+-	}
+ 	kfree(dummy);
+ 
+ 	return ret;
+@@ -1073,8 +1003,6 @@ static int rspi_request_dma(struct rspi_data *rspi,
+ 	if (!res || !rspi_pd)
+ 		return 0;	/* The driver assumes no error. */
+ 
+-	rspi->dma_width_16bit = rspi_pd->dma_width_16bit;
+-
+ 	/* If the module receives data by DMAC, it also needs TX DMAC */
+ 	if (rspi_pd->dma_rx_id && rspi_pd->dma_tx_id) {
+ 		dma_cap_zero(mask);
+diff --git a/include/linux/spi/rspi.h b/include/linux/spi/rspi.h
+index a25bd6f65e7f..e546b2ceb623 100644
+--- a/include/linux/spi/rspi.h
++++ b/include/linux/spi/rspi.h
+@@ -25,8 +25,6 @@ struct rspi_plat_data {
+ 	unsigned int dma_tx_id;
+ 	unsigned int dma_rx_id;
+ 
+-	unsigned dma_width_16bit:1;	/* DMAC read/write width = 16-bit */
+-
+ 	u16 num_chipselect;
+ };
+ 
 -- 
 1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

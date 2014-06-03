@@ -1,45 +1,38 @@
-From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 3/3] spi: sh-hspi: Make of_device_id array const
-Date: Tue, 03 Jun 2014 21:04:59 +0900
-Message-ID: <002001cf7f24$0b0b64c0$21222e40$%han@samsung.com>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 3/3] spi: sh-hspi: Make of_device_id array const
+Date: Tue, 3 Jun 2014 14:14:03 +0200
+Message-ID: <CAMuHMdXyLuL_MJoQYF-B4Z9fnhf+EDv9pFL=S7RSfu6oa2_FxQ@mail.gmail.com>
 References: <001e01cf7f23$946c4460$bd44cd20$%han@samsung.com>
+	<002001cf7f24$0b0b64c0$21222e40$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Kuninori Morimoto' <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
-To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
+To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-reply-to: <001e01cf7f23$946c4460$bd44cd20$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Content-language: ko
+In-Reply-To: <002001cf7f24$0b0b64c0$21222e40$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Make of_device_id array const, because all OF functions handle
-it as const.
+On Tue, Jun 3, 2014 at 2:04 PM, Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
+> Make of_device_id array const, because all OF functions handle
+> it as const.
+>
+> Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 
-Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- drivers/spi/spi-sh-hspi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Acked-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 
-diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
-index c8e795e..94b5fae 100644
---- a/drivers/spi/spi-sh-hspi.c
-+++ b/drivers/spi/spi-sh-hspi.c
-@@ -304,7 +304,7 @@ static int hspi_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
--static struct of_device_id hspi_of_match[] = {
-+static const struct of_device_id hspi_of_match[] = {
- 	{ .compatible = "renesas,hspi", },
- 	{ /* sentinel */ }
- };
--- 
-1.7.10.4
+Gr{oetje,eeting}s,
 
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

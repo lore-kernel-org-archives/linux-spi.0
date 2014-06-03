@@ -1,14 +1,13 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 2/3] spi: fsl-spi: Make of_device_id array const
-Date: Tue, 03 Jun 2014 21:03:59 +0900
-Message-ID: <001f01cf7f23$e7678da0$b636a8e0$%han@samsung.com>
+Subject: [PATCH 3/3] spi: sh-hspi: Make of_device_id array const
+Date: Tue, 03 Jun 2014 21:04:59 +0900
+Message-ID: <002001cf7f24$0b0b64c0$21222e40$%han@samsung.com>
 References: <001e01cf7f23$946c4460$bd44cd20$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	'Kumar Gala' <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	'Anton Vorontsov' <anton-9xeibp6oKSgdnm+yROfE0A@public.gmane.org>
+	'Kuninori Morimoto' <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-reply-to: <001e01cf7f23$946c4460$bd44cd20$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
@@ -21,22 +20,22 @@ it as const.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-fsl-spi.c |    2 +-
+ drivers/spi/spi-sh-hspi.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-spi.c b/drivers/spi/spi-fsl-spi.c
-index 98ccd23..9452f674 100644
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -58,7 +58,7 @@ static struct fsl_spi_match_data of_fsl_spi_grlib_config = {
- 	.type = TYPE_GRLIB,
- };
+diff --git a/drivers/spi/spi-sh-hspi.c b/drivers/spi/spi-sh-hspi.c
+index c8e795e..94b5fae 100644
+--- a/drivers/spi/spi-sh-hspi.c
++++ b/drivers/spi/spi-sh-hspi.c
+@@ -304,7 +304,7 @@ static int hspi_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
--static struct of_device_id of_fsl_spi_match[] = {
-+static const struct of_device_id of_fsl_spi_match[] = {
- 	{
- 		.compatible = "fsl,spi",
- 		.data = &of_fsl_spi_fsl_config,
+-static struct of_device_id hspi_of_match[] = {
++static const struct of_device_id hspi_of_match[] = {
+ 	{ .compatible = "renesas,hspi", },
+ 	{ /* sentinel */ }
+ };
 -- 
 1.7.10.4
 

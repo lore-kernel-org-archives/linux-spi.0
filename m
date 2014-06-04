@@ -1,11 +1,13 @@
 From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: [PATCH 1/4] spi: clps711x: Remove unnecessary platform_set_drvdata()
-Date: Wed,  4 Jun 2014 18:17:06 +0400
-Message-ID: <1401891429-14271-1-git-send-email-shc_work@mail.ru>
+Subject: [PATCH 4/4] spi: sh-msiof: Remove unnecessary platform_set_drvdata()
+Date: Wed,  4 Jun 2014 18:17:09 +0400
+Message-ID: <1401891429-14271-4-git-send-email-shc_work@mail.ru>
+References: <1401891429-14271-1-git-send-email-shc_work@mail.ru>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1401891429-14271-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -14,22 +16,22 @@ anywhere in the driver.
 
 Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 ---
- drivers/spi/spi-clps711x.c | 2 --
+ drivers/spi/spi-sh-msiof.c | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index 4cd62f6..ce538da 100644
---- a/drivers/spi/spi-clps711x.c
-+++ b/drivers/spi/spi-clps711x.c
-@@ -184,8 +184,6 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	}
- 	master->max_speed_hz = clk_get_rate(hw->spi_clk);
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 45b0914..83c4370 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -680,8 +680,6 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
  
--	platform_set_drvdata(pdev, master);
+ 	p = spi_master_get_devdata(master);
+ 
+-	platform_set_drvdata(pdev, p);
 -
- 	hw->syscon = syscon_regmap_lookup_by_pdevname("syscon.3");
- 	if (IS_ERR(hw->syscon)) {
- 		ret = PTR_ERR(hw->syscon);
+ 	of_id = of_match_device(sh_msiof_match, &pdev->dev);
+ 	if (of_id) {
+ 		p->chipdata = of_id->data;
 -- 
 1.8.5.5
 

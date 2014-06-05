@@ -1,41 +1,50 @@
-From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: [PATCH 4/4] spi: sh-msiof: Remove unnecessary platform_set_drvdata()
-Date: Wed,  4 Jun 2014 18:17:09 +0400
-Message-ID: <1401891429-14271-4-git-send-email-shc_work@mail.ru>
-References: <1401891429-14271-1-git-send-email-shc_work@mail.ru>
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1401891429-14271-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Subject: Re: [PATCH 00/18] spi: rspi: Add DMA support for QSPI on R-Car Gen2
+Date: Thu, 5 Jun 2014 14:58:29 +0900
+Message-ID: <53900705.4030906@renesas.com>
+References: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7bit
+Cc: Magnus Damm <magnus.damm@gmail.com>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Drop call to platform_set_drvdata() as driver data is not used
-anywhere in the driver.
+Hi Geert-san,
 
-Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
----
- drivers/spi/spi-sh-msiof.c | 2 --
- 1 file changed, 2 deletions(-)
+Thank you for the patches!
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 45b0914..83c4370 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -680,8 +680,6 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 
- 	p = spi_master_get_devdata(master);
- 
--	platform_set_drvdata(pdev, p);
--
- 	of_id = of_match_device(sh_msiof_match, &pdev->dev);
- 	if (of_id) {
- 		p->chipdata = of_id->data;
--- 
-1.8.5.5
+(2014/06/02 22:38), Geert Uytterhoeven wrote:
+> This patch series refactors the Renesas SPI driver and adds DMA support
+> using the SPI DMA framework for QSPI on R-Car Gen2, for Single, Dual, and
+> Quad SPI Transfers.
+> It also adds DMA support for RZ/A1H, but this was untested.
+> 
+> Apart from refactorings that don't change behavior:
+>   - [02/18] reverts a (harmless?) behavioral change for RSPI on SH,
+>   - [03/18] removes 16-bit DMA support, which has no in-tree users.
+> 	    16-bit DMA support requires using a double-sized buffer to
+> 	    accomodate the interleaved data format.
+> 	    If there's a strong requirement to keep this, I think it's best
+> 	    to re-add support after this series.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+I agree with you.
+(I wrote this 16-bit DMA function. But, as you know, nobody uses this function.)
+
+< snip >
+>  Documentation/devicetree/bindings/spi/spi-rspi.txt |   6 +
+>  drivers/spi/spi-rspi.c                             | 604 ++++++++-------------
+>  include/linux/spi/rspi.h                           |   2 -
+>  3 files changed, 228 insertions(+), 384 deletions(-)
+
+All of the patch series:
+Acked-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+
+Best regards,
+Yoshihiro Shimoda

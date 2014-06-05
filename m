@@ -1,50 +1,54 @@
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Subject: Re: [PATCH 00/18] spi: rspi: Add DMA support for QSPI on R-Car Gen2
-Date: Thu, 5 Jun 2014 14:58:29 +0900
-Message-ID: <53900705.4030906@renesas.com>
-References: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-Cc: Magnus Damm <magnus.damm@gmail.com>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>
-To: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1401716301-29612-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi/pxa2xx: change default supported DMA burst size to 1
+Date: Fri,  6 Jun 2014 01:45:09 +0800
+Message-ID: <1401990309-12492-1-git-send-email-chiau.ee.chew@intel.com>
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	LKML-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Geert-san,
+From: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
-Thank you for the patches!
+This is to fix the SPI DMA transfer failure for speed less than 1M.
+If using current DMA burst size setting (16), the Rx data bytes are
+invalid due to each data byte is multiplied according to the burst
+size setting.
 
-(2014/06/02 22:38), Geert Uytterhoeven wrote:
-> This patch series refactors the Renesas SPI driver and adds DMA support
-> using the SPI DMA framework for QSPI on R-Car Gen2, for Single, Dual, and
-> Quad SPI Transfers.
-> It also adds DMA support for RZ/A1H, but this was untested.
-> 
-> Apart from refactorings that don't change behavior:
->   - [02/18] reverts a (harmless?) behavioral change for RSPI on SH,
->   - [03/18] removes 16-bit DMA support, which has no in-tree users.
-> 	    16-bit DMA support requires using a double-sized buffer to
-> 	    accomodate the interleaved data format.
-> 	    If there's a strong requirement to keep this, I think it's best
-> 	    to re-add support after this series.
+Let's said supposedly we shall receive the following 18 bytes of data:
+01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18
+Instead, the data bytes received consist of "16 bytes of '01' +
+2 bytes of '02'" :
+01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 02 02
 
-I agree with you.
-(I wrote this 16-bit DMA function. But, as you know, nobody uses this function.)
+Signed-off-by: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx-dma.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-< snip >
->  Documentation/devicetree/bindings/spi/spi-rspi.txt |   6 +
->  drivers/spi/spi-rspi.c                             | 604 ++++++++-------------
->  include/linux/spi/rspi.h                           |   2 -
->  3 files changed, 228 insertions(+), 384 deletions(-)
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index f6759dc..c41ff14 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -368,7 +368,7 @@ int pxa2xx_spi_set_dma_burst_and_threshold(struct chip_data *chip,
+ 	 * otherwise we use the default. Also we use the default FIFO
+ 	 * thresholds for now.
+ 	 */
+-	*burst_code = chip_info ? chip_info->dma_burst_size : 16;
++	*burst_code = chip_info ? chip_info->dma_burst_size : 1;
+ 	*threshold = SSCR1_RxTresh(RX_THRESH_DFLT)
+ 		   | SSCR1_TxTresh(TX_THRESH_DFLT);
+ 
+-- 
+1.7.4.4
 
-All of the patch series:
-Acked-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-
-Best regards,
-Yoshihiro Shimoda
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

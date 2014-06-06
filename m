@@ -1,36 +1,36 @@
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 0/2] spi: rspi: Misc Cleanups
-Date: Fri,  6 Jun 2014 13:38:41 +0200
-Message-ID: <1402054723-30682-1-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH 1/2] spi: rspi: Remove unused variable in rspi_rz_transfer_one()
+Date: Fri,  6 Jun 2014 13:38:42 +0200
+Message-ID: <1402054723-30682-2-git-send-email-geert+renesas@glider.be>
+References: <1402054723-30682-1-git-send-email-geert+renesas@glider.be>
 Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1402054723-30682-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-	Hi Mark,
+Introduced by commit 8b983e90ea1a3dd82070f96c062ad521a06b7cc0 ("spi: rspi:
+Extract rspi_common_transfer()"), which removed its users.
 
-Here are two small cleanups for the Renesas SPI driver.
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/spi/spi-rspi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-I've been hiding in a brown paper bag, as the first one fixes an unused
-variable warning introduced by me in last patch of the previous series.
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 10112745bb17..ddee9df1547d 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -630,7 +630,6 @@ static int rspi_rz_transfer_one(struct spi_master *master,
+ 				struct spi_transfer *xfer)
+ {
+ 	struct rspi_data *rspi = spi_master_get_devdata(master);
+-	int ret;
+ 
+ 	rspi_rz_receive_init(rspi);
+ 
+-- 
+1.9.1
 
-  [1/2] spi: rspi: Remove unused variable in rspi_rz_transfer_one()
-  [2/2] spi: rspi: Pass spi_master pointer to rspi_release_dma()
-
- drivers/spi/spi-rspi.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
-Thanks for applying!
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds

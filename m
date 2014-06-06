@@ -1,64 +1,56 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: [PATCH 2/2] spi: rspi: Pass spi_master pointer to rspi_release_dma()
-Date: Fri,  6 Jun 2014 13:38:43 +0200
-Message-ID: <1402054723-30682-3-git-send-email-geert+renesas@glider.be>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 0/2] spi: rspi: Misc Cleanups
+Date: Fri, 6 Jun 2014 12:43:27 +0100
+Message-ID: <20140606114327.GM2520@sirena.org.uk>
 References: <1402054723-30682-1-git-send-email-geert+renesas@glider.be>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="9+yvdhHLKXN64C4s"
 Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
 In-Reply-To: <1402054723-30682-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-rspi_release_dma() doesn't need access to any fields in the driver private
-data, except for the pointer to the SPI master object. Hence just pass the
-needed pointer.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/spi/spi-rspi.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+--9+yvdhHLKXN64C4s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index ddee9df1547d..38fd938d6360 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -926,19 +926,19 @@ static int rspi_request_dma(struct device *dev, struct spi_master *master,
- 	return 0;
- }
- 
--static void rspi_release_dma(struct rspi_data *rspi)
-+static void rspi_release_dma(struct spi_master *master)
- {
--	if (rspi->master->dma_tx)
--		dma_release_channel(rspi->master->dma_tx);
--	if (rspi->master->dma_rx)
--		dma_release_channel(rspi->master->dma_rx);
-+	if (master->dma_tx)
-+		dma_release_channel(master->dma_tx);
-+	if (master->dma_rx)
-+		dma_release_channel(master->dma_rx);
- }
- 
- static int rspi_remove(struct platform_device *pdev)
- {
- 	struct rspi_data *rspi = platform_get_drvdata(pdev);
- 
--	rspi_release_dma(rspi);
-+	rspi_release_dma(rspi->master);
- 	pm_runtime_disable(&pdev->dev);
- 
- 	return 0;
-@@ -1140,7 +1140,7 @@ static int rspi_probe(struct platform_device *pdev)
- 	return 0;
- 
- error3:
--	rspi_release_dma(rspi);
-+	rspi_release_dma(master);
- error2:
- 	pm_runtime_disable(&pdev->dev);
- error1:
--- 
-1.9.1
+On Fri, Jun 06, 2014 at 01:38:41PM +0200, Geert Uytterhoeven wrote:
+> 	Hi Mark,
+>=20
+> Here are two small cleanups for the Renesas SPI driver.
+>=20
+> I've been hiding in a brown paper bag, as the first one fixes an unused
+> variable warning introduced by me in last patch of the previous series.
 
+Applied both, thanks.
+
+--9+yvdhHLKXN64C4s
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTkalcAAoJELSic+t+oim9oO8QAJId+VAWHaVhl3n0ErSayTuU
+BAwAcEO7CljEdgIcN2WYFZal3upcQJeChpEZdZlRto0zh+L5lWM/I5ObajW32h/f
+HFnFXZDLMJ1tBdk2Yf0c41g0pzSwOhQKDP5f1QT7TF+d3nwmyNGrJbd+yr1XQTrw
+JV0lWObxxK0Iw0hfvxnhqsOt0DuXeRg0Hau+j5OL8rZ3tMsek8zEONMtBolqid8H
+bAB3o8fDKc45v0TE4VuH4UUq5mhU9urjxT08k2eUNeiNr1J/VFsXu3ycRrgmnP+2
+DtxPwl3ThoTAPjo3cRyvHhhsJp882t+Bd834Tmi5RiVEgbp8mcGorxgD+MdbKTsP
+l9kIPPPvTC3r3QgVy9nhI+pP4qVlFrLbc6cenbiyxUJo5giz+ToTCHHxdfHy+PhH
+b0RNDOJrAlEAt2MyApa7EO0E5mFyjzaOYX1Q/KC3oCwWdLO4+q6NZVOOebaC6WhI
+3Y8J6yuOQWOoqDQw/m6TnQb472Y9jaUzEMGHN2vh+OjPCKzknOcSZYwULFFm66hm
+PcZlKRiOPXMdqE6YqOvmpxZ6DA2szfIJGVThA2ueMHkUUaCyMvxNXRdzN/ZPTYvD
+nLOIL6Wb1iCKnqtkPyNDaG3KXnm7u0vPgoKnNdk0i7BNsGxuOPgmIW/gwrgVZUlX
+jrClFa41oFW1RTSUuo2A
+=sUFt
+-----END PGP SIGNATURE-----
+
+--9+yvdhHLKXN64C4s--

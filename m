@@ -1,57 +1,45 @@
-From: Kumar Gala <galak@codeaurora.org>
-Subject: Re: [Patch v2 3/3] spi: qup: Add support for v1.1.1
-Date: Fri, 13 Jun 2014 11:45:09 -0500
-Message-ID: <83D400F5-EEC1-4559-96CA-3016EF9BCD90@codeaurora.org>
-References: <1402601652-24641-1-git-send-email-agross@codeaurora.org> <1402601652-24641-4-git-send-email-agross@codeaurora.org>
-Mime-Version: 1.0 (Mac OS X Mail 7.3 \(1878.2\))
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 8BIT
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	Sagar Dharia <sdharia@codeaurora.org>,
-	Daniel Sneddon <dsneddon@codeaurora.org>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	"Ivan T. Ivanov" <iivanov@mm-sol.com>,
-	Bjorn Andersson <bjorn.andersson@sonymobile.com>
-To: Andy Gross <agross@codeaurora.org>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
-In-Reply-To: <1402601652-24641-4-git-send-email-agross@codeaurora.org>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: =?UTF-8?q?J=C3=BCrg=20Billeter?= <j@bitron.ch>
+Subject: [PATCH] spi: sh-sci: fix use-after-free in sh_sci_spi_remove()
+Date: Mon, 16 Jun 2014 16:39:29 +0200
+Message-ID: <1402929569-14500-1-git-send-email-j@bitron.ch>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	=?UTF-8?q?J=C3=BCrg=20Billeter?= <j@bitron.ch>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+setbits() uses sp->membase.
 
-On Jun 12, 2014, at 2:34 PM, Andy Gross <agross@codeaurora.org> wrote:
+Signed-off-by: J=C3=BCrg Billeter <j@bitron.ch>
+---
+ drivers/spi/spi-sh-sci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> This patch adds support for v1.1.1 of the SPI QUP controller.
-> 
-> Signed-off-by: Andy Gross <agross@codeaurora.org>
-> ---
-> .../devicetree/bindings/spi/qcom,spi-qup.txt       |    6 +++-
-> drivers/spi/spi-qup.c                              |   36 ++++++++++++--------
-> 2 files changed, 27 insertions(+), 15 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-> index bee6ff2..e2c88df 100644
-> --- a/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-> +++ b/Documentation/devicetree/bindings/spi/qcom,spi-qup.txt
-> @@ -7,7 +7,11 @@ SPI in master mode supports up to 50MHz, up to four chip selects, programmable
-> data path from 4 bits to 32 bits and numerous protocol variants.
-> 
-> Required properties:
-> -- compatible:     Should contain "qcom,spi-qup-v2.1.1" or "qcom,spi-qup-v2.2.1"
-> +- compatible:     Should contain:
-> +		  "qcom,spi-qup-v1.1.1" for 8660, 8960 and 8064.
-> +		  "qcom,spi-qup-v2.1.1" for 8974 and later
-> +		  "qcom,spi-qup-v2.2.1" for 8974 v2 and later.
-> +
+diff --git a/drivers/spi/spi-sh-sci.c b/drivers/spi/spi-sh-sci.c
+index 1f56ef6..b83dd73 100644
+--- a/drivers/spi/spi-sh-sci.c
++++ b/drivers/spi/spi-sh-sci.c
+@@ -175,9 +175,9 @@ static int sh_sci_spi_remove(struct platform_device=
+ *dev)
+ {
+ 	struct sh_sci_spi *sp =3D platform_get_drvdata(dev);
+=20
+-	iounmap(sp->membase);
+-	setbits(sp, PIN_INIT, 0);
+ 	spi_bitbang_stop(&sp->bitbang);
++	setbits(sp, PIN_INIT, 0);
++	iounmap(sp->membase);
+ 	spi_master_put(sp->bitbang.master);
+ 	return 0;
+ }
+--=20
+2.0.0
 
-We should probably try to be a bit more clear about ipq/apq/msm here.
-
-> - reg:            Should contain base register location and length
-> - interrupts:     Interrupt number used by this controller
-
-- k
-
--- 
-Employee of Qualcomm Innovation Center, Inc.
-Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, hosted by The Linux Foundation
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

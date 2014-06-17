@@ -1,63 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi/pxa2xx: fix incorrect SW mode chipselect setting
- for BayTrail LPSS SPI
-Date: Tue, 17 Jun 2014 15:46:04 +0100
-Message-ID: <20140617144604.GW5099@sirena.org.uk>
-References: <1402675045-22460-1-git-send-email-chiau.ee.chew@intel.com>
+Subject: Re: [PATCH] spi: sh-sci: fix use-after-free in sh_sci_spi_remove()
+Date: Tue, 17 Jun 2014 15:47:06 +0100
+Message-ID: <20140617144706.GX5099@sirena.org.uk>
+References: <1402929569-14500-1-git-send-email-j@bitron.ch>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="T06BQBHjKAm4eKdv"
-Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="N2luHYDrPrGaLJcB"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: =?iso-8859-1?Q?J=FCrg?= Billeter <j@bitron.ch>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1402675045-22460-1-git-send-email-chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1402929569-14500-1-git-send-email-j-dnHBHbooSPftRgLqZ5aouw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---T06BQBHjKAm4eKdv
-Content-Type: text/plain; charset=us-ascii
+--N2luHYDrPrGaLJcB
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 13, 2014 at 11:57:25PM +0800, Chew Chiau Ee wrote:
-> From: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
->=20
-> It was observed that after module removal followed by insertion,
-> the SW mode chipselect is not properly set. Thus causing transfer
-> failure due to incorrect CS toggling.
+On Mon, Jun 16, 2014 at 04:39:29PM +0200, J=FCrg Billeter wrote:
+> setbits() uses sp->membase.
 
 Applied, thanks.
 
---T06BQBHjKAm4eKdv
+--N2luHYDrPrGaLJcB
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJToFSpAAoJELSic+t+oim9S3EP/j2zdrpytsWPnlPw6umZOjtg
-ZIlLVBN6obMRSy3EBtIfxHTA+omTtM03GXPCY1rdVbhNiA+PksCvj0ijL7Lv3Cil
-1fJTYfCdvdbvuK7CvaUCRDqLLL9tPX8pbBEoe5o4UeRWKM9AG3qeqbGbFOGTCDVr
-7HL4/6usn/xhHevdivLpD1vlR9zF0IKHuN7YRempm08vEDH5nL3Ren4E16tbECnh
-bjUMtoCuy2V0pAfdNQMoGjcfw/zDiHyTYpkn0iwR46wOpuhyozlTIWftNT92X1d8
-+Zsp1GjEwDBm4py6BkUAVq8KVxk0QKU6YMB4F3ij3euKD6Yqgk3ohOjxPVXBVPau
-Ol7qc64+RQmM013d3iO6cVKHaJktRy8X7FSkGNq1pOF6Z48NCfKremz43ErB0QjA
-RiAj/9E+ZJRLYonhk4QDCm56iVeYaPrPf2L8TchIwcwJM8uNc3nZef6a/RkFVfa3
-ymziccSh7ibPkukhndnUeQgUXOVpQx2AVmLnCqfyn1U2nVwfRkDmyywYdae3nLq8
-WouWCDL8HsCmt6w4LUuBWLck8QaRRRwMIhCtjm93GSucb65b5lxwC630bYJNoDXB
-ACLxnoH1X3HYUL47+8EJUqj4nWNpbl1xU4klQoUxozMmFdrQt21cdO1Rsk9xKtjo
-e9lMlXYlwRtyzZ6qDeLj
-=FBcD
+iQIcBAEBAgAGBQJToFTnAAoJELSic+t+oim9WJYP/1LC/kwx/8ki0cSdvjE4mgzR
+zGhAHnKmIh6015AHxwaza6nJLbtmxnnlQKKgHEo5UAcYvKs26iKVxGZrIBV28zqO
+PNufeWhfHQjfrqTFCueq9TCCQgCovKsVpcNvrWWhNrPkLxqT3Zg8PKcbd8HpdXMX
+buSikY06kFm4KTyCXSw7jM/CuhfoB/5Dq4eLzTMDU1selVFc7IFWTBMm3pgakK+9
+VgTAAKTZVpCP1q5Rm40nqBiUsjYjb4iYNGbH34Gm3BhrENy+HgzDvfMGL3ZSxXVV
+i2fgbffgR6Pc1S9yPN/hfcacb8uc/sd+Cj+FwTWU+VSqZ2s8RtqqVMQxIwprIb+I
+rRFqeR5JPQefNwCAXgIw1aaRFfD27p5YoKOY8F/j6C9gVSWhEqe7BweuwX5TeUpr
+7k0ugriDylAg4mMVvOdiJHPF3zck/xImQGKvoa7u6D8oLl1zAgy7u/6FMtYD98l+
+sdsWUou4fd366yhQJD3HW74rq4kj4kDP6qD4oIw790ov4jLTYai2h07H2cATb2EL
+pZq3eQsR9cdQSv6TOO5ohY7ooFl3PZrEg7kz6BgVG1SytfuRMRX6H4Ww0Eap9O1i
+n9qJ5WehP0EYUwv6VAA9umiRjGuaPtTB6/VJPlWNYxvxriTwBC6h1Gll4z4dCSNv
+O21XiNl895AQRCKue6aZ
+=NXX+
 -----END PGP SIGNATURE-----
 
---T06BQBHjKAm4eKdv--
+--N2luHYDrPrGaLJcB--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

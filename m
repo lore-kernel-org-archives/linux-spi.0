@@ -1,54 +1,103 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sh-sci: fix use-after-free in sh_sci_spi_remove()
-Date: Tue, 17 Jun 2014 15:47:06 +0100
-Message-ID: <20140617144706.GX5099@sirena.org.uk>
-References: <1402929569-14500-1-git-send-email-j@bitron.ch>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="N2luHYDrPrGaLJcB"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: =?iso-8859-1?Q?J=FCrg?= Billeter <j@bitron.ch>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1402929569-14500-1-git-send-email-j-dnHBHbooSPftRgLqZ5aouw@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH/RFC V7] clk: Default clock parents and rates assigned from DT
+Date: Wed, 18 Jun 2014 12:47:15 +0200
+Message-ID: <1403088436-29956-1-git-send-email-s.nawrocki@samsung.com>
+Cc: wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
+	mark.rutland-5wv7dgnIgG8@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
+	gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
+This patch adds DT binding documentation for a set of properties
+allowing to specify default parent clocks and clock rates in the device
+tree.  It also adds a helper function to parse the 'assigned-clocks',
+'assigned-clock-parents' and 'assigned-clock-rates' DT properties and
+to set the specified clocks configuration.  The configuration is now
+being done by the platform, I2C and SPI bus before driver probing and
+in the clock core after registering a clock provider.
 
---N2luHYDrPrGaLJcB
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Changes since v6:
+ - use a set of separate DT properties to specify the default parent
+   clocks and rates;
+ - the clock defaults setting extended to the I2C and SPI busses;
+ - added struct dev_clk_info to struct device so we can prevent multiple
+   calls to clk_dev_set_defaults() in case of deferred probing;
+ - skipped the first patch from the series already merged upstream.
 
-On Mon, Jun 16, 2014 at 04:39:29PM +0200, J=FCrg Billeter wrote:
-> setbits() uses sp->membase.
+Changes since v5:
+ - reverted to the DT binding as sugested by Grant, it should now work
+   for both clock suppliers and consumers, similarly as pinctrl hogging;
+ - fixed detecting of null phandles (ENOENT error handling);
+ - the clocks will now also be attempted to be configured right after
+   registering the clock provider, this allows to avoid a call to
+   of_clk_set_defaults() in multiple clock provider drivers;
+ - dropped of_clk_get_by_property() helper, added of_clk_get_by_clkspec.
 
-Applied, thanks.
+Changes since v4:
+ - added note explaining how to skip setting parent and rate of a clock,
+ - added missing call to of_node_put(),
+ - moved of_clk_dev_init() calls to the platform bus,
+ - dropped debug traces.
 
---N2luHYDrPrGaLJcB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Changes since v3:
+ - improved documentation of the DT binding,
+ - fixed build errors for !CONFIG_OF, the parsing helpers are only
+   compiled in if CONFIG_OF is set.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Changes since v2:
+ - code reordering to ensure there is no build errors, the clock
+   configuration code moved to a separate file,
+ - introduced an 'assigned-clocks' DT node which is supposed to contain
+   clocks, clock-parents, clock-rates properties and be child node
+   a clock provider node, and a code parsing it called from of_clk_init();
+   It's for clocks which are not directly connected to consumer devices.
+   An alternative would be to list such assigned clocks in 'clocks'
+   property, along with "proper" parent clocks, but then there would
+   be phandles in clocks property of a node pointing to itself and it
+   would require proper handling in of_clock_init().
+   I actually tried it but it looked a bit ugly and chose this time to
+   use an extra subnode.
 
-iQIcBAEBAgAGBQJToFTnAAoJELSic+t+oim9WJYP/1LC/kwx/8ki0cSdvjE4mgzR
-zGhAHnKmIh6015AHxwaza6nJLbtmxnnlQKKgHEo5UAcYvKs26iKVxGZrIBV28zqO
-PNufeWhfHQjfrqTFCueq9TCCQgCovKsVpcNvrWWhNrPkLxqT3Zg8PKcbd8HpdXMX
-buSikY06kFm4KTyCXSw7jM/CuhfoB/5Dq4eLzTMDU1selVFc7IFWTBMm3pgakK+9
-VgTAAKTZVpCP1q5Rm40nqBiUsjYjb4iYNGbH34Gm3BhrENy+HgzDvfMGL3ZSxXVV
-i2fgbffgR6Pc1S9yPN/hfcacb8uc/sd+Cj+FwTWU+VSqZ2s8RtqqVMQxIwprIb+I
-rRFqeR5JPQefNwCAXgIw1aaRFfD27p5YoKOY8F/j6C9gVSWhEqe7BweuwX5TeUpr
-7k0ugriDylAg4mMVvOdiJHPF3zck/xImQGKvoa7u6D8oLl1zAgy7u/6FMtYD98l+
-sdsWUou4fd366yhQJD3HW74rq4kj4kDP6qD4oIw790ov4jLTYai2h07H2cATb2EL
-pZq3eQsR9cdQSv6TOO5ohY7ooFl3PZrEg7kz6BgVG1SytfuRMRX6H4Ww0Eap9O1i
-n9qJ5WehP0EYUwv6VAA9umiRjGuaPtTB6/VJPlWNYxvxriTwBC6h1Gll4z4dCSNv
-O21XiNl895AQRCKue6aZ
-=NXX+
------END PGP SIGNATURE-----
+Changes since v1:
+ - updated DT binding documentation,
+ - dropped the platform bus notifier, the clock setup routine is now
+   being called directly from the driver core before a driver probe() call;
+   this has an advantage such as all bus types are handled and any errors
+   are propagated, so that, for instance a driver probe() can be deferred
+   also when resources specified by clock-parents/clock-rates properties
+   are not yet available; an alternative would be to let drivers call
+   of_clk_device_setup() directly,
+ - dropped the patch adding a macro definition for maximum DT property
+   name length for now.
 
---N2luHYDrPrGaLJcB--
+This series has been tested on ARM, on Exynos4412 Odroid U3 board.
+The full git tree can be found at:
+ git://linuxtv.org/snawrocki/samsung.git v3.16-rc1-odroid-sound-clk
+
+and browsed at
+ http://git.linuxtv.org/cgit.cgi/snawrocki/samsung.git/log/?h=v3.16-rc1-odroid-sound-clk
+
+Sylwester Nawrocki (1):
+  clk: Support for clock parents and rates assigned from device tree
+
+ .../devicetree/bindings/clock/clock-bindings.txt   |   36 +++++
+ drivers/base/platform.c                            |    5 +
+ drivers/clk/Makefile                               |    3 +
+ drivers/clk/clk-conf.c                             |  154 ++++++++++++++++++++
+ drivers/clk/clk.c                                  |   12 +-
+ drivers/i2c/i2c-core.c                             |    5 +
+ drivers/spi/spi.c                                  |    5 +
+ include/linux/clk/clk-conf.h                       |   33 +++++
+ include/linux/device.h                             |    4 +
+ 9 files changed, 255 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/clk/clk-conf.c
+ create mode 100644 include/linux/clk/clk-conf.h
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.7.9.5

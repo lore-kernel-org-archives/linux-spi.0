@@ -1,83 +1,77 @@
-From: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-Subject: Re: [PATCH/RFC 1/2] spi: sh-msiof: Add DT support to DMA setup
-Date: Fri, 20 Jun 2014 14:32:14 +0100
-Message-ID: <20140620133214.GM30188@leverpostej>
-References: <1403259638-13774-1-git-send-email-geert+renesas@glider.be>
- <1403259638-13774-2-git-send-email-geert+renesas@glider.be>
- <20140620125259.GL30188@leverpostej>
- <CAMuHMdV97sXuS6JyPTwgv7i73F4fupQkamAyuQfG78SrihoiKQ@mail.gmail.com>
+From: Himangi Saraogi <himangi774@gmail.com>
+Subject: [PATCH] spi: omap-uwire: use devm_ functions
+Date: Sat, 21 Jun 2014 02:08:58 +0530
+Message-ID: <20140620203858.GA14718@himangi-Dell>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Ben Dooks <ben.dooks-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: julia.lawall@lip6.fr
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdV97sXuS6JyPTwgv7i73F4fupQkamAyuQfG78SrihoiKQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jun 20, 2014 at 02:18:31PM +0100, Geert Uytterhoeven wrote:
-> Hi Mark,
-> 
-> On Fri, Jun 20, 2014 at 2:52 PM, Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org> wrote:
-> > On Fri, Jun 20, 2014 at 11:20:37AM +0100, Geert Uytterhoeven wrote:
-> >> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-> >> ---
-> >> The format of the DMA specifiers depends on the DT bindings for SHDMA,
-> >> which are still under development.
-> >>
-> >>  Documentation/devicetree/bindings/spi/sh-msiof.txt | 17 +++++++++++++--
-> >>  drivers/spi/spi-sh-msiof.c                         | 25 ++++++++++++++++------
-> >>  2 files changed, 33 insertions(+), 9 deletions(-)
-> >>
-> >> diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-> >> index f24baf3b6cc1..fc56e312c0bc 100644
-> >> --- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
-> >> +++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-> >> @@ -7,7 +7,13 @@ Required properties:
-> >>                        Examples with soctypes are:
-> >>                        "renesas,msiof-r8a7790" (R-Car H2)
-> >>                        "renesas,msiof-r8a7791" (R-Car M2)
-> >> -- reg                  : Offset and length of the register set for the device
-> >> +- reg                  : A list of offsets and lengths of the register sets for
-> >> +                      the device.
-> >> +                      If only one register set is present, it is to be used
-> >> +                      by both the CPU and the DMA engine.
-> >> +                      If two register sets are present, the first is to be
-> >> +                      used by the CPU, and the second is to be used by the
-> >> +                      DMA engine.
-> >
-> > I'm missing something here. I'm we're providing the DMA engines through
-> > DMA specifiers below, then why do we need the DMA engine address here?
-> > Surely they're separate device nodes?
-> 
-> It's not the DMA engine address, but the second bank of MSIOF addresses.
-> 
-> The MSIOF has two (identical) sets of register banks: the first one is to
-> be accessed by the CPU, the second one (actually only the Transmit FIFO
-> and Receive FIFO Data Registers) is to be accessed by the DMA engine.
+This patch introduces the use of devm_clk_get and devm_ioremap instead
+of the unmanaged interfaces and removes the corresponding free function
+calls.
 
-Ah, I see. Thanks for the clarification.
+Signed-off-by: Himangi Saraogi <himangi774@gmail.com>
+Acked-by: Julia Lawall <julia.lawall@lip6.fr>
+---
+ drivers/spi/spi-omap-uwire.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-> > The code update doesn't seem to do anything with the additional reg
-> > entry.
-> 
-> Indeed, as the second bank of registers is already used by spi-sh-msiof.c
-> for the non-DT DMA case. Register banks are resources, so they're
-> already present in non-DT platform devices.
-
-Ok. That makes sense then.
-
-Cheers,
-Mark.
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
+index 0f5a0aa..cbf67f9 100644
+--- a/drivers/spi/spi-omap-uwire.c
++++ b/drivers/spi/spi-omap-uwire.c
+@@ -447,7 +447,6 @@ static void uwire_off(struct uwire_spi *uwire)
+ {
+ 	uwire_write_reg(UWIRE_SR3, 0);
+ 	clk_disable(uwire->ck);
+-	clk_put(uwire->ck);
+ 	spi_master_put(uwire->bitbang.master);
+ }
+ 
+@@ -463,7 +462,7 @@ static int uwire_probe(struct platform_device *pdev)
+ 
+ 	uwire = spi_master_get_devdata(master);
+ 
+-	uwire_base = ioremap(UWIRE_BASE_PHYS, UWIRE_IO_SIZE);
++	uwire_base = devm_ioremap(&pdev->dev, UWIRE_BASE_PHYS, UWIRE_IO_SIZE);
+ 	if (!uwire_base) {
+ 		dev_dbg(&pdev->dev, "can't ioremap UWIRE\n");
+ 		spi_master_put(master);
+@@ -472,12 +471,11 @@ static int uwire_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, uwire);
+ 
+-	uwire->ck = clk_get(&pdev->dev, "fck");
++	uwire->ck = devm_clk_get(&pdev->dev, "fck");
+ 	if (IS_ERR(uwire->ck)) {
+ 		status = PTR_ERR(uwire->ck);
+ 		dev_dbg(&pdev->dev, "no functional clock?\n");
+ 		spi_master_put(master);
+-		iounmap(uwire_base);
+ 		return status;
+ 	}
+ 	clk_enable(uwire->ck);
+@@ -507,7 +505,6 @@ static int uwire_probe(struct platform_device *pdev)
+ 	status = spi_bitbang_start(&uwire->bitbang);
+ 	if (status < 0) {
+ 		uwire_off(uwire);
+-		iounmap(uwire_base);
+ 	}
+ 	return status;
+ }
+@@ -520,7 +517,6 @@ static int uwire_remove(struct platform_device *pdev)
+ 
+ 	spi_bitbang_stop(&uwire->bitbang);
+ 	uwire_off(uwire);
+-	iounmap(uwire_base);
+ 	return 0;
+ }
+ 
+-- 
+1.9.1

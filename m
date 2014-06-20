@@ -1,78 +1,52 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 3/5] spi: sh-msiof: Improve transfer error handling
-Date: Fri, 20 Jun 2014 12:16:18 +0200
-Message-ID: <1403259380-13634-4-git-send-email-geert+renesas@glider.be>
-References: <1403259380-13634-1-git-send-email-geert+renesas@glider.be>
-Cc: Magnus Damm <magnus.damm@gmail.com>,
-	Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
-	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1403259380-13634-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH/RFC 0/2] spi: sh-msiof: Add DT DMA support on r8a7791
+Date: Fri, 20 Jun 2014 12:20:36 +0200
+Message-ID: <1403259638-13774-1-git-send-email-geert+renesas@glider.be>
+Cc: Ben Dooks <ben.dooks-4yDnlxn2s6sWdaTGBSpHTA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-  - Add a timeout when waiting for the transfer complete interrupt,
-  - If sh_msiof_spi_stop() fails, there's no need to clear IER, as the
-    interrupt handler has already done that,
-  - Propagate transfer failures in sh_msiof_transfer_one().
+This preliminary patch series add DT support to the Renesas MSIOF SPI
+driver, and enables DMA support for MSIOF on r8a7791.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- drivers/spi/spi-sh-msiof.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+It's independent from the series "[PATCH/POC 0/2] ARM: shmobile: koelsch
+legacy: Enable DMA for MSIOF", but it depends on the SHDMA work for r8a7790
+by Ben Dooks (still v2, cfr. "[PATCH v2 0/9] Updates Renesas OF-DMA code"),
+and my series "[PATCH v2 0/7] ARM: shmobile: koelsch reference: Enable DMA
+for QSPI".
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 8bfa97e03502..29dee0436a9a 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -575,11 +575,16 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 	ret = sh_msiof_spi_start(p, rx_buf);
- 	if (ret) {
- 		dev_err(&p->pdev->dev, "failed to start hardware\n");
--		goto err;
-+		goto stop_ier;
- 	}
- 
- 	/* wait for tx fifo to be emptied / rx fifo to be filled */
--	wait_for_completion(&p->done);
-+	ret = wait_for_completion_timeout(&p->done, HZ);
-+	if (!ret) {
-+		dev_err(&p->pdev->dev, "PIO timeout\n");
-+		ret = -ETIMEDOUT;
-+		goto stop_reset;
-+	}
- 
- 	/* read rx fifo */
- 	if (rx_buf)
-@@ -591,12 +596,15 @@ static int sh_msiof_spi_txrx_once(struct sh_msiof_spi_priv *p,
- 	ret = sh_msiof_spi_stop(p, rx_buf);
- 	if (ret) {
- 		dev_err(&p->pdev->dev, "failed to shut down hardware\n");
--		goto err;
-+		return ret;
- 	}
- 
- 	return words;
- 
-- err:
-+stop_reset:
-+	sh_msiof_reset_str(p);
-+	sh_msiof_spi_stop(p, rx_buf);
-+stop_ier:
- 	sh_msiof_write(p, IER, 0);
- 	return ret;
- }
-@@ -679,7 +687,7 @@ static int sh_msiof_transfer_one(struct spi_master *master,
- 					   rx_buf,
- 					   words, bits);
- 		if (n < 0)
--			break;
-+			return n;
- 
- 		bytes_done += n * bytes_per_word;
- 		words -= n;
--- 
-1.9.1
+This was tested on r8a7791/koelsch.
+
+  [1/2] spi: sh-msiof: Add DT support to DMA setup
+  [2/2] ARM: shmobile: r8a7791 dtsi: Enable DMA for MSIOF
+
+ Documentation/devicetree/bindings/spi/sh-msiof.txt | 17 +++++++++++++--
+ arch/arm/boot/dts/r8a7791.dtsi                     | 15 ++++++++++---
+ drivers/spi/spi-sh-msiof.c                         | 25 ++++++++++++++++------
+ 3 files changed, 45 insertions(+), 12 deletions(-)
+
+As the DT bindings for SHDMA are still under development, I don't expect
+this to be applied yet.
+
+Thanks for your comments!
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

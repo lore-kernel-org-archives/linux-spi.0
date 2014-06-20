@@ -1,77 +1,90 @@
-From: Himangi Saraogi <himangi774@gmail.com>
-Subject: [PATCH] spi: omap-uwire: use devm_ functions
-Date: Sat, 21 Jun 2014 02:08:58 +0530
-Message-ID: <20140620203858.GA14718@himangi-Dell>
+From: dsneddon@codeaurora.org
+Subject: Re: [PATCH] spi: spidev: Fix user-space memory access.
+Date: Fri, 20 Jun 2014 20:40:39 -0000
+Message-ID: <c878c725f6789ec6625914e4a5a1b674.squirrel@www.codeaurora.org>
+References: <4277a609d7431f34663d19a006a5ada6.squirrel@www.codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: julia.lawall@lip6.fr
-To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+Cc: broonie@kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+To: linux-spi@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
+In-Reply-To: <4277a609d7431f34663d19a006a5ada6.squirrel@www.codeaurora.org>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-This patch introduces the use of devm_clk_get and devm_ioremap instead
-of the unmanaged interfaces and removes the corresponding free function
-calls.
+I just noticed this patch breaks when CONFIG_COMPAT isn't defined.  Please
+ignore this patch for now.
 
-Signed-off-by: Himangi Saraogi <himangi774@gmail.com>
-Acked-by: Julia Lawall <julia.lawall@lip6.fr>
----
- drivers/spi/spi-omap-uwire.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+> When the spidev module tries to access the user space memory passed in via
+> an IOCTL the compat_ptr function should be called to ensure
+> compatibility between kernel space and user space.
+>
+> Signed-off-by: Dan Sneddon <dsneddon@codeaurora.org>
+> ---
+>  drivers/spi/spidev.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+> index e3bc23b..3a45158 100644
+> --- a/drivers/spi/spidev.c
+> +++ b/drivers/spi/spidev.c
+> @@ -252,14 +252,16 @@ static int spidev_message(struct spidev_data
+> *spidev,
+>                 if (u_tmp->rx_buf) {
+>                         k_tmp->rx_buf = buf;
+>                         if (!access_ok(VERIFY_WRITE, (u8 __user *)
+> -                                               (uintptr_t) u_tmp->rx_buf,
+> +                                               (uintptr_t)compat_ptr( +
+>                                                     u_tmp->rx_buf),
+>                                                 u_tmp->len))
+>                                 goto done;
+>                 }
+>                 if (u_tmp->tx_buf) {
+>                         k_tmp->tx_buf = buf;
+>                         if (copy_from_user(buf, (const u8 __user *)
+> -                                               (uintptr_t) u_tmp->tx_buf,
+> +                                               (uintptr_t)compat_ptr( +
+>                                                     u_tmp->tx_buf),
+>                                         u_tmp->len))
+>                                 goto done;
+>                 }
+> @@ -294,8 +296,8 @@ static int spidev_message(struct spidev_data *spidev,
+>         for (n = n_xfers, u_tmp = u_xfers; n; n--, u_tmp++) {
+>                 if (u_tmp->rx_buf) {
+>                         if (__copy_to_user((u8 __user *)
+> -                                       (uintptr_t) u_tmp->rx_buf, buf, -
+>                                      u_tmp->len)) {
+> +
+> (uintptr_t)compat_ptr(u_tmp->rx_buf),
+> +                                       buf, u_tmp->len)) {
+>                                 status = -EFAULT;
+>                                 goto done;
+>                         }
+> --
+> 1.8.4
+>
+>
+>
+>
+>
+>
+> ---
+> sent by an employee of the Qualcomm Innovation Center, Inc.
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+> hosted by The Linux Foundation
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-arm-msm"
+> in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+>
 
-diff --git a/drivers/spi/spi-omap-uwire.c b/drivers/spi/spi-omap-uwire.c
-index 0f5a0aa..cbf67f9 100644
---- a/drivers/spi/spi-omap-uwire.c
-+++ b/drivers/spi/spi-omap-uwire.c
-@@ -447,7 +447,6 @@ static void uwire_off(struct uwire_spi *uwire)
- {
- 	uwire_write_reg(UWIRE_SR3, 0);
- 	clk_disable(uwire->ck);
--	clk_put(uwire->ck);
- 	spi_master_put(uwire->bitbang.master);
- }
- 
-@@ -463,7 +462,7 @@ static int uwire_probe(struct platform_device *pdev)
- 
- 	uwire = spi_master_get_devdata(master);
- 
--	uwire_base = ioremap(UWIRE_BASE_PHYS, UWIRE_IO_SIZE);
-+	uwire_base = devm_ioremap(&pdev->dev, UWIRE_BASE_PHYS, UWIRE_IO_SIZE);
- 	if (!uwire_base) {
- 		dev_dbg(&pdev->dev, "can't ioremap UWIRE\n");
- 		spi_master_put(master);
-@@ -472,12 +471,11 @@ static int uwire_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, uwire);
- 
--	uwire->ck = clk_get(&pdev->dev, "fck");
-+	uwire->ck = devm_clk_get(&pdev->dev, "fck");
- 	if (IS_ERR(uwire->ck)) {
- 		status = PTR_ERR(uwire->ck);
- 		dev_dbg(&pdev->dev, "no functional clock?\n");
- 		spi_master_put(master);
--		iounmap(uwire_base);
- 		return status;
- 	}
- 	clk_enable(uwire->ck);
-@@ -507,7 +505,6 @@ static int uwire_probe(struct platform_device *pdev)
- 	status = spi_bitbang_start(&uwire->bitbang);
- 	if (status < 0) {
- 		uwire_off(uwire);
--		iounmap(uwire_base);
- 	}
- 	return status;
- }
-@@ -520,7 +517,6 @@ static int uwire_remove(struct platform_device *pdev)
- 
- 	spi_bitbang_stop(&uwire->bitbang);
- 	uwire_off(uwire);
--	iounmap(uwire_base);
- 	return 0;
- }
- 
+
 -- 
-1.9.1
+---
+sent by an employee of the Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+hosted by The Linux Foundation

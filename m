@@ -1,154 +1,55 @@
-From: Russell King <rmk+kernel-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Subject: [PATCH v2] SPI: spi-orion: add runtime PM support
-Date: Sat, 21 Jun 2014 12:22:37 +0100
-Message-ID: <E1WyJNV-0004DZ-Sb@rmk-PC.arm.linux.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] SPI: spi-orion: add runtime PM support
+Date: Sat, 21 Jun 2014 16:31:57 +0100
+Message-ID: <20140621153157.GH5099@sirena.org.uk>
 References: <20140621110339.GG5099@sirena.org.uk>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
+ <E1WyJNV-0004DZ-Sb@rmk-PC.arm.linux.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="5Q2XQl/uTluQbjdP"
+Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Russell King <rmk+kernel-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140621110339.GG5099-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <E1WyJNV-0004DZ-Sb-eh5Bv4kxaXIANfyc6IWni62ZND6+EDdj@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add trivial runtime PM support.  This will only be of benefit on SoCs
-where the clock to the SPI interface can be shut down.
 
-Signed-off-by: Russell King <rmk+kernel-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
----
- drivers/spi/spi-orion.c | 59 +++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 50 insertions(+), 9 deletions(-)
+--5Q2XQl/uTluQbjdP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index 24844984ef36..aa3ecfc6b466 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -16,6 +16,7 @@
- #include <linux/io.h>
- #include <linux/spi/spi.h>
- #include <linux/module.h>
-+#include <linux/pm_runtime.h>
- #include <linux/of.h>
- #include <linux/clk.h>
- #include <linux/sizes.h>
-@@ -23,6 +24,9 @@
- 
- #define DRIVER_NAME			"orion_spi"
- 
-+/* Runtime PM autosuspend timeout: PM is fairly light on this driver */
-+#define SPI_AUTOSUSPEND_TIMEOUT		200
-+
- #define ORION_NUM_CHIPSELECTS		1 /* only one slave is supported*/
- #define ORION_SPI_WAIT_RDY_MAX_LOOP	2000 /* in usec */
- 
-@@ -277,7 +281,6 @@ orion_spi_write_read(struct spi_device *spi, struct spi_transfer *xfer)
- 	return xfer->len - count;
- }
- 
--
- static int orion_spi_transfer_one_message(struct spi_master *master,
- 					   struct spi_message *m)
- {
-@@ -370,6 +373,7 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	master->transfer_one_message = orion_spi_transfer_one_message;
- 	master->num_chipselect = ORION_NUM_CHIPSELECTS;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
-+	master->auto_runtime_pm = true;
- 
- 	platform_set_drvdata(pdev, master);
- 
-@@ -397,16 +401,26 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		goto out_rel_clk;
- 	}
- 
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_use_autosuspend(&pdev->dev);
-+	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
-+	pm_runtime_enable(&pdev->dev);
-+
- 	if (orion_spi_reset(spi) < 0)
--		goto out_rel_clk;
-+		goto out_rel_pm;
-+
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
- 
- 	master->dev.of_node = pdev->dev.of_node;
--	status = devm_spi_register_master(&pdev->dev, master);
-+	status = spi_register_master(master);
- 	if (status < 0)
--		goto out_rel_clk;
-+		goto out_rel_pm;
- 
- 	return status;
- 
-+out_rel_pm:
-+	pm_runtime_disable(&pdev->dev);
- out_rel_clk:
- 	clk_disable_unprepare(spi->clk);
- out:
-@@ -417,19 +431,45 @@ static int orion_spi_probe(struct platform_device *pdev)
- 
- static int orion_spi_remove(struct platform_device *pdev)
- {
--	struct spi_master *master;
--	struct orion_spi *spi;
--
--	master = platform_get_drvdata(pdev);
--	spi = spi_master_get_devdata(master);
-+	struct spi_master *master = platform_get_drvdata(pdev);
-+	struct orion_spi *spi = spi_master_get_devdata(master);
- 
-+	pm_runtime_get_sync(&pdev->dev);
- 	clk_disable_unprepare(spi->clk);
- 
-+	spi_unregister_master(master);
-+	pm_runtime_disable(&pdev->dev);
-+
- 	return 0;
- }
- 
- MODULE_ALIAS("platform:" DRIVER_NAME);
- 
-+#ifdef CONFIG_PM_RUNTIME
-+static int orion_spi_runtime_suspend(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct orion_spi *spi = spi_master_get_devdata(master);
-+
-+	clk_disable_unprepare(spi->clk);
-+	return 0;
-+}
-+
-+static int orion_spi_runtime_resume(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct orion_spi *spi = spi_master_get_devdata(master);
-+
-+	return clk_prepare_enable(spi->clk);
-+}
-+#endif
-+
-+static const struct dev_pm_ops orion_spi_pm_ops = {
-+	SET_RUNTIME_PM_OPS(orion_spi_runtime_suspend,
-+			   orion_spi_runtime_resume,
-+			   NULL)
-+};
-+
- static const struct of_device_id orion_spi_of_match_table[] = {
- 	{ .compatible = "marvell,orion-spi", },
- 	{}
-@@ -440,6 +480,7 @@ static struct platform_driver orion_spi_driver = {
- 	.driver = {
- 		.name	= DRIVER_NAME,
- 		.owner	= THIS_MODULE,
-+		.pm	= &orion_spi_pm_ops,
- 		.of_match_table = of_match_ptr(orion_spi_of_match_table),
- 	},
- 	.probe		= orion_spi_probe,
--- 
-1.8.3.1
+On Sat, Jun 21, 2014 at 12:22:37PM +0100, Russell King wrote:
+> Add trivial runtime PM support.  This will only be of benefit on SoCs
+> where the clock to the SPI interface can be shut down.
 
+Applied, thanks.
+
+--5Q2XQl/uTluQbjdP
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJTpaVpAAoJELSic+t+oim9dnQQAJXUrAe7zl/s14Fm/2IbnDWD
+FQIkXncA9HPEZ2OEhhv9SKrsk1b4sEiT069rVFE/ocy6PLHyXXrVGxj8YpojPUPA
+T/6P/IKXEsm2ymwT26jgUsibNCbbXDukM/dpx8OrwY7UI+tRK1S9hnHvkKDLcFU0
+f4Ib0ziEF/gW8b3xIMjmKJ1lsruJDs90i8SVoPmUEXBALxddonn6Kwhd461zirEj
+sCt25yZymbIjvc3POE+XNpvnx3NcFijeoaKHEoVW3ZInOjQzNdpZR6MfKKuojzpi
+3EGG6MkfjvrzT9frMOvJX/DEj8DPpK90zTZC7vjXHhLAuCHg4Uv7/LBUlR9sawNz
+aOHIWfjSyGK+W3MxNffZq5EUo0F8Sd2rhDDjgtOPOdvls1g/qw0+8elYMwJPEbTf
+T4U+t0TpaccPgrL/xbK1l/Bdg8QPLGKvpZWlf/AQDi2EyyoKKBNhgZLKxoPrtV8g
+sGEtADZLecaAZdgCWekFprBOPczKSBDifJGOzXdzH3YPDIFDjRcIV+jV3w2rkN90
+PLd7apxaPSgwgFfxhA4Z6Ww0aLhSsCHH8Ng5UOKzBBRB8IKwl7S+WxkoIej7+vCa
+0C+m1juPgvJxHwvCF7amkqTpWCaGmUfNuzKXBXVtggfNdzyK/3QxzEmzI9VsfKmh
+bqn+UnH98gaqbpV2Pu6z
+=afxD
+-----END PGP SIGNATURE-----
+
+--5Q2XQl/uTluQbjdP--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

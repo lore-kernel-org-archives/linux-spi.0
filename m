@@ -1,58 +1,52 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [Patch v2 3/3] spi: qup: Add support for v1.1.1
-Date: Sat, 21 Jun 2014 11:13:32 +0100
-Message-ID: <20140621101332.GF5099@sirena.org.uk>
-References: <1402601652-24641-1-git-send-email-agross@codeaurora.org>
- <1402601652-24641-4-git-send-email-agross@codeaurora.org>
+Subject: Re: [PATCH 1/2] spi: spi-adi-v3: Remove redundant OOM message
+Date: Sat, 21 Jun 2014 11:14:25 +0100
+Message-ID: <20140621101425.GG5099@sirena.org.uk>
+References: <1402634862-21783-1-git-send-email-sachin.kamat@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="TJXBoWFlNMMOjAij"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Daniel Sneddon <dsneddon-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
-	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
-To: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="odld9n7aScKQw2Re"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, spk.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Sachin Kamat <sachin.kamat-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1402601652-24641-4-git-send-email-agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+In-Reply-To: <1402634862-21783-1-git-send-email-sachin.kamat-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---TJXBoWFlNMMOjAij
+--odld9n7aScKQw2Re
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jun 12, 2014 at 02:34:12PM -0500, Andy Gross wrote:
-> This patch adds support for v1.1.1 of the SPI QUP controller.
+On Fri, Jun 13, 2014 at 10:17:41AM +0530, Sachin Kamat wrote:
+> Let memory subsystem do the error logging.
 
 Applied, thanks.
 
---TJXBoWFlNMMOjAij
+--odld9n7aScKQw2Re
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJTpVrJAAoJELSic+t+oim9Q7gQAIiIsFv6dminvw17O8sfpI85
-6jUuou/y5mvg+f5jRPT3AObgjpu1j1L+pnxPY9MGreENrsQ33npr5uuNRYUhcGx5
-hkbqaQgpo05K4wu1gmbpjwCHLIW1OvuyHtVEC1+a9qkEg5ZQlsEd9nt//2TAtUox
-0a1CWh9BERehFuzFB2c63KB1hDeeOWmPeImC8eiMVXW+7APcc10s4l6dUij+nnnX
-xv2UFss6RTtj5O7idp1OlTvqXBfIueUgxFx3TTF7WcZ773jpxh529doze9nFgD6M
-uWpCVgNFS06go4AOtpKrc+hmvjzyw0Q203eu0aod2czNzMvIXWvqkxmpwcgI3zjL
-sX7jFs1b1swBCbb67cXasXppLBBwLPCLdPTj+Lcwn77xIjxxbB+Az6lhORON0Grx
-+PiL8JqcEFYbvXpclzD3e/ccxOv580pUKZjXelP8guZ2b6de9v3gkO4SwsRPJywW
-rkhqvlSt2kqkhJb09aXYiA2u8v3Elji6/ZJ1rIs7EB96rdFlnWIcWZeWmsHvMchQ
-fJMzBCqtsVMWWLAOVEvge0dhJfXG6HH8Ykz7nsEO4R63HD+aupGJwS+05wpXr0i4
-nyqIjxCbNDMVb/X8o8K60bW9AuMQDxFPVOR6jcu1/ko0TsJUSCBbUQV8iPIJsPUd
-e8WuMUzRncY4D5Qi7v4V
-=pwa0
+iQIcBAEBAgAGBQJTpVr9AAoJELSic+t+oim9h6MQAIJGu7GK6S3NYzS/DDj16ThX
+j8tAsFW535MB5dzqiu8qbenLv/sslfl+QG+btndoFylsJ68MYZK+1GFRghYmRuyw
+AXEXzOZxJl5lZTdN+4NED/u9eGdF+QeO3ly+X9VEfrNihxxNjrio0aO4zFWk29iZ
+PHu0yOPcvA7qSgLbDTs7WG3IyXJgyDVNMytqAvIdWLEJiCYiDP5C4Nrw5fjHgCWe
+jabcEh66l9DHmYG3ntfX+M3FWb+BE9bIDs/be3qGtyNuemtUq9uPQ1TlzshR2PDK
+lQHkYVeHZX/FHBQpqu9MCyOe2VlMfq6O+gM9C1GAvJa1y2qSLl4TPxQL0FRMVX7k
+v0VYQuYETFA3jEok/+TKbTts4epu+33i91N4ztVv1qTm2wAPa0FCf4cLgJlDETP/
+aqnklEls9XP94jha1KagUoHiISE7JmEFAxnWa9qxh+3CpWwuX3Rb1Ula6GSHGJbG
++NyMO4tc88GeqrKaQ/WWmc9pRS5xZot79STfSqv16TpXb01HCHAtWRTFWEHKql2B
+pwnx7nozWTu37F7G2JTkNQHVowg6etimk6aaJ3h1+Sw2c8K04Cwy01tXvFcgOvA2
+xenaHJ6abPezinZkFZ4Clwmr4wvVPDIJUOfhnqd9nJEn1hv3kutUHygSL7l0vF/Y
+5yI3y0pgpNayP60GvsvN
+=i55G
 -----END PGP SIGNATURE-----
 
---TJXBoWFlNMMOjAij--
+--odld9n7aScKQw2Re--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

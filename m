@@ -1,55 +1,41 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] SPI: spi-orion: add runtime PM support
-Date: Sat, 21 Jun 2014 16:31:57 +0100
-Message-ID: <20140621153157.GH5099@sirena.org.uk>
-References: <20140621110339.GG5099@sirena.org.uk>
- <E1WyJNV-0004DZ-Sb@rmk-PC.arm.linux.org.uk>
+From: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: Re: [Patch v2 1/3] spi: qup: Remove chip select function
+Date: Sat, 21 Jun 2014 13:56:46 -0500
+Message-ID: <20140621185646.GA2601@qualcomm.com>
+References: <1402601652-24641-1-git-send-email-agross@codeaurora.org>
+ <1402601652-24641-2-git-send-email-agross@codeaurora.org>
+ <20140621101303.GE5099@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5Q2XQl/uTluQbjdP"
-Cc: Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>, Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Russell King <rmk+kernel-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Daniel Sneddon <dsneddon-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
+	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <E1WyJNV-0004DZ-Sb-eh5Bv4kxaXIANfyc6IWni62ZND6+EDdj@public.gmane.org>
+In-Reply-To: <20140621101303.GE5099-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Sat, Jun 21, 2014 at 11:13:03AM +0100, Mark Brown wrote:
+> On Thu, Jun 12, 2014 at 02:34:10PM -0500, Andy Gross wrote:
+> > This patch removes the chip select function.  Chip select should instead be
+> > supported using GPIOs, defining the DT entry "cs-gpios", and letting the SPI
+> > core assert/deassert the chip select as it sees fit.
+> 
+> Why?
 
---5Q2XQl/uTluQbjdP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The chip select control inside the controller is buggy.  It is supposed to
+automatically assert the chip select based on the activity in the controller,
+but it is buggy and doesn't work at all.  So instead we elect to use GPIOs.
 
-On Sat, Jun 21, 2014 at 12:22:37PM +0100, Russell King wrote:
-> Add trivial runtime PM support.  This will only be of benefit on SoCs
-> where the clock to the SPI interface can be shut down.
-
-Applied, thanks.
-
---5Q2XQl/uTluQbjdP
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJTpaVpAAoJELSic+t+oim9dnQQAJXUrAe7zl/s14Fm/2IbnDWD
-FQIkXncA9HPEZ2OEhhv9SKrsk1b4sEiT069rVFE/ocy6PLHyXXrVGxj8YpojPUPA
-T/6P/IKXEsm2ymwT26jgUsibNCbbXDukM/dpx8OrwY7UI+tRK1S9hnHvkKDLcFU0
-f4Ib0ziEF/gW8b3xIMjmKJ1lsruJDs90i8SVoPmUEXBALxddonn6Kwhd461zirEj
-sCt25yZymbIjvc3POE+XNpvnx3NcFijeoaKHEoVW3ZInOjQzNdpZR6MfKKuojzpi
-3EGG6MkfjvrzT9frMOvJX/DEj8DPpK90zTZC7vjXHhLAuCHg4Uv7/LBUlR9sawNz
-aOHIWfjSyGK+W3MxNffZq5EUo0F8Sd2rhDDjgtOPOdvls1g/qw0+8elYMwJPEbTf
-T4U+t0TpaccPgrL/xbK1l/Bdg8QPLGKvpZWlf/AQDi2EyyoKKBNhgZLKxoPrtV8g
-sGEtADZLecaAZdgCWekFprBOPczKSBDifJGOzXdzH3YPDIFDjRcIV+jV3w2rkN90
-PLd7apxaPSgwgFfxhA4Z6Ww0aLhSsCHH8Ng5UOKzBBRB8IKwl7S+WxkoIej7+vCa
-0C+m1juPgvJxHwvCF7amkqTpWCaGmUfNuzKXBXVtggfNdzyK/3QxzEmzI9VsfKmh
-bqn+UnH98gaqbpV2Pu6z
-=afxD
------END PGP SIGNATURE-----
-
---5Q2XQl/uTluQbjdP--
+-- 
+sent by an employee of the Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+hosted by The Linux Foundation
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,55 +1,51 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap-uwire: use devm_ functions
-Date: Sat, 21 Jun 2014 21:54:35 +0100
-Message-ID: <20140621205435.GE24291@sirena.org.uk>
-References: <20140620203858.GA14718@himangi-Dell>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 5/5] spi: sh-msiof: Add DMA support
+Date: Sun, 22 Jun 2014 10:06:08 +0200
+Message-ID: <CAMuHMdXB4U=tkGgV=UE5KRBgP7jqyB8Wpjn1x6ei-wq-MYkLqQ@mail.gmail.com>
+References: <1403259380-13634-6-git-send-email-geert+renesas@glider.be>
+	<20140621101959.GM5099@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="wchHw8dVAp53YPj8"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	julia.lawall-L2FTfq7BK8M@public.gmane.org
-To: Himangi Saraogi <himangi774-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
+	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140620203858.GA14718@himangi-Dell>
+In-Reply-To: <20140621101959.GM5099-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark,
 
---wchHw8dVAp53YPj8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Sat, Jun 21, 2014 at 12:19 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Fri, Jun 20, 2014 at 12:16:20PM +0200, Geert Uytterhoeven wrote:
+>> Add DMA support to the MSIOF driver using platform data.
+>
+> This doesn't apply against current code, can you please check and
+> resend?
 
-On Sat, Jun 21, 2014 at 02:08:58AM +0530, Himangi Saraogi wrote:
-> This patch introduces the use of devm_clk_get and devm_ioremap instead
-> of the unmanaged interfaces and removes the corresponding free function
-> calls.
+My patches were based on your for-next branch, which has
+commit 1e8231b79ccbb3e6e7b3f6af9f998dca16b00efe
+Author: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Date:   Tue Apr 29 17:21:25 2014 +0900
 
-Applied, thanks.
+    spi: sh-msiof: remove unnecessary OOM messages
 
---wchHw8dVAp53YPj8
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+(from topic/cleanup), but topic/sh-msiof hasn't.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Gr{oetje,eeting}s,
 
-iQIcBAEBAgAGBQJTpfEIAAoJELSic+t+oim9tWcP/3ks25sQZDaskKbXtGfrrbc+
-2juowYOME824rs6dx+tXKs1fY8iA9VZSAHEtLkgXQgoaC0Q8MPcgRGmZeJDxyQKb
-8Xt7Qy6AHbWwbWP0kNu6SG63AgI0l6ggsxQY/FSztFmHHKURcPlJjW5qQNmWcHI5
-CdXHsrpCpJt+TVp4mwqUZ7dAwppMxw2On0V7D0c9Hu5G9ROMX7FN/vABYjDBQ8Cj
-MOk8NLe2FG7snCtVKeXj7aN/eO5kR/SSoiIaidQdW+xGPF3qSV+aOGpPfSEQ60N7
-XlutpZWOF1H6KA9CENdz49yqForeSin1yQfuyxaWs3riYgzsZbVrFEV40Ka4uukE
-FrAE0TTAlSrdVs6rgk2kjOmnPWo6vct3QfWBlint95/J/ATJeNAPljXbAcZiabSm
-WvCTQ23GBuMTKqMghIbqZ8tYFo5wrkEvZOkWrCtuzGboHS73V8mBcZe+JecOTzfz
-/a3grLPNPw2eE8714KjfKaRN1TgEhrZkKnf1jUBya/F3Ol0j5bySuot4Dasmhxmi
-2SFXEiIJtzUU/6d8GoDc7sUKzUl2G+fB3MkCqdCKSJH6Zb6hjhhJHTwIBVFhuaVK
-IkskFoi9jhK6iAdJOaL4UL/8Ehdgi+hsUmsEMFlzjGgfZdk9czoNkYIkeAJQgxFO
-nZVysLYUH73qCFJKdCUs
-=x9v5
------END PGP SIGNATURE-----
+                        Geert
 
---wchHw8dVAp53YPj8--
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

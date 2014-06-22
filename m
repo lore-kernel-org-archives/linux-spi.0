@@ -1,51 +1,71 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 5/5] spi: sh-msiof: Add DMA support
-Date: Sun, 22 Jun 2014 10:06:08 +0200
-Message-ID: <CAMuHMdXB4U=tkGgV=UE5KRBgP7jqyB8Wpjn1x6ei-wq-MYkLqQ@mail.gmail.com>
-References: <1403259380-13634-6-git-send-email-geert+renesas@glider.be>
-	<20140621101959.GM5099@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [Patch v2 1/3] spi: qup: Remove chip select function
+Date: Sun, 22 Jun 2014 11:47:08 +0100
+Message-ID: <20140622104708.GK24291@sirena.org.uk>
+References: <1402601652-24641-1-git-send-email-agross@codeaurora.org>
+ <1402601652-24641-2-git-send-email-agross@codeaurora.org>
+ <20140621101303.GE5099@sirena.org.uk>
+ <20140621185646.GA2601@qualcomm.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Magnus Damm <magnus.damm-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Guennadi Liakhovetski <g.liakhovetski-Mmb7MZpHnFY@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="qDymnuGqqhW10CwH"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Daniel Sneddon <dsneddon-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
+	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
+To: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140621101959.GM5099-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20140621185646.GA2601-zC7DfRvBq/JWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
 
-On Sat, Jun 21, 2014 at 12:19 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Fri, Jun 20, 2014 at 12:16:20PM +0200, Geert Uytterhoeven wrote:
->> Add DMA support to the MSIOF driver using platform data.
->
-> This doesn't apply against current code, can you please check and
-> resend?
+--qDymnuGqqhW10CwH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-My patches were based on your for-next branch, which has
-commit 1e8231b79ccbb3e6e7b3f6af9f998dca16b00efe
-Author: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Date:   Tue Apr 29 17:21:25 2014 +0900
+On Sat, Jun 21, 2014 at 01:56:46PM -0500, Andy Gross wrote:
+> On Sat, Jun 21, 2014 at 11:13:03AM +0100, Mark Brown wrote:
+> > On Thu, Jun 12, 2014 at 02:34:10PM -0500, Andy Gross wrote:
 
-    spi: sh-msiof: remove unnecessary OOM messages
+> > > This patch removes the chip select function.  Chip select should instead be
+> > > supported using GPIOs, defining the DT entry "cs-gpios", and letting the SPI
+> > > core assert/deassert the chip select as it sees fit.
 
-(from topic/cleanup), but topic/sh-msiof hasn't.
+> > Why?
 
-Gr{oetje,eeting}s,
+> The chip select control inside the controller is buggy.  It is supposed to
+> automatically assert the chip select based on the activity in the controller,
+> but it is buggy and doesn't work at all.  So instead we elect to use GPIOs.
 
-                        Geert
+OK, though it was in manual mode.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+--qDymnuGqqhW10CwH
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJTprQpAAoJELSic+t+oim937IP/RApkLGTVuPPN1kQlVhJt8Bu
+11N0da/sCNYBdiHXgH/HMMXsEZSrXQGDfjjlSMm2XirJxDHJ3s68qkgE82ooP9hD
+regLghKR5S6qVtLGlfl/30sTXION6xhaVsnqRmGsad4knNH9o85snu00GWtcjOEN
+OBK6V+/Ei+W8ngcxD3huj/Dsy/dEZsFl1wmlAZ5FiXEe9JDYBcGjJLYr2UcwHm4C
+OIf0c0KAmYVGUegawErAUaYOw+7vlIXjyfy+z0Rw+22FTDLpeBckVMhCKrQcOE/r
+fcIY9R9pW1SSpoeaYpp/X9S7Eg5ZQwMDm+QMoZMFLCqQhEKjjQaLVKAvK3TZOSUs
+aMrk4x1OXMF/gsXGJDsIhdOxLxlCiz5/yhVL+Z4tjp1/tj67tqzJJTB4MxcO341/
+DMRIvDNDjC9mM+Ulr0I9fmKWndyqWKYhG0sE5X5fMiQ+0Zwy7aCPsCTy/5oZI2NQ
+jl70VSTpbnxMSZhKsrD8WHUneDjDPcnQ7YMj8Mqex1DxfrUgW3kwGBM/qG9fL2v9
+Wn0cPost2iUBIIRFhDcVu44gnjkmq0NAqPiWA5NpYC9y/NeYjmYtdceLtc4e9PcK
+6GBm+h6SMsAU6M2gkbILhjcxtT34saLThai01qOh6lIMhh1pYDDqvyJ0rdREFele
+oaBSeZZ0Prfs8jHowqht
+=5fWX
+-----END PGP SIGNATURE-----
+
+--qDymnuGqqhW10CwH--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

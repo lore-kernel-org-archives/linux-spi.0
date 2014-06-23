@@ -1,71 +1,287 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [Patch v2 1/3] spi: qup: Remove chip select function
-Date: Sun, 22 Jun 2014 11:47:08 +0100
-Message-ID: <20140622104708.GK24291@sirena.org.uk>
-References: <1402601652-24641-1-git-send-email-agross@codeaurora.org>
- <1402601652-24641-2-git-send-email-agross@codeaurora.org>
- <20140621101303.GE5099@sirena.org.uk>
- <20140621185646.GA2601@qualcomm.com>
+From: Alexander Sverdlin <alexander.sverdlin-OYasijW0DpE@public.gmane.org>
+Subject: Re: [PATCH 5/6] OF: Utility helper functions for dynamic nodes
+Date: Mon, 23 Jun 2014 18:26:49 +0200
+Message-ID: <53A85549.7040809@nsn.com>
+References: <1403430039-15085-1-git-send-email-pantelis.antoniou@konsulko.com> <1403430039-15085-6-git-send-email-pantelis.antoniou@konsulko.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="qDymnuGqqhW10CwH"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Daniel Sneddon <dsneddon-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
-	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>
-To: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Cc: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Matt Porter <matt.porter-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Koen Kooi <koen-QLwJDigV5abLmq1fohREcCpxlwaOVQ5f@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Alison Chaiken <Alison_Chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+	Dinh Nguyen <dinh.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Jan Lubbe <jluebbe-H4yykcOXDpCzQB+pC5nmwQ@public.gmane.org>, Michael Stickel <ms-g5CePrrZ5ROELgA04lAiVw@public.gmane.org>,
+	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+	Dirk Behme <dirk.behme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Alan Tull <delicious.quinoa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Michael Bohan <mbohan-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>,
+	Matt Ranostay <mranostay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pete Popov <pete.popov-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
+	Dan Malek <dan.male
+To: ext Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
+	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Ionut Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140621185646.GA2601-zC7DfRvBq/JWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1403430039-15085-6-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hello Pantelis!
 
---qDymnuGqqhW10CwH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 22/06/14 11:40, ext Pantelis Antoniou wrote:
+> Introduce helper functions for working with the live DT tree,
+> all of them related to dynamically adding/removing nodes and
+> properties.
+> 
+> __of_copy_property() copies a property dynamically
+> __of_create_empty_node() creates an empty node
+> 
+> Bug fix about prop->len == 0 by Ionut Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>
 
-On Sat, Jun 21, 2014 at 01:56:46PM -0500, Andy Gross wrote:
-> On Sat, Jun 21, 2014 at 11:13:03AM +0100, Mark Brown wrote:
-> > On Thu, Jun 12, 2014 at 02:34:10PM -0500, Andy Gross wrote:
+Are you sure about this? (see below...)
+ 
+> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+> ---
+>  drivers/of/Makefile |   2 +-
+>  drivers/of/util.c   | 141 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/of.h  |  42 ++++++++++++++++
+>  3 files changed, 184 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/of/util.c
+> 
+> diff --git a/drivers/of/Makefile b/drivers/of/Makefile
+> index 099b1fb..734d3e2 100644
+> --- a/drivers/of/Makefile
+> +++ b/drivers/of/Makefile
+> @@ -1,4 +1,4 @@
+> -obj-y = base.o device.o platform.o
+> +obj-y = base.o device.o platform.o util.o
+>  obj-$(CONFIG_OF_FLATTREE) += fdt.o
+>  obj-$(CONFIG_OF_EARLY_FLATTREE) += fdt_address.o
+>  obj-$(CONFIG_OF_PROMTREE) += pdt.o
+> diff --git a/drivers/of/util.c b/drivers/of/util.c
+> new file mode 100644
+> index 0000000..f4211f8
+> --- /dev/null
+> +++ b/drivers/of/util.c
+> @@ -0,0 +1,141 @@
+> +/*
+> + * Utility functions for working with device tree(s)
+> + *
+> + * Copyright (C) 2012 Pantelis Antoniou <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>
+> + * Copyright (C) 2012 Texas Instruments Inc.
+> + *
+> + * This program is free software; you can redistribute it and/or
+> + * modify it under the terms of the GNU General Public License
+> + * version 2 as published by the Free Software Foundation.
+> + */
+> +
+> +#include <linux/kernel.h>
+> +#include <linux/module.h>
+> +#include <linux/of.h>
+> +#include <linux/of_device.h>
+> +#include <linux/string.h>
+> +#include <linux/ctype.h>
+> +#include <linux/errno.h>
+> +#include <linux/string.h>
+> +#include <linux/slab.h>
+> +#include <linux/err.h>
+> +
+> +/**
+> + * __of_copy_property - Copy a property dynamically.
+> + * @prop:	Property to copy
+> + * @allocflags:	Allocation flags (typically pass GFP_KERNEL)
+> + * @propflags:	Property flags
+> + *
+> + * Copy a property by dynamically allocating the memory of both the
+> + * property stucture and the property name & contents. The property's
+> + * flags have the OF_DYNAMIC bit set so that we can differentiate between
+> + * dynamically allocated properties and not.
+> + * Returns the newly allocated property or NULL on out of memory error.
+> + */
+> +struct property *__of_copy_property(const struct property *prop,
+> +		gfp_t allocflags, unsigned long propflags)
+> +{
+> +	struct property *propn;
+> +
+> +	propn = kzalloc(sizeof(*prop), allocflags);
+> +	if (propn == NULL)
+> +		return NULL;
+> +
+> +	propn->_flags = propflags;
+> +
+> +	if (of_property_check_flag(propn, OF_ALLOCNAME)) {
+> +		propn->name = kstrdup(prop->name, allocflags);
+> +		if (propn->name == NULL)
+> +			goto err_fail_name;
+> +	} else
+> +		propn->name = prop->name;
+> +
+> +	if (prop->length > 0) {
+        ^^^^^^^^^^^^^^^^^^^^^
+Seems, that length==0 case will still produce value==NULL results,
+which will brake some checks in the kernel... Or am I missing something in
+the new version?
 
-> > > This patch removes the chip select function.  Chip select should instead be
-> > > supported using GPIOs, defining the DT entry "cs-gpios", and letting the SPI
-> > > core assert/deassert the chip select as it sees fit.
 
-> > Why?
+> +		if (of_property_check_flag(propn, OF_ALLOCVALUE)) {
+> +			propn->value = kmalloc(prop->length, allocflags);
+> +			if (propn->value == NULL)
+> +				goto err_fail_value;
+> +			memcpy(propn->value, prop->value, prop->length);
+> +		} else
+> +			propn->value = prop->value;
+> +
+> +		propn->length = prop->length;
+> +	}
+> +
+> +	/* mark the property as dynamic */
+> +	of_property_set_flag(propn, OF_DYNAMIC);
+> +
+> +	return propn;
+> +
+> +err_fail_value:
+> +	if (of_property_check_flag(propn, OF_ALLOCNAME))
+> +		kfree(propn->name);
+> +err_fail_name:
+> +	kfree(propn);
+> +	return NULL;
+> +}
+> +
+> +/**
+> + * __of_create_empty_node - Create an empty device node dynamically.
+> + * @name:	Name of the new device node
+> + * @type:	Type of the new device node
+> + * @full_name:	Full name of the new device node
+> + * @phandle:	Phandle of the new device node
+> + * @allocflags:	Allocation flags (typically pass GFP_KERNEL)
+> + * @nodeflags:	Node flags
+> + *
+> + * Create an empty device tree node, suitable for further modification.
+> + * The node data are dynamically allocated and all the node flags
+> + * have the OF_DYNAMIC & OF_DETACHED bits set.
+> + * Returns the newly allocated node or NULL on out of memory error.
+> + */
+> +struct device_node *__of_create_empty_node(
+> +		const char *name, const char *type, const char *full_name,
+> +		phandle phandle, gfp_t allocflags, unsigned long nodeflags)
+> +{
+> +	struct device_node *node;
+> +
+> +	node = kzalloc(sizeof(*node), allocflags);
+> +	if (node == NULL)
+> +		return NULL;
+> +
+> +	node->_flags = nodeflags;
+> +
+> +	if (of_node_check_flag(node, OF_ALLOCNAME)) {
+> +		node->name = kstrdup(name, allocflags);
+> +		if (node->name == NULL)
+> +			goto err_free_node;
+> +	} else
+> +		node->name = name;
+> +
+> +	if (of_node_check_flag(node, OF_ALLOCTYPE)) {
+> +		node->type = kstrdup(type, allocflags);
+> +		if (node->type == NULL)
+> +			goto err_free_name;
+> +	} else
+> +		node->type = type;
+> +
+> +	if (of_node_check_flag(node, OF_ALLOCFULL)) {
+> +		node->full_name = kstrdup(full_name, allocflags);
+> +		if (node->full_name == NULL)
+> +			goto err_free_type;
+> +	} else
+> +		node->full_name = full_name;
+> +
+> +	node->phandle = phandle;
+> +	of_node_set_flag(node, OF_DYNAMIC);
+> +	of_node_set_flag(node, OF_DETACHED);
+> +
+> +	of_node_init(node);
+> +
+> +	return node;
+> +err_free_type:
+> +	if (of_node_check_flag(node, OF_ALLOCTYPE))
+> +		kfree(node->type);
+> +err_free_name:
+> +	if (of_node_check_flag(node, OF_ALLOCNAME))
+> +		kfree(node->name);
+> +err_free_node:
+> +	kfree(node);
+> +	return NULL;
+> +}
+> diff --git a/include/linux/of.h b/include/linux/of.h
+> index 5e4e1b3..d381eb5 100644
+> --- a/include/linux/of.h
+> +++ b/include/linux/of.h
+> @@ -211,6 +211,15 @@ static inline unsigned long of_read_ulong(const __be32 *cell, int size)
+>  #define OF_DYNAMIC	1 /* node and properties were allocated via kmalloc */
+>  #define OF_DETACHED	2 /* node has been detached from the device tree */
+>  #define OF_POPULATED	3 /* device already created for the node */
+> +#define OF_ALLOCNAME	4 /* name was kmalloc-ed */
+> +#define OF_ALLOCTYPE	5 /* type was kmalloc-ed */
+> +#define OF_ALLOCFULL	6 /* full_name was kmalloc-ed */
+> +#define OF_ALLOCVALUE	7 /* value was kmalloc-ed */
+> +
+> +#define OF_NODE_ALLOCALL \
+> +	((1 << OF_ALLOCNAME) | (1 << OF_ALLOCTYPE) | (1 << OF_ALLOCFULL))
+> +#define OF_PROP_ALLOCALL \
+> +	((1 << OF_ALLOCNAME) | (1 << OF_ALLOCVALUE))
+>  
+>  #define OF_IS_DYNAMIC(x) test_bit(OF_DYNAMIC, &x->_flags)
+>  #define OF_MARK_DYNAMIC(x) set_bit(OF_DYNAMIC, &x->_flags)
+> @@ -824,4 +833,37 @@ typedef void (*of_init_fn_1)(struct device_node *);
+>  #define OF_DECLARE_2(table, name, compat, fn) \
+>  		_OF_DECLARE(table, name, compat, fn, of_init_fn_2)
+>  
+> +/**
+> + * General utilities for working with live trees.
+> + *
+> + * All functions with two leading underscores operate
+> + * without taking node references, so you either have to
+> + * own the devtree lock or work on detached trees only.
+> + */
+> +
+> +#ifdef CONFIG_OF
+> +
+> +struct property *__of_copy_property(const struct property *prop,
+> +		gfp_t allocflags, unsigned long propflags);
+> +struct device_node *__of_create_empty_node(const char *name,
+> +		const char *type, const char *full_name,
+> +		phandle phandle, gfp_t allocflags, unsigned long nodeflags);
+> +
+> +#else /* !CONFIG_OF */
+> +
+> +static inline struct property *__of_copy_property(const struct property *prop,
+> +		gfp_t allocflags, unsigned long propflags)
+> +{
+> +	return NULL;
+> +}
+> +
+> +static inline struct device_node *__of_create_empty_node(const char *name,
+> +		const char *type, const char *full_name,
+> +		phandle phandle, gfp_t allocflags, unsigned long nodeflags)
+> +{
+> +	return NULL;
+> +}
+> +
+> +#endif	/* !CONFIG_OF */
+> +
+>  #endif /* _LINUX_OF_H */
+> 
 
-> The chip select control inside the controller is buggy.  It is supposed to
-> automatically assert the chip select based on the activity in the controller,
-> but it is buggy and doesn't work at all.  So instead we elect to use GPIOs.
-
-OK, though it was in manual mode.
-
---qDymnuGqqhW10CwH
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJTprQpAAoJELSic+t+oim937IP/RApkLGTVuPPN1kQlVhJt8Bu
-11N0da/sCNYBdiHXgH/HMMXsEZSrXQGDfjjlSMm2XirJxDHJ3s68qkgE82ooP9hD
-regLghKR5S6qVtLGlfl/30sTXION6xhaVsnqRmGsad4knNH9o85snu00GWtcjOEN
-OBK6V+/Ei+W8ngcxD3huj/Dsy/dEZsFl1wmlAZ5FiXEe9JDYBcGjJLYr2UcwHm4C
-OIf0c0KAmYVGUegawErAUaYOw+7vlIXjyfy+z0Rw+22FTDLpeBckVMhCKrQcOE/r
-fcIY9R9pW1SSpoeaYpp/X9S7Eg5ZQwMDm+QMoZMFLCqQhEKjjQaLVKAvK3TZOSUs
-aMrk4x1OXMF/gsXGJDsIhdOxLxlCiz5/yhVL+Z4tjp1/tj67tqzJJTB4MxcO341/
-DMRIvDNDjC9mM+Ulr0I9fmKWndyqWKYhG0sE5X5fMiQ+0Zwy7aCPsCTy/5oZI2NQ
-jl70VSTpbnxMSZhKsrD8WHUneDjDPcnQ7YMj8Mqex1DxfrUgW3kwGBM/qG9fL2v9
-Wn0cPost2iUBIIRFhDcVu44gnjkmq0NAqPiWA5NpYC9y/NeYjmYtdceLtc4e9PcK
-6GBm+h6SMsAU6M2gkbILhjcxtT34saLThai01qOh6lIMhh1pYDDqvyJ0rdREFele
-oaBSeZZ0Prfs8jHowqht
-=5fWX
------END PGP SIGNATURE-----
-
---qDymnuGqqhW10CwH--
+-- 
+Best regards,
+Alexander Sverdlin.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

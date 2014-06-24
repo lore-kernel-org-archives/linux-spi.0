@@ -1,84 +1,174 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Rutland <mark.rutland@arm.com>
 Subject: Re: [PATCH 1/2] documentation: add rockchip spi documentation
-Date: Tue, 24 Jun 2014 11:33:36 +0100
-Message-ID: <20140624103336.GG23300@sirena.org.uk>
+Date: Tue, 24 Jun 2014 11:47:14 +0100
+Message-ID: <20140624104714.GF5856@leverpostej>
 References: <1403582324-9485-1-git-send-email-addy.ke@rock-chips.com>
  <1403582324-9485-2-git-send-email-addy.ke@rock-chips.com>
  <20140624101802.GE5856@leverpostej>
+ <2324491.URDIcWcjph@diego>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Sw7tCqrGA+HQ0/zt"
-Cc: addy ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org" <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
-	"grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org" <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	"robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"huangtao-TNX95d0MmH7DzftRWevZcw@public.gmane.org" <huangtao-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"yzq-TNX95d0MmH7DzftRWevZcw@public.gmane.org" <yzq-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"kever.yang-TNX95d0MmH7DzftRWevZcw@public.gmane.org" <kever.yang-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org" <zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"xjq-TNX95d0MmH7DzftRWevZcw@public.gmane.org" <xjq-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"zhenfu.fang-TNX95d0MmH7DzftRWevZcw@public.gmane.org" <zhenfu.fang-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org" <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	"cf-TNX95d0MmH7DzftRWevZcw@public.gmane.org" <cf-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"hj-TNX95d0MmH7DzftRWevZcw@public.gmane.org" <hj-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: addy ke <addy.ke@rock-chips.com>,
+	"broonie@kernel.org" <broonie@kernel.org>,
+	"grant.likely@linaro.org" <grant.likely@linaro.org>,
+	"robh+dt@kernel.org" <robh+dt@kernel.org>,
+	"huangtao@rock-chips.com" <huangtao@rock-chips.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"yzq@rock-chips.com" <yzq@rock-chips.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"kever.yang@rock-chips.com" <kever.yang@rock-chips.com>,
+	"zyw@rock-chips.com" <zyw@rock-chips.com>,
+	"xjq@rock-chips.com" <xjq@rock-chips.com>,
+	"zhenfu.fang@rock-chips.com" <zhenfu.fang@rock-chips.com>,
+	"olof@lixom.net" <olof@lixom.net>,
+	"cf@rock-chips.com" <cf@rock-chips.com>,
+	"hj@rock-chips.com" <hj@rock-chips.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>
+To: Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20140624101802.GE5856@leverpostej>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <2324491.URDIcWcjph@diego>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+On Tue, Jun 24, 2014 at 11:32:21AM +0100, Heiko St=C3=BCbner wrote:
+> Am Dienstag, 24. Juni 2014, 11:18:02 schrieb Mark Rutland:
+> > On Tue, Jun 24, 2014 at 04:58:43AM +0100, addy ke wrote:
+> > > Signed-off-by: addy ke <addy.ke@rock-chips.com>
+> > > ---
+> > >=20
+> > >  .../devicetree/bindings/spi/spi-rockchip.txt       | 51
+> > >  ++++++++++++++++++++++ 1 file changed, 51 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/spi/spi-roc=
+kchip.txt
+> > >=20
+> > > diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.t=
+xt
+> > > b/Documentation/devicetree/bindings/spi/spi-rockchip.txt new file=
+ mode
+> > > 100644
+> > > index 0000000..ce9c881
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+> > > @@ -0,0 +1,51 @@
+> > > +* Rockchip SPI Controller
+> > > +
+> > > +The Rockchip SPI controller is used to interface with various de=
+vices
+> > > such as flash +and display controllers using the SPI communicatio=
+n
+> > > interface.
+> > > +
+> > > +Required SoC Specific Properties:
+> > > +
+> > > +- compatible: should be one of the following.
+> > > +    - rockchip,rk3066-spi: for rk3066, rk3188 and rk3288 platfor=
+ms.
+> >=20
+> > Are you sure you don't want specifc strings for rk3188 and rk3288 (=
+in
+> > addtion to the common "rockchip,rk3066-spi")?
+>=20
+> Wasn't the convention that "later" platforms that are compatible to a=
+n earlier=20
+> one, reuse this compatible string instead of introducing a new one?
 
---Sw7tCqrGA+HQ0/zt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+That's why I said in addition to the common one. I'd only expect the
+driver to look for "rockchip,rk3066-spi", but a DTB could have:
 
-On Tue, Jun 24, 2014 at 11:18:02AM +0100, Mark Rutland wrote:
-> On Tue, Jun 24, 2014 at 04:58:43AM +0100, addy ke wrote:
+	compatible =3D "rockchip,rk3188-spi", "rockchip,rk3066-spi";
 
-> > +- Board Specific Portion:
-> > +
-> > +	&spi0 {
-> > +		status = "okay";
-> > +		spi_test@00 {
-> > +			compatible = "rockchip,spi_test";
+Seeding the DTBs with the extra strings early makes it more likely that
+we can rely on them later. If we don't happen to need them they only
+clutter some DTBs.
 
-> Huh?
+> From what I've heard so far, the specific spi controller got introduc=
+ed with=20
+> the rk3066 [earlier SoCs used a different implementation] and didn't =
+change for=20
+> rk3188 and rk3288. Addy may be able to verify this.
+>=20
+>=20
+> > > +- reg: physical base address of the controller and length of mem=
+ory
+> > > mapped
+> > > +       region.
+> > > +- interrupts: The interrupt number to the cpu. The interrupt spe=
+cifier
+> > > format +              depends on the interrupt controller.
+> > > +- clocks: Must contain an entry for each entry in clock-names.
+> > > +- clock-names: Shall be "spiclk" for the transfer-clock, and "ap=
+b_pclk"
+> > > for +			   the peripheral clock.
+> > > +
+> > > +Optional properties:
+> > > +- dmas: DMA specifiers for tx and rx dma. See the DMA client bin=
+ding,
+> > > +		Documentation/devicetree/bindings/dma/dma.txt
+> > > +- dma-names: DMA request names should include "tx" and "rx" if p=
+resent.
+> > > +
+> > > +Example:
+> > > +
+> > > +- SoC Specific Portion:
+> > > +
+> > > +	spi0: spi@ff110000 {
+> > > +		compatible =3D "rockchip,rockchip-spi";
+> >=20
+> > This does not match the description of the compatible property.
+> >=20
+> > > +		reg =3D <0xff110000 0x1000>;
+> > > +		dmas =3D <&pdma1 11>, <&pdma1 12>;
+> > > +		dma-names =3D "tx", "rx";
+> > > +		#address-cells =3D <1>;
+> > > +		#size-cells =3D <0>;
+> >=20
+> > These weren't mentioned.
+> >=20
+> > > +		interrupts =3D <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
+> > > +		pinctrl-names =3D "default";
+> > > +		pinctrl-0 =3D <&spi0_clk &spi0_tx &spi0_rx &spi0_cs0 &spi0_cs1=
+>;
+> >=20
+> > pinctrl was not mentioned.
+> >=20
+> > > +		clocks =3D <&cru SCLK_SPI0>, <&cru PCLK_SPI0>;
+> > > +		clock-names =3D "spiclk", "apb_pclk";
+> > > +		status =3D "disabled";
+> >=20
+> > Any reason for the status?
+>=20
+> I guess to have the spi controller only be enabled when a board is us=
+ing it as=20
+> below. But it may be an implementation detail which could be omitted =
+from the=20
+> binding doc.
 
-I expect that's just intended as an example of how to set up a device
-and they're doing something like use a driver that generates known
-patterns.  We'd normally omit such examples from the binding document
-since it's generic and covered well enough elsehwere.
+Yes please :)
 
---Sw7tCqrGA+HQ0/zt
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+>=20
+> >=20
+> > > +	};
+> > > +
+> > > +- Board Specific Portion:
+> > > +
+> > > +	&spi0 {
+> > > +		status =3D "okay";
+> > > +		spi_test@00 {
+> > > +			compatible =3D "rockchip,spi_test";
+> >=20
+> > Huh?
+>=20
+> SPI declares it's devices similar to i2c, so while the example might =
+profit=20
+> from a more casual device, I'm not exactly sure what is the problem h=
+ere.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Sure. Given that this is a known pattern for SPI controllers, do we nee=
+d
+this in each binding doc?
 
-iQIcBAEBAgAGBQJTqVP8AAoJELSic+t+oim9768P/2wmhn+zUELR+Afyz9m7T1uS
-F0B7iV9hm3LD98h96hGeaqax8XVEreR8E5DiF0pMxxkkalMsJetT0hXcU2edvM/k
-UuE9lYAX6ExcxlWjDpHF+2pZHPqjHH6s1cU4nOthZY/uBaQdVLS+WadU7Ng+JkYN
-0/udpOY53so3g93zMFNtpcAha4oOBMyBnwz3JmITfRvRPG/nzyPLA0hiGxPShdk8
-4ha3e18Tk/vvMFQzIWI5XcDE4L0hB7+fCkElXs5nJfDGhGA/U/0IFMmXcupVXLMM
-W4xXfQcfxEhWTCvCw4j/T0of36PNwvJnFMu0Djdq3VxAz9+2bQ1ZTAQMEbn+xPHg
-KwzLE1ESBJUhn8i8IM7PeliHjdu7AJ/IfNNCAFAqTLBeUR5/rnUtIT4D7Fj0pyiK
-LdfmIVwDjM0S4O5XTbOKVY0zWh/3JQFjr15wYTaNswLfqfNDBO2AVlT3biry7tn2
-InVk+efm+MFzg/SDVa8gnYEjghf0R09GtjVmSE6pl55HKlSountDkF3roMwZMdsi
-PyRZPxjCKt5GaoQt38S7OKyh6oCa9nnWO4onnpMoZWBt8f3eSTNJneZuY1N1TUQR
-hWsVYRmGakHjwSDMOVOEKFL8DnfaGI/a2E8NDO7OK9AzD3Y8XQyIQt8tgQbNZoCE
-WduhD98mr656/bTmqlMh
-=Haop
------END PGP SIGNATURE-----
-
---Sw7tCqrGA+HQ0/zt--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Mark.

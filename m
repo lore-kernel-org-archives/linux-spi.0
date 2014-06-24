@@ -1,12 +1,13 @@
 From: Alexander Sverdlin <alexander.sverdlin-OYasijW0DpE@public.gmane.org>
 Subject: Re: [PATCH 5/6] OF: Utility helper functions for dynamic nodes
-Date: Tue, 24 Jun 2014 10:10:01 +0200
-Message-ID: <53A93259.8000301@nsn.com>
-References: <1403430039-15085-1-git-send-email-pantelis.antoniou@konsulko.com> <1403430039-15085-6-git-send-email-pantelis.antoniou@konsulko.com> <53A85549.7040809@nsn.com> <6E91A461-4361-4A18-BE32-CECDD789C114@konsulko.com> <20140623183343.GA10389@heimdall>
+Date: Tue, 24 Jun 2014 10:12:52 +0200
+Message-ID: <53A93304.9000604@nsn.com>
+References: <1403430039-15085-1-git-send-email-pantelis.antoniou@konsulko.com> <1403430039-15085-6-git-send-email-pantelis.antoniou@konsulko.com> <53A85549.7040809@nsn.com> <6E91A461-4361-4A18-BE32-CECDD789C114@konsulko.com> <20140623183343.GA10389@heimdall> <78ACBAF6-A73E-4272-8D3A-258C4B10858C@konsulko.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Cc: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Cc: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
+	Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
 	Matt Porter <matt.porter-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
 	Koen Kooi <koen-QLwJDigV5abLmq1fohREcCpxlwaOVQ5f@public.gmane.org>,
@@ -24,103 +25,62 @@ Cc: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pete Popov <pete.popov-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
-	Dan Malek <dan.male
-To: Ioan Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>,
-	ext Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140623183343.GA10389@heimdall>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Pete Popov <pet
+To: ext Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
+	Ioan Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <78ACBAF6-A73E-4272-8D3A-258C4B10858C-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Pantelis, Grant,
+Hi!
 
-On 23/06/14 20:33, Ioan Nicu wrote:
->>> On 22/06/14 11:40, ext Pantelis Antoniou wrote:
->>>> Introduce helper functions for working with the live DT tree,
->>>> all of them related to dynamically adding/removing nodes and
->>>> properties.
->>>>
->>>> __of_copy_property() copies a property dynamically
->>>> __of_create_empty_node() creates an empty node
->>>>
->>>> Bug fix about prop->len == 0 by Ionut Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>
->>>
->>> Are you sure about this? (see below...)
->>>
-> 
-> Alexander is right, my fix was lost even though it's mentioned in this patch.
-> 
->>>> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
->>>> ---
->>
->> [snip]
->>>> +
->>>> +	if (prop->length > 0) {
->>>        ^^^^^^^^^^^^^^^^^^^^^
->>> Seems, that length==0 case will still produce value==NULL results,
->>> which will brake some checks in the kernel... Or am I missing something in
->>> the new version?
+On 23/06/14 21:13, ext Pantelis Antoniou wrote:
+
+[...]
+
+>>> I don't know of any place in the kernel accessing the value if prop->length==0
 >>>
 >>
->> prop->value will be set to NULL, and length will be set to zero (kzalloc).
->> This is a normal zero length property.
+>> We have a simple use case. We have an overlay which adds an interrupt controller.
+>> If you look in drivers/of/irq.c, in of_irq_parse_raw():
 >>
->> I don't know of any place in the kernel accessing the value if prop->length==0
+>> [...]
+>> 	/* Now start the actual "proper" walk of the interrupt tree */
+>> 	while (ipar != NULL) {
+>> 		/* Now check if cursor is an interrupt-controller and if it is
+>> 		 * then we are done
+>> 		 */
+>> 		if (of_get_property(ipar, "interrupt-controller", NULL) !=
+>> 				NULL) {
+>> 			pr_debug(" -> got it !\n");
+>> 			return 0;
+>> 		}
+>> [...]
+>>
+>> A node is identified as an interrupt controller if it has a zero-length property
+>> called "interrupt-controller" but with a non-NULL value.
+>>
+>> My proposed fix for this was to remove the if () condition. propn->value will be
+>> allocated with kmalloc(0) which returns ZERO_SIZE_PTR which is != NULL.
 >>
 > 
-> We have a simple use case. We have an overlay which adds an interrupt controller.
-> If you look in drivers/of/irq.c, in of_irq_parse_raw():
+> If that's the case, the code in irq.c is wrong.
 > 
-> [...]
-> 	/* Now start the actual "proper" walk of the interrupt tree */
-> 	while (ipar != NULL) {
-> 		/* Now check if cursor is an interrupt-controller and if it is
-> 		 * then we are done
-> 		 */
-> 		if (of_get_property(ipar, "interrupt-controller", NULL) !=
+> interrupt-controller is a bool property; the correct call to use is of_property_read_bool()
+> which returns true or false when the value is defined.
 
-We have to define, if it's allowed for an empty property to have NULL value.
-Several places in the kernel use of_get_property() to check for property existence.
-We either have to make a tree-wide patch and replace of_get_property() with of_find_property() in those cases,
-or ensure value != NULL in this copy function...
+No, it's not bool... It's an existence of a void property. 
 
-Grant, what do you think?
+> The use of of_get_property is a bug here. It is perfectly valid for a property to have a
+> NULL value when length = 0.
 
-> 				NULL) {
-> 			pr_debug(" -> got it !\n");
-> 			return 0;
-> 		}
-> [...]
-> 
-> A node is identified as an interrupt controller if it has a zero-length property
-> called "interrupt-controller" but with a non-NULL value.
-> 
-> My proposed fix for this was to remove the if () condition. propn->value will be
-> allocated with kmalloc(0) which returns ZERO_SIZE_PTR which is != NULL.
-> 
-> 
->>
->> [snip]
->>
->>>> +
->>>> #endif /* _LINUX_OF_H */
->>>>
->>>
->>> -- 
->>> Best regards,
->>> Alexander Sverdlin.
->>
->> Regards
->>
->> -- Pantelis
->>
-> 
-> Regards,
-> Ionut Nicu
-> 
+of_find_property() would be really correct in this particular case...
 
 -- 
 Best regards,
 Alexander Sverdlin.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

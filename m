@@ -1,44 +1,107 @@
-From: David Laight <David.Laight-ZS65k/vG3HxXrIkS9f7CXA@public.gmane.org>
-Subject: RE: [PATCH] spi: include "int ret" with macro
-Date: Wed, 25 Jun 2014 08:44:49 +0000
-Message-ID: <063D6719AE5E284EB5DD2968C1650D6D17264A4B@AcuExch.aculab.com>
-References: <1403661276-16598-1-git-send-email-B45475@freescale.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-To: 'Zhao Qiang' <B45475-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org" <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"B07421-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <B07421-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1403661276-16598-1-git-send-email-B45475-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH 5/6] OF: Utility helper functions for dynamic nodes
+Date: Wed, 25 Jun 2014 10:09:40 +0100
+Message-ID: <20140625090940.783DAC40D39@trevor.secretlab.ca>
+References: <1403430039-15085-1-git-send-email-pantelis.antoniou@konsulko.com>
+	<1403430039-15085-6-git-send-email-pantelis.antoniou@konsulko.com>
+	<53A85549.7040809@nsn.com>
+	<6E91A461-4361-4A18-BE32-CECDD789C114@konsulko.com>
+	<20140623183343.GA10389@heimdall> <53A93259.8000301@nsn.com>
+Cc: Rob Herring <robherring2@gmail.com>,
+	Stephen Warren <swarren@wwwdotorg.org>,
+	Matt Porter <matt.porter@linaro.org>,
+	Koen Kooi <koen@dominion.thruhere.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alison Chaiken <Alison_Chaiken@mentor.com>,
+	Dinh Nguyen <dinh.linux@gmail.com>,
+	Jan Lubbe <jluebbe@lasnet.de>, Michael Stickel <ms@mycable.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Alan Tull <delicious.quinoa@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Michael Bohan <mbohan@codeaurora.org>,
+	Michal Simek <monstr@monstr.eu>,
+	Matt Ranostay <mranostay@gmail.com>,
+	Joel Becker <jlbec@evilplan.org>, devicetree@vger.kernel.org,
+	Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Pete Popov <pete.popov@konsulko.com>,
+	Dan Malek <dan.male
+To: Alexander Sverdlin <alexander.sverdlin@nsn.com>,
+	Ioan Nicu <ioan.nicu.ext@nsn.com>,
+	ext Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <53A93259.8000301@nsn.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-RnJvbTogWmhhbyBRaWFuZw0KPiByZXQgaXMgdW51c2VkIHdoZW4gQ09ORklHX0ZTTF9TT0MgZGVm
-aW5lZCwNCj4gc28gaW5jbHVkZSBpdCB3aXRoICIjaWZuZGVmIENPTkZJR19GU0xfU09DIi4NCj4g
-DQo+IFNpZ25lZC1vZmYtYnk6IFpoYW8gUWlhbmcgPEI0NTQ3NUBmcmVlc2NhbGUuY29tPg0KPiAt
-LS0NCj4gIGRyaXZlcnMvc3BpL3NwaS1mc2wtbGliLmMgfCAzICsrLQ0KPiAgMSBmaWxlIGNoYW5n
-ZWQsIDIgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvc3BpL3NwaS1mc2wtbGliLmMgYi9kcml2ZXJzL3NwaS9zcGktZnNsLWxpYi5jDQo+IGlu
-ZGV4IGU1ZDQ1ZmMuLjQ0YWFjZTEgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS1mc2wt
-bGliLmMNCj4gKysrIGIvZHJpdmVycy9zcGkvc3BpLWZzbC1saWIuYw0KPiBAQCAtMTk4LDggKzE5
-OCw5IEBAIGludCBvZl9tcGM4eHh4X3NwaV9wcm9iZShzdHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpv
-ZmRldikNCj4gIAlzdHJ1Y3QgbXBjOHh4eF9zcGlfcHJvYmVfaW5mbyAqcGluZm87DQo+ICAJc3Ry
-dWN0IGZzbF9zcGlfcGxhdGZvcm1fZGF0YSAqcGRhdGE7DQo+ICAJY29uc3Qgdm9pZCAqcHJvcDsN
-Cj4gKyNpZm5kZWYgQ09ORklHX0ZTTF9TT0MNCj4gIAlpbnQgcmV0ID0gLUVOT01FTTsNCj4gLQ0K
-PiArI2VuZGlmDQoNCllvdSBhcmUgcmVtb3ZpbmcgdGhlIGJsYW5rIGxpbmUgYWZ0ZXIgdGhlIGRl
-ZmluaXRpb24gb2YgdGhlIGxvY2FscywNCmFuZCB0aGUgaW5pdGlhbGlzZXIgaXNuJ3QgbmVlZGVk
-Lg0KDQo+ICAJcGluZm8gPSBkZXZtX2t6YWxsb2MoJm9mZGV2LT5kZXYsIHNpemVvZigqcGluZm8p
-LCBHRlBfS0VSTkVMKTsNCj4gIAlpZiAoIXBpbmZvKQ0KPiAgCQlyZXR1cm4gLUVOT01FTTsNCj4g
-LS0NCg0KSSB0aGluayBpdCBtaWdodCBiZSBwcmVmZXJhYmxlIHRvIGRlZmluZSAncmV0JyBpbnNp
-ZGUgdGhlIGNvbmRpdGlvbmFsDQp3aGVyZSBpdCBpcyB1c2VkIC0gd2hpY2ggcmVxdWlyZXMgYW4g
-ZXh0cmEgey4uLn0gYmxvY2suDQoNCkEgJ3NuZWFreScgd2F5IHRvIGF2b2lkIHRoZSB3YXJuaW5n
-IGlzIHRvICdyZXR1cm4gcmV0JyB3aGVuIHRoZSBremFsbG9jKCkgZmFpbHMuDQoNCglEYXZpZA0K
-DQoNCg==
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Tue, 24 Jun 2014 10:10:01 +0200, Alexander Sverdlin <alexander.sverdlin@nsn.com> wrote:
+> Hi Pantelis, Grant,
+> 
+> On 23/06/14 20:33, Ioan Nicu wrote:
+> >>> On 22/06/14 11:40, ext Pantelis Antoniou wrote:
+> >>>> Introduce helper functions for working with the live DT tree,
+> >>>> all of them related to dynamically adding/removing nodes and
+> >>>> properties.
+> >>>>
+> >>>> __of_copy_property() copies a property dynamically
+> >>>> __of_create_empty_node() creates an empty node
+> >>>>
+> >>>> Bug fix about prop->len == 0 by Ionut Nicu <ioan.nicu.ext@nsn.com>
+> >>>
+> >>> Are you sure about this? (see below...)
+> >>>
+> > 
+> > Alexander is right, my fix was lost even though it's mentioned in this patch.
+> > 
+> >>>> Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+> >>>> ---
+> >>
+> >> [snip]
+> >>>> +
+> >>>> +	if (prop->length > 0) {
+> >>>        ^^^^^^^^^^^^^^^^^^^^^
+> >>> Seems, that length==0 case will still produce value==NULL results,
+> >>> which will brake some checks in the kernel... Or am I missing something in
+> >>> the new version?
+> >>>
+> >>
+> >> prop->value will be set to NULL, and length will be set to zero (kzalloc).
+> >> This is a normal zero length property.
+> >>
+> >> I don't know of any place in the kernel accessing the value if prop->length==0
+> >>
+> > 
+> > We have a simple use case. We have an overlay which adds an interrupt controller.
+> > If you look in drivers/of/irq.c, in of_irq_parse_raw():
+> > 
+> > [...]
+> > 	/* Now start the actual "proper" walk of the interrupt tree */
+> > 	while (ipar != NULL) {
+> > 		/* Now check if cursor is an interrupt-controller and if it is
+> > 		 * then we are done
+> > 		 */
+> > 		if (of_get_property(ipar, "interrupt-controller", NULL) !=
+> 
+> We have to define, if it's allowed for an empty property to have NULL value.
+> Several places in the kernel use of_get_property() to check for property existence.
+> We either have to make a tree-wide patch and replace of_get_property() with of_find_property() in those cases,
+> or ensure value != NULL in this copy function...
+> 
+> Grant, what do you think?
+
+I think it's a good cleanup, but until it happens, any new code needs to
+match the behaviour of fdt.c. In that case, making the value point to an
+empty string is a sane choice.  If you do the legwork of finding callers
+and fixing them up, then I'll apply it. Once done we can make the
+following change to fdt.c:
+
+- 			pp->value = (__be32 *)p;
++ 			pp->value = sz ? (__be32 *)p : 0;
+
+pdt.c similarly needs to be updated.
+
+I'm not overly worried though. That code has been in place for a very
+long time, so there is no rush. It can exist a while longer.
+
+g.

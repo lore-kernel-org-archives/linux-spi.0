@@ -1,73 +1,39 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 5/5] spi: sh-msiof: Add DMA support
-Date: Tue, 24 Jun 2014 20:56:23 +0200
-Message-ID: <CAMuHMdUEkCm_N0zGTftp5_N_u_FQ4-=KH8h8qsrAqLgk6Kk=iQ@mail.gmail.com>
-References: <1403259380-13634-6-git-send-email-geert+renesas@glider.be>
-	<20140621101959.GM5099@sirena.org.uk>
-	<CAMuHMdXB4U=tkGgV=UE5KRBgP7jqyB8Wpjn1x6ei-wq-MYkLqQ@mail.gmail.com>
+From: Zhao Qiang <B45475@freescale.com>
+Subject: [PATCH] spi: include "int ret" with macro
+Date: Wed, 25 Jun 2014 09:54:36 +0800
+Message-ID: <1403661276-16598-1-git-send-email-B45475@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <CAMuHMdXB4U=tkGgV=UE5KRBgP7jqyB8Wpjn1x6ei-wq-MYkLqQ@mail.gmail.com>
-Sender: linux-sh-owner@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Zhao Qiang <B45475@freescale.com>
+To: <linuxppc-dev@lists.ozlabs.org>, <broonie@kernel.org>,
+ <linux-spi@vger.kernel.org>, <B07421@freescale.com>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+ <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev/>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+ <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Sender: "Linuxppc-dev"
+ <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
 List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
-
-On Sun, Jun 22, 2014 at 10:06 AM, Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> On Sat, Jun 21, 2014 at 12:19 PM, Mark Brown <broonie@kernel.org> wrote:
->> On Fri, Jun 20, 2014 at 12:16:20PM +0200, Geert Uytterhoeven wrote:
->>> Add DMA support to the MSIOF driver using platform data.
->>
->> This doesn't apply against current code, can you please check and
->> resend?
->
-> My patches were based on your for-next branch, which has
-> commit 1e8231b79ccbb3e6e7b3f6af9f998dca16b00efe
-> Author: Jingoo Han <jg1.han@samsung.com>
-> Date:   Tue Apr 29 17:21:25 2014 +0900
->
->     spi: sh-msiof: remove unnecessary OOM messages
-
-Sorry, wrong copy and paste, I meant:
-
-commit b8fa0abd47f3f2fa47c1b2b06182c422d0c2350d
-Author: Alexander Shiyan <shc_work@mail.ru>
-Date:   Wed Jun 4 18:17:09 2014 +0400
-
-    spi: sh-msiof: Remove unnecessary platform_set_drvdata()
-
-    Drop call to platform_set_drvdata() as driver data is not used
-    anywhere in the driver.
-
-    Signed-off-by: Alexander Shiyan <shc_work@mail.ru>
-    Signed-off-by: Mark Brown <broonie@linaro.org>
-
-> (from topic/cleanup), but topic/sh-msiof hasn't.
-
-Do you want me to resend? Against which branch?
-
-Basically I had to revert the above commit, as I do use the driver data.
-So if I would rebase and resend against topic/sh-msiof, you'll get a merge
-conflict when merging this into for-next.
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+cmV0IGlzIHVudXNlZCB3aGVuIENPTkZJR19GU0xfU09DIGRlZmluZWQsCnNvIGluY2x1ZGUgaXQg
+d2l0aCAiI2lmbmRlZiBDT05GSUdfRlNMX1NPQyIuCgpTaWduZWQtb2ZmLWJ5OiBaaGFvIFFpYW5n
+IDxCNDU0NzVAZnJlZXNjYWxlLmNvbT4KLS0tCiBkcml2ZXJzL3NwaS9zcGktZnNsLWxpYi5jIHwg
+MyArKy0KIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkKCmRp
+ZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktZnNsLWxpYi5jIGIvZHJpdmVycy9zcGkvc3BpLWZz
+bC1saWIuYwppbmRleCBlNWQ0NWZjLi40NGFhY2UxIDEwMDY0NAotLS0gYS9kcml2ZXJzL3NwaS9z
+cGktZnNsLWxpYi5jCisrKyBiL2RyaXZlcnMvc3BpL3NwaS1mc2wtbGliLmMKQEAgLTE5OCw4ICsx
+OTgsOSBAQCBpbnQgb2ZfbXBjOHh4eF9zcGlfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAq
+b2ZkZXYpCiAJc3RydWN0IG1wYzh4eHhfc3BpX3Byb2JlX2luZm8gKnBpbmZvOwogCXN0cnVjdCBm
+c2xfc3BpX3BsYXRmb3JtX2RhdGEgKnBkYXRhOwogCWNvbnN0IHZvaWQgKnByb3A7CisjaWZuZGVm
+IENPTkZJR19GU0xfU09DCiAJaW50IHJldCA9IC1FTk9NRU07Ci0KKyNlbmRpZgogCXBpbmZvID0g
+ZGV2bV9remFsbG9jKCZvZmRldi0+ZGV2LCBzaXplb2YoKnBpbmZvKSwgR0ZQX0tFUk5FTCk7CiAJ
+aWYgKCFwaW5mbykKIAkJcmV0dXJuIC1FTk9NRU07Ci0tIAoxLjguNQoKX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXhwcGMtZGV2IG1haWxpbmcgbGlz
+dApMaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZwpodHRwczovL2xpc3RzLm96bGFicy5vcmcv
+bGlzdGluZm8vbGludXhwcGMtZGV2

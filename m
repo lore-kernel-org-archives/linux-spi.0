@@ -1,57 +1,59 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: omap-uwire: fix compilation failure
-Date: Fri, 27 Jun 2014 10:03:03 +0100
-Message-ID: <20140627090303.GB23300@sirena.org.uk>
-References: <20140620203858.GA14718@himangi-Dell>
- <1403849258-21779-1-git-send-email-olof@lixom.net>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: qup: Add DMA capabilities
+Date: Fri, 27 Jun 2014 11:50:57 +0100
+Message-ID: <20140627105057.GF23300@sirena.org.uk>
+References: <1403816781-31008-1-git-send-email-agross@codeaurora.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="XeHo0rFSNt4mQX/E"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Himangi Saraogi <himangi774-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
-To: Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="3ozdenm5Azl6mQ8k"
+Cc: linux-spi@vger.kernel.org, Sagar Dharia <sdharia@codeaurora.org>,
+	Daniel Sneddon <dsneddon@codeaurora.org>,
+	Bjorn Andersson <bjorn.andersson@sonymobile.com>,
+	"Ivan T. Ivanov" <iivanov@mm-sol.com>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org
+To: Andy Gross <agross@codeaurora.org>
+Return-path: <linux-arm-msm-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1403849258-21779-1-git-send-email-olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1403816781-31008-1-git-send-email-agross@codeaurora.org>
+Sender: linux-arm-msm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---XeHo0rFSNt4mQX/E
+--3ozdenm5Azl6mQ8k
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jun 26, 2014 at 11:07:38PM -0700, Olof Johansson wrote:
-> Patch 'spi: omap-uwire: use devm_ functions' (b3f6a57506b8) introduced a
-> build error due to a missing include file. Add it.
+On Thu, Jun 26, 2014 at 04:06:21PM -0500, Andy Gross wrote:
 
-A similar patch was applied a few days ago.
+> +	if (xfer->rx_buf) {
+> +		rx_dma = dma_map_single(controller->dev, xfer->rx_buf,
+> +			xfer->len, DMA_FROM_DEVICE);
 
---XeHo0rFSNt4mQX/E
+It would be better to use the core DMA mapping code rather than open
+coding.  This code won't work for vmalloc()ed addresses, or physically
+non-contiguous addresses unless there's an IOMMU fixing things up.
+
+--3ozdenm5Azl6mQ8k
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJTrTNEAAoJELSic+t+oim9ki0P/A7Q0H4ph4cBx8iqUpyhV3D4
-2BdPi+gBoJBAWVhx+E05D8w1qN6Ud0cCzHsL0bFd3ejLbHSgw0Lgtz4rYdOJ9DkW
-5sOvByejUPKJXHt1Ohgek/A+AUeQZM+cPncnZymQ8XyEQ/nu8Dvf5tSUlyUkEwDV
-omtKjpZlhfabFAPithapFCNlwPxqkC4AWDSBmI7siJjBb8WD+2Ztk4M2dXk4BcOj
-ZiFportodEPv21ogdIEV+JTrHn5KZi9X1ygZz7p70/1YmBOc/kt8tvYcRJuiQSmu
-SP8T84cIVGoGSdjxX/TfQIvykphtDAGPumWp2ZFyBWBy2mEwYZoSO5+sK3hsq8L5
-nmoB3VDiIGeX4UYWcB1GFxz3ZvhAIC2XssfI8zq4nj2pwA/MAfovQvHqEEQp5L/Q
-cvcbms2pRV7ulwWZofkSwEf84A70/dmJB0qpAluXbDSkGRIwIkVs0+fkQoElV0XH
-BLQeiOrhkPDX1PTDbaSpe05lX+JdHHJX5y0vaVixMBo2tryE6wZ+/8xXhFQbNAbd
-lOWAxJ7i3+NeSHVISlVjyIrmPTObRQ5QbKxUjpmQ+BScemkhOKf6tU/URaoy8IoW
-gdEGO27tZ4nAYPYhEwHS8hkXRmr0tli4JcofnGEPPDr+0zbQj4bva6lYAm9NK6bd
-Vey4I2XfvzoJOWasXr6S
-=zoWB
+iQIcBAEBAgAGBQJTrUyOAAoJELSic+t+oim9g64P/0DCLX3QOf409MCNcPwrkB4k
+CO/xvPxt70PNhbPO/Ari3MdqcuLJv1PtobDMlSFEgiWtE5ApwK7CbFX4O84aYjFb
+mtiTQQc29mjvPzoJ2DNcfNuch4880/CseAdHBYvcgsG6787UDSt7eLJjDJLuRmnX
+ccpoPKwbkPAq0klGWOGZ6vf3Kjeu4YA6Iq+s83CYhQEJ0uZr+YTBHPuauhRNsFAM
+sJ7YTkc3jTLmM4nIWBtol/llL0byZcdpD/TCPwCrXqoeYJDaTqhZJ/RjFgsxKtlf
+1F1gyPk4Nay/mqJ8d3HU/Yx4jj/k1rYeJAVsFvff7jwusY3+Sqyq81K6naohsi0x
+PccU9xMiSv5QVBka/2i3MawsAoiqwRI1xNSY2Z1o14neJI1jz1iffMhLKuu48FwJ
+hD1NXVYqm6msbGSav5KSnySuxoBZuekOty/kl3vX08mVlOmVuWnJSMnVUygK9mX9
+sx1NCVdg1XL85mhyShqVH9SGM8XAh5eu2mmrJo3MyRQM7V7GqBNakRpQ9OfOFTQo
+HptjIMpNwy68EkBPlS/stIO6RDWQ6W48bBcQyoUOJBuhZOY3lCx/hkYx3aI3ceBs
+nLTWAyF00He0WLu50679lmg8vfxGiuIRjDC/jble/bGcWbzSRc9G1UPwdo3MmHH7
+pKlT3865UCYcX0hEjxLc
+=YGCI
 -----END PGP SIGNATURE-----
 
---XeHo0rFSNt4mQX/E--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--3ozdenm5Azl6mQ8k--

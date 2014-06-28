@@ -1,52 +1,88 @@
-From: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-Subject: Re: [PATCH] spi: qup: Add DMA capabilities
-Date: Fri, 27 Jun 2014 13:58:30 -0500
-Message-ID: <20140627185830.GB13621@qualcomm.com>
-References: <1403816781-31008-1-git-send-email-agross@codeaurora.org>
- <20140627105057.GF23300@sirena.org.uk>
- <20140627155422.GA13621@qualcomm.com>
- <20140627162411.GO32514@n2100.arm.linux.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI fixes for v3.16
+Date: Sat, 28 Jun 2014 14:19:32 +0100
+Message-ID: <20140628131932.GU2520@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>,
-	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Daniel Sneddon <dsneddon-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	"Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>,
-	Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Russell King - ARM Linux <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="5FNPeqk0egs0iuvD"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20140627162411.GO32514-l+eeeJia6m9vn6HldHNs0ANdhmdF6hFW@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
-
-On Fri, Jun 27, 2014 at 05:24:11PM +0100, Russell King - ARM Linux wrote:
-
-<snip>
-
-> > > It would be better to use the core DMA mapping code rather than open
-> > > coding.  This code won't work for vmalloc()ed addresses, or physically
-> > > non-contiguous addresses unless there's an IOMMU fixing things up.
-> > 
-> > Ah, ok.  So I just need a to setup the scatter gather page list and then do a
-> > dma_map_sg.  I'll resend once I have this in place.
-> 
-> Note that DMA from vmalloc'd memory is non-coherent on some platforms,
-> even if you use the DMA API.
-
-Thankfully, that isn't the case on this platform.  As as the QUP controller is
-only on Qualcomm chipsets, we don't have to worry about it being used on other
-platforms.
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
--- 
-sent by an employee of the Qualcomm Innovation Center, Inc.
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-hosted by The Linux Foundation
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--5FNPeqk0egs0iuvD
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+The following changes since commit a497c3ba1d97fc69c1e78e7b96435ba8c2cb42ee:
+
+  Linux 3.16-rc2 (2014-06-21 19:02:54 -1000)
+
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3=
+=2E16-rc2
+
+for you to fetch changes up to 7216a4183947853f359b41ba1edb5db9b3091acc:
+
+  Merge remote-tracking branches 'spi/fix/pxa2xx', 'spi/fix/qup' and 'spi/f=
+ix/sh-sci' into spi-linus (2014-06-28 14:01:23 +0100)
+
+----------------------------------------------------------------
+
+spi: Fixes for v3.16
+
+A few driver specific fixes, the biggest one being a fix for the newly
+added Qualcomm SPI controller driver to make it not use its internal
+chip select due to hardware bugs, replacing it with GPIOs.
+
+----------------------------------------------------------------
+Andy Gross (2):
+      spi: qup: Fix order of spi_register_master
+      spi: qup: Remove chip select function
+
+Chew, Chiau Ee (1):
+      spi/pxa2xx: fix incorrect SW mode chipselect setting for BayTrail LPS=
+S SPI
+
+J=FCrg Billeter (1):
+      spi: sh-sci: fix use-after-free in sh_sci_spi_remove()
+
+Mark Brown (1):
+      Merge remote-tracking branches 'spi/fix/pxa2xx', 'spi/fix/qup' and 's=
+pi/fix/sh-sci' into spi-linus
+
+ .../devicetree/bindings/spi/qcom,spi-qup.txt       |  6 +++
+ drivers/spi/spi-pxa2xx.c                           |  8 +++-
+ drivers/spi/spi-qup.c                              | 44 +++++++-----------=
+----
+ drivers/spi/spi-sh-sci.c                           |  4 +-
+ 4 files changed, 27 insertions(+), 35 deletions(-)
+
+--5FNPeqk0egs0iuvD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+iQIcBAEBAgAGBQJTrsDhAAoJELSic+t+oim9sIEQAIV4ahU3nkNQTtdAZcBiAKHJ
+3KBNiw0fQew9ABJOML8N+P0ibS1JN+tarOoFvcdlzt0gWsb0JbdxoQqYt6rE0HOy
+CjSdWaPLdZI2XqtKAHMEE1/sSQPmlhWJO2QbG3nGzdgvaUm4phrPP9J6bmTLWm4v
+KY8xJ8HMgGN548NrpWFoem8dgq8KxUd808bl1UTIlscQ3kJceOoQsoYwDnCzMmrM
+RNOO8rqLkDRHLk451B548uZGtd1TtWI4VZxCVRdlO/9A+rjeb36MXUZisDPOXSwB
+4LXniXnK437QoFVbnbUY6PISMMpO1k9nD5/3lu7QMX/vjsRqLnVCyJ5VVcYGzXuQ
+6BRQ9qK0dJLnjTUwOYnOfvgzczeKVhTB48fuK+yM33b5BSdG0zMjS2UjzQTRpffk
+XFoBnLpUEuUgRJanRpVm6w7WVqJIk9ef/2d4FzBPJqQKL/XJOB+k7tsgsEej3zOf
+xm9h7veobl3CulccMScb2oaYHjoP0mj7DfOLMiBKURsTs/qMHgFfShIwDzpc0j41
+3jJj3z/jarelcEQp9sSH86G9UNUN9FWULh0vI6VWuE6LD1IIGfzeCWLtr3JGl/+s
+4qxmrp+bLtBdIfG99YRBP5KKjE1UsRmuopGGArzJnkVhnUIiTBH3xjFsHUpeXxTb
+Quk72yjT+WrbgrVG/cmq
+=Br6r
+-----END PGP SIGNATURE-----
+
+--5FNPeqk0egs0iuvD--

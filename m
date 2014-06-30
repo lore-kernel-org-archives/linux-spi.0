@@ -1,15 +1,15 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH resend 2/2] spi: sh-msiof: Add DMA support
-Date: Mon, 30 Jun 2014 12:10:24 +0200
-Message-ID: <1404123024-12004-3-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH resend 1/2] spi: sh-msiof: Add DMA support
+Date: Mon, 30 Jun 2014 12:10:23 +0200
+Message-ID: <1404123024-12004-2-git-send-email-geert+renesas@glider.be>
 References: <1404123024-12004-1-git-send-email-geert+renesas@glider.be>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1404123024-12004-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1404123024-12004-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 Add DMA support to the MSIOF driver using platform data.
 
@@ -35,21 +35,20 @@ larger than the FIFO size for PIO), should use cs-gpio (with the
 appropriate pinmux setup), as the hardware chipselect will be deasserted in
 between chunks.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
-This patch was rebased against spi/topic/sh-msiof.
-When merging this into spi/for-next, there will be a merge conflict due
-to commit b8fa0abd47f3f2fa47c1b2b06182c422d0c2350d ("spi: sh-msiof: Remove
-unnecessary platform_set_drvdata()"), which is obsoleted by this patch.
+This patch is against spi/for-next, which contains commit
+b8fa0abd47f3f2fa47c1b2b06182c422d0c2350d ("spi: sh-msiof: Remove
+unnecessary platform_set_drvdata()"), which is reverted by this patch.
 
-An alternative version against spi/for-next is also available.
+An alternative version against spi/topic/sh-msiof is also available.
 
- drivers/spi/spi-sh-msiof.c   | 348 ++++++++++++++++++++++++++++++++++++++++++-
+ drivers/spi/spi-sh-msiof.c   | 350 ++++++++++++++++++++++++++++++++++++++++++-
  include/linux/spi/sh_msiof.h |   2 +
- 2 files changed, 343 insertions(+), 7 deletions(-)
+ 2 files changed, 345 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 824f44e6bd88..9922ed3a4441 100644
+index ef831f1c1803..9922ed3a4441 100644
 --- a/drivers/spi/spi-sh-msiof.c
 +++ b/drivers/spi/spi-sh-msiof.c
 @@ -2,6 +2,7 @@
@@ -490,15 +489,17 @@ index 824f44e6bd88..9922ed3a4441 100644
  static int sh_msiof_spi_probe(struct platform_device *pdev)
  {
  	struct resource	*r;
-@@ -763,6 +1088,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+@@ -762,6 +1087,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 
  	p = spi_master_get_devdata(master);
  
- 	platform_set_drvdata(pdev, p);
++	platform_set_drvdata(pdev, p);
 +	p->master = master;
- 
++
  	of_id = of_match_device(sh_msiof_match, &pdev->dev);
  	if (of_id) {
-@@ -833,6 +1159,10 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 		p->chipdata = of_id->data;
+@@ -831,6 +1159,10 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
  	master->auto_runtime_pm = true;
  	master->transfer_one = sh_msiof_transfer_one;
  
@@ -509,7 +510,7 @@ index 824f44e6bd88..9922ed3a4441 100644
  	ret = devm_spi_register_master(&pdev->dev, master);
  	if (ret < 0) {
  		dev_err(&pdev->dev, "spi_register_master error.\n");
-@@ -842,6 +1172,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+@@ -840,6 +1172,7 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
  	return 0;
  
   err2:
@@ -517,7 +518,7 @@ index 824f44e6bd88..9922ed3a4441 100644
  	pm_runtime_disable(&pdev->dev);
   err1:
  	spi_master_put(master);
-@@ -850,6 +1181,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+@@ -848,6 +1181,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
  
  static int sh_msiof_spi_remove(struct platform_device *pdev)
  {
@@ -543,7 +544,3 @@ index 2e8db3d2d2e5..88a14d81c49e 100644
 -- 
 1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

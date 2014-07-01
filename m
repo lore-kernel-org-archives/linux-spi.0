@@ -1,57 +1,94 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH resend 2/2] spi: sh-msiof: Add DMA support
-Date: Mon, 30 Jun 2014 19:55:48 +0100
-Message-ID: <20140630185548.GH23300@sirena.org.uk>
-References: <1404123024-12004-1-git-send-email-geert+renesas@glider.be>
- <1404123024-12004-3-git-send-email-geert+renesas@glider.be>
+From: addy ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: [PATCH v2 1/2] documentation: add rockchip spi documentation
+Date: Tue,  1 Jul 2014 09:02:57 +0800
+Message-ID: <1404176577-3274-1-git-send-email-addy.ke@rock-chips.com>
+References: <1403582324-9485-2-git-send-email-addy.ke@rock-chips.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="DdFXZVhPRLAAj7qC"
-Cc: linux-spi@vger.kernel.org, linux-sh@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1404123024-12004-3-git-send-email-geert+renesas@glider.be>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, hj-TNX95d0MmH7DzftRWevZcw@public.gmane.org, kever.yang-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
+	xjq-TNX95d0MmH7DzftRWevZcw@public.gmane.org, huangtao-TNX95d0MmH7DzftRWevZcw@public.gmane.org, zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
+	yzq-TNX95d0MmH7DzftRWevZcw@public.gmane.org, zhenfu.fang-TNX95d0MmH7DzftRWevZcw@public.gmane.org, cf-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
+	zhangqing-TNX95d0MmH7DzftRWevZcw@public.gmane.org, wei.luo-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
+	addy ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1403582324-9485-2-git-send-email-addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
+
+Signed-off-by: addy ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+---
+changes since v1:
+- fix binding document according to comments from Mark Rutland
+- fix address according to comments from Mark Brown
+- combine all properties into "Required Properties" suggested by Heiko =
+St=C3=BCbner
+- remove "Board Specific Portion" suggested by Heiko St=C3=BCbner
+
+ .../devicetree/bindings/spi/spi-rockchip.txt       | 37 ++++++++++++++=
+++++++++
+ 1 file changed, 37 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-rockchip.=
+txt
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-rockchip.txt b/D=
+ocumentation/devicetree/bindings/spi/spi-rockchip.txt
+new file mode 100644
+index 0000000..7bab355
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-rockchip.txt
+@@ -0,0 +1,37 @@
++* Rockchip SPI Controller
++
++The Rockchip SPI controller is used to interface with various devices =
+such as flash
++and display controllers using the SPI communication interface.
++
++Required Properties:
++
++- compatible: should be one of the following.
++    "rockchip,rk3066-spi" for rk3066.
++    "rockchip,rk3188-spi", "rockchip,rk3066-spi" for rk3188.
++    "rockchip,rk3288-spi", "rockchip,rk3066-spi" for rk3288.
++- reg: physical base address of the controller and length of memory ma=
+pped
++       region.
++- interrupts: The interrupt number to the cpu. The interrupt specifier=
+ format
++              depends on the interrupt controller.
++- clocks: Must contain an entry for each entry in clock-names.
++- clock-names: Shall be "spiclk" for the transfer-clock, and "apb_pclk=
+" for
++			   the peripheral clock.
++- dmas: DMA specifiers for tx and rx dma. See the DMA client binding,
++		Documentation/devicetree/bindings/dma/dma.txt
++- dma-names: DMA request names should include "tx" and "rx" if present=
+=2E
++- #address-cells: should be 1.
++- #size-cells: should be 0.
++
++Example:
++
++	spi0: spi@ff110000 {
++		compatible =3D "rockchip,rk3066-spi";
++		reg =3D <0xff110000 0x1000>;
++		dmas =3D <&pdma1 11>, <&pdma1 12>;
++		dma-names =3D "tx", "rx";
++		#address-cells =3D <1>;
++		#size-cells =3D <0>;
++		interrupts =3D <GIC_SPI 44 IRQ_TYPE_LEVEL_HIGH>;
++		clocks =3D <&cru SCLK_SPI0>, <&cru PCLK_SPI0>;
++		clock-names =3D "spiclk", "apb_pclk";
++	};
+--=20
+1.8.3.2
 
 
---DdFXZVhPRLAAj7qC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Jun 30, 2014 at 12:10:24PM +0200, Geert Uytterhoeven wrote:
-> Add DMA support to the MSIOF driver using platform data.
->=20
-> As MSIOF DMA is limited to 32-bit words (requiring byte/wordswapping for
-> smaller wordsizes), and the group length is limited to 256 words, DMA is
-> performed on two fixed pages, allocated and mapped at driver initializati=
-on
-> time.
-
-Applied, thanks.
-
---DdFXZVhPRLAAj7qC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJTsbKxAAoJELSic+t+oim9c+UP/A0SxYbSUHbjhdAfuvF1fi51
-Mn0QIavWHpF4OTnkS9R5ruf5ITATUjF6Zf+6u5MJxuCeziB+OuQdLBV7nghTeL9o
-2ZzTU/rO5Ouw0tJCZTYxz4ic0LRzzEsh69fyKKo7SWg/Ia2Ka3ZHA2d2ef72qiQi
-Oo16SGZRvYUl+FSHl1xHf2Vgp2V7qB2Wl/ykch5K+FFeuLm2N20xOFps/9p0qtNw
-5TZ4gG7v+hu00/Dl7Uv9rtTPAXJxJrFyHHyO/KMStM/w239gwbWzU79OiB/Ki6LF
-RTveHMkKR5tZsXZTSFBPLBLDPtPTRREYEEsCwmGyVTCgfRVRYC1fZcMBKCe5RscK
-314qY4wfBgAn4eeG2+VmVmQEGauY0tS9H+v9SvCag1yopswg8SiqjQ3UmvtOlqg/
-4aSEPXTNot0mPvGX7ytt2TspFu0ntVAslZrPjZDks5fCDn8m8dYnXEo3IxTReGjA
-X6Ns6otUGcDoDzq4EJSTU564vEj9P2ST0c0jF/tJuj4I5pTHZJSRLnqvuqHpUH2R
-YYdFAQfC5nqzG8bLuUZGa3KjYDUfrIjy4yJMORm9S6ecAmc8ElXgkjQz95kC+WuH
-bkBSedQb2tgRf8bcYe30jCiw/88z30xDCLFXpXWS2kVECAMrBOSLA9Cx2SNYq64C
-Qbf6RC/z3ii8OilVdQyU
-=ku8o
------END PGP SIGNATURE-----
-
---DdFXZVhPRLAAj7qC--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

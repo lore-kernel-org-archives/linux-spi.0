@@ -1,128 +1,59 @@
-From: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
-Subject: Re: [PATCH] spi: qup: Add DMA capabilities
-Date: Wed, 02 Jul 2014 17:26:31 +0300
-Message-ID: <1404311191.3622.22.camel@iivanov-dev>
-References: <1403816781-31008-1-git-send-email-agross@codeaurora.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: question about drivers/spi/spi-au1550.c
+Date: Wed, 2 Jul 2014 20:44:02 +0100
+Message-ID: <20140702194402.GO410@sirena.org.uk>
+References: <CAB78YHy2tW4u5rrsz9yKqpD7uigtkp=B4Z950323-v0vGk5R8g@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Sagar Dharia <sdharia-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Daniel Sneddon <dsneddon-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="Y5wfsVCgeKAcINk2"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Julia Lawall <julia.lawall-L2FTfq7BK8M@public.gmane.org>
+To: Himangi Saraogi <himangi774-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1403816781-31008-1-git-send-email-agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAB78YHy2tW4u5rrsz9yKqpD7uigtkp=B4Z950323-v0vGk5R8g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
-Hi Andy,
+--Y5wfsVCgeKAcINk2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Just few comments.
+On Thu, Jul 03, 2014 at 12:31:45AM +0530, Himangi Saraogi wrote:
 
-On Thu, 2014-06-26 at 16:06 -0500, Andy Gross wrote:
-> This patch adds DMA capabilities to the spi-qup driver.  If DMA channels are
-> present, the QUP will use DMA instead of block mode for transfers to/from SPI
-> peripherals for transactions larger than the length of a block.
-> 
-> Signed-off-by: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
-> ---
->  .../devicetree/bindings/spi/qcom,spi-qup.txt       |   10 +
->  drivers/spi/spi-qup.c                              |  361 ++++++++++++++++++--
->  2 files changed, 350 insertions(+), 21 deletions(-)
-> 
+> I find in the probe function that hw->ioarea is allocated using
+> request_mem_region but a release_resource and kfree is called on it instead
+> of  a release_mem_region. Is there any special concern behind this. I was
+> planning to use devm_ioremap_resource here.
 
-<snip>
- 
-> diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-> index fc1de86..9b01db5 100644
-> --- a/drivers/spi/spi-qup.c
-> +++ b/drivers/spi/spi-qup.c
-> @@ -22,6 +22,8 @@
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/spi/spi.h>
-> +#include <linux/dmaengine.h>
-> +#include <linux/dma-mapping.h>
->  
->  #define QUP_CONFIG			0x0000
->  #define QUP_STATE			0x0004
-> @@ -116,6 +118,8 @@
->  
->  #define SPI_NUM_CHIPSELECTS		4
->  
-> +#define SPI_MAX_XFER			(SZ_64K - 64)
-> +
->  /* high speed mode is when bus rate is greater then 26MHz */
->  #define SPI_HS_MIN_RATE			26000000
->  #define SPI_MAX_RATE			50000000
-> @@ -142,6 +146,17 @@ struct spi_qup {
->  	int			w_size;	/* bytes per SPI word */
->  	int			tx_bytes;
->  	int			rx_bytes;
-> +
-> +	int			use_dma;
-> +
-> +	struct dma_chan		*rx_chan;
-> +	struct dma_slave_config	rx_conf;
-> +	struct dma_chan		*tx_chan;
-> +	struct dma_slave_config tx_conf;
-> +	dma_addr_t		rx_dma;
-> +	dma_addr_t		tx_dma;
+I'd expect this is just a bug you've spotted.  If you could send two
+patches, one fixing the bug and the other doing the devm_ conversion,
+that'd be ideal but a single patch is also fine.
 
-DMA addresses seems unused.
+--Y5wfsVCgeKAcINk2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-> +	void			*dummy;
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-This is not so dummy, probably 'spare'.
+iQIcBAEBAgAGBQJTtGD/AAoJELSic+t+oim95boQAIObeO7TILt1eUAl/HnuwKlt
+6KClFZ41AZSSj1FlW61qRbjTBHIzbkgY6pn5O9/o+6MXjV7Q2PMsJljqn0QmgNo6
+HJklfCYVbnC0GHuGT/sfroqqOkdP3FfiFHaJBgwoRuTLIOrWzMuG3xl49sWhkUn2
+qmeIiP66O4j5DjwkaIdVJj4gjT1FX0eOSiv4L3YKKSC7E1G0l1JOh31BEF3rD36w
+tzisL3vE1V2RP5uXPMOll5E3wKH17Uq1OK6T/KtqwdkeR9ssiIm6cy8ntWoefGgH
+GOE1qL/DVei1u/WEhSB22gNFTw4KT+Fb10+em75QgzfXseVytYSiVenxh6V+HNV0
+pW9lvERKdVSwoXhES6BFoZfctr9XGkcbcAnLyzWuzoyMqd2Es9Hw7BOUjhNitOaO
+JAEzYC4jX8teRP1hG55RcFoE22kA+eZWhkIT3d2+tuUXhCxc/GSmJtnN8zzdHxsu
+DFgoYRLZA/oELxo7cKU6KBoFvUoInC29gg+i8z8QOCrVPkb+fw/5Mq+33F4ARzox
+KB1su+gAxlzs4P3J9iSyXVN6XyeXH/Bifi/Ij6Jc7XbV6dXzICWZUh1viWKT0xtm
+XQy/wkmIPfmGAi0c48M5sMmdlUnOVWZh0m73wXSkuaECAi7M4+ymE1Qlzd3oVOTg
+ItikoGLyq7+x8M0L4zwa
+=L+XM
+-----END PGP SIGNATURE-----
 
-> +	atomic_t		dma_outstanding;
->  };
-
-<snip>
-
->  
->  
-> @@ -632,6 +896,56 @@ static int spi_qup_probe(struct platform_device *pdev)
->  	writel_relaxed(SPI_ERROR_CLK_UNDER_RUN | SPI_ERROR_CLK_OVER_RUN,
->  		       base + SPI_ERROR_FLAGS_EN);
->  
-> +	/* allocate dma resources, if available */
-> +	controller->rx_chan = dma_request_slave_channel(&pdev->dev, "rx");
-> +	if (controller->rx_chan) {
-> +		controller->tx_chan =
-> +			dma_request_slave_channel(&pdev->dev, "tx");
-> +
-> +		if (!controller->tx_chan) {
-> +			dev_err(&pdev->dev, "Failed to allocate dma tx chan");
-> +			dma_release_channel(controller->rx_chan);
-
-
-There is no point to go further with DMA configuration
-if there are no channels, right?
-
-> +		}
-> +
-> +		/* set DMA parameters */
-> +		controller->rx_conf.device_fc = 1;
-> +		controller->rx_conf.src_addr = res->start + QUP_INPUT_FIFO;
-> +		controller->rx_conf.src_maxburst = controller->in_blk_sz;
-> +
-> +		controller->tx_conf.device_fc = 1;
-> +		controller->tx_conf.dst_addr = res->start + QUP_OUTPUT_FIFO;
-> +		controller->tx_conf.dst_maxburst = controller->out_blk_sz;
-> +
-
-
-Please, could you share blsp2_bam device node configuration? 
-I would like to test these changes.
-
-Regards,
-Ivan
-
+--Y5wfsVCgeKAcINk2--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

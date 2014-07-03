@@ -1,83 +1,67 @@
-From: Himangi Saraogi <himangi774-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi/spi-sh: Use devm_ioremap
-Date: Fri, 4 Jul 2014 01:12:25 +0530
-Message-ID: <20140703194225.GA4388@himangi-Dell>
+From: Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH] devicetree/bindings: Add binding for micron n25q512a
+ memory
+Date: Thu, 3 Jul 2014 17:10:00 -0500
+Message-ID: <1404425400.21434.89.camel@snotra.buserror.net>
+References: <1404382376-3115-1-git-send-email-Priyanka.Jain@freescale.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: julia.lawall-L2FTfq7BK8M@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Priyanka Jain <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
+In-Reply-To: <1404382376-3115-1-git-send-email-Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch introduces the use of devm_ioremap and removes the iounmaps
-in the probe and remove functions. Also, the labels are renamed to
-preserve ordering.
+On Thu, 2014-07-03 at 15:42 +0530, Priyanka Jain wrote:
+> -Micron n25q512a memory is supported by m25p80 driver.
+>  Add compatible field required to support n25q512a in m25p80.txt
+> -Add micron to the vendor-prefixes.txt file
+> 
+> Signed-off-by: Priyanka Jain <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> ---
+>  Documentation/devicetree/bindings/mtd/m25p80.txt   |    1 +
+>  .../devicetree/bindings/vendor-prefixes.txt        |    1 +
+>  2 files changed, 2 insertions(+), 0 deletions(-)
 
-Signed-off-by: Himangi Saraogi <himangi774-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
-I would like to know if it will be a good idea to devmify the
-request_irq as well. There is ampiguity as the calls to
-spi_unregister_master and destroy_workqueue are before free_irq in
-remove function while after free_irq in the probe function.
- drivers/spi/spi-sh.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+Why did you send this to the ppc list but not the spi or mtd lists?
 
-diff --git a/drivers/spi/spi-sh.c b/drivers/spi/spi-sh.c
-index 03edf5e..2c30da0 100644
---- a/drivers/spi/spi-sh.c
-+++ b/drivers/spi/spi-sh.c
-@@ -432,7 +432,6 @@ static int spi_sh_remove(struct platform_device *pdev)
- 	spi_unregister_master(ss->master);
- 	destroy_workqueue(ss->workqueue);
- 	free_irq(ss->irq, ss);
--	iounmap(ss->addr);
- 
- 	return 0;
- }
-@@ -480,7 +479,7 @@ static int spi_sh_probe(struct platform_device *pdev)
- 	}
- 	ss->irq = irq;
- 	ss->master = master;
--	ss->addr = ioremap(res->start, resource_size(res));
-+	ss->addr = devm_ioremap(&pdev->dev, res->start, resource_size(res));
- 	if (ss->addr == NULL) {
- 		dev_err(&pdev->dev, "ioremap error.\n");
- 		ret = -ENOMEM;
-@@ -501,7 +500,7 @@ static int spi_sh_probe(struct platform_device *pdev)
- 	ret = request_irq(irq, spi_sh_irq, 0, "spi_sh", ss);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "request_irq error\n");
--		goto error3;
-+		goto error2;
- 	}
- 
- 	master->num_chipselect = 2;
-@@ -513,17 +512,15 @@ static int spi_sh_probe(struct platform_device *pdev)
- 	ret = spi_register_master(master);
- 	if (ret < 0) {
- 		printk(KERN_ERR "spi_register_master error.\n");
--		goto error4;
-+		goto error3;
- 	}
- 
- 	return 0;
- 
-- error4:
--	free_irq(irq, ss);
-  error3:
--	destroy_workqueue(ss->workqueue);
-+	free_irq(irq, ss);
-  error2:
--	iounmap(ss->addr);
-+	destroy_workqueue(ss->workqueue);
-  error1:
- 	spi_master_put(master);
- 
--- 
-1.9.1
+I'm having a hard time following the flow of how these SPI devices get
+bound -- is the compatible involved at all?  I don't see this string
+(with vendor prefix included) in the driver.  I do see a table that
+contains what looks like device IDs.  If the device can report its id,
+shouldn't we rely on that rather than device tree compatible?
+
+-Scott
+
+
+> diff --git a/Documentation/devicetree/bindings/mtd/m25p80.txt b/Documentation/devicetree/bindings/mtd/m25p80.txt
+> index 4611aa8..ce02e81 100644
+> --- a/Documentation/devicetree/bindings/mtd/m25p80.txt
+> +++ b/Documentation/devicetree/bindings/mtd/m25p80.txt
+> @@ -7,6 +7,7 @@ Required properties:
+>                 the DT binding is not Linux-only, but in case of Linux, see the
+>                 "spi_nor_ids" table in drivers/mtd/spi-nor/spi-nor.c for the list
+>                 of supported chips.
+> +               example: "micron,n25q512a"
+>  - reg : Chip-Select number
+>  - spi-max-frequency : Maximum frequency of the SPI bus the chip can operate at
+>  
+> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> index 4d7f375..a44cfee 100644
+> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
+> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
+> @@ -79,6 +79,7 @@ marvell	Marvell Technology Group Ltd.
+>  maxim	Maxim Integrated Products
+>  micrel	Micrel Inc.
+>  microchip	Microchip Technology Inc.
+> +micron	Micron Technology Inc.
+>  mosaixtech	Mosaix Technologies, Inc.
+>  moxa	Moxa
+>  mpl	MPL AG
+
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

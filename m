@@ -1,68 +1,75 @@
-From: Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH] devicetree/bindings: Add binding for micron n25q512a
+From: Priyanka Jain <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: RE: [PATCH] devicetree/bindings: Add binding for micron n25q512a
  memory
-Date: Thu, 3 Jul 2014 17:10:00 -0500
-Message-ID: <1404425400.21434.89.camel@snotra.buserror.net>
+Date: Fri, 4 Jul 2014 04:08:16 +0000
+Message-ID: <b7e1d3bf1675492585121d9e7950f05a@BLUPR03MB135.namprd03.prod.outlook.com>
 References: <1404382376-3115-1-git-send-email-Priyanka.Jain@freescale.com>
+ <1404425400.21434.89.camel@snotra.buserror.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Priyanka Jain <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org" <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1404382376-3115-1-git-send-email-Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <1404425400.21434.89.camel-88ow+0ZRuxG2UiBs7uKeOtHuzzzSOjJt@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, 2014-07-03 at 15:42 +0530, Priyanka Jain wrote:
-> -Micron n25q512a memory is supported by m25p80 driver.
->  Add compatible field required to support n25q512a in m25p80.txt
-> -Add micron to the vendor-prefixes.txt file
-> 
-> Signed-off-by: Priyanka Jain <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-> ---
->  Documentation/devicetree/bindings/mtd/m25p80.txt   |    1 +
->  .../devicetree/bindings/vendor-prefixes.txt        |    1 +
->  2 files changed, 2 insertions(+), 0 deletions(-)
-
-Why did you send this to the ppc list but not the spi or mtd lists?
-
-I'm having a hard time following the flow of how these SPI devices get
-bound -- is the compatible involved at all?  I don't see this string
-(with vendor prefix included) in the driver.  I do see a table that
-contains what looks like device IDs.  If the device can report its id,
-shouldn't we rely on that rather than device tree compatible?
-
--Scott
-
-
-> diff --git a/Documentation/devicetree/bindings/mtd/m25p80.txt b/Documentation/devicetree/bindings/mtd/m25p80.txt
-> index 4611aa8..ce02e81 100644
-> --- a/Documentation/devicetree/bindings/mtd/m25p80.txt
-> +++ b/Documentation/devicetree/bindings/mtd/m25p80.txt
-> @@ -7,6 +7,7 @@ Required properties:
->                 the DT binding is not Linux-only, but in case of Linux, see the
->                 "spi_nor_ids" table in drivers/mtd/spi-nor/spi-nor.c for the list
->                 of supported chips.
-> +               example: "micron,n25q512a"
->  - reg : Chip-Select number
->  - spi-max-frequency : Maximum frequency of the SPI bus the chip can operate at
->  
-> diff --git a/Documentation/devicetree/bindings/vendor-prefixes.txt b/Documentation/devicetree/bindings/vendor-prefixes.txt
-> index 4d7f375..a44cfee 100644
-> --- a/Documentation/devicetree/bindings/vendor-prefixes.txt
-> +++ b/Documentation/devicetree/bindings/vendor-prefixes.txt
-> @@ -79,6 +79,7 @@ marvell	Marvell Technology Group Ltd.
->  maxim	Maxim Integrated Products
->  micrel	Micrel Inc.
->  microchip	Microchip Technology Inc.
-> +micron	Micron Technology Inc.
->  mosaixtech	Mosaix Technologies, Inc.
->  moxa	Moxa
->  mpl	MPL AG
-
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogV29vZCBTY290dC1CMDc0
+MjENCj4gU2VudDogRnJpZGF5LCBKdWx5IDA0LCAyMDE0IDM6NDAgQU0NCj4gVG86IEphaW4gUHJp
+eWFua2EtQjMyMTY3DQo+IENjOiBkZXZpY2V0cmVlQHZnZXIua2VybmVsLm9yZzsgbGludXhwcGMt
+ZGV2QGxpc3RzLm96bGFicy5vcmc7IGxpbnV4LQ0KPiBzcGlAdmdlci5rZXJuZWwub3JnOyBsaW51
+eC1tdGRAbGlzdHMuaW5mcmFkZWFkLm9yZw0KPiBTdWJqZWN0OiBSZTogW1BBVENIXSBkZXZpY2V0
+cmVlL2JpbmRpbmdzOiBBZGQgYmluZGluZyBmb3IgbWljcm9uIG4yNXE1MTJhDQo+IG1lbW9yeQ0K
+PiANCj4gT24gVGh1LCAyMDE0LTA3LTAzIGF0IDE1OjQyICswNTMwLCBQcml5YW5rYSBKYWluIHdy
+b3RlOg0KPiA+IC1NaWNyb24gbjI1cTUxMmEgbWVtb3J5IGlzIHN1cHBvcnRlZCBieSBtMjVwODAg
+ZHJpdmVyLg0KPiA+ICBBZGQgY29tcGF0aWJsZSBmaWVsZCByZXF1aXJlZCB0byBzdXBwb3J0IG4y
+NXE1MTJhIGluIG0yNXA4MC50eHQgLUFkZA0KPiA+IG1pY3JvbiB0byB0aGUgdmVuZG9yLXByZWZp
+eGVzLnR4dCBmaWxlDQo+ID4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBQcml5YW5rYSBKYWluIDxQcml5
+YW5rYS5KYWluQGZyZWVzY2FsZS5jb20+DQo+ID4gLS0tDQo+ID4gIERvY3VtZW50YXRpb24vZGV2
+aWNldHJlZS9iaW5kaW5ncy9tdGQvbTI1cDgwLnR4dCAgIHwgICAgMSArDQo+ID4gIC4uLi9kZXZp
+Y2V0cmVlL2JpbmRpbmdzL3ZlbmRvci1wcmVmaXhlcy50eHQgICAgICAgIHwgICAgMSArDQo+ID4g
+IDIgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAwIGRlbGV0aW9ucygtKQ0KPiANCj4g
+V2h5IGRpZCB5b3Ugc2VuZCB0aGlzIHRvIHRoZSBwcGMgbGlzdCBidXQgbm90IHRoZSBzcGkgb3Ig
+bXRkIGxpc3RzPw0KPiANCltKYWluIFByaXlhbmthLUIzMjE2N10gU29ycnksIEkgbWlzc2VkIHRo
+YXQNCj4gSSdtIGhhdmluZyBhIGhhcmQgdGltZSBmb2xsb3dpbmcgdGhlIGZsb3cgb2YgaG93IHRo
+ZXNlIFNQSSBkZXZpY2VzIGdldA0KPiBib3VuZCAtLSBpcyB0aGUgY29tcGF0aWJsZSBpbnZvbHZl
+ZCBhdCBhbGw/ICBJIGRvbid0IHNlZSB0aGlzIHN0cmluZw0KPiAod2l0aCB2ZW5kb3IgcHJlZml4
+IGluY2x1ZGVkKSBpbiB0aGUgZHJpdmVyLiAgSSBkbyBzZWUgYSB0YWJsZSB0aGF0DQo+IGNvbnRh
+aW5zIHdoYXQgbG9va3MgbGlrZSBkZXZpY2UgSURzLiAgSWYgdGhlIGRldmljZSBjYW4gcmVwb3J0
+IGl0cyBpZCwNCj4gc2hvdWxkbid0IHdlIHJlbHkgb24gdGhhdCByYXRoZXIgdGhhbiBkZXZpY2Ug
+dHJlZSBjb21wYXRpYmxlPw0KPiANCj4gLVNjb3R0DQpbSmFpbiBQcml5YW5rYS1CMzIxNjddDQpT
+cGkgZHJpdmVyIGhhcyBhIGNoZWNrIHRvIGRldmljZSBuYW1lIGNvcnJlc3BvbmRpbmcgdG8gZGV2
+aWNlLWlkIGFuZCBjb21wYXJlIHRvIHdoYXQgaXMgcGFzc2VkIGluIGR0cyBzdHJpbmcuDQpOZXcg
+Y2hlY2twYXRjaCBzY3JpcHQgc2VhcmNoIGZvciBleGFjdCBzdHJpbmcgbWF0Y2ggaW4gYmluZGlu
+ZyBmb2xkZXIuIFNvLCBJIGhhdmUgYWRkZWQgdGhpcyBpbiBleGFtcGxlLg0KPiANCj4gDQo+ID4g
+ZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9tdGQvbTI1cDgw
+LnR4dA0KPiA+IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL210ZC9tMjVwODAu
+dHh0DQo+ID4gaW5kZXggNDYxMWFhOC4uY2UwMmU4MSAxMDA2NDQNCj4gPiAtLS0gYS9Eb2N1bWVu
+dGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbXRkL20yNXA4MC50eHQNCj4gPiArKysgYi9Eb2N1
+bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbXRkL20yNXA4MC50eHQNCj4gPiBAQCAtNyw2
+ICs3LDcgQEAgUmVxdWlyZWQgcHJvcGVydGllczoNCj4gPiAgICAgICAgICAgICAgICAgdGhlIERU
+IGJpbmRpbmcgaXMgbm90IExpbnV4LW9ubHksIGJ1dCBpbiBjYXNlIG9mIExpbnV4LA0KPiBzZWUg
+dGhlDQo+ID4gICAgICAgICAgICAgICAgICJzcGlfbm9yX2lkcyIgdGFibGUgaW4gZHJpdmVycy9t
+dGQvc3BpLW5vci9zcGktbm9yLmMNCj4gZm9yIHRoZSBsaXN0DQo+ID4gICAgICAgICAgICAgICAg
+IG9mIHN1cHBvcnRlZCBjaGlwcy4NCj4gPiArICAgICAgICAgICAgICAgZXhhbXBsZTogIm1pY3Jv
+bixuMjVxNTEyYSINCj4gPiAgLSByZWcgOiBDaGlwLVNlbGVjdCBudW1iZXINCj4gPiAgLSBzcGkt
+bWF4LWZyZXF1ZW5jeSA6IE1heGltdW0gZnJlcXVlbmN5IG9mIHRoZSBTUEkgYnVzIHRoZSBjaGlw
+IGNhbg0KPiA+IG9wZXJhdGUgYXQNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9u
+L2RldmljZXRyZWUvYmluZGluZ3MvdmVuZG9yLXByZWZpeGVzLnR4dA0KPiA+IGIvRG9jdW1lbnRh
+dGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3ZlbmRvci1wcmVmaXhlcy50eHQNCj4gPiBpbmRleCA0
+ZDdmMzc1Li5hNDRjZmVlIDEwMDY0NA0KPiA+IC0tLSBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJl
+ZS9iaW5kaW5ncy92ZW5kb3ItcHJlZml4ZXMudHh0DQo+ID4gKysrIGIvRG9jdW1lbnRhdGlvbi9k
+ZXZpY2V0cmVlL2JpbmRpbmdzL3ZlbmRvci1wcmVmaXhlcy50eHQNCj4gPiBAQCAtNzksNiArNzks
+NyBAQCBtYXJ2ZWxsCU1hcnZlbGwgVGVjaG5vbG9neSBHcm91cCBMdGQuDQo+ID4gIG1heGltCU1h
+eGltIEludGVncmF0ZWQgUHJvZHVjdHMNCj4gPiAgbWljcmVsCU1pY3JlbCBJbmMuDQo+ID4gIG1p
+Y3JvY2hpcAlNaWNyb2NoaXAgVGVjaG5vbG9neSBJbmMuDQo+ID4gK21pY3JvbglNaWNyb24gVGVj
+aG5vbG9neSBJbmMuDQo+ID4gIG1vc2FpeHRlY2gJTW9zYWl4IFRlY2hub2xvZ2llcywgSW5jLg0K
+PiA+ICBtb3hhCU1veGENCj4gPiAgbXBsCU1QTCBBRw0KPiANCg0K
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

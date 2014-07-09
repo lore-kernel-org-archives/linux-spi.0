@@ -1,49 +1,103 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH] spi: sh-msiof: Use correct device for DMA mapping with IOMMU
-Date: Wed,  9 Jul 2014 12:21:17 +0200
-Message-ID: <1404901277-31107-1-git-send-email-geert+renesas@glider.be>
-Cc: Laurent Pinchart <Laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 1/2] [RFC] spi: rspi: Handle dmaengine_prep_slave_sg() failures gracefully
+Date: Wed,  9 Jul 2014 12:26:22 +0200
+Message-ID: <1404901583-31366-1-git-send-email-geert+renesas@glider.be>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-To function correctly in the presence of an IOMMU, the DMA buffers must be
-mapped using the DMA channel's device instead of the MSIOF platform
-device's device.
+As typically a shmobile SoC has less DMA channels than devices that can use
+DMA, we may want to prioritize access to the DMA channels in the future.
+This means that dmaengine_prep_slave_sg() may start failing arbitrarily.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Handle dmaengine_prep_slave_sg() failures gracefully by falling back to
+PIO.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-sh-msiof.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-rspi.c | 30 ++++++++++++++++++++++--------
+ 1 file changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 9922ed3a4441..4f0f1cbc92ef 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -1026,12 +1026,14 @@ static int sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
- 	if (!p->rx_dma_page)
- 		goto free_tx_page;
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 38fd938d6360..c850dfdfa9e3 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -477,7 +477,7 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 					tx->sgl, tx->nents, DMA_TO_DEVICE,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (!desc_tx)
+-			return -EIO;
++			goto no_dma;
  
--	p->tx_dma_addr = dma_map_single(dev, p->tx_dma_page, PAGE_SIZE,
-+	p->tx_dma_addr = dma_map_single(&master->dma_tx->dev->device,
-+					p->tx_dma_page, PAGE_SIZE,
- 					DMA_TO_DEVICE);
- 	if (dma_mapping_error(dev, p->tx_dma_addr))
- 		goto free_rx_page;
+ 		irq_mask |= SPCR_SPTIE;
+ 	}
+@@ -486,7 +486,7 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 					rx->sgl, rx->nents, DMA_FROM_DEVICE,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 		if (!desc_rx)
+-			return -EIO;
++			goto no_dma;
  
--	p->rx_dma_addr = dma_map_single(dev, p->rx_dma_page, PAGE_SIZE,
-+	p->rx_dma_addr = dma_map_single(&master->dma_rx->dev->device,
-+					p->rx_dma_page, PAGE_SIZE,
- 					DMA_FROM_DEVICE);
- 	if (dma_mapping_error(dev, p->rx_dma_addr))
- 		goto unmap_tx_page;
+ 		irq_mask |= SPCR_SPRIE;
+ 	}
+@@ -540,6 +540,12 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 		enable_irq(rspi->rx_irq);
+ 
+ 	return ret;
++
++no_dma:
++	pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
++		     dev_driver_string(&rspi->master->dev),
++		     dev_name(&rspi->master->dev));
++	return -EAGAIN;
+ }
+ 
+ static void rspi_receive_init(const struct rspi_data *rspi)
+@@ -593,8 +599,10 @@ static int rspi_common_transfer(struct rspi_data *rspi,
+ 
+ 	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
+ 		/* rx_buf can be NULL on RSPI on SH in TX-only Mode */
+-		return rspi_dma_transfer(rspi, &xfer->tx_sg,
+-					 xfer->rx_buf ? &xfer->rx_sg : NULL);
++		ret = rspi_dma_transfer(rspi, &xfer->tx_sg,
++					xfer->rx_buf ? &xfer->rx_sg : NULL);
++		if (ret != -EAGAIN)
++			return ret;
+ 	}
+ 
+ 	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
+@@ -648,8 +656,11 @@ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
+ {
+ 	int ret;
+ 
+-	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer))
+-		return rspi_dma_transfer(rspi, &xfer->tx_sg, NULL);
++	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
++		ret = rspi_dma_transfer(rspi, &xfer->tx_sg, NULL);
++		if (ret != -EAGAIN)
++			return ret;
++	}
+ 
+ 	ret = rspi_pio_transfer(rspi, xfer->tx_buf, NULL, xfer->len);
+ 	if (ret < 0)
+@@ -663,8 +674,11 @@ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
+ 
+ static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer *xfer)
+ {
+-	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer))
+-		return rspi_dma_transfer(rspi, NULL, &xfer->rx_sg);
++	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
++		int ret = rspi_dma_transfer(rspi, NULL, &xfer->rx_sg);
++		if (ret != -EAGAIN)
++			return ret;
++	}
+ 
+ 	return rspi_pio_transfer(rspi, NULL, xfer->rx_buf, xfer->len);
+ }
 -- 
 1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,69 +1,109 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 1/2] [RFC] spi: rspi: Handle dmaengine_prep_slave_sg()
- failures gracefully
-Date: Thu, 10 Jul 2014 13:36:30 +0200
-Message-ID: <CAMuHMdU38zJWe-fVWcSpDBFo0QJ9GsGC3Mveey64P3VE=8ggPw@mail.gmail.com>
-References: <1404901583-31366-1-git-send-email-geert+renesas@glider.be>
-	<6218596.RTFxRvYFXy@avalon>
+From: Harini Katakam <harinikatakamlinux@gmail.com>
+Subject: Re: [RFC PATCH 1/2] spi: Add support for Zynq QSPI controller
+Date: Thu, 10 Jul 2014 17:25:19 +0530
+Message-ID: <CAFcVECLMNH9GM-ScWunoMrn9AEEZD-ZYP9yYmFsCWqOYVTGNcg@mail.gmail.com>
+References: <1404982207-4707-1-git-send-email-harinik@xilinx.com>
+	<1404982207-4707-2-git-send-email-harinik@xilinx.com>
+	<CAMuHMdXO-PkQ+07F=aZEjvH1Kh7uhWK8i3V9w+1aHvvtg7wDoQ@mail.gmail.com>
+	<CAFcVECJ93Lw1MRVU-=zLRbB6To--zmAxz8OLObu=mhV84-FTNA@mail.gmail.com>
+	<CAMuHMdU2HyCwXBJTAyswyj7XqhzhHQ24MamGLLVgMwU4xi0kxQ@mail.gmail.com>
+	<CAFcVEC+-bM91WmfwweDdTvJ7KwH+dxKDLkzsT82snWKhukLeYQ@mail.gmail.com>
+	<CAMuHMdVcBBNQfA--vOqwsyypwdL4HGs7YuR-SkZPttxeMeRn5g@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <6218596.RTFxRvYFXy@avalon>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	=?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex@denx.de>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Sourav Poddar <sourav.poddar@ti.com>,
+	"michals@xilinx.com" <michals@xilinx.com>,
+	Punnaiah Chou
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdVcBBNQfA--vOqwsyypwdL4HGs7YuR-SkZPttxeMeRn5g@mail.gmail.com>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Laurent,
+Hi Geert,
 
-On Thu, Jul 10, 2014 at 1:05 PM, Laurent Pinchart
-<laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org> wrote:
-> On Wednesday 09 July 2014 12:26:22 Geert Uytterhoeven wrote:
->> As typically a shmobile SoC has less DMA channels than devices that can use
->> DMA, we may want to prioritize access to the DMA channels in the future.
->> This means that dmaengine_prep_slave_sg() may start failing arbitrarily.
+On Thu, Jul 10, 2014 at 4:55 PM, Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> Hi Harini,
+>
+> On Thu, Jul 10, 2014 at 12:33 PM, Harini Katakam
+> <harinikatakamlinux@gmail.com> wrote:
+>> On Thu, Jul 10, 2014 at 3:12 PM, Geert Uytterhoeven
+>> <geert@linux-m68k.org> wrote:
+>>> On Thu, Jul 10, 2014 at 11:31 AM, Harini Katakam
+>>> <harinikatakamlinux@gmail.com> wrote:
+>>>>>> +       master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
+>>>>>> +                           SPI_TX_DUAL | SPI_TX_QUAD;
+>>>>>
+>>>>> Your driver advertises Dual/Quad SPI Transfer capabilities, but it doesn't
+>>>>> check spi_transfer.[tr]x_nbits? How can it determine when to enable Dual/Quad?
+>>>>
+>>>> Here the driver is just giving information that the controller support it.
+>>>> The MTD layer enables dual/quad based on what the flash supports; quad
+>>>> being the first priority
+>>>> I understand that the spi core reads rx, tx-bus-width property and
+>>>> master support flags and
+>>>> performs the necessary checks.
+>>>
+>>> That's correct: as long as the rx, tx-bus-width  properties do not indicate a
+>>> Dual or Quad wiring, it won't be used.
+>>>
+>>> However, based on schematics, someone may set the rx, tx-bus-width properties
+>>> to 4, which is correct, as DT describes the hardware. But this will fail to
+>>> work.
+>>> So I think it's safer not to announce Dual/Quad support in the driver until
+>>> the actual driver support is there.
 >>
->> Handle dmaengine_prep_slave_sg() failures gracefully by falling back to
->> PIO.
+>> OK. Correct me if I'm wrong but announcing this support in master->flags is
+>> just to say the controller supports it - Like Punnaiah mentioned in the other
+>> mail, nothing specific needs to be done from the controller driver to enable
+>> dual/quad support. This is at the SOC/IP level.
+>> I agree it might or might not be supported at board-level.
 >
-> Just a random thought, do you think there would be performance-sensitive cases
-> where failing the transfer completely would be better than using PIO ?
-
-QSPI Flash reads gain most from DMA.
-
-However, failing transfers (and thus the whole SPI message, which typically
-consists of multiple transfers) means we'll have to retry the message later.
-This could be done by the SPI driver, the SPI subsystem, or the upper layer.
-E.g. m25p80 and mtd do not retry SPI FLASH reads and writes.
-
->> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+> IC. So this is not a generic SPI controller, but a controller meant for QSPI
+> FLASHes? I.e. if you would connect a different device, the controller may
+> unexpectedly use Dual or Quad mode if it sees a byte fly by that looks like
+> a Quad SPI FLASH read command?
 >
-> -EAGAIN might not be the best error code to return in this case, as it would
-> imply that the caller should just call rspi_dma_transfer() again. On the other
-> hand I don't see another error code that would be a perfect match, so
 
-I followed the exact same reasoning to arrive at -EAGAIN...
+Yes. It would.
 
-BTW, calling rspi_dma_transfer() again is an option ;-)
+>> But that's based on the user's hardware. Should master->flags
+>> really take this into consideration?
+>
+> You mean master->mode_bits?
 
-> Acked-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Yes, i mean mode_bits. That was typo.
 
-Thanks!
+>
+>> BTW, I dint see master->mode_bits being used anywhere at the moment.
+>
+> It is used to match SPI controller and slave features, cfr. spi_setup() in
+> drivers/spi/spi.c.
+>
+> If Dual/Quad is supported, the bits should be set. Else spi_setup() will
+> clear the bits in the SPI slave's mode field, disabling Dual/Quad transfers.
+>
 
-Gr{oetje,eeting}s,
+OK.
 
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Regards,
+Harini

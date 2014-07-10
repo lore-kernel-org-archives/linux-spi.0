@@ -1,46 +1,128 @@
-From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: cadence: Configure SPI clock in the prepare_message()
- callback
-Date: Thu, 10 Jul 2014 12:50:05 +0200
-Message-ID: <53BE6FDD.6050206@metafoo.de>
-References: <1404984389-12802-1-git-send-email-lars@metafoo.de>	<1404984389-12802-2-git-send-email-lars@metafoo.de> <CAFcVEC+yX7Zm2rq=XU0V8cs-vgxeLX5HsM=NySXwe9iEazC5eA@mail.gmail.com>
+From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Subject: Re: [PATCH 1/2] [RFC] spi: rspi: Handle dmaengine_prep_slave_sg() failures gracefully
+Date: Thu, 10 Jul 2014 13:05:35 +0200
+Message-ID: <6218596.RTFxRvYFXy@avalon>
+References: <1404901583-31366-1-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Harini Katakam <harinikatakamlinux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CAFcVEC+yX7Zm2rq=XU0V8cs-vgxeLX5HsM=NySXwe9iEazC5eA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1404901583-31366-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 07/10/2014 12:43 PM, Harini Katakam wrote:
-> Hi,
->
-> On Thu, Jul 10, 2014 at 2:56 PM, Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org> wrote:
->> Currently the cadence SPI driver does the SPI clock configuration (setup CPOL
->> and CPHA) in the prepare_transfer_hardware() callback. The
->> prepare_transfer_hardware() callback is only called though when the controller
->> transitions from a idle state to a non-idle state. Such a transitions happens
->> when the message queue goes from empty to non-empty. If multiple messages from
->> different SPI slaves with different clock settings are in the message queue the
->> clock settings will not be properly updated when switching from one slave device
->> to another. Instead do the updating of the clock configuration in the
->> prepare_message() callback which will be called for each individual message.
->>
->
-> Yes, the requirement from the controller is that CPOL/CPHA setting changes
-> will not take effect when SPI is enabled. CPOL/CPHA setting is done in
-> prepare_hardware
-> before SPI is enabled. So this works.
-> According to your patches I understand that you might change CPOL/CPHA for
-> each message. Is this possible? Is this a requirement?
+Hi Geert,
 
-The message can be from different SPI devices, so yes this is a requirement. 
-I'm seeing the issue in one of my setups.
+Thank you for the patch.
 
-- Lars
+On Wednesday 09 July 2014 12:26:22 Geert Uytterhoeven wrote:
+> As typically a shmobile SoC has less DMA channels than devices that can use
+> DMA, we may want to prioritize access to the DMA channels in the future.
+> This means that dmaengine_prep_slave_sg() may start failing arbitrarily.
+> 
+> Handle dmaengine_prep_slave_sg() failures gracefully by falling back to
+> PIO.
+
+Just a random thought, do you think there would be performance-sensitive cases 
+where failing the transfer completely would be better than using PIO ?
+
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+
+-EAGAIN might not be the best error code to return in this case, as it would 
+imply that the caller should just call rspi_dma_transfer() again. On the other 
+hand I don't see another error code that would be a perfect match, so
+
+Acked-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+
+> ---
+>  drivers/spi/spi-rspi.c | 30 ++++++++++++++++++++++--------
+>  1 file changed, 22 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+> index 38fd938d6360..c850dfdfa9e3 100644
+> --- a/drivers/spi/spi-rspi.c
+> +++ b/drivers/spi/spi-rspi.c
+> @@ -477,7 +477,7 @@ static int rspi_dma_transfer(struct rspi_data *rspi,
+> struct sg_table *tx, tx->sgl, tx->nents, DMA_TO_DEVICE,
+>  					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+>  		if (!desc_tx)
+> -			return -EIO;
+> +			goto no_dma;
+> 
+>  		irq_mask |= SPCR_SPTIE;
+>  	}
+> @@ -486,7 +486,7 @@ static int rspi_dma_transfer(struct rspi_data *rspi,
+> struct sg_table *tx, rx->sgl, rx->nents, DMA_FROM_DEVICE,
+>  					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+>  		if (!desc_rx)
+> -			return -EIO;
+> +			goto no_dma;
+> 
+>  		irq_mask |= SPCR_SPRIE;
+>  	}
+> @@ -540,6 +540,12 @@ static int rspi_dma_transfer(struct rspi_data *rspi,
+> struct sg_table *tx, enable_irq(rspi->rx_irq);
+> 
+>  	return ret;
+> +
+> +no_dma:
+> +	pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
+> +		     dev_driver_string(&rspi->master->dev),
+> +		     dev_name(&rspi->master->dev));
+> +	return -EAGAIN;
+>  }
+> 
+>  static void rspi_receive_init(const struct rspi_data *rspi)
+> @@ -593,8 +599,10 @@ static int rspi_common_transfer(struct rspi_data *rspi,
+> 
+>  	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
+>  		/* rx_buf can be NULL on RSPI on SH in TX-only Mode */
+> -		return rspi_dma_transfer(rspi, &xfer->tx_sg,
+> -					 xfer->rx_buf ? &xfer->rx_sg : NULL);
+> +		ret = rspi_dma_transfer(rspi, &xfer->tx_sg,
+> +					xfer->rx_buf ? &xfer->rx_sg : NULL);
+> +		if (ret != -EAGAIN)
+> +			return ret;
+>  	}
+> 
+>  	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
+> @@ -648,8 +656,11 @@ static int qspi_transfer_out(struct rspi_data *rspi,
+> struct spi_transfer *xfer) {
+>  	int ret;
+> 
+> -	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer))
+> -		return rspi_dma_transfer(rspi, &xfer->tx_sg, NULL);
+> +	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
+> +		ret = rspi_dma_transfer(rspi, &xfer->tx_sg, NULL);
+> +		if (ret != -EAGAIN)
+> +			return ret;
+> +	}
+> 
+>  	ret = rspi_pio_transfer(rspi, xfer->tx_buf, NULL, xfer->len);
+>  	if (ret < 0)
+> @@ -663,8 +674,11 @@ static int qspi_transfer_out(struct rspi_data *rspi,
+> struct spi_transfer *xfer)
+> 
+>  static int qspi_transfer_in(struct rspi_data *rspi, struct spi_transfer
+> *xfer) {
+> -	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer))
+> -		return rspi_dma_transfer(rspi, NULL, &xfer->rx_sg);
+> +	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
+> +		int ret = rspi_dma_transfer(rspi, NULL, &xfer->rx_sg);
+> +		if (ret != -EAGAIN)
+> +			return ret;
+> +	}
+> 
+>  	return rspi_pio_transfer(rspi, NULL, xfer->rx_buf, xfer->len);
+>  }
+
+-- 
+Regards,
+
+Laurent Pinchart
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,46 +1,43 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH] spi: sh-msiof: Use correct device for DMA mapping with IOMMU
-Date: Wed, 9 Jul 2014 23:52:22 +0200
-Message-ID: <CAMuHMdWaYhSHU1toAM83V6Ee3dWdarz+Z3Q4De_idouEce_hhw@mail.gmail.com>
-References: <1404901277-31107-1-git-send-email-geert+renesas@glider.be>
-	<70265909.OPtNRHeAkP@avalon>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+From: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+Subject: [PATCH] spi: xilinx: Use pdev->id instead of pdev->dev.id for the SPI bus number
+Date: Thu, 10 Jul 2014 10:30:20 +0200
+Message-ID: <1404981020-22640-1-git-send-email-lars@metafoo.de>
+Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <70265909.OPtNRHeAkP@avalon>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Laurent,
+The Xilinx SPI driver initializes the bus_num field of the SPI master to
+pdev->dev.id. pdev->dev.id is always 0 for platform devices which causes bus
+number conflicts for the SPI controller when creating multiple device instances
+of the driver. Instead use pdev->id which will have the assignt platform device
+id. If the device is instantiated via devicetree pdev->id is -1 which will cause
+the SPI core to dynamically assign a id (or use the id defined via a alias in
+the devicetree).
 
-On Wed, Jul 9, 2014 at 11:38 PM, Laurent Pinchart
-<laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org> wrote:
-> On Wednesday 09 July 2014 12:21:17 Geert Uytterhoeven wrote:
->> To function correctly in the presence of an IOMMU, the DMA buffers must be
->> mapped using the DMA channel's device instead of the MSIOF platform
->> device's device.
->
-> Shouldn't you also update the dma_unmap_single() calls ?
+Signed-off-by: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+---
+ drivers/spi/spi-xilinx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I guess I should ;-)
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index a3b0b99..4d8efb1 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -369,7 +369,7 @@ static int xilinx_spi_probe(struct platform_device *pdev)
+ 		goto put_master;
+ 	}
+ 
+-	master->bus_num = pdev->dev.id;
++	master->bus_num = pdev->id;
+ 	master->num_chipselect = num_cs;
+ 	master->dev.of_node = pdev->dev.of_node;
+ 
+-- 
+1.8.0
 
-Thanks, will fix...
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

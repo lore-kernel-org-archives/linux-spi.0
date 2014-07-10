@@ -1,55 +1,57 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: xilinx: Use pdev->id instead of pdev->dev.id for
- the SPI bus number
-Date: Thu, 10 Jul 2014 12:39:14 +0200
-Message-ID: <20140710103914.GZ30458@sirena.org.uk>
-References: <1404981020-22640-1-git-send-email-lars@metafoo.de>
+Subject: Re: [PATCH 1/2] spi: rspi: Relax DMA dependency and increase build
+ coverage
+Date: Thu, 10 Jul 2014 12:40:05 +0200
+Message-ID: <20140710104005.GA30458@sirena.org.uk>
+References: <1404941228-9922-1-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="V8Y3+xXnhQGsvjWT"
-Cc: Michal Simek <michal.simek-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="SuGb6p5JEpzYJdwO"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1404981020-22640-1-git-send-email-lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>
+In-Reply-To: <1404941228-9922-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---V8Y3+xXnhQGsvjWT
+--SuGb6p5JEpzYJdwO
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Jul 10, 2014 at 10:30:20AM +0200, Lars-Peter Clausen wrote:
-> The Xilinx SPI driver initializes the bus_num field of the SPI master to
-> pdev->dev.id. pdev->dev.id is always 0 for platform devices which causes bus
-> number conflicts for the SPI controller when creating multiple device instances
+On Wed, Jul 09, 2014 at 11:27:07PM +0200, Geert Uytterhoeven wrote:
+> As of commit ab116a4df4942c78c189d9b0744dd940ab9e00b9 ("dmaengine:
+> shdma: fix a build failure on platforms with no DMA support"), the DMA
+> filter function shdma_chan_filter() is sufficiently abstracted to allow
+> building without DMA support. Hence drop the SH_DMAE_BASE dependency on
+> SUPERH.
 
-Applied, thanks.
+Applied both, thanks.
 
---V8Y3+xXnhQGsvjWT
+--SuGb6p5JEpzYJdwO
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTvm1PAAoJELSic+t+oim95jkP/A/9tQnNfb3Fl5oFFI7ayzje
-fHZfGl0USBlrNJWhfbKbqpXxIbcTS/+VOf/+2ZhLDKC8uOMkx0pKYw1ssXLLsfog
-EJhfJz1dbwtHcR60BRCTHd0IXK8gMpXxZwaTmUygA3M9canPv0SnGFD4m90uE10c
-cBH5ue2Mw2J06EQx+npwo32UE/S0lLCrxWGMRaMj54pVxT1tjT4J6UPi05mMbAbW
-226Acwmi0pThsZ1zut3jm4LlNClweRDCWl7BUEfHis/7VG1rIwDyPNev7eVZAFRC
-0Znq1VmPa2CyYzpWcGY7WPqdodnp3ls3Wef2d/1MKjdPIpgWJAt4eTe4bzG1eqLu
-Scp2kwRPQVVlOrrEyvys28yZh6S4yqCKp2X5tIXNjdB6PSRtqDwfjBIInLQ0sExe
-dtdVja4uk462HvgaKt97NTZspVIL26o62JpfiSs+z2IrviGXakYrJId4Z+SuOHqw
-pFepLUa9TObANkZ7YVqJOPYqFC0vc2Mx++Vdn2xBSBDUhZLwKwJoqXfR+cwmjunM
-5MnIt7vFqUHbf2tyozrG167CzIMWAt7YtzIxaVEJeAqQZDUwHrMI3CHjCBImK8vA
-2aC6TRvAbAQbAWE530wKEdwfs+HLTWLwl0rzNQc2whBVddvTpbjLB6AU1hdUdxdK
-Bcx6vX0lN1/1+T7et8dS
-=6ZF9
+iQIcBAEBAgAGBQJTvm2CAAoJELSic+t+oim9GZYP/1jWu0d24zWkF7U6XdDurZJY
+17EvfkjetLgueU1IvI5QXsM966xvLuLIik8m3OfCjtg6zpFdvIFxqsRDZoFXGNeY
+fO0RpoiBz9NzQUDUMkgbl9lOer20x7uIYaKb0ZmJ4/CacDaf3wD5MhMvoI/0c7wh
+bEEvBnqzkXTndl5R0BtZImQ5tiXj7ycUSysb2nu+pTUfmo0Bljg6/vnobwr7vR7I
+64aiU+XZV/IVUCmS8+GGgq8vj9fWfdTlu0ZUTTnUCdobm5ziPb6sB4Q3yNQ6T98W
+sSvq19JW0fuwDU9tKXV4gupOVTHTg7Ibfa0r5UPQn6FBGjsWEOTPurKCQZdQG0tP
+bLskiYquo/wYjo0RDOXYfa8gnY3fF82Qlby53Qc9oBz5Lw92MC8Gebv+eY4q7e7P
+MKC/VFrg8xG/TZgtFJRY8HoYIVk8Z9v89oPKeJC7cmtJNXnp/Kc+RMWcGNzKW8zr
+zRIpoK1dMYJKPKjgfyi0fvadTScB5nFS4KECDoIMd1WhP3IhPGu86IRG+XLakVWD
+4HmRzTYWGlAugUeZu6gXCuIH0De6qqSX9OqB9bByRY5QAnCDxzpjz2lCLiR/JOLF
+ADYpCLBKBlIQW2XdF3Pb0ofPR+ndEWqQoHdSlsSysLfWe8zE5Jt5U4erish23qRa
+NtFhWnxLz78b5tl60W0o
+=k6Cz
 -----END PGP SIGNATURE-----
 
---V8Y3+xXnhQGsvjWT--
+--SuGb6p5JEpzYJdwO--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,63 +1,129 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 0/4] patches for rockchip spi driver
-Date: Fri, 11 Jul 2014 14:00:14 +0100
-Message-ID: <20140711130014.GP30458@sirena.org.uk>
-References: <1405044389-6800-1-git-send-email-addy.ke@rock-chips.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH 1/2] [RFC] spi: rspi: Handle dmaengine_prep_slave_sg()
+ failures gracefully
+Date: Fri, 11 Jul 2014 15:22:14 +0200
+Message-ID: <CAMuHMdWgThOk+ant7YH4vMrQGuF=BbHsWxKQzkHyGZX=_aVrFQ@mail.gmail.com>
+References: <1404901583-31366-1-git-send-email-geert+renesas@glider.be>
+	<1498087.H5vJvgGuNO@avalon>
+	<CAMuHMdXj=Y0w39iyY9GPjUJPXC7UgPyeqk7+G+zZeAvGoE1fGg@mail.gmail.com>
+	<1976766.LYbV6saU9X@avalon>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2HnjjwBZJnP787BF"
-Cc: heiko@sntech.de, grant.likely@linaro.org, robh+dt@kernel.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	jogo@openwrt.org, olof@lixom.net, hj@rock-chips.com,
-	kever.yang@rock-chips.com, xjq@rock-chips.com,
-	huangtao@rock-chips.com, zyw@rock-chips.com, yzq@rock-chips.com,
-	zhenfu.fang@rock-chips.com, cf@rock-chips.com,
-	zhangqing@rock-chips.com, hl@rock-chips.com,
-	wei.luo@rock-chips.com, Addy Ke <addy.ke@rockchip.com>
-To: Addy Ke <addy.ke@rock-chips.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1405044389-6800-1-git-send-email-addy.ke@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	Linux-sh list <linux-sh@vger.kernel.org>,
+	dmaengine@vger.kernel.org,
+	Guennadi Liakhovetski <g.liakhovetski@gmx.de>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1976766.LYbV6saU9X@avalon>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Laurent,
 
---2HnjjwBZJnP787BF
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Fri, Jul 11, 2014 at 1:47 AM, Laurent Pinchart
+<laurent.pinchart@ideasonboard.com> wrote:
+> On Thursday 10 July 2014 13:55:43 Geert Uytterhoeven wrote:
+>> On Thu, Jul 10, 2014 at 1:08 PM, Laurent Pinchart wrote:
+>> >> --- a/drivers/spi/spi-rspi.c
+>> >> +++ b/drivers/spi/spi-rspi.c
+>> >> @@ -477,7 +477,7 @@ static int rspi_dma_transfer(struct rspi_data *rspi,
+>> >> struct sg_table *tx, tx->sgl, tx->nents, DMA_TO_DEVICE,
+>> >>                                       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+>> >>               if (!desc_tx)
+>> >> -                     return -EIO;
+>> >> +                     goto no_dma;
+>> >>               irq_mask |= SPCR_SPTIE;
+>> >>       }
+>> >>
+>> >> @@ -486,7 +486,7 @@ static int rspi_dma_transfer(struct rspi_data *rspi,
+>> >> struct sg_table *tx, rx->sgl, rx->nents, DMA_FROM_DEVICE,
+>> >>                                       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+>> >>               if (!desc_rx)
+>> >> -                     return -EIO;
+>> >> +                     goto no_dma;
+>> >
+>> > This is not a new issue introduced by this patch, but aren't you leaking
+>> > desc_tx here ?
+>>
+>> AFAIK, descriptors are cleaned up automatically after use, and the only
+>> function that takes a dma_async_tx_descriptor is dmaengine_submit().
+>>
+>> But indeed, if you don't use them, that doesn't happen.
+>> So calling dmaengine_terminate_all() seems appropriate to fix this.
+>>
+>> But, Documentation/dmaengine.txt says:
+>>
+>>         desc = dmaengine_prep_slave_sg(chan, sgl, nr_sg, direction, flags);
+>>
+>>    Once a descriptor has been obtained, the callback information can be
+>>    added and the descriptor must then be submitted.  Some DMA engine
+>>    drivers may hold a spinlock between a successful preparation and
+>>    submission so it is important that these two operations are closely
+>>    paired.
+>>
+>> W.r.t. the spinlock, is it safe to call dmaengine_terminate_all() for a
+>> prepared but not submitted transfer?
+>> Is there another/better way?
+>
+> Basically, I have no idea. I'm pretty sure some drivers will support it,
+> others won't. Reading the code won't help much, as there's no available
+> information regarding what the expected behaviour is. Welcome to the wonderful
+> world of the undocumented DMA engine API :-)
 
-On Fri, Jul 11, 2014 at 10:06:29AM +0800, Addy Ke wrote:
-> From: Addy Ke <addy.ke@rockchip.com>
->=20
-> These patches based on:
-> - git: kernel/git/broonie/spi.git
-> - branch: topic/rockchip
-> - commit: c15369087ae5c7db7f3e3604822eac6ab87429bd
+I did dive a bit into the code...
 
-Applied, thanks.
+1.  The spinlock comment seems to apply to INTEL_IOATDMA only.
+    This driver doesn't implement dma_device.device_control(), so
+    dmaengine_terminate_all() is a no-op there, and there doesn't seem to be
+    a way to release a descriptor without submitting it first.
 
---2HnjjwBZJnP787BF
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+2.  While I thought dmaengine_terminate_all() would release all descriptors
+    on shdma, as it calls shdma_chan_ld_cleanup(), it only releases the
+    descriptors that are at least in submitted state.
+    Hence after a while, you get
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.22 (GNU/Linux)
+        sh-dma-engine e6700020.dma-controller: No free link descriptor available
 
-iQIcBAEBAgAGBQJTv9/bAAoJELSic+t+oim90e0QAJ5ueB/rMWX9ry/vCihsIrfI
-Kyr4mqT4WrvDuGtR+CTZvKysAA1L0ROu4dr30cM/USTYWCN5KVm1pYRu7xzV1v3B
-MZ/zydLaQnVHUNAVl26IeuLiXyGWdkXZzRuOaoXSeXRbPEsfXTiP0cb4UIy2X+lC
-HnJKyfbFvt5tTGhz9hKvm8y/7Xw3WB4APgWgdhqF97BXNWSOO2e0duR2FAgBWTvl
-I1/d5MH/fI3o7C6nAVYXnl3shtuqAm4H6GUeqdbLNZ/nTXcoS28xts04O2YsUdnu
-wSFF1b01CgoTwwVbRXZKxWgf5F/Qt5JAT8KZOruI/PZZJCAZFAioDV7bTibTWgpS
-ueGQW4JjxjZNu9GBdIgs8mjhM8XvBic3G017umIUCFh55yU6q1EyUYS9wkl44rmM
-fVb4mKl55voLiFv9Al0mY0/GNgz3EinpDE/EHn70yetYrES8teMb50cQiX7NhCp8
-pkQQ57YHFcO816XoHIbyZbGxEFlmmHBs4qQCkQ2a9BHTttZrtK1K/q9WlRX2zBdB
-1/rwnrphQ8ersOXrk4UEPraPBU3dezzIMHw7EPFSm6Cehs1VfOGRiwF/SzPjIGZz
-r6xmTG0wWyce9p675HgJNVaoqVHc0pNEk8mK5nqxebxWBh93I7vlPqVsBcfq8Dcd
-pseA+v5JFaumuXkBO9u0
-=kbu3
------END PGP SIGNATURE-----
+    Interestingly, this contradicts with the comment in
+    shdma_free_chan_resources():
 
---2HnjjwBZJnP787BF--
+        /* Prepared and not submitted descriptors can still be on the queue */
+        if (!list_empty(&schan->ld_queue))
+                shdma_chan_ld_cleanup(schan, true);
+
+As dmaengine_submit() will not start the DMA operation, but merely add it
+to the pending queue (starting needs a call to dma_async_issue_pending()),
+it seems the right solution is to continue submitting the request for which
+preparation succeeded, and then aborting everything using
+dmaengine_terminate_all().
+
+Note that this also means that if submitting the RX request failed, you should
+still submit the TX request, as it has been prepared.
+
+Alternatively, you can interleave prep and submit for both channels, which
+makes the error recovery code less convoluted.
+
+> The best way to move forward would be to decide on a behaviour and document
+> it. If nobody objects, drivers that don't implement the correct behaviour
+> could be considered as broken, and should be fixed. If someone objects, then a
+> discussion should spring up, and hopefully an agreement will be achieved on
+> what the correct behaviour is.
+
+Right...
+
+The document already says "the descriptor must then be submitted",
+which matches with the above.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

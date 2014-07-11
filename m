@@ -1,60 +1,54 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: efm32: correct namespacing of location property
-Date: Fri, 11 Jul 2014 13:39:49 +0100
-Message-ID: <20140711123949.GM30458@sirena.org.uk>
-References: <CAOesGMjgX5PWBSD2YP7mTGMWafxBjeMDmzZoPCXb27YPUHEcyw@mail.gmail.com>
- <1405066677-12858-1-git-send-email-u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH 1/1] spi: samsung: Update binding documentation
+Date: Fri, 11 Jul 2014 14:02:47 +0100
+Message-ID: <20140711130247.GQ30458@sirena.org.uk>
+References: <1405069863-17723-1-git-send-email-sachin.kamat@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ZcSASNCKFtrdv99s"
+	protocol="application/pgp-signature"; boundary="ensexbfp9Ul6anXl"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, kernel-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org,
-	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?=
-	<u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+	spk.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Sachin Kamat <sachin.kamat-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1405066677-12858-1-git-send-email-u.kleine-koenig-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+In-Reply-To: <1405069863-17723-1-git-send-email-sachin.kamat-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---ZcSASNCKFtrdv99s
-Content-Type: text/plain; charset=iso-8859-1
+--ensexbfp9Ul6anXl
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 11, 2014 at 10:17:57AM +0200, Uwe Kleine-K=F6nig wrote:
-> Olof Johansson pointed out that usually the company name is picked as
-> namespace prefix to specific properties. So expect "energymicro,location"
-> but fall back to the previously introduced name "efm32,location".
+On Fri, Jul 11, 2014 at 02:41:03PM +0530, Sachin Kamat wrote:
+> Samsung SPI driver uses generic DMA bindings. Update the documentation
+> accordingly.
 
 Applied, thanks.
 
---ZcSASNCKFtrdv99s
+--ensexbfp9Ul6anXl
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2.0.22 (GNU/Linux)
 
-iQIcBAEBAgAGBQJTv9sRAAoJELSic+t+oim9gz0P/icOIW3qSSwG+T7ZIhIgXZvN
-LsI13gvaW1n9UilXU+MdAsRm21GAIkw8J3IxXHpFLnZAqXkrqiDUhFI2ZP59Bd5s
-IWGOP33d4AFbgRHj24gKs1PfHc7EbHavbtytBZ6aQDbPqrT3I0yBXCSJGqj3RjtE
-Y7VBCe+DCK+r+aonHQopENYf/rTzjGXsJvd7CyN2qyvW3mwGOaFigb+MKR691HC3
-CPBpqhEDCTvPJEjJqnR7uS7cX8gcwkESVdWsYjmbRr9wjvk8r40EwDOb91N22hU7
-FWMbx7uh4gNwH3NQGfstZJBaVI0gkxhAukXW4iwcPUZhQVHiOb1YQQfhMA6nqYvx
-wo549nc13bzUuw+4sAebEQzbnYx1Mo5hMla8ts9XXMUVHGU0imEM3kdt/AOf08jK
-UgNh3Phpenmfl0bNckSI9BjJoy0vA+LJNIvu79zrUvj+PeJ/5PgaoDfNM+RGZqLo
-skQFq3b1V6qIcz7NCzSOnWUYfFVR9Lolui3HbSDSGzu5GxDWSKkTYJDsTYT/IwlC
-q4nxBgjaNTfpnMadUmf37XWv1PSx4Z6972hNa2GGRz2kzScXFouJ7ciOQCgIh11i
-pqAXxUIqHzp4N+uG5p2zxAZiF9codJcrWzOdjybw0BpXJ/I44bxm/Pyjyr5m58gk
-FS+9RMHYxpKr7V6GJC7O
-=wL/w
+iQIcBAEBAgAGBQJTv+BzAAoJELSic+t+oim9G5IQAJGR9y4tFJqpE/AlLmxfxg/C
+NdsR3WAujuDo5kB5IVqLw9SjEm7r8twRC1W0I8zM/qkuHTxdAZATF7GUQc1NlItK
+q31cq5SoQqEObzXcU9aZ7WzR9Zx4gp26rE0o180abOgwwZDRfGci5kDSraEQu3jP
+58wz+TNAJxp/9UbT4gfBXbe4FexHkK/7o/wVyyDn/YcCsQzTFhHfvT3vIyFdDvL+
+vig30pXdP+gKvWxm+9oikFE0RmHB7le9VDMiHhD681pXSh0g8lJKPJU81B+f6ddT
+9dg6O/B2fl6vDMzN/vcM8mMykdmrHWu3mxZTiTTBxLJJF9znHY1gCaMWxPi25ayb
+fIY5nq9YytNdOoigg1c2IhEVasHvbjygZKpGMYoKpa0fP1Ca7kFyjSLRIYuHB2qf
+KAA+2Fvpd3g7EqBc+7f8c1919Fb3hLV3IHm+JcosjQ0Y2C1NApEcLMOXp4s5wAZ7
+oryU5LMMmtvh/IVq5GbvJswxkByyCQGchXeq8XfauN9NQxw3aKbFPxaZaFhR2jYW
+X3/e5u5Ayso/MW4X6XuXHNbzmB3aLOjvKMzo5F6FqIZ/PF5EQQG+pR8CsUJ38LQq
+1UB6W5D3XRGlpamJ/GewvR1pAC1Z9hB0HeHaRTvloilMI/etDm7uNAmQAs/yCaKA
+B4fOefTrF17UiuqW4YkD
+=NLdb
 -----END PGP SIGNATURE-----
 
---ZcSASNCKFtrdv99s--
+--ensexbfp9Ul6anXl--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

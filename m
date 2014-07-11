@@ -1,13 +1,15 @@
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 1/2] spi: rspi: Fix leaking of unused DMA descriptors
-Date: Fri, 11 Jul 2014 18:06:41 +0200
-Message-ID: <1405094802-14401-1-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH 2/2] spi: sh-msiof: Fix leaking of unused DMA descriptors
+Date: Fri, 11 Jul 2014 18:06:42 +0200
+Message-ID: <1405094802-14401-2-git-send-email-geert+renesas@glider.be>
+References: <1405094802-14401-1-git-send-email-geert+renesas@glider.be>
 Cc: Laurent Pinchart <Laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1405094802-14401-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
@@ -25,144 +27,131 @@ obtained, it must be submitted. Hence:
 Reported-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
 Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 ---
- drivers/spi/spi-rspi.c | 94 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 58 insertions(+), 36 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 71 +++++++++++++++++++++++++---------------------
+ 1 file changed, 38 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index c850dfdfa9e3..ad87a98f8f68 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -472,25 +472,52 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 2a4354dcd661..887c2084130f 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -636,48 +636,38 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
  	dma_cookie_t cookie;
  	int ret;
  
 -	if (tx) {
--		desc_tx = dmaengine_prep_slave_sg(rspi->master->dma_tx,
--					tx->sgl, tx->nents, DMA_TO_DEVICE,
+-		ier_bits |= IER_TDREQE | IER_TDMAE;
+-		dma_sync_single_for_device(p->master->dma_tx->device->dev,
+-					   p->tx_dma_addr, len, DMA_TO_DEVICE);
+-		desc_tx = dmaengine_prep_slave_single(p->master->dma_tx,
+-					p->tx_dma_addr, len, DMA_TO_DEVICE,
 -					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
 -		if (!desc_tx)
--			goto no_dma;
--
--		irq_mask |= SPCR_SPTIE;
+-			return -EAGAIN;
 -	}
+-
 +	/* First prepare and submit the DMA request(s), as this may fail */
  	if (rx) {
- 		desc_rx = dmaengine_prep_slave_sg(rspi->master->dma_rx,
- 					rx->sgl, rx->nents, DMA_FROM_DEVICE,
+ 		ier_bits |= IER_RDREQE | IER_RDMAE;
+ 		desc_rx = dmaengine_prep_slave_single(p->master->dma_rx,
+ 					p->rx_dma_addr, len, DMA_FROM_DEVICE,
  					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
 -		if (!desc_rx)
--			goto no_dma;
+-			return -EAGAIN;
+-	}
+-
+-	/* 1 stage FIFO watermarks for DMA */
+-	sh_msiof_write(p, FCTR, FCTR_TFWM_1 | FCTR_RFWM_1);
+-
+-	/* setup msiof transfer mode registers (32-bit words) */
+-	sh_msiof_spi_set_mode_regs(p, tx, rx, 32, len / 4);
+-
+-	sh_msiof_write(p, IER, ier_bits);
+-
+-	reinit_completion(&p->done);
 +		if (!desc_rx) {
 +			ret = -EAGAIN;
 +			goto no_dma_rx;
 +		}
-+
-+		desc_rx->callback = rspi_dma_complete;
-+		desc_rx->callback_param = rspi;
-+		cookie = dmaengine_submit(desc_rx);
-+		if (dma_submit_error(cookie)) {
-+			ret = cookie;
-+			goto no_dma_rx;
-+		}
  
- 		irq_mask |= SPCR_SPRIE;
+-	if (rx) {
+ 		desc_rx->callback = sh_msiof_dma_complete;
+ 		desc_rx->callback_param = p;
+ 		cookie = dmaengine_submit(desc_rx);
+ 		if (dma_submit_error(cookie)) {
+ 			ret = cookie;
+-			goto stop_ier;
++			goto no_dma_rx;
+ 		}
+-		dma_async_issue_pending(p->master->dma_rx);
  	}
  
-+	if (tx) {
-+		desc_tx = dmaengine_prep_slave_sg(rspi->master->dma_tx,
-+					tx->sgl, tx->nents, DMA_TO_DEVICE,
+ 	if (tx) {
++		ier_bits |= IER_TDREQE | IER_TDMAE;
++		dma_sync_single_for_device(p->master->dma_tx->device->dev,
++					   p->tx_dma_addr, len, DMA_TO_DEVICE);
++		desc_tx = dmaengine_prep_slave_single(p->master->dma_tx,
++					p->tx_dma_addr, len, DMA_TO_DEVICE,
 +					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
 +		if (!desc_tx) {
 +			ret = -EAGAIN;
 +			goto no_dma_tx;
 +		}
 +
-+		if (rx) {
-+			/* No callback */
-+			desc_tx->callback = NULL;
-+		} else {
-+			desc_tx->callback = rspi_dma_complete;
-+			desc_tx->callback_param = rspi;
-+		}
-+		cookie = dmaengine_submit(desc_tx);
-+		if (dma_submit_error(cookie)) {
-+			ret = cookie;
+ 		if (rx) {
+ 			/* No callback */
+ 			desc_tx->callback = NULL;
+@@ -688,15 +678,30 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 		cookie = dmaengine_submit(desc_tx);
+ 		if (dma_submit_error(cookie)) {
+ 			ret = cookie;
+-			goto stop_rx;
 +			goto no_dma_tx;
-+		}
-+
-+		irq_mask |= SPCR_SPTIE;
-+	}
-+
- 	/*
- 	 * DMAC needs SPxIE, but if SPxIE is set, the IRQ routine will be
- 	 * called. So, this driver disables the IRQ while DMA transfer.
-@@ -503,34 +530,24 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
- 	rspi_enable_irq(rspi, irq_mask);
- 	rspi->dma_callbacked = 0;
+ 		}
+-		dma_async_issue_pending(p->master->dma_tx);
+ 	}
  
--	if (rx) {
--		desc_rx->callback = rspi_dma_complete;
--		desc_rx->callback_param = rspi;
--		cookie = dmaengine_submit(desc_rx);
--		if (dma_submit_error(cookie))
--			return cookie;
++	/* 1 stage FIFO watermarks for DMA */
++	sh_msiof_write(p, FCTR, FCTR_TFWM_1 | FCTR_RFWM_1);
++
++	/* setup msiof transfer mode registers (32-bit words) */
++	sh_msiof_spi_set_mode_regs(p, tx, rx, 32, len / 4);
++
++	sh_msiof_write(p, IER, ier_bits);
++
++	reinit_completion(&p->done);
++
 +	/* Now start DMA */
-+	if (rx)
- 		dma_async_issue_pending(rspi->master->dma_rx);
--	}
--	if (tx) {
--		if (rx) {
--			/* No callback */
--			desc_tx->callback = NULL;
--		} else {
--			desc_tx->callback = rspi_dma_complete;
--			desc_tx->callback_param = rspi;
--		}
--		cookie = dmaengine_submit(desc_tx);
--		if (dma_submit_error(cookie))
--			return cookie;
 +	if (tx)
- 		dma_async_issue_pending(rspi->master->dma_tx);
--	}
- 
- 	ret = wait_event_interruptible_timeout(rspi->wait,
- 					       rspi->dma_callbacked, HZ);
- 	if (ret > 0 && rspi->dma_callbacked)
- 		ret = 0;
--	else if (!ret)
-+	else if (!ret) {
-+		dev_err(&rspi->master->dev, "DMA timeout\n");
- 		ret = -ETIMEDOUT;
-+		if (tx)
-+			dmaengine_terminate_all(rspi->master->dma_tx);
-+		if (rx)
-+			dmaengine_terminate_all(rspi->master->dma_rx);
-+	}
- 
- 	rspi_disable_irq(rspi, irq_mask);
- 
-@@ -541,11 +558,16 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
- 
- 	return ret;
- 
--no_dma:
--	pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
--		     dev_driver_string(&rspi->master->dev),
--		     dev_name(&rspi->master->dev));
--	return -EAGAIN;
-+no_dma_tx:
++		dma_async_issue_pending(p->master->dma_rx);
 +	if (rx)
-+		dmaengine_terminate_all(rspi->master->dma_rx);
++		dma_async_issue_pending(p->master->dma_tx);
++
+ 	ret = sh_msiof_spi_start(p, rx);
+ 	if (ret) {
+ 		dev_err(&p->pdev->dev, "failed to start hardware\n");
+-		goto stop_tx;
++		goto stop_dma;
+ 	}
+ 
+ 	/* wait for tx fifo to be emptied / rx fifo to be filled */
+@@ -726,14 +731,14 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ stop_reset:
+ 	sh_msiof_reset_str(p);
+ 	sh_msiof_spi_stop(p, rx);
+-stop_tx:
++stop_dma:
+ 	if (tx)
+ 		dmaengine_terminate_all(p->master->dma_tx);
+-stop_rx:
++no_dma_tx:
+ 	if (rx)
+ 		dmaengine_terminate_all(p->master->dma_rx);
+-stop_ier:
+ 	sh_msiof_write(p, IER, 0);
 +no_dma_rx:
-+	if (ret == -EAGAIN) {
-+		pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
-+			     dev_driver_string(&rspi->master->dev),
-+			     dev_name(&rspi->master->dev));
-+	}
-+	return ret;
+ 	return ret;
  }
  
- static void rspi_receive_init(const struct rspi_data *rspi)
 -- 
 1.9.1
 

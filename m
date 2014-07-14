@@ -1,120 +1,96 @@
-From: Harini Katakam <harini.katakam-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>
-Subject: RE: [RFC PATCH 1/2] spi: Add support for Zynq QSPI controller
-Date: Mon, 14 Jul 2014 07:22:24 +0000
-Message-ID: <10e00662-1e08-4552-aae7-1e2029e56238@BY2FFO11FD051.protection.gbl>
+From: Harini Katakam <harinikatakamlinux@gmail.com>
+Subject: Re: [RFC PATCH 1/2] spi: Add support for Zynq QSPI controller
+Date: Mon, 14 Jul 2014 12:57:07 +0530
+Message-ID: <CAFcVEC+fO9e6d0HXC0UsY3ptNhXhD0TVFuuw3HdS5RpAUmtR8Q@mail.gmail.com>
 References: <1404982207-4707-1-git-send-email-harinik@xilinx.com>
- <1404982207-4707-2-git-send-email-harinik@xilinx.com>
- <CAMuHMdXO-PkQ+07F=aZEjvH1Kh7uhWK8i3V9w+1aHvvtg7wDoQ@mail.gmail.com>
- <CAFcVECJ93Lw1MRVU-=zLRbB6To--zmAxz8OLObu=mhV84-FTNA@mail.gmail.com>
- <CAMuHMdU2HyCwXBJTAyswyj7XqhzhHQ24MamGLLVgMwU4xi0kxQ@mail.gmail.com>
- <CAFcVEC+-bM91WmfwweDdTvJ7KwH+dxKDLkzsT82snWKhukLeYQ@mail.gmail.com>
- <20140710120120.GD30458@sirena.org.uk>
- <CAFcVECJvvch9Li0WihqoWcGNMMDVXfrujLUq6wvca46FztYpzA@mail.gmail.com>
- <20140710150713.GJ30458@sirena.org.uk>
- <03CA77BA8AF6F1469AEDFBDA1322A7B748213306@XAP-PVEXMBX01.xlnx.xilinx.com>
+	<1404982207-4707-2-git-send-email-harinik@xilinx.com>
+	<20140711133841.GU30458@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-2
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	"ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org" <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	David Woodhouse <dwmw2-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	=?iso-8859-2?Q?Marek_Va=B9ut?= <marex-ynQEQJNshbs@public.gmane.org>,
-	Artem Bityutskiy <artem.bityutskiy-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Sourav Poddar <sourav.poddar-l0cyMroinI0@public.gmane.org>,
-	Michal Simek <michals-gjFFaj9aHVfQT0dZR+AlfA@public.gmane.org>,
-	Punnaiah Choudary Kalluri <punnaia
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <03CA77BA8AF6F1469AEDFBDA1322A7B748213306-4lKfpRxZ5enZMOc0yg5rMog+Gb3gawCHQz34XiSyOiE@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Grant Likely <grant.likely@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	linux-spi <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Brian Norris <computersforpeace@gmail.com>,
+	=?UTF-8?B?TWFyZWsgVmHFoXV0?= <marex@denx.de>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Sourav Poddar <sourav.poddar@ti.com>,
+	"michals@xilinx.com" <michals@xilinx.com>,
+	Punnaiah Choudary Kalluri <p
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-doc-owner@vger.kernel.org>
+In-Reply-To: <20140711133841.GU30458@sirena.org.uk>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 Hi Mark,
 
-My mail seems to have missed the below reply.
-Anyway, please find my answer below:
+On Fri, Jul 11, 2014 at 7:08 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Thu, Jul 10, 2014 at 02:20:06PM +0530, Harini Katakam wrote:
+>
+>> This patch adds support for QSPI controller used by Zynq.
+>
+> The driver looks pretty clean but there are a couple of issues below,
+> including a little bit more of the flash specifics.
+>
+>> +static void zynq_qspi_chipselect(struct spi_device *qspi, bool is_high)
+>> +{
+>> +     struct zynq_qspi *xqspi = spi_master_get_devdata(qspi->master);
+>> +     u32 config_reg;
+>> +
+>> +     config_reg = zynq_qspi_read(xqspi, ZYNQ_QSPI_CONFIG_OFFSET);
+>> +
+>> +     /* Select upper/lower page before asserting CS */
+>> +     if (xqspi->is_stacked) {
+>> +             u32 lqspi_cfg_reg;
+>
+> Like with the dual and quad mode stuff this looks very much like it's
+> specific to flash rather than something that applies to a generic SPI
+> driver.  However it does look like it's a generic SPI device which could
+> be used in other applications which makes things a bit tricky.  We don't
+> have a really good answer for this right now unfortunately, probably we
+> need some sort of special interface between the SPI and flash subsystems
+> to allow flash to use the flash specific stuff.
+>
+> For use as a generic SPI device what I'd suggest is stripping out the
+> flash specifics, merging the rest of the support and then considering
+> the flash specifics separately.
 
-> -----Original Message-----
-> From: Punnaiah Choudary Kalluri
-> Sent: Monday, July 14, 2014 12:03 PM
-> To: Harini Katakam
-> Subject: FW: [RFC PATCH 1/2] spi: Add support for Zynq QSPI controlle=
-r
->=20
->=20
->=20
-> >-----Original Message-----
-> >From: Mark Brown [mailto:broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org]
-> >Sent: Thursday, July 10, 2014 8:37 PM
-> >To: Harini Katakam
-> >Cc: Geert Uytterhoeven; Grant Likely; Rob Herring; Pawel Moll; Mark
-> Rutland;
-> >Ian Campbell; Kumar Gala; linux-spi; linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org;
-> >devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; David
-> Woodhouse;
-> >Brian Norris; Marek Va=B9ut; Artem Bityutskiy; Geert Uytterhoeven; S=
-ascha
-> >Hauer; Jingoo Han; Sourav Poddar; Michal Simek; Punnaiah Choudary
-> Kalluri
-> >Subject: Re: [RFC PATCH 1/2] spi: Add support for Zynq QSPI controll=
-er
-> >
-> >On Thu, Jul 10, 2014 at 06:09:55PM +0530, Harini Katakam wrote:
-> >> On Thu, Jul 10, 2014 at 5:31 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> wrote:
-> >
-> >> > How does the client driver select the width to use for a transfe=
-r?
-> >
-> >> This controller is meant to be used only with flash devices.
-> >> The flash devices' supported width will be reflected in a table in=
- MTD
-> layer.
-> >> When selecting, priority is given to quad over dual and single in =
-the MTD
-> and
-> >> it will send commands using the supported tx/rx bus width accordin=
-gly.
-> >> About the supported bus width on board, tx-bus-width and rx-bus-wi=
-dth
-> >> properties in dts will have the info; which I believe spi core use=
-s.
-> >
-> >If it's only intended to be used as a flash controller (and might
-> >misbehave if used as such, if the command detection false triggers) =
-then
-> >it is probably better to support it as a flash controller rather tha=
-n as
-> >a SPI controller.  Or can the flash-specific features be disabled?
+Reply in the other thread.
 
-There is provision to switch to legacy (generic spi) mode but it is not=
- usually used.
-As you can can see, the flash related specifics come into play only whe=
-n two flash devices
-are used. For a single slave, it will be generic.
-As per your suggestions, I could send this driver in multiple stages -
-Initially, qspi driver without flash specifics (this will work straight=
--away for a single flash)
-In the next set, flash specifics changes for dual flash configurations =
-(parallel/stacked)
-Is that acceptable?
+>
+>> +/**
+>> + * zynq_prepare_transfer_hardware - Prepares hardware for transfer.
+>> + * @master:  Pointer to the spi_master structure which provides
+>> + *           information about the controller.
+>> + *
+>> + * This function enables SPI master controller.
+>> + *
+>> + * Return:   Always 0
+>> + */
+>> +static int zynq_prepare_transfer_hardware(struct spi_master *master)
+>> +{
+>> +     struct zynq_qspi *xqspi = spi_master_get_devdata(master);
+>> +
+>> +     zynq_qspi_config_clock_mode(master->cur_msg->spi);
+>
+> The clock mode needs to be (and is) configured per transfer so I'd
+> expect it's possible to remove this call.
+>
+
+Yeah I understand. It can go away from here and there should be a
+prepare_message as per Lars-Peter's patches on spi-cadence.
+I'll reflect the same in this driver.
 
 Regards,
 Harini
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

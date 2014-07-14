@@ -1,81 +1,58 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH 1/2] spi: Add support for Zynq QSPI controller
-Date: Mon, 14 Jul 2014 19:07:18 +0100
-Message-ID: <20140714180718.GL6800@sirena.org.uk>
-References: <1404982207-4707-2-git-send-email-harinik@xilinx.com>
- <CAMuHMdXO-PkQ+07F=aZEjvH1Kh7uhWK8i3V9w+1aHvvtg7wDoQ@mail.gmail.com>
- <CAFcVECJ93Lw1MRVU-=zLRbB6To--zmAxz8OLObu=mhV84-FTNA@mail.gmail.com>
- <CAMuHMdU2HyCwXBJTAyswyj7XqhzhHQ24MamGLLVgMwU4xi0kxQ@mail.gmail.com>
- <CAFcVEC+-bM91WmfwweDdTvJ7KwH+dxKDLkzsT82snWKhukLeYQ@mail.gmail.com>
- <20140710120120.GD30458@sirena.org.uk>
- <CAFcVECJvvch9Li0WihqoWcGNMMDVXfrujLUq6wvca46FztYpzA@mail.gmail.com>
- <20140710150713.GJ30458@sirena.org.uk>
- <03CA77BA8AF6F1469AEDFBDA1322A7B748213306@XAP-PVEXMBX01.xlnx.xilinx.com>
- <10e00662-1e08-4552-aae7-1e2029e56238@BY2FFO11FD051.protection.gbl>
+Subject: Re: [PATCH v2 1/2] spi: rspi: Handle dmaengine_prep_slave_sg()
+ failures gracefully
+Date: Mon, 14 Jul 2014 19:21:52 +0100
+Message-ID: <20140714182152.GU6800@sirena.org.uk>
+References: <1405094477-14192-1-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="9JSHP372f+2dzJ8X"
-Cc: Grant Likely <grant.likely@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"ijc+devicetree@hellion.org.uk" <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Brian Norris <computersforpeace@gmail.com>,
-	Marek =?utf-8?B?VmHFoXV0?= <marex@denx.de>,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Geert Uytterhoeven <geert+renesas@linux-m68k.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Jingoo Han <jg1.han@samsung.com>,
-	Sourav Poddar <sourav.poddar@ti.com>,
-	Michal Simek <michals@xilinx.com>,
-	Punnaiah Choudary Kalluri <punnaia@xil
-To: Harini Katakam <harini.katakam@xilinx.com>
-Return-path: <linux-doc-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="ULJ2Z7kCM1hyNsWd"
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	linux-spi@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <10e00662-1e08-4552-aae7-1e2029e56238@BY2FFO11FD051.protection.gbl>
-Sender: linux-doc-owner@vger.kernel.org
+In-Reply-To: <1405094477-14192-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---9JSHP372f+2dzJ8X
+--ULJ2Z7kCM1hyNsWd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Jul 14, 2014 at 07:22:24AM +0000, Harini Katakam wrote:
+On Fri, Jul 11, 2014 at 06:01:16PM +0200, Geert Uytterhoeven wrote:
 
-> As per your suggestions, I could send this driver in multiple stages -
-> Initially, qspi driver without flash specifics (this will work straight-away for a single flash)
-> In the next set, flash specifics changes for dual flash configurations (parallel/stacked)
-> Is that acceptable?
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Acked-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+> ---
+> v2:
+>   - Add Acked-by
 
-Yes, that should be fine.
+Please don't ever resend things to add Acked-by - this just adds to
+noise and mail volume.
 
---9JSHP372f+2dzJ8X
+--ULJ2Z7kCM1hyNsWd
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJTxBxSAAoJELSic+t+oim9OBEP+wUY1itsZhpeEcXkgSsPvTwD
-mb3NuQyDYfI1Yr+VzifJF4Wrf2WembQr2zhFqNceC9NHB98uSFih+cK88NYHU/p4
-iGK/leChsv3LxX3muVPdohhdI+dKFTdlJyytY7NauFr+hPQjQ8zdo2m+/upxbHjE
-KebnKSdHH4D1ihuhBfVn7bByIvHfHPQfdhxSliC5RUtqlygyVBmyOeIzeNKB4irB
-1qOTuXgtBWq+7JzWS429Kn8f+H42CpXtdMMhJZwQEfO1NoRtHU/afxGHKUjW8XoS
-3GQujHyRLBapCRdJETjQpo737dHGQMNVcoEQe+pn+eYhgJHKkWm1Dq2P0cxs/S9J
-FhjajJWFYQirMpfUAFWeKQQ899l5o8iwWWTqAvmuAl1IkE9N9CVofqyhDbY5sPT6
-rtpk/z9Pxa/5WUvIU25fRXyLbXs2iKy23xbOk1Rwa6VhC+lUKnP+ApLRIEpa+1LV
-0PqBJmb4f+eFgpfhrY7jEaB/XSHJ3+nzQ2zHKSwZc7utWhrEdTFAk+5w91IskI+N
-R0+2afsNnM0HmKmsnm/jMSgi7aeQXwVoXazNgO+cjTj4XRFKB/2cvjf8QfUvrUHD
-lqFNCvSN1Av36ZYUoy4OQxDty/wKjKX2G8lRKQhzhUodVn5K5A5k6sXi+SIkLTOA
-K+ZJpy8AUhfCBBCAoMDt
-=iIgl
+iQIcBAEBAgAGBQJTxB+9AAoJELSic+t+oim9DWcP/iof3Dva3BaAM1RrRrR2eWsA
+UpUQOzYi8xUXoPT/w3z+JzEnSTiAVi0942sgWpPOZ5YOtY2D61NECI1BO+YO2MHe
+r2dXEoT57TtLLBwHOwncsyXNwGCYgIcUPeQG3m3ibcIkRpwUfJWDFxZkZG2VBPTD
+I8usfje3Iops3RGm2MQWQ5I4bj/RhYLJjmZ4KXBeRU/XMuiXWjJ6ldq2c561GvZd
+2YtN4le0DI5pEu8k9pL9pb3FZKvQCLzxeHW/niSPdwW1v3mClHClSbNZboyCr9dS
+Mxn9I/1R5a3Fr+MoUmVVBkmTXc76T1i6irzr9OWtOCh4txfQWnljosKfZ7/jS54s
+1kLUBklkO2PuV/EaTCqj/hctebkDCKHBTK+iScmLqS7RTfJQ6t6BLE1xO+sldRSQ
+BcpU5TYjDV3YLDyBRW9Q7u0lrfmqYbfTzNbTwPZ5die+Xj9ssrIDbqd/DYcyXynn
+CzMvP0sZ7FmZs+O2PdFzN9ooTS+wLj/nMKk1aXxZPAzNaepjqNvaEJwcbEcbNNmc
+5glXVN9WdMuvItGRfMZhiNVcwIhWekjznYlAyEeGfBr9c5xz8IJ3l+OvxF+EDMWM
+/oV9L0qMFp03dA76NP49P3Cj1K7/6+VHDPZGt2TmRenGYOQbNdrFPGjj2UpD/QZX
+teVHJTa1scrWYRGG+gxj
+=PFeY
 -----END PGP SIGNATURE-----
 
---9JSHP372f+2dzJ8X--
+--ULJ2Z7kCM1hyNsWd--

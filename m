@@ -1,98 +1,119 @@
-From: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Subject: [PATCH 4/4] ARM: DTS: fix the chip select gpios definition in the SPI nodes
-Date: Wed, 16 Jul 2014 17:19:10 +0200
-Message-ID: <1405523950-2231-5-git-send-email-javier.martinez@collabora.co.uk>
+From: Naveen Krishna Ch <naveenkrishna.ch-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 0/4] spi: s3c64xx: fix DT binding breakage
+Date: Wed, 16 Jul 2014 21:20:38 +0530
+Message-ID: <CAHfPSqB7BHx49WmFJ-1gyXYMPOyfapnMEGnwPiYOpap=295Vjg@mail.gmail.com>
 References: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk>
-Cc: Naveen Krishna Chatradhi <ch.naveen@samsung.com>,
-	Tomasz Figa <t.figa@samsung.com>,
-	Doug Anderson <dianders@chromium.org>,
-	Olof Johansson <olof@lixom.net>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Sachin Kamat <sachin.kamat@samsung.com>,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Naveen Krishna Chatradhi <ch.naveen-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Sachin Kamat <sachin.kamat-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org"
+	<linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1405523950-2231-1-git-send-email-javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
+Hello Javier,
 
-This patch replaces the "cs-gpio" from "controller-data" node
-as was specified in the old binding and uses the standard
-"cs-gpios" property expected by the SPI core as is defined now
-in the spi-s3c64xx driver DT binding.
+On 16 July 2014 20:49, Javier Martinez Canillas
+<javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org> wrote:
+> Hello Mark,
+>
+> The s3c64xx SPI driver DT binding is currently broken. Commit
+> 3146bee ("spi: s3c64xx: Added provision for dedicated cs pin")
+> added a new "cs-gpio" property and made it a requirement in
+> order to make the driver behave in the same way that it used to.
+>
+> The motivation of the offending commit was to allow boards that
+> want to use the native chip select (instead of a GPIO) to work
+> with the s3c64xx SPI driver. Something that was not possible
+> before since the driver made it mandatory to specify a GPIO.
+>
+> Unfortunately the commit also changed the driver defaults since
+> now besides specifying a GPIO, it makes mandatory to also specify
+> that a GPIO is used while the default used to be the opposite.
+>
+> That mean that old FDT are not working anymore after 3146bee
+> so DT backward compatibility was not ensured by that commit.
+>
+> This is a follow-up series from a previous one posted by Naveen
+> Krishna [0] which attempts to solve the issue.
+>
+> The feedback from Naveen's series was that the patches did not
+> provide a clear explanation about the rationale and goal of both
+> the series as a whole and the individual changes [1].
+>
+> So I tried to take Navee's series and rework them to provide
+> an easier to understand patch series.
+>
+> The series is composed of the following patches:
+>
+> Javier Martinez Canillas (1):
+>   Revert "spi: s3c64xx: Added provision for dedicated cs pin"
+>
+> Naveen Krishna Chatradhi (3):
+>   spi: s3c64xx: use the generic SPI "cs-gpios" property
+>   spi: samsung: Update binding documentation
+>   ARM: DTS: fix the chip select gpios definition in the SPI nodes
 
-Signed-off-by: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
-Reviewed-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Reviewed-by: Tomasz Figa <t.figa@samsung.com>
----
- arch/arm/boot/dts/exynos4210-smdkv310.dts | 2 +-
- arch/arm/boot/dts/exynos4412-trats2.dts   | 2 +-
- arch/arm/boot/dts/exynos5250-smdk5250.dts | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+I should have mentioned what was the issue being fixed. Your
+explanation is very clear. I'm working on getting the terminology correct.
 
-diff --git a/arch/arm/boot/dts/exynos4210-smdkv310.dts b/arch/arm/boot/dts/exynos4210-smdkv310.dts
-index 636d166..676e6e0 100644
---- a/arch/arm/boot/dts/exynos4210-smdkv310.dts
-+++ b/arch/arm/boot/dts/exynos4210-smdkv310.dts
-@@ -168,6 +168,7 @@
- 	};
- 
- 	spi_2: spi@13940000 {
-+		cs-gpios = <&gpc1 2 0>;
- 		status = "okay";
- 
- 		w25x80@0 {
-@@ -178,7 +179,6 @@
- 			spi-max-frequency = <1000000>;
- 
- 			controller-data {
--				cs-gpio = <&gpc1 2 0>;
- 				samsung,spi-feedback-delay = <0>;
- 			};
- 
-diff --git a/arch/arm/boot/dts/exynos4412-trats2.dts b/arch/arm/boot/dts/exynos4412-trats2.dts
-index 7787844..11967f4 100644
---- a/arch/arm/boot/dts/exynos4412-trats2.dts
-+++ b/arch/arm/boot/dts/exynos4412-trats2.dts
-@@ -589,6 +589,7 @@
- 	spi_1: spi@13930000 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi1_bus>;
-+		cs-gpios = <&gpb 5 0>;
- 		status = "okay";
- 
- 		s5c73m3_spi: s5c73m3 {
-@@ -596,7 +597,6 @@
- 			spi-max-frequency = <50000000>;
- 			reg = <0>;
- 			controller-data {
--				cs-gpio = <&gpb 5 0>;
- 				samsung,spi-feedback-delay = <2>;
- 			};
- 		};
-diff --git a/arch/arm/boot/dts/exynos5250-smdk5250.dts b/arch/arm/boot/dts/exynos5250-smdk5250.dts
-index a794a70..0c6433a 100644
---- a/arch/arm/boot/dts/exynos5250-smdk5250.dts
-+++ b/arch/arm/boot/dts/exynos5250-smdk5250.dts
-@@ -316,6 +316,7 @@
- 	};
- 
- 	spi_1: spi@12d30000 {
-+		cs-gpios = <&gpa2 5 0>;
- 		status = "okay";
- 
- 		w25q80bw@0 {
-@@ -326,7 +327,6 @@
- 			spi-max-frequency = <1000000>;
- 
- 			controller-data {
--				cs-gpio = <&gpa2 5 0>;
- 				samsung,spi-feedback-delay = <0>;
- 			};
- 
+Thank you.
+
+>
+>  .../devicetree/bindings/spi/spi-samsung.txt        |  8 ++--
+>  arch/arm/boot/dts/exynos4210-smdkv310.dts          |  2 +-
+>  arch/arm/boot/dts/exynos4412-trats2.dts            |  2 +-
+>  arch/arm/boot/dts/exynos5250-smdk5250.dts          |  2 +-
+>  drivers/spi/spi-s3c64xx.c                          | 54 ++++++++++------------
+>  5 files changed, 30 insertions(+), 38 deletions(-)
+>
+> Patch 01/04 reverts the offending commit since it not only broke
+> the DT binding but also introduced a confusing "cs-gpio" property
+> while the driver already used a property with the same name.
+>
+> Patch 02/04 fixes the DT binding for good by using the SPI core
+> "cs-gpios" property to specify the chip select GPIO instead of
+> using a custom property only used by this driver. This change
+> breaks backward compatibility but this has been broken for more
+> than a year and nobody complained so I think it's safe to change
+> it again in favor of using standard DT binding properties.
+>
+> A benefit of Patch 02/04 is that it allows DT and legacy boards
+> that need to use the built-in CS instead of a GPIO to work with
+> the driver which was the original motivation of the broken commit.
+>
+> Patch 03/04 updates the driver binding documentation accordingly
+> and patch 04/04 updates all the DTS board files in mainline.
+>
+> Best regards,
+> Javier
+>
+> [0]: http://www.spinics.net/lists/linux-samsung-soc/msg34163.html
+> [1]: http://www.spinics.net/lists/linux-samsung-soc/msg34309.html
+>
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+
+
+
 -- 
-2.0.0.rc2
+Shine bright,
+(: Nav :)
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

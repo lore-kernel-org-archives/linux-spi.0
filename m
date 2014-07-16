@@ -1,53 +1,88 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] spi: sh-msiof: Fix leaking of unused DMA descriptors
-Date: Mon, 14 Jul 2014 19:59:05 +0100
-Message-ID: <20140714185905.GF6800@sirena.org.uk>
-References: <1405094802-14401-1-git-send-email-geert+renesas@glider.be>
- <1405094802-14401-2-git-send-email-geert+renesas@glider.be>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="f6nK9RR+X1IX2pXa"
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	linux-spi@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1405094802-14401-2-git-send-email-geert+renesas@glider.be>
-Sender: linux-sh-owner@vger.kernel.org
+From: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
+Subject: [PATCH 0/4] spi: s3c64xx: fix DT binding breakage
+Date: Wed, 16 Jul 2014 17:19:06 +0200
+Message-ID: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk>
+Cc: Naveen Krishna Chatradhi <ch.naveen@samsung.com>,
+	Tomasz Figa <t.figa@samsung.com>,
+	Doug Anderson <dianders@chromium.org>,
+	Olof Johansson <olof@lixom.net>,
+	Kukjin Kim <kgene.kim@samsung.com>,
+	Sachin Kamat <sachin.kamat@samsung.com>,
+	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Javier Martinez Canillas <javier.martinez@collabora.co.uk>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Hello Mark,
 
---f6nK9RR+X1IX2pXa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The s3c64xx SPI driver DT binding is currently broken. Commit
+3146bee ("spi: s3c64xx: Added provision for dedicated cs pin")
+added a new "cs-gpio" property and made it a requirement in
+order to make the driver behave in the same way that it used to.
 
-On Fri, Jul 11, 2014 at 06:06:42PM +0200, Geert Uytterhoeven wrote:
-> If dmaengine_prep_slave_sg() or dmaengine_submit() fail, we may leak
-> unused DMA descriptors.
+The motivation of the offending commit was to allow boards that
+want to use the native chip select (instead of a GPIO) to work
+with the s3c64xx SPI driver. Something that was not possible
+before since the driver made it mandatory to specify a GPIO.
 
-Same here, this doesn't apply either.
+Unfortunately the commit also changed the driver defaults since
+now besides specifying a GPIO, it makes mandatory to also specify
+that a GPIO is used while the default used to be the opposite.
 
---f6nK9RR+X1IX2pXa
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+That mean that old FDT are not working anymore after 3146bee
+so DT backward compatibility was not ensured by that commit.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+This is a follow-up series from a previous one posted by Naveen
+Krishna [0] which attempts to solve the issue.
 
-iQIcBAEBAgAGBQJTxCh1AAoJELSic+t+oim9pzUP/ivBi4h7u2tDtwgePJRXxXCd
-WhYf7fViJXEWoy23nO8AbXOMy8y+TW1R+tSk3UMN+uBhuv4Rscul68HnEUXr36PN
-Qyx7m6PEY0tphQPdLdxf7oqAbJJgeIMvp+tQP4AkoTAVlRWzztO8Qtql29mowHP7
-YvakqGTcIZC7N24q5GKvNKpVeuuS2gBXDE9v1a/LDaY6bE6GJp32cwo5sYd/cd3W
-CBmLzD+oyeA/fS5JiI0JbQb5nl+Za+Y62niPZH2YbBdsJCe2rmURyePII++o3r0w
-dSbUx2uPPVwCm4yqnhWv3ML+zcVMR3Dd19uqlGh9WS0JSLRS4T1T0FzdLpl4F4jJ
-2DVKqsgcr9tT1ocG2zOVPqWw1ilACWET4ZRFhZNeLEjekKaT/BjpCZYmiXYfvi90
-l38Z6GGdbEqVcGGmwWmjLrk5wmoEvRf5K8f+6++EpKok6RW7GRG4gdHuud2gIV3q
-Va+5WAFN+7YqRc4OeHxUPF+c94qJ7ei6yYWmBvxo008/9ZtiblCdYfJEPo0sBBDW
-eWyrVimJcFOZDhKfVDFvNH/7A2eoghrlGriKKilMbwj6KtxLHnrPsKaTQTbtHTQN
-GONM10c9qqKh2undyxSCFWe/+9sJqYz3lJlL/VRE9Pf2iSvNNeOoWTNitRn76svZ
-QgjVmffGcd7VAtnRVJHW
-=a9Uk
------END PGP SIGNATURE-----
+The feedback from Naveen's series was that the patches did not
+provide a clear explanation about the rationale and goal of both
+the series as a whole and the individual changes [1].
 
---f6nK9RR+X1IX2pXa--
+So I tried to take Navee's series and rework them to provide
+an easier to understand patch series.
+
+The series is composed of the following patches:
+
+Javier Martinez Canillas (1):
+  Revert "spi: s3c64xx: Added provision for dedicated cs pin"
+
+Naveen Krishna Chatradhi (3):
+  spi: s3c64xx: use the generic SPI "cs-gpios" property
+  spi: samsung: Update binding documentation
+  ARM: DTS: fix the chip select gpios definition in the SPI nodes
+
+ .../devicetree/bindings/spi/spi-samsung.txt        |  8 ++--
+ arch/arm/boot/dts/exynos4210-smdkv310.dts          |  2 +-
+ arch/arm/boot/dts/exynos4412-trats2.dts            |  2 +-
+ arch/arm/boot/dts/exynos5250-smdk5250.dts          |  2 +-
+ drivers/spi/spi-s3c64xx.c                          | 54 ++++++++++------------
+ 5 files changed, 30 insertions(+), 38 deletions(-)
+
+Patch 01/04 reverts the offending commit since it not only broke
+the DT binding but also introduced a confusing "cs-gpio" property
+while the driver already used a property with the same name.
+
+Patch 02/04 fixes the DT binding for good by using the SPI core
+"cs-gpios" property to specify the chip select GPIO instead of
+using a custom property only used by this driver. This change
+breaks backward compatibility but this has been broken for more
+than a year and nobody complained so I think it's safe to change
+it again in favor of using standard DT binding properties.
+
+A benefit of Patch 02/04 is that it allows DT and legacy boards
+that need to use the built-in CS instead of a GPIO to work with
+the driver which was the original motivation of the broken commit.
+
+Patch 03/04 updates the driver binding documentation accordingly
+and patch 04/04 updates all the DTS board files in mainline.
+
+Best regards,
+Javier
+
+[0]: http://www.spinics.net/lists/linux-samsung-soc/msg34163.html
+[1]: http://www.spinics.net/lists/linux-samsung-soc/msg34309.html

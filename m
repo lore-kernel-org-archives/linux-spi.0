@@ -1,88 +1,184 @@
-From: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Subject: [PATCH 0/4] spi: s3c64xx: fix DT binding breakage
-Date: Wed, 16 Jul 2014 17:19:06 +0200
-Message-ID: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk>
-Cc: Naveen Krishna Chatradhi <ch.naveen@samsung.com>,
-	Tomasz Figa <t.figa@samsung.com>,
-	Doug Anderson <dianders@chromium.org>,
-	Olof Johansson <olof@lixom.net>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Sachin Kamat <sachin.kamat@samsung.com>,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Subject: [PATCH 1/4] Revert "spi: s3c64xx: Added provision for dedicated cs pin"
+Date: Wed, 16 Jul 2014 17:19:07 +0200
+Message-ID: <1405523950-2231-2-git-send-email-javier.martinez@collabora.co.uk>
+References: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk>
+Cc: Naveen Krishna Chatradhi <ch.naveen-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Sachin Kamat <sachin.kamat-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1405523950-2231-1-git-send-email-javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello Mark,
+This reverts commit 3146beec21b64f4551fcf0ac148381d54dc41b1b.
 
-The s3c64xx SPI driver DT binding is currently broken. Commit
-3146bee ("spi: s3c64xx: Added provision for dedicated cs pin")
-added a new "cs-gpio" property and made it a requirement in
-order to make the driver behave in the same way that it used to.
+This commit resulted in a DT backward compatibility breakage.
 
-The motivation of the offending commit was to allow boards that
-want to use the native chip select (instead of a GPIO) to work
-with the s3c64xx SPI driver. Something that was not possible
-before since the driver made it mandatory to specify a GPIO.
+Some devices use the native chip select (CS) instead of a GPIO
+pin to drive the CS line. But the SPI driver made it mandatory
+to specify a GPIO pin in the SPI device node controller-data.
+So, using the built-in CS was not possible with the driver.
 
-Unfortunately the commit also changed the driver defaults since
-now besides specifying a GPIO, it makes mandatory to also specify
-that a GPIO is used while the default used to be the opposite.
+Commit 3146bee tried to fix that by adding a "cs-gpio" property
+which could be defined in the SPI device node to make the driver
+request the GPIO from the controller-data node.
 
-That mean that old FDT are not working anymore after 3146bee
-so DT backward compatibility was not ensured by that commit.
+Unfortunately that changed the old DT binding semantics since
+now it's mandatory to have the "cs-gpio" property defined in
+the SPI device node in order to use a GPIO pin to drive the CS.
 
-This is a follow-up series from a previous one posted by Naveen
-Krishna [0] which attempts to solve the issue.
+As an example, a SPI device was defined before the commit with:
 
-The feedback from Naveen's series was that the patches did not
-provide a clear explanation about the rationale and goal of both
-the series as a whole and the individual changes [1].
+spi@12d20000 {
+    slave-node@0 {
+        controller-data {
+             cs-gpio = <&gpb1 2 0>;
+        }
+   }
+}
 
-So I tried to take Navee's series and rework them to provide
-an easier to understand patch series.
+and after the commit, the following DTS snippet must be used:
 
-The series is composed of the following patches:
+spi@12d20000 {
+    cs-gpio;
+    slave-node@0 {
+        controller-data {
+             cs-gpio = <&gpb1 2 0>;
+        }
+   }
+}
 
-Javier Martinez Canillas (1):
-  Revert "spi: s3c64xx: Added provision for dedicated cs pin"
+So, after commit 3146bee the driver does not look for the GPIO
+by default and it only looks for it if the top level "cs-gpio"
+property is defined while the default used to be the opposite.
+To always request the GPIO defined in the controller-data node.
 
-Naveen Krishna Chatradhi (3):
-  spi: s3c64xx: use the generic SPI "cs-gpios" property
-  spi: samsung: Update binding documentation
-  ARM: DTS: fix the chip select gpios definition in the SPI nodes
+This means that old FDT that of course didn't have this added
+"cs-gpio" DT property in the SPI node broke after this change.
 
- .../devicetree/bindings/spi/spi-samsung.txt        |  8 ++--
- arch/arm/boot/dts/exynos4210-smdkv310.dts          |  2 +-
- arch/arm/boot/dts/exynos4412-trats2.dts            |  2 +-
- arch/arm/boot/dts/exynos5250-smdk5250.dts          |  2 +-
- drivers/spi/spi-s3c64xx.c                          | 54 ++++++++++------------
- 5 files changed, 30 insertions(+), 38 deletions(-)
+The offending commit can't be reverted cleanly since more than
+a year have passed and other changes were made in the meantime
+but this patch partially reverts the driver to it's original
+state so old FDT can work again.
 
-Patch 01/04 reverts the offending commit since it not only broke
-the DT binding but also introduced a confusing "cs-gpio" property
-while the driver already used a property with the same name.
+This patch will break Device Trees that were relying on the new
+behavior of course but the patch should be reverted because:
 
-Patch 02/04 fixes the DT binding for good by using the SPI core
-"cs-gpios" property to specify the chip select GPIO instead of
-using a custom property only used by this driver. This change
-breaks backward compatibility but this has been broken for more
-than a year and nobody complained so I think it's safe to change
-it again in favor of using standard DT binding properties.
+a) There aren't DTS in mainline that use this new property.
+b) They were relying on a behavior that broke DT compatibility.
+c) The new binding is awkard, needing two properties with the
+   same name (cs-gpio) on different nodes is confusing at least.
+d) The new property was not added to the DT binding doc:
+   Documentation/devicetree/bindings/spi/spi-samsung.txt
 
-A benefit of Patch 02/04 is that it allows DT and legacy boards
-that need to use the built-in CS instead of a GPIO to work with
-the driver which was the original motivation of the broken commit.
+Signed-off-by: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Reviewed-by: Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+ drivers/spi/spi-s3c64xx.c | 37 +++++++++++--------------------------
+ 1 file changed, 11 insertions(+), 26 deletions(-)
 
-Patch 03/04 updates the driver binding documentation accordingly
-and patch 04/04 updates all the DTS board files in mainline.
+diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
+index a771a3a..e48c6fa 100644
+--- a/drivers/spi/spi-s3c64xx.c
++++ b/drivers/spi/spi-s3c64xx.c
+@@ -197,7 +197,6 @@ struct s3c64xx_spi_driver_data {
+ 	struct s3c64xx_spi_dma_data	tx_dma;
+ 	struct s3c64xx_spi_port_config	*port_conf;
+ 	unsigned int			port_id;
+-	bool				cs_gpio;
+ };
+ 
+ static void flush_fifo(struct s3c64xx_spi_driver_data *sdd)
+@@ -754,10 +753,8 @@ static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
+ {
+ 	struct s3c64xx_spi_csinfo *cs;
+ 	struct device_node *slave_np, *data_np = NULL;
+-	struct s3c64xx_spi_driver_data *sdd;
+ 	u32 fb_delay = 0;
+ 
+-	sdd = spi_master_get_devdata(spi->master);
+ 	slave_np = spi->dev.of_node;
+ 	if (!slave_np) {
+ 		dev_err(&spi->dev, "device node not found\n");
+@@ -776,10 +773,7 @@ static struct s3c64xx_spi_csinfo *s3c64xx_get_slave_ctrldata(
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-	/* The CS line is asserted/deasserted by the gpio pin */
+-	if (sdd->cs_gpio)
+-		cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
+-
++	cs->line = of_get_named_gpio(data_np, "cs-gpio", 0);
+ 	if (!gpio_is_valid(cs->line)) {
+ 		dev_err(&spi->dev, "chip select gpio is not specified or invalid\n");
+ 		kfree(cs);
+@@ -818,20 +812,17 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
+ 	}
+ 
+ 	if (!spi_get_ctldata(spi)) {
+-		/* Request gpio only if cs line is asserted by gpio pins */
+-		if (sdd->cs_gpio) {
+-			err = gpio_request_one(cs->line, GPIOF_OUT_INIT_HIGH,
+-					dev_name(&spi->dev));
+-			if (err) {
+-				dev_err(&spi->dev,
+-					"Failed to get /CS gpio [%d]: %d\n",
+-					cs->line, err);
+-				goto err_gpio_req;
+-			}
+-
+-			spi->cs_gpio = cs->line;
++		err = gpio_request_one(cs->line, GPIOF_OUT_INIT_HIGH,
++				       dev_name(&spi->dev));
++		if (err) {
++			dev_err(&spi->dev,
++				"Failed to get /CS gpio [%d]: %d\n",
++				cs->line, err);
++			goto err_gpio_req;
+ 		}
+ 
++		spi->cs_gpio = cs->line;
++
+ 		spi_set_ctldata(spi, cs);
+ 	}
+ 
+@@ -897,10 +888,8 @@ err_gpio_req:
+ static void s3c64xx_spi_cleanup(struct spi_device *spi)
+ {
+ 	struct s3c64xx_spi_csinfo *cs = spi_get_ctldata(spi);
+-	struct s3c64xx_spi_driver_data *sdd;
+ 
+-	sdd = spi_master_get_devdata(spi->master);
+-	if (spi->cs_gpio) {
++	if (cs) {
+ 		gpio_free(spi->cs_gpio);
+ 		if (spi->dev.of_node)
+ 			kfree(cs);
+@@ -1075,11 +1064,7 @@ static int s3c64xx_spi_probe(struct platform_device *pdev)
+ 	sdd->cntrlr_info = sci;
+ 	sdd->pdev = pdev;
+ 	sdd->sfr_start = mem_res->start;
+-	sdd->cs_gpio = true;
+ 	if (pdev->dev.of_node) {
+-		if (!of_find_property(pdev->dev.of_node, "cs-gpio", NULL))
+-			sdd->cs_gpio = false;
+-
+ 		ret = of_alias_get_id(pdev->dev.of_node, "spi");
+ 		if (ret < 0) {
+ 			dev_err(&pdev->dev, "failed to get alias id, errno %d\n",
+-- 
+2.0.0.rc2
 
-Best regards,
-Javier
-
-[0]: http://www.spinics.net/lists/linux-samsung-soc/msg34163.html
-[1]: http://www.spinics.net/lists/linux-samsung-soc/msg34309.html
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

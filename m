@@ -1,7 +1,7 @@
 From: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Subject: [PATCH 3/4] spi: samsung: Update binding documentation
-Date: Wed, 16 Jul 2014 17:19:09 +0200
-Message-ID: <1405523950-2231-4-git-send-email-javier.martinez@collabora.co.uk>
+Subject: [PATCH 4/4] ARM: DTS: fix the chip select gpios definition in the SPI nodes
+Date: Wed, 16 Jul 2014 17:19:10 +0200
+Message-ID: <1405523950-2231-5-git-send-email-javier.martinez@collabora.co.uk>
 References: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk>
 Cc: Naveen Krishna Chatradhi <ch.naveen@samsung.com>,
 	Tomasz Figa <t.figa@samsung.com>,
@@ -11,8 +11,7 @@ Cc: Naveen Krishna Chatradhi <ch.naveen@samsung.com>,
 	Sachin Kamat <sachin.kamat@samsung.com>,
 	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
 	linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Javier Martinez Canillas <javier.martinez@collabora.co.uk>
+	linux-arm-kernel@lists.infradead.org
 To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 In-Reply-To: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk>
@@ -21,52 +20,77 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
 
-Samsung SPI driver now uses the generic SPI "cs-gpios"
-binding so update the documentation accordingly.
+This patch replaces the "cs-gpio" from "controller-data" node
+as was specified in the old binding and uses the standard
+"cs-gpios" property expected by the SPI core as is defined now
+in the spi-s3c64xx driver DT binding.
 
 Signed-off-by: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
-[javier.martinez@collabora.co.uk: split changes and improve commit message]
-Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
+Reviewed-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
 Reviewed-by: Tomasz Figa <t.figa@samsung.com>
 ---
- Documentation/devicetree/bindings/spi/spi-samsung.txt | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/exynos4210-smdkv310.dts | 2 +-
+ arch/arm/boot/dts/exynos4412-trats2.dts   | 2 +-
+ arch/arm/boot/dts/exynos5250-smdk5250.dts | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-index 7f2d88d..1e8a857 100644
---- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-@@ -38,15 +38,13 @@ Optional Board Specific Properties:
- - num-cs: Specifies the number of chip select lines supported. If
-   not specified, the default number of chip select lines is set to 1.
+diff --git a/arch/arm/boot/dts/exynos4210-smdkv310.dts b/arch/arm/boot/dts/exynos4210-smdkv310.dts
+index 636d166..676e6e0 100644
+--- a/arch/arm/boot/dts/exynos4210-smdkv310.dts
++++ b/arch/arm/boot/dts/exynos4210-smdkv310.dts
+@@ -168,6 +168,7 @@
+ 	};
  
-+- cs-gpios: should specify GPIOs used for chipselects (see spi-bus.txt)
-+
- SPI Controller specific data in SPI slave nodes:
+ 	spi_2: spi@13940000 {
++		cs-gpios = <&gpc1 2 0>;
+ 		status = "okay";
  
- - The spi slave nodes should provide the following information which is required
-   by the spi controller.
- 
--  - cs-gpio: A gpio specifier that specifies the gpio line used as
--    the slave select line by the spi controller. The format of the gpio
--    specifier depends on the gpio controller.
--
-   - samsung,spi-feedback-delay: The sampling phase shift to be applied on the
-     miso line (to account for any lag in the miso line). The following are the
-     valid values.
-@@ -84,6 +82,7 @@ Example:
- 		#size-cells = <0>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi0_bus>;
-+		cs-gpios = <&gpa2 5 0>;
- 
- 		w25q80bw@0 {
- 			#address-cells = <1>;
-@@ -93,7 +92,6 @@ Example:
- 			spi-max-frequency = <10000>;
+ 		w25x80@0 {
+@@ -178,7 +179,6 @@
+ 			spi-max-frequency = <1000000>;
  
  			controller-data {
--				cs-gpio = <&gpa2 5 1 0 3>;
+-				cs-gpio = <&gpc1 2 0>;
+ 				samsung,spi-feedback-delay = <0>;
+ 			};
+ 
+diff --git a/arch/arm/boot/dts/exynos4412-trats2.dts b/arch/arm/boot/dts/exynos4412-trats2.dts
+index 7787844..11967f4 100644
+--- a/arch/arm/boot/dts/exynos4412-trats2.dts
++++ b/arch/arm/boot/dts/exynos4412-trats2.dts
+@@ -589,6 +589,7 @@
+ 	spi_1: spi@13930000 {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&spi1_bus>;
++		cs-gpios = <&gpb 5 0>;
+ 		status = "okay";
+ 
+ 		s5c73m3_spi: s5c73m3 {
+@@ -596,7 +597,6 @@
+ 			spi-max-frequency = <50000000>;
+ 			reg = <0>;
+ 			controller-data {
+-				cs-gpio = <&gpb 5 0>;
+ 				samsung,spi-feedback-delay = <2>;
+ 			};
+ 		};
+diff --git a/arch/arm/boot/dts/exynos5250-smdk5250.dts b/arch/arm/boot/dts/exynos5250-smdk5250.dts
+index a794a70..0c6433a 100644
+--- a/arch/arm/boot/dts/exynos5250-smdk5250.dts
++++ b/arch/arm/boot/dts/exynos5250-smdk5250.dts
+@@ -316,6 +316,7 @@
+ 	};
+ 
+ 	spi_1: spi@12d30000 {
++		cs-gpios = <&gpa2 5 0>;
+ 		status = "okay";
+ 
+ 		w25q80bw@0 {
+@@ -326,7 +327,6 @@
+ 			spi-max-frequency = <1000000>;
+ 
+ 			controller-data {
+-				cs-gpio = <&gpa2 5 0>;
  				samsung,spi-feedback-delay = <0>;
  			};
  

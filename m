@@ -1,54 +1,40 @@
-From: Mark Brown <broonie@kernel.org>
+From: Heiko Schocher <hs-ynQEQJNshbs@public.gmane.org>
 Subject: Re: spi, spi_fsl-spi.c not working?
-Date: Thu, 17 Jul 2014 12:31:29 +0100
-Message-ID: <20140717113129.GU17528@sirena.org.uk>
-References: <53C79351.2080406@denx.de>
+Date: Thu, 17 Jul 2014 13:44:15 +0200
+Message-ID: <53C7B70F.5040904@denx.de>
+References: <53C79351.2080406@denx.de> <20140717113129.GU17528@sirena.org.uk>
+Reply-To: hs-ynQEQJNshbs@public.gmane.org
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0WzQiIesntPPsVaS"
-Cc: linuxppc-dev@lists.ozlabs.org, linux-spi@vger.kernel.org,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Anton Vorontsov <avorontsov@ru.mvista.com>,
-	Kumar Gala <galak@kernel.crashing.org>
-To: Heiko Schocher <hs@denx.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <53C79351.2080406@denx.de>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>,
+	Anton Vorontsov <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>,
+	Kumar Gala <galak-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140717113129.GU17528-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hello Mark,
 
---0WzQiIesntPPsVaS
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Am 17.07.2014 13:31, schrieb Mark Brown:
+> On Thu, Jul 17, 2014 at 11:11:45AM +0200, Heiko Schocher wrote:
+>
+>> Is it maybe the missing "support for the SPI subsystem's queue SPI messages"?
+>
+> It shouldn't be that, that's still optional (sadly).
 
-On Thu, Jul 17, 2014 at 11:11:45AM +0200, Heiko Schocher wrote:
+Thanks for this info! I digging in it ...
 
-> Is it maybe the missing "support for the SPI subsystem's queue SPI messages"?
-
-It shouldn't be that, that's still optional (sadly).
-
---0WzQiIesntPPsVaS
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJTx7QOAAoJELSic+t+oim9ZaUP/RVeH0pegoL7anagNM4PjTXo
-RZEs6JTQRC4wm2aj7kewmwGTGvNTwOKBPKVDVGeKNuDokwoSTIVIBbyL3UeexRmA
-0yiMwQ7lWPKqZtx/d+DOxXC/zY4P3D+0o+kqJ1Gh4ulAqc95kN9U2R3/kLqE2by3
-P9PEeqqFBvd05NfOhjIDbC04Up53njdbFUStzXbGE/voOTWQf32j1TLziKZslb4p
-Tr1YIMfJTX4tNTWMB+MUZyNxhg6ogcU9ENIEZBhiZNvGapzY5DclfRglb3lOwrzK
-J75JxyxXIGTAbjzBmjYUAgL2rGwb73FVf3HgkRPxva5LrEtoBgKNtKU4k9GEqIw4
-y7MvZ4Eps1CYkxTOMlWPxPvMapInhFAA7i6//ok4ZDp4JEdx+sEtsMfqg1xoNMNo
-HyMX7D/KG6J36UV2K+VM8LteSo433alW9H4rfKBWB5fCAzK8aIpVfgsLThxwqG+3
-e/VG4bbJ2cPNlHS4mUBZokiFS8UNnQ7X/E5fyDYfPsPK1eOm+cUevLjD6l8Qwaov
-4TO9iD37SFdJINgrQiVnLAQAOx2nS9qUBK0+szzSXrMQzGglnF64qBblS03zP7ds
-SnG72+WcMa38nA35UdDh0KlNdPTDHpJKTL1OsgBFrFm1HamYajailj3yQHFqO2A4
-oJw5Y/BokJC3BnUV+r3u
-=1jxs
------END PGP SIGNATURE-----
-
---0WzQiIesntPPsVaS--
+bye,
+Heiko
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

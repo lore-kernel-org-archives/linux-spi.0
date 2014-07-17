@@ -1,60 +1,85 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 6/6] spi: atmel: Use dmaengine_prep_slave_sg() API
-Date: Wed, 16 Jul 2014 23:27:46 +0100
-Message-ID: <20140716222746.GN17528@sirena.org.uk>
-References: <1405095208-14642-6-git-send-email-geert+renesas@glider.be>
+From: Heiko Schocher <hs@denx.de>
+Subject: spi, spi_fsl-spi.c not working?
+Date: Thu, 17 Jul 2014 11:11:45 +0200
+Message-ID: <53C79351.2080406@denx.de>
+Reply-To: hs@denx.de
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Sh9dYexoRflRb0jn"
-Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1405095208-14642-6-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Anton Vorontsov <avorontsov@ru.mvista.com>,
+	Kumar Gala <galak@kernel.crashing.org>
+To: linuxppc-dev@lists.ozlabs.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hello all,
 
---Sh9dYexoRflRb0jn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I just tried a mpc83xx based board (similiar to the mpc8313erdb)
+with linux v3.16-rc4 using the drivers/spi/spi-fsl-spi.c driver.
+DT nodes for spi are the same as in arch/powerpc/boot/dts/mpc8313erdb.dts:
 
-On Fri, Jul 11, 2014 at 06:13:28PM +0200, Geert Uytterhoeven wrote:
-> Use the inline wrapper introduced by commit
-> 16052827d98fbc13c31ebad560af4bd53e2b4dd5 ("dmaengine/dma_slave: introduce
-> inline wrappers").
+                 spi@7000 {
+                         cell-index = <0>;
+                         compatible = "fsl,spi";
+                         reg = <0x7000 0x1000>;
+                         interrupts = <16 0x8>;
+                         interrupt-parent = <&ipic>;
+                         mode = "cpu";
+                 };
 
-Applied, thanks.  Please make sure everyone gets the cover letter on
-patch serieses (or just send the patches individually if there's no
-dependency) - it makes it easier to figure out what's going on.
+Bootlog shows:
 
---Sh9dYexoRflRb0jn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+[    1.341411] fsl_spi f0007000.spi: master is unqueued, this is deprecated
+[    1.554405] ------------[ cut here ]------------
+[    1.559080] WARNING: at c023a958 [verbose debug info unavailable]
+[    1.565208] Modules linked in:
+[    1.568305] CPU: 0 PID: 1 Comm: swapper Not tainted 3.16.0-rc4-ids720-patch1-01642-g69ef753 #20
+[    1.577059] task: c782c000 ti: c781a000 task.ti: c781a000
+[    1.582493] NIP: c023a958 LR: c0238bfc CTR: c027884c
+[    1.587491] REGS: c781bb80 TRAP: 0700   Not tainted  (3.16.0-rc4-ids720-patch1-01642-g69ef753)
+[    1.596149] MSR: 00029032 <EE,ME,IR,DR,RI>  CR: 22002044  XER: 00000000
+[    1.602851]
+GPR00: c0238bfc c781bc30 c782c000 c051421c c6c62a00 c6c62b06 c03e392c 00000002
+GPR08: c03de53c 00000001 c6c62ab8 00001032 82002042 00000000 c0004158 00000000
+GPR16: 00000000 00000000 00000000 00000000 c0495c54 c0495cbc c0495cc8 c0495cd4
+GPR24: 00000000 00000000 00000000 c050c6a4 c051421c c0544aa8 c0540000 c6c62a00
+[    1.632952] NIP [c023a958] driver_probe_device+0x58/0x230
+[    1.638397] LR [c0238bfc] bus_for_each_drv+0x50/0xac
+[    1.643390] Call Trace:
+[    1.645865] [c781bc30] [c023abf0] __device_attach+0x0/0x70 (unreliable)
+[    1.652539] [c781bc50] [c0238bfc] bus_for_each_drv+0x50/0xac
+[    1.658247] [c781bc80] [c023a8bc] device_attach+0xb4/0xd8
+[    1.663693] [c781bca0] [c0239dd4] bus_probe_device+0xa0/0xc4
+[    1.669400] [c781bcc0] [c0237d68] device_add+0x384/0x520
+[    1.674762] [c781bd00] [c0279298] spi_add_device+0xb0/0x170
+[    1.680383] [c781bd20] [c027aac4] spi_register_master+0x500/0x75c
+[    1.686530] [c781bd70] [c027e138] of_fsl_spi_probe+0x494/0x594
+[    1.692413] [c781bdd0] [c023c1ac] platform_drv_probe+0x28/0x68
+[    1.698297] [c781bde0] [c023a98c] driver_probe_device+0x8c/0x230
+[    1.704353] [c781be00] [c023abec] __driver_attach+0xbc/0xc0
+[    1.709972] [c781be20] [c0238cb4] bus_for_each_dev+0x5c/0xa8
+[    1.715681] [c781be50] [c023a038] bus_add_driver+0xf4/0x1e4
+[    1.721300] [c781be70] [c023b394] driver_register+0x88/0x130
+[    1.727013] [c781be80] [c0003ad0] do_one_initcall+0x8c/0x210
+[    1.732732] [c781bef0] [c04d30ac] kernel_init_freeable+0x114/0x1c0
+[    1.738962] [c781bf30] [c0004170] kernel_init+0x18/0x108
+[    1.744331] [c781bf40] [c000e830] ret_from_kernel_thread+0x5c/0x64
+[    1.750549] Instruction dump:
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Did someone detected such a problem with this driver?
 
-iQIcBAEBAgAGBQJTxvxfAAoJELSic+t+oim9P/8P/iw5Pw1Esd/hizoVoujvCTT6
-JHyW6hrXDjPxDiBAN2y+4rOIa8kbl2cn8XYwRiH7qN5hZZYEyKcvH6iiJ7dUQsaN
-zOyk1MAG7HxI2nYnraTqcOukrVX5cpm7D5I83v3MedNbOJrWj2fN/QiZcT9B7mRJ
-J2j0UTyPUe0657A1A46D3OPyHI7nALVO3oRDdnU81coyW3hU5MzyQ+joNyqqL3NT
-WgfIzGMUqJ84ElQlj/DJVYJRJPiFQuXa6noil9kp6gjgg1EeaDjSBq8PVB1389Wp
-wvzXCXRV00uBvNtut2ycxGr04RRAfVCkPd8OzzwZ75O56QML2359GWz51/ErULJt
-BhyHCvJ8ru6PjznhPehyAk0haXazsnldi4HjH9ChSnFSgbxwQQljjMqEMCaLj2Zd
-ti4WP1FD1MEOgmCTND/WCXAhQL5kOeWrfLK6bajSdKNcLBuwEW1wiBJUF69VCQyx
-8AwZNOTMBlv5ilxayrZ+jq1tuxRVVJIkfS9H2jZG8oQAGDXaEZgoO5F54Nm37RUI
-DUy3l7jFp3NfHEmlH+7q/uNLxqBo9G8jBroovMaDG92NxYdyWR3DEk8J00gsFaSQ
-O0wq3THu3i9NPxly2HcfRFDWRzPaNJWw5KeKy248WOVnYytxX93GloqxbPdwXkvk
-S6znuHDRK0T3QQbkUFni
-=lS9P
------END PGP SIGNATURE-----
+Is it maybe the missing "support for the SPI subsystem's queue SPI messages"?
 
---Sh9dYexoRflRb0jn--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Any hints?
+
+Thanks!
+
+bye,
+Heiko
+-- 
+DENX Software Engineering GmbH,     MD: Wolfgang Denk & Detlev Zundel
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany

@@ -1,67 +1,49 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 4/4] ARM: DTS: fix the chip select gpios definition in
- the SPI nodes
-Date: Thu, 17 Jul 2014 19:49:44 +0100
-Message-ID: <20140717184944.GE17528@sirena.org.uk>
-References: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk>
- <1405523950-2231-5-git-send-email-javier.martinez@collabora.co.uk>
+From: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Subject: Re: [PATCH 1/4] Revert "spi: s3c64xx: Added provision for dedicated
+ cs pin"
+Date: Thu, 17 Jul 2014 21:33:35 +0200
+Message-ID: <53C8250F.6070006@collabora.co.uk>
+References: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk> <1405523950-2231-2-git-send-email-javier.martinez@collabora.co.uk> <20140717184656.GB17528@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="1mpN54+oXr72ab9j"
-Cc: Naveen Krishna Chatradhi <ch.naveen@samsung.com>,
-	Tomasz Figa <t.figa@samsung.com>,
-	Doug Anderson <dianders@chromium.org>,
-	Olof Johansson <olof@lixom.net>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Sachin Kamat <sachin.kamat@samsung.com>,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-To: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1405523950-2231-5-git-send-email-javier.martinez@collabora.co.uk>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: Naveen Krishna Chatradhi <ch.naveen-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
+	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	Sachin Kamat <sachin.kamat-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140717184656.GB17528-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hello Mark,
 
---1mpN54+oXr72ab9j
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 07/17/2014 08:46 PM, Mark Brown wrote:
+> On Wed, Jul 16, 2014 at 05:19:07PM +0200, Javier Martinez Canillas wrote:
+>> This reverts commit 3146beec21b64f4551fcf0ac148381d54dc41b1b.
+> 
+> For the benefit of those who haven't memorized the SHA1s of every commit
+> that's "spi: s3c64xx: Added provision for dedicated cs pin" - please
+> include the human readable format whenever you reference a SHA1.
+> 
 
-On Wed, Jul 16, 2014 at 05:19:10PM +0200, Javier Martinez Canillas wrote:
-> From: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
->=20
-> This patch replaces the "cs-gpio" from "controller-data" node
-> as was specified in the old binding and uses the standard
-> "cs-gpios" property expected by the SPI core as is defined now
-> in the spi-s3c64xx driver DT binding.
+Ok, I'll take into account for the next time.
 
-I've applied this one too since everything here really ought to go in
-together and we should probably try to get this into v3.16 - Kukjin,
-please say if this is an issue and I can revert.
+> I've applied this.
+> 
 
---1mpN54+oXr72ab9j
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Thanks a lot for your help and sorry for all the inconveniences that this series
+caused to you.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJTyBrFAAoJELSic+t+oim9GrAQAIuX0t+BTxKUVhElJCfpCPku
-1hvwJ6/BdEiz0P7O5vmBMyiWC458B1F0f5pNiy85ELQ6uPi6jAN6UwcrDBQzD1yQ
-DUF763gYtyd4Ug2u/UrfJB/DAYAahteEWM7RNPZQBmxIlUMLvghje/ls9nFq1Q1c
-tZUHrZ2RQi+hyBzPQWi4iO2MBM9p8ILAPtoVx6CeDPne1lmbKOEUIiiLdufcmj5H
-06/Q+ah3NyJa9qB3jmUN+CJzDCc3dwGMzCkMLj6OG/94yb8n7e74BWuByfAmCclt
-JMTTko0aYl7CHE7/hGvZ5/f/q0LkTAbuuRxCpkZeGFoeDBuGFdlrMgG/hzFirkGm
-X0iCV2VclgwuCcdw22yFAZna7gB9w6e11AW1YvJZIKpPLJ3c5D0fostPJ7RwbE1/
-HP3hwzQoU1Q6vZ5AasjVteoxZL4UgkBCyZFNMI0yBm7XgXdYK1qe/l67/S6YXvlF
-c0dsA+nr9pF/tFTu2sILYC4KxJm9Qf7kx2Jrin/NR3RUyppKtoxESad8Mlh3YT38
-bt3ktUUPA9xs+6iz1jF+1h5ngF2LsGkx156LBVdhluAZocHISe/pQaQHem/7GTDp
-FXFdDyA05pnZHacBQsm1LLaUqIA8qkJ0X5SFDQyS+N/RRUnff47HdyQ7CqHiHcjJ
-CaokWmCD/cQktEsINexM
-=OHro
------END PGP SIGNATURE-----
-
---1mpN54+oXr72ab9j--
+Best regards,
+Javier
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

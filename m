@@ -1,13 +1,12 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/4] Revert "spi: s3c64xx: Added provision for dedicated
- cs pin"
-Date: Thu, 17 Jul 2014 19:46:56 +0100
-Message-ID: <20140717184656.GB17528@sirena.org.uk>
+Subject: Re: [PATCH 2/4] spi: s3c64xx: use the generic SPI "cs-gpios" property
+Date: Thu, 17 Jul 2014 19:48:04 +0100
+Message-ID: <20140717184804.GC17528@sirena.org.uk>
 References: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk>
- <1405523950-2231-2-git-send-email-javier.martinez@collabora.co.uk>
+ <1405523950-2231-3-git-send-email-javier.martinez@collabora.co.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="SuGb6p5JEpzYJdwO"
+	protocol="application/pgp-signature"; boundary="BzhqTaE66jeIVBY0"
 Cc: Naveen Krishna Chatradhi <ch.naveen@samsung.com>,
 	Tomasz Figa <t.figa@samsung.com>,
 	Doug Anderson <dianders@chromium.org>,
@@ -20,44 +19,46 @@ Cc: Naveen Krishna Chatradhi <ch.naveen@samsung.com>,
 To: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
 Return-path: <linux-samsung-soc-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1405523950-2231-2-git-send-email-javier.martinez@collabora.co.uk>
+In-Reply-To: <1405523950-2231-3-git-send-email-javier.martinez@collabora.co.uk>
 Sender: linux-samsung-soc-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---SuGb6p5JEpzYJdwO
+--BzhqTaE66jeIVBY0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 16, 2014 at 05:19:07PM +0200, Javier Martinez Canillas wrote:
-> This reverts commit 3146beec21b64f4551fcf0ac148381d54dc41b1b.
+On Wed, Jul 16, 2014 at 05:19:08PM +0200, Javier Martinez Canillas wrote:
+> From: Naveen Krishna Chatradhi <ch.naveen@samsung.com>
+>=20
+> The s3c64xx SPI driver uses a custom DT binding to specify
+> the GPIO used to drive the chip select (CS) line instead of
+> using the generic "cs-gpios" property already defined in:
+> Documentation/devicetree/bindings/spi/spi-bus.txt.
 
-For the benefit of those who haven't memorized the SHA1s of every commit
-that's "spi: s3c64xx: Added provision for dedicated cs pin" - please
-include the human readable format whenever you reference a SHA1.
+Applied, thanks.
 
-I've applied this.
-
---SuGb6p5JEpzYJdwO
+--BzhqTaE66jeIVBY0
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJTyBodAAoJELSic+t+oim9QRIP/AuVtgr3Zc28JmD8GRipCoGG
-WRNS6pELBUaiyIBRbr4Cp65ghHEoLnfXlta1oPiTK9i6PQZ87P/NUCOacqQpn0ss
-VJo27Q3IQ2TqyFvOqFl+jE+3g15WDUhVqoaAAKvGQpnOfe6pByUoqFljdQKZlQzQ
-93CFUIWiZr2Fh8yhdImRPKso9CGt2povajAWW/2qG4/31o4szsla3htSK6I94vf0
-WQ159SlbnHK80jNWn0wBiHM2snKFYkmDZOVqw5s8qacYZBRx4qMhBJci1aJ5zevs
-yqFfZvbsJ/1m+yEIvnmpmBQn6X+kmIqRwT67kC2VpTQ8j9ZLVLCFEwpE7xXm5Vsc
-GeL8nv5bYMhoDg6W3mlaMHlUNpeijGmKQwRWNPFByB1zQwxmhDYhAHI1jZtgMyrM
-FZAO1O565kpxBO/r5v4t/QdgqZI0T3HQqFHT+Ea0epvphfuep2EE409hND7ewtWu
-G7loYUaBC4BKYADFMhlu4zWBpcYdpJXxzWM0Zv+/HIoxmKIeRpKJkMzla7BtwHiT
-shFPD7nJ3fZOkCdkKXQCYE8CaAxKwQKja27lzNL3pQHZef/7Uat3ytQeXIqR7xmq
-2WD2CKgk/l9W5TQ3FZKt5FwX5G409URIEBw+f3N8SuybYIUfAquXAVknqmZq4Txr
-LDn7sgs7ZFFkQ86Ma4bL
-=pjcX
+iQIcBAEBAgAGBQJTyBphAAoJELSic+t+oim9iTcP/1JJ6L9RBhNYQP3bLmlclPqk
+lJtwJijQezzfk3sUsf5XTGpsX9NDFZGPC9rio7le8EdVycypBcMUae2NrPTsCCe4
+OudcibXGVyqKhErxqF5onispuPjHq/pBdvrgbyNKCVCL1/YL08XGrXlEB+0Dh0jH
+MR1I+DMFVCtNhul1vbG1mv7bykakmRH7JYlxprv3IUDKrGq4m+I5QLqpBunQr31v
+QUBsVdZw+S5pV7Ru8oDOiT3p/nUQuDYw/kfat4TZPiE4I/WRjmD+nVgmaVe42wsW
+0rl9rwV0RIjEkHR9T4srYdo2v8+pkf6q6cGdsrH5HbwZrcmQqb/2Clkc6uEF27cM
+/3muxWt0xELuxWqbAKg+lUawwmt9N4Q+pxsB90VAmK5JLeu9x8f9+bQnrZZ82QS2
+PZktoK/jnrFVxdVBFLM1sP7TYCkDTKctnPaRZ2mYHTQR1/+Qpp7eLMT27vb76oIJ
+Xx31wvOBQO3L3mqdhiBRnoth9hf0KqRa2o+ELKJDR/LHdH0cLwRGzyt7ZiPif4K5
+FmKpBnbHY0bq7neZpcRbplElNyz4bDGyz/DHlcpSFm5Fuoe6xVdEpx7qO++2TuoC
+5gSZm7SvcgXdtDbvE2Y/watfZHc9yF3bYImkzFUZxA0IvsO1wSNQa2vP/6nxRthG
+LTHCZg+ic82DN0v3ucDI
+=FPBf
 -----END PGP SIGNATURE-----
 
---SuGb6p5JEpzYJdwO--
+--BzhqTaE66jeIVBY0--

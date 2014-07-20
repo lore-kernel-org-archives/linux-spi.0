@@ -1,45 +1,40 @@
-From: Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: [PATCH 4/4] ARM: DTS: fix the chip select gpios definition in
- the SPI nodes
-Date: Sat, 19 Jul 2014 04:16:33 +0900
-Message-ID: <53C97291.3040501@samsung.com>
-References: <1405523950-2231-1-git-send-email-javier.martinez@collabora.co.uk> <1405523950-2231-5-git-send-email-javier.martinez@collabora.co.uk> <20140717184944.GE17528@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+From: weiyj_lk-9Onoh4P/yGk@public.gmane.org
+Subject: [PATCH -next] spi/rockchip: remove duplicated include from spi-rockchip.c
+Date: Sun, 20 Jul 2014 22:01:24 +0800
+Message-ID: <1405864884-13981-1-git-send-email-weiyj_lk@163.com>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Cc: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Tomasz Figa <t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Sachin Kamat <sachin.kamat-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Olof Johansson <olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Naveen Krishna Chatradhi <ch.naveen-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140717184944.GE17528-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 07/18/14 03:49, Mark Brown wrote:
-> On Wed, Jul 16, 2014 at 05:19:10PM +0200, Javier Martinez Canillas wrote:
->> From: Naveen Krishna Chatradhi<ch.naveen-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
->>
->> This patch replaces the "cs-gpio" from "controller-data" node
->> as was specified in the old binding and uses the standard
->> "cs-gpios" property expected by the SPI core as is defined now
->> in the spi-s3c64xx driver DT binding.
->
-> I've applied this one too since everything here really ought to go in
-> together and we should probably try to get this into v3.16 - Kukjin,
-> please say if this is an issue and I can revert.
->
-It should be fine to me :)
+From: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
 
-Thanks for your asking.
+Remove duplicated include.
 
-- Kukjin
+Signed-off-by: Wei Yongjun <yongjun_wei-zrsr2BFq86L20UzCJQGyNP8+0UxHXcjY@public.gmane.org>
+---
+ drivers/spi/spi-rockchip.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 72fb287..d697381 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -26,7 +26,6 @@
+ #include <linux/of.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/io.h>
+-#include <linux/scatterlist.h>
+ #include <linux/dmaengine.h>
+ 
+ #define DRIVER_NAME "rockchip-spi"
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

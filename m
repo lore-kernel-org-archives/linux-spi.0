@@ -1,68 +1,141 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: omap2-mcspi: fix blatant abuse of the resource
- subsystem
-Date: Mon, 21 Jul 2014 16:44:42 +0100
-Message-ID: <20140721154442.GB17528@sirena.org.uk>
-References: <1405683053-14104-1-git-send-email-LW@KARO-electronics.de>
- <20140718171035.GQ17528@sirena.org.uk>
- <20140721075144.251bb67d@ipc1.ka-ro>
- <20140721121820.GW17528@sirena.org.uk>
- <20140721144104.5e37f1a0@ipc1.ka-ro>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="YOxyDEsNCn0QNWql"
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Benoit Cousson <bcousson@baylibre.com>,
-	Charulatha V <charu@ti.com>
-To: Lothar =?iso-8859-1?Q?Wa=DFmann?= <LW@KARO-electronics.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20140721144104.5e37f1a0@ipc1.ka-ro>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
+Subject: [PATCH v2] spi/pxa2xx-pci: Add common clock framework support in PCI glue layer
+Date: Fri, 25 Jul 2014 01:10:54 +0800
+Message-ID: <1406221854-12828-1-git-send-email-chiau.ee.chew@intel.com>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Kweh Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+From: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 
---YOxyDEsNCn0QNWql
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+SPI PXA2XX core layer has dependency on common clock framework
+to obtain information on host supported clock rate. Thus, we
+setup the clock device in the PCI glue layer to enable PCI mode
+host pass in the clock rate information.
 
-On Mon, Jul 21, 2014 at 02:41:04PM +0200, Lothar Wa=DFmann wrote:
-> Mark Brown wrote:
+Signed-off-by: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Acked-by: Kweh, Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+---
+ changelog v2:
+ i. add CONFIG_COMMON_CLK dependency for SPI_PXA2XX_PCI in Kconfig
+ ii. add clk cleanup in remove()
 
-> > Just to be clear the issue is with the presentation of your change, it
-> > is not appropriate to provide a changelog which consists mainly of
-> > widely directed personal insults especially given that it omits basic
-> > technical content.
+ drivers/spi/Kconfig          |    2 +-
+ drivers/spi/spi-pxa2xx-pci.c |   21 ++++++++++++++++++++-
+ 2 files changed, 21 insertions(+), 2 deletions(-)
 
-> I understood that, but I feel incapable to come up with a reasonable
-> changelog for this.
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 62e2242..aa005cb 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -380,7 +380,7 @@ config SPI_PXA2XX
+ 	  additional documentation can be found a Documentation/spi/pxa2xx.
+ 
+ config SPI_PXA2XX_PCI
+-	def_tristate SPI_PXA2XX && PCI
++	def_tristate SPI_PXA2XX && PCI && COMMON_CLK
+ 
+ config SPI_ROCKCHIP
+ 	tristate "Rockchip SPI controller driver"
+diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
+index c1865c9..20ebbc7 100644
+--- a/drivers/spi/spi-pxa2xx-pci.c
++++ b/drivers/spi/spi-pxa2xx-pci.c
+@@ -7,6 +7,8 @@
+ #include <linux/of_device.h>
+ #include <linux/module.h>
+ #include <linux/spi/pxa2xx_spi.h>
++#include <linux/clk.h>
++#include <linux/clk-provider.h>
+ 
+ enum {
+ 	PORT_CE4100,
+@@ -21,6 +23,7 @@ struct pxa_spi_info {
+ 	int tx_chan_id;
+ 	int rx_slave_id;
+ 	int rx_chan_id;
++	unsigned long max_clk_rate;
+ };
+ 
+ static struct pxa_spi_info spi_info_configs[] = {
+@@ -32,6 +35,7 @@ static struct pxa_spi_info spi_info_configs[] = {
+ 		.tx_chan_id = -1,
+ 		.rx_slave_id = -1,
+ 		.rx_chan_id = -1,
++		.max_clk_rate = 3686400,
+ 	},
+ 	[PORT_BYT] = {
+ 		.type = LPSS_SSP,
+@@ -41,6 +45,7 @@ static struct pxa_spi_info spi_info_configs[] = {
+ 		.tx_chan_id = 0,
+ 		.rx_slave_id = 1,
+ 		.rx_chan_id = 1,
++		.max_clk_rate = 50000000,
+ 	},
+ };
+ 
+@@ -53,6 +58,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	struct pxa2xx_spi_master spi_pdata;
+ 	struct ssp_device *ssp;
+ 	struct pxa_spi_info *c;
++	char buf[40];
+ 
+ 	ret = pcim_enable_device(dev);
+ 	if (ret)
+@@ -84,6 +90,12 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	ssp->port_id = (c->port_id >= 0) ? c->port_id : dev->devfn;
+ 	ssp->type = c->type;
+ 
++	snprintf(buf, sizeof(buf), "pxa2xx-spi.%d", ssp->port_id);
++	ssp->clk = clk_register_fixed_rate(&dev->dev, buf , NULL,
++					CLK_IS_ROOT, c->max_clk_rate);
++	 if (IS_ERR(ssp->clk))
++		return PTR_ERR(ssp->clk);
++
+ 	memset(&pi, 0, sizeof(pi));
+ 	pi.parent = &dev->dev;
+ 	pi.name = "pxa2xx-spi";
+@@ -92,8 +104,10 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	pi.size_data = sizeof(spi_pdata);
+ 
+ 	pdev = platform_device_register_full(&pi);
+-	if (IS_ERR(pdev))
++	if (IS_ERR(pdev)) {
++		clk_unregister(ssp->clk);
+ 		return PTR_ERR(pdev);
++	}
+ 
+ 	pci_set_drvdata(dev, pdev);
+ 
+@@ -103,8 +117,13 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ static void pxa2xx_spi_pci_remove(struct pci_dev *dev)
+ {
+ 	struct platform_device *pdev = pci_get_drvdata(dev);
++	struct pxa2xx_spi_master *spi_pdata;
++
++	spi_pdata = dev_get_platdata(&pdev->dev);
+ 
+ 	platform_device_unregister(pdev);
++	clk_unregister(spi_pdata->ssp.clk);
++	pci_set_drvdata(dev, NULL);
+ }
+ 
+ static const struct pci_device_id pxa2xx_spi_pci_devices[] = {
+-- 
+1.7.4.4
 
-Just describe in a specific, technical fashion what the problem is and
-what the fix does without reference to personal qualities of the various
-parties involved in the code being the way it is.
-
---YOxyDEsNCn0QNWql
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJTzTVnAAoJELSic+t+oim9JSgP/1YbQarKbfq0/M89Klmqnvf5
-CVXLUgVL+EPAAI9UEDn6+53S5OqshLAvtD5/4KU7FWxIwyT+DP0eKTespp3O+nMb
-J8gHuG4KevPqzoJi8xmuZGCff3QCA4LPY1S0UUk3sYQ6hTQZzdP1qJjxgHytTDUl
-n2u24e54PtqmsubcPuYFnhUIvK2t57j4U7dY1hYbot5zOMBBubwvEJZ+TJQRa/xN
-/kymMpiO+1jFgTTatqARQmp1abI9TeXZAm6071WBzm0T9lxshKjW49usT9TBVvqv
-+ZkadN/n+rBfv85xaBOJu1H0/mEh1wfceirndoqzDkCKoe0Y2dtnVZ0qun9MUJIB
-qQKyXwNOPRkp1Oe/9qjz4twDlzfeyCrNZvLnQ7Ez0hPmxmTuE84qjeVKQfcmFHJ5
-k6e0TMOvhaPp1y5HiXMgjPilHDlHC/0hMl8PE2trrOA83tFL+CIuBB1B1FuqWp3p
-pTa+3WizSC0WK+5LXbFHtlOkcOdocTdoTLLD5ESOYqP3CB9AGQUghWNWJN8s/Bd/
-BbyQA3APGRo5XjdZepNDgqIdIEYYhweNZqpV49jzuCdQzGDM/dZK1P28EkxUuHap
-1q57uDphql+FWObGg2whYBvzEm6Qm5u6dQf4c4eGQ2eU8n3b3EBKYNID7uPYxGWu
-2KJlnYG1hpfxBDItg0KC
-=xbpx
------END PGP SIGNATURE-----
-
---YOxyDEsNCn0QNWql--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

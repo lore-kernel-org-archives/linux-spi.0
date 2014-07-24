@@ -1,141 +1,93 @@
-From: chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org
-Subject: [PATCH v2] spi/pxa2xx-pci: Add common clock framework support in PCI glue layer
-Date: Fri, 25 Jul 2014 01:10:54 +0800
-Message-ID: <1406221854-12828-1-git-send-email-chiau.ee.chew@intel.com>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Kweh Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
-To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Kweh Hock Leong <hock.leong.kweh@intel.com>
+Subject: [PATCH] spi/pxa2xx-pci: Enable DMA binding through device name
+Date: Thu, 24 Jul 2014 18:01:51 +0800
+Message-ID: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com>
+Cc: Kweh Hock Leong <hock.leong.kweh@intel.com>,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Darren Hart <dvhart@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Chew Chiau Ee <chiau.ee.chew@intel.com>, chiauee85@gmail.com
+To: Eric Miao <eric.y.miao@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: "Chew, Chiau Ee" <chiau.ee.chew@intel.com>
 
-SPI PXA2XX core layer has dependency on common clock framework
-to obtain information on host supported clock rate. Thus, we
-setup the clock device in the PCI glue layer to enable PCI mode
-host pass in the clock rate information.
+Intel LPSS Baytrail supports two DMA controllers and SPI is only
+using one of the DMA controller. During DMA channel request,
+we need to ensure the requested Tx and Rx channels are from the correct
+DMA controller. Thus, we add extra checking in filter callback funtion
+by matching against the DMA controller device name.
 
-Signed-off-by: Chew, Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Acked-by: Kweh, Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Chew, Chiau Ee <chiau.ee.chew@intel.com>
+Signed-off-by: Kweh, Hock Leong <hock.leong.kweh@intel.com>
 ---
- changelog v2:
- i. add CONFIG_COMMON_CLK dependency for SPI_PXA2XX_PCI in Kconfig
- ii. add clk cleanup in remove()
+ drivers/spi/spi-pxa2xx-dma.c   | 5 +++++
+ drivers/spi/spi-pxa2xx-pci.c   | 3 +++
+ include/linux/spi/pxa2xx_spi.h | 1 +
+ 3 files changed, 9 insertions(+)
 
- drivers/spi/Kconfig          |    2 +-
- drivers/spi/spi-pxa2xx-pci.c |   21 ++++++++++++++++++++-
- 2 files changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 62e2242..aa005cb 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -380,7 +380,7 @@ config SPI_PXA2XX
- 	  additional documentation can be found a Documentation/spi/pxa2xx.
+diff --git a/drivers/spi/spi-pxa2xx-dma.c b/drivers/spi/spi-pxa2xx-dma.c
+index c41ff14..4c4e918 100644
+--- a/drivers/spi/spi-pxa2xx-dma.c
++++ b/drivers/spi/spi-pxa2xx-dma.c
+@@ -214,6 +214,11 @@ static bool pxa2xx_spi_dma_filter(struct dma_chan *chan, void *param)
+ {
+ 	const struct pxa2xx_spi_master *pdata = param;
  
- config SPI_PXA2XX_PCI
--	def_tristate SPI_PXA2XX && PCI
-+	def_tristate SPI_PXA2XX && PCI && COMMON_CLK
- 
- config SPI_ROCKCHIP
- 	tristate "Rockchip SPI controller driver"
++	if (pdata->dma_devname) {
++		if (strcmp(dev_name(chan->device->dev), pdata->dma_devname))
++			return false;
++	}
++
+ 	return chan->chan_id == pdata->tx_chan_id ||
+ 	       chan->chan_id == pdata->rx_chan_id;
+ }
 diff --git a/drivers/spi/spi-pxa2xx-pci.c b/drivers/spi/spi-pxa2xx-pci.c
-index c1865c9..20ebbc7 100644
+index c1865c9..7a21bce 100644
 --- a/drivers/spi/spi-pxa2xx-pci.c
 +++ b/drivers/spi/spi-pxa2xx-pci.c
-@@ -7,6 +7,8 @@
- #include <linux/of_device.h>
- #include <linux/module.h>
- #include <linux/spi/pxa2xx_spi.h>
-+#include <linux/clk.h>
-+#include <linux/clk-provider.h>
- 
- enum {
- 	PORT_CE4100,
-@@ -21,6 +23,7 @@ struct pxa_spi_info {
+@@ -21,6 +21,7 @@ struct pxa_spi_info {
  	int tx_chan_id;
  	int rx_slave_id;
  	int rx_chan_id;
-+	unsigned long max_clk_rate;
++	char *dma_devname;
  };
  
  static struct pxa_spi_info spi_info_configs[] = {
-@@ -32,6 +35,7 @@ static struct pxa_spi_info spi_info_configs[] = {
- 		.tx_chan_id = -1,
- 		.rx_slave_id = -1,
- 		.rx_chan_id = -1,
-+		.max_clk_rate = 3686400,
- 	},
- 	[PORT_BYT] = {
- 		.type = LPSS_SSP,
-@@ -41,6 +45,7 @@ static struct pxa_spi_info spi_info_configs[] = {
+@@ -41,6 +42,7 @@ static struct pxa_spi_info spi_info_configs[] = {
  		.tx_chan_id = 0,
  		.rx_slave_id = 1,
  		.rx_chan_id = 1,
-+		.max_clk_rate = 50000000,
++		.dma_devname = "0000:00:1e.0"
  	},
  };
  
-@@ -53,6 +58,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 	struct pxa2xx_spi_master spi_pdata;
- 	struct ssp_device *ssp;
- 	struct pxa_spi_info *c;
-+	char buf[40];
+@@ -72,6 +74,7 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
+ 	spi_pdata.rx_slave_id = c->rx_slave_id;
+ 	spi_pdata.rx_chan_id = c->rx_chan_id;
+ 	spi_pdata.enable_dma = c->rx_slave_id >= 0 && c->tx_slave_id >= 0;
++	spi_pdata.dma_devname = c->dma_devname;
  
- 	ret = pcim_enable_device(dev);
- 	if (ret)
-@@ -84,6 +90,12 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 	ssp->port_id = (c->port_id >= 0) ? c->port_id : dev->devfn;
- 	ssp->type = c->type;
+ 	ssp = &spi_pdata.ssp;
+ 	ssp->phys_base = pci_resource_start(dev, 0);
+diff --git a/include/linux/spi/pxa2xx_spi.h b/include/linux/spi/pxa2xx_spi.h
+index 82d5111..264c3cb 100644
+--- a/include/linux/spi/pxa2xx_spi.h
++++ b/include/linux/spi/pxa2xx_spi.h
+@@ -34,6 +34,7 @@ struct pxa2xx_spi_master {
+ 	int tx_chan_id;
+ 	int rx_slave_id;
+ 	int tx_slave_id;
++	char *dma_devname;
  
-+	snprintf(buf, sizeof(buf), "pxa2xx-spi.%d", ssp->port_id);
-+	ssp->clk = clk_register_fixed_rate(&dev->dev, buf , NULL,
-+					CLK_IS_ROOT, c->max_clk_rate);
-+	 if (IS_ERR(ssp->clk))
-+		return PTR_ERR(ssp->clk);
-+
- 	memset(&pi, 0, sizeof(pi));
- 	pi.parent = &dev->dev;
- 	pi.name = "pxa2xx-spi";
-@@ -92,8 +104,10 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- 	pi.size_data = sizeof(spi_pdata);
- 
- 	pdev = platform_device_register_full(&pi);
--	if (IS_ERR(pdev))
-+	if (IS_ERR(pdev)) {
-+		clk_unregister(ssp->clk);
- 		return PTR_ERR(pdev);
-+	}
- 
- 	pci_set_drvdata(dev, pdev);
- 
-@@ -103,8 +117,13 @@ static int pxa2xx_spi_pci_probe(struct pci_dev *dev,
- static void pxa2xx_spi_pci_remove(struct pci_dev *dev)
- {
- 	struct platform_device *pdev = pci_get_drvdata(dev);
-+	struct pxa2xx_spi_master *spi_pdata;
-+
-+	spi_pdata = dev_get_platdata(&pdev->dev);
- 
- 	platform_device_unregister(pdev);
-+	clk_unregister(spi_pdata->ssp.clk);
-+	pci_set_drvdata(dev, NULL);
- }
- 
- static const struct pci_device_id pxa2xx_spi_pci_devices[] = {
+ 	/* For non-PXA arches */
+ 	struct ssp_device ssp;
 -- 
-1.7.4.4
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+1.9.1

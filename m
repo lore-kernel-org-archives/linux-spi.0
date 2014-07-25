@@ -1,75 +1,127 @@
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH] spi/pxa2xx-pci: Enable DMA binding through device name
-Date: Fri, 25 Jul 2014 10:38:36 +0200
-Message-ID: <7309109.iKHmHOxjzD@wuerfel>
-References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com> <5574058.fMy2hcvT92@wuerfel> <20140725082249.GX1857@lahna.fi.intel.com>
+From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 2/2] spi: sh-msiof: Use correct device for DMA
+ mapping with IOMMU
+Date: Fri, 25 Jul 2014 14:20:22 +0530
+Message-ID: <20140725085022.GM8181@intel.com>
+References: <1405094182-13962-1-git-send-email-geert+renesas@glider.be>
+ <1405094182-13962-2-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-arm-kernel@lists.infradead.org,
-	Kweh Hock Leong <hock.leong.kweh@intel.com>,
-	Eric Miao <eric.y.miao@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Chew Chiau Ee <chiau.ee.chew@intel.com>,
-	Darren Hart <dvhart@linux.intel.com>, chiauee85@gmail.com,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20140725082249.GX1857@lahna.fi.intel.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1405094182-13962-2-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Friday 25 July 2014 11:22:49 Mika Westerberg wrote:
-> > All you need to do is change your filter function to take the
-> > slave id from pxa_spi_info and stick it in there, e.g.
-> > 
-> > static bool pxa2xx_spi_dw_dma_filter(struct dma_chan *chan, void *param)
-> > {       
-> >         const struct pxa2xx_spi_master *pdata = param;
-> >         struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
-> >         
-> >         dwc->request_line = fargs->req;
-> >         dwc->src_master = 0;
-> >         dwc->dst_master = 0;
-> >         
-> >         return 1;
-> > }           
+On Fri, Jul 11, 2014 at 05:56:22PM +0200, Geert Uytterhoeven wrote:
+> To function correctly in the presence of an IOMMU, the DMA buffers must be
+> mapped using the DMA channel's device instead of the MSIOF platform
+> device's device.
+
+Acked-by: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+
+I think Mark should pick this one up, I will pick the Documentation update
+thru slave-dmanegine tree
+
+-- 
+~Vinod
 > 
-> Oh man. That makes pxa2xx_spi dependent on a certain specific DMA engine
-> driver.
-
-I think you can improve this by putting the filter function (and a pointer
-to it) into the pxa2xx_spi_master data provided by the PCI driver.
-
-On ARM, we usually provide those pointers through platform_data from
-the board file.
-
-> > Note that the filter function by definition is specific to the dma
-> > controller, not the dma slave (that's why most people define it in
-> > the dmaengine driver), and the pxa2xx_spi_dma_filter() function used
-> > in spi-pxa2xx-dma.c looks like it was written for another dma engine:
+> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+> ---
+> v2:
+>   - Use "dma_chan.device->dev" instead of "dma_chan.dev->device",
+>   - Also fix calls to dma_unmap_single(), dma_mapping_error(), and
+>     dma_sync_single_for_*()".
+> ---
+>  drivers/spi/spi-sh-msiof.c | 26 ++++++++++++++++----------
+>  1 file changed, 16 insertions(+), 10 deletions(-)
 > 
-> I wonder what's the rationale that passing slave_id with
-> dma_slave_config is wrong? The current code works fine with that and is
-> is independent of the DMA engine driver (even though we know that it is
-> going to be dw-dma).
+> diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+> index 9922ed3a4441..6f449b24704a 100644
+> --- a/drivers/spi/spi-sh-msiof.c
+> +++ b/drivers/spi/spi-sh-msiof.c
+> @@ -644,8 +644,8 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+>  
+>  	if (tx) {
+>  		ier_bits |= IER_TDREQE | IER_TDMAE;
+> -		dma_sync_single_for_device(&p->pdev->dev, p->tx_dma_addr, len,
+> -					   DMA_TO_DEVICE);
+> +		dma_sync_single_for_device(p->master->dma_tx->device->dev,
+> +					   p->tx_dma_addr, len, DMA_TO_DEVICE);
+>  		desc_tx = dmaengine_prep_slave_single(p->master->dma_tx,
+>  					p->tx_dma_addr, len, DMA_TO_DEVICE,
+>  					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+> @@ -716,7 +716,8 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+>  	}
+>  
+>  	if (rx)
+> -		dma_sync_single_for_cpu(&p->pdev->dev, p->rx_dma_addr, len,
+> +		dma_sync_single_for_cpu(p->master->dma_rx->device->dev,
+> +					p->rx_dma_addr, len,
+>  					DMA_FROM_DEVICE);
+>  
+>  	return 0;
+> @@ -996,6 +997,7 @@ static int sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
+>  	const struct sh_msiof_spi_info *info = dev_get_platdata(dev);
+>  	const struct resource *res;
+>  	struct spi_master *master;
+> +	struct device *tx_dev, *rx_dev;
+>  
+>  	if (!info || !info->dma_tx_id || !info->dma_rx_id)
+>  		return 0;	/* The driver assumes no error */
+> @@ -1026,21 +1028,23 @@ static int sh_msiof_request_dma(struct sh_msiof_spi_priv *p)
+>  	if (!p->rx_dma_page)
+>  		goto free_tx_page;
+>  
+> -	p->tx_dma_addr = dma_map_single(dev, p->tx_dma_page, PAGE_SIZE,
+> +	tx_dev = master->dma_tx->device->dev;
+> +	p->tx_dma_addr = dma_map_single(tx_dev, p->tx_dma_page, PAGE_SIZE,
+>  					DMA_TO_DEVICE);
+> -	if (dma_mapping_error(dev, p->tx_dma_addr))
+> +	if (dma_mapping_error(tx_dev, p->tx_dma_addr))
+>  		goto free_rx_page;
+>  
+> -	p->rx_dma_addr = dma_map_single(dev, p->rx_dma_page, PAGE_SIZE,
+> +	rx_dev = master->dma_rx->device->dev;
+> +	p->rx_dma_addr = dma_map_single(rx_dev, p->rx_dma_page, PAGE_SIZE,
+>  					DMA_FROM_DEVICE);
+> -	if (dma_mapping_error(dev, p->rx_dma_addr))
+> +	if (dma_mapping_error(rx_dev, p->rx_dma_addr))
+>  		goto unmap_tx_page;
+>  
+>  	dev_info(dev, "DMA available");
+>  	return 0;
+>  
+>  unmap_tx_page:
+> -	dma_unmap_single(dev, p->tx_dma_addr, PAGE_SIZE, DMA_TO_DEVICE);
+> +	dma_unmap_single(tx_dev, p->tx_dma_addr, PAGE_SIZE, DMA_TO_DEVICE);
+>  free_rx_page:
+>  	free_page((unsigned long)p->rx_dma_page);
+>  free_tx_page:
+> @@ -1062,8 +1066,10 @@ static void sh_msiof_release_dma(struct sh_msiof_spi_priv *p)
+>  		return;
+>  
+>  	dev = &p->pdev->dev;
+> -	dma_unmap_single(dev, p->rx_dma_addr, PAGE_SIZE, DMA_FROM_DEVICE);
+> -	dma_unmap_single(dev, p->tx_dma_addr, PAGE_SIZE, DMA_TO_DEVICE);
+> +	dma_unmap_single(master->dma_rx->device->dev, p->rx_dma_addr,
+> +			 PAGE_SIZE, DMA_FROM_DEVICE);
+> +	dma_unmap_single(master->dma_tx->device->dev, p->tx_dma_addr,
+> +			 PAGE_SIZE, DMA_TO_DEVICE);
+>  	free_page((unsigned long)p->rx_dma_page);
+>  	free_page((unsigned long)p->tx_dma_page);
+>  	dma_release_channel(master->dma_rx);
+> -- 
+> 1.9.1
 > 
-> The dw-dma handles slave_id in its implementation of
-> dmaengine_slave_config().
 
-The main point is that a single 'slave_id' is not actually enough to
-identify what a slave needs. In case of dw_dma, the dma engine actually
-requires three numbers (request line, source master, destination master)
-to identify it, and there is no good way to put all that information into
-a single integer. Other dma engines require a different set of data.
-
-There are only two drivers left that actually use slave_id in this way,
-and only for the legacy (no DT or ACPI) case, every other driver uses
-either DT or a filter function. I believe the shmobile part will soon
-be done with, after shmobile has been converted to DT, and after that
-we should remove the slave_id field from the dma_slave_config interface.
-
-	Arnd
+-- 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

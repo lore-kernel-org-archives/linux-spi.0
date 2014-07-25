@@ -1,13 +1,11 @@
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 Subject: Re: [PATCH] spi/pxa2xx-pci: Enable DMA binding through device name
-Date: Fri, 25 Jul 2014 11:22:49 +0300
-Message-ID: <20140725082249.GX1857@lahna.fi.intel.com>
-References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com>
- <20140724140620.GP1857@lahna.fi.intel.com>
- <20140725071138.GU1857@lahna.fi.intel.com>
- <5574058.fMy2hcvT92@wuerfel>
+Date: Fri, 25 Jul 2014 10:38:36 +0200
+Message-ID: <7309109.iKHmHOxjzD@wuerfel>
+References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com> <5574058.fMy2hcvT92@wuerfel> <20140725082249.GX1857@lahna.fi.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
 Cc: linux-arm-kernel@lists.infradead.org,
 	Kweh Hock Leong <hock.leong.kweh@intel.com>,
 	Eric Miao <eric.y.miao@gmail.com>,
@@ -18,75 +16,60 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	Darren Hart <dvhart@linux.intel.com>, chiauee85@gmail.com,
 	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Arnd Bergmann <arnd@arndb.de>
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <5574058.fMy2hcvT92@wuerfel>
+In-Reply-To: <20140725082249.GX1857@lahna.fi.intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 25, 2014 at 09:58:42AM +0200, Arnd Bergmann wrote:
-> On Friday 25 July 2014 10:11:38 Mika Westerberg wrote:
-> > On Thu, Jul 24, 2014 at 05:06:20PM +0300, Mika Westerberg wrote:
-> > > > On a related note, there seems to be a bug in this driver, which
-> > > > attempts to set the slave_id through dmaengine_slave_config(), which
-> > > > is wrong in both cases, ACPI and filter functions.
-> > > 
-> > > Good point. We will fix this, thanks.
+On Friday 25 July 2014 11:22:49 Mika Westerberg wrote:
+> > All you need to do is change your filter function to take the
+> > slave id from pxa_spi_info and stick it in there, e.g.
 > > 
-> > I take that back. How we are supposed to set the slave_id if we don't
-> > have request line information available (from ACPI or DT)?
+> > static bool pxa2xx_spi_dw_dma_filter(struct dma_chan *chan, void *param)
+> > {       
+> >         const struct pxa2xx_spi_master *pdata = param;
+> >         struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
+> >         
+> >         dwc->request_line = fargs->req;
+> >         dwc->src_master = 0;
+> >         dwc->dst_master = 0;
+> >         
+> >         return 1;
+> > }           
 > 
-> If you don't have the request line information, you are screwed and you
-> can't set it from either the filter function or slave_config.
+> Oh man. That makes pxa2xx_spi dependent on a certain specific DMA engine
+> driver.
+
+I think you can improve this by putting the filter function (and a pointer
+to it) into the pxa2xx_spi_master data provided by the PCI driver.
+
+On ARM, we usually provide those pointers through platform_data from
+the board file.
+
+> > Note that the filter function by definition is specific to the dma
+> > controller, not the dma slave (that's why most people define it in
+> > the dmaengine driver), and the pxa2xx_spi_dma_filter() function used
+> > in spi-pxa2xx-dma.c looks like it was written for another dma engine:
 > 
-> However, it looks like you do have it, at least this is what the
-> code tells me:
+> I wonder what's the rationale that passing slave_id with
+> dma_slave_config is wrong? The current code works fine with that and is
+> is independent of the DMA engine driver (even though we know that it is
+> going to be dw-dma).
 > 
-> static struct pxa_spi_info spi_info_configs[] = {
->         [PORT_CE4100] = {
-> 		...
->         },
->         [PORT_BYT] = {
->                 .type = LPSS_SSP,
->                 .port_id = 0,
->                 .num_chipselect = 1,
->                 .tx_slave_id = 0,
->                 .tx_chan_id = 0,
->                 .rx_slave_id = 1,
->                 .rx_chan_id = 1,
->         },
-> };
+> The dw-dma handles slave_id in its implementation of
+> dmaengine_slave_config().
 
-That's right we do have it.
+The main point is that a single 'slave_id' is not actually enough to
+identify what a slave needs. In case of dw_dma, the dma engine actually
+requires three numbers (request line, source master, destination master)
+to identify it, and there is no good way to put all that information into
+a single integer. Other dma engines require a different set of data.
 
-> All you need to do is change your filter function to take the
-> slave id from pxa_spi_info and stick it in there, e.g.
-> 
-> static bool pxa2xx_spi_dw_dma_filter(struct dma_chan *chan, void *param)
-> {       
->         const struct pxa2xx_spi_master *pdata = param;
->         struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
->         
->         dwc->request_line = fargs->req;
->         dwc->src_master = 0;
->         dwc->dst_master = 0;
->         
->         return 1;
-> }           
+There are only two drivers left that actually use slave_id in this way,
+and only for the legacy (no DT or ACPI) case, every other driver uses
+either DT or a filter function. I believe the shmobile part will soon
+be done with, after shmobile has been converted to DT, and after that
+we should remove the slave_id field from the dma_slave_config interface.
 
-Oh man. That makes pxa2xx_spi dependent on a certain specific DMA engine
-driver.
-
-> Note that the filter function by definition is specific to the dma
-> controller, not the dma slave (that's why most people define it in
-> the dmaengine driver), and the pxa2xx_spi_dma_filter() function used
-> in spi-pxa2xx-dma.c looks like it was written for another dma engine:
-
-I wonder what's the rationale that passing slave_id with
-dma_slave_config is wrong? The current code works fine with that and is
-is independent of the DMA engine driver (even though we know that it is
-going to be dw-dma).
-
-The dw-dma handles slave_id in its implementation of
-dmaengine_slave_config().
+	Arnd

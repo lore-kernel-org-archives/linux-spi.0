@@ -1,56 +1,83 @@
-From: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] dmaengine: Clarify device parameter for
- dma_sync_*_for_*()
-Date: Fri, 25 Jul 2014 14:21:48 +0530
-Message-ID: <20140725085148.GN8181@intel.com>
-References: <1405094182-13962-1-git-send-email-geert+renesas@glider.be>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH] spi/pxa2xx-pci: Enable DMA binding through device name
+Date: Fri, 25 Jul 2014 12:07:14 +0300
+Message-ID: <20140725090714.GY1857@lahna.fi.intel.com>
+References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com>
+ <5574058.fMy2hcvT92@wuerfel>
+ <20140725082249.GX1857@lahna.fi.intel.com>
+ <7309109.iKHmHOxjzD@wuerfel>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Dan Williams <dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	Kweh Hock Leong <hock.leong.kweh@intel.com>,
+	Eric Miao <eric.y.miao@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Chew Chiau Ee <chiau.ee.chew@intel.com>,
+	Darren Hart <dvhart@linux.intel.com>, chiauee85@gmail.com,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1405094182-13962-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <7309109.iKHmHOxjzD@wuerfel>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Jul 11, 2014 at 05:56:21PM +0200, Geert Uytterhoeven wrote:
-> Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-> ---
-> v2:
->   - New
-> ---
->  Documentation/dmaengine.txt | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+On Fri, Jul 25, 2014 at 10:38:36AM +0200, Arnd Bergmann wrote:
+> On Friday 25 July 2014 11:22:49 Mika Westerberg wrote:
+> > > All you need to do is change your filter function to take the
+> > > slave id from pxa_spi_info and stick it in there, e.g.
+> > > 
+> > > static bool pxa2xx_spi_dw_dma_filter(struct dma_chan *chan, void *param)
+> > > {       
+> > >         const struct pxa2xx_spi_master *pdata = param;
+> > >         struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
+> > >         
+> > >         dwc->request_line = fargs->req;
+> > >         dwc->src_master = 0;
+> > >         dwc->dst_master = 0;
+> > >         
+> > >         return 1;
+> > > }           
+> > 
+> > Oh man. That makes pxa2xx_spi dependent on a certain specific DMA engine
+> > driver.
 > 
-> diff --git a/Documentation/dmaengine.txt b/Documentation/dmaengine.txt
-> index 879b6e31e2da..87d3f192e160 100644
-> --- a/Documentation/dmaengine.txt
-> +++ b/Documentation/dmaengine.txt
-> @@ -100,8 +100,10 @@ The slave DMA usage consists of following steps:
->     The peripheral driver is expected to have mapped the scatterlist for
->     the DMA operation prior to calling device_prep_slave_sg, and must
->     keep the scatterlist mapped until the DMA operation has completed.
-> -   The scatterlist must be mapped using the DMA struct device.  So,
-> -   normal setup should look like this:
-> +   The scatterlist must be mapped using the DMA struct device.
-> +   If a mapping needs to be synchronized later, dma_sync_*_for_*() must be
-> +   called using the DMA struct device, too.
-> +   So, normal setup should look like this:
->  
->  	nr_sg = dma_map_sg(chan->device->dev, sgl, sg_len);
->  	if (nr_sg == 0)
-> -- 
-> 1.9.1
-> 
-Applied, thanks
+> I think you can improve this by putting the filter function (and a pointer
+> to it) into the pxa2xx_spi_master data provided by the PCI driver.
 
--- 
-~Vinod
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Indeed, that looks better. It still makes the PCI part of the driver
+dependent on a particular DMA engine driver but is certainly better than
+the core pxa2xx_spi driver.
+
+> On ARM, we usually provide those pointers through platform_data from
+> the board file.
+> 
+> > > Note that the filter function by definition is specific to the dma
+> > > controller, not the dma slave (that's why most people define it in
+> > > the dmaengine driver), and the pxa2xx_spi_dma_filter() function used
+> > > in spi-pxa2xx-dma.c looks like it was written for another dma engine:
+> > 
+> > I wonder what's the rationale that passing slave_id with
+> > dma_slave_config is wrong? The current code works fine with that and is
+> > is independent of the DMA engine driver (even though we know that it is
+> > going to be dw-dma).
+> > 
+> > The dw-dma handles slave_id in its implementation of
+> > dmaengine_slave_config().
+> 
+> The main point is that a single 'slave_id' is not actually enough to
+> identify what a slave needs. In case of dw_dma, the dma engine actually
+> requires three numbers (request line, source master, destination master)
+> to identify it, and there is no good way to put all that information into
+> a single integer. Other dma engines require a different set of data.
+> 
+> There are only two drivers left that actually use slave_id in this way,
+> and only for the legacy (no DT or ACPI) case, every other driver uses
+> either DT or a filter function. I believe the shmobile part will soon
+> be done with, after shmobile has been converted to DT, and after that
+> we should remove the slave_id field from the dma_slave_config interface.
+
+OK, thanks for the explanation.

@@ -1,12 +1,15 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Subject: Re: [PATCH] spi/pxa2xx-pci: Enable DMA binding through device name
-Date: Fri, 25 Jul 2014 12:19:02 +0200
-Message-ID: <5426556.OzZIXLrofJ@wuerfel>
-References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com> <20140725090714.GY1857@lahna.fi.intel.com> <20140725095559.GA1857@lahna.fi.intel.com>
+Date: Fri, 25 Jul 2014 13:45:47 +0300
+Message-ID: <1406285147.8530.13.camel@smile.fi.intel.com>
+References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com>
+	 <20140725090714.GY1857@lahna.fi.intel.com>
+	 <20140725095559.GA1857@lahna.fi.intel.com> <5426556.OzZIXLrofJ@wuerfel>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Kweh Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
 	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
@@ -14,142 +17,53 @@ Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
 	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140725095559.GA1857-3PARRvDOhMZrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <5426556.OzZIXLrofJ@wuerfel>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Friday 25 July 2014 12:55:59 Mika Westerberg wrote:
-> On Fri, Jul 25, 2014 at 12:07:14PM +0300, Mika Westerberg wrote:
-> > On Fri, Jul 25, 2014 at 10:38:36AM +0200, Arnd Bergmann wrote:
-> > > On Friday 25 July 2014 11:22:49 Mika Westerberg wrote:
-> > > > > All you need to do is change your filter function to take the
-> > > > > slave id from pxa_spi_info and stick it in there, e.g.
-> > > > > 
-> > > > > static bool pxa2xx_spi_dw_dma_filter(struct dma_chan *chan, void *param)
-> > > > > {       
-> > > > >         const struct pxa2xx_spi_master *pdata = param;
-> > > > >         struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
-> > > > >         
-> > > > >         dwc->request_line = fargs->req;
-> > > > >         dwc->src_master = 0;
-> > > > >         dwc->dst_master = 0;
-> > > > >         
-> > > > >         return 1;
-> > > > > }           
-> > > > 
-> > > > Oh man. That makes pxa2xx_spi dependent on a certain specific DMA engine
-> > > > driver.
-> > > 
-> > > I think you can improve this by putting the filter function (and a pointer
-> > > to it) into the pxa2xx_spi_master data provided by the PCI driver.
-> > 
-> > Indeed, that looks better. It still makes the PCI part of the driver
-> > dependent on a particular DMA engine driver but is certainly better than
-> > the core pxa2xx_spi driver.
-> 
-> Something like this?
-> 
-> Hock Leong / Chiaue Ee, are you able to check if this works on your BYT
-> machines?
+On Fri, 2014-07-25 at 12:19 +0200, Arnd Bergmann wrote:
+> On Friday 25 July 2014 12:55:59 Mika Westerberg wrote:
+> > On Fri, Jul 25, 2014 at 12:07:14PM +0300, Mika Westerberg wrote:
+> > > On Fri, Jul 25, 2014 at 10:38:36AM +0200, Arnd Bergmann wrote:
+> > > > On Friday 25 July 2014 11:22:49 Mika Westerberg wrote:
 
-I think I found a small bug, and one detail that could be improved.
+[]
 
-> @@ -321,12 +310,14 @@ int pxa2xx_spi_dma_setup(struct driver_data *drv_data)
->  		return -ENOMEM;
->  
->  	drv_data->tx_chan = dma_request_slave_channel_compat(mask,
-> -				pxa2xx_spi_dma_filter, pdata, dev, "tx");
-> +				pdata->dma_filter, pdata->dma_filter_param,
-> +				dev, "tx");
->  	if (!drv_data->tx_chan)
->  		return -ENODEV;
+> > Something like this?
 
-If you change this part to pass '(void *)info->tx_slave_id' rather than
-pdata->dma_filter_param, you can simplify the next code:
+Arnd, this dependency to certain DMA driver looks really bad.
 
-> +static bool pxa2xx_spi_pci_dma_filter(struct dma_chan *chan, void *param)
-> +{
-> +	struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
-> +	const struct pxa_spi_info *info = param;
-> +
-> +	if (chan->chan_id == info->tx_chan_id)
-> +		dwc->request_line = info->tx_slave_id;
-> +	else if (chan->chan_id == info->rx_chan_id)
-> +		dwc->request_line = info->rx_slave_id;
-> +	else
-> +		return false;
-> +
-> +	dwc->src_master = 0;
-> +	dwc->dst_master = 0;
-> +
-> +	return true;
-> +}
+If we go that way, can we split that part to [another] module and make
+it dependent to DW_DMAC?
 
-to disregard the tx_chan_id, which is really arbitrary as far as I can tell.
+Or shall we introduce a dmaengine type field in the platform data and
+dynamically choose proper filter-whatever-function to get the channel?
 
-What I think you got wrong here (by following my bad advice) is the master
-number. Looking at the code for dw_dma, I think src_master needs to be '1'
-for your driver.
+> > Hock Leong / Chiaue Ee, are you able to check if this works on your BYT
+> > machines?
 
-If we do the same change in the drivers/tty/serial/8250/8250_pci.c driver,
-the dw_dma driver can be simplified a little by removing the special
-case for the request line setting.
+> What I think you got wrong here (by following my bad advice) is the master
+> number. Looking at the code for dw_dma, I think src_master needs to be '1'
+> for your driver.
 
-diff --git a/drivers/dma/dw/core.c b/drivers/dma/dw/core.c
-index 1af731b83b3f..674f69fe6662 100644
---- a/drivers/dma/dw/core.c
-+++ b/drivers/dma/dw/core.c
-@@ -37,24 +37,6 @@
-  * support descriptor writeback.
-  */
- 
--static inline bool is_request_line_unset(struct dw_dma_chan *dwc)
--{
--	return dwc->request_line == (typeof(dwc->request_line))~0;
--}
--
--static inline void dwc_set_masters(struct dw_dma_chan *dwc)
--{
--	struct dw_dma *dw = to_dw_dma(dwc->chan.device);
--	struct dw_dma_slave *dws = dwc->chan.private;
--	unsigned char mmax = dw->nr_masters - 1;
--
--	if (!is_request_line_unset(dwc))
--		return;
--
--	dwc->src_master = min_t(unsigned char, mmax, dwc_get_sms(dws));
--	dwc->dst_master = min_t(unsigned char, mmax, dwc_get_dms(dws));
--}
--
- #define DWC_DEFAULT_CTLLO(_chan) ({				\
- 		struct dw_dma_chan *_dwc = to_dw_dma_chan(_chan);	\
- 		struct dma_slave_config	*_sconfig = &_dwc->dma_sconfig;	\
-@@ -967,10 +949,6 @@ set_runtime_config(struct dma_chan *chan, struct dma_slave_config *sconfig)
- 	memcpy(&dwc->dma_sconfig, sconfig, sizeof(*sconfig));
- 	dwc->direction = sconfig->direction;
- 
--	/* Take the request line from slave_id member */
--	if (is_request_line_unset(dwc))
--		dwc->request_line = sconfig->slave_id;
--
- 	convert_burst(&dwc->dma_sconfig.src_maxburst);
- 	convert_burst(&dwc->dma_sconfig.dst_maxburst);
- 
-@@ -1123,8 +1101,6 @@ static int dwc_alloc_chan_resources(struct dma_chan *chan)
- 	 * doesn't mean what you think it means), and status writeback.
- 	 */
- 
--	dwc_set_masters(dwc);
--
- 	spin_lock_irqsave(&dwc->lock, flags);
- 	i = dwc->descs_allocated;
- 	while (dwc->descs_allocated < NR_DESCS_PER_CHANNEL) {
+On some SoCs we have up to 4 masters. It's blurry for me how the SPI
+should choose those masters. Currently it works fine, but I suspect
+there are [might be] performance issues.
 
-	Arnd
+What about AVR32 case? We have to fix drivers as well there.
+
+> the dw_dma driver can be simplified a little by removing the special
+> case for the request line setting.
+
+Yes, this part I like.
+
+-- 
+Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Intel Finland Oy
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

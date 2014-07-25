@@ -1,68 +1,45 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH] spi/pxa2xx-pci: Enable DMA binding through device name
-Date: Fri, 25 Jul 2014 13:45:47 +0300
-Message-ID: <1406285147.8530.13.camel@smile.fi.intel.com>
-References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com>
-	 <20140725090714.GY1857@lahna.fi.intel.com>
-	 <20140725095559.GA1857@lahna.fi.intel.com> <5426556.OzZIXLrofJ@wuerfel>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Kweh Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Subject: [PATCH v1 2/3] pch_uart: use pci_get_dma_device() helper
+Date: Fri, 25 Jul 2014 16:31:43 +0300
+Message-ID: <1406295104-20082-2-git-send-email-andriy.shevchenko@linux.intel.com>
+References: <1406295104-20082-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Alex Williamson <alex.williamson-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	linux-pci-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Bjorn Helgaas <bhelgaas-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5426556.OzZIXLrofJ@wuerfel>
+In-Reply-To: <1406295104-20082-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, 2014-07-25 at 12:19 +0200, Arnd Bergmann wrote:
-> On Friday 25 July 2014 12:55:59 Mika Westerberg wrote:
-> > On Fri, Jul 25, 2014 at 12:07:14PM +0300, Mika Westerberg wrote:
-> > > On Fri, Jul 25, 2014 at 10:38:36AM +0200, Arnd Bergmann wrote:
-> > > > On Friday 25 July 2014 11:22:49 Mika Westerberg wrote:
+Since we have pci_get_dma_device() public we may use it in the drivers. It
+considers the function 0 as a DMA controller.
 
-[]
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/tty/serial/pch_uart.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-> > Something like this?
-
-Arnd, this dependency to certain DMA driver looks really bad.
-
-If we go that way, can we split that part to [another] module and make
-it dependent to DW_DMAC?
-
-Or shall we introduce a dmaengine type field in the platform data and
-dynamically choose proper filter-whatever-function to get the channel?
-
-> > Hock Leong / Chiaue Ee, are you able to check if this works on your BYT
-> > machines?
-
-> What I think you got wrong here (by following my bad advice) is the master
-> number. Looking at the code for dw_dma, I think src_master needs to be '1'
-> for your driver.
-
-On some SoCs we have up to 4 masters. It's blurry for me how the SPI
-should choose those masters. Currently it works fine, but I suspect
-there are [might be] performance issues.
-
-What about AVR32 case? We have to fix drivers as well there.
-
-> the dw_dma driver can be simplified a little by removing the special
-> case for the request line setting.
-
-Yes, this part I like.
-
+diff --git a/drivers/tty/serial/pch_uart.c b/drivers/tty/serial/pch_uart.c
+index 2f06e5a..c38fdee 100644
+--- a/drivers/tty/serial/pch_uart.c
++++ b/drivers/tty/serial/pch_uart.c
+@@ -736,9 +736,8 @@ static void pch_request_dma(struct uart_port *port)
+ 	dma_cap_zero(mask);
+ 	dma_cap_set(DMA_SLAVE, mask);
+ 
+-	dma_dev = pci_get_bus_and_slot(priv->pdev->bus->number,
+-				       PCI_DEVFN(0xa, 0)); /* Get DMA's dev
+-								information */
++	dma_dev = pci_get_dma_device(priv->pdev); /* Get DMA's dev information */
++
+ 	/* Set Tx DMA */
+ 	param = &priv->param_tx;
+ 	param->dma_dev = &dma_dev->dev;
 -- 
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
+2.0.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

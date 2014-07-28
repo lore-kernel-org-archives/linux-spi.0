@@ -1,64 +1,83 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi: orion: fix incorrect handling of cell-index DT
- property
-Date: Mon, 28 Jul 2014 22:30:53 +0100
-Message-ID: <20140728213053.GH17528@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: orion: add support for multiple chip selects
+Date: Mon, 28 Jul 2014 22:48:23 +0100
+Message-ID: <20140728214823.GI17528@sirena.org.uk>
 References: <1406498000-13079-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <1406498000-13079-2-git-send-email-thomas.petazzoni@free-electrons.com>
+ <1406498000-13079-3-git-send-email-thomas.petazzoni@free-electrons.com>
+ <53D5ECCA.7030806@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="gcRizOIrS73O/qKd"
-Cc: linux-spi@vger.kernel.org, Shadi Ammouri <shadi@marvell.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Jason Cooper <jason@lakedaemon.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Gregory Clement <gregory.clement@free-electrons.com>,
-	Tawfik Bayouk <tawfik@marvell.com>,
-	Nadav Haklai <nadavh@marvell.com>,
-	Lior Amsalem <alior@marvell.com>,
-	Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
-	stable@vger.kernel.org
-To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Return-path: <stable-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="FrGtGUqnfnh75Pg1"
+Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Tawfik Bayouk <tawfik-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+To: Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1406498000-13079-2-git-send-email-thomas.petazzoni@free-electrons.com>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <53D5ECCA.7030806-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---gcRizOIrS73O/qKd
+--FrGtGUqnfnh75Pg1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sun, Jul 27, 2014 at 11:53:19PM +0200, Thomas Petazzoni wrote:
-> In commit f814f9ac5a81 ("spi/orion: add device tree binding"), Device
-> Tree support was added to the spi-orion driver. However, this commit
-> reads the "cell-index" property, without taking into account the fact
-> that DT properties are big-endian encoded.
+On Mon, Jul 28, 2014 at 08:25:14AM +0200, Sebastian Hesselbarth wrote:
 
-Applied, thanks.
+> So, "num-cs" describes the number of *available* chip select signals. As
+> they can comprise extra cs lines that are GPIO and not dedicated
+> controller signals (native above), it cannot be something the driver
+> knows.
 
---gcRizOIrS73O/qKd
+Yes, indeed.  Though given that we also need a way to pass in the GPIOs
+for the chip selects which isn't standardised at the minute it's all a
+bit of a mess right now.
+
+> As long as you only use native cs lines, omit the cs-gpios property, if
+> there is any GPIO cs lines, insert <0> where you want native ones.
+
+Right, something like that should be usable.  We also need a way to say
+which native chip select to set when using a GPIO chip select if the
+GPIO chip selects go beyond the native ones and none of the native ones
+are masked by GPIOs.
+
+> Although, I wonder how the driver learns about reg = <1> is actually the
+> controller's cs0 in the example above?
+
+Interesting question...
+
+--FrGtGUqnfnh75Pg1
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT1sEKAAoJELSic+t+oim9048P/3DS7x2U4ZgJfhZhx11FflEd
-0a3k3YGof0Njd9iKYvOPz+yfKXqoRIdu/9opwww3xpbJ0DmYm+OjwPDkXt5KDHpJ
-sSP5a1QRss+x/cM6TfPLIHDw3ZBSDSwMkrJqKN0oGsG4wojwCSccBiqJ4HstdC0e
-93AQolTYkJqQJsSY1SVKjVimHeCCNbhO56GWr2zLbeQDlA7SiRLtgu+NOlNKarRE
-S2vsudPXqYRhzJeilxrI5R2AeFtmbxT8VbM6oDKjQRV4S5LGV0NOb5ROY2YmLOMy
-E4A7ue4d0ZvaS5o3cXgYggUGqdXGkK7KSZ/jL3/db2eG6uvOupB8V/GH+fke+g/D
-q0OJlicCSAlCtp0IA77+qKSSUraelISAaGnSLvpZf6LNEFve/FCC1I3YprrCFK7V
-j1N83h+g6i1PqxwswW/JhnWc/S+KOhr4C9V27AgTqGO1JGAs4qYHC1mehwIIEy6j
-uFWMhFdUFniBnTg6unkME23va7DHkg80YqG/8LS3wQMVkYMQZpnJJg9WbLIUyDAC
-/NLa4pJ6KEfg3chSFuEh6C+6fNZ759x4EgKCQYzs6XK6WKQ6rHwvO8QL6ygVZSEC
-EQCtodzpraag6KGPkSKfhpvrDm3Qvn5eVBCwRW1+S1ehfkmGntD4pRO5ujIghH0S
-D72kXRBC+S1Phx4axCrx
-=S6IS
+iQIcBAEBAgAGBQJT1sUkAAoJELSic+t+oim9kVoP/12Hv9cZLkYs4PEgIYQjUszT
+jY62eKWTJwuL3jlSdHsNfLoNiRsTwZ4dtoSVtRqYYhRIqZUgNYpf2O3CX8Y3/+Iu
+uabPPjObB+jdQGtWZj1LAFwXpUIB/8ZwP1eyCWiaEYauVIDl4imXqjVabgoiajEo
+trGFlo/HTYIXPWNaY0VScdUGMMq4uWcBMZWd0rsozDc+6kqnFqAcO770Ll80MGMF
+9MwPjPZNx5C8p3AE1GmW0yiBxkPwp8DD9TvcEbZxymIi9aviy4kSV41mbwF77GXc
++DOYVAr6tMtFDhv5XX/k70SguaefWPT4OUkjyXNWmrdkMXO5hh82wiLUjxzsWJga
+QELuKPdKPX9T8tZx4tS9QfRurLTutMv5vpgWEuZv2ybbOQ7drLPtvo9M2ErOLT5h
+8sVdasyuBKsqBDrr0+iKzU2cpL1erPqmPIX7NfEEK3ZlBmoA/TkSd6BdcC5RM3Xa
+KLg7+P7kNOOglGkHeH9T/BxeNWJXPT7sYCgSc0fFCYqmTbGUkcs2Q8tGdHl8g/JB
+Fy6wR8xKDnFAKL5D+j3DMO7ErObxlpZFnrBPl0XrPbAMvOritipJ/piLBnRoAB2m
+nnNozr+8i6LxlczfqeZddvHIHiqaNjmm+Dos+b6PF8P2QA1vHs9Bk2RXGpqNeWje
+Zl5JLAG4EMSeYQNOXZAf
+=UZUx
 -----END PGP SIGNATURE-----
 
---gcRizOIrS73O/qKd--
+--FrGtGUqnfnh75Pg1--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

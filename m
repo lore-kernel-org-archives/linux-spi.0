@@ -1,64 +1,147 @@
-From: "Shevchenko, Andriy" <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Subject: Re: [PATCH] spi/pxa2xx-pci: Enable DMA binding through device name
-Date: Mon, 28 Jul 2014 11:56:25 +0000
-Message-ID: <1406548584.8530.35.camel@smile.fi.intel.com>
-References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com>
-	 <5426556.OzZIXLrofJ@wuerfel> <1406285147.8530.13.camel@smile.fi.intel.com>
-	 <5237362.DJsH7MtqlU@wuerfel> <1406545580.8530.28.camel@smile.fi.intel.com>
+Date: Mon, 28 Jul 2014 14:47:56 +0200
+Message-ID: <5712887.nI9VbeNx2r@wuerfel>
+References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com> <5237362.DJsH7MtqlU@wuerfel> <1406545580.8530.28.camel@smile.fi.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Kweh, Hock Leong" <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	"haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"Chew, Chiau Ee" <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org" <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	"linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org" <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>
-To: "arnd-r2nGTMty4D4@public.gmane.org" <arnd-r2nGTMty4D4@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7Bit
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Kweh Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1406545580.8530.28.camel-XvqNBM/wLWRrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
-Content-Language: en-US
-Content-ID: <F32BCA7CAE2AF44EB81825B7FD8A6171-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gTW9uLCAyMDE0LTA3LTI4IGF0IDE0OjA2ICswMzAwLCBBbmR5IFNoZXZjaGVua28gd3JvdGU6
-DQo+IE9uIEZyaSwgMjAxNC0wNy0yNSBhdCAxNzo1NSArMDIwMCwgQXJuZCBCZXJnbWFubiB3cm90
-ZToNCj4gPiBPbiBGcmlkYXkgMjUgSnVseSAyMDE0IDEzOjQ1OjQ3IEFuZHkgU2hldmNoZW5rbyB3
-cm90ZToNCg0KW10NCg0KPiA+ID4gPiBXaGF0IEkgdGhpbmsgeW91IGdvdCB3cm9uZyBoZXJlIChi
-eSBmb2xsb3dpbmcgbXkgYmFkIGFkdmljZSkgaXMgdGhlIG1hc3Rlcg0KPiA+ID4gPiBudW1iZXIu
-IExvb2tpbmcgYXQgdGhlIGNvZGUgZm9yIGR3X2RtYSwgSSB0aGluayBzcmNfbWFzdGVyIG5lZWRz
-IHRvIGJlICcxJw0KPiA+ID4gPiBmb3IgeW91ciBkcml2ZXIuDQo+ID4gPiANCj4gPiA+IE9uIHNv
-bWUgU29DcyB3ZSBoYXZlIHVwIHRvIDQgbWFzdGVycy4gSXQncyBibHVycnkgZm9yIG1lIGhvdyB0
-aGUgU1BJDQo+ID4gPiBzaG91bGQgY2hvb3NlIHRob3NlIG1hc3RlcnMuIEN1cnJlbnRseSBpdCB3
-b3JrcyBmaW5lLCBidXQgSSBzdXNwZWN0DQo+ID4gPiB0aGVyZSBhcmUgW21pZ2h0IGJlXSBwZXJm
-b3JtYW5jZSBpc3N1ZXMuDQo+ID4gDQo+ID4gSSB0aGluayBpdCB3b3JrcyBiZWNhdXNlIHRoZSBk
-dy1kbWEgZGVmYXVsdHMgdG8gdGhlIHZhbHVlcyB1c2VkIGJ5DQo+ID4gdGhlIHNwZWNpZmljIGlt
-cGxlbWVudGF0aW9uIGluIHlvdXIgaGFyZHdhcmUuDQoNCltNaXNzZWQgaW4gcHJldmlvdXMgZW1h
-aWxdDQoNCkFjdHVhbGx5IHRoZSBkZWZhdWx0cyBjYW1lIGZyb20gb3JpZ2luYWwgZHJpdmVyIGZv
-ciBBVlIzMiBjYXNlLg0KDQpSZWdhcmRpbmcgdG8gRFcgRE1BIGRhdGFib29rIHRoZSBBSEIgbWFz
-dGVycyBjb3VsZCBiZSB1c2VkIGVhY2ggYnkgYW55DQpjaGFubmVsLCB0aG91Z2ggaXQgZGVwZW5k
-cyBvbiB3aGF0IEFIQiBsYXllciBpcyBib3VuZCB0byAoYW5kDQpjb3JyZXNwb25kaW5nIHBlcmlw
-aGVyYWwgZGV2aWNlKS4NCg0KVGh1cywgbGlrZSBJIHNhaWQgd2UgbWlnaHQgaGF2ZSB0aGUgW21p
-bm9yXSBwZXJmb3JtYW5jZSBpc3N1ZXMgaWYgd2UNCnVzZSwgZm9yIGV4YW1wbGUsIHR3byBvdXQg
-b2YgZm91ciBtYXN0ZXJzLg0KDQotLSANCkFuZHkgU2hldmNoZW5rbyA8YW5kcml5LnNoZXZjaGVu
-a29AaW50ZWwuY29tPg0KSW50ZWwgRmlubGFuZCBPeQ0KLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCkludGVsIEZpbmxh
-bmQgT3kKUmVnaXN0ZXJlZCBBZGRyZXNzOiBQTCAyODEsIDAwMTgxIEhlbHNpbmtpIApCdXNpbmVz
-cyBJZGVudGl0eSBDb2RlOiAwMzU3NjA2IC0gNCAKRG9taWNpbGVkIGluIEhlbHNpbmtpIAoKVGhp
-cyBlLW1haWwgYW5kIGFueSBhdHRhY2htZW50cyBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgbWF0
-ZXJpYWwgZm9yCnRoZSBzb2xlIHVzZSBvZiB0aGUgaW50ZW5kZWQgcmVjaXBpZW50KHMpLiBBbnkg
-cmV2aWV3IG9yIGRpc3RyaWJ1dGlvbgpieSBvdGhlcnMgaXMgc3RyaWN0bHkgcHJvaGliaXRlZC4g
-SWYgeW91IGFyZSBub3QgdGhlIGludGVuZGVkCnJlY2lwaWVudCwgcGxlYXNlIGNvbnRhY3QgdGhl
-IHNlbmRlciBhbmQgZGVsZXRlIGFsbCBjb3BpZXMuCg==
+On Monday 28 July 2014 14:06:20 Andy Shevchenko wrote:
+> On Fri, 2014-07-25 at 17:55 +0200, Arnd Bergmann wrote:
+> > On Friday 25 July 2014 13:45:47 Andy Shevchenko wrote:
+> > > On Fri, 2014-07-25 at 12:19 +0200, Arnd Bergmann wrote:
+> > > > On Friday 25 July 2014 12:55:59 Mika Westerberg wrote:
+> > > > > On Fri, Jul 25, 2014 at 12:07:14PM +0300, Mika Westerberg wrote:
+> > > > > > On Fri, Jul 25, 2014 at 10:38:36AM +0200, Arnd Bergmann wrote:
+> > > > > > > On Friday 25 July 2014 11:22:49 Mika Westerberg wrote:
+> > > 
+> > > []
+> > > 
+> > > > > Something like this?
+> > > 
+> > > Arnd, this dependency to certain DMA driver looks really bad.
+> > > 
+> > > If we go that way, can we split that part to [another] module and make
+> > > it dependent to DW_DMAC?
+> > 
+> > I don't see what you gain from that. The PC ID will tell you which DMA
+> > engine is being used. The driver already hardcodes a slave_id based on
+> > the PCI ID today, and the 
+> 
+> "...and the..."?
 
+Sorry for missing that.
+
+the slave ID only makes sense in combination with the master device
+it is used in, so the dependency exists already.
+
+> > > Or shall we introduce a dmaengine type field in the platform data and
+> > > dynamically choose proper filter-whatever-function to get the channel?
+> > 
+> > We already have an interface for this, in the form of
+> > dma_request_slave_channel(), which takes a string identifier that
+> > is used to look up all that information in either device tree or
+> > ACPI. It wouldn't be unreasonable to add a third path in there
+> > to handle hardcoded platform devices, but that's a lot of work.
+> > Note that you still need to encode a reference to the dma engine
+> > in some way to do this right. The current code (with or without Mika's
+> > patch) will break as soon as you have multiple DMA engine devices.
+> 
+> What about to keep PCI case still valid? We can pass struct pci_dev (or
+> actual struct device) of DMA controller to filter proper device.
+
+Yes, that would be best. IIRC you have a single PCI device that instantiates
+both the SPI and the DMA engine as subdevices (I haven't looked at the
+code again), so that information would be readily available.
+ 
+> > > > What I think you got wrong here (by following my bad advice) is the master
+> > > > number. Looking at the code for dw_dma, I think src_master needs to be '1'
+> > > > for your driver.
+> > > 
+> > > On some SoCs we have up to 4 masters. It's blurry for me how the SPI
+> > > should choose those masters. Currently it works fine, but I suspect
+> > > there are [might be] performance issues.
+> > 
+> > I think it works because the dw-dma defaults to the values used by
+> > the specific implementation in your hardware.
+> 
+> 
+> 
+> > > What about AVR32 case? We have to fix drivers as well there.
+> 
+> > which ones?
+> 
+> arch/avr32/mach-at32ap/at32ap700x.c:1332:at32_add_device_mci
+> 
+> It seems opaque for me if it's used anywhere.
+
+It seems correct to me. This is the filter function used by atmel_mci:
+
+static bool atmci_filter(struct dma_chan *chan, void *pdata)
+{
+        struct mci_platform_data *sl_pdata = pdata;
+        struct mci_dma_data *sl;
+
+        if (!sl_pdata)
+                return false;
+
+        sl = sl_pdata->dma_slave;
+        if (sl && find_slave_dev(sl) == chan->device->dev) {
+                chan->private = slave_data_ptr(sl);
+                return true;
+        } else {
+                return false;
+        }
+}
+
+It sets the dw_dma_slave information from  slave_data_ptr(sl) here,
+and does not attempt to set a slave_id at all, the slave_config
+call only sets the required fields.
+
+Do you still see a problem here?
+
+> Actually the defaults came from original driver for AVR32 case.
+> 
+> Regarding to DW DMA databook the AHB masters could be used each by any
+> channel, though it depends on what AHB layer is bound to (and
+> corresponding peripheral device).
+> 
+> Thus, like I said we might have the [minor] performance issues if we
+> use, for example, two out of four masters.
+
+I don't see how: We have four cases that I am aware of, and all seem
+to handle this right:
+
+a) request line and masters are all configured from device-tree.
+b) request line is configured from ACPI, masters are autoconfigured
+c) request line and masters are all configured from avr32/arm32
+   platform data.
+d) request line and masters are all configured from Bay Trail
+   PCI ID (Implemented by Mika's patch)
+
+The ACPI case could be extended if we ever get an ACPI based system
+that has more than two masters.
+In the other cases, the same source of information that configures
+the request line also configures the masters, so it's up to the
+system integration to pick the best setting.
+
+	Arnd
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

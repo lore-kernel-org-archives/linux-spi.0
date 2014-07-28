@@ -1,114 +1,64 @@
-From: Alex Williamson <alex.williamson@redhat.com>
-Subject: Re: [PATCH v1 1/3] PCI: export pci_get_dma_device() helper to other
- users
-Date: Mon, 28 Jul 2014 08:19:21 -0600
-Message-ID: <1406557161.1011.36.camel@ul30vt.home>
-References: <1406295104-20082-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <1406307516.1011.21.camel@ul30vt.home>
-	 <1406539595.8530.20.camel@smile.fi.intel.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: orion: fix incorrect handling of cell-index DT
+ property
+Date: Mon, 28 Jul 2014 22:30:53 +0100
+Message-ID: <20140728213053.GH17528@sirena.org.uk>
+References: <1406498000-13079-1-git-send-email-thomas.petazzoni@free-electrons.com>
+ <1406498000-13079-2-git-send-email-thomas.petazzoni@free-electrons.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-	Mark Brown <broonie@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Return-path: <linux-serial-owner@vger.kernel.org>
-In-Reply-To: <1406539595.8530.20.camel@smile.fi.intel.com>
-Sender: linux-serial-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gcRizOIrS73O/qKd"
+Cc: linux-spi@vger.kernel.org, Shadi Ammouri <shadi@marvell.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Jason Cooper <jason@lakedaemon.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Gregory Clement <gregory.clement@free-electrons.com>,
+	Tawfik Bayouk <tawfik@marvell.com>,
+	Nadav Haklai <nadavh@marvell.com>,
+	Lior Amsalem <alior@marvell.com>,
+	Ezequiel Garcia <ezequiel.garcia@free-electrons.com>,
+	stable@vger.kernel.org
+To: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Return-path: <stable-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1406498000-13079-2-git-send-email-thomas.petazzoni@free-electrons.com>
+Sender: stable-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, 2014-07-28 at 12:26 +0300, Andy Shevchenko wrote:
-> On Fri, 2014-07-25 at 10:58 -0600, Alex Williamson wrote:
-> > On Fri, 2014-07-25 at 16:31 +0300, Andy Shevchenko wrote:
-> > > Some chipsets use the function 0 for DMA on other functions of a
-> > > multifunctional device. One of the example is Intel EG20T PCH. This is also
-> > > applicable to Lynxpoint PCH when LPSS devices are switched to PCI mode.
-> > > 
-> > > This patch exports a useful helper to get a device of the DMA. This device is
-> > > needed to request a DMA channel from a proper controller.
-> > > 
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > ---
-> > >  drivers/pci/quirks.c | 2 +-
-> > >  include/linux/pci.h  | 9 +++++++++
-> > >  2 files changed, 10 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> > > index 80c2d01..8352e5b 100644
-> > > --- a/drivers/pci/quirks.c
-> > > +++ b/drivers/pci/quirks.c
-> > > @@ -3517,7 +3517,7 @@ static struct pci_dev *pci_func_0_dma_source(struct pci_dev *dev)
-> > >  	if (!PCI_FUNC(dev->devfn))
-> > >  		return pci_dev_get(dev);
-> > >  
-> > > -	return pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
-> > > +	return pci_get_dma_device(dev);
-> > >  }
-> > >  
-> > >  static const struct pci_dev_dma_source {
-> > > diff --git a/include/linux/pci.h b/include/linux/pci.h
-> > > index 61978a4..86caab7 100644
-> > > --- a/include/linux/pci.h
-> > > +++ b/include/linux/pci.h
-> > > @@ -1575,6 +1575,15 @@ static inline int pci_dev_specific_acs_enabled(struct pci_dev *dev,
-> > >  static inline void pci_dev_specific_enable_acs(struct pci_dev *dev) { }
-> > >  #endif
-> > >  
-> > > +/*
-> > > + * Some chipsets use the function 0 for DMA on other functions of a
-> > > + * multifunctional device.
-> > > + */
-> > > +static inline struct pci_dev *pci_get_dma_device(struct pci_dev *dev)
-> > > +{
-> > > +	return pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
-> > > +}
-> > > +
-> > >  void __iomem *pcim_iomap(struct pci_dev *pdev, int bar, unsigned long maxlen);
-> > >  void pcim_iounmap(struct pci_dev *pdev, void __iomem *addr);
-> > >  void __iomem * const *pcim_iomap_table(struct pci_dev *pdev);
-> > 
-> > You've created a very generic function for a very specific problem.  I
-> > can't just call this on any random device and expect it to work
-> > correctly.
-> 
-> Right.
-> 
-> >   What about all the other device which use function 1 for
-> > their DMA alias.
-> 
-> Hmm... I would like to understand what the difference between DMA alias
-> and the case when we have MFD where function 0 is real DMA controller
-> which serves the other devices in that block is?
 
-There is no difference, the PCI DMA alias code is meant to handle any
-case where the requester ID of a DMA is different from the device that
-actually initiates the DMA.  That may be a different function on a MFD,
-it may be a non-existent devfn, or it may be an upstream device.  Note
-that using function 0 as the DMA controller for other functions of a MFD
-is a broken design in a world of IOMMUs.  It means that we cannot
-distinguish transactions from different functions and we need to
-pre-enable these aliases for the device to work correctly.  There's
-nothing in the PCIe spec that allows an MFD to use the wrong requester
-ID for DMA.
+--gcRizOIrS73O/qKd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Another (probably minor) question, why do you still have
-> pci_get_dma_source() function in quirks.c?
+On Sun, Jul 27, 2014 at 11:53:19PM +0200, Thomas Petazzoni wrote:
+> In commit f814f9ac5a81 ("spi/orion: add device tree binding"), Device
+> Tree support was added to the spi-orion driver. However, this commit
+> reads the "cell-index" property, without taking into account the fact
+> that DT properties are big-endian encoded.
 
-It's in the process of being removed https://lkml.org/lkml/2014/5/22/725
+Applied, thanks.
 
-> >   We've just added infrastructure in PCI to support DMA
-> > aliases, see pci_for_each_dma_alias().  Please use this instead.  Quirks
-> > can be added to set the dma_alias_devfn and
-> > PCI_DEV_FLAGS_DMA_ALIAS_DEVFN to indicate that it's valid.  Thanks,
-> 
-> Do you mean I have to list all devices that, for example, are listed in
-> the spi-topcliff-pch.c?
+--gcRizOIrS73O/qKd
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-I'm not sure how you'll incorporate it, but creating a
-pci_get_dma_device() helper which assumes a specific broken relationship
-for DMA is clearly not a supportable solution.  Thanks,
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Alex
+iQIcBAEBAgAGBQJT1sEKAAoJELSic+t+oim9048P/3DS7x2U4ZgJfhZhx11FflEd
+0a3k3YGof0Njd9iKYvOPz+yfKXqoRIdu/9opwww3xpbJ0DmYm+OjwPDkXt5KDHpJ
+sSP5a1QRss+x/cM6TfPLIHDw3ZBSDSwMkrJqKN0oGsG4wojwCSccBiqJ4HstdC0e
+93AQolTYkJqQJsSY1SVKjVimHeCCNbhO56GWr2zLbeQDlA7SiRLtgu+NOlNKarRE
+S2vsudPXqYRhzJeilxrI5R2AeFtmbxT8VbM6oDKjQRV4S5LGV0NOb5ROY2YmLOMy
+E4A7ue4d0ZvaS5o3cXgYggUGqdXGkK7KSZ/jL3/db2eG6uvOupB8V/GH+fke+g/D
+q0OJlicCSAlCtp0IA77+qKSSUraelISAaGnSLvpZf6LNEFve/FCC1I3YprrCFK7V
+j1N83h+g6i1PqxwswW/JhnWc/S+KOhr4C9V27AgTqGO1JGAs4qYHC1mehwIIEy6j
+uFWMhFdUFniBnTg6unkME23va7DHkg80YqG/8LS3wQMVkYMQZpnJJg9WbLIUyDAC
+/NLa4pJ6KEfg3chSFuEh6C+6fNZ759x4EgKCQYzs6XK6WKQ6rHwvO8QL6ygVZSEC
+EQCtodzpraag6KGPkSKfhpvrDm3Qvn5eVBCwRW1+S1ehfkmGntD4pRO5ujIghH0S
+D72kXRBC+S1Phx4axCrx
+=S6IS
+-----END PGP SIGNATURE-----
 
+--gcRizOIrS73O/qKd--

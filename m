@@ -1,79 +1,114 @@
-From: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
-Subject: Re: [PATCH] spi/pxa2xx-pci: Enable DMA binding through device name
-Date: Mon, 28 Jul 2014 16:02:47 +0200
-Message-ID: <120751941.rzCjA94qJu@wuerfel>
-References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com> <5712887.nI9VbeNx2r@wuerfel> <1406554444.8530.45.camel@smile.fi.intel.com>
+From: Alex Williamson <alex.williamson@redhat.com>
+Subject: Re: [PATCH v1 1/3] PCI: export pci_get_dma_device() helper to other
+ users
+Date: Mon, 28 Jul 2014 08:19:21 -0600
+Message-ID: <1406557161.1011.36.camel@ul30vt.home>
+References: <1406295104-20082-1-git-send-email-andriy.shevchenko@linux.intel.com>
+	 <1406307516.1011.21.camel@ul30vt.home>
+	 <1406539595.8530.20.camel@smile.fi.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Kweh Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1406554444.8530.45.camel-XvqNBM/wLWRrdx17CPfAsdBPR1lH4CV8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+	Mark Brown <broonie@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Return-path: <linux-serial-owner@vger.kernel.org>
+In-Reply-To: <1406539595.8530.20.camel@smile.fi.intel.com>
+Sender: linux-serial-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Monday 28 July 2014 16:34:04 Andy Shevchenko wrote:
-> On Mon, 2014-07-28 at 14:47 +0200, Arnd Bergmann wrote:
-> > On Monday 28 July 2014 14:06:20 Andy Shevchenko wrote:
-> > static bool atmci_filter(struct dma_chan *chan, void *pdata)
-> > {
-> >         struct mci_platform_data *sl_pdata = pdata;
-> >         struct mci_dma_data *sl;
+On Mon, 2014-07-28 at 12:26 +0300, Andy Shevchenko wrote:
+> On Fri, 2014-07-25 at 10:58 -0600, Alex Williamson wrote:
+> > On Fri, 2014-07-25 at 16:31 +0300, Andy Shevchenko wrote:
+> > > Some chipsets use the function 0 for DMA on other functions of a
+> > > multifunctional device. One of the example is Intel EG20T PCH. This is also
+> > > applicable to Lynxpoint PCH when LPSS devices are switched to PCI mode.
+> > > 
+> > > This patch exports a useful helper to get a device of the DMA. This device is
+> > > needed to request a DMA channel from a proper controller.
+> > > 
+> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > ---
+> > >  drivers/pci/quirks.c | 2 +-
+> > >  include/linux/pci.h  | 9 +++++++++
+> > >  2 files changed, 10 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> > > index 80c2d01..8352e5b 100644
+> > > --- a/drivers/pci/quirks.c
+> > > +++ b/drivers/pci/quirks.c
+> > > @@ -3517,7 +3517,7 @@ static struct pci_dev *pci_func_0_dma_source(struct pci_dev *dev)
+> > >  	if (!PCI_FUNC(dev->devfn))
+> > >  		return pci_dev_get(dev);
+> > >  
+> > > -	return pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
+> > > +	return pci_get_dma_device(dev);
+> > >  }
+> > >  
+> > >  static const struct pci_dev_dma_source {
+> > > diff --git a/include/linux/pci.h b/include/linux/pci.h
+> > > index 61978a4..86caab7 100644
+> > > --- a/include/linux/pci.h
+> > > +++ b/include/linux/pci.h
+> > > @@ -1575,6 +1575,15 @@ static inline int pci_dev_specific_acs_enabled(struct pci_dev *dev,
+> > >  static inline void pci_dev_specific_enable_acs(struct pci_dev *dev) { }
+> > >  #endif
+> > >  
+> > > +/*
+> > > + * Some chipsets use the function 0 for DMA on other functions of a
+> > > + * multifunctional device.
+> > > + */
+> > > +static inline struct pci_dev *pci_get_dma_device(struct pci_dev *dev)
+> > > +{
+> > > +	return pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
+> > > +}
+> > > +
+> > >  void __iomem *pcim_iomap(struct pci_dev *pdev, int bar, unsigned long maxlen);
+> > >  void pcim_iounmap(struct pci_dev *pdev, void __iomem *addr);
+> > >  void __iomem * const *pcim_iomap_table(struct pci_dev *pdev);
 > > 
-> >         if (!sl_pdata)
-> >                 return false;
-> > 
-> >         sl = sl_pdata->dma_slave;
-> >         if (sl && find_slave_dev(sl) == chan->device->dev) {
-> >                 chan->private = slave_data_ptr(sl);
-> >                 return true;
-> >         } else {
-> >                 return false;
-> >         }
-> > }
-> > 
-> > It sets the dw_dma_slave information from  slave_data_ptr(sl) here,
-> > and does not attempt to set a slave_id at all, the slave_config
-> > call only sets the required fields.
-> > 
-> > Do you still see a problem here?
+> > You've created a very generic function for a very specific problem.  I
+> > can't just call this on any random device and expect it to work
+> > correctly.
 > 
-> Sorry, I was talking about master defaults regarding to your patch that
-> proposes to remove that part from dw_dmac. I mean it should be set in
-> function mentioned early.
-
-Ok. So atmci_filter is still correct because chan->private contains
-a pointer to a structure with both request and master settings, right?
-
-> > c) request line and masters are all configured from avr32/arm32
-> >    platform data.
-> > d) request line and masters are all configured from Bay Trail
-> >    PCI ID (Implemented by Mika's patch)
+> Right.
 > 
-> Actually here I just recall the case when we might have different number
-> of masters and use the same IP block [of SPI controller], how could you
-> distinguish that case? How to provide proper masters?
+> >   What about all the other device which use function 1 for
+> > their DMA alias.
 > 
-> It's luckily not a problem right now, but still potential one in some
-> cases.
+> Hmm... I would like to understand what the difference between DMA alias
+> and the case when we have MFD where function 0 is real DMA controller
+> which serves the other devices in that block is?
 
-Do you mean case d? I think for each PCI ID, you will have to add the
-correct settings to some table that is used in the filter function.
+There is no difference, the PCI DMA alias code is meant to handle any
+case where the requester ID of a DMA is different from the device that
+actually initiates the DMA.  That may be a different function on a MFD,
+it may be a non-existent devfn, or it may be an upstream device.  Note
+that using function 0 as the DMA controller for other functions of a MFD
+is a broken design in a world of IOMMUs.  It means that we cannot
+distinguish transactions from different functions and we need to
+pre-enable these aliases for the device to work correctly.  There's
+nothing in the PCIe spec that allows an MFD to use the wrong requester
+ID for DMA.
 
-Are there any cases you know where we can't hardcode them?
+> Another (probably minor) question, why do you still have
+> pci_get_dma_source() function in quirks.c?
 
-	Arnd
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+It's in the process of being removed https://lkml.org/lkml/2014/5/22/725
+
+> >   We've just added infrastructure in PCI to support DMA
+> > aliases, see pci_for_each_dma_alias().  Please use this instead.  Quirks
+> > can be added to set the dma_alias_devfn and
+> > PCI_DEV_FLAGS_DMA_ALIAS_DEVFN to indicate that it's valid.  Thanks,
+> 
+> Do you mean I have to list all devices that, for example, are listed in
+> the spi-topcliff-pch.c?
+
+I'm not sure how you'll incorporate it, but creating a
+pci_get_dma_device() helper which assumes a specific broken relationship
+for DMA is clearly not a supportable solution.  Thanks,
+
+Alex
+

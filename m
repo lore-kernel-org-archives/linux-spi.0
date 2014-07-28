@@ -1,101 +1,108 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v1 1/3] PCI: export pci_get_dma_device() helper to other
- users
-Date: Mon, 28 Jul 2014 12:26:35 +0300
-Message-ID: <1406539595.8530.20.camel@smile.fi.intel.com>
-References: <1406295104-20082-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <1406307516.1011.21.camel@ul30vt.home>
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH] spi/pxa2xx-pci: Enable DMA binding through device name
+Date: Mon, 28 Jul 2014 12:28:08 +0300
+Message-ID: <20140728092808.GI1857@lahna.fi.intel.com>
+References: <1406196111-22861-1-git-send-email-hock.leong.kweh@intel.com>
+ <20140725090714.GY1857@lahna.fi.intel.com>
+ <20140725095559.GA1857@lahna.fi.intel.com>
+ <5426556.OzZIXLrofJ@wuerfel>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: linux-pci-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Bjorn Helgaas <bhelgaas-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org>,
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Kweh Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-serial-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alex Williamson <alex.williamson-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>
+	Chew Chiau Ee <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Arnd Bergmann <arnd-r2nGTMty4D4@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1406307516.1011.21.camel-85EaTFmN5p//9pzu0YdTqQ@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <5426556.OzZIXLrofJ@wuerfel>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, 2014-07-25 at 10:58 -0600, Alex Williamson wrote:
-> On Fri, 2014-07-25 at 16:31 +0300, Andy Shevchenko wrote:
-> > Some chipsets use the function 0 for DMA on other functions of a
-> > multifunctional device. One of the example is Intel EG20T PCH. This is also
-> > applicable to Lynxpoint PCH when LPSS devices are switched to PCI mode.
+On Fri, Jul 25, 2014 at 12:19:02PM +0200, Arnd Bergmann wrote:
+> On Friday 25 July 2014 12:55:59 Mika Westerberg wrote:
+> > On Fri, Jul 25, 2014 at 12:07:14PM +0300, Mika Westerberg wrote:
+> > > On Fri, Jul 25, 2014 at 10:38:36AM +0200, Arnd Bergmann wrote:
+> > > > On Friday 25 July 2014 11:22:49 Mika Westerberg wrote:
+> > > > > > All you need to do is change your filter function to take the
+> > > > > > slave id from pxa_spi_info and stick it in there, e.g.
+> > > > > > 
+> > > > > > static bool pxa2xx_spi_dw_dma_filter(struct dma_chan *chan, void *param)
+> > > > > > {       
+> > > > > >         const struct pxa2xx_spi_master *pdata = param;
+> > > > > >         struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
+> > > > > >         
+> > > > > >         dwc->request_line = fargs->req;
+> > > > > >         dwc->src_master = 0;
+> > > > > >         dwc->dst_master = 0;
+> > > > > >         
+> > > > > >         return 1;
+> > > > > > }           
+> > > > > 
+> > > > > Oh man. That makes pxa2xx_spi dependent on a certain specific DMA engine
+> > > > > driver.
+> > > > 
+> > > > I think you can improve this by putting the filter function (and a pointer
+> > > > to it) into the pxa2xx_spi_master data provided by the PCI driver.
+> > > 
+> > > Indeed, that looks better. It still makes the PCI part of the driver
+> > > dependent on a particular DMA engine driver but is certainly better than
+> > > the core pxa2xx_spi driver.
 > > 
-> > This patch exports a useful helper to get a device of the DMA. This device is
-> > needed to request a DMA channel from a proper controller.
+> > Something like this?
 > > 
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-> > ---
-> >  drivers/pci/quirks.c | 2 +-
-> >  include/linux/pci.h  | 9 +++++++++
-> >  2 files changed, 10 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> > index 80c2d01..8352e5b 100644
-> > --- a/drivers/pci/quirks.c
-> > +++ b/drivers/pci/quirks.c
-> > @@ -3517,7 +3517,7 @@ static struct pci_dev *pci_func_0_dma_source(struct pci_dev *dev)
-> >  	if (!PCI_FUNC(dev->devfn))
-> >  		return pci_dev_get(dev);
-> >  
-> > -	return pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
-> > +	return pci_get_dma_device(dev);
-> >  }
-> >  
-> >  static const struct pci_dev_dma_source {
-> > diff --git a/include/linux/pci.h b/include/linux/pci.h
-> > index 61978a4..86caab7 100644
-> > --- a/include/linux/pci.h
-> > +++ b/include/linux/pci.h
-> > @@ -1575,6 +1575,15 @@ static inline int pci_dev_specific_acs_enabled(struct pci_dev *dev,
-> >  static inline void pci_dev_specific_enable_acs(struct pci_dev *dev) { }
-> >  #endif
-> >  
-> > +/*
-> > + * Some chipsets use the function 0 for DMA on other functions of a
-> > + * multifunctional device.
-> > + */
-> > +static inline struct pci_dev *pci_get_dma_device(struct pci_dev *dev)
-> > +{
-> > +	return pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));
-> > +}
-> > +
-> >  void __iomem *pcim_iomap(struct pci_dev *pdev, int bar, unsigned long maxlen);
-> >  void pcim_iounmap(struct pci_dev *pdev, void __iomem *addr);
-> >  void __iomem * const *pcim_iomap_table(struct pci_dev *pdev);
+> > Hock Leong / Chiaue Ee, are you able to check if this works on your BYT
+> > machines?
 > 
-> You've created a very generic function for a very specific problem.  I
-> can't just call this on any random device and expect it to work
-> correctly.
+> I think I found a small bug, and one detail that could be improved.
+> 
+> > @@ -321,12 +310,14 @@ int pxa2xx_spi_dma_setup(struct driver_data *drv_data)
+> >  		return -ENOMEM;
+> >  
+> >  	drv_data->tx_chan = dma_request_slave_channel_compat(mask,
+> > -				pxa2xx_spi_dma_filter, pdata, dev, "tx");
+> > +				pdata->dma_filter, pdata->dma_filter_param,
+> > +				dev, "tx");
+> >  	if (!drv_data->tx_chan)
+> >  		return -ENODEV;
+> 
+> If you change this part to pass '(void *)info->tx_slave_id' rather than
+> pdata->dma_filter_param, you can simplify the next code:
 
-Right.
+OK
 
->   What about all the other device which use function 1 for
-> their DMA alias.
+> > +static bool pxa2xx_spi_pci_dma_filter(struct dma_chan *chan, void *param)
+> > +{
+> > +	struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
+> > +	const struct pxa_spi_info *info = param;
+> > +
+> > +	if (chan->chan_id == info->tx_chan_id)
+> > +		dwc->request_line = info->tx_slave_id;
+> > +	else if (chan->chan_id == info->rx_chan_id)
+> > +		dwc->request_line = info->rx_slave_id;
+> > +	else
+> > +		return false;
+> > +
+> > +	dwc->src_master = 0;
+> > +	dwc->dst_master = 0;
+> > +
+> > +	return true;
+> > +}
+> 
+> to disregard the tx_chan_id, which is really arbitrary as far as I can tell.
+> 
+> What I think you got wrong here (by following my bad advice) is the master
+> number. Looking at the code for dw_dma, I think src_master needs to be '1'
+> for your driver.
 
-Hmm... I would like to understand what the difference between DMA alias
-and the case when we have MFD where function 0 is real DMA controller
-which serves the other devices in that block is?
-
-Another (probably minor) question, why do you still have
-pci_get_dma_source() function in quirks.c?
-
->   We've just added infrastructure in PCI to support DMA
-> aliases, see pci_for_each_dma_alias().  Please use this instead.  Quirks
-> can be added to set the dma_alias_devfn and
-> PCI_DEV_FLAGS_DMA_ALIAS_DEVFN to indicate that it's valid.  Thanks,
-
-Do you mean I have to list all devices that, for example, are listed in
-the spi-topcliff-pch.c?
-
-
--- 
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
-
+Right, I just copied your example. I'll change it to '1' in the next
+revision.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

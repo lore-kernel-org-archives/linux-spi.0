@@ -1,82 +1,79 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH 2/2] spi: orion: add support for multiple chip selects
-Date: Mon, 28 Jul 2014 22:48:23 +0100
-Message-ID: <20140728214823.GI17528@sirena.org.uk>
+Date: Mon, 28 Jul 2014 22:52:37 +0100
+Message-ID: <20140728215237.GJ17528@sirena.org.uk>
 References: <1406498000-13079-1-git-send-email-thomas.petazzoni@free-electrons.com>
  <1406498000-13079-3-git-send-email-thomas.petazzoni@free-electrons.com>
- <53D5ECCA.7030806@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FrGtGUqnfnh75Pg1"
-Cc: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
+	protocol="application/pgp-signature"; boundary="vJioXg+GvQhSmMus"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
 	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
 	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	Tawfik Bayouk <tawfik-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
 	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
 	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
 	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <53D5ECCA.7030806-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1406498000-13079-3-git-send-email-thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---FrGtGUqnfnh75Pg1
+--vJioXg+GvQhSmMus
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 28, 2014 at 08:25:14AM +0200, Sebastian Hesselbarth wrote:
+On Sun, Jul 27, 2014 at 11:53:20PM +0200, Thomas Petazzoni wrote:
 
-> So, "num-cs" describes the number of *available* chip select signals. As
-> they can comprise extra cs lines that are GPIO and not dedicated
-> controller signals (native above), it cannot be something the driver
-> knows.
+> @@ -150,6 +151,11 @@ orion_spi_setup_transfer(struct spi_device *spi, str=
+uct spi_transfer *t)
+>  	if (rc)
+>  		return rc;
+> =20
+> +	orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG,
+> +			  ORION_SPI_CS_MASK);
+> +	orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG,
+> +			  ORION_SPI_CS(spi->chip_select));
+> +
+>  	if (bits_per_word =3D=3D 16)
+>  		orion_spi_setbits(orion_spi, ORION_SPI_IF_CONFIG_REG,
+>  				  ORION_SPI_IF_8_16_BIT_MODE);
 
-Yes, indeed.  Though given that we also need a way to pass in the GPIOs
-for the chip selects which isn't standardised at the minute it's all a
-bit of a mess right now.
+I would expect to see this chip select manipulation to be being done in
+set_cs not in setup_transfer() otherwise we'll probably get surprised
+when the driver is converted to use transfer_one() and pull the chip
+select handling out of the driver (among other things).
 
-> As long as you only use native cs lines, omit the cs-gpios property, if
-> there is any GPIO cs lines, insert <0> where you want native ones.
-
-Right, something like that should be usable.  We also need a way to say
-which native chip select to set when using a GPIO chip select if the
-GPIO chip selects go beyond the native ones and none of the native ones
-are masked by GPIOs.
-
-> Although, I wonder how the driver learns about reg = <1> is actually the
-> controller's cs0 in the example above?
-
-Interesting question...
-
---FrGtGUqnfnh75Pg1
+--vJioXg+GvQhSmMus
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT1sUkAAoJELSic+t+oim9kVoP/12Hv9cZLkYs4PEgIYQjUszT
-jY62eKWTJwuL3jlSdHsNfLoNiRsTwZ4dtoSVtRqYYhRIqZUgNYpf2O3CX8Y3/+Iu
-uabPPjObB+jdQGtWZj1LAFwXpUIB/8ZwP1eyCWiaEYauVIDl4imXqjVabgoiajEo
-trGFlo/HTYIXPWNaY0VScdUGMMq4uWcBMZWd0rsozDc+6kqnFqAcO770Ll80MGMF
-9MwPjPZNx5C8p3AE1GmW0yiBxkPwp8DD9TvcEbZxymIi9aviy4kSV41mbwF77GXc
-+DOYVAr6tMtFDhv5XX/k70SguaefWPT4OUkjyXNWmrdkMXO5hh82wiLUjxzsWJga
-QELuKPdKPX9T8tZx4tS9QfRurLTutMv5vpgWEuZv2ybbOQ7drLPtvo9M2ErOLT5h
-8sVdasyuBKsqBDrr0+iKzU2cpL1erPqmPIX7NfEEK3ZlBmoA/TkSd6BdcC5RM3Xa
-KLg7+P7kNOOglGkHeH9T/BxeNWJXPT7sYCgSc0fFCYqmTbGUkcs2Q8tGdHl8g/JB
-Fy6wR8xKDnFAKL5D+j3DMO7ErObxlpZFnrBPl0XrPbAMvOritipJ/piLBnRoAB2m
-nnNozr+8i6LxlczfqeZddvHIHiqaNjmm+Dos+b6PF8P2QA1vHs9Bk2RXGpqNeWje
-Zl5JLAG4EMSeYQNOXZAf
-=UZUx
+iQIcBAEBAgAGBQJT1sYiAAoJELSic+t+oim9SdwP/iGoHF+mB6CbbhPuCp3rKePO
+xdTFM05s/yOxPL7pJDu3ETPzJperGTN9NVVz2ycekm6/+VafIMB1jXyTB9+e8x7L
+cXSBpuPshxOREgKMMwG89dR+lqwU2Hoo7BZqo8Dzc7htfBBkkVjAzZhYDy9m14xZ
+BSJ2PIYZKzYndMf2Q3+nI9d0+TrBwtEl0SdxaFiorT3cHA2RDszA3DXmOSUjdpNN
+iG9HxkNDpiNHvEU1I9yFnJ8lVnwc61YhtDWA0eIPa77u6O9ASDztA+DKPXNBbqE1
+2rmAPI708mCAnbOLfXKxUy3HmFVOWPzDYEsLeF2mkp5i4ZBPrhlbNIg1MNHTyOUv
+dqU2Ngldu9vpEgK8BPyl22AITn3sMJI0Pa+3hfjMpScsVswUA0zu4degLuAZ5Z8K
+2KrKKxPmVs0xfxDDtYHaM4JzbNdsclU5NYFdSzi4+w91uZXhIdDjCnAXxPBapYO/
+fXyBpmksx9jVtBLQk4U03JaGd9iggnodnzFfcMcou/5/xKwiunT2y0nJulZW/a1s
+xcjO6t/QkRZN7rFRQT4D+nekO1VhsHTDrJlv2jhFn8V8c61FIzrcdV2XXLqGcvlZ
+M1ayqxsHT9+vSpyCZ2T7Ak3u3Li/JtXTpt8Z/oqmCKYJgl0MVYHm5WFoLyMjOMav
+sx4MsAPb7XZX8RK9TUPX
+=F0jY
 -----END PGP SIGNATURE-----
 
---FrGtGUqnfnh75Pg1--
+--vJioXg+GvQhSmMus--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

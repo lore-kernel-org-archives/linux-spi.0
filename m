@@ -1,79 +1,80 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: orion: add support for multiple chip selects
-Date: Mon, 28 Jul 2014 22:52:37 +0100
-Message-ID: <20140728215237.GJ17528@sirena.org.uk>
-References: <1406498000-13079-1-git-send-email-thomas.petazzoni@free-electrons.com>
- <1406498000-13079-3-git-send-email-thomas.petazzoni@free-electrons.com>
+From: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Subject: Re: [PATCH] devicetree/bindings: Add binding for micron n25q512a
+ memory
+Date: Tue, 29 Jul 2014 10:24:44 +0100
+Message-ID: <20140729092444.GI2576@leverpostej>
+References: <1404382376-3115-1-git-send-email-Priyanka.Jain@freescale.com>
+ <1404425400.21434.89.camel@snotra.buserror.net>
+ <b7e1d3bf1675492585121d9e7950f05a@BLUPR03MB135.namprd03.prod.outlook.com>
+ <1404768354.21434.191.camel@snotra.buserror.net>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vJioXg+GvQhSmMus"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Shadi Ammouri <shadi-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Tawfik Bayouk <tawfik-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Nadav Haklai <nadavh-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Lior Amsalem <alior-eYqpPyKDWXRBDgjK7y7TUQ@public.gmane.org>,
-	Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-To: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Jain Priyanka-B32167 <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org" <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org" <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1406498000-13079-3-git-send-email-thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+In-Reply-To: <1404768354.21434.191.camel-88ow+0ZRuxG2UiBs7uKeOtHuzzzSOjJt@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Mon, Jul 07, 2014 at 10:25:54PM +0100, Scott Wood wrote:
+> On Thu, 2014-07-03 at 23:08 -0500, Jain Priyanka-B32167 wrote:
+> > 
+> > > -----Original Message-----
+> > > From: Wood Scott-B07421
+> > > Sent: Friday, July 04, 2014 3:40 AM
+> > > To: Jain Priyanka-B32167
+> > > Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org; linux-
+> > > spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+> > > Subject: Re: [PATCH] devicetree/bindings: Add binding for micron n25q512a
+> > > memory
+> > > 
+> > > On Thu, 2014-07-03 at 15:42 +0530, Priyanka Jain wrote:
+> > > > -Micron n25q512a memory is supported by m25p80 driver.
+> > > >  Add compatible field required to support n25q512a in m25p80.txt -Add
+> > > > micron to the vendor-prefixes.txt file
+> > > >
+> > > > Signed-off-by: Priyanka Jain <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> > > > ---
+> > > >  Documentation/devicetree/bindings/mtd/m25p80.txt   |    1 +
+> > > >  .../devicetree/bindings/vendor-prefixes.txt        |    1 +
+> > > >  2 files changed, 2 insertions(+), 0 deletions(-)
+> > > 
+> > > Why did you send this to the ppc list but not the spi or mtd lists?
+> > > 
+> > [Jain Priyanka-B32167] Sorry, I missed that
+> > > I'm having a hard time following the flow of how these SPI devices get
+> > > bound -- is the compatible involved at all?  I don't see this string
+> > > (with vendor prefix included) in the driver.  I do see a table that
+> > > contains what looks like device IDs.  If the device can report its id,
+> > > shouldn't we rely on that rather than device tree compatible?
+> > > 
+> > > -Scott
+> > [Jain Priyanka-B32167]
+> > Spi driver has a check to device name corresponding to device-id and compare to what is passed in dts string.
+> 
+> Please go into more detail.  I don't see where the string
+> "micron,n25q512a" appears in the current kernel.  I do see "n25q512a",
+> but how does that compare successfully with the version of the string
+> that has a vendor compatible?
 
---vJioXg+GvQhSmMus
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The spi code has a hack to not require an of_device_id_table:
+of_register_spi_devices calls of_modalias_node, which for a given
+"foo,bar" compatible string will set spi->modalias to "bar", by cutting
+off everything up to and including the comma. Later, spi_match_id can
+match a device with an spi_device_id->name of "bar".
 
-On Sun, Jul 27, 2014 at 11:53:20PM +0200, Thomas Petazzoni wrote:
+Thus "micron,n25q512a" can match one of the entries already in
+drivers/mtd/spi-nor/spi-nor.c.
 
-> @@ -150,6 +151,11 @@ orion_spi_setup_transfer(struct spi_device *spi, str=
-uct spi_transfer *t)
->  	if (rc)
->  		return rc;
-> =20
-> +	orion_spi_clrbits(orion_spi, ORION_SPI_IF_CTRL_REG,
-> +			  ORION_SPI_CS_MASK);
-> +	orion_spi_setbits(orion_spi, ORION_SPI_IF_CTRL_REG,
-> +			  ORION_SPI_CS(spi->chip_select));
-> +
->  	if (bits_per_word =3D=3D 16)
->  		orion_spi_setbits(orion_spi, ORION_SPI_IF_CONFIG_REG,
->  				  ORION_SPI_IF_8_16_BIT_MODE);
+This is a real pain when searching around.
 
-I would expect to see this chip select manipulation to be being done in
-set_cs not in setup_transfer() otherwise we'll probably get surprised
-when the driver is converted to use transfer_one() and pull the chip
-select handling out of the driver (among other things).
-
---vJioXg+GvQhSmMus
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJT1sYiAAoJELSic+t+oim9SdwP/iGoHF+mB6CbbhPuCp3rKePO
-xdTFM05s/yOxPL7pJDu3ETPzJperGTN9NVVz2ycekm6/+VafIMB1jXyTB9+e8x7L
-cXSBpuPshxOREgKMMwG89dR+lqwU2Hoo7BZqo8Dzc7htfBBkkVjAzZhYDy9m14xZ
-BSJ2PIYZKzYndMf2Q3+nI9d0+TrBwtEl0SdxaFiorT3cHA2RDszA3DXmOSUjdpNN
-iG9HxkNDpiNHvEU1I9yFnJ8lVnwc61YhtDWA0eIPa77u6O9ASDztA+DKPXNBbqE1
-2rmAPI708mCAnbOLfXKxUy3HmFVOWPzDYEsLeF2mkp5i4ZBPrhlbNIg1MNHTyOUv
-dqU2Ngldu9vpEgK8BPyl22AITn3sMJI0Pa+3hfjMpScsVswUA0zu4degLuAZ5Z8K
-2KrKKxPmVs0xfxDDtYHaM4JzbNdsclU5NYFdSzi4+w91uZXhIdDjCnAXxPBapYO/
-fXyBpmksx9jVtBLQk4U03JaGd9iggnodnzFfcMcou/5/xKwiunT2y0nJulZW/a1s
-xcjO6t/QkRZN7rFRQT4D+nekO1VhsHTDrJlv2jhFn8V8c61FIzrcdV2XXLqGcvlZ
-M1ayqxsHT9+vSpyCZ2T7Ak3u3Li/JtXTpt8Z/oqmCKYJgl0MVYHm5WFoLyMjOMav
-sx4MsAPb7XZX8RK9TUPX
-=F0jY
------END PGP SIGNATURE-----
-
---vJioXg+GvQhSmMus--
+Thanks,
+Mark.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

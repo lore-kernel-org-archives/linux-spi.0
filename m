@@ -1,43 +1,64 @@
-From: Andrea Adami <andrea.adami-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v2] spi/pxa2xx-pci: Add common clock framework support in
- PCI glue layer
-Date: Wed, 30 Jul 2014 00:06:38 +0200
-Message-ID: <CAAQYJAtLVgqbs=n2gxyemDAoHhM=7PFJy9bqKUExTbC+1rSNMg@mail.gmail.com>
-References: <1406221854-12828-1-git-send-email-chiau.ee.chew@intel.com>
-	<20140725053230.GT1857@lahna.fi.intel.com>
-	<CAAQYJAtM79NJJtfNYda-yFk113nm-2D8gZE5x=gbnLt2_eUdzQ@mail.gmail.com>
-	<20140729185529.GG17528@sirena.org.uk>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] mtd: spi-nor: Correct device-id for n25q512a device
+Date: Tue, 29 Jul 2014 21:14:31 -0700
+Message-ID: <20140730041431.GD11952@brian-ubuntu>
+References: <1404795285-2929-1-git-send-email-Priyanka.Jain@freescale.com>
+ <CAMuHMdV52qwThCezu=4NCpVBwbM2AjSK4cKXA+BdO=v_Yy2sBQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	Kweh Hock Leong <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Priyanka Jain <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140729185529.GG17528-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAMuHMdV52qwThCezu=4NCpVBwbM2AjSK4cKXA+BdO=v_Yy2sBQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Jul 29, 2014 at 8:55 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Tue, Jul 29, 2014 at 06:13:06PM +0200, Andrea Adami wrote:
->
->> note that a previous version of the patch breaks spi on pxa machines:
->> tested on pxa250 poodle and pxa255 corgi.
->> The patch is included in linux-Yocto since 3.14.
->
-> The interesting question is if this version works...
+Hi Priyanka,
 
-Happy to report that I could finally test on poodle/pxa250 the current
-v2 and the patch doesn't seem to disturb the probe.
-Sorry for the noise.
+On Tue, Jul 08, 2014 at 09:38:19AM +0200, Geert Uytterhoeven wrote:
+> CC linux-mtd
 
-Andrea
+(Thanks for forwarding, Geert)
+
+> On Tue, Jul 8, 2014 at 6:54 AM, Priyanka Jain
+> <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org> wrote:
+> > Signed-off-by: Priyanka Jain <Priyanka.Jain-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+> > ---
+> >  drivers/mtd/spi-nor/spi-nor.c |    2 +-
+> >  1 files changed, 1 insertions(+), 1 deletions(-)
+> >
+> > diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> > index c713c86..148bb51d 100644
+> > --- a/drivers/mtd/spi-nor/spi-nor.c
+> > +++ b/drivers/mtd/spi-nor/spi-nor.c
+> > @@ -487,7 +487,7 @@ const struct spi_device_id spi_nor_ids[] = {
+> >         { "n25q128a11",  INFO(0x20bb18, 0, 64 * 1024,  256, 0) },
+> >         { "n25q128a13",  INFO(0x20ba18, 0, 64 * 1024,  256, 0) },
+> >         { "n25q256a",    INFO(0x20ba19, 0, 64 * 1024,  512, SECT_4K) },
+> > -       { "n25q512a",    INFO(0x20bb20, 0, 64 * 1024, 1024, SECT_4K) },
+> > +       { "n25q512a",    INFO(0x20ba20, 0, 64 * 1024, 1024, SECT_4K) },
+
+We can't just change the ID, as this would break other devices.
+Apparently there are multiple similar devices with at least two
+different IDs. And we already have this patch queued up in l2-mtd.git
+(also in linux-next):
+
+commit c14deddec1fbd8c9757c53a49dbfd2dc83265f21
+Author: grmoore-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org <grmoore-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>
+Date:   Tue Apr 29 10:29:51 2014 -0500
+
+    mtd: spi-nor: add support for flag status register on Micron chips
+
+Feel free to test!
+
+> >
+> >         /* PMC */
+> >         { "pm25lv512",   INFO(0,        0, 32 * 1024,    2, SECT_4K_PMC) },
+
+Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

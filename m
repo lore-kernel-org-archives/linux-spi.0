@@ -1,50 +1,66 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: [PATCH] spi/ateml: Fix pointer to int conversion warnings on 64 bit builds
-Date: Fri,  1 Aug 2014 17:44:18 +0100
-Message-ID: <1406911458-12311-1-git-send-email-broonie@kernel.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org,
-	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] spi: davinci: add support to configure gpio cs
+ through dt
+Date: Fri, 1 Aug 2014 18:26:20 +0100
+Message-ID: <20140801172620.GA30458@sirena.org.uk>
+References: <1406911233-18999-1-git-send-email-grygorii.strashko@ti.com>
+ <1406911233-18999-2-git-send-email-grygorii.strashko@ti.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="YOxyDEsNCn0QNWql"
+Cc: santosh.shilimkar-l0cyMroinI0@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1406911233-18999-2-git-send-email-grygorii.strashko-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-On 64 bit systems integers are generally still 32 bit but long values and
-pointers are usually 64 bit. GCC warns when casting a 64 bit pointer into
-a 32 bit integer so cast to a long instead in order to avoid warnings.
+--YOxyDEsNCn0QNWql
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
----
- drivers/spi/spi-atmel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Fri, Aug 01, 2014 at 07:40:32PM +0300, Grygorii Strashko wrote:
+> From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+>=20
+> Currently driver supports only configuration of GPIO CS through
+> platform data. This patch enhances the driver to configure GPIO
+> CS through DT. Also update the DT binding documentation to
+> reflect the availability of cs-gpios.
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 1fb90dd..113c83f 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1012,7 +1012,7 @@ static int atmel_spi_setup(struct spi_device *spi)
- 	csr |= SPI_BF(DLYBCT, 0);
- 
- 	/* chipselect must have been muxed as GPIO (e.g. in board setup) */
--	npcs_pin = (unsigned int)spi->controller_data;
-+	npcs_pin = (unsigned long)spi->controller_data;
- 
- 	if (gpio_is_valid(spi->cs_gpio))
- 		npcs_pin = spi->cs_gpio;
-@@ -1247,7 +1247,7 @@ msg_done:
- static void atmel_spi_cleanup(struct spi_device *spi)
- {
- 	struct atmel_spi_device	*asd = spi->controller_state;
--	unsigned		gpio = (unsigned) spi->controller_data;
-+	unsigned		gpio = (unsigned long) spi->controller_data;
- 
- 	if (!asd)
- 		return;
--- 
-2.0.0
+Please submit an incremental patch with whatever the changes were from
+the version of this that I applied already.
 
+--YOxyDEsNCn0QNWql
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT2825AAoJELSic+t+oim9uq4P/2MBs/rvvBj7luODTtlVVWTi
+ruNvsNBJzaRZa+XPk5dvAu3rNBdd1gQp1tqR0hs2qDvlI952TWR79zgcZL6iJOyx
+8HIIa5m5h3i0WIBRT9KkdVoMFcakYxilPqR2uB2Meg6UkW2Olnj/B3MmWrLaSqIV
+iaW1LpxVxm6vuF0UYkq6Bt0qOOKSN7NImeYSSqqs654iW/JPSoKpHkZse1RFGC8g
+x8sjkacoLXAMdCkMKQm0WTlTltLJ9MAqRVQHcAerqwIJVI0eqBClc6/SkLYZ+O1R
+jJM9SqGa++kpCCjgXgz7d0GsGxMSJUy4Z9KdJHMXCQ3DMrMsRqfxJX18ncBkuj/M
+AlYYkfWdubCvNo2gP5Sy4K8h9FtC6fFqm7ripk4gZMgmbzDSCUEU/ZnFkfGsWBw6
+Lgd6vQx0IFtwe6to8TYXlTTyabBkxsDL0Q9TOXh/nN6FYYdWm8WnZhTnKECvIzu4
+gG9+0/t1SfvnPS8q4OJDgwpnVU7L1Hbu3NCipa78qJZkdRm9HAU0jqeVVg+jprQB
+ct9K11DVIR1w1r9D5KvHdtUxHOa+N0JqrIl0wxJvVWFQYDXHEf+PwM4/Wo/rbBkc
+ppYKAwY09pb9wUoQvTflyQFFIATQbFfyE/0AlqZS7oPJfuyVfSZDAb99hcqs33zU
+9pfKE99COtw+pdihkLyU
+=jXKl
+-----END PGP SIGNATURE-----
+
+--YOxyDEsNCn0QNWql--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

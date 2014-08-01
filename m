@@ -1,88 +1,59 @@
-From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-Subject: Re: [PATCH/RFC V8 1/1] clk: Support for clock parents and rates
- assigned from device tree
-Date: Fri, 1 Aug 2014 18:15:57 +0200
-Message-ID: <20140801161557.GA3277@katana>
-References: <1403105372-30403-1-git-send-email-s.nawrocki@samsung.com>
- <1403105372-30403-2-git-send-email-s.nawrocki@samsung.com>
- <53B59221.5080100@samsung.com>
- <20140725214231.5177.86866@quantum>
+From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: davinci: add support to configure gpio cs through
+ dt
+Date: Fri, 01 Aug 2014 20:29:04 +0300
+Message-ID: <53DBCE60.1010308@ti.com>
+References: <1406827995-30913-1-git-send-email-grygorii.strashko@ti.com> <1406827995-30913-3-git-send-email-grygorii.strashko@ti.com> <20140731193515.GO17528@sirena.org.uk> <53DBB202.1040509@ti.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UugvWAfsgieZRqgk"
-Cc: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
-	mark.rutland-5wv7dgnIgG8@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-	m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	santosh.shilimkar-l0cyMroinI0@public.gmane.org, Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20140725214231.5177.86866@quantum>
+In-Reply-To: <53DBB202.1040509-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark,
 
---UugvWAfsgieZRqgk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 08/01/2014 06:28 PM, Grygorii Strashko wrote:
+> Hi Mark,
+> On 07/31/2014 10:35 PM, Mark Brown wrote:
+>> On Thu, Jul 31, 2014 at 08:33:15PM +0300, Grygorii Strashko wrote:
+>>
+>>> +	if (np && master->cs_gpios != NULL && spi->cs_gpio >= 0) {
+>>> +		/* SPI core parse and update master->cs_gpio */
+>>>    		gpio_chipsel = true;
+>>> +		gpio = spi->cs_gpio;
+>>> +	} else if (pdata->chip_sel &&
+>>> +		   chip_sel < pdata->num_chipselect &&
+>>> +		   pdata->chip_sel[chip_sel] != SPI_INTERN_CS) {
+>>> +		/* platform data defines chip_sel */
+>>> +		gpio_chipsel = true;
+>>> +		gpio = pdata->chip_sel[chip_sel];
+>>> +	}
+>>
+>> This would all be a lot simpler and more direct if you were to arrange
+>> to use cs_gpio in the struct spi_device, and move you closer to
+>> converting to use more of the core functionality.
+> 
+> Unfortunately, I'm not sure this is good idea, because this part of
+> code is used by Davinci arch which is non-DT platform.
+> As result, this code was kept mostly unchanged.
+> 
+> I can try to rework it, but I'd like to do it as standalone patch.
+> Is it ok for you?
 
-On Fri, Jul 25, 2014 at 02:42:31PM -0700, Mike Turquette wrote:
-> Quoting Sylwester Nawrocki (2014-07-03 10:25:53)
-> > On 18/06/14 17:29, Sylwester Nawrocki wrote:
-> > > This patch adds helper functions to configure clock parents and rates
-> > > as specified through 'assigned-clock-parents', 'assigned-clock-rates'
-> > > DT properties for a clock provider or clock consumer device.
-> > > The helpers are now being called by the bus code for the platform, I2C
-> > > and SPI busses, before the driver probing and also in the clock core
-> > > after registration of a clock provider.
-> > >=20
-> > > Signed-off-by: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> > > Acked-by: Kyungmin Park <kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-> >=20
-> > Could someone please take a look and review that patch ?
-> > Any further suggestions, ACKs/NAKs ?
->=20
-> Patch looks good to me. I'm happy to take it.
->=20
-> >=20
-> > I would appreciate a DT, SPI or the I2C maintainer opinions.
->=20
-> Yes, Acks from SPI and I2C maintainers would be good. I might need to
-> drop those parts of this patch if they don't come through :-(
+I've just sent updated version with additional patch where
+I reworked driver for using cs_gpio for  both DT and non-DT cases.
+http://www.spinics.net/lists/arm-kernel/msg352382.html
 
-For the I2C part:
-
-Acked-by: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-
-
---UugvWAfsgieZRqgk
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iQIcBAEBAgAGBQJT2708AAoJEBQN5MwUoCm2aCYP/365qBaTpbuWjzeZ1mlBEwpR
-3/qVH7fE0MfwEHd03BafDmNAf3rV3zTdQjvTyz3w7eH1Tvwf5nWJr3Wgqltkp5iU
-Dcm4FUO6r17Fae+bZLO88By7UOm8WccZtsI8TorQTruGanCVZbavul/AvJdDX7ck
-ffhNzao4AMuQdjFMz3FQr7kkGo3GpveC3tmNhK4aFnDWsleEgNvQ2NvaRLdz6wbe
-OTxk42sIJtG7iKjleKz2xthCp6R/AvhdU1O6SZCKmskpmZW3eHp6107WuCqd0IMr
-ifs9cwEK62iqVAix0cNp5GxmsOpEUBtExk2RAxTQMGCwFePPu4BI5iXYMYuDXbDl
-4xHzLoSr0wbCW8EGl17+Pd3i+llfjgZxvKIi0DUOh6IeuvWtB8sVNA6h1+6w3VTi
-DmUOEBcdbpNR1y0OdszrApcP5CJYbYlFzUYWfVn+MV01nj9lNaAwGB2ynlk2CpMI
-r9u0PbShD9lib5CgbO/rbQqSJfG+o5rjlzP/YtTw+InVZQT+2OQqYh/RxsKVGjcE
-9SHHRKesGwBhiDtLS5oRTI5GakkYjqg5+euIFKcHBshmoTgf54BiWAV4WATKuxwT
-gjcfbiUHdTDJ6+z2klekmIelujnlAMgAoKcksb0toRkMXZbq91bqB/ytak6/wHEG
-YtLYHZZiHTwejG8qi5jm
-=mIbT
------END PGP SIGNATURE-----
-
---UugvWAfsgieZRqgk--
+Regards,
+-grygorii
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

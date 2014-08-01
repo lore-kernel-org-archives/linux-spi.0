@@ -1,59 +1,42 @@
-From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: davinci: add support to configure gpio cs through
- dt
-Date: Fri, 01 Aug 2014 20:29:04 +0300
-Message-ID: <53DBCE60.1010308@ti.com>
-References: <1406827995-30913-1-git-send-email-grygorii.strashko@ti.com> <1406827995-30913-3-git-send-email-grygorii.strashko@ti.com> <20140731193515.GO17528@sirena.org.uk> <53DBB202.1040509@ti.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	santosh.shilimkar-l0cyMroinI0@public.gmane.org, Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: [PATCH] spi/pl022: Explicitly truncate large bitmask
+Date: Fri,  1 Aug 2014 17:48:55 +0100
+Message-ID: <1406911735-17239-1-git-send-email-broonie@kernel.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org,
+	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <53DBB202.1040509-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 
-On 08/01/2014 06:28 PM, Grygorii Strashko wrote:
-> Hi Mark,
-> On 07/31/2014 10:35 PM, Mark Brown wrote:
->> On Thu, Jul 31, 2014 at 08:33:15PM +0300, Grygorii Strashko wrote:
->>
->>> +	if (np && master->cs_gpios != NULL && spi->cs_gpio >= 0) {
->>> +		/* SPI core parse and update master->cs_gpio */
->>>    		gpio_chipsel = true;
->>> +		gpio = spi->cs_gpio;
->>> +	} else if (pdata->chip_sel &&
->>> +		   chip_sel < pdata->num_chipselect &&
->>> +		   pdata->chip_sel[chip_sel] != SPI_INTERN_CS) {
->>> +		/* platform data defines chip_sel */
->>> +		gpio_chipsel = true;
->>> +		gpio = pdata->chip_sel[chip_sel];
->>> +	}
->>
->> This would all be a lot simpler and more direct if you were to arrange
->> to use cs_gpio in the struct spi_device, and move you closer to
->> converting to use more of the core functionality.
-> 
-> Unfortunately, I'm not sure this is good idea, because this part of
-> code is used by Davinci arch which is non-DT platform.
-> As result, this code was kept mostly unchanged.
-> 
-> I can try to rework it, but I'd like to do it as standalone patch.
-> Is it ok for you?
+When building on 64 bit architectures the use of bitwise negation generates
+constants larger than 32 bits which won't fit in u32s used to represent
+32 bit register values on the device. Explicitly cast to let the compiler
+know that the higher bits are not significant and can be discarded.
 
-I've just sent updated version with additional patch where
-I reworked driver for using cs_gpio for  both DT and non-DT cases.
-http://www.spinics.net/lists/arm-kernel/msg352382.html
+Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
--grygorii
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 66d2ae2..1189cfd 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -1417,7 +1417,7 @@ static void do_interrupt_dma_transfer(struct pl022 *pl022)
+ 	 * Default is to enable all interrupts except RX -
+ 	 * this will be enabled once TX is complete
+ 	 */
+-	u32 irqflags = ENABLE_ALL_INTERRUPTS & ~SSP_IMSC_MASK_RXIM;
++	u32 irqflags = (u32)(ENABLE_ALL_INTERRUPTS & ~SSP_IMSC_MASK_RXIM);
+ 
+ 	/* Enable target chip, if not already active */
+ 	if (!pl022->next_msg_cs_active)
+-- 
+2.0.0
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

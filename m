@@ -1,71 +1,66 @@
-From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v2 1/2] spi: davinci: add support to configure gpio cs
-	through dt
-Date: Fri, 1 Aug 2014 21:24:52 +0300
-Message-ID: <53DBDB74.3070205@ti.com>
+ through dt
+Date: Fri, 1 Aug 2014 19:21:10 +0100
+Message-ID: <20140801182110.GI30458@sirena.org.uk>
 References: <1406911233-18999-1-git-send-email-grygorii.strashko@ti.com>
-	<1406911233-18999-2-git-send-email-grygorii.strashko@ti.com>
-	<20140801173506.GB30458@sirena.org.uk>
+ <1406911233-18999-2-git-send-email-grygorii.strashko@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Ian Campbell
-	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Rob Herring
-	<robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        <santosh.shilimkar-l0cyMroinI0@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <20140801173506.GB30458-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces+gld-davinci-linux-open-source=gmane.org-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="vt4ed5MNefdcgji4"
+Cc: santosh.shilimkar-l0cyMroinI0@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1406911233-18999-2-git-send-email-grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On 08/01/2014 08:35 PM, Mark Brown wrote:
-> On Fri, Aug 01, 2014 at 07:40:32PM +0300, Grygorii Strashko wrote:
->> From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
->>
->> Currently driver supports only configuration of GPIO CS through
->> platform data. This patch enhances the driver to configure GPIO
->> CS through DT. Also update the DT binding documentation to
->> reflect the availability of cs-gpios.
-> 
-> Ah, sorry - this is the unapplied patch from before.  It would have been
-> much better to submit this as the second patch after your rework patch
-> since this...
-> 
 
-I can do this, but It will wait for a week :(
+--vt4ed5MNefdcgji4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
->> -	if (pdata->chip_sel && chip_sel < pdata->num_chipselect &&
->> -				pdata->chip_sel[chip_sel] != SPI_INTERN_CS)
->> +	if (np && master->cs_gpios != NULL && spi->cs_gpio >= 0) {
->> +		/* SPI core parse and update master->cs_gpio */
->>   		gpio_chipsel = true;
->> +		gpio = spi->cs_gpio;
->> +	} else if (pdata->chip_sel &&
->> +		   chip_sel < pdata->num_chipselect &&
->> +		   pdata->chip_sel[chip_sel] != SPI_INTERN_CS) {
->> +		/* platform data defines chip_sel */
->> +		gpio_chipsel = true;
->> +		gpio = pdata->chip_sel[chip_sel];
->> +	}
-> 
-> ...still looks excessively confusing - it is way more logic than I'd
-> expect to see on every chip select.
-> 
+On Fri, Aug 01, 2014 at 07:40:32PM +0300, Grygorii Strashko wrote:
+> From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+>=20
+> Currently driver supports only configuration of GPIO CS through
+> platform data. This patch enhances the driver to configure GPIO
+> CS through DT. Also update the DT binding documentation to
+> reflect the availability of cs-gpios.
 
-Yep. Finally, patch "[PATCH v2 2/2] spi: davinci: use spi_device.cs_gpio to store gpio cs per spi device"
-simplifies logic above.
+Applied both, thanks.
 
-Regards,
--grygorii
+--vt4ed5MNefdcgji4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT29qTAAoJELSic+t+oim9gugP/1p6z/WeoE06pYHUyxvaE7G8
+OGOi1c+ZHYGqQONZ749Gx4VVe99LIllmUAFCABMYKZXbEGbzNduqJH7j7cGO7WTS
+n9UE/+OhQUwFgAExgYXIr/yv8zkYC7OEsFKG6e7lAVwxk0yzn70AWBZyhTJPDkSv
+C/X93hKeJuniQBjy270QQJ1LSczoh0cHc7CUdto2NNq6tGPC4sM7aBJ2kKSU9rk8
++b+OH3NLz3jC8GXY1p0M1OOjXW5ymi7Q6iSL+G8pGGeDKs3QFn3FCpNFiv6Gt+Ea
+pwHyPwSNqmJD0T09prd1gH5dLUZjUX792bjRTFmiN/Nt2Q+K/NYzKAU9x+b9DEQT
+h9N0tbUcFlfO7C7gAdoK36koYP8w5mXcOfSdbpsF+vcy657P51ur779kfTu1GW7t
+ey7RbXtUKCIxTnMO19fW9Cn+UBIQQXk4KEL5H6G/3DULsBPa6dNAO02S7nCV/ycw
+o5wSi6xInYy3M6x3DY4LsJexyHCczSqnOQqNqHX2mmr29b1nMCCRM0xgl0jYjvmV
+bd5a53ZEx4k33hi0JBjGjZLVcLY7DxLR6Vy/3Z44FF9baVGwB+iTUvUcuKQTmT3s
+O0bGIdSCyAkkpVoJMG5TSwd29p/6NeCbDnuBxESHerTdK7TupH++1fiXcKBRTikV
+QKjOUrwLjlc4p8ErJ8bv
+=2EYg
+-----END PGP SIGNATURE-----
+
+--vt4ed5MNefdcgji4--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

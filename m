@@ -1,79 +1,55 @@
-From: =?UTF-8?q?Emilio=20L=C3=B3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-Subject: [PATCH v3 8/8] ARM: sun7i: dt: enable DMA on SPI
-Date: Mon,  4 Aug 2014 17:10:02 -0300
-Message-ID: <1407183002-29420-9-git-send-email-emilio@elopez.com.ar>
-References: <1407183002-29420-1-git-send-email-emilio@elopez.com.ar>
+From: Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: spi, spi_fsl-spi.c not working?
+Date: Mon, 4 Aug 2014 16:52:56 -0500
+Message-ID: <1407189176.10311.12.camel@snotra.buserror.net>
+References: <53C79351.2080406@denx.de>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	sunny-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, kevin.z.m.zh-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	shuge-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org, zhuzhenhua-0TFLnhJekD6UEPyfVivIlAC/G2K4zDHf@public.gmane.org,
-	=?UTF-8?q?Emilio=20L=C3=B3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
+	Andreas Larsson <andreas-FkzTOoA/JUlBDgjK7y7TUQ@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"Anton Vorontsov" <avorontsov-hkdhdckH98+B+jHODAdFcQ@public.gmane.org>
+To: <hs-ynQEQJNshbs@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1407183002-29420-1-git-send-email-emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
+In-Reply-To: <53C79351.2080406-ynQEQJNshbs@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-All of our SPI controllers support DMA transfers, so let's add the
-properties here so they can be used when it's best to do so.
+On Thu, 2014-07-17 at 11:11 +0200, Heiko Schocher wrote:
+> Hello all,
+> 
+> I just tried a mpc83xx based board (similiar to the mpc8313erdb)
+> with linux v3.16-rc4 using the drivers/spi/spi-fsl-spi.c driver.
+> DT nodes for spi are the same as in arch/powerpc/boot/dts/mpc8313erdb.dts:
+> 
+>                  spi@7000 {
+>                          cell-index = <0>;
+>                          compatible = "fsl,spi";
+>                          reg = <0x7000 0x1000>;
+>                          interrupts = <16 0x8>;
+>                          interrupt-parent = <&ipic>;
+>                          mode = "cpu";
+>                  };
+> 
+> Bootlog shows:
+> 
+> [    1.341411] fsl_spi f0007000.spi: master is unqueued, this is deprecated
+> [    1.554405] ------------[ cut here ]------------
+> [    1.559080] WARNING: at c023a958 [verbose debug info unavailable]
 
-Signed-off-by: Emilio L=C3=B3pez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-Reviewed-by: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
----
+If you haven't already resolved this, could you enable verbose debug
+info (or use gdb) to get the line number?
 
-Changes from v2:
- * Collect tag from Chen-Yu
+I don't see the WARNING when booting mpc8379rdb with SPI enabled (though
+I do see the "master is unqueued" message).  I don't have easy access to
+an mpc8313erdb to test on.
 
- arch/arm/boot/dts/sun7i-a20.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+-Scott
 
-diff --git a/arch/arm/boot/dts/sun7i-a20.dtsi b/arch/arm/boot/dts/sun7i=
--a20.dtsi
-index 510b5a8..ecdc873 100644
---- a/arch/arm/boot/dts/sun7i-a20.dtsi
-+++ b/arch/arm/boot/dts/sun7i-a20.dtsi
-@@ -437,6 +437,8 @@
- 			interrupts =3D <0 10 4>;
- 			clocks =3D <&ahb_gates 20>, <&spi0_clk>;
- 			clock-names =3D "ahb", "mod";
-+			dmas =3D <&dma 1 27>, <&dma 1 26>;
-+			dma-names =3D "rx", "tx";
- 			status =3D "disabled";
- 			#address-cells =3D <1>;
- 			#size-cells =3D <0>;
-@@ -448,6 +450,8 @@
- 			interrupts =3D <0 11 4>;
- 			clocks =3D <&ahb_gates 21>, <&spi1_clk>;
- 			clock-names =3D "ahb", "mod";
-+			dmas =3D <&dma 1 9>, <&dma 1 8>;
-+			dma-names =3D "rx", "tx";
- 			status =3D "disabled";
- 			#address-cells =3D <1>;
- 			#size-cells =3D <0>;
-@@ -543,6 +547,8 @@
- 			interrupts =3D <0 12 4>;
- 			clocks =3D <&ahb_gates 22>, <&spi2_clk>;
- 			clock-names =3D "ahb", "mod";
-+			dmas =3D <&dma 1 29>, <&dma 1 28>;
-+			dma-names =3D "rx", "tx";
- 			status =3D "disabled";
- 			#address-cells =3D <1>;
- 			#size-cells =3D <0>;
-@@ -582,6 +588,8 @@
- 			interrupts =3D <0 50 4>;
- 			clocks =3D <&ahb_gates 23>, <&spi3_clk>;
- 			clock-names =3D "ahb", "mod";
-+			dmas =3D <&dma 1 31>, <&dma 1 30>;
-+			dma-names =3D "rx", "tx";
- 			status =3D "disabled";
- 			#address-cells =3D <1>;
- 			#size-cells =3D <0>;
---=20
-2.0.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

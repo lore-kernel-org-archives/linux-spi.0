@@ -1,7 +1,8 @@
 From: =?UTF-8?q?Emilio=20L=C3=B3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-Subject: [PATCH v3 0/8] DMAEngine support for sun4i, sun5i & sun7i
-Date: Mon,  4 Aug 2014 17:09:54 -0300
-Message-ID: <1407183002-29420-1-git-send-email-emilio@elopez.com.ar>
+Subject: [PATCH v3 3/8] ARM: sun4i: dt: Add node to represent the DMA controller
+Date: Mon,  4 Aug 2014 17:09:57 -0300
+Message-ID: <1407183002-29420-4-git-send-email-emilio@elopez.com.ar>
+References: <1407183002-29420-1-git-send-email-emilio@elopez.com.ar>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
@@ -13,55 +14,44 @@ Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
 To: Maxime Ripard <maxime.ripard-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
 	vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, dan.j.williams-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1407183002-29420-1-git-send-email-emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi everyone,
+Let's add a node to represent the A10 DMA controller on the device tree=
+=2E
 
-As part of Google Summer of Code, I've tasked myself with implementing
-DMA support for the earlier Allwinner platforms. This third round of
-patches is the result of said effort.
+Signed-off-by: Emilio L=C3=B3pez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
+Reviewed-by: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
+---
 
-The first patch is the actual driver to support these platforms. Patche=
-s
-three, four and five add the corresponding DMA node to the sun4i, sun5i
-and sun7i device trees.
+Changes from v2:
+ * Fix whitespace
+ * Collect tag from Chen-Yu
 
-The second patch, involving the sunxi SPI driver, lets users do SPI
-transfers of >=3D64 bytes by using DMA. Patches six, seven and eight ad=
-d
-the DMA properties to SPI so the first two patches can be used.
+ arch/arm/boot/dts/sun4i-a10.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-All comments and reviews are welcome :)
-
-Thanks!
-
-Emilio
-
-Emilio L=C3=B3pez (8):
-  dma: sun4i: Add support for the DMA engine on sun[457]i SoCs
-  spi: sun4i: add DMA support
-  ARM: sun4i: dt: Add node to represent the DMA controller
-  ARM: sun5i: dt: Add nodes to represent the DMA controllers
-  ARM: sun7i: dt: Add node to represent the DMA controller
-  ARM: sun4i: dt: enable DMA on SPI
-  ARM: sun5i: dt: enable DMA on SPI
-  ARM: sun7i: dt: enable DMA on SPI
-
- .../devicetree/bindings/dma/sun4i-dma.txt          |   46 +
- arch/arm/boot/dts/sun4i-a10.dtsi                   |   16 +
- arch/arm/boot/dts/sun5i-a10s.dtsi                  |   14 +
- arch/arm/boot/dts/sun5i-a13.dtsi                   |   14 +
- arch/arm/boot/dts/sun7i-a20.dtsi                   |   16 +
- drivers/dma/Kconfig                                |   11 +
- drivers/dma/Makefile                               |    1 +
- drivers/dma/sun4i-dma.c                            | 1238 ++++++++++++=
-++++++++
- drivers/spi/spi-sun4i.c                            |  155 ++-
- 9 files changed, 1500 insertions(+), 11 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/dma/sun4i-dma.txt
- create mode 100644 drivers/dma/sun4i-dma.c
-
+diff --git a/arch/arm/boot/dts/sun4i-a10.dtsi b/arch/arm/boot/dts/sun4i=
+-a10.dtsi
+index d96e179..5c6791a 100644
+--- a/arch/arm/boot/dts/sun4i-a10.dtsi
++++ b/arch/arm/boot/dts/sun4i-a10.dtsi
+@@ -339,6 +339,14 @@
+ 		#size-cells =3D <1>;
+ 		ranges;
+=20
++		dma: dma-controller@01c02000 {
++			compatible =3D "allwinner,sun4i-a10-dma";
++			reg =3D <0x01c02000 0x1000>;
++			interrupts =3D <27>;
++			clocks =3D <&ahb_gates 6>;
++			#dma-cells =3D <2>;
++		};
++
+ 		spi0: spi@01c05000 {
+ 			compatible =3D "allwinner,sun4i-a10-spi";
+ 			reg =3D <0x01c05000 0x1000>;
 --=20
 2.0.4
 --

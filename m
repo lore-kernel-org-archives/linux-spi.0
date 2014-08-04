@@ -1,7 +1,7 @@
 From: =?UTF-8?q?Emilio=20L=C3=B3pez?= <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
-Subject: [PATCH v3 2/8] spi: sun4i: add DMA support
-Date: Mon,  4 Aug 2014 17:09:56 -0300
-Message-ID: <1407183002-29420-3-git-send-email-emilio@elopez.com.ar>
+Subject: [PATCH v3 4/8] ARM: sun5i: dt: Add nodes to represent the DMA controllers
+Date: Mon,  4 Aug 2014 17:09:58 -0300
+Message-ID: <1407183002-29420-5-git-send-email-emilio@elopez.com.ar>
 References: <1407183002-29420-1-git-send-email-emilio@elopez.com.ar>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -18,311 +18,65 @@ In-Reply-To: <1407183002-29420-1-git-send-email-emilio-0Z03zUJReD5OxF6Tv1QG9Q@pu
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch adds support for 64 byte or bigger transfers on the
-sun4i SPI controller. Said transfers will be performed via DMA.
+The A10S and A13 SoCs have sun4i-compatible DMA controllers. Let's add
+the corresponding nodes to represent them on the device tree.
 
 Signed-off-by: Emilio L=C3=B3pez <emilio-0Z03zUJReD5OxF6Tv1QG9Q@public.gmane.org>
+Reviewed-by: Chen-Yu Tsai <wens-jdAy2FN1RRM@public.gmane.org>
 ---
 
 Changes from v2:
- * Fix commit message
+ * Fix whitespace
+ * Collect tag from Chen-Yu
 
-Changes from v1:
- * remove 64 byte limitation on transfers
- * wrap stuff so it fits better in 80 cols
+Note that I have only tested on A10S, if anyone with an A13 device coul=
+d
+test as well, that would be great! I don't expect any issues however.
 
- drivers/spi/spi-sun4i.c | 155 ++++++++++++++++++++++++++++++++++++++++=
-++++----
- 1 file changed, 144 insertions(+), 11 deletions(-)
+ arch/arm/boot/dts/sun5i-a10s.dtsi | 8 ++++++++
+ arch/arm/boot/dts/sun5i-a13.dtsi  | 8 ++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index 85204c9..e674100 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -14,6 +14,8 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-+#include <linux/dmaengine.h>
-+#include <linux/dma-mapping.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/module.h>
-@@ -34,6 +36,7 @@
- #define SUN4I_CTL_CPHA				BIT(2)
- #define SUN4I_CTL_CPOL				BIT(3)
- #define SUN4I_CTL_CS_ACTIVE_LOW			BIT(4)
-+#define SUN4I_CTL_DMAMC_DEDICATED		BIT(5)
- #define SUN4I_CTL_LMTF				BIT(6)
- #define SUN4I_CTL_TF_RST			BIT(8)
- #define SUN4I_CTL_RF_RST			BIT(9)
-@@ -51,6 +54,8 @@
- #define SUN4I_INT_STA_REG		0x10
+diff --git a/arch/arm/boot/dts/sun5i-a10s.dtsi b/arch/arm/boot/dts/sun5=
+i-a10s.dtsi
+index b64f705..8b5a27c 100644
+--- a/arch/arm/boot/dts/sun5i-a10s.dtsi
++++ b/arch/arm/boot/dts/sun5i-a10s.dtsi
+@@ -300,6 +300,14 @@
+ 		#size-cells =3D <1>;
+ 		ranges;
 =20
- #define SUN4I_DMA_CTL_REG		0x14
-+#define SUN4I_DMA_CTL_RF_READY			BIT(0)
-+#define SUN4I_DMA_CTL_TF_NOT_FULL		BIT(10)
++		dma: dma-controller@01c02000 {
++			compatible =3D "allwinner,sun4i-a10-dma";
++			reg =3D <0x01c02000 0x1000>;
++			interrupts =3D <27>;
++			clocks =3D <&ahb_gates 6>;
++			#dma-cells =3D <2>;
++		};
++
+ 		spi0: spi@01c05000 {
+ 			compatible =3D "allwinner,sun4i-a10-spi";
+ 			reg =3D <0x01c05000 0x1000>;
+diff --git a/arch/arm/boot/dts/sun5i-a13.dtsi b/arch/arm/boot/dts/sun5i=
+-a13.dtsi
+index 3b2a94c..139f4ac 100644
+--- a/arch/arm/boot/dts/sun5i-a13.dtsi
++++ b/arch/arm/boot/dts/sun5i-a13.dtsi
+@@ -298,6 +298,14 @@
+ 		#size-cells =3D <1>;
+ 		ranges;
 =20
- #define SUN4I_WAIT_REG			0x18
-=20
-@@ -84,6 +89,9 @@ struct sun4i_spi {
- 	const u8		*tx_buf;
- 	u8			*rx_buf;
- 	int			len;
++		dma: dma-controller@01c02000 {
++			compatible =3D "allwinner,sun4i-a10-dma";
++			reg =3D <0x01c02000 0x1000>;
++			interrupts =3D <27>;
++			clocks =3D <&ahb_gates 6>;
++			#dma-cells =3D <2>;
++		};
 +
-+	struct dma_chan		*rx_dma_chan;
-+	struct dma_chan		*tx_dma_chan;
- };
-=20
- static inline u32 sun4i_spi_read(struct sun4i_spi *sspi, u32 reg)
-@@ -130,6 +138,24 @@ static inline void sun4i_spi_fill_fifo(struct sun4=
-i_spi *sspi, int len)
- 	}
- }
-=20
-+static bool sun4i_spi_can_dma(struct spi_master *master,
-+			      struct spi_device *spi,
-+			      struct spi_transfer *tfr)
-+{
-+	return tfr->len >=3D SUN4I_FIFO_DEPTH;
-+}
-+
-+static int sun4i_spi_prepare_message(struct spi_master *master,
-+				     struct spi_message *msg)
-+{
-+	struct sun4i_spi *sspi =3D spi_master_get_devdata(master);
-+
-+	master->dma_rx =3D sspi->rx_dma_chan;
-+	master->dma_tx =3D sspi->tx_dma_chan;
-+
-+	return 0;
-+}
-+
- static void sun4i_spi_set_cs(struct spi_device *spi, bool enable)
- {
- 	struct sun4i_spi *sspi =3D spi_master_get_devdata(spi->master);
-@@ -169,15 +195,12 @@ static int sun4i_spi_transfer_one(struct spi_mast=
-er *master,
- 				  struct spi_transfer *tfr)
- {
- 	struct sun4i_spi *sspi =3D spi_master_get_devdata(master);
-+	struct dma_async_tx_descriptor *desc_tx =3D NULL, *desc_rx =3D NULL;
- 	unsigned int mclk_rate, div, timeout;
- 	unsigned int tx_len =3D 0;
- 	int ret =3D 0;
- 	u32 reg;
-=20
--	/* We don't support transfer larger than the FIFO */
--	if (tfr->len > SUN4I_FIFO_DEPTH)
--		return -EINVAL;
--
- 	reinit_completion(&sspi->done);
- 	sspi->tx_buf =3D tfr->tx_buf;
- 	sspi->rx_buf =3D tfr->rx_buf;
-@@ -186,7 +209,6 @@ static int sun4i_spi_transfer_one(struct spi_master=
- *master,
- 	/* Clear pending interrupts */
- 	sun4i_spi_write(sspi, SUN4I_INT_STA_REG, ~0);
-=20
--
- 	reg =3D sun4i_spi_read(sspi, SUN4I_CTL_REG);
-=20
- 	/* Reset FIFOs */
-@@ -269,12 +291,63 @@ static int sun4i_spi_transfer_one(struct spi_mast=
-er *master,
- 	sun4i_spi_write(sspi, SUN4I_BURST_CNT_REG, SUN4I_BURST_CNT(tfr->len))=
-;
- 	sun4i_spi_write(sspi, SUN4I_XMIT_CNT_REG, SUN4I_XMIT_CNT(tx_len));
-=20
--	/* Fill the TX FIFO */
--	sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH);
--
- 	/* Enable the interrupts */
- 	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, SUN4I_INT_CTL_TC);
-=20
-+	if (sun4i_spi_can_dma(master, spi, tfr)) {
-+		dev_dbg(&sspi->master->dev, "Using DMA mode for transfer\n");
-+
-+		if (sspi->tx_buf) {
-+			desc_tx =3D dmaengine_prep_slave_sg(sspi->tx_dma_chan,
-+					tfr->tx_sg.sgl, tfr->tx_sg.nents,
-+					DMA_TO_DEVICE,
-+					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+			if (!desc_tx) {
-+				dev_err(&sspi->master->dev,
-+					"Couldn't prepare dma slave\n");
-+				return -EIO;
-+			}
-+
-+			dmaengine_submit(desc_tx);
-+		}
-+
-+		if (sspi->rx_buf) {
-+			desc_rx =3D dmaengine_prep_slave_sg(sspi->rx_dma_chan,
-+					tfr->rx_sg.sgl, tfr->rx_sg.nents,
-+					DMA_FROM_DEVICE,
-+					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
-+			if (!desc_rx) {
-+				dev_err(&sspi->master->dev,
-+					"Couldn't prepare dma slave\n");
-+				return -EIO;
-+			}
-+
-+			dmaengine_submit(desc_rx);
-+		}
-+
-+		/* Enable DMA requests */
-+		reg =3D sun4i_spi_read(sspi, SUN4I_CTL_REG);
-+		sun4i_spi_write(sspi, SUN4I_CTL_REG,
-+				reg | SUN4I_CTL_DMAMC_DEDICATED);
-+		sun4i_spi_write(sspi, SUN4I_DMA_CTL_REG,
-+				SUN4I_DMA_CTL_TF_NOT_FULL |
-+				SUN4I_DMA_CTL_RF_READY);
-+
-+		dma_async_issue_pending(sspi->rx_dma_chan);
-+		dma_async_issue_pending(sspi->tx_dma_chan);
-+	} else {
-+		dev_dbg(&sspi->master->dev, "Using PIO mode for transfer\n");
-+
-+		/* Disable DMA requests */
-+		reg =3D sun4i_spi_read(sspi, SUN4I_CTL_REG);
-+		sun4i_spi_write(sspi, SUN4I_CTL_REG,
-+				reg & ~SUN4I_CTL_DMAMC_DEDICATED);
-+		sun4i_spi_write(sspi, SUN4I_DMA_CTL_REG, 0);
-+
-+		/* Fill the TX FIFO */
-+		sun4i_spi_fill_fifo(sspi, SUN4I_FIFO_DEPTH);
-+	}
-+
- 	/* Start the transfer */
- 	reg =3D sun4i_spi_read(sspi, SUN4I_CTL_REG);
- 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg | SUN4I_CTL_XCH);
-@@ -286,7 +359,12 @@ static int sun4i_spi_transfer_one(struct spi_maste=
-r *master,
- 		goto out;
- 	}
-=20
--	sun4i_spi_drain_fifo(sspi, SUN4I_FIFO_DEPTH);
-+	if (sun4i_spi_can_dma(master, spi, tfr) && desc_rx) {
-+		/* The receive transfer should be the last one to finish */
-+		dma_wait_for_async_tx(desc_rx);
-+	} else {
-+		sun4i_spi_drain_fifo(sspi, SUN4I_FIFO_DEPTH);
-+	}
-=20
- out:
- 	sun4i_spi_write(sspi, SUN4I_INT_CTL_REG, 0);
-@@ -351,6 +429,7 @@ static int sun4i_spi_runtime_suspend(struct device =
-*dev)
-=20
- static int sun4i_spi_probe(struct platform_device *pdev)
- {
-+	struct dma_slave_config dma_sconfig;
- 	struct spi_master *master;
- 	struct sun4i_spi *sspi;
- 	struct resource	*res;
-@@ -386,7 +465,10 @@ static int sun4i_spi_probe(struct platform_device =
-*pdev)
- 		goto err_free_master;
- 	}
-=20
-+	init_completion(&sspi->done);
- 	sspi->master =3D master;
-+	master->can_dma =3D sun4i_spi_can_dma;
-+	master->prepare_message =3D sun4i_spi_prepare_message;
- 	master->set_cs =3D sun4i_spi_set_cs;
- 	master->transfer_one =3D sun4i_spi_transfer_one;
- 	master->num_chipselect =3D 4;
-@@ -409,7 +491,45 @@ static int sun4i_spi_probe(struct platform_device =
-*pdev)
- 		goto err_free_master;
- 	}
-=20
--	init_completion(&sspi->done);
-+	sspi->tx_dma_chan =3D dma_request_slave_channel_reason(&pdev->dev, "t=
-x");
-+	if (IS_ERR(sspi->tx_dma_chan)) {
-+		dev_err(&pdev->dev, "Unable to acquire DMA channel TX\n");
-+		ret =3D PTR_ERR(sspi->tx_dma_chan);
-+		goto err_free_master;
-+	}
-+
-+	dma_sconfig.direction =3D DMA_MEM_TO_DEV;
-+	dma_sconfig.src_addr_width =3D DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	dma_sconfig.dst_addr_width =3D DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	dma_sconfig.dst_addr =3D res->start + SUN4I_TXDATA_REG;
-+	dma_sconfig.src_maxburst =3D 1;
-+	dma_sconfig.dst_maxburst =3D 1;
-+
-+	ret =3D dmaengine_slave_config(sspi->tx_dma_chan, &dma_sconfig);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Unable to configure TX DMA slave\n");
-+		goto err_tx_dma_release;
-+	}
-+
-+	sspi->rx_dma_chan =3D dma_request_slave_channel_reason(&pdev->dev, "r=
-x");
-+	if (IS_ERR(sspi->rx_dma_chan)) {
-+		dev_err(&pdev->dev, "Unable to acquire DMA channel RX\n");
-+		ret =3D PTR_ERR(sspi->rx_dma_chan);
-+		goto err_tx_dma_release;
-+	}
-+
-+	dma_sconfig.direction =3D DMA_DEV_TO_MEM;
-+	dma_sconfig.src_addr_width =3D DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	dma_sconfig.dst_addr_width =3D DMA_SLAVE_BUSWIDTH_1_BYTE;
-+	dma_sconfig.src_addr =3D res->start + SUN4I_RXDATA_REG;
-+	dma_sconfig.src_maxburst =3D 1;
-+	dma_sconfig.dst_maxburst =3D 1;
-+
-+	ret =3D dmaengine_slave_config(sspi->rx_dma_chan, &dma_sconfig);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Unable to configure RX DMA slave\n");
-+		goto err_rx_dma_release;
-+	}
-=20
- 	/*
- 	 * This wake-up/shutdown pattern is to be able to have the
-@@ -418,7 +538,7 @@ static int sun4i_spi_probe(struct platform_device *=
-pdev)
- 	ret =3D sun4i_spi_runtime_resume(&pdev->dev);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Couldn't resume the device\n");
--		goto err_free_master;
-+		goto err_rx_dma_release;
- 	}
-=20
- 	pm_runtime_set_active(&pdev->dev);
-@@ -436,6 +556,10 @@ static int sun4i_spi_probe(struct platform_device =
-*pdev)
- err_pm_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	sun4i_spi_runtime_suspend(&pdev->dev);
-+err_rx_dma_release:
-+	dma_release_channel(sspi->rx_dma_chan);
-+err_tx_dma_release:
-+	dma_release_channel(sspi->tx_dma_chan);
- err_free_master:
- 	spi_master_put(master);
- 	return ret;
-@@ -443,8 +567,17 @@ err_free_master:
-=20
- static int sun4i_spi_remove(struct platform_device *pdev)
- {
-+	struct spi_master *master =3D platform_get_drvdata(pdev);
-+	struct sun4i_spi *sspi =3D spi_master_get_devdata(master);
-+
-+	if (pm_runtime_active(&pdev->dev))
-+		sun4i_spi_runtime_suspend(&pdev->dev);
-+
- 	pm_runtime_disable(&pdev->dev);
-=20
-+	dma_release_channel(sspi->rx_dma_chan);
-+	dma_release_channel(sspi->tx_dma_chan);
-+
- 	return 0;
- }
-=20
+ 		spi0: spi@01c05000 {
+ 			compatible =3D "allwinner,sun4i-a10-spi";
+ 			reg =3D <0x01c05000 0x1000>;
 --=20
 2.0.4
 --

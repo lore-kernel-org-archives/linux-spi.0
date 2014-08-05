@@ -1,52 +1,243 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: rspi: Fix leaking of unused DMA descriptors
-Date: Tue, 5 Aug 2014 16:34:40 +0200
-Message-ID: <CAMuHMdX4bDMogeSwmd3bxm_fKpjouxZJFT_dd5ErxgJkZ2U=cA@mail.gmail.com>
-References: <1405094802-14401-1-git-send-email-geert+renesas@glider.be>
-	<20140714185830.GE6800@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: [GIT PULL] SPI updates for v3.17
+Date: Tue, 5 Aug 2014 19:24:36 +0100
+Message-ID: <20140805182436.GF17528@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Laurent Pinchart <Laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140714185830.GE6800-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="YAj9hGQEeu6NAWot"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
 
-On Mon, Jul 14, 2014 at 8:58 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Fri, Jul 11, 2014 at 06:06:41PM +0200, Geert Uytterhoeven wrote:
->> If dmaengine_prep_slave_sg() or dmaengine_submit() fail, we may leak
->> unused DMA descriptors.
->
-> This doesn't apply, I guess it may depend on some of your other DMA
-> related patches but it's not immediately obvious and it's not been sent
-> as part of a series.  Can you please check and/or clarify?
+--YAj9hGQEeu6NAWot
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Indeed, this (and the rspi one) depended on the two "Handle
-dmaengine_prep_slave_single() failures gracefully" patches.
+The following changes since commit 19583ca584d6f574384e17fe7613dfaeadcdc4a6:
 
-Unless you recover them from e.g. patchwork, I'll resend them with my
-next batch.
+  Linux 3.16 (2014-08-03 15:25:02 -0700)
 
-Sorry for the fuzz.
+are available in the git repository at:
 
-Gr{oetje,eeting}s,
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3=
+=2E17
 
-                        Geert
+for you to fetch changes up to fab6a0410d20ef09238ef54b8726d170578da752:
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+  Merge remote-tracking branches 'spi/topic/sh', 'spi/topic/sh-msiof' and '=
+spi/topic/topcliff-pch' into spi-next (2014-08-04 17:21:16 +0100)
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+----------------------------------------------------------------
+spi: Updates for v3.17
+
+A quiet release, more bug fixes than anything else.  A few things do
+stand out though:
+
+ - Updates to several drivers to move towards the standard GPIO chip
+   select handling in the core.
+ - DMA support for the SH MSIOF driver.
+ - Support for Rockchip SPI controllers (their first mainline
+   submission).
+
+----------------------------------------------------------------
+Addy Ke (4):
+      spi/rockchip: cleanup some coding issues and uncessary output
+      spi/rockchip: call wait_for_idle() for the transfer to complete
+      spi/rockchip: master->mode_bits: remove SPI_CS_HIGH bit
+      spi/rockchip: add compatible strings for RK3188 and RK3288
+
+Alexander Shiyan (4):
+      spi: clps711x: Remove unnecessary platform_set_drvdata()
+      spi: falcon: Remove unnecessary platform_set_drvdata()
+      spi: omap-100k: Remove unnecessary platform_set_drvdata()
+      spi: sh-msiof: Remove unnecessary platform_set_drvdata()
+
+Andy Gross (1):
+      spi: qup: Add support for v1.1.1
+
+Andy Shevchenko (1):
+      spi: topcliff-pch: don't hardcode PCI slot to get DMA device
+
+Geert Uytterhoeven (16):
+      spi: sh-msiof: Add more register documentation
+      spi: sh-msiof: Extract sh_msiof_spi_{start,stop}() helpers
+      spi: sh-msiof: Improve transfer error handling
+      spi: sh-msiof: Refactor sh_msiof_transfer_one()
+      spi: sh-msiof: Add DMA support
+      spi: rspi: Remove unused variable in rspi_rz_transfer_one()
+      spi: rspi: Pass spi_master pointer to rspi_release_dma()
+      spi: sh-msiof: SPI_SH_MSIOF should depend on HAS_DMA
+      spi: rspi: Relax DMA dependency and increase build coverage
+      spi: core: Fix check for dma_map_sg() failures
+      spi: core: Pass correct device to dma_map_sg()
+      spi: rspi: Handle dmaengine_prep_slave_sg() failures gracefully
+      spi: sh-msiof: Handle dmaengine_prep_slave_single() failures graceful=
+ly
+      spi: sh-msiof: Use correct device for DMA mapping with IOMMU
+      spi: topcliff-pch: Update error messages for dmaengine_prep_slave_sg(=
+) API
+      spi: atmel: Use dmaengine_prep_slave_sg() API
+
+Grygorii Strashko (1):
+      spi: davinci: use spi_device.cs_gpio to store gpio cs per spi device
+
+Himangi Saraogi (3):
+      spi: omap-uwire: use devm_ functions
+      spi: au1550: Fix bug in deallocation of memory
+      spi/spi-sh: Use devm_ioremap
+
+Javier Martinez Canillas (1):
+      spi: s3c64xx: Revert "spi: s3c64xx: Added provision for dedicated cs =
+pin"
+
+Jingoo Han (3):
+      spi: cadence: Make of_device_id array const
+      spi: fsl-spi: Make of_device_id array const
+      spi: sh-hspi: Make of_device_id array const
+
+Lars-Peter Clausen (3):
+      spi: xilinx: Use pdev->id instead of pdev->dev.id for the SPI bus num=
+ber
+      spi: cadence: Make sure that clock polarity changes are applied
+      spi: cadence: Configure SPI clock in the prepare_message() callback
+
+Mark A. Greer (1):
+      spi: omap2-mcspi: Configure hardware when slave driver changes mode
+
+Mark Brown (15):
+      spi: Remove unused variable
+      spi: omap-uwire: Ensure devm_ioremap() is prototyped
+      Merge remote-tracking branch 'spi/topic/cleanup' into spi-sh-msiof
+      spi/rockchip: Add dependencies on relaxed I/O accessors
+      Merge tag 'v3.16-rc3' into spi-sh-msiof
+      spi/atmel: Fix pointer to int conversion warnings on 64 bit builds
+      spi/pl022: Explicitly truncate large bitmask
+      Merge remote-tracking branch 'spi/fix/core' into spi-linus
+      Merge remote-tracking branches 'spi/fix/au1550', 'spi/fix/cadence', '=
+spi/fix/omap2-mcspi' and 'spi/fix/orion' into spi-linus
+      Merge remote-tracking branches 'spi/fix/s3c64xx', 'spi/fix/samsung' a=
+nd 'spi/fix/xilinx' into spi-linus
+      Merge remote-tracking branch 'spi/topic/core' into spi-next
+      Merge remote-tracking branches 'spi/topic/adi-v3', 'spi/topic/atmel',=
+ 'spi/topic/cleanup' and 'spi/topic/davinci' into spi-next
+      Merge remote-tracking branches 'spi/topic/dw', 'spi/topic/efm32', 'sp=
+i/topic/fsl' and 'spi/topic/omap-uwire' into spi-next
+      Merge remote-tracking branches 'spi/topic/orion', 'spi/topic/pl022', =
+'spi/topic/qup', 'spi/topic/rockchip' and 'spi/topic/rspi' into spi-next
+      Merge remote-tracking branches 'spi/topic/sh', 'spi/topic/sh-msiof' a=
+nd 'spi/topic/topcliff-pch' into spi-next
+
+Murali Karicheri (2):
+      spi: davinci: fix to support more than 2 chip selects
+      spi: davinci: add support to configure gpio cs through dt
+
+Naveen Krishna Chatradhi (3):
+      spi: s3c64xx: use the generic SPI "cs-gpios" property
+      spi: s3c64xx: Update binding documentation
+      ARM: dts: fix the chip select gpios definition in the SPI nodes
+
+Russell King (2):
+      spi: spi-orion: check return value from clk_prepare()/clk_enable()
+      spi: spi-orion: add runtime PM support
+
+Sachin Kamat (4):
+      spi: spi-adi-v3: Remove redundant OOM message
+      spi: Remove redundant OOM message in spi.c
+      spi: omap-uwire: Fix build error
+      spi: samsung: Update binding documentation
+
+Steffen Trumtrar (1):
+      spi: dw-mmio: add devicetree support
+
+Thomas Petazzoni (1):
+      spi: orion: fix incorrect handling of cell-index DT property
+
+Uwe Kleine-K=F6nig (1):
+      spi: efm32: correct namespacing of location property
+
+Wei Yongjun (4):
+      spi/rockchip: remove duplicated include from spi-rockchip.c
+      spi/rockchip: remove redundant dev_err call in rockchip_spi_probe()
+      spi/rockchip: fix error return code in rockchip_spi_probe()
+      spi: orion: Fix error return code in orion_spi_probe()
+
+Zhao Qiang (1):
+      spi/fsl: deal with a compile warning
+
+addy ke (2):
+      spi/rockchip: add rockchip spi DT binding
+      spi/rockchip: add driver for Rockchip RK3xxx SoCs integrated SPI
+
+ .../devicetree/bindings/spi/efm32-spi.txt          |  13 +-
+ .../devicetree/bindings/spi/qcom,spi-qup.txt       |   6 +-
+ .../devicetree/bindings/spi/snps,dw-apb-ssi.txt    |  28 +
+ .../devicetree/bindings/spi/spi-davinci.txt        |   9 +-
+ .../devicetree/bindings/spi/spi-rockchip.txt       |  37 +
+ .../devicetree/bindings/spi/spi-samsung.txt        |  26 +-
+ arch/arm/boot/dts/exynos4210-smdkv310.dts          |   2 +-
+ arch/arm/boot/dts/exynos4412-trats2.dts            |   2 +-
+ arch/arm/boot/dts/exynos5250-smdk5250.dts          |   2 +-
+ drivers/spi/Kconfig                                |  16 +-
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-adi-v3.c                           |   5 +-
+ drivers/spi/spi-atmel.c                            |  22 +-
+ drivers/spi/spi-au1550.c                           |   6 +-
+ drivers/spi/spi-cadence.c                          |  37 +-
+ drivers/spi/spi-clps711x.c                         |   2 -
+ drivers/spi/spi-davinci.c                          |  72 +-
+ drivers/spi/spi-dw-mmio.c                          |  19 +-
+ drivers/spi/spi-efm32.c                            |   8 +-
+ drivers/spi/spi-falcon.c                           |   2 -
+ drivers/spi/spi-fsl-lib.c                          |   2 +-
+ drivers/spi/spi-fsl-spi.c                          |   2 +-
+ drivers/spi/spi-omap-100k.c                        |   2 -
+ drivers/spi/spi-omap-uwire.c                       |  11 +-
+ drivers/spi/spi-omap2-mcspi.c                      |  14 +
+ drivers/spi/spi-orion.c                            |  78 +-
+ drivers/spi/spi-pl022.c                            |   2 +-
+ drivers/spi/spi-qup.c                              |  36 +-
+ drivers/spi/spi-rockchip.c                         | 837 +++++++++++++++++=
+++++
+ drivers/spi/spi-rspi.c                             |  45 +-
+ drivers/spi/spi-s3c64xx.c                          |  54 +-
+ drivers/spi/spi-sh-hspi.c                          |   2 +-
+ drivers/spi/spi-sh-msiof.c                         | 527 +++++++++++--
+ drivers/spi/spi-sh.c                               |  15 +-
+ drivers/spi/spi-topcliff-pch.c                     |  12 +-
+ drivers/spi/spi-xilinx.c                           |   2 +-
+ drivers/spi/spi.c                                  |  12 +-
+ include/linux/spi/sh_msiof.h                       |   2 +
+ 38 files changed, 1725 insertions(+), 245 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/spi/snps,dw-apb-ssi.t=
+xt
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-rockchip.txt
+ create mode 100644 drivers/spi/spi-rockchip.c
+
+--YAj9hGQEeu6NAWot
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT4SFhAAoJELSic+t+oim99LUP/14FC5cLK5YWus1ttO8D0Hk7
+kOG+W/UG27m5Ic8xZeR04AcuIf1ohxwDfHecCcvCCIAUB0G9Fe48qhrjqmxC+FAo
+/j8gtJMs9v87efHdiwKcP3faBWBfymdAVl+UodRcyt+oKhfuQNmOzTyAebdyjKuF
+UHPlbMhJWzZJiaeyz56xKZTTZUUNhqKfZM4Xa5w5tjcMf8A72FJjlNivAbTAX4AE
+gxm/1M1yATmcYRaAXq/srjXjW9uln+2fLaWxjghve5tXtaFlpX4xQiOLRQF/biKW
+kna4VPKMcfKk7DQemFwjNhcW7tG4h0TB4gCdM3sLofr5WaiNY5AYtUzCMG+xQ2Pp
+q3d48yitPKIClRISeOfxA74JN0h49H6b8hWkdZkSMW8k2FVVBibjUVN4utgKU+8L
+/2ueEJGYQmu5sMrhpV1754n1KOygrkPcVbFpWQ08gPPWx6H5m298L+wo9gvxm8iG
+pTerhTZ5Xs63ZrGzOCdjotv1oGMa+3GTt5zf+iwDr+XDZEVcZnnZ9GQPuH5Fn+Pk
+FB3VAN21C5ZLAxwmT2O6TqErV3mTtfSoLPHzt+HrtDTP70MOzgjORL5jtR+XYY5V
+O6CSazvN2ceZPcUXWhwHWnxIbm0F7pfiQtun4F4LC70p+PRbcasJzOeNMBpSpcmn
+KyLo6w/v4XpAI5YV36yC
+=JmYj
+-----END PGP SIGNATURE-----
+
+--YAj9hGQEeu6NAWot--

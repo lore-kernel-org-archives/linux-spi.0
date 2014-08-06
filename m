@@ -1,81 +1,85 @@
-From: Valdis.Kletnieks@vt.edu
-Subject: Re: [PATCH 1/1] spi: Remove unused definitions
-Date: Wed, 06 Aug 2014 14:27:20 -0400
-Message-ID: <17153.1407349640@turing-police.cc.vt.edu>
-References: <1407347597-2168-1-git-send-email-xerofoiffy@gmail.com>
+From: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Subject: Re: [PATCH] spi: Fix warning about redefinition
+Date: Wed, 6 Aug 2014 11:33:28 -0700
+Message-ID: <20140806183328.GA5409@roeck-us.net>
+References: <1407344128-9754-1-git-send-email-xerofoiffy@gmail.com>
+ <CAFLxGvxfSD+dW1oUyKAqq8tUMHYS7fuJdsdRKOR94O+nD8RoMg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; boundary="==_Exmh_1407349640_2381P";
-	 micalg=pgp-sha1; protocol="application/pgp-signature"
-Content-Transfer-Encoding: 7bit
-Cc: Richard Weinberger <richard.weinberger@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-To: Nick Krause <xerofoiffy@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: Your message of "Wed, 06 Aug 2014 13:53:17 -0400."
-             <1407347597-2168-1-git-send-email-xerofoiffy@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: Nick Krause <xerofoiffy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Richard Weinberger <richard.weinberger-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CAFLxGvxfSD+dW1oUyKAqq8tUMHYS7fuJdsdRKOR94O+nD8RoMg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
---==_Exmh_1407349640_2381P
-Content-Type: text/plain; charset="us-ascii"
-Content-Id: <17141.1407349640.1@turing-police.cc.vt.edu>
-Content-Transfer-Encoding: quoted-printable
+On Wed, Aug 06, 2014 at 07:19:54PM +0200, Richard Weinberger wrote:
+> On Wed, Aug 6, 2014 at 6:55 PM, Nick Krause <xerofoiffy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
+> > Fix the following warnings about redefining READ and write
+> >
+> > drivers/spi/spi-omap-100k.c:73:0: warning: "WRITE" redefined [enabled by default]
+> > include/linux/fs.h:193:0: note: this is the location of the previous definition
+> > drivers/spi/spi-omap-100k.c:74:0: warning: "READ" redefined [enabled by default]
+> > include/linux/fs.h:192:0: note: this is the location of the previous definition
+> >
+> > Signed-off-by: Nick Krause <xerofoiffy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> > ---
+> >  drivers/spi/spi-omap-100k.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> > diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+> > index 5e91858..eb8ae4e 100644
+> > --- a/drivers/spi/spi-omap-100k.c
+> > +++ b/drivers/spi/spi-omap-100k.c
+> > @@ -70,6 +70,12 @@
+> >  #define SPI_STATUS_WE                   (1UL << 1)
+> >  #define SPI_STATUS_RD                   (1UL << 0)
+> >
+> > +#ifdef WRITE
+> > +#undef WRITE
+> > +#endif
+> > +#ifdef READ
+> > +#undef READ
+> > +#endif
+> >  #define WRITE 0
+> >  #define READ  1
+> 
+> Are these symbols even in use?
+> 
 
-On Wed, 06 Aug 2014 13:53:17 -0400, Nick Krause said:
-> Remove unused definition which cause the following warnings
-> =
+It is always fun watching those patches flow by :-)
 
-> drivers/spi/spi-omap-100k.c:73:0: warning: "WRITE" redefined [enabled by=
- default]
-> include/linux/fs.h:193:0: note: this is the location of the previous def=
-inition
-> drivers/spi/spi-omap-100k.c:74:0: warning: "READ" redefined [enabled by =
-default]
-> include/linux/fs.h:192:0: note: this is the location of the previous def=
-inition
+With the following patch:
 
-> -#define WRITE 0
-> -#define READ  1
+diff --git a/drivers/spi/spi-omap-100k.c b/drivers/spi/spi-omap-100k.c
+index 5e91858..f72ddfc 100644
+--- a/drivers/spi/spi-omap-100k.c
++++ b/drivers/spi/spi-omap-100k.c
+@@ -70,8 +70,8 @@
+ #define SPI_STATUS_WE                   (1UL << 1)
+ #define SPI_STATUS_RD                   (1UL << 0)
 
-NAK.  Full stop.  These are potentially used in an inner macro someplace, =
-and by
-removing these, the conflicting values from fs.h will be used instead.
+-#define WRITE 0
+-#define READ  1
++#undef WRITE
++#undef READ
 
-#define READ                    0
-#define WRITE                   RW_MASK
+[ just to make sure that no existing defines are used instead of the new ones ]
 
-So if there *is* a use in an inner macro, you just screwed the pooch
-and introduced a bug in this "clean up" - somebody will be expecting to se=
-e
-a 0 for a READ, and will receive a 1 instead.  This can't end well.
+When compiling the resulting code with W=1, I get:
 
-Nick - how *exactly* did you identify that these are in fact not used?
-Given your history of submitting poorly researched patches, you're going t=
-o
-have to justify the "unused" better than the handwaving you've done here.
+drivers/spi/spi-omap-100k.c: In function 'spi100k_read_data':
+drivers/spi/spi-omap-100k.c:148:6: warning: variable 'dataH' set but not used
+				[-Wunused-but-set-variable]
 
---==_Exmh_1407349640_2381P
-Content-Type: application/pgp-signature
+So, one might conclude that the defines are not used.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-Comment: Exmh version 2.5 07/13/2001
-
-iQIVAwUBU+JziAdmEQWDXROgAQIYrRAApfcA5BtiehUUlRTxVshRPQc+CGfZeKo6
-Ua7iA/biWJ+4zmNvJ/wkNF6k6tRSFS55dmj0xKoMjlJjmiziTCSKQbfkIa7YgACO
-P37JbPP78NcxF/uDMs67tI58yEkIKVJ2iHnWW9FJJnRAE+CZcr+Qp0EQ0Z4w6VJz
-LLS8J8Y7Tbf2uAXIJrZf4gxp6c/rz8Mxtw/AR8YA2gszO+nbdeyTICSfZJ1OhZXQ
-y2/RDzRKshbFpVQyo11fUOgER1nEmeZkmRZ1KgnZKZc02gDBpWj+Qj6egWbMRaPj
-jHw9QfiVUriUJG5wnk9mR08tAUwZ3Qa8oAy2eXZvMB8BKWNizGUYazfspECzvwws
-8Wn8AYhtaAWl3sqVZF1MZGCGMqjS6wOaKu4kG2r/wAQA1fIZtCCCgq88ZCdSx6NI
-XOP6WAmHqkxJrR8fYfTnN0ycwmL4X5X9JWmzz9bXuXjCDGWSB8j7KjFU/0bG+J4a
-qNiZXTqcSDrZtc2cqIRUB3YYLJ0l0XvEy2KEGBexyRBEdMrMmkxlXb0rBg4qU4jL
-eGFF7Bq7e5sdlUkWNpBorMm5SC8r2syPpHauliXQBvk+xnxfvQxU5vNn3v/9kSJW
-Z0+l9rRv+pCa7GOOIb92wOWoEG8xtxqznYKfl9zHY9CxF5lYkbd0R4QBpWXY753j
-JBMeCjqOUgQ=
-=FfCs
------END PGP SIGNATURE-----
-
---==_Exmh_1407349640_2381P--
+Guenter
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

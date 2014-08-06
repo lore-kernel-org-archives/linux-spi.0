@@ -1,53 +1,157 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 03/12] spi: rspi: Use devm_kasprintf()
-Date: Wed,  6 Aug 2014 14:59:00 +0200
-Message-ID: <1407329949-5695-4-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 06/12] spi: sh-msiof: Fix leaking of unused DMA descriptors
+Date: Wed,  6 Aug 2014 14:59:03 +0200
+Message-ID: <1407329949-5695-7-git-send-email-geert+renesas@glider.be>
 References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
-Cc: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>, Simon Horman <horms@verge.net.au>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Use the devm_kasprintf() helper function instead of open coding
-error-prone buffer handling and string formatting.
+If dmaengine_prep_slave_sg() or dmaengine_submit() fail, we may leak
+unused DMA descriptors.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+As per Documentation/dmaengine.txt, once a DMA descriptor has been
+obtained, it must be submitted. Hence:
+  - First prepare and submit all DMA descriptors,
+  - Prepare the SPI controller for DMA,
+  - Start DMA by calling dma_async_issue_pending(),
+  - Make sure to call dmaengine_terminate_all() on all descriptors that
+    haven't completed.
+
+Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
-devm_kasprintf() was included in upstream, and will be available as of
-release v3.17-rc1.
----
- drivers/spi/spi-rspi.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 71 +++++++++++++++++++++++++---------------------
+ 1 file changed, 38 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index a4d8d3cf2912..aa1c6a893570 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1046,12 +1046,11 @@ static int rspi_request_irq(struct device *dev, unsigned int irq,
- 			    irq_handler_t handler, const char *suffix,
- 			    void *dev_id)
- {
--	const char *base = dev_name(dev);
--	size_t len = strlen(base) + strlen(suffix) + 2;
--	char *name = devm_kzalloc(dev, len, GFP_KERNEL);
-+	const char *name = devm_kasprintf(dev, GFP_KERNEL, "%s:%s",
-+					  dev_name(dev), suffix);
- 	if (!name)
- 		return -ENOMEM;
--	snprintf(name, len, "%s:%s", base, suffix);
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 2a4354dcd661..887c2084130f 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -636,48 +636,38 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 	dma_cookie_t cookie;
+ 	int ret;
+ 
+-	if (tx) {
+-		ier_bits |= IER_TDREQE | IER_TDMAE;
+-		dma_sync_single_for_device(p->master->dma_tx->device->dev,
+-					   p->tx_dma_addr, len, DMA_TO_DEVICE);
+-		desc_tx = dmaengine_prep_slave_single(p->master->dma_tx,
+-					p->tx_dma_addr, len, DMA_TO_DEVICE,
+-					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+-		if (!desc_tx)
+-			return -EAGAIN;
+-	}
+-
++	/* First prepare and submit the DMA request(s), as this may fail */
+ 	if (rx) {
+ 		ier_bits |= IER_RDREQE | IER_RDMAE;
+ 		desc_rx = dmaengine_prep_slave_single(p->master->dma_rx,
+ 					p->rx_dma_addr, len, DMA_FROM_DEVICE,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+-		if (!desc_rx)
+-			return -EAGAIN;
+-	}
+-
+-	/* 1 stage FIFO watermarks for DMA */
+-	sh_msiof_write(p, FCTR, FCTR_TFWM_1 | FCTR_RFWM_1);
+-
+-	/* setup msiof transfer mode registers (32-bit words) */
+-	sh_msiof_spi_set_mode_regs(p, tx, rx, 32, len / 4);
+-
+-	sh_msiof_write(p, IER, ier_bits);
+-
+-	reinit_completion(&p->done);
++		if (!desc_rx) {
++			ret = -EAGAIN;
++			goto no_dma_rx;
++		}
+ 
+-	if (rx) {
+ 		desc_rx->callback = sh_msiof_dma_complete;
+ 		desc_rx->callback_param = p;
+ 		cookie = dmaengine_submit(desc_rx);
+ 		if (dma_submit_error(cookie)) {
+ 			ret = cookie;
+-			goto stop_ier;
++			goto no_dma_rx;
+ 		}
+-		dma_async_issue_pending(p->master->dma_rx);
+ 	}
+ 
+ 	if (tx) {
++		ier_bits |= IER_TDREQE | IER_TDMAE;
++		dma_sync_single_for_device(p->master->dma_tx->device->dev,
++					   p->tx_dma_addr, len, DMA_TO_DEVICE);
++		desc_tx = dmaengine_prep_slave_single(p->master->dma_tx,
++					p->tx_dma_addr, len, DMA_TO_DEVICE,
++					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++		if (!desc_tx) {
++			ret = -EAGAIN;
++			goto no_dma_tx;
++		}
 +
- 	return devm_request_irq(dev, irq, handler, 0, name, dev_id);
+ 		if (rx) {
+ 			/* No callback */
+ 			desc_tx->callback = NULL;
+@@ -688,15 +678,30 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ 		cookie = dmaengine_submit(desc_tx);
+ 		if (dma_submit_error(cookie)) {
+ 			ret = cookie;
+-			goto stop_rx;
++			goto no_dma_tx;
+ 		}
+-		dma_async_issue_pending(p->master->dma_tx);
+ 	}
+ 
++	/* 1 stage FIFO watermarks for DMA */
++	sh_msiof_write(p, FCTR, FCTR_TFWM_1 | FCTR_RFWM_1);
++
++	/* setup msiof transfer mode registers (32-bit words) */
++	sh_msiof_spi_set_mode_regs(p, tx, rx, 32, len / 4);
++
++	sh_msiof_write(p, IER, ier_bits);
++
++	reinit_completion(&p->done);
++
++	/* Now start DMA */
++	if (tx)
++		dma_async_issue_pending(p->master->dma_rx);
++	if (rx)
++		dma_async_issue_pending(p->master->dma_tx);
++
+ 	ret = sh_msiof_spi_start(p, rx);
+ 	if (ret) {
+ 		dev_err(&p->pdev->dev, "failed to start hardware\n");
+-		goto stop_tx;
++		goto stop_dma;
+ 	}
+ 
+ 	/* wait for tx fifo to be emptied / rx fifo to be filled */
+@@ -726,14 +731,14 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv *p, const void *tx,
+ stop_reset:
+ 	sh_msiof_reset_str(p);
+ 	sh_msiof_spi_stop(p, rx);
+-stop_tx:
++stop_dma:
+ 	if (tx)
+ 		dmaengine_terminate_all(p->master->dma_tx);
+-stop_rx:
++no_dma_tx:
+ 	if (rx)
+ 		dmaengine_terminate_all(p->master->dma_rx);
+-stop_ier:
+ 	sh_msiof_write(p, IER, 0);
++no_dma_rx:
+ 	return ret;
  }
  
 -- 
 1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

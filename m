@@ -1,79 +1,54 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/1] spi: Remove unused definitions
-Date: Wed, 6 Aug 2014 20:34:53 +0100
-Message-ID: <20140806193453.GJ17528@sirena.org.uk>
-References: <1407347597-2168-1-git-send-email-xerofoiffy@gmail.com>
- <17153.1407349640@turing-police.cc.vt.edu>
- <CAMuHMdVJQd0Mb8aXbd9iqkabzKdw9WSR791LxqUoVEJ1g1kaHA@mail.gmail.com>
+Subject: Re: [PATCH 01/12] spi: rspi: Fix leaking of unused DMA descriptors
+Date: Wed, 6 Aug 2014 21:11:43 +0100
+Message-ID: <20140806201143.GN17528@sirena.org.uk>
+References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
+ <1407329949-5695-2-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="id7U9qOqdBFOLQU4"
-Cc: Valdis Kletnieks <Valdis.Kletnieks@vt.edu>,
-	Nick Krause <xerofoiffy@gmail.com>,
-	Richard Weinberger <richard.weinberger@gmail.com>,
-	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="IpRpggDAsniQQBL1"
+Cc: Simon Horman <horms@verge.net.au>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	dmaengine@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdVJQd0Mb8aXbd9iqkabzKdw9WSR791LxqUoVEJ1g1kaHA@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <1407329949-5695-2-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---id7U9qOqdBFOLQU4
+--IpRpggDAsniQQBL1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Aug 06, 2014 at 08:50:15PM +0200, Geert Uytterhoeven wrote:
+On Wed, Aug 06, 2014 at 02:58:58PM +0200, Geert Uytterhoeven wrote:
+> If dmaengine_prep_slave_sg() or dmaengine_submit() fail, we may leak
+> unused DMA descriptors.
 
-> To be 100% sure, I tried to find with which kernel config this warning shows up.
-> It doesn't happen for omap1_defconfig with CONFIG_SPI_OMAP_100K,
-> which was the most likely culprit.
+Applied, thanks.
 
-> It does happen with sparc/sparc64 allmodconfig. However, changing or
-> removing the READ and WRITE definitions in drivers/spi/spi-omap-100k.c
-> doesn't have any influence on the preprocessed source files
-> ("make drivers/spi/spi-omap-100k.i", modulo line number changes),
-> for both omap1 and sparc builds.
-
-> (Nick: I believe the above is what people really want to see)
-
-> So I conclude they are really not used, and they can be safely removed.
-
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Right, I'd already done the same analysis myself with looking for uses
-myself (though I didn't go looking for how to trigger).  Nick, please do
-look at the analysis Geert provided above - it is indeed exactly the
-sort of thing that people would want to see, just saying what's in the
-diff isn't enough especially given the well advertised quality problems
-with your submissions.  You really need to explain why the change you're
-making is a good idea.
-
-I've applied the change.
-
---id7U9qOqdBFOLQU4
+--IpRpggDAsniQQBL1
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT4oNaAAoJELSic+t+oim96ssP/A94yqu+MJ74cbKu2VKKb3nS
-OGZUEdzWs8XVwJC6rxohwzRpc0b0vDEAYFk3FUs5T9I79QzpQZYnK2GnCLeWGsiV
-iXtZV1+ilnPLpnm8cfU6U3XbIVBug2GOuhajf3ZWqnYZ5ydLqpNMNoak1FTzwKZZ
-V0GxCGZXR4tCNnRqiotL94RRDlLIfCfU4tXCaLcHIqJTxFnuDu1E7SL8DUBC89jV
-/2uYhHmlQC1gnyVEZ3jvprbwTVLlqciGiA8ffFEL8hwa0vULaiUlIkPk2O5RvKV3
-sS/TuVLNf1hi/GyNa6C91q2Zb/uzARb0OAIgM5Zr4xD75TnNlI/dKORvm1i/kr4h
-CGM/GhNCzvDE639BBCrlKR9tdi+M1AkK4s8y2/WisvUjpoxSAe3sT9BjogFnIh8O
-/FhD9emVod7XGLcejPx9ih0BA9g7BZh4BLwtA1tV/cQruW3myUieI8T2rKIagxDE
-b1Hwj4uNMHK8RwYmEmISeFT0JxCGwEoOhNutXUp6WCWkQnUBMmA4YDHnK2aXn2nX
-2R7Sn0UW7ZRJkQVVvMvmdOKRmWvamw125AQeF1VDvX4wcwvSl6+mXPDUapdzywfz
-ljWvp1SUMOy8nRqJtViqYh5KGSMfJ71xjYbUWU9BYDpYvnnt1jGr4knGqRT44mwN
-Xxhz+PVdDCbzRaWHhtHW
-=0/SR
+iQIcBAEBAgAGBQJT4ov8AAoJELSic+t+oim9mz0P/32Dfudbmijut52ZHC6O9Afp
+LKlaXRRmKmYHRaYsMN+yjI+0bCSuXLqtAJ2XQ8fmIvIl9Hw7mNSELOc9BPdTIm9Z
+BRt52qwvBmBVp25YK4JTFX4hZtNokGTs4srruELFBWvHQqDSRUIuslc2SUSOgQb2
+iK1TsY/2zszJq1ZjIqoi21q76ZKp29Pr+w78tIvorOAbU0pas78S7bIOHy7Gj7sn
+NbzAfx1hEhM4I3eNF68lNqgSvfEmQceCaisiDzBTEzMtKl1yvsBiI61bxZ9P0/CC
+vMZBNOJkRFUI40nCWZJh4xS8hW66GHntpe5Kt/HC66pvuqNwSRZoP/rm2Qqxpfdy
+riJ6LiQMkMQFtMh0IJ0oDn8xe4QSytn3JZzXLQuse1Gn5fHIHt3bXcn4UKxmf2yc
+p3aih41IsvoTQk0Dx+VJczQXyR+tud7GSHcFuODI2d48ZZ74gQ+H+DO0/3SaeQma
+NhkQFNT0nwpegwyDouxnWbyk4hfrDzEMbPVoM2kvIboMreuLKhsg2fCWnrZBmUZM
+ctpn/VvMv2GkcwPQispoaMSTfKGA73MYMXzH5mWBn4uiUNpyXsyFWoj41+x/+DI0
+FBpy5e39he/WRZCqgZINb/q1BnPVW79vfe5nPSznCXsKnUV3sOywQZP7gU4sO8Mb
+TTkk6OAd5FXjrzESOrpp
+=rEOB
 -----END PGP SIGNATURE-----
 
---id7U9qOqdBFOLQU4--
+--IpRpggDAsniQQBL1--

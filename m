@@ -1,75 +1,170 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 00/12] spi: rspi and sh-msiof driver updates
-Date: Wed,  6 Aug 2014 14:58:57 +0200
-Message-ID: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH 01/12] spi: rspi: Fix leaking of unused DMA descriptors
+Date: Wed,  6 Aug 2014 14:58:58 +0200
+Message-ID: <1407329949-5695-2-git-send-email-geert+renesas@glider.be>
+References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
 Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
 	dmaengine@vger.kernel.org,
 	Geert Uytterhoeven <geert+renesas@glider.be>
 To: Mark Brown <broonie@kernel.org>, Simon Horman <horms@verge.net.au>
 Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-	Hi Mark, Simon,
+If dmaengine_prep_slave_sg() or dmaengine_submit() fail, we may leak
+unused DMA descriptors.
 
-Here's a series of Renesas RSPI/QSPI and SH-MSIOF SPI driver updates.
-I grouped them in three parts:
-  - [1-5] are for the rspi driver (Mark),
-  - [6-8] are for the sh-msiof driver (Mark),
-  - [9-12] are for the R-Car Gen2 DTSes (Simon).
+As per Documentation/dmaengine.txt, once a DMA descriptor has been
+obtained, it must be submitted. Hence:
+  - First prepare and submit all DMA descriptors,
+  - Prepare the SPI controller for DMA,
+  - Start DMA by calling dma_async_issue_pending(),
+  - Make sure to call dmaengine_terminate_all() on all descriptors that
+    haven't completed.
 
-Summary of changes:
-  - [1] and [6] are bug fixes I have sent before, but that weren't applied
-    due to dependency confusion,
-  - [2] is a new cosmetic fix,
-  - [3] makes rspi use a new helper function that will be available as of
-    v3.17-rc1,
-  - [4-5] and [7-8] make DMA work with the new R-Car DMAC driver,
-    developed by Laurent Pinchart in the series "[PATCH v2 0/8] R-Car Gen2
-    DMA Controller driver"
-    (http://www.spinics.net/lists/linux-sh/msg33890.html),
-  - [9-12] enable DMA in DT for r8a7791 and r8a7790, and depend on
-    "[PATCH v2 8/8] ARM: shmobile: r8a7791: Add DMAC devices to DT"
-    (http://www.spinics.net/lists/linux-sh/msg33897.html) resp.
-    "[PATCH v2 7/8] ARM: shmobile: r8a7790: Add DMAC devices to DT"
-    (http://www.spinics.net/lists/linux-sh/msg33896.html) of the
-    aforementioned series.
+Reported-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/spi/spi-rspi.c | 94 +++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 58 insertions(+), 36 deletions(-)
 
-This has been tested on r8a7791/koelsch.
-
-Geert Uytterhoeven (12):
-   [1] spi: rspi: Fix leaking of unused DMA descriptors
-   [2] spi: rspi: Remove unneeded semicolon
-   [3] spi: rspi: Use devm_kasprintf()
-   [4] spi: rspi: Configure DMA slave bus width to 8 bit
-   [5] spi: rspi: Add DT support to DMA setup
-   [6] spi: sh-msiof: Fix leaking of unused DMA descriptors
-   [7] spi: sh-msiof: Configure DMA slave bus width
-   [8] spi: sh-msiof: Add DT support to DMA setup
-   [9] ARM: shmobile: r8a7791 dtsi: Enable DMA for QSPI
-  [10] ARM: shmobile: r8a7791 dtsi: Enable DMA for MSIOF
-  [11] ARM: shmobile: r8a7790 dtsi: Enable DMA for QSPI
-  [12] ARM: shmobile: r8a7790 dtsi: Enable DMA for MSIOF
-
- Documentation/devicetree/bindings/spi/sh-msiof.txt |  17 ++-
- Documentation/devicetree/bindings/spi/spi-rspi.txt |   5 +
- arch/arm/boot/dts/r8a7790.dtsi                     |  18 ++-
- arch/arm/boot/dts/r8a7791.dtsi                     |  14 +-
- drivers/spi/spi-rspi.c                             | 147 +++++++++++++--------
- drivers/spi/spi-sh-msiof.c                         | 103 +++++++++------
- 6 files changed, 195 insertions(+), 109 deletions(-)
-
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index c850dfdfa9e3..ad87a98f8f68 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -472,25 +472,52 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 	dma_cookie_t cookie;
+ 	int ret;
+ 
+-	if (tx) {
+-		desc_tx = dmaengine_prep_slave_sg(rspi->master->dma_tx,
+-					tx->sgl, tx->nents, DMA_TO_DEVICE,
+-					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+-		if (!desc_tx)
+-			goto no_dma;
+-
+-		irq_mask |= SPCR_SPTIE;
+-	}
++	/* First prepare and submit the DMA request(s), as this may fail */
+ 	if (rx) {
+ 		desc_rx = dmaengine_prep_slave_sg(rspi->master->dma_rx,
+ 					rx->sgl, rx->nents, DMA_FROM_DEVICE,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+-		if (!desc_rx)
+-			goto no_dma;
++		if (!desc_rx) {
++			ret = -EAGAIN;
++			goto no_dma_rx;
++		}
++
++		desc_rx->callback = rspi_dma_complete;
++		desc_rx->callback_param = rspi;
++		cookie = dmaengine_submit(desc_rx);
++		if (dma_submit_error(cookie)) {
++			ret = cookie;
++			goto no_dma_rx;
++		}
+ 
+ 		irq_mask |= SPCR_SPRIE;
+ 	}
+ 
++	if (tx) {
++		desc_tx = dmaengine_prep_slave_sg(rspi->master->dma_tx,
++					tx->sgl, tx->nents, DMA_TO_DEVICE,
++					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++		if (!desc_tx) {
++			ret = -EAGAIN;
++			goto no_dma_tx;
++		}
++
++		if (rx) {
++			/* No callback */
++			desc_tx->callback = NULL;
++		} else {
++			desc_tx->callback = rspi_dma_complete;
++			desc_tx->callback_param = rspi;
++		}
++		cookie = dmaengine_submit(desc_tx);
++		if (dma_submit_error(cookie)) {
++			ret = cookie;
++			goto no_dma_tx;
++		}
++
++		irq_mask |= SPCR_SPTIE;
++	}
++
+ 	/*
+ 	 * DMAC needs SPxIE, but if SPxIE is set, the IRQ routine will be
+ 	 * called. So, this driver disables the IRQ while DMA transfer.
+@@ -503,34 +530,24 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 	rspi_enable_irq(rspi, irq_mask);
+ 	rspi->dma_callbacked = 0;
+ 
+-	if (rx) {
+-		desc_rx->callback = rspi_dma_complete;
+-		desc_rx->callback_param = rspi;
+-		cookie = dmaengine_submit(desc_rx);
+-		if (dma_submit_error(cookie))
+-			return cookie;
++	/* Now start DMA */
++	if (rx)
+ 		dma_async_issue_pending(rspi->master->dma_rx);
+-	}
+-	if (tx) {
+-		if (rx) {
+-			/* No callback */
+-			desc_tx->callback = NULL;
+-		} else {
+-			desc_tx->callback = rspi_dma_complete;
+-			desc_tx->callback_param = rspi;
+-		}
+-		cookie = dmaengine_submit(desc_tx);
+-		if (dma_submit_error(cookie))
+-			return cookie;
++	if (tx)
+ 		dma_async_issue_pending(rspi->master->dma_tx);
+-	}
+ 
+ 	ret = wait_event_interruptible_timeout(rspi->wait,
+ 					       rspi->dma_callbacked, HZ);
+ 	if (ret > 0 && rspi->dma_callbacked)
+ 		ret = 0;
+-	else if (!ret)
++	else if (!ret) {
++		dev_err(&rspi->master->dev, "DMA timeout\n");
+ 		ret = -ETIMEDOUT;
++		if (tx)
++			dmaengine_terminate_all(rspi->master->dma_tx);
++		if (rx)
++			dmaengine_terminate_all(rspi->master->dma_rx);
++	}
+ 
+ 	rspi_disable_irq(rspi, irq_mask);
+ 
+@@ -541,11 +558,16 @@ static int rspi_dma_transfer(struct rspi_data *rspi, struct sg_table *tx,
+ 
+ 	return ret;
+ 
+-no_dma:
+-	pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
+-		     dev_driver_string(&rspi->master->dev),
+-		     dev_name(&rspi->master->dev));
+-	return -EAGAIN;
++no_dma_tx:
++	if (rx)
++		dmaengine_terminate_all(rspi->master->dma_rx);
++no_dma_rx:
++	if (ret == -EAGAIN) {
++		pr_warn_once("%s %s: DMA not available, falling back to PIO\n",
++			     dev_driver_string(&rspi->master->dev),
++			     dev_name(&rspi->master->dev));
++	}
++	return ret;
+ }
+ 
+ static void rspi_receive_init(const struct rspi_data *rspi)
 -- 
 1.9.1
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds

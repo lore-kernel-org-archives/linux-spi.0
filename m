@@ -1,43 +1,54 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 11/12] ARM: shmobile: r8a7790 dtsi: Enable DMA for QSPI
-Date: Wed,  6 Aug 2014 14:59:08 +0200
-Message-ID: <1407329949-5695-12-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Subject: [PATCH 04/12] spi: rspi: Configure DMA slave bus width to 8 bit
+Date: Wed,  6 Aug 2014 14:59:01 +0200
+Message-ID: <1407329949-5695-5-git-send-email-geert+renesas@glider.be>
 References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	dmaengine@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	devicetree@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>, Simon Horman <horms@verge.net.au>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Add a DMA property to the QSPI node
+The new Renesas R-Car Gen2 DMA Controller driver (rcar-dmac) requires
+explicit configuration of the DMA slave bus width.
+Hardcode the DMA transfer size to 1 byte for both directions, as that's
+the only supported configuration (16-bit DMA support was removed in
+commit 9c5de2c1754c2bb3c69c4d7bf0d0edc0a61d8232 ("spi: rspi: Remove
+unused 16-bit DMA support")).
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: devicetree@vger.kernel.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 ---
-This depends on "[PATCH v2 7/8] ARM: shmobile: r8a7790: Add DMAC devices
-to DT" of series "[PATCH v2 0/8] R-Car Gen2 DMA Controller driver".
----
- arch/arm/boot/dts/r8a7790.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-rspi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
-index 4c74f219c824..495771b3cb34 100644
---- a/arch/arm/boot/dts/r8a7790.dtsi
-+++ b/arch/arm/boot/dts/r8a7790.dtsi
-@@ -978,6 +978,8 @@
- 		reg = <0 0xe6b10000 0 0x2c>;
- 		interrupts = <0 184 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&mstp9_clks R8A7790_CLK_QSPI_MOD>;
-+		dmas = <&dmac0 0x17>, <&dmac0 0x18>;
-+		dma-names = "tx", "rx";
- 		num-cs = <1>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index aa1c6a893570..6a4eb2d7f644 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -919,10 +919,13 @@ static struct dma_chan *rspi_request_dma_chan(struct device *dev,
+ 	memset(&cfg, 0, sizeof(cfg));
+ 	cfg.slave_id = id;
+ 	cfg.direction = dir;
+-	if (dir == DMA_MEM_TO_DEV)
++	if (dir == DMA_MEM_TO_DEV) {
+ 		cfg.dst_addr = port_addr;
+-	else
++		cfg.dst_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++	} else {
+ 		cfg.src_addr = port_addr;
++		cfg.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++	}
+ 
+ 	ret = dmaengine_slave_config(chan, &cfg);
+ 	if (ret) {
 -- 
 1.9.1
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

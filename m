@@ -1,11 +1,13 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 00/12] spi: rspi and sh-msiof driver updates
-Date: Wed, 6 Aug 2014 21:29:51 +0100
-Message-ID: <20140806202951.GU17528@sirena.org.uk>
+Subject: Re: [PATCH 06/12] spi: sh-msiof: Fix leaking of unused DMA
+ descriptors
+Date: Wed, 6 Aug 2014 21:35:43 +0100
+Message-ID: <20140806203543.GV17528@sirena.org.uk>
 References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
+ <1407329949-5695-7-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="FFJq4JBCEm+n5/He"
+	protocol="application/pgp-signature"; boundary="rT2J5DU38xRYJFcJ"
 Cc: Simon Horman <horms@verge.net.au>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
@@ -13,50 +15,41 @@ Cc: Simon Horman <horms@verge.net.au>,
 To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
+In-Reply-To: <1407329949-5695-7-git-send-email-geert+renesas@glider.be>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---FFJq4JBCEm+n5/He
+--rT2J5DU38xRYJFcJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 06, 2014 at 02:58:57PM +0200, Geert Uytterhoeven wrote:
-> 	Hi Mark, Simon,
->=20
-> Here's a series of Renesas RSPI/QSPI and SH-MSIOF SPI driver updates.
-> I grouped them in three parts:
->   - [1-5] are for the rspi driver (Mark),
->   - [6-8] are for the sh-msiof driver (Mark),
->   - [9-12] are for the R-Car Gen2 DTSes (Simon).
+On Wed, Aug 06, 2014 at 02:59:03PM +0200, Geert Uytterhoeven wrote:
+> If dmaengine_prep_slave_sg() or dmaengine_submit() fail, we may leak
+> unused DMA descriptors.
 
-Please don't send big jumbo patch serieses for different things in one
-fell swoop - for example the two bug fixes here should probably have
-been split out, and the rspi and sh-msiof changes have little
-interdependency with the rest of the series.
+Applied, thanks.
 
---FFJq4JBCEm+n5/He
+--rT2J5DU38xRYJFcJ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT4pA8AAoJELSic+t+oim9GX8P/iroLOv780dwIimD7Ud+fZc2
-GlYyZCFEOEuSz5PFyL/8y3zWrNk0r3M1ldt+IayO1Kz5MvlbCCc74udfljla8LJ7
-x/LipNn2nTFpwKcKRqPLJcJVCzDdiNO1+3ohu+S5Yl6AI+TUXjPyjKqjFOrcppGd
-vow+Bkjlq+zLjv6cLEzKlNBMYJCv6sPlAdaCGZR0FnkxiL38CafXWW2DKjj25Qzj
-ZB68scnEf/DorfcREDAYNh99EznLqsyNoWuD8wSBCPVhXvXBLKpJArEUya/Jx7Gx
-x58EXIIupSwSMb7iMRWAmZ8X2uRABa5GlnS/Q1SIRl41USlCwtdJOtKttDD6n16K
-dyIofk5GbUv/PJwaSvzjpj1mZzKC6TAfll8BiQBx3jdJpBJuWYi15GgoKEjPnJ8a
-0wCRGbc3d1hMdNx9gKrYO+6VeaRXxulbxB5Tc/rH+9PocOYrWfc2TQ6pcMNbFR1F
-ozq2KNNJa3/kZMVe7t8rG/pcAngfwckDjOwkTB4gcV12YhzQofcFXaRtvchX9E+s
-1+Ia/9KsK84T8iFFW59Vsdz6nMdTSVKde8KLvy0yi49wae/HnG7Ln4KoKHtL+/bA
-hnvqbNXIUxeNPILGridWVeuAZknWJQG/6U3SeTXTylNv29st+9uhMoPYPrRRwnKM
-TFNTugBkxSqDemRsTVkg
-=HojX
+iQIcBAEBAgAGBQJT4pGcAAoJELSic+t+oim94zIP/2I0+gJWLqdtDt3XKKd2zmAb
+Qd9jsZWmnJhcxCq7CzpvYOmocPrHQoTd7WfMoqv5BwsHyp0+1NOsALKDKW+dXkP1
+BGAL5Ox2aSNm1O3gXqtK+bAh7mz/8EcbPTfcVn3EJnHt0j6uVbiAkH25MWEhmmIr
+I9Kmg1sj6ROUSSJlbJcaCTJKSneKGxFV8Zt3ikMy3xWe+mFGVLGLiQJQrC7gRztg
+0BzXPsMIIsvmbnEAz/S3dkU9YFLgk+2HNwXGGr4Tv00u5DePLfydOonwVgbH/2fO
+3mZFVvIOvL4f/w3WNWaDlc2QO8ieUxpjs+ac14TIbwCLNAVJFRyOQLDBLYL5soGc
+zvkxnvwrqxNGEfvDRAUe+tnlKdqXLqpncB/v0bWZxEOdfPvgH0x0JBhZR6AI8yoK
+opL6nT08qnUKUJ7UHYzlOebdO9vBjUI7xNBHme4AwC+RpN6/EYKWoCcvmaV9VglC
+G1rpS8wLmgybAvE5ps1xVfc8dkPc2z5MNnwzx1KbTGfQloBa3b7kLRHcsjzxMOCv
+BRdqSBF+zujQPhXs0x2ho5MHZjggrhEsOWMbzcNXgZAs+qUeM+hjewKjjRro3ucR
+yvXO0KoE4jdK7c9vbD6OK42MVBbY0FeTDrMt05Q23FrPmZC3PZEVrIqV95CoXww6
+SlY28KKY7ekdR+0MbBkV
+=tqID
 -----END PGP SIGNATURE-----
 
---FFJq4JBCEm+n5/He--
+--rT2J5DU38xRYJFcJ--

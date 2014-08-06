@@ -1,12 +1,12 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 01/12] spi: rspi: Fix leaking of unused DMA descriptors
-Date: Wed, 6 Aug 2014 21:11:43 +0100
-Message-ID: <20140806201143.GN17528@sirena.org.uk>
+Subject: Re: [PATCH 02/12] spi: rspi: Remove unneeded semicolon
+Date: Wed, 6 Aug 2014 21:26:11 +0100
+Message-ID: <20140806202611.GQ17528@sirena.org.uk>
 References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
- <1407329949-5695-2-git-send-email-geert+renesas@glider.be>
+ <1407329949-5695-3-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="IpRpggDAsniQQBL1"
+	protocol="application/pgp-signature"; boundary="Uw3dxuaueHhmUKqq"
 Cc: Simon Horman <horms@verge.net.au>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
@@ -14,41 +14,41 @@ Cc: Simon Horman <horms@verge.net.au>,
 To: Geert Uytterhoeven <geert+renesas@glider.be>
 Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1407329949-5695-2-git-send-email-geert+renesas@glider.be>
+In-Reply-To: <1407329949-5695-3-git-send-email-geert+renesas@glider.be>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---IpRpggDAsniQQBL1
+--Uw3dxuaueHhmUKqq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Aug 06, 2014 at 02:58:58PM +0200, Geert Uytterhoeven wrote:
-> If dmaengine_prep_slave_sg() or dmaengine_submit() fail, we may leak
-> unused DMA descriptors.
+On Wed, Aug 06, 2014 at 02:58:59PM +0200, Geert Uytterhoeven wrote:
+> Introduced by commit 426ef76dd8a394a0e04d096941cd9acb49539a3e ("spi:
+> rspi: Add DT support").
 
 Applied, thanks.
 
---IpRpggDAsniQQBL1
+--Uw3dxuaueHhmUKqq
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT4ov8AAoJELSic+t+oim9mz0P/32Dfudbmijut52ZHC6O9Afp
-LKlaXRRmKmYHRaYsMN+yjI+0bCSuXLqtAJ2XQ8fmIvIl9Hw7mNSELOc9BPdTIm9Z
-BRt52qwvBmBVp25YK4JTFX4hZtNokGTs4srruELFBWvHQqDSRUIuslc2SUSOgQb2
-iK1TsY/2zszJq1ZjIqoi21q76ZKp29Pr+w78tIvorOAbU0pas78S7bIOHy7Gj7sn
-NbzAfx1hEhM4I3eNF68lNqgSvfEmQceCaisiDzBTEzMtKl1yvsBiI61bxZ9P0/CC
-vMZBNOJkRFUI40nCWZJh4xS8hW66GHntpe5Kt/HC66pvuqNwSRZoP/rm2Qqxpfdy
-riJ6LiQMkMQFtMh0IJ0oDn8xe4QSytn3JZzXLQuse1Gn5fHIHt3bXcn4UKxmf2yc
-p3aih41IsvoTQk0Dx+VJczQXyR+tud7GSHcFuODI2d48ZZ74gQ+H+DO0/3SaeQma
-NhkQFNT0nwpegwyDouxnWbyk4hfrDzEMbPVoM2kvIboMreuLKhsg2fCWnrZBmUZM
-ctpn/VvMv2GkcwPQispoaMSTfKGA73MYMXzH5mWBn4uiUNpyXsyFWoj41+x/+DI0
-FBpy5e39he/WRZCqgZINb/q1BnPVW79vfe5nPSznCXsKnUV3sOywQZP7gU4sO8Mb
-TTkk6OAd5FXjrzESOrpp
-=rEOB
+iQIcBAEBAgAGBQJT4o9gAAoJELSic+t+oim9LMUP/iR6s1iyPdrFHai/oR+QvU5D
+C2tY2NC0U3yKFDpY+BGsXMfaRb0JEC2dP7XncE0BITgoqUAqmGranvkL7sSekBqe
+rACSIWMCAbQ8Mq7p8qaFhCG1syNl1auKR9YM2azR6qX5S0eORVGwqi++2586j5FO
+VHP5V3EaSISvc//tTJSaXS2qhxuXWI77fypX0e0QqWhkZWISgIjp0Sxhfrodm/2D
+pAvG8IUQuC0nBgr4V7hVaLRkRO/sxfZD1cSpUr7fmrFR8O3fQhNVxanocRx04txV
+m9+nEVloRD8gFr/GAGRZ8Jefy+9I4jH2FHDHyfiUxTLNhuuM6wK9FKHamE60T1KJ
+Tr65XUiPBOQiknL03HXrZ+XcJaXIkA2uI+IRqw6bCg8HvHBKhGlySVpDYI4oWSZx
+RsXwykeTWP9KuGXfsO+KqeojEsbPJaxwWaUd9ACX2uI8M0xlIzSTgB4uSdMYWTQC
+nYT9+J9Z3oiyhM03hnGR+hhLMX7detBM+5BbvBQArgeMZu/pl9uqQ8ku4XD+qj7I
+rk8IXUnwGC+M1Z1B9pAQs8Za3zKKlUFrSTsdaDdqM+64GwJS4eF8ur7gyyxmXy0n
+Z0ipb/WKshASmsqY5S5Vj9zSP68F+Rlih0rJWNecPRLkfBXMpbhZUmMReQAW4bP7
+lvf4tgsRmmxabhx5aRNI
+=XF0X
 -----END PGP SIGNATURE-----
 
---IpRpggDAsniQQBL1--
+--Uw3dxuaueHhmUKqq--

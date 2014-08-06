@@ -1,40 +1,43 @@
 From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 02/12] spi: rspi: Remove unneeded semicolon
-Date: Wed,  6 Aug 2014 14:58:59 +0200
-Message-ID: <1407329949-5695-3-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH 11/12] ARM: shmobile: r8a7790 dtsi: Enable DMA for QSPI
+Date: Wed,  6 Aug 2014 14:59:08 +0200
+Message-ID: <1407329949-5695-12-git-send-email-geert+renesas@glider.be>
 References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
 Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
 	dmaengine@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	devicetree@vger.kernel.org
 To: Mark Brown <broonie@kernel.org>, Simon Horman <horms@verge.net.au>
 Return-path: <linux-sh-owner@vger.kernel.org>
 In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
 Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Introduced by commit 426ef76dd8a394a0e04d096941cd9acb49539a3e ("spi:
-rspi: Add DT support").
+Add a DMA property to the QSPI node
 
-Reported-by: kbuild test robot <fengguang.wu@intel.com>
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: devicetree@vger.kernel.org
 ---
- drivers/spi/spi-rspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This depends on "[PATCH v2 7/8] ARM: shmobile: r8a7790: Add DMAC devices
+to DT" of series "[PATCH v2 0/8] R-Car Gen2 DMA Controller driver".
+---
+ arch/arm/boot/dts/r8a7790.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
-index ad87a98f8f68..a4d8d3cf2912 100644
---- a/drivers/spi/spi-rspi.c
-+++ b/drivers/spi/spi-rspi.c
-@@ -1084,7 +1084,7 @@ static int rspi_probe(struct platform_device *pdev)
- 			master->num_chipselect = rspi_pd->num_chipselect;
- 		else
- 			master->num_chipselect = 2; /* default */
--	};
-+	}
- 
- 	/* ops parameter check */
- 	if (!ops->set_config_register) {
+diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
+index 4c74f219c824..495771b3cb34 100644
+--- a/arch/arm/boot/dts/r8a7790.dtsi
++++ b/arch/arm/boot/dts/r8a7790.dtsi
+@@ -978,6 +978,8 @@
+ 		reg = <0 0xe6b10000 0 0x2c>;
+ 		interrupts = <0 184 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&mstp9_clks R8A7790_CLK_QSPI_MOD>;
++		dmas = <&dmac0 0x17>, <&dmac0 0x18>;
++		dma-names = "tx", "rx";
+ 		num-cs = <1>;
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
 -- 
 1.9.1
 

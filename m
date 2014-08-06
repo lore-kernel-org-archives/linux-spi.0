@@ -1,40 +1,79 @@
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] spi: Fix warning about redefinition
-Date: Wed, 6 Aug 2014 12:18:34 -0700
-Message-ID: <20140806191834.GA12488@roeck-us.net>
-References: <CAO+Sx3nGKN1jh0VB9NjcFCqV7ZmWWjJge0nohdUGta9BF60EWQ@mail.gmail.com>
- <20140806190412.GA5605@roeck-us.net>
- <CAO+Sx3ncSgmdQq-PyZwXzN-ZJJ+0VD+kNVNJYzir+mHzVwxbdw@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/1] spi: Remove unused definitions
+Date: Wed, 6 Aug 2014 20:34:53 +0100
+Message-ID: <20140806193453.GJ17528@sirena.org.uk>
+References: <1407347597-2168-1-git-send-email-xerofoiffy@gmail.com>
+ <17153.1407349640@turing-police.cc.vt.edu>
+ <CAMuHMdVJQd0Mb8aXbd9iqkabzKdw9WSR791LxqUoVEJ1g1kaHA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Nick Krause <xerofoiffy@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="id7U9qOqdBFOLQU4"
+Cc: Valdis Kletnieks <Valdis.Kletnieks@vt.edu>,
+	Nick Krause <xerofoiffy@gmail.com>,
+	Richard Weinberger <richard.weinberger@gmail.com>,
 	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
 	open list <linux-kernel@vger.kernel.org>,
-	Richard Weinberger <richard.weinberger@gmail.com>
-To: David Wood <david@dtwood.co.uk>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAO+Sx3ncSgmdQq-PyZwXzN-ZJJ+0VD+kNVNJYzir+mHzVwxbdw@mail.gmail.com>
+In-Reply-To: <CAMuHMdVJQd0Mb8aXbd9iqkabzKdw9WSR791LxqUoVEJ1g1kaHA@mail.gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 06, 2014 at 09:07:04PM +0200, David Wood wrote:
-> On 6 August 2014 21:04, Guenter Roeck <linux@roeck-us.net> wrote:
-> > On Wed, Aug 06, 2014 at 08:53:41PM +0200, David Wood wrote:
-> > ...
-> > That was purely to ensure that there is no hidden use through a macro
-> > defined elsewhere, not a suggestion for a real patch.
-> >
-> > Guenter
-> 
-> I also managed not to notice that I had in fact shown that the fs.h
-> definitions were the opposite of those in the spi driver, so it would
-> in fact be significant if they were swapped.
-> 
-See it positively: There is someone out there doing an excellent job
-of forcing various kernel maintainers to have a close look into areas
-of the kernel they would otherwise never look at. In addition to that,
-we all gain valuable knowledge on how to validate patches.
 
-Guenter
+--id7U9qOqdBFOLQU4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Wed, Aug 06, 2014 at 08:50:15PM +0200, Geert Uytterhoeven wrote:
+
+> To be 100% sure, I tried to find with which kernel config this warning shows up.
+> It doesn't happen for omap1_defconfig with CONFIG_SPI_OMAP_100K,
+> which was the most likely culprit.
+
+> It does happen with sparc/sparc64 allmodconfig. However, changing or
+> removing the READ and WRITE definitions in drivers/spi/spi-omap-100k.c
+> doesn't have any influence on the preprocessed source files
+> ("make drivers/spi/spi-omap-100k.i", modulo line number changes),
+> for both omap1 and sparc builds.
+
+> (Nick: I believe the above is what people really want to see)
+
+> So I conclude they are really not used, and they can be safely removed.
+
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+Right, I'd already done the same analysis myself with looking for uses
+myself (though I didn't go looking for how to trigger).  Nick, please do
+look at the analysis Geert provided above - it is indeed exactly the
+sort of thing that people would want to see, just saying what's in the
+diff isn't enough especially given the well advertised quality problems
+with your submissions.  You really need to explain why the change you're
+making is a good idea.
+
+I've applied the change.
+
+--id7U9qOqdBFOLQU4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT4oNaAAoJELSic+t+oim96ssP/A94yqu+MJ74cbKu2VKKb3nS
+OGZUEdzWs8XVwJC6rxohwzRpc0b0vDEAYFk3FUs5T9I79QzpQZYnK2GnCLeWGsiV
+iXtZV1+ilnPLpnm8cfU6U3XbIVBug2GOuhajf3ZWqnYZ5ydLqpNMNoak1FTzwKZZ
+V0GxCGZXR4tCNnRqiotL94RRDlLIfCfU4tXCaLcHIqJTxFnuDu1E7SL8DUBC89jV
+/2uYhHmlQC1gnyVEZ3jvprbwTVLlqciGiA8ffFEL8hwa0vULaiUlIkPk2O5RvKV3
+sS/TuVLNf1hi/GyNa6C91q2Zb/uzARb0OAIgM5Zr4xD75TnNlI/dKORvm1i/kr4h
+CGM/GhNCzvDE639BBCrlKR9tdi+M1AkK4s8y2/WisvUjpoxSAe3sT9BjogFnIh8O
+/FhD9emVod7XGLcejPx9ih0BA9g7BZh4BLwtA1tV/cQruW3myUieI8T2rKIagxDE
+b1Hwj4uNMHK8RwYmEmISeFT0JxCGwEoOhNutXUp6WCWkQnUBMmA4YDHnK2aXn2nX
+2R7Sn0UW7ZRJkQVVvMvmdOKRmWvamw125AQeF1VDvX4wcwvSl6+mXPDUapdzywfz
+ljWvp1SUMOy8nRqJtViqYh5KGSMfJ71xjYbUWU9BYDpYvnnt1jGr4knGqRT44mwN
+Xxhz+PVdDCbzRaWHhtHW
+=0/SR
+-----END PGP SIGNATURE-----
+
+--id7U9qOqdBFOLQU4--

@@ -1,91 +1,40 @@
-From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 12/12] ARM: shmobile: r8a7790 dtsi: Enable DMA for MSIOF
-Date: Wed,  6 Aug 2014 14:59:09 +0200
-Message-ID: <1407329949-5695-13-git-send-email-geert+renesas@glider.be>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 02/12] spi: rspi: Remove unneeded semicolon
+Date: Wed,  6 Aug 2014 14:58:59 +0200
+Message-ID: <1407329949-5695-3-git-send-email-geert+renesas@glider.be>
 References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
-Cc: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	dmaengine@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>, Simon Horman <horms@verge.net.au>
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Add register sets used for access by the DMA engine, and DMA properties to
-the MSIOF nodes.
+Introduced by commit 426ef76dd8a394a0e04d096941cd9acb49539a3e ("spi:
+rspi: Add DT support").
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Reported-by: kbuild test robot <fengguang.wu@intel.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
-This depends on "[PATCH v2 7/8] ARM: shmobile: r8a7790: Add DMAC devices
-to DT" of series "[PATCH v2 0/8] R-Car Gen2 DMA Controller driver".
----
- arch/arm/boot/dts/r8a7790.dtsi | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/spi/spi-rspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
-index 495771b3cb34..45d6fdd6877b 100644
---- a/arch/arm/boot/dts/r8a7790.dtsi
-+++ b/arch/arm/boot/dts/r8a7790.dtsi
-@@ -988,9 +988,11 @@
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index ad87a98f8f68..a4d8d3cf2912 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -1084,7 +1084,7 @@ static int rspi_probe(struct platform_device *pdev)
+ 			master->num_chipselect = rspi_pd->num_chipselect;
+ 		else
+ 			master->num_chipselect = 2; /* default */
+-	};
++	}
  
- 	msiof0: spi@e6e20000 {
- 		compatible = "renesas,msiof-r8a7790";
--		reg = <0 0xe6e20000 0 0x0064>;
-+		reg = <0 0xe6e20000 0 0x0064>, <0 0xe7e20000 0 0x0064>;
- 		interrupts = <0 156 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&mstp0_clks R8A7790_CLK_MSIOF0>;
-+		dmas = <&dmac0 0x51>, <&dmac0 0x52>;
-+		dma-names = "tx", "rx";
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		status = "disabled";
-@@ -998,9 +1000,11 @@
- 
- 	msiof1: spi@e6e10000 {
- 		compatible = "renesas,msiof-r8a7790";
--		reg = <0 0xe6e10000 0 0x0064>;
-+		reg = <0 0xe6e10000 0 0x0064>, <0 0xe7e10000 0 0x0064>;
- 		interrupts = <0 157 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&mstp2_clks R8A7790_CLK_MSIOF1>;
-+		dmas = <&dmac0 0x55>, <&dmac0 0x56>;
-+		dma-names = "tx", "rx";
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		status = "disabled";
-@@ -1008,9 +1012,11 @@
- 
- 	msiof2: spi@e6e00000 {
- 		compatible = "renesas,msiof-r8a7790";
--		reg = <0 0xe6e00000 0 0x0064>;
-+		reg = <0 0xe6e00000 0 0x0064>, <0 0xe7e00000 0 0x0064>;
- 		interrupts = <0 158 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&mstp2_clks R8A7790_CLK_MSIOF2>;
-+		dmas = <&dmac0 0x41>, <&dmac0 0x42>;
-+		dma-names = "tx", "rx";
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		status = "disabled";
-@@ -1018,9 +1024,11 @@
- 
- 	msiof3: spi@e6c90000 {
- 		compatible = "renesas,msiof-r8a7790";
--		reg = <0 0xe6c90000 0 0x0064>;
-+		reg = <0 0xe6c90000 0 0x0064>, <0 0xe7c90000 0 0x0064>;
- 		interrupts = <0 159 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&mstp2_clks R8A7790_CLK_MSIOF3>;
-+		dmas = <&dmac0 0x45>, <&dmac0 0x46>;
-+		dma-names = "tx", "rx";
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		status = "disabled";
+ 	/* ops parameter check */
+ 	if (!ops->set_config_register) {
 -- 
 1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

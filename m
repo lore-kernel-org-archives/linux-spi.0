@@ -1,65 +1,81 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: Fix warning about redefinition
-Date: Wed, 6 Aug 2014 18:56:31 +0100
-Message-ID: <20140806175631.GI17528@sirena.org.uk>
-References: <1407344128-9754-1-git-send-email-xerofoiffy@gmail.com>
+From: Valdis.Kletnieks@vt.edu
+Subject: Re: [PATCH 1/1] spi: Remove unused definitions
+Date: Wed, 06 Aug 2014 14:27:20 -0400
+Message-ID: <17153.1407349640@turing-police.cc.vt.edu>
+References: <1407347597-2168-1-git-send-email-xerofoiffy@gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="vdyEe3aauNFvjM8k"
-Cc: "open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Nick Krause <xerofoiffy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1407344128-9754-1-git-send-email-xerofoiffy-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; boundary="==_Exmh_1407349640_2381P";
+	 micalg=pgp-sha1; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Cc: Richard Weinberger <richard.weinberger@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org (open list:SPI SUBSYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+To: Nick Krause <xerofoiffy@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: Your message of "Wed, 06 Aug 2014 13:53:17 -0400."
+             <1407347597-2168-1-git-send-email-xerofoiffy@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+--==_Exmh_1407349640_2381P
+Content-Type: text/plain; charset="us-ascii"
+Content-Id: <17141.1407349640.1@turing-police.cc.vt.edu>
+Content-Transfer-Encoding: quoted-printable
 
---vdyEe3aauNFvjM8k
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Wed, 06 Aug 2014 13:53:17 -0400, Nick Krause said:
+> Remove unused definition which cause the following warnings
+> =
 
-On Wed, Aug 06, 2014 at 12:55:28PM -0400, Nick Krause wrote:
+> drivers/spi/spi-omap-100k.c:73:0: warning: "WRITE" redefined [enabled by=
+ default]
+> include/linux/fs.h:193:0: note: this is the location of the previous def=
+inition
+> drivers/spi/spi-omap-100k.c:74:0: warning: "READ" redefined [enabled by =
+default]
+> include/linux/fs.h:192:0: note: this is the location of the previous def=
+inition
 
-> +#ifdef WRITE
-> +#undef WRITE
-> +#endif
-> +#ifdef READ
-> +#undef READ
-> +#endif
->  #define WRITE 0
->  #define READ  1
+> -#define WRITE 0
+> -#define READ  1
 
-Please think about what the effect of doing this is and look at how
-other similar problems have been addressed - the goal isn't to shut up
-the warning, it's to fix the problem the compiler is trying to tell you
-about.
+NAK.  Full stop.  These are potentially used in an inner macro someplace, =
+and by
+removing these, the conflicting values from fs.h will be used instead.
 
---vdyEe3aauNFvjM8k
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+#define READ                    0
+#define WRITE                   RW_MASK
+
+So if there *is* a use in an inner macro, you just screwed the pooch
+and introduced a bug in this "clean up" - somebody will be expecting to se=
+e
+a 0 for a READ, and will receive a 1 instead.  This can't end well.
+
+Nick - how *exactly* did you identify that these are in fact not used?
+Given your history of submitting poorly researched patches, you're going t=
+o
+have to justify the "unused" better than the handwaving you've done here.
+
+--==_Exmh_1407349640_2381P
+Content-Type: application/pgp-signature
 
 -----BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Version: GnuPG v1
+Comment: Exmh version 2.5 07/13/2001
 
-iQIcBAEBAgAGBQJT4mxMAAoJELSic+t+oim9rBsP/iBlgIW3zoVGmL3CCtGwbDTS
-MkG48W1fdTCB0bhAAe3Yg6G36Oe6Gv4tvMIB/IJNdtFNr2lutX3BGdxucAn6w3YR
-vPkpy0QysdSzdFzy1vunrSFuAQpUswPL081olwbyD/iFmOsHSL+Mbbqu8p2T58Qf
-W3Jkx+vvVXnZNyEUravKn9cjuymLcb9zNWBTfiVAuKiMFDUdC+JDJwyjSOFjRMfk
-sUtTWuj0T5YUWHcul3KR8rMDWxSzFdh2Exduo7f029XflkCVZ4j9x/WjDNdhZus/
-14ecQhl4NsiaalEzEDpVkVpBHoiNVCtHW7yKeFopT6LKbFGmBpPUlnp0bkhjzXYZ
-AIiDO1KDO4dAw6to+hbP+XR7p8UtDl4eiXoak/iAEc+p+q0KiuOm9h3mK3HDBxU/
-eEdAtHcCENbJYFi9BddSe+SjbxX262x5Zd7M1kvThRWXnUqHPK1jOSVpkDR9MRq/
-/HJfyjn902oKtrdljYREnUrkJwUmv1ifdIElq92M2ggjAGz6LBsBEGLm3SRy+AJD
-5b3NYwk1LmPky1YDEMxecAv9UTVi9t6TfC1p15cBstNLH5RfukbJKN8P/ETxpfS+
-EZW3kg4fF+cVljB4AiLNKas6mPHEzkSumWNBh5VisDtvFRNUm08kvZCGT5P5h6bj
-z/bMjhCPRon3pcwhIIU0
-=9TI1
+iQIVAwUBU+JziAdmEQWDXROgAQIYrRAApfcA5BtiehUUlRTxVshRPQc+CGfZeKo6
+Ua7iA/biWJ+4zmNvJ/wkNF6k6tRSFS55dmj0xKoMjlJjmiziTCSKQbfkIa7YgACO
+P37JbPP78NcxF/uDMs67tI58yEkIKVJ2iHnWW9FJJnRAE+CZcr+Qp0EQ0Z4w6VJz
+LLS8J8Y7Tbf2uAXIJrZf4gxp6c/rz8Mxtw/AR8YA2gszO+nbdeyTICSfZJ1OhZXQ
+y2/RDzRKshbFpVQyo11fUOgER1nEmeZkmRZ1KgnZKZc02gDBpWj+Qj6egWbMRaPj
+jHw9QfiVUriUJG5wnk9mR08tAUwZ3Qa8oAy2eXZvMB8BKWNizGUYazfspECzvwws
+8Wn8AYhtaAWl3sqVZF1MZGCGMqjS6wOaKu4kG2r/wAQA1fIZtCCCgq88ZCdSx6NI
+XOP6WAmHqkxJrR8fYfTnN0ycwmL4X5X9JWmzz9bXuXjCDGWSB8j7KjFU/0bG+J4a
+qNiZXTqcSDrZtc2cqIRUB3YYLJ0l0XvEy2KEGBexyRBEdMrMmkxlXb0rBg4qU4jL
+eGFF7Bq7e5sdlUkWNpBorMm5SC8r2syPpHauliXQBvk+xnxfvQxU5vNn3v/9kSJW
+Z0+l9rRv+pCa7GOOIb92wOWoEG8xtxqznYKfl9zHY9CxF5lYkbd0R4QBpWXY753j
+JBMeCjqOUgQ=
+=FfCs
 -----END PGP SIGNATURE-----
 
---vdyEe3aauNFvjM8k--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--==_Exmh_1407349640_2381P--

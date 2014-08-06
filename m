@@ -1,7 +1,7 @@
 From: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Subject: [PATCH 09/12] [v3] ARM: shmobile: r8a7791 dtsi: Enable DMA for QSPI
-Date: Wed,  6 Aug 2014 14:59:06 +0200
-Message-ID: <1407329949-5695-10-git-send-email-geert+renesas@glider.be>
+Subject: [PATCH 12/12] ARM: shmobile: r8a7790 dtsi: Enable DMA for MSIOF
+Date: Wed,  6 Aug 2014 14:59:09 +0200
+Message-ID: <1407329949-5695-13-git-send-email-geert+renesas@glider.be>
 References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
 Cc: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
@@ -14,36 +14,74 @@ In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5n
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add a DMA property to the QSPI node
+Add register sets used for access by the DMA engine, and DMA properties to
+the MSIOF nodes.
 
 Signed-off-by: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
 Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 ---
-This depends on "[PATCH v2 8/8] ARM: shmobile: r8a7791: Add DMAC devices
+This depends on "[PATCH v2 7/8] ARM: shmobile: r8a7790: Add DMAC devices
 to DT" of series "[PATCH v2 0/8] R-Car Gen2 DMA Controller driver".
-
-v2:
-  - Update DMA specifiers to match the renesas,rcar-dmac bindings,
-v2:
-  - QSPI needs to use 8-bit accesses for DMA, not 32-bit,
-  - Reorder: TX first, RX second.
 ---
- arch/arm/boot/dts/r8a7791.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/r8a7790.dtsi | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/r8a7791.dtsi b/arch/arm/boot/dts/r8a7791.dtsi
-index d59af615e365..8186c9f4a18a 100644
---- a/arch/arm/boot/dts/r8a7791.dtsi
-+++ b/arch/arm/boot/dts/r8a7791.dtsi
-@@ -1044,6 +1044,8 @@
- 		reg = <0 0xe6b10000 0 0x2c>;
- 		interrupts = <0 184 IRQ_TYPE_LEVEL_HIGH>;
- 		clocks = <&mstp9_clks R8A7791_CLK_QSPI_MOD>;
-+		dmas = <&dmac0 0x17>, <&dmac0 0x18>;
+diff --git a/arch/arm/boot/dts/r8a7790.dtsi b/arch/arm/boot/dts/r8a7790.dtsi
+index 495771b3cb34..45d6fdd6877b 100644
+--- a/arch/arm/boot/dts/r8a7790.dtsi
++++ b/arch/arm/boot/dts/r8a7790.dtsi
+@@ -988,9 +988,11 @@
+ 
+ 	msiof0: spi@e6e20000 {
+ 		compatible = "renesas,msiof-r8a7790";
+-		reg = <0 0xe6e20000 0 0x0064>;
++		reg = <0 0xe6e20000 0 0x0064>, <0 0xe7e20000 0 0x0064>;
+ 		interrupts = <0 156 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&mstp0_clks R8A7790_CLK_MSIOF0>;
++		dmas = <&dmac0 0x51>, <&dmac0 0x52>;
 +		dma-names = "tx", "rx";
- 		num-cs = <1>;
  		#address-cells = <1>;
  		#size-cells = <0>;
+ 		status = "disabled";
+@@ -998,9 +1000,11 @@
+ 
+ 	msiof1: spi@e6e10000 {
+ 		compatible = "renesas,msiof-r8a7790";
+-		reg = <0 0xe6e10000 0 0x0064>;
++		reg = <0 0xe6e10000 0 0x0064>, <0 0xe7e10000 0 0x0064>;
+ 		interrupts = <0 157 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&mstp2_clks R8A7790_CLK_MSIOF1>;
++		dmas = <&dmac0 0x55>, <&dmac0 0x56>;
++		dma-names = "tx", "rx";
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		status = "disabled";
+@@ -1008,9 +1012,11 @@
+ 
+ 	msiof2: spi@e6e00000 {
+ 		compatible = "renesas,msiof-r8a7790";
+-		reg = <0 0xe6e00000 0 0x0064>;
++		reg = <0 0xe6e00000 0 0x0064>, <0 0xe7e00000 0 0x0064>;
+ 		interrupts = <0 158 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&mstp2_clks R8A7790_CLK_MSIOF2>;
++		dmas = <&dmac0 0x41>, <&dmac0 0x42>;
++		dma-names = "tx", "rx";
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		status = "disabled";
+@@ -1018,9 +1024,11 @@
+ 
+ 	msiof3: spi@e6c90000 {
+ 		compatible = "renesas,msiof-r8a7790";
+-		reg = <0 0xe6c90000 0 0x0064>;
++		reg = <0 0xe6c90000 0 0x0064>, <0 0xe7c90000 0 0x0064>;
+ 		interrupts = <0 159 IRQ_TYPE_LEVEL_HIGH>;
+ 		clocks = <&mstp2_clks R8A7790_CLK_MSIOF3>;
++		dmas = <&dmac0 0x45>, <&dmac0 0x46>;
++		dma-names = "tx", "rx";
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		status = "disabled";
 -- 
 1.9.1
 

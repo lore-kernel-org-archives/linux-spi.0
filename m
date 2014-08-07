@@ -1,84 +1,67 @@
-From: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
-Subject: Re: [PATCH 00/12] spi: rspi and sh-msiof driver updates
-Date: Thu, 07 Aug 2014 02:16:47 +0200
-Message-ID: <2006783.fexCv50f5Y@avalon>
+From: Simon Horman <horms@verge.net.au>
+Subject: Re: [PATCH 09/12] [v3] ARM: shmobile: r8a7791 dtsi: Enable DMA for
+ QSPI
+Date: Thu, 7 Aug 2014 09:37:56 +0900
+Message-ID: <20140807003755.GF32652@verge.net.au>
 References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
+ <1407329949-5695-10-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Simon Horman <horms-/R6kz+dDXgpPR4JQBCEnsQ@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1407329949-5695-1-git-send-email-geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
+	dmaengine@vger.kernel.org, devicetree@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1407329949-5695-10-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Geert,
-
-Thank you for the patches.
-
-On Wednesday 06 August 2014 14:58:57 Geert Uytterhoeven wrote:
-> 	Hi Mark, Simon,
+On Wed, Aug 06, 2014 at 02:59:06PM +0200, Geert Uytterhoeven wrote:
+> Add a DMA property to the QSPI node
 > 
-> Here's a series of Renesas RSPI/QSPI and SH-MSIOF SPI driver updates.
-> I grouped them in three parts:
->   - [1-5] are for the rspi driver (Mark),
->   - [6-8] are for the sh-msiof driver (Mark),
->   - [9-12] are for the R-Car Gen2 DTSes (Simon).
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Cc: devicetree@vger.kernel.org
+> ---
+> This depends on "[PATCH v2 8/8] ARM: shmobile: r8a7791: Add DMAC devices
+> to DT" of series "[PATCH v2 0/8] R-Car Gen2 DMA Controller driver".
 
-For everything but 06/12,
+Hi Geert, Hi Laurent,
 
-Acked-by: Laurent Pinchart <laurent.pinchart-ryLnwIuWjnjg/C1BVhZhaw@public.gmane.org>
+Am I correct in assuming that with this patch applied things
+will continue to work the old way until the patch above applied
+to the same tree and from there on the user will get the new behaviour?
 
-> Summary of changes:
->   - [1] and [6] are bug fixes I have sent before, but that weren't applied
->     due to dependency confusion,
->   - [2] is a new cosmetic fix,
->   - [3] makes rspi use a new helper function that will be available as of
->     v3.17-rc1,
->   - [4-5] and [7-8] make DMA work with the new R-Car DMAC driver,
->     developed by Laurent Pinchart in the series "[PATCH v2 0/8] R-Car Gen2
->     DMA Controller driver"
->     (http://www.spinics.net/lists/linux-sh/msg33890.html),
->   - [9-12] enable DMA in DT for r8a7791 and r8a7790, and depend on
->     "[PATCH v2 8/8] ARM: shmobile: r8a7791: Add DMAC devices to DT"
->     (http://www.spinics.net/lists/linux-sh/msg33897.html) resp.
->     "[PATCH v2 7/8] ARM: shmobile: r8a7790: Add DMAC devices to DT"
->     (http://www.spinics.net/lists/linux-sh/msg33896.html) of the
->     aforementioned series.
+If so I think that I can take this patch as although the driver hasn't been
+merged the relevant bindings were added to the subsystem maintainers tree
+by "dmaengine: rcar-dmac: Add device tree bindings documentation" and are
+available in linux-next.
+
+Likewise for "[v3] ARM: shmobile: r8a7791 dtsi: Enable DMA for MSIO".
+
+> v2:
+>   - Update DMA specifiers to match the renesas,rcar-dmac bindings,
+> v2:
+>   - QSPI needs to use 8-bit accesses for DMA, not 32-bit,
+>   - Reorder: TX first, RX second.
+> ---
+>  arch/arm/boot/dts/r8a7791.dtsi | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> This has been tested on r8a7791/koelsch.
+> diff --git a/arch/arm/boot/dts/r8a7791.dtsi b/arch/arm/boot/dts/r8a7791.dtsi
+> index d59af615e365..8186c9f4a18a 100644
+> --- a/arch/arm/boot/dts/r8a7791.dtsi
+> +++ b/arch/arm/boot/dts/r8a7791.dtsi
+> @@ -1044,6 +1044,8 @@
+>  		reg = <0 0xe6b10000 0 0x2c>;
+>  		interrupts = <0 184 IRQ_TYPE_LEVEL_HIGH>;
+>  		clocks = <&mstp9_clks R8A7791_CLK_QSPI_MOD>;
+> +		dmas = <&dmac0 0x17>, <&dmac0 0x18>;
+> +		dma-names = "tx", "rx";
+>  		num-cs = <1>;
+>  		#address-cells = <1>;
+>  		#size-cells = <0>;
+> -- 
+> 1.9.1
 > 
-> Geert Uytterhoeven (12):
->    [1] spi: rspi: Fix leaking of unused DMA descriptors
->    [2] spi: rspi: Remove unneeded semicolon
->    [3] spi: rspi: Use devm_kasprintf()
->    [4] spi: rspi: Configure DMA slave bus width to 8 bit
->    [5] spi: rspi: Add DT support to DMA setup
->    [6] spi: sh-msiof: Fix leaking of unused DMA descriptors
->    [7] spi: sh-msiof: Configure DMA slave bus width
->    [8] spi: sh-msiof: Add DT support to DMA setup
->    [9] ARM: shmobile: r8a7791 dtsi: Enable DMA for QSPI
->   [10] ARM: shmobile: r8a7791 dtsi: Enable DMA for MSIOF
->   [11] ARM: shmobile: r8a7790 dtsi: Enable DMA for QSPI
->   [12] ARM: shmobile: r8a7790 dtsi: Enable DMA for MSIOF
-> 
->  Documentation/devicetree/bindings/spi/sh-msiof.txt |  17 ++-
->  Documentation/devicetree/bindings/spi/spi-rspi.txt |   5 +
->  arch/arm/boot/dts/r8a7790.dtsi                     |  18 ++-
->  arch/arm/boot/dts/r8a7791.dtsi                     |  14 +-
->  drivers/spi/spi-rspi.c                             | 147 +++++++++++-------
->  drivers/spi/spi-sh-msiof.c                         | 103 +++++++++------
->  6 files changed, 195 insertions(+), 109 deletions(-)
-
--- 
-Regards,
-
-Laurent Pinchart
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

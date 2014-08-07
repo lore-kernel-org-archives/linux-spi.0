@@ -1,78 +1,52 @@
-From: Simon Horman <horms@verge.net.au>
-Subject: Re: [PATCH 09/12] [v3] ARM: shmobile: r8a7791 dtsi: Enable DMA for
- QSPI
-Date: Thu, 7 Aug 2014 09:41:08 +0900
-Message-ID: <20140807004107.GB30872@verge.net.au>
-References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
- <1407329949-5695-10-git-send-email-geert+renesas@glider.be>
- <20140807003755.GF32652@verge.net.au>
- <20140807003908.GA30872@verge.net.au>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	linux-spi@vger.kernel.org, linux-sh@vger.kernel.org,
-	dmaengine@vger.kernel.org, devicetree@vger.kernel.org
-To: Geert Uytterhoeven <geert+renesas@glider.be>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20140807003908.GA30872@verge.net.au>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Nick Krause <xerofoiify-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: Initialize variable to prevent uninitialized warning
+Date: Thu,  7 Aug 2014 06:51:00 +0200
+Message-ID: <1407387060-28992-1-git-send-email-xerofoiify@gmail.com>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list:SPI SUBSYSTEM),
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org (open list)
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Aug 07, 2014 at 09:39:08AM +0900, Simon Horman wrote:
-> On Thu, Aug 07, 2014 at 09:37:56AM +0900, Simon Horman wrote:
-> > On Wed, Aug 06, 2014 at 02:59:06PM +0200, Geert Uytterhoeven wrote:
-> > > Add a DMA property to the QSPI node
-> > > 
-> > > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> > > Cc: devicetree@vger.kernel.org
-> > > ---
-> > > This depends on "[PATCH v2 8/8] ARM: shmobile: r8a7791: Add DMAC devices
-> > > to DT" of series "[PATCH v2 0/8] R-Car Gen2 DMA Controller driver".
-> > 
-> > Hi Geert, Hi Laurent,
-> > 
-> > Am I correct in assuming that with this patch applied things
-> > will continue to work the old way until the patch above applied
-> > to the same tree and from there on the user will get the new behaviour?
-> > 
-> > If so I think that I can take this patch as although the driver hasn't been
-> > merged the relevant bindings were added to the subsystem maintainers tree
-> > by "dmaengine: rcar-dmac: Add device tree bindings documentation" and are
-> > available in linux-next.
-> > 
-> > Likewise for "[v3] ARM: shmobile: r8a7791 dtsi: Enable DMA for MSIO".
-> 
-> ... and "ARM: shmobile: r8a7790 dtsi: Enable DMA for QSPI"
+While compiling we see the following waring
 
-... and "ARM: shmobile: r8a7790 dtsi: Enable DMA for MSIO"
+drivers/spi/spi-bfin5xx.c: In function 'bfin_spi_pump_transfers':
+drivers/spi/spi-bfin5xx.c:695:6: warning: 'cr_width' may be used uninitialized
+in this function [-Wuninitialized]
 
-and any other similar patches I didn't list above :)
+Initialize it to prevent the above warning
 
-> 
-> > > v2:
-> > >   - Update DMA specifiers to match the renesas,rcar-dmac bindings,
-> > > v2:
-> > >   - QSPI needs to use 8-bit accesses for DMA, not 32-bit,
-> > >   - Reorder: TX first, RX second.
-> > > ---
-> > >  arch/arm/boot/dts/r8a7791.dtsi | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/arch/arm/boot/dts/r8a7791.dtsi b/arch/arm/boot/dts/r8a7791.dtsi
-> > > index d59af615e365..8186c9f4a18a 100644
-> > > --- a/arch/arm/boot/dts/r8a7791.dtsi
-> > > +++ b/arch/arm/boot/dts/r8a7791.dtsi
-> > > @@ -1044,6 +1044,8 @@
-> > >  		reg = <0 0xe6b10000 0 0x2c>;
-> > >  		interrupts = <0 184 IRQ_TYPE_LEVEL_HIGH>;
-> > >  		clocks = <&mstp9_clks R8A7791_CLK_QSPI_MOD>;
-> > > +		dmas = <&dmac0 0x17>, <&dmac0 0x18>;
-> > > +		dma-names = "tx", "rx";
-> > >  		num-cs = <1>;
-> > >  		#address-cells = <1>;
-> > >  		#size-cells = <0>;
-> > > -- 
-> > > 1.9.1
-> > > 
+Signed-off-by: Nick Krause <xerofoify-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-bfin5xx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/spi/spi-bfin5xx.c b/drivers/spi/spi-bfin5xx.c
+index ebf720b..f268bf4 100644
+--- a/drivers/spi/spi-bfin5xx.c
++++ b/drivers/spi/spi-bfin5xx.c
+@@ -559,7 +559,7 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	struct spi_transfer *previous = NULL;
+ 	struct bfin_spi_slave_data *chip = NULL;
+ 	unsigned int bits_per_word;
+-	u16 cr, cr_width, dma_width, dma_config;
++	u16 cr, cr_width = 0, dma_width, dma_config;
+ 	u32 tranf_success = 1;
+ 	u8 full_duplex = 0;
+ 
+@@ -648,7 +648,6 @@ static void bfin_spi_pump_transfers(unsigned long data)
+ 	} else if (bits_per_word == 8) {
+ 		drv_data->n_bytes = bits_per_word/8;
+ 		drv_data->len = transfer->len;
+-		cr_width = 0;
+ 		drv_data->ops = &bfin_bfin_spi_transfer_ops_u8;
+ 	}
+ 	cr = bfin_read(&drv_data->regs->ctl) & ~(BIT_CTL_TIMOD | BIT_CTL_WORDSIZE);
+-- 
+2.0.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

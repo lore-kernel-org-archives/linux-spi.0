@@ -1,135 +1,62 @@
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 06/12] spi: sh-msiof: Fix leaking of unused DMA descriptors
-Date: Thu, 7 Aug 2014 10:55:01 +0200
-Message-ID: <CAMuHMdUd3OKqDwhLSCMW-rEQSnWky+saN5TgC005rkmNPfEL+g@mail.gmail.com>
-References: <1407329949-5695-1-git-send-email-geert+renesas@glider.be>
-	<1407329949-5695-7-git-send-email-geert+renesas@glider.be>
-	<1888537.ONCuOO6jck@avalon>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: Initialize variable to prevent uninitialized warning
+Date: Thu, 7 Aug 2014 10:55:17 +0100
+Message-ID: <20140807095517.GD17528@sirena.org.uk>
+References: <1407387060-28992-1-git-send-email-xerofoiify@gmail.com>
+ <20140807052219.GA21124@roeck-us.net>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
-	Simon Horman <horms@verge.net.au>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Linux-sh list <linux-sh@vger.kernel.org>,
-	dmaengine@vger.kernel.org
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Return-path: <linux-sh-owner@vger.kernel.org>
-In-Reply-To: <1888537.ONCuOO6jck@avalon>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="/9SduuEsPMGkuhdq"
+Cc: Nick Krause <xerofoiify-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"open list:SPI SUBSYSTEM" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	open list <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20140807052219.GA21124-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Laurent,
 
-On Thu, Aug 7, 2014 at 2:07 AM, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
-> On Wednesday 06 August 2014 14:59:03 Geert Uytterhoeven wrote:
->> +++ b/drivers/spi/spi-sh-msiof.c
->> @@ -636,48 +636,38 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv
->> *p, const void *tx, dma_cookie_t cookie;
->>       int ret;
->>
->> -     if (tx) {
->> -             ier_bits |= IER_TDREQE | IER_TDMAE;
->> -             dma_sync_single_for_device(p->master->dma_tx->device->dev,
->> -                                        p->tx_dma_addr, len, DMA_TO_DEVICE);
->> -             desc_tx = dmaengine_prep_slave_single(p->master->dma_tx,
->> -                                     p->tx_dma_addr, len, DMA_TO_DEVICE,
->> -                                     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
->> -             if (!desc_tx)
->> -                     return -EAGAIN;
->> -     }
->> -
->> +     /* First prepare and submit the DMA request(s), as this may fail */
->>       if (rx) {
->>               ier_bits |= IER_RDREQE | IER_RDMAE;
->>               desc_rx = dmaengine_prep_slave_single(p->master->dma_rx,
->>                                       p->rx_dma_addr, len, DMA_FROM_DEVICE,
->>                                       DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
->> -             if (!desc_rx)
->> -                     return -EAGAIN;
->> -     }
->> -
->> -     /* 1 stage FIFO watermarks for DMA */
->> -     sh_msiof_write(p, FCTR, FCTR_TFWM_1 | FCTR_RFWM_1);
->> -
->> -     /* setup msiof transfer mode registers (32-bit words) */
->> -     sh_msiof_spi_set_mode_regs(p, tx, rx, 32, len / 4);
->> -
->> -     sh_msiof_write(p, IER, ier_bits);
->> -
->> -     reinit_completion(&p->done);
->> +             if (!desc_rx) {
->> +                     ret = -EAGAIN;
->> +                     goto no_dma_rx;
->
-> You could return -EAGAIN directly here.
+--/9SduuEsPMGkuhdq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Indeed...
+On Wed, Aug 06, 2014 at 10:22:19PM -0700, Guenter Roeck wrote:
 
->> +             }
->>
->> -     if (rx) {
->>               desc_rx->callback = sh_msiof_dma_complete;
->>               desc_rx->callback_param = p;
->>               cookie = dmaengine_submit(desc_rx);
->>               if (dma_submit_error(cookie)) {
->>                       ret = cookie;
->> -                     goto stop_ier;
->> +                     goto no_dma_rx;
+> So if we ever hit that uninitialized case, where bits_per_word is
+> neither 8 nor 16, we'll have ops set to NULL and end up wondering
+> why the kernel crashes a bit further down in the code. Not really
+> sure if that is an improvement.
 
-... and here, too. Will do.
+It's not.  The goal isn't to fix the warning, it's to fix the problem
+the compiler is telling you about - initialising to the wrong value is
+just as bad as not being initialised at all.
 
->> @@ -688,15 +678,30 @@ static int sh_msiof_dma_once(struct sh_msiof_spi_priv
->> *p, const void *tx, cookie = dmaengine_submit(desc_tx);
->>               if (dma_submit_error(cookie)) {
->>                       ret = cookie;
->> -                     goto stop_rx;
->> +                     goto no_dma_tx;
->>               }
->> -             dma_async_issue_pending(p->master->dma_tx);
->>       }
->>
->> +     /* 1 stage FIFO watermarks for DMA */
->> +     sh_msiof_write(p, FCTR, FCTR_TFWM_1 | FCTR_RFWM_1);
->> +
->> +     /* setup msiof transfer mode registers (32-bit words) */
->> +     sh_msiof_spi_set_mode_regs(p, tx, rx, 32, len / 4);
->> +
->> +     sh_msiof_write(p, IER, ier_bits);
->> +
->> +     reinit_completion(&p->done);
->> +
->> +     /* Now start DMA */
->> +     if (tx)
->> +             dma_async_issue_pending(p->master->dma_rx);
->
-> if (tx) issue pending on dma_rx ? Shouldn't is be tx -> tx and rx -> rx below
-> ? I would also start rx before tx, but that might be an unnecessary
-> precaution.
+--/9SduuEsPMGkuhdq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Woops. That check should indeed be "if (rx)", and the one below should
-be "if (tx)".
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
->> +     if (rx)
->> +             dma_async_issue_pending(p->master->dma_tx);
->> +
+iQIcBAEBAgAGBQJT400CAAoJELSic+t+oim9SHUP/35bVakt6XIRGvlrUfQdozO3
+lS4FSF+xCtXibqyfFdYdaWqeCml8ZRDoyvc2YZOpr89ecyS7pYsxQZ4ks7sq4x8U
++XpNbzPI3LnQ2yyAVRDGDzUtILLdTgiI8/qaqpzJrFxAwLRSvHNuK3LppqIAZBcM
+7U7nKU/gc5daMZTxrKf/AEw2smifZHiE+iu19+2HIoIxytG/kJtOGd2NSyGIMzS8
+0YbubZaHAV33j8QdR6qw9i9eQ0gC/1FKgXmavwlHLuq3NfUB3WILIe8Granam9CV
+h13INCbyIEdYiY/9dkBlwtLtnMH0MHmDyM/JyHJC+KzdZJuwjY8gAHqlsTWeSQmC
+P5YHfkOrJa/hyNChanvJZ7Yl0eZQrQQQkhJFa4+mpUTplE9MuA/p0ZVfFQxkoUZM
+vaKRTqkrS90nDBMsbMDiwlT34GFhrLuNJRzmIxHRCN514zwP7tAR9wJBwWRv6VDH
+JqJEsA8OjGN0HNh3i5AXu3Wxe/T8zduk8mHVAiP9XDUd7IySxT0zon3pkZcwnp44
+HP+GFczLMrf34vubr466WPkSS0o/df1ei0U9DtdXujccrY9ivGSYcBB6O4J7qZvw
+xXbdWRSPokDSg3wh4c2OfbYPZ2UUzA15RXyyHuAROcOYpnfZUjKM/bS1axK6GUxI
+nHtOLyOx3tFkYCyr6MTm
+=9VsM
+-----END PGP SIGNATURE-----
 
-While I did test transmit-only in the past, usually I tested transmit + receive
-only, as the attached PMIC doesn't offer much test potential for large
-write-only transfers.
-
-Will send an update soon.
-
-Thanks for your review!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
+--/9SduuEsPMGkuhdq--
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

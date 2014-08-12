@@ -1,55 +1,39 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi: Fix the spi task hangs waiting dma_rx
-Date: Mon, 11 Aug 2014 19:56:29 +0100
-Message-ID: <20140811185629.GJ17528@sirena.org.uk>
-References: <1407618418-5427-1-git-send-email-jorge.araujo.ventura@gmail.com>
+From: Michael Jones <michael.jones-P0pTl12WyEgpBod+wgzj8A@public.gmane.org>
+Subject: does cs_change work in spi-dw.c?
+Date: Tue, 12 Aug 2014 17:24:37 +0200
+Message-ID: <53EA31B5.4010201@matrix-vision.de>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Mqg8Hw0aybcCoGup"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Jorge Ventura <jorge.araujo.ventura-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1407618418-5427-1-git-send-email-jorge.araujo.ventura-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hello,
 
---Mqg8Hw0aybcCoGup
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm using spi-dw.c via a userspace spidev device.  I'm doing an SPI read 
+access via the ioctl SPI_IOC_MESSAGE().  I would like to execute two 
+messages, with the chip select staying active between the two. If I 
+understand correctly, this is what the member 'cs_change' in 'struct 
+spi_ioc_transfer' is suppose to provide.  What I observe, though, is 
+that the chip select deactivates between messages regardless of how I 
+set 'cs_change'.
 
-On Sat, Aug 09, 2014 at 04:06:58PM -0500, Jorge Ventura wrote:
-> From: "Jorge A. Ventura" <jorge.araujo.ventura-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->=20
-> The spi hangs waiting the completion of omap2_mcspi_rx_callback.
+Can anybody confirm that they're able to use the cs_change switch with 
+this driver?
 
-Applied, thanks.
+I'm using an older kernel (3.10.31-LTSI), but I've browsed the more 
+recent changes to this driver and didn't see anything that obviously 
+effected this feature.
 
---Mqg8Hw0aybcCoGup
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+thanks,
+Michael
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJT6RHaAAoJELSic+t+oim9J0wP/2ZKHWbwaHTI46+iDlF7IJr3
-z9uJwcV6loxcFKb2dHhmxweLQriydfGgEu2rMAJ3a4HKt5n0Ti8u5U6K5RwP1RWU
-zWoq5wuzz4x1P4PjEiVEAVA5+Zplf+J32N14AU3kmzV9tXkhW02k/HujM9py9X5i
-y4lzetTGlMJpWdo9edSn9m1ndTsw61z9ZdCN03FiVujmFGHCbb7M2giyDpv+lekE
-lsMVsHFrbvH9UTQP2wK5b+BOr2Ro0JcQY6vcHbEuzKLPcchh2IOMs6EqpV966Ryt
-5BgTbB0NMOBCFBSgEpe2H8onjCGqC1I8WGjLjvhs5XU00TkXxa7YCsBj7pL7Uexx
-uRv3qeoT2XAJsMmJ6uCSi/Ohb/vzXfJXHtAObrRqNL4F1JhLAmg/0Ei9GphYYIIg
-ZIabj9HntgG1uH8j9njsx7Rwl98lNg5axQvA2RUbJ75I22JzVhuAEt8rexWwWqls
-HH/4eTDS3k5ym4UO/Zo7uHq8F6sERMHJV8Edxoo8D3WB6n96NEO+N051shxPGuyJ
-FEFHsMVctYFaa7nd19/FSR1im3dbzvrm3Al3XQ3avJc4JVlIrS2rQjlXmjAEHvQY
-SkwnYgnnIWZ3TgaEhmMPNu9PDht6Uk1coXOXKGvAvRkjOLYnTqCzd3r7EN8dENng
-7wJI1wMTekW7JfO3QQtQ
-=Wzhn
------END PGP SIGNATURE-----
-
---Mqg8Hw0aybcCoGup--
+MATRIX VISION GmbH, Talstrasse 16, DE-71570 Oppenweiler
+Registergericht: Amtsgericht Stuttgart, HRB 271090
+Geschaeftsfuehrer: Uwe Furtner, Erhard Meier
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,432 +1,59 @@
-From: =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [RFC][PATCH] spi: bcm53xx: driver for SPI controller on Broadcom bcma SoC
-Date: Wed, 13 Aug 2014 14:33:32 +0200
-Message-ID: <1407933212-20530-1-git-send-email-zajec5@gmail.com>
-Cc: Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: xilinx: Remove .owner field for driver
+Date: Wed, 13 Aug 2014 13:33:43 +0100
+Message-ID: <20140813123343.GR17528@sirena.org.uk>
+References: <d35c656e50eb7cc951499f13ef339d6aa1a23deb.1407930755.git.michal.simek@xilinx.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="FQUN4+YcNB5eWpmR"
+Cc: linux-kernel@vger.kernel.org, monstr@monstr.eu,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Michal Simek <michal.simek@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <d35c656e50eb7cc951499f13ef339d6aa1a23deb.1407930755.git.michal.simek@xilinx.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Broadcom 53xx ARM SoCs use bcma bus that contains various cores (AKA
-devices). If board has a serial flash, it's connected over SPI and the
-bcma bus includes a SPI controller. Example log from such a board:
-bus0: Found chip with id 53010, rev 0x00 and package 0x02
-(...)
-bus0: Core 18 found: SPI flash controller (manuf 0x4BF, id 0x50A, rev 0x01, class 0x0)
 
-This patch adds a bcma driver for SPI core, it registers SPI master
-controller and "bcm53xxspiflash" SPI device.
----
- drivers/spi/Kconfig       |   6 +
- drivers/spi/Makefile      |   1 +
- drivers/spi/spi-bcm53xx.c | 283 ++++++++++++++++++++++++++++++++++++++++++++++
- drivers/spi/spi-bcm53xx.h |  72 ++++++++++++
- 4 files changed, 362 insertions(+)
- create mode 100644 drivers/spi/spi-bcm53xx.c
- create mode 100644 drivers/spi/spi-bcm53xx.h
+--FQUN4+YcNB5eWpmR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 62e2242..b14b829 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -112,6 +112,12 @@ config SPI_AU1550
- 	  If you say yes to this option, support will be included for the
- 	  PSC SPI controller found on Au1550, Au1200 and Au1300 series.
- 
-+config SPI_BCM53XX
-+	tristate "Broadcom BCM53xx SPI controller"
-+	depends on ARCH_BCM_5301X
-+	help
-+          Enable support for the SPI controller on Broadcom BCM53xx ARM SoCs.
-+
- config SPI_BCM63XX
- 	tristate "Broadcom BCM63xx SPI controller"
- 	depends on BCM63XX
-diff --git a/drivers/spi/Makefile b/drivers/spi/Makefile
-index 762da07..78f24ca 100644
---- a/drivers/spi/Makefile
-+++ b/drivers/spi/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_SPI_ATMEL)			+= spi-atmel.o
- obj-$(CONFIG_SPI_ATH79)			+= spi-ath79.o
- obj-$(CONFIG_SPI_AU1550)		+= spi-au1550.o
- obj-$(CONFIG_SPI_BCM2835)		+= spi-bcm2835.o
-+obj-$(CONFIG_SPI_BCM53XX)		+= spi-bcm53xx.o
- obj-$(CONFIG_SPI_BCM63XX)		+= spi-bcm63xx.o
- obj-$(CONFIG_SPI_BCM63XX_HSSPI)		+= spi-bcm63xx-hsspi.o
- obj-$(CONFIG_SPI_BFIN5XX)		+= spi-bfin5xx.o
-diff --git a/drivers/spi/spi-bcm53xx.c b/drivers/spi/spi-bcm53xx.c
-new file mode 100644
-index 0000000..4ad0020
---- /dev/null
-+++ b/drivers/spi/spi-bcm53xx.c
-@@ -0,0 +1,283 @@
-+#define pr_fmt(fmt)		KBUILD_MODNAME ": " fmt
-+
-+#include <linux/kernel.h>
-+#include <linux/module.h>
-+#include <linux/slab.h>
-+#include <linux/delay.h>
-+#include <linux/bcma/bcma.h>
-+#include <linux/spi/spi.h>
-+
-+#include "spi-bcm53xx.h"
-+
-+struct bcm53xxspi {
-+	struct bcma_device *core;
-+	struct spi_master *master;
-+
-+	size_t read_offset;
-+};
-+
-+static inline u32 bcm53xxspi_read(struct bcm53xxspi *b53spi, u16 offset)
-+{
-+	return bcma_read32(b53spi->core, offset);
-+}
-+
-+static inline void bcm53xxspi_write(struct bcm53xxspi *b53spi, u16 offset,
-+				    u32 value)
-+{
-+	bcma_write32(b53spi->core, offset, value);
-+}
-+
-+static inline unsigned int bcm53xxspi_calc_timeout(size_t len)
-+{
-+	return (len * 9000 / 13500000 * 110 / 100) + 1;
-+}
-+
-+static int bcm53xxspi_wait(struct bcm53xxspi *b53spi, unsigned int timeout_ms)
-+{
-+	unsigned long deadline;
-+	u32 tmp;
-+
-+	/* SPE bit has to be 0 before we read MSPI STATUS */
-+	while (1) {
-+		tmp = bcm53xxspi_read(b53spi, B53SPI_MSPI_SPCR2);
-+		if (!(tmp & B53SPI_MSPI_SPCR2_SPE))
-+			break;
-+	}
-+
-+	/* Check status */
-+	deadline = jiffies + timeout_ms * HZ / 1000;
-+	do {
-+		tmp = bcm53xxspi_read(b53spi, B53SPI_MSPI_MSPI_STATUS);
-+		if (tmp & B53SPI_MSPI_MSPI_STATUS_SPIF) {
-+			bcm53xxspi_write(b53spi, B53SPI_MSPI_MSPI_STATUS, 0);
-+			return 0;
-+		}
-+
-+		cpu_relax();
-+		udelay(100);
-+	} while (!time_after_eq(jiffies, deadline));
-+
-+	bcm53xxspi_write(b53spi, B53SPI_MSPI_MSPI_STATUS, 0);
-+
-+	pr_err("Timeout waiting for SPI to be ready!\n");
-+
-+	return -EBUSY;
-+}
-+
-+static void bcm53xxspi_buf_write(struct bcm53xxspi *b53spi, u8 *w_buf,
-+				 size_t len, bool cont)
-+{
-+	u32 tmp;
-+	int i;
-+
-+	for (i = 0; i < len; i++) {
-+		/* Transmit Register File MSB */
-+		bcm53xxspi_write(b53spi, B53SPI_MSPI_TXRAM + 4 * (i * 2),
-+				 (unsigned int)w_buf[i]);
-+	}
-+
-+	for (i = 0; i < len; i++) {
-+		tmp = B53SPI_CDRAM_CONT | B53SPI_CDRAM_PCS_DISABLE_ALL |
-+		      B53SPI_CDRAM_PCS_DSCK;
-+		if (!cont && i == len - 1)
-+			tmp &= ~B53SPI_CDRAM_CONT;
-+		tmp &= ~0x1;
-+		/* Command Register File */
-+		bcm53xxspi_write(b53spi, B53SPI_MSPI_CDRAM + 4 * i, tmp);
-+	}
-+
-+	/* Set queue pointers */
-+	bcm53xxspi_write(b53spi, B53SPI_MSPI_NEWQP, 0);
-+	bcm53xxspi_write(b53spi, B53SPI_MSPI_ENDQP, len - 1);
-+
-+	if (cont)
-+		bcm53xxspi_write(b53spi, B53SPI_MSPI_WRITE_LOCK, 1);
-+
-+	/* Start SPI transfer */
-+	tmp = bcm53xxspi_read(b53spi, B53SPI_MSPI_SPCR2);
-+	tmp |= B53SPI_MSPI_SPCR2_SPE;
-+	if (cont)
-+		tmp |= B53SPI_MSPI_SPCR2_CONT_AFTER_CMD;
-+	bcm53xxspi_write(b53spi, B53SPI_MSPI_SPCR2, tmp);
-+
-+	/* Wait for SPI to finish */
-+	bcm53xxspi_wait(b53spi, bcm53xxspi_calc_timeout(len));
-+
-+	if (!cont)
-+		bcm53xxspi_write(b53spi, B53SPI_MSPI_WRITE_LOCK, 0);
-+
-+	b53spi->read_offset = len;
-+}
-+
-+static void bcm53xxspi_buf_read(struct bcm53xxspi *b53spi, u8 *r_buf,
-+				size_t len, bool cont)
-+{
-+	u32 tmp;
-+	int i;
-+
-+	for (i = 0; i < b53spi->read_offset + len; i++) {
-+		tmp = B53SPI_CDRAM_CONT | B53SPI_CDRAM_PCS_DISABLE_ALL |
-+		      B53SPI_CDRAM_PCS_DSCK;
-+		if (!cont && i == b53spi->read_offset + len - 1)
-+			tmp &= ~B53SPI_CDRAM_CONT;
-+		tmp &= ~0x1;
-+		/* Command Register File */
-+		bcm53xxspi_write(b53spi, B53SPI_MSPI_CDRAM + 4 * i, tmp);
-+	}
-+
-+	/* Set queue pointers */
-+	bcm53xxspi_write(b53spi, B53SPI_MSPI_NEWQP, 0);
-+	bcm53xxspi_write(b53spi, B53SPI_MSPI_ENDQP,
-+			 b53spi->read_offset + len - 1);
-+
-+	if (cont)
-+		bcm53xxspi_write(b53spi, B53SPI_MSPI_WRITE_LOCK, 1);
-+
-+	/* Start SPI transfer */
-+	tmp = bcm53xxspi_read(b53spi, B53SPI_MSPI_SPCR2);
-+	tmp |= B53SPI_MSPI_SPCR2_SPE;
-+	if (cont)
-+		tmp |= B53SPI_MSPI_SPCR2_CONT_AFTER_CMD;
-+	bcm53xxspi_write(b53spi, B53SPI_MSPI_SPCR2, tmp);
-+
-+	/* Wait for SPI to finish */
-+	bcm53xxspi_wait(b53spi, bcm53xxspi_calc_timeout(len));
-+
-+	if (!cont)
-+		bcm53xxspi_write(b53spi, B53SPI_MSPI_WRITE_LOCK, 0);
-+
-+	for (i = 0; i < len; ++i) {
-+		int offset = b53spi->read_offset + i;
-+
-+		/* Data stored in the transmit register file LSB */
-+		r_buf[i] = (u8)bcm53xxspi_read(b53spi, B53SPI_MSPI_RXRAM + 4 * (1 + offset * 2));
-+	}
-+
-+	b53spi->read_offset = 0;
-+}
-+
-+static int bcm53xxspi_transfer_one(struct spi_master *master,
-+				   struct spi_device *spi,
-+				   struct spi_transfer *t)
-+{
-+	struct bcm53xxspi *b53spi = spi_master_get_devdata(master);
-+	u8 *buf;
-+	size_t left;
-+
-+	if (t->tx_buf) {
-+		buf = (u8 *)t->tx_buf;
-+		left = t->len;
-+		while (left) {
-+			size_t to_write = min_t(size_t, 16, left);
-+			bool cont = left - to_write > 0;
-+
-+			bcm53xxspi_buf_write(b53spi, buf, to_write, cont);
-+			left -= to_write;
-+			buf += to_write;
-+		}
-+	}
-+
-+	if (t->rx_buf) {
-+		buf = (u8 *)t->rx_buf;
-+		left = t->len;
-+		while (left) {
-+			size_t to_read = min_t(size_t, 16 - b53spi->read_offset,
-+					       left);
-+			bool cont = left - to_read > 0;
-+
-+			bcm53xxspi_buf_read(b53spi, buf, to_read, cont);
-+			left -= to_read;
-+			buf += to_read;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/**************************************************
-+ * BCMA
-+ **************************************************/
-+
-+struct spi_board_info bcm53xx_info = {
-+	.modalias	= "bcm53xxspiflash",
-+};
-+
-+static const struct bcma_device_id bcm53xxspi_bcma_tbl[] = {
-+	BCMA_CORE(BCMA_MANUF_BCM, BCMA_CORE_QSPI, BCMA_ANY_REV, BCMA_ANY_CLASS),
-+	BCMA_CORETABLE_END
-+};
-+MODULE_DEVICE_TABLE(bcma, bcm53xxspi_bcma_tbl);
-+
-+static int bcm53xxspi_bcma_probe(struct bcma_device *core)
-+{
-+	struct bcm53xxspi *b53spi;
-+	struct spi_master *master;
-+	int err;
-+
-+	if (core->bus->drv_cc.core->id.rev != 42) {
-+		pr_err("SPI on SoC with unsupported ChipCommon rev\n");
-+		return -ENOTSUPP;
-+	}
-+
-+	master = spi_alloc_master(&core->dev, sizeof(*b53spi));
-+	if (!master)
-+		return -ENOMEM;
-+
-+	b53spi = spi_master_get_devdata(master);
-+	b53spi->master = master;
-+	b53spi->core = core;
-+
-+	master->transfer_one = bcm53xxspi_transfer_one;
-+
-+	bcma_set_drvdata(core, b53spi);
-+
-+	err = spi_register_master(master);
-+	if (err) {
-+		spi_master_put(master);
-+		bcma_set_drvdata(core, NULL);
-+		goto out;
-+	}
-+
-+	/* Broadcom SoCs (at least with the CC rev 42) use SPI for flash only */
-+	spi_new_device(master, &bcm53xx_info);
-+
-+out:
-+	return err;
-+}
-+
-+static void bcm53xxspi_bcma_remove(struct bcma_device *core)
-+{
-+	struct bcm53xxspi *b53spi = bcma_get_drvdata(core);
-+
-+	spi_unregister_master(b53spi->master);
-+}
-+
-+static struct bcma_driver bcm53xxspi_bcma_driver = {
-+	.name		= KBUILD_MODNAME,
-+	.id_table	= bcm53xxspi_bcma_tbl,
-+	.probe		= bcm53xxspi_bcma_probe,
-+	.remove		= bcm53xxspi_bcma_remove,
-+};
-+
-+/**************************************************
-+ * Init & exit
-+ **************************************************/
-+
-+static int __init bcm53xxspi_module_init(void)
-+{
-+	int err = 0;
-+
-+	err = bcma_driver_register(&bcm53xxspi_bcma_driver);
-+	if (err)
-+		pr_err("Failed to register bcma driver: %d\n", err);
-+
-+	return err;
-+}
-+
-+static void __exit bcm53xxspi_module_exit(void)
-+{
-+	bcma_driver_unregister(&bcm53xxspi_bcma_driver);
-+}
-+
-+module_init(bcm53xxspi_module_init);
-+module_exit(bcm53xxspi_module_exit);
-diff --git a/drivers/spi/spi-bcm53xx.h b/drivers/spi/spi-bcm53xx.h
-new file mode 100644
-index 0000000..73575df
---- /dev/null
-+++ b/drivers/spi/spi-bcm53xx.h
-@@ -0,0 +1,72 @@
-+#ifndef SPI_BCM53XX_H
-+#define SPI_BCM53XX_H
-+
-+#define B53SPI_BSPI_REVISION_ID			0x000
-+#define B53SPI_BSPI_SCRATCH			0x004
-+#define B53SPI_BSPI_MAST_N_BOOT_CTRL		0x008
-+#define B53SPI_BSPI_BUSY_STATUS			0x00c
-+#define B53SPI_BSPI_INTR_STATUS			0x010
-+#define B53SPI_BSPI_B0_STATUS			0x014
-+#define B53SPI_BSPI_B0_CTRL			0x018
-+#define B53SPI_BSPI_B1_STATUS			0x01c
-+#define B53SPI_BSPI_B1_CTRL			0x020
-+#define B53SPI_BSPI_STRAP_OVERRIDE_CTRL		0x024
-+#define B53SPI_BSPI_FLEX_MODE_ENABLE		0x028
-+#define B53SPI_BSPI_BITS_PER_CYCLE		0x02c
-+#define B53SPI_BSPI_BITS_PER_PHASE		0x030
-+#define B53SPI_BSPI_CMD_AND_MODE_BYTE		0x034
-+#define B53SPI_BSPI_BSPI_FLASH_UPPER_ADDR_BYTE	0x038
-+#define B53SPI_BSPI_BSPI_XOR_VALUE		0x03c
-+#define B53SPI_BSPI_BSPI_XOR_ENABLE		0x040
-+#define B53SPI_BSPI_BSPI_PIO_MODE_ENABLE	0x044
-+#define B53SPI_BSPI_BSPI_PIO_IODIR		0x048
-+#define B53SPI_BSPI_BSPI_PIO_DATA		0x04c
-+
-+/* RAF */
-+#define B53SPI_RAF_START_ADDR			0x100
-+#define B53SPI_RAF_NUM_WORDS			0x104
-+#define B53SPI_RAF_CTRL				0x108
-+#define B53SPI_RAF_FULLNESS			0x10c
-+#define B53SPI_RAF_WATERMARK			0x110
-+#define B53SPI_RAF_STATUS			0x114
-+#define B53SPI_RAF_READ_DATA			0x118
-+#define B53SPI_RAF_WORD_CNT			0x11c
-+#define B53SPI_RAF_CURR_ADDR			0x120
-+
-+/* MSPI */
-+#define B53SPI_MSPI_SPCR0_LSB			0x200
-+#define B53SPI_MSPI_SPCR0_MSB			0x204
-+#define B53SPI_MSPI_SPCR1_LSB			0x208
-+#define B53SPI_MSPI_SPCR1_MSB			0x20c
-+#define B53SPI_MSPI_NEWQP			0x210
-+#define B53SPI_MSPI_ENDQP			0x214
-+#define B53SPI_MSPI_SPCR2			0x218
-+#define  B53SPI_MSPI_SPCR2_SPE			0x00000040
-+#define  B53SPI_MSPI_SPCR2_CONT_AFTER_CMD	0x00000080
-+#define B53SPI_MSPI_MSPI_STATUS			0x220
-+#define  B53SPI_MSPI_MSPI_STATUS_SPIF		0x00000001
-+#define B53SPI_MSPI_CPTQP			0x224
-+#define B53SPI_MSPI_TXRAM			0x240 /* 32 registers, up to 0x2b8 */
-+#define B53SPI_MSPI_RXRAM			0x2c0 /* 32 registers, up to 0x33c */
-+#define B53SPI_MSPI_CDRAM			0x340 /* 16 registers, up to 0x37c */
-+#define  B53SPI_CDRAM_PCS_PCS0			0x00000001
-+#define  B53SPI_CDRAM_PCS_PCS1			0x00000002
-+#define  B53SPI_CDRAM_PCS_PCS2			0x00000004
-+#define  B53SPI_CDRAM_PCS_PCS3			0x00000008
-+#define  B53SPI_CDRAM_PCS_DISABLE_ALL		0x0000000f
-+#define  B53SPI_CDRAM_PCS_DSCK			0x00000010
-+#define  B53SPI_CDRAM_BITSE			0x00000040
-+#define  B53SPI_CDRAM_CONT			0x00000080
-+#define B53SPI_MSPI_WRITE_LOCK			0x380
-+#define B53SPI_MSPI_DISABLE_FLUSH_GEN		0x384
-+
-+/* Interrupt */
-+#define B53SPI_INTR_RAF_LR_FULLNESS_REACHED	0x3a0
-+#define B53SPI_INTR_RAF_LR_TRUNCATED		0x3a4
-+#define B53SPI_INTR_RAF_LR_IMPATIENT		0x3a8
-+#define B53SPI_INTR_RAF_LR_SESSION_DONE		0x3ac
-+#define B53SPI_INTR_RAF_LR_OVERREAD		0x3b0
-+#define B53SPI_INTR_MSPI_DONE			0x3b4
-+#define B53SPI_INTR_MSPI_HALT_SET_TRANSACTION_DONE	0x3b8
-+
-+#endif /* SPI_BCM53XX_H */
--- 
-1.8.4.5
+On Wed, Aug 13, 2014 at 01:52:39PM +0200, Michal Simek wrote:
+> There is no need to init .owner field.
+>=20
+> Based on the patch from Peter Griffin <peter.griffin@linaro.org>
+> "mmc: remove .owner field for drivers using module_platform_driver"
+>=20
+> This patch removes the superflous .owner field for drivers which
+> use the module_platform_driver API, as this is overriden in
+> platform_driver_register anyway."
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Would it not be better to do this as a tree wide or at least subsystem
+wide sweep with something like cocinelle?
+
+--FQUN4+YcNB5eWpmR
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT61sjAAoJELSic+t+oim9NSAP/i6xKj+OBzIRU2NOebXsaWxQ
+o+W2AgNeL7a1enJjM89p73b2ZWD92/52pHsGKeEAvQdeqOj9Y3GYEqzAYL/ds9fA
+0eMpawOGBxtw/dSxM/L09Fi9gjD3UCF4MUdieF/k92DM0kXG9Z18snU38pbGdUkh
+8RS/UfCaAEqVFoQSm3vOc5hVOuhW3ylZfh98j/RGA7CDJlLzRbC1nKdY4aQiuHQl
+x3+8+UMUhIyvnj0BoGH4zD/btJLQR73AcCdZ8gLL6FW4WevGtQbC/y3kc3YEMAzN
+YHSOmuqFeNTaGAsYUBDbZkI6YrdWK4224MEtZ2Nx7YyHrlmFdfy8r0TZIaOuhTd0
+1RK+eJRfgcO1rz+oGNr9AczCc/0t8Eb+Uo2lXKCce6qTUK+0jtEzw8adNNrmIGJm
+Z7VWUcb2lNAshpBpArYaGIRRjiYlB9UO4G3W9FY5dy3dpqkmM/iYcmMtzo2l7ICA
+YLeWdXDaHnxWEjuDuGCW+oL3//ZwuO+Aa9RN7chEDXUwea4Sh0gi0n/W5pnqyC2C
+r7BLXVg2TALIjUUCBlb+IMkvcBScmtsB4VshldW6liD+jPAbPibcj/7g4NI+DEvF
+3fyXle16Y/ooMHa1ot5xDLFnl33NKMfUxMsgFiL7cvwCJBAGozLlvVEBI5XmoejH
+tPpGAfDe/O1hDYRFjs6T
+=TGiQ
+-----END PGP SIGNATURE-----
+
+--FQUN4+YcNB5eWpmR--

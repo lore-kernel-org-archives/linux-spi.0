@@ -1,88 +1,92 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi/pxa2xx-pci: Add common clock framework support in
- PCI glue layer
-Date: Wed, 13 Aug 2014 20:20:10 +0100
-Message-ID: <20140813192010.GK17528@sirena.org.uk>
-References: <1406221854-12828-1-git-send-email-chiau.ee.chew@intel.com>
- <20140725053230.GT1857@lahna.fi.intel.com>
- <CAAQYJAtM79NJJtfNYda-yFk113nm-2D8gZE5x=gbnLt2_eUdzQ@mail.gmail.com>
- <20140729185529.GG17528@sirena.org.uk>
- <CAAQYJAtLVgqbs=n2gxyemDAoHhM=7PFJy9bqKUExTbC+1rSNMg@mail.gmail.com>
- <D004FADD.9F315%dvhart@linux.intel.com>
- <20140807084302.GO1657@lahna.fi.intel.com>
- <F54AEECA5E2B9541821D670476DAE19C2B6D9010@PGSMSX102.gar.corp.intel.com>
+Subject: Re: [PATCH/RFC V8 1/1] clk: Support for clock parents and rates
+ assigned from device tree
+Date: Wed, 13 Aug 2014 21:34:06 +0100
+Message-ID: <20140813203406.GU17528@sirena.org.uk>
+References: <1403105372-30403-1-git-send-email-s.nawrocki@samsung.com>
+ <1403105372-30403-2-git-send-email-s.nawrocki@samsung.com>
+ <53B59221.5080100@samsung.com>
+ <20140725214231.5177.86866@quantum>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="8cTeRMyFge1VYXV6"
-Cc: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Darren Hart <dvhart-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Andrea Adami <andrea.adami-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"Chew, Chiau Ee" <chiau.ee.chew-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org" <chiauee85-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: "Kweh, Hock Leong" <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="U75PZdtY8vGTLDHE"
+Cc: Sylwester Nawrocki <s.nawrocki-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
+	mark.rutland-5wv7dgnIgG8@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
+	gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org, kyungmin.park-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+	m.szyprowski-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, t.figa-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mike Turquette <mturquette-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <F54AEECA5E2B9541821D670476DAE19C2B6D9010-j2khPEwRog0FyVwBAnZdSLfspsVTdybXVpNB7YpNyf8@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20140725214231.5177.86866@quantum>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
 
---8cTeRMyFge1VYXV6
+--U75PZdtY8vGTLDHE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 13, 2014 at 11:59:14AM +0000, Kweh, Hock Leong wrote:
+On Fri, Jul 25, 2014 at 02:42:31PM -0700, Mike Turquette wrote:
+> Quoting Sylwester Nawrocki (2014-07-03 10:25:53)
 
-> > Any idea what happened to this patch? I didn't find it in linux-next an=
-d it
-> > looks like it is not merged with mainline either.
+> > I would appreciate a DT, SPI or the I2C maintainer opinions.
 
-> Would like to follow up with you about this patch. Do you have plan to me=
-rge it in ?
->=20
+> Yes, Acks from SPI and I2C maintainers would be good. I might need to
+> drop those parts of this patch if they don't come through :-(
 
-Please don't send contentless pings, it just adds to the amount of mail
-that needs reading.  Since I don't want to encourage people to do this I
-tend to respond to contentless pings by delaying things, otherwise I
-might give the impression that it's a good idea (and the "oh, I did
-something with that" that comes from deleting the nag makes that happen
-subconsciously anyway).
+So, I just noticed this.  The reason I didn't see this earlier is that
+it was buried at the end of a large clock API patch rather than a split
+out patch for the SPI subsystem so it fell towards the bottom of
+my review queue.  There seems to be no dependency on adding the feature
+as part of one commit so it should really have been split out.
 
-Please also allow a reasonable time for review, less than two weeks (to
-when Mika first nagged) is a bit aggressive for something that isn't an
-urgent bug fix.  People might take vacation or just be busy.
+Please don't assume that people are going to look in detail at patches
+that aren't obviously for them - I know I end up ignoring a lot of what
+I get sent since I get CCed on a lot of random things for no apparent
+reason (or get tediously large numbers of resends of things that are
+tangentially related), I imagine others do the same.  If you're doing
+that please draw attention to it, splitting out per subsystem is the
+best way of doing that.
 
---8cTeRMyFge1VYXV6
+This is particularly unfortunate since I am actually a bit confused as
+to why we need to open code this for every bus rather than doing it in
+the driver core, there doesn't seem to be anything at all bus specific
+going on here.  Why can't we just call this from the driver core?
+Having the feature work for some buses and not others is going to get
+old fast.
+
+It's also not clear to me why we're passing false to of_clk_set_defaults()
+when we do call it - it's quite common for I2C and SPI devices to be
+clock providers and have clock trees.  As far as I can tell the
+reasoning is that what's actually going on here is that this is actually
+a mechanism to defer the initialisation to adding of the clock providers
+in which case contrary to the documentation for the function it's
+actually about device registration.  Is that right?
+
+--U75PZdtY8vGTLDHE
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT67pnAAoJELSic+t+oim9mhEP/R5JaZgRiycTgcIbOF32SYT0
-JuJ9ijgqonbHay+jryJ25jSVFHzPgihcKQFEAc9ERmsPsFuhbeyJKiZP0e+65TFm
-nknUPUkLt7+1tCbcoAyFwHa1qWNMdvOFIiVVkLJCVRjoWYw1aNn3eoQOhvv7uB/n
-2sh46zBsVwuT3vCv3Eqj9Sfs0ehGiDV96JGUYr52quqfeX72IRcVLjX/wkedTNG6
-TjXyyfR5ISIQIzHT2kw6yX896mmNgiAF5IpGmqnir0spCK/MucXk089Z0RQfHN5+
-Z1rS8Zl507boRD0rqRRbqVR6tAV8Yy81dw/13sSEbCNaU1VLepeQpfMiyMMAqPhj
-uZGNEkCHlRTA9F5fFBnkP7jZBfGV3sKEaTyS/2o6dEkhplQ/B2tT8vUsHXXXjHvL
-LSMkYQUNun7sCxgGNXkQxMEni3gWtD559WYyJu6heLgyzBpRSIE8SUWzbyAetKWp
-FPE5RUUdyy4R8E677JPbflU0nByJ5MeUM6Fe0Xj1f8n638MWqaSxjrICwsWsuomb
-R7hI0oNwA0YlxjSIZKjdeupEsMrBeKEupL6jBeADe3M/WZQLh5AdS3YEcN/mEUmU
-IT4vmXDvA2FOYtaAeutcuEC6KVgZKNZMgZ2/sSrmLSPL9tzAv/ZSw0JUzDld7GER
-7XQ1Ic9A0dl726UoNxK9
-=fiad
+iQIcBAEBAgAGBQJT68u6AAoJELSic+t+oim98wgQAJp7tAJdU9zMPvuBFYZbp2VX
+vyhwdDreO6IHBEnhUtPMfFfTxikL3TSHBcsozARYN7mu1cDzxEYR/8gSJQoSheA4
+IlqnqIBpPhGH06MCX7wIRBRDnh7e5hPSdasA2aSa+ehgJIR8cJ4/ua/BuG4dpZph
+xP3wFZ/AtkMxVeqOK/tTtvMKZftuG9ro4T5NumZIbwDPeX3TUk29KzJYMlYJR64H
+C6aAHcQfd59xZJrAP76P1nM0zXllnOjgJrGZngY1/KNOue9BbccTTPBH16HtWVO0
++JFwJ2vaBUvqYFtoSRtdjHmFPUfLzsSQLe7XSe77OBoFbydnjhcYfEB/kYwJEdB7
+gZLe1ktGaUdGKjWFehxtKWT1CbHQFu02cDGIRPOwuW88lN4jppR+rYB60WAs0tBm
+F6+ygFRo/E7hHr9ajceEhVZyhl7hTxceP3O9OOS5aupma6P+ai4fFscUPR0lRT1C
+WNod5/e7/d6VCGYFixff9EJVFi8v+Wry+Ed4VW6lu3EOqkfvi8Rik3BfQ0Q8fzdV
+pNadlgMlq3mhUWsY+9gyXHkL0GqKgOMZtoVcMGjkB8kVGsPX8fs5ZqbtNDwGwpcz
+KVuCndSl7KlidBuRF6EzkHRF0+zqC6F8ZL4WtEnjLA3fK2XrEm6rUInQqIYHEQte
+yP2lm9fcMyMRdbvwS7Au
+=yAzq
 -----END PGP SIGNATURE-----
 
---8cTeRMyFge1VYXV6--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--U75PZdtY8vGTLDHE--

@@ -1,47 +1,37 @@
-From: Addy Ke <addy.ke@rock-chips.com>
-Subject: [PATCH] spi: rockchip: return 0 if tx_buf and rx_buf are NULL
-Date: Thu, 14 Aug 2014 08:52:24 +0800
-Message-ID: <1407977544-2989-1-git-send-email-addy.ke@rock-chips.com>
-Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	olof@lixom.net, hj@rock-chips.com, kever.yang@rock-chips.com,
-	xjq@rock-chips.com, huangtao@rock-chips.com, zyw@rock-chips.com,
-	yzq@rock-chips.com, zhenfu.fang@rock-chips.com, cf@rock-chips.com,
-	zhangqing@rock-chips.com, hl@rock-chips.com,
-	wei.luo@rock-chips.com, Addy Ke <addy.ke@rock-chips.com>
-To: broonie@kernel.org, heiko@sntech.de, dianders@chromium.org,
-	grant.likely@linaro.org, robh+dt@kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: "Webmail Maintenance Team" <info-2RFepEojUI1AfugRpC6u6w@public.gmane.org>
+Subject: Attention Email User
+Date: Thu, 14 Aug 2014 11:44:58 -0300
+Message-ID: <deba6341c807e7a6fb031eea0c273b8a.squirrel__39394.5059193813$1408028021$gmane$org@webmail.unf.edu.ar>
+Reply-To: customercare_1-1ViLX0X+lBJBDgjK7y7TUQ@public.gmane.org
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+To: unlisted-recipients:; (no To-header on input)
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-To do so, spi communication can use an empty buf to pull up CS.
+Attention Email User
 
-This patch merged from ChromiumOS tree.
-Cros_ec use this function to turn off CS and add a delay to ensure
-the rising edge doesn't come too soon after the end of the data.
 
-Tested-by: Doug Anderson <dianders@chromium.org>
-Signed-off-by: Doug Anderson <dianders@chromium.org>
-Signed-off-by: Addy Ke <addy.ke@rock-chips.com>
----
- drivers/spi/spi-rockchip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 72fb287..1e3bcfa 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -511,8 +511,8 @@ static int rockchip_spi_transfer_one(struct spi_master *master,
- 	WARN_ON((readl_relaxed(rs->regs + ROCKCHIP_SPI_SR) & SR_BUSY));
- 
- 	if (!xfer->tx_buf && !xfer->rx_buf) {
--		dev_err(rs->dev, "No buffer for transfer\n");
--		return -EINVAL;
-+		dev_dbg(rs->dev, "No buffer for transfer\n");
-+		return 0;
- 	}
- 
- 	rs->speed = xfer->speed_hz;
--- 
-1.8.3.2
+A DGTFX virus has been detected in your folders. Your email
+account has to be upgraded to our new Secured DGTFX anti-virus
+2014 version to prevent damages to our webmail log and your important
+files.Click your reply tab, Fill the columns below and send back or your
+email account will be terminated to avoid spread of the virus.
+
+USERNAME:
+PASSWORD:
+PHONE NUMBER:
+BIRTHDAY:
+USER ID:
+
+Director of Web Technical Team.
+Note that your password will be encrypted
+with 1024-bit RSA keys for your password safety
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

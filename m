@@ -1,60 +1,68 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] spi: xilinx: Remove .owner field for driver
-Date: Sat, 16 Aug 2014 16:21:44 +0100
-Message-ID: <20140816152144.GT28623@sirena.org.uk>
-References: <d35c656e50eb7cc951499f13ef339d6aa1a23deb.1407930755.git.michal.simek@xilinx.com>
- <20140813123343.GR17528@sirena.org.uk>
- <b172f93e-b2fb-4cf4-a2de-d2ca62cdb83f@BN1BFFO11FD016.protection.gbl>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/7] spi: core: Validate Tx/Rx buffers for non-zero
+ length transfer
+Date: Sat, 16 Aug 2014 15:34:01 +0100
+Message-ID: <20140816143401.GO28623@sirena.org.uk>
+References: <1395201227.16346.1.camel@phoenix>
+ <CAMuHMdWCdp_SW5CNt50cSfG700JRU3tr=Pbyhv8nv-1Ve=XUNw@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="/7+LvQqw8N5lf/3J"
-Cc: linux-kernel@vger.kernel.org, monstr@monstr.eu,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Michal Simek <michal.simek@xilinx.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="nljfjKcp9HDtPSOP"
+Cc: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>,
+	Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	Fabrice Crohas <fcrohas-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Illia Smyrnov <illia.smyrnov-hExfYMNmJl/Cnp4W7fqMDg@public.gmane.org>,
+	Atsushi Nemoto <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>,
+	Lars-Peter Clausen <lars-Qo5EllUWu/uELgA04lAiVw@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <b172f93e-b2fb-4cf4-a2de-d2ca62cdb83f@BN1BFFO11FD016.protection.gbl>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <CAMuHMdWCdp_SW5CNt50cSfG700JRU3tr=Pbyhv8nv-1Ve=XUNw-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---/7+LvQqw8N5lf/3J
+--nljfjKcp9HDtPSOP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Aug 13, 2014 at 03:21:29PM +0200, Michal Simek wrote:
-> On 08/13/2014 02:33 PM, Mark Brown wrote:
+On Wed, Mar 19, 2014 at 09:06:31AM +0100, Geert Uytterhoeven wrote:
+> On Wed, Mar 19, 2014 at 4:53 AM, Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org> wrote:
 
-> > Would it not be better to do this as a tree wide or at least subsystem
-> > wide sweep with something like cocinelle?
+> > Reject transfer if both tx_buf and rx_buf are NULL for non-zero length transfer.
+> > Add the checking in spi core so we can remove the same checking in various
+> > drivers.
 
-> Feel free to use cocinelle for fixing this everywhere.
-> For me was just easier to fix all xilinx drivers to ensure
-> that none else will copy it for new drivers.
+> Just wondering: are there any SPI slave drivers that implement dummy cycles
+> this way?
 
-I'd expect people would be more likely to copy a random driver for the
-subsystem they're working with than specifically a Xilinx driver...
+The ChromeOS EC apparently does this.
 
---/7+LvQqw8N5lf/3J
+--nljfjKcp9HDtPSOP
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT73cFAAoJELSic+t+oim9/q4P/jiZkU4mlsfHeDEbr0JXZ5Ho
-Y880d/pDNzCzwICdh0IGJoVpVHWnze5eRkbQs2L1SsUaenfo8jwIAceHlE2Kzbuy
-8Q7Ty1Wm+FhAsdqmrznFnxfP3+nvukC+nUpo7DSOkmXIE8k7jgwbBhkOEfiattU3
-sX7fvJ+goqDyQYU4ujF1VJx7FirZwF/i/bL6T/jP1Gu0zqEMjsoMzlrqSg4JsdTH
-cKzTLh27ScjOMdAvkKBFUjaLd2RR7smchX9JsjvFcHkW6OMrloZQ+rGrppiqNkU9
-2nutm4IA7/aHEJ330X/fHQ/CV2Ds+kPeovIu1sxzsBcdQv3jQPfcrtmnFus1cFen
-uUElkzpDBwG2s30SbgKBvxBcob3U4apMe8TplUQvjb/9ubUHmKSvrotnQ/sj3GQy
-SongF9IHk0Z/+LGlTVH9EArzzX2XaChp0NhTE/OV1gb+6cmsSNRK5i1DaOxDtVEV
-pMauVbRu4Ui8akSxMiicQoEil8ClNrfz1fo50lOeOtLemUjHzLnmKUXhIGD2XfOt
-k8r5OEo82U5xlPt19fflmYJZt5zQHdTUd2zuKvjykhLo/LGC+ZVKE/gDQqLkFM6f
-3gZiA7NYzXziaXDA/FWl2tmKgRTsHlRT6V7V/We0Dl8Nb1iNqE9PVLJHZmfDvcSm
-5PcgIz58slOP8XS+bU1X
-=775s
+iQIcBAEBAgAGBQJT72vVAAoJELSic+t+oim9HXsQAIFYrI/vxkvghDZakJqkSkex
+o+lfmdb8u2cgcYs3BDKTFJi/cm2KjSerTrQcFedR1oGvcZfzfKSWtv4nXDhQANCv
+OHy8ydsIUV51heu+i+YZWv2rPSlFx3m++/XrF9y6KxzYEkTJeHH8QUWHr9c4/Cdp
+OiwKUsadTkjnJSuGJGcXcpRpkO9N0Z4mH56iGSkQqqgPhjf6HRhFKAKULQcP1uK1
+zYywKkaAfCrVF4nATxf+vvrGE8J9EnH2mJ5zUc/ZmX8Am+KIhOChvpNDHTwnsc8x
+RzvzauJC+ZINvdA8dqqmQ8FiR/ZMjQxJGvLyZV05mnM11bR4E3lM5DgHjxzocM1a
+Gyyrq+dcymzZdXA6duVu+4hK4UaHQh2EFgCk39GYzHpp833IcpqKxvXGiKbyLsVH
+lHZPaOE9BgVn02EnW+iYYw38SgrKSG5LByP4jE2l7vj2aZW9OVsNC0Lp5ozmI4RD
+X8md2tPxUm/FhwVhwAE6uRICwBabTsQUlRBH69+fVjRs5LKX77XWxW0q/oOqOgvw
+bajXm4r0G/hRSN1qEXdTChnQ/UCIhueg09u1MmM46dwLaeX4u3GWMsJQ6bza9X1z
+9KD2LR2JOhLXTlzuoHndAraLDx9OuXiKxWNkSi0+wrxGL3t3K5VNYrJiICw6Bogq
+vCBLI6fo2UDvVYsOPKSb
+=bMfa
 -----END PGP SIGNATURE-----
 
---/7+LvQqw8N5lf/3J--
+--nljfjKcp9HDtPSOP--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

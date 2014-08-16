@@ -1,89 +1,60 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] (re-send) spi-imx: improve timing of bursts
-Date: Sat, 16 Aug 2014 16:13:36 +0100
-Message-ID: <20140816151336.GA5813@sirena.org.uk>
-References: <b6c440a488274f0b89a8bb4047d8ee3b@AMSPR04MB517.eurprd04.prod.outlook.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] spi: xilinx: Remove .owner field for driver
+Date: Sat, 16 Aug 2014 16:21:44 +0100
+Message-ID: <20140816152144.GT28623@sirena.org.uk>
+References: <d35c656e50eb7cc951499f13ef339d6aa1a23deb.1407930755.git.michal.simek@xilinx.com>
+ <20140813123343.GR17528@sirena.org.uk>
+ <b172f93e-b2fb-4cf4-a2de-d2ca62cdb83f@BN1BFFO11FD016.protection.gbl>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="UlVJffcvxoiEqYs2"
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Daniel Sobe <daniel.sobe-3arQi8VN3Tc@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="/7+LvQqw8N5lf/3J"
+Cc: linux-kernel@vger.kernel.org, monstr@monstr.eu,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Michal Simek <michal.simek@xilinx.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <b6c440a488274f0b89a8bb4047d8ee3b-xRIOyFSmT1bbVUvU2aK0zQfhPeD8jYilXA4E9RH9d+qIuWR1G4zioA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <b172f93e-b2fb-4cf4-a2de-d2ca62cdb83f@BN1BFFO11FD016.protection.gbl>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---UlVJffcvxoiEqYs2
-Content-Type: text/plain; charset=iso-8859-1
+--/7+LvQqw8N5lf/3J
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 28, 2014 at 11:05:49AM +0000, Daniel Sobe wrote:
->=20
-> Hi,
->=20
-> The patch below addresses 2 improvements:
+On Wed, Aug 13, 2014 at 03:21:29PM +0200, Michal Simek wrote:
+> On 08/13/2014 02:33 PM, Mark Brown wrote:
 
-Please follow the patch submission process covered in SubmittingPatches
-- in particular you need to send patches to the relevant developers as
-well as the mailing lists, you need to format your changelogs in the
-standard Linux style (including word wrapping within paragraphs) and you
-need to follow the kernel coding style.
+> > Would it not be better to do this as a tree wide or at least subsystem
+> > wide sweep with something like cocinelle?
 
-If you only send your patch to the list there's a good chance it'll be
-missed.
+> Feel free to use cocinelle for fixing this everywhere.
+> For me was just easier to fix all xilinx drivers to ensure
+> that none else will copy it for new drivers.
 
-> 1) Burstsize of a transfer adjusted up to the maximum burstsize of the  h=
-ardware --> no unwanted CS toggling between data words
-> 2) Variable trigger level allows to increase priority for data transfer, =
- enables continuous transfers up to the burstsize. --> remove gaps  every 6=
-4 words
+I'd expect people would be more likely to copy a random driver for the
+subsystem they're working with than specifically a Xilinx driver...
 
-> The original behaviour of the driver is untouched. The additional feature=
-s can be enabled via sysfs.
-
-Why would you ever want /CS toggling between words - such behaviour is
-just plain buggy?
-
-> +// (sysfs-)tunable attributes
-> +static int allow_big_bursts =3D 0; // if set to 1 this enables 32-bit bi=
-g bursts
-> +static int tx_fifo_thres =3D -1;=A0=A0 // if positive, use TX data reque=
-st interrupt when applicable
-
-These would need to be per device rather than global.  It's also not
-clear to me that we don't want to enable some level of FIFO threashold
-usage by default, perhaps aiming for something just slightly below the
-full FIFO so that we minimise the number of extra interrupts but
-increase throughput on lightly loaded systems - I'm not even sure that
-making this behaviour tunable is needed.
-
---UlVJffcvxoiEqYs2
+--/7+LvQqw8N5lf/3J
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT73UdAAoJELSic+t+oim92ZwP/iy5fU8etN7OcCj9FYnqbc6R
-LIquJBmjTmdjxXP7fDMjfBxWGBXoOwWIq+ppyoXuhP900hKlkfBVDQ2kW01tVpe4
-69zNomr7+sl/+yVDLLZBeep5w0tXjq3S8OCq4GuG+seBe8UKWuQ8ejwmKGV5DQg9
-070BGoVGRJpKhzKAEWJuxays8ZOapwrMCzhpenv6sBsYarpTuxNbS6qVzquY8VCj
-me5zXo75VJpn3TAkfcDxwp4Xv8A+dq5xyAaCICMhrmNRHImD6ZJwl9+ljArCsw2Y
-j9MyQKYVBzCgv9Se6ZpXNMRJ27nFzG6emujeOPUFMvLZEzEn16LrTTihxLlV+fa0
-uZG5EMxn39tAf1dEKxBEskaFUuK874USnAtxdHHDZRUJQ8gqpOrHEU5CUM0G7Mx7
-LpyToOo93qRJ/UPVpdmAGF7zfAorgmtRm8c93aOFR9PRrNuoLxH/wr9KmEZWDux4
-DkWZ6it1aNFxg0J6Gd4nrQsgt0jpSV77HmatUlxcRekl0c1A8phyEKrUyZ9N28ml
-OP7ZgXP5zT3znyEM5Uj5sFRnt1w1EeDcv7Rk//ZKcNspe4ACqnbHMXWfGnNL5E8c
-RQ+BgHpFdaHmkJ7Vbn47mCoLVDfyv5BQfOwnuVAWo//IfLqRIYbh3ZIZHmGwT3FS
-loL5u04321LdZ2Ig4Bsf
-=o0pX
+iQIcBAEBAgAGBQJT73cFAAoJELSic+t+oim9/q4P/jiZkU4mlsfHeDEbr0JXZ5Ho
+Y880d/pDNzCzwICdh0IGJoVpVHWnze5eRkbQs2L1SsUaenfo8jwIAceHlE2Kzbuy
+8Q7Ty1Wm+FhAsdqmrznFnxfP3+nvukC+nUpo7DSOkmXIE8k7jgwbBhkOEfiattU3
+sX7fvJ+goqDyQYU4ujF1VJx7FirZwF/i/bL6T/jP1Gu0zqEMjsoMzlrqSg4JsdTH
+cKzTLh27ScjOMdAvkKBFUjaLd2RR7smchX9JsjvFcHkW6OMrloZQ+rGrppiqNkU9
+2nutm4IA7/aHEJ330X/fHQ/CV2Ds+kPeovIu1sxzsBcdQv3jQPfcrtmnFus1cFen
+uUElkzpDBwG2s30SbgKBvxBcob3U4apMe8TplUQvjb/9ubUHmKSvrotnQ/sj3GQy
+SongF9IHk0Z/+LGlTVH9EArzzX2XaChp0NhTE/OV1gb+6cmsSNRK5i1DaOxDtVEV
+pMauVbRu4Ui8akSxMiicQoEil8ClNrfz1fo50lOeOtLemUjHzLnmKUXhIGD2XfOt
+k8r5OEo82U5xlPt19fflmYJZt5zQHdTUd2zuKvjykhLo/LGC+ZVKE/gDQqLkFM6f
+3gZiA7NYzXziaXDA/FWl2tmKgRTsHlRT6V7V/We0Dl8Nb1iNqE9PVLJHZmfDvcSm
+5PcgIz58slOP8XS+bU1X
+=775s
 -----END PGP SIGNATURE-----
 
---UlVJffcvxoiEqYs2--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--/7+LvQqw8N5lf/3J--

@@ -1,67 +1,105 @@
-From: Chao Fu <B44548-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: RE: [PATCH] spi: fsl-dspi: Convert to use regmap framework's
- endianness method.
-Date: Mon, 18 Aug 2014 08:06:17 +0000
-Message-ID: <2a6a678a69de44f4bce5cf1045389756@BL2PR03MB163.namprd03.prod.outlook.com>
-References: <1408348100-28819-1-git-send-email-Li.Xiubo@freescale.com>
+From: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Subject: Re: [PATCH/RFC V8 1/1] clk: Support for clock parents and rates
+ assigned from device tree
+Date: Mon, 18 Aug 2014 12:31:49 +0200
+Message-ID: <53F1D615.8070707@samsung.com>
+References: <1403105372-30403-1-git-send-email-s.nawrocki@samsung.com>
+ <1403105372-30403-2-git-send-email-s.nawrocki@samsung.com>
+ <53B59221.5080100@samsung.com> <20140725214231.5177.86866@quantum>
+ <20140813203406.GU17528@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
-Cc: "devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: "Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org" <Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1408348100-28819-1-git-send-email-Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ Mike Turquette <mturquette@linaro.org>, pawel.moll@arm.com, wsa@the-dreams.de,
+ gregkh@linuxfoundation.org, t.figa@samsung.com, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, kyungmin.park@samsung.com,
+ linux-i2c@vger.kernel.org, galak@codeaurora.org,
+ linux-arm-kernel@lists.infradead.org, m.szyprowski@samsung.com
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+In-reply-to: <20140813203406.GU17528@sirena.org.uk>
+List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
+List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
+List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
+List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
+List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
+ <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
+Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
+Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+List-Id: linux-spi.vger.kernel.org
 
-DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFhpdWJvIExpIFttYWlsdG86
-TGkuWGl1Ym9AZnJlZXNjYWxlLmNvbV0NCj4gU2VudDogMjAxNMTqONTCMTjI1SAxNTo0OA0KPiBU
-bzogYnJvb25pZUBrZXJuZWwub3JnOyBGdSBDaGFvLUI0NDU0OA0KPiBDYzogZGV2aWNldHJlZUB2
-Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LXNwaUB2Z2VyLmtlcm5lbC5vcmc7IFhpdWJvIExpLQ0KPiBC
-NDcwNTMNCj4gU3ViamVjdDogW1BBVENIXSBzcGk6IGZzbC1kc3BpOiBDb252ZXJ0IHRvIHVzZSBy
-ZWdtYXAgZnJhbWV3b3JrJ3MNCj4gZW5kaWFubmVzcyBtZXRob2QuDQo+IA0KPiBTaWduZWQtb2Zm
-LWJ5OiBYaXVibyBMaSA8TGkuWGl1Ym9AZnJlZXNjYWxlLmNvbT4NCj4gQ2M6IENoYW8gRnUgPGI0
-NDU0OEBmcmVlc2NhbGUuY29tPg0KPiAtLS0NCj4gDQoNCkFja2VkLWJ5OiBDaGFvIEZ1IDxCNDQ1
-NDhAZnJlZXNjYWxlLmNvbT4NClRoYW5rIHlvdSENCg0KIA0KPiBUaGlzIGlzIGRlcGVuZGVkIG9u
-IHRoZSBmb2xsb3dpbmcgcGF0Y2hlcywgd2hpY2ggaGFzIGJlZW4gYXBwbGllZCBpbnRvDQo+IFJl
-Z21hcC1UcmVlOg0KPiBodHRwczovL2xrbWwub3JnL2xrbWwvMjAxNC83LzE1LzYNCj4gaHR0cHM6
-Ly9sa21sLm9yZy9sa21sLzIwMTQvNy8xNS81DQo+IGh0dHBzOi8vbGttbC5vcmcvbGttbC8yMDE0
-LzcvMTUvNw0KPiANCj4gDQo+IA0KPiANCj4gIERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5k
-aW5ncy9zcGkvc3BpLWZzbC1kc3BpLnR4dCB8IDcgKysrKysrLQ0KPiAgZHJpdmVycy9zcGkvc3Bp
-LWZzbC1kc3BpLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgMyAtLS0NCj4gIDIgZmls
-ZXMgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAt
-LWdpdCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpLWZzbC1kc3Bp
-LnR4dA0KPiBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3BpLWZzbC1k
-c3BpLnR4dA0KPiBpbmRleCA1Mzc2ZGU0Li5jYmJlMTZlIDEwMDY0NA0KPiAtLS0gYS9Eb2N1bWVu
-dGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mvc3BpL3NwaS1mc2wtZHNwaS50eHQNCj4gKysrIGIv
-RG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9zcGktZnNsLWRzcGkudHh0DQo+
-IEBAIC0xMCw3ICsxMCwxMiBAQCBSZXF1aXJlZCBwcm9wZXJ0aWVzOg0KPiAgLSBwaW5jdHJsLW5h
-bWVzOiBtdXN0IGNvbnRhaW4gYSAiZGVmYXVsdCIgZW50cnkuDQo+ICAtIHNwaS1udW0tY2hpcHNl
-bGVjdHMgOiB0aGUgbnVtYmVyIG9mIHRoZSBjaGlwc2VsZWN0IHNpZ25hbHMuDQo+ICAtIGJ1cy1u
-dW0gOiB0aGUgc2xhdmUgY2hpcCBjaGlwc2VsZWN0IHNpZ25hbCBudW1iZXIuDQo+IC0tIGJpZy1l
-bmRpYW4gOiBpZiBEU1BJIG1vZHVkbGUgaXMgYmlnIGVuZGlhbiwgdGhlIGJvb2wgd2lsbCBiZSBz
-ZXQgaW4NCj4gbm9kZS4NCj4gKw0KPiArT3B0aW9uYWwgcHJvcGVydHk6DQo+ICstIGJpZy1lbmRp
-YW46IElmIHByZXNlbnQgdGhlIGRzcGkgZGV2aWNlJ3MgcmVnaXN0ZXJzIGFyZSBpbXBsZW1lbnRl
-ZA0KPiArICBpbiBiaWcgZW5kaWFuIG1vZGUsIG90aGVyd2lzZSBpbiBuYXRpdmUgbW9kZShzYW1l
-IHdpdGggQ1BVKSwgZm9yIG1vcmUNCj4gKyAgZGV0YWlsIHBsZWFzZSBzZWU6IERvY3VtZW50YXRp
-b24vZGV2aWNldHJlZS9iaW5kaW5ncy9yZWdtYXAvcmVnbWFwLnR4dC4NCj4gKw0KPiAgRXhhbXBs
-ZToNCj4gDQo+ICBkc3BpMEA0MDAyYzAwMCB7DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9z
-cGktZnNsLWRzcGkuYyBiL2RyaXZlcnMvc3BpL3NwaS1mc2wtZHNwaS5jDQo+IGluZGV4IDUwMjFk
-ZGYuLmViYzRkMWYgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvc3BpL3NwaS1mc2wtZHNwaS5jDQo+
-ICsrKyBiL2RyaXZlcnMvc3BpL3NwaS1mc2wtZHNwaS5jDQo+IEBAIC00OTMsOSArNDkzLDYgQEAg
-c3RhdGljIGludCBkc3BpX3Byb2JlKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYpDQo+ICAJ
-fQ0KPiANCj4gIAlkc3BpX3JlZ21hcF9jb25maWcubG9ja19hcmcgPSBkc3BpOw0KPiAtCWRzcGlf
-cmVnbWFwX2NvbmZpZy52YWxfZm9ybWF0X2VuZGlhbiA9DQo+IC0JCW9mX3Byb3BlcnR5X3JlYWRf
-Ym9vbChucCwgImJpZy1lbmRpYW4iKQ0KPiAtCQkJPyBSRUdNQVBfRU5ESUFOX0JJRyA6IFJFR01B
-UF9FTkRJQU5fREVGQVVMVDsNCj4gIAlkc3BpLT5yZWdtYXAgPSBkZXZtX3JlZ21hcF9pbml0X21t
-aW9fY2xrKCZwZGV2LT5kZXYsICJkc3BpIiwgYmFzZSwNCj4gIAkJCQkJCSZkc3BpX3JlZ21hcF9j
-b25maWcpOw0KPiAgCWlmIChJU19FUlIoZHNwaS0+cmVnbWFwKSkgew0KPiAtLQ0KPiAxLjguNQ0K
-DQo=
+On 13/08/14 22:34, Mark Brown wrote:
+> On Fri, Jul 25, 2014 at 02:42:31PM -0700, Mike Turquette wrote:
+>> Quoting Sylwester Nawrocki (2014-07-03 10:25:53)
+> 
+>>> I would appreciate a DT, SPI or the I2C maintainer opinions.
+> 
+>> Yes, Acks from SPI and I2C maintainers would be good. I might need to
+>> drop those parts of this patch if they don't come through :-(
+> 
+> So, I just noticed this.  The reason I didn't see this earlier is that
+> it was buried at the end of a large clock API patch rather than a split
+> out patch for the SPI subsystem so it fell towards the bottom of
+> my review queue.  There seems to be no dependency on adding the feature
+> as part of one commit so it should really have been split out.
+> 
+> Please don't assume that people are going to look in detail at patches
+> that aren't obviously for them - I know I end up ignoring a lot of what
+> I get sent since I get CCed on a lot of random things for no apparent
+> reason (or get tediously large numbers of resends of things that are
+> tangentially related), I imagine others do the same.  If you're doing
+> that please draw attention to it, splitting out per subsystem is the
+> best way of doing that.
+
+OK, will try to remember and improve things in future.
+
+> This is particularly unfortunate since I am actually a bit confused as
+> to why we need to open code this for every bus rather than doing it in
+> the driver core, there doesn't seem to be anything at all bus specific
+> going on here.  Why can't we just call this from the driver core?
+
+I had it done in the driver core in first versions of this patch, but
+then I learnt it is not something Greg would be fond of, so I went for
+this method. In fact, clocks configuration is not something which
+applies to each and every device, thus putting it in the bus code might
+not be that bad after all.
+
+> Having the feature work for some buses and not others is going to get
+> old fast.
+> 
+> It's also not clear to me why we're passing false to of_clk_set_defaults()
+> when we do call it - it's quite common for I2C and SPI devices to be
+> clock providers and have clock trees.  As far as I can tell the
+> reasoning is that what's actually going on here is that this is actually
+> a mechanism to defer the initialisation to adding of the clock providers
+> in which case contrary to the documentation for the function it's
+> actually about device registration.  Is that right?
+
+The flag is there to tell if clocks supplied by a particular device should
+also be configured. The function is being called with the flag set right
+after a clock provider registration in the clock core, this is where the
+take care of things when an (I2C, SPI, etc.) device is a clock provider.
+Obviously attempting to configure clocks which were not yet registered
+before a device's driver probe() call would fail. The flag is there to
+defer configuration of clocks after they are actually registered with
+the clk core, not only parsable from the device tree.
+
+Documentation of the function might be indeed a bit confusing :/
+I'll consider changing the sentence:
+
+"The @clk_supplier argument
+ should be set to true if @node may be also a clock supplier of any clock
+ listed in its 'assigned-clocks' or 'assigned-clock-parents' properties."
+
+to
+
+ "The @clk_supplier argument
+  should be set to true if @node is or may be a clock supplier of any
+  clock listed in its 'assigned-clocks' or 'assigned-clock-parents'
+  properties and such clocks are also to be configured."
+
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Regards,
+Sylwester

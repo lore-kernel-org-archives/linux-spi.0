@@ -1,39 +1,40 @@
-From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH V2] spi: bcm53xx: driver for SPI controller on Broadcom
- bcma SoC
-Date: Tue, 19 Aug 2014 18:56:01 +0200
-Message-ID: <CACna6rzO6Heqx98Gpec=g-u0v2gjMPbw1AqkWZ2whOOo1kTm=w@mail.gmail.com>
-References: <1408228864-20313-1-git-send-email-zajec5@gmail.com>
-	<1408293218-32439-1-git-send-email-zajec5@gmail.com>
-	<20140819163106.GM24407@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Manuel Lauss <manuel.lauss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: spi-au1550: fix build failure
+Date: Tue, 19 Aug 2014 19:18:44 +0200
+Message-ID: <1408468724-34602-1-git-send-email-manuel.lauss@gmail.com>
+Cc: Himangi Saraogi <himangi774-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Manuel Lauss <manuel.lauss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140819163106.GM24407-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 19 August 2014 18:31, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> On Sun, Aug 17, 2014 at 06:33:38PM +0200, Rafa=C5=82 Mi=C5=82ecki wro=
-te:
->> Broadcom 53xx ARM SoCs use bcma bus that contains various cores (AKA
->> devices). If board has a serial flash, it's connected over SPI and t=
-he
->> bcma bus includes a SPI controller. Example log from such a board:
->> bus0: Found chip with id 53010, rev 0x00 and package 0x02
->> (...)
->> bus0: Core 18 found: SPI flash controller (manuf 0x4BF, id 0x50A, re=
-v 0x01, class 0x0)
->
-> Applied, thanks.
+Fix a build failure introduced with commit 30670539b86
+(spi: au1550: Fix bug in deallocation of memory)
 
-Thank YOU! :)
+Signed-off-by: Manuel Lauss <manuel.lauss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+---
+Please consider for 3.17, compile and runtested.
 
---=20
-Rafa=C5=82
+ drivers/spi/spi-au1550.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
+index 40c3d43..f40b34c 100644
+--- a/drivers/spi/spi-au1550.c
++++ b/drivers/spi/spi-au1550.c
+@@ -945,7 +945,7 @@ static int au1550_spi_remove(struct platform_device *pdev)
+ 	spi_bitbang_stop(&hw->bitbang);
+ 	free_irq(hw->irq, hw);
+ 	iounmap((void __iomem *)hw->regs);
+-	release_mem_region(r->start, sizeof(psc_spi_t));
++	release_mem_region(hw->ioarea->start, sizeof(psc_spi_t));
+ 
+ 	if (hw->usedma) {
+ 		au1550_spi_dma_rxtmp_free(hw);
+-- 
+2.0.4
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

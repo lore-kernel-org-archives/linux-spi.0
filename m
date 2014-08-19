@@ -1,64 +1,61 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: bcm53xx: driver for SPI controller on Broadcom bcma
- SoC
-Date: Tue, 19 Aug 2014 11:29:46 -0500
-Message-ID: <20140819162946.GL24407@sirena.org.uk>
-References: <1407933212-20530-1-git-send-email-zajec5@gmail.com>
- <1408228864-20313-1-git-send-email-zajec5@gmail.com>
- <20140817142117.GI14537@sirena.org.uk>
- <CACna6ryqmkYhDFHHiLdE3b9TpypJAko=Z2xRsXCiMu2iQyvFDA@mail.gmail.com>
+Subject: Re: [PATCH V2] spi: bcm53xx: driver for SPI controller on Broadcom
+ bcma SoC
+Date: Tue, 19 Aug 2014 11:31:06 -0500
+Message-ID: <20140819163106.GM24407@sirena.org.uk>
+References: <1408228864-20313-1-git-send-email-zajec5@gmail.com>
+ <1408293218-32439-1-git-send-email-zajec5@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="gwtGiOGliFx8mAnm"
+	protocol="application/pgp-signature"; boundary="P9KQiUGMzYCFwWCN"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>
 To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CACna6ryqmkYhDFHHiLdE3b9TpypJAko=Z2xRsXCiMu2iQyvFDA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1408293218-32439-1-git-send-email-zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---gwtGiOGliFx8mAnm
+--P9KQiUGMzYCFwWCN
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 17, 2014 at 05:28:13PM +0200, Rafa=C5=82 Mi=C5=82ecki wrote:
-> On 17 August 2014 16:21, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+On Sun, Aug 17, 2014 at 06:33:38PM +0200, Rafa=C5=82 Mi=C5=82ecki wrote:
+> Broadcom 53xx ARM SoCs use bcma bus that contains various cores (AKA
+> devices). If board has a serial flash, it's connected over SPI and the
+> bcma bus includes a SPI controller. Example log from such a board:
+> bus0: Found chip with id 53010, rev 0x00 and package 0x02
+> (...)
+> bus0: Core 18 found: SPI flash controller (manuf 0x4BF, id 0x50A, rev 0x0=
+1, class 0x0)
 
-> > I'm also not seeing a set_cs() operation here.
+Applied, thanks.
 
-> I found no info about that, none of the registers seem to be
-> responsible for that. Is that OK for the driver to work without set_cs
-> handler/callback?
-
-Well, it's going to break with quite a few client drivers but I guess
-whoever runs into that problem can resolve it.
-
---gwtGiOGliFx8mAnm
+--P9KQiUGMzYCFwWCN
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT83txAAoJELSic+t+oim9/20P/1t3l3M+Ctk6sXZLsqDFSmcQ
-dHASj7mf+nepFudN3juQSCJeytWOdDFE+Cn+IW6guOaeaE/5ctMId9oWi5WBqW/M
-IdZdZTsWJf7EXod/EngnlnH9ZwmFNxVSCLHdIE2lu/1AmyTCVMFpxQGpAVbk8xbX
-S2AIYGk5ZUSHj/r/hkX/fvBJ7ItBn3QGtFDNCcuUw67j+o0IhjrjfF+5YCkYm76S
-L9qNII4fvcCrCKhXY08DhChOvRP9dqBpCWYmXat6dDrMXVqoXWzRVRNTVybAem/U
-CAOohIB1G6gPS6nG8ob98/22zaH2RG9W0lt+vWX48FDXAWZmN6j9IGBaeZgiqkzT
-eYoWYpxVjo7XUmXVURU7BFBCqKx5lK1n6n9s4LKz3PE6PV+ETTLUdaMTpQ53iRU0
-01O48RaztZOWZbubtLwWPnegLv7v8pc4HbebVuoedU9viZTX5BzYyvMrSdqBRQ3C
-150Z16H8Xe6i8G2enWo+2Jp9LyuusK3ffiVo00jd/cCWrLplOVCgwhGT5uNbbQVE
-QVt5aOBA5HPny7hD4klyOHMoNyQtA9KZwLp/4+pF8XoeIy0Ya93g9hqos8vJQnzP
-aD74hxnoCWirCrkFm9gxGf9b4yX95j8L6MRDB2fRFUweSFTgnRadoLJPMuoyBgfd
-cOoS27ddnoEAXo9YngD1
-=Ybmg
+iQIcBAEBAgAGBQJT83vHAAoJELSic+t+oim9pmYP/140bsOStK3B21XxseuUZF/r
+6QFcaKUSIYJv3kiOAFbRdCwNOCo3euNjtRx02ZLMC6AME09MGEzPnCou/rmpaQY3
+k523eaxslaObXY6zTVlQiLi7B4CQ2pNwVl8n9tudg17s64pa40rvOj7PS5ArISnI
+6FBs4q+9HWh1Grn+rt3Vj/ZLAbt/hAw5B2vJqugZ/icy21wBBHPcaAp/OmgMjgoL
+vBKJe9MrRPjDahXRAYsMxz54Uo6RYLOlDJ9lNDVIGOMU7Sp7qfBF2UlUsmWxQad3
+V+IPhW0PAoQrnJuOA5eZFqG0aAXM6jzL3S9PEhDBTSviZG6FogFdhhYw7r5nHcnE
+4GyLCi/sTU469qKgGzyGwyfeCpmvNcZ26eSgAV/7pMpo9dsBQUG5u8Ogp8XzXzPh
+AG0gPBF1EhxfHN7kwA7uH0yUqQDY0HZCHo2oTUCD0OtWwbKCTNfsAqSqTDMCu0ZQ
+Z5iPpy7lJvA0Rdf8gZeXr8rPhzTo3fjJnHJE4DShHeGgGK90iekAkPApAQnNvTXW
+v+TJ+VIP4DQ4DPLIv06gsBnG3n7+Q+3T4YBIj+Vvoibbq5qafVjbU+Xq7Bk+/oT9
+iDWtPZgzbIKo8jgzOpgL1aka65mEDKOnyHPSFAWO5VQc7xIs93GoRZCBUGioou+n
+LO3gvdguyVeNgCtlYF+p
+=/5NW
 -----END PGP SIGNATURE-----
 
---gwtGiOGliFx8mAnm--
+--P9KQiUGMzYCFwWCN--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

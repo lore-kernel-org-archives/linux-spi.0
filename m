@@ -1,44 +1,53 @@
-From: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: Re: [PATCH] spi: Only call transfer_one() if we have buffers to transfer
-Date: Tue, 19 Aug 2014 12:36:41 -0700
-Message-ID: <CAD=FV=UnqPftKx7NSRn7Td1AeXkwnwOpMuaJmxWz-P3Ce1qpLQ@mail.gmail.com>
-References: <1408203002-26403-1-git-send-email-broonie@kernel.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: spi-au1550: fix build failure
+Date: Tue, 19 Aug 2014 16:18:16 -0500
+Message-ID: <20140819211816.GT24407@sirena.org.uk>
+References: <1408468724-34602-1-git-send-email-manuel.lauss@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	olof-gZy3mtb3KLqsTnJN9+BGXg@public.gmane.org,
-	Lists linaro-kernel <linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org>,
-	Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="HjGz34yYE1BNnn/x"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Himangi Saraogi <himangi774-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Manuel Lauss <manuel.lauss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1408203002-26403-1-git-send-email-broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1408468724-34602-1-git-send-email-manuel.lauss-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Mark,
 
-On Sat, Aug 16, 2014 at 8:30 AM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-> From: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->
-> Client drivers such as the ChomeOS EC driver sometimes use transfers with
-> no buffers and only a delay specified in order to allow a delay after the
-> assertion of /CS. Rather than require controller drivers handle this noop
-> case gracefully put checks in the core to ensure that we don't call into
-> the controller for such transfers.
->
-> Reported-by: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-> Signed-off-by: Mark Brown <broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-> ---
->
-> Completely untested at this point.
->
->  drivers/spi/spi.c | 44 ++++++++++++++++++++++++++------------------
->  1 file changed, 26 insertions(+), 18 deletions(-)
+--HjGz34yYE1BNnn/x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thank you for writing this patch.  It looks great and works for me.
+On Tue, Aug 19, 2014 at 07:18:44PM +0200, Manuel Lauss wrote:
+> Fix a build failure introduced with commit 30670539b86
+> (spi: au1550: Fix bug in deallocation of memory)
 
-Tested-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Reviewed-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Applied, thanks.
+
+--HjGz34yYE1BNnn/x
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT878UAAoJELSic+t+oim9nc0P/0zh9K+eOjbiCQijdLBTvpEH
+6cLl8x700JiRUHP/SPfG3CLjhRTPL2wEoNahPXdsywhdgmQPYHC/1fTTbVar8A2T
+DxqZN67Dt2qTpFWxdNqWy9zPhUK9R87Q1hfQSe+I3ITDHLdfggWzx4u2yLoZGPlf
+VBMcXV3fTbS+0PhyFXFQEMuWjxqSytTrN+e9JFi4wvGhRX165r5sxaW97C23RR7y
+3vOefeb4O6HDux5bybDF98ntHZ3iuQiL/OJKCEorWBEAPWuaTxYS5uIZ6nO/mscx
+X+j7nWDavj6KlB9WL4pk2+BxVti5k72WuGZuBJxlfwtpz9g/L+bP9+qIzNfodPaw
+r8sLXQZmL6LalR0A4/yExsFOp3nViOhL9RyHenzig7dEU67Zo+mRpbmK/jWzocMy
+iupmtyPzlGCQ+HmqUcSyJVENYP+MAtFAoCv1xQwDVgrzy6IkuJGcB0TzITIzttwM
+2XrIAA5qGn/bsM5ifeiHEMgfgl4TPEEOiQWGE6nzUg58n2luGfrnLo0NIQeuvJWg
+x/ZML8npP5oFZaCo7rRHaOwzNfiyLEBwdr4xmEnWXOEuVRuppud4nKMHrD3On95X
+SaczIRE3sUheA18TTlRzPyFvKnYmIqxt9oxbtcSHig1W0jrrkpuXS+f3ISM+RGGY
+8jHKXE4xG7+Gg5+SrXng
+=x6c/
+-----END PGP SIGNATURE-----
+
+--HjGz34yYE1BNnn/x--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

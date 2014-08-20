@@ -1,49 +1,45 @@
-From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
-Subject: Re: [PATCH] spi/rockchip: fixup incorrect dma direction setting
-Date: Wed, 20 Aug 2014 10:09:56 +0200
-Message-ID: <3440626.YssIeyfVzZ@phil>
-References: <1408506462-3686-1-git-send-email-addy.ke@rock-chips.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7Bit
-Cc: broonie@kernel.org, dianders@chromium.org, grant.likely@linaro.org,
-	robh+dt@kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, olof@lixom.net, hj@rock-chips.com,
-	kever.yang@rock-chips.com, xjq@rock-chips.com,
-	huangtao@rock-chips.com, zyw@rock-chips.com, yzq@rock-chips.com,
-	zhenfu.fang@rock-chips.com, cf@rock-chips.com,
-	zhangqing@rock-chips.com, hl@rock-chips.com, wei.luo@rock-chips.com
-To: Addy Ke <addy.ke@rock-chips.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1408506462-3686-1-git-send-email-addy.ke@rock-chips.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi/pxa2xx: Add ACPI ID for Intel Braswell
+Date: Wed, 20 Aug 2014 13:57:26 +0300
+Message-ID: <1408532246-10988-1-git-send-email-mika.westerberg@linux.intel.com>
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Addy,
+From: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 
-please always remember to add a real commit message, something similar to:
+The SPI host controller is the same as used in Baytrail, only the ACPI ID
+is different so add this new ID to the list.
 
-"Fix typo that caused the tx direction to be set twice and left out the rx 
-direction."
+Signed-off-by: Alan Cox <alan-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Signed-off-by: Mika Westerberg <mika.westerberg-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-pxa2xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-for example.
+diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+index fe792106bdc5..46f45ca2c694 100644
+--- a/drivers/spi/spi-pxa2xx.c
++++ b/drivers/spi/spi-pxa2xx.c
+@@ -1074,6 +1074,7 @@ static struct acpi_device_id pxa2xx_spi_acpi_match[] = {
+ 	{ "INT3430", 0 },
+ 	{ "INT3431", 0 },
+ 	{ "80860F0E", 0 },
++	{ "8086228E", 0 },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, pxa2xx_spi_acpi_match);
+-- 
+2.1.0
 
-> Signed-off-by: Addy Ke <addy.ke@rock-chips.com>
-> ---
->  drivers/spi/spi-rockchip.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-> index cb8fd6f..4ef3fd3 100644
-> --- a/drivers/spi/spi-rockchip.c
-> +++ b/drivers/spi/spi-rockchip.c
-> @@ -679,7 +679,7 @@ static int rockchip_spi_probe(struct platform_device
-> *pdev) rs->dma_tx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_TXDR);
-> rs->dma_rx.addr = (dma_addr_t)(mem->start + ROCKCHIP_SPI_RXDR);
-> rs->dma_tx.direction = DMA_MEM_TO_DEV;
-> -		rs->dma_tx.direction = DMA_DEV_TO_MEM;
-> +		rs->dma_rx.direction = DMA_DEV_TO_MEM;
-> 
->  		master->can_dma = rockchip_spi_can_dma;
->  		master->dma_tx = rs->dma_tx.ch;
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

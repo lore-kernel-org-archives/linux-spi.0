@@ -1,57 +1,56 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi/pxa2xx: Add ACPI ID for Intel Braswell
-Date: Wed, 20 Aug 2014 10:20:28 -0500
-Message-ID: <20140820152028.GV24407@sirena.org.uk>
-References: <1408532246-10988-1-git-send-email-mika.westerberg@linux.intel.com>
+Subject: Re: [PATCH] spi/rockchip: fixup incorrect dma direction setting
+Date: Wed, 20 Aug 2014 10:31:32 -0500
+Message-ID: <20140820153132.GY24407@sirena.org.uk>
+References: <1408506462-3686-1-git-send-email-addy.ke@rock-chips.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jWL1oGPK2mPq0rME"
-Cc: Eric Miao <eric.y.miao@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Alan Cox <alan@linux.intel.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-To: Mika Westerberg <mika.westerberg@linux.intel.com>
+	protocol="application/pgp-signature"; boundary="6Jy4/gb9ZgnsEOX8"
+Cc: heiko@sntech.de, dianders@chromium.org, grant.likely@linaro.org,
+	robh+dt@kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, olof@lixom.net, hj@rock-chips.com,
+	kever.yang@rock-chips.com, xjq@rock-chips.com,
+	huangtao@rock-chips.com, zyw@rock-chips.com, yzq@rock-chips.com,
+	zhenfu.fang@rock-chips.com, cf@rock-chips.com,
+	zhangqing@rock-chips.com, hl@rock-chips.com, wei.luo@rock-chips.com
+To: Addy Ke <addy.ke@rock-chips.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1408532246-10988-1-git-send-email-mika.westerberg@linux.intel.com>
+In-Reply-To: <1408506462-3686-1-git-send-email-addy.ke@rock-chips.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---jWL1oGPK2mPq0rME
+--6Jy4/gb9ZgnsEOX8
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 20, 2014 at 01:57:26PM +0300, Mika Westerberg wrote:
-> From: Alan Cox <alan@linux.intel.com>
->=20
-> The SPI host controller is the same as used in Baytrail, only the ACPI ID
-> is different so add this new ID to the list.
+On Wed, Aug 20, 2014 at 11:47:42AM +0800, Addy Ke wrote:
+> Signed-off-by: Addy Ke <addy.ke@rock-chips.com>
 
 Applied, thanks.
 
---jWL1oGPK2mPq0rME
+--6Jy4/gb9ZgnsEOX8
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT9Ly5AAoJELSic+t+oim9lPEP/2uV0KhXTufFApjBXvF9Sgse
-OwFSOOP3k77bEs8NwPOfJaduNHyfrfWfWrl5wgvBK1qQ94RERvmSN92MehnlwkxL
-SyK0pZ823g6m+gEUXkdXOEiC9NrMQwnmY6Lab8KXGXXC4k13rAArCuFUOqm9/KyA
-FfxDPYGi3r12700X0ycqPHMrPmqXm2l94nrmrLrbTFtDqICmse2AbnNSXnQPnUWT
-CGD8O5xXDuNtPnoqW+OeYvvuk4E/jXoAB9nFhLM0ee07xeCBVHegX+lZ/zSAWwqt
-loXqMGaELmVEJHNn3oa5BRIGeLSVFpEjU0zveQBoARD9oaRoLwzmHLBgv/YL2M7W
-Byvgr78I6N+/wpNmudlEeHAvlrg3Rm9r6Y6ECCoouVmPpFhmNlKRciV+wC4D9nhv
-zMYxm3eZXezYWOxYEQ2R1zmlaYqtn8l4Innk08pF94oa20v7sGHukFDLSLc3f62z
-zHHxpm37++2dMIwbbpQORWZpmjPE4IUeot62cAYEI9cAitcOtSU6NBwi3tblTyut
-D3Bivh86Sbk+blZNf0ot3stnsIy4PuxPJAr1SyVxSn9f1q8woReFIeONbvnGrFyA
-nOllF4cu/7jnWwoYV6BMY/EuqjdgPilA9ZCwmxrCQOEnUg4DuxpaO+s7Jvw7Yofs
-CdzaVNhsrPEgC58oqXtG
-=8BZL
+iQIbBAEBAgAGBQJT9L9QAAoJELSic+t+oim9ZIIP+NzHME0U9O4Ork3bB63pU4+a
+BHIiDPeJWndMIj8JtOs+oVpp9kooZJHGW6WuiwvbbkIwh2SbKwpCfM2ERyUvANNt
+NSSIzY/wp2+PQlUkWgowm2NOjoCzNq+3q8qsQSIA/IcaqoJ4LCZyc+hFaXECO8SN
+N0wKy3ijhi5kmTDz8ZQKiDQcBNGM6OcC+QPCI3TsJV6xcgnVaa61t3D8XSK3oAvj
+3YRMwZ/JBpss1nlFBCy0sWIgoWDxi8WTuvhbzo51Yc2TCSpBCYj2hJ60BcHvLJ3C
+HDXd/uTA5MNtsBpPEwdFm1w0SnOc5lyxc+0BDLR/4H70Dc/1CgiTwN2yWL37LLcu
+qMHEFETd5X4UAcP9y9Ue95IwZvpvdt9G36u9KzSCkP7fxCSW69mc1j0+Hfdx4R9M
+YV7/zO841X5H4Sd6038DZzH/LpejDvkNzxZpQ1GIm2wXFJuNNp+U4sEXLENeV0RF
+94yiNjJk0eX6Jr9eCazsUX9ys5aROuoRcywxh33KakfIhIkXvtGvi3gklYNMjxOR
+zjJq+UtVfJpgH6ltLvHnXA/jf0aRBzxCqS7LVphOUEtemlZDBaLYzv4SsXCrSv4J
+TpyzGs0HCqhNK8HEtYPk+5kCIRjC7fHD8+Uwjj49IusMtMWczDMpW/O/7ttFxbzq
+WZk+5QsHYs8wbaWlkZ4=
+=Dua5
 -----END PGP SIGNATURE-----
 
---jWL1oGPK2mPq0rME--
+--6Jy4/gb9ZgnsEOX8--

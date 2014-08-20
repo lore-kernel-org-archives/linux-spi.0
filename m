@@ -1,56 +1,58 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi/rockchip: fixup incorrect dma direction setting
-Date: Wed, 20 Aug 2014 10:31:32 -0500
-Message-ID: <20140820153132.GY24407@sirena.org.uk>
-References: <1408506462-3686-1-git-send-email-addy.ke@rock-chips.com>
+Subject: Re: [PATCH] SPI: spi-au1550: Fix build problem in au1550_spi_remove
+Date: Wed, 20 Aug 2014 10:33:54 -0500
+Message-ID: <20140820153354.GZ24407@sirena.org.uk>
+References: <1408545613-28348-1-git-send-email-markos.chandras@imgtec.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6Jy4/gb9ZgnsEOX8"
-Cc: heiko@sntech.de, dianders@chromium.org, grant.likely@linaro.org,
-	robh+dt@kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, olof@lixom.net, hj@rock-chips.com,
-	kever.yang@rock-chips.com, xjq@rock-chips.com,
-	huangtao@rock-chips.com, zyw@rock-chips.com, yzq@rock-chips.com,
-	zhenfu.fang@rock-chips.com, cf@rock-chips.com,
-	zhangqing@rock-chips.com, hl@rock-chips.com, wei.luo@rock-chips.com
-To: Addy Ke <addy.ke@rock-chips.com>
+	protocol="application/pgp-signature"; boundary="csehs8AeUiGwWnbr"
+Cc: linux-kernel@vger.kernel.org,
+	Himangi Saraogi <himangi774@gmail.com>,
+	linux-spi@vger.kernel.org, linux-mips@linux-mips.org
+To: Markos Chandras <markos.chandras@imgtec.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1408506462-3686-1-git-send-email-addy.ke@rock-chips.com>
+In-Reply-To: <1408545613-28348-1-git-send-email-markos.chandras@imgtec.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---6Jy4/gb9ZgnsEOX8
+--csehs8AeUiGwWnbr
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Wed, Aug 20, 2014 at 11:47:42AM +0800, Addy Ke wrote:
-> Signed-off-by: Addy Ke <addy.ke@rock-chips.com>
+On Wed, Aug 20, 2014 at 03:40:13PM +0100, Markos Chandras wrote:
+> Commit 30670539b867 ("spi: au1550: Fix bug in deallocation of memory")
+> switched from release_resource to release_mem_region to release
+> memory regions allocated using the request_mem_region. However,
+> a build problem was introduced due to 'r' being undefined in that
+> function. We fix this by having 'r' being defined as the platform's
+> IORESROUCE_MEM region.
 
-Applied, thanks.
+A different fix has already been sent for htis issue - please check if
+there's anything you want to change with that and resubmit if there's
+anything.
 
---6Jy4/gb9ZgnsEOX8
+--csehs8AeUiGwWnbr
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIbBAEBAgAGBQJT9L9QAAoJELSic+t+oim9ZIIP+NzHME0U9O4Ork3bB63pU4+a
-BHIiDPeJWndMIj8JtOs+oVpp9kooZJHGW6WuiwvbbkIwh2SbKwpCfM2ERyUvANNt
-NSSIzY/wp2+PQlUkWgowm2NOjoCzNq+3q8qsQSIA/IcaqoJ4LCZyc+hFaXECO8SN
-N0wKy3ijhi5kmTDz8ZQKiDQcBNGM6OcC+QPCI3TsJV6xcgnVaa61t3D8XSK3oAvj
-3YRMwZ/JBpss1nlFBCy0sWIgoWDxi8WTuvhbzo51Yc2TCSpBCYj2hJ60BcHvLJ3C
-HDXd/uTA5MNtsBpPEwdFm1w0SnOc5lyxc+0BDLR/4H70Dc/1CgiTwN2yWL37LLcu
-qMHEFETd5X4UAcP9y9Ue95IwZvpvdt9G36u9KzSCkP7fxCSW69mc1j0+Hfdx4R9M
-YV7/zO841X5H4Sd6038DZzH/LpejDvkNzxZpQ1GIm2wXFJuNNp+U4sEXLENeV0RF
-94yiNjJk0eX6Jr9eCazsUX9ys5aROuoRcywxh33KakfIhIkXvtGvi3gklYNMjxOR
-zjJq+UtVfJpgH6ltLvHnXA/jf0aRBzxCqS7LVphOUEtemlZDBaLYzv4SsXCrSv4J
-TpyzGs0HCqhNK8HEtYPk+5kCIRjC7fHD8+Uwjj49IusMtMWczDMpW/O/7ttFxbzq
-WZk+5QsHYs8wbaWlkZ4=
-=Dua5
+iQIcBAEBAgAGBQJT9L/eAAoJELSic+t+oim9FeYQAIW3Mhf8CpsJ/pa9TioJNU/E
+pQEKiO/tYMSevoPRPiYj62YY9lCZNuafWl+rQ3v7xtw3+U0HxoujJiqFb8QqEJvy
+2BZkexsiCxMbynEXiekwulBKHYc5v1Tuc+ft09igaHMnBhUTLrSPB2YBf6dcLX51
+/tEkyoFxh/0My79a6yq19T4eKDvmluSNc83YqbQpbVkeIWaHpzaGcSG1nYL7bEH6
+MYyNn1qP5WImJCFnYeTLvzDiwrtI3JMUhd1Klv9Iit9IOi+9CCBr8+yM6pnEtPcy
+1cgOhl0VOzMVl9RrxS0ZFm4v5BmRI9dEefwmAQ7Q3jtEp1KcsTrrekcnR/gUQ6Qn
+Kd9Kk1Nb+r46CmezJhKpMxVjHL5cJAx54YTu8pN7Mnp/JWEqt5M+wBb3s5DLsCL4
+ZOb8YmHojmZluFPTxXQdmDXCcVgpX2+iNgTc51vgL1vQkrysvDHb+70ds9vTgYSx
+ekqdMCYdhJPTupVT2/eWOhcG3tWO+kLsnOHvwgE1Q0lLMMuevtifKDN//PAIRBcN
+btyr0z/By3Z2rVZwJQ3K6/VOueVdVyy0zbNgCBYYAycZOp969M59c8lDIGXS7TjF
+xVSx6hr6EyjEkJa2wRm+xoiEX+4+MSldYgotYtA57TkBYT/yTn6e4S5VlH/L5cdc
+E7xle/z50X6OpP/fAUmB
+=hODX
 -----END PGP SIGNATURE-----
 
---6Jy4/gb9ZgnsEOX8--
+--csehs8AeUiGwWnbr--

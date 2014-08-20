@@ -1,73 +1,57 @@
-From: Markos Chandras <markos.chandras-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] SPI: spi-au1550: Fix build problem in au1550_spi_remove
-Date: Wed, 20 Aug 2014 15:40:13 +0100
-Message-ID: <1408545613-28348-1-git-send-email-markos.chandras@imgtec.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi/pxa2xx: Add ACPI ID for Intel Braswell
+Date: Wed, 20 Aug 2014 10:20:28 -0500
+Message-ID: <20140820152028.GV24407@sirena.org.uk>
+References: <1408532246-10988-1-git-send-email-mika.westerberg@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: Markos Chandras <markos.chandras-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Himangi Saraogi <himangi774-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org>
-To: <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="jWL1oGPK2mPq0rME"
+Cc: Eric Miao <eric.y.miao@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Alan Cox <alan@linux.intel.com>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Mika Westerberg <mika.westerberg@linux.intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1408532246-10988-1-git-send-email-mika.westerberg@linux.intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Commit 30670539b867 ("spi: au1550: Fix bug in deallocation of memory")
-switched from release_resource to release_mem_region to release
-memory regions allocated using the request_mem_region. However,
-a build problem was introduced due to 'r' being undefined in that
-function. We fix this by having 'r' being defined as the platform's
-IORESROUCE_MEM region.
 
-This fixes a problem triggered by the db1xxx defconfig in the MIPS tree:
+--jWL1oGPK2mPq0rME
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-drivers/spi/spi-au1550.c: In function 'au1550_spi_remove':
-drivers/spi/spi-au1550.c:948:21: error: 'r' undeclared (first use in this
-							function)
-release_mem_region(r->start, sizeof(psc_spi_t));
+On Wed, Aug 20, 2014 at 01:57:26PM +0300, Mika Westerberg wrote:
+> From: Alan Cox <alan@linux.intel.com>
+>=20
+> The SPI host controller is the same as used in Baytrail, only the ACPI ID
+> is different so add this new ID to the list.
 
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Cc: Himangi Saraogi <himangi774-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Cc: linux-mips-6z/3iImG2C8G8FEW9MqTrA@public.gmane.org
-Signed-off-by: Markos Chandras <markos.chandras-1AXoQHu6uovQT0dZR+AlfA@public.gmane.org>
----
-This has only been compile tested
----
- drivers/spi/spi-au1550.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Applied, thanks.
 
-diff --git a/drivers/spi/spi-au1550.c b/drivers/spi/spi-au1550.c
-index 40c3d43c9292..f7edb504df78 100644
---- a/drivers/spi/spi-au1550.c
-+++ b/drivers/spi/spi-au1550.c
-@@ -937,6 +937,7 @@ err_nomem:
- 
- static int au1550_spi_remove(struct platform_device *pdev)
- {
-+	struct resource *r;
- 	struct au1550_spi *hw = platform_get_drvdata(pdev);
- 
- 	dev_info(&pdev->dev, "spi master remove: bus_num=%d\n",
-@@ -945,6 +946,13 @@ static int au1550_spi_remove(struct platform_device *pdev)
- 	spi_bitbang_stop(&hw->bitbang);
- 	free_irq(hw->irq, hw);
- 	iounmap((void __iomem *)hw->regs);
-+
-+	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!r) {
-+		dev_err(&pdev->dev, "no mmio resource\n");
-+		return -ENODEV;
-+	}
-+
- 	release_mem_region(r->start, sizeof(psc_spi_t));
- 
- 	if (hw->usedma) {
--- 
-2.0.4
+--jWL1oGPK2mPq0rME
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT9Ly5AAoJELSic+t+oim9lPEP/2uV0KhXTufFApjBXvF9Sgse
+OwFSOOP3k77bEs8NwPOfJaduNHyfrfWfWrl5wgvBK1qQ94RERvmSN92MehnlwkxL
+SyK0pZ823g6m+gEUXkdXOEiC9NrMQwnmY6Lab8KXGXXC4k13rAArCuFUOqm9/KyA
+FfxDPYGi3r12700X0ycqPHMrPmqXm2l94nrmrLrbTFtDqICmse2AbnNSXnQPnUWT
+CGD8O5xXDuNtPnoqW+OeYvvuk4E/jXoAB9nFhLM0ee07xeCBVHegX+lZ/zSAWwqt
+loXqMGaELmVEJHNn3oa5BRIGeLSVFpEjU0zveQBoARD9oaRoLwzmHLBgv/YL2M7W
+Byvgr78I6N+/wpNmudlEeHAvlrg3Rm9r6Y6ECCoouVmPpFhmNlKRciV+wC4D9nhv
+zMYxm3eZXezYWOxYEQ2R1zmlaYqtn8l4Innk08pF94oa20v7sGHukFDLSLc3f62z
+zHHxpm37++2dMIwbbpQORWZpmjPE4IUeot62cAYEI9cAitcOtSU6NBwi3tblTyut
+D3Bivh86Sbk+blZNf0ot3stnsIy4PuxPJAr1SyVxSn9f1q8woReFIeONbvnGrFyA
+nOllF4cu/7jnWwoYV6BMY/EuqjdgPilA9ZCwmxrCQOEnUg4DuxpaO+s7Jvw7Yofs
+CdzaVNhsrPEgC58oqXtG
+=8BZL
+-----END PGP SIGNATURE-----
+
+--jWL1oGPK2mPq0rME--

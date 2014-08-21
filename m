@@ -1,54 +1,41 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH 2/2] extcon: sm5502: EXTCON_SM5502 should depend on I2C
-Date: Thu, 21 Aug 2014 09:10:50 +0200
-Message-ID: <CAMuHMdVK67_d8OqSH10urTYi7EG=VaZnH9EZBiNDVACZkBRENw@mail.gmail.com>
-References: <2048653519.580921408598869113.JavaMail.weblogic@epmlwas01c>
-	<53F5878D.3030700@samsung.com>
+From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH 0/2] spi: davinci: fixes and updates
+Date: Thu, 21 Aug 2014 18:25:04 +0300
+Message-ID: <1408634706-5762-1-git-send-email-grygorii.strashko@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: myungjoo.ham-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <53F5878D.3030700-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <m-karicheri2-l0cyMroinI0@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+	Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <santosh.shilimkar-l0cyMroinI0@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Aug 21, 2014 at 7:45 AM, Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org> wrote:
-> On 08/21/2014 02:27 PM, MyungJoo Ham wrote:
->>> Thanks for your report. I already sent a patch[1] to fix this build break
->>> and I'll send pull request to includec this patch in 3.17-rc2.
->>>
->>> [1] https://lkml.org/lkml/2014/8/13/761
->>>
->>> Best Regards,
->>> Chanwoo Choi
->>
->> I do not object to this patch or your patch[1].
->>
->> However, wouldn't it be better to add depends on I2C at REGMAP_I2C?
->> When you use REGMAP_I2C, you assume that I2C is already there, don't you?
+The first patch fixes the issue for the case when SPI_NO_CS flag is set
+which was introduced by previous
+commit a88e34ea213e1b ("spi: davinci: add support to configure gpio cs through dt"). 
 
-REGMAP_I2C is meant to be "select"ed by its users. So these users
-should depend on I2C, as "select" does not check dependencies.
+The second patch completes migration of Davinci SPI driver to DT
+and adds ability to configure additional properties for SPI slave
+devices which were possible to configure only from platform code
+through struct davinci_spi_config
 
-> The previous REGMAP_I2C has not the dependency on I2C.
-> So, Greert posted following patch[1] to fix it.
-> [1] https://lkml.org/lkml/2014/8/17/27
->
-> Also, if I2C is 'm' (module) and some driver has not dependency on I2C,
-> build break happen.
+Grygorii Strashko (2):
+  spi: davinci: fix SPI_NO_CS functionality
+  spi: davinci: support adding delay between transmission
 
-Gr{oetje,eeting}s,
+ .../devicetree/bindings/spi/spi-davinci.txt        |   18 ++++
+ drivers/spi/spi-davinci.c                          |   96 +++++++++++++++++---
+ 2 files changed, 99 insertions(+), 15 deletions(-)
 
-                        Geert
+-- 
+1.7.9.5
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,63 +1,114 @@
-From: MyungJoo Ham <myungjoo.ham-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: Re: Re: [PATCH 2/2] extcon: sm5502: EXTCON_SM5502 should depend on I2C
-Date: Thu, 21 Aug 2014 05:27:51 +0000 (GMT)
-Message-ID: <2048653519.580921408598869113.JavaMail.weblogic@epmlwas01c>
-Reply-To: myungjoo.ham-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
+From: Chanwoo Choi <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: Re: [PATCH 2/2] extcon: sm5502: EXTCON_SM5502 should depend on I2C
+Date: Thu, 21 Aug 2014 14:45:49 +0900
+Message-ID: <53F5878D.3030700@samsung.com>
+References: <2048653519.580921408598869113.JavaMail.weblogic@epmlwas01c>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=euc-kr
-Content-Transfer-Encoding: base64
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+Content-Type: text/plain; charset=EUC-KR
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
 	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
 	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: =?euc-kr?Q?=C3=D6=C2=F9=BF=EC?= <cw00.choi-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+To: myungjoo.ham-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org
 Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-MIME-version: 1.0
+In-reply-to: <2048653519.580921408598869113.JavaMail.weblogic@epmlwas01c>
 Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-PiBIaSBHZWVydA0KPiANCj4gVGhhbmtzIGZvciB5b3VyIHJlcG9ydC4gSSBhbHJlYWR5IHNlbnQg
-YSBwYXRjaFsxXSB0byBmaXggdGhpcyBidWlsZCBicmVhaw0KPiBhbmQgSSdsbCBzZW5kIHB1bGwg
-cmVxdWVzdCB0byBpbmNsdWRlYyB0aGlzIHBhdGNoIGluIDMuMTctcmMyLg0KPiANCj4gWzFdIGh0
-dHBzOi8vbGttbC5vcmcvbGttbC8yMDE0LzgvMTMvNzYxDQo+IA0KPiBCZXN0IFJlZ2FyZHMsDQo+
-IENoYW53b28gQ2hvaQ0KDQpJIGRvIG5vdCBvYmplY3QgdG8gdGhpcyBwYXRjaCBvciB5b3VyIHBh
-dGNoWzFdLg0KDQpIb3dldmVyLCB3b3VsZG4ndCBpdCBiZSBiZXR0ZXIgdG8gYWRkIGRlcGVuZHMg
-b24gSTJDIGF0IFJFR01BUF9JMkM/DQpXaGVuIHlvdSB1c2UgUkVHTUFQX0kyQywgeW91IGFzc3Vt
-ZSB0aGF0IEkyQyBpcyBhbHJlYWR5IHRoZXJlLCBkb24ndCB5b3U/DQoNCg0KQ2hlZXJzLA0KTXl1
-bmdKb28NCg0KPiANCj4gDQo+IE9uIDA4LzE3LzIwMTQgMDc6MDggUE0sIEdlZXJ0IFV5dHRlcmhv
-ZXZlbiB3cm90ZToNCj4gPiBFWFRDT05fU001NTAyIHNlbGVjdHMgUkVHTUFQX0kyQywgYnV0IGlm
-IEkyQz1uOg0KPiA+IA0KPiA+IGRyaXZlcnMvYmFzZS9yZWdtYXAvcmVnbWFwLWkyYy5jOiBJbiBm
-dW5jdGlvbiChrnJlZ21hcF9zbWJ1c19ieXRlX3JlZ19yZWFkoa86DQo+ID4gZHJpdmVycy9iYXNl
-L3JlZ21hcC9yZWdtYXAtaTJjLmM6Mjg6IGVycm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBm
-dW5jdGlvbiChrmkyY19zbWJ1c19yZWFkX2J5dGVfZGF0YaGvDQo+ID4gZHJpdmVycy9iYXNlL3Jl
-Z21hcC9yZWdtYXAtaTJjLmM6IEluIGZ1bmN0aW9uIKGucmVnbWFwX3NtYnVzX2J5dGVfcmVnX3dy
-aXRloa86DQo+ID4gZHJpdmVycy9iYXNlL3JlZ21hcC9yZWdtYXAtaTJjLmM6NDY6IGVycm9yOiBp
-bXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiChrmkyY19zbWJ1c193cml0ZV9ieXRlX2Rh
-dGGhrw0KPiA+IGRyaXZlcnMvYmFzZS9yZWdtYXAvcmVnbWFwLWkyYy5jOiBJbiBmdW5jdGlvbiCh
-rnJlZ21hcF9zbWJ1c193b3JkX3JlZ19yZWFkoa86DQo+ID4gZHJpdmVycy9iYXNlL3JlZ21hcC9y
-ZWdtYXAtaTJjLmM6NjQ6IGVycm9yOiBpbXBsaWNpdCBkZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiCh
-rmkyY19zbWJ1c19yZWFkX3dvcmRfZGF0YaGvDQo+ID4gZHJpdmVycy9iYXNlL3JlZ21hcC9yZWdt
-YXAtaTJjLmM6IEluIGZ1bmN0aW9uIKGucmVnbWFwX3NtYnVzX3dvcmRfcmVnX3dyaXRloa86DQo+
-ID4gZHJpdmVycy9iYXNlL3JlZ21hcC9yZWdtYXAtaTJjLmM6ODI6IGVycm9yOiBpbXBsaWNpdCBk
-ZWNsYXJhdGlvbiBvZiBmdW5jdGlvbiChrmkyY19zbWJ1c193cml0ZV93b3JkX2RhdGGhrw0KPiA+
-IGRyaXZlcnMvYmFzZS9yZWdtYXAvcmVnbWFwLWkyYy5jOiBJbiBmdW5jdGlvbiChrnJlZ21hcF9p
-MmNfd3JpdGWhrzoNCj4gPiBkcml2ZXJzL2Jhc2UvcmVnbWFwL3JlZ21hcC1pMmMuYzo5NjogZXJy
-b3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9uIKGuaTJjX21hc3Rlcl9zZW5koa8N
-Cj4gPiBkcml2ZXJzL2Jhc2UvcmVnbWFwL3JlZ21hcC1pMmMuYzogSW4gZnVuY3Rpb24goa5yZWdt
-YXBfaTJjX2dhdGhlcl93cml0ZaGvOg0KPiA+IGRyaXZlcnMvYmFzZS9yZWdtYXAvcmVnbWFwLWky
-Yy5jOjExNzogZXJyb3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9uIKGuaTJjX2No
-ZWNrX2Z1bmN0aW9uYWxpdHmhrw0KPiA+IGRyaXZlcnMvYmFzZS9yZWdtYXAvcmVnbWFwLWkyYy5j
-OjEzMDogZXJyb3I6IGltcGxpY2l0IGRlY2xhcmF0aW9uIG9mIGZ1bmN0aW9uIKGuaTJjX3RyYW5z
-ZmVyoa8NCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBHZWVydCBVeXR0ZXJob2V2ZW4gPGdlZXJ0
-QGxpbnV4LW02OGsub3JnPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL2V4dGNvbi9LY29uZmlnIHwg
-MSArDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKQ0KPiA+IA0KPiA+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL2V4dGNvbi9LY29uZmlnIGIvZHJpdmVycy9leHRjb24vS2NvbmZpZw0K
-PiA+IGluZGV4IDZmMmY0NzI3ZGUyYy4uNzY0ZjNhMTEzZTBhIDEwMDY0NA0KPiA+IC0tLSBhL2Ry
-aXZlcnMvZXh0Y29uL0tjb25maWcNCj4gPiArKysgYi9kcml2ZXJzL2V4dGNvbi9LY29uZmlnDQo+
-ID4gQEAgLTcyLDYgKzcyLDcgQEAgY29uZmlnIEVYVENPTl9QQUxNQVMNCj4gPiAgDQo+ID4gIGNv
-bmZpZyBFWFRDT05fU001NTAyDQo+ID4gIAl0cmlzdGF0ZSAiU001NTAyIEVYVENPTiBzdXBwb3J0
-Ig0KPiA+ICsJZGVwZW5kcyBvbiBJMkMNCj4gPiAgCXNlbGVjdCBJUlFfRE9NQUlODQo+ID4gIAlz
-ZWxlY3QgUkVHTUFQX0kyQw0KPiA+ICAJc2VsZWN0IFJFR01BUF9JUlENCj4gPiANCj4gDQo+IA0K
-PiANCj4gDQo+ICAgICAgICANCj4gICANCj4gICAgICAgICAgDQo+IA0K
+Dear Myungjoo,
+
+On 08/21/2014 02:27 PM, MyungJoo Ham wrote:
+>> Hi Geert
+>>
+>> Thanks for your report. I already sent a patch[1] to fix this build =
+break
+>> and I'll send pull request to includec this patch in 3.17-rc2.
+>>
+>> [1] https://lkml.org/lkml/2014/8/13/761
+>>
+>> Best Regards,
+>> Chanwoo Choi
+>=20
+> I do not object to this patch or your patch[1].
+>=20
+> However, wouldn't it be better to add depends on I2C at REGMAP_I2C?
+> When you use REGMAP_I2C, you assume that I2C is already there, don't =
+you?
+
+The previous REGMAP_I2C has not the dependency on I2C.
+So, Greert posted following patch[1] to fix it.
+[1] https://lkml.org/lkml/2014/8/17/27
+
+Also, if I2C is 'm' (module) and some driver has not dependency on I2C,
+build break happen.
+
+Thanks
+Chanwoo Choi,
+
+
+>=20
+>=20
+> Cheers,
+> MyungJoo
+>=20
+>>
+>>
+>> On 08/17/2014 07:08 PM, Geert Uytterhoeven wrote:
+>>> EXTCON_SM5502 selects REGMAP_I2C, but if I2C=3Dn:
+>>>
+>>> drivers/base/regmap/regmap-i2c.c: In function =A1=AEregmap_smbus_by=
+te_reg_read=A1=AF:
+>>> drivers/base/regmap/regmap-i2c.c:28: error: implicit declaration of=
+ function =A1=AEi2c_smbus_read_byte_data=A1=AF
+>>> drivers/base/regmap/regmap-i2c.c: In function =A1=AEregmap_smbus_by=
+te_reg_write=A1=AF:
+>>> drivers/base/regmap/regmap-i2c.c:46: error: implicit declaration of=
+ function =A1=AEi2c_smbus_write_byte_data=A1=AF
+>>> drivers/base/regmap/regmap-i2c.c: In function =A1=AEregmap_smbus_wo=
+rd_reg_read=A1=AF:
+>>> drivers/base/regmap/regmap-i2c.c:64: error: implicit declaration of=
+ function =A1=AEi2c_smbus_read_word_data=A1=AF
+>>> drivers/base/regmap/regmap-i2c.c: In function =A1=AEregmap_smbus_wo=
+rd_reg_write=A1=AF:
+>>> drivers/base/regmap/regmap-i2c.c:82: error: implicit declaration of=
+ function =A1=AEi2c_smbus_write_word_data=A1=AF
+>>> drivers/base/regmap/regmap-i2c.c: In function =A1=AEregmap_i2c_writ=
+e=A1=AF:
+>>> drivers/base/regmap/regmap-i2c.c:96: error: implicit declaration of=
+ function =A1=AEi2c_master_send=A1=AF
+>>> drivers/base/regmap/regmap-i2c.c: In function =A1=AEregmap_i2c_gath=
+er_write=A1=AF:
+>>> drivers/base/regmap/regmap-i2c.c:117: error: implicit declaration o=
+f function =A1=AEi2c_check_functionality=A1=AF
+>>> drivers/base/regmap/regmap-i2c.c:130: error: implicit declaration o=
+f function =A1=AEi2c_transfer=A1=AF
+>>>
+>>> Signed-off-by: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+>>> ---
+>>>  drivers/extcon/Kconfig | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
+>>> index 6f2f4727de2c..764f3a113e0a 100644
+>>> --- a/drivers/extcon/Kconfig
+>>> +++ b/drivers/extcon/Kconfig
+>>> @@ -72,6 +72,7 @@ config EXTCON_PALMAS
+>>> =20
+>>>  config EXTCON_SM5502
+>>>  	tristate "SM5502 EXTCON support"
+>>> +	depends on I2C
+>>>  	select IRQ_DOMAIN
+>>>  	select REGMAP_I2C
+>>>  	select REGMAP_IRQ
+>>>
+>>
+>>
+>>
+>>
+>>       =20
+>>  =20
+>>         =20
+>>

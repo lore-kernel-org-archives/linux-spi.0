@@ -1,68 +1,114 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3] spi: spi-imx: add DMA support
-Date: Thu, 21 Aug 2014 19:50:30 -0500
-Message-ID: <20140822005030.GR24407@sirena.org.uk>
-References: <1408593190-1031-1-git-send-email-b38343@freescale.com>
+From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: davinci: support adding delay between transmission
+Date: Fri, 22 Aug 2014 16:33:09 +0300
+Message-ID: <53F74695.3010902@ti.com>
+References: <1408634706-5762-1-git-send-email-grygorii.strashko@ti.com> <1408634706-5762-3-git-send-email-grygorii.strashko@ti.com> <20140821182035.GM24407@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="uAY1Vrrb3oVaqxed"
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Frank.Li@freescale.com,
-	shawn.guo@linaro.org, marex@denx.de
-To: Robin Gong <b38343@freescale.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1408593190-1031-1-git-send-email-b38343@freescale.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <santosh.shilimkar-l0cyMroinI0@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<m-karicheri2-l0cyMroinI0@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140821182035.GM24407-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hi Mark,
 
---uAY1Vrrb3oVaqxed
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 08/21/2014 09:20 PM, Mark Brown wrote:
+> On Thu, Aug 21, 2014 at 06:25:06PM +0300, Grygorii Strashko wrote:
+>=20
+>> +- ti,davinci-spi-wdelay : delay between transmissions.
+>=20
+> I don't understand why this is here - there is already standard suppo=
+rt
+> in the SPI core for client drivers specifying inter-transfer delays. =
+ If
+> there is a need to provide platform configuration for this in additio=
+n
+> to that then it should also be a standard property, there is nothing
+> device specific about these.
 
-On Thu, Aug 21, 2014 at 11:53:10AM +0800, Robin Gong wrote:
+Sorry, may be I've missed smth, because I was not able to find such com=
+mon=20
+property in SPI bindings document and code. Could you point me on, pls?
 
-> Change from v2:
-> http://thread.gmane.org/gmane.linux.ports.arm.kernel/291722/focus=294363
-> 1. dma setup only for imx51-ecspi
-> 2. use one small dummy buffer(1 bd size) to templiy store data
->    for meanless rx/tx, instead of malloc the actual transfer size.
+In our case it's hardware delay applied between transmissions:
+"Delay in between transmissions. Idle time that will be applied at
+ the end of the current transmission if the bit WDEL is
+set in the current buffer. The delay to be applied is equal to:
+WDELAY =D7 PSPI module clock + 2 =D7 PSPI module clock
+ PSPI module clock -> Period of SPI module clock"
 
-You can use the must_tx and must_rx flags to use the core implementation
-of this functionality.  This will mean you get any performance or other
-improvements we implement there.
+>=20
+>> +- ti,davinci-spi-odd-parity : odd partity enabled
+>> +   OR
+>> +  ti,davinci-spi-even-parity : even parity enabled
+>=20
+> What do these mean?
 
-> +	int (*txrx_bufs)(struct spi_device *spi, struct spi_transfer *t);
-> +	struct dma_chan *dma_chan_rx;
-> +	struct dma_chan *dma_chan_tx;
+Supported by OMAP-L138/da830:
+"
+SPIFMTn[23].PARPOL - Parity polarity: even or odd. PARPOL can be modifi=
+ed in privilege mode only.
+ 0 An even parity flag is added at the end of the transmit data stream.
+ 1 An odd parity flag is added at the end of the transmit data stream.
 
-The SPI controller has variables for this already - you should use them
-(and the core support).  In general my main comment on this patch is
-that you should be using the core DMA support, it fixes some problems
-(like not having mapping for vmalloc() buffers) and factors out some
-code.
+SPIFMTn[22].PARENA - Parity enable.
+ 0 - No parity generation/ verification is performed.
+ 1 - A parity is transmitted at the end of each transmit data stream. A=
+t the end of a transfer the parity
+ generator compares the received parity bit with the locally calculated=
+ parity flag. If the parity bits do
+ not match the PARERR flag is set in the corresponding control field. T=
+he parity type (even or odd)
+ can be selected via the PARPOL bit.
+"
 
---uAY1Vrrb3oVaqxed
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+>=20
+>> +- ti,davinci-spi-io-type: io type (check platform_data/spi-davinci.=
+h)
+>=20
+> The bindings should be independent of the kernel, the values need to =
+be
+> included here (and the defines moved to include/dt-bindings so they c=
+an
+> be used when writing DTs).
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Allowed values here are:
+#define SPI_IO_TYPE_INTR	0
+#define SPI_IO_TYPE_POLL	1
+#define SPI_IO_TYPE_DMA		2
 
-iQIcBAEBAgAGBQJT9pPTAAoJELSic+t+oim9MY0P/RclDEBWSGFKDrO98Sfgbcgo
-7bCCzB+xENogpwedLzVcEZeZsvt9igFLm7t0CaXnEJv7/fB5rN3bFzvYYHyGkM82
-pCgplHwyjZculow1+LddjCHuPvPeL3dGYfeV1Jtvi3uPvpRUkTx//rtQREoHpvPg
-GUPU+7huxAds7Prkx+1nKq2KMl9aHz/p27FJJCbKBwvdgRIVqd9Cz0ZnzhA+LKqb
-eav74fNNaDn/KI1QL5S9BtS5JrMrQaNsEXkgSdGEkioqx4Pk8+R7dPFDLTn4Thtv
-UGWYRm+oHRAKBETGY/JAF5MuTlsxTY1Jn3TX29Tm2DBMnRnrN1YEyTs8tGGP/GU/
-04fq20HJWwODK+9fJOOYNjnTxQuByZZLrD/PfFuklc9Q8oN4HQACnBCBcq6zEkBJ
-ZZW9pKjEPbu15LHDyqgxC2M/T3gYuIuLEHhoERE6ALZKKBpE1YG5s+Z+0AnnJRHu
-EKeh62h/es04yQdOK2qiAiwXygn58k22cqdoy/gXni7n3A4dFEvSlp2uSFTmCOY4
-7wJuFRmMjUQ/EDPsK8jnGIIuTiZLepilM0+BK8STHwrazt9Z1wCGJJq4DQ/8OfB2
-jZtAhUrhLsWQpMIIidBU+2unQHWxxP+zZ11d81KRgbz7HPXDJCp6EVLp8uJ6jiZa
-o6rFDeK5DnFYTwH+3SQf
-=mcz3
------END PGP SIGNATURE-----
+I'll update.
 
---uAY1Vrrb3oVaqxed--
+>=20
+>> +- ti,davinci-spi-disable-timer: disable CS timer (SPIFMTn)
+>> +- ti,davinci-spi-c2t-delay: c2t delay
+>> +- ti,davinci-spi-t2c-delay: t2c delay
+>> +- ti,davinci-spi-t2e-delay: t2e delay
+>> +- ti,davinci-spi-c2e-delay: c2e delay
+>=20
+> What are all these timers/delays - at least some reference to the
+> datasheet please?
+>=20
+
+Sorry, I'll update bindings with links on datasheet.
+
+Keystone 2:
+http://www.ti.com/lit/ug/sprugp2a/sprugp2a.pdf
+
+Davinci:
+dm644x - http://www.ti.com/lit/ug/sprue32a/sprue32a.pdf
+OMAP-L138/da830 - http://www.ti.com/lit/ug/spruh77a/spruh77a.pdf
+
+Regards,
+-grygorii
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,85 +1,68 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: davinci: support adding delay between
- transmission
-Date: Thu, 21 Aug 2014 13:20:35 -0500
-Message-ID: <20140821182035.GM24407@sirena.org.uk>
-References: <1408634706-5762-1-git-send-email-grygorii.strashko@ti.com>
- <1408634706-5762-3-git-send-email-grygorii.strashko@ti.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v3] spi: spi-imx: add DMA support
+Date: Thu, 21 Aug 2014 19:50:30 -0500
+Message-ID: <20140822005030.GR24407@sirena.org.uk>
+References: <1408593190-1031-1-git-send-email-b38343@freescale.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="1f1tNaDgxoBnXskx"
-Cc: santosh.shilimkar-l0cyMroinI0@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	m-karicheri2-l0cyMroinI0@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="uAY1Vrrb3oVaqxed"
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Frank.Li@freescale.com,
+	shawn.guo@linaro.org, marex@denx.de
+To: Robin Gong <b38343@freescale.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1408634706-5762-3-git-send-email-grygorii.strashko-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1408593190-1031-1-git-send-email-b38343@freescale.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---1f1tNaDgxoBnXskx
+--uAY1Vrrb3oVaqxed
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Aug 21, 2014 at 06:25:06PM +0300, Grygorii Strashko wrote:
+On Thu, Aug 21, 2014 at 11:53:10AM +0800, Robin Gong wrote:
 
-> +- ti,davinci-spi-wdelay : delay between transmissions.
+> Change from v2:
+> http://thread.gmane.org/gmane.linux.ports.arm.kernel/291722/focus=294363
+> 1. dma setup only for imx51-ecspi
+> 2. use one small dummy buffer(1 bd size) to templiy store data
+>    for meanless rx/tx, instead of malloc the actual transfer size.
 
-I don't understand why this is here - there is already standard support
-in the SPI core for client drivers specifying inter-transfer delays.  If
-there is a need to provide platform configuration for this in addition
-to that then it should also be a standard property, there is nothing
-device specific about these.
+You can use the must_tx and must_rx flags to use the core implementation
+of this functionality.  This will mean you get any performance or other
+improvements we implement there.
 
-> +- ti,davinci-spi-odd-parity : odd partity enabled
-> +   OR
-> +  ti,davinci-spi-even-parity : even parity enabled
+> +	int (*txrx_bufs)(struct spi_device *spi, struct spi_transfer *t);
+> +	struct dma_chan *dma_chan_rx;
+> +	struct dma_chan *dma_chan_tx;
 
-What do these mean?
+The SPI controller has variables for this already - you should use them
+(and the core support).  In general my main comment on this patch is
+that you should be using the core DMA support, it fixes some problems
+(like not having mapping for vmalloc() buffers) and factors out some
+code.
 
-> +- ti,davinci-spi-io-type: io type (check platform_data/spi-davinci.h)
-
-The bindings should be independent of the kernel, the values need to be
-included here (and the defines moved to include/dt-bindings so they can
-be used when writing DTs).
-
-> +- ti,davinci-spi-disable-timer: disable CS timer (SPIFMTn)
-> +- ti,davinci-spi-c2t-delay: c2t delay
-> +- ti,davinci-spi-t2c-delay: t2c delay
-> +- ti,davinci-spi-t2e-delay: t2e delay
-> +- ti,davinci-spi-c2e-delay: c2e delay
-
-What are all these timers/delays - at least some reference to the
-datasheet please?
-
---1f1tNaDgxoBnXskx
+--uAY1Vrrb3oVaqxed
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT9jhwAAoJELSic+t+oim96wkP/ReX0hFwObinVqEhKGscQhAT
-/US3zqZPHGxVIOclnYISiHfbSCaQ5z/wyt9bMYzyZmDrS+gdx1iXW8U2s1PcRGh9
-cF9MaoQwk2LbeHSkwJOSTIOX+bPL49mlebqBBj4xuQoOsEmxjogZdgUcUG3qpb5Q
-8bMAkIiV87xBaJCMsfjD96XZjB81isfRWEe+mp3B1Kk0OGbEculR/K1PNLq1CDSJ
-2RISS+nkFgDwikES6pwSc4+jKKx8ubm1Yt7x66jETbJ1J7kkoN9qaAiHMcRthJor
-IxeDEKVF754n1lRWk6W4FGrdomAJv+Sz4AflIB7drRvjko6eIa/+JVqtYBtuBDHC
-HgRqGIaKaOjvQNBF0kO/SpA4e8Tj2EAq+l0DWcAmApg0W8kI8LZQsmZ/atxLpMwO
-1FUexpQV1OO2h4g2nFe06dNCwxJ83XaUA/rWhuOl4DHWGRDZOKOtK8S5WPFY1pxo
-hns11eIT8l8ht0DFsxVGLOrL9L9NMYG7MJj7snwbNp0/aWMnkYAiuCPAQVBufKrC
-mlN6LmuYO01pCvyTwPhZQI4DJ5zslucQFc6iHR36BI+K0OTMMv/K4siyl/G+n7oA
-kItRqnGgAlFJHlC059GLjhEVz3zPEIXXJk6tkLeL+Fy1Xuhp8SqT2ou1PscOS5vW
-zHMp+1iUHbMhaeaApa6U
-=5BGf
+iQIcBAEBAgAGBQJT9pPTAAoJELSic+t+oim9MY0P/RclDEBWSGFKDrO98Sfgbcgo
+7bCCzB+xENogpwedLzVcEZeZsvt9igFLm7t0CaXnEJv7/fB5rN3bFzvYYHyGkM82
+pCgplHwyjZculow1+LddjCHuPvPeL3dGYfeV1Jtvi3uPvpRUkTx//rtQREoHpvPg
+GUPU+7huxAds7Prkx+1nKq2KMl9aHz/p27FJJCbKBwvdgRIVqd9Cz0ZnzhA+LKqb
+eav74fNNaDn/KI1QL5S9BtS5JrMrQaNsEXkgSdGEkioqx4Pk8+R7dPFDLTn4Thtv
+UGWYRm+oHRAKBETGY/JAF5MuTlsxTY1Jn3TX29Tm2DBMnRnrN1YEyTs8tGGP/GU/
+04fq20HJWwODK+9fJOOYNjnTxQuByZZLrD/PfFuklc9Q8oN4HQACnBCBcq6zEkBJ
+ZZW9pKjEPbu15LHDyqgxC2M/T3gYuIuLEHhoERE6ALZKKBpE1YG5s+Z+0AnnJRHu
+EKeh62h/es04yQdOK2qiAiwXygn58k22cqdoy/gXni7n3A4dFEvSlp2uSFTmCOY4
+7wJuFRmMjUQ/EDPsK8jnGIIuTiZLepilM0+BK8STHwrazt9Z1wCGJJq4DQ/8OfB2
+jZtAhUrhLsWQpMIIidBU+2unQHWxxP+zZ11d81KRgbz7HPXDJCp6EVLp8uJ6jiZa
+o6rFDeK5DnFYTwH+3SQf
+=mcz3
 -----END PGP SIGNATURE-----
 
---1f1tNaDgxoBnXskx--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--uAY1Vrrb3oVaqxed--

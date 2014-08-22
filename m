@@ -1,114 +1,125 @@
-From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: davinci: support adding delay between transmission
-Date: Fri, 22 Aug 2014 16:33:09 +0300
-Message-ID: <53F74695.3010902@ti.com>
-References: <1408634706-5762-1-git-send-email-grygorii.strashko@ti.com> <1408634706-5762-3-git-send-email-grygorii.strashko@ti.com> <20140821182035.GM24407@sirena.org.uk>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: davinci: support adding delay between
+ transmission
+Date: Fri, 22 Aug 2014 10:06:44 -0500
+Message-ID: <20140822150644.GX24407@sirena.org.uk>
+References: <1408634706-5762-1-git-send-email-grygorii.strashko@ti.com>
+ <1408634706-5762-3-git-send-email-grygorii.strashko@ti.com>
+ <20140821182035.GM24407@sirena.org.uk>
+ <53F74695.3010902@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <santosh.shilimkar-l0cyMroinI0@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<m-karicheri2-l0cyMroinI0@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140821182035.GM24407-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="sCERuZXRFShPQgLr"
+Cc: santosh.shilimkar-l0cyMroinI0@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	m-karicheri2-l0cyMroinI0@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <53F74695.3010902-l0cyMroinI0@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Mark,
 
-On 08/21/2014 09:20 PM, Mark Brown wrote:
-> On Thu, Aug 21, 2014 at 06:25:06PM +0300, Grygorii Strashko wrote:
->=20
->> +- ti,davinci-spi-wdelay : delay between transmissions.
->=20
-> I don't understand why this is here - there is already standard suppo=
-rt
-> in the SPI core for client drivers specifying inter-transfer delays. =
- If
-> there is a need to provide platform configuration for this in additio=
-n
-> to that then it should also be a standard property, there is nothing
-> device specific about these.
+--sCERuZXRFShPQgLr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Sorry, may be I've missed smth, because I was not able to find such com=
-mon=20
-property in SPI bindings document and code. Could you point me on, pls?
+On Fri, Aug 22, 2014 at 04:33:09PM +0300, Grygorii Strashko wrote:
+> On 08/21/2014 09:20 PM, Mark Brown wrote:
+> > On Thu, Aug 21, 2014 at 06:25:06PM +0300, Grygorii Strashko wrote:
 
-In our case it's hardware delay applied between transmissions:
-"Delay in between transmissions. Idle time that will be applied at
- the end of the current transmission if the bit WDEL is
-set in the current buffer. The delay to be applied is equal to:
-WDELAY =D7 PSPI module clock + 2 =D7 PSPI module clock
- PSPI module clock -> Period of SPI module clock"
+> >> +- ti,davinci-spi-wdelay : delay between transmissions.
 
->=20
->> +- ti,davinci-spi-odd-parity : odd partity enabled
->> +   OR
->> +  ti,davinci-spi-even-parity : even parity enabled
->=20
-> What do these mean?
+> > I don't understand why this is here - there is already standard support
+> > in the SPI core for client drivers specifying inter-transfer delays.  If
+> > there is a need to provide platform configuration for this in addition
+> > to that then it should also be a standard property, there is nothing
+> > device specific about these.
 
-Supported by OMAP-L138/da830:
-"
-SPIFMTn[23].PARPOL - Parity polarity: even or odd. PARPOL can be modifi=
-ed in privilege mode only.
- 0 An even parity flag is added at the end of the transmit data stream.
- 1 An odd parity flag is added at the end of the transmit data stream.
+> Sorry, may be I've missed smth, because I was not able to find such commo=
+n=20
+> property in SPI bindings document and code. Could you point me on, pls?
 
-SPIFMTn[22].PARENA - Parity enable.
- 0 - No parity generation/ verification is performed.
- 1 - A parity is transmitted at the end of each transmit data stream. A=
-t the end of a transfer the parity
- generator compares the received parity bit with the locally calculated=
- parity flag. If the parity bits do
- not match the PARERR flag is set in the corresponding control field. T=
-he parity type (even or odd)
- can be selected via the PARPOL bit.
-"
+It's not a property, it's what the delay_usecs in the transfer does.
+There is no obvious reason to apply something like this unconditionally
+on every transfer in DT - either it's needed only at particular points
+in the transfer for device reasons (in which case the device driver
+needs to know about it) or we need some sort of association with what
+the device is doing since the way the client driver splits up transfers
+is entirely up to it.
 
->=20
->> +- ti,davinci-spi-io-type: io type (check platform_data/spi-davinci.=
-h)
->=20
-> The bindings should be independent of the kernel, the values need to =
-be
-> included here (and the defines moved to include/dt-bindings so they c=
-an
-> be used when writing DTs).
+> >> +- ti,davinci-spi-odd-parity : odd partity enabled
+> >> +   OR
+> >> +  ti,davinci-spi-even-parity : even parity enabled
 
-Allowed values here are:
-#define SPI_IO_TYPE_INTR	0
-#define SPI_IO_TYPE_POLL	1
-#define SPI_IO_TYPE_DMA		2
+> > What do these mean?
 
-I'll update.
+> Supported by OMAP-L138/da830:
+> "
+> SPIFMTn[23].PARPOL - Parity polarity: even or odd. PARPOL can be modified=
+ in privilege mode only.
+>  0 An even parity flag is added at the end of the transmit data stream.
+>  1 An odd parity flag is added at the end of the transmit data stream.
 
->=20
->> +- ti,davinci-spi-disable-timer: disable CS timer (SPIFMTn)
->> +- ti,davinci-spi-c2t-delay: c2t delay
->> +- ti,davinci-spi-t2c-delay: t2c delay
->> +- ti,davinci-spi-t2e-delay: t2e delay
->> +- ti,davinci-spi-c2e-delay: c2e delay
->=20
-> What are all these timers/delays - at least some reference to the
-> datasheet please?
->=20
+Why would these be specified in DT and not with runtime flags enabled by
+the device?  It looks like they affect the data stream generated by the
+controller so the client device needs to know about them; I'd expect
+that it's device driver would be controlling when they are enabled if
+the controller supports them.
 
-Sorry, I'll update bindings with links on datasheet.
+> >> +- ti,davinci-spi-io-type: io type (check platform_data/spi-davinci.h)
 
-Keystone 2:
-http://www.ti.com/lit/ug/sprugp2a/sprugp2a.pdf
+> > The bindings should be independent of the kernel, the values need to be
+> > included here (and the defines moved to include/dt-bindings so they can
+> > be used when writing DTs).
 
-Davinci:
-dm644x - http://www.ti.com/lit/ug/sprue32a/sprue32a.pdf
-OMAP-L138/da830 - http://www.ti.com/lit/ug/spruh77a/spruh77a.pdf
+> Allowed values here are:
+> #define SPI_IO_TYPE_INTR	0
+> #define SPI_IO_TYPE_POLL	1
+> #define SPI_IO_TYPE_DMA		2
 
-Regards,
--grygorii
+> I'll update.
+
+Now I see these it's not at all clear why this is configurable at all -
+I would expect the controller driver to automatically select the most
+appropriate scheme for the transfers it's doing in order to obtain the
+best performance rather than having a global switch for this.  For
+almost all devices the best results will be obtained by doing a mix of
+these modes.
+
+Typically for each level of transfer there will be some minimal size
+below which it doesn't make sense to use that control type, for example
+it's common to only DMA if there's more than a FIFO worth of data to
+transfer.
+
+--sCERuZXRFShPQgLr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT91yBAAoJELSic+t+oim9/ZgQAI7EwD6AlX4fZhRNw+428wAf
+6sqIhQqAP6BX8nYI3lbE4bfSFo9QL6FJSd9a82ET7dZ6ea+6DJow4xxWttjMXQFr
+ybsGVH9STq87Faevc0WmNO7o/RlfHbdkZ/KFcehC7VybKpUznWi6D/zj19VeYTdA
+KVU32lURBcEEPCG8u5E0xAW7FBe47nF/QnrBtcaChxFyZBgd6tPHYuX6g105wzxc
+1h3wDXPE8JdJJ+Xn21oaRWsv2UxdlfLQqRGccLgCwP4AFGSrlXqAtXlbnoaGW2LU
+WpxGZ08wn+VSeJwcufOx7Ceq+pby/al11jF6a3O5+F1yhMwRPvDzYJXzsUTPqPat
+GijiEr4Mr8MhmE6lSlI9sLLdLTvJqd/ywYGwhU8Bcflg9flwL4EJJOFPJA+oYBZm
+y4bcrwMWfZl8fIqhOwBXuk/+9CVXFGgpyUmbj3LGlW+9W3g9G45uT9gMrGQYPEyL
+A9HJrEMhMt476MkKvd1AZdo+5xpRGH/vxCp2ceb2dll6wDCTHbiMl86D0ItjR5la
+bw88hvuR68ooxJJzctLTJIadEeI8J4SPDOLEyRfYqdjDjHxmXWCsyQVC0bqh3T6G
+9LgluynqhH9FelBzYYje4pk1405feFg6fPz05iISNHIbNzhoNR3UexDGTaQdaA3C
+1K7MR0MCkneUnY12dqfn
+=tsyM
+-----END PGP SIGNATURE-----
+
+--sCERuZXRFShPQgLr--
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

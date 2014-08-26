@@ -1,54 +1,62 @@
-From: Marek Vasut <marex@denx.de>
+From: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Subject: Re: [PATCH v4] spi: spi-imx: add DMA support
-Date: Tue, 26 Aug 2014 09:26:40 +0200
-Message-ID: <201408260926.41038.marex@denx.de>
-References: <1408752835-10995-1-git-send-email-b38343@freescale.com> <201408251007.22393.marex@denx.de> <20140826071757.GA32751@Robin-OptiPlex-780>
+Date: Tue, 26 Aug 2014 15:52:22 +0800
+Message-ID: <20140826075220.GA820@Robin-OptiPlex-780>
+References: <1408752835-10995-1-git-send-email-b38343@freescale.com>
+ <201408251007.22393.marex@denx.de>
+ <20140826071757.GA32751@Robin-OptiPlex-780>
+ <201408260926.41038.marex@denx.de>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Frank.Li@freescale.com, shawn.guo@linaro.org
-To: Robin Gong <b38343@freescale.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20140826071757.GA32751@Robin-OptiPlex-780>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<Frank.Li-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <201408260926.41038.marex-ynQEQJNshbs@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday, August 26, 2014 at 09:17:59 AM, Robin Gong wrote:
-> On Mon, Aug 25, 2014 at 10:07:22AM +0200, Marek Vasut wrote:
-> > On Saturday, August 23, 2014 at 02:13:55 AM, Robin Gong wrote:
-> > > After enable DMA
-> > 
-> > Please also add a commit message which describes the change, not only
-> > some test results.
-> > 
-> > [...]
-> 
->  Ok, I will enrich it in next version.
-> 
-> > > @@ -911,6 +1194,13 @@ static int spi_imx_probe(struct platform_device
-> > > *pdev) goto out_put_per;
+On Tue, Aug 26, 2014 at 09:26:40AM +0200, Marek Vasut wrote:
+> On Tuesday, August 26, 2014 at 09:17:59 AM, Robin Gong wrote:
+> > On Mon, Aug 25, 2014 at 10:07:22AM +0200, Marek Vasut wrote:
+> > > On Saturday, August 23, 2014 at 02:13:55 AM, Robin Gong wrote:
+> > > > After enable DMA
 > > > 
-> > >  	spi_imx->spi_clk = clk_get_rate(spi_imx->clk_per);
+> > > Please also add a commit message which describes the change, not only
+> > > some test results.
 > > > 
-> > > +	/*
-> > > +	 * Only validated on i.mx6 now, can remove the constrain if validated
-> > > on +	 * other chips.
-> > > +	 */
+> > > [...]
 > > 
-> > Given that the check below tests for imx51_ecspi_devtype_data ... does
-> > that mean, that this code was never tested on MX51 and MX53, yet will be
-> > enabled for those chips and might possibly break them ?
+> >  Ok, I will enrich it in next version.
+> > 
+> > > > @@ -911,6 +1194,13 @@ static int spi_imx_probe(struct platform_device
+> > > > *pdev) goto out_put_per;
+> > > > 
+> > > >  	spi_imx->spi_clk = clk_get_rate(spi_imx->clk_per);
+> > > > 
+> > > > +	/*
+> > > > +	 * Only validated on i.mx6 now, can remove the constrain if validated
+> > > > on +	 * other chips.
+> > > > +	 */
+> > > 
+> > > Given that the check below tests for imx51_ecspi_devtype_data ... does
+> > > that mean, that this code was never tested on MX51 and MX53, yet will be
+> > > enabled for those chips and might possibly break them ?
+> > 
+> > Yes, because there is no available mx51 mx53 boards in my hands. But I
+> > think it won't bring too much trouble, since they share the same IP.
+> > No, the patch won't break current MX51 and MX53, because they didn't enable
+> > dma in dts setting,and they will keep use pio mode.
 > 
-> Yes, because there is no available mx51 mx53 boards in my hands. But I
-> think it won't bring too much trouble, since they share the same IP.
-> No, the patch won't break current MX51 and MX53, because they didn't enable
-> dma in dts setting,and they will keep use pio mode.
-
-Thanks for clearing this up, this was the important piece of information for me. 
-Please put it into the commit message.
-
-Best regards,
-Marek Vasut
+> Thanks for clearing this up, this was the important piece of information for me. 
+> Please put it into the commit message.
+>
+ Okay. Thanks for your reminding.
+> Best regards,
+> Marek Vasut
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

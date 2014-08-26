@@ -1,62 +1,78 @@
-From: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH v4] spi: spi-imx: add DMA support
-Date: Tue, 26 Aug 2014 15:52:22 +0800
-Message-ID: <20140826075220.GA820@Robin-OptiPlex-780>
-References: <1408752835-10995-1-git-send-email-b38343@freescale.com>
- <201408251007.22393.marex@denx.de>
- <20140826071757.GA32751@Robin-OptiPlex-780>
- <201408260926.41038.marex@denx.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<Frank.Li-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-To: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <201408260926.41038.marex-ynQEQJNshbs@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 7/9] spi: core: Convert to dev_pm_domain_attach|detach()
+Date: Tue, 26 Aug 2014 14:07:15 +0200
+Message-ID: <1409054837-5667-8-git-send-email-ulf.hansson@linaro.org>
+References: <1409054837-5667-1-git-send-email-ulf.hansson@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kevin Hilman <khilman@linaro.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	devicetree@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>,
+	Stephen Boyd <sboyd@codeaurora.org>,
+	Philipp Zabel <philipp.zabel@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>,
+	Russell King <linux@arm.linux.org.uk>,
+	Ulf Hansson <ulf.hansson@linaro.org>, linux-spi@vger.kernel.org
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-pm@vger.kernel.org
+Return-path: <linux-pm-owner@vger.kernel.org>
+In-Reply-To: <1409054837-5667-1-git-send-email-ulf.hansson@linaro.org>
+Sender: linux-pm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tue, Aug 26, 2014 at 09:26:40AM +0200, Marek Vasut wrote:
-> On Tuesday, August 26, 2014 at 09:17:59 AM, Robin Gong wrote:
-> > On Mon, Aug 25, 2014 at 10:07:22AM +0200, Marek Vasut wrote:
-> > > On Saturday, August 23, 2014 at 02:13:55 AM, Robin Gong wrote:
-> > > > After enable DMA
-> > > 
-> > > Please also add a commit message which describes the change, not only
-> > > some test results.
-> > > 
-> > > [...]
-> > 
-> >  Ok, I will enrich it in next version.
-> > 
-> > > > @@ -911,6 +1194,13 @@ static int spi_imx_probe(struct platform_device
-> > > > *pdev) goto out_put_per;
-> > > > 
-> > > >  	spi_imx->spi_clk = clk_get_rate(spi_imx->clk_per);
-> > > > 
-> > > > +	/*
-> > > > +	 * Only validated on i.mx6 now, can remove the constrain if validated
-> > > > on +	 * other chips.
-> > > > +	 */
-> > > 
-> > > Given that the check below tests for imx51_ecspi_devtype_data ... does
-> > > that mean, that this code was never tested on MX51 and MX53, yet will be
-> > > enabled for those chips and might possibly break them ?
-> > 
-> > Yes, because there is no available mx51 mx53 boards in my hands. But I
-> > think it won't bring too much trouble, since they share the same IP.
-> > No, the patch won't break current MX51 and MX53, because they didn't enable
-> > dma in dts setting,and they will keep use pio mode.
-> 
-> Thanks for clearing this up, this was the important piece of information for me. 
-> Please put it into the commit message.
->
- Okay. Thanks for your reminding.
-> Best regards,
-> Marek Vasut
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Previously only the ACPI power domain was supported by the i2c bus.
+
+Let's convert to the common attach/detach functions for power domains,
+which currently means we are extending the support to include the
+generic power domain as well.
+
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+---
+ drivers/spi/spi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index e0531ba..6a7b0cc 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -264,10 +264,12 @@ static int spi_drv_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	acpi_dev_pm_attach(dev, true);
+-	ret = sdrv->probe(to_spi_device(dev));
+-	if (ret)
+-		acpi_dev_pm_detach(dev, true);
++	ret = dev_pm_domain_attach(dev, true);
++	if (ret != -EPROBE_DEFER) {
++		ret = sdrv->probe(to_spi_device(dev));
++		if (ret)
++			dev_pm_domain_detach(dev, true);
++	}
+ 
+ 	return ret;
+ }
+@@ -278,7 +280,7 @@ static int spi_drv_remove(struct device *dev)
+ 	int ret;
+ 
+ 	ret = sdrv->remove(to_spi_device(dev));
+-	acpi_dev_pm_detach(dev, true);
++	dev_pm_domain_detach(dev, true);
+ 
+ 	return ret;
+ }
+-- 
+1.9.1
+

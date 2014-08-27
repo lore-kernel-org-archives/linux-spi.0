@@ -1,37 +1,37 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH] spi: dw-pci: fix bug when regs left uninitialized
-Date: Wed, 27 Aug 2014 17:53:19 +0300
-Message-ID: <1409151199.30155.20.camel@linux.intel.com>
-References: <1409145672-10258-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20140827144608.GE17528@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140827144608.GE17528-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [Fixes: PATCH v1] spi: dw: fix kernel crash due to NULL pointer dereference
+Date: Wed, 27 Aug 2014 19:26:08 +0300
+Message-ID: <1409156768-28461-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	<stable@vger.kernel.org>
+To: Baruch Siach <baruch@tkos.co.il>, Mark Brown <broonie@kernel.org>,
+	linux-spi@vger.kernel.org
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, 2014-08-27 at 15:46 +0100, Mark Brown wrote:
-> On Wed, Aug 27, 2014 at 04:21:12PM +0300, Andy Shevchenko wrote:
-> > The commit 04f421e7 "spi: dw: use managed resources" changes drivers to use
-> > managed functions, but seems wasn't properly tested in PCI case. The regs field
-> > of struct dw_spi left uninitialized. Thus, kernel crashes when tries to access
-> > to the SPI controller registers. This patch fixes the issue.
-> 
-> Applied.  Please use the Fixes: tag and use a minimum of 12 characters
-> for the commit ID (to avoid collisions).
+The obvious fix after the commit d9c73bb8a3a5 "spi: dw: add support for gpio
+controlled chip select". This patch fixes the issue by using locally defined
+temporary variable.
 
-Noted, thank you!
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v3.16+
+---
+ drivers/spi/spi-dw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 29f3314..670f062 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -271,7 +271,7 @@ static void giveback(struct dw_spi *dws)
+ 					transfer_list);
+ 
+ 	if (!last_transfer->cs_change)
+-		spi_chip_sel(dws, dws->cur_msg->spi, 0);
++		spi_chip_sel(dws, msg->spi, 0);
+ 
+ 	spi_finalize_current_message(dws->master);
+ }
 -- 
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.1.0

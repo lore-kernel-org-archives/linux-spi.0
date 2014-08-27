@@ -1,78 +1,43 @@
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 7/9] spi: core: Convert to dev_pm_domain_attach|detach()
-Date: Tue, 26 Aug 2014 14:07:15 +0200
-Message-ID: <1409054837-5667-8-git-send-email-ulf.hansson@linaro.org>
-References: <1409054837-5667-1-git-send-email-ulf.hansson@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kevin Hilman <khilman@linaro.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	devicetree@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Ben Dooks <ben-linux@fluff.org>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Stephen Boyd <sboyd@codeaurora.org>,
-	Philipp Zabel <philipp.zabel@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>,
-	Russell King <linux@arm.linux.org.uk>,
-	Ulf Hansson <ulf.hansson@linaro.org>, linux-spi@vger.kernel.org
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-pm@vger.kernel.org
-Return-path: <linux-pm-owner@vger.kernel.org>
-In-Reply-To: <1409054837-5667-1-git-send-email-ulf.hansson@linaro.org>
-Sender: linux-pm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi: dw-pci: fix bug when regs left uninitialized
+Date: Wed, 27 Aug 2014 16:21:12 +0300
+Message-ID: <1409145672-10258-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	<stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Previously only the ACPI power domain was supported by the i2c bus.
+The commit 04f421e7 "spi: dw: use managed resources" changes drivers to use
+managed functions, but seems wasn't properly tested in PCI case. The regs field
+of struct dw_spi left uninitialized. Thus, kernel crashes when tries to access
+to the SPI controller registers. This patch fixes the issue.
 
-Let's convert to the common attach/detach functions for power domains,
-which currently means we are extending the support to include the
-generic power domain as well.
-
-Cc: linux-spi@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # v3.14+
 ---
- drivers/spi/spi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/spi/spi-dw-pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e0531ba..6a7b0cc 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -264,10 +264,12 @@ static int spi_drv_probe(struct device *dev)
+diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
+index e203d8f..473bd52 100644
+--- a/drivers/spi/spi-dw-pci.c
++++ b/drivers/spi/spi-dw-pci.c
+@@ -59,6 +59,8 @@ static int spi_pci_probe(struct pci_dev *pdev,
  	if (ret)
  		return ret;
  
--	acpi_dev_pm_attach(dev, true);
--	ret = sdrv->probe(to_spi_device(dev));
--	if (ret)
--		acpi_dev_pm_detach(dev, true);
-+	ret = dev_pm_domain_attach(dev, true);
-+	if (ret != -EPROBE_DEFER) {
-+		ret = sdrv->probe(to_spi_device(dev));
-+		if (ret)
-+			dev_pm_domain_detach(dev, true);
-+	}
- 
- 	return ret;
- }
-@@ -278,7 +280,7 @@ static int spi_drv_remove(struct device *dev)
- 	int ret;
- 
- 	ret = sdrv->remove(to_spi_device(dev));
--	acpi_dev_pm_detach(dev, true);
-+	dev_pm_domain_detach(dev, true);
- 
- 	return ret;
- }
++	dws->regs = pcim_iomap_table(pdev)[pci_bar];
++
+ 	dws->bus_num = 0;
+ 	dws->num_cs = 4;
+ 	dws->irq = pdev->irq;
 -- 
-1.9.1
+2.1.0
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

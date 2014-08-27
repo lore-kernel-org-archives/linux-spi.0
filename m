@@ -1,53 +1,63 @@
-From: Mark Brown <broonie@kernel.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [Fixes: PATCH v1] spi: dw: fix kernel crash due to NULL pointer
  dereference
-Date: Wed, 27 Aug 2014 17:33:39 +0100
-Message-ID: <20140827163339.GJ17528@sirena.org.uk>
+Date: Wed, 27 Aug 2014 17:39:39 +0100
+Message-ID: <20140827163939.GK17528@sirena.org.uk>
 References: <1409156768-28461-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="/goR4nZoqCKYqIm7"
-Cc: Baruch Siach <baruch@tkos.co.il>, linux-spi@vger.kernel.org,
-	stable@vger.kernel.org
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Return-path: <stable-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="PtqI9FCiPnELgtD1"
+Cc: Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1409156768-28461-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1409156768-28461-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---/goR4nZoqCKYqIm7
+--PtqI9FCiPnELgtD1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 On Wed, Aug 27, 2014 at 07:26:08PM +0300, Andy Shevchenko wrote:
-> The obvious fix after the commit d9c73bb8a3a5 "spi: dw: add support for gpio
-> controlled chip select". This patch fixes the issue by using locally defined
+> The obvious fix after the commit d9c73bb8a3a5 "spi: dw: add support for g=
+pio
+> controlled chip select". This patch fixes the issue by using locally defi=
+ned
 > temporary variable.
+>=20
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+> Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # v3.16+
 
-Applied, thanks.
+Applied, but to repeat please use Fixes.
 
---/goR4nZoqCKYqIm7
+--PtqI9FCiPnELgtD1
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJT/ghgAAoJELSic+t+oim9lwMP/1zQKPxrPAWzZRTGOwyvdUbp
-PaIMlHl154MgJlRqmAK32sHUgXBiqDJXK0nbcVx/AxW2HR5ZA3x/1WCUbisK4Y6Z
-8OI8FBCxJGHoGFELTC6DeEx/A85EfxcpHIO+Ck2F2D419BqrDIIP7NlOxsAJSKwh
-Z9VTjUj/4O24iKpaThzp43FhncXpaHSp1ID0H1+GV6D6/e1GVfa003DOgS8RtoYP
-DM+8Q7ps3vCg2mE5fGnlrqfiegUhhVtIriO/rG/CiATdDktrHQSKqZwhIKciJT1f
-jntjiDuObDh8efrDQVZm6FPnED7oEVybzE7XVIAD8oOAqMt3ExruRNZFcnayEby9
-XJpaiazN1jfJMmIzSXTsgInK/wbvHIRFcR32qHVRTK7kQIcd6ozFoDph4jjSEmMA
-8y9Wx5Ky5CV9jLMz0uwElAwObRURCLlyPjy8wK2cxDFaU7SbNG3+LYo1H2HLLgIl
-ZbezNFBdM2pQw2nh53y6exRzWFztQkOsx9deYMWgwPAQXgQO1jldJvPN411LblSe
-R5sDISznoLf5Av2ZT9OYxB07HvtvQKsQ+knVX9Nf92VWRJP15xoPIlLyhjhVeJ5Z
-8vmydas3oSGSXdBEq8yzNj9qFc68Xm0c4KWV9oHKkVnaVseP3Y1+elqREEsqs3so
-PD4E3umnOwY/QO7GJwml
-=4qRS
+iQIcBAEBAgAGBQJT/gnHAAoJELSic+t+oim9WqsQAJUBmnqG1tWfdBYQTwda5OyO
+9gToQxHIVd7UdNL7NG2+YJPs/pkID/JvavhiZ99zxRrPCPiSPs3XQFCsmpcAGVgC
+JfF+z5RqY7qFbT60Zs2iF63m2fLIL5e2cz4Cidbyp1wsYOQz5GMdkRk6g8Ov1Twv
+kdzKoKPlfFYw8AeA7q5ee63SIdUShUwyc8LOR5a6T3WUYck7F0SiLyNe3a+jZq++
+yA8MHlSkZEdv1hgZXysQlfm3utz0qUi26sGtIBjqiwJWwtMSqJJ1CrVgMksP0opZ
+RRrIRKr0aGZhhYVSsYvHMGZRz9ND236Y0p/5iP+DUYimXRlG6BCCU4WY8M2R+INR
+jQd/nhSohk+MqqgP6LTj60iHAxC165Mp7s7dF9TR8I9i+ABRu9hoigHvIDRnWotg
+C8sDq9J+F+gdb4X1/AwkwA3+1e9/RfzQCC9KLXBAdb6kXBmqtnKyMZ+d7XxieRyy
+tqf/LvnQsDv+rf/EKY/gak9hbWAhx7YnmR5dJPTabhelFfc6jK95JmBQtAtctTgm
+E2+5qPgKp9rc7wFUOvr/mw+yAynzVukbQVur1aClxR0kcf+WdxzN/IhzHJN3PXDJ
+1iHjt6NzD15df6v3f97KSAwJMSTD+TqjKBSiyWjWv6rl4Mpw70r9Ru6Xoal80usn
+ZVX/M+6NZt0kkZYAEZBK
+=cE1z
 -----END PGP SIGNATURE-----
 
---/goR4nZoqCKYqIm7--
+--PtqI9FCiPnELgtD1--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,36 +1,38 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v1 2/4] spi: dw-pci: apply pci_bar and re-use pci_name
-Date: Thu, 28 Aug 2014 10:21:02 +0300
-Message-ID: <1409210464-29039-2-git-send-email-andriy.shevchenko@linux.intel.com>
-References: <1409210464-29039-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Subject: [PATCH] spi: dw-mid: check that DMA was inited before exit
+Date: Thu, 28 Aug 2014 10:37:40 +0300
+Message-ID: <1409211460-6787-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	<stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1409210464-29039-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Nevertheless pci_bar is 0 let's explicitly use it when map IO regions. While
-here, use pci_name instead of dev_name.
+If the driver was compiled with DMA support, but DMA channels weren't acquired
+by some reason, mid_spi_dma_exit() will crash the kernel.
 
+Fixes: 7063c0d942a1 (spi/dw_spi: add DMA support)
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # v2.6.38+
 ---
- drivers/spi/spi-dw-pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-dw-mid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 6123e37..473bd52 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -55,7 +55,7 @@ static int spi_pci_probe(struct pci_dev *pdev,
- 	/* Get basic io resource and map it */
- 	dws->paddr = pci_resource_start(pdev, pci_bar);
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index ed521de..51fde71 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -83,6 +83,8 @@ err_exit:
  
--	ret = pcim_iomap_regions(pdev, 1, dev_name(&pdev->dev));
-+	ret = pcim_iomap_regions(pdev, 1 << pci_bar, pci_name(pdev));
- 	if (ret)
- 		return ret;
- 
+ static void mid_spi_dma_exit(struct dw_spi *dws)
+ {
++	if (!dws->dma_inited)
++		return;
+ 	dma_release_channel(dws->txchan);
+ 	dma_release_channel(dws->rxchan);
+ }
 -- 
 2.1.0
 

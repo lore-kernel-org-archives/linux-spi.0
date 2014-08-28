@@ -1,42 +1,61 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH] spi: dw-mid: check that DMA was inited before exit
-Date: Thu, 28 Aug 2014 10:37:40 +0300
-Message-ID: <1409211460-6787-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	<stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2] spi: rspi: Add support for new R-Car Gen2 SoCs
+Date: Thu, 28 Aug 2014 10:10:19 +0200
+Message-ID: <1409213419-5507-1-git-send-email-geert+renesas@glider.be>
+Cc: devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-sh-owner@vger.kernel.org>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-If the driver was compiled with DMA support, but DMA channels weren't acquired
-by some reason, mid_spi_dma_exit() will crash the kernel.
+Add support for QSPI in:
+  - r8a7792 (R-Car V2H)
+  - r8a7793 (R-Car M2-N)
+  - r8a7794 (R-Car E2)
 
-Fixes: 7063c0d942a1 (spi/dw_spi: add DMA support)
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # v2.6.38+
+r8a7791 is now called "R-Car M2-W".
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- drivers/spi/spi-dw-mid.c | 2 ++
- 1 file changed, 2 insertions(+)
+v2:
+  - Drop RFC
+  - Replace an "M2" by "Gen2"
+---
+ Documentation/devicetree/bindings/spi/spi-rspi.txt | 5 ++++-
+ drivers/spi/spi-rspi.c                             | 2 +-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index ed521de..51fde71 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -83,6 +83,8 @@ err_exit:
+diff --git a/Documentation/devicetree/bindings/spi/spi-rspi.txt b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+index f9929aceeacc..8f4169f63936 100644
+--- a/Documentation/devicetree/bindings/spi/spi-rspi.txt
++++ b/Documentation/devicetree/bindings/spi/spi-rspi.txt
+@@ -11,7 +11,10 @@ Required properties:
+ 		        - "renesas,rspi-sh7757" (SH)
+ 			- "renesas,rspi-r7s72100" (RZ/A1H)
+ 			- "renesas,qspi-r8a7790" (R-Car H2)
+-			- "renesas,qspi-r8a7791" (R-Car M2)
++			- "renesas,qspi-r8a7791" (R-Car M2-W)
++			- "renesas,qspi-r8a7792" (R-Car V2H)
++			- "renesas,qspi-r8a7793" (R-Car M2-N)
++			- "renesas,qspi-r8a7794" (R-Car E2)
+ - reg              : Address start and address range size of the device
+ - interrupts       : A list of interrupt-specifiers, one for each entry in
+ 		     interrupt-names.
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index 1da609e4491d..54bb0faec155 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -87,7 +87,7 @@
+ /* RSPI on SH only */
+ #define SPCR_TXMD		0x02	/* TX Only Mode (vs. Full Duplex) */
+ #define SPCR_SPMS		0x01	/* 3-wire Mode (vs. 4-wire) */
+-/* QSPI on R-Car M2 only */
++/* QSPI on R-Car Gen2 only */
+ #define SPCR_WSWAP		0x02	/* Word Swap of read-data for DMAC */
+ #define SPCR_BSWAP		0x01	/* Byte Swap of read-data for DMAC */
  
- static void mid_spi_dma_exit(struct dw_spi *dws)
- {
-+	if (!dws->dma_inited)
-+		return;
- 	dma_release_channel(dws->txchan);
- 	dma_release_channel(dws->rxchan);
- }
 -- 
-2.1.0
+1.9.1
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

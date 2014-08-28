@@ -1,78 +1,88 @@
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v2 7/9] spi: core: Convert to dev_pm_domain_attach|detach()
-Date: Thu, 28 Aug 2014 10:39:00 +0200
-Message-ID: <1409215142-8218-8-git-send-email-ulf.hansson@linaro.org>
-References: <1409215142-8218-1-git-send-email-ulf.hansson@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kevin Hilman <khilman@linaro.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	devicetree@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Ben Dooks <ben-linux@fluff.org>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Stephen Boyd <sboyd@codeaurora.org>,
-	Philipp Zabel <philipp.zabel@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>,
-	Russell King <linux@arm.linux.org.uk>,
-	Ulf Hansson <ulf.hansson@linaro.org>, linux-spi@vger.kernel.org
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-pm@vger.kernel.org
-Return-path: <linux-pm-owner@vger.kernel.org>
-In-Reply-To: <1409215142-8218-1-git-send-email-ulf.hansson@linaro.org>
-Sender: linux-pm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH] spi: dw-mid: don't leak memory on exit
+Date: Thu, 28 Aug 2014 11:53:17 +0300
+Message-ID: <1409215997-26085-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	<stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Previously only the ACPI power domain was supported by the spi bus.
+When built with DMA support the memory for an internal structure is allocated
+but not freed. Converting to devm_kzalloc solves the issue.
 
-Let's convert to the common attach/detach functions for power domains,
-which currently means we are extending the support to include the
-generic power domain as well.
-
-Cc: linux-spi@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 7063c0d942a1 (spi/dw_spi: add DMA support)
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Cc: <stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org> # v2.6.38+
 ---
- drivers/spi/spi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/spi/spi-dw-mid.c | 4 ++--
+ drivers/spi/spi-dw-pci.c | 5 ++---
+ drivers/spi/spi-dw.h     | 3 ++-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index e0531ba..6a7b0cc 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -264,10 +264,12 @@ static int spi_drv_probe(struct device *dev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index c79bf96..ceb95b4 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -202,7 +202,7 @@ static struct dw_spi_dma_ops mid_dma_ops = {
+ #define CLK_SPI_CDIV_MASK	0x00000e00
+ #define CLK_SPI_DISABLE_OFFSET	8
  
--	acpi_dev_pm_attach(dev, true);
--	ret = sdrv->probe(to_spi_device(dev));
--	if (ret)
--		acpi_dev_pm_detach(dev, true);
-+	ret = dev_pm_domain_attach(dev, true);
-+	if (ret != -EPROBE_DEFER) {
-+		ret = sdrv->probe(to_spi_device(dev));
-+		if (ret)
-+			dev_pm_domain_detach(dev, true);
-+	}
+-int dw_spi_mid_init(struct dw_spi *dws)
++int dw_spi_mid_init(struct device *dev, struct dw_spi *dws)
+ {
+ 	void __iomem *clk_reg;
+ 	u32 clk_cdiv;
+@@ -220,7 +220,7 @@ int dw_spi_mid_init(struct dw_spi *dws)
+ 	dws->fifo_len = 40;	/* FIFO has 40 words buffer */
  
- 	return ret;
- }
-@@ -278,7 +280,7 @@ static int spi_drv_remove(struct device *dev)
- 	int ret;
+ #ifdef CONFIG_SPI_DW_MID_DMA
+-	dws->dma_priv = kzalloc(sizeof(struct mid_dma), GFP_KERNEL);
++	dws->dma_priv = devm_kzalloc(dev, sizeof(struct mid_dma), GFP_KERNEL);
+ 	if (!dws->dma_priv)
+ 		return -ENOMEM;
+ 	dws->dma_ops = &mid_dma_ops;
+diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
+index b8b02d7..dd06c07 100644
+--- a/drivers/spi/spi-dw-pci.c
++++ b/drivers/spi/spi-dw-pci.c
+@@ -28,8 +28,7 @@ struct dw_spi_pci {
+ 	struct dw_spi	dws;
+ };
  
- 	ret = sdrv->remove(to_spi_device(dev));
--	acpi_dev_pm_detach(dev, true);
-+	dev_pm_domain_detach(dev, true);
+-static int spi_pci_probe(struct pci_dev *pdev,
+-	const struct pci_device_id *ent)
++static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+ 	struct dw_spi_pci *dwpci;
+ 	struct dw_spi *dws;
+@@ -66,7 +65,7 @@ static int spi_pci_probe(struct pci_dev *pdev,
+ 	 * clock rate, FIFO depth.
+ 	 */
+ 	if (pdev->device == 0x0800) {
+-		ret = dw_spi_mid_init(dws);
++		ret = dw_spi_mid_init(&pdev->dev, dws);
+ 		if (ret)
+ 			return ret;
+ 	}
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 0f8cece..b3ff9eb 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -232,5 +232,6 @@ extern int dw_spi_resume_host(struct dw_spi *dws);
+ extern void dw_spi_xfer_done(struct dw_spi *dws);
  
- 	return ret;
- }
+ /* platform related setup */
+-extern int dw_spi_mid_init(struct dw_spi *dws); /* Intel MID platforms */
++/* Intel MID platforms */
++extern int dw_spi_mid_init(struct device *dev, struct dw_spi *dws);
+ #endif /* DW_SPI_HEADER_H */
 -- 
-1.9.1
+2.1.0
 
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

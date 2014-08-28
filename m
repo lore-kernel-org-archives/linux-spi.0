@@ -1,80 +1,78 @@
-From: Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2] spi: sh-msiof: Add support for new R-Car Gen2 SoCs
-Date: Thu, 28 Aug 2014 10:11:03 +0200
-Message-ID: <1409213463-5599-1-git-send-email-geert+renesas@glider.be>
-Cc: devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v2 7/9] spi: core: Convert to dev_pm_domain_attach|detach()
+Date: Thu, 28 Aug 2014 10:39:00 +0200
+Message-ID: <1409215142-8218-8-git-send-email-ulf.hansson@linaro.org>
+References: <1409215142-8218-1-git-send-email-ulf.hansson@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kevin Hilman <khilman@linaro.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	devicetree@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>,
+	Stephen Boyd <sboyd@codeaurora.org>,
+	Philipp Zabel <philipp.zabel@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>,
+	Russell King <linux@arm.linux.org.uk>,
+	Ulf Hansson <ulf.hansson@linaro.org>, linux-spi@vger.kernel.org
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-pm@vger.kernel.org
+Return-path: <linux-pm-owner@vger.kernel.org>
+In-Reply-To: <1409215142-8218-1-git-send-email-ulf.hansson@linaro.org>
+Sender: linux-pm-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add support for MSIOF in:
-  - r8a7792 (R-Car V2H)
-  - r8a7793 (R-Car M2-N)
-  - r8a7794 (R-Car E2)
+Previously only the ACPI power domain was supported by the spi bus.
 
-r8a7791 is now called "R-Car M2-W".
+Let's convert to the common attach/detach functions for power domains,
+which currently means we are extending the support to include the
+generic power domain as well.
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
-v2:
-  - Drop RFC
-  - Replace an "H2 and M2" by "Gen2"
----
- Documentation/devicetree/bindings/spi/sh-msiof.txt | 6 +++++-
- drivers/spi/spi-sh-msiof.c                         | 6 ++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/spi/spi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/sh-msiof.txt b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-index 98e07f1c3dab..d11c3721e7cd 100644
---- a/Documentation/devicetree/bindings/spi/sh-msiof.txt
-+++ b/Documentation/devicetree/bindings/spi/sh-msiof.txt
-@@ -6,6 +6,10 @@ Required properties:
- 			 "renesas,sh-mobile-msiof" for SH Mobile series.
- 			 Examples with soctypes are:
- 			 "renesas,msiof-r8a7790" (R-Car H2)
-+			 "renesas,msiof-r8a7791" (R-Car M2-W)
-+			 "renesas,msiof-r8a7792" (R-Car V2H)
-+			 "renesas,msiof-r8a7793" (R-Car M2-N)
-+			 "renesas,msiof-r8a7794" (R-Car E2)
- - reg                  : A list of offsets and lengths of the register sets for
- 			 the device.
- 			 If only one register set is present, it is to be used
-@@ -31,7 +35,7 @@ Optional properties, deprecated for soctype-specific bindings:
- - renesas,tx-fifo-size : Overrides the default tx fifo size given in words
- 			 (default is 64)
- - renesas,rx-fifo-size : Overrides the default rx fifo size given in words
--			 (default is 64, or 256 on R-Car H2 and M2)
-+			 (default is 64, or 256 on R-Car Gen2)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index e0531ba..6a7b0cc 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -264,10 +264,12 @@ static int spi_drv_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
- Pinctrl properties might be needed, too.  See
- Documentation/devicetree/bindings/pinctrl/renesas,*.
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 1165d418340f..3f365402fcc0 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -928,6 +928,9 @@ static const struct of_device_id sh_msiof_match[] = {
- 	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
- 	{ .compatible = "renesas,msiof-r8a7790",   .data = &r8a779x_data },
- 	{ .compatible = "renesas,msiof-r8a7791",   .data = &r8a779x_data },
-+	{ .compatible = "renesas,msiof-r8a7792",   .data = &r8a779x_data },
-+	{ .compatible = "renesas,msiof-r8a7793",   .data = &r8a779x_data },
-+	{ .compatible = "renesas,msiof-r8a7794",   .data = &r8a779x_data },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, sh_msiof_match);
-@@ -1219,6 +1222,9 @@ static struct platform_device_id spi_driver_ids[] = {
- 	{ "spi_sh_msiof",	(kernel_ulong_t)&sh_data },
- 	{ "spi_r8a7790_msiof",	(kernel_ulong_t)&r8a779x_data },
- 	{ "spi_r8a7791_msiof",	(kernel_ulong_t)&r8a779x_data },
-+	{ "spi_r8a7792_msiof",	(kernel_ulong_t)&r8a779x_data },
-+	{ "spi_r8a7793_msiof",	(kernel_ulong_t)&r8a779x_data },
-+	{ "spi_r8a7794_msiof",	(kernel_ulong_t)&r8a779x_data },
- 	{},
- };
- MODULE_DEVICE_TABLE(platform, spi_driver_ids);
+-	acpi_dev_pm_attach(dev, true);
+-	ret = sdrv->probe(to_spi_device(dev));
+-	if (ret)
+-		acpi_dev_pm_detach(dev, true);
++	ret = dev_pm_domain_attach(dev, true);
++	if (ret != -EPROBE_DEFER) {
++		ret = sdrv->probe(to_spi_device(dev));
++		if (ret)
++			dev_pm_domain_detach(dev, true);
++	}
+ 
+ 	return ret;
+ }
+@@ -278,7 +280,7 @@ static int spi_drv_remove(struct device *dev)
+ 	int ret;
+ 
+ 	ret = sdrv->remove(to_spi_device(dev));
+-	acpi_dev_pm_detach(dev, true);
++	dev_pm_domain_detach(dev, true);
+ 
+ 	return ret;
+ }
 -- 
 1.9.1
 

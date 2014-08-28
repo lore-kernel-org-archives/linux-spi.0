@@ -1,69 +1,56 @@
-From: Robin Gong <b38343@freescale.com>
-Subject: Re: [PATCH v4] spi: spi-imx: add DMA support
-Date: Thu, 28 Aug 2014 17:59:41 +0800
-Message-ID: <20140828095939.GA13274@Robin-OptiPlex-780>
-References: <1408752835-10995-1-git-send-email-b38343@freescale.com>
- <CAGUYZuQre3RAQy+qqwq5HthrjnT85V5RKu2xwXOC=gL6Yk33TQ@mail.gmail.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2] spi: rspi: Add support for new R-Car Gen2 SoCs
+Date: Thu, 28 Aug 2014 15:33:42 +0100
+Message-ID: <20140828143342.GA29327@sirena.org.uk>
+References: <1409213419-5507-1-git-send-email-geert+renesas@glider.be>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: marex@denx.de, Frank.Li@freescale.com,
- linux-kernel <linux-kernel@vger.kernel.org>, linux-spi@vger.kernel.org,
- broonie@kernel.org, shawn.guo@linaro.org, linux-arm-kernel@lists.infradead.org
-To: sanjeev sharma <sanjeevsharmaengg@gmail.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="G4iJoqBmSsgzjUCe"
+Cc: devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-sh@vger.kernel.org
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Return-path: <linux-sh-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <CAGUYZuQre3RAQy+qqwq5HthrjnT85V5RKu2xwXOC=gL6Yk33TQ@mail.gmail.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+In-Reply-To: <1409213419-5507-1-git-send-email-geert+renesas@glider.be>
+Sender: linux-sh-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Wed, Aug 27, 2014 at 11:12:08AM +0530, sanjeev sharma wrote:
-> On Sat, Aug 23, 2014 at 5:43 AM, Robin Gong <b38343@freescale.com> wrote:
-> 
-> > +       /*
-> > +        * Configure the DMA register: setup the watermark
-> > +        * and enable DMA request.
-> > +        */
-> > +       if (spi_imx->dma_is_inited) {
-> > +               dma = readl(spi_imx->base + MX51_ECSPI_DMA);
-> > +
-> > +               spi_imx->tx_wml = spi_imx_get_fifosize(spi_imx) / 2;
-> > +               spi_imx->rx_wml = spi_imx_get_fifosize(spi_imx) / 2;
-> > +               spi_imx->rxt_wml = spi_imx_get_fifosize(spi_imx) / 2;
-> > +               rx_wml_cfg = spi_imx->rx_wml <<
-> > MX51_ECSPI_DMA_RX_WML_OFFSET;
-> > +               tx_wml_cfg = spi_imx->tx_wml <<
-> > MX51_ECSPI_DMA_TX_WML_OFFSET;
-> > +               rxt_wml_cfg = spi_imx->rxt_wml <<
-> > MX51_ECSPI_DMA_RXT_WML_OFFSET;
-> > +               dma = (dma & ~MX51_ECSPI_DMA_TX_WML_MASK
-> > +                               & ~MX51_ECSPI_DMA_RX_WML_MASK
-> > +                               & ~MX51_ECSPI_DMA_RXT_WML_MASK)
-> > +                               | rx_wml_cfg | tx_wml_cfg | rxt_wml_cfg
-> > +                               |(1 << MX51_ECSPI_DMA_TEDEN_OFFSET)
-> > +                               |(1 << MX51_ECSPI_DMA_RXDEN_OFFSET)
-> > +                               |(1 << MX51_ECSPI_DMA_RXTDEN_OFFSET);
-> > +
-> >
-> 
-> IMO, we should have an seperate function for dmactrl,rx_threshold &
-> tx_threshold for better visiblity.
-> 
->
-I understood your concern, but I don't want to create one function only for
-setting some bit fields of the register.
-> >
-> > --
-> > To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> > the body of a message to majordomo@vger.kernel.org
-> > More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> > Please read the FAQ at  http://www.tux.org/lkml/
-> >
+
+--G4iJoqBmSsgzjUCe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Aug 28, 2014 at 10:10:19AM +0200, Geert Uytterhoeven wrote:
+> Add support for QSPI in:
+>   - r8a7792 (R-Car V2H)
+>   - r8a7793 (R-Car M2-N)
+>   - r8a7794 (R-Car E2)
+>=20
+> r8a7791 is now called "R-Car M2-W".
+
+Applied, thanks.
+
+--G4iJoqBmSsgzjUCe
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJT/z3CAAoJELSic+t+oim9PrEP/2XoVZ+UW472VbDvmzLJ6QLc
+s7yFVHmILvNIVKec4SYRZ4HRMUD387ieKeAc//oPKG06RmuP41gxaVNf5X4t1J2r
+Lh4D/LsNSeGFoI633qn3+ZpzV/15CJCTfz2J/YG1ZwY22ba0Yopj3Uh/ehO2CSQc
+Z2Bl3Ud33d6pKFavbL67z4rh11L/kOhCgv+QDGaDg8WKBdksDl/KXhkJ8M6E/kdo
+TY0v3dA5V7YYMZWnIYAGU8Q9VfWxiTWppJcEgU5TOSaCNqxeYzH1A+hMNKoe/2td
+2LzgxkRHZbZQOh98Zzv3n2XvobeGW5pkHPNUD+RZrrgFuIWJruI1LFJ7R4aNjlWI
+nemmR9jzxPmlxcsFzT1f/+ih75ODyMSooaP97HsP/Us9kra2Cdu921O4NFSRO0QD
+oOLWyNM0P61x9qotwlrq8kBCx4EwhR/SaVamYPkEQVo7blKn5YyAswuVD17I1pV4
+31UCS6O5buvyZi8LN+PK3YEqMqMMNQmRcK6gxb3q+rzxJa3OBaefNJ2K/rCSfw0/
+8ScT607aCOghYGaj4l72szHKR/mto7JNjRdf/zNd7JY7RpZjszKTxuLr3/PROnmv
+kUkmwvphJ1nIui+ngX0tMl0bR/S+ZWurdC0+oNAKlPg13NffwfQHfcxvWP/+YuS7
+yZn8kYIO6rU2hFqEGEU7
+=Q1Xr
+-----END PGP SIGNATURE-----
+
+--G4iJoqBmSsgzjUCe--

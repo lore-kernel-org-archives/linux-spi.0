@@ -1,76 +1,57 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v3 4/5] spi: dw-pci: provide platform specific data via driver_data
-Date: Fri, 29 Aug 2014 12:41:42 +0300
-Message-ID: <1409305303-32631-5-git-send-email-andriy.shevchenko@linux.intel.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 0/5] spi: dw-pci: cleanup the driver
+Date: Fri, 29 Aug 2014 11:56:35 +0100
+Message-ID: <20140829105635.GM29327@sirena.org.uk>
 References: <1409305303-32631-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="37nyS7qXrnu4wN2o"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <1409305303-32631-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Instead of checking for device and vendor IDs inside probe function let's
-provide a helper function via driver_data.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-dw-pci.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+--37nyS7qXrnu4wN2o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
-index 3774261..3c2b0d9 100644
---- a/drivers/spi/spi-dw-pci.c
-+++ b/drivers/spi/spi-dw-pci.c
-@@ -32,11 +32,19 @@ struct dw_spi_pci {
- 	struct dw_spi	dws;
- };
- 
--static int spi_pci_probe(struct pci_dev *pdev,
--	const struct pci_device_id *ent)
-+struct spi_pci_desc {
-+	int	(*setup)(struct dw_spi *);
-+};
-+
-+static struct spi_pci_desc spi_pci_mid_desc = {
-+	.setup = dw_spi_mid_init,
-+};
-+
-+static int spi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- {
- 	struct dw_spi_pci *dwpci;
- 	struct dw_spi *dws;
-+	struct spi_pci_desc *desc = (struct spi_pci_desc *)ent->driver_data;
- 	int pci_bar = 0;
- 	int ret;
- 
-@@ -66,11 +74,11 @@ static int spi_pci_probe(struct pci_dev *pdev,
- 	dws->irq = pdev->irq;
- 
- 	/*
--	 * Specific handling for Intel MID paltforms, like dma setup,
-+	 * Specific handling for paltforms, like dma setup,
- 	 * clock rate, FIFO depth.
- 	 */
--	if (pdev->device == 0x0800) {
--		ret = dw_spi_mid_init(dws);
-+	if (desc && desc->setup) {
-+		ret = desc->setup(dws);
- 		if (ret)
- 			return ret;
- 	}
-@@ -117,7 +125,7 @@ static SIMPLE_DEV_PM_OPS(dw_spi_pm_ops, spi_suspend, spi_resume);
- 
- static const struct pci_device_id pci_ids[] = {
- 	/* Intel MID platform SPI controller 0 */
--	{ PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0800) },
-+	{ PCI_VDEVICE(INTEL, 0x0800), (kernel_ulong_t)&spi_pci_mid_desc},
- 	{},
- };
- 
--- 
-2.1.0
+On Fri, Aug 29, 2014 at 12:41:38PM +0300, Andy Shevchenko wrote:
+> This set of small clean ups of the driver.
+>=20
+> Changelog v3:
+> - rebase on top of recent linux-next keeping in mind NAck of "spi: dw-mid:
+>   don't leak memory on exit"
 
+Who nacked it?
+
+--37nyS7qXrnu4wN2o
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJUAFxgAAoJELSic+t+oim9pNcP/2UQ6vZ+FuamPQKXzZKGYG5I
+frQupYY7Zu69L+1zH+NzP08aYRUzLfnmIh9ZRDYkrWi1tIQkkiRuALgLaDXAinsM
+hq8+kMoubQOd0GP8mTnrmnY8srjGK5JcRZK4mbdyMhY/Bjmm1yBDnnLTYFTf0zw1
+Rp1MtpmVio1ABzWaZ+f1PeXp1wGdAcRfE6NhqZLmwoGNdUbxMtg9MXd3lH17U1Qb
+7vCcWPk6WwEWAQAVSmC/7fLRNE5pUqhKb0MSY3UNjuV5szgDUCASAOn9omm6nDFt
+5cUYlbeIEtqslAKnR7gouli/J1xowH1h7jMxDmKmIEv60nWRrubnGhR8esFY/ENP
+GeUfkppUtKSXV5OlbA/L9CiLgr8MLLFf2qvJNNMsvdfixcfFCOLiFdLiNb6urGEe
+ejS2u7GMtQzfv5+ekCKuiLg7FF5Zm62Va8UrsVMZ9bSrDcacFH4tB3pLu9yuvkaM
+JqJzUt74z0482aooXZwUOz5QiEPPKD/xz8o2KWszwMsIjKDMETQnnZcOAz9A+Cte
+84PHcf5QgybugAENWZ32g9OyxAHbZtJ3I/eBvNe+fliGhpgmEYOIL52/vDpSMUtN
+THiQ9lf/XIibFtQB712EaKpB+kqKNHfkvLFa72iV6XCUNPyUi6XAYrQk0a/ID19W
+R3qgGR2lka5EbybCKwTl
+=SuXt
+-----END PGP SIGNATURE-----
+
+--37nyS7qXrnu4wN2o--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

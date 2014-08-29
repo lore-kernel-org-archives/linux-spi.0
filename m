@@ -1,32 +1,36 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v3 0/5] spi: dw-pci: cleanup the driver
-Date: Fri, 29 Aug 2014 12:41:38 +0300
-Message-ID: <1409305303-32631-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v3 2/5] spi: dw-pci: apply pci_bar and re-use pci_name
+Date: Fri, 29 Aug 2014 12:41:40 +0300
+Message-ID: <1409305303-32631-3-git-send-email-andriy.shevchenko@linux.intel.com>
+References: <1409305303-32631-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1409305303-32631-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This set of small clean ups of the driver.
+Nevertheless pci_bar is 0 let's explicitly use it when map IO regions. While
+here, use pci_name instead of dev_name.
 
-Changelog v3:
-- rebase on top of recent linux-next keeping in mind NAck of "spi: dw-mid:
-  don't leak memory on exit"
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-dw-pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changelog v2:
-- add patch 4/5
-
-Andy Shevchenko (5):
-  spi: dw-pci: move info message at the end of probe
-  spi: dw-pci: apply pci_bar and re-use pci_name
-  spi: dw-pci: convert to use dev_pm_ops
-  spi: dw-pci: provide platform specific data via driver_data
-  spi: dw-pci: remove FSF address and update copyright
-
- drivers/spi/spi-dw-pci.c | 67 ++++++++++++++++++++++--------------------------
- 1 file changed, 30 insertions(+), 37 deletions(-)
-
+diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
+index 6123e37..473bd52 100644
+--- a/drivers/spi/spi-dw-pci.c
++++ b/drivers/spi/spi-dw-pci.c
+@@ -55,7 +55,7 @@ static int spi_pci_probe(struct pci_dev *pdev,
+ 	/* Get basic io resource and map it */
+ 	dws->paddr = pci_resource_start(pdev, pci_bar);
+ 
+-	ret = pcim_iomap_regions(pdev, 1, dev_name(&pdev->dev));
++	ret = pcim_iomap_regions(pdev, 1 << pci_bar, pci_name(pdev));
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.1.0
 

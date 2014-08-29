@@ -1,57 +1,60 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 0/5] spi: dw-pci: cleanup the driver
-Date: Fri, 29 Aug 2014 11:56:35 +0100
-Message-ID: <20140829105635.GM29327@sirena.org.uk>
-References: <1409305303-32631-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH] spi/rockchip: Avoid accidentally turning off the clock
+Date: Fri, 29 Aug 2014 12:08:03 +0100
+Message-ID: <20140829110803.GO29327@sirena.org.uk>
+References: <1409269428-24680-1-git-send-email-dianders@chromium.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="37nyS7qXrnu4wN2o"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="XMHqbYJb993HXwLR"
+Cc: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>, Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>,
+	"Jeffy.Chen" <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	amstan-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1409305303-32631-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1409269428-24680-1-git-send-email-dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---37nyS7qXrnu4wN2o
+--XMHqbYJb993HXwLR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 29, 2014 at 12:41:38PM +0300, Andy Shevchenko wrote:
-> This set of small clean ups of the driver.
->=20
-> Changelog v3:
-> - rebase on top of recent linux-next keeping in mind NAck of "spi: dw-mid:
->   don't leak memory on exit"
+On Thu, Aug 28, 2014 at 04:43:48PM -0700, Doug Anderson wrote:
+> If our client is requesting a clock that is above the maximum clock
+> then the following division will result in 0:
+>   rs->max_freq / rs->speed
 
-Who nacked it?
+Applied, thanks.
 
---37nyS7qXrnu4wN2o
+--XMHqbYJb993HXwLR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJUAFxgAAoJELSic+t+oim9pNcP/2UQ6vZ+FuamPQKXzZKGYG5I
-frQupYY7Zu69L+1zH+NzP08aYRUzLfnmIh9ZRDYkrWi1tIQkkiRuALgLaDXAinsM
-hq8+kMoubQOd0GP8mTnrmnY8srjGK5JcRZK4mbdyMhY/Bjmm1yBDnnLTYFTf0zw1
-Rp1MtpmVio1ABzWaZ+f1PeXp1wGdAcRfE6NhqZLmwoGNdUbxMtg9MXd3lH17U1Qb
-7vCcWPk6WwEWAQAVSmC/7fLRNE5pUqhKb0MSY3UNjuV5szgDUCASAOn9omm6nDFt
-5cUYlbeIEtqslAKnR7gouli/J1xowH1h7jMxDmKmIEv60nWRrubnGhR8esFY/ENP
-GeUfkppUtKSXV5OlbA/L9CiLgr8MLLFf2qvJNNMsvdfixcfFCOLiFdLiNb6urGEe
-ejS2u7GMtQzfv5+ekCKuiLg7FF5Zm62Va8UrsVMZ9bSrDcacFH4tB3pLu9yuvkaM
-JqJzUt74z0482aooXZwUOz5QiEPPKD/xz8o2KWszwMsIjKDMETQnnZcOAz9A+Cte
-84PHcf5QgybugAENWZ32g9OyxAHbZtJ3I/eBvNe+fliGhpgmEYOIL52/vDpSMUtN
-THiQ9lf/XIibFtQB712EaKpB+kqKNHfkvLFa72iV6XCUNPyUi6XAYrQk0a/ID19W
-R3qgGR2lka5EbybCKwTl
-=SuXt
+iQIcBAEBAgAGBQJUAF8QAAoJELSic+t+oim99kIP/3uRNvfVY4neyrcFLxk1xnYG
+3JU3o5OVMkWVN1ltT7fh18ukOXO9S2MGXzBSHbHuhnt46iqJx1pJll+8eftzrPJZ
+zYyoubftXWJJquP1Ih+m4sicqMw9BXkWbfUt/i5pWwGvjGbwAZFPAwe83PXMx8YU
+LFApMDg9+GX/QNrkjZfFiJwH9s2bsioupDBMtMeL5rxecGWgE5fSXd5JRyXuVCF7
+X5k3qVIr/ulBVv/E7Mpt5IbJjlTAGEfObOuH6t8hu3xs3hP6riG345XTTV2HHSek
+b6fuKmgcLOh/pOA1cXoCzqHdAc/X690m8W6y/U30YlOoPa6+wyLmMY1jclr26Kx6
+os6poTlUEHPYDXrTzYMlae3TF64lrSMTNHRxHQNoAfA8B17bLOkzqNrrgfH/BTxK
+I/3tzvJq/9z1+bjzK4bv06OCkfjwmN7TCehVWeO+A7MBKOm6y3E83c6003fwb2eb
+JO6KOt959b8fCoNCXhVBJpu+5dEAFRoo0GziFEJLEM5HttCGhuH6Q5ilJlqakK2W
+rwyCoqyunqFxt/CiT58KANfRku0Q2UntXIHj+1M449EE2XEQTHUPaSaN+SXYqho4
+n9R5UH3y7QeAMUnczG3iTxJTMVHBsyXjSKi8uPZMagfgbPN3HTC2dqJzb7+vw3of
++ygK23mpVXd2kgAyHLbU
+=Rg55
 -----END PGP SIGNATURE-----
 
---37nyS7qXrnu4wN2o--
+--XMHqbYJb993HXwLR--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

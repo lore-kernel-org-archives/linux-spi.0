@@ -1,44 +1,50 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH] spi: dw-mid: don't leak memory on exit
-Date: Fri, 29 Aug 2014 10:35:15 +0300
-Message-ID: <1409297715.30155.27.camel@linux.intel.com>
-References: <1409215997-26085-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20140828181922.GJ29327@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Feng Tang <feng.tang@intel.com>, linux-spi@vger.kernel.org,
-	stable@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <stable-owner@vger.kernel.org>
-In-Reply-To: <20140828181922.GJ29327@sirena.org.uk>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: [PATCH v3 1/5] spi: dw-pci: move info message at the end of probe
+Date: Fri, 29 Aug 2014 12:41:39 +0300
+Message-ID: <1409305303-32631-2-git-send-email-andriy.shevchenko@linux.intel.com>
+References: <1409305303-32631-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1409305303-32631-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, 2014-08-28 at 19:19 +0100, Mark Brown wrote:
-> On Thu, Aug 28, 2014 at 11:53:17AM +0300, Andy Shevchenko wrote:
-> > When built with DMA support the memory for an internal structure is allocated
-> > but not freed. Converting to devm_kzalloc solves the issue.
-> > 
-> > Fixes: 7063c0d942a1 (spi/dw_spi: add DMA support)
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Cc: <stable@vger.kernel.org> # v2.6.38+
-> 
-> You've sent two versions of this with different changelogs and diffs -
-> what's the story there?
+Let's print info message when controller is found and properly initialized.
 
-Sorry for confusion.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+---
+ drivers/spi/spi-dw-pci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-There are two different fixes against MID support.
-One of them to protect against crash on removal, another is this one.
-
-> This doesn't seem like an obvious stable candidate - it's a leak fix on
-> probe.
-
-Yes, I may agree with you. Then, please, do not consider this one. It
-would be a part of a patches against spi-dw-mid.c
-
-
+diff --git a/drivers/spi/spi-dw-pci.c b/drivers/spi/spi-dw-pci.c
+index e149604..6123e37 100644
+--- a/drivers/spi/spi-dw-pci.c
++++ b/drivers/spi/spi-dw-pci.c
+@@ -40,9 +40,6 @@ static int spi_pci_probe(struct pci_dev *pdev,
+ 	int pci_bar = 0;
+ 	int ret;
+ 
+-	dev_info(&pdev->dev, "found PCI SPI controller(ID: %04x:%04x)\n",
+-		pdev->vendor, pdev->device);
+-
+ 	ret = pcim_enable_device(pdev);
+ 	if (ret)
+ 		return ret;
+@@ -85,6 +82,9 @@ static int spi_pci_probe(struct pci_dev *pdev,
+ 	/* PCI hook and SPI hook use the same drv data */
+ 	pci_set_drvdata(pdev, dwpci);
+ 
++	dev_info(&pdev->dev, "found PCI SPI controller(ID: %04x:%04x)\n",
++		pdev->vendor, pdev->device);
++
+ 	return 0;
+ }
+ 
 -- 
-Andy Shevchenko <andriy.shevchenko@intel.com>
-Intel Finland Oy
+2.1.0
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

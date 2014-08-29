@@ -1,53 +1,44 @@
-From: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
-Subject: [PATCH] spi/rockchip: Avoid accidentally turning off the clock
-Date: Thu, 28 Aug 2014 16:43:48 -0700
-Message-ID: <1409269428-24680-1-git-send-email-dianders@chromium.org>
-Cc: "Jeffy.Chen" <jeffy.chen-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	amstan-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
-	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH] spi: dw-mid: don't leak memory on exit
+Date: Fri, 29 Aug 2014 10:35:15 +0300
+Message-ID: <1409297715.30155.27.camel@linux.intel.com>
+References: <1409215997-26085-1-git-send-email-andriy.shevchenko@linux.intel.com>
+	 <20140828181922.GJ29327@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Feng Tang <feng.tang@intel.com>, linux-spi@vger.kernel.org,
+	stable@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <stable-owner@vger.kernel.org>
+In-Reply-To: <20140828181922.GJ29327@sirena.org.uk>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-If our client is requesting a clock that is above the maximum clock
-then the following division will result in 0:
-  rs->max_freq / rs->speed
+On Thu, 2014-08-28 at 19:19 +0100, Mark Brown wrote:
+> On Thu, Aug 28, 2014 at 11:53:17AM +0300, Andy Shevchenko wrote:
+> > When built with DMA support the memory for an internal structure is allocated
+> > but not freed. Converting to devm_kzalloc solves the issue.
+> > 
+> > Fixes: 7063c0d942a1 (spi/dw_spi: add DMA support)
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Cc: <stable@vger.kernel.org> # v2.6.38+
+> 
+> You've sent two versions of this with different changelogs and diffs -
+> what's the story there?
 
-We'll then program 0 into the SPI_BAUDR register.  The Rockchip TRM
-says: "If the value is 0, the serial output clock (sclk_out) is
-disabled."
+Sorry for confusion.
 
-It's much better to end up with the fastest possible clock rather than
-a clock that is off, so enforce a minimum value.
+There are two different fixes against MID support.
+One of them to protect against crash on removal, another is this one.
 
-Signed-off-by: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
----
- drivers/spi/spi-rockchip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> This doesn't seem like an obvious stable candidate - it's a leak fix on
+> probe.
 
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index 6321326..cd0e08b0 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -499,7 +499,7 @@ static void rockchip_spi_config(struct rockchip_spi *rs)
- 	}
- 
- 	/* div doesn't support odd number */
--	div = rs->max_freq / rs->speed;
-+	div = max_t(u32, rs->max_freq / rs->speed, 1);
- 	div = (div + 1) & 0xfffe;
- 
- 	spi_enable_chip(rs, 0);
+Yes, I may agree with you. Then, please, do not consider this one. It
+would be a part of a patches against spi-dw-mid.c
+
+
 -- 
-2.1.0.rc2.206.gedb03e5
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Andy Shevchenko <andriy.shevchenko@intel.com>
+Intel Finland Oy

@@ -1,106 +1,53 @@
-From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
-Subject: [PATCH] spi: dw: Don't use devm_kzalloc in master->setup callback
-Date: Sun, 31 Aug 2014 12:47:06 +0800
-Message-ID: <1409460426.31873.4.camel@phoenix>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Subject: Re: [PATCH v2] spi/drivers: Restrict COMPILE_TEST by HAS_DMA where needed
+Date: Sun, 31 Aug 2014 10:39:09 +0200
+Message-ID: <CAMuHMdXqFSv9B-OuGYGBfb5NReLQNRJat5_9=uBdSct7_3sQOg@mail.gmail.com>
+References: <1409328631-1420-1-git-send-email-geert@linux-m68k.org>
+	<20140829173752.GX29327@sirena.org.uk>
+	<CAMuHMdW3RBxXNrfK=2d_uHCesE+NaLFheGgdBEP7JuPcd8Xd1Q@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-	Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-spi <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <CAMuHMdW3RBxXNrfK=2d_uHCesE+NaLFheGgdBEP7JuPcd8Xd1Q@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-device_add() expects that any memory allocated via devm_* API is only
-done in the device's probe function.
+Hi Mark,
 
-Fix below boot warning:
-WARNING: CPU: 1 PID: 1 at drivers/base/dd.c:286 driver_probe_device+0x2b4/0x2f4()
-Modules linked in:
-CPU: 1 PID: 1 Comm: swapper/0 Not tainted 3.16.0-10474-g835c90b-dirty #160
-[<c0016364>] (unwind_backtrace) from [<c001251c>] (show_stack+0x20/0x24)
-[<c001251c>] (show_stack) from [<c04eaefc>] (dump_stack+0x7c/0x98)
-[<c04eaefc>] (dump_stack) from [<c0023d4c>] (warn_slowpath_common+0x78/0x9c)
-[<c0023d4c>] (warn_slowpath_common) from [<c0023d9c>] (warn_slowpath_null+0x2c/0x34)
-[<c0023d9c>] (warn_slowpath_null) from [<c0302c60>] (driver_probe_device+0x2b4/0x2f4)
-[<c0302c60>] (driver_probe_device) from [<c0302d90>] (__device_attach+0x50/0x54)
-[<c0302d90>] (__device_attach) from [<c0300e60>] (bus_for_each_drv+0x54/0x9c)
-[<c0300e60>] (bus_for_each_drv) from [<c0302958>] (device_attach+0x84/0x90)
-[<c0302958>] (device_attach) from [<c0301f10>] (bus_probe_device+0x94/0xb8)
-[<c0301f10>] (bus_probe_device) from [<c03000c0>] (device_add+0x434/0x4fc)
-[<c03000c0>] (device_add) from [<c0342dd4>] (spi_add_device+0x98/0x164)
-[<c0342dd4>] (spi_add_device) from [<c03444a4>] (spi_register_master+0x598/0x768)
-[<c03444a4>] (spi_register_master) from [<c03446b4>] (devm_spi_register_master+0x40/0x80)
-[<c03446b4>] (devm_spi_register_master) from [<c0346214>] (dw_spi_add_host+0x1a8/0x258)
-[<c0346214>] (dw_spi_add_host) from [<c0346920>] (dw_spi_mmio_probe+0x1d4/0x294)
-[<c0346920>] (dw_spi_mmio_probe) from [<c0304560>] (platform_drv_probe+0x3c/0x6c)
-[<c0304560>] (platform_drv_probe) from [<c0302a98>] (driver_probe_device+0xec/0x2f4)
-[<c0302a98>] (driver_probe_device) from [<c0302d3c>] (__driver_attach+0x9c/0xa0)
-[<c0302d3c>] (__driver_attach) from [<c0300f0c>] (bus_for_each_dev+0x64/0x98)
-[<c0300f0c>] (bus_for_each_dev) from [<c0302518>] (driver_attach+0x2c/0x30)
-[<c0302518>] (driver_attach) from [<c0302134>] (bus_add_driver+0xdc/0x1f4)
-[<c0302134>] (bus_add_driver) from [<c03035c8>] (driver_register+0x88/0x104)
-[<c03035c8>] (driver_register) from [<c030445c>] (__platform_driver_register+0x58/0x6c)
-[<c030445c>] (__platform_driver_register) from [<c0700f00>] (dw_spi_mmio_driver_init+0x18/0x20)
-[<c0700f00>] (dw_spi_mmio_driver_init) from [<c0008914>] (do_one_initcall+0x90/0x1d4)
-[<c0008914>] (do_one_initcall) from [<c06d7d90>] (kernel_init_freeable+0x178/0x248)
-[<c06d7d90>] (kernel_init_freeable) from [<c04e687c>] (kernel_init+0x18/0xfc)
-[<c04e687c>] (kernel_init) from [<c000ecd8>] (ret_from_fork+0x14/0x20)
+On Fri, Aug 29, 2014 at 9:13 PM, Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> On Fri, Aug 29, 2014 at 7:37 PM, Mark Brown <broonie@kernel.org> wrote:
+>> On Fri, Aug 29, 2014 at 06:10:31PM +0200, Geert Uytterhoeven wrote:
+>>> commit dd1053a93fdc11d4 ("spi/drivers: Enable build of drivers with
+>>> COMPILE_TEST") allows compile-testing drivers on platforms they're not
+>>> meant for.
+>>
+>>> However, adding "|| COMPILE_TEST" bypasses all other implicit dependencies
+>>> assumed by the platform dependencies before, like HAS_DMA.
+>>
+>> I'm wondering if it isn't better to have the non-DMA platforms define
+>> stub (always error) DMA functions instead - it's less error prone and
+>> with SPI there's a bunch of drivers which can run perfectly usefully
+>> without DMA while optionally supporting DMA.
+>
+> The SPI problem will sort itself out once all SPI master drivers have been
+> converted to use the SPI DMA core ;-)
 
-Reported-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
----
-Hi Thor,
-Can you test this patch with your master->dev.of_node fix?
-Thanks.
- drivers/spi/spi-dw.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+BTW, the dmaengine API has stubs, only the low-level dma-mapping API
+doesn't. That's why e.g. spi-rspi doesn't need a dependency on HAS_DMA.
+So it's indeed a good thing to handle the low-level DMA mapping in the
+subsystem's core, as only that part can be optional and depend on HAS_DMA.
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 670f062..0dd0623 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -547,8 +547,7 @@ static int dw_spi_setup(struct spi_device *spi)
- 	/* Only alloc on first setup */
- 	chip = spi_get_ctldata(spi);
- 	if (!chip) {
--		chip = devm_kzalloc(&spi->dev, sizeof(struct chip_data),
--				GFP_KERNEL);
-+		chip = kzalloc(sizeof(struct chip_data), GFP_KERNEL);
- 		if (!chip)
- 			return -ENOMEM;
- 		spi_set_ctldata(spi, chip);
-@@ -606,6 +605,14 @@ static int dw_spi_setup(struct spi_device *spi)
- 	return 0;
- }
- 
-+static void dw_spi_cleanup(struct spi_device *spi)
-+{
-+	struct chip_data *chip = spi_get_ctldata(spi);
-+
-+	kfree(chip);
-+	spi_set_ctldata(spi, NULL);
-+}
-+
- /* Restart the controller, disable all interrupts, clean rx fifo */
- static void spi_hw_init(struct dw_spi *dws)
- {
-@@ -661,6 +668,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	master->bus_num = dws->bus_num;
- 	master->num_chipselect = dws->num_cs;
- 	master->setup = dw_spi_setup;
-+	master->cleanup = dw_spi_cleanup;
- 	master->transfer_one_message = dw_spi_transfer_one_message;
- 	master->max_speed_hz = dws->max_freq;
- 
--- 
-1.9.1
+Gr{oetje,eeting}s,
 
-
+                        Geert
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

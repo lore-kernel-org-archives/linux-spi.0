@@ -1,72 +1,154 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2] spi/drivers: Restrict COMPILE_TEST by HAS_DMA where
- needed
-Date: Sun, 31 Aug 2014 14:05:16 +0100
-Message-ID: <20140831130516.GH29327@sirena.org.uk>
-References: <1409328631-1420-1-git-send-email-geert@linux-m68k.org>
- <20140829173752.GX29327@sirena.org.uk>
- <CAMuHMdW3RBxXNrfK=2d_uHCesE+NaLFheGgdBEP7JuPcd8Xd1Q@mail.gmail.com>
- <CAMuHMdXqFSv9B-OuGYGBfb5NReLQNRJat5_9=uBdSct7_3sQOg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="NncV4Eud7lVzK4Rv"
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+From: gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org
+Subject: [PATCH] spi: orion: support armada extended baud rates
+Date: Mon,  1 Sep 2014 17:01:30 +1000
+Message-ID: <1409554890-21239-1-git-send-email-gerg@uclinux.org>
+Cc: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdXqFSv9B-OuGYGBfb5NReLQNRJat5_9=uBdSct7_3sQOg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
 
---NncV4Eud7lVzK4Rv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The Armada SoC family implementation of this SPI hardware module has
+extended the configuration register to allow for a wider range of SPI
+clock rates. Specifically the Serial Baud Rate Pre-selection bits in the
+SPI Interface Configuration Register now also use bits 6 and 7 as well.
 
-On Sun, Aug 31, 2014 at 10:39:09AM +0200, Geert Uytterhoeven wrote:
-> On Fri, Aug 29, 2014 at 9:13 PM, Geert Uytterhoeven
+Modify the baud rate calculation to handle these differences for the
+Armada case. Potentially a baud rate can be setup using a number of
+different pre-scalar and scalar combinations. This code tries all
+possible pre-scalar divisors (8 in total) to try and find the most
+accuate set.
 
-> >> I'm wondering if it isn't better to have the non-DMA platforms define
-> >> stub (always error) DMA functions instead - it's less error prone and
-> >> with SPI there's a bunch of drivers which can run perfectly usefully
-> >> without DMA while optionally supporting DMA.
+Signed-off-by: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+---
+ drivers/spi/spi-orion.c | 77 +++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 61 insertions(+), 16 deletions(-)
 
-> > The SPI problem will sort itself out once all SPI master drivers have been
-> > converted to use the SPI DMA core ;-)
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index c4675fa..816822f 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -40,6 +40,7 @@
+ #define ORION_SPI_MODE_CPHA		(1 << 12)
+ #define ORION_SPI_IF_8_16_BIT_MODE	(1 << 5)
+ #define ORION_SPI_CLK_PRESCALE_MASK	0x1F
++#define ARMADA_SPI_CLK_PRESCALE_MASK	0xDF
+ #define ORION_SPI_MODE_MASK		(ORION_SPI_MODE_CPOL | \
+ 					 ORION_SPI_MODE_CPHA)
+ 
+@@ -82,31 +83,74 @@ static int orion_spi_baudrate_set(struct spi_device *spi, unsigned int speed)
+ 	u32 rate;
+ 	u32 prescale;
+ 	u32 reg;
++	u32 mask;
+ 	struct orion_spi *orion_spi;
+ 
+ 	orion_spi = spi_master_get_devdata(spi->master);
+ 
+ 	tclk_hz = clk_get_rate(orion_spi->clk);
+ 
+-	/*
+-	 * the supported rates are: 4,6,8...30
+-	 * round up as we look for equal or less speed
+-	 */
+-	rate = DIV_ROUND_UP(tclk_hz, speed);
+-	rate = roundup(rate, 2);
++	if (of_machine_is_compatible("marvell,armada370")) {
++		unsigned int clk, spr, sppr, sppr2, err;
++		unsigned int best_spr, best_sppr, best_err;
+ 
+-	/* check if requested speed is too small */
+-	if (rate > 30)
+-		return -EINVAL;
++		best_err = speed;
++		best_spr = 0;
++		best_sppr = 0;
+ 
+-	if (rate < 4)
+-		rate = 4;
++		tclk_hz *= 10;
++		if (speed > tclk_hz)
++			return -EINVAL;
+ 
+-	/* Convert the rate to SPI clock divisor value.	*/
+-	prescale = 0x10 + rate/2;
++		/* Iterate over the valid range looking for best fit */
++		for (sppr = 0; sppr < 8; sppr++) {
++			sppr2 = 0x1 << sppr;
++
++			spr = tclk_hz / sppr2;
++			spr = DIV_ROUND_UP(spr, speed);
++			if ((spr == 0) || (spr > 15))
++				continue;
++
++			clk = tclk_hz / (spr * sppr2);
++			err = speed - clk;
++
++			if (err < best_err) {
++				best_spr = spr;
++				best_sppr = sppr;
++				best_err = err;
++			}
++		}
++
++		if ((best_sppr == 0) && (best_spr == 0))
++			return -EINVAL;
++
++		prescale = ((best_sppr & 0x6) << 5) |
++			((best_sppr & 0x1) << 4) | best_spr;
++
++		mask = ARMADA_SPI_CLK_PRESCALE_MASK;
++	} else {
++		mask = ORION_SPI_CLK_PRESCALE_MASK;
++
++		/*
++		 * the supported rates are: 4,6,8...30
++		 * round up as we look for equal or less speed
++		 */
++		rate = DIV_ROUND_UP(tclk_hz, speed);
++		rate = roundup(rate, 2);
++
++		/* check if requested speed is too small */
++		if (rate > 30)
++			return -EINVAL;
++
++		if (rate < 4)
++			rate = 4;
++
++		/* Convert the rate to SPI clock divisor value.	*/
++		prescale = 0x10 + rate/2;
++	}
+ 
+ 	reg = readl(spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
+-	reg = ((reg & ~ORION_SPI_CLK_PRESCALE_MASK) | prescale);
++	reg = ((reg & ~mask) | prescale);
+ 	writel(reg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
+ 
+ 	return 0;
+@@ -348,7 +392,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	struct orion_spi *spi;
+ 	struct resource *r;
+ 	unsigned long tclk_hz;
+-	int status = 0;
++	int mindiv, status = 0;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*spi));
+ 	if (master == NULL) {
+@@ -390,7 +434,8 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 
+ 	tclk_hz = clk_get_rate(spi->clk);
+ 	master->max_speed_hz = DIV_ROUND_UP(tclk_hz, 4);
+-	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, 30);
++	mindiv = (of_machine_is_compatible("marvell,armada370")) ? 1920 : 30;
++	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, mindiv);
+ 
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	spi->base = devm_ioremap_resource(&pdev->dev, r);
+-- 
+1.9.1
 
-> BTW, the dmaengine API has stubs, only the low-level dma-mapping API
-> doesn't. That's why e.g. spi-rspi doesn't need a dependency on HAS_DMA.
-> So it's indeed a good thing to handle the low-level DMA mapping in the
-> subsystem's core, as only that part can be optional and depend on HAS_DMA.
-
-Yeah, but I'd expect there's other subsystems which will be in a similar
-boat here and with dmaengine having stubs it seems strange that the
-mapping API doesn't.
-
---NncV4Eud7lVzK4Rv
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJUAx2JAAoJELSic+t+oim9rc0P/i7Dm0TqbBvt2WbfUyImsHoo
-WyUNTqyw3WacLp/zIR+4Ya5OvnceOI7QRCx+96wFo92zc8dp98OENoOaFdKm6tPy
-4yj8oa58X/Fx53xtjY8IbjEwwi8s3yqTR/4RwgLlV0funP5r2bZs6WX3gCq42Y+m
-fE8LA6GffXQGgRY56VR/G/eGbQ0LEkhzIZBNBzDgvYtyf9aN+Jrja4t1oIp0m3q7
-O5T/Fhps6mav/TUJxSZLwopp+RqflrFPeXdt/5QKmKkpUt3pNkqXBtAR80UkyfHd
-Oij+MmGVOTKyHl3lR+29w7L6bTqT1u5zcnTSTOeMGsHlcVwfph5wnjLqnics9pLJ
-ErtnDungvFYfoixdf5IIW/swBjorBZaYnfWqKq1EK3qQvDFMiR+e3dBWDRmD8jPY
-+dcJq6cV/WYoOdXZTXL44pO6BKDKOnX3tJwTY9BpfFSpb9V/2wMtQcGFFo1Cm+16
-4AWZLQhYKavTmUbPKzPFi/1QlKeU99hVCur2O5Hp/1yIErWthi8QTXTaVf73rZIb
-yUs1u6YZ+hFearGCyHMNae7liwuPzvr2F1jeIvx88O5bU6Y6jIRt25M5qBG2u3Im
-sUjhxORArsgnKtLE3wRF6uzCYecM12XcHlYZeApRUYgzfNERspu5Hvxs1z2OaY8t
-XO/6Bj3TP7t8ZqstGzrA
-=R0s/
------END PGP SIGNATURE-----
-
---NncV4Eud7lVzK4Rv--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

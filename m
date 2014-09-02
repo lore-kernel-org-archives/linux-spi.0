@@ -1,55 +1,70 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: dw: Don't use devm_kzalloc in master->setup callback
-Date: Mon, 1 Sep 2014 17:52:49 +0100
-Message-ID: <20140901165249.GI29327@sirena.org.uk>
-References: <1409460426.31873.4.camel@phoenix>
+From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+Subject: [PATCH 1/9] spi: davinci: Fix checkpatch issue
+Date: Tue, 02 Sep 2014 11:48:00 +0900
+Message-ID: <002101cfc658$4f627cf0$ee2776d0$%han@samsung.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="9jVH9MMcXWLfwoO6"
-Cc: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-	Baruch Siach <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	'Grygorii Strashko' <grygorii.strashko-l0cyMroinI0@public.gmane.org>,
+	'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1409460426.31873.4.camel@phoenix>
+Content-language: ko
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Fix the following checkpatch warnings.
 
---9jVH9MMcXWLfwoO6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+  WARNING: Missing a blank line after declarations
+  WARNING: quoted string split across lines
 
-On Sun, Aug 31, 2014 at 12:47:06PM +0800, Axel Lin wrote:
-> device_add() expects that any memory allocated via devm_* API is only
-> done in the device's probe function.
+Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+---
+ drivers/spi/spi-davinci.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Applied, thanks.
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 48f1d26e6ad9..cb20d6c482a6 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -167,8 +167,10 @@ static void davinci_spi_rx_buf_u16(u32 data, struct davinci_spi *dspi)
+ static u32 davinci_spi_tx_buf_u8(struct davinci_spi *dspi)
+ {
+ 	u32 data = 0;
++
+ 	if (dspi->tx) {
+ 		const u8 *tx = dspi->tx;
++
+ 		data = *tx++;
+ 		dspi->tx = tx;
+ 	}
+@@ -178,8 +180,10 @@ static u32 davinci_spi_tx_buf_u8(struct davinci_spi *dspi)
+ static u32 davinci_spi_tx_buf_u16(struct davinci_spi *dspi)
+ {
+ 	u32 data = 0;
++
+ 	if (dspi->tx) {
+ 		const u16 *tx = dspi->tx;
++
+ 		data = *tx++;
+ 		dspi->tx = tx;
+ 	}
+@@ -985,8 +989,8 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 			goto free_clk;
+ 
+ 		dev_info(&pdev->dev, "DMA: supported\n");
+-		dev_info(&pdev->dev, "DMA: RX channel: %pa, TX channel: %pa, "
+-				"event queue: %d\n", &dma_rx_chan, &dma_tx_chan,
++		dev_info(&pdev->dev, "DMA: RX channel: %pa, TX channel: %pa, event queue: %d\n",
++				&dma_rx_chan, &dma_tx_chan,
+ 				pdata->dma_event_q);
+ 	}
+ 
+-- 
+2.0.0
 
---9jVH9MMcXWLfwoO6
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJUBKRdAAoJELSic+t+oim9yyEP/0KljKfJ3o0KnM6CUoor9ARG
-zkp4M7EERBI8U7ED0EiVWePGhMbdhVHpEoJmG+aRN8OwKa2QyNduFub7+23rwT9m
-3XDIUFWM6qI4h3OmNNOFlAK+AQXN84XEEewekIqZ8OKeEoJMPyW0K47ddEsZmkHi
-3sRi8OnU0SB6O4IMpVLGwGWtFss5yeR/raDZj1KwAzr7NZIu04MBMPpotniC8GPX
-knp8xU/32/AAR+coIMPg3qMjUBNpIeqJ7OgjNu3xue24zD1NXE9T//7dRj0qYuN6
-ZGbyGF1QCYXqDX/OtMKoMNR6yB16rjow5fIFCPDvYCG20nPeYI33d3ftW//G+5Db
-IO/LR8LsqfYSRwMwVjE9MyZNEYD5tod4tOL6UGhkL7jil9bwCWuVAqpuwRkwaFnV
-AFw19afX2oqQn+RLnRxpSduI08NuuYJ1vJ43hCY8KT1SqNB0q9OuIqKwRTZgZWLc
-qdG3kXa2JdoJK6eHb6pRdQ4Mh//aUnRQf5AmzzNkWnsXsH2eECVAg16sn1Ai+Ef3
-rCzGj+A/f83HmFP0ahz3IDxiIUJmJhLTWb8IS8FG3oDbXTkgnxVIZ6QfMTavY/Po
-0apCNlXeNl1S5ACCglEXXtMRBq3KZZ7/tSPfpvv09VrOk1csofYOLeBoxvbejPFz
-1unG5BupR6nY2M8WSKSX
-=xZ6j
------END PGP SIGNATURE-----
-
---9jVH9MMcXWLfwoO6--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

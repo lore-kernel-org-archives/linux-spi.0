@@ -1,68 +1,49 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/4] spi: altera: remove unnecessary #ifdef CONFIG_OF
-Date: Tue, 2 Sep 2014 12:16:56 +0100
-Message-ID: <20140902111656.GU29327@sirena.org.uk>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 2/4] spi: atmel: remove unnecessary #if defined(CONFIG_OF)
+Date: Tue, 2 Sep 2014 14:15:09 +0200
+Message-ID: <CAMuHMdU2S_vwv3=CUtgGjqnq-nbh=up42gDWzR35ai6s4ZVaWQ@mail.gmail.com>
 References: <002a01cfc65d$2dc86640$895932c0$%han@samsung.com>
- <CAFRkauAD7upo4e1Vc08FAMFamv=Lwy2whzJz3vADtse18kjriA@mail.gmail.com>
+	<002b01cfc65d$569ef570$03dce050$%han@samsung.com>
+	<20140902105018.GR29327@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="PUHnpEUN0SLOjcm5"
+Content-Type: text/plain; charset=UTF-8
 Cc: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
 	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <CAFRkauAD7upo4e1Vc08FAMFamv=Lwy2whzJz3vADtse18kjriA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20140902105018.GR29327-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Tue, Sep 2, 2014 at 12:50 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Tue, Sep 02, 2014 at 12:24:00PM +0900, Jingoo Han wrote:
+>> Remove unnecessary  #if defined(CONFIG_OF), because this is
+>> already handled by the of_match_ptr macro.
+>
+> Applied, thanks.
 
---PUHnpEUN0SLOjcm5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+If CONFIG_OF is not set, binary size is increased, as the OF match
+table is still emitted, while it's no longer in use:
 
-On Tue, Sep 02, 2014 at 01:34:39PM +0800, Axel Lin wrote:
+m68k allmodconfig:
 
-> > -#ifdef CONFIG_OF
-> >  static const struct of_device_id altera_spi_match[] = {
-> >         { .compatible = "ALTR,spi-1.0", },
-> >         { .compatible = "altr,spi-1.0", },
-> >         {},
-> >  };
-> >  MODULE_DEVICE_TABLE(of, altera_spi_match);
-> > -#endif /* CONFIG_OF */
+   text   data    bss    dec    hex filename
+   7318    373      0   7691   1e0b drivers/spi/spi-atmel.o.old
+   7710    373      0   8083   1f93 drivers/spi/spi-atmel.o.new
+  10037    781      0  10818   2a42 drivers/spi/spi-atmel.ko.old
+  10465    781      0  11246   2bee drivers/spi/spi-atmel.ko.new
 
-> For !CONFIG_OF case:
->         #define of_match_ptr(_ptr)      NULL
-> Can you explain how of_match_ptr() handle this?
+Gr{oetje,eeting}s,
 
-Unless MODULE_DEVICE_TABLE knows about OF that's not going to trigger
-the dead code elimination.
+                        Geert
 
---PUHnpEUN0SLOjcm5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJUBaclAAoJELSic+t+oim9PfsP/iFpMfb/XTApA+VCL687eXnG
-Hb6JLkfVtMKUCg6RB6EMnR0syl8qf/S3vAH0BSMRN0TiEtZZ8maOJyM9lbwo4dr4
-+Sw4yLUd5jiF1sAzhwZ/6wNyWMNwl7RmPP1KFjPrUaUurCX+FEAx0hFA55ADDe3L
-wIvndMeTwPCMHwJb9goMacZFq5+7/D4skt7O98Y1Qvp1N3Ek3qpUcXvjuUjMIQA0
-MapPfKLZ3RTDNB6GuYmDdhhvshO13tq6llqsI4pcz6DuKIPo+9RD+pRApevd0sRY
-OI7ZLXcfpSnN0zL9tLvGLexQjend6furhod1eBZSan0qvxtnogO/d5cWt2kGeD6K
-yos9GcFfcOwm3OaWNYx/MKrAf4Hs6aK41V1w0PzK/eYS+fXTtfmJtkzhCDQm1FJj
-4lOepapvbPWk2hEPGX9x4smPURF6tW4aHoRjOWk8Y/yEynexYEyBJktWR5K+CP27
-nMaC85IDICZfacVPMkhyDY2EfP3TM1zuU0VZ95X3IaGklSciRk8PlNqR+l3i2aT4
-Hr5ZFzqlRqDXR6Tn36OBvo9hKi88mMU5BYbpCrSdeOvEkPUbYLFzKuz4cgQ1Bmrs
-4Z37cpq31DOAXPruHGhSe3e0MHStpcNcRczjuSoROSwYl23GbetMDYX97kQI9ZjD
-pQb8Ml2TCdC44Wl/SJiq
-=p/CC
------END PGP SIGNATURE-----
-
---PUHnpEUN0SLOjcm5--
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

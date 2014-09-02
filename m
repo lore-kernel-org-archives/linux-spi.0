@@ -1,12 +1,12 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 8/9] spi: txx9: Fix checkpatch issue
-Date: Tue, 02 Sep 2014 11:53:54 +0900
-Message-ID: <002801cfc659$222039c0$6660ad40$%han@samsung.com>
+Subject: [PATCH 9/9] spi: xtensa-xtfpga: Fix checkpatch issue
+Date: Tue, 02 Sep 2014 11:54:37 +0900
+Message-ID: <002901cfc659$3b9a9850$b2cfc8f0$%han@samsung.com>
 References: <002101cfc658$4f627cf0$ee2776d0$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Atsushi Nemoto' <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>,
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Max Filippov' <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
@@ -17,33 +17,25 @@ List-ID: <linux-spi.vger.kernel.org>
 
 Fix the following checkpatch warnings.
 
-  Missing a blank line after declarations.
+  WARNING: Missing a blank line after declarations
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-txx9.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-xtensa-xtfpga.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
-index 5f183baa91a9..2501a8373e89 100644
---- a/drivers/spi/spi-txx9.c
-+++ b/drivers/spi/spi-txx9.c
-@@ -97,6 +97,7 @@ static void txx9spi_cs_func(struct spi_device *spi, struct txx9spi *c,
- 		int on, unsigned int cs_delay)
+diff --git a/drivers/spi/spi-xtensa-xtfpga.c b/drivers/spi/spi-xtensa-xtfpga.c
+index 41e158187f9d..0dc5df5233a9 100644
+--- a/drivers/spi/spi-xtensa-xtfpga.c
++++ b/drivers/spi/spi-xtensa-xtfpga.c
+@@ -46,6 +46,7 @@ static inline unsigned int xtfpga_spi_read32(const struct xtfpga_spi *spi,
+ static inline void xtfpga_spi_wait_busy(struct xtfpga_spi *xspi)
  {
- 	int val = (spi->mode & SPI_CS_HIGH) ? on : !on;
+ 	unsigned i;
 +
- 	if (on) {
- 		/* deselect the chip with cs_change hint in last transfer */
- 		if (c->last_chipselect >= 0)
-@@ -188,6 +189,7 @@ static void txx9spi_work_one(struct txx9spi *c, struct spi_message *m)
- 		if (prev_speed_hz != speed_hz
- 				|| prev_bits_per_word != bits_per_word) {
- 			int n = DIV_ROUND_UP(c->baseclk, speed_hz) - 1;
-+
- 			n = clamp(n, SPI_MIN_DIVIDER, SPI_MAX_DIVIDER);
- 			/* enter config mode */
- 			txx9spi_wr(c, mcr | TXx9_SPMCR_CONFIG | TXx9_SPMCR_BCLR,
+ 	for (i = 0; xtfpga_spi_read32(xspi, XTFPGA_SPI_BUSY) &&
+ 	     i < BUSY_WAIT_US; ++i)
+ 		udelay(1);
 -- 
 2.0.0
 

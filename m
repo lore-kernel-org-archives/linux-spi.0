@@ -1,56 +1,68 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 9/9] spi: xtensa-xtfpga: Fix checkpatch issue
-Date: Tue, 2 Sep 2014 11:47:59 +0100
-Message-ID: <20140902104759.GQ29327@sirena.org.uk>
-References: <002101cfc658$4f627cf0$ee2776d0$%han@samsung.com>
- <002901cfc659$3b9a9850$b2cfc8f0$%han@samsung.com>
+Subject: Re: [PATCH 1/4] spi: altera: remove unnecessary #ifdef CONFIG_OF
+Date: Tue, 2 Sep 2014 12:16:56 +0100
+Message-ID: <20140902111656.GU29327@sirena.org.uk>
+References: <002a01cfc65d$2dc86640$895932c0$%han@samsung.com>
+ <CAFRkauAD7upo4e1Vc08FAMFamv=Lwy2whzJz3vADtse18kjriA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Uc2nn8srCdMFAHlk"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Max Filippov' <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="PUHnpEUN0SLOjcm5"
+Cc: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Thomas Chou <thomas-SDxUXYEhEBiCuPEqFHbRBg@public.gmane.org>
+To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <002901cfc659$3b9a9850$b2cfc8f0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <CAFRkauAD7upo4e1Vc08FAMFamv=Lwy2whzJz3vADtse18kjriA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---Uc2nn8srCdMFAHlk
+--PUHnpEUN0SLOjcm5
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 02, 2014 at 11:54:37AM +0900, Jingoo Han wrote:
-> Fix the following checkpatch warnings.
->=20
->   WARNING: Missing a blank line after declarations
+On Tue, Sep 02, 2014 at 01:34:39PM +0800, Axel Lin wrote:
 
-Applied, thanks.
+> > -#ifdef CONFIG_OF
+> >  static const struct of_device_id altera_spi_match[] = {
+> >         { .compatible = "ALTR,spi-1.0", },
+> >         { .compatible = "altr,spi-1.0", },
+> >         {},
+> >  };
+> >  MODULE_DEVICE_TABLE(of, altera_spi_match);
+> > -#endif /* CONFIG_OF */
 
---Uc2nn8srCdMFAHlk
+> For !CONFIG_OF case:
+>         #define of_match_ptr(_ptr)      NULL
+> Can you explain how of_match_ptr() handle this?
+
+Unless MODULE_DEVICE_TABLE knows about OF that's not going to trigger
+the dead code elimination.
+
+--PUHnpEUN0SLOjcm5
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJUBaBcAAoJELSic+t+oim97KcP/2LlGgI0Mahzi9EzMmvrHMSV
-eeI65FZ40O6JeCxPKubaWTkyZUvpIJDD072NkPmJVkt5z3NjkwHCr20w1RF7L4GB
-Os+iGP6oVSr4v8LlGxFMwC8cO3iPI7egRidigMTZVN3d5GHIp/fMFbqnrUvZf3J2
-H0KlzYjgCcma64iBED9v0qKsFoFZC86kFlVO3OdK2NUKL1QC7V/Y3mxm5XnH+xG2
-bWtotP8SRwHpoumik7FfcKIJAol1jAzg2S7qrOy99EM7qkYsbSmlaYg+QPJuyi88
-2i+xkQigfZDJjvgoSz3ovUfTSlN6WIWvtwO3BVmpN8C+7wyK46SHkvqYCbpwX9cR
-1SZhNqAoJ6hMIlGkkadvn4GJy+qVhghupJlpLGn3wsiY4cQnjnsXJGeypvP9xQTh
-TzlOZCtK2tRVoTvBVU/O/QpD3u5isr3zRP0nX1Xxfh+vQ6OdixcjnJzhLDQ1rCut
-79E/wWGdibkal7mRDXQTC4l5b15mSKZ2uPlBCbxbVPLl0hagvIWLqQI1ine4driz
-x2GfWY1RXXEXwOVeEIgnDeB8o/XDZ3YiRm5y0ybAy0CiRv6yIIQNXwiJ4lbMsohz
-3D1zQmJOW+TaKdIEt0rBM454vE4cpFVBLRADBawfQDpNT0hJykAY7OlwxE3FO2v5
-C/O0FC+VBfmd94oaSKSG
-=rnlZ
+iQIcBAEBAgAGBQJUBaclAAoJELSic+t+oim9PfsP/iFpMfb/XTApA+VCL687eXnG
+Hb6JLkfVtMKUCg6RB6EMnR0syl8qf/S3vAH0BSMRN0TiEtZZ8maOJyM9lbwo4dr4
++Sw4yLUd5jiF1sAzhwZ/6wNyWMNwl7RmPP1KFjPrUaUurCX+FEAx0hFA55ADDe3L
+wIvndMeTwPCMHwJb9goMacZFq5+7/D4skt7O98Y1Qvp1N3Ek3qpUcXvjuUjMIQA0
+MapPfKLZ3RTDNB6GuYmDdhhvshO13tq6llqsI4pcz6DuKIPo+9RD+pRApevd0sRY
+OI7ZLXcfpSnN0zL9tLvGLexQjend6furhod1eBZSan0qvxtnogO/d5cWt2kGeD6K
+yos9GcFfcOwm3OaWNYx/MKrAf4Hs6aK41V1w0PzK/eYS+fXTtfmJtkzhCDQm1FJj
+4lOepapvbPWk2hEPGX9x4smPURF6tW4aHoRjOWk8Y/yEynexYEyBJktWR5K+CP27
+nMaC85IDICZfacVPMkhyDY2EfP3TM1zuU0VZ95X3IaGklSciRk8PlNqR+l3i2aT4
+Hr5ZFzqlRqDXR6Tn36OBvo9hKi88mMU5BYbpCrSdeOvEkPUbYLFzKuz4cgQ1Bmrs
+4Z37cpq31DOAXPruHGhSe3e0MHStpcNcRczjuSoROSwYl23GbetMDYX97kQI9ZjD
+pQb8Ml2TCdC44Wl/SJiq
+=p/CC
 -----END PGP SIGNATURE-----
 
---Uc2nn8srCdMFAHlk--
+--PUHnpEUN0SLOjcm5--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

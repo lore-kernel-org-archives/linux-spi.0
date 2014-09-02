@@ -1,57 +1,55 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 3/9] spi: ep93xx: Fix checkpatch issue
-Date: Tue, 2 Sep 2014 11:47:47 +0100
-Message-ID: <20140902104747.GP29327@sirena.org.uk>
-References: <002101cfc658$4f627cf0$ee2776d0$%han@samsung.com>
- <002301cfc658$9eb72c60$dc258520$%han@samsung.com>
+Subject: Re: [PATCH 4/4] spi: xtensa-xtfpga: remove unnecessary #ifdef
+ CONFIG_OF
+Date: Tue, 2 Sep 2014 11:50:34 +0100
+Message-ID: <20140902105034.GS29327@sirena.org.uk>
+References: <002a01cfc65d$2dc86640$895932c0$%han@samsung.com>
+ <002d01cfc65d$9fa78d90$def6a8b0$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="jASSyw8pZdwiLt00"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Mika Westerberg' <mika.westerberg-X3B1VOXEql0@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="99FKeZQ5IARcBmLz"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Max Filippov' <jcmvbkbc-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <002301cfc658$9eb72c60$dc258520$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <002d01cfc65d$9fa78d90$def6a8b0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---jASSyw8pZdwiLt00
+--99FKeZQ5IARcBmLz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 02, 2014 at 11:50:13AM +0900, Jingoo Han wrote:
-> Fix the following checkpatch warnings.
->=20
->   WARNING: Missing a blank line after declarations
+On Tue, Sep 02, 2014 at 12:26:02PM +0900, Jingoo Han wrote:
+> Remove unnecessary #ifdef CONFIG_OF, because this is already
+> handled by the of_match_ptr macro.
 
 Applied, thanks.
 
---jASSyw8pZdwiLt00
+--99FKeZQ5IARcBmLz
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJUBaBQAAoJELSic+t+oim9zxgQAIh9u0O4rWZVLKGeDXbkTlN6
-HE4OdBw4OM95bBqg2wANphv0pLRMbw88bOIlBcac645B+V6RbXSSL1dkJitEdy7c
-3CSINxddo1nX89RTBavePE4y6ETGu0Rn9w566lHaMwT+YeQ+XfpT7sI8j5WzL27n
-JgflKmUw5KrNbt+GCu/6yf+gVS5bJqH1PzQq+9XtIlJTOGiG5r5e5lI+1gi6VYSc
-hjHKB3KkojCmVWmnJB8V1zQADMg1OSBSR787NpsWOOTJEQo+/oDAQYlrzSqBKLu6
-NrfGupVHI+GEEFbgBz+ADTUustgibuJW51J3Irdnc87uKUhs3pivGbkOtB8R2KGI
-eAvXyfgUOGy3g1YLXswpHJlpAt3TWYybXO4MIYiAhUT66TPyp/cgJwCt1rJbsg/u
-D3EnJMScwQtDJwfHGZFHvc1pvP/GQHX3+gB1qRqfZrI1jrELCFUkXmYvwzgRGZQu
-n3IKxa5trvxzJ4JHLGmVqnwMsG2X7hrWvJ9ABNzRlxhN7pV6czfIUGgyUomSoUFs
-mFOdIuDyDujvwH7we7xEjp9CKkFl5goNLNwL6e5vzEngi2hL8PjoeG9n0wKmgKUK
-TRTrAm819FzL/bUwrJ70Yf86Y1C7KeJbZAZjO+ORZtM32vhkRAstWFU0AtkguZ2t
-LKGfNjWJEdslDu5ulc2t
-=JZRE
+iQIcBAEBAgAGBQJUBaD3AAoJELSic+t+oim95IsP/itc9fjK3SjRdADIfoao2ht8
+Ot8S9bS8hX4X685B8Z4dKIfP7YD5mrRZxc9yf3a4cmAR/QzWjkjYTW4tLqf//usG
+Y0MTfohehoA5pUZdkTADqwZzvCLU2ATnhn1Qy9jIHEPwC9/NUniCkcma7siPpDEI
+UeTt0/Rtt6NWjgaCBet9/xS0saJzzpwvZxNj4V412nrKdukGhRxgcPezMvmzFqN0
+DG0f7RG1V5vYnRSwUw4Ofb3Ls5hYk9eMwFsdgOzGkzrd+4SbGmOYIOvys7mrQi6k
+OfUiHCQfBdX7NCzFLkMGQuxjuO4IDxH4UuNRKOMFCKQsAZCDGX0KSqg5BpssbzOt
+HwuA0c44qxM5G+8dFdLbFx9Rhb0lY3bgD3GXdFm18g8y4irBePZYDhiFfn8CUdis
+nqzWGt8oEijVOD3VDya9uHAZIgqP1NNQfZ1n8cTnedABT4O3VvxakBkz7uwsioBh
+xl1a4Xc0zfNchwZau7OYKXEiXqrstZLqjKVohJmqBpXdlBZiGE7JnAfurNpKxCsL
+I3YcpDrKbT2gnFwtntkH/S015O1LKAUDXwUEZn66yWqBPI/kmdQeFrtWyBLGcJSw
+dalI016c56YLkeP6Fi8BaeBTc9haG8ZLnqEerZhOHVXZnf2VucJJM1gw/BFvc19w
+R/mhu+izQJhlu/Q/8tUX
+=rduE
 -----END PGP SIGNATURE-----
 
---jASSyw8pZdwiLt00--
+--99FKeZQ5IARcBmLz--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

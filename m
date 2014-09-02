@@ -1,58 +1,65 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 4/9] spi: spi-mxs: Fix checkpatch issue
-Date: Tue, 2 Sep 2014 17:32:42 +0100
-Message-ID: <20140902163242.GZ29327@sirena.org.uk>
-References: <002101cfc658$4f627cf0$ee2776d0$%han@samsung.com>
- <002401cfc658$b32398f0$196acad0$%han@samsung.com>
+Subject: Re: [PATCH 2/4] spi: atmel: remove unnecessary #if defined(CONFIG_OF)
+Date: Tue, 2 Sep 2014 17:36:58 +0100
+Message-ID: <20140902163658.GA29327@sirena.org.uk>
+References: <002a01cfc65d$2dc86640$895932c0$%han@samsung.com>
+ <002b01cfc65d$569ef570$03dce050$%han@samsung.com>
+ <20140902105018.GR29327@sirena.org.uk>
+ <CAMuHMdU2S_vwv3=CUtgGjqnq-nbh=up42gDWzR35ai6s4ZVaWQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5DFjIrIHbGf/FHYW"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Marek =?utf-8?Q?Va=C5=A1ut'?= <marex-ynQEQJNshbs@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="DG78IEnUmLKoW088"
+Cc: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Nicolas Ferre <nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <002401cfc658$b32398f0$196acad0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+In-Reply-To: <CAMuHMdU2S_vwv3=CUtgGjqnq-nbh=up42gDWzR35ai6s4ZVaWQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---5DFjIrIHbGf/FHYW
+--DG78IEnUmLKoW088
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 02, 2014 at 11:50:48AM +0900, Jingoo Han wrote:
-> Fix the following checkpatch warnings.
->=20
->   WARNING: Missing a blank line after declarations
->   WARNING: Prefer kcalloc over kzalloc with multiply
+On Tue, Sep 02, 2014 at 02:15:09PM +0200, Geert Uytterhoeven wrote:
+> On Tue, Sep 2, 2014 at 12:50 PM, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> > On Tue, Sep 02, 2014 at 12:24:00PM +0900, Jingoo Han wrote:
+> >> Remove unnecessary  #if defined(CONFIG_OF), because this is
+> >> already handled by the of_match_ptr macro.
 
-Applied, thanks.
+> > Applied, thanks.
 
---5DFjIrIHbGf/FHYW
+> If CONFIG_OF is not set, binary size is increased, as the OF match
+> table is still emitted, while it's no longer in use:
+
+OK, I've discarded the series.
+
+--DG78IEnUmLKoW088
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJUBfEnAAoJELSic+t+oim9yNQP/iKzh2B7faROsORdrrg0iZWU
-mVwj3YjBzINH2nqR87ADS9jeXocROj0Ph91aPZEUQK/tVec7SwahNGgEx0ZcbT7y
-be6/BIJhAkj76E7TlmN/0GmprtDGPUK3Nk2TCPjPh6FLoeUA8EzGh6DpmIPQjVjO
-GQv1eYY01I6vuves+co1cPSdgplGdUxhljjYh3JhGP2rr4jSpRHTDYh4R0T0hTsM
-y2beskYp8p835X194+6/jIYUiKjEeQoOm3DsPPdlJ7YmR1p8qA5K0ZWiXalPElVd
-bCqnbjen5uGVsqTqwQNBUYIIGDS7Qy6DhAN329PgbnSDF2/bwHdFVw2WS17/6vms
-SNesuws7WqZXddASNtVWsmmZb4JywpGWudWKzajetsJV/1/IFIc4f/7inGVamG16
-rhFOz0+0Mmcznafx/aPlrYbTHMEitH9GNOyKEDHvYNZJo2xZdAVXBh5d5kRQig8D
-hCzdbHVnct3Z79Jrq2zHVeRt3xXFqPewrvg9sqtIkG0g8zCDLQQhnzLI+rlBwm1O
-ZmD9WrIx74cRtr8+3pRa6fx7TO65tky0McN/Gih+QQYh7KKPTKqkePJAWSCxm/x3
-Gmi9F44TcibW6u6THxDniSiWn9XNlt8QCxsht1lDQUlUM2ALalZvteihq9KqemM7
-1GGpLNX07doiME50TK5V
-=JQ2B
+iQIcBAEBAgAGBQJUBfInAAoJELSic+t+oim9ItwP/jAHyYhpSBexiVlkj1jIm00r
+gt+cX8YRmNK59wjHErTgFIyG/99uOy4ltmVg11oDFW9wDdIzWIsHy8Qc5nKD/90a
+B7++D57RYn7YeXZhDgxT0bOxzvwrY5ofWlxZQjuNlbfqdJUIL4eyEfVPqtVBwBXR
+O5boEr+NirWmeeibvPcvqiSjwD8xWAtqI/4JiDpQsoAZNc8xQ3RFeQUiM1gaqOAb
+8UzAlQw30loBEy4RBdKe4VgBn6v5p1n7UttlFH9dWb5LkSlQWfgxuKvmmVFv36fy
+HvTxQfqLJgHWotGiqQqdjBobMmTlzn7uyfDBiHQCql+V4buGtdCPMPKvsDUc0iIs
+6vVFj3TmlSHB8tn2Ntsj/Tv5LbLN8IEwbaK5D6Cs5SoNoutrQuRKHPNcqeKnG6H8
+Ds5M83vKX6vmdS4RpCpDDMdyMpxo06bKS/LMnbQaUMllTshPUoyMzed2lZOKduQ0
+9wMktnhpxyVnqV1l2eswgz1fT7hmkZ0DwjeYQbi1lc/jSpFEn7+wKyWM0v8RMvyW
+aUrFYCKKnqq1l03CiENsJOWQMH9j785VPRzrW0PUi3h6mywEk/wk1MGGGEZifOoS
+jCvy/KLW2LenqJ6eUDTQEu9Mi6IDnfqokWkvBAI4Py5Q3OEZP9VuIUDp0DncK4Rn
+ahDG3E5HsLFKzQbOGVIz
+=2NlD
 -----END PGP SIGNATURE-----
 
---5DFjIrIHbGf/FHYW--
+--DG78IEnUmLKoW088--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,13 +1,12 @@
 From: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Subject: [PATCH 7/9] spi: tegra20-sflash: Fix checkpatch issue
-Date: Tue, 02 Sep 2014 11:53:11 +0900
-Message-ID: <002701cfc659$08938bb0$19baa310$%han@samsung.com>
+Subject: [PATCH 8/9] spi: txx9: Fix checkpatch issue
+Date: Tue, 02 Sep 2014 11:53:54 +0900
+Message-ID: <002801cfc659$222039c0$6660ad40$%han@samsung.com>
 References: <002101cfc658$4f627cf0$ee2776d0$%han@samsung.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Laxman Dewangan' <ldewangan-DDmLM1+adcrQT0dZR+AlfA@public.gmane.org>,
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, 'Atsushi Nemoto' <anemo-7JcRY8pycbNHfZP73Gtkiw@public.gmane.org>,
 	'Jingoo Han' <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 To: 'Mark Brown' <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
@@ -18,35 +17,33 @@ List-ID: <linux-spi.vger.kernel.org>
 
 Fix the following checkpatch warnings.
 
-  WARNING: macros should not use a trailing semicolon
-  WARNING: Missing a blank line after declarations
+  Missing a blank line after declarations.
 
 Signed-off-by: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
 ---
- drivers/spi/spi-tegra20-sflash.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-txx9.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 3548ce25c08f..cd66fe7b78a9 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -99,7 +99,7 @@
- #define SPI_TX_TRIG_MASK		(0x3 << 16)
- #define SPI_TX_TRIG_1W			(0x0 << 16)
- #define SPI_TX_TRIG_4W			(0x1 << 16)
--#define SPI_DMA_BLK_COUNT(count)	(((count) - 1) & 0xFFFF);
-+#define SPI_DMA_BLK_COUNT(count)	(((count) - 1) & 0xFFFF)
- 
- #define SPI_TX_FIFO			0x10
- #define SPI_RX_FIFO			0x20
-@@ -221,6 +221,7 @@ static int tegra_sflash_read_rx_fifo_to_client_rxbuf(
- 	while (!(status & SPI_RXF_EMPTY)) {
- 		int i;
- 		u32 x = tegra_sflash_readl(tsd, SPI_RX_FIFO);
+diff --git a/drivers/spi/spi-txx9.c b/drivers/spi/spi-txx9.c
+index 5f183baa91a9..2501a8373e89 100644
+--- a/drivers/spi/spi-txx9.c
++++ b/drivers/spi/spi-txx9.c
+@@ -97,6 +97,7 @@ static void txx9spi_cs_func(struct spi_device *spi, struct txx9spi *c,
+ 		int on, unsigned int cs_delay)
+ {
+ 	int val = (spi->mode & SPI_CS_HIGH) ? on : !on;
 +
- 		for (i = 0; (i < tsd->bytes_per_word); i++)
- 			*rx_buf++ = (x >> (i*8)) & 0xFF;
- 		read_words++;
+ 	if (on) {
+ 		/* deselect the chip with cs_change hint in last transfer */
+ 		if (c->last_chipselect >= 0)
+@@ -188,6 +189,7 @@ static void txx9spi_work_one(struct txx9spi *c, struct spi_message *m)
+ 		if (prev_speed_hz != speed_hz
+ 				|| prev_bits_per_word != bits_per_word) {
+ 			int n = DIV_ROUND_UP(c->baseclk, speed_hz) - 1;
++
+ 			n = clamp(n, SPI_MIN_DIVIDER, SPI_MAX_DIVIDER);
+ 			/* enter config mode */
+ 			txx9spi_wr(c, mcr | TXx9_SPMCR_CONFIG | TXx9_SPMCR_BCLR,
 -- 
 2.0.0
 

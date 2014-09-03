@@ -1,50 +1,41 @@
-From: Husam Al Sayed <oscar55@post.sk>
-Subject: FROM: Husam Al Sayed.
-Date: Wed, 3 Sep 2014 20:50:26 +0200 (CEST)
-Message-ID: <1078771224.347254.1409770226251.JavaMail.root@mbox05>
-Reply-To: "alsayedhusa@hotmail.com" <alsayedhusa@hotmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Cc: linux-spi@vger.kernel.org, kou.ishizaki@toshiba.co.jp,
-	jens@de.ibm.com, jk@ozlabs.org, linuxppc-dev@lists.ozlabs.org,
-	cbe-oss-dev@lists.ozlabs.org, phillip@squashfs.org.uk,
-	squashfs-devel@lists.sourceforge.net, jbglaw@lug-owl.de,
-	stable@vger.kernel.org, pe1dnn@amsat.org, sjakub@gmail.com,
-	abbotti@mev.co.uk, hsweeten@visionengravers.com,
-	nsankar@broadcom.com, davilla@4pi.com, abraham.manu@gmail.com,
-	steveu@coppice.org, david@rowetel.com, mark.einon@gmail.com,
-	marek.belisko@gmail.com, d@teklibre.com, hans.verkuil@cisco.com,
-	jic23@kernel.org, linux-iio@vger.kernel.org, jarod@wilsonet.com,
-	jak@jak-linux.org, marvin24@gmx.de, ac100@lists.launchpad.net,
-	jfrederich@gmail.com
-To: unlisted-recipients:; (no To-header on input)
-Return-path: <stable-owner@vger.kernel.org>
-Sender: stable-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>
+Subject: [PATCH 0/3] SPI Fixes for spi-rockchip
+Date: Wed,  3 Sep 2014 13:44:24 -0700
+Message-ID: <1409777067-17422-1-git-send-email-dianders@chromium.org>
+Cc: Alexandru Stan <amstan-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	Sonny Rao <sonnyrao-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	Doug Anderson <dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org>, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
+	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, broonie-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>,
+	Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-FROM: Husam Al Sayed.
+These three patches are random SPI fixes for spi-rockchip.  They are
+unrelated and can be applied / NAKed separately.  They've been tested
+in PIO mode on an rk3288 board (since SPI DMA isn't currently working
+for some unknown reason).
 
-EMAIL:alsayedhusa@hotmail.com
- 
-Hello,
- 
-I decided to write you this proposal in good faith, believing that you will
-not betray me. I am Mr. Husam Al Sayed, a Bank officer here in U.A.E.
- 
-One Mr. Peter Adams, a citizen of your country and Crude Oil dealer made a fixed deposit with my bank in 2005 for 108 calendar months, valued at US$30,000,000.00 (Thirty Million United State Dollars) the due date for this deposit contract was last 22nd of January 2014. Sadly Peter was among the death victims in the May 27 2006 Earthquake disaster in Java, Indonesia that killed over 5,000 people. He was in Indonesia on a business trip and that was how he met his untimely end. My bank management is yet to know about his death, I knew about it because he was my friend and I am his Account Officer. Peter did not mention any Next of Kin/ Heir when the account was opened, he was not married and no children. Last week my Bank Management requested that Peter should give instructions on what to do 
- about his funds, if to renew the contract.
- 
-I know this will happen and that is why I have been looking for a means to handle the situation, because if my Bank Directors happens to know that Peter is dead and do not have any Heir, they will take the funds for their personal use, so I don't want such to happen. That is why I am seeking your co-operation to present you as the Next of Kin/ Heir to the account, since you are a foreigner and my bank head quarters will release the account to you. There is no risk involved; the transaction will be executed under a legitimate arrangement that will protect us from any breach of law. It is better that we claim the money, than allowing the Bank Directors to take it, they are rich already. I am not a greedy person, so I am suggesting we share the funds in this ratio, 50/50%, equal sharing. Let 
- me know your mind on this and please do treat this information highly confidential. We shall go over the details once I receive your urgent response. Please Urgently get back to me through this email address as soon as possible:
- 
- 
- 
-Have a nice day and God bless. Anticipating your communication.
- 
-Regards,
-FROM: Husam Al Sayed.
-EMAIL: alsayedhusa@hotmail.com
-_____________________________________________________________________
 
-Denne vyberame najlepsie hry - http://www.hrymat.sk
+Doug Anderson (3):
+  spi/rockchip: Fix the wait_for_idle() timeout
+  spi/rockchip: Don't warn if SPI is busy but disabled
+  dt-bindings: spi/rockchip: Mark DMA as optional
+
+ Documentation/devicetree/bindings/spi/spi-rockchip.txt | 8 ++++++--
+ drivers/spi/spi-rockchip.c                             | 5 +++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
+-- 
+2.1.0.rc2.206.gedb03e5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

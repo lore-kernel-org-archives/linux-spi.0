@@ -1,58 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/9] spi: davinci: Fix checkpatch issue
-Date: Wed, 3 Sep 2014 19:30:54 +0100
-Message-ID: <20140903183054.GZ29327@sirena.org.uk>
-References: <002101cfc658$4f627cf0$ee2776d0$%han@samsung.com>
+From: Husam Al Sayed <oscar55@post.sk>
+Subject: FROM: Husam Al Sayed.
+Date: Wed, 3 Sep 2014 20:50:26 +0200 (CEST)
+Message-ID: <1078771224.347254.1409770226251.JavaMail.root@mbox05>
+Reply-To: "alsayedhusa@hotmail.com" <alsayedhusa@hotmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="bL2/s+BzS+0mqUOB"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	'Grygorii Strashko' <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-To: Jingoo Han <jg1.han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <002101cfc658$4f627cf0$ee2776d0$%han-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Cc: linux-spi@vger.kernel.org, kou.ishizaki@toshiba.co.jp,
+	jens@de.ibm.com, jk@ozlabs.org, linuxppc-dev@lists.ozlabs.org,
+	cbe-oss-dev@lists.ozlabs.org, phillip@squashfs.org.uk,
+	squashfs-devel@lists.sourceforge.net, jbglaw@lug-owl.de,
+	stable@vger.kernel.org, pe1dnn@amsat.org, sjakub@gmail.com,
+	abbotti@mev.co.uk, hsweeten@visionengravers.com,
+	nsankar@broadcom.com, davilla@4pi.com, abraham.manu@gmail.com,
+	steveu@coppice.org, david@rowetel.com, mark.einon@gmail.com,
+	marek.belisko@gmail.com, d@teklibre.com, hans.verkuil@cisco.com,
+	jic23@kernel.org, linux-iio@vger.kernel.org, jarod@wilsonet.com,
+	jak@jak-linux.org, marvin24@gmx.de, ac100@lists.launchpad.net,
+	jfrederich@gmail.com
+To: unlisted-recipients:; (no To-header on input)
+Return-path: <stable-owner@vger.kernel.org>
+Sender: stable-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+FROM: Husam Al Sayed.
 
---bL2/s+BzS+0mqUOB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+EMAIL:alsayedhusa@hotmail.com
+ 
+Hello,
+ 
+I decided to write you this proposal in good faith, believing that you will
+not betray me. I am Mr. Husam Al Sayed, a Bank officer here in U.A.E.
+ 
+One Mr. Peter Adams, a citizen of your country and Crude Oil dealer made a fixed deposit with my bank in 2005 for 108 calendar months, valued at US$30,000,000.00 (Thirty Million United State Dollars) the due date for this deposit contract was last 22nd of January 2014. Sadly Peter was among the death victims in the May 27 2006 Earthquake disaster in Java, Indonesia that killed over 5,000 people. He was in Indonesia on a business trip and that was how he met his untimely end. My bank management is yet to know about his death, I knew about it because he was my friend and I am his Account Officer. Peter did not mention any Next of Kin/ Heir when the account was opened, he was not married and no children. Last week my Bank Management requested that Peter should give instructions on what to do 
+ about his funds, if to renew the contract.
+ 
+I know this will happen and that is why I have been looking for a means to handle the situation, because if my Bank Directors happens to know that Peter is dead and do not have any Heir, they will take the funds for their personal use, so I don't want such to happen. That is why I am seeking your co-operation to present you as the Next of Kin/ Heir to the account, since you are a foreigner and my bank head quarters will release the account to you. There is no risk involved; the transaction will be executed under a legitimate arrangement that will protect us from any breach of law. It is better that we claim the money, than allowing the Bank Directors to take it, they are rich already. I am not a greedy person, so I am suggesting we share the funds in this ratio, 50/50%, equal sharing. Let 
+ me know your mind on this and please do treat this information highly confidential. We shall go over the details once I receive your urgent response. Please Urgently get back to me through this email address as soon as possible:
+ 
+ 
+ 
+Have a nice day and God bless. Anticipating your communication.
+ 
+Regards,
+FROM: Husam Al Sayed.
+EMAIL: alsayedhusa@hotmail.com
+_____________________________________________________________________
 
-On Tue, Sep 02, 2014 at 11:48:00AM +0900, Jingoo Han wrote:
-> Fix the following checkpatch warnings.
->=20
->   WARNING: Missing a blank line after declarations
->   WARNING: quoted string split across lines
-
-Applied all the rest, thanks.
-
---bL2/s+BzS+0mqUOB
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQIcBAEBAgAGBQJUB15bAAoJELSic+t+oim9fqoQAInQXAiTk+nvBIbRNK9lJGIC
-vkPGVGGSOmXHO5Hns/AC0B0homD7EAKr1BzFEP2rUStyBXE7wTGNLxg6srirCZ6Y
-0vp9eOt/nBKjIu0SQxw7tZdlcauYOkavsnwDquCgKnnazqxFK9H6Dh44uWkoH0SO
-MaftV3pPEukHTvgVRmKHakhBtHL3eJOH9SwsBt6vy9cgN3Z5vdDYI7+GANEf+bvG
-W5abCMYvH8QlqenTcXme+RkoagYtw29oFxrLYBR9R1adx9Qrm7nvxWUKzXhE311L
-uQd0dRWQ44jGDl8Sps3l1Udb+1muK1k2GuWjimIAR3kmJhh66knlZzHJ7JvOAwzi
-aoeqYu98YhYonrA6mj75ubRIZVKRqUGi/408pvW/YugZ1gpXIZ9OUmoKRucxXZcV
-d3wONdyj2FNYzMnF61pSSQ5N7rAGkBuGdn56oQ7pYzEsZMq+bjeDYmZGNChKg+3t
-bEH3HBXyubpwBr2KteXrLNByROclgJCFj4xMfZqfMAFBKLbQlQqlUxWNr7M/zZG8
-yZstIDoXFViYmi3d4Wgcr1l0cqrzqO8k0tuX1U8VT4EsqqFKLFTvCDSrecbig1Kj
-Yd9s1x5aADHAUz7ZAvzJvjXKdmQ9yLBa+6B8QW2iwKFcaKrbQosbAFvZ+zXE83aM
-gncSvI4ysjnAZYK+fUPy
-=PgCp
------END PGP SIGNATURE-----
-
---bL2/s+BzS+0mqUOB--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Denne vyberame najlepsie hry - http://www.hrymat.sk

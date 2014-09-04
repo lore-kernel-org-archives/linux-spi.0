@@ -1,60 +1,59 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 6/8] spi: sirf: set default spi frequency if it is not set
-Date: Thu, 4 Sep 2014 23:39:13 +0100
-Message-ID: <20140904223913.GU29327@sirena.org.uk>
+Subject: Re: [PATCH 7/8] spi: sirf: cleanup the indentation of marcos
+Date: Thu, 4 Sep 2014 23:39:37 +0100
+Message-ID: <20140904223936.GV29327@sirena.org.uk>
 References: <1409648557-5470-1-git-send-email-Barry.Song@csr.com>
- <1409648557-5470-2-git-send-email-Barry.Song@csr.com>
+ <1409648557-5470-3-git-send-email-Barry.Song@csr.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="80TIu+lzzbJOSSak"
+	protocol="application/pgp-signature"; boundary="RHIbD+tF1+NVxQvu"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
 	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
 To: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1409648557-5470-2-git-send-email-Barry.Song-kQvG35nSl+M@public.gmane.org>
+In-Reply-To: <1409648557-5470-3-git-send-email-Barry.Song-kQvG35nSl+M@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---80TIu+lzzbJOSSak
+--RHIbD+tF1+NVxQvu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 02, 2014 at 05:02:35PM +0800, Barry Song wrote:
+On Tue, Sep 02, 2014 at 05:02:36PM +0800, Barry Song wrote:
 > From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
 >=20
-> give spi a default frequence if it is not set and the value is 0.
+> let "#define" statement keep same indentation. the old code layout is
+> pretty ugly.
 
-I think this is a good idea but I think we should do this in the SPI
-core rather than this driver since the same thing is going to apply to
-many drivers.  Can you do a patch for that?
+Applied, thanks.
 
---80TIu+lzzbJOSSak
+--RHIbD+tF1+NVxQvu
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIcBAEBAgAGBQJUCOoOAAoJELSic+t+oim9xqMQAJmkCDjis1nT1Zv2gq5vb8p7
-WfxrTHri7u0N0yhDD3LYvFm4spjA+QEeQMOA1U2/mi4LRTIFCzUfo3xYZ2mlJ3Uf
-QBlexEm5E2fdAJg7P9xnX4/jpjkJqczHH/1F5z6JpljYD+tR0DpIBmNH3QCy42YH
-m+MNRvJqWIWB8agAY1AgROzyTiFFs8PXq5fl5LCrbng66XLDVUWwZG3rLAIEI66L
-ewnPdAyH7UtnK2nG2gXi00xpuEQfR1zgPqIjmWQsILNWxX1yMBpcm3yx91eIs6sp
-pwOAUQzwFIuX+SyN5oYDzev6jcUDQE4vQ8+uXdQasp2jfsGhQZ4Cxf1FXB1v5NxK
-8W30v4tFhRH7EwAqG1qIeGpYFjrlfiBr8JC9A14AmvmejTTgXPIkDWi2N0T4Smte
-wJuQLfdViMVFHX83j7qlFl1yUp+3m1T64JrEb79v3vqi9itrqgO4k8ECpZ3z0AXm
-Rdk7Kb20UwyxnJmUQtmI2EAHlNNj1iweDeIwlkSbqqtu0GKblSEA8hv0Bnz3TC8P
-pHtLj3+Uw26W0nfM6av6hmG1SXMXovdCaaHzIzxRzdZaUEkKBChXz61U83JksHmN
-dizNwVfsWVsaJ/CXZ/jBktJRdz1k2vV1iLSEpgdG6y3gJi0drroNW9TdgGDua7C/
-whPU0zTelPbwYkz8Xdcm
-=qdIb
+iQIcBAEBAgAGBQJUCOolAAoJELSic+t+oim914kQAIXV9ECyFA05y/cJv2Jo7WBk
+FqFm9L/ATlT8t7H7+XL7tuS9lM1yS1Q2UcEWAdjzVvcKeHV3adZHNKzsgfrEV4Qr
+uWNVsl7PkgiXro5ZLN1aH0J7JZ2CNeRsBAiO+kdFFVI42dgOfFTp8sgvzpfrCY8X
+dTrCNURcBJEjRWpv/kljJg+5ypQS/jjQfqH5Qb4Utb4V3qbPnWcZz6wGrwyO+NAf
+LRw8n/VNXKpoIRvNk6nlZbo9f242dJuZLxVCfUnc0Z9xEuSyuTIUd3VHXcTfp8Ml
+byVCL7zzuJsayIuaDTjcyTSB8ZoPU7Ra3a3s9VD/QEVyFNVxmpll2s20LHng6EnY
+Na+npMuwPojGL0Cx4q5gkqw7X90sLuRUds0ex9UChq/T+6z1Yyd8pGn+Sffomsin
+3Bj2MXRgHYGg9Sn1ysEH4iXUvJU1hAv89iqEdYYUBp/vBKikArC8QUxZCW7uO/bQ
+ouuaxQ1KPZF7X0E7DotuT94g80GIUDHR3vYcr4WFtVuHNAOoONk9ytnDuvMLIA6z
+/4XCeyEkFUuUSk6ht6sU9duB+49E4Ovp1Dn5HLiSInTLYRxB6I8ZqU0Tklva99bo
+oomIDCOI9EVqQt0I5KisW/41ejIpb2e7bc9rJdHVBgIfDhon1WzQ9dN5SbyeL86d
+7Ye/gB1BUpi2d/Yp04C6
+=Kn1p
 -----END PGP SIGNATURE-----
 
---80TIu+lzzbJOSSak--
+--RHIbD+tF1+NVxQvu--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

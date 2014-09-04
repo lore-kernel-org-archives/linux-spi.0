@@ -1,56 +1,78 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion: support armada extended baud rates
-Date: Thu, 4 Sep 2014 15:17:27 +0200
-Message-ID: <CAMuHMdWDOaPnmCzThqCo2848eDj6jmi-eaXM1YAXQLi41da34A@mail.gmail.com>
-References: <1409835268-29555-1-git-send-email-gerg@uclinux.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1409835268-29555-1-git-send-email-gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v3 7/9] spi: core: Convert to dev_pm_domain_attach|detach()
+Date: Thu,  4 Sep 2014 15:52:34 +0200
+Message-ID: <1409838756-31963-8-git-send-email-ulf.hansson@linaro.org>
+References: <1409838756-31963-1-git-send-email-ulf.hansson@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kevin Hilman <khilman@linaro.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	devicetree@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>,
+	Stephen Boyd <sboyd@codeaurora.org>,
+	Philipp Zabel <philipp.zabel@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>,
+	Russell King <linux@arm.linux.org.uk>,
+	Ulf Hansson <ulf.hansson@linaro.org>, linux-spi@vger.kernel.org
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-pm@vger.kernel.org
+Return-path: <linux-pm-owner@vger.kernel.org>
+In-Reply-To: <1409838756-31963-1-git-send-email-ulf.hansson@linaro.org>
+Sender: linux-pm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hi Greg,
+Previously only the ACPI PM domain was supported by the spi bus.
 
-On Thu, Sep 4, 2014 at 2:54 PM,  <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org> wrote:
-> The Armada SoC family implementation of this SPI hardware module has
-> extended the configuration register to allow for a wider range of SPI
-> clock rates. Specifically the Serial Baud Rate Pre-selection bits in the
-> SPI Interface Configuration Register now also use bits 6 and 7 as well.
->
-> Modify the baud rate calculation to handle these differences for the
-> Armada case. Potentially a baud rate can be setup using a number of
-> different pre-scalar and scalar combinations. This code tries all
-> possible pre-scalar divisors (8 in total) to try and find the most
-> accuate set.
+Let's convert to the common attach/detach functions for PM domains,
+which currently means we are extending the support to include the
+generic PM domain as well.
 
-Are the Orion rates and register bits a subset of the Armada ones?
-I.e. does the Armada work with the Orion setup?
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+---
+ drivers/spi/spi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-> This change introduces a new device tree compatible device name
-> "armada-spi". This is used in place of "orion-spi" on the Armada SoC
-> parts.
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index ca935df..72a0beb 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -264,10 +264,12 @@ static int spi_drv_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	acpi_dev_pm_attach(dev, true);
+-	ret = sdrv->probe(to_spi_device(dev));
+-	if (ret)
+-		acpi_dev_pm_detach(dev, true);
++	ret = dev_pm_domain_attach(dev, true);
++	if (ret != -EPROBE_DEFER) {
++		ret = sdrv->probe(to_spi_device(dev));
++		if (ret)
++			dev_pm_domain_detach(dev, true);
++	}
+ 
+ 	return ret;
+ }
+@@ -278,7 +280,7 @@ static int spi_drv_remove(struct device *dev)
+ 	int ret;
+ 
+ 	ret = sdrv->remove(to_spi_device(dev));
+-	acpi_dev_pm_detach(dev, true);
++	dev_pm_domain_detach(dev, true);
+ 
+ 	return ret;
+ }
+-- 
+1.9.1
 
-> -                               compatible = "marvell,orion-spi";
-> +                               compatible = "marvell,armada-spi";
-
-If the answer to my above question is yes, you want to keep
-"marvell,orion-spi" as a fallback.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,81 +1,68 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH 2/2] Documentation: DT bindings for AXM55xx SSP CS
-Date: Thu, 4 Sep 2014 19:05:40 +0200
-Message-ID: <CACRpkdZZfSR18acUm8U7aM5uxdX8gefN-Lbw7of5qqEe=Pddqg@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] gpio: Add driver for AXM55xx SSP chip selects
+Date: Thu, 4 Sep 2014 18:06:30 +0100
+Message-ID: <20140904170630.GL29327@sirena.org.uk>
 References: <1409576021-24828-1-git-send-email-anders.berg@avagotech.com>
-	<1409576021-24828-3-git-send-email-anders.berg@avagotech.com>
+ <1409576021-24828-2-git-send-email-anders.berg@avagotech.com>
+ <CACRpkdby4H-fivNn_kG2uL0EjsCGAc+t6OyFi0+VcNGf2Z9NQA@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Alexandre Courbot <gnurou@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Anders Berg <anders.berg@avagotech.com>,
-	Mark Brown <broonie@kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-Return-path: <linux-gpio-owner@vger.kernel.org>
-In-Reply-To: <1409576021-24828-3-git-send-email-anders.berg@avagotech.com>
-Sender: linux-gpio-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="QRMPWTMRwp+GIPe+"
+Cc: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <CACRpkdby4H-fivNn_kG2uL0EjsCGAc+t6OyFi0+VcNGf2Z9NQA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-I bet Mark and linux-spi are interested in this patch too.
 
-Yours,
-Linus Walleij
+--QRMPWTMRwp+GIPe+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 1, 2014 at 2:53 PM, Anders Berg <anders.berg@avagotech.com> wrote:
-> Bindings and documentation for AXM55xx SSP chip select controller.
->
-> Signed-off-by: Anders Berg <anders.berg@avagotech.com>
-> ---
->  .../devicetree/bindings/gpio/gpio-axxia-sspcs.txt  | 36 ++++++++++++++++++++++
->  1 file changed, 36 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/gpio/gpio-axxia-sspcs.txt
->
-> diff --git a/Documentation/devicetree/bindings/gpio/gpio-axxia-sspcs.txt b/Documentation/devicetree/bindings/gpio/gpio-axxia-sspcs.txt
-> new file mode 100644
-> index 0000000..a64c695
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/gpio/gpio-axxia-sspcs.txt
-> @@ -0,0 +1,36 @@
-> +* Axxia SSP GPIO chip-select driver
-> +
-> +The Axxia device has a ARM PL022 Prime Cell SSP controller with an extension of
-> +five chip select signals that may be controlled by software. This driver
-> +exports them as GPIOs.
-> +
-> +Required properties:
-> +
-> +  * compatible: should be "lsi,ssp-gpio"
-> +  * reg: address of the chip select control register.
-> +  * gpio-controller: mark the device as gpio controller
-> +  * #gpio-cells: should be 1 and this field specifies the chip select number
-> +
-> +Example:
-> +-------
-> +
-> +       spics: sspgpio@2010088030 {
-> +               compatible = "lsi,ssp-gpio";
-> +               #gpio-cells = <1>;
-> +               reg = <0x20 0x10088030 0x00 0x4>;
-> +               gpio-controller;
-> +       };
-> +
-> +       spi0: ssp@2010088000 {
-> +               compatible = "arm,pl022", "arm,primecell";
-> +               #address-cells = <1>;
-> +               #size-cells = <0>;
-> +               reg = <0x20 0x10088000 0x00 0x1000>;
-> +               num-cs = <5>;
-> +               cs-gpios = <&spics 0>,
-> +                          <&spics 1>,
-> +                          <&spics 2>,
-> +                          <&spics 3>,
-> +                          <&spics 4>;
-> +               ...
-> +      };
-> --
-> 1.9.1
->
+On Thu, Sep 04, 2014 at 07:04:44PM +0200, Linus Walleij wrote:
+> I need an ACK from Mark Brown on this before I apply.
+> The driver seems to do what it should, but I need Mark to
+> be OK with exporting the CS signals from an SSP/SPI block
+> to be exposed to Linux as GPIOs.
+>=20
+> (Top-posting and quoting patch verbatim so Mark gets it.)
+
+I don't see any sort of reasoning for this?
+
+--QRMPWTMRwp+GIPe+
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIcBAEBAgAGBQJUCJwTAAoJELSic+t+oim96LkQAIp1bppb41pXt3R11K1vTTHG
+FiDJF761Cafs/2DXkPEDzLrKjOw6Z5i3pxzeZupNoVvfjn+4X9nmQdjXPqRAWy5v
+8H8sdrlhQ6ner/tyL5hXz2VnRbFtFrH9UepbxLJbFsuQ4mNj/5ZbWctN16DyN7H0
+D/9GeujTRW2EF10MAB/T4uOsLmvWTNWVNlDizKG0MP2icLPVFc5h3c7O6PqViRuS
+u+ouYBFVn8WMbA7zjuaaCMB4MiRdJ6Mx0hH++ZWg+GRpgmKLeIB6xQUn/p0JWeu7
+fU+7OJV2KQS1TQHGwPvs+Y4mXUnRNdob3Q81fvCh+9W3MZFan9vaFxYYyCQjLf05
+KboI4thHFQ1Uz1v6pTeabDXwClANMQjUmuKwP0pfn3z+PHVL1qmrN9iSsV68T6xR
+0SVulDSjtQ+gkp6Kx0xugk0/8iwwK8TvBE6xKpvz3Hs6aTALqQ2jeR04vby9Muu/
+i/4V2bBCwn7EW7r/2d8yIMt4Am9sgMlFNB5sJYN2hVfu1vnUSobbksF1LTPz9y1u
+hf/VhCTh6hwqh/Z1DJQSLYtzs/+p0ATmatQc1fsIvYJq/Smw3uoUaMVeSwOt0fS0
+7RAi6lFcKxprD48Pz0vyNQWxu/Q4nPrf7NBbn74Qc2kSExVuLnS9RD7Mxk/wJ1+p
+fD4ucPQfIx2lr7/h7Cl9
+=Szsp
+-----END PGP SIGNATURE-----
+
+--QRMPWTMRwp+GIPe+--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

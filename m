@@ -1,28 +1,29 @@
 From: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 Subject: Re: Autoloading of SPI/nor driver on kirkwood (qnap devices)
-Date: Thu, 04 Sep 2014 03:11:29 +0100
-Message-ID: <1409796689.27524.34.camel@decadent.org.uk>
+Date: Thu, 04 Sep 2014 03:21:58 +0100
+Message-ID: <1409797318.27524.37.camel@decadent.org.uk>
 References: <1409673299.14324.43.camel@dagon.hellion.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-GE2BA4lK9Aiz0+lL9T0z"
+	protocol="application/pgp-signature"; boundary="=-cis7sBr9TmdqXO/HY6GK"
 Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
 	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
 	Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	debian-kernel <debian-kernel-0aAXYlwwYIJuHlm7Suoebg@public.gmane.org>,
 	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 In-Reply-To: <1409673299.14324.43.camel-ztPmHsLffjjnO4AKDKe2m+kiAK3p4hvP@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---=-GE2BA4lK9Aiz0+lL9T0z
+--=-cis7sBr9TmdqXO/HY6GK
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+
+[Re-sending with more recent address for Huang Shijie.]
 
 On Tue, 2014-09-02 at 16:54 +0100, Ian Campbell wrote:
 > Hello,
@@ -72,29 +73,29 @@ Experience is directly proportional to the value of equipment destroyed.
                                                          - Carolyn Scheppne=
 r
 
---=-GE2BA4lK9Aiz0+lL9T0z
+--=-cis7sBr9TmdqXO/HY6GK
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIVAwUAVAfKVue/yOyVhhEJAQqz0Q/+KUKj3uLlkTqhHKrYLHveL+w19w4RBB3w
-43ECTRpCxJAbC7OkjLcd8UW5GYSIXgekPFVujhHek3D/RUUcJTlSy3DLg9g77+B2
-iAmfl/VLpao8LxsBYEDs1p1ywZ2TJLFl2KqxixyG86x9ufLpC2Qun4Sp229hf8qu
-+LzvDvGdlFSZ5uEtHvbQ0LVOuan5ZoJcK4o0Uhbh0b4YIgjQ34uAjrtzOaXmeBjT
-BCL0uDvZRnRm1NWKOwzsAJDSPGj4fMR4AJsvrbGzme6Ez9Rj9FFYcKPQC1RGxvgD
-bCa8ESWZpJtKc46efVxSVS06A33rA8LH7gtcFIgHYoM0Fz4nA5QjmUxNL69da/8h
-V06copYYvQUhfCnjS4OJ01txgHTwCFbw6Bh0EPNl3H6NLPMIQTZVzXBw5PPOhzAQ
-sXkI3Ke9nOY/ImUIm0e7maNC2cfvKl7QTr37y0VITH2hxIbftC7QrPNBuz79YmLc
-Zh63LIA9nwE3t6hstHXLCB24rr3Pq/BGxLsD82HQj/bWlPsGGhWj2NW6YvRoxla5
-kprAQBmyrvb8qiP4+4H9h4kqzd8+324bw4YgAHbc2GP1e/NSVxzwUU2vdBYqICgK
-/mUPmn3tJGBa4RTvCCxY5mU7AOVaRu7rWHk1uBhJ2fuuiQct6NlEpOXg7WlTjcZx
-jUWl8+q9CBk=
-=CQFt
+iQIVAwUAVAfMzOe/yOyVhhEJAQpUgBAAjB1BBKrOq6Enw/tGTc9hzG9mbk5YUNHH
+vPWXNjw1oXeQJyU2KiiVTnHLc1NwgQFpj0lEvMxxRiMqPwBfywSlD8Q+lpP5Q9fZ
+w5WjqyiVqusn9wmwEKPu26YizQj6LxDMc+fR8Q//t2lldlH7Eohg7tfACNJdKVE5
+einL2dSeQOLNXTqAzu+m0kct0FCYPVNQ0PqSNqEGIT3gQ9KELX57mC9lL/+lQUI5
+51aHxjq6G1Vxqsjg+6i78c4fiZYfERlLGAld5CJiXUUwBuElWT5rKfGL6FWOjm/W
+GTRcrPeWC0OdTX/NTlb859BdVbffqzbLLFkbbT7dILc4L7tjBXI+71soyKmXXdCE
+NRI2bW9O5qWkF3OufryisFUx/VkXW+IjmQFr4pGGl/7qERZ/lTi4Drow7aHQjwGt
+KM7d4ItDb9zXP0UzJ7j6NpPlyAU/uzlBjZ6dEXB7qWMYEC4hv8nHm73TLtiAYGQU
+7dEVsX/BWmIKs5AEJE8dWUls54NV3d4lJWdq7kb1h99+syJZoYX7spgy3Ktwl7/X
+wa2imsiB6tSGucww2hyFKQSuRpBslxQ9RlAtU/I/sgdRmmhPdHF4NUM09QshGi0c
+JQShqv1CRMc3leIDHdJ8t3JewNzHEZSnxeYNd6OdIUw36lRYRh22s4JlpQr5Y5nS
+bmz3gwqDeto=
+=Lc42
 -----END PGP SIGNATURE-----
 
---=-GE2BA4lK9Aiz0+lL9T0z--
+--=-cis7sBr9TmdqXO/HY6GK--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

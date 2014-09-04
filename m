@@ -1,81 +1,266 @@
-From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
-Subject: Re: Autoloading of SPI/nor driver on kirkwood (qnap devices)
-Date: Thu, 4 Sep 2014 09:02:04 +0200
-Message-ID: <CAMuHMdWBr=B0_Xivti9K5ReryHHEunQj2P26FjhmzhO-L9t+9g@mail.gmail.com>
-References: <1409673299.14324.43.camel@dagon.hellion.org.uk>
-	<1409796689.27524.34.camel@decadent.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Huang Shijie <b32955-KZfg59tc24xl57MIdRCFDg@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	debian-kernel <debian-kernel-0aAXYlwwYIJuHlm7Suoebg@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
+From: gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org
+Subject: [PATCH v2] spi: orion: support armada extended baud rates
+Date: Thu,  4 Sep 2014 22:54:28 +1000
+Message-ID: <1409835268-29555-1-git-send-email-gerg@uclinux.org>
+Cc: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1409796689.27524.34.camel-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Ben,
+From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
 
-On Thu, Sep 4, 2014 at 4:11 AM, Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org> wrote:
->> I noticed that many platforms declare the flash chip as compatible =
->> "st,m25pXXX" whereas the ts219.dtsi just said m25p128 but I tried
->> changing that and it didn't help. In any case without spi-nor.ko being
->> autoloaded I don't support m25p80.ko ever would be.
->
-> m25p80.c has:
->
-> static struct spi_driver m25p80_driver = {
->         ...
->         .id_table       = spi_nor_ids,
->         ...
-> };
->
-> while spi_nor_ids is defined in spi-nor.c.  Since they end up as two
-> separate modules, modpost can't read the ID table and add the device ID
-> aliases to m25p80.ko.
+The Armada SoC family implementation of this SPI hardware module has
+extended the configuration register to allow for a wider range of SPI
+clock rates. Specifically the Serial Baud Rate Pre-selection bits in the
+SPI Interface Configuration Register now also use bits 6 and 7 as well.
 
-Woops. This indeed doesn't work.
-Note that the MODULE_DEVICE_TABLE() is also gone from m25p80.c
+Modify the baud rate calculation to handle these differences for the
+Armada case. Potentially a baud rate can be setup using a number of
+different pre-scalar and scalar combinations. This code tries all
+possible pre-scalar divisors (8 in total) to try and find the most
+accuate set.
 
-So m25p80.c needs to contain the IDs, while spi-nor.c also needs the IDs
-because it's a framework/library.
+This change introduces a new device tree compatible device name
+"armada-spi". This is used in place of "orion-spi" on the Armada SoC
+parts.
 
-A quick solution would be to move the ID table to a header file, and include
-that by both, and re-add the lost MODULE_DEVICE_TABLE() to m25p80.c.
-That duplicates the data, though.
+Signed-off-by: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+---
+Changes in v2:
+Introduced a new devicetree compatible name for armada SPI support.
 
-Hmm, for the built-in case, we can avoid the duplication by letting m25p80.c
-refer to the table in spi-nor.c if !MODULE.
-Does anyone see a better solution?
+ .../devicetree/bindings/spi/spi-orion.txt          |   2 +-
+ arch/arm/boot/dts/armada-370-xp.dtsi               |   4 +-
+ drivers/spi/spi-orion.c                            | 116 +++++++++++++++++----
+ 3 files changed, 97 insertions(+), 25 deletions(-)
 
-> It looks like m25p80 has been split up in order that the new fsl-qspi
-> driver can share its code (bypassing the SPI core and its device
-> model!).  Why doesn't fsl-qspi implement an SPI controller device?  I
-> think it is totally unacceptable to regress m25p80 in this way for the
-> sake of a new driver.
+diff --git a/Documentation/devicetree/bindings/spi/spi-orion.txt b/Documentation/devicetree/bindings/spi/spi-orion.txt
+index a3ff50f..674b64f 100644
+--- a/Documentation/devicetree/bindings/spi/spi-orion.txt
++++ b/Documentation/devicetree/bindings/spi/spi-orion.txt
+@@ -1,7 +1,7 @@
+ Marvell Orion SPI device
+ 
+ Required properties:
+-- compatible : should be "marvell,orion-spi".
++- compatible : should be "marvell,orion-spi" or "marvell,armada-spi".
+ - reg : offset and length of the register set for the device
+ - cell-index : Which of multiple SPI controllers is this.
+ Optional properties:
+diff --git a/arch/arm/boot/dts/armada-370-xp.dtsi b/arch/arm/boot/dts/armada-370-xp.dtsi
+index 23227e0..d2a9f50 100644
+--- a/arch/arm/boot/dts/armada-370-xp.dtsi
++++ b/arch/arm/boot/dts/armada-370-xp.dtsi
+@@ -110,7 +110,7 @@
+ 			};
+ 
+ 			spi0: spi@10600 {
+-				compatible = "marvell,orion-spi";
++				compatible = "marvell,armada-spi";
+ 				reg = <0x10600 0x28>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+@@ -121,7 +121,7 @@
+ 			};
+ 
+ 			spi1: spi@10680 {
+-				compatible = "marvell,orion-spi";
++				compatible = "marvell,armada-spi";
+ 				reg = <0x10680 0x28>;
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index c4675fa..566747f 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -18,6 +18,7 @@
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of.h>
++#include <linux/of_device.h>
+ #include <linux/clk.h>
+ #include <linux/sizes.h>
+ #include <asm/unaligned.h>
+@@ -40,13 +41,27 @@
+ #define ORION_SPI_MODE_CPHA		(1 << 12)
+ #define ORION_SPI_IF_8_16_BIT_MODE	(1 << 5)
+ #define ORION_SPI_CLK_PRESCALE_MASK	0x1F
++#define ARMADA_SPI_CLK_PRESCALE_MASK	0xDF
+ #define ORION_SPI_MODE_MASK		(ORION_SPI_MODE_CPOL | \
+ 					 ORION_SPI_MODE_CPHA)
+ 
++enum orion_spi_type {
++	ORION_SPI,
++	ARMADA_SPI,
++};
++
++struct orion_spi_dev {
++	enum orion_spi_type	typ;
++	unsigned int		min_divisor;
++	unsigned int		max_divisor;
++	u32			prescale_mask;
++};
++
+ struct orion_spi {
+ 	struct spi_master	*master;
+ 	void __iomem		*base;
+ 	struct clk              *clk;
++	const struct orion_spi_dev *devdata;
+ };
+ 
+ static inline void __iomem *spi_reg(struct orion_spi *orion_spi, u32 reg)
+@@ -83,30 +98,66 @@ static int orion_spi_baudrate_set(struct spi_device *spi, unsigned int speed)
+ 	u32 prescale;
+ 	u32 reg;
+ 	struct orion_spi *orion_spi;
++	const struct orion_spi_dev *devdata;
+ 
+ 	orion_spi = spi_master_get_devdata(spi->master);
++	devdata = orion_spi->devdata;
+ 
+ 	tclk_hz = clk_get_rate(orion_spi->clk);
+ 
+-	/*
+-	 * the supported rates are: 4,6,8...30
+-	 * round up as we look for equal or less speed
+-	 */
+-	rate = DIV_ROUND_UP(tclk_hz, speed);
+-	rate = roundup(rate, 2);
++	if (devdata->typ == ARMADA_SPI) {
++		unsigned int clk, spr, sppr, sppr2, err;
++		unsigned int best_spr, best_sppr, best_err;
++
++		best_err = speed;
++		best_spr = 0;
++		best_sppr = 0;
++
++		/* Iterate over the valid range looking for best fit */
++		for (sppr = 0; sppr < 8; sppr++) {
++			sppr2 = 0x1 << sppr;
++
++			spr = tclk_hz / sppr2;
++			spr = DIV_ROUND_UP(spr, speed);
++			if ((spr == 0) || (spr > 15))
++				continue;
+ 
+-	/* check if requested speed is too small */
+-	if (rate > 30)
+-		return -EINVAL;
++			clk = tclk_hz / (spr * sppr2);
++			err = speed - clk;
+ 
+-	if (rate < 4)
+-		rate = 4;
++			if (err < best_err) {
++				best_spr = spr;
++				best_sppr = sppr;
++				best_err = err;
++			}
++		}
++
++		if ((best_sppr == 0) && (best_spr == 0))
++			return -EINVAL;
++
++		prescale = ((best_sppr & 0x6) << 5) |
++			((best_sppr & 0x1) << 4) | best_spr;
++	} else {
++		/*
++		 * the supported rates are: 4,6,8...30
++		 * round up as we look for equal or less speed
++		 */
++		rate = DIV_ROUND_UP(tclk_hz, speed);
++		rate = roundup(rate, 2);
++
++		/* check if requested speed is too small */
++		if (rate > 30)
++			return -EINVAL;
+ 
+-	/* Convert the rate to SPI clock divisor value.	*/
+-	prescale = 0x10 + rate/2;
++		if (rate < 4)
++			rate = 4;
++
++		/* Convert the rate to SPI clock divisor value.	*/
++		prescale = 0x10 + rate/2;
++	}
+ 
+ 	reg = readl(spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
+-	reg = ((reg & ~ORION_SPI_CLK_PRESCALE_MASK) | prescale);
++	reg = ((reg & ~devdata->prescale_mask) | prescale);
+ 	writel(reg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
+ 
+ 	return 0;
+@@ -342,8 +393,31 @@ static int orion_spi_reset(struct orion_spi *orion_spi)
+ 	return 0;
+ }
+ 
++static const struct orion_spi_dev orion_spi_dev_data = {
++	.typ = ORION_SPI,
++	.min_divisor = 4,
++	.max_divisor = 30,
++	.prescale_mask = ORION_SPI_CLK_PRESCALE_MASK,
++};
++
++static const struct orion_spi_dev armada_spi_dev_data = {
++	.typ = ARMADA_SPI,
++	.min_divisor = 1,
++	.max_divisor = 1920,
++	.prescale_mask = ARMADA_SPI_CLK_PRESCALE_MASK,
++};
++
++static const struct of_device_id orion_spi_of_match_table[] = {
++	{ .compatible = "marvell,orion-spi", .data = &orion_spi_dev_data, },
++	{ .compatible = "marvell,armada-spi", .data = &armada_spi_dev_data, },
++	{}
++};
++MODULE_DEVICE_TABLE(of, orion_spi_of_match_table);
++
+ static int orion_spi_probe(struct platform_device *pdev)
+ {
++	const struct of_device_id *of_id;
++	const struct orion_spi_dev *devdata;
+ 	struct spi_master *master;
+ 	struct orion_spi *spi;
+ 	struct resource *r;
+@@ -378,6 +452,10 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	spi = spi_master_get_devdata(master);
+ 	spi->master = master;
+ 
++	of_id = of_match_device(orion_spi_of_match_table, &pdev->dev);
++	devdata = of_id->data;
++	spi->devdata = devdata;
++
+ 	spi->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(spi->clk)) {
+ 		status = PTR_ERR(spi->clk);
+@@ -389,8 +467,8 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 		goto out;
+ 
+ 	tclk_hz = clk_get_rate(spi->clk);
+-	master->max_speed_hz = DIV_ROUND_UP(tclk_hz, 4);
+-	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, 30);
++	master->max_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->min_divisor);
++	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->max_divisor);
+ 
+ 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	spi->base = devm_ioremap_resource(&pdev->dev, r);
+@@ -469,12 +547,6 @@ static const struct dev_pm_ops orion_spi_pm_ops = {
+ 			   NULL)
+ };
+ 
+-static const struct of_device_id orion_spi_of_match_table[] = {
+-	{ .compatible = "marvell,orion-spi", },
+-	{}
+-};
+-MODULE_DEVICE_TABLE(of, orion_spi_of_match_table);
+-
+ static struct platform_driver orion_spi_driver = {
+ 	.driver = {
+ 		.name	= DRIVER_NAME,
+-- 
+1.9.1
 
-Fsl-qspi is not a generic SPI driver, but a dedicated SPI NOR driver.
-It's programmed using high-level SPI NOR commands, instead of low-level
-SPI commands.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

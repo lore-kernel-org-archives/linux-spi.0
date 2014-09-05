@@ -1,64 +1,64 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 8/8] spi: sirf: make DMA transfer mode optional
-Date: Thu, 4 Sep 2014 23:41:32 +0100
-Message-ID: <20140904224132.GW29327@sirena.org.uk>
-References: <1409648557-5470-1-git-send-email-Barry.Song@csr.com>
- <1409648557-5470-4-git-send-email-Barry.Song@csr.com>
+From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH v2] spi: orion: support armada extended baud rates
+Date: Fri, 05 Sep 2014 10:36:10 +1000
+Message-ID: <5409057A.6090900@uclinux.org>
+References: <1409835268-29555-1-git-send-email-gerg@uclinux.org> <CAMuHMdWDOaPnmCzThqCo2848eDj6jmi-eaXM1YAXQLi41da34A@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tnSXTZOLuLJuusSZ"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1409648557-5470-4-git-send-email-Barry.Song-kQvG35nSl+M@public.gmane.org>
+In-Reply-To: <CAMuHMdWDOaPnmCzThqCo2848eDj6jmi-eaXM1YAXQLi41da34A-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Geert,
 
---tnSXTZOLuLJuusSZ
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 04/09/14 23:17, Geert Uytterhoeven wrote:
+> On Thu, Sep 4, 2014 at 2:54 PM,  <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org> wrote:
+>> The Armada SoC family implementation of this SPI hardware module has
+>> extended the configuration register to allow for a wider range of SPI
+>> clock rates. Specifically the Serial Baud Rate Pre-selection bits in the
+>> SPI Interface Configuration Register now also use bits 6 and 7 as well.
+>>
+>> Modify the baud rate calculation to handle these differences for the
+>> Armada case. Potentially a baud rate can be setup using a number of
+>> different pre-scalar and scalar combinations. This code tries all
+>> possible pre-scalar divisors (8 in total) to try and find the most
+>> accuate set.
+> 
+> Are the Orion rates and register bits a subset of the Armada ones?
+> I.e. does the Armada work with the Orion setup?
 
-On Tue, Sep 02, 2014 at 05:02:37PM +0800, Barry Song wrote:
-> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
->=20
-> some customers want a pure PIO transfer mode even though DMA mode is
-> supported. here we give them a Kconfig option, but still keep the DMA
-> enabled in default.
+The bits used by the orion are a subset (bits 0-4 of the SPI
+configuration register) of those used by the armada (bits 0-4 and
+6-7).
 
-This doesn't feel like something for the standard kernel - can you
-explain the benefit the customers think they're getting here?  It seems
-like either this is something we should have as a more general option,
-perhaps controllable at runtime or there's likely to be some bug or
-other problem that's being worked around here.
+In practice the defined prescalar values for the orion do give
+the same divisor for the same bits set on armada. The extra bits
+on the armada let you get to lower SPI baudrates (which is more of
+a problem on the armada with its higher core clocks).
 
---tnSXTZOLuLJuusSZ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>> This change introduces a new device tree compatible device name
+>> "armada-spi". This is used in place of "orion-spi" on the Armada SoC
+>> parts.
+> 
+>> -                               compatible = "marvell,orion-spi";
+>> +                               compatible = "marvell,armada-spi";
+> 
+> If the answer to my above question is yes, you want to keep
+> "marvell,orion-spi" as a fallback.
 
-iQIcBAEBAgAGBQJUCOqZAAoJELSic+t+oim9neYP/j4mS7TOYMZ3aCNvHbIuSFcQ
-smIc5ImBIWJFwP2+qmMRcG+v+hcLMCB6iBrOEC68ZznHU/Demg7IL+ptt5Pa87lB
-B1eu6LvZx9AjIvPaEak0ltVTy66PpWCT/rJS/Jqhf0kAi2gx4Z4zbngvpHM97A8+
-5yoc3wMDHzNjXJufwO+H3ihgD3KFWK6BjlmAbTiYz7O8z/I3jcOW9wpFNDk2TtHq
-tTQRPDAtzEJGbXEsTw+k1F2yo1mg54gOq5pN6NkqHfmM/YVJjVEY+8rli48H5EsH
-XUeADr+t2gKTSN988w8hAE92U/YhCEeflwGbe1vjqnYMlsCclnsJAHwgxwL0a4tR
-7WOps/ZioOuyN+9qK/qpYCdY886wi74ixyrUABHImj0q4XNtonVbaj9UOw9wDxg7
-qXSGAV/lRhc4NqBL0uQOoqqMaY/kZ0G5mqpNmQXbWuKPewCZLwHn2Tf896KPIUnt
-A6SU/3oRU5SLEbpxV7JCtQmJZBKSABHN19LKCT/HhpKfjhxhx5tvIPkc7ub/IEOQ
-2p8i1kG2VBJ6fKzxXG3V3XQZMNCs3J5dTNPXSv8v08HZMUfZJnipidh4whB/3LTT
-fVoGhG+dkVuqEUY+iv/vlS2gcUFrmaeUeNiqXOGTxWcHO+Mrd7f2R8xeNIgFzwGH
-41IcI3muAQVQ90hW6rmg
-=kqxt
------END PGP SIGNATURE-----
+Do you mean like this?
 
---tnSXTZOLuLJuusSZ--
+  compatible = "marvell,orion-spi", "marvell,armada-spi";
+
+Regards
+Greg
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

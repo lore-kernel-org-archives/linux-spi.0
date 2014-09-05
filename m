@@ -1,44 +1,47 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 8/8] spi: sirf: make DMA transfer mode optional
-Date: Fri, 5 Sep 2014 16:14:17 +0800
-Message-ID: <CAGsJ_4ysw0vy93N4evG_Aq2mMuymVXY6ig2U0EQBwQmz3uMyNA@mail.gmail.com>
-References: <1409648557-5470-1-git-send-email-Barry.Song@csr.com>
- <1409648557-5470-4-git-send-email-Barry.Song@csr.com> <20140904224132.GW29327@sirena.org.uk>
+From: Anders Berg <anders.berg@avagotech.com>
+Subject: Re: [PATCH 1/2] gpio: Add driver for AXM55xx SSP chip selects
+Date: Fri, 5 Sep 2014 11:05:37 +0200
+Message-ID: <CAE0=X_3QO5p26M=FS7joKS3zD6LAM_moFutHNcyE1-CjauL3Rw@mail.gmail.com>
+References: <1409576021-24828-1-git-send-email-anders.berg@avagotech.com>
+	<1409576021-24828-2-git-send-email-anders.berg@avagotech.com>
+	<CACRpkdby4H-fivNn_kG2uL0EjsCGAc+t6OyFi0+VcNGf2Z9NQA@mail.gmail.com>
+	<20140904170630.GL29327@sirena.org.uk>
+	<CACRpkdZEoBan=Lqr1T-iY41U9NfMA_MCLX3LA=juw7X4pmRvSQ@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Cc: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
-	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140904224132.GW29327-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Linus Walleij <linus.walleij@linaro.org>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <CACRpkdZEoBan=Lqr1T-iY41U9NfMA_MCLX3LA=juw7X4pmRvSQ@mail.gmail.com>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-2014-09-05 6:41 GMT+08:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
-> On Tue, Sep 02, 2014 at 05:02:37PM +0800, Barry Song wrote:
->> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+> On Thu, Sep 4, 2014 at 7:06 PM, Mark Brown <broonie@kernel.org> wrote:
+>> On Thu, Sep 04, 2014 at 07:04:44PM +0200, Linus Walleij wrote:
+>>> I need an ACK from Mark Brown on this before I apply.
+>>> The driver seems to do what it should, but I need Mark to
+>>> be OK with exporting the CS signals from an SSP/SPI block
+>>> to be exposed to Linux as GPIOs.
+>>>
+>>> (Top-posting and quoting patch verbatim so Mark gets it.)
 >>
->> some customers want a pure PIO transfer mode even though DMA mode is
->> supported. here we give them a Kconfig option, but still keep the DMA
->> enabled in default.
+>> I don't see any sort of reasoning for this?
 >
-> This doesn't feel like something for the standard kernel - can you
-> explain the benefit the customers think they're getting here?  It seems
-> like either this is something we should have as a more general option,
-> perhaps controllable at runtime or there's likely to be some bug or
-> other problem that's being worked around here.
+> Maybe there was some earlier, but this is an excellent opportunity
+> to repeat it... So Anders: why do you want to do this?
+>
 
-i have no strong technical reason for this as the benefit is not
-always technical. you know....the commit log has provided the reason
-for this patch.
-the difficulty for me is maintaining the difference between mainline
-and local codes, but if we have to maintain two copies,  we can.
+Well, the problem with adding this to the spi-pl022 driver (as a
+vendor specific extension) is that this IP block unfortunately isn't
+distinguishable from the standard ARM PL022 implementation (same
+values in the PrimeCell identification registers). That's why I went
+down the GPIO path...
 
--barry
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+/Anders

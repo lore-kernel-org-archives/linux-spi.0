@@ -1,68 +1,94 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/8] spi: sirf: request and free cs gpio in setup and
- cleanup callbacks
-Date: Sat, 6 Sep 2014 14:57:35 +0100
-Message-ID: <20140906135735.GE2601@sirena.org.uk>
-References: <1409648468-5436-1-git-send-email-Barry.Song@csr.com>
- <1409648468-5436-3-git-send-email-Barry.Song@csr.com>
- <20140904191954.GO29327@sirena.org.uk>
- <CA+qxAP06x5uHzObuWzmcAjFz4YKHRxxH5FE5cGZYzKQNUsJdyg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] spi: davinci: support adding delay between
+ transmission
+Date: Sat, 6 Sep 2014 15:31:14 +0100
+Message-ID: <20140906143113.GI2601@sirena.org.uk>
+References: <1408634706-5762-1-git-send-email-grygorii.strashko@ti.com>
+ <1408634706-5762-3-git-send-email-grygorii.strashko@ti.com>
+ <20140821182035.GM24407@sirena.org.uk>
+ <53F74695.3010902@ti.com>
+ <20140822150644.GX24407@sirena.org.uk>
+ <5409C704.5070303@ti.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="3O1VwFp74L81IIeR"
-Cc: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: swingboard <swingboard-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="nEsDIrWrg+hrB7l1"
+Cc: santosh.shilimkar-l0cyMroinI0@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	m-karicheri2-l0cyMroinI0@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CA+qxAP06x5uHzObuWzmcAjFz4YKHRxxH5FE5cGZYzKQNUsJdyg-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <5409C704.5070303-l0cyMroinI0@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---3O1VwFp74L81IIeR
+--nEsDIrWrg+hrB7l1
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 05, 2014 at 11:34:57AM +0800, swingboard wrote:
-> 2014-09-05 3:19 GMT+08:00 Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>:
+On Fri, Sep 05, 2014 at 05:21:56PM +0300, Grygorii Strashko wrote:
 
-> > I'm not quite sure I understand the rationale here - as far as I can
-> > tell this is making the GPIO request happen later not earlier so it's
-> > not clear to me what the problem this is fixing in the existing code.
-> > If the goal is to move the request around in the probe function why not
-> > just move the existing code earlier in probe()?
+> I think we have some misunderstanding here :(
+> 1) All new properties a optional and should be specified for SPI Slave de=
+vices
+> 2) Seems we are talking using different terms:
+> - you referring to the term "transfers" - sequence of packets.
+>   Each packet is one transfer (array of words).
+> - while these new properties affect on "transmissions" - sequence of word=
+s.
+>   Each word is one transmission.
 
-> As GPIO cs can be high or low validate and the used GPIO pin with
-> default value may high or low,
-> it is need do spi device's chipselect invalidation work in spi_setup,
-> the patch purpose for it.
-> master->cs_gpios only assigned after spi_bitbang_start and the
-> function call spi_setup,
-> if keep the existing code there will result gpio usage before gpio request.
-> just move gpio request code in spi_sirfsoc_setup before gpio use.
+That's *very* unusual terminology which doesn't match my expectations at
+all.  Please describe words as words, that'll be much more obvious.
 
-I'm still having a hard time understanding why pulling the code earlier
-in probe isn't a better fix here.
+> Also, below is additional information about properties which
+> are used in 5-pin mode (SPI_READY) to improve error detection
+> [OMAP-L138/da830 - http://www.ti.com/lit/ug/spruh77a/spruh77a.pdf]:
 
---3O1VwFp74L81IIeR
+This is a *whole* other thing, please split these out and work on this
+separately.  The client device is going to need to be doing the same
+thing here so implementing this as a local option in the controller
+driver isn't the best way forwards.
+
+> >> SPIFMTn[23].PARPOL - Parity polarity: even or odd. PARPOL can be modif=
+ied in privilege mode only.
+> >>   0 An even parity flag is added at the end of the transmit data strea=
+m.
+> >>   1 An odd parity flag is added at the end of the transmit data stream.
+
+> > Why would these be specified in DT and not with runtime flags enabled by
+> > the device?  It looks like they affect the data stream generated by the
+> > controller so the client device needs to know about them; I'd expect
+> > that it's device driver would be controlling when they are enabled if
+> > the controller supports them.
+
+> Could you clarify, pls - Do you mean that struct spi_device.mode and=20
+> common SPI DT bindings should be extended to support this?
+
+Yes, if they aren't something that's purely internal to the device they
+need to be generic so that both devices can be configured appropriately.
+
+--nEsDIrWrg+hrB7l1
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUCxLOAAoJECTWi3JdVIfQDZgH+waWoeK6TL8kSy3zM2rBbAko
-iNkZl835hAtAVUfLCFEec8+/dP258FTf8B5IHiRoV+i9y48zGTiGEGObUg1ngVkc
-I7mKuT1HekyXkqVYm4EY1iqiIZScodz65XrBvGaqtDqxsVIHOYGuCv5/kaL2vHsW
-loCifKWFvQwmd3odetwISOIFxx1z9cCmoCoDII6bczy+VSgCxqz9pZXuELw4cVbP
-q80S9vT+MxtMXE+5LnCDrYo9onXhbbRnhzPsmZ6m/uZ2IreTFqe/dRJso9WoBs2L
-VBCWx3utT/M+72dqE66cERj+D3qmbJDYPdEzQh0EN437SBUmZC5m4aq5xriD+Ek=
-=PZn3
+iQEcBAEBAgAGBQJUCxqxAAoJECTWi3JdVIfQYjwH/An1KCsee66haxtTca1CTfh1
+iKEmcHmrctbujZkCjhdk1uIwX/z6j9Ik+0PUX6d0DpAaxhOpiDkdS5+MN2yIpGJ4
+2H2ls+Tx6juopNwEnXz1wP+NmCj5FGzIxKTgEFueeRMWN6gp2+1rwz9F7lDXocmu
+YpDKF2auif7JECfLneAYKCpxo+GVODhwFo73KM4EDxSvwSRmT3a7Z156l4o24864
+My7tqHk8DG72iW670Qge2JVfq/Nn4Yg42Lj1z1OBqw/OERsL1Ghzl5gZzMwMmjAR
+iIUPqcA8eZS86/Ih11BWIFo9IBle6rD52hj9z20KpjI881rm2XpiybO7FYHN5TA=
+=+YEl
 -----END PGP SIGNATURE-----
 
---3O1VwFp74L81IIeR--
+--nEsDIrWrg+hrB7l1--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

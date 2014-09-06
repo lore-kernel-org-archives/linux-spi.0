@@ -1,56 +1,63 @@
-From: Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Subject: Re: [PATCH v2] spi: orion: support armada extended baud rates
-Date: Sat, 6 Sep 2014 15:16:54 +0200
-Message-ID: <20140906151654.49584b70@free-electrons.com>
-References: <1409835268-29555-1-git-send-email-gerg@uclinux.org>
-	<CAMuHMdWDOaPnmCzThqCo2848eDj6jmi-eaXM1YAXQLi41da34A@mail.gmail.com>
-	<5409057A.6090900@uclinux.org>
-	<CAMuHMdWf6_yBhpNgK=wJcQqzLNJvTnC95SrqrcZyRH+jGL93vA@mail.gmail.com>
-	<5409B68A.7010604@uclinux.org>
-	<20140906120600.GA11500@arch.cereza>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/2] gpio: Add driver for AXM55xx SSP chip selects
+Date: Sat, 6 Sep 2014 14:53:08 +0100
+Message-ID: <20140906135308.GC2601@sirena.org.uk>
+References: <1409576021-24828-1-git-send-email-anders.berg@avagotech.com>
+ <1409576021-24828-2-git-send-email-anders.berg@avagotech.com>
+ <CACRpkdby4H-fivNn_kG2uL0EjsCGAc+t6OyFi0+VcNGf2Z9NQA@mail.gmail.com>
+ <20140904170630.GL29327@sirena.org.uk>
+ <CACRpkdZEoBan=Lqr1T-iY41U9NfMA_MCLX3LA=juw7X4pmRvSQ@mail.gmail.com>
+ <CAE0=X_3QO5p26M=FS7joKS3zD6LAM_moFutHNcyE1-CjauL3Rw@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Cc: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140906120600.GA11500-nAQHv47ARr+vIlHkl8J1cg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="pAwQNkOnpTn9IO2O"
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+To: Anders Berg <anders.berg@avagotech.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <CAE0=X_3QO5p26M=FS7joKS3zD6LAM_moFutHNcyE1-CjauL3Rw@mail.gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Hello,
 
-On Sat, 6 Sep 2014 09:06:00 -0300, Ezequiel Garcia wrote:
+--pAwQNkOnpTn9IO2O
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Confirmed. Judging from the specs, seems the same SPI IP is on all the
-> Armada SoCs; you can do the 'armada-spi' compatible addition on 375 and 38x.
+On Fri, Sep 05, 2014 at 11:05:37AM +0200, Anders Berg wrote:
 
-However, I believe a compatible string like "armada-370-spi" should be
-used instead of "armada-spi". The normal rule is to use the oldest SoC
-that introduced a certain feature as the compatible string.
+> Well, the problem with adding this to the spi-pl022 driver (as a
+> vendor specific extension) is that this IP block unfortunately isn't
+> distinguishable from the standard ARM PL022 implementation (same
+> values in the PrimeCell identification registers). That's why I went
+> down the GPIO path...
 
-Remember for example that Armada 1500 (Berlin) is a completely different
-line of SoC, which cannot use this SPI driver.
+Would it not be more straightforward to just register it as a platform
+device in this case, or use a separate OF ID in the DT?  We appear to
+specify a compatible string when registering AMBA devices even if we are
+capable of identifying using the ID registers.
 
-Thanks Greg for working on this! I noticed this as well recently when
-doing an SPI development, but you were faster than me in proposing a
-patch!
+--pAwQNkOnpTn9IO2O
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Thanks,
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Thomas
--- 
-Thomas Petazzoni, CTO, Free Electrons
-Embedded Linux, Kernel and Android engineering
-http://free-electrons.com
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+iQEcBAEBAgAGBQJUCxHEAAoJECTWi3JdVIfQ0uUH/A2xoGk4MXCll2e7e6pUQIPH
+SQ5bBfvdjxyCVunWYUjlqdFKgJ4BPOiC53cACl9tdjN3M0Tog12Xcf9RmsLjDy+x
+NDcTUH/9WSiOf0SZ1VaNs8X6QlHsp/kLeSXmEr4M7XMO71hPAC9NNH1vxUksPA2p
+kexibLyxh2hbtvQyhs+qD9IZnTLLKhi7385RBsjY+vjriVrqaZ5w0D3R/ms39AkS
+Lkw8DyDbj2Lk2wIJvlKb2jHv1jmco+DhS1ns6vK2kbs1xPDMW4Li1Se5mZTTHaUz
+6yAbYLNzFOtDuRz5wJvjezZCAhSITzbxVgC8pBjd6IDMibBVm4OGczF1CxburTE=
+=sp84
+-----END PGP SIGNATURE-----
+
+--pAwQNkOnpTn9IO2O--

@@ -1,63 +1,63 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] gpio: Add driver for AXM55xx SSP chip selects
-Date: Sat, 6 Sep 2014 14:53:08 +0100
-Message-ID: <20140906135308.GC2601@sirena.org.uk>
-References: <1409576021-24828-1-git-send-email-anders.berg@avagotech.com>
- <1409576021-24828-2-git-send-email-anders.berg@avagotech.com>
- <CACRpkdby4H-fivNn_kG2uL0EjsCGAc+t6OyFi0+VcNGf2Z9NQA@mail.gmail.com>
- <20140904170630.GL29327@sirena.org.uk>
- <CACRpkdZEoBan=Lqr1T-iY41U9NfMA_MCLX3LA=juw7X4pmRvSQ@mail.gmail.com>
- <CAE0=X_3QO5p26M=FS7joKS3zD6LAM_moFutHNcyE1-CjauL3Rw@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 8/8] spi: sirf: make DMA transfer mode optional
+Date: Sat, 6 Sep 2014 14:55:50 +0100
+Message-ID: <20140906135550.GD2601@sirena.org.uk>
+References: <1409648557-5470-1-git-send-email-Barry.Song@csr.com>
+ <1409648557-5470-4-git-send-email-Barry.Song@csr.com>
+ <20140904224132.GW29327@sirena.org.uk>
+ <CAGsJ_4ysw0vy93N4evG_Aq2mMuymVXY6ig2U0EQBwQmz3uMyNA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="pAwQNkOnpTn9IO2O"
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Anders Berg <anders.berg@avagotech.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="oj4kGyHlBMXGt3Le"
+Cc: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
+	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAE0=X_3QO5p26M=FS7joKS3zD6LAM_moFutHNcyE1-CjauL3Rw@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <CAGsJ_4ysw0vy93N4evG_Aq2mMuymVXY6ig2U0EQBwQmz3uMyNA-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---pAwQNkOnpTn9IO2O
+--oj4kGyHlBMXGt3Le
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Sep 05, 2014 at 11:05:37AM +0200, Anders Berg wrote:
+On Fri, Sep 05, 2014 at 04:14:17PM +0800, Barry Song wrote:
 
-> Well, the problem with adding this to the spi-pl022 driver (as a
-> vendor specific extension) is that this IP block unfortunately isn't
-> distinguishable from the standard ARM PL022 implementation (same
-> values in the PrimeCell identification registers). That's why I went
-> down the GPIO path...
+> i have no strong technical reason for this as the benefit is not
+> always technical. you know....the commit log has provided the reason
+> for this patch.
+> the difficulty for me is maintaining the difference between mainline
+> and local codes, but if we have to maintain two copies,  we can.
 
-Would it not be more straightforward to just register it as a platform
-device in this case, or use a separate OF ID in the DT?  We appear to
-specify a compatible string when registering AMBA devices even if we are
-capable of identifying using the ID registers.
+OK, well I think that's best though it would be better if we were able
+to understand what benefit your customers believe they are seeing here
+and hopefully address it in a better way.  Doing this sort of thing with
+Kconfig options is not great, especially when you start trying to build
+kernels that work with more than one board.
 
---pAwQNkOnpTn9IO2O
+--oj4kGyHlBMXGt3Le
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUCxHEAAoJECTWi3JdVIfQ0uUH/A2xoGk4MXCll2e7e6pUQIPH
-SQ5bBfvdjxyCVunWYUjlqdFKgJ4BPOiC53cACl9tdjN3M0Tog12Xcf9RmsLjDy+x
-NDcTUH/9WSiOf0SZ1VaNs8X6QlHsp/kLeSXmEr4M7XMO71hPAC9NNH1vxUksPA2p
-kexibLyxh2hbtvQyhs+qD9IZnTLLKhi7385RBsjY+vjriVrqaZ5w0D3R/ms39AkS
-Lkw8DyDbj2Lk2wIJvlKb2jHv1jmco+DhS1ns6vK2kbs1xPDMW4Li1Se5mZTTHaUz
-6yAbYLNzFOtDuRz5wJvjezZCAhSITzbxVgC8pBjd6IDMibBVm4OGczF1CxburTE=
-=sp84
+iQEcBAEBAgAGBQJUCxJlAAoJECTWi3JdVIfQXX8H/1QxEJoJkb4UlPUk7Z8CF/9A
+7g6EsHPc5QTiqo08pNB5UeCC5s1rAE7qwG7SU7OMmQWh359hepwibpf0T9lnegtz
+mtItoCgAPFCTwZKtvDIvGm2S48D8Oyo95vt9GG0QCK+qDGp94fBepWelsDNhejee
+mlnXTamThc0MAyLF1I7dL+QYV+E203lghanj7kepNU/oLT8t9+LIU//JNq+2eM2c
+z7DWpno7XvW230GABgLZuMQLTYcvlwJ5As040QEgesuZFL6bT/Ms0p93KMYwq8dM
+88TbPy1G2qzorbfvMSpxQvxyaoyqoQtzDfUIlNr+KWJ0+x04AXD1GKggNoDh61s=
+=sENR
 -----END PGP SIGNATURE-----
 
---pAwQNkOnpTn9IO2O--
+--oj4kGyHlBMXGt3Le--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

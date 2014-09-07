@@ -1,48 +1,90 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 8/8] spi: sirf: make DMA transfer mode optional
-Date: Sun, 07 Sep 2014 08:55:53 +0800
-Message-ID: <D031CD59.21619%21cnbao@gmail.com>
-References: <20140906135550.GD2601@sirena.org.uk>
+From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+Subject: Re: [PATCH v2] spi: orion: support armada extended baud rates
+Date: Sun, 07 Sep 2014 22:14:16 +1000
+Message-ID: <540C4C18.5030903@uclinux.org>
+References: <1409835268-29555-1-git-send-email-gerg@uclinux.org> <CAMuHMdWDOaPnmCzThqCo2848eDj6jmi-eaXM1YAXQLi41da34A@mail.gmail.com> <5409057A.6090900@uclinux.org> <CAMuHMdWf6_yBhpNgK=wJcQqzLNJvTnC95SrqrcZyRH+jGL93vA@mail.gmail.com> <5409B68A.7010604@uclinux.org> <20140906120600.GA11500@arch.cereza>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Barry Song <Barry.Song-kQvG35nSl+M@public.gmane.org>, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>,
-	DL-SHA-WorkGroupLinux <workgroup.linux-kQvG35nSl+M@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	Thomas Petazzoni <thomas.petazzoni-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Gregory Clement <gregory.clement-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Sebastian Hesselbarth <sebastian.hesselbarth-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140906135550.GD2601-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20140906120600.GA11500-nAQHv47ARr+vIlHkl8J1cg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi Ezequiel,
 
-
-On 14-9-6 =CF=C2=CE=E79:55, "Mark Brown" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
-
->On Fri, Sep 05, 2014 at 04:14:17PM +0800, Barry Song wrote:
+On 06/09/14 22:06, Ezequiel Garcia wrote:
+> Hi Greg,
 >
->> i have no strong technical reason for this as the benefit is not
->> always technical. you know....the commit log has provided the reason
->> for this patch.
->> the difficulty for me is maintaining the difference between mainline
->> and local codes, but if we have to maintain two copies,  we can.
+> (Ccing mvebu guys, full discussion here: http://www.spinics.net/lists/devicetree/msg47806.html)
 >
->OK, well I think that's best though it would be better if we were able
->to understand what benefit your customers believe they are seeing here
->and hopefully address it in a better way.  Doing this sort of thing wi=
-th
->Kconfig options is not great, especially when you start trying to buil=
-d
->kernels that work with more than one board.
+> On 05 Sep 11:11 PM, Greg Ungerer wrote:
+>> On 05/09/14 17:36, Geert Uytterhoeven wrote:
+>>> No, the other way around (from most-specific to least-specific):
+>>>
+>>>      compatible = "marvell,armada-spi", "marvell,orion-spi"
+>>>
+>>> So the Armada version is used if available, and the Orion version
+>>> is used as a fallback.
+> Since you are doing another spin, please split this in two patches.
+> The driver and devicetree binding documentation should be in one patch,
+> and the devicetree .dtsi change in another patch.
+>
+> By following Geert's request about the compatible, you make sure both
+> patches can be merged through different maintainers, and that an old devicetree
+> blob can be used safely.
 
-my goal is doubling-check this with customers, if there is no problem,
-drop this one as it is not a valid technical solution.
+Sure, yes, I would prefer that too. I didn't do it for this because 
+checkpatch
+complained for the spi-orion.c change in its own:
 
--barry
+WARNING: DT compatible string "marvell,armada-spi" appears un-documented 
+-- check ./Documentation/devicetree/bindings/
+#170: FILE: drivers/spi/spi-orion.c:412:
++    { .compatible = "marvell,armada-spi", .data = &armada_spi_dev_data, },
+
+But I am happy to ignore that :-)
 
 
+>>>   Also what about armada370-xp, armada375, armada380
+>>> and any other variants out there?
+>> I don't know. I don't have access to functional specs for anything
+>> other than the 370. I expect they are probably the same though.
+>> (Can anyone confirm?)
+>>
+> Confirmed. Judging from the specs, seems the same SPI IP is on all the
+> Armada SoCs; you can do the 'armada-spi' compatible addition on 375 and 38x.
+>
+> Did a few tests on the AXP-GP board (which has an SPI flash) using
+> 'orion-spi' and 'armada-spi' compatibles.
+>
+> Tested-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> Reviewed-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+
+Thanks, appreciate that.
+
+
+> I haven't been able to spot any speed difference, though (perhaps my
+> test is too limited?), so I wonder if there's any improvement with this
+> patch?
+
+Try setting a speed like 2MHz for an SPI device. It will fail because that
+is below the minimum divisor it can calculate with the old orion style
+behavior. I have an armada 370 based board with an ethernet switch
+that is controlled by SPI. Its typical SPI bus speed is 2MHz, that is how I
+came up against this.
+
+Regards
+Greg
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

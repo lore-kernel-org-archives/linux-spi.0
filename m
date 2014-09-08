@@ -1,69 +1,83 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 1/2] gpio: Add driver for AXM55xx SSP chip selects
-Date: Mon, 8 Sep 2014 12:35:47 +0100
-Message-ID: <20140908113547.GJ4015@sirena.org.uk>
-References: <1409576021-24828-1-git-send-email-anders.berg@avagotech.com>
- <1409576021-24828-2-git-send-email-anders.berg@avagotech.com>
- <CACRpkdby4H-fivNn_kG2uL0EjsCGAc+t6OyFi0+VcNGf2Z9NQA@mail.gmail.com>
- <20140904170630.GL29327@sirena.org.uk>
- <CACRpkdZEoBan=Lqr1T-iY41U9NfMA_MCLX3LA=juw7X4pmRvSQ@mail.gmail.com>
- <CAE0=X_3QO5p26M=FS7joKS3zD6LAM_moFutHNcyE1-CjauL3Rw@mail.gmail.com>
- <20140906135308.GC2601@sirena.org.uk>
- <CAE0=X_2q1Z+pGuh6OY9Si5jbrF9HkczNFUqUgK_8xBekNvMeyQ@mail.gmail.com>
+From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: davinci: support adding delay between
+	transmission
+Date: Mon, 8 Sep 2014 16:30:57 +0300
+Message-ID: <540DAF91.6090002@ti.com>
+References: <1408634706-5762-1-git-send-email-grygorii.strashko@ti.com>
+	<1408634706-5762-3-git-send-email-grygorii.strashko@ti.com>
+	<20140821182035.GM24407@sirena.org.uk> <53F74695.3010902@ti.com>
+	<20140822150644.GX24407@sirena.org.uk>
+	<5409C704.5070303@ti.com> <20140906143113.GI2601@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="mhjHhnbe5PrRcwjY"
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Anders Berg <anders.berg@avagotech.com>
-Return-path: <linux-gpio-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CAE0=X_2q1Z+pGuh6OY9Si5jbrF9HkczNFUqUgK_8xBekNvMeyQ@mail.gmail.com>
-Sender: linux-gpio-owner@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <santosh.shilimkar-l0cyMroinI0@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+In-Reply-To: <20140906143113.GI2601-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
+Hi Mark,
 
---mhjHhnbe5PrRcwjY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 09/06/2014 05:31 PM, Mark Brown wrote:
+> On Fri, Sep 05, 2014 at 05:21:56PM +0300, Grygorii Strashko wrote:
+> 
+>> I think we have some misunderstanding here :(
+>> 1) All new properties a optional and should be specified for SPI Slave devices
+>> 2) Seems we are talking using different terms:
+>> - you referring to the term "transfers" - sequence of packets.
+>>    Each packet is one transfer (array of words).
+>> - while these new properties affect on "transmissions" - sequence of words.
+>>    Each word is one transmission.
+> 
+> That's *very* unusual terminology which doesn't match my expectations at
+> all.  Please describe words as words, that'll be much more obvious.
 
-On Mon, Sep 08, 2014 at 01:02:32PM +0200, Anders Berg wrote:
-> On Sat, Sep 6, 2014 at 3:53 PM, Mark Brown <broonie@kernel.org> wrote:
+These terms are used in DM/TRM :(
 
-> > Would it not be more straightforward to just register it as a platform
-> > device in this case, or use a separate OF ID in the DT?  We appear to
-> > specify a compatible string when registering AMBA devices even if we are
-> > capable of identifying using the ID registers.
+I'll split this patch and first introduce WDELAY, C2TDELAY, T2CDELAY
+(with updated documentation).
+The only question is - Should they be somehow common or specific for spi-davinci?
 
-> I'll drop this gpio patch for now and submit a patch on the pl022
-> driver instead. I read the arm,primecell binding and learned that
-> there is a property (arm,primecell-periphid) that can be used to
-> override the HW PrimeCell ID. Seems like something to use here, right?
+> 
+>> Also, below is additional information about properties which
+>> are used in 5-pin mode (SPI_READY) to improve error detection
+>> [OMAP-L138/da830 - http://www.ti.com/lit/ug/spruh77a/spruh77a.pdf]:
+> 
+> This is a *whole* other thing, please split these out and work on this
+> separately.  The client device is going to need to be doing the same
+> thing here so implementing this as a local option in the controller
+> driver isn't the best way forwards.
+> 
+>>>> SPIFMTn[23].PARPOL - Parity polarity: even or odd. PARPOL can be modified in privilege mode only.
+>>>>    0 An even parity flag is added at the end of the transmit data stream.
+>>>>    1 An odd parity flag is added at the end of the transmit data stream.
+> 
+>>> Why would these be specified in DT and not with runtime flags enabled by
+>>> the device?  It looks like they affect the data stream generated by the
+>>> controller so the client device needs to know about them; I'd expect
+>>> that it's device driver would be controlling when they are enabled if
+>>> the controller supports them.
+> 
+>> Could you clarify, pls - Do you mean that struct spi_device.mode and
+>> common SPI DT bindings should be extended to support this?
+> 
+> Yes, if they aren't something that's purely internal to the device they
+> need to be generic so that both devices can be configured appropriately.
+> 
 
-Possibly, though if there's no hardware ID to override to that might not
-be the best option.  You could always define a property that's specific
-to the pl022 driver flagging that it's got these extra chip selects though.
-
---mhjHhnbe5PrRcwjY
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUDZSTAAoJECTWi3JdVIfQ/AsH/iHCP5Aalikko8/T0dqeY94z
-fNwr+78Oo/IlKhNOnt9/gySYurhzeVi04FMpGQ4eoVmbaC+K5yAwBw+aBbOyC7HF
-pYqvO7uVR9pMab685pJTpiIsN0l7u8Kgkubc9Q+4oc8P/zYtWI83ou7ZsdN+oeM9
-kk5myErUMVKCuDCSuJikhtmQjIEPZa6aSFnsWnGGnU8xB0PEGeRx/v2uLv/d0WcL
-yFe4Mvwvyl2sAgpn2YiI+5xlPMW9J99hVte0WM99j1W5nt3nnl6uF/vX+UYt8Lp0
-wphT5YptZ/vJYwMz+pNTX6cLjbv/zwGLxHTnC2OUPIdjVegwRQJiiGKRuPg5bcw=
-=Nc6W
------END PGP SIGNATURE-----
-
---mhjHhnbe5PrRcwjY--
+Regards,
+-grygorii

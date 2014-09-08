@@ -1,83 +1,76 @@
-From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: davinci: support adding delay between
-	transmission
-Date: Mon, 8 Sep 2014 16:30:57 +0300
-Message-ID: <540DAF91.6090002@ti.com>
-References: <1408634706-5762-1-git-send-email-grygorii.strashko@ti.com>
-	<1408634706-5762-3-git-send-email-grygorii.strashko@ti.com>
-	<20140821182035.GM24407@sirena.org.uk> <53F74695.3010902@ti.com>
-	<20140822150644.GX24407@sirena.org.uk>
-	<5409C704.5070303@ti.com> <20140906143113.GI2601@sirena.org.uk>
+From: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+Subject: Re: [PATCH] ARM: mvebu: use improved armada spi device tree
+ compatible name
+Date: Mon, 8 Sep 2014 10:40:56 -0300
+Message-ID: <20140908134056.GA2274@arch.hh.imgtec.org>
+References: <1410147029-30067-1-git-send-email-gerg@uclinux.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <santosh.shilimkar-l0cyMroinI0@public.gmane.org>,
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-In-Reply-To: <20140906143113.GI2601-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org
+To: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1410147029-30067-1-git-send-email-gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+Sending to Jason (just in case)
 
-On 09/06/2014 05:31 PM, Mark Brown wrote:
-> On Fri, Sep 05, 2014 at 05:21:56PM +0300, Grygorii Strashko wrote:
-> 
->> I think we have some misunderstanding here :(
->> 1) All new properties a optional and should be specified for SPI Slave devices
->> 2) Seems we are talking using different terms:
->> - you referring to the term "transfers" - sequence of packets.
->>    Each packet is one transfer (array of words).
->> - while these new properties affect on "transmissions" - sequence of words.
->>    Each word is one transmission.
-> 
-> That's *very* unusual terminology which doesn't match my expectations at
-> all.  Please describe words as words, that'll be much more obvious.
+On 08 Sep 01:30 PM, gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org wrote:
+> From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+>=20
+> Switch the Armada SoC SPI port device tree binding to use the new imp=
+roved
+> armada-370-spi compatible name. This allows for a wider range of baud=
+ rates
+> to be used.
+>=20
+> Signed-off-by: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+> Tested-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> Reviewed-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> ---
+>  arch/arm/boot/dts/armada-370-xp.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm/boot/dts/armada-370-xp.dtsi b/arch/arm/boot/dts=
+/armada-370-xp.dtsi
+> index 23227e0..83286ec 100644
+> --- a/arch/arm/boot/dts/armada-370-xp.dtsi
+> +++ b/arch/arm/boot/dts/armada-370-xp.dtsi
+> @@ -110,7 +110,7 @@
+>  			};
+> =20
+>  			spi0: spi@10600 {
+> -				compatible =3D "marvell,orion-spi";
+> +				compatible =3D "marvell,armada-370-spi", "marvell,orion-spi";
+>  				reg =3D <0x10600 0x28>;
+>  				#address-cells =3D <1>;
+>  				#size-cells =3D <0>;
+> @@ -121,7 +121,7 @@
+>  			};
+> =20
+>  			spi1: spi@10680 {
+> -				compatible =3D "marvell,orion-spi";
+> +				compatible =3D "marvell,armada-370-spi", "marvell,orion-spi";
+>  				reg =3D <0x10680 0x28>;
+>  				#address-cells =3D <1>;
+>  				#size-cells =3D <0>;
+> --=20
+> 1.9.1
+>=20
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-spi" =
+in
+> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
 
-These terms are used in DM/TRM :(
-
-I'll split this patch and first introduce WDELAY, C2TDELAY, T2CDELAY
-(with updated documentation).
-The only question is - Should they be somehow common or specific for spi-davinci?
-
-> 
->> Also, below is additional information about properties which
->> are used in 5-pin mode (SPI_READY) to improve error detection
->> [OMAP-L138/da830 - http://www.ti.com/lit/ug/spruh77a/spruh77a.pdf]:
-> 
-> This is a *whole* other thing, please split these out and work on this
-> separately.  The client device is going to need to be doing the same
-> thing here so implementing this as a local option in the controller
-> driver isn't the best way forwards.
-> 
->>>> SPIFMTn[23].PARPOL - Parity polarity: even or odd. PARPOL can be modified in privilege mode only.
->>>>    0 An even parity flag is added at the end of the transmit data stream.
->>>>    1 An odd parity flag is added at the end of the transmit data stream.
-> 
->>> Why would these be specified in DT and not with runtime flags enabled by
->>> the device?  It looks like they affect the data stream generated by the
->>> controller so the client device needs to know about them; I'd expect
->>> that it's device driver would be controlling when they are enabled if
->>> the controller supports them.
-> 
->> Could you clarify, pls - Do you mean that struct spi_device.mode and
->> common SPI DT bindings should be extended to support this?
-> 
-> Yes, if they aren't something that's purely internal to the device they
-> need to be generic so that both devices can be configured appropriately.
-> 
-
-Regards,
--grygorii
+--=20
+Ezequiel Garc=EDa, Free Electrons
+Embedded Linux, Kernel and Android Engineering
+http://free-electrons.com
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

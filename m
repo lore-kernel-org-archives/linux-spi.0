@@ -1,63 +1,80 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: davinci: support adding delay between
- transmission
-Date: Mon, 8 Sep 2014 15:39:56 +0100
-Message-ID: <20140908143956.GL4015@sirena.org.uk>
-References: <1408634706-5762-1-git-send-email-grygorii.strashko@ti.com>
- <1408634706-5762-3-git-send-email-grygorii.strashko@ti.com>
- <20140821182035.GM24407@sirena.org.uk>
- <53F74695.3010902@ti.com>
- <20140822150644.GX24407@sirena.org.uk>
- <5409C704.5070303@ti.com>
- <20140906143113.GI2601@sirena.org.uk>
- <540DAF91.6090002@ti.com>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="rwgQ89ZNnFUwFHTC"
-Cc: santosh.shilimkar-l0cyMroinI0@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	m-karicheri2-l0cyMroinI0@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <540DAF91.6090002-l0cyMroinI0@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v4 7/9] spi: core: Convert to dev_pm_domain_attach|detach()
+Date: Tue,  9 Sep 2014 13:36:08 +0200
+Message-ID: <1410262570-22785-8-git-send-email-ulf.hansson@linaro.org>
+References: <1409838756-31963-1-git-send-email-ulf.hansson@linaro.org>
+ <1410262570-22785-1-git-send-email-ulf.hansson@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kevin Hilman <khilman@linaro.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Tomasz Figa <tomasz.figa@gmail.com>,
+	devicetree@vger.kernel.org,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Simon Horman <horms@verge.net.au>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Ben Dooks <ben-linux@fluff.org>,
+	Kukjin Kim <kgene.kim@samsung.com>,
+	Stephen Boyd <sboyd@codeaurora.org>,
+	Philipp Zabel <philipp.zabel@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa@the-dreams.de>,
+	Chris Ball <chris@printf.net>,
+	Russell King <linux@arm.linux.org.uk>,
+	Ulf Hansson <ulf.hansson@linaro.org>, linux-spi@vger.kernel.org
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+	Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-pm@vger.kernel.org
+Return-path: <linux-pm-owner@vger.kernel.org>
+In-Reply-To: <1410262570-22785-1-git-send-email-ulf.hansson@linaro.org>
+Sender: linux-pm-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Previously only the ACPI PM domain was supported by the spi bus.
 
---rwgQ89ZNnFUwFHTC
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Let's convert to the common attach/detach functions for PM domains,
+which currently means we are extending the support to include the
+generic PM domain as well.
 
-On Mon, Sep 08, 2014 at 04:30:57PM +0300, Grygorii Strashko wrote:
+Cc: linux-spi@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Kevin Hilman <khilman@linaro.org>
+---
+ drivers/spi/spi.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-> I'll split this patch and first introduce WDELAY, C2TDELAY, T2CDELAY
-> (with updated documentation).
-> The only question is - Should they be somehow common or specific for spi-davinci?
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index ca935df..72a0beb 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -264,10 +264,12 @@ static int spi_drv_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	acpi_dev_pm_attach(dev, true);
+-	ret = sdrv->probe(to_spi_device(dev));
+-	if (ret)
+-		acpi_dev_pm_detach(dev, true);
++	ret = dev_pm_domain_attach(dev, true);
++	if (ret != -EPROBE_DEFER) {
++		ret = sdrv->probe(to_spi_device(dev));
++		if (ret)
++			dev_pm_domain_detach(dev, true);
++	}
+ 
+ 	return ret;
+ }
+@@ -278,7 +280,7 @@ static int spi_drv_remove(struct device *dev)
+ 	int ret;
+ 
+ 	ret = sdrv->remove(to_spi_device(dev));
+-	acpi_dev_pm_detach(dev, true);
++	dev_pm_domain_detach(dev, true);
+ 
+ 	return ret;
+ }
+-- 
+1.9.1
 
-If they don't have any impact on the device at the remote end of the
-link then making them device specific is fine.
-
---rwgQ89ZNnFUwFHTC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUDb+3AAoJECTWi3JdVIfQwXUH/R1UsOJfdE5xKgajiOSfKPC8
-8PT9MkwnBoE0/YWY8ljzOBZ2LVgayyNK8pcCc7eiu/m+TtOHIJINt5wCrBtmcIlf
-fQ+SiJ9mVsZeSWLdv64x8JY9eDi4rjogBuEfeoHTQiRERfRYp8ucjUq04tdCCxxM
-hvBkFpYgD6iJnPkkSzRUEXG5z9B5UomvWWTsWyp88n9MpAundf9cF9OpUdzBFGCY
-xCgWY6XflYheG88DHXG00MqCCwXnBWXFvgDOtFW7lk56I6cd2Q5RL9gIU4AXv8AD
-xB4mmO+8vvwchYQ5px1UkIqIWB2tMtzo7vsWK9ghfPgqyWWKfr1BI0h/wdg8r2s=
-=zw4N
------END PGP SIGNATURE-----
-
---rwgQ89ZNnFUwFHTC--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

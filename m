@@ -1,273 +1,59 @@
-From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH v2] spi: davinci: add support for adding delay between word's
-	transmission
-Date: Tue, 9 Sep 2014 19:07:31 +0300
-Message-ID: <1410278851-10783-1-git-send-email-grygorii.strashko@ti.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2] spi: davinci: add support for adding delay between
+ word's transmission
+Date: Tue, 9 Sep 2014 17:55:55 +0100
+Message-ID: <20140909165555.GD2601@sirena.org.uk>
+References: <1410278851-10783-1-git-send-email-grygorii.strashko@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-        <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-        Ian Campbell
-	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: <santosh.shilimkar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
-List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
-List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
-List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
-	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
-Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
-Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="AHwfuuqjYixMHmQf"
+Cc: santosh.shilimkar-l0cyMroinI0@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
+	Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1410278851-10783-1-git-send-email-grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
 
-This patch adds ability to configure delay between transmission of
-words over SPI bus if it's required by SPI slave devices.
+--AHwfuuqjYixMHmQf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-New optional SPI slave properties:
-- ti,spi-word-delay : delay between transmission of words
-	(SPIFMTn.WDELAY, SPIDAT1.WDEL)
+On Tue, Sep 09, 2014 at 07:07:31PM +0300, Grygorii Strashko wrote:
 
-- ti,spi-c2t-delay: Chip-select-active-to-transmit-start delay
-	(SPIDELAY.C2TDELAY)
+> - ti,spi-c2t-delay: Chip-select-active-to-transmit-start delay
+> 	(SPIDELAY.C2TDELAY)
 
-- ti,spi-t2c-delay: Transmit-end-to-chip-select-inactive delay
-	(SPIDELAY.T2CDELAY)
+> - ti,spi-t2c-delay: Transmit-end-to-chip-select-inactive delay
+> 	(SPIDELAY.T2CDELAY)
 
-- ti,spi-disable-cstimer: disable CS timer (SPIFMTn.DISCSTIMERS).
+Now I look at these they look very much like the standard delay feature
+that the SPI subsystem has already - are they?
 
-If WDELAY, C2TDELAY, T2CDELAY are configured then delay
-between transmission of words will be added as following:
+--AHwfuuqjYixMHmQf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-   wdelay = T2CDELAY + WDELAY + C2TDELAY.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-If "ti,spi-disable-cstimer" is configured:
+iQEcBAEBAgAGBQJUDzEaAAoJECTWi3JdVIfQcxsH/RWFMB9r3ZwsWsqISVqdMESh
+fPVCt6Fhu1OLMzY3rYe75Tz7u8Q4AIHNocobXbe8fBbx/Wy4esNf//Zh82W9SpT/
+Qz4smeQh2PIn3/QxYKlqoZhsRzL60377C306+nFd3dmDQEFlM/4YTRqLAiemQPeS
+7wzCkjQxBkTeBR3ueghpyq84HJaZ0p0wv+Mu5E0KpE5AKRO7iTqwnmeS96fON+at
+qryPh5biF1cMNXnY2nrRlGcfOotZCsN01buto3U0uN5wGd2cSPTrcBSgY779lmkI
+NMST+Kcj//c5LTDGnQxyUfFjI++6YiRy4Nakzb7BKECvxL4MlgR7plUFxOFk9aU=
+=961c
+-----END PGP SIGNATURE-----
 
-   wdelay = WDELAY.
-
-Signed-off-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
-Signed-off-by: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
----
-
-Changes in v2:
-- reduced number of new parameters
-- bindings updated
-
-Link on v1:
-http://www.spinics.net/lists/linux-spi/msg01609.html
-
- .../devicetree/bindings/spi/spi-davinci.txt        | 50 +++++++++++++++++
- drivers/spi/spi-davinci.c                          | 62 +++++++++++++++++++---
- 2 files changed, 105 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-index f80887b..1c336d4 100644
---- a/Documentation/devicetree/bindings/spi/spi-davinci.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
-@@ -24,6 +24,54 @@ Optional:
- 	cs-gpios = <0>, <0>, <0>, <&gpio1 30 0>, <&gpio1 31 0>;
- 	where first three are internal CS and last two are GPIO CS.
- 
-+Optional properties for slave devices:
-+SPI slave nodes can contain the following properties.
-+Not all SPI Peripherals from Texas Instruments support this.
-+Please check SPI peripheral documentation for a device before using these.
-+
-+- ti,spi-word-delay : delay between transmission of words
-+	(SPIFMTn.WDELAY, SPIDAT1.WDEL) must be specified in number of SPI module
-+	clock periods.
-+
-+	delay = WDELAY * SPI_module_clock_period + 2 * SPI_module_clock_period
-+
-+- ti,spi-c2t-delay: Chip-select-active-to-transmit-start delay
-+	(SPIDELAY.C2TDELAY) must be specified in number of SPI module
-+	clock periods. if 0 - delay is not applied.
-+
-+	delay = (C2TDELAY + 2) * SPI_module_clock_period
-+
-+- ti,spi-t2c-delay: Transmit-end-to-chip-select-inactive delay
-+	(SPIDELAY.T2CDELAY) must be specified in number of SPI module
-+	clock periods. if 0 - delay is not applied.
-+
-+	delay = (T2CDELAY + 1) * SPI_module_clock_period
-+
-+- ti,spi-disable-cstimer: disable CS timer (SPIFMTn.DISCSTIMERS). Boolean
-+	property that the C2TDELAY and T2CDELAY timers should be disabled.
-+
-+Below is timing diagram which shows functional meaning of
-+"ti,spi-word-delay", "ti,spi-c2t-delay" and "ti,spi-t2c-delay" parameters.
-+
-+             +-+ +-+ +-+ +-+ +-+                           +-+ +-+ +-+
-+SPI_CLK      | | | | | | | | | |                           | | | | | |
-+  +----------+ +-+ +-+ +-+ +-+ +---------------------------+ +-+ +-+ +-
-+
-+SPI_SOMI/SIMO+-----------------+                           +-----------
-+  +----------+ word1           +---------------------------+word2
-+             +-----------------+                           +-----------
-+                                          WDELAY
-+                                         <--------->
-+                                        +           +
-+SPI_CS                                  |           |
-+  +----+                                +-----------+
-+       |                                |           |
-+       +-----+-----------------+--------+           +-----+------------
-+       |     |                 |        |           |     |
-+       +     +                 +        |           +     +
-+        <--->                   <------>             <--->
-+       C2TDELAY                 T2CDELAY            C2TDELAY
-+
- Example of a NOR flash slave device (n25q032) connected to DaVinci
- SPI controller device over the SPI bus.
- 
-@@ -43,6 +91,8 @@ spi0:spi@20BF0000 {
- 		compatible = "st,m25p32";
- 		spi-max-frequency = <25000000>;
- 		reg = <0>;
-+		ti,spi-c2t-delay = <8>;
-+		ti,spi-t2c-delay = <8>;
- 
- 		partition@0 {
- 			label = "u-boot-spl";
-diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 48f1d26..ccadc95 100644
---- a/drivers/spi/spi-davinci.c
-+++ b/drivers/spi/spi-davinci.c
-@@ -65,6 +65,7 @@
- 
- /* SPIDAT1 (upper 16 bit defines) */
- #define SPIDAT1_CSHOLD_MASK	BIT(12)
-+#define SPIDAT1_WDEL		BIT(10)
- 
- /* SPIGCR1 */
- #define SPIGCR1_CLKMOD_MASK	BIT(1)
-@@ -209,6 +210,7 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
- {
- 	struct davinci_spi *dspi;
- 	struct davinci_spi_platform_data *pdata;
-+	struct davinci_spi_config *spicfg = spi->controller_data;
- 	u8 chip_sel = spi->chip_select;
- 	u16 spidat1 = CS_DEFAULT;
- 	bool gpio_chipsel = false;
-@@ -223,6 +225,10 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
- 		gpio = spi->cs_gpio;
- 	}
- 
-+	/* program delay transfers if tx_delay is non zero */
-+	if (spicfg->wdelay)
-+		spidat1 |= SPIDAT1_WDEL;
-+
- 	/*
- 	 * Board specific chip select logic decides the polarity and cs
- 	 * line for the controller
-@@ -237,9 +243,9 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
- 			spidat1 |= SPIDAT1_CSHOLD_MASK;
- 			spidat1 &= ~(0x1 << chip_sel);
- 		}
--
--		iowrite16(spidat1, dspi->base + SPIDAT1 + 2);
- 	}
-+
-+	iowrite16(spidat1, dspi->base + SPIDAT1 + 2);
- }
- 
- /**
-@@ -285,7 +291,7 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
- 	int prescale;
- 
- 	dspi = spi_master_get_devdata(spi->master);
--	spicfg = (struct davinci_spi_config *)spi->controller_data;
-+	spicfg = spi->controller_data;
- 	if (!spicfg)
- 		spicfg = &davinci_spi_default_cfg;
- 
-@@ -333,6 +339,14 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
- 		spifmt |= SPIFMT_PHASE_MASK;
- 
- 	/*
-+	* Assume wdelay is used only on SPI peripherals that has this field
-+	* in SPIFMTn register and when it's configured from board file or DT.
-+	*/
-+	if (spicfg->wdelay)
-+		spifmt |= ((spicfg->wdelay << SPIFMT_WDELAY_SHIFT)
-+				& SPIFMT_WDELAY_MASK);
-+
-+	/*
- 	 * Version 1 hardware supports two basic SPI modes:
- 	 *  - Standard SPI mode uses 4 pins, with chipselect
- 	 *  - 3 pin SPI is a 4 pin variant without CS (SPI_NO_CS)
-@@ -349,9 +363,6 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
- 
- 		u32 delay = 0;
- 
--		spifmt |= ((spicfg->wdelay << SPIFMT_WDELAY_SHIFT)
--							& SPIFMT_WDELAY_MASK);
--
- 		if (spicfg->odd_parity)
- 			spifmt |= SPIFMT_ODD_PARITY_MASK;
- 
-@@ -383,6 +394,37 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
- 	return 0;
- }
- 
-+static int davinci_spi_of_setup(struct spi_device *spi)
-+{
-+	struct davinci_spi_config *spicfg = spi->controller_data;
-+	struct device_node *np = spi->dev.of_node;
-+	u32 prop;
-+	int len;
-+
-+	if (spicfg == NULL && np) {
-+		spicfg = kzalloc(sizeof(*spicfg), GFP_KERNEL);
-+		if (!spicfg)
-+			return -ENOMEM;
-+		*spicfg = davinci_spi_default_cfg;
-+		/* override with dt configured values */
-+		if (!of_property_read_u32(np,
-+					  "ti,spi-word-delay", &prop))
-+			spicfg->wdelay = (u8)prop;
-+		if (of_find_property(np,
-+				     "ti,spi-disable-cstimer", &len))
-+			spicfg->timer_disable = 1;
-+		if (!of_property_read_u32(np,
-+					  "ti,spi-c2t-delay", &prop))
-+			spicfg->c2tdelay = (u8)prop;
-+		if (!of_property_read_u32(np,
-+					  "ti,spi-t2c-delay", &prop))
-+			spicfg->t2cdelay = (u8)prop;
-+		spi->controller_data = spicfg;
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * davinci_spi_setup - This functions will set default transfer method
-  * @spi: spi device on which data transfer to be done
-@@ -436,11 +478,17 @@ static int davinci_spi_setup(struct spi_device *spi)
- 	else
- 		clear_io_bits(dspi->base + SPIGCR1, SPIGCR1_LOOPBACK_MASK);
- 
--	return retval;
-+	return davinci_spi_of_setup(spi);
- }
- 
- static void davinci_spi_cleanup(struct spi_device *spi)
- {
-+	struct davinci_spi_config *spicfg = spi->controller_data;
-+
-+	spi->controller_data = NULL;
-+	if (spi->dev.of_node)
-+		kfree(spicfg);
-+
- 	if (spi->cs_gpio >= 0)
- 		gpio_free(spi->cs_gpio);
- }
--- 
-1.9.1
+--AHwfuuqjYixMHmQf--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

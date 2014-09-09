@@ -1,46 +1,40 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] SPI: Fix error message
-Date: Tue, 9 Sep 2014 16:22:25 +0100
-Message-ID: <20140909152225.GB2601@sirena.org.uk>
-References: <1410268670-7132-1-git-send-email-stigge@antcom.de>
+From: Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>
+Subject: Re: [PATCH] ARM: mvebu: use improved armada spi device tree
+ compatible name
+Date: Tue, 9 Sep 2014 12:00:43 -0400
+Message-ID: <20140909160043.GP30828@titan.lakedaemon.net>
+References: <1410147029-30067-1-git-send-email-gerg@uclinux.org>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="g9DrFxK9lbE4xtT+"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Roland Stigge <stigge@antcom.de>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1410268670-7132-1-git-send-email-stigge@antcom.de>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---g9DrFxK9lbE4xtT+
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1410147029-30067-1-git-send-email-gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Sep 09, 2014 at 03:17:50PM +0200, Roland Stigge wrote:
-> This patch fixes an error message typo ("not" missing).
->=20
-> Signed-off-by: Roland Stigge <stigge@antcom.de>
+On Mon, Sep 08, 2014 at 01:30:29PM +1000, gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org wrote:
+> From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+> 
+> Switch the Armada SoC SPI port device tree binding to use the new improved
+> armada-370-spi compatible name. This allows for a wider range of baud rates
+> to be used.
+> 
+> Signed-off-by: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+> Tested-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> Reviewed-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
+> ---
+>  arch/arm/boot/dts/armada-370-xp.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Applied.  Please use subject lines matching the style for the subsystem.
+Applied to mvebu/dt.
 
---g9DrFxK9lbE4xtT+
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+thx,
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUDxswAAoJECTWi3JdVIfQctYH/iwdXE0hjzYvsNNyB8dOJKAm
-uUGYkzEcOi1UoiOwNRXjFnGD9ea42bdWjpAHA4zJTmm2M6XkZLSfbNUmSgQ+ZGCm
-jOi05D6S9cAg6vuhxbXQhOK3P3GDsQ/d9/tUn6l+B0PRi+h1dZ4DpuNxYXm00ClV
-iN9+iqWaLUWcRLsNBnsM9lDRK/376fkh2cKIc9XiGL4kFDkpDwWcMh/e83/JMJdr
-DUPZ4QwUB7yZg356aj+jBQDqZ/fbmke91b8dFnOffsvefpdyHbcoTA0wu5qZg76G
-RHwjMpO4k2hjtPJ12/gIhr4lYvO0aTn/oNOQ8VUmFPN195pQvBvyeNZ4rOiqbKM=
-=1qxA
------END PGP SIGNATURE-----
-
---g9DrFxK9lbE4xtT+--
+Jason.
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

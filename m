@@ -1,61 +1,46 @@
-From: Mark Brown <broonie@kernel.org>
+From: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Subject: Re: [PATCH v5] spi: spi-imx: add DMA support
-Date: Wed, 10 Sep 2014 11:21:05 +0100
-Message-ID: <20140910102105.GR2601@sirena.org.uk>
+Date: Wed, 10 Sep 2014 19:22:59 +0800
+Message-ID: <20140910112258.GA30794@Robin-OptiPlex-780>
 References: <1410312604-31949-1-git-send-email-b38343@freescale.com>
+ <20140910102105.GR2601@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="lRMsAdG4hjP4MFkn"
-Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, marex@denx.de, shawn.guo@linaro.org,
-	Frank.Li@freescale.com
-To: Robin Gong <b38343@freescale.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<marex-ynQEQJNshbs@public.gmane.org>, <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <Frank.Li-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1410312604-31949-1-git-send-email-b38343@freescale.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <20140910102105.GR2601-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, Sep 10, 2014 at 11:21:05AM +0100, Mark Brown wrote:
+> On Wed, Sep 10, 2014 at 09:30:04AM +0800, Robin Gong wrote:
+> 
+> > +static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
+> > +			 struct spi_transfer *transfer)
+> > +{
+> > +	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
+> > +
+> > +	if (spi_imx->dma_is_inited && (transfer->len > spi_imx->rx_wml)
+> > +	    && (transfer->len > spi_imx->tx_wml))
+> > +		spi_imx->usedma = true;
+> > +	else
+> > +		spi_imx->usedma = false;
+> > +
+> > +	return spi_imx->usedma;
+> > +}
+> 
+> This isn't going to work, anything that looks at the usedma flag will
+> see the result of the last thing that was checked which may or may not
+> be the transfer that it's handling.  The driver should check to see if
+> the core mapped the transfer for DMA.
+Yes, you're right. I should use "transfer->tx_sg->sgl == NULL" or
+"transfer->rx_sg->sgl == NULL" instead of usedma flag in driver, right?
 
---lRMsAdG4hjP4MFkn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Sep 10, 2014 at 09:30:04AM +0800, Robin Gong wrote:
-
-> +static bool spi_imx_can_dma(struct spi_master *master, struct spi_device *spi,
-> +			 struct spi_transfer *transfer)
-> +{
-> +	struct spi_imx_data *spi_imx = spi_master_get_devdata(master);
-> +
-> +	if (spi_imx->dma_is_inited && (transfer->len > spi_imx->rx_wml)
-> +	    && (transfer->len > spi_imx->tx_wml))
-> +		spi_imx->usedma = true;
-> +	else
-> +		spi_imx->usedma = false;
-> +
-> +	return spi_imx->usedma;
-> +}
-
-This isn't going to work, anything that looks at the usedma flag will
-see the result of the last thing that was checked which may or may not
-be the transfer that it's handling.  The driver should check to see if
-the core mapped the transfer for DMA.
-
---lRMsAdG4hjP4MFkn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUECYQAAoJECTWi3JdVIfQWnAH/0TKY6xJ2i+5Tu3FsNwHzYNO
-K/37WBHrBc8YOzu7p5MC74fOkyhQAw2/08zSsye3pfsRRqPgyc7MF1zjAuL08D1P
-mSDgswdRnFRAL8u+E23YiLt/1b5W0m8jqqYamOk/6K/Hh/9OIO1Vihy6Y8j9g/LW
-Z9+s0I3Jf/18kHpfPeJ5FBt5YWAybCBa5hvY2lH090cYmvMWWBasa63bQSFu3tim
-bMyqN9Xed6IBWssQq+TrfqMd7/zbYiLL7VnCRbKQ9chu61bziV88CuQIsy2u2riF
-CkPcCzbx1TXAbjtNfjT3MV95Kf5Xxifl29ID9pC7cAuD3oPv52WUJEiM3gpLs0E=
-=2Lux
------END PGP SIGNATURE-----
-
---lRMsAdG4hjP4MFkn--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

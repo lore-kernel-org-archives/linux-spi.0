@@ -1,165 +1,40 @@
-From: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
-Subject: [PATCH] spi: pl022: Add support for chip select extension
-Date: Wed, 10 Sep 2014 16:40:30 +0200
-Message-ID: <1410360030-26634-1-git-send-email-anders.berg@avagotech.com>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+From: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: Re: [PATCH v5] spi: spi-imx: add DMA support
+Date: Wed, 10 Sep 2014 23:18:01 +0800
+Message-ID: <20140910151759.GA31462@Robin-OptiPlex-780>
+References: <1410312604-31949-1-git-send-email-b38343@freescale.com>
+ <20140910102105.GR2601@sirena.org.uk>
+ <20140910112258.GA30794@Robin-OptiPlex-780>
+ <20140910114530.GD7960@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Cc: <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<marex-ynQEQJNshbs@public.gmane.org>, <shawn.guo-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>, <Frank.Li-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20140910114530.GD7960-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add support for a extended PL022 which has an extra register for controlling up
-to five chip select signals. This controller is found on the AXM5516 SoC.
-Unfortunately the PrimeCell identification registers are identical to a
-standard ARM PL022. To work around this, the peripheral ID must be overridden
-in the device tree using the "arm,primecell-periphid" property with the value
-0x000b6022.
-
-Signed-off-by: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
----
- drivers/spi/spi-pl022.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 58 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 1189cfd..b395489 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -82,6 +82,7 @@
- #define SSP_MIS(r)	(r + 0x01C)
- #define SSP_ICR(r)	(r + 0x020)
- #define SSP_DMACR(r)	(r + 0x024)
-+#define SSP_CSR(r)	(r + 0x030) /* vendor extension */
- #define SSP_ITCR(r)	(r + 0x080)
- #define SSP_ITIP(r)	(r + 0x084)
- #define SSP_ITOP(r)	(r + 0x088)
-@@ -198,6 +199,12 @@
- #define SSP_DMACR_MASK_TXDMAE		(0x1UL << 1)
- 
- /*
-+ * SSP Chip Select Control Register - SSP_CSR
-+ * (vendor extension)
-+ */
-+#define SSP_CSR_CSVALUE_MASK		(0x1FUL << 0)
-+
-+/*
-  * SSP Integration Test control Register - SSP_ITCR
-  */
- #define SSP_ITCR_MASK_ITEN		(0x1UL << 0)
-@@ -313,6 +320,7 @@ enum ssp_writing {
-  * @extended_cr: 32 bit wide control register 0 with extra
-  * features and extra features in CR1 as found in the ST variants
-  * @pl023: supports a subset of the ST extensions called "PL023"
-+ * @internal_cs_ctrl: supports chip select control register
-  */
- struct vendor_data {
- 	int fifodepth;
-@@ -321,6 +329,7 @@ struct vendor_data {
- 	bool extended_cr;
- 	bool pl023;
- 	bool loopback;
-+	bool internal_cs_ctrl;
- };
- 
- /**
-@@ -440,9 +449,32 @@ static void null_cs_control(u32 command)
- 	pr_debug("pl022: dummy chip select control, CS=0x%x\n", command);
- }
- 
-+/**
-+ * internal_cs_control - Control chip select signals via SSP_CSR.
-+ * @pl022: SSP driver private data structure
-+ * @command: select/delect the chip
-+ *
-+ * Used on controller with internal chip select control via SSP_CSR register
-+ * (vendor extension). Each of the 5 LSB in the register controls one chip
-+ * select signal.
-+ */
-+static void internal_cs_control(struct pl022 *pl022, u32 command)
-+{
-+	u32 tmp;
-+
-+	tmp = readw(SSP_CSR(pl022->virtbase));
-+	if (command == SSP_CHIP_SELECT)
-+		tmp &= ~BIT(pl022->cur_cs);
-+	else
-+		tmp |= BIT(pl022->cur_cs);
-+	writew(tmp, SSP_CSR(pl022->virtbase));
-+}
-+
- static void pl022_cs_control(struct pl022 *pl022, u32 command)
- {
--	if (gpio_is_valid(pl022->cur_cs))
-+	if (pl022->vendor->internal_cs_ctrl)
-+		internal_cs_control(pl022, command);
-+	else if (gpio_is_valid(pl022->cur_cs))
- 		gpio_set_value(pl022->cur_cs, command);
- 	else
- 		pl022->cur_chip->cs_control(command);
-@@ -2118,6 +2150,9 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 	if (platform_info->num_chipselect && platform_info->chipselects) {
- 		for (i = 0; i < num_cs; i++)
- 			pl022->chipselects[i] = platform_info->chipselects[i];
-+	} else if (pl022->vendor->internal_cs_ctrl) {
-+		for (i = 0; i < num_cs; i++)
-+			pl022->chipselects[i] = i;
- 	} else if (IS_ENABLED(CONFIG_OF)) {
- 		for (i = 0; i < num_cs; i++) {
- 			int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
-@@ -2347,6 +2382,7 @@ static struct vendor_data vendor_arm = {
- 	.extended_cr = false,
- 	.pl023 = false,
- 	.loopback = true,
-+	.internal_cs_ctrl = false,
- };
- 
- static struct vendor_data vendor_st = {
-@@ -2356,6 +2392,7 @@ static struct vendor_data vendor_st = {
- 	.extended_cr = true,
- 	.pl023 = false,
- 	.loopback = true,
-+	.internal_cs_ctrl = false,
- };
- 
- static struct vendor_data vendor_st_pl023 = {
-@@ -2365,6 +2402,17 @@ static struct vendor_data vendor_st_pl023 = {
- 	.extended_cr = true,
- 	.pl023 = true,
- 	.loopback = false,
-+	.internal_cs_ctrl = false,
-+};
-+
-+static struct vendor_data vendor_lsi = {
-+	.fifodepth = 8,
-+	.max_bpw = 16,
-+	.unidir = false,
-+	.extended_cr = false,
-+	.pl023 = false,
-+	.loopback = true,
-+	.internal_cs_ctrl = true,
- };
- 
- static struct amba_id pl022_ids[] = {
-@@ -2398,6 +2446,15 @@ static struct amba_id pl022_ids[] = {
- 		.mask	= 0xffffffff,
- 		.data	= &vendor_st_pl023,
- 	},
-+	{
-+		/*
-+		 * PL022 variant that has a chip select control register whih
-+		 * allows control of 5 output signals nCS[0:4].
-+		 */
-+		.id	= 0x000b6022,
-+		.mask	= 0x000fffff,
-+		.data	= &vendor_lsi,
-+	},
- 	{ 0, 0 },
- };
- 
--- 
-1.9.1
+On Wed, Sep 10, 2014 at 12:45:30PM +0100, Mark Brown wrote:
+> On Wed, Sep 10, 2014 at 07:22:59PM +0800, Robin Gong wrote:
+> > On Wed, Sep 10, 2014 at 11:21:05AM +0100, Mark Brown wrote:
+> 
+> > > This isn't going to work, anything that looks at the usedma flag will
+> > > see the result of the last thing that was checked which may or may not
+> > > be the transfer that it's handling.  The driver should check to see if
+> > > the core mapped the transfer for DMA.
+> 
+> > Yes, you're right. I should use "transfer->tx_sg->sgl == NULL" or
+> > "transfer->rx_sg->sgl == NULL" instead of usedma flag in driver, right?
+> 
+> Right.
+But looks spi core framework can make sure every rx or tx transfer in sequence.
+If so, can_dma will never be called until this transfer finished
+(spi_pump_messages), and my usedma flag also never be modified until next
+transfer start. Please correct me if I am wrong, thanks.
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

@@ -1,115 +1,52 @@
-From: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Subject: SPI and module auto-loading
-Date: Thu, 11 Sep 2014 15:03:50 +0200
-Message-ID: <54119DB6.8020807@collabora.co.uk>
+From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: pl022: Add support for chip select extension
+Date: Thu, 11 Sep 2014 15:26:01 +0200
+Message-ID: <CACRpkdavQBJkaC40GJkD396JkwPjSr_dzWegn8veLpG-Fcn-SQ@mail.gmail.com>
+References: <1410360030-26634-1-git-send-email-anders.berg@avagotech.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
-	wsa@the-dreams.de, sjoerd.simons@collabora.co.uk
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1410360030-26634-1-git-send-email-anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hello Mark,
+On Wed, Sep 10, 2014 at 4:40 PM, Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org> wrote:
 
-We found an issue with module auto-loading on an I2C driver [0] and it turned
-out to be a problem on how the I2C subsystem reports the module alias to
-user-space. It always report modalias as "i2c:<dev_id>" even when the driver
-is probed via DT. The problem with this particular driver is that the I2C
-device ID table didn't contain an entry that matched what the I2C core was
-reporting as the MODALIAS uevent env var.
+> Add support for a extended PL022 which has an extra register for controlling up
+> to five chip select signals. This controller is found on the AXM5516 SoC.
+> Unfortunately the PrimeCell identification registers are identical to a
+> standard ARM PL022. To work around this, the peripheral ID must be overridden
+> in the device tree using the "arm,primecell-periphid" property with the value
+> 0x000b6022.
+>
+> Signed-off-by: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
+(...)
+> +               /*
+> +                * PL022 variant that has a chip select control register whih
+> +                * allows control of 5 output signals nCS[0:4].
+> +                */
+> +               .id     = 0x000b6022,
 
-I looked at the SPI core and it does the same. It always reports to udev as
-modalias "spi:<dev_id>" so the aliases filled in a module from the OF table
-are never used.
+OK so you're defining 0xb6 to the the 8bit ID for LSI.
 
-This can be easily worked around (and probably why it never was an issue) if
-the OF and SPI tables are kept in sync but I don't know if that is a hard
-requirement for all use-cases (e.g: a SPI driver that is DT only?).
+Do you have some special reason for this, like that it appears
+in some other silicon block from LSI? Otherwise I suggest using
+0x4c (uppercase 'L') so as to follow the pattern of the other
+vendor IDs.
 
-Now, changing this behavior will break module auto-loading for a lot of
-drivers relies on the current behavior and don't define a struct of_device_id
-or are not using the MODULE_DEVICE_TABLE(of,..) macro but I wonder if that
-means that the drivers are broken and should be fixed?
+Please patch include/linux/amba/bus.h to add
+AMBA_VENDOR_LSI = 0x4c (or 6b) as well, as this is the first
+occurence.
 
-I'm sending an RFC patch [1] to know what you think about it.
-
-Thanks a lot and best regards,
-Javier
-
-[0]: https://lkml.org/lkml/2014/9/11/127
-[1]
->From a7cd35209a597a578df6c801e5ff7b63b584bf3e Mon Sep 17 00:00:00 2001
-From: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
-Date: Thu, 11 Sep 2014 14:31:04 +0200
-Subject: [PATCH RFC] spi: core: report OF style modalias when probing using DT
-
-An SPI driver that supports both OF and legacy platforms, will have
-both an OF and SPI ID table. This means that when built as a module,
-the aliases will be filled from both tables, e.g:
-
-$ modinfo cros_ec_spi | grep alias
-alias:          spi:cros-ec-spi
-alias:          of:N*T*Cgoogle,cros-ec-spi*
-
-But currently always an alias of the form spi:<dev_id> is reported
-even when the it was probed by matching the OF compatible string.
-
-$ cat /sys/devices/12d40000.spi/spi_master/spi2/spi2.0/modalias
-spi:cros-ec-spi
-
-Drivers for IP blocks that are included in DT-only platforms, may not
-have an updated SPI ID table so if a device is probed by matching its
-compatible string, udev can get a MODALIAS uevent env var that doesn't
-match with one of the valid aliases so the module won't be auto-loaded
-by libkmod/modprobe.
-
-This patch reports OF related uevent env vars (e.g: OF_COMPATIBLE) and
-so the module can be auto-loaded and also report the correctly on sysfs:
-
-$ cat /sys/devices/12d40000.spi/spi_master/spi2/spi2.0/modalias
-of:Ncros-ecT<NULL>Cgoogle,cros-ec-spi
-
-Signed-off-by: Javier Martinez Canillas <javier.martinez@collabora.co.uk>
----
-
-NOTE: this will break module auto-loading for all drivers that rely on the
-current behavior so it should not be applied unless is part of a series that
-fix all the broken drivers.
-
- drivers/spi/spi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 95cfe3b..154e1d6 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -63,6 +63,10 @@ modalias_show(struct device *dev, struct device_attribute
-*a, char *buf)
- 	const struct spi_device	*spi = to_spi_device(dev);
- 	int len;
-
-+	len = of_device_get_modalias(dev, buf, PAGE_SIZE - 1);
-+	if (len != -ENODEV)
-+		return len;
-+
- 	len = acpi_device_modalias(dev, buf, PAGE_SIZE - 1);
- 	if (len != -ENODEV)
- 		return len;
-@@ -124,6 +128,10 @@ static int spi_uevent(struct device *dev, struct
-kobj_uevent_env *env)
- 	const struct spi_device		*spi = to_spi_device(dev);
- 	int rc;
-
-+	rc = of_device_uevent_modalias(dev, env);
-+	if (rc != -ENODEV)
-+		return rc;
-+
- 	rc = acpi_device_uevent_modalias(dev, env);
- 	if (rc != -ENODEV)
- 		return rc;
--- 
-2.1.0
+Yours,
+Linus Walleij
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

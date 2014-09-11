@@ -1,69 +1,54 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: SPI and module auto-loading
-Date: Thu, 11 Sep 2014 20:33:25 +0100
-Message-ID: <20140911193325.GT4015@sirena.org.uk>
-References: <54119DB6.8020807@collabora.co.uk>
+From: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
+Subject: Re: [PATCH] spi: pl022: Add support for chip select extension
+Date: Thu, 11 Sep 2014 23:29:43 +0200
+Message-ID: <CAE0=X_2W43VdysVJ6JGEMPuwq2nUSyYRX6Rm=Ds+Hait0i4gsg@mail.gmail.com>
+References: <1410360030-26634-1-git-send-email-anders.berg@avagotech.com>
+	<CACRpkdavQBJkaC40GJkD396JkwPjSr_dzWegn8veLpG-Fcn-SQ@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="uLzYCuFow5JXEQYy"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org
-To: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <54119DB6.8020807-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+In-Reply-To: <CACRpkdavQBJkaC40GJkD396JkwPjSr_dzWegn8veLpG-Fcn-SQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Thu, Sep 11, 2014 at 3:26 PM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
+> On Wed, Sep 10, 2014 at 4:40 PM, Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org> wrote:
+>
+>> Add support for a extended PL022 which has an extra register for controlling up
+>> to five chip select signals. This controller is found on the AXM5516 SoC.
+>> Unfortunately the PrimeCell identification registers are identical to a
+>> standard ARM PL022. To work around this, the peripheral ID must be overridden
+>> in the device tree using the "arm,primecell-periphid" property with the value
+>> 0x000b6022.
+>>
+>> Signed-off-by: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
+> (...)
+>> +               /*
+>> +                * PL022 variant that has a chip select control register whih
+>> +                * allows control of 5 output signals nCS[0:4].
+>> +                */
+>> +               .id     = 0x000b6022,
+>
+> OK so you're defining 0xb6 to the the 8bit ID for LSI.
+>
+> Do you have some special reason for this, like that it appears
+> in some other silicon block from LSI? Otherwise I suggest using
+> 0x4c (uppercase 'L') so as to follow the pattern of the other
+> vendor IDs.
 
---uLzYCuFow5JXEQYy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I picked 0xb6 since I've seen some reference manuals for other AMBA
+peripherals the use of JEDEC assigned vendor IDs in this register
+field (see the PL390 TRM for example). So I put the LSI Logic 7-bit
+JEDEC ID (0x36) there: [0:6] = 0x36, [7] = 1 (the MSB set to '1' to
+signify the use of JEDEC ID instead of a "classic" AMBA vendor).
 
-On Thu, Sep 11, 2014 at 03:03:50PM +0200, Javier Martinez Canillas wrote:
-
-> This can be easily worked around (and probably why it never was an issue)=
- if
-> the OF and SPI tables are kept in sync but I don't know if that is a hard
-> requirement for all use-cases (e.g: a SPI driver that is DT only?).
-
-I'm not sure I see that as an interesting use case, it seems better to
-have drivers usable without DT and it's trivial to do so.
-
-> I'm sending an RFC patch [1] to know what you think about it.
->=20
-> Thanks a lot and best regards,
-> Javier
->=20
-> [0]: https://lkml.org/lkml/2014/9/11/127
-> [1]
-> From a7cd35209a597a578df6c801e5ff7b63b584bf3e Mon Sep 17 00:00:00 2001
-> From: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
-> Date: Thu, 11 Sep 2014 14:31:04 +0200
-> Subject: [PATCH RFC] spi: core: report OF style modalias when probing usi=
-ng DT
-
-We already have a perfectly good way of sending patches.
-
---uLzYCuFow5JXEQYy
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUEfkFAAoJECTWi3JdVIfQBKMH/AvgdddkgsAuZXg0uSXksiX3
-UvFMGkZKC3GPQFagIuItNqMVzR7VCNfAQE84RX7ms7tuoco07mTRj+C9rcktxdxy
-qtHavXlHzRtCNIUttL4RSA9R1vLxyKj5AF5D0IsWuzetcyZ2SVF/uWUO/+Gk8hGr
-NSujW8pNQLSjWp5J+3/C5cjjELhp+QHuSYB7Zyozks9PDpmKZ7lFhiPSR3TDDQ25
-s7TTVWZIXmpm5Tr/agx2GuKLbQyE6oc2tSgypSPcjTmnezCeZ3ksKT3qWKvdDEyF
-1wgLuNW6Iskv2YCG6w1LgX1rqZOe2vCp7uheK06fXke86P2GlieE/MonOm7AIQc=
-=ysPq
------END PGP SIGNATURE-----
-
---uLzYCuFow5JXEQYy--
+/Anders
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

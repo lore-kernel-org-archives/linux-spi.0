@@ -1,54 +1,63 @@
-From: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
-Subject: Re: [PATCH] spi: pl022: Add support for chip select extension
-Date: Thu, 11 Sep 2014 23:29:43 +0200
-Message-ID: <CAE0=X_2W43VdysVJ6JGEMPuwq2nUSyYRX6Rm=Ds+Hait0i4gsg@mail.gmail.com>
-References: <1410360030-26634-1-git-send-email-anders.berg@avagotech.com>
-	<CACRpkdavQBJkaC40GJkD396JkwPjSr_dzWegn8veLpG-Fcn-SQ@mail.gmail.com>
+From: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Subject: Re: SPI and module auto-loading
+Date: Fri, 12 Sep 2014 11:50:23 +0200
+Message-ID: <5412C1DF.3040707@collabora.co.uk>
+References: <54119DB6.8020807@collabora.co.uk> <20140911193325.GT4015@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CACRpkdavQBJkaC40GJkD396JkwPjSr_dzWegn8veLpG-Fcn-SQ-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <20140911193325.GT4015-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Sep 11, 2014 at 3:26 PM, Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org> wrote:
-> On Wed, Sep 10, 2014 at 4:40 PM, Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org> wrote:
+On 09/11/2014 09:33 PM, Mark Brown wrote:
+> On Thu, Sep 11, 2014 at 03:03:50PM +0200, Javier Martinez Canillas wrote:
+> 
+>> This can be easily worked around (and probably why it never was an issue) if
+>> the OF and SPI tables are kept in sync but I don't know if that is a hard
+>> requirement for all use-cases (e.g: a SPI driver that is DT only?).
+> 
+> I'm not sure I see that as an interesting use case, it seems better to
+> have drivers usable without DT and it's trivial to do so.
 >
->> Add support for a extended PL022 which has an extra register for controlling up
->> to five chip select signals. This controller is found on the AXM5516 SoC.
->> Unfortunately the PrimeCell identification registers are identical to a
->> standard ARM PL022. To work around this, the peripheral ID must be overridden
->> in the device tree using the "arm,primecell-periphid" property with the value
->> 0x000b6022.
->>
->> Signed-off-by: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
-> (...)
->> +               /*
->> +                * PL022 variant that has a chip select control register whih
->> +                * allows control of 5 output signals nCS[0:4].
->> +                */
->> +               .id     = 0x000b6022,
->
-> OK so you're defining 0xb6 to the the 8bit ID for LSI.
->
-> Do you have some special reason for this, like that it appears
-> in some other silicon block from LSI? Otherwise I suggest using
-> 0x4c (uppercase 'L') so as to follow the pattern of the other
-> vendor IDs.
 
-I picked 0xb6 since I've seen some reference manuals for other AMBA
-peripherals the use of JEDEC assigned vendor IDs in this register
-field (see the PL390 TRM for example). So I put the LSI Logic 7-bit
-JEDEC ID (0x36) there: [0:6] = 0x36, [7] = 1 (the MSB set to '1' to
-signify the use of JEDEC ID instead of a "classic" AMBA vendor).
+Yes, it's trivial but seems like an unnecessary duplication for me. AFAICT the
+OF tables are only used to match the devices in spi_match_device() but if both
+the OF and SPI tables must be kept in sync to properly report the module
+aliases to user-space then I wonder if the OF tables shouldn't just be removed
+from the SPI drivers since spi_match_device() will succeed anyways when
+calling spi_match_id().
 
-/Anders
+>> I'm sending an RFC patch [1] to know what you think about it.
+>> [1]
+>> From a7cd35209a597a578df6c801e5ff7b63b584bf3e Mon Sep 17 00:00:00 2001
+>> From: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+>> Date: Thu, 11 Sep 2014 14:31:04 +0200
+>> Subject: [PATCH RFC] spi: core: report OF style modalias when probing using DT
+> 
+> We already have a perfectly good way of sending patches.
+> 
+
+Of course I know how to post patches properly but proposing a patch was not my
+intention here since as I said this could break module auto-loading for many
+drivers that rely on the current behavior. What I wanted was to explain with
+code how the SPI core could report uevents in order to be consistent with what
+other subsystems do (e.g: platform drivers):
+
+http://lxr.free-electrons.com/source/drivers/base/platform.c#L717
+
+I should probably had used sharing instead of sending but as a non-native
+english speaker sometimes I don't always choose the best wording.
+
+Anyway, I was just raising the issue because if a driver only defines an OF
+table and not a SPI table, the driver will be probed correctly but module
+auto-loading will not work. So even when it looks like having a SPI id table
+is not a requirement for OF, it really is and I think that is not documented.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

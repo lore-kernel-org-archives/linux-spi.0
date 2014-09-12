@@ -1,55 +1,62 @@
-From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] spi: pl022: Add support for chip select extension
-Date: Fri, 12 Sep 2014 19:00:30 +0200
-Message-ID: <CACRpkdZfzsg-upNJaWX5CO6dJn3mg=wzhKhX-koask4ckxVTmQ@mail.gmail.com>
-References: <1410360030-26634-1-git-send-email-anders.berg@avagotech.com>
-	<CACRpkdavQBJkaC40GJkD396JkwPjSr_dzWegn8veLpG-Fcn-SQ@mail.gmail.com>
-	<CAE0=X_1YMs1OUx3H65qbZ9CX-oSiW4Uo65Z7qCW8-6ksc4ovvQ@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: SPI and module auto-loading
+Date: Fri, 12 Sep 2014 11:14:42 +0100
+Message-ID: <20140912101442.GR7960@sirena.org.uk>
+References: <54119DB6.8020807@collabora.co.uk>
+ <20140911193325.GT4015@sirena.org.uk>
+ <5412C1DF.3040707@collabora.co.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-To: Anders Berg <anders.berg@avagotech.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <CAE0=X_1YMs1OUx3H65qbZ9CX-oSiW4Uo65Z7qCW8-6ksc4ovvQ@mail.gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="6eUvXotnMb6+obQB"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org
+To: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <5412C1DF.3040707-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Thu, Sep 11, 2014 at 10:10 PM, Anders Berg <anders.berg@avagotech.com> wrote:
-> On Thu, Sep 11, 2014 at 3:26 PM, Linus Walleij <linus.walleij@linaro.org>
-> wrote:
->> On Wed, Sep 10, 2014 at 4:40 PM, Anders Berg <anders.berg@avagotech.com>
->> wrote:
->> (...)
->> > +               /*
->> > +                * PL022 variant that has a chip select control register
->> > whih
->> > +                * allows control of 5 output signals nCS[0:4].
->> > +                */
->> > +               .id     = 0x000b6022,
->>
->> OK so you're defining 0xb6 to the the 8bit ID for LSI.
->>
->> Do you have some special reason for this, like that it appears
->> in some other silicon block from LSI? Otherwise I suggest using
->> 0x4c (uppercase 'L') so as to follow the pattern of the other
->> vendor IDs.
->
->
-> I picked 0xb6 since I've seen some reference manuals for other AMBA
-> peripherals the use of JEDEC assigned vendor IDs in this register field (see
-> the PL390 TRM for example). So I put the LSI Logic 7-bit JEDEC ID (0x36)
-> there: [0:6] = 0x36, [7] = 1 (the MSB set to '1' to signify the use of JEDEC
-> ID instead of a "classic" AMBA vendor).
 
-Hey that's very observant, I had no clue about that scheme!
+--6eUvXotnMb6+obQB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Can you write a comment about this in <linux/amba/bus.h> when
-you patch it (like above the enum) so we know that in the future
-when people need to pick new IDs?
+On Fri, Sep 12, 2014 at 11:50:23AM +0200, Javier Martinez Canillas wrote:
+> On 09/11/2014 09:33 PM, Mark Brown wrote:
 
-Yours,
-Linus Walleij
+> > I'm not sure I see that as an interesting use case, it seems better to
+> > have drivers usable without DT and it's trivial to do so.
+
+> Yes, it's trivial but seems like an unnecessary duplication for me. AFAICT the
+> OF tables are only used to match the devices in spi_match_device() but if both
+> the OF and SPI tables must be kept in sync to properly report the module
+> aliases to user-space then I wonder if the OF tables shouldn't just be removed
+> from the SPI drivers since spi_match_device() will succeed anyways when
+> calling spi_match_id().
+
+The vendor identifier is an important part of the OF device ID, vendors
+can and do end up with different devices of the same name.
+
+--6eUvXotnMb6+obQB
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUEseRAAoJECTWi3JdVIfQLgIH/3mMnuTYaQ0by3BYj4TI7PED
+4Yttr0iYsNtUz/X070ERIAHgFULpgapFrOdTrdlCS4juYORZVVjYzQA0Xad6UMux
++4apRJ/k7/MkIt7HbR36gc+ADidmgFGGvLULMUezdjpvIVnO38w6AEMwdV33dofO
+sdhc/GgcZGnQpKTdORBRt0i07Ql0vjEDDwoLqoHqBznAxoE7Zga7U643cPlwb9md
+aZg+LAI8BmNaVVEp0vvpLDc+0nP1CcnMt3tDlhSATvqfBcHt/rl9+YFCzlBWK8gt
+zt+B9s+T2Rm966QyVqa5/ICkHu9mCbzoWrpftRX2gGfxFSwwnARVcWA5TPabGck=
+=sAgB
+-----END PGP SIGNATURE-----
+
+--6eUvXotnMb6+obQB--
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

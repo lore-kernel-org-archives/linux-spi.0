@@ -1,108 +1,230 @@
 From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
-Subject: [PATCH] spi: davinci: request cs_gpio's from probe
-Date: Fri, 12 Sep 2014 17:54:00 +0300
-Message-ID: <1410533640-21469-1-git-send-email-grygorii.strashko@ti.com>
+Subject: [PATCH v3] spi: davinci: add support for adding delay between word's
+	transmissions
+Date: Fri, 12 Sep 2014 18:48:12 +0300
+Message-ID: <1410536892-22775-1-git-send-email-grygorii.strashko@ti.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <m-karicheri2-l0cyMroinI0@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
-	Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+        <davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+        Ian Campbell
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+        Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+        <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: <santosh.shilimkar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+        <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Return-path: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Unsubscribe: <http://linux.davincidsp.com/mailman/options/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=unsubscribe>
+List-Archive: <http://linux.davincidsp.com/pipermail/davinci-linux-open-source>
+List-Post: <mailto:davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+List-Help: <mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=help>
+List-Subscribe: <http://linux.davincidsp.com/mailman/listinfo/davinci-linux-open-source>,
+	<mailto:davinci-linux-open-source-request-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org?subject=subscribe>
+Sender: <davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+Errors-To: davinci-linux-open-source-bounces-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-Now CS GPIOs are requested from struct spi_master.setup() callback
-and that causes failures when Client SPI device is getting accessed
-through SPIDEV driver. The failure happens, because .setup() callback
-may be called many times from IOCTL handler and when it's called
-second time gpio_request() will fail and return -EBUSY.
+From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
 
-Hence, fix it by moving CS GPIOs requesting code in .probe().
+This patch adds ability to configure delay between transmission of
+words over SPI bus if it's required by SPI slave devices.
 
-Reported-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+New optional SPI slave's property:
+- ti,spi-word-delay : delay between transmission of words
+	(SPIFMTn.WDELAY, SPIDAT1.WDEL)
+
+Signed-off-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
 Signed-off-by: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
 ---
-Tested using spidev_test utility.
+Changes in v3:
+- removed C2TDELAY, T2CDELAY parameters
 
- drivers/spi/spi-davinci.c | 34 +++++++++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 9 deletions(-)
+v2:
+http://www.spinics.net/lists/devicetree/msg48514.html
+v1:
+http://www.spinics.net/lists/linux-spi/msg01609.html
 
+ .../devicetree/bindings/spi/spi-davinci.txt        | 30 +++++++++++++
+ drivers/spi/spi-davinci.c                          | 50 +++++++++++++++++++---
+ 2 files changed, 73 insertions(+), 7 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-davinci.txt b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+index f80887b..12ecfe9 100644
+--- a/Documentation/devicetree/bindings/spi/spi-davinci.txt
++++ b/Documentation/devicetree/bindings/spi/spi-davinci.txt
+@@ -1,5 +1,10 @@
+ Davinci SPI controller device bindings
+ 
++Links on DM:
++Keystone 2 - http://www.ti.com/lit/ug/sprugp2a/sprugp2a.pdf
++dm644x - http://www.ti.com/lit/ug/sprue32a/sprue32a.pdf
++OMAP-L138/da830 - http://www.ti.com/lit/ug/spruh77a/spruh77a.pdf
++
+ Required properties:
+ - #address-cells: number of cells required to define a chip select
+ 	address on the SPI bus. Should be set to 1.
+@@ -24,6 +29,30 @@ Optional:
+ 	cs-gpios = <0>, <0>, <0>, <&gpio1 30 0>, <&gpio1 31 0>;
+ 	where first three are internal CS and last two are GPIO CS.
+ 
++Optional properties for slave devices:
++SPI slave nodes can contain the following properties.
++Not all SPI Peripherals from Texas Instruments support this.
++Please check SPI peripheral documentation for a device before using these.
++
++- ti,spi-wdelay : delay between transmission of words
++	(SPIFMTn.WDELAY, SPIDAT1.WDEL) must be specified in number of SPI module
++	clock periods.
++
++	delay = WDELAY * SPI_module_clock_period + 2 * SPI_module_clock_period
++
++Below is timing diagram which shows functional meaning of
++"ti,spi-wdelay" parameter.
++
++             +-+ +-+ +-+ +-+ +-+                           +-+ +-+ +-+
++SPI_CLK      | | | | | | | | | |                           | | | | | |
++  +----------+ +-+ +-+ +-+ +-+ +---------------------------+ +-+ +-+ +-
++
++SPI_SOMI/SIMO+-----------------+                           +-----------
++  +----------+ word1           +---------------------------+word2
++             +-----------------+                           +-----------
++                                          WDELAY
++                                <-------------------------->
++
+ Example of a NOR flash slave device (n25q032) connected to DaVinci
+ SPI controller device over the SPI bus.
+ 
+@@ -43,6 +72,7 @@ spi0:spi@20BF0000 {
+ 		compatible = "st,m25p32";
+ 		spi-max-frequency = <25000000>;
+ 		reg = <0>;
++		ti,spi-wdelay = <8>;
+ 
+ 		partition@0 {
+ 			label = "u-boot-spl";
 diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
-index 48f1d26..d493507 100644
+index d493507..ada3891 100644
 --- a/drivers/spi/spi-davinci.c
 +++ b/drivers/spi/spi-davinci.c
-@@ -397,24 +397,21 @@ static int davinci_spi_setup(struct spi_device *spi)
- 	struct spi_master *master = spi->master;
- 	struct device_node *np = spi->dev.of_node;
- 	bool internal_cs = true;
--	unsigned long flags = GPIOF_DIR_OUT;
+@@ -65,6 +65,7 @@
+ 
+ /* SPIDAT1 (upper 16 bit defines) */
+ #define SPIDAT1_CSHOLD_MASK	BIT(12)
++#define SPIDAT1_WDEL		BIT(10)
+ 
+ /* SPIGCR1 */
+ #define SPIGCR1_CLKMOD_MASK	BIT(1)
+@@ -209,6 +210,7 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
+ {
+ 	struct davinci_spi *dspi;
+ 	struct davinci_spi_platform_data *pdata;
++	struct davinci_spi_config *spicfg = spi->controller_data;
+ 	u8 chip_sel = spi->chip_select;
+ 	u16 spidat1 = CS_DEFAULT;
+ 	bool gpio_chipsel = false;
+@@ -223,6 +225,10 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
+ 		gpio = spi->cs_gpio;
+ 	}
+ 
++	/* program delay transfers if tx_delay is non zero */
++	if (spicfg->wdelay)
++		spidat1 |= SPIDAT1_WDEL;
++
+ 	/*
+ 	 * Board specific chip select logic decides the polarity and cs
+ 	 * line for the controller
+@@ -237,9 +243,9 @@ static void davinci_spi_chipselect(struct spi_device *spi, int value)
+ 			spidat1 |= SPIDAT1_CSHOLD_MASK;
+ 			spidat1 &= ~(0x1 << chip_sel);
+ 		}
+-
+-		iowrite16(spidat1, dspi->base + SPIDAT1 + 2);
+ 	}
++
++	iowrite16(spidat1, dspi->base + SPIDAT1 + 2);
+ }
+ 
+ /**
+@@ -285,7 +291,7 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 	int prescale;
  
  	dspi = spi_master_get_devdata(spi->master);
- 	pdata = &dspi->pdata;
+-	spicfg = (struct davinci_spi_config *)spi->controller_data;
++	spicfg = spi->controller_data;
+ 	if (!spicfg)
+ 		spicfg = &davinci_spi_default_cfg;
  
--	flags |= (spi->mode & SPI_CS_HIGH) ? GPIOF_INIT_LOW : GPIOF_INIT_HIGH;
+@@ -333,6 +339,14 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 		spifmt |= SPIFMT_PHASE_MASK;
+ 
+ 	/*
++	* Assume wdelay is used only on SPI peripherals that has this field
++	* in SPIFMTn register and when it's configured from board file or DT.
++	*/
++	if (spicfg->wdelay)
++		spifmt |= ((spicfg->wdelay << SPIFMT_WDELAY_SHIFT)
++				& SPIFMT_WDELAY_MASK);
++
++	/*
+ 	 * Version 1 hardware supports two basic SPI modes:
+ 	 *  - Standard SPI mode uses 4 pins, with chipselect
+ 	 *  - 3 pin SPI is a 4 pin variant without CS (SPI_NO_CS)
+@@ -349,9 +363,6 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 
+ 		u32 delay = 0;
+ 
+-		spifmt |= ((spicfg->wdelay << SPIFMT_WDELAY_SHIFT)
+-							& SPIFMT_WDELAY_MASK);
 -
- 	if (!(spi->mode & SPI_NO_CS)) {
- 		if (np && (master->cs_gpios != NULL) && (spi->cs_gpio >= 0)) {
--			retval = gpio_request_one(spi->cs_gpio,
--						  flags, dev_name(&spi->dev));
-+			retval = gpio_direction_output(
-+				      spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
- 			internal_cs = false;
- 		} else if (pdata->chip_sel &&
- 			   spi->chip_select < pdata->num_chipselect &&
- 			   pdata->chip_sel[spi->chip_select] != SPI_INTERN_CS) {
- 			spi->cs_gpio = pdata->chip_sel[spi->chip_select];
--			retval = gpio_request_one(spi->cs_gpio,
--						  flags, dev_name(&spi->dev));
-+			retval = gpio_direction_output(
-+				      spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
- 			internal_cs = false;
- 		}
+ 		if (spicfg->odd_parity)
+ 			spifmt |= SPIFMT_ODD_PARITY_MASK;
  
-@@ -441,8 +438,6 @@ static int davinci_spi_setup(struct spi_device *spi)
+@@ -383,6 +394,26 @@ static int davinci_spi_setup_transfer(struct spi_device *spi,
+ 	return 0;
+ }
+ 
++static int davinci_spi_of_setup(struct spi_device *spi)
++{
++	struct davinci_spi_config *spicfg = spi->controller_data;
++	struct device_node *np = spi->dev.of_node;
++	u32 prop;
++
++	if (spicfg == NULL && np) {
++		spicfg = kzalloc(sizeof(*spicfg), GFP_KERNEL);
++		if (!spicfg)
++			return -ENOMEM;
++		*spicfg = davinci_spi_default_cfg;
++		/* override with dt configured values */
++		if (!of_property_read_u32(np, "ti,spi-wdelay", &prop))
++			spicfg->wdelay = (u8)prop;
++		spi->controller_data = spicfg;
++	}
++
++	return 0;
++}
++
+ /**
+  * davinci_spi_setup - This functions will set default transfer method
+  * @spi: spi device on which data transfer to be done
+@@ -433,11 +464,16 @@ static int davinci_spi_setup(struct spi_device *spi)
+ 	else
+ 		clear_io_bits(dspi->base + SPIGCR1, SPIGCR1_LOOPBACK_MASK);
+ 
+-	return retval;
++	return davinci_spi_of_setup(spi);
+ }
  
  static void davinci_spi_cleanup(struct spi_device *spi)
  {
--	if (spi->cs_gpio >= 0)
--		gpio_free(spi->cs_gpio);
++	struct davinci_spi_config *spicfg = spi->controller_data;
++
++	spi->controller_data = NULL;
++	if (spi->dev.of_node)
++		kfree(spicfg);
  }
  
  static int davinci_spi_check_error(struct davinci_spi *dspi, int int_status)
-@@ -967,6 +962,27 @@ static int davinci_spi_probe(struct platform_device *pdev)
- 	if (dspi->version == SPI_VERSION_2)
- 		dspi->bitbang.flags |= SPI_READY;
- 
-+	if (pdev->dev.of_node) {
-+		int i;
-+
-+		for (i = 0; i < pdata->num_chipselect; i++) {
-+			int cs_gpio = of_get_named_gpio(pdev->dev.of_node,
-+							"cs-gpios", i);
-+
-+			if (cs_gpio == -EPROBE_DEFER) {
-+				ret = cs_gpio;
-+				goto free_clk;
-+			}
-+
-+			if (gpio_is_valid(cs_gpio)) {
-+				ret = devm_gpio_request(&pdev->dev, cs_gpio,
-+							dev_name(&pdev->dev));
-+				if (ret)
-+					goto free_clk;
-+			}
-+		}
-+	}
-+
- 	r = platform_get_resource(pdev, IORESOURCE_DMA, 0);
- 	if (r)
- 		dma_rx_chan = r->start;
 -- 
 1.9.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

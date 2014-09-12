@@ -1,69 +1,106 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH v1 4/6] spi: dw-mid: remove Moorestown support
-Date: Fri, 12 Sep 2014 15:11:59 +0300
-Message-ID: <1410523921-16732-5-git-send-email-andriy.shevchenko@linux.intel.com>
-References: <1410523921-16732-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Subject: [PATCH] spi: davinci: request cs_gpio's from probe
+Date: Fri, 12 Sep 2014 17:54:00 +0300
+Message-ID: <1410533640-21469-1-git-send-email-grygorii.strashko@ti.com>
+Mime-Version: 1.0
+Content-Type: text/plain
+Cc: <m-karicheri2-l0cyMroinI0@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>,
+	Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+To: <santosh.shilimkar-l0cyMroinI0@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1410523921-16732-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-The support of the Moorestown was removed [1] from kernel long time ago. This
-is just a follow up of that change.
+Now CS GPIOs are requested from struct spi_master.setup() callback
+and that causes failures when Client SPI device is getting accessed
+through SPIDEV driver. The failure happens, because .setup() callback
+may be called many times from IOCTL handler and when it's called
+second time gpio_request() will fail and return -EBUSY.
 
-[1] http://www.spinics.net/lists/platform-driver-x86/msg02948.html
+Hence, fix it by moving CS GPIOs requesting code in .probe().
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Reported-by: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
+Signed-off-by: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
 ---
- drivers/spi/Kconfig      | 2 +-
- drivers/spi/spi-dw-mid.c | 8 +++-----
- 2 files changed, 4 insertions(+), 6 deletions(-)
+Tested using spidev_test utility.
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 149d6f3..dc10453 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -600,7 +600,7 @@ config SPI_DW_PCI
- 	depends on SPI_DESIGNWARE && PCI
+ drivers/spi/spi-davinci.c | 34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/spi/spi-davinci.c b/drivers/spi/spi-davinci.c
+index 48f1d26..d493507 100644
+--- a/drivers/spi/spi-davinci.c
++++ b/drivers/spi/spi-davinci.c
+@@ -397,24 +397,21 @@ static int davinci_spi_setup(struct spi_device *spi)
+ 	struct spi_master *master = spi->master;
+ 	struct device_node *np = spi->dev.of_node;
+ 	bool internal_cs = true;
+-	unsigned long flags = GPIOF_DIR_OUT;
  
- config SPI_DW_MID_DMA
--	bool "DMA support for DW SPI controller on Intel Moorestown platform"
-+	bool "DMA support for DW SPI controller on Intel MID platform"
- 	depends on SPI_DW_PCI && INTEL_MID_DMAC
+ 	dspi = spi_master_get_devdata(spi->master);
+ 	pdata = &dspi->pdata;
  
- config SPI_DW_MMIO
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index 0d88e4a..deba3c4 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -50,11 +50,9 @@ static int mid_spi_dma_init(struct dw_spi *dws)
+-	flags |= (spi->mode & SPI_CS_HIGH) ? GPIOF_INIT_LOW : GPIOF_INIT_HIGH;
+-
+ 	if (!(spi->mode & SPI_NO_CS)) {
+ 		if (np && (master->cs_gpios != NULL) && (spi->cs_gpio >= 0)) {
+-			retval = gpio_request_one(spi->cs_gpio,
+-						  flags, dev_name(&spi->dev));
++			retval = gpio_direction_output(
++				      spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+ 			internal_cs = false;
+ 		} else if (pdata->chip_sel &&
+ 			   spi->chip_select < pdata->num_chipselect &&
+ 			   pdata->chip_sel[spi->chip_select] != SPI_INTERN_CS) {
+ 			spi->cs_gpio = pdata->chip_sel[spi->chip_select];
+-			retval = gpio_request_one(spi->cs_gpio,
+-						  flags, dev_name(&spi->dev));
++			retval = gpio_direction_output(
++				      spi->cs_gpio, !(spi->mode & SPI_CS_HIGH));
+ 			internal_cs = false;
+ 		}
  
- 	/*
- 	 * Get pci device for DMA controller, currently it could only
--	 * be the DMA controller of either Moorestown or Medfield
-+	 * be the DMA controller of Medfield
- 	 */
--	dws->dmac = pci_get_device(PCI_VENDOR_ID_INTEL, 0x0813, NULL);
--	if (!dws->dmac)
--		dws->dmac = pci_get_device(PCI_VENDOR_ID_INTEL, 0x0827, NULL);
-+	dws->dmac = pci_get_device(PCI_VENDOR_ID_INTEL, 0x0827, NULL);
+@@ -441,8 +438,6 @@ static int davinci_spi_setup(struct spi_device *spi)
  
- 	dma_cap_zero(mask);
- 	dma_cap_set(DMA_SLAVE, mask);
-@@ -192,7 +190,7 @@ static struct dw_spi_dma_ops mid_dma_ops = {
- };
- #endif
+ static void davinci_spi_cleanup(struct spi_device *spi)
+ {
+-	if (spi->cs_gpio >= 0)
+-		gpio_free(spi->cs_gpio);
+ }
  
--/* Some specific info for SPI0 controller on Moorestown */
-+/* Some specific info for SPI0 controller on Intel MID */
+ static int davinci_spi_check_error(struct davinci_spi *dspi, int int_status)
+@@ -967,6 +962,27 @@ static int davinci_spi_probe(struct platform_device *pdev)
+ 	if (dspi->version == SPI_VERSION_2)
+ 		dspi->bitbang.flags |= SPI_READY;
  
- /* HW info for MRST CLk Control Unit, one 32b reg */
- #define MRST_SPI_CLK_BASE	100000000	/* 100m */
++	if (pdev->dev.of_node) {
++		int i;
++
++		for (i = 0; i < pdata->num_chipselect; i++) {
++			int cs_gpio = of_get_named_gpio(pdev->dev.of_node,
++							"cs-gpios", i);
++
++			if (cs_gpio == -EPROBE_DEFER) {
++				ret = cs_gpio;
++				goto free_clk;
++			}
++
++			if (gpio_is_valid(cs_gpio)) {
++				ret = devm_gpio_request(&pdev->dev, cs_gpio,
++							dev_name(&pdev->dev));
++				if (ret)
++					goto free_clk;
++			}
++		}
++	}
++
+ 	r = platform_get_resource(pdev, IORESOURCE_DMA, 0);
+ 	if (r)
+ 		dma_rx_chan = r->start;
 -- 
-2.1.0
+1.9.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

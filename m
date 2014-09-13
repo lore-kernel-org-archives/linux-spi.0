@@ -1,50 +1,46 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v1 1/6] spi: dw: don't use mrst prefix anymore
-Date: Sat, 13 Sep 2014 16:58:34 +0100
-Message-ID: <20140913155834.GD7960@sirena.org.uk>
+Subject: Re: [PATCH v1 0/6] spi: dw: various clean ups and a bug fix
+Date: Sat, 13 Sep 2014 17:03:26 +0100
+Message-ID: <20140913160326.GE7960@sirena.org.uk>
 References: <1410523921-16732-1-git-send-email-andriy.shevchenko@linux.intel.com>
- <1410523921-16732-2-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="G/vVCphCGw+yuveY"
+	protocol="application/pgp-signature"; boundary="+mQKy/8VjtYrTtD4"
 Cc: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1410523921-16732-2-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+In-Reply-To: <1410523921-16732-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---G/vVCphCGw+yuveY
+--+mQKy/8VjtYrTtD4
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Sep 12, 2014 at 03:11:56PM +0300, Andy Shevchenko wrote:
-> Since driver is used on other platforms and debugfs stuff would be useful there
-> as well let's substitute mrst_ by dw_ where it suits. Additionally let's use
-> SPI master device name when print registers dump.
+On Fri, Sep 12, 2014 at 03:11:55PM +0300, Andy Shevchenko wrote:
+> There is a set of few clean ups and one bug fix in the dw spi driver.
 
-Could the driver use regmap and get the register dump functionality for
-free?
+Applied all, thanks.
 
---G/vVCphCGw+yuveY
+--+mQKy/8VjtYrTtD4
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUFGmpAAoJECTWi3JdVIfQ2SoH/3HrZZPKFlZ04LEFP+ZI8tAR
-JiRntuTv876qyd3mdTjk8t5I9v93/thiAKG4ELV+GE/kyH4W0gcIzVBCE2/LMODv
-JUM3wVORVh2zGTA+hUNxegxEYJe73x75w0nKk20TTTQNssa0LVdE+28Ox5EvpzDk
-/5DeCA9wtzsLjzw4Ad89zltgF3Ru1Jz/sjXs+saVCGRRAQ5BSjEBVxXuPB3ZfVTn
-SQTW4Aebc66IkdBZjGoDY7X9aft9bl59sz7eTyvGWPSv2OHUMc54QnWGZKfrdugX
-hJIoj3EsrYS+I3/RhJ8rDF6knak0MdMC2gYuyvPtMWGR5Bf/CKMqesEKtvyT2G4=
-=Xv5q
+iQEcBAEBAgAGBQJUFGrNAAoJECTWi3JdVIfQoxQH/RsUrQKNuNSIqE5/lH+3ux5r
+4x6V0E7xgktqG3fXeBzhiDgDYEnJo60EJruHrSdzgTrIsVzVOe1mCwB5x3ecHFS6
+oFmxkHHZjPc+K4ajDH7fdwualg5+Immu7xlWuJWWESr7ewoawWEjAOSHB3Ssk5qG
+C3rBaxrfXxr6H3dX24d43sVF/inh/kzKN5oLwTOAue/S+jzTFEx0+r5MS+9damoB
+N9T9Z050p8cC7f9qFOAjWuZUUv1QpxLTuNnrB1zaLZ4ofgWLIGBROU6SdqnSIkEb
+JLI5XPJdUvYMSbtAh3U1YlgHKjUI0nZPWfJIgOrpPGLnIIEInaw5ZU+kOJM9qEI=
+=60FH
 -----END PGP SIGNATURE-----
 
---G/vVCphCGw+yuveY--
+--+mQKy/8VjtYrTtD4--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

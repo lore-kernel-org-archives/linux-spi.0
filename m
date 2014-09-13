@@ -1,62 +1,51 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: SPI and module auto-loading
-Date: Fri, 12 Sep 2014 11:14:42 +0100
-Message-ID: <20140912101442.GR7960@sirena.org.uk>
-References: <54119DB6.8020807@collabora.co.uk>
- <20140911193325.GT4015@sirena.org.uk>
- <5412C1DF.3040707@collabora.co.uk>
+Subject: Re: [PATCH v1 1/6] spi: dw: don't use mrst prefix anymore
+Date: Sat, 13 Sep 2014 16:58:34 +0100
+Message-ID: <20140913155834.GD7960@sirena.org.uk>
+References: <1410523921-16732-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1410523921-16732-2-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6eUvXotnMb6+obQB"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org, sjoerd.simons-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org
-To: Javier Martinez Canillas <javier.martinez-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="G/vVCphCGw+yuveY"
+Cc: Feng Tang <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <5412C1DF.3040707-ZGY8ohtN/8pPYcu2f3hruQ@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1410523921-16732-2-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---6eUvXotnMb6+obQB
+--G/vVCphCGw+yuveY
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Sep 12, 2014 at 11:50:23AM +0200, Javier Martinez Canillas wrote:
-> On 09/11/2014 09:33 PM, Mark Brown wrote:
+On Fri, Sep 12, 2014 at 03:11:56PM +0300, Andy Shevchenko wrote:
+> Since driver is used on other platforms and debugfs stuff would be useful there
+> as well let's substitute mrst_ by dw_ where it suits. Additionally let's use
+> SPI master device name when print registers dump.
 
-> > I'm not sure I see that as an interesting use case, it seems better to
-> > have drivers usable without DT and it's trivial to do so.
+Could the driver use regmap and get the register dump functionality for
+free?
 
-> Yes, it's trivial but seems like an unnecessary duplication for me. AFAICT the
-> OF tables are only used to match the devices in spi_match_device() but if both
-> the OF and SPI tables must be kept in sync to properly report the module
-> aliases to user-space then I wonder if the OF tables shouldn't just be removed
-> from the SPI drivers since spi_match_device() will succeed anyways when
-> calling spi_match_id().
-
-The vendor identifier is an important part of the OF device ID, vendors
-can and do end up with different devices of the same name.
-
---6eUvXotnMb6+obQB
+--G/vVCphCGw+yuveY
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUEseRAAoJECTWi3JdVIfQLgIH/3mMnuTYaQ0by3BYj4TI7PED
-4Yttr0iYsNtUz/X070ERIAHgFULpgapFrOdTrdlCS4juYORZVVjYzQA0Xad6UMux
-+4apRJ/k7/MkIt7HbR36gc+ADidmgFGGvLULMUezdjpvIVnO38w6AEMwdV33dofO
-sdhc/GgcZGnQpKTdORBRt0i07Ql0vjEDDwoLqoHqBznAxoE7Zga7U643cPlwb9md
-aZg+LAI8BmNaVVEp0vvpLDc+0nP1CcnMt3tDlhSATvqfBcHt/rl9+YFCzlBWK8gt
-zt+B9s+T2Rm966QyVqa5/ICkHu9mCbzoWrpftRX2gGfxFSwwnARVcWA5TPabGck=
-=sAgB
+iQEcBAEBAgAGBQJUFGmpAAoJECTWi3JdVIfQ2SoH/3HrZZPKFlZ04LEFP+ZI8tAR
+JiRntuTv876qyd3mdTjk8t5I9v93/thiAKG4ELV+GE/kyH4W0gcIzVBCE2/LMODv
+JUM3wVORVh2zGTA+hUNxegxEYJe73x75w0nKk20TTTQNssa0LVdE+28Ox5EvpzDk
+/5DeCA9wtzsLjzw4Ad89zltgF3Ru1Jz/sjXs+saVCGRRAQ5BSjEBVxXuPB3ZfVTn
+SQTW4Aebc66IkdBZjGoDY7X9aft9bl59sz7eTyvGWPSv2OHUMc54QnWGZKfrdugX
+hJIoj3EsrYS+I3/RhJ8rDF6knak0MdMC2gYuyvPtMWGR5Bf/CKMqesEKtvyT2G4=
+=Xv5q
 -----END PGP SIGNATURE-----
 
---6eUvXotnMb6+obQB--
+--G/vVCphCGw+yuveY--
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,7 +1,7 @@
 From: Jeff Epler <jepler-ixP+gI44yfQ4d9/VWYMlNA@public.gmane.org>
-Subject: [RFC 4/4] spidev-s3c64xx: allocate dma channel at startup
-Date: Sun, 14 Sep 2014 09:45:08 -0500
-Message-ID: <1410705908-20847-5-git-send-email-jepler@unpythonic.net>
+Subject: [RFC 2/4] spidev: Avoid runtime memory allocations
+Date: Sun, 14 Sep 2014 09:45:06 -0500
+Message-ID: <1410705908-20847-3-git-send-email-jepler@unpythonic.net>
 References: <1410705908-20847-1-git-send-email-jepler@unpythonic.net>
 To: linux-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
@@ -9,59 +9,101 @@ In-Reply-To: <1410705908-20847-1-git-send-email-jepler-ixP+gI44yfQ4d9/VWYMlNA@pu
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-it appears that acquire_dma introduces intolerable delays; the system
-is fine with the dma channnels allocated all the time.
+allocating bounce and k_xfers at every iteration was a source of
+excess delays.
 ---
- drivers/spi/spi-s3c64xx.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/spi/spidev.c | 35 +++++++++++++++++++++++++++++------
+ 1 file changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 92de1b5..e6a46c9 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -797,10 +797,6 @@ static int s3c64xx_spi_prepare_transfer(struct spi_master *spi)
- {
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 2e0655d..dda7632 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -85,6 +85,8 @@ struct spidev_data {
+ 	struct mutex		buf_lock;
+ 	unsigned		users;
+ 	u8			*buffer;
++        struct spi_ioc_transfer *bounce;
++        struct spi_transfer     *k_xfers;
+ };
  
--	/* Acquire DMA channels */
--	while (!acquire_dma(sdd))
--		msleep(10);
--
- 	pm_runtime_get_sync(&sdd->pdev->dev);
+ static LIST_HEAD(device_list);
+@@ -227,9 +229,9 @@ static int spidev_message(struct spidev_data *spidev,
+ 	int			status = -EFAULT;
  
- 	return 0;
-@@ -810,10 +806,6 @@ static int s3c64xx_spi_unprepare_transfer(struct spi_master *spi)
- {
- 	struct s3c64xx_spi_driver_data *sdd = spi_master_get_devdata(spi);
+ 	spi_message_init(&msg);
+-	k_xfers = kcalloc(n_xfers, sizeof(*k_tmp), GFP_KERNEL);
+-	if (k_xfers == NULL)
+-		return -ENOMEM;
++        if (n_xfers * sizeof(*k_tmp) > bufsiz)
++                return -ENOMEM;
++	k_xfers = spidev->k_xfers;
  
--	/* Free DMA channels */
--	sdd->ops->release(sdd->rx_dma.ch, &s3c64xx_spi_dma_client);
--	sdd->ops->release(sdd->tx_dma.ch, &s3c64xx_spi_dma_client);
--
- 	pm_runtime_put(&sdd->pdev->dev);
+ 	/* Construct spi_message, copying any tx data to bounce buffer.
+ 	 * We walk the array of user-provided transfers, using each one
+@@ -302,7 +304,6 @@ static int spidev_message(struct spidev_data *spidev,
+ 	status = total;
  
- 	return 0;
-@@ -1344,6 +1336,9 @@ static int __init s3c64xx_spi_probe(struct platform_device *pdev)
- 		goto err7;
+ done:
+-	kfree(k_xfers);
+ 	return status;
+ }
+ 
+@@ -451,8 +452,12 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		if (n_ioc == 0)
+ 			break;
+ 
++                if(tmp > bufsiz) {
++			retval = -EINVAL;
++			break;
++                }
+ 		/* copy into scratch area */
+-		ioc = kmalloc(tmp, GFP_KERNEL);
++		ioc = spidev->bounce;
+ 		if (!ioc) {
+ 			retval = -ENOMEM;
+ 			break;
+@@ -465,7 +470,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 
+ 		/* translate to spi_message, execute */
+ 		retval = spidev_message(spidev, ioc, n_ioc);
+-		kfree(ioc);
+ 		break;
  	}
  
-+        // cannot fail(?)
-+	acquire_dma(sdd);
+@@ -504,6 +508,19 @@ static int spidev_open(struct inode *inode, struct file *filp)
+ 				dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
+ 				status = -ENOMEM;
+ 			}
++			spidev->bounce = kmalloc(bufsiz, GFP_KERNEL);
++			if (!spidev->bounce) {
++				dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
++                                kfree(spidev->buffer);
++				status = -ENOMEM;
++			}
++			spidev->k_xfers = kmalloc(bufsiz, GFP_KERNEL);
++			if (!spidev->k_xfers) {
++				dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
++                                kfree(spidev->buffer);
++                                kfree(spidev->bounce);
++				status = -ENOMEM;
++			}
+ 		}
+ 		if (status == 0) {
+ 			spidev->users++;
+@@ -534,6 +551,12 @@ static int spidev_release(struct inode *inode, struct file *filp)
+ 		kfree(spidev->buffer);
+ 		spidev->buffer = NULL;
+ 
++		kfree(spidev->bounce);
++		spidev->bounce = NULL;
 +
- 	writel(S3C64XX_SPI_INT_RX_OVERRUN_EN | S3C64XX_SPI_INT_RX_UNDERRUN_EN |
- 	       S3C64XX_SPI_INT_TX_OVERRUN_EN | S3C64XX_SPI_INT_TX_UNDERRUN_EN,
- 	       sdd->regs + S3C64XX_SPI_INT_EN);
-@@ -1396,6 +1391,10 @@ static int s3c64xx_spi_remove(struct platform_device *pdev)
- 
- 	spi_unregister_master(master);
- 
-+	/* Free DMA channels */
-+	sdd->ops->release(sdd->rx_dma.ch, &s3c64xx_spi_dma_client);
-+	sdd->ops->release(sdd->tx_dma.ch, &s3c64xx_spi_dma_client);
++		kfree(spidev->k_xfers);
++		spidev->k_xfers = NULL;
 +
- 	writel(0, sdd->regs + S3C64XX_SPI_INT_EN);
- 
- 	free_irq(platform_get_irq(pdev, 0), sdd);
+ 		/* ... after we unbound from the underlying device? */
+ 		spin_lock_irq(&spidev->spi_lock);
+ 		dofree = (spidev->spi == NULL);
 -- 
 2.1.0
 

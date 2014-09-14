@@ -1,112 +1,85 @@
-From: Jeff Epler <jepler-ixP+gI44yfQ4d9/VWYMlNA@public.gmane.org>
-Subject: [RFC 2/4] spidev: Avoid runtime memory allocations
-Date: Sun, 14 Sep 2014 09:45:06 -0500
-Message-ID: <1410705908-20847-3-git-send-email-jepler@unpythonic.net>
-References: <1410705908-20847-1-git-send-email-jepler@unpythonic.net>
-To: linux-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
+Subject: [PATCH 0/5] m25p80,spi-nor: Fix module aliases for m25p80; clean up
+ chip identification
+Date: Sun, 14 Sep 2014 18:10:24 +0100
+Message-ID: <1410714624.3040.38.camel@decadent.org.uk>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-WyED6Tz+auDGCieAXHHx"
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	debian-kernel <debian-kernel-0aAXYlwwYIJuHlm7Suoebg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1410705908-20847-1-git-send-email-jepler-ixP+gI44yfQ4d9/VWYMlNA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-allocating bounce and k_xfers at every iteration was a source of
-excess delays.
----
- drivers/spi/spidev.c | 35 +++++++++++++++++++++++++++++------
- 1 file changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 2e0655d..dda7632 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -85,6 +85,8 @@ struct spidev_data {
- 	struct mutex		buf_lock;
- 	unsigned		users;
- 	u8			*buffer;
-+        struct spi_ioc_transfer *bounce;
-+        struct spi_transfer     *k_xfers;
- };
- 
- static LIST_HEAD(device_list);
-@@ -227,9 +229,9 @@ static int spidev_message(struct spidev_data *spidev,
- 	int			status = -EFAULT;
- 
- 	spi_message_init(&msg);
--	k_xfers = kcalloc(n_xfers, sizeof(*k_tmp), GFP_KERNEL);
--	if (k_xfers == NULL)
--		return -ENOMEM;
-+        if (n_xfers * sizeof(*k_tmp) > bufsiz)
-+                return -ENOMEM;
-+	k_xfers = spidev->k_xfers;
- 
- 	/* Construct spi_message, copying any tx data to bounce buffer.
- 	 * We walk the array of user-provided transfers, using each one
-@@ -302,7 +304,6 @@ static int spidev_message(struct spidev_data *spidev,
- 	status = total;
- 
- done:
--	kfree(k_xfers);
- 	return status;
- }
- 
-@@ -451,8 +452,12 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 		if (n_ioc == 0)
- 			break;
- 
-+                if(tmp > bufsiz) {
-+			retval = -EINVAL;
-+			break;
-+                }
- 		/* copy into scratch area */
--		ioc = kmalloc(tmp, GFP_KERNEL);
-+		ioc = spidev->bounce;
- 		if (!ioc) {
- 			retval = -ENOMEM;
- 			break;
-@@ -465,7 +470,6 @@ spidev_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 
- 		/* translate to spi_message, execute */
- 		retval = spidev_message(spidev, ioc, n_ioc);
--		kfree(ioc);
- 		break;
- 	}
- 
-@@ -504,6 +508,19 @@ static int spidev_open(struct inode *inode, struct file *filp)
- 				dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
- 				status = -ENOMEM;
- 			}
-+			spidev->bounce = kmalloc(bufsiz, GFP_KERNEL);
-+			if (!spidev->bounce) {
-+				dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
-+                                kfree(spidev->buffer);
-+				status = -ENOMEM;
-+			}
-+			spidev->k_xfers = kmalloc(bufsiz, GFP_KERNEL);
-+			if (!spidev->k_xfers) {
-+				dev_dbg(&spidev->spi->dev, "open/ENOMEM\n");
-+                                kfree(spidev->buffer);
-+                                kfree(spidev->bounce);
-+				status = -ENOMEM;
-+			}
- 		}
- 		if (status == 0) {
- 			spidev->users++;
-@@ -534,6 +551,12 @@ static int spidev_release(struct inode *inode, struct file *filp)
- 		kfree(spidev->buffer);
- 		spidev->buffer = NULL;
- 
-+		kfree(spidev->bounce);
-+		spidev->bounce = NULL;
-+
-+		kfree(spidev->k_xfers);
-+		spidev->k_xfers = NULL;
-+
- 		/* ... after we unbound from the underlying device? */
- 		spin_lock_irq(&spidev->spi_lock);
- 		dofree = (spidev->spi == NULL);
--- 
-2.1.0
+--=-WyED6Tz+auDGCieAXHHx
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+The first patch in the series restores the module aliases to m25p80, but
+it does so by duplicating the list of names.  This should be suitable
+for stable, but it isn't viable in the longer term.
+
+The following patches change the spi-nor interface so that this
+duplication is no longer necessary.  This includes removing
+spi_nor::read_id, but it could be re-added after this with a different
+interface, e.g. returning a flash_info structure (which would need to be
+defined in spi_nor.h).
+
+Ben.
+
+Ben Hutchings (5):
+  m25p80,spi-nor: Fix module aliases for m25p80
+  spi-nor: Remove spi_nor::read_id operation
+  spi-nor: Make spi_nor_scan() take a chip type name, not an
+    spi_device_id
+  spi-nor: Replace struct spi_device_id with struct flash_info
+  m25p80,spi-nor: Share the list of supported chip type names again
+
+ drivers/mtd/devices/m25p80.c      |  13 +-
+ drivers/mtd/spi-nor/fsl-quadspi.c |   7 +-
+ drivers/mtd/spi-nor/spi-nor.c     | 383 +++++++++++++++++++---------------=
+----
+ include/linux/mtd/spi-nor.h       |  87 +++++++--
+ 4 files changed, 279 insertions(+), 211 deletions(-)
+
+
+--=20
+Ben Hutchings
+The world is coming to an end.	Please log off.
+
+--=-WyED6Tz+auDGCieAXHHx
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQIVAwUAVBXMB+e/yOyVhhEJAQr8IBAAthtsIxne5LGnVF5d7wdXYL8GDsM4GuqS
+0b5WQ/YK9zXm9mwPqu0kBi4cRTR2mglnTXzJ07GVR7bKkWlPTYq7r0NvS+chX0oO
+GzKMHwz2KYBxGik7gQKRYiKdJkx1s83/c64TiY8YwJmi62xi2nrZvJRFML900SCU
+0SQDF0KtIVQVJbjd0esgT/tf3peWiHDrZfW76selhbTMcNWILaut0HgJNfopKJrZ
+ujN5ngWNwmOhN170TLP/gjGWVmtujyTN/groeEYr4htOeOAMzUmLIRjtPgO+OQda
+w+6nJ9Dq16Q7gnFXsnsv3L3kC9vDe7rAi/ILxL8ys/cM6QCcFTLfoqEYK+iEfEO4
+muVEa9WEURk1duQDq2PPhc1AL4ejoLxJgKBI00VWfEI4gbIS3LOdU6oQ+Ynl/WnK
+M0Q5iXEdbypf6W/GiJ8M7cgx32ukVsnNI/RanKI2LnrKsq+NA03wiGBeg3cjpNEc
+5WeYouI8S0r2nPvfK5qIEo3nff9eK8XLcsTmb2N79feRBDpEh0scF7atSewNm9t6
+6+uX8+YIZEPZ4Dz9c0/r4uS1LpRCdj/jwPRHADPyfATfgaEomkNbouWGPEAkwA1+
+DH/gqoccOSR4S/Y0ACGS859/+q/grM4QWlAFcQTae9nkvQw8fjmoBdJfh6gQ8rZm
+9dR2fbU6438=
+=SdVx
+-----END PGP SIGNATURE-----
+
+--=-WyED6Tz+auDGCieAXHHx--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

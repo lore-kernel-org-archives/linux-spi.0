@@ -1,191 +1,43 @@
-From: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
-Subject: [PATCH v2] spi: pl022: Add support for chip select extension
-Date: Mon, 15 Sep 2014 13:38:52 +0200
-Message-ID: <1410781132-16223-1-git-send-email-anders.berg@avagotech.com>
-Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+From: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+Subject: Re: [PATCH] spi: davinci: request cs_gpio's from probe
+Date: Mon, 15 Sep 2014 16:06:42 +0300
+Message-ID: <5416E462.7010406@ti.com>
+References: <1410533640-21469-1-git-send-email-grygorii.strashko@ti.com> <20140913162858.GG7960@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+Cc: <santosh.shilimkar-l0cyMroinI0@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<m-karicheri2-l0cyMroinI0@public.gmane.org>, <linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	<davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20140913162858.GG7960-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add support for a extended PL022 which has an extra register for controlling up
-to five chip select signals. This controller is found on the AXM5516 SoC.
-Unfortunately the PrimeCell identification registers are identical to a
-standard ARM PL022. To work around this, the peripheral ID must be overridden
-in the device tree using the "arm,primecell-periphid" property with the value
-0x000b6022.
+On 09/13/2014 07:28 PM, Mark Brown wrote:
+> On Fri, Sep 12, 2014 at 05:54:00PM +0300, Grygorii Strashko wrote:
+> 
+>>   static void davinci_spi_cleanup(struct spi_device *spi)
+>>   {
+>> -	if (spi->cs_gpio >= 0)
+>> -		gpio_free(spi->cs_gpio);
+>>   }
+> 
+> This function is now empty so should be removed.  I've applied for now
+> but please send a followup fixing this.
+> 
 
-Signed-off-by: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
----
-Changelog:
+The function davinci_spi_cleanup() will be reused by following patch
+"[PATCH v3] spi: davinci: add support for adding delay between word's transmissions"
+http://www.spinics.net/lists/devicetree/msg49141.html
 
-v2:
-    - added constant to <linux/amba/bus.h>
+So, in broonie/spi.git/for-next it will not be empty.
 
- drivers/spi/spi-pl022.c  | 59 +++++++++++++++++++++++++++++++++++++++++++++++-
- include/linux/amba/bus.h |  5 ++++
- 2 files changed, 63 insertions(+), 1 deletion(-)
+Again, I've missed description of this dependency, sorry for that.
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 1189cfd..b395489 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -82,6 +82,7 @@
- #define SSP_MIS(r)	(r + 0x01C)
- #define SSP_ICR(r)	(r + 0x020)
- #define SSP_DMACR(r)	(r + 0x024)
-+#define SSP_CSR(r)	(r + 0x030) /* vendor extension */
- #define SSP_ITCR(r)	(r + 0x080)
- #define SSP_ITIP(r)	(r + 0x084)
- #define SSP_ITOP(r)	(r + 0x088)
-@@ -198,6 +199,12 @@
- #define SSP_DMACR_MASK_TXDMAE		(0x1UL << 1)
- 
- /*
-+ * SSP Chip Select Control Register - SSP_CSR
-+ * (vendor extension)
-+ */
-+#define SSP_CSR_CSVALUE_MASK		(0x1FUL << 0)
-+
-+/*
-  * SSP Integration Test control Register - SSP_ITCR
-  */
- #define SSP_ITCR_MASK_ITEN		(0x1UL << 0)
-@@ -313,6 +320,7 @@ enum ssp_writing {
-  * @extended_cr: 32 bit wide control register 0 with extra
-  * features and extra features in CR1 as found in the ST variants
-  * @pl023: supports a subset of the ST extensions called "PL023"
-+ * @internal_cs_ctrl: supports chip select control register
-  */
- struct vendor_data {
- 	int fifodepth;
-@@ -321,6 +329,7 @@ struct vendor_data {
- 	bool extended_cr;
- 	bool pl023;
- 	bool loopback;
-+	bool internal_cs_ctrl;
- };
- 
- /**
-@@ -440,9 +449,32 @@ static void null_cs_control(u32 command)
- 	pr_debug("pl022: dummy chip select control, CS=0x%x\n", command);
- }
- 
-+/**
-+ * internal_cs_control - Control chip select signals via SSP_CSR.
-+ * @pl022: SSP driver private data structure
-+ * @command: select/delect the chip
-+ *
-+ * Used on controller with internal chip select control via SSP_CSR register
-+ * (vendor extension). Each of the 5 LSB in the register controls one chip
-+ * select signal.
-+ */
-+static void internal_cs_control(struct pl022 *pl022, u32 command)
-+{
-+	u32 tmp;
-+
-+	tmp = readw(SSP_CSR(pl022->virtbase));
-+	if (command == SSP_CHIP_SELECT)
-+		tmp &= ~BIT(pl022->cur_cs);
-+	else
-+		tmp |= BIT(pl022->cur_cs);
-+	writew(tmp, SSP_CSR(pl022->virtbase));
-+}
-+
- static void pl022_cs_control(struct pl022 *pl022, u32 command)
- {
--	if (gpio_is_valid(pl022->cur_cs))
-+	if (pl022->vendor->internal_cs_ctrl)
-+		internal_cs_control(pl022, command);
-+	else if (gpio_is_valid(pl022->cur_cs))
- 		gpio_set_value(pl022->cur_cs, command);
- 	else
- 		pl022->cur_chip->cs_control(command);
-@@ -2118,6 +2150,9 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 	if (platform_info->num_chipselect && platform_info->chipselects) {
- 		for (i = 0; i < num_cs; i++)
- 			pl022->chipselects[i] = platform_info->chipselects[i];
-+	} else if (pl022->vendor->internal_cs_ctrl) {
-+		for (i = 0; i < num_cs; i++)
-+			pl022->chipselects[i] = i;
- 	} else if (IS_ENABLED(CONFIG_OF)) {
- 		for (i = 0; i < num_cs; i++) {
- 			int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
-@@ -2347,6 +2382,7 @@ static struct vendor_data vendor_arm = {
- 	.extended_cr = false,
- 	.pl023 = false,
- 	.loopback = true,
-+	.internal_cs_ctrl = false,
- };
- 
- static struct vendor_data vendor_st = {
-@@ -2356,6 +2392,7 @@ static struct vendor_data vendor_st = {
- 	.extended_cr = true,
- 	.pl023 = false,
- 	.loopback = true,
-+	.internal_cs_ctrl = false,
- };
- 
- static struct vendor_data vendor_st_pl023 = {
-@@ -2365,6 +2402,17 @@ static struct vendor_data vendor_st_pl023 = {
- 	.extended_cr = true,
- 	.pl023 = true,
- 	.loopback = false,
-+	.internal_cs_ctrl = false,
-+};
-+
-+static struct vendor_data vendor_lsi = {
-+	.fifodepth = 8,
-+	.max_bpw = 16,
-+	.unidir = false,
-+	.extended_cr = false,
-+	.pl023 = false,
-+	.loopback = true,
-+	.internal_cs_ctrl = true,
- };
- 
- static struct amba_id pl022_ids[] = {
-@@ -2398,6 +2446,15 @@ static struct amba_id pl022_ids[] = {
- 		.mask	= 0xffffffff,
- 		.data	= &vendor_st_pl023,
- 	},
-+	{
-+		/*
-+		 * PL022 variant that has a chip select control register whih
-+		 * allows control of 5 output signals nCS[0:4].
-+		 */
-+		.id	= 0x000b6022,
-+		.mask	= 0x000fffff,
-+		.data	= &vendor_lsi,
-+	},
- 	{ 0, 0 },
- };
- 
-diff --git a/include/linux/amba/bus.h b/include/linux/amba/bus.h
-index fdd7e1b..c324f57 100644
---- a/include/linux/amba/bus.h
-+++ b/include/linux/amba/bus.h
-@@ -44,10 +44,15 @@ struct amba_driver {
- 	const struct amba_id	*id_table;
- };
- 
-+/*
-+ * Constants for the designer field of the Peripheral ID register. When bit 7
-+ * is set to '1', bits [6:0] should be the JEP106 manufacturer identity code.
-+ */
- enum amba_vendor {
- 	AMBA_VENDOR_ARM = 0x41,
- 	AMBA_VENDOR_ST = 0x80,
- 	AMBA_VENDOR_QCOM = 0x51,
-+	AMBA_VENDOR_LSI = 0xb6,
- };
- 
- extern struct bus_type amba_bustype;
--- 
-1.9.1
+Regards,
+-grygorii
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

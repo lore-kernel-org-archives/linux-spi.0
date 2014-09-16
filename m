@@ -1,53 +1,51 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v6] spi: spi-imx: add DMA support
-Date: Tue, 16 Sep 2014 10:41:12 -0700
-Message-ID: <20140916174112.GU7960@sirena.org.uk>
-References: <1410398324-15284-1-git-send-email-b38343@freescale.com>
+Subject: Re: [PATCH v2] spi: pl022: Add support for chip select extension
+Date: Tue, 16 Sep 2014 11:34:31 -0700
+Message-ID: <20140916183431.GX7960@sirena.org.uk>
+References: <1410781132-16223-1-git-send-email-anders.berg@avagotech.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="saqwZB8dd8xoGD4q"
-Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	Frank.Li-KZfg59tc24xl57MIdRCFDg@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="J0QI3A+imHzF1NdR"
+Cc: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1410398324-15284-1-git-send-email-b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+In-Reply-To: <1410781132-16223-1-git-send-email-anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---saqwZB8dd8xoGD4q
+--J0QI3A+imHzF1NdR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Sep 11, 2014 at 09:18:44AM +0800, Robin Gong wrote:
-> Enable DMA support on i.mx6. The read speed can increase from 600KB/s
-> to 1.2MB/s on i.mx6q. You can disable or enable dma function in dts.
-> If not set "dma-names" in dts, spi will use PIO mode. This patch only
-> validate on i.mx6, not i.mx5, but encourage ones to apply this patch
-> on i.mx5 since they share the same IP.
+On Mon, Sep 15, 2014 at 01:38:52PM +0200, Anders Berg wrote:
 
-Applied, thanks.
+> v2:
+>     - added constant to <linux/amba/bus.h>
 
---saqwZB8dd8xoGD4q
+Since you're editing the AMBA code you should also CC Russell so he can
+review the AMBA part of the change.
+
+--J0QI3A+imHzF1NdR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUGHY3AAoJECTWi3JdVIfQjyAH/idzcyENZCv5XYBmBARGjcLd
-VBO8sU5OieN4U5/bq2TyDzVW4vRP0BfBoQ2PQZec5N1UcYnWAsfjupzGC1yvGAqK
-mq9OAe4J5qihlwNLg+YNn9AHTGEcBJ+UKmJE+Y3KhS58wIGiLYq3YVfb9hyflVla
-6gQ9Wjmqc3uNtRvvr3sey8/19B+7i0Lr8vlUyBM751I7nVUZPOy26YoHsNc1QS82
-WgX7QcmB4WpUeUtQ4nxFrrq8jxi+dexrU5HHcuqOa+wqA8SNeQbdREdUekn5N+Mf
-IdI7X1I8KtOTpbFF9fF/eHT/h8PwInhuCvgBc76KNRAZOLGYFileVkn8pg9HcbU=
-=5iX7
+iQEcBAEBAgAGBQJUGIK2AAoJECTWi3JdVIfQPqkH/3q6cXYjOeFlqwJk1vqkIt34
+O6mh8Lv0eVcdn32ZvzJvX0vnFARbkXhXxuX5viTrbAZ3DnY6J+OJtLqcP9qIv47x
+eCSJikvZkSS8PEJKNRRw5ejxBwkjjDHC7BuCGT+jkCogR726e7uJPc1Ss2IsgaTH
+uHHQ5xw3Y1qpQThrnAftY/07HCj9+0SGgQBf5Q2GE8nKRaURp58hSYeanOsNOBif
+ch820E0ZVG7BMoXsN2q5Y7FP31CtB2fEzEzESaT+2Qg62u1E3ljANlccFh5CAbEB
+iDOmDT96XS/syxcr2fl7U1TYvSxUOPZLoFAJ1lrXY89oJ3w4g8sTaaeg8U3f5/0=
+=i9bF
 -----END PGP SIGNATURE-----
 
---saqwZB8dd8xoGD4q--
+--J0QI3A+imHzF1NdR--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

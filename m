@@ -1,54 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [RESEND PATCH v3] spi: davinci: add support for adding delay
- between word's transmissions
-Date: Tue, 16 Sep 2014 10:32:10 -0700
-Message-ID: <20140916173210.GS7960@sirena.org.uk>
-References: <1410866705-13520-1-git-send-email-grygorii.strashko@ti.com>
+Subject: Re: [PATCH v6] spi: spi-imx: add DMA support
+Date: Tue, 16 Sep 2014 10:41:12 -0700
+Message-ID: <20140916174112.GU7960@sirena.org.uk>
+References: <1410398324-15284-1-git-send-email-b38343@freescale.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="GTcZWaq9rmc9jFqg"
-Cc: santosh.shilimkar-l0cyMroinI0@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	davinci-linux-open-source-VycZQUHpC/PFrsHnngEfi1aTQe2KTcn/@public.gmane.org,
-	Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
-To: Grygorii Strashko <grygorii.strashko-l0cyMroinI0@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="saqwZB8dd8xoGD4q"
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
+	Frank.Li-KZfg59tc24xl57MIdRCFDg@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1410866705-13520-1-git-send-email-grygorii.strashko-l0cyMroinI0@public.gmane.org>
+In-Reply-To: <1410398324-15284-1-git-send-email-b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---GTcZWaq9rmc9jFqg
+--saqwZB8dd8xoGD4q
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 16, 2014 at 02:25:05PM +0300, Grygorii Strashko wrote:
-> From: Murali Karicheri <m-karicheri2-l0cyMroinI0@public.gmane.org>
->=20
-> This patch adds ability to configure delay between transmission of
-> words over SPI bus if it's required by SPI slave devices.
+On Thu, Sep 11, 2014 at 09:18:44AM +0800, Robin Gong wrote:
+> Enable DMA support on i.mx6. The read speed can increase from 600KB/s
+> to 1.2MB/s on i.mx6q. You can disable or enable dma function in dts.
+> If not set "dma-names" in dts, spi will use PIO mode. This patch only
+> validate on i.mx6, not i.mx5, but encourage ones to apply this patch
+> on i.mx5 since they share the same IP.
 
 Applied, thanks.
 
---GTcZWaq9rmc9jFqg
+--saqwZB8dd8xoGD4q
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUGHQaAAoJECTWi3JdVIfQxUgH/11jaStH8iiGX8nagXyF2i5c
-B4KMcn9V6k3SOMhz2U9V8EkxCavUc/t+qc5KKLtxtXh2QXCN7nPbqljH+QgD6LiJ
-NwSAKS+yEaIcEfsNjruoxh4a7VOO90Iu62i28jCpbtOZHbLs8Pn6+MSSGgjK2hI6
-HW4OAX2+GqqVrREq0M4ySNQgozdWbrAIXSQPQ36DIrzBWW8qgrUS5oScDZDvlxXz
-DnV7E4OJXl+rRMpUA+6xIRPcpJqweTGQVJWjvQeJ9NP4T7pzpPdTL2GfQVLiet6x
-jMI9Ug3yPb6i3RrL8N1Q7RasHSQLeFIbBYe/B8k6cLr2tQ6FqX8SAvxAJROgSPY=
-=kB5J
+iQEcBAEBAgAGBQJUGHY3AAoJECTWi3JdVIfQjyAH/idzcyENZCv5XYBmBARGjcLd
+VBO8sU5OieN4U5/bq2TyDzVW4vRP0BfBoQ2PQZec5N1UcYnWAsfjupzGC1yvGAqK
+mq9OAe4J5qihlwNLg+YNn9AHTGEcBJ+UKmJE+Y3KhS58wIGiLYq3YVfb9hyflVla
+6gQ9Wjmqc3uNtRvvr3sey8/19B+7i0Lr8vlUyBM751I7nVUZPOy26YoHsNc1QS82
+WgX7QcmB4WpUeUtQ4nxFrrq8jxi+dexrU5HHcuqOa+wqA8SNeQbdREdUekn5N+Mf
+IdI7X1I8KtOTpbFF9fF/eHT/h8PwInhuCvgBc76KNRAZOLGYFileVkn8pg9HcbU=
+=5iX7
 -----END PGP SIGNATURE-----
 
---GTcZWaq9rmc9jFqg--
+--saqwZB8dd8xoGD4q--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

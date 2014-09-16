@@ -1,38 +1,44 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH] spi/imx: Add MAINTAINERS entry for i.MX SPI driver
-Date: Tue, 16 Sep 2014 18:12:28 +0200
-Message-ID: <201409161812.28216.marex@denx.de>
-References: <1410821060-9102-1-git-send-email-broonie@kernel.org> <201409160713.17273.marex@denx.de> <20140916160557.GL7960@sirena.org.uk>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 1/1] spi-summery: documentation mistake
+Date: Tue, 16 Sep 2014 09:43:37 -0700
+Message-ID: <20140916164337.GO7960@sirena.org.uk>
+References: <1410864733-861751-1-git-send-email-oscar@oscr.io>
 Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linaro-kernel-cunTk1MwBs8s++Sfvej+rw@public.gmane.org,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140916160557.GL7960-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="yLCsp91D2sDKcV7m"
+Cc: rdunlap@infradead.org, linux-spi@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Oscar Utbult <oscar@oscr.io>
+Return-path: <linux-doc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1410864733-861751-1-git-send-email-oscar@oscr.io>
+Sender: linux-doc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Tuesday, September 16, 2014 at 06:05:57 PM, Mark Brown wrote:
-> On Tue, Sep 16, 2014 at 07:13:17AM +0200, Marek Vasut wrote:
-> > git log --follow tells me you have it wrong. I wrote the MXS one ;-)
-> > 
-> > commit b5f3294f0be5496aec01e5aa709a5fab8bb2f225
-> > Author: Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-> > Date:   Tue Sep 22 16:46:02 2009 -0700
-> > 
-> >     spi: add SPI driver for most known i.MX SoCs
-> 
-> Gah, sorry.
 
-No problem. I'm happy to help reviewing the iMX ones too as it concerns me as 
-well, but let's keep the credit straight ;-)
+--yLCsp91D2sDKcV7m
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Best regards,
-Marek Vasut
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Tue, Sep 16, 2014 at 12:52:13PM +0200, Oscar Utbult wrote:
+> Contributors are not listed in alphabetical order as claimed by documentation.
+
+Applied, thanks.
+
+--yLCsp91D2sDKcV7m
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUGGi4AAoJECTWi3JdVIfQAaIH/1eheZPk44hM7WvsmRcZMMdo
+m5IjXesVzXR4WOlkdMlI4xmixwjWo6oa4FF0XfgZFFR3dWDjmT59DvWhd4f6t586
+2sWfrf9xK2LDIlq7A1a1FtZTxWsg0hMsR/5p5yFqM6AxVQsQaTZQ+fh3mueAUwhp
+bA8cqbzC9UnNmv+xWIYfxAXlLiMN8xl46rXIkeXShNjaKOZ4xERWi7BCMjPR5Hpq
++wPwHVT44wG5A+Gb81vMoN/5mp4WtP4NPiBHch2W31rk6Z5NQcn2GjPVPCwMl6ln
++n8WByoqWK+PJpvPNSL3988XDE36eqPxtujEW3ftHJyQVk6r4H87VHg3KtW2QuA=
+=MdxB
+-----END PGP SIGNATURE-----
+
+--yLCsp91D2sDKcV7m--

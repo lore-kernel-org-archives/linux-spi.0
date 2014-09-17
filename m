@@ -1,198 +1,94 @@
-From: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
-Subject: [PATCH v2] spi: pl022: Add support for chip select extension
-Date: Wed, 17 Sep 2014 08:46:58 +0200
-Message-ID: <1410936418-26443-1-git-send-email-anders.berg@avagotech.com>
-References: <20140916183431.GX7960@sirena.org.uk>
-Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+From: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+Subject: Re: [PATCH 5/5] m25p80,spi-nor: Share the list of supported chip type
+ names again
+Date: Wed, 17 Sep 2014 10:23:26 +0200
+Message-ID: <CAMuHMdVSYvUh3qVRhw15KmOn0MYocbJVQBr9TkHtebM19c8dJA@mail.gmail.com>
+References: <1410714624.3040.38.camel@decadent.org.uk>
+	<1410714708.3040.43.camel@decadent.org.uk>
+	<CAMuHMdUs+7uidcD6tivnq6+TbD4_piixLVqwuSa0Z1u3sF7EoA@mail.gmail.com>
+	<1410793627.3040.61.camel@decadent.org.uk>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	debian-kernel <debian-kernel-0aAXYlwwYIJuHlm7Suoebg@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140916183431.GX7960-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <1410793627.3040.61.camel-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Add support for a extended PL022 which has an extra register for controlling up
-to five chip select signals. This controller is found on the AXM5516 SoC.
-Unfortunately the PrimeCell identification registers are identical to a
-standard ARM PL022. To work around this, the peripheral ID must be overridden
-in the device tree using the "arm,primecell-periphid" property with the value
-0x000b6022.
+Hi Ben,
 
-Signed-off-by: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
----
+On Mon, Sep 15, 2014 at 5:07 PM, Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org> wrote:
+>> >
+>> > +#define __SPI_NOR_ENUM_TYPES(c_id, str_and_c_id)                         \
+>> > +       c_id(at25fs010)         c_id(at25fs040)         c_id(at25df041a)  \
+>> > +       c_id(at25df321a)        c_id(at25df641)         c_id(at26f004)    \
+>>
+>> Can't you just have the IDs in a header file only, and let the header file
+>> generate either a struct flash_info or a struct spi_device_id table, using
+>> a macro defined by the file that includes it?
+>
+> How would we match up the rest of the struct flash_info to the name?
 
-Adding Russell to Cc.
+Ah, you use the enums to match the names to the rest of the flash_info.
+But you can do it in one-shot, can't you?
 
-Changelog:
+spi-nor-data.h:
 
-v2:
-    - added constant to <linux/amba/bus.h>
+FLASH_ENTRY("at25fs010", 0x1f6601, 0, 32 * 1024,   4, SECT_4K),
+FLASH_ENTRY("at25fs040", 0x1f6604, 0, 64 * 1024,   8, SECT_4K),
+...
 
- drivers/spi/spi-pl022.c  | 59 +++++++++++++++++++++++++++++++++++++++++++++++-
- include/linux/amba/bus.h |  5 ++++
- 2 files changed, 63 insertions(+), 1 deletion(-)
+m25p80.c:
 
-diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
-index 1189cfd..b395489 100644
---- a/drivers/spi/spi-pl022.c
-+++ b/drivers/spi/spi-pl022.c
-@@ -82,6 +82,7 @@
- #define SSP_MIS(r)	(r + 0x01C)
- #define SSP_ICR(r)	(r + 0x020)
- #define SSP_DMACR(r)	(r + 0x024)
-+#define SSP_CSR(r)	(r + 0x030) /* vendor extension */
- #define SSP_ITCR(r)	(r + 0x080)
- #define SSP_ITIP(r)	(r + 0x084)
- #define SSP_ITOP(r)	(r + 0x088)
-@@ -198,6 +199,12 @@
- #define SSP_DMACR_MASK_TXDMAE		(0x1UL << 1)
- 
- /*
-+ * SSP Chip Select Control Register - SSP_CSR
-+ * (vendor extension)
-+ */
-+#define SSP_CSR_CSVALUE_MASK		(0x1FUL << 0)
-+
-+/*
-  * SSP Integration Test control Register - SSP_ITCR
-  */
- #define SSP_ITCR_MASK_ITEN		(0x1UL << 0)
-@@ -313,6 +320,7 @@ enum ssp_writing {
-  * @extended_cr: 32 bit wide control register 0 with extra
-  * features and extra features in CR1 as found in the ST variants
-  * @pl023: supports a subset of the ST extensions called "PL023"
-+ * @internal_cs_ctrl: supports chip select control register
-  */
- struct vendor_data {
- 	int fifodepth;
-@@ -321,6 +329,7 @@ struct vendor_data {
- 	bool extended_cr;
- 	bool pl023;
- 	bool loopback;
-+	bool internal_cs_ctrl;
- };
- 
- /**
-@@ -440,9 +449,32 @@ static void null_cs_control(u32 command)
- 	pr_debug("pl022: dummy chip select control, CS=0x%x\n", command);
- }
- 
-+/**
-+ * internal_cs_control - Control chip select signals via SSP_CSR.
-+ * @pl022: SSP driver private data structure
-+ * @command: select/delect the chip
-+ *
-+ * Used on controller with internal chip select control via SSP_CSR register
-+ * (vendor extension). Each of the 5 LSB in the register controls one chip
-+ * select signal.
-+ */
-+static void internal_cs_control(struct pl022 *pl022, u32 command)
-+{
-+	u32 tmp;
-+
-+	tmp = readw(SSP_CSR(pl022->virtbase));
-+	if (command == SSP_CHIP_SELECT)
-+		tmp &= ~BIT(pl022->cur_cs);
-+	else
-+		tmp |= BIT(pl022->cur_cs);
-+	writew(tmp, SSP_CSR(pl022->virtbase));
-+}
-+
- static void pl022_cs_control(struct pl022 *pl022, u32 command)
- {
--	if (gpio_is_valid(pl022->cur_cs))
-+	if (pl022->vendor->internal_cs_ctrl)
-+		internal_cs_control(pl022, command);
-+	else if (gpio_is_valid(pl022->cur_cs))
- 		gpio_set_value(pl022->cur_cs, command);
- 	else
- 		pl022->cur_chip->cs_control(command);
-@@ -2118,6 +2150,9 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
- 	if (platform_info->num_chipselect && platform_info->chipselects) {
- 		for (i = 0; i < num_cs; i++)
- 			pl022->chipselects[i] = platform_info->chipselects[i];
-+	} else if (pl022->vendor->internal_cs_ctrl) {
-+		for (i = 0; i < num_cs; i++)
-+			pl022->chipselects[i] = i;
- 	} else if (IS_ENABLED(CONFIG_OF)) {
- 		for (i = 0; i < num_cs; i++) {
- 			int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
-@@ -2347,6 +2382,7 @@ static struct vendor_data vendor_arm = {
- 	.extended_cr = false,
- 	.pl023 = false,
- 	.loopback = true,
-+	.internal_cs_ctrl = false,
- };
- 
- static struct vendor_data vendor_st = {
-@@ -2356,6 +2392,7 @@ static struct vendor_data vendor_st = {
- 	.extended_cr = true,
- 	.pl023 = false,
- 	.loopback = true,
-+	.internal_cs_ctrl = false,
- };
- 
- static struct vendor_data vendor_st_pl023 = {
-@@ -2365,6 +2402,17 @@ static struct vendor_data vendor_st_pl023 = {
- 	.extended_cr = true,
- 	.pl023 = true,
- 	.loopback = false,
-+	.internal_cs_ctrl = false,
-+};
-+
-+static struct vendor_data vendor_lsi = {
-+	.fifodepth = 8,
-+	.max_bpw = 16,
-+	.unidir = false,
-+	.extended_cr = false,
-+	.pl023 = false,
-+	.loopback = true,
-+	.internal_cs_ctrl = true,
- };
- 
- static struct amba_id pl022_ids[] = {
-@@ -2398,6 +2446,15 @@ static struct amba_id pl022_ids[] = {
- 		.mask	= 0xffffffff,
- 		.data	= &vendor_st_pl023,
- 	},
-+	{
-+		/*
-+		 * PL022 variant that has a chip select control register whih
-+		 * allows control of 5 output signals nCS[0:4].
-+		 */
-+		.id	= 0x000b6022,
-+		.mask	= 0x000fffff,
-+		.data	= &vendor_lsi,
-+	},
- 	{ 0, 0 },
- };
- 
-diff --git a/include/linux/amba/bus.h b/include/linux/amba/bus.h
-index fdd7e1b..c324f57 100644
---- a/include/linux/amba/bus.h
-+++ b/include/linux/amba/bus.h
-@@ -44,10 +44,15 @@ struct amba_driver {
- 	const struct amba_id	*id_table;
- };
- 
-+/*
-+ * Constants for the designer field of the Peripheral ID register. When bit 7
-+ * is set to '1', bits [6:0] should be the JEP106 manufacturer identity code.
-+ */
- enum amba_vendor {
- 	AMBA_VENDOR_ARM = 0x41,
- 	AMBA_VENDOR_ST = 0x80,
- 	AMBA_VENDOR_QCOM = 0x51,
-+	AMBA_VENDOR_LSI = 0xb6,
- };
- 
- extern struct bus_type amba_bustype;
--- 
-1.9.1
+#define FLASH_ENTRY(_name, _jedec_id, _ext_id, _sector_size,
+_n_sectors, _flags) \
+        { .name = _name },
 
+static const struct spi_device_id m25p_ids[] = {
+#include "spi-nor-data.h"
+};
+
+spi-nor.c:
+
+#define FLASH_ENTRY(_name, _jedec_id, _ext_id, _sector_size,
+_n_sectors, _flags) \
+        { \
+                 .name = _name, \
+                .jedec_id = (_jedec_id), \
+                .ext_id = (_ext_id), \
+                .sector_size = (_sector_size), \
+                .n_sectors = (_n_sectors), \
+                .page_size = 256, \
+                .flags = (_flags), \
+        }
+
+static const struct flash_info spi_nor_info[] = {
+#include "spi-nor-data.h"
+};
+
+Then the whole table data in contained in one place (spi-nor-data.h).
+Am I still missing something?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

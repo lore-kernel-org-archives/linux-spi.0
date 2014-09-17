@@ -1,41 +1,198 @@
-From: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
-Subject: Re: [PATCH v6] spi: spi-imx: add DMA support
-Date: Wed, 17 Sep 2014 02:49:17 +0200
-Message-ID: <201409170249.17597.marex@denx.de>
-References: <1410398324-15284-1-git-send-email-b38343@freescale.com> <20140915223944.GH7960@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: Text/Plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Robin Gong <b38343-KZfg59tc24xl57MIdRCFDg@public.gmane.org>, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	Frank.Li-KZfg59tc24xl57MIdRCFDg@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
+Subject: [PATCH v2] spi: pl022: Add support for chip select extension
+Date: Wed, 17 Sep 2014 08:46:58 +0200
+Message-ID: <1410936418-26443-1-git-send-email-anders.berg@avagotech.com>
+References: <20140916183431.GX7960@sirena.org.uk>
+Cc: Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140915223944.GH7960-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20140916183431.GX7960-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tuesday, September 16, 2014 at 12:39:44 AM, Mark Brown wrote:
-> On Thu, Sep 11, 2014 at 09:18:44AM +0800, Robin Gong wrote:
-> > Enable DMA support on i.mx6. The read speed can increase from 600KB/s
-> > to 1.2MB/s on i.mx6q. You can disable or enable dma function in dts.
-> > If not set "dma-names" in dts, spi will use PIO mode. This patch only
-> > validate on i.mx6, not i.mx5, but encourage ones to apply this patch
-> > on i.mx5 since they share the same IP.
-> 
-> Adding Maerk (who I had to add to earlier versions of this patch).
+Add support for a extended PL022 which has an extra register for controlling up
+to five chip select signals. This controller is found on the AXM5516 SoC.
+Unfortunately the PrimeCell identification registers are identical to a
+standard ARM PL022. To work around this, the peripheral ID must be overridden
+in the device tree using the "arm,primecell-periphid" property with the value
+0x000b6022.
 
-Looks OK to me.
+Signed-off-by: Anders Berg <anders.berg-1wcpHE2jlwO1Z/+hSey0Gg@public.gmane.org>
+---
 
-Acked-by: Marek Vasut <marex-ynQEQJNshbs@public.gmane.org>
+Adding Russell to Cc.
 
-Thank you!
+Changelog:
 
-Best regards,
-Marek Vasut
+v2:
+    - added constant to <linux/amba/bus.h>
+
+ drivers/spi/spi-pl022.c  | 59 +++++++++++++++++++++++++++++++++++++++++++++++-
+ include/linux/amba/bus.h |  5 ++++
+ 2 files changed, 63 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 1189cfd..b395489 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -82,6 +82,7 @@
+ #define SSP_MIS(r)	(r + 0x01C)
+ #define SSP_ICR(r)	(r + 0x020)
+ #define SSP_DMACR(r)	(r + 0x024)
++#define SSP_CSR(r)	(r + 0x030) /* vendor extension */
+ #define SSP_ITCR(r)	(r + 0x080)
+ #define SSP_ITIP(r)	(r + 0x084)
+ #define SSP_ITOP(r)	(r + 0x088)
+@@ -198,6 +199,12 @@
+ #define SSP_DMACR_MASK_TXDMAE		(0x1UL << 1)
+ 
+ /*
++ * SSP Chip Select Control Register - SSP_CSR
++ * (vendor extension)
++ */
++#define SSP_CSR_CSVALUE_MASK		(0x1FUL << 0)
++
++/*
+  * SSP Integration Test control Register - SSP_ITCR
+  */
+ #define SSP_ITCR_MASK_ITEN		(0x1UL << 0)
+@@ -313,6 +320,7 @@ enum ssp_writing {
+  * @extended_cr: 32 bit wide control register 0 with extra
+  * features and extra features in CR1 as found in the ST variants
+  * @pl023: supports a subset of the ST extensions called "PL023"
++ * @internal_cs_ctrl: supports chip select control register
+  */
+ struct vendor_data {
+ 	int fifodepth;
+@@ -321,6 +329,7 @@ struct vendor_data {
+ 	bool extended_cr;
+ 	bool pl023;
+ 	bool loopback;
++	bool internal_cs_ctrl;
+ };
+ 
+ /**
+@@ -440,9 +449,32 @@ static void null_cs_control(u32 command)
+ 	pr_debug("pl022: dummy chip select control, CS=0x%x\n", command);
+ }
+ 
++/**
++ * internal_cs_control - Control chip select signals via SSP_CSR.
++ * @pl022: SSP driver private data structure
++ * @command: select/delect the chip
++ *
++ * Used on controller with internal chip select control via SSP_CSR register
++ * (vendor extension). Each of the 5 LSB in the register controls one chip
++ * select signal.
++ */
++static void internal_cs_control(struct pl022 *pl022, u32 command)
++{
++	u32 tmp;
++
++	tmp = readw(SSP_CSR(pl022->virtbase));
++	if (command == SSP_CHIP_SELECT)
++		tmp &= ~BIT(pl022->cur_cs);
++	else
++		tmp |= BIT(pl022->cur_cs);
++	writew(tmp, SSP_CSR(pl022->virtbase));
++}
++
+ static void pl022_cs_control(struct pl022 *pl022, u32 command)
+ {
+-	if (gpio_is_valid(pl022->cur_cs))
++	if (pl022->vendor->internal_cs_ctrl)
++		internal_cs_control(pl022, command);
++	else if (gpio_is_valid(pl022->cur_cs))
+ 		gpio_set_value(pl022->cur_cs, command);
+ 	else
+ 		pl022->cur_chip->cs_control(command);
+@@ -2118,6 +2150,9 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	if (platform_info->num_chipselect && platform_info->chipselects) {
+ 		for (i = 0; i < num_cs; i++)
+ 			pl022->chipselects[i] = platform_info->chipselects[i];
++	} else if (pl022->vendor->internal_cs_ctrl) {
++		for (i = 0; i < num_cs; i++)
++			pl022->chipselects[i] = i;
+ 	} else if (IS_ENABLED(CONFIG_OF)) {
+ 		for (i = 0; i < num_cs; i++) {
+ 			int cs_gpio = of_get_named_gpio(np, "cs-gpios", i);
+@@ -2347,6 +2382,7 @@ static struct vendor_data vendor_arm = {
+ 	.extended_cr = false,
+ 	.pl023 = false,
+ 	.loopback = true,
++	.internal_cs_ctrl = false,
+ };
+ 
+ static struct vendor_data vendor_st = {
+@@ -2356,6 +2392,7 @@ static struct vendor_data vendor_st = {
+ 	.extended_cr = true,
+ 	.pl023 = false,
+ 	.loopback = true,
++	.internal_cs_ctrl = false,
+ };
+ 
+ static struct vendor_data vendor_st_pl023 = {
+@@ -2365,6 +2402,17 @@ static struct vendor_data vendor_st_pl023 = {
+ 	.extended_cr = true,
+ 	.pl023 = true,
+ 	.loopback = false,
++	.internal_cs_ctrl = false,
++};
++
++static struct vendor_data vendor_lsi = {
++	.fifodepth = 8,
++	.max_bpw = 16,
++	.unidir = false,
++	.extended_cr = false,
++	.pl023 = false,
++	.loopback = true,
++	.internal_cs_ctrl = true,
+ };
+ 
+ static struct amba_id pl022_ids[] = {
+@@ -2398,6 +2446,15 @@ static struct amba_id pl022_ids[] = {
+ 		.mask	= 0xffffffff,
+ 		.data	= &vendor_st_pl023,
+ 	},
++	{
++		/*
++		 * PL022 variant that has a chip select control register whih
++		 * allows control of 5 output signals nCS[0:4].
++		 */
++		.id	= 0x000b6022,
++		.mask	= 0x000fffff,
++		.data	= &vendor_lsi,
++	},
+ 	{ 0, 0 },
+ };
+ 
+diff --git a/include/linux/amba/bus.h b/include/linux/amba/bus.h
+index fdd7e1b..c324f57 100644
+--- a/include/linux/amba/bus.h
++++ b/include/linux/amba/bus.h
+@@ -44,10 +44,15 @@ struct amba_driver {
+ 	const struct amba_id	*id_table;
+ };
+ 
++/*
++ * Constants for the designer field of the Peripheral ID register. When bit 7
++ * is set to '1', bits [6:0] should be the JEP106 manufacturer identity code.
++ */
+ enum amba_vendor {
+ 	AMBA_VENDOR_ARM = 0x41,
+ 	AMBA_VENDOR_ST = 0x80,
+ 	AMBA_VENDOR_QCOM = 0x51,
++	AMBA_VENDOR_LSI = 0xb6,
+ };
+ 
+ extern struct bus_type amba_bustype;
+-- 
+1.9.1
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

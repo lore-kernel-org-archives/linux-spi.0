@@ -1,61 +1,47 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 07/10] spi: dw: fix style of code in few places
-Date: Thu, 18 Sep 2014 20:08:57 +0300
-Message-ID: <1411060140-2801-8-git-send-email-andriy.shevchenko@linux.intel.com>
-References: <1411060140-2801-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: pl022:  Add missing error check for devm_kzalloc
+Date: Thu, 18 Sep 2014 11:14:36 -0700
+Message-ID: <20140918181436.GF7960@sirena.org.uk>
+References: <1411025267-773-1-git-send-email-kiran.padwal@smartplayin.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="oMvEetrZIm2PFzDm"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Kiran Padwal <kiran.padwal-edOiRQu9Xnj5XLMNweQjbQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1411060140-2801-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1411025267-773-1-git-send-email-kiran.padwal-edOiRQu9Xnj5XLMNweQjbQ@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Make comments be surrounded by spaces and move part of code to one line where
-it suits 80 characters.
 
-There is no functional changes.
+--oMvEetrZIm2PFzDm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-dw.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+On Thu, Sep 18, 2014 at 12:57:47PM +0530, Kiran Padwal wrote:
+> Currently this driver is missing a check on the return value of devm_kzalloc,
+> which would cause a NULL pointer dereference in a OOM situation.
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 54e195b..11c7613 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -397,7 +397,7 @@ static void pump_transfers(unsigned long data)
- 		goto early_exit;
- 	}
- 
--	/* Delay if requested at end of transfer*/
-+	/* Delay if requested at end of transfer */
- 	if (message->state == RUNNING_STATE) {
- 		previous = list_entry(transfer->transfer_list.prev,
- 					struct spi_transfer,
-@@ -528,7 +528,7 @@ static int dw_spi_transfer_one_message(struct spi_master *master,
- 	struct dw_spi *dws = spi_master_get_devdata(master);
- 
- 	dws->cur_msg = msg;
--	/* Initial message state*/
-+	/* Initial message state */
- 	dws->cur_msg->state = START_STATE;
- 	dws->cur_transfer = list_entry(dws->cur_msg->transfers.next,
- 						struct spi_transfer,
-@@ -659,8 +659,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	dws->prev_chip = NULL;
- 	dws->dma_inited = 0;
- 	dws->dma_addr = (dma_addr_t)(dws->paddr + 0x60);
--	snprintf(dws->name, sizeof(dws->name), "dw_spi%d",
--			dws->bus_num);
-+	snprintf(dws->name, sizeof(dws->name), "dw_spi%d", dws->bus_num);
- 
- 	ret = devm_request_irq(dev, dws->irq, dw_spi_irq, IRQF_SHARED,
- 			dws->name, dws);
--- 
-2.1.0
+Applied, thanks.
 
+--oMvEetrZIm2PFzDm
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUGyELAAoJECTWi3JdVIfQpqwH/32Q78L8lCwnvo45H8eiPt1Q
+bJ5sU4Xn8FhtkT270GitYvl3mMV57eU8b1PuAHGRVTQordnJORwzPRlXjKmNNTz3
+jvWsBUQSawdm2XirHEA9AS3S7jGqooryEEeA6cGB041pyeIQoL9f8FwXdT5XO0zL
+W7zEh6/YROiX6dbHvdljkki8QjTMNAswyY8kdzM05SHQwh14T2t/XRT48x6Ltw9j
+CodMLE+MiI3ekNjKlZm3Fcc+AQhsj5/OSi6dE2/oPT5XTJQi7dQxZnbetHCgeh6m
+LtntYdcMHUZMJBGTASUq7wIrRQbe5VViRkgXl2G9aVkI0nxivwrTN++kY3IDs0c=
+=zbTI
+-----END PGP SIGNATURE-----
+
+--oMvEetrZIm2PFzDm--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

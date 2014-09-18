@@ -1,7 +1,7 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 06/10] spi: dw: introduce support of loopback mode
-Date: Thu, 18 Sep 2014 20:08:56 +0300
-Message-ID: <1411060140-2801-7-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 04/10] spi: dw-mid: follow new DMAengine workflow
+Date: Thu, 18 Sep 2014 20:08:54 +0300
+Message-ID: <1411060140-2801-5-git-send-email-andriy.shevchenko@linux.intel.com>
 References: <1411060140-2801-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
@@ -11,37 +11,46 @@ In-Reply-To: <1411060140-2801-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-For testing purposes it's good to have a loopback mode enabled. The patch adds
-necessary bits for that.
+Though intel-mid-dma does not follow a new DMA workflow let's prepare SPI DW
+driver for that.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-dw.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-dw-mid.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index d58edfe..54e195b 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -599,6 +599,9 @@ static int dw_spi_setup(struct spi_device *spi)
- 			| (spi->mode  << SPI_MODE_OFFSET)
- 			| (chip->tmode << SPI_TMOD_OFFSET);
+diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
+index 27150c7..a62413d 100644
+--- a/drivers/spi/spi-dw-mid.c
++++ b/drivers/spi/spi-dw-mid.c
+@@ -152,7 +152,7 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
+ 				&dws->tx_sgl,
+ 				1,
+ 				DMA_MEM_TO_DEV,
+-				DMA_PREP_INTERRUPT);
++				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 	txdesc->callback = dw_spi_dma_done;
+ 	txdesc->callback_param = dws;
  
-+	if (spi->mode & SPI_LOOP)
-+		chip->cr0 |= 1 << SPI_SRL_OFFSET;
+@@ -175,13 +175,17 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
+ 				&dws->rx_sgl,
+ 				1,
+ 				DMA_DEV_TO_MEM,
+-				DMA_PREP_INTERRUPT);
++				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 	rxdesc->callback = dw_spi_dma_done;
+ 	rxdesc->callback_param = dws;
+ 
+ 	/* rx must be started before tx due to spi instinct */
+ 	rxdesc->tx_submit(rxdesc);
+ 	txdesc->tx_submit(txdesc);
 +
- 	if (gpio_is_valid(spi->cs_gpio)) {
- 		ret = gpio_direction_output(spi->cs_gpio,
- 				!(spi->mode & SPI_CS_HIGH));
-@@ -666,7 +669,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 		goto err_free_master;
- 	}
++	dma_async_issue_pending(rxchan);
++	dma_async_issue_pending(txchan);
++
+ 	return 0;
+ }
  
--	master->mode_bits = SPI_CPOL | SPI_CPHA;
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_LOOP;
- 	master->bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16);
- 	master->bus_num = dws->bus_num;
- 	master->num_chipselect = dws->num_cs;
 -- 
 2.1.0
 

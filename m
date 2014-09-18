@@ -1,18 +1,46 @@
-From: BeaTe <gfgf4434-j9pdmedNgrk@public.gmane.org>
-Subject: Beate-
-Date: Wed, 17 Sep 2014 11:05:30 -0700
-Message-ID: <20140917140530.OLR77.51849.root__33678.2523700551$1410977497$gmane$org@fed1rmwml105>
-Reply-To: cxcw11-4erNu1AC6T7QT0dZR+AlfA@public.gmane.org
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-To: unlisted-recipients:; (no To-header on input)
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Kiran Padwal <kiran.padwal@smartplayin.com>
+Subject: [PATCH] spi: pl022:  Add missing error check for devm_kzalloc
+Date: Thu, 18 Sep 2014 12:57:47 +0530
+Message-ID: <1411025267-773-1-git-send-email-kiran.padwal@smartplayin.com>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Kiran Padwal <kiran.padwal@smartplayin.com>
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-I need a person who can assist me in setting up a charity home. I am sick now so reply if you can help. Beate.
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Currently this driver is missing a check on the return value of devm_kzalloc,
+which would cause a NULL pointer dereference in a OOM situation.
+
+This patch adds a missing check.
+
+Signed-off-by: Kiran Padwal <kiran.padwal@smartplayin.com>
+---
+ drivers/spi/spi-pl022.c |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 1189cfd..7f13f3f 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -2100,6 +2100,10 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	pl022->vendor = id->data;
+ 	pl022->chipselects = devm_kzalloc(dev, num_cs * sizeof(int),
+ 					  GFP_KERNEL);
++	if (!pl022->chipselects) {
++		status = -ENOMEM;
++		goto err_no_mem;
++	}
+ 
+ 	/*
+ 	 * Bus Number Which has been Assigned to this SSP controller
+@@ -2241,6 +2245,7 @@ static int pl022_probe(struct amba_device *adev, const struct amba_id *id)
+ 	amba_release_regions(adev);
+  err_no_ioregion:
+  err_no_gpio:
++ err_no_mem:
+ 	spi_master_put(master);
+ 	return status;
+ }
+-- 
+1.7.9.5

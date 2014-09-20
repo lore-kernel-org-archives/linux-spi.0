@@ -1,186 +1,99 @@
 From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: [PATCH 2/3] spi: clps711x: Add devicetree support
-Date: Sat, 20 Sep 2014 11:05:10 +0400
-Message-ID: <1411196710-4961-2-git-send-email-shc_work@mail.ru>
-References: <1411196710-4961-1-git-send-email-shc_work@mail.ru>
+Subject: [PATCH 1/3] spi: clps711x: Migrate to the new clk subsystem
+Date: Sat, 20 Sep 2014 11:05:09 +0400
+Message-ID: <1411196710-4961-1-git-send-email-shc_work@mail.ru>
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1411196710-4961-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-This patch adds devicetree support for the clps711x-spi driver and
-completely removes the non-DT support.
-This change is safe, because the current kernel code does not have
-a users of this driver.
+Currently clps711x arch have a fully functional CLK driver.
+This patch migrates clps711x-spi driver to use the new CLK subsystem.
 
 Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 ---
- drivers/spi/spi-clps711x.c                 | 61 ++++++++++--------------------
- include/linux/platform_data/spi-clps711x.h | 21 ----------
- 2 files changed, 20 insertions(+), 62 deletions(-)
- delete mode 100644 include/linux/platform_data/spi-clps711x.h
+ drivers/spi/spi-clps711x.c | 34 ++--------------------------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/spi/spi-clps711x.c b/drivers/spi/spi-clps711x.c
-index 181cf22..355a6cc 100644
+index ce538da..181cf22 100644
 --- a/drivers/spi/spi-clps711x.c
 +++ b/drivers/spi/spi-clps711x.c
-@@ -12,7 +12,6 @@
- #include <linux/io.h>
- #include <linux/clk.h>
- #include <linux/gpio.h>
--#include <linux/delay.h>
- #include <linux/module.h>
- #include <linux/interrupt.h>
- #include <linux/platform_device.h>
-@@ -20,9 +19,8 @@
- #include <linux/mfd/syscon.h>
- #include <linux/mfd/syscon/clps711x.h>
- #include <linux/spi/spi.h>
--#include <linux/platform_data/spi-clps711x.h>
+@@ -30,7 +30,6 @@
+ struct spi_clps711x_data {
+ 	void __iomem		*syncio;
+ 	struct regmap		*syscon;
+-	struct regmap		*syscon1;
+ 	struct clk		*spi_clk;
  
--#define DRIVER_NAME	"spi-clps711x"
-+#define DRIVER_NAME		"clps711x-spi"
+ 	u8			*tx_buf;
+@@ -47,27 +46,6 @@ static int spi_clps711x_setup(struct spi_device *spi)
+ 	return 0;
+ }
  
- #define SYNCIO_FRMLEN(x)	((x) << 8)
- #define SYNCIO_TXFRMEN		(1 << 14)
-@@ -104,21 +102,10 @@ static irqreturn_t spi_clps711x_isr(int irq, void *dev_id)
- static int spi_clps711x_probe(struct platform_device *pdev)
+-static void spi_clps711x_setup_xfer(struct spi_device *spi,
+-				    struct spi_transfer *xfer)
+-{
+-	struct spi_master *master = spi->master;
+-	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
+-
+-	/* Setup SPI frequency divider */
+-	if (xfer->speed_hz >= master->max_speed_hz)
+-		regmap_update_bits(hw->syscon1, SYSCON_OFFSET,
+-				   SYSCON1_ADCKSEL_MASK, SYSCON1_ADCKSEL(3));
+-	else if (xfer->speed_hz >= (master->max_speed_hz / 2))
+-		regmap_update_bits(hw->syscon1, SYSCON_OFFSET,
+-				   SYSCON1_ADCKSEL_MASK, SYSCON1_ADCKSEL(2));
+-	else if (xfer->speed_hz >= (master->max_speed_hz / 8))
+-		regmap_update_bits(hw->syscon1, SYSCON_OFFSET,
+-				   SYSCON1_ADCKSEL_MASK, SYSCON1_ADCKSEL(1));
+-	else
+-		regmap_update_bits(hw->syscon1, SYSCON_OFFSET,
+-				   SYSCON1_ADCKSEL_MASK, SYSCON1_ADCKSEL(0));
+-}
+-
+ static int spi_clps711x_prepare_message(struct spi_master *master,
+ 					struct spi_message *msg)
  {
- 	struct spi_clps711x_data *hw;
--	struct spi_clps711x_pdata *pdata = dev_get_platdata(&pdev->dev);
- 	struct spi_master *master;
- 	struct resource *res;
- 	int i, irq, ret;
+@@ -87,7 +65,7 @@ static int spi_clps711x_transfer_one(struct spi_master *master,
+ 	struct spi_clps711x_data *hw = spi_master_get_devdata(master);
+ 	u8 data;
  
--	if (!pdata) {
--		dev_err(&pdev->dev, "No platform data supplied\n");
--		return -EINVAL;
--	}
--
--	if (pdata->num_chipselect < 1) {
--		dev_err(&pdev->dev, "At least one CS must be defined\n");
--		return -EINVAL;
--	}
--
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		return irq;
-@@ -127,40 +114,24 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 	if (!master)
- 		return -ENOMEM;
+-	spi_clps711x_setup_xfer(spi, xfer);
++	clk_set_rate(hw->spi_clk, xfer->speed_hz ? : spi->max_speed_hz);
  
--	master->cs_gpios = devm_kzalloc(&pdev->dev, sizeof(int) *
--					pdata->num_chipselect, GFP_KERNEL);
--	if (!master->cs_gpios) {
--		ret = -ENOMEM;
--		goto err_out;
--	}
--
--	master->bus_num = pdev->id;
-+	master->bus_num = -1;
- 	master->mode_bits = SPI_CPHA | SPI_CS_HIGH;
- 	master->bits_per_word_mask =  SPI_BPW_RANGE_MASK(1, 8);
--	master->num_chipselect = pdata->num_chipselect;
-+	master->dev.of_node = pdev->dev.of_node;
- 	master->setup = spi_clps711x_setup;
- 	master->prepare_message = spi_clps711x_prepare_message;
- 	master->transfer_one = spi_clps711x_transfer_one;
+ 	hw->len = xfer->len;
+ 	hw->bpw = xfer->bits_per_word;
+@@ -176,13 +154,11 @@ static int spi_clps711x_probe(struct platform_device *pdev)
+ 		}
+ 	}
  
- 	hw = spi_master_get_devdata(master);
- 
--	for (i = 0; i < master->num_chipselect; i++) {
--		master->cs_gpios[i] = pdata->chipselect[i];
--		ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
--					DRIVER_NAME);
--		if (ret) {
--			dev_err(&pdev->dev, "Can't get CS GPIO %i\n", i);
--			goto err_out;
--		}
--	}
--
- 	hw->spi_clk = devm_clk_get(&pdev->dev, NULL);
+-	hw->spi_clk = devm_clk_get(&pdev->dev, "spi");
++	hw->spi_clk = devm_clk_get(&pdev->dev, NULL);
  	if (IS_ERR(hw->spi_clk)) {
+-		dev_err(&pdev->dev, "Can't get clocks\n");
  		ret = PTR_ERR(hw->spi_clk);
  		goto err_out;
  	}
+-	master->max_speed_hz = clk_get_rate(hw->spi_clk);
  
--	hw->syscon = syscon_regmap_lookup_by_pdevname("syscon.3");
-+	hw->syscon =
-+		syscon_regmap_lookup_by_compatible("cirrus,clps711x-syscon3");
+ 	hw->syscon = syscon_regmap_lookup_by_pdevname("syscon.3");
  	if (IS_ERR(hw->syscon)) {
- 		ret = PTR_ERR(hw->syscon);
+@@ -190,12 +166,6 @@ static int spi_clps711x_probe(struct platform_device *pdev)
  		goto err_out;
-@@ -185,14 +156,15 @@ static int spi_clps711x_probe(struct platform_device *pdev)
- 		goto err_out;
+ 	}
  
- 	ret = devm_spi_register_master(&pdev->dev, master);
--	if (!ret) {
--		dev_info(&pdev->dev,
--			 "SPI bus driver initialized. Master clock %u Hz\n",
--			 master->max_speed_hz);
--		return 0;
+-	hw->syscon1 = syscon_regmap_lookup_by_pdevname("syscon.1");
+-	if (IS_ERR(hw->syscon1)) {
+-		ret = PTR_ERR(hw->syscon1);
+-		goto err_out;
 -	}
-+	if (ret)
-+		goto err_out;
- 
--	dev_err(&pdev->dev, "Failed to register master\n");
-+	for (i = 0; i < master->num_chipselect; i++) {
-+		ret = devm_gpio_request(&pdev->dev, master->cs_gpios[i],
-+					dev_name(&pdev->dev));
-+		if (ret)
-+			goto err_out;
-+	}
- 
- err_out:
- 	spi_master_put(master);
-@@ -200,10 +172,17 @@ err_out:
- 	return ret;
- }
- 
-+static const struct of_device_id clps711x_spi_dt_ids[] = {
-+	{ .compatible = "cirrus,clps711x-spi", },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, clps711x_spi_dt_ids);
-+
- static struct platform_driver clps711x_spi_driver = {
- 	.driver	= {
- 		.name	= DRIVER_NAME,
- 		.owner	= THIS_MODULE,
-+		.of_match_table = clps711x_spi_dt_ids,
- 	},
- 	.probe	= spi_clps711x_probe,
- };
-diff --git a/include/linux/platform_data/spi-clps711x.h b/include/linux/platform_data/spi-clps711x.h
-deleted file mode 100644
-index 301956e..0000000
---- a/include/linux/platform_data/spi-clps711x.h
-+++ /dev/null
-@@ -1,21 +0,0 @@
--/*
-- *  CLPS711X SPI bus driver definitions
-- *
-- *  Copyright (C) 2012 Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- */
 -
--#ifndef ____LINUX_PLATFORM_DATA_SPI_CLPS711X_H
--#define ____LINUX_PLATFORM_DATA_SPI_CLPS711X_H
--
--/* Board specific platform_data */
--struct spi_clps711x_pdata {
--	int *chipselect;	/* Array of GPIO-numbers */
--	int num_chipselect;	/* Total count of GPIOs */
--};
--
--#endif
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	hw->syncio = devm_ioremap_resource(&pdev->dev, res);
+ 	if (IS_ERR(hw->syncio)) {
 -- 
 1.8.5.5
 

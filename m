@@ -1,80 +1,53 @@
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v5 08/11] spi: core: Convert to dev_pm_domain_attach|detach()
-Date: Fri, 19 Sep 2014 20:27:41 +0200
-Message-ID: <1411151264-16245-9-git-send-email-ulf.hansson@linaro.org>
-References: <1411151264-16245-1-git-send-email-ulf.hansson@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-acpi@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Kevin Hilman <khilman@linaro.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Tomasz Figa <tomasz.figa@gmail.com>,
-	devicetree@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Simon Horman <horms@verge.net.au>,
-	Magnus Damm <magnus.damm@gmail.com>,
-	Ben Dooks <ben-linux@fluff.org>,
-	Kukjin Kim <kgene.kim@samsung.com>,
-	Stephen Boyd <sboyd@codeaurora.org>,
-	Philipp Zabel <philipp.zabel@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Wolfram Sang <wsa@the-dreams.de>,
-	Chris Ball <chris@printf.net>,
-	Russell King <linux@arm.linux.org.uk>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>, linux-spi@vger.kernel.org
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-pm@vger.kernel.org
-Return-path: <linux-pm-owner@vger.kernel.org>
-In-Reply-To: <1411151264-16245-1-git-send-email-ulf.hansson@linaro.org>
-Sender: linux-pm-owner@vger.kernel.org
+From: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+Subject: [PATCH 3/3] spi: clps711x: dts: Add bindings documentation for the CLPS711X SPI driver
+Date: Sat, 20 Sep 2014 11:05:36 +0400
+Message-ID: <1411196736-5019-1-git-send-email-shc_work@mail.ru>
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Previously only the ACPI PM domain was supported by the spi bus.
+This patch adds the devicetree documentation for the
+Cirrus Logic CLPS711X SPI driver.
 
-Let's convert to the common attach/detach functions for PM domains,
-which currently means we are extending the support to include the
-generic PM domain as well.
-
-Cc: linux-spi@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Kevin Hilman <khilman@linaro.org>
+Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
 ---
- drivers/spi/spi.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ .../devicetree/bindings/spi/spi-clps711x.txt         | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/spi/spi-clps711x.txt
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index ca935df..72a0beb 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -264,10 +264,12 @@ static int spi_drv_probe(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	acpi_dev_pm_attach(dev, true);
--	ret = sdrv->probe(to_spi_device(dev));
--	if (ret)
--		acpi_dev_pm_detach(dev, true);
-+	ret = dev_pm_domain_attach(dev, true);
-+	if (ret != -EPROBE_DEFER) {
-+		ret = sdrv->probe(to_spi_device(dev));
-+		if (ret)
-+			dev_pm_domain_detach(dev, true);
-+	}
- 
- 	return ret;
- }
-@@ -278,7 +280,7 @@ static int spi_drv_remove(struct device *dev)
- 	int ret;
- 
- 	ret = sdrv->remove(to_spi_device(dev));
--	acpi_dev_pm_detach(dev, true);
-+	dev_pm_domain_detach(dev, true);
- 
- 	return ret;
- }
+diff --git a/Documentation/devicetree/bindings/spi/spi-clps711x.txt b/Documentation/devicetree/bindings/spi/spi-clps711x.txt
+new file mode 100644
+index 0000000..43712c0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/spi-clps711x.txt
+@@ -0,0 +1,20 @@
++* Cirrus Logic ARM CLPS711X Serial Peripheral Interface (SPI)
++
++Required properties:
++- compatible: Shall contain "cirrus,clps711x-spi".
++- reg: Offset and length of the register set for the device.
++- interrupts: Should contain SPI interrupt.
++- clocks: phandle to SPI reference clock.
++- cs-gpios: Specifies the GPIO pins to be used for chipselects.
++
++Example:
++	spi: spi@80000500 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		compatible = "cirrus,ep7312-spi", "cirrus,clps711x-spi";
++		reg = <0x80000500 0x4>;
++		interrupts = <15>;
++		clocks = <&clks CLPS711X_CLK_SPIREF>;
++		cs-gpios = <&portb 4 GPIO_ACTIVE_LOW>,
++			   <&portb 5 GPIO_ACTIVE_LOW>;
++	};
 -- 
-1.9.1
+1.8.5.5
 
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

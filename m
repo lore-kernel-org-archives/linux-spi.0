@@ -1,50 +1,151 @@
-From: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCAzLzNdIHNwaTogY2xwczcxMXg6IGR0czogQWRkIGJpbmRp?=
- =?UTF-8?B?bmdzIGRvY3VtZW50YXRpb24gZm9yIHRoZSBDTFBTNzExWCBTUEkgZHJpdmVy?=
-Date: Tue, 23 Sep 2014 20:49:34 +0400
-Message-ID: <1411490974.406069578@f51.i.mail.ru>
-References: <1411196736-5019-1-git-send-email-shc_work@mail.ru>
- <20140922180852.GA23666@leverpostej>
-Reply-To: =?UTF-8?B?QWxleGFuZGVyIFNoaXlhbg==?= <shc_work-JGs/UdohzUI@public.gmane.org>
+From: Andy Gross <agross-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Subject: Re: [PATCH] spi: qup: Fix incorrect block transfers
+Date: Tue, 23 Sep 2014 14:26:13 -0500
+Message-ID: <20140923192613.GA5975@qualcomm.com>
+References: <1411360048-3388-1-git-send-email-agross@codeaurora.org>
+ <1411464267.18580.46.camel@iivanov-dev>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-Cc: =?UTF-8?B?bGludXgtc3BpQHZnZXIua2VybmVsLm9yZw==?=
-	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?UTF-8?B?TWFyayBCcm93bg==?= <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	=?UTF-8?B?ZGV2aWNldHJlZUB2Z2VyLmtlcm5lbC5vcmc=?=
-	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	=?UTF-8?B?QXJuZCBCZXJnbWFubg==?= <arnd-r2nGTMty4D4@public.gmane.org>
-To: =?UTF-8?B?TWFyayBSdXRsYW5k?= <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Bjorn Andersson <bjorn.andersson-/MT0OVThwyLZJqsBc5GL+g@public.gmane.org>,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: "Ivan T. Ivanov" <iivanov-NEYub+7Iv8PQT0dZR+AlfA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140922180852.GA23666@leverpostej>
+Content-Disposition: inline
+In-Reply-To: <1411464267.18580.46.camel@iivanov-dev>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-K0NDOiBBcm5kIEJlcmdtYW5uIAoKTW9uLCAyMiBTZXAgMjAxNCAxOTowODo1MiArMDEwMCDQvtGC
-IE1hcmsgUnV0bGFuZCA8bWFyay5ydXRsYW5kQGFybS5jb20+Ogo+IE9uIFNhdCwgU2VwIDIwLCAy
-MDE0IGF0IDA4OjA1OjM2QU0gKzAxMDAsIEFsZXhhbmRlciBTaGl5YW4gd3JvdGU6Cj4gPiBUaGlz
-IHBhdGNoIGFkZHMgdGhlIGRldmljZXRyZWUgZG9jdW1lbnRhdGlvbiBmb3IgdGhlCj4gPiBDaXJy
-dXMgTG9naWMgQ0xQUzcxMVggU1BJIGRyaXZlci4KPiA+IAo+ID4gU2lnbmVkLW9mZi1ieTogQWxl
-eGFuZGVyIFNoaXlhbiA8c2hjX3dvcmtAbWFpbC5ydT4KPiA+IC0tLQo+ID4gIC4uLi9kZXZpY2V0
-cmVlL2JpbmRpbmdzL3NwaS9zcGktY2xwczcxMXgudHh0ICAgICAgICAgfCAyMCArKysrKysrKysr
-KysrKysrKysrKwo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspCj4gPiAgY3Jl
-YXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9zcGkvc3Bp
-LWNscHM3MTF4LnR4dAo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi9kZXZpY2V0
-cmVlL2JpbmRpbmdzL3NwaS9zcGktY2xwczcxMXgudHh0IGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0
-cmVlL2JpbmRpbmdzL3NwaS9zcGktY2xwczcxMXgudHh0Cj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0
-NAo+ID4gaW5kZXggMDAwMDAwMC4uNDM3MTJjMAo+ID4gLS0tIC9kZXYvbnVsbAo+ID4gKysrIGIv
-RG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL3NwaS9zcGktY2xwczcxMXgudHh0Cj4g
-PiBAQCAtMCwwICsxLDIwIEBACj4gPiArKiBDaXJydXMgTG9naWMgQVJNIENMUFM3MTFYIFNlcmlh
-bCBQZXJpcGhlcmFsIEludGVyZmFjZSAoU1BJKQo+ID4gKwo+ID4gK1JlcXVpcmVkIHByb3BlcnRp
-ZXM6Cj4gPiArLSBjb21wYXRpYmxlOiBTaGFsbCBjb250YWluICJjaXJydXMsY2xwczcxMXgtc3Bp
-Ii4KPiAKPiBJcyB0aGVyZSBhIHNwZWNpZmljICJjbHBzMTF4IiBkZXZpY2UsIG9yIGlzIHRoYXQg
-J3gnIGEgd2lsZGNhcmQ/Cj4gCj4gUGxlYXNlIGRvbid0IHVzZSB3aWxkY2FyZHMgaW4gYmluZGlu
-Z3MuIENob29zZSBhIHBhcnRpY3VsYXIgZGV2aWNlIGFzCj4gdGhlIGZhbGxiYWNrIHN0cmluZyB0
-byB1c2UuCgpXZSBoYXZlIGFncmVlZCB0byB1c2Ugc3VjaCBjb21wYXRpYmxlIHN0cmluZyBmb3Jt
-YXQgZm9yIHRoaXMgcGxhdGZvcm0uCmh0dHA6Ly93d3cuc3Bpbmljcy5uZXQvbGlzdHMvbGludXgt
-cHdtL21zZzAwOTU4Lmh0bWwKQWxsIENMUFM3MTFYLWRyaXZlcnMgdXNlIHRoaXMgZm9ybWF0LgoK
-LS0tCgo=
+On Tue, Sep 23, 2014 at 12:24:27PM +0300, Ivan T. Ivanov wrote:
+> 
+> Hi Andy,
+> 
+> On Sun, 2014-09-21 at 23:27 -0500, Andy Gross wrote:
+> > This patch fixes a number of errors with the QUP block transfer mode.  Errors
+> > manifested themselves as input underruns, output overruns, and timed out
+> > transactions.
+> 
+> At what speeds are you seeing those errors?
+
+We've tried 25MHz and 50MHz.  Both fail in the same way.  Keep in mind this is
+definitely a timing / race issue and it probably also dependent on the latency
+of the attached device.  I cannot reproduce this at all on my IPQ8064 based
+board, but others can.
+
+This problem manifested itself while using spidev and a usermode flash
+programming application (flashrom).
+
+> 
+> > 
+> > The block mode does not require the priming that occurs in FIFO mode.  At the
+> > moment that the QUP is placed into the RUN state, the QUP may immediately raise
+> > an interrupt if the request is a write.  Therefore, there is no need to prime
+> > the pump.
+> > 
+> > In addition, the block transfers require that whole blocks of data are
+> > read/written at a time.  The last block of data that completes a transaction may
+> > contain less than a full blocks worth of data.
+> 
+> Does this mean that block transfer will start only if the required
+> bytes from block is written into buffer?
+
+No, a better way of putting this is that immediately on setting RUN state,
+you'll get a service interrupt to fill the FIFO in block mode.  So there is no
+need to prime the FIFO from the non-isr context due to this behavior.
+
+<snip>
+
+> 
+> > +static void qup_fill_read_buffer(struct spi_qup *controller,
+> > +	struct spi_transfer *xfer, u32 data)
+> 
+> Please, could prefix this whit spi_ to be consistent with the
+> rest of the code.
+
+Good point.  I need to be consistent.
+
+> >  {
+> >  	u8 *rx_buf = xfer->rx_buf;
+> > -	u32 word, state;
+> > -	int idx, shift, w_size;
+> > -
+> > -	w_size = controller->w_size;
+> > -
+> > -	while (controller->rx_bytes < xfer->len) {
+> > -
+> > -		state = readl_relaxed(controller->base + QUP_OPERATIONAL);
+> > -		if (0 == (state & QUP_OP_IN_FIFO_NOT_EMPTY))
+> > -			break;
+> > +	int idx, shift;
+> > +	int read_len = min_t(int, xfer->len - controller->rx_bytes,
+> > +				controller->w_size);
+> 
+> You should not need this check here. xfer->len is multiple of controller->w_size
+> and you always read one word at time.
+
+Ah I missed the __spi_validate where this is done.  I'll remove this.  Good
+catch.
+
+<snip>
+
+> >  	const u8 *tx_buf = xfer->tx_buf;
+> > -	u32 word, state, data;
+> > -	int idx, w_size;
+> > +	u32 val;
+> > +	int idx;
+> > +	int write_len = min_t(int, xfer->len - controller->tx_bytes,
+> > +				controller->w_size);
+> >  
+> 
+> Same here.
+
+Agreed.
+
+<snip>
+
+> > -		word = 0;
+> > -		for (idx = 0; idx < w_size; idx++, controller->tx_bytes++) {
+> > +static void spi_qup_service_block(struct spi_qup *controller,
+> > +	struct spi_transfer *xfer, bool is_read)
+> > +{
+> 
+> Please, could you split this function to read and write, so we can use:
+> 
+> spi_qup_fifo_read() and spi_qup_fifo_write() in FIFO modes and 
+> spi_qup_block_read() and spi_qup_block_write() for BLOCK mode.
+
+Well I had it collapsed and the functions are identical except for the
+read/write specific pieces, which amount to 2 lines.  I can resplit it out.  It
+makes it symmetric.
+
+> 
+> > +	u32 data, words_per_blk, num_words, ack_flag, op_flag;
+> > +	int i;
+> > +
+> > +	if (is_read) {
+> > +		op_flag = QUP_OP_IN_BLOCK_READ_REQ;
+> > +		ack_flag = QUP_OP_IN_SERVICE_FLAG;
+> > +		num_words = DIV_ROUND_UP(xfer->len - controller->rx_bytes,
+> > +					controller->w_size);
+> 
+> Same here and below.
+
+Agreed.
+
+> > +		words_per_blk = controller->in_blk_sz >> 2;
+> > +	} else {
+> > +		op_flag = QUP_OP_OUT_BLOCK_WRITE_REQ;
+> > +		ack_flag = QUP_OP_OUT_SERVICE_FLAG;
+> > +		num_words = DIV_ROUND_UP(xfer->len - controller->tx_bytes,
+> > +					controller->w_size);
+> > +		words_per_blk = controller->out_blk_sz >> 2;
+> > +	}
+
+-- 
+sent by an employee of the Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+hosted by The Linux Foundation
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

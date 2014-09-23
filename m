@@ -1,78 +1,175 @@
-From: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
-Subject: Re: [PATCH 3/3] spi: clps711x: dts: Add bindings documentation for
- the CLPS711X SPI driver
-Date: Mon, 22 Sep 2014 19:08:52 +0100
-Message-ID: <20140922180852.GA23666@leverpostej>
-References: <1411196736-5019-1-git-send-email-shc_work@mail.ru>
+From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Subject: Re: [PATCH] spi: qup: Fix incorrect block transfers
+Date: Tue, 23 Sep 2014 12:24:27 +0300
+Message-ID: <1411464267.18580.46.camel@iivanov-dev>
+References: <1411360048-3388-1-git-send-email-agross@codeaurora.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1411196736-5019-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>,
+	Bjorn Andersson <bjorn.andersson@sonymobile.com>,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+To: Andy Gross <agross@codeaurora.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1411360048-3388-1-git-send-email-agross@codeaurora.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sat, Sep 20, 2014 at 08:05:36AM +0100, Alexander Shiyan wrote:
-> This patch adds the devicetree documentation for the
-> Cirrus Logic CLPS711X SPI driver.
+
+Hi Andy,
+
+On Sun, 2014-09-21 at 23:27 -0500, Andy Gross wrote:
+> This patch fixes a number of errors with the QUP block transfer mode.  Errors
+> manifested themselves as input underruns, output overruns, and timed out
+> transactions.
+
+At what speeds are you seeing those errors?
+
 > 
-> Signed-off-by: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+> The block mode does not require the priming that occurs in FIFO mode.  At the
+> moment that the QUP is placed into the RUN state, the QUP may immediately raise
+> an interrupt if the request is a write.  Therefore, there is no need to prime
+> the pump.
+> 
+> In addition, the block transfers require that whole blocks of data are
+> read/written at a time.  The last block of data that completes a transaction may
+> contain less than a full blocks worth of data.
+
+Does this mean that block transfer will start only if the required
+bytes from block is written into buffer?
+
+> 
+> Each block of data results in an input/output service interrupt accompanied with
+> a input/output block flag set.  Additional block reads/writes require clearing
+> of the service flag.  It is ok to check for additional blocks of data in the
+> ISR, but you have to ack every block you transfer.  Imbalanced acks result in
+> early return from complete transactions with pending interrupts that still have
+> to be ack'd.  The next transaction can be affected by these interrupts.
+> 
+> Signed-off-by: Andy Gross <agross@codeaurora.org>
 > ---
->  .../devicetree/bindings/spi/spi-clps711x.txt         | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/spi/spi-clps711x.txt
+>  drivers/spi/spi-qup.c |  194 +++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 141 insertions(+), 53 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-clps711x.txt b/Documentation/devicetree/bindings/spi/spi-clps711x.txt
-> new file mode 100644
-> index 0000000..43712c0
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/spi-clps711x.txt
-> @@ -0,0 +1,20 @@
-> +* Cirrus Logic ARM CLPS711X Serial Peripheral Interface (SPI)
+
+<snip>
+
+> +static void qup_fill_read_buffer(struct spi_qup *controller,
+> +	struct spi_transfer *xfer, u32 data)
+
+Please, could prefix this whit spi_ to be consistent with the
+rest of the code.
+
+>  {
+>  	u8 *rx_buf = xfer->rx_buf;
+> -	u32 word, state;
+> -	int idx, shift, w_size;
+> -
+> -	w_size = controller->w_size;
+> -
+> -	while (controller->rx_bytes < xfer->len) {
+> -
+> -		state = readl_relaxed(controller->base + QUP_OPERATIONAL);
+> -		if (0 == (state & QUP_OP_IN_FIFO_NOT_EMPTY))
+> -			break;
+> +	int idx, shift;
+> +	int read_len = min_t(int, xfer->len - controller->rx_bytes,
+> +				controller->w_size);
+
+You should not need this check here. xfer->len is multiple of controller->w_size
+and you always read one word at time.
+
+>  
+> -		word = readl_relaxed(controller->base + QUP_INPUT_FIFO);
+> -
+> -		if (!rx_buf) {
+> -			controller->rx_bytes += w_size;
+> -			continue;
+> -		}
+> -
+> -		for (idx = 0; idx < w_size; idx++, controller->rx_bytes++) {
+> +	if (rx_buf)
+> +		for (idx = 0; idx < read_len; idx++) {
+>  			/*
+>  			 * The data format depends on bytes per SPI word:
+>  			 *  4 bytes: 0x12345678
+> @@ -229,40 +218,129 @@ static void spi_qup_fifo_read(struct spi_qup *controller,
+>  			 *  1 byte : 0x00000012
+>  			 */
+>  			shift = BITS_PER_BYTE;
+> -			shift *= (w_size - idx - 1);
+> -			rx_buf[controller->rx_bytes] = word >> shift;
+> +			shift *= (controller->w_size - idx - 1);
+> +			rx_buf[controller->rx_bytes + idx] = data >> shift;
+>  		}
+> -	}
 > +
-> +Required properties:
-> +- compatible: Shall contain "cirrus,clps711x-spi".
+> +	controller->rx_bytes += read_len;
+>  }
+>  
+> -static void spi_qup_fifo_write(struct spi_qup *controller,
+> -			    struct spi_transfer *xfer)
+> +static void qup_prepare_write_data(struct spi_qup *controller,
+> +	struct spi_transfer *xfer, u32 *data)
+>  {
+>  	const u8 *tx_buf = xfer->tx_buf;
+> -	u32 word, state, data;
+> -	int idx, w_size;
+> +	u32 val;
+> +	int idx;
+> +	int write_len = min_t(int, xfer->len - controller->tx_bytes,
+> +				controller->w_size);
+>  
 
-Is there a specific "clps11x" device, or is that 'x' a wildcard?
+Same here.
 
-Please don't use wildcards in bindings. Choose a particular device as
-the fallback string to use.
+> -	w_size = controller->w_size;
+> +	*data = 0;
+>  
+> -	while (controller->tx_bytes < xfer->len) {
+> +	if (tx_buf)
+> +		for (idx = 0; idx < write_len; idx++) {
+> +			val = tx_buf[controller->tx_bytes + idx];
+> +			*data |= val << (BITS_PER_BYTE * (3 - idx));
+> +		}
+>  
+> -		state = readl_relaxed(controller->base + QUP_OPERATIONAL);
+> -		if (state & QUP_OP_OUT_FIFO_FULL)
+> -			break;
+> +	controller->tx_bytes += write_len;
+> +}
+>  
+> -		word = 0;
+> -		for (idx = 0; idx < w_size; idx++, controller->tx_bytes++) {
+> +static void spi_qup_service_block(struct spi_qup *controller,
+> +	struct spi_transfer *xfer, bool is_read)
+> +{
 
-> +- reg: Offset and length of the register set for the device.
-> +- interrupts: Should contain SPI interrupt.
-> +- clocks: phandle to SPI reference clock.
-> +- cs-gpios: Specifies the GPIO pins to be used for chipselects.
+Please, could you split this function to read and write, so we can use:
+
+spi_qup_fifo_read() and spi_qup_fifo_write() in FIFO modes and 
+spi_qup_block_read() and spi_qup_block_write() for BLOCK mode.
+
+> +	u32 data, words_per_blk, num_words, ack_flag, op_flag;
+> +	int i;
 > +
-> +Example:
-> +	spi: spi@80000500 {
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		compatible = "cirrus,ep7312-spi", "cirrus,clps711x-spi";
+> +	if (is_read) {
+> +		op_flag = QUP_OP_IN_BLOCK_READ_REQ;
+> +		ack_flag = QUP_OP_IN_SERVICE_FLAG;
+> +		num_words = DIV_ROUND_UP(xfer->len - controller->rx_bytes,
+> +					controller->w_size);
 
-Which other strings are compatible?
+Same here and below.
 
-Thanks,
-Mark.
+> +		words_per_blk = controller->in_blk_sz >> 2;
+> +	} else {
+> +		op_flag = QUP_OP_OUT_BLOCK_WRITE_REQ;
+> +		ack_flag = QUP_OP_OUT_SERVICE_FLAG;
+> +		num_words = DIV_ROUND_UP(xfer->len - controller->tx_bytes,
+> +					controller->w_size);
+> +		words_per_blk = controller->out_blk_sz >> 2;
+> +	}
 
-> +		reg = <0x80000500 0x4>;
-> +		interrupts = <15>;
-> +		clocks = <&clks CLPS711X_CLK_SPIREF>;
-> +		cs-gpios = <&portb 4 GPIO_ACTIVE_LOW>,
-> +			   <&portb 5 GPIO_ACTIVE_LOW>;
-> +	};
-> -- 
-> 1.8.5.5
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Thank you.
+Ivan

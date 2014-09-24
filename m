@@ -1,10 +1,11 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH 04/10] spi: dw-mid: follow new DMAengine workflow
-Date: Wed, 24 Sep 2014 13:35:38 +0300
-Message-ID: <1411554938.30231.12.camel@linux.intel.com>
+Subject: Re: [PATCH 05/10] spi: dw: disable all interrupts first when pump
+ message
+Date: Wed, 24 Sep 2014 13:38:17 +0300
+Message-ID: <1411555097.30231.14.camel@linux.intel.com>
 References: <1411060140-2801-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <1411060140-2801-5-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20140924084453.GG4015@sirena.org.uk>
+	 <1411060140-2801-6-git-send-email-andriy.shevchenko@linux.intel.com>
+	 <20140924084724.GH4015@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
@@ -12,24 +13,28 @@ Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, dmaengine-u
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140924084453.GG4015-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20140924084724.GH4015-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 2014-09-24 at 09:44 +0100, Mark Brown wrote:
-> On Thu, Sep 18, 2014 at 08:08:54PM +0300, Andy Shevchenko wrote:
-> > Though intel-mid-dma does not follow a new DMA workflow let's prepare SPI DW
-> > driver for that.
+On Wed, 2014-09-24 at 09:47 +0100, Mark Brown wrote:
+> On Thu, Sep 18, 2014 at 08:08:55PM +0300, Andy Shevchenko wrote:
 > 
-> I don't understand what this change is supposed to do - what is "a new
-> DMA workflow"?
+> > Always disable all interrupts before pump message. Enable them only for PIO
+> > mode.
+> 
+> Why?  
+> 
+> It's also not very obvious looking at the diff how this actually works,
+> the connection between DMA based transfer and interrupt disabling is
+> not clear.
 
+It's a really good question and needs to be investigated more.
 
-The client is obliged to call dma_async_issue_pending() which starts the
-actual transfers. Old DMA drivers do not follow this, since requirement
-was introduced in 2011 IIRC.
+If I don't disable interrupts I'm getting sometimes overrun/underrun
+interrupt. But we have no proper transfer handler in case of DMA.
 
-Current DMA driver for spi-dw doesn't follow this, but dw_dmac does.
+Perhaps we should carefully handle that case.
 
 -- 
 Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>

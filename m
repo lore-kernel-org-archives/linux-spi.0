@@ -1,12 +1,12 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH 04/10] spi: dw-mid: follow new DMAengine workflow
-Date: Wed, 24 Sep 2014 14:59:23 +0300
-Message-ID: <1411559963.30231.18.camel@linux.intel.com>
+Subject: Re: [PATCH 02/10] spi: dw-mid: always use duplex transfers when DMA
+Date: Wed, 24 Sep 2014 15:02:12 +0300
+Message-ID: <1411560132.22587.0.camel@linux.intel.com>
 References: <1411060140-2801-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <1411060140-2801-5-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20140924084453.GG4015@sirena.org.uk>
-	 <1411554938.30231.12.camel@linux.intel.com>
-	 <20140924110849.GH16977@sirena.org.uk>
+	 <1411060140-2801-3-git-send-email-andriy.shevchenko@linux.intel.com>
+	 <20140924084407.GF4015@sirena.org.uk>
+	 <1411554747.30231.10.camel@linux.intel.com>
+	 <20140924110747.GG16977@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
@@ -14,30 +14,35 @@ Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, dmaengine-u
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140924110849.GH16977-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20140924110747.GG16977-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 2014-09-24 at 12:08 +0100, Mark Brown wrote:
-> On Wed, Sep 24, 2014 at 01:35:38PM +0300, Andy Shevchenko wrote:
+On Wed, 2014-09-24 at 12:07 +0100, Mark Brown wrote:
+> On Wed, Sep 24, 2014 at 01:32:27PM +0300, Andy Shevchenko wrote:
 > > On Wed, 2014-09-24 at 09:44 +0100, Mark Brown wrote:
-> > > On Thu, Sep 18, 2014 at 08:08:54PM +0300, Andy Shevchenko wrote:
-> > > > Though intel-mid-dma does not follow a new DMA workflow let's prepare SPI DW
-> > > > driver for that.
+> > > On Thu, Sep 18, 2014 at 08:08:52PM +0300, Andy Shevchenko wrote:
 > 
-> > > I don't understand what this change is supposed to do - what is "a new
-> > > DMA workflow"?
+> > > > In case of DMA we never got things done until we enable both channels. In case
+> > > > of receive only or send only mode the user has to provide a dummy buffer.
 > 
-> > The client is obliged to call dma_async_issue_pending() which starts the
-> > actual transfers. Old DMA drivers do not follow this, since requirement
-> > was introduced in 2011 IIRC.
+> > > The driver must never impose such requirements on clients, they
+> > > shouldn't need to know about the quirks of the controller.  There's
+> > > support in the core providing dummy buffers for transmit and receive,
+> > > you should use that (possibly extending it so the dummies are only
+> > > provided for DMA).
 > 
-> > Current DMA driver for spi-dw doesn't follow this, but dw_dmac does.
+> > Currently driver in case of receiving or sending only will never call
+> > the xfer_done from DMA callback since we never will have counter equal
+> > to 2. So, the driver already relies on duplex mode. Am I missing
+> > something?
 > 
-> So be specific about it missing the call so someone reading the
-> changelog can understand what this is supposed to do.
+> Please re-read what I wrote above, especially the first phrase.  You
+> can't require that we rewrite essentialy every SPI driver on the off
+> chance that it's used with this controller.
 
-Will do.
+I think I know how to satisfy the user and fix the driver.
+I will remake the approach.
 
 
 -- 

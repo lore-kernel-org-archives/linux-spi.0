@@ -1,62 +1,52 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: qup: Fix incorrect block transfers
-Date: Wed, 24 Sep 2014 09:30:35 +0100
-Message-ID: <20140924083035.GY4015@sirena.org.uk>
-References: <1411360048-3388-1-git-send-email-agross@codeaurora.org>
- <1411464267.18580.46.camel@iivanov-dev>
- <20140923192613.GA5975@qualcomm.com>
+Subject: Re: [PATCH v2] spi: pl022: Add support for chip select extension
+Date: Wed, 24 Sep 2014 09:32:05 +0100
+Message-ID: <20140924083205.GZ4015@sirena.org.uk>
+References: <20140916183431.GX7960@sirena.org.uk>
+ <1410936418-26443-1-git-send-email-anders.berg@avagotech.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7uidztUHYC105IRM"
-Cc: "Ivan T. Ivanov" <iivanov@mm-sol.com>,
-	Bjorn Andersson <bjorn.andersson@sonymobile.com>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-To: Andy Gross <agross@codeaurora.org>
+	protocol="application/pgp-signature"; boundary="1IWgL8yD8uKyf/Tu"
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Russell King <linux@arm.linux.org.uk>,
+	linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+To: Anders Berg <anders.berg@avagotech.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20140923192613.GA5975@qualcomm.com>
+In-Reply-To: <1410936418-26443-1-git-send-email-anders.berg@avagotech.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---7uidztUHYC105IRM
+--1IWgL8yD8uKyf/Tu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Sep 23, 2014 at 02:26:13PM -0500, Andy Gross wrote:
-> On Tue, Sep 23, 2014 at 12:24:27PM +0300, Ivan T. Ivanov wrote:
-> > On Sun, 2014-09-21 at 23:27 -0500, Andy Gross wrote:
+On Wed, Sep 17, 2014 at 08:46:58AM +0200, Anders Berg wrote:
+> Add support for a extended PL022 which has an extra register for controlling up
+> to five chip select signals. This controller is found on the AXM5516 SoC.
+> Unfortunately the PrimeCell identification registers are identical to a
+> standard ARM PL022. To work around this, the peripheral ID must be overridden
+> in the device tree using the "arm,primecell-periphid" property with the value
+> 0x000b6022.
 
-> > > This patch fixes a number of errors with the QUP block transfer mode.  Errors
-> > > manifested themselves as input underruns, output overruns, and timed out
-> > > transactions.
+Applied, thanks.
 
-> > At what speeds are you seeing those errors?
-
-> We've tried 25MHz and 50MHz.  Both fail in the same way.  Keep in mind this is
-> definitely a timing / race issue and it probably also dependent on the latency
-> of the attached device.  I cannot reproduce this at all on my IPQ8064 based
-> board, but others can.
-
-With SPI everything is entirely clocked from the master - the attached
-device can't cause any of those issues unless there's an electrical
-problem that *really* upsets the master.
-
---7uidztUHYC105IRM
+--1IWgL8yD8uKyf/Tu
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUIoEqAAoJECTWi3JdVIfQDH8H/3z5Kjor3KxMUlgCR7OOhlwb
-ww6ti3EsagIAQnUcIAazXFldKhjow7Y0cpHKz5cQuEnekxsqfX6TxiyVl+8V9cmq
-K/8mt6eI9SuW9+1tOlu7ra9z51VX7V2eSOzzn1laan56idKuEPvQHTc77zP9Hoxa
-imMTtOZOIWEYc9S57yvaHbIDIMYYYpaNoNBr0H1G+YXJDcZHsNjNxVcYUHrw0tge
-tEA85ExSRW6Sg3l94zH2PscWDH0YEXpdqLoFwbInxiyQ+jCm3oIPSVDcUZtiS1HD
-lhEwj93eMVgbKA1j9CjnxKCcsSy3r4RiLxe94MGNRealWXAq3ErBkpOWy86Cx4s=
-=dveO
+iQEcBAEBAgAGBQJUIoGFAAoJECTWi3JdVIfQqzEH/jXdjXelxupUyZXDr6EmgzNe
+xEbMFtB0thR/Z74+rYsRlYcJLWOCnpn3X3Xx7h2F3obu6X7JlGTTJ/f8cHtQEOC7
+wDb5qLY0KCdvtFaQ7IMY4W4120OXzZ6WrRnPOUFU2CJ0mhERQK/63cuZ4vtdO/KU
+DKVZ7pOFgyZ/X76bcjB3eoQAUI4zaV0S8aniKONLbnnYJAE9hQUink60FTVbcWPM
+PsXGB70HFKbIrqou+o3Tpih6RgKHb5IkJSY4jZD0UyvPBrmvdLNwbMuk1ePGEk3R
+MzZm77I7Fryn4g8ZnlMKy/jgvVYVdTgNoXIn3Cb+P92KjX1K/flQz/qfgGqxEVw=
+=8ZMs
 -----END PGP SIGNATURE-----
 
---7uidztUHYC105IRM--
+--1IWgL8yD8uKyf/Tu--

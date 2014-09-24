@@ -1,47 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/3] spi: clps711x: Migrate to the new clk subsystem
-Date: Wed, 24 Sep 2014 09:40:33 +0100
-Message-ID: <20140924084033.GE4015@sirena.org.uk>
-References: <1411196710-4961-1-git-send-email-shc_work@mail.ru>
+Subject: Re: [PATCH 02/10] spi: dw-mid: always use duplex transfers when DMA
+Date: Wed, 24 Sep 2014 09:44:07 +0100
+Message-ID: <20140924084407.GF4015@sirena.org.uk>
+References: <1411060140-2801-1-git-send-email-andriy.shevchenko@linux.intel.com>
+ <1411060140-2801-3-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4D0iojmU0rbTyz/6"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Shiyan <shc_work-JGs/UdohzUI@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="5tP+uu4DqNOLJklJ"
+Cc: Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1411196710-4961-1-git-send-email-shc_work-JGs/UdohzUI@public.gmane.org>
+In-Reply-To: <1411060140-2801-3-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---4D0iojmU0rbTyz/6
+--5tP+uu4DqNOLJklJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sat, Sep 20, 2014 at 11:05:09AM +0400, Alexander Shiyan wrote:
-> Currently clps711x arch have a fully functional CLK driver.
-> This patch migrates clps711x-spi driver to use the new CLK subsystem.
+On Thu, Sep 18, 2014 at 08:08:52PM +0300, Andy Shevchenko wrote:
+> In case of DMA we never got things done until we enable both channels. In case
+> of receive only or send only mode the user has to provide a dummy buffer.
 
-Applied, thanks.
+The driver must never impose such requirements on clients, they
+shouldn't need to know about the quirks of the controller.  There's
+support in the core providing dummy buffers for transmit and receive,
+you should use that (possibly extending it so the dummies are only
+provided for DMA).
 
---4D0iojmU0rbTyz/6
+--5tP+uu4DqNOLJklJ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUIoOAAAoJECTWi3JdVIfQjN0H/iGNAMubtfAztb6Dc+BTmPtc
-7kCTWqBU/8Lml7xLg7n7y/CEI7YSUqj6IVr+p/2CmSF064c1VBXTYCCSZKIYALVB
-W5j/Vtg2fTFNg4W4VLo0qNpcKTZ7CHNWabfgNTgpxyepKet7k9vqqN2z/vKMXMbM
-gCY7l0UWhD63E552Ur1mNFhhj5dG2n1Jo+BOdeddaUVafka/v1st7iZ8PlwzaHrO
-nF0zrggCElDg++fC+djigm2azPVeXDNEqq2XqkB0pdaQ70rca4gN1UOMlgbwp+n/
-leJ1yFG9P9m99/MxEL8lOCdCSpS8k0QeczPIGR54HCcwWQVAZnmtZbiqfV/Gt4s=
-=PZRX
+iQEcBAEBAgAGBQJUIoRWAAoJECTWi3JdVIfQZH4H/idaPNP2clsZIguyvYfWGdMq
+1O/rsIdylDSluLD5foEP0shQaLEFzk4fNwAvN++dIVFBUqyDT+Ho3jpG0BTo8HgK
+0WBOr0OomMLG5vm2o3ELq2SbYe8LnitdR9P9ED11Nr+n0nc8MfAm4s1wQOZURA44
+D9C+xc2HmCJTN/lvF+d8L1Cm+inbr44yZNa9dtE2No/IJ/ww1PdxLbKLaCfiZqBh
+n8GvcAH46RQ7+7GJCgsmtXon9E604xZV5rlnXNB6WerNlxsFostVACQL2dAJh9RB
+Q9hS01eKs/KeEAuff9LoE/l39fyZbdRR6Tw/yIm89Oc9CWBZybKNUGMrQFXgci4=
+=Hwqk
 -----END PGP SIGNATURE-----
 
---4D0iojmU0rbTyz/6--
+--5tP+uu4DqNOLJklJ--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

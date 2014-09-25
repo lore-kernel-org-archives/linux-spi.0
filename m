@@ -1,49 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi: fsl-dspi: Remove probe info message
-Date: Thu, 25 Sep 2014 13:49:29 +0100
-Message-ID: <20140925124929.GJ27755@sirena.org.uk>
-References: <1411644744-29371-1-git-send-email-alexander.stein@systec-electronic.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 21/27] spi: omap2-mcspi: use
+ pm_runtime_last_busy_and_autosuspend helper
+Date: Thu, 25 Sep 2014 14:03:35 +0100
+Message-ID: <20140925130335.GK27755@sirena.org.uk>
+References: <1411575342-31048-1-git-send-email-vinod.koul@intel.com>
+ <1411575342-31048-22-git-send-email-vinod.koul@intel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="HcccYpVZDxQ8hzPO"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="W2ydbIOJmkm74tJ2"
+Cc: linux-kernel@vger.kernel.org, subhransu.s.prusty@intel.com,
+	linux-spi@vger.kernel.org
+To: Vinod Koul <vinod.koul@intel.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1411644744-29371-1-git-send-email-alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1411575342-31048-22-git-send-email-vinod.koul@intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---HcccYpVZDxQ8hzPO
+--W2ydbIOJmkm74tJ2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Sep 25, 2014 at 01:32:24PM +0200, Alexander Stein wrote:
-> Remove the probe info message which also has wrong output. No need to add
-> KERN_INFO to pr_info. Output was:
-> 6Freescale DSPI master initialized
+On Wed, Sep 24, 2014 at 09:45:11PM +0530, Vinod Koul wrote:
+> Use the new pm_runtime_last_busy_and_autosuspend helper instead of open
+> coding the same code
 
-Applied, thanks.
+Acked-by: Mark Brown <broonie@kernel.org>
 
---HcccYpVZDxQ8hzPO
+though I have to say that the function name is rather spectacularly long
+here.
+
+--W2ydbIOJmkm74tJ2
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUJA9YAAoJECTWi3JdVIfQ3aEH/1huoFLo9yVwq5hHPNwaJ8X6
-1ekulrkdysbTmHTwt3pOfJwjDx/wNpT3k8nDmp7vOWV8eLXd8bckxxW+zJV4z4j5
-b8Uo8HmylShW3PgASlmb3upRGKJpTk02XZSoRPkN0DrC27oPbLio/aa0ljW4L8eF
-xSXE0ZRJ3PSztuqC9bub0Mmm2aSqzS/hQB5FYXdcDoB4t0VEjlMobUpmHdqAmbR4
-Kwx8K71wKStOE0S46I1wVMBfWi7YfGmVUpe/aivpxZvtd8wDjQGD9B3dF5taFEZV
-i/kNPljEYU3fx2clasLloHTd+lPcOwDdnCzPl+nPFhCRfgx3TRDCCVdO8aOGAyY=
-=J9Br
+iQEcBAEBAgAGBQJUJBKmAAoJECTWi3JdVIfQ3JsIAIV5+JNPOGg6gJjmKBjWritA
+ZZWkO6riCpOJdbjmoSxZ3WZVd0ahmlZjboCdsDpzgVgqu/9f2nlMBG/HmcRe12kX
+bSMnh9NWZuRqc2+4xHBq5xKDkS4PNzl/K01IiRuFAHeH5uRL2nN+8b5uWq8oZ1oB
+oOE+ztxw9Ga3WkQ0un3cpt8Rb961Y7AfWdDcz3Aey+Zzs5Z1V+LINDx9bv3QCFfp
+j/rv8rVku8SXZNEnHyeIzK2PlvZVijGNtCrxGyiTL4vRQO1ghdnAABc+eH2PzF+U
+1o9J+GePWUK0PBi0Cbj3ZyJvf4mJoG5gUQflTC6edbEnF5GuQIzBOqihIjR/7+o=
+=weOe
 -----END PGP SIGNATURE-----
 
---HcccYpVZDxQ8hzPO--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--W2ydbIOJmkm74tJ2--

@@ -1,104 +1,46 @@
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Subject: Re: [PATCH 00/27] add
-	pm_runtime_last_busy_and_autosuspend() helper
-Date: Thu, 25 Sep 2014 21:54:36 +0200
-Message-ID: <32849712.0gtj7BlKY3@vostro.rjw.lan>
-References: <1411575342-31048-1-git-send-email-vinod.koul@intel.com>
- <20140925142201.GD28045@saruman> <20140925142758.GB1316@katana>
+From: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+Subject: [PATCH 1/2] spi: bcm53xx: Fix module dependency
+Date: Fri, 26 Sep 2014 14:18:31 +0800
+Message-ID: <1411712311.23531.0.camel@phoenix>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Cc: linux-wireless@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>,
- patches@opensource.wolfsonmicro.com, linux-doc@vger.kernel.org,
- Seungwon Jeon <tgih.jun@samsung.com>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- Chris Ball <chris@printf.net>, dri-devel@lists.freedesktop.org,
- Marcin Wojtas <mw@semihalf.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- David Herrmann <dh.herrmann@gmail.com>,
- Shinya Kuribayashi <skuribay@pobox.com>,
- Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- Jingoo Han <jg1.han@samsung.com>, Jaehoon Chung <jh80.chung@samsung.com>,
- Jani Nikula <jani.nikula@intel.com>, Tomi Valkeinen <tomi.valkeinen@ti.com>,
- Alan Stern <stern@rowland.harvard.edu>, Ben Skeggs <bskeggs@redhat.com>,
- Bjorn Andersson <bjorn.andersson@sonymobile.com>,
- Dave Airlie <airlied@redhat.com>, Ulf Hansson <ulf.hanss
-To: Wolfram Sang <wsa@the-dreams.de>, Vinod Koul <vinod.koul@intel.com>
-Return-path: <intel-gfx-bounces@lists.freedesktop.org>
-In-Reply-To: <20140925142758.GB1316@katana>
-List-Unsubscribe: <http://lists.freedesktop.org/mailman/options/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
-List-Archive: <http://lists.freedesktop.org/archives/intel-gfx>
-List-Post: <mailto:intel-gfx@lists.freedesktop.org>
-List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
-List-Subscribe: <http://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
- <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
-Errors-To: intel-gfx-bounces@lists.freedesktop.org
-Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
-List-Id: linux-spi.vger.kernel.org
+Cc: =?gb2312?Q?Rafa=810=920_Mi=810=920ecki?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thursday, September 25, 2014 04:27:58 PM Wolfram Sang wrote:
-> 
-> --Bn2rw/3z4jIqBvZU
-> Content-Type: text/plain; charset=us-ascii
-> Content-Disposition: inline
-> Content-Transfer-Encoding: quoted-printable
-> 
-> On Thu, Sep 25, 2014 at 09:22:01AM -0500, Felipe Balbi wrote:
-> > On Thu, Sep 25, 2014 at 01:27:18PM +0530, Vinod Koul wrote:
-> > > On Wed, Sep 24, 2014 at 03:32:19PM -0500, Felipe Balbi wrote:
-> > > > > > > OK, I guess this is as good as it gets.
-> > > > > > >=20
-> > > > > > > What tree would you like it go through?
-> > > > > >=20
-> > > > > > Do we really need this new helper ? I mean, the very moment when =
-> we
-> > > > > > decide to implement ->runtime_idle() we will need to get rid of t=
-> his
-> > > > > > change. I wonder if it's really valid...
-> > > > >=20
-> > > > > I'm not sure I'm following?  This seems to simply implement what dr=
-> ivers
-> > > > > have been doing already as one function.  Why would it be invalid t=
-> o reduce
-> > > > > code duplication?
-> > > >=20
-> > > > For two reasons:
-> > > >=20
-> > > > 1) the helper has no inteligence whatsoever. It just calls the same
-> > > > functions.
-> > > >=20
-> > > > 2) the duplication will vanish whenever someone implements
-> > > > ->runtime_idle() and have that call pm_runtime_autosuspend() (like PCI
-> > > > and USB buses are doing today). This will just be yet another line th=
-> at
-> > > > needs to change.
-> > > >=20
-> > > > Frankly though, no strong feelings, I just think it's a commit that
-> > > > doesn't bring that any benefits other than looking like one line was
-> > > > removed.
-> > > and yes that is what it tries to do nothing more nothing less. If in fu=
-> ture
-> > > there are no users (today we have quite a few), then we can remove the =
-> dead
-> > > macro, no harm. But that is not the situation today.
-> >=20
-> > as I said, a commit that's bound to be useless. It's not like you're
-> > saving 10 lines of code, it's only one. Replacing two simple lines with
-> > a function which takes <joke> almost as many characters to type </joke>.
-> >=20
-> > IMO, this is pretty useless and I'd rather not see them in the drivers I
-> > maintain, sorry.
-> 
-> It is not a NACK from me; yet from a high-level perspective I agree with
-> Felipe.
+config SPI_BCM53XX needs to depend on BCMA_POSSIBLE and select BCMA.
+This fixes below build error:
+ERROR: "bcma_driver_unregister" [drivers/spi/spi-bcm53xx.ko] undefined!
+ERROR: "__bcma_driver_register" [drivers/spi/spi-bcm53xx.ko] undefined!
 
-OK
+Signed-off-by: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+---
+ drivers/spi/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I'd rather not merge something that driver people don't want to use.
-
-Vinod?
-
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index dc10453..84e7c9e 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -116,6 +116,8 @@ config SPI_AU1550
+ config SPI_BCM53XX
+ 	tristate "Broadcom BCM53xx SPI controller"
+ 	depends on ARCH_BCM_5301X
++	depends on BCMA_POSSIBLE
++	select BCMA
+ 	help
+           Enable support for the SPI controller on Broadcom BCM53xx ARM SoCs.
+ 
 -- 
-I speak only for myself.
-Rafael J. Wysocki, Intel Open Source Technology Center.
+1.9.1
+
+
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

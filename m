@@ -1,50 +1,40 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] spi: bcm53xx: Fix module dependency
-Date: Fri, 26 Sep 2014 09:13:32 +0100
-Message-ID: <20140926081332.GY27755@sirena.org.uk>
-References: <1411712311.23531.0.camel@phoenix>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="dwN3S3mscniL3FCL"
-Cc: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Axel Lin <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>
+From: Weike Chen <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] SPI: spi-pxa2xx: Add support for Intel Quark X1000 SPI controller
+Date: Fri, 26 Sep 2014 10:25:48 -0700
+Message-ID: <1411752349-31490-1-git-send-email-alvin.chen@intel.com>
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mika Westerberg <mika.westerberg-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Hock Leong Kweh <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Boon Leong Ong <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Raymond Tan <raymond.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Alvin Chen <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1411712311.23531.0.camel@phoenix>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Hi,
+Intel Quark X1000 consists of two SPI controllers which can be PCI enumerated.
+SPI-PXA2XX PCI layer doesn't support it. Thus, we add support for Intel Quark
+X1000 SPI as well.
 
---dwN3S3mscniL3FCL
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Weike Chen (1):
+  SPI: spi-pxa2xx: SPI support for Intel Quark X1000
 
-On Fri, Sep 26, 2014 at 02:18:31PM +0800, Axel Lin wrote:
-> config SPI_BCM53XX needs to depend on BCMA_POSSIBLE and select BCMA.
-> This fixes below build error:
-> ERROR: "bcma_driver_unregister" [drivers/spi/spi-bcm53xx.ko] undefined!
-> ERROR: "__bcma_driver_register" [drivers/spi/spi-bcm53xx.ko] undefined!
+ drivers/spi/spi-pxa2xx-pci.c |    8 ++
+ drivers/spi/spi-pxa2xx.c     |  251 +++++++++++++++++++++++++++++++++++-------
+ drivers/spi/spi-pxa2xx.h     |    8 +-
+ include/linux/pxa2xx_ssp.h   |   21 ++++
+ 4 files changed, 249 insertions(+), 39 deletions(-)
 
-Applied both, thanks.
+-- 
+1.7.9.5
 
---dwN3S3mscniL3FCL
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUJSArAAoJECTWi3JdVIfQIhkH/3wAK+FBqnKogkkuISYFU7bP
-BvkQ1YE0xl/e9wbXvzTzZ614Bd/b8I8zAEvXrCUSb64yfDFj6hW9FRq10QIOoKJK
-0waYF9NYWK1QP3+T1nHrULLSH4m/kcNIggRlYsObu6avcBPcOu/bDDBLsvBWVMS1
-5LcWfxUQdxZ1mg0bCkeCo9ZTGV0ypsFZE2m0UkUj28FN5/AJXBuo4/k5mF+CYJ44
-PDvuDlTyWGICCWRu/lXkzXD0MsQEjIPLrD8XaOdZYEd1tzacNRSS8ioHVq011DZM
-wAD6i0599k/p678wLUo94S87R6dp3AglgZsiM9bMsrxMSDZJI0txIu4m3THRi3Y=
-=rTBP
------END PGP SIGNATURE-----
-
---dwN3S3mscniL3FCL--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

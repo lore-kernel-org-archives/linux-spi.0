@@ -1,250 +1,109 @@
-From: gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org
-Subject: [PATCH v3] spi: orion: support armada extended baud rates
-Date: Sun, 28 Sep 2014 23:24:04 +1000
-Message-ID: <1411910644-7174-1-git-send-email-gerg@uclinux.org>
-Cc: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Vinod Koul <vinod.koul@intel.com>
+Subject: Re: [PATCH 00/27] add
+	pm_runtime_last_busy_and_autosuspend() helper
+Date: Sun, 28 Sep 2014 21:07:19 +0530
+Message-ID: <20140928153719.GG1638@intel.com>
+References: <1411575342-31048-1-git-send-email-vinod.koul@intel.com>
+ <20140925142201.GD28045@saruman> <20140925142758.GB1316@katana>
+ <32849712.0gtj7BlKY3@vostro.rjw.lan>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Cc: linux-wireless@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>,
+ patches@opensource.wolfsonmicro.com, Wolfram Sang <wsa@the-dreams.de>,
+ linux-mmc@vger.kernel.org, Daniel Vetter <daniel.vetter@ffwll.ch>,
+ Chris Ball <chris@printf.net>, dri-devel@lists.freedesktop.org,
+ Marcin Wojtas <mw@semihalf.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ David Herrmann <dh.herrmann@gmail.com>,
+ Shinya Kuribayashi <skuribay@pobox.com>,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ Jingoo Han <jg1.han@samsung.com>, Seungwon Jeon <tgih.jun@samsung.com>,
+ Jaehoon Chung <jh80.chung@samsung.com>, Jani Nikula <jani.nikula@intel.com>,
+ Tomi Valkeinen <tomi.valkeinen@ti.com>, Alan Stern <stern@rowland.harvard.edu>,
+ Ben Skeggs <bskeggs@redhat.com>,
+ Bjorn Andersson <bjorn.andersson@sonymobile.com>,
+ Dave Airlie <airlied@
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Return-path: <intel-gfx-bounces@lists.freedesktop.org>
+Content-Disposition: inline
+In-Reply-To: <32849712.0gtj7BlKY3@vostro.rjw.lan>
+List-Unsubscribe: <http://lists.freedesktop.org/mailman/options/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=unsubscribe>
+List-Archive: <http://lists.freedesktop.org/archives/intel-gfx>
+List-Post: <mailto:intel-gfx@lists.freedesktop.org>
+List-Help: <mailto:intel-gfx-request@lists.freedesktop.org?subject=help>
+List-Subscribe: <http://lists.freedesktop.org/mailman/listinfo/intel-gfx>,
+ <mailto:intel-gfx-request@lists.freedesktop.org?subject=subscribe>
+Errors-To: intel-gfx-bounces@lists.freedesktop.org
+Sender: "Intel-gfx" <intel-gfx-bounces@lists.freedesktop.org>
+List-Id: linux-spi.vger.kernel.org
 
-From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+On Thu, Sep 25, 2014 at 09:54:36PM +0200, Rafael J. Wysocki wrote:
+> On Thursday, September 25, 2014 04:27:58 PM Wolfram Sang wrote:
+> > 
+> > --Bn2rw/3z4jIqBvZU
+> > Content-Type: text/plain; charset=us-ascii
+> > Content-Disposition: inline
+> > Content-Transfer-Encoding: quoted-printable
+> > 
+> > On Thu, Sep 25, 2014 at 09:22:01AM -0500, Felipe Balbi wrote:
+> > > On Thu, Sep 25, 2014 at 01:27:18PM +0530, Vinod Koul wrote:
+> > > > On Wed, Sep 24, 2014 at 03:32:19PM -0500, Felipe Balbi wrote:
+> > > > > > > > OK, I guess this is as good as it gets.
+> > > > > > > >=20
+> > > > > > > > What tree would you like it go through?
+> > > > > > >=20
+> > > > > > > Do we really need this new helper ? I mean, the very moment when =
+> > we
+> > > > > > > decide to implement ->runtime_idle() we will need to get rid of t=
+> > his
+> > > > > > > change. I wonder if it's really valid...
+> > > > > >=20
+> > > > > > I'm not sure I'm following?  This seems to simply implement what dr=
+> > ivers
+> > > > > > have been doing already as one function.  Why would it be invalid t=
+> > o reduce
+> > > > > > code duplication?
+> > > > >=20
+> > > > > For two reasons:
+> > > > >=20
+> > > > > 1) the helper has no inteligence whatsoever. It just calls the same
+> > > > > functions.
+> > > > >=20
+> > > > > 2) the duplication will vanish whenever someone implements
+> > > > > ->runtime_idle() and have that call pm_runtime_autosuspend() (like PCI
+> > > > > and USB buses are doing today). This will just be yet another line th=
+> > at
+> > > > > needs to change.
+> > > > >=20
+> > > > > Frankly though, no strong feelings, I just think it's a commit that
+> > > > > doesn't bring that any benefits other than looking like one line was
+> > > > > removed.
+> > > > and yes that is what it tries to do nothing more nothing less. If in fu=
+> > ture
+> > > > there are no users (today we have quite a few), then we can remove the =
+> > dead
+> > > > macro, no harm. But that is not the situation today.
+> > >=20
+> > > as I said, a commit that's bound to be useless. It's not like you're
+> > > saving 10 lines of code, it's only one. Replacing two simple lines with
+> > > a function which takes <joke> almost as many characters to type </joke>.
+> > >=20
+> > > IMO, this is pretty useless and I'd rather not see them in the drivers I
+> > > maintain, sorry.
+> > 
+> > It is not a NACK from me; yet from a high-level perspective I agree with
+> > Felipe.
+> 
+> OK
+> 
+> I'd rather not merge something that driver people don't want to use.
+> 
+> Vinod?
+There have been quite a few ACKs as well. Either way am okay. If you feel
+this will get removed as discussed, then there is no point in merging
 
-The Armada SoC family implementation of this SPI hardware module has
-extended the configuration register to allow for a wider range of SPI
-clock rates. Specifically the Serial Baud Rate Pre-selection bits in the
-SPI Interface Configuration Register now also use bits 6 and 7 as well.
-
-Modify the baud rate calculation to handle these differences for the
-Armada case. Potentially a baud rate can be setup using a number of
-different pre-scalar and scalar combinations. This code tries all
-possible pre-scalar divisors (8 in total) to try and find the most
-accurate set.
-
-This change introduces (and documents) a new device tree compatible
-device name "armada-370-spi" to support this.
-
-Signed-off-by: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
-Tested-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
-Reviewed-by: Ezequiel Garcia <ezequiel.garcia-wi1+55ScJUtKEb57/3fJTNBPR1lH4CV8@public.gmane.org>
----
-Changes in v2:
-Introduced a new devicetree compatible name for armada SPI support.
-
-Changes in v3:
-Changed compatible devicetree name to armada-370-spi.
-Split change to armada-370-xp.dtsi out into separate patch
-
- .../devicetree/bindings/spi/spi-orion.txt          |   2 +-
- drivers/spi/spi-orion.c                            | 116 +++++++++++++++++----
- 2 files changed, 95 insertions(+), 23 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/spi/spi-orion.txt b/Documentation/devicetree/bindings/spi/spi-orion.txt
-index a3ff50f..50c3a3d 100644
---- a/Documentation/devicetree/bindings/spi/spi-orion.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-orion.txt
-@@ -1,7 +1,7 @@
- Marvell Orion SPI device
- 
- Required properties:
--- compatible : should be "marvell,orion-spi".
-+- compatible : should be "marvell,orion-spi" or "marvell,armada-370-spi".
- - reg : offset and length of the register set for the device
- - cell-index : Which of multiple SPI controllers is this.
- Optional properties:
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index c4675fa..acf8e48 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -18,6 +18,7 @@
- #include <linux/module.h>
- #include <linux/pm_runtime.h>
- #include <linux/of.h>
-+#include <linux/of_device.h>
- #include <linux/clk.h>
- #include <linux/sizes.h>
- #include <asm/unaligned.h>
-@@ -40,13 +41,27 @@
- #define ORION_SPI_MODE_CPHA		(1 << 12)
- #define ORION_SPI_IF_8_16_BIT_MODE	(1 << 5)
- #define ORION_SPI_CLK_PRESCALE_MASK	0x1F
-+#define ARMADA_SPI_CLK_PRESCALE_MASK	0xDF
- #define ORION_SPI_MODE_MASK		(ORION_SPI_MODE_CPOL | \
- 					 ORION_SPI_MODE_CPHA)
- 
-+enum orion_spi_type {
-+	ORION_SPI,
-+	ARMADA_SPI,
-+};
-+
-+struct orion_spi_dev {
-+	enum orion_spi_type	typ;
-+	unsigned int		min_divisor;
-+	unsigned int		max_divisor;
-+	u32			prescale_mask;
-+};
-+
- struct orion_spi {
- 	struct spi_master	*master;
- 	void __iomem		*base;
- 	struct clk              *clk;
-+	const struct orion_spi_dev *devdata;
- };
- 
- static inline void __iomem *spi_reg(struct orion_spi *orion_spi, u32 reg)
-@@ -83,30 +98,66 @@ static int orion_spi_baudrate_set(struct spi_device *spi, unsigned int speed)
- 	u32 prescale;
- 	u32 reg;
- 	struct orion_spi *orion_spi;
-+	const struct orion_spi_dev *devdata;
- 
- 	orion_spi = spi_master_get_devdata(spi->master);
-+	devdata = orion_spi->devdata;
- 
- 	tclk_hz = clk_get_rate(orion_spi->clk);
- 
--	/*
--	 * the supported rates are: 4,6,8...30
--	 * round up as we look for equal or less speed
--	 */
--	rate = DIV_ROUND_UP(tclk_hz, speed);
--	rate = roundup(rate, 2);
-+	if (devdata->typ == ARMADA_SPI) {
-+		unsigned int clk, spr, sppr, sppr2, err;
-+		unsigned int best_spr, best_sppr, best_err;
-+
-+		best_err = speed;
-+		best_spr = 0;
-+		best_sppr = 0;
-+
-+		/* Iterate over the valid range looking for best fit */
-+		for (sppr = 0; sppr < 8; sppr++) {
-+			sppr2 = 0x1 << sppr;
-+
-+			spr = tclk_hz / sppr2;
-+			spr = DIV_ROUND_UP(spr, speed);
-+			if ((spr == 0) || (spr > 15))
-+				continue;
- 
--	/* check if requested speed is too small */
--	if (rate > 30)
--		return -EINVAL;
-+			clk = tclk_hz / (spr * sppr2);
-+			err = speed - clk;
- 
--	if (rate < 4)
--		rate = 4;
-+			if (err < best_err) {
-+				best_spr = spr;
-+				best_sppr = sppr;
-+				best_err = err;
-+			}
-+		}
-+
-+		if ((best_sppr == 0) && (best_spr == 0))
-+			return -EINVAL;
-+
-+		prescale = ((best_sppr & 0x6) << 5) |
-+			((best_sppr & 0x1) << 4) | best_spr;
-+	} else {
-+		/*
-+		 * the supported rates are: 4,6,8...30
-+		 * round up as we look for equal or less speed
-+		 */
-+		rate = DIV_ROUND_UP(tclk_hz, speed);
-+		rate = roundup(rate, 2);
-+
-+		/* check if requested speed is too small */
-+		if (rate > 30)
-+			return -EINVAL;
- 
--	/* Convert the rate to SPI clock divisor value.	*/
--	prescale = 0x10 + rate/2;
-+		if (rate < 4)
-+			rate = 4;
-+
-+		/* Convert the rate to SPI clock divisor value.	*/
-+		prescale = 0x10 + rate/2;
-+	}
- 
- 	reg = readl(spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
--	reg = ((reg & ~ORION_SPI_CLK_PRESCALE_MASK) | prescale);
-+	reg = ((reg & ~devdata->prescale_mask) | prescale);
- 	writel(reg, spi_reg(orion_spi, ORION_SPI_IF_CONFIG_REG));
- 
- 	return 0;
-@@ -342,8 +393,31 @@ static int orion_spi_reset(struct orion_spi *orion_spi)
- 	return 0;
- }
- 
-+static const struct orion_spi_dev orion_spi_dev_data = {
-+	.typ = ORION_SPI,
-+	.min_divisor = 4,
-+	.max_divisor = 30,
-+	.prescale_mask = ORION_SPI_CLK_PRESCALE_MASK,
-+};
-+
-+static const struct orion_spi_dev armada_spi_dev_data = {
-+	.typ = ARMADA_SPI,
-+	.min_divisor = 1,
-+	.max_divisor = 1920,
-+	.prescale_mask = ARMADA_SPI_CLK_PRESCALE_MASK,
-+};
-+
-+static const struct of_device_id orion_spi_of_match_table[] = {
-+	{ .compatible = "marvell,orion-spi", .data = &orion_spi_dev_data, },
-+	{ .compatible = "marvell,armada-370-spi", .data = &armada_spi_dev_data, },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, orion_spi_of_match_table);
-+
- static int orion_spi_probe(struct platform_device *pdev)
- {
-+	const struct of_device_id *of_id;
-+	const struct orion_spi_dev *devdata;
- 	struct spi_master *master;
- 	struct orion_spi *spi;
- 	struct resource *r;
-@@ -378,6 +452,10 @@ static int orion_spi_probe(struct platform_device *pdev)
- 	spi = spi_master_get_devdata(master);
- 	spi->master = master;
- 
-+	of_id = of_match_device(orion_spi_of_match_table, &pdev->dev);
-+	devdata = of_id->data;
-+	spi->devdata = devdata;
-+
- 	spi->clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(spi->clk)) {
- 		status = PTR_ERR(spi->clk);
-@@ -389,8 +467,8 @@ static int orion_spi_probe(struct platform_device *pdev)
- 		goto out;
- 
- 	tclk_hz = clk_get_rate(spi->clk);
--	master->max_speed_hz = DIV_ROUND_UP(tclk_hz, 4);
--	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, 30);
-+	master->max_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->min_divisor);
-+	master->min_speed_hz = DIV_ROUND_UP(tclk_hz, devdata->max_divisor);
- 
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	spi->base = devm_ioremap_resource(&pdev->dev, r);
-@@ -469,12 +547,6 @@ static const struct dev_pm_ops orion_spi_pm_ops = {
- 			   NULL)
- };
- 
--static const struct of_device_id orion_spi_of_match_table[] = {
--	{ .compatible = "marvell,orion-spi", },
--	{}
--};
--MODULE_DEVICE_TABLE(of, orion_spi_of_match_table);
--
- static struct platform_driver orion_spi_driver = {
- 	.driver = {
- 		.name	= DRIVER_NAME,
 -- 
-1.9.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+~Vinod

@@ -1,64 +1,269 @@
-From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/5] m25p80,spi-nor: Fix module aliases for m25p80
-Date: Mon, 29 Sep 2014 10:37:20 +0200
-Message-ID: <CACna6rwxK61zVPNf2ACYj_NfNtkq=fNqdE4Xjjnpb8TVp1hvww@mail.gmail.com>
-References: <1410714624.3040.38.camel@decadent.org.uk>
-	<1410714670.3040.39.camel@decadent.org.uk>
-	<20140928222150.GC3248@norris-Latitude-E6410>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH 1/2 v2] SPI: spi-pxa2xx: Add helpers for regiseters'
+ accessing
+Date: Mon, 29 Sep 2014 11:52:17 +0300
+Message-ID: <1411980737.10697.0.camel@linux.intel.com>
+References: <1412000548-9908-1-git-send-email-alvin.chen@intel.com>
+	 <1412000548-9908-2-git-send-email-alvin.chen@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	debian-kernel <debian-kernel-0aAXYlwwYIJuHlm7Suoebg@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
-To: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mika Westerberg <mika.westerberg-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Hock Leong Kweh <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Boon Leong Ong <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Raymond Tan <raymond.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Weike Chen <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20140928222150.GC3248@norris-Latitude-E6410>
+In-Reply-To: <1412000548-9908-2-git-send-email-alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On 29 September 2014 00:21, Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> (Honestly, some of this name-matching / ID-matching stuff confuses me;
-> there is at least one too many ways to choose a flash device for this
-> driver.)
-
-It's not that complex once you track it. It's just ugly to tracks
-because of different structs, function calls and code locations.
-
-1) All m25p80 users (arch code, SPI drivers, etc.) register
-struct spi_board_info
-that contains "modalias". It it used to match a driver to load.
-In most (?) cases modalias is set to "m25p80"
-
-2) Some m25p80 users decided to put a flash device name (e.g.
-"at25fs010", "mx25l2005a", "m25p05", "w25x10") as modalias of the
-struct spi_board_info. I think they are affected by the recent m25p80
-change to use spi-not framework.
-
-3) Other m25p80 users provide flash device name (e.g. "at25fs010",
-"mx25l2005a", "m25p05", "w25x10") using platform_data in the struct
-spi_board_info. It points to the struct flash_platform_data with
-"name" and "type" properties. It seems to me that "name" is never
-used.
+On Mon, 2014-09-29 at 07:22 -0700, Weike Chen wrote:
 
 
-My idea for fixing this:
+I'm okay with the current version, though I have few minor comments
+below.
 
-1) Always use "m25p80" modalias (for m25p80 compatible hw).
-This will make m25p80 driver work without this huge id_table
+> Introduce helper functions to access the 'SSCR0' and 'SSCR1'.
+> 
 
-2) Do not use "name" nor "type" in the struct flash_platform_data if
-the flash supports JEDEC
+Like you said in the summary there are many accessors to many registers,
+not only cr1/cr0. Perhaps, you may extend your commit message.
 
-3) If the flash is m25p80 compatible, but doesn't support JEDEC, let's
-use "type" to let m25p80 work.
+In any case
+Reviewed-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+
+
+More comments below.
+
+> Signed-off-by: Weike Chen <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/spi/spi-pxa2xx.c |  108 ++++++++++++++++++++++++++++++++++++----------
+>  1 file changed, 85 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
+> index 256c0ab..e7ff9c5 100644
+> --- a/drivers/spi/spi-pxa2xx.c
+> +++ b/drivers/spi/spi-pxa2xx.c
+> @@ -80,6 +80,73 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
+>  	return drv_data->ssp_type == LPSS_SSP;
+>  }
+>  
+> +static u32 pxa2xx_spi_get_ssrc1_change_mask(const struct driver_data *drv_data)
+> +{
+> +	switch (drv_data->ssp_type) {
+> +	default:
+> +		return SSCR1_CHANGE_MASK;
+> +	}
+> +}
+> +
+> +static u32
+> +pxa2xx_spi_get_rx_default_thre(const struct driver_data *drv_data)
+> +{
+> +	switch (drv_data->ssp_type) {
+> +	default:
+> +		return RX_THRESH_DFLT;
+> +	}
+> +}
+> +
+> +static bool pxa2xx_spi_txfifo_full(const struct driver_data *drv_data)
+> +{
+> +	void __iomem *reg = drv_data->ioaddr;
+> +	u32 mask;
+> +
+> +	switch (drv_data->ssp_type) {
+> +	default:
+> +		mask = SSSR_TFL_MASK;
+> +		break;
+> +	}
+> +
+> +	return (read_SSSR(reg) & mask) == mask;
+> +}
+> +
+> +static void pxa2xx_spi_clear_rx_thre(const struct driver_data *drv_data,
+> +				     u32 *sccr1_reg)
+> +{
+> +	u32 mask;
+> +
+> +	switch (drv_data->ssp_type) {
+> +	default:
+> +		mask = SSCR1_RFT;
+> +		break;
+> +	}
+> +	*sccr1_reg &= ~mask;
+> +}
+> +
+> +static void pxa2xx_spi_set_rx_thre(const struct driver_data *drv_data,
+> +				   u32 *sccr1_reg, u32 threshold)
+> +{
+> +	switch (drv_data->ssp_type) {
+> +	default:
+> +		*sccr1_reg |= SSCR1_RxTresh(threshold);
+> +		break;
+> +	}
+> +}
+> +
+> +static u32 pxa2xx_configure_sscr0(const struct driver_data *drv_data,
+> +				  u32 clk_div, u8 bits)
+> +{
+> +	switch (drv_data->ssp_type) {
+> +	default:
+> +		return clk_div
+> +			| SSCR0_Motorola
+> +			| SSCR0_DataSize(bits > 16 ? bits - 16 : bits)
+> +			| SSCR0_SSE
+> +			| (bits > 16 ? SSCR0_EDSS : 0);
+> +	}
+> +}
+> +
+>  /*
+>   * Read and write LPSS SSP private registers. Caller must first check that
+>   * is_lpss_ssp() returns true before these can be called.
+> @@ -234,7 +301,7 @@ static int null_writer(struct driver_data *drv_data)
+>  	void __iomem *reg = drv_data->ioaddr;
+>  	u8 n_bytes = drv_data->n_bytes;
+>  
+> -	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
+> +	if (pxa2xx_spi_txfifo_full(drv_data)
+>  		|| (drv_data->tx == drv_data->tx_end))
+
+Just wondering if those two could fit one line.
+
+>  		return 0;
+>  
+> @@ -262,7 +329,7 @@ static int u8_writer(struct driver_data *drv_data)
+>  {
+>  	void __iomem *reg = drv_data->ioaddr;
+>  
+> -	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
+> +	if (pxa2xx_spi_txfifo_full(drv_data)
+>  		|| (drv_data->tx == drv_data->tx_end))
+
+Ditto.
+
+>  		return 0;
+>  
+> @@ -289,7 +356,7 @@ static int u16_writer(struct driver_data *drv_data)
+>  {
+>  	void __iomem *reg = drv_data->ioaddr;
+>  
+> -	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
+> +	if (pxa2xx_spi_txfifo_full(drv_data)
+>  		|| (drv_data->tx == drv_data->tx_end))
+
+Ditto.
+
+>  		return 0;
+>  
+> @@ -316,7 +383,7 @@ static int u32_writer(struct driver_data *drv_data)
+>  {
+>  	void __iomem *reg = drv_data->ioaddr;
+>  
+> -	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
+> +	if (pxa2xx_spi_txfifo_full(drv_data)
+>  		|| (drv_data->tx == drv_data->tx_end))
+
+Ditto.
+
+>  		return 0;
+>  
+> @@ -508,8 +575,9 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+>  		 * remaining RX bytes.
+>  		 */
+>  		if (pxa25x_ssp_comp(drv_data)) {
+> +			u32 rx_thre;
+>  
+> -			sccr1_reg &= ~SSCR1_RFT;
+> +			pxa2xx_spi_clear_rx_thre(drv_data, &sccr1_reg);
+>  
+>  			bytes_left = drv_data->rx_end - drv_data->rx;
+>  			switch (drv_data->n_bytes) {
+> @@ -519,10 +587,12 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
+>  				bytes_left >>= 1;
+>  			}
+>  
+> -			if (bytes_left > RX_THRESH_DFLT)
+> -				bytes_left = RX_THRESH_DFLT;
+> +			rx_thre = pxa2xx_spi_get_rx_default_thre(drv_data);
+> +			if (rx_thre > bytes_left)
+> +				rx_thre = bytes_left;
+>  
+> -			sccr1_reg |= SSCR1_RxTresh(bytes_left);
+> +			pxa2xx_spi_set_rx_thre(drv_data, &sccr1_reg,
+> +					       rx_thre);
+>  		}
+>  		write_SSCR1(sccr1_reg, reg);
+>  	}
+> @@ -613,6 +683,7 @@ static void pump_transfers(unsigned long data)
+>  	u32 cr1;
+>  	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
+>  	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
+> +	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
+>  
+>  	/* Get current state information */
+>  	message = drv_data->cur_msg;
+> @@ -731,11 +802,7 @@ static void pump_transfers(unsigned long data)
+>  						     "pump_transfers: DMA burst size reduced to match bits_per_word\n");
+>  		}
+>  
+> -		cr0 = clk_div
+> -			| SSCR0_Motorola
+> -			| SSCR0_DataSize(bits > 16 ? bits - 16 : bits)
+> -			| SSCR0_SSE
+> -			| (bits > 16 ? SSCR0_EDSS : 0);
+> +		cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, bits);
+>  	}
+>  
+>  	message->state = RUNNING_STATE;
+> @@ -772,16 +839,15 @@ static void pump_transfers(unsigned long data)
+>  	}
+>  
+>  	/* see if we need to reload the config registers */
+> -	if ((read_SSCR0(reg) != cr0)
+> -		|| (read_SSCR1(reg) & SSCR1_CHANGE_MASK) !=
+> -			(cr1 & SSCR1_CHANGE_MASK)) {
+> +	if ((read_SSCR0(reg) != cr0) ||
+> +	    (read_SSCR1(reg) & change_mask) != (cr1 & change_mask)) {
+>  
+>  		/* stop the SSP, and update the other bits */
+>  		write_SSCR0(cr0 & ~SSCR0_SSE, reg);
+>  		if (!pxa25x_ssp_comp(drv_data))
+>  			write_SSTO(chip->timeout, reg);
+>  		/* first set CR1 without interrupt and service enables */
+> -		write_SSCR1(cr1 & SSCR1_CHANGE_MASK, reg);
+> +		write_SSCR1(cr1 & change_mask, reg);
+>  		/* restart the SSP */
+>  		write_SSCR0(cr0, reg);
+>  
+> @@ -959,12 +1025,8 @@ static int setup(struct spi_device *spi)
+>  	clk_div = ssp_get_clk_div(drv_data, spi->max_speed_hz);
+>  	chip->speed_hz = spi->max_speed_hz;
+>  
+> -	chip->cr0 = clk_div
+> -			| SSCR0_Motorola
+> -			| SSCR0_DataSize(spi->bits_per_word > 16 ?
+> -				spi->bits_per_word - 16 : spi->bits_per_word)
+> -			| SSCR0_SSE
+> -			| (spi->bits_per_word > 16 ? SSCR0_EDSS : 0);
+> +	chip->cr0 = pxa2xx_configure_sscr0(drv_data, clk_div,
+> +					   spi->bits_per_word);
+>  	chip->cr1 &= ~(SSCR1_SPO | SSCR1_SPH);
+>  	chip->cr1 |= (((spi->mode & SPI_CPHA) != 0) ? SSCR1_SPH : 0)
+>  			| (((spi->mode & SPI_CPOL) != 0) ? SSCR1_SPO : 0);
+
+
+-- 
+Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Intel Finland Oy
+
+
+
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

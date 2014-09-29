@@ -1,7 +1,7 @@
 From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 1/5] m25p80,spi-nor: Fix module aliases for m25p80
-Date: Mon, 29 Sep 2014 08:36:46 +0200
-Message-ID: <CACna6rx=GyZ-4JpDix==WKszABseQXK6qCCkfiKCm9-WzBmM3A@mail.gmail.com>
+Date: Mon, 29 Sep 2014 10:37:20 +0200
+Message-ID: <CACna6rwxK61zVPNf2ACYj_NfNtkq=fNqdE4Xjjnpb8TVp1hvww@mail.gmail.com>
 References: <1410714624.3040.38.camel@decadent.org.uk>
 	<1410714670.3040.39.camel@decadent.org.uk>
 	<20140928222150.GC3248@norris-Latitude-E6410>
@@ -25,71 +25,40 @@ Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 On 29 September 2014 00:21, Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> + Rafal
->
-> Rafal has been looking at the same area of code. I'd really like to get
-> this patch into 3.18 if possible, so the more eyes the better.
+> (Honestly, some of this name-matching / ID-matching stuff confuses me;
+> there is at least one too many ways to choose a flash device for this
+> driver.)
 
-Thanks Brian.
+It's not that complex once you track it. It's just ugly to tracks
+because of different structs, function calls and code locations.
 
-I took me a while to follow this issue, too bad I wasn't subscribed to
-the ML earlier. Let me try to sum it up.
+1) All m25p80 users (arch code, SPI drivers, etc.) register
+struct spi_board_info
+that contains "modalias". It it used to match a driver to load.
+In most (?) cases modalias is set to "m25p80"
 
+2) Some m25p80 users decided to put a flash device name (e.g.
+"at25fs010", "mx25l2005a", "m25p05", "w25x10") as modalias of the
+struct spi_board_info. I think they are affected by the recent m25p80
+change to use spi-not framework.
 
-
-1) The main urgent issue: broken auto-loading
-Tracked in the thread: http://www.spinics.net/lists/linux-spi/msg01726.html
-Problem: m25p80.c references spi_nor_ids (from external file)
-Short-term solution: duplicate IDs in the m25p80.c
-
-Ben: just like Brian, I think the patch like this one (
-[PATCH 1/5] m25p80,spi-nor: Fix module aliases for m25p80
-) is the way to go. However few comments:
-
-a) I don't see why you modify m25p_probe in it.
-
-b) I don't think the described clean solution (you described it in the
-commit message):
-> A clean solution to this will involve defining the list of device
-> IDs in spi-nor.h and removing struct spi_device_id from the spi-nor
-> API, but this is quite a large change.
-is the correct one. I think there should be a single string to trigger
-m25p80 load and the rest should be handled using JEDEC, with some
-workarounds for incompatible devices only.
-
-One thing I wonder about is sense of pushing this patch to the Linus's
-tree. Do you think we could prepare a real fix for Linus and leave
-this patch for stable@ only? I'm far from being an expert on such
-things, just asking.
+3) Other m25p80 users provide flash device name (e.g. "at25fs010",
+"mx25l2005a", "m25p05", "w25x10") using platform_data in the struct
+spi_board_info. It points to the struct flash_platform_data with
+"name" and "type" properties. It seems to me that "name" is never
+used.
 
 
+My idea for fixing this:
 
-2) On going cleanups
-It seems there are at least 2 ppl (me, Ben) working on some cleanups
-independently.
+1) Always use "m25p80" modalias (for m25p80 compatible hw).
+This will make m25p80 driver work without this huge id_table
 
-a) There is (l2-mtd pushed) patch moving flash_platform_data into m25p80:
-https://patchwork.ozlabs.org/patch/394219/
+2) Do not use "name" nor "type" in the struct flash_platform_data if
+the flash supports JEDEC
 
-b) Removing spi_nor::read_id
-https://patchwork.ozlabs.org/patch/389073/
-Ben: I think this one has a NACK from me, because I'm going to use
-custom read_id in the bcm53xxspiflash driver.
-See following thread for bcm53xxspiflash description:
-http://comments.gmane.org/gmane.linux.drivers.mtd/54578
-Initial commit (it uses read_id): https://patchwork.ozlabs.org/patch/381902/
-
-c) Obsoleting spi_device_id
-It seems we both were working on the same thing, me slightly slower however ;)
-https://patchwork.ozlabs.org/patch/377917/
-https://patchwork.ozlabs.org/patch/389074/
-https://patchwork.ozlabs.org/patch/389075/
-I still have to review calmly your changes, but they need to be rebased anyway.
-
-d) Cleaning m25p80
-https://patchwork.ozlabs.org/patch/389076/
-Ben: As said before, I think we should do smarter in the m25p80. We
-should get rid of all that duplicated strings.
+3) If the flash is m25p80 compatible, but doesn't support JEDEC, let's
+use "type" to let m25p80 work.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

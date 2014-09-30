@@ -1,16 +1,16 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Subject: Re: [PATCH 1/5] m25p80,spi-nor: Fix module aliases for m25p80
-Date: Mon, 29 Sep 2014 20:55:58 -0700
-Message-ID: <20140930035558.GA8687@brian-ubuntu>
+Date: Tue, 30 Sep 2014 07:09:38 +0200
+Message-ID: <CACna6rxBFNvF5bouv9KkS-3=TxcXVMrs30KMTS0mCjDAva4jiA@mail.gmail.com>
 References: <1410714624.3040.38.camel@decadent.org.uk>
- <1410714670.3040.39.camel@decadent.org.uk>
- <20140928222150.GC3248@norris-Latitude-E6410>
- <CACna6rx=GyZ-4JpDix==WKszABseQXK6qCCkfiKCm9-WzBmM3A@mail.gmail.com>
- <1412042858.9388.79.camel@decadent.org.uk>
+	<1410714670.3040.39.camel@decadent.org.uk>
+	<20140928222150.GC3248@norris-Latitude-E6410>
+	<CACna6rx=GyZ-4JpDix==WKszABseQXK6qCCkfiKCm9-WzBmM3A@mail.gmail.com>
+	<1412042858.9388.79.camel@decadent.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+Cc: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
 	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
 	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
@@ -23,105 +23,90 @@ Cc: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane
 	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
 To: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
 In-Reply-To: <1412042858.9388.79.camel-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Sep 30, 2014 at 03:07:38AM +0100, Ben Hutchings wrote:
+On 30 September 2014 04:07, Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org> wrote:
 > On Mon, 2014-09-29 at 08:36 +0200, Rafa=C5=82 Mi=C5=82ecki wrote:
-> > b) I don't think the described clean solution (you described it in =
-the
-> > commit message):
-> > > A clean solution to this will involve defining the list of device
-> > > IDs in spi-nor.h and removing struct spi_device_id from the spi-n=
-or
-> > > API, but this is quite a large change.
-> > is the correct one. I think there should be a single string to trig=
-ger
-> > m25p80 load and the rest should be handled using JEDEC, with some
-> > workarounds for incompatible devices only.
->=20
+>> On 29 September 2014 00:21, Brian Norris <computersforpeace-Re5JQEeQqe8@public.gmane.org=
+m> wrote:
+>> > + Rafal
+>> >
+>> > Rafal has been looking at the same area of code. I'd really like t=
+o get
+>> > this patch into 3.18 if possible, so the more eyes the better.
+>>
+>> Thanks Brian.
+>>
+>> I took me a while to follow this issue, too bad I wasn't subscribed =
+to
+>> the ML earlier. Let me try to sum it up.
+>>
+>>
+>>
+>> 1) The main urgent issue: broken auto-loading
+>> Tracked in the thread: http://www.spinics.net/lists/linux-spi/msg017=
+26.html
+>> Problem: m25p80.c references spi_nor_ids (from external file)
+>> Short-term solution: duplicate IDs in the m25p80.c
+>>
+>> Ben: just like Brian, I think the patch like this one (
+>> [PATCH 1/5] m25p80,spi-nor: Fix module aliases for m25p80
+>> ) is the way to go. However few comments:
+>>
+>> a) I don't see why you modify m25p_probe in it.
+>
+> Because spi_nor_scan() requires a struct spi_device_id with the
+> driver_data field pointing to a struct flash_info.
+
+More friendly explanation: because spi_get_device_id uses driver's
+id_table (that was now changes to pure strings).
+I see the point.
+
+
+>> b) I don't think the described clean solution (you described it in t=
+he
+>> commit message):
+>> > A clean solution to this will involve defining the list of device
+>> > IDs in spi-nor.h and removing struct spi_device_id from the spi-no=
+r
+>> > API, but this is quite a large change.
+>> is the correct one. I think there should be a single string to trigg=
+er
+>> m25p80 load and the rest should be handled using JEDEC, with some
+>> workarounds for incompatible devices only.
+>
 > That certainly makes sense for Linux-specific platform data, but I do=
 n't
 > think it works for Device Tree "compatible" strings (see
 > <http://mid.gmane.org/1410660009.3040.29.camel-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>).
 
-I think it might work.
+We could simply follow the way Linux-specific platform data works. We
+could always use
+compatible =3D "m25p80";
+and then for some rare cases (where JEDEC fails) add something like
+model =3D "at25df321a";
 
-Your quote from that thread:
 
-  "I think that a DT node is always supposed to include a compatible
-  string for the specific device.  It could also include a generic
-  compatible string for SPI NOR chips, but the *only* thing a driver ca=
-n
-  do with that is to use the JEDEC ID command.  It can't even
-  generically read a single byte, since addresses may be either 3 or 4
-  bytes long!  So I think that if a generic compatible string is
-  defined, the DT binding must also define the properties that spi-nor
-  currently reads out of its static table."
-
-=46or every current entry (except the "*-nonjedec" entries; I don't thi=
-nk
-we should be supporting any more entries like this, and I'd like to kil=
-l
-the existing ones if possible), we can do just that; read out the JEDEC
-ID and go from there. (Rafal is also looking at non-JEDEC RDID commands=
-,
-but that would just require a different type of binding.)
-
-In fact, for most of these entries, we'll read out the ID and override
-the match provided by the driver anyway. See:
-
-int spi_nor_scan(...)
-{
-=2E..
-	[Note: almost all 'info' entries provide a non-zero jedec_id field]
-	if (info->jedec_id) {
-		const struct spi_device_id *jid;
-
-		jid =3D nor->read_id(nor);
-		if (IS_ERR(jid)) {
-			return PTR_ERR(jid);
-		} else if (jid !=3D id) {
-			/*
-			 * JEDEC knows better, so overwrite platform ID. We
-			 * can't trust partitions any longer, but we'll let
-			 * mtd apply them anyway, since some partitions may be
-			 * marked read-only, and we don't want to lose that
-			 * information, even if it's not 100% accurate.
-			 */
-			dev_warn(dev, "found %s, expected %s\n",
-				 jid->name, id->name);
-			id =3D jid;
-			info =3D (void *)jid->driver_data;
-		}
-	}
-=2E..
-}
-
-I think this chunk might be reworked (or at least, modify the comments)
-to note how we primarily expect to override the input ID. We might even
-drop the dev_warn() eventually, and make it more informative instead.
-
+>> b) Removing spi_nor::read_id
+>> https://patchwork.ozlabs.org/patch/389073/
+>> Ben: I think this one has a NACK from me, because I'm going to use
+>> custom read_id in the bcm53xxspiflash driver.
+>> See following thread for bcm53xxspiflash description:
+>> http://comments.gmane.org/gmane.linux.drivers.mtd/54578
+>> Initial commit (it uses read_id): https://patchwork.ozlabs.org/patch=
+/381902/
 > [...]
-> > b) Removing spi_nor::read_id
-> > https://patchwork.ozlabs.org/patch/389073/
-> > Ben: I think this one has a NACK from me, because I'm going to use
-> > custom read_id in the bcm53xxspiflash driver.
-> > See following thread for bcm53xxspiflash description:
-> > http://comments.gmane.org/gmane.linux.drivers.mtd/54578
-> > Initial commit (it uses read_id): https://patchwork.ozlabs.org/patc=
-h/381902/
-> [...]
->=20
+>
 > But it has to use spi_nor_match_id() because of the driver_data
 > requirement.  This just illustrates that the read_id operation doesn'=
 t
 > make sense as currently defined.
 
-Right. I think it may turn out better to drop it and force a redesign
-for the next user.
+I agree, however there is already a patch in progress handling that:
+https://patchwork.ozlabs.org/patch/377917/
+
 
 > I accept that there will be a need for a read_id operation, but I thi=
 nk
@@ -129,15 +114,14 @@ nk
 p
 > to be described and named in spi-nor.c.
 
-Maybe struct flash_info, but this still leaks more spi-nor.c internal
-info into drivers. Perhaps Rafal's use case could be served by a
-select-able 'READ ID' opcode, with his flash_info structs still stored
-in spi_nor_ids[] -- or possibly as a separate ID table within spi-nor.c=
-=2E
+=46lashes not supporting JEDEC are usually some weird versions of norma=
+l
+flashes with JEDEC support. So I think we could still have them in the
+spi-nor database and let users provide the name instead of filling the
+whole struct flash_info.
 
-But either way, I agree the current read_id() hook is not satisfactory.
-
-Brian
+--=20
+Rafa=C5=82
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

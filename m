@@ -1,24 +1,27 @@
 From: Ben Hutchings <ben@decadent.org.uk>
-Subject: Re: [PATCH 0/5] m25p80,spi-nor: Fix module aliases for m25p80;
- clean up chip identification
-Date: Tue, 30 Sep 2014 02:47:53 +0100
-Message-ID: <1412041673.9388.75.camel@decadent.org.uk>
+Subject: Re: [PATCH 5/5] m25p80,spi-nor: Share the list of supported chip
+ type names again
+Date: Tue, 30 Sep 2014 02:50:40 +0100
+Message-ID: <1412041840.9388.77.camel@decadent.org.uk>
 References: <1410714624.3040.38.camel@decadent.org.uk>
-	 <1410714795.3040.45.camel@decadent.org.uk>
-	 <20140928220300.GB3248@norris-Latitude-E6410>
+	 <1410714708.3040.43.camel@decadent.org.uk>
+	 <CAMuHMdUs+7uidcD6tivnq6+TbD4_piixLVqwuSa0Z1u3sF7EoA@mail.gmail.com>
+	 <1410793627.3040.61.camel@decadent.org.uk>
+	 <CAMuHMdVSYvUh3qVRhw15KmOn0MYocbJVQBr9TkHtebM19c8dJA@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-af4rIWq8laF++TYmV1B/"
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, Andrew Lunn <andrew@lunn.ch>,
-  Jason Cooper <jason@lakedaemon.net>, linux-spi
+	protocol="application/pgp-signature"; boundary="=-o25/WjVznYUAh0NXkN+y"
+Cc: Brian Norris <computersforpeace@gmail.com>, Andrew Lunn
+ <andrew@lunn.ch>,  Jason Cooper <jason@lakedaemon.net>, linux-spi
  <linux-spi@vger.kernel.org>, Huang Shijie <shijie8@gmail.com>,  MTD Maling
  List <linux-mtd@lists.infradead.org>, Ian Campbell <ijc@hellion.org.uk>,
  debian-kernel <debian-kernel@lists.debian.org>,
- linux-arm-kernel@lists.infradead.org
-To: Brian Norris <computersforpeace@gmail.com>
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
 Return-path: <bounce-debian-kernel=glddk-debian-kernel=m.gmane.org@lists.debian.org>
-In-Reply-To: <20140928220300.GB3248@norris-Latitude-E6410>
-Resent-Message-ID: <y_LUHTkTZLN.A.IiH.vvgKUB@bendel>
+In-Reply-To: <CAMuHMdVSYvUh3qVRhw15KmOn0MYocbJVQBr9TkHtebM19c8dJA@mail.gmail.com>
+Resent-Message-ID: <ZWtgiP02oZO.A.0sH.HygKUB@bendel>
 List-URL: <http://lists.debian.org/debian-kernel/>
 List-Post: <mailto:debian-kernel@lists.debian.org>
 List-Help: <mailto:debian-kernel-request@lists.debian.org?subject=help>
@@ -27,71 +30,65 @@ List-Unsubscribe: <mailto:debian-kernel-request@lists.debian.org?subject=unsubsc
 List-Id: linux-spi.vger.kernel.org
 
 
---=-af4rIWq8laF++TYmV1B/
+--=-o25/WjVznYUAh0NXkN+y
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 2014-09-28 at 15:03 -0700, Brian Norris wrote:
-> On Sun, Sep 14, 2014 at 06:13:15PM +0100, Ben Hutchings wrote:
-> > On Sun, 2014-09-14 at 18:10 +0100, Ben Hutchings wrote:
-> > > The first patch in the series restores the module aliases to m25p80, =
-but
-> > > it does so by duplicating the list of names.  This should be suitable
-> > > for stable, but it isn't viable in the longer term.
-> > >=20
-> > > The following patches change the spi-nor interface so that this
-> > > duplication is no longer necessary.  This includes removing
-> > > spi_nor::read_id, but it could be re-added after this with a differen=
-t
-> > > interface, e.g. returning a flash_info structure (which would need to=
- be
-> > > defined in spi_nor.h).
-> >=20
-> > Note that these patch are:
-> > - Based on your 'testing' branch
+On Wed, 2014-09-17 at 10:23 +0200, Geert Uytterhoeven wrote:
+> Hi Ben,
 >=20
-> Which testing branch? These two are the only official
-> repos for MTD:
+> On Mon, Sep 15, 2014 at 5:07 PM, Ben Hutchings <ben@decadent.org.uk> wrot=
+e:
+> >> >
+> >> > +#define __SPI_NOR_ENUM_TYPES(c_id, str_and_c_id)                   =
+      \
+> >> > +       c_id(at25fs010)         c_id(at25fs040)         c_id(at25df0=
+41a)  \
+> >> > +       c_id(at25df321a)        c_id(at25df641)         c_id(at26f00=
+4)    \
+> >>
+> >> Can't you just have the IDs in a header file only, and let the header =
+file
+> >> generate either a struct flash_info or a struct spi_device_id table, u=
+sing
+> >> a macro defined by the file that includes it?
+> >
+> > How would we match up the rest of the struct flash_info to the name?
 >=20
->     git git://git.infradead.org/linux-mtd.git
->     git git://git.infradead.org/l2-mtd.git
+> Ah, you use the enums to match the names to the rest of the flash_info.
+> But you can do it in one-shot, can't you?
+[...]
 
-You had a testing branch in
-git://git.infradead.org/users/norris/linux-mtd.git, and that included
-commit af249c3a0ca8 ('mtd: spi-nor: remove duplicated w25q128 entry')
-which this patch series depended on.
+I know, but I didn't want to expose the data in a header file.  As other
+people consider that a lesser evil than this rather complex approach,
+I'll do it the simple way.
 
 Ben.
-
-> > - Untested by me, aside from compiling and checking that m25p80 has the
-> >   expected module aliases
->=20
-> Brian
 
 --=20
 Ben Hutchings
 The two most common things in the universe are hydrogen and stupidity.
 
---=-af4rIWq8laF++TYmV1B/
+--=-o25/WjVznYUAh0NXkN+y
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQIVAwUAVCoLz+e/yOyVhhEJAQq6UhAA0jcXyFfWvhrrztz2B2rSCojXniQy13cs
-lIrCKn4afHCMvEviWRnRkwQDd8MyEkpdPwoMMXUEWlBjbBtuw0rDwH6LqJpfg15Y
-KRjOh/l1A2vRDMztzkDnD/VyKykQI9kwT5JAMBZzhcUS4LpdHzLppzwEr0lP9hdz
-KkI1XxH1DGK4w+PHjoQaRbvwR8GzTUqy25D1hJNF0ACZrkoM+JrLzNUgrJ2h3q7j
-VMD15oSwgVjM1888DMbdtfqRcvO9znPoYYTa41WwbYe4nSqpyKMGaUekqyYNQ462
-lFLt8uDdfDxpCqVMOvhxhA9aFTgRVeBgo2AsJ0El7jhBXWPO0dympIl8/YisJSoT
-775PtOSdBnQdDRpHGYj6qaWzgVCezPUfE2jl/mrKNE38apQ4FCI3vgmejAyyfUNK
-Wh/6lzm+/5Q0dJeE/c072bnqe14NXD1fokuAFi16fEApvr4CP0Q0M8En4Yl7hLQx
-SDDqU0s4CYB5vmt5q3D9Sn3pkwg5mvosuEKIHcmHJ1/6RE4k45qtk/SWgpUBBY0i
-H6xpx/yEUFE8RbUnAq25AMv/XsXzI2iIeKbOKhE99NlKXXmOcFLwhLXGnU3F4rtR
-XO4vEa++SZemYrrZodH+CfntlUC5swT1D0tW+Vf8o3aybTF+uZs4MPO2MqzUKkab
-beqOz9eaYII=
-=Rfr4
+iQIVAwUAVCoMcee/yOyVhhEJAQpUcQ/9Gzjr+giicDSQT+2MCjtU1CO+fwg1+Dwo
+J+IPQRVvVPwqW7lWVPM89U01GNA15ewmodYZIzE4VPd2V8HdfvCohXqwaRtOFDHb
+1RWYyBiptHq1CbmnwgxVOxELWNNgNfrY323iXqPw79kxR53N15SfCRpncXLADi6e
+dERgrikXkropbM2tCt48iV2xmdxYE8JIWqCXxJ6Gubld24xpf6mEtSFPPDnuWcae
+nIn0xrKapux5yKpBxqoOEQyxaAlOXrftMa6gCYEo6INUh1i9RxNYsf79zhOyoZBc
+1Yax73PUBv5fmnuG4Ov3n0FG9BbehMgdY80qI9GRRd4kq8RBGZ/YJqhmeCEEc7c3
+9ESd1PA8T+HK4ppbkV1rCxAKCYFXymMbJvWR/+joNbip0pgZFlyCb3lKVp3RLKxr
+FD2QdCmT+rLfslMg/QS74yI3pKbnPvnFr48gaTBmwUG9vfNfQ1Qps3ry0MAkA5kR
+6wXUZ9Fqzzi2KQMhF0NPRt5E2XoKBveehXguf2CAI2OEILgv4dEUYkiTEglcsydI
+Lf1vXZIJdMtkJA06NW5QNSFv76mXrkD20c4ynkntu1PFH0klQkZrqmtC5aMm40Do
+UtXPngevAV91BjJDyo1aNRsJ+xReBu9sNZLcmtFGM3Wb83pDcNNeaN+SZsoCt0df
+3SzrkNhkiUs=
+=cGtu
 -----END PGP SIGNATURE-----
 
---=-af4rIWq8laF++TYmV1B/--
+--=-o25/WjVznYUAh0NXkN+y--

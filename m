@@ -1,56 +1,61 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi: Using Trigger number to transmit/receive data
-Date: Wed, 1 Oct 2014 19:19:10 +0100
-Message-ID: <20141001181910.GA17974@sirena.org.uk>
-References: <1412045974-6715-1-git-send-email-cm-hiep@jinso.co.jp>
- <1412045974-6715-2-git-send-email-cm-hiep@jinso.co.jp>
- <CAMuHMdU3riiMHpYQ8VSjhBnoi9CAJgDHvbkWKwvgDQFefTmi9g@mail.gmail.com>
+From: Mark Brown <broonie-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/2] mtd: m25p80: get rid of spi_get_device_id
+Date: Wed, 1 Oct 2014 19:20:03 +0100
+Message-ID: <20141001182003.GB17974@sirena.org.uk>
+References: <1411984074-3850-1-git-send-email-zajec5@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="lrZ03NoBR/3+SXJZ"
-Cc: Cao Minh Hiep <cm-hiep-HEF513clHfp3+QwDJ9on6Q@public.gmane.org>,
-	Geert Uytterhoeven <geert+renesas-gXvu3+zWzMSzQB+pC5nmwQ@public.gmane.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Ryusuke Sakato <ryusuke.sakato.bx-zM6kxYcvzFBBDgjK7y7TUQ@public.gmane.org>,
-	Linux-sh list <linux-sh-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="6sX45UoQRIJXqkqR"
+Cc: David Woodhouse <David.Woodhouse-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Artem Bityutskiy <dedekind1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
+	Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	debian-kernel <debian-kernel-0aAXYlwwYIJuHlm7Suoebg@public.gmane.org>
+To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdU3riiMHpYQ8VSjhBnoi9CAJgDHvbkWKwvgDQFefTmi9g-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
+In-Reply-To: <1411984074-3850-1-git-send-email-zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---lrZ03NoBR/3+SXJZ
-Content-Type: text/plain; charset=us-ascii
+--6sX45UoQRIJXqkqR
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 30, 2014 at 07:17:47PM +0200, Geert Uytterhoeven wrote:
+On Mon, Sep 29, 2014 at 11:47:53AM +0200, Rafa=C5=82 Mi=C5=82ecki wrote:
+> This simplifies the way we use spi_nor framework and will allow us to
+> drop spi_nor_match_id.
 
-> Please CC linux-spi on SPI patches.
+Please don't CC linux-spi on spi-nor patches that don't have SPI level
+changes, it just clogs up patchwork.
 
-The maintainer as well (that's me for this) - this applies to all
-upstream submissions, see SubmittingPatches.
-
---lrZ03NoBR/3+SXJZ
+--6sX45UoQRIJXqkqR
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJULEWdAAoJECTWi3JdVIfQRRIIAIbYKY3AgDOWrHe9IF7OquxU
-9/uO4uacQUbdI3K3o5VoX4snehiTmvIZdN91NXzV2DaeGqLDrRKjz/2dKXhhQBmx
-zJILNHiZc/gQbOCn53OnMi0wUOj1dm6XiKCgrwWKc8Una6bg13FIyuqgte+3kPcU
-3KvmXx4qdsGUTV8kdrTIY4UOyLqDpuULu/cnQVnlqjjLeoQkDpklEC6OX3e8RAs7
-LC8T9cs6lQxk0blqB4iRMlbHf7okbhMNRHuQgFZL4TP5ddvoZSnIi+AHYWrbuIIw
-TMl1fP6S2m59DUnExwoNGgKsYAkPmKbAKkGhfRd076lHVDV/hwQapvobpywvx0Q=
-=9UkX
+iQEcBAEBAgAGBQJULEXSAAoJECTWi3JdVIfQ2roH/0OaqzUv/QRZUlaWQtUih6CX
+vHdg2Uy2SHZR9xCIOUXypgHKhGbHIH+BLD4bdwXd5Vwtus4V2Ah+46OjXGNzCi12
+s6y+ycNDDWrAeAB5EqoxIFLtffV4WxyQiR0kCGismyoWOlRPLx8yTo6mVU+viTw9
+qIJxmAkqwUOqkHAj8Wr0Vhbjpj/uQ6Vf405nnW/Zbo+jdVHTWf88tOoR6DAkNVvu
+DcsXICE2T9JzNxRJn4Vz7dDYpy1UT4l1pAo53/+g6tMIa4FxviFBvZN0PifwfrzZ
+eJx7NubePA5rCckz33Xj8pN/DBo3SsDjtEzz3X4PYWhhCQkMlT2e3XZh6kw7oDw=
+=ef0F
 -----END PGP SIGNATURE-----
 
---lrZ03NoBR/3+SXJZ--
+--6sX45UoQRIJXqkqR--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

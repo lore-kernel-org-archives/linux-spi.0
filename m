@@ -1,61 +1,52 @@
-From: Mark Brown <broonie-8fiUuRrzOP0dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/2] mtd: m25p80: get rid of spi_get_device_id
-Date: Wed, 1 Oct 2014 19:20:03 +0100
-Message-ID: <20141001182003.GB17974@sirena.org.uk>
-References: <1411984074-3850-1-git-send-email-zajec5@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3] spi: orion: support armada extended baud rates
+Date: Wed, 1 Oct 2014 19:22:34 +0100
+Message-ID: <20141001182234.GK4273@sirena.org.uk>
+References: <1411910644-7174-1-git-send-email-gerg@uclinux.org>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6sX45UoQRIJXqkqR"
-Cc: David Woodhouse <David.Woodhouse-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Artem Bityutskiy <dedekind1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	debian-kernel <debian-kernel-0aAXYlwwYIJuHlm7Suoebg@public.gmane.org>
-To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="fVx4YFaxe8of50Zh"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1411984074-3850-1-git-send-email-zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1411910644-7174-1-git-send-email-gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---6sX45UoQRIJXqkqR
-Content-Type: text/plain; charset=utf-8
+--fVx4YFaxe8of50Zh
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 29, 2014 at 11:47:53AM +0200, Rafa=C5=82 Mi=C5=82ecki wrote:
-> This simplifies the way we use spi_nor framework and will allow us to
-> drop spi_nor_match_id.
+On Sun, Sep 28, 2014 at 11:24:04PM +1000, gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org wrote:
+> From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+>=20
+> The Armada SoC family implementation of this SPI hardware module has
+> extended the configuration register to allow for a wider range of SPI
+> clock rates. Specifically the Serial Baud Rate Pre-selection bits in the
+> SPI Interface Configuration Register now also use bits 6 and 7 as well.
 
-Please don't CC linux-spi on spi-nor patches that don't have SPI level
-changes, it just clogs up patchwork.
+Applied, thanks.
 
---6sX45UoQRIJXqkqR
+--fVx4YFaxe8of50Zh
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJULEXSAAoJECTWi3JdVIfQ2roH/0OaqzUv/QRZUlaWQtUih6CX
-vHdg2Uy2SHZR9xCIOUXypgHKhGbHIH+BLD4bdwXd5Vwtus4V2Ah+46OjXGNzCi12
-s6y+ycNDDWrAeAB5EqoxIFLtffV4WxyQiR0kCGismyoWOlRPLx8yTo6mVU+viTw9
-qIJxmAkqwUOqkHAj8Wr0Vhbjpj/uQ6Vf405nnW/Zbo+jdVHTWf88tOoR6DAkNVvu
-DcsXICE2T9JzNxRJn4Vz7dDYpy1UT4l1pAo53/+g6tMIa4FxviFBvZN0PifwfrzZ
-eJx7NubePA5rCckz33Xj8pN/DBo3SsDjtEzz3X4PYWhhCQkMlT2e3XZh6kw7oDw=
-=ef0F
+iQEcBAEBAgAGBQJULEZpAAoJECTWi3JdVIfQhfQH/ipU7M0HgrjQ9KESRMBHBu3K
+FyrffsZIU+opj2S16xu7SLsrqKbUHnGO9Ue41/xXOuh9vH4SpeqeqrT39QBN4GDn
+j1/pkG9hFvTD2B4iD7ve2ggE0vzUOwNVrb9UjdY6VbMVBPo+m42u/xKdIGS1akob
+DPiC0l7OYBAmu8/N2Ct2R3h1qyyF8jSm7Qo/xPKP37k7XVqT8EyXYDX5Sis47Vul
+qg9p50DddEa+9GuaOQoMdM15IRFhBDR3amYnuTkDMvYxtLSASpz8UWZpGwRpjwSL
+IZidh20mRj+b0mg3syghh2IxVHZy6vBchC7DIHvtqXdt36IJUU3swy7Rb0xXQe4=
+=qB2B
 -----END PGP SIGNATURE-----
 
---6sX45UoQRIJXqkqR--
+--fVx4YFaxe8of50Zh--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

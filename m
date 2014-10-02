@@ -1,121 +1,48 @@
-From: Andy Gross <agross@codeaurora.org>
-Subject: Re: [Patch v3] spi: qup: Fix incorrect block transfers
-Date: Thu, 2 Oct 2014 10:28:45 -0500
-Message-ID: <20141002152845.GB14663@qualcomm.com>
-References: <1412112088-25928-1-git-send-email-agross@codeaurora.org>
- <1412257472.1027.37.camel@iivanov-dev>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 1/3] spi: dw-mid: change magic numbers to the constants
+Date: Thu, 2 Oct 2014 17:06:38 +0100
+Message-ID: <20141002160638.GV4273@sirena.org.uk>
+References: <1412256669-14828-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	Bjorn Andersson <bjorn.andersson@sonymobile.com>,
-	Kumar Gala <galak@codeaurora.org>
-To: "Ivan T. Ivanov" <iivanov@mm-sol.com>
-Return-path: <linux-arm-msm-owner@vger.kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="BBw4iOnA9FNdCxVc"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1412257472.1027.37.camel@iivanov-dev>
-Sender: linux-arm-msm-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1412256669-14828-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Thu, Oct 02, 2014 at 04:44:32PM +0300, Ivan T. Ivanov wrote:
-> 
-> Hi Andy,
-> 
-> I am trying to understand why we need extra functions for block 
-> read and write.
 
-I separated them out because the constraints for doing the allowable
-writes/reads was making the whole thing messy.  I opted for a cleaner
-implementation.
+--BBw4iOnA9FNdCxVc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> 
-> Essentially fifo and block read/write function are looking
-> the same for me. Except that block functions have one extra write
-> in QUP_OPERATIONAL register.
+On Thu, Oct 02, 2014 at 04:31:07PM +0300, Andy Shevchenko wrote:
+> Instead of using magic numbers in the code we create a bit map definition of
+> the DMACR register and use it.
 
-It's not just that, the difference between the fifo and block is that you just
-read/write the fifo until you hit the full or empty.  You can't do that with
-block.  you have to read in block size transfers (4x32B read/writes).
+Applied all, thanks.
 
-> 
-> On Tue, 2014-09-30 at 16:21 -0500, Andy Gross wrote:
-> > This patch fixes a number of errors with the QUP block transfer mode.  Errors
-> > manifested themselves as input underruns, output overruns, and timed out
-> > transactions.
-> > 
-> > The block mode does not require the priming that occurs in FIFO mode.  At the
-> > moment that the QUP is placed into the RUN state, the QUP will immediately raise
-> > an interrupt if the request is a write.  Therefore, there is no need to prime
-> > the pump.
-> 
-> But does this hurt in some way? I mean fist FIFO fill happens when
-> controller is in PAUSED state. Once enabled it can start transfer 
-> immediately. 
+--BBw4iOnA9FNdCxVc
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Unfortunately that creates a race in the block mode.  Because we hit run, we are
-telling the controller to do something.  In the block case, it fires off an IRQ
-to request output blocks.  This IRQ is going to hit sometime before, during, or
-after the fifo_write function.  If we are unlucky and we are in the fifo_write
-and somewhere in that loop, the irq is handled and we enter the fifo_write
-function again.  We already did some number of writes/reads that have not been
-recorded.  The IRQ fifo_write rips through and fills the fifo.  Then we return
-from the IRQ and continue to read/write and this causes the overrun/underrun.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
-Letting the IRQ handle the block transfer start removes this specific issue.
-The cost is one irq overhead and the read/write of 16 words.
+iQEcBAEBAgAGBQJULXgOAAoJECTWi3JdVIfQlrUH/R818gi8/iStQm1s/EDK2Qjz
+B2PnwKSD8dV1ucoASGxdYoV9d0CyJD9Hvby9j9RFWjvL9B7FgKFmzdUe7vvmWGbM
+K/SZZmu6/k9psgpAt/jR1UmWKZiM2Eg8IEUeWgFMa4a8S9/q+gna/PUhePrCRFFT
+f4Hu0wv+0O7smXnZF3fA5pjy3ZdRBoiauwW63YR1vZ+a4CEAuWTdVlFznrqEVZiF
+wMOJJzxmiQVx7OUV3xSvsHSgnP0nTJuubZ0kr0j2bMnouFWl+KvC4CFpqJcUMHb3
+nqOIhnRvRFRX4hTIojh99OvylLZ3IA+LqBDbvOnixdzSBcg8rjx6XQm6wf8ygaU=
+=EZY9
+-----END PGP SIGNATURE-----
 
-> 
-> > 
-> > In addition, the block transfers require that whole blocks of data are
-> > read/written at a time.  
-> 
-> Thats fine, but I can not see why this will not happen with existing
-> fill functions. Fifo's are drained until there is data and filled
-> until there is a space. And because we are not using pack/unpack mode, 
-> every SPI word occupy one cell in fifo (32 bits), this means that 
-> existing read/write functions are working in "block" mode.
-
-Not true.  The block mode is different because the IRQ generation is tied to the
-block size.  You won't get a service interrupt until either the transaction is
-completely done, or a block of data is read/written.  And you get an IRQ for
-each block that has to be ACKd.  That is completely different than the behavior
-than the FIFO mode.  If you are not reading/writing full blocks of data, you are
-doing it wrong.
-
-In FIFO mode, you get a service interrupt when at least 1 word of data is ready
-to be read, or there is space to place at least one word of data for write.
-
-> 
-> > The last block of data that completes a transaction may
-> > contain less than a full blocks worth of data.
-> > 
-> > Each block of data results in an input/output service interrupt accompanied with
-> > a input/output block flag set.  Additional block reads/writes require clearing
-> > of the service flag.  It is ok to check for additional blocks of data in the
-> > ISR, but you have to ack every block you transfer.  Imbalanced acks result in
-> > early return from complete transactions with pending interrupts that still have
-> > to be ack'd.  The next transaction can be affected by these interrupts.
-> > Transactions are deemed complete when the MAX_INPUT or MAX_OUTPUT flag are set.
-> 
-> And this is the thing that can cause errors that you see, I suppose.
-> We are getting extra interrupts, which are not cleared, even if we have
-> drained fifo completely. 
-
-We get errors because
-1) We don't adhere to the programming model for block mode
-2) We return early from transactions that have not been fully ack'd.
-
-> 
-> Regards,
-> Ivan
-> 
-> P.S. They are still several coding style issues :-). The same as those that 
-> I have already pointed to you.
-
-Sigh, I thought i fixed those.  I'll have another look.
-
--- 
-sent by an employee of the Qualcomm Innovation Center, Inc.
-The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
-hosted by The Linux Foundation
+--BBw4iOnA9FNdCxVc--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

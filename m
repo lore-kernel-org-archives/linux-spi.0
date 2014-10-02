@@ -1,61 +1,55 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 3/3] spi: dw-mid: follow new DMAengine workflow
-Date: Thu,  2 Oct 2014 16:31:09 +0300
-Message-ID: <1412256669-14828-3-git-send-email-andriy.shevchenko@linux.intel.com>
-References: <1412256669-14828-1-git-send-email-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 1/3] spi: dw-mid: change magic numbers to the constants
+Date: Thu,  2 Oct 2014 16:31:07 +0300
+Message-ID: <1412256669-14828-1-git-send-email-andriy.shevchenko@linux.intel.com>
 Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1412256669-14828-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Though intel-mid-dma does not follow a new DMA workflow (*) let's prepare SPI
-DW driver for that.
+Instead of using magic numbers in the code we create a bit map definition of
+the DMACR register and use it.
 
-(*) The client is obliged to call dma_async_issue_pending() which starts the
-actual transfers. Old DMA drivers do not follow this, since requirement was
-introduced in the discussion of [1].
-
-[1] http://www.spinics.net/lists/arm-kernel/msg125987.html
+There is no functional change.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 ---
- drivers/spi/spi-dw-mid.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/spi/spi-dw-mid.c | 4 ++--
+ drivers/spi/spi-dw.h     | 4 ++++
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index a507add..46c6d58 100644
+index ecae30f..7bdf937 100644
 --- a/drivers/spi/spi-dw-mid.c
 +++ b/drivers/spi/spi-dw-mid.c
-@@ -150,7 +150,7 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
- 				&dws->tx_sgl,
- 				1,
- 				DMA_MEM_TO_DEV,
--				DMA_PREP_INTERRUPT);
-+				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	txdesc->callback = dw_spi_dma_done;
- 	txdesc->callback_param = dws;
+@@ -124,9 +124,9 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
+ 		dw_writew(dws, DW_SPI_DMARDLR, 0xf);
+ 		dw_writew(dws, DW_SPI_DMATDLR, 0x10);
+ 		if (dws->tx_dma)
+-			dma_ctrl |= 0x2;
++			dma_ctrl |= SPI_DMA_TDMAE;
+ 		if (dws->rx_dma)
+-			dma_ctrl |= 0x1;
++			dma_ctrl |= SPI_DMA_RDMAE;
+ 		dw_writew(dws, DW_SPI_DMACR, dma_ctrl);
+ 		spi_enable_chip(dws, 1);
+ 	}
+diff --git a/drivers/spi/spi-dw.h b/drivers/spi/spi-dw.h
+index 089fc4b..83a103a 100644
+--- a/drivers/spi/spi-dw.h
++++ b/drivers/spi/spi-dw.h
+@@ -74,6 +74,10 @@
+ #define SPI_INT_RXFI			(1 << 4)
+ #define SPI_INT_MSTI			(1 << 5)
  
-@@ -172,13 +172,17 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
- 				&dws->rx_sgl,
- 				1,
- 				DMA_DEV_TO_MEM,
--				DMA_PREP_INTERRUPT);
-+				DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	rxdesc->callback = dw_spi_dma_done;
- 	rxdesc->callback_param = dws;
- 
- 	/* rx must be started before tx due to spi instinct */
- 	dmaengine_submit(rxdesc);
-+	dma_async_issue_pending(dws->rxchan);
++/* Bit fields in DMACR */
++#define SPI_DMA_RDMAE			(1 << 0)
++#define SPI_DMA_TDMAE			(1 << 1)
 +
- 	dmaengine_submit(txdesc);
-+	dma_async_issue_pending(dws->txchan);
-+
- 	return 0;
- }
+ /* TX RX interrupt level threshold, max can be 256 */
+ #define SPI_INT_THRESHOLD		32
  
 -- 
 2.1.1

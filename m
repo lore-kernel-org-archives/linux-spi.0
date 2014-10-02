@@ -1,96 +1,73 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: [PATCH 2/3] spi: dw-mid: convert to use DMAengine wrappers
-Date: Thu,  2 Oct 2014 16:31:08 +0300
-Message-ID: <1412256669-14828-2-git-send-email-andriy.shevchenko@linux.intel.com>
-References: <1412256669-14828-1-git-send-email-andriy.shevchenko@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Vinod Koul <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1412256669-14828-1-git-send-email-andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: "Ivan T. Ivanov" <iivanov@mm-sol.com>
+Subject: Re: [Patch v3] spi: qup: Fix incorrect block transfers
+Date: Thu, 02 Oct 2014 16:44:32 +0300
+Message-ID: <1412257472.1027.37.camel@iivanov-dev>
+References: <1412112088-25928-1-git-send-email-agross@codeaurora.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	Bjorn Andersson <bjorn.andersson@sonymobile.com>,
+	Kumar Gala <galak@codeaurora.org>
+To: Andy Gross <agross@codeaurora.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1412112088-25928-1-git-send-email-agross@codeaurora.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Instead of direct dereference to dmaengine callbacks we are going to use
-DMAengine wrappers.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
----
- drivers/spi/spi-dw-mid.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+Hi Andy,
 
-diff --git a/drivers/spi/spi-dw-mid.c b/drivers/spi/spi-dw-mid.c
-index 7bdf937..a507add 100644
---- a/drivers/spi/spi-dw-mid.c
-+++ b/drivers/spi/spi-dw-mid.c
-@@ -113,8 +113,7 @@ static void dw_spi_dma_done(void *arg)
- 
- static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
- {
--	struct dma_async_tx_descriptor *txdesc = NULL, *rxdesc = NULL;
--	struct dma_chan *txchan, *rxchan;
-+	struct dma_async_tx_descriptor *txdesc, *rxdesc;
- 	struct dma_slave_config txconf, rxconf;
- 	u16 dma_ctrl = 0;
- 
-@@ -132,8 +131,6 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
- 	}
- 
- 	dws->dma_chan_done = 0;
--	txchan = dws->txchan;
--	rxchan = dws->rxchan;
- 
- 	/* 2. Prepare the TX dma transfer */
- 	txconf.direction = DMA_MEM_TO_DEV;
-@@ -143,14 +140,13 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
- 	txconf.dst_addr_width = dws->dma_width;
- 	txconf.device_fc = false;
- 
--	txchan->device->device_control(txchan, DMA_SLAVE_CONFIG,
--				       (unsigned long) &txconf);
-+	dmaengine_slave_config(dws->txchan, &txconf);
- 
- 	memset(&dws->tx_sgl, 0, sizeof(dws->tx_sgl));
- 	dws->tx_sgl.dma_address = dws->tx_dma;
- 	dws->tx_sgl.length = dws->len;
- 
--	txdesc = dmaengine_prep_slave_sg(txchan,
-+	txdesc = dmaengine_prep_slave_sg(dws->txchan,
- 				&dws->tx_sgl,
- 				1,
- 				DMA_MEM_TO_DEV,
-@@ -166,14 +162,13 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
- 	rxconf.src_addr_width = dws->dma_width;
- 	rxconf.device_fc = false;
- 
--	rxchan->device->device_control(rxchan, DMA_SLAVE_CONFIG,
--				       (unsigned long) &rxconf);
-+	dmaengine_slave_config(dws->rxchan, &rxconf);
- 
- 	memset(&dws->rx_sgl, 0, sizeof(dws->rx_sgl));
- 	dws->rx_sgl.dma_address = dws->rx_dma;
- 	dws->rx_sgl.length = dws->len;
- 
--	rxdesc = dmaengine_prep_slave_sg(rxchan,
-+	rxdesc = dmaengine_prep_slave_sg(dws->rxchan,
- 				&dws->rx_sgl,
- 				1,
- 				DMA_DEV_TO_MEM,
-@@ -182,8 +177,8 @@ static int mid_spi_dma_transfer(struct dw_spi *dws, int cs_change)
- 	rxdesc->callback_param = dws;
- 
- 	/* rx must be started before tx due to spi instinct */
--	rxdesc->tx_submit(rxdesc);
--	txdesc->tx_submit(txdesc);
-+	dmaengine_submit(rxdesc);
-+	dmaengine_submit(txdesc);
- 	return 0;
- }
- 
--- 
-2.1.1
+I am trying to understand why we need extra functions for block 
+read and write.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Essentially fifo and block read/write function are looking
+the same for me. Except that block functions have one extra write
+in QUP_OPERATIONAL register.
+
+On Tue, 2014-09-30 at 16:21 -0500, Andy Gross wrote:
+> This patch fixes a number of errors with the QUP block transfer mode.  Errors
+> manifested themselves as input underruns, output overruns, and timed out
+> transactions.
+> 
+> The block mode does not require the priming that occurs in FIFO mode.  At the
+> moment that the QUP is placed into the RUN state, the QUP will immediately raise
+> an interrupt if the request is a write.  Therefore, there is no need to prime
+> the pump.
+
+But does this hurt in some way? I mean fist FIFO fill happens when
+controller is in PAUSED state. Once enabled it can start transfer 
+immediately. 
+
+> 
+> In addition, the block transfers require that whole blocks of data are
+> read/written at a time.  
+
+Thats fine, but I can not see why this will not happen with existing
+fill functions. Fifo's are drained until there is data and filled
+until there is a space. And because we are not using pack/unpack mode, 
+every SPI word occupy one cell in fifo (32 bits), this means that 
+existing read/write functions are working in "block" mode.
+
+> The last block of data that completes a transaction may
+> contain less than a full blocks worth of data.
+> 
+> Each block of data results in an input/output service interrupt accompanied with
+> a input/output block flag set.  Additional block reads/writes require clearing
+> of the service flag.  It is ok to check for additional blocks of data in the
+> ISR, but you have to ack every block you transfer.  Imbalanced acks result in
+> early return from complete transactions with pending interrupts that still have
+> to be ack'd.  The next transaction can be affected by these interrupts.
+> Transactions are deemed complete when the MAX_INPUT or MAX_OUTPUT flag are set.
+
+And this is the thing that can cause errors that you see, I suppose.
+We are getting extra interrupts, which are not cleared, even if we have
+drained fifo completely. 
+
+Regards,
+Ivan
+
+P.S. They are still several coding style issues :-). The same as those that 
+I have already pointed to you.

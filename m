@@ -1,68 +1,57 @@
-From: Scott Wood <scottwood@freescale.com>
-Subject: Re: [PATCH v2 2/2] spi: fsl-spi: Allow dynamic allocation of CPM1
- parameter RAM
-Date: Fri, 3 Oct 2014 14:51:48 -0500
-Message-ID: <1412365908.13320.429.camel@snotra.buserror.net>
-References: <20141003164917.397871AB276@localhost.localdomain>
+From: christophe leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+Subject: Re: [PATCH 2/2] spi: fsl-spi: Allow dynamic allocation of CPM1 parameter
+ RAM
+Date: Fri, 03 Oct 2014 22:15:11 +0200
+Message-ID: <542F03CF.8010900@c-s.fr>
+References: <20141003125609.5BEA11AB276@localhost.localdomain> <20141003144420.GC24441@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <20141003164917.397871AB276@localhost.localdomain>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=ISO-8859-1;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Benjamin Herrenschmidt <benh-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
+	Paul Mackerras <paulus-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>,
+	Marcelo Tosatti <marcelo-Bw31MaZKKs3YtjvyW6yDsg@public.gmane.org>,
+	Vitaly Bordug <vitb-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>,
+	scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20141003144420.GC24441-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Fri, 2014-10-03 at 18:49 +0200, Christophe Leroy wrote:
-> On CPM1, the SPI parameter RAM has a default location. In order to use SPI while
-> using SCC2 with features like QMC or Ethernet, it is necessary to relocate SPI
-> parameter RAM in a free location in the CPM dual port RAM.
 
-Please explain in more detail why it's necessary.
+Le 03/10/2014 16:44, Mark Brown a =E9crit :
+> On Fri, Oct 03, 2014 at 02:56:09PM +0200, Christophe Leroy wrote:
+>
+>> +config CPM1_RELOCSPI
+>> +	bool "Dynamic SPI relocation"
+>> +	default n
+>> +	help
+>> +	  On recent MPC8xx (at least MPC866 and MPC885) SPI can be relocat=
+ed
+>> +	  without micropatch. This activates relocation to a dynamically
+>> +	  allocated area in the CPM Dual port RAM.
+>> +	  When combined with SPI relocation patch (for older MPC8xx) it av=
+oids
+>> +	  the "loss" of additional Dual port RAM space just above the patc=
+h,
+>> +	  which might be needed for example when using the CPM QMC.
+> Something like this shouldn't be a compile time option.  Either it
+> should be unconditional or it should be triggered in some system
+> specific manner (from DT, from knowing about other users or similar).
+Can't be unconditional as older versions of mpc8xx (eg MPC860) don't=20
+support relocation without a micropatch.
+I have therefore submitted a v2 based on a DTS compatible property.
 
->  With this patch,
-> when "fsl,cpm1-spi-reloc" instead of "fsl,cpm1-spi" compatible is set in the
-> device tree, the parameter RAM for SPI is dynamically allocated
-> with cpm_muram_alloc().
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> 
-> ---
-> Changes from v1 to v2: using OF compatible instead of compile time option
-> 
->  drivers/spi/spi-fsl-cpm.c   | 3 +++
->  drivers/spi/spi-fsl-lib.c   | 2 ++
->  include/linux/fsl_devices.h | 1 +
->  3 files changed, 6 insertions(+)
-> 
-> diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
-> index 0f3a912..048ca5f 100644
-> --- a/drivers/spi/spi-fsl-cpm.c
-> +++ b/drivers/spi/spi-fsl-cpm.c
-> @@ -261,6 +261,9 @@ static unsigned long fsl_spi_cpm_get_pram(struct mpc8xxx_spi *mspi)
->  	if (mspi->flags & SPI_CPM2) {
->  		pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 64);
->  		out_be16(spi_base, pram_ofs);
-> +	} else if (mspi->flags & SPI_CPM1_RELOC) {
-> +		pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 32);
-> +		out_be16(spi_base, pram_ofs);
->  	} else {
->  		u16 rpbase = in_be16(spi_base);
->  
-> diff --git a/drivers/spi/spi-fsl-lib.c b/drivers/spi/spi-fsl-lib.c
-> index c3f7802..e9db4c5 100644
-> --- a/drivers/spi/spi-fsl-lib.c
-> +++ b/drivers/spi/spi-fsl-lib.c
-> @@ -227,6 +227,8 @@ int of_mpc8xxx_spi_probe(struct platform_device *ofdev)
->  		pdata->flags = SPI_CPM_MODE | SPI_CPM2;
->  	else if (of_device_is_compatible(np, "fsl,cpm1-spi"))
->  		pdata->flags = SPI_CPM_MODE | SPI_CPM1;
-> +	else if (of_device_is_compatible(np, "fsl,cpm1-spi-reloc"))
-> +		pdata->flags = SPI_CPM_MODE | SPI_CPM1 | SPI_CPM1_RELOC;
+---
+Ce courrier =E9lectronique ne contient aucun virus ou logiciel malveill=
+ant parce que la protection avast! Antivirus est active.
+http://www.avast.com
 
-Where's the binding and device tree update for this?  What specific
-aspect of hardware does it describe?
-
--Scott
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

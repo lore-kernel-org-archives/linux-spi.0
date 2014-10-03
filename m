@@ -1,30 +1,51 @@
-From: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Subject: [PATCH v2 0/2] fsl: fsl-spi: Fix CMP1 pram allocation and allow dynamic allocation
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v2 1/2] spi: fsl-spi: Fix parameter ram offset setup for CPM1
 Date: Fri,  3 Oct 2014 18:49:16 +0200 (CEST)
-Message-ID: <20141003164916.BA7611AAFC7@localhost.localdomain>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Message-ID: <20141003164916.DBD631AAFA2@localhost.localdomain>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-This patchset:
-1) Fix parameter ram offset setup for CPM1
-2) Allow dynamic allocation of CPM1 parameter RAM
+On CPM1, the SPI parameter RAM has a default location. In fsl_spi_cpm_get_pram()
+there was a confusion between the SPI_BASE register and the base of the SPI
+parameter RAM. Fortunatly, it was working properly with MPC866 and MPC885
+because they do set SPI_BASE, but on MPC860 and other old MPC8xx that doesn't
+set SPI_BASE, pram_ofs was not properly set. This patch fixes this confusion.
 
-Tested on MPC885.
-
-Signed-off-by: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 
 ---
-Changes from v1 to v2: using OF compatible instead of compile time option
+Changes from v1 to v2: none
 
- drivers/spi/spi-fsl-cpm.c   | 12 +++++++-----
- drivers/spi/spi-fsl-lib.c   |  2 ++
- include/linux/fsl_devices.h |  1 +
- 3 files changed, 10 insertions(+), 5 deletions(-)
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+ drivers/spi/spi-fsl-cpm.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
+index 54b0637..0f3a912 100644
+--- a/drivers/spi/spi-fsl-cpm.c
++++ b/drivers/spi/spi-fsl-cpm.c
+@@ -262,15 +262,14 @@ static unsigned long fsl_spi_cpm_get_pram(struct mpc8xxx_spi *mspi)
+ 		pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 64);
+ 		out_be16(spi_base, pram_ofs);
+ 	} else {
+-		struct spi_pram __iomem *pram = spi_base;
+-		u16 rpbase = in_be16(&pram->rpbase);
++		u16 rpbase = in_be16(spi_base);
+ 
+-		/* Microcode relocation patch applied? */
++		/* Microcode relocation patch applied | rpbase set by default */
+ 		if (rpbase) {
+ 			pram_ofs = rpbase;
+ 		} else {
+-			pram_ofs = cpm_muram_alloc(SPI_PRAM_SIZE, 64);
+-			out_be16(spi_base, pram_ofs);
++			pram_ofs = offsetof(cpm8xx_t, cp_dparam[PROFF_SPI]) -
++				   offsetof(cpm8xx_t, cp_dpmem[0]);
+ 		}
+ 	}
+ 
+-- 
+2.1.0

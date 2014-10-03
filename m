@@ -1,57 +1,55 @@
-From: christophe leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Subject: Re: [PATCH 2/2] spi: fsl-spi: Allow dynamic allocation of CPM1 parameter
- RAM
-Date: Fri, 03 Oct 2014 22:15:11 +0200
-Message-ID: <542F03CF.8010900@c-s.fr>
-References: <20141003125609.5BEA11AB276@localhost.localdomain> <20141003144420.GC24441@sirena.org.uk>
+From: Scott Wood <scottwood@freescale.com>
+Subject: Re: [PATCH 2/2] spi: fsl-spi: Allow dynamic allocation of CPM1
+ parameter RAM
+Date: Fri, 3 Oct 2014 15:24:18 -0500
+Message-ID: <1412367858.13320.432.camel@snotra.buserror.net>
+References: <20141003125609.5BEA11AB276@localhost.localdomain>
+ <20141003144420.GC24441@sirena.org.uk> <542F03CF.8010900@c-s.fr>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Benjamin Herrenschmidt <benh-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
-	Paul Mackerras <paulus-eUNUBHrolfbYtjvyW6yDsg@public.gmane.org>,
-	Marcelo Tosatti <marcelo-Bw31MaZKKs3YtjvyW6yDsg@public.gmane.org>,
-	Vitaly Bordug <vitb-XVmvHMARGAS8U2dJNN8I7kB+6BGkLq7r@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Joakim Tjernlund <joakim.tjernlund-SNLAxHN9vbcOP4wsBPIw7w@public.gmane.org>,
-	scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20141003144420.GC24441-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Marcelo Tosatti <marcelo@kvack.org>, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+To: christophe leroy <christophe.leroy@c-s.fr>
+Return-path: <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+In-Reply-To: <542F03CF.8010900@c-s.fr>
+List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
+ <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
+List-Archive: <http://lists.ozlabs.org/pipermail/linuxppc-dev/>
+List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
+List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
+List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
+ <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Errors-To: linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org
+Sender: "Linuxppc-dev"
+ <linuxppc-dev-bounces+glppe-linuxppc-embedded-2=m.gmane.org@lists.ozlabs.org>
+List-Id: linux-spi.vger.kernel.org
 
-
-Le 03/10/2014 16:44, Mark Brown a =E9crit :
-> On Fri, Oct 03, 2014 at 02:56:09PM +0200, Christophe Leroy wrote:
->
->> +config CPM1_RELOCSPI
->> +	bool "Dynamic SPI relocation"
->> +	default n
->> +	help
->> +	  On recent MPC8xx (at least MPC866 and MPC885) SPI can be relocat=
-ed
->> +	  without micropatch. This activates relocation to a dynamically
->> +	  allocated area in the CPM Dual port RAM.
->> +	  When combined with SPI relocation patch (for older MPC8xx) it av=
-oids
->> +	  the "loss" of additional Dual port RAM space just above the patc=
-h,
->> +	  which might be needed for example when using the CPM QMC.
-> Something like this shouldn't be a compile time option.  Either it
-> should be unconditional or it should be triggered in some system
-> specific manner (from DT, from knowing about other users or similar).
-Can't be unconditional as older versions of mpc8xx (eg MPC860) don't=20
-support relocation without a micropatch.
-I have therefore submitted a v2 based on a DTS compatible property.
-
----
-Ce courrier =E9lectronique ne contient aucun virus ou logiciel malveill=
-ant parce que la protection avast! Antivirus est active.
-http://www.avast.com
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+T24gRnJpLCAyMDE0LTEwLTAzIGF0IDIyOjE1ICswMjAwLCBjaHJpc3RvcGhlIGxlcm95IHdyb3Rl
+Ogo+IExlIDAzLzEwLzIwMTQgMTY6NDQsIE1hcmsgQnJvd24gYSDDqWNyaXQgOgo+ID4gT24gRnJp
+LCBPY3QgMDMsIDIwMTQgYXQgMDI6NTY6MDlQTSArMDIwMCwgQ2hyaXN0b3BoZSBMZXJveSB3cm90
+ZToKPiA+Cj4gPj4gK2NvbmZpZyBDUE0xX1JFTE9DU1BJCj4gPj4gKwlib29sICJEeW5hbWljIFNQ
+SSByZWxvY2F0aW9uIgo+ID4+ICsJZGVmYXVsdCBuCj4gPj4gKwloZWxwCj4gPj4gKwkgIE9uIHJl
+Y2VudCBNUEM4eHggKGF0IGxlYXN0IE1QQzg2NiBhbmQgTVBDODg1KSBTUEkgY2FuIGJlIHJlbG9j
+YXRlZAo+ID4+ICsJICB3aXRob3V0IG1pY3JvcGF0Y2guIFRoaXMgYWN0aXZhdGVzIHJlbG9jYXRp
+b24gdG8gYSBkeW5hbWljYWxseQo+ID4+ICsJICBhbGxvY2F0ZWQgYXJlYSBpbiB0aGUgQ1BNIER1
+YWwgcG9ydCBSQU0uCj4gPj4gKwkgIFdoZW4gY29tYmluZWQgd2l0aCBTUEkgcmVsb2NhdGlvbiBw
+YXRjaCAoZm9yIG9sZGVyIE1QQzh4eCkgaXQgYXZvaWRzCj4gPj4gKwkgIHRoZSAibG9zcyIgb2Yg
+YWRkaXRpb25hbCBEdWFsIHBvcnQgUkFNIHNwYWNlIGp1c3QgYWJvdmUgdGhlIHBhdGNoLAo+ID4+
+ICsJICB3aGljaCBtaWdodCBiZSBuZWVkZWQgZm9yIGV4YW1wbGUgd2hlbiB1c2luZyB0aGUgQ1BN
+IFFNQy4KPiA+IFNvbWV0aGluZyBsaWtlIHRoaXMgc2hvdWxkbid0IGJlIGEgY29tcGlsZSB0aW1l
+IG9wdGlvbi4gIEVpdGhlciBpdAo+ID4gc2hvdWxkIGJlIHVuY29uZGl0aW9uYWwgb3IgaXQgc2hv
+dWxkIGJlIHRyaWdnZXJlZCBpbiBzb21lIHN5c3RlbQo+ID4gc3BlY2lmaWMgbWFubmVyIChmcm9t
+IERULCBmcm9tIGtub3dpbmcgYWJvdXQgb3RoZXIgdXNlcnMgb3Igc2ltaWxhcikuCj4gQ2FuJ3Qg
+YmUgdW5jb25kaXRpb25hbCBhcyBvbGRlciB2ZXJzaW9ucyBvZiBtcGM4eHggKGVnIE1QQzg2MCkg
+ZG9uJ3QgCj4gc3VwcG9ydCByZWxvY2F0aW9uIHdpdGhvdXQgYSBtaWNyb3BhdGNoLgo+IEkgaGF2
+ZSB0aGVyZWZvcmUgc3VibWl0dGVkIGEgdjIgYmFzZWQgb24gYSBEVFMgY29tcGF0aWJsZSBwcm9w
+ZXJ0eS4KClNvIHRoZSBkZXZpY2UgdHJlZSBjaGFuZ2UgaXMgYWJvdXQgd2hldGhlciByZWxvY2F0
+aW9uIGlzIHN1cHBvcnRlZCwgbm90CndoZXRoZXIgaXQgaXMgcmVxdWlyZWQ/ICBJcyB0aGlzIHNw
+ZWNpZmljIHRvIFNQSSBvciBkb2VzIHRoZSByZWxvY2F0aW9uCm1lY2hhbmlzbSB3b3JrIGZvciBv
+dGhlciB0aGluZ3M/CgpIb3cgYWJvdXQgY2hlY2tpbmcgZm9yIHRoZSBleGlzdGluZyBzcGVjaWZp
+Yy1Tb0MgY29tcGF0aWJsZXM/CgotU2NvdHQKCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpMaW51eHBwYy1kZXYgbWFpbGluZyBsaXN0CkxpbnV4cHBjLWRl
+dkBsaXN0cy5vemxhYnMub3JnCmh0dHBzOi8vbGlzdHMub3psYWJzLm9yZy9saXN0aW5mby9saW51
+eHBwYy1kZXY=

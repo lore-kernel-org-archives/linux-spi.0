@@ -1,119 +1,233 @@
-From: christophe leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] spi: fsl-spi: Fix parameter ram offset setup for
- CPM1
-Date: Sat, 04 Oct 2014 14:02:12 +0200
-Message-ID: <542FE1C4.7000403@c-s.fr>
-References: <20141003164916.DBD631AAFA2@localhost.localdomain> <1412368198.13320.434.camel@snotra.buserror.net>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1412368198.13320.434.camel-88ow+0ZRuxG2UiBs7uKeOtHuzzzSOjJt@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Cao Minh Hiep <cm-hiep@jinso.co.jp>
+Subject: [PATCH v2 1/1] spi: Using Trigger number to transmit/receive data
+Date: Mon,  6 Oct 2014 18:54:24 +0900
+Message-ID: <1412589264-16136-2-git-send-email-cm-hiep@jinso.co.jp>
+References: <1412589264-16136-1-git-send-email-cm-hiep@jinso.co.jp>
+Cc: linux-spi@vger.kernel.org, kuninori.morimoto.gx@renesas.com,
+	yoshihiro.shimoda.uh@renesas.com, ryusuke.sakato.bx@renesas.com,
+	linux-sh@vger.kernel.org
+To: broonie@kernel.org, geert+renesas@glider.be
+Return-path: <linux-sh-owner@vger.kernel.org>
+In-Reply-To: <1412589264-16136-1-git-send-email-cm-hiep@jinso.co.jp>
+Sender: linux-sh-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
 
-Le 03/10/2014 22:29, Scott Wood a =C3=A9crit :
-> On Fri, 2014-10-03 at 18:49 +0200, Christophe Leroy wrote:
->> On CPM1, the SPI parameter RAM has a default location. In fsl_spi_cp=
-m_get_pram()
->> there was a confusion between the SPI_BASE register and the base of =
-the SPI
->> parameter RAM. Fortunatly, it was working properly with MPC866 and M=
-PC885
->> because they do set SPI_BASE, but on MPC860 and other old MPC8xx tha=
-t doesn't
->> set SPI_BASE, pram_ofs was not properly set. This patch fixes this c=
-onfusion.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
->>
->> ---
->> Changes from v1 to v2: none
->>
->>   drivers/spi/spi-fsl-cpm.c | 9 ++++-----
->>   1 file changed, 4 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
->> index 54b0637..0f3a912 100644
->> --- a/drivers/spi/spi-fsl-cpm.c
->> +++ b/drivers/spi/spi-fsl-cpm.c
->> @@ -262,15 +262,14 @@ static unsigned long fsl_spi_cpm_get_pram(stru=
-ct mpc8xxx_spi *mspi)
->>   		pram_ofs =3D cpm_muram_alloc(SPI_PRAM_SIZE, 64);
->>   		out_be16(spi_base, pram_ofs);
->>   	} else {
->> -		struct spi_pram __iomem *pram =3D spi_base;
->> -		u16 rpbase =3D in_be16(&pram->rpbase);
->> +		u16 rpbase =3D in_be16(spi_base);
->>  =20
->> -		/* Microcode relocation patch applied? */
->> +		/* Microcode relocation patch applied | rpbase set by default */
->>   		if (rpbase) {
->>   			pram_ofs =3D rpbase;
->>   		} else {
->> -			pram_ofs =3D cpm_muram_alloc(SPI_PRAM_SIZE, 64);
->> -			out_be16(spi_base, pram_ofs);
->> +			pram_ofs =3D offsetof(cpm8xx_t, cp_dparam[PROFF_SPI]) -
->> +				   offsetof(cpm8xx_t, cp_dpmem[0]);
->>   		}
->>   	}
-> Why is PROFF_SPI not coming from the device tree?
-That's where it starts to become tricky.
+In order to transmit and receive data when have 32 bytes of data that
+ready has prepared on Transmit/Receive Buffer to transmit or receive.
+Instead transmits/receives a byte data using Transmit/Receive Buffer
+Data Triggering Number will improve the speed of transfer data.
 
-PROFF_SPI is defined in cpm1.h which is included by the driver already.=
-=20
-It provides the default offset from the start of the parameter RAM.
-Previously I had the following in my device tree, and the last part of=20
-the source above (the one for rpbase =3D=3D 0) could not work.
-
-             spi: spi@a80 {
-                 cell-index =3D <0>;
-                 compatible =3D "fsl,spi", "fsl,cpm1-spi";
-                 reg =3D <0xa80 0x30 0x3d80 0x30>;
-
-=46irst reg area was the area for SPI registers. Second area was the=20
-parameter RAM zone, which was just mapped to get access to the SPI_BASE=
-=20
-pointer (rpbase)
-
-Now I have
-
-                 compatible =3D "fsl,spi", "fsl,cpm1-spi-reloc";
-                 reg =3D <0xa80 0x30 0x3dac 0x2>;
-
-=46irst reg area is the area for SPI registers. Second area is the=20
-SPI_BASE, as for the CPM2.
-
-On recent 8xx (885 and 866 at least) it contains the offset (=3D0x1D80)=
- of=20
-the parameter RAM. But on old ones (860, ...) it contains 0. Therefore=20
-we have to get the default index in another way.
-What I wanted was to keep something similar to what's done with CPM2.
-
-What should it look like if that offset had to be in the device tree ?
-
-> Why don't I see any
-> cpm spi in any device tree nor any binding for it?
-There's one in mgcoge.dts:
-
-             spi@11aa0 {
-                 cell-index =3D <0>;
-                 compatible =3D "fsl,spi", "fsl,cpm2-spi";
-                 reg =3D <0x11a80 0x40 0x89fc 0x2>;
-
-Christophe
-
+Signed-off-by: Hiep Cao Minh <cm-hiep@jinso.co.jp>
 ---
-Ce courrier =C3=A9lectronique ne contient aucun virus ou logiciel malve=
-illant parce que la protection avast! Antivirus est active.
-http://www.avast.com
+ drivers/spi/spi-rspi.c | 138 ++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 125 insertions(+), 13 deletions(-)
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+diff --git a/drivers/spi/spi-rspi.c b/drivers/spi/spi-rspi.c
+index ad87a98..2d2dff2 100644
+--- a/drivers/spi/spi-rspi.c
++++ b/drivers/spi/spi-rspi.c
+@@ -182,6 +182,13 @@
+ #define SPBFCR_RXRST		0x40	/* Receive Buffer Data Reset */
+ #define SPBFCR_TXTRG_MASK	0x30	/* Transmit Buffer Data Triggering Number */
+ #define SPBFCR_RXTRG_MASK	0x07	/* Receive Buffer Data Triggering Number */
++/* QSPI on R-Car H2 */
++#define SPBFCR_TXTRG_32B	0x00	/* 32Byte Transmit Buffer Triggering */
++#define SPBFCR_TXTRG_1B		0x30	/* 1Byte Transmit Buffer Triggering */
++#define SPBFCR_RXTRG_1B		0x00	/* 32Byte Receive Buffer Triggering */
++#define SPBFCR_RXTRG_32B	0x07	/* 1Byte Receive Buffer Triggering */
++
++#define QSPI_BUFFER_SIZE        32
+ 
+ struct rspi_data {
+ 	void __iomem *addr;
+@@ -371,6 +378,52 @@ static int qspi_set_config_register(struct rspi_data *rspi, int access_size)
+ 	return 0;
+ }
+ 
++static void qspi_update(const struct rspi_data *rspi, u8 mask, u8 val, u8 reg)
++{
++	u8 data;
++
++	data = rspi_read8(rspi, reg);
++	data &= ~mask;
++	data |= (val & mask);
++	rspi_write8(rspi, data, reg);
++}
++
++static int qspi_set_send_trigger(struct rspi_data *rspi, int len)
++{
++	int n;
++
++	n = min(len, QSPI_BUFFER_SIZE);
++
++	if (len >= QSPI_BUFFER_SIZE) {
++		/* sets triggering number to 32 bytes */
++		qspi_update(rspi, SPBFCR_TXTRG_MASK,
++			     SPBFCR_TXTRG_32B, QSPI_SPBFCR);
++	} else {
++		/* sets triggering number to 1 byte */
++		qspi_update(rspi, SPBFCR_TXTRG_MASK,
++			     SPBFCR_TXTRG_1B, QSPI_SPBFCR);
++	}
++
++	return n;
++}
++
++static void qspi_set_receive_trigger(struct rspi_data *rspi, int len)
++{
++	int n;
++
++	n = min(len, QSPI_BUFFER_SIZE);
++
++	if (len >= QSPI_BUFFER_SIZE) {
++		/* sets triggering number to 32 bytes */
++		qspi_update(rspi, SPBFCR_RXTRG_MASK,
++			     SPBFCR_RXTRG_32B, QSPI_SPBFCR);
++	} else {
++		/* sets triggering number to 1 byte */
++		qspi_update(rspi, SPBFCR_RXTRG_MASK,
++			     SPBFCR_RXTRG_1B, QSPI_SPBFCR);
++	}
++}
++
+ #define set_config_register(spi, n) spi->ops->set_config_register(spi, n)
+ 
+ static void rspi_enable_irq(const struct rspi_data *rspi, u8 enable)
+@@ -410,27 +463,40 @@ static inline int rspi_wait_for_rx_full(struct rspi_data *rspi)
+ 	return rspi_wait_for_interrupt(rspi, SPSR_SPRF, SPCR_SPRIE);
+ }
+ 
+-static int rspi_data_out(struct rspi_data *rspi, u8 data)
++static int rspi_wait_for_tx_empty_check(struct rspi_data *rspi)
+ {
+ 	int error = rspi_wait_for_tx_empty(rspi);
+ 	if (error < 0) {
+ 		dev_err(&rspi->master->dev, "transmit timeout\n");
+ 		return error;
+ 	}
+-	rspi_write_data(rspi, data);
++
+ 	return 0;
+ }
+ 
+-static int rspi_data_in(struct rspi_data *rspi)
++static int rspi_wait_for_rx_full_check(struct rspi_data *rspi)
+ {
+-	int error;
+-	u8 data;
+-
+-	error = rspi_wait_for_rx_full(rspi);
++	int error = rspi_wait_for_rx_full(rspi);
+ 	if (error < 0) {
+ 		dev_err(&rspi->master->dev, "receive timeout\n");
+ 		return error;
+ 	}
++
++	return 0;
++}
++
++static int rspi_data_out(struct rspi_data *rspi, u8 data)
++{
++	rspi_wait_for_tx_empty_check(rspi);
++	rspi_write_data(rspi, data);
++	return 0;
++}
++
++static int rspi_data_in(struct rspi_data *rspi)
++{
++	u8 data;
++
++	rspi_wait_for_rx_full_check(rspi);
+ 	data = rspi_read_data(rspi);
+ 	return data;
+ }
+@@ -614,19 +680,28 @@ static bool rspi_can_dma(struct spi_master *master, struct spi_device *spi,
+ 	return __rspi_can_dma(rspi, xfer);
+ }
+ 
+-static int rspi_common_transfer(struct rspi_data *rspi,
+-				struct spi_transfer *xfer)
++static int rspi_dma_check_then_transfer(struct rspi_data *rspi,
++					 struct spi_transfer *xfer)
+ {
+-	int ret;
+-
+ 	if (rspi->master->can_dma && __rspi_can_dma(rspi, xfer)) {
+ 		/* rx_buf can be NULL on RSPI on SH in TX-only Mode */
+-		ret = rspi_dma_transfer(rspi, &xfer->tx_sg,
++		int ret = rspi_dma_transfer(rspi, &xfer->tx_sg,
+ 					xfer->rx_buf ? &xfer->rx_sg : NULL);
+ 		if (ret != -EAGAIN)
+ 			return ret;
+ 	}
+ 
++	return 0;
++}
++
++static int rspi_common_transfer(struct rspi_data *rspi,
++				struct spi_transfer *xfer)
++{
++	int ret;
++
++	ret = rspi_dma_check_then_transfer(rspi, xfer);
++	if (ret < 0)
++		return ret;
+ 	ret = rspi_pio_transfer(rspi, xfer->tx_buf, xfer->rx_buf, xfer->len);
+ 	if (ret < 0)
+ 		return ret;
+@@ -666,12 +741,49 @@ static int rspi_rz_transfer_one(struct spi_master *master,
+ 	return rspi_common_transfer(rspi, xfer);
+ }
+ 
++static int qspi_trigger_transfer_out_int(struct rspi_data *rspi, const u8 *tx,
++					u8 *rx, unsigned int len)
++{
++	int i, n, ret;
++
++	while (len > 0) {
++		n = qspi_set_send_trigger(rspi, len);
++		qspi_set_receive_trigger(rspi, len);
++		if (n == QSPI_BUFFER_SIZE) {
++			rspi_wait_for_tx_empty_check(rspi);
++			for (i = 0; i < n; i++)
++				rspi_write_data(rspi, *tx++);
++			rspi_wait_for_rx_full_check(rspi);
++			for (i = 0; i < n; i++)
++				*rx++ = rspi_read_data(rspi);
++		} else {
++			ret = rspi_pio_transfer(rspi, tx, rx, n);
++			if (ret < 0)
++				return ret;
++		}
++		len -= n;
++	}
++
++	return 0;
++}
++
+ static int qspi_transfer_out_in(struct rspi_data *rspi,
+ 				struct spi_transfer *xfer)
+ {
++	int ret;
++
+ 	qspi_receive_init(rspi);
+ 
+-	return rspi_common_transfer(rspi, xfer);
++	ret = rspi_dma_check_then_transfer(rspi, xfer);
++	if (ret < 0)
++		return ret;
++
++	ret = qspi_trigger_transfer_out_int(rspi, xfer->tx_buf,
++					    xfer->rx_buf, xfer->len);
++	if (ret < 0)
++		return ret;
++
++	return 0;
+ }
+ 
+ static int qspi_transfer_out(struct rspi_data *rspi, struct spi_transfer *xfer)
+-- 
+1.9.1
+

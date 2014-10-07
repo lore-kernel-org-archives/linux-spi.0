@@ -1,40 +1,43 @@
-From: Scott Wood <scottwood-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: Re: [PATCH v2 2/2] spi: fsl-spi: Allow dynamic allocation of CPM1
- parameter RAM
-Date: Mon, 6 Oct 2014 19:24:10 -0500
-Message-ID: <1412641450.13320.509.camel@snotra.buserror.net>
-References: <20141003164917.397871AB276@localhost.localdomain>
-	 <1412365908.13320.429.camel@snotra.buserror.net> <542FC6CC.4000507@c-s.fr>
+From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Subject: [PATCH 0/2] SPI: Enable devicetree spi child nodes
+Date: Tue, 7 Oct 2014 14:48:15 -0500
+Message-ID: <1412711297-31857-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org>,
-	<linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-To: christophe leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <542FC6CC.4000507-GgN8y9CXRhA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
+	<tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>,
+	<axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
+	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <jkosina-AlSwsSmVLrQ@public.gmane.org>, <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	<robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	<dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-Id: linux-spi.vger.kernel.org
 
-On Sat, 2014-10-04 at 12:07 +0200, christophe leroy wrote:
-> The bindings for that driver are described in 
-> Documentation/devicetree/bindings/spi/fsl-spi.txt. But it seems that it 
-> doesn't describe anything related to those compatibles. The driver has a 
-> match on "fsl,fsl-spi" only,
+From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
-I think you mean "fsl,spi", and that's a terrible compatible name.
+This patch series is used to enable the spidev as a child of the
+SPI device tree node. This patch was tested on the Altera
+SOCFPGA platform.
 
->  and for using it with CPM you have to add 
-> "fsl,cpm1-spi" or "fsl,cpm2-spi" to tell the driver that it is CPM 
-> (existing code below).
+Thor Thayer (2):
+  spi: dw: Initialize of_node to discover device tree node children
+  arm: dts: socfpga: Add SPI nodes & update copyright.
 
-fsl-spi.txt doesn't describe CPM1/2 at all, but rather QE (CPM3) and
-non-CPM.
+ Documentation/devicetree/bindings/spi/spi-dw.txt |    1 +
+ arch/arm/boot/dts/socfpga.dtsi                   |   52 ++++++++++++++++++----
+ arch/arm/configs/socfpga_defconfig               |    1 +
+ drivers/spi/spi-dw-mmio.c                        |    5 ++-
+ drivers/spi/spi-dw.c                             |    3 ++
+ 5 files changed, 53 insertions(+), 9 deletions(-)
 
--Scott
-
+-- 
+1.7.9.5
 
 --
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

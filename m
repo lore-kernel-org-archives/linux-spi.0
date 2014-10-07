@@ -1,251 +1,131 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: [GIT PULL] SPI updates for v3.18
-Date: Mon, 6 Oct 2014 16:16:52 +0100
-Message-ID: <20141006151652.GP4609@sirena.org.uk>
+From: Scott Wood <scottwood@freescale.com>
+Subject: Re: [PATCH v2 1/2] spi: fsl-spi: Fix parameter ram offset setup for
+ CPM1
+Date: Mon, 6 Oct 2014 19:15:53 -0500
+Message-ID: <1412640953.13320.502.camel@snotra.buserror.net>
+References: <20141003164916.DBD631AAFA2@localhost.localdomain>
+	 <1412368198.13320.434.camel@snotra.buserror.net> <542FE1C4.7000403@c-s.fr>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="/DkgDsqJFFamjKX0"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie@kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>, <linux-spi@vger.kernel.org>
+To: christophe leroy <christophe.leroy@c-s.fr>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
+In-Reply-To: <542FE1C4.7000403@c-s.fr>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Sat, 2014-10-04 at 14:02 +0200, christophe leroy wrote:
+> Le 03/10/2014 22:29, Scott Wood a =C3=A9crit :
+> > On Fri, 2014-10-03 at 18:49 +0200, Christophe Leroy wrote:
+> >> On CPM1, the SPI parameter RAM has a default location. In fsl_spi_=
+cpm_get_pram()
+> >> there was a confusion between the SPI_BASE register and the base o=
+f the SPI
+> >> parameter RAM. Fortunatly, it was working properly with MPC866 and=
+ MPC885
+> >> because they do set SPI_BASE, but on MPC860 and other old MPC8xx t=
+hat doesn't
+> >> set SPI_BASE, pram_ofs was not properly set. This patch fixes this=
+ confusion.
+> >>
+> >> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> >>
+> >> ---
+> >> Changes from v1 to v2: none
+> >>
+> >>   drivers/spi/spi-fsl-cpm.c | 9 ++++-----
+> >>   1 file changed, 4 insertions(+), 5 deletions(-)
+> >>
+> >> diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
+> >> index 54b0637..0f3a912 100644
+> >> --- a/drivers/spi/spi-fsl-cpm.c
+> >> +++ b/drivers/spi/spi-fsl-cpm.c
+> >> @@ -262,15 +262,14 @@ static unsigned long fsl_spi_cpm_get_pram(st=
+ruct mpc8xxx_spi *mspi)
+> >>   		pram_ofs =3D cpm_muram_alloc(SPI_PRAM_SIZE, 64);
+> >>   		out_be16(spi_base, pram_ofs);
+> >>   	} else {
+> >> -		struct spi_pram __iomem *pram =3D spi_base;
+> >> -		u16 rpbase =3D in_be16(&pram->rpbase);
+> >> +		u16 rpbase =3D in_be16(spi_base);
+> >>  =20
+> >> -		/* Microcode relocation patch applied? */
+> >> +		/* Microcode relocation patch applied | rpbase set by default *=
+/
+> >>   		if (rpbase) {
+> >>   			pram_ofs =3D rpbase;
+> >>   		} else {
+> >> -			pram_ofs =3D cpm_muram_alloc(SPI_PRAM_SIZE, 64);
+> >> -			out_be16(spi_base, pram_ofs);
+> >> +			pram_ofs =3D offsetof(cpm8xx_t, cp_dparam[PROFF_SPI]) -
+> >> +				   offsetof(cpm8xx_t, cp_dpmem[0]);
+> >>   		}
+> >>   	}
+> > Why is PROFF_SPI not coming from the device tree?
+> That's where it starts to become tricky.
+>=20
+> PROFF_SPI is defined in cpm1.h which is included by the driver alread=
+y.=20
 
---/DkgDsqJFFamjKX0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Yes, but those values shouldn't be used.  It's a leftover from the old
+way of hardcoding things and describing the hardware with kconfig rathe=
+r
+than the device tree.
 
-The following changes since commit fe82dcec644244676d55a1384c958d5f67979adb:
+> It provides the default offset from the start of the parameter RAM.
+> Previously I had the following in my device tree, and the last part o=
+f=20
+> the source above (the one for rpbase =3D=3D 0) could not work.
+>=20
+>              spi: spi@a80 {
+>                  cell-index =3D <0>;
+>                  compatible =3D "fsl,spi", "fsl,cpm1-spi";
+>                  reg =3D <0xa80 0x30 0x3d80 0x30>;
+>=20
+> First reg area was the area for SPI registers. Second area was the=20
+> parameter RAM zone, which was just mapped to get access to the SPI_BA=
+SE=20
+> pointer (rpbase)
+>=20
+> Now I have
+>=20
+>                  compatible =3D "fsl,spi", "fsl,cpm1-spi-reloc";
+>                  reg =3D <0xa80 0x30 0x3dac 0x2>;
+>=20
+> First reg area is the area for SPI registers. Second area is the=20
+> SPI_BASE, as for the CPM2.
+>=20
+> On recent 8xx (885 and 866 at least) it contains the offset (=3D0x1D8=
+0) of=20
+> the parameter RAM. But on old ones (860, ...) it contains 0. Therefor=
+e=20
+> we have to get the default index in another way.
+> What I wanted was to keep something similar to what's done with CPM2.
+>=20
+> What should it look like if that offset had to be in the device tree =
+?
 
-  Linux 3.17-rc7 (2014-09-28 14:29:07 -0700)
+If the offset is not relocatable or discoverable, it should stay in the
+device tree.  If you have an old chip you wouldn't have
+fsl,cpm1-spi-reloc and thus you'd still have "0x3d80 0x30" in reg.
 
-are available in the git repository at:
+> > Why don't I see any
+> > cpm spi in any device tree nor any binding for it?
+> There's one in mgcoge.dts:
+>=20
+>              spi@11aa0 {
+>                  cell-index =3D <0>;
+>                  compatible =3D "fsl,spi", "fsl,cpm2-spi";
+>                  reg =3D <0x11a80 0x40 0x89fc 0x2>;
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3=
-=2E18
+I'm not sure why I missed that, but this patch is for cpm1-spi, not
+cpm2-spi...
 
-for you to fetch changes up to a2285b8c75bf7e21895f7c2cf75d6a910914517b:
+Even if you insist on keeping your board dts out-of-tree, there should
+at least be a binding in-tree.
 
-  Merge remote-tracking branch 'spi/topic/xilinx' into spi-next (2014-10-03=
- 16:33:44 +0100)
+BTW, more specific compatibles should come first.
 
-----------------------------------------------------------------
-spi: Updates for v3.18
-
-A quiet release for SPI, mainly driver updates and not too many of them:
-
- - Support for dummy transfers (for delays on startup) in drivers using
-   transfer_one().
- - Lots of enhancements to the Designware driver to support new Intel
-   SoCs.
- - Support for newer Renesas chips.
- - DMA support for the i.MX driver.
- - One new driver for Broadcom BCM53xx chips.
-
-----------------------------------------------------------------
-Addy Ke (1):
-      spi/rockchip: fix bug that cause the failure to read data in DMA mode
-
-Alexander Shiyan (1):
-      spi: clps711x: Migrate to the new clk subsystem
-
-Alexander Stein (1):
-      spi: fsl-dspi: Remove probe info message
-
-Anders Berg (1):
-      spi: pl022: Add support for chip select extension
-
-Andy Shevchenko (19):
-      spi/pxa2xx-pci: remove unnecessary assignment
-      spi: dw-pci: move info message at the end of probe
-      spi: dw-pci: apply pci_bar and re-use pci_name
-      spi: dw-pci: convert to use dev_pm_ops
-      spi: dw-pci: provide platform specific data via driver_data
-      spi: dw-pci: remove FSF address and update copyright
-      spi: dw: remove FSF address
-      spi: dw-mid: check that DMA was inited before exit
-      spi: dw-mid: remove Moorestown support
-      spi: dw-mid: remove redundant dmac member
-      spi: dw-mid: remove FSF address and update copyright
-      spi: dw: don't use mrst prefix anymore
-      spi: dw-mid: respect 8 bit mode
-      spi: dw-mid: terminate ongoing transfers at exit
-      spi: dw: introduce support of loopback mode
-      spi: dw: fix style of code in few places
-      spi: dw-mid: change magic numbers to the constants
-      spi: dw-mid: convert to use DMAengine wrappers
-      spi: dw-mid: follow new DMAengine workflow
-
-Axel Lin (2):
-      spi: bcm53xx: Fix module dependency
-      spi: bcm53xx: Add missing module information
-
-Chew, Chiau Ee (1):
-      spi/pxa2xx-pci: Add common clock framework support in PCI glue layer
-
-Geert Uytterhoeven (12):
-      spi: rspi: Remove unneeded semicolon
-      spi: rspi: Use devm_kasprintf()
-      spi: rspi: Configure DMA slave bus width to 8 bit
-      spi: rspi: Add DT support to DMA setup
-      spi: sh-msiof: Configure DMA slave bus width
-      spi: sh-msiof: Add DT support to DMA setup
-      spi: sh-msiof: Return early in sh_msiof_dma_once() where possible
-      spi: sh-msiof: Fix transmit-only DMA transfers
-      regmap: Split regmap_get_endian() in two functions
-      spi: rspi: Add support for new R-Car Gen2 SoCs
-      spi: sh-msiof: Add support for new R-Car Gen2 SoCs
-      spi/drivers: Restrict COMPILE_TEST by HAS_DMA where needed
-
-Greg Ungerer (1):
-      spi: orion: support armada extended baud rates
-
-Javier Martinez Canillas (1):
-      regmap: Fix DT endianess parsing logic
-
-Jingoo Han (10):
-      spi: bcm53xx: make local symbol static
-      spi: ep93xx: Fix checkpatch issue
-      spi: xtensa-xtfpga: Fix checkpatch issue
-      spi: spi-mxs: Fix checkpatch issue
-      spi: davinci: Fix checkpatch issue
-      spi: dw: Fix checkpatch issue
-      spi: orion: Fix checkpatch issue
-      spi: tegra114: Fix checkpatch issue
-      spi: tegra20-sflash: Fix checkpatch issue
-      spi: txx9: Fix checkpatch issue
-
-Kiran Padwal (1):
-      spi: pl022: Add missing error check for devm_kzalloc
-
-Mark Brown (12):
-      Merge tag 'dt-endian' of git://git.kernel.org/.../broonie/regmap into=
- spi-fsl-dspi
-      spi: Only call transfer_one() if we have buffers to transfer
-      Merge tag 'dt-endian' of git://git.kernel.org/.../broonie/regmap into=
- spi-fsl-dspi
-      Merge branch 'topic/checkpatch' of git://git.kernel.org/.../broonie/s=
-pi into spi-dw
-      Merge remote-tracking branch 'spi/fix/rockchip' into spi-linus
-      Merge remote-tracking branch 'spi/topic/core' into spi-next
-      Merge remote-tracking branch 'spi/topic/dma-dep' into spi-next
-      Merge remote-tracking branches 'spi/topic/bcm53xx', 'spi/topic/cadenc=
-e', 'spi/topic/checkpatch' and 'spi/topic/clps711x' into spi-next
-      Merge remote-tracking branches 'spi/topic/davinci', 'spi/topic/doc', =
-'spi/topic/dw' and 'spi/topic/fsl' into spi-next
-      Merge remote-tracking branches 'spi/topic/fsl-dspi', 'spi/topic/imx',=
- 'spi/topic/mxs', 'spi/topic/omap-100k' and 'spi/topic/orion' into spi-next
-      Merge remote-tracking branches 'spi/topic/pl022', 'spi/topic/pxa2xx',=
- 'spi/topic/rspi', 'spi/topic/sh-msiof' and 'spi/topic/sirf' into spi-next
-      Merge remote-tracking branch 'spi/topic/xilinx' into spi-next
-
-Michael Heimpold (1):
-      spi: spi-mxs: fix a tiny typo in a comment
-
-Michal Simek (2):
-      spi: cadence: Remove .owner field for driver
-      spi: xilinx: Remove .owner field for driver
-
-Murali Karicheri (1):
-      spi: davinci: add support for adding delay between word's transmissio=
-ns
-
-Nick Krause (1):
-      spi: omap-100k: Remove unused definitions
-
-Oscar Utbult (1):
-      spi-summary: documentation mistake
-
-Qipan Li (3):
-      spi: sirf: correct spi gpio and hardware chipselect behaviour
-      spi: sirf: fix 'cmd_transfer' function typos
-      spi: sirf: cleanup the indentation of marcos
-
-Rafa=C5=82 Mi=C5=82ecki (1):
-      spi: bcm53xx: driver for SPI controller on Broadcom bcma SoC
-
-Robin Gong (1):
-      spi: spi-imx: add DMA support
-
-Stephen Warren (1):
-      regmap: of_regmap_get_endian() cleanup
-
-Xiubo Li (5):
-      regmap: add DT endianness binding support.
-      regmap: Add the DT binding documentation for endianness
-      spi: fsl-dspi: Convert to use regmap framework's endianness method.
-      spi: Fix possible ZERO_SIZE_PTR pointer dereferencing error.
-      spi: fsl: Sort include headers alphabetically
-
- .../devicetree/bindings/regmap/regmap.txt          |  47 ++++
- .../devicetree/bindings/spi/fsl-imx-cspi.txt       |   5 +
- Documentation/devicetree/bindings/spi/sh-msiof.txt |  23 +-
- .../devicetree/bindings/spi/spi-davinci.txt        |  30 +++
- .../devicetree/bindings/spi/spi-fsl-dspi.txt       |   7 +-
- .../devicetree/bindings/spi/spi-orion.txt          |   2 +-
- Documentation/devicetree/bindings/spi/spi-rspi.txt |  10 +-
- Documentation/spi/spi-summary                      |   6 +-
- drivers/base/regmap/regmap-i2c.c                   |   2 +
- drivers/base/regmap/regmap-spi.c                   |   2 +
- drivers/base/regmap/regmap.c                       |  74 ++++-
- drivers/spi/Kconfig                                |  19 +-
- drivers/spi/Makefile                               |   1 +
- drivers/spi/spi-bcm53xx.c                          | 299 +++++++++++++++++=
-++++
- drivers/spi/spi-bcm53xx.h                          |  72 +++++
- drivers/spi/spi-cadence.c                          |   1 -
- drivers/spi/spi-clps711x.c                         |  34 +--
- drivers/spi/spi-davinci.c                          |  63 ++++-
- drivers/spi/spi-dw-mid.c                           |  65 ++---
- drivers/spi/spi-dw-pci.c                           |  67 +++--
- drivers/spi/spi-dw.c                               |  64 +++--
- drivers/spi/spi-dw.h                               |  11 +-
- drivers/spi/spi-ep93xx.c                           |   1 +
- drivers/spi/spi-fsl-cpm.c                          |  14 +-
- drivers/spi/spi-fsl-dspi.c                         |  22 +-
- drivers/spi/spi-fsl-espi.c                         |  12 +-
- drivers/spi/spi-fsl-lib.c                          |   6 +-
- drivers/spi/spi-fsl-spi.c                          |  22 +-
- drivers/spi/spi-imx.c                              | 286 +++++++++++++++++=
-++-
- drivers/spi/spi-mxs.c                              |   6 +-
- drivers/spi/spi-omap-100k.c                        |   4 -
- drivers/spi/spi-orion.c                            | 121 +++++++--
- drivers/spi/spi-pl022.c                            |  64 ++++-
- drivers/spi/spi-pxa2xx-pci.c                       |  20 +-
- drivers/spi/spi-rockchip.c                         |  15 +-
- drivers/spi/spi-rspi.c                             |  55 ++--
- drivers/spi/spi-sh-msiof.c                         |  51 ++--
- drivers/spi/spi-sirf.c                             | 109 +++-----
- drivers/spi/spi-tegra114.c                         |   9 +
- drivers/spi/spi-tegra20-sflash.c                   |   3 +-
- drivers/spi/spi-txx9.c                             |   2 +
- drivers/spi/spi-xilinx.c                           |   1 -
- drivers/spi/spi-xtensa-xtfpga.c                    |   1 +
- drivers/spi/spi.c                                  |  45 ++--
- include/linux/amba/bus.h                           |   5 +
- 45 files changed, 1396 insertions(+), 382 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/regmap/regmap.txt
- create mode 100644 drivers/spi/spi-bcm53xx.c
- create mode 100644 drivers/spi/spi-bcm53xx.h
-
---/DkgDsqJFFamjKX0
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUMrJjAAoJECTWi3JdVIfQrDkH+wfKzqN0riSLczrHCCdusiib
-EgLxLxDa/5GzntEuKyTCv7CPEMuVuBeUTfXspbsmmAtQQa+8ORKZ/dHV68aX/8IQ
-x6MnobbjXGGLvsZHCc9KpFQqEmQGyVBao2R8aIAJ/KBZChqUeOeyx7gZ1W0a5aeL
-D8qCh7Pkwcskk8si4a13gwGeQgqmirhtjNmzaSWC18BMAN8p8vQDsaxvePK4nILY
-qgC+M6V9NA+L10rMH6s56nJKAKCuz+rfpb/KLwkR4aclsTEP+TvtBZdOb3VvxfXL
-fLhuMB75dJRJj6ntmpGAfSwoVBAa0HDkzWPQ8gSGyDHnQsgujLrsWAgLTqzy+MA=
-=2NUI
------END PGP SIGNATURE-----
-
---/DkgDsqJFFamjKX0--
+-Scott

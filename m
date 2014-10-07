@@ -1,7 +1,7 @@
 From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Subject: [PATCH 1/2] spi: dw: Initialize of_node to discover DT node children
-Date: Tue, 7 Oct 2014 14:48:16 -0500
-Message-ID: <1412711297-31857-2-git-send-email-tthayer@opensource.altera.com>
+Subject: [PATCH 2/2] arm: dts: socfpga: Add SPI nodes & update copyright.
+Date: Tue, 7 Oct 2014 14:48:17 -0500
+Message-ID: <1412711297-31857-3-git-send-email-tthayer@opensource.altera.com>
 References: <1412711297-31857-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
 Content-Type: text/plain
@@ -21,60 +21,98 @@ List-Id: linux-spi.vger.kernel.org
 
 From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
-1. The of_node element must be initialized to enable discovery of node
-children. The discovery takes place in the of_register_spi_devices() function.
-2. Grabbing the bus-num from the device tree.
-3. Update the SOCFPGA configuration.
+Add 2 SPI nodes to SOCFPGA device tree. Update copyright.
+Update spi-dw.txt with bus-num as an optional property.
 
 Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 ---
- arch/arm/configs/socfpga_defconfig |    1 +
- drivers/spi/spi-dw-mmio.c          |    5 ++++-
- drivers/spi/spi-dw.c               |    3 +++
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/spi/spi-dw.txt |    1 +
+ arch/arm/boot/dts/socfpga.dtsi                   |   52 ++++++++++++++++++----
+ 2 files changed, 45 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
-index d7a5855..54f3540 100644
---- a/arch/arm/configs/socfpga_defconfig
-+++ b/arch/arm/configs/socfpga_defconfig
-@@ -52,6 +52,7 @@ CONFIG_CAN_C_CAN_PLATFORM=y
- CONFIG_CAN_DEBUG_DEVICES=y
- CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_DEVTMPFS=y
-+CONFIG_DEVTMPFS_MOUNT=y
- CONFIG_PROC_DEVICETREE=y
- CONFIG_BLK_DEV_RAM=y
- CONFIG_BLK_DEV_RAM_COUNT=2
-diff --git a/drivers/spi/spi-dw-mmio.c b/drivers/spi/spi-dw-mmio.c
-index 21ce0e3..b8483057 100644
---- a/drivers/spi/spi-dw-mmio.c
-+++ b/drivers/spi/spi-dw-mmio.c
-@@ -82,7 +82,10 @@ static int dw_spi_mmio_probe(struct platform_device *pdev)
- 	dws->num_cs = num_cs;
+diff --git a/Documentation/devicetree/bindings/spi/spi-dw.txt b/Documentation/devicetree/bindings/spi/spi-dw.txt
+index 7b63ed6..f1d54e6 100644
+--- a/Documentation/devicetree/bindings/spi/spi-dw.txt
++++ b/Documentation/devicetree/bindings/spi/spi-dw.txt
+@@ -11,6 +11,7 @@ Required properties:
  
- 	if (pdev->dev.of_node) {
--		int i;
-+		int i, prop;
+ Optional properties:
+ - cs-gpios: see spi-bus.txt
++- bus-num: see spi-bus.txt
+ 
+ Example:
+ 
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index 4d77ad6..42855bc 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -1,15 +1,14 @@
+ /*
+- *  Copyright (C) 2012 Altera <www.altera.com>
++ * Copyright Altera Corporation (C) 2012-2014. All rights reserved.
+  *
+  * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
++ * it under the terms and conditions of the GNU General Public License,
++ * version 2, as published by the Free Software Foundation.
+  *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
++ * This program is distributed in the hope it will be useful, but WITHOUT
++ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
++ * more details.
+  *
+  * You should have received a copy of the GNU General Public License
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+@@ -628,6 +627,43 @@
+ 			clock-names = "biu", "ciu";
+ 		};
+ 
++		spi0: spi@fff00000 {
++			compatible = "snps,dw-apb-ssi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0xfff00000 0x1000>;
++			interrupts = <0 154 4>;
++			num-cs = <4>;
++			bus-num = <0>;
++			clocks = <&per_base_clk>;
 +
-+		if (!of_property_read_u32(pdev->dev.of_node, "bus-num", &prop))
-+			dws->bus_num = prop;
- 
- 		for (i = 0; i < dws->num_cs; i++) {
- 			int cs_gpio = of_get_named_gpio(pdev->dev.of_node,
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 0dd0623..d8be9f9 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -671,6 +671,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	master->cleanup = dw_spi_cleanup;
- 	master->transfer_one_message = dw_spi_transfer_one_message;
- 	master->max_speed_hz = dws->max_freq;
-+#if defined(CONFIG_OF)
-+	master->dev.of_node = dev->of_node;
-+#endif
- 
- 	/* Basic HW init */
- 	spi_hw_init(dws);
++			spidev@0 {
++				compatible = "spidev";
++				reg = <0>;	/* chip select */
++				spi-max-frequency = <100000000>;
++				enable-dma = <1>;
++			};
++		};
++
++		spi1: spi@fff01000 {
++			compatible = "snps,dw-apb-ssi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0xfff01000 0x1000>;
++			interrupts = <0 156 4>;
++			num-cs = <4>;
++			bus-num = <1>;
++			clocks = <&per_base_clk>;
++			status = "disabled";
++
++			spidev@0 {
++				compatible = "spidev";
++				reg = <0>;
++				spi-max-frequency = <100000000>;
++				enable-dma = <1>;
++			};
++		};
++
+ 		/* Local timer */
+ 		timer@fffec600 {
+ 			compatible = "arm,cortex-a9-twd-timer";
 -- 
 1.7.9.5
 

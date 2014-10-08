@@ -1,50 +1,58 @@
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH 1/2] spi: dw: Initialize of_node to discover DT node
- children
-Date: Wed, 08 Oct 2014 11:17:21 +0300
-Message-ID: <1412756241.7701.7.camel@linux.intel.com>
-References: <1412711297-31857-1-git-send-email-tthayer@opensource.altera.com>
-	 <1412711297-31857-2-git-send-email-tthayer@opensource.altera.com>
+From: Bryan O'Donoghue <pure.logic@nexus-software.ie>
+Subject: Re: [PATCH 2/2 v2] SPI: spi-pxa2xx: SPI support for Intel Quark X1000
+Date: Wed, 08 Oct 2014 10:02:07 +0100
+Message-ID: <5434FD8F.8090209@nexus-software.ie>
+References: <1412000548-9908-1-git-send-email-alvin.chen@intel.com> <1412000548-9908-3-git-send-email-alvin.chen@intel.com> <54348D56.20708@nexus-software.ie> <4656BEB6164FC34F8171C6538F1A595B2E997E59@SHSMSX101.ccr.corp.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: broonie@kernel.org, jkosina@suse.cz, pawel.moll@arm.com,
-	robh+dt@kernel.org, mark.rutland@arm.com,
-	ijc+devicetree@hellion.org.uk, galak@codeaurora.org,
-	dinguyen@opensource.altera.com, linux-spi@vger.kernel.org,
-	linux-doc@vger.kernel.org, devicetree@vger.kernel.org,
-	tthayer.linux@gmail.com, tthayer@altera.com, axel.lin@ingics.com,
-	baruch@tkos.co.il
-To: tthayer@opensource.altera.com
-Return-path: <linux-doc-owner@vger.kernel.org>
-In-Reply-To: <1412711297-31857-2-git-send-email-tthayer@opensource.altera.com>
-Sender: linux-doc-owner@vger.kernel.org
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Westerberg, Mika" <mika.westerberg@intel.com>,
+	"Kweh, Hock Leong" <hock.leong.kweh@intel.com>,
+	"Ong, Boon Leong" <boon.leong.ong@intel.com>,
+	"Tan, Raymond" <raymond.tan@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Chen, Alvin" <alvin.chen@intel.com>,
+	Eric Miao <eric.y.miao@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <4656BEB6164FC34F8171C6538F1A595B2E997E59@SHSMSX101.ccr.corp.intel.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, 2014-10-07 at 14:48 -0500, tthayer@opensource.altera.com wrote:
-> From: Thor Thayer <tthayer@opensource.altera.com>
-> 
-> 1. The of_node element must be initialized to enable discovery of node
-> children. The discovery takes place in the of_register_spi_devices() function.
-> 2. Grabbing the bus-num from the device tree.
-> 3. Update the SOCFPGA configuration.
+On 08/10/14 08:48, Chen, Alvin wrote:
 
-[]
+> Now, we have another board which can support 4 slave spi per master, but not only Galileo. Since that board is not public, after discussing with team, we decide to make the
+> upstream code to support '1'.
+>
+> I will change it back to
+> .num_chipselect = 1,
 
-> --- a/drivers/spi/spi-dw.c
-> +++ b/drivers/spi/spi-dw.c
-> @@ -671,6 +671,9 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
->  	master->cleanup = dw_spi_cleanup;
->  	master->transfer_one_message = dw_spi_transfer_one_message;
->  	master->max_speed_hz = dws->max_freq;
-> +#if defined(CONFIG_OF)
-> +	master->dev.of_node = dev->of_node;
-> +#endif
+Hi Alvin.
 
-I'm not sure you need this #ifdef surrounded an assignment.
-If I'm wrong then you probably have to use if (IS_ENABLED(CONFIG_OF)).
+The important thing in terms of Galileo is to ensure that a GPIO can be 
+used for chip-select.
 
--- 
-Andy Shevchenko <andriy.shevchenko@intel.com>
-Intel Finland Oy
+The user-space API ported from Arduino to Linux wants to control it's 
+own chip-select directly - so the internal chip-select of the Quark SPI 
+master can - and does de-assert while doing SPI transactions on Galileo. 
+The CS on the master is tied to FIFO occupancy - so at higher bit-rates 
+we can fail to keep the FIFO occupied :(
 
+That doesn't matter though, because the pinned out SPI:CS on the Arduino 
+header is a GPIO.
+
+ From the perspective of the Arduino code in user-space and the slave 
+hardware @ the other end of the SPI bus - we see a nice and consistent 
+chip-select for the entire duration of the SPI transaction - even though 
+the actual SPI:CS coming from the SoC can *waggle* - when FIFOs go empty.
+
+IMO - so long as you've tested on Galileo and seen working SPI - you're 
+good to go anyway.
+
+Bryan

@@ -1,57 +1,96 @@
-From: "Chen, Alvin" <alvin.chen@intel.com>
-Subject: RE: [PATCH 2/2 v2] SPI: spi-pxa2xx: SPI support for Intel Quark
- X1000
-Date: Wed, 8 Oct 2014 01:32:09 +0000
-Message-ID: <4656BEB6164FC34F8171C6538F1A595B2E997C63@SHSMSX101.ccr.corp.intel.com>
-References: <1412000548-9908-1-git-send-email-alvin.chen@intel.com>
-	 <1412000548-9908-3-git-send-email-alvin.chen@intel.com>
- <1411981378.11022.1.camel@linux.intel.com>
+From: Ray Jui <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH] spi: pl022: Fix broken spidev when DMA is enabled
+Date: Tue, 7 Oct 2014 21:38:47 -0700
+Message-ID: <1412743127-4523-1-git-send-email-rjui@broadcom.com>
+References: <Ray Jui <rjui@broadcom.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: Eric Miao <eric.y.miao@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Westerberg, Mika" <mika.westerberg@intel.com>,
-	"Kweh, Hock Leong" <hock.leong.kweh@intel.com>,
-	"Ong, Boon Leong" <boon.leong.ong@intel.com>,
-	"Tan, Raymond" <raymond.tan@intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1411981378.11022.1.camel@linux.intel.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	JD Zheng <jdzheng-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Ray Jui <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <Ray Jui <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-PiA+IFRoZSBTUEkgbWVtb3J5IG1hcHBlZCBJL08gcmVnaXN0ZXJzIHN1cHBvcnRlZCBieSBRdWFy
-ayBhcmUgZGlmZmVyZW50DQo+ID4gZnJvbSB0aGUgY3VycmVudCBpbXBsZW1lbnRhdGlvbiwgYW5k
-IFF1YXJrIG9ubHkgc3VwcG9ydHMgdGhlIHJlZ2lzdGVycw0KPiA+IG9mICdTU0NSMCcsICdTU0NS
-MScsICdTU1NSJywgJ1NTRFInLCBhbmQgJ0REU19SQVRFJy4gVGhpcyBwYXRjaCBpcyB0bw0KPiA+
-IGVuYWJsZSB0aGUgU1BJIGZvciBJbnRlbCBRdWFyayBYMTAwMC4NCj4gPg0KPiA+IFRoaXMgcGll
-Y2Ugb2Ygd29yayBpcyBkZXJpdmVkIGZyb20gRGFuIE8nRG9ub3ZhbidzIGluaXRpYWwgd29yayBm
-b3INCj4gPiBJbnRlbCBRdWFyaw0KPiA+IFgxMDAwIFNQSSBlbmFibGluZy4NCj4gDQo+IE1pbm9y
-IGNvbW1lbnRzIGFyZSBiZWxvdy4NCj4gDQo+IEFmdGVyIGFkZHJlc3NpbmcgdGhlbQ0KPiBSZXZp
-ZXdlZC1ieTogQW5keSBTaGV2Y2hlbmtvIDxhbmRyaXkuc2hldmNoZW5rb0BsaW51eC5pbnRlbC5j
-b20+DQo+IA0KT0suDQo+ID4gKwljYXNlIFFVQVJLX1gxMDAwX1NTUDoNCj4gPiArCQlyZXR1cm4g
-UlhfVEhSRVNIX1FVQVJLX1gxMDAwX0RGTFQ7DQo+ID4gIAlkZWZhdWx0Og0KPiA+ICAJCXJldHVy
-biBSWF9USFJFU0hfREZMVDsNCj4gPiAgCX0NCj4gPiArDQo+IA0KPiBSZWR1bmRhbnQgZW1wdHkg
-bGluZS4NCj4gDQpPSy4gSSB3aWxsIHJlbW92ZSBpdC4NCg0KPiA+ICBzdGF0aWMgdm9pZCBweGEy
-eHhfc3BpX2NsZWFyX3J4X3RocmUoY29uc3Qgc3RydWN0IGRyaXZlcl9kYXRhICpkcnZfZGF0YSwN
-Cj4gPiAtCQkJCSAgICAgdTMyICpzY2NyMV9yZWcpDQo+ID4gKwkJCQkJICB1MzIgKnNjY3IxX3Jl
-ZykNCj4gDQo+IFVubmVjZXNzYXJ5IGNoYW5nZS4NCj4gDQpJbXByb3ZlIGl0IGluIHRoZSBmaXJz
-dCBwYXRjaC4NCj4gPiAgc3RhdGljIHZvaWQgcHhhMnh4X3NwaV9zZXRfcnhfdGhyZShjb25zdCBz
-dHJ1Y3QgZHJpdmVyX2RhdGEgKmRydl9kYXRhLA0KPiA+IC0JCQkJICAgdTMyICpzY2NyMV9yZWcs
-IHUzMiB0aHJlc2hvbGQpDQo+ID4gKwkJCQkJdTMyICpzY2NyMV9yZWcsIHUzMiB0aHJlc2hvbGQp
-DQo+IA0KPiBEaXR0by4NCj4gDQo+IE9yIHlvdSBtYXkgZG8gdGhhdCBpbiB0aGUgZmlyc3QgcGF0
-Y2guDQo+IA0KSW1wcm92ZSBpdCBpbiB0aGUgZmlyc3QgcGF0Y2guDQo+ID4NCj4gPiAgCQkJcHhh
-Mnh4X3NwaV9zZXRfcnhfdGhyZShkcnZfZGF0YSwgJnNjY3IxX3JlZywNCj4gPiAtCQkJCQkgICAg
-ICAgcnhfdGhyZSk7DQo+ID4gKwkJCQkJCSAgICByeF90aHJlKTsNCj4gDQo+IERpdHRvLg0KPiAN
-CkltcHJvdmUgaXQgaW4gdGhlIGZpcnN0IHBhdGNoLg0KPiA+ICsJaWYgKGlzX3F1YXJrX3gxMDAw
-X3NzcChkcnZfZGF0YSkgJiYNCj4gPiArCSAgICAocmVhZF9ERFNfUkFURShyZWcpICE9IGNoaXAt
-PmRkc19yYXRlKSkNCj4gDQo+IENvdWxkIGl0IGJlIG9uZSBsaW5lPw0KPiANCk5vLCBpdCBpcyBi
-ZXlvbmQgODAgY2hhcmFjdGVycyBpZiBpdCBpcyBpbiBvbmUgbGluZS4NCg==
+The PL022 SPI driver maps the DMA RX buffer before the DMA TX buffer. In
+most cases, the sequence of the mapping does not matter. But in cases
+where TX and RX happen to use the same buffer, e.g., spidev, it causes
+the cached TX data not written to memory, because the same memory has
+been marked invalid when dma_map_sg on the RX buffer is called
+
+The solution is to reverse the sequence so it maps the TX buffer before
+the RX buffer
+
+Signed-off-by: Ray Jui <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Reviewed-by: JD (Jiandong) Zheng <jdzheng-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Tested-by: Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Reviewed-by: Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+---
+ drivers/spi/spi-pl022.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/spi/spi-pl022.c b/drivers/spi/spi-pl022.c
+index 1189cfd..edb7298 100644
+--- a/drivers/spi/spi-pl022.c
++++ b/drivers/spi/spi-pl022.c
+@@ -773,10 +773,10 @@ static void *next_transfer(struct pl022 *pl022)
+ static void unmap_free_dma_scatter(struct pl022 *pl022)
+ {
+ 	/* Unmap and free the SG tables */
+-	dma_unmap_sg(pl022->dma_tx_channel->device->dev, pl022->sgt_tx.sgl,
+-		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ 	dma_unmap_sg(pl022->dma_rx_channel->device->dev, pl022->sgt_rx.sgl,
+ 		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
++	dma_unmap_sg(pl022->dma_tx_channel->device->dev, pl022->sgt_tx.sgl,
++		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ 	sg_free_table(&pl022->sgt_rx);
+ 	sg_free_table(&pl022->sgt_tx);
+ }
+@@ -1026,16 +1026,16 @@ static int configure_dma(struct pl022 *pl022)
+ 			  pl022->cur_transfer->len, &pl022->sgt_tx);
+ 
+ 	/* Map DMA buffers */
+-	rx_sglen = dma_map_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
+-			   pl022->sgt_rx.nents, DMA_FROM_DEVICE);
+-	if (!rx_sglen)
+-		goto err_rx_sgmap;
+-
+ 	tx_sglen = dma_map_sg(txchan->device->dev, pl022->sgt_tx.sgl,
+ 			   pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ 	if (!tx_sglen)
+ 		goto err_tx_sgmap;
+ 
++	rx_sglen = dma_map_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
++			   pl022->sgt_rx.nents, DMA_FROM_DEVICE);
++	if (!rx_sglen)
++		goto err_rx_sgmap;
++
+ 	/* Send both scatterlists */
+ 	rxdesc = dmaengine_prep_slave_sg(rxchan,
+ 				      pl022->sgt_rx.sgl,
+@@ -1070,12 +1070,12 @@ err_txdesc:
+ 	dmaengine_terminate_all(txchan);
+ err_rxdesc:
+ 	dmaengine_terminate_all(rxchan);
++	dma_unmap_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
++		     pl022->sgt_rx.nents, DMA_FROM_DEVICE);
++err_rx_sgmap:
+ 	dma_unmap_sg(txchan->device->dev, pl022->sgt_tx.sgl,
+ 		     pl022->sgt_tx.nents, DMA_TO_DEVICE);
+ err_tx_sgmap:
+-	dma_unmap_sg(rxchan->device->dev, pl022->sgt_rx.sgl,
+-		     pl022->sgt_tx.nents, DMA_FROM_DEVICE);
+-err_rx_sgmap:
+ 	sg_free_table(&pl022->sgt_tx);
+ err_alloc_tx_sg:
+ 	sg_free_table(&pl022->sgt_rx);
+-- 
+1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

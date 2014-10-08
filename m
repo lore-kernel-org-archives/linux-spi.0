@@ -1,239 +1,164 @@
-From: Weike Chen <alvin.chen@intel.com>
-Subject: [PATCH 1/2 v3] SPI: spi-pxa2xx: Add helpers for regiseters' accessing
-Date: Wed,  8 Oct 2014 08:50:22 -0700
-Message-ID: <1412783423-9408-2-git-send-email-alvin.chen@intel.com>
-References: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
+From: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Subject: Re: [PATCH 2/2] arm: dts: socfpga: Add SPI nodes & update copyright.
+Date: Wed, 8 Oct 2014 10:01:03 +0200
+Message-ID: <20141008080103.GB15799@pengutronix.de>
+References: <1412711297-31857-1-git-send-email-tthayer@opensource.altera.com>
+ <1412711297-31857-3-git-send-email-tthayer@opensource.altera.com>
+ <20141007203123.GA15799@pengutronix.de>
+ <5434535A.9070101@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Hock Leong Kweh <hock.leong.kweh@intel.com>,
- Raymond Tan <raymond.tan@intel.com>,
- Mika Westerberg <mika.westerberg@intel.com>, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, Alvin Chen <alvin.chen@intel.com>,
- Boon Leong Ong <boon.leong.ong@intel.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linux-arm-kernel@lists.infradead.org
-To: Eric Miao <eric.y.miao@gmail.com>, Russell King <linux@arm.linux.org.uk>,
- Haojian Zhuang <haojian.zhuang@gmail.com>, Mark Brown <broonie@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, jkosina-AlSwsSmVLrQ@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org,
+	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
+	dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org, axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org,
+	baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <5434535A.9070101-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-There are several registers for SPI, and the registers of 'SSCR0' and 'SSCR1'
-are accessed frequently. This path is to introduce helper functions to
-simplify the accessing of 'SSCR0' and 'SSCR1'.
+Hi!
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Weike Chen <alvin.chen@intel.com>
----
- drivers/spi/spi-pxa2xx.c |  107 ++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 84 insertions(+), 23 deletions(-)
+On Tue, Oct 07, 2014 at 03:55:54PM -0500, Thor Thayer wrote:
+> 
+> On 10/07/2014 03:31 PM, Steffen Trumtrar wrote:
+> >Hi!
+> >
+> >On Tue, Oct 07, 2014 at 02:48:17PM -0500, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
+> >>From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+> >>
+> >>Add 2 SPI nodes to SOCFPGA device tree. Update copyright.
+> >>Update spi-dw.txt with bus-num as an optional property.
+> >>
+> >>Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+> >>---
+> >>  Documentation/devicetree/bindings/spi/spi-dw.txt |    1 +
+> >>  arch/arm/boot/dts/socfpga.dtsi                   |   52 ++++++++++++++++++----
+> >>  2 files changed, 45 insertions(+), 8 deletions(-)
+> >>
+> >>diff --git a/Documentation/devicetree/bindings/spi/spi-dw.txt b/Documentation/devicetree/bindings/spi/spi-dw.txt
+> >>index 7b63ed6..f1d54e6 100644
+> >>--- a/Documentation/devicetree/bindings/spi/spi-dw.txt
+> >>+++ b/Documentation/devicetree/bindings/spi/spi-dw.txt
+> >>@@ -11,6 +11,7 @@ Required properties:
+> >>  Optional properties:
+> >>  - cs-gpios: see spi-bus.txt
+> >>+- bus-num: see spi-bus.txt
+> >>  Example:
+> >>diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+> >>index 4d77ad6..42855bc 100644
+> >>--- a/arch/arm/boot/dts/socfpga.dtsi
+> >>+++ b/arch/arm/boot/dts/socfpga.dtsi
+> >>@@ -1,15 +1,14 @@
+> >>  /*
+> >>- *  Copyright (C) 2012 Altera <www.altera.com>
+> >>+ * Copyright Altera Corporation (C) 2012-2014. All rights reserved.
+> >>   *
+> >>   * This program is free software; you can redistribute it and/or modify
+> >>- * it under the terms of the GNU General Public License as published by
+> >>- * the Free Software Foundation; either version 2 of the License, or
+> >>- * (at your option) any later version.
+> >>+ * it under the terms and conditions of the GNU General Public License,
+> >>+ * version 2, as published by the Free Software Foundation.
+> >>   *
+> >>- * This program is distributed in the hope that it will be useful,
+> >>- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+> >>- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+> >>- * GNU General Public License for more details.
+> >>+ * This program is distributed in the hope it will be useful, but WITHOUT
+> >>+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+> >>+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+> >>+ * more details.
+> >This shouldn't be in the same patch IMHO.
+> Hi Steffen,
+> 
+> Are you saying the socfpga.dtsi changes shouldn't be in the patch or
+> the copyright update?
+> 
+> If the copyright update, it seemed like a good time since there were
+> other changes.
+> 
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 256c0ab..33dba9b 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -80,6 +80,73 @@ static bool is_lpss_ssp(const struct driver_data *drv_data)
- 	return drv_data->ssp_type == LPSS_SSP;
- }
- 
-+static u32 pxa2xx_spi_get_ssrc1_change_mask(const struct driver_data *drv_data)
-+{
-+	switch (drv_data->ssp_type) {
-+	default:
-+		return SSCR1_CHANGE_MASK;
-+	}
-+}
-+
-+static u32
-+pxa2xx_spi_get_rx_default_thre(const struct driver_data *drv_data)
-+{
-+	switch (drv_data->ssp_type) {
-+	default:
-+		return RX_THRESH_DFLT;
-+	}
-+}
-+
-+static bool pxa2xx_spi_txfifo_full(const struct driver_data *drv_data)
-+{
-+	void __iomem *reg = drv_data->ioaddr;
-+	u32 mask;
-+
-+	switch (drv_data->ssp_type) {
-+	default:
-+		mask = SSSR_TFL_MASK;
-+		break;
-+	}
-+
-+	return (read_SSSR(reg) & mask) == mask;
-+}
-+
-+static void pxa2xx_spi_clear_rx_thre(const struct driver_data *drv_data,
-+				     u32 *sccr1_reg)
-+{
-+	u32 mask;
-+
-+	switch (drv_data->ssp_type) {
-+	default:
-+		mask = SSCR1_RFT;
-+		break;
-+	}
-+	*sccr1_reg &= ~mask;
-+}
-+
-+static void pxa2xx_spi_set_rx_thre(const struct driver_data *drv_data,
-+				   u32 *sccr1_reg, u32 threshold)
-+{
-+	switch (drv_data->ssp_type) {
-+	default:
-+		*sccr1_reg |= SSCR1_RxTresh(threshold);
-+		break;
-+	}
-+}
-+
-+static u32 pxa2xx_configure_sscr0(const struct driver_data *drv_data,
-+				  u32 clk_div, u8 bits)
-+{
-+	switch (drv_data->ssp_type) {
-+	default:
-+		return clk_div
-+			| SSCR0_Motorola
-+			| SSCR0_DataSize(bits > 16 ? bits - 16 : bits)
-+			| SSCR0_SSE
-+			| (bits > 16 ? SSCR0_EDSS : 0);
-+	}
-+}
-+
- /*
-  * Read and write LPSS SSP private registers. Caller must first check that
-  * is_lpss_ssp() returns true before these can be called.
-@@ -234,7 +301,7 @@ static int null_writer(struct driver_data *drv_data)
- 	void __iomem *reg = drv_data->ioaddr;
- 	u8 n_bytes = drv_data->n_bytes;
- 
--	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
-+	if (pxa2xx_spi_txfifo_full(drv_data)
- 		|| (drv_data->tx == drv_data->tx_end))
- 		return 0;
- 
-@@ -262,7 +329,7 @@ static int u8_writer(struct driver_data *drv_data)
- {
- 	void __iomem *reg = drv_data->ioaddr;
- 
--	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
-+	if (pxa2xx_spi_txfifo_full(drv_data)
- 		|| (drv_data->tx == drv_data->tx_end))
- 		return 0;
- 
-@@ -289,7 +356,7 @@ static int u16_writer(struct driver_data *drv_data)
- {
- 	void __iomem *reg = drv_data->ioaddr;
- 
--	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
-+	if (pxa2xx_spi_txfifo_full(drv_data)
- 		|| (drv_data->tx == drv_data->tx_end))
- 		return 0;
- 
-@@ -316,7 +383,7 @@ static int u32_writer(struct driver_data *drv_data)
- {
- 	void __iomem *reg = drv_data->ioaddr;
- 
--	if (((read_SSSR(reg) & SSSR_TFL_MASK) == SSSR_TFL_MASK)
-+	if (pxa2xx_spi_txfifo_full(drv_data)
- 		|| (drv_data->tx == drv_data->tx_end))
- 		return 0;
- 
-@@ -508,8 +575,9 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
- 		 * remaining RX bytes.
- 		 */
- 		if (pxa25x_ssp_comp(drv_data)) {
-+			u32 rx_thre;
- 
--			sccr1_reg &= ~SSCR1_RFT;
-+			pxa2xx_spi_clear_rx_thre(drv_data, &sccr1_reg);
- 
- 			bytes_left = drv_data->rx_end - drv_data->rx;
- 			switch (drv_data->n_bytes) {
-@@ -519,10 +587,11 @@ static irqreturn_t interrupt_transfer(struct driver_data *drv_data)
- 				bytes_left >>= 1;
- 			}
- 
--			if (bytes_left > RX_THRESH_DFLT)
--				bytes_left = RX_THRESH_DFLT;
-+			rx_thre = pxa2xx_spi_get_rx_default_thre(drv_data);
-+			if (rx_thre > bytes_left)
-+				rx_thre = bytes_left;
- 
--			sccr1_reg |= SSCR1_RxTresh(bytes_left);
-+			pxa2xx_spi_set_rx_thre(drv_data, &sccr1_reg, rx_thre);
- 		}
- 		write_SSCR1(sccr1_reg, reg);
- 	}
-@@ -613,6 +682,7 @@ static void pump_transfers(unsigned long data)
- 	u32 cr1;
- 	u32 dma_thresh = drv_data->cur_chip->dma_threshold;
- 	u32 dma_burst = drv_data->cur_chip->dma_burst_size;
-+	u32 change_mask = pxa2xx_spi_get_ssrc1_change_mask(drv_data);
- 
- 	/* Get current state information */
- 	message = drv_data->cur_msg;
-@@ -731,11 +801,7 @@ static void pump_transfers(unsigned long data)
- 						     "pump_transfers: DMA burst size reduced to match bits_per_word\n");
- 		}
- 
--		cr0 = clk_div
--			| SSCR0_Motorola
--			| SSCR0_DataSize(bits > 16 ? bits - 16 : bits)
--			| SSCR0_SSE
--			| (bits > 16 ? SSCR0_EDSS : 0);
-+		cr0 = pxa2xx_configure_sscr0(drv_data, clk_div, bits);
- 	}
- 
- 	message->state = RUNNING_STATE;
-@@ -772,16 +838,15 @@ static void pump_transfers(unsigned long data)
- 	}
- 
- 	/* see if we need to reload the config registers */
--	if ((read_SSCR0(reg) != cr0)
--		|| (read_SSCR1(reg) & SSCR1_CHANGE_MASK) !=
--			(cr1 & SSCR1_CHANGE_MASK)) {
-+	if ((read_SSCR0(reg) != cr0) ||
-+	    (read_SSCR1(reg) & change_mask) != (cr1 & change_mask)) {
- 
- 		/* stop the SSP, and update the other bits */
- 		write_SSCR0(cr0 & ~SSCR0_SSE, reg);
- 		if (!pxa25x_ssp_comp(drv_data))
- 			write_SSTO(chip->timeout, reg);
- 		/* first set CR1 without interrupt and service enables */
--		write_SSCR1(cr1 & SSCR1_CHANGE_MASK, reg);
-+		write_SSCR1(cr1 & change_mask, reg);
- 		/* restart the SSP */
- 		write_SSCR0(cr0, reg);
- 
-@@ -959,12 +1024,8 @@ static int setup(struct spi_device *spi)
- 	clk_div = ssp_get_clk_div(drv_data, spi->max_speed_hz);
- 	chip->speed_hz = spi->max_speed_hz;
- 
--	chip->cr0 = clk_div
--			| SSCR0_Motorola
--			| SSCR0_DataSize(spi->bits_per_word > 16 ?
--				spi->bits_per_word - 16 : spi->bits_per_word)
--			| SSCR0_SSE
--			| (spi->bits_per_word > 16 ? SSCR0_EDSS : 0);
-+	chip->cr0 = pxa2xx_configure_sscr0(drv_data, clk_div,
-+					   spi->bits_per_word);
- 	chip->cr1 &= ~(SSCR1_SPO | SSCR1_SPH);
- 	chip->cr1 |= (((spi->mode & SPI_CPHA) != 0) ? SSCR1_SPH : 0)
- 			| (((spi->mode & SPI_CPOL) != 0) ? SSCR1_SPO : 0);
+Going with what Mark Brown said: Split it up more.
+
+> >>   *
+> >>   * You should have received a copy of the GNU General Public License
+> >>   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+> >>@@ -628,6 +627,43 @@
+> >>  			clock-names = "biu", "ciu";
+> >>  		};
+> >>+		spi0: spi@fff00000 {
+> >>+			compatible = "snps,dw-apb-ssi";
+> >>+			#address-cells = <1>;
+> >>+			#size-cells = <0>;
+> >>+			reg = <0xfff00000 0x1000>;
+> >>+			interrupts = <0 154 4>;
+> >>+			num-cs = <4>;
+> >>+			bus-num = <0>;
+> >>+			clocks = <&per_base_clk>;
+> >>+
+> >>+			spidev@0 {
+> >>+				compatible = "spidev";
+> >>+				reg = <0>;	/* chip select */
+> >>+				spi-max-frequency = <100000000>;
+> >>+				enable-dma = <1>;
+> >>+			};
+> >>+		};
+> >>+
+> >>+		spi1: spi@fff01000 {
+> >>+			compatible = "snps,dw-apb-ssi";
+> >>+			#address-cells = <1>;
+> >>+			#size-cells = <0>;
+> >>+			reg = <0xfff01000 0x1000>;
+> >>+			interrupts = <0 156 4>;
+> >>+			num-cs = <4>;
+> >>+			bus-num = <1>;
+> >>+			clocks = <&per_base_clk>;
+				   ^^^^^^^^^^^^
+Shouldn't this be spi_m_clk?
+
+> >>+			status = "disabled";
+> >>+
+> >>+			spidev@0 {
+> >>+				compatible = "spidev";
+> >>+				reg = <0>;
+> >>+				spi-max-frequency = <100000000>;
+> >>+				enable-dma = <1>;
+> >>+			};
+> >>+		};
+> >>+
+> >I don't think, this is the right place. Put it in the board dts.
+> >Oh, and why is spi0 not disabled but spi1 is?
+> OK. I can put it in the board dts. I thought the IP would go in the
+> socfpga.dtsi file since it describes the chip.
+> 
+
+Okay, I see that my comment is unclear. What I wanted to say is:
+put the spidev into your board dts. Other boards might have something
+else connected there.
+
+> I understand your point which is why the 2nd SPI is disabled - it is
+> not pinned out on the Development Kit board.
+> 
+
+Okay. Then disable both in the dtsi and enable the one you want to use
+in your board file. The dtsi should only have stuff that is common to
+ALL Socfpgas, so the IPs (if they are the same, which AFAIK they are).
+
+Regards,
+Steffen
+
 -- 
-1.7.9.5
+Pengutronix e.K.                           |                             |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

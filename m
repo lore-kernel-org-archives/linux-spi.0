@@ -1,42 +1,87 @@
 From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Subject: [PATCHv2] spi: dw: Initialize of_node to discover DT node children
-Date: Wed, 8 Oct 2014 13:51:34 -0500
-Message-ID: <1412794294-31248-1-git-send-email-tthayer@opensource.altera.com>
+Subject: [PATCHv2] arm: dts: socfpga: Add SPI nodes to SOCFPGA DT.
+Date: Wed, 8 Oct 2014 14:27:08 -0500
+Message-ID: <1412796428-3255-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
 Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>,
-	<tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>,
-	<axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>, <tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>, <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
+	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	<mark.rutland-5wv7dgnIgG8@public.gmane.org>, <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	<galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
-The of_node element must be initialized to enable discovery of node
-children which takes place in the of_register_spi_devices() function.
+Add 2 SPI nodes to SOCFPGA device tree.
 
 Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 ---
-v2:  Remove #ifdef (CONFIG_OF). Remove other files.
+v2: Remove extra files. Move SPIDEV into board specific file.
 ---
- drivers/spi/spi-dw.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/socfpga.dtsi          |   24 ++++++++++++++++++++++++
+ arch/arm/boot/dts/socfpga_cyclone5.dtsi |   10 ++++++++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 0dd0623..0159a70 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -671,6 +671,7 @@ int dw_spi_add_host(struct device *dev, struct dw_spi *dws)
- 	master->cleanup = dw_spi_cleanup;
- 	master->transfer_one_message = dw_spi_transfer_one_message;
- 	master->max_speed_hz = dws->max_freq;
-+	master->dev.of_node = dev->of_node;
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index 4d77ad6..d81bc2d3 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -628,6 +628,30 @@
+ 			clock-names = "biu", "ciu";
+ 		};
  
- 	/* Basic HW init */
- 	spi_hw_init(dws);
++		spi0: spi@fff00000 {
++			compatible = "snps,dw-apb-ssi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0xfff00000 0x1000>;
++			interrupts = <0 154 4>;
++			num-cs = <4>;
++			bus-num = <0>;
++			clocks = <&spi_m_clk>;
++			status = "disabled";
++		};
++
++		spi1: spi@fff01000 {
++			compatible = "snps,dw-apb-ssi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0xfff01000 0x1000>;
++			interrupts = <0 156 4>;
++			num-cs = <4>;
++			bus-num = <1>;
++			clocks = <&spi_m_clk>;
++			status = "disabled";
++		};
++
+ 		/* Local timer */
+ 		timer@fffec600 {
+ 			compatible = "arm,cortex-a9-twd-timer";
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5.dtsi b/arch/arm/boot/dts/socfpga_cyclone5.dtsi
+index bf51182..85c6b5c 100644
+--- a/arch/arm/boot/dts/socfpga_cyclone5.dtsi
++++ b/arch/arm/boot/dts/socfpga_cyclone5.dtsi
+@@ -48,5 +48,15 @@
+ 		sysmgr@ffd08000 {
+ 			cpu1-start-addr = <0xffd080c4>;
+ 		};
++
++		spi0: spi@fff00000 {
++			status = "okay";
++
++			spidev@0 {
++				compatible = "spidev";
++				reg = <0>;	/* chip select */
++				spi-max-frequency = <100000000>;
++			};
++		};
+ 	};
+ };
 -- 
 1.7.9.5
 

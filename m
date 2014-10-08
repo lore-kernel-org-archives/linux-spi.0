@@ -1,55 +1,58 @@
-From: "Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: RE: [PATCH 2/2 v2] SPI: spi-pxa2xx: SPI support for Intel Quark
- X1000
-Date: Wed, 8 Oct 2014 07:48:24 +0000
-Message-ID: <4656BEB6164FC34F8171C6538F1A595B2E997E59@SHSMSX101.ccr.corp.intel.com>
-References: <1412000548-9908-1-git-send-email-alvin.chen@intel.com>
- <1412000548-9908-3-git-send-email-alvin.chen@intel.com>
- <54348D56.20708@nexus-software.ie>
-Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Westerberg, Mika" <mika.westerberg-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Kweh, Hock Leong" <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Ong, Boon Leong" <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Tan, Raymond" <raymond.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: "pure.logic-SyKdqv6vbfZdzvEItQ6vdLNAH6kLmebB@public.gmane.org" <pure.logic-SyKdqv6vbfZdzvEItQ6vdLNAH6kLmebB@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"Haojian Zhuang" <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <54348D56.20708-SyKdqv6vbfZdzvEItQ6vdLNAH6kLmebB@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Weike Chen <alvin.chen@intel.com>
+Subject: [PATCH 0/2 v3] SPI: spi-pxa2xx: Add support for Intel Quark X1000 SPI controller
+Date: Wed,  8 Oct 2014 08:50:21 -0700
+Message-ID: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mika Westerberg <mika.westerberg@intel.com>,
+	Hock Leong Kweh <hock.leong.kweh@intel.com>,
+	Boon Leong Ong <boon.leong.ong@intel.com>,
+	Raymond Tan <raymond.tan@intel.com>,
+	Alvin Chen <alvin.chen@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Eric Miao <eric.y.miao@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
+Hi,
+Intel Quark X1000 consists of two SPI controllers which can be PCI enumerated.
+SPI-PXA2XX PCI layer doesn't support it. Thus, we add support for Intel Quark
+X1000 SPI as well.
 
-> 
-> On 29/09/14 15:22, Weike Chen wrote:
-> > +		.num_chipselect = 4,
-> 
-> How is this right ?
-> 
-> There's only one physical chip-select line per SPI master...
-> 
-> It's a 1:1 mapping.
-> 
-Now, we have another board which can support 4 slave spi per master, but not only Galileo. Since that board is not public, after discussing with team, we decide to make the
-upstream code to support '1'.
+---
+v3:
+[PATCH 1/2]
+* Improve the commit message.
+* A couple of minor fixes.
+[PATCH 2/2]
+* Set '.num_chipselect' to '1' instead of '4'.
+* A couple of minor fixes.
 
-I will change it back to 
-.num_chipselect = 1,
+v2:
+  Split into two patches: one is for helper functions,
+  and another is for quark supporting.
 
+[PATCH 1/2]
+* Add helper functions to access registers.
+* Use 'switch' instead of 'if-else'.
+[PATCH 2/2]
+* Use 'switch' instead of 'if-else'.
+* Add comments for the 'dds'&'clk_div' caculation.
+* A couple of minor fixes.
 
-> Best,
-> Bryan
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Weike Chen (2):
+  SPI: spi-pxa2xx: Add helpers for regiseters' accessing
+  SPI: spi-pxa2xx: SPI support for Intel Quark X1000
+
+ drivers/spi/spi-pxa2xx-pci.c |    8 ++
+ drivers/spi/spi-pxa2xx.c     |  304 ++++++++++++++++++++++++++++++++++++------
+ drivers/spi/spi-pxa2xx.h     |   16 ++-
+ include/linux/pxa2xx_ssp.h   |   21 +++
+ 4 files changed, 304 insertions(+), 45 deletions(-)
+
+-- 
+1.7.9.5

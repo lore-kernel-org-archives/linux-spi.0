@@ -1,58 +1,51 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 2/2] arm: dts: socfpga: Add SPI nodes & update copyright.
-Date: Wed, 8 Oct 2014 00:12:00 +0100
-Message-ID: <20141007231200.GR4609@sirena.org.uk>
-References: <1412711297-31857-1-git-send-email-tthayer@opensource.altera.com>
- <1412711297-31857-3-git-send-email-tthayer@opensource.altera.com>
+From: "Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: RE: [PATCH 1/2 v2] SPI: spi-pxa2xx: Add helpers for regiseters'
+ accessing
+Date: Wed, 8 Oct 2014 00:46:58 +0000
+Message-ID: <4656BEB6164FC34F8171C6538F1A595B2E997C28@SHSMSX101.ccr.corp.intel.com>
+References: <1412000548-9908-1-git-send-email-alvin.chen@intel.com>
+	 <1412000548-9908-2-git-send-email-alvin.chen@intel.com>
+ <1411980737.10697.0.camel@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="kPepdeVVZyud5ZkI"
-Cc: jkosina-AlSwsSmVLrQ@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	mark.rutland-5wv7dgnIgG8@public.gmane.org, ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org,
-	galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org, dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-doc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org, axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org, baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org,
-	andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Westerberg, Mika" <mika.westerberg-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"Kweh, Hock Leong" <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"Ong, Boon Leong" <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"Tan, Raymond" <raymond.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1412711297-31857-3-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+In-Reply-To: <1411980737.10697.0.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-
---kPepdeVVZyud5ZkI
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Tue, Oct 07, 2014 at 02:48:17PM -0500, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
-
-> Add 2 SPI nodes to SOCFPGA device tree. Update copyright.
-> Update spi-dw.txt with bus-num as an optional property.
-
-Again, this is just randomly mixing multiple changes.  Also why are we
-adding a bus-num property - bus numbers are an implementation detail of
-Linux and I can't see any reason to put them in the device tree.  If
-there were one the binding would need to explain what they were.
-
---kPepdeVVZyud5ZkI
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUNHNAAAoJECTWi3JdVIfQLMQH/17DH64GaK/WL3gS//He087f
-9bzMa7NZ4go/wIuwoFHKFGCg1VSjTYAUig/TU+hxJOEUKMZkQLLBGHjXF9snQ1iF
-bZ7iBNXMR2wNR/ShN/IafpdcFjPjAq4RUyQqGg0MgFc3jMDc71i3VxbJ1SnlijD7
-JMPzcJdz50KlbyaH8lm/x07xINKZjNzjLRJ3Y8jFnYHHVfKHN12nZJE459d8EoDZ
-bg+6ju7KQpwta19GPyNtsk3KS5e/IQ0kgQ9p0hySt3bHCpIUuFwXviI1cz+dR/Ug
-r5YMs9fSH8swW8NErRsjN/AG+b287L/Jtp4Ie4abH/gp3rLU71aTwJR5rdLOuuo=
-=vvxe
------END PGP SIGNATURE-----
-
---kPepdeVVZyud5ZkI--
+DQo+IEknbSBva2F5IHdpdGggdGhlIGN1cnJlbnQgdmVyc2lvbiwgdGhvdWdoIEkgaGF2ZSBmZXcg
+bWlub3IgY29tbWVudHMgYmVsb3cuDQo+IA0KPiA+IEludHJvZHVjZSBoZWxwZXIgZnVuY3Rpb25z
+IHRvIGFjY2VzcyB0aGUgJ1NTQ1IwJyBhbmQgJ1NTQ1IxJy4NCj4gPg0KPiANCj4gTGlrZSB5b3Ug
+c2FpZCBpbiB0aGUgc3VtbWFyeSB0aGVyZSBhcmUgbWFueSBhY2Nlc3NvcnMgdG8gbWFueSByZWdp
+c3RlcnMsIG5vdA0KPiBvbmx5IGNyMS9jcjAuIFBlcmhhcHMsIHlvdSBtYXkgZXh0ZW5kIHlvdXIg
+Y29tbWl0IG1lc3NhZ2UuDQo+IA0KT0suDQoNCj4gSW4gYW55IGNhc2UNCj4gUmV2aWV3ZWQtYnk6
+IEFuZHkgU2hldmNoZW5rbyA8YW5kcml5LnNoZXZjaGVua29AbGludXguaW50ZWwuY29tPg0KPiAN
+Ck9LLg0KPiA+ICsNCj4gPiAgLyoNCj4gPiAgICogUmVhZCBhbmQgd3JpdGUgTFBTUyBTU1AgcHJp
+dmF0ZSByZWdpc3RlcnMuIENhbGxlciBtdXN0IGZpcnN0IGNoZWNrIHRoYXQNCj4gPiAgICogaXNf
+bHBzc19zc3AoKSByZXR1cm5zIHRydWUgYmVmb3JlIHRoZXNlIGNhbiBiZSBjYWxsZWQuDQo+ID4g
+QEAgLTIzNCw3ICszMDEsNyBAQCBzdGF0aWMgaW50IG51bGxfd3JpdGVyKHN0cnVjdCBkcml2ZXJf
+ZGF0YSAqZHJ2X2RhdGEpDQo+ID4gIAl2b2lkIF9faW9tZW0gKnJlZyA9IGRydl9kYXRhLT5pb2Fk
+ZHI7DQo+ID4gIAl1OCBuX2J5dGVzID0gZHJ2X2RhdGEtPm5fYnl0ZXM7DQo+ID4NCj4gPiAtCWlm
+ICgoKHJlYWRfU1NTUihyZWcpICYgU1NTUl9URkxfTUFTSykgPT0gU1NTUl9URkxfTUFTSykNCj4g
+PiArCWlmIChweGEyeHhfc3BpX3R4Zmlmb19mdWxsKGRydl9kYXRhKQ0KPiA+ICAJCXx8IChkcnZf
+ZGF0YS0+dHggPT0gZHJ2X2RhdGEtPnR4X2VuZCkpDQo+IA0KPiBKdXN0IHdvbmRlcmluZyBpZiB0
+aG9zZSB0d28gY291bGQgZml0IG9uZSBsaW5lLg0KPiANCk5vLCBpZiBtYWtlIHRoZSB0d28gaW4g
+b25lIGxpbmUsIGl0IGlzIDg0IGNoYXJhY3RlcnMuDQo=
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

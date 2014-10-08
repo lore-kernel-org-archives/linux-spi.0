@@ -1,90 +1,57 @@
-From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Subject: [PATCHv2] arm: dts: socfpga: Add SPI nodes to SOCFPGA DT.
-Date: Wed, 8 Oct 2014 14:27:08 -0500
-Message-ID: <1412796428-3255-1-git-send-email-tthayer@opensource.altera.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCHv2] arm: dts: socfpga: Add SPI nodes to SOCFPGA DT.
+Date: Wed, 8 Oct 2014 21:05:15 +0100
+Message-ID: <20141008200515.GK4609@sirena.org.uk>
+References: <1412796428-3255-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>, <tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	<tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>, <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
-	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	<mark.rutland-5wv7dgnIgG8@public.gmane.org>, <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	<galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="QSIxHKMNNe9U+x7e"
+Cc: robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
+	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org, axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org,
+	baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org,
+	s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org
+To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1412796428-3255-1-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
-Add 2 SPI nodes to SOCFPGA device tree.
+--QSIxHKMNNe9U+x7e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
----
-v2: Remove extra files. Move SPIDEV into board specific file.
----
- arch/arm/boot/dts/socfpga.dtsi          |   24 ++++++++++++++++++++++++
- arch/arm/boot/dts/socfpga_cyclone5.dtsi |   10 ++++++++++
- 2 files changed, 34 insertions(+)
+On Wed, Oct 08, 2014 at 02:27:08PM -0500, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
 
-diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
-index 4d77ad6..d81bc2d3 100644
---- a/arch/arm/boot/dts/socfpga.dtsi
-+++ b/arch/arm/boot/dts/socfpga.dtsi
-@@ -628,6 +628,30 @@
- 			clock-names = "biu", "ciu";
- 		};
- 
-+		spi0: spi@fff00000 {
-+			compatible = "snps,dw-apb-ssi";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0xfff00000 0x1000>;
-+			interrupts = <0 154 4>;
-+			num-cs = <4>;
-+			bus-num = <0>;
-+			clocks = <&spi_m_clk>;
-+			status = "disabled";
-+		};
-+
-+		spi1: spi@fff01000 {
-+			compatible = "snps,dw-apb-ssi";
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+			reg = <0xfff01000 0x1000>;
-+			interrupts = <0 156 4>;
-+			num-cs = <4>;
-+			bus-num = <1>;
-+			clocks = <&spi_m_clk>;
-+			status = "disabled";
-+		};
-+
- 		/* Local timer */
- 		timer@fffec600 {
- 			compatible = "arm,cortex-a9-twd-timer";
-diff --git a/arch/arm/boot/dts/socfpga_cyclone5.dtsi b/arch/arm/boot/dts/socfpga_cyclone5.dtsi
-index bf51182..85c6b5c 100644
---- a/arch/arm/boot/dts/socfpga_cyclone5.dtsi
-+++ b/arch/arm/boot/dts/socfpga_cyclone5.dtsi
-@@ -48,5 +48,15 @@
- 		sysmgr@ffd08000 {
- 			cpu1-start-addr = <0xffd080c4>;
- 		};
-+
-+		spi0: spi@fff00000 {
-+			status = "okay";
-+
-+			spidev@0 {
-+				compatible = "spidev";
-+				reg = <0>;	/* chip select */
-+				spi-max-frequency = <100000000>;
-+			};
-+		};
- 	};
- };
--- 
-1.7.9.5
+> +			spidev@0 {
+> +				compatible = "spidev";
+> +				reg = <0>;	/* chip select */
+> +				spi-max-frequency = <100000000>;
+> +			};
 
+No, if you're putting spidev into the DT that's broken - describe the
+hardware, not the software you're using to control it.
+
+--QSIxHKMNNe9U+x7e
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUNZj6AAoJECTWi3JdVIfQIegH+wVVSusgfUH6dIdrCNCcqe8n
+IESgKRjvAcro2UgVTWsG2qfPZrsIydgLWlLDt+GNQm2N864trm96i65ZVYodYyYP
+cmJVjEjxdeM5fS5xZXr/QWq9NQmkdWQQxmMMdvicEhvsxP8AWv1h/bqL4xw7UMUZ
+Z8tqF0rbIORAuSLgunuYWuDbSx7om17KJHzKMsNOrfX4EHURD6QUn3RqSU74wDZT
+UBdsPQx9UQa8JUxB/B7FY+qPqVl9BVbHQxjog4S/NKt0XAUB6xV982FwW1iTsXio
+abpCakwEo3hKBGSrwldvbywDrNOI5L3qn9/q/kSY4rXmKEzv9VUUsuP21MHcJFE=
+=8aou
+-----END PGP SIGNATURE-----
+
+--QSIxHKMNNe9U+x7e--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,54 +1,50 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv2] spi: dw: Initialize of_node to discover DT node
- children
-Date: Wed, 8 Oct 2014 21:12:57 +0100
-Message-ID: <20141008201257.GL4609@sirena.org.uk>
-References: <1412794294-31248-1-git-send-email-tthayer@opensource.altera.com>
+From: Xiubo Li <Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Subject: [PATCH] spi: fsl-dspi: remove useless code for dspi driver.
+Date: Thu, 9 Oct 2014 11:27:45 +0800
+Message-ID: <1412825265-10221-1-git-send-email-Li.Xiubo@freescale.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Wmb//eAa7gSNqSeK"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org,
-	tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org, axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org, baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org,
-	andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Xiubo Li <Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1412794294-31248-1-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+Since we are using regmap framework's internal locks, so the
+lock_arg for dspi_regmap_config is redundant here.
 
---Wmb//eAa7gSNqSeK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This patch just remove it, and then the dspi_regmap_config could
+be const type.
 
-On Wed, Oct 08, 2014 at 01:51:34PM -0500, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wro=
-te:
-> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
->=20
-> The of_node element must be initialized to enable discovery of node
-> children which takes place in the of_register_spi_devices() function.
+Signed-off-by: Xiubo Li <Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+---
+ drivers/spi/spi-fsl-dspi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Applied, thanks.
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 4482160..12dc995 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -438,7 +438,7 @@ static int dspi_resume(struct device *dev)
+ 
+ static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
+ 
+-static struct regmap_config dspi_regmap_config = {
++static const struct regmap_config dspi_regmap_config = {
+ 	.reg_bits = 32,
+ 	.val_bits = 32,
+ 	.reg_stride = 4,
+@@ -492,7 +492,6 @@ static int dspi_probe(struct platform_device *pdev)
+ 		goto out_master_put;
+ 	}
+ 
+-	dspi_regmap_config.lock_arg = dspi;
+ 	dspi->regmap = devm_regmap_init_mmio_clk(&pdev->dev, "dspi", base,
+ 						&dspi_regmap_config);
+ 	if (IS_ERR(dspi->regmap)) {
+-- 
+2.1.0.27.g96db324
 
---Wmb//eAa7gSNqSeK
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUNZrIAAoJECTWi3JdVIfQcMkH/3xDmhUAcnrYGb+n5NfppUwt
-sur3DdUalGSINpkxMCKXcSWPgCPh5ieQb2Hou8CHUYN2gaY821YQ91ntZeE6R/dl
-UU6C39f/wsRlQgOJQ2OY4wNqbptrwLAcyFN7hu38sZQqS0wA3kxFBM8XcQ687XXh
-Jf1309zP1aHcnmDbrCZudx2RcDScNqUuNJ/zNybzNGQyewquzw1IOwaoRqFioMYP
-deucH/zDr7xcjvASF77X6i2sVeTmX7evBRJWWE1c9a3JMBRRrretJmjAZ32TLKK+
-cyRoI8nf4aGaVkVFkKlRB4Mqfk/BJ+UZ8CoBSQRqRMZI8SchceyrJiIHs39a7iw=
-=561C
------END PGP SIGNATURE-----
-
---Wmb//eAa7gSNqSeK--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

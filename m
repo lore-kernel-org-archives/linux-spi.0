@@ -1,49 +1,43 @@
-From: Xiubo Li <Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-Subject: [PATCH] spi: fsl-dspi: remove useless code for dspi driver.
-Date: Thu, 9 Oct 2014 11:27:45 +0800
-Message-ID: <1412825265-10221-1-git-send-email-Li.Xiubo@freescale.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, Xiubo Li <Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: Kiran Padwal <kiran.padwal-edOiRQu9Xnj5XLMNweQjbQ@public.gmane.org>
+Subject: [PATCH 3/3] spi: qup: Remove .owner field for driver
+Date: Thu,  9 Oct 2014 13:12:08 +0530
+Message-ID: <1412840528-31508-1-git-send-email-kiran.padwal@smartplayin.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-msm-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Kiran Padwal <kiran.padwal-edOiRQu9Xnj5XLMNweQjbQ@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Since we are using regmap framework's internal locks, so the
-lock_arg for dspi_regmap_config is redundant here.
+There is no need to init .owner field.
 
-This patch just remove it, and then the dspi_regmap_config could
-be const type.
+Based on the patch from Peter Griffin <peter.griffin-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+"mmc: remove .owner field for drivers using module_platform_driver"
 
-Signed-off-by: Xiubo Li <Li.Xiubo-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+This patch removes the superfluous .owner field for drivers which
+use the module_platform_driver API, as this is overridden in
+platform_driver_register anyway."
+
+Signed-off-by: Kiran Padwal <kiran.padwal-edOiRQu9Xnj5XLMNweQjbQ@public.gmane.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-qup.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 4482160..12dc995 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -438,7 +438,7 @@ static int dspi_resume(struct device *dev)
- 
- static SIMPLE_DEV_PM_OPS(dspi_pm, dspi_suspend, dspi_resume);
- 
--static struct regmap_config dspi_regmap_config = {
-+static const struct regmap_config dspi_regmap_config = {
- 	.reg_bits = 32,
- 	.val_bits = 32,
- 	.reg_stride = 4,
-@@ -492,7 +492,6 @@ static int dspi_probe(struct platform_device *pdev)
- 		goto out_master_put;
- 	}
- 
--	dspi_regmap_config.lock_arg = dspi;
- 	dspi->regmap = devm_regmap_init_mmio_clk(&pdev->dev, "dspi", base,
- 						&dspi_regmap_config);
- 	if (IS_ERR(dspi->regmap)) {
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 97471e1..30511bd 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -758,7 +758,6 @@ static const struct dev_pm_ops spi_qup_dev_pm_ops = {
+ static struct platform_driver spi_qup_driver = {
+ 	.driver = {
+ 		.name		= "spi_qup",
+-		.owner		= THIS_MODULE,
+ 		.pm		= &spi_qup_dev_pm_ops,
+ 		.of_match_table = spi_qup_dt_match,
+ 	},
 -- 
-2.1.0.27.g96db324
+1.7.9.5
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

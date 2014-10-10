@@ -1,49 +1,53 @@
-From: "Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: RE: [PATCH 2/2 v3] SPI: spi-pxa2xx: SPI support for Intel Quark
- X1000
-Date: Fri, 10 Oct 2014 00:46:18 +0000
-Message-ID: <4656BEB6164FC34F8171C6538F1A595B2E998BCE@SHSMSX101.ccr.corp.intel.com>
-References: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
- <1412783423-9408-3-git-send-email-alvin.chen@intel.com>
- <5436ECC6.9080704@nexus-software.ie>
+From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 0/5] m25p80,spi-nor: Fix module aliases for m25p80; clean
+ up chip identification
+Date: Thu, 9 Oct 2014 21:52:00 -0700
+Message-ID: <20141010045200.GC22169@norris-Latitude-E6410>
+References: <1410714624.3040.38.camel@decadent.org.uk>
+ <1410714795.3040.45.camel@decadent.org.uk>
+ <20140928220300.GB3248@norris-Latitude-E6410>
+ <1412041673.9388.75.camel@decadent.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Westerberg, Mika" <mika.westerberg-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Kweh, Hock Leong" <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Ong, Boon Leong" <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Tan, Raymond" <raymond.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: "pure.logic-SyKdqv6vbfZdzvEItQ6vdLNAH6kLmebB@public.gmane.org" <pure.logic-SyKdqv6vbfZdzvEItQ6vdLNAH6kLmebB@public.gmane.org>,
-	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	"Haojian Zhuang" <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=us-ascii
+Cc: Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
+	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
+	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
+	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	MTD Maling List <linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	debian-kernel <debian-kernel-0aAXYlwwYIJuHlm7Suoebg@public.gmane.org>,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <5436ECC6.9080704-SyKdqv6vbfZdzvEItQ6vdLNAH6kLmebB@public.gmane.org>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <1412041673.9388.75.camel-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-> Hi Alvin,
+On Tue, Sep 30, 2014 at 02:47:53AM +0100, Ben Hutchings wrote:
+> On Sun, 2014-09-28 at 15:03 -0700, Brian Norris wrote:
+> > On Sun, Sep 14, 2014 at 06:13:15PM +0100, Ben Hutchings wrote:
+> > > Note that these patch are:
+> > > - Based on your 'testing' branch
+> > 
+> > Which testing branch? These two are the only official
+> > repos for MTD:
+> > 
+> >     git git://git.infradead.org/linux-mtd.git
+> >     git git://git.infradead.org/l2-mtd.git
 > 
-> Doesn't apply.
-> 
-> Applying: SPI: spi-pxa2xx: SPI support for Intel Quark X1000
-> error: patch failed: drivers/spi/spi-pxa2xx-pci.c:19
-> error: drivers/spi/spi-pxa2xx-pci.c: patch does not apply Patch failed at 0002 SPI:
-> spi-pxa2xx: SPI support for Intel Quark X1000
-> 
-It is based on the slave-dma tree (git.infraded.org) for-linus branch, which will be reapplied on top of v3.19-rc1.
-More information can be got from Andy.
+> You had a testing branch in
+> git://git.infradead.org/users/norris/linux-mtd.git, and that included
+> commit af249c3a0ca8 ('mtd: spi-nor: remove duplicated w25q128 entry')
+> which this patch series depended on.
 
+That repository is very much unofficial. I have a MAINTAINERS patch
+queued up to add git://git.infradead.org/l2-mtd.git (our -next repo) to
+reduce future confusion.
 
-> --
-> Bryan
+Regards,
+Brian
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

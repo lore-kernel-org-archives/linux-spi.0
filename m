@@ -1,57 +1,55 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [v3] spi: orion: support armada extended baud rates
-Date: Mon, 13 Oct 2014 14:48:16 +0200
-Message-ID: <20141013124816.GX27755@sirena.org.uk>
-References: <1411910644-7174-1-git-send-email-gerg@uclinux.org>
- <20141011144857.GA17350@gobelin>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH 3/3] spi: qup: Remove .owner field for driver
+Date: Mon, 13 Oct 2014 15:09:18 +0200
+Message-ID: <20141013130918.GY27755@sirena.org.uk>
+References: <1412840528-31508-1-git-send-email-kiran.padwal@smartplayin.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="H/HqDnEH3ZcfIhoq"
-Cc: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Karl Beldan <karl.beldan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="4ds4tGy7aNC8MgBu"
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+To: Kiran Padwal <kiran.padwal@smartplayin.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20141011144857.GA17350@gobelin>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1412840528-31508-1-git-send-email-kiran.padwal@smartplayin.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---H/HqDnEH3ZcfIhoq
+--4ds4tGy7aNC8MgBu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Oct 11, 2014 at 04:52:04PM +0200, Karl Beldan wrote:
-> On 28/09/14 23:24:04, Greg Ungerer wrote:
-> > @@ -378,6 +452,10 @@ static int orion_spi_probe(struct platform_device *pdev)
+On Thu, Oct 09, 2014 at 01:12:08PM +0530, Kiran Padwal wrote:
+> There is no need to init .owner field.
+>=20
+> Based on the patch from Peter Griffin <peter.griffin@linaro.org>
+> "mmc: remove .owner field for drivers using module_platform_driver"
+>=20
+> This patch removes the superfluous .owner field for drivers which
+> use the module_platform_driver API, as this is overridden in
+> platform_driver_register anyway."
 
-> > +	of_id = of_match_device(orion_spi_of_match_table, &pdev->dev);
-> > +	devdata = of_id->data;
-> > +	spi->devdata = devdata;
+Two problems:
+ - I'm missing patches 1 and 2.
+ - This only changes one driver but essentially every SPI driver
+   initializes .owner - why is only thi sone driver being changed?
 
-> Won't of_match_device return NULL on non-DT systems, and further
-> references oops ?
-
-Yes.
-
---H/HqDnEH3ZcfIhoq
+--4ds4tGy7aNC8MgBu
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUO8oQAAoJECTWi3JdVIfQDiwH/1XnWWZYDD1GbvG9capkyVd7
-dsg4R4mWOxI8yqB5jhahkVjq6zVuxc0JlU/Z8qlsubENEWJEEqJJZ6gCmrUoPyQu
-WE8rZ2kEBCzvEAiRIRvg3a/7yplvHjrqwf/tkadGUUMGP9jPHQSDb0CGKXAEUX9w
-Bnqa7TheFZYVTon5CTvYLRy7ci21HJMKq/2R/Yn/EqyjRsYjU2kj1LnJLX5IqKL3
-XZuD5j4nchHrHLPzzgdfu3PGXqIvmM6Phx7iwx2m10gXycbtbfubu7hpK7EFzPIq
-mTBdF3c/t5/IYyNF6dr71XlgC4Cr7lox4qRFCBKQ9F/qJTwwtw9oMqloesfvlj0=
-=eBBN
+iQEcBAEBAgAGBQJUO87+AAoJECTWi3JdVIfQY/0H/ipMeDskAN3b1Vu78Cz3GC+3
+Xk87d/mOAOT7o3ogH4PYH5aY6SxWXX0kGFHL5NGM4JZXV/CtkaxnOzR5pc1M/Nbk
+Q6hqFd3+qRmkxhBFaQ0K3oekJtUKWST4jQq/d3fkiHcJ1bM7zs3NG/hxsZJvEHW4
+rml1x/aQ3WyGADy4GghfjkYTPVBSPeAzpCqWqzvN7s3DmqH66ezdeJO0i9yEM5a+
+6/LjQ0+Ljca2XfcTrF10QHyLBMWIq+egq8QA7NTDQrMLfMi7PJlyP0ek2//mevvB
+fFvK9VbbzOpSd2oihLm4rpZAGM1v6AO5JVGtvtPIvkYWAqgrMngLO4HGbv5r5SA=
+=HnE7
 -----END PGP SIGNATURE-----
 
---H/HqDnEH3ZcfIhoq--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--4ds4tGy7aNC8MgBu--

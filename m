@@ -1,52 +1,49 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: spidev: Use separate TX and RX bounce buffers
-Date: Mon, 13 Oct 2014 13:07:26 +0200
-Message-ID: <20141013110726.GT27755@sirena.org.uk>
+Subject: Re: [PATCH] spi: pl022: Fix incorrect dma_unmap_sg
+Date: Mon, 13 Oct 2014 13:08:51 +0200
+Message-ID: <20141013110851.GU27755@sirena.org.uk>
 References: <rjui@broadcom.com>
- <1412878765-29088-1-git-send-email-rjui@broadcom.com>
+ <1412880294-9860-1-git-send-email-rjui@broadcom.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="80FmgzPrdF8O9k7o"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	JD Zheng <jdzheng-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
-	Geert Uytterhoeven <geert.uytterhoeven-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="J9FDM06y/La6Wdcu"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 To: Ray Jui <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1412878765-29088-1-git-send-email-rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+In-Reply-To: <1412880294-9860-1-git-send-email-rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---80FmgzPrdF8O9k7o
+--J9FDM06y/La6Wdcu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Oct 09, 2014 at 11:19:25AM -0700, Ray Jui wrote:
-> By using separate TX and RX bounce buffers, we avoid potential cache
-> flush and invalidation sequence issue that may be encountered when a
-> single bounce buffer is shared between TX and RX
+On Thu, Oct 09, 2014 at 11:44:54AM -0700, Ray Jui wrote:
+> When mapped RX DMA entries are unmapped in an error condition when DMA
+> is firstly configured in the driver, the number of TX DMA entries was
+> passed in, which is incorrect
 
 Applied, thanks.
 
---80FmgzPrdF8O9k7o
+--J9FDM06y/La6Wdcu
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUO7JtAAoJECTWi3JdVIfQczgH/33EOoph6nnr17oswSdKgMe0
-V1ToWcU3XovTDlHV0uVcZqfpdOAMzXfcz4xd5gB2si2rrVfDlDwgYVyVgGG41FJo
-m8nVSg43dBwcKmf07se2gF2JHRQeZShDktoD/1pIrHWmBhZj7ZXxw/lrVZ1kEh/7
-f4MgJPC8CVuQ7kWMr3vO18fY4ZLhySD5Lj4NYysl0euxhzzc22xFxxDyXD4LJeMz
-n/bYmW+aNg5OVpHoxfYg27W0TGmLcUscmJDTqELFS6+XaBqq7kQhUXOT7h4pHQpL
-2QBu80OMCf89MfUBg7E4e75kttQ47azCxHHWTXEh3sQBrA7gKfAWsi3B0GF7orE=
-=rRC8
+iQEcBAEBAgAGBQJUO7LCAAoJECTWi3JdVIfQxuwH/jgj0dqO8NNfa17Bxm9iBxOv
+IAyvpMdcJCBYoRwyplx08xwSZjDRNJZhPnl3VZ3mm8KzCDsRya1eV+QKrb5peQRP
+fQLbKpUwA+f4XEf8CeLP/nxQaej+KlS1oAxfkRGnaTZL1xqXqSrax5mLlK3R1a49
+ZXzqWXMZUF7ksBwATX4BsiY0lR/2yyNLyCoekcMD5yqAwpVsmtGJ5jB3dW9E3o5D
+B7TOD2otj+Qd6cuCiYs/MplWEtHYMty6PjbaxW9zfMXY0lMDzx9WjOeVXOnkCyPF
+RHspo7diIKz7VirFFZM8lWSMF3PesHUXMFwzaBO+BAqmx1GxAu/p2s7b0iuf7dg=
+=2Ypm
 -----END PGP SIGNATURE-----
 
---80FmgzPrdF8O9k7o--
+--J9FDM06y/La6Wdcu--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

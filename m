@@ -1,45 +1,61 @@
-From: Cao Minh Hiep <cm-hiep@jinso.co.jp>
-Subject: [PATCH v2 0/1 resend] spi: Using Trigger number to transmit/receive data
-Date: Tue, 14 Oct 2014 09:57:43 +0900
-Message-ID: <1413248264-3685-1-git-send-email-cm-hiep@jinso.co.jp>
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
-	kuninori.morimoto.gx@renesas.com, yoshihiro.shimoda.uh@renesas.com,
-	ryusuke.sakato.bx@renesas.com, linux-sh@vger.kernel.org
-To: geert+renesas@glider.be
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+Subject: Re: [v3] spi: orion: support armada extended baud rates
+Date: Tue, 14 Oct 2014 12:03:12 +1000
+Message-ID: <543C8460.1060508@uclinux.org>
+References: <20141011144857.GA17350@gobelin>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Karl Beldan <karl.beldan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20141011144857.GA17350@gobelin>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
+Hi Karl,
 
-Hi Geert,
+On 12/10/14 00:52, Karl Beldan wrote:
+> On 28/09/14 23:24:04, Greg Ungerer wrote:
+>> @@ -378,6 +452,10 @@ static int orion_spi_probe(struct platform_device *pdev)
+>>  	spi = spi_master_get_devdata(master);
+>>  	spi->master = master;
+>>  
+>> +	of_id = of_match_device(orion_spi_of_match_table, &pdev->dev);
+>> +	devdata = of_id->data;
+>> +	spi->devdata = devdata;
+>> +
+> Won't of_match_device return NULL on non-DT systems, and further
+> references oops ?
 
-Here is the verion 2 of the QSPI patch, I have added the DMA support on it.
-In order to use DMA When the DMA is available. 
-This patch supports for r8a7790 SOC and developed base on the upstream-v3.17-rc7
-and have tested on the Lager board.
-Please review it when you have time!
+Yes, sure enough.
 
-Version 1:
+So I propose to fix with this change.
 
-This is the patch of QSPI that support for r8a7790 SOC. The pupose of 
-this patch is to transmit and receive the 32 bytes of data when the data 
-already has prepared on Transmit/Receive Buffer. Using Transmit/Receive 
-Buffer Data Trigger Number to do that instead transmits/receives a byte 
-of data. With this patch will improve the speed of transfer data.
-This patch was developed base on the upstream-v3.17-rc5 and have 
-tested on the Lager board.
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index acf8e48..c069ccd 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -453,7 +453,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+        spi->master = master;
+ 
+        of_id = of_match_device(orion_spi_of_match_table, &pdev->dev);
+-       devdata = of_id->data;
++       devdata = (of_id) ? of_id->data : &orion_spi_dev_data;
+        spi->devdata = devdata;
+ 
+        spi->clk = devm_clk_get(&pdev->dev, NULL);
 
 
-Best Regards,
-Cao Minh Hiep 
+Mark: This was generated on linux-3.17-rc7 with the first spi-orion
+patch applied. What do you want it generated against?
 
-Hiep Cao Minh (1):
-  spi: Using Trigger number to transmit/receive data
+Regards
+Greg
 
- drivers/spi/spi-rspi.c | 138 ++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 125 insertions(+), 13 deletions(-)
 
--- 
-1.9.1
-
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

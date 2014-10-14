@@ -1,60 +1,30 @@
-From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
-Subject: Re: [v3] spi: orion: support armada extended baud rates
-Date: Tue, 14 Oct 2014 12:03:12 +1000
-Message-ID: <543C8460.1060508@uclinux.org>
-References: <20141011144857.GA17350@gobelin>
+From: Ray Jui <rjui-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>
+Subject: Re: [PATCH] spi: spidev: Use separate TX and RX bounce buffers
+Date: Mon, 13 Oct 2014 20:05:35 -0700
+Message-ID: <543C92FF.80201@broadcom.com>
+References: <rjui@broadcom.com> <1412878765-29088-1-git-send-email-rjui@broadcom.com> <20141013110726.GT27755@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="ISO-8859-1"; format=flowed
 Content-Transfer-Encoding: 7bit
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Karl Beldan <karl.beldan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	JD Zheng <jdzheng-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	Scott Branden <sbranden-dY08KVG/lbpWk0Htik3J/w@public.gmane.org>,
+	"Geert Uytterhoeven" <geert.uytterhoeven-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20141011144857.GA17350@gobelin>
+In-Reply-To: <20141013110726.GT27755-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi Karl,
-
-On 12/10/14 00:52, Karl Beldan wrote:
-> On 28/09/14 23:24:04, Greg Ungerer wrote:
->> @@ -378,6 +452,10 @@ static int orion_spi_probe(struct platform_device *pdev)
->>  	spi = spi_master_get_devdata(master);
->>  	spi->master = master;
->>  
->> +	of_id = of_match_device(orion_spi_of_match_table, &pdev->dev);
->> +	devdata = of_id->data;
->> +	spi->devdata = devdata;
->> +
-> Won't of_match_device return NULL on non-DT systems, and further
-> references oops ?
-
-Yes, sure enough.
-
-So I propose to fix with this change.
-
-diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
-index acf8e48..c069ccd 100644
---- a/drivers/spi/spi-orion.c
-+++ b/drivers/spi/spi-orion.c
-@@ -453,7 +453,7 @@ static int orion_spi_probe(struct platform_device *pdev)
-        spi->master = master;
- 
-        of_id = of_match_device(orion_spi_of_match_table, &pdev->dev);
--       devdata = of_id->data;
-+       devdata = (of_id) ? of_id->data : &orion_spi_dev_data;
-        spi->devdata = devdata;
- 
-        spi->clk = devm_clk_get(&pdev->dev, NULL);
-
-
-Mark: This was generated on linux-3.17-rc7 with the first spi-orion
-patch applied. What do you want it generated against?
-
-Regards
-Greg
-
-
+On 10/13/2014 4:07 AM, Mark Brown wrote:
+> On Thu, Oct 09, 2014 at 11:19:25AM -0700, Ray Jui wrote:
+>> By using separate TX and RX bounce buffers, we avoid potential cache
+>> flush and invalidation sequence issue that may be encountered when a
+>> single bounce buffer is shared between TX and RX
+>
+> Applied, thanks.
+>
+Thanks, Mark.
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

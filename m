@@ -1,40 +1,62 @@
-From: Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-Subject: [PATCH 0/2] spi: fix two bugs
-Date: Wed, 15 Oct 2014 19:25:11 +0800
-Message-ID: <1413372311-4203-1-git-send-email-addy.ke@rock-chips.com>
-Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, hj-TNX95d0MmH7DzftRWevZcw@public.gmane.org, kever.yang-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
-	xjq-TNX95d0MmH7DzftRWevZcw@public.gmane.org, huangtao-TNX95d0MmH7DzftRWevZcw@public.gmane.org, zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
-	yzq-TNX95d0MmH7DzftRWevZcw@public.gmane.org, zhenfu.fang-TNX95d0MmH7DzftRWevZcw@public.gmane.org, cf-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
-	zhangqing-TNX95d0MmH7DzftRWevZcw@public.gmane.org, hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
-	wei.luo-TNX95d0MmH7DzftRWevZcw@public.gmane.org, Addy Ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org,
-	grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org, robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, amstan-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
-	sonnyrao-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+From: Addy Ke <addy.ke@rock-chips.com>
+Subject: [PATCH 1/2] spi/rockchip: fix bug that case spi can't go as fast as slave request
+Date: Wed, 15 Oct 2014 19:25:49 +0800
+Message-ID: <1413372349-4254-1-git-send-email-addy.ke@rock-chips.com>
+References: <1413372311-4203-1-git-send-email-addy.ke@rock-chips.com>
+Cc: linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+	olof@lixom.net, hj@rock-chips.com, kever.yang@rock-chips.com,
+	xjq@rock-chips.com, huangtao@rock-chips.com, zyw@rock-chips.com,
+	yzq@rock-chips.com, zhenfu.fang@rock-chips.com, cf@rock-chips.com,
+	zhangqing@rock-chips.com, hl@rock-chips.com,
+	wei.luo@rock-chips.com, Addy Ke <addy.ke@rock-chips.com>
+To: broonie@kernel.org, heiko@sntech.de, dianders@chromium.org,
+	grant.likely@linaro.org, robh+dt@kernel.org, amstan@google.com,
+	sonnyrao@google.com
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1413372311-4203-1-git-send-email-addy.ke@rock-chips.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Patch 1: fix bug that case spi can't go as fast as slave request
-Patch 2: fix bug that cause spi transfer timed out in DMA duplex mode
+Because the minimum divisor in rk3x's spi controller is 2,
+if spi_clk is less than 2 * sclk_out, we can't get the right divisor.
+So we must set spi_clk again to match slave request.
 
-Tested on rk3288-pinky-version2 board.
+Signed-off-by: Addy Ke <addy.ke@rock-chips.com>
+---
+ drivers/spi/spi-rockchip.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Addy Ke (2):
-  spi/rockchip: fix bug that case spi can't go as fast as slave request
-  spi/rockchip: fix bug that cause spi transfer timed out in DMA duplex
-    mode
-
- drivers/spi/spi-rockchip.c | 46 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 35 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index f96ea8a..3044c6c 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -145,6 +145,9 @@
+ #define RXBUSY						(1 << 0)
+ #define TXBUSY						(1 << 1)
+ 
++/* sclk_out: spi master internal logic in rk3x can support 50Mhz */
++#define MAX_SCLK_OUT		50000000
++
+ enum rockchip_ssi_type {
+ 	SSI_MOTO_SPI = 0,
+ 	SSI_TI_SSP,
+@@ -496,6 +499,15 @@ static void rockchip_spi_config(struct rockchip_spi *rs)
+ 			dmacr |= RF_DMA_EN;
+ 	}
+ 
++	if (WARN_ON(rs->speed > MAX_SCLK_OUT))
++		rs->speed = MAX_SCLK_OUT;
++
++	/* the minimum divsor is 2 */
++	if (rs->max_freq < 2 * rs->speed) {
++		clk_set_rate(rs->spiclk, 2 * rs->speed);
++		rs->max_freq = clk_get_rate(rs->spiclk);
++	}
++
+ 	/* div doesn't support odd number */
+ 	div = max_t(u32, rs->max_freq / rs->speed, 1);
+ 	div = (div + 1) & 0xfffe;
 -- 
 1.8.3.2
-
-
---
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html

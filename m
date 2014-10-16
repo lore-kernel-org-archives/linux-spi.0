@@ -1,7 +1,8 @@
 From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Subject: [PATCHv3] Add SPI nodes to Altera SOCFPGA DT
-Date: Thu, 16 Oct 2014 17:07:30 -0500
-Message-ID: <1413497251-21954-1-git-send-email-tthayer@opensource.altera.com>
+Subject: [PATCHv3] arm: dts: socfpga: Add SPI nodes to SOCFPGA DT.
+Date: Thu, 16 Oct 2014 17:07:31 -0500
+Message-ID: <1413497251-21954-2-git-send-email-tthayer@opensource.altera.com>
+References: <1413497251-21954-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
@@ -12,21 +13,58 @@ To: <dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>, <broonie-DgEjT
 	<robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
 	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1413497251-21954-1-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
-This patch adds the SPI nodes to the SOCFPGA device tree. Both
-nodes are left in the disabled state since no devices are
-present on the development boards.
+Add 2 SPI nodes to SOCFPGA device tree.
 
-Thor Thayer (1):
-  arm: dts: socfpga: Add SPI nodes to SOCFPGA DT.
+Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+---
+v2: Remove extra files. Move SPIDEV into board specific file.
 
+v3: Remove dts file since SPIDEV is not allowed.
+---
  arch/arm/boot/dts/socfpga.dtsi |   24 ++++++++++++++++++++++++
  1 file changed, 24 insertions(+)
 
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index 4d77ad6..d81bc2d3 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -628,6 +628,30 @@
+ 			clock-names = "biu", "ciu";
+ 		};
+ 
++		spi0: spi@fff00000 {
++			compatible = "snps,dw-apb-ssi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0xfff00000 0x1000>;
++			interrupts = <0 154 4>;
++			num-cs = <4>;
++			bus-num = <0>;
++			clocks = <&spi_m_clk>;
++			status = "disabled";
++		};
++
++		spi1: spi@fff01000 {
++			compatible = "snps,dw-apb-ssi";
++			#address-cells = <1>;
++			#size-cells = <0>;
++			reg = <0xfff01000 0x1000>;
++			interrupts = <0 156 4>;
++			num-cs = <4>;
++			bus-num = <1>;
++			clocks = <&spi_m_clk>;
++			status = "disabled";
++		};
++
+ 		/* Local timer */
+ 		timer@fffec600 {
+ 			compatible = "arm,cortex-a9-twd-timer";
 -- 
 1.7.9.5
 

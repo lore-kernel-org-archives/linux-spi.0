@@ -1,51 +1,64 @@
-From: "Shevchenko, Andriy" <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 10/10] dmaengine: intel-mid-dma: remove the driver
-Date: Thu, 16 Oct 2014 08:12:52 +0000
-Message-ID: <1413447171.2396.9.camel@intel.com>
-References: <1411060140-2801-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <1411060140-2801-11-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20141015150727.GX1638@intel.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 0/2 v3] SPI: spi-pxa2xx: Add support for Intel Quark
+ X1000 SPI controller
+Date: Thu, 16 Oct 2014 10:50:42 +0200
+Message-ID: <20141016085042.GI724@sirena.org.uk>
+References: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
+ <4656BEB6164FC34F8171C6538F1A595B2E999534@SHSMSX101.ccr.corp.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <dmaengine-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="RwxaKO075aXzzOz0"
+Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
 	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: "Koul, Vinod" <vinod.koul-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Westerberg, Mika" <mika.westerberg-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"Kweh, Hock Leong" <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"Ong, Boon Leong" <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"Tan, Raymond" <raymond.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: "Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20141015150727.GX1638-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Content-Language: en-US
-Content-ID: <CF004F0BBA776543B43BC5A44D4546DA-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <4656BEB6164FC34F8171C6538F1A595B2E999534-0J0gbvR4kThpB2pF5aRoyrfspsVTdybXVpNB7YpNyf8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-T24gV2VkLCAyMDE0LTEwLTE1IGF0IDIwOjM3ICswNTMwLCBWaW5vZCBLb3VsIHdyb3RlOg0KPiBP
-biBUaHUsIFNlcCAxOCwgMjAxNCBhdCAwODowOTowMFBNICswMzAwLCBBbmR5IFNoZXZjaGVua28g
-d3JvdGU6DQo+ID4gU2luY2UgdGhlIGxhc3QgYW5kIHRoZSBvbmx5IHVzZXIgb2YgdGhpcyBkcml2
-ZXIgaXMgY29udmVydGVkIHRvIHVzZSBkd19kbWFjIHdlDQo+ID4gY2FuIHJlbW92ZSBkcml2ZXIg
-ZnJvbSB0aGUgdHJlZS4NCj4gPiANCj4gPiBNb3Jlb3ZlciwgYmVzaWRlcyB0aGUgZHJpdmVyIGlz
-IHVubWFpbnRhaW5lZCBhIGxvbmcgdGltZSwgaXQgc2VydmVzIGZvciB0aGUNCj4gPiBEZXNpZ25X
-YXJlIERNQSBJUCwgZm9yIHdoaWNoIHdlIGhhdmUgYWxyZWFkeSBkcml2ZXIgaW4gdGhlIHRyZWUu
-DQo+IEkgZG9udCBtaW5kLCB0d28gdGhpbmdzOg0KPiANCj4gLSB3ZXJlIHRoZSBzcGkgY2hhbmdl
-cyBtZXJnZWQsIGlmIHNvIHdlIGNuYSBxdWV1ZSB1cCBwb3N0IHJjMQ0KDQpUaGVyZSBhcmUgZmV3
-IHBhdGNoZXMgYWdhaW5zdCBzcGkgZHcgdGhhdCBzaG91bGQgYmUgYWRkcmVzc2VkLiBJdCdzDQph
-cHBhcmVudGx5IGEgbWF0ZXJpYWwgZm9yIHYzLjE5KC1yYzEpLCBzbywgd2UgaGF2ZSB0aW1lLg0K
-DQo+IC0gaGF2ZSB5b3UgYWRkZWQgc3VwcG9ydCBmb3IgaURNQSBpbiBEVz8gSSBkb250IHRoaW5r
-IHRoYXQgSSBoYXZlIHNlZW4gc3R1ZmYNCj4gICBvbiB0aGF0DQoNCmludGVsX21pZF9kbWEgZG9l
-c24ndCBzdXBwb3J0IHRoaXMgaW4gdXBzdHJlYW0gYXMgZmFyIGFzIEkgY2FuIHNlZS4gSQ0KZG9u
-J3QgdGhpbmsgaXQncyByZWxhdGVkIHRvIHRoZSB0b3BpYy4NCg0KTmV2ZXJ0aGVsZXNzLCBhbnN3
-ZXJpbmcgdG8geW91ciBxdWVzdGlvbiB0aGUgaURNQSBzdXBwb3J0IGlzIGluIHBsYW4gZm9yDQp2
-My4xOSgtcmMxKS4NCg0KLS0gDQpBbmR5IFNoZXZjaGVua28gPGFuZHJpeS5zaGV2Y2hlbmtvQGlu
-dGVsLmNvbT4NCkludGVsIEZpbmxhbmQgT3kNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpJbnRlbCBGaW5sYW5kIE95
-ClJlZ2lzdGVyZWQgQWRkcmVzczogUEwgMjgxLCAwMDE4MSBIZWxzaW5raSAKQnVzaW5lc3MgSWRl
-bnRpdHkgQ29kZTogMDM1NzYwNiAtIDQgCkRvbWljaWxlZCBpbiBIZWxzaW5raSAKClRoaXMgZS1t
-YWlsIGFuZCBhbnkgYXR0YWNobWVudHMgbWF5IGNvbnRhaW4gY29uZmlkZW50aWFsIG1hdGVyaWFs
-IGZvcgp0aGUgc29sZSB1c2Ugb2YgdGhlIGludGVuZGVkIHJlY2lwaWVudChzKS4gQW55IHJldmll
-dyBvciBkaXN0cmlidXRpb24KYnkgb3RoZXJzIGlzIHN0cmljdGx5IHByb2hpYml0ZWQuIElmIHlv
-dSBhcmUgbm90IHRoZSBpbnRlbmRlZApyZWNpcGllbnQsIHBsZWFzZSBjb250YWN0IHRoZSBzZW5k
-ZXIgYW5kIGRlbGV0ZSBhbGwgY29waWVzLgo=
 
+--RwxaKO075aXzzOz0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Oct 16, 2014 at 12:31:41AM +0000, Chen, Alvin wrote:
+> Hi Mark,
+>=20
+> Any update for these patches? Just want to follow-up.
+
+Don't top post and allow a reasonable time for review, you are chasing
+this after less than a week.  This just sends more e-mail which wastes
+my time.
+
+--RwxaKO075aXzzOz0
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUP4bhAAoJECTWi3JdVIfQt14H+gIuoo4ePS3NT8y7jqrnoEE0
+EMUGWocdc2BrlG/Bp9yTdDlzGHwiAAr51dzWvG2oviM7EftSITQXGg9sQeHWoTn8
+8H+XK+rma+ZPgDZu+rZ1IcGD53uLww6CxGx2kp7fpCpewmjvzQdhC8Ekcmi4B3ci
+4jeO4c8EGQ5Iv4z897UegHLZcZDt81QPV3f06SwtXKlI5qRtBl2pD9cy/8Bj1C1q
+9p9RG6z4H4IGFIWdVjh+JkyVgthD72Csb0WwJzKGsbqAuqVVcUA+anL552Tme3B8
+kpiX4/Sd2KiIY4OdV/0U+UFa+og+fHO7Le2n5cq/9mRzIWYIEQtU13dKI6N0o2w=
+=IhY1
+-----END PGP SIGNATURE-----
+
+--RwxaKO075aXzzOz0--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

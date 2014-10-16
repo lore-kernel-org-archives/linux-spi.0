@@ -1,64 +1,55 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 0/2 v3] SPI: spi-pxa2xx: Add support for Intel Quark
- X1000 SPI controller
-Date: Thu, 16 Oct 2014 10:50:42 +0200
-Message-ID: <20141016085042.GI724@sirena.org.uk>
-References: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
- <4656BEB6164FC34F8171C6538F1A595B2E999534@SHSMSX101.ccr.corp.intel.com>
+From: addy ke <addy.ke-TNX95d0MmH7DzftRWevZcw@public.gmane.org>
+Subject: Re: [PATCH 1/2] spi/rockchip: fix bug that case spi can't go as fast
+ as slave request
+Date: Thu, 16 Oct 2014 17:16:02 +0800
+Message-ID: <543F8CD2.1010302@rock-chips.com>
+References: <1413372311-4203-1-git-send-email-addy.ke@rock-chips.com> <1413372349-4254-1-git-send-email-addy.ke@rock-chips.com> <20141015130452.GD27755@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="RwxaKO075aXzzOz0"
-Cc: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Westerberg, Mika" <mika.westerberg-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Kweh, Hock Leong" <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Ong, Boon Leong" <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Tan, Raymond" <raymond.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: "Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Cc: heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org, dianders-F7+t8E8rja9g9hUCZPvPmw@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
+	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, amstan-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org, sonnyrao-hpIqsD4AKlfQT0dZR+AlfA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	olof-nZhT3qVonbNeoWH0uzbU5w@public.gmane.org, hj-TNX95d0MmH7DzftRWevZcw@public.gmane.org, kever.yang-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
+	xjq-TNX95d0MmH7DzftRWevZcw@public.gmane.org, huangtao-TNX95d0MmH7DzftRWevZcw@public.gmane.org, zyw-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
+	yzq-TNX95d0MmH7DzftRWevZcw@public.gmane.org, zhenfu.fang-TNX95d0MmH7DzftRWevZcw@public.gmane.org, cf-TNX95d0MmH7DzftRWevZcw@public.gmane.org,
+	zhangqing-TNX95d0MmH7DzftRWevZcw@public.gmane.org, hl-TNX95d0MmH7DzftRWevZcw@public.gmane.org, wei.luo-TNX95d0MmH7DzftRWevZcw@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <4656BEB6164FC34F8171C6538F1A595B2E999534-0J0gbvR4kThpB2pF5aRoyrfspsVTdybXVpNB7YpNyf8@public.gmane.org>
+In-Reply-To: <20141015130452.GD27755-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+hi, Mark
 
---RwxaKO075aXzzOz0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2014/10/15 21:04, Mark Brown wrote:
+> On Wed, Oct 15, 2014 at 07:25:49PM +0800, Addy Ke wrote:
+> 
+>> +	if (WARN_ON(rs->speed > MAX_SCLK_OUT))
+>> +		rs->speed = MAX_SCLK_OUT;
+>> +
+>> +	/* the minimum divsor is 2 */
+>> +	if (rs->max_freq < 2 * rs->speed) {
+>> +		clk_set_rate(rs->spiclk, 2 * rs->speed);
+>> +		rs->max_freq = clk_get_rate(rs->spiclk);
+>> +	}
+> 
+> I'll apply this but you should be checking the return code from
+> clk_set_rate() here, please send a followup patch doing that.  It might
 
-On Thu, Oct 16, 2014 at 12:31:41AM +0000, Chen, Alvin wrote:
-> Hi Mark,
->=20
-> Any update for these patches? Just want to follow-up.
+If clk_set_rate return error, do I only put dev_warn here or return error value to spi core?
 
-Don't top post and allow a reasonable time for review, you are chasing
-this after less than a week.  This just sends more e-mail which wastes
-my time.
+> also be worth consdering just setting the rate unconditionally here, it
+> seems like it should make things simpler.
+> 
+I think we need.
+If we set the rate unconditionally here, clk_set_rate() will be executed in each spi transfer.
 
---RwxaKO075aXzzOz0
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUP4bhAAoJECTWi3JdVIfQt14H+gIuoo4ePS3NT8y7jqrnoEE0
-EMUGWocdc2BrlG/Bp9yTdDlzGHwiAAr51dzWvG2oviM7EftSITQXGg9sQeHWoTn8
-8H+XK+rma+ZPgDZu+rZ1IcGD53uLww6CxGx2kp7fpCpewmjvzQdhC8Ekcmi4B3ci
-4jeO4c8EGQ5Iv4z897UegHLZcZDt81QPV3f06SwtXKlI5qRtBl2pD9cy/8Bj1C1q
-9p9RG6z4H4IGFIWdVjh+JkyVgthD72Csb0WwJzKGsbqAuqVVcUA+anL552Tme3B8
-kpiX4/Sd2KiIY4OdV/0U+UFa+og+fHO7Le2n5cq/9mRzIWYIEQtU13dKI6N0o2w=
-=IhY1
------END PGP SIGNATURE-----
 
---RwxaKO075aXzzOz0--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

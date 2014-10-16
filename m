@@ -1,83 +1,59 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 2/2] spi/rockchip: fix bug that cause spi transfer timed
- out in DMA duplex mode
-Date: Thu, 16 Oct 2014 11:34:40 +0200
-Message-ID: <20141016093440.GC2200@sirena.org.uk>
-References: <1413372311-4203-1-git-send-email-addy.ke@rock-chips.com>
- <1413372378-4309-1-git-send-email-addy.ke@rock-chips.com>
- <20141015130547.GE27755@sirena.org.uk>
- <543F8F2A.9040904@rock-chips.com>
+From: addy ke <addy.ke@rock-chips.com>
+Subject: Re: [PATCH 1/2] spi/rockchip: fix bug that case spi can't go as fast
+ as slave request
+Date: Thu, 16 Oct 2014 17:58:51 +0800
+Message-ID: <543F96DB.40403@rock-chips.com>
+References: <1413372311-4203-1-git-send-email-addy.ke@rock-chips.com> <1413372349-4254-1-git-send-email-addy.ke@rock-chips.com> <20141015130452.GD27755@sirena.org.uk> <543F8CD2.1010302@rock-chips.com> <20141016093410.GB2200@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="===============8319858234307316899=="
-Cc: heiko@sntech.de, kever.yang@rock-chips.com, linux-kernel@vger.kernel.org,
- xjq@rock-chips.com, zyw@rock-chips.com, linux-rockchip@lists.infradead.org,
- grant.likely@linaro.org, hj@rock-chips.com, huangtao@rock-chips.com,
- devicetree@vger.kernel.org, amstan@google.com, yzq@rock-chips.com,
- zhangqing@rock-chips.com, cf@rock-chips.com, robh+dt@kernel.org,
- linux-arm-kernel@lists.infradead.org, hl@rock-chips.com, dianders@chromium.org,
- linux-spi@vger.kernel.org, wei.luo@rock-chips.com, sonnyrao@google.com,
- olof@lixom.net, zhenfu.fang@rock-chips.com
-To: addy ke <addy.ke@rock-chips.com>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <543F8F2A.9040904@rock-chips.com>
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Cc: heiko@sntech.de, dianders@chromium.org, grant.likely@linaro.org,
+	robh+dt@kernel.org, amstan@google.com, sonnyrao@google.com,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+	olof@lixom.net, hj@rock-chips.com, kever.yang@rock-chips.com,
+	xjq@rock-chips.com, huangtao@rock-chips.com, zyw@rock-chips.com,
+	yzq@rock-chips.com, zhenfu.fang@rock-chips.com, cf@rock-chips.com,
+	zhangqing@rock-chips.com, hl@rock-chips.com, wei.luo@rock-chips.com
+To: broonie@kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <20141016093410.GB2200@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---===============8319858234307316899==
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="pAwQNkOnpTn9IO2O"
-Content-Disposition: inline
 
+On 2014/10/16 17:34, Mark Brown wrote:
+> On Thu, Oct 16, 2014 at 05:16:02PM +0800, addy ke wrote:
+>> On 2014/10/15 21:04, Mark Brown wrote:
+>>> On Wed, Oct 15, 2014 at 07:25:49PM +0800, Addy Ke wrote:
+> 
+>>>> +	if (WARN_ON(rs->speed > MAX_SCLK_OUT))
+>>>> +		rs->speed = MAX_SCLK_OUT;
+> 
+>>>> +	/* the minimum divsor is 2 */
+>>>> +	if (rs->max_freq < 2 * rs->speed) {
+>>>> +		clk_set_rate(rs->spiclk, 2 * rs->speed);
+>>>> +		rs->max_freq = clk_get_rate(rs->spiclk);
+>>>> +	}
+> 
+>>> I'll apply this but you should be checking the return code from
+>>> clk_set_rate() here, please send a followup patch doing that.  It might
+> 
+>> If clk_set_rate return error, do I only put dev_warn here or return error value to spi core?
+> 
+> It'd be better to return an error if we need to set the rate and can't
+> do it.
+> 
+>>> also be worth consdering just setting the rate unconditionally here, it
+>>> seems like it should make things simpler.
+> 
+>> I think we need.
+>> If we set the rate unconditionally here, clk_set_rate() will be executed in each spi transfer.
+> 
+> Is that really such a high cost?
+> 
+Not high cost, but  I think if the default spi_clk is enough, we do not need to set spi_clk again.
 
---pAwQNkOnpTn9IO2O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, Oct 16, 2014 at 05:26:02PM +0800, addy ke wrote:
-
-> The following changes is nessarry:(if tx complete, spi must be disabled too)
-> diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-> index 153269b..87bc16f 100644
-
-Please send this using the normal submission process.
-
---pAwQNkOnpTn9IO2O
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUP5EvAAoJECTWi3JdVIfQCXQH/RU6JwnyaxOhvqyazCG1SBn/
-mAWJ2EyFc+hhm1ao/caDwG0TKP1HXS35JbflhETePYeTaiVvmG7RDRvsRXDHe/qi
-G6vWXcxdalH3tcCES+CUAbFcW1RAgbUjlWKjIOGB1Z04F4x7OusdRoqQZhKCMr9D
-OhEFP0z3iH3s8ET4hPUw1vv4HzNFVBrndSZfGKi7KCUPpNAseplII49ZigaFC8KX
-4o86FWM0qJt9wy7y2VHQxYXaapjoYeHiAyEmT6dfAYsQE0yNmaXoNo2OWvYiv7HX
-wT+Zpo4goW4ZVG40AwLIyqmhBMWxn48X4MfFU/ieLGJa+mpqWoJ6eokYYuv7dL0=
-=mqAw
------END PGP SIGNATURE-----
-
---pAwQNkOnpTn9IO2O--
-
-
---===============8319858234307316899==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-linux-arm-kernel mailing list
-linux-arm-kernel@lists.infradead.org
-http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-
---===============8319858234307316899==--
+Maybe we can only set spi_clk as (2 * MAX_SCLK_OUT) in probe().

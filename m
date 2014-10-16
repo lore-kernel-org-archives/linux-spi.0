@@ -1,62 +1,172 @@
-From: "Chen, Alvin" <alvin.chen@intel.com>
-Subject: RE: [PATCH 0/2 v3] SPI: spi-pxa2xx: Add support for Intel Quark
- X1000 SPI controller
-Date: Thu, 16 Oct 2014 00:31:41 +0000
-Message-ID: <4656BEB6164FC34F8171C6538F1A595B2E999534@SHSMSX101.ccr.corp.intel.com>
-References: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
+From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi/atmel: add support for runtime PM
+Date: Thu, 16 Oct 2014 09:49:20 +0800
+Message-ID: <1413424160-21180-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Westerberg, Mika" <mika.westerberg@intel.com>,
-	"Kweh, Hock Leong" <hock.leong.kweh@intel.com>,
-	"Ong, Boon Leong" <boon.leong.ong@intel.com>,
-	"Tan, Raymond" <raymond.tan@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Eric Miao <eric.y.miao@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-SGkgTWFyaywNCg0KQW55IHVwZGF0ZSBmb3IgdGhlc2UgcGF0Y2hlcz8gSnVzdCB3YW50IHRvIGZv
-bGxvdy11cC4NCg0KDQpCZXN0IHJlZ2FyZHPvvIxBbHZpbiBDaGVuDQpJQ0ZTIFBsYXRmb3JtIEVu
-Z2luZWVyaW5nIFNvbHV0aW9uDQpGbGV4IFNlcnZpY2VzIChDTU1JIExldmVsIDMsIElRQTIwMDUs
-IElRQTIwMDgpLMKgR3JlYXRlciBBc2lhIFJlZ2lvbiBJbnRlbCBJbmZvcm1hdGlvbiBUZWNobm9s
-b2d5IFRlbC4gMDEwLTgyMTcxOTYwDQppbmV0LjgtNzU4MTk2MA0KRW1haWwuIGFsdmluLmNoZW5A
-aW50ZWwuY29tIA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IENoZW4s
-IEFsdmluDQo+IFNlbnQ6IFdlZG5lc2RheSwgT2N0b2JlciA4LCAyMDE0IDExOjUwIFBNDQo+IFRv
-OiBFcmljIE1pYW87IFJ1c3NlbGwgS2luZzsgSGFvamlhbiBaaHVhbmc7IE1hcmsgQnJvd24NCj4g
-Q2M6IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgtc3BpQHZnZXIu
-a2VybmVsLm9yZzsNCj4gbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsgV2VzdGVyYmVyZywg
-TWlrYTsgS3dlaCwgSG9jayBMZW9uZzsgT25nLCBCb29uDQo+IExlb25nOyBUYW4sIFJheW1vbmQ7
-IENoZW4sIEFsdmluOyBBbmR5IFNoZXZjaGVua28NCj4gU3ViamVjdDogW1BBVENIIDAvMiB2M10g
-U1BJOiBzcGktcHhhMnh4OiBBZGQgc3VwcG9ydCBmb3IgSW50ZWwgUXVhcmsgWDEwMDAgU1BJDQo+
-IGNvbnRyb2xsZXINCj4gDQo+IEhpLA0KPiBJbnRlbCBRdWFyayBYMTAwMCBjb25zaXN0cyBvZiB0
-d28gU1BJIGNvbnRyb2xsZXJzIHdoaWNoIGNhbiBiZSBQQ0kgZW51bWVyYXRlZC4NCj4gU1BJLVBY
-QTJYWCBQQ0kgbGF5ZXIgZG9lc24ndCBzdXBwb3J0IGl0LiBUaHVzLCB3ZSBhZGQgc3VwcG9ydCBm
-b3IgSW50ZWwgUXVhcmsNCj4gWDEwMDAgU1BJIGFzIHdlbGwuDQo+IA0KPiAtLS0NCj4gdjM6DQo+
-IFtQQVRDSCAxLzJdDQo+ICogSW1wcm92ZSB0aGUgY29tbWl0IG1lc3NhZ2UuDQo+ICogQSBjb3Vw
-bGUgb2YgbWlub3IgZml4ZXMuDQo+IFtQQVRDSCAyLzJdDQo+ICogU2V0ICcubnVtX2NoaXBzZWxl
-Y3QnIHRvICcxJyBpbnN0ZWFkIG9mICc0Jy4NCj4gKiBBIGNvdXBsZSBvZiBtaW5vciBmaXhlcy4N
-Cj4gDQo+IHYyOg0KPiAgIFNwbGl0IGludG8gdHdvIHBhdGNoZXM6IG9uZSBpcyBmb3IgaGVscGVy
-IGZ1bmN0aW9ucywNCj4gICBhbmQgYW5vdGhlciBpcyBmb3IgcXVhcmsgc3VwcG9ydGluZy4NCj4g
-DQo+IFtQQVRDSCAxLzJdDQo+ICogQWRkIGhlbHBlciBmdW5jdGlvbnMgdG8gYWNjZXNzIHJlZ2lz
-dGVycy4NCj4gKiBVc2UgJ3N3aXRjaCcgaW5zdGVhZCBvZiAnaWYtZWxzZScuDQo+IFtQQVRDSCAy
-LzJdDQo+ICogVXNlICdzd2l0Y2gnIGluc3RlYWQgb2YgJ2lmLWVsc2UnLg0KPiAqIEFkZCBjb21t
-ZW50cyBmb3IgdGhlICdkZHMnJidjbGtfZGl2JyBjYWN1bGF0aW9uLg0KPiAqIEEgY291cGxlIG9m
-IG1pbm9yIGZpeGVzLg0KPiANCj4gV2Vpa2UgQ2hlbiAoMik6DQo+ICAgU1BJOiBzcGktcHhhMnh4
-OiBBZGQgaGVscGVycyBmb3IgcmVnaXNldGVycycgYWNjZXNzaW5nDQo+ICAgU1BJOiBzcGktcHhh
-Mnh4OiBTUEkgc3VwcG9ydCBmb3IgSW50ZWwgUXVhcmsgWDEwMDANCj4gDQo+ICBkcml2ZXJzL3Nw
-aS9zcGktcHhhMnh4LXBjaS5jIHwgICAgOCArKw0KPiAgZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5j
-ICAgICB8ICAzMDQNCj4gKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0t
-DQo+ICBkcml2ZXJzL3NwaS9zcGktcHhhMnh4LmggICAgIHwgICAxNiArKy0NCj4gIGluY2x1ZGUv
-bGludXgvcHhhMnh4X3NzcC5oICAgfCAgIDIxICsrKw0KPiAgNCBmaWxlcyBjaGFuZ2VkLCAzMDQg
-aW5zZXJ0aW9ucygrKSwgNDUgZGVsZXRpb25zKC0pDQo+IA0KPiAtLQ0KPiAxLjcuOS41DQoNCg==
+Drivers should put the device into low power states proactively whenever the
+device is not in use. Thus implement support for runtime PM and use the
+autosuspend feature to make sure that we can still perform well in case we see
+lots of SPI traffic within short period of time.
+
+Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-atmel.c |   62 +++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 55 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 649dcb5..aca285e 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -26,6 +26,7 @@
+ #include <linux/io.h>
+ #include <linux/gpio.h>
+ #include <linux/pinctrl/consumer.h>
++#include <linux/pm_runtime.h>
+ 
+ /* SPI register offsets */
+ #define SPI_CR					0x0000
+@@ -191,6 +192,8 @@
+ 
+ #define SPI_DMA_TIMEOUT		(msecs_to_jiffies(1000))
+ 
++#define AUTOSUSPEND_TIMEOUT	2000
++
+ struct atmel_spi_dma {
+ 	struct dma_chan			*chan_rx;
+ 	struct dma_chan			*chan_tx;
+@@ -1313,6 +1316,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	master->setup = atmel_spi_setup;
+ 	master->transfer_one_message = atmel_spi_transfer_one_message;
+ 	master->cleanup = atmel_spi_cleanup;
++	master->auto_runtime_pm = true;
+ 	platform_set_drvdata(pdev, master);
+ 
+ 	as = spi_master_get_devdata(master);
+@@ -1385,6 +1389,11 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
+ 			(unsigned long)regs->start, irq);
+ 
++	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
++	pm_runtime_use_autosuspend(&pdev->dev);
++	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_enable(&pdev->dev);
++
+ 	ret = devm_spi_register_master(&pdev->dev, master);
+ 	if (ret)
+ 		goto out_free_dma;
+@@ -1392,6 +1401,9 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ out_free_dma:
++	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
++
+ 	if (as->use_dma)
+ 		atmel_spi_release_dma(as);
+ 
+@@ -1413,6 +1425,8 @@ static int atmel_spi_remove(struct platform_device *pdev)
+ 	struct spi_master	*master = platform_get_drvdata(pdev);
+ 	struct atmel_spi	*as = spi_master_get_devdata(master);
+ 
++	pm_runtime_get_sync(&pdev->dev);
++
+ 	/* reset the hardware and block queue progress */
+ 	spin_lock_irq(&as->lock);
+ 	if (as->use_dma) {
+@@ -1430,9 +1444,13 @@ static int atmel_spi_remove(struct platform_device *pdev)
+ 
+ 	clk_disable_unprepare(as->clk);
+ 
++	pm_runtime_put_noidle(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
++
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_PM
+ #ifdef CONFIG_PM_SLEEP
+ static int atmel_spi_suspend(struct device *dev)
+ {
+@@ -1447,9 +1465,10 @@ static int atmel_spi_suspend(struct device *dev)
+ 		return ret;
+ 	}
+ 
+-	clk_disable_unprepare(as->clk);
+-
+-	pinctrl_pm_select_sleep_state(dev);
++	if (!pm_runtime_suspended(dev)) {
++		clk_disable_unprepare(as->clk);
++		pinctrl_pm_select_sleep_state(dev);
++	}
+ 
+ 	return 0;
+ }
+@@ -1460,9 +1479,10 @@ static int atmel_spi_resume(struct device *dev)
+ 	struct atmel_spi	*as = spi_master_get_devdata(master);
+ 	int ret;
+ 
+-	pinctrl_pm_select_default_state(dev);
+-
+-	clk_prepare_enable(as->clk);
++	if (!pm_runtime_suspended(dev)) {
++		pinctrl_pm_select_default_state(dev);
++		clk_prepare_enable(as->clk);
++	}
+ 
+ 	/* Start the queue running */
+ 	ret = spi_master_resume(master);
+@@ -1471,9 +1491,37 @@ static int atmel_spi_resume(struct device *dev)
+ 
+ 	return ret;
+ }
++#endif
+ 
+-static SIMPLE_DEV_PM_OPS(atmel_spi_pm_ops, atmel_spi_suspend, atmel_spi_resume);
++#ifdef CONFIG_PM_RUNTIME
++static int atmel_spi_runtime_suspend(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct atmel_spi *as = spi_master_get_devdata(master);
+ 
++	clk_disable_unprepare(as->clk);
++	pinctrl_pm_select_sleep_state(dev);
++
++	return 0;
++}
++
++static int atmel_spi_runtime_resume(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct atmel_spi *as = spi_master_get_devdata(master);
++
++	pinctrl_pm_select_default_state(dev);
++	clk_prepare_enable(as->clk);
++
++	return 0;
++}
++#endif
++
++static const struct dev_pm_ops atmel_spi_pm_ops = {
++	SET_SYSTEM_SLEEP_PM_OPS(atmel_spi_suspend, atmel_spi_resume)
++	SET_RUNTIME_PM_OPS(atmel_spi_runtime_suspend,
++			   atmel_spi_runtime_resume, NULL)
++};
+ #define ATMEL_SPI_PM_OPS	(&atmel_spi_pm_ops)
+ #else
+ #define ATMEL_SPI_PM_OPS	NULL
+-- 
+1.7.9.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

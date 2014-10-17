@@ -1,54 +1,48 @@
-From: Mark Brown <broonie@kernel.org>
+From: Kevin Hilman <khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH] spi/atmel: add support for runtime PM
-Date: Fri, 17 Oct 2014 15:57:16 +0200
-Message-ID: <20141017135716.GS1820@sirena.org.uk>
+Date: Fri, 17 Oct 2014 07:22:09 -0700
+Message-ID: <7hd29qhj3i.fsf@deeprootsystems.com>
 References: <1413424160-21180-1-git-send-email-wenyou.yang@atmel.com>
- <7hk33yhms4.fsf@deeprootsystems.com>
+	<7hk33yhms4.fsf@deeprootsystems.com>
+	<20141017135716.GS1820@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="U7F658e60E1K4csu"
-Cc: Wenyou Yang <wenyou.yang@atmel.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, nicolas.ferre@atmel.com,
-	linux-arm-kernel@lists.infradead.org
-To: Kevin Hilman <khilman@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <7hk33yhms4.fsf@deeprootsystems.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org,
+	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20141017135716.GS1820-GFdadSzt00ze9xe1eoZjHA@public.gmane.org> (Mark Brown's message of
+	"Fri, 17 Oct 2014 15:57:16 +0200")
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> writes:
 
---U7F658e60E1K4csu
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> On Fri, Oct 17, 2014 at 06:02:35AM -0700, Kevin Hilman wrote:
+>> Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> writes:
+>
+>> > +	if (!pm_runtime_suspended(dev)) {
+>> > +		clk_disable_unprepare(as->clk);
+>> > +		pinctrl_pm_select_sleep_state(dev);
+>> > +	}
+>
+>> a.k.a. pm_runtime_put_sync() since the ->runtime_suspend() callback does
+>> the same thing.
+>
+> Will that do the right thing when runtime PM is disabled in Kconfig?
 
-On Fri, Oct 17, 2014 at 06:02:35AM -0700, Kevin Hilman wrote:
-> Wenyou Yang <wenyou.yang@atmel.com> writes:
+Good point.
 
-> > +	if (!pm_runtime_suspended(dev)) {
-> > +		clk_disable_unprepare(as->clk);
-> > +		pinctrl_pm_select_sleep_state(dev);
-> > +	}
+Then the way to make this cleaner, and obvious on inspection that system
+suspend/resume are doing the same thing as runtime suspend/resume is to
+have ->suspend call the runtime_suspend function.
 
-> a.k.a. pm_runtime_put_sync() since the ->runtime_suspend() callback does
-> the same thing.
+The runtime suspend/resume functions then should be wrapped in CONFIG_PM
+instead of CONFIG_PM_RUNTIME.
 
-Will that do the right thing when runtime PM is disabled in Kconfig?
-
---U7F658e60E1K4csu
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUQSA8AAoJECTWi3JdVIfQ4hgIAIRkPMBs9XhakV8+58tgax0e
-Ror4gskn0x8g0OPdHaK/aQ05Eg3/2Vm0ZT0CH7aCS2FASA+uy5n3uyKnWWY936xV
-WY5iBpwSkqCDkfvonQ5EMa3hoZe8gXSPgn0NZ2n5QKaUSXMBTaMGtGn0jnAZMmJU
-QCSn1qZhErRJAd4Wdl1g3Y4YAqC8ijilmNz5fj/RfL/rUSljCPl++wHOTgX/DRWb
-7Dw/P93nVrqGDnMCY4ZUrk+0wIeuHbcVyDth9hIr0oSvV023AWm99pbioh35kgX7
-+Q7OrE3XLKSICkHpJgNtRBrhCV0BERLZXoXtRlKYyGYcIAeRhRa3U64U5UK3cSI=
-=OciW
------END PGP SIGNATURE-----
-
---U7F658e60E1K4csu--
+Kevin
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,184 +1,101 @@
-From: Kevin Hilman <khilman@kernel.org>
-Subject: Re: [PATCH] spi/atmel: add support for runtime PM
-Date: Fri, 17 Oct 2014 06:02:35 -0700
-Message-ID: <7hk33yhms4.fsf@deeprootsystems.com>
-References: <1413424160-21180-1-git-send-email-wenyou.yang@atmel.com>
+From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Subject: Re: [PATCHv3] arm: dts: socfpga: Add SPI nodes to SOCFPGA DT.
+Date: Fri, 17 Oct 2014 08:55:21 -0500
+Message-ID: <54411FC9.3050109@opensource.altera.com>
+References: <1413497251-21954-1-git-send-email-tthayer@opensource.altera.com> <1413497251-21954-2-git-send-email-tthayer@opensource.altera.com> <20141017065233.GA10262@pengutronix.de>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <nicolas.ferre@atmel.com>,
-	<linux-arm-kernel@lists.infradead.org>
-To: Wenyou Yang <wenyou.yang@atmel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1413424160-21180-1-git-send-email-wenyou.yang@atmel.com> (Wenyou
-	Yang's message of "Thu, 16 Oct 2014 09:49:20 +0800")
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset="windows-1252"; format=flowed
+Content-Transfer-Encoding: 7bit
+Cc: <dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>, <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	<robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <pawel.moll-5wv7dgnIgG8@public.gmane.org>, <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	<ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>, <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	<linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>, <tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>,
+	<axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
+	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+To: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20141017065233.GA10262-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Wenyou Yang <wenyou.yang@atmel.com> writes:
 
-> Drivers should put the device into low power states proactively whenever the
-> device is not in use. Thus implement support for runtime PM and use the
-> autosuspend feature to make sure that we can still perform well in case we see
-> lots of SPI traffic within short period of time.
+On 10/17/2014 01:52 AM, Steffen Trumtrar wrote:
+> Hi!
 >
-> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
-> ---
->  drivers/spi/spi-atmel.c |   62 +++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 55 insertions(+), 7 deletions(-)
+> On Thu, Oct 16, 2014 at 05:07:31PM -0500, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
+>> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+>>
+>> Add 2 SPI nodes to SOCFPGA device tree.
+>>
+>> Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+>> ---
+>> v2: Remove extra files. Move SPIDEV into board specific file.
+>>
+>> v3: Remove dts file since SPIDEV is not allowed.
+>> ---
+>>   arch/arm/boot/dts/socfpga.dtsi |   24 ++++++++++++++++++++++++
+>>   1 file changed, 24 insertions(+)
+>>
+>> diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+>> index 4d77ad6..d81bc2d3 100644
+>> --- a/arch/arm/boot/dts/socfpga.dtsi
+>> +++ b/arch/arm/boot/dts/socfpga.dtsi
+>> @@ -628,6 +628,30 @@
+>>   			clock-names = "biu", "ciu";
+>>   		};
+>>   
+>> +		spi0: spi@fff00000 {
+>> +			compatible = "snps,dw-apb-ssi";
+>> +			#address-cells = <1>;
+>> +			#size-cells = <0>;
+>> +			reg = <0xfff00000 0x1000>;
+>> +			interrupts = <0 154 4>;
+>> +			num-cs = <4>;
+>> +			bus-num = <0>;
+> 			^^^^^^^^^^^^^^
 >
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 649dcb5..aca285e 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -26,6 +26,7 @@
->  #include <linux/io.h>
->  #include <linux/gpio.h>
->  #include <linux/pinctrl/consumer.h>
-> +#include <linux/pm_runtime.h>
->  
->  /* SPI register offsets */
->  #define SPI_CR					0x0000
-> @@ -191,6 +192,8 @@
->  
->  #define SPI_DMA_TIMEOUT		(msecs_to_jiffies(1000))
->  
-> +#define AUTOSUSPEND_TIMEOUT	2000
-> +
->  struct atmel_spi_dma {
->  	struct dma_chan			*chan_rx;
->  	struct dma_chan			*chan_tx;
-> @@ -1313,6 +1316,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
->  	master->setup = atmel_spi_setup;
->  	master->transfer_one_message = atmel_spi_transfer_one_message;
->  	master->cleanup = atmel_spi_cleanup;
-> +	master->auto_runtime_pm = true;
->  	platform_set_drvdata(pdev, master);
->  
->  	as = spi_master_get_devdata(master);
-> @@ -1385,6 +1389,11 @@ static int atmel_spi_probe(struct platform_device *pdev)
->  	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
->  			(unsigned long)regs->start, irq);
->  
-> +	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
-> +	pm_runtime_use_autosuspend(&pdev->dev);
-> +	pm_runtime_set_active(&pdev->dev);
-> +	pm_runtime_enable(&pdev->dev);
-> +
->  	ret = devm_spi_register_master(&pdev->dev, master);
->  	if (ret)
->  		goto out_free_dma;
-> @@ -1392,6 +1401,9 @@ static int atmel_spi_probe(struct platform_device *pdev)
->  	return 0;
->  
->  out_free_dma:
-> +	pm_runtime_disable(&pdev->dev);
-> +	pm_runtime_set_suspended(&pdev->dev);
-> +
->  	if (as->use_dma)
->  		atmel_spi_release_dma(as);
->  
-> @@ -1413,6 +1425,8 @@ static int atmel_spi_remove(struct platform_device *pdev)
->  	struct spi_master	*master = platform_get_drvdata(pdev);
->  	struct atmel_spi	*as = spi_master_get_devdata(master);
->  
-> +	pm_runtime_get_sync(&pdev->dev);
-> +
->  	/* reset the hardware and block queue progress */
->  	spin_lock_irq(&as->lock);
->  	if (as->use_dma) {
-> @@ -1430,9 +1444,13 @@ static int atmel_spi_remove(struct platform_device *pdev)
->  
->  	clk_disable_unprepare(as->clk);
->  
-> +	pm_runtime_put_noidle(&pdev->dev);
+> I think you can/should get rid of this property. It is only used/documented for
+> fsl-dspi as far as I can see.
+Hi Steffen!
 
-Why the _noidle version?
+You are right, I will remove this.
 
-> +	pm_runtime_disable(&pdev->dev);
-> +
->  	return 0;
->  }
->  
-> +#ifdef CONFIG_PM
+I didn't see it documented in the dw-spi bindings but I did see a 
+reference to .bus_num in the static structure (spi_board_info) shown in 
+spi-summary.txt. If the bus-num isn't defined or used, the bus ends up 
+as 32766 (0x7FE). However, the main point is that this isn't used in the 
+code so I should remove it.
 
-Why CONFIG_PM?  CONFIG_PM_SLEEP  causes CONFIG_PM=y, so this seems
-redundant.
+Thanks for your input and for reviewing!
 
->  #ifdef CONFIG_PM_SLEEP
->  static int atmel_spi_suspend(struct device *dev)
->  {
-> @@ -1447,9 +1465,10 @@ static int atmel_spi_suspend(struct device *dev)
->  		return ret;
->  	}
->  
-> -	clk_disable_unprepare(as->clk);
-> -
-> -	pinctrl_pm_select_sleep_state(dev);
-> +	if (!pm_runtime_suspended(dev)) {
-> +		clk_disable_unprepare(as->clk);
-> +		pinctrl_pm_select_sleep_state(dev);
-> +	}
+Thor
+>> +			clocks = <&spi_m_clk>;
+>> +			status = "disabled";
+>> +		};
+>> +
+>> +		spi1: spi@fff01000 {
+>> +			compatible = "snps,dw-apb-ssi";
+>> +			#address-cells = <1>;
+>> +			#size-cells = <0>;
+>> +			reg = <0xfff01000 0x1000>;
+>> +			interrupts = <0 156 4>;
+>> +			num-cs = <4>;
+>> +			bus-num = <1>;
+>> +			clocks = <&spi_m_clk>;
+>> +			status = "disabled";
+>> +		};
+>> +
+>>   		/* Local timer */
+>>   		timer@fffec600 {
+>>   			compatible = "arm,cortex-a9-twd-timer";
+> The rest looks good IMO.
+>
+> Regards,
+> Steffen
+>
 
-a.k.a. pm_runtime_put_sync() since the ->runtime_suspend() callback does
-the same thing.
-
->  	return 0;
->  }
-> @@ -1460,9 +1479,10 @@ static int atmel_spi_resume(struct device *dev)
->  	struct atmel_spi	*as = spi_master_get_devdata(master);
->  	int ret;
->  
-> -	pinctrl_pm_select_default_state(dev);
-> -
-> -	clk_prepare_enable(as->clk);
-> +	if (!pm_runtime_suspended(dev)) {
-> +		pinctrl_pm_select_default_state(dev);
-> +		clk_prepare_enable(as->clk);
-> +	}
-
-a.k.a. pm_runtime_get_sync()
-
-Kevin
-
->  	/* Start the queue running */
->  	ret = spi_master_resume(master);
-> @@ -1471,9 +1491,37 @@ static int atmel_spi_resume(struct device *dev)
->  
->  	return ret;
->  }
-> +#endif
->  
-> -static SIMPLE_DEV_PM_OPS(atmel_spi_pm_ops, atmel_spi_suspend, atmel_spi_resume);
-> +#ifdef CONFIG_PM_RUNTIME
-> +static int atmel_spi_runtime_suspend(struct device *dev)
-> +{
-> +	struct spi_master *master = dev_get_drvdata(dev);
-> +	struct atmel_spi *as = spi_master_get_devdata(master);
->  
-> +	clk_disable_unprepare(as->clk);
-> +	pinctrl_pm_select_sleep_state(dev);
-> +
-> +	return 0;
-> +}
-> +
-> +static int atmel_spi_runtime_resume(struct device *dev)
-> +{
-> +	struct spi_master *master = dev_get_drvdata(dev);
-> +	struct atmel_spi *as = spi_master_get_devdata(master);
-> +
-> +	pinctrl_pm_select_default_state(dev);
-> +	clk_prepare_enable(as->clk);
-> +
-> +	return 0;
-> +}
-> +#endif
-> +
-> +static const struct dev_pm_ops atmel_spi_pm_ops = {
-> +	SET_SYSTEM_SLEEP_PM_OPS(atmel_spi_suspend, atmel_spi_resume)
-> +	SET_RUNTIME_PM_OPS(atmel_spi_runtime_suspend,
-> +			   atmel_spi_runtime_resume, NULL)
-> +};
->  #define ATMEL_SPI_PM_OPS	(&atmel_spi_pm_ops)
->  #else
->  #define ATMEL_SPI_PM_OPS	NULL
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

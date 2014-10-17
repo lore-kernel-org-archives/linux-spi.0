@@ -1,52 +1,184 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi/rockchip: spi controller must be disabled in tx
- callback too
-Date: Fri, 17 Oct 2014 14:29:37 +0200
-Message-ID: <20141017122937.GK1820@sirena.org.uk>
-References: <1413510253-3519-1-git-send-email-addy.ke@rock-chips.com>
+From: Kevin Hilman <khilman@kernel.org>
+Subject: Re: [PATCH] spi/atmel: add support for runtime PM
+Date: Fri, 17 Oct 2014 06:02:35 -0700
+Message-ID: <7hk33yhms4.fsf@deeprootsystems.com>
+References: <1413424160-21180-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="5mZBmBd1ZkdwT1ny"
-Cc: heiko@sntech.de, dianders@chromium.org, grant.likely@linaro.org,
-	robh+dt@kernel.org, amstan@google.com, sonnyrao@google.com,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-	olof@lixom.net, hj@rock-chips.com, kever.yang@rock-chips.com,
-	xjq@rock-chips.com, huangtao@rock-chips.com, zyw@rock-chips.com,
-	yzq@rock-chips.com, zhenfu.fang@rock-chips.com, cf@rock-chips.com,
-	zhangqing@rock-chips.com, hl@rock-chips.com, wei.luo@rock-chips.com
-To: Addy Ke <addy.ke@rock-chips.com>
+Content-Type: text/plain
+Cc: <broonie@kernel.org>, <linux-spi@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <nicolas.ferre@atmel.com>,
+	<linux-arm-kernel@lists.infradead.org>
+To: Wenyou Yang <wenyou.yang@atmel.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1413510253-3519-1-git-send-email-addy.ke@rock-chips.com>
+In-Reply-To: <1413424160-21180-1-git-send-email-wenyou.yang@atmel.com> (Wenyou
+	Yang's message of "Thu, 16 Oct 2014 09:49:20 +0800")
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+Wenyou Yang <wenyou.yang@atmel.com> writes:
 
---5mZBmBd1ZkdwT1ny
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Drivers should put the device into low power states proactively whenever the
+> device is not in use. Thus implement support for runtime PM and use the
+> autosuspend feature to make sure that we can still perform well in case we see
+> lots of SPI traffic within short period of time.
+>
+> Signed-off-by: Wenyou Yang <wenyou.yang@atmel.com>
+> ---
+>  drivers/spi/spi-atmel.c |   62 +++++++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 55 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+> index 649dcb5..aca285e 100644
+> --- a/drivers/spi/spi-atmel.c
+> +++ b/drivers/spi/spi-atmel.c
+> @@ -26,6 +26,7 @@
+>  #include <linux/io.h>
+>  #include <linux/gpio.h>
+>  #include <linux/pinctrl/consumer.h>
+> +#include <linux/pm_runtime.h>
+>  
+>  /* SPI register offsets */
+>  #define SPI_CR					0x0000
+> @@ -191,6 +192,8 @@
+>  
+>  #define SPI_DMA_TIMEOUT		(msecs_to_jiffies(1000))
+>  
+> +#define AUTOSUSPEND_TIMEOUT	2000
+> +
+>  struct atmel_spi_dma {
+>  	struct dma_chan			*chan_rx;
+>  	struct dma_chan			*chan_tx;
+> @@ -1313,6 +1316,7 @@ static int atmel_spi_probe(struct platform_device *pdev)
+>  	master->setup = atmel_spi_setup;
+>  	master->transfer_one_message = atmel_spi_transfer_one_message;
+>  	master->cleanup = atmel_spi_cleanup;
+> +	master->auto_runtime_pm = true;
+>  	platform_set_drvdata(pdev, master);
+>  
+>  	as = spi_master_get_devdata(master);
+> @@ -1385,6 +1389,11 @@ static int atmel_spi_probe(struct platform_device *pdev)
+>  	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
+>  			(unsigned long)regs->start, irq);
+>  
+> +	pm_runtime_set_autosuspend_delay(&pdev->dev, AUTOSUSPEND_TIMEOUT);
+> +	pm_runtime_use_autosuspend(&pdev->dev);
+> +	pm_runtime_set_active(&pdev->dev);
+> +	pm_runtime_enable(&pdev->dev);
+> +
+>  	ret = devm_spi_register_master(&pdev->dev, master);
+>  	if (ret)
+>  		goto out_free_dma;
+> @@ -1392,6 +1401,9 @@ static int atmel_spi_probe(struct platform_device *pdev)
+>  	return 0;
+>  
+>  out_free_dma:
+> +	pm_runtime_disable(&pdev->dev);
+> +	pm_runtime_set_suspended(&pdev->dev);
+> +
+>  	if (as->use_dma)
+>  		atmel_spi_release_dma(as);
+>  
+> @@ -1413,6 +1425,8 @@ static int atmel_spi_remove(struct platform_device *pdev)
+>  	struct spi_master	*master = platform_get_drvdata(pdev);
+>  	struct atmel_spi	*as = spi_master_get_devdata(master);
+>  
+> +	pm_runtime_get_sync(&pdev->dev);
+> +
+>  	/* reset the hardware and block queue progress */
+>  	spin_lock_irq(&as->lock);
+>  	if (as->use_dma) {
+> @@ -1430,9 +1444,13 @@ static int atmel_spi_remove(struct platform_device *pdev)
+>  
+>  	clk_disable_unprepare(as->clk);
+>  
+> +	pm_runtime_put_noidle(&pdev->dev);
 
-On Fri, Oct 17, 2014 at 09:44:13AM +0800, Addy Ke wrote:
-> Signed-off-by: Addy Ke <addy.ke@rock-chips.com>
+Why the _noidle version?
 
-Applied, thanks.
+> +	pm_runtime_disable(&pdev->dev);
+> +
+>  	return 0;
+>  }
+>  
+> +#ifdef CONFIG_PM
 
---5mZBmBd1ZkdwT1ny
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Why CONFIG_PM?  CONFIG_PM_SLEEP  causes CONFIG_PM=y, so this seems
+redundant.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+>  #ifdef CONFIG_PM_SLEEP
+>  static int atmel_spi_suspend(struct device *dev)
+>  {
+> @@ -1447,9 +1465,10 @@ static int atmel_spi_suspend(struct device *dev)
+>  		return ret;
+>  	}
+>  
+> -	clk_disable_unprepare(as->clk);
+> -
+> -	pinctrl_pm_select_sleep_state(dev);
+> +	if (!pm_runtime_suspended(dev)) {
+> +		clk_disable_unprepare(as->clk);
+> +		pinctrl_pm_select_sleep_state(dev);
+> +	}
 
-iQEcBAEBAgAGBQJUQQuwAAoJECTWi3JdVIfQmn4H/jutDQY3t8Ck34xwvUpl1tbr
-ttypqQoJHVRBQKcfabAO8GH3caU246mIwQ43SgpBHAE0oQZh3CaGuUmaPNeLy4Yo
-JYNb99McbD3EPDWRyBIKaZUIAjddUOz5NCwH+80v7b4uCHNazM6MO2/UIwjEBtAD
-I4cbCHKi/MR7BcaYgDCp6L9KYCWjoBqPwZYKQm3udY0M+iuIIRx6Xz30DiaJ+Gic
-6rWBK8R39riv0oH6SQ8zFFdO9hx6TfqA2BDQBjhB0GzWNrX0dHaSNBs/UAxoI6AQ
-XIsCss0MTtSmr5morvZ4rb1eNL4w8hr+QEkMvRgyztqJs2mGqjQO4lj//8Y25LM=
-=g+oM
------END PGP SIGNATURE-----
+a.k.a. pm_runtime_put_sync() since the ->runtime_suspend() callback does
+the same thing.
 
---5mZBmBd1ZkdwT1ny--
+>  	return 0;
+>  }
+> @@ -1460,9 +1479,10 @@ static int atmel_spi_resume(struct device *dev)
+>  	struct atmel_spi	*as = spi_master_get_devdata(master);
+>  	int ret;
+>  
+> -	pinctrl_pm_select_default_state(dev);
+> -
+> -	clk_prepare_enable(as->clk);
+> +	if (!pm_runtime_suspended(dev)) {
+> +		pinctrl_pm_select_default_state(dev);
+> +		clk_prepare_enable(as->clk);
+> +	}
+
+a.k.a. pm_runtime_get_sync()
+
+Kevin
+
+>  	/* Start the queue running */
+>  	ret = spi_master_resume(master);
+> @@ -1471,9 +1491,37 @@ static int atmel_spi_resume(struct device *dev)
+>  
+>  	return ret;
+>  }
+> +#endif
+>  
+> -static SIMPLE_DEV_PM_OPS(atmel_spi_pm_ops, atmel_spi_suspend, atmel_spi_resume);
+> +#ifdef CONFIG_PM_RUNTIME
+> +static int atmel_spi_runtime_suspend(struct device *dev)
+> +{
+> +	struct spi_master *master = dev_get_drvdata(dev);
+> +	struct atmel_spi *as = spi_master_get_devdata(master);
+>  
+> +	clk_disable_unprepare(as->clk);
+> +	pinctrl_pm_select_sleep_state(dev);
+> +
+> +	return 0;
+> +}
+> +
+> +static int atmel_spi_runtime_resume(struct device *dev)
+> +{
+> +	struct spi_master *master = dev_get_drvdata(dev);
+> +	struct atmel_spi *as = spi_master_get_devdata(master);
+> +
+> +	pinctrl_pm_select_default_state(dev);
+> +	clk_prepare_enable(as->clk);
+> +
+> +	return 0;
+> +}
+> +#endif
+> +
+> +static const struct dev_pm_ops atmel_spi_pm_ops = {
+> +	SET_SYSTEM_SLEEP_PM_OPS(atmel_spi_suspend, atmel_spi_resume)
+> +	SET_RUNTIME_PM_OPS(atmel_spi_runtime_suspend,
+> +			   atmel_spi_runtime_resume, NULL)
+> +};
+>  #define ATMEL_SPI_PM_OPS	(&atmel_spi_pm_ops)
+>  #else
+>  #define ATMEL_SPI_PM_OPS	NULL

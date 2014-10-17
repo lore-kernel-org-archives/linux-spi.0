@@ -1,60 +1,52 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv3] arm: dts: socfpga: Add SPI nodes to SOCFPGA DT.
-Date: Fri, 17 Oct 2014 13:13:49 +0200
-Message-ID: <20141017111349.GC1820@sirena.org.uk>
-References: <1413497251-21954-1-git-send-email-tthayer@opensource.altera.com>
- <1413497251-21954-2-git-send-email-tthayer@opensource.altera.com>
- <20141017065233.GA10262@pengutronix.de>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi/rockchip: spi controller must be disabled in tx
+ callback too
+Date: Fri, 17 Oct 2014 14:29:37 +0200
+Message-ID: <20141017122937.GK1820@sirena.org.uk>
+References: <1413510253-3519-1-git-send-email-addy.ke@rock-chips.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="wxDdMuZNg1r63Hyj"
-Cc: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org, dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org,
-	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org, axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org,
-	baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="5mZBmBd1ZkdwT1ny"
+Cc: heiko@sntech.de, dianders@chromium.org, grant.likely@linaro.org,
+	robh+dt@kernel.org, amstan@google.com, sonnyrao@google.com,
+	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+	olof@lixom.net, hj@rock-chips.com, kever.yang@rock-chips.com,
+	xjq@rock-chips.com, huangtao@rock-chips.com, zyw@rock-chips.com,
+	yzq@rock-chips.com, zhenfu.fang@rock-chips.com, cf@rock-chips.com,
+	zhangqing@rock-chips.com, hl@rock-chips.com, wei.luo@rock-chips.com
+To: Addy Ke <addy.ke@rock-chips.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20141017065233.GA10262-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1413510253-3519-1-git-send-email-addy.ke@rock-chips.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---wxDdMuZNg1r63Hyj
+--5mZBmBd1ZkdwT1ny
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Oct 17, 2014 at 08:52:33AM +0200, Steffen Trumtrar wrote:
-> On Thu, Oct 16, 2014 at 05:07:31PM -0500, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
+On Fri, Oct 17, 2014 at 09:44:13AM +0800, Addy Ke wrote:
+> Signed-off-by: Addy Ke <addy.ke@rock-chips.com>
 
-> > +			bus-num = <0>;
-> 			^^^^^^^^^^^^^^
+Applied, thanks.
 
-> I think you can/should get rid of this property. It is only used/documented for
-> fsl-dspi as far as I can see.
-
-Yes, and it shouldn't be there either.
-
---wxDdMuZNg1r63Hyj
+--5mZBmBd1ZkdwT1ny
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUQPnpAAoJECTWi3JdVIfQt6IH/jxvrPY4x5yyqoJ1Y9Uk5w5H
-tHCx5HGbGiFrZkBcGUhAnuCieGl6lCpP4dleQ05JWielKU+wp4BGhQSSrVjSsNCC
-Mlpq3yknXFdq+VJXcwMODDEBtDketYdMCatUp5QtFrA9ZXcI5nanFwEPsdLS056I
-fJiwPpSEncMrPia8w9KiOdVBBufvkNZ9B4VLWcQXCZNO9awgbrDBStoACAYBuoWw
-oluk9Zi1uUCMVUeTCXnOFdajZkFhcbU/jYU1DqbYuyaAcNGCQsDT0RyBzuXgiR7k
-uTvGTD8giVaEjw8NZK3PJBdQXUFiSUFNuVne/pKLwk2ttV7eDFoV/pQucHhfYcE=
-=y4AR
+iQEcBAEBAgAGBQJUQQuwAAoJECTWi3JdVIfQmn4H/jutDQY3t8Ck34xwvUpl1tbr
+ttypqQoJHVRBQKcfabAO8GH3caU246mIwQ43SgpBHAE0oQZh3CaGuUmaPNeLy4Yo
+JYNb99McbD3EPDWRyBIKaZUIAjddUOz5NCwH+80v7b4uCHNazM6MO2/UIwjEBtAD
+I4cbCHKi/MR7BcaYgDCp6L9KYCWjoBqPwZYKQm3udY0M+iuIIRx6Xz30DiaJ+Gic
+6rWBK8R39riv0oH6SQ8zFFdO9hx6TfqA2BDQBjhB0GzWNrX0dHaSNBs/UAxoI6AQ
+XIsCss0MTtSmr5morvZ4rb1eNL4w8hr+QEkMvRgyztqJs2mGqjQO4lj//8Y25LM=
+=g+oM
 -----END PGP SIGNATURE-----
 
---wxDdMuZNg1r63Hyj--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--5mZBmBd1ZkdwT1ny--

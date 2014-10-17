@@ -1,91 +1,47 @@
-From: Steffen Trumtrar <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
-Subject: Re: [PATCHv3] arm: dts: socfpga: Add SPI nodes to SOCFPGA DT.
-Date: Fri, 17 Oct 2014 08:52:33 +0200
-Message-ID: <20141017065233.GA10262@pengutronix.de>
-References: <1413497251-21954-1-git-send-email-tthayer@opensource.altera.com>
- <1413497251-21954-2-git-send-email-tthayer@opensource.altera.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi/atmel: fix simple_return.cocci warnings
+Date: Fri, 17 Oct 2014 10:58:20 +0200
+Message-ID: <20141017085820.GD3771@sirena.org.uk>
+References: <543feff0.QhS1UtLsJt/o5948%fengguang.wu@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
-	robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, pawel.moll-5wv7dgnIgG8@public.gmane.org, mark.rutland-5wv7dgnIgG8@public.gmane.org,
-	ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org, galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org, axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org,
-	baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="UfEAyuTBtIjiZzX6"
+Cc: devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+To: Fengguang Wu <fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1413497251-21954-2-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+In-Reply-To: <543feff0.QhS1UtLsJt/o5948%fengguang.wu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-Hi!
 
-On Thu, Oct 16, 2014 at 05:07:31PM -0500, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
-> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-> 
-> Add 2 SPI nodes to SOCFPGA device tree.
-> 
-> Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-> ---
-> v2: Remove extra files. Move SPIDEV into board specific file.
-> 
-> v3: Remove dts file since SPIDEV is not allowed.
-> ---
->  arch/arm/boot/dts/socfpga.dtsi |   24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
-> 
-> diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
-> index 4d77ad6..d81bc2d3 100644
-> --- a/arch/arm/boot/dts/socfpga.dtsi
-> +++ b/arch/arm/boot/dts/socfpga.dtsi
-> @@ -628,6 +628,30 @@
->  			clock-names = "biu", "ciu";
->  		};
->  
-> +		spi0: spi@fff00000 {
-> +			compatible = "snps,dw-apb-ssi";
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			reg = <0xfff00000 0x1000>;
-> +			interrupts = <0 154 4>;
-> +			num-cs = <4>;
-> +			bus-num = <0>;
-			^^^^^^^^^^^^^^
+--UfEAyuTBtIjiZzX6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I think you can/should get rid of this property. It is only used/documented for
-fsl-dspi as far as I can see.
+On Fri, Oct 17, 2014 at 12:18:56AM +0800, Fengguang Wu wrote:
+> drivers/spi/spi-atmel.c:1518:1-4: WARNING: end returns can be simpified and declaration on line 1514 can be dropped
 
-> +			clocks = <&spi_m_clk>;
-> +			status = "disabled";
-> +		};
-> +
-> +		spi1: spi@fff01000 {
-> +			compatible = "snps,dw-apb-ssi";
-> +			#address-cells = <1>;
-> +			#size-cells = <0>;
-> +			reg = <0xfff01000 0x1000>;
-> +			interrupts = <0 156 4>;
-> +			num-cs = <4>;
-> +			bus-num = <1>;
-> +			clocks = <&spi_m_clk>;
-> +			status = "disabled";
-> +		};
-> +
->  		/* Local timer */
->  		timer@fffec600 {
->  			compatible = "arm,cortex-a9-twd-timer";
+Applied, thanks.
 
-The rest looks good IMO.
+--UfEAyuTBtIjiZzX6
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-Regards,
-Steffen
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
--- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+iQEcBAEBAgAGBQJUQNorAAoJECTWi3JdVIfQoOUH/RZWWUb1j56WILiSzVPqOMnR
+rHX0RDbOPBu8Jwl3jx5f+kMcjjh4kr3P3M70wzMk/locGk1H3cgAd2RJhznKpfhK
+IcqzUMYpahJSjJr6tq96apRLOWeoznRHRSUxDENUqU87gDbaFiYH1WGRDTsVFeDn
+r+qWj2Q/JkUGsxwEG3/R6HbpDx7kxJU5MmTYQkJq6s/9iaISvx89hTkuSfqHFgU9
+Tmp/ekie+UZcO2VykTsP3+B3CyP5gVJO90xz47yyCaBQaQjvYJ5eruAVOYZEvydE
+LRqE6h96Zs7g5olMqhdsaKduvcAFiJkIB9BCoNMlEAEQqwWVIFSHvAgY/G68RRA=
+=2khw
+-----END PGP SIGNATURE-----
+
+--UfEAyuTBtIjiZzX6--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

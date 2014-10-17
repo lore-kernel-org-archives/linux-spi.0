@@ -1,8 +1,10 @@
 From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 1/2] mtd: m25p80: get rid of spi_get_device_id
-Date: Fri, 17 Oct 2014 09:30:23 -0700
-Message-ID: <20141017163023.GH22169@norris-Latitude-E6410>
+Subject: Re: [PATCH 2/2] mtd: spi-nor: make spi_nor_scan() take a chip type
+ name, not spi_device_id
+Date: Fri, 17 Oct 2014 09:31:09 -0700
+Message-ID: <20141017163109.GI22169@norris-Latitude-E6410>
 References: <1411984074-3850-1-git-send-email-zajec5@gmail.com>
+ <1411984074-3850-2-git-send-email-zajec5@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: QUOTED-PRINTABLE
@@ -21,18 +23,22 @@ Cc: David Woodhouse <David.Woodhouse-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
 To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1411984074-3850-1-git-send-email-zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <1411984074-3850-2-git-send-email-zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Sep 29, 2014 at 11:47:53AM +0200, Rafa=C5=82 Mi=C5=82ecki wrote=
+On Mon, Sep 29, 2014 at 11:47:54AM +0200, Rafa=C5=82 Mi=C5=82ecki wrote=
 :
-> This simplifies the way we use spi_nor framework and will allow us to
-> drop spi_nor_match_id.
+> From: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 >=20
+> Drivers currently call spi_nor_match_id() and then spi_nor_scan().
+> This adds a dependency on struct spi_device_id which we want to
+> avoid.  Make spi_nor_scan() do it for them.
+>=20
+> Signed-off-by: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
 > Signed-off-by: Rafa=C5=82 Mi=C5=82ecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Applied to l2-mtd.git/master.
+Pushed to l2-mtd.git/master.
 
 Brian
 --

@@ -1,46 +1,212 @@
-From: Brian Norris <computersforpeace-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH 2/2] mtd: spi-nor: make spi_nor_scan() take a chip type
- name, not spi_device_id
-Date: Fri, 17 Oct 2014 09:31:09 -0700
-Message-ID: <20141017163109.GI22169@norris-Latitude-E6410>
-References: <1411984074-3850-1-git-send-email-zajec5@gmail.com>
- <1411984074-3850-2-git-send-email-zajec5@gmail.com>
+From: "Yang, Wenyou" <Wenyou.Yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: RE: [PATCH] spi/atmel: add support for runtime PM
+Date: Mon, 20 Oct 2014 01:59:05 +0000
+Message-ID: <B256D81BAE5131468A838E5D7A243641BF592EF5@penmbx01>
+References: <1413424160-21180-1-git-send-email-wenyou.yang@atmel.com>
+ <7hk33yhms4.fsf@deeprootsystems.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: David Woodhouse <David.Woodhouse-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Artem Bityutskiy <dedekind1-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-mtd-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>,
-	Hauke Mehrtens <hauke-5/S+JYg5SzeELgA04lAiVw@public.gmane.org>,
-	Andrew Lunn <andrew-g2DYL2Zd6BY@public.gmane.org>,
-	Jason Cooper <jason-NLaQJdtUoK4Be96aLqz0jA@public.gmane.org>,
-	linux-spi <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Ian Campbell <ijc-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Geert Uytterhoeven <geert-Td1EMuHUCqxL1ZNQvxDV9g@public.gmane.org>,
-	Huang Shijie <shijie8-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	debian-kernel <debian-kernel-0aAXYlwwYIJuHlm7Suoebg@public.gmane.org>
-To: =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Cc: "broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org" <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Ferre, Nicolas" <Nicolas.FERRE-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>
+To: Kevin Hilman <khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1411984074-3850-2-git-send-email-zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <7hk33yhms4.fsf-1D3HCaltpLuhEniVeURVKkEOCMrvLtNR@public.gmane.org>
+Content-Language: en-US
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Mon, Sep 29, 2014 at 11:47:54AM +0200, Rafa=C5=82 Mi=C5=82ecki wrote=
-:
-> From: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
->=20
-> Drivers currently call spi_nor_match_id() and then spi_nor_scan().
-> This adds a dependency on struct spi_device_id which we want to
-> avoid.  Make spi_nor_scan() do it for them.
->=20
-> Signed-off-by: Ben Hutchings <ben-/+tVBieCtBitmTQ+vhA3Yw@public.gmane.org>
-> Signed-off-by: Rafa=C5=82 Mi=C5=82ecki <zajec5-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 
-Pushed to l2-mtd.git/master.
 
-Brian
+> -----Original Message-----
+> From: Kevin Hilman [mailto:khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org]
+> Sent: Friday, October 17, 2014 9:03 PM
+> To: Yang, Wenyou
+> Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org; linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org; linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org;
+> Ferre, Nicolas; linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org
+> Subject: Re: [PATCH] spi/atmel: add support for runtime PM
+> 
+> Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org> writes:
+> 
+> > Drivers should put the device into low power states proactively
+> > whenever the device is not in use. Thus implement support for runtime
+> > PM and use the autosuspend feature to make sure that we can still
+> > perform well in case we see lots of SPI traffic within short period of time.
+> >
+> > Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+> > ---
+> >  drivers/spi/spi-atmel.c |   62
+> +++++++++++++++++++++++++++++++++++++++++------
+> >  1 file changed, 55 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c index
+> > 649dcb5..aca285e 100644
+> > --- a/drivers/spi/spi-atmel.c
+> > +++ b/drivers/spi/spi-atmel.c
+> > @@ -26,6 +26,7 @@
+> >  #include <linux/io.h>
+> >  #include <linux/gpio.h>
+> >  #include <linux/pinctrl/consumer.h>
+> > +#include <linux/pm_runtime.h>
+> >
+> >  /* SPI register offsets */
+> >  #define SPI_CR					0x0000
+> > @@ -191,6 +192,8 @@
+> >
+> >  #define SPI_DMA_TIMEOUT		(msecs_to_jiffies(1000))
+> >
+> > +#define AUTOSUSPEND_TIMEOUT	2000
+> > +
+> >  struct atmel_spi_dma {
+> >  	struct dma_chan			*chan_rx;
+> >  	struct dma_chan			*chan_tx;
+> > @@ -1313,6 +1316,7 @@ static int atmel_spi_probe(struct platform_device
+> *pdev)
+> >  	master->setup = atmel_spi_setup;
+> >  	master->transfer_one_message = atmel_spi_transfer_one_message;
+> >  	master->cleanup = atmel_spi_cleanup;
+> > +	master->auto_runtime_pm = true;
+> >  	platform_set_drvdata(pdev, master);
+> >
+> >  	as = spi_master_get_devdata(master); @@ -1385,6 +1389,11 @@ static
+> > int atmel_spi_probe(struct platform_device *pdev)
+> >  	dev_info(&pdev->dev, "Atmel SPI Controller at 0x%08lx (irq %d)\n",
+> >  			(unsigned long)regs->start, irq);
+> >
+> > +	pm_runtime_set_autosuspend_delay(&pdev->dev,
+> AUTOSUSPEND_TIMEOUT);
+> > +	pm_runtime_use_autosuspend(&pdev->dev);
+> > +	pm_runtime_set_active(&pdev->dev);
+> > +	pm_runtime_enable(&pdev->dev);
+> > +
+> >  	ret = devm_spi_register_master(&pdev->dev, master);
+> >  	if (ret)
+> >  		goto out_free_dma;
+> > @@ -1392,6 +1401,9 @@ static int atmel_spi_probe(struct platform_device
+> *pdev)
+> >  	return 0;
+> >
+> >  out_free_dma:
+> > +	pm_runtime_disable(&pdev->dev);
+> > +	pm_runtime_set_suspended(&pdev->dev);
+> > +
+> >  	if (as->use_dma)
+> >  		atmel_spi_release_dma(as);
+> >
+> > @@ -1413,6 +1425,8 @@ static int atmel_spi_remove(struct platform_device
+> *pdev)
+> >  	struct spi_master	*master = platform_get_drvdata(pdev);
+> >  	struct atmel_spi	*as = spi_master_get_devdata(master);
+> >
+> > +	pm_runtime_get_sync(&pdev->dev);
+> > +
+> >  	/* reset the hardware and block queue progress */
+> >  	spin_lock_irq(&as->lock);
+> >  	if (as->use_dma) {
+> > @@ -1430,9 +1444,13 @@ static int atmel_spi_remove(struct
+> > platform_device *pdev)
+> >
+> >  	clk_disable_unprepare(as->clk);
+> >
+> > +	pm_runtime_put_noidle(&pdev->dev);
+> 
+> Why the _noidle version?
+ Because invoked from the _remove function, only decrement the device's usage counter, no further idle operation need.
+
+> 
+> > +	pm_runtime_disable(&pdev->dev);
+> > +
+> >  	return 0;
+> >  }
+> >
+> > +#ifdef CONFIG_PM
+> 
+> Why CONFIG_PM?  CONFIG_PM_SLEEP  causes CONFIG_PM=y, so this seems
+> redundant.
+Accepted, I will remove it.
+
+> 
+> >  #ifdef CONFIG_PM_SLEEP
+> >  static int atmel_spi_suspend(struct device *dev)  { @@ -1447,9
+> > +1465,10 @@ static int atmel_spi_suspend(struct device *dev)
+> >  		return ret;
+> >  	}
+> >
+> > -	clk_disable_unprepare(as->clk);
+> > -
+> > -	pinctrl_pm_select_sleep_state(dev);
+> > +	if (!pm_runtime_suspended(dev)) {
+> > +		clk_disable_unprepare(as->clk);
+> > +		pinctrl_pm_select_sleep_state(dev);
+> > +	}
+> 
+> a.k.a. pm_runtime_put_sync() since the ->runtime_suspend() callback does the
+> same thing.
+> 
+> >  	return 0;
+> >  }
+> > @@ -1460,9 +1479,10 @@ static int atmel_spi_resume(struct device *dev)
+> >  	struct atmel_spi	*as = spi_master_get_devdata(master);
+> >  	int ret;
+> >
+> > -	pinctrl_pm_select_default_state(dev);
+> > -
+> > -	clk_prepare_enable(as->clk);
+> > +	if (!pm_runtime_suspended(dev)) {
+> > +		pinctrl_pm_select_default_state(dev);
+> > +		clk_prepare_enable(as->clk);
+> > +	}
+> 
+> a.k.a. pm_runtime_get_sync()
+> 
+> Kevin
+> 
+> >  	/* Start the queue running */
+> >  	ret = spi_master_resume(master);
+> > @@ -1471,9 +1491,37 @@ static int atmel_spi_resume(struct device *dev)
+> >
+> >  	return ret;
+> >  }
+> > +#endif
+> >
+> > -static SIMPLE_DEV_PM_OPS(atmel_spi_pm_ops, atmel_spi_suspend,
+> > atmel_spi_resume);
+> > +#ifdef CONFIG_PM_RUNTIME
+> > +static int atmel_spi_runtime_suspend(struct device *dev) {
+> > +	struct spi_master *master = dev_get_drvdata(dev);
+> > +	struct atmel_spi *as = spi_master_get_devdata(master);
+> >
+> > +	clk_disable_unprepare(as->clk);
+> > +	pinctrl_pm_select_sleep_state(dev);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int atmel_spi_runtime_resume(struct device *dev) {
+> > +	struct spi_master *master = dev_get_drvdata(dev);
+> > +	struct atmel_spi *as = spi_master_get_devdata(master);
+> > +
+> > +	pinctrl_pm_select_default_state(dev);
+> > +	clk_prepare_enable(as->clk);
+> > +
+> > +	return 0;
+> > +}
+> > +#endif
+> > +
+> > +static const struct dev_pm_ops atmel_spi_pm_ops = {
+> > +	SET_SYSTEM_SLEEP_PM_OPS(atmel_spi_suspend, atmel_spi_resume)
+> > +	SET_RUNTIME_PM_OPS(atmel_spi_runtime_suspend,
+> > +			   atmel_spi_runtime_resume, NULL) };
+> >  #define ATMEL_SPI_PM_OPS	(&atmel_spi_pm_ops)
+> >  #else
+> >  #define ATMEL_SPI_PM_OPS	NULL
+
+Best Regards,
+Wenyou Yang
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

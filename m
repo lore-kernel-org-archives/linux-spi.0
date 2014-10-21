@@ -1,92 +1,127 @@
-From: "Yang, Wenyou" <Wenyou.Yang@atmel.com>
-Subject: RE: [PATCH] spi/atmel: add support for runtime PM
-Date: Tue, 21 Oct 2014 00:51:20 +0000
-Message-ID: <B256D81BAE5131468A838E5D7A243641BF59671F@penmbx01>
-References: <1413424160-21180-1-git-send-email-wenyou.yang@atmel.com>
- <7hk33yhms4.fsf@deeprootsystems.com>	<20141017135716.GS1820@sirena.org.uk>
- <7hd29qhj3i.fsf@deeprootsystems.com>
- <B256D81BAE5131468A838E5D7A243641BF594F37@penmbx01>
- <7hd29mfwa8.fsf@deeprootsystems.com>
+From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi/atmel: improve the system suspend/resume functions implementation
+Date: Tue, 21 Oct 2014 11:43:34 +0800
+Message-ID: <1413863014-1791-1-git-send-email-wenyou.yang@atmel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Cc: Mark Brown <broonie@kernel.org>, "Ferre, Nicolas" <Nicolas.FERRE@atmel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>
-To: Kevin Hilman <khilman@kernel.org>
-Return-path: <linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org>
-In-Reply-To: <7hd29mfwa8.fsf@deeprootsystems.com>
-Content-Language: en-US
-List-Unsubscribe: <http://lists.infradead.org/mailman/options/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=unsubscribe>
-List-Archive: <http://lists.infradead.org/pipermail/linux-arm-kernel/>
-List-Post: <mailto:linux-arm-kernel@lists.infradead.org>
-List-Help: <mailto:linux-arm-kernel-request@lists.infradead.org?subject=help>
-List-Subscribe: <http://lists.infradead.org/mailman/listinfo/linux-arm-kernel>,
- <mailto:linux-arm-kernel-request@lists.infradead.org?subject=subscribe>
-Sender: "linux-arm-kernel" <linux-arm-kernel-bounces@lists.infradead.org>
-Errors-To: linux-arm-kernel-bounces+linux-arm-kernel=m.gmane.org@lists.infradead.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Kevin,
+To make it cleaner, the system suspend/resume directly call
+the runtime suspend/resume functions
+and remove the wapper of CONFIG_PM_RUNTIME, CONFIG_PM_SLEEP.
 
-> -----Original Message-----
-> From: Kevin Hilman [mailto:khilman@kernel.org]
-> Sent: Tuesday, October 21, 2014 2:09 AM
-> To: Yang, Wenyou
-> Cc: Mark Brown; linux-spi@vger.kernel.org; linux-kernel@vger.kernel.org; Ferre,
-> Nicolas; linux-arm-kernel@lists.infradead.org
-> Subject: Re: [PATCH] spi/atmel: add support for runtime PM
-> 
-> "Yang, Wenyou" <Wenyou.Yang@atmel.com> writes:
-> 
-> >> -----Original Message-----
-> >> From: Kevin Hilman [mailto:khilman@kernel.org]
-> >> Sent: Friday, October 17, 2014 10:22 PM
-> >> To: Mark Brown
-> >> Cc: Yang, Wenyou; linux-spi@vger.kernel.org;
-> >> linux-kernel@vger.kernel.org; Ferre, Nicolas;
-> >> linux-arm-kernel@lists.infradead.org
-> >> Subject: Re: [PATCH] spi/atmel: add support for runtime PM
-> >>
-> >> Mark Brown <broonie@kernel.org> writes:
-> >>
-> >> > On Fri, Oct 17, 2014 at 06:02:35AM -0700, Kevin Hilman wrote:
-> >> >> Wenyou Yang <wenyou.yang@atmel.com> writes:
-> >> >
-> >> >> > +	if (!pm_runtime_suspended(dev)) {
-> >> >> > +		clk_disable_unprepare(as->clk);
-> >> >> > +		pinctrl_pm_select_sleep_state(dev);
-> >> >> > +	}
-> >> >
-> >> >> a.k.a. pm_runtime_put_sync() since the ->runtime_suspend()
-> >> >> callback does the same thing.
-> >> >
-> >> > Will that do the right thing when runtime PM is disabled in Kconfig?
-> >>
-> >> Good point.
-> >>
-> >> Then the way to make this cleaner, and obvious on inspection that
-> >> system suspend/resume are doing the same thing as runtime
-> >> suspend/resume is to have -
-> >> >suspend call the runtime_suspend function.
-> >>
-> >> The runtime suspend/resume functions then should be wrapped in
-> >> CONFIG_PM instead of CONFIG_PM_RUNTIME.
-> > But if the runtime PM is disabled, __pm_runtime_idle() return -ENOSYS,
-> > which invoked by pm_runtime_put_sync(), in spite of the runtime
-> > suspend/resume functions wrapper,
-> 
-> You won't be calling _put_sync(), instead you'll just directly call
-> atmel_spi_runtime_suspend().
-Got it , I will change it. Thanks.
+Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-atmel.c |   61 ++++++++++++++++++++---------------------------
+ 1 file changed, 26 insertions(+), 35 deletions(-)
 
-> 
-> The goal is to make it obvious upon reading that ->suspend and
-> ->runtime_suspend are doing exactly the same thing.
-> 
-> Kevin
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 3f50014..6ed1893 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1451,11 +1451,30 @@ static int atmel_spi_remove(struct platform_device *pdev)
+ }
+ 
+ #ifdef CONFIG_PM
+-#ifdef CONFIG_PM_SLEEP
++static int atmel_spi_runtime_suspend(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct atmel_spi *as = spi_master_get_devdata(master);
++
++	clk_disable_unprepare(as->clk);
++	pinctrl_pm_select_sleep_state(dev);
++
++	return 0;
++}
++
++static int atmel_spi_runtime_resume(struct device *dev)
++{
++	struct spi_master *master = dev_get_drvdata(dev);
++	struct atmel_spi *as = spi_master_get_devdata(master);
++
++	pinctrl_pm_select_default_state(dev);
++
++	return clk_prepare_enable(as->clk);
++}
++
+ static int atmel_spi_suspend(struct device *dev)
+ {
+-	struct spi_master	*master = dev_get_drvdata(dev);
+-	struct atmel_spi	*as = spi_master_get_devdata(master);
++	struct spi_master *master = dev_get_drvdata(dev);
+ 	int ret;
+ 
+ 	/* Stop the queue running */
+@@ -1465,23 +1484,19 @@ static int atmel_spi_suspend(struct device *dev)
+ 		return ret;
+ 	}
+ 
+-	if (!pm_runtime_suspended(dev)) {
+-		clk_disable_unprepare(as->clk);
+-		pinctrl_pm_select_sleep_state(dev);
+-	}
++	if (!pm_runtime_suspended(dev))
++		atmel_spi_runtime_suspend(dev);
+ 
+ 	return 0;
+ }
+ 
+ static int atmel_spi_resume(struct device *dev)
+ {
+-	struct spi_master	*master = dev_get_drvdata(dev);
+-	struct atmel_spi	*as = spi_master_get_devdata(master);
++	struct spi_master *master = dev_get_drvdata(dev);
+ 	int ret;
+ 
+ 	if (!pm_runtime_suspended(dev)) {
+-		pinctrl_pm_select_default_state(dev);
+-		ret = clk_prepare_enable(as->clk);
++		ret = atmel_spi_runtime_resume(dev);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -1493,30 +1508,6 @@ static int atmel_spi_resume(struct device *dev)
+ 
+ 	return ret;
+ }
+-#endif
+-
+-#ifdef CONFIG_PM_RUNTIME
+-static int atmel_spi_runtime_suspend(struct device *dev)
+-{
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct atmel_spi *as = spi_master_get_devdata(master);
+-
+-	clk_disable_unprepare(as->clk);
+-	pinctrl_pm_select_sleep_state(dev);
+-
+-	return 0;
+-}
+-
+-static int atmel_spi_runtime_resume(struct device *dev)
+-{
+-	struct spi_master *master = dev_get_drvdata(dev);
+-	struct atmel_spi *as = spi_master_get_devdata(master);
+-
+-	pinctrl_pm_select_default_state(dev);
+-
+-	return clk_prepare_enable(as->clk);
+-}
+-#endif
+ 
+ static const struct dev_pm_ops atmel_spi_pm_ops = {
+ 	SET_SYSTEM_SLEEP_PM_OPS(atmel_spi_suspend, atmel_spi_resume)
+-- 
+1.7.9.5
 
-Best Regards,
-Wenyou Yang
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

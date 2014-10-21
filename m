@@ -1,125 +1,43 @@
-From: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi/atmel: improve the system suspend/resume functions implementation
-Date: Tue, 21 Oct 2014 11:43:34 +0800
-Message-ID: <1413863014-1791-1-git-send-email-wenyou.yang@atmel.com>
-Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	<nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>, <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>,
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>, <khilman-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+From: gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org
+Subject: [PATCH] spi: orion: fix potential NULL pointer de-reference
+Date: Tue, 21 Oct 2014 15:57:48 +1000
+Message-ID: <1413871068-32174-1-git-send-email-gerg@uclinux.org>
+Cc: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	karl.beldan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-To make it cleaner, the system suspend/resume directly call
-the runtime suspend/resume functions
-and remove the wapper of CONFIG_PM_RUNTIME, CONFIG_PM_SLEEP.
+From: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
 
-Signed-off-by: Wenyou Yang <wenyou.yang-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+It's possible that the call to of_match_device() (introduced in commit
+df59fa7f ["spi: orion: support armada extended baud rates"]) may return
+a NULL if there is no match in the device tree (or perhaps no device tree
+at all). Check the return pointer and set the local device data to the
+lowest common denominator orion device data if it is NULL.
+
+Reported-by: Karl Beldan <karl.beldan-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Greg Ungerer <gerg-JBU5SbJe1FlAfugRpC6u6w@public.gmane.org>
 ---
- drivers/spi/spi-atmel.c |   61 ++++++++++++++++++++---------------------------
- 1 file changed, 26 insertions(+), 35 deletions(-)
+ drivers/spi/spi-orion.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 3f50014..6ed1893 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1451,11 +1451,30 @@ static int atmel_spi_remove(struct platform_device *pdev)
- }
+diff --git a/drivers/spi/spi-orion.c b/drivers/spi/spi-orion.c
+index 835cdda..c76b7d7 100644
+--- a/drivers/spi/spi-orion.c
++++ b/drivers/spi/spi-orion.c
+@@ -454,7 +454,7 @@ static int orion_spi_probe(struct platform_device *pdev)
+ 	spi->master = master;
  
- #ifdef CONFIG_PM
--#ifdef CONFIG_PM_SLEEP
-+static int atmel_spi_runtime_suspend(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct atmel_spi *as = spi_master_get_devdata(master);
-+
-+	clk_disable_unprepare(as->clk);
-+	pinctrl_pm_select_sleep_state(dev);
-+
-+	return 0;
-+}
-+
-+static int atmel_spi_runtime_resume(struct device *dev)
-+{
-+	struct spi_master *master = dev_get_drvdata(dev);
-+	struct atmel_spi *as = spi_master_get_devdata(master);
-+
-+	pinctrl_pm_select_default_state(dev);
-+
-+	return clk_prepare_enable(as->clk);
-+}
-+
- static int atmel_spi_suspend(struct device *dev)
- {
--	struct spi_master	*master = dev_get_drvdata(dev);
--	struct atmel_spi	*as = spi_master_get_devdata(master);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	int ret;
+ 	of_id = of_match_device(orion_spi_of_match_table, &pdev->dev);
+-	devdata = of_id->data;
++	devdata = (of_id) ? of_id->data : &orion_spi_dev_data;
+ 	spi->devdata = devdata;
  
- 	/* Stop the queue running */
-@@ -1465,23 +1484,19 @@ static int atmel_spi_suspend(struct device *dev)
- 		return ret;
- 	}
- 
--	if (!pm_runtime_suspended(dev)) {
--		clk_disable_unprepare(as->clk);
--		pinctrl_pm_select_sleep_state(dev);
--	}
-+	if (!pm_runtime_suspended(dev))
-+		atmel_spi_runtime_suspend(dev);
- 
- 	return 0;
- }
- 
- static int atmel_spi_resume(struct device *dev)
- {
--	struct spi_master	*master = dev_get_drvdata(dev);
--	struct atmel_spi	*as = spi_master_get_devdata(master);
-+	struct spi_master *master = dev_get_drvdata(dev);
- 	int ret;
- 
- 	if (!pm_runtime_suspended(dev)) {
--		pinctrl_pm_select_default_state(dev);
--		ret = clk_prepare_enable(as->clk);
-+		ret = atmel_spi_runtime_resume(dev);
- 		if (ret)
- 			return ret;
- 	}
-@@ -1493,30 +1508,6 @@ static int atmel_spi_resume(struct device *dev)
- 
- 	return ret;
- }
--#endif
--
--#ifdef CONFIG_PM_RUNTIME
--static int atmel_spi_runtime_suspend(struct device *dev)
--{
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct atmel_spi *as = spi_master_get_devdata(master);
--
--	clk_disable_unprepare(as->clk);
--	pinctrl_pm_select_sleep_state(dev);
--
--	return 0;
--}
--
--static int atmel_spi_runtime_resume(struct device *dev)
--{
--	struct spi_master *master = dev_get_drvdata(dev);
--	struct atmel_spi *as = spi_master_get_devdata(master);
--
--	pinctrl_pm_select_default_state(dev);
--
--	return clk_prepare_enable(as->clk);
--}
--#endif
- 
- static const struct dev_pm_ops atmel_spi_pm_ops = {
- 	SET_SYSTEM_SLEEP_PM_OPS(atmel_spi_suspend, atmel_spi_resume)
+ 	spi->clk = devm_clk_get(&pdev->dev, NULL);
 -- 
-1.7.9.5
+1.9.1
 
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in

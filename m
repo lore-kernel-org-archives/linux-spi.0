@@ -1,7 +1,7 @@
 From: Varka Bhadram <varkabhadram-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH spi 2/7] spi-tegra20-sflash: remove duplicate check on resource
-Date: Tue, 21 Oct 2014 15:35:45 +0530
-Message-ID: <1413885950-24208-2-git-send-email-varkab@cdac.in>
+Subject: [PATCH spi 3/7] spi-sirf: remove duplicate check on resource
+Date: Tue, 21 Oct 2014 15:35:46 +0530
+Message-ID: <1413885950-24208-3-git-send-email-varkab@cdac.in>
 References: <1413885950-24208-1-git-send-email-varkab@cdac.in>
 Cc: Varka Bhadram <varkab-If5XQcfNmg0@public.gmane.org>
 To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
@@ -14,25 +14,34 @@ Sanity check on resource happening with devm_ioremap_resource().
 
 Signed-off-by: Varka Bhadram <varkab-If5XQcfNmg0@public.gmane.org>
 ---
- drivers/spi/spi-tegra20-sflash.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/spi/spi-sirf.c |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
-index 3d6a12b..3748445 100644
---- a/drivers/spi/spi-tegra20-sflash.c
-+++ b/drivers/spi/spi-tegra20-sflash.c
-@@ -511,11 +511,6 @@ static int tegra_sflash_probe(struct platform_device *pdev)
- 	spin_lock_init(&tsd->lock);
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index f59d417..ee85da2 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -502,12 +502,6 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, master);
+ 	sspi = spi_master_get_devdata(master);
  
- 	r = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!r) {
--		dev_err(&pdev->dev, "No IO memory resource\n");
+-	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!mem_res) {
+-		dev_err(&pdev->dev, "Unable to get IO resource\n");
 -		ret = -ENODEV;
--		goto exit_free_master;
+-		goto free_master;
 -	}
- 	tsd->base = devm_ioremap_resource(&pdev->dev, r);
- 	if (IS_ERR(tsd->base)) {
- 		ret = PTR_ERR(tsd->base);
+ 	master->num_chipselect = num_cs;
+ 
+ 	for (i = 0; i < master->num_chipselect; i++) {
+@@ -534,6 +528,7 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	mem_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	sspi->base = devm_ioremap_resource(&pdev->dev, mem_res);
+ 	if (IS_ERR(sspi->base)) {
+ 		ret = PTR_ERR(sspi->base);
 -- 
 1.7.9.5
 

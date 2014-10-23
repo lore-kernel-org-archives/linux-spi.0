@@ -1,48 +1,80 @@
-From: Cao Minh Hiep <cm-hiep@jinso.co.jp>
-Subject: [PATCH v3 0/1] spi: Using Trigger number to transmit/receive data
-Date: Thu, 23 Oct 2014 12:14:12 +0900
-Message-ID: <1414034053-14750-1-git-send-email-cm-hiep@jinso.co.jp>
-Cc: broonie@kernel.org, linux-spi@vger.kernel.org,
-	kuninori.morimoto.gx@renesas.com, yoshihiro.shimoda.uh@renesas.com,
-	ryusuke.sakato.bx@renesas.com, linux-sh@vger.kernel.org
-To: geert+renesas@glider.be
-Return-path: <linux-sh-owner@vger.kernel.org>
-Sender: linux-sh-owner@vger.kernel.org
+From: Dinh Nguyen <dinguyen-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Subject: Re: [PATCHv4] arm: dts: socfpga: Add SPI nodes to SOCFPGA DT.
+Date: Thu, 23 Oct 2014 10:33:56 -0500
+Message-ID: <alpine.DEB.2.02.1410231032100.31473@linux-builds1>
+References: <1413917741-19240-1-git-send-email-tthayer@opensource.altera.com> <1413917741-19240-2-git-send-email-tthayer@opensource.altera.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	<mark.rutland-5wv7dgnIgG8@public.gmane.org>, <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	<galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <tthayer.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	<tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>, <axel.lin-8E1dMatC8ynQT0dZR+AlfA@public.gmane.org>, <baruch-NswTu9S1W3P6gbPvEgmw2w@public.gmane.org>,
+	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>, <s.trumtrar-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>
+To: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1413917741-19240-2-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Hiep Cao Minh <cm-hiep@jinso.co.jp>
+On Tue, 21 Oct 2014, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
 
-Hi Geert-san,
+> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+> 
+> Add 2 SPI nodes to SOCFPGA device tree.
+> 
+> Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+> ---
+> v2: Remove extra files. Move SPIDEV into board specific file.
+> 
+> v3: Remove dts file since SPIDEV is not allowed.
+> 
+> v4: Remove bus-num since it is unused and not defined in bindings.
+> ---
+>  arch/arm/boot/dts/socfpga.dtsi |   22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+> index 4d77ad6..2792e6c 100644
+> --- a/arch/arm/boot/dts/socfpga.dtsi
+> +++ b/arch/arm/boot/dts/socfpga.dtsi
+> @@ -628,6 +628,28 @@
+>  			clock-names = "biu", "ciu";
+>  		};
+>  
+> +		spi0: spi@fff00000 {
+> +			compatible = "snps,dw-apb-ssi";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			reg = <0xfff00000 0x1000>;
+> +			interrupts = <0 154 4>;
+> +			num-cs = <4>;
+> +			clocks = <&spi_m_clk>;
+> +			status = "disabled";
+> +		};
+> +
+> +		spi1: spi@fff01000 {
+> +			compatible = "snps,dw-apb-ssi";
+> +			#address-cells = <1>;
+> +			#size-cells = <0>;
+> +			reg = <0xfff01000 0x1000>;
+> +			interrupts = <0 156 4>;
+> +			num-cs = <4>;
+> +			clocks = <&spi_m_clk>;
+> +			status = "disabled";
+> +		};
+> +
+>  		/* Local timer */
+>  		timer@fffec600 {
+>  			compatible = "arm,cortex-a9-twd-timer";
+> -- 
+> 1.7.9.5
 
-I have updated a new version of the QSPI patch (verion 3), that I modified as 
-your comments. This patch supports for r8a7790 SOC and developed base on the 
-upstream-stable-v3.17 and have tested on the Lager board.
-Please consider the following patches for the r8a7790 Soc.
+Applied to git.rocketboards.org/linux-socfpga-next.git next-dt.
 
-Version 2:
-Added the DMA support on it.In order to use DMA When the DMA is available. 
-This patch supports for r8a7790 SOC and developed base on the upstream-v3.17-rc7
-and have tested on the Lager board.
-
-Version 1:
-
-This is the patch of QSPI that support for r8a7790 SOC. The pupose of 
-this patch is to transmit and receive the 32 bytes of data when the data 
-already has prepared on Transmit/Receive Buffer. Using Transmit/Receive 
-Buffer Data Trigger Number to do that instead transmits/receives a byte 
-of data. With this patch will improve the speed of transfer data.
-This patch was developed base on the upstream-v3.17-rc5 and have 
-tested on the Lager board.
-
-Best Regards,
-Cao Minh Hiep 
-
-Hiep Cao Minh (1):
-  spi: Using Trigger number to transmit/receive data
-
- drivers/spi/spi-rspi.c | 124 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 117 insertions(+), 7 deletions(-)
-
--- 
-1.9.1
-
+BR,
+Dinh
+--
+To unsubscribe from this list: send the line "unsubscribe devicetree" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,63 +1,86 @@
-From: Torsten Fleischer <torfl6749@gmail.com>
-Subject: [PATCH 1/1] spi: spi-gpio: Add dt support for a single device with no chip select
-Date: Mon, 27 Oct 2014 16:27:17 +0100
-Message-ID: <1414423637-2817-1-git-send-email-torfl6749@gmail.com>
-Cc: Torsten Fleischer <torfl6749@gmail.com>
-To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org
+From: Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 1/1] spi: spi-gpio: Add dt support for a single device
+ with no chip select
+Date: Mon, 27 Oct 2014 17:30:55 +0000
+Message-ID: <20141027173055.GD4971@leverpostej>
+References: <1414423637-2817-1-git-send-email-torfl6749@gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+To: Torsten Fleischer <torfl6749@gmail.com>
 Return-path: <linux-kernel-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1414423637-2817-1-git-send-email-torfl6749@gmail.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-From: Torsten Fleischer <torfl6749@gmail.com>
+On Mon, Oct 27, 2014 at 03:27:17PM +0000, Torsten Fleischer wrote:
+> From: Torsten Fleischer <torfl6749@gmail.com>
+> 
+> Use an empty 'cs-gpios' property if a single device is connected which
+> has no chip select.
+> This refers to the discussion at https://lkml.org/lkml/2013/11/13/62.
+> 
+> Signed-off-by: Torsten Fleischer <torfl6749@gmail.com>
+> ---
+>  Documentation/devicetree/bindings/spi/spi-gpio.txt |  6 ++++--
+>  drivers/spi/spi-gpio.c                             | 10 +++++++---
+>  2 files changed, 11 insertions(+), 5 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.txt b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+> index 8a824be..ad8795f 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-gpio.txt
+> +++ b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+> @@ -8,8 +8,10 @@ Required properties:
+>   - gpio-sck: GPIO spec for the SCK line to use
+>   - gpio-miso: GPIO spec for the MISO line to use
+>   - gpio-mosi: GPIO spec for the MOSI line to use
+> - - cs-gpios: GPIOs to use for chipselect lines
+> - - num-chipselects: number of chipselect lines
+> + - cs-gpios: GPIOs to use for chipselect lines. Leave this property empty if
+> +             a single device with no chip select is connected.
+> + - num-chipselects: Number of chipselect lines. Has to be "1" even if a single
+> +                    device with no chip select is connected.
 
-Use an empty 'cs-gpios' property if a single device is connected which
-has no chip select.
-This refers to the discussion at https://lkml.org/lkml/2013/11/13/62.
+Why not just have num-chipselectes = <0>, and no cs-gpios property?
 
-Signed-off-by: Torsten Fleischer <torfl6749@gmail.com>
----
- Documentation/devicetree/bindings/spi/spi-gpio.txt |  6 ++++--
- drivers/spi/spi-gpio.c                             | 10 +++++++---
- 2 files changed, 11 insertions(+), 5 deletions(-)
+That would match the HW, and is unambigious as the author has to state
+explicitly that there are no chipselects.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.txt b/Documentation/devicetree/bindings/spi/spi-gpio.txt
-index 8a824be..ad8795f 100644
---- a/Documentation/devicetree/bindings/spi/spi-gpio.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-gpio.txt
-@@ -8,8 +8,10 @@ Required properties:
-  - gpio-sck: GPIO spec for the SCK line to use
-  - gpio-miso: GPIO spec for the MISO line to use
-  - gpio-mosi: GPIO spec for the MOSI line to use
-- - cs-gpios: GPIOs to use for chipselect lines
-- - num-chipselects: number of chipselect lines
-+ - cs-gpios: GPIOs to use for chipselect lines. Leave this property empty if
-+             a single device with no chip select is connected.
-+ - num-chipselects: Number of chipselect lines. Has to be "1" even if a single
-+                    device with no chip select is connected.
- 
- Example:
- 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 9f59553..b343818a 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -461,9 +461,13 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 		 * property of the node.
- 		 */
- 
--		for (i = 0; i < SPI_N_CHIPSEL; i++)
--			spi_gpio->cs_gpios[i] =
--				of_get_named_gpio(np, "cs-gpios", i);
-+		if ((SPI_N_CHIPSEL == 1) &&
-+				(of_gpio_named_count(np, "cs-gpios") == 0))
-+			spi_gpio->cs_gpios[0] = SPI_GPIO_NO_CHIPSELECT;
-+		else
-+			for (i = 0; i < SPI_N_CHIPSEL; i++)
-+				spi_gpio->cs_gpios[i] =
-+					of_get_named_gpio(np, "cs-gpios", i);
- 	}
- #endif
- 
--- 
-1.8.4.5
+Mark.
+
+>  
+>  Example:
+>  
+> diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+> index 9f59553..b343818a 100644
+> --- a/drivers/spi/spi-gpio.c
+> +++ b/drivers/spi/spi-gpio.c
+> @@ -461,9 +461,13 @@ static int spi_gpio_probe(struct platform_device *pdev)
+>  		 * property of the node.
+>  		 */
+>  
+> -		for (i = 0; i < SPI_N_CHIPSEL; i++)
+> -			spi_gpio->cs_gpios[i] =
+> -				of_get_named_gpio(np, "cs-gpios", i);
+> +		if ((SPI_N_CHIPSEL == 1) &&
+> +				(of_gpio_named_count(np, "cs-gpios") == 0))
+> +			spi_gpio->cs_gpios[0] = SPI_GPIO_NO_CHIPSELECT;
+> +		else
+> +			for (i = 0; i < SPI_N_CHIPSEL; i++)
+> +				spi_gpio->cs_gpios[i] =
+> +					of_get_named_gpio(np, "cs-gpios", i);
+>  	}
+>  #endif
+>  
+> -- 
+> 1.8.4.5
+> 
+> --
+> To unsubscribe from this list: send the line "unsubscribe devicetree" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html
+> 

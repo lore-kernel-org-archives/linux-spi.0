@@ -1,98 +1,70 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: [PATCH v8 4/8] OF: platform: Add OF notifier handler
-Date: Tue, 28 Oct 2014 22:36:01 +0200
-Message-ID: <1414528565-10907-5-git-send-email-pantelis.antoniou@konsulko.com>
+From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Subject: [PATCH v8 6/8] OF: i2c: Add OF notifier handler
+Date: Tue, 28 Oct 2014 22:36:03 +0200
+Message-ID: <1414528565-10907-7-git-send-email-pantelis.antoniou@konsulko.com>
 References: <1414528565-10907-1-git-send-email-pantelis.antoniou@konsulko.com>
-Cc: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Matt Porter <matt.porter-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Koen Kooi <koen-QLwJDigV5abLmq1fohREcCpxlwaOVQ5f@public.gmane.org>,
-	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	Alison Chaiken <Alison_Chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Dinh Nguyen <dinh.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jan Lubbe <jluebbe-H4yykcOXDpCzQB+pC5nmwQ@public.gmane.org>,
-	Alexander Sverdlin <alexander.sverdlin-OYasijW0DpE@public.gmane.org>,
-	Michael Stickel <ms-g5CePrrZ5ROELgA04lAiVw@public.gmane.org>,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-	Dirk Behme <dirk.behme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Alan Tull <delicious.quinoa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Michael Bohan <mbohan-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Ionut Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>,
-	Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>,
-	Matt Ranostay <mranostay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1414528565-10907-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Cc: Rob Herring <robherring2@gmail.com>,
+	Stephen Warren <swarren@wwwdotorg.org>,
+	Matt Porter <matt.porter@linaro.org>,
+	Koen Kooi <koen@dominion.thruhere.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alison Chaiken <Alison_Chaiken@mentor.com>,
+	Dinh Nguyen <dinh.linux@gmail.com>,
+	Jan Lubbe <jluebbe@lasnet.de>,
+	Alexander Sverdlin <alexander.sverdlin@nsn.com>,
+	Michael Stickel <ms@mycable.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Dirk Behme <dirk.behme@gmail.com>,
+	Alan Tull <delicious.quinoa@gmail.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Michael Bohan <mbohan@codeaurora.org>,
+	Ionut Nicu <ioan.nicu.ext@nsn.com>,
+	Michal Simek <monstr@monstr.eu>,
+	Matt Ranostay <mranostay@gmail.com>,
+	Joel Becker <jlbec@evilplan.org>, devicetree@vger.kernel.org,
+	Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+To: Grant Likely <grant.likely@secretlab.ca>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+In-Reply-To: <1414528565-10907-1-git-send-email-pantelis.antoniou@konsulko.com>
+Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Add OF notifier handler needed for creating/destroying platform devices
+Add OF notifier handler needed for creating/destroying i2c devices
 according to dynamic runtime changes in the DT live tree.
 
-Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
 ---
- drivers/base/platform.c     | 18 +++++++++--
- drivers/of/platform.c       | 78 +++++++++++++++++++++++++++++++++++++++++++++
- include/linux/of_platform.h | 10 ++++++
- 3 files changed, 103 insertions(+), 3 deletions(-)
+ drivers/i2c/i2c-core.c | 79 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 78 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index b2afc29..282bfec 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -1002,10 +1002,22 @@ int __init platform_bus_init(void)
- 
- 	error = device_register(&platform_bus);
- 	if (error)
--		return error;
--	error =  bus_register(&platform_bus_type);
-+		goto err_out;
-+
-+	error = bus_register(&platform_bus_type);
-+	if (error)
-+		goto err_unreg_dev;
-+
-+	error = of_platform_register_reconfig_notifier();
- 	if (error)
--		device_unregister(&platform_bus);
-+		goto err_unreg_bus;
-+
-+	return 0;
-+err_unreg_bus:
-+	bus_unregister(&platform_bus_type);
-+err_unreg_dev:
-+	device_unregister(&platform_bus);
-+err_out:
- 	return error;
+diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
+index e6da9d3..e751b78 100644
+--- a/drivers/i2c/i2c-core.c
++++ b/drivers/i2c/i2c-core.c
+@@ -1470,6 +1470,7 @@ struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
+ 	return i2c_verify_adapter(dev);
  }
- 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 3b64d0b..aa8db92 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -546,4 +546,82 @@ void of_platform_depopulate(struct device *parent)
+ EXPORT_SYMBOL(of_find_i2c_adapter_by_node);
++
+ #else
+ static void of_i2c_register_devices(struct i2c_adapter *adap) { }
+ #endif /* CONFIG_OF */
+@@ -1955,6 +1956,71 @@ void i2c_clients_command(struct i2c_adapter *adap, unsigned int cmd, void *arg)
  }
- EXPORT_SYMBOL_GPL(of_platform_depopulate);
+ EXPORT_SYMBOL(i2c_clients_command);
  
-+#ifdef CONFIG_OF_DYNAMIC
++#if IS_ENABLED(CONFIG_OF)
 +
-+static struct notifier_block platform_of_notifier;
-+
-+static int of_platform_notify(struct notifier_block *nb,
++static int of_i2c_notify(struct notifier_block *nb,
 +				unsigned long action, void *arg)
 +{
-+	struct platform_device *pdev_parent, *pdev;
 +	struct device_node *dn;
++	struct i2c_adapter *adap;
++	struct i2c_client *client;
 +	int state;
-+	bool children_left;
 +
 +	state = of_reconfig_get_state_change(action, arg);
-+
-+	/* no change? */
 +	if (state == -1)
 +		return NOTIFY_OK;
 +
@@ -112,69 +84,64 @@ index 3b64d0b..aa8db92 100644
 +
 +	if (state) {
 +
-+		/* verify that the parent is a bus */
-+		if (!of_match_node(of_default_bus_match_table, dn->parent))
++		adap = of_find_i2c_adapter_by_node(dn->parent);
++		if (adap == NULL)
 +			return NOTIFY_OK;	/* not for us */
 +
-+		/* pdev_parent may be NULL when no bus platform device */
-+		pdev_parent = of_find_device_by_node(dn->parent);
-+		pdev = of_platform_device_create(dn, NULL,
-+				pdev_parent ? &pdev_parent->dev : NULL);
-+		of_dev_put(pdev_parent);
++		client = of_i2c_register_device(adap, dn);
++		put_device(&adap->dev);
 +
-+		if (pdev == NULL) {
++		if (IS_ERR(client)) {
 +			pr_err("%s: failed to create for '%s'\n",
 +					__func__, dn->full_name);
-+			/* of_platform_device_create tosses the error code */
-+			return notifier_from_errno(-EINVAL);
++			return notifier_from_errno(PTR_ERR(client));
 +		}
 +
 +	} else {
 +
 +		/* find our device by node */
-+		pdev = of_find_device_by_node(dn);
-+		if (pdev == NULL)
++		client = of_find_i2c_device_by_node(dn);
++		if (client == NULL)
 +			return NOTIFY_OK;	/* no? not meant for us */
 +
 +		/* unregister takes one ref away */
-+		of_platform_device_destroy(&pdev->dev, &children_left);
++		i2c_unregister_device(client);
 +
 +		/* and put the reference of the find */
-+		of_dev_put(pdev);
++		put_device(&client->dev);
 +
 +	}
 +
 +	return NOTIFY_OK;
 +}
 +
-+int of_platform_register_reconfig_notifier(void)
-+{
-+	platform_of_notifier.notifier_call = of_platform_notify;
-+	return of_reconfig_notifier_register(&platform_of_notifier);
-+}
-+EXPORT_SYMBOL_GPL(of_platform_register_reconfig_notifier);
++static struct notifier_block i2c_of_notifier;
 +
 +#endif
 +
- #endif /* CONFIG_OF_ADDRESS */
-diff --git a/include/linux/of_platform.h b/include/linux/of_platform.h
-index c2b0627..01fe5d6 100644
---- a/include/linux/of_platform.h
-+++ b/include/linux/of_platform.h
-@@ -84,4 +84,14 @@ static inline int of_platform_populate(struct device_node *root,
- static inline void of_platform_depopulate(struct device *parent) { }
- #endif
+ static int __init i2c_init(void)
+ {
+ 	int retval;
+@@ -1972,8 +2038,19 @@ static int __init i2c_init(void)
+ 	retval = i2c_add_driver(&dummy_driver);
+ 	if (retval)
+ 		goto class_err;
+-	return 0;
  
-+#ifdef CONFIG_OF_DYNAMIC
-+extern int of_platform_register_reconfig_notifier(void);
-+#else
-+static inline int of_platform_register_reconfig_notifier(void)
-+{
-+	return 0;
-+}
++#if IS_ENABLED(CONFIG_OF)
++	i2c_of_notifier.notifier_call = of_i2c_notify;
++	retval = of_reconfig_notifier_register(&i2c_of_notifier);
++	if (retval)
++		goto notifier_err;
 +#endif
 +
-+
- #endif	/* _LINUX_OF_PLATFORM_H */
++	return 0;
++#if IS_ENABLED(CONFIG_OF)
++notifier_err:
++	i2c_del_driver(&dummy_driver);
++#endif
+ class_err:
+ #ifdef CONFIG_I2C_COMPAT
+ 	class_compat_unregister(i2c_adapter_compat_class);
 -- 
 1.7.12

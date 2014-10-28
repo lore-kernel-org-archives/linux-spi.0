@@ -1,7 +1,7 @@
 From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
-Subject: [PATCH v8 5/8] of: i2c: Export single device registration method
-Date: Tue, 28 Oct 2014 22:36:02 +0200
-Message-ID: <1414528565-10907-6-git-send-email-pantelis.antoniou@konsulko.com>
+Subject: [PATCH v8 7/8] of: spi: Export single device registration method and accessors
+Date: Tue, 28 Oct 2014 22:36:04 +0200
+Message-ID: <1414528565-10907-8-git-send-email-pantelis.antoniou@konsulko.com>
 References: <1414528565-10907-1-git-send-email-pantelis.antoniou@konsulko.com>
 Cc: Rob Herring <robherring2@gmail.com>,
 	Stephen Warren <swarren@wwwdotorg.org>,
@@ -30,171 +30,306 @@ In-Reply-To: <1414528565-10907-1-git-send-email-pantelis.antoniou@konsulko.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Dynamically inserting i2c client device nodes requires the use
-of a single device registration method. Rework and export it.
+Dynamically inserting spi device nodes requires the use of a single
+device registration method. Rework and export it.
+
+Methods to lookup a device/master using a device node are added
+as well, of_find_spi_master_by_node() & of_find_spi_device_by_node().
 
 Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
 ---
- drivers/i2c/i2c-core.c | 99 +++++++++++++++++++++++++++-----------------------
- include/linux/i2c.h    | 10 +++++
- 2 files changed, 64 insertions(+), 45 deletions(-)
+ drivers/spi/spi.c | 256 +++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 158 insertions(+), 98 deletions(-)
 
-diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
-index 2f90ac6..e6da9d3 100644
---- a/drivers/i2c/i2c-core.c
-+++ b/drivers/i2c/i2c-core.c
-@@ -54,6 +54,7 @@
- #include <linux/acpi.h>
- #include <linux/jump_label.h>
- #include <asm/uaccess.h>
-+#include <linux/err.h>
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index ebcb33d..f81d799 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1220,6 +1220,123 @@ err_init_queue:
+ /*-------------------------------------------------------------------------*/
  
- #include "i2c-core.h"
- 
-@@ -1370,63 +1371,71 @@ static void i2c_scan_static_board_info(struct i2c_adapter *adapter)
- /* OF support code */
- 
- #if IS_ENABLED(CONFIG_OF)
--static void of_i2c_register_devices(struct i2c_adapter *adap)
-+struct i2c_client *
-+of_i2c_register_device(struct i2c_adapter *adap,
-+		struct device_node *node)
- {
--	void *result;
--	struct device_node *node;
-+	struct i2c_client *result;
-+	struct i2c_board_info info = {};
-+	struct dev_archdata dev_ad = {};
-+	const __be32 *addr;
-+	int len;
- 
--	/* Only register child devices if the adapter has a node pointer set */
--	if (!adap->dev.of_node)
--		return;
-+	dev_dbg(&adap->dev, "of_i2c: register %s\n", node->full_name);
- 
--	dev_dbg(&adap->dev, "of_i2c: walking child nodes\n");
-+	if (of_modalias_node(node, info.type, sizeof(info.type)) < 0) {
-+		dev_err(&adap->dev, "of_i2c: modalias failure on %s\n",
-+			node->full_name);
-+		return ERR_PTR(-EINVAL);
-+	}
- 
--	for_each_available_child_of_node(adap->dev.of_node, node) {
--		struct i2c_board_info info = {};
--		struct dev_archdata dev_ad = {};
--		const __be32 *addr;
--		int len;
-+	addr = of_get_property(node, "reg", &len);
-+	if (!addr || (len < sizeof(int))) {
-+		dev_err(&adap->dev, "of_i2c: invalid reg on %s\n",
-+			node->full_name);
-+		return ERR_PTR(-EINVAL);
-+	}
- 
--		dev_dbg(&adap->dev, "of_i2c: register %s\n", node->full_name);
-+	info.addr = be32_to_cpup(addr);
-+	if (info.addr > (1 << 10) - 1) {
-+		dev_err(&adap->dev, "of_i2c: invalid addr=%x on %s\n",
-+			info.addr, node->full_name);
-+		return ERR_PTR(-EINVAL);
-+	}
- 
--		if (of_modalias_node(node, info.type, sizeof(info.type)) < 0) {
--			dev_err(&adap->dev, "of_i2c: modalias failure on %s\n",
--				node->full_name);
--			continue;
--		}
-+	info.irq = irq_of_parse_and_map(node, 0);
-+	info.of_node = of_node_get(node);
-+	info.archdata = &dev_ad;
- 
--		addr = of_get_property(node, "reg", &len);
--		if (!addr || (len < sizeof(int))) {
--			dev_err(&adap->dev, "of_i2c: invalid reg on %s\n",
--				node->full_name);
--			continue;
--		}
-+	if (of_get_property(node, "wakeup-source", NULL))
-+		info.flags |= I2C_CLIENT_WAKE;
- 
--		info.addr = be32_to_cpup(addr);
--		if (info.addr > (1 << 10) - 1) {
--			dev_err(&adap->dev, "of_i2c: invalid addr=%x on %s\n",
--				info.addr, node->full_name);
--			continue;
--		}
-+	request_module("%s%s", I2C_MODULE_PREFIX, info.type);
- 
--		info.irq = irq_of_parse_and_map(node, 0);
--		info.of_node = of_node_get(node);
--		info.archdata = &dev_ad;
-+	result = i2c_new_device(adap, &info);
-+	if (result == NULL) {
-+		dev_err(&adap->dev, "of_i2c: Failure registering %s\n",
-+			node->full_name);
-+		of_node_put(node);
-+		irq_dispose_mapping(info.irq);
-+		return ERR_PTR(-EINVAL);
-+	}
-+	return result;
-+}
-+EXPORT_SYMBOL(of_i2c_register_device);
- 
--		if (of_get_property(node, "wakeup-source", NULL))
--			info.flags |= I2C_CLIENT_WAKE;
-+static void of_i2c_register_devices(struct i2c_adapter *adap)
+ #if defined(CONFIG_OF)
++
++static struct spi_device *
++of_register_spi_device(struct spi_master *master, struct device_node *node)
 +{
-+	struct device_node *node;
++	struct spi_device *spi;
++	struct device_node *nc;
++	int rc;
++	u32 value;
++
++	/* Alloc an spi_device */
++	spi = spi_alloc_device(master);
++	if (!spi) {
++		dev_err(&master->dev, "spi_device alloc error for %s\n",
++			nc->full_name);
++		rc = -ENOMEM;
++		goto err_out;
++	}
++
++	/* Select device driver */
++	rc = of_modalias_node(nc, spi->modalias,
++				sizeof(spi->modalias));
++	if (rc < 0) {
++		dev_err(&master->dev, "cannot find modalias for %s\n",
++			nc->full_name);
++		goto err_out;
++	}
++
++	/* Device address */
++	rc = of_property_read_u32(nc, "reg", &value);
++	if (rc) {
++		dev_err(&master->dev, "%s has no valid 'reg' property (%d)\n",
++			nc->full_name, rc);
++		goto err_out;
++	}
++	spi->chip_select = value;
++
++	/* Mode (clock phase/polarity/etc.) */
++	if (of_find_property(nc, "spi-cpha", NULL))
++		spi->mode |= SPI_CPHA;
++	if (of_find_property(nc, "spi-cpol", NULL))
++		spi->mode |= SPI_CPOL;
++	if (of_find_property(nc, "spi-cs-high", NULL))
++		spi->mode |= SPI_CS_HIGH;
++	if (of_find_property(nc, "spi-3wire", NULL))
++		spi->mode |= SPI_3WIRE;
++	if (of_find_property(nc, "spi-lsb-first", NULL))
++		spi->mode |= SPI_LSB_FIRST;
++
++	/* Device DUAL/QUAD mode */
++	if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
++		switch (value) {
++		case 1:
++			break;
++		case 2:
++			spi->mode |= SPI_TX_DUAL;
++			break;
++		case 4:
++			spi->mode |= SPI_TX_QUAD;
++			break;
++		default:
++			dev_warn(&master->dev,
++				"spi-tx-bus-width %d not supported\n",
++				value);
++			break;
++		}
++	}
++
++	if (!of_property_read_u32(nc, "spi-rx-bus-width", &value)) {
++		switch (value) {
++		case 1:
++			break;
++		case 2:
++			spi->mode |= SPI_RX_DUAL;
++			break;
++		case 4:
++			spi->mode |= SPI_RX_QUAD;
++			break;
++		default:
++			dev_warn(&master->dev,
++				"spi-rx-bus-width %d not supported\n",
++				value);
++			break;
++		}
++	}
++
++	/* Device speed */
++	rc = of_property_read_u32(nc, "spi-max-frequency", &value);
++	if (rc) {
++		dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
++			nc->full_name, rc);
++		goto err_out;
++	}
++	spi->max_speed_hz = value;
++
++	/* IRQ */
++	spi->irq = irq_of_parse_and_map(nc, 0);
++
++	/* Store a pointer to the node in the device structure */
++	of_node_get(nc);
++	spi->dev.of_node = nc;
++
++	/* Register the new device */
++	request_module("%s%s", SPI_MODULE_PREFIX, spi->modalias);
++	rc = spi_add_device(spi);
++	if (rc) {
++		dev_err(&master->dev, "spi_device register error %s\n",
++			nc->full_name);
++		goto err_out;
++	}
++
++	return spi;
++
++err_out:
++	spi_dev_put(spi);
++	return ERR_PTR(rc);
++}
++
+ /**
+  * of_register_spi_devices() - Register child devices onto the SPI bus
+  * @master:	Pointer to spi_master device
+@@ -1229,120 +1346,63 @@ err_init_queue:
+  */
+ static void of_register_spi_devices(struct spi_master *master)
+ {
+-	struct spi_device *spi;
+ 	struct device_node *nc;
+-	int rc;
+-	u32 value;
++	struct spi_device *spi;
  
--		request_module("%s%s", I2C_MODULE_PREFIX, info.type);
-+	/* Only register child devices if the adapter has a node pointer set */
-+	if (!adap->dev.of_node)
-+		return;
+ 	if (!master->dev.of_node)
+ 		return;
  
--		result = i2c_new_device(adap, &info);
--		if (result == NULL) {
--			dev_err(&adap->dev, "of_i2c: Failure registering %s\n",
--				node->full_name);
--			of_node_put(node);
--			irq_dispose_mapping(info.irq);
+ 	for_each_available_child_of_node(master->dev.of_node, nc) {
+-		/* Alloc an spi_device */
+-		spi = spi_alloc_device(master);
+-		if (!spi) {
+-			dev_err(&master->dev, "spi_device alloc error for %s\n",
++		spi = of_register_spi_device(master, nc);
++		if (IS_ERR(spi))
++			dev_warn(&master->dev, "Failed to create SPI device for %s\n",
+ 				nc->full_name);
+-			spi_dev_put(spi);
 -			continue;
 -		}
++	}
++}
+ 
+-		/* Select device driver */
+-		if (of_modalias_node(nc, spi->modalias,
+-				     sizeof(spi->modalias)) < 0) {
+-			dev_err(&master->dev, "cannot find modalias for %s\n",
+-				nc->full_name);
+-			spi_dev_put(spi);
+-			continue;
+-		}
++static int of_dev_node_match(struct device *dev, void *data)
++{
++	return dev->of_node == data;
++}
+ 
+-		/* Device address */
+-		rc = of_property_read_u32(nc, "reg", &value);
+-		if (rc) {
+-			dev_err(&master->dev, "%s has no valid 'reg' property (%d)\n",
+-				nc->full_name, rc);
+-			spi_dev_put(spi);
+-			continue;
+-		}
+-		spi->chip_select = value;
+-
+-		/* Mode (clock phase/polarity/etc.) */
+-		if (of_find_property(nc, "spi-cpha", NULL))
+-			spi->mode |= SPI_CPHA;
+-		if (of_find_property(nc, "spi-cpol", NULL))
+-			spi->mode |= SPI_CPOL;
+-		if (of_find_property(nc, "spi-cs-high", NULL))
+-			spi->mode |= SPI_CS_HIGH;
+-		if (of_find_property(nc, "spi-3wire", NULL))
+-			spi->mode |= SPI_3WIRE;
+-		if (of_find_property(nc, "spi-lsb-first", NULL))
+-			spi->mode |= SPI_LSB_FIRST;
+-
+-		/* Device DUAL/QUAD mode */
+-		if (!of_property_read_u32(nc, "spi-tx-bus-width", &value)) {
+-			switch (value) {
+-			case 1:
+-				break;
+-			case 2:
+-				spi->mode |= SPI_TX_DUAL;
+-				break;
+-			case 4:
+-				spi->mode |= SPI_TX_QUAD;
+-				break;
+-			default:
+-				dev_warn(&master->dev,
+-					 "spi-tx-bus-width %d not supported\n",
+-					 value);
+-				break;
+-			}
+-		}
++/* bah; the match functions differ just by const-ness */
++static int of_dev_node_match_const(struct device *dev, const void *data)
++{
++	return dev->of_node == data;
++}
+ 
+-		if (!of_property_read_u32(nc, "spi-rx-bus-width", &value)) {
+-			switch (value) {
+-			case 1:
+-				break;
+-			case 2:
+-				spi->mode |= SPI_RX_DUAL;
+-				break;
+-			case 4:
+-				spi->mode |= SPI_RX_QUAD;
+-				break;
+-			default:
+-				dev_warn(&master->dev,
+-					 "spi-rx-bus-width %d not supported\n",
+-					 value);
+-				break;
+-			}
+-		}
++/* must call put_device() when done with returned spi_device device */
++struct spi_device *of_find_spi_device_by_node(struct device_node *node)
++{
++	struct device *dev;
+ 
+-		/* Device speed */
+-		rc = of_property_read_u32(nc, "spi-max-frequency", &value);
+-		if (rc) {
+-			dev_err(&master->dev, "%s has no valid 'spi-max-frequency' property (%d)\n",
+-				nc->full_name, rc);
+-			spi_dev_put(spi);
+-			continue;
+-		}
+-		spi->max_speed_hz = value;
++	dev = bus_find_device(&spi_bus_type, NULL, node,
++					 of_dev_node_match);
++	if (!dev)
++		return NULL;
+ 
+-		/* IRQ */
+-		spi->irq = irq_of_parse_and_map(nc, 0);
++	return to_spi_device(dev);
++}
++EXPORT_SYMBOL(of_find_spi_device_by_node);
+ 
+-		/* Store a pointer to the node in the device structure */
+-		of_node_get(nc);
+-		spi->dev.of_node = nc;
++/* forward decl */
++static struct class spi_master_class;
+ 
+-		/* Register the new device */
+-		request_module("%s%s", SPI_MODULE_PREFIX, spi->modalias);
+-		rc = spi_add_device(spi);
+-		if (rc) {
+-			dev_err(&master->dev, "spi_device register error %s\n",
+-				nc->full_name);
+-			spi_dev_put(spi);
+-		}
++/* the spi masters are not using spi_bus, so we find it with another way */
++struct spi_master *of_find_spi_master_by_node(struct device_node *node)
++{
++	struct device *dev;
+ 
 -	}
-+	dev_dbg(&adap->dev, "of_i2c: walking child nodes\n");
++	dev = class_find_device(&spi_master_class, NULL, node,
++				of_dev_node_match_const);
++	if (!dev)
++		return NULL;
 +
-+	for_each_available_child_of_node(adap->dev.of_node, node)
-+		of_i2c_register_device(adap, node);
++	/* reference got in class_find_device */
++	return container_of(dev, struct spi_master, dev);
  }
- 
- static int of_dev_node_match(struct device *dev, void *data)
-diff --git a/include/linux/i2c.h b/include/linux/i2c.h
-index b556e0a..22a8f44 100644
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -558,6 +558,9 @@ static inline int i2c_adapter_id(struct i2c_adapter *adap)
- #endif /* I2C */
- 
- #if IS_ENABLED(CONFIG_OF)
-+struct i2c_client *
-+of_i2c_register_device(struct i2c_adapter *adap, struct device_node *node);
++EXPORT_SYMBOL(of_find_spi_master_by_node);
 +
- /* must call put_device() when done with returned i2c_client device */
- extern struct i2c_client *of_find_i2c_device_by_node(struct device_node *node);
- 
-@@ -566,6 +569,13 @@ extern struct i2c_adapter *of_find_i2c_adapter_by_node(struct device_node *node)
- 
  #else
- 
-+static inline struct i2c_client *
-+of_i2c_register_device(struct i2c_adapter *adap,
-+		struct device_node *node)
-+{
-+	return ERR_PTR(-ENODEV);
-+}
-+
- static inline struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
- {
- 	return NULL;
+ static void of_register_spi_devices(struct spi_master *master) { }
+ #endif
 -- 
 1.7.12

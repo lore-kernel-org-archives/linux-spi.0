@@ -1,442 +1,180 @@
-From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
-Subject: [PATCH v8 3/8] OF: DT-Overlay configfs interface (v2)
-Date: Tue, 28 Oct 2014 22:36:00 +0200
-Message-ID: <1414528565-10907-4-git-send-email-pantelis.antoniou@konsulko.com>
+From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Subject: [PATCH v8 4/8] OF: platform: Add OF notifier handler
+Date: Tue, 28 Oct 2014 22:36:01 +0200
+Message-ID: <1414528565-10907-5-git-send-email-pantelis.antoniou@konsulko.com>
 References: <1414528565-10907-1-git-send-email-pantelis.antoniou@konsulko.com>
-Cc: Rob Herring <robherring2@gmail.com>,
-	Stephen Warren <swarren@wwwdotorg.org>,
-	Matt Porter <matt.porter@linaro.org>,
-	Koen Kooi <koen@dominion.thruhere.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alison Chaiken <Alison_Chaiken@mentor.com>,
-	Dinh Nguyen <dinh.linux@gmail.com>,
-	Jan Lubbe <jluebbe@lasnet.de>,
-	Alexander Sverdlin <alexander.sverdlin@nsn.com>,
-	Michael Stickel <ms@mycable.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Dirk Behme <dirk.behme@gmail.com>,
-	Alan Tull <delicious.quinoa@gmail.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Michael Bohan <mbohan@codeaurora.org>,
-	Ionut Nicu <ioan.nicu.ext@nsn.com>,
-	Michal Simek <monstr@monstr.eu>,
-	Matt Ranostay <mranostay@gmail.com>,
-	Joel Becker <jlbec@evilplan.org>, devicetree@vger.kernel.org,
-	Wolfram Sang <wsa@the-dreams.de>, linux-i2c@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-To: Grant Likely <grant.likely@secretlab.ca>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1414528565-10907-1-git-send-email-pantelis.antoniou@konsulko.com>
-Sender: linux-kernel-owner@vger.kernel.org
+Cc: Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
+	Matt Porter <matt.porter-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Koen Kooi <koen-QLwJDigV5abLmq1fohREcCpxlwaOVQ5f@public.gmane.org>,
+	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
+	Alison Chaiken <Alison_Chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
+	Dinh Nguyen <dinh.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Jan Lubbe <jluebbe-H4yykcOXDpCzQB+pC5nmwQ@public.gmane.org>,
+	Alexander Sverdlin <alexander.sverdlin-OYasijW0DpE@public.gmane.org>,
+	Michael Stickel <ms-g5CePrrZ5ROELgA04lAiVw@public.gmane.org>,
+	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+	Dirk Behme <dirk.behme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Alan Tull <delicious.quinoa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
+	Michael Bohan <mbohan-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Ionut Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>,
+	Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>,
+	Matt Ranostay <mranostay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1414528565-10907-1-git-send-email-pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Add a runtime interface to using configfs for generic device tree overlay
-usage.
+Add OF notifier handler needed for creating/destroying platform devices
+according to dynamic runtime changes in the DT live tree.
 
-A device-tree configfs entry is created in /config/device-tree/overlays
-
-* To create an overlay you mkdir the directory:
-
-	# mkdir /config/device-tree/overlays/foo
-
-* Either you echo the overlay firmware file to the path property file.
-
-	# echo foo.dtbo >/config/device-tree/overlays/foo/path
-
-* Or you cat the contents of the overlay to the dtbo file
-
-	# cat foo.dtbo >/config/device-tree/overlays/foo/dtbo
-
-The overlay file will be applied.
-
-To remove it simply rmdir the directory.
-
-	# rmdir /config/device-tree/overlays/foo
-
-Changes since v1:
-* of_resolve() -> of_resolve_phandles().
-
-Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
+Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
 ---
- drivers/of/Kconfig    |   7 ++
- drivers/of/Makefile   |   1 +
- drivers/of/configfs.c | 340 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 348 insertions(+)
- create mode 100644 drivers/of/configfs.c
+ drivers/base/platform.c     | 18 +++++++++--
+ drivers/of/platform.c       | 78 +++++++++++++++++++++++++++++++++++++++++++++
+ include/linux/of_platform.h | 10 ++++++
+ 3 files changed, 103 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index aa315c4..d59ba40 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -90,4 +90,11 @@ config OF_OVERLAY
- 	select OF_DEVICE
- 	select OF_RESOLVE
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index b2afc29..282bfec 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -1002,10 +1002,22 @@ int __init platform_bus_init(void)
  
-+config OF_CONFIGFS
-+	bool "OpenFirmware Overlay ConfigFS interface"
-+	select CONFIGFS_FS
-+	select OF_OVERLAY
-+	help
-+	  Enable a simple user-space driver DT overlay interface.
+ 	error = device_register(&platform_bus);
+ 	if (error)
+-		return error;
+-	error =  bus_register(&platform_bus_type);
++		goto err_out;
 +
- endmenu # OF
-diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index 1bfe462..6d12949 100644
---- a/drivers/of/Makefile
-+++ b/drivers/of/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_OF_MTD)	+= of_mtd.o
- obj-$(CONFIG_OF_RESERVED_MEM) += of_reserved_mem.o
- obj-$(CONFIG_OF_RESOLVE)  += resolver.o
- obj-$(CONFIG_OF_OVERLAY) += overlay.o
-+obj-$(CONFIG_OF_CONFIGFS) += configfs.o
++	error = bus_register(&platform_bus_type);
++	if (error)
++		goto err_unreg_dev;
++
++	error = of_platform_register_reconfig_notifier();
+ 	if (error)
+-		device_unregister(&platform_bus);
++		goto err_unreg_bus;
++
++	return 0;
++err_unreg_bus:
++	bus_unregister(&platform_bus_type);
++err_unreg_dev:
++	device_unregister(&platform_bus);
++err_out:
+ 	return error;
+ }
  
- CFLAGS_fdt.o = -I$(src)/../../scripts/dtc/libfdt
- CFLAGS_fdt_address.o = -I$(src)/../../scripts/dtc/libfdt
-diff --git a/drivers/of/configfs.c b/drivers/of/configfs.c
-new file mode 100644
-index 0000000..932f572
---- /dev/null
-+++ b/drivers/of/configfs.c
-@@ -0,0 +1,340 @@
-+/*
-+ * Configfs entries for device-tree
-+ *
-+ * Copyright (C) 2013 - Pantelis Antoniou <panto@antoniou-consulting.com>
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public License
-+ * as published by the Free Software Foundation; either version
-+ * 2 of the License, or (at your option) any later version.
-+ */
-+#include <linux/ctype.h>
-+#include <linux/cpu.h>
-+#include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/of_fdt.h>
-+#include <linux/spinlock.h>
-+#include <linux/slab.h>
-+#include <linux/proc_fs.h>
-+#include <linux/configfs.h>
-+#include <linux/types.h>
-+#include <linux/stat.h>
-+#include <linux/limits.h>
-+#include <linux/file.h>
-+#include <linux/vmalloc.h>
-+#include <linux/firmware.h>
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 3b64d0b..aa8db92 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -546,4 +546,82 @@ void of_platform_depopulate(struct device *parent)
+ }
+ EXPORT_SYMBOL_GPL(of_platform_depopulate);
+ 
++#ifdef CONFIG_OF_DYNAMIC
 +
-+#include "of_private.h"
++static struct notifier_block platform_of_notifier;
 +
-+#ifdef CONFIG_OF_OVERLAY
-+
-+struct cfs_overlay_item {
-+	struct config_item	item;
-+
-+	char			path[PATH_MAX];
-+
-+	const struct firmware	*fw;
-+	struct device_node	*overlay;
-+	int			ov_id;
-+
-+	void			*dtbo;
-+	int			dtbo_size;
-+};
-+
-+static int create_overlay(struct cfs_overlay_item *overlay, void *blob)
++static int of_platform_notify(struct notifier_block *nb,
++				unsigned long action, void *arg)
 +{
-+	int err;
++	struct platform_device *pdev_parent, *pdev;
++	struct device_node *dn;
++	int state;
++	bool children_left;
 +
-+	/* unflatten the tree */
-+	of_fdt_unflatten_tree((void *)blob, &overlay->overlay);
-+	if (overlay->overlay == NULL) {
-+		pr_err("%s: failed to unflatten tree\n", __func__);
-+		err = -EINVAL;
-+		goto out_err;
-+	}
-+	pr_debug("%s: unflattened OK\n", __func__);
++	state = of_reconfig_get_state_change(action, arg);
 +
-+	/* mark it as detached */
-+	of_node_set_flag(overlay->overlay, OF_DETACHED);
++	/* no change? */
++	if (state == -1)
++		return NOTIFY_OK;
 +
-+	/* perform resolution */
-+	err = of_resolve_phandles(overlay->overlay);
-+	if (err != 0) {
-+		pr_err("%s: Failed to resolve tree\n", __func__);
-+		goto out_err;
-+	}
-+	pr_debug("%s: resolved OK\n", __func__);
-+
-+	err = of_overlay_create(overlay->overlay);
-+	if (err < 0) {
-+		pr_err("%s: Failed to create overlay (err=%d)\n",
-+				__func__, err);
-+		goto out_err;
-+	}
-+	overlay->ov_id = err;
-+
-+out_err:
-+	return err;
-+}
-+
-+static inline struct cfs_overlay_item *to_cfs_overlay_item(
-+		struct config_item *item)
-+{
-+	return item ? container_of(item, struct cfs_overlay_item, item) : NULL;
-+}
-+
-+CONFIGFS_ATTR_STRUCT(cfs_overlay_item);
-+#define CFS_OVERLAY_ITEM_ATTR(_name, _mode, _show, _store)	\
-+struct cfs_overlay_item_attribute cfs_overlay_item_attr_##_name = \
-+	__CONFIGFS_ATTR(_name, _mode, _show, _store)
-+#define CFS_OVERLAY_ITEM_ATTR_RO(_name, _show)	\
-+struct cfs_overlay_item_attribute cfs_overlay_item_attr_##_name = \
-+	__CONFIGFS_ATTR_RO(_name, _show)
-+
-+CONFIGFS_BIN_ATTR_STRUCT(cfs_overlay_item);
-+#define CFS_OVERLAY_ITEM_BIN_ATTR(_name, _mode, _read, _write, _priv, _max) \
-+struct cfs_overlay_item_bin_attribute cfs_overlay_item_bin_attr_##_name = \
-+	__CONFIGFS_BIN_ATTR(_name, _mode, _read, _write, _priv, _max)
-+#define CFS_OVERLAY_ITEM_BIN_ATTR_RO(_name, _read, _priv, _max)	\
-+struct cfs_overlay_item_bin_attribute cfs_overlay_item_bin_attr_##_name = \
-+	__CONFIGFS_BIN_ATTR_RO(_name, _read, _priv, _max)
-+
-+static ssize_t cfs_overlay_item_path_show(struct cfs_overlay_item *overlay,
-+		char *page)
-+{
-+	return sprintf(page, "%s\n", overlay->path);
-+}
-+
-+static ssize_t cfs_overlay_item_path_store(struct cfs_overlay_item *overlay,
-+		const char *page, size_t count)
-+{
-+	const char *p = page;
-+	char *s;
-+	int err;
-+
-+	/* if it's set do not allow changes */
-+	if (overlay->path[0] != '\0' || overlay->dtbo_size > 0)
-+		return -EPERM;
-+
-+	/* copy to path buffer (and make sure it's always zero terminated */
-+	count = snprintf(overlay->path, sizeof(overlay->path) - 1, "%s", p);
-+	overlay->path[sizeof(overlay->path) - 1] = '\0';
-+
-+	/* strip trailing newlines */
-+	s = overlay->path + strlen(overlay->path);
-+	while (s > overlay->path && *--s == '\n')
-+		*s = '\0';
-+
-+	pr_debug("%s: path is '%s'\n", __func__, overlay->path);
-+
-+	err = request_firmware(&overlay->fw, overlay->path, NULL);
-+	if (err != 0)
-+		goto out_err;
-+
-+	err = create_overlay(overlay, (void *)overlay->fw->data);
-+	if (err != 0)
-+		goto out_err;
-+
-+	return count;
-+
-+out_err:
-+
-+	release_firmware(overlay->fw);
-+	overlay->fw = NULL;
-+
-+	overlay->path[0] = '\0';
-+	return err;
-+}
-+
-+static ssize_t cfs_overlay_item_status_show(struct cfs_overlay_item *overlay,
-+		char *page)
-+{
-+	return sprintf(page, "%s\n",
-+			overlay->ov_id >= 0 ? "applied" : "unapplied");
-+}
-+
-+CFS_OVERLAY_ITEM_ATTR(path, S_IRUGO | S_IWUSR,
-+		cfs_overlay_item_path_show, cfs_overlay_item_path_store);
-+CFS_OVERLAY_ITEM_ATTR_RO(status, cfs_overlay_item_status_show);
-+
-+static struct configfs_attribute *cfs_overlay_attrs[] = {
-+	&cfs_overlay_item_attr_path.attr,
-+	&cfs_overlay_item_attr_status.attr,
-+	NULL,
-+};
-+
-+ssize_t cfs_overlay_item_dtbo_read(struct cfs_overlay_item *overlay,
-+		void *buf, size_t max_count)
-+{
-+	pr_debug("%s: buf=%p max_count=%u\n", __func__,
-+			buf, max_count);
-+
-+	if (overlay->dtbo == NULL)
-+		return 0;
-+
-+	/* copy if buffer provided */
-+	if (buf != NULL) {
-+		/* the buffer must be large enough */
-+		if (overlay->dtbo_size > max_count)
-+			return -ENOSPC;
-+
-+		memcpy(buf, overlay->dtbo, overlay->dtbo_size);
++	switch (action) {
++	case OF_RECONFIG_ATTACH_NODE:
++	case OF_RECONFIG_DETACH_NODE:
++		dn = arg;
++		break;
++	case OF_RECONFIG_ADD_PROPERTY:
++	case OF_RECONFIG_REMOVE_PROPERTY:
++	case OF_RECONFIG_UPDATE_PROPERTY:
++		dn = ((struct of_prop_reconfig *)arg)->dn;
++		break;
++	default:
++		return NOTIFY_OK;
 +	}
 +
-+	return overlay->dtbo_size;
++	if (state) {
++
++		/* verify that the parent is a bus */
++		if (!of_match_node(of_default_bus_match_table, dn->parent))
++			return NOTIFY_OK;	/* not for us */
++
++		/* pdev_parent may be NULL when no bus platform device */
++		pdev_parent = of_find_device_by_node(dn->parent);
++		pdev = of_platform_device_create(dn, NULL,
++				pdev_parent ? &pdev_parent->dev : NULL);
++		of_dev_put(pdev_parent);
++
++		if (pdev == NULL) {
++			pr_err("%s: failed to create for '%s'\n",
++					__func__, dn->full_name);
++			/* of_platform_device_create tosses the error code */
++			return notifier_from_errno(-EINVAL);
++		}
++
++	} else {
++
++		/* find our device by node */
++		pdev = of_find_device_by_node(dn);
++		if (pdev == NULL)
++			return NOTIFY_OK;	/* no? not meant for us */
++
++		/* unregister takes one ref away */
++		of_platform_device_destroy(&pdev->dev, &children_left);
++
++		/* and put the reference of the find */
++		of_dev_put(pdev);
++
++	}
++
++	return NOTIFY_OK;
 +}
 +
-+ssize_t cfs_overlay_item_dtbo_write(struct cfs_overlay_item *overlay,
-+		const void *buf, size_t count)
++int of_platform_register_reconfig_notifier(void)
 +{
-+	int err;
-+
-+	/* if it's set do not allow changes */
-+	if (overlay->path[0] != '\0' || overlay->dtbo_size > 0)
-+		return -EPERM;
-+
-+	/* copy the contents */
-+	overlay->dtbo = kmemdup(buf, count, GFP_KERNEL);
-+	if (overlay->dtbo == NULL)
-+		return -ENOMEM;
-+
-+	overlay->dtbo_size = count;
-+
-+	err = create_overlay(overlay, overlay->dtbo);
-+	if (err != 0)
-+		goto out_err;
-+
-+	return count;
-+
-+out_err:
-+	kfree(overlay->dtbo);
-+	overlay->dtbo = NULL;
-+	overlay->dtbo_size = 0;
-+
-+	return err;
++	platform_of_notifier.notifier_call = of_platform_notify;
++	return of_reconfig_notifier_register(&platform_of_notifier);
 +}
++EXPORT_SYMBOL_GPL(of_platform_register_reconfig_notifier);
 +
-+CFS_OVERLAY_ITEM_BIN_ATTR(dtbo, S_IRUGO | S_IWUSR,
-+		cfs_overlay_item_dtbo_read, cfs_overlay_item_dtbo_write,
-+		NULL, SZ_1M);
-+
-+static struct configfs_bin_attribute *cfs_overlay_bin_attrs[] = {
-+	&cfs_overlay_item_bin_attr_dtbo.bin_attr,
-+	NULL,
-+};
-+
-+static void cfs_overlay_release(struct config_item *item)
-+{
-+	struct cfs_overlay_item *overlay = to_cfs_overlay_item(item);
-+
-+	if (overlay->ov_id >= 0)
-+		of_overlay_destroy(overlay->ov_id);
-+	if (overlay->fw)
-+		release_firmware(overlay->fw);
-+	/* kfree with NULL is safe */
-+	kfree(overlay->dtbo);
-+	kfree(overlay);
-+}
-+
-+CONFIGFS_ATTR_OPS(cfs_overlay_item);
-+CONFIGFS_BIN_ATTR_OPS(cfs_overlay_item);
-+static struct configfs_item_operations cfs_overlay_item_ops = {
-+	.release		= cfs_overlay_release,
-+	.show_attribute		= cfs_overlay_item_attr_show,
-+	.store_attribute	= cfs_overlay_item_attr_store,
-+	.read_bin_attribute	= cfs_overlay_item_bin_attr_read,
-+	.write_bin_attribute	= cfs_overlay_item_bin_attr_write,
-+};
-+
-+static struct config_item_type cfs_overlay_type = {
-+	.ct_item_ops	= &cfs_overlay_item_ops,
-+	.ct_attrs	= cfs_overlay_attrs,
-+	.ct_bin_attrs	= cfs_overlay_bin_attrs,
-+	.ct_owner	= THIS_MODULE,
-+};
-+
-+static struct config_item *cfs_overlay_group_make_item(
-+		struct config_group *group, const char *name)
-+{
-+	struct cfs_overlay_item *overlay;
-+
-+	overlay = kzalloc(sizeof(*overlay), GFP_KERNEL);
-+	if (!overlay)
-+		return ERR_PTR(-ENOMEM);
-+	overlay->ov_id = -1;
-+
-+	config_item_init_type_name(&overlay->item, name, &cfs_overlay_type);
-+	return &overlay->item;
-+}
-+
-+static void cfs_overlay_group_drop_item(struct config_group *group,
-+		struct config_item *item)
-+{
-+	struct cfs_overlay_item *overlay = to_cfs_overlay_item(item);
-+
-+	config_item_put(&overlay->item);
-+}
-+
-+static struct configfs_group_operations overlays_ops = {
-+	.make_item	= cfs_overlay_group_make_item,
-+	.drop_item	= cfs_overlay_group_drop_item,
-+};
-+
-+static struct config_item_type overlays_type = {
-+	.ct_group_ops   = &overlays_ops,
-+	.ct_owner       = THIS_MODULE,
-+};
-+
-+#endif /* CONFIG_OF_OVERLAY */
-+
-+static struct configfs_group_operations of_cfs_ops = {
-+	/* empty - we don't allow anything to be created */
-+};
-+
-+static struct config_item_type of_cfs_type = {
-+	.ct_group_ops   = &of_cfs_ops,
-+	.ct_owner       = THIS_MODULE,
-+};
-+
-+struct config_group of_cfs_overlay_group;
-+
-+struct config_group *of_cfs_def_groups[] = {
-+#ifdef CONFIG_OF_OVERLAY
-+	&of_cfs_overlay_group,
-+#endif
-+	NULL
-+};
-+
-+static struct configfs_subsystem of_cfs_subsys = {
-+	.su_group = {
-+		.cg_item = {
-+			.ci_namebuf = "device-tree",
-+			.ci_type = &of_cfs_type,
-+		},
-+		.default_groups = of_cfs_def_groups,
-+	},
-+	.su_mutex = __MUTEX_INITIALIZER(of_cfs_subsys.su_mutex),
-+};
-+
-+static int __init of_cfs_init(void)
-+{
-+	int ret;
-+
-+	pr_info("%s\n", __func__);
-+
-+	config_group_init(&of_cfs_subsys.su_group);
-+#ifdef CONFIG_OF_OVERLAY
-+	config_group_init_type_name(&of_cfs_overlay_group, "overlays",
-+			&overlays_type);
 +#endif
 +
-+	ret = configfs_register_subsystem(&of_cfs_subsys);
-+	if (ret != 0) {
-+		pr_err("%s: failed to register subsys\n", __func__);
-+		goto out;
-+	}
-+	pr_info("%s: OK\n", __func__);
-+out:
-+	return ret;
+ #endif /* CONFIG_OF_ADDRESS */
+diff --git a/include/linux/of_platform.h b/include/linux/of_platform.h
+index c2b0627..01fe5d6 100644
+--- a/include/linux/of_platform.h
++++ b/include/linux/of_platform.h
+@@ -84,4 +84,14 @@ static inline int of_platform_populate(struct device_node *root,
+ static inline void of_platform_depopulate(struct device *parent) { }
+ #endif
+ 
++#ifdef CONFIG_OF_DYNAMIC
++extern int of_platform_register_reconfig_notifier(void);
++#else
++static inline int of_platform_register_reconfig_notifier(void)
++{
++	return 0;
 +}
-+late_initcall(of_cfs_init);
++#endif
++
++
+ #endif	/* _LINUX_OF_PLATFORM_H */
 -- 
 1.7.12

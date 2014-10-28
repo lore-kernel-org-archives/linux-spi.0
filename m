@@ -1,86 +1,95 @@
-From: Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH 1/1] spi: spi-gpio: Add dt support for a single device
- with no chip select
-Date: Mon, 27 Oct 2014 17:30:55 +0000
-Message-ID: <20141027173055.GD4971@leverpostej>
-References: <1414423637-2817-1-git-send-email-torfl6749@gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Cc: "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Subject: [PATCH 00/15] new locomo driver
+Date: Tue, 28 Oct 2014 03:01:53 +0300
+Message-ID: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
+Cc: Andrea Adami <andrea.adami@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bryan Wu <cooloney@gmail.com>,
+	Richard Purdie <rpurdie@rpsys.net>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Lee Jones <lee.jones@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-To: Torsten Fleischer <torfl6749@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1414423637-2817-1-git-send-email-torfl6749@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
+	Jingoo Han <jg1.han@samsung.com>,
+	Liam Girdwood <lgirdwood@gmail.com>
+To: linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	alsa-devel@alsa-project.org
+Return-path: <linux-leds-owner@vger.kernel.org>
+Sender: linux-leds-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Mon, Oct 27, 2014 at 03:27:17PM +0000, Torsten Fleischer wrote:
-> From: Torsten Fleischer <torfl6749@gmail.com>
-> 
-> Use an empty 'cs-gpios' property if a single device is connected which
-> has no chip select.
-> This refers to the discussion at https://lkml.org/lkml/2013/11/13/62.
-> 
-> Signed-off-by: Torsten Fleischer <torfl6749@gmail.com>
-> ---
->  Documentation/devicetree/bindings/spi/spi-gpio.txt |  6 ++++--
->  drivers/spi/spi-gpio.c                             | 10 +++++++---
->  2 files changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.txt b/Documentation/devicetree/bindings/spi/spi-gpio.txt
-> index 8a824be..ad8795f 100644
-> --- a/Documentation/devicetree/bindings/spi/spi-gpio.txt
-> +++ b/Documentation/devicetree/bindings/spi/spi-gpio.txt
-> @@ -8,8 +8,10 @@ Required properties:
->   - gpio-sck: GPIO spec for the SCK line to use
->   - gpio-miso: GPIO spec for the MISO line to use
->   - gpio-mosi: GPIO spec for the MOSI line to use
-> - - cs-gpios: GPIOs to use for chipselect lines
-> - - num-chipselects: number of chipselect lines
-> + - cs-gpios: GPIOs to use for chipselect lines. Leave this property empty if
-> +             a single device with no chip select is connected.
-> + - num-chipselects: Number of chipselect lines. Has to be "1" even if a single
-> +                    device with no chip select is connected.
+Sharp Zaurus SL-5500 and SL-5600 use special companion Gate Array. Current
+drivers present in Linux kernel has some problems:
 
-Why not just have num-chipselectes = <0>, and no cs-gpios property?
+ * It uses custom bus instead of platform bus/mfd core.
+ * Device drivers are not well layered/separated.
+ * It uses custom gpio accessors instead of using GPIOLIB.
 
-That would match the HW, and is unambigious as the author has to state
-explicitly that there are no chipselects.
+With this patchset I tried to modernise and restructure the LoCoMo driver.
+Also I added an experimental SPI driver that will be used by mmc-spi on
+Sharp SL-5500 collie devices.
 
-Mark.
+----------------------------------------------------------------
+Dmitry Eremin-Solenikov (15):
+      mfd: add new driver for Sharp LoCoMo
+      GPIO: port LoCoMo gpio support from old driver
+      leds: port locomo leds driver to new locomo core
+      input: convert LoCoMo keyboard driver to use new locomo core
+      video: backlight: add new locomo backlight driver
+      video: lcd: add LoCoMo LCD driver
+      video: backlight: drop old locomo bl/lcd driver
+      ARM: sa1100: make collie use new locomo drivers
+      ARM: sa1100: don't preallocate IRQ space for locomo
+      ARM: pxa: poodle: use new LoCoMo driver
+      sound: soc: poodle: make use of new locomo GPIO interface
+      ARM: pxa: poodle: don't preallocate IRQ space for locomo
+      ARM: drop old LoCoMo driver
+      gpio: locomo: implement per-pin irq handling
+      spi: add locomo SPI driver
 
->  
->  Example:
->  
-> diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-> index 9f59553..b343818a 100644
-> --- a/drivers/spi/spi-gpio.c
-> +++ b/drivers/spi/spi-gpio.c
-> @@ -461,9 +461,13 @@ static int spi_gpio_probe(struct platform_device *pdev)
->  		 * property of the node.
->  		 */
->  
-> -		for (i = 0; i < SPI_N_CHIPSEL; i++)
-> -			spi_gpio->cs_gpios[i] =
-> -				of_get_named_gpio(np, "cs-gpios", i);
-> +		if ((SPI_N_CHIPSEL == 1) &&
-> +				(of_gpio_named_count(np, "cs-gpios") == 0))
-> +			spi_gpio->cs_gpios[0] = SPI_GPIO_NO_CHIPSELECT;
-> +		else
-> +			for (i = 0; i < SPI_N_CHIPSEL; i++)
-> +				spi_gpio->cs_gpios[i] =
-> +					of_get_named_gpio(np, "cs-gpios", i);
->  	}
->  #endif
->  
-> -- 
-> 1.8.4.5
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe devicetree" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> 
+ arch/arm/common/Kconfig                            |   3 -
+ arch/arm/common/Makefile                           |   1 -
+ arch/arm/common/locomo.c                           | 914 ---------------------
+ arch/arm/mach-pxa/Kconfig                          |   1 -
+ arch/arm/mach-pxa/include/mach/poodle.h            |  16 +-
+ arch/arm/mach-pxa/poodle.c                         |  23 +-
+ arch/arm/mach-sa1100/Kconfig                       |   1 -
+ arch/arm/mach-sa1100/collie.c                      | 112 +--
+ arch/arm/mach-sa1100/include/mach/collie.h         |  25 +-
+ arch/arm/mach-sa1100/include/mach/irqs.h           |  19 +-
+ drivers/gpio/Kconfig                               |   7 +
+ drivers/gpio/Makefile                              |   1 +
+ drivers/gpio/gpio-locomo.c                         | 386 +++++++++
+ drivers/input/keyboard/Kconfig                     |   1 -
+ drivers/input/keyboard/locomokbd.c                 | 165 ++--
+ drivers/leds/Kconfig                               |   1 -
+ drivers/leds/leds-locomo.c                         | 104 ++-
+ drivers/mfd/Kconfig                                |   8 +
+ drivers/mfd/Makefile                               |   1 +
+ drivers/mfd/locomo.c                               | 644 +++++++++++++++
+ drivers/spi/Kconfig                                |   8 +
+ drivers/spi/Makefile                               |   1 +
+ drivers/spi/spi-locomo.c                           | 370 +++++++++
+ drivers/video/backlight/Kconfig                    |  14 +-
+ drivers/video/backlight/Makefile                   |   3 +-
+ drivers/video/backlight/locomo_bl.c                | 171 ++++
+ drivers/video/backlight/locomo_lcd.c               | 224 +++++
+ drivers/video/backlight/locomolcd.c                | 255 ------
+ .../asm/hardware => include/linux/mfd}/locomo.h    | 148 ++--
+ sound/soc/pxa/poodle.c                             |  51 +-
+ 30 files changed, 2185 insertions(+), 1493 deletions(-)
+ delete mode 100644 arch/arm/common/locomo.c
+ create mode 100644 drivers/gpio/gpio-locomo.c
+ create mode 100644 drivers/mfd/locomo.c
+ create mode 100644 drivers/spi/spi-locomo.c
+ create mode 100644 drivers/video/backlight/locomo_bl.c
+ create mode 100644 drivers/video/backlight/locomo_lcd.c
+ delete mode 100644 drivers/video/backlight/locomolcd.c
+ rename {arch/arm/include/asm/hardware => include/linux/mfd}/locomo.h (55%)

@@ -1,100 +1,62 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] of: spi: Export single device registration method and
- accessors (v2)
-Date: Wed, 29 Oct 2014 12:22:04 +0000
-Message-ID: <20141029122204.GG18557@sirena.org.uk>
-References: <1414572037-11306-1-git-send-email-pantelis.antoniou@konsulko.com>
- <20141029101420.GT18557@sirena.org.uk>
- <6A3753C0-251A-4645-AD96-CB1D6521175F@antoniou-consulting.com>
+From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Subject: Re: [PATCH v1 0/2] spi: dw-mid: fix simplex DMA transfers
+Date: Wed, 29 Oct 2014 15:20:48 +0200
+Message-ID: <1414588848.2396.64.camel@linux.intel.com>
+References: <1414513502-595-1-git-send-email-andriy.shevchenko@linux.intel.com>
+	 <20141028224156.GN18557@sirena.org.uk>
+	 <1414579076.2396.62.camel@linux.intel.com>
+	 <20141029111712.GE18557@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="tlm0M+DeSTNuB35b"
-Cc: Alexander Sverdlin <alexander.sverdlin-OYasijW0DpE@public.gmane.org>,
-	Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>,
-	Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Matt Porter <matt.porter-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Koen Kooi <koen-QLwJDigV5abLmq1fohREcCpxlwaOVQ5f@public.gmane.org>,
-	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	Alison Chaiken <Alison_Chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Dinh Nguyen <dinh.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jan Lubbe <jluebbe-H4yykcOXDpCzQB+pC5nmwQ@public.gmane.org>, Michael Stickel <ms-g5CePrrZ5ROELgA04lAiVw@public.gmane.org>,
-	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-	Dirk Behme <dirk.behme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Alan Tull <delicious.quinoa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Michael Bohan <mbohan-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Ionut Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>,
-	Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>,
-	Matt Ranostay <mranostay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-spi-u79uwXL29Tb/PtFMR13I2A@public.gmane.org
-To: Pantelis Antoniou <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <6A3753C0-251A-4645-AD96-CB1D6521175F-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>
+In-Reply-To: <20141029111712.GE18557-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+On Wed, 2014-10-29 at 11:17 +0000, Mark Brown wrote:
+> On Wed, Oct 29, 2014 at 12:37:56PM +0200, Andy Shevchenko wrote:
+> > On Tue, 2014-10-28 at 22:41 +0000, Mark Brown wrote:
+> 
+> > >   Can you please also send a patch for Linus
+> > > setting SPI_MASTER_MUST_RX and SPI_MASTER_MUST_TX - this is a bug which
+> > > should be fixed in mainline but these seem a bit big for merge right
+> > > now, those flags will cause the core to always ensure that both
+> > > directions have data avoiding the issue?
+> 
+> > I'm sorry I didn't quite understand that bug.
+> 
+> > When those bits are set the core will always provide valid tx_buf and
+> > rx_buf pointers. How would it help us? Currently driver relies on tx_dma
+> > and rx_dma which are provided by clients if I understood correctly.
+> 
+> Uh, are you sure
 
---tlm0M+DeSTNuB35b
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+There is a function in spi-dw.c called map_dma_buffers() which uses
+tx_dma and rx_dma pointers. I don't see where they are initialized.
 
-On Wed, Oct 29, 2014 at 01:48:06PM +0200, Pantelis Antoniou wrote:
-> > On Oct 29, 2014, at 12:14 , Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+>  - how exactly has this been tested?  
 
-> > This feels like there is an abstraction problem somewhere, whatever code
-> > is supposed to use this is going to need to be taught about each
-> > individual bus which is going to be tedious, I would expect that we'd
-> > have something like the bus being able to provide a callback which will
-> > get invoked whenever a new node appears on the parent node for the bus.
+I don't know how it was tested before, but, besides intel-mid-dma is
+somehow broken (I won't spend time to patch it), I'm using patch I
+already published which converts driver to use dw_dmac driver. With it I
+run tests on a loop back.
 
-> There=E2=80=99s a whole patchset that does exactly this.=20
-> Look at "OF: spi: Add OF notifier handler=E2=80=9D and you=E2=80=99ll whe=
-re this is used.
+> tx_dma and rx_dma
+> *can* be provided by users but vanishingly few actually do so.  Drivers
+> must not rely on the caller doing this, the feature will be going away
+> apart from anything else.  If the driver is relying on this it probably
+> needs to have the DMA support that's there removed as a fix and should
+> be converted to use the core DMA mapping functionality in -next.
 
-I deleted that unread I'm afraid; one of the reasons that you should use
-subject lines matching the styles for the subsystems is that it's one of
-the things people use to filter out things that actually need attention,
-if things are busy things that at first glance don't look terribly
-relevant (like changes to the OF core in this case) are likely to get
-looked at less urgently or just skipped.
+So, regarding to above what would you like me to do as next step?
 
-A quick glance suggests that this is adding code inside the SPI core so
-it's still not explaining why anything is being exported, can you
-clarify please?
+-- 
+Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Intel Finland Oy
 
-> > SubmittingPatches says.  Please also try to keep your CC list sane,
-> > CCing random people just means that you're increasing the volume of mail
-> > they have to process.  I'm surprised kernel.org accepts so many CCs.
-
-> > I have to say I don't recall ever seeing v1...
-
-> All of them are in the CC list for a reason.=20
-
-This is a single, standalone SPI patch - you didn't send it as part of a
-series (which is the only reason I read it).
-
---tlm0M+DeSTNuB35b
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUUNvrAAoJECTWi3JdVIfQ4A4H/1YvLCCSelky+9svlKbsYNYF
-Bxw4veuiONfqqbnjsBNE+hwI5rNaKiJv4d3GgYUYa69i9SlDEU7JXYVE69ZYF3WO
-zjFnJCcs4KeYiyzrjcyl5fgU+OACakDtQkOY6Ncn0HZqQPgfT67EU2Ov1fEMv4/f
-1ofH7j5QTxaIECybBxF/7vhDWteK00wc0ThYSmtg9XMkGkYC0nOmJaodPktSbneu
-OU9/0sFWahryla2pGT3wquGp+WsMWIfi7jZ6UA2v88cgEfuih9lHFY5GKa60KmOz
-s7bqj/gNNHqeqGUr51Hdzc87fHGgqrltKeaTcsVZ3uapsAGNk9BQNYWTcRgtLuc=
-=3pJ6
------END PGP SIGNATURE-----
-
---tlm0M+DeSTNuB35b--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

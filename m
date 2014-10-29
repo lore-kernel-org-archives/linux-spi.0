@@ -1,166 +1,59 @@
-From: "Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: RE: [PATCH 1/2 v3] SPI: spi-pxa2xx: Add helpers for regiseters'
- accessing
-Date: Wed, 29 Oct 2014 00:33:36 +0000
-Message-ID: <4656BEB6164FC34F8171C6538F1A595B2E9A90E6@SHSMSX101.ccr.corp.intel.com>
-References: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
- <1412783423-9408-2-git-send-email-alvin.chen@intel.com>
+From: Alexandre Courbot <gnurou@gmail.com>
+Subject: Re: [PATCH 11/15] sound: soc: poodle: make use of new locomo GPIO interface
+Date: Wed, 29 Oct 2014 12:03:34 +0900
+Message-ID: <CAAVeFuKgARoMFzf+663iP6cULs93d4WSQS8ESjUb9VcxguWurA@mail.gmail.com>
+References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
+ <1414454528-24240-12-git-send-email-dbaryshkov@gmail.com> <20141028145850.GU18557@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"Westerberg, Mika" <mika.westerberg-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Kweh, Hock Leong" <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Ong, Boon Leong" <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	"Tan, Raymond" <raymond.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <1412783423-9408-2-git-send-email-alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Content-Language: en-US
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	linux-input@vger.kernel.org, linux-leds@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+	Andrea Adami <andrea.adami@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bryan Wu <cooloney@gmail.com>,
+	Richard Purdie <rpurdie@rpsys.net>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Lee Jones <lee.jones@linaro.org>,
+	Jingoo Han <jg1.han@samsung.com>,
+	Liam Girdwood <lgirdwood@gma
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <20141028145850.GU18557@sirena.org.uk>
+Sender: linux-gpio-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-QW55IHVwZGF0ZSBmb3IgdGhlc2UgcGF0Y2hlcz8gSnVzdCB3YW50IHRvIGZvbGxvdy11cC4NCg0K
-DQoNCkJlc3QgcmVnYXJkc++8jEFsdmluIENoZW4NCklDRlMgUGxhdGZvcm0gRW5naW5lZXJpbmcg
-U29sdXRpb24NCkZsZXggU2VydmljZXMgKENNTUkgTGV2ZWwgMywgSVFBMjAwNSwgSVFBMjAwOCks
-wqBHcmVhdGVyIEFzaWEgUmVnaW9uIEludGVsIEluZm9ybWF0aW9uIFRlY2hub2xvZ3kgVGVsLiAw
-MTAtODIxNzE5NjANCmluZXQuOC03NTgxOTYwDQpFbWFpbC4gYWx2aW4uY2hlbkBpbnRlbC5jb20g
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ2hlbiwgQWx2aW4NCj4g
-U2VudDogV2VkbmVzZGF5LCBPY3RvYmVyIDgsIDIwMTQgMTE6NTAgUE0NCj4gVG86IEVyaWMgTWlh
-bzsgUnVzc2VsbCBLaW5nOyBIYW9qaWFuIFpodWFuZzsgTWFyayBCcm93bg0KPiBDYzogbGludXgt
-YXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eC1zcGlAdmdlci5rZXJuZWwub3Jn
-Ow0KPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBXZXN0ZXJiZXJnLCBNaWthOyBLd2Vo
-LCBIb2NrIExlb25nOyBPbmcsIEJvb24NCj4gTGVvbmc7IFRhbiwgUmF5bW9uZDsgQ2hlbiwgQWx2
-aW47IEFuZHkgU2hldmNoZW5rbw0KPiBTdWJqZWN0OiBbUEFUQ0ggMS8yIHYzXSBTUEk6IHNwaS1w
-eGEyeHg6IEFkZCBoZWxwZXJzIGZvciByZWdpc2V0ZXJzJyBhY2Nlc3NpbmcNCj4gDQo+IFRoZXJl
-IGFyZSBzZXZlcmFsIHJlZ2lzdGVycyBmb3IgU1BJLCBhbmQgdGhlIHJlZ2lzdGVycyBvZiAnU1ND
-UjAnIGFuZCAnU1NDUjEnDQo+IGFyZSBhY2Nlc3NlZCBmcmVxdWVudGx5LiBUaGlzIHBhdGggaXMg
-dG8gaW50cm9kdWNlIGhlbHBlciBmdW5jdGlvbnMgdG8gc2ltcGxpZnkNCj4gdGhlIGFjY2Vzc2lu
-ZyBvZiAnU1NDUjAnIGFuZCAnU1NDUjEnLg0KPiANCj4gUmV2aWV3ZWQtYnk6IEFuZHkgU2hldmNo
-ZW5rbyA8YW5kcml5LnNoZXZjaGVua29AbGludXguaW50ZWwuY29tPg0KPiBBY2tlZC1ieTogTWlr
-YSBXZXN0ZXJiZXJnIDxtaWthLndlc3RlcmJlcmdAbGludXguaW50ZWwuY29tPg0KPiBTaWduZWQt
-b2ZmLWJ5OiBXZWlrZSBDaGVuIDxhbHZpbi5jaGVuQGludGVsLmNvbT4NCj4gLS0tDQo+ICBkcml2
-ZXJzL3NwaS9zcGktcHhhMnh4LmMgfCAgMTA3DQo+ICsrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKy0tLS0tLS0tLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCA4NCBpbnNlcnRpb25zKCsp
-LCAyMyBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3NwaS9zcGktcHhh
-Mnh4LmMgYi9kcml2ZXJzL3NwaS9zcGktcHhhMnh4LmMgaW5kZXgNCj4gMjU2YzBhYi4uMzNkYmE5
-YiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9zcGkvc3BpLXB4YTJ4eC5jDQo+ICsrKyBiL2RyaXZl
-cnMvc3BpL3NwaS1weGEyeHguYw0KPiBAQCAtODAsNiArODAsNzMgQEAgc3RhdGljIGJvb2wgaXNf
-bHBzc19zc3AoY29uc3Qgc3RydWN0IGRyaXZlcl9kYXRhDQo+ICpkcnZfZGF0YSkNCj4gIAlyZXR1
-cm4gZHJ2X2RhdGEtPnNzcF90eXBlID09IExQU1NfU1NQOyAgfQ0KPiANCj4gK3N0YXRpYyB1MzIg
-cHhhMnh4X3NwaV9nZXRfc3NyYzFfY2hhbmdlX21hc2soY29uc3Qgc3RydWN0IGRyaXZlcl9kYXRh
-DQo+ICsqZHJ2X2RhdGEpIHsNCj4gKwlzd2l0Y2ggKGRydl9kYXRhLT5zc3BfdHlwZSkgew0KPiAr
-CWRlZmF1bHQ6DQo+ICsJCXJldHVybiBTU0NSMV9DSEFOR0VfTUFTSzsNCj4gKwl9DQo+ICt9DQo+
-ICsNCj4gK3N0YXRpYyB1MzINCj4gK3B4YTJ4eF9zcGlfZ2V0X3J4X2RlZmF1bHRfdGhyZShjb25z
-dCBzdHJ1Y3QgZHJpdmVyX2RhdGEgKmRydl9kYXRhKSB7DQo+ICsJc3dpdGNoIChkcnZfZGF0YS0+
-c3NwX3R5cGUpIHsNCj4gKwlkZWZhdWx0Og0KPiArCQlyZXR1cm4gUlhfVEhSRVNIX0RGTFQ7DQo+
-ICsJfQ0KPiArfQ0KPiArDQo+ICtzdGF0aWMgYm9vbCBweGEyeHhfc3BpX3R4Zmlmb19mdWxsKGNv
-bnN0IHN0cnVjdCBkcml2ZXJfZGF0YSAqZHJ2X2RhdGEpDQo+ICt7DQo+ICsJdm9pZCBfX2lvbWVt
-ICpyZWcgPSBkcnZfZGF0YS0+aW9hZGRyOw0KPiArCXUzMiBtYXNrOw0KPiArDQo+ICsJc3dpdGNo
-IChkcnZfZGF0YS0+c3NwX3R5cGUpIHsNCj4gKwlkZWZhdWx0Og0KPiArCQltYXNrID0gU1NTUl9U
-RkxfTUFTSzsNCj4gKwkJYnJlYWs7DQo+ICsJfQ0KPiArDQo+ICsJcmV0dXJuIChyZWFkX1NTU1Io
-cmVnKSAmIG1hc2spID09IG1hc2s7IH0NCj4gKw0KPiArc3RhdGljIHZvaWQgcHhhMnh4X3NwaV9j
-bGVhcl9yeF90aHJlKGNvbnN0IHN0cnVjdCBkcml2ZXJfZGF0YSAqZHJ2X2RhdGEsDQo+ICsJCQkJ
-ICAgICB1MzIgKnNjY3IxX3JlZykNCj4gK3sNCj4gKwl1MzIgbWFzazsNCj4gKw0KPiArCXN3aXRj
-aCAoZHJ2X2RhdGEtPnNzcF90eXBlKSB7DQo+ICsJZGVmYXVsdDoNCj4gKwkJbWFzayA9IFNTQ1Ix
-X1JGVDsNCj4gKwkJYnJlYWs7DQo+ICsJfQ0KPiArCSpzY2NyMV9yZWcgJj0gfm1hc2s7DQo+ICt9
-DQo+ICsNCj4gK3N0YXRpYyB2b2lkIHB4YTJ4eF9zcGlfc2V0X3J4X3RocmUoY29uc3Qgc3RydWN0
-IGRyaXZlcl9kYXRhICpkcnZfZGF0YSwNCj4gKwkJCQkgICB1MzIgKnNjY3IxX3JlZywgdTMyIHRo
-cmVzaG9sZCkNCj4gK3sNCj4gKwlzd2l0Y2ggKGRydl9kYXRhLT5zc3BfdHlwZSkgew0KPiArCWRl
-ZmF1bHQ6DQo+ICsJCSpzY2NyMV9yZWcgfD0gU1NDUjFfUnhUcmVzaCh0aHJlc2hvbGQpOw0KPiAr
-CQlicmVhazsNCj4gKwl9DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB1MzIgcHhhMnh4X2NvbmZpZ3Vy
-ZV9zc2NyMChjb25zdCBzdHJ1Y3QgZHJpdmVyX2RhdGEgKmRydl9kYXRhLA0KPiArCQkJCSAgdTMy
-IGNsa19kaXYsIHU4IGJpdHMpDQo+ICt7DQo+ICsJc3dpdGNoIChkcnZfZGF0YS0+c3NwX3R5cGUp
-IHsNCj4gKwlkZWZhdWx0Og0KPiArCQlyZXR1cm4gY2xrX2Rpdg0KPiArCQkJfCBTU0NSMF9Nb3Rv
-cm9sYQ0KPiArCQkJfCBTU0NSMF9EYXRhU2l6ZShiaXRzID4gMTYgPyBiaXRzIC0gMTYgOiBiaXRz
-KQ0KPiArCQkJfCBTU0NSMF9TU0UNCj4gKwkJCXwgKGJpdHMgPiAxNiA/IFNTQ1IwX0VEU1MgOiAw
-KTsNCj4gKwl9DQo+ICt9DQo+ICsNCj4gIC8qDQo+ICAgKiBSZWFkIGFuZCB3cml0ZSBMUFNTIFNT
-UCBwcml2YXRlIHJlZ2lzdGVycy4gQ2FsbGVyIG11c3QgZmlyc3QgY2hlY2sgdGhhdA0KPiAgICog
-aXNfbHBzc19zc3AoKSByZXR1cm5zIHRydWUgYmVmb3JlIHRoZXNlIGNhbiBiZSBjYWxsZWQuDQo+
-IEBAIC0yMzQsNyArMzAxLDcgQEAgc3RhdGljIGludCBudWxsX3dyaXRlcihzdHJ1Y3QgZHJpdmVy
-X2RhdGEgKmRydl9kYXRhKQ0KPiAgCXZvaWQgX19pb21lbSAqcmVnID0gZHJ2X2RhdGEtPmlvYWRk
-cjsNCj4gIAl1OCBuX2J5dGVzID0gZHJ2X2RhdGEtPm5fYnl0ZXM7DQo+IA0KPiAtCWlmICgoKHJl
-YWRfU1NTUihyZWcpICYgU1NTUl9URkxfTUFTSykgPT0gU1NTUl9URkxfTUFTSykNCj4gKwlpZiAo
-cHhhMnh4X3NwaV90eGZpZm9fZnVsbChkcnZfZGF0YSkNCj4gIAkJfHwgKGRydl9kYXRhLT50eCA9
-PSBkcnZfZGF0YS0+dHhfZW5kKSkNCj4gIAkJcmV0dXJuIDA7DQo+IA0KPiBAQCAtMjYyLDcgKzMy
-OSw3IEBAIHN0YXRpYyBpbnQgdThfd3JpdGVyKHN0cnVjdCBkcml2ZXJfZGF0YSAqZHJ2X2RhdGEp
-ICB7DQo+ICAJdm9pZCBfX2lvbWVtICpyZWcgPSBkcnZfZGF0YS0+aW9hZGRyOw0KPiANCj4gLQlp
-ZiAoKChyZWFkX1NTU1IocmVnKSAmIFNTU1JfVEZMX01BU0spID09IFNTU1JfVEZMX01BU0spDQo+
-ICsJaWYgKHB4YTJ4eF9zcGlfdHhmaWZvX2Z1bGwoZHJ2X2RhdGEpDQo+ICAJCXx8IChkcnZfZGF0
-YS0+dHggPT0gZHJ2X2RhdGEtPnR4X2VuZCkpDQo+ICAJCXJldHVybiAwOw0KPiANCj4gQEAgLTI4
-OSw3ICszNTYsNyBAQCBzdGF0aWMgaW50IHUxNl93cml0ZXIoc3RydWN0IGRyaXZlcl9kYXRhICpk
-cnZfZGF0YSkgIHsNCj4gIAl2b2lkIF9faW9tZW0gKnJlZyA9IGRydl9kYXRhLT5pb2FkZHI7DQo+
-IA0KPiAtCWlmICgoKHJlYWRfU1NTUihyZWcpICYgU1NTUl9URkxfTUFTSykgPT0gU1NTUl9URkxf
-TUFTSykNCj4gKwlpZiAocHhhMnh4X3NwaV90eGZpZm9fZnVsbChkcnZfZGF0YSkNCj4gIAkJfHwg
-KGRydl9kYXRhLT50eCA9PSBkcnZfZGF0YS0+dHhfZW5kKSkNCj4gIAkJcmV0dXJuIDA7DQo+IA0K
-PiBAQCAtMzE2LDcgKzM4Myw3IEBAIHN0YXRpYyBpbnQgdTMyX3dyaXRlcihzdHJ1Y3QgZHJpdmVy
-X2RhdGEgKmRydl9kYXRhKSAgew0KPiAgCXZvaWQgX19pb21lbSAqcmVnID0gZHJ2X2RhdGEtPmlv
-YWRkcjsNCj4gDQo+IC0JaWYgKCgocmVhZF9TU1NSKHJlZykgJiBTU1NSX1RGTF9NQVNLKSA9PSBT
-U1NSX1RGTF9NQVNLKQ0KPiArCWlmIChweGEyeHhfc3BpX3R4Zmlmb19mdWxsKGRydl9kYXRhKQ0K
-PiAgCQl8fCAoZHJ2X2RhdGEtPnR4ID09IGRydl9kYXRhLT50eF9lbmQpKQ0KPiAgCQlyZXR1cm4g
-MDsNCj4gDQo+IEBAIC01MDgsOCArNTc1LDkgQEAgc3RhdGljIGlycXJldHVybl90IGludGVycnVw
-dF90cmFuc2ZlcihzdHJ1Y3QNCj4gZHJpdmVyX2RhdGEgKmRydl9kYXRhKQ0KPiAgCQkgKiByZW1h
-aW5pbmcgUlggYnl0ZXMuDQo+ICAJCSAqLw0KPiAgCQlpZiAocHhhMjV4X3NzcF9jb21wKGRydl9k
-YXRhKSkgew0KPiArCQkJdTMyIHJ4X3RocmU7DQo+IA0KPiAtCQkJc2NjcjFfcmVnICY9IH5TU0NS
-MV9SRlQ7DQo+ICsJCQlweGEyeHhfc3BpX2NsZWFyX3J4X3RocmUoZHJ2X2RhdGEsICZzY2NyMV9y
-ZWcpOw0KPiANCj4gIAkJCWJ5dGVzX2xlZnQgPSBkcnZfZGF0YS0+cnhfZW5kIC0gZHJ2X2RhdGEt
-PnJ4Ow0KPiAgCQkJc3dpdGNoIChkcnZfZGF0YS0+bl9ieXRlcykgew0KPiBAQCAtNTE5LDEwICs1
-ODcsMTEgQEAgc3RhdGljIGlycXJldHVybl90IGludGVycnVwdF90cmFuc2ZlcihzdHJ1Y3QNCj4g
-ZHJpdmVyX2RhdGEgKmRydl9kYXRhKQ0KPiAgCQkJCWJ5dGVzX2xlZnQgPj49IDE7DQo+ICAJCQl9
-DQo+IA0KPiAtCQkJaWYgKGJ5dGVzX2xlZnQgPiBSWF9USFJFU0hfREZMVCkNCj4gLQkJCQlieXRl
-c19sZWZ0ID0gUlhfVEhSRVNIX0RGTFQ7DQo+ICsJCQlyeF90aHJlID0gcHhhMnh4X3NwaV9nZXRf
-cnhfZGVmYXVsdF90aHJlKGRydl9kYXRhKTsNCj4gKwkJCWlmIChyeF90aHJlID4gYnl0ZXNfbGVm
-dCkNCj4gKwkJCQlyeF90aHJlID0gYnl0ZXNfbGVmdDsNCj4gDQo+IC0JCQlzY2NyMV9yZWcgfD0g
-U1NDUjFfUnhUcmVzaChieXRlc19sZWZ0KTsNCj4gKwkJCXB4YTJ4eF9zcGlfc2V0X3J4X3RocmUo
-ZHJ2X2RhdGEsICZzY2NyMV9yZWcsIHJ4X3RocmUpOw0KPiAgCQl9DQo+ICAJCXdyaXRlX1NTQ1Ix
-KHNjY3IxX3JlZywgcmVnKTsNCj4gIAl9DQo+IEBAIC02MTMsNiArNjgyLDcgQEAgc3RhdGljIHZv
-aWQgcHVtcF90cmFuc2ZlcnModW5zaWduZWQgbG9uZyBkYXRhKQ0KPiAgCXUzMiBjcjE7DQo+ICAJ
-dTMyIGRtYV90aHJlc2ggPSBkcnZfZGF0YS0+Y3VyX2NoaXAtPmRtYV90aHJlc2hvbGQ7DQo+ICAJ
-dTMyIGRtYV9idXJzdCA9IGRydl9kYXRhLT5jdXJfY2hpcC0+ZG1hX2J1cnN0X3NpemU7DQo+ICsJ
-dTMyIGNoYW5nZV9tYXNrID0gcHhhMnh4X3NwaV9nZXRfc3NyYzFfY2hhbmdlX21hc2soZHJ2X2Rh
-dGEpOw0KPiANCj4gIAkvKiBHZXQgY3VycmVudCBzdGF0ZSBpbmZvcm1hdGlvbiAqLw0KPiAgCW1l
-c3NhZ2UgPSBkcnZfZGF0YS0+Y3VyX21zZzsNCj4gQEAgLTczMSwxMSArODAxLDcgQEAgc3RhdGlj
-IHZvaWQgcHVtcF90cmFuc2ZlcnModW5zaWduZWQgbG9uZyBkYXRhKQ0KPiAgCQkJCQkJICAgICAi
-cHVtcF90cmFuc2ZlcnM6IERNQSBidXJzdCBzaXplIHJlZHVjZWQNCj4gdG8gbWF0Y2ggYml0c19w
-ZXJfd29yZFxuIik7DQo+ICAJCX0NCj4gDQo+IC0JCWNyMCA9IGNsa19kaXYNCj4gLQkJCXwgU1ND
-UjBfTW90b3JvbGENCj4gLQkJCXwgU1NDUjBfRGF0YVNpemUoYml0cyA+IDE2ID8gYml0cyAtIDE2
-IDogYml0cykNCj4gLQkJCXwgU1NDUjBfU1NFDQo+IC0JCQl8IChiaXRzID4gMTYgPyBTU0NSMF9F
-RFNTIDogMCk7DQo+ICsJCWNyMCA9IHB4YTJ4eF9jb25maWd1cmVfc3NjcjAoZHJ2X2RhdGEsIGNs
-a19kaXYsIGJpdHMpOw0KPiAgCX0NCj4gDQo+ICAJbWVzc2FnZS0+c3RhdGUgPSBSVU5OSU5HX1NU
-QVRFOw0KPiBAQCAtNzcyLDE2ICs4MzgsMTUgQEAgc3RhdGljIHZvaWQgcHVtcF90cmFuc2ZlcnMo
-dW5zaWduZWQgbG9uZyBkYXRhKQ0KPiAgCX0NCj4gDQo+ICAJLyogc2VlIGlmIHdlIG5lZWQgdG8g
-cmVsb2FkIHRoZSBjb25maWcgcmVnaXN0ZXJzICovDQo+IC0JaWYgKChyZWFkX1NTQ1IwKHJlZykg
-IT0gY3IwKQ0KPiAtCQl8fCAocmVhZF9TU0NSMShyZWcpICYgU1NDUjFfQ0hBTkdFX01BU0spICE9
-DQo+IC0JCQkoY3IxICYgU1NDUjFfQ0hBTkdFX01BU0spKSB7DQo+ICsJaWYgKChyZWFkX1NTQ1Iw
-KHJlZykgIT0gY3IwKSB8fA0KPiArCSAgICAocmVhZF9TU0NSMShyZWcpICYgY2hhbmdlX21hc2sp
-ICE9IChjcjEgJiBjaGFuZ2VfbWFzaykpIHsNCj4gDQo+ICAJCS8qIHN0b3AgdGhlIFNTUCwgYW5k
-IHVwZGF0ZSB0aGUgb3RoZXIgYml0cyAqLw0KPiAgCQl3cml0ZV9TU0NSMChjcjAgJiB+U1NDUjBf
-U1NFLCByZWcpOw0KPiAgCQlpZiAoIXB4YTI1eF9zc3BfY29tcChkcnZfZGF0YSkpDQo+ICAJCQl3
-cml0ZV9TU1RPKGNoaXAtPnRpbWVvdXQsIHJlZyk7DQo+ICAJCS8qIGZpcnN0IHNldCBDUjEgd2l0
-aG91dCBpbnRlcnJ1cHQgYW5kIHNlcnZpY2UgZW5hYmxlcyAqLw0KPiAtCQl3cml0ZV9TU0NSMShj
-cjEgJiBTU0NSMV9DSEFOR0VfTUFTSywgcmVnKTsNCj4gKwkJd3JpdGVfU1NDUjEoY3IxICYgY2hh
-bmdlX21hc2ssIHJlZyk7DQo+ICAJCS8qIHJlc3RhcnQgdGhlIFNTUCAqLw0KPiAgCQl3cml0ZV9T
-U0NSMChjcjAsIHJlZyk7DQo+IA0KPiBAQCAtOTU5LDEyICsxMDI0LDggQEAgc3RhdGljIGludCBz
-ZXR1cChzdHJ1Y3Qgc3BpX2RldmljZSAqc3BpKQ0KPiAgCWNsa19kaXYgPSBzc3BfZ2V0X2Nsa19k
-aXYoZHJ2X2RhdGEsIHNwaS0+bWF4X3NwZWVkX2h6KTsNCj4gIAljaGlwLT5zcGVlZF9oeiA9IHNw
-aS0+bWF4X3NwZWVkX2h6Ow0KPiANCj4gLQljaGlwLT5jcjAgPSBjbGtfZGl2DQo+IC0JCQl8IFNT
-Q1IwX01vdG9yb2xhDQo+IC0JCQl8IFNTQ1IwX0RhdGFTaXplKHNwaS0+Yml0c19wZXJfd29yZCA+
-IDE2ID8NCj4gLQkJCQlzcGktPmJpdHNfcGVyX3dvcmQgLSAxNiA6IHNwaS0+Yml0c19wZXJfd29y
-ZCkNCj4gLQkJCXwgU1NDUjBfU1NFDQo+IC0JCQl8IChzcGktPmJpdHNfcGVyX3dvcmQgPiAxNiA/
-IFNTQ1IwX0VEU1MgOiAwKTsNCj4gKwljaGlwLT5jcjAgPSBweGEyeHhfY29uZmlndXJlX3NzY3Iw
-KGRydl9kYXRhLCBjbGtfZGl2LA0KPiArCQkJCQkgICBzcGktPmJpdHNfcGVyX3dvcmQpOw0KPiAg
-CWNoaXAtPmNyMSAmPSB+KFNTQ1IxX1NQTyB8IFNTQ1IxX1NQSCk7DQo+ICAJY2hpcC0+Y3IxIHw9
-ICgoKHNwaS0+bW9kZSAmIFNQSV9DUEhBKSAhPSAwKSA/IFNTQ1IxX1NQSCA6IDApDQo+ICAJCQl8
-ICgoKHNwaS0+bW9kZSAmIFNQSV9DUE9MKSAhPSAwKSA/IFNTQ1IxX1NQTyA6IDApOw0KPiAtLQ0K
-PiAxLjcuOS41DQoNCg==
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+On Tue, Oct 28, 2014 at 11:58 PM, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Oct 28, 2014 at 03:02:04AM +0300, Dmitry Eremin-Solenikov wrote:
+>> Since LoCoMo driver has been converted to provide proper gpiolib
+>> interface, make poodle ASoC platform driver use gpiolib API.
+>
+> Please use subject lines matching the style for the subsystem.
+>
+>> +     ret = gpio_request_array(poodle_gpios, ARRAY_SIZE(poodle_gpios));
+>> +     if (ret) {
+>> +             dev_err(&pdev->dev, "gpio_request_array() failed: %d\n",
+>> +                             ret);
+>> +             return ret;
+>> +     }
+>
+> I sense a need for devm_gpio_request_array() here.  Otherwise this looks
+> fine - ideally it'd move to gpiod but moving to gpiolib is a clear win
+> so no need to block on this.
+
+I wish Dmitry took the opportunity to move this driver to the gpiod
+API, especially since doing so would be trivial for this driver. Not a
+critical requirement though, the present patch is already an
+improvement. But if you want to do that last step, please have a look
+at Documentation/gpio/consumer.txt and the "Platform Data" section of
+Documentation/gpio/board.txt.

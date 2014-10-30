@@ -1,74 +1,55 @@
 From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-Subject: Re: [PATCH v1 0/2] spi: dw-mid: fix simplex DMA transfers
-Date: Thu, 30 Oct 2014 09:10:54 +0200
-Message-ID: <1414653054.2396.66.camel@linux.intel.com>
-References: <1414513502-595-1-git-send-email-andriy.shevchenko@linux.intel.com>
-	 <20141028224156.GN18557@sirena.org.uk>
-	 <1414579076.2396.62.camel@linux.intel.com>
-	 <20141029111712.GE18557@sirena.org.uk>
-	 <1414588848.2396.64.camel@linux.intel.com>
-	 <20141029221530.GQ18557@sirena.org.uk>
+Subject: Re: [PATCH 1/2 v3] SPI: spi-pxa2xx: Add helpers for regiseters'
+ accessing
+Date: Thu, 30 Oct 2014 09:12:14 +0200
+Message-ID: <1414653134.2396.67.camel@linux.intel.com>
+References: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
+	 <1412783423-9408-2-git-send-email-alvin.chen@intel.com>
+	 <4656BEB6164FC34F8171C6538F1A595B2E9A90E6@SHSMSX101.ccr.corp.intel.com>
+	 <5450CF36.7060105@nexus-software.ie>
+	 <4656BEB6164FC34F8171C6538F1A595B2E9A92B3@SHSMSX101.ccr.corp.intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Cc: Bryan O'Donoghue <pure.logic-SyKdqv6vbfZdzvEItQ6vdLNAH6kLmebB@public.gmane.org>,
+	Eric Miao <eric.y.miao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
+	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
+	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"Westerberg, Mika" <mika.westerberg-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"Kweh, Hock Leong" <hock.leong.kweh-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"Ong, Boon Leong" <boon.leong.ong-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	"Tan, Raymond" <raymond.tan-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: "Chen, Alvin" <alvin.chen-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20141029221530.GQ18557-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <4656BEB6164FC34F8171C6538F1A595B2E9A92B3-0J0gbvR4kThpB2pF5aRoyrfspsVTdybXVpNB7YpNyf8@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, 2014-10-29 at 22:15 +0000, Mark Brown wrote:
-> On Wed, Oct 29, 2014 at 03:20:48PM +0200, Andy Shevchenko wrote:
-> > On Wed, 2014-10-29 at 11:17 +0000, Mark Brown wrote:
->=20
-> > >  - how exactly has this been tested? =20
->=20
-> > I don't know how it was tested before, but, besides intel-mid-dma i=
-s
-> > somehow broken (I won't spend time to patch it), I'm using patch I
-> > already published which converts driver to use dw_dmac driver. With=
- it I
-> > run tests on a loop back.
->=20
-> How exactly do you run those tests though, what is the client driver?
+On Thu, 2014-10-30 at 01:02 +0000, Chen, Alvin wrote:
+> > >
+> > 
+> > Hi Alvin, Weike.
+> > 
+> > I'm not clear if these patches apply to the current tip-of-tree.
+> > 
+> > I thought the action required here, was for a resend of patches to ensure they
+> > applied to tip-of-tree ?
+> > 
+> As I said before, it is based on the slave-dma tree (git.infraded.org) for-linus branch, which will be reapplied on top of v3.19-rc1. 
+> 
+> That is to say these patches will be applied to slave-dma tree for-linus branch, and then the slave-dma tree for-linus branch will be applied to v3.19.
+> Andy, am I right?
 
-I have a hack patch to register the spidev and I run internal test suit=
-e
-written by Mika Westerberg. It uses a loop back mode to send and check
-data.
+All of those patches are in v3.18-rc1, so you may rebase on top of
+3.18-rcX safely I guess.
 
->=20
-> > > tx_dma and rx_dma
-> > > *can* be provided by users but vanishingly few actually do so.  D=
-rivers
-> > > must not rely on the caller doing this, the feature will be going=
- away
-> > > apart from anything else.  If the driver is relying on this it pr=
-obably
-> > > needs to have the DMA support that's there removed as a fix and s=
-hould
-> > > be converted to use the core DMA mapping functionality in -next.
->=20
-> > So, regarding to above what would you like me to do as next step?
->=20
-> Looking at map_dma_buffers() it's probably actually safe since it che=
-cks
-> that the message has is_dma_mapped set which virtually no clients wil=
-l
-> do.  However this means that we're not bothering to DMA almost all th=
-e
-> time which is silly - I'd like to see the driver converted to provide=
- a
-> can_dma() operation and let the core worry about mapping, that will m=
-ean
-> a substantial performance win for most clients.
 
-That is exactly my intention with the additional thing =E2=80=94 to use=
- dw_dmac
-instead of intel-mid-dma.
-
---=20
+-- 
 Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Intel Finland Oy
 

@@ -1,42 +1,62 @@
-From: "Chen, Alvin" <alvin.chen@intel.com>
-Subject: RE: [PATCH 1/2 v3] SPI: spi-pxa2xx: Add helpers for regiseters'
- accessing
-Date: Thu, 30 Oct 2014 01:02:16 +0000
-Message-ID: <4656BEB6164FC34F8171C6538F1A595B2E9A92B3@SHSMSX101.ccr.corp.intel.com>
-References: <1412783423-9408-1-git-send-email-alvin.chen@intel.com>
- <1412783423-9408-2-git-send-email-alvin.chen@intel.com>
- <4656BEB6164FC34F8171C6538F1A595B2E9A90E6@SHSMSX101.ccr.corp.intel.com>
- <5450CF36.7060105@nexus-software.ie>
+From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 1/1] spi: spi-gpio: Add dt support for a single device
+ with no chip select
+Date: Thu, 30 Oct 2014 07:52:08 +0100
+Message-ID: <CANZ4BrT8noz+zueDm2hModbduamnhSZj2F1VamckahoXUjAcGg@mail.gmail.com>
+References: <1414423637-2817-1-git-send-email-torfl6749@gmail.com>
+	<20141027173055.GD4971@leverpostej>
 Mime-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Westerberg, Mika" <mika.westerberg@intel.com>,
-	"Kweh, Hock Leong" <hock.leong.kweh@intel.com>,
-	"Ong, Boon Leong" <boon.leong.ong@intel.com>,
-	"Tan, Raymond" <raymond.tan@intel.com>
-To: Bryan O'Donoghue <pure.logic@nexus-software.ie>,
-	Eric Miao <eric.y.miao@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	"Haojian Zhuang" <haojian.zhuang@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	"Andy Shevchenko" <andriy.shevchenko@linux.intel.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <5450CF36.7060105@nexus-software.ie>
-Content-Language: en-US
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Cc: "linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	"linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	"devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+To: Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20141027173055.GD4971@leverpostej>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-PiA+DQo+IA0KPiBIaSBBbHZpbiwgV2Vpa2UuDQo+IA0KPiBJJ20gbm90IGNsZWFyIGlmIHRoZXNl
-IHBhdGNoZXMgYXBwbHkgdG8gdGhlIGN1cnJlbnQgdGlwLW9mLXRyZWUuDQo+IA0KPiBJIHRob3Vn
-aHQgdGhlIGFjdGlvbiByZXF1aXJlZCBoZXJlLCB3YXMgZm9yIGEgcmVzZW5kIG9mIHBhdGNoZXMg
-dG8gZW5zdXJlIHRoZXkNCj4gYXBwbGllZCB0byB0aXAtb2YtdHJlZSA/DQo+IA0KQXMgSSBzYWlk
-IGJlZm9yZSwgaXQgaXMgYmFzZWQgb24gdGhlIHNsYXZlLWRtYSB0cmVlIChnaXQuaW5mcmFkZWQu
-b3JnKSBmb3ItbGludXMgYnJhbmNoLCB3aGljaCB3aWxsIGJlIHJlYXBwbGllZCBvbiB0b3Agb2Yg
-djMuMTktcmMxLiANCg0KVGhhdCBpcyB0byBzYXkgdGhlc2UgcGF0Y2hlcyB3aWxsIGJlIGFwcGxp
-ZWQgdG8gc2xhdmUtZG1hIHRyZWUgZm9yLWxpbnVzIGJyYW5jaCwgYW5kIHRoZW4gdGhlIHNsYXZl
-LWRtYSB0cmVlIGZvci1saW51cyBicmFuY2ggd2lsbCBiZSBhcHBsaWVkIHRvIHYzLjE5Lg0KQW5k
-eSwgYW0gSSByaWdodD8NCg0KDQo=
+2014-10-27 18:30 GMT+01:00 Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>:
+> On Mon, Oct 27, 2014 at 03:27:17PM +0000, Torsten Fleischer wrote:
+>> From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>>
+>> Use an empty 'cs-gpios' property if a single device is connected which
+>> has no chip select.
+>> This refers to the discussion at https://lkml.org/lkml/2013/11/13/62.
+>>
+>> Signed-off-by: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>> ---
+>>  Documentation/devicetree/bindings/spi/spi-gpio.txt |  6 ++++--
+>>  drivers/spi/spi-gpio.c                             | 10 +++++++---
+>>  2 files changed, 11 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.txt b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+>> index 8a824be..ad8795f 100644
+>> --- a/Documentation/devicetree/bindings/spi/spi-gpio.txt
+>> +++ b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+>> @@ -8,8 +8,10 @@ Required properties:
+>>   - gpio-sck: GPIO spec for the SCK line to use
+>>   - gpio-miso: GPIO spec for the MISO line to use
+>>   - gpio-mosi: GPIO spec for the MOSI line to use
+>> - - cs-gpios: GPIOs to use for chipselect lines
+>> - - num-chipselects: number of chipselect lines
+>> + - cs-gpios: GPIOs to use for chipselect lines. Leave this property empty if
+>> +             a single device with no chip select is connected.
+>> + - num-chipselects: Number of chipselect lines. Has to be "1" even if a single
+>> +                    device with no chip select is connected.
+>
+> Why not just have num-chipselectes = <0>, and no cs-gpios property?
+>
+> That would match the HW, and is unambigious as the author has to state
+> explicitly that there are no chipselects.
+
+Thanks for the objection. I agree to your proposal. This is a clearer
+way to describe such
+a hardware. I will send an updated patch.
+
+Torsten
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

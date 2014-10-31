@@ -1,9 +1,9 @@
 From: Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH 02/15] GPIO: port LoCoMo gpio support from old driver
-Date: Fri, 31 Oct 2014 08:48:35 +0100
-Message-ID: <CACRpkdY7tRadod2vQfEytmw-ubaMAvr_=XTczD5bUMkqie0xkg@mail.gmail.com>
+Subject: Re: [PATCH 09/15] ARM: sa1100: don't preallocate IRQ space for locomo
+Date: Fri, 31 Oct 2014 08:50:47 +0100
+Message-ID: <CACRpkdZnAtXtdtKbuqj8a_6a=2jS_Jf6yrq=iz-GJV+4RifRhw@mail.gmail.com>
 References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
-	<1414454528-24240-3-git-send-email-dbaryshkov@gmail.com>
+	<1414454528-24240-10-git-send-email-dbaryshkov@gmail.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Cc: "linux-arm-kernel@lists.infradead.org"
@@ -28,83 +28,20 @@ Cc: "linux-arm-kernel@lists.infradead.org"
 	Mark Brown <broonie@kernel.org>,
 	Jingoo
 To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Return-path: <linux-leds-owner@vger.kernel.org>
-In-Reply-To: <1414454528-24240-3-git-send-email-dbaryshkov@gmail.com>
-Sender: linux-leds-owner@vger.kernel.org
+Return-path: <linux-gpio-owner@vger.kernel.org>
+In-Reply-To: <1414454528-24240-10-git-send-email-dbaryshkov@gmail.com>
+Sender: linux-gpio-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-On Tue, Oct 28, 2014 at 1:01 AM, Dmitry Eremin-Solenikov
+On Tue, Oct 28, 2014 at 1:02 AM, Dmitry Eremin-Solenikov
 <dbaryshkov@gmail.com> wrote:
 
-> Add gpiolib driver for gpio pins placed on the LoCoMo GA.
+> As new locomo driver properly supports SPARSE_IRQ, stop playing with
+> NR_IRQS on sa1100 (locomo was the last chip requiring NR_IRQ tricks).
 >
 > Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
 
-(...)
-> +static int locomo_gpio_get(struct gpio_chip *chip,
-> +               unsigned offset)
-> +{
-> +       struct locomo_gpio *lg = container_of(chip, struct locomo_gpio, gpio);
-> +
-> +       return readw(lg->regs + LOCOMO_GPL) & (1 << offset);
-
-Do this:
-
-#include <linux/bitops.h>
-
-return !!(readw(lg->regs + LOCOMO_GPL) & BIT(offset));
-
-So you clamp the returned value to a bool.
-
-> +static void __locomo_gpio_set(struct gpio_chip *chip,
-> +               unsigned offset, int value)
-> +{
-> +       struct locomo_gpio *lg = container_of(chip, struct locomo_gpio, gpio);
-> +       u16  r;
-> +
-> +       r = readw(lg->regs + LOCOMO_GPO);
-> +       if (value)
-> +               r |= 1 << offset;
-
-r |= BIT(offset);
-
-> +       else
-> +               r &= ~(1 << offset);
-
-r &= BIT(offset);
-
-(etc, everywhere this pattern occurs).
-> +static void locomo_gpio_set(struct gpio_chip *chip,
-> +               unsigned offset, int value)
-> +{
-> +       struct locomo_gpio *lg = container_of(chip, struct locomo_gpio, gpio);
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&lg->lock, flags);
-> +
-> +       __locomo_gpio_set(chip, offset, value);
-> +
-> +       spin_unlock_irqrestore(&lg->lock, flags);
-
-If you actually always have to be getting and releasing a spin lock around
-the register writes, contemplate using regmap-mmio because that
-is part of what it does.
-
-But is this locking really necessary?
-
-> +static int locomo_gpio_remove(struct platform_device *pdev)
-> +{
-> +       struct locomo_gpio *lg = platform_get_drvdata(pdev);
-> +       int ret;
-> +
-> +       ret = gpiochip_remove(&lg->gpio);
-> +       if (ret) {
-> +               dev_err(&pdev->dev, "Can't remove gpio chip: %d\n", ret);
-> +               return ret;
-> +       }
-
-The return value from gpiochip_remove() has been removed in v3.18-rc1
-so this will not compile.
+That's right! By moving to irqdomain things get even better :)
 
 Yours,
 Linus Walleij

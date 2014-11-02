@@ -1,82 +1,103 @@
-From: Alexandre Courbot <gnurou@gmail.com>
-Subject: Re: [PATCH 11/15] sound: soc: poodle: make use of new locomo GPIO interface
-Date: Sat, 1 Nov 2014 14:42:33 +0900
-Message-ID: <CAAVeFuKuBeoF0i4RpuXo=H1G4C6BfjC0hEUyN2TO02UM0DsHfg@mail.gmail.com>
-References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
- <1414454528-24240-12-git-send-email-dbaryshkov@gmail.com> <20141028145850.GU18557@sirena.org.uk>
- <CAAVeFuKgARoMFzf+663iP6cULs93d4WSQS8ESjUb9VcxguWurA@mail.gmail.com>
- <CACRpkdY-RDuxGMWe_SD613ovsEoHhxjP1+3T-m_zKQSx=mkFjA@mail.gmail.com> <CALT56yP6K-sXOGM4z-WRsvFVjOi-13wM+Ewqn6WpDmNB4xcOEg@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	Linux Input <linux-input@vger.kernel.org>,
-	"linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Ji
-To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Return-path: <linux-leds-owner@vger.kernel.org>
-In-Reply-To: <CALT56yP6K-sXOGM4z-WRsvFVjOi-13wM+Ewqn6WpDmNB4xcOEg@mail.gmail.com>
-Sender: linux-leds-owner@vger.kernel.org
+From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Subject: [RFC 0/2] drivers: spi/i2c: account completions as iowait
+Date: Sun,  2 Nov 2014 14:58:07 +0100
+Message-ID: <1414936689-2707-1-git-send-email-wsa@the-dreams.de>
+Cc: linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Peter Zijlstra <peterz-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>,
+	Ingo Molnar <mingo-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	Balbir Singh <bsingharora-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+To: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 31, 2014 at 6:58 PM, Dmitry Eremin-Solenikov
-<dbaryshkov@gmail.com> wrote:
-> 2014-10-31 12:52 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
->> On Wed, Oct 29, 2014 at 4:03 AM, Alexandre Courbot <gnurou@gmail.com> wrote:
->>> On Tue, Oct 28, 2014 at 11:58 PM, Mark Brown <broonie@kernel.org> wrote:
->>>> On Tue, Oct 28, 2014 at 03:02:04AM +0300, Dmitry Eremin-Solenikov wrote:
->>>>> Since LoCoMo driver has been converted to provide proper gpiolib
->>>>> interface, make poodle ASoC platform driver use gpiolib API.
->>>>
->>>> Please use subject lines matching the style for the subsystem.
->>>>
->>>>> +     ret = gpio_request_array(poodle_gpios, ARRAY_SIZE(poodle_gpios));
->>>>> +     if (ret) {
->>>>> +             dev_err(&pdev->dev, "gpio_request_array() failed: %d\n",
->>>>> +                             ret);
->>>>> +             return ret;
->>>>> +     }
->>>>
->>>> I sense a need for devm_gpio_request_array() here.  Otherwise this looks
->>>> fine - ideally it'd move to gpiod but moving to gpiolib is a clear win
->>>> so no need to block on this.
->>>
->>> I wish Dmitry took the opportunity to move this driver to the gpiod
->>> API, especially since doing so would be trivial for this driver.
->>
->> +1 on this.
->>
->> However this platform is not device tree, so this implies setting up
->> a descriptor table for the affected driver(s) to work properly.
->> See Documentation/gpio/board.txt
->
-> I checked the gpiod interfaces after original suggestion by Alexandre.
->
-> Introducing those mapping tables (much like pinctrl tables) look like
-> a duplicate effort if Russell will permit adding a DT support. So
-> I thought that I will reconsider gpiod/pinctrl/etc after fixing
-> LoCoMo, reiterating IRQ patches, possibly switching to COMMON_CLK
-> and (finally) thinking about device tree support.
+So, I recently learned that there is wait_for_completion_io_* because one I2C
+driver uses it instead of wait_for_completion_*. I want consistency, so
+technically the io-versions seem to be the correct ones to me, because, well,
+we are waiting for IO.
 
-Note that the mapping tables are likely not going to end up being
-huge, and taking that step will allow you to convert to the gpiod
-interface, something you would probably want to do later when adding
-DT support anyway. So at the end of the day there would be very little
-wasted effort: once converting to DT, just add the GPIO properties
-into the appropriate node, remove the mapping tables, and you're done.
+However, researching the net, users currently interpret iowait entirely as
+blkio wait. Furthermore, io_schedule() calls delayacct_blkio_{start|end}() which
+worked fine for my tests with I2C but might show that iowait was really meant as
+blkiowait? So, should other subsystems use it?
+
+To make it more confusing, some people (like Peter Zijlstra [1]) seem to like
+iowait gone, so maybe it is all not worth it?
+
+I'd be grateful for a rule-of-thumb here. And because people like to discuss
+code, I created patches to convert I2C and SPI to be accounted as iowait ;)
+
+Thanks,
+
+   Wolfram
+
+
+[1] http://www.spinics.net/lists/kernel/msg1778892.html
+
+Wolfram Sang (2):
+  i2c: account completions as iowait
+  spi: account completions as iowait
+
+ drivers/i2c/busses/i2c-axxia.c           |  4 ++--
+ drivers/i2c/busses/i2c-bcm-kona.c        |  8 ++++----
+ drivers/i2c/busses/i2c-bcm2835.c         |  2 +-
+ drivers/i2c/busses/i2c-bfin-twi.c        |  4 ++--
+ drivers/i2c/busses/i2c-cadence.c         |  2 +-
+ drivers/i2c/busses/i2c-davinci.c         |  2 +-
+ drivers/i2c/busses/i2c-designware-core.c |  2 +-
+ drivers/i2c/busses/i2c-efm32.c           |  2 +-
+ drivers/i2c/busses/i2c-exynos5.c         |  2 +-
+ drivers/i2c/busses/i2c-highlander.c      |  2 +-
+ drivers/i2c/busses/i2c-hix5hd2.c         |  2 +-
+ drivers/i2c/busses/i2c-ismt.c            |  2 +-
+ drivers/i2c/busses/i2c-mxs.c             |  2 +-
+ drivers/i2c/busses/i2c-nomadik.c         |  4 ++--
+ drivers/i2c/busses/i2c-omap.c            |  2 +-
+ drivers/i2c/busses/i2c-pmcmsp.c          |  2 +-
+ drivers/i2c/busses/i2c-pnx.c             |  2 +-
+ drivers/i2c/busses/i2c-qup.c             |  4 ++--
+ drivers/i2c/busses/i2c-riic.c            |  2 +-
+ drivers/i2c/busses/i2c-sh7760.c          |  2 +-
+ drivers/i2c/busses/i2c-sirf.c            |  2 +-
+ drivers/i2c/busses/i2c-st.c              |  2 +-
+ drivers/i2c/busses/i2c-sun6i-p2wi.c      |  2 +-
+ drivers/i2c/busses/i2c-tegra.c           |  2 +-
+ drivers/i2c/busses/i2c-wmt.c             |  4 ++--
+ drivers/spi/spi-altera.c                 |  2 +-
+ drivers/spi/spi-atmel.c                  |  2 +-
+ drivers/spi/spi-au1550.c                 |  4 ++--
+ drivers/spi/spi-bcm2835.c                |  2 +-
+ drivers/spi/spi-bcm63xx-hsspi.c          |  2 +-
+ drivers/spi/spi-bcm63xx.c                |  2 +-
+ drivers/spi/spi-efm32.c                  |  2 +-
+ drivers/spi/spi-ep93xx.c                 |  4 ++--
+ drivers/spi/spi-fsl-espi.c               |  2 +-
+ drivers/spi/spi-fsl-spi.c                |  2 +-
+ drivers/spi/spi-imx.c                    |  6 +++---
+ drivers/spi/spi-mpc512x-psc.c            |  2 +-
+ drivers/spi/spi-mpc52xx-psc.c            |  2 +-
+ drivers/spi/spi-mxs.c                    |  2 +-
+ drivers/spi/spi-nuc900.c                 |  2 +-
+ drivers/spi/spi-oc-tiny.c                |  2 +-
+ drivers/spi/spi-omap2-mcspi.c            |  4 ++--
+ drivers/spi/spi-ppc4xx.c                 |  2 +-
+ drivers/spi/spi-qup.c                    |  2 +-
+ drivers/spi/spi-s3c24xx.c                |  2 +-
+ drivers/spi/spi-s3c64xx.c                |  2 +-
+ drivers/spi/spi-sh-msiof.c               |  4 ++--
+ drivers/spi/spi-sirf.c                   | 10 +++++-----
+ drivers/spi/spi-sun4i.c                  |  2 +-
+ drivers/spi/spi-sun6i.c                  |  2 +-
+ drivers/spi/spi-tegra114.c               |  2 +-
+ drivers/spi/spi-tegra20-sflash.c         |  2 +-
+ drivers/spi/spi-tegra20-slink.c          |  2 +-
+ drivers/spi/spi-ti-qspi.c                |  4 ++--
+ drivers/spi/spi-xilinx.c                 |  2 +-
+ drivers/spi/spi.c                        |  4 ++--
+ drivers/spi/spidev.c                     |  2 +-
+ 57 files changed, 77 insertions(+), 77 deletions(-)
+
+-- 
+2.1.1

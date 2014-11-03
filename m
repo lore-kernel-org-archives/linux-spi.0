@@ -1,84 +1,103 @@
-From: Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 02/15] GPIO: port LoCoMo gpio support from old driver
-Date: Mon, 3 Nov 2014 14:43:21 +0100
-Message-ID: <CACRpkdb7v3LmOhbhQ9TPk1_bnLnpwizawW6RQvhQRLSjRewAaQ@mail.gmail.com>
-References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
-	<1414454528-24240-3-git-send-email-dbaryshkov@gmail.com>
-	<CACRpkdY7tRadod2vQfEytmw-ubaMAvr_=XTczD5bUMkqie0xkg@mail.gmail.com>
-	<CALT56yOgMUA7o2dzfHph=S2zkDV4zERzMh4ishpPwpAx7Cqj6Q@mail.gmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: "linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org"
-	<linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org>,
-	"linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-gpio-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	Linux Input <linux-input-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-leds-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-leds-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org" <linux-fbdev-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
-	"alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org" <alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org>,
-	Andrea Adami <andrea.adami-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
-	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
-	Alexandre Courbot <gnurou-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Dmitry Torokhov <dmitry.torokhov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Bryan Wu <cooloney-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Richard Purdie <rpurdie-Fm38FmjxZ/leoWH0uzbU5w@public.gmane.org>,
-	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Jingoo
-To: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <CALT56yOgMUA7o2dzfHph=S2zkDV4zERzMh4ishpPwpAx7Cqj6Q-JsoAwUIsXosN+BqQ9rBEUg@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Torsten Fleischer <torfl6749@gmail.com>
+Subject: [PATCH v2 1/1] spi: spi-gpio: Add dt support for a single device with no chip select
+Date: Mon,  3 Nov 2014 17:17:55 +0100
+Message-ID: <1415031475-2268-1-git-send-email-torfl6749@gmail.com>
+Cc: Torsten Fleischer <torfl6749@gmail.com>
+To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Fri, Oct 31, 2014 at 10:39 AM, Dmitry Eremin-Solenikov
-<dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
-> 2014-10-31 10:48 GMT+03:00 Linus Walleij <linus.walleij-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>:
->> On Tue, Oct 28, 2014 at 1:01 AM, Dmitry Eremin-Solenikov
->> <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org> wrote:
->>
->>> Add gpiolib driver for gpio pins placed on the LoCoMo GA.
->>>
->>> Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->>
->
-> [skipped]
->
->> (etc, everywhere this pattern occurs).
->>> +static void locomo_gpio_set(struct gpio_chip *chip,
->>> +               unsigned offset, int value)
->>> +{
->>> +       struct locomo_gpio *lg = container_of(chip, struct locomo_gpio, gpio);
->>> +       unsigned long flags;
->>> +
->>> +       spin_lock_irqsave(&lg->lock, flags);
->>> +
->>> +       __locomo_gpio_set(chip, offset, value);
->>> +
->>> +       spin_unlock_irqrestore(&lg->lock, flags);
->>
->> If you actually always have to be getting and releasing a spin lock around
->> the register writes, contemplate using regmap-mmio because that
->> is part of what it does.
->>
->> But is this locking really necessary?
->
-> I have a custom of doing such locking and never having to think about
-> somebody breaking into RMW cycles.
->
-> Also isn't regmap an overkill here? Wouldn't regmap also do a lock/unlock
-> around each register read/write/RMW?
+From: Torsten Fleischer <torfl6749@gmail.com>
 
-Yes that's the point: if you use regmap mmio you get the RMW-locking
-for free, with the regmap implementation.
+In order to describe a single slave device that has no chip select line
+the 'num-chipselects' property has to be <0> and the 'cs-gpios' property
+doesn't need to be set.
 
-Yours,
-Linus Walleij
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Signed-off-by: Torsten Fleischer <torfl6749@gmail.com>
+---
+ Documentation/devicetree/bindings/spi/spi-gpio.txt |  6 ++++--
+ drivers/spi/spi-gpio.c                             | 21 +++++++++++++++------
+ 2 files changed, 19 insertions(+), 8 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.txt b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+index 8a824be..a95603b 100644
+--- a/Documentation/devicetree/bindings/spi/spi-gpio.txt
++++ b/Documentation/devicetree/bindings/spi/spi-gpio.txt
+@@ -8,8 +8,10 @@ Required properties:
+  - gpio-sck: GPIO spec for the SCK line to use
+  - gpio-miso: GPIO spec for the MISO line to use
+  - gpio-mosi: GPIO spec for the MOSI line to use
+- - cs-gpios: GPIOs to use for chipselect lines
+- - num-chipselects: number of chipselect lines
++ - cs-gpios: GPIOs to use for chipselect lines.
++             Not needed if num-chipselects = <0>.
++ - num-chipselects: Number of chipselect lines. Should be <0> if a single device
++                    with no chip select is connected.
+ 
+ Example:
+ 
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 9f59553..f0492c9 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -413,6 +413,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	struct spi_gpio_platform_data	*pdata;
+ 	u16 master_flags = 0;
+ 	bool use_of = 0;
++	int num_devices;
+ 
+ 	status = spi_gpio_probe_dt(pdev);
+ 	if (status < 0)
+@@ -422,16 +423,21 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 
+ 	pdata = dev_get_platdata(&pdev->dev);
+ #ifdef GENERIC_BITBANG
+-	if (!pdata || !pdata->num_chipselect)
++	if (!pdata || (!use_of && !pdata->num_chipselect))
+ 		return -ENODEV;
+ #endif
+ 
++	if (use_of && !SPI_N_CHIPSEL)
++		num_devices = 1;
++	else
++		num_devices = SPI_N_CHIPSEL;
++
+ 	status = spi_gpio_request(pdata, dev_name(&pdev->dev), &master_flags);
+ 	if (status < 0)
+ 		return status;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*spi_gpio) +
+-					(sizeof(int) * SPI_N_CHIPSEL));
++					(sizeof(int) * num_devices));
+ 	if (!master) {
+ 		status = -ENOMEM;
+ 		goto gpio_free;
+@@ -446,7 +452,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+ 	master->flags = master_flags;
+ 	master->bus_num = pdev->id;
+-	master->num_chipselect = SPI_N_CHIPSEL;
++	master->num_chipselect = num_devices;
+ 	master->setup = spi_gpio_setup;
+ 	master->cleanup = spi_gpio_cleanup;
+ #ifdef CONFIG_OF
+@@ -461,9 +467,12 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 		 * property of the node.
+ 		 */
+ 
+-		for (i = 0; i < SPI_N_CHIPSEL; i++)
+-			spi_gpio->cs_gpios[i] =
+-				of_get_named_gpio(np, "cs-gpios", i);
++		if (!SPI_N_CHIPSEL)
++			spi_gpio->cs_gpios[0] = SPI_GPIO_NO_CHIPSELECT;
++		else
++			for (i = 0; i < SPI_N_CHIPSEL; i++)
++				spi_gpio->cs_gpios[i] =
++					of_get_named_gpio(np, "cs-gpios", i);
+ 	}
+ #endif
+ 
+-- 
+1.8.4.5

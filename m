@@ -1,103 +1,60 @@
-From: Torsten Fleischer <torfl6749@gmail.com>
-Subject: [PATCH v2 1/1] spi: spi-gpio: Add dt support for a single device with no chip select
-Date: Mon,  3 Nov 2014 17:17:55 +0100
-Message-ID: <1415031475-2268-1-git-send-email-torfl6749@gmail.com>
-Cc: Torsten Fleischer <torfl6749@gmail.com>
-To: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+Subject: Re: [RFC 0/2] drivers: spi/i2c: account completions as iowait
+Date: Mon, 3 Nov 2014 20:31:28 +0100
+Message-ID: <20141103193128.GA1449@katana>
+References: <1414936689-2707-1-git-send-email-wsa@the-dreams.de>
+ <20141102165943.GT10501@worktop.programming.kicks-ass.net>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="rwEMma7ioTxnRzrJ"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Ingo Molnar <mingo-H+wXaHxf7aLQT0dZR+AlfA@public.gmane.org>,
+	Balbir Singh <bsingharora-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Peter Zijlstra <peterz-wEGCiKHe2LqWVfeAwA7xHQ@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20141102165943.GT10501-IIpfhp3q70z/8w/KjCw3T+5/BudmfyzbbVWyRVo5IupeoWH0uzbU5w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-From: Torsten Fleischer <torfl6749@gmail.com>
 
-In order to describe a single slave device that has no chip select line
-the 'num-chipselects' property has to be <0> and the 'cs-gpios' property
-doesn't need to be set.
+--rwEMma7ioTxnRzrJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Signed-off-by: Torsten Fleischer <torfl6749@gmail.com>
----
- Documentation/devicetree/bindings/spi/spi-gpio.txt |  6 ++++--
- drivers/spi/spi-gpio.c                             | 21 +++++++++++++++------
- 2 files changed, 19 insertions(+), 8 deletions(-)
+> If people really think its worth; we could invent new IO-wait measure
+> that do make sense -- maybe, but the current thing is complete bollocks.
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-gpio.txt b/Documentation/devicetree/bindings/spi/spi-gpio.txt
-index 8a824be..a95603b 100644
---- a/Documentation/devicetree/bindings/spi/spi-gpio.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-gpio.txt
-@@ -8,8 +8,10 @@ Required properties:
-  - gpio-sck: GPIO spec for the SCK line to use
-  - gpio-miso: GPIO spec for the MISO line to use
-  - gpio-mosi: GPIO spec for the MOSI line to use
-- - cs-gpios: GPIOs to use for chipselect lines
-- - num-chipselects: number of chipselect lines
-+ - cs-gpios: GPIOs to use for chipselect lines.
-+             Not needed if num-chipselects = <0>.
-+ - num-chipselects: Number of chipselect lines. Should be <0> if a single device
-+                    with no chip select is connected.
- 
- Example:
- 
-diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-index 9f59553..f0492c9 100644
---- a/drivers/spi/spi-gpio.c
-+++ b/drivers/spi/spi-gpio.c
-@@ -413,6 +413,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	struct spi_gpio_platform_data	*pdata;
- 	u16 master_flags = 0;
- 	bool use_of = 0;
-+	int num_devices;
- 
- 	status = spi_gpio_probe_dt(pdev);
- 	if (status < 0)
-@@ -422,16 +423,21 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 
- 	pdata = dev_get_platdata(&pdev->dev);
- #ifdef GENERIC_BITBANG
--	if (!pdata || !pdata->num_chipselect)
-+	if (!pdata || (!use_of && !pdata->num_chipselect))
- 		return -ENODEV;
- #endif
- 
-+	if (use_of && !SPI_N_CHIPSEL)
-+		num_devices = 1;
-+	else
-+		num_devices = SPI_N_CHIPSEL;
-+
- 	status = spi_gpio_request(pdata, dev_name(&pdev->dev), &master_flags);
- 	if (status < 0)
- 		return status;
- 
- 	master = spi_alloc_master(&pdev->dev, sizeof(*spi_gpio) +
--					(sizeof(int) * SPI_N_CHIPSEL));
-+					(sizeof(int) * num_devices));
- 	if (!master) {
- 		status = -ENOMEM;
- 		goto gpio_free;
-@@ -446,7 +452,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 	master->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
- 	master->flags = master_flags;
- 	master->bus_num = pdev->id;
--	master->num_chipselect = SPI_N_CHIPSEL;
-+	master->num_chipselect = num_devices;
- 	master->setup = spi_gpio_setup;
- 	master->cleanup = spi_gpio_cleanup;
- #ifdef CONFIG_OF
-@@ -461,9 +467,12 @@ static int spi_gpio_probe(struct platform_device *pdev)
- 		 * property of the node.
- 		 */
- 
--		for (i = 0; i < SPI_N_CHIPSEL; i++)
--			spi_gpio->cs_gpios[i] =
--				of_get_named_gpio(np, "cs-gpios", i);
-+		if (!SPI_N_CHIPSEL)
-+			spi_gpio->cs_gpios[0] = SPI_GPIO_NO_CHIPSELECT;
-+		else
-+			for (i = 0; i < SPI_N_CHIPSEL; i++)
-+				spi_gpio->cs_gpios[i] =
-+					of_get_named_gpio(np, "cs-gpios", i);
- 	}
- #endif
- 
--- 
-1.8.4.5
+One more reason to simply convert this one I2C user back to plain
+wait_for_completion() for now.
+
+Thanks for these explanations!
+
+--rwEMma7ioTxnRzrJ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBAgAGBQJUV9gQAAoJEBQN5MwUoCm28ZIP/Rd7XLlywV/dVxy7h68HuCLF
+i6/ZJov8UgG0J6BIGgtkmH1Jwr4eAWyddC1EkdXzFKo7KelVE0UYmD5WCnsrjpyW
+t9h+dLh4f/VawNEta9tP8j1wUTNtSQktqi4Qb5mKEF0PTRN5ir+rcJIbIxkjDW4d
+1vEB5/CfuqrEAxCZYf8NKEpUfvj2frtoq+zBsCoW6XKmZ16gkztuXukorH0moAFb
+5JNIlNFe95nQL+2yHsFc4MARxtdCVNErfoXHxKoFytYsxIbqQTUv6b6yUJYScfoQ
+rq9tv+5YW16UsQCm04y7y4z6cqVRVEeUa0RhDbF3QjHfuS34rEj6JMosksmFrE1C
+OStLdNAUw2+YQOMKjgI1CzxbOU98UKll9cVERU9gukWlyBaTXwNVNnOGT7XPVfUD
+Z7q7vVTifIO3wzW47tKB40dAVIvG2/q5VkEJeLcBnoeIA/UW+HMjzH+HofCvN0Vn
+H3wUEbBmMP1kBwXpN0sOlCpHcHpnjgHve3ipxfeAc29KwDhfs4WAJYeZZtSm5Moy
+SeWu6ZCfthvjEh4znlrp468QAWZjT2vwdkF8wPa+qsOx0G3R6yJbW86qhSxJyien
+0vYyEUCht/f1KbBN1eHJt0DM4x6faWES/SP3Dv3qsY3N+6tNCxn0CPn64nF5n6wb
+Jgi86BPpnFr4CCQ7bRKf
+=xjLs
+-----END PGP SIGNATURE-----
+
+--rwEMma7ioTxnRzrJ--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

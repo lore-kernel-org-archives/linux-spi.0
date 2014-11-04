@@ -1,50 +1,53 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH 1/1] spi: fsl-dspi: Fix CTAR selection
-Date: Tue, 4 Nov 2014 10:52:33 +0000
-Message-ID: <20141104105233.GD3815@sirena.org.uk>
-References: <1415089218-2011-1-git-send-email-alexander.stein@systec-electronic.com>
+Subject: Re: [PATCH v2 1/1] spi: spi-gpio: Add dt support for a single device
+ with no chip select
+Date: Tue, 4 Nov 2014 19:57:32 +0000
+Message-ID: <20141104195732.GX3815@sirena.org.uk>
+References: <1415031475-2268-1-git-send-email-torfl6749@gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0VNbQffo0Gc48lc+"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Alexander Stein <alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="umhhH1MY3lvPZrwj"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1415089218-2011-1-git-send-email-alexander.stein-93q1YBGzJSMe9JSWTWOYM3xStJ4P+DSV@public.gmane.org>
+In-Reply-To: <1415031475-2268-1-git-send-email-torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---0VNbQffo0Gc48lc+
+--umhhH1MY3lvPZrwj
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 04, 2014 at 09:20:18AM +0100, Alexander Stein wrote:
-> There are only 4 CTAR registers (CTAR0 - CTAR3) so we can only use the
-> lower 2 bits of the chip select to select a CTAR register.
-> SPI_PUSHR_CTAS used the lower 3 bits which would result in wrong bit values
-> if the chip selects 4/5 are used. For those chip selects SPI_CTAR even
-> calculated offsets of non-existing registers.
+On Mon, Nov 03, 2014 at 05:17:55PM +0100, Torsten Fleischer wrote:
+> From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+>=20
+> In order to describe a single slave device that has no chip select line
+> the 'num-chipselects' property has to be <0> and the 'cs-gpios' property
+> doesn't need to be set.
 
 Applied, thanks.
 
---0VNbQffo0Gc48lc+
+--umhhH1MY3lvPZrwj
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUWK/xAAoJECTWi3JdVIfQARMH/ifs9jDmSwOjrBfYck9+Xhi5
-n8W0RHxJl/wNQP4/E/xB6PgFtng4PpXp6zBpjFgKJu0csuku8mw+NX75WqC1vM3V
-8OOWsRnt3nwiYt2Bb6OHChCbhtTscJtZXDWI18V9lehYGq6PNTZcZfNDlc4FipCV
-BueanYUn6oGwLzKcDxac7h77J78bfO174EJk+aabHRZV6ySaRQirVq9cVF+X9arG
-eoO8T+CVKMZvRsrDdL/8grm8drMqM7JI+b9loRioh4h2nPJXYn85jZHksZyaQPbY
-CfQWACDkzASrzNFYeYIz2Uy1SOINymqTC3FZLjCa6Mr4CYkYlMp1DdbdSOH4mi8=
-=BGPW
+iQEcBAEBAgAGBQJUWS+sAAoJECTWi3JdVIfQ2zoH/AtLkp1eNCvq46l7yZU6Cy+9
+DUB96pmHjF1HozvCcFPzuS9S+6JUJYxmoVYltYKt6hb5D/Pgta7z3Iwo9BTwe/pt
+/bW4S7wCb2Bu2yfZ4Heu2vftWhUXc3cwfi0VPT7qsCch+EOEHH3cw3W0vFcPVq2+
+YH+EG6wOHhrVWojX6YsOH/0Trl7YAsWKC1sqI/E7IKnr6C7c/KQ/KJV3FIhpIDtN
+cqCVZ0YIpozGCqmAPWMCTkJlYaxXVahiXixqZ4o6OJ9K0j5khHLPhxjWK9KTJUU8
+QsSiQbVLRkbFa58Xv7DB2azHpB87JaJR6aMXbyKuX04DBfg4/7HQVY0SlFdIW8U=
+=nmig
 -----END PGP SIGNATURE-----
 
---0VNbQffo0Gc48lc+--
+--umhhH1MY3lvPZrwj--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

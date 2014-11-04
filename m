@@ -1,53 +1,99 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/1] spi: spi-gpio: Add dt support for a single device
- with no chip select
-Date: Tue, 4 Nov 2014 19:57:32 +0000
-Message-ID: <20141104195732.GX3815@sirena.org.uk>
-References: <1415031475-2268-1-git-send-email-torfl6749@gmail.com>
+From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Subject: [PATCH] spi: dw: Fix dynamic speed change
+Date: Tue, 4 Nov 2014 16:36:56 -0600
+Message-ID: <1415140617-2028-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="umhhH1MY3lvPZrwj"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	<setka-3PjVBYxTQDg@public.gmane.org>, <tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>,
+	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1415031475-2268-1-git-send-email-torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
---umhhH1MY3lvPZrwj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Changing SPI transfer speed using a utility such as spi_config with
+spidev updates chip->speed_hz which is compared to the next transfer
+speed.
 
-On Mon, Nov 03, 2014 at 05:17:55PM +0100, Torsten Fleischer wrote:
-> From: Torsten Fleischer <torfl6749-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
->=20
-> In order to describe a single slave device that has no chip select line
-> the 'num-chipselects' property has to be <0> and the 'cs-gpios' property
-> doesn't need to be set.
+When speed_hz is not declared in a SPI transfer, the transfer speed is
+not updated for the next read/write on /dev/spidevX.Y. The element
+spi_transfer->speed_hz is filled with spi->max_speed_hz. The test of
+if (transfer->speed_hz != speed) doesn't work because the chip->speed_hz
+matches transfer->speed_hz and the clock divider is not updated.
 
-Applied, thanks.
+This fix: On each transfer update the clock divider, compare to the
+previous clock divider and update if necessary. This fixes another
+bug where the clock divider calculation at the top of the
+pump_transfers() function could be an odd-number.
 
---umhhH1MY3lvPZrwj
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+Reported-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
+Signed-off-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
+Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+---
+ drivers/spi/spi-dw.c |   33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 72e12ba..3456b34 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -376,9 +376,6 @@ static void pump_transfers(unsigned long data)
+ 	chip = dws->cur_chip;
+ 	spi = message->spi;
+ 
+-	if (unlikely(!chip->clk_div))
+-		chip->clk_div = dws->max_freq / chip->speed_hz;
+-
+ 	if (message->state == ERROR_STATE) {
+ 		message->status = -EIO;
+ 		goto early_exit;
+@@ -415,21 +412,27 @@ static void pump_transfers(unsigned long data)
+ 
+ 	cr0 = chip->cr0;
+ 
+-	/* Handle per transfer options for bpw and speed */
+-	if (transfer->speed_hz) {
+-		speed = chip->speed_hz;
++	/* Always calculate the desired clock divider */
++	speed = transfer->speed_hz ? transfer->speed_hz : chip->speed_hz;
++
++	if (speed > dws->max_freq) {
++		dev_err(&spi->dev, "Unsupported SPI freq: %d Hz\n", speed);
++		message->status = -EIO;
++		goto early_exit;
++	}
++
++	/* clk_div doesn't support odd number */
++	clk_div = dws->max_freq / speed;
++	clk_div = (clk_div + 1) & 0xfffe;
+ 
+-		if (transfer->speed_hz != speed) {
+-			speed = transfer->speed_hz;
++	/* Determine if the clock divider changed, if so update chip struct */
++	if (clk_div != chip->clk_div)
++		chip->clk_div = clk_div;
++	else
++		clk_div = 0; /* Prevent register programming below */
+ 
+-			/* clk_div doesn't support odd number */
+-			clk_div = dws->max_freq / speed;
+-			clk_div = (clk_div + 1) & 0xfffe;
++	chip->speed_hz = speed;
+ 
+-			chip->speed_hz = speed;
+-			chip->clk_div = clk_div;
+-		}
+-	}
+ 	if (transfer->bits_per_word) {
+ 		bits = transfer->bits_per_word;
+ 		dws->n_bytes = dws->dma_width = bits >> 3;
+-- 
+1.7.9.5
 
-iQEcBAEBAgAGBQJUWS+sAAoJECTWi3JdVIfQ2zoH/AtLkp1eNCvq46l7yZU6Cy+9
-DUB96pmHjF1HozvCcFPzuS9S+6JUJYxmoVYltYKt6hb5D/Pgta7z3Iwo9BTwe/pt
-/bW4S7wCb2Bu2yfZ4Heu2vftWhUXc3cwfi0VPT7qsCch+EOEHH3cw3W0vFcPVq2+
-YH+EG6wOHhrVWojX6YsOH/0Trl7YAsWKC1sqI/E7IKnr6C7c/KQ/KJV3FIhpIDtN
-cqCVZ0YIpozGCqmAPWMCTkJlYaxXVahiXixqZ4o6OJ9K0j5khHLPhxjWK9KTJUU8
-QsSiQbVLRkbFa58Xv7DB2azHpB87JaJR6aMXbyKuX04DBfg4/7HQVY0SlFdIW8U=
-=nmig
------END PGP SIGNATURE-----
-
---umhhH1MY3lvPZrwj--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

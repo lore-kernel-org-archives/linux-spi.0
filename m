@@ -1,79 +1,123 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 01/15] mfd: add new driver for Sharp LoCoMo
-Date: Wed, 5 Nov 2014 20:24:05 +0000
-Message-ID: <20141105202405.GJ8509@sirena.org.uk>
-References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
- <1414454528-24240-2-git-send-email-dbaryshkov@gmail.com>
- <CACRpkdbW3NA00zMZr216ZeZpgVkXwKUo30biTVd5kcHKGGtkHg@mail.gmail.com>
- <CALT56yNX8v4mZn=o1ZoVLHPmg6wq0dgFNowpqNuFtU=eCc+d8w@mail.gmail.com>
- <CACRpkdaKUZjbSEH75M9xudTF9HefwOCVEe5otv9-9f2UG8=hVg@mail.gmail.com>
- <CALT56yM8B3ffYb0=EZVbRRGDZSxMci2sRp9XVtjQuLa5abN+cg@mail.gmail.com>
+From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Subject: Re: [PATCH] spi: dw: Fix dynamic speed change
+Date: Wed, 5 Nov 2014 14:25:03 -0600
+Message-ID: <545A879F.7020600@opensource.altera.com>
+References: <1415140617-2028-1-git-send-email-tthayer@opensource.altera.com> <1415181423.472.15.camel@linux.intel.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="VSaCG/zfRnOiPJtU"
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	Linux Input <linux-input@vger.kernel.org>,
-	"linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>
-To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Return-path: <linux-leds-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <CALT56yM8B3ffYb0=EZVbRRGDZSxMci2sRp9XVtjQuLa5abN+cg@mail.gmail.com>
-Sender: linux-leds-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8;
+	format=flowed
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>,
+	<feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>, <setka-3PjVBYxTQDg@public.gmane.org>, <tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>
+To: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1415181423.472.15.camel-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---VSaCG/zfRnOiPJtU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 11/05/2014 03:57 AM, Andy Shevchenko wrote:
+> On Tue, 2014-11-04 at 16:36 -0600, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrot=
+e:
+>> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+>>
+>> Changing SPI transfer speed using a utility such as spi_config with
+>> spidev updates chip->speed_hz which is compared to the next transfer
+>> speed.
+>>
+>> When speed_hz is not declared in a SPI transfer, the transfer speed =
+is
+>> not updated for the next read/write on /dev/spidevX.Y. The element
+>> spi_transfer->speed_hz is filled with spi->max_speed_hz. The test of
+>> if (transfer->speed_hz !=3D speed) doesn't work because the chip->sp=
+eed_hz
+>> matches transfer->speed_hz and the clock divider is not updated.
+>>
+>> This fix: On each transfer update the clock divider, compare to the
+>> previous clock divider and update if necessary. This fixes another
+>> bug where the clock divider calculation at the top of the
+>> pump_transfers() function could be an odd-number.
+>>
+> My intention is to use SPI core API as much as possible. Thus,
+> pump_transfers() I think should be gone in future. Instead of doing a=
+n
+> additional work can you provide a helper function to set speed_hz and
+> call it from pump_transfers()?
+>
+Hi. I see your point but this patch may change significantly as a resul=
+t=20
+of discussion. If some form of clock divider changes are implemented,=20
+I'm happy to make a helper function.
+Thanks for reviewing!
+>
+>> Reported-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
+>> Signed-off-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
+>> Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+>> ---
+>>   drivers/spi/spi-dw.c |   33 ++++++++++++++++++---------------
+>>   1 file changed, 18 insertions(+), 15 deletions(-)
+>>
+>> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+>> index 72e12ba..3456b34 100644
+>> --- a/drivers/spi/spi-dw.c
+>> +++ b/drivers/spi/spi-dw.c
+>> @@ -376,9 +376,6 @@ static void pump_transfers(unsigned long data)
+>>   	chip =3D dws->cur_chip;
+>>   	spi =3D message->spi;
+>>  =20
+>> -	if (unlikely(!chip->clk_div))
+>> -		chip->clk_div =3D dws->max_freq / chip->speed_hz;
+>> -
+>>   	if (message->state =3D=3D ERROR_STATE) {
+>>   		message->status =3D -EIO;
+>>   		goto early_exit;
+>> @@ -415,21 +412,27 @@ static void pump_transfers(unsigned long data)
+>>  =20
+>>   	cr0 =3D chip->cr0;
+>>  =20
+>> -	/* Handle per transfer options for bpw and speed */
+>> -	if (transfer->speed_hz) {
+>> -		speed =3D chip->speed_hz;
+>> +	/* Always calculate the desired clock divider */
+>> +	speed =3D transfer->speed_hz ? transfer->speed_hz : chip->speed_hz=
+;
+>> +
+>> +	if (speed > dws->max_freq) {
+>> +		dev_err(&spi->dev, "Unsupported SPI freq: %d Hz\n", speed);
+>> +		message->status =3D -EIO;
+>> +		goto early_exit;
+>> +	}
+>> +
+>> +	/* clk_div doesn't support odd number */
+>> +	clk_div =3D dws->max_freq / speed;
+>> +	clk_div =3D (clk_div + 1) & 0xfffe;
+>>  =20
+>> -		if (transfer->speed_hz !=3D speed) {
+>> -			speed =3D transfer->speed_hz;
+>> +	/* Determine if the clock divider changed, if so update chip struc=
+t */
+> Maybe "=E2=80=A6update speed_hz" ?
+>
+>> +	if (clk_div !=3D chip->clk_div)
+>> +		chip->clk_div =3D clk_div;
+>> +	else
+>> +		clk_div =3D 0; /* Prevent register programming below */
+>>  =20
+>> -			/* clk_div doesn't support odd number */
+>> -			clk_div =3D dws->max_freq / speed;
+>> -			clk_div =3D (clk_div + 1) & 0xfffe;
+>> +	chip->speed_hz =3D speed;
+>>  =20
+>> -			chip->speed_hz =3D speed;
+>> -			chip->clk_div =3D clk_div;
+>> -		}
+>> -	}
+>>   	if (transfer->bits_per_word) {
+>>   		bits =3D transfer->bits_per_word;
+>>   		dws->n_bytes =3D dws->dma_width =3D bits >> 3;
+>
 
-On Thu, Nov 06, 2014 at 12:02:49AM +0400, Dmitry Eremin-Solenikov wrote:
-> 2014-11-03 16:41 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
-
-> > The point is still the same: no unrelated code in drivers/mfd,
-> > then either use IIO DAC as a middle layer or sink the DAC handling
-> > into respective subdriver, i.e. push it into the backlight or
-> > volume directly then.
-
-> The problem is that the DAC is equally used by backlight and by sound
-> device (WIP).
-> What about true i2c device driver sitting in drivers/misc and exporting a regmap
-> of 2 8-bit registers?
-
-If it can just export registers that sounds like a MFD.  If it needs to
-export functionality then like Linus says the IIO subsystem abstracts
-DACs.
-
---VSaCG/zfRnOiPJtU
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUWodkAAoJECTWi3JdVIfQmVgH/3rgog8tN2ChD8V1ivSlMvNt
-BR0isnXota/g1iIVojeFIhBwN7UZ5ZniMjn0dV7LKpMO20yzKNKz7znanQqTps6e
-hBfrJc+uD1sjIdPCZHD0exKJyRCe40xkCG24rGUev9e2Vsnk2YyD5I6jo/yGNb97
-icM3wNV/kSYXH0Iq/LViQqdtDXbFmnjxgN/qv1hQJGNF8ceAQeSTdO/HeLsyrjW5
-JbIqnxNmxAaVACQSlkfbxrbCIj9zVqmW8V2Tab31nG3Mz/7rGofOcNM8ytzf2osP
-WoIfhvxmqLtRvjwf6tfK2feLyW+NwjQ3ZK0w6OxPC1QCwrg+LSMNP2wbRe9qfpw=
-=sVTi
------END PGP SIGNATURE-----
-
---VSaCG/zfRnOiPJtU--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

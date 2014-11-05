@@ -1,118 +1,65 @@
-From: Andy Shevchenko <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH] spi: dw: Fix dynamic speed change
-Date: Wed, 05 Nov 2014 11:57:03 +0200
-Message-ID: <1415181423.472.15.camel@linux.intel.com>
+Date: Wed, 5 Nov 2014 10:54:52 +0000
+Message-ID: <20141105105452.GS3729@sirena.org.uk>
 References: <1415140617-2028-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org,
-	setka-3PjVBYxTQDg@public.gmane.org, tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gV1yUYniiDLxW66s"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, setka-3PjVBYxTQDg@public.gmane.org,
+	tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
 To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
 In-Reply-To: <1415140617-2028-1-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 2014-11-04 at 16:36 -0600, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
-> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
->=20
-> Changing SPI transfer speed using a utility such as spi_config with
-> spidev updates chip->speed_hz which is compared to the next transfer
-> speed.
->=20
-> When speed_hz is not declared in a SPI transfer, the transfer speed i=
-s
+
+--gV1yUYniiDLxW66s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Tue, Nov 04, 2014 at 04:36:56PM -0600, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wrote:
+
+> When speed_hz is not declared in a SPI transfer, the transfer speed is
 > not updated for the next read/write on /dev/spidevX.Y. The element
+
+Why is the behaviour of spidev relevant here, if there is a problem with
+spidev why is it being addressed in a specific driver?
+
 > spi_transfer->speed_hz is filled with spi->max_speed_hz. The test of
-> if (transfer->speed_hz !=3D speed) doesn't work because the chip->spe=
-ed_hz
+> if (transfer->speed_hz != speed) doesn't work because the chip->speed_hz
 > matches transfer->speed_hz and the clock divider is not updated.
->=20
-> This fix: On each transfer update the clock divider, compare to the
-> previous clock divider and update if necessary. This fixes another
-> bug where the clock divider calculation at the top of the
-> pump_transfers() function could be an odd-number.
->=20
 
-My intention is to use SPI core API as much as possible. Thus,
-pump_transfers() I think should be gone in future. Instead of doing an
-additional work can you provide a helper function to set speed_hz and
-call it from pump_transfers()?
+In what way does the test "not work"?  What should the test be doing and
+what is it actually doing?
 
-
-
-> Reported-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
-> Signed-off-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
-> Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-> ---
->  drivers/spi/spi-dw.c |   33 ++++++++++++++++++---------------
->  1 file changed, 18 insertions(+), 15 deletions(-)
->=20
-> diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-> index 72e12ba..3456b34 100644
-> --- a/drivers/spi/spi-dw.c
-> +++ b/drivers/spi/spi-dw.c
-> @@ -376,9 +376,6 @@ static void pump_transfers(unsigned long data)
->  	chip =3D dws->cur_chip;
->  	spi =3D message->spi;
-> =20
-> -	if (unlikely(!chip->clk_div))
-> -		chip->clk_div =3D dws->max_freq / chip->speed_hz;
-> -
->  	if (message->state =3D=3D ERROR_STATE) {
->  		message->status =3D -EIO;
->  		goto early_exit;
-> @@ -415,21 +412,27 @@ static void pump_transfers(unsigned long data)
-> =20
->  	cr0 =3D chip->cr0;
-> =20
-> -	/* Handle per transfer options for bpw and speed */
-> -	if (transfer->speed_hz) {
-> -		speed =3D chip->speed_hz;
 > +	/* Always calculate the desired clock divider */
-> +	speed =3D transfer->speed_hz ? transfer->speed_hz : chip->speed_hz;
-> +
-> +	if (speed > dws->max_freq) {
-> +		dev_err(&spi->dev, "Unsupported SPI freq: %d Hz\n", speed);
-> +		message->status =3D -EIO;
-> +		goto early_exit;
-> +	}
-> +
-> +	/* clk_div doesn't support odd number */
-> +	clk_div =3D dws->max_freq / speed;
-> +	clk_div =3D (clk_div + 1) & 0xfffe;
-> =20
-> -		if (transfer->speed_hz !=3D speed) {
-> -			speed =3D transfer->speed_hz;
-> +	/* Determine if the clock divider changed, if so update chip struct=
- */
+> +	speed = transfer->speed_hz ? transfer->speed_hz : chip->speed_hz;
 
-Maybe "=E2=80=A6update speed_hz" ?
+Please avoid using the ternery operator standalone, write a normal if to
+help people read the code.  Though in this case the core should always
+ensure that there is a speed set on each transfer so I'm not clear when
+this test would ever use anything other than transfer->speed_hz anyway.
 
-> +	if (clk_div !=3D chip->clk_div)
-> +		chip->clk_div =3D clk_div;
-> +	else
-> +		clk_div =3D 0; /* Prevent register programming below */
-> =20
-> -			/* clk_div doesn't support odd number */
-> -			clk_div =3D dws->max_freq / speed;
-> -			clk_div =3D (clk_div + 1) & 0xfffe;
-> +	chip->speed_hz =3D speed;
-> =20
-> -			chip->speed_hz =3D speed;
-> -			chip->clk_div =3D clk_div;
-> -		}
-> -	}
->  	if (transfer->bits_per_word) {
->  		bits =3D transfer->bits_per_word;
->  		dws->n_bytes =3D dws->dma_width =3D bits >> 3;
+--gV1yUYniiDLxW66s
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
---=20
-Andy Shevchenko <andriy.shevchenko-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Intel Finland Oy
+iQEcBAEBAgAGBQJUWgH7AAoJECTWi3JdVIfQLUQH/3tY/TrhfwPHJik3TzFZFMKV
+at23KcBocV5N7GLwiZx1p52pbZWqcgTToYSS1rB8sTdg1HXxfPHzsLUD3JsRvEEm
+eB5w7rzD7ngh1/zftQUYOe0n2k7VQ9XaONnHiNtzauTzT0GRZneka68a8XwZBCWA
+zaISVx18pCXZhMSumL6zyCYPxT4nlmKHWciodsu7rTasjOr0gGO4y6zXJBHQMxeQ
+AbfDemSDpc7NY/LRnMq0+A8n1l2+efGX7hprQHaFtzrbExOb0bZeAKZD1jjtRjcN
+9VUrjtwJtoiQdJbQwO81O5VBw/+Moq5htqx30WeL59XjeUXV+VJPGNVBQFVW8/E=
+=fh2n
+-----END PGP SIGNATURE-----
 
+--gV1yUYniiDLxW66s--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

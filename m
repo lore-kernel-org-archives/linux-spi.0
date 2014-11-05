@@ -1,90 +1,87 @@
-From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Subject: Re: [PATCH] spi: dw: Fix dynamic speed change
-Date: Wed, 5 Nov 2014 14:25:59 -0600
-Message-ID: <545A87D7.3010705@opensource.altera.com>
-References: <1415140617-2028-1-git-send-email-tthayer@opensource.altera.com> <20141105105452.GS3729@sirena.org.uk> <545A1308.4080106@vsis.cz> <20141105132442.GT3729@sirena.org.uk>
+From: Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH 01/15] mfd: add new driver for Sharp LoCoMo
+Date: Wed, 05 Nov 2014 21:32:37 +0100
+Message-ID: <545A8965.2010406@metafoo.de>
+References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>	<1414454528-24240-2-git-send-email-dbaryshkov@gmail.com>	<CACRpkdbW3NA00zMZr216ZeZpgVkXwKUo30biTVd5kcHKGGtkHg@mail.gmail.com>	<CALT56yNX8v4mZn=o1ZoVLHPmg6wq0dgFNowpqNuFtU=eCc+d8w@mail.gmail.com>	<CACRpkdaKUZjbSEH75M9xudTF9HefwOCVEe5otv9-9f2UG8=hVg@mail.gmail.com>
+ <CALT56yM8B3ffYb0=EZVbRRGDZSxMci2sRp9XVtjQuLa5abN+cg@mail.gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8;
-	format=flowed
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	<tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>, <andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	=?UTF-8?B?Vmxhc3RpbWlsIMWgZXRrYQ==?= <setka-3PjVBYxTQDg@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20141105132442.GT3729-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
+Content-Transfer-Encoding: 7bit
+Cc: Alexandre Courbot <gnurou@gmail.com>,
+ "linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+ Bryan Wu <cooloney@gmail.com>, Russell King <linux@arm.linux.org.uk>,
+ Samuel Ortiz <sameo@linux.intel.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Lee Jones <lee.jones@linaro.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+ Mark Brown <broonie@kernel.org>, Andrea Adami <andrea.adami@gmail.com>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+ Linux Input <linux-input@vger.kernel.org>, Jingoo Han <jg1.han@samsung.com>,
+ Daniel Mack <daniel@zonque.org>, Robert Jarzmik <robert.jarzmik@free.fr>,
+ Richard Purdie <rpurdie@rpsys.net>,
+ "
+To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>
+Return-path: <alsa-devel-bounces@alsa-project.org>
+In-Reply-To: <CALT56yM8B3ffYb0=EZVbRRGDZSxMci2sRp9XVtjQuLa5abN+cg@mail.gmail.com>
+List-Unsubscribe: <http://mailman.alsa-project.org/mailman/options/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=unsubscribe>
+List-Archive: <http://mailman.alsa-project.org/pipermail/alsa-devel/>
+List-Post: <mailto:alsa-devel@alsa-project.org>
+List-Help: <mailto:alsa-devel-request@alsa-project.org?subject=help>
+List-Subscribe: <http://mailman.alsa-project.org/mailman/listinfo/alsa-devel>,
+ <mailto:alsa-devel-request@alsa-project.org?subject=subscribe>
+Errors-To: alsa-devel-bounces@alsa-project.org
+Sender: alsa-devel-bounces@alsa-project.org
+List-Id: linux-spi.vger.kernel.org
 
-
-On 11/05/2014 07:24 AM, Mark Brown wrote:
-> On Wed, Nov 05, 2014 at 01:07:36PM +0100, Vlastimil =C5=A0etka wrote:
->> 5.11.2014 11:54, Mark Brown:
->>> On Tue, Nov 04, 2014 at 04:36:56PM -0600, tthayer-yzvPICuk2ABMcg4IHK0kFvd9D2ou9A/h@public.gmane.org=
-=2Ecom wrote:
->>>> When speed_hz is not declared in a SPI transfer, the transfer spee=
-d is
->>>> not updated for the next read/write on /dev/spidevX.Y. The element
->>> Why is the behaviour of spidev relevant here, if there is a problem=
- with
->>> spidev why is it being addressed in a specific driver?
->> You can do a transfer at SPI using SPI_IOC_MESSAGE ioctl. In this ca=
-se you
->> can declare speed_hz per transfer, and everything is OK in spi-dw.
-> You can declare a speed per transfer for *any* client, this is totall=
-y
-> generic behaviour.  What is the specific relevance of spidev here?
-spidev was just the vehicle that the issue was observed on and is usefu=
-l=20
-for debugging.
->> If you do not declare speed_hz (default is 0) when using SPI_IOC_MES=
-SAGE, or
->> when you do just read/write on /dev/spidevX.Y, the spi_transfer->spe=
-ed_hz is
->> filled by spi->max_speed_hz (which is the value previously set by
->> SPI_IOC_WR_MAX_SPEED_HZ). This triggers a problem in spi-dw.
-> Again, this is something that any client could do...
+On 11/05/2014 09:02 PM, Dmitry Eremin-Solenikov wrote:
+> 2014-11-03 16:41 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
+>> On Fri, Oct 31, 2014 at 10:54 AM, Dmitry Eremin-Solenikov
+>> <dbaryshkov@gmail.com> wrote:
+>>> 2014-10-31 10:42 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
+>>
+>>>> It seems some DAC handling is part of the MFD driver, and we recently
+>>>> discussed that MFD should not be doing misc stuff but mainly act as
+>>>> arbiter and switching station.
+>>>>
+>>>> Can you please move the DAC parts of the driver to
+>>>> drivers/iio/dac?
+>>>>
+>>>> The IIO DAC subsystem will likely add other goodies to
+>>>> the driver for free and give a nice API to consumers.
+>>>
+>>> I wanted this part to be as simple as possible. I will look into IIO
+>>> DAC subsystem.
+>>> The DAC is as simple 2 channel 8-bit i2c device connected to a separate i2c bus
+>>> controlled through a register in LoCoMo device. One channel is used
+>>> for backlight,
+>>> other will be used for volume control. So (in theory) I can add the
+>>> following device
+>>> chain:  locomo -> i2c-locomo -> m62332 -> IIO DAC client.  However isn't that
+>>> quite an overkill for just backlight & volume control? Please advice me on this.
+>>
+>> The point is still the same: no unrelated code in drivers/mfd,
+>> then either use IIO DAC as a middle layer or sink the DAC handling
+>> into respective subdriver, i.e. push it into the backlight or
+>> volume directly then.
 >
->> The reason is buggy condition which encloses chip->clk_div recalcula=
-tion:
->>       if (transfer->speed_hz) {
->>           speed =3D chip->speed_hz;
->>           if (transfer->speed_hz !=3D speed) {
->> because transfer->speed_hz is filled by spi->max_speed_hz, which is =
-equal to
->> chip->speed_hz -- because SPI_IOC_WR_MAX_SPEED_HZ do this (in dw_spi=
-_setup):
-> To repeat again: please talk about driver problems in terms of the
-> driver not in terms of a particular driver.  Glancing at the code her=
-e
-> it looks like spidev is buggy here, it's just blindly allowing usersp=
-ace
-> to overwrite the maximum speed configured for the device which seems
-> like a bad idea, drivers should have no reason to expect that somethi=
-ng
-> called max_speed is actually variable.  It looks like spidev is abusi=
-ng
-> this as a default speed.
-spidev is calling the case condition SPI_IOC_WR_MAX_SPEED_HZ in=20
-spidev_ioctl() to overwrite the maximum speed. From the code and the=20
-name, it seems like overwriting the maximum speed was the intended use=20
-and not a side effect.
->>      chip->speed_hz =3D spi->max_speed_hz =3D new_spi_speed
-> So the driver is overriding its idea of the current speed without
-> actually updatng the hardware.  Why is the fix here not to just delet=
-e
-> the assignment here, it seems fairly obviously buggy?
-Yes, removing line 591 of the spi-dw.c (chip->speed_hz =3D=20
-spi->max_speed_hz;) will solve the problem and seems like a clean fix.=20
-In this case the chip->speed_hz will persist the last transfer speed=20
-setting.
+> The problem is that the DAC is equally used by backlight and by sound
+> device (WIP).
 
-The chip->speed_hz parameter won't be updated as part of the spi-dw=20
-driver initialization. This may not matter since it will get updated on=
-=20
-the first transfer in the (transfer->speed !=3D speed) test shown above=
-=2E
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+That shouldn't be a problem. The IIO API allows different consumers to 
+request different channels of a converter. You can write a generic IIO based 
+backlight driver and a generic IIO based volume control driver. This makes 
+it possible to re-use them in other circuits with other DACs but the same 
+application.
+
+> What about true i2c device driver sitting in drivers/misc and exporting a regmap
+> of 2 8-bit registers?
+
+If it is a generic DAC it should go into drivers/iio/, this will allow code 
+sharing and code re-usability. Given the simplicity of the DAC there might 
+even be other existing drivers that can be used to control it.
+
+- Lars

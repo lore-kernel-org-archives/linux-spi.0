@@ -1,146 +1,54 @@
-From: Padmavathi Venna <padma.kvr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: s3c64xx: add support for exynos7 SPI controller
-Date: Thu,  6 Nov 2014 15:21:49 +0530
-Message-ID: <1415267509-16653-1-git-send-email-padma.v@samsung.com>
-Cc: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
-To: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] spi: s3c64xx: add support for exynos7 SPI controller
+Date: Thu, 6 Nov 2014 10:26:36 +0000
+Message-ID: <20141106102636.GT8509@sirena.org.uk>
+References: <1415267509-16653-1-git-send-email-padma.v@samsung.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="4AfY4lbNVy6SI0IG"
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org
+To: Padmavathi Venna <padma.kvr@gmail.com>
+Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <1415267509-16653-1-git-send-email-padma.v@samsung.com>
+Sender: linux-samsung-soc-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-Exynos7 SPI controller supports only the auto Selection of
-CS toggle mode and Exynos7 SoC includes six SPI controllers.
-Add support for these changes in Exynos7 SPI controller driver.
 
-Signed-off-by: Padmavathi Venna <padma.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
----
- .../devicetree/bindings/spi/spi-samsung.txt        |    2 +-
- drivers/spi/Kconfig                                |    2 +-
- drivers/spi/spi-s3c64xx.c                          |   32 ++++++++++++++++---
- 3 files changed, 29 insertions(+), 7 deletions(-)
+--4AfY4lbNVy6SI0IG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-samsung.txt b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-index 1e8a857..6dbdeb3 100644
---- a/Documentation/devicetree/bindings/spi/spi-samsung.txt
-+++ b/Documentation/devicetree/bindings/spi/spi-samsung.txt
-@@ -9,7 +9,7 @@ Required SoC Specific Properties:
-     - samsung,s3c2443-spi: for s3c2443, s3c2416 and s3c2450 platforms
-     - samsung,s3c6410-spi: for s3c6410 platforms
-     - samsung,s5pv210-spi: for s5pv210 and s5pc110 platforms
--    - samsung,exynos4210-spi: for exynos4 and exynos5 platforms
-+    - samsung,exynos7-spi: for exynos7 platforms
- 
- - reg: physical base address of the controller and length of memory mapped
-   region.
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 84e7c9e..de2d33d 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -444,7 +444,7 @@ config SPI_S3C24XX_FIQ
- 
- config SPI_S3C64XX
- 	tristate "Samsung S3C64XX series type SPI"
--	depends on PLAT_SAMSUNG
-+	depends on (PLAT_SAMSUNG || ARCH_EXYNOS)
- 	select S3C64XX_PL080 if ARCH_S3C64XX
- 	help
- 	  SPI driver for Samsung S3C64XX and newer SoCs.
-diff --git a/drivers/spi/spi-s3c64xx.c b/drivers/spi/spi-s3c64xx.c
-index 480133e..59e07cf 100644
---- a/drivers/spi/spi-s3c64xx.c
-+++ b/drivers/spi/spi-s3c64xx.c
-@@ -33,8 +33,9 @@
- 
- #include <linux/platform_data/spi-s3c64xx.h>
- 
--#define MAX_SPI_PORTS		3
-+#define MAX_SPI_PORTS		6
- #define S3C64XX_SPI_QUIRK_POLL		(1 << 0)
-+#define S3C64XX_SPI_QUIRK_CS_AUTO	(1 << 1)
- 
- /* Registers and bit-fields */
- 
-@@ -78,6 +79,7 @@
- 
- #define S3C64XX_SPI_SLAVE_AUTO			(1<<1)
- #define S3C64XX_SPI_SLAVE_SIG_INACT		(1<<0)
-+#define S3C64XX_SPI_SLAVE_NSC_CNT_2		(2<<4)
- 
- #define S3C64XX_SPI_INT_TRAILING_EN		(1<<6)
- #define S3C64XX_SPI_INT_RX_OVERRUN_EN		(1<<5)
-@@ -717,7 +719,12 @@ static int s3c64xx_spi_transfer_one(struct spi_master *master,
- 	enable_datapath(sdd, spi, xfer, use_dma);
- 
- 	/* Start the signals */
--	writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
-+		writel(0, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	else
-+		writel(readl(sdd->regs + S3C64XX_SPI_SLAVE_SEL)
-+			| S3C64XX_SPI_SLAVE_AUTO | S3C64XX_SPI_SLAVE_NSC_CNT_2,
-+			sdd->regs + S3C64XX_SPI_SLAVE_SEL);
- 
- 	spin_unlock_irqrestore(&sdd->lock, flags);
- 
-@@ -866,13 +873,15 @@ static int s3c64xx_spi_setup(struct spi_device *spi)
- 	}
- 
- 	pm_runtime_put(&sdd->pdev->dev);
--	writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
-+		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
- 	return 0;
- 
- setup_exit:
- 	pm_runtime_put(&sdd->pdev->dev);
- 	/* setup() returns with device de-selected */
--	writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
-+		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
- 
- 	if (gpio_is_valid(spi->cs_gpio))
- 		gpio_free(spi->cs_gpio);
-@@ -946,7 +955,8 @@ static void s3c64xx_spi_hwinit(struct s3c64xx_spi_driver_data *sdd, int channel)
- 
- 	sdd->cur_speed = 0;
- 
--	writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
-+	if (!(sdd->port_conf->quirks & S3C64XX_SPI_QUIRK_CS_AUTO))
-+		writel(S3C64XX_SPI_SLAVE_SIG_INACT, sdd->regs + S3C64XX_SPI_SLAVE_SEL);
- 
- 	/* Disable Interrupts - we use Polling if not DMA mode */
- 	writel(0, regs + S3C64XX_SPI_INT_EN);
-@@ -1341,6 +1351,15 @@ static struct s3c64xx_spi_port_config exynos5440_spi_port_config = {
- 	.quirks		= S3C64XX_SPI_QUIRK_POLL,
- };
- 
-+static struct s3c64xx_spi_port_config exynos7_spi_port_config = {
-+	.fifo_lvl_mask	= { 0x1ff, 0x7F, 0x7F, 0x7F, 0x7F, 0x1ff},
-+	.rx_lvl_offset	= 15,
-+	.tx_st_done	= 25,
-+	.high_speed	= true,
-+	.clk_from_cmu	= true,
-+	.quirks		= S3C64XX_SPI_QUIRK_CS_AUTO,
-+};
-+
- static struct platform_device_id s3c64xx_spi_driver_ids[] = {
- 	{
- 		.name		= "s3c2443-spi",
-@@ -1374,6 +1393,9 @@ static const struct of_device_id s3c64xx_spi_dt_match[] = {
- 	{ .compatible = "samsung,exynos5440-spi",
- 			.data = (void *)&exynos5440_spi_port_config,
- 	},
-+	{ .compatible = "samsung,exynos7-spi",
-+			.data = (void *)&exynos7_spi_port_config,
-+	},
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, s3c64xx_spi_dt_match);
--- 
-1.7.4.4
+On Thu, Nov 06, 2014 at 03:21:49PM +0530, Padmavathi Venna wrote:
+> Exynos7 SPI controller supports only the auto Selection of
+> CS toggle mode and Exynos7 SoC includes six SPI controllers.
+> Add support for these changes in Exynos7 SPI controller driver.
 
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+Could you give a bit more detail on what the "auto selection of CS
+toggle mode" is - in the diff it looks like it's not an existing mode.
+I'm a bit worried that it's not going to function well with devices that
+send more than one transfer per message.
+
+> Signed-off-by: Padmavathi Venna <padma.v@samsung.com>
+
+It's better if your signoff is using the same e-maill address as=20
+
+--4AfY4lbNVy6SI0IG
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUW0zXAAoJECTWi3JdVIfQr/AH/R+QLj3eZH9EE6l3EetEEPO+
+x9GGn7iRKAidcq6tXoy6EKtCC5BGPm0kc2desYgGpVrcBi6ro8OMOjfxy3irtJlq
+yiosuUP9M0pP2DfMeNARPNHyz499AaLSz+/Gr4YZciT0o6/tnqcEpsY0ONILKSnp
+8fex7bA2JuFQObppUzzqHszNuGh4Bl8pkcyFlqeV4vHEEhpWdBc32S9K4cYxWpxp
+B+D4J4OXHaCVIHv286zO8tYADDIy/EvPK8UGdZxa/7cEeVqBDHqXFQiu8n6QamHl
+LXjV7L3GXMdvvPDZf9MmAP/xVdOBHfOTRseR7mjNjs14EYpBj+ezy/f+KwcTTOU=
+=IaZv
+-----END PGP SIGNATURE-----
+
+--4AfY4lbNVy6SI0IG--

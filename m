@@ -1,7 +1,7 @@
 From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Subject: [PATCH] spi: dw: Fix dynamic speed change.
-Date: Thu, 6 Nov 2014 13:50:39 -0600
-Message-ID: <1415303439-31468-1-git-send-email-tthayer@opensource.altera.com>
+Subject: [PATCHv2] spi: dw: Fix dynamic speed change.
+Date: Thu, 6 Nov 2014 13:54:27 -0600
+Message-ID: <1415303667-31584-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
 Content-Type: text/plain
 Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,

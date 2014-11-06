@@ -1,80 +1,52 @@
-From: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: pxa2xx: toggle clocks on suspend if not disabled by runtime PM
-Date: Thu,  6 Nov 2014 14:08:29 +0300
-Message-ID: <1415272109-24970-1-git-send-email-dbaryshkov@gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH] spi: pxa2xx: toggle clocks on suspend if not disabled by
+ runtime PM
+Date: Thu, 6 Nov 2014 12:52:55 +0000
+Message-ID: <20141106125255.GE8509@sirena.org.uk>
+References: <1415272109-24970-1-git-send-email-dbaryshkov@gmail.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="8WKGInOJRMBXYFEc"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	Robert Jarzmik <robert.jarzmik-GANU6spQydw@public.gmane.org>,
 	Daniel Mack <daniel-cYrQPVfZoowdnm+yROfE0A@public.gmane.org>,
 	Haojian Zhuang <haojian.zhuang-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Andrea Adami <andrea.adami-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1415272109-24970-1-git-send-email-dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-If PM_RUNTIME is enabled, it is easy to trigger the following backtrace
-on pxa2xx hosts:
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 1 at /home/lumag/linux/arch/arm/mach-pxa/clock.c:35 clk_disable+0xa0/0xa8()
-Modules linked in:
-CPU: 0 PID: 1 Comm: swapper Not tainted 3.17.0-00007-g1b3d2ee-dirty #104
-[<c000de68>] (unwind_backtrace) from [<c000c078>] (show_stack+0x10/0x14)
-[<c000c078>] (show_stack) from [<c001d75c>] (warn_slowpath_common+0x6c/0x8c)
-[<c001d75c>] (warn_slowpath_common) from [<c001d818>] (warn_slowpath_null+0x1c/0x24)
-[<c001d818>] (warn_slowpath_null) from [<c0015e80>] (clk_disable+0xa0/0xa8)
-[<c0015e80>] (clk_disable) from [<c02507f8>] (pxa2xx_spi_suspend+0x2c/0x34)
-[<c02507f8>] (pxa2xx_spi_suspend) from [<c0200360>] (platform_pm_suspend+0x2c/0x54)
-[<c0200360>] (platform_pm_suspend) from [<c0207fec>] (dpm_run_callback.isra.14+0x2c/0x74)
-[<c0207fec>] (dpm_run_callback.isra.14) from [<c0209254>] (__device_suspend+0x120/0x2f8)
-[<c0209254>] (__device_suspend) from [<c0209a94>] (dpm_suspend+0x50/0x208)
-[<c0209a94>] (dpm_suspend) from [<c00455ac>] (suspend_devices_and_enter+0x8c/0x3a0)
-[<c00455ac>] (suspend_devices_and_enter) from [<c0045ad4>] (pm_suspend+0x214/0x2a8)
-[<c0045ad4>] (pm_suspend) from [<c04b5c34>] (test_suspend+0x14c/0x1dc)
-[<c04b5c34>] (test_suspend) from [<c000880c>] (do_one_initcall+0x8c/0x1fc)
-[<c000880c>] (do_one_initcall) from [<c04aecfc>] (kernel_init_freeable+0xf4/0x1b4)
-[<c04aecfc>] (kernel_init_freeable) from [<c0378078>] (kernel_init+0x8/0xec)
-[<c0378078>] (kernel_init) from [<c0009590>] (ret_from_fork+0x14/0x24)
----[ end trace 46524156d8faa4f6 ]---
+--8WKGInOJRMBXYFEc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This happens because suspend function tries to disable a clock that is
-already disabled by runtime_suspend callback. Add if
-(!pm_runtime_suspended()) checks to suspend/resume path.
+On Thu, Nov 06, 2014 at 02:08:29PM +0300, Dmitry Eremin-Solenikov wrote:
+> If PM_RUNTIME is enabled, it is easy to trigger the following backtrace
+> on pxa2xx hosts:
 
-Signed-off-by: Dmitry Eremin-Solenikov <dbaryshkov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Reported-by: Andrea Adami <andrea.adami-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
----
- drivers/spi/spi-pxa2xx.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Applied, thanks.
 
-diff --git a/drivers/spi/spi-pxa2xx.c b/drivers/spi/spi-pxa2xx.c
-index 46f45ca..9090dad 100644
---- a/drivers/spi/spi-pxa2xx.c
-+++ b/drivers/spi/spi-pxa2xx.c
-@@ -1276,7 +1276,9 @@ static int pxa2xx_spi_suspend(struct device *dev)
- 	if (status != 0)
- 		return status;
- 	write_SSCR0(0, drv_data->ioaddr);
--	clk_disable_unprepare(ssp->clk);
-+
-+	if (!pm_runtime_suspended(dev))
-+		clk_disable_unprepare(ssp->clk);
- 
- 	return 0;
- }
-@@ -1290,7 +1292,8 @@ static int pxa2xx_spi_resume(struct device *dev)
- 	pxa2xx_spi_dma_resume(drv_data);
- 
- 	/* Enable the SSP clock */
--	clk_prepare_enable(ssp->clk);
-+	if (!pm_runtime_suspended(dev))
-+		clk_prepare_enable(ssp->clk);
- 
- 	/* Restore LPSS private register bits */
- 	lpss_ssp_setup(drv_data);
--- 
-2.1.1
+--8WKGInOJRMBXYFEc
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUW28mAAoJECTWi3JdVIfQ8yEH/i+6hOISfZgAJ4nipNQXsBFJ
+7QVb2BNLxi5aENYG77JZdsc1IvlZ0ypuq+/ny+h3JBs/XyNwxwc9Ob4BccM/2+25
+WhzAsDNte0rdwWeC9PAfxzd4gny8b4jlLMLtn1ft0BOvt3ja8atWMBAuvYBMYLUX
+a6JzNQcC4aa869h6zVDWbvEyuUsxmKb3A/mr9qaFfmPXc26FbQtVazZDDoiHBdTd
+EAQSN9+rLfEr+RCdD3DpJ2RvBdyxoExIoI3cYy6x25httD+Eyaw1iDkxwAHQ3tDr
+adpMvSGhArDg6Xj2oBPTpEmpcxmZZJoy+YtAzeEBZunX7xaGfL3Q3JdhDWY71fM=
+=8ZPy
+-----END PGP SIGNATURE-----
+
+--8WKGInOJRMBXYFEc--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

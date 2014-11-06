@@ -1,87 +1,83 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: dw: Fix dynamic speed change
-Date: Thu, 6 Nov 2014 15:48:00 +0000
-Message-ID: <20141106154800.GL8509@sirena.org.uk>
-References: <1415140617-2028-1-git-send-email-tthayer@opensource.altera.com>
- <20141105105452.GS3729@sirena.org.uk>
- <545A1308.4080106@vsis.cz>
- <20141105132442.GT3729@sirena.org.uk>
- <545A87D7.3010705@opensource.altera.com>
+From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Subject: [PATCH] spi: dw: Fix dynamic speed change.
+Date: Thu, 6 Nov 2014 13:50:39 -0600
+Message-ID: <1415303439-31468-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="lrl7g2KojMNQ8tYq"
-Cc: Vlastimil =?utf-8?B?xaBldGth?= <setka-3PjVBYxTQDg@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org,
-	andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Content-Type: text/plain
+Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	<setka-3PjVBYxTQDg@public.gmane.org>, <tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>,
+	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <545A87D7.3010705-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
+From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 
---lrl7g2KojMNQ8tYq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+An IOCTL call that calls spi_setup() and then dw_spi_setup() will
+overwrite the persisted last transfer speed. On each transfer, the
+SPI speed is compared to the last transfer speed to determine if the
+clock divider registers need to be updated (did the speed change?).
+This bug was observed with the spidev driver using spi-config to
+update the max transfer speed.
 
-On Wed, Nov 05, 2014 at 02:25:59PM -0600, Thor Thayer wrote:
+This fix: Don't overwrite the persisted last transaction clock speed
+when updating the SPI parameters in dw_spi_setup(). On the next
+transaction, the new speed won't match the persisted last speed
+and the hardware registers will be updated.
+On initialization, the persisted last transaction clock
+speed will be 0 but will be updated after the first SPI
+transaction.
 
-Please leave blank lines between paragraphs and quoted bits, it makes
-things much easier to read than an unbroken wall of text covering many
-screenfuls.
+Move zeroed clock divider check into clock change test because
+chip->clk_div is zero on startup and would cause a divide-by-zero
+error. The calculation was wrong as well (can't support odd #).
 
-> On 11/05/2014 07:24 AM, Mark Brown wrote:
+Reported-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
+Signed-off-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
+Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+---
+v2: Simplify fix so that last persistent SPI transfer speed is not
+overwritten.
+---
+ drivers/spi/spi-dw.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-> >To repeat again: please talk about driver problems in terms of the
-> >driver not in terms of a particular driver.  Glancing at the code here
-> >it looks like spidev is buggy here, it's just blindly allowing userspace
-> >to overwrite the maximum speed configured for the device which seems
-> >like a bad idea, drivers should have no reason to expect that something
-> >called max_speed is actually variable.  It looks like spidev is abusing
-> >this as a default speed.
+diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
+index 72e12ba..d0d5542 100644
+--- a/drivers/spi/spi-dw.c
++++ b/drivers/spi/spi-dw.c
+@@ -376,9 +376,6 @@ static void pump_transfers(unsigned long data)
+ 	chip = dws->cur_chip;
+ 	spi = message->spi;
+ 
+-	if (unlikely(!chip->clk_div))
+-		chip->clk_div = dws->max_freq / chip->speed_hz;
+-
+ 	if (message->state == ERROR_STATE) {
+ 		message->status = -EIO;
+ 		goto early_exit;
+@@ -419,7 +416,7 @@ static void pump_transfers(unsigned long data)
+ 	if (transfer->speed_hz) {
+ 		speed = chip->speed_hz;
+ 
+-		if (transfer->speed_hz != speed) {
++		if ((transfer->speed_hz != speed) || (!chip->clk_div)) {
+ 			speed = transfer->speed_hz;
+ 
+ 			/* clk_div doesn't support odd number */
+@@ -581,7 +578,6 @@ static int dw_spi_setup(struct spi_device *spi)
+ 		dev_err(&spi->dev, "No max speed HZ parameter\n");
+ 		return -EINVAL;
+ 	}
+-	chip->speed_hz = spi->max_speed_hz;
+ 
+ 	chip->tmode = 0; /* Tx & Rx */
+ 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
+-- 
+1.7.9.5
 
-> spidev is calling the case condition SPI_IOC_WR_MAX_SPEED_HZ in
-> spidev_ioctl() to overwrite the maximum speed. From the code and the name,
-> it seems like overwriting the maximum speed was the intended use and not a
-> side effect.
-
-This means it was an API that was implemented thoughtlessly rather than
-anything else; it should be fixed to cache and use the current speed
-after one has been set.
-
-> >>     chip->speed_hz = spi->max_speed_hz = new_spi_speed
-> >So the driver is overriding its idea of the current speed without
-> >actually updatng the hardware.  Why is the fix here not to just delete
-> >the assignment here, it seems fairly obviously buggy?
-
-> Yes, removing line 591 of the spi-dw.c (chip->speed_hz = spi->max_speed_hz;)
-> will solve the problem and seems like a clean fix. In this case the
-> chip->speed_hz will persist the last transfer speed setting.
-
-> The chip->speed_hz parameter won't be updated as part of the spi-dw driver
-> initialization. This may not matter since it will get updated on the first
-> transfer in the (transfer->speed != speed) test shown above.
-
-OK, great - can you submit that version please?
-
---lrl7g2KojMNQ8tYq
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUW5grAAoJECTWi3JdVIfQ5gEIAIaYRovmWBqdxgK3XnhN5AzY
-awOgkz3s2QpLv3icpF3++5ymGkyKNkemvEyxvTmJbkSRitd9YFIIESE7JJbIkFfA
-l1vxiYkA6rTokoSIxhhCgQP5ZGdKg1wlDuTYnNdR3s2pbEAF6c28tdNIDWtjRmpl
-ykzv7R0iuZQzmiLckgxchdVwCLnx1OlmDTfxMFqGK9cJacYbHamLoPT1h+80vHyf
-8fcNZWytItgZTiF7Zh4f0+KA0tQCidqNK12jvkwKJNDQkvgOd4mde/NRC5JSibC/
-LfGyF0g/qHRw9WczcQ6E8RSPzTg75e2SQVQFb/ra25jZOLAxbUzMtsjUoyFXEnk=
-=n3ml
------END PGP SIGNATURE-----
-
---lrl7g2KojMNQ8tYq--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

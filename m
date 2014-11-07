@@ -1,61 +1,112 @@
-From: Laurentiu Palcu <laurentiu.palcu@intel.com>
-Subject: [PATCH 2/2] mfd: dln2: add support for USB-SPI module
-Date: Fri,  7 Nov 2014 14:45:14 +0200
-Message-ID: <1415364314-30320-3-git-send-email-laurentiu.palcu@intel.com>
-References: <1415364314-30320-1-git-send-email-laurentiu.palcu@intel.com>
-Cc: Octavian Purdila <octavian.purdila@intel.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Laurentiu Palcu <laurentiu.palcu@intel.com>
-To: Mark Brown <broonie@kernel.org>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Johan Havold <johan@kernel.org>
+From: Torsten Fleischer <torfl6749@gmail.com>
+Subject: [PATCH 1/1] spi: spi-gpio: Fix compiler warning when building for 64 bit systems
+Date: Fri,  7 Nov 2014 18:11:58 +0100
+Message-ID: <1415380318-2065-1-git-send-email-torfl6749@gmail.com>
+Cc: Torsten Fleischer <torfl6749@gmail.com>
+To: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1415364314-30320-1-git-send-email-laurentiu.palcu@intel.com>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Signed-off-by: Laurentiu Palcu <laurentiu.palcu@intel.com>
----
- drivers/mfd/dln2.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+From: Torsten Fleischer <torfl6749@gmail.com>
 
-diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
-index 9765a17..0cdad2d 100644
---- a/drivers/mfd/dln2.c
-+++ b/drivers/mfd/dln2.c
-@@ -52,6 +52,7 @@ enum dln2_handle {
- 	DLN2_HANDLE_CTRL,
- 	DLN2_HANDLE_GPIO,
- 	DLN2_HANDLE_I2C,
-+	DLN2_HANDLE_SPI,
- 	DLN2_HANDLES
+The assignment of SPI_GPIO_NO_CHIPSELECT to cs_gpios[0] causes the following
+compiler warning, when building for 64 bit systems:
+"warning: overflow in implicit constant conversion [-Woverflow]".
+
+This is because the SPI_GPIO_NO_CHIPSELECT flag is a '-1' type casted to
+unsigned long and cs_gpios is of the type int.
+
+Furthermore the chip select's GPIO number is locally stored as unsigned int
+and compared with SPI_GPIO_NO_CHIPSELECT. Thus the result of the comparison
+is always false, if unsigned long and unsigned int have a different size.
+
+As part of the fix this patch adds a check for the device tree's cs-gpios
+property.
+
+Reported-by: kbuild test robot <fengguang.wu@intel.com>
+Signed-off-by: Torsten Fleischer <torfl6749@gmail.com>
+---
+ drivers/spi/spi-gpio.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
+
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index f0492c9..4b600d4 100644
+--- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -48,7 +48,7 @@ struct spi_gpio {
+ 	struct spi_bitbang		bitbang;
+ 	struct spi_gpio_platform_data	pdata;
+ 	struct platform_device		*pdev;
+-	int				cs_gpios[0];
++	unsigned long			cs_gpios[0];
  };
  
-@@ -634,6 +635,12 @@ static struct dln2_platform_data dln2_pdata_i2c = {
- 	.port = 0,
- };
+ /*----------------------------------------------------------------------*/
+@@ -220,7 +220,7 @@ static u32 spi_gpio_spec_txrx_word_mode3(struct spi_device *spi,
+ static void spi_gpio_chipselect(struct spi_device *spi, int is_active)
+ {
+ 	struct spi_gpio *spi_gpio = spi_to_spi_gpio(spi);
+-	unsigned int cs = spi_gpio->cs_gpios[spi->chip_select];
++	unsigned long cs = spi_gpio->cs_gpios[spi->chip_select];
  
-+/* Only one SPI port supported */
-+static struct dln2_platform_data dln2_pdata_spi = {
-+	.handle = DLN2_HANDLE_SPI,
-+	.port = 0,
-+};
-+
- static const struct mfd_cell dln2_devs[] = {
- 	{
- 		.name = "dln2-gpio",
-@@ -645,6 +652,11 @@ static const struct mfd_cell dln2_devs[] = {
- 		.platform_data = &dln2_pdata_i2c,
- 		.pdata_size = sizeof(struct dln2_platform_data),
- 	},
-+	{
-+		.name = "dln2-spi",
-+		.platform_data = &dln2_pdata_spi,
-+		.pdata_size = sizeof(struct dln2_platform_data),
-+	},
- };
+ 	/* set initial clock polarity */
+ 	if (is_active)
+@@ -234,7 +234,7 @@ static void spi_gpio_chipselect(struct spi_device *spi, int is_active)
  
- static void dln2_disconnect(struct usb_interface *interface)
+ static int spi_gpio_setup(struct spi_device *spi)
+ {
+-	unsigned int		cs;
++	unsigned long		cs;
+ 	int			status = 0;
+ 	struct spi_gpio		*spi_gpio = spi_to_spi_gpio(spi);
+ 	struct device_node	*np = spi->master->dev.of_node;
+@@ -249,7 +249,7 @@ static int spi_gpio_setup(struct spi_device *spi)
+ 		/*
+ 		 * ... otherwise, take it from spi->controller_data
+ 		 */
+-		cs = (unsigned int)(uintptr_t) spi->controller_data;
++		cs = (uintptr_t) spi->controller_data;
+ 	}
+ 
+ 	if (!spi->controller_state) {
+@@ -277,7 +277,7 @@ static int spi_gpio_setup(struct spi_device *spi)
+ static void spi_gpio_cleanup(struct spi_device *spi)
+ {
+ 	struct spi_gpio *spi_gpio = spi_to_spi_gpio(spi);
+-	unsigned int cs = spi_gpio->cs_gpios[spi->chip_select];
++	unsigned long cs = spi_gpio->cs_gpios[spi->chip_select];
+ 
+ 	if (cs != SPI_GPIO_NO_CHIPSELECT)
+ 		gpio_free(cs);
+@@ -437,7 +437,7 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 		return status;
+ 
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*spi_gpio) +
+-					(sizeof(int) * num_devices));
++					(sizeof(unsigned long) * num_devices));
+ 	if (!master) {
+ 		status = -ENOMEM;
+ 		goto gpio_free;
+@@ -470,9 +470,15 @@ static int spi_gpio_probe(struct platform_device *pdev)
+ 		if (!SPI_N_CHIPSEL)
+ 			spi_gpio->cs_gpios[0] = SPI_GPIO_NO_CHIPSELECT;
+ 		else
+-			for (i = 0; i < SPI_N_CHIPSEL; i++)
+-				spi_gpio->cs_gpios[i] =
+-					of_get_named_gpio(np, "cs-gpios", i);
++			for (i = 0; i < SPI_N_CHIPSEL; i++) {
++				status = of_get_named_gpio(np, "cs-gpios", i);
++				if (status < 0) {
++					dev_err(&pdev->dev,
++						"invalid cs-gpios property\n");
++					goto gpio_free;
++				}
++				spi_gpio->cs_gpios[i] = status;
++			}
+ 	}
+ #endif
+ 
 -- 
-1.9.1
+1.8.4.5

@@ -1,56 +1,71 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCHv2] spi: dw: Fix dynamic speed change.
-Date: Fri, 7 Nov 2014 10:15:42 +0000
-Message-ID: <20141107101542.GB8509@sirena.org.uk>
-References: <1415303667-31584-1-git-send-email-tthayer@opensource.altera.com>
+Subject: [GIT PULL] SPI fixes for v3.18
+Date: Fri, 7 Nov 2014 10:48:17 +0000
+Message-ID: <20141107104817.GH8509@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="/mAvBbWDJ4sDNDUu"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, setka-3PjVBYxTQDg@public.gmane.org,
-	tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
-To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
+	protocol="application/pgp-signature"; boundary="1IOMu5+WhZnpLp54"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Linus Torvalds <torvalds-de/tnXTf+JLsfHDXvbKv3WD2FQJk+8+b@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1415303667-31584-1-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---/mAvBbWDJ4sDNDUu
+--1IOMu5+WhZnpLp54
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 06, 2014 at 01:54:27PM -0600, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wro=
-te:
-> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
->=20
-> An IOCTL call that calls spi_setup() and then dw_spi_setup() will
-> overwrite the persisted last transfer speed. On each transfer, the
-> SPI speed is compared to the last transfer speed to determine if the
-> clock divider registers need to be updated (did the speed change?).
-> This bug was observed with the spidev driver using spi-config to
-> update the max transfer speed.
+The following changes since commit 0df1f2487d2f0d04703f142813d53615d62a1da4:
 
-Applied, thanks.
+  Linux 3.18-rc3 (2014-11-02 15:01:51 -0800)
 
---/mAvBbWDJ4sDNDUu
+are available in the git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-v3.18-rc3
+
+for you to fetch changes up to 4e72b4278dbc228e4dc453d4dfeca997e521d9af:
+
+  Merge remote-tracking branches 'spi/fix/fsl-dspi' and 'spi/fix/pxa2xx' into spi-linus (2014-11-06 12:58:46 +0000)
+
+----------------------------------------------------------------
+spi: Bug fixes for v3.18
+
+A couple of small driver fixes for v3.18, both quite problematic if you
+hit a use case that's affected.
+
+----------------------------------------------------------------
+Alexander Stein (1):
+      spi: fsl-dspi: Fix CTAR selection
+
+Dmitry Eremin-Solenikov (1):
+      spi: pxa2xx: toggle clocks on suspend if not disabled by runtime PM
+
+Mark Brown (1):
+      Merge remote-tracking branches 'spi/fix/fsl-dspi' and 'spi/fix/pxa2xx' into spi-linus
+
+ drivers/spi/spi-fsl-dspi.c | 4 ++--
+ drivers/spi/spi-pxa2xx.c   | 7 +++++--
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+
+--1IOMu5+WhZnpLp54
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUXJvNAAoJECTWi3JdVIfQFosH/3rTm3hoxdQnSAaqjNL5WIiP
-PldIV+pSbqTBIVWIwSUYYl8tl4t78dXxQLNVKcLJiTfL5QQ+gT29fGSLssmbzs4v
-KdT7+OOfsxb8gjW93Q8jkU4u0GQqZZDp3JwJiEmAlmZHKn8zG2yCc1ooQbrnR39x
-N0rixqLRkI6tvKA6ho6oS3KWYF+aU7gUdWXFsZ2ae/1TuFAw+QvCzSRVXVrWLpoK
-hN04fkAkmkkZUtnYejrIpRPeSUceFsr4y+5IUabHmJJefzhPJcd+/UolhStxyvY5
-RWCLO1h+uNwsbzxv1nlekQM5+OOUrdIU8FHk83jbdFeZEl6Ak50arBWKXTMdE9Y=
-=lFQ4
+iQEcBAEBAgAGBQJUXKNwAAoJECTWi3JdVIfQrBoH/i4D82DBWJKQC83bNbng3Qb+
+26W0Pk3ZnWs5mWR6Rlgx4fl/P843D8ogsMDp0rRXWzKg46qM6845MG1tYNyuFqOH
+2FMPMJQqcGllM8Hfjv0Nc4A5oDboZonCJZS6wtg6DrgH/LdHJK45ngzRwzaqMPU4
+2hBUaEJUx/cPeKrZz0mO6ylNpJaZ//ryxH43c314/IHP2AfMCG2BUh31YxMENbeY
+VkAwxa3bOWVNwQQfifCehGZ4jaT6E1xVOu8mz3Js8U8fkTtg6sJ0AXMGvDRdDGoS
+sB0V72htq5QRGumVrtWXyG0syHULHFXOfuM0GDfkBwx2vcK6k1AlCYt+3xgXWX4=
+=b8Un
 -----END PGP SIGNATURE-----
 
---/mAvBbWDJ4sDNDUu--
+--1IOMu5+WhZnpLp54--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

@@ -1,58 +1,57 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: s3c64xx: add support for exynos7 SPI controller
-Date: Fri, 7 Nov 2014 10:13:10 +0000
-Message-ID: <20141107101310.GA8509@sirena.org.uk>
-References: <1415267509-16653-1-git-send-email-padma.v@samsung.com>
- <20141106102636.GT8509@sirena.org.uk>
- <CAAgF-BfGwcNzMx0meFVkJqNMTbQ4_PP1PZ3i6edOm6U3bc26_Q@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCHv2] spi: dw: Fix dynamic speed change.
+Date: Fri, 7 Nov 2014 10:15:42 +0000
+Message-ID: <20141107101542.GB8509@sirena.org.uk>
+References: <1415303667-31584-1-git-send-email-tthayer@opensource.altera.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="BqH9fKuTou9vMXa4"
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Kukjin Kim <kgene.kim@samsung.com>
-To: Padma Venkat <padma.kvr@gmail.com>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="/mAvBbWDJ4sDNDUu"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org, setka-3PjVBYxTQDg@public.gmane.org,
+	tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org, andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org
+To: tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <CAAgF-BfGwcNzMx0meFVkJqNMTbQ4_PP1PZ3i6edOm6U3bc26_Q@mail.gmail.com>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1415303667-31584-1-git-send-email-tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---BqH9fKuTou9vMXa4
+--/mAvBbWDJ4sDNDUu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Nov 07, 2014 at 02:01:57PM +0530, Padma Venkat wrote:
+On Thu, Nov 06, 2014 at 01:54:27PM -0600, tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org wro=
+te:
+> From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+>=20
+> An IOCTL call that calls spi_setup() and then dw_spi_setup() will
+> overwrite the persisted last transfer speed. On each transfer, the
+> SPI speed is compared to the last transfer speed to determine if the
+> clock divider registers need to be updated (did the speed change?).
+> This bug was observed with the spidev driver using spi-config to
+> update the max transfer speed.
 
-> CS can also be controlled automatically by setting AUTO_N_MANUAL to 1
-> in CS_CFG. When it is auto CS automatically toggles between packet to
-> packet. NCS_TIME_COUNT in CS_CFG controls the inactive period. The
-> driver by default uses manual mode. But on exynos7 the manual mode is
-> removed.
+Applied, thanks.
 
-OK, but what's a packet here?
-
-> I tested the driver with wm5110 codec.
-
-Did you try firmware downloads or something else that generates multiple
-transfers in a message?  Normal register writes will use a single
-transfer so I'd expect them to just work.
-
---BqH9fKuTou9vMXa4
+--/mAvBbWDJ4sDNDUu
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUXJs2AAoJECTWi3JdVIfQZ8UH/jVxyhU2pvbWKIMBLcRa0BVE
-upCzn9UOpe1r6NF6eC4FlRV9DkVjlWTBfC3ZfKT1LCD+ZfWysOT58G2U1sA69ObY
-DTmTlQazFIFYGYzjSHLDs50OnVGRBlUA/kwJeMbcOiAtbG7YmdqWECLI1c/uF6FV
-BhkUa6EXUzmgpasTfmGTKRJQzrBwGM6vjeCufr2ObAvEG1AWH3PGByPcHIXKqjbl
-euEl9HsF+mXo60jU4zRbm2uaJNke3oMPNhYHV3DQJxoPX0meJ6jGdP9KgoVgatQY
-QRaUSQjlEYmqSN1vTsj6rtx7qB007B7sBzHQqlKXOOFolz6IzKsCKCbzh8PbEDs=
-=jv0k
+iQEcBAEBAgAGBQJUXJvNAAoJECTWi3JdVIfQFosH/3rTm3hoxdQnSAaqjNL5WIiP
+PldIV+pSbqTBIVWIwSUYYl8tl4t78dXxQLNVKcLJiTfL5QQ+gT29fGSLssmbzs4v
+KdT7+OOfsxb8gjW93Q8jkU4u0GQqZZDp3JwJiEmAlmZHKn8zG2yCc1ooQbrnR39x
+N0rixqLRkI6tvKA6ho6oS3KWYF+aU7gUdWXFsZ2ae/1TuFAw+QvCzSRVXVrWLpoK
+hN04fkAkmkkZUtnYejrIpRPeSUceFsr4y+5IUabHmJJefzhPJcd+/UolhStxyvY5
+RWCLO1h+uNwsbzxv1nlekQM5+OOUrdIU8FHk83jbdFeZEl6Ak50arBWKXTMdE9Y=
+=lFQ4
 -----END PGP SIGNATURE-----
 
---BqH9fKuTou9vMXa4--
+--/mAvBbWDJ4sDNDUu--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

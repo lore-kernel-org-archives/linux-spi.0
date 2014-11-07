@@ -1,83 +1,64 @@
-From: <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-Subject: [PATCHv2] spi: dw: Fix dynamic speed change.
-Date: Thu, 6 Nov 2014 13:54:27 -0600
-Message-ID: <1415303667-31584-1-git-send-email-tthayer@opensource.altera.com>
+From: Padma Venkat <padma.kvr-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH] spi: s3c64xx: add support for exynos7 SPI controller
+Date: Fri, 7 Nov 2014 14:01:57 +0530
+Message-ID: <CAAgF-BfGwcNzMx0meFVkJqNMTbQ4_PP1PZ3i6edOm6U3bc26_Q@mail.gmail.com>
+References: <1415267509-16653-1-git-send-email-padma.v@samsung.com>
+	<20141106102636.GT8509@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain
-Cc: <linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>, <feng.tang-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	<setka-3PjVBYxTQDg@public.gmane.org>, <tthayer-EIB2kfCEclfQT0dZR+AlfA@public.gmane.org>,
-	<andriy.shevchenko-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
-To: <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Content-Type: text/plain; charset=UTF-8
+Cc: linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	linux-samsung-soc-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Kukjin Kim <kgene.kim-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <20141106102636.GT8509-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
+Hi Mark,
 
-An IOCTL call that calls spi_setup() and then dw_spi_setup() will
-overwrite the persisted last transfer speed. On each transfer, the
-SPI speed is compared to the last transfer speed to determine if the
-clock divider registers need to be updated (did the speed change?).
-This bug was observed with the spidev driver using spi-config to
-update the max transfer speed.
+CCing Kukjin Kim.
 
-This fix: Don't overwrite the persisted last transaction clock speed
-when updating the SPI parameters in dw_spi_setup(). On the next
-transaction, the new speed won't match the persisted last speed
-and the hardware registers will be updated.
-On initialization, the persisted last transaction clock
-speed will be 0 but will be updated after the first SPI
-transaction.
+On 11/6/14, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote:
+> On Thu, Nov 06, 2014 at 03:21:49PM +0530, Padmavathi Venna wrote:
+>> Exynos7 SPI controller supports only the auto Selection of
+>> CS toggle mode and Exynos7 SoC includes six SPI controllers.
+>> Add support for these changes in Exynos7 SPI controller driver.
+>
+> Could you give a bit more detail on what the "auto selection of CS
+> toggle mode" is - in the diff it looks like it's not an existing mode.
+> I'm a bit worried that it's not going to function well with devices that
+> send more than one transfer per message.
 
-Move zeroed clock divider check into clock change test because
-chip->clk_div is zero on startup and would cause a divide-by-zero
-error. The calculation was wrong as well (can't support odd #).
+There is a bit AUTO_N_MANUAL(as per manual) in the spi CS_CFG
+register(as per manual, in the driver it is S3C64XX_SPI_SLAVE_SEL) to
+control the CS toggle mode either manually or automatically. If CS has
+to be controlled manually the AUTO_N_MANUAL should be set to 0 which
+the driver is doing in the s3c64xx_spi_transfer_one function by
+writing 0 in the S3C64XX_SPI_SLAVE_SEL. When it is handled manually
+NSSOUT as per the manual(in the driver it is
+S3C64XX_SPI_SLAVE_SIG_INACT) controls the level of CS which when set
+deactivates the signal and reset activates.
 
-Reported-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
-Signed-off-by: Vlastimil Setka <setka-3PjVBYxTQDg@public.gmane.org>
-Signed-off-by: Thor Thayer <tthayer-yzvPICuk2ABMcg4IHK0kFoH6Mc4MB0Vx@public.gmane.org>
----
-v2: Simplify fix so that last persistent SPI transfer speed is not
-overwritten.
----
- drivers/spi/spi-dw.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+CS can also be controlled automatically by setting AUTO_N_MANUAL to 1
+in CS_CFG. When it is auto CS automatically toggles between packet to
+packet. NCS_TIME_COUNT in CS_CFG controls the inactive period. The
+driver by default uses manual mode. But on exynos7 the manual mode is
+removed.
 
-diff --git a/drivers/spi/spi-dw.c b/drivers/spi/spi-dw.c
-index 72e12ba..d0d5542 100644
---- a/drivers/spi/spi-dw.c
-+++ b/drivers/spi/spi-dw.c
-@@ -376,9 +376,6 @@ static void pump_transfers(unsigned long data)
- 	chip = dws->cur_chip;
- 	spi = message->spi;
- 
--	if (unlikely(!chip->clk_div))
--		chip->clk_div = dws->max_freq / chip->speed_hz;
--
- 	if (message->state == ERROR_STATE) {
- 		message->status = -EIO;
- 		goto early_exit;
-@@ -419,7 +416,7 @@ static void pump_transfers(unsigned long data)
- 	if (transfer->speed_hz) {
- 		speed = chip->speed_hz;
- 
--		if (transfer->speed_hz != speed) {
-+		if ((transfer->speed_hz != speed) || (!chip->clk_div)) {
- 			speed = transfer->speed_hz;
- 
- 			/* clk_div doesn't support odd number */
-@@ -581,7 +578,6 @@ static int dw_spi_setup(struct spi_device *spi)
- 		dev_err(&spi->dev, "No max speed HZ parameter\n");
- 		return -EINVAL;
- 	}
--	chip->speed_hz = spi->max_speed_hz;
- 
- 	chip->tmode = 0; /* Tx & Rx */
- 	/* Default SPI mode is SCPOL = 0, SCPH = 0 */
--- 
-1.7.9.5
+I tested the driver with wm5110 codec.
 
+>
+>> Signed-off-by: Padmavathi Venna <padma.v-Sze3O3UU22JBDgjK7y7TUQ@public.gmane.org>
+>
+> It's better if your signoff is using the same e-maill address as
+
+ok.  I will take care of this.
+
+>
+
+Thanks
+Padma
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

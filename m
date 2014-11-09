@@ -1,53 +1,129 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH 3/3] ARM: dts: meson: add node for SPIFC
-Date: Sun, 9 Nov 2014 10:17:29 +0000
-Message-ID: <20141109101729.GN2722@sirena.org.uk>
+From: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH 2/3] spi: meson: Add support for Amlogic Meson SPIFC
+Date: Sun, 9 Nov 2014 23:56:50 +0100
+Message-ID: <20141109225650.GA27950@gmail.com>
 References: <1415525113-25598-1-git-send-email-b.galvani@gmail.com>
- <1415525113-25598-4-git-send-email-b.galvani@gmail.com>
+ <1415525113-25598-3-git-send-email-b.galvani@gmail.com>
+ <20141109101712.GM2722@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JLiXfqD9/Kt1b+Pq"
-Cc: linux-spi@vger.kernel.org, Carlo Caione <carlo@caione.org>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Jerry Cao <jerry.cao@amlogic.com>,
-	Victor Wan <victor.wan@amlogic.com>
-To: Beniamino Galvani <b.galvani@gmail.com>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <1415525113-25598-4-git-send-email-b.galvani@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-
---JLiXfqD9/Kt1b+Pq
 Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Carlo Caione <carlo-KA+7E9HrN00dnm+yROfE0A@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Jerry Cao <jerry.cao-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>,
+	Victor Wan <victor.wan-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
+In-Reply-To: <20141109101712.GM2722-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On Sun, Nov 09, 2014 at 10:25:13AM +0100, Beniamino Galvani wrote:
-> This adds a node for the SPI Flash Controller to the Amlogic Meson
-> DTS.
+On Sun, Nov 09, 2014 at 10:17:12AM +0000, Mark Brown wrote:
+> On Sun, Nov 09, 2014 at 10:25:12AM +0100, Beniamino Galvani wrote:
+> 
+> > +static int meson_spifc_wait_ready(struct meson_spifc *spifc)
+> > +{
+> > +	unsigned long deadline = jiffies + msecs_to_jiffies(1000);
+> > +	u32 data;
+> > +
+> > +	do {
+> > +		regmap_read(spifc->regmap, REG_SLAVE, &data);
+> > +		if (data & SLAVE_TRST_DONE)
+> > +			return 0;
+> > +		cond_resched();
+> > +	} while (time_before(jiffies, deadline));
+> 
+> This will busy wait for up to a second, that seems like a long time to
+> busy wait.  We also appear to be using this for the entire duration of
+> the transfer which could be a fairly long time even during normal
+> operation if doing a large transfer such as a firmware download, or if
+> the bus speed is low.
 
-Acked-by: Mark Brown <broonie@kernel.org>
+Yes, probably the timeout value is too long since the maximum length
+of a basic transfer is 64 bytes. Can you suggest a reasonable value?
 
---JLiXfqD9/Kt1b+Pq
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+> 
+> > +	meson_spifc_setup_speed(spifc, xfer->speed_hz ? xfer->speed_hz :
+> > +				spi->max_speed_hz);
+> > +
+> 
+> Please avoid the ternery operator, it does nothing for legibility and in
+> this case it's not needed as the core will always ensure that there is a
+> per-transfer speed set.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
+Ok.
 
-iQEcBAEBAgAGBQJUXz85AAoJECTWi3JdVIfQG5cH/3A15dIrwZU8ZtnWmeAznIes
-0YCa6pASIak1j8iCCGLW5qUXchiMB5ag5gWAZRiZAfuW7K0K57IlRrHYQSsk8jOC
-UWK5M0er7jKCTpfgrwfpO1GcOWlNQwo+qCx47M8N2HBK6cSH1AC3WqhzZmyn6anK
-HnV+858F6PoBlRflAhRJNVRyF2MIS9DqSS4hYttsUrWiiHxsz3jmnsgZr4Z6thjR
-VegzJ354je2zaKhEPPBL+s08xwRN/1EzZ67KFCYWLfgMA7uMwRk6F4BuxfHEqOs4
-K0+qlRjZAJJpIiD/3aCF124O9Kfu7Ar+ZTJosEcsZt61UESR4StW7uUOWcqpMzM=
-=sG1B
------END PGP SIGNATURE-----
+> > +	while (done < xfer->len && !ret) {
+> > +		len = min_t(int, xfer->len - done, SPIFC_BUFFER_SIZE);
+> > +		ret = meson_spifc_txrx(spifc, xfer, done, len,
+> > +				       last_xfer, done + len >= xfer->len);
+> > +		done += len;
+> > +	}
+> 
+> I noticed that the handling of /CS was done in the spifc_txrx() function
+> - will this do the right thing if the transfer needs to be split for the
+> buffer size?
 
---JLiXfqD9/Kt1b+Pq--
+It should. When the transfer gets split, CS is kept active for all the
+chunks and the value of CS after that depends on the value of
+cs_change.
+
+> 
+> > +	if (!ret && xfer->delay_usecs)
+> > +		udelay(xfer->delay_usecs);
+> 
+> The core will do this for you if you implement this as transfer_one().
+
+Please correct me if I'm wrong, but I think that transfer_one() can't
+be used in this case. The hardware doesn't support direct manipulation
+of CS and allows only to specify if CS must be kept active after the
+current transfer. So I need to know for each transfer if it's the last
+and this can be achieved only implementing transfer_one_message().
+
+> 
+> > +static int meson_spifc_transfer_one_message(struct spi_master *master,
+> > +					    struct spi_message *msg)
+> 
+> This appears to do nothing that the core won't do - just implement
+> transfer_one() and remove this.
+> 
+> > +	spifc = spi_master_get_devdata(master);
+> > +	memset(spifc, 0, sizeof(struct meson_spifc));
+> 
+> There should be no need for this memset.
+> 
+> > +	spifc_regmap_config.max_register = resource_size(res) - 4;
+> > +	spifc_regmap_config.name = "amlogic,meson-spifc";
+> 
+> If you're dynamically initializing the structure you need to work with a
+> copy of it rather than directly since there may be multiple instances.
+> I'm not seeing a reason to override the regmap name here, this is only
+> really intended for devices with multiple register maps.
+> 
+> > +	ret = clk_prepare_enable(spifc->clk);
+> > +	if (ret) {
+> > +		dev_err(spifc->dev, "can't prepare clock\n");
+> > +		goto out_err;
+> > +	}
+> 
+> You should really implement runtime PM operations to disable this when
+> not in use and use auto_runtime_pm to make sure this happens.
+> 
+> > +	master->bus_num = pdev->id;
+> 
+> Leave this blank for DT only devices (and for non-DT devices this won't
+> work if you get two different buses).
+
+Ok, will do. Thanks for the review.
+
+Beniamino
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

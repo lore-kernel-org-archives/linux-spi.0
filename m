@@ -1,47 +1,79 @@
-From: Padma Venkat <padma.kvr@gmail.com>
-Subject: Re: [PATCH] spi: s3c64xx: add support for exynos7 SPI controller
-Date: Mon, 10 Nov 2014 10:20:27 +0530
-Message-ID: <CAAgF-Bd=S7-PoA7GZoy87W9Dem3OXVhc1tL-eyWEAHvF0LPTKQ@mail.gmail.com>
-References: <1415267509-16653-1-git-send-email-padma.v@samsung.com>
-	<20141106102636.GT8509@sirena.org.uk>
-	<CAAgF-BfGwcNzMx0meFVkJqNMTbQ4_PP1PZ3i6edOm6U3bc26_Q@mail.gmail.com>
-	<20141107101310.GA8509@sirena.org.uk>
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] mfd: dln2: add support for USB-SPI module
+Date: Mon, 10 Nov 2014 09:30:05 +0000
+Message-ID: <20141110093005.GF21424@x1>
+References: <1415364314-30320-1-git-send-email-laurentiu.palcu@intel.com>
+ <1415364314-30320-3-git-send-email-laurentiu.palcu@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, linux-spi@vger.kernel.org,
-	Kukjin Kim <kgene.kim@samsung.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-samsung-soc-owner@vger.kernel.org>
-In-Reply-To: <20141107101310.GA8509@sirena.org.uk>
-Sender: linux-samsung-soc-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <1415364314-30320-3-git-send-email-laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-Hi Mark,
+On Fri, 07 Nov 2014, Laurentiu Palcu wrote:
 
-On 11/7/14, Mark Brown <broonie@kernel.org> wrote:
-> On Fri, Nov 07, 2014 at 02:01:57PM +0530, Padma Venkat wrote:
->
->> CS can also be controlled automatically by setting AUTO_N_MANUAL to 1
->> in CS_CFG. When it is auto CS automatically toggles between packet to
->> packet. NCS_TIME_COUNT in CS_CFG controls the inactive period. The
->> driver by default uses manual mode. But on exynos7 the manual mode is
->> removed.
->
-> OK, but what's a packet here?
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/mfd/dln2.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>=20
+> diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
+> index 9765a17..0cdad2d 100644
+> --- a/drivers/mfd/dln2.c
+> +++ b/drivers/mfd/dln2.c
+> @@ -52,6 +52,7 @@ enum dln2_handle {
+>  	DLN2_HANDLE_CTRL,
+>  	DLN2_HANDLE_GPIO,
+>  	DLN2_HANDLE_I2C,
+> +	DLN2_HANDLE_SPI,
+>  	DLN2_HANDLES
+>  };
+> =20
+> @@ -634,6 +635,12 @@ static struct dln2_platform_data dln2_pdata_i2c =
+=3D {
+>  	.port =3D 0,
+>  };
+> =20
+> +/* Only one SPI port supported */
+> +static struct dln2_platform_data dln2_pdata_spi =3D {
 
-Packet is either 1 byte or 4 bytes size depends on width of the SPI channel.
+Is this ever fiddled with?  If not, const?
 
->
->> I tested the driver with wm5110 codec.
->
-> Did you try firmware downloads or something else that generates multiple
-> transfers in a message?  Normal register writes will use a single
-> transfer so I'd expect them to just work.
->
+> +	.handle =3D DLN2_HANDLE_SPI,
+> +	.port =3D 0,
+> +};
+> +
+>  static const struct mfd_cell dln2_devs[] =3D {
+>  	{
+>  		.name =3D "dln2-gpio",
+> @@ -645,6 +652,11 @@ static const struct mfd_cell dln2_devs[] =3D {
+>  		.platform_data =3D &dln2_pdata_i2c,
+>  		.pdata_size =3D sizeof(struct dln2_platform_data),
+>  	},
+> +	{
+> +		.name =3D "dln2-spi",
+> +		.platform_data =3D &dln2_pdata_spi,
+> +		.pdata_size =3D sizeof(struct dln2_platform_data),
+> +	},
+>  };
+> =20
+>  static void dln2_disconnect(struct usb_interface *interface)
 
-OK. I don't have provision to test on this board. I will try to test
-on older boards by disabling manual mode.
-
-Thanks
-padma
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

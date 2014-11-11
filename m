@@ -1,90 +1,73 @@
-From: Laurentiu Palcu <laurentiu.palcu@intel.com>
-Subject: Re: [PATCH 2/2] mfd: dln2: add support for USB-SPI module
-Date: Tue, 11 Nov 2014 15:09:04 +0200
-Message-ID: <20141111130904.GN5826@lpalcu-linux>
-References: <1415364314-30320-1-git-send-email-laurentiu.palcu@intel.com>
- <1415364314-30320-3-git-send-email-laurentiu.palcu@intel.com>
- <20141110093005.GF21424@x1>
+From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Subject: Re: [PATCH 02/15] GPIO: port LoCoMo gpio support from old driver
+Date: Tue, 11 Nov 2014 17:16:38 +0400
+Message-ID: <CALT56yPr42FV66USngocw=eWPt81d5R2MJxmzBnv02HOMmXAkA@mail.gmail.com>
+References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
+	<1414454528-24240-3-git-send-email-dbaryshkov@gmail.com>
+	<CACRpkdY7tRadod2vQfEytmw-ubaMAvr_=XTczD5bUMkqie0xkg@mail.gmail.com>
+	<CALT56yOgMUA7o2dzfHph=S2zkDV4zERzMh4ishpPwpAx7Cqj6Q@mail.gmail.com>
+	<CACRpkdb7v3LmOhbhQ9TPk1_bnLnpwizawW6RQvhQRLSjRewAaQ@mail.gmail.com>
+	<CALT56yO9f8wzaArnmfQSDzCM3S+2oT+62anH5kbFY3WdEt_HZg@mail.gmail.com>
+	<20141106060335.GR8509@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie@kernel.org>,
+Content-Type: text/plain; charset=UTF-8
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	Linux Input <linux-input@vger.kernel.org>,
+	"linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+	Andrea Adami <andrea.adami@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bryan Wu <cooloney@gmail.com>,
+	Richard Purdie <rpurdie@rpsys.net>,
 	Samuel Ortiz <sameo@linux.intel.com>,
-	Johan Havold <johan@kernel.org>,
-	Octavian Purdila <octavian.purdila@intel.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Lee Jones <lee.jones@linaro.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Content-Disposition: inline
-In-Reply-To: <20141110093005.GF21424@x1>
-Sender: linux-kernel-owner@vger.kernel.org
+	Lee Jones <lee.jones@linaro.org>
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-input-owner@vger.kernel.org>
+In-Reply-To: <20141106060335.GR8509@sirena.org.uk>
+Sender: linux-input-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Lee,
+2014-11-06 9:03 GMT+03:00 Mark Brown <broonie@kernel.org>:
+> On Thu, Nov 06, 2014 at 01:33:24AM +0400, Dmitry Eremin-Solenikov wrote:
+>> 2014-11-03 16:43 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
+>
+>> > Yes that's the point: if you use regmap mmio you get the RMW-locking
+>> > for free, with the regmap implementation.
+>
+>> Just to be more concrete. Currently locomo_gpio_ack_irq() function uses
+>> one lock and one unlock for doing 3 consecutive RMW I I convert locomo
+>> to regmap, will that be 3 lock/unlock calls or still one? (Or maybe I'm
+>> trying to be over-protective here and adding more lock/unlock cycles
+>> won't matter that much?)
+>
+> You'll get three lock/unlocks, we could add an interface for bulk
+> updates under one lock if it's important though.
+>
+>> Next question: if I have to export regmap to several subdrivers, is it better
+>> to have one big regmap or to have one-map-per-driver approach?
+>
+> One regmap for the physical register map which is shared between all the
+> users.
 
-On Mon, Nov 10, 2014 at 09:30:05AM +0000, Lee Jones wrote:
-> On Fri, 07 Nov 2014, Laurentiu Palcu wrote:
->=20
-> > Signed-off-by: Laurentiu Palcu <laurentiu.palcu@intel.com>
-> > ---
-> >  drivers/mfd/dln2.c | 12 ++++++++++++
-> >  1 file changed, 12 insertions(+)
-> >=20
-> > diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
-> > index 9765a17..0cdad2d 100644
-> > --- a/drivers/mfd/dln2.c
-> > +++ b/drivers/mfd/dln2.c
-> > @@ -52,6 +52,7 @@ enum dln2_handle {
-> >  	DLN2_HANDLE_CTRL,
-> >  	DLN2_HANDLE_GPIO,
-> >  	DLN2_HANDLE_I2C,
-> > +	DLN2_HANDLE_SPI,
-> >  	DLN2_HANDLES
-> >  };
-> > =20
-> > @@ -634,6 +635,12 @@ static struct dln2_platform_data dln2_pdata_i2=
-c =3D {
-> >  	.port =3D 0,
-> >  };
-> > =20
-> > +/* Only one SPI port supported */
-> > +static struct dln2_platform_data dln2_pdata_spi =3D {
->=20
-> Is this ever fiddled with?  If not, const?
-Well, if we declare this const we also need to cast the assignment belo=
-w to
-void* since platform_data is void*. Otherwise we get a "assignment
-discards =E2=80=98const=E2=80=99 qualifier from pointer target type" wa=
-rning.=20
+Mark, Linus,
 
-Also, for consistency, we have to do it for all dln2_pdata_*. I'm not
-sure it's worth it...
+Just to better understand your suggestions: do you want me to convert
+to regmap only gpio driver or do you suggest to convert all LoCoMo drivers?
+That is doable, of course, but the amount of changes is overwhelming.
+Also I'm concerned about the performance impact from going through
+regmap layers.
 
-laurentiu
 
->=20
-> > +	.handle =3D DLN2_HANDLE_SPI,
-> > +	.port =3D 0,
-> > +};
-> > +
-> >  static const struct mfd_cell dln2_devs[] =3D {
-> >  	{
-> >  		.name =3D "dln2-gpio",
-> > @@ -645,6 +652,11 @@ static const struct mfd_cell dln2_devs[] =3D {
-> >  		.platform_data =3D &dln2_pdata_i2c,
-> >  		.pdata_size =3D sizeof(struct dln2_platform_data),
-> >  	},
-> > +	{
-> > +		.name =3D "dln2-spi",
-> > +		.platform_data =3D &dln2_pdata_spi,
-> > +		.pdata_size =3D sizeof(struct dln2_platform_data),
-> > +	},
-> >  };
-> > =20
-> >  static void dln2_disconnect(struct usb_interface *interface)
->=20
-> --=20
-> Lee Jones
-> Linaro STMicroelectronics Landing Team Lead
-> Linaro.org =E2=94=82 Open source software for ARM SoCs
-> Follow Linaro: Facebook | Twitter | Blog
+-- 
+With best wishes
+Dmitry

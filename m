@@ -1,80 +1,95 @@
-From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH] spi: spidev: Don't mangle max_speed_hz in underlying spi
- device
-Date: Tue, 11 Nov 2014 17:59:43 +0000
-Message-ID: <20141111175943.GC3815@sirena.org.uk>
-References: <1415442589-29434-1-git-send-email-broonie@kernel.org>
- <546214F7.1040007@opensource.altera.com>
+From: Beniamino Galvani <b.galvani@gmail.com>
+Subject: Re: [PATCH 2/3] spi: meson: Add support for Amlogic Meson SPIFC
+Date: Tue, 11 Nov 2014 20:52:34 +0100
+Message-ID: <20141111195234.GA15145@gmail.com>
+References: <1415525113-25598-1-git-send-email-b.galvani@gmail.com>
+ <1415525113-25598-3-git-send-email-b.galvani@gmail.com>
+ <20141109101712.GM2722@sirena.org.uk>
+ <20141109225650.GA27950@gmail.com>
+ <20141110151140.GA3815@sirena.org.uk>
 Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ky36DnKXfPqepASA"
-Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-To: Thor Thayer <tthayer@opensource.altera.com>
+Content-Type: text/plain; charset=us-ascii
+Cc: linux-spi@vger.kernel.org, Carlo Caione <carlo@caione.org>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Jerry Cao <jerry.cao@amlogic.com>,
+	Victor Wan <victor.wan@amlogic.com>
+To: Mark Brown <broonie@kernel.org>
 Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <546214F7.1040007@opensource.altera.com>
+In-Reply-To: <20141110151140.GA3815@sirena.org.uk>
 Sender: linux-kernel-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
+On Mon, Nov 10, 2014 at 03:11:40PM +0000, Mark Brown wrote:
+> On Sun, Nov 09, 2014 at 11:56:50PM +0100, Beniamino Galvani wrote:
+> > On Sun, Nov 09, 2014 at 10:17:12AM +0000, Mark Brown wrote:
+>
+> > > I noticed that the handling of /CS was done in the spifc_txrx() function
+> > > - will this do the right thing if the transfer needs to be split for the
+> > > buffer size?
+> 
+> > It should. When the transfer gets split, CS is kept active for all the
+> > chunks and the value of CS after that depends on the value of
+> > cs_change.
+> 
+> Can you be more specific about how that works?  I'm just not seeing the
+> code that handles this.
 
---ky36DnKXfPqepASA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+It's this:
 
-On Tue, Nov 11, 2014 at 07:53:59AM -0600, Thor Thayer wrote:
-> Hi Mark,
+static int meson_spifc_txrx(struct meson_spifc *spifc,
+                            struct spi_transfer *xfer,
+                            int offset, int len, bool last_xfer,
+                            bool last_chunk)
+{
+	bool keep_cs = true;
 
-Please delete irrelevant context from mails, it makes it much easier to
-find any new content you've added.
+	[...]
 
-> On 11/08/2014 04:29 AM, Mark Brown wrote:
+        if (last_chunk) {
+                if (last_xfer)
+                        keep_cs = xfer->cs_change;
+                else
+                        keep_cs = !xfer->cs_change;
+        }
 
-> >  			if (retval < 0)
-> >-				spi->max_speed_hz = save;
-> >+				spidev->speed_hz = tmp;
-> >  			else
-> >  				dev_dbg(&spi->dev, "%d Hz (max)\n", tmp);
-> >+			spi->max_speed_hz = save;
+        regmap_update_bits(spifc->regmap, REG_USER4, USER4_CS_ACT,
+                           keep_cs ? USER4_CS_ACT : 0);
 
-> I think the test should be if (retval >= 0) otherwise the value is only
-> updated on an error. With this change, I was able to successfully change the
-> SPI speed without affecting the max speed. This was tested using
-> spidev_test.c on a Altera Cyclone V which includes the DesignWare SPI IP
-> (spi-dw.c).
+	/* start transfer */
+	[...]
+}
 
-Yup, misleading code.
+The USER4_CS_ACT bit specifies if CS must be kept active after the
+transfer.
 
-> >  	if (status == 0)
-> >  		spi_set_drvdata(spi, spidev);
-> >  	else
+> > > > +	if (!ret && xfer->delay_usecs)
+> > > > +		udelay(xfer->delay_usecs);
+> 
+> > > The core will do this for you if you implement this as transfer_one().
+> 
+> > Please correct me if I'm wrong, but I think that transfer_one() can't
+> > be used in this case. The hardware doesn't support direct manipulation
+> > of CS and allows only to specify if CS must be kept active after the
+> > current transfer. So I need to know for each transfer if it's the last
+> > and this can be achieved only implementing transfer_one_message().
+> 
+> This is already in a function that's operating at the transfer_one()
+> level, the function is even called transfer_one() and besides it's
+> clearly not something specific to this hardware so should be factored
+> out into the core instead of open coded.
 
-> The echo command calls spidev_write() directly. Although the speed can't be
-> specified in the echo command, it did prompt me to look at that path.
+A way to simplify this at core level could be to add a 'last' flag to
+the spi_transfer structure and populate it before calling
+transfer_one_message(); in this way, drivers that need to know the
+position of the transfer in the message in order to properly handle CS
+can use the generic version of transfer_one_message() instead of
+reimplementing it. It seems that other existing drivers probably can
+benefit from this.
 
-> In that case I think we'd need to add the .speed_hz element in
-> spidev_sync_write() and spidev_sync_read().
-> struct spi_transfer    t = {
->             .rx_buf        = spidev->rx_buffer,
->             .len        = len,
->             .speed_hz    = spidev->speed_hz,
->         };
-
-Yup, looks that way.
-
---ky36DnKXfPqepASA
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2
-
-iQEcBAEBAgAGBQJUYk6PAAoJECTWi3JdVIfQx9wH/A63e3wpnb4wPhEBPgNs8gfs
-MxeWw6y6LibsDs6Mlg5O/tLwgD0LaWmPHumFd3t8BOkhPNX4DeDdIOIyIP+IRyJA
-0uouKCaFmOr5SB3yg9cAbA/nTHcfe9zWC5brLa1CMIDi/f7Fkpwi20PgR+wvWXB8
-CSQYYxzB/IXEydzI38L6ePhQbUuhDnHT9ExeESBZOxxLqnzp0GGBxpPK+VXXl5kI
-0Qvls5WptYVtHIcaB5kXTWkHXhjMAlbCbXea5XqB4aVqGzyI2dhf2S1HYuEIHhLl
-MANf5KEh3ctUbt612gAdMtJiiRanOqcbgM2OKccnY0Ya6G0rF4h/R7WRkU21I5c=
-=0CXa
------END PGP SIGNATURE-----
-
---ky36DnKXfPqepASA--
+Beniamino

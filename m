@@ -1,73 +1,40 @@
-From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Subject: Re: [PATCH 02/15] GPIO: port LoCoMo gpio support from old driver
-Date: Tue, 11 Nov 2014 17:16:38 +0400
-Message-ID: <CALT56yPr42FV66USngocw=eWPt81d5R2MJxmzBnv02HOMmXAkA@mail.gmail.com>
-References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
-	<1414454528-24240-3-git-send-email-dbaryshkov@gmail.com>
-	<CACRpkdY7tRadod2vQfEytmw-ubaMAvr_=XTczD5bUMkqie0xkg@mail.gmail.com>
-	<CALT56yOgMUA7o2dzfHph=S2zkDV4zERzMh4ishpPwpAx7Cqj6Q@mail.gmail.com>
-	<CACRpkdb7v3LmOhbhQ9TPk1_bnLnpwizawW6RQvhQRLSjRewAaQ@mail.gmail.com>
-	<CALT56yO9f8wzaArnmfQSDzCM3S+2oT+62anH5kbFY3WdEt_HZg@mail.gmail.com>
-	<20141106060335.GR8509@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	Linux Input <linux-input@vger.kernel.org>,
-	"linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-input-owner@vger.kernel.org>
-In-Reply-To: <20141106060335.GR8509@sirena.org.uk>
-Sender: linux-input-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi/rockchip: remove redundant call to spi_master_put()
+Date: Tue, 11 Nov 2014 15:22:51 +0200
+Message-ID: <1415712171-20951-1-git-send-email-laurentiu.palcu@intel.com>
+Cc: linux-rockchip-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+To: Heiko Stuebner <heiko-4mtYJXux2i+zQB+pC5nmwQ@public.gmane.org>, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-2014-11-06 9:03 GMT+03:00 Mark Brown <broonie@kernel.org>:
-> On Thu, Nov 06, 2014 at 01:33:24AM +0400, Dmitry Eremin-Solenikov wrote:
->> 2014-11-03 16:43 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
->
->> > Yes that's the point: if you use regmap mmio you get the RMW-locking
->> > for free, with the regmap implementation.
->
->> Just to be more concrete. Currently locomo_gpio_ack_irq() function uses
->> one lock and one unlock for doing 3 consecutive RMW I I convert locomo
->> to regmap, will that be 3 lock/unlock calls or still one? (Or maybe I'm
->> trying to be over-protective here and adding more lock/unlock cycles
->> won't matter that much?)
->
-> You'll get three lock/unlocks, we could add an interface for bulk
-> updates under one lock if it's important though.
->
->> Next question: if I have to export regmap to several subdrivers, is it better
->> to have one big regmap or to have one-map-per-driver approach?
->
-> One regmap for the physical register map which is shared between all the
-> users.
+The call to spi_master_put() in rockchip_spi_remove() is redundant since
+the master is registered using devm_. This patch removes it.
 
-Mark, Linus,
+Signed-off-by: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+---
+ drivers/spi/spi-rockchip.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Just to better understand your suggestions: do you want me to convert
-to regmap only gpio driver or do you suggest to convert all LoCoMo drivers?
-That is doable, of course, but the amount of changes is overwhelming.
-Also I'm concerned about the performance impact from going through
-regmap layers.
-
-
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 3afc266..e8cfe6c 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -724,8 +724,6 @@ static int rockchip_spi_remove(struct platform_device *pdev)
+ 	if (rs->dma_rx.ch)
+ 		dma_release_channel(rs->dma_rx.ch);
+ 
+-	spi_master_put(master);
+-
+ 	return 0;
+ }
+ 
 -- 
-With best wishes
-Dmitry
+1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

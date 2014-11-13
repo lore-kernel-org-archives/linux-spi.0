@@ -1,81 +1,100 @@
-From: Andrew Bresticker <abrestic@chromium.org>
-Subject: [PATCH V2 1/2] spi: Add binding document for IMG SPFI controller
-Date: Wed, 12 Nov 2014 19:08:15 -0800
-Message-ID: <1415848096-20079-2-git-send-email-abrestic@chromium.org>
-References: <1415848096-20079-1-git-send-email-abrestic@chromium.org>
-Cc: Andrew Bresticker <abrestic@chromium.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	James Hartley <James.Hartley@imgtec.com>,
-	Ezequiel Garcia <Ezequiel.Garcia@imgtec.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1415848096-20079-1-git-send-email-abrestic@chromium.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH 2/2] mfd: dln2: add support for USB-SPI module
+Date: Thu, 13 Nov 2014 10:32:20 +0000
+Message-ID: <20141113103220.GL24004@x1>
+References: <1415364314-30320-1-git-send-email-laurentiu.palcu@intel.com>
+ <1415364314-30320-3-git-send-email-laurentiu.palcu@intel.com>
+ <20141110093005.GF21424@x1>
+ <20141111130904.GN5826@lpalcu-linux>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20141111130904.GN5826@lpalcu-linux>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-The Synchronous Peripheral Flash Interface (SPFI) controller found
-on IMG SoCs supports single, dual, and (optionally) quad mode SPI
-transfers.
+On Tue, 11 Nov 2014, Laurentiu Palcu wrote:
 
-Signed-off-by: Andrew Bresticker <abrestic@chromium.org>
----
-Changes from v1:
- - spi-img.txt -> spi-img-spfi.txt
- - fixed commit subject
----
- .../devicetree/bindings/spi/spi-img-spfi.txt       | 37 ++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-img-spfi.txt
+> Hi Lee,
+>=20
+> On Mon, Nov 10, 2014 at 09:30:05AM +0000, Lee Jones wrote:
+> > On Fri, 07 Nov 2014, Laurentiu Palcu wrote:
+> >=20
+> > > Signed-off-by: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> > > ---
+> > >  drivers/mfd/dln2.c | 12 ++++++++++++
+> > >  1 file changed, 12 insertions(+)
+> > >=20
+> > > diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
+> > > index 9765a17..0cdad2d 100644
+> > > --- a/drivers/mfd/dln2.c
+> > > +++ b/drivers/mfd/dln2.c
+> > > @@ -52,6 +52,7 @@ enum dln2_handle {
+> > >  	DLN2_HANDLE_CTRL,
+> > >  	DLN2_HANDLE_GPIO,
+> > >  	DLN2_HANDLE_I2C,
+> > > +	DLN2_HANDLE_SPI,
+> > >  	DLN2_HANDLES
+> > >  };
+> > > =20
+> > > @@ -634,6 +635,12 @@ static struct dln2_platform_data dln2_pdata_=
+i2c =3D {
+> > >  	.port =3D 0,
+> > >  };
+> > > =20
+> > > +/* Only one SPI port supported */
+> > > +static struct dln2_platform_data dln2_pdata_spi =3D {
+> >=20
+> > Is this ever fiddled with?  If not, const?
+> Well, if we declare this const we also need to cast the assignment be=
+low to
+> void* since platform_data is void*. Otherwise we get a "assignment
+> discards =E2=80=98const=E2=80=99 qualifier from pointer target type" =
+warning.=20
+>=20
+> Also, for consistency, we have to do it for all dln2_pdata_*. I'm not
+> sure it's worth it...
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-img-spfi.txt b/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
-new file mode 100644
-index 0000000..c7dd50f
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-img-spfi.txt
-@@ -0,0 +1,37 @@
-+IMG Synchronous Peripheral Flash Interface (SPFI) controller
-+
-+Required properties:
-+- compatible: Must be "img,spfi".
-+- reg: Must contain the base address and length of the SPFI registers.
-+- interrupts: Must contain the SPFI interrupt.
-+- clocks: Must contain an entry for each entry in clock-names.
-+  See ../clock/clock-bindings.txt for details.
-+- clock-names: Must include the following entries:
-+  - spfi: SPI operating clock
-+  - sys: SPI system interface clock
-+- dmas: Must contain an entry for each entry in dma-names.
-+  See ../dma/dma.txt for details.
-+- dma-names: Must include the following entries:
-+  - rx
-+  - tx
-+- #address-cells: Must be 1.
-+- #size-cells: Must be 0.
-+
-+Optional properties:
-+- img,supports-quad-mode: Should be set if the interface supports quad mode
-+  SPI transfers.
-+
-+Example:
-+
-+spi@18100f00 {
-+	compatible = "img,spfi";
-+	reg = <0x18100f00 0x100>;
-+	interrupts = <GIC_SHARED 22 IRQ_TYPE_LEVEL_HIGH>;
-+	clocks = <&spi_clk>, <&system_clk>;
-+	clock-names = "spfi", "sys";
-+	dmas = <&mdc 9 0xffffffff 0>, <&mdc 10 0xffffffff 0>;
-+	dma-names = "rx", "tx";
-+
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+};
--- 
-2.1.0.rc2.206.gedb03e5
+Yes, perhaps you are right.
+
+Patch applied.
+
+> > > +	.handle =3D DLN2_HANDLE_SPI,
+> > > +	.port =3D 0,
+> > > +};
+> > > +
+> > >  static const struct mfd_cell dln2_devs[] =3D {
+> > >  	{
+> > >  		.name =3D "dln2-gpio",
+> > > @@ -645,6 +652,11 @@ static const struct mfd_cell dln2_devs[] =3D=
+ {
+> > >  		.platform_data =3D &dln2_pdata_i2c,
+> > >  		.pdata_size =3D sizeof(struct dln2_platform_data),
+> > >  	},
+> > > +	{
+> > > +		.name =3D "dln2-spi",
+> > > +		.platform_data =3D &dln2_pdata_spi,
+> > > +		.pdata_size =3D sizeof(struct dln2_platform_data),
+> > > +	},
+> > >  };
+> > > =20
+> > >  static void dln2_disconnect(struct usb_interface *interface)
+> >=20
+
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

@@ -1,60 +1,58 @@
-From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 1/2] spi: add support for DLN-2 USB-SPI adapter
-Date: Fri, 14 Nov 2014 11:10:00 +0000
-Message-ID: <20141114111000.GY3815@sirena.org.uk>
-References: <1415799490-27989-1-git-send-email-laurentiu.palcu@intel.com>
- <1415799490-27989-2-git-send-email-laurentiu.palcu@intel.com>
- <20141113122728.GA18285@localhost>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH V2 0/2] spi: IMG SPFI driver
+Date: Fri, 14 Nov 2014 15:04:11 +0000
+Message-ID: <20141114150411.GB3815@sirena.org.uk>
+References: <1415848096-20079-1-git-send-email-abrestic@chromium.org>
+ <20141113173631.GI3815@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="S+nDaPSl8JRieaZD"
-Cc: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="2ZXnG0twRSEA0LxK"
+Cc: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Grant Likely <grant.likely@linaro.org>,
+	James Hartley <James.Hartley@imgtec.com>,
+	Ezequiel Garcia <Ezequiel.Garcia@imgtec.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org
+To: Andrew Bresticker <abrestic@chromium.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20141113122728.GA18285@localhost>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <20141113173631.GI3815@sirena.org.uk>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
 
---S+nDaPSl8JRieaZD
+--2ZXnG0twRSEA0LxK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 13, 2014 at 01:27:28PM +0100, Johan Havold wrote:
-> On Wed, Nov 12, 2014 at 03:38:09PM +0200, Laurentiu Palcu wrote:
-> > This adds support for Diolan DLN2 USB-SPI adapter.
-> >=20
-> > Information about the USB protocol interface can be found in the
-> > Programmer's Reference Manual [1], see section 5.4.6 for the SPI
-> > master module commands and responses.
+On Thu, Nov 13, 2014 at 05:36:31PM +0000, Mark Brown wrote:
+> On Wed, Nov 12, 2014 at 07:08:14PM -0800, Andrew Bresticker wrote:
+> > This series adds support for the Sychronous Peripheral Flash Interface
+> > master found on IMG SoCs.  The controller supports up to 5 chip-select
+> > lines and single, dual, and optionally quad, mode transfers.
 
-John, please delete unneeded context from your replies - it makes it
-much easier to find any content you've added.
+> Applied both, thanks.
 
---S+nDaPSl8JRieaZD
+...and reverted since they fail to build in x86 allmodconfig (due to a
+missing linux/interrupt.h it seems).  Please check and resend.
+
+--2ZXnG0twRSEA0LxK
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUZeMHAAoJECTWi3JdVIfQKEgH/ijHSJnt0GOQSZDIqfCAp1Bd
-a9M9otWx6UxdnsVsjv7/pfMialqcTTwyB/MzpzK023g19H4gwo9QVKby/XIk0lVB
-8YXfxwFSLY12YGOuW13wR9/z0jj2HyT31dz9f/5L4n5pW1KWNynEVqtgjDdEng26
-qmWJxO7CD5FxUJP1qfuE8lBdKX6ozdGkH6Y4k+t8RJg1RX3n6mSrOiEwg1MNkfp6
-WUawqwG+G2B/E9C/c6k2NKpiDTxT3elySqDjsGVafsQ91TuC/SNXm38GgJ205i6a
-U3XqdW/ksckUij2ThBJgmu3+B23rS2NqakCe79swKQbhWyHvhArbs+J/d0HZ+3w=
-=ODX4
+iQEcBAEBAgAGBQJUZhnqAAoJECTWi3JdVIfQJE8H/Aj98L8arZae6SFhlU93VbYF
+IYx+pmmkZv6VsdArO0T6lM2/yA/ghmISIRpzKeGaxj8ASS06yZ5KE+J4QmB2NRVx
+qrcBwejf6YU7WQU3orwpU6KbCTLR8Cg83G3BnSdwwNcIzTEmI3QUVAz44ZhTlZnh
+g3H5qz/iLfBfAhEoL+U7fXDX03WSX5S1iVkl5r9CBrlU1weIcWIQIBDIFC1w8XoF
+grb3XtizgudFQFC41iNbdzNKMyZltKxmOr9xBux9dbjp8GcHjPiz74ulL2/SBXBO
+na9MzNWXuffFelT/kJHxlw1XHva9xd/nPXeICcQgRy8v6f1zBFXSmxzjcdNRiwc=
+=/cKV
 -----END PGP SIGNATURE-----
 
---S+nDaPSl8JRieaZD--
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+--2ZXnG0twRSEA0LxK--

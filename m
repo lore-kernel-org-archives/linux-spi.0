@@ -1,58 +1,76 @@
 From: Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH V2 0/2] spi: IMG SPFI driver
-Date: Fri, 14 Nov 2014 15:04:11 +0000
-Message-ID: <20141114150411.GB3815@sirena.org.uk>
-References: <1415848096-20079-1-git-send-email-abrestic@chromium.org>
- <20141113173631.GI3815@sirena.org.uk>
+Subject: Re: [PATCH 01/15] mfd: add new driver for Sharp LoCoMo
+Date: Fri, 14 Nov 2014 15:10:00 +0000
+Message-ID: <20141114151000.GC3815@sirena.org.uk>
+References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
+ <1414454528-24240-2-git-send-email-dbaryshkov@gmail.com>
+ <CACRpkdbW3NA00zMZr216ZeZpgVkXwKUo30biTVd5kcHKGGtkHg@mail.gmail.com>
+ <CALT56yNX8v4mZn=o1ZoVLHPmg6wq0dgFNowpqNuFtU=eCc+d8w@mail.gmail.com>
+ <CACRpkdaKUZjbSEH75M9xudTF9HefwOCVEe5otv9-9f2UG8=hVg@mail.gmail.com>
+ <CALT56yM8B3ffYb0=EZVbRRGDZSxMci2sRp9XVtjQuLa5abN+cg@mail.gmail.com>
+ <20141105202405.GJ8509@sirena.org.uk>
+ <CALT56yOtjNbYOWM4ba5yP8pz7bNLY5BWpkkpfmv5QZU-7Y5u_g@mail.gmail.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="2ZXnG0twRSEA0LxK"
-Cc: Rob Herring <robh+dt@kernel.org>, Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Grant Likely <grant.likely@linaro.org>,
-	James Hartley <James.Hartley@imgtec.com>,
-	Ezequiel Garcia <Ezequiel.Garcia@imgtec.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org
-To: Andrew Bresticker <abrestic@chromium.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
+	protocol="application/pgp-signature"; boundary="0hFlL8mdTQLjOaTk"
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+	Linux Input <linux-input@vger.kernel.org>,
+	"linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
+	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
+	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+	Andrea Adami <andrea.adami@gmail.com>,
+	Russell King <linux@arm.linux.org.uk>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Alexandre Courbot <gnurou@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Bryan Wu <cooloney@gmail.com>,
+	Richard Purdie <rpurdie@rpsys.net>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	Lee Jones <lee.jones@linaro.org>
+To: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
+Return-path: <linux-gpio-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <20141113173631.GI3815@sirena.org.uk>
-Sender: linux-kernel-owner@vger.kernel.org
+In-Reply-To: <CALT56yOtjNbYOWM4ba5yP8pz7bNLY5BWpkkpfmv5QZU-7Y5u_g@mail.gmail.com>
+Sender: linux-gpio-owner@vger.kernel.org
 List-Id: linux-spi.vger.kernel.org
 
 
---2ZXnG0twRSEA0LxK
+--0hFlL8mdTQLjOaTk
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Thu, Nov 13, 2014 at 05:36:31PM +0000, Mark Brown wrote:
-> On Wed, Nov 12, 2014 at 07:08:14PM -0800, Andrew Bresticker wrote:
-> > This series adds support for the Sychronous Peripheral Flash Interface
-> > master found on IMG SoCs.  The controller supports up to 5 chip-select
-> > lines and single, dual, and optionally quad, mode transfers.
+On Fri, Nov 14, 2014 at 04:47:00PM +0400, Dmitry Eremin-Solenikov wrote:
 
-> Applied both, thanks.
+> I'm actually looking at the regulator interface. Since this DAC serves mostly
+> like a (semi-)constant voltage interface, would it be rather logical to use
+> regulator subsystem to drive it?
 
-...and reverted since they fail to build in x86 allmodconfig (due to a
-missing linux/interrupt.h it seems).  Please check and resend.
+Possibly...  it's mostly a function of what the consumers of the
+functionality look like - if that code looks weird calling into the
+regulator API then it's bad, if that code looks OK it's fine.  I haven't
+looked at the hardware at all so don't have strong feelings either way
+so long as the result looks tasteful.
 
---2ZXnG0twRSEA0LxK
+--0hFlL8mdTQLjOaTk
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUZhnqAAoJECTWi3JdVIfQJE8H/Aj98L8arZae6SFhlU93VbYF
-IYx+pmmkZv6VsdArO0T6lM2/yA/ghmISIRpzKeGaxj8ASS06yZ5KE+J4QmB2NRVx
-qrcBwejf6YU7WQU3orwpU6KbCTLR8Cg83G3BnSdwwNcIzTEmI3QUVAz44ZhTlZnh
-g3H5qz/iLfBfAhEoL+U7fXDX03WSX5S1iVkl5r9CBrlU1weIcWIQIBDIFC1w8XoF
-grb3XtizgudFQFC41iNbdzNKMyZltKxmOr9xBux9dbjp8GcHjPiz74ulL2/SBXBO
-na9MzNWXuffFelT/kJHxlw1XHva9xd/nPXeICcQgRy8v6f1zBFXSmxzjcdNRiwc=
-=/cKV
+iQEcBAEBAgAGBQJUZhtHAAoJECTWi3JdVIfQ9u0H/0MiTrLksAi3U2z6tRBVRifd
+8X7vBDcAuPO8IdYuNRiUzB8b6jaDmnAmUc5lrJ4rrAwhrhMKk6I+wNNTAvXXWSRz
+FVjX3yHZomhQ1+Jlz98zcFSnEVxxHpJpN3pRXKL7BN5NTd7fedq5mvdN6899KRIa
+VQ8ByRl5sA8PkMvHN85dT+ECCQbTNQ8Szw96k5/LIRLAR+53rb8oB4y6d23Sqbvh
+mbXzzzjj0ap0LypK8XP7pNrXage5XVY/Y7bLusETEgdhR2Bxkc3YzlhgKY8/gHo4
+x3xdPJAUB/KUQxxEchL/wysUIlC1P8K5Tj29lyuhfztFM9RFxkpnyp8CoCusZtw=
+=Pl/n
 -----END PGP SIGNATURE-----
 
---2ZXnG0twRSEA0LxK--
+--0hFlL8mdTQLjOaTk--

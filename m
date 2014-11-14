@@ -1,60 +1,55 @@
-From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Subject: Re: [PATCH 01/15] mfd: add new driver for Sharp LoCoMo
-Date: Fri, 14 Nov 2014 19:30:22 +0400
-Message-ID: <CALT56yPkKO=_FYyQvgvnCBA4XU6ETZk_3NNjRu-0mhHy-4aSAQ@mail.gmail.com>
-References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
-	<1414454528-24240-2-git-send-email-dbaryshkov@gmail.com>
-	<CACRpkdbW3NA00zMZr216ZeZpgVkXwKUo30biTVd5kcHKGGtkHg@mail.gmail.com>
-	<CALT56yNX8v4mZn=o1ZoVLHPmg6wq0dgFNowpqNuFtU=eCc+d8w@mail.gmail.com>
-	<CACRpkdaKUZjbSEH75M9xudTF9HefwOCVEe5otv9-9f2UG8=hVg@mail.gmail.com>
-	<CALT56yM8B3ffYb0=EZVbRRGDZSxMci2sRp9XVtjQuLa5abN+cg@mail.gmail.com>
-	<20141105202405.GJ8509@sirena.org.uk>
-	<CALT56yOtjNbYOWM4ba5yP8pz7bNLY5BWpkkpfmv5QZU-7Y5u_g@mail.gmail.com>
-	<20141114151000.GC3815@sirena.org.uk>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	Linux Input <linux-input@vger.kernel.org>,
-	"linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-leds-owner@vger.kernel.org>
-In-Reply-To: <20141114151000.GC3815@sirena.org.uk>
-Sender: linux-leds-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+Subject: [PATCH 1/2] spi: Fix mapping from vmalloc-ed buffer to scatter list
+Date: Fri, 14 Nov 2014 15:40:44 +0000
+Message-ID: <1415979645-26264-1-git-send-email-ckeepax@opensource.wolfsonmicro.com>
+Cc: lgirdwood-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	alsa-devel-K7yf7f+aM1XWsZ/bQMPhNw@public.gmane.org, patches-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-2014-11-14 18:10 GMT+03:00 Mark Brown <broonie@kernel.org>:
-> On Fri, Nov 14, 2014 at 04:47:00PM +0400, Dmitry Eremin-Solenikov wrote:
->
->> I'm actually looking at the regulator interface. Since this DAC serves mostly
->> like a (semi-)constant voltage interface, would it be rather logical to use
->> regulator subsystem to drive it?
->
-> Possibly...  it's mostly a function of what the consumers of the
-> functionality look like - if that code looks weird calling into the
-> regulator API then it's bad, if that code looks OK it's fine.  I haven't
-> looked at the hardware at all so don't have strong feelings either way
-> so long as the result looks tasteful.
+We can only use page_address on memory that has been mapped using kmap,
+when the buffer passed to the SPI has been allocated by vmalloc the page
+has not necessarily been mapped through kmap. This means sometimes
+page_address will return NULL causing the pointer we pass to sg_set_buf
+to be invalid.
 
-The DAC is used in backlight driver (control brightness) and in ASoC
-machine driver (master joined volume).
+As we only call page_address such that we can pass a virtual address to
+sg_set_buf which will then immediately call virt_to_page on it, fix this
+by calling sg_set_page directly rather then relying on the sg_set_buf
+helper.
 
+Signed-off-by: Charles Keepax <ckeepax-yzvPICuk2AATkU/dhu1WVueM+bqZidxxQQ4Iyu8u01E@public.gmane.org>
+---
+ drivers/spi/spi.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index ebcb33d..50f20f2 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -615,13 +615,13 @@ static int spi_map_buf(struct spi_master *master, struct device *dev,
+ 				sg_free_table(sgt);
+ 				return -ENOMEM;
+ 			}
+-			sg_buf = page_address(vm_page) +
+-				((size_t)buf & ~PAGE_MASK);
++			sg_set_page(&sgt->sgl[i], vm_page,
++				    min, offset_in_page(buf));
+ 		} else {
+ 			sg_buf = buf;
++			sg_set_buf(&sgt->sgl[i], sg_buf, min);
+ 		}
+ 
+-		sg_set_buf(&sgt->sgl[i], sg_buf, min);
+ 
+ 		buf += min;
+ 		len -= min;
 -- 
-With best wishes
-Dmitry
+1.7.2.5
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

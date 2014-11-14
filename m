@@ -1,75 +1,60 @@
-From: Dmitry Eremin-Solenikov <dbaryshkov@gmail.com>
-Subject: Re: [PATCH 02/15] GPIO: port LoCoMo gpio support from old driver
-Date: Fri, 14 Nov 2014 16:48:12 +0400
-Message-ID: <CALT56yNh=orC+-iq--6MJv5swc_EjgG=n=0zJf-css8jdWGVFw@mail.gmail.com>
-References: <1414454528-24240-1-git-send-email-dbaryshkov@gmail.com>
-	<1414454528-24240-3-git-send-email-dbaryshkov@gmail.com>
-	<CACRpkdY7tRadod2vQfEytmw-ubaMAvr_=XTczD5bUMkqie0xkg@mail.gmail.com>
-	<CALT56yOgMUA7o2dzfHph=S2zkDV4zERzMh4ishpPwpAx7Cqj6Q@mail.gmail.com>
-	<CACRpkdb7v3LmOhbhQ9TPk1_bnLnpwizawW6RQvhQRLSjRewAaQ@mail.gmail.com>
-	<CALT56yO9f8wzaArnmfQSDzCM3S+2oT+62anH5kbFY3WdEt_HZg@mail.gmail.com>
-	<20141106060335.GR8509@sirena.org.uk>
-	<CALT56yPr42FV66USngocw=eWPt81d5R2MJxmzBnv02HOMmXAkA@mail.gmail.com>
-	<CACRpkdZiari6CtWq1kBCvX3cwwatJiHAuWUb40WSUEfjZjk+Lg@mail.gmail.com>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v2 1/2] spi: add support for DLN-2 USB-SPI adapter
+Date: Fri, 14 Nov 2014 11:10:00 +0000
+Message-ID: <20141114111000.GY3815@sirena.org.uk>
+References: <1415799490-27989-1-git-send-email-laurentiu.palcu@intel.com>
+ <1415799490-27989-2-git-send-email-laurentiu.palcu@intel.com>
+ <20141113122728.GA18285@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Cc: Mark Brown <broonie@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-	Linux Input <linux-input@vger.kernel.org>,
-	"linux-leds@vger.kernel.org" <linux-leds@vger.kernel.org>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
-	"linux-fbdev@vger.kernel.org" <linux-fbdev@vger.kernel.org>,
-	"alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
-	Andrea Adami <andrea.adami@gmail.com>,
-	Russell King <linux@arm.linux.org.uk>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Bryan Wu <cooloney@gmail.com>,
-	Richard Purdie <rpurdie@rpsys.net>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Lee Jones <lee.jones@linaro.org>,
-	Jingoo
-To: Linus Walleij <linus.walleij@linaro.org>
-Return-path: <linux-leds-owner@vger.kernel.org>
-In-Reply-To: <CACRpkdZiari6CtWq1kBCvX3cwwatJiHAuWUb40WSUEfjZjk+Lg@mail.gmail.com>
-Sender: linux-leds-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
-
-2014-11-14 13:11 GMT+03:00 Linus Walleij <linus.walleij@linaro.org>:
-> On Tue, Nov 11, 2014 at 2:16 PM, Dmitry Eremin-Solenikov
-> <dbaryshkov@gmail.com> wrote:
->
->> Just to better understand your suggestions: do you want me to convert
->> to regmap only gpio driver or do you suggest to convert all LoCoMo drivers?
->
-> Um... I was just thinking about this one usecase.
-
-I ended up converting all drivers. It allowed me to clean up several points
-in the driver.
-
->
-> It's no big deal, the other review comments are more important.
-
-Fixed most of the comments. Last remaining issue is factoring out m62332
-interface.
-
->> That is doable, of course, but the amount of changes is overwhelming.
->> Also I'm concerned about the performance impact from going through
->> regmap layers.
->
-> Is it on a critical path? The current locking isn't any less invasive
-> AFAICT.
->
-> Yours,
-> Linus Walleij
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="S+nDaPSl8JRieaZD"
+Cc: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
+	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Disposition: inline
+In-Reply-To: <20141113122728.GA18285@localhost>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
+--S+nDaPSl8JRieaZD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-With best wishes
-Dmitry
+On Thu, Nov 13, 2014 at 01:27:28PM +0100, Johan Havold wrote:
+> On Wed, Nov 12, 2014 at 03:38:09PM +0200, Laurentiu Palcu wrote:
+> > This adds support for Diolan DLN2 USB-SPI adapter.
+> >=20
+> > Information about the USB protocol interface can be found in the
+> > Programmer's Reference Manual [1], see section 5.4.6 for the SPI
+> > master module commands and responses.
+
+John, please delete unneeded context from your replies - it makes it
+much easier to find any content you've added.
+
+--S+nDaPSl8JRieaZD
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUZeMHAAoJECTWi3JdVIfQKEgH/ijHSJnt0GOQSZDIqfCAp1Bd
+a9M9otWx6UxdnsVsjv7/pfMialqcTTwyB/MzpzK023g19H4gwo9QVKby/XIk0lVB
+8YXfxwFSLY12YGOuW13wR9/z0jj2HyT31dz9f/5L4n5pW1KWNynEVqtgjDdEng26
+qmWJxO7CD5FxUJP1qfuE8lBdKX6ozdGkH6Y4k+t8RJg1RX3n6mSrOiEwg1MNkfp6
+WUawqwG+G2B/E9C/c6k2NKpiDTxT3elySqDjsGVafsQ91TuC/SNXm38GgJ205i6a
+U3XqdW/ksckUij2ThBJgmu3+B23rS2NqakCe79swKQbhWyHvhArbs+J/d0HZ+3w=
+=ODX4
+-----END PGP SIGNATURE-----
+
+--S+nDaPSl8JRieaZD--
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

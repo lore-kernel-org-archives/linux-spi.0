@@ -1,61 +1,57 @@
-From: Beniamino Galvani <b.galvani@gmail.com>
-Subject: [PATCH v2 2/4] spi: meson: Add device tree bindings documentation for SPIFC
-Date: Mon, 17 Nov 2014 23:47:49 +0100
-Message-ID: <1416264471-774-3-git-send-email-b.galvani@gmail.com>
+From: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH v2 4/4] ARM: dts: meson: add node for SPIFC
+Date: Mon, 17 Nov 2014 23:47:51 +0100
+Message-ID: <1416264471-774-5-git-send-email-b.galvani@gmail.com>
 References: <1416264471-774-1-git-send-email-b.galvani@gmail.com>
-Cc: linux-spi@vger.kernel.org, Carlo Caione <carlo@caione.org>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
-	Rob Herring <robh+dt@kernel.org>,
-	Pawel Moll <pawel.moll@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ian Campbell <ijc+devicetree@hellion.org.uk>,
-	Kumar Gala <galak@codeaurora.org>,
-	Jerry Cao <jerry.cao@amlogic.com>,
-	Victor Wan <victor.wan@amlogic.com>,
-	Beniamino Galvani <b.galvani@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-In-Reply-To: <1416264471-774-1-git-send-email-b.galvani@gmail.com>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Carlo Caione <carlo-KA+7E9HrN00dnm+yROfE0A@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Jerry Cao <jerry.cao-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>,
+	Victor Wan <victor.wan-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>,
+	Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+In-Reply-To: <1416264471-774-1-git-send-email-b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-This adds documentation of device tree bindings for the Amlogic Meson
-SPIFC (SPI Flash Controller).
+This adds a node for the SPI Flash Controller to the Amlogic Meson
+DTS.
 
-Signed-off-by: Beniamino Galvani <b.galvani@gmail.com>
+Signed-off-by: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 ---
- .../devicetree/bindings/spi/spi-meson.txt          | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/spi/spi-meson.txt
+ arch/arm/boot/dts/meson.dtsi | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-meson.txt b/Documentation/devicetree/bindings/spi/spi-meson.txt
-new file mode 100644
-index 0000000..bb52a86
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/spi-meson.txt
-@@ -0,0 +1,22 @@
-+Amlogic Meson SPI controllers
+diff --git a/arch/arm/boot/dts/meson.dtsi b/arch/arm/boot/dts/meson.dtsi
+index e6539ea..d28b16e 100644
+--- a/arch/arm/boot/dts/meson.dtsi
++++ b/arch/arm/boot/dts/meson.dtsi
+@@ -106,5 +106,14 @@
+ 			clocks = <&clk81>;
+ 			status = "disabled";
+ 		};
 +
-+* SPIFC (SPI Flash Controller)
-+
-+The Meson SPIFC is a controller optimized for communication with SPI
-+NOR memories, without DMA support and a 64-byte unified transmit /
-+receive buffer.
-+
-+Required properties:
-+ - compatible: should be "amlogic,meson6-spifc"
-+ - reg: physical base address and length of the controller registers
-+ - clocks: phandle of the input clock for the baud rate generator
-+ - #address-cells: should be 1
-+ - #size-cells: should be 0
-+
-+	spi@c1108c80 {
-+		compatible = "amlogic,meson6-spifc";
-+		reg = <0xc1108c80 0x80>;
-+		clocks = <&clk81>;
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+	};
++		spifc: spi@c1108c80 {
++			compatible = "amlogic,meson6-spifc";
++			reg = <0xc1108c80 0x80>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++			clocks = <&clk81>;
++			status = "disabled";
++		};
+ 	};
+ }; /* end of / */
 -- 
 1.9.1
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

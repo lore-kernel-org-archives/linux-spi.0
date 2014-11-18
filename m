@@ -1,83 +1,55 @@
-From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v2 2/2] mfd: dln2: add support for USB-SPI module
-Date: Tue, 18 Nov 2014 14:28:16 +0000
-Message-ID: <20141118142816.GE24004@x1>
-References: <1415799490-27989-1-git-send-email-laurentiu.palcu@intel.com>
- <1415799490-27989-3-git-send-email-laurentiu.palcu@intel.com>
+From: Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v2 3/4] spi: meson: Add support for Amlogic Meson SPIFC
+Date: Tue, 18 Nov 2014 14:28:24 +0000
+Message-ID: <20141118142824.GJ22111@sirena.org.uk>
+References: <1416264471-774-1-git-send-email-b.galvani@gmail.com>
+ <1416264471-774-4-git-send-email-b.galvani@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="sT9gWZPUZYhvPS56"
+Cc: linux-spi@vger.kernel.org, Carlo Caione <carlo@caione.org>,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, Russell King <linux@arm.linux.org.uk>,
+	Rob Herring <robh+dt@kernel.org>,
+	Pawel Moll <pawel.moll@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ian Campbell <ijc+devicetree@hellion.org.uk>,
+	Kumar Gala <galak@codeaurora.org>,
+	Jerry Cao <jerry.cao@amlogic.com>,
+	Victor Wan <victor.wan@amlogic.com>
+To: Beniamino Galvani <b.galvani@gmail.com>
+Return-path: <linux-kernel-owner@vger.kernel.org>
 Content-Disposition: inline
-In-Reply-To: <1415799490-27989-3-git-send-email-laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+In-Reply-To: <1416264471-774-4-git-send-email-b.galvani@gmail.com>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-On Wed, 12 Nov 2014, Laurentiu Palcu wrote:
 
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> Acked-by: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-> ---
->  drivers/mfd/dln2.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+--sT9gWZPUZYhvPS56
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-=46or my own reference:
+On Mon, Nov 17, 2014 at 11:47:50PM +0100, Beniamino Galvani wrote:
+> This is a driver for the Amlogic Meson SPIFC (SPI flash controller),
+> which is one of the two SPI controllers available on the SoC. It
+> doesn't support DMA and has a 64-byte unified transmit/receive buffer.
 
-Acked-by: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+This is all good.
 
-So what's the plan for this set?
+--sT9gWZPUZYhvPS56
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
 
-> diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
-> index 9765a17..0cdad2d 100644
-> --- a/drivers/mfd/dln2.c
-> +++ b/drivers/mfd/dln2.c
-> @@ -52,6 +52,7 @@ enum dln2_handle {
->  	DLN2_HANDLE_CTRL,
->  	DLN2_HANDLE_GPIO,
->  	DLN2_HANDLE_I2C,
-> +	DLN2_HANDLE_SPI,
->  	DLN2_HANDLES
->  };
-> =20
-> @@ -634,6 +635,12 @@ static struct dln2_platform_data dln2_pdata_i2c =
-=3D {
->  	.port =3D 0,
->  };
-> =20
-> +/* Only one SPI port supported */
-> +static struct dln2_platform_data dln2_pdata_spi =3D {
-> +	.handle =3D DLN2_HANDLE_SPI,
-> +	.port =3D 0,
-> +};
-> +
->  static const struct mfd_cell dln2_devs[] =3D {
->  	{
->  		.name =3D "dln2-gpio",
-> @@ -645,6 +652,11 @@ static const struct mfd_cell dln2_devs[] =3D {
->  		.platform_data =3D &dln2_pdata_i2c,
->  		.pdata_size =3D sizeof(struct dln2_platform_data),
->  	},
-> +	{
-> +		.name =3D "dln2-spi",
-> +		.platform_data =3D &dln2_pdata_spi,
-> +		.pdata_size =3D sizeof(struct dln2_platform_data),
-> +	},
->  };
-> =20
->  static void dln2_disconnect(struct usb_interface *interface)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
 
---=20
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org =E2=94=82 Open source software for ARM SoCs
-=46ollow Linaro: Facebook | Twitter | Blog
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+iQEcBAEBAgAGBQJUa1eIAAoJECTWi3JdVIfQ4CsH/is/jUtomdmXalHCodXC1Itp
+HRX6vo3rAYSVLvHK/6u0VRD8H9QyEsnW7fjK+LtcGnHmhwYhcPhwV53Dm381WTJR
+k9NAhjTUCb0iQ/9+0WJ3+dbg+MJz2Mqj5P2q2wjiW5sFrBO11CRkaejhADvUDqCe
+wMWeiJsQoRr90hpWAmDdP5qbqIIDcN/6MopmMuhc3HgvTcmwDKYjV/M+546SRMRW
+rigmpJt9WmI0RB2oZeSWv5Soi41eTldM3Ad1ZCWwwboDBZlbk5cxC4Qte9IqphIx
+ysxVOdFvOwaOIQ4JkWU0EbqUFWwtyRtcTdGml/rUPdBAyfJJqDZb5qPEJ0FQM/o=
+=5SbJ
+-----END PGP SIGNATURE-----
+
+--sT9gWZPUZYhvPS56--

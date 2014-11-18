@@ -1,102 +1,58 @@
-From: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 1/2] spi: add support for DLN-2 USB-SPI adapter
-Date: Tue, 18 Nov 2014 18:06:27 +0100
-Message-ID: <20141118170627.GB22786@localhost>
-References: <1416312599-5176-1-git-send-email-laurentiu.palcu@intel.com>
- <1416312599-5176-2-git-send-email-laurentiu.palcu@intel.com>
+From: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: Re: [PATCH v2 1/4] spi: Add 'last' flag to spi_transfer structure
+Date: Tue, 18 Nov 2014 23:55:46 +0100
+Message-ID: <20141118225546.GA27182@gmail.com>
+References: <1416264471-774-1-git-send-email-b.galvani@gmail.com>
+ <1416264471-774-2-git-send-email-b.galvani@gmail.com>
+ <20141118140658.GI22111@sirena.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Carlo Caione <carlo-KA+7E9HrN00dnm+yROfE0A@public.gmane.org>,
+	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
+	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
+	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
+	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
+	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
+	Jerry Cao <jerry.cao-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>,
+	Victor Wan <victor.wan-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1416312599-5176-2-git-send-email-laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20141118140658.GI22111-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Nov 18, 2014 at 02:09:58PM +0200, Laurentiu Palcu wrote:
+On Tue, Nov 18, 2014 at 02:06:58PM +0000, Mark Brown wrote:
+> It's incredibly sad to iterate through the entire list in order to find
+> the last entry, especially given that it's a doubly linked list and this
+> is a bit of a hot path.  We should look at the previous entry for the
+> list head instead, or perhaps better yet by doing this as part of
+> spi_validate() which already itereates over the entire list and is where
+> we do other similar fixups.
+> 
+> Though looking at this I'm not sure that a flag is the best approach at
+> all - why not just have the driver call list_is_last() in the transfer
+> function or ideally provide an inline function that does that so that we
+> can change the implementation later?
 
-> +/*
-> + * Copy the data to DLN2 buffer and change the byte order to LE, requested by
-> + * DLN2 module. SPI core makes sure that the data length is a multiple of word
-> + * size.
-> + */
-> +static int dln2_spi_copy_to_buf(u8 *dln2_buf, const u8 *src, u16 len, u8 bpw)
-> +{
-> +#ifdef __LITTLE_ENDIAN
-> +	memcpy(dln2_buf, src, len);
-> +#else
-> +	if (bpw <= 8) {
-> +		memcpy(dln2_buf, src, len);
-> +	} else if (bpw <= 16) {
-> +		__le16 *d = (__le16 *)dln2_buf;
-> +		u16 *s = (u16 *)src;
-> +
-> +		len = len / 2;
-> +		while (len--)
-> +			put_unaligned_le16(get_unaligned(s++), d++);
+I didn't realize that the master structure passed to transfer_one()
+has a reference to the current message and thus to the transfer
+list. Then yes, the additional flag in the transfer structure probably
+doesn't make much sense.
 
-You said the dln2 buffer was properly aligned, right? Then you don't
-need to use put_unaligned_lexx here...
+Would it be better to introduce something like:
 
-> +	} else {
-> +		__le32 *d = (__le32 *)dln2_buf;
-> +		u32 *s = (u32 *)src;
-> +
-> +		len = len / 4;
-> +		while (len--)
-> +			put_unaligned_le32(get_unaligned(s++), d++);
-> +	}
-> +#endif
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Copy the data from DLN2 buffer and convert to CPU byte order since the DLN2
-> + * buffer is LE ordered. SPI core makes sure that the data length is a multiple
-> + * of word size.
-> + */
-> +static int dln2_spi_copy_from_buf(u8 *dest, const u8 *dln2_buf, u16 len, u8 bpw)
-> +{
-> +#ifdef __LITTLE_ENDIAN
-> +	memcpy(dest, dln2_buf, len);
-> +#else
-> +	if (bpw <= 8) {
-> +		memcpy(dest, dln2_buf, len);
-> +	} else if (bpw <= 16) {
-> +		u16 *d = (u16 *)dest;
-> +		__le16 *s = (__le16 *)dln2_buf;
-> +
-> +		len = len / 2;
-> +		while (len--)
-> +			put_unaligned(get_unaligned_le16(s++), d++)
+static inline bool
+spi_transfer_is_last(struct spi_master *master, struct spi_transfer *xfer)
+{
+        return list_is_last(&xfer->transfer_list, &master->cur_msg->transfers);
+}
 
-...or get_unaligned_lexx here.
+or open code it in the driver?
 
-> +	} else {
-> +		u32 *d = (u32 *)dest;
-> +		__le32 *s = (__le32 *)dln2_buf;
-> +
-> +		len = len / 4;
-> +		while (len--)
-> +			put_unaligned(get_unaligned_le32(s++), d++)
-> +	}
-> +#endif
-> +
-> +	return 0;
-> +}
-
-Did you check the alignment of the SPI buffers as well? I'd assume they
-were DMA-able and thus properly aligned, and then you do not need to use
-any unaligned helpers above at all.
-
-Johan
+Beniamino
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

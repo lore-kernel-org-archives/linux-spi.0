@@ -1,52 +1,81 @@
-From: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-Subject: Re: [PATCH v5 1/2] spi: add support for DLN-2 USB-SPI adapter
-Date: Wed, 19 Nov 2014 16:12:40 +0200
-Message-ID: <20141119141239.GE2583@lpalcu-linux>
-References: <1416394031-2663-1-git-send-email-laurentiu.palcu@intel.com>
- <1416402467-26999-1-git-send-email-laurentiu.palcu@intel.com>
- <20141119135121.GF7857@localhost>
+From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+Subject: Re: [PATCH v3 2/2] mfd: dln2: add support for USB-SPI module
+Date: Wed, 19 Nov 2014 16:29:25 +0000
+Message-ID: <20141119162925.GE1875@x1>
+References: <1416312599-5176-1-git-send-email-laurentiu.palcu@intel.com>
+ <1416312599-5176-3-git-send-email-laurentiu.palcu@intel.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
+	Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
 	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
 	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Johan Hovold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20141119135121.GF7857@localhost>
+In-Reply-To: <1416312599-5176-3-git-send-email-laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Wed, Nov 19, 2014 at 02:51:21PM +0100, Johan Hovold wrote:
-> On Wed, Nov 19, 2014 at 03:07:47PM +0200, Laurentiu Palcu wrote:
-> 
-> > +/*
-> > + * Perform one read operation.
-> > + */
-> > +static int dln2_spi_read_one(struct dln2_spi *dln2, u8 *data,
-> > +			     u16 data_len, u8 attr)
-> > +{
-> > +	int ret;
-> > +	struct {
-> > +		u8 port;
-> > +		__le16 size;
-> > +		u8 attr;
-> > +	} __packed tx;
-> > +	struct {
-> > +		__le16 size;
-> > +		u8 buf[DLN2_SPI_MAX_XFER_SIZE];
-> > +	} __packed *rx = dln2->buf;
-> 
-> You said you verified that the dln2 protocol headers did not mess up the
-> alignment, yet they do. Here you have a two byte header.
-I did, only that I mistakenly counted the entire header, including
-dln2_response struct size, which is 10 bytes... :/
+On Tue, 18 Nov 2014, Laurentiu Palcu wrote:
 
-thanks,
-laurentiu
+> Signed-off-by: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+> ---
+>  drivers/mfd/dln2.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 
+=46or my own reference:
+
+Acked-by: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+
+So what's the plan for this set?
+
+> diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
+> index 9765a17..0cdad2d 100644
+> --- a/drivers/mfd/dln2.c
+> +++ b/drivers/mfd/dln2.c
+> @@ -52,6 +52,7 @@ enum dln2_handle {
+>  	DLN2_HANDLE_CTRL,
+>  	DLN2_HANDLE_GPIO,
+>  	DLN2_HANDLE_I2C,
+> +	DLN2_HANDLE_SPI,
+>  	DLN2_HANDLES
+>  };
+> =20
+> @@ -634,6 +635,12 @@ static struct dln2_platform_data dln2_pdata_i2c =
+=3D {
+>  	.port =3D 0,
+>  };
+> =20
+> +/* Only one SPI port supported */
+> +static struct dln2_platform_data dln2_pdata_spi =3D {
+> +	.handle =3D DLN2_HANDLE_SPI,
+> +	.port =3D 0,
+> +};
+> +
+>  static const struct mfd_cell dln2_devs[] =3D {
+>  	{
+>  		.name =3D "dln2-gpio",
+> @@ -645,6 +652,11 @@ static const struct mfd_cell dln2_devs[] =3D {
+>  		.platform_data =3D &dln2_pdata_i2c,
+>  		.pdata_size =3D sizeof(struct dln2_platform_data),
+>  	},
+> +	{
+> +		.name =3D "dln2-spi",
+> +		.platform_data =3D &dln2_pdata_spi,
+> +		.pdata_size =3D sizeof(struct dln2_platform_data),
+> +	},
+>  };
+> =20
+>  static void dln2_disconnect(struct usb_interface *interface)
+
+--=20
+Lee Jones
+Linaro STMicroelectronics Landing Team Lead
+Linaro.org =E2=94=82 Open source software for ARM SoCs
+=46ollow Linaro: Facebook | Twitter | Blog
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

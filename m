@@ -1,12 +1,14 @@
-From: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Subject: Re: [PATCH v2 1/4] spi: Add 'last' flag to spi_transfer structure
-Date: Tue, 18 Nov 2014 23:55:46 +0100
-Message-ID: <20141118225546.GA27182@gmail.com>
+Date: Wed, 19 Nov 2014 09:34:45 +0000
+Message-ID: <20141119093445.GV22111@sirena.org.uk>
 References: <1416264471-774-1-git-send-email-b.galvani@gmail.com>
  <1416264471-774-2-git-send-email-b.galvani@gmail.com>
  <20141118140658.GI22111@sirena.org.uk>
+ <20141118225546.GA27182@gmail.com>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="s0H35NU0PUc8VBh+"
 Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Carlo Caione <carlo-KA+7E9HrN00dnm+yROfE0A@public.gmane.org>,
 	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
 	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
@@ -17,42 +19,50 @@ Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Carlo Caione <carlo-KA+7E
 	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
 	Jerry Cao <jerry.cao-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>,
 	Victor Wan <victor.wan-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>
-To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+To: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <20141118140658.GI22111-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
+In-Reply-To: <20141118225546.GA27182-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, Nov 18, 2014 at 02:06:58PM +0000, Mark Brown wrote:
-> It's incredibly sad to iterate through the entire list in order to find
-> the last entry, especially given that it's a doubly linked list and this
-> is a bit of a hot path.  We should look at the previous entry for the
-> list head instead, or perhaps better yet by doing this as part of
-> spi_validate() which already itereates over the entire list and is where
-> we do other similar fixups.
-> 
-> Though looking at this I'm not sure that a flag is the best approach at
-> all - why not just have the driver call list_is_last() in the transfer
-> function or ideally provide an inline function that does that so that we
-> can change the implementation later?
 
-I didn't realize that the master structure passed to transfer_one()
-has a reference to the current message and thus to the transfer
-list. Then yes, the additional flag in the transfer structure probably
-doesn't make much sense.
+--s0H35NU0PUc8VBh+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Would it be better to introduce something like:
+On Tue, Nov 18, 2014 at 11:55:46PM +0100, Beniamino Galvani wrote:
 
-static inline bool
-spi_transfer_is_last(struct spi_master *master, struct spi_transfer *xfer)
-{
-        return list_is_last(&xfer->transfer_list, &master->cur_msg->transfers);
-}
+> Would it be better to introduce something like:
 
-or open code it in the driver?
+> static inline bool
+> spi_transfer_is_last(struct spi_master *master, struct spi_transfer *xfer)
+> {
+>         return list_is_last(&xfer->transfer_list, &master->cur_msg->transfers);
+> }
 
-Beniamino
+> or open code it in the driver?
+
+Adding the helper function seems better, it means we can change the
+implementation later.
+
+--s0H35NU0PUc8VBh+
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2
+
+iQEcBAEBAgAGBQJUbGQxAAoJECTWi3JdVIfQe2sH/RfuVlJmbwTuMXxo8oXmtKoc
+BkHQLcXVYYGZL+9M7S/W/Pk2xzSqvQuWPMUWraFk39+5XHzlieHbsFkWOd/P7H5i
+0yekOEWxbVkHnRzOEBJsXlUNCJbepPUA+0YPBlIMtlTi3ClCDfPjgAZTcLDgLdH4
+F6DWpQgHcU6n+bnCUGBNcas1l3v8Q73QhJCtifjxnnS2aUaQ1jZPmWSc50kA8W1i
+n/HDZn3VFxnfCTJ+1z/vwAwf4BKC1SgI0qJezWIHLsI8yeG4LgIMqExnqpVXOTUF
+vW4JxSeNNtEweyIiEzqLvSFdCDrXUJfYnWoueQIRsOTpUh3mMrtWhInUdg8LFK4=
+=JxKc
+-----END PGP SIGNATURE-----
+
+--s0H35NU0PUc8VBh+--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

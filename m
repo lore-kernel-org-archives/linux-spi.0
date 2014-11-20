@@ -1,54 +1,53 @@
-From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: sirf: reset SPI controller in init stage
-Date: Thu, 20 Nov 2014 22:33:07 +0800
-Message-ID: <1416493987-6024-1-git-send-email-21cnbao@gmail.com>
-Cc: workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
-	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-ID: <linux-spi.vger.kernel.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] spi: fsl-spi: Don't use cpm_command on CPM1
+Date: Thu, 20 Nov 2014 17:24:17 +0100 (CET)
+Message-ID: <20141120162418.04FAC1A9BFC@localhost.localdomain>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-spi@vger.kernel.org
+To: Mark Brown <broonie@kernel.org>
+Return-path: <linux-kernel-owner@vger.kernel.org>
+Sender: linux-kernel-owner@vger.kernel.org
+List-Id: linux-spi.vger.kernel.org
 
-From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+On CPM1, when the SPI parameter RAM is relocated to somewhere else than the
+default location, in accordance with freescale documentation
+(refer micropatch SPI application note EB662), init RX/TX params command shall
+not be used because it doesn't take into account the new location, and
+overwrites data that is in original location of SPI param ram at addresses 
+SCC2 param base +  (u32*)0x88 (u16*)0x90 (u32*)0x98 (u16*)0xA0, hence breaking
+activity on SCC2 if SCC2 is used in a mode like QMC for instance.
 
-in SPI boot mode, romcode uses SPI controller to fetch data from NOR
-flash. Here we need to reset the hardware IP to restore its state.
+Therefore, the action shall be done manually as described by freescale and as
+was already partly done by the driver.
 
-Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
-Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+Reported-by: Patrick Vasseur <patrick.vasseur@c-s.fr>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Tested-by: Patrick Vasseur <patrick.vasseur@c-s.fr>
+
 ---
- drivers/spi/spi-sirf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/spi/spi-fsl-cpm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
-index 90dc05b..73a88b3 100644
---- a/drivers/spi/spi-sirf.c
-+++ b/drivers/spi/spi-sirf.c
-@@ -23,6 +23,7 @@
- #include <linux/dmaengine.h>
- #include <linux/dma-direction.h>
- #include <linux/dma-mapping.h>
-+#include <linux/reset.h>
- 
- #define DRIVER_NAME "sirfsoc_spi"
- 
-@@ -647,6 +648,12 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
- 	int irq;
- 	int i, ret;
- 
-+	ret = device_reset(&pdev->dev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "SPI reset failed!\n");
-+		return ret;
-+	}
-+
- 	master = spi_alloc_master(&pdev->dev, sizeof(*sspi));
- 	if (!master) {
- 		dev_err(&pdev->dev, "Unable to allocate SPI master\n");
+diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
+index 54b0637..da97988 100644
+--- a/drivers/spi/spi-fsl-cpm.c
++++ b/drivers/spi/spi-fsl-cpm.c
+@@ -56,12 +56,15 @@ void fsl_spi_cpm_reinit_txrx(struct mpc8xxx_spi *mspi)
+ 		qe_issue_cmd(QE_INIT_TX_RX, mspi->subblock,
+ 			     QE_CR_PROTOCOL_UNSPECIFIED, 0);
+ 	} else {
+-		cpm_command(CPM_SPI_CMD, CPM_CR_INIT_TRX);
+ 		if (mspi->flags & SPI_CPM1) {
++			out_be32(&mspi->pram->rstate, 0);
+ 			out_be16(&mspi->pram->rbptr,
+ 				 in_be16(&mspi->pram->rbase));
++			out_be32(&mspi->pram->tstate, 0);
+ 			out_be16(&mspi->pram->tbptr,
+ 				 in_be16(&mspi->pram->tbase));
++		} else {
++			cpm_command(CPM_SPI_CMD, CPM_CR_INIT_TRX);
+ 		}
+ 	}
+ }
 -- 
-2.1.1
-
---
-To unsubscribe from this list: send the line "unsubscribe linux-spi" in
-the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-More majordomo info at  http://vger.kernel.org/majordomo-info.html
+2.1.0

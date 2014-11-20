@@ -1,53 +1,48 @@
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] spi: fsl-spi: Don't use cpm_command on CPM1
-Date: Thu, 20 Nov 2014 17:24:17 +0100 (CET)
-Message-ID: <20141120162418.04FAC1A9BFC@localhost.localdomain>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-spi@vger.kernel.org
-To: Mark Brown <broonie@kernel.org>
-Return-path: <linux-kernel-owner@vger.kernel.org>
-Sender: linux-kernel-owner@vger.kernel.org
-List-Id: linux-spi.vger.kernel.org
+From: trotters05422-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+Subject: Fix Penguin Penalty 17th October2014 ( mail-archive.com )
+Date: Fri, 21 Nov 2014 02:15:19 +0530
+Message-ID: <546e52db.8a85440a.600a.ffff8b38@mx.google.com>
+Reply-To: juliakites-/E1597aS9LQAvxtiuMwx3w@public.gmane.org
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=ISO-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
-On CPM1, when the SPI parameter RAM is relocated to somewhere else than the
-default location, in accordance with freescale documentation
-(refer micropatch SPI application note EB662), init RX/TX params command shall
-not be used because it doesn't take into account the new location, and
-overwrites data that is in original location of SPI param ram at addresses 
-SCC2 param base +  (u32*)0x88 (u16*)0x90 (u32*)0x98 (u16*)0xA0, hence breaking
-activity on SCC2 if SCC2 is used in a mode like QMC for instance.
+Dear Sir
 
-Therefore, the action shall be done manually as described by freescale and as
-was already partly done by the driver.
+Did your website get hit by Google Penguin update on October 17th 2014?=
+ What basically is Google Penguin Update? It is actually a code name fo=
+r Google algorithm which aims at decreasing your websites search engine=
+ rankings that violate Google=92s guidelines by using black hat SEO tec=
+hniques to rank your webpage by giving number of spammy links to the pa=
+ge.
+=20
+We are one of those few SEO companies that can help you avoid penalties=
+ from Google Updates like Penguin and Panda. Our clients have survived =
+all the previous and present updates with ease. They have never been hi=
+t because we use 100% white hat SEO techniques to rank Webpages.  Simpl=
+e thing that we do to keep websites away from any Penguin or Panda pena=
+lties is follow Google guidelines and we give Google users the best ans=
+wers to their queries.
 
-Reported-by: Patrick Vasseur <patrick.vasseur@c-s.fr>
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Tested-by: Patrick Vasseur <patrick.vasseur@c-s.fr>
+If you are looking to increase the quality of your websites and to get =
+more targeted traffic or save your websites from these Google penalties=
+ email us back with your interest.=20
 
----
- drivers/spi/spi-fsl-cpm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+We will be glad to serve you and help you grow your business.
 
-diff --git a/drivers/spi/spi-fsl-cpm.c b/drivers/spi/spi-fsl-cpm.c
-index 54b0637..da97988 100644
---- a/drivers/spi/spi-fsl-cpm.c
-+++ b/drivers/spi/spi-fsl-cpm.c
-@@ -56,12 +56,15 @@ void fsl_spi_cpm_reinit_txrx(struct mpc8xxx_spi *mspi)
- 		qe_issue_cmd(QE_INIT_TX_RX, mspi->subblock,
- 			     QE_CR_PROTOCOL_UNSPECIFIED, 0);
- 	} else {
--		cpm_command(CPM_SPI_CMD, CPM_CR_INIT_TRX);
- 		if (mspi->flags & SPI_CPM1) {
-+			out_be32(&mspi->pram->rstate, 0);
- 			out_be16(&mspi->pram->rbptr,
- 				 in_be16(&mspi->pram->rbase));
-+			out_be32(&mspi->pram->tstate, 0);
- 			out_be16(&mspi->pram->tbptr,
- 				 in_be16(&mspi->pram->tbase));
-+		} else {
-+			cpm_command(CPM_SPI_CMD, CPM_CR_INIT_TRX);
- 		}
- 	}
- }
--- 
-2.1.0
+Regards
+
+Julia kites
+
+SEO Manager ( TOB )
+B7 Green Avenue, Amritsar 143001 Punjab
+____________________________
+NO CLICK in the subject to STOP EMAILS
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

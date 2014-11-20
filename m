@@ -1,81 +1,53 @@
-From: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 2/2] mfd: dln2: add support for USB-SPI module
-Date: Wed, 19 Nov 2014 16:29:25 +0000
-Message-ID: <20141119162925.GE1875@x1>
-References: <1416312599-5176-1-git-send-email-laurentiu.palcu@intel.com>
- <1416312599-5176-3-git-send-email-laurentiu.palcu@intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Samuel Ortiz <sameo-VuQAYsv1563Yd54FQh9/CA@public.gmane.org>,
-	Johan Havold <johan-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Octavian Purdila <octavian.purdila-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-To: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
+From: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: sirf: reset SPI controller in init stage
+Date: Thu, 20 Nov 2014 22:33:07 +0800
+Message-ID: <1416493987-6024-1-git-send-email-21cnbao@gmail.com>
+Cc: workgroup.linux-kQvG35nSl+M@public.gmane.org, Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>,
+	Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <1416312599-5176-3-git-send-email-laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-On Tue, 18 Nov 2014, Laurentiu Palcu wrote:
+From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
 
-> Signed-off-by: Laurentiu Palcu <laurentiu.palcu-ral2JQCrhuEAvxtiuMwx3w@public.gmane.org>
-> ---
->  drivers/mfd/dln2.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+in SPI boot mode, romcode uses SPI controller to fetch data from NOR
+flash. Here we need to reset the hardware IP to restore its state.
 
-=46or my own reference:
+Signed-off-by: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
+Signed-off-by: Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
+---
+ drivers/spi/spi-sirf.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Acked-by: Lee Jones <lee.jones-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
+diff --git a/drivers/spi/spi-sirf.c b/drivers/spi/spi-sirf.c
+index 90dc05b..73a88b3 100644
+--- a/drivers/spi/spi-sirf.c
++++ b/drivers/spi/spi-sirf.c
+@@ -23,6 +23,7 @@
+ #include <linux/dmaengine.h>
+ #include <linux/dma-direction.h>
+ #include <linux/dma-mapping.h>
++#include <linux/reset.h>
+ 
+ #define DRIVER_NAME "sirfsoc_spi"
+ 
+@@ -647,6 +648,12 @@ static int spi_sirfsoc_probe(struct platform_device *pdev)
+ 	int irq;
+ 	int i, ret;
+ 
++	ret = device_reset(&pdev->dev);
++	if (ret) {
++		dev_err(&pdev->dev, "SPI reset failed!\n");
++		return ret;
++	}
++
+ 	master = spi_alloc_master(&pdev->dev, sizeof(*sspi));
+ 	if (!master) {
+ 		dev_err(&pdev->dev, "Unable to allocate SPI master\n");
+-- 
+2.1.1
 
-So what's the plan for this set?
-
-> diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
-> index 9765a17..0cdad2d 100644
-> --- a/drivers/mfd/dln2.c
-> +++ b/drivers/mfd/dln2.c
-> @@ -52,6 +52,7 @@ enum dln2_handle {
->  	DLN2_HANDLE_CTRL,
->  	DLN2_HANDLE_GPIO,
->  	DLN2_HANDLE_I2C,
-> +	DLN2_HANDLE_SPI,
->  	DLN2_HANDLES
->  };
-> =20
-> @@ -634,6 +635,12 @@ static struct dln2_platform_data dln2_pdata_i2c =
-=3D {
->  	.port =3D 0,
->  };
-> =20
-> +/* Only one SPI port supported */
-> +static struct dln2_platform_data dln2_pdata_spi =3D {
-> +	.handle =3D DLN2_HANDLE_SPI,
-> +	.port =3D 0,
-> +};
-> +
->  static const struct mfd_cell dln2_devs[] =3D {
->  	{
->  		.name =3D "dln2-gpio",
-> @@ -645,6 +652,11 @@ static const struct mfd_cell dln2_devs[] =3D {
->  		.platform_data =3D &dln2_pdata_i2c,
->  		.pdata_size =3D sizeof(struct dln2_platform_data),
->  	},
-> +	{
-> +		.name =3D "dln2-spi",
-> +		.platform_data =3D &dln2_pdata_spi,
-> +		.pdata_size =3D sizeof(struct dln2_platform_data),
-> +	},
->  };
-> =20
->  static void dln2_disconnect(struct usb_interface *interface)
-
---=20
-Lee Jones
-Linaro STMicroelectronics Landing Team Lead
-Linaro.org =E2=94=82 Open source software for ARM SoCs
-=46ollow Linaro: Facebook | Twitter | Blog
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

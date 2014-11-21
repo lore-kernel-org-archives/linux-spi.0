@@ -1,12 +1,16 @@
-From: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
-Subject: Re: [PATCH v8 6/8] OF: i2c: Add OF notifier handler
-Date: Fri, 21 Nov 2014 17:11:15 +0200
-Message-ID: <E28022BF-F72E-4BD9-9F95-4DB091EA7981@konsulko.com>
-References: <1414528565-10907-1-git-send-email-pantelis.antoniou@konsulko.com> <1414528565-10907-7-git-send-email-pantelis.antoniou@konsulko.com> <20141121015335.99BF2C413E8@trevor.secretlab.ca> <546E9D75.3000208@roeck-us.net> <20141121150837.20DC4C40D85@trevor.secretlab.ca>
-Mime-Version: 1.0 (Mac OS X Mail 8.1 \(1993\))
-Content-Type: text/plain; charset=utf-8
+From: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+Subject: Re: [PATCH] of: spi: Export single device registration method
+ =?iso-8859-1?Q?and=0D?= accessors (v2)
+Date: Fri, 21 Nov 2014 15:33:29 +0000
+Message-ID: <20141121153329.C4DDDC40D85@trevor.secretlab.ca>
+References: <1414572037-11306-1-git-send-email-pantelis.antoniou@konsulko.com>
+	<20141029101420.GT18557@sirena.org.uk>
+	<6A3753C0-251A-4645-AD96-CB1D6521175F@antoniou-consulting.com>
+	<20141029122204.GG18557@sirena.org.uk>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=ISO-8859-1
 Content-Transfer-Encoding: QUOTED-PRINTABLE
-Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
+Cc: Alexander Sverdlin <alexander.sverdlin-OYasijW0DpE@public.gmane.org>,
 	Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
 	Matt Porter <matt.porter-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
@@ -14,9 +18,8 @@ Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
 	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
 	Alison Chaiken <Alison_Chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
 	Dinh Nguyen <dinh.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jan Lubbe <jluebbe-H4yykcOXDpCzQB+pC5nmwQ@public.gmane.org>,
-	Alexander Sverdlin <alexander.sverdlin-OYasijW0DpE@public.gmane.org>,
-	Michael Stickel <ms-g5CePrrZ5ROELgA04lAiVw@public.gmane.org>,
+	Jan Lubbe <jluebbe-H4yykcOXDpCzQB+pC5nmwQ@public.gmane.org>, Michael Stickel <ms-g5CePrrZ5ROELgA04lAiVw@public.gmane.org>,
+	Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
 	Dirk Behme <dirk.behme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Alan Tull <delicious.quinoa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
@@ -26,206 +29,79 @@ Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
 	Matt Ranostay <mranostay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
 	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
 	Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>, linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>, linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
+	linux-kernel <linux-kernel-fy+rA21nqHI@public.gmane.org
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
+	Pantelis Antoniou <panto-wVdstyuyKrO8r51toPun2/C9HSW9iNxf@public.gmane.org>
 Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-In-Reply-To: <20141121150837.20DC4C40D85-WNowdnHR2B42iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
+In-Reply-To: <20141029122204.GG18557-GFdadSzt00ze9xe1eoZjHA@public.gmane.org>
 Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-Id: linux-spi.vger.kernel.org
 
-Hi Grant,
+On Wed, 29 Oct 2014 12:22:04 +0000
+, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
+ wrote:
+> On Wed, Oct 29, 2014 at 01:48:06PM +0200, Pantelis Antoniou wrote:
+> > > On Oct 29, 2014, at 12:14 , Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org> wrote=
+:
+>=20
+> > > This feels like there is an abstraction problem somewhere, whatev=
+er code
+> > > is supposed to use this is going to need to be taught about each
+> > > individual bus which is going to be tedious, I would expect that =
+we'd
+> > > have something like the bus being able to provide a callback whic=
+h will
+> > > get invoked whenever a new node appears on the parent node for th=
+e bus.
+>=20
+> > There=E2=80=99s a whole patchset that does exactly this.=20
+> > Look at "OF: spi: Add OF notifier handler=E2=80=9D and you=E2=80=99=
+ll where this is used.
+>=20
+> I deleted that unread I'm afraid; one of the reasons that you should =
+use
+> subject lines matching the styles for the subsystems is that it's one=
+ of
+> the things people use to filter out things that actually need attenti=
+on,
+> if things are busy things that at first glance don't look terribly
+> relevant (like changes to the OF core in this case) are likely to get
+> looked at less urgently or just skipped.
+>=20
+> A quick glance suggests that this is adding code inside the SPI core =
+so
+> it's still not explaining why anything is being exported, can you
+> clarify please?
 
-> On Nov 21, 2014, at 17:08 , Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org> =
-wrote:
->=20
-> On Thu, 20 Nov 2014 18:03:33 -0800
-> , Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>
-> wrote:
->> On 11/20/2014 05:53 PM, Grant Likely wrote:
->>> On Tue, 28 Oct 2014 22:36:03 +0200
->>> , Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
->>>  wrote:
->>>> Add OF notifier handler needed for creating/destroying i2c devices
->>>> according to dynamic runtime changes in the DT live tree.
->>>>=20
->>>> Signed-off-by: Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>
->>>> ---
->>>>  drivers/i2c/i2c-core.c | 79 +++++++++++++++++++++++++++++++++++++=
-++++++++++++-
->>>>  1 file changed, 78 insertions(+), 1 deletion(-)
->>>>=20
->>>> diff --git a/drivers/i2c/i2c-core.c b/drivers/i2c/i2c-core.c
->>>> index e6da9d3..e751b78 100644
->>>> --- a/drivers/i2c/i2c-core.c
->>>> +++ b/drivers/i2c/i2c-core.c
->>>> @@ -1470,6 +1470,7 @@ struct i2c_adapter *of_find_i2c_adapter_by_n=
-ode(struct device_node *node)
->>>>  	return i2c_verify_adapter(dev);
->>>>  }
->>>>  EXPORT_SYMBOL(of_find_i2c_adapter_by_node);
->>>> +
->>>>  #else
->>>>  static void of_i2c_register_devices(struct i2c_adapter *adap) { }
->>>>  #endif /* CONFIG_OF */
->>>> @@ -1955,6 +1956,71 @@ void i2c_clients_command(struct i2c_adapter=
- *adap, unsigned int cmd, void *arg)
->>>>  }
->>>>  EXPORT_SYMBOL(i2c_clients_command);
->>>>=20
->>>> +#if IS_ENABLED(CONFIG_OF)
->>>> +
->>>> +static int of_i2c_notify(struct notifier_block *nb,
->>>> +				unsigned long action, void *arg)
->>>> +{
->>>> +	struct device_node *dn;
->>>> +	struct i2c_adapter *adap;
->>>> +	struct i2c_client *client;
->>>> +	int state;
->>>> +
->>>> +	state =3D of_reconfig_get_state_change(action, arg);
->>>> +	if (state =3D=3D -1)
->>>> +		return NOTIFY_OK;
->>>> +
->>>> +	switch (action) {
->>>> +	case OF_RECONFIG_ATTACH_NODE:
->>>> +	case OF_RECONFIG_DETACH_NODE:
->>>> +		dn =3D arg;
->>>> +		break;
->>>> +	case OF_RECONFIG_ADD_PROPERTY:
->>>> +	case OF_RECONFIG_REMOVE_PROPERTY:
->>>> +	case OF_RECONFIG_UPDATE_PROPERTY:
->>>> +		dn =3D ((struct of_prop_reconfig *)arg)->dn;
->>>> +		break;
->>>> +	default:
->>>> +		return NOTIFY_OK;
->>>> +	}
->>>> +
->>>> +	if (state) {
->>>> +
->>>> +		adap =3D of_find_i2c_adapter_by_node(dn->parent);
->>>> +		if (adap =3D=3D NULL)
->>>> +			return NOTIFY_OK;	/* not for us */
->>>> +
->>>> +		client =3D of_i2c_register_device(adap, dn);
->>>> +		put_device(&adap->dev);
->>>> +
->>>> +		if (IS_ERR(client)) {
->>>> +			pr_err("%s: failed to create for '%s'\n",
->>>> +					__func__, dn->full_name);
->>>> +			return notifier_from_errno(PTR_ERR(client));
->>>> +		}
->>>> +
->>>> +	} else {
->>>> +
->>>> +		/* find our device by node */
->>>> +		client =3D of_find_i2c_device_by_node(dn);
->>>> +		if (client =3D=3D NULL)
->>>> +			return NOTIFY_OK;	/* no? not meant for us */
->>>> +
->>>> +		/* unregister takes one ref away */
->>>> +		i2c_unregister_device(client);
->>>> +
->>>> +		/* and put the reference of the find */
->>>> +		put_device(&client->dev);
->>>> +
->>>> +	}
->>>=20
->>> Nit: odd whitespace
->>>=20
->>>> +
->>>> +	return NOTIFY_OK;
->>>> +}
->>>> +
->>>> +static struct notifier_block i2c_of_notifier;
->>>> +
->>>> +#endif
->>>> +
->>>>  static int __init i2c_init(void)
->>>>  {
->>>>  	int retval;
->>>> @@ -1972,8 +2038,19 @@ static int __init i2c_init(void)
->>>>  	retval =3D i2c_add_driver(&dummy_driver);
->>>>  	if (retval)
->>>>  		goto class_err;
->>>> -	return 0;
->>>>=20
->>>> +#if IS_ENABLED(CONFIG_OF)
->>>> +	i2c_of_notifier.notifier_call =3D of_i2c_notify;
->>=20
->> Wouldn't it be easier to just initialize i2c_of_notifier above inste=
-ad of
->> here in the code ? Or is there a reason for doing it here ?
->=20
-> Yes, absolutely. This code should also depend on CONFIG_OF_DYNAMIC to=
-o,
-> not merely CONFIG_OF.
->=20
->>=20
+I have the same question. This doesn't look like it should be exporting
+symbols.
 
-No reason; it just seemed like the most opportune place to put it at th=
-e time.
+Also, the way the patch is written causes a lot of code changes to get
+interleaved in the diff. It would be better to split into two patches;
+one that creates the new of_register_spi_device(), and a separate patch
+to add the other new functions. It would be certainly easier to review
+that way.
 
->> Thanks,
->> Guenter
->>=20
->>>> +	retval =3D of_reconfig_notifier_register(&i2c_of_notifier);
->>>> +	if (retval)
->>>> +		goto notifier_err;
->>>> +#endif
 >=20
-> We can also get rid of the ugly #ifdef in the body by creating empty
-> stubs for of_reconfig_notify_{register,unregister}() and doing the
-> following:
+> > > SubmittingPatches says.  Please also try to keep your CC list san=
+e,
+> > > CCing random people just means that you're increasing the volume =
+of mail
+> > > they have to process.  I'm surprised kernel.org accepts so many C=
+Cs.
 >=20
-> 	if (IS_ENABLED(CONFIG_OF_DYNAMIC))
-> 		WARN_ON(of_reconfig_notifier_register(&i2c_of_notifier))
+> > > I have to say I don't recall ever seeing v1...
 >=20
-> I picked up the patch into my tree and made the above changes because
-> they're pretty trivial. If Wolfram is okay with it then I can take th=
-e
-> whole series through my tree. Otherwise I'll put the of_reconfig_* em=
-pty
-> stubs into a separate branch that he and broonie can both pull.
+> > All of them are in the CC list for a reason.=20
 >=20
+> This is a single, standalone SPI patch - you didn't send it as part o=
+f a
+> series (which is the only reason I read it).
 
-I=E2=80=99m fine with doing this if you=E2=80=99d like, it=E2=80=99s pr=
-etty simple.
+Yes, this is part of the OF overlay series. It should have at least bee=
+n
+marked as [PATCH 7/8] and that it replaced the previous, buggy, patch 7=
+=2E
 
-Regards
-
-=E2=80=94 Pantelis
-
-> g.
->=20
->>>> +
->>>> +	return 0;
->>>> +#if IS_ENABLED(CONFIG_OF)
->>>> +notifier_err:
->>>> +	i2c_del_driver(&dummy_driver);
->>>> +#endif
->>>=20
->>> Similar to my comment on the platform bus, don't break the entire b=
-us if
->>> registration of the notifier fails. I would drop the error case and=
- just
->>> do a WARN_ON() if it fails.
->>>=20
->>> Otherwise:
->>>=20
->>> Acked-by: Grant Likely <grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>
->>>=20
->>>>  class_err:
->>>>  #ifdef CONFIG_I2C_COMPAT
->>>>  	class_compat_unregister(i2c_adapter_compat_class);
->>>> --
->>>> 1.7.12
->>>>=20
->>>=20
->>>=20
->>=20
->> --
->> To unsubscribe from this list: send the line "unsubscribe linux-kern=
-el" in
->> the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
->> More majordomo info at  http://vger.kernel.org/majordomo-info.html
->> Please read the FAQ at  http://www.tux.org/lkml/
+g.

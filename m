@@ -1,51 +1,58 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH] spi: sirf: reset SPI controller in init stage
-Date: Fri, 21 Nov 2014 18:11:39 +0000
-Message-ID: <20141121181139.GW3815@sirena.org.uk>
-References: <1416493987-6024-1-git-send-email-21cnbao@gmail.com>
+Subject: Re: [PATCH] spi: fsl-spi: Don't use cpm_command on CPM1
+Date: Fri, 21 Nov 2014 18:12:53 +0000
+Message-ID: <20141121181253.GX3815@sirena.org.uk>
+References: <20141120162418.04FAC1A9BFC@localhost.localdomain>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="D6v9cGCN71sRmige"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, workgroup.linux-kQvG35nSl+M@public.gmane.org,
-	Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>, Barry Song <Baohua.Song-kQvG35nSl+M@public.gmane.org>
-To: Barry Song <21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="RyRVxeT1fPSLkipE"
+Cc: linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linuxppc-dev-uLR06cmDAlY/bJ5BZ2RsiQ@public.gmane.org,
+	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: Christophe Leroy <christophe.leroy-GgN8y9CXRhA@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1416493987-6024-1-git-send-email-21cnbao-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+In-Reply-To: <20141120162418.04FAC1A9BFC-bi+AKbBUZKY6gyzm1THtWbp2dZbC/Bob@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
 
---D6v9cGCN71sRmige
+--RyRVxeT1fPSLkipE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 20, 2014 at 10:33:07PM +0800, Barry Song wrote:
-> From: Qipan Li <Qipan.Li-kQvG35nSl+M@public.gmane.org>
->=20
-> in SPI boot mode, romcode uses SPI controller to fetch data from NOR
-> flash. Here we need to reset the hardware IP to restore its state.
+On Thu, Nov 20, 2014 at 05:24:17PM +0100, Christophe Leroy wrote:
+> On CPM1, when the SPI parameter RAM is relocated to somewhere else than t=
+he
+> default location, in accordance with freescale documentation
+> (refer micropatch SPI application note EB662), init RX/TX params command =
+shall
+> not be used because it doesn't take into account the new location, and
+> overwrites data that is in original location of SPI param ram at addresse=
+s=20
+> SCC2 param base +  (u32*)0x88 (u16*)0x90 (u32*)0x98 (u16*)0xA0, hence bre=
+aking
+> activity on SCC2 if SCC2 is used in a mode like QMC for instance.
 
 Applied, thanks.
 
---D6v9cGCN71sRmige
+--RyRVxeT1fPSLkipE
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUb4BaAAoJECTWi3JdVIfQclcH/i9htM9uW/EK9Ve7dqzW630v
-TUhcemIOWsadX/UsP4b0qbjeVB7OZlaF4ySu5tK9fxzNWBXg3KSFmgvaKhJwhsLk
-D9HM3StMOx0i24Z7lVqpKNhEFRxdMvLvDR/cfR674+GYK+RjvCS04c6Pqg3r9vww
-a4z0gk49HQZC1wUM1pkr41K4wxftX/dgXjUdmoPbo/KKyeyMdvx18stOrkQ5vDxx
-vt9hlC36/7ckqE7WkmDB3twI6XLKpZ1erVQ/hoPrMQT/S2Jnn8E6BDxxZbdV2581
-ZDueyRyICCVBYIGF3dWTtIi8RMFvdaY/eB76WJuN1Ffc+7DLFYp8ayyboa6D0hY=
-=6ECH
+iQEcBAEBAgAGBQJUb4CkAAoJECTWi3JdVIfQzEIIAIBpGFtzX4a+MGQh8q+sJtEs
+AwPTpoaGY/EzbgYSx39srYrjQD17FK5uogXnDRYcg62BEIbvix2PQrNgADXK0xLi
+wF6VY2ApnMnyoBZQKx+yT0d1esADAswtX8pfkD2yL2WroIwIfCtC1six4uXZB2WC
+UEantw8K25PTJfNLT3N82Cb21qclcuA1vUYe/Q+8dtQKJzz+kt+v4Q8dZCKqoiWf
+lvA43RWlFLXfjjQnCfpb4v4Cm1sNglJkuMsJS+opiKMvjq9b1NkPL3rs3ysb5NyG
+9haY99ntFjTYydZEmsQT1YBAsjfR01rCuaJnee6jWJZWMx46t5oLG1OGaymWQf8=
+=uMc0
 -----END PGP SIGNATURE-----
 
---D6v9cGCN71sRmige--
+--RyRVxeT1fPSLkipE--
 --
 To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org

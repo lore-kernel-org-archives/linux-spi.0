@@ -1,59 +1,50 @@
 From: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
-Subject: Re: [PATCH v3 3/4] spi: meson: Add support for Amlogic Meson SPIFC
-Date: Mon, 24 Nov 2014 18:55:05 +0000
-Message-ID: <20141124185505.GE7712@sirena.org.uk>
-References: <1416669702-7841-1-git-send-email-b.galvani@gmail.com>
- <1416669702-7841-4-git-send-email-b.galvani@gmail.com>
+Subject: Re: [PATCH 1/2] spi: atmel: remove compat for non DT board when
+ requesting dma chan
+Date: Mon, 24 Nov 2014 18:57:48 +0000
+Message-ID: <20141124185748.GF7712@sirena.org.uk>
+References: <1415981574-11165-1-git-send-email-ludovic.desroches@atmel.com>
 Mime-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="7sjjZzazJd4OX9P7"
-Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Carlo Caione <carlo-KA+7E9HrN00dnm+yROfE0A@public.gmane.org>,
-	linux-kernel-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
-	devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Russell King <linux-lFZ/pmaqli7XmaaqVzeoHQ@public.gmane.org>,
-	Rob Herring <robh+dt-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	Pawel Moll <pawel.moll-5wv7dgnIgG8@public.gmane.org>,
-	Mark Rutland <mark.rutland-5wv7dgnIgG8@public.gmane.org>,
-	Ian Campbell <ijc+devicetree-KcIKpvwj1kUDXYZnReoRVg@public.gmane.org>,
-	Kumar Gala <galak-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Jerry Cao <jerry.cao-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>,
-	Victor Wan <victor.wan-LpR1jeaWuhtBDgjK7y7TUQ@public.gmane.org>
-To: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Return-path: <devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+	protocol="application/pgp-signature"; boundary="vnj+srGq+/SN26DJ"
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, linux-arm-kernel-IAPFreCvJWM7uuMidbF8XUB+6BGkLq7r@public.gmane.org,
+	nicolas.ferre-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org
+To: Ludovic Desroches <ludovic.desroches-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Content-Disposition: inline
-In-Reply-To: <1416669702-7841-4-git-send-email-b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Sender: devicetree-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+In-Reply-To: <1415981574-11165-1-git-send-email-ludovic.desroches-AIFe0yeh4nAAvxtiuMwx3w@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
 
---7sjjZzazJd4OX9P7
+--vnj+srGq+/SN26DJ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Sat, Nov 22, 2014 at 04:21:41PM +0100, Beniamino Galvani wrote:
-> This is a driver for the Amlogic Meson SPIFC (SPI flash controller),
-> which is one of the two SPI controllers available on the SoC. It
-> doesn't support DMA and has a 64-byte unified transmit/receive buffer.
+On Fri, Nov 14, 2014 at 05:12:53PM +0100, Ludovic Desroches wrote:
+> All boards with a dma controller have DT support so using
+> dma_request_slave_channel_compat is no more needed.
 
-Applied, thanks.
+Applied both, thanks.
 
---7sjjZzazJd4OX9P7
+--vnj+srGq+/SN26DJ
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v2
 
-iQEcBAEBAgAGBQJUc38JAAoJECTWi3JdVIfQ1VkIAILkSXvspAENmsjVW5ktnEy4
-/79f7Gc0md7x8Qig7ixDPY0OXpVBw/3SEFwho+I3E5gcbCakahu/HWe3AvF6G4PF
-aFHx+bpBcvnBj731GKXQdNNZXpd4taJyxMqTnO/qEOaBPqS9z149YTCth5T+QVCf
-bhr9N1Tjz6GonIHmsq86PJW3eSvM80qQiHCmau2k9pzD2zteTCLS/7uB5dWCuvNb
-7f7kckvWogbRyYNUB7BiUO1Fi+m7ORz3yd8a2yaBsNKG6xo85bZmcX7HKO6Pawpp
-kzmsvt/9uGbIAlTT7msh6MNwoZRPTBOhc66vGe298nlKV7DZvzOR4eo07PKUAvE=
-=7kd6
+iQEcBAEBAgAGBQJUc3+sAAoJECTWi3JdVIfQRqYH/1YCi/Mo8R8n/Sf6ftHWij9Q
+a012RP5QI4xOTnf5g4CJ2nsJ6b4HPOrJzFUJqQxAS1sN4OkbvPnkROW7cQb5QPeJ
+j9uG/4qQ4ax8tMuyrgRbytom6XIl9f0yA+ZipFqwIm40KC0/jbwzQmO6EAyWKG8T
+TKz7eMCDf14CFJUiRY8AO2IFgatGMK7RrP1PVOFttMAkDqN7mByl80LookkP8vOx
+CtdeF7mZblsMIt+txNFgwDh4MVkBftSKALDO4iOzCNM719e7JlH94q5125AKmebT
+L7ZN56DVDA82rUhxbR/SXTK0MrtMM1PRFF9TyZDXLpyljunO979rMiYIte7VuWc=
+=E/AC
 -----END PGP SIGNATURE-----
 
---7sjjZzazJd4OX9P7--
+--vnj+srGq+/SN26DJ--
 --
-To unsubscribe from this list: send the line "unsubscribe devicetree" in
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
 the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 More majordomo info at  http://vger.kernel.org/majordomo-info.html

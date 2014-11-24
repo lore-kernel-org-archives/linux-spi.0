@@ -1,80 +1,70 @@
-From: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
-Subject: Re: [PATCH v8 6/8] OF: i2c: Add OF notifier handler
-Date: Sun, 23 Nov 2014 17:23:26 +0100
-Message-ID: <20141123162326.GB1303@katana>
-References: <1414528565-10907-1-git-send-email-pantelis.antoniou@konsulko.com>
- <1414528565-10907-7-git-send-email-pantelis.antoniou@konsulko.com>
- <20141121015335.99BF2C413E8@trevor.secretlab.ca>
- <546E9D75.3000208@roeck-us.net>
- <20141121150837.20DC4C40D85@trevor.secretlab.ca>
-Mime-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="CUfgB8w4ZwR/yMy5"
-Cc: Guenter Roeck <linux-0h96xk9xTtrk1uMJSBkQmQ@public.gmane.org>,
-	Pantelis Antoniou <pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org>,
-	Rob Herring <robherring2-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Stephen Warren <swarren-3lzwWm7+Weoh9ZMKESR00Q@public.gmane.org>,
-	Matt Porter <matt.porter-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org>,
-	Koen Kooi <koen-QLwJDigV5abLmq1fohREcCpxlwaOVQ5f@public.gmane.org>,
-	Greg Kroah-Hartman <gregkh-hQyY1W1yCW8ekmWlsbkhG0B+6BGkLq7r@public.gmane.org>,
-	Alison Chaiken <Alison_Chaiken-nmGgyN9QBj3QT0dZR+AlfA@public.gmane.org>,
-	Dinh Nguyen <dinh.linux-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Jan Lubbe <jluebbe-H4yykcOXDpCzQB+pC5nmwQ@public.gmane.org>,
-	Alexander Sverdlin <alexander.sverdlin-OYasijW0DpE@public.gmane.org>,
-	Michael Stickel <ms-g5CePrrZ5ROELgA04lAiVw@public.gmane.org>,
-	Dirk Behme <dirk.behme-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Alan Tull <delicious.quinoa-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Sascha Hauer <s.hauer-bIcnvbaLZ9MEGnE8C9+IrQ@public.gmane.org>,
-	Michael Bohan <mbohan-sgV2jX0FEOL9JmXXK+q4OQ@public.gmane.org>,
-	Ionut Nicu <ioan.nicu.ext-OYasijW0DpE@public.gmane.org>,
-	Michal Simek <monstr-pSz03upnqPeHXe+LvDLADg@public.gmane.org>,
-	Matt Ranostay <mranostay-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
-	Joel Becker <jlbec-aKy9MeLSZ9dg9hUCZPvPmw@public.gmane.org>, devicetree-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	linux-i2c-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>,
-	linux-spi
-To: Grant Likely <grant.likely-s3s/WqlpOiPyB63q8FvJNQ@public.gmane.org>
-Return-path: <linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
-Content-Disposition: inline
-In-Reply-To: <20141121150837.20DC4C40D85-WNowdnHR2B42iJbIjFUEsiwD8/FfD2ys@public.gmane.org>
-Sender: linux-i2c-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-List-Id: linux-spi.vger.kernel.org
+From: Andrey Smirnov <andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [RFC, PATCH] Add support for long SPI transfers
+Date: Mon, 24 Nov 2014 09:50:22 -0800
+Message-ID: <1416851423-1902-1-git-send-email-andrew.smirnov@gmail.com>
+Cc: andrew.smirnov-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, yurovsky-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org, broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org,
+	linux-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+To: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
+Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+List-ID: <linux-spi.vger.kernel.org>
 
+Hi,
 
---CUfgB8w4ZwR/yMy5
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+This patch is a very first, very preliminary version of the feature I
+am implementing for niche usecase of SPI in a system I am working
+on. It by no means contains production code and is purely RFC to "test
+the water" and see if there would be any interest in including this in
+mainline tree.
 
+The system I am working with implements a lion's share of its
+functionality in an extrenal FPGA connected to an ARM SoC via SPI
+bus. In my use-case SPI bus used both for initial bitfile programming
+of the FPGA and sending/fetching data to/from FPGA as well. Both use
+cases, can benefit greatly from ability to send very long bit streams
+over SPI as a single transaction during which CS line stays low the
+whole time. The use-case of programming the FPGA is the most important
+for me, since it is mandatory to program the FPGA before the rest of
+the system can proceed to a functioning state and therefore my
+"Applied power -> Functional State" time is greatly influenced by that
+operation.
 
-> I picked up the patch into my tree and made the above changes because
-> they're pretty trivial. If Wolfram is okay with it then I can take the
-> whole series through my tree. Otherwise I'll put the of_reconfig_* empty
-> stubs into a separate branch that he and broonie can both pull.
+As things are right now both SPI subsystem and SPIDEV driver are
+limited by their APIs to SPI transactions that are no longer than 255
+bits and that problem is exacerbated by the fact that transction
+length validity verification code does not have provisions for
+anything bigger than 32 bits.
 
-With your fix applied and in case of targetting 3.19:
+The code in this RFC deals only with the first problem, as I am not
+sure what would best way to tackle the second one.
 
-Reviewed-by: Wolfram Sang <wsa-z923LK4zBo2bacvFa/9K2g@public.gmane.org>
+So I guess my two maing questions for this RFC are the following:
 
+ - Is this work seem like a good fit to be included in the mainline
+   kernel, or should I just keep doing it as my system specifica hack
+   and not bother with upsteaming?
 
---CUfgB8w4ZwR/yMy5
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+ - If the idea is good for upstreaming what would be a good way to
+   improve length checking code? I was thinking of ditching the
+   bitmask in favour of driver provided function that would take
+   transfer length as an argument, are there any better options?
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
+Thank you.
 
-iQIcBAEBAgAGBQJUcgn+AAoJEBQN5MwUoCm2tIAP/RULnWQjdzIKKiwQUBYw60fF
-58Ha7WPDM07X36HWiS+bW/D/ZoWguLRqBC3XdfFLk8vqLSw511108hzG8saQbTGQ
-Xt9+BGMimATszp0MIke3Qnv+rq0v56zGjq15jtgJJaf+kAZYRZiat4m3adeYpMtJ
-2sWzGf0e1uCf3nVIzr/gAMUPimCFdaPJoKLDldL0lLAk+XKwK68dprDdk+3Hkd9y
-SdmoSb4gdXzEviG2IvvYCL7xCrLsIRC1pnINbA5j7z7TKKv3fMASkvr8MNZUa99t
-o7qiTKkrFeaJE1nIJFKhB/2B/tUzvULlxOh/8PVyd1AJB9JggiLP9kJx3cpE4QaA
-uKhVnaNOgPWVDIBm7YBlbHZQovAAqxI3VISwxkib2iFYw+QApo5XiExaME2Pt1jr
-QL/73AJvUxN+wefoNGvv3U7D+7Cfx98YH/tmnJs/oc3wBhE8SChQShK++RMJxd22
-zmVc+A6uMhexkxx2vtvd4S6n8njcMMMCD8VRvVlLZVMh76sie1GsPqLW7hFKj/JE
-hbWb6GIx+7giqaHR045YIj7+kaI64MxciBo4soaoaIe0CpU9abJfeEy/g0/LmLBQ
-FDTiGwUPE8T/OhZjO69OaX/6WxQ18XasJFO78bAtRCw+ei6yuc/GnH5YZIB4zStO
-v5aKcKtyr217hWj9k1TK
-=PwMc
------END PGP SIGNATURE-----
+Andrey Smirnov
 
---CUfgB8w4ZwR/yMy5--
+Andrey Smirnov (1):
+  spi, spidev: Add support for long SPI transfers
+
+ drivers/spi/spidev.c            | 7 ++++++-
+ include/linux/spi/spi.h         | 4 ++--
+ include/uapi/linux/spi/spidev.h | 2 +-
+ 3 files changed, 9 insertions(+), 4 deletions(-)
+
+-- 
+1.9.3
+
+--
+To unsubscribe from this list: send the line "unsubscribe linux-spi" in
+the body of a message to majordomo-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
+More majordomo info at  http://vger.kernel.org/majordomo-info.html

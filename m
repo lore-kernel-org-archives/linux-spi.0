@@ -1,67 +1,37 @@
-From: Fabio Estevam <festevam-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-Subject: [PATCH] spi: Check for spi_of_notifier when CONFIG_OF_DYNAMIC=y
-Date: Wed, 26 Nov 2014 20:13:57 -0200
-Message-ID: <1417040037-22522-1-git-send-email-festevam@gmail.com>
-Cc: pantelis.antoniou-OWPKS81ov/FWk0Htik3J/w@public.gmane.org, grant.likely-QSEj5FYQhm4dnm+yROfE0A@public.gmane.org,
-	linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org,
-	Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
-To: broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org
+From: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Subject: [PATCH] spi: meson: Select REGMAP_MMIO
+Date: Thu, 27 Nov 2014 00:07:48 +0100
+Message-ID: <1417043268-17563-1-git-send-email-b.galvani@gmail.com>
+Cc: linux-spi-u79uwXL29TY76Z2rM5mHXA@public.gmane.org, Jim Davis <jim.epost-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>,
+	Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+To: Mark Brown <broonie-DgEjT+Ai2ygdnm+yROfE0A@public.gmane.org>
 Return-path: <linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org>
 Sender: linux-spi-owner-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
 List-ID: <linux-spi.vger.kernel.org>
 
-From: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+The Meson SPIFC driver uses regmap mmio functions and so it must
+select REGMAP_MMIO to avoid the following build error:
 
-Since commit ce79d54ae447d651173 ("spi/of: Add OF notifier handler") the 
-following warning is seen on a imx53 system that has CONFIG_OF_DYNAMIC=n:
+spi-meson-spifc.c: undefined reference to `devm_regmap_init_mmio_clk'
 
-[    0.048119] ------------[ cut here ]------------
-[    0.048146] WARNING: CPU: 0 PID: 1 at drivers/spi/spi.c:2419 spi_init+0x60/0xa8()
-[    0.048158] Modules linked in:
-[    0.048183] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 3.18.0-rc6-next-20141126-00003-g9388e85 #2080
-[    0.048193] Hardware name: Freescale i.MX53 (Device Tree Support)
-[    0.048203] Backtrace:
-[    0.048235] [<80011f74>] (dump_backtrace) from [<80012110>] (show_stack+0x18/0x1c)
-[    0.048246]  r6:00000973 r5:00000000 r4:00000000 r3:00000000
-[    0.048284] [<800120f8>] (show_stack) from [<806b3ad8>] (dump_stack+0x88/0xa4)
-[    0.048312] [<806b3a50>] (dump_stack) from [<8002a55c>] (warn_slowpath_common+0x80/0xbc)
-[    0.048320]  r5:8096cfcc r4:00000000
-[    0.048343] [<8002a4dc>] (warn_slowpath_common) from [<8002a5bc>] (warn_slowpath_null+0x24/0x2c)
-[    0.048354]  r8:8096cf6c r7:809355ec r6:ddcd7c00 r5:812029e4 r4:00000000
-[    0.048389] [<8002a598>] (warn_slowpath_null) from [<8096cfcc>] (spi_init+0x60/0xa8)
-[    0.048405] [<8096cf6c>] (spi_init) from [<80008a7c>] (do_one_initcall+0x88/0x1e0)
-[    0.048415]  r5:8099e018 r4:8099e018
-[    0.048438] [<800089f4>] (do_one_initcall) from [<80935e38>] (kernel_init_freeable+0x110/0x1e0)
-[    0.048448]  r10:80980700 r9:809806e4 r8:000000cc r7:809355ec r6:809f8940 r5:00000002
-[    0.048478]  r4:8098d744
-[    0.048508] [<80935d28>] (kernel_init_freeable) from [<806ae574>] (kernel_init+0x10/0xf4)
-[    0.048517]  r10:00000000 r9:00000000 r8:00000000 r7:00000000 r6:00000000 r5:806ae564
-[    0.048547]  r4:00000000
-[    0.048565] [<806ae564>] (kernel_init) from [<8000ed68>] (ret_from_fork+0x14/0x2c)
-[    0.048574]  r4:00000000 r3:00000000
-[    0.048616] ---[ end trace 405a65d177dae4fd ]---
-
-Only check of_reconfig_notifier_register() in the CONFIG_OF_DYNAMIC=y case,
-as intended by commit ce79d54ae447d65.
-
-Signed-off-by: Fabio Estevam <fabio.estevam-KZfg59tc24xl57MIdRCFDg@public.gmane.org>
+Reported-by: Jim Davis <jim.epost-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+Signed-off-by: Beniamino Galvani <b.galvani-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
 ---
- drivers/spi/spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 8a0e4b0..4431a57 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2415,7 +2415,7 @@ static int __init spi_init(void)
- 	if (status < 0)
- 		goto err2;
- 
--	if (IS_ENABLED(CONFIG_OF))
-+	if (IS_ENABLED(CONFIG_OF_DYNAMIC))
- 		WARN_ON(of_reconfig_notifier_register(&spi_of_notifier));
- 
- 	return 0;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 0373c37..400c344 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -311,6 +311,7 @@ config SPI_FSL_ESPI
+ config SPI_MESON_SPIFC
+ 	tristate "Amlogic Meson SPIFC controller"
+ 	depends on ARCH_MESON || COMPILE_TEST
++	select REGMAP_MMIO
+ 	help
+ 	  This enables master mode support for the SPIFC (SPI flash
+ 	  controller) available in Amlogic Meson SoCs.
 -- 
 1.9.1
 
